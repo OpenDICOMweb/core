@@ -1,0 +1,94 @@
+## ignore the git directory
+.git/
+
+## Dart Language Stuff
+# ==========================
+# See https://www.dartlang.org/tools/private-files.html
+
+# Files and directories created by pub and dart2js:
+.buildlog
+.packages
+.project
+.pub/
+build/
+packages/
+pubspec.lock
+logger.log
+
+# output directories
+/out/
+/output/
+
+#Don’t commit the API documentation directory created by dartdoc:
+doc/api/
+
+# Avoid committing generated JavaScript files:
+*.dart.js
+*.info.json
+*.js
+*.js_
+*.js.deps
+*.js.map
+*.part.js
+
+## JetBrains IDE Stuff, e.g. WebStorm
+# ==========================
+# See https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+# for details.
+# *** Currently all JetBrains stuff is ignored
+
+# Don’t commit files and directories dropped by other development environments.
+/.idea/
+*.ipr
+*.iws
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# =========================
+# Operating System Files
+# =========================
+# #Windows OS Files
+# =========================
+#
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# =========================
+# Apple (OSX) OS Files
+# =========================
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+

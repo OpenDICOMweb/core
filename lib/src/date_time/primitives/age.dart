@@ -1,0 +1,102 @@
+// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
+// Use of this source code is governed by the open source license
+// that can be found in the LICENSE file.
+// Original author: Jim Philbin <jfphilbin@gmail.edu> -
+// See the AUTHORS file for other contributors.
+
+import 'package:core/src/date_time/primitives/constants.dart';
+import 'package:core/src/date_time/primitives/errors.dart';
+import 'package:core/src/hash/sha256.dart' as sha256;
+import 'package:core/src/string/string.dart';
+import 'package:core/src/system/system.dart';
+
+// DICOM Age (AS) constants.
+
+/// The valid tokens for DICOM Age (AS) [String]s.
+const String kAgeTokens = 'DWMY';
+
+/// The maximum values of the 3 digits in an [Age] [String].
+const int kMaxAgeInteger = 999;
+
+/// The minimum number of nDays an Age (AS) may have.
+const int kMinAge = 0;
+
+/// The maximum number of nDays an Age (AS) may have.
+const int kMaxAge = kMaxAgeYearsInDays;
+
+/// The maximum Age that can be expressed in days (nnnD).
+const int kMaxAgeInDays = kMaxAgeInteger;
+
+/// The maximum Age that can be expressed in weeks (nnnW).
+const int kMaxAgeWeeksInDays = kMaxAgeInteger * kDaysInWeek;
+
+const int kAgeDaysInMonth = 30;
+
+/// The maximum Age that can be expressed in months (nnnM).
+const int kMaxAgeMonthsInDays = kMaxAgeInteger * kAgeDaysInMonth;
+
+const int kAgeDaysInYear = 365;
+
+/// The maximum Age that can be expressed in years (nnnY).
+const int kMaxAgeYearsInDays = kMaxAgeInteger * kAgeDaysInYear;
+
+
+bool isValidAge(int nDays) => nDays >= kMinAge && nDays <= kMaxAge;
+
+int randomAgeInDays(int nDays) => System.rng.nextInt(kMaxAgeInDays);
+
+int hashAgeInDays(int nDays) => system.hash(nDays) % kMaxAgeInDays;
+
+int sha256AgeInDays(int nDays) => sha256.int63(nDays) % kMaxAgeInDays;
+
+String sha256AgeAsString(int nDays) => ageToString(sha256AgeInDays(nDays));
+
+/// Returns a [String] corresponding to age in days.
+/// The [String] is in the format: 'dddt', where 'd' is a decimal
+/// digit and 't' is an age token, one of "D", "W", "M", "Y".
+String ageToString(int nDays) {
+  if (nDays < 0 || nDays > kMaxAge) return invalidAgeError(nDays);
+
+  String s;
+  if (nDays >= 0 && nDays <= kMaxAgeInDays) {
+    s = '${digits3(nDays)}D';
+  } else if (nDays <= kMaxAgeWeeksInDays) {
+    s = '${digits3(nDays ~/ kDaysInWeek)}W';
+  } else if (nDays <= kMaxAgeMonthsInDays) {
+    s = '${digits3(nDays ~/ kAgeDaysInMonth)}M';
+  } else if (nDays <= kMaxAgeYearsInDays) {
+    s = '${digits3(nDays ~/ kAgeDaysInYear)}Y';
+  } else {
+    throw new FallThroughError();
+  }
+  return s;
+}
+
+String canonicalAgeString(int nDays) {
+	if (nDays < 0 || nDays > kMaxAge) return null;
+	if (nDays <= kMaxAgeInDays) return '${nDays}D';
+	if (nDays <= kMaxAgeWeeksInDays) return '${nDays}W';
+	if (nDays <= kMaxAgeMonthsInDays) return '${nDays}M';
+	if (nDays <= kMaxAgeYearsInDays) return '${nDays}Y';
+	return null;
+}
+
+//Flush if not used by V0.9.0
+/// Returns a [String] corresponding to age in days.
+/// The [String] is in the format: 'dddt', where 'd' is a decimal
+/// digit and 't' is an age token, one of "D", "W", "M", "Y".
+String ageInDaysToString(int nDays) {
+  String s;
+  if (nDays >= 0 && nDays <= kMaxAgeInDays) {
+    s = '${digits3(nDays)}D';
+  } else if (nDays <= kMaxAgeWeeksInDays) {
+    s = '${digits3(nDays ~/ 7)}W';
+  } else if (nDays <= kMaxAgeMonthsInDays) {
+    s = '${digits3(nDays ~/ 30)}M';
+  } else if (nDays <= kMaxAgeYearsInDays) {
+    s = '${digits3(nDays ~/ 365)}Y';
+  } else {
+    return invalidAgeError(nDays);
+  }
+  return s;
+}

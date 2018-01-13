@@ -1,0 +1,431 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="James F. Philbin<jfphilbin@gmail.com">
+  <style>
+  </style>
+  <link rel="stylesheet" href="odw_style.css">
+  <script src="file:/C:/Users/admin/AppData/Local/Temp/multimarkdown_highlight.pack.js"></script>
+</head>
+<body>
+
+<a href="http://OpenDICOMweb.github.io"><strong>
+  <small>Open DICOM<em>web Project</em></small>
+</strong></a>
+<div href="container">
+  <div href="markdown-body">
+    <h1> Unit Testing Guidelines
+      <p class="author">
+        James F. Philbin
+        <small>&lt;jfphilbin@gmail.com&gt;</small>
+      </p>
+    </h1>
+    <p>Writing good, robust Unit Tests is not hard -- it just takes
+       practice.</p>
+    <h2 id="fundamental-principals"><a href="#fundamental-principals"
+                                       class="anchor"><span class="octicon octicon-link"></span></a>
+      1. Fundamental Principals
+    </h2>
+    <p>A Unit Test should be short, quick, and automated.</p>
+    <ul>
+      <li>It should verify that a specific part of the program works.</li>
+      <li>It should have a clear pass/fail condition.</li>
+      <li>It should only test the <em>interface</em> not the _implementation.
+      </li>
+      <li>It should test the specific functionality of a function, or class.
+      </li>
+      <li>Every test should be as independent as possible from other tests.</li>
+      <li>Each package should have its own Unit Tests.</li>
+    </ul>
+    <p>A <em>good</em> Unit Test follows these rules:</p>
+    <ul>
+      <li>The test only fails when a new bug is introduced into the system,
+          the interface changes, or new requirements are introduced.
+      </li>
+      <li>When the test fails, it is easy to understand the reason for
+          the failure.
+      </li>
+    </ul>
+    <h2 id="test-the-interface-not-the-implementation">
+      <a href="#test-the-interface-not-the-implementation"
+         class="anchor"><span class="octicon octicon-link"></span></a>
+      2. Test the Interface, not the Implementation
+    </h2>
+    <p>The Unit Test should test the interface to a function or class. It
+       should test various combinations of inputs (parameters) and verify
+       that the resulting output (result) conforms to the expected
+       behaviour.</p>
+    <p>The Unit Test for a function or method should test that each parameter,
+       or combination of parameters yields the expected output. The test
+       should include:</p>
+    <ul>
+      <li>Testing invalid types, if the return type is not explicit.</li>
+      <li>Testing null values.</li>
+      <li>Testing the range (extreme values) of each input parameter both
+          valid and invalid.
+      </li>
+      <li>Testing the various combinations of parameters that have
+          inter-dependencies.
+      </li>
+    </ul>
+    <p>For example, an integer (<code>int</code>) parameter should be tested for
+       a
+       for negative and positive values, both in and out of range, as well as
+       zero and null values. if the parameter does not have a strong type
+       (i.e. has type <code>dynamic</code>) it should be tested with non-integer
+       types such as <code>String</code>.</p>
+    <h2 id="specific-rules"><a href="#specific-rules"
+
+                               class="anchor"><span class="octicon octicon-link"></span></a>
+      3. Specific Rules
+    </h2>
+    <ol>
+      <li>
+        <p>Tests should test the <em>interface</em>, not the
+          <em>implementation</em>.
+           This mean that private variables, functions, fields, and methods
+           should not be called directly from the test.</p>
+      </li>
+      <li>
+        <p><em>All values should be typed</em>.</p>
+        <ol>
+          <li>Any variable declared without a value MUST have a type.</li>
+          <li>The <code>var</code> declaration should be used sparingly and only
+              when the compiler can determine the type.
+          </li>
+        </ol>
+      </li>
+      <li>
+        <p>Any data that should not be modified should be created, if
+           possible, with <code>const</code>; or, <code>final</code>
+           declarations.
+           However, <code>final</code> declarations only ensure that the
+           variable
+           is not modified, not the substructure.</p>
+      </li>
+      <li>
+        <p>Any data accessed outside the scope of the test should either
+           be constant or should be created with <code>setup</code> and
+          <code>teardown</code> functions, so that the initial conditions of the
+           test are always the same.</p>
+      </li>
+      <li>
+        <p>In general, each test file should test only one class
+           or type of object. However, if a group of classes share the same
+           abstract base class, they might be grouped on one file.</p>
+      </li>
+      <li>
+        <p>In general, only concrete, i.e. non-abstract, classes need
+           to be tested. The tests for the concrete classes will test the
+           abstract class(es) that they extend.</p>
+      </li>
+      <li>
+        <p>Tests should validate each Getter, Setter, and Method in
+           the class. The test should start with the simplest of these and
+           proceed through the various levels of complexity.</p>
+      </li>
+      <li>
+        <p>For classes that have been extended, the highest non-abstract
+           class in the class hierarchy should be tested first, followed
+           by classes that extend that class, etc.</p>
+      </li>
+      <li>
+        <p>If randomized data generators are being used they should have
+           a <em>seed</em> values that allows them to reproduce randomly
+           generated data.</p>
+      </li>
+      <li>
+        <p><code>setup</code> and <code>teardown</code> functions should be used
+                              to
+                              to create external data that has mutable
+                              (modifiable)
+                              state.</p>
+      </li>
+      <li>
+        <p>All Tests should use the Dart
+          <a href="https://pub.dartlang.org/packages/test">Test</a> framework.
+        </p>
+      </li>
+      <li>
+        <p>Code coverage tests should use the
+          <a href="https://pub.dartlang.org/packages/coverage">Coverage</a>
+           framework.</p>
+      </li>
+      <li>
+        <p>If benchmarking is part of Unit Testing, the Dart
+          <a href="https://pub.dartlang.org/packages/benchmark_harness">Benchmark
+                                                                        Harness</a>
+           should be used.</p>
+      </li>
+      <li>If a mocking framework is needed,
+        <a href="https://pub.dartlang.org/packages/mockito">Mockito</a> should
+          be
+          used.
+      </li>
+    </ol>
+    <h2 id="test-file-names-and-structure">
+      <a href="#test-file-names-and-structure"
+         class="anchor"><span class="octicon octicon-link"></span></a>
+      4. Test
+      File
+      Names
+      and
+      Structure
+    </h2>
+    <p>The name of a test file should conform to the following pattern:</p>
+    <p><code>test/&lt;name&gt;_test.dart</code></p>
+    <p>Where <code>name</code> describes the function, class, or functionality
+       being tested.</p>
+    <p>Each test file should have the following structure:</p>
+    <pre><code>void main () {
+
+  group(&quot;&lt;Group Test Name&gt;&quot;, () {
+  
+    // Constant definitions
+    const List&lt;String&gt; validDates = const &lt;String&gt;[...];
+    
+    // Final definitions
+    final List&lt;Date&gt; validDates = getValidDates(...);
+    
+    // Group level setup and teardown functions
+    &lt;type&gt; setup(...){...}
+    &lt;type&gt; teardown(...){...}
+    
+    test(&quot;&lt;Test 1 Name&quot;, () {
+      
+      // Local const definitions
+      const List&lt;String&gt; x = const &lt;String&gt;[...];
+      
+      // Local final definitions
+      fanal x = ...
+      
+      // Test level setup and teardown functions
+      &lt;type&gt; setup(...){...}
+       void teardown(...){...}
+       
+      // Local variable definitions with explicit types
+      
+      // Expect group
+      //    local definitions
+      //    local computations
+      //    optional log statements
+      //    expect statement
+      
+      ...
+    
+    });
+    
+    test(&quot;&lt;Test 1 Name&quot;, () {
+      // another test
+    });
+    
+    test(&quot;&lt;Test 2 Name&quot;, () {
+      // another test
+    });
+    ...
+  }
+}
+</code></pre>
+    <h2 id="test-directory-and-structure">
+      <a href="#test-directory-and-structure"
+         class="anchor"><span class="octicon octicon-link"></span></a>
+      5. Test Directory and Structure.
+    </h2>
+    <p>4. Test programs should be organized in the <code>/test</code> directory
+       of the package.</p>
+    <p><code>/&lt;package&gt;/test/&lt;name&gt;_test.dart</code></p>
+    <p>Each class should have its own test files named as follows:</p>
+    <p><code>/&lt;package&gt;/test/&lt;class&gt;_test.dart</code></p>
+    <p>If the hierarchy of classes is sufficiently complicated a test
+       sub-directory should be created with the name of the base class or
+       highest level concrete class.</p>
+    <p>For example,</p>
+    <pre><code>&lt;package&gt;/test
+           /&lt;base class&gt;
+             &lt;class0&gt;.dart
+             &lt;class1&gt;.dart
+</code></pre>
+    <p>For example, the class structure below:</p>
+    <pre><code>Element
+  FloatBase
+    Float32
+      FL
+      OF
+    Float64
+      FD
+      OD
+  IntBase
+    Int16Base
+      SS
+    Int32Base
+      SL
+    Uint8Base
+      OB
+      OBPixelData
+      EncapulatedPixelData
+    StringBase
+      AE
+      AS
+      ...
+</code></pre>
+    <p>Should have a file structure similar to:</p>
+    <pre><code>/element
+  /float
+    float32.dart
+    float64.dart
+  /integer
+    ss.dart
+    ss.dart
+    uint8.dart 
+  /string
+  ...
+</code></pre>
+    <p>Where the float32.dart file tests classes FL and OB, etc.</p>
+    <h2 id="guidelines"><a href="#guidelines"
+
+                           class="anchor"><span
+        class="octicon octicon-link"></span></a>
+      6  . Guidelines</h2>
+    <h3 id="1-know-what-youre-testing"><a href="#1-know-what-youre-testing"
+
+                                          class="anchor"><span class="octicon octicon-link"></span></a>
+      1.
+      Know
+      What
+      You're
+      Testing
+    </h3>
+    <p>Although this seems like a trivial, it is not always
+       easy to follow.</p>
+    <p>A test written <em>without</em> a clear objective is usually easy to
+       spot.
+       It is long, hard to understand, and usually tests more than one thing.
+    </p>
+    <p>There is nothing wrong with testing every aspect of a specific
+       program, function, or class, but problems occur when to
+       several such tests are contained into a single test function.
+       It creates a complex and fragile Unit Test.</p>
+    <h3 id="2-unit-test-names-should-be-descriptive">
+      <a href="#2-unit-test-names-should-be-descriptive"
+
+         class="anchor"><span class="octicon octicon-link"></span></a>
+      2. Unit
+      Test
+      Names
+      Should
+      be
+      Descriptive
+    </h3>
+    <p>The Unit Test name should describe the purpose of the test. If
+       the test is difficult to name it usually means that the test
+       lacks focus and is trying to do too much.</p>
+    <p>Testing only one thing creates a more readable test. When a
+       simple test fails, it is easier to find the cause and fix
+       it than to do so with a long and complex test.</p>
+    <h3 id="3-unit-tests-should-be-self-sufficient">
+      <a href="#3-unit-tests-should-be-self-sufficient"
+         class="anchor"><span class="octicon octicon-link"></span></a>
+      3. Unit
+      Tests
+      Should be
+      Self-Sufficient
+    </h3>
+    <p>Each Unit Test in a file should be able to run separately from
+       the other tests in that file.</p>
+    <p>A good Unit Test is focused. It avoids dependencies such
+       as global data, environment settings, or databases.
+       A single test should not depend on running other tests before
+       it, nor should it be affected by the order of execution of other
+       tests. Running the same Unit Test 1,000 times should return the
+       same result every time.</p>
+    <p>Using global states such as static variables, external data
+       (i.e. registry, database), or environment settings may cause
+      <em>leaks</em> between tests. Make sure to properly initialize and
+       clean each of the <em>global states</em> between test runs or avoid
+       using them completely.</p>
+    <h3 id="4-tests-should-be-deterministic">
+      <a href="#4-tests-should-be-deterministic"
+         class="anchor"><span class="octicon octicon-link"></span></a>
+      4. Tests
+      Should be
+      Deterministic
+    </h3>
+    <p>The worst test is one that passes some of the time. A test should
+       either pass all the time or fail until fixed. Having a Unit Test
+       that passes some of the time is equivalent to not having a test
+       at all.</p>
+    <p>One practice that should used carefully is writing tests with
+       random input. Using randomized data in a Unit Test might introduce
+       uncertainty unless the random data can be clearly controlled for
+       validity and non validity. If the randomized input is not well
+       controlled, then when a test fails, it might be impossible to
+       reproduce because the test data changes each time it runs. So,
+       it is important that random data generators used in Unit Tests
+       be able to regenerate the same data based on a <em>seed</em>.</p>
+    <h3 id="5-naming-conventions"><a href="#5-naming-conventions"
+                                     class="anchor"><span class="octicon octicon-link"></span></a>
+      5. Naming
+      conventions
+    </h3>
+    <p>To know why a test failed, we need to be able to understand it
+       at a glance. The first thing that you notice about a failed
+       test is its name -- the test method name is very important.
+       When a well-named test fails, it is easier to understand what
+       was tested and why it failed.</p>
+    <h3 id="6-do-repeat-yourself"><a href="#6-do-repeat-yourself"
+
+                                     class="anchor"><span class="octicon octicon-link"></span></a>
+      6.Do Repeat Yourself
+    </h3>
+    <p>In production code writing the same code twice should be avoided
+       because it causes maintainability issues. However, in Unit Testing
+       readability is important, so it is typical to have duplicate code.
+       Avoiding duplication in tests cause tests to be difficult
+       to read and understand.</p>
+    <p>In other words, having to change 4-5 similar tests is preferable
+       to not understanding one non-duplicated test when it fails.
+       Eliminating duplication is usually a good thing -- as long
+       as it does not create obscure code. Object creation can be
+       refactored to factory methods and custom assertions can be
+       created to check a complex object -- as long as the test's
+       readability does not suffer.</p>
+    <h3 id="7-test-the-interface-not-the-implementation">
+      <a href="#7-test-the-interface-not-the-implementation"
+         class="anchor"><span class="octicon octicon-link"></span>
+      </a>
+      7. Test the Interface, Not the Implementation
+    </h3>
+    <p>Successful Unit Tests only test external inputs and output.
+       They should only fail when inputs cause an invalid output.
+       if the implementations changes, but not the interface, the
+       test should still be valid without any changes.</p>
+    <p>A <em>fragile</em> Unit Test is one that fails due to an internal
+       change in the software that does not affect the interface.</p>
+    <p>Fragile Unit Tests result when the same developer that wrote
+       the production code, and knows how the solution was implemented,
+       writes the Unit Tests. In this case, it is difficult not to test
+       the implementation.</p>
+    <p>Only test private methods if you have a very good reason to do so,
+       otherwise, trivial refactoring can cause errors and failures
+       in the tests.</p>
+    <h3 id="8-use-an-test-and-mocking-framework">
+      <a href="#8-use-an-test-and-mocking-framework"
+         class="anchor"><span class="octicon octicon-link"></span></a>
+      8. Use an Test and Mocking Frameworks
+    </h3>
+    <p>Writing good Unit Tests can be hard when the class under test
+       has internal or external dependencies. In order to run a test,
+       you may need a connection to a fully populated database or a
+       remote server. In some cases, you may need to instantiate a
+       complex class created by someone else.</p>
+    <p>These dependencies can make Unit Testing difficult. When a
+       test needs a complex setup to run, if not handled properly
+       a fragile will result.</p>
+    <p>To avoid these problems use an Test framework with setup
+       and tear-down functions to set default behavior of external
+       objects.</p>
+  </div>
+</div>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

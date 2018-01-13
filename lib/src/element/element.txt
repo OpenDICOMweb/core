@@ -1,0 +1,64 @@
+# Element
+
+//TODO: This is incorrect re-document
+/// Element
+///
+/// Notes:
+///   1. Elements may have a zero length value field, these are denoted by either [null] or the
+///   empty [String] ("").
+///   2. If an Element has one or more values that value has a minimum length and a maximum
+///   length.
+///   3. It is not possible to create an [Element] that has:
+///     `_values == null && _vfBytes== null`
+///
+/// A DICOM [Element].
+///
+/// [_vfBytes] is designed to hold either a slice or view of an unparsed
+/// [Uint8List] containing a DICOM object, or the parsed values of the [Element].
+//TODO rewrite
+///   - The invariant for all [Element]s is that if [_vfBytes] is [null], then
+///   [_vfBytes] must not be [null].
+///   - If the element is created with the [Element] constructor, the [_vfBytes]
+///   must not be accessed.
+///   - if the [Element] is created with the [.fromBytes] constructor,
+///   then [values] should be initialized lazily when accessed.
+///
+//TODO: It should be possible for [_vfBytes] to be eliminated and have [_values],
+//      either contain a [Uint8List] or a [List<E>]. [_values] would then never
+//      have [null] as a value. [values] and [bytes] would convert back and forth
+//      between the two representations.
+/// An internal [List<E>] of values.
+///  List<E> _values;
+///
+/// Returns a new copy of values.  If [_vfBytes] is a Uint8List, then it must be
+/// decoded first and then copied.
+///List<E> get _valuesCopy;
+///
+/// Returns a [List<E>] of [values], by Converting the[Uint8List] in [_vfBytes]
+/// to the appropriate [List<E>].
+///List<E> get _valueFieldToValues;
+///
+/// Returns the [List<E>] encoded as a [Uint8List].  If [_vfBytes] is already a [Uint8List]
+/// just returns it; otherwise, encodes [List<E>] as [Uint8List].
+///Uint8List get _valuesToValueField;
+//TODO: remove this field. See TODO above.
+/// [_vfBytes] is either a [Uint8List] that must be parsed, or a [List<E>] of
+/// already parsed [values].
+///
+/// Note: The type of this [List] is dynamic because it can either be a [Uint8List]
+/// that has not been decoded, or a [List<E>] that has been decoded.
+//  Uint8List _vfBytes;
+
+
+  //TODO: unit test == and hash
+  //TODO: make sure this works for private and unknown private tags.
+  /// Returns [true] if [this] and [other] are the same type,
+  /// have the same [Tag], and have equal [values].
+  ///
+  /// Note:
+  ///   1. This method checks that the Tags are equal.
+  ///   Subclasses don't have to implement [==] or [hashCode].
+  ///   If [tag]s are equal, then [VR]s must be equal.
+  ///
+  ///   2. This works because it is written in terms of [values] (not [_values]),
+  ///   which lazily converts [_vfBytes] to [_values].

@@ -1,0 +1,1128 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="author" content="James F. Philbin<jfphilbin@gmail.com"><style>
+/*
+Copyright (c) Vladimir Schneider vladimir.schneider@gmail.com
+adapted and tweaked from https://github.com/sindresorhus/github-markdown-css
+
+Copyright (c) Sindre Sorhus sindresorhus@gmail.com (sindresorhus.com)
+
+The MIT License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+/*
+ * Layout only CSS to ease maintenance of multiple color schemes
+ */
+
+@font-face {
+    font-family: 'task-items';
+    src: url('file:/C:/Users/admin/AppData/Local/Temp/multimarkdown_taskitems.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.container {
+    width: 980px;
+    margin: 0 auto;
+    padding-left: 10px;
+    float: left !important;
+}
+
+.wiki-container {
+    width: 830px;
+    margin: 0 auto;
+    padding-left: 20px;
+    float: left !important;
+}
+
+.wiki-body {
+    width: 700px;
+    margin-left: -20px;
+    padding-left: 20px;
+}
+
+.markdown-body,
+.wiki-body {
+    overflow: hidden;
+    word-wrap: break-word;
+    font-size: 14px;
+}
+
+#readme .markdown-body {
+    /*corner radii on a large body of text causes very slow scrolling and updates in WebView */
+    /*border-bottom-left-radius: 3px;*/
+    /*border-bottom-right-radius: 3px;*/
+    border-bottom-right-radius: 0;
+    padding: 45px 38px 45px 38px;
+    word-wrap: break-word;
+}
+
+.boxed-group>h3, .boxed-group .heading {
+    border-bottom: 0;
+    /*border-radius: 3px 3px 0 0;*/
+    border-radius: 0;
+    display: block;
+    font-size: 14px;
+    line-height: 17px;
+    margin: 0;
+    padding: 6px 10px 6px;
+}
+
+.boxed-group {
+    border-radius: 0;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
+  text-indent: 0;
+  -webkit-text-size-adjust: none;
+}
+
+a {
+    background-color: transparent;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+strong {
+    font-weight: bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+h1 {
+    font-size: 2em;
+    margin: 0.67em 0;
+}
+
+img {
+    border: 0;
+}
+
+hr {
+    border: 0 none;
+    box-sizing: content-box;
+    height: 2px;
+    margin: 16px 0;
+    overflow: hidden;
+    padding: 0;
+}
+
+hr:before {
+    content: "";
+    display: table;
+}
+
+hr:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+
+pre {
+    overflow: auto;
+}
+
+var,
+code,
+kbd {
+    font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-size: 12px;
+}
+
+pre {
+    margin-top: 0;
+    margin-bottom: 0;
+    font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+code {
+    border-radius: 0;
+    font-size: 85%;
+    margin: 0;
+    padding: 0.2em 0 0.2em 0;
+}
+
+var {
+    font-style: italic;
+}
+
+code:before,
+code:after {
+    content: "\00a0";
+    letter-spacing: -0.2em;
+}
+
+pre > code {
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    white-space: pre;
+    word-break: normal;
+}
+
+.highlight {
+    margin-bottom: 16px;
+}
+
+.highlight pre,
+pre {
+    border-radius: 0;
+    font-size: 85%;
+    line-height: 1.45;
+    overflow: auto;
+    padding: 16px;
+}
+
+.highlight pre {
+    margin-bottom: 0;
+    word-break: normal;
+}
+
+pre {
+    word-wrap: normal;
+}
+
+pre code {
+    background-color: transparent;
+    border-radius: 0;
+    border: 0;
+    display: inline;
+    line-height: inherit;
+    margin: 0;
+    max-width: initial;
+    overflow: initial;
+    padding: 0;
+    word-wrap: normal;
+}
+
+pre code:before,
+pre code:after {
+    content: normal;
+}
+
+kbd {
+    border-radius: 0;
+    display: inline-block;
+    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    font-weight: 500;
+    line-height: 10px;
+    padding: 5px 5px 3px 5px;
+    vertical-align: middle;
+}
+
+input {
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
+
+html input[disabled] {
+    cursor: default;
+}
+
+input {
+    line-height: normal;
+}
+
+input[type="checkbox"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+input {
+    font-family: Helvetica, arial, nimbussansl, liberationsans, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 11px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover,
+a:active {
+    text-decoration: underline;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: Helvetica, "Helvetica Neue", Arial, freesans, sans-serif;
+    line-height: 1.1;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.25em;
+}
+
+h4 {
+    font-size: 1em;
+}
+
+h5 {
+    font-size: 0.875em;
+}
+
+h6 {
+    font-size: 0.85em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    margin-top: 1em;
+    position: relative;
+}
+
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+    display: none;
+    font-weight: normal;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+h1:hover .anchor,
+h2:hover .anchor,
+h3:hover .anchor,
+h4:hover .anchor,
+h5:hover .anchor,
+h6:hover .anchor {
+    margin-left: -30px;
+    padding-left: 0;
+    text-decoration: none;
+}
+
+h1:hover .anchor .octicon-link,
+h2:hover .anchor .octicon-link,
+h3:hover .anchor .octicon-link,
+h4:hover .anchor .octicon-link,
+h5:hover .anchor .octicon-link,
+h6:hover .anchor .octicon-link {
+    display: inline-block;
+}
+
+h1 {
+    font-size: 2.25em;
+    line-height: 1.2;
+    padding-bottom: 0.3em;
+}
+
+.wiki-container > h1 {
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: normal;
+}
+
+h1 .anchor {
+    line-height: 1;
+}
+
+h2 {
+    font-size: 1.75em;
+    line-height: 1.225;
+    padding-bottom: 0.3em;
+}
+
+h2 .anchor {
+    line-height: 1;
+}
+
+h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+
+h3 .anchor {
+    line-height: 1.2;
+}
+
+h4 {
+    font-size: 1.25em;
+}
+
+h4 .anchor {
+    line-height: 1.2;
+}
+
+h5 {
+    font-size: 1em;
+}
+
+h5 .anchor {
+    line-height: 1.1;
+}
+
+h6 {
+    font-size: 1em;
+}
+
+h6 .anchor {
+    line-height: 1.1;
+}
+
+blockquote {
+    margin: 0;
+}
+
+dd {
+    margin-left: 0;
+}
+
+.octicon {
+    display: inline-block;
+    font: normal normal normal 28px/1 task-items;
+    text-decoration: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.bookicon {
+    display: inline-block;
+    font: normal normal normal 20px/1 task-items;
+    text-decoration: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.octicon-link:before {
+    content: 'C';
+}
+
+.octicon-book:before {
+    content: 'B';
+}
+
+.markdown-body > *:first-child {
+    margin-top: 0 !important;
+}
+
+.markdown-body > *:last-child {
+    margin-bottom: 0 !important;
+}
+
+a:not([href]) {
+    color: inherit;
+    text-decoration: none;
+}
+
+.anchor {
+    display: block;
+    left: 0;
+    margin-left: -30px;
+    padding-left: 30px;
+    padding-right: 6px;
+    position: absolute;
+    top: 0;
+}
+
+.anchor:focus {
+    outline: none;
+}
+
+blockquote,
+ul,
+ol,
+table,
+pre {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+/* loosely spaced list items that reflect the markdown source */
+p {
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+/* loosely spaced list items that duplicate quirky GFM implementation */
+p {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+ul,
+ol {
+    padding: 0;
+}
+
+ol ol,
+ul ol {
+    list-style-type: lower-roman;
+    text-indent: 0;
+}
+
+ul ul ol,
+ul ol ol,
+ol ul ol,
+ol ol ol {
+    list-style-type: lower-alpha;
+    text-indent: 0;
+}
+
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-item-closed,
+.task-item-open {
+    display: inline-block;
+    font: normal normal normal 18px/1 task-items;
+    text-decoration: none;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin-left: -1.48em;
+    margin-right: 0.48em;
+}
+
+.task-item-closed:before {
+    content: 'X';
+}
+
+.task-item-open:before {
+    content: 'O';
+}
+
+ul,
+ol {
+    padding-left: 2em;
+    margin-top: 16px;
+}
+
+ul ul,
+ul ol,
+ol ol,
+ol ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.task-list-item + .task-list-item-checkbox {
+    margin-top: 3px;
+}
+
+.task-list-item input {
+    margin: 0 0.35em 0.25em -0.6em;
+    vertical-align: middle;
+}
+
+dl {
+    margin: 16px 0;
+    padding: 0;
+}
+
+dl dt {
+    font-size: 1em;
+    font-style: italic;
+    font-weight: bold;
+    margin-top: 16px;
+    padding: 0;
+}
+
+dl dd {
+    margin-top: 0;
+    padding: 0 16px;
+}
+
+blockquote {
+    padding: 0 15px;
+}
+
+blockquote > :first-child {
+    margin-top: 0;
+}
+
+blockquote > :last-child {
+    margin-bottom: 0;
+}
+
+aside {
+    padding: 0 15px;
+}
+
+aside > :first-child {
+    margin-top: 0;
+}
+
+aside > :last-child {
+    margin-bottom: 0;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 10px;
+    display: block;
+    line-height: inherit !important;
+    overflow: auto;
+    word-break: normal;
+}
+
+table th {
+    font-weight: bold;
+}
+
+table caption {
+  font-weight: bold;
+  padding: 5px 0 5px 10px;
+  text-align: left;
+}
+
+th,
+td {
+    padding: 6px 10px 2px 10px !important;
+}
+
+img {
+    box-sizing: border-box;
+    max-width: 100%;
+}
+
+</style>
+<style>
+.container { width: 100%; }
+.wiki-container { width: 100%; }
+.wiki-body { width: 100%; }
+</style>
+<style>
+/*
+Copyright (c) Vladimir Schneider vladimir.schneider@gmail.com
+adapted and tweaked from https://github.com/sindresorhus/github-markdown-css
+
+Copyright (c) Sindre Sorhus sindresorhus@gmail.com (sindresorhus.com)
+
+The MIT License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+
+/*
+ * default color scheme - light
+ * Colors and rendering only CSS to ease maintenance of multiple color schemes
+ */
+
+.markdown-body,
+.wiki-body {
+    /*font-family: Helvetica, Arial, freesans, sans-serif;*/
+    /*font-family: Arial, Helvetica, "Helvetica Neue", "Segoe UI", freesans, sans-serif;*/
+    font-family: Helvetica, Arial, "Helvetica Neue", "Segoe UI", freesans, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+body {
+    background-color: #ffffff;
+    color: #333;
+}
+
+.boxed-group > h3, .boxed-group .heading {
+    background-color: #f5f5f5;
+    border: 1px solid #d8d8d8;
+}
+
+#readme .markdown-body {
+    background-color: transparent;
+    border: 1px solid #ddd;
+}
+
+#readme .wiki-body {
+    background-color: transparent;
+    border: none;
+}
+
+.focus-highlight {
+    border: solid rgba(255, 0, 255, 0.50) 1px !important;
+    background-color: rgba(255, 0, 255, 0.07) !important;
+}
+
+thead tr.focus-highlight, thead tr.focus-highlight th {
+    border: solid rgba(160, 0, 160, 0.5) 2px !important;
+    background-color: rgba(160, 0, 160, 0.1) !important;
+}
+
+tbody tr.focus-highlight {
+    border: solid rgba(255, 0, 255, 0.5) 2px !important;
+    background-color: rgba(255, 0, 255, 0.07) !important;
+}
+
+img.local-only {
+    border: 2px solid #b0a803;
+}
+
+img.absent {
+    border: 2px solid #B00020;
+    color: #B00020;
+    /*font-weight: bold;*/
+}
+
+a {
+    color: #0366d6;
+}
+
+a.mail-link {
+    color: #aa33bb;
+}
+
+a.absent {
+    color: #B00020;
+}
+
+a.local-only {
+    color: #be8000;
+}
+
+a.page-anchor {
+    color: #000;
+}
+
+a.page-anchor:hover {
+    color: #0366d6;
+}
+
+abbr {
+    text-decoration: none;
+    border-bottom: 1px dashed #0366d6;
+}
+
+hr {
+    background-color: #e7e7e7;
+}
+
+h1 .octicon-link,
+h2 .octicon-link,
+h3 .octicon-link,
+h4 .octicon-link,
+h5 .octicon-link,
+h6 .octicon-link {
+    color: #000;
+}
+
+h1,
+h2 {
+    border-bottom: 1px solid #eee;
+}
+
+h6 {
+    color: #777;
+}
+
+blockquote {
+    border-left: 4px solid #ddd;
+    color: #777;
+}
+
+blockquote h1,
+blockquote h2,
+blockquote h3,
+blockquote h4,
+blockquote h5,
+blockquote h6 {
+    color: #777;
+}
+
+aside {
+    border-left: 4px solid #C80010;
+}
+
+th {
+    border: 1px solid #d4d4d4;
+}
+
+table thead tr {
+    background-color: #e8e8e8;
+}
+
+table thead tr:nth-child(2n) {
+    background-color: #dcdcdc;
+}
+
+td {
+    border: 1px solid #dddddd;
+}
+
+table tbody tr {
+    background-color: #ffffff;
+}
+
+table tbody tr:nth-child(2n) {
+    background-color: #f4f4f4;
+}
+
+var,
+code {
+    background-color: rgba(0, 0, 0, 0.06);
+    /*color: #B00020;*/
+}
+
+.highlight pre,
+pre {
+    background-color: #f7f7f7;
+    border: 1px solid #f8f8f8;
+}
+
+pre code {
+    color: #000;
+}
+
+kbd {
+    background-color: #fcfcfc;
+    border: solid 1px #ccc;
+    box-shadow: inset 0 -1px 0 #bbb;
+    color: #555;
+}
+
+del {
+    /*text-decoration-color: #B00020;*/
+}
+
+.search-highlight {
+    color: #000;
+    padding:1px 0 1px 0;
+    background-color: #ffff00;
+}
+
+.selection-highlight {
+    color: #FFFFFF;
+    padding:1px 0 1px 0;
+    background-color: #5974AB;
+}
+
+</style>
+<style>
+/*
+
+github.com style (c) Vasily Polovnyov vast@whiteants.net
+modified for idea default (c) Vladimir Schneider vladimir.schneider@gmail.com
+
+*/
+
+.hljs {
+  color: #333;
+  /*background: #f8f8f8;*/
+  background: transparent;
+}
+
+.hljs-comment,
+.diff .hljs-header {
+  color: #998;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.css .rule .hljs-keyword,
+.hljs-winutils,
+.nginx .hljs-title,
+.hljs-subst,
+.hljs-request,
+.hljs-status {
+  color: #a71d5d;
+  /*font-weight: bold;*/
+}
+
+.hljs-number,
+.hljs-hexcolor,
+.ruby .hljs-constant {
+  color: #008080;
+}
+
+.hljs-string,
+.hljs-tag .hljs-value,
+.hljs-doctag,
+.tex .hljs-formula {
+  color: #008000;
+}
+
+.hljs-title,
+.hljs-id,
+.scss .hljs-preprocessor {
+  color: #795da3;
+  /*font-weight: bold;*/
+}
+
+.hljs-list .hljs-keyword,
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-class .hljs-title,
+.hljs-type,
+.vhdl .hljs-literal,
+.tex .hljs-command {
+  color: #795da3;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-tag .hljs-title,
+.hljs-rule .hljs-property,
+.django .hljs-tag .hljs-keyword {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-attribute,
+.hljs-variable,
+.lisp .hljs-body,
+.hljs-name {
+  color: #008080;
+}
+
+.hljs-regexp {
+  color: #009926;
+}
+
+.hljs-symbol,
+.ruby .hljs-symbol .hljs-string,
+.lisp .hljs-keyword,
+.clojure .hljs-keyword,
+.scheme .hljs-keyword,
+.tex .hljs-special,
+.hljs-prompt {
+  color: #795da3;
+}
+
+.hljs-built_in {
+  color: #0086b3;
+}
+
+.hljs-preprocessor,
+.hljs-pragma,
+.hljs-pi,
+.hljs-doctype,
+.hljs-shebang,
+.hljs-cdata {
+  color: #999;
+  font-weight: bold;
+}
+
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
+
+.diff .hljs-change {
+  background: #0086b3;
+}
+
+.hljs-chunk {
+  color: #aaa;
+}
+</style>
+<link rel="stylesheet" href="odw_style.css">
+<title>private_elements.md</title>
+<script src="file:/C:/Users/admin/AppData/Local/Temp/multimarkdown_highlight.pack.js"></script>
+</head>
+<body>
+<a href="http://OpenDICOMweb.github.io"><strong><small>Open DICOM<em>web Project</em></small><strong></a><div class="container">
+<div id="readme" class="boxed-group">
+<h3>
+   <a href="#" name="markdown-page" id="markdown-page" class="page-anchor"><span class="bookicon octicon-book"></span>
+</a>  private_elements.md
+</h3>
+<article class="markdown-body">
+<h1 id="private-element-handling-in-open-dicomweb-sdk"><a href="#private-element-handling-in-open-dicomweb-sdk" name="private-element-handling-in-open-dicomweb-sdk" class="anchor"><span class="octicon octicon-link"></span></a>Private Element Handling in Open DICOMweb SDK</h1>
+<h2 id="dicom-tag-code"><a href="#dicom-tag-code" name="dicom-tag-code" class="anchor"><span class="octicon octicon-link"></span></a>DICOM Tag Code</h2>
+<p>A DICOM Tag Code is a 32-bit unsigned number. The 16 high-order bits are
+called the Group Number and the 16 low-order bits are called the Element
+number. Tag Codes are typically written as:</p>
+<pre><code>(gggg,eeee)
+</code></pre>
+<p>Where gggg is the hexadicimal Group Number and <code>eeee</code> is the hexadecimal
+Element Number.</p>
+<h2 id="public-and-private-tag-code"><a href="#public-and-private-tag-code" name="public-and-private-tag-code" class="anchor"><span class="octicon octicon-link"></span></a>Public and Private Tag Code</h2>
+<p>Tag Codes are divided into Public Codes and Private Code.
+A <em>Public</em> Code has a Group Number that is even number. Public Group
+Numbers for a Dataset are greater than 0x0007 and less than 0xFFFF.</p>
+<p>A <em>Private</em> Code has a Group Number that is an odd number, which is
+greater than 0x0008 and less than 0xFFFE.</p>
+<h2 id="private-group"><a href="#private-group" name="private-group" class="anchor"><span class="octicon octicon-link"></span></a>Private Group</h2>
+<p>A <em>Private Group</em> is a group of a Date Elements, where each Element
+has a Tag Code with the same Private Group Number.</p>
+<h2 id="private-tag-code-structure"><a href="#private-tag-code-structure" name="private-tag-code-structure" class="anchor"><span class="octicon octicon-link"></span></a>Private Tag Code Structure</h2>
+<p>A Private Tag Code is represented as a hexadecimal integer that
+has the following structure:</p>
+<pre><code>(pppp,eeee)
+</code></pre>
+<p>Where</p>
+<p><code>pppp</code> is the private <em>group</em> number, which must be odd.
+<code>eeee</code> is the private <em>element</em> number.</p>
+<p>The are three types of valid Private Tag codes:
+1. <em>Private Group Length</em>,
+2. <em>Private Creator</em>, and
+3. <em>Private Data</em>.</p>
+<p>There are also two potentially invalid Private Tag Codes, which
+might appear in the dataset:</p>
+<ol>
+  <li><em>Undefined Private Tag</em>, and</li>
+  <li><em>Private Data without Creator</em>.</li>
+</ol>
+<h3 id="structure-of-private-group-length-tag-code"><a href="#structure-of-private-group-length-tag-code" name="structure-of-private-group-length-tag-code" class="anchor"><span class="octicon octicon-link"></span></a>Structure of <em>Private Group length</em> Tag Code</h3>
+<p><code>pppp,0000</code></p>
+<p>There</p>
+<h3 id="structure-of-a-private-subgroup-creator-tag-code"><a href="#structure-of-a-private-subgroup-creator-tag-code" name="structure-of-a-private-subgroup-creator-tag-code" class="anchor"><span class="octicon octicon-link"></span></a>Structure of a <em>Private Subgroup Creator</em> Tag Code</h3>
+<p><code>pppp,00cc</code></p>
+<p>Where</p>
+<pre><code>`cc` is a hexadecimal integer between `10` and `FF`.
+</code></pre>
+<p>The Private Group Tag Codes between <code>0001</code> and <code>000F</code> are <em>Undefined Private Tag</em>
+Codes, which should never appear in any Dataset.</p>
+<p><code>cc</code> is the Private Creators identifier.  It reserves a set a Tag codes
+from <code>cc00</code> to <code>ccFF</code>, called the Private Data <em>Subgroup</em> for the Private Creator
+<code>cc</code>.</p>
+<h3 id="structure-of-valid-private-data-tag-code"><a href="#structure-of-valid-private-data-tag-code" name="structure-of-valid-private-data-tag-code" class="anchor"><span class="octicon octicon-link"></span></a>Structure of Valid <em>Private Data</em> Tag Code</h3>
+<p><code>pppp,ccdd</code></p>
+<p>Where</p>
+<pre><code>`cc` is the Private Creator Index, and
+`dd` is the Private Data Index between `00` and `FF`.
+</code></pre>
+<h3 id="the-tag-code-structure-of-a-private-group"><a href="#the-tag-code-structure-of-a-private-group" name="the-tag-code-structure-of-a-private-group" class="anchor"><span class="octicon octicon-link"></span></a>The Tag Code Structure of a Private Group</h3>
+<table>
+  <thead>
+    <tr><th align="center">  Element    </th><th align="left"> Description </th></tr>
+  </thead>
+  <tbody>
+    <tr><td align="center">    0000     </td><td align="left"> Private Group Length</td></tr>
+    <tr><td align="center"> 0001 - 000F </td><td align="left"> <em>Illegal Private Codes</em> </td></tr>
+    <tr><td align="center">    0010     </td><td align="left"> Private Creator Index 10 </td></tr>
+    <tr><td align="center"> 0011 </td><td align="left"> 0011 </td></tr>
+    <tr><td align="center">     ...     </td><td align="left"> Private Creator Index 12 - FE </td></tr>
+    <tr><td align="center">    00FF     </td><td align="left"> Private Creator Index FF </td></tr>
+    <tr><td align="center"> 1000 - 10FF </td><td align="left"> Private Data Subgroup 10 </td></tr>
+    <tr><td align="center"> 1100 - 11FF </td><td align="left"> Private Data Subgroup 11 </td></tr>
+    <tr><td align="center">    ...      </td><td align="left"> Private Data Subgroup 12 - FE </td></tr>
+    <tr><td align="center"> FF00 - FFFF </td><td align="left"> Private Creator Subgroup FF</td></tr>
+  </tbody>
+</table>
+<h3 id="private-group-length"><a href="#private-group-length" name="private-group-length" class="anchor"><span class="octicon octicon-link"></span></a>Private Group Length</h3>
+<h3 id="invalid-private-code"><a href="#invalid-private-code" name="invalid-private-code" class="anchor"><span class="octicon octicon-link"></span></a>Invalid Private Code</h3>
+<table>
+  <thead>
+    <tr><th align="center"> Element </th><th align="left"> Description </th></tr>
+  </thead>
+  <tbody>
+    <tr><td align="center">    0000     </td><td align="left"> Private Group Length</td></tr>
+    <tr><td align="center">   <del><em>0001</em></del>    </td><td align="left"> <del><em>Illegal Private Codes</em></del> </td></tr>
+    <tr><td align="center">    0010     </td><td align="left"> Private Creator Index 10 </td></tr>
+    <tr><td align="center"> 1000 - 10FF </td><td align="left"> Private Data Subgroup 10 </td></tr>
+    <tr><td align="center"> <del><em>1500 - 15FF</em></del> </td><td align="left"> <del><em>Private Data Subgroup 15</em></del> </td></tr>
+  </tbody>
+</table>
+<p>The Element Number 0001 is illegal and not allowed in a DICOM Dataset.
+Subgroup 15 is invalid because it does not have a corresponding Private
+Creator.</p>
+<h3 id="private-group-class"><a href="#private-group-class" name="private-group-class" class="anchor"><span class="octicon octicon-link"></span></a>Private Group Class</h3>
+<p>Members:
+1. groupLength
+There can be only one Group Length Element per Private Group.</p>
+<ol>
+  <li>
+    <p>illegalElements</p>
+    <p>There can be up to 15 Illegal elements in a private group.</p>
+  </li>
+  <li>SubGroups
+  <p>Each SubGroup has one Creator and up to 256 Data Elements.</p>
+  <p>If a Creator is Missing an Unknown Creator is supplied.</p>
+  </li>
+</ol>
+<h3 id="algorithm"><a href="#algorithm" name="algorithm" class="anchor"><span class="octicon octicon-link"></span></a>Algorithm</h3>
+<p>When a Private Group Code is encountered do the following:</p>
+<ol>
+  <li>If the <em>Code</em> is a Private Group Length element read it</li>
+</ol>
+</article>
+</div>
+</div>
+<script>hljs.initHighlightingOnLoad();</script></body>
+</html>

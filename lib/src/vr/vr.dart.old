@@ -1,0 +1,192 @@
+// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
+// Use of this source code is governed by the open source license
+// that can be found in the LICENSE file.
+// Original author: Jim Philbin <jfphilbin@gmail.edu> -
+// See the AUTHORS file for other contributors.
+
+import 'package:core/src/dicom.dart';
+import 'package:core/src/errors.dart';
+import 'package:core/src/vr/vr_errors.dart';
+import 'package:core/src/vr/vr.dart';
+
+// ignore_for_file: type_annotate_public_apis
+
+const int kShortVF = kMaxShortVF;
+const int kLongVF = kMaxLongVF;
+
+class VR<T> {
+  final int index; // done   // done
+  final String id; // done called vrKeyword
+  final int code;
+  final int vlfSize;
+  final int maxVFLength;
+
+  const VR(this.index, this.id, this.code, this.vlfSize, this.maxVFLength);
+
+  VR byIndex(int index) => vrByIndex[index];
+  // Sequence == 0,
+  static const kSQ = VRSequence.kSQ;
+
+  // Begin EVR Long integers
+  static const kUN = VRInt.kUN;
+  static const kOB = VRInt.kOB;
+  static const kOW = VRInt.kOW;
+
+  // End maybe Undefined Length
+  static const kOL = VRInt.kOL;
+
+  // EVR Long floats
+  static const kOD = VRFloat.kOD;
+  static const kOF = VRFloat.kOF;
+
+  // EVR Long Strings
+  static const kUC = VRUtf8.kUC;
+  static const kUR = VRText.kUR;
+  static const kUT = VRText.kUT;
+
+  // End Evr Long
+  // Begin EVR Short
+  // Short Numbers
+  static const kSS = VRInt.kSS;
+  static const kUS = VRInt.kUS;
+  static const kSL = VRInt.kSL;
+  static const kUL = VRInt.kUL;
+  static const kAT = VRInt.kAT;
+  static const kFL = VRFloat.kFL;
+  static const kFD = VRFloat.kFD;
+
+  // Short Strings
+  static const kSH = VRUtf8.kSH;
+  static const kLO = VRUtf8.kLO;
+  static const kST = VRText.kST;
+  static const kLT = VRText.kLT;
+
+  // Short Number Strings
+  static const kDS = VRAscii.kDS;
+  static const kIS = VRAscii.kIS;
+
+  // Short Date/Time
+  static const kAS = VRAscii.kAS;
+  static const kDA = VRAscii.kDA;
+  static const kDT = VRAscii.kDT;
+  static const kTM = VRAscii.kTM;
+
+  // Special Strings
+  static const kAE = VRAscii.kAE;
+  static const kCS = VRAscii.kCS;
+  static const kPN = VRAscii.kPN;
+  static const kUI = VRAscii.kUI;
+}
+
+class VRFloat extends VR<double> {
+  final int sizeInBytes; // size in bytes
+
+  const VRFloat(
+      int index, String id, int code, int vlfSize, int maxVFLength, this.sizeInBytes)
+      : super(index, id, code, vlfSize, maxVFLength);
+
+  int get maxLength => maxVFLength ~/ sizeInBytes;
+
+  static const kFL = const VRFloat(kFLIndex, 'FL', kFLCode, 2, kShortVF, 4);
+  static const kFD = const VRFloat(kFDIndex, 'FD', kFDCode, 2, kShortVF, 8);
+  static const kOF = const VRFloat(kOFIndex, 'OF', kOFCode, 4, kLongVF, 4);
+  static const kOD = const VRFloat(kODIndex, 'OD', kODCode, 4, kLongVF, 8);
+}
+
+class VRInt extends VR<int> {
+  final int sizeInBytes; // size in bytes
+
+  const VRInt(
+      int index, String id, int code, int vlfSize, int maxVFLength, this.sizeInBytes)
+      : super(index, id, code, vlfSize, maxVFLength);
+
+  int get maxLength => maxVFLength ~/ sizeInBytes;
+
+  static const kUN = const VRInt(kUNIndex, 'UN', kUNCode, 4, kLongVF, 1);
+  static const kOB = const VRInt(kOBIndex, 'OB', kOBCode, 4, kLongVF, 1);
+
+  static const kSS = const VRInt(kSSIndex, 'SS', kSSCode, 2, kShortVF, 2);
+  static const kUS = const VRInt(kUSIndex, 'US', kUSCode, 2, kShortVF, 2);
+  static const kOW = const VRInt(kOWIndex, 'OW', kOWCode, 4, kLongVF, 2);
+
+  static const kSL = const VRInt(kSLIndex, 'SL', kSLCode, 2, kShortVF, 4);
+  static const kUL = const VRInt(kULIndex, 'UL', kULCode, 2, kShortVF, 4);
+  static const kAT = const VRInt(kATIndex, 'AT', kATCode, 2, kShortVF, 4);
+  static const kOL = const VRInt(kOLIndex, 'OL', kOLCode, 4, kLongVF, 4);
+}
+
+class VRAscii extends VR<String> {
+  final int minVLength;
+  final int maxVLength;
+
+  const VRAscii(int index, String id, int code, int vlfSize, int maxVFLength,
+      this.minVLength, this.maxVLength)
+      : super(index, id, code, vlfSize, maxVFLength);
+
+  int get maxLength => maxVFLength ~/ 2;
+
+  static const kDS = const VRAscii(kDSIndex, 'DS', kDSCode, 2, kShortVF, 1, 16);
+  static const kIS = const VRAscii(kISIndex, 'IS', kISCode, 2, kShortVF, 1, 12);
+
+  static const kAS = const VRAscii(kASIndex, 'AS', kASCode, 2, kShortVF, 4, 4);
+  static const kDA = const VRAscii(kDAIndex, 'DA', kDACode, 2, kShortVF, 8, 8);
+  static const kDT = const VRAscii(kDTIndex, 'DT', kDTCode, 2, kShortVF, 4, 26);
+  static const kTM = const VRAscii(kTMIndex, 'TM', kTMCode, 2, kShortVF, 2, 13);
+
+  static const kAE = const VRAscii(kAEIndex, 'AE', kAECode, 2, kShortVF, 1, 16);
+  static const kCS = const VRAscii(kCSIndex, 'CS', kCSCode, 2, kShortVF, 1, 16);
+  static const kPN = const VRAscii(kPNIndex, 'PN', kPNCode, 2, kShortVF, 1, 3 * 64);
+  static const kUI = const VRAscii(kUIIndex, 'UI', kUICode, 2, kShortVF, 5, 64);
+}
+
+class VRUtf8 extends VR<String> {
+  final int minVLength;
+  final int maxVLength;
+
+  const VRUtf8(int index, String id, int code, int vlfSize, int maxVFLength,
+      this.minVLength, this.maxVLength)
+      : super(index, id, code, vlfSize, maxVFLength);
+
+  int get maxLength => maxVFLength ~/ 2;
+
+  static const kSH = const VRUtf8(kSHIndex, 'SH', kSHCode, 2, kShortVF, 1, 16);
+  static const kLO = const VRUtf8(kLOIndex, 'LO', kLOCode, 2, kShortVF, 1, 64);
+  static const kUC = const VRUtf8(kUCIndex, 'UC', kUCCode, 4, kLongVF, 1, kLongVF);
+}
+
+class VRText extends VR<String> {
+  const VRText(int index, String id, int code, int vlfSize, int maxVFLength)
+      : super(index, id, code, vlfSize, maxVFLength);
+
+  int get maxLength => 1;
+
+  static const kST = const VRText(kSTIndex, 'ST', kSTCode, 2, kShortVF);
+  static const kLT = const VRText(kLTIndex, 'LT', kLTCode, 2, kShortVF);
+  static const kUR = const VRText(kURIndex, 'UR', kURCode, 4, kLongVF);
+  static const kUT = const VRText(kUTIndex, 'UT', kUTCode, 4, kLongVF);
+}
+
+class VRSequence extends VR<int> {
+  const VRSequence(int index, String id, int code, int vlfSize, int maxVFLength)
+      : super(index, id, code, vlfSize, maxVFLength);
+
+  int get maxLength => unsupportedError();
+
+  static const kSQ = const VRSequence(kSQIndex, 'SQ', kSQCode, 4, kLongVF);
+}
+
+class VRSpecial extends VR<int> {
+  final List<VRInt> vrs;
+
+  const VRSpecial(int index, String id, int code, int vlfSize, int maxVFLength, this.vrs)
+      : super(index, id, code, vlfSize, maxVFLength);
+
+  static const kOBOW =
+      const VRSpecial(kOBOWIndex, 'OBOW', -1, 0, 0, const <VRInt>[VR.kOB, VR.kOW]);
+  static const kUSSS =
+      const VRSpecial(kUSSSIndex, 'USSS', -1, 0, 0, const <VRInt>[VR.kUS, VR.kSS]);
+  static const kUSSSOW = const VRSpecial(
+      kUSSSOWIndex, 'kUSSSOW', -1, 0, 0, const <VRInt>[VR.kUS, VR.kSS, VR.kOW]);
+  static const kUSOW =
+      const VRSpecial(kUSOWIndex, 'USOW', -1, 0, 0, const <VRInt>[VR.kUS, VR.kOW]);
+}
