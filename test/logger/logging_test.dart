@@ -4,10 +4,12 @@
 
 import 'dart:async';
 
-import 'package:core/core.dart';
+import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
+  Server.initialize(name: 'logger/logging_test', level: Level.info);
+
   group('Logger Tests', () {
     test('level comparison is a valid comparator', () {
       final level1 = const Level('N3', 'NOT_REAL1', 253);
@@ -62,7 +64,7 @@ void main() {
       expect(unsorted, isNot(orderedEquals(sorted)));
 
       unsorted.sort();
-      print(unsorted);
+      log.debug(unsorted);
       expect(unsorted, orderedEquals(sorted));
     });
 
@@ -81,13 +83,13 @@ void main() {
     test('logger naming is hierarchical', () {
       final c = new Logger('a.b.c');
       expect(c.name, equals('c'));
-      print('c.parent.name: ${c.parent.name}');
+      log.debug('c.parent.name: ${c.parent.name}');
       expect(c.parent.name, equals('b'));
       expect(c.parent.parent.name, equals('a'));
-      print('${Logger.root.name}');
-      print('${Logger.root.fullName}');
-      print(Logger.show());
-      print('parent: ${c.parent.parent.parent}');
+      log.debug('${Logger.root.name}');
+      log.debug('${Logger.root.fullName}');
+      log.debug(Logger.show());
+      log.debug('parent: ${c.parent.parent.parent}');
       expect(c.parent.parent.parent.name, equals('root'));
       expect(c.parent.parent.parent.parent, isNull);
     });
@@ -105,10 +107,10 @@ void main() {
       final a = new Logger('a');
       final b = new Logger('a.b');
       final c = new Logger('a.c');
-      print('b.parent: ${b.parent}');
+      log.debug('b.parent: ${b.parent}');
       expect(a, same(b.parent));
-      print('c.parent: ${c.parent}');
-      print('a.children: ${a.children}');
+      log.debug('c.parent: ${c.parent}');
+      log.debug('a.children: ${a.children}');
       expect(a, same(c.parent));
       expect(a.children['b'], same(b));
       expect(a.children['c'], same(c));
@@ -356,7 +358,6 @@ void main() {
         ..error('7')
         ..abort('8');
 
-      print('$rootMessages');
       expect(
           rootMessages,
           equals([
@@ -377,8 +378,6 @@ void main() {
       root.onRecord.listen((r) {
         rootMessages.add('${r.level}: ${r.message} ${r.error}');
       });
-
-      print('$rootMessages');
 
       root
         ..debug3('1')
@@ -454,8 +453,8 @@ void main() {
         ..warn0('9')
         ..abort('10');
 
-      print('onrecode: ${root.onRecord}');
-      print('root messages: $rootMessages');
+      log.debug('onrecode: ${root.onRecord}');
+      log.debug('root messages: $rootMessages');
       expect(
           rootMessages,
           equals([
@@ -582,9 +581,9 @@ void main() {
         objects.add(record.object);
       });
 
-      print('controller: ${c.onRecord}');
-      print('messages: $messages');
-      print('objects: $objects');
+      log.debug('controller: ${c.onRecord}');
+      log.debug('messages: $messages');
+      log.debug('objects: $objects');
       root..info0(5)..info0(false)..info0([1, 2, 3])..info0(() => 10)..info0(object);
 
       expect(
@@ -651,7 +650,7 @@ void main() {
       } catch (e, t) {
         trace = t;
         error = e;
-        print('trace:$t');
+        log.debug('trace:$t');
       }
       final records = <LogRecord>[];
       Logger.recordStackTraceAtLevel = Level.warn0;

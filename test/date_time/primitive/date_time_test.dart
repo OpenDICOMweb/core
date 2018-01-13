@@ -12,10 +12,10 @@ void main() {
       name: 'date_time_test', minYear: -1000, maxYear: 3000, level: Level.info);
 
   test('kMinEpochMicrosecond', () {
-    print('minYear: ${system.minYear}');
-    print('maxYear: ${system.maxYear}');
-    print('kMinEpochMicrosecond: $kMinEpochMicrosecond');
-    print('kMaxEpochMicrosecond: $kMaxEpochMicrosecond');
+    log.debug('minYear: ${system.minYear}');
+    log.debug('maxYear: ${system.maxYear}');
+    log.debug('kMinEpochMicrosecond: $kMinEpochMicrosecond');
+    log.debug('kMaxEpochMicrosecond: $kMaxEpochMicrosecond');
     expect(isValidYear(system.minYear), true);
     expect(isValidYear(system.maxYear), true);
     expect(isValidDateMicroseconds(kMinEpochMicrosecond), true);

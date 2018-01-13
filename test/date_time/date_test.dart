@@ -348,7 +348,7 @@ void main() {
 
   test('weekDayName', () {
     final List date = epochDayToDate(0);
-    print(date);
+    log.debug(date);
     //for(var s in goodDcmDateList){
     final date0 = Date.parse(goodDcmDateList[0]);
     log..debug('${date0.weekday}')..debug('${date0.weekdayName}')..debug('date0: $date0');

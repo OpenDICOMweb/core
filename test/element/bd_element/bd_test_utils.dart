@@ -26,9 +26,9 @@ const _ivrVFOffset = 8;
 ByteData makeShortEvrHeader(int code, int vrCode, ByteData bd) {
   final group = code >> 16;
   final elt = code & 0xFFFF;
-  // print('mkShort: group: ${hex16(group)} elt: ${hex16(elt)}');
+  // log.debug('mkShort: group: ${hex16(group)} elt: ${hex16(elt)}');
   // final v = group << 16)
-  // print('mkShortCode: ')
+  // log.debug('mkShortCode: ')
   final vfLength = bd.lengthInBytes - _shortEvrHeaderSize;
   bd
     ..setUint16(0, group, Endian.little)
@@ -42,10 +42,10 @@ ByteData makeLongEvrHeader(int code, int vrCode, ByteData bd) {
   final group = code >> 16;
   final elt = code & 0xFFFF;
   final vfLength = bd.lengthInBytes - _longEvrHeaderSize;
-  print('vfLength: $vfLength');
-  // print('mkShort: group: ${hex16(group)} elt: ${hex16(elt)}');
+  log.debug('vfLength: $vfLength');
+  // log.debug('mkShort: group: ${hex16(group)} elt: ${hex16(elt)}');
   // final v = group << 16)
-  // print('mkShortCode: ')
+  // log.debug('mkShortCode: ')
   bd
     ..setUint16(0, group, Endian.little)
     ..setUint16(2, elt, Endian.little)
@@ -59,9 +59,9 @@ ByteData makeLongEvrHeader(int code, int vrCode, ByteData bd) {
 ByteData makeIvrHeader(int code, int vfLengthInBytes, ByteData bd) {
   final group = code >> 16;
   final elt = code & 0xFFFF;
-  // print('mkShort: group: ${hex16(group)} elt: ${hex16(elt)}');
+  // log.debug('mkShort: group: ${hex16(group)} elt: ${hex16(elt)}');
   // final v = group << 16)
-  // print('mkShortCode: ')
+  // log.debug('mkShortCode: ')
   bd
     ..setUint16(0, group, Endian.little)
     ..setUint16(2, elt, Endian.little)
@@ -70,7 +70,7 @@ ByteData makeIvrHeader(int code, int vfLengthInBytes, ByteData bd) {
 }
 
 ByteData makeShortEvr(int code, int vrCode, ByteData vfBD) {
-  // print('makeEvr: ${hex32(code)}');
+  // log.debug('makeEvr: ${hex32(code)}');
   final vfLength = vfBD.lengthInBytes;
   final eLength = _shortEvrHeaderSize + vfLength;
   final bd = new ByteData(eLength);
@@ -80,7 +80,7 @@ ByteData makeShortEvr(int code, int vrCode, ByteData vfBD) {
 }
 
 ByteData makeLongEvr(int code, int vrCode, ByteData vfBD) {
-  // print('makeEvr: ${hex32(code)}');
+  // log.debug('makeEvr: ${hex32(code)}');
   final vfLength = vfBD.lengthInBytes;
   final eLength = _longEvrHeaderSize + vfLength;
   final bd = new ByteData(eLength);
@@ -90,7 +90,7 @@ ByteData makeLongEvr(int code, int vrCode, ByteData vfBD) {
 }
 
 ByteData makeIvr(int code, ByteData vfBD) {
-  // print('makeEvr: ${hex32(code)}');
+  // log.debug('makeEvr: ${hex32(code)}');
   final vfLength = vfBD.lengthInBytes;
   final eLength = _ivrHeaderSize + vfLength;
   final bd = new ByteData(eLength);
@@ -108,12 +108,12 @@ void copyBDToVF(ByteData bd, int vfOffset, ByteData vfBD) {
 int getCode(ByteData bd) {
   final group = bd.getUint16(0, Endian.little);
   final elt = bd.getUint16(2, Endian.little);
-//  print('group: ${hex16(group)}, elt: ${hex(elt)}');
+//  log.debug('group: ${hex16(group)}, elt: ${hex(elt)}');
   return (group << 16) + elt;
 }
 
 String codeToString(int code) {
-//  print('code: ${hex32(code)}');
+//  log.debug('code: ${hex32(code)}');
   final group = code >> 16;
   final elt = code & 0xFFFF;
   final sb = new StringBuffer()
@@ -135,13 +135,13 @@ String getVRId(ByteData bd) => vrIdByIndex[getVRIndex(bd)];
 
 int getShortVFLength(ByteData bd) {
   final vfl = bd.getUint16(_shortEvrVFLengthOffset, Endian.little);
-  print('vfl: $vfl');
+  log.debug('vfl: $vfl');
   return vfl;
 }
 
 int getLongVFLength(ByteData bd) {
   final vfl = bd.getUint32(_longEvrVFLengthOffset, Endian.little);
-  print('vfl: $vfl');
+  log.debug('vfl: $vfl');
   return vfl;
 }
 
@@ -150,7 +150,7 @@ String shortEvrInfo(ByteData bd) {
   final vr = getVRId(bd);
   final vfLength = getShortVFLength(bd);
   final msg = 'ShortEvr: $code $vr $vfLength';
-  print(msg);
+  log.debug(msg);
   return msg;
 }
 
@@ -159,7 +159,7 @@ String longEvrInfo(ByteData bd) {
   final vr = getVRId(bd);
   final vfLength = getLongVFLength(bd);
   final msg = 'LongEvr(${bd.lengthInBytes}): $code $vr $vfLength';
-  print(msg);
+  log.debug(msg);
   return msg;
 }
 

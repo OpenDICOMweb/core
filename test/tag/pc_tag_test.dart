@@ -12,7 +12,7 @@ void main() {
 
   test('PrivateCreatorTag ACUSON Test', () {
     final pTag = new PCTag(0x00090010, kUNIndex, 'ACUSON');
-    print('pTag: $pTag');
+    log.debug('pTag: $pTag');
     expect(pTag is PCTagKnown, true);
     log.debug(pTag.info);
     if (pTag is PCTagDefinition) {

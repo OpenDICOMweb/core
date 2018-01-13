@@ -4,27 +4,27 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
-import 'package:core/core.dart';
+import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-
+  Server.initialize(name: 'logger/indenter_test', level: Level.info);
   test('Basic indent test', () {
     final z = new Indenter();
 
-    print('"${z.z}"');
+    log.debug('"${z.z}"');
     z.down;
-    print('"${z.z}"');
+    log.debug('"${z.z}"');
     z.down;
-    print('"${z.z}"');
+    log.debug('"${z.z}"');
     z.down;
-    print('"${z.z}"');
+    log.debug('"${z.z}"');
     z.up;
-    print('"${z.z}"');
+    log.debug('"${z.z}"');
     z.up;
-    print('"${z.z}"');
+    log.debug('"${z.z}"');
     z.up;
-    print('"${z.z}"');
+    log.debug('"${z.z}"');
   });
 }
 

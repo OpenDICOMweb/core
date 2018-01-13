@@ -10,13 +10,13 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize();
   final s = hex8(0xff);
-  print('s: "$s"');
+  log.debug('s: "$s"');
 
   group('Hexadecimal test', () {
 
     test('To Radix String', () {
       final s = hex8(0xff);
-      print('s: "$s"');
+      log.debug('s: "$s"');
       expect(s == '0xff', true);
     });
 

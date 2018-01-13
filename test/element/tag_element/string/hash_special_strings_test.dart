@@ -74,7 +74,7 @@ void main() {
     expect(hash0 == hash2, false);
 
     final sha0 = ds0.sha256;
-    print('sha0: $sha0');
+    log.debug('sha0: $sha0');
     expect(sha0.hasValidValues, true);
     expect(DS.isValidValues(PTag.kPatientAge, sha0.values), true);
 

@@ -7,7 +7,6 @@
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-
 import 'package:test/test.dart';
 
 import '../bd_test_utils.dart';
@@ -51,11 +50,11 @@ void main() {
         final float64List = rng.float64List(1, 1);
         expect(float64List is Float64List, true);
         expect(float64List.length, 1);
-        print('float64List: $float64List');
+        log.debug('float64List: $float64List');
         final bd = makeOD(kSelectorODValue, float64List);
         longEvrInfo(bd);
         final od0 = ODevr.make(bd, kODIndex);
-        print('od0: $od0');
+        log.debug('od0: $od0');
         expect(od0.hasValidValues, true);
 
         log

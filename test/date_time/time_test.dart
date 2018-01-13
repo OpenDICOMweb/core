@@ -286,7 +286,7 @@ void main() {
       for (var s in goodDcmTimes) {
         final t0 = Time.parse(s);
         final t1 = Time.parse(s);
-        print('t0.hash: ${t0.hash}');
+        log.debug('t0.hash: ${t0.hash}');
         log..debug('t0.value:${t0.toString()}, t0.hash:${t0.hash}')..debug(
             't1.value:${t1.toString()}, t1.hash:${t1.hash}');
         expect(t0.hash, equals(t1.hash));

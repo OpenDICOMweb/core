@@ -666,7 +666,7 @@ void main() {
     });
 
     test('SL isValidVFLength good values', () {
-      print('max % 4: ${kMaxShortVF % 4}');
+      log.debug('max % 4: ${kMaxShortVF % 4}');
       expect(SL.isValidVFLength(SL.kMaxVFLength), true);
       expect(SL.isValidVFLength(0), true);
     });

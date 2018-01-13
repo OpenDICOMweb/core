@@ -10,13 +10,13 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'age_test', level: Level.info);
 
-  print('bar');
+  log.debug('bar');
   group('Age Tests', () {
     test('isValidAgeInDays', () {
       final vam0 = isValidAge(kMaxAgeInDays);
       expect(vam0, true);
 
-      print('foo');
+      log.debug('foo');
       log.debug('foo');
       final vam1 = isValidAge(kMinAge);
       expect(vam1, true);

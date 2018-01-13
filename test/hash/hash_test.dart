@@ -22,15 +22,15 @@ return copy;
 void main() {
   Server.initialize(name: 'integer/integer_test', level: Level.info);
   /*
-  print('32: ${hash(32)}');
-  print('33: ${hash(33)}');
-  print('hash2(32, 32) = ${hash2(32, 32)}');
-  print('hash(32) = ${Hash.hash(32)}');
-  print('hash(33) = ${Hash.hash(33)}');
-  print('hash(3.2) = ${Hash.hash(3.2)}');
-  print('hash(3.4) = ${Hash.hash(3.4)}');
-  print('hash('32') = ${Hash.hash('32')}');
-  print('hash('33') = ${Hash.hash('33')}');
+  log.debug('32: ${hash(32)}');
+  log.debug('33: ${hash(33)}');
+  log.debug('hash2(32, 32) = ${hash2(32, 32)}');
+  log.debug('hash(32) = ${Hash.hash(32)}');
+  log.debug('hash(33) = ${Hash.hash(33)}');
+  log.debug('hash(3.2) = ${Hash.hash(3.2)}');
+  log.debug('hash(3.4) = ${Hash.hash(3.4)}');
+  log.debug('hash('32') = ${Hash.hash('32')}');
+  log.debug('hash('33') = ${Hash.hash('33')}');
   //hash64Test();
   // hash32Test();
   */
@@ -46,16 +46,16 @@ void main() {
     final h1 = Hash64.bd(bd1);
     final h2 = Hash64.bd(bd2);
 
-    print('0: $bd0 h0: $h0');
-    print('1: $bd1 h1: $h1');
-    print('2: $bd2 h2: $h2');
+    log.debug('0: $bd0 h0: $h0');
+    log.debug('1: $bd1 h1: $h1');
+    log.debug('2: $bd2 h2: $h2');
 /*    final u80 = bd0.buffer.asUint8List();
     final u81 = bd1.buffer.asUint8List();
     final u82 = bd2.buffer.asUint8List();
 
-    print('0: $u80 h0: $h0');
-    print('1: $u81 h1: $h1');
-    print('2: $u82 h2: $h2');
+    log.debug('0: $u80 h0: $h0');
+    log.debug('1: $u81 h1: $h1');
+    log.debug('2: $u82 h2: $h2');
 */
     
   });
@@ -74,7 +74,7 @@ void float32HashTest() {
     for(var i = 0; i < 1000; i++) {
       final n = rng.nextDouble;
       final h = Hash64.floatHash(n);
-      print('n: $n h: $h');
+      log.debug('n: $n h: $h');
       assert(n != h);
     }
   });
@@ -85,7 +85,7 @@ void float64HashTest() {
     for(var i = 0; i < 1000; i++) {
       final n = rng.nextDouble;
       final h = Hash64.floatHash(n);
-      print('n: $n h: $h');
+      log.debug('n: $n h: $h');
       assert(n != h);
     }
   });

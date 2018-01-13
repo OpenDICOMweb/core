@@ -22,7 +22,7 @@ void main() {
 
     for (var i = 0; i < float64List.length; i++) {
       //Urgent: please remove or convert to log... all print statements
-      print('float64List[$i]: ${float64List[i]}, float32List[$i]: ${float32List[i]}');
+      log.debug('float64List[$i]: ${float64List[i]}, float32List[$i]: ${float32List[i]}');
     }
   });
 

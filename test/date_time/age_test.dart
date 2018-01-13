@@ -48,11 +48,11 @@ void main() {
       expect(kAgeTokens == 'DWMY', true);
       for (var s in goodDcmAge) {
         final units = int.parse(s.substring(0, 3));
-        print('s: $s');
+        log.debug('s: $s');
         final a0 = Age.tryParse(s);
-        print('a0.nDays: ${a0.nDays}');
+        log.debug('a0.nDays: ${a0.nDays}');
         final n0 = canonicalAgeString(a0.nDays);
-        print('n0: $n0');
+        log.debug('n0: $n0');
         log.debug('a0:$a0, age: ${a0.nDays}');
         expect(units >= 0 && units <= 999, true);
 

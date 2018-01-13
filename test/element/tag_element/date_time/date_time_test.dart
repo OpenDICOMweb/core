@@ -7,7 +7,6 @@
 import 'dart:convert';
 
 import 'package:core/server.dart';
-
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
@@ -73,7 +72,7 @@ void main() {
       for (var s in goodAgeList) {
         system.throwOnError = false;
         final as0 = new AStag(PTag.kPatientAge, s);
-        print('as0 $as0');
+        log.debug('as0 $as0');
         expect(as0.hasValidValues, true);
       }
     });

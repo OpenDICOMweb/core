@@ -1148,7 +1148,7 @@ void main() {
       final base640 = Float64Base.listToBase64(<double>[78678.11, 12345.678]);
       log.debug('b64: $base640');
       final od0 = FDtag.fromBase64(PTag.kSelectorFDValue, base640);
-      print('od0: $od0');
+      log.debug('od0: $od0');
       expect(od0.hasValidValues, true);
 
       for (var i = 0; i < 10; i++) {
