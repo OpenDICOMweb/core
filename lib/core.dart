@@ -8,12 +8,17 @@
 
 
 export 'package:core/src/dataset/base/dataset.dart';
+export 'package:core/src/dataset/base/ds_bytes.dart';
 export 'package:core/src/dataset/base/item.dart';
 export 'package:core/src/dataset/base/root_dataset.dart';
+export 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
+export 'package:core/src/dataset/byte_data/bd_item.dart';
+export 'package:core/src/dataset/byte_data/bd_root_dataset.dart';
 export 'package:core/src/dataset/element_list/element_list.dart';
 export 'package:core/src/dataset/element_list/history.dart';
 export 'package:core/src/dataset/element_list/map_as_list.dart';
 export 'package:core/src/dataset/errors.dart';
+export 'package:core/src/dataset/base/parse_info.dart';
 export 'package:core/src/dataset/tag/tag_item.dart';
 export 'package:core/src/dataset/tag/tag_root_dataset.dart';
 export 'package:core/src/date_time/age.dart';
@@ -32,12 +37,21 @@ export 'package:core/src/dicom.dart';
 export 'package:core/src/element/base/element.dart';
 export 'package:core/src/element/base/float.dart';
 export 'package:core/src/element/base/integer.dart';
+export 'package:core/src/element/base/pixel_data.dart';
 export 'package:core/src/element/base/private.dart';
 export 'package:core/src/element/base/sequence.dart';
 export 'package:core/src/element/base/string.dart';
 export 'package:core/src/element/byte_data/bd_element.dart';
 export 'package:core/src/element/byte_data/evr.dart';
 export 'package:core/src/element/byte_data/ivr.dart';
+export 'package:core/src/element/tag/date_time.dart';
+export 'package:core/src/element/tag/float.dart';
+export 'package:core/src/element/tag/integer.dart';
+export 'package:core/src/element/tag/pixel_data.dart';
+export 'package:core/src/element/tag/private.dart';
+export 'package:core/src/element/tag/sequence.dart';
+export 'package:core/src/element/tag/string.dart';
+export 'package:core/src/element/tag/tag_element_mixin.dart';
 export 'package:core/src/element/crypto.dart';
 export 'package:core/src/element/errors.dart';
 export 'package:core/src/element/frame_descriptor.dart';
@@ -93,6 +107,9 @@ export 'package:core/src/system/sys_info.dart';
 export 'package:core/src/system/system.dart';
 
 export 'package:core/src/tag/tag_lib.dart';
+
+export 'package:core/src/timer/timer.dart';
+export 'package:core/src/timer/timestamp.dart';
 
 export 'package:core/src/uid/constants.dart';
 export 'package:core/src/uid/uid.dart';

@@ -16,7 +16,7 @@ import 'package:core/src/element/tag/integer.dart';
 import 'package:core/src/element/tag/string.dart';
 import 'package:core/src/tag/tag_lib.dart';
 
-typedef Element TagMaker<V>(Tag tag, Iterable<V> vList);
+typedef Element TagElementMaker<V>(Tag tag, Iterable<V> vList);
 typedef TagElement MakeFrom(Element e);
 typedef TagElement MakeFromBytes(ByteData bd);
 typedef Element MakeFromBD(BDElement bd);
@@ -125,7 +125,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 
   static Element from(Element e) => make(e.tag, e.vrIndex, e.values);
 
-  static final List<TagMaker> _tagMakers = <TagMaker>[
+  static final List<TagElementMaker> _tagMakers = <TagElementMaker>[
     null,
     // Maybe Undefined Lengths
     OBtag.make, OWtag.make, UNtag.make, // No reformat
