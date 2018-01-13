@@ -133,7 +133,7 @@ class TimeZone implements Comparable<TimeZone> {
 
   static TimeZone _getTimeZone(int us) {
     final index = kValidTZMicroseconds.indexOf(us);
-    print('index: $index');
+//    print('index: $index');
     return (index == -1) ? invalidTimeZoneMicrosecondsError(us) : kMembers[index];
   }
 

@@ -91,8 +91,7 @@ void main() {
         final time = Time.parse(s);
         log.debug('    Time: $time');
         if (time == null)
-          return invalidTimeString(
-              'Bad Value{"$s"} in Good Time in Microseconds');
+          return invalidTimeString('Bad Value{"$s"} in Good Time in Microseconds');
         expect(time, isNotNull);
         log
           ..debug('    Time.parse: "$s": $time')
@@ -212,8 +211,7 @@ void main() {
       system.throwOnError = true;
       log.debug('throwOnError: $throwOnError');
       for (var i in badDcmTimesInt) {
-        expect(
-            () => new Time(i), throwsA(const isInstanceOf<InvalidTimeError>()));
+        expect(() => new Time(i), throwsA(const isInstanceOf<InvalidTimeError>()));
       }
 
       system.throwOnError = false;
@@ -268,17 +266,13 @@ void main() {
       for (var s in goodDcmTimes) {
         final t0 = Time.parse(s);
         final t1 = Time.parse(s);
-        log
-          ..debug('t0.value:${t0.toString()}')
-          ..debug('t1.value:${t1.toString()}');
+        log..debug('t0.value:${t0.toString()}')..debug('t1.value:${t1.toString()}');
         expect(t0 == t1, true);
       }
 
       final t2 = Time.parse(goodDcmTimes[0]);
       final t3 = Time.parse(goodDcmTimes[1]);
-      log
-        ..debug('t2.value:${t2.toString()}')
-        ..debug('t3.value:${t3.toString()}');
+      log..debug('t2.value:${t2.toString()}')..debug('t3.value:${t3.toString()}');
       expect(t2 == t3, false);
     });
 
@@ -286,36 +280,37 @@ void main() {
       for (var s in goodDcmTimes) {
         final t0 = Time.parse(s);
         final t1 = Time.parse(s);
-        log.debug('t0.hash: ${t0.hash}');
-        log..debug('t0.value:${t0.toString()}, t0.hash:${t0.hash}')..debug(
-            't1.value:${t1.toString()}, t1.hash:${t1.hash}');
+        log
+          ..debug('t0.hash: ${t0.hash}')
+          ..debug('t0.value:${t0.toString()}, t0.hash:${t0.hash}')
+          ..debug('t1.value:${t1.toString()}, t1.hash:${t1.hash}');
         expect(t0.hash, equals(t1.hash));
       }
-        final t2 = Time.parse(goodDcmTimes[0]);
-        final t3 = Time.parse(goodDcmTimes[1]);
-        log
-          ..debug('t2.value:${t2.toString()}, t2.hash:${t2.hash}')
-          ..debug('t3.value:${t3.toString()}, t3.hash:${t3.hash}');
+      final t2 = Time.parse(goodDcmTimes[0]);
+      final t3 = Time.parse(goodDcmTimes[1]);
+      log
+        ..debug('t2.value:${t2.toString()}, t2.hash:${t2.hash}')
+        ..debug('t3.value:${t3.toString()}, t3.hash:${t3.hash}');
 
-        expect(t2.hash, isNot(t3.hash));
+      expect(t2.hash, isNot(t3.hash));
     });
 
     test('hashCode', () {
       for (var s in goodDcmTimes) {
-      final t0 = Time.parse(s);
-      final t1 = Time.parse(s);
-      log
-      ..debug('t0.value:${t0.toString()}, t0.hash:${t0.hashCode}')
-      ..debug('t1.value:${t1.toString()}, t1.hash:${t1.hashCode}');
+        final t0 = Time.parse(s);
+        final t1 = Time.parse(s);
+        log
+          ..debug('t0.value:${t0.toString()}, t0.hash:${t0.hashCode}')
+          ..debug('t1.value:${t1.toString()}, t1.hash:${t1.hashCode}');
 
-      expect(t0.hashCode, equals(t1.hashCode));
+        expect(t0.hashCode, equals(t1.hashCode));
       }
 
       final t2 = Time.parse(goodDcmTimes[0]);
       final t3 = Time.parse(goodDcmTimes[1]);
       log
-      ..debug('t2.value:${t2.toString()}, t2.hash:${t2.hashCode}')
-      ..debug('t3.value:${t3.toString()}, t3.hash:${t3.hashCode}');
+        ..debug('t2.value:${t2.toString()}, t2.hash:${t2.hashCode}')
+        ..debug('t3.value:${t3.toString()}, t3.hash:${t3.hashCode}');
       expect(t2.hashCode, isNot(t3.hashCode));
     });
 
@@ -372,6 +367,5 @@ void main() {
         }
       }
     });
-
   });
 }

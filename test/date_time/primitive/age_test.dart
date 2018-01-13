@@ -17,7 +17,6 @@ void main() {
       expect(vam0, true);
 
       log.debug('foo');
-      log.debug('foo');
       final vam1 = isValidAge(kMinAge);
       expect(vam1, true);
 

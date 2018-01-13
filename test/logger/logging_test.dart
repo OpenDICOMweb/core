@@ -86,10 +86,6 @@ void main() {
       log.debug('c.parent.name: ${c.parent.name}');
       expect(c.parent.name, equals('b'));
       expect(c.parent.parent.name, equals('a'));
-      log.debug('${Logger.root.name}');
-      log.debug('${Logger.root.fullName}');
-      log.debug(Logger.show());
-      log.debug('parent: ${c.parent.parent.parent}');
       expect(c.parent.parent.parent.name, equals('root'));
       expect(c.parent.parent.parent.parent, isNull);
     });
@@ -107,10 +103,7 @@ void main() {
       final a = new Logger('a');
       final b = new Logger('a.b');
       final c = new Logger('a.c');
-      log.debug('b.parent: ${b.parent}');
       expect(a, same(b.parent));
-      log.debug('c.parent: ${c.parent}');
-      log.debug('a.children: ${a.children}');
       expect(a, same(c.parent));
       expect(a.children['b'], same(b));
       expect(a.children['c'], same(c));
@@ -453,8 +446,7 @@ void main() {
         ..warn0('9')
         ..abort('10');
 
-      log.debug('onrecode: ${root.onRecord}');
-      log.debug('root messages: $rootMessages');
+      log..debug('onrecode: ${root.onRecord}')..debug('root messages: $rootMessages');
       expect(
           rootMessages,
           equals([
@@ -581,9 +573,10 @@ void main() {
         objects.add(record.object);
       });
 
-      log.debug('controller: ${c.onRecord}');
-      log.debug('messages: $messages');
-      log.debug('objects: $objects');
+      log
+        ..debug('controller: ${c.onRecord}')
+        ..debug('messages: $messages')
+        ..debug('objects: $objects');
       root..info0(5)..info0(false)..info0([1, 2, 3])..info0(() => 10)..info0(object);
 
       expect(

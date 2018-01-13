@@ -77,10 +77,8 @@ abstract class Evr<V> implements BDElement<V> {
 
   Uint8List get asBytes => bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
 
-  static BDElement make(int code, int vrIndex, ByteData bd) {
-    print('code: ${dcm(code)}');
-    return _evrBDMakers[vrIndex](bd, vrIndex);
-  }
+  static BDElement make(int code, int vrIndex, ByteData bd) =>
+      _evrBDMakers[vrIndex](bd, vrIndex);
 
   static final List<DecodeBinaryVF> _evrBDMakers = <DecodeBinaryVF>[
     _sqError, // stop reformat
@@ -156,9 +154,9 @@ abstract class EvrLongMixin<V> {
 
   /// Returns the Value Field Length field.
   int get vfLengthField {
-    print('bd: ${bd.lengthInBytes}');
+//    print('bd: ${bd.lengthInBytes}');
     final lf = bd.getUint32(_longVFLengthOffset, Endian.little);
-    print('vfLengthField: $lf');
+//    print('vfLengthField: $lf');
     return lf;
   }
 }

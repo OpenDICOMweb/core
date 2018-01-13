@@ -7,6 +7,7 @@
 import 'dart:typed_data';
 
 import 'package:bignum/bignum.dart';
+import 'package:core/src/system/system.dart';
 import 'package:core/src/uid/uid_errors.dart';
 import 'package:core/src/uid/uid_string.dart';
 import 'package:core/src/uid/well_known_uids.dart';
@@ -110,7 +111,7 @@ class Uid {
   static String _convertBigIntToUid(Uint8List uuid) {
     final n = new BigInteger.fromBytes(1, uuid).abs();
     final s = n.toRadix(16).padLeft(32, '0');
-    print('$n "$s"');
+   log.debug('$n "$s"');
     return '2.25.$s';
   }
 

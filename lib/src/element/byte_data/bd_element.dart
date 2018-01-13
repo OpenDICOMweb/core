@@ -93,9 +93,9 @@ abstract class Common {
   int get vfLength {
     final vfo = vfOffset;
     final len = bd.lengthInBytes - vfo;
-    print('vfo: $vfo, len:$len');
+//    print('vfo: $vfo, len:$len');
     final vfl = vfLengthField;
-    print('vfl: $vfl, ${vfl.toRadixString(16)}');
+//    print('vfl: $vfl, ${vfl.toRadixString(16)}');
     assert(vfl == kUndefinedLength || len == vfl);
     return len;
   }

@@ -6,9 +6,9 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'indenter.dart';
-import 'log_level.dart';
-import 'log_record.dart';
+import 'package:core/src/logger/indenter.dart';
+import 'package:core/src/logger/log_level.dart';
+import 'package:core/src/logger/log_record.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic, only_throw_errors
 
@@ -48,24 +48,19 @@ class Logger {
   /// actual instance whenever it is called with the same string name.
   factory Logger(String name, [Level level = defaultLevel]) {
     if (name.startsWith('.')) throw new ArgumentError('Name shouldn\'t start with a "."');
-
-    print('name: "$name"');
     if (name == 'root') return root;
+
     // Split hierarchical names (separated with '.').
     final nameList = name.split('.');
-    print('names: $nameList');
     var parent = root;
     Logger logger;
     for (var i = 0; i < nameList.length; i++) {
-      print('  parent: ${parent.name} - ${parent.fullName}');
       final name = nameList[i];
       logger = parent._children[name];
       logger ??=
           parent._children.putIfAbsent(name, () => new Logger._(name, parent, level));
-      print('    logger: ${logger.name} - ${logger.fullName}');
       parent = logger;
     }
-    print('  logger.name: "${logger.name}" parent: "${parent.name}"');
     return logger;
   }
 

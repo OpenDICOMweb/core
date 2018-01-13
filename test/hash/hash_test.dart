@@ -46,18 +46,12 @@ void main() {
     final h1 = Hash64.bd(bd1);
     final h2 = Hash64.bd(bd2);
 
-    log.debug('0: $bd0 h0: $h0');
-    log.debug('1: $bd1 h1: $h1');
-    log.debug('2: $bd2 h2: $h2');
-/*    final u80 = bd0.buffer.asUint8List();
-    final u81 = bd1.buffer.asUint8List();
-    final u82 = bd2.buffer.asUint8List();
+    log.debug('''
+0: $bd0 h0: $h0
+1: $bd1 h1: $h1
+2: $bd2 h2: $h2
+''');
 
-    log.debug('0: $u80 h0: $h0');
-    log.debug('1: $u81 h1: $h1');
-    log.debug('2: $u82 h2: $h2');
-*/
-    
   });
 }
 

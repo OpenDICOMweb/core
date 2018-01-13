@@ -418,9 +418,8 @@ abstract class Element<V> extends ListBase<V> {
   Issues get issues {
     Issues result;
     if (tag is PTagInvalidVR) {
-      final badVR = tag.badVRIndex;
       result ?? _getIssues();
-      result.add('Invalid VR($badVR for $tag');
+      result.add('Invalid VR for $tag');
     }
     checkLength(values, result ?? _getIssues());
     checkValues(values, result ?? _getIssues);

@@ -72,12 +72,17 @@ String ageToString(int nDays) {
   return s;
 }
 
+String _daysToString(int nDays, int units, String token) {
+  final n = nDays ~/ units;
+  return '${n.toString().padLeft(3, '0')}$token';
+}
+
 String canonicalAgeString(int nDays) {
 	if (nDays < 0 || nDays > kMaxAge) return null;
-	if (nDays <= kMaxAgeInDays) return '${nDays}D';
-	if (nDays <= kMaxAgeWeeksInDays) return '${nDays}W';
-	if (nDays <= kMaxAgeMonthsInDays) return '${nDays}M';
-	if (nDays <= kMaxAgeYearsInDays) return '${nDays}Y';
+	if (nDays <= kMaxAgeInDays) return _daysToString(nDays, kMaxAgeInDays,'D');
+	if (nDays <= kMaxAgeWeeksInDays) return _daysToString(nDays, kMaxAgeWeeksInDays,'D');
+	if (nDays <= kMaxAgeMonthsInDays) return _daysToString(nDays, kMaxAgeMonthsInDays,'D');
+	if (nDays <= kMaxAgeYearsInDays) return _daysToString(nDays, kMaxAgeYearsInDays,'D');
 	return null;
 }
 
@@ -98,5 +103,6 @@ String ageInDaysToString(int nDays) {
   } else {
     return invalidAgeError(nDays);
   }
+  log.debug('nDays: $nDays Age String: "$s"');
   return s;
 }

@@ -50,7 +50,6 @@ typedef bool _ETypePredicate<K>(Dataset ds, K key);
 ///       PDTag
 ///       PDTagUnknown
 //TODO: is hashCode needed?
-// Fix: make this class abstract
 abstract class Tag {
   ///TODO: Tag and Tag.public are inconsistent when new Tag, PrivateTag... files
   ///      are generated make them consistent.
@@ -70,9 +69,6 @@ abstract class Tag {
   VR get vr => vrByIndex[vrIndex];
   bool get hasNormalVR => isNormalVRIndex(vrIndex);
   bool get hasSpecialVR => isSpecialVRIndex(vrIndex);
-
-  //Fix: hack to avoid Type problem
-  int get badVRIndex => -1;
   String get keyword => 'UnknownTag';
   String get name => 'Unknown Tag';
   VM get vm => VM.k1_n;
@@ -446,7 +442,7 @@ abstract class Tag {
       if (Tag.isPrivateCreatorCode(code)) return new PCTag(code, vrIndex, creator);
       if (Tag.isPrivateDataCode(code)) return new PDTag(code, vrIndex, creator);
     }
-    print('lookupTag: ${Tag.toDcm(code)} $vrIndex, $creator');
+    log.debug('lookupTag: ${Tag.toDcm(code)} $vrIndex, $creator');
     msg = 'Unknown Private Tag Code: creator: $creator';
     return invalidTagCode(code, msg);
   }

@@ -15499,8 +15499,6 @@ class PTagUnknown extends PTag {
 /// A [Tag] with a known key, but invalid [vrIndex].
 class PTagInvalidVR extends Tag {
   PTag tag;
-  @override
-  int badVRIndex;
   PTagInvalidVR(this.tag, int badVRIndex) : super();
 
   @override
@@ -15514,5 +15512,5 @@ class PTagInvalidVR extends Tag {
   bool get isKnown => false;
 
   @override
-  String toString() => '*Invalid VR($badVRIndex)* $tag';
+  String toString() => '*Invalid VR for $tag';
 }

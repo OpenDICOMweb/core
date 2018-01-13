@@ -54,8 +54,8 @@ class MapAsList extends ElementList<int> {
         keysA.moveNext();
         keysB.moveNext();
         if (keysA.current != keysB.current) {
-        	print('A = ${keysA.current}');
-	        print('B = ${keysB.current}');
+//        	print('A = ${keysA.current}');
+//	        print('B = ${keysB.current}');
 	        return false;
         }
       }

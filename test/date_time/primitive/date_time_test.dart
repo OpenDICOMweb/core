@@ -12,10 +12,11 @@ void main() {
       name: 'date_time_test', minYear: -1000, maxYear: 3000, level: Level.info);
 
   test('kMinEpochMicrosecond', () {
-    log.debug('minYear: ${system.minYear}');
-    log.debug('maxYear: ${system.maxYear}');
-    log.debug('kMinEpochMicrosecond: $kMinEpochMicrosecond');
-    log.debug('kMaxEpochMicrosecond: $kMaxEpochMicrosecond');
+    log
+      ..debug('minYear: ${system.minYear}')
+      ..debug('maxYear: ${system.maxYear}')
+      ..debug('kMinEpochMicrosecond: $kMinEpochMicrosecond')
+      ..debug('kMaxEpochMicrosecond: $kMaxEpochMicrosecond');
     expect(isValidYear(system.minYear), true);
     expect(isValidYear(system.maxYear), true);
     expect(isValidDateMicroseconds(kMinEpochMicrosecond), true);
@@ -155,8 +156,9 @@ void main() {
   });
 
   test('dateTimeMicrosecondsToString', () {
-    log..debug('minYear: ${system.minYear} maxYear: ${system.maxYear}')
-    ..debug('isValidMicrosecond: ${isValidDateTimeMicroseconds(19790512011556789)}');
+    log
+      ..debug('minYear: ${system.minYear} maxYear: ${system.maxYear}')
+      ..debug('isValidMicrosecond: ${isValidDateTimeMicroseconds(19790512011556789)}');
     final dtm0 = microsecondToDateTimeString(19790512011556789, asDicom: false);
     log.debug('dtm0: $dtm0');
 

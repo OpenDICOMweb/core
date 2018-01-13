@@ -80,7 +80,7 @@ String hashAgeString(String s) {
  // final hash = System.rng.nextInt(kMaxAgeInDays);
  // final hash = system.hash(days) % kMaxAgeInDays;
   final hash = hashAgeInDays(days);
-  print('s: "$s", days: $days, hash: $hash');
+//  print('s: "$s", days: $days, hash: $hash');
   return ageToString(hash);
 }
 

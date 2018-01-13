@@ -28,16 +28,14 @@ void main() {
       ..debug2('debug2 level')
       ..debug2('debug3 level');
 
-    expect(() => log0.fatal('die *******'),
-               throwsA(const isInstanceOf<FatalError>()));
+    expect(() => log0.fatal('die *******'), throwsA(const isInstanceOf<FatalError>()));
 
     log0.debug(log0);
   });
 
-  test('Hierarchical Logger Test', (){
-    final log0 = new Logger('server_test');
-
-    log0.debug('Root.Level: ${Logger.root.level}');
+  test('Hierarchical Logger Test', () {
+    final log0 = new Logger('server_test')
+      ..debug('Root.Level: ${Logger.root.level}');
     Logger.root.level = Level.config;
     log0.debug('Root.Level: ${Logger.root.level}');
 
@@ -52,10 +50,8 @@ void main() {
       ..debug2('debug2 level')
       ..debug3('debug3 level');
 
-    expect(() => log1.fatal('die *******'),
-               throwsA(const isInstanceOf<FatalError>()));
+    expect(() => log1.fatal('die *******'), throwsA(const isInstanceOf<FatalError>()));
 
     log1.debug(log1);
   });
 }
-

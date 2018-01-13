@@ -119,9 +119,9 @@ abstract class System {
       : version = (version == null) ? new Version(0, 0, 1) : version,
         log = new Logger(name, level) {
     if (minYear < kMinYearLimit) throw new InvalidYearError(minYear);
-    print('minYear: $minYear, minYearLimit: $kMinYearLimit');
+    log.config('minYear: $minYear, minYearLimit: $kMinYearLimit');
     if (maxYear > kMaxYearLimit) throw new InvalidYearError(maxYear);
-    print('maxYear:  $maxYear, maxYearLimit:  $kMaxYearLimit');
+    log.config('maxYear:  $maxYear, maxYearLimit:  $kMaxYearLimit');
     hasher ??= const Hash64();
   }
 
