@@ -7,11 +7,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/uInt16_test', level: Level.info0);
+  Server.initialize(name: 'element/uInt16_test', level: Level.info);
   final rng = new RNG(1);
 
   const uInt16MinMax = const [kUint16Min, kUint16Max];
@@ -937,7 +936,7 @@ void main() {
     });
 
     test('US encodeDecodeJsonVF', () {
-      system.level = Level.debug1;
+      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt16list0 = rng.uint16List(0, i);
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);
@@ -1577,7 +1576,7 @@ void main() {
     });
 
     test('OW encodeDecodeJsonVF', () {
-      system.level = Level.debug1;
+      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt16list0 = rng.uint16List(0, i);
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);

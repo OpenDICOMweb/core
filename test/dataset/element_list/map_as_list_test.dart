@@ -5,11 +5,10 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'map_as_list_test', level: Level.debug);
+  Server.initialize(name: 'map_as_list_test', level: Level.info);
 
   group('MapAsList', () {
     test('[] and []=', () {

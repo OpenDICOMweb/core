@@ -9,7 +9,8 @@ import 'package:core/src/element/base/private.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/string/hexadecimal.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/elt.dart';
+import 'package:core/src/tag/group.dart';
 
 //TODO: needed??
 const List<LO> emptyPrivateCreator = const <LO>[];

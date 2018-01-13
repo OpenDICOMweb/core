@@ -16,7 +16,7 @@ void main() {
       // Epoch Days if desired, but it takes a long time.
       minYear: startYear,
       maxYear: endYear,
-      level: Level.info0);
+      level: Level.info);
 
   // These next two values are used throughout the test
   // They can be changed to make the tests longer or shorter

@@ -10,7 +10,7 @@ import 'package:core/core.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/tag_element_mixin.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag.dart';
 
 /// Float - Array of IEEE single precision (32-bit) floating point numbers.
 /// Max Array length is ((2^16)-4)/ 4).

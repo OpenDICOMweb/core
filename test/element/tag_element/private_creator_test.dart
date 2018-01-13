@@ -5,7 +5,6 @@
 
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -13,7 +12,7 @@ void main() {
 }
 
 void privateCreatorTest() {
-  Server.initialize(name: 'element/private_creator_test', level: Level.debug2);
+  Server.initialize(name: 'element/private_creator_test', level: Level.info);
 
   test('Valid Unknown Private Creator ', () {
 	  final name0 = 'Unknown Creator Tag';

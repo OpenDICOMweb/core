@@ -20,7 +20,7 @@ const List<List<int>> kWeekdayDiffTable = const <List<int>>[
 
 void main() {
   Server.initialize(
-      name: 'epoch_day_test', minYear: kMinYearLimit, maxYear: kMaxYearLimit, level: Level.info0);
+      name: 'epoch_day_test', minYear: kMinYearLimit, maxYear: kMaxYearLimit, level: Level.info);
 
   // These next two values are used throughout the test
   // They can be changed to make the tests longer or shorter

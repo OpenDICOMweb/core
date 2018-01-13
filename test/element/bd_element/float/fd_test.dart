@@ -7,13 +7,12 @@
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 import '../bd_test_utils.dart';
 
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.debug);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
 
   final float64LstCommon0 = const <double>[
@@ -45,7 +44,7 @@ void main() {
     });
 
     test('FD hasValidValues random: good values', () {
-      system.level = Level.debug;
+      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final float64List = rng.float64List(1, 1);
         expect(float64List is Float64List, true);

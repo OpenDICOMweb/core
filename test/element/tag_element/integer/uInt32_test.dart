@@ -7,11 +7,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/uInt32_test', level: Level.info0);
+  Server.initialize(name: 'element/uInt32_test', level: Level.info);
   final rng = new RNG(1);
 
   const uInt32MinMax = const [kUint16Min, kUint16Max];
@@ -794,7 +793,7 @@ void main() {
     });
 
     test('UL encodeDecodeJsonVF', () {
-      system.level = Level.debug1;
+      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt32list0 = rng.uint32List(0, i);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
@@ -2232,7 +2231,7 @@ void main() {
     });
 
     test('OL encodeDecodeJsonVF', () {
-      system.level = Level.debug1;
+      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt32list0 = rng.uint32List(0, i);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);

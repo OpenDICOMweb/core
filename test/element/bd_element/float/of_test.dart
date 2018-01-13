@@ -7,14 +7,13 @@
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 import '../bd_test_utils.dart';
 
 //Urgent: why is this file so much shorter than fl_test.dart
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.debug);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
   List<double> float32List;
 
   final listFloat32Common0 = const <double>[

@@ -73,8 +73,8 @@ class Hash64 extends Hash {
 }
 
 final _byteBuf = new ByteData(8);
-final _float64Buf = _byteBuf.buffer.asFloat64List();
-final _uint64Buf = _byteBuf.buffer.asUint64List();
+final Float64List _float64Buf = _byteBuf.buffer.asFloat64List();
+final Uint64List _uint64Buf = _byteBuf.buffer.asUint64List();
 
 
 double _float64Hash(double n) {

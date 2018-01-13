@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
@@ -18,7 +17,7 @@ final Uint8List frame = new Uint8List.fromList(testFrame);
 final List<Uint8List> fragments = [emptyOffsetsAsBytes, testFrame];
 
 void main() {
-  Server.initialize(name: 'element/un_pixel_data_test', level: Level.info0);
+  Server.initialize(name: 'element/un_pixel_data_test', level: Level.info);
 
   final ts = TransferSyntax.kDefaultForDicomWeb;
   group('UNtagPixelData Tests', () {

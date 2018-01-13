@@ -5,11 +5,10 @@
 
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/sha256Hash_float_test', level: Level.debug);
+  Server.initialize(name: 'element/sha256Hash_float_test', level: Level.info);
   final rng = new RNG(1);
 
   group('Integer Elements', () {

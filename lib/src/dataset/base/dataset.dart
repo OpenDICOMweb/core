@@ -20,7 +20,7 @@ import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/uid/uid.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 

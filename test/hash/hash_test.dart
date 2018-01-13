@@ -20,7 +20,7 @@ return copy;
 
 //Urgent: test hash
 void main() {
-  Server.initialize(name: 'integer/integer_test', level: Level.info0);
+  Server.initialize(name: 'integer/integer_test', level: Level.info);
   /*
   print('32: ${hash(32)}');
   print('33: ${hash(33)}');

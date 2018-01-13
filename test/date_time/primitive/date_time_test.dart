@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(
-      name: 'date_time_test', minYear: -1000, maxYear: 3000, level: Level.debug);
+      name: 'date_time_test', minYear: -1000, maxYear: 3000, level: Level.info);
 
   test('kMinEpochMicrosecond', () {
     print('minYear: ${system.minYear}');

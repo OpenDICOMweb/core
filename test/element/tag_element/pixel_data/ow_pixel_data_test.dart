@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
@@ -16,7 +15,7 @@ final Uint8List u8Frame = new Uint8List.fromList(testFrame);
 final Uint16List u16Frame = new Uint16List.fromList(testFrame);
 
 void main() {
-  Server.initialize(name: 'element/ow_pixel_data_test', level: Level.info0);
+  Server.initialize(name: 'element/ow_pixel_data_test', level: Level.info);
   group('OW PixelData Tests', () {
     final pixels0 = new Uint16List(1024);
     for (var i = 0; i < pixels0.length; i++) pixels0[i] = 4095;

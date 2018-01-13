@@ -14,9 +14,9 @@ import 'package:core/src/element/base/mixin/undefined_length_mixin.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/logger/formatter.dart';
+import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/vr/vr.dart';
-import 'package:tag/tag.dart';
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 

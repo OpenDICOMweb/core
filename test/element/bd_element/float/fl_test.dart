@@ -7,13 +7,12 @@
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 import '../bd_test_utils.dart';
 
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.info0);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
 //  List<double> float32List;
 
@@ -58,7 +57,7 @@ void main() {
     });
 
     test('FL hasValidValues: good values', () {
-      system.level = Level.debug2;
+      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final float32List = rng.float32List(2, 2);
         final bd = makeFL(kCornealVertexLocation, float32List);

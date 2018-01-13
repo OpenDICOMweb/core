@@ -5,14 +5,13 @@
 
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'element/sha256Hash_string_test', level: Level.debug);
+  Server.initialize(name: 'element/sha256Hash_string_test', level: Level.info);
   group('String Elements', () {
 
     test('String Text', () {

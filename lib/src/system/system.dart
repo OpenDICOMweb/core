@@ -122,7 +122,7 @@ abstract class System {
     print('minYear: $minYear, minYearLimit: $kMinYearLimit');
     if (maxYear > kMaxYearLimit) throw new InvalidYearError(maxYear);
     print('maxYear:  $maxYear, maxYearLimit:  $kMaxYearLimit');
-    hasher ??= new Hash64();
+    hasher ??= const Hash64();
   }
 
   // **** Interface

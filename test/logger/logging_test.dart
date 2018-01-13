@@ -147,8 +147,9 @@ void main() {
         throw new UnsupportedError('test exception');
         // ignore: avoid_catches_without_on_clauses
       } catch (error, stack) {
-        Logger.root.log(Level.error, 'error', 0, error, stack);
-        Logger.root.warn0('foo', 0, error, stack);
+        Logger.root
+          ..log(Level.error, 'error', 0, error, stack)
+          ..warn0('foo', 0, error, stack);
       }
 
       Logger.root.log(Level.abort, 'abort');
@@ -432,6 +433,7 @@ void main() {
       a.onRecord.listen((record) {
         aMessages.add('${record.level}: ${record.message}');
       });
+
       root.onRecord.listen((record) {
         rootMessages.add('${record.level}: ${record.message}');
       });

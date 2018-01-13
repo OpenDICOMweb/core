@@ -13,8 +13,8 @@ import 'package:core/src/element/crypto.dart';
 import 'package:core/src/empty_list.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
+import 'package:core/src/tag/tag_lib.dart';
 import 'package:core/src/vr/vr.dart';
-import 'package:tag/tag.dart';
 
 
 // ignore_for_file: avoid_annotating_with_dynamic

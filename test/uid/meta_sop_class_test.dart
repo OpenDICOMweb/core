@@ -7,7 +7,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'meta_sop_class_test', level: Level.info0);
+  Server.initialize(name: 'meta_sop_class_test', level: Level.info);
 
   group('MetaSopClass', () {
     test('String to UID', () {

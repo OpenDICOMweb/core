@@ -4,11 +4,10 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/sha256Hash_integer_test', level: Level.info0);
+  Server.initialize(name: 'element/sha256Hash_integer_test', level: Level.info);
   group('Integer Elements', () {
     const int32V1 = const <int>[kInt32Max];
     const uInt8V1 = const <int>[kUint8Min];

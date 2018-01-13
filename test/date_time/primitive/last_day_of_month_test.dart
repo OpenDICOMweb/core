@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'last_day_of_month', level: Level.info0);
+  Server.initialize(name: 'last_day_of_month', level: Level.info);
 
   group('epochTest', () {
     test('Test for epochDay', () {

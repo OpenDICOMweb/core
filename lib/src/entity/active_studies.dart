@@ -17,8 +17,8 @@ import 'package:core/src/entity/patient/person_name.dart';
 import 'package:core/src/entity/series.dart';
 import 'package:core/src/entity/study.dart';
 import 'package:core/src/logger/formatter.dart';
+import 'package:core/src/tag/tag_lib.dart';
 import 'package:core/src/uid/uid.dart';
-import 'package:tag/tag.dart';
 
 // ignore_for_file: only_throw_errors
 

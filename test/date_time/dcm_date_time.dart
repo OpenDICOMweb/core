@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(
-      name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.info0);
+      name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.info);
 
   const goodDcmDateTimeList = const <String>[
     '19500718105630',

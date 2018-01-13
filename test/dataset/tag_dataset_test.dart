@@ -4,12 +4,11 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 void main() {
-  Server.initialize(name: 'dataset/tag_dataset_test', level: Level.debug);
+  Server.initialize(name: 'dataset/tag_dataset_test', level: Level.info);
   final rsg = new RSG(seed: 1);
   final rng = new RNG(1);
 

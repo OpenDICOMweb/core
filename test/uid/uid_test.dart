@@ -12,7 +12,7 @@ import 'package:test/test.dart';
 // TODO: add tests for all three errors in core/src/uid/uid_errors.dart.
 
 void main() {
-  Server.initialize(name: 'uid_test', level: Level.info0);
+  Server.initialize(name: 'uid_test', level: Level.info);
   uidTest();
 }
 

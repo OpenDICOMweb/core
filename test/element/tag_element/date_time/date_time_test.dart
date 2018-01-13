@@ -7,7 +7,7 @@
 import 'dart:convert';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
+
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
@@ -17,7 +17,7 @@ RSG rsg = new RSG(seed: 1);
 
 void main() {
   // minYear and maxYear can be passed as an argument
-  Server.initialize(name: 'string/date_time_test', level: Level.debug);
+  Server.initialize(name: 'string/date_time_test', level: Level.info);
   system.throwOnError = false;
 
   group('ASTag', () {
@@ -350,7 +350,7 @@ void main() {
     });
 
     test('AS fromBytes random', () {
-      system.level = Level.debug;
+ //     system.level = Level.debug;
       system.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getASList(1, 1);

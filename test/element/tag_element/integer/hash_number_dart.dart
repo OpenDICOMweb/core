@@ -5,14 +5,13 @@
 
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'element/hash_number_test', level: Level.debug);
+  Server.initialize(name: 'element/hash_number_test', level: Level.info);
   test('Integer Strings', () {
     final stringList0 = rsg.getISList(1, 1);
     final is0 = new IStag(PTag.kEvaluatorNumber, stringList0);

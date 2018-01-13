@@ -5,12 +5,11 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 // Urgent Sharath: please fix these tests
 void main() {
-  Server.initialize(name: 'replace_uids', level: Level.debug);
+  Server.initialize(name: 'replace_uids', level: Level.info);
 
 	group('', (){
 		test('updateUid', () {

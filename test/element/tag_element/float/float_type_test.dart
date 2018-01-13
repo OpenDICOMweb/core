@@ -6,12 +6,11 @@
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 /// Tests that were handling Float32List loss of precision correctly
 void main() {
-  Server.initialize(name: 'element/float_type_test', level: Level.info0);
+  Server.initialize(name: 'element/float_type_test', level: Level.info);
 
   group('Floating Point Values', () {
     test('Create Elements from floating values', () {

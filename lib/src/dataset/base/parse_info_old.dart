@@ -8,7 +8,7 @@ import 'dart:typed_data';
 
 import 'package:core/core.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 class ParseInfo {
   // Reader Info

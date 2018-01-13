@@ -15,7 +15,7 @@ void main() {
       name: 'date_test',
       minYear: kMinYearLimit,
       maxYear: kMaxYearLimit,
-      level: Level.debug);
+      level: Level.info);
   //Good dates
   const goodDcmDateList = const <String>['19500718', '00000101', '19700101'];
 

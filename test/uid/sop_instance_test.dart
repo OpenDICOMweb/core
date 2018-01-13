@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'sop_instance_test', level: Level.info0);
+  Server.initialize(name: 'sop_instance_test', level: Level.info);
 
   group('WellKnownSopInstance', () {
     test('String to UID', () {

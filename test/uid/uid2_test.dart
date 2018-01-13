@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'uid2_test', level: Level.info0);
+  Server.initialize(name: 'uid2_test', level: Level.info);
 
   const goodUids = const <String>[
     '0.20.3000',

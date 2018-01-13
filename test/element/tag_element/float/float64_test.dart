@@ -8,11 +8,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/float64_test', level: Level.info0);
+  Server.initialize(name: 'element/float64_test', level: Level.info);
   final rng = new RNG(1);
 
   final float64LstCommon0 = const <double>[
@@ -859,7 +858,7 @@ void main() {
       });
 
       test('Float64Base.listFromBase64', () {
-        system.level = Level.debug1;
+        system.level = Level.info;
         for (var i = 0; i < 10; i++) {
           final floatList0 = rng.float64List(0, i);
           final float64List0 = new Float64List.fromList(floatList0);
@@ -886,7 +885,7 @@ void main() {
       });
 
       test('Float64Base encodeDecodeJsonVF', () {
-        system.level = Level.debug1;
+        system.level = Level.info;
         for (var i = 1; i < 10; i++) {
           final floatList0 = rng.float64List(1, i);
           final float64List0 = new Float64List.fromList(floatList0);
@@ -1126,7 +1125,7 @@ void main() {
     });
 
     test('OD fromBytes', () {
-      system.level = Level.debug;
+      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
         final float = new Float64List.fromList(floatList0);

@@ -15,7 +15,7 @@ import 'data.dart';
 void main() {
   const typeChars = const <String>['8', '9', 'a', 'b'];
 
-  Server.initialize(name: 'data_test', level: Level.info0);
+  Server.initialize(name: 'data_test', level: Level.info);
   String version;
   String type;
   Uuid.useUppercase = false;

@@ -68,7 +68,7 @@ class Hash32 extends Hash {
 
 //final _byteBuf = new ByteData(4);
 final _float32Buf = new Float32List(1);
-final _uint32Buf = _float32Buf.buffer.asUint32List();
+final Uint32List _uint32Buf = _float32Buf.buffer.asUint32List();
 
 
 double _float32Hash(double n) {

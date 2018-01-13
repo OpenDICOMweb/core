@@ -21,9 +21,9 @@ import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/tag_lib.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/vr/vr.dart';
-import 'package:tag/tag.dart';
 
 // Design Notes:
 // - All lookups are done using Tag.index;

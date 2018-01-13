@@ -7,11 +7,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/int16_test', level: Level.info0);
+  Server.initialize(name: 'element/int16_test', level: Level.info);
   final rng = new RNG(1);
   system.throwOnError = false;
 

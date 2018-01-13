@@ -7,11 +7,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/uInt8_test', level: Level.info0);
+  Server.initialize(name: 'element/uInt8_test', level: Level.info);
   final rng = new RNG(1);
 
   group('OB', () {
@@ -690,7 +689,7 @@ void main() {
     });
 
     test('OB.encodeDecodeJsonVF', () {
-      system.level = Level.debug1;
+      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt8list0 = rng.uint8List(0, i);
         final uInt8ListV1 = new Uint8List.fromList(uInt8list0);

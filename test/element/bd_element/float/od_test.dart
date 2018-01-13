@@ -7,14 +7,14 @@
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
+
 import 'package:test/test.dart';
 
 import '../bd_test_utils.dart';
 
 //Urgent: why is this file so much shorter than fl_test.dart
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.info0);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
 
   final float64LstCommon0 = const <double>[
@@ -88,7 +88,7 @@ void main() {
     // test('OD null as values', () {});
 
     test('OD hashCode and == random', () {
-      system.level = Level.debug;
+ //     system.level = Level.debug;
       system.throwOnError = false;
       final rng = new RNG(1);
 

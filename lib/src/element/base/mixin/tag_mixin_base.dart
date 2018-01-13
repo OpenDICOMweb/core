@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 /// A Element Type predicate. Returns _true_ if the Element
 /// corresponding to [key] in the [Dataset] satisfies the

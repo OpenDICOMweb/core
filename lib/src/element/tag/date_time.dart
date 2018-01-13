@@ -14,7 +14,7 @@ import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/tag_element_mixin.dart';
 import 'package:core/src/empty_list.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 /// A Application Entity Title (AS) Element
 class AStag extends AS with TagElement<String> {

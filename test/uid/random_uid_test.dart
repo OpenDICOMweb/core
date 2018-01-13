@@ -9,7 +9,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'random_uid_test', level: Level.debug);
+  Server.initialize(name: 'random_uid_test', level: Level.info);
   group('Random Uid Tests', () {
 
     test('Seeded Random Tests', (){

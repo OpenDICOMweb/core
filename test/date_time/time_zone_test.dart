@@ -7,7 +7,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'time_zone_test', level: Level.debug);
+  Server.initialize(name: 'time_zone_test', level: Level.info);
 
   const List inValidTimeZoneStrings = const <String>[
     '-1230',

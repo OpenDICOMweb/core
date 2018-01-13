@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'transfer_syntax_test', level: Level.info0);
+  Server.initialize(name: 'transfer_syntax_test', level: Level.info);
   transferSyntaxTest();
 }
 

@@ -4,16 +4,14 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'element/hash_time_test', level: Level.info0);
+  Server.initialize(name: 'element/hash_time_test', level: Level.info);
   test('String Date', () {
     final stringList = <String>['19930822'];
     final da0 = new DAtag(PTag.kCreationDate, stringList);

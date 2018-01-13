@@ -11,7 +11,6 @@ export 'package:core/src/element/base/integer.dart';
 export 'package:core/src/element/base/meta.dart';
 export 'package:core/src/element/base/mixin/undefined_length_mixin.dart';
 export 'package:core/src/element/base/pixel_data.dart';
-export 'package:core/src/element/base/pixel_data_mixin.dart';
 export 'package:core/src/element/base/private.dart';
 export 'package:core/src/element/base/sequence.dart';
 export 'package:core/src/element/base/string.dart';

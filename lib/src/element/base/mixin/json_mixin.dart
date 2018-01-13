@@ -8,7 +8,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag.dart';
 
 abstract class JsonMixin<V> {
 	Tag get tag;

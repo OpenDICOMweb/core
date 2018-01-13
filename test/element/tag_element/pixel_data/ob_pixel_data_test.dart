@@ -7,7 +7,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
+
 import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
@@ -18,7 +18,7 @@ final Uint8List frame = new Uint8List.fromList(testFrame);
 final List<Uint8List> fragments = [emptyOffsetsAsBytes, testFrame];
 
 void main() {
-  Server.initialize(name: 'element/ob_pixel_data_test', level: Level.info0);
+  Server.initialize(name: 'element/ob_pixel_data_test', level: Level.info);
 
   final ts = TransferSyntax.kDefaultForDicomWeb;
   group('OBtagPixelData Tests', () {
@@ -658,7 +658,7 @@ void main() {
       final ob0 = OB.isValidTag(PTag.kPixelData);
       expect(ob0, true);
 
-      system.level = Level.debug;
+//      system.level = Level.debug;
       system.throwOnError = false;
       for (var tag in obTags) {
         log.debug('tag: $tag');

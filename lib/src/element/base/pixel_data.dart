@@ -4,63 +4,67 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'dart:typed_data';
+
 import 'package:core/src/element/base/integer.dart';
-import 'package:core/src/element/base/pixel_data_mixin.dart';
+import 'package:core/src/element/vf_fragments.dart';
+import 'package:core/src/system/system.dart';
+import 'package:core/src/uid/well_known/transfer_syntax.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
-/* Flush at V.0.9.0
-bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
-bool _isValidVFLength(int vfl, int min, int max, int sizeInBytes) =>
-    _inRange(vfl, min, max) && (vfl % sizeInBytes == 0);
-*/
+abstract class PixelDataMixin {
+  Iterable<int> get values;
+  TransferSyntax get ts;
+  VFFragments get fragments;
+  Tag get tag;
 
-int _toLength(int length, int vLength) =>
-    (length == null || length > vLength) ? vLength : length;
+  /// Returns _true_ if encapsulated (i.e. compressed).
+  bool get isCompressed => fragments != null;
 
-abstract class OBPixelData extends OB with PixelDataMixin, Uint8PixelDataMixin {
-/*
-  // Overridden to ensure that it is a [Uint8List].
-  @override
+  bool get isEncapsulated => isCompressed;
+
+  Uint32List get offsets => _offsets ??= (fragments == null) ? null : fragments.offsets;
+  Uint32List _offsets;
+
+  Uint8List get bulkdata => fragments.bulkdata;
+
+  static bool isValidTag(Tag tag) {
+    if (tag == PTag.kPixelData) return true;
+    if (throwOnError) return invalidTagError(tag);
+    return false;
+  }
+}
+
+abstract class Uint8PixelDataMixin {
+  Iterable<int> get values;
+  bool get isEncapsulated;
+  VFFragments get fragments;
+
   Uint8List get valuesCopy => new Uint8List.fromList(pixels);
 
   /// The [Uint8List] of pixels, possibly compressed.
-  @override
   Uint8List get pixels =>
       _pixels ??= (isEncapsulated) ? fragments.bulkdata : Uint8Base.toUint8List(values);
   Uint8List _pixels;
-*/
-
-  /// Returns an Uint8List View of [values].
-  @override
-  OBPixelData view([int start = 0, int length]) => super.view(start, length);
-
-  // static bool isValidTag(Tag tag) => _isValidTag(tag);
 }
 
-abstract class UNPixelData extends UN with PixelDataMixin, Uint8PixelDataMixin {
-  /// Returns an Uint8List View of [values].
-  @override
-  UNPixelData view([int start = 0, int length]) =>
-      update(typedData.buffer.asUint8List(start, _toLength(length, values.length)));
-}
+abstract class Uint16PixelDataMixin {
+  Iterable<int> get values;
+  bool get isEncapsulated;
+  VFFragments get fragments;
 
-abstract class OWPixelData extends OW with PixelDataMixin, Uint16PixelDataMixin {
-/*
-  // Overridden to ensure that it is a [Uint16List].
-  @override
   Uint16List get valuesCopy => new Uint16List.fromList(pixels);
 
   /// The [Uint16List] of pixels, possibly compressed.
-  @override
   Uint16List get pixels =>
       _pixels ??= (isEncapsulated) ? fragments.bulkdata : Uint16Base.toUint16List(values);
   Uint16List _pixels;
-*/
-
-  /// Returns a  an Uint8List View of [values].
-  @override
-  OWPixelData view([int start = 0, int length]) =>
-      update(typedData.buffer.asUint16List(start, _toLength(length, values.length)));
-
-  // static bool isValidTag(Tag tag) => _isValidTag(tag);
 }
+
+
+abstract class OBPixelData extends OB with PixelDataMixin, Uint8PixelDataMixin {}
+
+abstract class UNPixelData extends UN with PixelDataMixin, Uint8PixelDataMixin {}
+
+abstract class OWPixelData extends OW with PixelDataMixin, Uint16PixelDataMixin {}

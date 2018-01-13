@@ -6,7 +6,6 @@
 import 'dart:convert';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
@@ -15,7 +14,7 @@ import 'utility_test.dart' as utility;
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'string/special_test', level: Level.debug2);
+  Server.initialize(name: 'string/special_test', level: Level.info);
   system.throwOnError = false;
 
   group('AE Tests', () {
@@ -494,7 +493,7 @@ void main() {
       });
 
       test('Create AE.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getAEList(1, 1);
         final bytes = AE.toBytes(vList1);
         log.debug(
@@ -1063,7 +1062,7 @@ void main() {
       });
 
       test('Create CS.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getCSList(1, 1);
         final bytes = CS.toBytes(vList1);
         log.debug(
@@ -1598,7 +1597,7 @@ void main() {
       });
 
       test('Create UI.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getCSList(1, 1);
         final bytes = UI.toBytes(vList1);
         log.debug(
@@ -2091,7 +2090,7 @@ void main() {
       });
 
       test('Create UR.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getCSList(1, 1);
         final bytes = UR.toBytes(vList1);
         log.debug(

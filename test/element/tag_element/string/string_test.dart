@@ -6,14 +6,13 @@
 import 'dart:convert';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'string/string_test', level: Level.info0);
+  Server.initialize(name: 'string/string_test', level: Level.info);
   system.throwOnError = false;
 
   group('LO Tests', () {
@@ -517,7 +516,7 @@ void main() {
       });
 
       test('Create LO.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getLOList(1, 1);
         final bytes = LO.toBytes(vList1);
         log.debug('LO.fromBytes(bytes): ${LO.fromBytes(bytes)}, bytes: $bytes');
@@ -1046,7 +1045,7 @@ void main() {
       });
 
       test('Create LT.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getLTList(1, 1);
         final bytes = LT.toBytes(vList1);
         log.debug('LT.fromBytes(bytes): ${LT.fromBytes(bytes)}, bytes: $bytes');
@@ -1603,7 +1602,7 @@ void main() {
       });
 
       test('Create PN.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getPNList(1, 1);
         final bytes = PN.toBytes(vList1);
         log.debug('PN.fromBytes(bytes): ${PN.fromBytes(bytes)}, bytes: $bytes');
@@ -2125,7 +2124,7 @@ void main() {
       });
 
       test('Create SH.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getSHList(1, 1);
         final bytes = SH.toBytes(vList1);
         log.debug('SH.fromBytes(bytes): ${SH.fromBytes(bytes)}, bytes: $bytes');
@@ -2666,7 +2665,7 @@ void main() {
       });
 
       test('Create ST.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getSTList(1, 1);
         final bytes = ST.toBytes(vList1);
         log.debug('ST.fromBytes(bytes): ${ST.fromBytes(bytes)}, bytes: $bytes');
@@ -3176,7 +3175,7 @@ void main() {
       });
 
       test('Create UC.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getUCList(1, 1);
         final bytes = UC.toBytes(vList1);
         log.debug('UC.fromBytes(bytes): ${UC.fromBytes(bytes)}, bytes: $bytes');
@@ -3647,7 +3646,7 @@ void main() {
       });
 
       test('Create UT.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getUTList(1, 1);
         final bytes = UT.toBytes(vList1);
         log.debug('UT.fromBytes(bytes): ${UT.fromBytes(bytes)}, bytes: $bytes');

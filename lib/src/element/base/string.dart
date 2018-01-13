@@ -24,9 +24,9 @@ import 'package:core/src/parser/parse_errors.dart';
 import 'package:core/src/string/ascii.dart';
 import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/vr/vr.dart';
-import 'package:tag/tag.dart';
 
 //TODO: add static .fromBytes and .fromByteData to all classes
 typedef V _TryParser<V>(String s, Issues issues);

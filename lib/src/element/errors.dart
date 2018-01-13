@@ -12,7 +12,7 @@ import 'package:core/src/element/frame_descriptor.dart';
 import 'package:core/src/element/frame_list.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/system/system.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag.dart';
 
 /// A [NullElementError] should be thrown whenever an [Element] has
 /// a values field containing _null_. An [Element] that has no

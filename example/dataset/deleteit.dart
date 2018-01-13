@@ -4,10 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
-
-
 import 'package:core/core.dart';
-import 'package:tag/tag.dart';
 
 void main() {
   final ds = new TagRootDataset();

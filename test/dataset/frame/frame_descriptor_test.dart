@@ -4,11 +4,10 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/frame_descriptor_test', level: Level.info0);
+  Server.initialize(name: 'element/frame_descriptor_test', level: Level.info);
 
   group('FrameDescriptor Tests', () {
     test('Create 8-bit FrameDescriptor', () {

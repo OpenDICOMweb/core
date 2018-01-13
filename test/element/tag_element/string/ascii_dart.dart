@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 void main() {
-  Server.initialize(name: 'ascii_test.dart', level: Level.debug);
+  Server.initialize(name: 'ascii_test.dart', level: Level.info);
 
   group('Ascii Tests', () {
     test('Simple Ascii Test', () {

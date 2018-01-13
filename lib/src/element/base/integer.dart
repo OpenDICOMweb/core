@@ -16,7 +16,7 @@ import 'package:core/src/empty_list.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/vr/vr.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 int _toLength(int length, int vLength) =>
     (length == null || length > vLength) ? vLength : length;

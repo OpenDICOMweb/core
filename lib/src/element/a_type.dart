@@ -6,7 +6,7 @@
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 typedef bool ElementPredicate(Dataset ds, Element e, [DatasetPredicate dsp]);
 

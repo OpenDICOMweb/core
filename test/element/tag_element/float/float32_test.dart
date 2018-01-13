@@ -8,11 +8,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.info0);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
   List<double> float32List;
 
@@ -53,7 +52,7 @@ void main() {
     });
 
     test('FL hasValidValues good values random', () {
-      system.level = Level.debug;
+      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final float32List = rng.float32List(1, 1);
         expect(float32List is Float32List, true);
@@ -794,7 +793,7 @@ void main() {
     });
 
     test('Float32Base decodeJsonVF', () {
-      system.level = Level.debug2;
+      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);

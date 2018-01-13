@@ -20,7 +20,7 @@ void main() {
       // Epoch Days if desired, but it takes a long time.
       minYear: startYear,
       maxYear: endYear,
-      level: Level.debug2);
+      level: Level.info);
 
   final startEpochDay = dateToEpochDay(startYear, 1, 1);
   final endEpochDay = dateToEpochDay(endYear, 1, 1);

@@ -10,7 +10,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/typed_data_utils_test', level: Level.info0);
+  Server.initialize(name: 'element/typed_data_utils_test', level: Level.info);
   final rng = new RNG(1);
 
   test('Uint32Base.toUint32List', () {

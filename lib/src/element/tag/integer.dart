@@ -12,7 +12,7 @@ import 'package:core/src/element/base/integer.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/tag_element_mixin.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag.dart';
 
 /// Returns [vfLengthField] is it is valid.
 int _checkVFL(Uint8List bytes, int vfLengthField) =>

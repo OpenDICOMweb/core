@@ -20,7 +20,7 @@ import 'package:core/src/errors.dart';
 import 'package:core/src/string/ascii.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag.dart';
 
 typedef BDElement DecodeBinaryVF(ByteData bd, int vrIndex);
 

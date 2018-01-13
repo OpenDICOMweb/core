@@ -5,14 +5,13 @@
 
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'element/hash_special_test', level: Level.debug);
+  Server.initialize(name: 'element/hash_special_test', level: Level.info);
   test('UI', () {
     final stringList1 = rsg.getUIList(1, 1);
     final ui0 = new UItag(PTag.kStudyInstanceUID, stringList1);

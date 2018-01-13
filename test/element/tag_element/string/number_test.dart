@@ -7,7 +7,6 @@
 import 'dart:convert';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
@@ -477,7 +476,7 @@ void main() {
       });
 
       test('Create DS.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getCSList(1, 1);
         final bytes = DS.toBytes(vList1);
         log.debug('DS.fromBytes(bytes): ${DS.fromBytes(bytes)}, bytes: $bytes');
@@ -1066,7 +1065,7 @@ void main() {
       });
 
       test('Create IS.fromBytes', () {
-        system.level = Level.debug;
+        system.level = Level.info;
         final vList1 = rsg.getCSList(1, 1);
         final bytes = IS.toBytes(vList1);
         log.debug('IS.fromBytes(bytes): ${IS.fromBytes(bytes)}, bytes: $bytes');

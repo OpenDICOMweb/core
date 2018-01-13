@@ -9,7 +9,7 @@ import 'package:core/src/date_time/primitives/time.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'time_test', level: Level.info0);
+  Server.initialize(name: 'time_test', level: Level.info);
 
   group('Time Tests', () {
     test('Check Time', () {

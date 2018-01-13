@@ -12,7 +12,7 @@ import 'package:core/src/dataset/tag/tag_item.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/tag/tag_element_mixin.dart';
 import 'package:core/src/logger/formatter.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 /// A Sequence ([SQ]) Element.
 ///

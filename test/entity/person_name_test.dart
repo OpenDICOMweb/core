@@ -9,7 +9,7 @@ import 'package:test/test.dart';
 import 'package:test_tools/tools.dart' as rsg;
 
 void main() {
-  Server.initialize(name: 'person_name.test', level: Level.debug);
+  Server.initialize(name: 'person_name.test', level: Level.info);
 
   //noOfgroups=3, noOfomponents=5, componentLength=8
   final strValid = rsg.generateDcmPersonName(3, 5, 6);

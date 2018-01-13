@@ -14,7 +14,7 @@ import 'package:core/src/element/tag/date_time.dart';
 import 'package:core/src/element/tag/float.dart';
 import 'package:core/src/element/tag/integer.dart';
 import 'package:core/src/element/tag/string.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 typedef Element TagMaker<V>(Tag tag, Iterable<V> vList);
 typedef TagElement MakeFrom(Element e);

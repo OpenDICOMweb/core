@@ -7,7 +7,7 @@
 import 'dart:typed_data';
 
 import 'package:core/src/issues.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 /// Tag Mixin Class
 ///

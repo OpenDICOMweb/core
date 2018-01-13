@@ -25,7 +25,7 @@ bool testElementUpdate(Element e0, List values) {
 }
 
 void main() {
-  Server.initialize(name: 'String/utility.dart', level: Level.info0);
+  Server.initialize(name: 'String/utility.dart', level: Level.info);
   final rng = new RNG(1);
 
   test('bytesToAttributeTags random', () {

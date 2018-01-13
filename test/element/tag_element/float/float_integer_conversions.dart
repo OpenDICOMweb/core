@@ -9,7 +9,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.info0);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
 
   //Urgent: this kind of global variable leads to bugs - please move inside tests

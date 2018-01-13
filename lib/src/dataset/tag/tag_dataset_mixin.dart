@@ -3,10 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-
-
-
-import 'package:tag/tag.dart';
+import 'package:core/core.dart';
 
 /// An [TagDataset] is a Dataset containing TagElements.
 abstract class TagDataset {

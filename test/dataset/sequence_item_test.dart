@@ -4,12 +4,11 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 // Urgent Sharath: please fix these tests
 void main() {
-  Server.initialize(name: 'element/sequence_item_test', level: Level.info0);
+  Server.initialize(name: 'element/sequence_item_test', level: Level.info);
 
   group('Items and Sequences', () {
     var itemsList = <TagItem>[];

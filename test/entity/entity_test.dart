@@ -7,7 +7,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'entity_test', level: Level.info0);
+  Server.initialize(name: 'entity_test', level: Level.info);
 
   group('Entity Tests', () {
     final rootDataset = new TagRootDataset();

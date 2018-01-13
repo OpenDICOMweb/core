@@ -10,7 +10,7 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/uid/uid.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag.dart';
 
 /// DICOM Information Entities
 ///

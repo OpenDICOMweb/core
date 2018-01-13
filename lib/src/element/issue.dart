@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/element/base/element.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag.dart';
 
 enum IssueAction { abort, quarantine, error, warning, info, bestPractice }
 

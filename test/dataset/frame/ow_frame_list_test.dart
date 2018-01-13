@@ -7,7 +7,6 @@
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:tag/tag.dart';
 import 'package:test/test.dart';
 
 import '../pixel_data/test_pixel_data.dart';
@@ -15,7 +14,7 @@ import '../pixel_data/test_pixel_data.dart';
 final Uint8List frame = new Uint8List.fromList(testFrame);
 
 void main() {
-  Server.initialize(name: 'element/ow_frame_list_test', level: Level.info0);
+  Server.initialize(name: 'element/ow_frame_list_test', level: Level.info);
 
   /// OWtag Frame List Tests
   group('FrameList16Bit', () {

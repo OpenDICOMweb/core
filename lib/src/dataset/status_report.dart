@@ -6,7 +6,7 @@
 
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/logger/log_level.dart';
-import 'package:tag/tag.dart';
+import 'package:core/src/tag/tag_lib.dart';
 
 class Entry {
   final Level level;

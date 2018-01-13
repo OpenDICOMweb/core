@@ -10,7 +10,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'rng/float_test', level: Level.info0);
+  Server.initialize(name: 'rng/float_test', level: Level.info);
   rngTest();
 }
 

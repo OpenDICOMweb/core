@@ -91,6 +91,9 @@ export 'package:core/src/string/hexadecimal.dart';
 export 'package:core/src/string/string.dart';
 export 'package:core/src/system/sys_info.dart';
 export 'package:core/src/system/system.dart';
+
+export 'package:core/src/tag/tag_lib.dart';
+
 export 'package:core/src/uid/constants.dart';
 export 'package:core/src/uid/uid.dart';
 export 'package:core/src/uid/uid_errors.dart';

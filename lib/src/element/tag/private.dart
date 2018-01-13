@@ -11,8 +11,9 @@ import 'package:core/src/element/tag/string.dart';
 import 'package:core/src/element/tag/tag_element_mixin.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
+import 'package:core/src/tag/tag_lib.dart';
 import 'package:core/src/vr/vr.dart';
-import 'package:tag/tag.dart';
+
 
 // Note: PrivateData Elements are just regular [Element]s
 class PrivateTagElement<V> extends PrivateElement<V> with TagElement<V> {
