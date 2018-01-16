@@ -4,8 +4,9 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
-import 'package:system/server.dart';
+import 'package:core/server.dart';
 
+// TODO: Move to generator package
 void main() {
 	Server.initialize();
 
@@ -52,30 +53,28 @@ void main() {
 		dicomStringToTZMap.add('"$dicom": TimeZone.k$index');
 		inetStringToTZMap.add('"$inet": TimeZone.k$index');
 	}
-	tableOut += tzs.join(',\n  ') + '\n];\n';
+	tableOut += '${tzs.join(',\n  ')}\n];\n';
 	usOut += usList.join(', ');
-	tzDicomStringListOut += dicomList.join(', ') + '\n];\n';
-	tzInetStringListOut += inetList.join(', ') + '\n];\n';
-	tzDicomStringMapOut += dicomStringToUSMap.join(',\n  ') + '\n};\n';
-	tzInetStringMapOut += inetStringToUSMap.join(',\n  ') + '\n};\n';
-	tzDicomStringMapOut += dicomStringToTZMap.join(',\n  ') + '\n};\n';
-	tzInetStringMapOut += inetStringToTZMap.join(',\n  ') + '\n};\n';
+	tzDicomStringListOut += '${dicomList.join(', ')}\n];\n';
+	tzInetStringListOut += '${inetList.join(', ')}\n];\n';
+	tzDicomStringMapOut += '${dicomStringToUSMap.join(',\n  ')}\n};\n';
+	tzInetStringMapOut += '${inetStringToUSMap.join(',\n  ')}\n};\n';
+	tzDicomStringMapOut += '${dicomStringToTZMap.join(',\n  ')}\n};\n';
+	tzInetStringMapOut += '${inetStringToTZMap.join(',\n  ')}\n};\n';
 
 	print(definitions.join('\n'));
 	print(members.join(', '));
 
-/*	print(tableOut);
+	print(tableOut);
 	print(usOut);
 	print(tzDicomStringListOut);
 	print(tzInetStringListOut);
 	print(tzDicomStringMapOut);
 	print(tzInetStringMapOut);
-	*/
 
 }
 
-String genTimeZone() {
-  final out = '''
+String genTimeZone() => '''
 
 import 'package:string/string.dart';
 import 'package:system/core.dart';
@@ -110,9 +109,8 @@ class TimeZone implements Comparable<TimeZone> {
   
   const TimeZone(this.index, this.
 
-  
   ''';
-}
+
 class TimeZone {
 	final int index;
 	final int hour;
