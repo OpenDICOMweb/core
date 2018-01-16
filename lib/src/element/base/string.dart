@@ -408,8 +408,9 @@ abstract class AE extends StringAscii {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
+
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -520,8 +521,8 @@ abstract class CS extends StringAscii {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -685,8 +686,8 @@ abstract class DS extends StringAscii {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -834,8 +835,8 @@ abstract class IS extends StringAscii {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -1019,8 +1020,8 @@ abstract class UI extends StringAscii {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -1151,8 +1152,8 @@ abstract class LO extends StringUtf8 {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -1294,8 +1295,8 @@ abstract class PN extends StringUtf8 {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -1409,8 +1410,8 @@ abstract class SH extends StringUtf8 {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -1527,8 +1528,8 @@ abstract class UC extends StringUtf8 {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -1656,8 +1657,8 @@ abstract class LT extends StringUtf8 {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -1784,8 +1785,8 @@ abstract class ST extends StringUtf8 {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -1926,8 +1927,8 @@ abstract class UR extends Text {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
@@ -2089,8 +2090,8 @@ abstract class UT extends StringUtf8 {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, int length, [Issues issues]) =>
-      _isValidVListLength(tag, length, issues, kMaxLength);
+  static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
 /*
   static bool isValidVR(VR vr, [Issues issues]) {
