@@ -10,7 +10,7 @@ import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/byte_data/bd_item.dart';
 import 'package:core/src/dataset/element_list/map_as_list.dart';
-import 'package:core/src/dataset/tag/tag_dataset_mixin.dart';
+import 'package:core/src/dataset/tag/tag_dataset.dart';
 
 /// An [TagItem] is an [Item] contained in an SQtag Element.
 class TagItem extends Item<int> with TagDataset {

@@ -9,7 +9,7 @@ import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/byte_data/bd_root_dataset.dart';
 import 'package:core/src/dataset/element_list/map_as_list.dart';
-import 'package:core/src/dataset/tag/tag_dataset_mixin.dart';
+import 'package:core/src/dataset/tag/tag_dataset.dart';
 
 /// A [TagRootDataset].
 class TagRootDataset extends RootDataset<int> with TagDataset {
