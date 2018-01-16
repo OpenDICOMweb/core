@@ -273,7 +273,6 @@ abstract class Tag {
       vrIndex == kOFIndex ||
       vrIndex == kOLIndex ||
       vrIndex == kOWIndex ||
-      vrIndex == kOBIndex ||
       vrIndex == kOBOWIndex;
 
   /// Returns _true_  if [vList].length is a valid number of values for _this_.
