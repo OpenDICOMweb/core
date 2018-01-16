@@ -138,20 +138,24 @@ Null invalidValuesLength<V>(int vmMin, int vmMax, Iterable<V> values, [Issues is
 }
 
 class InvalidValuesError extends Error {
-  final Iterable values;
   final String msg;
+  final Iterable values;
 
-  InvalidValuesError(this.values, [this.msg]);
+  InvalidValuesError(this.msg, this.values);
 
   @override
   String toString() => msg;
 }
 
 Null invalidValuesError(Iterable values, {Tag tag, Issues issues, String msg}) {
-  final s = 'Invalid Values Error:  - $msg\n   $values';
-  log.error(s);
-  if (issues != null) issues.add(s);
-  if (throwOnError) throw new InvalidValuesError(values, s);
+  final sb = new StringBuffer('Invalid Values Error');
+  if (tag != null) sb.write(' for $tag');
+  sb..write(': values = $values');
+  if (msg != null) sb.write('\n  $msg');
+  final errMsg = sb.toString();
+  log.error(errMsg);
+  if (issues != null) issues.add(errMsg);
+  if (throwOnError) throw new InvalidValuesError(errMsg, values);
   return null;
 }
 
@@ -257,8 +261,7 @@ class InvalidValueFieldLengthError extends Error {
   final int elementSize;
 
   InvalidValueFieldLengthError(this.vfBytes, this.elementSize) {
-    if (log != null)
-      log.error(toString());
+    if (log != null) log.error(toString());
   }
 
   @override
@@ -300,7 +303,6 @@ class InvalidCharacterInStringError extends ParseError {
 }
 */
 
-
 /*
 Null invalidCharacterInString(String s, String char, int index, [Issues issues]) {
   final msg =  InvalidCharacterInStringError._msg(s, char, index);
@@ -310,4 +312,3 @@ Null invalidCharacterInString(String s, String char, int index, [Issues issues])
   return null;
 }
 */
-

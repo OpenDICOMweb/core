@@ -14,8 +14,12 @@ void main() {
 	group('', (){
 		test('updateUid', () {
 			//Begin: Test for updateUid on Elements with VM.k1
+      system.throwOnError = false;
 			final ui0 = new UItag(PTag.kStudyInstanceUID, null);
 			log.debug('ui0: $ui0');
+			expect(ui0, isNull);
+
+			system.throwOnError = true;
 			expect(new UItag(PTag.kStudyInstanceUID, null),
              throwsA(const isInstanceOf<InvalidValuesError>()));
 
