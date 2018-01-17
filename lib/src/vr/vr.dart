@@ -11,7 +11,6 @@ import 'package:core/src/element/base/integer.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
-import 'package:core/src/string/ascii.dart';
 import 'package:core/src/system/system.dart';
 
 // Sequence is 0
@@ -419,12 +418,15 @@ class VRInt extends VR<int> {
       kOLIndex, 'OL', kOLCode, 4, kLongVF, 4, Uint32Base.kMinValue, Uint32Base.kMaxValue);
 }
 
+typedef bool IsValidString(String s, {Issues issues, bool allowInvalid});
+
 class VRAscii extends VR<String> {
   final int minVLength;
   final int maxVLength;
+  final IsValidString isValid;
 
   const VRAscii(int index, String id, int code, int vlfSize, int maxVFLength,
-      this.minVLength, this.maxVLength)
+      this.minVLength, this.maxVLength, this.isValid)
       : super(index, id, code, vlfSize, maxVFLength);
 
   int get maxLength => maxVFLength ~/ 2;
@@ -437,6 +439,10 @@ class VRAscii extends VR<String> {
     return vfLength >= (vmMin * minVLength) && vfLength <= maxVFL;
   }
 
+  @override
+  bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) =>
+  isValid(s, issues: issues, allowInvalid: allowInvalid);
+/*
   ///
   @override
   bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) {
@@ -461,16 +467,25 @@ class VRAscii extends VR<String> {
     // Had trailing spaces
     return true;
   }
+*/
 
-  static const kAS = const VRAscii(kASIndex, 'AS', kASCode, 2, kShortVF, 4, 4);
-  static const kDA = const VRAscii(kDAIndex, 'DA', kDACode, 2, kShortVF, 8, 8);
-  static const kDT = const VRAscii(kDTIndex, 'DT', kDTCode, 2, kShortVF, 4, 26);
-  static const kTM = const VRAscii(kTMIndex, 'TM', kTMCode, 2, kShortVF, 2, 13);
+  static const kAS =
+      const VRAscii(kASIndex, 'AS', kASCode, 2, kShortVF, 4, 4, AS.isValidValue);
+  static const kDA =
+      const VRAscii(kDAIndex, 'DA', kDACode, 2, kShortVF, 8, 8, DA.isValidValue);
+  static const kDT =
+      const VRAscii(kDTIndex, 'DT', kDTCode, 2, kShortVF, 4, 26, DT.isValidValue);
+  static const kTM =
+      const VRAscii(kTMIndex, 'TM', kTMCode, 2, kShortVF, 2, 13, TM.isValidValue);
 
-  static const kAE = const VRAscii(kAEIndex, 'AE', kAECode, 2, kShortVF, 1, 16);
-  static const kCS = const VRAscii(kCSIndex, 'CS', kCSCode, 2, kShortVF, 1, 16);
-  static const kPN = const VRAscii(kPNIndex, 'PN', kPNCode, 2, kShortVF, 1, 3 * 64);
-  static const kUI = const VRAscii(kUIIndex, 'UI', kUICode, 2, kShortVF, 5, 64);
+  static const kAE =
+      const VRAscii(kAEIndex, 'AE', kAECode, 2, kShortVF, 1, 16, AE.isValidValue);
+  static const kCS =
+      const VRAscii(kCSIndex, 'CS', kCSCode, 2, kShortVF, 1, 16, CS.isValidValue);
+  static const kPN =
+      const VRAscii(kPNIndex, 'PN', kPNCode, 2, kShortVF, 1, 3 * 64, PN.isValidValue);
+  static const kUI =
+      const VRAscii(kUIIndex, 'UI', kUICode, 2, kShortVF, 5, 64, UI.isValidValue);
 }
 
 class VRUtf8 extends VR<String> {
@@ -538,10 +553,8 @@ class VRText extends VR<String> {
   static const kUT = const VRText(kUTIndex, 'UT', kUTCode, 4, kLongVF);
 }
 
-typedef bool IsValidString(String s);
-
 class VRNumber extends VR<String> {
- final IsValidString isValid;
+  final IsValidString isValid;
 
   const VRNumber(
       int index, String id, int code, int vlfSize, int maxVFLength, this.isValid)

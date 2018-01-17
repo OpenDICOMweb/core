@@ -14,8 +14,8 @@ import 'package:core/src/tag/tag_lib.dart';
 
 // Note: PrivateData Elements are just regular [Element]s
 abstract class PrivateElement<V> extends Element<V> {
-	Element<V> get e;
-	bool get wasUN;
+  Element<V> get e;
+  bool get wasUN;
 
   /// Create a [PrivateElement]
 //  PrivateElement(this.e, {this.wasUN = false}) : super(e.tag);
@@ -24,14 +24,14 @@ abstract class PrivateElement<V> extends Element<V> {
   bool operator ==(Object other) => other is PrivateElement && e == other.e;
 
   @override
-	Iterable<V> get emptyList => e.emptyList;
+  Iterable<V> get emptyList => e.emptyList;
   @override
   int get hashCode => e.hashCode;
   @override
   Tag get tag => e.tag;
-	bool get isKnown => tag.isKnown;
-	@override
-	int get group => e.tag.group;
+  bool get isKnown => tag.isKnown;
+  @override
+  int get group => e.tag.group;
   //Why are these 3 necessary
   @override
   int get code => tag.code;
@@ -57,8 +57,8 @@ abstract class PrivateElement<V> extends Element<V> {
   @override
   Element get sha256 => e.sha256;
 
-	@override
-	TypedData get typedData => e.typedData;
+  @override
+  TypedData get typedData => e.typedData;
 
 /* Flush if not needed
   @override
@@ -74,17 +74,16 @@ abstract class PrivateElement<V> extends Element<V> {
 */
 
   @override
-	ByteData get vfByteData => e.vfByteData;
+  ByteData get vfByteData => e.vfByteData;
 
   @override
-	bool checkValues([Iterable<V> vList, Issues issues]) =>
-			e.checkValues(vList, issues);
+  bool checkValues(Iterable<V> vList, [Issues issues]) => e.checkValues(vList, issues);
 
-	@override
-	PrivateElement<V> update([Iterable<V> vList]) => e.update(vList);
+  @override
+  PrivateElement<V> update([Iterable<V> vList]) => e.update(vList);
 
-	@override
-	PrivateElement<V> updateF(Iterable<V> f(Iterable<V> vList)) => e.updateF(f);
+  @override
+  PrivateElement<V> updateF(Iterable<V> f(Iterable<V> vList)) => e.updateF(f);
 
   PrivateElement<V> view([int start = 0, int end]) => throw new UnimplementedError();
 }
@@ -92,7 +91,7 @@ abstract class PrivateElement<V> extends Element<V> {
 abstract class PrivateIllegal<V> extends PrivateElement<V> {
   //PrivateIllegal(Element e) : super(e);
 
- // K get key;
+  // K get key;
 }
 
 abstract class PrivateCreator extends LO {

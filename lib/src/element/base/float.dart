@@ -73,7 +73,7 @@ abstract class FloatBase extends Element<double> {
   FloatBase get noValues => update(emptyList);
 
   @override
-  bool checkValue(double value, [Issues issues]) => true;
+  bool checkValue(double value, {Issues issues, bool allowInvalid = false}) => true;
 
   /// Returns a [view] of this [Element] with [values] replaced by [TypedData].
   FloatBase view([int start = 0, int length]);

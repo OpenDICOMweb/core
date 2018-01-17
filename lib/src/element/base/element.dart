@@ -22,7 +22,6 @@ import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/tag_lib.dart';
 import 'package:core/src/vr/vr.dart';
 
-
 typedef bool ElementTest(Element e);
 
 typedef Iterable<V> ValuesConverter<V>(Iterable<V> vList);
@@ -309,12 +308,10 @@ abstract class Element<V> extends ListBase<V> {
   TypedData get typedData;
 
   /// Returns [values] encoded as [ByteData].
-  ByteData get vfByteData =>
-      (checkValues(values, null)) ? typedData.buffer.asByteData() : null;
+  ByteData get vfByteData => (checkValues(values)) ? typedData.buffer.asByteData() : null;
 
   /// Returns [values] encoded as a [Uint8List].
-  Uint8List get vfBytes =>
-      (checkValues(values, null)) ? typedData.buffer.asUint8List() : null;
+  Uint8List get vfBytes => (checkValues(values)) ? typedData.buffer.asUint8List() : null;
 
   /// Returns the Ascii Padding Character for this [Element],
   /// if it has one; otherwise returns -1;
@@ -344,14 +341,14 @@ abstract class Element<V> extends ListBase<V> {
 */
 
   /// Returns _true_ if [value] is valid for _this_.
-  bool checkValue(V v, [Issues issues]);
+  bool checkValue(V v, {Issues issues, bool allowInvalid = false});
 
   /// Returns _true_ if [values] are valid for _this_.
   bool checkValues(Iterable<V> vList, [Issues issues]) {
     final ok = checkLength(vList, issues);
     if (!ok) return ok;
     for (var v in vList)
-      if (!checkValue(v, issues)) {
+      if (!checkValue(v, issues: issues)) {
         invalidValuesError(vList, issues: issues);
         return false;
       }

@@ -74,12 +74,11 @@ bool _isFilteredString(String s, int min, int max, bool filter(int c),
     }
   }
   // No trailing spaces
-  if (i >= s.length) return true;
-
-  // Skip trailing spaces
-  if (allowTrailing) {
+  if (i >= s.length) {
+    return true;
+  } else if (allowTrailing) {
+    // Skip trailing spaces
     for (; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) return false;
-    // Had trailing spaces
     return true;
   }
   return false;
@@ -240,7 +239,8 @@ abstract class StringBase<V> extends Element<String> {
   int get padChar => kSpace;
 
   @override
-  bool checkValue(String s, [Issues issues]);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false});
+
   @override
   bool checkValues(Iterable<String> vList, [Issues issues]) =>
       super.checkValues(vList, issues);
@@ -282,11 +282,15 @@ abstract class StringBase<V> extends Element<String> {
   bool isNotValidValuesLength(String v, Issues issues, int minLength, int maxLength) =>
       !isValidValueLength(v, issues, minLength, maxLength);
 
-  static bool isValidValues(Tag tag, Iterable<String> vList, Issues issues,
-      bool isValidValue(String s, [Issues issues]), int maxVListLength) {
+  static bool isValidValues(
+      Tag tag,
+      Iterable<String> vList,
+      Issues issues,
+      bool isValidValue(String s, {Issues issues, bool allowInvalid}),
+      int maxVListLength) {
     if (Element.isNotValidVListLength(tag, vList, issues, maxVListLength)) return false;
     var ok = true;
-    for (var v in vList) ok = isValidValue(v, issues);
+    for (var v in vList) ok = isValidValue(v, issues: issues);
     if (ok == false) {
       invalidValuesError(vList, issues: issues);
       return false;
@@ -294,8 +298,12 @@ abstract class StringBase<V> extends Element<String> {
     return ok;
   }
 
-  static bool isNotValidValues(Tag tag, Iterable<String> vList, Issues issues,
-          bool isValidValue(String s, [Issues issues]), int maxVListLength) =>
+  static bool isNotValidValues(
+          Tag tag,
+          Iterable<String> vList,
+          Issues issues,
+          bool isValidValue(String s, {Issues issues, bool allowInvalid}),
+          int maxVListLength) =>
       !isValidValues(tag, vList, issues, isValidValue, maxVListLength);
 
 /* Flush at V.0.9.0
@@ -409,7 +417,8 @@ abstract class AE extends StringAscii {
   int get maxValueLength => kMaxValueLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = true;
 //  static const VR kVR = VR.kAE;
@@ -462,7 +471,7 @@ abstract class AE extends StringAscii {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (!_isDcmString(s, 16, allowLeading: true)) {
       if (issues != null) issues.add('Invalid AETitle String (AE): "$s"');
@@ -471,7 +480,8 @@ abstract class AE extends StringAscii {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList, [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
@@ -513,7 +523,8 @@ abstract class CS extends StringAscii {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   StringBase blank([int n = 1]) => update([blanks(n)]);
 
@@ -569,7 +580,7 @@ abstract class CS extends StringAscii {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotFilteredString(s, 0, kMaxValueLength, isCSChar,
         allowLeading: true, allowTrailing: true)) {
@@ -579,7 +590,8 @@ abstract class CS extends StringAscii {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -666,7 +678,8 @@ abstract class DS extends StringAscii {
   }
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = true;
 //  static const VR kVR = VR.kDS;
@@ -719,7 +732,7 @@ abstract class DS extends StringAscii {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) {
       invalidStringLength(s);
       return false;
@@ -727,10 +740,11 @@ abstract class DS extends StringAscii {
     final v = tryParse(s);
     if (v != null) return true;
     invalidString('Invalid Decimal (DS) String: "$s"');
-    return  false;
+    return false;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -761,7 +775,7 @@ abstract class DS extends StringAscii {
     final v = double.parse(s, _onError);
     if (v == null) {
       if (issues != null) issues.add('Invalid Digital String (DS): "$s"');
-      return invalidString("$s", issues);
+      return invalidString('$s', issues);
     }
     return v;
   }
@@ -808,7 +822,8 @@ abstract class IS extends StringAscii {
   IS get sha256 => sha256UnsupportedError(this);
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = true;
 //  static const VR kVR = VR.kIS;
@@ -861,7 +876,7 @@ abstract class IS extends StringAscii {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) {
       invalidStringLength(s, issues);
       return false;
@@ -874,7 +889,8 @@ abstract class IS extends StringAscii {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -979,7 +995,8 @@ abstract class UI extends StringAscii {
   UI get sha256 => sha256UnsupportedError(this);
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   Iterable<Uid> _convertStrings() {
     final uids = new List<Uid>(values.length);
@@ -1038,7 +1055,7 @@ abstract class UI extends StringAscii {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (!Uid.isValidString(s)) {
       if (issues != null) issues.add('Invalid Unique Identifier String (UI): "$s"');
@@ -1047,7 +1064,8 @@ abstract class UI extends StringAscii {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -1107,7 +1125,8 @@ abstract class LO extends StringUtf8 {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kLO;
@@ -1160,7 +1179,7 @@ abstract class LO extends StringUtf8 {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmString(s, 64)) {
       if (issues != null) issues.add('Invalid Long String (LO): "$s"');
@@ -1169,7 +1188,8 @@ abstract class LO extends StringUtf8 {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -1238,7 +1258,8 @@ abstract class PN extends StringUtf8 {
   }
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kPN;
@@ -1291,7 +1312,7 @@ abstract class PN extends StringUtf8 {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmString(s, 5 * 64)) {
       if (issues != null) issues.add('Invalid Person Name String (PN): "$s"');
@@ -1300,7 +1321,8 @@ abstract class PN extends StringUtf8 {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -1341,7 +1363,8 @@ abstract class SH extends StringUtf8 {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kSH;
@@ -1394,7 +1417,7 @@ abstract class SH extends StringUtf8 {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmString(s, kMaxValueLength)) {
       if (issues != null) issues.add('Invalid Short String (SH): "$s"');
@@ -1403,7 +1426,8 @@ abstract class SH extends StringUtf8 {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -1447,7 +1471,8 @@ abstract class UC extends StringUtf8 {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kUC;
@@ -1500,7 +1525,7 @@ abstract class UC extends StringUtf8 {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmString(s, kMaxLongVF)) {
       if (issues != null) issues.add('Invalid Unlimited Characters String (UC): "$s"');
@@ -1509,7 +1534,8 @@ abstract class UC extends StringUtf8 {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -1571,7 +1597,8 @@ abstract class LT extends Text {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kLT;
@@ -1624,7 +1651,7 @@ abstract class LT extends Text {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmText(s, 10240)) {
       if (issues != null) issues.add('Invalid Long Text (LT): "$s"');
@@ -1633,7 +1660,8 @@ abstract class LT extends Text {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (vList.length > 1) {
@@ -1684,7 +1712,8 @@ abstract class ST extends StringUtf8 {
   //TODO: add issues
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kST;
@@ -1737,7 +1766,7 @@ abstract class ST extends StringUtf8 {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmText(s, 1024)) {
       if (issues != null) issues.add('Invalid Short Test (ST): "$s"');
@@ -1746,7 +1775,8 @@ abstract class ST extends StringUtf8 {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (vList.length > 1) {
@@ -1801,7 +1831,8 @@ abstract class UR extends Text {
   //TODO: add issues
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   Iterable<Uid> _convertStrings() {
     final uids = new List<Uid>(values.length);
@@ -1862,7 +1893,7 @@ abstract class UR extends Text {
       !isValidValueLength(s, issues);
 
   //Urgent Jim: Add switch for leading spaces
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     try {
       if (s.startsWith(' ')) throw const FormatException();
@@ -1874,7 +1905,8 @@ abstract class UR extends Text {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (vList.length > 1) {
@@ -1950,7 +1982,8 @@ abstract class UT extends StringUtf8 {
   //TODO: add issues
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   Iterable<Uid> _convertStrings() {
     final uids = new List<Uid>(values.length);
@@ -2005,7 +2038,7 @@ abstract class UT extends StringUtf8 {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmText(s, kMaxLongVF)) {
       if (issues != null) issues.add('Invalid Unlimited Text (UT): "$s"');
@@ -2014,7 +2047,8 @@ abstract class UT extends StringUtf8 {
     return true;
   }
 
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+  static bool isNotValidValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (vList.length > 1) {
@@ -2089,7 +2123,8 @@ abstract class AS extends StringBase<int> {
   AS get hash => (values.isEmpty) ? this : update([age.hashString]);
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = true;
   static bool allowLowerCase = false;
@@ -2141,7 +2176,7 @@ abstract class AS extends StringBase<int> {
       !isValidValueLength(s, issues);
 
   //Urgent: Add issues everywhere
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) {
       invalidAgeString('Invalid Age String: "$s"');
       return false;
@@ -2223,7 +2258,8 @@ abstract class DA extends StringBase<int> {
   DA get sha256 => unsupportedError();
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   void clearDates() => _dates = null;
 
@@ -2276,7 +2312,7 @@ abstract class DA extends StringBase<int> {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (!Date.isValidString(s, issues: issues)) {
       if (issues != null) issues.add('Invalid Date String (DA): "$s"');
@@ -2338,7 +2374,8 @@ abstract class DT extends StringBase<int> {
   }
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   void clearDcmDateTimes() => _dateTimes = null;
 
@@ -2391,7 +2428,7 @@ abstract class DT extends StringBase<int> {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (!DcmDateTime.isValidString(s, issues: issues)) {
       if (issues != null) issues.add('Invalid Date Time (DT): "$s"');
@@ -2456,7 +2493,8 @@ abstract class TM extends StringBase<int> {
   }
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   void clearTimes() => _times = null;
 
@@ -2509,7 +2547,7 @@ abstract class TM extends StringBase<int> {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  static bool isValidValue(String s, [Issues issues]) {
+  static bool isValidValue(String s, {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (!Time.isValidString(s, issues: issues)) {
       if (issues != null) issues.add('Invalid Time String (TM): "$s"');

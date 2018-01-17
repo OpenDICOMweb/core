@@ -91,10 +91,11 @@ Summary $tag
 ''';
 
   @override
-  bool checkValue(Item v, [Issues issues]) => isValidValue(v);
+  bool checkValue(Item v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
+
   @override
-  bool checkValues(Iterable<Item> vList, [Issues issues]) =>
-      isValidValues(vList, issues);
+  bool checkValues(Iterable<Item> vList, [Issues issues]) => isValidValues(vList, issues);
 
   //Fix: make conform to Fold interface
   /// Walk the [Dataset] recursively and return the count of [Element]s
@@ -179,8 +180,7 @@ Summary $tag
   }
 */
 
-  Iterable<Element> updateAll<V>(int index, Iterable<V> vList,
-      {bool required = false}) {
+  Iterable<Element> updateAll<V>(int index, Iterable<V> vList, {bool required = false}) {
     final eList = <Element>[];
     for (var item in items) {
       final e = item[index];
@@ -249,8 +249,7 @@ Summary $tag
   }
 
   //Urgent Jim: merge with removeRecursive
-  Iterable<Element> removeAll(int index,
-      {bool recursive = true, bool required = false}) {
+  Iterable<Element> removeAll(int index, {bool recursive = true, bool required = false}) {
     final result = <Element>[];
     forEach((item) => result.add(item.delete(index)));
     return result;
@@ -302,14 +301,14 @@ Summary $tag
       (index == kVRIndex) ? index : invalidVRIndex(index, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-    (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
   static bool isValidVListLength(int vfl) => true;
 
   //TODO: make sure this is good enough
-  static bool isValidValue(Item item, [Issues issues]) => true;
+  static bool isValidValue(Item item, {Issues issues, bool allowInvalid = false}) => true;
 
   static bool isValidValues(Iterable<Item> vList, Issues issues) => true;
 }

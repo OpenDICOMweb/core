@@ -15,8 +15,8 @@ import 'package:core/src/element/errors.dart';
 import 'package:core/src/empty_list.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
-import 'package:core/src/vr/vr.dart';
 import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/vr/vr.dart';
 
 int _toLength(int length, int vLength) =>
     (length == null || length > vLength) ? vLength : length;
@@ -164,7 +164,7 @@ abstract class Int8Base extends IntBase {
   Int8Base get sha256 => update(Sha256.int16(typedData));
 
   @override
-  bool checkValue(int v, [Issues issues]) =>
+  bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].
@@ -248,7 +248,7 @@ abstract class Int16Base extends IntBase {
   Int16Base get sha256 => update(Sha256.int16(typedData));
 
   @override
-  bool checkValue(int v, [Issues issues]) =>
+  bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].
@@ -405,7 +405,7 @@ abstract class Int32Base extends IntBase {
   Int32Base get sha256 => update(Sha256.int32(typedData));
 
   @override
-  bool checkValue(int v, [Issues issues]) =>
+  bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns an Int32List View of [values].
@@ -658,7 +658,7 @@ abstract class Uint8Base extends IntBase {
   Uint8Base get sha256 => update(Sha256.uint8(typedData));
 
   @override
-  bool checkValue(int v, [Issues issues]) =>
+  bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].
@@ -874,7 +874,7 @@ abstract class Uint16Base extends IntBase {
   Uint16Base get sha256 => update(Sha256.uint16(typedData));
 
   @override
-  bool checkValue(int v, [Issues issues]) =>
+  bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].
@@ -1102,7 +1102,7 @@ abstract class Uint32Base extends IntBase {
   Uint32Base get sha256 => update(Sha256.uint32(typedData));
 
   @override
-  bool checkValue(int v, [Issues issues]) =>
+  bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].

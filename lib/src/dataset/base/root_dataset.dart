@@ -8,8 +8,8 @@ import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/base/parse_info.dart';
 import 'package:core/src/dataset/element_list/element_list.dart';
+import 'package:core/src/dataset/parse_info.dart';
 import 'package:core/src/dataset/status_report.dart';
 import 'package:core/src/date_time/age.dart';
 import 'package:core/src/date_time/date.dart';

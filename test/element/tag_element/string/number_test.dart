@@ -323,7 +323,7 @@ void main() {
       }
 
       final vList1 = rsg.getDSList(1, 1);
-      final ds1 = new IStag(PTag.kWaveformChannelNumber, vList1);
+      final ds1 = new DStag(PTag.kWaveformChannelNumber, vList1);
       expect(ds1, isNull);
     });
 

@@ -43,7 +43,8 @@ class PrivateTagElement<V> extends PrivateElement<V> with TagElement<V> {
 //  VR get vr => unimplementedError();
 
   @override
-  bool checkValue(V v, [Issues issues]) => e.checkValue(v, issues);
+  bool checkValue(V v, {Issues issues, bool allowInvalid = false}) =>
+      e.checkValue(v, issues: issues, allowInvalid: allowInvalid);
 
   @override
   PrivateTagElement<V> update([Iterable<V> vList]) =>

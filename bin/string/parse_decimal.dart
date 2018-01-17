@@ -37,8 +37,6 @@ void main() {
     ' +1.5e-1 '
   ];
 
-  double v;
-
   for (var s in goodDecimalStrings) {
     final n = double.parse(s);
     print('s: "$s" n: $n');
