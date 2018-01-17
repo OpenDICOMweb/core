@@ -441,9 +441,26 @@ class VRAscii extends VR<String> {
     if (s.isEmpty) return true;
     if (s.length < minVLength || s.length > maxVLength) return false;
 
-    for (var i = 0; i < s.length; i++) {
+    var i = 0;
+    // Skip leading spaces
+    for (; i < s.length; i++) {
       final c = s.codeUnitAt(i);
-      if (c <= kSpace || c >= kDelete) return false;
+      if (c != kSpace) break;
+    }
+    // If s is all space characters it is illegal
+    if (i >= s.length) return false;
+
+    for (; i < s.length; i++) {
+      final c = s.codeUnitAt(i);
+      if (c <= kSpace || c >= kDelete) break;
+    }
+    // No trailing spaces
+    if (i >= s.length) return true;
+
+    // Skip trailing spaces
+    for (; i < s.length; i++) {
+      final c = s.codeUnitAt(i);
+      if (c != kSpace) return false;
     }
     return true;
   }

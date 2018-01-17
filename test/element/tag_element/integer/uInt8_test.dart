@@ -433,10 +433,9 @@ void main() {
     ];
 
     //VM.k1_n
-//Urgent not used - delete?
-//    const obTags1 = const <PTag>[
-//      PTag.kSelectorOBValue,
-//    ];
+    const obTags1 = const <PTag>[
+      PTag.kSelectorOBValue,
+    ];
 
     const otherTags = const <PTag>[
       PTag.kColumnAngulationPatient,
@@ -461,6 +460,11 @@ void main() {
       expect(OB.isValidVRIndex(kOBIndex), true);
 
       for (var tag in obTags0) {
+        system.throwOnError = false;
+        expect(OB.isValidVRIndex(tag.vrIndex), true);
+      }
+
+      for (var tag in obTags1) {
         system.throwOnError = false;
         expect(OB.isValidVRIndex(tag.vrIndex), true);
       }
