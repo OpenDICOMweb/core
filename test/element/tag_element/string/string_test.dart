@@ -3292,7 +3292,7 @@ void main() {
 
       //hasValidValues: good values
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getUTList(3, 4);
+        final vList0 = rsg.getUTList(1, 1);
         log.debug('$i: vList0: $vList0');
         final ut1 = new UTtag(PTag.kUniversalEntityID, vList0);
         expect(ut1.hasValidValues, true);
@@ -3305,9 +3305,9 @@ void main() {
       expect(ut0.update(['d^u:96P, azV']).values, equals(['d^u:96P, azV']));
 
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getUTList(3, 4);
+        final vList0 = rsg.getUTList(1, 1);
         final ut1 = new UTtag(PTag.kLocalNamespaceEntityID, vList0);
-        final vList1 = rsg.getUTList(3, 4);
+        final vList1 = rsg.getUTList(1, 1);
         expect(ut1.update(vList1).values, equals(vList1));
       }
     });
@@ -3320,7 +3320,7 @@ void main() {
       log.debug('st0: ${ut0.noValues}');
 
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getUTList(3, 4);
+        final vList0 = rsg.getUTList(1, 1);
         final ut0 = new UTtag(PTag.kLocalNamespaceEntityID, vList0);
         log.debug('ut0: $ut0');
         expect(utNoValues.values.isEmpty, true);
@@ -3336,7 +3336,7 @@ void main() {
       expect(ut1.hashCode == ut0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getUTList(3, 4);
+        final vList0 = rsg.getUTList(1, 1);
         final ut2 = new UTtag(PTag.kLocalNamespaceEntityID, vList0);
         final UTtag ut3 = ut2.copy;
         expect(ut3 == ut2, true);
@@ -3382,7 +3382,7 @@ void main() {
         expect(ut0.hashCode == ut2.hashCode, false);
         expect(ut0 == ut2, false);
 
-        stringList2 = rsg.getUTList(2, 3);
+        stringList2 = rsg.getUTList(1, 1);
         final ut3 = new UTtag(PTag.kLocalNamespaceEntityID, stringList2);
         log.debug('stringList2:$stringList2 , ut3.hash_code:${ut3.hashCode}');
         expect(ut0.hashCode == ut3.hashCode, false);

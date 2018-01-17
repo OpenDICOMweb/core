@@ -102,6 +102,7 @@ Null invalidUidElement(Element e) {
 }
 
 
+/*
 class RetainedElementError<K> extends Error {
   K key;
   String msg;
@@ -120,6 +121,7 @@ Null retainedElementError<K>(K key, [String msg]) {
   if (throwOnError) throw new RetainedElementError(key);
   return null;
 }
+*/
 
 class DeletedElementError<K> extends Error {
   K key;

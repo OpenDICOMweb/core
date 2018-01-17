@@ -96,6 +96,7 @@ bool _isNotValidVF(int vfl, int min, int max, Issues issues) {
 }
 */
 
+/*
 //Urgent Jim: add error message to issues
 bool _isValidVListLength(Tag tag, int vLength, Issues issues, int maxLength) {
   assert(tag != null && vLength != null && maxLength != null);
@@ -105,6 +106,7 @@ bool _isValidVListLength(Tag tag, int vLength, Issues issues, int maxLength) {
   assert((min >= 0) && (max >= 1) && (max <= maxLength));
   return _inRange(vLength, min, max);
 }
+*/
 
 /* Flush at V.0.9.0
 bool _isNotValidValueLength(int length, int min, int max, Issues issues) {

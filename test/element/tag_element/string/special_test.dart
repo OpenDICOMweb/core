@@ -2146,7 +2146,7 @@ void main() {
         log.debug('stringList1:$stringList1');
         final ur2 = new URtag(PTag.kRetrieveURL, stringList2);
         log.debug('stringList2:$stringList2');
-        expect(ur1, isNull);
+        expect(ur2, isNull);
 
         system.throwOnError = true;
         expect(() => new URtag(PTag.kRetrieveURL, stringList0),

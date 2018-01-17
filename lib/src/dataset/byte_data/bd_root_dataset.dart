@@ -25,8 +25,10 @@ class BDRootDataset extends RootDataset<int> with DatasetBD {
   /// Creates an empty, i.e. without ByteElements, [BDRootDataset].
   BDRootDataset(this.bd,
       {MapAsList fmi, MapAsList elements, this.path = ''})
-      : fmi = elements ?? new MapAsList(),
-        elements = elements ?? new MapAsList();
+      : fmi = (fmi == null) ? new MapAsList() : fmi,
+        elements = (elements == null) ? new MapAsList() : elements {
+    print('BDRoot: $this');
+  }
 
   //Flush at V0.9.0 if not used.
   /// Creates a [BDRootDataset] from another [BDRootDataset].

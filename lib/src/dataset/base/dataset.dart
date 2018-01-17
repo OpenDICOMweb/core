@@ -19,8 +19,8 @@ import 'package:core/src/element/base/pixel_data.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/issues.dart';
-import 'package:core/src/uid/uid.dart';
 import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/uid/uid.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 
@@ -178,7 +178,7 @@ $runtimeType(#$hashCode):
 
   /// Replaces the element with [index] with a new element that is
   /// the same except it has no values.  Returns the original element.
-  Element update<V>(int index, List<V> vList, {bool required = false}) {
+  Element update<V>(int index, Iterable<V> vList, {bool required = false}) {
     final old = elements.lookup(index, required: required);
     if (old == null) return elementNotPresentError(index);
     final e = old.update(vList);
@@ -220,7 +220,7 @@ $runtimeType(#$hashCode):
 
   /// Replaces the element with [index] with a new element that is
   /// the same except it has no values.  Returns the original element.
-  List<V> replace<V>(int index, List<V> vList, {bool required = false}) {
+  Iterable<V> replace<V>(int index, Iterable<V> vList, {bool required = false}) {
     final e = elements[index];
     final old = e.values;
     e.values = vList;
@@ -261,6 +261,35 @@ $runtimeType(#$hashCode):
 
   List<Element> deleteAll(int index, {bool recursive = false}) =>
       elements.deleteAll(index, recursive: recursive);
+
+  List<Element> deleteIfTrue(bool test(Element e), {bool recursive = false}) {
+    final deleted = <Element>[];
+    for (var e in elements) {
+      if (test(e)) {
+
+        delete(e.index);
+        deleted.add(e);
+
+      } else if (e is SQ) {
+        for(var item in e.items) {
+          final dList = item.deleteIfTrue(test, recursive: recursive);
+          deleted.addAll(dList);
+        }
+      }
+    }
+    return deleted;
+  }
+  Iterable<Element> deleteAllPrivate({bool recursive = false}) =>
+      deleteIfTrue((e) => e.isPrivate, recursive: recursive);
+
+  Iterable<Element> deletePrivateGroup(int group, {bool recursive = false}) =>
+      deleteIfTrue((e) => e.isPrivate && e.group.isOdd, recursive: recursive);
+
+  Iterable<Element> retainSafePrivate() {
+    final dList = <Element>[];
+    //TODO: finish
+    return dList;
+  }
 
   // **** end Element interface
 
