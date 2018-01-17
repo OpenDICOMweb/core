@@ -355,7 +355,7 @@ void main() {
     });
 
     test('checkEpochDay', () {
-      system.level = Level.debug;
+ //     system.level = Level.debug;
 
       final ced0 = checkEpochDay(kMinEpochDay);
       log.debug('ced0:$ced0');
@@ -381,7 +381,7 @@ void main() {
     });
 
     test('epochMicrosecondsToDate', () {
-      system.level = Level.debug2;
+//      system.level = Level.debug2;
       final List<int> emd0 = epochMicrosecondToDate(kMinEpochMicrosecond);
       log.debug('emd0: "$emd0"');
       expect(emd0, isNotNull);

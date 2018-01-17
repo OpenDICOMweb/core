@@ -606,7 +606,7 @@ void main() {
       });
 
       test('Create Uint16Base.listToBase64', () {
-        system.level = Level.debug;
+        //  system.level = Level.debug;;
         final frame0 = [1, 2, 3];
         final bdFrame0 = new Uint16List.fromList(frame0);
         log..debug('frame:$frame0')..debug('bdFrame: $bdFrame0');

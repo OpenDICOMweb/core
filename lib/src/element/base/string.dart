@@ -145,6 +145,7 @@ bool _isNotValidValueLength(int length, int min, int max, Issues issues) {
 
 */
 String blanks(int n) => ''.padRight(n, ' ');
+
 /// Returns a [Uint8List] corresponding to a binary Value Field.
 Uint8List textToBytes(String s, int maxVFLength, {bool isAscii = true}) {
   if (s == null) return nullValueError();
@@ -719,8 +720,14 @@ abstract class DS extends StringAscii {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
-    if (s == null || isNotValidValueLength(s, issues)) return false;
-    return tryParse(s) != null;
+    if (s == null || isNotValidValueLength(s, issues)) {
+      invalidStringLength(s);
+      return false;
+    }
+    final v = tryParse(s);
+    if (v != null) return true;
+    invalidString('Invalid Decimal (DS) String: "$s"');
+    return  false;
   }
 
   static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
@@ -750,26 +757,11 @@ abstract class DS extends StringAscii {
   /// Parse a [DS] [String]. Leading and trailing spaces allowed,
   /// but all spaces is illegal.
   static double tryParse(String s, [Issues issues]) {
-    var i = 0;
-    // Skip leading spaces
-    for(; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) break;
-    if (i >= s.length) {
-      if (issues != null) issues.add('Invalid Blank Digital String (DS): "$s"');
-      return invalidString(s, issues);
-    }
-
-    var j = s.length - 1;
-    for(; j >= i; j--) if (s.codeUnitAt(j) != kSpace) break;
-    if (j < i) {
-      if (issues != null) issues.add('Invalid Blank Digital String (DS): "$s"');
-      return invalidString(s, issues);
-    }
-
-    //TODO: change to tryParse when available
-    final v = double.parse(s.substring(i, j), _onError);
+    //TODO: change to double.tryParse when available
+    final v = double.parse(s, _onError);
     if (v == null) {
       if (issues != null) issues.add('Invalid Digital String (DS): "$s"');
-      return invalidString(s, issues);
+      return invalidString("$s", issues);
     }
     return v;
   }
@@ -870,8 +862,16 @@ abstract class IS extends StringAscii {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
-    if (s == null || isNotValidValueLength(s, issues)) return false;
-    return tryParse(s) != null;
+    if (s == null || isNotValidValueLength(s, issues)) {
+      invalidStringLength(s, issues);
+      return false;
+    }
+    final n = tryParse(s);
+    if (n == null) {
+      invalidString(s, issues);
+      return false;
+    }
+    return true;
   }
 
   static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
@@ -2142,9 +2142,13 @@ abstract class AS extends StringBase<int> {
 
   //Urgent: Add issues everywhere
   static bool isValidValue(String s, [Issues issues]) {
-    if (s == null || isNotValidValueLength(s, issues)) return false;
-    if (Age.isValidString(s)) return true;
+    if (s == null || isNotValidValueLength(s, issues)) {
+      invalidAgeString('Invalid Age String: "$s"');
+      return false;
+    }
+    if (Age.isValidString(s, issues)) return true;
     if (issues != null) issues.add('Invalid Age String (AS): "$s"');
+    invalidAgeString('Invalid Age String: "$s"');
     return false;
   }
 

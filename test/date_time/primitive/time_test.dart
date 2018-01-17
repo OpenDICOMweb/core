@@ -286,7 +286,7 @@ void main() {
     });
 
     test('minuteFromMicrosecond', () {
-      system.level = Level.debug;
+//      system.level = Level.debug;
       final mfm0 = minuteFromMicrosecond(kMicrosecondsPerDay);
       log.debug('mfm0: $mfm0');
       expect(mfm0, isNotNull);

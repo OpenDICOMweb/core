@@ -14,7 +14,7 @@ void main() {
   final rng = new RNG(1);
 
   test('Uint32Base.toUint32List', () {
-    system.level = Level.debug;
+    //  system.level = Level.debug;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final s0 = Uint32Base.toUint32List(uInt32List0);
@@ -39,7 +39,7 @@ void main() {
   });
 
   test('Uint32Base.listToBytes', () {
-    system.level = Level.debug;
+    //  system.level = Level.debug;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       log.debug('uInt32List0 : $uInt32List0');
@@ -54,7 +54,7 @@ void main() {
   });
 
   test('Uint32Base.listFromBytes', () {
-    system.level = Level.debug;
+    //  system.level = Level.debug;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
@@ -67,7 +67,7 @@ void main() {
   });
 
   test('AT.fromByteData', () {
-    system.level = Level.debug;
+    //  system.level = Level.debug;;
     final uInt32List0 = rng.uint32List(1, 1);
     final byteData = uInt32List0.buffer.asByteData();
     final u32 = Uint32Base.listFromByteData(byteData);
@@ -76,7 +76,7 @@ void main() {
   });
 
   test('AT.toByteData', () {
-    system.level = Level.debug;
+    //  system.level = Level.debug;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final s0 = Uint32Base.listToByteData(uInt32List0);
@@ -86,7 +86,7 @@ void main() {
   });
 
   test('AT.fromBase64', () {
-    system.level = Level.debug;
+    //  system.level = Level.debug;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
@@ -98,7 +98,7 @@ void main() {
     }
   });
   test('AT.toBase64', () {
-    system.level = Level.debug;
+    //  system.level = Level.debug;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final uInt32ListV1 = new Uint32List.fromList(uInt32List0);

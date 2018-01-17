@@ -154,7 +154,7 @@ void main() {
     });
 
     test('AS invalidLength random', () {
-      system.level = Level.debug2;
+      //  system.level = Level.debug;2;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(2, 5);
         system.throwOnError = false;
@@ -609,7 +609,7 @@ void main() {
       });
 
       test('AS fromBytes', () {
-        system.level = Level.debug;
+    //    	system.level = Level.debug;
         final vList1 = rsg.getASList(1, 1);
         final bytes = AS.toBytes(vList1);
         log.debug(
@@ -1055,7 +1055,7 @@ void main() {
     });
 
     test('DA fromBytes random', () {
-      system.level = Level.debug;
+  //    	system.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDAList(1, 1);
         final bytes = DA.toBytes(vList1);
@@ -1349,7 +1349,7 @@ void main() {
         }
       });
       test('DA fromBytes', () {
-        system.level = Level.debug;
+    //    	system.level = Level.debug;
         for (var s in goodDAList) {
           final bytes = DA.toBytes(s);
           log.debug('DA.fromBytes(bytes): ${DA.fromBytes(
@@ -1496,7 +1496,7 @@ void main() {
     ];
     test('DT fromBytes', () {
       //fromBytes
-      system.level = Level.debug2;
+//      system.level = Level.debug2;
       for (var s in goodDTList) {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = DT.toBytes(s);
@@ -1508,7 +1508,7 @@ void main() {
     });
 
     test('DT fromBytes random', () {
-      system.level = Level.debug;
+  //    	system.level = Level.debug;
       //fromBytes
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDTList(1, 1);
@@ -2132,7 +2132,7 @@ void main() {
       });
 
       test('DT fromBytes', () {
-        system.level = Level.debug;
+    //    	system.level = Level.debug;
         for (var s in goodDTList) {
           final bytes = DT.toBytes(s);
           log.debug('DT.fromBytes(bytes): ${DT.fromBytes(
@@ -2187,7 +2187,7 @@ void main() {
   });
 
   group('TM Test', () {
-    system.level = Level.debug2;
+//    system.level = Level.debug2;
     log
       ..debug('kMinEpochMicroseconds: $kMinEpochMicrosecond')
       ..debug('kMaxEpochMicroseconds: $kMaxEpochMicrosecond')
@@ -2261,9 +2261,9 @@ void main() {
     ];
 
     test('TM hasValidValues good values random', () {
-      system.level = Level.debug2;
+//      system.level = Level.debug2;
       for (var i = 0; i < 10; i++) {
-        system.level = Level.debug2;
+//        system.level = Level.debug2;
         final vList0 = rsg.getTMList(1, 1);
         log.debug('vList0: $vList0');
         final tm0 = new TMtag(PTag.kModifiedImageTime, vList0);
@@ -2817,7 +2817,7 @@ void main() {
       });
 
       test('TM fromBytes', () {
-        system.level = Level.debug;
+    //    	system.level = Level.debug;
         final vList1 = rsg.getTMList(1, 1);
         final bytes = TM.toBytes(vList1);
         log.debug('TM.fromBytes(bytes): ${TM.fromBytes(

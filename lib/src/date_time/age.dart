@@ -7,6 +7,7 @@
 import 'package:core/src/date_time/primitives/age.dart';
 import 'package:core/src/date_time/primitives/constants.dart';
 import 'package:core/src/errors.dart';
+import 'package:core/src/issues.dart';
 import 'package:core/src/parser/parse_errors.dart';
 import 'package:core/src/parser/parser.dart';
 import 'package:core/src/string/string.dart';
@@ -126,10 +127,11 @@ class Age {
 
   static bool isValid(int nDays) => isValidAge(nDays);
 
-  static bool isValidString(String s) {
+  static bool isValidString(String s, [Issues issues]) {
     if (tryParseAgeString(s) != -1) {
       return true;
     } else {
+      if (issues != null) issues.add('Invalid Age String: "$s"');
       invalidAgeString(s);
       return false;
     }

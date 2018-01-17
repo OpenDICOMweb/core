@@ -85,7 +85,7 @@ void main() {
     });
 
     test('Leap Year Performance Test', () {
-      system.level = Level.debug2;
+//      system.level = Level.debug2;
       log.info0('Leap Year Perfermance Test: $startYear - $endYear');
       final watch = new Stopwatch()..start();
 

@@ -637,7 +637,7 @@ void main() {
     });
 
     test('LO fromBytes', () {
-      system.level = Level.debug;
+//      system.level = Level.debug;
       final vList1 = rsg.getLOList(1, 1);
       final bytes = LO.toBytes(vList1);
       log.debug('LO.fromBytes(bytes): ${LO.fromBytes(bytes)}, bytes: $bytes');
@@ -1242,7 +1242,7 @@ void main() {
     });
 
     test('LT fromBytes', () {
-      system.level = Level.debug;
+      //  system.level = Level.debug;;
       final vList1 = rsg.getLTList(1, 1);
       final bytes = LT.toBytes(vList1);
       log.debug('LT.fromBytes(bytes): ${LT.fromBytes(bytes)}, bytes: $bytes');
@@ -1885,7 +1885,7 @@ void main() {
     });
 
     test('PN fromBytes', () {
-      system.level = Level.debug;
+      //  system.level = Level.debug;;
       final vList1 = rsg.getPNList(1, 1);
       final bytes = PN.toBytes(vList1);
       log.debug('PN.fromBytes(bytes): ${PN.fromBytes(bytes)}, bytes: $bytes');
@@ -2526,7 +2526,7 @@ void main() {
     });
 
     test('SH fromBytes', () {
-      system.level = Level.debug;
+      //  system.level = Level.debug;;
       final vList1 = rsg.getSHList(1, 1);
       final bytes = SH.toBytes(vList1);
       log.debug('SH.fromBytes(bytes): ${SH.fromBytes(bytes)}, bytes: $bytes');
@@ -3146,7 +3146,7 @@ void main() {
     });
 
     test('ST fromBytes', () {
-      system.level = Level.debug;
+      //  system.level = Level.debug;;
       final vList1 = rsg.getSTList(1, 1);
       final bytes = ST.toBytes(vList1);
       log.debug('ST.fromBytes(bytes): ${ST.fromBytes(bytes)}, bytes: $bytes');
@@ -3759,7 +3759,7 @@ void main() {
     });
 
     test('UC fromBytes', () {
-      system.level = Level.debug;
+ //     system.level = Level.debug;
       final vList1 = rsg.getUCList(1, 1);
       final bytes = UC.toBytes(vList1);
       log.debug('UC.fromBytes(bytes): ${UC.fromBytes(bytes)}, bytes: $bytes');
@@ -4311,7 +4311,7 @@ void main() {
     });
 
     test('UT fromBytes', () {
-      system.level = Level.debug;
+      //  system.level = Level.debug;;
       final vList1 = rsg.getUTList(1, 1);
       final bytes = UT.toBytes(vList1);
       log.debug('UT.fromBytes(bytes): ${UT.fromBytes(bytes)}, bytes: $bytes');

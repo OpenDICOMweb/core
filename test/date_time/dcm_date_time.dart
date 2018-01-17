@@ -123,7 +123,7 @@ void main() {
     });
 
     test('hash', () {
-      system.level = Level.debug;
+//      system.level = Level.debug;
       for (var s in goodDcmDateTimeList) {
         log.debug('s: $s');
         final dt = DcmDateTime.parse(s);
