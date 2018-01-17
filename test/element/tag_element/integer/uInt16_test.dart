@@ -28,18 +28,23 @@ void main() {
         log.debug('us0: ${us0.info}');
         expect(us0.hasValidValues, true);
 
-        log..debug('us0: $us0, values: ${us0.values}')..debug('us0: ${us0.info}');
+        log
+          ..debug('us0: $us0, values: ${us0.values}')
+          ..debug('us0: ${us0.info}');
         expect(us0[0], equals(uInt16List0[0]));
       }
 
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(2, 2);
-        final us0 = new UStag(PTag.kTopLeftHandCornerOfLocalizerArea, uInt16List0);
+        final us0 =
+            new UStag(PTag.kTopLeftHandCornerOfLocalizerArea, uInt16List0);
         expect(us0.hasValidValues, true);
         log.debug('us0: ${us0.info}');
         expect(us0.hasValidValues, true);
 
-        log..debug('us0: $us0, values: ${us0.values}')..debug('us0: ${us0.info}');
+        log
+          ..debug('us0: $us0, values: ${us0.values}')
+          ..debug('us0: ${us0.info}');
         expect(us0[0], equals(uInt16List0[0]));
       }
     });
@@ -89,7 +94,8 @@ void main() {
       expect(us3.hasValidValues, false);
 
       system.throwOnError = true;
-      expect(() => us3.hasValidValues, throwsA(const isInstanceOf<InvalidValuesError>()));
+      expect(() => us3.hasValidValues,
+          throwsA(const isInstanceOf<InvalidValuesError>()));
 
       system.throwOnError = false;
       final us4 = new UStag(PTag.kRepresentativeFrameNumber, null);
@@ -203,7 +209,8 @@ void main() {
         expect(us0 == us2, false);
 
         uInt16List2 = rng.uint16List(2, 2);
-        final us3 = new UStag(PTag.kTopLeftHandCornerOfLocalizerArea, uInt16List2);
+        final us3 =
+            new UStag(PTag.kTopLeftHandCornerOfLocalizerArea, uInt16List2);
         log.debug('uInt16List2:$uInt16List2 , us3.hash_code:${us3.hashCode}');
         expect(us0.hashCode == us3.hashCode, false);
         expect(us0 == us3, false);
@@ -253,7 +260,8 @@ void main() {
         final uInt16List0 = rng.uint16List(1, 1);
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
-        final us0 = new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
+        final us0 =
+            new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(uInt8ListV11));
         expect(us0.values is Uint16List, true);
@@ -261,14 +269,16 @@ void main() {
 
         // Test Base64
         final base64 = BASE64.encode(uInt8ListV11);
-        final us1 = new UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
+        final us1 =
+            new UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0 == us1, true);
         expect(us1.value, equals(us0.value));
 
         final uInt16List1 = rng.uint16List(2, 2);
         final uInt16ListV2 = new Uint16List.fromList(uInt16List1);
         final uInt8ListV12 = uInt16ListV2.buffer.asUint8List();
-        final us2 = new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV12);
+        final us2 =
+            new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV12);
         expect(us2.hasValidValues, false);
       }
     });
@@ -276,7 +286,8 @@ void main() {
     test('US fromBytes', () {
       final uInt16ListV1 = new Uint16List.fromList(uInt16Min);
       final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
-      final us5 = new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
+      final us5 =
+          new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
       expect(us5.hasValidValues, true);
       expect(us5.vfBytes, equals(uInt8ListV11));
       expect(us5.values is Uint16List, true);
@@ -336,7 +347,8 @@ void main() {
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);
         final uInt16ListV11 = uInt16ListV1.buffer.asUint8List();
         final base64 = BASE64.encode(uInt16ListV11);
-        final us0 = new UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
+        final us0 =
+            new UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0.hasValidValues, true);
       }
     });
@@ -362,7 +374,8 @@ void main() {
         final uInt16List0 = rng.uint16List(1, 1);
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV1 = uInt16ListV1.buffer.asUint8List();
-        final us0 = new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV1);
+        final us0 =
+            new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV1);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(uInt8ListV1));
         expect(us0.values is Uint16List, true);
@@ -509,18 +522,27 @@ void main() {
         final validMinVList = rng.uint16List(1, 1);
         for (var tag in usTags0) {
           expect(US.isValidVListLength(tag, validMinVList), true);
-          expect(US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(
+              US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(
+              US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
     test('US isValidVListLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
-        system.throwOnError = false;
         final validMinVList = rng.uint16List(2, i + 1);
         for (var tag in usTags0) {
+          system.throwOnError = false;
           expect(US.isValidVListLength(tag, validMinVList), false);
+          expect(US.isValidVListLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => US.isValidVListLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          expect(() => US.isValidVListLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -532,18 +554,27 @@ void main() {
         for (var tag in usTags1) {
           expect(US.isValidVListLength(tag, validMinVList), true);
 
-          expect(US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(
+              US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(
+              US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
     test('US isValidVListLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
-        system.throwOnError = false;
         final validMinVList = rng.uint16List(3, i + 1);
         for (var tag in usTags1) {
+          system.throwOnError = false;
           expect(US.isValidVListLength(tag, validMinVList), false);
+          expect(US.isValidVListLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => US.isValidVListLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          expect(() => US.isValidVListLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -555,18 +586,27 @@ void main() {
         for (var tag in usTags2) {
           expect(US.isValidVListLength(tag, validMinVList), true);
 
-          expect(US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(
+              US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(
+              US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
     test('US isValidVListLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
-        system.throwOnError = false;
         final validMinVList = rng.uint16List(4, i + 1);
         for (var tag in usTags2) {
+          system.throwOnError = false;
           expect(US.isValidVListLength(tag, validMinVList), false);
+          expect(US.isValidVListLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => US.isValidVListLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          expect(() => US.isValidVListLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -578,18 +618,27 @@ void main() {
         for (var tag in usTags3) {
           expect(US.isValidVListLength(tag, validMinVList), true);
 
-          expect(US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(
+              US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(
+              US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
     test('US isValidVListLength VM.k4 bad values', () {
       for (var i = 4; i < 10; i++) {
-        system.throwOnError = false;
         final validMinVList = rng.uint16List(5, i + 1);
         for (var tag in usTags3) {
+          system.throwOnError = false;
           expect(US.isValidVListLength(tag, validMinVList), false);
+          expect(US.isValidVListLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => US.isValidVListLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          expect(() => US.isValidVListLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -601,22 +650,15 @@ void main() {
           expect(US.isValidVListLength(tag, validMinVList), true);
 
           expect(
-              US.isValidVListLength(tag, invalidVList.sublist(0, US.kMaxLength)), true);
+              US.isValidVListLength(
+                  tag, invalidVList.sublist(0, US.kMaxLength)),
+              true);
 
           expect(
-              US.isValidVListLength(tag, invalidVList.sublist(0, US.kMaxLength)), true);
+              US.isValidVListLength(
+                  tag, invalidVList.sublist(0, US.kMaxLength)),
+              true);
         }
-      }
-    });
-
-    test('US isValidVListLength bad values', () {
-      for (var tag in usTags0) {
-        system.throwOnError = false;
-        expect(US.isValidVListLength(tag, invalidVList), false);
-
-        system.throwOnError = true;
-        expect(() => US.isValidVListLength(tag, invalidVList),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 
@@ -668,8 +710,8 @@ void main() {
       system.throwOnError = false;
       expect(US.checkVRIndex(kAEIndex), isNull);
       system.throwOnError = true;
-      expect(
-          () => US.checkVRIndex(kAEIndex), throwsA(const isInstanceOf<InvalidVRError>()));
+      expect(() => US.checkVRIndex(kAEIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
         system.throwOnError = false;
@@ -736,8 +778,8 @@ void main() {
       expect(US.isValidVRCode(kAECode), false);
 
       system.throwOnError = true;
-      expect(
-          () => US.isValidVRCode(kAECode), throwsA(const isInstanceOf<InvalidVRError>()));
+      expect(() => US.isValidVRCode(kAECode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
         system.throwOnError = false;
@@ -773,7 +815,12 @@ void main() {
       system.throwOnError = false;
       const uInt16MinMax = const [kUint16Min, kUint16Max];
       const uInt16MinMaxPlus0 = const [kUint16Min, kUint16Max, kUint8Min];
-      const uInt16MinMaxPlus1 = const [kUint16Min, kUint16Max, kUint8Min, kUint8Max];
+      const uInt16MinMaxPlus1 = const [
+        kUint16Min,
+        kUint16Max,
+        kUint8Min,
+        kUint8Max
+      ];
       const uInt16Min = const [kUint16Min];
       const uInt16Max = const [kUint16Max];
 
@@ -782,13 +829,16 @@ void main() {
       expect(US.isValidValues(PTag.kWarningReason, uInt16Max), true);
 
       //VM.k2
-      expect(US.isValidValues(PTag.kLightPathFilterPassBand, uInt16MinMax), true);
+      expect(
+          US.isValidValues(PTag.kLightPathFilterPassBand, uInt16MinMax), true);
 
       //VM.k3
-      expect(US.isValidValues(PTag.kTextColorCIELabValue, uInt16MinMaxPlus0), true);
+      expect(US.isValidValues(PTag.kTextColorCIELabValue, uInt16MinMaxPlus0),
+          true);
 
       //VM.k4
-      expect(US.isValidValues(PTag.kAcquisitionMatrix, uInt16MinMaxPlus1), true);
+      expect(
+          US.isValidValues(PTag.kAcquisitionMatrix, uInt16MinMaxPlus1), true);
 
       //VM.k1_n
       expect(US.isValidValues(PTag.kSelectorUSValue, uInt16Min), true);
@@ -807,10 +857,12 @@ void main() {
       expect(US.isValidValues(PTag.kWarningReason, uInt16MinMinus), false);
 
       //VM.k2
-      expect(US.isValidValues(PTag.kLightPathFilterPassBand, uInt16MaxPlus), false);
+      expect(US.isValidValues(PTag.kLightPathFilterPassBand, uInt16MaxPlus),
+          false);
 
       //VM.k3
-      expect(US.isValidValues(PTag.kTextColorCIELabValue, uInt16MaxPlus), false);
+      expect(
+          US.isValidValues(PTag.kTextColorCIELabValue, uInt16MaxPlus), false);
 
       //VM.k4
       expect(US.isValidValues(PTag.kAcquisitionMatrix, uInt16MinMinus), false);
@@ -827,7 +879,12 @@ void main() {
 
       const uInt16MinMax = const [kUint16Min, kUint16Max];
       const uInt16MinMaxPlus0 = const [kUint16Min, kUint16Max, kUint8Min];
-      const uInt16MinMaxPlus1 = const [kUint16Min, kUint16Max, kUint8Min, kUint8Max];
+      const uInt16MinMaxPlus1 = const [
+        kUint16Min,
+        kUint16Max,
+        kUint8Min,
+        kUint8Max
+      ];
       const uInt16Min = const [kUint16Min];
       const uInt16Max = const [kUint16Max];
 
@@ -838,17 +895,20 @@ void main() {
 
       expect(US.isValidValues(PTag.kLightPathFilterPassBand, uInt16Min), false);
       expect(US.isValidValues(PTag.kLightPathFilterPassBand, uInt16Max), false);
-      expect(US.isValidValues(PTag.kLightPathFilterPassBand, uInt16MinMaxPlus0), false);
+      expect(US.isValidValues(PTag.kLightPathFilterPassBand, uInt16MinMaxPlus0),
+          false);
 
       //VM.k3
       expect(US.isValidValues(PTag.kTextColorCIELabValue, uInt16Min), false);
       expect(US.isValidValues(PTag.kTextColorCIELabValue, uInt16Max), false);
-      expect(US.isValidValues(PTag.kTextColorCIELabValue, uInt16MinMaxPlus1), false);
+      expect(US.isValidValues(PTag.kTextColorCIELabValue, uInt16MinMaxPlus1),
+          false);
 
       //VM.k4
       expect(US.isValidValues(PTag.kAcquisitionMatrix, uInt16Min), false);
       expect(US.isValidValues(PTag.kAcquisitionMatrix, uInt16Max), false);
-      expect(US.isValidValues(PTag.kAcquisitionMatrix, uInt16MinMaxPlus0), false);
+      expect(
+          US.isValidValues(PTag.kAcquisitionMatrix, uInt16MinMaxPlus0), false);
 
       system.throwOnError = true;
       expect(() => US.isValidValues(PTag.kWarningReason, uInt16MinMax),
@@ -879,7 +939,8 @@ void main() {
         final bd = uInt16ListV1.buffer.asUint8List();
         log
           ..debug('uInt16ListV1 : $uInt16ListV1')
-          ..debug('Uint16Base.listFromBytes(bd) ; ${Uint16Base.listFromBytes(bd)}');
+          ..debug(
+              'Uint16Base.listFromBytes(bd) ; ${Uint16Base.listFromBytes(bd)}');
         expect(Uint16Base.listFromBytes(bd), equals(uInt16ListV1));
       }
     });
@@ -967,7 +1028,8 @@ void main() {
         final bd = uInt16ListV1.buffer.asUint8List();
         log
           ..debug('uInt16ListV1 : $uInt16ListV1')
-          ..debug('Uint16Base.listFromBytes(bd) ; ${Uint16Base.listFromBytes(bd)}');
+          ..debug(
+              'Uint16Base.listFromBytes(bd) ; ${Uint16Base.listFromBytes(bd)}');
         expect(Uint16Base.listFromBytes(bd), equals(uInt16ListV1));
       }
     });
@@ -990,19 +1052,23 @@ void main() {
     test('OW hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
-        final ow0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
+        final ow0 =
+            new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
         expect(ow0.hasValidValues, true);
         log.debug('ow0: ${ow0.info}');
         expect(ow0.hasValidValues, true);
 
-        log..debug('ow0: $ow0, values: ${ow0.values}')..debug('ow0: ${ow0.info}');
+        log
+          ..debug('ow0: $ow0, values: ${ow0.values}')
+          ..debug('ow0: ${ow0.info}');
         expect(ow0[0], equals(uInt16List0[0]));
       }
 
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(2, 3);
         log.debug('$i: uInt16List0: $uInt16List0');
-        final ow0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
+        final ow0 =
+            new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
         expect(ow0.hasValidValues, true);
       }
     });
@@ -1027,10 +1093,12 @@ void main() {
     });
 
     test('OW hasValidValues bad values', () {
-      final ow0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MaxPlus);
+      final ow0 =
+          new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MaxPlus);
       expect(ow0, isNull);
 
-      final ow1 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMinus);
+      final ow1 =
+          new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMinus);
       expect(ow1, isNull);
 
       final ow2 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMax);
@@ -1049,7 +1117,8 @@ void main() {
     test('OW update random', () {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(3, 4);
-        final ow1 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
+        final ow1 =
+            new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
         final uInt16List1 = rng.uint16List(3, 4);
         expect(ow1.update(uInt16List1).values, equals(uInt16List1));
       }
@@ -1120,8 +1189,10 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         uInt16List0 = rng.uint16List(1, 1);
-        final ow0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
-        final ow1 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
+        final ow0 =
+            new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
+        final ow1 =
+            new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
         log
           ..debug('uInt16List0:$uInt16List0, ow0.hash_code:${ow0.hashCode}')
           ..debug('uInt16List0:$uInt16List0, ow1.hash_code:${ow1.hashCode}');
@@ -1137,15 +1208,18 @@ void main() {
       List<int> uInt16List2;
       for (var i = 0; i < 10; i++) {
         uInt16List1 = rng.uint16List(1, 1);
-        final ow0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
+        final ow0 =
+            new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List0);
 
-        final ow2 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List1);
+        final ow2 =
+            new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List1);
         log.debug('uInt16List1:$uInt16List1 , ow2.hash_code:${ow2.hashCode}');
         expect(ow0.hashCode == ow2.hashCode, false);
         expect(ow0 == ow2, false);
 
         uInt16List2 = rng.uint16List(2, 3);
-        final ow3 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List2);
+        final ow3 =
+            new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16List2);
         log.debug('uInt16List2:$uInt16List2 , ow3.hash_code:${ow3.hashCode}');
         expect(ow0.hashCode == ow3.hashCode, false);
         expect(ow0 == ow3, false);
@@ -1175,7 +1249,8 @@ void main() {
     test('OW checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
-        final ow0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
+        final ow0 =
+            new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
         expect(ow0.checkLength(ow0.values), true);
       }
     });
@@ -1188,7 +1263,8 @@ void main() {
     test('OW checkValues random', () {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
-        final ow0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
+        final ow0 =
+            new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
         expect(ow0.checkValues(ow0.values), true);
       }
     });
@@ -1201,7 +1277,8 @@ void main() {
     test('OW valuesCopy random', () {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
-        final ow0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
+        final ow0 =
+            new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
         expect(uInt16List0, equals(ow0.valuesCopy));
       }
     });
@@ -1214,18 +1291,21 @@ void main() {
     test('OW replace random', () {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
-        final ow0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
+        final ow0 =
+            new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List0);
         final uInt16List1 = rng.uint16List(1, 1);
         expect(ow0.replace(uInt16List1), equals(uInt16List0));
         expect(ow0.values, equals(uInt16List1));
       }
 
       final uInt16List1 = rng.uint16List(1, 1);
-      final ow1 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List1);
+      final ow1 =
+          new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List1);
       expect(ow1.replace(<int>[]), equals(uInt16List1));
       expect(ow1.values, equals(<int>[]));
 
-      final ow2 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List1);
+      final ow2 =
+          new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16List1);
       expect(ow2.replace(null), equals(uInt16List1));
       expect(ow2.values, equals(<int>[]));
     });
@@ -1395,8 +1475,8 @@ void main() {
       system.throwOnError = false;
       expect(OW.checkVRIndex(kAEIndex), isNull);
       system.throwOnError = true;
-      expect(
-          () => OW.checkVRIndex(kAEIndex), throwsA(const isInstanceOf<InvalidVRError>()));
+      expect(() => OW.checkVRIndex(kAEIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
         system.throwOnError = false;
@@ -1450,8 +1530,8 @@ void main() {
       expect(OW.isValidVRCode(kAECode), false);
 
       system.throwOnError = true;
-      expect(
-          () => OW.isValidVRCode(kAECode), throwsA(const isInstanceOf<InvalidVRError>()));
+      expect(() => OW.isValidVRCode(kAECode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
         system.throwOnError = false;
@@ -1505,12 +1585,15 @@ void main() {
       const uInt16MinMinus = const [kUint16Min - 1];
 
       expect(OW.isValidValues(PTag.kPixelData, uInt16MaxPlus), false);
-      expect(OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MinMinus), false);
+      expect(OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MinMinus),
+          false);
 
       system.throwOnError = true;
-      expect(() => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MaxPlus),
+      expect(
+          () => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MaxPlus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
-      expect(() => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MinMinus),
+      expect(
+          () => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MinMinus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -1532,7 +1615,8 @@ void main() {
         final bd = uInt16ListV1.buffer.asUint8List();
         log
           ..debug('uInt16ListV1 : $uInt16ListV1')
-          ..debug('Uint16Base.listFromBytes(bd) ; ${Uint16Base.listFromBytes(bd)}');
+          ..debug(
+              'Uint16Base.listFromBytes(bd) ; ${Uint16Base.listFromBytes(bd)}');
         expect(Uint16Base.listFromBytes(bd), equals(uInt16ListV1));
       }
     });
@@ -1607,7 +1691,8 @@ void main() {
         final bd = uInt16ListV1.buffer.asUint8List();
         log
           ..debug('uInt16ListV1 : $uInt16ListV1')
-          ..debug('Uint16Base.listFromBytes(bd) ; ${Uint16Base.listFromBytes(bd)}');
+          ..debug(
+              'Uint16Base.listFromBytes(bd) ; ${Uint16Base.listFromBytes(bd)}');
         expect(Uint16Base.listFromBytes(bd), equals(uInt16ListV1));
       }
     });

@@ -490,12 +490,19 @@ void main() {
     });
 
     test('SS isValidVListLength VM.k1 bad values', () {
-      system.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rng.int16List(2, i + 2);
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
         for (var tag in ssTags0) {
+          system.throwOnError = false;
           expect(SS.isValidVListLength(tag, validMinVList), false);
+          expect(SS.isValidVListLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => SS.isValidVListLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          expect(() => SS.isValidVListLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -519,9 +526,16 @@ void main() {
     test('SS isValidVListLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final validMinVList = rng.int16List(3, i + 1);
-        system.throwOnError = false;
         for (var tag in ssTags1) {
+          system.throwOnError = false;
           expect(SS.isValidVListLength(tag, validMinVList), false);
+          expect(SS.isValidVListLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => SS.isValidVListLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          expect(() => SS.isValidVListLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -536,17 +550,6 @@ void main() {
                   tag, invalidVList.sublist(0, SS.kMaxLength)),
               true);
         }
-      }
-    });
-
-    test('SS isValidVListLength bad values', () {
-      for (var tag in ssTags0) {
-        system.throwOnError = false;
-        expect(SS.isValidVListLength(tag, invalidVList), false);
-
-        system.throwOnError = true;
-        expect(() => SS.isValidVListLength(tag, invalidVList),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 

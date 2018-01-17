@@ -475,13 +475,20 @@ void main() {
     });
 
     test('SL isValidVListLength VM.k1 bad values', () {
-      system.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rng.int32List(2, i + 1);
 
         for (var tag in slTags0) {
+          system.throwOnError = false;
           log.debug('tag: $tag');
           expect(SL.isValidVListLength(tag, validMinVList0), false);
+          expect(SL.isValidVListLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => SL.isValidVListLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          expect(() => SL.isValidVListLength(tag, validMinVList0),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -505,13 +512,20 @@ void main() {
     });
 
     test('SL isValidVListLength VM.k2 bad values', () {
-      system.throwOnError = false;
       for (var i = 2; i < 10; i++) {
         final validMinVList0 = rng.int32List(3, i + 1);
 
         for (var tag in slTags1) {
           log.debug('tag: $tag');
+          system.throwOnError = false;
           expect(SL.isValidVListLength(tag, validMinVList0), false);
+          expect(SL.isValidVListLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => SL.isValidVListLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          expect(() => SL.isValidVListLength(tag, validMinVList0),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -544,25 +558,20 @@ void main() {
     });
 
     test('SL isValidVListLength VM.k2_2n bad values', () {
-      system.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList0 = rng.int32List(1, 1);
         for (var tag in slTags3) {
           log.debug('tag: $tag');
-
+          system.throwOnError = false;
           expect(SL.isValidVListLength(tag, validMinVList0), false);
+          expect(SL.isValidVListLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => SL.isValidVListLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          expect(() => SL.isValidVListLength(tag, validMinVList0),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
-      }
-    });
-
-    test('SL isValidVListLength bad values', () {
-      for (var tag in slTags0) {
-        system.throwOnError = false;
-        expect(SL.isValidVListLength(tag, invalidVList), false);
-
-        system.throwOnError = true;
-        expect(() => SL.isValidVListLength(tag, invalidVList),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 

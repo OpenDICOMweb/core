@@ -14,6 +14,7 @@ void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
   List<double> float32List;
+  system.throwOnError = false;
 
   final listFloat32Common0 = const <double>[
     1.1,
@@ -449,9 +450,17 @@ void main() {
     test('FL isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.float32List(2, i + 1);
-        system.throwOnError = false;
         for (var tag in flTags0) {
+          system.throwOnError = false;
           expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FL.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+
+          expect(() => FL.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -469,9 +478,17 @@ void main() {
     test('FL isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final validMinVList = rng.float32List(3, i + 1);
-        system.throwOnError = false;
         for (var tag in flTags1) {
+          system.throwOnError = false;
           expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FL.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+
+          expect(() => FL.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -489,9 +506,17 @@ void main() {
     test('FL isValidLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
         final validMinVList = rng.float32List(4, i + 1);
-        system.throwOnError = false;
         for (var tag in flTags2) {
+          system.throwOnError = false;
           expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FL.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+
+          expect(() => FL.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -509,9 +534,17 @@ void main() {
     test('FL isValidLength VM.k6 bad values', () {
       for (var i = 6; i < 10; i++) {
         final validMinVList = rng.float32List(7, i + 1);
-        system.throwOnError = false;
         for (var tag in flTags3) {
+          system.throwOnError = false;
           expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FL.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+
+          expect(() => FL.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       }
     });
@@ -539,21 +572,18 @@ void main() {
     test('FL isValidLength VM.k6_n bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.float32List(1, 5);
-        system.throwOnError = false;
         for (var tag in flTags5) {
+          system.throwOnError = false;
           expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FL.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+
+          expect(() => FL.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
-      }
-    });
-
-    test('FL isValidLength bad values', () {
-      for (var tag in otherTags) {
-        system.throwOnError = false;
-        expect(FL.isValidLength(tag, invalidVList), false);
-
-        system.throwOnError = true;
-        expect(() => FL.isValidLength(tag, invalidVList),
-            throwsA(const isInstanceOf<InvalidVRForTagError>()));
       }
     });
 
