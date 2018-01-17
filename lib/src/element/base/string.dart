@@ -54,31 +54,57 @@ bool _isValidValueLength(String s, int min, int max) {
 
 //Urgent add issues
 //TODO: this does not handle escape sequences
-bool _isFilteredString(String s, int min, int max, bool filter(int c)) {
-  if (!_isValidValueLength(s, min, max)) return false;
-  for (var index = 0; index < max; index++) {
-    final c = s.codeUnitAt(index);
-    if (!filter(c)) {
-      invalidCharacterInString(s, index);
+bool _isFilteredString(String s, int min, int max, bool filter(int c),
+    {bool allowLeading = false, bool allowTrailing = false, bool allowBlank = true}) {
+  if (s.isEmpty) return true;
+  if (s.length < min || s.length > max) return false;
+
+  var i = 0;
+  if (allowLeading) {
+    // Skip leading spaces
+    for (; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) break;
+    // If s is all space characters
+    if (i >= s.length) return allowBlank;
+  }
+
+  for (; i < s.length; i++) {
+    if (!filter(s.codeUnitAt(i))) {
+      invalidCharacterInString(s, i);
       return false;
     }
   }
-  return true;
+  // No trailing spaces
+  if (i >= s.length) return true;
+
+  // Skip trailing spaces
+  if (allowTrailing) {
+    for (; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) return false;
+    // Had trailing spaces
+    return true;
+  }
+  return false;
 }
 
-bool _isNotFilteredString(String s, int min, int max, bool filter(int c)) =>
-    !_isFilteredString(s, min, max, filter);
+bool _isNotFilteredString(String s, int min, int max, bool filter(int c),
+        {bool allowLeading = false,
+        bool allowTrailing = false,
+        bool allowBlank = true}) =>
+    !_isFilteredString(s, min, max, filter,
+        allowLeading: allowLeading, allowTrailing: allowTrailing);
 
-bool _isDcmString(String s, int max) {
+bool _isDcmString(String s, int max, {bool allowLeading = true, bool allowBlank = true}) {
   final len = (s.length < max) ? s.length : max;
-  return _isFilteredString(s, 0, len, isDcmStringChar);
+  return _isFilteredString(s, 0, len, isDcmStringChar,
+      allowLeading: allowLeading, allowTrailing: true, allowBlank: allowBlank);
 }
 
-bool _isNotDcmString(String s, int max) => !_isDcmString(s, max);
+bool _isNotDcmString(String s, int max, {bool allowLeading = true}) =>
+    !_isDcmString(s, max, allowLeading: allowLeading);
 
 bool _isDcmText(String s, int max) {
   final len = (s.length < max) ? s.length : max;
-  return _isFilteredString(s, 0, len, isDcmTextChar);
+  return _isFilteredString(s, 0, len, isDcmTextChar,
+      allowLeading: false, allowTrailing: true);
 }
 
 bool _isNotDcmText(String s, int max) => !_isDcmText(s, max);
@@ -118,7 +144,7 @@ bool _isNotValidValueLength(int length, int min, int max, Issues issues) {
 }
 
 */
-
+String blanks(int n) => ''.padRight(n, ' ');
 /// Returns a [Uint8List] corresponding to a binary Value Field.
 Uint8List textToBytes(String s, int maxVFLength, {bool isAscii = true}) {
   if (s == null) return nullValueError();
@@ -235,14 +261,6 @@ abstract class StringBase<V> extends Element<String> {
     values = v;
     return old;
   }
-
-  StringBase blank([int n = 1]) => update(<String>[''.padRight(n, ' ')]);
-
-  // If leading whitespace is insignificant or not allowed, then [blank]
-  // is not supported. The following Elements that do not support blank:
-  // AS, DA, DS, DT, IS, TM, UI.
-  StringBase blankNotSupported() =>
-      throw new UnsupportedError('$runtimeType cannot be blank');
 
   static const bool kIsAsciiRequired = true;
   static const int kSizeInBytes = 1;
@@ -390,7 +408,7 @@ abstract class AE extends StringAscii {
   int get maxValueLength => kMaxValueLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = true;
 //  static const VR kVR = VR.kAE;
@@ -413,14 +431,6 @@ abstract class AE extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -452,12 +462,12 @@ abstract class AE extends StringAscii {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
-    var result = (isValidValueLength(s, issues)) ? true : false;
-    if (!_isDcmString(s, 16)) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
+    if (!_isDcmString(s, 16, allowLeading: true)) {
       if (issues != null) issues.add('Invalid AETitle String (AE): "$s"');
-      result = false;
+      return false;
     }
-    return result;
+    return true;
   }
 
   static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
@@ -502,7 +512,9 @@ abstract class CS extends StringAscii {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
+
+  StringBase blank([int n = 1]) => update([blanks(n)]);
 
   static const bool kIsAsciiRequired = true;
   static bool allowLowerCase = false;
@@ -526,14 +538,6 @@ abstract class CS extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -552,11 +556,6 @@ abstract class CS extends StringAscii {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -570,18 +569,19 @@ abstract class CS extends StringAscii {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
-    final len = (s.length <= 16) ? s.length : 16;
-    if (_isNotFilteredString(s, 0, len, isCSChar)) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
+    if (_isNotFilteredString(s, 0, kMaxValueLength, isCSChar,
+        allowLeading: true, allowTrailing: true)) {
       if (issues != null) issues.add('Invalid Code String (CS): "$s"');
       return false;
     }
     return true;
   }
 
+  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
+
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
-
-  static bool isNotValidValue(String s, [Issues issues]) => !isValidValue(s, issues);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList, [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
@@ -665,10 +665,7 @@ abstract class DS extends StringAscii {
   }
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
-
-  @override
-  DS blank([int n = 1]) => blankNotSupported();
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = true;
 //  static const VR kVR = VR.kDS;
@@ -691,14 +688,6 @@ abstract class DS extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -717,11 +706,6 @@ abstract class DS extends StringAscii {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -735,7 +719,7 @@ abstract class DS extends StringAscii {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
-    if (s == null || isNotValidValueLength(s)) return false;
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     return tryParse(s) != null;
   }
 
@@ -762,9 +746,27 @@ abstract class DS extends StringAscii {
   static Iterable<String> fromByteData(ByteData bd, {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
 
+  //Urgent Sharath add tests with leading and trailing spaces, and all spaces (blank)
+  /// Parse a [DS] [String]. Leading and trailing spaces allowed,
+  /// but all spaces is illegal.
   static double tryParse(String s, [Issues issues]) {
+    var i = 0;
+    // Skip leading spaces
+    for(; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) break;
+    if (i >= s.length) {
+      if (issues != null) issues.add('Invalid Blank Digital String (DS): "$s"');
+      return invalidString(s, issues);
+    }
+
+    var j = s.length - 1;
+    for(; j >= i; j--) if (s.codeUnitAt(j) != kSpace) break;
+    if (j < i) {
+      if (issues != null) issues.add('Invalid Blank Digital String (DS): "$s"');
+      return invalidString(s, issues);
+    }
+
     //TODO: change to tryParse when available
-    final v = double.parse(s, _onError);
+    final v = double.parse(s.substring(i, j), _onError);
     if (v == null) {
       if (issues != null) issues.add('Invalid Digital String (DS): "$s"');
       return invalidString(s, issues);
@@ -814,10 +816,7 @@ abstract class IS extends StringAscii {
   IS get sha256 => sha256UnsupportedError(this);
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
-
-  @override
-  IS blank([int n = 1]) => blankNotSupported();
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = true;
 //  static const VR kVR = VR.kIS;
@@ -840,14 +839,6 @@ abstract class IS extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -866,11 +857,6 @@ abstract class IS extends StringAscii {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -884,7 +870,7 @@ abstract class IS extends StringAscii {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
-    if (s == null || isNotValidValueLength(s)) return false;
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     return tryParse(s) != null;
   }
 
@@ -993,16 +979,13 @@ abstract class UI extends StringAscii {
   UI get sha256 => sha256UnsupportedError(this);
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   Iterable<Uid> _convertStrings() {
     final uids = new List<Uid>(values.length);
     for (var v in values) uids.add(Uid.parse(v));
     return uids;
   }
-
-  @override
-  UI blank([int count = 1]) => blankNotSupported();
 
   static const bool kIsAsciiRequired = true;
 //  static const VR kVR = VR.kUI;
@@ -1025,14 +1008,6 @@ abstract class UI extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -1051,11 +1026,6 @@ abstract class UI extends StringAscii {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -1069,6 +1039,7 @@ abstract class UI extends StringAscii {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (!Uid.isValidString(s)) {
       if (issues != null) issues.add('Invalid Unique Identifier String (UI): "$s"');
       return false;
@@ -1101,6 +1072,8 @@ abstract class UI extends StringAscii {
 }
 
 abstract class StringUtf8 extends StringBase<String> {
+  StringBase blank([int n = 1]) => update([blanks(n)]);
+
   List<String> valuesFromBytes(Uint8List bytes) =>
       stringValuesFromBytes(vfBytes, maxVFLength, isAscii: true);
 
@@ -1134,7 +1107,7 @@ abstract class LO extends StringUtf8 {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kLO;
@@ -1157,14 +1130,6 @@ abstract class LO extends StringUtf8 {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -1183,11 +1148,6 @@ abstract class LO extends StringUtf8 {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -1201,6 +1161,7 @@ abstract class LO extends StringUtf8 {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmString(s, 64)) {
       if (issues != null) issues.add('Invalid Long String (LO): "$s"');
       return false;
@@ -1277,7 +1238,7 @@ abstract class PN extends StringUtf8 {
   }
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kPN;
@@ -1300,14 +1261,6 @@ abstract class PN extends StringUtf8 {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -1326,11 +1279,6 @@ abstract class PN extends StringUtf8 {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -1344,6 +1292,7 @@ abstract class PN extends StringUtf8 {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmString(s, 5 * 64)) {
       if (issues != null) issues.add('Invalid Person Name String (PN): "$s"');
       return false;
@@ -1392,7 +1341,7 @@ abstract class SH extends StringUtf8 {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kSH;
@@ -1415,14 +1364,6 @@ abstract class SH extends StringUtf8 {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -1441,11 +1382,6 @@ abstract class SH extends StringUtf8 {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -1459,6 +1395,7 @@ abstract class SH extends StringUtf8 {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmString(s, kMaxValueLength)) {
       if (issues != null) issues.add('Invalid Short String (SH): "$s"');
       return false;
@@ -1510,7 +1447,7 @@ abstract class UC extends StringUtf8 {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kUC;
@@ -1533,14 +1470,6 @@ abstract class UC extends StringUtf8 {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -1559,11 +1488,6 @@ abstract class UC extends StringUtf8 {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -1577,6 +1501,7 @@ abstract class UC extends StringUtf8 {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmString(s, kMaxLongVF)) {
       if (issues != null) issues.add('Invalid Unlimited Characters String (UC): "$s"');
       return false;
@@ -1617,12 +1542,19 @@ abstract class Text extends StringUtf8 {
   @override
   TypedData get typedData => textToBytes(values.elementAt(0), maxVFLength);
 
+  @override
+  bool checkLength([Iterable<String> vList, Issues issues]) =>
+      vList.isEmpty || vList.length == 1;
+
+  @override
+  StringBase blank([int n = 1]) => update([blanks(n)]);
+
   Iterable<String> valueFromBytes(Uint8List vfBytes) =>
       textValuesFromBytes(vfBytes, maxVFLength, isAscii: isAsciiRequired);
 }
 
 /// An Long Text (LT) Element
-abstract class LT extends StringUtf8 {
+abstract class LT extends Text {
 //  @override
 //  VR get vr => kVR;
   @override
@@ -1639,7 +1571,7 @@ abstract class LT extends StringUtf8 {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kLT;
@@ -1662,14 +1594,6 @@ abstract class LT extends StringUtf8 {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -1688,11 +1612,6 @@ abstract class LT extends StringUtf8 {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -1706,6 +1625,7 @@ abstract class LT extends StringUtf8 {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmText(s, 10240)) {
       if (issues != null) issues.add('Invalid Long Text (LT): "$s"');
       return false;
@@ -1762,12 +1682,9 @@ abstract class ST extends StringUtf8 {
   int get maxVFLength => kMaxVFLength;
 
   //TODO: add issues
-  @override
-  bool checkLength([Iterable<String> vList, Issues issues]) =>
-      vList.isEmpty || vList.length == 1;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kST;
@@ -1790,14 +1707,6 @@ abstract class ST extends StringUtf8 {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -1816,11 +1725,6 @@ abstract class ST extends StringUtf8 {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -1834,6 +1738,7 @@ abstract class ST extends StringUtf8 {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmText(s, 1024)) {
       if (issues != null) issues.add('Invalid Short Test (ST): "$s"');
       return false;
@@ -1894,21 +1799,15 @@ abstract class UR extends Text {
   Uri _uri;
 
   //TODO: add issues
-  @override
-  bool checkLength([Iterable<String> vList, Issues issues]) =>
-      vList.isEmpty || vList.length == 1;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   Iterable<Uid> _convertStrings() {
     final uids = new List<Uid>(values.length);
     for (var v in values) uids.add(Uid.parse(v));
     return uids;
   }
-
-  @override
-  UR blank([int n = 1]) => blankNotSupported();
 
   static const bool kIsAsciiRequired = false;
 //  static const VR kVR = VR.kUR;
@@ -1932,14 +1831,6 @@ abstract class UR extends Text {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -1958,11 +1849,6 @@ abstract class UR extends Text {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxShortVF);
 
@@ -1977,6 +1863,7 @@ abstract class UR extends Text {
 
   //Urgent Jim: Add switch for leading spaces
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     try {
       if (s.startsWith(' ')) throw const FormatException();
       Uri.parse(s);
@@ -2061,12 +1948,9 @@ abstract class UT extends StringUtf8 {
   int get maxVFLength => kMaxVFLength;
 
   //TODO: add issues
-  @override
-  bool checkLength([Iterable<String> vList, Issues issues]) =>
-      vList.isEmpty || vList.length == 1;
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   Iterable<Uid> _convertStrings() {
     final uids = new List<Uid>(values.length);
@@ -2095,14 +1979,6 @@ abstract class UT extends StringUtf8 {
   static bool isValidVListLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -2121,14 +1997,16 @@ abstract class UT extends StringUtf8 {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length) => _inRange(length, 0, kMaxVFLength);
 
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+
+  static bool isNotValidValueLength(String s, [Issues issues]) =>
+      !isValidValueLength(s, issues);
+
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (_isNotDcmText(s, kMaxLongVF)) {
       if (issues != null) issues.add('Invalid Unlimited Text (UT): "$s"');
       return false;
@@ -2166,22 +2044,7 @@ abstract class UT extends StringUtf8 {
 
 // **** Date/Time Elements
 
-/// All public constructors should take either Iterable<String> or
-/// FloatXXList from [TypedData].
-///
-/// Note: When
-///     ```[new] Foo.fromBytes(key, bytes)```
-/// is invoked [values] is always a [TypedData] [List]; however, when
-///     ```[new] Foo(key, [Iterable<String>])```
-/// is invoked [values] may be either [TypedData] [List] or [Iterable<String>].
-@override
-abstract class DateTimeBase extends StringBase<int> {
-  @override
-  DateTimeBase blank([int n = 1]) =>
-      throw new UnsupportedError('Dates and Times cannot be blank');
-}
-
-abstract class AS extends DateTimeBase {
+abstract class AS extends StringBase<int> {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -2226,10 +2089,7 @@ abstract class AS extends DateTimeBase {
   AS get hash => (values.isEmpty) ? this : update([age.hashString]);
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
-
-  @override
-  AS blank([int n = 1]) => blankNotSupported();
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   static const bool kIsAsciiRequired = true;
   static bool allowLowerCase = false;
@@ -2250,14 +2110,6 @@ abstract class AS extends DateTimeBase {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -2276,11 +2128,6 @@ abstract class AS extends DateTimeBase {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -2295,6 +2142,7 @@ abstract class AS extends DateTimeBase {
 
   //Urgent: Add issues everywhere
   static bool isValidValue(String s, [Issues issues]) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (Age.isValidString(s)) return true;
     if (issues != null) issues.add('Invalid Age String (AS): "$s"');
     return false;
@@ -2329,7 +2177,7 @@ abstract class AS extends DateTimeBase {
 }
 
 /// An abstract class for date ([DA]) [Element]s.
-abstract class DA extends DateTimeBase {
+abstract class DA extends StringBase<int> {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -2367,15 +2215,11 @@ abstract class DA extends DateTimeBase {
     return update(vList);
   }
 
-/* Urgent Jim
   @override
-  DA get sha256 => (values.isEmpty)
-                   ? this
-                   : update(Sha256. int64(values).map((n) => n.toString())
-*/
+  DA get sha256 => unsupportedError();
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   void clearDates() => _dates = null;
 
@@ -2398,14 +2242,6 @@ abstract class DA extends DateTimeBase {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -2424,11 +2260,6 @@ abstract class DA extends DateTimeBase {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -2442,7 +2273,8 @@ abstract class DA extends DateTimeBase {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
-    if (!Date.isValidString(s)) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
+    if (!Date.isValidString(s, issues: issues)) {
       if (issues != null) issues.add('Invalid Date String (DA): "$s"');
       return false;
     }
@@ -2472,7 +2304,7 @@ abstract class DA extends DateTimeBase {
 }
 
 /// An abstract class for time ([TM]) [Element]s.
-abstract class DT extends DateTimeBase {
+abstract class DT extends StringBase<int> {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -2502,7 +2334,7 @@ abstract class DT extends DateTimeBase {
   }
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   void clearDcmDateTimes() => _dateTimes = null;
 
@@ -2525,14 +2357,6 @@ abstract class DT extends DateTimeBase {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -2551,11 +2375,6 @@ abstract class DT extends DateTimeBase {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -2569,7 +2388,8 @@ abstract class DT extends DateTimeBase {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
-    if (!DcmDateTime.isValidString(s)) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
+    if (!DcmDateTime.isValidString(s, issues: issues)) {
       if (issues != null) issues.add('Invalid Date Time (DT): "$s"');
       return false;
     }
@@ -2602,7 +2422,7 @@ abstract class DT extends DateTimeBase {
 ///
 /// [Time] [String]s have the following format: HHMMSS.ffffff.
 /// [See PS3.18, TM](http://dicom.nema.org/medical/dicom/current/output/html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
-abstract class TM extends DateTimeBase {
+abstract class TM extends StringBase<int> {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -2632,7 +2452,7 @@ abstract class TM extends DateTimeBase {
   }
 
   @override
-  bool checkValue(String s, [Issues issues]) => isValidValue(s);
+  bool checkValue(String s, [Issues issues]) => isValidValue(s, issues);
 
   void clearTimes() => _times = null;
 
@@ -2655,14 +2475,6 @@ abstract class TM extends DateTimeBase {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
-
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -2681,11 +2493,6 @@ abstract class TM extends DateTimeBase {
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-/*
-  static VR checkVR(VR vr, [Issues issues]) =>
-      (vr == kVR) ? vr : invalidVR(vr.index, issues, kVRIndex);
-*/
-
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
 
@@ -2699,7 +2506,8 @@ abstract class TM extends DateTimeBase {
       !isValidValueLength(s, issues);
 
   static bool isValidValue(String s, [Issues issues]) {
-    if (!Time.isValidString(s)) {
+    if (s == null || isNotValidValueLength(s, issues)) return false;
+    if (!Time.isValidString(s, issues: issues)) {
       if (issues != null) issues.add('Invalid Time String (TM): "$s"');
       return false;
     }

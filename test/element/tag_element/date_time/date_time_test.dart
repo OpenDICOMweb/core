@@ -339,6 +339,7 @@ void main() {
       expect(as2, isNull);
     });
 
+/* Urgent Sharath delete blank not supported
     test('AS blank random', () {
       system.throwOnError = false;
       for (var i = 1; i < 10; i++) {
@@ -347,6 +348,7 @@ void main() {
         expect(as0.blank, throwsA(const isInstanceOf<UnsupportedError>()));
       }
     });
+*/
 
     test('AS fromBytes random', () {
  //     system.level = Level.debug;
@@ -997,12 +999,14 @@ void main() {
       }
     });
 
+/* Urgent Sharath delete blank not supported
     test('DA blank random', () {
       for (var s in goodDAList) {
         final da0 = new DAtag(PTag.kCreationDate, s);
         expect(da0.blank, throwsA(const isInstanceOf<UnsupportedError>()));
       }
     });
+*/
 
     test('DA replace', () {
       final vList0 = ['19991025'];
@@ -1774,12 +1778,14 @@ void main() {
       }
     });
 
+/* Urgent Sharath delete blank not supported
     test('DT blank random', () {
       for (var s in goodDTList) {
         final dt0 = new DTtag(PTag.kDateTime, s);
         expect(dt0.blank, throwsA(const isInstanceOf<UnsupportedError>()));
       }
     });
+*/
 
     test('DT replace', () {
       final vList0 = ['19991025235959'];
@@ -2538,12 +2544,14 @@ void main() {
       }
     });
 
+/* Urgent Sharath delete blank not supported
     test('TM blank random', () {
       for (var s in goodTMList) {
         final tm0 = new TMtag(PTag.kModifiedImageTime, s);
         expect(tm0.blank, throwsA(const isInstanceOf<UnsupportedError>()));
       }
     });
+*/
 
     test('TM replace random', () {
       for (var i = 0; i < 10; i++) {

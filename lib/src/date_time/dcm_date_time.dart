@@ -204,8 +204,8 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   static DcmDateTime get now => new DcmDateTime.fromDart(new DateTime.now());
 
   /// Returns _true_ if [s] is a valid DICOM [DcmDateTime] [String] (DT).
-  static bool isValidString(String s, {int start = 0, int end}) =>
-      isValidDcmDateTimeString(s, start: start, end: end);
+  static bool isValidString(String s, {int start = 0, int end, Issues issues}) =>
+      isValidDcmDateTimeString(s, start: start, end: end, issues: issues);
 
   /// Returns a DICOM [DcmDateTime], if [s] is a valid DT [String];
   static DcmDateTime parse(String s,

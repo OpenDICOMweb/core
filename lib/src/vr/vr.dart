@@ -8,6 +8,7 @@ import 'dart:convert';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dicom.dart';
 import 'package:core/src/element/base/integer.dart';
+import 'package:core/src/element/base/string.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/string/ascii.dart';
@@ -333,8 +334,8 @@ abstract class VR<T> {
   static const kLT = VRText.kLT;
 
   // Short Number Strings
-  static const kDS = VRAscii.kDS;
-  static const kIS = VRAscii.kIS;
+  static const kDS = VRNumber.kDS;
+  static const kIS = VRNumber.kIS;
 
   // Short Date/Time
   static const kAS = VRAscii.kAS;
@@ -436,20 +437,30 @@ class VRAscii extends VR<String> {
     return vfLength >= (vmMin * minVLength) && vfLength <= maxVFL;
   }
 
+  ///
   @override
   bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) {
     if (s.isEmpty) return true;
     if (s.length < minVLength || s.length > maxVLength) return false;
 
-    for (var i = 0; i < s.length; i++) {
+    var i = 0;
+    // Skip leading spaces
+    for (; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) break;
+    // If s is all space characters it is illegal
+    if (i >= s.length) return false;
+
+    for (; i < s.length; i++) {
       final c = s.codeUnitAt(i);
-      if (c <= kSpace || c >= kDelete) return false;
+      if (c <= kSpace || c >= kDelete) break;
     }
+    // No trailing spaces
+    if (i >= s.length) return true;
+
+    // Skip trailing spaces
+    for (; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) return false;
+    // Had trailing spaces
     return true;
   }
-
-  static const kDS = const VRAscii(kDSIndex, 'DS', kDSCode, 2, kShortVF, 1, 16);
-  static const kIS = const VRAscii(kISIndex, 'IS', kISCode, 2, kShortVF, 1, 12);
 
   static const kAS = const VRAscii(kASIndex, 'AS', kASCode, 2, kShortVF, 4, 4);
   static const kDA = const VRAscii(kDAIndex, 'DA', kDACode, 2, kShortVF, 8, 8);
@@ -482,7 +493,7 @@ class VRUtf8 extends VR<String> {
 
   @override
   bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) {
-    if (s.isEmpty) return true;
+    if (s.isEmpty || allowInvalid) return true;
     if (s.length < minVLength || s.length > maxVLength) return false;
     try {
       UTF8.encode(s);
@@ -509,7 +520,8 @@ class VRText extends VR<String> {
 
   @override
   bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) {
-    if (s.isEmpty || (s.length <= maxVFLength && allowInvalid == false)) return true;
+    if (allowInvalid || s.isEmpty || (s.length <= maxVFLength && allowInvalid == true))
+      return true;
     //TODO unit test
     try {
       UTF8.encode(s);
@@ -524,6 +536,30 @@ class VRText extends VR<String> {
   static const kLT = const VRText(kLTIndex, 'LT', kLTCode, 2, kShortVF);
   static const kUR = const VRText(kURIndex, 'UR', kURCode, 4, kLongVF);
   static const kUT = const VRText(kUTIndex, 'UT', kUTCode, 4, kLongVF);
+}
+
+typedef bool IsValidString(String s);
+
+class VRNumber extends VR<String> {
+ final IsValidString isValid;
+
+  const VRNumber(
+      int index, String id, int code, int vlfSize, int maxVFLength, this.isValid)
+      : super(index, id, code, vlfSize, maxVFLength);
+
+  @override
+  bool isValidVFLength(int vfLength, int _, int __) => vfLength > maxVFLength;
+
+  @override
+  bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) {
+    if (s.isEmpty || (s.length <= maxVFLength && allowInvalid == true)) return true;
+    return isValid(s);
+  }
+
+  static const kDS =
+      const VRNumber(kDSIndex, 'DS', kDSCode, 2, kShortVF, DS.isValidValue);
+  static const kIS =
+      const VRNumber(kISIndex, 'IS', kISCode, 2, kShortVF, IS.isValidValue);
 }
 
 class VRSequence extends VR<Item> {

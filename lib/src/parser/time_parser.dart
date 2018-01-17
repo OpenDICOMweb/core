@@ -29,8 +29,8 @@ int parseInternetTime(String s,
         start: start, end: end - 2, issues: issues, onError: onError);
 
 /// Returns _true_ if [s] represents a valid DICOM time [String].
-bool isValidDcmTimeString(String s, {int start = 0, int end}) =>
-    parseDcmTime(s, start: start, end: end) == null ? false : true;
+bool isValidDcmTimeString(String s, {int start = 0, int end, Issues issues}) =>
+    parseDcmTime(s, start: start, end: end, issues: issues) == null ? false : true;
 
 const List<int> kValidTimeStringLengths = const <int>[2, 4, 6, 8];
 
@@ -39,13 +39,11 @@ int microsecondsToHour(int us) => us ~/ kMicrosecondsPerHour;
 
 /// Returns the minute part of microseconds ([us]).
 int microsecondToMinute(int us) =>
-    (us - (microsecondsToHour(us) * kMicrosecondsPerHour)) ~/
-    kMicrosecondsPerMinute;
+    (us - (microsecondsToHour(us) * kMicrosecondsPerHour)) ~/ kMicrosecondsPerMinute;
 
 /// Returns the second part of microseconds ([us]).
 int microsecondsToSecond(int us) =>
-    (us - (microsecondToMinute(us) * kMicrosecondsPerMinute)) ~/
-    kMicrosecondsPerSecond;
+    (us - (microsecondToMinute(us) * kMicrosecondsPerMinute)) ~/ kMicrosecondsPerSecond;
 
 /// Returns the millisecond part of microseconds ([us]).
 int microsecondsToMillisecond(int us) =>
@@ -71,7 +69,7 @@ String microsecondsToString(int us) {
 
 /// Returns a new time [String] that is the hash of the [s] argument.
 String hashDcmTimeString(String s) {
-	var us = parseDcmTime(s);
+  var us = parseDcmTime(s);
   if (us == null) return null;
   us = hashTimeMicroseconds(us);
   return microsecondsToString(us);
@@ -125,7 +123,7 @@ int _parseTimeFraction(String s, int start, int end, Issues issues) {
 }
 
 int _fractionToUSeconds(int fraction, Issues issues) {
-	var f = fraction;
+  var f = fraction;
   if (f < 10) return f *= 100000;
   if (f < 100) return f *= 10000;
   if (f < 1000) return f *= 1000;

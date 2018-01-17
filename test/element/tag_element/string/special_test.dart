@@ -230,12 +230,14 @@ void main() {
       expect(ae2.values, equals(<String>[]));
     });
 
+/* Urgent Sharath: delete this test as AE no longer allows all blanks
     test('AE blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getAEList(1, 1);
         final ae0 = new AEtag(PTag.kPerformedStationAETitle, vList1);
+        // Note: all blanks are illegal in AE
         final blank = ae0.blank(i);
-        log.debug(('blank$i: ${blank.values}'));
+        log.debug(('blank$i: $blank'));
         expect(blank.values.length == 1, true);
         log.debug('value: ${blank.value}');
         expect(blank.value.length == i, true);
@@ -244,6 +246,7 @@ void main() {
         expect(blank.values, equals(strSpaceList));
       }
     });
+*/
 
     test('AE formBytes random', () {
       for (var i = 0; i < 10; i++) {
@@ -298,6 +301,7 @@ void main() {
       }
     });
 
+    //Urgent: fix all nested groups in all tests!!!!
     group('AE ', () {
       //VM.k1
       const aeTags0 = const <PTag>[
@@ -863,6 +867,8 @@ void main() {
       expect(cs2.values, equals(<String>[]));
     });
 
+/*
+//    Urgent Sharath all spaces no longer legal for CS
     test('CS blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getCSList(1, 1);
@@ -877,6 +883,7 @@ void main() {
         expect(blank.values, equals(strSpaceList));
       }
     });
+*/
 
     test('CS formBytes random', () {
       for (var i = 0; i < 10; i++) {
@@ -1628,6 +1635,7 @@ void main() {
       expect(ui2.values, equals(<String>[]));
     });
 
+/* Urgent Sharath: UI doesn't support blank
     test('UI blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getUIList(1, 1);
@@ -1635,6 +1643,7 @@ void main() {
         expect(ui0.blank, throwsA(const isInstanceOf<UnsupportedError>()));
       }
     });
+*/
 
     test('UI formBytes random', () {
       for (var i = 0; i < 10; i++) {

@@ -52,8 +52,8 @@ int parseInternetDate(String s,
 
 /// Returns true is [s] contains a valid DICOM date.
 // Note: checkArgs is done by [parseDcmDate].
-bool isValidDcmDateString(String s, {int start = 0, int end}) =>
-    (parseDcmDate(s, start: start, end: end) == null) ? false : true;
+bool isValidDcmDateString(String s, {int start = 0, int end, Issues issues}) =>
+    (parseDcmDate(s, start: start, end: end, issues: issues) == null) ? false : true;
 
 List<int> dateStringListToMicroseconds(List<String> daList) => daList.map(parseDcmDate);
 

@@ -7,7 +7,7 @@ part of odw.sdk.core.parser;
 //TODO: redo doc
 
 int parseDcmDateTime(String s,
-{int start = 0, int end, Issues issues, int onError(String s)}) {
+    {int start = 0, int end, Issues issues, int onError(String s)}) {
   try {
     int date, time = 0, tz = 0, index = start;
     end ??= s.length;
@@ -19,18 +19,18 @@ int parseDcmDateTime(String s,
       final timeEnd = (end < 21) ? end : 21;
       time = _parseDcmTime(s, index, timeEnd, issues);
       assert(time != null);
-      if (end > 21) tz = _parseDcmTimeZone(s, 21,  end,  issues);
+      if (end > 21) tz = _parseDcmTimeZone(s, 21, end, issues);
       assert(tz != null);
     }
     return date + time + tz;
-  } on FormatException catch(e) {
-	  if (onError != null) return onError(s.substring(start, end));
-	  return invalidTimeZoneString(e.message);
+  } on FormatException catch (e) {
+    if (onError != null) return onError(s.substring(start, end));
+    return invalidTimeZoneString(e.message);
   }
 }
 
-bool isValidDcmDateTimeString(String s, {int start = 0, int end}) =>
-    (parseDcmDateTime(s, start: start, end: end) == null) ? false : true;
+bool isValidDcmDateTimeString(String s, {int start = 0, int end, Issues issues}) =>
+    (parseDcmDateTime(s, start: start, end: end, issues: issues) == null) ? false : true;
 
 // **** Internal Functions
 

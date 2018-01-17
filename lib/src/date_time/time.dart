@@ -161,8 +161,8 @@ class Time implements Comparable<Time>{
   String toString() => inet;
 
   /// Returns _true_ if [s] is a valid DICOM [Time] [String].
-  static bool isValidString(String s, {int start = 0, int end}) =>
-      isValidDcmTimeString(s, start: start, end: end);
+  static bool isValidString(String s, {int start = 0, int end, Issues issues}) =>
+      isValidDcmTimeString(s, start: start, end: end, issues: issues);
 
   // Enhancement: all parse functions should take an onError argument.
   // Issue: are start, end, min, and max needed.
