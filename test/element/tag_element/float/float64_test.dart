@@ -490,9 +490,14 @@ void main() {
       test('FD isValidLength VM.k1 bad values', () {
         for (var i = 1; i < 10; i++) {
           final validMinVList = rng.float32List(2, i + 1);
-          system.throwOnError = false;
           for (var tag in fdTags0) {
+            system.throwOnError = false;
             expect(FD.isValidLength(tag, validMinVList), false);
+            expect(FD.isValidLength(tag, invalidVList), false);
+
+            system.throwOnError = true;
+            expect(() => FD.isValidLength(tag, invalidVList),
+                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
           }
         }
       });
@@ -510,9 +515,14 @@ void main() {
       test('FD isValidLength VM.k2 bad values', () {
         for (var i = 2; i < 10; i++) {
           final validMinVList = rng.float32List(3, i + 1);
-          system.throwOnError = false;
           for (var tag in fdTags1) {
+            system.throwOnError = false;
             expect(FD.isValidLength(tag, validMinVList), false);
+            expect(FD.isValidLength(tag, invalidVList), false);
+
+            system.throwOnError = true;
+            expect(() => FD.isValidLength(tag, invalidVList),
+                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
           }
         }
       });
@@ -530,9 +540,14 @@ void main() {
       test('FD isValidLength VM.k3 bad values', () {
         for (var i = 3; i < 10; i++) {
           final validMinVList = rng.float32List(4, i + 1);
-          system.throwOnError = false;
           for (var tag in fdTags2) {
+            system.throwOnError = false;
             expect(FD.isValidLength(tag, validMinVList), false);
+            expect(FD.isValidLength(tag, invalidVList), false);
+
+            system.throwOnError = true;
+            expect(() => FD.isValidLength(tag, invalidVList),
+                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
           }
         }
       });
@@ -550,9 +565,14 @@ void main() {
       test('FD isValidLength VM.k4 bad values', () {
         for (var i = 4; i < 10; i++) {
           final validMinVList = rng.float32List(5, i + 1);
-          system.throwOnError = false;
           for (var tag in fdTags3) {
+            system.throwOnError = false;
             expect(FD.isValidLength(tag, validMinVList), false);
+            expect(FD.isValidLength(tag, invalidVList), false);
+
+            system.throwOnError = true;
+            expect(() => FD.isValidLength(tag, invalidVList),
+                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
           }
         }
       });
@@ -573,6 +593,11 @@ void main() {
           system.throwOnError = false;
           for (var tag in fdTags4) {
             expect(FD.isValidLength(tag, validMinVList), false);
+            expect(FD.isValidLength(tag, invalidVList), false);
+
+            system.throwOnError = true;
+            expect(() => FD.isValidLength(tag, invalidVList),
+                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
           }
         }
       });
@@ -590,9 +615,14 @@ void main() {
       test('FD isValidLength VM.k9 bad values', () {
         for (var i = 9; i < 20; i++) {
           final validMinVList = rng.float32List(10, i + 1);
-          system.throwOnError = false;
           for (var tag in fdTags5) {
+            system.throwOnError = false;
             expect(FD.isValidLength(tag, validMinVList), false);
+            expect(FD.isValidLength(tag, invalidVList), false);
+
+            system.throwOnError = true;
+            expect(() => FD.isValidLength(tag, invalidVList),
+                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
           }
         }
       });
@@ -604,17 +634,6 @@ void main() {
           for (var tag in fdTags6) {
             expect(FD.isValidLength(tag, validMinVList), true);
           }
-        }
-      });
-
-      test('FD isValidLength bad values', () {
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(FD.isValidLength(tag, invalidVList), false);
-
-          system.throwOnError = true;
-          expect(() => FD.isValidLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         }
       });
 

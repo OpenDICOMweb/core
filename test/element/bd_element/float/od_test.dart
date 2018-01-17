@@ -11,7 +11,6 @@ import 'package:test/test.dart';
 
 import '../bd_test_utils.dart';
 
-//Urgent: why is this file so much shorter than fl_test.dart
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
