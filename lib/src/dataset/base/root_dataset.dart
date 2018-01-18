@@ -25,7 +25,6 @@ import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known/sop_class.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 
-
 /// The Root [Dataset] for a DICOM Entity.
 abstract class RootDataset<K> extends Dataset<K> {
   // **** interface
@@ -86,8 +85,7 @@ abstract class RootDataset<K> extends Dataset<K> {
   TransferSyntax get transferSyntax {
     final TransferSyntax ts = fmi.getUid(kTransferSyntaxUID, required: true);
     if (ts == null) {
-      log.info0('Using system.defaultTransferSyntax: '
-          '${system.defaultTransferSyntax}');
+//      log.info0('Using system.defaultTransferSyntax: ${system.defaultTransferSyntax}');
       return system.defaultTransferSyntax;
     }
     return ts;
@@ -134,7 +132,7 @@ abstract class RootDataset<K> extends Dataset<K> {
   }
 
   /// The DICOM Preamble (128 bytes) and Prefix('DICM')
- // Uint8List get prefix => ASCII.encode('DICM');
+  // Uint8List get prefix => ASCII.encode('DICM');
 
   /// Returns a formatted summary of _this_.
   String get summary => '''\n$runtimeType (#$hashCode)
@@ -155,9 +153,7 @@ ${elements.subSummary}
   String format(Formatter z) {
     final sb = new StringBuffer(summary);
     z.down;
-    sb
-      ..write(z.fmt('FMI:', fmi))
-      ..write(z.fmt('Elements:', elements));
+    sb..write(z.fmt('FMI:', fmi))..write(z.fmt('Elements:', elements));
     z.up;
     return sb.toString();
   }

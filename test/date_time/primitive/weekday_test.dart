@@ -117,11 +117,11 @@ void main() {
     test('previousWeekday', () {
       for (var day = 0; day < 7; day++) {
         final pwd = previousWeekday(day);
-        log.info0('pwd: $pwd');
+        log.debug('pwd: $pwd');
         if (day < 0 || day > 6) {
           expect(pwd, null);
         } else {
-          log.info0('day: $day');
+          log.debug('day: $day');
           expect(pwd, day - 1 == -1 ? 6 : day - 1);
         }
       }
@@ -130,11 +130,11 @@ void main() {
     test('nextWeekday', () {
       for (var day = 0; day < 7; day++) {
         final pwd = nextWeekday(day);
-        log.info0('pwd: $pwd');
+        log.debug('pwd: $pwd');
         if (day < 0 || day > 6) {
           expect(pwd, null);
         } else {
-          log.info0('day: $day');
+          log.debug('day: $day');
           expect(pwd, day + 1 == 7 ? 0 : day + 1);
         }
       }

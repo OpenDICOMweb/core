@@ -14,7 +14,7 @@ import 'utility_test.dart' as utility;
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'string/special_test', level: Level.debug2);
+  Server.initialize(name: 'string/special_test', level: Level.info);
   system.throwOnError = false;
 
   group('AEtag', () {

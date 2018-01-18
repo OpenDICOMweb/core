@@ -483,7 +483,7 @@ ByteData _removePadding(ByteData bd, int vfOffset, [int padChar = kSpace]) {
   final lastIndex = bd.lengthInBytes - 1;
   final char = bd.getUint8(lastIndex);
   if (char == kNull || char == kSpace) {
-    log.info('Removing Padding: $char');
+    log.warn('Removing Padding: $char');
     return bd.buffer.asByteData(bd.offsetInBytes, bd.lengthInBytes - 1);
   }
   return bd;

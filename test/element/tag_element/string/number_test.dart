@@ -339,9 +339,9 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDSList(1, 1);
         final bytes = DS.toBytes(vList1);
-        log.info0('bytes:$bytes');
+        log.debug('bytes:$bytes');
         final ds1 = new DStag.fromBytes(PTag.kSamplingFrequency, bytes);
-        log.info0('ds1: ${ds1.info}');
+        log.debug('ds1: ${ds1.info}');
         expect(ds1.hasValidValues, true);
       }
     });
@@ -1320,9 +1320,9 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getISList(1, 1);
         final bytes = IS.toBytes(vList1);
-        log.info0('bytes:$bytes');
+        log.debug('bytes:$bytes');
         final is1 = new IStag.fromBytes(PTag.kWaveformChannelNumber, bytes);
-        log.info0('is1: ${is1.info}');
+        log.debug('is1: ${is1.info}');
         expect(is1.hasValidValues, true);
       }
     });

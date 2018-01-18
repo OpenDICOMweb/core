@@ -249,10 +249,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final intList0 = rng.int16List(1, 1);
         final uint8List0 = Int16Base.listToBytes(intList0);
-        log.info('uint8List0: $uint8List0');
+        log.debug('uint8List0: $uint8List0');
         //       final uInt8ListV1 = int16List0.buffer.asUint8List();
         final ss0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, uint8List0);
-        log.info('ss0: $ss0');
+        log.debug('ss0: $ss0');
         expect(ss0.hasValidValues, true);
         expect(ss0.vfBytes, equals(uint8List0));
         expect(ss0.values is Int16List, true);
@@ -283,7 +283,7 @@ void main() {
     test('SS fromBytes bad values ', () {
       final int16ListV2 = new Int16List.fromList([rng.nextInt32]);
       final uInt8ListV2 = int16ListV2.buffer.asUint8List();
-      log.info('int16ListV2 : $int16ListV2, uInt8ListV2: $uInt8ListV2');
+      log.debug('int16ListV2 : $int16ListV2, uInt8ListV2: $uInt8ListV2');
       final ss7 = SStag.fromBytes(PTag.kTagAngleSecondAxis, uInt8ListV2);
       expect(ss7.hasValidValues, true);
     });

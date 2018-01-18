@@ -164,7 +164,7 @@ void main() {
         expect(vs0, false);
 
         system.throwOnError = true;
-        log.info('s: "$s"');
+        log.debug('s: "$s"');
         expect(() => Age.isValidString(s),
             throwsA(const isInstanceOf<InvalidAgeStringError>()));
       }

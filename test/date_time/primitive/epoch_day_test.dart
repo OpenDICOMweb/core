@@ -88,7 +88,7 @@ void main() {
 
     test('Leap Year Performance Test', () {
       system.level = Level.info0;
-      log.info0('Leap Year Perfermance Test: $startYear - $endYear');
+      log.debug('Leap Year Perfermance Test: $startYear - $endYear');
       final watch = new Stopwatch()..start();
 
       for (var i = startEpochDay; i < endEpochDay; i++) {
@@ -113,7 +113,7 @@ void main() {
         }
       }
       watch.stop();
-      log.info0('    Elapsed: ${watch.elapsed}');
+      log.debug('    Elapsed: ${watch.elapsed}');
     });
 
     test('Basic EpochDay', () {
@@ -149,7 +149,7 @@ void main() {
     });
 
     test('Epoch Date Basic Test', () {
-      log.info0('Epoch Date Basic Test...');
+      log.debug('Epoch Date Basic Test...');
       final watch = new Stopwatch()..start();
       for (var i = system.minYear; i < system.maxYear; i++) {
         final List<int> date = epochDayToDate(i);
@@ -157,20 +157,20 @@ void main() {
         final m = date[1];
         final d = date[2];
         final n = dateToEpochDay(y, m, d);
-        // log.debug0('$i, $n, ${i == n}');
+        // log.debug('$i, $n, ${i == n}');
         expect(i == n, true);
         if (isLeapYear(y) && m == 2 && d == 29) {
           final last = lastDayOfMonth(y, m);
           expect(last == 29, true);
-          log.debug0('$y-$m-$d');
+          log.debug('$y-$m-$d');
         }
       }
       watch.stop();
-      log.info0('  Elapsed: ${watch.elapsed}');
+      log.debug('  Elapsed: ${watch.elapsed}');
     });
 
     test('Epoch Date Performance Test', () {
-      log.info0('Epoch Date Performance Test...');
+      log.debug('Epoch Date Performance Test...');
       system.level = Level.info0;
       log.debug1('  startYear: $startYear, endYear: $endYear');
 
@@ -193,7 +193,7 @@ void main() {
       watch.start();
 
       for (var y = startYear; y <= endYear; y++) {
-        log.debug0('    Year: $startYear: ${watch.elapsed}');
+        log.debug('    Year: $startYear: ${watch.elapsed}');
         for (var m = 1; m <= 12; m++) {
           final lastDay = lastDayOfMonth(y, m);
           log.debug1('Year: $y, Month: $m, lastDay: $lastDay, Leap: ${isLeapYear(y)}');
@@ -221,7 +221,7 @@ void main() {
             '${endYear - startYear}')
         ..debug1('  Tested ${-begin + end} dates');
       watch.stop();
-      log.info0('  Elapsed: ${watch.elapsed}');
+      log.debug('  Elapsed: ${watch.elapsed}');
     });
 
     test('dateUnitTest', () {
@@ -249,7 +249,7 @@ void main() {
       // log.debug('\n******* Starting Loop');
       watch.start();
       for (var y = startYear; y <= endYear; y++) {
-        if (y % 10000 == 0) log.debug0('    Year: $y: ${watch.elapsed}');
+        if (y % 10000 == 0) log.debug('    Year: $y: ${watch.elapsed}');
         for (var m = 1; m <= 12; m++) {
           final e = lastDayOfMonth(y, m);
           //    log.debug('Month: $m, lastDay: $e');
@@ -286,10 +286,10 @@ void main() {
             '${endYear - startYear}')
         ..debug('  Tested ${-begin + end} dates');
       watch.stop();
-      log.info0('  Elapsed: ${watch.elapsed}');
+      log.debug('  Elapsed: ${watch.elapsed}');
     });
     test('weekDayFromEpochDay', () {
-      log.info0('weekDayFromEpochDay');
+      log.debug('weekDayFromEpochDay');
       final watch = new Stopwatch();
       final zeroWeekDay = kThursday;
       watch.start();

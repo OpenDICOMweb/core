@@ -831,7 +831,7 @@ void main() {
       final da1 = new DAtag(PTag.kCreationDate, ['19930822']);
       final daNoValues1 = da1.noValues;
       expect(daNoValues1.values.isEmpty, true);
-      log.info0('daNoValues1:$daNoValues1');
+      log.debug('daNoValues1:$daNoValues1');
 
       for (var s in goodDAList) {
         final da1 = new DAtag(PTag.kCreationDate, s);
@@ -1617,7 +1617,7 @@ void main() {
       final dt1 = new DTtag(PTag.kDateTime, ['19991025235959']);
       final dtNoValues1 = dt1.noValues;
       expect(dtNoValues1.values.isEmpty, true);
-      log.info0('dtNoValues1:$dtNoValues1');
+      log.debug('dtNoValues1:$dtNoValues1');
 
       for (var s in goodDTList) {
         final dt1 = new DTtag(PTag.kDateTime, s);
@@ -2299,7 +2299,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1, 2, 18);
         final tm0 = new TMtag(PTag.kModifiedImageTime, vList0);
-        log.info0('vList0: $vList0, tm0:${tm0.info}');
+        log.debug('vList0: $vList0, tm0:${tm0.info}');
         expect(tm0.hasValidValues, true);
       }
 
@@ -2308,7 +2308,7 @@ void main() {
         final vList0 = rsg.getInvalidTMList(3, 4, 2, 18);
         log.debug('invalid TM vList:$vList0');
         final tm0 = new TMtag(PTag.kModifiedImageTime, vList0);
-        log.info0('vList0: $vList0');
+        log.debug('vList0: $vList0');
         //Urgent Sharath we need to to implement rsg.getInvalidTMList in test_tools.
          expect(tm0, isNull);
       }

@@ -161,7 +161,7 @@ void main() {
     test('hashString Date', () {
       system.throwOnError = false;
       for (var s in goodDcmDateList) {
-        log.info0('s: "$s"');
+        log.debug('s: "$s"');
         final hs0 = Date.hashString(s);
         log.debug('hs0: $hs0');
         expect(hs0, isNotNull);

@@ -110,8 +110,7 @@ class Fmi {
   static Uid getTransferSyntax(Dataset ds) {
     final ts = ds.getString(kTransferSyntaxUID);
     if (ts == null) {
-      log.info0('Using system.defaultTransferSyntax: '
-          '${system.defaultTransferSyntax}');
+ //     log.info0('Using system.defaultTransferSyntax: ${system.defaultTransferSyntax}');
       return system.defaultTransferSyntax;
     }
     return TransferSyntax.lookup(ts);

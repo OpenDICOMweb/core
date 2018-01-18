@@ -11,7 +11,7 @@ import 'package:test_tools/tools.dart';
 
 void main(List<String> args) {
   final rsg = new RSG(seed: 0);
-  print('wkUid.lenght: ${wkUids.length}');
+  print('wkUid.length: ${wkUids.length}');
   //hasValidValues: good values
   List<String> vList0;
   for (var i = 0; i < 100; i++) {

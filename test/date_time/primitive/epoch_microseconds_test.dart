@@ -86,7 +86,7 @@ void main() {
 
     test('Leap Year Performance Test', () {
 //      system.level = Level.debug2;
-      log.info0('Leap Year Perfermance Test: $startYear - $endYear');
+      log.debug('Leap Year Perfermance Test: $startYear - $endYear');
       final watch = new Stopwatch()..start();
 
       for (var i = startYear; i < endYear; i++) {
@@ -110,7 +110,7 @@ void main() {
         }
       }
       watch.stop();
-      log.info0('    Elapsed: ${watch.elapsed}');
+      log.debug('    Elapsed: ${watch.elapsed}');
     });
 
     test('Basic EpochMicroseconds', () {
@@ -139,7 +139,7 @@ void main() {
     });
 
     test('Epoch Date Basic Test', () {
-      log.info0('Epoch Date Basic Test...');
+      log.debug('Epoch Date Basic Test...');
       final watch = new Stopwatch()..start();
       for (var i = system.minYear; i < system.maxYear; i++) {
         final List<int> date = epochMicrosecondToDate(i * kMicrosecondsPerDay);
@@ -156,11 +156,11 @@ void main() {
         }
       }
       watch.stop();
-      log.info0('  Elapsed: ${watch.elapsed}');
+      log.debug('  Elapsed: ${watch.elapsed}');
     });
 
     test('Epoch Date Performance Test', () {
-      log.info0('Epoch Date Performance Test...');
+      log.debug('Epoch Date Performance Test...');
       system.level = Level.info0;
       log.debug1('  startMicrosecond: $startMicrosecond, endMicrosecond: '
           '$endMicrosecond');
@@ -216,7 +216,7 @@ void main() {
             '${endYear - startYear}')
         ..debug1('  Tested ${-begin + end} dates');
       watch.stop();
-      log.info0('  Elapsed: ${watch.elapsed}');
+      log.debug('  Elapsed: ${watch.elapsed}');
     });
 
     test('dateUnitTest', () {
@@ -282,10 +282,10 @@ void main() {
             '${endYear - startYear}')
         ..debug('  Tested ${-begin + end} dates');
       watch.stop();
-      log.info0('  Elapsed: ${watch.elapsed}');
+      log.debug('  Elapsed: ${watch.elapsed}');
     });
     test('weekDayFromEpochDay', () {
-      log.info0('weekDayFromEpochDay');
+      log.debug('weekDayFromEpochDay');
       final watch = new Stopwatch()..start();
       final zeroWeekDay = kThursday;
 

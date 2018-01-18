@@ -171,7 +171,7 @@ class DatasetComparitor<K> {
     final v0 = sq0.values;
     final v1 = sq1.values;
     if (v0.isEmpty && v1.isEmpty) return;
-    log.info0('sq0.values($v0), sq1.values($v1');
+//    log.info0('sq0.values($v0), sq1.values($v1');
     for (var i = 0; i < len; i++)
       hasDifferenceSQ = compareItems(v0.elementAt(i), v1.elementAt(i));
     if (hasDifferenceSQ) addNonMatchingElements(sq0, sq1);

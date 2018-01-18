@@ -33,7 +33,8 @@ Null invalidUid(Uid uid, [Issues issues]) {
 /// Logs an Error entry, and then if [throwOnError] is _true_ throws an
 /// [InvalidUidError]; otherwise, returns _null_.
 Null invalidUidList(List<Uid> uidList, [Issues issues]) {
-  final msg = 'Invalid List<Uid> Error: $uidList';
+ // final msg = 'Invalid List<Uid> Error: $uidList';
+   final msg = 'Invalid List<Uid> Error: "${uidList[0]}" ...';
   return _doUidError(msg, issues);
 }
 

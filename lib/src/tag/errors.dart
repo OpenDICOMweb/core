@@ -226,7 +226,9 @@ class InvalidValuesLengthError<V> extends Error {
 
   static String _msg<V>(Tag tag, Iterable<V> values) {
   	if (tag == null || tag is! Tag) return invalidTagError(tag);
-	  return 'InvalidValuesLengthError:\n  Tag(${tag.info})\n  values: $values';
+  	// Urgent Jim use truncated list
+	  return 'InvalidValuesLengthError:\n  Tag(${tag.info}';
+    //    'values: ${values.elementAt(0)} ...';
   }
 
 }
