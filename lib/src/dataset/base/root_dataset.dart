@@ -13,7 +13,6 @@ import 'package:core/src/dataset/parse_info.dart';
 import 'package:core/src/dataset/status_report.dart';
 import 'package:core/src/date_time/age.dart';
 import 'package:core/src/date_time/date.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/empty_list.dart';
 import 'package:core/src/entity/patient/patient.dart';
@@ -21,6 +20,7 @@ import 'package:core/src/entity/patient/person_name.dart';
 import 'package:core/src/entity/patient/sex.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known/sop_class.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
@@ -54,6 +54,7 @@ abstract class RootDataset<K> extends Dataset<K> {
   // it's own specialized implementation for correctness and efficiency.
   ElementList get fmi;
 
+  String get path;
   /// Returns the parsing information [ParseInfo] for _this_.
   /// [pInfo] has one-time setter that is initialized lazily.
   // ignore: unnecessary_getters_setters

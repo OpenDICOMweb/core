@@ -13,15 +13,18 @@ import 'package:core/src/dataset/tag/tag_dataset.dart';
 
 /// A [TagRootDataset].
 class TagRootDataset extends RootDataset<int> with TagDataset {
+  ByteData bd;
   @override
   RDSBytes dsBytes;
   @override
   final MapAsList fmi;
   @override
   final MapAsList elements;
+  @override
+  final String path;
 
   /// Creates an empty, i.e. without TagElements, [TagRootDataset].
-  TagRootDataset({ByteData bd, int fmiEnd, String path = ''})
+  TagRootDataset({this.bd, int fmiEnd, MapAsList fmi, MapAsList elements, this.path = ''})
       : dsBytes = new RDSBytes(bd, fmiEnd),
         fmi = new MapAsList(),
         elements = new MapAsList();
@@ -36,7 +39,8 @@ class TagRootDataset extends RootDataset<int> with TagDataset {
       bool fast = true})
       : dsBytes = new RDSBytes(bd, fmiEnd),
         fmi = new MapAsList.from(rds.fmi),
-        elements = new MapAsList.from(rds.elements);
+        elements = new MapAsList.from(rds.elements),
+        path = rds.path;
 
   //Urgent make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].
@@ -48,7 +52,8 @@ class TagRootDataset extends RootDataset<int> with TagDataset {
                         bool fast = true})*/
       : dsBytes = new RDSBytes(rds.bd, rds.dsBytes.fmiEnd),
         fmi = new MapAsList.from(rds.fmi),
-        elements = new MapAsList.from(rds.elements);
+        elements = new MapAsList.from(rds.elements),
+        path = rds.path;
 
   @override
   TagRootDataset copy([_]) => new TagRootDataset.from(this);

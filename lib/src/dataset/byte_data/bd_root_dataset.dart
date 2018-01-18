@@ -20,13 +20,15 @@ class BDRootDataset extends RootDataset<int> with DatasetBD {
   final MapAsList fmi;
   @override
   final MapAsList elements;
+  @override
   String path;
 
   /// Creates an empty, i.e. without ByteElements, [BDRootDataset].
   BDRootDataset(this.bd,
-      {MapAsList fmi, MapAsList elements, this.path = ''})
-      : fmi = (fmi == null) ? new MapAsList() : fmi,
-        elements = (elements == null) ? new MapAsList() : elements {
+      {int fmiEnd, MapAsList fmi, MapAsList elements, this.path = ''})
+      : dsBytes = new RDSBytes(bd, fmiEnd),
+        fmi = fmi ?? new MapAsList(),
+        elements = elements ?? new MapAsList() {
     print('BDRoot: $this');
   }
 
