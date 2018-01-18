@@ -12,7 +12,6 @@ import 'package:core/src/date_time/date.dart';
 import 'package:core/src/date_time/dcm_date_time.dart';
 import 'package:core/src/date_time/primitives//age.dart';
 import 'package:core/src/date_time/time.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/crypto.dart';
 import 'package:core/src/element/errors.dart';
@@ -24,6 +23,7 @@ import 'package:core/src/parser/parse_errors.dart';
 import 'package:core/src/string/ascii.dart';
 import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/vr/vr.dart';
@@ -345,6 +345,7 @@ abstract class StringBase<V> extends Element<String> {
         ? <String>[ASCII.decode(vfBytes, allowInvalid: allow)]
         : <String>[UTF8.decode(vfBytes, allowMalformed: allow)];
   }
+
 
   //Urgent Jim: definition of fromBase64 and toBase64(line:366) looks same
   //TODO: issues

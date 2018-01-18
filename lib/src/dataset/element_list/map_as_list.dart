@@ -41,7 +41,7 @@ class MapAsList extends ElementList<int> {
         super(dataset ??= map.dataset, new List.from(map.sequences),
             new History.from(map.history));
 
- //Flush when above is working
+  //Flush when above is working
   @override
   bool operator ==(Object other) {
     if (other is MapAsList) {
@@ -56,7 +56,7 @@ class MapAsList extends ElementList<int> {
         if (keysA.current != keysB.current) {
 //        	print('A = ${keysA.current}');
 //	        print('B = ${keysB.current}');
-	        return false;
+          return false;
         }
       }
 
@@ -77,9 +77,10 @@ class MapAsList extends ElementList<int> {
 
   @override
   Element lookup(int index, {bool required = false}) {
-  	final e = eMap[index];
-  	if (e == null && required == true) return invalidElementIndex(index);
-  	return e;
+    final e = eMap[index];
+    if (e == null && required == true)
+      return invalidElementIndex(index, required: required);
+    return e;
   }
 
   @override
@@ -132,5 +133,5 @@ class MapAsList extends ElementList<int> {
   @override
   String toString() => '$elementsList';
 
- // static const MapEquality<int, Element> _equality = const MapEquality();
+  // static const MapEquality<int, Element> _equality = const MapEquality();
 }

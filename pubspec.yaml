@@ -12,7 +12,7 @@ dependencies:
   bignum: ^0.1.0
   crypto: any
   quiver: any
-#TODO before V0.9.0: decide on using pub_semver or version - remove one
+# TODO before V0.9.0: decide on using pub_semver or version - remove one
   version: ^1.0.2
 
 dev_dependencies:
