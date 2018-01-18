@@ -82,12 +82,12 @@ class DatasetComparitor<K> {
     length = ds0.length;
     if (ds0.length != ds1.length) {
       length = ds0.length;
-      log.debug('*** Uneven DS length: ds0($ds0), ds1($ds1)');
+      // log.debug('*** Uneven DS length: ds0($ds0), ds1($ds1)');
       if (ds0.length > ds1.length) length = ds1.length;
       hasDifference = true;
     }
 
-    log.debug('length($length)');
+    // log.debug('length($length)');
     final ds0List = ds0.elements.toList(growable: false);
     final ds1List = ds1.elements.toList(growable: false);
     for (var i = 0; i < length; i++) {
@@ -98,7 +98,7 @@ class DatasetComparitor<K> {
         ..debug('e0: ${e0.info}')
         ..debug('e1: ${e1.info}');
       if (e0.runtimeType != e1.runtimeType) {
-        log.debug('Uneven Type: e0($e0), e0($e0)');
+        // log.debug('Uneven Type: e0($e0), e0($e0)');
         //throw 'Non matching elements';
       }
       if (e0 is SQ && e1 is SQ) {
@@ -127,13 +127,13 @@ class DatasetComparitor<K> {
       log.warn('$i ($level) Null Element: e0($e0), e1($e1)');
       return;
     } else if (e0.tag != e1.tag) {
-      log.debug('!= Tag E0: ${e0.tag.dcm}, E1: ${e1.tag.dcm}');
+      // log.debug('!= Tag E0: ${e0.tag.dcm}, E1: ${e1.tag.dcm}');
       hasDifference = true;
     } else if (e0.vrIndex != e1.vrIndex) {
-      log.debug('!= VR E0: ${e0.vrId}, E1: ${e1.vrId}');
+      // log.debug('!= VR E0: ${e0.vrId}, E1: ${e1.vrId}');
       hasDifference = true;
     } else if (e0.length != e1.length) {
-      log.debug('!= Length E0: ${e0.length}, E1: ${e1.length}');
+      // log.debug('!= Length E0: ${e0.length}, E1: ${e1.length}');
       hasDifference = true;
     }
     final len = (e0.length < e1.length) ? e0.length : e1.length;
@@ -141,7 +141,7 @@ class DatasetComparitor<K> {
     final v1 = e1.values.toList(growable: false);
     for (var i = 0; i < len; i++) {
       if (v0[i] != v1[i]) {
-        log.debug('!= values[$i] E0: ${v0[i]}, E1: ${v1[i]}');
+        // log.debug('!= values[$i] E0: ${v0[i]}, E1: ${v1[i]}');
         hasDifference = true;
       }
     }
@@ -154,16 +154,16 @@ class DatasetComparitor<K> {
     log.down;
     var hasDifferenceSQ = false;
     if (sq0.tag != sq1.tag) {
-      log.debug('!= Sequence Tag E0: ${sq0.tag.dcm}, E1: ${sq1.tag.dcm}');
+      // log.debug('!= Sequence Tag E0: ${sq0.tag.dcm}, E1: ${sq1.tag.dcm}');
       hasDifference = true;
     }
     if (sq0.vrIndex != sq1.vrIndex) {
-      log.debug('!= Sequence VR E0: ${sq0.vrId}, E1: ${sq1.vrId}');
+      // log.debug('!= Sequence VR E0: ${sq0.vrId}, E1: ${sq1.vrId}');
       hasDifference = true;
     }
     if (sq0.isEmpty && sq1.isEmpty) return;
     if (sq0.length != sq1.length) {
-      log.debug('!= Sequence Items E0: ${sq0.length}, E1: ${sq1.length}');
+      // log.debug('!= Sequence Items E0: ${sq0.length}, E1: ${sq1.length}');
       hasDifference = true;
     }
 

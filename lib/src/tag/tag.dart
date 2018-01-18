@@ -441,7 +441,7 @@ abstract class Tag {
       if (Tag.isPrivateCreatorCode(code)) return new PCTag(code, vrIndex, creator);
       if (Tag.isPrivateDataCode(code)) return new PDTag(code, vrIndex, creator);
     }
-    log.debug('lookupTag: ${Tag.toDcm(code)} $vrIndex, $creator');
+//    log.debug('lookupTag: ${Tag.toDcm(code)} $vrIndex, $creator');
     msg = 'Unknown Private Tag Code: creator: $creator';
     return invalidTagCode(code, msg);
   }

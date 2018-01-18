@@ -34,7 +34,7 @@ class Series extends Entity {
     final e = rds[kSeriesInstanceUID];
     if (e == null) return elementNotPresentError(e);
     final seriesUid = new Uid(e.value);
-    log.debug('seriesUid: $seriesUid');
+    // log.debug('seriesUid: $seriesUid');
     final series = new Series(study, seriesUid, rds);
     study.putIfAbsent(series);
     return series;

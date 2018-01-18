@@ -5,6 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/core.dart';
+
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
@@ -72,7 +73,7 @@ class Compare {
   }
 
   void compareElements(Element eo, Element e1) {
-    log.debug('Elements:\n\te0: $eo\n\te1: $e1');
+    // log.debug('Elements:\n\te0: $eo\n\te1: $e1');
     if (eo.tag != e1.tag) throw new ArgumentError('Incomparable Tags: $eo, $e1');
     if (eo.vrIndex != e1.vrIndex) throw new ArgumentError('VRs are not equivalent: $eo, '
                                                            '$e1');
@@ -80,7 +81,7 @@ class Compare {
   }
 
   void compareSequences(SQ sq0, SQ sq1) {
-    log.debug('sq0: $sq0\nsq1: $sq1');
+    // log.debug('sq0: $sq0\nsq1: $sq1');
 
     if (sq0.items.length == sq1.items.length) {
       if (sq0.items.isEmpty) return;
@@ -91,28 +92,28 @@ class Compare {
   }
 
   void compareItems(Dataset item0, Dataset item1) {
-    log.debug('item0: $item0\nitem1: $item1');
+    // log.debug('item0: $item0\nitem1: $item1');
     final elements0 = item0.elements;
     final elements1 = item1.elements;
-    log.debug('elements0: $elements0\nelements0: $elements0');
+    // log.debug('elements0: $elements0\nelements0: $elements0');
 
     if (elements0.length == elements1.length) {
-      log.debug('map.length:\n\t${elements0.length}\n\t${elements1.length}');
+      // log.debug('map.length:\n\t${elements0.length}\n\t${elements1.length}');
       if (elements0.isEmpty) {
-        log.debug('zero length items: $item0, $item1');
+        // log.debug('zero length items: $item0, $item1');
       }
       for (var i = 0; i < elements0.length; i++) {
-        log.debug(
-            '\telements0[$i]: ${elements0[i]}final\n\telements1[$i]: ${elements1[i]}');
+        // log.debug(
+        //    '\telements0[$i]: ${elements0[i]}final\n\telements1[$i]: ${elements1[i]}');
         compareElements(elements0[i], elements1[i]);
       }
     } else {
-      log.debug('Item: unequal lengths:\n\t$item0\n\t$item1');
+      // log.debug('Item: unequal lengths:\n\t$item0\n\t$item1');
     }
   }
 
   void compareValues(Element e0, Element e1) {
-    log.debug('e0: $e0\ne1: $e1');
+    // log.debug('e0: $e0\ne1: $e1');
     final v0 = e0.values.toList(growable: false);
     final v1 = e1.values.toList(growable: false);
     if (v0.length == v1.length) {
@@ -124,11 +125,11 @@ class Compare {
       }
       same.add(e0);
     } else if (v0.length < v1.length) {
-      log.debug('v0: $v0\nv1: $v1');
+      // log.debug('v0: $v0\nv1: $v1');
       diff.add([-1, e0, e1]);
     } else {
       diff.add([1, e0, e1]);
-      log.debug('v0: $v0\nv1: $v1');
+      // log.debug('v0: $v0\nv1: $v1');
     }
   }
 }

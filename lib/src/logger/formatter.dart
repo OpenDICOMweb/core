@@ -5,7 +5,6 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/logger/indenter.dart';
-import 'package:core/src/system/system.dart';
 
 abstract class Formattable<T> implements Iterable<T> {
   @override
@@ -113,7 +112,7 @@ class Formatter {
         }
       }
     } on NoSuchMethodError {
-      log.debug('no such method: $values');
+//      log.debug('no such method: $values');
       if (values != null) sb.write('$z$values\n');
     } finally {
       up;

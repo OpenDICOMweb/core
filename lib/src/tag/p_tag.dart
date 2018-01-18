@@ -65,8 +65,11 @@ class PTag extends Tag {
         this.type = EType.k3,
         super();
 
+ // TODO: make this the definition of index once we have a Tag array in index order,
+ // TODO: by frequency
+ // int get index => pTagCodes.indexOf(code);
   @override
-  int get index => pTagCodes.indexOf(code);
+  int get index => code;
 
   @override
   bool get isValid => keyword != _unknownKeyword;
