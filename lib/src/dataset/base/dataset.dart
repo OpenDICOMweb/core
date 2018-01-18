@@ -180,7 +180,7 @@ $runtimeType(#$hashCode):
   /// the same except it has no values.  Returns the original element.
   Element update<V>(int index, Iterable<V> vList, {bool required = false}) {
     final old = elements.lookup(index, required: required);
-    if (old == null) return elementNotPresentError(index);
+    if (old == null) return null;
     final e = old.update(vList);
     elements[index] = e;
     return old;
@@ -190,7 +190,7 @@ $runtimeType(#$hashCode):
   /// the same except it has no values.  Returns the original element.
   Element updateF<V>(int index, Iterable f(Iterable<V> vList), {bool required = false}) {
     final old = elements.lookup(index, required: required);
-    if (old == null) return elementNotPresentError(index);
+    if (old == null) return null;
     final e = old.updateF(f);
     elements[index] = e;
     return old;
