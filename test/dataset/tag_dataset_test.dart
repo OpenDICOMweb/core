@@ -347,22 +347,22 @@ void main() {
 
       expect(
           () =>
-              rootDS.update<String>(kQueryRetrieveLevel, stringDSList1, required: false),
+              rootDS.update<String>(kQueryRetrieveLevel, stringDSList1, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
 
       expect(
           () => rootDS.update<String>(kQueryRetrieveLevel, stringDSList1, required: true),
-          throwsA(const isInstanceOf<InvalidElementIndexError>()));
-
-      expect(
-          () => rootDS.update<String>(kCompoundGraphicInstanceID, stringDSList1,
-              required: false),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
 
       expect(
           () => rootDS.update<String>(kCompoundGraphicInstanceID, stringDSList1,
               required: true),
-          throwsA(const isInstanceOf<InvalidElementIndexError>()));
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+
+      expect(
+          () => rootDS.update<String>(kCompoundGraphicInstanceID, stringDSList1,
+              required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
 
     test('listsEqual', () {

@@ -176,23 +176,19 @@ $runtimeType(#$hashCode):
 
   void addList(List<Element> eList) => elements.addAll(eList);
 
-  /// Replaces the element with [index] with a new element that is
-  /// the same except it has no values.  Returns the original element.
+  /// Replaces the element with [index] with a new element with the same [Tag],
+  /// but with [vList] as its _values_. Returns the original element.
   Element update<V>(int index, Iterable<V> vList, {bool required = false}) {
     final old = elements.lookup(index, required: required);
-    if (old == null) return elementNotPresentError(index);
-    final e = old.update(vList);
-    elements[index] = e;
+    if (old != null) elements[index] = old.update(vList);
     return old;
   }
 
-  /// Replaces the element with [index] with a new element that is
-  /// the same except it has no values.  Returns the original element.
+  /// Replaces the element with [index] with a new element with the same [Tag],
+  /// but with _values_ of [f(e.values)]. Returns the original element.
   Element updateF<V>(int index, Iterable f(Iterable<V> vList), {bool required = false}) {
     final old = elements.lookup(index, required: required);
-    if (old == null) return elementNotPresentError(index);;
-    final e = old.updateF(f);
-    elements[index] = e;
+    if (old != null) elements[index] = old.updateF(f);
     return old;
   }
 
@@ -218,10 +214,11 @@ $runtimeType(#$hashCode):
   List<Element> updateAllUids(int index, Iterable<Uid> uids) =>
       elements.updateAllUids(index, uids);
 
-  /// Replaces the element with [index] with a new element that is
-  /// the same except it has no values.  Returns the original element.
+  /// Replaces the _values_ of the [Element] with [index] with [vList].
+  /// Returns the original _values_.
   Iterable<V> replace<V>(int index, Iterable<V> vList, {bool required = false}) {
-    final e = elements[index];
+    final e = elements.lookup(index, required: required);
+    if (e == null) return const <V>[];
     final old = e.values;
     e.values = vList;
     return old;

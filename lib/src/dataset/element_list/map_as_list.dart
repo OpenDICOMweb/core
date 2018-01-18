@@ -7,9 +7,9 @@
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/element_list/element_list.dart';
 import 'package:core/src/dataset/element_list/history.dart';
+import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/element/errors.dart';
 import 'package:core/src/system/system.dart';
 
 //  create MapAsList
@@ -41,7 +41,12 @@ class MapAsList extends ElementList<int> {
         super(dataset ??= map.dataset, new List.from(map.sequences),
             new History.from(map.history));
 
-  //Flush when above is working
+/* TODO: change to this version of ==
+  @override
+  bool operator ==(Object other) =>
+		  (other is MapAsList) ? _equality.equals(eMap, other.eMap) : false;
+*/
+  // Flush when above is working
   @override
   bool operator ==(Object other) {
     if (other is MapAsList) {
@@ -53,11 +58,7 @@ class MapAsList extends ElementList<int> {
       for (var i = 0; i < length; i++) {
         keysA.moveNext();
         keysB.moveNext();
-        if (keysA.current != keysB.current) {
-//        	print('A = ${keysA.current}');
-//	        print('B = ${keysB.current}');
-          return false;
-        }
+        if (keysA.current != keysB.current) return false;
       }
 
       final valuesA = eMap.values.iterator;
@@ -78,19 +79,13 @@ class MapAsList extends ElementList<int> {
   @override
   Element lookup(int index, {bool required = false}) {
     final e = eMap[index];
-    if (e == null && required == true)
-      return invalidElementIndex(index, required: required);
-    return e;
+    return (e == null && required == true)
+    // TODO: which error to throw - invalidElementIndex or
+     ? elementNotPresentError(index) : e;
   }
 
   @override
   void operator []=(int index, Element e) => eMap[e.index] = e;
-
-/*
-  @override
-  bool operator ==(Object other) =>
-		  (other is MapAsList) ? _equality.equals(eMap, other.eMap) : false;
-*/
 
   @override
   int get hashCode => system.hasher.nList(eMap.values);
