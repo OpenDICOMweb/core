@@ -7,7 +7,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/mixin/undefined_length_mixin.dart';
 import 'package:core/src/element/crypto.dart';
@@ -15,6 +14,7 @@ import 'package:core/src/element/errors.dart';
 import 'package:core/src/empty_list.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/tag_lib.dart';
 import 'package:core/src/vr/vr.dart';
 
@@ -210,11 +210,8 @@ abstract class Int8Base extends IntBase {
   }
 
   /// Returns a [Int8List] from a [BASE64] [String].
-  static Int8List listFromBase64(String s, {bool asView = true, bool check = true}) {
-    //TODO: convert to one line when Base6.decode is Uint8List.
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Int8List listFromBase64(String s, {bool asView = true, bool check = true}) =>
+      (s.isEmpty) ? kEmptyInt8List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Int8List] from a [Uint8List].
   static Int8List listFromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -294,11 +291,8 @@ abstract class Int16Base extends IntBase {
   }
 
   /// Returns a [Int16List] from a [BASE64] [String].
-  static Int16List listFromBase64(String s, {bool asView = true, bool check = true}) {
-    //TODO: convert to one line when Base6.decode is Uint8List.
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Int16List listFromBase64(String s, {bool asView = true, bool check = true})=>
+      (s.isEmpty) ? kEmptyInt16List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Int16List] from a [Uint8List].
   static Int16List listFromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -451,11 +445,8 @@ abstract class Int32Base extends IntBase {
   }
 
   /// Returns a [Int32List] from a [BASE64] [String].
-  static Int32List listFromBase64(String s, {bool asView = true}) {
-    //TODO: convert to one line when Base6.decode is Uint8List.
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Int32List listFromBase64(String s, {bool asView = true}) =>
+      (s.isEmpty) ? kEmptyInt32List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Int32List] from a [Uint8List].
   static Int32List listFromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -482,7 +473,7 @@ abstract class Int32Base extends IntBase {
     return (asView) ? i32List : new Int32List.fromList(i32List);
   }
 
-  static bool _isNotAligned(TypedData vList) =>(vList.offsetInBytes % kSizeInBytes) != 0;
+  static bool _isNotAligned(TypedData vList) => (vList.offsetInBytes % kSizeInBytes) != 0;
 }
 
 /// Signed Long ([SL]) [Element].
@@ -579,29 +570,29 @@ abstract class Int64Base extends IntBase {
 
   /// Returns a [BASE64] [String] created from [vList];
   static String listToBase64(Iterable<int> vList,
-                             {bool asView = true, bool check = true}) =>
+          {bool asView = true, bool check = true}) =>
       BASE64.encode(listToBytes(vList));
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List listToBytes(Iterable<int> vList,
-                               {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final td = _toInt64List(vList);
     return td?.buffer?.asUint8List(td.offsetInBytes, td.lengthInBytes);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData listToByteData(Iterable<int> vList,
-                                 {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final td = _toInt64List(vList);
     return td?.buffer?.asByteData(td.offsetInBytes, td.lengthInBytes);
   }
 
   static Int64List toInt64List(Iterable<int> vList,
-                                 {bool asView = true, bool check = true}) =>
+          {bool asView = true, bool check = true}) =>
       _toInt64List(vList);
 
   static Int64List _toInt64List(Iterable<int> vList,
-                                  {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     assert(vList != null);
     if (vList is Int64List) return vList;
     if ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
@@ -610,12 +601,8 @@ abstract class Int64Base extends IntBase {
   }
 
   /// Returns a [Int64List] from a [BASE64] [String].
-  static Int64List listFromBase64(String s, {bool asView = true}) {
-    if (s.isEmpty) return kEmptyInt64List;
-    // TODO: cleanup when the type of Base64.decode is Uint8List.
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Int64List listFromBase64(String s, {bool asView = true}) =>
+      (s.isEmpty) ? kEmptyInt64List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Int64List] from a [Uint8List].
   static Int64List listFromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -706,10 +693,8 @@ abstract class Uint8Base extends IntBase {
   }
 
   /// Returns a [Uint8List] from a [BASE64] [String].
-  static Uint8List listFromBase64(String s, {bool asView = true, bool check = true}) {
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Uint8List listFromBase64(String s, {bool asView = true, bool check = true})=>
+      (s.isEmpty) ? kEmptyUint8List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Uint8List] from a [Uint8List].
   static Uint8List listFromBytes(Uint8List bytes,
@@ -919,10 +904,8 @@ abstract class Uint16Base extends IntBase {
   }
 
   /// Returns a [Uint16List] from a [BASE64] [String].
-  static Uint16List listFromBase64(String s, {bool asView = true, bool check = true}) {
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Uint16List listFromBase64(String s, {bool asView = true, bool check = true})=>
+      (s.isEmpty) ? kEmptyUint16List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Uint16List] from a [Uint8List].
   static Uint16List listFromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -1148,10 +1131,8 @@ abstract class Uint32Base extends IntBase {
   }
 
   /// Returns a [Uint32List] from a [BASE64] [String].
-  static Uint32List listFromBase64(String s, {bool asView = true}) {
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Uint32List listFromBase64(String s, {bool asView = true}) =>
+      (s.isEmpty) ? kEmptyUint32List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Uint32List] from a [Uint8List].
   static Uint32List listFromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -1449,12 +1430,8 @@ abstract class Uint64Base extends IntBase {
   }
 
   /// Returns a [Uint64List] from a [BASE64] [String].
-  static Uint64List listFromBase64(String s, {bool asView = true}) {
-    if (s.isEmpty) return kEmptyUint64List;
-    // TODO: cleanup when the type of Base64.decode is Uint8List.
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Uint64List listFromBase64(String s, {bool asView = true}) =>
+      (s.isEmpty) ? kEmptyUint64List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Uint64List] from a [Uint8List].
   static Uint64List listFromBytes(Uint8List bytes, {bool asView = true}) =>

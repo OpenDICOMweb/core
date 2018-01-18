@@ -10,6 +10,7 @@ environment:
 
 dependencies:
   bignum: ^0.1.0
+  convert: ^2.0.0
   crypto: any
   quiver: any
 # TODO before V0.9.0: decide on using pub_semver or version - remove one
@@ -17,7 +18,7 @@ dependencies:
 
 dev_dependencies:
   test:  ^0.12.24
-  benchmark_harness: ^1.0.4
+  benchmark_harness: any
   coverage: ^0.9.3
   grinder: ^0.8.0
   yaml: ^2.1.12

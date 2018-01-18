@@ -7,15 +7,14 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/crypto.dart';
 import 'package:core/src/empty_list.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/tag_lib.dart';
 import 'package:core/src/vr/vr.dart';
-
 
 // ignore_for_file: avoid_annotating_with_dynamic
 
@@ -158,12 +157,8 @@ abstract class Float32Base extends FloatBase {
   }
 
   /// Returns a [Float32List] from a [BASE64] [String].
-  static Float32List listFromBase64(String s) {
-    if (s.isEmpty) return kEmptyFLoat32List;
-    //TODO: convert to one line when Base6.decode is Uint8List.
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Float32List listFromBase64(String s) =>
+      (s.isEmpty) ? kEmptyFLoat32List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Float32List] from a [Uint8List].
   static Float32List listFromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -385,14 +380,8 @@ abstract class Float64Base extends FloatBase {
   }
 
   /// Returns a [Float64List] from a [BASE64] [String].
-  static Float64List listFromBase64(String s, {bool asView = true}) {
-    if (s.isEmpty) return kEmptyFloat64List;
-    //TODO: convert to
-    //     _listFromTypedData(BASE64.decode(s));
-    // when the type of Base64.decode is Uint8List.
-    final Uint8List bytes = BASE64.decode(s);
-    return listFromBytes(bytes);
-  }
+  static Float64List listFromBase64(String s, {bool asView = true}) =>
+      (s.isEmpty) ? kEmptyFloat64List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Float64List] from a [Uint8List].
   static Float64List listFromBytes(Uint8List bytes, {bool asView = true}) =>
