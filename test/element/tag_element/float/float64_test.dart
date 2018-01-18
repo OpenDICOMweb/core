@@ -373,584 +373,579 @@ void main() {
         expect(fd1.hasValidValues, true);
       }
     });
+  });
 
-    group('FD Element', () {
-      //VM.k1
-      const fdTags0 = const <PTag>[
-        PTag.kEventTimeOffset,
-        PTag.kReferencePixelPhysicalValueX,
-        PTag.kReferencePixelPhysicalValueY,
-        PTag.kPhysicalDeltaX,
-        PTag.kPhysicalDeltaY,
-        PTag.kTubeAngle,
-      ];
+  group('FD Element', () {
+    //VM.k1
+    const fdTags0 = const <PTag>[
+      PTag.kEventTimeOffset,
+      PTag.kReferencePixelPhysicalValueX,
+      PTag.kReferencePixelPhysicalValueY,
+      PTag.kPhysicalDeltaX,
+      PTag.kPhysicalDeltaY,
+      PTag.kTubeAngle,
+    ];
 
-      //VM.k2
-      const fdTags1 = const <PTag>[
-        PTag.kTimeRange,
-        PTag.kReconstructionFieldOfView,
-        PTag.kReconstructionPixelSpacing,
-        PTag.kRecommendedRotationPoint,
-        PTag.kTwoDMatingPoint,
-        PTag.kRangeOfFreedom,
-        PTag.kTwoDImplantTemplateGroupMemberMatchingPoint,
-      ];
+    //VM.k2
+    const fdTags1 = const <PTag>[
+      PTag.kTimeRange,
+      PTag.kReconstructionFieldOfView,
+      PTag.kReconstructionPixelSpacing,
+      PTag.kRecommendedRotationPoint,
+      PTag.kTwoDMatingPoint,
+      PTag.kRangeOfFreedom,
+      PTag.kTwoDImplantTemplateGroupMemberMatchingPoint,
+    ];
 
-      //VM.k3
-      const fdTags2 = const <PTag>[
-        PTag.kDiffusionGradientOrientation,
-        PTag.kVelocityEncodingDirection,
-        PTag.kSlabOrientation,
-        PTag.kMidSlabPosition,
-        PTag.kASLSlabOrientation,
-        PTag.kDataCollectionCenterPatient,
-        PTag.kGridResolution,
-      ];
+    //VM.k3
+    const fdTags2 = const <PTag>[
+      PTag.kDiffusionGradientOrientation,
+      PTag.kVelocityEncodingDirection,
+      PTag.kSlabOrientation,
+      PTag.kMidSlabPosition,
+      PTag.kASLSlabOrientation,
+      PTag.kDataCollectionCenterPatient,
+      PTag.kGridResolution,
+    ];
 
-      //VM.k4
-      const fdTags3 = const <PTag>[
-        PTag.kBoundingRectangle,
-        PTag.kTwoDMatingAxes,
-        PTag.kTwoDLineCoordinates,
-        PTag.kDisplayEnvironmentSpatialPosition,
-        PTag.kDoubleExposureFieldDelta,
-        PTag.kTwoDImplantTemplateGroupMemberMatchingAxes,
-      ];
-      //VM.k6
-      const fdTags4 = const <PTag>[PTag.kImageOrientationVolume];
+    //VM.k4
+    const fdTags3 = const <PTag>[
+      PTag.kBoundingRectangle,
+      PTag.kTwoDMatingAxes,
+      PTag.kTwoDLineCoordinates,
+      PTag.kDisplayEnvironmentSpatialPosition,
+      PTag.kDoubleExposureFieldDelta,
+      PTag.kTwoDImplantTemplateGroupMemberMatchingAxes,
+    ];
+    //VM.k6
+    const fdTags4 = const <PTag>[PTag.kImageOrientationVolume];
 
-      //VM.k9
-      const fdTags5 = const <PTag>[
-        PTag.kViewOrientationModifier,
-        PTag.kThreeDMatingAxes,
-        PTag.kThreeDImplantTemplateGroupMemberMatchingAxes,
-      ];
+    //VM.k9
+    const fdTags5 = const <PTag>[
+      PTag.kViewOrientationModifier,
+      PTag.kThreeDMatingAxes,
+      PTag.kThreeDImplantTemplateGroupMemberMatchingAxes,
+    ];
 
-      //VM.k1_n
-      const fdTags6 = const <PTag>[
-        PTag.kRealWorldValueLUTData,
-        PTag.kSelectorFDValue,
-        PTag.kInversionTimes,
-        PTag.kDepthsOfFocus,
-      ];
+    //VM.k1_n
+    const fdTags6 = const <PTag>[
+      PTag.kRealWorldValueLUTData,
+      PTag.kSelectorFDValue,
+      PTag.kInversionTimes,
+      PTag.kDepthsOfFocus,
+    ];
 
-      const otherTags = const <PTag>[
-        PTag.kNumberOfIterations,
-        PTag.kAcquisitionProtocolName,
-        PTag.kAcquisitionContextDescription,
-        PTag.kCTPositionSequence,
-        PTag.kAcquisitionType,
-        PTag.kPerformedStationAETitle,
-        PTag.kSelectorSTValue,
-        PTag.kDate,
-        PTag.kTime
-      ];
+    const otherTags = const <PTag>[
+      PTag.kNumberOfIterations,
+      PTag.kAcquisitionProtocolName,
+      PTag.kAcquisitionContextDescription,
+      PTag.kCTPositionSequence,
+      PTag.kAcquisitionType,
+      PTag.kPerformedStationAETitle,
+      PTag.kSelectorSTValue,
+      PTag.kDate,
+      PTag.kTime
+    ];
 
-      final invalidVList =
-          rng.float32List(FD.kMaxLength + 1, FD.kMaxLength + 1);
+    final invalidVList = rng.float32List(FD.kMaxLength + 1, FD.kMaxLength + 1);
 
-      test('FD isValidVR good values', () {
+    test('FD isValidVR good values', () {
+      system.throwOnError = false;
+      expect(FD.isValidVRIndex(kFDIndex), true);
+
+      for (var s in fdTags0) {
         system.throwOnError = false;
-        expect(FD.isValidVRIndex(kFDIndex), true);
+        expect(FD.isValidVRIndex(s.vrIndex), true);
+      }
+    });
 
-        for (var s in fdTags0) {
-          system.throwOnError = false;
-          expect(FD.isValidVRIndex(s.vrIndex), true);
-        }
-      });
+    test('FD isValidVR bad values', () {
+      system.throwOnError = false;
+      expect(FD.isValidVRIndex(kAEIndex), false);
 
-      test('FD isValidVR bad values', () {
+      system.throwOnError = true;
+      expect(() => FD.isValidVRIndex(kAEIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var otherTag in otherTags) {
         system.throwOnError = false;
-        expect(FD.isValidVRIndex(kAEIndex), false);
+        expect(FD.isValidVRIndex(otherTag.vrIndex), false);
 
         system.throwOnError = true;
-        expect(() => FD.isValidVRIndex(kAEIndex),
+        expect(() => FD.isValidVRIndex(otherTag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var otherTag in otherTags) {
-          system.throwOnError = false;
-          expect(FD.isValidVRIndex(otherTag.vrIndex), false);
-
-          system.throwOnError = true;
-          expect(() => FD.isValidVRIndex(otherTag.vrIndex),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
-
-      test('FD isValidLength VM.k1 good values', () {
-        for (var i = 0; i < 10; i++) {
-          final validMinVList = rng.float32List(1, 1);
-          system.throwOnError = false;
-          for (var tag in fdTags0) {
-            expect(FD.isValidLength(tag, validMinVList), true);
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k1 bad values', () {
-        for (var i = 1; i < 10; i++) {
-          final validMinVList = rng.float32List(2, i + 1);
-          for (var tag in fdTags0) {
-            system.throwOnError = false;
-            expect(FD.isValidLength(tag, validMinVList), false);
-            expect(FD.isValidLength(tag, invalidVList), false);
-
-            system.throwOnError = true;
-            expect(() => FD.isValidLength(tag, invalidVList),
-                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k2 good values', () {
-        for (var i = 0; i < 10; i++) {
-          final validMinVList = rng.float32List(2, 2);
-          system.throwOnError = false;
-          for (var tag in fdTags1) {
-            expect(FD.isValidLength(tag, validMinVList), true);
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k2 bad values', () {
-        for (var i = 2; i < 10; i++) {
-          final validMinVList = rng.float32List(3, i + 1);
-          for (var tag in fdTags1) {
-            system.throwOnError = false;
-            expect(FD.isValidLength(tag, validMinVList), false);
-            expect(FD.isValidLength(tag, invalidVList), false);
-
-            system.throwOnError = true;
-            expect(() => FD.isValidLength(tag, invalidVList),
-                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k3 good values', () {
-        for (var i = 0; i < 10; i++) {
-          final validMinVList = rng.float32List(3, 3);
-          system.throwOnError = false;
-          for (var tag in fdTags2) {
-            expect(FD.isValidLength(tag, validMinVList), true);
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k3 bad values', () {
-        for (var i = 3; i < 10; i++) {
-          final validMinVList = rng.float32List(4, i + 1);
-          for (var tag in fdTags2) {
-            system.throwOnError = false;
-            expect(FD.isValidLength(tag, validMinVList), false);
-            expect(FD.isValidLength(tag, invalidVList), false);
-
-            system.throwOnError = true;
-            expect(() => FD.isValidLength(tag, invalidVList),
-                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k4 good values', () {
-        for (var i = 0; i < 10; i++) {
-          final validMinVList = rng.float32List(4, 4);
-          system.throwOnError = false;
-          for (var tag in fdTags3) {
-            expect(FD.isValidLength(tag, validMinVList), true);
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k4 bad values', () {
-        for (var i = 4; i < 10; i++) {
-          final validMinVList = rng.float32List(5, i + 1);
-          for (var tag in fdTags3) {
-            system.throwOnError = false;
-            expect(FD.isValidLength(tag, validMinVList), false);
-            expect(FD.isValidLength(tag, invalidVList), false);
-
-            system.throwOnError = true;
-            expect(() => FD.isValidLength(tag, invalidVList),
-                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k6 good values', () {
-        for (var i = 0; i < 10; i++) {
-          final validMinVList = rng.float32List(6, 6);
-          system.throwOnError = false;
-          for (var tag in fdTags4) {
-            expect(FD.isValidLength(tag, validMinVList), true);
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k6 bad values', () {
-        for (var i = 6; i < 10; i++) {
-          final validMinVList = rng.float32List(7, i + 1);
-          system.throwOnError = false;
-          for (var tag in fdTags4) {
-            expect(FD.isValidLength(tag, validMinVList), false);
-            expect(FD.isValidLength(tag, invalidVList), false);
-
-            system.throwOnError = true;
-            expect(() => FD.isValidLength(tag, invalidVList),
-                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k9 good values', () {
-        for (var i = 0; i < 10; i++) {
-          final validMinVList = rng.float32List(9, 9);
-          system.throwOnError = false;
-          for (var tag in fdTags5) {
-            expect(FD.isValidLength(tag, validMinVList), true);
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k9 bad values', () {
-        for (var i = 9; i < 20; i++) {
-          final validMinVList = rng.float32List(10, i + 1);
-          for (var tag in fdTags5) {
-            system.throwOnError = false;
-            expect(FD.isValidLength(tag, validMinVList), false);
-            expect(FD.isValidLength(tag, invalidVList), false);
-
-            system.throwOnError = true;
-            expect(() => FD.isValidLength(tag, invalidVList),
-                throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-          }
-        }
-      });
-
-      test('FD isValidLength VM.k1_n good values', () {
-        for (var i = 1; i < 10; i++) {
-          final validMinVList = rng.float32List(1, i);
-          system.throwOnError = false;
-          for (var tag in fdTags6) {
-            expect(FD.isValidLength(tag, validMinVList), true);
-          }
-        }
-      });
-
-      test('FD isValidVRIndex good values', () {
+    test('FD isValidLength VM.k1 good values', () {
+      for (var i = 0; i < 10; i++) {
+        final validMinVList = rng.float32List(1, 1);
         system.throwOnError = false;
-        expect(FD.isValidVRIndex(kFDIndex), true);
+        for (var tag in fdTags0) {
+          expect(FD.isValidLength(tag, validMinVList), true);
+        }
+      }
+    });
 
+    test('FD isValidLength VM.k1 bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final validMinVList = rng.float32List(2, i + 1);
         for (var tag in fdTags0) {
           system.throwOnError = false;
-          expect(FD.isValidVRIndex(tag.vrIndex), true);
-        }
-      });
+          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidVList), false);
 
-      test('FD isValidVRIndex bad values', () {
+          system.throwOnError = true;
+          expect(() => FD.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k2 good values', () {
+      for (var i = 0; i < 10; i++) {
+        final validMinVList = rng.float32List(2, 2);
         system.throwOnError = false;
-        expect(FD.isValidVRIndex(kATIndex), false);
+        for (var tag in fdTags1) {
+          expect(FD.isValidLength(tag, validMinVList), true);
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k2 bad values', () {
+      for (var i = 2; i < 10; i++) {
+        final validMinVList = rng.float32List(3, i + 1);
+        for (var tag in fdTags1) {
+          system.throwOnError = false;
+          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FD.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k3 good values', () {
+      for (var i = 0; i < 10; i++) {
+        final validMinVList = rng.float32List(3, 3);
+        system.throwOnError = false;
+        for (var tag in fdTags2) {
+          expect(FD.isValidLength(tag, validMinVList), true);
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k3 bad values', () {
+      for (var i = 3; i < 10; i++) {
+        final validMinVList = rng.float32List(4, i + 1);
+        for (var tag in fdTags2) {
+          system.throwOnError = false;
+          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FD.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k4 good values', () {
+      for (var i = 0; i < 10; i++) {
+        final validMinVList = rng.float32List(4, 4);
+        system.throwOnError = false;
+        for (var tag in fdTags3) {
+          expect(FD.isValidLength(tag, validMinVList), true);
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k4 bad values', () {
+      for (var i = 4; i < 10; i++) {
+        final validMinVList = rng.float32List(5, i + 1);
+        for (var tag in fdTags3) {
+          system.throwOnError = false;
+          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FD.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k6 good values', () {
+      for (var i = 0; i < 10; i++) {
+        final validMinVList = rng.float32List(6, 6);
+        system.throwOnError = false;
+        for (var tag in fdTags4) {
+          expect(FD.isValidLength(tag, validMinVList), true);
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k6 bad values', () {
+      for (var i = 6; i < 10; i++) {
+        final validMinVList = rng.float32List(7, i + 1);
+        system.throwOnError = false;
+        for (var tag in fdTags4) {
+          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FD.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k9 good values', () {
+      for (var i = 0; i < 10; i++) {
+        final validMinVList = rng.float32List(9, 9);
+        system.throwOnError = false;
+        for (var tag in fdTags5) {
+          expect(FD.isValidLength(tag, validMinVList), true);
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k9 bad values', () {
+      for (var i = 9; i < 20; i++) {
+        final validMinVList = rng.float32List(10, i + 1);
+        for (var tag in fdTags5) {
+          system.throwOnError = false;
+          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidVList), false);
+
+          system.throwOnError = true;
+          expect(() => FD.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        }
+      }
+    });
+
+    test('FD isValidLength VM.k1_n good values', () {
+      for (var i = 1; i < 10; i++) {
+        final validMinVList = rng.float32List(1, i);
+        system.throwOnError = false;
+        for (var tag in fdTags6) {
+          expect(FD.isValidLength(tag, validMinVList), true);
+        }
+      }
+    });
+
+    test('FD isValidVRIndex good values', () {
+      system.throwOnError = false;
+      expect(FD.isValidVRIndex(kFDIndex), true);
+
+      for (var tag in fdTags0) {
+        system.throwOnError = false;
+        expect(FD.isValidVRIndex(tag.vrIndex), true);
+      }
+    });
+
+    test('FD isValidVRIndex bad values', () {
+      system.throwOnError = false;
+      expect(FD.isValidVRIndex(kATIndex), false);
+
+      system.throwOnError = true;
+      expect(() => FD.isValidVRIndex(kATIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(FD.isValidVRIndex(tag.vrIndex), false);
 
         system.throwOnError = true;
-        expect(() => FD.isValidVRIndex(kATIndex),
+        expect(() => FD.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(FD.isValidVRIndex(tag.vrIndex), false);
+    test('FD isValidVRCode good values', () {
+      system.throwOnError = false;
+      expect(FD.isValidVRCode(kFDCode), true);
 
-          system.throwOnError = true;
-          expect(() => FD.isValidVRIndex(tag.vrIndex),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
-
-      test('FD isValidVRCode good values', () {
+      for (var tag in fdTags0) {
         system.throwOnError = false;
-        expect(FD.isValidVRCode(kFDCode), true);
+        expect(FD.isValidVRCode(tag.vrCode), true);
+      }
+    });
 
-        for (var tag in fdTags0) {
-          system.throwOnError = false;
-          expect(FD.isValidVRCode(tag.vrCode), true);
-        }
-      });
+    test('FD isValidVRCode bad values', () {
+      system.throwOnError = false;
+      expect(FD.isValidVRCode(kATCode), false);
 
-      test('FD isValidVRCode bad values', () {
+      system.throwOnError = true;
+      expect(() => FD.isValidVRCode(kATCode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(FD.isValidVRCode(kATCode), false);
+        expect(FD.isValidVRCode(tag.vrCode), false);
 
         system.throwOnError = true;
-        expect(() => FD.isValidVRCode(kATCode),
+        expect(() => FD.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(FD.isValidVRCode(tag.vrCode), false);
+    test('FD checkVRIndex good values', () {
+      system.throwOnError = false;
+      expect(FD.checkVRIndex(kFDIndex), kFDIndex);
 
-          system.throwOnError = true;
-          expect(() => FD.isValidVRCode(tag.vrCode),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
-
-      test('FD checkVRIndex good values', () {
+      for (var tag in fdTags0) {
         system.throwOnError = false;
-        expect(FD.checkVRIndex(kFDIndex), kFDIndex);
+        expect(FD.checkVRIndex(tag.vrIndex), tag.vrIndex);
+      }
+    });
 
-        for (var tag in fdTags0) {
-          system.throwOnError = false;
-          expect(FD.checkVRIndex(tag.vrIndex), tag.vrIndex);
-        }
-      });
+    test('FD checkVRIndex bad values', () {
+      system.throwOnError = false;
+      expect(
+          FD.checkVRIndex(
+            kAEIndex,
+          ),
+          isNull);
+      system.throwOnError = true;
+      expect(() => FD.checkVRIndex(kAEIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
-      test('FD checkVRIndex bad values', () {
+      for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(
-            FD.checkVRIndex(
-              kAEIndex,
-            ),
-            isNull);
+        expect(FD.checkVRIndex(tag.vrIndex), isNull);
+
         system.throwOnError = true;
         expect(() => FD.checkVRIndex(kAEIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(FD.checkVRIndex(tag.vrIndex), isNull);
+    test('FD checkVRIndex good values', () {
+      system.throwOnError = false;
+      expect(FD.checkVRIndex(kFDIndex), equals(kFDIndex));
 
-          system.throwOnError = true;
-          expect(() => FD.checkVRIndex(kAEIndex),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
-
-      test('FD checkVRIndex good values', () {
+      for (var tag in fdTags0) {
         system.throwOnError = false;
-        expect(FD.checkVRIndex(kFDIndex), equals(kFDIndex));
+        expect(FD.checkVRIndex(tag.vrIndex), equals(tag.vrIndex));
+      }
+    });
 
-        for (var tag in fdTags0) {
-          system.throwOnError = false;
-          expect(FD.checkVRIndex(tag.vrIndex), equals(tag.vrIndex));
-        }
-      });
+    test('FD checkVRIndex bad values', () {
+      system.throwOnError = false;
+      expect(FD.checkVRIndex(kATIndex), isNull);
 
-      test('FD checkVRIndex bad values', () {
+      system.throwOnError = true;
+      expect(() => FD.checkVRIndex(kATIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(FD.checkVRIndex(kATIndex), isNull);
+        expect(FD.checkVRIndex(tag.vrIndex), isNull);
 
         system.throwOnError = true;
-        expect(() => FD.checkVRIndex(kATIndex),
+        expect(() => FD.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(FD.checkVRIndex(tag.vrIndex), isNull);
+    test('FD checkVRCode good values', () {
+      system.throwOnError = false;
+      expect(FD.checkVRCode(kFDCode), equals(kFDCode));
 
-          system.throwOnError = true;
-          expect(() => FD.checkVRIndex(tag.vrIndex),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
-
-      test('FD checkVRCode good values', () {
+      for (var tag in fdTags0) {
         system.throwOnError = false;
-        expect(FD.checkVRCode(kFDCode), equals(kFDCode));
+        expect(FD.checkVRCode(tag.vrCode), equals(tag.vrCode));
+      }
+    });
 
-        for (var tag in fdTags0) {
-          system.throwOnError = false;
-          expect(FD.checkVRCode(tag.vrCode), equals(tag.vrCode));
-        }
-      });
+    test('FD checkVRCode bad values', () {
+      system.throwOnError = false;
+      expect(FD.checkVRCode(kATCode), isNull);
 
-      test('FD checkVRCode bad values', () {
+      system.throwOnError = true;
+      expect(() => FD.checkVRCode(kATCode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(FD.checkVRCode(kATCode), isNull);
+        expect(FD.checkVRCode(tag.vrCode), isNull);
 
         system.throwOnError = true;
-        expect(() => FD.checkVRCode(kATCode),
+        expect(() => FD.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(FD.checkVRCode(tag.vrCode), isNull);
+    test('FD isValidVFLength good values', () {
+      expect(FD.isValidVFLength(FD.kMaxVFLength), true);
+      expect(FD.isValidVFLength(0), true);
+    });
 
-          system.throwOnError = true;
-          expect(() => FD.checkVRCode(tag.vrCode),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
+    test('FD isValidVFLength bad values', () {
+      expect(FD.isValidVFLength(FD.kMaxVFLength + 1), false);
+      expect(FD.isValidVFLength(-1), false);
+    });
 
-      test('FD isValidVFLength good values', () {
-        expect(FD.isValidVFLength(FD.kMaxVFLength), true);
-        expect(FD.isValidVFLength(0), true);
-      });
-
-      test('FD isValidVFLength bad values', () {
-        expect(FD.isValidVFLength(FD.kMaxVFLength + 1), false);
-        expect(FD.isValidVFLength(-1), false);
-      });
-
-      test('FD isValidValues good values', () {
-        system.throwOnError = false;
-        //VM.k1
-        for (var i = 0; i <= float64LstCommon0.length - 1; i++) {
-          expect(
-              FD.isValidValues(
-                  PTag.kEffectiveEchoTime, <double>[float64LstCommon0[i]]),
-              true);
-        }
-
-        //VM.k2
+    test('FD isValidValues good values', () {
+      system.throwOnError = false;
+      //VM.k1
+      for (var i = 0; i <= float64LstCommon0.length - 1; i++) {
         expect(
             FD.isValidValues(
-                PTag.kReconstructionFieldOfView, float64LstCommon0.take(2)),
+                PTag.kEffectiveEchoTime, <double>[float64LstCommon0[i]]),
             true);
+      }
 
-        //VM.k3
-        expect(
-            FD.isValidValues(PTag.kGridResolution, float64LstCommon0.take(3)),
-            true);
+      //VM.k2
+      expect(
+          FD.isValidValues(
+              PTag.kReconstructionFieldOfView, float64LstCommon0.take(2)),
+          true);
 
-        //VM.k4
-        expect(
-            FD.isValidValues(
-                PTag.kBoundingRectangle, float64LstCommon0.take(4)),
-            true);
+      //VM.k3
+      expect(FD.isValidValues(PTag.kGridResolution, float64LstCommon0.take(3)),
+          true);
 
-        //VM.k6
-        expect(
-            FD.isValidValues(
-                PTag.kImageOrientationVolume, float64LstCommon0.take(6)),
-            true);
+      //VM.k4
+      expect(
+          FD.isValidValues(PTag.kBoundingRectangle, float64LstCommon0.take(4)),
+          true);
 
-        //VM.k9
-        expect(
-            FD.isValidValues(PTag.kThreeDMatingAxes, float64LstCommon0.take(9)),
-            true);
+      //VM.k6
+      expect(
+          FD.isValidValues(
+              PTag.kImageOrientationVolume, float64LstCommon0.take(6)),
+          true);
 
-        //VM.k1_n
-        expect(
-            FD.isValidValues(PTag.kSelectorFDValue, float64LstCommon0), true);
-      });
+      //VM.k9
+      expect(
+          FD.isValidValues(PTag.kThreeDMatingAxes, float64LstCommon0.take(9)),
+          true);
 
-      test('FD isValidValues bad values length', () {
-        system.throwOnError = false;
-        expect(FD.isValidValues(PTag.kEffectiveEchoTime, float64LstCommon0),
-            false);
+      //VM.k1_n
+      expect(FD.isValidValues(PTag.kSelectorFDValue, float64LstCommon0), true);
+    });
 
-        system.throwOnError = true;
-        expect(
-            () => FD.isValidValues(PTag.kEffectiveEchoTime, float64LstCommon0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-      });
+    test('FD isValidValues bad values length', () {
+      system.throwOnError = false;
+      expect(
+          FD.isValidValues(PTag.kEffectiveEchoTime, float64LstCommon0), false);
 
-      test('Float64Base.toFloat64List', () {
-        expect(Float64Base.toFloat64List(float64LstCommon0), float64LstCommon0);
+      system.throwOnError = true;
+      expect(() => FD.isValidValues(PTag.kEffectiveEchoTime, float64LstCommon0),
+          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+    });
 
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          expect(Float64Base.toFloat64List(floatList0), floatList0);
-        }
-      });
+    test('Float64Base.toFloat64List', () {
+      expect(Float64Base.toFloat64List(float64LstCommon0), float64LstCommon0);
 
-      test('Float64Base.listFromBytes', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          final float = new Float64List.fromList(floatList0);
-          final bd = float.buffer.asUint8List();
-          expect(Float64Base.listFromBytes(bd), equals(floatList0));
-        }
-        final float0 = new Float64List.fromList(<double>[]);
-        final bd0 = float0.buffer.asUint8List();
-        expect(Float64Base.listFromBytes(bd0), equals(<double>[]));
-      });
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        expect(Float64Base.toFloat64List(floatList0), floatList0);
+      }
+    });
 
-      test('FD toBytes', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          final float64List0 = new Float64List.fromList(floatList0);
-          final uInt8List0 = float64List0.buffer.asUint8List();
-          //final base64 = BASE64.encode(uInt8List0);
-          final base64 = Float64Base.listToBytes(float64List0);
-          expect(base64, equals(uInt8List0));
-        }
-      });
+    test('Float64Base.listFromBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float = new Float64List.fromList(floatList0);
+        final bd = float.buffer.asUint8List();
+        expect(Float64Base.listFromBytes(bd), equals(floatList0));
+      }
+      final float0 = new Float64List.fromList(<double>[]);
+      final bd0 = float0.buffer.asUint8List();
+      expect(Float64Base.listFromBytes(bd0), equals(<double>[]));
+    });
 
-      test('Float64Base.listFromBase64', () {
-        system.level = Level.info;
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(0, i);
-          final float64List0 = new Float64List.fromList(floatList0);
-          final uInt8List0 = float64List0.buffer.asUint8List();
-          final base64 = BASE64.encode(uInt8List0);
-          log.debug('FD.base64: "$base64"');
+    test('FD toBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float64List0 = new Float64List.fromList(floatList0);
+        final uInt8List0 = float64List0.buffer.asUint8List();
+        //final base64 = BASE64.encode(uInt8List0);
+        final base64 = Float64Base.listToBytes(float64List0);
+        expect(base64, equals(uInt8List0));
+      }
+    });
 
-          final fdList = Float64Base.listFromBase64(base64);
-          log.debug('  FD.decode: $fdList');
-          expect(fdList, equals(floatList0));
-          expect(fdList, equals(float64List0));
-        }
-      });
+    test('Float64Base.listFromBase64', () {
+      system.level = Level.info;
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(0, i);
+        final float64List0 = new Float64List.fromList(floatList0);
+        final uInt8List0 = float64List0.buffer.asUint8List();
+        final base64 = BASE64.encode(uInt8List0);
+        log.debug('FD.base64: "$base64"');
 
-      test('Float64Base.listToBase64', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(0, i);
-          final float64List0 = new Float64List.fromList(floatList0);
-          final uInt8List0 = float64List0.buffer.asUint8List();
-          final base64 = BASE64.encode(uInt8List0);
-          final fd0 = Float64Base.listToBase64(floatList0);
-          expect(fd0, equals(base64));
-        }
-      });
+        final fdList = Float64Base.listFromBase64(base64);
+        log.debug('  FD.decode: $fdList');
+        expect(fdList, equals(floatList0));
+        expect(fdList, equals(float64List0));
+      }
+    });
 
-      test('Float64Base encodeDecodeJsonVF', () {
-        system.level = Level.info;
-        for (var i = 1; i < 10; i++) {
-          final floatList0 = rng.float64List(1, i);
-          final float64List0 = new Float64List.fromList(floatList0);
-          final uInt8List0 = float64List0.buffer.asUint8List();
+    test('Float64Base.listToBase64', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(0, i);
+        final float64List0 = new Float64List.fromList(floatList0);
+        final uInt8List0 = float64List0.buffer.asUint8List();
+        final base64 = BASE64.encode(uInt8List0);
+        final fd0 = Float64Base.listToBase64(floatList0);
+        expect(fd0, equals(base64));
+      }
+    });
 
-          // Encode
-          final base64 = BASE64.encode(uInt8List0);
-          log.debug('FD.base64: "$base64"');
-          final s = Float64Base.listToBase64(floatList0);
-          log.debug('  FD.json: "$s"');
-          expect(s, equals(base64));
+    test('Float64Base encodeDecodeJsonVF', () {
+      system.level = Level.info;
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float64List(1, i);
+        final float64List0 = new Float64List.fromList(floatList0);
+        final uInt8List0 = float64List0.buffer.asUint8List();
 
-          // Decode
-          final fd0 = Float64Base.listFromBase64(base64);
-          log.debug('FD.base64: $fd0');
-          final fd1 = Float64Base.listFromBase64(s);
-          log.debug('  FD.json: $fd1');
-          expect(fd0, equals(floatList0));
-          expect(fd0, equals(float64List0));
-          expect(fd0, equals(fd1));
-        }
-      });
+        // Encode
+        final base64 = BASE64.encode(uInt8List0);
+        log.debug('FD.base64: "$base64"');
+        final s = Float64Base.listToBase64(floatList0);
+        log.debug('  FD.json: "$s"');
+        expect(s, equals(base64));
 
-      test('Float64Base.listFromBytes', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          final float64List0 = new Float64List.fromList(floatList0);
-          final bd = float64List0.buffer.asUint8List();
-          expect(Float64Base.listFromBytes(bd), equals(floatList0));
-        }
-        final float0 = new Float64List.fromList(<double>[]);
-        final bd0 = float0.buffer.asUint8List();
-        expect(Float64Base.listFromBytes(bd0), equals(<double>[]));
-      });
+        // Decode
+        final fd0 = Float64Base.listFromBase64(base64);
+        log.debug('FD.base64: $fd0');
+        final fd1 = Float64Base.listFromBase64(s);
+        log.debug('  FD.json: $fd1');
+        expect(fd0, equals(floatList0));
+        expect(fd0, equals(float64List0));
+        expect(fd0, equals(fd1));
+      }
+    });
 
-      test('FD fromByteData', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          final float = new Float64List.fromList(floatList0);
-          final byteData0 = float.buffer.asByteData();
-          expect(Float64Base.listFromByteData(byteData0), equals(floatList0));
-        }
-        final float0 = new Float64List.fromList(<double>[]);
-        final bd0 = float0.buffer.asByteData();
-        expect(Float64Base.listFromByteData(bd0), equals(<double>[]));
-      });
+    test('Float64Base.listFromBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float64List0 = new Float64List.fromList(floatList0);
+        final bd = float64List0.buffer.asUint8List();
+        expect(Float64Base.listFromBytes(bd), equals(floatList0));
+      }
+      final float0 = new Float64List.fromList(<double>[]);
+      final bd0 = float0.buffer.asUint8List();
+      expect(Float64Base.listFromBytes(bd0), equals(<double>[]));
+    });
+
+    test('FD fromByteData', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float = new Float64List.fromList(floatList0);
+        final byteData0 = float.buffer.asByteData();
+        expect(Float64Base.listFromByteData(byteData0), equals(floatList0));
+      }
+      final float0 = new Float64List.fromList(<double>[]);
+      final bd0 = float0.buffer.asByteData();
+      expect(Float64Base.listFromByteData(bd0), equals(<double>[]));
     });
   });
 
@@ -1178,314 +1173,314 @@ void main() {
         expect(od1.hasValidValues, true);
       }
     });
+  });
 
-    group('OD Element', () {
-      const odTags = const <PTag>[
-        PTag.kSelectorODValue,
-        PTag.kDoubleFloatPixelData,
-      ];
+  group('OD Element', () {
+    const odTags = const <PTag>[
+      PTag.kSelectorODValue,
+      PTag.kDoubleFloatPixelData,
+    ];
 
-      const otherTags = const <PTag>[
-        PTag.kNumberOfIterations,
-        PTag.kAcquisitionProtocolName,
-        PTag.kAcquisitionContextDescription,
-        PTag.kCTPositionSequence,
-        PTag.kAcquisitionType,
-        PTag.kPerformedStationAETitle,
-        PTag.kSelectorSTValue,
-        PTag.kDate,
-        PTag.kTime
-      ];
+    const otherTags = const <PTag>[
+      PTag.kNumberOfIterations,
+      PTag.kAcquisitionProtocolName,
+      PTag.kAcquisitionContextDescription,
+      PTag.kCTPositionSequence,
+      PTag.kAcquisitionType,
+      PTag.kPerformedStationAETitle,
+      PTag.kSelectorSTValue,
+      PTag.kDate,
+      PTag.kTime
+    ];
 
-      test('OD isValidVR good values', () {
+    test('OD isValidVR good values', () {
+      system.throwOnError = false;
+      expect(OD.isValidVRIndex(kODIndex), true);
+
+      for (var s in odTags) {
         system.throwOnError = false;
-        expect(OD.isValidVRIndex(kODIndex), true);
+        expect(OD.isValidVRIndex(s.vrIndex), true);
+      }
+    });
 
-        for (var s in odTags) {
-          system.throwOnError = false;
-          expect(OD.isValidVRIndex(s.vrIndex), true);
-        }
-      });
+    test('OD isValidVR bad values', () {
+      system.throwOnError = false;
+      expect(OD.isValidVRIndex(kAEIndex), false);
 
-      test('OD isValidVR bad values', () {
+      system.throwOnError = true;
+      expect(() => OD.isValidVRIndex(kAEIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var s in otherTags) {
         system.throwOnError = false;
-        expect(OD.isValidVRIndex(kAEIndex), false);
+        expect(OD.isValidVRIndex(s.vrIndex), false);
 
         system.throwOnError = true;
-        expect(() => OD.isValidVRIndex(kAEIndex),
+        expect(() => OD.isValidVRIndex(s.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var s in otherTags) {
-          system.throwOnError = false;
-          expect(OD.isValidVRIndex(s.vrIndex), false);
+    test('OD.isValidVFLength good values', () {
+      system.throwOnError = false;
+      expect(OD.isValidVFLength(OD.kMaxLength), true);
+      expect(OD.isValidVFLength(0), true);
+    });
 
-          system.throwOnError = true;
-          expect(() => OD.isValidVRIndex(s.vrIndex),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
+    test('OD.isValidVFLength bad values', () {
+      system.throwOnError = false;
+      expect(OD.isValidVFLength(OD.kMaxVFLength + 1), false);
+      expect(OD.isValidVFLength(-1), false);
+    });
 
-      test('OD.isValidVFLength good values', () {
+    test('OD.isValidVRIndex good values', () {
+      system.throwOnError = false;
+      expect(OD.isValidVRIndex(kODIndex), true);
+
+      for (var tag in odTags) {
         system.throwOnError = false;
-        expect(OD.isValidVFLength(OD.kMaxLength), true);
-        expect(OD.isValidVFLength(0), true);
-      });
+        expect(OD.isValidVRIndex(tag.vrIndex), true);
+      }
+    });
 
-      test('OD.isValidVFLength bad values', () {
+    test('OD.isValidVRIndex bad values', () {
+      system.throwOnError = false;
+      expect(OD.isValidVRIndex(kATIndex), false);
+
+      system.throwOnError = true;
+      expect(() => OD.isValidVRIndex(kATIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(OD.isValidVFLength(OD.kMaxVFLength + 1), false);
-        expect(OD.isValidVFLength(-1), false);
-      });
-
-      test('OD.isValidVRIndex good values', () {
-        system.throwOnError = false;
-        expect(OD.isValidVRIndex(kODIndex), true);
-
-        for (var tag in odTags) {
-          system.throwOnError = false;
-          expect(OD.isValidVRIndex(tag.vrIndex), true);
-        }
-      });
-
-      test('OD.isValidVRIndex bad values', () {
-        system.throwOnError = false;
-        expect(OD.isValidVRIndex(kATIndex), false);
+        expect(OD.isValidVRIndex(tag.vrIndex), false);
 
         system.throwOnError = true;
-        expect(() => OD.isValidVRIndex(kATIndex),
+        expect(() => OD.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(OD.isValidVRIndex(tag.vrIndex), false);
+    test('OD.isValidVRCode good values', () {
+      system.throwOnError = false;
+      expect(OD.isValidVRCode(kODCode), true);
 
-          system.throwOnError = true;
-          expect(() => OD.isValidVRIndex(tag.vrIndex),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
-
-      test('OD.isValidVRCode good values', () {
+      for (var tag in odTags) {
         system.throwOnError = false;
-        expect(OD.isValidVRCode(kODCode), true);
+        expect(OD.isValidVRCode(tag.vrCode), true);
+      }
+    });
 
-        for (var tag in odTags) {
-          system.throwOnError = false;
-          expect(OD.isValidVRCode(tag.vrCode), true);
-        }
-      });
+    test('OD.isValidVRCode bad values', () {
+      system.throwOnError = false;
+      expect(OD.isValidVRCode(kATCode), false);
 
-      test('OD.isValidVRCode bad values', () {
+      system.throwOnError = true;
+      expect(() => OD.isValidVRCode(kATCode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(OD.isValidVRCode(kATCode), false);
+        expect(OD.isValidVRCode(tag.vrCode), false);
 
         system.throwOnError = true;
-        expect(() => OD.isValidVRCode(kATCode),
+        expect(() => OD.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(OD.isValidVRCode(tag.vrCode), false);
+    test('OD checkVR good values', () {
+      system.throwOnError = false;
+      expect(OD.checkVRIndex(kODIndex), kODIndex);
 
-          system.throwOnError = true;
-          expect(() => OD.isValidVRCode(tag.vrCode),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
-
-      test('OD checkVR good values', () {
+      for (var tag in odTags) {
         system.throwOnError = false;
-        expect(OD.checkVRIndex(kODIndex), kODIndex);
+        expect(OD.checkVRIndex(tag.vrIndex), tag.vrIndex);
+      }
+    });
 
-        for (var tag in odTags) {
-          system.throwOnError = false;
-          expect(OD.checkVRIndex(tag.vrIndex), tag.vrIndex);
-        }
-      });
+    test('OD checkVR bad values', () {
+      system.throwOnError = false;
+      expect(
+          OD.checkVRIndex(
+            kAEIndex,
+          ),
+          isNull);
+      system.throwOnError = true;
+      expect(() => OD.checkVRIndex(kAEIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
-      test('OD checkVR bad values', () {
+      for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(
-            OD.checkVRIndex(
-              kAEIndex,
-            ),
-            isNull);
+        expect(OD.checkVRIndex(tag.vrIndex), isNull);
+
         system.throwOnError = true;
         expect(() => OD.checkVRIndex(kAEIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(OD.checkVRIndex(tag.vrIndex), isNull);
+    test('OD checkVRIndex good values', () {
+      system.throwOnError = false;
+      expect(OD.checkVRIndex(kODIndex), equals(kODIndex));
 
-          system.throwOnError = true;
-          expect(() => OD.checkVRIndex(kAEIndex),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
-
-      test('OD checkVRIndex good values', () {
+      for (var tag in odTags) {
         system.throwOnError = false;
-        expect(OD.checkVRIndex(kODIndex), equals(kODIndex));
+        expect(OD.checkVRIndex(tag.vrIndex), equals(tag.vrIndex));
+      }
+    });
 
-        for (var tag in odTags) {
-          system.throwOnError = false;
-          expect(OD.checkVRIndex(tag.vrIndex), equals(tag.vrIndex));
-        }
-      });
+    test('OD checkVRIndex bad values', () {
+      system.throwOnError = false;
+      expect(OD.checkVRIndex(kATIndex), isNull);
 
-      test('OD checkVRIndex bad values', () {
+      system.throwOnError = true;
+      expect(() => OD.checkVRIndex(kATIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(OD.checkVRIndex(kATIndex), isNull);
+        expect(OD.checkVRIndex(tag.vrIndex), isNull);
 
         system.throwOnError = true;
-        expect(() => OD.checkVRIndex(kATIndex),
+        expect(() => OD.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(OD.checkVRIndex(tag.vrIndex), isNull);
+    test('OD checkVRCode good values', () {
+      system.throwOnError = false;
+      expect(OD.checkVRCode(kODCode), equals(kODCode));
 
-          system.throwOnError = true;
-          expect(() => OD.checkVRIndex(tag.vrIndex),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
-
-      test('OD checkVRCode good values', () {
+      for (var tag in odTags) {
         system.throwOnError = false;
-        expect(OD.checkVRCode(kODCode), equals(kODCode));
+        expect(OD.checkVRCode(tag.vrCode), equals(tag.vrCode));
+      }
+    });
 
-        for (var tag in odTags) {
-          system.throwOnError = false;
-          expect(OD.checkVRCode(tag.vrCode), equals(tag.vrCode));
-        }
-      });
+    test('OD checkVRCode bad values', () {
+      system.throwOnError = false;
+      expect(OD.checkVRCode(kATCode), isNull);
 
-      test('OD checkVRCode bad values', () {
+      system.throwOnError = true;
+      expect(() => OD.checkVRCode(kATCode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(OD.checkVRCode(kATCode), isNull);
+        expect(OD.checkVRCode(tag.vrCode), isNull);
 
         system.throwOnError = true;
-        expect(() => OD.checkVRCode(kATCode),
+        expect(() => OD.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
-        for (var tag in otherTags) {
-          system.throwOnError = false;
-          expect(OD.checkVRCode(tag.vrCode), isNull);
+    test('OD isValidVFLength good values', () {
+      expect(OD.isValidVFLength(OD.kMaxVFLength), true);
+      expect(OD.isValidVFLength(0), true);
+    });
 
-          system.throwOnError = true;
-          expect(() => OD.checkVRCode(tag.vrCode),
-              throwsA(const isInstanceOf<InvalidVRError>()));
-        }
-      });
+    test('OD isValidVFLength bad values', () {
+      expect(OD.isValidVFLength(OD.kMaxVFLength + 1), false);
+      expect(OD.isValidVFLength(-1), false);
+    });
 
-      test('OD isValidVFLength good values', () {
-        expect(OD.isValidVFLength(OD.kMaxVFLength), true);
-        expect(OD.isValidVFLength(0), true);
-      });
+    test('OD.isValidValues', () {
+      system.throwOnError = false;
+      for (var i = 0; i <= float64LstCommon0.length - 1; i++) {
+        expect(
+            OD.isValidValues(
+                PTag.kSelectorODValue, <double>[float64LstCommon0[i]]),
+            true);
+      }
+    });
 
-      test('OD isValidVFLength bad values', () {
-        expect(OD.isValidVFLength(OD.kMaxVFLength + 1), false);
-        expect(OD.isValidVFLength(-1), false);
-      });
+    test('Flaot64Base.toFloat64List', () {
+      expect(Float64Base.toFloat64List(float64LstCommon0), float64LstCommon0);
 
-      test('OD.isValidValues', () {
-        system.throwOnError = false;
-        for (var i = 0; i <= float64LstCommon0.length - 1; i++) {
-          expect(
-              OD.isValidValues(
-                  PTag.kSelectorODValue, <double>[float64LstCommon0[i]]),
-              true);
-        }
-      });
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        expect(Float64Base.toFloat64List(floatList0), floatList0);
+      }
+    });
 
-      test('Flaot64Base.toFloat64List', () {
-        expect(Float64Base.toFloat64List(float64LstCommon0), float64LstCommon0);
+    test('Float64Base.fromBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float = new Float64List.fromList(floatList0);
+        final bd = float.buffer.asUint8List();
+        expect(Float64Base.listFromBytes(bd), equals(floatList0));
+      }
+      final float0 = new Float64List.fromList(<double>[]);
+      final bd0 = float0.buffer.asUint8List();
+      expect(Float64Base.listFromBytes(bd0), equals(<double>[]));
+    });
 
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          expect(Float64Base.toFloat64List(floatList0), floatList0);
-        }
-      });
+    test('Create Float64Base.listToBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float64List0 = new Float64List.fromList(floatList0);
+        final uInt8List0 = float64List0.buffer.asUint8List();
+        //final base64 = BASE64.encode(uInt8List0);
+        final base64 = Float64Base.listToBytes(float64List0);
+        expect(base64, equals(uInt8List0));
+      }
+    });
 
-      test('Float64Base.fromBytes', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          final float = new Float64List.fromList(floatList0);
-          final bd = float.buffer.asUint8List();
-          expect(Float64Base.listFromBytes(bd), equals(floatList0));
-        }
-        final float0 = new Float64List.fromList(<double>[]);
-        final bd0 = float0.buffer.asUint8List();
-        expect(Float64Base.listFromBytes(bd0), equals(<double>[]));
-      });
+    test('OD.decodeEncodeBinaryVF', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float64List0 = new Float64List.fromList(floatList0);
+        expect(floatList0.lengthInBytes.isEven, true);
+        final uInt8List0 = float64List0.buffer.asUint8List();
+        final base64 = BASE64.encode(uInt8List0);
+        final uInt8List1 = BASE64.decode(base64);
+        final uInt8List2 = Float64Base.listToBytes(floatList0);
+        expect(uInt8List0, equals(uInt8List1));
+        expect(uInt8List0, equals(uInt8List1));
+        expect(uInt8List0, equals(uInt8List2));
 
-      test('Create Float64Base.listToBytes', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          final float64List0 = new Float64List.fromList(floatList0);
-          final uInt8List0 = float64List0.buffer.asUint8List();
-          //final base64 = BASE64.encode(uInt8List0);
-          final base64 = Float64Base.listToBytes(float64List0);
-          expect(base64, equals(uInt8List0));
-        }
-      });
+        final dList = Float64Base.listFromBytes(uInt8List2);
+        expect(dList, equals(floatList0));
+        expect(dList, equals(float64List0));
+      }
+    });
 
-      test('OD.decodeEncodeBinaryVF', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          final float64List0 = new Float64List.fromList(floatList0);
-          expect(floatList0.lengthInBytes.isEven, true);
-          final uInt8List0 = float64List0.buffer.asUint8List();
-          final base64 = BASE64.encode(uInt8List0);
-          final uInt8List1 = BASE64.decode(base64);
-          final uInt8List2 = Float64Base.listToBytes(floatList0);
-          expect(uInt8List0, equals(uInt8List1));
-          expect(uInt8List0, equals(uInt8List1));
-          expect(uInt8List0, equals(uInt8List2));
+    test('OD.fromBase64', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(0, i);
+        final float64List0 = new Float64List.fromList(floatList0);
+        final uInt8List0 = float64List0.buffer.asUint8List();
+        final base64 = BASE64.encode(uInt8List0);
+        expect(Float64Base.listFromBase64(base64), floatList0);
+        expect(Float64Base.listFromBase64(base64), float64List0);
+      }
+    });
 
-          final dList = Float64Base.listFromBytes(uInt8List2);
-          expect(dList, equals(floatList0));
-          expect(dList, equals(float64List0));
-        }
-      });
+    test('OD.fromBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(0, i);
+        final float64List0 = new Float64List.fromList(floatList0);
+        expect(floatList0.lengthInBytes.isEven, true);
+        final bd = float64List0.buffer.asUint8List();
+        expect(Float64Base.listFromBytes(bd), equals(floatList0));
+      }
+      final float0 = new Float64List.fromList(<double>[]);
+      final bd0 = float0.buffer.asUint8List();
+      expect(Float64Base.listFromBytes(bd0), equals(<double>[]));
+    });
 
-      test('OD.fromBase64', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(0, i);
-          final float64List0 = new Float64List.fromList(floatList0);
-          final uInt8List0 = float64List0.buffer.asUint8List();
-          final base64 = BASE64.encode(uInt8List0);
-          expect(Float64Base.listFromBase64(base64), floatList0);
-          expect(Float64Base.listFromBase64(base64), float64List0);
-        }
-      });
-
-      test('OD.fromBytes', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(0, i);
-          final float64List0 = new Float64List.fromList(floatList0);
-          expect(floatList0.lengthInBytes.isEven, true);
-          final bd = float64List0.buffer.asUint8List();
-          expect(Float64Base.listFromBytes(bd), equals(floatList0));
-        }
-        final float0 = new Float64List.fromList(<double>[]);
-        final bd0 = float0.buffer.asUint8List();
-        expect(Float64Base.listFromBytes(bd0), equals(<double>[]));
-      });
-
-      test('OD.fromByteData', () {
-        for (var i = 0; i < 10; i++) {
-          final floatList0 = rng.float64List(1, 1);
-          final float = new Float64List.fromList(floatList0);
-          final byteData0 = float.buffer.asByteData();
-          expect(Float64Base.listFromByteData(byteData0), equals(floatList0));
-        }
-        final float0 = new Float64List.fromList(<double>[]);
-        final bd0 = float0.buffer.asByteData();
-        expect(Float64Base.listFromByteData(bd0), equals(<double>[]));
-      });
+    test('OD.fromByteData', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float = new Float64List.fromList(floatList0);
+        final byteData0 = float.buffer.asByteData();
+        expect(Float64Base.listFromByteData(byteData0), equals(floatList0));
+      }
+      final float0 = new Float64List.fromList(<double>[]);
+      final bd0 = float0.buffer.asByteData();
+      expect(Float64Base.listFromByteData(bd0), equals(<double>[]));
     });
   });
 }

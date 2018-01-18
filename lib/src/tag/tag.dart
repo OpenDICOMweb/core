@@ -252,7 +252,10 @@ abstract class Tag {
   /// then singleton; otherwise must be greater than 0;
   //TODO: should be modified when EType info is available.
   bool isValidValues<V>(Iterable<V> vList, [Issues issues]) {
-    if (vList == null) nullValueError();
+    if (vList == null) {
+      nullValueError();
+      return false;
+    }
     if (vrIndex == kUNIndex || vList.isEmpty) return true;
 
     if (isNotValidValuesLength(vList, issues)) {
@@ -292,7 +295,9 @@ abstract class Tag {
   bool isValidLength(int length) {
     assert(length != null);
     if (isLengthAlwaysValid == true || length == 0) return true;
-    return (length >= minValues && length <= maxValues && (length % columns) == 0) &&
+    return (length >= minValues &&
+            length <= maxValues &&
+            (length % columns) == 0) &&
         length <= vr.maxVFLength;
   }
 
@@ -303,8 +308,8 @@ abstract class Tag {
   bool isValidVFLength(int vfLength, [Issues issues]) {
     assert(vfLength >= 0 && vfLength <= vr.maxVFLength);
     if (isVFLengthAlwaysValid(vrIndex)) return true;
-    if (vr.isValidVFLength(vfLength, minValues, maxValues) && (vfLength % columns) == 0)
-      return true;
+    if (vr.isValidVFLength(vfLength, minValues, maxValues) &&
+        (vfLength % columns) == 0) return true;
 
     final msg = 'Invalid Value Field length: '
         'min($minValues) <= $vfLength <= max($maxValues)';
@@ -438,7 +443,8 @@ abstract class Tag {
     } else {
       if (Tag.isPrivateGroupLengthCode(code))
         return new PrivateTagGroupLength(code, vrIndex);
-      if (Tag.isPrivateCreatorCode(code)) return new PCTag(code, vrIndex, creator);
+      if (Tag.isPrivateCreatorCode(code))
+        return new PCTag(code, vrIndex, creator);
       if (Tag.isPrivateDataCode(code)) return new PDTag(code, vrIndex, creator);
     }
 //    log.debug('lookupTag: ${Tag.toDcm(code)} $vrIndex, $creator');
@@ -446,7 +452,8 @@ abstract class Tag {
     return invalidTagCode(code, msg);
   }
 
-  static Tag lookupByKeyword(String keyword, [int vrIndex = kUNIndex, Object creator]) {
+  static Tag lookupByKeyword(String keyword,
+      [int vrIndex = kUNIndex, Object creator]) {
 /*    Tag tag = Tag.lookupKeyword(keyword, vr);
     if (tag != null) return tag;
     tag = Tag.lookupPrivateCreatorKeyword(keyword, vr) {
@@ -570,7 +577,8 @@ abstract class Tag {
       Group.isPublic(Group.fromTag(code)) && Elt.fromTag(code) == 0;
 
   static bool isPublicGroupLengthKeyword(String keyword) =>
-      keyword == 'PublicGroupLengthKeyword' || isPublicGroupLengthKeywordCode(keyword);
+      keyword == 'PublicGroupLengthKeyword' ||
+      isPublicGroupLengthKeywordCode(keyword);
 
   //TODO: test - needs to handle 'oxGGGGEEEE' and 'GGGGEEEE'
   static bool isPublicGroupLengthKeywordCode(String keywordCode) {
@@ -593,7 +601,8 @@ abstract class Tag {
   }
 
   static bool isPrivateDataCode(int code) =>
-      Group.isPrivate(Group.fromTag(code)) && Elt.isPrivateData(Elt.fromTag(code));
+      Group.isPrivate(Group.fromTag(code)) &&
+      Elt.isPrivateData(Elt.fromTag(code));
 
   static int privateCreatorBase(int code) => Elt.pcBase(Elt.fromTag(code));
 
@@ -626,13 +635,16 @@ abstract class Tag {
 
   /// Returns a valid [PDTagKnown], or -1.
   static int toPrivateData(int group, int pcIndex, int pdIndex) {
-    if (Group.isPrivate(group) && _isPCIndex(pcIndex) && _isPDIndex(pcIndex, pdIndex))
+    if (Group.isPrivate(group) &&
+        _isPCIndex(pcIndex) &&
+        _isPDIndex(pcIndex, pdIndex))
       return _toPrivateData(group, pcIndex, pcIndex);
     return -1;
   }
 
   /// Returns a [PCTag], without checking arguments.
-  static int _toPrivateCreator(int group, int pcIndex) => (group << 16) + pcIndex;
+  static int _toPrivateCreator(int group, int pcIndex) =>
+      (group << 16) + pcIndex;
 
   /// Returns a [PDTagKnown], without checking arguments.
   static int _toPrivateData(int group, int pcIndex, int pdIndex) =>
@@ -647,7 +659,8 @@ abstract class Tag {
   //static bool _isSimplePDIndex(int pde) => 0x1000 >= pde && pde <= 0xFFFF;
 
   /// Return _true_  if [pdi] is a valid Private Data Index.
-  static bool _isPDIndex(int pci, int pdi) => _pdBase(pci) <= pdi && pdi <= _pdLimit(pci);
+  static bool _isPDIndex(int pci, int pdi) =>
+      _pdBase(pci) <= pdi && pdi <= _pdLimit(pci);
 
   /// Returns the offset base for a Private Data Element with the
   /// Private Creator [pcIndex].

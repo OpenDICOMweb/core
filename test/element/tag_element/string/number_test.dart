@@ -327,14 +327,6 @@ void main() {
       expect(ds1, isNull);
     });
 
-/* Urgent Sharath delete blank not supported
-    test('DS blank random', () {
-      final vList1 = rsg.getDSList(2, 2);
-      final ds2 = new DStag(PTag.kPresentationPixelSpacing, vList1);
-      expect(ds2.blank, throwsA(const isInstanceOf<UnsupportedError>()));
-    });
-*/
-
     test('DS formBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDSList(1, 1);
