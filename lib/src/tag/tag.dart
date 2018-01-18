@@ -7,7 +7,7 @@
 import 'dart:convert';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';

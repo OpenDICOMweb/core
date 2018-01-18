@@ -477,7 +477,7 @@ $runtimeType(#$hashCode):
         assert(bitsAllocated == 8 || bitsAllocated == 1);
         return pd.pixels;
       } else if (pd is UNPixelData) {
-        //Urgent Jim: use transfer syntax to convert to OW or OB
+        // TODO: use transfer syntax to convert UN into OW or OB
         assert(bitsAllocated == 8 || bitsAllocated == 1);
         return pd.pixels;
       } else {

@@ -12,7 +12,7 @@ import 'package:core/src/date_time/date.dart';
 import 'package:core/src/date_time/dcm_date_time.dart';
 import 'package:core/src/date_time/primitives//age.dart';
 import 'package:core/src/date_time/time.dart';
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/crypto.dart';
 import 'package:core/src/element/errors.dart';
@@ -39,18 +39,12 @@ typedef String Trimmer(String s);
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
-/// Naming
-///   bool isSomething(x)
-///   bool inRange(T v, T min, T max)
-///   T checkSomething(T x, {onError: (T x) => T) - returns x or throws if invalid.
-///   List<String> testSomething(T x) - returns a list of errors or null
-///   X parse(String s, {onError = f}
-///
-///
+/*
 bool _isValidValueLength(String s, int min, int max) {
   if (s == null || s.isEmpty) return false;
   return _inRange(s.length, min, max);
 }
+*/
 
 //Urgent add issues
 //TODO: this does not handle escape sequences
@@ -362,6 +356,7 @@ abstract class StringBase<V> extends Element<String> {
         : sList;
   }
 
+  // Urgent Jim Fix
   //TODO: issues
   static Iterable<String> toBase64(Iterable<String> sList, int maxVFLength,
       [Issues issues]) {

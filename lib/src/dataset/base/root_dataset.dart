@@ -13,7 +13,7 @@ import 'package:core/src/dataset/parse_info.dart';
 import 'package:core/src/dataset/status_report.dart';
 import 'package:core/src/date_time/age.dart';
 import 'package:core/src/date_time/date.dart';
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/empty_list.dart';
 import 'package:core/src/entity/patient/patient.dart';

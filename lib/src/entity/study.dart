@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/dataset/base/root_dataset.dart';
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/instance.dart';

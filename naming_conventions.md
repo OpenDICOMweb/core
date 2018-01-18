@@ -35,3 +35,10 @@ This is the most basic way of validating an Element's value. In the following si
 ```V element.checkValue(V value, [Issues issues])```
 
 ```Issues element.issues(V value, [Issues issues])```
+
+/// Naming
+///   bool isSomething(x)
+///   bool inRange(T v, T min, T max)
+///   T checkSomething(T x, {onError: (T x) => T) - returns x or throws if invalid.
+///   List<String> testSomething(T x) - returns a list of errors or null
+///   X parse(String s, {onError = f}

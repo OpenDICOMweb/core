@@ -10,7 +10,7 @@ import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/errors.dart';

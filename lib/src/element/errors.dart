@@ -6,7 +6,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/frame_descriptor.dart';
 import 'package:core/src/element/frame_list.dart';

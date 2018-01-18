@@ -9,7 +9,7 @@ import 'dart:typed_data';
 import 'package:core/src/dataset//errors.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/float.dart';
 import 'package:core/src/element/base/integer.dart';

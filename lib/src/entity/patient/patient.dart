@@ -7,7 +7,7 @@
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/date_time/date.dart';
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/entity/active_studies.dart';
 import 'package:core/src/entity/entity.dart';

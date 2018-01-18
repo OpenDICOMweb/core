@@ -9,7 +9,7 @@ import 'dart:typed_data';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/element_list/element_list.dart';
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/sequence.dart';
 
 /// Sequence Items -

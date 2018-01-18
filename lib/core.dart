@@ -40,7 +40,7 @@ export 'package:core/src/date_time/primitives/time.dart' hide internalTimeInMicr
 export 'package:core/src/date_time/primitives/time_zone.dart';
 export 'package:core/src/date_time/time.dart';
 export 'package:core/src/date_time/time_zone.dart';
-export 'package:core/src/dicom.dart';
+export 'package:core/src/tag/constants.dart';
 export 'package:core/src/element/base/element.dart';
 export 'package:core/src/element/base/float.dart';
 export 'package:core/src/element/base/integer.dart';
@@ -104,7 +104,7 @@ export 'package:core/src/logger/server/file/log_file.dart';
 export 'package:core/src/parser/parse_errors.dart';
 export 'package:core/src/parser/parser.dart';
 export 'package:core/src/random/rng.dart';
-export 'package:core/src/sdk.dart';
+export 'package:core/src/system/sdk.dart';
 export 'package:core/src/string/ascii.dart';
 export 'package:core/src/string/decimal.dart';
 export 'package:core/src/string/dicom_string.dart';

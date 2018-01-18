@@ -7,7 +7,6 @@
 import 'dart:typed_data';
 
 import 'package:bignum/bignum.dart';
-import 'package:core/src/system/system.dart';
 import 'package:core/src/uid/uid_errors.dart';
 import 'package:core/src/uid/uid_string.dart';
 import 'package:core/src/uid/well_known_uids.dart';

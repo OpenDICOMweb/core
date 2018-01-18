@@ -7,7 +7,7 @@
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known_uids.dart';

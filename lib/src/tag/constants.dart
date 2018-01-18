@@ -2567,7 +2567,7 @@ const int kAlgorithmName = 0x00660036;
 const int kRecommendedPointRadius = 0x00660037;
 const int kRecommendedLineThickness = 0x00660038;
 const int kFloatingPointValues = 0x00660125;
-//Urgent: add 00660129 thru 00660134
+// Urgent: add 00660129 thru 00660134
 const int kImplantSize = 0x00686210;
 const int kImplantTemplateVersion = 0x00686221;
 const int kReplacedImplantTemplateSequence = 0x00686222;

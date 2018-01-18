@@ -19,13 +19,13 @@ import 'dart:math';
 
 import 'package:core/src/date_time/primitives/constants.dart';
 import 'package:core/src/date_time/primitives/time_zone.dart';
-import 'package:core/src/dicom.dart' as dicom;
+import 'package:core/src/tag/constants.dart' as dicom;
 import 'package:core/src/errors.dart';
 import 'package:core/src/hash/hash.dart';
 import 'package:core/src/hash/hash64.dart';
 import 'package:core/src/logger/log_level.dart';
 import 'package:core/src/logger/logger.dart';
-import 'package:core/src/sdk.dart';
+import 'package:core/src/system/sdk.dart';
 import 'package:core/src/string/hexadecimal.dart' as hexadecimal;
 import 'package:core/src/system/sys_info.dart';
 import 'package:core/src/uid/supported_transfer_syntax.dart';

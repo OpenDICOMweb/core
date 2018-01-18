@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/dicom.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/system/system.dart';

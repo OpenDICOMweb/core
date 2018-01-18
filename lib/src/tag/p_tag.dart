@@ -10,7 +10,7 @@ import 'package:core/src/tag/elt.dart';
 import 'package:core/src/tag/errors.dart';
 import 'package:core/src/tag/group.dart';
 import 'package:core/src/tag/p_tag_code_map.dart';
-import 'package:core/src/tag/p_tag_codes.dart';
+// import 'package:core/src/tag/p_tag_codes.dart';
 import 'package:core/src/tag/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
