@@ -352,6 +352,7 @@ abstract class StringBase<V> extends Element<String> {
         : <String>[UTF8.decode(vfBytes, allowMalformed: allow)];
   }
 
+  //Urgent Jim: definition of fromBase64 and toBase64(line:366) looks same
   //TODO: issues
   static Iterable<String> fromBase64(Iterable<String> sList, int maxVFLength,
       [Issues issues]) {
