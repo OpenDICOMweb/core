@@ -27,8 +27,8 @@ class BDRootDataset extends RootDataset<int> with DatasetBD {
   BDRootDataset(this.bd,
       {int fmiEnd, MapAsList fmi, MapAsList elements, this.path = ''})
       : dsBytes = new RDSBytes(bd, fmiEnd),
-        fmi = fmi ?? new MapAsList(),
-        elements = elements ?? new MapAsList() {
+        fmi = (fmi == null) ? new MapAsList() : fmi,
+        elements = (elements == null) ? new MapAsList() : elements {
     print('BDRoot: $this');
   }
 

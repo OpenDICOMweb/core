@@ -30,16 +30,42 @@ const int defaultSize = 200;
 /// An [ElementList] implemented using a [Map].
 class MapAsList extends ElementList<int> {
   /// A [Map] from key to [Element].
-  Map<int, Element> eMap;
+  final Map<int, Element> eMap;
+  @override
+  final List<SQ> sequences;
+  Dataset _dataset;
+  History _history;
 
-  MapAsList([Dataset dataset, List<SQ> sequences, History history])
-      : eMap = <int, Element>{},
-        super(dataset, sequences, history);
+  /// If _true_ duplicate [Element]s are stored in the duplicate Map
+  /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
+  @override
+  bool allowDuplicates = true;
+
+  /// If _true_ [Element]s with invalid values are stored in the
+  /// [Dataset]; otherwise, an [elementNotPresentError] is thrown.
+  @override
+  bool allowInvalidValues = true;
+
+  /// A field that control whether new [Element]s are checked for
+  /// Issues when they are [add]ed to the [Dataset].
+  @override
+  bool checkIssuesOnAdd = false;
+
+  /// A field that control whether new [Element]s are checked for
+  /// Issues when they are accessed from the [Dataset].
+  @override
+  bool checkIssuesOnAccess = false;
+
+
+  MapAsList([this._dataset, List<SQ> sequences, this._history])
+      : sequences = (sequences == null) ? <SQ>[] : sequences,
+        eMap = <int, Element>{};
 
   MapAsList.from(MapAsList map, [Dataset dataset])
       : eMap = new Map.from(map.eMap),
-        super(dataset ??= map.dataset, new List.from(map.sequences),
-            new History.from(map.history));
+        sequences = new List.from(map.sequences),
+        _dataset = dataset ?? map._dataset,
+        _history = new History.from(map.history);
 
 /* TODO: change to this version of ==
   @override
@@ -75,6 +101,17 @@ class MapAsList extends ElementList<int> {
 
   @override
   Element operator [](int index) => lookup(index);
+
+  @override
+  // ignore: unnecessary_getters_setters
+  Dataset get dataset => _dataset;
+  // ignore: unnecessary_getters_setters
+  set dataset(Dataset ds) => _dataset ??= ds;
+
+  /// Lazy access to modified elements
+  @override
+  History get history => _history ??= new History();
+  set history(History m) => _history ??= new History();
 
   @override
   Element lookup(int index, {bool required = false}) {

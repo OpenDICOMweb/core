@@ -33,25 +33,37 @@ import 'package:core/src/vr/vr.dart';
 abstract class ElementList<V> extends ListBase<Element> {
   /// If _true_ duplicate [Element]s are stored in the duplicate Map
   /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
-  bool allowDuplicates = true;
+  bool get allowDuplicates;
+  set allowDuplicates(bool v);
 
   /// If _true_ [Element]s with invalid values are stored in the
   /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
-  bool allowInvalidValues = true;
+  bool get allowInvalidValues;
+  set allowInvalidValues(bool v);
 
   /// A field that control whether new [Element]s are checked for
   /// [Issues] when they are [add]ed to the [Dataset].
-  bool checkIssuesOnAdd = false;
+  bool get checkIssuesOnAdd;
+  set checkIssuesOnAdd(bool v);
 
   /// A field that control whether new [Element]s are checked for
   /// [Issues] when they are accessed from the [Dataset].
-  bool checkIssuesOnAccess = false;
+  bool get checkIssuesOnAccess;
+  set checkIssuesOnAccess(bool v);
 
-  /// A list of the Sequences ([SQ]) in _this_.
-  List<SQ> sequences; // = <SQ>[];
+  /// The [Dataset] that contains _this_.
+  Dataset get dataset;
 
+  /// The [List<SQ] of Sequences contained in _this_.
+  List<SQ> get sequences;
+
+  /// A [History] of the [Element]s modified in _this_.
+  History get history;
+
+/*
   ElementList([this._dataset, List<SQ> sequences, this._history])
       : sequences = sequences ?? <SQ>[];
+*/
 
   /// Returns the [Element] with [index], or _null_.
   @override
@@ -89,16 +101,6 @@ abstract class ElementList<V> extends ListBase<Element> {
   void clear();
 
   ///
-  // ignore: unnecessary_getters_setters
-  Dataset get dataset => _dataset;
-  Dataset _dataset;
-  // ignore: unnecessary_getters_setters
-  set dataset(Dataset ds) => _dataset ??= ds;
-
-  /// Lazy access to modified elements
-  History get history => _history ??= new History();
-  History _history;
-  set history(History m) => _history ??= new History();
 
   bool recordNotFound = false;
 

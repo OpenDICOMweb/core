@@ -85,7 +85,9 @@ class RNG {
 
   /// Returns a double in the range of an IEEE 32-bit floating point number.
   double get nextFloat32 {
+    final n = nextDouble;
     _float32[0] = nextDouble;
+    if (_float32[0].isNaN) throw 'NaN: ${_float32[0]}';
     return _float32[0];
   }
 
@@ -431,7 +433,7 @@ class RNG {
   Float32List float32List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
     final v = new Float32List(length);
-    for (var i = 0; i < length; i++) v[i] = nextFloat32;
+    for (var i = 0; i < length; i++)v[i] = nextFloat32;
     return v;
   }
 
