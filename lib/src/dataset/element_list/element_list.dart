@@ -328,7 +328,7 @@ ElementList Summary
 
   Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) {
     assert(index != null && uids != null);
-    final old = this[index];
+    final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     if (old is! UI) return invalidUidElement(old);
     add(old.update(uids.toList(growable: false)));
@@ -342,7 +342,7 @@ ElementList Summary
                            {bool required = false}) {
     //Note: This assumes [uids] are valid
     assert(index != null && uids != null);
-    final old = this[index];
+    final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     if (old is! UI) return invalidUidElement(old);
     final e = old.update(uids ?? kEmptyStringList);
@@ -356,7 +356,7 @@ ElementList Summary
   Element updateUidList(int index, List<String> uids,
       {bool recursive = true, bool required = false}) {
     assert(index != null);
-    final e = this[index];
+    final e = lookup(index, required: required);
 
     final uids = getUidList(index, required: required);
     if (uids == null) return (required) ? elementNotPresentError(index) : null;
@@ -383,7 +383,7 @@ ElementList Summary
   /// Replaces the element with [index] with a new element that is
   /// the same except it has no values.  Returns the original element.
   Element noValues(int index, {bool required = false}) {
-    final e = this[index];
+    final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
     this[index] = e.noValues;
     return e;
@@ -410,7 +410,7 @@ ElementList Summary
   /// [Element] with [index] was not present.
   List<V> replace(int index, Iterable<V> vList, {bool required = false}) {
     assert(index != null && vList != null);
-    final e = this[index];
+    final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
     final v = e.values;
     e.replace(vList);
@@ -419,7 +419,7 @@ ElementList Summary
 
   List<V> replaceF(int index, Iterable<V> f(Iterable<V> vList), {bool required = false}) {
     assert(index != null && f != null);
-    final e = this[index];
+    final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
     final v = e.values;
     e.replace(f(v));
@@ -477,7 +477,7 @@ ElementList Summary
   // Design Note: Can't use remove
   @override
   Element removeAt(int index, {bool required = false}) {
-    final e = this[index];
+    final e = lookup(index, required: required);
     this[index] == null;
     return (e == null && required) ? elementNotPresentError(index) : e;
   }
@@ -563,12 +563,12 @@ ElementList Summary
   /// Returns the [int] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   V getValue(int index, {bool required = false}) {
-    final e = this[index];
+    final e = lookup(index, required: required);
     return _checkOneValue(index, e.values);
   }
 
   List<V> getValues(int index, {bool required = false}) {
-    final e = this[index];
+    final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
     final List<V> values = e.values;
     assert(values != null);
@@ -592,7 +592,8 @@ ElementList Summary
     if (e == null || e is! IntBase) return nonIntegerTag(index);
     if (!allowInvalidValues && !e.hasValidValues) return invalidElementError(e);
     final vList = e.values;
-    if (vList == null) return nullValueError('getIntList');
+    //if (vList == null) return nullValueError('getIntList');
+    assert(vList != null);
     return vList;
   }
 
@@ -601,17 +602,19 @@ ElementList Summary
   /// Returns a [double] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   double getFloat(int index, {bool required = false}) {
-    final FloatBase e = this[index];
+    final e = lookup(index, required: required);
+    if (e == null || e is! FloatBase) return nonFloatTag(index);
     return _checkOneValue<double>(index, e.values);
   }
 
   /// Returns the [List<double>] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   List<double> getFloatList(int index, {bool required = false}) {
-    final FloatBase e = this[index];
+    final e = lookup(index, required: required);
     if (e == null || e is! FloatBase) return invalidFloatElement(e);
     final vList = e.values;
-    if (vList == null) return nullValueError('getFloatList');
+    //if (vList == null) return nullValueError('getFloatList');
+    assert(vList != null);
     return vList;
   }
 
@@ -620,17 +623,20 @@ ElementList Summary
   /// Returns a [double] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   String getString(int index, {bool required = false}) {
-    final StringBase e = this[index];
-    return (e == null || e.isEmpty) ? '' : _checkOneValue<String>(index, e.values);
+    final e = lookup(index, required: required);
+    if (e == null || e is! StringBase) return nonStringTag(index);
+    return (e.isEmpty) ? '' : _checkOneValue<String>(index, e.values);
   }
 
   /// Returns the [List<double>] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   List<String> getStringList(int index, {bool required = false}) {
-    final StringBase e = this[index];
+    final e = lookup(index, required: required);
     if (e == null || e is! StringBase) return nonStringTag(index);
+    if (!allowInvalidValues && !e.hasValidValues) return invalidElementError(e);
     final vList = e.values;
-    if (vList == null) return nullValueError('getStringList');
+    //if (vList == null) return nullValueError('getStringList');
+    assert(vList != null);
     return vList;
   }
 
@@ -639,14 +645,14 @@ ElementList Summary
   /// Returns an [Item] value for the [SQ] [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   Item getItem(int index, {bool required = false}) {
-    final SQ e = this[index];
+    final SQ e = lookup(index, required: required);
     return _checkOneValue<Item>(index, e.values);
   }
 
   /// Returns the [List<double>] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   List<Item> getItemList(int index, {bool required = false}) {
-    final SQ e = this[index];
+    final SQ e = lookup(index, required: required);
     if (e == null || e is! Item) return nonSequenceTag(index);
     final vList = e.values;
     if (vList == null) return nullValueError('getItemList');
@@ -665,7 +671,7 @@ ElementList Summary
   /// Returns the [List<double>] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   List<Uid> getUidList(int index, {bool required = false}) {
-    final UI e = this[index];
+    final UI e = lookup(index, required: required);
     if (e == null || e is! UI) return nonUidTag(index);
     final vList = e.uids;
     if (vList == null) return nullValueError('getUidList');
