@@ -472,7 +472,6 @@ ElementList Summary
     return result;
   }
 
-  // Urgent Sharath: unit test
   /// Removes the [Element] with index from _this_.
   // Design Note: Can't use remove
   @override
@@ -482,7 +481,6 @@ ElementList Summary
     return (e == null && required) ? elementNotPresentError(index) : e;
   }
 
-  // Urgent Sharath: unit test
   /// Removes the [Element] with [index] from _this_.
   Element delete(int index, {bool required = false}) {
     assert(index != null, 'Invalid index: $index');
