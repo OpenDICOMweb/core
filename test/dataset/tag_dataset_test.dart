@@ -24,8 +24,7 @@ void main() {
 
       //  element.modify(1, 10, 4);
       expect(date.checkValue('3758'), false);
-//Urgent Sharath: next line is greater than maxYear
-      //expect(date.tag.isValidValue('25240528'), true);
+
       expect(date.checkValue('20240528'), true);
 
       tag = PTag.lookupByCode(kSeriesDate, kDAIndex); // Series Date
@@ -85,7 +84,7 @@ void main() {
     final tag2 = PTag.lookupByCode(kTransferSyntaxUID);
     final tag3 = PTag.lookupByCode(kMediaStorageSOPInstanceUID);
     final tag4 = PTag.lookupByCode(kSeriesTime);
-    var tag5 = PTag.lookupByCode(kAcquisitionDate);
+    final tag5 = PTag.lookupByCode(kAcquisitionDate);
     rootDS0
       ..add(new UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
       ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
@@ -135,17 +134,15 @@ void main() {
       log.debug('Retained : ${rootDS0.retainedCodes}');
     });
 */
-    test('test for remove', () {
-      tag5 = PTag.lookupByCode(kSeriesTime);
-      var removedElement = rootDS0.elements[kSeriesTime];
+    test('test for delete', () {
+      final deleteElement = rootDS0.elements[kSeriesTime];
       log
-        ..debug('removedElement: $removedElement')
-        ..debug('removedElement code: ${removedElement.tag.code}');
-      final e = rootDS0.delete(removedElement.tag.code);
+        ..debug('removedElement: $deleteElement')
+        ..debug('removedElement code: ${deleteElement.tag.code}');
+
+      final e = rootDS0.delete(deleteElement.tag.code);
       log.debug('removed e: $e');
-      expect(e, equals(removedElement));
-      removedElement = rootDS0.elements[kSeriesTime];
-      expect(rootDS0.delete(tag5.code), equals(removedElement));
+      expect(e, equals(deleteElement));
     });
 
     test('test for copy', () {
@@ -159,7 +156,7 @@ void main() {
       expect(dsNew.elements, equals(rootDS0.elements));
 
       final ds1 = rootDS0.copy(rootDS0.parent);
-      log.debug('ds1: $ds1');
+      log.debug('ds1.elements: ${ds1.elements}');
       final ds2 = rootDS0.copy(null);
       log.debug('ds2.elements: ${ds2.elements}');
 
@@ -395,9 +392,8 @@ void main() {
       final elements1 = new MapAsList();
       final lt = new LTtag(PTag.kApprovalStatusFurtherDescription, ['foo bar']);
       final lo = new LOtag(PTag.kProductName, ['foo bar']);
-// Urgent: Sharath invalid values please fix
-//      final ss = new SStag(PTag.kTagAngleSecondAxis, <int>[123, 345]);
-//      final sl = new SLtag(PTag.kReferencePixelX0, <int>[13, 29, 67, 55]);
+      final ss = new SStag(PTag.kTagAngleSecondAxis, <int>[123]);
+      final sl = new SLtag(PTag.kReferencePixelX0, <int>[13]);
 
       system.throwOnError = false;
       //Next line throws InvalidValuesError because 345 is not valid
@@ -412,12 +408,11 @@ void main() {
 
       elements1[lt.code] = lt;
       elements1[lo.code] = lo;
-// Urgent: Sharath related to line 408 and 409 above please fix
-//      elements1[ss.code] = ss;
-//      elements1[sl.code] = sl;
+      elements1[ss.code] = ss;
+      elements1[sl.code] = sl;
       elements1[ob.code] = ob;
       valuesList.add(new TagItem.fromList(rootDS0, elements1));
-//      expect(elements1.length == 5, true);
+      expect(elements1.length == 5, true);
 
       // Create SQtag and add to rootDS0
       final sqTag = PTag.kReferencedStudySequence;
@@ -435,8 +430,7 @@ void main() {
         ..debug('rootDS: ${rootDS0.info}')
         ..debug('rootDS: ${rootDS0.elements}')
         ..debug('total: ${rootDS0.total}');
-// Urgent: Sharath related to line 471 and 472 above please fix
-//      expect(rootDS0.total == 9, true);
+      expect(rootDS0.total == 9, true);
 
       final sq1 = rootDS0.lookup(sqTag.code);
       expect((sq == sq1), true);
@@ -453,17 +447,16 @@ void main() {
       log
         ..debug('length: ${rootDS0.length}, total: ${rootDS0.total} ')
         ..debug('rootDS0.total: ${rootDS0.total}, sq.total: ${sq.total}');
+
       // No of SQtag Elements in top level of rootDS0
       expect(rootDS0.length == 3, true);
-//      expect(rootDS0.total == 11, true);
     });
 
     test('removeDuplicates', () {
       final un0 = new UNtag(PTag.kAirCounts, [1]);
       final un1 = new UNtag(PTag.kAirCounts, [2]);
-// Urgent: Sharath next 2 lines throw InvalidVRIndex please fix
-//      final aeUN0 = new AEtag(PTag.kDarkCurrentCounts, ['3']);
-//      final aeUN1 = new AEtag(PTag.kAirCounts, ['3']);
+      final aeOB0 = new OBtag(PTag.kDarkCurrentCounts, [3]);
+      final aeOW1 = new OWtag(PTag.kAirCounts, [3]);
 
       final rds = new TagRootDataset();
       log.debug('system.throwOnError: $system.throwOnError');
@@ -472,15 +465,14 @@ void main() {
           '${rds.elements.history.duplicates.length}');
 
       rds.allowDuplicates = false;
+      system.throwOnError = true;
       expect(() => rds.add(un1), throwsA(const isInstanceOf<DuplicateElementError>()));
-// Urgent: Sharath related to line 471 and 472 above please fix
-//      rds.add(aeUN0);
-//    expect(() => rds.add(aeUN1), throwsA(const isInstanceOf<DuplicateElementError>()));
+      rds.add(aeOB0);
+    expect(() => rds.add(aeOW1), throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rds.allowDuplicates = true;
       expect(rds.add(un1), isNull);
-// Urgent: Sharath related to line 471 and 472 above please fix
-//      expect(rds.add(aeUN1), isNull);
+      expect(rds.add(aeOW1), isNull);
 
       log
         ..debug('rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
@@ -493,8 +485,8 @@ void main() {
       system.throwOnError = false;
       log.debug('system.throwOnError:$system.throwOnError');
       expect(rds.add(un1), isNull);
-// Urgent: Sharath related to line 471 and 472 above please fix
-//      expect(rds.add(aeUN1), isNull);
+      expect(rds.add(aeOB0), isNull);
+      expect(rds.add(aeOW1), isNull);
     });
   });
 
@@ -508,11 +500,12 @@ void main() {
       final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
       final rootDS0 = new TagRootDataset()..add(ss0)..add(sh0)..add(fl0);
 
-      log.debug('system.throwOnError:$system.throwOnError');
       //integer type VR
       expect(rootDS0.getIntList(kTagAngleSecondAxis), equals(int16Min));
 
       system.throwOnError = true;
+      log.debug('system.throwOnError:${system.throwOnError}');
+
       //string type VR
       expect(() => rootDS0.getIntList(kPerformedLocation),
           throwsA(const isInstanceOf<InvalidTagTypeError>()));
@@ -521,40 +514,48 @@ void main() {
       expect(() => rootDS0.getIntList(kAbsoluteChannelDisplayScale),
           throwsA(const isInstanceOf<InvalidTagTypeError>()));
 
+      expect(() => rootDS0.getIntList(kDisplayedAreaBottomRightHandCorner, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+
+
       system.throwOnError = false;
-      log.debug('system.throwOnError:$system.throwOnError');
+      log.debug('system.throwOnError:${system.throwOnError}');
       expect(rootDS0.getIntList(kAbsoluteChannelDisplayScale), isNull);
+      expect(rootDS0.getIntList(kDisplayedAreaBottomRightHandCorner), isNull);
+      expect(rootDS0.getIntList(kPerformedLocation), isNull);
     });
 
-    test('getIntValue', () {
+    test('getInt', () {
       system.throwOnError = false;
       const int32Min = const [kInt16Min];
       final sl0 = new SLtag(PTag.kReferencePixelX0, int32Min);
-// Urgent: Sharath  sl2 is invalid please fix
-//      final sl2 = new SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2, 3]);
+      final sl1 = new SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
       final sl2 = new SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
-      final lt2 = new LTtag(PTag.kDetectorDescription, ['foo']);
-      final fl3 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
+      final lt0 = new LTtag(PTag.kDetectorDescription, ['foo']);
+      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
+
       final rootDS0 = new TagRootDataset()
         ..add(sl0)
+        ..add(sl1)
         ..add(sl2)
-        ..add(lt2)
-        ..add(fl3);
-      log
-        ..debug('fl3: ${fl3.values.runtimeType}: ${fl3.values} '
-            '${fl3.values is List<double>}')
-        ..debug('system.throwOnError: $system.throwOnError');
+        ..add(lt0)
+        ..add(fl0);
+
       //integer type VR
       expect(rootDS0.getInt(kReferencePixelX0), equals(int32Min[0]));
 
+      log.debug('system.throwOnError:${system.throwOnError}');
+      expect(rootDS0.getInt(kDisplayedAreaTopLeftHandCorner), isNull);
+      expect(rootDS0.getInt(kDetectorDescription), isNull);
+      expect(rootDS0.getInt(kAbsoluteChannelDisplayScale), isNull);
+
       system.throwOnError = true;
       rootDS0.allowInvalidValues = false;
+      log.debug('system.throwOnError:${system.throwOnError}');
+
       //integer type VR : with VM more then one
-// Urgent: Sharath  please fix, my fix on line 537 made this not wor
-//      expect(() => rootDS0.getIntList(kDisplayedAreaTopLeftHandCorner, required: true),
-//          throwsA(const isInstanceOf<InvalidElementError>()));
-//      expect(() => rootDS0.getInt(kDisplayedAreaTopLeftHandCorner, required: true),
-//          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      expect(() => rootDS0.getInt(kDisplayedAreaBottomRightHandCorner, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
 
       //string type VR
       expect(() => rootDS0.getInt(kDetectorDescription),
@@ -563,71 +564,75 @@ void main() {
       //float type VR
       expect(() => rootDS0.getInt(kAbsoluteChannelDisplayScale),
           throwsA(const isInstanceOf<InvalidTagTypeError>()));
-
-      system.throwOnError = false;
-      log.debug('system.throwOnError:$system.throwOnError');
-      expect(rootDS0.getInt(kDisplayedAreaTopLeftHandCorner), isNull);
-      expect(rootDS0.getInt(kDetectorDescription), isNull);
-      expect(rootDS0.getInt(kAbsoluteChannelDisplayScale), isNull);
     });
 
     test('getStringList', () {
       final stringList0 = rsg.getLOList(1, 1);
       final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
-      final ss2 = new SStag(PTag.kTagAngleSecondAxis, [12]);
-      final fl3 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
-      final rootDS0 = new TagRootDataset()..add(lo0)..add(ss2)..add(fl3);
+      final ss0 = new SStag(PTag.kTagAngleSecondAxis, [12]);
+      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
+      final rootDS0 = new TagRootDataset()..add(lo0)..add(ss0)..add(fl0);
 
-      log
-        ..debug('system.throwOnError:$system.throwOnError')
-        //string type VR
-        ..debug('hasValueValues lo0: ${lo0.hasValidValues}')
-        ..debug('hasValueValues strngList0:'
-            ' ${PTag.kReceiveCoilManufacturerName.isValidValues(stringList0)}');
+      //string type VR
       final values = rootDS0.getStringList(kReceiveCoilManufacturerName);
       log
         ..debug('values: $values')
         ..debug('isString: ${isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex)}')
         ..debug(isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex));
+
       expect(rootDS0.getStringList(kReceiveCoilManufacturerName), equals(stringList0));
 
+      system.throwOnError = false;
+      log.debug('system.throwOnError:${system.throwOnError}');
+      expect(rootDS0.getStringList(kAbsoluteChannelDisplayScale), isNull);
+      expect(rootDS0.getStringList(kTagAngleSecondAxis), isNull);
+
       system.throwOnError = true;
+      log.debug('system.throwOnError:${system.throwOnError}');
       //integer type VR
       expect(() => rootDS0.getStringList(kTagAngleSecondAxis),
-          throwsA(const isInstanceOf<TypeError>()));
+          throwsA(const isInstanceOf<InvalidTagTypeError>()));
 
       //float type VR
       expect(() => rootDS0.getStringList(kAbsoluteChannelDisplayScale),
-          throwsA(const isInstanceOf<TypeError>()));
+          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+
+      expect(() => rootDS0.getStringList(kDisplayedAreaTopLeftHandCorner),
+          throwsA(const isInstanceOf<InvalidTagTypeError>()));
     });
 
-    test('getStringValue', () {
+    test('getString', () {
       final stringList0 = rsg.getLOList(1, 1);
       final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
-      final ds2 = new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
-      final ss2 = new SStag(PTag.kTagAngleSecondAxis, [12]);
-      final fl3 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
-      final rootDS0 = new TagRootDataset()..add(lo0)..add(ss2)..add(ds2)..add(fl3);
+      final ds0 = new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
+      final ss0 = new SStag(PTag.kTagAngleSecondAxis, [12]);
+      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
+      final rootDS0 = new TagRootDataset()..add(lo0)..add(ss0)..add(ds0)..add(fl0);
 
       log.debug('system.throwOnError:$system.throwOnError');
       //string type VR
       expect(rootDS0.getString(kReceiveCoilManufacturerName), equals(stringList0[0]));
 
       system.throwOnError = true;
+      log.debug('system.throwOnError:${system.throwOnError}');
       //string type VR : with VM more than 1
       expect(() => rootDS0.getString(kImagerPixelSpacing, required: true),
           throwsA(const isInstanceOf<InvalidValuesLengthError>()));
 
       //integer type VR
       expect(() => rootDS0.getString(kTagAngleSecondAxis),
-          throwsA(const isInstanceOf<TypeError>()));
+          throwsA(const isInstanceOf<InvalidTagTypeError>()));
 
       //float type VR
       expect(() => rootDS0.getString(kAbsoluteChannelDisplayScale),
-          throwsA(const isInstanceOf<TypeError>()));
+          throwsA(const isInstanceOf<InvalidTagTypeError>()));
 
       system.throwOnError = false;
-      log.debug('system.throwOnError:$system.throwOnError');
+      log.debug('system.throwOnError:${system.throwOnError}');
+
+      //Urgent: required parameter has no use
+      // Code differences with other get methods
+      expect(rootDS0.getString(kImagerPixelSpacing), isNull);
     });
 
     test('getFloatList', () {
@@ -637,21 +642,26 @@ void main() {
       final da2 = new DAtag(PTag.kStudyDate, ['20151212']);
       final rootDS0 = new TagRootDataset()..add(fl0)..add(sl2)..add(da2);
 
-      log.debug('system.throwOnError:$system.throwOnError');
       //float type VR
       expect(rootDS0.getFloatList(kAbsoluteChannelDisplayScale), equals(float32List0));
 
+      system.throwOnError = false;
+      log.debug('system.throwOnError:${system.throwOnError}');
+      expect(rootDS0.getFloatList(kReferencePixelX0), isNull);
+      expect(rootDS0.getFloatList(kStudyDate), isNull);
+
       system.throwOnError = true;
+      log.debug('system.throwOnError:${system.throwOnError}');
       //integer type VR
       expect(() => rootDS0.getFloatList(kReferencePixelX0),
-          throwsA(const isInstanceOf<TypeError>()));
+          throwsA(const isInstanceOf<InvalidElementTypeError>()));
 
       //string type VR
       expect(() => rootDS0.getFloatList(kStudyDate),
-          throwsA(const isInstanceOf<TypeError>()));
+          throwsA(const isInstanceOf<InvalidElementTypeError>()));
     });
 
-    test('getFloatValue', () {
+    test('getFloat', () {
       final List<double> float32List0 = rng.float32List(1, 1);
       final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
       final fl1 = new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
@@ -659,9 +669,12 @@ void main() {
       final da0 = new DAtag(PTag.kStudyDate, ['20151212']);
       final rootDS0 = new TagRootDataset()..add(fl0)..add(fl1)..add(sl0)..add(da0);
 
-      log.debug('system.throwOnError:$system.throwOnError');
       //float type VR
       expect(rootDS0.getFloat(kAbsoluteChannelDisplayScale), equals(float32List0[0]));
+
+      system.throwOnError = false;
+      log.debug('system.throwOnError:${system.throwOnError}');
+      expect(rootDS0.getFloat(kAnatomicStructureReferencePoint), isNull);
 
       system.throwOnError = true;
       //string type VR : with VM more than 1
@@ -670,11 +683,11 @@ void main() {
 
       //integer type VR
       expect(() => rootDS0.getFloat(kReferencePixelX0),
-          throwsA(const isInstanceOf<TypeError>()));
+          throwsA(const isInstanceOf<InvalidTagTypeError>()));
 
       //string type VR
       expect(
-          () => rootDS0.getFloat(kStudyDate), throwsA(const isInstanceOf<TypeError>()));
+          () => rootDS0.getFloat(kStudyDate), throwsA(const isInstanceOf<InvalidTagTypeError>()));
     });
 
     test('[] and []=', () {
@@ -688,12 +701,10 @@ void main() {
       final element0 = rootDS0[lo0.code];
       log.debug('lo0: $lo0, Element0: $element0');
       expect(element0 == lo0, true);
-      expect(element0, equals(lo0));
 
       final element1 = rootDS0[ut0.code];
       log.debug('ut0: $ut0, Element1: $element1');
       expect(element1 == ut0, true);
-      expect(element1, equals(ut0));
 
       final element2 = rootDS0[kIdentifierTypeCode];
       log.debug('Element2: $element2');
@@ -705,7 +716,6 @@ void main() {
 
       //adding a new element
       rootDS0[lt0.key] = lt0;
-      log.debug(rootDS0);
       expect(rootDS0.total == 3, true);
 
       //adding a duplicate element
@@ -740,24 +750,24 @@ void main() {
       //no duplicates
       expect(rootDS0.hasDuplicates, false);
 
-      final un0 = new UNtag(PTag.kAirCounts, [1]);
-      final un1 = new UNtag(PTag.kAirCounts, [1, 2, 3]);
+      final ob0 = new OBtag(PTag.kAirCounts, [1]);
+      final ob1 = new OBtag(PTag.kAirCounts, [1, 2, 3]);
 
       system.throwOnError = true;
-      rootDS0.add(un0);
+      rootDS0.add(ob0);
       log.debug('rds.elements.length: ${rootDS0.elements.length}, rds.duplicates.length: '
           '${rootDS0.elements.history.duplicates.length}');
       //adding duplicates
       rootDS0.allowDuplicates = false;
       expect(
-          () => rootDS0.add(un1), throwsA(const isInstanceOf<DuplicateElementError>()));
+          () => rootDS0.add(ob1), throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rootDS0.allowDuplicates = true;
-      expect(rootDS0.add(un1), isNull);
+      expect(rootDS0.add(ob1), isNull);
 
       system.throwOnError = false;
       log.debug('system.throwOnError:$system.throwOnError');
-      expect(rootDS0.add(un1), isNull);
+      expect(rootDS0.add(ob1), isNull);
 
       //has Duplicates
       expect(rootDS0.hasDuplicates, true);
@@ -779,7 +789,7 @@ void main() {
       expect(rootDS0, equals(rootNew));
     });
 
-    test('length', () {
+    test('elements.length', () {
       final stringList0 = rsg.getLOList(1, 1);
       final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
       final fl2 = new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
@@ -789,7 +799,7 @@ void main() {
       expect(rootDS0.length == rootDS0.elements.length, true);
     });
 
-    test('elements', () {
+    test('elementsList', () {
       final stringList0 = rsg.getLOList(1, 1);
       final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
       final st2 = new STtag(PTag.kMetaboliteMapDescription, ['dfg']);
