@@ -72,6 +72,7 @@ bool _isFilteredString(String s, int min, int max, bool filter(int c),
     return true;
   } else if (allowTrailing) {
     // Skip trailing spaces
+    // ignore: prefer_conditional_assignment
     for (; i < s.length; i++) if (s.codeUnitAt(i) != kSpace) return false;
     return true;
   }

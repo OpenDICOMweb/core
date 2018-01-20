@@ -85,8 +85,10 @@ class RNG {
 
   /// Returns a double in the range of an IEEE 32-bit floating point number.
   double get nextFloat32 {
+    //TODO: remove after confirming NaNs are not generated
     final n = nextDouble;
-    _float32[0] = nextDouble;
+    _float32[0] = n;
+    // ignore: only_throw_errors
     if (_float32[0].isNaN) throw 'NaN: ${_float32[0]}';
     return _float32[0];
   }

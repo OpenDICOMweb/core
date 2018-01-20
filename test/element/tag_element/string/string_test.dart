@@ -3968,8 +3968,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         stringList0 = rsg.getUTList(1, 1);
         final ut0 = new UTtag(PTag.kLocalNamespaceEntityID, stringList0);
-        // Urgent Sharath - remove or use ut1
-        final ut1 = new UTtag(PTag.kLocalNamespaceEntityID, stringList0);
+ //Urgent Sharath - remove or use ut1
+ //       final ut1 = new UTtag(PTag.kLocalNamespaceEntityID, stringList0);
 
         stringList1 = rsg.getUTList(1, 1);
         final ut2 = new UTtag(PTag.kUniversalEntityID, stringList1);

@@ -9,7 +9,6 @@ import 'dart:typed_data';
 import 'package:core/src/dataset//errors.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/float.dart';
 import 'package:core/src/element/base/integer.dart';
@@ -22,6 +21,7 @@ import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/string/ascii.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 import 'package:core/src/vr/vr.dart';
 
@@ -90,7 +90,8 @@ abstract class Evr<V> implements BDElement<V> {
     UCevr.make, URevr.make, UTevr.make,
 
     // EVR Short
-    TMevr.make, ASevr.make, ATevr.make,
+
+    AEevr.make, ASevr.make, ATevr.make,
     CSevr.make, DAevr.make, DSevr.make,
     DTevr.make, FDevr.make, FLevr.make,
     ISevr.make, LOevr.make, LTevr.make,
