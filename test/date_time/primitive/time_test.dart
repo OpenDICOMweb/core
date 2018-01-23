@@ -459,38 +459,6 @@ void main() {
       expect(tms3, equals('000000.000000'));
     });
 
-/* Urgent Sharath: Fix or Flush
-    test('Bad Time and Bad Time Hash', () {
-      final x = 3;
-      final y = 11;
-      log.debug('x: $x, y: $y');
-      for (var  h = -1; h < 3; h += x) {
-        log.debug1('hour: $h');
-        for (var  m = 0; m < 60; m += x) {
-          log.debug2('minute: $m');
-          for (var  s = 0; s < 60; s += x) {
-            log.debug3('second: $s');
-            for (var  ms = 0; ms < 1000; ms += y) {
-              for (var  us = 0; us < 1000; us += y) {
-                final v = h * kMicrosecondsPerHour +
-                    m * kMicrosecondsPerMinute +
-                    s * kMicrosecondsPerSecond +
-                    ms * kMicrosecondsPerMillisecond +
-                    us;
-                final usTime = timeInMicroseconds(h, m, s, ms, us);
-                expect(v == usTime, true);
-                expect(isValidTime(h, m, s, ms, us), true);
-                expect(isValidTimeMicroseconds(v), true);
-
-                final hash = hashTimeMicroseconds(usTime);
-                expect(isValidTimeMicroseconds(hash), true);
-              }
-            }
-          }
-        }
-      }
-    });
-    */
   });
 }
 
