@@ -82,7 +82,6 @@ void main() {
 
   group('isValid', () {
     test('isValid Good and Bad DcmDateTime', () {
-
       for (var dt in goodDcmDateTimeList) {
         final dateTime = DcmDateTime.parse(dt);
         log.debug('dateTime: $dateTime');
@@ -199,6 +198,26 @@ void main() {
             final dt1 = new DcmDateTime(y, m, d + 1);
             log.debug('dt0: $dt0, dt1: $dt1');
             expect(dt0 < dt1, true);
+          }
+        }
+      }
+    });
+
+    test('compareTo', () {
+      for (var y = 1900; y < 2000; y++) {
+        for (var m = 1; m < 12; m++) {
+          for (var d = 1; d < lastDayOfMonth(y, m); d++) {
+            if(d + 1 < lastDayOfMonth(y, m)) {
+              final dt0 = new DcmDateTime(y, m, d);
+              final dt1 = new DcmDateTime(y, m, d + 1);
+              expect(dt0.compareTo(dt1), -1);
+
+              expect(dt1.compareTo(dt0), 1);
+              expect(dt0.compareTo(dt0), 0);
+
+              final dt2 = new DcmDateTime(y, m, d);
+              expect(dt0.compareTo(dt2), 0);
+            }
           }
         }
       }
