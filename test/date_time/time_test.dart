@@ -91,7 +91,8 @@ void main() {
         final time = Time.parse(s);
         log.debug('    Time: $time');
         if (time == null)
-          return invalidTimeString('Bad Value{"$s"} in Good Time in Microseconds');
+          return invalidTimeString(
+              'Bad Value{"$s"} in Good Time in Microseconds');
         expect(time, isNotNull);
         log
           ..debug('    Time.parse: "$s": $time')
@@ -211,7 +212,8 @@ void main() {
       system.throwOnError = true;
       log.debug('throwOnError: $throwOnError');
       for (var i in badDcmTimesInt) {
-        expect(() => new Time(i), throwsA(const isInstanceOf<InvalidTimeError>()));
+        expect(
+            () => new Time(i), throwsA(const isInstanceOf<InvalidTimeError>()));
       }
 
       system.throwOnError = false;
@@ -266,13 +268,17 @@ void main() {
       for (var s in goodDcmTimes) {
         final t0 = Time.parse(s);
         final t1 = Time.parse(s);
-        log..debug('t0.value:${t0.toString()}')..debug('t1.value:${t1.toString()}');
+        log
+          ..debug('t0.value:${t0.toString()}')
+          ..debug('t1.value:${t1.toString()}');
         expect(t0 == t1, true);
       }
 
       final t2 = Time.parse(goodDcmTimes[0]);
       final t3 = Time.parse(goodDcmTimes[1]);
-      log..debug('t2.value:${t2.toString()}')..debug('t3.value:${t3.toString()}');
+      log
+        ..debug('t2.value:${t2.toString()}')
+        ..debug('t3.value:${t3.toString()}');
       expect(t2 == t3, false);
     });
 
@@ -363,6 +369,24 @@ void main() {
             final t2 = t0 - t1;
             log.debug('t2.microseconds: ${t2.microseconds}');
             expect(t2, isNotNull);
+          }
+        }
+      }
+    });
+
+    test('compareTo', () {
+      for (var h = 1; h < 24; h++) {
+        for (var m = 1; m < 60; m++) {
+          for (var s = 1; s < 60; s++) {
+            if(s + 1 < 60) {
+              final t0 = new Time(h, m, s);
+              final t1 = new Time(h, m, s + 1);
+
+              expect(t0.compareTo(t1), -1);
+              expect(t1.compareTo(t0), 1);
+              expect(t0.compareTo(t0), 0);
+              expect(t1.compareTo(t1), 0);
+            }
           }
         }
       }

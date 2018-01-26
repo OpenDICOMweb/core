@@ -102,7 +102,7 @@ class TimeZone implements Comparable<TimeZone> {
   static const int kMaxMicroseconds = kMaxTimeZoneMicroseconds;
 
   static TimeZone microsecondsToTimeZone(int us) {
-    final index = kValidTZMicroseconds[us];
+    final index = kValidTZMicroseconds.indexOf(us);
     return (index == -1) ? invalidTimeMicrosecondsError(us) : kMembers[index];
   }
 

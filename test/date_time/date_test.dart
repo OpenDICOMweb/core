@@ -70,8 +70,8 @@ void main() {
       system.throwOnError = true;
       for (var s in badDcmDateList) {
         log.debug('Bad date: $s');
-        expect(
-            () => Date.parse(s), throwsA(const isInstanceOf<InvalidDateStringError>()));
+        expect(() => Date.parse(s),
+            throwsA(const isInstanceOf<InvalidDateStringError>()));
       }
     });
 
@@ -351,7 +351,10 @@ void main() {
     log.debug(date);
     //for(var s in goodDcmDateList){
     final date0 = Date.parse(goodDcmDateList[0]);
-    log..debug('${date0.weekday}')..debug('${date0.weekdayName}')..debug('date0: $date0');
+    log
+      ..debug('${date0.weekday}')
+      ..debug('${date0.weekdayName}')
+      ..debug('date0: $date0');
     final weekDayName0 = date0.weekdayName; //check once
     log.debug('weekDayName0: $weekDayName0');
     //}
@@ -424,8 +427,10 @@ void main() {
     for (var s in goodDcmDateList) {
       final date0 = Date.parse(s);
       final date1 = Date.parse(s);
-      log..debug('date0.value:${date0.toString(
-				  )}, date0.hashCode:${date0.hashCode}')..debug('date1.value:${date1.toString(
+      log
+        ..debug('date0.value:${date0.toString(
+				  )}, date0.hashCode:${date0.hashCode}')
+        ..debug('date1.value:${date1.toString(
 				  )}, date1.hashCode:${date1.hashCode}');
       expect(date0.hashCode, equals(date1.hashCode));
     }
@@ -484,6 +489,23 @@ void main() {
           final dt1 = new Date(y, m, d + 1);
           log.debug('dt0: $dt0, dt1: $dt1');
           expect(dt0.isBefore(dt1), true);
+        }
+      }
+    }
+  });
+
+  test('compareTo', () {
+    for (var y = 1800; y < 2000; y++) {
+      for (var m = 1; m < 12; m++) {
+        for (var d = 1; d < lastDayOfMonth(y, m); d++) {
+          if (d + 1 < lastDayOfMonth(y, m)) {
+            final dt0 = new Date(y, m, d);
+            final dt1 = new Date(y, m, d + 1);
+            expect(dt0.compareTo(dt1), -1);
+
+            expect(dt1.compareTo(dt0), 1);
+            expect(dt0.compareTo(dt0), 0);
+          }
         }
       }
     }
