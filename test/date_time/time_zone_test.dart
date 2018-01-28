@@ -167,8 +167,7 @@ void main() {
 
       for (String s in inValidTimeZoneStrings) {
         system.throwOnError = false;
-        log..debug('s: $s')
-        ..debug('throwOnError: $throwOnError');
+        log..debug('s: $s')..debug('throwOnError: $throwOnError');
         final issues = TimeZone.issues(s, start: 0);
         log.debug('issues: "$issues"');
         expect(issues.isEmpty, false);
@@ -254,7 +253,7 @@ void main() {
 
     test('hash', () {
       for (var s in kValidDcmTZStrings) {
-      	log.debug('TZ: $s');
+        log.debug('TZ: $s');
         final t0 = TimeZone.parse(s);
         final t1 = TimeZone.parse(s);
         log
@@ -288,6 +287,60 @@ void main() {
         ..debug('t2.value:${t2.toString()}, t2.hash:${t2.hashCode}')
         ..debug('t3.value:${t3.toString()}, t3.hash:${t3.hashCode}');
       expect(t2.hashCode, isNot(t3.hashCode));
+    });
+
+    test('microsecondsToTimeZone', () {
+      for (var h = kMinTimeZoneHour; h < kMaxTimeZoneHour; h++) {
+        final sign = (h.sign.isNegative) ? -1 : 1;
+
+        if (h >= -12 && h <= 14) {
+          for (var m = 0; m < 60; m++) {
+            system.throwOnError = false;
+            if (isValidTimeZone(sign, h, m)) {
+              final us0 = timeZoneToMicroseconds(sign, h, m);
+              final tzus =TimeZone.microsecondsToTimeZone(us0);
+              log.debug('us0: $us0, tzus: ${tzus.toString()}');
+
+              expect(kValidInetTZStrings.contains(tzus.toString()), true);
+            }
+          }
+        }
+      }
+    });
+
+    test('>', () {
+      for(var i=0; i< kValidInetTZStrings.length; i++) {
+        if(i + 1 < kValidInetTZStrings.length) {
+          final tz1 = TimeZone.parseInternet(kValidInetTZStrings[i]);
+          final tz2 = TimeZone.parseInternet(kValidInetTZStrings[i + 1]);
+
+          expect(tz2 > tz1 , true);
+        }
+      }
+    });
+
+    test('<', () {
+      for(var i=0; i< kValidInetTZStrings.length; i++) {
+        if(i + 1 < kValidInetTZStrings.length) {
+          final tz1 = TimeZone.parseInternet(kValidInetTZStrings[i]);
+          final tz2 = TimeZone.parseInternet(kValidInetTZStrings[i + 1]);
+
+          expect(tz1 < tz2 , true);
+        }
+      }
+    });
+
+    test('compareTo', () {
+      for(var i=0; i< kValidInetTZStrings.length; i++) {
+        if(i + 1 < kValidInetTZStrings.length) {
+          final tz1 = TimeZone.parseInternet(kValidInetTZStrings[i]);
+          final tz2 = TimeZone.parseInternet(kValidInetTZStrings[i + 1]);
+
+          expect(tz1.compareTo(tz2) == -1, true);// tz1 < tz2
+          expect(tz2.compareTo(tz1) == 1, true);// tz2 > tz1
+          expect(tz1.compareTo(tz1) == 0, true);// tz1 == tz1
+        }
+      }
     });
   });
 }

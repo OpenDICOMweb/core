@@ -3164,7 +3164,6 @@ void main() {
 
     test('ST fromBase64', () {
       final vList1 = rsg.getSTList(1, 1);
-      //final values = ASCII.encode(vList1[0]);
       system.throwOnError = false;
       final v0 = ST.fromBase64(vList1);
       expect(v0, isNotNull);
@@ -3181,12 +3180,11 @@ void main() {
       expect(ST.toBase64(vList0), equals(vList0));
 
       final vList1 = ['dslkj'];
-      //final s0 = ASCII.encode(vList0[0]);
       expect(ST.toBase64(vList1), equals(vList1));
     });
   });
 
-/*  group('UCtag', () {
+  group('UCtag', () {
     const goodUCList = const <List<String>>[
       const <String>['2qVmo1AAD'],
       const <String>['erty#4u'],
@@ -3237,7 +3235,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => new UCtag(PTag.kStrainDescription, null),
-          throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('UC hasValidValues random', () {
@@ -3256,11 +3254,9 @@ void main() {
         final vList0 = rsg.getUCList(3, 4);
         log.debug('$i: vList0: $vList0');
 
-// Urgent Sharath
-        //isLengthAlwaysValid of US always true
         system.throwOnError = false;
         final uc1 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
-        expect(uc1.hasValidValues, true);
+        expect(uc1, isNull);
         system.throwOnError = true;
         expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
@@ -3293,18 +3289,22 @@ void main() {
       log.debug('st0: ${uc0.noValues}');
 
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getUCList(3, 4);
+        final vList0 = rsg.getUCList(1, 1);
         system.throwOnError = false;
-        final uc0 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
-        expect(uc0, isNull);
+        final uc1 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
+        final UCtag ucNoValues1 = uc1.noValues;
+        expect(ucNoValues1.values.isEmpty, true);
+
+        final vList1 = rsg.getUCList(2, 4);
+        system.throwOnError = false;
+        final uc2 = new UCtag(PTag.kGeneticModificationsDescription, vList1);
+        expect(uc2, isNull);
         system.throwOnError = true;
-        expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList0),
+        expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList1),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-        log.debug('uc0: $uc0');
 
         system.throwOnError = false;
         //Urgent Jim why doesn't this throw?
-        expect(ucNoValues.values.isEmpty, true);
 
         system.throwOnError = true;
         //Urgent Sharath: add test for true case
@@ -3325,16 +3325,12 @@ void main() {
         expect(uc2, isNull);
         expect(() => uc1.update(vList0).values,
             throwsA(const isInstanceOf<NoSuchMethodError>()));
-//        final UCtag uc3 = uc2.copy;
         expect(
             () => uc2.copy, throwsA(const isInstanceOf<NoSuchMethodError>()));
 
         system.throwOnError = true;
         expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-
-        //      expect(uc3 == uc2, true);
-        //      expect(uc3.hashCode == uc2.hashCode, false);
       }
     });
 
@@ -3355,6 +3351,7 @@ void main() {
     });
 
     test('UC hashCode and == bad values random', () {
+      system.throwOnError = false;
       List<String> stringList0;
       List<String> stringList1;
       List<String> stringList2;
@@ -3398,8 +3395,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
         final uc0 = new UCtag(PTag.kStrainDescription, vList0);
-//Urgent Jim
-//        expect(uc0.tag.isValidValues(uc0.values), true);
+        expect(uc0.tag.isValidValues(uc0.values), true);
         expect(uc0.hasValidValues, true);
       }
     });
@@ -3493,9 +3489,9 @@ void main() {
         }
       }
     });
-  });*/
+  });
 
-/*  group('UC Element', () {
+  group('UC Element', () {
     const goodUCList = const <List<String>>[
       const <String>['2qVmo1AAD'],
       const <String>['erty#4u'],
@@ -3541,7 +3537,7 @@ void main() {
       PTag.kAddressTrial
     ];
 
-    final invalidVList = rsg.getUCList(UC.kMaxLength + 1, UC.kMaxLength + 1);
+    final invalidVList = rsg.getUCList(5000, 5000);
 
     test('UC checkVR good values', () {
       system.throwOnError = false;
@@ -3710,11 +3706,9 @@ void main() {
       system.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rsg.getUCList(1, i);
-        final validMaxLengthList = invalidVList.sublist(0, UC.kMaxLength);
         for (var tag in ucTags1) {
           log.debug('tag: $tag');
           expect(UC.isValidVListLength(tag, validMinVList0), true);
-          expect(UC.isValidVListLength(tag, validMaxLengthList), true);
         }
       }
     });
@@ -3759,7 +3753,7 @@ void main() {
     });
 
     test('UC fromBytes', () {
- //     system.level = Level.debug;
+      //     system.level = Level.debug;
       final vList1 = rsg.getUCList(1, 1);
       final bytes = UC.toBytes(vList1);
       log.debug('UC.fromBytes(bytes): ${UC.fromBytes(bytes)}, bytes: $bytes');
@@ -3832,7 +3826,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
       }
     });
-  });*/
+  });
 
   group('UTtag', () {
     const goodUTList = const <List<String>>[
@@ -3968,8 +3962,6 @@ void main() {
       for (var i = 0; i < 10; i++) {
         stringList0 = rsg.getUTList(1, 1);
         final ut0 = new UTtag(PTag.kLocalNamespaceEntityID, stringList0);
- //Urgent Sharath - remove or use ut1
- //       final ut1 = new UTtag(PTag.kLocalNamespaceEntityID, stringList0);
 
         stringList1 = rsg.getUTList(1, 1);
         final ut2 = new UTtag(PTag.kUniversalEntityID, stringList1);
