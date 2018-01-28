@@ -10,7 +10,7 @@ import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/parser/parse_errors.dart';
 import 'package:core/src/parser/parser.dart';
-import 'package:core/src/string/string.dart';
+import 'package:core/src/string/number.dart';
 
 //TODO: convert age string to duration
 // TODO: before V0.9.0 document

@@ -11,35 +11,6 @@ import 'package:core/src/string/hexadecimal.dart';
 
 // **** This file contains low-level [String] functions
 
-//TODO: make private and public versions of these
-//Note: the following do no error checking.
-String digits2(int n) {
-  if (n >= 10) return '$n';
-  return '0$n';
-}
-
-String digits3(int n) {
-  if (n > 999) return null;
-  if (n >= 100) return '$n';
-  if (n >= 10) return '0$n';
-  return '00$n';
-}
-
-String digits4(int n) {
-  if (n >= 1000) return '$n';
-  if (n >= 100) return '0$n';
-  if (n >= 10) return '00$n';
-  return '000$n';
-}
-
-String digits6(int n) {
-  if (n >= 100000) return '$n';
-  if (n >= 10000) return '0$n';
-  if (n >= 1000) return '00$n';
-  if (n >= 100) return '000$n';
-  if (n >= 10) return '0000$n';
-  return '00000$n';
-}
 
 /// Returns an [Iterable] of [s], where is is split by the
 /// separator and then each component of the [Iterable] has

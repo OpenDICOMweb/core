@@ -7,7 +7,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/float.dart';
 import 'package:core/src/element/base/integer.dart';
@@ -20,6 +19,7 @@ import 'package:core/src/errors.dart';
 import 'package:core/src/string/ascii.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/tag.dart';
 
 typedef BDElement DecodeBinaryVF(ByteData bd, int vrIndex);
@@ -333,6 +333,10 @@ void _toBytes(int i, ByteData bd0, ByteData bd1) {
   final s1 = ASCII.decode(bytes1, allowInvalid: true);
   log.warn('    $s1');
 }
+
+/// Returns _true_ if all bytes in [bd0] and [bd1] are the same.
+/// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
+bool bdEqual(ByteData bd0, ByteData bd1) => byteDataEqual(bd0, bd1);
 
 /// Returns _true_ if all bytes in [bytes0] and [bytes1] are the same.
 /// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.

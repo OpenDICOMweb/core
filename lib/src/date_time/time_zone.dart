@@ -9,7 +9,7 @@ import 'package:core/src/date_time/primitives/errors.dart';
 import 'package:core/src/date_time/primitives/time_zone.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/parser/parser.dart';
-import 'package:core/src/string/string.dart';
+import 'package:core/src/string/number.dart';
 
 typedef TimeZone OnTimeZoneError(int sign, int h);
 typedef TimeZone OnTimeZoneParseError(String s);

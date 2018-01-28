@@ -6,6 +6,39 @@
 
 import 'dart:typed_data';
 
+//TODO: make private and public versions of these
+//Note: the following do no error checking.
+String digits2(int n) {
+  if (n > 99) return null;
+  if (n >= 10) return '$n';
+  return '0$n';
+}
+
+String digits3(int n) {
+  if (n > 999) return null;
+  if (n >= 100) return '$n';
+  if (n >= 10) return '0$n';
+  return '00$n';
+}
+
+String digits4(int n) {
+  if (n > 9999) return null;
+  if (n >= 1000) return '$n';
+  if (n >= 100) return '0$n';
+  if (n >= 10) return '00$n';
+  return '000$n';
+}
+
+String digits6(int n) {
+  if (n > 999999) return null;
+  if (n >= 100000) return '$n';
+  if (n >= 10000) return '0$n';
+  if (n >= 1000) return '00$n';
+  if (n >= 100) return '000$n';
+  if (n >= 10) return '0000$n';
+  return '00000$n';
+}
+
 // **** Convert integer to decimal String
 
 /// Returns a decimal [String] corresponding to [n] in the format
@@ -45,3 +78,19 @@ String bytesToHex(Uint8List bytes, [int start = 0, int end]) {
   for (var i = start; i < end; i++) sb.write(i.toRadixString(16).padLeft(2, '0'));
   return sb.toString();
 }
+
+/// Returns a [String] that approximately corresponds to [v],
+/// that has at most 16 characters.
+String floatToString(double v) {
+  final precision = 10;
+  var s = v.toString();
+  if (s.length > 16) {
+    for (var i = precision; i > 0; i--) {
+      s = v.toStringAsPrecision(i);
+      if (s.length <= 16) break;
+    }
+  }
+  assert(s.length <= 16, '"$s" exceeds max DS length of 16');
+  return s;
+}
+

@@ -104,7 +104,8 @@ abstract class ElementList<V> extends ListBase<Element> {
 
   bool recordNotFound = false;
 
-  Iterable<int> get indices => elements.map((e) => (e is Element) ? e.index : null);
+  Iterable<int> get indices =>
+      elements.map((e) => (e is Element) ? e.index : null);
 
   /// An [List] of the duplicate [Element]s in _this_.
   List<Element> get duplicates => history.duplicates;
@@ -117,14 +118,16 @@ abstract class ElementList<V> extends ListBase<Element> {
   int get total => counter((e) => true);
   int get nSequences => counter((e) => (e is SQ));
   int get nPrivate => counter((e) => Tag.isPrivateCode(e.code));
-  int get nPrivateSequences => counter((e) => Tag.isPrivateCode(e.code) && e is SQ);
+  int get nPrivateSequences =>
+      counter((e) => Tag.isPrivateCode(e.code) && e is SQ);
 
   //TODO: Uncomment when counter has fold interface
- // int get nItems => counter(itemCount);
+  // int get nItems => counter(itemCount);
   int get dupTotal {
     var count = history.duplicates.length;
     for (var sq in sequences)
-      for (var item in sq.items) count += item.elements.history.duplicates.length;
+      for (var item in sq.items)
+        count += item.elements.history.duplicates.length;
     return count;
   }
 
@@ -146,7 +149,6 @@ abstract class ElementList<V> extends ListBase<Element> {
 
   int itemCount(Element e) => (e is SQ) ? e.values.length : 0;
 
-
   // **** Other Getters and Methods
 
   /// Returns a formatted [String]. See [Formatter].
@@ -162,9 +164,11 @@ ElementList Summary
              Sequences: $nSequences
          Private Total: $nPrivate
 ''');
-    if (nPrivateSequences != 0) sb.writeln('     Private Sequences: $nPrivateSequences');
+    if (nPrivateSequences != 0)
+      sb.writeln('     Private Sequences: $nPrivateSequences');
     if (dupTotal != 0) sb.writeln('      Total Duplicates: $dupTotal');
-    if (duplicates.isNotEmpty) sb.writeln('  Top Level Duplicates: ${duplicates.length}');
+    if (duplicates.isNotEmpty)
+      sb.writeln('  Top Level Duplicates: ${duplicates.length}');
     return sb.toString();
   }
 
@@ -238,8 +242,8 @@ ElementList Summary
   bool tryAdd(Element e, [Issues issues]) {
     final old = lookup(e.code);
     if (old == null) {
-      if (checkIssuesOnAdd && (issues != null)) if (!allowInvalidValues && !e.isValid)
-        invalidElementError(e);
+      if (checkIssuesOnAdd && (issues != null)) if (!allowInvalidValues &&
+          !e.isValid) invalidElementError(e);
       this[e.code] = e;
       if (e is SQ) sequences.add(e);
       return true;
@@ -278,8 +282,8 @@ ElementList Summary
   Element update(int index, {Iterable<V> vList, bool required = false}) {
     final old = lookup(index);
     if (old == null) return null;
-    this[index] =
-        old.update((vList == null) ? const <V>[] : vList.toList(growable: false));
+    this[index] = old
+        .update((vList == null) ? const <V>[] : vList.toList(growable: false));
     return old;
   }
 
@@ -288,7 +292,8 @@ ElementList Summary
   ///
   /// If updating the [Element] fails, the current element is left in
   /// place and _null_ is returned.
-  Element updateF(int index, Iterable<V> f(Iterable<V> vList), {bool required = false}) {
+  Element updateF(int index, Iterable<V> f(Iterable<V> vList),
+      {bool required = false}) {
     final old = lookup(index);
     if (old == null) return null;
     this[index] = old.update(f(old.values) ?? const <V>[]);
@@ -298,7 +303,8 @@ ElementList Summary
   /// Updates all [Element.values] with [index] in _this_ or in any
   /// Sequences (SQ) contained in _this_ with [vList]. Returns a [List<Element>]
   /// of the original [Element]s that were updated.
-  List<Element> updateAll(int index, {Iterable<V> vList, bool required = false}) {
+  List<Element> updateAll(int index,
+      {Iterable<V> vList, bool required = false}) {
     vList ??= const <V>[];
     final v = update(index, vList: vList, required: required);
     final result = <Element>[]..add(v);
@@ -341,7 +347,7 @@ ElementList Summary
   /// a list of [Uid.randomList] is created. It is an error if [Element]
   /// corresponding to [index] does not have a VR of UI.
   UI updateUidStrings(int index, Iterable<String> uids,
-                           {bool required = false}) {
+      {bool required = false}) {
     //Note: This assumes [uids] are valid
     assert(index != null && uids != null);
     final old = lookup(index, required: required);
@@ -419,7 +425,8 @@ ElementList Summary
     return v;
   }
 
-  List<V> replaceF(int index, Iterable<V> f(Iterable<V> vList), {bool required = false}) {
+  List<V> replaceF(int index, Iterable<V> f(Iterable<V> vList),
+      {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
@@ -427,7 +434,6 @@ ElementList Summary
     e.replace(f(v));
     return v;
   }
-
 
   List<List<V>> replaceAll(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
@@ -440,7 +446,6 @@ ElementList Summary
       }
     return result;
   }
-
 
   List<List<V>> replaceAllF(int index, Iterable<V> f(Iterable<V> vList)) {
     assert(index != null && f != null);
@@ -556,9 +561,10 @@ ElementList Summary
 
   // **** Values Getters and Methods
 
-  V _checkOneValue<V>(int index, List<V> values) => (values == null || values.length != 1)
-      ? invalidValuesLengthError(Tag.lookupByCode(index), values)
-      : values.first;
+  V _checkOneValue<V>(int index, List<V> values) =>
+      (values == null || values.length != 1)
+          ? invalidValuesLengthError(Tag.lookupByCode(index), values)
+          : values.first;
 
   /// Returns the [int] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;

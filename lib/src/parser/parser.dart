@@ -14,7 +14,7 @@ import 'package:core/src/issues.dart';
 import 'package:core/src/logger/log_level.dart';
 import 'package:core/src/parser/parse_errors.dart';
 import 'package:core/src/string/ascii.dart';
-import 'package:core/src/string/string.dart';
+import 'package:core/src/string/number.dart';
 import 'package:core/src/system/system.dart';
 
 part 'age_parser.dart';

@@ -9,7 +9,7 @@ import 'package:core/src/date_time/primitives/date.dart';
 import 'package:core/src/date_time/primitives/errors.dart';
 import 'package:core/src/date_time/primitives/time.dart';
 import 'package:core/src/hash/sha256.dart' as sha256;
-import 'package:core/src/string/string.dart';
+import 'package:core/src/string/number.dart';
 import 'package:core/src/system/system.dart';
 
 /// The minimum Unix Epoch day for this [System].

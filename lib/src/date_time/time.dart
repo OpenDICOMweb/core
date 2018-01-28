@@ -11,7 +11,7 @@ import 'package:core/src/date_time/primitives/time.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/parser/parse_errors.dart';
 import 'package:core/src/parser/parser.dart';
-import 'package:core/src/string/string.dart';
+import 'package:core/src/string/number.dart';
 
 typedef Time OnTimeError(int h, int m, int s, int ms, int us);
 typedef Time OnTimeParseError(String s);
@@ -19,14 +19,13 @@ typedef String OnTimeHashStringError(String s);
 
 //Enhancement: should implement Comparable, add, subtract
 /// A span of time. Similar to [Duration], but handles DICOM time (TM) values.
-class Time implements Comparable<Time>{
+class Time implements Comparable<Time> {
   static const Time midnight = const Time._(0);
   static const Time zero = midnight;
   static const Time kMidnight = const Time._(0);
 
   /// Internally [Time] is stored in microseconds.
   final int microseconds;
-
 
   /// Creates a new Time object.
   factory Time(int h,
@@ -46,8 +45,7 @@ class Time implements Comparable<Time>{
   }
   //Internal constructor - hidden when exported:
   factory Time.fromMicroseconds(int uSecs) {
-    if (uSecs > kMicrosecondsPerDay)
-      return invalidTimeMicrosecondsError(uSecs);
+    if (uSecs > kMicrosecondsPerDay) return invalidTimeMicrosecondsError(uSecs);
     return new Time._(uSecs);
   }
 
@@ -66,13 +64,11 @@ class Time implements Comparable<Time>{
 
   //TODO: unit test to verify
   /// Returns `true` if this Duration is the same object as [other].
-  Time operator +(Time other) =>
-      new Time._(microseconds + other.microseconds);
+  Time operator +(Time other) => new Time._(microseconds + other.microseconds);
 
   //TODO: unit test to verify
   /// Returns `true` if this Duration is the same object as [other].
-  Time operator -(Time other) =>
-     new Time._(microseconds - other.microseconds);
+  Time operator -(Time other) => new Time._(microseconds - other.microseconds);
 
   @override
   int get hashCode => microseconds.hashCode;
@@ -105,11 +101,13 @@ class Time implements Comparable<Time>{
 
   /// Returns the [minute] as an integer.
   int get minute =>
-      (microseconds - (inHours * kMicrosecondsPerHour)) ~/ kMicrosecondsPerMinute;
+      (microseconds - (inHours * kMicrosecondsPerHour)) ~/
+      kMicrosecondsPerMinute;
 
   /// Returns the [second] as an integer.
   int get second =>
-      (microseconds - (inMinutes * kMicrosecondsPerMinute)) ~/ kMicrosecondsPerSecond;
+      (microseconds - (inMinutes * kMicrosecondsPerMinute)) ~/
+      kMicrosecondsPerSecond;
 
   /// Returns the [millisecond] as an integer.
   int get millisecond =>
@@ -117,7 +115,8 @@ class Time implements Comparable<Time>{
       kMicrosecondsPerMillisecond;
 
   /// Returns the [microsecond] as an integer.
-  int get microsecond => microseconds - (inMilliseconds * kMicrosecondsPerMillisecond);
+  int get microsecond =>
+      microseconds - (inMilliseconds * kMicrosecondsPerMillisecond);
 
   /// Returns the [fraction] of second as an integer.
   int get fraction => microseconds - (inSeconds * kMicrosecondsPerSecond);
@@ -142,7 +141,8 @@ class Time implements Comparable<Time>{
 
   Time get now {
     final dt = new DateTime.now();
-    return new Time(dt.hour, dt.minute, dt.second, dt.millisecond, dt.millisecond);
+    return new Time(
+        dt.hour, dt.minute, dt.second, dt.millisecond, dt.millisecond);
   }
 
   /// Returns _this_ as a [String] in DICOM time (TM) format.
@@ -161,7 +161,8 @@ class Time implements Comparable<Time>{
   String toString() => inet;
 
   /// Returns _true_ if [s] is a valid DICOM [Time] [String].
-  static bool isValidString(String s, {int start = 0, int end, Issues issues}) =>
+  static bool isValidString(String s,
+          {int start = 0, int end, Issues issues}) =>
       isValidDcmTimeString(s, start: start, end: end, issues: issues);
 
   // Enhancement: all parse functions should take an onError argument.
@@ -188,19 +189,14 @@ class Time implements Comparable<Time>{
   }
 
   static int compare(Time a, Time b) {
-	  if (a == b)
-	    return 0;
-	  if (a > b)
-	    return  1;
-	  return -1;
+    if (a == b) return 0;
+    if (a > b) return 1;
+    return -1;
   }
-
 
   /// Returns a new time [String] that is the hash of [s], which
   /// must be a [String] in DICOM Time (TM) format.
-  static String hashString(String s) =>
-		  hashDcmTimeString(s);
-
+  static String hashString(String s) => hashDcmTimeString(s);
 
   /// Returns a new [List<String>] of DICOM time (DT) values, where each element
   /// in the [List] is the hash of the corresponding element in the argument.

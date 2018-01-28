@@ -11,7 +11,7 @@ import 'package:core/src/date_time/time.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/parser/parse_errors.dart';
 import 'package:core/src/parser/parser.dart';
-import 'package:core/src/string/string.dart';
+import 'package:core/src/string/number.dart';
 import 'package:core/src/system/system.dart';
 
 import 'date.dart';

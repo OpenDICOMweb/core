@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 import 'package:core/src/date_time/primitives/constants.dart';
 import 'package:core/src/date_time/primitives/errors.dart';
-import 'package:core/src/string/string.dart';
+import 'package:core/src/string/number.dart';
 import 'package:core/src/system/system.dart';
 
 // ignore_for_file: only_throw_errors

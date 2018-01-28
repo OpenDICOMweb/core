@@ -269,9 +269,6 @@ abstract class FL extends Float32Base {
 
 abstract class OF extends Float32Base {
   @override
-  //Urgent Jim Fix
-  //VR get vr => vrFromIndex(kVRIndex);
-  @override
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
