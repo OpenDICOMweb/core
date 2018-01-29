@@ -353,7 +353,7 @@ void main() {
             final t0 = new Time(h, m, s);
             final t1 = new Time(h, m, s + 1);
             final t2 = t0 + t1;
-            log.debug('t2.microseconds: ${t2.microseconds}');
+            log.debug('t2.microseconds: ${t2.uSeconds}');
             expect(t2, isNotNull);
           }
         }
@@ -367,7 +367,7 @@ void main() {
             final t0 = new Time(h, m, s);
             final t1 = new Time(h, m, s + 1);
             final t2 = t0 - t1;
-            log.debug('t2.microseconds: ${t2.microseconds}');
+            log.debug('t2.microseconds: ${t2.uSeconds}');
             expect(t2, isNotNull);
           }
         }

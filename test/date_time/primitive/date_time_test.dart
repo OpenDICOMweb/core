@@ -5,6 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
+import 'package:core/src/date_time/primitives/date_time.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
@@ -12,7 +13,10 @@ RSG rsg = new RSG(seed: 1);
 
 void main() {
   Server.initialize(
-      name: 'date_time_test', minYear: -1000, maxYear: 3000, level: Level.info);
+      name: 'date_time_test',
+      minYear: -1000,
+      maxYear: 3000,
+      level: Level.debug);
 
   test('kMinEpochMicrosecond', () {
     log
@@ -25,6 +29,7 @@ void main() {
     expect(isValidDateMicroseconds(kMinEpochMicrosecond), true);
     expect(isValidDateMicroseconds(kMaxEpochMicrosecond), true);
   });
+
   test('dcmDateTimeInMicroseconds', () {
     final dcmDTM0 = dcmDateTimeInMicroseconds(1998, 02, 12, 12, 15, 40, 12, 45);
     log.debug('dcmDTM0: $dcmDTM0');
@@ -159,18 +164,18 @@ void main() {
   });
 
   test('dateTimeToString', () {
-    final dt0 = dateTimeToString(1998, 11, 15, 23, 10, 45, 05, 10);
+    final dt0 = dateTimeString(1998, 11, 15, 23, 10, 45, 05, 10);
     log.debug(dt0);
     expect(dt0, '19981115231045.005010');
 
-    final dt1 = dateTimeToString(1998, 11, 15, 23, 10, 45, 0, 0);
+    final dt1 = dateTimeString(1998, 11, 15, 23, 10, 45, 0, 0);
     log.debug(dt1);
     expect(dt1, '19981115231045.000000');
 
     final dt2 =
-        dateTimeToString(1998, 11, 15, 23, 10, 45, 05, 10, asDicom: false);
+        dateTimeString(1998, 11, 15, 23, 10, 45, 05, 10, asDicom: false);
     log.debug(dt2);
-    expect(dt2, '1998-11-15T23:10:45.005010');
+    expect(dt2, '1998-11-15${system.dateTimeSeparator}23:10:45.005010');
   });
 
   test('dateTimeMicrosecondsToString', () {
@@ -196,31 +201,34 @@ void main() {
               final s = 10;
               final ms = 600;
               final us = 600;
-              final dt0 = inetDateTime(y, m, d, h, mm, s, ms, us);
+              final dt0 = inetDateTimeString(y, m, d, h, mm, s, ms, us);
               final mx = digits2(m);
               final dx = digits2(d);
               final hx = digits2(h);
               final mmx = digits2(mm);
 
-              log.debug('dt0: $dt0, $y$mx$dx$hx$mmx$s.$ms$us');
-              expect(dt0 == '$y$mx$dx$hx$mmx$s.$ms$us', true);
+              final inet = '$y-$mx-$dx${system.dateTimeSeparator}'
+                  '$hx:$mmx:$s.$ms$us';
+              log.debug('dt0: $dt0, $inet');
+              expect(dt0 == inet, true);
             }
           }
         }
       }
     }
 
-    final dt0 = inetDateTime(1998, 11, 15, 23, 10, 45, 05, 10);
+    final dt0 = inetDateTimeString(1998, 11, 15, 23, 10, 45, 05, 10);
     log.debug(dt0);
-    expect(dt0, '19981115231045.005010');
+    expect(dt0, '1998-11-15${system.dateTimeSeparator}23:10:45.005010');
 
-    final dt1 = inetDateTime(1998, 11, 15, 23, 10, 45, 0, 0);
+    final dt1 =
+        inetDateTimeString(1998, 11, 15, 23, 10, 45, 0, 0, truncate: true);
     log.debug(dt1);
-    expect(dt1, '19981115231045');
+    expect(dt1, '1998-11-15${system.dateTimeSeparator}23:10:45');
 
-    final dt2 = inetDateTime(1998, 11, 15, 23, 10, 45, 05, 10, asDicom: false);
+    final dt2 = inetDateTimeString(1998, 11, 15, 23, 10, 45, 05, 10);
     log.debug(dt2);
-    expect(dt2, '1998-11-15T23:10:45.005010');
+    expect(dt2, '1998-11-15${system.dateTimeSeparator}23:10:45.005010');
   });
 
   test('dtToDateString', () {
@@ -231,13 +239,17 @@ void main() {
           final yx = digits4(dt0.year);
           final mx = digits2(dt0.month);
           final dx = digits2(dt0.day);
-          expect(dtToDateString(dt0), '$yx-$mx-$dx');
+          expect(dtToDateString(dt0, asDicom: false), '$yx-$mx-$dx');
+          expect(dtToDateString(dt0, asDicom: true), '$yx$mx$dx');
+          expect(dtToDateString(dt0), '$yx$mx$dx');
         }
       }
     }
 
     final dt0 = new DateTime(1998, 10, 15);
-    expect(dtToDateString(dt0), '1998-10-15');
+    expect(dtToDateString(dt0, asDicom: false), '1998-10-15');
+    expect(dtToDateString(dt0, asDicom: true), '19981015');
+    expect(dtToDateString(dt0), '19981015');
   });
 
   test('dtToTimeString', () {
@@ -266,10 +278,12 @@ void main() {
     expect(dtToTimeString(dt0), '094558');
 
     final dt1 = new DateTime(1998, 10, 15, 09, 45, 58);
-    expect(dtToTimeString(dt1, hasFraction: true, asDicom: true), '094558.000000');
+    expect(dtToTimeString(dt1, showFraction: true, asDicom: true),
+        '094558.000000');
 
     final dt2 = new DateTime(1998, 10, 15, 09, 45, 58);
-    expect(dtToTimeString(dt2, hasFraction: true, asDicom: false), '09:45:58.000000');
+    expect(dtToTimeString(dt2, showFraction: true, asDicom: false),
+        '09:45:58.000000');
 
     final dt3 = new DateTime(1998, 10, 15, 09, 45, 58);
     expect(dtToTimeString(dt3, asDicom: false), '09:45:58');
@@ -277,10 +291,13 @@ void main() {
 
   test('dtToDateTimeString', () {
     for (var y = 1999; y < 2000; y++) {
-      for (var m = 1; m < 12; m++) {
-        for (var d = 1; d < lastDayOfMonth(y, m); d++) {
-          for (var h = 1; h < 24; h++) {
-            for (var mm = 1; mm < 60; mm++) {
+      for (var m = 1; m <= 12; m++) {
+        for (var d = 1; d <= lastDayOfMonth(y, m); d++) {
+          for (var h = 0; h < 24; h++) {
+            //    print('** h: $h');
+            final hx = digits2(h);
+            //    print('** hx: $hx');
+            for (var mm = 0; mm < 60; mm++) {
               final s = 10;
               final ms = 600;
               final us = 600;
@@ -289,9 +306,57 @@ void main() {
               final dx = digits2(d);
               final hx = digits2(h);
               final mmx = digits2(mm);
+              final dtSep = system.dateTimeSeparator;
+              log.debug('''
+dt0: 
+  $dt0 
+  $y-$mx-$dx$dtSep$hx:$mmx:$s.$ms$us''');
+              var s0 = '$dt0';
+              var s1 = '$y-$mx-$dx $hx:$mmx:$s.$ms$us';
+              if (s0 != s1) print('>  $s0\   $s1');
+              s0 = dtToDateTimeString(dt0, asDicom: true, showFraction: false);
+              s1 = '$y$mx$dx$hx$mmx$s';
+              if (s0 != s1) print('0> $s0\   $s1');
+              expect(s0 == s1, true);
+              s0 = dtToDateTimeString(dt0, asDicom: true, showFraction: false);
+              s1 = '$y$mx$dx$hx$mmx$s';
+              if (s0 != s1) print('1> $s0\   $s1');
+              expect(s0 == s1, true);
+              s0 = dtToDateTimeString(dt0, asDicom: false, showFraction: false);
+              s1 = '$y-$mx-$dx$dtSep$hx:$mmx:$s';
+              if (s0 != s1) print('3> $s0\   $s1');
+              expect(s0 == s1, true);
+            }
+          }
+        }
+      }
+    }
+  });
 
-              log.debug('dt0: $dt0, $y$mx$dx$hx$mmx$s.$ms$us');
-              expect(dtToDateTimeString(dt0), '$y-$mx-$dx\T$hx$mmx$s');
+  test('system time test', () {
+    for (var y = 1999; y < 2000; y++) {
+      for (var m = 1; m <= 12; m++) {
+        for (var d = 1; d <= lastDayOfMonth(y, m); d++) {
+          for (var h = 0; h < 24; h++) {
+            for (var mm = 0; mm < 60; mm++) {
+              final s = 10;
+              final ms = 600;
+              final us = 600;
+              final dt0 = new DateTime(y, m, d, h, mm, s, ms, us);
+              final mx = digits2(m);
+              final dx = digits2(d);
+              final hx = digits2(h);
+              final mmx = digits2(mm);
+              final dtSep = system.dateTimeSeparator;
+              log.debug('''
+System: $dt0 
+  Test: $y-$mx-$dx$dtSep$hx:$mmx:$s.$ms$us''');
+              final s0 = '$dt0';
+              final s1 = '$y-$mx-$dx $hx:$mmx:$s.$ms$us';
+              if (s0 != s1) print('>  $s0\n   $s1');
+              expect(s0 == s1, true);
+
+
             }
           }
         }

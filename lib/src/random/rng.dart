@@ -7,7 +7,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:core/src/date_time/primitives/date_time.dart';
+import 'package:core/src/date_time/primitives/dcm_date_time.dart';
 import 'package:core/src/integer/integer.dart';
 import 'package:core/src/string/ascii.dart';
 

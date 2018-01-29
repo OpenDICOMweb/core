@@ -6,8 +6,7 @@
 
 //import 'package:intl/intl.dart';
 
-
-import 'package:core/src/date_time/primitives/date_time.dart';
+import 'package:core/src/logger/date_time_utils.dart';
 import 'package:core/src/logger/log_record.dart';
 import 'package:core/src/logger/transformer/transformer.dart';
 
@@ -92,7 +91,7 @@ class Formatter extends Transformer {
           case name:
             return record.name;
           case time:
-            return dtToDateTimeString(record.dt);
+            return dateTime(record.dt);
           case index:
             return record.index.toString();
           case exception:

@@ -282,7 +282,7 @@ ElementList Summary
   Element update<V>(int index, Iterable<V> vList, {bool required = false}) {
     assert(vList != null);
     final old = lookup(index);
-    if (old == null) return null;
+    if (old == null) return (required) ? elementNotPresentError(index): null;
     this[index] = old.update(vList.toList(growable: false));
     return old;
   }
@@ -295,7 +295,7 @@ ElementList Summary
   Element updateF<V>(int index, Iterable<V> f(Iterable<V> vList),
       {bool required = false}) {
     final old = lookup(index);
-    if (old == null) return null;
+    if (old == null) return (required) ? elementNotPresentError(index): null;
     this[index] = old.update(f(old.values) ?? const <V>[]);
     return old;
   }
@@ -466,7 +466,7 @@ ElementList Summary
 
   Element replaceUid(int index, Iterable<Uid> uids, {bool required = false}) {
     final old = lookup(index);
-    if (old == null) return null;
+    if (old == null) return (required) ? elementNotPresentError(index): null;
     if (old is! UI) return invalidUidElement(old);
     old.replace(uids.toList(growable: false));
     return old;

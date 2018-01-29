@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/date_time/primitives/constants.dart';
-import 'package:core/src/date_time/primitives/date_time.dart';
+import 'package:core/src/date_time/primitives/dcm_date_time.dart';
 import 'package:core/src/date_time/primitives/errors.dart';
 import 'package:core/src/date_time/primitives/time.dart';
 import 'package:core/src/issues.dart';
@@ -25,7 +25,7 @@ class Time implements Comparable<Time> {
   static const Time kMidnight = const Time._(0);
 
   /// Internally [Time] is stored in microseconds.
-  final int microseconds;
+  final int uSeconds;
 
   /// Creates a new Time object.
   factory Time(int h,
@@ -49,77 +49,77 @@ class Time implements Comparable<Time> {
     return new Time._(uSecs);
   }
 
-  const Time._(this.microseconds);
+  const Time._(this.uSeconds);
 
   /// Returns `true` if this [Time] is the same as [other].
   @override
   bool operator ==(Object other) =>
-      (other is Time) ? microseconds == other.microseconds : false;
+      (other is Time) ? uSeconds == other.uSeconds : false;
 
   //TODO: unit test
-  bool operator >(Time other) => microseconds > other.microseconds;
+  bool operator >(Time other) => uSeconds > other.uSeconds;
 
   //TODO: unit test
-  bool operator <(Time other) => !(microseconds > other.microseconds);
+  bool operator <(Time other) => !(uSeconds > other.uSeconds);
 
   //TODO: unit test to verify
   /// Returns `true` if this Duration is the same object as [other].
-  Time operator +(Time other) => new Time._(microseconds + other.microseconds);
+  Time operator +(Time other) => new Time._(uSeconds + other.uSeconds);
 
   //TODO: unit test to verify
   /// Returns `true` if this Duration is the same object as [other].
-  Time operator -(Time other) => new Time._(microseconds - other.microseconds);
+  Time operator -(Time other) => new Time._(uSeconds - other.uSeconds);
 
   @override
-  int get hashCode => microseconds.hashCode;
+  int get hashCode => uSeconds.hashCode;
 
   //TODO: unit test
   /// Returns a new [Time] containing the [hash] of _this_.
-  Time get hash => new Time._(hashTimeMicroseconds(microseconds));
+  Time get hash => new Time._(hashTimeMicroseconds(uSeconds));
 
   //TODO: unit test
-  /// Returns a new [Time] containing the SHA-256 hash of [microseconds].
-  Time get sha256 => new Time._(sha256Microseconds(microseconds));
+  /// Returns a new [Time] containing the SHA-256 hash of [uSeconds].
+  Time get sha256 => new Time._(sha256Microseconds(uSeconds));
 
   /// Returns the total number of _microseconds_ in _this_.
-  int get inMicroseconds => microseconds;
+  int get inMicroseconds => uSeconds;
 
   /// Returns the total number of _milliseconds_ in _this_.
-  int get inMilliseconds => microseconds ~/ kMicrosecondsPerMillisecond;
+  int get inMilliseconds => uSeconds ~/ kMicrosecondsPerMillisecond;
 
   /// Returns the total number of _seconds_ in _this_.
-  int get inSeconds => microseconds ~/ kMicrosecondsPerSecond;
+  int get inSeconds => uSeconds ~/ kMicrosecondsPerSecond;
 
   /// Returns the total number of _minutes_ in _this_.
-  int get inMinutes => microseconds ~/ kMicrosecondsPerMinute;
+  int get inMinutes => uSeconds ~/ kMicrosecondsPerMinute;
 
   /// Returns the total number of _hours_ in _this_.
-  int get inHours => microseconds ~/ kMicrosecondsPerHour;
+  int get inHours => uSeconds ~/ kMicrosecondsPerHour;
 
   /// Returns the [hour] as an integer.
   int get hour => inHours;
 
   /// Returns the [minute] as an integer.
   int get minute =>
-      (microseconds - (inHours * kMicrosecondsPerHour)) ~/
+      (uSeconds - (inHours * kMicrosecondsPerHour)) ~/
       kMicrosecondsPerMinute;
 
   /// Returns the [second] as an integer.
   int get second =>
-      (microseconds - (inMinutes * kMicrosecondsPerMinute)) ~/
+      (uSeconds - (inMinutes * kMicrosecondsPerMinute)) ~/
       kMicrosecondsPerSecond;
 
   /// Returns the [millisecond] as an integer.
   int get millisecond =>
-      (microseconds - (inSeconds * kMicrosecondsPerSecond)) ~/
+      (uSeconds - (inSeconds * kMicrosecondsPerSecond)) ~/
       kMicrosecondsPerMillisecond;
 
   /// Returns the [microsecond] as an integer.
   int get microsecond =>
-      microseconds - (inMilliseconds * kMicrosecondsPerMillisecond);
+      uSeconds - (inMilliseconds * kMicrosecondsPerMillisecond);
 
   /// Returns the [fraction] of second as an integer.
-  int get fraction => microseconds - (inSeconds * kMicrosecondsPerSecond);
+  int get fraction => uSeconds - (inSeconds * kMicrosecondsPerSecond);
 
   /// Returns the [hour] as a 2 digit [String].
   String get h => digits2(hour);
@@ -145,14 +145,20 @@ class Time implements Comparable<Time> {
         dt.hour, dt.minute, dt.second, dt.millisecond, dt.millisecond);
   }
 
+  //TODO: test that now and nowNew return the same values
+  Time get nowNew {
+    final uSecs = (new DateTime.now()).microsecondsSinceEpoch;
+    return new Time.fromMicroseconds(uSecs);
+  }
+
   /// Returns _this_ as a [String] in DICOM time (TM) format.
-  String get dcm => microsecondToTimeString(microseconds, asDicom: true);
+  String get dcm => microsecondToTimeString(uSeconds, asDicom: true);
 
   /// Returns _this_ as a [String] in Internet \[RFC3339\] _full-time_ format.
-  String get inet => microsecondToTimeString(microseconds, asDicom: false);
+  String get inet => microsecondToTimeString(uSeconds, asDicom: false);
 
   /// Returns _this_ as a [Duration].
-  Duration get asDuration => new Duration(microseconds: microseconds);
+  Duration get asDuration => new Duration(microseconds: uSeconds);
 
   @override
   int compareTo(Time other) => compare(this, other);
@@ -167,7 +173,8 @@ class Time implements Comparable<Time> {
 
   // Enhancement: all parse functions should take an onError argument.
   // Issue: are start, end, min, and max needed.
-  /// Returns a [Time] corresponding to [s], if [s] is valid; otherwise, returns _null_.
+  /// Returns a [Time] corresponding to [s], if [s] is valid;
+  /// otherwise, returns _null_.
   static Time parse(String s,
       {int start = 0, int end, ParseIssues issues, OnTimeParseError onError}) {
     final us = parseDcmTime(s, start: start, end: end);

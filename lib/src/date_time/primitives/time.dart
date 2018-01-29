@@ -21,7 +21,7 @@ int timeToMicroseconds(int h, [int m = 0, int s = 0, int ms = 0, int us = 0]) =>
         : internalTimeInMicroseconds(h, m, s, ms, us);
 
 // *** No Error Checking
-int internalTimeInMicroseconds(int h, [int m = 0, int s = 0, int ms = 0, int us = 0]) =>
+int internalTimeInMicroseconds(int h, int m, int s, int ms, int us) =>
     kMicrosecondsPerHour * h +
     kMicrosecondsPerMinute * m +
     kMicrosecondsPerSecond * s +

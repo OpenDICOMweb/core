@@ -18,8 +18,10 @@ import 'package:core/src/system/system.dart';
 
 final int kMinYear = system.minYear;
 final int kMaxYear = system.maxYear;
-final int kMinYearInMicroseconds = dateToEpochDay(kMinYear, 1, 1) * kMicrosecondsPerDay;
-final int kMaxYearInMicroseconds = dateToEpochDay(kMinYear, 1, 1) * kMicrosecondsPerDay;
+final int kMinYearInMicroseconds =
+    dateToEpochDay(kMinYear, 1, 1) * kMicrosecondsPerDay;
+final int kMaxYearInMicroseconds =
+    dateToEpochDay(kMinYear, 1, 1) * kMicrosecondsPerDay;
 
 /// The minimum Unix Epoch day for this [System].
 final int kMinEpochDay = _dateToEpochDay(kMinYear, 1, 1);
@@ -87,8 +89,9 @@ int toDateMicroseconds(int us) {
 //   - doe: day of Epoch
 //   - eDay: epoch day
 //   - nm: normalized month number - March is 1
-int dateToEpochDay(int y, int m, int d) =>
-    (_isValidDate(y, m, d)) ? _dateToEpochDay(y, m, d) : invalidDateError(y, m, d);
+int dateToEpochDay(int y, int m, int d) => (_isValidDate(y, m, d))
+    ? _dateToEpochDay(y, m, d)
+    : invalidDateError(y, m, d);
 
 // This should only be called when y, m, and d are already validated.
 int _dateToEpochDay(int y, int m, int d) {
@@ -120,27 +123,37 @@ int toValidYearInMicroseconds(int us) =>
 bool isValidDate(int y, int m, int d) => _isValidDate(y, m, d);
 bool isNotValidDate(int y, int m, int d) => !_isValidDate(y, m, d);
 
+/// Returns _true_ if [year] >= [kMinYear] && [year] <= [kMaxYear].
+bool isValidYear(int year) => _isValidYear(year);
+
+
+//TODO: remove if only used in tests
 /// Returns [day] if valid; otherwise, calls [invalidEpochDayError].
-int checkEpochDay(int day) => _isValidEpochDay(day) ? day : invalidEpochDayError(day);
+int checkEpochDay(int day) =>
+    _isValidEpochDay(day) ? day : invalidEpochDayError(day);
 
 typedef dynamic DateToObject(int y, int m, int d, {bool asDicom});
 
-dynamic epochMicrosecondToDate(int us, {DateToObject creator, bool asDicom = true}) =>
+Object epochMicrosecondToDate(int us,
+        {DateToObject creator, bool asDicom = true}) =>
     _epochMicrosecondToDate(us, creator: creator, asDicom: asDicom);
 
-dynamic _epochMicrosecondToDate(int us, {DateToObject creator, bool asDicom = true}) {
+Object _epochMicrosecondToDate(int us,
+    {DateToObject creator, bool asDicom = true}) {
   if (_isNotValidEpochMicrosecond(us)) return null;
   final epochDay = us ~/ kMicrosecondsPerDay;
   return _epochDayToDate(epochDay, creator: creator, asDicom: asDicom);
 }
 
-/// Returns [Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar)
+/// Returns
+/// [Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar)
 /// year/month/day as a [list<int>] of length 3.
 ///
 /// Preconditions:
 ///     z is number of days since 1970-01-01 and is in the range:
 ///         [epochFromDays(Int64.min), epochFromDays(Int64.max - 719468)]
-dynamic epochDayToDate(int epochDay, {DateToObject creator, bool asDicom = true}) =>
+dynamic epochDayToDate(int epochDay,
+        {DateToObject creator, bool asDicom = true}) =>
     (_isValidEpochDay(epochDay))
         ? _epochDayToDate(epochDay, creator: creator, asDicom: asDicom)
         : null;
@@ -148,7 +161,8 @@ dynamic epochDayToDate(int epochDay, {DateToObject creator, bool asDicom = true}
 const int zeroCEDay = -719468;
 const int daysInEra = 146097;
 
-dynamic _epochDayToDate(int epochDay, {DateToObject creator, bool asDicom = true}) {
+dynamic _epochDayToDate(int epochDay,
+    {DateToObject creator, bool asDicom = true}) {
   if (isNotValidEpochDay(epochDay)) return invalidEpochDayError(epochDay);
   final z = epochDay + 719468;
   final era = ((z >= 0) ? z : z - 146096) ~/ 146097;
@@ -230,7 +244,9 @@ int hashDateMicroseconds(int us, [int onError(int n)]) {
   do {
     v = system.hash(v);
   } while ((v <= kMicrosecondsPerDay));
-  return (v.isNegative) ? v % kMinYearInMicroseconds : v % kMaxYearInMicroseconds;
+  return (v.isNegative)
+      ? v % kMinYearInMicroseconds
+      : v % kMaxYearInMicroseconds;
 }
 
 Iterable<int> hashDateMicrosecondsList(Iterable<int> daList) =>
@@ -259,21 +275,22 @@ String microsecondToDateString(int us, {bool asDicom = true}) {
   return epochDayToDate(epochDay, creator: dateToString, asDicom: asDicom);
 }
 
+String epochDayToString(int epochDay, {bool asDicom = false}) =>
+    epochDayToDate(epochDay, creator: _dateToString, asDicom: asDicom);
+
+
 /// Returns a [String] containing the date. If [asDicom] is _true_ the
 /// result has the format "yyyymmdd"; otherwise the format is "yyyy-mm-dd".
 String dateToString(int y, int m, int d, {bool asDicom = true}) =>
     (isNotValidDate(y, m, d)) ? null : _dateToString(y, m, d, asDicom: asDicom);
 
-String _dateToString(int y, int m, int d, {bool asDicom = true}) {
-  final sb = new StringBuffer(digits4(y));
-  if (!asDicom) sb.write('-');
-  sb.write(digits2(m));
-  if (!asDicom) sb..write('-');
-  sb.write(digits2(d));
-  return sb.toString();
+// Assumes y, m, and d are valid
+String _dateToString(int y, int m, int d, {bool asDicom = false}) {
+  final yy = digits4(y);
+  final mm = digits2(m);
+  final dd = digits2(d);
+  return (asDicom) ? '$yy$mm$dd' : '$yy-$mm-$dd';
 }
-
-bool isValidYear(int year) => _isValidYear(year);
 
 // **** Internal Functions ****
 
@@ -293,7 +310,8 @@ bool _isValidMonth(int m) => _inRange(m, 1, 12);
 
 bool _isValidDate(int y, int m, int d) {
   if (!_isValidYear(y) || !_isValidMonth(m)) return false;
-  final lastDay = (m != 2) ? daysInCommonYearMonth[m] : (_isLeapYear(y)) ? 29 : 28;
+  final lastDay =
+      (m != 2) ? daysInCommonYearMonth[m] : (_isLeapYear(y)) ? 29 : 28;
   return _inRange(d, 1, lastDay);
 }
 

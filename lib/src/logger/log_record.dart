@@ -6,7 +6,7 @@
 
 import 'dart:async';
 
-import 'package:core/src/date_time/primitives/date_time.dart';
+import 'package:core/src/logger/date_time_utils.dart' as dtu;
 import 'package:core/src/logger/log_level.dart';
 import 'package:core/src/logger/logger.dart';
 
@@ -42,9 +42,9 @@ class LogRecord {
       : dt = new DateTime.now(),
         index = _count++;
 
-  String get date => dtToDateString(dt);
-  String get time => dtToTimeString(dt);
-  String get dateTime => dtToDateTimeString(dt);
+  String get date => dtu.date(dt);
+  String get time => dtu.time(dt);
+  String get dateTime => '$dt';
 
   String get json => '''{
   "@type": "$runtimeType",
@@ -55,7 +55,7 @@ class LogRecord {
   "Trace": "$trace",
   "Zone": "$zone",
   "Object": "$object} 
-  "Time": "${dtToDateTimeString(dt)}",
+  "Time": "$dt",
   "Index": "$index"
 }''';
 
@@ -68,7 +68,7 @@ $runtimeType
   Trace:   $trace
   Zone:    $zone
   Object:  $object 
-  Time:    ${dtToDateTimeString(dt)}
+  Time:    '$dt'
   Index:   $index
 ''';
 
@@ -82,6 +82,5 @@ $runtimeType
 typedef String RecordFormatter(LogRecord record);
 
 //TODO: create standard set of formatters.
-String shortFormatter(LogRecord r) => '[${r.level.abbr}] ${r.message} <${r.name}>';
-
-
+String shortFormatter(LogRecord r) =>
+    '[${r.level.abbr}] ${r.message} <${r.name}>';

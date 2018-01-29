@@ -19,15 +19,15 @@ import 'dart:math';
 
 import 'package:core/src/date_time/primitives/constants.dart';
 import 'package:core/src/date_time/primitives/time_zone.dart';
-import 'package:core/src/tag/constants.dart' as dicom;
 import 'package:core/src/errors.dart';
 import 'package:core/src/hash/hash.dart';
 import 'package:core/src/hash/hash64.dart';
 import 'package:core/src/logger/log_level.dart';
 import 'package:core/src/logger/logger.dart';
-import 'package:core/src/system/sdk.dart';
 import 'package:core/src/string/hexadecimal.dart' as hexadecimal;
+import 'package:core/src/system/sdk.dart';
 import 'package:core/src/system/sys_info.dart';
+import 'package:core/src/tag/constants.dart' as dicom;
 import 'package:core/src/uid/supported_transfer_syntax.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
@@ -48,6 +48,8 @@ const int kMinYearLimit = -144169;
 
 /// The maximum Epoch Year using a 63-bit integer as microseconds.
 const int kMaxYearLimit = 148108;
+
+const String kDefaultTimeSeparator = ' ';
 
 /// An abstract class that is the foundation of both Servers and Clients.
 abstract class System {
@@ -97,6 +99,9 @@ abstract class System {
   bool allowMalformedUtf8 = true;
 
   bool useAscii = false;
+
+
+  String dateTimeSeparator = kDefaultTimeSeparator;
 
   System(
       {this.name = 'Unknown',

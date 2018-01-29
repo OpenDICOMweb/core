@@ -5,7 +5,7 @@
 
 import 'package:core/src/date_time/primitives/constants.dart';
 import 'package:core/src/date_time/primitives/date.dart';
-import 'package:core/src/date_time/primitives/date_time.dart';
+import 'package:core/src/date_time/primitives/dcm_date_time.dart';
 import 'package:core/src/date_time/primitives/errors.dart';
 import 'package:core/src/date_time/time.dart';
 import 'package:core/src/issues.dart';
@@ -126,10 +126,10 @@ class Date implements Comparable<Date> {
 
   //TODO: unit test to verify
   /// Returns a new [Date] whose value is _this_ + other.microseconds;
-  Date add(Time other) => new Date._(microseconds + other.microseconds);
+  Date add(Time other) => new Date._(microseconds + other.uSeconds);
 
   /// Returns a new [Date] whose value is _this_ + other.microseconds;
-  Date difference(Time other) => new Date._(microseconds - other.microseconds);
+  Date difference(Time other) => new Date._(microseconds - other.uSeconds);
 
   @override
   int compareTo(Date other) => compare(this, other);

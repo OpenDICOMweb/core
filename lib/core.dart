@@ -34,9 +34,10 @@ export 'package:core/src/date_time/dcm_date_time.dart';
 export 'package:core/src/date_time/primitives/age.dart';
 export 'package:core/src/date_time/primitives/constants.dart';
 export 'package:core/src/date_time/primitives/date.dart';
-export 'package:core/src/date_time/primitives/date_time.dart';
+export 'package:core/src/date_time/primitives/dcm_date_time.dart';
 export 'package:core/src/date_time/primitives/errors.dart';
-export 'package:core/src/date_time/primitives/time.dart' hide internalTimeInMicroseconds;
+export 'package:core/src/date_time/primitives/time.dart'
+    hide internalTimeInMicroseconds;
 export 'package:core/src/date_time/primitives/time_zone.dart';
 export 'package:core/src/date_time/time.dart';
 export 'package:core/src/date_time/time_zone.dart';

@@ -3,16 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'package:core/core.dart';
-/// Returns the date in Internet format.
-String _date(DateTime dt) => dtToDateString(dt);
-
-/// Returns the time in Internet format.
-String _time(DateTime dt) => dtToTimeString(dt);
-
-/// Returns the date/time in Internet format.
-String _dateTime(DateTime dt) => dtToDateTimeString(dt);
-
+import 'package:core/src/logger/date_time_utils.dart';
 
 enum LogMode { append, delete }
 
@@ -36,10 +27,16 @@ class LogFile {
       this.type: LogType.text})
       : path = _getPath(prefix, timeFmt, type);
 
-  LogFile.json({String prefix: 'log', this.mode: LogMode.delete, this.timeFmt: TimeFmt.date})
+  LogFile.json(
+      {String prefix: 'log',
+      this.mode: LogMode.delete,
+      this.timeFmt: TimeFmt.date})
       : path = _getPath(prefix, timeFmt, LogType.json);
 
-  LogFile.text({String prefix: 'log', this.mode: LogMode.delete, this.timeFmt: TimeFmt.date})
+  LogFile.text(
+      {String prefix: 'log',
+      this.mode: LogMode.delete,
+      this.timeFmt: TimeFmt.date})
       : path = _getPath(prefix, timeFmt, LogType.text);
 
   String get info => '''
@@ -58,13 +55,13 @@ $runtimeType: '$path',
         fName = prefix;
         break;
       case TimeFmt.date:
-        fName = '$prefix\_${_date(dt)}';
+        fName = '$prefix\_${date(dt)}';
         break;
       case TimeFmt.time:
-        fName = '$prefix\_${_time(dt)}';
+        fName = '$prefix\_${time(dt)}';
         break;
       case TimeFmt.dateTime:
-        fName = '$prefix\_${_dateTime(dt)}';
+        fName = '$prefix\_${dateTime(dt)}';
         break;
       default:
         throw new ArgumentError('$fmt');
