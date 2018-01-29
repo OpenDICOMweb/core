@@ -408,7 +408,7 @@ ElementList Summary
       if (e is SQ) {
         result.addAll(e.noValuesAll(index));
       } else {
-        result.add(e.replace(e.values));
+        result.add(e.update(e.values));
       }
     return result;
   }
@@ -656,18 +656,25 @@ ElementList Summary
   /// Returns an [Item] value for the [SQ] [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   Item getItem(int index, {bool required = false}) {
-    final SQ e = lookup(index, required: required);
-    return _checkOneValue<Item>(index, e.values);
+    final e = lookup(index, required: required);
+    if (e == null)
+      return (required == false) ? null : elementNotPresentError(index);
+    if (e is SQ) return _checkOneValue<Item>(index, e.values);
+    return nonSequenceTag(index);
   }
 
-  /// Returns the [List<double>] values for the [Element] with [index].
+  /// Returns the [List<Item>] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   List<Item> getItemList(int index, {bool required = false}) {
-    final SQ e = lookup(index, required: required);
-    if (e == null || e is! Item) return nonSequenceTag(index);
-    final vList = e.values;
-    if (vList == null) return nullValueError('getItemList');
-    return vList;
+    final e = lookup(index, required: required);
+    if (e == null)
+      return (required == false) ? null : elementNotPresentError(index);
+    if (e is SQ) {
+      final List<Item> vList = e.values;
+      if (vList == null) return nullValueError('getItemList');
+      return vList;
+    }
+    return nonSequenceTag(index);
   }
 
   // **** Uid

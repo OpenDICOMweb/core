@@ -117,13 +117,17 @@ void main() {
     });
 
     test('Basic EpochDay', () {
-      log..debug('zeroDay: $kEpochDayZero')..debug('zeroDayAsList: $kEpochDateZero');
+      log
+        ..debug('zeroDay: $kEpochDayZero')
+        ..debug('zeroDayAsList: $kEpochDateZero');
 
       // Base tests
       expect(kEpochDayZero == 0, true);
       expect(epochDayToDate(0), equals(kEpochDateZero));
+    });
+
+    test('dateToEpochDay', () {
       expect(dateToEpochDay(1970, 1, 1) == 0, true);
-      expect(weekdayFromEpochDay(kEpochDayZero) == kEpochDayZeroWeekday, true);
 
       // Dates before Epoch Day
       expect(dateToEpochDay(1969, 12, 31) == -1, true);
@@ -137,14 +141,26 @@ void main() {
       expect(dateToEpochDay(1970, 1, 3) == 2, true);
       expect(dateToEpochDay(1970, 1, 4) == 3, true);
       expect(dateToEpochDay(1971, 1, 1) == 365, true);
+    });
+
+    test('dateListsEqual', () {
+      const zeroDate = const <int>[1970, 1, 1];
+      log.debug('zeroDayAsList: $zeroDate');
+      expect(dateListsEqual(epochDayToDate(0), zeroDate), true);
+    });
+
+    test('weekdayFromEpochDay', () {
+      expect(weekdayFromEpochDay(kEpochDayZero) == kEpochDayZeroWeekday, true);
 
       // Weekdays from Epoch Day
       expect(weekdayFromEpochDay(-364) == kEpochDayZeroWeekday, true);
       expect(weekdayFromEpochDay(364) == kEpochDayZeroWeekday, true);
 
       // Weekdays from date
-      expect(weekdayFromEpochDay(dateToEpochDay(1970, 1, 1)) == kThursday, true);
-      expect(weekdayFromEpochDay(dateToEpochDay(1969, 1, 1)) == kWednesday, true);
+      expect(
+          weekdayFromEpochDay(dateToEpochDay(1970, 1, 1)) == kThursday, true);
+      expect(
+          weekdayFromEpochDay(dateToEpochDay(1969, 1, 1)) == kWednesday, true);
       expect(weekdayFromEpochDay(dateToEpochDay(1971, 1, 1)) == kFriday, true);
     });
 
@@ -196,7 +212,8 @@ void main() {
         log.debug('    Year: $startYear: ${watch.elapsed}');
         for (var m = 1; m <= 12; m++) {
           final lastDay = lastDayOfMonth(y, m);
-          log.debug1('Year: $y, Month: $m, lastDay: $lastDay, Leap: ${isLeapYear(y)}');
+          log.debug1(
+              'Year: $y, Month: $m, lastDay: $lastDay, Leap: ${isLeapYear(y)}');
           for (var d = 1; d <= lastDay; d++) {
             final z = dateToEpochDay(y, m, d);
             log.debug1('Day: $d z: $z');
@@ -300,7 +317,9 @@ void main() {
         // log.debug('    $i: day: $day, wd: $wd');
         expect(day == wd, true);
       }
-      log..debug3('    Elapesd: ${watch.elapsed}')..debug3('  weekDayFromDay: days <= 0');
+      log
+        ..debug3('    Elapesd: ${watch.elapsed}')
+        ..debug3('  weekDayFromDay: days <= 0');
       for (var i = 0; i > -10000; i--) {
         final wd = weekdayFromEpochDay(i);
         final day = (zeroWeekDay + i) % 7;
@@ -355,7 +374,7 @@ void main() {
     });
 
     test('checkEpochDay', () {
- //     system.level = Level.debug;
+      //     system.level = Level.debug;
 
       final ced0 = checkEpochDay(kMinEpochDay);
       log.debug('ced0:$ced0');
