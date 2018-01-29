@@ -177,18 +177,16 @@ String inetDateTime(int y, int m, int d, int h, int mm, int s, int ms, int us,
   return asDicom ? '$yx$mx$dx$hx$mmx$sx$f' : '$yx-$mx-$dx\T$hx:$mmx:$sx$f';
 }
 
-///Returns a human-readable string for the current local time in Internet format.
+///Returns a human-readable string for the date part of [dt].
 String dtToDateString(DateTime dt) {
-  final dt = new DateTime.now();
   final y = digits4(dt.year);
   final m = digits2(dt.month);
   final d = digits2(dt.day);
   return '$y-$m-$d';
 }
 
-///Returns a human-readable string for the current local time in Internet format.
+///Returns a human-readable string for the time part of [dt].
 String dtToTimeString(DateTime dt, {bool asDicom = true, bool hasFraction = false}) {
-  final dt = new DateTime.now();
   final h = digits2(dt.hour);
   final min = digits2(dt.minute);
   final sec = digits2(dt.second);
@@ -201,6 +199,6 @@ String dtToTimeString(DateTime dt, {bool asDicom = true, bool hasFraction = fals
   }
 }
 
-///Returns a human-readable string for the current local time in Internet format.
+///Returns a human-readable string for [dt] in Internet format.
 String dtToDateTimeString(DateTime dt, {bool hasFraction = false}) =>
     '${dtToDateString(dt)}T${dtToTimeString(dt)}';

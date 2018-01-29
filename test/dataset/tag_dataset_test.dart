@@ -62,18 +62,20 @@ void main() {
         ..delete(time.tag.code, required: false);
 
       // Uids (UI)
-      tag = PTag.lookupByCode(kMediaStorageSOPClassUID); // Media Storage SOP Class UID
+      tag = PTag.lookupByCode(
+          kMediaStorageSOPClassUID); // Media Storage SOP Class UID
       rootDS.add(new UItag(tag, [kCTImageStorage]));
 
-      tag = PTag
-          .lookupByCode(kMediaStorageSOPInstanceUID); // Media Storage SOP Instance UID
+      tag = PTag.lookupByCode(
+          kMediaStorageSOPInstanceUID); // Media Storage SOP Instance UID
 
-      rootDS.add(new UItag(
-          tag, ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']));
+      rootDS.add(new UItag(tag,
+          ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']));
       tag = PTag.lookupByCode(kTransferSyntaxUID); // Transfer Syntax UID
       rootDS.add(new UItag(tag, [kExplicitVRLittleEndian]));
       tag = PTag.lookupByCode(kStudyInstanceUID); // Study Instance UID
-      rootDS.add(new UItag(tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']));
+      rootDS.add(
+          new UItag(tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']));
     });
   });
 
@@ -86,10 +88,11 @@ void main() {
     final tag4 = PTag.lookupByCode(kSeriesTime);
     final tag5 = PTag.lookupByCode(kAcquisitionDate);
     rootDS0
-      ..add(new UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+      ..add(
+          new UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
       ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
-      ..add(new UItag(
-          tag3, ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
+      ..add(new UItag(tag3,
+          ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
       ..add(new TMtag(tag4, ['105234.530000']))
       ..add(new DAtag(tag5, ['19990505']));
 /* Urgent Jim: move to profile.dart
@@ -185,19 +188,21 @@ void main() {
       final tag4 = PTag.lookupByCode(kSeriesTime);
       final tag5 = PTag.lookupByCode(kAcquisitionDate);
       rootDS0
-        ..add(new UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
         ..add(new UItag(
-            tag3, ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
+            tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
+        ..add(new UItag(tag3,
+            ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
         ..add(new TMtag(tag4, ['105234.530000']))
         ..add(new DAtag(tag5, ['19990505']));
 
       // rootDS1
       final rootDS1 = new TagRootDataset()
-        ..add(new UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
         ..add(new UItag(
-            tag3, ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
+            tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
+        ..add(new UItag(tag3,
+            ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
         ..add(new TMtag(tag4, ['105234.530000']))
         ..add(new DAtag(tag5, ['19990505']));
 
@@ -206,10 +211,11 @@ void main() {
 
       // rootDS2
       final rootDS2 = new TagRootDataset()
-        ..add(new UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
         ..add(new UItag(
-            tag3, ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']));
+            tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
+        ..add(new UItag(tag3,
+            ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']));
 
       expect(rootDS0 == rootDS2, false);
       expect(rootDS1 == rootDS2, false);
@@ -256,7 +262,8 @@ void main() {
         ..debug('ae0: ${ae0.info} isValid: ${ae0.isValid}');
       rds.add(ae0);
       log.debug('rds: $rds');
-      expect(() => rds.add(ae0), throwsA(const isInstanceOf<DuplicateElementError>()));
+      expect(() => rds.add(ae0),
+          throwsA(const isInstanceOf<DuplicateElementError>()));
 
       try {
         rds.add(ae0);
@@ -269,15 +276,18 @@ void main() {
       log.debug('allow: ${rds.allowDuplicates}');
       system.throwOnError = true;
       // Adding same element twice
-      expect(() => rds.add(ae0), throwsA(const isInstanceOf<DuplicateElementError>()));
+      expect(() => rds.add(ae0),
+          throwsA(const isInstanceOf<DuplicateElementError>()));
       expect(rds[ae0.key] == ae0, true);
 
       // Adding element with same [id]
-      expect(() => rds.add(ae2), throwsA(const isInstanceOf<DuplicateElementError>()));
+      expect(() => rds.add(ae2),
+          throwsA(const isInstanceOf<DuplicateElementError>()));
       expect(rds[ae2.key] == ae0, true);
 
       // Adding Invalid element
-      expect(() => rds.add(ae1), throwsA(const isInstanceOf<DuplicateElementError>()));
+      expect(() => rds.add(ae1),
+          throwsA(const isInstanceOf<DuplicateElementError>()));
       expect(rds[ae1.key] == ae0, true);
 
       system.throwOnError = false;
@@ -338,17 +348,19 @@ void main() {
       expect(old, isNull);
 
       expect(rootDS.update<String>(kQueryRetrieveLevel, stringDSList1), isNull);
-      expect(rootDS.update<String>(kCompoundGraphicInstanceID, stringDSList1), isNull);
+      expect(rootDS.update<String>(kCompoundGraphicInstanceID, stringDSList1),
+          isNull);
 
       system.throwOnError = true;
 
       expect(
-          () =>
-              rootDS.update<String>(kQueryRetrieveLevel, stringDSList1, required: true),
+          () => rootDS.update<String>(kQueryRetrieveLevel, stringDSList1,
+              required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
 
       expect(
-          () => rootDS.update<String>(kQueryRetrieveLevel, stringDSList1, required: true),
+          () => rootDS.update<String>(kQueryRetrieveLevel, stringDSList1,
+              required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
 
       expect(
@@ -382,9 +394,12 @@ void main() {
 
       // Make Item with 3 Elements
       final elements0 = new MapAsList();
-      elements0[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
-      elements0[kInstitutionAddress] = new STtag(PTag.kInstitutionAddress, ['foo bar']);
-      elements0[kExtendedCodeMeaning] = new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
+      elements0[kRecognitionCode] =
+          new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      elements0[kInstitutionAddress] =
+          new STtag(PTag.kInstitutionAddress, ['foo bar']);
+      elements0[kExtendedCodeMeaning] =
+          new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
       valuesList.add(new TagItem.fromList(rootDS0, elements0));
       expect(elements0.length == 3, true);
 
@@ -400,9 +415,8 @@ void main() {
       final ob0 = new OBtag(PTag.kICCProfile, [123, 345], 2);
       expect(ob0, isNull);
       system.throwOnError = true;
-      expect(() =>new OBtag(PTag.kICCProfile, [123, 345], 2),
-                 throwsA(const isInstanceOf<InvalidValuesError>()));
-
+      expect(() => new OBtag(PTag.kICCProfile, [123, 345], 2),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
 
       final ob = new OBtag(PTag.kICCProfile, [123, 255], 2);
 
@@ -461,25 +475,30 @@ void main() {
       final rds = new TagRootDataset();
       log.debug('system.throwOnError: $system.throwOnError');
       rds.add(un0);
-      log.debug('rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
+      log.debug(
+          'rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
           '${rds.elements.history.duplicates.length}');
 
       rds.allowDuplicates = false;
       system.throwOnError = true;
-      expect(() => rds.add(un1), throwsA(const isInstanceOf<DuplicateElementError>()));
+      expect(() => rds.add(un1),
+          throwsA(const isInstanceOf<DuplicateElementError>()));
       rds.add(aeOB0);
-    expect(() => rds.add(aeOW1), throwsA(const isInstanceOf<DuplicateElementError>()));
+      expect(() => rds.add(aeOW1),
+          throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rds.allowDuplicates = true;
       expect(rds.add(un1), isNull);
       expect(rds.add(aeOW1), isNull);
 
       log
-        ..debug('rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
+        ..debug(
+            'rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
             '${rds.elements.history.duplicates.length}')
         ..debug('rds.total: ${rds.total}');
       rds.elements.history.duplicates = <Element>[];
-      log.debug('rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
+      log.debug(
+          'rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
           '${rds.elements.history.duplicates.length}');
 
       system.throwOnError = false;
@@ -514,9 +533,10 @@ void main() {
       expect(() => rootDS0.getIntList(kAbsoluteChannelDisplayScale),
           throwsA(const isInstanceOf<InvalidTagTypeError>()));
 
-      expect(() => rootDS0.getIntList(kDisplayedAreaBottomRightHandCorner, required: true),
+      expect(
+          () => rootDS0.getIntList(kDisplayedAreaBottomRightHandCorner,
+              required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
-
 
       system.throwOnError = false;
       log.debug('system.throwOnError:${system.throwOnError}');
@@ -554,7 +574,9 @@ void main() {
       log.debug('system.throwOnError:${system.throwOnError}');
 
       //integer type VR : with VM more then one
-      expect(() => rootDS0.getInt(kDisplayedAreaBottomRightHandCorner, required: true),
+      expect(
+          () => rootDS0.getInt(kDisplayedAreaBottomRightHandCorner,
+              required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
 
       //string type VR
@@ -577,10 +599,12 @@ void main() {
       final values = rootDS0.getStringList(kReceiveCoilManufacturerName);
       log
         ..debug('values: $values')
-        ..debug('isString: ${isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex)}')
+        ..debug(
+            'isString: ${isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex)}')
         ..debug(isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex));
 
-      expect(rootDS0.getStringList(kReceiveCoilManufacturerName), equals(stringList0));
+      expect(rootDS0.getStringList(kReceiveCoilManufacturerName),
+          equals(stringList0));
 
       system.throwOnError = false;
       log.debug('system.throwOnError:${system.throwOnError}');
@@ -607,11 +631,16 @@ void main() {
       final ds0 = new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
       final ss0 = new SStag(PTag.kTagAngleSecondAxis, [12]);
       final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
-      final rootDS0 = new TagRootDataset()..add(lo0)..add(ss0)..add(ds0)..add(fl0);
+      final rootDS0 = new TagRootDataset()
+        ..add(lo0)
+        ..add(ss0)
+        ..add(ds0)
+        ..add(fl0);
 
       log.debug('system.throwOnError:$system.throwOnError');
       //string type VR
-      expect(rootDS0.getString(kReceiveCoilManufacturerName), equals(stringList0[0]));
+      expect(rootDS0.getString(kReceiveCoilManufacturerName),
+          equals(stringList0[0]));
 
       system.throwOnError = true;
       log.debug('system.throwOnError:${system.throwOnError}');
@@ -643,7 +672,8 @@ void main() {
       final rootDS0 = new TagRootDataset()..add(fl0)..add(sl2)..add(da2);
 
       //float type VR
-      expect(rootDS0.getFloatList(kAbsoluteChannelDisplayScale), equals(float32List0));
+      expect(rootDS0.getFloatList(kAbsoluteChannelDisplayScale),
+          equals(float32List0));
 
       system.throwOnError = false;
       log.debug('system.throwOnError:${system.throwOnError}');
@@ -664,13 +694,19 @@ void main() {
     test('getFloat', () {
       final List<double> float32List0 = rng.float32List(1, 1);
       final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
-      final fl1 = new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
+      final fl1 =
+          new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
       final sl0 = new SLtag(PTag.kReferencePixelX0, [458]);
       final da0 = new DAtag(PTag.kStudyDate, ['20151212']);
-      final rootDS0 = new TagRootDataset()..add(fl0)..add(fl1)..add(sl0)..add(da0);
+      final rootDS0 = new TagRootDataset()
+        ..add(fl0)
+        ..add(fl1)
+        ..add(sl0)
+        ..add(da0);
 
       //float type VR
-      expect(rootDS0.getFloat(kAbsoluteChannelDisplayScale), equals(float32List0[0]));
+      expect(rootDS0.getFloat(kAbsoluteChannelDisplayScale),
+          equals(float32List0[0]));
 
       system.throwOnError = false;
       log.debug('system.throwOnError:${system.throwOnError}');
@@ -686,8 +722,140 @@ void main() {
           throwsA(const isInstanceOf<InvalidTagTypeError>()));
 
       //string type VR
+      expect(() => rootDS0.getFloat(kStudyDate),
+          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+    });
+
+    test('getItem', () {
+      system.level = Level.debug;
+      final rootDS0 = new TagRootDataset();
+      final valuesList = <TagItem>[];
+
+      // Make Item with 3 Elements
+      final elements0 = new MapAsList();
+      elements0[kRecognitionCode] =
+          new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      elements0[kImagerPixelSpacing] =
+          new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
+      elements0[kTagAngleSecondAxis] =
+          new SStag(PTag.kTagAngleSecondAxis, [12]);
+
+      valuesList.add(new TagItem.fromList(rootDS0, elements0));
+      expect(elements0.length == 3, true);
+
+      elements0[kAnatomicStructureReferencePoint] =
+          new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
+
+      // Create SQtag and add to rootDS0
+      final sqTag = PTag.kReferencedStudySequence;
+      final sq = new SQtag(sqTag, rootDS0, valuesList, SQ.kMaxVFLength);
+      log.debug('sq: ${sq.info}');
+      expect(sq.length == 1, true);
+
+      //Sequence Elements
+      rootDS0.add(sq);
+      // Only 1 Element at top level
+      expect(rootDS0.length == 1, true);
+
+      expect(rootDS0.getItem(kReferencedStudySequence), equals(valuesList[0]));
+
+      system.throwOnError = false;
+      expect(rootDS0.getItem(kAnatomicStructureReferencePoint, required: true),
+          isNull);
+
+      system.throwOnError = true;
       expect(
-          () => rootDS0.getFloat(kStudyDate), throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          () =>
+              rootDS0.getItem(kAnatomicStructureReferencePoint, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('getItemList', () {
+      final rootDS0 = new TagRootDataset();
+      final valuesList = <TagItem>[];
+
+      // Make Item with 3 Elements
+      final elements0 = new MapAsList();
+      elements0[kRecognitionCode] =
+          new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      elements0[kImagerPixelSpacing] =
+          new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
+      elements0[kTagAngleSecondAxis] =
+          new SStag(PTag.kTagAngleSecondAxis, [12]);
+
+      valuesList.add(new TagItem.fromList(rootDS0, elements0));
+      expect(elements0.length == 3, true);
+
+      elements0[kAnatomicStructureReferencePoint] =
+          new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
+
+      // Create SQtag and add to rootDS0
+      final sqTag = PTag.kReferencedStudySequence;
+      final sq = new SQtag(sqTag, rootDS0, valuesList, SQ.kMaxVFLength);
+      log.debug('sq: ${sq.info}');
+      expect(sq.length == 1, true);
+
+      //Sequence Elements
+      rootDS0.add(sq);
+      expect(rootDS0.length == 1, true);
+
+      expect(rootDS0.getItemList(kReferencedStudySequence), equals(valuesList));
+
+      system.throwOnError = false;
+      expect(
+          rootDS0.getItemList(kAnatomicStructureReferencePoint, required: true),
+          isNull);
+
+      system.throwOnError = true;
+      expect(
+          () => rootDS0.getItemList(kAnatomicStructureReferencePoint,
+              required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('getUid', () {
+      final stringList0 = rsg.getUIList(1, 1);
+      final ui0 = new UItag(PTag.kSpecimenUID, stringList0);
+      final rootDS0 = new TagRootDataset()..add(ui0);
+
+      expect(rootDS0.getUid(kSpecimenUID), equals(Uid.parse(stringList0[0])));
+
+      system.throwOnError = false;
+      expect(rootDS0.getUid(kFalseNegativesQuantity, required: true), isNull);
+
+      system.throwOnError = true;
+      expect(() => rootDS0.getUid(kFalseNegativesQuantity, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('getUidList', () {
+      final stringList0 = rsg.getUIList(1, 1);
+      final ui0 = new UItag(PTag.kSpecimenUID, stringList0);
+      final rootDS0 = new TagRootDataset()..add(ui0);
+
+      expect(
+          rootDS0.getUidList(kSpecimenUID), equals(Uid.parseList(stringList0)));
+
+      system.throwOnError = false;
+      expect(
+          rootDS0.getUidList(kFalseNegativesQuantity, required: true), isNull);
+
+      system.throwOnError = true;
+      expect(() => rootDS0.getUidList(kFalseNegativesQuantity, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('normalizeDate', () {
+      system.throwOnError = false;
+      final vList0 = rsg.getDAList(1, 1);
+      log.debug('vList0: $vList0');
+      final da0 = new DAtag(PTag.kCreationDate, vList0);
+      final sl0 = new SLtag(PTag.kReferencePixelX0, [458]);
+
+      final rootDS0 = new TagRootDataset()..add(da0)..add(sl0);
+      expect(rootDS0.normalizeDate(da0.index, Date.parse('19930822')),
+          equals(da0));
+      //expect(rootDS0.normalizeDate(sl0.index, Date.parse('19930822')));
     });
 
     test('[] and []=', () {
@@ -755,12 +923,13 @@ void main() {
 
       system.throwOnError = true;
       rootDS0.add(ob0);
-      log.debug('rds.elements.length: ${rootDS0.elements.length}, rds.duplicates.length: '
+      log.debug(
+          'rds.elements.length: ${rootDS0.elements.length}, rds.duplicates.length: '
           '${rootDS0.elements.history.duplicates.length}');
       //adding duplicates
       rootDS0.allowDuplicates = false;
-      expect(
-          () => rootDS0.add(ob1), throwsA(const isInstanceOf<DuplicateElementError>()));
+      expect(() => rootDS0.add(ob1),
+          throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rootDS0.allowDuplicates = true;
       expect(rootDS0.add(ob1), isNull);
@@ -792,7 +961,8 @@ void main() {
     test('elements.length', () {
       final stringList0 = rsg.getLOList(1, 1);
       final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
-      final fl2 = new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
+      final fl2 =
+          new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
       final rootDS0 = new TagRootDataset()..add(lo0)..add(fl2);
 
       log.debug('rootDS0.length: ${rootDS0.length}');
