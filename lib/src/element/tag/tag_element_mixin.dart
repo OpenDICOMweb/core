@@ -117,7 +117,8 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     return bd;
   }
 
-  static Element make(Tag tag, int vrIndex, Iterable values) {
+  //TODO: change arg order to (tag, values, vrIndex)
+  static Element make(Tag tag, Iterable values, int vrIndex) {
     assert(tag.vrIndex == vrIndex);
     return _tagMakers[tag.vrIndex](tag, values);
   }
