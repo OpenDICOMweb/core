@@ -10,7 +10,7 @@ import 'package:core/src/tag/tag_lib.dart';
 /// A [DatasetBD] is a DICOM [Dataset].
 abstract class DatasetBD {
 
-	ElementList<int> get elements;
+	ElementList get elements;
 
 	bool get isImmutable => true;
 

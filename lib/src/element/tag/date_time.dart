@@ -34,10 +34,13 @@ class AStag extends AS with TagElement<String> {
 
   @override
   AStag update([Iterable<String> vList = kEmptyStringList]) =>
-      (AS.isValidValues(tag, vList)) ? new AStag(tag, vList) : invalidValuesError(values);
+      (AS.isValidValues(tag, vList))
+          ? new AStag(tag, vList)
+          : invalidValuesError(values);
 
   @override
-  AStag updateF(Iterable<String> f(Iterable<String> vList)) => new AStag(tag, f(values));
+  AStag updateF(Iterable<String> f(Iterable<String> vList)) =>
+      new AStag(tag, f(values));
 
   static AStag parse(String s, {String onError(String s)}) => new AStag(
       PTag.kPatientAge,
@@ -73,11 +76,14 @@ class DAtag extends DA with TagElement<String> {
 
   @override
   DAtag update([Iterable<String> vList = kEmptyStringList]) =>
-      (DA.isValidValues(tag, vList)) ? new DAtag(tag, vList) : invalidValuesError(values);
+      (DA.isValidValues(tag, vList))
+          ? new DAtag(tag, vList)
+          : invalidValuesError(values);
   /*new DAtag(tag, vList ?? kEmptyStringList);*/
 
   @override
-  DAtag updateF(Iterable<String> f(Iterable<String> vList)) => new DAtag(tag, f(values));
+  DAtag updateF(Iterable<String> f(Iterable<String> vList)) =>
+      new DAtag(tag, f(values));
 
   static DAtag fromB64(Tag tag, String base64) =>
       new DAtag.fromBytes(tag, BASE64.decode(base64));
@@ -108,10 +114,13 @@ class DTtag extends DT with TagElement<String> {
 
   @override
   DTtag update([Iterable<String> vList = kEmptyStringList]) =>
-      (DT.isValidValues(tag, vList)) ? new DTtag(tag, vList) : invalidValuesError(values);
+      (DT.isValidValues(tag, vList))
+          ? new DTtag(tag, vList)
+          : invalidValuesError(values);
 
   @override
-  DTtag updateF(Iterable<String> f(Iterable<String> vList)) => new DTtag(tag, f(values));
+  DTtag updateF(Iterable<String> f(Iterable<String> vList)) =>
+      new DTtag(tag, f(values));
 
   static DTtag fromB64(Tag tag, String base64) =>
       new DTtag.fromBytes(tag, BASE64.decode(base64));
@@ -143,10 +152,13 @@ class TMtag extends TM with TagElement<String> {
 
   @override
   TMtag update([Iterable<String> vList = kEmptyStringList]) =>
-      (TM.isValidValues(tag, vList)) ? new TMtag(tag, vList) : invalidValuesError(values);
+      (TM.isValidValues(tag, vList))
+          ? new TMtag(tag, vList)
+          : invalidValuesError(values);
 
   @override
-  TMtag updateF(Iterable<String> f(Iterable<String> vList)) => new TMtag(tag, f(values));
+  TMtag updateF(Iterable<String> f(Iterable<String> vList)) =>
+      new TMtag(tag, f(values));
 
   static TMtag fromB64(Tag tag, String base64) =>
       new TMtag.fromBytes(tag, BASE64.decode(base64));

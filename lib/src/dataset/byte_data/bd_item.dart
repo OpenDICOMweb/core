@@ -13,11 +13,11 @@ import 'package:core/src/dataset/element_list/map_as_list.dart';
 import 'package:core/src/dataset/private_group.dart';
 
 /// An [BDItem] is a DICOM [Dataset], which is contained in an SQ Element.
-class BDItem extends Item<int>  with DatasetBD {
+class BDItem extends Item  with DatasetBD {
   @override
   IDSBytes dsBytes;
   @override
-  final Dataset<int> parent;
+  final Dataset parent;
   @override
   final MapAsList elements;
 
@@ -42,6 +42,6 @@ class BDItem extends Item<int>  with DatasetBD {
       : dsBytes = new IDSBytes(bd);
 
   @override
-  BDItem copy([Dataset<int> parent]) =>
+  BDItem copy([Dataset parent]) =>
       new BDItem.from(this, (parent == null) ? this.parent : parent);
 }

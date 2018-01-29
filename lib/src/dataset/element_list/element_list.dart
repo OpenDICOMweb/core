@@ -30,7 +30,7 @@ import 'package:core/src/vr/vr.dart';
 // - There should be no references to keys;
 
 ///
-abstract class ElementList<V> extends ListBase<Element> {
+abstract class ElementList extends ListBase<Element> {
   /// If _true_ duplicate [Element]s are stored in the duplicate Map
   /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
   bool get allowDuplicates;
@@ -279,11 +279,11 @@ ElementList Summary
   ///
   /// If updating the [Element] fails, the current element is left in
   /// place and _null_ is returned.
-  Element update(int index, {Iterable<V> vList, bool required = false}) {
+  Element update<V>(int index, Iterable<V> vList, {bool required = false}) {
+    assert(vList != null);
     final old = lookup(index);
     if (old == null) return null;
-    this[index] = old
-        .update((vList == null) ? const <V>[] : vList.toList(growable: false));
+    this[index] = old.update(vList.toList(growable: false));
     return old;
   }
 
@@ -292,7 +292,7 @@ ElementList Summary
   ///
   /// If updating the [Element] fails, the current element is left in
   /// place and _null_ is returned.
-  Element updateF(int index, Iterable<V> f(Iterable<V> vList),
+  Element updateF<V>(int index, Iterable<V> f(Iterable<V> vList),
       {bool required = false}) {
     final old = lookup(index);
     if (old == null) return null;
@@ -303,10 +303,10 @@ ElementList Summary
   /// Updates all [Element.values] with [index] in _this_ or in any
   /// Sequences (SQ) contained in _this_ with [vList]. Returns a [List<Element>]
   /// of the original [Element]s that were updated.
-  List<Element> updateAll(int index,
+  List<Element> updateAll<V>(int index,
       {Iterable<V> vList, bool required = false}) {
     vList ??= const <V>[];
-    final v = update(index, vList: vList, required: required);
+    final v = update(index, vList, required: required);
     final result = <Element>[]..add(v);
     for (var e in elements)
       if (e is SQ) {
@@ -321,7 +321,7 @@ ElementList Summary
   /// Sequences (SQ) contained in _this_ with an empty list.
   /// Returns a List<Element>] of the original [Element.values] that
   /// were updated.
-  List<Element> updateAllF(int index, Iterable<V> f(Iterable<V> vList),
+  List<Element> updateAllF<V>(int index, Iterable<V> f(Iterable<V> vList),
       {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);
@@ -381,7 +381,7 @@ ElementList Summary
     final result = <Element>[]..add(v);
     for (var e in elements)
       if (e is SQ) {
-        result.addAll(e.updateAllUids<V>(index, uids));
+        result.addAll(e.updateAllUids(index, uids));
       } else {
         result.add(e.replace(e.values));
       }
@@ -413,10 +413,11 @@ ElementList Summary
     return result;
   }
 
-  /// Replaces the [Element.values] at [index] with [f(vList)].
+  /// Replaces the [Element.values] at [index] with [vList].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  List<V> replace(int index, Iterable<V> vList, {bool required = false}) {
+  Iterable<V> replace<V>(int index, Iterable<V> vList,
+      {bool required = false}) {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
@@ -425,7 +426,10 @@ ElementList Summary
     return v;
   }
 
-  List<V> replaceF(int index, Iterable<V> f(Iterable<V> vList),
+  /// Replaces the [Element.values] at [index] with [f(vList)].
+  /// Returns the original [Element.values], or _null_ if no
+  /// [Element] with [index] was not present.
+  Iterable<V> replaceF<V>(int index, Iterable<V> f(Iterable<V> vList),
       {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
@@ -435,7 +439,7 @@ ElementList Summary
     return v;
   }
 
-  List<List<V>> replaceAll(int index, Iterable<V> vList) {
+  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
     final result = <List<V>>[]..add(replace(index, vList));
     for (var e in elements)
@@ -447,7 +451,8 @@ ElementList Summary
     return result;
   }
 
-  List<List<V>> replaceAllF(int index, Iterable<V> f(Iterable<V> vList)) {
+  Iterable<Iterable<V>> replaceAllF<V>(
+      int index, Iterable<V> f(Iterable<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
     for (var e in elements)
@@ -472,7 +477,7 @@ ElementList Summary
     final result = <Element>[]..add(v);
     for (var e in elements)
       if (e is SQ) {
-        result.addAll(e.updateAllUids<V>(index, uids));
+        result.addAll(e.updateAllUids(index, uids));
       } else {
         result.add(e.replace(e.values));
       }
@@ -568,12 +573,12 @@ ElementList Summary
 
   /// Returns the [int] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
-  V getValue(int index, {bool required = false}) {
+  V getValue<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     return _checkOneValue(index, e.values);
   }
 
-  List<V> getValues(int index, {bool required = false}) {
+  List<V> getValues<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
     final List<V> values = e.values;

@@ -13,11 +13,11 @@ import 'package:core/src/dataset/element_list/map_as_list.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 
 /// An [TagItem] is an [Item] contained in an SQtag Element.
-class TagItem extends Item<int> with TagDataset {
+class TagItem extends Item with TagDataset {
   @override
   IDSBytes dsBytes;
   @override
-  final Dataset<int> parent;
+  final Dataset parent;
   @override
   final MapAsList elements;
 
