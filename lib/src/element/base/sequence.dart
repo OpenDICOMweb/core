@@ -8,12 +8,12 @@ import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/mixin/undefined_length_mixin.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/logger/formatter.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/vr/vr.dart';
@@ -201,7 +201,7 @@ Summary $tag
     return eList;
   }
 
-  Iterable<Element> updateAllUids<V>(int index, Iterable<Uid> uids,
+  Iterable<Element> updateAllUids(int index, Iterable<Uid> uids,
       {bool required = false}) {
     final eList = <Element>[];
     final vList = uids.map((v) => asString).toList(growable: false);

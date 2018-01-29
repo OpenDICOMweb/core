@@ -12,7 +12,7 @@ import 'package:core/src/dataset/element_list/map_as_list.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 
 /// A [TagRootDataset].
-class TagRootDataset extends RootDataset<int> with TagDataset {
+class TagRootDataset extends RootDataset with TagDataset {
   ByteData bd;
   @override
   RDSBytes dsBytes;

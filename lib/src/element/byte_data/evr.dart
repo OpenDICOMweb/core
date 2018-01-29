@@ -748,7 +748,7 @@ class SQevr extends SQ<int> with Common, Evr<Item>, EvrLongMixin<String> {
   @override
   final ByteData bd;
   @override
-  final Dataset<int> parent;
+  final Dataset parent;
   @override
   final Iterable<Item> values;
 

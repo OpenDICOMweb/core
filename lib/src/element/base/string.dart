@@ -46,8 +46,6 @@ bool _isValidValueLength(String s, int min, int max) {
 }
 */
 
-
-
 /*
 bool _isFilteredString2(String s, int min, int max, bool filter(int c),
     {bool allowLeadingSpaces = false,
@@ -220,7 +218,7 @@ String _vfToString(TypedData vf, bool isAscii) {
 }
 
 /// The base [class] for [String] [Element]s with [values] that are [Iterable<String>].
-abstract class StringBase<V> extends Element<String> {
+abstract class StringBase extends Element<String> {
   @override
   Iterable<String> get values;
   @override
@@ -413,7 +411,7 @@ abstract class StringBase<V> extends Element<String> {
       stringListToBytes(sList, maxVFLength);
 }
 
-abstract class StringAscii extends StringBase<String> {
+abstract class StringAscii extends StringBase {
   Iterable<String> get valuesFromBytes =>
       stringValuesFromBytes(vfBytes, maxVFLength, isAscii: true);
 
@@ -567,7 +565,7 @@ abstract class CS extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  StringBase blank([int n = 1]) => update([blanks(n)]);
+  CS blank([int n = 1]) => update([blanks(n)]);
 
   static const bool kIsAsciiRequired = true;
   static bool allowLowerCase = false;
@@ -1168,7 +1166,7 @@ abstract class UI extends StringAscii {
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
 }
 
-abstract class StringUtf8 extends StringBase<String> {
+abstract class StringUtf8 extends StringBase {
   StringBase blank([int n = 1]) => update([blanks(n)]);
 
   List<String> valuesFromBytes(Uint8List bytes) =>
@@ -2227,7 +2225,7 @@ abstract class UT extends StringUtf8 {
 
 // **** Date/Time Elements
 
-abstract class AS extends StringBase<int> {
+abstract class AS extends StringBase {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -2370,7 +2368,7 @@ abstract class AS extends StringBase<int> {
 }
 
 /// An abstract class for date ([DA]) [Element]s.
-abstract class DA extends StringBase<int> {
+abstract class DA extends StringBase {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -2502,7 +2500,7 @@ abstract class DA extends StringBase<int> {
 }
 
 /// An abstract class for time ([TM]) [Element]s.
-abstract class DT extends StringBase<int> {
+abstract class DT extends StringBase {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -2628,7 +2626,7 @@ abstract class DT extends StringBase<int> {
 ///
 /// [Time] [String]s have the following format: HHMMSS.ffffff.
 /// [See PS3.18, TM](http://dicom.nema.org/medical/dicom/current/output/html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
-abstract class TM extends StringBase<int> {
+abstract class TM extends StringBase {
   @override
   int get vrIndex => kVRIndex;
   @override

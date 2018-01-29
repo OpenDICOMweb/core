@@ -26,16 +26,16 @@ import 'package:core/src/uid/well_known/sop_class.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 
 /// The Root [Dataset] for a DICOM Entity.
-abstract class RootDataset<K> extends Dataset<K> {
+abstract class RootDataset extends Dataset {
   // **** interface
 
   /// Returns a copy of this [RootDataset].
-  RootDataset<K> copy([Null _]);
+  RootDataset copy([Null _]);
 
   // **** End of interface
 
   @override
-  Dataset<K> get parent => null;
+  Dataset get parent => null;
 
   ByteData get preamble => (dsBytes != null) ? dsBytes.preamble : kEmptyByteData;
   ByteData get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyByteData;

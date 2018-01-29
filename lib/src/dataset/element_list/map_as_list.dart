@@ -28,7 +28,7 @@ import 'package:core/src/system/system.dart';
 const int defaultSize = 200;
 
 /// An [ElementList] implemented using a [Map].
-class MapAsList extends ElementList<int> {
+class MapAsList extends ElementList {
   /// A [Map] from key to [Element].
   final Map<int, Element> eMap;
   @override

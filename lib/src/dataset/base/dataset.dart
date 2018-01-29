@@ -32,18 +32,18 @@ import 'package:core/src/uid/uid.dart';
 
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
-abstract class Dataset<K> extends ListBase<Element> {
+abstract class Dataset extends ListBase<Element> {
   // **** Start of Interface ****
   DSBytes get dsBytes;
 
   /// Returns the [Tag.index] for the corresponding [key].
-  int keyToIndex(K key);
+  int keyToIndex(int key);
 
   Tag getTag(int index);
 
   /// The parent of _this_. If [parent] == _null_, then this is a Root Dataset
   /// (see RootDatasetMixin); otherwise, it is an [Item].
-  Dataset<K> get parent;
+  Dataset get parent;
 
   /// An [ElementList] of the [Element]s in _this_.
   ///
@@ -202,8 +202,8 @@ $runtimeType(#$hashCode):
   /// Updates all elements with [index] in _this_, or any Sequence ([SQ])
   /// Items contained in it, with a new element whose values are [f(this.values)].
   /// Returns a list containing all [Element]s that were replaced.
-  List<List> updateAllF<V>(int index, Iterable f(Iterable<V> vList)) =>
-      elements.updateAllF(index, f);
+  List<Element> updateAllF<V>(int index, Iterable f(Iterable<V> vList)) =>
+      elements.updateAllF<V>(index, f);
 
   Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) =>
       elements.updateUid(index, uids);
@@ -227,16 +227,17 @@ $runtimeType(#$hashCode):
   /// Replaces all elements with [index] in _this_ and any [Item]s
   /// descended from it, with a new element that has [vList<V>] as its
   /// values. Returns a list containing all [Element]s that were replaced.
-  List<Element> replaceAll(int index, Iterable vList) =>
+  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) =>
       elements.replaceAll(index, vList);
 
-  List<Element> replaceAllF(int index, List f(Iterable vList)) =>
-      elements.replaceAllF(index, f);
+  Iterable<Iterable<V>> replaceAllF<V>(int index, Iterable<V> f(Iterable vList)
+                                       ) =>
+      elements.replaceAllF<V>(index, f);
 
   Element replaceUid(int index, Iterable<Uid> uids, {bool required = false}) =>
       elements.replaceUid(index, uids);
 
-  List<Element> replaceAllUids(int index, Iterable<Uid> uids) =>
+  Iterable<Element> replaceAllUids(int index, Iterable<Uid> uids) =>
       elements.replaceAllUids(index, uids);
 
   /// Replaces the element with [index] with a new element that is
@@ -248,7 +249,7 @@ $runtimeType(#$hashCode):
   /// descended from it, with a new element that is the same except
   /// it has no values. Returns a list containing all [Element]s
   /// that were replaced.
-  List<Element> noValuesAll(int index, {bool recursive = false}) =>
+  Iterable<Element> noValuesAll(int index, {bool recursive = false}) =>
       elements.noValuesAll(index);
 
   Element delete(int index, {bool required = false, bool recursive = false}) =>
@@ -256,7 +257,7 @@ $runtimeType(#$hashCode):
       ? elements.deleteAll(index, recursive: recursive)
       : elements.delete(index, required: required);
 
-  List<Element> deleteAll(int index, {bool recursive = false}) =>
+  Iterable<Element> deleteAll(int index, {bool recursive = false}) =>
       elements.deleteAll(index, recursive: recursive);
 
   List<Element> deleteIfTrue(bool test(Element e), {bool recursive = false}) {

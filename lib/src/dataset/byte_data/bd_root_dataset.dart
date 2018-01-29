@@ -12,7 +12,7 @@ import 'package:core/src/dataset/element_list/map_as_list.dart';
 import 'package:core/src/entity/patient/patient.dart';
 
 /// A [BDRootDataset].
-class BDRootDataset extends RootDataset<int> with DatasetBD {
+class BDRootDataset extends RootDataset with DatasetBD {
   final ByteData bd;
   @override
   RDSBytes dsBytes;

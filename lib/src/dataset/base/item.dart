@@ -13,7 +13,7 @@ import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/sequence.dart';
 
 /// Sequence Items -
-abstract class Item<K> extends Dataset<K> {
+abstract class Item extends Dataset {
 
   @override
   IDSBytes get dsBytes;
@@ -28,7 +28,7 @@ abstract class Item<K> extends Dataset<K> {
 	set sequence(SQ sq) => _sq ??= sq;
 
 	@override
-	Dataset<K> get parent;
+	Dataset get parent;
 	@override
 	ElementList get elements;
 
@@ -60,5 +60,5 @@ abstract class Item<K> extends Dataset<K> {
     sequence = _sq ??= sq;
   }
 
-  Item copy([Dataset<K> parent]);
+  Item copy([Dataset parent]);
 }
