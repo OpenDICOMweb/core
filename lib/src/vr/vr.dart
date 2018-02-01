@@ -142,6 +142,7 @@ const List<int> kNullPaddingVRIndices = const <int>[
 const List<int> kUndefinedLengthVRCodes = const <int>[kSQCode, kOBCode, kOWCode, kUNCode];
 
 String vrIdFromIndex(int vrIndex) => vrIdByIndex[vrIndex];
+int vrIndexFromId(String id) => vrIdByIndex.indexOf(id);
 
 const List<String> vrIdByIndex = const <String>[
   // Begin maybe undefined length

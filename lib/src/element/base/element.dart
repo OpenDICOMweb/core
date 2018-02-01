@@ -124,7 +124,7 @@ abstract class Element<V> extends ListBase<V> {
   }
 
   /// Returns a DICOM Tag code as a hexadecimal integer.
-  String get hex => '0x$code';
+  String get hex => '${hex32(code)}';
 
   /// _true_ if [code] is a File Meta Information Tag Code.
   bool get isFMI => code >= 0x00020000 && code <= 0x00020102;

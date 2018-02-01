@@ -16,7 +16,7 @@ void main() {
       name: 'date_time_test',
       minYear: -1000,
       maxYear: 3000,
-      level: Level.debug);
+      level: Level.info);
 
   test('kMinEpochMicrosecond', () {
     log
@@ -301,7 +301,7 @@ void main() {
               final s = 10;
               final ms = 600;
               final us = 600;
-              final dt0 = new DateTime(y, m, d, h, mm, s, ms, us);
+              final dt0 = new DateTime.utc(y, m, d, h, mm, s, ms, us);
               final mx = digits2(m);
               final dx = digits2(d);
               final hx = digits2(h);
@@ -313,18 +313,18 @@ dt0:
   $y-$mx-$dx$dtSep$hx:$mmx:$s.$ms$us''');
               var s0 = '$dt0';
               var s1 = '$y-$mx-$dx $hx:$mmx:$s.$ms$us';
-              if (s0 != s1) print('>  $s0\   $s1');
+              if (s0 != s1) log.debug('>  $s0\   $s1');
               s0 = dtToDateTimeString(dt0, asDicom: true, showFraction: false);
               s1 = '$y$mx$dx$hx$mmx$s';
-              if (s0 != s1) print('0> $s0\   $s1');
+              if (s0 != s1) log.debug('0> $s0\   $s1');
               expect(s0 == s1, true);
               s0 = dtToDateTimeString(dt0, asDicom: true, showFraction: false);
               s1 = '$y$mx$dx$hx$mmx$s';
-              if (s0 != s1) print('1> $s0\   $s1');
+              if (s0 != s1) log.debug('1> $s0\   $s1');
               expect(s0 == s1, true);
               s0 = dtToDateTimeString(dt0, asDicom: false, showFraction: false);
               s1 = '$y-$mx-$dx$dtSep$hx:$mmx:$s';
-              if (s0 != s1) print('3> $s0\   $s1');
+              if (s0 != s1) log.debug('3> $s0\   $s1');
               expect(s0 == s1, true);
             }
           }
@@ -333,7 +333,7 @@ dt0:
     }
   });
 
-  test('system time test', () {
+  test('System UTC Time test', () {
     for (var y = 1999; y < 2000; y++) {
       for (var m = 1; m <= 12; m++) {
         for (var d = 1; d <= lastDayOfMonth(y, m); d++) {
@@ -342,7 +342,7 @@ dt0:
               final s = 10;
               final ms = 600;
               final us = 600;
-              final dt0 = new DateTime(y, m, d, h, mm, s, ms, us);
+              final dt0 = new DateTime.utc(y, m, d, h, mm, s, ms, us);
               final mx = digits2(m);
               final dx = digits2(d);
               final hx = digits2(h);
@@ -350,17 +350,16 @@ dt0:
               final dtSep = system.dateTimeSeparator;
               log.debug('''
 System: $dt0 
-  Test: $y-$mx-$dx$dtSep$hx:$mmx:$s.$ms$us''');
+  Test: $y-$mx-$dx$dtSep$hx:$mmx:$s.$ms$us\Z''');
               final s0 = '$dt0';
-              final s1 = '$y-$mx-$dx $hx:$mmx:$s.$ms$us';
-              if (s0 != s1) print('>  $s0\n   $s1');
+              final s1 = '$y-$mx-$dx $hx:$mmx:$s.$ms$us\Z';
+              if (s0 != s1) log.debug('>  $s0\n   $s1');
               expect(s0 == s1, true);
-
-
             }
           }
         }
       }
     }
   });
+
 }

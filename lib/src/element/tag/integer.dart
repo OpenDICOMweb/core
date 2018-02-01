@@ -414,8 +414,8 @@ class ATtag extends AT with TagElement<int> {
     return list;
   }
 
-  static OBtag make<int>(Tag tag, Iterable<int> vList) =>
-      new OBtag(tag, vList ?? kEmptyIntList);
+  static ATtag make<int>(Tag tag, Iterable<int> vList) =>
+      new ATtag(tag, vList ?? kEmptyIntList);
 
   static ATtag fromBD(BDElement bd) => new ATtag.fromBytes(bd.tag, bd.vfBytes);
 }

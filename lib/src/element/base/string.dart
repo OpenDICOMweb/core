@@ -1170,10 +1170,10 @@ abstract class StringUtf8 extends StringBase {
   StringBase blank([int n = 1]) => update([blanks(n)]);
 
   List<String> valuesFromBytes(Uint8List bytes) =>
-      stringValuesFromBytes(vfBytes, maxVFLength, isAscii: true);
+      stringValuesFromBytes(vfBytes, maxVFLength, isAscii: false);
 
   Uint8List bytesFromValues(List<String> vList) =>
-      stringListToBytes(values, maxVFLength, isAscii: true);
+      stringListToBytes(values, maxVFLength, isAscii: false);
 
   Iterable<String> valuesFromJson(Iterable<String> sList, [Issues issues]) =>
       StringBase.fromBase64(sList, maxVFLength, issues);
@@ -1812,7 +1812,7 @@ abstract class LT extends Text {
 }
 
 /// An Short Text (ST) Element
-abstract class ST extends StringUtf8 {
+abstract class ST extends Text {
 //  @override
 //  VR get vr => kVR;
   @override
@@ -2099,7 +2099,7 @@ abstract class UR extends Text {
 }
 
 /// An Unlimited Text (UT) Element
-abstract class UT extends StringUtf8 {
+abstract class UT extends Text {
 //  @override
 //  VR get vr => kVR;
   @override
