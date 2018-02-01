@@ -191,7 +191,7 @@ class Name {
     if (s == null || s == '' || s.length > maxGroupLength) return false;
     final groups = s.split('=');
     for (var group in groups) {
-      if (group.length > 64 || !_filteredTest(s, _isPNNameChar)) return false;
+      if (group.length > 64 || !_filteredTest(group, _isPNNameChar)) return false;
     }
     return true;
   }

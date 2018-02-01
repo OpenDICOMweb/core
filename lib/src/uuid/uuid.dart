@@ -193,7 +193,8 @@ class Uuid {
 
   /// Returns _true_
   static bool _isValidStringVersion(String s, int version) {
-    if (version < 1 || version > 5) invalidUuidString('Invalid version number: $version');
+    if (version < 1 || version > 5)
+      invalidUuidString('Invalid version number: $version');
     final _version = _getVersionNumberFromString(s);
     if (!_isISOVariantFromString(s) || _version != version) return false;
     // For certain versions, the checks we did up to this point are fine.
@@ -208,12 +209,13 @@ class Uuid {
     return _kISOVariantAsLetter.contains(subType);
   }
 
-
-  static bool isNotValidString(String s, [int version]) => !isValidString(s, version);
+  static bool isNotValidString(String s, [int version]) =>
+      !isValidString(s, version);
 
   /// Returns _true_ if [data] is a valid [Uuid] for [version]. If
   /// [version] is _null_ returns _true_ for any valid version.
-  static bool isValidData(List<int> data, [int version]) => _isValidUuid(data, version);
+  static bool isValidData(List<int> data, [int version]) =>
+      _isValidUuid(data, version);
 
   static bool isNotValidData(List<int> data, [int version]) =>
       !isValidData(data, version);
@@ -224,26 +226,30 @@ class Uuid {
   /// [InvalidUuidListError] is thrown.
   static Uuid parse(String s, {Uint8List data, OnUuidParseError onError}) {
     final bytes = _parseToBytes(s, data, (s) => null, kUuidStringLength);
-    return (bytes == null && onError != null) ? onError(s) : new Uuid.fromList(bytes);
+    return (bytes == null && onError != null)
+        ? onError(s)
+        : new Uuid.fromList(bytes);
   }
 
   /// Unparses (converts [Uuid] to a [String]) a [bytes] of bytes and
   /// outputs a proper UUID string.
   //TODO: Unit test uppercase/lowercase
   static String _toUuidFormat(Uint8List bytes) {
-	  var i = 0;
-	  final byteToHex = (useUppercase) ? _byteToUppercaseHex : _byteToLowercaseHex;
-	  return '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}'
-			  '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
-			  '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
-			  '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
-			  '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
-			  '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}'
-			  '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}'
-			  '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}';
+    var i = 0;
+    final byteToHex =
+        (useUppercase) ? _byteToUppercaseHex : _byteToLowercaseHex;
+    return '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}'
+        '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
+        '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
+        '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
+        '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
+        '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}'
+        '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}'
+        '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}';
   }
 
-  static String _toUidString(Uint8List bytes) => _toUuidFormat(bytes).replaceAll('-', '');
+  static String _toUidString(Uint8List bytes) =>
+      _toUuidFormat(bytes).replaceAll('-', '');
 }
 
 // **** Internal Procedures ****
@@ -257,8 +263,9 @@ const int kDataLengthInBytes = 16;
 bool _isValidUuid(List<int> bytes, [int version]) {
   if (version != null && (version < 1 || version > 5))
     throw new UuidError('Invalid version number: $version');
-  final ok = bytes.length == 16 && _isISOVariant(bytes) && _hasValidVersion(bytes);
-  if (!ok || (version != null && _version != version)) return false;
+  final ok =
+      bytes.length == 16 && _isISOVariant(bytes) && _hasValidVersion(bytes);
+  if (!ok || (version != null && _version(bytes) != version)) return false;
   if (version != 5 || version != 3) return true;
   //Enhancement
   // In order to do this we need getters and setters for the various fields.
@@ -271,7 +278,8 @@ bool _isISOVariant(Uint8List bytes) => _getVariant(bytes) == 2;
 int _version(Uint8List bytes) => bytes[6] >> 4;
 
 bool _isVersion4(Uint8List bytes) => bytes[6] >> 4 == 4;
-bool _hasValidVersion(Uint8List bytes) => _version(bytes) > 0 && _version(bytes) < 6;
+bool _hasValidVersion(Uint8List bytes) =>
+    _version(bytes) > 0 && _version(bytes) < 6;
 
 bool _isValidV4List(Uint8List bytes) =>
     bytes.length == 16 && _isISOVariant(bytes) && _isVersion4(bytes);
@@ -296,7 +304,8 @@ Uint8List _listToBytes(List<int> data, {bool coerce = true}) {
 /// Can optionally be provided a [Uint8List] to write into.
 Uint8List _parseToBytes(
     String s, Uint8List data, OnUuidBytesError onError, int targetLength) {
-  if (s == null || s.length != targetLength)
+  //if (s == null || (s.length != targetLength && s.length != kUuidAsUidStringLength))
+    if (s == null || s.length != targetLength )
     return invalidUuidParseToBytesError(s, targetLength);
   final bytes = _getDataBuffer(data);
   try {
@@ -323,7 +332,8 @@ Uint8List _parseToBytes(
 Uint8List _getDataBuffer(List<int> bytes) {
   if (bytes == null) return new Uint8List(16);
   if (bytes.length != 16)
-    return invalidUuidListError(bytes, 'Invalid Uuid List length: ${bytes.length}');
+    return invalidUuidListError(
+        bytes, 'Invalid Uuid List length: ${bytes.length}');
   if (bytes is Uint8List) return bytes;
   return new Uint8List.fromList(bytes);
 }
@@ -337,7 +347,6 @@ void _toBytes(String s, Uint8List bytes, int byteIndex, int start, int end) {
     bytes[index++] = _hexToByte[s.substring(i, i + 2)];
   }
 }
-
 
 // *** Generated by 'tools/generate_conversions.dart' ***
 

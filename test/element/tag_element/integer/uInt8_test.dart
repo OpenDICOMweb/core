@@ -383,21 +383,21 @@ void main() {
       }
     });
 
-    test('OB.checkValue good values', () {
+    test('OB checkValue good values', () {
       final uInt8list0 = rng.uint8List(1, 1);
       final ob0 = new OBtag(PTag.kPrivateInformation, uInt8list0);
       expect(ob0.checkValue(uInt8Max[0]), true);
       expect(ob0.checkValue(uInt8Min[0]), true);
     });
 
-    test('OB.checkValue bad values', () {
+    test('OB checkValue bad values', () {
       final uInt8list0 = rng.uint8List(1, 1);
       final ob0 = new OBtag(PTag.kPrivateInformation, uInt8list0);
       expect(ob0.checkValue(uInt8MaxPlus[0]), false);
       expect(ob0.checkValue(uInt8MinMinus[0]), false);
     });
 
-    test('OB.view', () {
+    test('OB view', () {
       final uInt8list0 = rng.uint8List(10, 10);
       final ob0 = new OBtag(PTag.kSelectorOBValue, uInt8list0);
       for (var i = 0, j = 0; i < uInt8list0.length; i++, j++) {
@@ -449,13 +449,69 @@ void main() {
       PTag.kTime
     ];
 
-    test('OB.isValidVListLength', () {
+    test('OB isValidVListLength', () {
       system.throwOnError = false;
       expect(OB.isValidVListLength(OB.kMaxLength), true);
       expect(OB.isValidVListLength(0), true);
     });
 
-    test('OB.isValidVR good values', () {
+    test('OB isValidTag good values', () {
+      system.throwOnError = false;
+      expect(OB.isValidTag(PTag.kSelectorOBValue), true);
+      expect(OB.isValidTag(PTag.kAudioSampleData), true);
+
+      for (var tag in obTags0) {
+        expect(OB.isValidTag(tag), true);
+      }
+    });
+
+    test('OB isValidTag bad values', () {
+      system.throwOnError = false;
+      expect(OB.isValidTag(PTag.kSelectorUSValue), false);
+
+      system.throwOnError = true;
+      expect(() => OB.isValidTag(PTag.kSelectorUSValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(OB.isValidTag(tag), false);
+
+        system.throwOnError = true;
+        expect(() => OB.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('OB isNotValidTag good values', () {
+      system.throwOnError = false;
+      expect(OB.isNotValidTag(PTag.kSelectorOBValue), false);
+      expect(OB.isNotValidTag(PTag.kAudioSampleData), false);
+
+      for (var tag in obTags0) {
+        expect(OB.isNotValidTag(tag), false);
+      }
+    });
+
+    test('OB isNotValidTag bad values', () {
+      system.throwOnError = false;
+      expect(OB.isNotValidTag(PTag.kSelectorUSValue), true);
+
+      system.throwOnError = true;
+      expect(() => OB.isNotValidTag(PTag.kSelectorUSValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(OB.isNotValidTag(tag), true);
+
+        system.throwOnError = true;
+        expect(() => OB.isNotValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('OB isValidVR good values', () {
       system.throwOnError = false;
       expect(OB.isValidVRIndex(kOBIndex), true);
 
@@ -470,7 +526,7 @@ void main() {
       }
     });
 
-    test('OB.isValidVR bad values', () {
+    test('OB isValidVR bad values', () {
       system.throwOnError = false;
       expect(OB.isValidVRIndex(kAEIndex), false);
       system.throwOnError = true;
@@ -487,7 +543,7 @@ void main() {
       }
     });
 
-    test('OB.checkVR good values', () {
+    test('OB checkVR good values', () {
       system.throwOnError = false;
       expect(OB.checkVRIndex(kOBIndex), kOBIndex);
 
@@ -496,7 +552,7 @@ void main() {
         expect(OB.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
-    test('OB.checkVR bad values', () {
+    test('OB checkVR bad values', () {
       system.throwOnError = false;
       expect(OB.checkVRIndex(kAEIndex), isNull);
       system.throwOnError = true;
@@ -513,7 +569,7 @@ void main() {
       }
     });
 
-    test('OB.isValidVRIndex good values', () {
+    test('OB isValidVRIndex good values', () {
       system.throwOnError = false;
       expect(OB.isValidVRIndex(kOBIndex), true);
 
@@ -522,7 +578,7 @@ void main() {
       }
     });
 
-    test('OB.isValidVRIndex bad values', () {
+    test('OB isValidVRIndex bad values', () {
       system.throwOnError = false;
       expect(OB.isValidVRIndex(kCSIndex), false);
 
@@ -540,7 +596,7 @@ void main() {
       }
     });
 
-    test('OB.isValidVRCode good values', () {
+    test('OB isValidVRCode good values', () {
       system.throwOnError = false;
       expect(OB.isValidVRCode(kOBCode), true);
       for (var tag in obTags0) {
@@ -548,7 +604,7 @@ void main() {
       }
     });
 
-    test('OB.isValidVRCode bad values', () {
+    test('OB isValidVRCode bad values', () {
       system.throwOnError = false;
       expect(OB.isValidVRCode(kAECode), false);
 
@@ -566,27 +622,27 @@ void main() {
       }
     });
 
-    test('OB.isValidVFLength good values', () {
+    test('OB isValidVFLength good values', () {
       expect(OB.isValidVFLength(OB.kMaxVFLength), true);
       expect(OB.isValidVFLength(0), true);
     });
 
-    test('OB.isValidVFLength bad values', () {
+    test('OB isValidVFLength bad values', () {
       expect(OB.isValidVFLength(OB.kMaxVFLength + 1), false);
       expect(OB.isValidVFLength(-1), false);
     });
 
-    test('OB.isValidValue good values', () {
+    test('OB isValidValue good values', () {
       expect(OB.isValidValue(OB.kMinValue), true);
       expect(OB.isValidValue(OB.kMaxValue), true);
     });
 
-    test('OB.isValidValue bad values', () {
+    test('OB isValidValue bad values', () {
       expect(OB.isValidValue(OB.kMinValue - 1), false);
       expect(OB.isValidValue(OB.kMaxValue + 1), false);
     });
 
-    test('OB.isValidValues good values', () {
+    test('OB isValidValues good values', () {
       system.throwOnError = false;
       const uInt8MinMax = const [kUint8Min, kUint8Max];
       const uInt8Min = const [kUint8Min];
@@ -602,7 +658,7 @@ void main() {
       expect(OB.isValidValues(PTag.kSelectorOBValue, uInt8MinMax), true);
     });
 
-    test('OB.isValidValues bad values', () {
+    test('OB isValidValues bad values', () {
       const uInt8MaxPlus = const [kUint8Max + 1];
       const uInt8MinMinus = const [kUint8Min - 1];
 
@@ -617,7 +673,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
-    test('OB.toUint8List', () {
+    test('OB toUint8List', () {
       for (var i = 0; i < 10; i++) {
         final uInt8list0 = rng.uint8List(1, 1);
         expect(Uint8Base.toUint8List(uInt8list0), uInt8list0);
@@ -692,7 +748,7 @@ void main() {
       }
     });
 
-    test('OB.encodeDecodeJsonVF', () {
+    test('OB encodeDecodeJsonVF', () {
       system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt8list0 = rng.uint8List(0, i);
