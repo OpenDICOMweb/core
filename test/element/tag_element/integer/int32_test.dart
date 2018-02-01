@@ -575,6 +575,60 @@ void main() {
       }
     });
 
+    test('SL isValidTag good values', () {
+      system.throwOnError = false;
+      expect(SL.isValidTag(PTag.kSelectorSLValue), true);
+
+      for (var tag in slTags0) {
+        expect(SL.isValidTag(tag), true);
+      }
+    });
+
+    test('SL isValidTag bad values', () {
+      system.throwOnError = false;
+      expect(SL.isValidTag(PTag.kSelectorUSValue), false);
+
+      system.throwOnError = true;
+      expect(() => SL.isValidTag(PTag.kSelectorUSValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(SL.isValidTag(tag), false);
+
+        system.throwOnError = true;
+        expect(() => SL.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('SL isNotValidTag good values', () {
+      system.throwOnError = false;
+      expect(SL.isNotValidTag(PTag.kSelectorSLValue), false);
+
+      for (var tag in slTags0) {
+        expect(SL.isNotValidTag(tag), false);
+      }
+    });
+
+    test('SL isNotValidTag bad values', () {
+      system.throwOnError = false;
+      expect(SL.isNotValidTag(PTag.kSelectorUSValue), true);
+
+      system.throwOnError = true;
+      expect(() => SL.isNotValidTag(PTag.kSelectorUSValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(SL.isNotValidTag(tag), true);
+
+        system.throwOnError = true;
+        expect(() => SL.isNotValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
     test('SL isValidVR good values', () {
       system.throwOnError = false;
       expect(SL.isValidVRIndex(kSLIndex), true);

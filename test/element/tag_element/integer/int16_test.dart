@@ -553,6 +553,64 @@ void main() {
       }
     });
 
+    test('SS isValidTag good values', () {
+      system.throwOnError = false;
+      expect(SS.isValidTag(PTag.kSelectorSSValue), true);
+      expect(SS.isValidTag(PTag.kZeroVelocityPixelValue), true);
+      expect(SS.isValidTag(PTag.kGrayLookupTableData), true);
+
+      for (var tag in ssTags0) {
+        expect(SS.isValidTag(tag), true);
+      }
+    });
+
+    test('SS isValidTag bad values', () {
+      system.throwOnError = false;
+      expect(SS.isValidTag(PTag.kSelectorUSValue), false);
+
+      system.throwOnError = true;
+      expect(() => SS.isValidTag(PTag.kSelectorUSValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(SS.isValidTag(tag), false);
+
+        system.throwOnError = true;
+        expect(() => SS.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('SS isNotValidTag good values', () {
+      system.throwOnError = false;
+      expect(SS.isNotValidTag(PTag.kSelectorSSValue), false);
+      expect(SS.isNotValidTag(PTag.kZeroVelocityPixelValue), false);
+      expect(SS.isNotValidTag(PTag.kGrayLookupTableData), false);
+
+      for (var tag in ssTags0) {
+        expect(SS.isNotValidTag(tag), false);
+      }
+    });
+
+    test('SS isNotValidTag bad values', () {
+      system.throwOnError = false;
+      expect(SS.isNotValidTag(PTag.kSelectorUSValue), true);
+
+      system.throwOnError = true;
+      expect(() => SS.isNotValidTag(PTag.kSelectorUSValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(SS.isNotValidTag(tag), true);
+
+        system.throwOnError = true;
+        expect(() => SS.isNotValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
     test('SS isValidVR good values', () {
       system.throwOnError = false;
       expect(SS.isValidVRIndex(kSSIndex), true);

@@ -662,6 +662,64 @@ void main() {
       }
     });
 
+    test('US isValidTag good values', () {
+      system.throwOnError = false;
+      expect(US.isValidTag(PTag.kSelectorUSValue), true);
+      expect(US.isValidTag(PTag.kZeroVelocityPixelValue), true);
+      expect(US.isValidTag(PTag.kGrayLookupTableData), true);
+
+      for (var tag in usTags0) {
+        expect(US.isValidTag(tag), true);
+      }
+    });
+
+    test('US isValidTag bad values', () {
+      system.throwOnError = false;
+      expect(US.isValidTag(PTag.kSelectorAEValue), false);
+
+      system.throwOnError = true;
+      expect(() => US.isValidTag(PTag.kSelectorAEValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(US.isValidTag(tag), false);
+
+        system.throwOnError = true;
+        expect(() => US.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('US isNotValidTag good values', () {
+      system.throwOnError = false;
+      expect(US.isNotValidTag(PTag.kSelectorUSValue), false);
+      expect(US.isNotValidTag(PTag.kZeroVelocityPixelValue), false);
+      expect(US.isNotValidTag(PTag.kGrayLookupTableData), false);
+
+      for (var tag in usTags0) {
+        expect(US.isNotValidTag(tag), false);
+      }
+    });
+
+    test('US isNotValidTag bad values', () {
+      system.throwOnError = false;
+      expect(US.isNotValidTag(PTag.kSelectorAEValue), true);
+
+      system.throwOnError = true;
+      expect(() => US.isNotValidTag(PTag.kSelectorAEValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(US.isNotValidTag(tag), true);
+
+        system.throwOnError = true;
+        expect(() => US.isNotValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
     test('US isValidVR good values', () {
       system.throwOnError = false;
       expect(US.isValidVRIndex(kUSIndex), true);
@@ -676,7 +734,7 @@ void main() {
       system.throwOnError = false;
       expect(US.isValidVRIndex(kAEIndex), false);
       system.throwOnError = true;
-      expect(() => SL.isValidVRIndex(kAEIndex),
+      expect(() => US.isValidVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
@@ -1425,6 +1483,64 @@ void main() {
       system.throwOnError = false;
       expect(OW.isValidVListLength(OW.kMaxLength), true);
       expect(OW.isValidVListLength(0), true);
+    });
+
+    test('OW isValidTag good values', () {
+      system.throwOnError = false;
+      expect(OW.isValidTag(PTag.kSelectorOWValue), true);
+      expect(OW.isValidTag(PTag.kAudioSampleData), true);
+      expect(OW.isValidTag(PTag.kGrayLookupTableData), true);
+
+      for (var tag in owTags0) {
+        expect(OW.isValidTag(tag), true);
+      }
+    });
+
+    test('OW isValidTag bad values', () {
+      system.throwOnError = false;
+      expect(OW.isValidTag(PTag.kSelectorAEValue), false);
+
+      system.throwOnError = true;
+      expect(() => OW.isValidTag(PTag.kSelectorAEValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(OW.isValidTag(tag), false);
+
+        system.throwOnError = true;
+        expect(() => OW.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('OW isNotValidTag good values', () {
+      system.throwOnError = false;
+      expect(OW.isNotValidTag(PTag.kSelectorOWValue), false);
+      expect(OW.isNotValidTag(PTag.kAudioSampleData), false);
+      expect(OW.isNotValidTag(PTag.kGrayLookupTableData), false);
+
+      for (var tag in owTags0) {
+        expect(OW.isNotValidTag(tag), false);
+      }
+    });
+
+    test('OW isNotValidTag bad values', () {
+      system.throwOnError = false;
+      expect(OW.isNotValidTag(PTag.kSelectorAEValue), true);
+
+      system.throwOnError = true;
+      expect(() => OW.isNotValidTag(PTag.kSelectorAEValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(OW.isNotValidTag(tag), true);
+
+        system.throwOnError = true;
+        expect(() => OW.isNotValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
     });
 
     test('OW isValidVR good values', () {
