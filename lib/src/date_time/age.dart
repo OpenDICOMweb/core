@@ -55,7 +55,7 @@ class Age {
   Age get acr => Age.parse('089Y');
 
   Age get sha256 => new Age(sha256AgeInDays(nDays));
-  
+
   Age get hash => new Age(hashAgeInDays(nDays));
 
   String get hashString => ageToString(hashAgeInDays(nDays));
@@ -77,7 +77,8 @@ class Age {
   static int tryParseDays(String s, {bool allowLowercase = false}) =>
       tryParseAgeString(s, allowLowercase: allowLowercase);
 
-  static int parseDays(String s, {Age onError(String s), bool allowLowercase = false}) =>
+  static int parseDays(String s,
+          {Age onError(String s), bool allowLowercase = false}) =>
       parseAgeString(s, allowLowercase: allowLowercase);
 
   static Age tryParse(String s, {bool allowLowercase = true}) {
@@ -89,31 +90,11 @@ class Age {
   /// 4 character DICOM age (AS) [String]. [s] must be in the
   /// format: 'dddt', where 'd' is a decimal digit and 't' is an age
   /// token, one of "D", "W", "M", "Y". If [s] is invalid returns -1.
-  static int tryParseString(String s, {bool allowLowercase = false}) {
-    if (s == null || s.length != 4) return -1;
+  static int tryParseString(String s, {bool allowLowercase = false}) =>
+      tryParseAgeString(s, allowLowercase: allowLowercase);
 
-    final token = (allowLowercase) ? s[3].toUpperCase() : s[3];
-    if (!kAgeTokens.contains(token)) return -1;
-
-    //TODO: change to tryParse when available in Dart 2.0
-    final n = int.parse(s.substring(0, 3), onError: (s) => -1);
-//    print('n: $n, d: "$token"');
-    if (n == null || n < 0 || (n == 0 && token != 'D')) return -1;
-    switch (token) {
-      case 'D':
-        return n;
-      case 'W':
-        return n * kDaysInWeek;
-      case 'M':
-        return n * kAgeDaysInMonth;
-      case 'Y':
-        return n * kAgeDaysInYear;
-      default:
-        return -1;
-    }
-  }
-
-  static Age parse(String s, {Age onError(String s), bool allowLowercase = false}) {
+  static Age parse(String s,
+      {Age onError(String s), bool allowLowercase = false}) {
     int days;
     try {
       days = parseAgeString(s, allowLowercase: allowLowercase);
@@ -139,7 +120,7 @@ class Age {
 
   /// Returns a valid [Age] [String] in highest precision.
   String toHighestPrecision(int count) {
-  //  if (!_inYearRange(count)) throw new InternalError('Invalid number of days: $count');
+    //  if (!_inYearRange(count)) throw new InternalError('Invalid number of days: $count');
     if (_inDayRange(count)) return days;
     if (_inWeekRange(count)) return weeks;
     if (_inMonthRange(count)) return months;

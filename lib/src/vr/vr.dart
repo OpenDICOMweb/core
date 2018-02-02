@@ -6,12 +6,12 @@
 import 'dart:convert';
 
 import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/integer.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/constants.dart';
 
 // Sequence is 0
 const int kSQIndex = 0;
@@ -74,7 +74,8 @@ const int kVRSpecialIndexMax = 34; // USOW
 const int kVRNormalIndexMin = 0; // SQ
 const int kVRNormalIndexMax = 30; // US
 
-bool isValidOBIndex(int vrIndex) => vrIndex == kOBIndex || vrIndex == kOBOWIndex;
+bool isValidOBIndex(int vrIndex) =>
+    vrIndex == kOBIndex || vrIndex == kOBOWIndex;
 
 bool isValidOWIndex(int vrIndex) =>
     vrIndex == kOWIndex || vrIndex == kOBOWIndex || vrIndex == kUSSSOWIndex;
@@ -94,7 +95,8 @@ bool isNormalVRIndex(int vrIndex) =>
     vrIndex >= kVRNormalIndexMin && vrIndex <= kVRNormalIndexMax;
 
 bool isMaybeUndefinedLengthVRIndex(int vrIndex) =>
-    vrIndex >= kVRMaybeUndefinedIndexMin && vrIndex <= kVRMaybeUndefinedIndexMax;
+    vrIndex >= kVRMaybeUndefinedIndexMin &&
+    vrIndex <= kVRMaybeUndefinedIndexMax;
 
 bool isEvrLongVRIndex(int vrIndex) =>
     vrIndex >= kVREvrLongIndexMin && vrIndex <= kVREvrLongIndexMax;
@@ -111,7 +113,8 @@ bool isFloatVR(int vrIndex) =>
     vrIndex == kOFIndex ||
     vrIndex == kODIndex;
 
-bool isStringVR(int vrIndex) => isShortStringVR(vrIndex) || isLongStringVR(vrIndex);
+bool isStringVR(int vrIndex) =>
+    isShortStringVR(vrIndex) || isLongStringVR(vrIndex);
 
 bool isShortStringVR(int vrIndex) =>
     vrIndex >= kVRIvrDefinedIndexMin && vrIndex <= kVRIvrDefinedIndexMax;
@@ -125,13 +128,15 @@ const List<int> kVFLengthAlwaysValidIndices = const <int>[
   kODIndex, kOFIndex, kUCIndex, kURIndex, kUTIndex
 ];
 
-bool isVFLengthAlwaysValid(int vrIndex) => kVFLengthAlwaysValidIndices.contains(vrIndex);
+bool isVFLengthAlwaysValid(int vrIndex) =>
+    kVFLengthAlwaysValidIndices.contains(vrIndex);
 
 const List<int> kUndefinedLengthVRIndices = const <int>[
   kSQIndex, kOBIndex, kOWIndex, kUNIndex // No reformat
 ];
 
-bool isUndefinedLengthAllowed(int vrIndex) => kUndefinedLengthVRCodes.contains(vrIndex);
+bool isUndefinedLengthAllowed(int vrIndex) =>
+    kUndefinedLengthVRCodes.contains(vrIndex);
 
 const List<int> kNullPaddingVRIndices = const <int>[
   kOBIndex,
@@ -139,7 +144,12 @@ const List<int> kNullPaddingVRIndices = const <int>[
   kUIIndex
 ];
 
-const List<int> kUndefinedLengthVRCodes = const <int>[kSQCode, kOBCode, kOWCode, kUNCode];
+const List<int> kUndefinedLengthVRCodes = const <int>[
+  kSQCode,
+  kOBCode,
+  kOWCode,
+  kUNCode
+];
 
 String vrIdFromIndex(int vrIndex) => vrIdByIndex[vrIndex];
 int vrIndexFromId(String id) => vrIdByIndex.indexOf(id);
@@ -358,8 +368,8 @@ abstract class VR<T> {
 class VRFloat extends VR<double> {
   final int sizeInBytes; // size in bytes
 
-  const VRFloat(
-      int index, String id, int code, int vlfSize, int maxVFLength, this.sizeInBytes)
+  const VRFloat(int index, String id, int code, int vlfSize, int maxVFLength,
+      this.sizeInBytes)
       : super(index, id, code, vlfSize, maxVFLength);
 
   int get maxLength => maxVFLength ~/ sizeInBytes;
@@ -399,24 +409,26 @@ class VRInt extends VR<int> {
   @override
   bool isValidValue(int v, Issues issues) => v >= min && v <= max;
 
-  static const kUN = const VRInt(kUNIndex, 'UN', kUNCode, 4, kLongVF, 1, 0, 255);
-  static const kOB = const VRInt(kOBIndex, 'OB', kOBCode, 4, kLongVF, 1, 0, 255);
+  static const kUN =
+      const VRInt(kUNIndex, 'UN', kUNCode, 4, kLongVF, 1, 0, 255);
+  static const kOB =
+      const VRInt(kOBIndex, 'OB', kOBCode, 4, kLongVF, 1, 0, 255);
 
-  static const kSS = const VRInt(
-      kSSIndex, 'SS', kSSCode, 2, kShortVF, 2, Int16Base.kMinValue, Int16Base.kMaxValue);
+  static const kSS = const VRInt(kSSIndex, 'SS', kSSCode, 2, kShortVF, 2,
+      Int16Base.kMinValue, Int16Base.kMaxValue);
   static const kUS = const VRInt(kUSIndex, 'US', kUSCode, 2, kShortVF, 2,
       Uint16Base.kMinValue, Uint16Base.kMaxValue);
-  static const kOW = const VRInt(
-      kOWIndex, 'OW', kOWCode, 4, kLongVF, 2, Uint16Base.kMinValue, Uint16Base.kMaxValue);
+  static const kOW = const VRInt(kOWIndex, 'OW', kOWCode, 4, kLongVF, 2,
+      Uint16Base.kMinValue, Uint16Base.kMaxValue);
 
-  static const kSL = const VRInt(
-      kSLIndex, 'SL', kSLCode, 2, kShortVF, 4, Int32Base.kMinValue, Int32Base.kMaxValue);
+  static const kSL = const VRInt(kSLIndex, 'SL', kSLCode, 2, kShortVF, 4,
+      Int32Base.kMinValue, Int32Base.kMaxValue);
   static const kUL = const VRInt(kULIndex, 'UL', kULCode, 2, kShortVF, 4,
       Uint32Base.kMinValue, Uint32Base.kMaxValue);
   static const kAT = const VRInt(kATIndex, 'AT', kATCode, 2, kShortVF, 4,
       Uint32Base.kMinValue, Uint32Base.kMaxValue);
-  static const kOL = const VRInt(
-      kOLIndex, 'OL', kOLCode, 4, kLongVF, 4, Uint32Base.kMinValue, Uint32Base.kMaxValue);
+  static const kOL = const VRInt(kOLIndex, 'OL', kOLCode, 4, kLongVF, 4,
+      Uint32Base.kMinValue, Uint32Base.kMaxValue);
 }
 
 typedef bool IsValidString(String s, {Issues issues, bool allowInvalid});
@@ -436,13 +448,14 @@ class VRAscii extends VR<String> {
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) {
     final max = vmMax == -1 ? maxLength : vmMax;
     final potentialMaxVFL = max * maxVLength;
-    final maxVFL = (potentialMaxVFL > maxVFLength) ? maxVFLength : potentialMaxVFL;
+    final maxVFL =
+        (potentialMaxVFL > maxVFLength) ? maxVFLength : potentialMaxVFL;
     return vfLength >= (vmMin * minVLength) && vfLength <= maxVFL;
   }
 
   @override
   bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) =>
-  isValid(s, issues: issues, allowInvalid: allowInvalid);
+      isValid(s, issues: issues, allowInvalid: allowInvalid);
 /*
   ///
   @override
@@ -470,23 +483,23 @@ class VRAscii extends VR<String> {
   }
 */
 
-  static const kAS =
-      const VRAscii(kASIndex, 'AS', kASCode, 2, kShortVF, 4, 4, AS.isValidValue);
-  static const kDA =
-      const VRAscii(kDAIndex, 'DA', kDACode, 2, kShortVF, 8, 8, DA.isValidValue);
-  static const kDT =
-      const VRAscii(kDTIndex, 'DT', kDTCode, 2, kShortVF, 4, 26, DT.isValidValue);
-  static const kTM =
-      const VRAscii(kTMIndex, 'TM', kTMCode, 2, kShortVF, 2, 13, TM.isValidValue);
+  static const kAS = const VRAscii(
+      kASIndex, 'AS', kASCode, 2, kShortVF, 4, 4, AS.isValidValue);
+  static const kDA = const VRAscii(
+      kDAIndex, 'DA', kDACode, 2, kShortVF, 8, 8, DA.isValidValue);
+  static const kDT = const VRAscii(
+      kDTIndex, 'DT', kDTCode, 2, kShortVF, 4, 26, DT.isValidValue);
+  static const kTM = const VRAscii(
+      kTMIndex, 'TM', kTMCode, 2, kShortVF, 2, 13, TM.isValidValue);
 
-  static const kAE =
-      const VRAscii(kAEIndex, 'AE', kAECode, 2, kShortVF, 1, 16, AE.isValidValue);
-  static const kCS =
-      const VRAscii(kCSIndex, 'CS', kCSCode, 2, kShortVF, 1, 16, CS.isValidValue);
-  static const kPN =
-      const VRAscii(kPNIndex, 'PN', kPNCode, 2, kShortVF, 1, 3 * 64, PN.isValidValue);
-  static const kUI =
-      const VRAscii(kUIIndex, 'UI', kUICode, 2, kShortVF, 5, 64, UI.isValidValue);
+  static const kAE = const VRAscii(
+      kAEIndex, 'AE', kAECode, 2, kShortVF, 1, 16, AE.isValidValue);
+  static const kCS = const VRAscii(
+      kCSIndex, 'CS', kCSCode, 2, kShortVF, 1, 16, CS.isValidValue);
+  static const kPN = const VRAscii(
+      kPNIndex, 'PN', kPNCode, 2, kShortVF, 1, 3 * 64, PN.isValidValue);
+  static const kUI = const VRAscii(
+      kUIIndex, 'UI', kUICode, 2, kShortVF, 5, 64, UI.isValidValue);
 }
 
 class VRUtf8 extends VR<String> {
@@ -503,7 +516,8 @@ class VRUtf8 extends VR<String> {
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) {
     final max = vmMax == -1 ? maxLength : vmMax;
     final potentialMaxVFL = max * maxVLength;
-    final maxVFL = (potentialMaxVFL > maxVFLength) ? maxVFLength : potentialMaxVFL;
+    final maxVFL =
+        (potentialMaxVFL > maxVFLength) ? maxVFLength : potentialMaxVFL;
     return vfLength >= (vmMin * minVLength) && vfLength <= maxVFL;
   }
 
@@ -522,7 +536,8 @@ class VRUtf8 extends VR<String> {
 
   static const kSH = const VRUtf8(kSHIndex, 'SH', kSHCode, 2, kShortVF, 1, 16);
   static const kLO = const VRUtf8(kLOIndex, 'LO', kLOCode, 2, kShortVF, 1, 64);
-  static const kUC = const VRUtf8(kUCIndex, 'UC', kUCCode, 4, kLongVF, 1, kLongVF);
+  static const kUC =
+      const VRUtf8(kUCIndex, 'UC', kUCCode, 4, kLongVF, 1, kLongVF);
 }
 
 class VRText extends VR<String> {
@@ -536,8 +551,9 @@ class VRText extends VR<String> {
 
   @override
   bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) {
-    if (allowInvalid || s.isEmpty || (s.length <= maxVFLength && allowInvalid == true))
-      return true;
+    if (allowInvalid ||
+        s.isEmpty ||
+        (s.length <= maxVFLength && allowInvalid == true)) return true;
     //TODO unit test
     try {
       UTF8.encode(s);
@@ -557,8 +573,8 @@ class VRText extends VR<String> {
 class VRNumber extends VR<String> {
   final IsValidString isValid;
 
-  const VRNumber(
-      int index, String id, int code, int vlfSize, int maxVFLength, this.isValid)
+  const VRNumber(int index, String id, int code, int vlfSize, int maxVFLength,
+      this.isValid)
       : super(index, id, code, vlfSize, maxVFLength);
 
   @override
@@ -566,7 +582,8 @@ class VRNumber extends VR<String> {
 
   @override
   bool isValidValue(String s, Issues issues, {bool allowInvalid = false}) {
-    if (s.isEmpty || (s.length <= maxVFLength && allowInvalid == true)) return true;
+    if (s.isEmpty || (s.length <= maxVFLength && allowInvalid == true))
+      return true;
     return isValid(s);
   }
 
@@ -596,7 +613,8 @@ class VRSequence extends VR<Item> {
 class VRSpecial extends VR<int> {
   final List<VRInt> vrs;
 
-  const VRSpecial(int index, String id, int code, int vlfSize, int maxVFLength, this.vrs)
+  const VRSpecial(
+      int index, String id, int code, int vlfSize, int maxVFLength, this.vrs)
       : super(index, id, code, vlfSize, maxVFLength);
 
   @override
@@ -608,14 +626,14 @@ class VRSpecial extends VR<int> {
     return false;
   }
 
-  static const kOBOW =
-      const VRSpecial(kOBOWIndex, 'OBOW', -1, 0, 0, const <VRInt>[VR.kOB, VR.kOW]);
-  static const kUSSS =
-      const VRSpecial(kUSSSIndex, 'USSS', -1, 0, 0, const <VRInt>[VR.kUS, VR.kSS]);
+  static const kOBOW = const VRSpecial(
+      kOBOWIndex, 'OBOW', -1, 0, 0, const <VRInt>[VR.kOB, VR.kOW]);
+  static const kUSSS = const VRSpecial(
+      kUSSSIndex, 'USSS', -1, 0, 0, const <VRInt>[VR.kUS, VR.kSS]);
   static const kUSSSOW = const VRSpecial(
       kUSSSOWIndex, 'kUSSSOW', -1, 0, 0, const <VRInt>[VR.kUS, VR.kSS, VR.kOW]);
-  static const kUSOW =
-      const VRSpecial(kUSOWIndex, 'USOW', -1, 0, 0, const <VRInt>[VR.kUS, VR.kOW]);
+  static const kUSOW = const VRSpecial(
+      kUSOWIndex, 'USOW', -1, 0, 0, const <VRInt>[VR.kUS, VR.kOW]);
 }
 
 //TODO: try to remove this error from core SDK

@@ -842,8 +842,11 @@ abstract class UN extends Uint8Base with UndefinedLengthMixin {
   static bool isValidValue(int v, [Issues issues]) =>
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
+  // UN values are always true, since the read VR is unknown
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+   //   IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue,
+   //                           kMaxLength);
+   true;
 }
 
 abstract class Uint16Base extends IntBase {

@@ -117,10 +117,10 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     return bd;
   }
 
-  //TODO: change arg order to (tag, values, vrIndex)
   static Element make(Tag tag, Iterable values, int vrIndex) {
-    assert(tag.vrIndex == vrIndex);
-    return _tagMakers[tag.vrIndex](tag, values);
+   // assert(tag.vr.isValid == vrIndex, 'Tag VR: ${tag.vrIndex}, vrIndex, '
+   //     '$vrIndex');
+    return _tagMakers[vrIndex](tag, values);
   }
 
 

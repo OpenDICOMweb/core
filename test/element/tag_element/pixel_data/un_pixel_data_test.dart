@@ -564,6 +564,7 @@ void main() {
       expect(UN.isValidValue(UN.kMaxValue + 1), false);
     });
 
+    //Urgent: Sharath let's discuss - UN values are always valid
     test('Create UN.isValidValues', () {
       system.throwOnError = false;
       const uInt8Min = const [UN.kMinValue];
@@ -571,8 +572,10 @@ void main() {
       const uInt8MaxPlus = const [UN.kMaxValue + 1];
       const uInt8MinMinus = const [UN.kMinValue - 1];
 
+
       expect(UN.isValidValues(PTag.kPixelData, uInt8Min), true);
       expect(UN.isValidValues(PTag.kPixelData, uInt8Max), true);
+
       expect(UN.isValidValues(PTag.kPixelData, uInt8MaxPlus), false);
       expect(UN.isValidValues(PTag.kPixelData, uInt8MinMinus), false);
 
@@ -581,7 +584,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => UN.isValidValues(PTag.kPixelData, uInt8MinMinus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
-    });
+    }, skip: "UN values are always valid");
 
     test('Create Uint8Base.listFromBytes', () {
       expect(Uint8Base.listFromBytes(frame), equals(frame));

@@ -26,10 +26,6 @@ String _padString(String s, int length, [String padChar = '0']) {
 }
 
 String __toRadixString(int n, int base, int length, String padChar) {
-  //final sLength = math.exp(n);
-
-  //print('n: $n sLength: $sLength');
-  //if (sLength > length) throw 'Invalid Length Error';
   final sb = new AsciiBuffer();
   final radixDigits = getRadixDigits();
 

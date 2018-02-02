@@ -51,7 +51,6 @@ int tryParseAgeString(String s, {bool allowLowercase = false}) {
 
 	//TODO: change to tryParse when available in Dart 2.0
 	final n = int.parse(s.substring(0, 3), onError: (s) => -1);
-	print('n: $n, d: "$token"');
 	if (n == null || n < 0 || (n == 0 && token != 'D')) return -1;
 	switch (token) {
 		case 'D':
