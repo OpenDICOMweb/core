@@ -291,9 +291,6 @@ void main() {
       for (var m = 1; m <= 12; m++) {
         for (var d = 1; d <= lastDayOfMonth(y, m); d++) {
           for (var h = 0; h < 24; h++) {
-            //    print('** h: $h');
-            final hx = digits2(h);
-            //    print('** hx: $hx');
             for (var mm = 0; mm < 60; mm++) {
               final s = 10;
               final ms = 600;

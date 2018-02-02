@@ -92,9 +92,9 @@ bool _isFilteredString(String s, int min, int max, bool filter(int c),
 
   if (i >= s.length) return allowBlank;
 
-  for (; i < s.length; i++) {
-    if (!filter(s.codeUnitAt(i))) {
-      invalidCharacterInString(s, i);
+  for (var j = 0; j < s.length; j++) {
+    if (!filter(s.codeUnitAt(j))) {
+      invalidCharacterInString(s, j);
       return false;
     }
   }

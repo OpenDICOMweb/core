@@ -124,7 +124,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   }
 
 
-  static Element from(Element e) => make(e.tag,  e.values, e.vrIndex,);
+  static Element from(Element e) => make(e.tag, e.values, e.vrIndex);
 
   static final List<TagElementMaker> _tagMakers = <TagElementMaker>[
     null,

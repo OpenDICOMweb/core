@@ -115,9 +115,6 @@ void main() {
 			expect(uiValues3.values, equals(<String>[]));
 			//End: Elements with VM.k1
 
-			//Begin: Test for updateUid on Elements with VM.k1_n
-			final rootDS5 = new TagRootDataset();
-
 			//Test for valid list values
 			final uidList4 =['1.2.840.10008.1.2.1', '1.2.840.10008.5.1.1.9'];
 			final ui6 = new UItag(PTag.kReferencedRelatedGeneralSOPClassUIDInFile,uidList4);
