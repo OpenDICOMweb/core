@@ -13,10 +13,7 @@ RSG rsg = new RSG(seed: 1);
 
 void main() {
   Server.initialize(
-      name: 'date_time_test',
-      minYear: -1000,
-      maxYear: 3000,
-      level: Level.info);
+      name: 'date_time_test', minYear: -1000, maxYear: 3000, level: Level.info);
 
   test('kMinEpochMicrosecond', () {
     log
@@ -361,5 +358,5 @@ System: $dt0
       }
     }
   });
-
+  
 }
