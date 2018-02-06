@@ -1159,8 +1159,9 @@ void main() {
       expect(LT.isValidValueLength('a'), true);
     });
 
+    // Urgent Sharath: changed to true
     test('LT isValidValueLength bad values', () {
-      expect(LT.isValidValueLength(''), false);
+      expect(LT.isValidValueLength(''), true);
     });
 
     test('LT isNotValidValueLength good values', () {
@@ -3069,8 +3070,9 @@ void main() {
       expect(ST.isValidValueLength('a'), true);
     });
 
+    // Urgent: changed to true
     test('ST isValidValueLength bad values', () {
-      expect(ST.isValidValueLength(''), false);
+      expect(ST.isValidValueLength(''), true);
     });
 
     test('ST isNotValidValueLength good values', () {
@@ -3081,8 +3083,9 @@ void main() {
       }
     });
 
+    // Urgent: changed to true
     test('ST isNotValidValueLength bad values', () {
-      expect(ST.isNotValidValueLength(''), true);
+      expect(ST.isNotValidValueLength(''), false);
     });
 
     test('ST isValidVListLength VM.k1 good values', () {

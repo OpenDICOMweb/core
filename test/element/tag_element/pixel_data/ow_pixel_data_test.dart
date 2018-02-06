@@ -426,8 +426,9 @@ void main() {
         expect(ow1, true);
       }
       //VR.UN
+      // Urgent Sharath: UN is always valid
       final ow2 = OW.isValidTag(PTag.kNoName0);
-      expect(ow2, false);
+      expect(ow2, true);
 
       for (var tag in obowTags) {
         final ow3 = OW.isValidTag(tag);

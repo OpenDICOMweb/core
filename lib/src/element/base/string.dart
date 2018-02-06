@@ -28,6 +28,15 @@ import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/vr/vr.dart';
 
+// TODO: For each class add the following static fields:
+//       bool areLeadingSpacesAllowed = x;
+//       bool areLeadingSpacesSignificant = x;
+//       bool areTrailingSpacesAllowed = x;
+//       bool areTrailingSpacesSignificant = x;
+//       bool areEmbeddedSpacesAllowed = x;
+//       bool areAllSpacesAllowed = x;
+//       bool isEmptyStringAllowed = x;
+
 //TODO: add static .fromBytes and .fromByteData to all classes
 typedef V _TryParser<V>(String s, Issues issues);
 
@@ -378,7 +387,7 @@ abstract class AE extends StringAscii {
   static const String kVRName = 'Application Entity';
   static const int kMaxVFLength = kMaxShortVF;
   static const int kMaxLength = kMaxVFLength ~/ 2;
-  static const int kMinValueLength = 0;
+  static const int kMinValueLength = 1;
   static const int kMaxValueLength = 16;
 
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
@@ -486,7 +495,7 @@ abstract class CS extends StringAscii {
   static const String kVRName = 'Code String';
   static const int kMaxVFLength = kMaxShortVF;
   static const int kMaxLength = kMaxShortVF ~/ 2;
-  // Urgent: is "" a valid code value?
+  // Urgent Jim: is "" a valid code value?
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 16;
 
@@ -533,7 +542,7 @@ abstract class CS extends StringAscii {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  // Urgent: decide what to do about blank values (""). all String Elements
+  // Urgent Jim: decide what to do about blank values (""). all String Elements
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
@@ -953,6 +962,19 @@ abstract class UI extends StringAscii {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  Iterable<Uid> replaceUid([Iterable<Uid> vList = Uid.kEmptyList]) =>
+      _replaceUid(vList);
+
+  Iterable<Uid> replaceUidF(Iterable<Uid> f(Iterable<Uid> vList)) =>
+      _replaceUid(f(uids) ?? Uid.kEmptyList);
+
+  Iterable<Uid> _replaceUid(Iterable<Uid> vList) {
+    final v = vList ?? Uid.kEmptyList;
+    final old = uids;
+    values = v.map((uid) => uid.toString());
+    return old;
+  }
 
   static const bool kIsAsciiRequired = true;
   static const int kVRIndex = kUIIndex;
@@ -1637,7 +1659,6 @@ abstract class LT extends Text {
 
 /// An Short Text (ST) Element
 abstract class ST extends Text {
-
   @override
   int get vrIndex => kVRIndex;
   @override

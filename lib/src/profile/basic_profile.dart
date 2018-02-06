@@ -938,14 +938,10 @@ class BasicProfile {
     0xfffcfffc: kDataSetTrailingPadding
   };
 
-  /// Urgent: format in condensed form
+  /// Urgent Sharath: format in condensed form (like first lin)
   static const List<int> codes = const [
-    0x00001000,
-    0x00001001,
-    0x00020003,
-    0x00041511,
-    0x00080014,
-    0x00080018,
+    // No format
+    0x00001000, 0x00001001, 0x00020003, 0x00041511, 0x00080014, 0x00080018,
     0x00080020,
     0x00080021,
     0x00080022,

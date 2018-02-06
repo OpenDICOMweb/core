@@ -1285,7 +1285,7 @@ const int kTransducerGeometryCodeSequence = 0x0018980d;
 const int kTransducerBeamSteeringCodeSequence = 0x0018980e;
 const int kTransducerApplicationCodeSequence = 0x0018980f;
 const int kZeroVelocityPixelValue = 0x00189810;
-// Urgent: add all the (0018,99xx) tags.
+// Urgent Sharath: add all the (0018,99xx) tags.
 const int kInstructionPerformedDateTime = 0x00189919;
 const int kContributingEquipmentSequence = 0x0018a001;
 const int kContributionDateTime = 0x0018a002;
@@ -2567,7 +2567,7 @@ const int kAlgorithmName = 0x00660036;
 const int kRecommendedPointRadius = 0x00660037;
 const int kRecommendedLineThickness = 0x00660038;
 const int kFloatingPointValues = 0x00660125;
-//Urgent: add 00660129 thru 00660134
+// Urgent Sharath: add 00660129 thru 00660134
 const int kImplantSize = 0x00686210;
 const int kImplantTemplateVersion = 0x00686221;
 const int kReplacedImplantTemplateSequence = 0x00686222;

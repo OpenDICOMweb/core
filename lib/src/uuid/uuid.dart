@@ -226,9 +226,10 @@ class Uuid {
   /// [InvalidUuidListError] is thrown.
   static Uuid parse(String s, {Uint8List data, OnUuidParseError onError}) {
     final bytes = _parseToBytes(s, data, (s) => null, kUuidStringLength);
-    return (bytes == null && onError != null)
-        ? onError(s)
-        : new Uuid.fromList(bytes);
+    if (bytes == null) {
+      return (onError == null) ? null : onError(s);
+    }
+    return new Uuid.fromList(bytes);
   }
 
   /// Unparses (converts [Uuid] to a [String]) a [bytes] of bytes and
@@ -304,12 +305,13 @@ Uint8List _listToBytes(List<int> data, {bool coerce = true}) {
 /// Can optionally be provided a [Uint8List] to write into.
 Uint8List _parseToBytes(
     String s, Uint8List data, OnUuidBytesError onError, int targetLength) {
-  //if (s == null || (s.length != targetLength && s.length != kUuidAsUidStringLength))
-    if (s == null || s.length != targetLength )
+  if (s == null || s.length != targetLength)
     return invalidUuidParseToBytesError(s, targetLength);
   final bytes = _getDataBuffer(data);
   try {
     if (targetLength == 36) {
+      if (s[8] != '-' || s[13] != '-' || s[18] != '-' || s[23] != '-')
+        return invalidUuidParseToBytesError(s, targetLength);
       _toBytes(s, bytes, 0, 0, 8);
       _toBytes(s, bytes, 4, 9, 13);
       _toBytes(s, bytes, 6, 14, 18);

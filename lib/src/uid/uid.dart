@@ -90,6 +90,8 @@ class Uid {
   //TODO: is this the correct number
   static int kUidMaxRootLength = 24;
 
+  static const List<Uid> kEmptyList = const <Uid>[];
+
   /// ASCII constants for '0', '1', and '2'. No other roots are valid.
   static const List<String> uidRoots = kUidRoots;
 

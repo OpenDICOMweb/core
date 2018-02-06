@@ -37,7 +37,7 @@ bool _isValidList(Iterable<int> vList, int minValue, int maxValue) {
 bool _isNotValidList(Iterable<int> vList, int minValue, int maxValue) =>
     !_isValidList(vList, minValue, maxValue);
 
-bool doTestValidity = false;
+bool doTestValidity = true;
 
 abstract class IntBase extends Element<int> {
   @override
@@ -880,7 +880,8 @@ abstract class Uint16Base extends IntBase {
   static Uint16List _toUint16List(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
-    if (vList is Uint16List) return vList;
+    if (vList is Uint16List && asView == true)
+      return vList.buffer.asUint16List();
     if ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
       return invalidValuesError(vList);
     return new Uint16List.fromList(vList);
@@ -1020,10 +1021,9 @@ abstract class OW extends Uint16Base with UndefinedLengthMixin {
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
+  // Urgent Sharath: replace all checkVRIndex in this file with the following:
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (vList != null &&
-       (doTestValidity && isValidVRIndex(tag.vrIndex)) &&
-          isValidValues(tag, vList));
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1033,22 +1033,24 @@ abstract class OW extends Uint16Base with UndefinedLengthMixin {
     if (vrIndex == kOWIndex ||
         vrIndex == kOBOWIndex ||
         vrIndex == kUSSSOWIndex ||
-        vrIndex == kUNIndex)
-      return true;
+        vrIndex == kUNIndex) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
+  // Urgent Sharath: replace all isValidVRCode in this file with the following:
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     final vrIndex = vrIndexFromCodeMap[vrCode];
-    if (vrIndex == kVRIndex || vrIndex == kOBOWIndex || vrIndex == kUSSSOWIndex)
-      return true;
+    if (isValidVRIndex(vrIndex)) return true;
     invalidVRCode(vrCode, issues, kVRIndex);
     return false;
   }
 
+  // Urgent Sharath: replace all checkVRIndex in this file with the following:
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
+      (isValidVRIndex(vrIndex))
+          ? vrIndex
+          : invalidVR(vrIndex, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
@@ -1057,7 +1059,9 @@ abstract class OW extends Uint16Base with UndefinedLengthMixin {
   static bool isValidValue(int v, [Issues issues]) =>
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
+  // Urgent Sharath: replace all checkVRIndex in this file with the following:
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       IntBase._isValidValues(
           tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }

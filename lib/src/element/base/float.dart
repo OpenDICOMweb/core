@@ -72,7 +72,8 @@ abstract class FloatBase extends Element<double> {
   FloatBase get noValues => update(emptyList);
 
   @override
-  bool checkValue(double value, {Issues issues, bool allowInvalid = false}) => true;
+  bool checkValue(double value, {Issues issues, bool allowInvalid = false}) =>
+      true;
 
   /// Returns a [view] of this [Element] with [values] replaced by [TypedData].
   FloatBase view([int start = 0, int length]);
@@ -102,7 +103,8 @@ abstract class FloatBase extends Element<double> {
   /// Returns _true_ if each value in [vList] is valid.
   static bool isValidValues(
       Tag tag, Iterable<double> vList, Issues issues, int maxVListLength) {
-    if (!Element.isValidVListLength(tag, vList, issues, maxVListLength)) return false;
+    if (!Element.isValidVListLength(tag, vList, issues, maxVListLength))
+      return false;
 
 /* TODO: Delete when sure only doubles will be passed
     for (var v in vList)
@@ -128,32 +130,37 @@ abstract class Float32Base extends FloatBase {
 
   /// Returns a view of [values].
   @override
-  Float32Base view([int start = 0, int length]) =>
-      update(typedData.buffer.asFloat32List(start, _toLength(length, values.length)));
+  Float32Base view([int start = 0, int length]) => update(
+      typedData.buffer.asFloat32List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 4;
 
   /// Returns a [BASE64] [String] created from [vList];
-  static String listToBase64(Iterable<double> vList) => BASE64.encode(listToBytes(vList));
+  static String listToBase64(Iterable<double> vList) =>
+      BASE64.encode(listToBytes(vList));
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List listToBytes(Iterable<double> vList, {bool asView = true}) {
-    final td = _toFloat32List(vList);
+    final td = _toFloat32List(vList, asView: asView);
     return td?.buffer?.asUint8List(td.offsetInBytes, td.lengthInBytes);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData listToByteData(Iterable<double> vList, {bool asView = true}) {
-    final td = _toFloat32List(vList);
+    final td = _toFloat32List(vList, asView: asView);
     return td?.buffer?.asByteData(td.offsetInBytes, td.lengthInBytes);
   }
 
-  static Float32List toFloat32List(Iterable<double> vList, {bool asView = true}) =>
-      _toFloat32List(vList);
+  static Float32List toFloat32List(Iterable<double> vList,
+          {bool asView = true}) =>
+      _toFloat32List(vList, asView: asView);
 
-  static Float32List _toFloat32List(Iterable<double> vList, {bool asView = true}) {
+  static Float32List _toFloat32List(Iterable<double> vList,
+      {bool asView = true}) {
     assert(vList != null);
-    return (vList is Float32List) ? vList : new Float32List.fromList(vList);
+    return (vList is Float32List && asView == true)
+           ? vList.buffer.asFloat32List()
+           : new Float32List.fromList(vList);
   }
 
   /// Returns a [Float32List] from a [BASE64] [String].
@@ -185,7 +192,8 @@ abstract class Float32Base extends FloatBase {
     return (asView) ? f32List : new Float32List.fromList(f32List);
   }
 
-  static bool _isNotAligned(TypedData vList) => (vList.offsetInBytes % kSizeInBytes) != 0;
+  static bool _isNotAligned(TypedData vList) =>
+      (vList.offsetInBytes % kSizeInBytes) != 0;
 }
 
 /// FL
@@ -238,14 +246,16 @@ abstract class FL extends Float32Base {
     return false;
   }
 
-  static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : invalidVRIndex(vrIndex, issues, kVRIndex);
+  static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
+      ? vrIndex
+      : invalidVRIndex(vrIndex, issues, kVRIndex);
 
   /// Returns
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-  static bool isValidVFLength(int length, [int min = 0, int max = kMaxVFLength]) =>
+  static bool isValidVFLength(int length,
+          [int min = 0, int max = kMaxVFLength]) =>
       _isValidVFLength(length, min, max, kSizeInBytes);
 
   static bool isValidLength(Tag tag, Iterable<double> vList, [Issues issues]) {
@@ -314,8 +324,9 @@ abstract class OF extends Float32Base {
     return false;
   }
 
-  static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : invalidVRIndex(vrIndex, issues, kVRIndex);
+  static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
+      ? vrIndex
+      : invalidVRIndex(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
@@ -343,8 +354,8 @@ abstract class Float64Base extends FloatBase {
   @override
   Float64Base view([int start = 0, int length]) {
     if (!checkLength(values)) return invalidValuesLengthError(tag, values);
-    return update(
-        typedData.buffer.asFloat64List(start, _toLength(length, values.length)));
+    return update(typedData.buffer
+        .asFloat64List(start, _toLength(length, values.length)));
   }
 
   static const int kSizeInBytes = 8;
@@ -365,10 +376,12 @@ abstract class Float64Base extends FloatBase {
     return td?.buffer?.asByteData(td.offsetInBytes, td.lengthInBytes);
   }
 
-  static Float64List toFloat64List(Iterable<double> vList, {bool check = true}) =>
+  static Float64List toFloat64List(Iterable<double> vList,
+          {bool check = true}) =>
       _toFloat64List(vList);
 
-  static Float64List _toFloat64List(Iterable<double> vList, {bool check = true}) {
+  static Float64List _toFloat64List(Iterable<double> vList,
+      {bool check = true}) {
     assert(vList != null);
     return (vList is Float64List) ? vList : new Float64List.fromList(vList);
   }
@@ -402,7 +415,8 @@ abstract class Float64Base extends FloatBase {
     return (asView) ? f64List : new Float64List.fromList(f64List);
   }
 
-  static bool _isAligned(TypedData vList) => (vList.offsetInBytes % kSizeInBytes) == 0;
+  static bool _isAligned(TypedData vList) =>
+      (vList.offsetInBytes % kSizeInBytes) == 0;
 
   static bool _isNotAligned(TypedData vList) => !_isAligned(vList);
 }
@@ -451,13 +465,15 @@ abstract class FD extends Float64Base {
     return false;
   }
 
-  static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : invalidVRIndex(vrIndex, issues, kVRIndex);
+  static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
+      ? vrIndex
+      : invalidVRIndex(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
-  static bool isValidVFLength(int length, [int min = 0, int max = kMaxVFLength]) =>
+  static bool isValidVFLength(int length,
+          [int min = 0, int max = kMaxVFLength]) =>
       _isValidVFLength(length, min, max, kSizeInBytes);
 
   static bool isValidLength(Tag tag, Iterable<double> vList, [Issues issues]) =>
@@ -515,8 +531,9 @@ abstract class OD extends Float64Base {
     return false;
   }
 
-  static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : invalidVRIndex(vrIndex, issues, kVRIndex);
+  static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
+      ? vrIndex
+      : invalidVRIndex(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);

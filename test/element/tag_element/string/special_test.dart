@@ -453,7 +453,8 @@ void main() {
         }
       }
       expect(AE.isValidValueLength('&t&wSB)~PIA!UIDX'), true);
-      expect(AE.isValidValueLength(''), true);
+      //Urgent Sharath: AE's may not have a blank string.
+      expect(AE.isValidValueLength(''), false);
     });
 
     test('AE isValidValueLength bad values', () {

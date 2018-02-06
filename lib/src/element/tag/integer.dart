@@ -61,7 +61,8 @@ class SStag extends SS with TagElement<int> {
   SStag update([Iterable<int> vList = kEmptyIntList]) => new SStag(tag, vList);
 
   @override
-  SStag updateF(Iterable<int> f(Iterable<int> vList)) => new SStag(tag, f(values));
+  SStag updateF(Iterable<int> f(Iterable<int> vList)) =>
+      new SStag(tag, f(values));
 
   static SStag make<double>(Tag tag, Iterable<double> vList) =>
       new SStag(tag, vList ?? kEmptyDoubleList);
@@ -106,7 +107,8 @@ class SLtag extends SL with TagElement<int> {
   SLtag update([Iterable<int> vList = kEmptyIntList]) => new SLtag(tag, vList);
 
   @override
-  SLtag updateF(Iterable<int> f(Iterable<int> vList)) => new SLtag(tag, f(values));
+  SLtag updateF(Iterable<int> f(Iterable<int> vList)) =>
+      new SLtag(tag, f(values));
 
 /*
   static SLtag fromB64(Tag tag, String base64) =>
@@ -146,7 +148,8 @@ class OBtag extends OB with TagElement<int> {
   int vfLengthField;
 
   /// Creates an [OB] Element from a [Iterable<int>] of byte values (0 - 255).
-  factory OBtag(Tag tag, [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
+  factory OBtag(Tag tag,
+          [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
       (OB.isValidArgs(tag, vList))
           ? new OBtag._(tag, vList, vfLengthField)
           : invalidValuesError(vList, tag: tag);
@@ -166,7 +169,8 @@ class OBtag extends OB with TagElement<int> {
   OBtag update([Iterable<int> vList = kEmptyIntList]) => new OBtag(tag, vList);
 
   @override
-  OBtag updateF(Iterable<int> f(Iterable<int> vList)) => new OBtag(tag, f(values));
+  OBtag updateF(Iterable<int> f(Iterable<int> vList)) =>
+      new OBtag(tag, f(values));
 
   static OBtag fromB64(Tag tag, String s, int vfLengthField) =>
       new OBtag.fromBytes(tag, BASE64.decode(s), vfLengthField);
@@ -187,7 +191,8 @@ class UNtag extends UN with TagElement<int> {
   @override
   final int vfLengthField;
 
-  factory UNtag(Tag tag, [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
+  factory UNtag(Tag tag,
+          [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
       (UN.isValidArgs(tag, vList))
           ? new UNtag._(tag, vList, vfLengthField)
           : invalidValuesError(vList, tag: tag);
@@ -206,7 +211,8 @@ class UNtag extends UN with TagElement<int> {
   UNtag update([Iterable<int> vList = kEmptyIntList]) => new UNtag(tag, vList);
 
   @override
-  UNtag updateF(Iterable<int> f(Iterable<int> vList)) => new UNtag(tag, f(values));
+  UNtag updateF(Iterable<int> f(Iterable<int> vList)) =>
+      new UNtag(tag, f(values));
 
   static UNtag make<int>(Tag tag, Iterable<int> vList) =>
       new UNtag(tag, vList ?? kEmptyIntList);
@@ -245,7 +251,8 @@ class UStag extends US with TagElement<int> {
   UStag update([Iterable<int> vList = kEmptyIntList]) => new UStag(tag, vList);
 
   @override
-  UStag updateF(Iterable<int> f(Iterable<int> vList)) => new UStag(tag, f(values));
+  UStag updateF(Iterable<int> f(Iterable<int> vList)) =>
+      new UStag(tag, f(values));
 
   static UStag make<int>(Tag tag, Iterable<int> vList) =>
       new UStag(tag, vList ?? kEmptyIntList);
@@ -267,7 +274,8 @@ class OWtag extends OW with TagElement<int> {
   final int vfLengthField;
 
   /// Creates an [OWtag] Element.
-  factory OWtag(Tag tag, [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
+  factory OWtag(Tag tag,
+          [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
 //Urgent Jim: figure out what to do with Private Creators with bad vr
       (OW.isValidArgs(tag, vList) || tag is PCTagUnknown)
           ? new OWtag._(tag, vList, vfLengthField)
@@ -292,7 +300,8 @@ class OWtag extends OW with TagElement<int> {
   OWtag update([Iterable<int> vList = kEmptyIntList]) => new OWtag(tag, vList);
 
   @override
-  OWtag updateF(Iterable<int> f(Iterable<int> vList)) => new OWtag(tag, f(values));
+  OWtag updateF(Iterable<int> f(Iterable<int> vList)) =>
+      new OWtag(tag, f(values));
 
   static OWtag make<int>(Tag tag, Iterable<int> vList) =>
       new OWtag(tag, vList ?? kEmptyIntList);
@@ -331,7 +340,8 @@ class OLtag extends OL with TagElement<int> {
   OLtag update([Iterable<int> vList = kEmptyIntList]) => new OLtag(tag, vList);
 
   @override
-  OLtag updateF(Iterable<int> f(Iterable<int> vList)) => new OLtag(tag, f(values));
+  OLtag updateF(Iterable<int> f(Iterable<int> vList)) =>
+      new OLtag(tag, f(values));
 
   static OLtag make<int>(Tag tag, Iterable<int> vList) =>
       new OLtag(tag, vList ?? kEmptyIntList);
@@ -369,7 +379,8 @@ class ULtag extends UL with TagElement<int> {
   ULtag update([Iterable<int> vList = kEmptyIntList]) => new ULtag(tag, vList);
 
   @override
-  ULtag updateF(Iterable<int> f(Iterable<int> vList)) => new ULtag(tag, f(values));
+  ULtag updateF(Iterable<int> f(Iterable<int> vList)) =>
+      new ULtag(tag, f(values));
 
   static ULtag fromB64(Tag tag, String base64) =>
       new ULtag.fromBytes(tag, BASE64.decode(base64));
@@ -411,7 +422,8 @@ class ATtag extends AT with TagElement<int> {
   ATtag update([Iterable<int> vList = kEmptyIntList]) => new ATtag(tag, vList);
 
   @override
-  ATtag updateF(Iterable<int> f(Iterable<int> vList)) => new ATtag(tag, f(values));
+  ATtag updateF(Iterable<int> f(Iterable<int> vList)) =>
+      new ATtag(tag, f(values));
 
   static ATtag fromB64(Tag tag, String base64) =>
       new ATtag.fromBytes(tag, BASE64.decode(base64));
