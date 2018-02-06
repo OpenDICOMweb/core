@@ -268,7 +268,7 @@ class OWtag extends OW with TagElement<int> {
 
   /// Creates an [OWtag] Element.
   factory OWtag(Tag tag, [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
-//Urgent: figure out what to do with Private Creators with bad vr
+//Urgent Jim: figure out what to do with Private Creators with bad vr
       (OW.isValidArgs(tag, vList) || tag is PCTagUnknown)
           ? new OWtag._(tag, vList, vfLengthField)
           : invalidValuesError(vList, tag: tag);
