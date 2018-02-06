@@ -6,6 +6,9 @@
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
+import 'package:test_tools/tools.dart';
+
+RSG rsg = new RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'map_as_list_test', level: Level.info);
@@ -157,6 +160,66 @@ void main() {
       log.debug('noValues0: $noValues0');
     });
 
+    test('noValuesAll', () {
+      system.level = Level.debug;
+      final map0 = new MapAsList();
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+
+      /*final rds = new TagRootDataset();
+      final valuesList = <TagItem>[];
+      map0[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      map0[kInstitutionAddress] = new STtag(PTag.kInstitutionAddress, ['foo bar']);
+      map0[kExtendedCodeMeaning] = new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
+
+      valuesList.add(new TagItem.fromList(rds, map0));
+      final sq0 = new SQtag(PTag.kPatientSizeCodeSequence, rds);
+      map0[sq0.code] = sq0;
+      final noV = map0.noValuesAll(sq0.index);
+      print(noV);*/
+
+      map0[as0.code] = as0;
+
+      var noValues0 = map0.noValuesAll(as0.key);
+      expect(noValues0.isEmpty, false);
+
+      noValues0 = map0.noValuesAll(as0.key);
+      for (var e in noValues0) {
+        expect(e.values.isEmpty, true);
+        log.debug('noValues0: $noValues0');
+      }
+    });
+
+    test('update (String)', () {
+      final map0 = new MapAsList();
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      map0[as0.code] = as0;
+
+      final update0 = map0.update(as0.key, <String>[]);
+      expect(update0.isEmpty, false);
+    });
+
+    test('update (int)', () {
+      final map0 = new MapAsList();
+      final vList0 = [kInt16Min];
+      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      map0.add(ss0);
+
+      final vList1 = [kInt16Max];
+      final update1 = map0.update(ss0.key, vList1).values;
+      expect(update1, equals(vList0));
+
+      final update2 = map0.update(ss0.key, <int>[]);
+      expect(update2.values.isEmpty, false);
+    });
+
+    test('update (float)', () {
+      final map0 = new MapAsList();
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      map0.add(fd0);
+      final update1 = map0.update(fd0.key, <double>[]);
+      expect(update1.isEmpty, false);
+    });
+
     test('duplicate', () {
       final map0 = new MapAsList();
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -167,11 +230,122 @@ void main() {
       final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
-      map0..add(fd0)..add(fd1)..add(as0)..add(as1)..add(as2)..add(ob0)..add(ae0);
+      map0
+        ..add(fd0)
+        ..add(fd1)
+        ..add(as0)
+        ..add(as1)
+        ..add(as2)
+        ..add(ob0)
+        ..add(ae0);
 
       final dup = map0.duplicates;
       log.debug('map0: $map0, dup: $dup');
       expect(dup, isNotNull);
+    });
+
+    test('removeDuplicates', () {
+      final map0 = new MapAsList();
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final as1 = new AStag(PTag.kPatientAge, ['024Y']);
+      final as2 = new AStag(PTag.kPatientAge, ['012M']);
+      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
+
+      map0
+        ..add(fd0)
+        ..add(fd1)
+        ..add(as0)
+        ..add(as1)
+        ..add(as2)
+        ..add(ob0)
+        ..add(ae0);
+
+      system.level = Level.debug;
+      final dup = map0.duplicates;
+      log.debug('map0: $map0, dup: $dup');
+      expect(dup, isNotNull);
+      final removeDup = map0.removeDuplicates();
+      log.debug('map0: $map0, removeDup: $removeDup');
+      expect(dup, equals(<Element>[]));
+      expect(removeDup, null);
+    });
+
+    test('getElementsInRange', () {
+      final map0 = new MapAsList();
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
+
+      map0..add(fd0)..add(as0)..add(ob0)..add(ae0);
+
+      system.level = Level.debug;
+      final inRange0 = map0.getElementsInRange(0, fd0.code);
+      final inRange1 = map0.getElementsInRange(0, fd0.code + 1);
+      final inRange2 = map0.getElementsInRange(0, ae0.code);
+      final inRange3 = map0.getElementsInRange(0, ae0.code + 1);
+      log
+        ..debug('map0: $map0')
+        ..debug('inRange0: $inRange0')
+        ..debug('inRange1: $inRange1')
+        ..debug('inRange2: $inRange2')
+        ..debug('inRange3: $inRange3');
+
+      expect(inRange0, isNotNull);
+    });
+
+    test('replaceUid', () {
+      final map = new MapAsList();
+      final uidList0 = '1.2.840.10008.5.1.4.34.5';
+      final uid1 = Uid.randomList(34);
+      final uidl0 = <Uid>[new Uid()];
+
+      final vList0 = rsg.getUIList(1, 1);
+      final uid0 = new UItag(PTag.kSelectorUIValue, vList0);
+      map.add(uid0);
+
+      //Urgent
+      print(map.replaceUid(uid0.key, uidl0));
+      print(map.replaceUid(uid0.key, uid1));
+    });
+
+    test('replace', () {
+      final map = new MapAsList();
+      final vList0 = [15.24];
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
+      map.add(fd0);
+
+      system.level = Level.debug;
+      final vList1 = [123];
+      expect(map.replace(fd0.index, vList1), equals(vList0));
+      log.debug('fd0.values: ${fd0.values}');
+      expect(fd0.values, equals(vList1));
+
+      system.throwOnError = true;
+      final vList2 = ['024Y'];
+      final as0 = new AStag(PTag.kPatientAge, vList2);
+      final vList3 = [123];
+      //expect(map.replace(as0.index, vList3), equals(vList2));
+      expect(() => map.replace(as0.index, vList3, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('replaceAll', () {
+      final map = new MapAsList();
+      final vList0 = [15.24];
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
+      map.add(fd0);
+
+      system.level = Level.debug;
+      final vList1 = [123];
+      final replaceA0 = map.replaceAll(fd0.index, vList1);
+      log.debug('replaceA0 : $replaceA0');
+      expect(replaceA0, equals([vList0, vList1]));
+      log.debug('fd0.values: ${fd0.values}');
+      expect(fd0.values, equals(vList1));
     });
 
     test('== and hashCode', () {
