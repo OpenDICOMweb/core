@@ -8,7 +8,7 @@ import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/uid_type.dart';
 import 'package:core/src/uid/well_known/wk_uid.dart';
 
-//Urgent: verify that all SOPClass Definitions from PS3.6 are present
+// TODO: verify that all SOPClass Definitions from PS3.6 are present
 
 class TransferSyntax extends WKUid {
   static const UidType uidType = UidType.kTransferSyntax;

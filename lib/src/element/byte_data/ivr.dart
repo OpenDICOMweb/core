@@ -9,7 +9,6 @@ import 'dart:typed_data';
 import 'package:core/src/dataset//errors.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/float.dart';
 import 'package:core/src/element/base/integer.dart';
@@ -21,6 +20,7 @@ import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 import 'package:core/src/vr/vr.dart';
 
@@ -68,9 +68,9 @@ abstract class Ivr<V> implements BDElement<V> {
   @override
   bool get isEvr => false;
 
-  //Urgent fix:
+  // TODO: add correct deIdIndex
   @override
-  int get deIdIndex => 0;
+  int get deIdIndex => unimplementedError();
   @override
   int get ieIndex => 0;
   bool get allowInvalid => true;

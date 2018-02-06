@@ -21,7 +21,7 @@ class InvalidTagError extends Error {
   static String _msg<K>(Object tag) => 'InvalidTagError: $tag';
 }
 
-//Urgent: jim figure out best way to handel invalid tags
+//TODO: jim figure out best way to handel invalid tags
 Object invalidTagError(Object obj, [Issues issues]) {
   final msg = 'InvalidTagError: $obj';
   if (issues != null) issues.add(msg);
@@ -226,7 +226,7 @@ class InvalidValuesLengthError<V> extends Error {
 
   static String _msg<V>(Tag tag, Iterable<V> values) {
   	if (tag == null || tag is! Tag) return invalidTagError(tag);
-  	// Urgent Jim use truncated list
+  	// TODO: use truncated list of values
 	  return 'InvalidValuesLengthError:\n  Tag(${tag.info}';
     //    'values: ${values.elementAt(0)} ...';
   }

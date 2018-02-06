@@ -248,7 +248,7 @@ Summary $tag
     return result;
   }
 
-  //Urgent Jim: merge with removeRecursive
+  // TODO Jim: merge with removeRecursive
   Iterable<Element> removeAll(int index, {bool recursive = true, bool required = false}) {
     final result = <Element>[];
     forEach((item) => result.add(item.delete(index)));

@@ -128,41 +128,6 @@ bool _isDcmText(String s, int max) {
 
 bool _isNotDcmText(String s, int max) => !_isDcmText(s, max);
 
-/* Flush at V.0.9.0
-bool _isValidVFLength(int vfl, int minBytes, int maxBytes, int sizeInBytes) =>
-    _inRange(vfl, minBytes, maxBytes) && (vfl % sizeInBytes == 0);
-
-bool _isNotValidVF(int vfl, int min, int max, Issues issues) {
-  if (vfl < min && vfl > max) {
-    if (issues.isNotEmpty) issues.add('Invalid Value Field Length: $vfl');
-    return true;
-  }
-  return false;
-}
-*/
-
-/*
-//Urgent Jim: add error message to issues
-bool _isValidVListLength(Tag tag, int vLength, Issues issues, int maxLength) {
-  assert(tag != null && vLength != null && maxLength != null);
-  //if (length == 0) return true;
-  final min = tag.vmMin;
-  final max = (tag.vmMax == -1) ? maxLength : tag.vmMax;
-  assert((min >= 0) && (max >= 1) && (max <= maxLength));
-  return _inRange(vLength, min, max);
-}
-*/
-
-/* Flush at V.0.9.0
-bool _isNotValidValueLength(int length, int min, int max, Issues issues) {
-  if (length < min && length > max) {
-    if (issues.isNotEmpty) issues.add('Invalid Value Length: $length');
-    return true;
-  }
-  return false;
-}
-
-*/
 String blanks(int n) => ''.padRight(n, ' ');
 
 /// Returns a [Uint8List] corresponding to a binary Value Field.
@@ -217,7 +182,8 @@ String _vfToString(TypedData vf, bool isAscii) {
       : UTF8.decode(vfBytes, allowMalformed: allow);
 }
 
-/// The base [class] for [String] [Element]s with [values] that are [Iterable<String>].
+/// The base [class] for [String] [Element]s with [values]
+/// that are [Iterable<String>].
 abstract class StringBase extends Element<String> {
   @override
   Iterable<String> get values;
@@ -303,7 +269,7 @@ abstract class StringBase extends Element<String> {
     return true;
   }
 
-  bool isNotValidValuesLength(
+  static bool isNotValidValuesLength(
           String v, Issues issues, int minLength, int maxLength) =>
       !isValidValueLength(v, issues, minLength, maxLength);
 
@@ -331,14 +297,6 @@ abstract class StringBase extends Element<String> {
           bool isValidValue(String s, {Issues issues, bool allowInvalid}),
           int maxVListLength) =>
       !isValidValues(tag, vList, issues, isValidValue, maxVListLength);
-
-/* Flush at V.0.9.0
-  static bool _isValidVList(Iterable<String> values, Issues issues,
-      bool isValidValue(String s, [Issues issues])) {
-    for (var v in values) if (isNotValidValue(v, issues)) return false;
-    return true;
-  }
-*/
 
   static Iterable<V> tryParseList<V>(
       Iterable<String> vList, Issues issues, _TryParser tryParse) {
@@ -380,33 +338,6 @@ abstract class StringBase extends Element<String> {
         : <String>[UTF8.decode(vfBytes, allowMalformed: allow)];
   }
 
-  //Urgent Jim: definition of fromBase64 and toBase64(line:366) looks same
-  //TODO: issues
-  static Iterable<String> fromBase64(Iterable<String> sList, int maxVFLength,
-      [Issues issues]) {
-    final length = _stringListVFLength(sList);
-    return (!_inRange(length, 0, maxVFLength))
-        ? invalidVFLength(length, maxVFLength)
-        : sList;
-  }
-
-  // Urgent Jim Fix
-  //TODO: issues
-  static Iterable<String> toBase64(Iterable<String> sList, int maxVFLength,
-      [Issues issues]) {
-    final length = _stringListVFLength(sList);
-    return (!_inRange(length, 0, maxVFLength))
-        ? invalidVFLength(length, maxVFLength)
-        : sList;
-  }
-
-  /// Returns the length of a ValueField that holds [sList].
-  static int _stringListVFLength(Iterable<String> sList) {
-    var count = 0;
-    for (var s in sList) count += s.length + 1;
-    return count;
-  }
-
   static Uint8List toBytes(List<String> sList, int maxVFLength) =>
       stringListToBytes(sList, maxVFLength);
 }
@@ -417,21 +348,10 @@ abstract class StringAscii extends StringBase {
 
   Uint8List get bytesFromValues =>
       stringListToBytes(values, maxVFLength, isAscii: true);
-
-/* Flush or Fix
-  Iterable<String> get valuesFromJson =>
-      StringBase.decodeJsonVF(sList, maxVFLength, issues);
-
-  Iterable<String> get jsonFromValues =>
-      StringBase.toBase64(sList, maxVFLength, issues);
-*/
-
 }
 
 /// A Application Entity Title ([AE]) Element
 abstract class AE extends StringAscii {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -452,7 +372,6 @@ abstract class AE extends StringAscii {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = true;
-//  static const VR kVR = VR.kAE;
   static const int kVRIndex = kAEIndex;
   static const int kVRCode = kAECode;
   static const String kVRKeyword = 'AE';
@@ -533,12 +452,6 @@ abstract class AE extends StringAscii {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -546,8 +459,6 @@ abstract class AE extends StringAscii {
 
 /// A Code String ([CS]) Element
 abstract class CS extends StringAscii {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -569,14 +480,14 @@ abstract class CS extends StringAscii {
 
   static const bool kIsAsciiRequired = true;
   static bool allowLowerCase = false;
-//  static const VR kVR = VR.kCS;
   static const int kVRIndex = kCSIndex;
   static const int kVRCode = kCSCode;
   static const String kVRKeyword = 'CS';
   static const String kVRName = 'Code String';
   static const int kMaxVFLength = kMaxShortVF;
   static const int kMaxLength = kMaxShortVF ~/ 2;
-  static const int kMinValueLength = 1;
+  // Urgent: is "" a valid code value?
+  static const int kMinValueLength = 0;
   static const int kMaxValueLength = 16;
 
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
@@ -622,9 +533,14 @@ abstract class CS extends StringAscii {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
+  // Urgent: decide what to do about blank values (""). all String Elements
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
+    if (s.isEmpty) {
+      log.warn('Empty Code String');
+      return true;
+    }
     if (_isNotFilteredString(s, 0, kMaxValueLength, isCSChar,
         allowLeading: true, allowTrailing: true)) {
       if (issues != null) issues.add('Invalid Code String (CS): "$s"');
@@ -651,20 +567,12 @@ abstract class CS extends StringAscii {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
 }
 
 abstract class DS extends StringAscii {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -731,7 +639,6 @@ abstract class DS extends StringAscii {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = true;
-//  static const VR kVR = VR.kDS;
   static const int kVRIndex = kDSIndex;
   static const int kVRCode = kDSCode;
   static const String kVRKeyword = 'DS';
@@ -814,17 +721,12 @@ abstract class DS extends StringAscii {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  //Urgent Sharath add tests with leading and trailing spaces, and all spaces (blank)
+  //TODO: Sharath add tests with leading and trailing spaces,
+  // and all spaces (blank).
   /// Parse a [DS] [String]. Leading and trailing spaces allowed,
   /// but all spaces is illegal.
   static double tryParse(String s, [Issues issues]) {
@@ -855,8 +757,6 @@ abstract class DS extends StringAscii {
 //
 //   T update<T>(Iterable<T> vList);
 abstract class IS extends StringAscii {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -884,7 +784,6 @@ abstract class IS extends StringAscii {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = true;
-//  static const VR kVR = VR.kIS;
   static const int kVRIndex = kISIndex;
   static const int kVRCode = kISCode;
   static const String kVRKeyword = 'IS';
@@ -969,12 +868,6 @@ abstract class IS extends StringAscii {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -1027,8 +920,6 @@ abstract class UI extends StringAscii {
   @override
   final int padChar = kNull;
   @override
-//  VR get vr => kVR;
-  @override
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
@@ -1048,17 +939,14 @@ abstract class UI extends StringAscii {
   Iterable<Uid> get uids => _uids ??= Uid.parseList(values);
   Iterable<Uid> _uids;
 
-  //Urgent uids or uid1
-  Iterable<Uid> get uids1 => _uids ??= _convertStrings();
-
   Uid get uid => (uids.length == 1) ? uids.elementAt(0) : null;
 
-  //Urgent Fix: how to handle UID hashing.
+  //TODO: how to handle UID hashing.
   @override
   UI get hash =>
       throw new UnimplementedError('UIDs cannot currently be hashed');
 
-  //Fix: how to handle UID hashing.
+  //TODO: how to handle UID hashing.
   @override
   UI get sha256 => sha256UnsupportedError(this);
 
@@ -1066,14 +954,7 @@ abstract class UI extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  Iterable<Uid> _convertStrings() {
-    final uids = new List<Uid>(values.length);
-    for (var v in values) uids.add(Uid.parse(v));
-    return uids;
-  }
-
   static const bool kIsAsciiRequired = true;
-//  static const VR kVR = VR.kUI;
   static const int kVRIndex = kUIIndex;
   static const int kVRCode = kUICode;
   static const String kVRKeyword = 'UI';
@@ -1155,12 +1036,6 @@ abstract class UI extends StringAscii {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: true);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -1174,18 +1049,10 @@ abstract class StringUtf8 extends StringBase {
 
   Uint8List bytesFromValues(List<String> vList) =>
       stringListToBytes(values, maxVFLength, isAscii: false);
-
-  Iterable<String> valuesFromJson(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, maxVFLength, issues);
-
-  Iterable<String> jsonFromValues(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, maxVFLength, issues);
 }
 
 /// A Long String (LO) Element
 abstract class LO extends StringUtf8 {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1206,7 +1073,6 @@ abstract class LO extends StringUtf8 {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
-//  static const VR kVR = VR.kLO;
   static const int kVRIndex = kLOIndex;
   static const int kVRCode = kLOCode;
   static const String kVRKeyword = 'LO';
@@ -1287,12 +1153,6 @@ abstract class LO extends StringUtf8 {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -1312,8 +1172,6 @@ abstract class PC extends LO {
 
 /// A Person Name ([PN]) [Element].
 abstract class PN extends StringUtf8 {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1332,7 +1190,7 @@ abstract class PN extends StringUtf8 {
   Iterable<PersonName> get names => _names ??= values.map(PersonName.parse);
   Iterable<PersonName> _names;
 
-  //Urgent: implement
+  //TODO: implement
   @override
   PN get hash => throw new UnimplementedError();
 
@@ -1347,7 +1205,6 @@ abstract class PN extends StringUtf8 {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
-//  static const VR kVR = VR.kPN;
   static const int kVRIndex = kPNIndex;
   static const int kVRCode = kPNCode;
   static const String kVRKeyword = 'PN';
@@ -1424,12 +1281,6 @@ abstract class PN extends StringUtf8 {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -1437,8 +1288,6 @@ abstract class PN extends StringUtf8 {
 
 /// A Short String (SH) Element
 abstract class SH extends StringUtf8 {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1459,7 +1308,6 @@ abstract class SH extends StringUtf8 {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
-//  static const VR kVR = VR.kSH;
   static const int kVRIndex = kSHIndex;
   static const int kVRCode = kSHCode;
   static const String kVRKeyword = 'SH';
@@ -1540,12 +1388,6 @@ abstract class SH extends StringUtf8 {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -1553,8 +1395,6 @@ abstract class SH extends StringUtf8 {
 
 /// An Unlimited Characters (UC) Element
 abstract class UC extends StringUtf8 {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1575,7 +1415,6 @@ abstract class UC extends StringUtf8 {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
-//  static const VR kVR = VR.kUC;
   static const int kVRIndex = kUCIndex;
   static const int kVRCode = kUCCode;
   static const String kVRKeyword = 'UC';
@@ -1657,12 +1496,6 @@ abstract class UC extends StringUtf8 {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -1690,8 +1523,6 @@ abstract class Text extends StringUtf8 {
 
 /// An Long Text (LT) Element
 abstract class LT extends Text {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1710,14 +1541,13 @@ abstract class LT extends Text {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
-//  static const VR kVR = VR.kLT;
   static const int kVRIndex = kLTIndex;
   static const int kVRCode = kLTCode;
   static const String kVRKeyword = 'LT';
   static const String kVRName = 'Long Text';
   static const int kMaxVFLength = kMaxShortVF;
   static const int kMaxLength = 1;
-  static const int kMinValueLength = 1;
+  static const int kMinValueLength = 0;
   static const int kMaxValueLength = 10240;
 
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
@@ -1766,7 +1596,7 @@ abstract class LT extends Text {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
-    if (_isNotDcmText(s, 10240)) {
+    if (_isNotDcmText(s, kMaxValueLength)) {
       if (issues != null) issues.add('Invalid Long Text (LT): "$s"');
       return false;
     }
@@ -1800,12 +1630,6 @@ abstract class LT extends Text {
         isAscii: kIsAsciiRequired);
   }
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       textValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -1813,8 +1637,7 @@ abstract class LT extends Text {
 
 /// An Short Text (ST) Element
 abstract class ST extends Text {
-//  @override
-//  VR get vr => kVR;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1835,14 +1658,13 @@ abstract class ST extends Text {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static const bool kIsAsciiRequired = false;
-//  static const VR kVR = VR.kST;
   static const int kVRIndex = kSTIndex;
   static const int kVRCode = kSTCode;
   static const String kVRKeyword = 'ST';
   static const String kVRName = 'Short Text';
   static const int kMaxVFLength = kMaxShortVF;
   static const int kMaxLength = 1;
-  static const int kMinValueLength = 1;
+  static const int kMinValueLength = 0;
   static const int kMaxValueLength = 1024;
 
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
@@ -1891,7 +1713,7 @@ abstract class ST extends Text {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
-    if (_isNotDcmText(s, 1024)) {
+    if (_isNotDcmText(s, kMaxValueLength)) {
       if (issues != null) issues.add('Invalid Short Test (ST): "$s"');
       return false;
     }
@@ -1921,12 +1743,6 @@ abstract class ST extends Text {
         isAscii: kIsAsciiRequired);
   }
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       textValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -1936,8 +1752,6 @@ abstract class ST extends Text {
 ///
 /// The Value Multiplicity of this [Element] is 1.
 abstract class UR extends Text {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1962,14 +1776,7 @@ abstract class UR extends Text {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  Iterable<Uid> _convertStrings() {
-    final uids = new List<Uid>(values.length);
-    for (var v in values) uids.add(Uid.parse(v));
-    return uids;
-  }
-
   static const bool kIsAsciiRequired = false;
-//  static const VR kVR = VR.kUR;
   static const int kVRIndex = kURIndex;
   static const int kVRCode = kURCode;
   static const String kVRKeyword = 'UR';
@@ -2023,7 +1830,7 @@ abstract class UR extends Text {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  //Urgent Jim: Add switch for leading spaces
+  //TODO Jim: Add switch for leading spaces
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
@@ -2064,12 +1871,6 @@ abstract class UR extends Text {
         isAscii: kIsAsciiRequired);
   }
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       textValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -2100,8 +1901,6 @@ abstract class UR extends Text {
 
 /// An Unlimited Text (UT) Element
 abstract class UT extends Text {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -2123,21 +1922,14 @@ abstract class UT extends Text {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  Iterable<Uid> _convertStrings() {
-    final uids = new List<Uid>(values.length);
-    for (var v in values) uids.add(Uid.parse(v));
-    return uids;
-  }
-
   static const bool kIsAsciiRequired = false;
-//  static const VR kVR = VR.kUT;
   static const int kVRIndex = kUTIndex;
   static const int kVRCode = kUTCode;
   static const String kVRKeyword = 'UT';
   static const String kVRName = 'Unlimited Text';
   static const int kMaxVFLength = kMaxLongVF;
   static const int kMaxLength = 1;
-  static const int kMinValueLength = 1;
+  static const int kMinValueLength = 0;
   static const int kMaxValueLength = kMaxLongVF;
 
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
@@ -2212,12 +2004,6 @@ abstract class UT extends Text {
         isAscii: kIsAsciiRequired);
   }
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       textValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -2230,8 +2016,6 @@ abstract class AS extends StringBase {
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
-//  @override
-//  VR get vr => kVR;
   @override
   String get vrKeyword => kVRKeyword;
   @override
@@ -2278,7 +2062,6 @@ abstract class AS extends StringBase {
   static bool allowLowerCase = false;
   static const int kVRIndex = kASIndex;
   static const int kVRCode = kASCode;
-//  static const VR kVR = VR.kAS;
   static const String kVRKeyword = 'AS';
   static const String kVRName = 'Age String';
   static const int kMaxLength = kMaxShortVF ~/ (kMinValueLength + 1);
@@ -2325,7 +2108,7 @@ abstract class AS extends StringBase {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  //Urgent: Add issues everywhere
+  //TODO: Add issues everywhere
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) {
@@ -2351,12 +2134,6 @@ abstract class AS extends StringBase {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> tryDecodeVF(Uint8List bytes) =>
       textValuesFromBytes(bytes, kMaxVFLength);
 
@@ -2373,8 +2150,6 @@ abstract class DA extends StringBase {
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
-//  @override
-//  VR get vr => kVR;
   @override
   String get vrKeyword => kVRKeyword;
   @override
@@ -2419,7 +2194,6 @@ abstract class DA extends StringBase {
   static bool allowLowerCase = false;
   static const int kVRIndex = kDAIndex;
   static const int kVRCode = kDACode;
-//  static const VR kVR = VR.kDA;
   static const String kVRKeyword = 'DA';
   static const String kVRName = 'Date';
   static const int kMaxLength = kMaxShortVF ~/ (kMinValueLength + 1);
@@ -2489,12 +2263,6 @@ abstract class DA extends StringBase {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> tryDecodeVF(Uint8List bytes) =>
       stringValuesFromBytes(bytes, kMaxVFLength, isAscii: true);
 }
@@ -2505,8 +2273,6 @@ abstract class DT extends StringBase {
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
-//  @override
-//  VR get vr => kVR;
   @override
   String get vrKeyword => kVRKeyword;
   @override
@@ -2542,7 +2308,6 @@ abstract class DT extends StringBase {
   static bool allowLowerCase = false;
   static const int kVRIndex = kDTIndex;
   static const int kVRCode = kDTCode;
-//  static const VR kVR = VR.kDT;
   static const String kVRKeyword = 'DT';
   static const String kVRName = 'Date Time';
   static const int kMaxLength = kMaxShortVF ~/ (kMinValueLength + 1);
@@ -2612,12 +2377,6 @@ abstract class DT extends StringBase {
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
-
   static Iterable<String> tryDecodeVF(Uint8List bytes) =>
       stringValuesFromBytes(bytes, kMaxVFLength, isAscii: true);
 }
@@ -2631,8 +2390,6 @@ abstract class TM extends StringBase {
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
-//  @override
-//  VR get vr => kVR;
   @override
   String get vrKeyword => kVRKeyword;
   @override
@@ -2666,7 +2423,6 @@ abstract class TM extends StringBase {
   static bool allowLowerCase = false;
   static const int kVRIndex = kTMIndex;
   static const int kVRCode = kTMCode;
-//  static const VR kVR = VR.kTM;
   static const String kVRKeyword = 'TM';
   static const String kVRName = 'Time';
   static const int kMaxLength = kMaxShortVF ~/ (kMinValueLength + 1);
@@ -2735,12 +2491,6 @@ abstract class TM extends StringBase {
 
   static Uint8List toBytes(Iterable<String> values) =>
       stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static Iterable<String> fromBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.fromBase64(sList, kMaxVFLength, issues);
-
-  static Iterable<String> toBase64(Iterable<String> sList, [Issues issues]) =>
-      StringBase.toBase64(sList, kMaxVFLength, issues);
 
   static Iterable<String> tryDecodeVF(Uint8List bytes) =>
       stringValuesFromBytes(bytes, kMaxVFLength, isAscii: true);

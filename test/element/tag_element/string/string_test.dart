@@ -654,6 +654,7 @@ void main() {
       expect(LO.toBytes(vList1), equals(values));
     });
 
+/*
     test('LO fromBase64', () {
       system.throwOnError = false;
       final vList1 = rsg.getLOList(1, 1);
@@ -677,6 +678,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(LO.toBase64(vList1), equals(vList1));
     });
+*/
 
     test('LO checkList good values', () {
       system.throwOnError = false;
@@ -1260,6 +1262,7 @@ void main() {
       expect(LT.toBytes(vList1), equals(values));
     });
 
+/*
     test('LT fromBase64', () {
       final vList1 = rsg.getLTList(1, 1);
       //final values = ASCII.encode(vList1[0]);
@@ -1282,6 +1285,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(LT.toBase64(vList1), equals(vList1));
     });
+*/
 
     test('LT checkList good values', () {
       system.throwOnError = false;
@@ -1611,6 +1615,7 @@ void main() {
       }
     });
   });
+
   group('PN', () {
     const goodPNList = const <List<String>>[
       const <String>['Adams^John Robert Quincy^^Rev.^B.A. M.Div.'],
@@ -1902,6 +1907,7 @@ void main() {
       expect(PN.toBytes(vList1), equals(values));
     });
 
+/*
     test('PN fromBase64', () {
       final vList1 = rsg.getPNList(1, 1);
       //final values = ASCII.encode(vList1[0]);
@@ -1924,7 +1930,9 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(PN.toBase64(vList1), equals(vList1));
     });
+*/
   });
+
 
   group('SHtag', () {
     const goodSHList = const <List<String>>[
@@ -2542,6 +2550,7 @@ void main() {
       expect(SH.toBytes(vList1), equals(values));
     });
 
+/*
     test('SH fromBase64', () {
       final vList1 = rsg.getSHList(1, 1);
       //final values = ASCII.encode(vList1[0]);
@@ -2564,6 +2573,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(SH.toBase64(vList1), equals(vList1));
     });
+*/
 
     test('SH checkList good values', () {
       system.throwOnError = false;
@@ -3162,6 +3172,7 @@ void main() {
       expect(ST.toBytes(vList1), equals(values));
     });
 
+/*
     test('ST fromBase64', () {
       final vList1 = rsg.getSTList(1, 1);
       system.throwOnError = false;
@@ -3182,6 +3193,8 @@ void main() {
       final vList1 = ['dslkj'];
       expect(ST.toBase64(vList1), equals(vList1));
     });
+*/
+
   });
 
   group('UCtag', () {
@@ -3302,13 +3315,6 @@ void main() {
         system.throwOnError = true;
         expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList1),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
-
-        system.throwOnError = false;
-        //Urgent Jim why doesn't this throw?
-
-        system.throwOnError = true;
-        //Urgent Sharath: add test for true case
-
       }
     });
 
@@ -3770,7 +3776,7 @@ void main() {
       expect(UC.toBytes(vList1), equals(values));
     });
 
-    test('UC fromBase64', () {
+/*    test('UC fromBase64', () {
       final vList1 = rsg.getUCList(1, 1);
       //final values = ASCII.encode(vList1[0]);
       system.throwOnError = false;
@@ -3792,6 +3798,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(UC.toBase64(vList1), equals(vList1));
     });
+  */
     test('UC checkList good values', () {
       system.throwOnError = false;
       for (var i = 0; i <= 10; i++) {
@@ -4320,7 +4327,7 @@ void main() {
       expect(UT.toBytes(vList1), equals(values));
     });
 
-    test('UT fromBase64', () {
+/*    test('UT fromBase64', () {
       final vList1 = rsg.getUTList(1, 1);
       //final values = ASCII.encode(vList1[0]);
       system.throwOnError = false;
@@ -4341,6 +4348,7 @@ void main() {
       final vList1 = ['dslkj'];
       //final s0 = ASCII.encode(vList0[0]);
       expect(UT.toBase64(vList1), equals(vList1));
-    });
+    });*/
+
   });
 }

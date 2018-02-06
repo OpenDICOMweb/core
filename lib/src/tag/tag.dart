@@ -7,13 +7,13 @@
 import 'dart:convert';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/string/ascii.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/elt.dart';
 import 'package:core/src/tag/errors.dart';
@@ -174,7 +174,7 @@ abstract class Tag {
   int get columns => vm.columns;
 
   // **** Element Type (1, 1c, 2, ...)
-  //Urgent: add EType to tag
+  //TODO: add EType to tag
   EType get eType => EType.k3;
   int get eTypeIndex => eType.index;
   _ETypePredicate get eTypePredicate => throw new UnimplementedError();

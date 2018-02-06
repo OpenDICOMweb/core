@@ -305,6 +305,8 @@ abstract class VR<T> {
   bool isValidValue(T v, Issues issues);
   bool isNotValidValue(T v, Issues issues) => !isValidValue(v, issues);
 
+  bool isValidIndex(int vrIndex) => vrIndex == index;
+
   VR byIndex(int index) => vrByIndex[index];
   // Sequence == 0,
   static const kSQ = VRSequence.kSQ;
@@ -626,6 +628,13 @@ class VRSpecial extends VR<int> {
     return false;
   }
 
+  @override
+  bool isValidIndex(int vrIndex) {
+    for (var vr in vrs)
+      if (vr.index == vrIndex) return true;
+    return false;
+  }
+
   static const kOBOW = const VRSpecial(
       kOBOWIndex, 'OBOW', -1, 0, 0, const <VRInt>[VR.kOB, VR.kOW]);
   static const kUSSS = const VRSpecial(
@@ -643,7 +652,7 @@ Null invalidVR(int vrIndex, Issues issues, int correctVRIndex) {
 }
 
 Null invalidVRIndex(int vrIndex, Issues issues, int correctVRIndex) {
-  final msg = 'Invalid VR index($vrIndex = ${vrIdByIndex[vrIndex]})';
+  final msg = 'Invalid VR index($vrIndex == ${vrIdByIndex[vrIndex]})';
   return _doError(msg, issues, correctVRIndex);
 }
 

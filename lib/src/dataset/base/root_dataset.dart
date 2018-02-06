@@ -101,10 +101,10 @@ abstract class RootDataset extends Dataset {
   /// Returns _true_ if the [transferSyntax] is Implicit VR Transfer Syntax.
   bool get isIVR => transferSyntax.isIvr;
 
-  //Urgent Jim: tighten the upper bound
+  // TODO: tighten the upper bound
   bool get hasCmdElements => hasElementsInRange(0x00000000, 0x0000FFFF);
 
-  //Urgent Jim: tighten the upper bound
+  // TODO: tighten the upper bound
   bool get hasFmi => fmi != null;
 
   bool get wasShortEncoding => pInfo.wasShortFile;

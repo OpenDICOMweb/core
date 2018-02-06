@@ -124,9 +124,9 @@ class PTag extends Tag {
     // (1000,08x8)
     if ((code >= 0x10100000) && (code <= 0x1010FFFF)) return PTag.kZonalMap;
 
-    //Urgent v0.5.4: 0x50xx,yyyy Elements
-    //Urgent: 0x60xx,yyyy Elements
-    //Urgent: 0x7Fxx,yyyy Elements
+    // TODO v0.5.4: 0x50xx,yyyy Elements
+    // TODO: 0x60xx,yyyy Elements
+    // TODO: 0x7Fxx,yyyy Elements
 
     // No match return [null]
     if (shouldThrow) throw new InvalidTagCodeError(code);

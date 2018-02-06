@@ -6,7 +6,6 @@
 
 import 'dart:typed_data';
 
-// Urgent Jim: move to system.
 const List<String> kEmptyStringList = const <String>[];
 
 const List<int> kEmptyIntList = const <int>[];

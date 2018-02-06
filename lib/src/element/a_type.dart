@@ -22,7 +22,7 @@ class AType {
 
   const AType(this.index, this.name, this.predicate, {this.isConditional});
 
-  //Urgent Jim: fix a_type
+  //TODO: fix a_type
   bool call(Dataset ds, Tag tag, Element e) {
     throw new UnimplementedError();
 /*    Element e = ds.lookup(tag.code);

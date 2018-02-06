@@ -39,11 +39,11 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   static final int localTZMicrosecond = start.timeZoneOffset.inMilliseconds;
 
   /// The local [TimeZone].
-  static final TimeZone localTimeZone = new TimeZone.fromMicroseconds(localTZMinute);
+  static final TimeZone localTimeZone =
+      new TimeZone.fromMicroseconds(localTZMinute);
 
   final int microseconds;
 
-  //Urgent: Jim
   /// Creates a new [DcmDateTime] in the local time zone based on the arguments.
   factory DcmDateTime(int y,
       [int m = 0,
@@ -68,14 +68,19 @@ class DcmDateTime implements Comparable<DcmDateTime> {
             : invalidDcmDateTimeError(y, m, d, h, mm, s, ms, us);
       return new DcmDateTime._(date + time + localTZMicrosecond);
     } on FormatException catch (e) {
-      //Urgent Jim
       return invalidDcmDateTimeError(y, m, d, h, mm, s, ms, us, e);
     }
   }
 
   /// Creates a new [DcmDateTime] in UTC based on the arguments.
   factory DcmDateTime.utc(int y,
-      [int m = 0, int d = 0, int h = 0, int mm = 0, int s = 0, int ms = 0, int us = 0]) {
+      [int m = 0,
+      int d = 0,
+      int h = 0,
+      int mm = 0,
+      int s = 0,
+      int ms = 0,
+      int us = 0]) {
     final day = dateToEpochMicroseconds(y, m, d);
     if (day == null) return null;
     final time = timeToMicroseconds(h, mm, s, ms, us);
@@ -83,9 +88,9 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     return new DcmDateTime._(day + time);
   }
 
-  //Note: This method relies on the fact that invalid Dates or Times cannot be created.
   /// Returns a [DcmDateTime] corresponding to [Date], [Time], and [TimeZone].
   /// If [TimeZone] is not provided, it defaults to the local time zone.
+  //Note: Invalid Dates or Times cannot be created.
   DcmDateTime.fromDateTime(Date date, Time time, [TimeZone tz])
       : microseconds = date.microseconds + time.microsecond + tz.microseconds;
 
@@ -93,8 +98,8 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   factory DcmDateTime.fromDart(DateTime dt) {
     final eDay = dateToEpochMicroseconds(dt.year, dt.month, dt.day);
     if (eDay == null) return null;
-    final us =
-        timeToMicroseconds(dt.hour, dt.minute, dt.second, dt.millisecond, dt.microsecond);
+    final us = timeToMicroseconds(
+        dt.hour, dt.minute, dt.second, dt.millisecond, dt.microsecond);
     if (us == null) return null;
     final tzMicroseconds = dt.timeZoneOffset.inMicroseconds;
     return new DcmDateTime._(eDay + us + tzMicroseconds);
@@ -194,7 +199,8 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   String get dcm => (fraction == 0) ? '$y$m$d$h$mm$s' : '$y$m$d$h$m$s.$f';
 
   /// Returns _this_ as a [String] in Internet \[RFC3339\] _date-time_ format.
-  String get inet => (fraction == 0) ? '$y-$m-${d}T$h:$mm:$s' : '$y-$m-${d}T$h:$m:$s.$f';
+  String get inet =>
+      (fraction == 0) ? '$y-$m-${d}T$h:$mm:$s' : '$y-$m-${d}T$h:$m:$s.$f';
 
   /// Returns the [DcmDateTime] in ISO date [String] format.
   @override
@@ -204,15 +210,21 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   static DcmDateTime get now => new DcmDateTime.fromDart(new DateTime.now());
 
   /// Returns _true_ if [s] is a valid DICOM [DcmDateTime] [String] (DT).
-  static bool isValidString(String s, {int start = 0, int end, Issues issues}) =>
+  static bool isValidString(String s,
+          {int start = 0, int end, Issues issues}) =>
       isValidDcmDateTimeString(s, start: start, end: end, issues: issues);
 
   /// Returns a DICOM [DcmDateTime], if [s] is a valid DT [String];
   static DcmDateTime parse(String s,
-      {int start = 0, int end, ParseIssues issues, OnDcmDateTimeParseError onError}) {
+      {int start = 0,
+      int end,
+      ParseIssues issues,
+      OnDcmDateTimeParseError onError}) {
     final dt = parseDcmDateTime(s, start: start, end: end);
     if (dt == null)
-      return (onError != null) ? onError(s) : invalidDcmDateTimeString(s, issues);
+      return (onError != null)
+          ? onError(s)
+          : invalidDcmDateTimeString(s, issues);
     return new DcmDateTime._(dt);
   }
 
@@ -294,6 +306,7 @@ Null invalidDcmDateTimeError(int y,
     int us = 0,
     Exception error]) {
   log.error(InvalidDcmDateTimeError._msg(y, m, d, h, mm, s, ms, us, error));
-  if (throwOnError) throw new InvalidDcmDateTimeError(y, d, m, h, mm, s, ms, us, error);
+  if (throwOnError)
+    throw new InvalidDcmDateTimeError(y, d, m, h, mm, s, ms, us, error);
   return null;
 }

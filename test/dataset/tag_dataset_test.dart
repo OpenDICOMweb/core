@@ -95,7 +95,7 @@ void main() {
           ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
       ..add(new TMtag(tag4, ['105234.530000']))
       ..add(new DAtag(tag5, ['19990505']));
-/* Urgent Jim: move to profile.dart
+/* TODO Jim: move to profile.dart
 
     test('test for Retained', () {
       rootDS0.retainCode(kStudyInstanceUID);
@@ -659,7 +659,7 @@ void main() {
       system.throwOnError = false;
       log.debug('system.throwOnError:${system.throwOnError}');
 
-      //Urgent: required parameter has no use
+      // TODO: required parameter has no use
       // Code differences with other get methods
       expect(rootDS0.getString(kImagerPixelSpacing), isNull);
     });

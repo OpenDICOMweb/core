@@ -15,14 +15,14 @@ class Timestamp {
 
   Timestamp([this.msg = '']) : dt = new DateTime.now();
 
-  /// Creates a new local Timestamp from a [DateTime], along with an optional message
+  /// Creates a new local Timestamp from a [DateTime],
+  /// along with an optional message
   Timestamp.fromDateTime(this.dt, [this.msg = '']);
 
   @override
   bool operator ==(Object other) =>
       (other is Timestamp) && (dt == other.dt) && (msg == other.msg);
 
-  //Urgent Jim: figure out how to customize hash for 32 and 64 bit systems
   @override
   int get hashCode => Hash64.k2(dt, msg);
 
@@ -37,7 +37,8 @@ class Timestamp {
   /// Returns the date component in internet format
   String get time => '${dt.hour}:${dt.minute}:${dt.second}.${dt.millisecond}';
 
-  /// Returns a formatted String of the time component without fractional seconds.
+  /// Returns a formatted String of the time component
+  /// without fractional seconds.
   String get second => '${dt.hour}:${dt.minute}:${dt.second}';
 
   /// Return the fraction part of the second.
@@ -49,7 +50,8 @@ class Timestamp {
 
   /// Returns a formatted String of the time component including microseconds.
   String get microsecond =>
-      '${dt.hour}:${dt.minute}:${dt.second}.${dt.millisecond},${dt.microsecond}';
+      '${dt.hour}:${dt.minute}:${dt.second}.'
+          '${dt.millisecond},${dt.microsecond}';
 
   /// Returns the name of the Time Zone for _this_.
   String get tzName => dt.timeZoneName;

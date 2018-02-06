@@ -6,7 +6,7 @@
 
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 
-//Urgent: finish this class
+//TODO: finish this class
 class SupportedTransferSyntax {
   final TransferSyntax uid;
   final bool isStorable;
@@ -14,7 +14,7 @@ class SupportedTransferSyntax {
   final bool isEncodable;
   final bool isDisplayable;
 
-  //Urgent: flesh out the rest of this table.
+  //TODO: flesh out the rest of this table.
   const SupportedTransferSyntax(this.uid,
       {this.isStorable = true,
       this.isDecodable = false,

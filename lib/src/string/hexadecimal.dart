@@ -16,8 +16,9 @@ const String uppercaseRadixDigits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 String getRadixDigits() =>
     (system.isHexUppercase) ? uppercaseRadixDigits : lowercaseRadixDigits;
 
-//Urgent Unit test
-String _toRadixString(int n, {int base = 10, int length, String padChar = '0'}) =>
+//TODO Unit test
+String _toRadixString(int n,
+        {int base = 10, int length, String padChar = '0'}) =>
     __toRadixString(n, base, length, padChar);
 
 String _padString(String s, int length, [String padChar = '0']) {
@@ -43,7 +44,8 @@ String xHex(int n) => _toRadixString(n, base: 16, length: 8, padChar: '0');
 
 /// _Deprecated_: Use [hex] instead.
 @deprecated
-String toHex(int n, {int maxLength = 8, String prefix = '0x', String padding = '0'}) =>
+String toHex(int n,
+        {int maxLength = 8, String prefix = '0x', String padding = '0'}) =>
     '$prefix${_toRadixString(16).padLeft(maxLength, padding)}';
 
 /// Returns a hexadecimal [String] corresponding to [n] in the format
@@ -62,7 +64,8 @@ String toHex(int n, {int maxLength = 8, String prefix = '0x', String padding = '
 /// _Note_: If [padding] has a [maxLength] greater than 1 the result
 /// will not have a length equal to [maxLength]. See the [String]
 /// method `padLeft` for details.
-String hex(int n, {int maxLength = 8, String prefix = '0x', String padding = '0'}) =>
+String hex(int n,
+        {int maxLength = 8, String prefix = '0x', String padding = '0'}) =>
     '$prefix${n.toRadixString(16).padLeft(maxLength, padding)}';
 
 /// Returns a hexadecimal [String] corresponding to [v] as a 32-bit
@@ -84,7 +87,7 @@ String hex32(int v) {
 /// left padded with zeros. Finally, the result is prefixed with '0x'.
 @deprecated
 String toHex16(int v) {
-	assert(v >= 0 && v <= 0xFFFF);
+  assert(v >= 0 && v <= 0xFFFF);
   return hex(v, maxLength: 4);
 }
 
@@ -98,11 +101,11 @@ String hex16(int v, {String prefix = '0x'}) {
 /// left padded with zeros. Finally, the result is prefixed with '0x'.
 @deprecated
 String toHex8(int v) {
-	assert(v >= 0 && v <= 0xFF);
+  assert(v >= 0 && v <= 0xFF);
   return hex(v, maxLength: 4);
 }
 
 String hex8(int v) {
-	assert(v >= 0 && v <= 0xFF);
+  assert(v >= 0 && v <= 0xFF);
   return hex(v, maxLength: 2);
 }

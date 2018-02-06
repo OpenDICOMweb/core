@@ -48,54 +48,6 @@ bool isValidDateTime(int y,
 typedef dynamic DcmDateTimeToObject(
     int y, int m, int d, int h, int mm, int s, int ms, int us);
 
-/* Flush if not used by V0.9.0
-dynamic microsecondToDateTime(int us, DcmDateTimeToObject creator) {
-  int y, m, d, h, mm, s, ms, us;
-
-  dynamic getDate(int yy, int mm, int dd, {bool asDicom = true}) {
-    y = yy;
-    m = mm;
-    d = dd;
-    return true;
-  }
-
-
-  dynamic getTime(int hh, int mmmm, int ss, int msms, int usus, {bool asDicom = true}) {
-    h = hh;
-    mm = mmmm;
-    s = ss;
-    ms = msms;
-    us = usus;
-    return true;
-  }
-
-  int epochDay = us ~/ kMicrosecondsPerDay;
-  int time = us % kMicrosecondsPerDay;
-  String tz = timeZoneToString()
-  epochDayToDate(epochDay, getDate);
-
-  microsecondsToTime(time, getTime);
-  return (creator != null)
-      ? creator(y, m, d, h, mm, s, ms, us)
-      : _dateTimeToList(y, m, d, h, mm, s, ms, us);
-}
-
-List<int> _dateTimeToList(
-    int y, int m, int d, int h, int mm, int s, int ms, int us) {
-  var dt = new List<int>(5);
-  dt[0] = y;
-  dt[1] = m;
-  dt[2] = d;
-  dt[3] = h;
-  dt[4] = mm;
-  dt[5] = s;
-  dt[6] = ms;
-  dt[7] = us;
-  return dt;
-}
-
-*/
-
 /// Returns a hash of microsecond ([us]) that is in the
 /// range: ```0 <= hash <= [kMicrosecondsPerDay]```.
 int hashDateTimeMicroseconds(int us) => system.hash(us);
@@ -153,14 +105,13 @@ String microsecondToDateTimeString(int epochMicrosecond,
   epochDayToDate(epochDay, creator: getDate, asDicom: asDicom);
   final time = epochMicrosecond % kMicrosecondsPerDay;
   microsecondToTime(time, getTime, asDicom: asDicom);
-  //Urgent: add real time zone
+  // TODO: add real time zone
   final dt = dateTimeString(y, m, d, h, mm, s, ms, us, asDicom: asDicom);
   return '$dt+0000';
 }
 
 //TODO: decide if needed at V0.9.0
-String dateTimeString(int y, int m, int d, int h, int mm, int s, int ms, int
-us,
+String dateTimeString(int y, int m, int d, int h, int mm, int s, int ms, int us,
     {bool asDicom = true, bool truncate = false}) {
   final yx = digits4(y);
   final mx = digits2(m);

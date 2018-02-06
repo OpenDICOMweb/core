@@ -132,7 +132,7 @@ abstract class ElementList extends ListBase<Element> {
   }
 
   //Enhancement? make private for performance
-  //Urgent Jim: make conform to Fold interface
+  //TODO: make conform to Fold interface
   /// Walk the [Dataset] recursively and return the count of [Element]s
   /// for which [test] is true.
   /// Note: It ignores duplicates.
@@ -516,7 +516,7 @@ ElementList Summary
 
   /// Returns a copy of _this_. If [parent] is _null_ the
   /// [parent] of the copy is _this_ [parent].
-  // Urgent Jim: Why don't the subclasses work with this interface?
+  // TODO Jim: Why don't the subclasses work with this interface?
   ElementList copy([Dataset parent]);
 
   /* Flush if not used

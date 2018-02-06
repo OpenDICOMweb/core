@@ -10,7 +10,6 @@ import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/errors.dart';
@@ -19,6 +18,7 @@ import 'package:core/src/issues.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/tag_lib.dart';
 import 'package:core/src/vr/vr.dart';
 
@@ -47,9 +47,6 @@ abstract class Element<V> extends ListBase<V> {
   /// used to locate other values in the [Element] Definition.
   int get index => code;
 
-  /// The Value Representation (VR) of this [Element] type.
-//Urgent Jim fix
-//  VR get vr;
   String get vrId => vrIdByIndex[vrIndex];
 
   /// The index ([vrIndex]) of the Value Representation for this Element.

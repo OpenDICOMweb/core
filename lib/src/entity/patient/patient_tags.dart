@@ -7,7 +7,7 @@
 import 'package:core/src/tag/tag_lib.dart';
 import 'package:core/src/vr/vr.dart';
 
-//Urgent: move to dictionary
+// TODO: move to dictionary
 class PatientTag {
   final String keyword;
   final int tag;

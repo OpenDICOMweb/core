@@ -118,7 +118,7 @@ abstract class Dataset extends ListBase<Element> {
   int get lengthInBytes => (dsBytes == null) ? -1 : dsBytes.eLength;
   bool get hasDuplicates => elements.history.duplicates.isNotEmpty;
 
-  //Urgent: implement private groups and Private elements
+  // TODO: implement private groups and Private elements
   String get info => '''
 $runtimeType(#$hashCode):
             Total: ${elements.total}

@@ -22,8 +22,8 @@ import 'package:core/src/uid/uid.dart';
 
 // ignore_for_file: only_throw_errors
 
-// Urgent: create errors for this class
-// Urgent: make subject a clinical trial subject that is DeIdentified
+// TODO: create errors for this class
+// TODO: make subject a clinical trial subject that is DeIdentified
 
 /// A singleton [class] that contains all [Study]s and [Patient]s
 /// in the running system.

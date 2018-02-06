@@ -905,6 +905,7 @@ void main() {
       expect(DS.toBytes(vList1), equals(values));
     });
 
+/*
     test('DS fromBase64', () {
       system.throwOnError = false;
       final vList1 = rsg.getDSList(1, 1);
@@ -928,6 +929,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(DS.toBase64(vList1), equals(vList1));
     });
+*/
 
     test('DS tryParse', () {
       system.throwOnError = false;
@@ -1753,6 +1755,7 @@ void main() {
       final values = ASCII.encode(vList1[0]);
       expect(IS.toBytes(vList1), equals(values));
     });
+/*
 
     test('IS fromBase64', () {
       system.throwOnError = false;
@@ -1777,6 +1780,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(IS.toBase64(vList1), equals(vList1));
     });
+*/
 
     test('IS tryParse', () {
       system.throwOnError = false;

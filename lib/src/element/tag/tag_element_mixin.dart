@@ -38,19 +38,10 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   String get name => tag.name;
 
   // VR related Getters
-  //Urgent: Jim to fix
-  @override
-//  VR get vr => vrByIndex[vrIndex];
   @override
   int get vrIndex => tag.vrIndex;
   @override
   int get vrCode => tag.vrCode;
-
-  /// The number of bytes in one value.
-  @override
-//	int get unitSize => tag.elementSize;
-  @override
-//	int get maxVFLength => tag.maxVFLength;
 
   // **** VM Related Getters
   @override
@@ -72,11 +63,11 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   EType get eType => tag.type;
   @override
   int get eTypeIndex => tag.type.index;
-  //Urgent: fix
+  // TODO: fix
   @override
   ETypePredicate get eTypePredicate => throw new UnimplementedError();
 
-  //Urgent: fix to IE.patient.index
+  // TODO: fix to IE.patient.index
   @override
   IEType get ieType => IEType.kInstance;
 
@@ -86,12 +77,12 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   @override
   String get ieLevel => ieType.level;
 
-  //Urgent: fix
+  //TODO: fix
   @override
   int get deIdIndex => 0;
 
-  //Urgent: fix
-  @override
+  //TODO: fix
+//  @override
 //	DeIdMethod get deIdMethod => tag.deIdMethod;
 
   /// Returns true if _this_ is a Data Element defined by the DICOM Standard.
@@ -117,14 +108,15 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     return bd;
   }
 
-  static Element make(Tag tag, Iterable values, int vrIndex) {
+  static Element make(Tag tag, Iterable values, int vrIndex) =>
    // assert(tag.vr.isValid == vrIndex, 'Tag VR: ${tag.vrIndex}, vrIndex, '
    //     '$vrIndex');
-    return _tagMakers[vrIndex](tag, values);
-  }
+     _tagMakers[vrIndex](tag, values);
 
 
-  static Element from(Element e) => make(e.tag, e.values, e.vrIndex);
+
+  static Element from(Element e, int vrIndex) =>
+      make(e.tag, e.values, vrIndex);
 
   static final List<TagElementMaker> _tagMakers = <TagElementMaker>[
     null,

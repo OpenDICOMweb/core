@@ -29,7 +29,7 @@ class TagRootDataset extends RootDataset with TagDataset {
         fmi = new MapAsList(),
         elements = new MapAsList();
 
-  //Urgent make this work recursively
+  // TODO: make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].
   TagRootDataset.from(RootDataset rds,
       {ByteData bd,
@@ -42,7 +42,7 @@ class TagRootDataset extends RootDataset with TagDataset {
         elements = new MapAsList.from(rds.elements),
         path = rds.path;
 
-  //Urgent make this work recursively
+  // TODO: make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].
   TagRootDataset.fromBD(BDRootDataset rds)
 /*                      {ByteData bd,

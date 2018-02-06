@@ -176,9 +176,9 @@ abstract class System {
     return v.toString();
   }
 
-  //Urgent: finish
+  //TODO: finish
   String get info => '''
-  Urgent: finish
+  TODO: finish
   ''';
 
   // **** File Meta Information - each client or server should implement.
@@ -232,7 +232,6 @@ abstract class System {
 /// The system singleton;
 final System system = System.system;
 
-//Urgent Jim: out how to handle Hash64
 /// The system hash function
 int hash(Object o) => system.hash(o);
 

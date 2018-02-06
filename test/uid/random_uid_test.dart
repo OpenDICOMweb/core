@@ -96,10 +96,6 @@ void main() {
       final uidRootType0 = Uid.randomList(uid.asString.length);
       log.debug('uidRootType0 : $uidRootType0');
       expect(uidRootType0, isNotNull);
-
-      //urgent: can we pass null here?
-      //final uidRootType1 = Uid.randomList(null);
-      //expect(uidRootType1, isNull);
     });
 
     test('isValidStringList', (){

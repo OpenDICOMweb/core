@@ -103,6 +103,8 @@ export 'package:core/src/logger/server/file/file_handler.dart';
 export 'package:core/src/logger/server/file/log_file.dart';
 export 'package:core/src/parser/parse_errors.dart';
 export 'package:core/src/parser/parser.dart';
+export 'package:core/src/profile/deid_profile.dart';
+export 'package:core/src/profile/normalize_dates.dart';
 export 'package:core/src/random/rng.dart';
 export 'package:core/src/string/ascii.dart';
 export 'package:core/src/string/dicom_string.dart';
@@ -127,7 +129,8 @@ export 'package:core/src/uid/well_known/sop_class.dart';
 export 'package:core/src/uid/well_known/sop_class_list.dart';
 export 'package:core/src/uid/well_known/sop_class_map.dart';
 export 'package:core/src/uid/well_known/sop_instance.dart';
-export 'package:core/src/uid/well_known/synchronization_frame_of_reference.dart';
+export 'package:core/src/uid/well_known/'
+    'synchronization_frame_of_reference.dart';
 export 'package:core/src/uid/well_known/transfer_syntax.dart';
 export 'package:core/src/uid/well_known_uids.dart';
 export 'package:core/src/uuid/errors.dart';

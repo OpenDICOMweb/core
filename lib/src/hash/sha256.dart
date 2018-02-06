@@ -53,7 +53,7 @@ final _sha256Buffer = new Uint64List(8);
 
 /// Returns a 63-bit (SMI) integer, extracted from a SHA256 digest.
 int int63(int value) {
-  // Urgent: what should [offset] be to make this effective
+  // TODO: what should [offset] be to make this effective
   const offset = 1;
   _sha256Buffer[offset] = value;
   final bytes = _sha256Buffer.buffer.asUint8List();

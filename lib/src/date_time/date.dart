@@ -37,12 +37,12 @@ class Date implements Comparable<Date> {
   final int microseconds;
 
   /// Creates a [Date].
-  factory Date(int y, [int m = 0, int d = 0, ParseIssues issues, OnDateError onError]) {
+  factory Date(int y,
+      [int m = 0, int d = 0, ParseIssues issues, OnDateError onError]) {
     try {
       final microseconds = dateToEpochMicroseconds(y, m, d);
       return (microseconds == null) ? null : new Date._(microseconds);
     } on FormatException catch (e) {
-      //Urgent Jim
       return invalidDateError(y, m, d, e);
     }
   }
@@ -55,7 +55,8 @@ class Date implements Comparable<Date> {
 
   //TODO: unit test
   @override
-  bool operator ==(Object other) => other is Date && microseconds == other.microseconds;
+  bool operator ==(Object other) =>
+      other is Date && microseconds == other.microseconds;
 
   //TODO: unit test
   bool operator >(Date other) => microseconds > other.microseconds;
@@ -143,8 +144,8 @@ class Date implements Comparable<Date> {
   ///     ```original``` is the original date, i.e. [_epochDay],
   ///     ```enrollment``` is the subjects date of enrollment in a clinical
   ///     study, and ```acrBaseline``` is January 1, 1960.
-  Date normalize(Date enrollment) =>
-      new Date._(microseconds - (enrollment.microseconds - kACRBaselineMicroseconds));
+  Date normalize(Date enrollment) => new Date._(
+      microseconds - (enrollment.microseconds - kACRBaselineMicroseconds));
 
   /// Returns a [Date] [String] in Internet format.
   @override
@@ -162,12 +163,14 @@ class Date implements Comparable<Date> {
   }
 
   /// Returns _true_ if [s] is a valid DICOM [Date] [String].
-  static bool isValidString(String s, {int start = 0, int end, Issues issues}) =>
+  static bool isValidString(String s,
+          {int start = 0, int end, Issues issues}) =>
       isValidDcmDateString(s, start: start, end: end, issues: issues);
 
   /// Returns a [ParseIssues] object if there are errors or warnings related to [s];
   /// otherwise, returns _null_.
-  static ParseIssues issues(String s, {int start = 0, int end, int min = 0, int max}) {
+  static ParseIssues issues(String s,
+      {int start = 0, int end, int min = 0, int max}) {
     final issues = new ParseIssues('Date', s);
     parseDcmDate(s, issues: issues);
     return issues;
@@ -225,9 +228,11 @@ class Date implements Comparable<Date> {
   /// date [String] and the _enrollment_ date [String}.
   static String normalizeString(String date, Date enrollment) {
     if (date == null || enrollment == null) return null;
-    final oDay = parseDcmDate(date);
-    if (oDay == null) return null;
-    return microsecondToDateString(oDay - (enrollment.microseconds - acrBaseline));
+    final dateInUSecs = parseDcmDate(date);
+    if (dateInUSecs == null) return null;
+    final offsetFromBaseline = enrollment.microseconds - acrBaseline;
+    final normalInUSecs = dateInUSecs - offsetFromBaseline;
+    return microsecondToDateString(normalInUSecs);
   }
 
   /// Returns a [List<String>] of DICOM date (DA) values, where each element in the

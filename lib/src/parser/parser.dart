@@ -30,7 +30,7 @@ part 'time_zone_parser.dart';
 //TODO: for performance make every function that can be internal
 //TODO: redo doc
 
-//Urgent Jim: the following is the plan for all parsers int the String package.
+//TODO: the following is the plan for all parsers int the String package.
 /// DICOM Parsers
 ///
 /// Each parser has the following signature

@@ -20,7 +20,8 @@ abstract class PrivateTag extends Tag {
   @override
   final VM vm;
 
-  const PrivateTag(this.code, [this.vrIndex = kUNIndex, this.vm = VM.k1_n]) : super();
+  const PrivateTag(this.code, [this.vrIndex = kUNIndex, this.vm = VM.k1_n])
+      : super();
 
   PrivateTag._(this.code, [this.vrIndex = kUNIndex, this.vm = VM.k1_n]);
 
@@ -30,7 +31,6 @@ abstract class PrivateTag extends Tag {
   @override
   String get name => 'Illegal Private Tag';
 
-  //Urgent: fix
   @override
   int get index => -1;
 
@@ -71,21 +71,12 @@ class PrivateTagGroupLength extends PrivateTag {
 
   @override
   String get name => 'Private Group Length Tag';
-
-
-
-/*
-  //Flush at V0.9.0 if not used.
-  static PrivateTagGroupLength maker(int code, int vrIndex, [_]) =>
-      new PrivateTagGroupLength(code, vr);
-*/
-
 }
 
 /// Private Illegal Tags have have codes that are (gggg,eeee),
 /// where gggg is odd, and eeee is between 01 and 09 hexadecimal.
 /// For example (0009,0005).
-// Flush at v0.9.0 if not used by then
+// TODO: Flush at v0.9.0 if not used by then
 class PrivateTagIllegal extends PrivateTag {
   static const int kUnknownIndex = -1;
 
@@ -93,10 +84,4 @@ class PrivateTagIllegal extends PrivateTag {
 
   @override
   String get name => 'Private Illegal Tag';
-
-/* Flush if not needed
-  static PrivateTagIllegal maker(int code, int vrIndex, String name) =>
-      new PrivateTagIllegal(code, vr);
-*/
-
 }

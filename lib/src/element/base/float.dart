@@ -191,9 +191,6 @@ abstract class Float32Base extends FloatBase {
 /// FL
 abstract class FL extends Float32Base {
   @override
-  //Urgent Jim Fix
-  //VR get vr => vrFromIndex(kVRIndex);
-  @override
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
@@ -411,9 +408,6 @@ abstract class Float64Base extends FloatBase {
 }
 
 abstract class FD extends Float64Base {
-//  @override
-  //Urgent Jim Fix
-  //VR get vr => vrFromIndex(kVRIndex);
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -474,9 +468,6 @@ abstract class FD extends Float64Base {
 }
 
 abstract class OD extends Float64Base {
-//  @override
-  //Urgent Jim Fix
-  //VR get vr => vrFromIndex(kVRIndex);
   @override
   int get vrIndex => kVRIndex;
   @override

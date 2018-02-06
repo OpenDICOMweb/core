@@ -32,3 +32,26 @@ abstract class MetaElement<V> extends Element<V> {
   @override
   V get value => element.value;
 }
+
+// Must implement Values and Value with reified.
+abstract class BulkdataRef<V> extends Element<V> {
+  Element get element;
+  String get uri;
+
+  List get empty => element.emptyList;
+  @override
+  Tag get tag => element.tag;
+  //Why are these 3 necessary
+  @override
+  int get code => tag.code;
+  @override
+  String get keyword => tag.keyword;
+  @override
+  int get vrIndex => tag.vrIndex;
+  @override
+  int get vrCode => tag.vrCode;
+  @override
+  VM get vm => tag.vm;
+  @override
+  int get sizeInBytes => tag.elementSize;
+}

@@ -15,10 +15,10 @@ import 'package:core/src/logger/log_record.dart';
 /// A Function called by the Fatal method.
 typedef void LogExitHandler(LogRecord record);
 
-//Urgent: fix logger indentation
-//Urgent: argument for increasing/decreasing indent
-//Urgent: allow logger to be wrapped inside other Loggers
-//TODO: Add ability to write to a file or network connection.
+// TODO: fix logger indentation
+// TODO: argument for increasing/decreasing indent
+// TODO: allow logger to be wrapped inside other Loggers
+// TODO: Add ability to write to a file or network connection.
 class Logger {
 //	static const String defaultFileName = 'logger.log';
 
@@ -47,7 +47,8 @@ class Logger {
   /// Singleton constructor. Calling `new Logger(name)` will return the same
   /// actual instance whenever it is called with the same string name.
   factory Logger(String name, [Level level = defaultLevel]) {
-    if (name.startsWith('.')) throw new ArgumentError('Name shouldn\'t start with a "."');
+    if (name.startsWith('.'))
+      throw new ArgumentError('Name shouldn\'t start with a "."');
     if (name == 'root') return root;
 
     // Split hierarchical names (separated with '.').
@@ -57,8 +58,8 @@ class Logger {
     for (var i = 0; i < nameList.length; i++) {
       final name = nameList[i];
       logger = parent._children[name];
-      logger ??=
-          parent._children.putIfAbsent(name, () => new Logger._(name, parent, level));
+      logger ??= parent._children
+          .putIfAbsent(name, () => new Logger._(name, parent, level));
       parent = logger;
     }
     return logger;
@@ -72,7 +73,8 @@ class Logger {
   ///
   /// It can be useful when you just need a local short-living logger,
   /// which you'd like to be garbage-collected later.
-  factory Logger.detached(String name, [Level value = defaultLevel, Indenter indenter]) =>
+  factory Logger.detached(String name,
+          [Level value = defaultLevel, Indenter indenter]) =>
       new Logger._(name, null, value);
 
   Logger._(this.name, this.parent, this._level, {Indenter indenter})
@@ -81,8 +83,8 @@ class Logger {
     if (parent != null) parent._children[name] = this;
   }
 
-  /// Effective level considering the levels established in this logger's parents
-  /// (when [isHierarchicalEnabled] is true).
+  /// Effective level considering the levels established in
+  /// this logger's parents (when [isHierarchicalEnabled] is true).
   Level get level {
     if (isHierarchicalEnabled) {
       if (_level != null) return _level;
@@ -106,11 +108,13 @@ class Logger {
   }
 
   /// The full name of this logger, which includes the parent's full name.
-  String get fullName =>
-      (parent == null || parent.name == 'root') ? name : '${parent.fullName}.$name';
+  String get fullName => (parent == null || parent.name == 'root')
+      ? name
+      : '${parent.fullName}.$name';
 
   Map<String, Logger> __children;
-  Map<String, Logger> get children => __children ?? new UnmodifiableMapView(_children);
+  Map<String, Logger> get children =>
+      __children ?? new UnmodifiableMapView(_children);
 
   /// Turn console printing on.
   bool get printOn => doPrint = true;
@@ -184,7 +188,8 @@ class Logger {
 
     if (indent > 0) indenter.inc(indent);
     msg = '${indenter.z}$msg';
-    final record = new LogRecord(logLevel, msg, fullName, error, trace, zone, object);
+    final record =
+        new LogRecord(logLevel, msg, fullName, error, trace, zone, object);
     records.add(record);
     if (doPrint) print(record);
     if (indent < 0) indenter.inc(indent);
@@ -343,7 +348,8 @@ class Logger {
 
   List<LogRecord> search(Level severity) {
     final results = <LogRecord>[];
-    for (var record in records) if (record.level == severity) results.add(record);
+    for (var record in records)
+      if (record.level == severity) results.add(record);
     return results;
   }
 

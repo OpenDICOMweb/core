@@ -39,7 +39,6 @@ class Time implements Comparable<Time> {
       final uSecs = timeToMicroseconds(h, m, s, ms, us);
       return (uSecs == null) ? null : new Time._(uSecs);
     } on FormatException catch (e) {
-      //Urgent Jim
       return invalidTimeError(h, m, s, ms, us, e);
     }
   }

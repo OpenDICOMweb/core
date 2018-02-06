@@ -20,7 +20,7 @@ class LdapOid extends WKUid {
   String toString() => asString;
 
 
-  //Urgent: verify that all SOPClass Definitions from PS3.6 are present
+  // TODO: verify that all SOPClass Definitions from PS3.6 are present
   static const String kName = 'LDAP OID';
 
   static LdapOid lookup(String s) => map[s];

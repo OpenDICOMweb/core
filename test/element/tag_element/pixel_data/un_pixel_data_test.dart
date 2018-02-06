@@ -584,7 +584,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => UN.isValidValues(PTag.kPixelData, uInt8MinMinus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
-    }, skip: "UN values are always valid");
+    }, skip: 'UN values are always valid');
 
     test('Create Uint8Base.listFromBytes', () {
       expect(Uint8Base.listFromBytes(frame), equals(frame));

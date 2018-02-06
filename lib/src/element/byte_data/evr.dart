@@ -541,7 +541,8 @@ class DAevr extends DA
 
   static DAevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kDAIndex);
-    if (bd.lengthInBytes != 4) log.error('Invalid Date (DA) length: ${bd.lengthInBytes}');
+    if (bd.lengthInBytes != 16)
+      log.error('Invalid Date (DA) length: ${bd.lengthInBytes}');
     return new DAevr(bd);
   }
 }

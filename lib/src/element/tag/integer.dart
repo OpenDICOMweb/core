@@ -8,11 +8,25 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/core.dart';
+import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/integer.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/tag_element_mixin.dart';
 import 'package:core/src/tag/tag.dart';
+
+class IntBulkdata extends BulkdataRef<int> {
+  @override
+  int code;
+  @override
+  String uri;
+
+  IntBulkdata(this.code, this.uri);
+
+  @override
+  List<int> get values => _values ??= getBulkdata(code, uri);
+  List<int> _values;
+}
 
 /// Returns [vfLengthField] is it is valid.
 int _checkVFL(Uint8List bytes, int vfLengthField) =>
@@ -254,7 +268,8 @@ class OWtag extends OW with TagElement<int> {
 
   /// Creates an [OWtag] Element.
   factory OWtag(Tag tag, [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
-      (OW.isValidArgs(tag, vList))
+//Urgent: figure out what to do with Private Creators with bad vr
+      (OW.isValidArgs(tag, vList) || tag is PCTagUnknown)
           ? new OWtag._(tag, vList, vfLengthField)
           : invalidValuesError(vList, tag: tag);
 

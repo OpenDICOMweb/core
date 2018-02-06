@@ -100,8 +100,8 @@ abstract class Common {
     return len;
   }
 
-  //Urgent fix:
-  int get deIdIndex => 0;
+  //TODO: add correct index
+  int get deIdIndex => unimplementedError();
   int get ieIndex => 0;
   bool get allowInvalid => true;
   bool get allowMalformed => true;

@@ -18,7 +18,6 @@ class OdwSysInfo {
     'sdk': '^1.24.2'
   };
 
-  //Urgent: jim
   static const Map<String, dynamic> packages = const <String, dynamic>{
     'core': const <String, dynamic>{
       'version': '^0.5.6',

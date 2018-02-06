@@ -8,12 +8,27 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/core.dart';
+
+import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/tag_element_mixin.dart';
 import 'package:core/src/tag/tag.dart';
 
+
+class StringBulkdata extends BulkdataRef<int> {
+  @override
+  int code;
+  @override
+  String uri;
+
+  StringBulkdata(this.code, this.uri);
+
+  @override
+  List<int> get values => _values ??= getBulkdata(code, uri);
+  List<int> _values;
+}
 
 class AEtag extends AE with TagElement<String> {
   @override

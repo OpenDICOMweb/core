@@ -30,7 +30,6 @@ class Issue<V> {
   List<String> get issues {
     final msgs = <String>[]..add(lengthMsg)..add(widthMsg);
     for (var v in values) {
-//Urgent Jim fix
       final issues = e.issues;
       if (issues != null) msgs.add('value $v: $issues');
     }

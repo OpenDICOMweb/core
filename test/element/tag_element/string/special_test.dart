@@ -587,6 +587,7 @@ void main() {
       expect(AE.toBytes(vList1), equals(values));
     });
 
+/*
     test('AE fromBase64', () {
       system.throwOnError = false;
       final vList1 = rsg.getAEList(1, 1);
@@ -610,6 +611,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(AE.toBase64(vList1), equals(vList1));
     });
+*/
 
     test('AE. heckList good values', () {
       system.throwOnError = false;
@@ -1356,6 +1358,7 @@ void main() {
       expect(CS.toBytes(vList1), equals(values));
     });
 
+/*
     test('CS fromBase64', () {
       system.throwOnError = false;
       final vList1 = rsg.getCSList(1, 1);
@@ -1379,6 +1382,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(CS.toBase64(vList1), equals(vList1));
     });
+*/
 
     test('CS checkList good values', () {
       system.throwOnError = false;
@@ -2000,6 +2004,7 @@ void main() {
       expect(UI.toBytes(vList1), equals(values));
     });
 
+/*
     test('UI fromBase64', () {
       system.throwOnError = false;
       final vList1 = rsg.getUIList(1, 1);
@@ -2023,6 +2028,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(UI.toBase64(vList1), equals(vList1));
     });
+*/
 
     test('UI checkList good values', () {
       system.throwOnError = false;
@@ -2576,6 +2582,7 @@ void main() {
       expect(UR.toBytes(vList1), equals(values));
     });
 
+/*
     test('UR fromBase64', () {
       system.throwOnError = false;
       final vList1 = rsg.getURList(1, 1);
@@ -2599,6 +2606,7 @@ void main() {
       //final s0 = ASCII.encode(vList0[0]);
       expect(UR.toBase64(vList1), equals(vList1));
     });
+*/
 
     test('UR parse', () {
       system.throwOnError = false;

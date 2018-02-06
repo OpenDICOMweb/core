@@ -34,7 +34,7 @@ class Uid {
   static final _Generator _generator = generateSecureUidString;
   final String value;
 
-  //Urgent: test that validation is working
+  //TODO: test that validation is working
   Uid([String s]) : this.value = (s == null) ? _generator() : check(s);
 
   /// Used by internal random generators
@@ -55,7 +55,8 @@ class Uid {
   factory Uid.secure() => new Uid._(generateSecureUidString());
 
   @override
-  bool operator ==(Object other) => (other is Uid) && (asString == other.asString);
+  bool operator ==(Object other) =>
+      (other is Uid) && (asString == other.asString);
 
   @override
   int get hashCode => value.hashCode;
@@ -87,7 +88,7 @@ class Uid {
   static const int kUidMinLength = 6;
   static const int kUidMaxLength = 64;
   //TODO: is this the correct number
-  static  int kUidMaxRootLength = 24;
+  static int kUidMaxRootLength = 24;
 
   /// ASCII constants for '0', '1', and '2'. No other roots are valid.
   static const List<String> uidRoots = kUidRoots;
@@ -104,9 +105,10 @@ class Uid {
       _convertBigIntToUid(V4Generator.seededPseudo.next);
 
   /// Returns a [Uid] created from a pseudo random [Uuid].
-  static String generatePseudoUidString() => _convertBigIntToUid(V4Generator.pseudo.next);
+  static String generatePseudoUidString() =>
+      _convertBigIntToUid(V4Generator.pseudo.next);
 
-  //Urgent: Jim fix
+  //TODO: Jim fix
   static String _convertBigIntToUid(Uint8List uuid) {
     final n = new BigInteger.fromBytes(1, uuid).abs();
     final s = n.toRadix(16).padLeft(32, '0');
@@ -115,14 +117,13 @@ class Uid {
   }
 
   /// Returns a [Uid] created from a secure random [Uuid].
-  static String generateSecureUidString() => _convertBigIntToUid(V4Generator.secure.next);
+  static String generateSecureUidString() =>
+      _convertBigIntToUid(V4Generator.secure.next);
 
   static bool isDicom(Uid uid) => uid.asString.indexOf(dicomRoot) == 0;
 
   /// Returns [s] if it is a valid [Uid] [String]; otherwise, _null_.
   static String check(String s) => isValidString(s) ? s : null;
-
-//  static String test(String s) => isValidString(s) ? s : throw 'Invalid Uid String: $s';
 
   /// Returns a [String] containing the name of the organization associated
   /// with the root.
@@ -175,11 +176,12 @@ class Uid {
   }
 
   /// Return the first character of the [Uid] [String].
-  static String uidRootType(String uidString) => kUidRootType[uidString.codeUnitAt(0)];
+  static String uidRootType(String uidString) =>
+      kUidRootType[uidString.codeUnitAt(0)];
 
   /// Returns a [list<Uid>] of [Uid] generated from random [Uuid]s.
   static List<Uid> randomList(int length) {
-  	final uList = new List<Uid>(length);
+    final uList = new List<Uid>(length);
     for (var i = 0; i < length; i++) uList[i] = new Uid();
     return uList;
   }

@@ -7,10 +7,25 @@
 import 'dart:typed_data';
 
 import 'package:core/core.dart';
+
+import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/tag_element_mixin.dart';
 import 'package:core/src/tag/tag.dart';
+
+class FloatBulkdata extends BulkdataRef<double> {
+  @override
+  int code;
+  @override
+  String uri;
+
+  FloatBulkdata(this.code, this.uri);
+
+  @override
+  List<double> get values => _values ??= getBulkdata(code, uri);
+  List<double> _values;
+}
 
 /// Float - Array of IEEE single precision (32-bit) floating point numbers.
 /// Max Array length is ((2^16)-4)/ 4).
@@ -26,13 +41,18 @@ class FLtag extends FL with TagElement<double> {
           ? new FLtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
+  factory FLtag.bulkdata(Tag tag, String url) =>
+      new FLtag._(tag, new FloatBulkdata(tag.code, url));
+
   FLtag._(this.tag, this.values);
 
   @override
-  FLtag update([Iterable<double> vList = kEmptyDoubleList]) => new FLtag(tag, vList);
+  FLtag update([Iterable<double> vList = kEmptyDoubleList]) =>
+      new FLtag(tag, vList);
 
   @override
-  FLtag updateF(Iterable<double> f(Iterable<double> vList)) => new FLtag(tag, f(values));
+  FLtag updateF(Iterable<double> f(Iterable<double> vList)) =>
+      new FLtag(tag, f(values));
 
   static FLtag make<double>(Tag tag, Iterable<double> vList) =>
       new FLtag(tag, vList ?? kEmptyDoubleList);
@@ -50,7 +70,8 @@ class FLtag extends FL with TagElement<double> {
       (FL.isNotValidTag(bd.tag)) ? null : new FLtag._(bd.tag, bd.values);
 }
 
-/// Other Float - Array of IEEE single precision (32-bit) floating point numbers.
+/// Other Float - Array of IEEE single precision
+/// (32-bit) floating point numbers.
 ///
 /// Max Array length is ((2^32)-4)/ 4)
 class OFtag extends OF with TagElement<double> {
@@ -71,7 +92,8 @@ class OFtag extends OF with TagElement<double> {
   OFtag update([Iterable<double> vList]) => new OFtag(tag, vList);
 
   @override
-  OFtag updateF(Iterable<double> f(Iterable<double> vList)) => new OFtag(tag, f(values));
+  OFtag updateF(Iterable<double> f(Iterable<double> vList)) =>
+      new OFtag(tag, f(values));
 
   static OFtag make<double>(Tag tag, Iterable<double> vList) =>
       new OFtag(tag, vList ?? kEmptyDoubleList);
@@ -106,10 +128,12 @@ class FDtag extends FD with TagElement<double> {
   FDtag._(this.tag, this.values);
 
   @override
-  FDtag update([Iterable<double> vList = kEmptyDoubleList]) => new FDtag(tag, vList);
+  FDtag update([Iterable<double> vList = kEmptyDoubleList]) =>
+      new FDtag(tag, vList);
 
   @override
-  FDtag updateF(Iterable<double> f(Iterable<double> vList)) => new FDtag(tag, f(values));
+  FDtag updateF(Iterable<double> f(Iterable<double> vList)) =>
+      new FDtag(tag, f(values));
 
   static FDtag make<double>(Tag tag, Iterable<double> vList) =>
       new FDtag(tag, vList ?? kEmptyDoubleList);
@@ -145,10 +169,12 @@ class ODtag extends OD with TagElement<double> {
   ODtag._(this.tag, this.values);
 
   @override
-  ODtag update([Iterable<double> vList = kEmptyDoubleList]) => new ODtag(tag, vList);
+  ODtag update([Iterable<double> vList = kEmptyDoubleList]) =>
+      new ODtag(tag, vList);
 
   @override
-  ODtag updateF(Iterable<double> f(Iterable<double> vList)) => new ODtag(tag, f(values));
+  ODtag updateF(Iterable<double> f(Iterable<double> vList)) =>
+      new ODtag(tag, f(values));
 
   static ODtag make<double>(Tag tag, Iterable<double> vList) =>
       new ODtag(tag, vList ?? kEmptyDoubleList);

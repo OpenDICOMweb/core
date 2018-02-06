@@ -14,8 +14,8 @@ abstract class Formattable<T> implements Iterable<T> {
   String fmt(Formatter v);
 }
 
-//Urgent: add SprintF style formatting to formatter
-//Urgent: add DICOM methods to Sprintf (dcm, vr, ...)
+// TODO: add SprintF style formatting to formatter
+// TODO: add DICOM methods to Sprintf (dcm, vr, ...)
 class Formatter {
   //static final Logger log = new Logger('Formatter');
 

@@ -3,11 +3,11 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for contributors.
 
-// Urgent: separate internal and public
-// Urgent: how to lookup vm from fast_tag
-// Urgent: sort order min then max then width
-// Urgent: add lookup(int min, int max, int width;
-// Urgent: add isPublic, isPrivate, isBoth
+// TODO: separate internal and public
+// TODO: how to lookup vm from fast_tag
+// TODO: sort order min then max then width
+// TODO: add lookup(int min, int max, int width;
+// TODO: add isPublic, isPrivate, isBoth
 
 /// A class that defined Value Multiplicities and their validators.
 ///
@@ -35,7 +35,8 @@ class VM {
   final bool isPrivate;
 
   // Constructor
-  const VM(this.keyword, this.min, this.max, this.columns, {this.isPrivate = false});
+  const VM(this.keyword, this.min, this.max, this.columns,
+      {this.isPrivate = false});
 
   String get id {
     final s = keyword.replaceAll('-', '_');
@@ -58,7 +59,7 @@ class VM {
       length >= min && length <= getMax(maxLength);
 
   bool isValid<T>(List<T> v, int maxLength) =>
-		  v.length >= min && v.length <= getMax(maxLength);
+      v.length >= min && v.length <= getMax(maxLength);
 
   bool isNotValid<T>(List<T> v, int maxLength) => !isValid(v, maxLength);
 
@@ -279,27 +280,4 @@ class VM {
     'k40915': VM.k40915,
     'k40923': VM.k40923,
   };
-/*
-  //TODO: add all internal definitions to this map
-  // Lookup Map
-  static const Map<String, VMx> map = const {
-    '1': VMx.k1,
-    '1_2': VMx.k1_2,
-    '1_32': VMx.k1_32,
-    '1_99': VMx.k1_99,
-    '16': VMx.k16,
-    '1_n': VMx.k1_n,
-    '2': VMx.k2,
-    '2_2n': VMx.k2_2n,
-    '2_n': VMx.k2_n,
-    '3': VMx.k3,
-    '3_3n': VMx.k3_3n,
-    '3_n': VMx.k3_n,
-    '4': VMx.k4,
-    '6': VMx.k6,
-    '6_n': VMx.k6_n,
-    '9': VMx.k9
-  };
-*/
-
 }

@@ -23,7 +23,7 @@ class SopClass extends WKUid {
 
   static SopClass lookup(String s) => map[s];
 
-  //Urgent: verify that all SOPClass Definitions from PS3.6 are present
+  // TODO: verify that all SOPClass Definitions from PS3.6 are present
   static const SopClass kVerification = const SopClass('1.2.840.10008.1.1',
       'VerificationSOPClass', UidType.kSOPClass, 'Verification SOP Class');
 

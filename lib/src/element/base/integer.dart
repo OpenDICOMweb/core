@@ -37,38 +37,7 @@ bool _isValidList(Iterable<int> vList, int minValue, int maxValue) {
 bool _isNotValidList(Iterable<int> vList, int minValue, int maxValue) =>
     !_isValidList(vList, minValue, maxValue);
 
-/* Flush when working
-bool _isValidVListLength(Tag tag, int length, Issues issues, int maxLength) {
-  final min = (tag == null) ? 0 : tag.vmMin;
-  final max =
-      (tag == null) ? maxLength : (tag.vmMax == -1) ? maxLength : tag.vmMax;
-  assert((min >= 0) && (max >= 1) && (max <= maxLength));
-  return _inRange(length, min, max);
-}
-
-Iterable<int> _coerceNumListToInt(Iterable<num> vList) {
-  if (vList is Iterable<int>) return _checkListInt(vList);
-  return _coerceList(vList);
-}
-
-/// Returns a valid [Iterable<int>] or [invalidListInteger].
-Iterable<int> _checkListInt(Iterable<int> vList) {
-  for (var i = 0; i < vList.length; i++)
-    if (vList.elementAt(i) is! int) return _coerceList(vList);
-  return vList;
-}
-
-Iterable<int> _coerceList(Iterable<num> iter) {
-  final dList = new Int64List(iter.length);
-  for (var i = 0; i < iter.length; i++) {
-    final v = iter.elementAt(i);
-    dList[i] = (v is int) ? v : _coerce(v);
-  }
-  return dList;
-}
-
-int _coerce(num v) => (v is num) ? v.toInt() : throw new TypeError();
-*/
+bool doTestValidity = false;
 
 abstract class IntBase extends Element<int> {
   @override
@@ -138,11 +107,13 @@ abstract class IntBase extends Element<int> {
     return true;
   }
 
-  static bool _isValidValues(Tag tag, Iterable<int> vList, Issues issues, int minVLength,
-      int maxVLength, int maxVFListLength) {
-    if (!Element.isValidVListLength(tag, vList, issues, maxVFListLength)) return false;
+  static bool _isValidValues(Tag tag, Iterable<int> vList, Issues issues,
+      int minVLength, int maxVLength, int maxVFListLength) {
+    if (!Element.isValidVListLength(tag, vList, issues, maxVFListLength))
+      return false;
     var result = true;
-    for (var v in vList) result = _isValidValue(v, issues, minVLength, maxVLength);
+    for (var v in vList)
+      result = _isValidValue(v, issues, minVLength, maxVLength);
     if (result == false) {
       invalidValuesError(vList, issues: issues);
       return false;
@@ -169,8 +140,8 @@ abstract class Int8Base extends IntBase {
 
   /// Returns a  an Uint8List View of [values].
   @override
-  Int8Base view([int start = 0, int length]) =>
-      update(typedData.buffer.asInt8List(start, _toLength(length, values.length)));
+  Int8Base view([int start = 0, int length]) => update(
+      typedData.buffer.asInt8List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 1;
   static const int kSizeInBits = kSizeInBytes * 8;
@@ -210,7 +181,8 @@ abstract class Int8Base extends IntBase {
   }
 
   /// Returns a [Int8List] from a [BASE64] [String].
-  static Int8List listFromBase64(String s, {bool asView = true, bool check = true}) =>
+  static Int8List listFromBase64(String s,
+          {bool asView = true, bool check = true}) =>
       (s.isEmpty) ? kEmptyInt8List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Int8List] from a [Uint8List].
@@ -250,8 +222,8 @@ abstract class Int16Base extends IntBase {
 
   /// Returns a  an Uint8List View of [values].
   @override
-  Int16Base view([int start = 0, int length]) =>
-      update(typedData.buffer.asInt16List(start, _toLength(length, values.length)));
+  Int16Base view([int start = 0, int length]) => update(
+      typedData.buffer.asInt16List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 2;
   static const int kSizeInBits = kSizeInBytes * 8;
@@ -291,7 +263,8 @@ abstract class Int16Base extends IntBase {
   }
 
   /// Returns a [Int16List] from a [BASE64] [String].
-  static Int16List listFromBase64(String s, {bool asView = true, bool check = true})=>
+  static Int16List listFromBase64(String s,
+          {bool asView = true, bool check = true}) =>
       (s.isEmpty) ? kEmptyInt16List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Int16List] from a [Uint8List].
@@ -315,9 +288,6 @@ abstract class Int16Base extends IntBase {
 
 /// Signed Short [Element].
 abstract class SS extends Int16Base {
-//  @override
-  //Urgent Jim Fix
-  //VR get vr => vrFromIndex(kVRIndex);
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -347,14 +317,17 @@ abstract class SS extends Int16Base {
   static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (isValidVRIndex(tag.vrIndex) && vList != null && isValidValues(tag, vList));
+      (isValidVRIndex(tag.vrIndex) &&
+          vList != null &&
+          isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  //TODO: unit test for all isValidVListLength methods when fast tag is available
-  static bool isValidVListLength(Tag tag, Iterable<int> vList, [Issues issues]) =>
+  //TODO: unit test for all isValidVListLength when fast tag is available
+  static bool isValidVListLength(Tag tag, Iterable<int> vList,
+          [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
@@ -382,7 +355,8 @@ abstract class SS extends Int16Base {
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      IntBase._isValidValues(
+          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 abstract class Int32Base extends IntBase {
@@ -404,8 +378,8 @@ abstract class Int32Base extends IntBase {
 
   /// Returns an Int32List View of [values].
   @override
-  SL view([int start = 0, int length]) =>
-      update(typedData.buffer.asInt32List(start, _toLength(length, values.length)));
+  SL view([int start = 0, int length]) => update(
+      typedData.buffer.asInt32List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 4;
   static const int kSizeInBits = kSizeInBytes * 8;
@@ -473,14 +447,12 @@ abstract class Int32Base extends IntBase {
     return (asView) ? i32List : new Int32List.fromList(i32List);
   }
 
-  static bool _isNotAligned(TypedData vList) => (vList.offsetInBytes % kSizeInBytes) != 0;
+  static bool _isNotAligned(TypedData vList) =>
+      (vList.offsetInBytes % kSizeInBytes) != 0;
 }
 
 /// Signed Long ([SL]) [Element].
 abstract class SL extends Int32Base {
-//  @override
-  //Urgent Jim Fix
-  //VR get vr => vrFromIndex(kVRIndex);
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -509,13 +481,16 @@ abstract class SL extends Int32Base {
   static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (isValidVRIndex(tag.vrIndex) && vList != null && isValidValues(tag, vList));
+      (isValidVRIndex(tag.vrIndex) &&
+          vList != null &&
+          isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, Iterable<int> vList, [Issues issues]) =>
+  static bool isValidVListLength(Tag tag, Iterable<int> vList,
+          [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
@@ -540,7 +515,8 @@ abstract class SL extends Int32Base {
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      IntBase._isValidValues(
+          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 /// An abstract class for 64-bit integers.
@@ -560,7 +536,8 @@ abstract class Int64Base extends IntBase {
   @override
   Int64Base view([int start = 0, int length]) {
     if (!checkLength(values)) return invalidValuesLengthError(tag, values);
-    return update(typedData.buffer.asInt64List(start, _toLength(length, values.length)));
+    return update(
+        typedData.buffer.asInt64List(start, _toLength(length, values.length)));
   }
 
   static const int kSizeInBytes = 8;
@@ -629,7 +606,8 @@ abstract class Int64Base extends IntBase {
     return (asView) ? f64List : new Int64List.fromList(f64List);
   }
 
-  static bool _isNotAligned(TypedData vList) => (vList.offsetInBytes % kSizeInBytes) != 0;
+  static bool _isNotAligned(TypedData vList) =>
+      (vList.offsetInBytes % kSizeInBytes) != 0;
 }
 
 abstract class Uint8Base extends IntBase {
@@ -650,8 +628,8 @@ abstract class Uint8Base extends IntBase {
 
   /// Returns a  an Uint8List View of [values].
   @override
-  Uint8Base view([int start = 0, int length]) =>
-      update(typedData.buffer.asUint8List(start, _toLength(length, values.length)));
+  Uint8Base view([int start = 0, int length]) => update(
+      typedData.buffer.asUint8List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 1;
   static const int kSizeInBits = kSizeInBytes * 8;
@@ -693,7 +671,8 @@ abstract class Uint8Base extends IntBase {
   }
 
   /// Returns a [Uint8List] from a [BASE64] [String].
-  static Uint8List listFromBase64(String s, {bool asView = true, bool check = true})=>
+  static Uint8List listFromBase64(String s,
+          {bool asView = true, bool check = true}) =>
       (s.isEmpty) ? kEmptyUint8List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Uint8List] from a [Uint8List].
@@ -719,8 +698,6 @@ abstract class Uint8Base extends IntBase {
 
 /// Other Byte [Element].
 abstract class OB extends Uint8Base with UndefinedLengthMixin {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -753,7 +730,9 @@ abstract class OB extends Uint8Base with UndefinedLengthMixin {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (isValidVRIndex(tag.vrIndex) && vList != null && isValidValues(tag, vList));
+      (isValidVRIndex(tag.vrIndex) &&
+          vList != null &&
+          isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -782,13 +761,12 @@ abstract class OB extends Uint8Base with UndefinedLengthMixin {
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      IntBase._isValidValues(
+          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 /// Unknown (UN) [Element].
 abstract class UN extends Uint8Base with UndefinedLengthMixin {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -821,7 +799,9 @@ abstract class UN extends Uint8Base with UndefinedLengthMixin {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (isValidVRIndex(tag.vrIndex) && vList != null && isValidValues(tag, vList));
+      (isValidVRIndex(tag.vrIndex) &&
+          vList != null &&
+          isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -844,9 +824,9 @@ abstract class UN extends Uint8Base with UndefinedLengthMixin {
 
   // UN values are always true, since the read VR is unknown
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-   //   IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue,
-   //                           kMaxLength);
-   true;
+      //   IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue,
+      //                           kMaxLength);
+      true;
 }
 
 abstract class Uint16Base extends IntBase {
@@ -867,8 +847,8 @@ abstract class Uint16Base extends IntBase {
 
   /// Returns a  an Uint8List View of [values].
   @override
-  Uint16Base view([int start = 0, int length]) =>
-      update(typedData.buffer.asUint16List(start, _toLength(length, values.length)));
+  Uint16Base view([int start = 0, int length]) => update(
+      typedData.buffer.asUint16List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 2;
   static const int kSizeInBits = kSizeInBytes * 8;
@@ -907,7 +887,8 @@ abstract class Uint16Base extends IntBase {
   }
 
   /// Returns a [Uint16List] from a [BASE64] [String].
-  static Uint16List listFromBase64(String s, {bool asView = true, bool check = true})=>
+  static Uint16List listFromBase64(String s,
+          {bool asView = true, bool check = true}) =>
       (s.isEmpty) ? kEmptyUint16List : listFromBytes(BASE64.decode(s));
 
   /// Returns a [Uint16List] from a [Uint8List].
@@ -935,14 +916,12 @@ abstract class Uint16Base extends IntBase {
     return (asView) ? u16List : new Uint16List.fromList(u16List);
   }
 
-  static bool _isNotAligned(TypedData vList) => (vList.offsetInBytes % kSizeInBytes) != 0;
+  static bool _isNotAligned(TypedData vList) =>
+      (vList.offsetInBytes % kSizeInBytes) != 0;
 }
 
 /// Other Byte [Element].
 abstract class US extends Uint16Base {
-//  @override
-  //Urgent Jim Fix
-  //VR get vr => vrFromIndex(kVRIndex);
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -969,13 +948,16 @@ abstract class US extends Uint16Base {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (isValidVRIndex(tag.vrIndex) && vList != null && isValidValues(tag, vList));
+      (isValidVRIndex(tag.vrIndex) &&
+          vList != null &&
+          isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, Iterable<int> vList, [Issues issues]) =>
+  static bool isValidVListLength(Tag tag, Iterable<int> vList,
+          [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
@@ -1003,13 +985,12 @@ abstract class US extends Uint16Base {
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      IntBase._isValidValues(
+          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 /// Unknown (OW) [Element].
 abstract class OW extends Uint16Base with UndefinedLengthMixin {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1040,14 +1021,19 @@ abstract class OW extends Uint16Base with UndefinedLengthMixin {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (isValidVRIndex(tag.vrIndex) && vList != null && isValidValues(tag, vList));
+      (vList != null &&
+       (doTestValidity && isValidVRIndex(tag.vrIndex)) &&
+          isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
-    if (vrIndex == kOWIndex || vrIndex == kOBOWIndex || vrIndex == kUSSSOWIndex)
+    if (vrIndex == kOWIndex ||
+        vrIndex == kOBOWIndex ||
+        vrIndex == kUSSSOWIndex ||
+        vrIndex == kUNIndex)
       return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
     return false;
@@ -1072,7 +1058,8 @@ abstract class OW extends Uint16Base with UndefinedLengthMixin {
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      IntBase._isValidValues(
+          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 abstract class Uint32Base extends IntBase {
@@ -1093,8 +1080,8 @@ abstract class Uint32Base extends IntBase {
 
   /// Returns a  an Uint8List View of [values].
   @override
-  Uint32Base view([int start = 0, int length]) =>
-      update(typedData.buffer.asUint32List(start, _toLength(length, values.length)));
+  Uint32Base view([int start = 0, int length]) => update(
+      typedData.buffer.asUint32List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 4;
   static const int kSizeInBits = kSizeInBytes * 8;
@@ -1162,14 +1149,12 @@ abstract class Uint32Base extends IntBase {
     return (asView) ? u32List : new Uint32List.fromList(u32List);
   }
 
-  static bool _isNotAligned(TypedData vList) => (vList.offsetInBytes % kSizeInBytes) != 0;
+  static bool _isNotAligned(TypedData vList) =>
+      (vList.offsetInBytes % kSizeInBytes) != 0;
 }
 
 /// Attribute Tag [Element].
 abstract class AT extends Uint32Base {
-//  @override
-  //Urgent Jim Fix
-  //VR get vr => vrFromIndex(kVRIndex);
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1196,13 +1181,16 @@ abstract class AT extends Uint32Base {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (isValidVRIndex(tag.vrIndex) && vList != null && isValidValues(tag, vList));
+      (isValidVRIndex(tag.vrIndex) &&
+          vList != null &&
+          isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, Iterable<int> vList, [Issues issues]) =>
+  static bool isValidVListLength(Tag tag, Iterable<int> vList,
+          [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
@@ -1227,16 +1215,14 @@ abstract class AT extends Uint32Base {
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      IntBase._isValidValues(
+          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 /// Other Long [Element].
 ///
 /// VFLength and Values length are always valid.
 abstract class OL extends Uint32Base {
-//  @override
-  //Urgent Jim Fix
-  //VR get vr => vrFromIndex(kVRIndex);
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1267,7 +1253,9 @@ abstract class OL extends Uint32Base {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (isValidVRIndex(tag.vrIndex) && vList != null && isValidValues(tag, vList));
+      (isValidVRIndex(tag.vrIndex) &&
+          vList != null &&
+          isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1296,13 +1284,12 @@ abstract class OL extends Uint32Base {
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      IntBase._isValidValues(
+          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 /// Unsigned Long [Element].
 abstract class UL extends Uint32Base {
-//  @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -1329,13 +1316,16 @@ abstract class UL extends Uint32Base {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      (isValidVRIndex(tag.vrIndex) && vList != null && isValidValues(tag, vList));
+      (isValidVRIndex(tag.vrIndex) &&
+          vList != null &&
+          isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVListLength(Tag tag, Iterable<int> vList, [Issues issues]) =>
+  static bool isValidVListLength(Tag tag, Iterable<int> vList,
+          [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
@@ -1360,7 +1350,8 @@ abstract class UL extends Uint32Base {
       IntBase._isValidValue(v, issues, kMinValue, kMaxValue);
 
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      IntBase._isValidValues(
+          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 /// Group Length [Element] is a subtype of [UL]. It always has a tag
@@ -1392,7 +1383,8 @@ abstract class Uint64Base extends IntBase {
   @override
   Uint64Base view([int start = 0, int length]) {
     if (!checkLength(values)) return invalidValuesLengthError(tag, values);
-    return update(typedData.buffer.asUint64List(start, _toLength(length, values.length)));
+    return update(
+        typedData.buffer.asUint64List(start, _toLength(length, values.length)));
   }
 
   static const int kSizeInBytes = 8;
@@ -1461,5 +1453,6 @@ abstract class Uint64Base extends IntBase {
     return (asView) ? f64List : new Uint64List.fromList(f64List);
   }
 
-  static bool _isNotAligned(TypedData vList) => (vList.offsetInBytes % kSizeInBytes) != 0;
+  static bool _isNotAligned(TypedData vList) =>
+      (vList.offsetInBytes % kSizeInBytes) != 0;
 }

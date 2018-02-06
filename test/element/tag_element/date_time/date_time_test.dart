@@ -703,6 +703,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
+/* Flush
     test('AS fromBase64 good values', () {
       system.throwOnError = false;
       final vList1 = rsg.getASList(1, 1);
@@ -739,6 +740,7 @@ void main() {
       expect(() => AS.toBase64(vList0),
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
+*/
 
     test('AS tryDecodeVF values', () {
       final vList1 = ['001M'];
@@ -1532,6 +1534,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
+/* Flush
     test('DA fromBase64 good values', () {
       system.throwOnError = false;
       for (var s in goodDAList) {
@@ -1555,6 +1558,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
+
     test('DA toBase64 good values', () {
       //final s = BASE64.encode(testFrame);
       for (var v in goodDAList) {
@@ -1573,7 +1577,7 @@ void main() {
       expect(() => DA.toBase64(vList0),
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
-
+*/
     test('DA tryDecodeVF', () {
       final vList1 = ['19500712'];
       final bytes = DA.toBytes(vList1);
@@ -2425,6 +2429,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
+/*
     test('DT fromBase64 good values', () {
       system.throwOnError = false;
       for (var s in goodDTList) {
@@ -2466,6 +2471,7 @@ void main() {
       expect(() => DT.toBase64(vList0),
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
+*/
 
     test('DT tryDecodeVF', () {
       final vList1 = ['19500718105630'];
@@ -3236,6 +3242,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
+/*
     test('TM fromBase64 good values', () {
       system.throwOnError = false;
       final vList1 = rsg.getTMList(1, 1);
@@ -3275,6 +3282,7 @@ void main() {
       expect(() => TM.toBase64(vList0),
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
+*/
 
     test('TM tryDecodeVF', () {
       final vList1 = rsg.getTMList(1, 1);
