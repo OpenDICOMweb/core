@@ -158,8 +158,8 @@ abstract class Float32Base extends FloatBase {
   static Float32List _toFloat32List(Iterable<double> vList,
       {bool asView = true}) {
     assert(vList != null);
-    return (vList is Float32List && asView == true)
-           ? vList.buffer.asFloat32List()
+    return (asView && vList is Float32List)
+           ? vList
            : new Float32List.fromList(vList);
   }
 
@@ -377,14 +377,14 @@ abstract class Float64Base extends FloatBase {
   }
 
   static Float64List toFloat64List(Iterable<double> vList,
-          {bool asView = true}) =>
-      _toFloat64List(vList, asView);
+      {bool asView = true}) =>
+    _toFloat64List(vList, asView);
 
   static Float64List _toFloat64List(Iterable<double> vList, bool asView) {
     assert(vList != null);
     return (asView && vList is Float64List)
-           ? vList
-           : new Float64List.fromList(vList);
+        ? vList
+        : new Float64List.fromList(vList);
   }
 
   /// Returns a [Float64List] from a [BASE64] [String].

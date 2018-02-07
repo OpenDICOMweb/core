@@ -822,6 +822,35 @@ void main() {
       }
     });
 
+    test('Float32Base.listToByteData', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(1, 1);
+        final float32List0 = new Float32List.fromList(floatList0);
+        final bd0 = float32List0.buffer.asByteData();
+        final lBd0 = Float32Base.listToByteData(float32List0);
+        log.debug(
+            'lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd0.buffer == bd0.buffer, true);
+
+        final lBd1 = Float32Base.listToByteData(float32List0, asView: false);
+        log.debug(
+            'lBd1: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd1.buffer == bd0.buffer, false);
+
+        final floatList1 = rng.float64List(1, 1);
+        final float64List0 = new Float64List.fromList(floatList1);
+        final bd1 = float64List0.buffer.asByteData();
+        final lBd2 = Float32Base.listToByteData(float64List0);
+
+        log.debug(
+            'lBd2: ${lBd2.buffer.asUint8List()}, bd1: ${bd1.buffer.asUint8List()}');
+        expect(lBd2.buffer.asUint8List(), isNot(bd1.buffer.asUint8List()));
+        expect(lBd2.buffer == bd1.buffer, false);
+      }
+    });
+
     test('Float32Base decodeJsonVF', () {
       system.level = Level.info;
       for (var i = 0; i < 10; i++) {
