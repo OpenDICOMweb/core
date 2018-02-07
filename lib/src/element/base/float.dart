@@ -361,29 +361,30 @@ abstract class Float64Base extends FloatBase {
   static const int kSizeInBytes = 8;
 
   /// Returns a [BASE64] [String] created from [vList];
-  static String listToBase64(Iterable<double> vList, {bool check = true}) =>
+  static String listToBase64(Iterable<double> vList) =>
       BASE64.encode(listToBytes(vList));
 
   /// Returns a [Uint8List] created from [vList];
-  static Uint8List listToBytes(Iterable<double> vList, {bool check = true}) {
-    final td = _toFloat64List(vList);
+  static Uint8List listToBytes(Iterable<double> vList, {bool asView = true}) {
+    final td = _toFloat64List(vList, asView);
     return td?.buffer?.asUint8List(td.offsetInBytes, td.lengthInBytes);
   }
 
   /// Returns a [ByteData] created from [vList];
-  static ByteData listToByteData(Iterable<double> vList, {bool check = true}) {
-    final td = _toFloat64List(vList);
+  static ByteData listToByteData(Iterable<double> vList, {bool asView = true}) {
+    final td = _toFloat64List(vList, asView);
     return td?.buffer?.asByteData(td.offsetInBytes, td.lengthInBytes);
   }
 
   static Float64List toFloat64List(Iterable<double> vList,
-          {bool check = true}) =>
-      _toFloat64List(vList);
+          {bool asView = true}) =>
+      _toFloat64List(vList, asView);
 
-  static Float64List _toFloat64List(Iterable<double> vList,
-      {bool check = true}) {
+  static Float64List _toFloat64List(Iterable<double> vList, bool asView) {
     assert(vList != null);
-    return (vList is Float64List) ? vList : new Float64List.fromList(vList);
+    return (asView && vList is Float64List)
+           ? vList
+           : new Float64List.fromList(vList);
   }
 
   /// Returns a [Float64List] from a [BASE64] [String].

@@ -69,7 +69,7 @@ export 'package:core/src/element/tag/sequence.dart';
 export 'package:core/src/element/tag/sequence.dart';
 export 'package:core/src/element/tag/string.dart';
 export 'package:core/src/element/tag/string.dart';
-export 'package:core/src/element/tag/tag_element_mixin.dart';
+export 'package:core/src/element/tag/tag_element.dart';
 export 'package:core/src/element/utils.dart';
 export 'package:core/src/element/vf_fragments.dart';
 export 'package:core/src/empty_list.dart';

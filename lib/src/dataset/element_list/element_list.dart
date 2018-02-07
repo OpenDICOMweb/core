@@ -16,7 +16,6 @@ import 'package:core/src/element/base/integer.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/errors.dart';
-import 'package:core/src/empty_list.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/logger/formatter.dart';
@@ -343,37 +342,38 @@ ElementList Summary
     return old;
   }
 
-  /// Replace the [List<UUIDs in a [UI].  If [uids] is _null_, then
+/*
+  /// Replace the [List<UUIDs in a [UI].  If [sList] is _null_, then
   /// a list of [Uid.randomList] is created. It is an error if [Element]
   /// corresponding to [index] does not have a VR of UI.
-  UI updateUidStrings(int index, Iterable<String> uids,
+  UI updateUidStrings(int index, Iterable<String> sList,
       {bool required = false}) {
     //Note: This assumes [uids] are valid
-    assert(index != null && uids != null);
+    assert(index != null && sList != null);
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     if (old is! UI) return invalidUidElement(old);
-    final e = old.update(uids ?? kEmptyStringList);
+    final e = old.update(sList);
     add(e);
     return old;
   }
+*/
 
-  /// Replace the UIDs in an [Element].  If [uids] is _null_, then
-  /// a list of [Uid.randomList] is created. It is an error if [Element]
+  /// Replace the UIDs in an [Element]. If [required] is _true_ and the
+  /// [Element] is not present a [elementNotPresentError] is called.
+  /// It is an error if [sList] is _null_.  It is an error if the [Element]
   /// corresponding to [index] does not have a VR of UI.
-  Element updateUidList(int index, List<String> uids,
+  Element updateUidList(int index, Iterable<String> sList,
       {bool recursive = true, bool required = false}) {
-    assert(index != null);
-    final e = lookup(index, required: required);
+    assert(index != null && sList != null);
+    final old = lookup(index, required: required);
+    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old is! UI) return invalidUidElement(old);
 
-    final uids = getUidList(index, required: required);
-    if (uids == null) return (required) ? elementNotPresentError(index) : null;
     // If [e] has noValues, and [uids] == null, just return [e],
     // because there is no discernible difference.
-    if (e.values.isEmpty && (uids == null || uids.isEmpty)) return e;
-    assert(e.values is List<String>);
-    final vList = (uids == null) ? Uid.randomList(e.values.length) : uids;
-    return e.update(vList);
+    if (old.values.isEmpty && sList.isEmpty) return old;
+    return old.update(sList);
   }
 
   List<Element> updateAllUids(int index, Iterable<Uid> uids) {
@@ -464,7 +464,8 @@ ElementList Summary
     return result;
   }
 
-  Element replaceUid(int index, Iterable<Uid> uids, {bool required = false}) {
+  List<String> replaceUid(int index, Iterable<Uid> uids,
+      {bool required = false}) {
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     if (old is UI) {
@@ -532,7 +533,11 @@ ElementList Summary
 */
 
   /// Remove all duplicates from the [Dataset].
-  void removeDuplicates() => duplicates.clear();
+  List<Element> removeDuplicates() {
+    final dups = duplicates;
+    duplicates.clear();
+    return dups;
+  }
 
   /*
   bool _isNotPresentKey(int index, bool required) {

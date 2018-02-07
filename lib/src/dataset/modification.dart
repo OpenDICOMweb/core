@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/element/tag/tag_element_mixin.dart';
+import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag/tag_lib.dart';
 
 enum ChangeType { created, replaced, modified, deleted }

@@ -54,7 +54,6 @@ abstract class Dataset extends ListBase<Element> {
   /// _true_ if _this_ is immutable.
   bool get isImmutable;
 
-
   /// Returns a Sequence([SQ]) containing any [Element]s that were
   /// modified or removed.
   //TODO: complete and test
@@ -164,7 +163,8 @@ $runtimeType(#$hashCode):
     return results;
   }
 
-  bool hasElementsInRange(int min, int max) => elements.hasElementsInRange(min, max);
+  bool hasElementsInRange(int min, int max) =>
+      elements.hasElementsInRange(min, max);
 
   List<Element> getElementsInRange(int min, int max) =>
       elements.getElementsInRange(min, max);
@@ -186,7 +186,8 @@ $runtimeType(#$hashCode):
 
   /// Replaces the element with [index] with a new element with the same [Tag],
   /// but with _values_ of [f(e.values)]. Returns the original element.
-  Element updateF<V>(int index, Iterable f(Iterable<V> vList), {bool required = false}) {
+  Element updateF<V>(int index, Iterable f(Iterable<V> vList),
+      {bool required = false}) {
     final old = elements.lookup(index, required: required);
     if (old != null) elements[index] = old.updateF(f);
     return old;
@@ -198,7 +199,6 @@ $runtimeType(#$hashCode):
   List<List> updateAll<V>(int index, Iterable<V> vList) =>
       elements.updateAll(index, vList: vList);
 
-
   /// Updates all elements with [index] in _this_, or any Sequence ([SQ])
   /// Items contained in it, with a new element whose values are [f(this.values)].
   /// Returns a list containing all [Element]s that were replaced.
@@ -208,15 +208,17 @@ $runtimeType(#$hashCode):
   Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) =>
       elements.updateUid(index, uids);
 
-  Element updateUidString(int index, Iterable<String> uids, {bool required = false}) =>
-      elements.updateUidStrings(index, uids);
+  Element updateUidString(int index, Iterable<String> uids,
+          {bool required = false}) =>
+      elements.updateUidList(index, uids);
 
   List<Element> updateAllUids(int index, Iterable<Uid> uids) =>
       elements.updateAllUids(index, uids);
 
   /// Replaces the _values_ of the [Element] with [index] with [vList].
   /// Returns the original _values_.
-  Iterable<V> replace<V>(int index, Iterable<V> vList, {bool required = false}) {
+  Iterable<V> replace<V>(int index, Iterable<V> vList,
+      {bool required = false}) {
     final e = elements.lookup(index, required: required);
     if (e == null) return const <V>[];
     final old = e.values;
@@ -230,11 +232,12 @@ $runtimeType(#$hashCode):
   Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) =>
       elements.replaceAll(index, vList);
 
-  Iterable<Iterable<V>> replaceAllF<V>(int index, Iterable<V> f(Iterable vList)
-                                       ) =>
+  Iterable<Iterable<V>> replaceAllF<V>(
+          int index, Iterable<V> f(Iterable vList)) =>
       elements.replaceAllF<V>(index, f);
 
-  Element replaceUid(int index, Iterable<Uid> uids, {bool required = false}) =>
+  Iterable<String> replaceUid(int index, Iterable<Uid> uids,
+          {bool required = false}) =>
       elements.replaceUid(index, uids);
 
   Iterable<Element> replaceAllUids(int index, Iterable<Uid> uids) =>
@@ -254,8 +257,8 @@ $runtimeType(#$hashCode):
 
   Element delete(int index, {bool required = false, bool recursive = false}) =>
       (recursive)
-      ? elements.deleteAll(index, recursive: recursive)
-      : elements.delete(index, required: required);
+          ? elements.deleteAll(index, recursive: recursive)
+          : elements.delete(index, required: required);
 
   Iterable<Element> deleteAll(int index, {bool recursive = false}) =>
       elements.deleteAll(index, recursive: recursive);
@@ -264,12 +267,10 @@ $runtimeType(#$hashCode):
     final deleted = <Element>[];
     for (var e in elements) {
       if (test(e)) {
-
         delete(e.index);
         deleted.add(e);
-
       } else if (e is SQ) {
-        for(var item in e.items) {
+        for (var item in e.items) {
           final dList = item.deleteIfTrue(test, recursive: recursive);
           deleted.addAll(dList);
         }
@@ -277,6 +278,7 @@ $runtimeType(#$hashCode):
     }
     return deleted;
   }
+
   Iterable<Element> deleteAllPrivate({bool recursive = false}) =>
       deleteIfTrue((e) => e.isPrivate, recursive: recursive);
 
@@ -374,11 +376,13 @@ $runtimeType(#$hashCode):
     }
     return invalidElementError(old, 'Not a DA (date) Element');
   }
+
   /// Returns a formatted [String]. See [Formatter].
   String format(Formatter z) => z.fmt(this, elements);
 
   @override
-  String toString() => '$runtimeType ${elements.total} Elements, $length Top Level, '
+  String toString() =>
+      '$runtimeType ${elements.total} Elements, $length Top Level, '
       '${elements.duplicates.length} Duplicates, isRoot $isRoot';
 
   // **************** RootDataset related Getters and Methods
@@ -493,7 +497,8 @@ $runtimeType(#$hashCode):
   List<PrivateGroup> _privateGroups;
   set privateGroups(List<PrivateGroup> vList) => _privateGroups ??= vList;
 
-  int _privateElementCounter(int count, Element e) => e.isPrivate ? count + 1 : count;
+  int _privateElementCounter(int count, Element e) =>
+      e.isPrivate ? count + 1 : count;
   int get nPrivateElements => fold(0, _privateElementCounter);
 
   int _privateGroupCounter(int count, Element e) =>

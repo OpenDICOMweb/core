@@ -10,7 +10,7 @@ import 'dart:typed_data';
 import 'package:core/core.dart';
 import 'package:core/src/element/base/integer.dart';
 import 'package:core/src/element/base/pixel_data.dart';
-import 'package:core/src/element/tag/tag_element_mixin.dart';
+import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/tag/tag.dart';
 

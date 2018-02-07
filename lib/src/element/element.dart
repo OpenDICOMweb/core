@@ -20,7 +20,7 @@ export 'package:core/src/element/frame.dart';
 export 'package:core/src/element/frame_descriptor.dart';
 export 'package:core/src/element/frame_list.dart';
 export 'package:core/src/element/private_group.dart';
-export 'package:core/src/element/tag/tag_element_mixin.dart';
+export 'package:core/src/element/tag/tag_element.dart';
 export 'package:core/src/element/transfer_syntax_option.dart';
 export 'package:core/src/element/utils.dart';
 export 'package:core/src/element/vf_fragments.dart';

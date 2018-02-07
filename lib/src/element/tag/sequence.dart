@@ -10,7 +10,7 @@ import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/tag/tag_item.dart';
 import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/element/tag/tag_element_mixin.dart';
+import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/tag/tag_lib.dart';
 

@@ -447,7 +447,7 @@ class GLivr extends GL with Common, Ivr<int>,  IntMixin, Int32Mixin {
 
 // **** String Elements
 
-class AEivr extends AE with Common, Ivr<String>,  StringMixin, AsciiMixin {
+class AEivr extends AE with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -459,7 +459,7 @@ class AEivr extends AE with Common, Ivr<String>,  StringMixin, AsciiMixin {
   }
 }
 
-class ASivr extends AS with Common, Ivr<String>,  StringMixin, AsciiMixin {
+class ASivr extends AS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -471,7 +471,7 @@ class ASivr extends AS with Common, Ivr<String>,  StringMixin, AsciiMixin {
   }
 }
 
-class CSivr extends CS with Common, Ivr<String>,  StringMixin, AsciiMixin {
+class CSivr extends CS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -483,7 +483,7 @@ class CSivr extends CS with Common, Ivr<String>,  StringMixin, AsciiMixin {
   }
 }
 
-class DAivr extends DA with Common, Ivr<String>,  StringMixin, AsciiMixin {
+class DAivr extends DA with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -495,7 +495,7 @@ class DAivr extends DA with Common, Ivr<String>,  StringMixin, AsciiMixin {
   }
 }
 
-class DSivr extends DS with Common, Ivr<String>,  StringMixin, AsciiMixin {
+class DSivr extends DS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -507,7 +507,7 @@ class DSivr extends DS with Common, Ivr<String>,  StringMixin, AsciiMixin {
   }
 }
 
-class DTivr extends DT with Common, Ivr<String>,  StringMixin, AsciiMixin {
+class DTivr extends DT with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -519,7 +519,7 @@ class DTivr extends DT with Common, Ivr<String>,  StringMixin, AsciiMixin {
   }
 }
 
-class ISivr extends IS with Common, Ivr<String>,  StringMixin, AsciiMixin {
+class ISivr extends IS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -531,7 +531,7 @@ class ISivr extends IS with Common, Ivr<String>,  StringMixin, AsciiMixin {
   }
 }
 
-class UIivr extends UI with Common, Ivr<String>,  StringMixin, AsciiMixin {
+class UIivr extends UI with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -543,7 +543,7 @@ class UIivr extends UI with Common, Ivr<String>,  StringMixin, AsciiMixin {
   }
 }
 
-class LOivr extends LO with Common, Ivr<String>,  StringMixin, Utf8Mixin {
+class LOivr extends LO with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -555,7 +555,7 @@ class LOivr extends LO with Common, Ivr<String>,  StringMixin, Utf8Mixin {
   }
 }
 
-class PCivr extends PC with Common, Ivr<String>,  StringMixin, Utf8Mixin {
+class PCivr extends PC with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -567,7 +567,7 @@ class PCivr extends PC with Common, Ivr<String>,  StringMixin, Utf8Mixin {
   }
 }
 
-class PNivr extends PN with Common, Ivr<String>,  StringMixin, Utf8Mixin {
+class PNivr extends PN with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -579,7 +579,7 @@ class PNivr extends PN with Common, Ivr<String>,  StringMixin, Utf8Mixin {
   }
 }
 
-class SHivr extends SH with Common, Ivr<String>,  StringMixin, Utf8Mixin {
+class SHivr extends SH with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -591,7 +591,7 @@ class SHivr extends SH with Common, Ivr<String>,  StringMixin, Utf8Mixin {
   }
 }
 
-class LTivr extends LT with Common, Ivr<String>,  StringMixin, TextMixin {
+class LTivr extends LT with Common, Ivr<String>,  BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -605,7 +605,7 @@ class LTivr extends LT with Common, Ivr<String>,  StringMixin, TextMixin {
   }
 }
 
-class STivr extends ST with Common, Ivr<String>,  StringMixin, TextMixin {
+class STivr extends ST with Common, Ivr<String>,  BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -617,7 +617,7 @@ class STivr extends ST with Common, Ivr<String>,  StringMixin, TextMixin {
   }
 }
 
-class TMivr extends TM with Common, Ivr<String>,  StringMixin, AsciiMixin {
+class TMivr extends TM with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -629,7 +629,7 @@ class TMivr extends TM with Common, Ivr<String>,  StringMixin, AsciiMixin {
   }
 }
 
-class UCivr extends UC with Common, Ivr<String>,  StringMixin, Utf8Mixin {
+class UCivr extends UC with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -641,7 +641,7 @@ class UCivr extends UC with Common, Ivr<String>,  StringMixin, Utf8Mixin {
   }
 }
 
-class URivr extends UR with Common, Ivr<String>,  StringMixin, TextMixin {
+class URivr extends UR with Common, Ivr<String>,  BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -653,7 +653,7 @@ class URivr extends UR with Common, Ivr<String>,  StringMixin, TextMixin {
   }
 }
 
-class UTivr extends UT with Common, Ivr<String>,  StringMixin, TextMixin {
+class UTivr extends UT with Common, Ivr<String>,  BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 

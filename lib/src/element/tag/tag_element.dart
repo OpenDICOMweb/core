@@ -8,12 +8,14 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/mixin/tag_mixin_base.dart';
+import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/date_time.dart';
 import 'package:core/src/element/tag/float.dart';
 import 'package:core/src/element/tag/integer.dart';
 import 'package:core/src/element/tag/string.dart';
+import 'package:core/src/string/ascii.dart';
 import 'package:core/src/tag/tag_lib.dart';
 
 typedef Element TagElementMaker<V>(Tag tag, Iterable<V> vList);
@@ -186,7 +188,37 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   ];
 
   static Null _sqErrorBD(BDElement bd) => invalidElementIndex(0);
-
-
-
 }
+
+abstract class TagStringMixin {
+  // **** Interface
+  ByteData get bd;
+  int get eLength;
+  int get padChar;
+  int get vfOffset;
+  int get vfLengthField;
+  StringBase update([Iterable<String> vList]);
+
+  // Urgent: remove after all element/base classes have this method
+  StringBase updateF(Iterable<String> f(Iterable<String> vList));
+  // **** End interface
+
+  /// Returns the actual length in bytes after removing any padding chars.
+  // Floats always have a valid (defined length) vfLengthField.
+  int get vfLength {
+    final vf0 = vfOffset;
+    final lib = bd.lengthInBytes;
+    final length = lib - vf0;
+    assert(length >= 0);
+    return length;
+  }
+
+  int get valuesLength {
+    if (vfLength == 0) return 0;
+    var count = 1;
+    for (var i = vfOffset; i < eLength; i++)
+      if (bd.getUint8(i) == kBackslash) count++;
+    return count;
+  }
+}
+

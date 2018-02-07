@@ -37,7 +37,8 @@ void main() {
           planarConfiguration0);
 
       expect(desc0.samplesPerPixel == samplesPerPixel0, true);
-      expect(desc0.photometricInterpretation == photometricInterpretation0, true);
+      expect(
+          desc0.photometricInterpretation == photometricInterpretation0, true);
       expect(desc0.rows == rows0, true);
       expect(desc0.columns == columns0, true);
       expect(desc0.length == rows0 * columns0, true);
@@ -54,7 +55,8 @@ void main() {
 
     test('Create FrameDescriptor.fromDataset', () {
       final ts = TransferSyntax.kExplicitVRLittleEndian;
-      final uiTransFerSyntax = new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+      final uiTransFerSyntax =
+          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation =
           new CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);
@@ -67,8 +69,10 @@ void main() {
       final usPlanarConfiguration = new UStag(PTag.kPlanarConfiguration, [2]);
       final isPixelAspectRatio = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
       final pixelAspectRatioValue = 1 / 2;
-      final usSmallestImagePixelValue = new UStag(PTag.kSmallestImagePixelValue, [0]);
-      final usLargestImagePixelValue = new UStag(PTag.kLargestImagePixelValue, [255]);
+      final usSmallestImagePixelValue =
+          new UStag(PTag.kSmallestImagePixelValue, [0]);
+      final usLargestImagePixelValue =
+          new UStag(PTag.kLargestImagePixelValue, [255]);
 
       final rds0 = new TagRootDataset()
         ..add(uiTransFerSyntax)
@@ -98,13 +102,17 @@ void main() {
       expect(descFromDataSet0.bitsAllocated, equals(usBitsAllocated.value));
       expect(descFromDataSet0.bitsStored, equals(usBitsStored.value));
       expect(descFromDataSet0.highBit, equals(usHighBit.value));
-      expect(descFromDataSet0.pixelRepresentation, equals(usPixelRepresentation.value));
-      expect(descFromDataSet0.planarConfiguration, equals(usPlanarConfiguration.value));
+      expect(descFromDataSet0.pixelRepresentation,
+          equals(usPixelRepresentation.value));
+      expect(descFromDataSet0.planarConfiguration,
+          equals(usPlanarConfiguration.value));
       expect(descFromDataSet0.pixelAspectRatio, equals(pixelAspectRatioValue));
       expect(descFromDataSet0.smallestImagePixelValue == 0, true);
       //here us4.value is bitsStored which is 8
       expect(descFromDataSet0.largestImagePixelValue <= 255, true);
-      expect((descFromDataSet0.largestImagePixelValue >> usBitsStored.value) == 0, true);
+      expect(
+          (descFromDataSet0.largestImagePixelValue >> usBitsStored.value) == 0,
+          true);
     });
   });
 

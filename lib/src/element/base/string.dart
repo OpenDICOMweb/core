@@ -139,8 +139,19 @@ bool _isNotDcmText(String s, int max) => !_isDcmText(s, max);
 
 String blanks(int n) => ''.padRight(n, ' ');
 
+Uint8List _textListToBytes(Iterable<String> values, int maxVFLength) {
+  if (values.isEmpty) return kEmptyUint8List;
+  if (values.length == 1) {
+    final s = values.elementAt(0);
+    if (s == null) return nullValueError();
+    if (s.isEmpty) return kEmptyUint8List;
+    return _vfFromString(s, maxVFLength, false);
+  }
+  return invalidValuesLength(1, 1, values);
+}
+
 /// Returns a [Uint8List] corresponding to a binary Value Field.
-Uint8List textToBytes(String s, int maxVFLength, {bool isAscii = true}) {
+Uint8List _textToBytes(String s, int maxVFLength, bool isAscii) {
   if (s == null) return nullValueError();
   if (s.isEmpty) return kEmptyUint8List;
   return _vfFromString(s, maxVFLength, isAscii);
@@ -950,12 +961,11 @@ abstract class UI extends StringAscii {
 
   Uid get uid => (uids.length == 1) ? uids.elementAt(0) : null;
 
-  //TODO: how to handle UID hashing.
+  // UI does not support [hash].
   @override
-  UI get hash =>
-      throw new UnimplementedError('UIDs cannot currently be hashed');
+  UI get hash => unsupportedError('UIDs cannot currently be hashed');
 
-  //TODO: how to handle UID hashing.
+  // UI does not support [sha256].
   @override
   UI get sha256 => sha256UnsupportedError(this);
 
@@ -963,16 +973,28 @@ abstract class UI extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
+  // Urgent Sharath: add this method to all classes in element/base
+  // Urgent Sharath: and remove it element/tag and element/byte_data classes
+  @override
+  StringBase updateF(Iterable<String> f(Iterable<String> vList)) =>
+      update(f(values));
+
+  UI updateUid(Iterable<Uid> uidList) => update(toStringList(uidList));
+
+  UI updateUidF(Iterable<Uid> f(Iterable<String> vList)) =>
+      updateUid(f(values));
+
   Iterable<Uid> replaceUid([Iterable<Uid> vList = Uid.kEmptyList]) =>
       _replaceUid(vList);
 
   Iterable<Uid> replaceUidF(Iterable<Uid> f(Iterable<Uid> vList)) =>
       _replaceUid(f(uids) ?? Uid.kEmptyList);
 
-  Iterable<Uid> _replaceUid(Iterable<Uid> vList) {
-    final v = vList ?? Uid.kEmptyList;
+  Iterable<Uid> _replaceUid(Iterable<Uid> uidList) {
+    final v = uidList ?? kEmptyStringList;
     final old = uids;
-    values = v.map((uid) => uid.toString());
+    _uids = null;
+    values = toStringList(v);
     return old;
   }
 
@@ -984,9 +1006,15 @@ abstract class UI extends StringAscii {
   static const int kMaxVFLength = kMaxShortVF;
   static const int kMaxLength = kMaxShortVF ~/ 2;
   static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 1024;
+  static const int kMaxValueLength = 64;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
+  static bool isValidArgs(Tag tag, Iterable<Uid> vList, [Issues issues]) =>
+      (isValidVRIndex(tag.vrIndex) &&
+          vList != null &&
+          isValidValues(tag, toStringList(vList)));
+
+  static bool isValidStringArgs(Tag tag, Iterable<String> vList,
+          [Issues issues]) =>
       (isValidVRIndex(tag.vrIndex) &&
           vList != null &&
           isValidValues(tag, vList));
@@ -1061,6 +1089,13 @@ abstract class UI extends StringAscii {
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
       stringValuesFromBytes(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+
+  static List<String> toStringList(Iterable<Uid> uids) {
+    final sList = new List<String>(uids.length);
+    for (var i = 0; i < sList.length; i++)
+      sList[i] = uids.elementAt(i).toString();
+    return sList;
+  }
 }
 
 abstract class StringUtf8 extends StringBase {
@@ -1530,7 +1565,7 @@ abstract class Text extends StringUtf8 {
   bool get isSingleValued => false;
 
   @override
-  TypedData get typedData => textToBytes(values.elementAt(0), maxVFLength);
+  TypedData get typedData => _textListToBytes(values, maxVFLength);
 
   @override
   bool checkLength([Iterable<String> vList, Issues issues]) =>
@@ -1646,11 +1681,16 @@ abstract class LT extends Text {
           {int offset = 0, int length}) =>
       textValuesFromBytes(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
+/*
   static Uint8List toBytes(Iterable<String> values) {
     if (values.length > 1) invalidValuesLength(1, 1, values);
-    return textToBytes(values.elementAt(0), kMaxVFLength,
+    return _textToBytes(values.elementAt(0), kMaxVFLength,
         isAscii: kIsAsciiRequired);
   }
+*/
+
+  static Uint8List toBytes(Iterable<String> values) =>
+      _textListToBytes(values, kMaxVFLength);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
@@ -1758,11 +1798,16 @@ abstract class ST extends Text {
           {int offset = 0, int length}) =>
       textValuesFromBytes(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
+  static Uint8List toBytes(Iterable<String> values) =>
+      _textListToBytes(values, kMaxVFLength);
+
+/*
   static Uint8List toBytes(Iterable<String> values) {
     if (values.length > 1) invalidValuesLength(1, 1, values);
-    return textToBytes(values.elementAt(0), kMaxVFLength,
+    return _textToBytes(values.elementAt(0), kMaxVFLength,
         isAscii: kIsAsciiRequired);
   }
+*/
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
@@ -1886,11 +1931,16 @@ abstract class UR extends Text {
           {int offset = 0, int length}) =>
       textValuesFromBytes(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
+  static Uint8List toBytes(Iterable<String> values) =>
+      _textListToBytes(values, kMaxVFLength);
+
+/* Flush
   static Uint8List toBytes(Iterable<String> values) {
     if (values.length > 1) invalidValuesLength(1, 1, values);
-    return textToBytes(values.elementAt(0), kMaxVFLength,
+    return _textToBytes(values.elementAt(0), kMaxVFLength,
         isAscii: kIsAsciiRequired);
   }
+*/
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
@@ -2019,11 +2069,16 @@ abstract class UT extends Text {
           {int offset = 0, int length}) =>
       textValuesFromBytes(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
+  static Uint8List toBytes(Iterable<String> values) =>
+      _textListToBytes(values, kMaxVFLength);
+
+/* Flush
   static Uint8List toBytes(Iterable<String> values) {
     if (values.length > 1) invalidValuesLength(1, 1, values);
-    return textToBytes(values.elementAt(0), kMaxVFLength,
+    return _textToBytes(values.elementAt(0), kMaxVFLength,
         isAscii: kIsAsciiRequired);
   }
+*/
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
@@ -2060,8 +2115,7 @@ abstract class AS extends StringBase {
   }
 
   @override
-  TypedData get typedData =>
-      textToBytes(values.elementAt(0), kMaxVFLength, isAscii: isAsciiRequired);
+  TypedData get typedData => _textListToBytes(values, kMaxVFLength);
 
   Age get age => _age ??= Age.parse(value);
   Age _age;
