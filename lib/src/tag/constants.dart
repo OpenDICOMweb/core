@@ -69,6 +69,7 @@ const int kDcmPrefix = 0x4d434944;
 const int kMaxShortVF = 0x10000;
 
 const int kMax32BitVF = 0xFFFFFFFE;
+
 /// The maximum length, in bytes, of a "long" (32-bit) Value Field.
 ///
 /// Note: the values is `[kUint32Max] - 1` because the maximum value
@@ -1285,8 +1286,65 @@ const int kTransducerGeometryCodeSequence = 0x0018980d;
 const int kTransducerBeamSteeringCodeSequence = 0x0018980e;
 const int kTransducerApplicationCodeSequence = 0x0018980f;
 const int kZeroVelocityPixelValue = 0x00189810;
-// Urgent Sharath: add all the (0018,99xx) tags.
+const int kReferenceLocationLabel = 0x00189900;
+const int kReferenceLocationDescription = 0x00189901;
+const int kReferenceBasisCodeSequence = 0x00189902;
+const int kReferenceGeometryCodeSequence = 0x00189903;
+const int kOffsetDistance = 0x00189904;
+const int kOffsetDirection = 0x00189905;
+const int kPotentialScheduledProtocolCodeSequence = 0x00189906;
+const int kPotentialRequestedProcedureCodeSequence = 0x00189907;
+const int kPotentialReasonsForProcedure = 0x00189908;
+const int kPotentialReasonsForProcedureCodeSequence = 0x00189909;
+const int kPotentialDiagnosticTasks = 0x0018990A;
+const int kContraindicationsCodeSequence = 0x0018990B;
+const int kReferencedDefinedProtocolSequence = 0x0018990C;
+const int kReferencedPerformedProtocolSequence = 0x0018990D;
+const int kPredecessorProtocolSequence = 0x0018990E;
+const int kProtocolPlanningInformation = 0x0018990F;
+const int kProtocolDesignRationale = 0x00189910;
+const int kPatientSpecificationSequence = 0x00189911;
+const int kModelSpecificationSequence = 0x00189912;
+const int kParametersSpecificationSequence = 0x00189913;
+const int kInstructionSequence = 0x00189914;
+const int kInstructionIndex = 0x00189915;
+const int kInstructionText = 0x00189916;
+const int kInstructionDescription = 0x00189917;
+const int kInstructionPerformedFlag = 0x00189918;
 const int kInstructionPerformedDateTime = 0x00189919;
+const int kInstructionPerformedComment = 0x0018991A;
+const int kPatientPositioningInstructionSequence = 0x0018991B;
+const int kPositioningMethodCodeSequence = 0x0018991C;
+const int kPositioningLandmarkSequence = 0x0018991D;
+const int kTargetFrameOfReferenceUID = 0x0018991E;
+const int kAcquisitionProtocolElementSpecificationSequence = 0x0018991F;
+const int kAcquisitionProtocolElementSequence = 0x00189920;
+const int kProtocolElementNumber = 0x00189921;
+const int kProtocolElementName = 0x00189922;
+const int kProtocolElementCharacteristicsSummary = 0x00189923;
+const int kProtocolElementPurpose = 0x00189924;
+const int kAcquisitionMotion = 0x00189930;
+const int kAcquisitionStartLocationSequence = 0x00189931;
+const int kAcquisitionEndLocationSequence = 0x00189932;
+const int kReconstructionProtocolElementSpecificationSequence = 0x00189933;
+const int kReconstructionProtocolElementSequence = 0x00189934;
+const int kStorageProtocolElementSpecificationSequence = 0x00189935;
+const int kStorageProtocolElementSequence = 0x00189936;
+const int kRequestedSeriesDescription = 0x00189937;
+const int kSourceAcquisitionProtocolElementNumber = 0x00189938;
+const int kSourceAcquisitionBeamNumber = 0x00189939;
+const int kSourceReconstructionProtocolElementNumber = 0x0018993A;
+const int kReconstructionStartLocationSequence = 0x0018993B;
+const int kReconstructionEndLocationSequence = 0x0018993C;
+const int kReconstructionAlgorithmSequence = 0x0018993D;
+const int kReconstructionTargetCenterLocationSequence = 0x0018993E;
+const int kImageFilterDescription = 0x00189941;
+const int kCTDIvolNotificationTrigger = 0x00189942;
+const int kDLPNotificationTrigger = 0x00189943;
+const int kAutoKVPSelectionType = 0x00189944;
+const int kAutoKVPUpperBound = 0x00189945;
+const int kAutoKVPLowerBound = 0x00189946;
+const int kProtocolDefinedPatientPosition = 0x00189947;
 const int kContributingEquipmentSequence = 0x0018a001;
 const int kContributionDateTime = 0x0018a002;
 const int kContributionDescription = 0x0018a003;
@@ -1490,7 +1548,7 @@ const int kKeratometryMeasurementTypeCodeSequence = 0x00221096;
 const int kImplantPartNumber = 0x00221097;
 const int kReferencedOphthalmicAxialMeasurementsSequence = 0x00221100;
 const int kOphthalmicAxialLengthMeasurementsSegmentNameCodeSequence =
-0x00221101;
+    0x00221101;
 const int kRefractiveErrorBeforeRefractiveSurgeryCodeSequence = 0x00221103;
 const int kIOLPowerForExactEmmetropia = 0x00221121;
 const int kIOLPowerForExactTargetRefraction = 0x00221122;
@@ -1510,9 +1568,9 @@ const int kSignalToNoiseRatio = 0x00221155;
 const int kOphthalmicAxialLengthDataSourceDescription = 0x00221159;
 const int kOphthalmicAxialLengthMeasurementsTotalLengthSequence = 0x00221210;
 const int kOphthalmicAxialLengthMeasurementsSegmentalLengthSequence =
-0x00221211;
+    0x00221211;
 const int kOphthalmicAxialLengthMeasurementsLengthSummationSequence =
-0x00221212;
+    0x00221212;
 const int kUltrasoundOphthalmicAxialLengthMeasurementsSequence = 0x00221220;
 const int kOpticalOphthalmicAxialLengthMeasurementsSequence = 0x00221225;
 const int kUltrasoundSelectedOphthalmicAxialLengthSequence = 0x00221230;
@@ -1526,7 +1584,7 @@ const int kOphthalmicAxialLengthQualityMetricTypeDescription = 0x00221273;
 const int kIntraocularLensCalculationsRightEyeSequence = 0x00221300;
 const int kIntraocularLensCalculationsLeftEyeSequence = 0x00221310;
 const int kReferencedOphthalmicAxialLengthMeasurementQCImageSequence =
-0x00221330;
+    0x00221330;
 const int kOphthalmicMappingDeviceType = 0x00221415;
 const int kAcquisitionMethodCodeSequence = 0x00221420;
 const int kAcquisitionMethodAlgorithmSequence = 0x00221423;
@@ -1600,7 +1658,7 @@ const int kShortTermFluctuationProbability = 0x00240077;
 const int kCorrectedLocalizedDeviationFromNormalCalculated = 0x00240078;
 const int kCorrectedLocalizedDeviationFromNormal = 0x00240079;
 const int kCorrectedLocalizedDeviationFromNormalProbabilityCalculated =
-0x00240080;
+    0x00240080;
 const int kCorrectedLocalizedDeviationFromNormalProbability = 0x00240081;
 const int kGlobalDeviationProbabilitySequence = 0x00240083;
 const int kLocalizedDeviationProbabilitySequence = 0x00240085;
@@ -1621,7 +1679,7 @@ const int kAgeCorrectedSensitivityDeviationProbabilityValue = 0x00240100;
 const int kGeneralizedDefectCorrectedSensitivityDeviationFlag = 0x00240102;
 const int kGeneralizedDefectCorrectedSensitivityDeviationValue = 0x00240103;
 const int kGeneralizedDefectCorrectedSensitivityDeviationProbabilityValue =
-0x00240104;
+    0x00240104;
 const int kMinimumSensitivityValue = 0x00240105;
 const int kBlindSpotLocalized = 0x00240106;
 const int kBlindSpotXCoordinate = 0x00240107;
@@ -2076,7 +2134,7 @@ const int kInputAvailabilityFlag = 0x00404020;
 const int kInputInformationSequence = 0x00404021;
 const int kRelevantInformationSequence = 0x00404022;
 const int kReferencedGeneralPurposeScheduledProcedureStepTransactionUID =
-0x00404023;
+    0x00404023;
 const int kScheduledStationNameCodeSequence = 0x00404025;
 const int kScheduledStationClassCodeSequence = 0x00404026;
 const int kScheduledStationGeographicLocationCodeSequence = 0x00404027;
@@ -2567,7 +2625,11 @@ const int kAlgorithmName = 0x00660036;
 const int kRecommendedPointRadius = 0x00660037;
 const int kRecommendedLineThickness = 0x00660038;
 const int kFloatingPointValues = 0x00660125;
-// Urgent Sharath: add 00660129 thru 00660134
+const int kTrackPointIndexList = 0x00660129;
+const int kTrackStatisticsSequence = 0x00660130;
+const int kMeasurementValuesSequence = 0x00660132;
+const int kDiffusionAcquisitionCodeSequence = 0x00660133;
+const int kDiffusionModelCodeSequence = 0x0066134;
 const int kImplantSize = 0x00686210;
 const int kImplantTemplateVersion = 0x00686221;
 const int kReplacedImplantTemplateSequence = 0x00686222;
@@ -3934,6 +3996,3 @@ const int kMinDatasetTag = kLengthToEnd;
 
 /// Data Set Trailing Padding
 const int kMaxDatasetTag = kDataSetTrailingPadding;
-
-
-

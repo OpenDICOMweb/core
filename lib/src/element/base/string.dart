@@ -1646,10 +1646,13 @@ abstract class LT extends Text {
           {int offset = 0, int length}) =>
       textValuesFromBytes(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
+  // Urgent Sharath: repeat this for ST, UT, UR
   static Uint8List toBytes(Iterable<String> values) {
-    if (values.length > 1) invalidValuesLength(1, 1, values);
-    return textToBytes(values.elementAt(0), kMaxVFLength,
-        isAscii: kIsAsciiRequired);
+    if(values.isEmpty) return kEmptyUint8List;
+    if (values.length == 1)
+      return textToBytes(values.elementAt(0), kMaxVFLength,
+          isAscii: kIsAsciiRequired);
+    return invalidValuesLength(1, 1, values);
   }
 
   static Iterable<String> fromByteData(ByteData bd,

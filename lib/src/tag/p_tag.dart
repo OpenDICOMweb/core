@@ -16,7 +16,6 @@ import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr/vr.dart';
 // import 'package:core/src/tag/p_tag_codes.dart';
 
-
 //TODO: is hashCode needed?
 class PTag extends Tag {
   @override
@@ -5259,11 +5258,282 @@ class PTag extends Tag {
       //(0018,9810)
       = const PTag._('ZeroVelocityPixelValue', 0x00189810,
           'Zero Velocity Pixel Value', kUSSSIndex, VM.k1, false);
-  static const PTag kInstructionPerformedDateTime
+  static const PTag kReferenceLocationLabel
+      //(0018,9900)
+      = const PTag._('ReferenceLocationLabel', 0x00189900,
+          'Reference Location Label', kLOIndex, VM.k1, false);
+  static const PTag kReferenceLocationDescription
+      //(0018,9901)
+      = const PTag._('ReferenceLocationDescription', 0x00189901,
+          'Reference Location Description', kUTIndex, VM.k1, false);
+  static const PTag kReferenceBasisCodeSequence
+      //(0018,9902)
+      = const PTag._('ReferenceBasisCodeSequence', 0x00189902,
+          'Reference Basis Code Sequence', kSQIndex, VM.k1, false);
+  static const PTag kReferenceGeometryCodeSequence
+      //(0018,9903)
+      = const PTag._('ReferenceGeometryCodeSequence', 0x00189903,
+          'Reference Geometry Code Sequence', kSQIndex, VM.k1, false);
+  static const PTag kOffsetDistance
+      //(0018,9904)
+      = const PTag._('OffsetDistance', 0x00189904, 'Offset Distance', kDSIndex,
+          VM.k1, false);
+  static const PTag kOffsetDirection
+      //(0018,9905)
+      = const PTag._('OffsetDirection', 0x00189905, 'Offset Direction',
+          kCSIndex, VM.k1, false);
+  static const PTag kPotentialScheduledProtocolCodeSequence
+      //(0018,9906)
+      = const PTag._('PotentialScheduledProtocolCodeSequence', 0x00189906,
+          'Potential Scheduled Protocol Code Sequence', kSQIndex, VM.k1, false);
+  static const PTag kPotentialRequestedProcedureCodeSequence
+      //(0018,9907)
+      = const PTag._(
+          'PotentialRequestedProcedureCodeSequence',
+          0x00189907,
+          'Potential Requested Procedure Code Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kPotentialReasonsForProcedure
+      //(0018,9908))
+      = const PTag._('PotentialReasonsForProcedure', 0x00189908,
+          'Potential Reasons for Procedure', kUCIndex, VM.k1_n, false);
+  static const PTag kPotentialReasonsForProcedureCodeSequence
+      //(0018,9909)
+      = const PTag._(
+          'PotentialReasonsForProcedureCodeSequence',
+          0x00189909,
+          'Potential Reasons for Procedure Code Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kPotentialDiagnosticTasks
+      //(0018,990A)
+      = const PTag._('PotentialDiagnosticTasks', 0x0018990A,
+          'Potential Diagnostic Tasks', kUCIndex, VM.k1_n, false);
+  static const PTag kContraindicationsCodeSequence
+      //(0018,990B)
+      = const PTag._('kContrraindicationsCodeSequence', 0x0018990B,
+          'Containdications Code Sequence', kSQIndex, VM.k1, false);
+  static const PTag kReferencedDefinedProtocolSequence
       //(0018,9810)
+      = const PTag._('ReferencedDefinedProtocolSequence', 0x0018990C,
+          'Referenced Defined Protocol Sequence', kSQIndex, VM.k1, false);
+  static const PTag kReferencedPerformedProtocolSequence
+      //(0018,990D)
+      = const PTag._('ReferencedPerformedProtocolSequence', 0x0018990D,
+          'Referenced Performed Protocol Sequence', kSQIndex, VM.k1, false);
+  static const PTag kPredecessorProtocolSequence
+      //(0018,990E)
+      = const PTag._('PredecessorProtocolSequence', 0x0018990E,
+          'Predecessor Protocol Sequence', kSQIndex, VM.k1, false);
+  static const PTag kProtocolPlanningInformation
+      //(0018,990F)
+      = const PTag._('ProtocolPlanningInformation', 0x0018990F,
+          'Protocol Planning Information', kUTIndex, VM.k1, false);
+  static const PTag kProtocolDesignRationale
+      //(0018,9910)
+      = const PTag._('ProtocolDesignRationale', 0x00189910,
+          'Protocol Design Rationale', kUTIndex, VM.k1, false);
+  static const PTag kPatientSpecificationSequence
+      //(0018,9911)
+      = const PTag._('PatientSpecificationSequence', 0x00189911,
+          'Patient Specification Sequence', kSQIndex, VM.k1, false);
+  static const PTag kModelSpecificationSequence
+      //(0018,9912)
+      = const PTag._('ModelSpecificationSequence', 0x00189912,
+          'Model Specification Sequence', kSQIndex, VM.k1, false);
+  static const PTag kParametersSpecificationSequence
+      //(0018,9913)
+      = const PTag._('ParametersSpecificationSequence', 0x00189913,
+          'Parameters Specification Sequence', kSQIndex, VM.k1, false);
+  static const PTag kInstructionSequence
+      //(0018,9914)
+      = const PTag._('InstructionSequence', 0x00189914, 'Instruction Sequence',
+          kSQIndex, VM.k1, false);
+  static const PTag kInstructionIndex
+      //(0018,9915)
+      = const PTag._('InstructionIndex', 0x00189915, 'Instruction Index',
+          kUSIndex, VM.k1, false);
+  static const PTag kInstructionText
+      //(0018,9916)
+      = const PTag._('InstructionText', 0x00189916, 'Instruction Text',
+          kLOIndex, VM.k1, false);
+  static const PTag kInstructionDescription
+      //(0018,9917)
+      = const PTag._('InstructionDescription', 0x00189917,
+          'Instruction Description', kUTIndex, VM.k1, false);
+  static const PTag kInstructionPerformedFlag
+      //(0018,9918)
+      = const PTag._('InstructionPerformedFlag', 0x00189918,
+          'Instruction Performed Flag', kCSIndex, VM.k1, false);
+  static const PTag kInstructionPerformedDateTime
+      //(0018,9919)
       = const PTag._('InstructionPerformedDateTime', 0x00189919,
-          'Instruction Performed Date Time', kDTIndex, VM.k1, false);
-  // Urgent: add all the (0018,99xx) tags.
+          'Instruction Performed DateTime', kSQIndex, VM.k1, false);
+  static const PTag kInstructionPerformedComment
+      //(0018,991A)
+      = const PTag._('InstructionPerformedComment', 0x0018991A,
+          'Instruction Performance Comment', kUTIndex, VM.k1, false);
+  static const PTag kPatientPositioningInstructionSequence
+      //(0018,991B)
+      = const PTag._('PatientPositioningInstructionSequence', 0x0018991B,
+          'Patient Positioning Instruction Sequence', kSQIndex, VM.k1, false);
+  static const PTag kPositioningMethodCodeSequence
+      //(0018,991C)
+      = const PTag._('PositioningMethodCodeSequence', 0x0018991C,
+          'Positioning Method Code Sequence', kSQIndex, VM.k1, false);
+  static const PTag kPositioningLandmarkSequence
+      //(0018,991D)
+      = const PTag._('PositioningLandmarkSequence', 0x0018991D,
+          'Positioning Landmark Sequence', kSQIndex, VM.k1, false);
+  static const PTag kTargetFrameOfReferenceUID
+      //(0018,991E)
+      = const PTag._('TargetFrameOfReferenceUID', 0x0018991E,
+          'Target Frame of Reference UID', kUIIndex, VM.k1, false);
+  static const PTag kAcquisitionProtocolElementSpecificationSequence
+      //(0018,991F)
+      = const PTag._(
+          'AcquisitionProtocolElementSpecificationSequence',
+          0x0018991F,
+          'Acquisition Protocol Element Specification Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kAcquisitionProtocolElementSequence
+      //(0018,9920)
+      = const PTag._('AcquisitionProtocolElementSequence', 0x00189920,
+          'Acquisition Protocol Element Sequence', kSQIndex, VM.k1, false);
+  static const PTag kProtocolElementNumber
+      //(0018,9921)
+      = const PTag._('ProtocolElementNumber', 0x00189921,
+          'Protocol Element Number', kUSIndex, VM.k1, false);
+  static const PTag kProtocolElementName
+      //(0018,9922)
+      = const PTag._('ProtocolElementName', 0x00189922, 'Protocol Element Name',
+          kLOIndex, VM.k1, false);
+  static const PTag kProtocolElementCharacteristicsSummary
+      //(0018,9923)
+      = const PTag._('ProtocolElementCharacteristicsSummary', 0x00189923,
+          'Protocol Element Characteristics Summary', kUTIndex, VM.k1, false);
+  static const PTag kProtocolElementPurpose
+      //(0018,9924)
+      = const PTag._('ProtocolElementPurpose', 0x00189924,
+          'Protocol Element Purpose', kUTIndex, VM.k1, false);
+  static const PTag kAcquisitionMotion
+      //(0018,9930)
+      = const PTag._('AcquisitionMotion', 0x00189930, 'Acquisition Motion',
+          kCSIndex, VM.k1, false);
+  static const PTag kAcquisitionStartLocationSequence
+      //(0018,9931)
+      = const PTag._('AcquisitionStartLocationSequence', 0x00189931,
+          'Acquisition Start Location Sequence', kSQIndex, VM.k1, false);
+  static const PTag kAcquisitionEndLocationSequence
+      //(0018,9932)
+      = const PTag._('AcquisitionEndLocationSequence', 0x00189932,
+          'Acquisition End Location Sequence', kSQIndex, VM.k1, false);
+  static const PTag kReconstructionProtocolElementSpecificationSequence
+      //(0018,9933)
+      = const PTag._(
+          'ReconstructionProtocolElementSpecificationSequence',
+          0x00189933,
+          'Reconstruction Protocol Element Specification Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kReconstructionProtocolElementSequence
+      //(0018,9934)
+      = const PTag._('ReconstructionProtocolElementSequence', 0x00189934,
+          'Reconstruction Protocol Element Sequence', kSQIndex, VM.k1, false);
+  static const PTag kStorageProtocolElementSpecificationSequence
+      //(0018,9935)
+      = const PTag._(
+          'StorageProtocolElementSpecificationSequence',
+          0x00189935,
+          'Storage Protocol Element Specification Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kStorageProtocolElementSequence
+      //(0018,9936)
+      = const PTag._('StorageProtocolElementSequence', 0x00189936,
+          'Storage Protocol Element Sequence', kSQIndex, VM.k1, false);
+  static const PTag kRequestedSeriesDescription
+      //(0018,9937)
+      = const PTag._('RequestedSeriesDescription', 0x00189937,
+          'Requested Series Description', kLOIndex, VM.k1, false);
+  static const PTag kSourceAcquisitionProtocolElementNumber
+      //(0018,9938)
+      = const PTag._(
+          'SourceAcquisitionProtocolElementNumber',
+          0x00189938,
+          'Source Acquisition Protocol Element Number',
+          kUSIndex,
+          VM.k1_n,
+          false);
+  static const PTag kSourceAcquisitionBeamNumber
+      //(0018,9939)
+      = const PTag._('SourceAcquisitionBeamNumber', 0x00189939,
+          'Source Acquisition Beam Number', kUSIndex, VM.k1_n, false);
+  static const PTag kSourceReconstructionProtocolElementNumber
+      //(0018,993A)
+      = const PTag._(
+          'SourceReconstructionProtocolElementNumber',
+          0x0018993A,
+          'Source Reconstruction Protocol Element Number',
+          kUSIndex,
+          VM.k1_n,
+          false);
+  static const PTag kReconstructionStartLocationSequence
+      //(0018,993B)
+      = const PTag._('ReconstructionStartLocationSequence', 0x0018993B,
+          'Reconstruction Start Location Sequence', kSQIndex, VM.k1, false);
+  static const PTag kReconstructionEndLocationSequence
+      //(0018,993C)
+      = const PTag._('ReconstructionEndLocationSequence', 0x0018993C,
+          'Reconstruction End Location Sequence', kSQIndex, VM.k1, false);
+  static const PTag kReconstructionAlgorithmSequence
+      //(0018,993D)
+      = const PTag._('ReconstructionAlgorithmSequence', 0x0018993D,
+          'Reconstruction Algorithm Sequencer', kSQIndex, VM.k1, false);
+  static const PTag kReconstructionTargetCenterLocationSequence
+      //(0018,993E)
+      = const PTag._(
+          'ReconstructionTargetCenterLocationSequence',
+          0x0018993E,
+          'Reconstruction Target Center Location Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kImageFilterDescription
+      //(0018,9941)
+      = const PTag._('ImageFilterDescription', 0x00189941,
+          'Image Filter Description', kUTIndex, VM.k1, false);
+  static const PTag kCTDIvolNotificationTrigger
+      //(0018,9942)
+      = const PTag._('CTDIvolNotificationTrigger', 0x00189942,
+          'CTDIvol Notification Trigger', kFDIndex, VM.k1, false);
+  static const PTag kDLPNotificationTrigger
+      //(0018,9943)
+      = const PTag._('DLPNotificationTrigger', 0x00189943,
+          'DLP Notification Trigger', kFDIndex, VM.k1, false);
+  static const PTag kAutoKVPSelectionType
+      //(0018,9944)
+      = const PTag._('AutoKVPSelectionType', 0x00189944,
+          'Auto KVP Selection Type', kCSIndex, VM.k1, false);
+  static const PTag kAutoKVPUpperBound
+      //(0018,9945)
+      = const PTag._('AutoKVPUpperBound', 0x00189945, 'Auto KVP Upper Bound',
+          kFDIndex, VM.k1, false);
+  static const PTag kAutoKVPLowerBound
+      //(0018,9946)
+      = const PTag._('AutoKVPLowerBound', 0x00189946, 'Auto KVP Lower Bound',
+          kFDIndex, VM.k1, false);
+  static const PTag kProtocolDefinedPatientPosition
+      //(0018,9947)
+      = const PTag._('ProtocolDefinedPatientPosition', 0x00189947,
+          'Protocol Defined Patient Position', kCSIndex, VM.k1, false);
   static const PTag kContributingEquipmentSequence
       //(0018,A001)
       = const PTag._('ContributingEquipmentSequence', 0x0018A001,
@@ -11029,6 +11299,7 @@ class PTag extends Tag {
       VM.k1);
   static const PTag kFloatingPointValues = const PTag._('FloatingPointValues',
       0x00660125, 'Floating Point Values', kOFIndex, VM.k1);
+
   static const PTag kTrackPointIndexList = const PTag._('TrackPointIndexList',
       0x00660129, 'Track Point Index List', kOLIndex, VM.k1);
   static const PTag kTrackStatisticsSequence = const PTag._(

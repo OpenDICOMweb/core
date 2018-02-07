@@ -872,6 +872,23 @@ void main() {
       }
     });
 
+    test('Create Float64Base.listToByteData', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float64List0 = new Float64List.fromList(floatList0);
+        final bd = float64List0.buffer.asByteData();
+        final lBd0 = Float64Base.listToByteData(float64List0);
+        log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd: ${bd.buffer.asUint8List()}');
+        expect(lBd0.buffer.asUint8List(), equals(bd.buffer.asUint8List()));
+        expect(lBd0.buffer == bd.buffer, true);
+
+        final lBd1 = Float64Base.listToByteData(float64List0, asView: false);
+        log.debug('lBd1: ${lBd1.buffer.asUint8List()}, bd: ${bd.buffer.asUint8List()}');
+        expect(lBd1.buffer.asUint8List(), equals(bd.buffer.asUint8List()));
+        expect(lBd1.buffer == bd.buffer, false);
+      }
+    });
+
     test('Float64Base.listFromBase64', () {
       system.level = Level.info;
       for (var i = 0; i < 10; i++) {

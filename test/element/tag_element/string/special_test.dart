@@ -14,7 +14,7 @@ import 'utility_test.dart' as utility;
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'string/special_test', level: Level.debug);
+  Server.initialize(name: 'string/special_test', level: Level.info0);
   system.throwOnError = false;
 
   group('AEtag', () {
@@ -587,32 +587,6 @@ void main() {
       final values = ASCII.encode(vList1[0]);
       expect(AE.toBytes(vList1), equals(values));
     });
-
-/*
-    test('AE fromBase64', () {
-      system.throwOnError = false;
-      final vList1 = rsg.getAEList(1, 1);
-
-      final v0 = AE.fromBase64(vList1);
-      expect(v0, isNotNull);
-
-      final v1 = AE.fromBase64(['PIA5']);
-      expect(v1, isNotNull);
-
-      final v2 = AE.fromBase64(['PIA']);
-      expect(v2, isNotNull);
-    });
-
-    test('AE toBase64', () {
-      //final s = BASE64.encode(testFrame);
-      final vList0 = rsg.getAEList(1, 1);
-      expect(AE.toBase64(vList0), equals(vList0));
-
-      final vList1 = ['dslkj'];
-      //final s0 = ASCII.encode(vList0[0]);
-      expect(AE.toBase64(vList1), equals(vList1));
-    });
-*/
 
     test('AE. heckList good values', () {
       system.throwOnError = false;
@@ -1359,32 +1333,6 @@ void main() {
       expect(CS.toBytes(vList1), equals(values));
     });
 
-/*
-    test('CS fromBase64', () {
-      system.throwOnError = false;
-      final vList1 = rsg.getCSList(1, 1);
-
-      final v0 = CS.fromBase64(vList1);
-      expect(v0, isNotNull);
-
-      final v1 = CS.fromBase64(['PIA5']);
-      expect(v1, isNotNull);
-
-      final v2 = CS.fromBase64(['PIA']);
-      expect(v2, isNotNull);
-    });
-
-    test('CS toBase64', () {
-      //final s = BASE64.encode(testFrame);
-      final vList0 = rsg.getCSList(1, 1);
-      expect(CS.toBase64(vList0), equals(vList0));
-
-      final vList1 = ['dslkj'];
-      //final s0 = ASCII.encode(vList0[0]);
-      expect(CS.toBase64(vList1), equals(vList1));
-    });
-*/
-
     test('CS checkList good values', () {
       system.throwOnError = false;
       for (var i = 0; i <= 10; i++) {
@@ -2005,32 +1953,6 @@ void main() {
       expect(UI.toBytes(vList1), equals(values));
     });
 
-/*
-    test('UI fromBase64', () {
-      system.throwOnError = false;
-      final vList1 = rsg.getUIList(1, 1);
-
-      final v0 = UI.fromBase64(vList1);
-      expect(v0, isNotNull);
-
-      final v1 = UI.fromBase64(['1.2.840.10008.5.1.4.34.5']);
-      expect(v1, isNotNull);
-
-      final v2 = UI.fromBase64(['1.2.840.10008.5.1.4.34.4']);
-      expect(v2, isNotNull);
-    });
-
-    test('UI toBase64', () {
-      //final s = BASE64.encode(testFrame);
-      final vList0 = rsg.getUIList(1, 1);
-      expect(UI.toBase64(vList0), equals(vList0));
-
-      final vList1 = ['1.2.840.10008.5.1.4.34.5'];
-      //final s0 = ASCII.encode(vList0[0]);
-      expect(UI.toBase64(vList1), equals(vList1));
-    });
-*/
-
     test('UI checkList good values', () {
       system.throwOnError = false;
       for (var i = 0; i <= 10; i++) {
@@ -2315,6 +2237,21 @@ void main() {
         }
       }
     });
+
+    test('UR decodeBinaryTextVF', () {
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getURList(1, 1);
+        final bytes = UR.toBytes(vList1);
+        final dbTxt0 = StringBase.decodeBinaryTextVF(bytes, kMaxShortVF);
+        log.debug('dbTxt0: $dbTxt0');
+        expect(dbTxt0, equals(vList1));
+
+        final dbTxt1 =
+        StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
+        log.debug('dbTxt1: $dbTxt1');
+        expect(dbTxt1, equals(vList1));
+      }
+    });
   });
 
   group('UR', () {
@@ -2582,32 +2519,6 @@ void main() {
       final values = ASCII.encode(vList1[0]);
       expect(UR.toBytes(vList1), equals(values));
     });
-
-/*
-    test('UR fromBase64', () {
-      system.throwOnError = false;
-      final vList1 = rsg.getURList(1, 1);
-
-      final v0 = UR.fromBase64(vList1);
-      expect(v0, isNotNull);
-
-      final v1 = UR.fromBase64(['PIA5']);
-      expect(v1, isNotNull);
-
-      final v2 = UR.fromBase64(['PIA']);
-      expect(v2, isNotNull);
-    });
-
-    test('UR toBase64', () {
-      //final s = BASE64.encode(testFrame);
-      final vList0 = rsg.getURList(1, 1);
-      expect(UR.toBase64(vList0), equals(vList0));
-
-      final vList1 = ['dslkj'];
-      //final s0 = ASCII.encode(vList0[0]);
-      expect(UR.toBase64(vList1), equals(vList1));
-    });
-*/
 
     test('UR parse', () {
       system.throwOnError = false;

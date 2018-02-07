@@ -256,7 +256,8 @@ abstract class Int16Base extends IntBase {
   static Int16List _toInt16List(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
-    if (vList is Int16List) return vList;
+    if (vList is Int16List && asView == true)
+      return vList.buffer.asInt16List();
     if ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
       return invalidValuesError(vList);
     return new Int16List.fromList(vList);
@@ -1118,7 +1119,8 @@ abstract class Uint32Base extends IntBase {
   static Uint32List _toUint32List(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
-    if (vList is Uint32List) return vList;
+    if (vList is Uint32List && asView == true)
+      return vList.buffer.asUint32List();
     if ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
       return invalidValuesError(vList);
     return new Uint32List.fromList(vList);
