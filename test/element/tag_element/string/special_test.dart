@@ -14,7 +14,7 @@ import 'utility_test.dart' as utility;
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'string/special_test', level: Level.debug);
+  Server.initialize(name: 'string/special_test', level: Level.info);
   system.throwOnError = false;
 
   group('AEtag', () {
@@ -2225,11 +2225,11 @@ void main() {
 
         system.throwOnError = true;
         expect(() => new URtag(PTag.kRetrieveURL, stringList0),
-            throwsA(const isInstanceOf<InvalidValuesLength>()));
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         expect(() => new URtag(PTag.kPixelDataProviderURL, stringList1),
-            throwsA(const isInstanceOf<InvalidValuesLength>()));
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         expect(() => new URtag(PTag.kRetrieveURL, stringList2),
-            throwsA(const isInstanceOf<InvalidValuesLength>()));
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 

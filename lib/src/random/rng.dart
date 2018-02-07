@@ -27,7 +27,7 @@ class RNG {
   final Random generator;
 
   /// Creates a Random Number Generator ([RNG]) using Dart's [Random].
-  factory RNG([int seed]) => new RNG.withDefaults(isSecure: false);
+  factory RNG([int seed]) => new RNG.withDefaults(isSecure: false, seed: seed);
 
   /// Creates a **_secure_** Random Number Generator ([RNG]) using Dart's
   /// [Random.secure].
@@ -182,9 +182,11 @@ class RNG {
   static const int kMaxRandomIntExclusive = (1 << 32);
   static const int kMaxRandomIntInclusive = kMaxRandomIntExclusive - 1;
   static const int kMinRandom31BitIntExclusive = -0x40000000;
-  static const int kMinRandom31BitIntInclusive = kMinRandom31BitIntExclusive + 1;
+  static const int kMinRandom31BitIntInclusive =
+      kMinRandom31BitIntExclusive + 1;
   static const int kMaxRandom31BitIntExclusive = 0x40000000;
-  static const int kMaxRandom31BitIntInclusive = kMaxRandom31BitIntExclusive - 1;
+  static const int kMaxRandom31BitIntInclusive =
+      kMaxRandom31BitIntExclusive - 1;
 
   /// Returns a 63-bit integer (DartSMInt) in the range from [min]
   /// to [max] inclusive.
@@ -198,7 +200,9 @@ class RNG {
     if (limit < 0 || limit > kDartMaxSMInt)
       // ignore: only_throw_errors
       throw 'Invalid range error: $kDartMinSMInt > $max - $min = $limit < $kDartMaxSMInt';
-    final n = (limit < kUint32Max) ? __nextUint32(limit) : _nextSMUint().remainder(limit);
+    final n = (limit < kUint32Max)
+        ? __nextUint32(limit)
+        : _nextSMUint().remainder(limit);
     return n + min;
   }
 
@@ -305,7 +309,8 @@ class RNG {
   /// [minLength] must be greater than or equal to 0, and [maxLength] must
   /// be less than or equal to 2^31-1, i.e. the maximum 32-bit signed positive
   /// integer.
-  int getLength([int minLength, int maxLength]) => _getLength(minLength, maxLength);
+  int getLength([int minLength, int maxLength]) =>
+      _getLength(minLength, maxLength);
 
   int _getLength([int minLength, int maxLength]) {
     final min = (minLength == null) ? defaultMinListLength : minLength;
@@ -320,7 +325,8 @@ class RNG {
   /// [minValue] to [maxValue] inclusive. [minValue] and [maxValue] must be
   /// valid 32-bit integers. [minLength] defaults to 1, and [maxLength]
   /// defaults to 256.
-  List<int> intList(int minValue, int maxValue, [int minLength, int maxLength]) {
+  List<int> intList(int minValue, int maxValue,
+      [int minLength, int maxLength]) {
     RangeError.checkValueInInterval(minValue, kInt32Min, kInt32Max, 'minValue');
     RangeError.checkValueInInterval(maxValue, minValue, kInt32Max, 'maxValue');
     final len = _getLength(minLength, maxLength);
@@ -329,7 +335,8 @@ class RNG {
     return vList;
   }
 
-  ByteData byteDataList(int minValue, int maxValue, [int minLength, int maxLength]) {
+  ByteData byteDataList(int minValue, int maxValue,
+      [int minLength, int maxLength]) {
     RangeError.checkValueInInterval(minValue, kUint8Min, kUint8Max, 'minValue');
     RangeError.checkValueInInterval(maxValue, minValue, kUint32Max, 'maxValue');
     final len = _getLength(minLength, maxLength);
@@ -435,7 +442,7 @@ class RNG {
   Float32List float32List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
     final v = new Float32List(length);
-    for (var i = 0; i < length; i++)v[i] = nextFloat32;
+    for (var i = 0; i < length; i++) v[i] = nextFloat32;
     return v;
   }
 

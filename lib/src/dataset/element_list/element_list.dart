@@ -391,10 +391,10 @@ ElementList Summary
   /// Replaces the element with [index] with a new element that is
   /// the same except it has no values.  Returns the original element.
   Element noValues(int index, {bool required = false}) {
-    final e = lookup(index, required: required);
-    if (e == null) return (required) ? elementNotPresentError(index) : null;
-    this[index] = e.noValues;
-    return e;
+    final old = lookup(index, required: required);
+    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    this[index] = old.noValues;
+    return old;
   }
 
   /// Updates all [Element.values] with [index] in _this_ or in any
@@ -404,12 +404,14 @@ ElementList Summary
   List<Element> noValuesAll(int index) {
     assert(index != null);
     final result = <Element>[]..add(noValues(index));
-    for (var e in elements)
+    for (var e in elements) {
       if (e is SQ) {
         result.addAll(e.noValuesAll(index));
-      } else {
-        result.add(e.update(e.values));
+      } else if (e.index == index) {
+        result.add(e);
+        this[index] = e.noValues;
       }
+    }
     return result;
   }
 

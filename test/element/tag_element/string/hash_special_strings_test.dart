@@ -20,7 +20,7 @@ void main() {
     system.throwOnError = true;
     expect(() => ui0.sha256,
         throwsA(const isInstanceOf<Sha256UnsupportedError>()));
-    expect(() => ui0.hash, throwsA(const isInstanceOf<UnimplementedError>()));
+    expect(() => ui0.hash, throwsA(const isInstanceOf<UnsupportedError>()));
   });
 
   test('AS', () {

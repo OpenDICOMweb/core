@@ -11,6 +11,10 @@ import 'package:core/src/string/ascii.dart';
 import 'package:core/src/uuid/errors.dart';
 import 'package:core/src/uuid/v4generator.dart';
 
+// Note: This implementation is faster than http:pub.dartlang.org/uuid
+//   this one: Template(RunTime): 2101.890756302521 us.
+//   pub uuid: Template(RunTime): 7402.2140221402215 us.
+
 typedef Uint8List OnUuidBytesError(List<int> iList);
 typedef Uuid OnUuidParseError(String s);
 typedef Uint8List OnUuidParseToBytesError(String s);
@@ -46,10 +50,6 @@ const List<int> kEnds = const <int>[8, 13, 18, 23, kUuidStringLength];
 
 const List<int> _kISOVariantAsLetter = const <int>[k8, k9, ka, kb];
 
-// Note: This implementation is faster than http:pub.dartlang.org/uuid
-//   this one: Template(RunTime): 2101.890756302521 us.
-//   pub uuid: Template(RunTime): 7402.2140221402215 us.
-
 /// A Version 4 (random) Uuid.
 /// See [RFC4122](https://tools.ietf.org/html/rfc4122).
 ///
@@ -83,7 +83,7 @@ class Uuid {
 
   /// Constructs [Uuid] from a [List<int>] of 16 unsigned 8-bit [int]s.
   Uuid.fromList(List<int> iList, {OnUuidBytesError onError, bool coerce = true})
-      : this.data = _listToBytes(iList);
+      : this.data = _uint8ListToBytes(iList);
 
   /// Two [Uuid]s are [==] if they contain equivalent [data].
   @override
@@ -120,6 +120,10 @@ class Uuid {
       sb.write(data[i].toRadixString(16).padLeft(2, '0').toLowerCase());
     return sb.toString();
   }
+
+  String get asDecimal => _toDecimalString(data, '');
+
+  String get asUid => _toDecimalString(data, '2.25.1');
 
   /// Returns the version number of _this_.
   int get version => data[6] >> 4;
@@ -160,13 +164,12 @@ class Uuid {
     return true;
   }
 
-  static String get generatePseudoDcmString =>
-      _toUidString(V4Generator.pseudo.next);
+  static String get generatePseudoDcmString => toUid(V4Generator.pseudo.next);
 
-  static String get generateSecureDcmString =>
-      _toUidString(V4Generator.secure.next);
+  static String get generateSecureDcmString => toUid(V4Generator.secure.next);
 
-  /// Returns _true_ if a secure (_Random.secure_) random number generator is being used.
+  /// Returns _true_ if a secure (_Random.secure_)
+  /// random number generator is being used.
   static bool get isSecure => generator.isSecure;
 
   /// Returns the integer [seed] provided to the pseudo (non-secure)
@@ -232,7 +235,7 @@ class Uuid {
     return new Uuid.fromList(bytes);
   }
 
-  /// Unparses (converts [Uuid] to a [String]) a [bytes] of bytes and
+  /// Unparses (converts [Uuid] to a [String]) [bytes] of bytes and
   /// outputs a proper UUID string.
   //TODO: Unit test uppercase/lowercase
   static String _toUuidFormat(Uint8List bytes) {
@@ -249,8 +252,24 @@ class Uuid {
         '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}';
   }
 
-  static String _toUidString(Uint8List bytes) =>
-      _toUuidFormat(bytes).replaceAll('-', '');
+  /// Returns [bytes] as a UID [String] prefixed by [prefix].
+  ///
+  /// _Note_: The default [prefix] is '2.25.1'. The trailing '.1'
+  /// is used to avoid the problem of leading zeroes in the [Uuid]
+  /// part of the UID.
+  static String toUid(Uint8List bytes, [String prefix = '2.25.1']) =>
+      _toDecimalString(bytes, prefix);
+
+  /// Returns [bytes] as a decimal [String] prefixed by [prefix].
+  static String _toDecimalString(Uint8List bytes, String prefix) {
+    assert(bytes.length == 16);
+    final sb = new StringBuffer(prefix);
+    final v = bytes.buffer.asUint32List();
+    for (var i = 0; i < v.length; i++) sb.write(v[i].toString());
+    final s = sb.toString();
+    print('uid (${s.length})"$s"');
+    return s;
+  }
 }
 
 // **** Internal Procedures ****
@@ -293,7 +312,7 @@ void _setToVersion4(Uint8List bytes) {
 }
 
 //TODO: Unit Test Error handling
-Uint8List _listToBytes(List<int> data, {bool coerce = true}) {
+Uint8List _uint8ListToBytes(List<int> data, {bool coerce = true}) {
   if (data.length != 16)
     return invalidUuidListError(data, 'Invalid Length(${data.length})');
   final bytes = _getDataBuffer(data);
@@ -328,16 +347,16 @@ Uint8List _parseToBytes(
   return bytes;
 }
 
-/// Returns a valid [Uuid] data buffer. If [bytes] is _null_ a new
-/// data buffer is created. If [bytes] is not _null_ and has length
+/// Returns a valid [Uuid] data buffer. If [uuid] is _null_ a new
+/// data buffer is created. If [uuid] is not _null_ and has length
 /// 16, it is returned; otherwise, [invalidUuidListError] is called.
-Uint8List _getDataBuffer(List<int> bytes) {
-  if (bytes == null) return new Uint8List(16);
-  if (bytes.length != 16)
+Uint8List _getDataBuffer(List<int> uuid) {
+  if (uuid == null) return new Uint8List(16);
+  if (uuid.length != 16)
     return invalidUuidListError(
-        bytes, 'Invalid Uuid List length: ${bytes.length}');
-  if (bytes is Uint8List) return bytes;
-  return new Uint8List.fromList(bytes);
+        uuid, 'Invalid Uuid List length: ${uuid.length}');
+  if (uuid is Uint8List) return uuid;
+  return new Uint8List.fromList(uuid);
 }
 
 /// Converts characters from a String into the corresponding byte values.
@@ -352,6 +371,7 @@ void _toBytes(String s, Uint8List bytes, int byteIndex, int start, int end) {
 
 // *** Generated by 'tools/generate_conversions.dart' ***
 
+//TODO Jim: add to string package
 /// Returns the Hex [String] equivalent to an 8-bit [int].
 const List<String> _byteToLowercaseHex = const [
   '00', '01', '02', '03', '04', '05', '06', '07', // No reformat
@@ -471,25 +491,3 @@ const Map<String, int> _hexToByte = const {
   'f6': 246, 'f7': 247, 'f8': 248, 'f9': 249, 'fa': 250, 'fb': 251,
   'fc': 252, 'fd': 253, 'fe': 254, 'ff': 255
 };
-
-/*
-/// An invalid [Uuid] [String] [Error].
-class InvalidUuidStringError extends Error {
-  String msg;
-  InvalidUuidStringError(this.msg);
-
-  @override
-  String toString() => _msg(msg);
-
-  static String _msg(String s) => 'InvalidUuidStringError: "$s"';
-}
-*/
-
-/*
-Null invalidUuidString(String msg, [Issues issues]) {
-  log.error(InvalidUuidStringError._msg(msg));
-  if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidUuidStringError('$msg');
-  return null;
-}
-*/

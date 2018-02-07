@@ -776,7 +776,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => new LTtag(PTag.kAcquisitionProtocolDescription, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLength>()));
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
@@ -4077,7 +4077,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => new UTtag(PTag.kUniversalEntityID, vList1),
-          throwsA(const isInstanceOf<InvalidValuesLength>()));
+          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
     });
 
     test('UT checkValue good values', () {

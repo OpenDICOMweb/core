@@ -8,7 +8,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/core.dart';
-
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
@@ -391,12 +390,10 @@ class UItag extends UI with TagElement<String> {
   }
 
   factory UItag.fromStrings(Tag tag, Iterable<String> sList,
-      {bool validate = true}) {
-    sList ??= kEmptyStringList;
-    return (validate && !UI.isValidStringArgs(tag, sList))
-        ? invalidValuesError(sList, tag: tag)
-        : new UItag._(tag, sList);
-  }
+          {bool validate = true}) =>
+      (sList == null || (validate && !UI.isValidStringArgs(tag, sList)))
+          ? invalidValuesError(sList, tag: tag)
+          : new UItag._(tag, sList);
 
   UItag._(this.tag, this.values);
 
