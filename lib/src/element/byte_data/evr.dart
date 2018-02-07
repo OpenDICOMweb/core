@@ -75,7 +75,8 @@ abstract class Evr<V> implements BDElement<V> {
             (valuesLength % columns == 0));
   }
 
-  Uint8List get asBytes => bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
+  Uint8List get asBytes =>
+      bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
 
   static BDElement make(int code, int vrIndex, ByteData bd) =>
       _evrBDMakers[vrIndex](bd, vrIndex);
@@ -100,11 +101,13 @@ abstract class Evr<V> implements BDElement<V> {
     UIevr.make, ULevr.make, USevr.make,
   ];
 
-  static Null _sqError(ByteData bd, [int vrIndex]) => invalidElementIndex(vrIndex);
+  static Null _sqError(ByteData bd, [int vrIndex]) =>
+      invalidElementIndex(vrIndex);
 
   static Element makePixelData(int code, int vrIndex, ByteData bd,
       [TransferSyntax ts, VFFragments fragments]) {
-    if (code != kPixelData) return invalidKey(code, 'Invalid Tag Code for PixelData');
+    if (code != kPixelData)
+      return invalidKey(code, 'Invalid Tag Code for PixelData');
     switch (vrIndex) {
       case kOBIndex:
         return OBevrPixelData.make(code, vrIndex, bd, ts, fragments);
@@ -162,7 +165,8 @@ abstract class EvrLongMixin<V> {
   }
 }
 
-class FLevr extends FL with Common, Evr<double>, EvrShortMixin<double>, Float32Mixin {
+class FLevr extends FL
+    with Common, Evr<double>, EvrShortMixin<double>, Float32Mixin {
   @override
   final ByteData bd;
 
@@ -177,7 +181,8 @@ class FLevr extends FL with Common, Evr<double>, EvrShortMixin<double>, Float32M
   }
 }
 
-class OFevr extends OF with Common, Evr<double>, EvrLongMixin<double>, Float32Mixin {
+class OFevr extends OF
+    with Common, Evr<double>, EvrLongMixin<double>, Float32Mixin {
   @override
   final ByteData bd;
 
@@ -192,7 +197,8 @@ class OFevr extends OF with Common, Evr<double>, EvrLongMixin<double>, Float32Mi
   }
 }
 
-class FDevr extends FD with Common, Evr<double>, EvrShortMixin<double>, Float64Mixin {
+class FDevr extends FD
+    with Common, Evr<double>, EvrShortMixin<double>, Float64Mixin {
   @override
   final ByteData bd;
 
@@ -207,7 +213,8 @@ class FDevr extends FD with Common, Evr<double>, EvrShortMixin<double>, Float64M
   }
 }
 
-class ODevr extends OD with Common, Evr<double>, EvrLongMixin<double>, Float64Mixin {
+class ODevr extends OD
+    with Common, Evr<double>, EvrLongMixin<double>, Float64Mixin {
   @override
   final ByteData bd;
 
@@ -224,7 +231,8 @@ class ODevr extends OD with Common, Evr<double>, EvrLongMixin<double>, Float64Mi
 
 // **** Integer Elements
 
-class OBevr extends OB with Common, Evr<int>, EvrLongMixin<int>, IntMixin, Int8Mixin {
+class OBevr extends OB
+    with Common, Evr<int>, EvrLongMixin<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
 
@@ -269,7 +277,8 @@ class OBevrPixelData extends OBPixelData
   }
 }
 
-class UNevr extends UN with Common, Evr<int>, EvrLongMixin<int>, IntMixin, Int8Mixin {
+class UNevr extends UN
+    with Common, Evr<int>, EvrLongMixin<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
 
@@ -313,7 +322,8 @@ class UNevrPixelData extends UNPixelData
   }
 }
 
-class SSevr extends SS with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int16Mixin {
+class SSevr extends SS
+    with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
 
@@ -328,7 +338,8 @@ class SSevr extends SS with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int1
   }
 }
 
-class USevr extends US with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int16Mixin {
+class USevr extends US
+    with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
 
@@ -343,7 +354,8 @@ class USevr extends US with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int1
   }
 }
 
-class OWevr extends OW with Common, Evr<int>, EvrLongMixin<int>, IntMixin, Int16Mixin {
+class OWevr extends OW
+    with Common, Evr<int>, EvrLongMixin<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
 
@@ -390,7 +402,8 @@ class OWevrPixelData extends OWPixelData
 // **** 32-bit integer Elements (AT, SL, UL, GL)
 
 /// Attribute (Element) Code (AT)
-class ATevr extends AT with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
+class ATevr extends AT
+    with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -406,7 +419,8 @@ class ATevr extends AT with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int3
 }
 
 /// Other Long (OL)
-class OLevr extends OL with Common, Evr<int>, EvrLongMixin<int>, IntMixin, Int32Mixin {
+class OLevr extends OL
+    with Common, Evr<int>, EvrLongMixin<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -422,7 +436,8 @@ class OLevr extends OL with Common, Evr<int>, EvrLongMixin<int>, IntMixin, Int32
 }
 
 /// Signed Long (SL)
-class SLevr extends SL with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
+class SLevr extends SL
+    with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -438,7 +453,8 @@ class SLevr extends SL with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int3
 }
 
 /// Unsigned Long (UL)
-class ULevr extends UL with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
+class ULevr extends UL
+    with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -454,7 +470,8 @@ class ULevr extends UL with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int3
 }
 
 /// Group Length (GL)
-class GLevr extends GL with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
+class GLevr extends GL
+    with Common, Evr<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -491,7 +508,7 @@ ByteData _removePadding(ByteData bd, int vfOffset, [int padChar = kSpace]) {
 }
 
 class AEevr extends AE
-    with Common, Evr<String>, EvrShortMixin<int>, StringMixin, AsciiMixin {
+    with Common, Evr<String>, EvrShortMixin<int>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -505,7 +522,7 @@ class AEevr extends AE
 }
 
 class ASevr extends AS
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, AsciiMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -513,13 +530,14 @@ class ASevr extends AS
 
   static ASevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kASIndex);
-    if (bd.lengthInBytes != 4) log.error('Invalid Age (AS) length: ${bd.lengthInBytes}');
+    if (bd.lengthInBytes != 4)
+      log.error('Invalid Age (AS) length: ${bd.lengthInBytes}');
     return new ASevr(bd);
   }
 }
 
 class CSevr extends CS
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, AsciiMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -533,7 +551,7 @@ class CSevr extends CS
 }
 
 class DAevr extends DA
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, AsciiMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -548,7 +566,7 @@ class DAevr extends DA
 }
 
 class DSevr extends DS
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, AsciiMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -561,7 +579,7 @@ class DSevr extends DS
 }
 
 class DTevr extends DT
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, AsciiMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -575,7 +593,7 @@ class DTevr extends DT
 }
 
 class ISevr extends IS
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, AsciiMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -589,7 +607,7 @@ class ISevr extends IS
 }
 
 class UIevr extends UI
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, AsciiMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -603,7 +621,7 @@ class UIevr extends UI
 }
 
 class LOevr extends LO
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, Utf8Mixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -617,7 +635,7 @@ class LOevr extends LO
 }
 
 class PCevr extends PC
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, Utf8Mixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -631,7 +649,7 @@ class PCevr extends PC
 }
 
 class PNevr extends PN
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, Utf8Mixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -645,7 +663,7 @@ class PNevr extends PN
 }
 
 class SHevr extends SH
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, Utf8Mixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -659,7 +677,7 @@ class SHevr extends SH
 }
 
 class LTevr extends LT
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, TextMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -675,7 +693,7 @@ class LTevr extends LT
 }
 
 class STevr extends ST
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, TextMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -689,7 +707,7 @@ class STevr extends ST
 }
 
 class TMevr extends TM
-    with Common, Evr<String>, EvrShortMixin<String>, StringMixin, AsciiMixin {
+    with Common, Evr<String>, EvrShortMixin<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -704,7 +722,7 @@ class TMevr extends TM
 }
 
 class UCevr extends UC
-    with Common, Evr<String>, EvrLongMixin<String>, StringMixin, Utf8Mixin {
+    with Common, Evr<String>, EvrLongMixin<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -718,7 +736,7 @@ class UCevr extends UC
 }
 
 class URevr extends UR
-    with Common, Evr<String>, EvrLongMixin<String>, StringMixin, TextMixin {
+    with Common, Evr<String>, EvrLongMixin<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -732,7 +750,7 @@ class URevr extends UR
 }
 
 class UTevr extends UT
-    with Common, Evr<String>, EvrLongMixin<String>, StringMixin, TextMixin {
+    with Common, Evr<String>, EvrLongMixin<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 

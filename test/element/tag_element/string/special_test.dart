@@ -14,7 +14,7 @@ import 'utility_test.dart' as utility;
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'string/special_test', level: Level.info0);
+  Server.initialize(name: 'string/special_test', level: Level.info);
   system.throwOnError = false;
 
   group('AEtag', () {
@@ -1395,11 +1395,11 @@ void main() {
     test('UI hasValidValues good values', () {
       for (var s in goodUIList) {
         system.throwOnError = false;
-        final ui0 = new UItag(PTag.kStudyInstanceUID, s);
+        final ui0 = new UItag.fromStrings(PTag.kStudyInstanceUID, s);
         expect(ui0.hasValidValues, true);
       }
       system.throwOnError = false;
-      final ui0 = new UItag(PTag.kConcatenationUID, []);
+      final ui0 = new UItag.fromStrings(PTag.kConcatenationUID, []);
       expect(ui0.hasValidValues, true);
       expect(ui0.values, equals(<String>[]));
     });
@@ -1407,28 +1407,28 @@ void main() {
     test('UI hasValidValues bad values', () {
       for (var s in badUIList) {
         system.throwOnError = false;
-        final ui0 = new UItag(PTag.kStudyInstanceUID, s);
+        final ui0 = new UItag.fromStrings(PTag.kStudyInstanceUID, s);
         expect(ui0, isNull);
 
         system.throwOnError = true;
-        expect(() => new UItag(PTag.kStudyInstanceUID, s),
+        expect(() => new UItag.fromStrings(PTag.kStudyInstanceUID, s),
             throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
       system.throwOnError = false;
-      final ui1 = new UItag(PTag.kConcatenationUID, null);
+      final ui1 = new UItag.fromStrings(PTag.kConcatenationUID, null);
       log.debug('ui1: $ui1');
       expect(ui1, isNull);
 
       system.throwOnError = true;
-      expect(() => new UItag(PTag.kStudyInstanceUID, null),
+      expect(() => new UItag.fromStrings(PTag.kStudyInstanceUID, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('UI hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final ui0 = new UItag(PTag.kStudyInstanceUID, vList0);
+        final ui0 = new UItag.fromStrings(PTag.kStudyInstanceUID, vList0);
         log.debug('ui0:${ui0.info}');
         expect(ui0.hasValidValues, true);
 
@@ -1440,7 +1440,8 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 10);
-        final ui1 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final ui1 =
+            new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, vList0);
         expect(ui1.hasValidValues, true);
 
         log
@@ -1456,11 +1457,11 @@ void main() {
         log.debug('$i: vList0: $vList0');
 
         system.throwOnError = false;
-        final ui2 = new UItag(PTag.kStudyInstanceUID, vList0);
+        final ui2 = new UItag.fromStrings(PTag.kStudyInstanceUID, vList0);
         expect(ui2, isNull);
 
         system.throwOnError = true;
-        expect(() => new UItag(PTag.kStudyInstanceUID, vList0),
+        expect(() => new UItag.fromStrings(PTag.kStudyInstanceUID, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
@@ -1468,12 +1469,14 @@ void main() {
     test('UI update random', () {
       system.throwOnError = false;
       final vList0 = rsg.getUIList(3, 4);
-      final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+      final ui0 =
+          new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, vList0);
       expect(utility.testElementUpdate(ui0, vList0), true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(3, 4);
-        final ui1 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final ui1 =
+            new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, vList0);
         final vList1 = rsg.getUIList(3, 4);
         expect(ui1.update(vList1).values, equals(vList1));
       }
@@ -1481,13 +1484,15 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final vList0 = rsg.getUIList(3, 4);
-        final ui1 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final ui1 =
+            new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, vList0);
         final vList1 = rsg.getAEList(3, 4);
         expect(ui1.update(vList1), isNull);
 
         system.throwOnError = true;
         final vList2 = rsg.getUIList(3, 4);
-        final ui2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
+        final ui2 =
+            new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, vList2);
         final vList3 = rsg.getAEList(3, 4);
         expect(() => ui2.update(vList3),
             throwsA(const isInstanceOf<InvalidValuesError>()));
@@ -1495,21 +1500,23 @@ void main() {
 
       system.throwOnError = true;
       final vList2 = rsg.getUIList(3, 4);
-      final ui2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
+      final ui2 =
+          new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, vList2);
       final vList3 = ['3.2.840.10008.1.2.0'];
       expect(() => ui2.update(vList3),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('UI noValues random', () {
-      final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, []);
+      final ui0 = new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, []);
       final UItag uiNoValues = ui0.noValues;
       expect(uiNoValues.values.isEmpty, true);
       log.debug('ui0: ${ui0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(3, 4);
-        final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final ui0 =
+            new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, vList0);
         log.debug('ui0: $ui0');
         expect(uiNoValues.values.isEmpty, true);
         log.debug('ui0: ${ui0.noValues}');
@@ -1517,14 +1524,15 @@ void main() {
     });
 
     test('UI copy random', () {
-      final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, []);
+      final ui0 = new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, []);
       final UItag ui1 = ui0.copy;
       expect(ui1 == ui0, true);
       expect(ui1.hashCode == ui0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(3, 4);
-        final ui2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final ui2 =
+            new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, vList0);
         final UItag ui3 = ui2.copy;
         expect(ui3 == ui2, true);
         expect(ui3.hashCode == ui2.hashCode, true);
@@ -1535,8 +1543,8 @@ void main() {
       List<String> stringList0;
       for (var i = 0; i < 10; i++) {
         stringList0 = rsg.getUIList(1, 1);
-        final ui0 = new UItag(PTag.kConcatenationUID, stringList0);
-        final ui1 = new UItag(PTag.kConcatenationUID, stringList0);
+        final ui0 = new UItag.fromStrings(PTag.kConcatenationUID, stringList0);
+        final ui1 = new UItag.fromStrings(PTag.kConcatenationUID, stringList0);
         log
           ..debug('stringList0:$stringList0, ui0.hash_code:${ui0.hashCode}')
           ..debug('stringList0:$stringList0, ui1.hash_code:${ui1.hashCode}');
@@ -1555,22 +1563,24 @@ void main() {
       log.debug('UI hashCode and ==');
       for (var i = 0; i < 10; i++) {
         stringList0 = rsg.getUIList(1, 1);
-        final ui0 = new UItag(PTag.kConcatenationUID, stringList0);
+        final ui0 = new UItag.fromStrings(PTag.kConcatenationUID, stringList0);
 
         stringList1 = rsg.getUIList(1, 1);
-        final ui2 = new UItag(PTag.kDimensionOrganizationUID, stringList1);
+        final ui2 =
+            new UItag.fromStrings(PTag.kDimensionOrganizationUID, stringList1);
         log.debug('stringList1:$stringList1 , ui2.hash_code:${ui2.hashCode}');
         expect(ui0.hashCode == ui2.hashCode, false);
         expect(ui0 == ui2, false);
 
         stringList2 = rsg.getUIList(1, 10);
-        final ui3 = new UItag(PTag.kRelatedGeneralSOPClassUID, stringList2);
+        final ui3 =
+            new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, stringList2);
         log.debug('stringList2:$stringList2 , ui3.hash_code:${ui3.hashCode}');
         expect(ui0.hashCode == ui3.hashCode, false);
         expect(ui0 == ui3, false);
 
         stringList3 = rsg.getUIList(2, 3);
-        final ui4 = new UItag(PTag.kLaterality, stringList3);
+        final ui4 = new UItag.fromStrings(PTag.kLaterality, stringList3);
         log.debug('stringList3:$stringList3 , ui4.hash_code:${ui4.hashCode}');
         expect(ui0.hashCode == ui4.hashCode, false);
         expect(ui0 == ui4, false);
@@ -1580,7 +1590,7 @@ void main() {
     test('UI valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final ui0 = new UItag(PTag.kSOPInstanceUID, vList0);
+        final ui0 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
         expect(vList0, equals(ui0.valuesCopy));
       }
     });
@@ -1588,7 +1598,7 @@ void main() {
     test('UI isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final ui0 = new UItag(PTag.kSOPInstanceUID, vList0);
+        final ui0 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
         expect(ui0.tag.isValidLength(ui0.length), true);
       }
     });
@@ -1596,7 +1606,7 @@ void main() {
     test('UI isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final ui0 = new UItag(PTag.kSOPInstanceUID, vList0);
+        final ui0 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
         expect(ui0.tag.isValidValues(ui0.values), true);
         expect(ui0.hasValidValues, true);
       }
@@ -1605,18 +1615,18 @@ void main() {
     test('UI replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final ui0 = new UItag(PTag.kSOPInstanceUID, vList0);
+        final ui0 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
         final vList1 = rsg.getUIList(1, 1);
         expect(ui0.replace(vList1), equals(vList0));
         expect(ui0.values, equals(vList1));
       }
 
       final vList1 = rsg.getUIList(1, 1);
-      final ui1 = new UItag(PTag.kSOPInstanceUID, vList1);
+      final ui1 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList1);
       expect(ui1.replace([]), equals(vList1));
       expect(ui1.values, equals(<String>[]));
 
-      final ui2 = new UItag(PTag.kSOPInstanceUID, vList1);
+      final ui2 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList1);
       expect(ui2.replace(null), equals(vList1));
       expect(ui2.values, equals(<String>[]));
     });
@@ -1634,24 +1644,24 @@ void main() {
 
     test('UI checkLength good values', () {
       final vList0 = rsg.getUIList(1, 1);
-      final ui0 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final ui0 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
       for (var s in goodUIList) {
         expect(ui0.checkLength(s), true);
       }
-      final ui1 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final ui1 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
       expect(ui1.checkLength([]), true);
     });
 
     test('UI checkLength bad values', () {
       final vList0 = rsg.getUIList(1, 1);
       final vList1 = ['1.2.840.10008.5.1.4.34.5', '1.2.840.10008.3.1.2.32.7'];
-      final ui2 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final ui2 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
       expect(ui2.checkLength(vList1), false);
     });
 
     test('UI checkValue good values', () {
       final vList0 = rsg.getUIList(1, 1);
-      final ui0 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final ui0 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
       for (var s in goodUIList) {
         for (var a in s) {
           expect(ui0.checkValue(a), true);
@@ -1661,7 +1671,7 @@ void main() {
 
     test('UI checkValue bad values', () {
       final vList0 = rsg.getUIList(1, 1);
-      final ui0 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final ui0 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
       for (var s in badUIList) {
         for (var a in s) {
           system.throwOnError = false;
@@ -2137,11 +2147,11 @@ void main() {
 
         system.throwOnError = true;
         expect(() => new URtag(PTag.kRetrieveURL, stringList0),
-            throwsA(const isInstanceOf<InvalidValuesLength>()));
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         expect(() => new URtag(PTag.kPixelDataProviderURL, stringList1),
-            throwsA(const isInstanceOf<InvalidValuesLength>()));
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
         expect(() => new URtag(PTag.kRetrieveURL, stringList2),
-            throwsA(const isInstanceOf<InvalidValuesLength>()));
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 

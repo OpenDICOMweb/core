@@ -39,7 +39,8 @@ abstract class BDElement<V> extends Element<V> {
   /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
   bool get isEvr;
 
-  static BDElement make(int code, int vrIndex, ByteData bd, {bool isEvr = true}) =>
+  static BDElement make(int code, int vrIndex, ByteData bd,
+          {bool isEvr = true}) =>
       (isEvr) ? Evr.make(code, vrIndex, bd) : Ivr.make(code, vrIndex, bd);
 
   // **** End Interface ****
@@ -135,7 +136,8 @@ abstract class Float32Mixin {
 
   FloatBase update([Iterable<double> vList]) => unsupportedError();
 
-  FloatBase updateF(Iterable<double> f(Iterable<double> vList)) => unsupportedError();
+  FloatBase updateF(Iterable<double> f(Iterable<double> vList)) =>
+      unsupportedError();
 }
 
 // **** EVR Long Float Elements (OD, OF)
@@ -149,7 +151,8 @@ abstract class Float64Mixin {
 
   FloatBase update([Iterable<double> vList]) => unsupportedError();
 
-  FloatBase updateF(Iterable<double> f(Iterable<double> vList)) => unsupportedError();
+  FloatBase updateF(Iterable<double> f(Iterable<double> vList)) =>
+      unsupportedError();
 }
 
 abstract class IntMixin {
@@ -197,7 +200,7 @@ abstract class Int32Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, _int32SizeInBytes);
 }
 
-abstract class StringMixin {
+abstract class BDStringMixin {
   // **** Interface
   ByteData get bd;
   int get eLength;
@@ -219,13 +222,16 @@ abstract class StringMixin {
   int get valuesLength {
     if (vfLength == 0) return 0;
     var count = 1;
-    for (var i = vfOffset; i < eLength; i++) if (bd.getUint8(i) == kBackslash) count++;
+    for (var i = vfOffset; i < eLength; i++)
+      if (bd.getUint8(i) == kBackslash) count++;
     return count;
   }
 
   StringBase update([Iterable<String> vList]) => unsupportedError();
 
-  StringBase updateF(Iterable<String> f(Iterable<String> vList)) => unsupportedError();
+  // Urgent: remove after all element/base classes have this method
+  StringBase updateF(Iterable<String> f(Iterable<String> vList)) =>
+      unsupportedError();
 }
 
 /// A Mixin for [String] [Element]s that may only have ASCII values.
@@ -341,8 +347,10 @@ bool bdEqual(ByteData bd0, ByteData bd1) => byteDataEqual(bd0, bd1);
 /// Returns _true_ if all bytes in [bytes0] and [bytes1] are the same.
 /// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
 bool bytesEqual(Uint8List bytes0, Uint8List bytes1) {
-  final bd0 = bytes0.buffer.asByteData(bytes0.offsetInBytes, bytes0.lengthInBytes);
-  final bd1 = bytes1.buffer.asByteData(bytes1.offsetInBytes, bytes1.lengthInBytes);
+  final bd0 =
+      bytes0.buffer.asByteData(bytes0.offsetInBytes, bytes0.lengthInBytes);
+  final bd1 =
+      bytes1.buffer.asByteData(bytes1.offsetInBytes, bytes1.lengthInBytes);
   return byteDataEqual(bd0, bd1);
 }
 
@@ -354,7 +362,8 @@ int getLength(Uint8List vfBytes, int unitSize) {
 
 int _getValuesLength(int vfLengthField, int sizeInBytes) {
   final length = vfLengthField ~/ sizeInBytes;
-  assert(
-      vfLengthField >= 0 && vfLengthField.isEven && (vfLengthField % sizeInBytes == 0));
+  assert(vfLengthField >= 0 &&
+      vfLengthField.isEven &&
+      (vfLengthField % sizeInBytes == 0));
   return length;
 }

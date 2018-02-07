@@ -18,7 +18,7 @@ void main() {
       final elements = new MapAsList();
       final ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
-          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');
       elements[uiTransFerSyntax.index] = uiTransFerSyntax;
       log.debug('elements: $elements');
@@ -160,22 +160,25 @@ void main() {
       log.debug('noValues0: $noValues0');
     });
 
+    // Urgent Sharath: please fix
     test('noValuesAll', () {
       system.level = Level.debug;
-      final map0 = new MapAsList();
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final map0 = new MapAsList()..add(as0);
 
-      /*final rds = new TagRootDataset();
+      final rds = new TagRootDataset();
       final valuesList = <TagItem>[];
       map0[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
-      map0[kInstitutionAddress] = new STtag(PTag.kInstitutionAddress, ['foo bar']);
-      map0[kExtendedCodeMeaning] = new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
+      map0[kInstitutionAddress] =
+          new STtag(PTag.kInstitutionAddress, ['foo bar']);
+      map0[kExtendedCodeMeaning] =
+          new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
       valuesList.add(new TagItem.fromList(rds, map0));
       final sq0 = new SQtag(PTag.kPatientSizeCodeSequence, rds);
       map0[sq0.code] = sq0;
       final noV = map0.noValuesAll(sq0.index);
-      print(noV);*/
+      print(noV);
 
       map0[as0.code] = as0;
 
@@ -184,6 +187,7 @@ void main() {
 
       noValues0 = map0.noValuesAll(as0.key);
       for (var e in noValues0) {
+        print('noValues: $e');
         expect(e.values.isEmpty, true);
         log.debug('noValues0: $noValues0');
       }
@@ -270,7 +274,7 @@ void main() {
       final removeDup = map0.removeDuplicates();
       log.debug('map0: $map0, removeDup: $removeDup');
       expect(dup, equals(<Element>[]));
-      expect(removeDup, null);
+      expect(removeDup, <Element>[]);
     });
 
     test('getElementsInRange', () {
@@ -297,20 +301,198 @@ void main() {
       expect(inRange0, isNotNull);
     });
 
-    test('replaceUid', () {
-      final map = new MapAsList();
-      final uidList0 = '1.2.840.10008.5.1.4.34.5';
-      final uid1 = Uid.randomList(34);
-      final uidl0 = <Uid>[new Uid()];
+// Urgent Sharath: look at this and if okay remove this comment
+    test('Simple UItag, replace, and replaceUid test', () {
+      final uidString0 = '1.2.840.10008.5.1.4.34.5';
+      final uidString0a = '1.2.840.10008.5.1.4.34';
+      final uidStringList0 = [uidString0];
+      final uidStringList0a = [uidString0a];
+      final uid0 = new Uid(uidString0);
+      final uid0a = new Uid(uidString0a);
+      final uidList0 = [uid0];
+      final uidList0a = [uid0a];
 
-      final vList0 = rsg.getUIList(1, 1);
-      final uid0 = new UItag(PTag.kSelectorUIValue, vList0);
-      map.add(uid0);
+      // Create element and check values and uids
+      final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+      final map0 = new MapAsList()..add(ui0);
+      print('values: ${ui0.values}');
+      expect(ui0.values, equals(uidStringList0));
+      expect(ui0.value, equals(uidStringList0[0]));
+      print('values: ${ui0.uids}');
+      expect(ui0.uids, equals(uidList0));
+      expect(ui0.uids.elementAt(0), equals(uidList0[0]));
 
-      //Urgent
-      print(map.replaceUid(uid0.key, uidl0));
-      print(map.replaceUid(uid0.key, uid1));
+
+      // Test replace
+      final uidStringList0b = map0.replace(ui0.code, uidStringList0a);
+      expect(uidStringList0b, equals(uidStringList0));
+      expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
+
+      // Test replaceUid
+      final uidList0b = map0.replaceUid(ui0.code, uidList0a);
+      print('uidList0b: $uidList0b');
+      expect(uidList0b, equals(uidStringList0a));
+      expect(uidList0b.elementAt(0), equals(uidStringList0a[0]));
     });
+
+    // Urgent Sharath: similar to above but with UItag.fromString.
+    //                 if okay remove this comment
+    test('Simple UItag.fromString, replace, and replaceUid test', () {
+      final uidString0 = '1.2.840.10008.5.1.4.34.5';
+      final uidString0a = '1.2.840.10008.5.1.4.34';
+      final uidStringList0 = [uidString0];
+      final uidStringList0a = [uidString0a];
+      final uid0 = new Uid(uidString0);
+      final uid0a = new Uid(uidString0a);
+      final uidList0 = [uid0];
+      final uidList0a = [uid0a];
+
+      // Create element and check values and uids
+      final ui0 = new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+      final map0 = new MapAsList()..add(ui0);
+      print('values: ${ui0.values}');
+      expect(ui0.values, equals(uidStringList0));
+      expect(ui0.value, equals(uidStringList0[0]));
+      print('values: ${ui0.uids}');
+      expect(ui0.uids, equals(uidList0));
+      expect(ui0.uids.elementAt(0), equals(uidList0[0]));
+
+      // Test replace
+      final uidStringList0b = map0.replace(ui0.code, uidStringList0a);
+      expect(uidStringList0b, equals(uidStringList0));
+      expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
+
+      // Test replaceUid
+      final uidList0b = map0.replaceUid(ui0.code, uidList0a);
+      print('uidList0b: $uidList0b');
+      expect(uidList0b, equals(uidStringList0a));
+      expect(uidList0b.elementAt(0), equals(uidStringList0a[0]));
+    });
+
+    // Urgent Sharath: this should have a for loop that is generating new data
+    //                 on each iteration.
+    test('Simple Random UItag, replace, and replaceUid test', () {
+      final count = 8;
+      final uidList0 = Uid.randomList(count);
+      final uidList0a = Uid.randomList(count);
+      final uidStringList0 = UI.toStringList(uidList0);
+      final uidStringList0a = UI.toStringList(uidList0a);
+
+      // Create element and check values and uids
+      print('uidList0: $uidList0');
+      final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+      print('ui0: $ui0');
+      final map0 = new MapAsList()..add(ui0);
+      print('values: ${ui0.values}');
+      expect(ui0.values, equals(uidStringList0));
+      expect(ui0.value, equals(uidStringList0[0]));
+      print('values: ${ui0.uids}');
+      expect(ui0.uids, equals(uidList0));
+      expect(ui0.uids.elementAt(0), equals(uidList0[0]));
+
+      // Test replace
+      final uidStringList0b = map0.replace(ui0.code, uidStringList0a);
+      expect(uidStringList0b, equals(uidStringList0));
+      expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
+
+      // Test replaceUid
+      final uidList0b = map0.replaceUid(ui0.code, uidList0a);
+      print('uidList0b: $uidList0b');
+      expect(uidList0b, equals(uidStringList0a));
+      expect(uidList0b.elementAt(0), equals(uidStringList0a[0]));
+    });
+
+    // Urgent Sharath: this should have a for loop that is generating new data
+    //                 on each iteration.
+    test('Simple Random UItag.fromString, replace, and replaceUid test', () {
+      final uidString0 = '1.2.840.10008.5.1.4.34.5';
+      final uidString0a = '1.2.840.10008.5.1.4.34';
+      final uidStringList0 = [uidString0];
+      final uidStringList0a = [uidString0a];
+      final uid0 = new Uid(uidString0);
+      final uid0a = new Uid(uidString0a);
+      final uidList0 = [uid0];
+      final uidList0a = [uid0a];
+
+      // Create element and check values and uids
+      final ui0 = new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+      final map0 = new MapAsList()..add(ui0);
+      print('values: ${ui0.values}');
+      expect(ui0.values, equals(uidStringList0));
+      expect(ui0.value, equals(uidStringList0[0]));
+      print('values: ${ui0.uids}');
+      expect(ui0.uids, equals(uidList0));
+      expect(ui0.uids.elementAt(0), equals(uidList0[0]));
+
+      // Test replace
+      final uidStringList0b = ui0.replace(uidStringList0a);
+      expect(uidStringList0b, equals(uidStringList0));
+      expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
+
+      // Test replaceUid
+      final uidList0b = map0.replaceUid(ui0.code, uidList0a);
+      print('uidList0b: $uidList0b');
+      expect(uidList0b, equals(uidStringList0a));
+      expect(uidList0b.elementAt(0), equals(uidStringList0a[0]));
+    });
+
+/* Urgent Sharath: fix or flush
+    test('Simple Random UItag.fromString, replace, and replaceUid test', () {
+      final uid1 = new Uid(uidString0);
+      final ui1 = new UItag(PTag.kSelectorUIValue, uidList0);
+      final map1 = new MapAsList()
+        ..add(ui1);
+      expect(ui1.values == uidStringList0, true);
+      expect(ui0.value == uidStringList0[0], true);
+      var oldValues = map1.replaceUid(ui0.key, uidList0a);
+      var newValues = map1
+          .lookup(ui0.key)
+          .values;
+    });
+
+    test('Simple Random UItag.fromString, replace, and replaceUid test', () {
+      print('uidList1: $uidList0');
+      print('uidList1A: $uidList0a');
+      final ui2 = new UItag(PTag.kSelectorUIValue, uidList0);
+      final map2 = new MapAsList()..add(ui2);
+      expect(ui2.uids == uidList0, true);
+      expect(ui2.uids.elementAt(0) == uidList0[0], true);
+      expect(ui2.values == UI.toStringList(uidList0), true);
+      expect(ui2.value == UI.toStringList(uidList0)[0], true);
+
+      final uidList1b = ui2.replaceUid(uidList0a);
+      expect(ui2.uids == uidList0a, true);
+      expect(ui2.uids.elementAt(0) == uidList0a[0], true);
+      expect(ui2.values == UI.toStringList(uidList0a), true);
+      expect(ui2.value == UI.toStringList(uidList0a)[0], true);
+
+      final uidList1c  = map.replaceUid(ui0.key, uidList2);
+      var newValues = map.lookup(ui0.key).values;
+
+      final uidList2 = <Uid>[new Uid()];
+      print('uidList2: $uidList2');
+      final uid2 = new UItag(PTag.kSelectorUIValue, uidList2);
+      final map2 = new MapAsList()..add(uid1);
+
+
+      final vList3 = rsg.getUIList(1, 1);
+      final uid3 = new UItag.fromStrings(PTag.kSelectorUIValue, vList3);
+      final map3 = new MapAsList()..add(uid1);
+
+      var oldValues  = map.replaceUid(ui0.key, uidList2);
+      var newValues = map.lookup(ui0.key).values;
+      print('oldValues: $oldValues');
+      print('newValues: $newValues');
+      expect(ui0.values, equals(uidList2));
+      oldValues = map.replaceUid(ui0.key, uidList0);
+      newValues = map.lookup(ui0.key).values;
+
+      print(map.replaceUid(ui0.key, uidList0));
+
+
+      expect(ui0.values, equals(uidList2));
+    });
+*/
 
     test('replace', () {
       final map = new MapAsList();

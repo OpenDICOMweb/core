@@ -14,7 +14,9 @@ void main() {
   for (var i = 0; i < 1000; i++) {
     var uuid = new Uuid();
     checkUuid(uuid);
-    log..debug('$i:')..debug('  a:$uuid');
+    log
+      ..debug('$i:')
+      ..debug('  a:$uuid');
     uuid = new Uuid();
     log.debug('isSecure: ${Uuid.isSecure}');
     checkUuid(uuid);

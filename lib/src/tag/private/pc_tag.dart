@@ -5,6 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/string/hexadecimal.dart';
+import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/private/pc_tag_map.dart';
 import 'package:core/src/tag/private/pd_tag_definitions.dart';
 import 'package:core/src/tag/private/private_tag.dart';
@@ -15,18 +16,21 @@ import 'package:core/src/vr/vr.dart';
 //TODO: add constant tag for PCTag.kUnknown
 //TODO: this should be done the same way as KnownPublicTags
 class PCTag extends PrivateTag {
-  final int actualVRIndex;
+  final int correctlVRIndex = kLOIndex;
   @override
   final String name;
 
-  factory PCTag(int code, int actualVRIndex, String name) {
+  factory PCTag(int code, int vrIndex, String name) {
     final def = PCTagDefinition.lookup(name);
+    if (vrIndex != kLOIndex)
+      log.error('**** Error: Private Creator Tag with invalid vrIndex: '
+                    '$vrIndex');
     return (def != null)
-        ? new PCTagKnown(code, kLOIndex, name, def)
-        : new PCTagUnknown(code, kLOIndex, name);
+        ? new PCTagKnown(code, vrIndex, name, def)
+        : new PCTagUnknown(code, vrIndex, name);
   }
 
-  const PCTag._(int code, this.actualVRIndex, this.name) : super(code, kLOIndex);
+  const PCTag._(int code, int vrIndex, this.name) : super(code, kLOIndex);
 
   Map<int, PDTagDefinition> get dataTags => const <int, PDTagDefinition>{};
 

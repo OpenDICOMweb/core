@@ -22,13 +22,15 @@ const List<int> uuidList = const <int>[
 final Uint8List uuidBytes = new Uint8List.fromList(uuidList);
 
 void main() {
-  Server.initialize(name: 'uuid_string_test', level: Level.info);
+  Server.initialize(name: 'uuid_string_test', level: Level.debug);
+
   group('Uuid Tests', () {
     // The data in this test is in data.dart
     test('Uuid Test with seed', () {
-      log.debug('seed: ${Uuid.seed}');
       final uuid0 = new Uuid.seededPseudo();
-      log.debug('Uuid: $uuid0');
+      log
+        ..debug('seed: ${Uuid.seed}')
+        ..debug('Uuid: $uuid0');
       expect(uuid0.asString, equals(s0));
 
       final uuid1 = new Uuid.seededPseudo();

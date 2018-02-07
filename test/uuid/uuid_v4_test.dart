@@ -12,11 +12,12 @@ import 'data.dart';
 //TODO: generalize this package to use: uuid_pseudo, uuid_secure, uuid_w_seed
 
 void main() {
-  Server.initialize(name: 'uuid_v4_test', level: Level.info);
+  Server.initialize(name: 'uuid_v4_test', level: Level.debug);
 
   group('Version 4 Tests', () {
     test('Check if V4 is consistent using a seed', () {
       final uuid0 = new Uuid.seededPseudo();
+      print('uuid0: $uuid0');
       log..debug('uuid0: $uuid0')..debug('data0: $data0');
 
       expect(uuid0.data.length, equals(16));

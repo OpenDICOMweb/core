@@ -8,7 +8,7 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/private.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/string.dart';
-import 'package:core/src/element/tag/tag_element_mixin.dart';
+import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/tag/tag_lib.dart';

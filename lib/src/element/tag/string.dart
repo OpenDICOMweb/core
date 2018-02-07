@@ -8,15 +8,14 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/core.dart';
-
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
-import 'package:core/src/element/tag/tag_element_mixin.dart';
+import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag/tag.dart';
 
-
+// Urgent: move all updateF methods to base/string
 class StringBulkdata extends BulkdataRef<int> {
   @override
   int code;
@@ -96,7 +95,6 @@ class CStag extends CS with TagElement<String> {
       new CStag.fromBytes(tag, BASE64.decode(base64));
 
   static CStag fromBD(BDElement bd) => new CStag.fromBytes(bd.tag, bd.vfBytes);
-
 }
 
 class DStag extends DS with TagElement<String> {
@@ -270,7 +268,6 @@ class PNtag extends PN with TagElement<String> {
       new PNtag.fromBytes(tag, BASE64.decode(base64));
 
   static PNtag fromBD(BDElement bd) => new PNtag.fromBytes(bd.tag, bd.vfBytes);
-
 }
 
 /// A Short String (SH) Element
@@ -381,13 +378,22 @@ class UCtag extends UC with TagElement<String> {
 class UItag extends UI with TagElement<String> {
   @override
   final Tag tag;
+  // TODO: decide if values should be Iterable<String>
   @override
   Iterable<String> values;
 
-  factory UItag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (UI.isValidArgs(tag, vList))
-          ? new UItag._(tag, vList)
-          : invalidValuesError(vList, tag: tag);
+  factory UItag(Tag tag, Iterable<Uid> vList, {bool validate = true}) {
+    vList ??= Uid.kEmptyList;
+    if (validate && !UI.isValidArgs(tag, vList))
+      return invalidValuesError(vList, tag: tag);
+    return new UItag._(tag, UI.toStringList(vList));
+  }
+
+  factory UItag.fromStrings(Tag tag, Iterable<String> sList,
+          {bool validate = true}) =>
+      (sList == null || (validate && !UI.isValidStringArgs(tag, sList)))
+          ? invalidValuesError(sList, tag: tag)
+          : new UItag._(tag, sList);
 
   UItag._(this.tag, this.values);
 
@@ -396,11 +402,8 @@ class UItag extends UI with TagElement<String> {
         values = UI.fromBytes(bytes);
 
   @override
-  UItag update([Iterable<String> vList = kEmptyStringList]) => new UItag(tag, vList);
-
-  @override
-  UItag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new UItag(tag, f(values));
+  UItag update([Iterable<String> vList = kEmptyStringList]) =>
+      new UItag.fromStrings(tag, vList);
 
   static UItag make<String>(Tag tag, Iterable<String> vList) =>
       new UItag(tag, vList ?? kEmptyStringList);

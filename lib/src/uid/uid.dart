@@ -4,9 +4,6 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
-import 'package:bignum/bignum.dart';
 import 'package:core/src/uid/uid_errors.dart';
 import 'package:core/src/uid/uid_string.dart';
 import 'package:core/src/uid/well_known_uids.dart';
@@ -34,7 +31,6 @@ class Uid {
   static final _Generator _generator = generateSecureUidString;
   final String value;
 
-  //TODO: test that validation is working
   Uid([String s]) : this.value = (s == null) ? _generator() : check(s);
 
   /// Used by internal random generators
@@ -61,7 +57,9 @@ class Uid {
   @override
   int get hashCode => value.hashCode;
 
+  /// The minimum length of a [Uid][String].
   int get minLength => kUidMinLength;
+  /// The maximum length of a [Uid][String].
   int get maxLength => kUidMaxLength;
 
   int get maxRootLength => kUidMaxRootLength;
@@ -84,12 +82,13 @@ class Uid {
 
   // **** Static Getters and Methods
 
-  //TODO: is this the correct number
+  //TODO: What should minimum be?
   static const int kUidMinLength = 6;
   static const int kUidMaxLength = 64;
-  //TODO: is this the correct number
-  static int kUidMaxRootLength = 24;
+  //TODO: What should this value be?
+  static const int kUidMaxRootLength = 24;
 
+  /// An empty [List<Uid>].
   static const List<Uid> kEmptyList = const <Uid>[];
 
   /// ASCII constants for '0', '1', and '2'. No other roots are valid.
@@ -104,24 +103,17 @@ class Uid {
 
   /// Returns a [Uid] created from a pseudo random [Uuid].
   static String generateSeededPseudoUidString() =>
-      _convertBigIntToUid(V4Generator.seededPseudo.next);
+      Uuid.toUid(V4Generator.seededPseudo.next);
 
   /// Returns a [Uid] created from a pseudo random [Uuid].
   static String generatePseudoUidString() =>
-      _convertBigIntToUid(V4Generator.pseudo.next);
-
-  //TODO: Jim fix
-  static String _convertBigIntToUid(Uint8List uuid) {
-    final n = new BigInteger.fromBytes(1, uuid).abs();
-    final s = n.toRadix(16).padLeft(32, '0');
-//   log.debug('$n "$s"');
-    return '2.25.$s';
-  }
+      Uuid.toUid(V4Generator.pseudo.next);
 
   /// Returns a [Uid] created from a secure random [Uuid].
   static String generateSecureUidString() =>
-      _convertBigIntToUid(V4Generator.secure.next);
+      Uuid.toUid(V4Generator.secure.next);
 
+  /// Returns _true_ is [uid] has the DICOM UID Root (1.2.840.10008).
   static bool isDicom(Uid uid) => uid.asString.indexOf(dicomRoot) == 0;
 
   /// Returns [s] if it is a valid [Uid] [String]; otherwise, _null_.

@@ -8,11 +8,20 @@
 
 import 'package:core/server.dart';
 // 0: data
+
 List<int> data0 = <int>[
   143, 83, 77, 87, 1, 149, 74, 60, // No reformat
   135, 150, 139, 227, 179, 68, 64, 188
 ];
+
+
+/*List<int> data0 = <int>[
+  207, 206, 228, 240, 248, 183, 65, 3, // No reformat
+  152, 144, 119, 219, 68, 6, 252, 107
+];*/
+
 String s0 = '8f534d57-0195-4a3c-8796-8be3b34440bc';
+//String s0 = 'cfcee4f0-f8b7-4103-9890-77db4406fc6b';
 Uuid uuidD0 = new Uuid.fromList(data0);
 Uuid uuidS0 = Uuid.parse(s0);
 

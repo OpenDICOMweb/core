@@ -304,7 +304,8 @@ void main() {
     test('Create Uncompressed FrameList1Bit (FrameDescriptor.fromDataset)', () {
       //Frame Descriptor.fromDataSet1
       final ts = TransferSyntax.kExplicitVRLittleEndian;
-      final uiTransferSyntaxUID0 = new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+      final uiTransferSyntaxUID0 = new UItag.fromStrings(PTag
+                                                             .kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
@@ -764,7 +765,7 @@ void main() {
     test('Create Uncompressed FrameList8Bit (FrameDescriptor.fromDataset)', () {
       //Frame Descriptor.fromDataSet1
       final ts = TransferSyntax.kExplicitVRLittleEndian;
-      final uiTransferSyntaxUID0 = new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+      final uiTransferSyntaxUID0 = new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);

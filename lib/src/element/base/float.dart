@@ -361,7 +361,7 @@ abstract class Float64Base extends FloatBase {
   static const int kSizeInBytes = 8;
 
   /// Returns a [BASE64] [String] created from [vList];
-  static String listToBase64(Iterable<double> vList, {bool check = true}) =>
+  static String listToBase64(Iterable<double> vList) =>
       BASE64.encode(listToBytes(vList));
 
   /// Returns a [Uint8List] created from [vList];
@@ -378,7 +378,7 @@ abstract class Float64Base extends FloatBase {
 
   static Float64List toFloat64List(Iterable<double> vList,
       {bool asView = true}) =>
-      _toFloat64List(vList, asView);
+    _toFloat64List(vList, asView);
 
   static Float64List _toFloat64List(Iterable<double> vList, bool asView) {
     assert(vList != null);

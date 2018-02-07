@@ -1,57 +1,63 @@
 // Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
 // Use of this source code is governed by the open source license
 // that can be found in the LICENSE file.
-// Author: Jim Philbin <jfphilbin@gmail.edu> - 
+// Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
-
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'random_uid_test', level: Level.info);
+  Server.initialize(name: 'random_uid_test', level: Level.debug);
   group('Random Uid Tests', () {
-
-    test('Seeded Random Tests', (){
+    test('Seeded Random Tests', () {
       final uid = new Uid.seededPseudo();
-      final uid0 = new Uid.seededPseudo();
-      log.debug('uid: (${uid.asString.length})"$uid" '
-      'uid0: (${uid0.asString.length})"$uid0"');
-      expect(uid.asString.indexOf('2.25.') == 0, true);
-      expect(uid.asString.length > 30, true);
-      expect(uid.asString.length <= 44, true);
+      final uidString = uid.asString;
+      log.debug('uid: (${uidString.length})"$uid" ');
+      expect(uidString.indexOf('2.25.') == 0, true);
+      expect(uidString[5] != '0', true);
+      expect(uidString.length > 30, true);
+      expect(uidString.length <= 60, true);
 
+      final uid0 = new Uid.seededPseudo();
+      log.debug('uid0: (${uid0.asString.length})"$uid0"');
       expect(uid == uid0, false);
       expect(uid.hashCode, isNot(uid0.hashCode));
 
       final uid1 = Uid.generateSeededPseudoUidString();
       expect(uid1.indexOf('2.25.') == 0, true);
       expect(uid1.length > 30, true);
-      expect(uid1.length <= 44, true);
+      expect(uid1.length <= 60, true);
     });
 
-    test('Pseudo Random Tests', (){
+    test('Pseudo Random Tests', () {
       final uid = new Uid.pseudo();
-      expect(uid.asString.indexOf('2.25.') == 0, true);
-      expect(uid.asString.length > 30, true);
-      expect(uid.asString.length <= 44, true);
+      final uidString = uid.asString;
+      expect(uidString.indexOf('2.25.') == 0, true);
+      expect(uidString[5] != '0', true);
+      expect(uidString.length > 30, true);
+      expect(uidString.length <= 60, true);
 
       final uid1 = Uid.generatePseudoUidString();
       expect(uid1.indexOf('2.25.') == 0, true);
+      expect(uidString[5] != '0', true);
       expect(uid1.length > 30, true);
-      expect(uid1.length <= 44, true);
+      expect(uid1.length <= 60, true);
     });
 
     test('Secure Random Tests', () {
       final uid = new Uid.secure();
-      expect(uid.asString.indexOf('2.25.') == 0, true);
-      expect(uid.asString.length > 30, true);
-      expect(uid.asString.length <= 44, true);
+      final uidString = uid.asString;
+      expect(uidString.indexOf('2.25.') == 0, true);
+      expect(uidString[5] != '0', true);
+      expect(uidString.length > 30, true);
+      expect(uidString.length <= 60, true);
 
       final uid1 = Uid.generateSecureUidString();
       expect(uid1.indexOf('2.25.') == 0, true);
+      expect(uidString[5] != '0', true);
       expect(uid1.length > 30, true);
-      expect(uid1.length <= 44, true);
+      expect(uid1.length <= 60, true);
     });
 
     const goodUids = const <String>[
@@ -76,7 +82,7 @@ void main() {
       '1.4.1.2.840.10008.1.2.4.64.1.2.840.10008.1.2.4.64.1.2.840.10008.1.2.4.64',
       '0.0.000.00000.0.0.00',
       '1.2.a840.1b0008.1.2.4.64', // Uid can't have letters
-      '1.2.840.10a08.0.1.2'  // letters can't be used
+      '1.2.840.10a08.0.1.2' // letters can't be used
     ];
 
     test('parseList', () {
@@ -84,7 +90,7 @@ void main() {
       final abc = <String>[];
 
       wellKnownUids.forEach((index, value) {
-       abc.add(index);
+        abc.add(index);
       });
 
       final uidParseList = Uid.parseList(abc);
@@ -98,7 +104,7 @@ void main() {
       expect(uidRootType0, isNotNull);
     });
 
-    test('isValidStringList', (){
+    test('isValidStringList', () {
       final validStringList0 = Uid.isValidStringList(goodUids);
       expect(validStringList0, true);
 
@@ -114,12 +120,12 @@ void main() {
 
     test('check', () {
       //good
-      for(var s in wellKnownUids.keys) {
+      for (var s in wellKnownUids.keys) {
         final check = Uid.check(s);
         expect(check, isNotNull);
       }
       //bad
-      for(var s in badUids){
+      for (var s in badUids) {
         final check = Uid.check(s);
         expect(check, isNull);
       }
@@ -133,49 +139,38 @@ void main() {
 
     test('isDicom', () {
       final goodUids = const <String>[
-      '1.2.840.10008.1.1' ,
-      '1.2.840.10008.1.2',
-      '1.2.840.10008.1.2.1',
-      '1.2.840.10008.1.2.1.99',
-      '1.2.840.10008.1.2.2',
-      '1.2.840.10008.1.2.4.50',
-      '1.2.840.10008.1.2.4.51',
-      '1.2.840.10008.1.2.4.52',
-      '1.2.840.10008.1.2.4.53',
-
-      '1.2.840.10008.1.2.4.54',
-
-      '1.2.840.10008.1.2.4.55',
-
-      '1.2.840.10008.1.2.4.56',
-
-      '1.2.840.10008.1.2.4.57',
-      '1.2.840.10008.1.2.4.58',
-      '1.2.840.10008.1.2.4.59',
-      '1.2.840.10008.1.2.4.60',
-      '1.2.840.10008.1.2.4.61',
-
-      '1.2.840.10008.1.2.4.62',
-
-      '1.2.840.10008.1.2.4.63',
-
-      '1.2.840.10008.1.2.4.64',
-
-      '1.2.840.10008.1.2.4.65',
-      '1.2.840.10008.1.2.4.66',
-      '1.2.840.10008.1.2.4.70',
-
-      '1.2.840.10008.1.2.4.80',
-      '1.2.840.10008.1.2.4.81',
-      '1.2.840.10008.1.2.4.90',
-
-      '1.2.840.10008.1.2.4.91',
-      '1.2.840.10008.1.2.4.92',
-
-      '1.2.840.10008.1.2.4.93'
+        '1.2.840.10008.1.1',
+        '1.2.840.10008.1.2',
+        '1.2.840.10008.1.2.1',
+        '1.2.840.10008.1.2.1.99',
+        '1.2.840.10008.1.2.2',
+        '1.2.840.10008.1.2.4.50',
+        '1.2.840.10008.1.2.4.51',
+        '1.2.840.10008.1.2.4.52',
+        '1.2.840.10008.1.2.4.53',
+        '1.2.840.10008.1.2.4.54',
+        '1.2.840.10008.1.2.4.55',
+        '1.2.840.10008.1.2.4.56',
+        '1.2.840.10008.1.2.4.57',
+        '1.2.840.10008.1.2.4.58',
+        '1.2.840.10008.1.2.4.59',
+        '1.2.840.10008.1.2.4.60',
+        '1.2.840.10008.1.2.4.61',
+        '1.2.840.10008.1.2.4.62',
+        '1.2.840.10008.1.2.4.63',
+        '1.2.840.10008.1.2.4.64',
+        '1.2.840.10008.1.2.4.65',
+        '1.2.840.10008.1.2.4.66',
+        '1.2.840.10008.1.2.4.70',
+        '1.2.840.10008.1.2.4.80',
+        '1.2.840.10008.1.2.4.81',
+        '1.2.840.10008.1.2.4.90',
+        '1.2.840.10008.1.2.4.91',
+        '1.2.840.10008.1.2.4.92',
+        '1.2.840.10008.1.2.4.93'
       ];
 
-      for(var s in goodUids) {
+      for (var s in goodUids) {
         final dicom = Uid.isDicom(Uid.parse(s));
         expect(dicom, true);
       }
@@ -188,8 +183,5 @@ void main() {
       final rs0 = Uid.randomString();
       expect(rs0, isNotNull);
     });
-
-
   });
 }
-

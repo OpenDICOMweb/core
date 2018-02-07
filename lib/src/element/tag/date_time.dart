@@ -12,7 +12,7 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
-import 'package:core/src/element/tag/tag_element_mixin.dart';
+import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/empty_list.dart';
 import 'package:core/src/tag/tag_lib.dart';
 

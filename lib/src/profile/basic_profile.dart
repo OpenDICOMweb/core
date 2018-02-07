@@ -69,7 +69,7 @@ class BasicProfile {
 
   /// U: Replace with a non-zero length UID that is internally consistent
   /// within a set of Instances in the Study or Series;
-  static Element replaceUids(Dataset ds, Tag tag, Iterable<Uid> values,
+  static List<String> replaceUids(Dataset ds, Tag tag, Iterable<Uid> values,
           {bool required = false}) =>
       ds.replaceUid(tag.code, values);
 

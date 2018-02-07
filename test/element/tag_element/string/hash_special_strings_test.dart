@@ -3,7 +3,6 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -14,13 +13,14 @@ void main() {
   Server.initialize(name: 'element/hash_special_test', level: Level.info);
   test('UI', () {
     final stringList1 = rsg.getUIList(1, 1);
-    final ui0 = new UItag(PTag.kStudyInstanceUID, stringList1);
+    final ui0 = new UItag.fromStrings(PTag.kStudyInstanceUID, stringList1);
 
     final sha2 = Sha256.stringList(stringList1);
     log.debug('stringList1: $stringList1;, sha2: $sha2');
     system.throwOnError = true;
-    expect(() => ui0.sha256, throwsA(const isInstanceOf<Sha256UnsupportedError>()));
-    expect(() => ui0.hash, throwsA(const isInstanceOf<UnimplementedError>()));
+    expect(() => ui0.sha256,
+        throwsA(const isInstanceOf<Sha256UnsupportedError>()));
+    expect(() => ui0.hash, throwsA(const isInstanceOf<UnsupportedError>()));
   });
 
   test('AS', () {
@@ -35,14 +35,15 @@ void main() {
     expect(AS.isValidValues(PTag.kPatientAge, sha0.values), true);
 
     final sha1 = as1.sha256;
-    expect(sha1 .hasValidValues, true);
+    expect(sha1.hasValidValues, true);
     expect(AS.isValidValues(PTag.kPatientAge, sha1.values), true);
 
-    final sha2  = as2.sha256;
-    expect(sha2 .hasValidValues, true);
-    expect(AS.isValidValues(PTag.kPatientAge,sha2 .values), true);
+    final sha2 = as2.sha256;
+    expect(sha2.hasValidValues, true);
+    expect(AS.isValidValues(PTag.kPatientAge, sha2.values), true);
 
-    log.debug('as0.hash: ${as0.hash}, as1.hash: ${as1.hash}, as2.hash: ${as2.hash}');
+    log.debug(
+        'as0.hash: ${as0.hash}, as1.hash: ${as1.hash}, as2.hash: ${as2.hash}');
     var hash0 = as0.acrHash;
     log.debug('hash0: ${hash0.info}');
     var hash1 = as1.acrHash;

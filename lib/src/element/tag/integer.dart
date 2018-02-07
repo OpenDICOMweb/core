@@ -12,7 +12,7 @@ import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/integer.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
-import 'package:core/src/element/tag/tag_element_mixin.dart';
+import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag/tag.dart';
 
 class IntBulkdata extends BulkdataRef<int> {
@@ -277,7 +277,7 @@ class OWtag extends OW with TagElement<int> {
   factory OWtag(Tag tag,
           [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
 //Urgent Jim: figure out what to do with Private Creators with bad vr
-      (OW.isValidArgs(tag, vList) || tag is PCTagUnknown)
+      (OW.isValidArgs(tag, vList))
           ? new OWtag._(tag, vList, vfLengthField)
           : invalidValuesError(vList, tag: tag);
 
