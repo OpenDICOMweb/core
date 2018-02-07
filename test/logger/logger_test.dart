@@ -7,7 +7,7 @@
 import 'package:core/core.dart';
 import 'package:test/test.dart';
 
-Logger log = new Logger('test', Level.debug);
+Logger log = new Logger('test', Level.info);
 
 void main() {
 

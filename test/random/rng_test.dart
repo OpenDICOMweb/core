@@ -11,13 +11,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'rng/float_test', level: Level.info);
-  rngTest();
-}
 
-//TODO: remove var from tests
-//Logger log = new Logger('rng_test', Level.debug0);
-//Seed is provided for repeatability
-void rngTest() {
   group('getLength tests of RNG', () {
     final rng = new RNG(0);
     final count = 10;
@@ -63,7 +57,8 @@ void rngTest() {
     final minMax = 32;
     final maxMax = 255;
     final minLength = rng.nextUint(minMin, maxMin);
-    final maxLength = rng.nextUint(minLength, minLength + rng.nextUint(minMax, maxMax));
+    final maxLength =
+        rng.nextUint(minLength, minLength + rng.nextUint(minMax, maxMax));
     log.debug('minLength($minLength), maxLength($maxLength)');
 
     //TODO: test range of values

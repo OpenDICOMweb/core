@@ -162,7 +162,7 @@ void main() {
 
     // Urgent Sharath: please fix
     test('noValuesAll', () {
-      system.level = Level.debug;
+//      system.level = Level.debug;
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final map0 = new MapAsList()..add(as0);
 
@@ -267,7 +267,7 @@ void main() {
         ..add(ob0)
         ..add(ae0);
 
-      system.level = Level.debug;
+//      system.level = Level.debug;
       final dup = map0.duplicates;
       log.debug('map0: $map0, dup: $dup');
       expect(dup, isNotNull);
@@ -286,7 +286,7 @@ void main() {
 
       map0..add(fd0)..add(as0)..add(ob0)..add(ae0);
 
-      system.level = Level.debug;
+//      system.level = Level.debug;
       final inRange0 = map0.getElementsInRange(0, fd0.code);
       final inRange1 = map0.getElementsInRange(0, fd0.code + 1);
       final inRange2 = map0.getElementsInRange(0, ae0.code);
@@ -500,7 +500,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       map.add(fd0);
 
-      system.level = Level.debug;
+//      system.level = Level.debug;
       final vList1 = [123];
       expect(map.replace(fd0.index, vList1), equals(vList0));
       log.debug('fd0.values: ${fd0.values}');
@@ -521,7 +521,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       map.add(fd0);
 
-      system.level = Level.debug;
+//      system.level = Level.debug;
       final vList1 = [123];
       final replaceA0 = map.replaceAll(fd0.index, vList1);
       log.debug('replaceA0 : $replaceA0');

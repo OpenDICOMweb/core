@@ -9,11 +9,6 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'rng/in_range_test', level: Level.info);
-  rngStringTest();
-}
-
-void rngStringTest() {
-  //final Logger log = new Logger('rng_test', Level.debug0);
 
   group('RNG Strings test', () {
     final rng = new RNG(0);
@@ -21,8 +16,8 @@ void rngStringTest() {
     test('nextDigit test', () {
       final count = rng.getLength(10, 100);
       for (var i = 0; i < count; i++) {
-	      final c = rng.nextDigit;
-	      final n = c.codeUnitAt(0);
+        final c = rng.nextDigit;
+        final n = c.codeUnitAt(0);
         log.debug('nextDigit c: $c, n: $n');
         expect(n >= k0 + 0 && n <= k0 + 9, true);
       }
@@ -32,8 +27,8 @@ void rngStringTest() {
       system.level = Level.debug2;
       final count = rng.getLength(10, 100);
       for (var i = 0; i < count; i++) {
-	      final len = rng.getLength(1, 12);
-	      final s = rng.nextIntString(len, len);
+        final len = rng.getLength(1, 12);
+        final s = rng.nextIntString(len, len);
         log.debug('nextIntString: (${s.length})"$s"');
         expect(s.isNotEmpty && s.length <= 16, true);
         expect(int.parse(s) is int, true);
@@ -47,22 +42,22 @@ void rngStringTest() {
       system.level = Level.debug2;
       final count = rng.getLength(10, 100);
       for (var i = 0; i < count; i++) {
-	      final word = rng.nextAsciiWord(minWordLength, maxWordLength);
+        final word = rng.nextAsciiWord(minWordLength, maxWordLength);
         log.debug('nextAsciiWord: (${word.length})"$word"');
         expect(
             word.length >= minWordLength && word.length <= maxWordLength, true);
-	      final codeUnits = word.codeUnits;
+        final codeUnits = word.codeUnits;
         for (var c in codeUnits) expect(isWordChar(c), true);
       }
 
       minWordLength = 16;
       maxWordLength = 64;
       for (var i = 0; i < count; i++) {
-	      final word = rng.nextAsciiWord(minWordLength, maxWordLength);
+        final word = rng.nextAsciiWord(minWordLength, maxWordLength);
         log.debug('nextIntString: (${word.length})"$word"');
         expect(
             word.length >= minWordLength && word.length <= maxWordLength, true);
-	      final codeUnits = word.codeUnits;
+        final codeUnits = word.codeUnits;
         for (var c in codeUnits) expect(isWordChar(c), true);
       }
     });
