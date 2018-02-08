@@ -867,6 +867,65 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
+    test('Int32Base listToByteData good values', () {
+      system.level = Level.debug;
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final int32list0 = rng.int32List(1, 1);
+        final bd0 = int32list0.buffer.asByteData();
+        final lBd0 = Int32Base.listToByteData(int32list0);
+        log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
+            .asUint8List()}');
+        expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd0.buffer == bd0.buffer, true);
+
+        final lBd1 = Int32Base.listToByteData(int32list0, check: false);
+        log.debug(
+            'lBd3: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd1.buffer == bd0.buffer, true);
+      }
+
+      const int32Max = const [kInt32Max];
+      final int32List = new Int32List.fromList(int32Max);
+      final bd1 = int32List.buffer.asByteData();
+      final lBd2 = Int32Base.listToByteData(int32List);
+      log.debug(
+          'bd: ${bd1.buffer.asUint8List()}, lBd2: ${lBd2.buffer.asUint8List()}');
+      expect(lBd2.buffer.asUint8List(), equals(bd1.buffer.asUint8List()));
+      expect(lBd2.buffer == bd1.buffer, true);
+    });
+
+    test('Int32Base listToByteData bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final int32list0 = rng.int32List(1, 1);
+        final bd0 = int32list0.buffer.asByteData();
+        final lBd1 = Int32Base.listToByteData(int32list0, asView: false);
+        log.debug(
+            'lBd1: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd1.buffer == bd0.buffer, false);
+
+        final lBd2 =
+        Int32Base.listToByteData(int32list0, asView: false, check: false);
+        log.debug(
+            'lBd2: ${lBd2.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        expect(lBd2.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd2.buffer == bd0.buffer, false);
+      }
+
+      final int32Max = const <int>[kInt32Max + 1];
+      expect(Int32Base.listToByteData(int32Max), isNull);
+
+      const int32Min = const [kInt32Min - 1];
+      expect(Int32Base.listToByteData(int32Min), isNull);
+
+      system.throwOnError = true;
+      expect(() => Int32Base.listToByteData(int32Max),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+    });
+
     test('SL fromBase64', () {
       system.level = Level.info;
       for (var i = 0; i < 10; i++) {

@@ -361,10 +361,8 @@ abstract class AE extends StringAscii {
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 16;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -423,6 +421,7 @@ abstract class AE extends StringAscii {
       (isValidValues(tag, vList, issues)) ? vList : null;
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> fromBytes(Uint8List bytes,
@@ -470,10 +469,8 @@ abstract class CS extends StringAscii {
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 16;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList, issues));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -534,6 +531,7 @@ abstract class CS extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -628,10 +626,8 @@ abstract class DS extends StringAscii {
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 16;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -688,6 +684,7 @@ abstract class DS extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -773,10 +770,8 @@ abstract class IS extends StringAscii {
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 12;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -835,6 +830,7 @@ abstract class IS extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -969,15 +965,12 @@ abstract class UI extends StringAscii {
   static const int kMaxValueLength = 64;
 
   static bool isValidArgs(Tag tag, Iterable<Uid> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, toStringList(vList)));
+      vList != null &&
+      (doTestValidity ? isValidValues(tag, toStringList(vList)) : true);
 
   static bool isValidStringArgs(Tag tag, Iterable<String> vList,
           [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1033,6 +1026,7 @@ abstract class UI extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -1099,10 +1093,8 @@ abstract class LO extends StringUtf8 {
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 64;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1157,6 +1149,7 @@ abstract class LO extends StringUtf8 {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -1231,10 +1224,8 @@ abstract class PN extends StringUtf8 {
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 3 * 64;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1289,6 +1280,7 @@ abstract class PN extends StringUtf8 {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> fromBytes(Uint8List bytes,
@@ -1334,10 +1326,8 @@ abstract class SH extends StringUtf8 {
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 16;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1392,6 +1382,7 @@ abstract class SH extends StringUtf8 {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -1441,10 +1432,8 @@ abstract class UC extends StringUtf8 {
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = kMaxLongVF;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1500,6 +1489,7 @@ abstract class UC extends StringUtf8 {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -1567,10 +1557,8 @@ abstract class LT extends Text {
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 10240;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1625,6 +1613,7 @@ abstract class LT extends Text {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -1674,10 +1663,8 @@ abstract class ST extends Text {
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 1024;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1732,6 +1719,7 @@ abstract class ST extends Text {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> fromBytes(Uint8List bytes,
@@ -1785,10 +1773,8 @@ abstract class UR extends Text {
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = kMaxLongVF;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1847,6 +1833,7 @@ abstract class UR extends Text {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -1921,10 +1908,8 @@ abstract class UT extends Text {
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = kMaxLongVF;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -1975,6 +1960,7 @@ abstract class UT extends Text {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> fromBytes(Uint8List bytes,
@@ -2048,10 +2034,8 @@ abstract class AS extends StringBase {
   static const int kMinValueLength = 4;
   static const int kMaxValueLength = 4;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -2101,6 +2085,7 @@ abstract class AS extends StringBase {
   }
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -2180,10 +2165,8 @@ abstract class DA extends StringBase {
   static const int kMinValueLength = 8;
   static const int kMaxValueLength = 8;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList, issues));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -2230,6 +2213,7 @@ abstract class DA extends StringBase {
   }
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -2294,10 +2278,8 @@ abstract class DT extends StringBase {
   static const int kMinValueLength = 4;
   static const int kMaxValueLength = 26;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList, issues));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -2344,6 +2326,7 @@ abstract class DT extends StringBase {
   }
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
@@ -2409,10 +2392,8 @@ abstract class TM extends StringBase {
   static const int kMinValueLength = 2;
   static const int kMaxValueLength = 13;
 
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      (isValidVRIndex(tag.vrIndex) &&
-          vList != null &&
-          isValidValues(tag, vList, issues));
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -2459,6 +2440,7 @@ abstract class TM extends StringBase {
   }
 
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
   static Iterable<String> checkList(Tag tag, Iterable<String> vList,
