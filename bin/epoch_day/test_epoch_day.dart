@@ -31,8 +31,8 @@ void main() {
 
   assert(zeroDay == 0, '1970-01-01 is day 0');
   assert(dateListsEqual(epochDayToDate(0), zeroDate), '1970-01-01 is day 0');
-  assert(
-      weekdayFromEpochDay(dateToEpochDay(1970, 1, 1)) == 4, '1970-01-01 is a Thursday');
+  assert(weekdayFromEpochDay(dateToEpochDay(1970, 1, 1)) == 4,
+      '1970-01-01 is a Thursday');
 
   assert(dateToEpochDay(1970, 1, 1) == 0);
   assert(dateToEpochDay(1969, 12, 31) == -1);
@@ -55,7 +55,8 @@ void leapYearTest(int startYear, int endYear) {
   for (var i = startYear; i < endYear; i++) {
     final List<int> date = epochDayToDate(i);
     final y = date[0];
-    log.debug('year: $y, isCommonYear: ${isCommonYear(y)}, isLeapYear: ${isLeapYear(y)}'
+    log.debug(
+        'year: $y, isCommonYear: ${isCommonYear(y)}, isLeapYear: ${isLeapYear(y)}'
         'i % 4: ${i % 4}, isLeapYear: ${isLeapYear(i)}');
     final m = date[1];
     final d = date[2];
@@ -116,8 +117,7 @@ void dateUnitTest(int startYear, int endYear) {
   // log.debug('\n******* Starting Loop');
   watch.start();
   for (var y = startYear; y <= endYear; y++) {
-    if (y % 10000 == 0)
-    	log.info0('    Year: $y: ${watch.elapsed}');
+    if (y % 10000 == 0) log.info0('    Year: $y: ${watch.elapsed}');
     for (var m = 1; m <= 12; m++) {
       final e = lastDayOfMonth(y, m);
       log.debug('Month: $m, lastDay: $e');

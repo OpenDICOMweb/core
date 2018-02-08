@@ -6,7 +6,6 @@
 
 import 'package:core/server.dart';
 
-// Urgent Sharath: move to tag
 // Urgent Sharath: Create something like this for element if it doesn't already exist.
 void main() {
   final rootDS = new TagRootDataset();
@@ -53,7 +52,7 @@ void main() {
   final x1 = <dynamic>[1, ' foo'];
   final x2 = <dynamic>['Foo', 1.11];
 
-  //Urgent Sharath: move to Element
+  // Urgent Sharath: move to core/test/vr
   print('\ntestVRIsValidValuesType');
   testVRIsValidValues(vrIndex, d0, ' $d0', expected: true);
   testVRIsValidValues(vrIndex, d1, ' $d1', expected: false);

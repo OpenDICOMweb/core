@@ -355,9 +355,6 @@ void main() {
           equals(new UNtagPixelData.fromBytes(
               PTag.kNoName0, frame, frame.lengthInBytes, ts, frags)));
 
-      /* final un1 =
-          new UNtagPixelData.fromBytes(PTag.kSelectorSTValue, frame, frame.lengthInBytes);
-*/
       expect(un0.tag == PTag.kNoName0, true);
       expect(un0.vrIndex == kUNIndex, true);
       //expect(un1.vrIndex == kUNIndex, false);
@@ -564,7 +561,6 @@ void main() {
       expect(UN.isValidValue(UN.kMaxValue + 1), false);
     });
 
-    // Urgent Sharath: delete of fix - UN values are always valid
     test('Create UN.isValidValues', () {
       system.throwOnError = false;
       const uInt8Min = const [UN.kMinValue];

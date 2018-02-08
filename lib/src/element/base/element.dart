@@ -360,14 +360,6 @@ abstract class Element<V> extends ListBase<V> {
 
   bool valuesEqual(Element<V> other) => vListEqual<V>(values, other.values);
 
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method is a side effect on the [Element].
-  Iterable<V> replace([Iterable<V> vList]);
-
-  /// Replace the current [values] with the result of [f(vList)], and return
-  /// the original [values]. This method is a side effect on the [Element].
-  Iterable<V> replaceF(Iterable<V> f(Iterable<V> vList));
-
   // ************ Element related Getters and Methods *************
   // **************************************************************
 
@@ -444,10 +436,24 @@ abstract class Element<V> extends ListBase<V> {
   /// _true_ if the [Element] is valid.
   bool get isValid => hasValidVR && hasValidLength && hasValidValues;
 
-  /// Returns a copy of _this_ with [values] replaced by [ValuesConverter(values)].
+  /// Returns a copy of _this_ with [values] replaced by [vList].
   Element<V> update([Iterable<V> vList]);
 
-  Element updateF(Iterable<V> f(Iterable<V> vList));
+  /// Returns a copy of _this_ with [values] [f]([values]).
+  Element updateF(Iterable<V> f(Iterable<V> vList)) => update(f(values));
+
+  /// Replace the current [values] with [vList], and return the original
+  /// [values]. This method modifies the [Element].
+  Iterable<V> replace([Iterable<V> vList]) {
+    vList ??= <V>[];
+    final old = values;
+    values = vList;
+    return old;
+  }
+
+  /// Replace the current [values] with the result of [f([values]])],
+  /// and return the original [values]. This method modifies the [Element].
+  Iterable<V> replaceF(Iterable<V> f(Iterable<V> vList)) => replace(f(values));
 
   /// Returns a copy of _this_.
   Element<V> get copy => update(valuesCopy);

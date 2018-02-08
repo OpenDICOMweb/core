@@ -74,28 +74,6 @@ abstract class IntBase extends Element<int> {
   /// Returns a [view] of this [Element] with [values] replaced by [TypedData].
   IntBase view([int start = 0, int length]);
 
-  @override
-  IntBase update([Iterable<int> vList = kEmptyIntList]);
-
-  @override
-  IntBase updateF(Iterable<int> f(Iterable<int> vList));
-
-  @override
-  Iterable<int> replace([Iterable<int> vList = kEmptyIntList]) =>
-      _replace(vList ?? kEmptyIntList);
-
-  @override
-  Iterable<int> replaceF(Iterable<int> f(Iterable<int> vList)) =>
-      _replace(f(values) ?? kEmptyIntList);
-
-  // This is a space & speed optimization - rather than [super.replace].
-  Iterable<int> _replace(Iterable<int> vList) {
-    //  final v = (vList is! Iterable<int>) ? vList.toIntList(vList) : vList;
-    final old = values;
-    values = vList;
-    return old;
-  }
-
   static bool _isValidValue(int v, Issues issues, int min, int max) {
     if (v < min || v > max) {
       if (issues != null) {

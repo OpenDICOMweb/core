@@ -212,24 +212,6 @@ abstract class StringBase extends Element<String> {
   bool checkValues(Iterable<String> vList, [Issues issues]) =>
       super.checkValues(vList, issues);
 
-  @override
-  Iterable<String> replace([Iterable<String> vList = kEmptyStringList]) =>
-      _replace(vList);
-
-  @override
-  Iterable<String> replaceF(Iterable<String> f(Iterable<String> vList)) =>
-      _replace(f(values) ?? kEmptyStringList);
-
-  Iterable<String> _replace(Iterable<String> vList) {
-    var v = vList ?? kEmptyStringList;
-    if (v.isNotEmpty) {
-      v = (vList is! Iterable<String>) ? vList.toList() : vList;
-    }
-    final old = values;
-    values = v;
-    return old;
-  }
-
   static const bool kIsAsciiRequired = true;
   static const int kSizeInBytes = 1;
   static const int kSizeInBits = kSizeInBytes * 8;
@@ -465,7 +447,7 @@ abstract class CS extends StringAscii {
   static const String kVRName = 'Code String';
   static const int kMaxVFLength = kMaxShortVF;
   static const int kMaxLength = kMaxShortVF ~/ 2;
-  // Urgent Jim: is "" a valid code value?
+  // It seems that CS may have an empty String value
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 16;
 
@@ -510,7 +492,6 @@ abstract class CS extends StringAscii {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  // Urgent Jim: decide what to do about blank values (""). all String Elements
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) return false;
@@ -577,6 +558,7 @@ abstract class DS extends StringAscii {
     return update(vList);
   }
 
+  // TODO: should this be in core/src/string?
   /// Returns a [String] that approximately corresponds to [v],
   /// that has at most 16 characters.
   String floatToString(double v) {
@@ -929,18 +911,12 @@ abstract class UI extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  // Urgent Sharath: add this method to all classes in element/base
-  // Urgent Sharath: and remove it element/tag and element/byte_data classes
-  @override
-  StringBase updateF(Iterable<String> f(Iterable<String> vList)) =>
-      update(f(values));
-
   UI updateUid(Iterable<Uid> uidList) => update(toStringList(uidList));
 
   UI updateUidF(Iterable<Uid> f(Iterable<String> vList)) =>
       updateUid(f(values));
 
-  Iterable<Uid> replaceUid([Iterable<Uid> vList = Uid.kEmptyList]) =>
+  Iterable<Uid> replaceUid(Iterable<Uid> vList) =>
       _replaceUid(vList);
 
   Iterable<Uid> replaceUidF(Iterable<Uid> f(Iterable<Uid> vList)) =>

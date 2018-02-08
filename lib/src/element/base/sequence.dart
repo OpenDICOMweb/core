@@ -162,18 +162,6 @@ Summary $tag
   @override
   SQ update([Iterable<Item> vList = emptyItemList]);
 
-  @override
-  SQ updateF(Iterable<Item> f(Iterable<Item> vList));
-
-/*
-  Element updateElementAt<V>(int itemIndex, int eIndex, Iterable<V> vList) {
-    RangeError.checkValueInInterval(itemIndex, 0, items.length);
-    final item = items[itemIndex];
-    final e = item.lookup(eIndex);
-    return e.update(vList);
-  }
-*/
-
   Iterable<Element> updateAll<V>(int index, Iterable<V> vList,
       {bool required = false}) {
     final eList = <Element>[];
@@ -226,14 +214,21 @@ Summary $tag
   Iterable<Item> replaceF(Iterable<Item> f(Iterable<Item> vList)) =>
       unsupportedError();
 
+/*
   Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
     final result = <Iterable<V>>[];
     for (var item in items) {
-      final old = item.replace<V>(index, vList);
+      final old = item.replace(index, vList);
       result.add(old);
     }
     return result;
   }
+*/
+
+  Iterable<V> _replaceF<V>(Iterable<V> vList) => vList;
+
+  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) =>
+      replaceAllF(index, _replaceF);
 
   Iterable<Iterable<V>> replaceAllF<V>(
       int index, Iterable<V> f(Iterable<V> vList)) {

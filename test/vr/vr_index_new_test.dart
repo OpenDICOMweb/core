@@ -8,7 +8,7 @@ import 'package:core/core.dart';
 import 'package:test/test.dart';
 
 
-//Urgent: move any other VR tests from Tag to Test.
+// Urgent: move any other VR tests from Tag to Test.
 void main() {
   test('VR Index', () {
     expect(VR.kSQ.index == kSQIndex, true);

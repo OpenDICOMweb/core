@@ -78,41 +78,11 @@ abstract class FloatBase extends Element<double> {
   /// Returns a [view] of this [Element] with [values] replaced by [TypedData].
   FloatBase view([int start = 0, int length]);
 
-  @override
-  FloatBase update([Iterable<double> vList = kEmptyDoubleList]);
-
-  @override
-  FloatBase updateF(Iterable<double> f(Iterable<double> vList));
-
-  @override
-  Iterable<double> replace([Iterable<double> vList = kEmptyDoubleList]) =>
-      _replace(vList ?? kEmptyDoubleList);
-
-  @override
-  Iterable<double> replaceF(Iterable<double> f(Iterable<double> vList)) =>
-      _replace(f(values) ?? kEmptyDoubleList);
-
-  // This is a space & speed optimization - rather than [super.replace].
-  Iterable<double> _replace(Iterable<double> vList) {
-    // final v = (vList is! Iterable<double>) ? toF64List(vList) : vList;
-    final old = values;
-    values = vList;
-    return old;
-  }
-
   /// Returns _true_ if each value in [vList] is valid.
   static bool isValidValues(
       Tag tag, Iterable<double> vList, Issues issues, int maxVListLength) {
     if (!Element.isValidVListLength(tag, vList, issues, maxVListLength))
       return false;
-
-/* TODO: Delete when sure only doubles will be passed
-    for (var v in vList)
-      if (!isValidValue(v)) {
-        invalidValuesError(vList, issues: issues);
-        return false;
-      }
-*/
     return true;
   }
 }

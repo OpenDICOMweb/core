@@ -65,7 +65,6 @@ void main() {
     final ds0 = new DStag(PTag.kProcedureStepProgress, stringLst0);
     final ds1 = new DStag(PTag.kProcedureStepProgress, stringLst0);
     final ds2 = new DStag(PTag.kProcedureStepProgress, stringLst1);
-//Fix conversion in Element DS from floating list to string list
     log.debug('ds0.hash: ${ds0.hash}, ds1.hash: ${ds1.hash}');
     final hash0 = ds0.hash;
     final hash1 = ds1.hash;

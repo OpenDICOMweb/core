@@ -82,9 +82,6 @@ abstract class PrivateElement<V> extends Element<V> {
   @override
   PrivateElement<V> update([Iterable<V> vList]) => e.update(vList);
 
-  @override
-  PrivateElement<V> updateF(Iterable<V> f(Iterable<V> vList)) => e.updateF(f);
-
   PrivateElement<V> view([int start = 0, int end]) => throw new UnimplementedError();
 }
 

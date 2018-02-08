@@ -53,12 +53,6 @@ class PrivateTagElement<V> extends PrivateElement<V> with TagElement<V> {
   @override
   PrivateTagElement<V> updateF(Iterable<V> f(Iterable<V> vList)) =>
 		  unsupportedError('PrivateIllegalElementTag.replace');
-
-  @override
-  Iterable<V> replace([Iterable<V> vList]) => e.replace(vList);
-
-  @override
-  Iterable<V> replaceF(Iterable<V> f(Iterable<V> vList)) => e.replaceF(f);
 }
 
 class IllegalPrivateTagElement<V> extends PrivateTagElement<V> {
