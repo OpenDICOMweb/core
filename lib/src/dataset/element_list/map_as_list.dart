@@ -124,6 +124,7 @@ class MapAsList extends ElementList {
   @override
   void operator []=(int index, Element e) => eMap[e.index] = e;
 
+  // TODO: verify that this hashCode is unique
   @override
   int get hashCode => system.hasher.nList(eMap.values);
 

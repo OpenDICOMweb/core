@@ -66,9 +66,7 @@ abstract class Tag {
   int get index => code;
   int get code;
   int get vrIndex;
-  VR get vr => vrByIndex[vrIndex];
-  bool get hasNormalVR => isNormalVRIndex(vrIndex);
-  bool get hasSpecialVR => isSpecialVRIndex(vrIndex);
+
   String get keyword => 'UnknownTag';
   String get name => 'Unknown Tag';
   VM get vm => VM.k1_n;
@@ -114,6 +112,8 @@ abstract class Tag {
 
   // **** VR Getters
 
+  VR get vr => vrByIndex[vrIndex];
+
 //  int get vrIndex => vr.index;
   int get vrCode => vrCodeByIndex[vrIndex];
 
@@ -133,9 +133,11 @@ abstract class Tag {
   /// Used for encoding DICOM media types
   int get dcmHeaderLength => (hasShortVF) ? 8 : 12;
 
-//  bool get isAscii => vr.isAscii;
-//  bool get isUtf8 => vr.isUtf8;
+  bool get hasNormalVR => isNormalVRIndex(vrIndex);
+  bool get hasSpecialVR => isSpecialVRIndex(vrIndex);
 
+  bool isValidVRIndex(int index) => vr.isValidIndex(index);
+  
   // **** VM Getters
 
   /// The minimum number that MUST be present, if any values are present.
@@ -472,17 +474,15 @@ abstract class Tag {
     throw new UnimplementedError();
   }
 
+  static bool allowInvalidVR = false;
+
+  // Returns _true_ if [vrIndex] is valid for [tag].
   static bool isValidVR(Tag tag, int vrIndex) {
-    if (tag.vrIndex == kUNIndex) return true;
-    if (tag.vrIndex >= kOBOWIndex && tag.vrIndex <= kUSOWIndex) {
-      return isNormalVRIndex(vrIndex);
-    } else if (tag.vrIndex <= kUSIndex) {
-      if (tag.vrIndex != vrIndex) {
-        invalidVRIndexForTag(tag, vrIndex);
-        return false;
-      }
-    }
-    return true;
+    if (tag.vr.isValidIndex(vrIndex)) return true;
+    log.warn('Invalid VR ${vrIdFromIndex(vrIndex)} for $tag');
+    if (allowInvalidVR) return true;
+    if (throwOnError) invalidVRForTag(tag, vrIndex);
+    return false;
   }
 
   //TODO: move these to Fast Tag

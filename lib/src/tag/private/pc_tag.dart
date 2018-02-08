@@ -16,15 +16,15 @@ import 'package:core/src/vr/vr.dart';
 //TODO: add constant tag for PCTag.kUnknown
 //TODO: this should be done the same way as KnownPublicTags
 class PCTag extends PrivateTag {
-  final int correctlVRIndex = kLOIndex;
+  final int correctVRIndex = kLOIndex;
   @override
   final String name;
 
   factory PCTag(int code, int vrIndex, String name) {
     final def = PCTagDefinition.lookup(name);
-    if (vrIndex != kLOIndex)
+    if (vrIndex != kLOIndex && vrIndex != kUNIndex)
       log.error('**** Error: Private Creator Tag with invalid vrIndex: '
-                    '$vrIndex');
+          '$vrIndex');
     return (def != null)
         ? new PCTagKnown(code, vrIndex, name, def)
         : new PCTagUnknown(code, vrIndex, name);
@@ -82,7 +82,7 @@ class PCTag extends PrivateTag {
       new PCTag(code, vrIndex, name);
 
   static const PCTag kUnknown =
-  const PCTag._(0x0, kLOIndex, 'Unknown Private Creator Tag');
+      const PCTag._(0x0, kLOIndex, 'Unknown Private Creator Tag');
 }
 
 class PCTagKnown extends PCTag {
@@ -101,7 +101,7 @@ class PCTagKnown extends PCTag {
   PDTagDefinition lookupData(int code) {
     final pdDefCode = code & 0xFFFF00FF;
     final pdDef = definition.dataTags[pdDefCode];
-	  return (pdDef == null) ? PDTagDefinition.kUnknown : pdDef;
+    return (pdDef == null) ? PDTagDefinition.kUnknown : pdDef;
   }
 
   @override
@@ -122,12 +122,17 @@ String _fmtDataTagMap(Map<int, PDTagDefinition> dataTags) {
 }
 
 class PCTagUnknown extends PCTag {
+  @override
+  final int vrIndex;
 
- const PCTagUnknown(int code, int actualVRIndex, String name)
-      : super._(code, actualVRIndex, name);
+  const PCTagUnknown(int code, this.vrIndex, String name)
+      : super._(code, vrIndex, name);
 
- static const PCTagUnknown kUnknownCreator =
-    const PCTagUnknown(0x00, kLOIndex, 'Unknown Creator');
+  @override
+  String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)}';
+
+  static const PCTagUnknown kUnknownCreator =
+      const PCTagUnknown(0x00, kLOIndex, 'Unknown Creator');
 }
 
 class PCTagDefinition {
@@ -198,8 +203,8 @@ class PCTagDefinition {
     0x00090014: PDTagDefinition.k28,
     0x00090015: PDTagDefinition.k29,
   });
-  static const PCTagDefinition k3 =
-      const PCTagDefinition._(3, 'AEGIS_DICOM_2.00', const <int, PDTagDefinition>{
+  static const PCTagDefinition k3 = const PCTagDefinition._(
+      3, 'AEGIS_DICOM_2.00', const <int, PDTagDefinition>{
     0x00030000: PDTagDefinition.k30,
     0x00050000: PDTagDefinition.k31,
     0x00090000: PDTagDefinition.k32,
@@ -250,8 +255,8 @@ class PCTagDefinition {
     0x00290080: PDTagDefinition.k50,
     0x00290090: PDTagDefinition.k51,
   });
-  static const PCTagDefinition k7 =
-      const PCTagDefinition._(7, 'CARDIO-D.R. 1.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k7 = const PCTagDefinition._(
+      7, 'CARDIO-D.R. 1.0', const <int, PDTagDefinition>{
     0x00090000: PDTagDefinition.k52,
     0x00090001: PDTagDefinition.k53,
     0x00090040: PDTagDefinition.k54,
@@ -539,14 +544,14 @@ class PCTagDefinition {
     0x011900f0: PDTagDefinition.k10973,
     0x011900ff: PDTagDefinition.k10974,
   });
-  static const PCTagDefinition k9 =
-      const PCTagDefinition._(9, 'CMR42 CIRCLECVI', const <int, PDTagDefinition>{
+  static const PCTagDefinition k9 = const PCTagDefinition._(
+      9, 'CMR42 CIRCLECVI', const <int, PDTagDefinition>{
     0x25100010: PDTagDefinition.k69,
     0x25100020: PDTagDefinition.k70,
     0x25100030: PDTagDefinition.k71,
   });
-  static const PCTagDefinition k10 =
-      const PCTagDefinition._(10, 'DCMTK_ANONYMIZER', const <int, PDTagDefinition>{
+  static const PCTagDefinition k10 = const PCTagDefinition._(
+      10, 'DCMTK_ANONYMIZER', const <int, PDTagDefinition>{
     0x00090000: PDTagDefinition.k72,
     0x00090010: PDTagDefinition.k73,
     0x00090020: PDTagDefinition.k74,
@@ -554,8 +559,8 @@ class PCTagDefinition {
     0x00090040: PDTagDefinition.k76,
     0x00090050: PDTagDefinition.k77,
   });
-  static const PCTagDefinition k11 =
-      const PCTagDefinition._(11, 'DIDI TO PCR 1.1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k11 = const PCTagDefinition._(
+      11, 'DIDI TO PCR 1.1', const <int, PDTagDefinition>{
     0x00190022: PDTagDefinition.k78,
     0x00190023: PDTagDefinition.k79,
     0x00190024: PDTagDefinition.k80,
@@ -599,8 +604,8 @@ class PCTagDefinition {
     0x0019008e: PDTagDefinition.k6565,
     0x0019008f: PDTagDefinition.k6567,
   });
-  static const PCTagDefinition k12 =
-      const PCTagDefinition._(12, 'DIGISCAN IMAGE', const <int, PDTagDefinition>{
+  static const PCTagDefinition k12 = const PCTagDefinition._(
+      12, 'DIGISCAN IMAGE', const <int, PDTagDefinition>{
     0x00290031: PDTagDefinition.k113,
     0x00290032: PDTagDefinition.k114,
     0x00290033: PDTagDefinition.k115,
@@ -1407,8 +1412,8 @@ class PCTagDefinition {
     0x002300f0: PDTagDefinition.k503,
     0x002300ff: PDTagDefinition.k504,
   });
-  static const PCTagDefinition k28 =
-      const PCTagDefinition._(28, 'GEMS_ADWSoft_3D1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k28 = const PCTagDefinition._(
+      28, 'GEMS_ADWSoft_3D1', const <int, PDTagDefinition>{
     0x00470001: PDTagDefinition.k505,
     0x00470050: PDTagDefinition.k506,
     0x00470051: PDTagDefinition.k507,
@@ -1462,8 +1467,8 @@ class PCTagDefinition {
     0x004700d4: PDTagDefinition.k3987,
     0x004700d5: PDTagDefinition.k3988,
   });
-  static const PCTagDefinition k29 =
-      const PCTagDefinition._(29, 'GEMS_ADWSoft_DPO', const <int, PDTagDefinition>{
+  static const PCTagDefinition k29 = const PCTagDefinition._(
+      29, 'GEMS_ADWSoft_DPO', const <int, PDTagDefinition>{
     0x00390080: PDTagDefinition.k557,
     0x00390085: PDTagDefinition.k558,
     0x00390090: PDTagDefinition.k559,
@@ -1896,8 +1901,8 @@ class PCTagDefinition {
     0x00210090: PDTagDefinition.k10517,
     0x00210092: PDTagDefinition.k10518,
   });
-  static const PCTagDefinition k38 =
-      const PCTagDefinition._(38, 'SIEMENS RA GEN', const <int, PDTagDefinition>{
+  static const PCTagDefinition k38 = const PCTagDefinition._(
+      38, 'SIEMENS RA GEN', const <int, PDTagDefinition>{
     0x00190052: PDTagDefinition.k767,
     0x00110020: PDTagDefinition.k1762,
     0x00110025: PDTagDefinition.k1763,
@@ -2057,8 +2062,8 @@ class PCTagDefinition {
     0x00330005: PDTagDefinition.k854,
     0x00330006: PDTagDefinition.k855,
   });
-  static const PCTagDefinition k41 =
-      const PCTagDefinition._(41, 'GE_GENESIS_REV3.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k41 = const PCTagDefinition._(
+      41, 'GE_GENESIS_REV3.0', const <int, PDTagDefinition>{
     0x00190039: PDTagDefinition.k856,
     0x0019008f: PDTagDefinition.k876,
     0x0019009c: PDTagDefinition.k877,
@@ -3015,8 +3020,8 @@ class PCTagDefinition {
     0x00090010: PDTagDefinition.k1088,
     0x00090012: PDTagDefinition.k1089,
   });
-  static const PCTagDefinition k62 =
-      const PCTagDefinition._(62, 'PHILIPS MR/LAST', const <int, PDTagDefinition>{
+  static const PCTagDefinition k62 = const PCTagDefinition._(
+      62, 'PHILIPS MR/LAST', const <int, PDTagDefinition>{
     0x00190009: PDTagDefinition.k1090,
     0x0019000e: PDTagDefinition.k1091,
     0x001900b1: PDTagDefinition.k1092,
@@ -3072,8 +3077,8 @@ class PCTagDefinition {
     0x00410007: PDTagDefinition.k6719,
     0x00410009: PDTagDefinition.k6720,
   });
-  static const PCTagDefinition k63 =
-      const PCTagDefinition._(63, 'PHILIPS MR/PART', const <int, PDTagDefinition>{
+  static const PCTagDefinition k63 = const PCTagDefinition._(
+      63, 'PHILIPS MR/PART', const <int, PDTagDefinition>{
     0x19100000: PDTagDefinition.k1138,
     0x19100005: PDTagDefinition.k1139,
     0x19100006: PDTagDefinition.k1140,
@@ -3417,8 +3422,8 @@ class PCTagDefinition {
     0x001900c5: PDTagDefinition.k8171,
     0x00190090: PDTagDefinition.k10504,
   });
-  static const PCTagDefinition k71 =
-      const PCTagDefinition._(71, 'SIEMENS CSA HEADER', const <int, PDTagDefinition>{
+  static const PCTagDefinition k71 = const PCTagDefinition._(
+      71, 'SIEMENS CSA HEADER', const <int, PDTagDefinition>{
     0x00290008: PDTagDefinition.k1362,
     0x00290009: PDTagDefinition.k1363,
     0x00290010: PDTagDefinition.k1364,
@@ -3517,8 +3522,8 @@ class PCTagDefinition {
     0x00090010: PDTagDefinition.k1449,
     0x00090012: PDTagDefinition.k1450,
   });
-  static const PCTagDefinition k78 =
-      const PCTagDefinition._(78, 'SIEMENS DLR.01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k78 = const PCTagDefinition._(
+      78, 'SIEMENS DLR.01', const <int, PDTagDefinition>{
     0x00190010: PDTagDefinition.k1451,
     0x00190011: PDTagDefinition.k1452,
     0x00190015: PDTagDefinition.k1453,
@@ -3624,8 +3629,8 @@ class PCTagDefinition {
     0x002900c1: PDTagDefinition.k1547,
     0x00290080: PDTagDefinition.k8497,
   });
-  static const PCTagDefinition k81 =
-      const PCTagDefinition._(81, 'SIEMENS MED HG', const <int, PDTagDefinition>{
+  static const PCTagDefinition k81 = const PCTagDefinition._(
+      81, 'SIEMENS MED HG', const <int, PDTagDefinition>{
     0x00290010: PDTagDefinition.k1548,
     0x00290015: PDTagDefinition.k1549,
     0x00290020: PDTagDefinition.k1550,
@@ -3635,8 +3640,8 @@ class PCTagDefinition {
     0x00290060: PDTagDefinition.k1554,
     0x00290070: PDTagDefinition.k1555,
   });
-  static const PCTagDefinition k82 =
-      const PCTagDefinition._(82, 'SIEMENS MED MG', const <int, PDTagDefinition>{
+  static const PCTagDefinition k82 = const PCTagDefinition._(
+      82, 'SIEMENS MED MG', const <int, PDTagDefinition>{
     0x00290010: PDTagDefinition.k1556,
     0x00290015: PDTagDefinition.k1557,
     0x00290020: PDTagDefinition.k1558,
@@ -3748,8 +3753,8 @@ class PCTagDefinition {
       86, 'SIEMENS MEDCOM HEADER2', const <int, PDTagDefinition>{
     0x00290060: PDTagDefinition.k1635,
   });
-  static const PCTagDefinition k87 =
-      const PCTagDefinition._(87, 'SIEMENS MEDCOM OOG', const <int, PDTagDefinition>{
+  static const PCTagDefinition k87 = const PCTagDefinition._(
+      87, 'SIEMENS MEDCOM OOG', const <int, PDTagDefinition>{
     0x00290008: PDTagDefinition.k1636,
     0x00290009: PDTagDefinition.k1637,
     0x00290010: PDTagDefinition.k1638,
@@ -3871,14 +3876,14 @@ class PCTagDefinition {
     0x00210054: PDTagDefinition.k1757,
     0x00210055: PDTagDefinition.k1758,
   });
-  static const PCTagDefinition k90 =
-      const PCTagDefinition._(90, 'SIEMENS NUMARIS II', const <int, PDTagDefinition>{
+  static const PCTagDefinition k90 = const PCTagDefinition._(
+      90, 'SIEMENS NUMARIS II', const <int, PDTagDefinition>{
     0x7fe30000: PDTagDefinition.k1759,
     0x7fe30010: PDTagDefinition.k1760,
     0x7fe30020: PDTagDefinition.k1761,
   });
-  static const PCTagDefinition k91 =
-      const PCTagDefinition._(91, 'SIEMENS RA PLANE A', const <int, PDTagDefinition>{
+  static const PCTagDefinition k91 = const PCTagDefinition._(
+      91, 'SIEMENS RA PLANE A', const <int, PDTagDefinition>{
     0x00110028: PDTagDefinition.k1848,
     0x00110029: PDTagDefinition.k1849,
     0x0011002a: PDTagDefinition.k1850,
@@ -4013,8 +4018,8 @@ class PCTagDefinition {
     0x001900df: PDTagDefinition.k1980,
     0x001900e0: PDTagDefinition.k1981,
   });
-  static const PCTagDefinition k92 =
-      const PCTagDefinition._(92, 'SIEMENS RA PLANE B', const <int, PDTagDefinition>{
+  static const PCTagDefinition k92 = const PCTagDefinition._(
+      92, 'SIEMENS RA PLANE B', const <int, PDTagDefinition>{
     0x00110028: PDTagDefinition.k1982,
     0x00110029: PDTagDefinition.k1983,
     0x0011002a: PDTagDefinition.k1984,
@@ -4260,8 +4265,8 @@ class PCTagDefinition {
     0x002100a5: PDTagDefinition.k8388,
     0x002100a6: PDTagDefinition.k8389,
   });
-  static const PCTagDefinition k95 = const PCTagDefinition._(
-      95, 'SIEMENS SMS-AX  ORIGINAL IMAGE INFO 1.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k95 = const PCTagDefinition._(95,
+      'SIEMENS SMS-AX  ORIGINAL IMAGE INFO 1.0', const <int, PDTagDefinition>{
     0x00250000: PDTagDefinition.k2117,
     0x00250001: PDTagDefinition.k2118,
     0x00250002: PDTagDefinition.k2119,
@@ -4370,8 +4375,8 @@ class PCTagDefinition {
     0x00110020: PDTagDefinition.k2190,
     0x00290060: PDTagDefinition.k2191,
   });
-  static const PCTagDefinition k100 =
-      const PCTagDefinition._(100, 'SPI Release 1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k100 = const PCTagDefinition._(
+      100, 'SPI Release 1', const <int, PDTagDefinition>{
     0x00090010: PDTagDefinition.k2192,
     0x00090015: PDTagDefinition.k2193,
     0x00090040: PDTagDefinition.k2194,
@@ -4393,8 +4398,8 @@ class PCTagDefinition {
     0x00110020: PDTagDefinition.k2206,
     0x00290060: PDTagDefinition.k2207,
   });
-  static const PCTagDefinition k102 =
-      const PCTagDefinition._(102, 'SPI-P Release 1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k102 = const PCTagDefinition._(
+      102, 'SPI-P Release 1', const <int, PDTagDefinition>{
     0x00090000: PDTagDefinition.k2208,
     0x00090004: PDTagDefinition.k2209,
     0x00090008: PDTagDefinition.k2210,
@@ -4487,8 +4492,8 @@ class PCTagDefinition {
     0x002900b1: PDTagDefinition.k6696,
     0x002900bf: PDTagDefinition.k6697,
   });
-  static const PCTagDefinition k103 =
-      const PCTagDefinition._(103, 'SPI-P Release 1;1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k103 = const PCTagDefinition._(
+      103, 'SPI-P Release 1;1', const <int, PDTagDefinition>{
     0x000900c0: PDTagDefinition.k2286,
     0x000900c1: PDTagDefinition.k2287,
     0x00190000: PDTagDefinition.k2288,
@@ -4526,16 +4531,16 @@ class PCTagDefinition {
     0x0029004e: PDTagDefinition.k2320,
     0x0029004f: PDTagDefinition.k2321,
   });
-  static const PCTagDefinition k104 =
-      const PCTagDefinition._(104, 'SPI-P Release 1;2', const <int, PDTagDefinition>{
+  static const PCTagDefinition k104 = const PCTagDefinition._(
+      104, 'SPI-P Release 1;2', const <int, PDTagDefinition>{
     0x00290000: PDTagDefinition.k2322,
     0x00290004: PDTagDefinition.k2323,
     0x0029000c: PDTagDefinition.k2324,
     0x0029001e: PDTagDefinition.k2325,
     0x0029001f: PDTagDefinition.k2326,
   });
-  static const PCTagDefinition k105 =
-      const PCTagDefinition._(105, 'SPI-P Release 1;3', const <int, PDTagDefinition>{
+  static const PCTagDefinition k105 = const PCTagDefinition._(
+      105, 'SPI-P Release 1;3', const <int, PDTagDefinition>{
     0x00290000: PDTagDefinition.k2327,
     0x00290001: PDTagDefinition.k2328,
     0x00290002: PDTagDefinition.k2329,
@@ -4547,8 +4552,8 @@ class PCTagDefinition {
     0x0029001e: PDTagDefinition.k2335,
     0x0029001f: PDTagDefinition.k2336,
   });
-  static const PCTagDefinition k106 =
-      const PCTagDefinition._(106, 'SPI-P Release 2;1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k106 = const PCTagDefinition._(
+      106, 'SPI-P Release 2;1', const <int, PDTagDefinition>{
     0x00110018: PDTagDefinition.k2337,
     0x0023000d: PDTagDefinition.k2338,
     0x0023000e: PDTagDefinition.k2339,
@@ -4873,8 +4878,8 @@ class PCTagDefinition {
     0x00290042: PDTagDefinition.k2535,
     0x00290043: PDTagDefinition.k2536,
   });
-  static const PCTagDefinition k124 =
-      const PCTagDefinition._(124, 'Silhouette V1.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k124 = const PCTagDefinition._(
+      124, 'Silhouette V1.0', const <int, PDTagDefinition>{
     0x00290013: PDTagDefinition.k2537,
     0x00290014: PDTagDefinition.k2538,
     0x00290017: PDTagDefinition.k2539,
@@ -4918,8 +4923,8 @@ class PCTagDefinition {
     0x01350011: PDTagDefinition.k2563,
     0x01350012: PDTagDefinition.k2564,
   });
-  static const PCTagDefinition k126 =
-      const PCTagDefinition._(126, 'TOSHIBA_MEC_1.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k126 = const PCTagDefinition._(
+      126, 'TOSHIBA_MEC_1.0', const <int, PDTagDefinition>{
     0x00090001: PDTagDefinition.k2624,
     0x00090002: PDTagDefinition.k2625,
     0x00090003: PDTagDefinition.k2626,
@@ -5048,8 +5053,8 @@ class PCTagDefinition {
     0x7fdf00f1: PDTagDefinition.k2742,
     0x7fdf00f5: PDTagDefinition.k2743,
   });
-  static const PCTagDefinition k130 =
-      const PCTagDefinition._(130, 'AGFA-AG_HPState', const <int, PDTagDefinition>{
+  static const PCTagDefinition k130 = const PCTagDefinition._(
+      130, 'AGFA-AG_HPState', const <int, PDTagDefinition>{
     0x00870002: PDTagDefinition.k2697,
     0x00870003: PDTagDefinition.k2741,
     0x00110011: PDTagDefinition.k2748,
@@ -5087,8 +5092,8 @@ class PCTagDefinition {
       131, 'ACUSON:1.2.840.113680.1.0:7ffe', const <int, PDTagDefinition>{
     0x7fdf0000: PDTagDefinition.k2744,
   });
-  static const PCTagDefinition k132 =
-      const PCTagDefinition._(132, 'AgilityRuntime', const <int, PDTagDefinition>{
+  static const PCTagDefinition k132 = const PCTagDefinition._(
+      132, 'AgilityRuntime', const <int, PDTagDefinition>{
     0x00110020: PDTagDefinition.k2745,
     0x00110021: PDTagDefinition.k2746,
     0x00110022: PDTagDefinition.k2747,
@@ -5098,8 +5103,8 @@ class PCTagDefinition {
     0x00290014: PDTagDefinition.k2833,
     0x0029001f: PDTagDefinition.k2834,
   });
-  static const PCTagDefinition k133 =
-      const PCTagDefinition._(133, 'AGFA_ADC_Compact', const <int, PDTagDefinition>{
+  static const PCTagDefinition k133 = const PCTagDefinition._(
+      133, 'AGFA_ADC_Compact', const <int, PDTagDefinition>{
     0x00190030: PDTagDefinition.k2772,
     0x00190040: PDTagDefinition.k2773,
     0x00190050: PDTagDefinition.k2774,
@@ -5156,8 +5161,8 @@ class PCTagDefinition {
     0x00290000: PDTagDefinition.k2813,
     0x00290001: PDTagDefinition.k2814,
   });
-  static const PCTagDefinition k138 =
-      const PCTagDefinition._(138, 'MITRA MARKUP 1.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k138 = const PCTagDefinition._(
+      138, 'MITRA MARKUP 1.0', const <int, PDTagDefinition>{
     0x00290000: PDTagDefinition.k2815,
     0x00290001: PDTagDefinition.k2816,
     0x00290002: PDTagDefinition.k2817,
@@ -5201,8 +5206,8 @@ class PCTagDefinition {
     0x00330008: PDTagDefinition.k2851,
     0x0033000a: PDTagDefinition.k2853,
   });
-  static const PCTagDefinition k142 =
-      const PCTagDefinition._(142, 'AgilityOverlay', const <int, PDTagDefinition>{
+  static const PCTagDefinition k142 = const PCTagDefinition._(
+      142, 'AgilityOverlay', const <int, PDTagDefinition>{
     0x00710001: PDTagDefinition.k2867,
     0x00710002: PDTagDefinition.k2868,
     0x00710003: PDTagDefinition.k2869,
@@ -5244,8 +5249,8 @@ class PCTagDefinition {
     0x0071005d: PDTagDefinition.k2905,
     0x00710060: PDTagDefinition.k2906,
   });
-  static const PCTagDefinition k143 =
-      const PCTagDefinition._(143, 'AGFA KOSD 1.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k143 = const PCTagDefinition._(
+      143, 'AGFA KOSD 1.0', const <int, PDTagDefinition>{
     0x00350000: PDTagDefinition.k2917,
     0x00350003: PDTagDefinition.k2918,
   });
@@ -5254,8 +5259,8 @@ class PCTagDefinition {
     0x2e130010: PDTagDefinition.k2919,
     0x2e130011: PDTagDefinition.k2920,
   });
-  static const PCTagDefinition k145 =
-      const PCTagDefinition._(145, 'agfa/xeroverse', const <int, PDTagDefinition>{
+  static const PCTagDefinition k145 = const PCTagDefinition._(
+      145, 'agfa/xeroverse', const <int, PDTagDefinition>{
     0x7fdb0099: PDTagDefinition.k2921,
   });
   static const PCTagDefinition k146 = const PCTagDefinition._(
@@ -5699,15 +5704,15 @@ class PCTagDefinition {
     0x00190018: PDTagDefinition.k10491,
     0x00230002: PDTagDefinition.k10522,
   });
-  static const PCTagDefinition k149 =
-      const PCTagDefinition._(149, 'GEMS_DL_PATNT_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k149 = const PCTagDefinition._(
+      149, 'GEMS_DL_PATNT_01', const <int, PDTagDefinition>{
     0x00110080: PDTagDefinition.k3537,
     0x00110081: PDTagDefinition.k3538,
     0x00110082: PDTagDefinition.k3539,
     0x00110083: PDTagDefinition.k3540,
   });
-  static const PCTagDefinition k150 =
-      const PCTagDefinition._(150, 'GEMS_DL_STUDY_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k150 = const PCTagDefinition._(
+      150, 'GEMS_DL_STUDY_01', const <int, PDTagDefinition>{
     0x00150080: PDTagDefinition.k3559,
     0x00150081: PDTagDefinition.k3560,
     0x00150082: PDTagDefinition.k3561,
@@ -5734,8 +5739,8 @@ class PCTagDefinition {
     0x0015009c: PDTagDefinition.k3582,
     0x0015009d: PDTagDefinition.k3583,
   });
-  static const PCTagDefinition k151 =
-      const PCTagDefinition._(151, 'GEMS_DL_SERIES_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k151 = const PCTagDefinition._(
+      151, 'GEMS_DL_SERIES_01', const <int, PDTagDefinition>{
     0x00150085: PDTagDefinition.k3584,
     0x00150087: PDTagDefinition.k3585,
     0x0015008c: PDTagDefinition.k3586,
@@ -5743,8 +5748,8 @@ class PCTagDefinition {
     0x0019004c: PDTagDefinition.k3725,
     0x0019004d: PDTagDefinition.k3726,
   });
-  static const PCTagDefinition k152 =
-      const PCTagDefinition._(152, 'GEMS_DL_IMG_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k152 = const PCTagDefinition._(
+      152, 'GEMS_DL_IMG_01', const <int, PDTagDefinition>{
     0x0019000b: PDTagDefinition.k3589,
     0x0019002b: PDTagDefinition.k3590,
     0x00190030: PDTagDefinition.k3591,
@@ -5873,8 +5878,8 @@ class PCTagDefinition {
     0x001900ee: PDTagDefinition.k3714,
     0x001900ef: PDTagDefinition.k3715,
   });
-  static const PCTagDefinition k153 =
-      const PCTagDefinition._(153, 'GEMS_XR3DCAL_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k153 = const PCTagDefinition._(
+      153, 'GEMS_XR3DCAL_01', const <int, PDTagDefinition>{
     0x00210020: PDTagDefinition.k3727,
   });
   static const PCTagDefinition k154 = const PCTagDefinition._(
@@ -5903,8 +5908,8 @@ class PCTagDefinition {
     0x00210060: PDTagDefinition.k3749,
     0x00210065: PDTagDefinition.k3750,
   });
-  static const PCTagDefinition k155 =
-      const PCTagDefinition._(155, 'GEMS_3D_INTVL_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k155 = const PCTagDefinition._(
+      155, 'GEMS_3D_INTVL_01', const <int, PDTagDefinition>{
     0x00230001: PDTagDefinition.k3751,
     0x00230002: PDTagDefinition.k3752,
     0x00230003: PDTagDefinition.k3753,
@@ -5943,8 +5948,8 @@ class PCTagDefinition {
     0x00230043: PDTagDefinition.k3786,
     0x00230044: PDTagDefinition.k3787,
   });
-  static const PCTagDefinition k156 =
-      const PCTagDefinition._(156, 'GEMS_DL_FRAME_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k156 = const PCTagDefinition._(
+      156, 'GEMS_DL_FRAME_01', const <int, PDTagDefinition>{
     0x00250002: PDTagDefinition.k3788,
     0x00250003: PDTagDefinition.k3789,
     0x00250004: PDTagDefinition.k3790,
@@ -5989,19 +5994,19 @@ class PCTagDefinition {
     0x0025003b: PDTagDefinition.k3830,
     0x0025003c: PDTagDefinition.k3831,
   });
-  static const PCTagDefinition k157 =
-      const PCTagDefinition._(157, 'GEMS_ADWSoft_DPO1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k157 = const PCTagDefinition._(
+      157, 'GEMS_ADWSoft_DPO1', const <int, PDTagDefinition>{
     0x00390095: PDTagDefinition.k3858,
   });
-  static const PCTagDefinition k158 =
-      const PCTagDefinition._(158, 'GEMS_AWSoft_SB1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k158 = const PCTagDefinition._(
+      158, 'GEMS_AWSoft_SB1', const <int, PDTagDefinition>{
     0x00390050: PDTagDefinition.k3859,
     0x00390051: PDTagDefinition.k3860,
     0x00390052: PDTagDefinition.k3861,
     0x00390095: PDTagDefinition.k3862,
   });
-  static const PCTagDefinition k159 =
-      const PCTagDefinition._(159, 'GEMS_AWSOFT_CD1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k159 = const PCTagDefinition._(
+      159, 'GEMS_AWSOFT_CD1', const <int, PDTagDefinition>{
     0x00390065: PDTagDefinition.k3863,
     0x00390070: PDTagDefinition.k3864,
     0x00390075: PDTagDefinition.k3865,
@@ -6012,8 +6017,8 @@ class PCTagDefinition {
     0x003900aa: PDTagDefinition.k3870,
     0x003900ff: PDTagDefinition.k3871,
   });
-  static const PCTagDefinition k160 =
-      const PCTagDefinition._(160, 'GEMS_HELIOS_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k160 = const PCTagDefinition._(
+      160, 'GEMS_HELIOS_01', const <int, PDTagDefinition>{
     0x00450001: PDTagDefinition.k3956,
     0x00450002: PDTagDefinition.k3957,
     0x00450003: PDTagDefinition.k3958,
@@ -6062,20 +6067,20 @@ class PCTagDefinition {
     0x00450044: PDTagDefinition.k10660,
     0x00450045: PDTagDefinition.k10661,
   });
-  static const PCTagDefinition k161 =
-      const PCTagDefinition._(161, 'GEMS_3DSTATE_001', const <int, PDTagDefinition>{
+  static const PCTagDefinition k161 = const PCTagDefinition._(
+      161, 'GEMS_3DSTATE_001', const <int, PDTagDefinition>{
     0x004700e9: PDTagDefinition.k3989,
     0x004700ea: PDTagDefinition.k3990,
     0x004700eb: PDTagDefinition.k3991,
     0x004700ec: PDTagDefinition.k3992,
     0x004700ed: PDTagDefinition.k3993,
   });
-  static const PCTagDefinition k162 =
-      const PCTagDefinition._(162, 'GEMS_IQTB_IDEN_47', const <int, PDTagDefinition>{
+  static const PCTagDefinition k162 = const PCTagDefinition._(
+      162, 'GEMS_IQTB_IDEN_47', const <int, PDTagDefinition>{
     0x00470002: PDTagDefinition.k4018,
   });
-  static const PCTagDefinition k163 =
-      const PCTagDefinition._(163, 'GEMS_CT_HINO_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k163 = const PCTagDefinition._(
+      163, 'GEMS_CT_HINO_01', const <int, PDTagDefinition>{
     0x004b0001: PDTagDefinition.k4020,
     0x004b0002: PDTagDefinition.k4021,
     0x004b0003: PDTagDefinition.k4022,
@@ -6100,8 +6105,8 @@ class PCTagDefinition {
     0x7fd10050: PDTagDefinition.k4267,
     0x7fd10060: PDTagDefinition.k4268,
   });
-  static const PCTagDefinition k165 =
-      const PCTagDefinition._(165, 'GEMS_CT_VES_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k165 = const PCTagDefinition._(
+      165, 'GEMS_CT_VES_01', const <int, PDTagDefinition>{
     0x00510001: PDTagDefinition.k4025,
   });
   static const PCTagDefinition k166 = const PCTagDefinition._(
@@ -6236,8 +6241,8 @@ class PCTagDefinition {
     0x310900ee: PDTagDefinition.k4128,
     0x310900ef: PDTagDefinition.k4129,
   });
-  static const PCTagDefinition k175 = const PCTagDefinition._(
-      175, 'Applicare/RadWorks/Version 6.0/Summary', const <int, PDTagDefinition>{
+  static const PCTagDefinition k175 = const PCTagDefinition._(175,
+      'Applicare/RadWorks/Version 6.0/Summary', const <int, PDTagDefinition>{
     0x31090001: PDTagDefinition.k4130,
     0x31090011: PDTagDefinition.k4131,
     0x31090012: PDTagDefinition.k4132,
@@ -6339,8 +6344,8 @@ class PCTagDefinition {
     0x00110060: PDTagDefinition.k4306,
     0x0011006d: PDTagDefinition.k4307,
   });
-  static const PCTagDefinition k181 =
-      const PCTagDefinition._(181, 'GEMS_FALCON_03', const <int, PDTagDefinition>{
+  static const PCTagDefinition k181 = const PCTagDefinition._(
+      181, 'GEMS_FALCON_03', const <int, PDTagDefinition>{
     0x00450055: PDTagDefinition.k4308,
     0x00450062: PDTagDefinition.k4309,
     0x00450063: PDTagDefinition.k4310,
@@ -6479,8 +6484,8 @@ class PCTagDefinition {
       const PCTagDefinition._(189, 'APEX_PRIVATE', const <int, PDTagDefinition>{
     0x00270011: PDTagDefinition.k4420,
   });
-  static const PCTagDefinition k190 =
-      const PCTagDefinition._(190, 'GEMS_XELPRV_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k190 = const PCTagDefinition._(
+      190, 'GEMS_XELPRV_01', const <int, PDTagDefinition>{
     0x00330008: PDTagDefinition.k4421,
     0x00330010: PDTagDefinition.k4422,
     0x00330011: PDTagDefinition.k4423,
@@ -6503,20 +6508,20 @@ class PCTagDefinition {
     0x00330071: PDTagDefinition.k4440,
     0x00330072: PDTagDefinition.k4441,
   });
-  static const PCTagDefinition k191 =
-      const PCTagDefinition._(191, 'REPORT_FROM_APP', const <int, PDTagDefinition>{
+  static const PCTagDefinition k191 = const PCTagDefinition._(
+      191, 'REPORT_FROM_APP', const <int, PDTagDefinition>{
     0x00390095: PDTagDefinition.k4442,
   });
   static const PCTagDefinition k192 = const PCTagDefinition._(
       192, 'GEMS_VXTL_USERDATA_01', const <int, PDTagDefinition>{
     0x00470011: PDTagDefinition.k4443,
   });
-  static const PCTagDefinition k193 =
-      const PCTagDefinition._(193, 'DL_INTERNAL_USE', const <int, PDTagDefinition>{
+  static const PCTagDefinition k193 = const PCTagDefinition._(
+      193, 'DL_INTERNAL_USE', const <int, PDTagDefinition>{
     0x0015008f: PDTagDefinition.k4444,
   });
-  static const PCTagDefinition k194 =
-      const PCTagDefinition._(194, 'GEMS_LUNAR_RAW', const <int, PDTagDefinition>{
+  static const PCTagDefinition k194 = const PCTagDefinition._(
+      194, 'GEMS_LUNAR_RAW', const <int, PDTagDefinition>{
     0x70030001: PDTagDefinition.k4445,
     0x70030002: PDTagDefinition.k4446,
     0x70030003: PDTagDefinition.k4447,
@@ -6526,8 +6531,8 @@ class PCTagDefinition {
       const PCTagDefinition._(195, 'GE_GROUP', const <int, PDTagDefinition>{
     0x60050010: PDTagDefinition.k4450,
   });
-  static const PCTagDefinition k196 =
-      const PCTagDefinition._(196, 'GEMS_IT_US_REPORT', const <int, PDTagDefinition>{
+  static const PCTagDefinition k196 = const PCTagDefinition._(
+      196, 'GEMS_IT_US_REPORT', const <int, PDTagDefinition>{
     0x00450011: PDTagDefinition.k4453,
     0x00450012: PDTagDefinition.k4454,
     0x00450013: PDTagDefinition.k4455,
@@ -6620,17 +6625,21 @@ class PCTagDefinition {
       199, 'GE LUT Asymmetry Parameter', const <int, PDTagDefinition>{
     0x00450067: PDTagDefinition.k4482,
   });
-  static const PCTagDefinition k200 = const PCTagDefinition._(200,
-      'Applicare/Centricity Radiology Web/Version 1.0', const <int, PDTagDefinition>{
-    0x41090001: PDTagDefinition.k4483,
-    0x41090002: PDTagDefinition.k4484,
-    0x41090003: PDTagDefinition.k4485,
-  });
-  static const PCTagDefinition k201 = const PCTagDefinition._(201,
-      'Applicare/Centricity Radiology Web/Version 2.0', const <int, PDTagDefinition>{
-    0x41110001: PDTagDefinition.k4486,
-    0x41110002: PDTagDefinition.k4487,
-  });
+  static const PCTagDefinition k200 = const PCTagDefinition._(
+      200,
+      'Applicare/Centricity Radiology Web/Version 1.0',
+      const <int, PDTagDefinition>{
+        0x41090001: PDTagDefinition.k4483,
+        0x41090002: PDTagDefinition.k4484,
+        0x41090003: PDTagDefinition.k4485,
+      });
+  static const PCTagDefinition k201 = const PCTagDefinition._(
+      201,
+      'Applicare/Centricity Radiology Web/Version 2.0',
+      const <int, PDTagDefinition>{
+        0x41110001: PDTagDefinition.k4486,
+        0x41110002: PDTagDefinition.k4487,
+      });
   static const PCTagDefinition k202 = const PCTagDefinition._(
       202, 'GEMS-IT/Centricity RA600/7.0', const <int, PDTagDefinition>{
     0x41130010: PDTagDefinition.k4488,
@@ -6721,8 +6730,8 @@ class PCTagDefinition {
     0x31090080: PDTagDefinition.k4553,
     0x31090090: PDTagDefinition.k4554,
   });
-  static const PCTagDefinition k209 =
-      const PCTagDefinition._(209, 'GEMS_FUNCTOOL_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k209 = const PCTagDefinition._(
+      209, 'GEMS_FUNCTOOL_01', const <int, PDTagDefinition>{
     0x0051000d: PDTagDefinition.k4556,
     0x00510002: PDTagDefinition.k4596,
     0x00510003: PDTagDefinition.k4597,
@@ -6855,8 +6864,8 @@ class PCTagDefinition {
     0x00190082: PDTagDefinition.k4680,
     0x00190083: PDTagDefinition.k4681,
   });
-  static const PCTagDefinition k211 =
-      const PCTagDefinition._(211, 'Harmony R1.0 C2', const <int, PDTagDefinition>{
+  static const PCTagDefinition k211 = const PCTagDefinition._(
+      211, 'Harmony R1.0 C2', const <int, PDTagDefinition>{
     0x00190000: PDTagDefinition.k4682,
     0x00190001: PDTagDefinition.k4683,
     0x00190002: PDTagDefinition.k4684,
@@ -6884,8 +6893,8 @@ class PCTagDefinition {
     0x00190084: PDTagDefinition.k4706,
     0x00190091: PDTagDefinition.k4707,
   });
-  static const PCTagDefinition k212 =
-      const PCTagDefinition._(212, 'Harmony R1.0 C3', const <int, PDTagDefinition>{
+  static const PCTagDefinition k212 = const PCTagDefinition._(
+      212, 'Harmony R1.0 C3', const <int, PDTagDefinition>{
     0x00190000: PDTagDefinition.k4708,
     0x00190003: PDTagDefinition.k4709,
     0x00190007: PDTagDefinition.k4710,
@@ -6987,8 +6996,8 @@ class PCTagDefinition {
     0x00290000: PDTagDefinition.k4824,
     0x00290001: PDTagDefinition.k4826,
   });
-  static const PCTagDefinition k216 =
-      const PCTagDefinition._(216, 'LODOX_STATSCAN', const <int, PDTagDefinition>{
+  static const PCTagDefinition k216 = const PCTagDefinition._(
+      216, 'LODOX_STATSCAN', const <int, PDTagDefinition>{
     0x00190001: PDTagDefinition.k4792,
     0x00190002: PDTagDefinition.k4793,
     0x00190003: PDTagDefinition.k4794,
@@ -6998,24 +7007,30 @@ class PCTagDefinition {
     0x00190007: PDTagDefinition.k4798,
     0x00190008: PDTagDefinition.k4799,
   });
-  static const PCTagDefinition k217 = const PCTagDefinition._(217,
-      'SCHICK TECHNOLOGIES - Change List Creator ID', const <int, PDTagDefinition>{
-    0x00210001: PDTagDefinition.k4800,
-    0x00210002: PDTagDefinition.k4801,
-  });
-  static const PCTagDefinition k218 = const PCTagDefinition._(218,
-      'SCHICK TECHNOLOGIES - Note List Creator ID', const <int, PDTagDefinition>{
-    0x00210001: PDTagDefinition.k4802,
-    0x00210002: PDTagDefinition.k4803,
-  });
-  static const PCTagDefinition k219 = const PCTagDefinition._(219,
-      'SCHICK TECHNOLOGIES - Change Item Creator ID', const <int, PDTagDefinition>{
-    0x00210001: PDTagDefinition.k4804,
-    0x00210002: PDTagDefinition.k4805,
-    0x00210003: PDTagDefinition.k4806,
-    0x00210004: PDTagDefinition.k4807,
-    0x00210005: PDTagDefinition.k4808,
-  });
+  static const PCTagDefinition k217 = const PCTagDefinition._(
+      217,
+      'SCHICK TECHNOLOGIES - Change List Creator ID',
+      const <int, PDTagDefinition>{
+        0x00210001: PDTagDefinition.k4800,
+        0x00210002: PDTagDefinition.k4801,
+      });
+  static const PCTagDefinition k218 = const PCTagDefinition._(
+      218,
+      'SCHICK TECHNOLOGIES - Note List Creator ID',
+      const <int, PDTagDefinition>{
+        0x00210001: PDTagDefinition.k4802,
+        0x00210002: PDTagDefinition.k4803,
+      });
+  static const PCTagDefinition k219 = const PCTagDefinition._(
+      219,
+      'SCHICK TECHNOLOGIES - Change Item Creator ID',
+      const <int, PDTagDefinition>{
+        0x00210001: PDTagDefinition.k4804,
+        0x00210002: PDTagDefinition.k4805,
+        0x00210003: PDTagDefinition.k4806,
+        0x00210004: PDTagDefinition.k4807,
+        0x00210005: PDTagDefinition.k4808,
+      });
   static const PCTagDefinition k220 = const PCTagDefinition._(
       220,
       'SCHICK TECHNOLOGIES - Image Security Creator ID',
@@ -7438,8 +7453,8 @@ class PCTagDefinition {
     0x0019001f: PDTagDefinition.k4867,
     0x00190021: PDTagDefinition.k4868,
   });
-  static const PCTagDefinition k225 =
-      const PCTagDefinition._(225, 'SECTRA_Ident_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k225 = const PCTagDefinition._(
+      225, 'SECTRA_Ident_01', const <int, PDTagDefinition>{
     0x00090001: PDTagDefinition.k4870,
     0x00090002: PDTagDefinition.k4871,
     0x00090004: PDTagDefinition.k4872,
@@ -7543,8 +7558,8 @@ class PCTagDefinition {
     0x00110041: PDTagDefinition.k4952,
     0x00110042: PDTagDefinition.k4953,
   });
-  static const PCTagDefinition k232 =
-      const PCTagDefinition._(232, 'LORAD Selenia', const <int, PDTagDefinition>{
+  static const PCTagDefinition k232 = const PCTagDefinition._(
+      232, 'LORAD Selenia', const <int, PDTagDefinition>{
     0x00190006: PDTagDefinition.k4954,
     0x00190007: PDTagDefinition.k4955,
     0x00190008: PDTagDefinition.k4956,
@@ -7572,8 +7587,8 @@ class PCTagDefinition {
     0x00190080: PDTagDefinition.k4978,
     0x00190090: PDTagDefinition.k4979,
   });
-  static const PCTagDefinition k233 =
-      const PCTagDefinition._(233, 'HOLOGIC, Inc.', const <int, PDTagDefinition>{
+  static const PCTagDefinition k233 = const PCTagDefinition._(
+      233, 'HOLOGIC, Inc.', const <int, PDTagDefinition>{
     0x00190001: PDTagDefinition.k4980,
     0x00190002: PDTagDefinition.k4981,
     0x00190003: PDTagDefinition.k4982,
@@ -7630,18 +7645,18 @@ class PCTagDefinition {
     0x7f010011: PDTagDefinition.k5033,
     0x7f010012: PDTagDefinition.k5034,
   });
-  static const PCTagDefinition k234 =
-      const PCTagDefinition._(234, '1.2.840.113663.1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k234 = const PCTagDefinition._(
+      234, '1.2.840.113663.1', const <int, PDTagDefinition>{
     0x00290000: PDTagDefinition.k5035,
     0x00290001: PDTagDefinition.k5036,
   });
-  static const PCTagDefinition k235 =
-      const PCTagDefinition._(235, 'MeVis BreastCare', const <int, PDTagDefinition>{
+  static const PCTagDefinition k235 = const PCTagDefinition._(
+      235, 'MeVis BreastCare', const <int, PDTagDefinition>{
     0x00190001: PDTagDefinition.k5256,
     0x00710001: PDTagDefinition.k5257,
   });
-  static const PCTagDefinition k236 =
-      const PCTagDefinition._(236, 'Viewing Protocol', const <int, PDTagDefinition>{
+  static const PCTagDefinition k236 = const PCTagDefinition._(
+      236, 'Viewing Protocol', const <int, PDTagDefinition>{
     0x00650093: PDTagDefinition.k5258,
   });
   static const PCTagDefinition k237 =
@@ -7657,8 +7672,8 @@ class PCTagDefinition {
     0x14550008: PDTagDefinition.k5267,
     0x14550010: PDTagDefinition.k5268,
   });
-  static const PCTagDefinition k238 =
-      const PCTagDefinition._(238, 'SEGAMI_HEADER', const <int, PDTagDefinition>{
+  static const PCTagDefinition k238 = const PCTagDefinition._(
+      238, 'SEGAMI_HEADER', const <int, PDTagDefinition>{
     0x00290031: PDTagDefinition.k5269,
     0x00290032: PDTagDefinition.k5270,
   });
@@ -7690,8 +7705,8 @@ class PCTagDefinition {
     0x00290022: PDTagDefinition.k5301,
     0x00290030: PDTagDefinition.k5302,
   });
-  static const PCTagDefinition k244 = const PCTagDefinition._(
-      244, 'Image (ID, Version, Size, Dump, GUID)', const <int, PDTagDefinition>{
+  static const PCTagDefinition k244 = const PCTagDefinition._(244,
+      'Image (ID, Version, Size, Dump, GUID)', const <int, PDTagDefinition>{
     0x80030000: PDTagDefinition.k5303,
     0x80030010: PDTagDefinition.k5304,
     0x80030020: PDTagDefinition.k5305,
@@ -7736,23 +7751,25 @@ class PCTagDefinition {
     0x00110003: PDTagDefinition.k5324,
     0x00110004: PDTagDefinition.k5325,
   });
-  static const PCTagDefinition k251 = const PCTagDefinition._(251,
-      'Voxar 2.16.124.113543.6003.1999.12.20.12.5.0', const <int, PDTagDefinition>{
-    0x11350000: PDTagDefinition.k5326,
-    0x11350001: PDTagDefinition.k5327,
-    0x11350002: PDTagDefinition.k5328,
-    0x11350006: PDTagDefinition.k5329,
-    0x11350007: PDTagDefinition.k5330,
-    0x11350008: PDTagDefinition.k5331,
-    0x11350009: PDTagDefinition.k5332,
-    0x11350010: PDTagDefinition.k5333,
-    0x11350013: PDTagDefinition.k5334,
-    0x11350014: PDTagDefinition.k5335,
-    0x11350016: PDTagDefinition.k5336,
-    0x11350017: PDTagDefinition.k5337,
-    0x11350018: PDTagDefinition.k5338,
-    0x11350021: PDTagDefinition.k5339,
-  });
+  static const PCTagDefinition k251 = const PCTagDefinition._(
+      251,
+      'Voxar 2.16.124.113543.6003.1999.12.20.12.5.0',
+      const <int, PDTagDefinition>{
+        0x11350000: PDTagDefinition.k5326,
+        0x11350001: PDTagDefinition.k5327,
+        0x11350002: PDTagDefinition.k5328,
+        0x11350006: PDTagDefinition.k5329,
+        0x11350007: PDTagDefinition.k5330,
+        0x11350008: PDTagDefinition.k5331,
+        0x11350009: PDTagDefinition.k5332,
+        0x11350010: PDTagDefinition.k5333,
+        0x11350013: PDTagDefinition.k5334,
+        0x11350014: PDTagDefinition.k5335,
+        0x11350016: PDTagDefinition.k5336,
+        0x11350017: PDTagDefinition.k5337,
+        0x11350018: PDTagDefinition.k5338,
+        0x11350021: PDTagDefinition.k5339,
+      });
   static const PCTagDefinition k252 = const PCTagDefinition._(
       252, 'Kodak Image Information', const <int, PDTagDefinition>{
     0x00290015: PDTagDefinition.k5340,
@@ -7823,8 +7840,8 @@ class PCTagDefinition {
     0x01990039: PDTagDefinition.k5695,
     0x0199003a: PDTagDefinition.k5696,
   });
-  static const PCTagDefinition k254 =
-      const PCTagDefinition._(254, 'MAROTECH Inc.', const <int, PDTagDefinition>{
+  static const PCTagDefinition k254 = const PCTagDefinition._(
+      254, 'MAROTECH Inc.', const <int, PDTagDefinition>{
     0x00370001: PDTagDefinition.k5347,
     0x00370021: PDTagDefinition.k5348,
     0x00370022: PDTagDefinition.k5349,
@@ -8008,8 +8025,8 @@ class PCTagDefinition {
     0x00290010: PDTagDefinition.k5504,
     0x00410001: PDTagDefinition.k5505,
   });
-  static const PCTagDefinition k263 =
-      const PCTagDefinition._(263, 'HMC - CT - ID', const <int, PDTagDefinition>{
+  static const PCTagDefinition k263 = const PCTagDefinition._(
+      263, 'HMC - CT - ID', const <int, PDTagDefinition>{
     0x00090000: PDTagDefinition.k5506,
     0x00090001: PDTagDefinition.k5507,
   });
@@ -8037,15 +8054,15 @@ class PCTagDefinition {
     0x56530024: PDTagDefinition.k5551,
     0x56530025: PDTagDefinition.k5552,
   });
-  static const PCTagDefinition k266 = const PCTagDefinition._(
-      266, 'PI Private Block (0781:3000 - 0781:30FF)', const <int, PDTagDefinition>{
+  static const PCTagDefinition k266 = const PCTagDefinition._(266,
+      'PI Private Block (0781:3000 - 0781:30FF)', const <int, PDTagDefinition>{
     0x07810001: PDTagDefinition.k5553,
     0x07810002: PDTagDefinition.k5554,
     0x07810005: PDTagDefinition.k5555,
     0x07810009: PDTagDefinition.k5556,
   });
-  static const PCTagDefinition k267 =
-      const PCTagDefinition._(267, 'Riverain Medical', const <int, PDTagDefinition>{
+  static const PCTagDefinition k267 = const PCTagDefinition._(
+      267, 'Riverain Medical', const <int, PDTagDefinition>{
     0x02030000: PDTagDefinition.k5557,
     0x02030001: PDTagDefinition.k5558,
     0x02030002: PDTagDefinition.k5559,
@@ -8054,8 +8071,8 @@ class PCTagDefinition {
     0x020300f0: PDTagDefinition.k5562,
     0x020300f1: PDTagDefinition.k5563,
   });
-  static const PCTagDefinition k268 = const PCTagDefinition._(
-      268, 'INTELERAD MEDICAL SYSTEMS INTELEVIEWER', const <int, PDTagDefinition>{
+  static const PCTagDefinition k268 = const PCTagDefinition._(268,
+      'INTELERAD MEDICAL SYSTEMS INTELEVIEWER', const <int, PDTagDefinition>{
     0x00710001: PDTagDefinition.k5566,
     0x00710002: PDTagDefinition.k5567,
     0x00710003: PDTagDefinition.k5568,
@@ -8065,8 +8082,8 @@ class PCTagDefinition {
     0x00710007: PDTagDefinition.k5572,
     0x0071000a: PDTagDefinition.k5573,
   });
-  static const PCTagDefinition k269 =
-      const PCTagDefinition._(269, 'DR Systems, Inc.', const <int, PDTagDefinition>{
+  static const PCTagDefinition k269 = const PCTagDefinition._(
+      269, 'DR Systems, Inc.', const <int, PDTagDefinition>{
     0x44530000: PDTagDefinition.k5581,
     0x44530001: PDTagDefinition.k5582,
     0x44530002: PDTagDefinition.k5583,
@@ -8075,8 +8092,8 @@ class PCTagDefinition {
     0x4453000a: PDTagDefinition.k5586,
     0x4453000c: PDTagDefinition.k5587,
   });
-  static const PCTagDefinition k270 =
-      const PCTagDefinition._(270, 'ETIAM DICOMDIR', const <int, PDTagDefinition>{
+  static const PCTagDefinition k270 = const PCTagDefinition._(
+      270, 'ETIAM DICOMDIR', const <int, PDTagDefinition>{
     0x08590040: PDTagDefinition.k5588,
   });
   static const PCTagDefinition k271 = const PCTagDefinition._(
@@ -8112,12 +8129,12 @@ class PCTagDefinition {
     0x00090000: PDTagDefinition.k5611,
     0x00090001: PDTagDefinition.k5612,
   });
-  static const PCTagDefinition k274 =
-      const PCTagDefinition._(274, 'RadWorksMarconi', const <int, PDTagDefinition>{
+  static const PCTagDefinition k274 = const PCTagDefinition._(
+      274, 'RadWorksMarconi', const <int, PDTagDefinition>{
     0x00290024: PDTagDefinition.k5613,
   });
-  static const PCTagDefinition k275 =
-      const PCTagDefinition._(275, 'MeVis eatDicom', const <int, PDTagDefinition>{
+  static const PCTagDefinition k275 = const PCTagDefinition._(
+      275, 'MeVis eatDicom', const <int, PDTagDefinition>{
     0x00090010: PDTagDefinition.k5614,
     0x00090011: PDTagDefinition.k5615,
   });
@@ -8129,8 +8146,8 @@ class PCTagDefinition {
     0x00210013: PDTagDefinition.k5619,
     0x00210071: PDTagDefinition.k5620,
   });
-  static const PCTagDefinition k277 = const PCTagDefinition._(
-      277, 'MeVis eD: Absolute Temporal Positions', const <int, PDTagDefinition>{
+  static const PCTagDefinition k277 = const PCTagDefinition._(277,
+      'MeVis eD: Absolute Temporal Positions', const <int, PDTagDefinition>{
     0x00210010: PDTagDefinition.k5621,
     0x00210011: PDTagDefinition.k5622,
     0x00210012: PDTagDefinition.k5623,
@@ -8239,8 +8256,8 @@ class PCTagDefinition {
     0x00550051: PDTagDefinition.k5761,
     0x00550065: PDTagDefinition.k5762,
   });
-  static const PCTagDefinition k285 =
-      const PCTagDefinition._(285, 'VEPRO BROKER 1.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k285 = const PCTagDefinition._(
+      285, 'VEPRO BROKER 1.0', const <int, PDTagDefinition>{
     0x00570010: PDTagDefinition.k5763,
   });
   static const PCTagDefinition k286 = const PCTagDefinition._(
@@ -8472,8 +8489,8 @@ class PCTagDefinition {
     0x00130010: PDTagDefinition.k10426,
     0x00130014: PDTagDefinition.k10427,
   });
-  static const PCTagDefinition k291 =
-      const PCTagDefinition._(291, 'dcm4che/archive', const <int, PDTagDefinition>{
+  static const PCTagDefinition k291 = const PCTagDefinition._(
+      291, 'dcm4che/archive', const <int, PDTagDefinition>{
     0x00430010: PDTagDefinition.k5785,
     0x00430011: PDTagDefinition.k5786,
     0x00430012: PDTagDefinition.k5787,
@@ -8556,8 +8573,8 @@ class PCTagDefinition {
     0x12710084: PDTagDefinition.k5860,
     0x12710085: PDTagDefinition.k5861,
   });
-  static const PCTagDefinition k294 =
-      const PCTagDefinition._(294, 'DZDICOM 4.3.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k294 = const PCTagDefinition._(
+      294, 'DZDICOM 4.3.0', const <int, PDTagDefinition>{
     0x00090001: PDTagDefinition.k6051,
     0x00090002: PDTagDefinition.k6052,
     0x00090003: PDTagDefinition.k6053,
@@ -8967,8 +8984,8 @@ class PCTagDefinition {
     0x333500b1: PDTagDefinition.k6388,
     0x333500c0: PDTagDefinition.k6389,
   });
-  static const PCTagDefinition k318 =
-      const PCTagDefinition._(318, 'iCAD PK Study', const <int, PDTagDefinition>{
+  static const PCTagDefinition k318 = const PCTagDefinition._(
+      318, 'iCAD PK Study', const <int, PDTagDefinition>{
     0x33350000: PDTagDefinition.k6390,
     0x33350001: PDTagDefinition.k6391,
     0x33350002: PDTagDefinition.k6392,
@@ -9094,8 +9111,8 @@ class PCTagDefinition {
     0x00090032: PDTagDefinition.k6476,
     0x00090033: PDTagDefinition.k6477,
   });
-  static const PCTagDefinition k331 =
-      const PCTagDefinition._(331, 'Brainlab-S32-SO', const <int, PDTagDefinition>{
+  static const PCTagDefinition k331 = const PCTagDefinition._(
+      331, 'Brainlab-S32-SO', const <int, PDTagDefinition>{
     0x00630001: PDTagDefinition.k6478,
     0x00630010: PDTagDefinition.k6479,
   });
@@ -9107,8 +9124,8 @@ class PCTagDefinition {
       333, 'PHILIPS MR/PART 12', const <int, PDTagDefinition>{
     0x09210010: PDTagDefinition.k6482,
   });
-  static const PCTagDefinition k334 =
-      const PCTagDefinition._(334, 'PHILIPS MR/PART 7', const <int, PDTagDefinition>{
+  static const PCTagDefinition k334 = const PCTagDefinition._(
+      334, 'PHILIPS MR/PART 7', const <int, PDTagDefinition>{
     0x00190000: PDTagDefinition.k6487,
   });
   static const PCTagDefinition k335 = const PCTagDefinition._(
@@ -9160,16 +9177,16 @@ class PCTagDefinition {
     0x00290032: PDTagDefinition.k6666,
     0x0029003f: PDTagDefinition.k6667,
   });
-  static const PCTagDefinition k338 =
-      const PCTagDefinition._(338, 'PHILIPS MR/PART 6', const <int, PDTagDefinition>{
+  static const PCTagDefinition k338 = const PCTagDefinition._(
+      338, 'PHILIPS MR/PART 6', const <int, PDTagDefinition>{
     0x00190010: PDTagDefinition.k6501,
   });
   static const PCTagDefinition k339 = const PCTagDefinition._(
       339, 'SPI-P-CTBE-Private Release 1', const <int, PDTagDefinition>{
     0x00210000: PDTagDefinition.k6634,
   });
-  static const PCTagDefinition k340 =
-      const PCTagDefinition._(340, 'PMS-THORA-5.1', const <int, PDTagDefinition>{
+  static const PCTagDefinition k340 = const PCTagDefinition._(
+      340, 'PMS-THORA-5.1', const <int, PDTagDefinition>{
     0x00890020: PDTagDefinition.k6721,
   });
   static const PCTagDefinition k341 = const PCTagDefinition._(
@@ -9957,8 +9974,8 @@ class PCTagDefinition {
     0x00090000: PDTagDefinition.k7901,
     0x00090010: PDTagDefinition.k7902,
   });
-  static const PCTagDefinition k382 =
-      const PCTagDefinition._(382, 'SIEMENS MED NM', const <int, PDTagDefinition>{
+  static const PCTagDefinition k382 = const PCTagDefinition._(
+      382, 'SIEMENS MED NM', const <int, PDTagDefinition>{
     0x00090080: PDTagDefinition.k7909,
     0x00110010: PDTagDefinition.k7927,
     0x00170000: PDTagDefinition.k7944,
@@ -10367,8 +10384,8 @@ class PCTagDefinition {
     0x00510065: PDTagDefinition.k8861,
     0x00550001: PDTagDefinition.k8884,
   });
-  static const PCTagDefinition k392 =
-      const PCTagDefinition._(392, 'SIEMENS Selma', const <int, PDTagDefinition>{
+  static const PCTagDefinition k392 = const PCTagDefinition._(
+      392, 'SIEMENS Selma', const <int, PDTagDefinition>{
     0x00190006: PDTagDefinition.k8172,
     0x00190007: PDTagDefinition.k8173,
     0x00190008: PDTagDefinition.k8174,
@@ -10381,8 +10398,8 @@ class PCTagDefinition {
     0x00190034: PDTagDefinition.k8181,
     0x00190035: PDTagDefinition.k8182,
   });
-  static const PCTagDefinition k393 =
-      const PCTagDefinition._(393, 'SIEMENS SIENET', const <int, PDTagDefinition>{
+  static const PCTagDefinition k393 = const PCTagDefinition._(
+      393, 'SIEMENS SIENET', const <int, PDTagDefinition>{
     0x00190001: PDTagDefinition.k8198,
   });
   static const PCTagDefinition k394 = const PCTagDefinition._(
@@ -10457,8 +10474,8 @@ class PCTagDefinition {
       396, 'Siemens Ultrasound Miscellaneous', const <int, PDTagDefinition>{
     0x00190020: PDTagDefinition.k8257,
   });
-  static const PCTagDefinition k397 = const PCTagDefinition._(
-      397, 'Siemens: Thorax/Multix FD Lab Settings', const <int, PDTagDefinition>{
+  static const PCTagDefinition k397 = const PCTagDefinition._(397,
+      'Siemens: Thorax/Multix FD Lab Settings', const <int, PDTagDefinition>{
     0x00190000: PDTagDefinition.k8258,
     0x00190001: PDTagDefinition.k8259,
     0x00190002: PDTagDefinition.k8261,
@@ -10538,8 +10555,8 @@ class PCTagDefinition {
     0x00210000: PDTagDefinition.k8322,
     0x00210001: PDTagDefinition.k8323,
   });
-  static const PCTagDefinition k400 = const PCTagDefinition._(
-      400, 'Siemens: Thorax/Multix FD Post Processing', const <int, PDTagDefinition>{
+  static const PCTagDefinition k400 = const PCTagDefinition._(400,
+      'Siemens: Thorax/Multix FD Post Processing', const <int, PDTagDefinition>{
     0x00210000: PDTagDefinition.k8390,
     0x00210001: PDTagDefinition.k8391,
     0x00210002: PDTagDefinition.k8392,
@@ -10568,8 +10585,8 @@ class PCTagDefinition {
     0x00210030: PDTagDefinition.k8415,
     0x00210031: PDTagDefinition.k8416,
   });
-  static const PCTagDefinition k401 =
-      const PCTagDefinition._(401, 'KINETDX_GRAPHICS', const <int, PDTagDefinition>{
+  static const PCTagDefinition k401 = const PCTagDefinition._(
+      401, 'KINETDX_GRAPHICS', const <int, PDTagDefinition>{
     0x002100a4: PDTagDefinition.k8428,
   });
   static const PCTagDefinition k402 =
@@ -10582,61 +10599,63 @@ class PCTagDefinition {
     0x002100ac: PDTagDefinition.k8434,
     0x002100b4: PDTagDefinition.k8435,
   });
-  static const PCTagDefinition k403 =
-      const PCTagDefinition._(403, 'syngoDynamics', const <int, PDTagDefinition>{
+  static const PCTagDefinition k403 = const PCTagDefinition._(
+      403, 'syngoDynamics', const <int, PDTagDefinition>{
     0x002100ae: PDTagDefinition.k8436,
     0x002100b0: PDTagDefinition.k8437,
     0x002100b1: PDTagDefinition.k8438,
   });
-  static const PCTagDefinition k404 = const PCTagDefinition._(
-      404, 'Siemens: Thorax/Multix FD Image Stamp', const <int, PDTagDefinition>{
+  static const PCTagDefinition k404 = const PCTagDefinition._(404,
+      'Siemens: Thorax/Multix FD Image Stamp', const <int, PDTagDefinition>{
     0x00230000: PDTagDefinition.k8440,
     0x00230001: PDTagDefinition.k8441,
     0x00230002: PDTagDefinition.k8442,
     0x00230003: PDTagDefinition.k8443,
     0x00230004: PDTagDefinition.k8444,
   });
-  static const PCTagDefinition k405 = const PCTagDefinition._(405,
-      'Siemens: Thorax/Multix FD Raw Image Settings', const <int, PDTagDefinition>{
-    0x00250000: PDTagDefinition.k8452,
-    0x00250001: PDTagDefinition.k8453,
-    0x00250002: PDTagDefinition.k8454,
-    0x00250003: PDTagDefinition.k8455,
-    0x00250004: PDTagDefinition.k8456,
-    0x00250005: PDTagDefinition.k8457,
-    0x00250006: PDTagDefinition.k8458,
-    0x00250007: PDTagDefinition.k8459,
-    0x00250008: PDTagDefinition.k8460,
-    0x00250009: PDTagDefinition.k8461,
-    0x0025000a: PDTagDefinition.k8462,
-    0x0025000b: PDTagDefinition.k8463,
-    0x0025000c: PDTagDefinition.k8464,
-    0x0025000d: PDTagDefinition.k8465,
-    0x0025000e: PDTagDefinition.k8466,
-    0x0025000f: PDTagDefinition.k8467,
-    0x00250010: PDTagDefinition.k8468,
-    0x00250011: PDTagDefinition.k8469,
-    0x00250012: PDTagDefinition.k8470,
-    0x00250013: PDTagDefinition.k8471,
-    0x00250014: PDTagDefinition.k8472,
-    0x00250015: PDTagDefinition.k8473,
-    0x00250016: PDTagDefinition.k8474,
-    0x00250017: PDTagDefinition.k8475,
-    0x00250018: PDTagDefinition.k8476,
-    0x00250019: PDTagDefinition.k8477,
-    0x0025001a: PDTagDefinition.k8479,
-    0x0025001b: PDTagDefinition.k8480,
-    0x0025001c: PDTagDefinition.k8481,
-    0x0025001d: PDTagDefinition.k8482,
-    0x00250030: PDTagDefinition.k8483,
-    0x00250031: PDTagDefinition.k8484,
-    0x00250032: PDTagDefinition.k8485,
-    0x00250033: PDTagDefinition.k8486,
-    0x00250034: PDTagDefinition.k8487,
-    0x00250035: PDTagDefinition.k8488,
-    0x00250036: PDTagDefinition.k8489,
-    0x00250037: PDTagDefinition.k8490,
-  });
+  static const PCTagDefinition k405 = const PCTagDefinition._(
+      405,
+      'Siemens: Thorax/Multix FD Raw Image Settings',
+      const <int, PDTagDefinition>{
+        0x00250000: PDTagDefinition.k8452,
+        0x00250001: PDTagDefinition.k8453,
+        0x00250002: PDTagDefinition.k8454,
+        0x00250003: PDTagDefinition.k8455,
+        0x00250004: PDTagDefinition.k8456,
+        0x00250005: PDTagDefinition.k8457,
+        0x00250006: PDTagDefinition.k8458,
+        0x00250007: PDTagDefinition.k8459,
+        0x00250008: PDTagDefinition.k8460,
+        0x00250009: PDTagDefinition.k8461,
+        0x0025000a: PDTagDefinition.k8462,
+        0x0025000b: PDTagDefinition.k8463,
+        0x0025000c: PDTagDefinition.k8464,
+        0x0025000d: PDTagDefinition.k8465,
+        0x0025000e: PDTagDefinition.k8466,
+        0x0025000f: PDTagDefinition.k8467,
+        0x00250010: PDTagDefinition.k8468,
+        0x00250011: PDTagDefinition.k8469,
+        0x00250012: PDTagDefinition.k8470,
+        0x00250013: PDTagDefinition.k8471,
+        0x00250014: PDTagDefinition.k8472,
+        0x00250015: PDTagDefinition.k8473,
+        0x00250016: PDTagDefinition.k8474,
+        0x00250017: PDTagDefinition.k8475,
+        0x00250018: PDTagDefinition.k8476,
+        0x00250019: PDTagDefinition.k8477,
+        0x0025001a: PDTagDefinition.k8479,
+        0x0025001b: PDTagDefinition.k8480,
+        0x0025001c: PDTagDefinition.k8481,
+        0x0025001d: PDTagDefinition.k8482,
+        0x00250030: PDTagDefinition.k8483,
+        0x00250031: PDTagDefinition.k8484,
+        0x00250032: PDTagDefinition.k8485,
+        0x00250033: PDTagDefinition.k8486,
+        0x00250034: PDTagDefinition.k8487,
+        0x00250035: PDTagDefinition.k8488,
+        0x00250036: PDTagDefinition.k8489,
+        0x00250037: PDTagDefinition.k8490,
+      });
   static const PCTagDefinition k406 = const PCTagDefinition._(
       406, 'SIEMENS SYNGO ENHANCED IDATASET API', const <int, PDTagDefinition>{
     0x00270001: PDTagDefinition.k8491,
@@ -10647,13 +10666,13 @@ class PCTagDefinition {
       407, 'SIEMENS SYNGO FUNCTION ASSIGNMENT', const <int, PDTagDefinition>{
     0x00290001: PDTagDefinition.k8494,
   });
-  static const PCTagDefinition k408 =
-      const PCTagDefinition._(408, 'SHS MagicView 300', const <int, PDTagDefinition>{
+  static const PCTagDefinition k408 = const PCTagDefinition._(
+      408, 'SHS MagicView 300', const <int, PDTagDefinition>{
     0x00290002: PDTagDefinition.k8495,
     0x00290003: PDTagDefinition.k8496,
   });
-  static const PCTagDefinition k409 =
-      const PCTagDefinition._(409, 'SIEMENS MED MAMMO', const <int, PDTagDefinition>{
+  static const PCTagDefinition k409 = const PCTagDefinition._(
+      409, 'SIEMENS MED MAMMO', const <int, PDTagDefinition>{
     0x0029005a: PDTagDefinition.k8498,
   });
   static const PCTagDefinition k410 = const PCTagDefinition._(
@@ -10964,13 +10983,13 @@ class PCTagDefinition {
       422, 'SIEMENS MI RWVM SUV', const <int, PDTagDefinition>{
     0x00410001: PDTagDefinition.k8812,
   });
-  static const PCTagDefinition k423 =
-      const PCTagDefinition._(423, 'SIEMENS WH SR 1.0', const <int, PDTagDefinition>{
+  static const PCTagDefinition k423 = const PCTagDefinition._(
+      423, 'SIEMENS WH SR 1.0', const <int, PDTagDefinition>{
     0x00710001: PDTagDefinition.k8910,
     0x00710002: PDTagDefinition.k8911,
   });
-  static const PCTagDefinition k424 =
-      const PCTagDefinition._(424, 'SIEMENS MED PT', const <int, PDTagDefinition>{
+  static const PCTagDefinition k424 = const PCTagDefinition._(
+      424, 'SIEMENS MED PT', const <int, PDTagDefinition>{
     0x00710023: PDTagDefinition.k8912,
     0x00710024: PDTagDefinition.k8913,
     0x00710021: PDTagDefinition.k8958,
@@ -11242,8 +11261,8 @@ class PCTagDefinition {
       430, 'syngoDynamics_Reporting', const <int, PDTagDefinition>{
     0x002100ad: PDTagDefinition.k9214,
   });
-  static const PCTagDefinition k431 =
-      const PCTagDefinition._(431, 'SIEMENS MR N3D', const <int, PDTagDefinition>{
+  static const PCTagDefinition k431 = const PCTagDefinition._(
+      431, 'SIEMENS MR N3D', const <int, PDTagDefinition>{
     0x0021004a: PDTagDefinition.k9215,
     0x00210030: PDTagDefinition.k9387,
     0x00210031: PDTagDefinition.k9388,
@@ -11355,8 +11374,8 @@ class PCTagDefinition {
     0x002100c1: PDTagDefinition.k9494,
     0x002100c2: PDTagDefinition.k9495,
   });
-  static const PCTagDefinition k432 = const PCTagDefinition._(
-      432, 'SIEMENS SYNGO ENCAPSULATED DOCUMENT DATA', const <int, PDTagDefinition>{
+  static const PCTagDefinition k432 = const PCTagDefinition._(432,
+      'SIEMENS SYNGO ENCAPSULATED DOCUMENT DATA', const <int, PDTagDefinition>{
     0x00870020: PDTagDefinition.k9216,
     0x00870030: PDTagDefinition.k9217,
     0x00870040: PDTagDefinition.k9218,
@@ -11416,8 +11435,8 @@ class PCTagDefinition {
       435, 'SIEMENS SYNGO DATA PADDING', const <int, PDTagDefinition>{
     0x7fdf00fc: PDTagDefinition.k9264,
   });
-  static const PCTagDefinition k436 =
-      const PCTagDefinition._(436, 'SIEMENS MR HEADER', const <int, PDTagDefinition>{
+  static const PCTagDefinition k436 = const PCTagDefinition._(
+      436, 'SIEMENS MR HEADER', const <int, PDTagDefinition>{
     0x00190008: PDTagDefinition.k9265,
     0x00190009: PDTagDefinition.k9266,
     0x0019000a: PDTagDefinition.k9267,
@@ -11562,8 +11581,8 @@ class PCTagDefinition {
     0x0021005b: PDTagDefinition.k9384,
     0x0021005e: PDTagDefinition.k9385,
   });
-  static const PCTagDefinition k439 =
-      const PCTagDefinition._(439, 'SIEMENS MR IMA', const <int, PDTagDefinition>{
+  static const PCTagDefinition k439 = const PCTagDefinition._(
+      439, 'SIEMENS MR IMA', const <int, PDTagDefinition>{
     0x00210001: PDTagDefinition.k9386,
   });
   static const PCTagDefinition k440 = const PCTagDefinition._(
@@ -11573,8 +11592,8 @@ class PCTagDefinition {
     0x00210003: PDTagDefinition.k9498,
     0x002100f1: PDTagDefinition.k9499,
   });
-  static const PCTagDefinition k441 =
-      const PCTagDefinition._(441, 'SIEMENS MR SDS 01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k441 = const PCTagDefinition._(
+      441, 'SIEMENS MR SDS 01', const <int, PDTagDefinition>{
     0x002100fe: PDTagDefinition.k9500,
     0x00210001: PDTagDefinition.k9501,
     0x00210002: PDTagDefinition.k9502,
@@ -11649,8 +11668,8 @@ class PCTagDefinition {
     0x00210052: PDTagDefinition.k9571,
     0x00210053: PDTagDefinition.k9572,
   });
-  static const PCTagDefinition k442 =
-      const PCTagDefinition._(442, 'SIEMENS MR MRS 05', const <int, PDTagDefinition>{
+  static const PCTagDefinition k442 = const PCTagDefinition._(
+      442, 'SIEMENS MR MRS 05', const <int, PDTagDefinition>{
     0x00210001: PDTagDefinition.k9573,
     0x00210002: PDTagDefinition.k9574,
     0x00210003: PDTagDefinition.k9575,
@@ -11674,8 +11693,8 @@ class PCTagDefinition {
     0x00250002: PDTagDefinition.k9590,
     0x00250003: PDTagDefinition.k9591,
   });
-  static const PCTagDefinition k444 =
-      const PCTagDefinition._(444, 'SIEMENS MR SDI 02', const <int, PDTagDefinition>{
+  static const PCTagDefinition k444 = const PCTagDefinition._(
+      444, 'SIEMENS MR SDI 02', const <int, PDTagDefinition>{
     0x00210001: PDTagDefinition.k9608,
     0x00210002: PDTagDefinition.k9609,
     0x00210003: PDTagDefinition.k9610,
@@ -11768,17 +11787,17 @@ class PCTagDefinition {
     0x00210080: PDTagDefinition.k9697,
     0x002100fe: PDTagDefinition.k9698,
   });
-  static const PCTagDefinition k445 =
-      const PCTagDefinition._(445, 'SIEMENS MR CM 03', const <int, PDTagDefinition>{
+  static const PCTagDefinition k445 = const PCTagDefinition._(
+      445, 'SIEMENS MR CM 03', const <int, PDTagDefinition>{
     0x00210001: PDTagDefinition.k9699,
     0x00210002: PDTagDefinition.k9700,
   });
-  static const PCTagDefinition k446 =
-      const PCTagDefinition._(446, 'SIEMENS MR PS 04', const <int, PDTagDefinition>{
+  static const PCTagDefinition k446 = const PCTagDefinition._(
+      446, 'SIEMENS MR PS 04', const <int, PDTagDefinition>{
     0x00210001: PDTagDefinition.k9701,
   });
-  static const PCTagDefinition k447 =
-      const PCTagDefinition._(447, 'SIEMENS MR FOR 06', const <int, PDTagDefinition>{
+  static const PCTagDefinition k447 = const PCTagDefinition._(
+      447, 'SIEMENS MR FOR 06', const <int, PDTagDefinition>{
     0x00210001: PDTagDefinition.k9702,
   });
   static const PCTagDefinition k448 = const PCTagDefinition._(
@@ -11864,8 +11883,8 @@ class PCTagDefinition {
       452, 'SIEMENS CT APPL TMP DATAMODEL', const <int, PDTagDefinition>{
     0x00290000: PDTagDefinition.k9770,
   });
-  static const PCTagDefinition k453 = const PCTagDefinition._(
-      453, 'SIEMENS MED SMS USG ANTARES 3D VOLUME', const <int, PDTagDefinition>{
+  static const PCTagDefinition k453 = const PCTagDefinition._(453,
+      'SIEMENS MED SMS USG ANTARES 3D VOLUME', const <int, PDTagDefinition>{
     0x00390000: PDTagDefinition.k9771,
     0x00390003: PDTagDefinition.k9772,
     0x00390004: PDTagDefinition.k9773,
@@ -12109,8 +12128,8 @@ class PCTagDefinition {
       455, 'SIEMENS MED OCS BEAM DISPLAY INFO', const <int, PDTagDefinition>{
     0x00390076: PDTagDefinition.k10007,
   });
-  static const PCTagDefinition k456 = const PCTagDefinition._(
-      456, 'SIEMENS MED OCS PUBLIC RT PLAN ATTRIBUTES', const <int, PDTagDefinition>{
+  static const PCTagDefinition k456 = const PCTagDefinition._(456,
+      'SIEMENS MED OCS PUBLIC RT PLAN ATTRIBUTES', const <int, PDTagDefinition>{
     0x00390001: PDTagDefinition.k10008,
   });
   static const PCTagDefinition k457 = const PCTagDefinition._(
@@ -12138,24 +12157,26 @@ class PCTagDefinition {
     0x00630020: PDTagDefinition.k10026,
     0x00630021: PDTagDefinition.k10027,
   });
-  static const PCTagDefinition k459 = const PCTagDefinition._(459,
-      'PMI Private Calibration Module Version 2.0', const <int, PDTagDefinition>{
-    0x21210001: PDTagDefinition.k10028,
-    0x21210002: PDTagDefinition.k10029,
-    0x21210003: PDTagDefinition.k10030,
-    0x21210004: PDTagDefinition.k10031,
-    0x21210005: PDTagDefinition.k10032,
-    0x21210006: PDTagDefinition.k10033,
-    0x21210008: PDTagDefinition.k10034,
-    0x21210009: PDTagDefinition.k10035,
-    0x2121000a: PDTagDefinition.k10036,
-    0x2121000b: PDTagDefinition.k10037,
-    0x2121000c: PDTagDefinition.k10038,
-    0x2121000d: PDTagDefinition.k10039,
-    0x2121000e: PDTagDefinition.k10040,
-  });
-  static const PCTagDefinition k460 =
-      const PCTagDefinition._(460, 'POLYTRON-SMS 2.5', const <int, PDTagDefinition>{
+  static const PCTagDefinition k459 = const PCTagDefinition._(
+      459,
+      'PMI Private Calibration Module Version 2.0',
+      const <int, PDTagDefinition>{
+        0x21210001: PDTagDefinition.k10028,
+        0x21210002: PDTagDefinition.k10029,
+        0x21210003: PDTagDefinition.k10030,
+        0x21210004: PDTagDefinition.k10031,
+        0x21210005: PDTagDefinition.k10032,
+        0x21210006: PDTagDefinition.k10033,
+        0x21210008: PDTagDefinition.k10034,
+        0x21210009: PDTagDefinition.k10035,
+        0x2121000a: PDTagDefinition.k10036,
+        0x2121000b: PDTagDefinition.k10037,
+        0x2121000c: PDTagDefinition.k10038,
+        0x2121000d: PDTagDefinition.k10039,
+        0x2121000e: PDTagDefinition.k10040,
+      });
+  static const PCTagDefinition k460 = const PCTagDefinition._(
+      460, 'POLYTRON-SMS 2.5', const <int, PDTagDefinition>{
     0x00090002: PDTagDefinition.k10043,
     0x00090004: PDTagDefinition.k10044,
     0x00090006: PDTagDefinition.k10045,
@@ -12261,13 +12282,15 @@ class PCTagDefinition {
     0x300b00f0: PDTagDefinition.k10142,
     0x300b00f1: PDTagDefinition.k10143,
   });
-  static const PCTagDefinition k462 = const PCTagDefinition._(462,
-      'SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING', const <int, PDTagDefinition>{
-    0x7fd10001: PDTagDefinition.k10144,
-    0x7fd10009: PDTagDefinition.k10145,
-    0x7fd10010: PDTagDefinition.k10146,
-    0x7fd10011: PDTagDefinition.k10147,
-  });
+  static const PCTagDefinition k462 = const PCTagDefinition._(
+      462,
+      'SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING',
+      const <int, PDTagDefinition>{
+        0x7fd10001: PDTagDefinition.k10144,
+        0x7fd10009: PDTagDefinition.k10145,
+        0x7fd10010: PDTagDefinition.k10146,
+        0x7fd10011: PDTagDefinition.k10147,
+      });
   static const PCTagDefinition k463 = const PCTagDefinition._(
       463, 'SIEMENS Ultrasound S2000', const <int, PDTagDefinition>{
     0x00210000: PDTagDefinition.k10148,
@@ -12308,8 +12331,8 @@ class PCTagDefinition {
     0x007d0002: PDTagDefinition.k10174,
     0x007d0003: PDTagDefinition.k10175,
   });
-  static const PCTagDefinition k467 =
-      const PCTagDefinition._(467, 'TOSHIBA_MEC_OT3', const <int, PDTagDefinition>{
+  static const PCTagDefinition k467 = const PCTagDefinition._(
+      467, 'TOSHIBA_MEC_OT3', const <int, PDTagDefinition>{
     0x00090000: PDTagDefinition.k10176,
   });
   static const PCTagDefinition k468 = const PCTagDefinition._(
@@ -12353,8 +12376,8 @@ class PCTagDefinition {
     0x00290090: PDTagDefinition.k10202,
     0x70150073: PDTagDefinition.k10216,
   });
-  static const PCTagDefinition k473 =
-      const PCTagDefinition._(473, 'TOSHIBA_MEC_CT3', const <int, PDTagDefinition>{
+  static const PCTagDefinition k473 = const PCTagDefinition._(
+      473, 'TOSHIBA_MEC_CT3', const <int, PDTagDefinition>{
     0x70050061: PDTagDefinition.k10203,
     0x70050062: PDTagDefinition.k10204,
     0x70050063: PDTagDefinition.k10205,
@@ -12433,8 +12456,8 @@ class PCTagDefinition {
     0x70150010: PDTagDefinition.k10214,
     0x70150060: PDTagDefinition.k10215,
   });
-  static const PCTagDefinition k476 =
-      const PCTagDefinition._(476, 'TOSHIBA_MEC_XA3', const <int, PDTagDefinition>{
+  static const PCTagDefinition k476 = const PCTagDefinition._(
+      476, 'TOSHIBA_MEC_XA3', const <int, PDTagDefinition>{
     0x70790021: PDTagDefinition.k10217,
     0x70790022: PDTagDefinition.k10218,
     0x70790023: PDTagDefinition.k10219,
@@ -12571,8 +12594,8 @@ class PCTagDefinition {
       const PCTagDefinition._(478, 'GEMS_PATI_01', const <int, PDTagDefinition>{
     0x00110010: PDTagDefinition.k10404,
   });
-  static const PCTagDefinition k479 =
-      const PCTagDefinition._(479, 'Siemens MED NM', const <int, PDTagDefinition>{
+  static const PCTagDefinition k479 = const PCTagDefinition._(
+      479, 'Siemens MED NM', const <int, PDTagDefinition>{
     0x0019000f: PDTagDefinition.k10507,
     0x001900a5: PDTagDefinition.k10508,
     0x001900a6: PDTagDefinition.k10509,
@@ -12584,8 +12607,8 @@ class PCTagDefinition {
     0x00210001: PDTagDefinition.k10521,
     0x00230001: PDTagDefinition.k10524,
   });
-  static const PCTagDefinition k480 =
-      const PCTagDefinition._(480, 'GEMS_CT_FLRO_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k480 = const PCTagDefinition._(
+      480, 'GEMS_CT_FLRO_01', const <int, PDTagDefinition>{
     0x00290001: PDTagDefinition.k10531,
     0x00290002: PDTagDefinition.k10532,
   });
@@ -12593,8 +12616,8 @@ class PCTagDefinition {
       const PCTagDefinition._(481, 'GEMS_0039', const <int, PDTagDefinition>{
     0x00390095: PDTagDefinition.k10573,
   });
-  static const PCTagDefinition k482 =
-      const PCTagDefinition._(482, 'GEMS_HINO_CT_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k482 = const PCTagDefinition._(
+      482, 'GEMS_HINO_CT_01', const <int, PDTagDefinition>{
     0x004b0001: PDTagDefinition.k10671,
     0x004b0002: PDTagDefinition.k10672,
     0x004b0003: PDTagDefinition.k10673,
@@ -12633,8 +12656,8 @@ class PCTagDefinition {
     0x200100b0: PDTagDefinition.k11005,
     0x200100c0: PDTagDefinition.k11006,
   });
-  static const PCTagDefinition k484 =
-      const PCTagDefinition._(484, 'GEMS_MR_RAW_01', const <int, PDTagDefinition>{
+  static const PCTagDefinition k484 = const PCTagDefinition._(
+      484, 'GEMS_MR_RAW_01', const <int, PDTagDefinition>{
     0x70010001: PDTagDefinition.k11062,
     0x70010002: PDTagDefinition.k11063,
     0x70010003: PDTagDefinition.k11064,
@@ -12647,8 +12670,8 @@ class PCTagDefinition {
     0x7001000a: PDTagDefinition.k11071,
     0x7001000b: PDTagDefinition.k11072,
   });
-  static const PCTagDefinition k485 =
-      const PCTagDefinition._(485, 'TOSHIBA_MEC_MR3', const <int, PDTagDefinition>{
+  static const PCTagDefinition k485 = const PCTagDefinition._(
+      485, 'TOSHIBA_MEC_MR3', const <int, PDTagDefinition>{
     0x700d0000: PDTagDefinition.k11131,
     0x700d0001: PDTagDefinition.k11132,
     0x700d0002: PDTagDefinition.k11133,

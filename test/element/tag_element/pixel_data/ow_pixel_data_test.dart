@@ -37,7 +37,7 @@ void main() {
       expect(
           () => new OWtagPixelData(
               PTag.kVariableNextDataGroup, pixels0, pixels0.lengthInBytes),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow0.vrIndex == kOBOWIndex, true);
@@ -85,7 +85,7 @@ void main() {
       expect(
           () => new OWtagPixelData.fromBytes(
               PTag.kVariableNextDataGroup, bytes1, bytes1.lengthInBytes),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow0.vrIndex == kOBOWIndex || ow0.vrIndex == kUNIndex, true);
@@ -177,7 +177,7 @@ void main() {
       expect(
           () => new OWtagPixelData.fromBase64(
               PTag.kVariableNextDataGroup, base64, base64.length),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow0.vrIndex == kOBOWIndex, true);

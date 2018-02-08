@@ -110,18 +110,6 @@ class SLtag extends SL with TagElement<int> {
   SLtag updateF(Iterable<int> f(Iterable<int> vList)) =>
       new SLtag(tag, f(values));
 
-/*
-  static SLtag fromB64(Tag tag, String base64) =>
-      new SLtag.fromBytes(tag, BASE64.decode(base64));
-
-  static SLtag make<int>(Tag tag, Iterable<int> vList) =>
-      new SLtag(tag, vList ?? kEmptyIntList);
-
-//  static SLtag fromEBytes(EBytes eb) => new SLtag.fromBytes(eb.tag, eb.vfBytes);
-
-  static SLtag fromBD(BDElement bd) => new SLtag.fromBytes(bd.tag, bd.vfBytes);
-*/
-
   static SLtag make<double>(Tag tag, Iterable<double> vList) =>
       new SLtag(tag, vList ?? kEmptyDoubleList);
 
@@ -158,7 +146,9 @@ class OBtag extends OB with TagElement<int> {
   OBtag._(this.tag, this.values, this.vfLengthField);
 
   OBtag.fromBytes(Tag tag, Uint8List bytes, this.vfLengthField)
-      : tag = (Tag.isValidVR(tag, OB.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, OB.kVRIndex))
+            ? tag
+            : invalidTagError(tag, OBtag),
         // ignore: prefer_initializing_formals
         values = bytes;
 
@@ -199,10 +189,7 @@ class UNtag extends UN with TagElement<int> {
 
   UNtag._(this.tag, this.values, this.vfLengthField);
 
-  UNtag.fromBytes(Tag tag, Uint8List bytes, this.vfLengthField)
-      : tag = (Tag.isValidVR(tag, UN.kVRIndex)) ? tag : invalidTagError(tag),
-        // ignore: prefer_initializing_formals
-        values = bytes;
+  UNtag.fromBytes(this.tag, this.values, this.vfLengthField);
 
   factory UNtag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
       new UNtag.fromBytes(tag, BASE64.decode(base64), vfLengthField);
@@ -241,7 +228,9 @@ class UStag extends US with TagElement<int> {
 
   /// Creates an [UStag] with a value that is a [Uint8List].
   UStag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, US.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, US.kVRIndex))
+            ? tag
+            : invalidTagError(tag, UStag),
         values = Uint16Base.listFromBytes(bytes);
 
   factory UStag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
@@ -285,7 +274,9 @@ class OWtag extends OW with TagElement<int> {
 
   /// Creates an [OWtag] with a value that is a [Uint16List].
   OWtag.fromBytes(Tag tag, Uint8List bytes, int vfLengthField)
-      : tag = (Tag.isValidVR(tag, OW.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, OW.kVRIndex))
+            ? tag
+            : invalidTagError(tag, OWtag),
         values = Uint16Base.listFromBytes(bytes),
         vfLengthField = _checkVFL(bytes, vfLengthField);
 
@@ -330,7 +321,9 @@ class OLtag extends OL with TagElement<int> {
 
   /// Creates an [OLtag] with a value that is a [Uint8List].
   OLtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, OL.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, OL.kVRIndex))
+            ? tag
+            : invalidTagError(tag, OLtag),
         values = Uint32Base.listFromBytes(bytes);
 
   factory OLtag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
@@ -369,7 +362,9 @@ class ULtag extends UL with TagElement<int> {
 
   /// Creates an [ULtag] with a value that is a [Uint8List].
   ULtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, UL.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, UL.kVRIndex))
+            ? tag
+            : invalidTagError(tag, ULtag),
         values = Uint32Base.listFromBytes(bytes);
 
   factory ULtag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
@@ -388,7 +383,12 @@ class ULtag extends UL with TagElement<int> {
   static ULtag make<int>(Tag tag, Iterable<int> vList) =>
       new ULtag(tag, vList ?? kEmptyIntList);
 
-  static ULtag fromBD(BDElement bd) => new ULtag.fromBytes(bd.tag, bd.vfBytes);
+  static ULtag fromBD(BDElement bd) {
+    final tag = bd.tag;
+    final bytes = bd.vfBytes;
+    final te = new ULtag.fromBytes(tag, bytes);
+    return te;
+  }
 }
 
 /// Immutable Attribute Tags
@@ -411,7 +411,9 @@ class ATtag extends AT with TagElement<int> {
 
   /// Creates an [ ATtag] with a value that is a [Uint8List].
   ATtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, AT.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, AT.kVRIndex))
+            ? tag
+            : invalidTagError(tag, ATtag),
         values = Uint32Base.listFromBytes(bytes);
 
   /// Creates an [ ATtag] with a value that is a Base64 [String].

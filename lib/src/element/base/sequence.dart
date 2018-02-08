@@ -27,6 +27,8 @@ bool _isValidVFLength(int vfl, int minBytes, int maxBytes, int sizeInBytes) =>
 
 const Iterable<Item> emptyItemList = const <Item>[];
 
+int level = 0;
+
 abstract class SQ<K> extends Element<Item> with UndefinedLengthMixin {
   // **** Interface
 
@@ -95,25 +97,20 @@ Summary $tag
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   @override
-  bool checkValues(Iterable<Item> vList, [Issues issues]) => isValidValues(vList, issues);
+  bool checkValues(Iterable<Item> vList, [Issues issues]) =>
+      isValidValues(vList, issues);
 
-  //Fix: make conform to Fold interface
   /// Walk the [Dataset] recursively and return the count of [Element]s
   /// for which [test] is true.
   /// Note: It ignores duplicates.
   @override
   int counter(ElementTest test) {
-    // Starts at 1 in order to include the SQ itself.
     var count = 1;
-    for (var item in items)
-      for (var e in item.elements) {
-        if (e is SQ) {
-          count += e.counter(test);
-        } else {
-          if (test(e)) count++;
-        }
+    for (var item in items) {
+      for (var e in item) {
+        count += (e is SQ) ? e.counter(test) : 1;
       }
-    //    log.debug1('sqCounter: $count');
+    }
     return count;
   }
 
@@ -121,11 +118,8 @@ Summary $tag
   void forEach(void f(Item item)) => items.forEach(f);
 
   @override
-  T fold<T>(T initialValue, T combine(T v, Item item)) {
-    var v = initialValue;
-    for (var item in items) v = combine(v, item);
-    return v;
-  }
+  T fold<T>(T initialValue, T combine(T previous, Item item)) =>
+      items.fold(initialValue, combine);
 
   Element lookup(int index, {bool required = false}) {
     for (var item in items) {
@@ -180,7 +174,8 @@ Summary $tag
   }
 */
 
-  Iterable<Element> updateAll<V>(int index, Iterable<V> vList, {bool required = false}) {
+  Iterable<Element> updateAll<V>(int index, Iterable<V> vList,
+      {bool required = false}) {
     final eList = <Element>[];
     for (var item in items) {
       final e = item[index];
@@ -224,10 +219,12 @@ Summary $tag
   }
 
   @override
-  Iterable<Item> replace([Iterable<Item> vList = emptyItemList]) => unsupportedError();
+  Iterable<Item> replace([Iterable<Item> vList = emptyItemList]) =>
+      unsupportedError();
 
   @override
-  Iterable<Item> replaceF(Iterable<Item> f(Iterable<Item> vList)) => unsupportedError();
+  Iterable<Item> replaceF(Iterable<Item> f(Iterable<Item> vList)) =>
+      unsupportedError();
 
   Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
     final result = <Iterable<V>>[];
@@ -238,7 +235,8 @@ Summary $tag
     return result;
   }
 
-  Iterable<Iterable<V>> replaceAllF<V>(int index, Iterable<V> f(Iterable<V> vList)) {
+  Iterable<Iterable<V>> replaceAllF<V>(
+      int index, Iterable<V> f(Iterable<V> vList)) {
     final result = <Iterable<V>>[];
     for (var item in items) {
       final e = item.lookup(index);
@@ -249,7 +247,8 @@ Summary $tag
   }
 
   // TODO Jim: merge with removeRecursive
-  Iterable<Element> removeAll(int index, {bool recursive = true, bool required = false}) {
+  Iterable<Element> removeAll(int index,
+      {bool recursive = true, bool required = false}) {
     final result = <Element>[];
     forEach((item) => result.add(item.delete(index)));
     return result;
@@ -308,7 +307,9 @@ Summary $tag
   static bool isValidVListLength(int vfl) => true;
 
   //TODO: make sure this is good enough
-  static bool isValidValue(Item item, {Issues issues, bool allowInvalid = false}) => true;
+  static bool isValidValue(Item item,
+          {Issues issues, bool allowInvalid = false}) =>
+      true;
 
   static bool isValidValues(Iterable<Item> vList, Issues issues) => true;
 }

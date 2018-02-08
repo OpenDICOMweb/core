@@ -58,7 +58,15 @@ class History {
   //TODO:
   SQ get modifiedElementsSequence => unimplementedError();
 
-  String get info => '''
-	not
-	''';
+  @override
+  String toString() => '''
+	History:
+	               Added: ${added.length}
+               Updated: ${updated.length}
+               Removed: ${removed.length}
+            Duplicates: ${duplicates.length}
+    RequiredNotPresent: ${requiredNotPresent.length}
+            NotPresent: ${notPresent.length}
+         PrivateGroups: ${privateGroups.length}
+''';
 }

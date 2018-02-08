@@ -391,16 +391,22 @@ class VRFloat extends VR<double> {
   static const kOD = const VRFloat(kODIndex, 'OD', kODCode, 4, kLongVF, 8);
 }
 
+typedef bool IsValidIndex(int vrInex);
+
 class VRInt extends VR<int> {
   final int sizeInBytes; // size in bytes
   final int min;
   final int max;
+  final IsValidIndex isValid;
 
   const VRInt(int index, String id, int code, int vlfSize, int maxVFLength,
-      this.sizeInBytes, this.min, this.max)
+      this.sizeInBytes, this.min, this.max, this.isValid)
       : super(index, id, code, vlfSize, maxVFLength);
 
   int get maxLength => maxVFLength ~/ sizeInBytes;
+
+  @override
+  bool isValidIndex(int vrIndex) => isValid(vrIndex);
 
   @override
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) {
@@ -411,26 +417,31 @@ class VRInt extends VR<int> {
   @override
   bool isValidValue(int v, Issues issues) => v >= min && v <= max;
 
-  static const kUN =
-      const VRInt(kUNIndex, 'UN', kUNCode, 4, kLongVF, 1, 0, 255);
-  static const kOB =
-      const VRInt(kOBIndex, 'OB', kOBCode, 4, kLongVF, 1, 0, 255);
+  static const kUN = const VRInt(
+      kUNIndex, 'UN', kUNCode, 4, kLongVF, 1, 0, 255, UN.isValidVRIndex);
+  static const kOB = const VRInt(
+      kOBIndex, 'OB', kOBCode, 4, kLongVF, 1, 0, 255, OB.isValidVRIndex);
 
   static const kSS = const VRInt(kSSIndex, 'SS', kSSCode, 2, kShortVF, 2,
-      Int16Base.kMinValue, Int16Base.kMaxValue);
+      Int16Base.kMinValue, Int16Base.kMaxValue, SS.isValidVRIndex);
+
   static const kUS = const VRInt(kUSIndex, 'US', kUSCode, 2, kShortVF, 2,
-      Uint16Base.kMinValue, Uint16Base.kMaxValue);
+      Uint16Base.kMinValue, Uint16Base.kMaxValue, US.isValidVRIndex);
+
   static const kOW = const VRInt(kOWIndex, 'OW', kOWCode, 4, kLongVF, 2,
-      Uint16Base.kMinValue, Uint16Base.kMaxValue);
+      Uint16Base.kMinValue, Uint16Base.kMaxValue, OW.isValidVRIndex);
 
   static const kSL = const VRInt(kSLIndex, 'SL', kSLCode, 2, kShortVF, 4,
-      Int32Base.kMinValue, Int32Base.kMaxValue);
+      Int32Base.kMinValue, Int32Base.kMaxValue, SL.isValidVRIndex);
+
   static const kUL = const VRInt(kULIndex, 'UL', kULCode, 2, kShortVF, 4,
-      Uint32Base.kMinValue, Uint32Base.kMaxValue);
+      Uint32Base.kMinValue, Uint32Base.kMaxValue, UL.isValidVRIndex);
+
   static const kAT = const VRInt(kATIndex, 'AT', kATCode, 2, kShortVF, 4,
-      Uint32Base.kMinValue, Uint32Base.kMaxValue);
+      Uint32Base.kMinValue, Uint32Base.kMaxValue, AT.isValidVRIndex);
+
   static const kOL = const VRInt(kOLIndex, 'OL', kOLCode, 4, kLongVF, 4,
-      Uint32Base.kMinValue, Uint32Base.kMaxValue);
+      Uint32Base.kMinValue, Uint32Base.kMaxValue, OL.isValidVRIndex);
 }
 
 typedef bool IsValidString(String s, {Issues issues, bool allowInvalid});
@@ -630,19 +641,21 @@ class VRSpecial extends VR<int> {
 
   @override
   bool isValidIndex(int vrIndex) {
-    for (var vr in vrs)
-      if (vr.index == vrIndex) return true;
+    for (var vr in vrs) if (vr.index == vrIndex) return true;
     return false;
   }
 
   static const kOBOW = const VRSpecial(
-      kOBOWIndex, 'OBOW', -1, 0, 0, const <VRInt>[VR.kOB, VR.kOW]);
+      kOBOWIndex, 'OBOW', -1, 0, 0, const <VRInt>[VR.kOB, VR.kOW, VR.kUN]);
+
   static const kUSSS = const VRSpecial(
-      kUSSSIndex, 'USSS', -1, 0, 0, const <VRInt>[VR.kUS, VR.kSS]);
-  static const kUSSSOW = const VRSpecial(
-      kUSSSOWIndex, 'kUSSSOW', -1, 0, 0, const <VRInt>[VR.kUS, VR.kSS, VR.kOW]);
+      kUSSSIndex, 'USSS', -1, 0, 0, const <VRInt>[VR.kUS, VR.kSS, VR.kUN]);
+
+  static const kUSSSOW = const VRSpecial(kUSSSOWIndex, 'kUSSSOW', -1, 0, 0,
+      const <VRInt>[VR.kUS, VR.kSS, VR.kOW, VR.kUN]);
+
   static const kUSOW = const VRSpecial(
-      kUSOWIndex, 'USOW', -1, 0, 0, const <VRInt>[VR.kUS, VR.kOW]);
+      kUSOWIndex, 'USOW', -1, 0, 0, const <VRInt>[VR.kUS, VR.kOW, VR.kUN]);
 }
 
 //TODO: try to remove this error from core SDK

@@ -30,7 +30,8 @@ typedef Element<V> ElementConverter<V>(Iterable<V> vList);
 
 typedef bool Condition(Dataset ds, Element e);
 
-Iterable<V> _toList<V>(Iterable v) => (v is Iterable) ? v.toList(growable: false) : v;
+Iterable<V> _toList<V>(Iterable v) =>
+    (v is Iterable) ? v.toList(growable: false) : v;
 
 bool doTestValidity = true;
 
@@ -271,7 +272,8 @@ abstract class Element<V> extends ListBase<V> {
   V operator [](int i) => values.elementAt(i);
 
   @override
-  void operator []=(int i, V v) => throw new UnsupportedError('Elements are immutable');
+  void operator []=(int i, V v) =>
+      throw new UnsupportedError('Elements are immutable');
 
   /// Returns the number of [values] of _this_.
   @override
@@ -307,10 +309,12 @@ abstract class Element<V> extends ListBase<V> {
   TypedData get typedData;
 
   /// Returns [values] encoded as [ByteData].
-  ByteData get vfByteData => (checkValues(values)) ? typedData.buffer.asByteData() : null;
+  ByteData get vfByteData =>
+      (checkValues(values)) ? typedData.buffer.asByteData() : null;
 
   /// Returns [values] encoded as a [Uint8List].
-  Uint8List get vfBytes => (checkValues(values)) ? typedData.buffer.asUint8List() : null;
+  Uint8List get vfBytes =>
+      (checkValues(values)) ? typedData.buffer.asUint8List() : null;
 
   /// Returns the Ascii Padding Character for this [Element],
   /// if it has one; otherwise returns -1;

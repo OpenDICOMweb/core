@@ -503,7 +503,7 @@ void main() {
     test('Create UN.checkVR', () {
       system.throwOnError = false;
       expect(UN.checkVRIndex(kUNIndex), kUNIndex);
-      expect(UN.checkVRIndex(kAEIndex), null);
+      expect(UN.checkVRIndex(kAEIndex), kAEIndex);
       expect(UN.isValidVRIndex(kUNIndex), true);
       expect(UN.isValidVRIndex(kAEIndex), true);
 
@@ -514,7 +514,7 @@ void main() {
 
       for (var tag in otherTags) {
         system.throwOnError = false;
-        expect(UN.checkVRIndex(tag.vrIndex), null);
+        expect(UN.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
@@ -564,6 +564,7 @@ void main() {
       expect(UN.isValidValue(UN.kMaxValue + 1), false);
     });
 
+    // Urgent Sharath: delete of fix - UN values are always valid
     test('Create UN.isValidValues', () {
       system.throwOnError = false;
       const uInt8Min = const [UN.kMinValue];
@@ -583,7 +584,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => UN.isValidValues(PTag.kPixelData, uInt8MinMinus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
-    }, skip: 'UN values are always valid');
+    });
 
     test('Create Uint8Base.listFromBytes', () {
       expect(Uint8Base.listFromBytes(frame), equals(frame));

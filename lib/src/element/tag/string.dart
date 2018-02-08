@@ -43,7 +43,9 @@ class AEtag extends AE with TagElement<String> {
   AEtag._(this.tag, this.values);
 
   AEtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, AE.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, AE.kVRIndex))
+            ? tag
+            : invalidTagError(tag, AEtag),
         values = AE.fromBytes(bytes);
 
   @override
@@ -77,7 +79,9 @@ class CStag extends CS with TagElement<String> {
   CStag._(this.tag, this.values);
 
   CStag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, CS.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, CS.kVRIndex))
+            ? tag
+            : invalidTagError(tag, CStag),
         values = CS.fromBytes(bytes);
 
   @override
@@ -111,7 +115,9 @@ class DStag extends DS with TagElement<String> {
   DStag._(this.tag, this.values);
 
   DStag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, DS.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, DS.kVRIndex))
+            ? tag
+            : invalidTagError(tag, DStag),
         values = DS.fromBytes(bytes);
 
   @override
@@ -145,7 +151,9 @@ class IStag extends IS with TagElement<String> {
   IStag._(this.tag, this.values);
 
   IStag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, IS.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, IS.kVRIndex))
+            ? tag
+            : invalidTagError(tag, IStag),
         values = IS.fromBytes(bytes);
 
   @override
@@ -180,7 +188,9 @@ class LOtag extends LO with TagElement<String> {
   LOtag.internal(this.tag, this.values);
 
   LOtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, LO.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, LO.kVRIndex))
+            ? tag
+            : invalidTagError(tag, LOtag),
         values = LO.fromBytes(bytes);
 
   @override
@@ -215,7 +225,9 @@ class LTtag extends LT with TagElement<String> {
   LTtag._(this.tag, this.values);
 
   LTtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, LT.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, LT.kVRIndex))
+            ? tag
+            : invalidTagError(tag, LTtag),
         values = LT.fromBytes(bytes);
 
   @override
@@ -250,7 +262,9 @@ class PNtag extends PN with TagElement<String> {
   PNtag._(this.tag, this.values);
 
   PNtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, PN.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, PN.kVRIndex))
+            ? tag
+            : invalidTagError(tag, PNtag),
         values = PN.fromBytes(bytes);
 
   @override
@@ -285,7 +299,9 @@ class SHtag extends SH with TagElement<String> {
   SHtag._(this.tag, this.values);
 
   SHtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, SH.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, SH.kVRIndex))
+            ? tag
+            : invalidTagError(tag, SHtag),
         values = SH.fromBytes(bytes);
 
   @override
@@ -320,7 +336,9 @@ class STtag extends ST with TagElement<String> {
   STtag._(this.tag, this.values);
 
   STtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, ST.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, ST.kVRIndex))
+            ? tag
+            : invalidTagError(tag, STtag),
         values = ST.fromBytes(bytes);
 
   @override
@@ -355,7 +373,9 @@ class UCtag extends UC with TagElement<String> {
   UCtag._(this.tag, this.values);
 
   UCtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, UC.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, UC.kVRIndex))
+            ? tag
+            : invalidTagError(tag, UCtag),
         values = UC.fromBytes(bytes);
 
   @override
@@ -378,7 +398,6 @@ class UCtag extends UC with TagElement<String> {
 class UItag extends UI with TagElement<String> {
   @override
   final Tag tag;
-  // TODO: decide if values should be Iterable<String>
   @override
   Iterable<String> values;
 
@@ -398,7 +417,9 @@ class UItag extends UI with TagElement<String> {
   UItag._(this.tag, this.values);
 
   UItag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, UI.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, UI.kVRIndex))
+            ? tag
+            : invalidTagError(tag, UItag),
         values = UI.fromBytes(bytes);
 
   @override
@@ -406,7 +427,7 @@ class UItag extends UI with TagElement<String> {
       new UItag.fromStrings(tag, vList);
 
   static UItag make<String>(Tag tag, Iterable<String> vList) =>
-      new UItag(tag, vList ?? kEmptyStringList);
+      new UItag.fromStrings(tag, vList ?? kEmptyStringList);
 
   static UItag fromB64(Tag tag, String base64) =>
       new UItag.fromBytes(tag, BASE64.decode(base64));
@@ -443,7 +464,9 @@ class URtag extends UR with TagElement<String> {
   URtag._(this.tag, this.values);
 
   URtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, UR.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, UR.kVRIndex))
+            ? tag
+            : invalidTagError(tag, URtag),
         values = UR.fromBytes(bytes);
 
   @override
@@ -478,7 +501,9 @@ class UTtag extends UT with TagElement<String> {
   UTtag._(this.tag, this.values);
 
   UTtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, UT.kVRIndex)) ? tag : invalidTagError(tag),
+      : tag = (Tag.isValidVR(tag, UT.kVRIndex))
+            ? tag
+            : invalidTagError(tag, UTtag),
         values = UT.fromBytes(bytes);
 
   @override

@@ -11,23 +11,25 @@ import 'package:core/src/tag/tag.dart';
 import 'package:core/src/vr/vr.dart';
 
 class InvalidTagError extends Error {
-  Object tag;
+  Tag tag;
+  Type type;
 
-  InvalidTagError(this.tag);
+  InvalidTagError(this.tag, this.type);
 
   @override
-  String toString() => Tag.toMsg(tag);
+  String toString() => _msg(tag, type);
 
-  static String _msg<K>(Object tag) => 'InvalidTagError: $tag';
+  static String _msg(Tag tag, Type type) =>
+      'InvalidTag for $type: $tag';
 }
 
 //TODO: jim figure out best way to handel invalid tags
-Object invalidTagError(Object obj, [Issues issues]) {
-  final msg = 'InvalidTagError: $obj';
+Object invalidTagError(Tag tag, Type type, [Issues issues]) {
+  final msg = InvalidTagError._msg(tag, type);
   if (issues != null) issues.add(msg);
-  log.error(InvalidTagKeyError._msg(obj));
-  if (throwOnError) throw new InvalidTagError(obj);
-  return obj;
+  log.error(InvalidTagKeyError._msg(tag));
+  if (throwOnError) throw new InvalidTagError(tag, type);
+  return tag;
 }
 
 class InvalidTagTypeError extends Error {
@@ -55,7 +57,8 @@ Null nonSequenceTag(int index, [Issues issues]) =>
 Null nonUidTag(int index, [Issues issues]) =>
 		_doTagError(index, issues, 'Non-Uid Tag');
 
-Object _doTagError(int index, Issues issues, [String msg = 'Invalid Tag Type']) {
+Object _doTagError(int index, Issues issues,
+                   [String msg = 'Invalid Tag Type']) {
 	final tag = Tag.lookup(index);
 	final s =  '$msg: $tag';
   if (issues != null) issues.add(s);
@@ -225,7 +228,8 @@ class InvalidValuesLengthError<V> extends Error {
   String toString() => _msg(tag, values);
 
   static String _msg<V>(Tag tag, Iterable<V> values) {
-  	if (tag == null || tag is! Tag) return invalidTagError(tag);
+  	if (tag == null || tag is! Tag) return
+      '$tag is not a $Tag';
   	// TODO: use truncated list of values
 	  return 'InvalidValuesLengthError:\n  Tag(${tag.info}';
     //    'values: ${values.elementAt(0)} ...';

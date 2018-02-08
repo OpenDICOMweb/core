@@ -743,15 +743,22 @@ abstract class OB extends Uint8Base with UndefinedLengthMixin {
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
       vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
-  static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
+  static bool isValidTag(Tag tag, [Issues issues]) {
+    if (_isValidVRIndex(tag.vrIndex)) return true;
+    invalidTagError(tag, OB, issues);
+    return false;
+  }
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
-    if (vrIndex == kOBIndex || vrIndex == kOBOWIndex) return true;
+    if (_isValidVRIndex(vrIndex)) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
     return false;
   }
+
+  static bool _isValidVRIndex(int vrIndex) =>
+      vrIndex == kOBIndex || vrIndex == kOBOWIndex;
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     final vrIndex = vrIndexFromCodeMap[vrCode];
@@ -818,19 +825,13 @@ abstract class UN extends Uint8Base with UndefinedLengthMixin {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  static bool isValidVRIndex(int index, [Issues issues]) => true;
+  static bool isValidVRIndex(int vrIndex, [Issues issues]) => true;
 
-  static bool isValidVRCode(int vrCode, [Issues issues]) {
-    final vrIndex = vrIndexFromCodeMap[vrCode];
-    if (isValidVRIndex(vrIndex)) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
-  }
+  static bool isValidVRCode(int vrCode, [Issues issues]) => true;
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (isValidVRIndex(vrIndex))
-          ? vrIndex
-          : invalidVR(vrIndex, issues, kVRIndex);
+      (isValidVRIndex(vrIndex)) ? vrIndex : invalidVRIndex(
+          vrIndex, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
@@ -841,9 +842,8 @@ abstract class UN extends Uint8Base with UndefinedLengthMixin {
 
   // UN values are always true, since the read VR is unknown
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      //   IntBase._isValidValues(tag, vList, issues, kMinValue, kMaxValue,
-      //                           kMaxLength);
-      true;
+      IntBase._isValidValues(
+          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 abstract class Uint16Base extends IntBase {

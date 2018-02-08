@@ -112,9 +112,7 @@ class DeIdProfile {
   static Element removeUidUnlessZeroOrDummy<V>(
       Dataset ds, Tag tag, List<V> values,
       {bool required = false}) {
-    if (ds.lookup(tag.code) is! SQ)
-      throw new InvalidTagError(
-          'Invalid Tag(${ds.lookup(tag.code)}) for this action');
+    if (ds.lookup(tag.code) is! SQ) throw new InvalidTagError(tag, SQ);
     if (_isEmpty(values, true)) return ds.noValues(tag.code);
     return ds.update<V>(tag.code, values);
   }
@@ -122,7 +120,7 @@ class DeIdProfile {
   static Element addIfMissing<V>(Dataset ds, Tag tag, List<V> values,
       {bool required = false}) {
     final e = ds.lookup(tag.code);
-    if (e is! SQ) throw new InvalidTagError('Invalid Tag ($e) for this action');
+    if (e is! SQ) throw new InvalidTagError(tag, SQ);
     if (_isEmpty(values, true))
       return ds.noValues(tag.code, required: required);
     return ds.update(tag.code, values);

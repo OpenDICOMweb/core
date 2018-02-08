@@ -471,7 +471,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => OB.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         system.throwOnError = false;
@@ -479,7 +479,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => OB.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 

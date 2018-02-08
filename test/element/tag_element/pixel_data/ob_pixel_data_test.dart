@@ -35,7 +35,7 @@ void main() {
       expect(
           () => new OBtagPixelData(
               PTag.kVariableNextDataGroup, pixels1, pixels1.length),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, true);
@@ -87,7 +87,7 @@ void main() {
       expect(
           () => new OBtagPixelData(
               PTag.kVariableNextDataGroup, frame, kUndefinedLength, ts, frags),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, true);
@@ -140,7 +140,7 @@ void main() {
       expect(
           () => new OBtagPixelData(
               PTag.kVariableNextDataGroup, pixels1, pixels1.length),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, true);
@@ -200,7 +200,7 @@ void main() {
       expect(
           () => new OBtagPixelData.fromBytes(PTag.kVariableNextDataGroup, frame,
               frame.lengthInBytes, ts, frags),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, true);
@@ -315,7 +315,7 @@ void main() {
       expect(
           () => new OBtagPixelData.fromBase64(
               PTag.kVariableNextDataGroup, base64, base64.length),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, true);
@@ -376,7 +376,7 @@ void main() {
       expect(
           () => new OBtagPixelData.fromBase64(PTag.kVariableNextDataGroup,
               base64, frame.lengthInBytes, ts, frags),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, true);

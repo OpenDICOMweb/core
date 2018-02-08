@@ -131,10 +131,11 @@ class SQtag extends SQ<TagItem> with TagElement<Dataset> {
   String format(Formatter z) => z.fmt(this, items);
 
   @override
-  String toString() => '$runtimeType ${tag.dcm} ${tag.keyword} ${items.length} items';
+  String toString() => '$runtimeType $dcm ${tag.keyword} ${items.length} items';
 
   static const Iterable<TagItem> emptyItemTagList = const <TagItem>[];
 
-  static SQtag make(Tag tag, Iterable<TagItem> values, [int vfLength, Dataset parent]) =>
+  static SQtag make(Tag tag, Iterable<TagItem> values,
+          [int vfLength, Dataset parent]) =>
       new SQtag(tag, parent, values, vfLength);
 }

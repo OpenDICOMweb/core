@@ -160,9 +160,10 @@ abstract class ElementList extends ListBase<Element> {
 ElementList Summary
         Total Elements: $total
     Top Level Elements: $length
+      Total Duplicates: $dupTotal
              Sequences: $nSequences
          Private Total: $nPrivate
-''');
+               History: $history''');
     if (nPrivateSequences != 0)
       sb.writeln('     Private Sequences: $nPrivateSequences');
     if (dupTotal != 0) sb.writeln('      Total Duplicates: $dupTotal');
@@ -175,26 +176,11 @@ ElementList Summary
   int indexOf(Object e, [int _]) => (e is Element) ? e.code : -1;
 
   @override
-  void forEach(void f(Element e)) {
-    for (var e in elements)
-      if (e is SQ) {
-        for (var item in e.items) item.forEach(f);
-      } else {
-        f(e);
-      }
-  }
+  void forEach(void f(Element e)) => elements.forEach(f);
 
   @override
-  T fold<T>(T initialValue, T combine(T previous, Element e)) {
-    var v = initialValue;
-    for (var e in elements)
-      if (e is SQ) {
-        v = e.fold<T>(v, (v, item) => item.fold(v, combine));
-      } else {
-        combine(v, e);
-      }
-    return v;
-  }
+  T fold<T>(T initialValue, T combine(T previous, Element e)) =>
+      elements.fold(initialValue, combine);
 
   void forEachSequence(void f(Element e)) => sequences.forEach(f);
 
