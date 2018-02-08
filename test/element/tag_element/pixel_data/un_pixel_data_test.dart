@@ -564,7 +564,6 @@ void main() {
       expect(UN.isValidValue(UN.kMaxValue + 1), false);
     });
 
-    //Urgent: Sharath let's discuss - UN values are always valid
     test('Create UN.isValidValues', () {
       system.throwOnError = false;
       const uInt8Min = const [UN.kMinValue];
