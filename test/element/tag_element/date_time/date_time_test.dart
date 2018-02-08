@@ -2594,16 +2594,14 @@ void main() {
         expect(tm0.hasValidValues, true);
       }
 
-/* Urgent Sharath: please debug
+/* TODO: Implement getInvalidXXList()
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getInvalidTMList(3, 4, 2, 18);
         log.debug('invalid TM vList:$vList0');
         final tm0 = new TMtag(PTag.kModifiedImageTime, vList0);
         log.debug('vList0: $vList0');
-        //Urgent Sharath we need to to implement rsg.getInvalidTMList in test_tools.
          expect(tm0, isNull);
       }
-      //Urgent Sharath we need to to implement or remove.
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getInvalidTMList(3, 4);
         final tm0 = new TMtag(PTag.kModifiedImageTime, vList0);

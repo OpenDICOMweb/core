@@ -32,6 +32,8 @@ typedef bool Condition(Dataset ds, Element e);
 
 Iterable<V> _toList<V>(Iterable v) => (v is Iterable) ? v.toList(growable: false) : v;
 
+bool doTestValidity = true;
+
 /// All add, replace, and remove operations should
 /// be done by calling add, replace, and remove methods in [Dataset].
 

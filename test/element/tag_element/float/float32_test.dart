@@ -835,7 +835,7 @@ void main() {
 
         final lBd1 = Float32Base.listToByteData(float32List0, asView: false);
         log.debug(
-            'lBd1: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+            'lBd1: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd1.buffer == bd0.buffer, false);
 

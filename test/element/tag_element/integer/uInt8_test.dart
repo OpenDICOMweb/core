@@ -697,7 +697,7 @@ void main() {
       }
     });
 
-    test('Uint8Base.listToBytesBytes', () {
+    test('Uint8Base.listToBytes', () {
       system.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final uInt8list0 = rng.uint8List(1, 1);
@@ -720,6 +720,80 @@ void main() {
 
       system.throwOnError = true;
       expect(() => Uint8Base.listToBytes(uInt16Max),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+    });
+
+    test('Uint8Base listToByteData good values', () {
+      system.level = Level.debug;
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final uInt8list0 = rng.uint8List(1, 1);
+        final bd0 = uInt8list0.buffer.asByteData();
+        final lBd0 = Uint8Base.listToByteData(uInt8list0);
+        log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
+            .asUint8List()}');
+        expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd0.buffer == bd0.buffer, true);
+
+        final lBd1 = Uint8Base.listToByteData(uInt8list0, check: false);
+        log.debug(
+            'lBd3: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd1.buffer == bd0.buffer, true);
+      }
+
+      const uint8Max = const [kUint8Max];
+      final uint8List = new Uint8List.fromList(uint8Max);
+      final bd1 = uint8List.buffer.asByteData();
+      final lBd2 = Uint8Base.listToByteData(uint8List);
+      log.debug(
+          'bd: ${bd1.buffer.asUint8List()}, lBd2: ${lBd2.buffer.asUint8List()}');
+      expect(lBd2.buffer.asUint8List(), equals(bd1.buffer.asUint8List()));
+      expect(lBd2.buffer == bd1.buffer, true);
+    });
+
+    test('Uint8Base listToByteData bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final uInt8list0 = rng.uint8List(1, 1);
+        final bd0 = uInt8list0.buffer.asByteData();
+        final lBd1 = Uint8Base.listToByteData(uInt8list0, asView: false);
+        log.debug(
+            'lBd1: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd1.buffer == bd0.buffer, false);
+
+        final uint16list0 = rng.uint16List(1, 1);
+        assert(uint16list0 is TypedData);
+        final bd1 = uint16list0.buffer.asByteData();
+        final lBd2 = Uint8Base.listToByteData(uint16list0);
+        log.debug('lBd0: ${lBd2.buffer.asUint8List()}, bd1: ${bd1.buffer
+            .asUint8List()}');
+        expect(lBd2.buffer.asUint8List(), isNot(bd0.buffer.asUint8List()));
+        expect(lBd2.buffer == bd0.buffer, false);
+
+        final lBd3 = Uint8Base.listToByteData(uint16list0, asView: false);
+        expect(lBd3.buffer.asUint8List(), isNot(bd1.buffer.asUint8List()));
+        expect(lBd3.buffer == bd1.buffer, false);
+
+        final lBd4 =
+            Uint8Base.listToByteData(uInt8list0, asView: false, check: false);
+        log.debug(
+            'lBd4: ${lBd4.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        expect(lBd4.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
+        expect(lBd4.buffer == bd0.buffer, false);
+      }
+
+      system.throwOnError = false;
+      final uInt16Max = const <int>[kUint16Max];
+      expect(Uint8Base.listToByteData(uInt16Max), isNull);
+
+      system.throwOnError = false;
+      final uInt32Max = const <int>[kUint32Max];
+      expect(Uint8Base.listToByteData(uInt32Max), isNull);
+
+      system.throwOnError = true;
+      expect(() => Uint8Base.listToByteData(uInt16Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 

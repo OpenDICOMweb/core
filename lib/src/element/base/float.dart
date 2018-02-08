@@ -159,8 +159,8 @@ abstract class Float32Base extends FloatBase {
       {bool asView = true}) {
     assert(vList != null);
     return (asView && vList is Float32List)
-           ? vList
-           : new Float32List.fromList(vList);
+        ? vList
+        : new Float32List.fromList(vList);
   }
 
   /// Returns a [Float32List] from a [BASE64] [String].
@@ -222,7 +222,7 @@ abstract class FL extends Float32Base {
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
   static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-      (isValidTag(tag) && vList != null && isValidValues(tag, vList));
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -268,6 +268,7 @@ abstract class FL extends Float32Base {
 
   /// Returns _true_ if each value in [vList] is valid.
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       FloatBase.isValidValues(tag, vList, issues, kMaxLength);
 
   /// Returns _true_ if [value] is valid for [FL] VR.
@@ -306,7 +307,7 @@ abstract class OF extends Float32Base {
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
   static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-      (isValidTag(tag) && vList != null && isValidValues(tag, vList));
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -336,6 +337,7 @@ abstract class OF extends Float32Base {
   static bool isValidLength(int vfl) => true;
 
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       FloatBase.isValidValues(tag, vList, issues, kMaxLength);
 }
 
@@ -377,8 +379,8 @@ abstract class Float64Base extends FloatBase {
   }
 
   static Float64List toFloat64List(Iterable<double> vList,
-      {bool asView = true}) =>
-    _toFloat64List(vList, asView);
+          {bool asView = true}) =>
+      _toFloat64List(vList, asView);
 
   static Float64List _toFloat64List(Iterable<double> vList, bool asView) {
     assert(vList != null);
@@ -448,7 +450,7 @@ abstract class FD extends Float64Base {
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
   static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-      (isValidTag(tag) && vList != null && isValidValues(tag, vList));
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -481,6 +483,7 @@ abstract class FD extends Float64Base {
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       FloatBase.isValidValues(tag, vList, issues, kMaxLength);
 }
 
@@ -514,7 +517,7 @@ abstract class OD extends Float64Base {
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
   static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-      (isValidTag(tag) && vList != null && isValidValues(tag, vList));
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -544,5 +547,6 @@ abstract class OD extends Float64Base {
   static bool isValidLength(int vfl) => true;
 
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
       FloatBase.isValidValues(tag, vList, issues, kMaxLength);
 }
