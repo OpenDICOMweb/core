@@ -119,9 +119,8 @@ void main() {
       for (var i = 0; i <= float64LstCommon0.length - 1; i++) {
         final bd = makeOD(kSelectorODValue, <double>[float64LstCommon0[i]]);
         final of0 = new ODevr(bd);
-        // Urgent Sharath: fix invalid PTag
         expect(
-            OD.isValidValues(PTag.kOverallTemplateSpatialTolerance, of0.values),
+            OD.isValidValues(PTag.kDoubleFloatPixelData, of0.values),
             true);
       }
     });

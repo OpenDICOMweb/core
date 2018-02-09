@@ -1537,6 +1537,19 @@ void main() {
       PTag.kSelectorOWValue,
     ];
 
+    final obowTags = <PTag>[
+      PTag.kVariablePixelData,
+      PTag.kDarkCurrentCounts,
+      PTag.kAirCounts,
+      PTag.kAudioSampleData,
+      PTag.kCurveData,
+      PTag.kChannelMinimumValue,
+      PTag.kChannelMaximumValue,
+      PTag.kWaveformPaddingValue,
+      PTag.kWaveformData,
+      PTag.kOverlayData
+    ];
+
     const otherTags = const <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
@@ -1563,6 +1576,10 @@ void main() {
 
       for (var tag in owTags0) {
         expect(OW.isValidTag(tag), true);
+      }
+      for (var tag in obowTags) {
+        final ow3 = OW.isValidTag(tag);
+        expect(ow3, true);
       }
     });
 
@@ -1593,6 +1610,9 @@ void main() {
       for (var tag in owTags0) {
         expect(OW.isNotValidTag(tag), false);
       }
+      for (var tag in obowTags) {
+        expect(OW.isNotValidTag(tag), false);
+      }
     });
 
     test('OW isNotValidTag bad values', () {
@@ -1618,6 +1638,10 @@ void main() {
       expect(OW.isValidVRIndex(kOWIndex), true);
 
       for (var tag in owTags0) {
+        system.throwOnError = false;
+        expect(OW.isValidVRIndex(tag.vrIndex), true);
+      }
+      for (var tag in obowTags) {
         system.throwOnError = false;
         expect(OW.isValidVRIndex(tag.vrIndex), true);
       }
@@ -1655,6 +1679,11 @@ void main() {
         system.throwOnError = false;
         expect(OW.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
+
+      for (var tag in obowTags) {
+        system.throwOnError = false;
+        expect(OW.checkVRIndex(tag.vrIndex), tag.vrIndex);
+      }
     });
 
     test('OW checkVR bad values', () {
@@ -1679,6 +1708,11 @@ void main() {
       expect(OW.isValidVRIndex(kOWIndex), true);
 
       for (var tag in owTags0) {
+        system.throwOnError = false;
+        expect(OW.isValidVRIndex(tag.vrIndex), true);
+      }
+
+      for (var tag in obowTags) {
         system.throwOnError = false;
         expect(OW.isValidVRIndex(tag.vrIndex), true);
       }
