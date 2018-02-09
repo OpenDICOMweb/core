@@ -437,6 +437,19 @@ void main() {
       PTag.kSelectorOBValue,
     ];
 
+    final obowTags = <PTag>[
+      PTag.kVariablePixelData,
+      PTag.kDarkCurrentCounts,
+      PTag.kAirCounts,
+      PTag.kAudioSampleData,
+      PTag.kCurveData,
+      PTag.kChannelMinimumValue,
+      PTag.kChannelMaximumValue,
+      PTag.kWaveformPaddingValue,
+      PTag.kWaveformData,
+      PTag.kOverlayData
+    ];
+
     const otherTags = const <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
@@ -462,6 +475,11 @@ void main() {
 
       for (var tag in obTags0) {
         expect(OB.isValidTag(tag), true);
+      }
+
+      for (var tag in obowTags) {
+        final ob3 = OB.isValidTag(tag);
+        expect(ob3, true);
       }
     });
 
@@ -491,6 +509,10 @@ void main() {
       for (var tag in obTags0) {
         expect(OB.isNotValidTag(tag), false);
       }
+      for (var tag in obowTags) {
+        final ob3 = OB.isNotValidTag(tag);
+        expect(ob3, false);
+      }
     });
 
     test('OB isNotValidTag bad values', () {
@@ -518,6 +540,11 @@ void main() {
       for (var tag in obTags0) {
         system.throwOnError = false;
         expect(OB.isValidVRIndex(tag.vrIndex), true);
+      }
+
+      for (var tag in obowTags) {
+        final ob3 = OB.isValidVRIndex(tag.vrIndex);
+        expect(ob3, true);
       }
 
       for (var tag in obTags1) {
@@ -551,6 +578,11 @@ void main() {
         system.throwOnError = false;
         expect(OB.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
+
+      for (var tag in obowTags) {
+        final ob3 = OB.checkVRIndex(tag.vrIndex);
+        expect(ob3, tag.vrIndex);
+      }
     });
     test('OB checkVR bad values', () {
       system.throwOnError = false;
@@ -575,6 +607,11 @@ void main() {
 
       for (var tag in obTags0) {
         expect(OB.isValidVRIndex(tag.vrIndex), true);
+      }
+
+      for (var tag in obowTags) {
+        final ob3 = OB.isValidVRIndex(tag.vrIndex);
+        expect(ob3, true);
       }
     });
 

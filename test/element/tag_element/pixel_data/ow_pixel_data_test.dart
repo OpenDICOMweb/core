@@ -32,6 +32,8 @@ void main() {
     test('Create OWtagPixelData', () {
       final ow0 =
           new OWtagPixelData(PTag.kPixelData, pixels0, pixels0.lengthInBytes);
+      final ow1 = new OWtagPixelData(
+          PTag.kCoefficientsSDVN, pixels0, pixels0.lengthInBytes);
 
       system.throwOnError = true;
       expect(
@@ -40,7 +42,9 @@ void main() {
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
+      expect(ow1.tag == PTag.kCoefficientsSDVN, true);
       expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
       expect(ow0.vfBytes.length == 2048, true);
@@ -70,16 +74,27 @@ void main() {
           new OWtagPixelData(PTag.kPixelData, pixels1, pixels1.lengthInBytes);
       final ow2 =
           new OWtagPixelData(PTag.kPixelData, pixels2, pixels2.lengthInBytes);
+      final ow3 = new OWtagPixelData(
+          PTag.kCoefficientsSDVN, pixels2, pixels2.lengthInBytes);
+      final ow4 = new OWtagPixelData(
+          PTag.kCoefficientsSDVN, pixels2, pixels2.lengthInBytes);
 
       expect(ow0.hashCode == ow1.hashCode, true);
       expect(ow0 == ow1, true);
+      expect(ow3.hashCode == ow4.hashCode, true);
+      expect(ow3 == ow4, true);
+
       expect(ow0.hashCode == ow2.hashCode, false);
       expect(ow0 == ow2, false);
+      expect(ow0.hashCode == ow4.hashCode, false);
+      expect(ow0 == ow4, false);
     });
 
     test('Create  OWtagPixelData.fromBytes', () {
       final ow0 = new OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes1, bytes1.lengthInBytes);
+      final ow1 = new OWtagPixelData.fromBytes(
+          PTag.kCoefficientsSDDN, bytes1, bytes1.lengthInBytes);
 
       system.throwOnError = true;
       expect(
@@ -88,6 +103,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
+      expect(ow1.tag == PTag.kCoefficientsSDDN, true);
       expect(ow0.vrIndex == kOBOWIndex || ow0.vrIndex == kUNIndex, true);
 
       expect(ow0.isEncapsulated == false, true);
@@ -119,11 +135,20 @@ void main() {
           PTag.kPixelData, bytes1, bytes1.lengthInBytes);
       final ow2 = new OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes2, bytes2.lengthInBytes);
+      final ow3 = new OWtagPixelData.fromBytes(
+          PTag.kCoefficientsSDHN, bytes2, bytes2.lengthInBytes);
+      final ow4 = new OWtagPixelData.fromBytes(
+          PTag.kCoefficientsSDHN, bytes2, bytes2.lengthInBytes);
 
       expect(ow0.hashCode == ow1.hashCode, true);
       expect(ow0 == ow1, true);
+      expect(ow3.hashCode == ow4.hashCode, true);
+      expect(ow3 == ow4, true);
+
       expect(ow0.hashCode == ow2.hashCode, false);
       expect(ow0 == ow2, false);
+      expect(ow0.hashCode == ow3.hashCode, false);
+      expect(ow0 == ow3, false);
     });
 
     test('OWtagPixelData.update Test', () {
@@ -131,10 +156,19 @@ void main() {
       final ow1 = ow0.update(pixels0);
       expect(ow1 == ow0, true);
 
-      final ow2 = new OWtagPixelData.fromBytes(
-          PTag.kPixelData, bytes1, bytes1.lengthInBytes);
-      final ow3 = ow2.update(pixels1);
+      final ow2 = new OWtagPixelData(PTag.kCoefficientsSDHN, pixels0);
+      final ow3 = ow2.update(pixels0);
       expect(ow3 == ow2, true);
+
+      final ow4 = new OWtagPixelData.fromBytes(
+          PTag.kPixelData, bytes1, bytes1.lengthInBytes);
+      final ow5 = ow4.update(pixels1);
+      expect(ow5 == ow4, true);
+
+      final ow6 = new OWtagPixelData.fromBytes(
+          PTag.kCoefficientsSDHN, bytes1, bytes1.lengthInBytes);
+      final ow7 = ow6.update(pixels1);
+      expect(ow7 == ow6, true);
     });
 
     test('getPixelData', () {
@@ -172,6 +206,8 @@ void main() {
       final base64 = BASE64.encode(u8Frame);
       final ow0 =
           new OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
+      final ow1 = new OWtagPixelData.fromBase64(
+          PTag.kCoefficientsSDVN, base64, base64.length);
 
       system.throwOnError = true;
       expect(
@@ -180,7 +216,9 @@ void main() {
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
+      expect(ow1.tag == PTag.kCoefficientsSDVN, true);
       expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
       expect(ow0.pixels is Uint16List, true);
@@ -209,22 +247,34 @@ void main() {
           new OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
       final ow2 = new OWtagPixelData.fromBase64(
           PTag.kVariablePixelData, base64, base64.length);
+      final ow3 = new OWtagPixelData.fromBase64(
+          PTag.kCoefficientsSDVN, base64, base64.length);
+      final ow4 = new OWtagPixelData.fromBase64(
+          PTag.kCoefficientsSDVN, base64, base64.length);
 
       expect(ow0.hashCode == ow1.hashCode, true);
       expect(ow0 == ow1, true);
+      expect(ow3.hashCode == ow4.hashCode, true);
+      expect(ow3 == ow4, true);
+
       expect(ow0.hashCode == ow2.hashCode, false);
       expect(ow0 == ow2, false);
+      expect(ow0.hashCode == ow4.hashCode, false);
+      expect(ow0 == ow4, false);
     });
 
     test('Create OWtagPixelData.make', () {
       final ow0 = OWtagPixelData.make(PTag.kPixelData, pixels0);
+      final ow1 = OWtagPixelData.make(PTag.kCoefficientsSDVN, pixels0);
 
       system.throwOnError = true;
       expect(() => OWtagPixelData.make(PTag.kSelectorSTValue, pixels0),
           throwsA(const isInstanceOf<InvalidVRForTagError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
+      expect(ow1.tag == PTag.kCoefficientsSDVN, true);
       expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
       expect(ow0.vfBytes.length == 2048, true);
@@ -250,16 +300,25 @@ void main() {
       final ow0 = OWtagPixelData.make(PTag.kPixelData, pixels0);
       final ow1 = OWtagPixelData.make(PTag.kPixelData, pixels0);
       final ow2 = OWtagPixelData.make(PTag.kVariablePixelData, pixels0);
+      final ow3 = OWtagPixelData.make(PTag.kCoefficientsSDVN, pixels0);
+      final ow4 = OWtagPixelData.make(PTag.kCoefficientsSDVN, pixels0);
 
       expect(ow0.hashCode == ow1.hashCode, true);
       expect(ow0 == ow1, true);
+      expect(ow3.hashCode == ow4.hashCode, true);
+      expect(ow3 == ow4, true);
+
       expect(ow0.hashCode == ow2.hashCode, false);
       expect(ow0 == ow2, false);
+      expect(ow0.hashCode == ow3.hashCode, false);
+      expect(ow0 == ow3, false);
     });
 
     test('create new OWtagPixelData.fromBytes', () {
       final ow0 = new OWtagPixelData.fromBytes(
           PTag.kPixelData, u8Frame, u8Frame.lengthInBytes);
+      final ow1 = new OWtagPixelData.fromBytes(
+          PTag.kCoefficientsSDVN, u8Frame, u8Frame.lengthInBytes);
 
       system.throwOnError = true;
       expect(
@@ -268,7 +327,9 @@ void main() {
           throwsA(const isInstanceOf<InvalidVRForTagError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
+      expect(ow1.tag == PTag.kCoefficientsSDVN, true);
       expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
       expect(ow0.vfBytes.length == 139782, true);
@@ -294,18 +355,28 @@ void main() {
           PTag.kPixelData, u8Frame, u8Frame.lengthInBytes);
       final ow2 = new OWtagPixelData.fromBytes(
           PTag.kVariablePixelData, u8Frame, u8Frame.lengthInBytes);
+      final ow3 = new OWtagPixelData.fromBytes(
+          PTag.kCoefficientsSDVN, u8Frame, u8Frame.lengthInBytes);
+      final ow4 = new OWtagPixelData.fromBytes(
+          PTag.kCoefficientsSDVN, u8Frame, u8Frame.lengthInBytes);
 
       expect(ow0.hashCode == ow1.hashCode, true);
       expect(ow0 == ow1, true);
+      expect(ow3.hashCode == ow4.hashCode, true);
+      expect(ow3 == ow4, true);
 
       expect(ow0.hashCode == ow2.hashCode, false);
       expect(ow0 == ow2, false);
+      expect(ow0.hashCode == ow3.hashCode, false);
+      expect(ow0 == ow3, false);
     });
 
     test('creat OWtagPixelData.fromB64', () {
       final base64 = BASE64.encode(u8Frame);
       final ow0 =
           OWtagPixelData.fromB64(PTag.kPixelData, base64, base64.length);
+      final ow1 =
+          OWtagPixelData.fromB64(PTag.kCoefficientsSDVN, base64, base64.length);
 
       system.throwOnError = true;
       expect(
@@ -314,7 +385,9 @@ void main() {
           throwsA(const isInstanceOf<InvalidVRForTagError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
+      expect(ow1.tag == PTag.kCoefficientsSDVN, true);
       expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
       expect(ow0.vfBytes.length == 139782, true);
@@ -343,17 +416,26 @@ void main() {
 
       final ow2 = OWtagPixelData.fromB64(
           PTag.kVariablePixelData, base64, base64.length);
+      final ow3 = OWtagPixelData.fromB64(
+          PTag.kCoefficientsSDVN, base64, base64.length);
+      final ow4 = OWtagPixelData.fromB64(
+          PTag.kCoefficientsSDVN, base64, base64.length);
 
       expect(ow0.hashCode == ow1.hashCode, true);
       expect(ow0 == ow1, true);
+      expect(ow3.hashCode == ow4.hashCode, true);
+      expect(ow3 == ow4, true);
 
       expect(ow0.hashCode == ow2.hashCode, false);
       expect(ow0 == ow2, false);
+      expect(ow0.hashCode == ow3.hashCode, false);
+      expect(ow0 == ow3, false);
     });
   });
 
   group('OWPixelData', () {
-    final owTags = <PTag>[
+    //Urgent: tests below have already been done in uInt16List_test and can deleted
+   /* final owTags = <PTag>[
       PTag.kRedPaletteColorLookupTableData,
       PTag.kGreenPaletteColorLookupTableData,
       PTag.kBluePaletteColorLookupTableData,
@@ -403,18 +485,7 @@ void main() {
       PTag.kTime
     ];
 
-    const testFrame0 = const <int>[
-      255,
-      79,
-      255,
-      81,
-      0,
-      41,
-      0,
-      451,
-      6510,
-      45600,
-    ];
+
 
     test('Create OW.isValidTag', () {
       final ow0 = Tag.isValidVR(PTag.kPixelData, OW.kVRIndex);
@@ -553,8 +624,20 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => OW.isValidValues(PTag.kPixelData, uInt16MinMinus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
-    });
+    });*/
 
+    const testFrame0 = const <int>[
+      255,
+      79,
+      255,
+      81,
+      0,
+      41,
+      0,
+      451,
+      6510,
+      45600,
+    ];
     test('Create Uint16Base.listFromBytes', () {
       expect(Uint16Base.listFromBytes(u8Frame), u8Frame.buffer.asUint16List());
 
