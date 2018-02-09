@@ -100,6 +100,7 @@ void main() {
 
       final ba1 = new UStag(PTag.kBitsAllocated, []);
       final ba2 = new UStag(PTag.kBitsAllocated, []);
+      print('ba2: $ba2');
       final ds1 = new TagRootDataset()..add(ba1);
       final pixels1 = ds1.getPixelData();
       expect(pixels1 == null, true);

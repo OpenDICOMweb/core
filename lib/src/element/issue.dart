@@ -5,6 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/tag/tag.dart';
 
 enum IssueAction { abort, quarantine, error, warning, info, bestPractice }
@@ -41,7 +42,7 @@ class Issue<V> {
   bool get isEmpty => !isNotEmpty;
 
   String get widthMsg => (!tag.isValidColumns<V>(values))
-      ? 'Invalid Width for${tag.dcm}: values length($length) '
+      ? 'Invalid Width for${dcm(tag.code)}: values length($length) '
           'is not a multiple of vmWidth(${tag.isValidColumns}'
       : '';
 

@@ -4,7 +4,8 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/tag/tag.dart';
+import 'package:core/src/string/dicom_string.dart'as fmt;
+import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr/vr.dart';
 
@@ -28,8 +29,8 @@ class PDTagDefinition  {
 
   int get offset => code & 0xFFFF;
 
-  String get hex => Tag.toHex(code);
-  String get dcm => Tag.toDcm(code);
+  String get hex => hex32(code);
+  String get dcm => fmt.dcm(code);
 
   String get info => '${toString()}${vrIdByIndex[vrIndex]}, $vm';
 

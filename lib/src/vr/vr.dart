@@ -122,7 +122,8 @@ bool isShortStringVR(int vrIndex) =>
 bool isLongStringVR(int vrIndex) =>
     vrIndex >= kVRIvrDefinedIndexMin && vrIndex <= kVRIvrDefinedIndexMax;
 
-/// Returns _true_ if the VR with _vrIndex_ is by definition always a valid length.
+/// Returns _true_ if the VR with _vrIndex_
+/// is, by definition, always a valid length.
 const List<int> kVFLengthAlwaysValidIndices = const <int>[
   kSQIndex, kUNIndex, kOBIndex, kOWIndex, kOLIndex, // No reformat
   kODIndex, kOFIndex, kUCIndex, kURIndex, kUTIndex
@@ -200,9 +201,10 @@ const List<int> vrCodeByIndex = const <int>[
   kODCode, kOFCode, kOLCode, kUCCode, kURCode, kUTCode,
   // End Evr Long
   // Begin EVR Short
-  kAECode, kASCode, kATCode, kCSCode, kDACode, kDSCode, kDTCode,
-  kFDCode, kFLCode, kISCode, kLOCode, kLTCode, kPNCode, kSHCode,
-  kSLCode, kSSCode, kSTCode, kTMCode, kUICode, kULCode, kUSCode
+  kAECode, kASCode, kATCode, kCSCode, kDACode, kDSCode,
+  kDTCode, kFDCode, kFLCode, kISCode, kLOCode, kLTCode,
+  kPNCode, kSHCode, kSLCode, kSSCode, kSTCode, kTMCode,
+  kUICode, kULCode, kUSCode
 ];
 
 const List<int> vrElementSizeByIndex = const <int>[
@@ -274,7 +276,8 @@ const int kUTMaxLength = kMaxLongVF;
 
 int vrIndexFromCode(int vrCode) => vrIndexFromCodeMap[vrCode];
 
-//TODO: would it be better to order this table by value rather than alphabetically?
+// TODO: would it be better to order this table
+//      by value rather than alphabetically?
 const Map<int, int> vrIndexFromCodeMap = const <int, int>{
   0x4541: kAEIndex, 0x5341: kASIndex, 0x5441: kATIndex, 0x5343: kCSIndex,
   0x4144: kDAIndex, 0x5344: kDSIndex, 0x5444: kDTIndex, 0x4446: kFDIndex,

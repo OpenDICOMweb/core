@@ -9,22 +9,27 @@ import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/byte_data/bd_item.dart';
+import 'package:core/src/dataset/element_list/element_list.dart';
 import 'package:core/src/dataset/element_list/map_as_list.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
+import 'package:core/src/element/base/sequence.dart';
 
 /// An [TagItem] is an [Item] contained in an SQtag Element.
 class TagItem extends Item with TagDataset {
   @override
-  IDSBytes dsBytes;
-  @override
   final Dataset parent;
+  // TODO: tighten this type to SQtag
+  @override
+  SQ sequence;
   @override
   final MapAsList elements;
+  @override
+  IDSBytes dsBytes;
 
   /// Creates a new [TagItem] from [ByteData].
-  TagItem(this.parent, [ByteData bd])
-      : dsBytes = new IDSBytes(bd),
-        elements = new MapAsList();
+  TagItem(this.parent, {this.sequence, ElementList elements, ByteData bd})
+      : elements = elements ?? new MapAsList(),
+        dsBytes = new IDSBytes(bd);
 
   /// Creates a new [TagItem] from an existing [TagItem].
   /// If [parent] is _null_ the new [TagItem] has the same
@@ -32,8 +37,10 @@ class TagItem extends Item with TagDataset {
   TagItem.from(TagItem item, Dataset parent)
       : parent = (parent == null) ? item.parent : parent,
         elements = new MapAsList.from(item.elements, parent),
+        sequence = item.sequence,
         dsBytes = item.dsBytes;
 
+  // TODO: add SQbd
   /// Creates a new [TagItem] from an existing [TagItem].
   /// If [parent] is _null_ the new [TagItem] has the same
   /// parent as [item].
@@ -43,7 +50,7 @@ class TagItem extends Item with TagDataset {
         dsBytes = item.dsBytes;
 
   /// Creates a new [TagItem] from an [MapAsList].
-  TagItem.fromList(this.parent, this.elements, [ByteData bd])
+  TagItem.fromList(this.parent, this.elements, [this.sequence, ByteData bd])
       : dsBytes = new IDSBytes(bd);
 
   @override

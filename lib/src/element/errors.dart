@@ -6,11 +6,11 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/frame_descriptor.dart';
 import 'package:core/src/element/frame_list.dart';
 import 'package:core/src/issues.dart';
+import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/tag.dart';
 
@@ -46,8 +46,9 @@ class InvalidElementIndexError extends Error {
 
 Null invalidElementIndex(int index, {Element element, bool required = false}) {
   final code = dcm(index);
-  final msg =
-      (required) ? 'InvalidRequiredElementIndex: $code' : 'InvalidElementIndex: $code';
+  final msg = (required)
+      ? 'InvalidRequiredElementIndex: $code'
+      : 'InvalidElementIndex: $code';
   log.error(msg);
   if (throwOnError) throw new InvalidElementIndexError(index);
   return null;
@@ -86,7 +87,8 @@ class InvalidValueFieldError extends Error {
 }
 
 Null invalidValueField(String msg, Uint8List vfBytes) {
-  final s = 'Invalid Value Field Error: $msg - vfLength(${vfBytes.lengthInBytes})';
+  final s =
+      'Invalid Value Field Error: $msg - vfLength(${vfBytes.lengthInBytes})';
   log.error(msg);
   if (throwOnError) throw new InvalidValueFieldError(vfBytes, s);
 
@@ -129,7 +131,8 @@ class InvalidValuesLength<V> extends Error {
       'values: $values';
 }
 
-Null invalidValuesLength<V>(int vmMin, int vmMax, Iterable<V> values, [Issues issues]) {
+Null invalidValuesLength<V>(int vmMin, int vmMax, Iterable<V> values,
+    [Issues issues]) {
   final msg = InvalidValuesLength._msg(vmMin, vmMax, values);
   log.error(msg);
   if (issues != null) issues.add(msg);
@@ -188,7 +191,8 @@ class InvalidFrameDescriptorError extends Error {
   @override
   String toString() => _msg(desc);
 
-  static String _msg(FrameDescriptor desc) => 'InvalidFrameDescriptorError: $desc';
+  static String _msg(FrameDescriptor desc) =>
+      'InvalidFrameDescriptorError: $desc';
 }
 
 Null invalidFrameDescriptorError(FrameDescriptor desc) {
@@ -205,7 +209,8 @@ class InvalidFrameListError extends Error {
   @override
   String toString() => _msg(frameList);
 
-  static String _msg(FrameList frameList) => '$InvalidFrameListError: $frameList';
+  static String _msg(FrameList frameList) =>
+      '$InvalidFrameListError: $frameList';
 }
 
 Null invalidFrameListError(FrameList frameList) {

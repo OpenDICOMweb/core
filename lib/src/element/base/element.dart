@@ -15,7 +15,6 @@ import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/hash/hash64.dart';
 import 'package:core/src/issues.dart';
-import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
@@ -120,7 +119,8 @@ abstract class Element<V> extends ListBase<V> {
   /// _g_ and _e_ are hexadecimal characters.
   String get dcm {
     assert(code >= 0 && code <= 0xFFFFFFFF, 'code: $code');
-    return '(${hex16(code >> 16, prefix: '')},${hex16(code & 0xFFFF, prefix: '')})';
+    return '(${hex16(code >> 16, prefix: '')},'
+        '${hex16(code & 0xFFFF, prefix: '')})';
   }
 
   /// Returns a DICOM Tag code as a hexadecimal integer.
@@ -263,7 +263,8 @@ abstract class Element<V> extends ListBase<V> {
 
   // ************* Values related Getters and Methods *************
   // **************************************************************
-  // ****Note: This should be implemented at the Integer/Float/String/Sequence level.
+  // ****Note: This should be implemented at the
+  // Integer/Float/String/Sequence level.
 
   /// The maximum number of values for this element;
   int get maxLength;
@@ -333,15 +334,6 @@ abstract class Element<V> extends ListBase<V> {
     return (length == 0) ||
         (length >= minValues && length <= maxValues && (length % columns == 0));
   }
-
-/* Flush when working
-  bool checkValidLength(Iterable<V> vList, [Issues issues]) {
-    final length = vList.length;
-    if (length < vmMin || length > vmMax)
-      return invalidValuesLengthError(tag, values, issues);
-    return true;
-  }
-*/
 
   /// Returns _true_ if [value] is valid for _this_.
   bool checkValue(V v, {Issues issues, bool allowInvalid = false});
@@ -461,7 +453,8 @@ abstract class Element<V> extends ListBase<V> {
   int counter(ElementTest test) => test(this) ? 1 : 0;
 
   /// Returns a formatted [String] representation of _this_.
-  String format(Formatter z) => '${z(info)}\n';
+ // String format(Formatter z) => '${z(info)}\n';
+ // String format(Formatter z) => z.fmt(this, elements);
 
   bool doFancy = false;
   @override
@@ -510,7 +503,6 @@ abstract class Element<V> extends ListBase<V> {
   static bool isValidVListLength<V>(
       Tag tag, Iterable<V> vList, Issues issues, int maxLength) {
     assert(tag != null && vList != null);
-    //TODO: replace next with if (tag.isLengthAlwaysValid) return true;
     if (tag.isLengthAlwaysValid || vList.isEmpty) return true;
     final length = vList.length;
     if (length >= tag.vmMin &&

@@ -33,8 +33,8 @@ void main() {
       final creator = creatorCodes[i];
       final group = groups[i];
       final v = Tag.isCreatorCodeInGroup(creator, group);
-      log.debug('$v: creator: ${Tag.toDcm(creator)}, '
-          'group:  ${Tag.toDcm(group)}');
+      log.debug('$v: creator: ${dcm(creator)}, '
+          'group:  ${dcm(group)}');
       expect(v, true);
     }
   });
@@ -47,7 +47,7 @@ void main() {
       final creator = creatorCodes[i];
       final group = groups[i];
       final v = Tag.isCreatorCodeInGroup(creator, group);
-      log.debug('$v: creator: ${Tag.toDcm(creator)}, group:  ${Tag.toDcm(group)
+      log.debug('$v: creator: ${dcm(creator)}, group:  ${dcm(group)
       }');
       expect(v, false);
     }
@@ -63,8 +63,8 @@ void main() {
       final group = groups[i];
       final subgroup = subgroups[i];
       final v = Tag.isPDataCodeInSubgroup(code, group, subgroup);
-      log.debug('$v: code: ${Tag.toDcm(code)}, '
-          'group:  ${Tag.toDcm(group)}, subgroup:  ${Tag.toDcm(subgroup)}');
+      log.debug('$v: code: ${dcm(code)}, '
+          'group:  ${dcm(group)}, subgroup:  ${dcm(subgroup)}');
       expect(v, true);
     }
   });
@@ -79,8 +79,8 @@ void main() {
       final group = groups[i];
       final subgroup = subgroups[i];
       final v = Tag.isPDataCodeInSubgroup(code, group, subgroup);
-      log.debug('$v: code: ${Tag.toDcm(code)}, '
-          'group:  ${Tag.toDcm(group)}, subgroup:  ${Tag.toDcm(subgroup)}');
+      log.debug('$v: code: ${dcm(code)}, '
+          'group:  ${dcm(group)}, subgroup:  ${dcm(subgroup)}');
       expect(v, false);
     }
   });

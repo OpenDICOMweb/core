@@ -40,6 +40,8 @@ class Formatter {
             prefix: prefix,
             indent: indent);
 
+  Formatter.basic([this.maxDepth = -1]) : indenter = Indenter.basic;
+
   Formatter.withIndenter(this.maxDepth, this.indenter);
 
   int get reset => indenter.reset;
@@ -61,63 +63,132 @@ class Formatter {
   }
 
   //TODO: Test values argument.
+  String callNew([Object o, Object values]) {
+    var depth = 0;
+    final sb = new StringBuffer('$z$o');
+    if (values == null) return '$sb';
+    down;
+    try {
+      while (!atMaxDepth(depth++))
+        if (values is Iterable) {
+          var depth = 0;
+          for (var value in values) {
+            if (value is Formattable) {
+              try {
+                sb.write(value.format(this));
+                if (atMaxDepth(depth++)) break;
+              } on NoSuchMethodError {
+                sb.write('$z$value\n');
+              }
+            }
+          }
+        } else if (values is Formattable) {
+          sb.write(values.format(this));
+        } else {
+          sb.write('$z$values\n');
+        }
+    } on NoSuchMethodError {
+      if (values != null) sb.write('$z$values\n');
+    } finally {
+      up;
+    }
+    return '$sb';
+  }
+
+  //TODO: Test values argument.
   String call([Object o, Iterable values]) {
     final sb = new StringBuffer('$z$o');
-    if (values == null) return sb.toString();
+    if (values == null) return '$sb';
     block:
     {
       down;
       if (values is Iterable) {
         var depth = 0;
-        var count = 0;
         for (var value in values) {
           if (value is Formattable) {
             try {
-              sb.write(value.fmt(this));
+              sb.write(value.format(this));
             } on NoSuchMethodError {
-              sb.write(value.toString());
+              sb.write('$z$value\n');
             }
-            if (count++ > 100 || atMaxDepth(depth++)) break block;
+            if (atMaxDepth(depth++)) break block;
           }
         }
       } else {
         if (values is Formattable) {
-          sb.write(values.fmt(this));
+          sb.write(values.format(this));
           if (atMaxDepth(_depth++)) break block;
         }
       }
     }
     up;
-    return sb.toString();
+    return '$sb';
   }
 
   String fmt(Object o, [Object values]) {
     var depth = 0;
-    if (values == null) return '$z$o\n';
     final sb = new StringBuffer('$z$o\n');
+    if (values == null) return '$sb';
     try {
       block:
       {
         down;
         if (values is Iterable) {
+          print('fmt: $o values: "$values"');
           var depth = 0;
-          var count = 0;
           for (var value in values) {
-            sb.write(value.format(this));
-            if (count++ > 100 || atMaxDepth(depth++)) break block;
+            try {
+              sb.write(value.format(this));
+            } on NoSuchMethodError {
+              sb.write('$z$value\n');
+            }
+            if (atMaxDepth(depth++)) break block;
           }
         } else if (values is Formattable) {
           sb.write(values.format(this));
           if (atMaxDepth(depth++)) break block;
+        } else {
+          sb.write('$z$values\n');
+          if (atMaxDepth(depth++)) break block;
         }
       }
     } on NoSuchMethodError {
-//      log.debug('no such method: $values');
       if (values != null) sb.write('$z$values\n');
     } finally {
       up;
     }
-    return sb.toString();
+    return '$sb';
+  }
+
+  String fmtNew(Object o, [Object values]) {
+    var depth = 0;
+    final sb = new StringBuffer('$z$o\n');
+    if (values == null) return '$sb';
+    down;
+    try {
+      while (!atMaxDepth(depth++)) {
+        if (values is Iterable) {
+          var depth = 0;
+          for (var value in values) {
+            try {
+              sb.write(value.format(this));
+              if (atMaxDepth(depth++)) break;
+            } on NoSuchMethodError {
+              sb.write('$z$value\n');
+            }
+          }
+        } else if (values is Formattable) {
+          sb.write(values.format(this));
+        } else {
+          sb.write('$z$values\n');
+        }
+      }
+    } on NoSuchMethodError {
+      if (values != null) sb.write('$z$values\n');
+    } finally {
+      up;
+    }
+    return '$sb';
   }
 
   @override

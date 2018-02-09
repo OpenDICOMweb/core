@@ -4,6 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/elt.dart';
@@ -17275,7 +17276,7 @@ class PTagGroupLength extends PTag {
       : super._(
             'kPublicGroupLength${hex(code)}',
             code,
-            'Public Group Length for ${Tag.toDcm(code)}',
+            'Public Group Length for ${dcm(code)}',
             kULIndex,
             VM.k1,
             true,
@@ -17306,7 +17307,7 @@ class PTagUnknown extends PTag {
       : super._(
             'kUnknownPublicTag_${hex16(Group.fromTag(code))}',
             code,
-            'Unknown DICOM Tag ${Tag.toDcm(code)}',
+            'Unknown DICOM Tag ${dcm(code)}',
             vrIndex,
             VM.k1_n,
             false,

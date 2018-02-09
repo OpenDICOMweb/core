@@ -11,6 +11,7 @@ import 'package:core/src/element/errors.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/string/ascii.dart';
+import 'package:core/src/string/dicom_string.dart' as fmt;
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
@@ -96,7 +97,7 @@ abstract class Tag {
   // **** Code Getters
 
   /// Returns a [String] for the [code] in DICOM format, i.e. (gggg,eeee).
-  String get dcm => '${Tag.toDcm(code)}';
+  String get dcm => '${fmt.dcm(code)}';
 
   /// Returns the [group] number for _this_  [Tag].
   int get group => code >> 16;
@@ -538,7 +539,7 @@ abstract class Tag {
   static String toMsg<T>(T tag) {
     String msg;
     if (tag is int) {
-      msg = 'Code ${Tag.toDcm(tag)}';
+      msg = 'Code ${fmt.dcm(tag)}';
     } else if (tag is String) {
       msg = 'Keyword "$tag"';
     } else {
@@ -681,15 +682,17 @@ abstract class Tag {
   /// Returns [code] in DICOM format '(gggg,eeee)'.
   static String toHex(int code) => hex32(code);
 
+/*
   /// Returns [code] in DICOM format '(gggg,eeee)'.
   static String toDcm(int code) {
     if (code == null) return '"null"';
-    return '(${hex16(Group.fromTag(code))},'
-        '${hex16(Elt.fromTag(code))})';
+    return '(${hex16(Group.fromTag(code), prefix: '')},'
+        '${hex16(Elt.fromTag(code), prefix: '')})';
   }
+*/
 
   /// Returns a [List] of DICOM tag codes in '(gggg,eeee)' format
-  static Iterable<String> listToDcm(List<int> tags) => tags.map(toDcm);
+  static Iterable<String> listToDcm(List<int> tags) => tags.map(fmt.dcm);
 
   /// Takes a [String] in format '(gggg,eeee)' and returns [int].
   static int toInt(String s) {

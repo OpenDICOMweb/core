@@ -9,25 +9,30 @@ import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
+import 'package:core/src/dataset/element_list/element_list.dart';
 import 'package:core/src/dataset/element_list/map_as_list.dart';
 import 'package:core/src/dataset/private_group.dart';
+import 'package:core/src/element/base/sequence.dart';
 
 /// An [BDItem] is a DICOM [Dataset], which is contained in an SQ Element.
-class BDItem extends Item  with DatasetBD {
-  @override
-  IDSBytes dsBytes;
+class BDItem extends Item with DatasetBD {
   @override
   final Dataset parent;
+  // TODO: tighten this type to SQtag
+  @override
+  SQ sequence;
   @override
   final MapAsList elements;
+  @override
+  IDSBytes dsBytes;
 
   @override
   final List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
   /// Creates a new empty [BDItem] from [ByteData].
-  BDItem(this.parent, [ByteData bd])
-      : dsBytes = new IDSBytes(bd),
-        elements = new MapAsList();
+  BDItem(this.parent, {this.sequence, ElementList elements, ByteData bd})
+      : elements = new MapAsList(),
+        dsBytes = new IDSBytes(bd);
 
   /// Create a new [BDItem] from an existing [BDItem].
   /// If [parent] is _null_the new [BDItem] has the same

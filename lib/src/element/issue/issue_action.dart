@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/tag/tag.dart';
+import 'package:core/src/string/dicom_string.dart';
 
 //typedef String _Msg(object);
 
@@ -15,7 +15,7 @@ String invalidPadCharMsg(String char) =>
     'Invalid padding character $char in String';
 
 String privateGroupLengthPresentMsg(int code) =>
-    'Retired Private Group Length tag ${Tag.toDcm(code)} present';
+    'Retired Private Group Length tag ${dcm(code)} present';
 
 class IssueAction {
   /// A unique number (used as an index) identifying this [IssueAction].

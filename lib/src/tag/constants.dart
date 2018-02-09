@@ -49,13 +49,6 @@ String eltToHex(int elt) => hex16(elt);
 /// Returns a hexadecimal [String] corresponding to the Tag Element number.
 String eltAsHex(int elt) => hex16(elt);
 
-/// Returns a [String] in DICOM Tag Code format, e.g. (gggg,eeee),
-/// corresponding to the Tag [code].
-String dcm(int code) {
-  assert(code >= 0 && code <= 0xFFFFFFFF, 'code: $code');
-  return '(${hex16(code >> 16, prefix: '')},${hex16(code & 0xFFFF, prefix: '')})';
-}
-
 //**** DICOM Constants ****
 
 /// The DICOM Prefix 'DICM' as an integer.

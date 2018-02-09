@@ -108,7 +108,9 @@ Summary $tag
     var count = 1;
     for (var item in items) {
       for (var e in item) {
-        count += (e is SQ) ? e.counter(test) : 1;
+        count += (e is SQ)
+                 ? counter(test)
+                 : 1;
       }
     }
     return count;
@@ -256,7 +258,6 @@ Summary $tag
 */
 
   /// Returns a formatted [String]. See [Formatter].
-  @override
   String format(Formatter z) => z.fmt(this, items);
 
 //  static const VR kVR = VR.kSQ;

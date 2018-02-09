@@ -86,7 +86,8 @@ void main() {
 
       // FrameDescriptor fields
       expect(ol32FLa.samplesPerPixel == samplesPerPixel0, true);
-      expect(ol32FLa.photometricInterpretation == photometricInterpretation0, true);
+      expect(ol32FLa.photometricInterpretation == photometricInterpretation0,
+          true);
       expect(ol32FLa.rows == rows4, true);
       expect(ol32FLa.columns == columns6, true);
       expect(ol32FLa.bitsAllocated == bitsAllocated32, true);
@@ -99,7 +100,8 @@ void main() {
       // FrameDescriptor
       expect(ol32FDa.ts == ts0, true);
       expect(ol32FDa.samplesPerPixel == samplesPerPixel0, true);
-      expect(ol32FDa.photometricInterpretation == photometricInterpretation0, true);
+      expect(ol32FDa.photometricInterpretation == photometricInterpretation0,
+          true);
       expect(ol32FDa.rows == rows4, true);
       expect(ol32FDa.columns == columns6, true);
       expect(ol32FDa.length == rows4 * columns6, true);
@@ -109,7 +111,8 @@ void main() {
       expect(ol32FDa.pixelRepresentation == pixelRepresentation0, true);
       expect(ol32FDa.planarConfiguration == planarConfiguration0, true);
       expect(ol32FDa.pixelAspectRatio == pixelAspectRatio0, true);
-      expect(ol32FDa.lengthInBits == (rows4 * columns6) * bitsAllocated32, true);
+      expect(
+          ol32FDa.lengthInBits == (rows4 * columns6) * bitsAllocated32, true);
       expect(ol32FDa.pixelSizeInBits == bitsAllocated32, true);
       expect(ol32FDa.length == rows4 * columns6, true);
       expect(ol32FDa.lengthInBytes == pixels0.lengthInBytes, true);
@@ -175,7 +178,8 @@ void main() {
 
         // FrameDescriptor fields
         expect(ol32FLb.samplesPerPixel == samplesPerPixel0, true);
-        expect(ol32FLb.photometricInterpretation == photometricInterpretation1, true);
+        expect(ol32FLb.photometricInterpretation == photometricInterpretation1,
+            true);
         expect(ol32FLb.rows == rows4, true);
         expect(ol32FLb.columns == columns6, true);
         expect(ol32FLb.bitsAllocated == bitsAllocated32, true);
@@ -188,7 +192,8 @@ void main() {
         // FrameDescriptor
         expect(ol32FDb.ts == ts0, true);
         expect(ol32FDb.samplesPerPixel == samplesPerPixel0, true);
-        expect(ol32FDb.photometricInterpretation == photometricInterpretation1, true);
+        expect(ol32FDb.photometricInterpretation == photometricInterpretation1,
+            true);
         expect(ol32FDb.rows == rows4, true);
         expect(ol32FDb.columns == columns6, true);
         expect(ol32FDb.length == rows4 * columns6, true);
@@ -198,7 +203,8 @@ void main() {
         expect(ol32FDb.pixelRepresentation == pixelRepresentation0, true);
         expect(ol32FDb.planarConfiguration == planarConfiguration0, true);
         expect(ol32FDb.pixelAspectRatio == pixelAspectRatio0, true);
-        expect(ol32FDb.lengthInBits == (rows4 * columns6) * bitsAllocated32, true);
+        expect(
+            ol32FDb.lengthInBits == (rows4 * columns6) * bitsAllocated32, true);
         expect(ol32FDb.pixelSizeInBits == bitsAllocated32, true);
         expect(ol32FDb.length == rows4 * columns6, true);
       }
@@ -290,7 +296,8 @@ void main() {
     test('Create FrameList32Bit Uncompressed fromDataset', () {
       //Frame Descriptor.fromDataSet
       const ts = TransferSyntax.kExplicitVRLittleEndian;
-      final uiTransferSyntaxUID0 = new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
+      final uiTransferSyntaxUID0 =
+          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['RGB1']);
@@ -303,7 +310,8 @@ void main() {
       final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [2]);
       final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
       final pixelAspectRatioValue0 = 1 / 2;
-      final usSmallestImagePixelValue0 = new UStag(PTag.kSmallestImagePixelValue, [0]);
+      final usSmallestImagePixelValue0 =
+          new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
           new UStag(PTag.kLargestImagePixelValue, [(1 << 16) - 1]);
       final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[], 0);
@@ -365,7 +373,9 @@ void main() {
       expect(ol32FLd.rows == ol32FDd.rows, true);
       expect(ol32FLd.columns == ol32FDd.columns, true);
       expect(
-          ol32FLd.photometricInterpretation == ol32FDd.photometricInterpretation, true);
+          ol32FLd.photometricInterpretation ==
+              ol32FDd.photometricInterpretation,
+          true);
       expect(ol32FLd.bitsAllocated == ol32FDd.bitsAllocated, true);
       expect(ol32FLd.bitsStored == ol32FDd.bitsStored, true);
       expect(ol32FLd.highBit == ol32FDd.highBit, true);
@@ -374,11 +384,13 @@ void main() {
       expect(ol32FLd.pixelAspectRatio == pixelAspectRatioValue0, true);
       expect(ol32FLd.pixelSizeInBits == ol32FDd.pixelSizeInBits, true);
       expect(ol32FLd.frameLength == ol32FDd.length, true);
-      expect(ol32FLd.desc.lengthInBytes == ol32FDd.lengthInBytes * nFrames0, true);
+      expect(
+          ol32FLd.desc.lengthInBytes == ol32FDd.lengthInBytes * nFrames0, true);
 
       expect(ol32FDd.smallestImagePixelValue == 0, true);
       expect(ol32FDd.largestImagePixelValue == 65535, true);
-      expect((ol32FDd.largestImagePixelValue >> usBitsStored0.value) == 0, true);
+      expect(
+          (ol32FDd.largestImagePixelValue >> usBitsStored0.value) == 0, true);
       expect(ol32FDd.redLUTDescriptor, null);
       expect(ol32FDd.greenLUTDescriptor, null);
       expect(ol32FDd.blueLUTDescriptor, null);
@@ -394,8 +406,8 @@ void main() {
       // FrameDescriptor(fromDataSet)
       expect(ol32FDd.ts == ts, true);
       expect(ol32FDd.samplesPerPixel, equals(usSamplesPerPixel0.value));
-      expect(
-          ol32FDd.photometricInterpretation, equals(csPhotometricInterpretation0.value));
+      expect(ol32FDd.photometricInterpretation,
+          equals(csPhotometricInterpretation0.value));
       expect(ol32FDd.rows, equals(usRows0.value));
       expect(ol32FDd.columns, equals(usColumns0.value));
       expect(ol32FDd.bitsAllocated, equals(usBitsAllocated0.value));
@@ -406,7 +418,8 @@ void main() {
       expect(ol32FDd.pixelAspectRatio, equals(pixelAspectRatioValue0));
       expect(ol32FDd.smallestImagePixelValue == 0, true);
       expect(ol32FDd.largestImagePixelValue == 65535, true);
-      expect((ol32FDd.largestImagePixelValue >> usBitsStored0.value) == 0, true);
+      expect(
+          (ol32FDd.largestImagePixelValue >> usBitsStored0.value) == 0, true);
     });
 
     test('FrameList32Bit operator []', () {
@@ -437,7 +450,9 @@ void main() {
           final frame0 = ol32FLc[j];
           expect(frame0.index == j, true);
 
-          expect(frame0.lengthInBytes * nFrames0 == ol32FLc.pixels.lengthInBytes, true);
+          expect(
+              frame0.lengthInBytes * nFrames0 == ol32FLc.pixels.lengthInBytes,
+              true);
 
           expect(frame0.length == ol32FLc.desc.length, true);
 
@@ -449,16 +464,20 @@ void main() {
           expect(frame0.bitsAllocated == ol32FLc.desc.bitsAllocated, true);
           expect(frame0.bitsStored == ol32FLc.desc.bitsStored, true);
           expect(frame0.highBit == ol32FLc.desc.highBit, true);
-          expect(frame0.pixelRepresentation == ol32FLc.desc.pixelRepresentation, true);
-          expect(frame0.planarConfiguration == ol32FLc.desc.planarConfiguration, true);
-          expect(frame0.pixelAspectRatio == ol32FLc.desc.pixelAspectRatio, true);
+          expect(frame0.pixelRepresentation == ol32FLc.desc.pixelRepresentation,
+              true);
+          expect(frame0.planarConfiguration == ol32FLc.desc.planarConfiguration,
+              true);
+          expect(
+              frame0.pixelAspectRatio == ol32FLc.desc.pixelAspectRatio, true);
 
           expect(frame0.parent == ol32FLc, true);
           expect(frame0.length == ol32FLc.frameLength, true);
         }
       }
       log.debug('nFrames0: $nFrames0, Frames in FrameList: ${ol32FLc.nFrames}');
-      expect(() => ol32FLc[nFrames0], throwsA(const isInstanceOf<RangeError>()));
+      expect(
+          () => ol32FLc[nFrames0], throwsA(const isInstanceOf<RangeError>()));
     });
   });
 }

@@ -18,8 +18,8 @@ void main() {
   print('LO: ${lo.info}');
   final creator = new PrivateTagCreator(lo);
   print('Creator: ${creator.info}');
-  print('cElement: ${Tag.toDcm(creator.code)}, '
-      'pcTag: ${Tag.toDcm(creator.tag.code)}');
+  print('cElement: ${dcm(creator.code)}, '
+      'pcTag: ${dcm(creator.tag.code)}');
   const  pDataCode = 0x00291010;
   final pdTag = new PDTag(pDataCode, kUNIndex, pcTag);
   print('PDTag: ${pdTag.info}');

@@ -57,7 +57,7 @@ abstract class Hash {
   int nList(Iterable<Object> objects) {
     if (objects == null) throw new ArgumentError('Invalid null argument');
     return finish(
-        objects.fold(0, (h, o) => combine(h, o.hashCode)));
+        objects.fold(kHashSeed, (h, o) => combine(h, o.hashCode)));
   }
 
   /// Generates a hash code for multiple [vList].

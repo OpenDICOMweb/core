@@ -5,6 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/issues.dart';
+import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/tag.dart';
@@ -84,7 +85,7 @@ class InvalidTagKeyError<K> extends Error {
   static String _value(Object key) {
     if (key == null) return 'null';
     if (key is String) return key;
-    if (key is int) return Tag.toDcm(key);
+    if (key is int) return dcm(key);
     return key;
   }
 }
@@ -108,7 +109,7 @@ class InvalidTagCodeError extends Error {
   static String _msg(int code, String msg) =>
       'InvalidTagCodeError: "${_value(code)}": $msg';
 
-  static String _value(int code) => (code == null) ? 'null' : Tag.toDcm(code);
+  static String _value(int code) => (code == null) ? 'null' : dcm(code);
 }
 
 Null invalidTagCode(int code, [String msg]) {

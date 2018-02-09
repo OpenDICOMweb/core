@@ -41,7 +41,7 @@ abstract class BDElement<V> extends Element<V> {
 
   static BDElement make(int code, int vrIndex, ByteData bd,
           {bool isEvr = true}) =>
-      (isEvr) ? Evr.make(code, vrIndex, bd) : Ivr.make(code, vrIndex, bd);
+      (isEvr) ? EvrElement.make(code, vrIndex, bd) : Ivr.make(code, vrIndex, bd);
 
   // **** End Interface ****
 

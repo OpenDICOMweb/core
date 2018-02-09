@@ -6,6 +6,15 @@
 
 
 import 'package:core/src/string/ascii.dart';
+import 'package:core/src/string/hexadecimal.dart';
+
+/// Returns a [String] in DICOM Tag Code format, e.g. (gggg,eeee),
+/// corresponding to the Tag [code].
+String dcm(int code) {
+  assert(code >= 0 && code <= 0xFFFFFFFF, 'code: $code');
+  return '(${hex16(code >> 16, prefix: '')},'
+      '${hex16(code & 0xFFFF, prefix: '')})';
+}
 
 /// DICOM Character Set Predicates
 

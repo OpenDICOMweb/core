@@ -85,7 +85,7 @@ abstract class Dataset extends ListBase<Element> {
 
   //Issue: is this good enough?
   @override
-  int get hashCode => elements.hashCode;
+  int get hashCode => system.hasher.nList(elements);
 
   /// An [Iterable] of the [Element] [keys] in _this_.
   Iterable<int> get keys => elements.keys;

@@ -22,10 +22,9 @@ abstract class Item extends Dataset {
 	/// The Sequence that contains this Item.
 	/// [sequence] has one-time setter that is initialized lazily.
   // ignore: unnecessary_getters_setters
-	SQ get sequence => _sq;
-	SQ _sq;
+	SQ get sequence;
   // ignore: unnecessary_getters_setters
-	set sequence(SQ sq) => _sq ??= sq;
+	set sequence(SQ sq);
 
 	@override
 	Dataset get parent;
@@ -56,8 +55,8 @@ abstract class Item extends Dataset {
 	/// _Deprecated_: Use [sequence] = [sq] instead.
   @deprecated
   void addSQ(SQ sq) {
-    assert(sq is SQ && sq != null && _sq == null);
-    sequence = _sq ??= sq;
+    assert(sq is SQ && sq != null);
+    sequence = sq;
   }
 
   Item copy([Dataset parent]);

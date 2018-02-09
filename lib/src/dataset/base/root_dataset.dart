@@ -136,7 +136,7 @@ abstract class RootDataset extends Dataset {
   // Uint8List get prefix => ASCII.encode('DICM');
 
   /// Returns a formatted summary of _this_.
-  String get summary => '''\n$runtimeType (#$hashCode)
+  String get summary => '''\n$runtimeType 
              SOP Class: $sopClassUid
        Transfer Syntax: $transferSyntax
 ${elements.subSummary}       
@@ -154,7 +154,9 @@ ${elements.subSummary}
   String format(Formatter z) {
     final sb = new StringBuffer(summary);
     z.down;
-    sb..write(z.fmt('FMI:', fmi))..write(z.fmt('Elements:', elements));
+    sb
+      ..write(z.fmt('FMI:', fmi))
+      ..write(z.fmt('Elements:', elements));
     z.up;
     return sb.toString();
   }

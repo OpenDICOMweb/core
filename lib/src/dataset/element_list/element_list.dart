@@ -151,9 +151,9 @@ abstract class ElementList extends ListBase<Element> {
   // **** Other Getters and Methods
 
   /// Returns a formatted [String]. See [Formatter].
-  String format(Formatter z) => z.fmt(this, elements);
+ // String format(Formatter z) => z.fmt(this, elements);
 
-  String get summary => '$runtimeType (#$hashCode)\n$subSummary';
+  String get summary => '$runtimeType\n$subSummary';
 
   String get subSummary {
     final sb = new StringBuffer('''
@@ -498,7 +498,8 @@ ElementList Summary
     final e = delete(index);
     if (e != null) results.add(e);
     assert(this[index] == null);
-    // If index is not a Sequence walk all Sequences recursively and remove index.
+    // If index is not a Sequence walk all
+    // Sequences recursively, and remove index.
     if (recursive)
       for (var sq in sequences)
         for (var item in sq.items) results.add(item.delete(index));
@@ -509,16 +510,6 @@ ElementList Summary
   /// [parent] of the copy is _this_ [parent].
   // TODO Jim: Why don't the subclasses work with this interface?
   ElementList copy([Dataset parent]);
-
-  /* Flush if not used
-  Element noValuesCode(int index, [bool required = true]) {
-    assert(index != null);
-    Element e = elements[index];
-    if (_isNotPresentElement(index, e, required)) return null;
-    elements[index] = e.noValues;
-    return e;
-  }
-*/
 
   /// Remove all duplicates from the [Dataset].
   List<Element> removeDuplicates() {

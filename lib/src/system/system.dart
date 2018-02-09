@@ -24,17 +24,12 @@ import 'package:core/src/hash/hash.dart';
 import 'package:core/src/hash/hash64.dart';
 import 'package:core/src/logger/log_level.dart';
 import 'package:core/src/logger/logger.dart';
-import 'package:core/src/string/hexadecimal.dart' as hexadecimal;
 import 'package:core/src/system/sdk.dart';
 import 'package:core/src/system/sys_info.dart';
-import 'package:core/src/tag/constants.dart' as dicom;
 import 'package:core/src/uid/supported_transfer_syntax.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 import 'package:version/version.dart';
-
-
-
 
 //TODO: add a createFMI method to convert writer that uses the system object
 //      to generate the new FMI.
@@ -223,10 +218,10 @@ abstract class System {
   // ignore: unnecessary_getters_setters
   static set system(System system) => _system ??= system;
 
-  static String dcm(int code) => dicom.dcm(code);
-  static String hex8(int v) => hexadecimal.hex8(v);
-  static String hex16(int v) => hexadecimal.hex16(v);
-  static String hex32(int v) => hexadecimal.hex32(v);
+  static String dcm(int code) => dcm(code);
+  static String hex8(int v) => hex8(v);
+  static String hex16(int v) => hex16(v);
+  static String hex32(int v) => hex32(v);
 }
 
 /// The system singleton;
