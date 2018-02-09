@@ -35,7 +35,8 @@ void main() {
       final ow2 =
           new OWtagPixelData(PTag.kPixelData, pixels2, pixels2.lengthInBytes);
       expect(ow0.tag == PTag.kPixelData, true);
-      expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow0.vrIndex == kOBOWIndex, false);
+      expect(ow0.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
       expect(ow0.vfBytes.length == 2048, true);
@@ -59,7 +60,8 @@ void main() {
       final ow2 = new OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes2, bytes2.lengthInBytes);
       expect(ow0.tag == PTag.kPixelData, true);
-      expect(ow0.vrIndex == kOBOWIndex || ow0.vrIndex == kUNIndex, true);
+      expect(ow0.vrIndex == kOBOWIndex || ow0.vrIndex == kUNIndex, false);
+      expect(ow0.vrIndex == kOWIndex, true);
 
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);

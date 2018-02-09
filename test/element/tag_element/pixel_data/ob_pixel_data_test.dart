@@ -7,7 +7,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-
 import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
@@ -41,7 +40,8 @@ void main() {
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob1.tag == PTag.kPrivateInformation, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob1.vrIndex == kOBIndex, true);
       expect(ob0.values is List<int>, true);
       expect(ob0.fragments == null, true);
@@ -104,7 +104,8 @@ void main() {
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob1.tag == PTag.kPrivateInformation, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob1.vrIndex == kOBIndex, true);
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
@@ -171,7 +172,8 @@ void main() {
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob1.tag == PTag.kPrivateInformation, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob1.vrIndex == kOBIndex, true);
       expect(ob0.fragments == null, true);
       expect(ob0.offsets == null, true);
@@ -245,7 +247,8 @@ void main() {
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob1.tag == PTag.kPrivateInformation, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob1.vrIndex == kOBIndex, true);
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
@@ -369,7 +372,8 @@ void main() {
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob1.tag == PTag.kPrivateInformation, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob1.vrIndex == kOBIndex, true);
       expect(ob0.fragments == null, true);
       expect(ob0.offsets == null, true);
@@ -446,7 +450,8 @@ void main() {
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob1.tag == PTag.kPrivateInformation, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob1.vrIndex == kOBIndex, true);
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
@@ -525,7 +530,8 @@ void main() {
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob3.tag == PTag.kPrivateInformation, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob3.vrIndex == kOBIndex, true);
       expect(ob0.values is List<int>, true);
       expect(ob0.fragments == null, true);
@@ -594,7 +600,8 @@ void main() {
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob1.tag == PTag.kPrivateInformation, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob1.vrIndex == kOBIndex, true);
       expect(ob0.fragments == null, true);
       expect(ob0.offsets == null, true);
@@ -675,7 +682,8 @@ void main() {
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob1.tag == PTag.kPrivateInformation, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob1.vrIndex == kOBIndex, true);
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);

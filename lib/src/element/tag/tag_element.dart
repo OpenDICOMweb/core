@@ -41,8 +41,6 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 
   // VR related Getters
   @override
-  int get vrIndex => tag.vrIndex;
-  @override
   int get vrCode => tag.vrCode;
 
   // **** VM Related Getters
@@ -165,9 +163,11 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 
 //  static Null _sqError(EBytes eb) => invalidElementIndex(0);
 
-  static Element fromBD(BDElement bd, [int vrIndex]) =>
-      _bdElementMakers[vrIndex](bd);
-
+  static Element fromBD(BDElement bd, [int vrIndex]) {
+    print('fromBD vrIndex: $vrIndex');
+    if (vrIndex > 30) throw 'bad vrIndex $bd';
+    return _bdElementMakers[vrIndex](bd);
+  }
   static final List<MakeFromBD> _bdElementMakers = <MakeFromBD>[
     _sqErrorBD,
     // Maybe Undefined Lengths

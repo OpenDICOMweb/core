@@ -43,7 +43,8 @@ void main() {
       final ob1 = new OBtagPixelData(PTag.kPixelData, frame1, kUndefinedLength,ts, frags0);
 
       expect(ob0.tag == PTag.kPixelData, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob0.fragments == frags0, true);
       expect(ob0.offsets == frags0.offsets, true);
       expect(ob0.isEncapsulated == true, true);
@@ -64,7 +65,8 @@ void main() {
       final ob0 = new OBtagPixelData(PTag.kPixelData, frame, kUndefinedLength,ts, frags);
       final ob1 = new OBtagPixelData(PTag.kPixelData, frame, kUndefinedLength,ts, frags);
       expect(ob0.tag == PTag.kPixelData, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
       expect(ob0.isEncapsulated == true, true);
@@ -88,7 +90,8 @@ void main() {
       final ob1 = new OBtagPixelData.fromBytes(
           PTag.kPixelData, frame, frame.lengthInBytes,ts, frags);
       expect(ob0.tag == PTag.kPixelData, true);
-      expect(ob0.vrIndex == kOBOWIndex, true);
+      expect(ob0.vrIndex == kOBOWIndex, false);
+      expect(ob0.vrIndex == kOBIndex, true);
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
       expect(ob0.isEncapsulated == true, true);

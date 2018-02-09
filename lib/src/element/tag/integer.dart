@@ -169,7 +169,7 @@ class OBtag extends OB with TagElement<int> {
       new OBtag(tag, vList ?? kEmptyIntList);
 
   static OBtag fromBD(BDElement bd) =>
-      new OBtag.fromBytes(bd.tag, bd.vfBytes, bd.vfLengthField);
+    new OBtag.fromBytes(bd.tag, bd.vfBytes, bd.vfLengthField);
 }
 
 /// Unsigned 8-bit integer with unknown VR (VR.kUN).

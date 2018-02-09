@@ -43,7 +43,8 @@ void main() {
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow1.tag == PTag.kCoefficientsSDVN, true);
-      expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow0.vrIndex == kOBOWIndex, false);
+      expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
@@ -104,8 +105,8 @@ void main() {
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow1.tag == PTag.kCoefficientsSDDN, true);
-      expect(ow0.vrIndex == kOBOWIndex || ow0.vrIndex == kUNIndex, true);
-
+      expect(ow0.vrIndex == kOBOWIndex || ow0.vrIndex == kUNIndex, false);
+      expect(ow0.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
       expect(ow0.vfBytes.length == bytes1.lengthInBytes, true);
@@ -217,7 +218,8 @@ void main() {
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow1.tag == PTag.kCoefficientsSDVN, true);
-      expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow0.vrIndex == kOBOWIndex, false);
+      expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
@@ -273,7 +275,8 @@ void main() {
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow1.tag == PTag.kCoefficientsSDVN, true);
-      expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow0.vrIndex == kOBOWIndex, false);
+      expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
@@ -328,7 +331,8 @@ void main() {
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow1.tag == PTag.kCoefficientsSDVN, true);
-      expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow0.vrIndex == kOBOWIndex, false);
+      expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);
@@ -386,7 +390,8 @@ void main() {
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow1.tag == PTag.kCoefficientsSDVN, true);
-      expect(ow0.vrIndex == kOBOWIndex, true);
+      expect(ow0.vrIndex == kOBOWIndex, false);
+      expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
       expect(ow0.vfBytes is Uint8List, true);

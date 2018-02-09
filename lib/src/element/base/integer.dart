@@ -49,9 +49,6 @@ abstract class IntBase extends Element<int> {
   bool get isBinary => true;
 
   @override
-  int get vfLength => values.length * sizeInBytes;
-
-  @override
   int get padChar => unsupportedError('IntBase does not have a padChar');
 
   /// Returns a copy of [values]
