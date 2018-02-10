@@ -38,7 +38,7 @@ abstract class Uint8PixelDataMixin {
 
   /// The [Uint8List] of pixels, possibly compressed.
   Uint8List get pixels => _pixels ??=
-      (isEncapsulated) ? fragments.bulkdata : Uint8Base.toUint8List(values);
+      (isEncapsulated) ? fragments.bulkdata : Uint8Base.fromList(values);
   Uint8List _pixels;
 }
 
@@ -51,14 +51,16 @@ abstract class Uint16PixelDataMixin {
 
   /// The [Uint16List] of pixels, possibly compressed.
   Uint16List get pixels => _pixels ??=
-      (isEncapsulated) ? fragments.bulkdata : Uint16Base.toUint16List(values);
+      (isEncapsulated) ? fragments.bulkdata : Uint16Base.fromList(values);
   Uint16List _pixels;
 }
 
-abstract class OBPixelData extends OB with PixelDataMixin, Uint8PixelDataMixin {
+abstract class OBPixelData extends OB
+    with PixelDataMixin, Uint8PixelDataMixin {
 }
 
-abstract class UNPixelData extends UN with PixelDataMixin, Uint8PixelDataMixin {
+abstract class UNPixelData extends UN
+    with PixelDataMixin, Uint8PixelDataMixin {
 }
 
 abstract class OWPixelData extends OW

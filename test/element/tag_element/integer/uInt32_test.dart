@@ -411,8 +411,8 @@ void main() {
       final ul0 = new ULtag(PTag.kSelectorULValue, uInt32list0);
       for (var i = 0, j = 0; i < uInt32list0.length; i++, j += 4) {
         final ul1 = ul0.view(j, uInt32list0.length - i);
-        log.debug(
-            'ul0: ${ul0.values}, ul1: ${ul1.values}, uInt32list0.sublist(i) : ${uInt32list0.sublist(i)}');
+        log.debug('ul0: ${ul0.values}, ul1: ${ul1.values}, '
+            'uInt32list0.sublist(i) : ${uInt32list0.sublist(i)}');
         expect(ul1.values, equals(uInt32list0.sublist(i)));
       }
     });
@@ -797,15 +797,15 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesLengthError>()));
     });
 
-    test('UL toUint32List', () {
+    test('UL fromList', () {
       for (var i = 0; i < 10; i++) {
         final uInt32list0 = rng.uint32List(1, 1);
-        expect(Uint32Base.toUint32List(uInt32list0), uInt32list0);
+        expect(Uint32Base.fromList(uInt32list0), uInt32list0);
       }
       const uInt32Min = const [kUint32Min];
       const uInt32Max = const [kUint32Max];
-      expect(Uint32Base.toUint32List(uInt32Min), uInt32Min);
-      expect(Uint32Base.toUint32List(uInt32Max), uInt32Max);
+      expect(Uint32Base.fromList(uInt32Min), uInt32Min);
+      expect(Uint32Base.fromList(uInt32Max), uInt32Max);
     });
 
     test('UL fromBytes', () {
@@ -815,9 +815,8 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listFromBytes(bd) ; ${Uint32Base.listFromBytes(bd)}');
-        expect(Uint32Base.listFromBytes(bd), equals(uInt32ListV1));
+          ..debug('Uint32Base.fromBytes(bd) ; ${Uint32Base.fromBytes(bd)}');
+        expect(Uint32Base.fromBytes(bd), equals(uInt32ListV1));
       }
     });
 
@@ -829,39 +828,39 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listToBytes(uInt32ListV1) ; ${Uint32Base.listToBytes(uInt32ListV1)}');
-        expect(Uint32Base.listToBytes(uInt32ListV1), equals(bd));
+          ..debug('Uint32Base.toBytes(uInt32ListV1): '
+              '${Uint32Base.toBytes(uInt32ListV1)}');
+        expect(Uint32Base.toBytes(uInt32ListV1), equals(bd));
       }
 
       const uInt32Max = const [kUint32Max];
       final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
       final uInt32List = uInt32ListV1.buffer.asUint8List();
-      expect(Uint32Base.listToBytes(uInt32Max), uInt32List);
+      expect(Uint32Base.toBytes(uInt32Max), uInt32List);
 
       const uInt64Max = const [kUint64Max];
-      expect(Uint32Base.listToBytes(uInt64Max), isNull);
+      expect(Uint32Base.toBytes(uInt64Max), isNull);
 
       system.throwOnError = true;
-      expect(() => Uint32Base.listToBytes(uInt64Max),
+      expect(() => Uint32Base.toBytes(uInt64Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
-    test('Uint32Base listToByteData good values', () {
+    test('Uint32Base toByteData good values', () {
       system.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final uInt32list0 = rng.uint32List(1, 1);
         final bd0 = uInt32list0.buffer.asByteData();
-        final lBd0 = Uint32Base.listToByteData(uInt32list0);
+        final lBd0 = Uint32Base.toByteData(uInt32list0);
         log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
             .asUint8List()}');
         expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd0.buffer == bd0.buffer, true);
 
-        final lBd1 = Uint32Base.listToByteData(uInt32list0, check: false);
-        log.debug(
-            'lBd3: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        final lBd1 = Uint32Base.toByteData(uInt32list0, check: false);
+        log.debug('lBd3: ${lBd1.buffer.asUint8List()}, '
+            'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd1.buffer == bd0.buffer, true);
       }
@@ -869,38 +868,38 @@ void main() {
       const uint32Max = const [kUint32Max];
       final uint32List = new Uint32List.fromList(uint32Max);
       final bd1 = uint32List.buffer.asByteData();
-      final lBd2 = Uint32Base.listToByteData(uint32List);
-      log.debug(
-          'bd: ${bd1.buffer.asUint8List()}, lBd2: ${lBd2.buffer.asUint8List()}');
+      final lBd2 = Uint32Base.toByteData(uint32List);
+      log.debug('bd: ${bd1.buffer.asUint8List()}, '
+          'lBd2: ${lBd2.buffer.asUint8List()}');
       expect(lBd2.buffer.asUint8List(), equals(bd1.buffer.asUint8List()));
       expect(lBd2.buffer == bd1.buffer, true);
     });
 
-    test('Uint32Base listToByteData bad values', () {
+    test('Uint32Base toByteData bad values', () {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final uInt32list0 = rng.uint32List(1, 1);
         final bd0 = uInt32list0.buffer.asByteData();
-        final lBd1 = Uint32Base.listToByteData(uInt32list0, asView: false);
-        log.debug(
-            'lBd1: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        final lBd1 = Uint32Base.toByteData(uInt32list0, asView: false);
+        log.debug('lBd1: ${lBd1.buffer.asUint8List()}, '
+            'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd1.buffer == bd0.buffer, false);
 
-        final lBd2 = Uint32Base.listToByteData(uInt32list0,
-            asView: false, check: false);
-        log.debug(
-            'lBd2: ${lBd2.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        final lBd2 =
+            Uint32Base.toByteData(uInt32list0, asView: false, check: false);
+        log.debug('lBd2: ${lBd2.buffer.asUint8List()}, '
+            'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd2.buffer == bd0.buffer, false);
       }
 
       system.throwOnError = false;
       final uInt32Max = const <int>[kUint32Max + 1];
-      expect(Uint32Base.listToByteData(uInt32Max), isNull);
+      expect(Uint32Base.toByteData(uInt32Max), isNull);
 
       system.throwOnError = true;
-      expect(() => Uint32Base.listToByteData(uInt32Max),
+      expect(() => Uint32Base.toByteData(uInt32Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -912,7 +911,7 @@ void main() {
         final base64 = BASE64.encode(bd);
         log.debug('UL.base64: "$base64"');
 
-        final ulList = Uint32Base.listFromBase64(base64);
+        final ulList = Uint32Base.fromBase64(base64);
         log.debug('  UL.decode: $ulList');
         expect(ulList, equals(uInt32list0));
         expect(ulList, equals(uInt32ListV1));
@@ -925,7 +924,7 @@ void main() {
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
         final s = BASE64.encode(bd);
-        expect(Uint32Base.listToBase64(uInt32list0), equals(s));
+        expect(Uint32Base.toBase64(uInt32list0), equals(s));
       }
     });
 
@@ -939,14 +938,14 @@ void main() {
         // Encode
         final base64 = BASE64.encode(bd);
         log.debug('UL.base64: "$base64"');
-        final s = Uint32Base.listToBase64(uInt32list0);
+        final s = Uint32Base.toBase64(uInt32list0);
         log.debug('  UL.json: "$s"');
         expect(s, equals(base64));
 
         // Decode
-        final ul0 = Uint32Base.listFromBase64(base64);
+        final ul0 = Uint32Base.fromBase64(base64);
         log.debug('UL.base64: $ul0');
-        final ul1 = Uint32Base.listFromBase64(s);
+        final ul1 = Uint32Base.fromBase64(s);
         log.debug('  UL.json: $ul1');
         expect(ul0, equals(uInt32list0));
         expect(ul0, equals(uInt32ListV1));
@@ -961,9 +960,8 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listFromBytes(bd) ; ${Uint32Base.listFromBytes(bd)}');
-        expect(Uint32Base.listFromBytes(bd), equals(uInt32ListV1));
+          ..debug('Uint32Base.fromBytes(bd) ; ${Uint32Base.fromBytes(bd)}');
+        expect(Uint32Base.fromBytes(bd), equals(uInt32ListV1));
       }
     });
 
@@ -974,9 +972,9 @@ void main() {
         final byteData = uInt32ListV1.buffer.asByteData();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listFromByteData(byteData) ; ${Uint32Base.listFromByteData(byteData)}');
-        expect(Uint32Base.listFromByteData(byteData), equals(uInt32ListV1));
+          ..debug('Uint32Base.fromByteData(byteData): '
+              '${Uint32Base.fromByteData(byteData)}');
+        expect(Uint32Base.fromByteData(byteData), equals(uInt32ListV1));
       }
     });
   });
@@ -1354,8 +1352,8 @@ void main() {
       final at0 = new ATtag(PTag.kSelectorATValue, uInt32list0);
       for (var i = 0, j = 0; i < uInt32list0.length; i++, j += 4) {
         final at1 = at0.view(j, uInt32list0.length - i);
-        log.debug(
-            'at0: ${at0.values}, at1: ${at1.values}, uInt32list0.sublist(i) : ${uInt32list0.sublist(i)}');
+        log.debug('at0: ${at0.values}, at1: ${at1.values}, '
+            'uInt32list0.sublist(i) : ${uInt32list0.sublist(i)}');
         expect(at1.values, equals(uInt32list0.sublist(i)));
       }
     });
@@ -1681,15 +1679,15 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesLengthError>()));
     });
 
-    test('AT toUint32List', () {
+    test('AT fromList', () {
       for (var i = 0; i < 10; i++) {
         final uInt32list0 = rng.uint32List(1, 1);
-        expect(Uint32Base.toUint32List(uInt32list0), uInt32list0);
+        expect(Uint32Base.fromList(uInt32list0), uInt32list0);
       }
       const uInt32Min = const [kUint32Min];
       const uInt32Max = const [kUint32Max];
-      expect(Uint32Base.toUint32List(uInt32Min), uInt32Min);
-      expect(Uint32Base.toUint32List(uInt32Max), uInt32Max);
+      expect(Uint32Base.fromList(uInt32Min), uInt32Min);
+      expect(Uint32Base.fromList(uInt32Max), uInt32Max);
     });
 
     test('AT fromBytes', () {
@@ -1699,9 +1697,8 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listFromBytes(bd) ; ${Uint32Base.listFromBytes(bd)}');
-        expect(Uint32Base.listFromBytes(bd), equals(uInt32ListV1));
+          ..debug('Uint32Base.fromBytes(bd) ; ${Uint32Base.fromBytes(bd)}');
+        expect(Uint32Base.fromBytes(bd), equals(uInt32ListV1));
       }
     });
 
@@ -1713,21 +1710,21 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listToBytes(uInt32ListV1) ; ${Uint32Base.listToBytes(uInt32ListV1)}');
-        expect(Uint32Base.listToBytes(uInt32ListV1), equals(bd));
+          ..debug('Uint32Base.toBytes(uInt32ListV1): '
+              '${Uint32Base.toBytes(uInt32ListV1)}');
+        expect(Uint32Base.toBytes(uInt32ListV1), equals(bd));
       }
 
       const uInt32Max = const [kUint32Max];
       final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
       final uInt32List = uInt32ListV1.buffer.asUint8List();
-      expect(Uint32Base.listToBytes(uInt32Max), uInt32List);
+      expect(Uint32Base.toBytes(uInt32Max), uInt32List);
 
       const uInt64Max = const [kUint64Max];
-      expect(Uint32Base.listToBytes(uInt64Max), isNull);
+      expect(Uint32Base.toBytes(uInt64Max), isNull);
 
       system.throwOnError = true;
-      expect(() => Uint32Base.listToBytes(uInt64Max),
+      expect(() => Uint32Base.toBytes(uInt64Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -1737,7 +1734,7 @@ void main() {
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
         final s = BASE64.encode(bd);
-        expect(Uint32Base.listFromBase64(s), equals(uInt32ListV1));
+        expect(Uint32Base.fromBase64(s), equals(uInt32ListV1));
       }
     });
 
@@ -1748,7 +1745,7 @@ void main() {
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
         final s = BASE64.encode(bd);
-        expect(Uint32Base.listToBase64(uInt32list0), equals(s));
+        expect(Uint32Base.toBase64(uInt32list0), equals(s));
       }
     });
 
@@ -1759,9 +1756,8 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listFromBytes(bd) ; ${Uint32Base.listFromBytes(bd)}');
-        expect(Uint32Base.listFromBytes(bd), equals(uInt32ListV1));
+          ..debug('Uint32Base.fromBytes(bd) ; ${Uint32Base.fromBytes(bd)}');
+        expect(Uint32Base.fromBytes(bd), equals(uInt32ListV1));
       }
     });
 
@@ -1772,9 +1768,9 @@ void main() {
         final byteData = uInt32ListV1.buffer.asByteData();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listFromByteData(byteData) ; ${Uint32Base.listFromByteData(byteData)}');
-        expect(Uint32Base.listFromByteData(byteData), equals(uInt32ListV1));
+          ..debug('Uint32Base.fromByteData(byteData): '
+              '${Uint32Base.fromByteData(byteData)}');
+        expect(Uint32Base.fromByteData(byteData), equals(uInt32ListV1));
       }
     });
   });
@@ -2162,8 +2158,8 @@ void main() {
       final ol0 = new OLtag(PTag.kSelectorOLValue, uInt32list0);
       for (var i = 0, j = 0; i < uInt32list0.length; i++, j += 4) {
         final ol1 = ol0.view(j, uInt32list0.length - i);
-        log.debug(
-            'ol0: ${ol0.values}, ol1: ${ol1.values}, uInt32list0.sublist(i) : ${uInt32list0.sublist(i)}');
+        log.debug('ol0: ${ol0.values}, ol1: ${ol1.values}, '
+            'uInt32list0.sublist(i) : ${uInt32list0.sublist(i)}');
         expect(ol1.values, equals(uInt32list0.sublist(i)));
       }
     });
@@ -2426,15 +2422,15 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
-    test('OL toUint32List', () {
+    test('OL fromList', () {
       for (var i = 0; i < 10; i++) {
         final uInt32list0 = rng.uint32List(1, 1);
-        expect(Uint32Base.toUint32List(uInt32list0), uInt32list0);
+        expect(Uint32Base.fromList(uInt32list0), uInt32list0);
       }
       const uInt32Min = const [kUint32Min];
       const uInt32Max = const [kUint32Max];
-      expect(Uint32Base.toUint32List(uInt32Min), uInt32Min);
-      expect(Uint32Base.toUint32List(uInt32Max), uInt32Max);
+      expect(Uint32Base.fromList(uInt32Min), uInt32Min);
+      expect(Uint32Base.fromList(uInt32Max), uInt32Max);
     });
 
     test('OL fromBytes', () {
@@ -2444,9 +2440,8 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listFromBytes(bd) ; ${Uint32Base.listFromBytes(bd)}');
-        expect(Uint32Base.listFromBytes(bd), equals(uInt32ListV1));
+          ..debug('Uint32Base.fromBytes(bd) ; ${Uint32Base.fromBytes(bd)}');
+        expect(Uint32Base.fromBytes(bd), equals(uInt32ListV1));
       }
     });
 
@@ -2458,21 +2453,21 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listToBytes(uInt32ListV1) ; ${Uint32Base.listToBytes(uInt32ListV1)}');
-        expect(Uint32Base.listToBytes(uInt32ListV1), equals(bd));
+          ..debug('Uint32Base.toBytes(uInt32ListV1): '
+              '${Uint32Base.toBytes(uInt32ListV1)}');
+        expect(Uint32Base.toBytes(uInt32ListV1), equals(bd));
       }
 
       const uInt32Max = const [kUint32Max];
       final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
       final uInt32List = uInt32ListV1.buffer.asUint8List();
-      expect(Uint32Base.listToBytes(uInt32Max), uInt32List);
+      expect(Uint32Base.toBytes(uInt32Max), uInt32List);
 
       const uInt64Max = const [kUint64Max];
-      expect(Uint32Base.listToBytes(uInt64Max), isNull);
+      expect(Uint32Base.toBytes(uInt64Max), isNull);
 
       system.throwOnError = true;
-      expect(() => Uint32Base.listToBytes(uInt64Max),
+      expect(() => Uint32Base.toBytes(uInt64Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -2484,7 +2479,7 @@ void main() {
         final base64 = BASE64.encode(bd);
         log.debug('OL.base64: "$base64"');
 
-        final olList = Uint32Base.listFromBase64(base64);
+        final olList = Uint32Base.fromBase64(base64);
         log.debug('  OL.decode: $olList');
         expect(olList, equals(uInt32list0));
         expect(olList, equals(uInt32ListV1));
@@ -2497,7 +2492,7 @@ void main() {
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
         final s = BASE64.encode(bd);
-        expect(Uint32Base.listToBase64(uInt32list0), equals(s));
+        expect(Uint32Base.toBase64(uInt32list0), equals(s));
       }
     });
 
@@ -2511,14 +2506,14 @@ void main() {
         // Encode
         final base64 = BASE64.encode(bd);
         log.debug('OL.base64: "$base64"');
-        final s = Uint32Base.listToBase64(uInt32list0);
+        final s = Uint32Base.toBase64(uInt32list0);
         log.debug('  OL.json: "$s"');
         expect(s, equals(base64));
 
         // Decode
-        final ol0 = Uint32Base.listFromBase64(base64);
+        final ol0 = Uint32Base.fromBase64(base64);
         log.debug('OL.base64: $ol0');
-        final ol1 = Uint32Base.listFromBase64(s);
+        final ol1 = Uint32Base.fromBase64(s);
         log.debug('  OL.json: $ol1');
         expect(ol0, equals(uInt32list0));
         expect(ol0, equals(uInt32ListV1));
@@ -2533,9 +2528,8 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listFromBytes(bd) ; ${Uint32Base.listFromBytes(bd)}');
-        expect(Uint32Base.listFromBytes(bd), equals(uInt32ListV1));
+          ..debug('Uint32Base.fromBytes(bd) ; ${Uint32Base.fromBytes(bd)}');
+        expect(Uint32Base.fromBytes(bd), equals(uInt32ListV1));
       }
     });
 
@@ -2546,9 +2540,9 @@ void main() {
         final byteData = uInt32ListV1.buffer.asByteData();
         log
           ..debug('uInt32ListV1 : $uInt32ListV1')
-          ..debug(
-              'Uint32Base.listFromByteData(byteData) ; ${Uint32Base.listFromByteData(byteData)}');
-        expect(Uint32Base.listFromByteData(byteData), equals(uInt32ListV1));
+          ..debug('Uint32Base.fromByteData(byteData): '
+              '${Uint32Base.fromByteData(byteData)}');
+        expect(Uint32Base.fromByteData(byteData), equals(uInt32ListV1));
       }
     });
   });

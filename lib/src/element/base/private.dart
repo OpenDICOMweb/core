@@ -24,7 +24,7 @@ abstract class PrivateElement<V> extends Element<V> {
   bool operator ==(Object other) => other is PrivateElement && e == other.e;
 
   @override
-  Iterable<V> get emptyList => e.emptyList;
+  List<V> get emptyList => e.emptyList;
   @override
   int get hashCode => e.hashCode;
   @override

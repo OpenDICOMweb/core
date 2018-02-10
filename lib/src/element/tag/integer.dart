@@ -29,8 +29,8 @@ class IntBulkdata extends BulkdataRef<int> {
 }
 
 /// Returns [vfLengthField] is it is valid.
-int _checkVFL(Uint8List bytes, int vfLengthField) =>
-    (vfLengthField == kUndefinedLength || vfLengthField == bytes.length)
+int _checkVFL(int vfLength, int vfLengthField) =>
+    (vfLengthField == kUndefinedLength || vfLengthField == vfLength)
         ? vfLengthField
         : null;
 
@@ -51,7 +51,7 @@ class SStag extends SS with TagElement<int> {
 
   SStag.fromBytes(Tag tag, Uint8List bytes)
       : tag = (Tag.isValidVR(tag, SS.kVRIndex)) ? tag : invalidTagError(tag),
-        values = Uint16Base.listFromBytes(bytes);
+        values = Uint16Base.fromBytes(bytes);
 
   factory SStag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
       new SStag.fromBytes(tag, BASE64.decode(base64));
@@ -60,23 +60,19 @@ class SStag extends SS with TagElement<int> {
   @override
   SStag update([Iterable<int> vList = kEmptyIntList]) => new SStag(tag, vList);
 
-  @override
-  SStag updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new SStag(tag, f(values));
-
-  static SStag make<double>(Tag tag, Iterable<double> vList) =>
+  static SStag make<int>(Tag tag, Iterable<int> vList, [int _]) =>
       new SStag(tag, vList ?? kEmptyDoubleList);
 
   static SStag fromBase64(Tag tag, String s) => SS.isNotValidTag(tag)
       ? null
-      : new SStag._(tag, Int16Base.listFromBase64(s) ?? kEmptyDoubleList);
+      : new SStag._(tag, Int16Base.fromBase64(s) ?? kEmptyDoubleList);
 
   /// Creates an [SStag] from a [Uint8List].
   static SStag fromBytes(Tag tag, Uint8List bytes) => SS.isNotValidTag(tag)
       ? null
-      : new SStag._(tag, Int16Base.listFromBytes(bytes) ?? kEmptyUint8List);
+      : new SStag._(tag, Int16Base.fromBytes(bytes) ?? kEmptyUint8List);
 
-  static SStag fromBD(BDElement bd) =>
+  static SStag fromBDE(BDElement bd) =>
       SS.isNotValidTag(bd.tag) ? null : new SStag._(bd.tag, bd.values);
 }
 
@@ -97,7 +93,7 @@ class SLtag extends SL with TagElement<int> {
 /*
   SLtag.fromBytes(Tag tag, Uint8List bytes)
       : tag = (Tag.isValidVR(tag, SL.kVRIndex)) ? tag : invalidTagError(tag),
-        values = Int32Base.listFromBytes(bytes);
+        values = Int32Base.fromBytes(bytes);
 
   factory SLtag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
       new SLtag.fromBytes(tag, BASE64.decode(base64));
@@ -106,23 +102,19 @@ class SLtag extends SL with TagElement<int> {
   @override
   SLtag update([Iterable<int> vList = kEmptyIntList]) => new SLtag(tag, vList);
 
-  @override
-  SLtag updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new SLtag(tag, f(values));
-
-  static SLtag make<double>(Tag tag, Iterable<double> vList) =>
+  static SLtag make<int>(Tag tag, Iterable<int> vList, [int _]) =>
       new SLtag(tag, vList ?? kEmptyDoubleList);
 
   static SLtag fromBase64(Tag tag, String s) => SL.isNotValidTag(tag)
       ? null
-      : new SLtag._(tag, Int32Base.listFromBase64(s) ?? kEmptyDoubleList);
+      : new SLtag._(tag, Int32Base.fromBase64(s) ?? kEmptyDoubleList);
 
   /// Creates an [SLtag] from a [Uint8List].
   static SLtag fromBytes(Tag tag, Uint8List bytes) => SL.isNotValidTag(tag)
       ? null
-      : new SLtag._(tag, Int32Base.listFromBytes(bytes) ?? kEmptyDoubleList);
+      : new SLtag._(tag, Int32Base.fromBytes(bytes) ?? kEmptyDoubleList);
 
-  static SLtag fromBD(BDElement bd) =>
+  static SLtag fromBDE(BDElement bd) =>
       SL.isNotValidTag(bd.tag) ? null : new SLtag._(bd.tag, bd.values);
 }
 
@@ -137,14 +129,21 @@ class OBtag extends OB with TagElement<int> {
 
   /// Creates an [OB] Element from a [Iterable<int>] of byte values (0 - 255).
   factory OBtag(Tag tag,
-          [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
+          [Iterable<int> vList = IntBase.kEmptyList, int vfLengthField]) =>
       (OB.isValidArgs(tag, vList))
           ? new OBtag._(tag, vList, vfLengthField)
           : invalidValuesError(vList, tag: tag);
 
+  factory OBtag._fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) {
+    if (_isNotValidTag(tag, kOBIndex)) return null;
+    final vList = Uint8Base.fromBytes(bytes);
+    final vflf = _getVFLF(vList.lengthInBytes, vfLengthField);
+    return new OBtag._(tag, vList, vflf);
+  }
   /// Creates an [OB] Element from a [Iterable<int>] of byte values (0 - 255).
   OBtag._(this.tag, this.values, this.vfLengthField);
 
+/*
   OBtag.fromBytes(Tag tag, Uint8List bytes, this.vfLengthField)
       : tag = (Tag.isValidVR(tag, OB.kVRIndex))
             ? tag
@@ -152,24 +151,33 @@ class OBtag extends OB with TagElement<int> {
         // ignore: prefer_initializing_formals
         values = bytes;
 
+
   factory OBtag.fromBase64(Tag tag, String base64, int vfLengthField) =>
       new OBtag.fromBytes(tag, BASE64.decode(base64), vfLengthField);
-
+*/
   @override
   OBtag update([Iterable<int> vList = kEmptyIntList]) => new OBtag(tag, vList);
 
-  @override
-  OBtag updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new OBtag(tag, f(values));
+  static OBtag make(Tag tag, Iterable<int> vList, [int vfLengthField]) =>
+      _fromList(tag, vList, vfLengthField);
 
-  static OBtag fromB64(Tag tag, String s, int vfLengthField) =>
-      new OBtag.fromBytes(tag, BASE64.decode(s), vfLengthField);
+  static OBtag _fromList(Tag tag, Iterable<int> vList, [int
+  vfLengthField]) {
+    if (_isNotValidTag(tag, kOBIndex)) return null;
+    final td = Uint8Base.fromList(vList);
+    final vflf = _getVFLF(td.lengthInBytes, vfLengthField);
+    return new OBtag._(tag, td, vflf);
+  }
 
-  static OBtag make<int>(Tag tag, Iterable<int> vList) =>
-      new OBtag(tag, vList ?? kEmptyIntList);
+  static OBtag fromBase64(Tag tag, String s, [int vfLengthField]) =>
+      new OBtag._fromBytes(tag, BASE64.decode(s), vfLengthField);
 
-  static OBtag fromBD(BDElement bd) =>
-    new OBtag.fromBytes(bd.tag, bd.vfBytes, bd.vfLengthField);
+  static OBtag fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) =>
+      new OBtag._fromBytes(tag, bytes, vfLengthField);
+
+  static OBtag fromBDE(BDElement bde) =>
+      new OBtag._fromBytes(bde.tag, bde.vfBytes, bde.vfLengthField);
+
 }
 
 /// Unsigned 8-bit integer with unknown VR (VR.kUN).
@@ -197,17 +205,13 @@ class UNtag extends UN with TagElement<int> {
   @override
   UNtag update([Iterable<int> vList = kEmptyIntList]) => new UNtag(tag, vList);
 
-  @override
-  UNtag updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new UNtag(tag, f(values));
-
-  static UNtag make<int>(Tag tag, Iterable<int> vList) =>
+  static UNtag make<int>(Tag tag, Iterable<int> vList, [int _]) =>
       new UNtag(tag, vList ?? kEmptyIntList);
 
   static UNtag fromB64(Tag tag, String s, int vfLengthField) =>
       new UNtag.fromBytes(tag, BASE64.decode(s), vfLengthField);
 
-  static UNtag fromBD(BDElement bd) =>
+  static UNtag fromBDE(BDElement bd) =>
       new UNtag.fromBytes(bd.tag, bd.vfBytes, bd.vfLengthField);
 }
 
@@ -231,7 +235,7 @@ class UStag extends US with TagElement<int> {
       : tag = (Tag.isValidVR(tag, US.kVRIndex))
             ? tag
             : invalidTagError(tag, UStag),
-        values = Uint16Base.listFromBytes(bytes);
+        values = Uint16Base.fromBytes(bytes);
 
   factory UStag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
       new UStag.fromBytes(tag, BASE64.decode(base64));
@@ -239,17 +243,13 @@ class UStag extends US with TagElement<int> {
   @override
   UStag update([Iterable<int> vList = kEmptyIntList]) => new UStag(tag, vList);
 
-  @override
-  UStag updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new UStag(tag, f(values));
-
-  static UStag make<int>(Tag tag, Iterable<int> vList) =>
+  static UStag make<int>(Tag tag, Iterable<int> vList, [int _]) =>
       new UStag(tag, vList ?? kEmptyIntList);
 
   static UStag fromB64(Tag tag, String base64) =>
       new UStag.fromBytes(tag, BASE64.decode(base64));
 
-  static UStag fromBD(BDElement bd) => new UStag.fromBytes(bd.tag, bd.vfBytes);
+  static UStag fromBDE(BDElement bd) => new UStag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 /// Other Word VR
@@ -264,45 +264,72 @@ class OWtag extends OW with TagElement<int> {
 
   /// Creates an [OWtag] Element.
   factory OWtag(Tag tag,
-          [Iterable<int> vList = kEmptyIntList, int vfLengthField]) =>
-//Urgent Jim: figure out what to do with Private Creators with bad vr
+          [Iterable<int> vList = IntBase.kEmptyList, int vfLengthField]) =>
       (OW.isValidArgs(tag, vList))
           ? new OWtag._(tag, vList, vfLengthField)
           : invalidValuesError(vList, tag: tag);
 
   OWtag._(this.tag, this.values, this.vfLengthField);
 
+/*
   /// Creates an [OWtag] with a value that is a [Uint16List].
   OWtag.fromBytes(Tag tag, Uint8List bytes, int vfLengthField)
       : tag = (Tag.isValidVR(tag, OW.kVRIndex))
             ? tag
             : invalidTagError(tag, OWtag),
-        values = Uint16Base.listFromBytes(bytes),
+        values = Uint16Base.fromBytes(bytes),
         vfLengthField = _checkVFL(bytes, vfLengthField);
+*/
 
+/*
   factory OWtag.fromBase64(Tag tag, String base64, int vfLengthField,
           [TransferSyntax ts]) =>
       new OWtag.fromBytes(tag, BASE64.decode(base64), vfLengthField);
+*/
+/*
 
-  OWtag._fromBytes(this.tag, Uint8List bytes, this.vfLengthField)
-      : values = Uint16Base.listFromBytes(bytes);
+  OWtag._fromBytes(this.tag, Uint8List bytes, [this.vfLengthField])
+      : values = Uint16Base.fromBytes(bytes);
+*/
 
   @override
   OWtag update([Iterable<int> vList = kEmptyIntList]) => new OWtag(tag, vList);
 
-  @override
-  OWtag updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new OWtag(tag, f(values));
+  static OWtag make(Tag tag, Iterable<int> vList, [int vfLengthField]) =>
+      _fromList(tag, vList, vfLengthField);
 
-  static OWtag make<int>(Tag tag, Iterable<int> vList) =>
-      new OWtag(tag, vList ?? kEmptyIntList);
+  static OWtag _fromList(Tag tag, Iterable vList, [int vfLengthField]) {
+    if (_isNotValidTag(tag, kOWIndex)) return null;
+    final td = Uint16Base.fromList(vList);
+    final vflf = _getVFLF(td.lengthInBytes, vfLengthField);
+    return new OWtag._(tag, td, vflf);
+  }
 
-  static OWtag fromB64(Tag tag, String s, int vfLengthField) =>
-      new OWtag.fromBytes(tag, BASE64.decode(s), vfLengthField);
+  static OWtag fromBase64(Tag tag, String s, [int vfLengthField]) =>
+      _fromBytes(tag, BASE64.decode(s), vfLengthField);
 
-  static OWtag fromBD(BDElement bd) =>
-      new OWtag.fromBytes(bd.tag, bd.vfBytes, bd.vfLengthField);
+  static OWtag fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) =>
+      _fromBytes(tag, bytes, vfLengthField);
+
+  static OWtag fromBDE(BDElement bde) =>
+      _fromBytes(bde.tag, bde.vfBytes, bde.vfLengthField);
+
+  static OWtag _fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) {
+    if (_isNotValidTag(tag, kOWIndex)) return null;
+    final vList = Uint16Base.fromBytes(bytes);
+    final vflf = _getVFLF(vList.lengthInBytes, vfLengthField);
+    return new OWtag._(tag, vList, vflf);
+  }
 }
+
+bool _isNotValidTag(Tag tag, int vrIndex) {
+  if (Tag.isValidVR(tag, vrIndex)) return false;
+  invalidTagError(tag, OWtagPixelData);
+  return true;
+}
+
+int _getVFLF(int vfLength, int vfLengthField) =>
+    (vfLengthField == null) ? vfLength : _checkVFL(vfLength, vfLengthField);
 
 /// Other Long
 class OLtag extends OL with TagElement<int> {
@@ -324,7 +351,7 @@ class OLtag extends OL with TagElement<int> {
       : tag = (Tag.isValidVR(tag, OL.kVRIndex))
             ? tag
             : invalidTagError(tag, OLtag),
-        values = Uint32Base.listFromBytes(bytes);
+        values = Uint32Base.fromBytes(bytes);
 
   factory OLtag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
       new OLtag.fromBytes(tag, BASE64.decode(base64));
@@ -332,17 +359,13 @@ class OLtag extends OL with TagElement<int> {
   @override
   OLtag update([Iterable<int> vList = kEmptyIntList]) => new OLtag(tag, vList);
 
-  @override
-  OLtag updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new OLtag(tag, f(values));
-
-  static OLtag make<int>(Tag tag, Iterable<int> vList) =>
+  static OLtag make<int>(Tag tag, Iterable<int> vList, [int _]) =>
       new OLtag(tag, vList ?? kEmptyIntList);
 
   static OLtag fromB64(Tag tag, String base64) =>
       new OLtag.fromBytes(tag, BASE64.decode(base64));
 
-  static SLtag fromBD(BDElement bd) => SLtag.fromBytes(bd.tag, bd.vfBytes);
+  static SLtag fromBDE(BDElement bd) => SLtag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 /// Unsigned Short
@@ -365,7 +388,7 @@ class ULtag extends UL with TagElement<int> {
       : tag = (Tag.isValidVR(tag, UL.kVRIndex))
             ? tag
             : invalidTagError(tag, ULtag),
-        values = Uint32Base.listFromBytes(bytes);
+        values = Uint32Base.fromBytes(bytes);
 
   factory ULtag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
       new ULtag.fromBytes(tag, BASE64.decode(base64));
@@ -373,17 +396,13 @@ class ULtag extends UL with TagElement<int> {
   @override
   ULtag update([Iterable<int> vList = kEmptyIntList]) => new ULtag(tag, vList);
 
-  @override
-  ULtag updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new ULtag(tag, f(values));
-
   static ULtag fromB64(Tag tag, String base64) =>
       new ULtag.fromBytes(tag, BASE64.decode(base64));
 
-  static ULtag make<int>(Tag tag, Iterable<int> vList) =>
+  static ULtag make<int>(Tag tag, Iterable<int> vList, [int _]) =>
       new ULtag(tag, vList ?? kEmptyIntList);
 
-  static ULtag fromBD(BDElement bd) {
+  static ULtag fromBDE(BDElement bd) {
     final tag = bd.tag;
     final bytes = bd.vfBytes;
     final te = new ULtag.fromBytes(tag, bytes);
@@ -414,7 +433,7 @@ class ATtag extends AT with TagElement<int> {
       : tag = (Tag.isValidVR(tag, AT.kVRIndex))
             ? tag
             : invalidTagError(tag, ATtag),
-        values = Uint32Base.listFromBytes(bytes);
+        values = Uint32Base.fromBytes(bytes);
 
   /// Creates an [ ATtag] with a value that is a Base64 [String].
   factory ATtag.fromBase64(Tag tag, String base64) =>
@@ -422,10 +441,6 @@ class ATtag extends AT with TagElement<int> {
 
   @override
   ATtag update([Iterable<int> vList = kEmptyIntList]) => new ATtag(tag, vList);
-
-  @override
-  ATtag updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new ATtag(tag, f(values));
 
   static ATtag fromB64(Tag tag, String base64) =>
       new ATtag.fromBytes(tag, BASE64.decode(base64));
@@ -443,8 +458,8 @@ class ATtag extends AT with TagElement<int> {
     return list;
   }
 
-  static ATtag make<int>(Tag tag, Iterable<int> vList) =>
+  static ATtag make<int>(Tag tag, Iterable<int> vList, [int _]) =>
       new ATtag(tag, vList ?? kEmptyIntList);
 
-  static ATtag fromBD(BDElement bd) => new ATtag.fromBytes(bd.tag, bd.vfBytes);
+  static ATtag fromBDE(BDElement bd) => new ATtag.fromBytes(bd.tag, bd.vfBytes);
 }

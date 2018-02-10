@@ -53,11 +53,11 @@ void main() {
     });
 
     test('Create  OW.fromBytes', () {
-      final ow0 = new OWtagPixelData.fromBytes(
+      final ow0 = OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes1, bytes1.lengthInBytes);
-      final ow1 = new OWtagPixelData.fromBytes(
+      final ow1 = OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes1, bytes1.lengthInBytes);
-      final ow2 = new OWtagPixelData.fromBytes(
+      final ow2 = OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes2, bytes2.lengthInBytes);
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow0.vrIndex == kOBOWIndex || ow0.vrIndex == kUNIndex, false);
@@ -85,7 +85,7 @@ void main() {
       expect(ow1 == ow0, true);
 
       final ow2 =
-          new OWtag.fromBytes(PTag.kPixelData, bytes1, bytes1.lengthInBytes);
+          OWtag.fromBytes(PTag.kPixelData, bytes1, bytes1.lengthInBytes);
       final ow3 = ow2.update(pixels1);
       expect(ow3 == ow2, true);
     });

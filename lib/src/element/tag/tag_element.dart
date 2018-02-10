@@ -6,19 +6,19 @@
 
 import 'dart:typed_data';
 
+import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/mixin/tag_mixin_base.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
-import 'package:core/src/element/tag/date_time.dart';
-import 'package:core/src/element/tag/float.dart';
-import 'package:core/src/element/tag/integer.dart';
-import 'package:core/src/element/tag/string.dart';
+import 'package:core/src/element/tag/export.dart';
 import 'package:core/src/string/ascii.dart';
 import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/uid/well_known/transfer_syntax.dart';
+import 'package:core/src/vr/vr.dart';
 
-typedef Element TagElementMaker<V>(Tag tag, Iterable<V> vList);
+typedef Element TagElementMaker(Tag tag, Iterable vList, [int vfLengthField]);
 typedef TagElement MakeFrom(Element e);
 typedef TagElement MakeFromBytes(ByteData bd);
 typedef Element MakeFromBD(BDElement bd);
@@ -108,17 +108,15 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     return bd;
   }
 
-  static Element make(Tag tag, Iterable values, int vrIndex) =>
-   // assert(tag.vr.isValid == vrIndex, 'Tag VR: ${tag.vrIndex}, vrIndex, '
-   //     '$vrIndex');
-     _tagMakers[vrIndex](tag, values);
+  static Element make(Tag tag, Iterable values, int vrIndex,
+          [int vfLengthField]) =>
+      // assert(tag.vr.isValid == vrIndex, 'Tag VR: ${tag.vrIndex}, vrIndex, '
+      //     '$vrIndex');
+      _tagMakers[vrIndex](tag, values);
 
+  static Element from(Element e, int vrIndex) => make(e.tag, e.values, vrIndex);
 
-
-  static Element from(Element e, int vrIndex) =>
-      make(e.tag, e.values, vrIndex);
-
-  static final List<TagElementMaker> _tagMakers = <TagElementMaker>[
+  static final _tagMakers = <Function>[
     null,
     // Maybe Undefined Lengths
     OBtag.make, OWtag.make, UNtag.make, // No reformat
@@ -136,6 +134,22 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     SStag.make, STtag.make, TMtag.make,
     UItag.make, ULtag.make, UStag.make,
   ];
+
+  static Element makeMaybeUndefinedLength(
+      Tag tag, Iterable values, int vfLengthField, int vrIndex) {
+    switch (vrIndex) {
+      case kOBIndex:
+        return OBtagPixelData.fromBytes(tag, values, vfLengthField);
+      case kUNIndex:
+        return UNtagPixelData.fromBytes(tag, values, vfLengthField);
+      case kOWIndex:
+        return OWtagPixelData.fromBytes(tag, values, vfLengthField);
+      case kSQIndex:
+        return OWtagPixelData.fromBytes(tag, values, vfLengthField);
+      default:
+        return invalidVRIndex(vrIndex, null, null);
+    }
+  }
 
 /*
   static Element fromEB(EBytes eb, [int vrIndex]) => _eByteMakers[vrIndex](eb);
@@ -163,31 +177,64 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 
 //  static Null _sqError(EBytes eb) => invalidElementIndex(0);
 
-  static Element fromBD(BDElement bd, [int vrIndex]) {
+  static Element fromBDE(BDElement bd, [int vrIndex]) {
     print('fromBD vrIndex: $vrIndex');
     if (vrIndex > 30) throw 'bad vrIndex $bd';
     return _bdElementMakers[vrIndex](bd);
   }
+
   static final List<MakeFromBD> _bdElementMakers = <MakeFromBD>[
-    _sqErrorBD,
+    _vrIndexError,
     // Maybe Undefined Lengths
-    OBtag.fromBD, OWtag.fromBD, UNtag.fromBD, // No reformat
+    _vrIndexError, _vrIndexError, _vrIndexError, // No reformat
 
     // EVR Long
-    ODtag.fromBD, OFtag.fromBD, OLtag.fromBD,
-    UCtag.fromBD, URtag.fromBD, UTtag.fromBD,
+    ODtag.fromBDE, OFtag.fromBDE, OLtag.fromBDE,
+    UCtag.fromBDE, URtag.fromBDE, UTtag.fromBDE,
 
     // EVR Short
-    AEtag.fromBD, AStag.fromBD, ATtag.fromBD,
-    CStag.fromBD, DAtag.fromBD, DStag.fromBD,
-    DTtag.fromBD, FDtag.fromBD, FLtag.fromBD,
-    IStag.fromBD, LOtag.fromBD, LTtag.fromBD,
-    PNtag.fromBD, SHtag.fromBD, SLtag.fromBD,
-    SStag.fromBD, STtag.fromBD, TMtag.fromBD,
-    UItag.fromBD, ULtag.fromBD, UStag.fromBD,
+    AEtag.fromBDE, AStag.fromBDE, ATtag.fromBDE,
+    CStag.fromBDE, DAtag.fromBDE, DStag.fromBDE,
+    DTtag.fromBDE, FDtag.fromBDE, FLtag.fromBDE,
+    IStag.fromBDE, LOtag.fromBDE, LTtag.fromBDE,
+    PNtag.fromBDE, SHtag.fromBDE, SLtag.fromBDE,
+    SStag.fromBDE, STtag.fromBDE, TMtag.fromBDE,
+    UItag.fromBDE, ULtag.fromBDE, UStag.fromBDE,
   ];
 
-  static Null _sqErrorBD(BDElement bd) => invalidElementIndex(0);
+  static Null _vrIndexError(BDElement bd) => invalidElementIndex(0);
+
+  static Element maybeUndefinedFromPDE(PTag tag, BDElement e, int vrIndex) {
+    switch (vrIndex) {
+      case kOBIndex:
+        return OBtag.fromBDE(e);
+      case kUNIndex:
+        return UNtag.fromBDE(e);
+      case kOWIndex:
+        return OWtag.fromBDE(e);
+      default:
+        return invalidVRIndex(vrIndex, null, null);
+    }
+  }
+
+  static Element pixelDataFromBDE(PTag tag, int vrIndex, BDElement e,
+      [TransferSyntax ts]) {
+    if (tag != PTag.kPixelData)
+      return invalidKey(tag, 'Invalid Tag Code for PixelData');
+    switch (vrIndex) {
+      case kOBIndex:
+        return OBtagPixelData.fromBytes(
+            tag, e.vfBytes, e.vfLengthField, ts, e.fragments);
+      case kUNIndex:
+        return UNtagPixelData.fromBytes(
+            tag, e.vfBytes, e.vfLengthField, ts, e.fragments);
+      case kOWIndex:
+        return OWtagPixelData.fromBytes(
+            tag, e.vfBytes, e.vfLengthField, ts, e.fragments);
+      default:
+        return invalidVRIndex(vrIndex, null, null);
+    }
+  }
 }
 
 abstract class TagStringMixin {
@@ -221,4 +268,3 @@ abstract class TagStringMixin {
     return count;
   }
 }
-

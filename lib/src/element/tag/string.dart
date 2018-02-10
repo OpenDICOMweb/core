@@ -15,7 +15,6 @@ import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag/tag.dart';
 
-// Urgent: move all updateF methods to base/string
 class StringBulkdata extends BulkdataRef<int> {
   @override
   int code;
@@ -52,17 +51,13 @@ class AEtag extends AE with TagElement<String> {
   AEtag update([Iterable<String> vList = kEmptyStringList]) =>
       new AEtag(tag, vList ?? kEmptyStringList);
 
-  @override
-  AEtag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new AEtag(tag, f(values));
-
-  static AEtag make<String>(Tag tag, Iterable<String> vList) =>
+  static AEtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new AEtag(tag, vList ?? kEmptyStringList);
 
   static AEtag fromB64(Tag tag, String base64) =>
       new AEtag.fromBytes(tag, BASE64.decode(base64));
 
-  static AEtag fromBD(BDElement bd) => new AEtag.fromBytes(bd.tag, bd.vfBytes);
+  static AEtag fromBDE(BDElement bd) => new AEtag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 class CStag extends CS with TagElement<String> {
@@ -88,17 +83,13 @@ class CStag extends CS with TagElement<String> {
   CStag update([Iterable<String> vList = kEmptyStringList]) =>
       new CStag(tag, vList ?? kEmptyStringList);
 
-  @override
-  CStag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new CStag(tag, f(values));
-
-  static CStag make<String>(Tag tag, Iterable<String> vList) =>
+  static CStag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new CStag(tag, vList ?? kEmptyStringList);
 
   static CStag fromB64(Tag tag, String base64) =>
       new CStag.fromBytes(tag, BASE64.decode(base64));
 
-  static CStag fromBD(BDElement bd) => new CStag.fromBytes(bd.tag, bd.vfBytes);
+  static CStag fromBDE(BDElement bd) => new CStag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 class DStag extends DS with TagElement<String> {
@@ -124,17 +115,13 @@ class DStag extends DS with TagElement<String> {
   DStag update([Iterable<String> vList = kEmptyStringList]) =>
       new DStag(tag, vList ?? kEmptyStringList);
 
-  @override
-  DStag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new DStag(tag, f(values));
-
-  static DStag make<String>(Tag tag, Iterable<String> vList) =>
+  static DStag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new DStag(tag, vList ?? kEmptyStringList);
 
   static DStag fromB64(Tag tag, String base64) =>
       new DStag.fromBytes(tag, BASE64.decode(base64));
 
-  static DStag fromBD(BDElement bd) => new DStag.fromBytes(bd.tag, bd.vfBytes);
+  static DStag fromBDE(BDElement bd) => new DStag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 class IStag extends IS with TagElement<String> {
@@ -160,17 +147,13 @@ class IStag extends IS with TagElement<String> {
   IStag update([Iterable<String> vList = kEmptyStringList]) =>
       new IStag(tag, vList ?? kEmptyStringList);
 
-  @override
-  IStag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new IStag(tag, f(values));
-
-  static IStag make<String>(Tag tag, Iterable<String> vList) =>
+  static IStag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new IStag(tag, vList ?? kEmptyStringList);
 
   static IStag fromB64(Tag tag, String base64) =>
       new IStag.fromBytes(tag, BASE64.decode(base64));
 
-  static IStag fromBD(BDElement bd) => new IStag.fromBytes(bd.tag, bd.vfBytes);
+  static IStag fromBDE(BDElement bd) => new IStag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 /// A Long String (LO) Element
@@ -197,17 +180,13 @@ class LOtag extends LO with TagElement<String> {
   LOtag update([Iterable<String> vList = kEmptyStringList]) =>
       new LOtag(tag, vList ?? kEmptyStringList);
 
-  @override
-  LOtag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new LOtag(tag, f(values));
-
-  static LOtag make<String>(Tag tag, Iterable<String> vList) =>
+  static LOtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new LOtag(tag, vList ?? kEmptyStringList);
 
   static LOtag fromB64(Tag tag, String base64) =>
       new LOtag.fromBytes(tag, BASE64.decode(base64));
 
-  static LOtag fromBD(BDElement bd) => new LOtag.fromBytes(bd.tag, bd.vfBytes);
+  static LOtag fromBDE(BDElement bd) => new LOtag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 /// An Long Text (LT) Element
@@ -234,17 +213,13 @@ class LTtag extends LT with TagElement<String> {
   LTtag update([Iterable<String> vList = kEmptyStringList]) =>
       new LTtag(tag, vList ?? kEmptyStringList);
 
-  @override
-  LTtag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new LTtag(tag, f(values));
-
-  static LTtag make<String>(Tag tag, Iterable<String> vList) =>
+  static LTtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new LTtag(tag, vList ?? kEmptyStringList);
 
   static LTtag fromB64(Tag tag, String base64) =>
       new LTtag.fromBytes(tag, BASE64.decode(base64));
 
-  static LTtag fromBD(BDElement bd) => new LTtag.fromBytes(bd.tag, bd.vfBytes);
+  static LTtag fromBDE(BDElement bd) => new LTtag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 /// A Person Name ([PN]) Element.
@@ -271,17 +246,13 @@ class PNtag extends PN with TagElement<String> {
   PNtag update([Iterable<String> vList = kEmptyStringList]) =>
       new PNtag(tag, vList ?? kEmptyStringList);
 
-  @override
-  PNtag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new PNtag(tag, f(values));
-
-  static PNtag make<String>(Tag tag, Iterable<String> vList) =>
+  static PNtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new PNtag(tag, vList ?? kEmptyStringList);
 
   static PNtag fromB64(Tag tag, String base64) =>
       new PNtag.fromBytes(tag, BASE64.decode(base64));
 
-  static PNtag fromBD(BDElement bd) => new PNtag.fromBytes(bd.tag, bd.vfBytes);
+  static PNtag fromBDE(BDElement bd) => new PNtag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 /// A Short String (SH) Element
@@ -308,17 +279,13 @@ class SHtag extends SH with TagElement<String> {
   SHtag update([Iterable<String> vList = kEmptyStringList]) =>
       new SHtag(tag, vList ?? kEmptyStringList);
 
-  @override
-  SHtag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new SHtag(tag, f(values));
-
-  static SHtag make<String>(Tag tag, Iterable<String> vList) =>
+  static SHtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new SHtag(tag, vList ?? kEmptyStringList);
 
   static SHtag fromB64(Tag tag, String base64) =>
       new SHtag.fromBytes(tag, BASE64.decode(base64));
 
-  static SHtag fromBD(BDElement bd) => new SHtag.fromBytes(bd.tag, bd.vfBytes);
+  static SHtag fromBDE(BDElement bd) => new SHtag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 /// An Short Text (ST) Element
@@ -345,17 +312,13 @@ class STtag extends ST with TagElement<String> {
   STtag update([Iterable<String> vList = kEmptyStringList]) =>
       new STtag(tag, vList ?? kEmptyStringList);
 
-  @override
-  STtag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new STtag(tag, f(values));
-
-  static STtag make<String>(Tag tag, Iterable<String> vList) =>
+  static STtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new STtag(tag, vList ?? kEmptyStringList);
 
   static STtag fromB64(Tag tag, String base64) =>
       new STtag.fromBytes(tag, BASE64.decode(base64));
 
-  static STtag fromBD(BDElement bd) => new STtag.fromBytes(bd.tag, bd.vfBytes);
+  static STtag fromBDE(BDElement bd) => new STtag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 /// An Unlimited Characters (UC) Element
@@ -382,17 +345,13 @@ class UCtag extends UC with TagElement<String> {
   UCtag update([Iterable<String> vList = kEmptyStringList]) =>
       new UCtag(tag, vList ?? kEmptyStringList);
 
-  @override
-  UCtag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new UCtag(tag, f(values));
-
-  static UCtag make<String>(Tag tag, Iterable<String> vList) =>
+  static UCtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new UCtag(tag, vList ?? kEmptyStringList);
 
   static UCtag fromB64(Tag tag, String base64) =>
       new UCtag.fromBytes(tag, BASE64.decode(base64));
 
-  static UCtag fromBD(BDElement bd) => new UCtag.fromBytes(bd.tag, bd.vfBytes);
+  static UCtag fromBDE(BDElement bd) => new UCtag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 class UItag extends UI with TagElement<String> {
@@ -426,13 +385,13 @@ class UItag extends UI with TagElement<String> {
   UItag update([Iterable<String> vList = kEmptyStringList]) =>
       new UItag.fromStrings(tag, vList);
 
-  static UItag make<String>(Tag tag, Iterable<String> vList) =>
+  static UItag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new UItag.fromStrings(tag, vList ?? kEmptyStringList);
 
   static UItag fromB64(Tag tag, String base64) =>
       new UItag.fromBytes(tag, BASE64.decode(base64));
 
-  static UItag fromBD(BDElement bd) => new UItag.fromBytes(bd.tag, bd.vfBytes);
+  static UItag fromBDE(BDElement bd) => new UItag.fromBytes(bd.tag, bd.vfBytes);
 
   static UItag parseBase64(Tag tag, String s, int vfLength) =>
       new UItag.fromBytes(tag, BASE64.decode(s));
@@ -473,17 +432,13 @@ class URtag extends UR with TagElement<String> {
   URtag update([Iterable<String> vList = kEmptyStringList]) =>
       new URtag(tag, vList ?? kEmptyStringList);
 
-  @override
-  URtag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new URtag(tag, f(values));
-
-  static URtag make<String>(Tag tag, Iterable<String> vList) =>
+  static URtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new URtag(tag, vList ?? kEmptyStringList);
 
   static URtag fromB64(Tag tag, String base64) =>
       new URtag.fromBytes(tag, BASE64.decode(base64));
 
-  static URtag fromBD(BDElement bd) => new URtag.fromBytes(bd.tag, bd.vfBytes);
+  static URtag fromBDE(BDElement bd) => new URtag.fromBytes(bd.tag, bd.vfBytes);
 }
 
 /// An Unlimited Text (UT) Element
@@ -510,15 +465,165 @@ class UTtag extends UT with TagElement<String> {
   UTtag update([Iterable<String> vList = kEmptyStringList]) =>
       new UTtag(tag, vList ?? kEmptyStringList);
 
-  @override
-  UTtag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new UTtag(tag, f(values));
-
-  static UTtag make<String>(Tag tag, Iterable<String> vList) =>
+  static UTtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
       new UTtag(tag, vList ?? kEmptyStringList);
 
   static UTtag fromB64(Tag tag, String base64) =>
       new UTtag.fromBytes(tag, BASE64.decode(base64));
 
-  static UTtag fromBD(BDElement bd) => new UTtag.fromBytes(bd.tag, bd.vfBytes);
+  static UTtag fromBDE(BDElement bd) => new UTtag.fromBytes(bd.tag, bd.vfBytes);
+}
+
+// **** Date/Time classes
+/// A Application Entity Title (AS) Element
+class AStag extends AS with TagElement<String> {
+  @override
+  final Tag tag;
+  @override
+  Iterable<String> values;
+
+  factory AStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
+      (AS.isValidArgs(tag, vList))
+          ? new AStag._(tag, vList)
+          : invalidValuesError(vList, tag: tag);
+
+  AStag._(this.tag, this.values);
+
+  AStag.fromBytes(this.tag, Uint8List bytes) : values = AS.fromBytes(bytes);
+
+  @override
+  AStag update([Iterable<String> vList = kEmptyStringList]) =>
+      (AS.isValidValues(tag, vList))
+          ? new AStag(tag, vList)
+          : invalidValuesError(values);
+
+  @override
+  AStag updateF(Iterable<String> f(Iterable<String> vList)) =>
+      new AStag(tag, f(values));
+
+  static AStag parse(String s, {String onError(String s)}) => new AStag(
+      PTag.kPatientAge,
+      Age.isValidString(s)
+          ? <String>[s]
+          : invalidValuesError(<String>[s], tag: PTag.kPatientAge));
+
+  static Element make<String>(Tag tag, Iterable<String> vList, [int _]) =>
+      new AStag(tag, vList ?? kEmptyStringList);
+
+  static AStag fromB64(Tag tag, String base64) =>
+      new AStag.fromBytes(tag, BASE64.decode(base64));
+
+  static AStag fromBDE(BDElement bd) => new AStag.fromBytes(bd.tag, bd.vfBytes);
+}
+
+/// A DICOM Date ([DA]) [Element].
+/// TODO: add link to standard
+class DAtag extends DA with TagElement<String> {
+  @override
+  final Tag tag;
+  @override
+  Iterable<String> values;
+
+  factory DAtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
+      (DA.isValidArgs(tag, vList))
+          ? new DAtag._(tag, vList)
+          : invalidValuesError(vList, tag: tag);
+
+  DAtag._(this.tag, this.values);
+
+  DAtag.fromBytes(this.tag, Uint8List bytes) : values = DA.fromBytes(bytes);
+
+  @override
+  DAtag update([Iterable<String> vList = kEmptyStringList]) =>
+      (DA.isValidValues(tag, vList))
+          ? new DAtag(tag, vList)
+          : invalidValuesError(values);
+  /*new DAtag(tag, vList ?? kEmptyStringList);*/
+
+  @override
+  DAtag updateF(Iterable<String> f(Iterable<String> vList)) =>
+      new DAtag(tag, f(values));
+
+  static DAtag fromB64(Tag tag, String base64) =>
+      new DAtag.fromBytes(tag, BASE64.decode(base64));
+
+  static DAtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
+      new DAtag(tag, vList ?? kEmptyStringList);
+
+  static DAtag fromBDE(BDElement bd) => new DAtag.fromBytes(bd.tag, bd.vfBytes);
+}
+
+/// A DICOM DateTime [DT] [Element].
+///
+/// A concatenated date-time character string in the format: YYYYMMDDHHMMSS.FFFFFF&ZZXX
+class DTtag extends DT with TagElement<String> {
+  @override
+  final Tag tag;
+  @override
+  Iterable<String> values;
+
+  factory DTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
+      (DT.isValidArgs(tag, vList))
+          ? new DTtag._(tag, vList)
+          : invalidValuesError(vList, tag: tag);
+
+  DTtag._(this.tag, this.values);
+
+  DTtag.fromBytes(this.tag, Uint8List bytes) : values = DT.fromBytes(bytes);
+
+  @override
+  DTtag update([Iterable<String> vList = kEmptyStringList]) =>
+      (DT.isValidValues(tag, vList))
+          ? new DTtag(tag, vList)
+          : invalidValuesError(values);
+
+  @override
+  DTtag updateF(Iterable<String> f(Iterable<String> vList)) =>
+      new DTtag(tag, f(values));
+
+  static DTtag fromB64(Tag tag, String base64) =>
+      new DTtag.fromBytes(tag, BASE64.decode(base64));
+
+  static DTtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
+      new DTtag(tag, vList ?? kEmptyStringList);
+
+  static DTtag fromBDE(BDElement bd) => new DTtag.fromBytes(bd.tag, bd.vfBytes);
+}
+
+/// The DICOM [TM] (Time) [Element].
+///
+/// [Time] [String]s have the following format: HHMMSS.ffffff.
+/// [See PS3.18, TM](http://dicom.nema.org/medical/dicom/current/output/html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
+class TMtag extends TM with TagElement<String> {
+  @override
+  final Tag tag;
+  @override
+  Iterable<String> values;
+
+  factory TMtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
+      (TM.isValidArgs(tag, vList))
+          ? new TMtag._(tag, vList)
+          : invalidValuesError(vList, tag: tag);
+
+  TMtag._(this.tag, this.values);
+
+  TMtag.fromBytes(this.tag, Uint8List bytes) : values = TM.fromBytes(bytes);
+
+  @override
+  TMtag update([Iterable<String> vList = kEmptyStringList]) =>
+      (TM.isValidValues(tag, vList))
+          ? new TMtag(tag, vList)
+          : invalidValuesError(values);
+
+  @override
+  TMtag updateF(Iterable<String> f(Iterable<String> vList)) =>
+      new TMtag(tag, f(values));
+
+  static TMtag fromB64(Tag tag, String base64) =>
+      new TMtag.fromBytes(tag, BASE64.decode(base64));
+
+  static TMtag make<String>(Tag tag, Iterable<String> vList, [int _]) =>
+      new TMtag(tag, vList ?? kEmptyStringList);
+
+  static TMtag fromBDE(BDElement bd) => new TMtag.fromBytes(bd.tag, bd.vfBytes);
 }

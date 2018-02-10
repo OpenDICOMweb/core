@@ -26,8 +26,9 @@ import 'package:core/src/vr/vr.dart';
 
 int _getValuesLength(int vfLengthField, int sizeInBytes) {
   final length = vfLengthField ~/ sizeInBytes;
-  assert(
-      vfLengthField >= 0 && vfLengthField.isEven && (vfLengthField % sizeInBytes == 0));
+  assert(vfLengthField >= 0 &&
+      vfLengthField.isEven &&
+      (vfLengthField % sizeInBytes == 0));
   return length;
 }
 
@@ -103,8 +104,9 @@ abstract class Ivr<V> implements BDElement<V> {
 
   @override
   ByteData get vfByteData => bd.buffer.asByteData(bd.offsetInBytes, vfLength);
-  
-  static Null _sqError(ByteData bd, [int vrIndex]) => invalidElementIndex(vrIndex);
+
+  static Null _sqError(ByteData bd, [int vrIndex]) =>
+      invalidElementIndex(vrIndex);
 
   static BDElement make(int code, int vrIndex, ByteData bd) =>
       _ivrBDMakers[vrIndex](bd, vrIndex);
@@ -130,7 +132,8 @@ abstract class Ivr<V> implements BDElement<V> {
 
   static Element makePixelData(int code, int vrIndex, ByteData bd,
       [TransferSyntax ts, VFFragments fragments]) {
-    if (code != kPixelData) return invalidKey(code, 'Invalid Tag Code for PixelData');
+    if (code != kPixelData)
+      return invalidKey(code, 'Invalid Tag Code for PixelData');
     switch (vrIndex) {
       case kOBIndex:
         return OBivrPixelData.make(bd, vrIndex, ts, fragments);
@@ -158,7 +161,7 @@ class FLivr extends FL with Common, Ivr<double>, Float32Mixin {
   FLivr(this.bd);
 
   @override
-  Iterable<double> get values => Float32Base.listFromByteData(vfByteData);
+  Iterable<double> get values => Float32Base.fromByteData(vfByteData);
 
   static FLivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -176,7 +179,7 @@ class OFivr extends OF with Common, Ivr<double>, Float32Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, sizeInBytes);
 
   @override
-  Iterable<double> get values => Float32Base.listFromByteData(vfByteData);
+  Iterable<double> get values => Float32Base.fromByteData(vfByteData);
 
   static OFivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -196,7 +199,7 @@ class FDivr extends FL with Common, Ivr<double>, Float32Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, sizeInBytes);
 
   @override
-  Iterable<double> get values =>Float64Base.listFromByteData(vfByteData);
+  Iterable<double> get values => Float64Base.fromByteData(vfByteData);
 
   static FDivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -211,7 +214,7 @@ class ODivr extends OD with Common, Ivr<double>, Float32Mixin {
   ODivr(this.bd);
 
   @override
-  Iterable<double> get values => Float64Base.listFromByteData(vfByteData);
+  Iterable<double> get values => Float64Base.fromByteData(vfByteData);
 
   static ODivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -223,14 +226,14 @@ class ODivr extends OD with Common, Ivr<double>, Float32Mixin {
 
 // **** 8-bit Integer Elements (OB, UN)
 
-class OBivr extends OB with Common, Ivr<int>,  IntMixin, Int8Mixin {
+class OBivr extends OB with Common, Ivr<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
 
   OBivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint8Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
 
   static OBivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -238,7 +241,8 @@ class OBivr extends OB with Common, Ivr<int>,  IntMixin, Int8Mixin {
   }
 }
 
-class OBivrPixelData extends OBPixelData with Common, Ivr<int>, IntMixin, Int8Mixin {
+class OBivrPixelData extends OBPixelData
+    with Common, Ivr<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
   @override
@@ -249,7 +253,7 @@ class OBivrPixelData extends OBPixelData with Common, Ivr<int>, IntMixin, Int8Mi
   OBivrPixelData(this.bd, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values =>  Uint8Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
 
   static OBivrPixelData make(ByteData bd, int vrIndex,
       [TransferSyntax ts, VFFragments fragments]) {
@@ -258,14 +262,14 @@ class OBivrPixelData extends OBPixelData with Common, Ivr<int>, IntMixin, Int8Mi
   }
 }
 
-class UNivr extends UN with Common, Ivr<int>,  IntMixin, Int8Mixin {
+class UNivr extends UN with Common, Ivr<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
 
   UNivr(this.bd);
 
   @override
-  Iterable<int> get values =>  Uint8Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
 
   static UNivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -273,7 +277,8 @@ class UNivr extends UN with Common, Ivr<int>,  IntMixin, Int8Mixin {
   }
 }
 
-class UNivrPixelData extends UNPixelData with Common, Ivr<int>, IntMixin, Int8Mixin {
+class UNivrPixelData extends UNPixelData
+    with Common, Ivr<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
   @override
@@ -284,7 +289,7 @@ class UNivrPixelData extends UNPixelData with Common, Ivr<int>, IntMixin, Int8Mi
   UNivrPixelData(this.bd, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values =>  Uint8Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
 
   static UNivrPixelData make(ByteData bd, int vrIndex,
       [TransferSyntax ts, VFFragments fragments]) {
@@ -295,14 +300,14 @@ class UNivrPixelData extends UNPixelData with Common, Ivr<int>, IntMixin, Int8Mi
 
 // **** 16-bit Integer Elements (SS, US, OW)
 
-class SSivr extends SS with Common, Ivr<int>,  IntMixin, Int16Mixin {
+class SSivr extends SS with Common, Ivr<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
 
   SSivr(this.bd);
 
   @override
-  Iterable<int> get values =>  Int16Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Int16Base.fromByteData(vfByteData);
 
   static SSivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -310,14 +315,14 @@ class SSivr extends SS with Common, Ivr<int>,  IntMixin, Int16Mixin {
   }
 }
 
-class USivr extends US with Common, Ivr<int>,  IntMixin, Int16Mixin {
+class USivr extends US with Common, Ivr<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
 
   USivr(this.bd);
 
   @override
-  Iterable<int> get values =>  Uint16Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
 
   static USivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -325,14 +330,14 @@ class USivr extends US with Common, Ivr<int>,  IntMixin, Int16Mixin {
   }
 }
 
-class OWivr extends OW with Common, Ivr<int>,  IntMixin, Int16Mixin {
+class OWivr extends OW with Common, Ivr<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
 
   OWivr(this.bd);
 
   @override
-  Iterable<int> get values =>  Uint16Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
 
   static OWivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -340,7 +345,8 @@ class OWivr extends OW with Common, Ivr<int>,  IntMixin, Int16Mixin {
   }
 }
 
-class OWivrPixelData extends OWPixelData with Common, Ivr<int>, IntMixin, Int16Mixin {
+class OWivrPixelData extends OWPixelData
+    with Common, Ivr<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
   @override
@@ -351,7 +357,7 @@ class OWivrPixelData extends OWPixelData with Common, Ivr<int>, IntMixin, Int16M
   OWivrPixelData(this.bd, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values =>  Uint16Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
 
   static OWivrPixelData make(ByteData bd, int vrIndex,
       [TransferSyntax ts, VFFragments fragments]) {
@@ -363,14 +369,14 @@ class OWivrPixelData extends OWPixelData with Common, Ivr<int>, IntMixin, Int16M
 // **** 32-bit integer Elements (AT, SL, UL, GL)
 
 /// Attribute (Element) Code (AT)
-class ATivr extends AT with Common, Ivr<int>,  IntMixin, Int32Mixin {
+class ATivr extends AT with Common, Ivr<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
   ATivr(this.bd);
 
   @override
-  Iterable<int> get values =>  Uint32Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
 
   static ATivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -379,14 +385,14 @@ class ATivr extends AT with Common, Ivr<int>,  IntMixin, Int32Mixin {
 }
 
 /// Other Long (OL)
-class OLivr extends OL with Common, Ivr<int>,  IntMixin, Int32Mixin {
+class OLivr extends OL with Common, Ivr<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
   OLivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
 
   static OLivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -395,14 +401,14 @@ class OLivr extends OL with Common, Ivr<int>,  IntMixin, Int32Mixin {
 }
 
 /// Signed Long (SL)
-class SLivr extends SL with Common, Ivr<int>,  IntMixin, Int32Mixin {
+class SLivr extends SL with Common, Ivr<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
   SLivr(this.bd);
 
   @override
-  Iterable<int> get values => Int32Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Int32Base.fromByteData(vfByteData);
 
   static SLivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -411,14 +417,14 @@ class SLivr extends SL with Common, Ivr<int>,  IntMixin, Int32Mixin {
 }
 
 /// Unsigned Long (UL)
-class ULivr extends UL with Common, Ivr<int>,  IntMixin, Int32Mixin {
+class ULivr extends UL with Common, Ivr<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
   ULivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
 
   static ULivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -427,14 +433,14 @@ class ULivr extends UL with Common, Ivr<int>,  IntMixin, Int32Mixin {
 }
 
 /// Group Length (GL)
-class GLivr extends GL with Common, Ivr<int>,  IntMixin, Int32Mixin {
+class GLivr extends GL with Common, Ivr<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
   GLivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.listFromByteData(vfByteData);
+  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
 
   static const String kVRKeyword = 'GL';
   static const String kVRName = 'Group Length';
@@ -447,7 +453,7 @@ class GLivr extends GL with Common, Ivr<int>,  IntMixin, Int32Mixin {
 
 // **** String Elements
 
-class AEivr extends AE with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
+class AEivr extends AE with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -459,7 +465,7 @@ class AEivr extends AE with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   }
 }
 
-class ASivr extends AS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
+class ASivr extends AS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -471,7 +477,7 @@ class ASivr extends AS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   }
 }
 
-class CSivr extends CS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
+class CSivr extends CS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -483,7 +489,7 @@ class CSivr extends CS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   }
 }
 
-class DAivr extends DA with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
+class DAivr extends DA with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -495,7 +501,7 @@ class DAivr extends DA with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   }
 }
 
-class DSivr extends DS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
+class DSivr extends DS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -507,7 +513,7 @@ class DSivr extends DS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   }
 }
 
-class DTivr extends DT with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
+class DTivr extends DT with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -519,7 +525,7 @@ class DTivr extends DT with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   }
 }
 
-class ISivr extends IS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
+class ISivr extends IS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -531,7 +537,7 @@ class ISivr extends IS with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   }
 }
 
-class UIivr extends UI with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
+class UIivr extends UI with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -543,7 +549,7 @@ class UIivr extends UI with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   }
 }
 
-class LOivr extends LO with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
+class LOivr extends LO with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -555,7 +561,7 @@ class LOivr extends LO with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   }
 }
 
-class PCivr extends PC with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
+class PCivr extends PC with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -567,7 +573,7 @@ class PCivr extends PC with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   }
 }
 
-class PNivr extends PN with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
+class PNivr extends PN with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -579,7 +585,7 @@ class PNivr extends PN with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   }
 }
 
-class SHivr extends SH with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
+class SHivr extends SH with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -591,7 +597,7 @@ class SHivr extends SH with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   }
 }
 
-class LTivr extends LT with Common, Ivr<String>,  BDStringMixin, TextMixin {
+class LTivr extends LT with Common, Ivr<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -605,7 +611,7 @@ class LTivr extends LT with Common, Ivr<String>,  BDStringMixin, TextMixin {
   }
 }
 
-class STivr extends ST with Common, Ivr<String>,  BDStringMixin, TextMixin {
+class STivr extends ST with Common, Ivr<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -617,7 +623,7 @@ class STivr extends ST with Common, Ivr<String>,  BDStringMixin, TextMixin {
   }
 }
 
-class TMivr extends TM with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
+class TMivr extends TM with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -629,7 +635,7 @@ class TMivr extends TM with Common, Ivr<String>,  BDStringMixin, AsciiMixin {
   }
 }
 
-class UCivr extends UC with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
+class UCivr extends UC with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -641,7 +647,7 @@ class UCivr extends UC with Common, Ivr<String>,  BDStringMixin, Utf8Mixin {
   }
 }
 
-class URivr extends UR with Common, Ivr<String>,  BDStringMixin, TextMixin {
+class URivr extends UR with Common, Ivr<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -653,7 +659,7 @@ class URivr extends UR with Common, Ivr<String>,  BDStringMixin, TextMixin {
   }
 }
 
-class UTivr extends UT with Common, Ivr<String>,  BDStringMixin, TextMixin {
+class UTivr extends UT with Common, Ivr<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 

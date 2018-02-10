@@ -192,10 +192,11 @@ abstract class StringBase extends Element<String> {
 
   /// The _canonical_ empty [values] value for Floating Point Elements.
   @override
-  Iterable<String> emptyList = const <String>[];
+  List<String> emptyList = kEmptyList;
+  static const List<String>kEmptyList = const <String>[];
 
   @override
-  StringBase get noValues => update(emptyList);
+  StringBase get noValues => update(kEmptyList);
 
   // **** Getters that get Value Field as Uint or ByteData
 

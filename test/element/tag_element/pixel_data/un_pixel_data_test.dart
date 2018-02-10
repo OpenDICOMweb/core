@@ -127,7 +127,7 @@ void main() {
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBytes', () {
-      final un0 = new UNtagPixelData.fromBytes(
+      final un0 = UNtagPixelData.fromBytes(
           PTag.kNoName0, frame, frame.lengthInBytes);
 
       final un1 =
@@ -166,11 +166,11 @@ void main() {
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBytes hashCode and ==', () {
-      final un0 = new UNtagPixelData.fromBytes(
+      final un0 = UNtagPixelData.fromBytes(
           PTag.kNoName0, frame, frame.lengthInBytes);
-      final un1 = new UNtagPixelData.fromBytes(
+      final un1 = UNtagPixelData.fromBytes(
           PTag.kNoName0, frame, frame.lengthInBytes);
-      final un2 = new UNtagPixelData.fromBytes(
+      final un2 = UNtagPixelData.fromBytes(
           PTag.kVariablePixelData, frame, frame.lengthInBytes);
 
       expect(un0.hashCode == un1.hashCode, true);
@@ -183,10 +183,10 @@ void main() {
     test('Create Unencapsulated UNtagPixelData.fromBase64', () {
       final base64 = BASE64.encode(frame);
       final un0 =
-          new UNtagPixelData.fromBase64(PTag.kNoName0, base64, base64.length);
+          UNtagPixelData.fromBase64(PTag.kNoName0, base64, base64.length);
 
       final un1 =
-          new UNtagPixelData.fromBase64(PTag.kNoName1, base64, base64.length);
+          UNtagPixelData.fromBase64(PTag.kNoName1, base64, base64.length);
 
       expect(un0.tag == PTag.kNoName0, true);
       expect(un0.vrIndex == kUNIndex, true);
@@ -224,10 +224,10 @@ void main() {
     test('Create Unencapsulated UNtagPixelData.fromBase64 hashCode and ==', () {
       final base64 = BASE64.encode(frame);
       final un0 =
-          new UNtagPixelData.fromBase64(PTag.kNoName0, base64, base64.length);
+          UNtagPixelData.fromBase64(PTag.kNoName0, base64, base64.length);
       final un1 =
-          new UNtagPixelData.fromBase64(PTag.kNoName0, base64, base64.length);
-      final un2 = new UNtagPixelData.fromBase64(
+          UNtagPixelData.fromBase64(PTag.kNoName0, base64, base64.length);
+      final un2 = UNtagPixelData.fromBase64(
           PTag.kVariablePixelData, base64, base64.length);
 
       expect(un0.hashCode == un1.hashCode, true);
@@ -240,10 +240,10 @@ void main() {
       final base64 = BASE64.encode(frame);
       final frags = new VFFragments(fragments);
 
-      final un0 = new UNtagPixelData.fromBase64(
+      final un0 = UNtagPixelData.fromBase64(
           PTag.kNoName0, base64, frame.lengthInBytes, ts, frags);
 
-      /*final un1 = new UNtagPixelData.fromBase64(
+      /*final un1 = UNtagPixelData.fromBase64(
           PTag.kDate, base64, frame.lengthInBytes, ts, frags);*/
 
       expect(un0.tag == PTag.kNoName0, true);
@@ -277,11 +277,11 @@ void main() {
       final base64 = BASE64.encode(frame);
       final frags = new VFFragments(fragments);
 
-      final un0 = new UNtagPixelData.fromBase64(
+      final un0 = UNtagPixelData.fromBase64(
           PTag.kNoName0, base64, frame.lengthInBytes, ts, frags);
-      final un1 = new UNtagPixelData.fromBase64(
+      final un1 = UNtagPixelData.fromBase64(
           PTag.kNoName0, base64, frame.lengthInBytes, ts, frags);
-      final un2 = new UNtagPixelData.fromBase64(
+      final un2 = UNtagPixelData.fromBase64(
           PTag.kVariablePixelData, base64, frame.lengthInBytes, ts, frags);
 
       expect(un0.hashCode == un1.hashCode, true);
@@ -348,11 +348,11 @@ void main() {
 
     test('new UNtagPixelData.fromBytes', () {
       final frags = new VFFragments(fragments);
-      final un0 = new UNtagPixelData.fromBytes(
+      final un0 = UNtagPixelData.fromBytes(
           PTag.kNoName0, frame, frame.lengthInBytes);
       expect(
           un0,
-          equals(new UNtagPixelData.fromBytes(
+          equals(UNtagPixelData.fromBytes(
               PTag.kNoName0, frame, frame.lengthInBytes, ts, frags)));
 
       expect(un0.tag == PTag.kNoName0, true);
@@ -386,13 +386,13 @@ void main() {
     });
 
     test('new UNtagPixelData.fromBytes hashCode and ==', () {
-      final un0 = new UNtagPixelData.fromBytes(
+      final un0 = UNtagPixelData.fromBytes(
           PTag.kNoName0, frame, frame.lengthInBytes);
 
-      final un1 = new UNtagPixelData.fromBytes(
+      final un1 = UNtagPixelData.fromBytes(
           PTag.kNoName0, frame, frame.lengthInBytes);
 
-      final un2 = new UNtagPixelData.fromBytes(
+      final un2 = UNtagPixelData.fromBytes(
           PTag.kVariablePixelData, frame, frame.lengthInBytes);
 
       expect(un0.hashCode == un1.hashCode, true);
@@ -405,14 +405,14 @@ void main() {
     test('UNtagPixelData.fromB64', () {
       final base64 = BASE64.encode(frame);
       final frags = new VFFragments(fragments);
-      final un0 = UNtagPixelData.fromB64(
+      final un0 = UNtagPixelData.fromBase64(
           PTag.kNoName0, base64, base64.length, ts, frags);
       expect(
           un0,
-          equals(UNtagPixelData.fromB64(
+          equals(UNtagPixelData.fromBase64(
               PTag.kNoName0, base64, base64.length, ts, frags)));
 
-      final un1 = UNtagPixelData.fromB64(
+      final un1 = UNtagPixelData.fromBase64(
           PTag.kSelectorUNValue, base64, base64.length, ts, frags);
 
       expect(un0.tag == PTag.kNoName0, true);
@@ -445,12 +445,12 @@ void main() {
     test('UNtagPixelData.fromB64 hashCode and ==', () {
       final base64 = BASE64.encode(frame);
       final frags = new VFFragments(fragments);
-      final un0 = UNtagPixelData.fromB64(
+      final un0 = UNtagPixelData.fromBase64(
           PTag.kNoName0, base64, base64.length, ts, frags);
-      final un1 = UNtagPixelData.fromB64(
+      final un1 = UNtagPixelData.fromBase64(
           PTag.kNoName0, base64, base64.length, ts, frags);
 
-      final un2 = UNtagPixelData.fromB64(
+      final un2 = UNtagPixelData.fromBase64(
           PTag.kVariablePixelData, base64, base64.length, ts, frags);
 
       //hash_code : good and bad
@@ -582,39 +582,39 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
-    test('Create Uint8Base.listFromBytes', () {
-      expect(Uint8Base.listFromBytes(frame), equals(frame));
+    test('Create Uint8Base.fromBytes', () {
+      expect(Uint8Base.fromBytes(frame), equals(frame));
     });
 
-    test('Create Uint8Base.listFromBytes', () {
+    test('Create Uint8Base.fromBytes', () {
       system.throwOnError = false;
       const uInt8Max = const [UN.kMaxValue];
       const uInt16Max = const [kUint16Max];
       final uInt8ListV1 = new Uint8List.fromList(uInt8Max);
       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-      expect(Uint8Base.listFromBytes(uInt8ListV11), equals(uInt8Max));
+      expect(Uint8Base.fromBytes(uInt8ListV11), equals(uInt8Max));
 
-      expect(Uint8Base.listFromBytes(frame), equals(frame));
+      expect(Uint8Base.fromBytes(frame), equals(frame));
 
       final uInt16ListV1 = new Uint16List.fromList(uInt16Max);
       final uInt8ListV12 = uInt16ListV1.buffer.asUint8List();
-      expect(Uint8Base.listFromBytes(uInt8ListV12), uInt8ListV12);
+      expect(Uint8Base.fromBytes(uInt8ListV12), uInt8ListV12);
     });
 
-    test('Create Uint32Base.listFromBase64', () {
-      final s = Uint8Base.listToBase64(testFrame);
-      expect(Uint8Base.listFromBase64(s), equals(testFrame));
+    test('Create Uint32Base.fromBase64', () {
+      final s = Uint8Base.toBase64(testFrame);
+      expect(Uint8Base.fromBase64(s), equals(testFrame));
     });
 
-    test('Create Uint32Base.listFromBytes', () {
-      final bytes = Uint8Base.listToBytes(testFrame);
+    test('Create Uint32Base.fromBytes', () {
+      final bytes = Uint8Base.toBytes(testFrame);
       log.debug('s: "$bytes"');
-      expect(Uint8Base.listFromBytes(bytes), bytes);
+      expect(Uint8Base.fromBytes(bytes), bytes);
     });
 
-    test('Create Uint32Base.listFromByteData', () {
-      final bd = Uint8Base.listToByteData(testFrame);
-      expect(Uint8Base.listFromByteData(bd), equals(frame));
+    test('Create Uint32Base.fromByteData', () {
+      final bd = Uint8Base.toByteData(testFrame);
+      expect(Uint8Base.fromByteData(bd), equals(frame));
     });
   });
 }

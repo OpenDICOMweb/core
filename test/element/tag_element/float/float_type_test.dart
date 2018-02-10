@@ -35,7 +35,7 @@ void main() {
     test('Create Elements from strings', () {
       //Urgent Sharath: I don't understand. Why use UTF8 encoding
       //  final fString = BASE64.encode(UTF8.encode('78678'));
-      final fString = Float32Base.listToBase64(<double>[1.0, 2.0, 3.0]);
+      final fString = Float32Base.toBase64(<double>[1.0, 2.0, 3.0]);
 
       final fl0 = FLtag.fromBase64(
           PTag.lookupByCode(kRecommendedDisplayFrameRateInFloat), fString);
@@ -43,7 +43,7 @@ void main() {
       final of0 = OFtag.fromBase64(PTag.lookupByCode(kUValueData), fString);
       log.debug('Elements from base64: ${of0.info}');
 
-      final dString = Float64Base.listToBase64(<double>[1.0, 2.0, 3.0]);
+      final dString = Float64Base.toBase64(<double>[1.0, 2.0, 3.0]);
       final od0 =
           ODtag.fromBase64(PTag.lookupByCode(kSelectorODValue), dString);
       log.debug('Elements from base64: ${od0.info}');

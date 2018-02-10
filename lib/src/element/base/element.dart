@@ -32,7 +32,9 @@ typedef bool Condition(Dataset ds, Element e);
 Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
 
+
 bool doTestValidity = true;
+bool doFancy = false;
 
 /// All add, replace, and remove operations should
 /// be done by calling add, replace, and remove methods in [Dataset].
@@ -44,6 +46,9 @@ bool doTestValidity = true;
 /// is the [Type] of the [values] of the [Element].
 abstract class Element<V> extends ListBase<V> {
   // **** Interface
+
+  /// Returns the canonical empty list for [V].
+  List<V> get emptyList;
 
   /// The [index] of the [Element] Definition for _this_. It is
   /// used to locate other values in the [Element] Definition.
@@ -298,9 +303,6 @@ abstract class Element<V> extends ListBase<V> {
     return values.first;
   }
 
-  /// Returns the canonical empty list for [V].
-  Iterable<V> get emptyList => const <V>[];
-
   /// Returns a copy of [values].
   // *Note*: This Getter could be using [growable]: [false].
   Iterable<V> get valuesCopy => new List.from(values);
@@ -456,7 +458,6 @@ abstract class Element<V> extends ListBase<V> {
  // String format(Formatter z) => '${z(info)}\n';
  // String format(Formatter z) => z.fmt(this, elements);
 
-  bool doFancy = false;
   @override
   String toString() {
     if (doFancy) {
@@ -483,7 +484,6 @@ abstract class Element<V> extends ListBase<V> {
 
   // ***************** Static Getters and Methods *****************
   // **************************************************************
-
   static bool equal<V>(Element<V> a, Element<V> b) =>
       identical(a, b) || (a.tag == b.tag && vListEqual<V>(a.values, b.values));
 

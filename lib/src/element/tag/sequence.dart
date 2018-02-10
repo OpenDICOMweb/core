@@ -10,9 +10,11 @@ import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/tag/tag_item.dart';
 import 'package:core/src/element/base/sequence.dart';
+import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/vr/vr.dart';
 
 /// A Sequence ([SQ]) Element.
 ///
@@ -49,6 +51,12 @@ class SQtag extends SQ<TagItem> with TagElement<Dataset> {
     return new SQtag(sq.tag, parent, nItems, sq.vfLengthField);
   }
 
+  factory SQtag._fromBytes(Tag tag, Dataset parent, List<TagItem> vList,
+      Uint8List bytes, [int vfLengthField]) {
+    if (tag.vrIndex != kSQIndex) return null;
+    return new SQtag(tag, parent, vList, vfLengthField);
+  }
+
   SQtag.fromDecoder(this.tag, this.parent, this.values, this.vfLengthField);
 
   @override
@@ -80,10 +88,6 @@ class SQtag extends SQ<TagItem> with TagElement<Dataset> {
   @override
   SQtag update([Iterable<Item> vList = emptyItemTagList]) =>
       new SQtag(tag, parent, vList);
-
-  @override
-  SQtag updateF(Iterable<Item> f(Iterable<TagItem> vList)) =>
-      new SQtag(tag, parent, f(values));
 
   /// Returns a copy of _this_ Sequence, with a new [List] of Tag[Item]s.
   SQtag updateSQtag(Iterable<TagItem> items, Dataset parent) =>
@@ -138,4 +142,7 @@ class SQtag extends SQ<TagItem> with TagElement<Dataset> {
   static SQtag make(Tag tag, Iterable<TagItem> values,
           [int vfLength, Dataset parent]) =>
       new SQtag(tag, parent, values, vfLength);
+
+  static SQtag fromBDE(BDElement e, Dataset parent) =>
+      new SQtag._fromBytes(e.tag, parent, e.values, e.vfBytes, e.vfLengthField);
 }

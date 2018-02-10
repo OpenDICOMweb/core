@@ -20,7 +20,7 @@ final Int32List kEmptyInt32List = new Int32List(0);
 final Int64List kEmptyInt64List = new Int64List(0);
 
 const List<double> kEmptyDoubleList = const <double>[];
-final Float32List kEmptyFLoat32List = new Float32List(0);
+final Float32List kEmptyFloat32List = new Float32List(0);
 final Float64List kEmptyFloat64List = new Float64List(0);
 
 final ByteData kEmptyByteData = new ByteData(0);

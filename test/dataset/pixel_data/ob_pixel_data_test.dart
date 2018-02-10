@@ -81,10 +81,10 @@ void main() {
     });
 
     test('Create Unencapsulated OBtagPixelData.fromBytes', () {
-      final ob0 = new OBtagPixelData.fromBytes(
-          PTag.kPixelData, frame, frame.lengthInBytes);
-      final ob1 = new OBtagPixelData.fromBytes(
-          PTag.kPixelData, frame, frame.lengthInBytes);
+      final ob0 =
+          OBtagPixelData.fromBytes(PTag.kPixelData, frame, frame.lengthInBytes);
+      final ob1 =
+          OBtagPixelData.fromBytes(PTag.kPixelData, frame, frame.lengthInBytes);
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
@@ -105,9 +105,9 @@ void main() {
 
     test('Create Encapsulated OBtagPixelData.fromBytes', () {
       final frags = new VFFragments(fragments);
-      final ob0 = new OBtagPixelData.fromBytes(
+      final ob0 = OBtagPixelData.fromBytes(
           PTag.kPixelData, frame, frame.lengthInBytes, ts, frags);
-      final ob1 = new OBtagPixelData.fromBytes(
+      final ob1 = OBtagPixelData.fromBytes(
           PTag.kPixelData, frame, frame.lengthInBytes, ts, frags);
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
@@ -139,12 +139,12 @@ void main() {
       final ob3 = ob2.update(frame);
       expect(ob2 == ob3, true);
 
-      final ob4 = new OBtagPixelData.fromBytes(
-          PTag.kPixelData, frame, frame.lengthInBytes);
+      final ob4 =
+          OBtagPixelData.fromBytes(PTag.kPixelData, frame, frame.lengthInBytes);
       final ob5 = ob4.update(testFrame);
       expect(ob4 == ob5, true);
 
-      final ob6 = new OBtagPixelData.fromBytes(
+      final ob6 = OBtagPixelData.fromBytes(
           PTag.kPixelData, frame, frame.lengthInBytes, ts, frags);
       final ob7 = ob6.update(testFrame);
       expect(ob6 == ob7, true);

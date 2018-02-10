@@ -28,45 +28,42 @@ typedef BDElement BDElementMaker(int code, int vrIndex, ByteData bd);
 
 //TODO: move documentation from EVR/IVR
 abstract class BDElement<V> extends Element<V> {
+  static BDElement make(int code, int vrIndex, ByteData bd,
+          {bool isEvr = true}) =>
+      (isEvr)
+          ? EvrElement.make(code, vrIndex, bd)
+          : Ivr.make(code, vrIndex, bd);
+
+  // **** Start Interface ****
+
   /// The [ByteData] containing this Element.
   ByteData get bd;
-  @override
-  Iterable<V> get values;
-  @override
-  set values(Iterable<V> vList) => unsupportedError();
+//  @override
+//  Iterable<V> get values;
+//  @override
+//  set values(Iterable<V> vList) => unsupportedError();
 
   /// Returns _true_ if this Element is encoded as Explicit VR Little Endian;
   /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
   bool get isEvr;
-
-  static BDElement make(int code, int vrIndex, ByteData bd,
-          {bool isEvr = true}) =>
-      (isEvr) ? EvrElement.make(code, vrIndex, bd) : Ivr.make(code, vrIndex, bd);
-
-  // **** End Interface ****
-
-  @override
-  Tag get tag;
-  @override
-  int get vrCode;
-  @override
-  int get vrIndex;
+//  @override
+//  Tag get tag;
+//  @override
+//  int get vrCode;
+//  @override
+//  int get vrIndex;
   int get vfLengthOffset;
   int get vfOffset;
-
-  /// Returns the Value Field Length field.
-  @override
-  int get vfLengthField;
-
+//  @override
+//  int get vfLengthField;
   Uint8List get vfBytesWithPadding;
-
-  @override
-  Uint8List get vfBytes;
-
+ // @override
+ // Uint8List get vfBytes;
   ByteData get vfByteDataWithPadding;
+//  @override
+//  ByteData get vfByteData;
 
-  @override
-  ByteData get vfByteData;
+// **** End Interface ****
 }
 
 const int _codeOffset = 0;
@@ -166,13 +163,13 @@ abstract class IntMixin {
 
 // **** 8-bit Integer Elements (OB, UN)
 
-const int _uint8SizeInBytes = 1;
+const int _int8SizeInBytes = 1;
 
 abstract class Int8Mixin {
   int get vfLength;
   int get vfLengthField;
 
-  int get valuesLength => _getValuesLength(vfLength, _uint8SizeInBytes);
+  int get valuesLength => _getValuesLength(vfLength, _int8SizeInBytes);
 }
 
 // **** 16-bit Integer Elements (SS, US, OW)
@@ -232,6 +229,22 @@ abstract class BDStringMixin {
   // Urgent: remove after all element/base classes have this method
   StringBase updateF(Iterable<String> f(Iterable<String> vList)) =>
       unsupportedError();
+
+/* Flush when working
+  //TODO: This should be done in convert
+  ByteData _removePadding(ByteData bd, int vfOffset, [int padChar = kSpace]) {
+    if (bd.lengthInBytes == vfOffset) return bd;
+    assert(bd.lengthInBytes.isEven);
+    final lastIndex = bd.lengthInBytes - 1;
+    final char = bd.getUint8(lastIndex);
+    if (char == kNull || char == kSpace) {
+      log.warn('Removing Padding: $char');
+      return bd.buffer.asByteData(bd.offsetInBytes, bd.lengthInBytes - 1);
+    }
+    return bd;
+  }
+*/
+
 }
 
 /// A Mixin for [String] [Element]s that may only have ASCII values.

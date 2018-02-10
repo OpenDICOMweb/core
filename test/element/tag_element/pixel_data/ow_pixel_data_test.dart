@@ -31,7 +31,7 @@ void main() {
 
     test('Create OWtagPixelData', () {
       final ow0 =
-          new OWtagPixelData(PTag.kPixelData, pixels0, pixels0.lengthInBytes);
+          new OWtagPixelData(PTag.kPixelData, pixels0, pixels0.length);
       final ow1 = new OWtagPixelData(
           PTag.kCoefficientsSDVN, pixels0, pixels0.lengthInBytes);
 
@@ -92,14 +92,17 @@ void main() {
     });
 
     test('Create  OWtagPixelData.fromBytes', () {
-      final ow0 = new OWtagPixelData.fromBytes(
+      final ow0 = OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes1, bytes1.lengthInBytes);
-      final ow1 = new OWtagPixelData.fromBytes(
+      final ow1 = OWtag.fromBytes(
           PTag.kCoefficientsSDDN, bytes1, bytes1.lengthInBytes);
 
+      print('bytes1: ${bytes1.lengthInBytes}');
+      final vfBytes = ow0.vfBytes;
+      print('ow0.vfBytes.length: ${ow0.vfBytes.lengthInBytes}');
       system.throwOnError = true;
       expect(
-          () => new OWtagPixelData.fromBytes(
+          () => OWtagPixelData.fromBytes(
               PTag.kVariableNextDataGroup, bytes1, bytes1.lengthInBytes),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
@@ -111,6 +114,7 @@ void main() {
       expect(ow0.vfBytes is Uint8List, true);
       expect(ow0.vfBytes.length == bytes1.lengthInBytes, true);
       expect(ow0.pixels is Uint16List, true);
+      print('first: ${ow0.pixels.first}');
       expect(ow0.pixels.first == 4095, true);
       expect(ow0.pixels.length == 1024, true);
       expect(ow0.length == ow0.pixels.length, true);
@@ -130,15 +134,15 @@ void main() {
     });
 
     test('Create  OWtagPixelData.fromBytes hashCode and ==', () {
-      final ow0 = new OWtagPixelData.fromBytes(
+      final ow0 = OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes1, bytes1.lengthInBytes);
-      final ow1 = new OWtagPixelData.fromBytes(
+      final ow1 = OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes1, bytes1.lengthInBytes);
-      final ow2 = new OWtagPixelData.fromBytes(
+      final ow2 = OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes2, bytes2.lengthInBytes);
-      final ow3 = new OWtagPixelData.fromBytes(
+      final ow3 = OWtagPixelData.fromBytes(
           PTag.kCoefficientsSDHN, bytes2, bytes2.lengthInBytes);
-      final ow4 = new OWtagPixelData.fromBytes(
+      final ow4 = OWtagPixelData.fromBytes(
           PTag.kCoefficientsSDHN, bytes2, bytes2.lengthInBytes);
 
       expect(ow0.hashCode == ow1.hashCode, true);
@@ -161,12 +165,12 @@ void main() {
       final ow3 = ow2.update(pixels0);
       expect(ow3 == ow2, true);
 
-      final ow4 = new OWtagPixelData.fromBytes(
+      final ow4 = OWtagPixelData.fromBytes(
           PTag.kPixelData, bytes1, bytes1.lengthInBytes);
       final ow5 = ow4.update(pixels1);
       expect(ow5 == ow4, true);
 
-      final ow6 = new OWtagPixelData.fromBytes(
+      final ow6 = OWtagPixelData.fromBytes(
           PTag.kCoefficientsSDHN, bytes1, bytes1.lengthInBytes);
       final ow7 = ow6.update(pixels1);
       expect(ow7 == ow6, true);
@@ -206,13 +210,13 @@ void main() {
     test('Create OWtagPixelData.fromBase64', () {
       final base64 = BASE64.encode(u8Frame);
       final ow0 =
-          new OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
-      final ow1 = new OWtagPixelData.fromBase64(
+          OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
+      final ow1 = OWtagPixelData.fromBase64(
           PTag.kCoefficientsSDVN, base64, base64.length);
 
       system.throwOnError = true;
       expect(
-          () => new OWtagPixelData.fromBase64(
+          () => OWtagPixelData.fromBase64(
               PTag.kVariableNextDataGroup, base64, base64.length),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
@@ -244,14 +248,14 @@ void main() {
     test('Create OWtagPixelData.fromBase64 hashCode and ==', () {
       final base64 = BASE64.encode(u8Frame);
       final ow0 =
-          new OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
+          OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
       final ow1 =
-          new OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
-      final ow2 = new OWtagPixelData.fromBase64(
+          OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
+      final ow2 = OWtagPixelData.fromBase64(
           PTag.kVariablePixelData, base64, base64.length);
-      final ow3 = new OWtagPixelData.fromBase64(
+      final ow3 = OWtagPixelData.fromBase64(
           PTag.kCoefficientsSDVN, base64, base64.length);
-      final ow4 = new OWtagPixelData.fromBase64(
+      final ow4 = OWtagPixelData.fromBase64(
           PTag.kCoefficientsSDVN, base64, base64.length);
 
       expect(ow0.hashCode == ow1.hashCode, true);
@@ -318,14 +322,14 @@ void main() {
     });
 
     test('create new OWtagPixelData.fromBytes', () {
-      final ow0 = new OWtagPixelData.fromBytes(
+      final ow0 = OWtagPixelData.fromBytes(
           PTag.kPixelData, u8Frame, u8Frame.lengthInBytes);
-      final ow1 = new OWtagPixelData.fromBytes(
+      final ow1 = OWtagPixelData.fromBytes(
           PTag.kCoefficientsSDVN, u8Frame, u8Frame.lengthInBytes);
 
       system.throwOnError = true;
       expect(
-          () => new OWtagPixelData.fromBytes(
+          () => OWtagPixelData.fromBytes(
               PTag.kSelectorSTValue, u8Frame, u8Frame.lengthInBytes),
           throwsA(const isInstanceOf<InvalidVRForTagError>()));
 
@@ -353,15 +357,15 @@ void main() {
     });
 
     test('create new OWtagPixelData.fromBytes hashCode and ==', () {
-      final ow0 = new OWtagPixelData.fromBytes(
+      final ow0 = OWtagPixelData.fromBytes(
           PTag.kPixelData, u8Frame, u8Frame.lengthInBytes);
-      final ow1 = new OWtagPixelData.fromBytes(
+      final ow1 = OWtagPixelData.fromBytes(
           PTag.kPixelData, u8Frame, u8Frame.lengthInBytes);
-      final ow2 = new OWtagPixelData.fromBytes(
+      final ow2 = OWtagPixelData.fromBytes(
           PTag.kVariablePixelData, u8Frame, u8Frame.lengthInBytes);
-      final ow3 = new OWtagPixelData.fromBytes(
+      final ow3 = OWtagPixelData.fromBytes(
           PTag.kCoefficientsSDVN, u8Frame, u8Frame.lengthInBytes);
-      final ow4 = new OWtagPixelData.fromBytes(
+      final ow4 = OWtagPixelData.fromBytes(
           PTag.kCoefficientsSDVN, u8Frame, u8Frame.lengthInBytes);
 
       expect(ow0.hashCode == ow1.hashCode, true);
@@ -375,16 +379,16 @@ void main() {
       expect(ow0 == ow3, false);
     });
 
-    test('creat OWtagPixelData.fromB64', () {
+    test('creat OWtagPixelData.fromBase64', () {
       final base64 = BASE64.encode(u8Frame);
       final ow0 =
-          OWtagPixelData.fromB64(PTag.kPixelData, base64, base64.length);
-      final ow1 =
-          OWtagPixelData.fromB64(PTag.kCoefficientsSDVN, base64, base64.length);
+          OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
+      final ow1 = OWtagPixelData.fromBase64(
+          PTag.kCoefficientsSDVN, base64, base64.length);
 
       system.throwOnError = true;
       expect(
-          () => OWtagPixelData.fromB64(
+          () => OWtagPixelData.fromBase64(
               PTag.kSelectorSTValue, base64, base64.length),
           throwsA(const isInstanceOf<InvalidVRForTagError>()));
 
@@ -411,19 +415,19 @@ void main() {
       expect(ow0.checkValue(kUint16Min - 1), false);
     });
 
-    test('creat OWtagPixelData.fromB64 hashCode and ==', () {
+    test('creat OWtagPixelData.fromBase64 hashCode and ==', () {
       final base64 = BASE64.encode(u8Frame);
       final ow0 =
-          OWtagPixelData.fromB64(PTag.kPixelData, base64, base64.length);
+          OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
 
       final ow1 =
-          OWtagPixelData.fromB64(PTag.kPixelData, base64, base64.length);
+          OWtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
 
-      final ow2 = OWtagPixelData.fromB64(
+      final ow2 = OWtagPixelData.fromBase64(
           PTag.kVariablePixelData, base64, base64.length);
-      final ow3 = OWtagPixelData.fromB64(
+      final ow3 = OWtagPixelData.fromBase64(
           PTag.kCoefficientsSDVN, base64, base64.length);
-      final ow4 = OWtagPixelData.fromB64(
+      final ow4 = OWtagPixelData.fromBase64(
           PTag.kCoefficientsSDVN, base64, base64.length);
 
       expect(ow0.hashCode == ow1.hashCode, true);
@@ -440,7 +444,7 @@ void main() {
 
   group('OWPixelData', () {
     //Urgent: tests below have already been done in uInt16List_test and can deleted
-   /* final owTags = <PTag>[
+    /* final owTags = <PTag>[
       PTag.kRedPaletteColorLookupTableData,
       PTag.kGreenPaletteColorLookupTableData,
       PTag.kBluePaletteColorLookupTableData,
@@ -644,10 +648,10 @@ void main() {
       45600,
     ];
     test('Create Uint16Base.listFromBytes', () {
-      expect(Uint16Base.listFromBytes(u8Frame), u8Frame.buffer.asUint16List());
+      expect(Uint16Base.fromBytes(u8Frame), u8Frame.buffer.asUint16List());
 
       final frame0 = new Uint8List.fromList(testFrame0);
-      expect(Uint16Base.listFromBytes(frame0), frame0.buffer.asUint16List());
+      expect(Uint16Base.fromBytes(frame0), frame0.buffer.asUint16List());
     });
 
     test('Create Uint16Base.listToBytes', () {
@@ -657,7 +661,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
         log.debug('uInt16List0: $uInt16List0');
-        expect(Uint16Base.listToBytes(uInt16List0),
+        expect(Uint16Base.toBytes(uInt16List0),
             uInt16List0.buffer.asUint8List());
       }
 
@@ -668,21 +672,21 @@ void main() {
       final ui0 = new Uint16List.fromList(uInt8Max);
       final ui1 = new Uint16List.fromList(uInt16Max);
 
-      expect(Uint16Base.listToBytes(uInt8Max), ui0.buffer.asUint8List());
-      expect(Uint16Base.listToBytes(uInt16Max), ui1.buffer.asUint8List());
-      expect(Uint16Base.listToBytes(ui1), ui1.buffer.asUint8List());
+      expect(Uint16Base.toBytes(uInt8Max), ui0.buffer.asUint8List());
+      expect(Uint16Base.toBytes(uInt16Max), ui1.buffer.asUint8List());
+      expect(Uint16Base.toBytes(ui1), ui1.buffer.asUint8List());
 
-      expect(Uint16Base.listToBytes(uInt32Max), isNull);
+      expect(Uint16Base.toBytes(uInt32Max), isNull);
 
       system.throwOnError = true;
-      expect(() => Uint16Base.listToBytes(uInt32Max),
+      expect(() => Uint16Base.toBytes(uInt32Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('Create OW.decodeJsonVF', () {
       //     final testPixels = new Uint16List.fromList([123]);
-      final b64Pixels = Uint16Base.listToBase64(u16Frame);
-      final v = Uint16Base.listFromBase64(b64Pixels);
+      final b64Pixels = Uint16Base.toBase64(u16Frame);
+      final v = Uint16Base.fromBase64(b64Pixels);
       log
         ..debug(' u16Frame: $u16Frame')
         ..debug('b64Pixels: $b64Pixels')
@@ -697,35 +701,35 @@ void main() {
       log..debug('frame:$frame0')..debug('bdFrame: $bdFrame0');
       final bdU8 = bdFrame0.buffer.asUint8List();
       final b640 = BASE64.encode(bdU8);
-      final b64Pixels0 = Uint16Base.listToBase64(bdFrame0);
+      final b64Pixels0 = Uint16Base.toBase64(bdFrame0);
       log..debug('  b640: $b640')..debug('frame0: $bdFrame0');
       expect(b64Pixels0, equals(b640));
-      final owPixels0 = Uint16Base.listFromBase64(b64Pixels0);
+      final owPixels0 = Uint16Base.fromBase64(b64Pixels0);
       log.debug('owPixels0: $owPixels0');
       expect(owPixels0, equals(frame0));
 
       final u16FrameBytes = u16Frame.buffer.asUint8List();
       final b64 = BASE64.encode(u16FrameBytes);
-      final b64Pixels = Uint16Base.listToBase64(u16Frame);
+      final b64Pixels = Uint16Base.toBase64(u16Frame);
       log..debug('  b64: $b64')..debug('frame: $u16Frame');
       expect(b64Pixels, equals(b64));
-      final owPixels = Uint16Base.listFromBase64(b64Pixels);
+      final owPixels = Uint16Base.fromBase64(b64Pixels);
       expect(owPixels, equals(u16Frame));
     });
 
     test('Create Uint16Base.listFromBytes', () {
-      expect(Uint16Base.listFromBytes(u8Frame), u8Frame.buffer.asUint16List());
+      expect(Uint16Base.fromBytes(u8Frame), u8Frame.buffer.asUint16List());
 
       final frame0 = new Uint8List.fromList(testFrame0);
-      expect(Uint16Base.listFromBytes(frame0), frame0.buffer.asUint16List());
+      expect(Uint16Base.fromBytes(frame0), frame0.buffer.asUint16List());
     });
 
     test('Create Uint16Base.listFromByteData', () {
-      expect(Uint16Base.listFromBytes(u8Frame), u8Frame.buffer.asUint16List());
+      expect(Uint16Base.fromBytes(u8Frame), u8Frame.buffer.asUint16List());
       final frame0 = new Uint8List.fromList(testFrame0);
       final bd = frame0.buffer.asByteData();
 
-      expect(Uint16Base.listFromByteData(bd), frame0.buffer.asUint16List());
+      expect(Uint16Base.fromByteData(bd), frame0.buffer.asUint16List());
     });
   });
 }

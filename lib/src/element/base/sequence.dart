@@ -20,20 +20,10 @@ import 'package:core/src/vr/vr.dart';
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
-/* Flush at V0.9.0
-bool _isValidVFLength(int vfl, int minBytes, int maxBytes, int sizeInBytes) =>
-    _inRange(vfl, minBytes, maxBytes) && (vfl % sizeInBytes == 0);
-*/
-
-const Iterable<Item> emptyItemList = const <Item>[];
-
 int level = 0;
 
 abstract class SQ<K> extends Element<Item> with UndefinedLengthMixin {
   // **** Interface
-
-  @override
-  Iterable<Item> get emptyList => emptyItemList;
 
   /// The [tag] corresponding to _this_.
   @override
@@ -73,9 +63,6 @@ abstract class SQ<K> extends Element<Item> with UndefinedLengthMixin {
 
   @override
   bool get hadULength => vfLengthField == kUndefinedLength;
-
-  @override
-  SQ get noValues => update(emptyItemList);
 
   @override
   TypedData get typedData =>
@@ -161,8 +148,27 @@ Summary $tag
     items.elementAt(itemIndex)..add(e);
   }
 
+
   @override
-  SQ update([Iterable<Item> vList = emptyItemList]);
+  List<Item> get emptyList => kEmptyList;
+  static const List<Item> kEmptyList = const <Item>[];
+
+  @override
+  SQ get noValues => update(kEmptyList);
+
+  Iterable<Element> noValuesAll(int index) {
+    final result = <Element>[];
+    for (var item in items) {
+      final e = item.lookup(index);
+      item[index] = e.noValues;
+      result.add(e);
+    }
+    return result;
+  }
+
+
+  @override
+  SQ update([Iterable<Item> vList = kEmptyList]);
 
   Iterable<Element> updateAll<V>(int index, Iterable<V> vList,
       {bool required = false}) {
@@ -198,18 +204,8 @@ Summary $tag
     return eList;
   }
 
-  Iterable<Element> noValuesAll(int index) {
-    final result = <Element>[];
-    for (var item in items) {
-      final e = item.lookup(index);
-      item[index] = e.noValues;
-      result.add(e);
-    }
-    return result;
-  }
-
   @override
-  Iterable<Item> replace([Iterable<Item> vList = emptyItemList]) =>
+  Iterable<Item> replace([Iterable<Item> vList = kEmptyList]) =>
       unsupportedError();
 
   @override

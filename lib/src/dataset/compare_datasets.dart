@@ -104,12 +104,12 @@ class DatasetComparitor<K> {
       if (e0 is SQ && e1 is SQ) {
         compareSequences(e0, e1);
       } else if (e0 is MetaElement && e1 is MetaElement) {
-        final m0 = e0.element;
-        final m1 = e1.element;
+        final m0 = e0.e;
+        final m1 = e1.e;
         if (m0 is SQ && m1 is SQ) {
           compareSequences(m0, m1);
         } else {
-          compareElements(i, e0.element, e1.element);
+          compareElements(i, e0.e, e1.e);
         }
       } else {
         compareElements(i, e0, e1);
