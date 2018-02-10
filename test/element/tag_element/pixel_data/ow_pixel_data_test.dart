@@ -98,7 +98,6 @@ void main() {
           PTag.kCoefficientsSDDN, bytes1, bytes1.lengthInBytes);
 
       print('bytes1: ${bytes1.lengthInBytes}');
-      final vfBytes = ow0.vfBytes;
       print('ow0.vfBytes.length: ${ow0.vfBytes.lengthInBytes}');
       system.throwOnError = true;
       expect(
