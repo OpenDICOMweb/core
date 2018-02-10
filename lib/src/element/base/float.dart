@@ -123,20 +123,6 @@ abstract class Float32Base extends FloatBase {
   static ByteData toByteData(Iterable<double> vList, {bool asView = true}) =>
       _asByteData(fromList(vList, asView: asView));
 
-/*
-  static Float32List toFloat32List(Iterable<double> vList,
-          {bool asView = true}) =>
-      _toFloat32List(vList, asView: asView);
-
-  static Float32List _toFloat32List(Iterable<double> vList,
-      {bool asView = true}) {
-    assert(vList != null);
-    return (asView && vList is Float32List)
-        ? vList
-        : new Float32List.fromList(vList);
-  }
-*/
-
   /// Returns a [Float32List] with the same length as [vList]. If
   /// [vList] is a [Float32List] and [asView] is _true_, then [vList] is
   /// returned; otherwise, a copy of vList is returned. No value checking

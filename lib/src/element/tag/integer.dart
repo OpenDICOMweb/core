@@ -47,15 +47,6 @@ class SStag extends SS with TagElement<int> {
           : invalidValuesError(vList, tag: tag);
 
   SStag._(this.tag, this.values);
-/*
-
-  SStag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, SS.kVRIndex)) ? tag : invalidTagError(tag),
-        values = Uint16Base.fromBytes(bytes);
-
-  factory SStag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
-      new SStag.fromBytes(tag, BASE64.decode(base64));
-*/
 
   @override
   SStag update([Iterable<int> vList = kEmptyIntList]) => new SStag(tag, vList);
@@ -89,15 +80,6 @@ class SLtag extends SL with TagElement<int> {
           : invalidValuesError(vList, tag: tag);
 
   SLtag._(this.tag, this.values);
-
-/*
-  SLtag.fromBytes(Tag tag, Uint8List bytes)
-      : tag = (Tag.isValidVR(tag, SL.kVRIndex)) ? tag : invalidTagError(tag),
-        values = Int32Base.fromBytes(bytes);
-
-  factory SLtag.fromBase64(Tag tag, String base64, [int vfLengthField]) =>
-      new SLtag.fromBytes(tag, BASE64.decode(base64));
-*/
 
   @override
   SLtag update([Iterable<int> vList = kEmptyIntList]) => new SLtag(tag, vList);
@@ -143,18 +125,6 @@ class OBtag extends OB with TagElement<int> {
   /// Creates an [OB] Element from a [Iterable<int>] of byte values (0 - 255).
   OBtag._(this.tag, this.values, this.vfLengthField);
 
-/*
-  OBtag.fromBytes(Tag tag, Uint8List bytes, this.vfLengthField)
-      : tag = (Tag.isValidVR(tag, OB.kVRIndex))
-            ? tag
-            : invalidTagError(tag, OBtag),
-        // ignore: prefer_initializing_formals
-        values = bytes;
-
-
-  factory OBtag.fromBase64(Tag tag, String base64, int vfLengthField) =>
-      new OBtag.fromBytes(tag, BASE64.decode(base64), vfLengthField);
-*/
   @override
   OBtag update([Iterable<int> vList = kEmptyIntList]) => new OBtag(tag, vList);
 
@@ -270,27 +240,6 @@ class OWtag extends OW with TagElement<int> {
           : invalidValuesError(vList, tag: tag);
 
   OWtag._(this.tag, this.values, this.vfLengthField);
-
-/*
-  /// Creates an [OWtag] with a value that is a [Uint16List].
-  OWtag.fromBytes(Tag tag, Uint8List bytes, int vfLengthField)
-      : tag = (Tag.isValidVR(tag, OW.kVRIndex))
-            ? tag
-            : invalidTagError(tag, OWtag),
-        values = Uint16Base.fromBytes(bytes),
-        vfLengthField = _checkVFL(bytes, vfLengthField);
-*/
-
-/*
-  factory OWtag.fromBase64(Tag tag, String base64, int vfLengthField,
-          [TransferSyntax ts]) =>
-      new OWtag.fromBytes(tag, BASE64.decode(base64), vfLengthField);
-*/
-/*
-
-  OWtag._fromBytes(this.tag, Uint8List bytes, [this.vfLengthField])
-      : values = Uint16Base.fromBytes(bytes);
-*/
 
   @override
   OWtag update([Iterable<int> vList = kEmptyIntList]) => new OWtag(tag, vList);

@@ -224,22 +224,6 @@ abstract class Int16Base extends IntBase {
           {bool asView = true, bool check = true}) =>
       _asByteData(fromList(vList, asView: asView, check: check));
 
-/*
-  static Int16List toInt16List(Iterable<int> vList,
-          {bool asView = true, bool check = true}) =>
-      _toInt16List(vList, asView: asView, check: check);
-
-  static Int16List _toInt16List(Iterable<int> vList,
-      {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList is Int16List)
-      return (asView == true) ? vList : new Int16List.fromList(vList);
-    return ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
-        ? invalidValuesError(vList)
-        : new Int16List.fromList(vList);
-  }
-*/
-
   /// Returns a [Int16List] with the same length as [vList]. If
   /// [vList] is a [Int16List] and [asView] is _true_, then [vList] is
   /// returned; otherwise, a copy of vList is returned. No value checking
@@ -333,7 +317,6 @@ abstract class SS extends Int16Base {
 
   static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
 
-  //TODO: unit test for all isValidVListLength when fast tag is available
   static bool isValidVListLength(Tag tag, Iterable<int> vList,
           [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
@@ -412,22 +395,6 @@ abstract class Int32Base extends IntBase {
   static ByteData toByteData(Iterable<int> vList,
           {bool asView = true, bool check = true}) =>
       _asByteData(fromList(vList, asView: asView, check: check));
-
-/*
-  static Int32List toInt32List(Iterable<int> vList,
-          {bool asView = true, bool check = true}) =>
-      fromList(vList, asView: asView, check: check);
-
-  static Int32List _toInt32List(Iterable<int> vList,
-      {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList is Int32List)
-      return (asView == true) ? vList : new Int32List.fromList(vList);
-    return ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
-        ? invalidValuesError(vList)
-        : new Int32List.fromList(vList);
-  }
-*/
 
   /// Returns a [Int32List] with the same length as [vList]. If
   /// [vList] is a [Int32List] and [asView] is _true_, then [vList] is
@@ -593,21 +560,6 @@ abstract class Int64Base extends IntBase {
   static ByteData toByteData(Iterable<int> vList,
           {bool asView = true, bool check = true}) =>
       _asByteData(fromList(vList, asView: asView, check: check));
-
-/*
-  static Int64List toInt64List(Iterable<int> vList,
-          {bool asView = true, bool check = true}) =>
-      fromList(vList);
-
-  static Int64List _toInt64List(Iterable<int> vList,
-      {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList is Int64List) return vList;
-    if ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
-      return invalidValuesError(vList);
-    return new Int64List.fromList(vList);
-  }
-*/
 
   /// Returns a [Int64List] with the same length as [vList]. If
   /// [vList] is a [Int64List] and [asView] is _true_, then [vList] is
@@ -1081,7 +1033,6 @@ abstract class OW extends Uint16Base with UndefinedLengthMixin {
   @override
   bool get isLengthAlwaysValid => true;
 
-//  static const VR kVR = VR.kOW;
   static const int kVRIndex = kOWIndex;
   static const int kVRCode = kOWCode;
   static const String kVRKeyword = 'OW';
@@ -1175,22 +1126,6 @@ abstract class Uint32Base extends IntBase {
   static ByteData toByteData(Iterable<int> vList,
           {bool asView = true, bool check = true}) =>
       _asByteData(fromList(vList, asView: asView, check: check));
-
-/*
-  static Uint32List toUint32List(Iterable<int> vList,
-          {bool asView = true, bool check = true}) =>
-      fromList(vList, asView: asView, check: check);
-
-  static Uint32List _toUint32List(Iterable<int> vList,
-      {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList is Uint32List)
-      return (asView == true) ? vList : new Uint32List.fromList(vList);
-    return ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
-        ? invalidValuesError(vList)
-        : new Uint32List.fromList(vList);
-  }
-*/
 
   /// Returns a [Uint32List] with the same length as [vList]. If
   /// [vList] is a [Uint32List] and [asView] is _true_, then [vList] is
@@ -1506,22 +1441,6 @@ abstract class Uint64Base extends IntBase {
   static ByteData toByteData(Iterable<int> vList,
           {bool asView = true, bool check = true}) =>
       _asByteData(fromList(vList, asView: asView, check: check));
-
-/*
-  static Uint64List toUint64List(Iterable<int> vList,
-          {bool asView = true, bool check = true}) =>
-      fromList(vList);
-
-  static Uint64List _toUint64List(Iterable<int> vList,
-      {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList is Uint64List)
-      return (asView == true) ? vList : new Uint64List.fromList(vList);
-    return ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
-        ? invalidValuesError(vList)
-        : new Uint64List.fromList(vList);
-  }
-*/
 
   /// Returns a [Uint64List] with the same length as [vList]. If
   /// [vList] is a [Uint64List] and [asView] is _true_, then [vList] is
