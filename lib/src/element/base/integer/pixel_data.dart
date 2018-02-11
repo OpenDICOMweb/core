@@ -6,16 +6,26 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/element/base/integer.dart';
+import 'package:core/src/element/base/integer/integer.dart';
+import 'package:core/src/element/base/integer/integer_mixin.dart';
+import 'package:core/src/element/base/mixin/undefined_length_mixin.dart';
 import 'package:core/src/element/vf_fragments.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 
-abstract class PixelDataMixin {
-  Iterable<int> get values;
-  TransferSyntax get ts;
-  VFFragments get fragments;
+/// PixelDataMixin class
+abstract class PixelData {
   Tag get tag;
+  int get vfLengthField;
+  Uint8List get vfBytes;
+
+  /// Returns the [VFFragments] for this Element, if any; otherwise,
+  /// returns _null_.  Only kPixelData Elements can have [fragments].
+  VFFragments get fragments;
+
+  /// The [List<int>] of pixels.
+  List<int> get pixels;
+  TransferSyntax get ts;
 
   /// Returns _true_ if encapsulated (i.e. compressed).
   bool get isCompressed => fragments != null;
@@ -55,13 +65,26 @@ abstract class Uint16PixelDataMixin {
   Uint16List _pixels;
 }
 
-abstract class OBPixelData extends OB
-    with PixelDataMixin, Uint8PixelDataMixin {
-}
+abstract class OBPixelData extends IntBase
+    with
+        OBMixin,
+        Uint8Base,
+        PixelData,
+        Uint8PixelDataMixin,
+        UndefinedLengthMixin {}
 
-abstract class UNPixelData extends UN
-    with PixelDataMixin, Uint8PixelDataMixin {
-}
+abstract class UNPixelData extends IntBase
+    with
+        UNMixin,
+        Uint8Base,
+        PixelData,
+        Uint8PixelDataMixin,
+        UndefinedLengthMixin {}
 
-abstract class OWPixelData extends OW
-    with PixelDataMixin, Uint16PixelDataMixin {}
+abstract class OWPixelData extends IntBase
+    with
+        OWMixin,
+        Uint16Base,
+        PixelData,
+        Uint16PixelDataMixin,
+        UndefinedLengthMixin {}

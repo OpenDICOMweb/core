@@ -261,7 +261,7 @@ void main() {
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
         final us0 =
-            new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
+             UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(uInt8ListV11));
         expect(us0.values is Uint16List, true);
@@ -270,7 +270,7 @@ void main() {
         // Test Base64
         final base64 = BASE64.encode(uInt8ListV11);
         final us1 =
-            new UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
+             UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0 == us1, true);
         expect(us1.value, equals(us0.value));
 
@@ -278,7 +278,7 @@ void main() {
         final uInt16ListV2 = new Uint16List.fromList(uInt16List1);
         final uInt8ListV12 = uInt16ListV2.buffer.asUint8List();
         final us2 =
-            new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV12);
+             UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV12);
         expect(us2.hasValidValues, false);
       }
     });
@@ -287,7 +287,7 @@ void main() {
       final uInt16ListV1 = new Uint16List.fromList(uInt16Min);
       final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
       final us5 =
-          new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
+           UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
       expect(us5.hasValidValues, true);
       expect(us5.vfBytes, equals(uInt8ListV11));
       expect(us5.values is Uint16List, true);
@@ -348,7 +348,7 @@ void main() {
         final uInt16ListV11 = uInt16ListV1.buffer.asUint8List();
         final base64 = BASE64.encode(uInt16ListV11);
         final us0 =
-            new UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
+             UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0.hasValidValues, true);
       }
     });
@@ -357,7 +357,7 @@ void main() {
       final uInt16ListV1 = new Uint16List.fromList(uInt16Min);
       final uInt16ListV11 = uInt16ListV1.buffer.asUint8List();
       final base64 = BASE64.encode(uInt16ListV11);
-      final us0 = new UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
+      final us0 =  UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
       expect(us0.hasValidValues, true);
     });
 
@@ -375,7 +375,7 @@ void main() {
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV1 = uInt16ListV1.buffer.asUint8List();
         final us0 =
-            new UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV1);
+             UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV1);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(uInt8ListV1));
         expect(us0.values is Uint16List, true);
@@ -389,7 +389,7 @@ void main() {
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
         final base64 = BASE64.encode(uInt8ListV11);
-        final us0 = UStag.fromB64(PTag.kRepresentativeFrameNumber, base64);
+        final us0 = UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0.hasValidValues, true);
       }
     });
@@ -1473,7 +1473,7 @@ void main() {
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
         final base64 = BASE64.encode(uInt8ListV11);
-        final ow0 = OWtag.fromBase64(PTag.kEdgePointIndexList, base64, 10);
+        final ow0 = OWtag.fromBase64(PTag.kEdgePointIndexList, base64);
         expect(ow0.hasValidValues, true);
       }
     });

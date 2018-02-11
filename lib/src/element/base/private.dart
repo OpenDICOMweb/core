@@ -10,7 +10,7 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/logger/formatter.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 
 // Note: PrivateData Elements are just regular [Element]s
 abstract class PrivateElement<V> extends Element<V> {

@@ -15,11 +15,11 @@ import 'package:core/src/dataset/element_list/element_list.dart';
 import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/dataset/private_group.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/pixel_data.dart';
+import 'package:core/src/element/base/integer/pixel_data.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/issues.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/uid/uid.dart';
 
 // ignore_for_file: unnecessary_getters_setters

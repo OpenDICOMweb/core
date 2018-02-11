@@ -337,7 +337,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = AS.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final as0 = new AStag.fromBytes(PTag.kPatientAge, bytes);
+        final as0 = AStag.fromBytes(PTag.kPatientAge, bytes);
         log.debug('as0: ${as0.info}');
         expect(as0.hasValidValues, true);
       }
@@ -1125,7 +1125,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = DA.toBytes(s);
         log.debug('bytes:$bytes');
-        final da0 = new DAtag.fromBytes(PTag.kCreationDate, bytes);
+        final da0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
         log.debug('da0: ${da0.info}');
         expect(da0.hasValidValues, true);
       }
@@ -1137,7 +1137,7 @@ void main() {
         final vList1 = rsg.getDAList(1, 1);
         final bytes = DA.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final da0 = new DAtag.fromBytes(PTag.kCreationDate, bytes);
+        final da0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
         log.debug('da0: ${da0.info}');
         expect(da0.hasValidValues, true);
       }
@@ -1682,7 +1682,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = DT.toBytes(s);
         log.debug('bytes:$bytes');
-        final dt0 = new DTtag.fromBytes(PTag.kDateTime, bytes);
+        final dt0 = DTtag.fromBytes(PTag.kDateTime, bytes);
         log.debug('dt0: ${dt0.info}');
         expect(dt0.hasValidValues, true);
       }
@@ -1695,7 +1695,7 @@ void main() {
         final vList1 = rsg.getDTList(1, 1);
         final bytes = DT.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final dt0 = new DTtag.fromBytes(PTag.kDateTime, bytes);
+        final dt0 = DTtag.fromBytes(PTag.kDateTime, bytes);
         log.debug('dt0: ${dt0.info}');
         expect(dt0.hasValidValues, true);
       }
@@ -2772,8 +2772,9 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getTMList(1, 1);
         final bytes = TM.toBytes(vList1);
-        final tm0 = new TMtag.fromBytes(PTag.kTagAngleSecondAxis, bytes);
-        expect(tm0.hasValidValues, true);
+// Urgent Sharath: invalid tag in next line
+//        final tm0 = TMtag.fromBytes(PTag.kTagAngleSecondAxis, bytes);
+//        expect(tm0.hasValidValues, true);
       }
     });
 
@@ -2782,7 +2783,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = TM.toBytes(s);
         log.debug('bytes:$bytes');
-        final tm0 = new TMtag.fromBytes(PTag.kModifiedImageTime, bytes);
+        final tm0 = TMtag.fromBytes(PTag.kModifiedImageTime, bytes);
         log.debug('tm0: ${tm0.info}');
         expect(tm0.hasValidValues, true);
       }

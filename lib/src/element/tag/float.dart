@@ -9,7 +9,6 @@ import 'dart:typed_data';
 
 import 'package:core/core.dart';
 import 'package:core/src/element/base/float.dart';
-import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag/tag.dart';
@@ -40,7 +39,7 @@ class FLtag extends FL with TagElement<double> {
   FLtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new FLtag(tag, vList);
 
-  static FLtag make<double>(Tag tag, Iterable<double> vList) =>
+  static FLtag make(Tag tag, Iterable<double> vList) =>
       new FLtag(tag, vList ?? kEmptyDoubleList);
 
   static FLtag fromBase64(Tag tag, String s) =>
@@ -49,8 +48,7 @@ class FLtag extends FL with TagElement<double> {
   static FLtag fromBytes(Tag tag, Uint8List bytes) =>
       new FLtag._fromBytes(tag, bytes);
 
-  static FLtag fromBDE(BDElement bde) =>
-      new FLtag._fromBytes(bde.tag, bde.vfBytes);
+  static FLtag fromBDE(Element e) => new FLtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// Other Float - Array of IEEE single precision
@@ -81,7 +79,7 @@ class OFtag extends OF with TagElement<double> {
   OFtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new OFtag(tag, vList);
 
-  static OFtag make<double>(Tag tag, Iterable<double> vList) =>
+  static OFtag make(Tag tag, Iterable<double> vList) =>
       new OFtag(tag, vList ?? kEmptyDoubleList);
 
   static OFtag fromBase64(Tag tag, String s) =>
@@ -90,8 +88,7 @@ class OFtag extends OF with TagElement<double> {
   static OFtag fromBytes(Tag tag, Uint8List bytes) =>
       new OFtag._fromBytes(tag, bytes);
 
-  static OFtag fromBDE(BDElement bde) =>
-      new OFtag._fromBytes(bde.tag, bde.vfBytes);
+  static OFtag fromBDE(Element e) => new OFtag._fromBytes(e.tag, e.vfBytes);
 }
 
 Float32List _f32FromBytes(Uint8List bytes) => Float32Base.fromBytes(bytes);
@@ -122,7 +119,7 @@ class FDtag extends FD with TagElement<double> {
   FDtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new FDtag(tag, vList);
 
-  static FDtag make<double>(Tag tag, Iterable<double> vList) =>
+  static FDtag make(Tag tag, Iterable<double> vList) =>
       new FDtag(tag, vList ?? kEmptyDoubleList);
 
   static FDtag fromBase64(Tag tag, String s) =>
@@ -131,8 +128,7 @@ class FDtag extends FD with TagElement<double> {
   static FDtag fromBytes(Tag tag, Uint8List bytes) =>
       new FDtag._fromBytes(tag, bytes);
 
-  static FDtag fromBDE(BDElement bde) =>
-      new FDtag._fromBytes(bde.tag, bde.vfBytes);
+  static FDtag fromBDE(Element e) => new FDtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.
@@ -150,11 +146,11 @@ class ODtag extends OD with TagElement<double> {
           ? new ODtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory ODtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (OD.isNotValidTag(tag)) ? null : new ODtag._(tag, _f64FromBytes(bytes));
-
   factory ODtag.bulkdata(Tag tag, String url) =>
       new ODtag._(tag, new FloatBulkdata(tag.code, url));
+
+  factory ODtag._fromBytes(Tag tag, Uint8List bytes) =>
+      (OD.isNotValidTag(tag)) ? null : new ODtag._(tag, _f64FromBytes(bytes));
 
   ODtag._(this.tag, this.values);
 
@@ -162,7 +158,7 @@ class ODtag extends OD with TagElement<double> {
   ODtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new ODtag(tag, vList);
 
-  static ODtag make<double>(Tag tag, Iterable<double> vList) =>
+  static ODtag make(Tag tag, Iterable<double> vList) =>
       new ODtag(tag, vList ?? kEmptyDoubleList);
 
   static ODtag fromBase64(Tag tag, String s) =>
@@ -171,8 +167,7 @@ class ODtag extends OD with TagElement<double> {
   static ODtag fromBytes(Tag tag, Uint8List bytes) =>
       new ODtag._fromBytes(tag, bytes);
 
-  static ODtag fromBDE(BDElement bde) =>
-      new ODtag._fromBytes(bde.tag, bde.vfBytes);
+  static ODtag fromBDE(Element e) => new ODtag._fromBytes(e.tag, e.vfBytes);
 }
 
 Float64List _f64FromBytes(Uint8List bytes) => Float64Base.fromBytes(bytes);

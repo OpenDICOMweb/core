@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/vr/vr.dart';
 
 // TODO: move to dictionary

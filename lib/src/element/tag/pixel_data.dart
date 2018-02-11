@@ -7,8 +7,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/element/base/integer.dart';
-import 'package:core/src/element/base/pixel_data.dart';
+import 'package:core/src/element/base/integer/integer.dart';
+import 'package:core/src/element/base/integer/integer_mixin.dart';
+import 'package:core/src/element/base/integer/pixel_data.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/empty_list.dart';
@@ -58,7 +59,7 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static OBtagPixelData fromBDE(OBPixelData e, [TransferSyntax ts]) =>
+  static OBtagPixelData fromBDE(IntBase e, [TransferSyntax ts]) =>
       fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
@@ -113,7 +114,7 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static UNtagPixelData fromBDE(UNPixelData e, [TransferSyntax ts]) =>
+  static UNtagPixelData fromBDE(IntBase e, [TransferSyntax ts]) =>
       fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
@@ -176,7 +177,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static OWtagPixelData fromBDE(OWPixelData e, [TransferSyntax ts]) =>
+  static OWtagPixelData fromBDE(IntBase e, [TransferSyntax ts]) =>
       fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [OWtagPixelData] Element from a [Uint8List].

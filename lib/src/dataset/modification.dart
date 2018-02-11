@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/element/tag/tag_element.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 
 enum ChangeType { created, replaced, modified, deleted }
 

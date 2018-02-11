@@ -266,8 +266,7 @@ void main() {
         final vList1 = rsg.getLOList(1, 1);
         final bytes = LO.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final lo0 =
-            new LOtag.fromBytes(PTag.kReceiveCoilManufacturerName, bytes);
+        final lo0 = LOtag.fromBytes(PTag.kReceiveCoilManufacturerName, bytes);
         log.debug('lo0: ${lo0.info}');
         expect(lo0.hasValidValues, true);
       }
@@ -910,7 +909,7 @@ void main() {
         log.debug('vList1:$vList1');
         final bytes = LT.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final lt0 = new LTtag.fromBytes(PTag.kImageComments, bytes);
+        final lt0 = LTtag.fromBytes(PTag.kImageComments, bytes);
         log.debug('lt0: ${lt0.info}');
         expect(lt0.hasValidValues, true);
       }
@@ -1526,7 +1525,7 @@ void main() {
         final vList1 = rsg.getPNList(1, 1);
         final bytes = PN.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final pn0 = new PNtag.fromBytes(PTag.kOrderEnteredBy, bytes);
+        final pn0 = PNtag.fromBytes(PTag.kOrderEnteredBy, bytes);
         log.debug('pn0: ${pn0.info}');
         expect(pn0.hasValidValues, true);
       }
@@ -2120,7 +2119,7 @@ void main() {
         final vList1 = rsg.getSHList(1, 1);
         final bytes = SH.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final sh0 = new SHtag.fromBytes(PTag.kTextureLabel, bytes);
+        final sh0 = SHtag.fromBytes(PTag.kTextureLabel, bytes);
         log.debug('sh0: ${sh0.info}');
         expect(sh0.hasValidValues, true);
       }
@@ -2757,7 +2756,7 @@ void main() {
         final vList1 = rsg.getSTList(1, 1);
         final bytes = ST.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final st0 = new STtag.fromBytes(PTag.kSelectorSTValue, bytes);
+        final st0 = STtag.fromBytes(PTag.kSelectorSTValue, bytes);
         log.debug('st0: ${st0.info}');
         expect(st0.hasValidValues, true);
       }
@@ -2819,7 +2818,7 @@ void main() {
         expect(dbTxt0, equals(vList1));
 
         final dbTxt1 =
-        StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
+            StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
         log.debug('dbTxt1: $dbTxt1');
         expect(dbTxt1, equals(vList1));
       }
@@ -3350,7 +3349,7 @@ void main() {
         final vList1 = rsg.getUCList(1, 1);
         final bytes = UC.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final uc0 = new UCtag.fromBytes(PTag.kStrainDescription, bytes);
+        final uc0 = UCtag.fromBytes(PTag.kStrainDescription, bytes);
         log.debug('uc0: ${uc0.info}');
         expect(uc0.hasValidValues, true);
       }
@@ -3931,7 +3930,7 @@ void main() {
         final vList1 = rsg.getUTList(1, 1);
         final bytes = UT.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final ut0 = new UTtag.fromBytes(PTag.kUniversalEntityID, bytes);
+        final ut0 = UTtag.fromBytes(PTag.kUniversalEntityID, bytes);
         log.debug('ut0: ${ut0.info}');
         expect(ut0.hasValidValues, true);
       }
@@ -3992,7 +3991,7 @@ void main() {
         expect(dbTxt0, equals(vList1));
 
         final dbTxt1 =
-        StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
+            StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
         log.debug('dbTxt1: $dbTxt1');
         expect(dbTxt1, equals(vList1));
       }
@@ -4222,6 +4221,5 @@ void main() {
       final values = ASCII.encode(vList1[0]);
       expect(UT.toBytes(vList1), equals(values));
     });
-
   });
 }

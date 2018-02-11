@@ -8,7 +8,7 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/system/system.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 

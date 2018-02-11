@@ -9,7 +9,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/float.dart';
-import 'package:core/src/element/base/integer.dart';
+import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/byte_data/evr.dart';
 import 'package:core/src/element/byte_data/ivr.dart';
@@ -132,9 +132,6 @@ abstract class Float32Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, _float32SizeInBytes);
 
   FloatBase update([Iterable<double> vList]) => unsupportedError();
-
-  FloatBase updateF(Iterable<double> f(Iterable<double> vList)) =>
-      unsupportedError();
 }
 
 // **** EVR Long Float Elements (OD, OF)
@@ -147,9 +144,6 @@ abstract class Float64Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, _float64SizeInBytes);
 
   FloatBase update([Iterable<double> vList]) => unsupportedError();
-
-  FloatBase updateF(Iterable<double> f(Iterable<double> vList)) =>
-      unsupportedError();
 }
 
 abstract class IntMixin {
@@ -157,8 +151,6 @@ abstract class IntMixin {
   int get vfOffset;
 
   IntBase update([Iterable<int> vList]) => unsupportedError();
-
-  IntBase updateF(Iterable<int> f(Iterable<int> vList)) => unsupportedError();
 }
 
 // **** 8-bit Integer Elements (OB, UN)
@@ -225,10 +217,6 @@ abstract class BDStringMixin {
   }
 
   StringBase update([Iterable<String> vList]) => unsupportedError();
-
-  // Urgent: remove after all element/base classes have this method
-  StringBase updateF(Iterable<String> f(Iterable<String> vList)) =>
-      unsupportedError();
 
 /* Flush when working
   //TODO: This should be done in convert

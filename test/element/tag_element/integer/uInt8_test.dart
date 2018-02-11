@@ -242,7 +242,7 @@ void main() {
 
         // Test Base64
         final base64 = BASE64.encode(uInt8List0);
-        final ob1 = OBtag.fromBase64(PTag.kPrivateInformation, base64, 10);
+        final ob1 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
         expect(ob0 == ob1, true);
         expect(ob1.value, equals(ob0.value));
 
@@ -334,7 +334,7 @@ void main() {
         final uInt8ListV1 = new Uint8List.fromList(uInt8list0);
         final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
         final base64 = BASE64.encode(uInt8ListV11);
-        final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64, 10);
+        final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
         expect(ob0.hasValidValues, true);
       }
     });
@@ -343,7 +343,7 @@ void main() {
       final uInt8ListV1 = new Uint8List.fromList(uInt8Min);
       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
       final base64 = BASE64.encode(uInt8ListV11);
-      final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64, 10);
+      final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
       expect(ob0.hasValidValues, true);
     });
 
@@ -375,7 +375,7 @@ void main() {
         final uInt8ListV1 = new Uint8List.fromList(uInt8list0);
         final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
         final base64 = BASE64.encode(uInt8ListV11);
-        final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64, 10);
+        final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
         expect(ob0.hasValidValues, true);
       }
     });

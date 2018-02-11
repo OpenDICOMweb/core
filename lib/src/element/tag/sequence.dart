@@ -13,7 +13,7 @@ import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/logger/formatter.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/vr/vr.dart';
 
 /// A Sequence ([SQ]) Element.

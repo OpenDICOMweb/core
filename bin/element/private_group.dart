@@ -16,7 +16,7 @@ void main() {
   print('Creator Tag: ${pcTag.info}');
   final lo = new LOtag(pcTag, ['CAMTRONICS IP']);
   print('LO: ${lo.info}');
-  final creator = new PrivateTagCreator(lo);
+  final creator = new TagPrivateCreator(lo);
   print('Creator: ${creator.info}');
   print('cElement: ${dcm(creator.code)}, '
       'pcTag: ${dcm(creator.tag.code)}');

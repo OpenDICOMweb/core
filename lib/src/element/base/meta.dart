@@ -4,7 +4,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 
 //TODO: each private creator in the same Private Group MUST have a distinct identifier;
 abstract class MetaElement<V> extends Element<V> {

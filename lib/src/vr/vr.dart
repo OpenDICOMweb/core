@@ -6,7 +6,8 @@
 import 'dart:convert';
 
 import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/element/base/integer.dart';
+import 'package:core/src/element/base/integer/integer.dart';
+import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';

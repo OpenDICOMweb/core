@@ -9,7 +9,7 @@ import 'package:core/src/element/base/private.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/string/hexadecimal.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 
 
 //TODO: needed??

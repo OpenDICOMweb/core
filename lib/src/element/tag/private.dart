@@ -11,7 +11,7 @@ import 'package:core/src/element/tag/string.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/vr/vr.dart';
 
 
@@ -59,24 +59,25 @@ class IllegalPrivateTagElement<V> extends PrivateTagElement<V> {
   IllegalPrivateTagElement(Element e, {bool wasUN}) : super(e, wasUN: wasUN);
 }
 
-class PrivateTagCreator extends LOtag {
+class TagPrivateCreator extends LOtag {
   LOtag e;
   final Map<int, Element> pData = <int, Element>{};
 
-  factory PrivateTagCreator(Element e, {bool wasUN}) =>
-      (e is LOtag) ? new PrivateTagCreator._(e, e.vrIndex == kUNIndex) :
+  factory TagPrivateCreator(Element e, {bool wasUN}) =>
+      (e is LOtag) ? new TagPrivateCreator._(e, e.vrIndex == kUNIndex) :
       invalidElementError(e);
 
-  factory PrivateTagCreator.phantom(int code) {
+  factory TagPrivateCreator.phantom(int code) {
     const values = const <String>['Phantom Private Creator'];
     final pcIndex = Elt.fromTag(code) >> 8;
     final pcCode = (code << 16) + pcIndex;
     final pct = new PCTag(pcCode, kLOIndex, 'Phantom Private Creator');
     final e = new LOtag(pct, values);
-    return new PrivateTagCreator(e);
+    return new TagPrivateCreator(e);
   }
 
-  PrivateTagCreator._(Element e, [bool wasUN = false]) : super.internal(e.tag, e.values);
+  TagPrivateCreator._(Element e, [bool wasUN = false]) :
+        super.internal(e.tag, e.values);
 
   @override
   int get maxVFLength => e.maxVFLength;

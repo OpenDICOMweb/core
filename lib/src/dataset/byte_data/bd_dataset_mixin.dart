@@ -5,7 +5,7 @@
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/element_list/element_list.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 
 /// A [DatasetBD] is a DICOM [Dataset].
 abstract class DatasetBD {

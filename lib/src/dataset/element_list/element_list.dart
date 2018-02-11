@@ -12,7 +12,7 @@ import 'package:core/src/dataset/element_list/history.dart';
 import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/float.dart';
-import 'package:core/src/element/base/integer.dart';
+import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/element/errors.dart';
@@ -20,7 +20,7 @@ import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/system/system.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/vr/vr.dart';
 

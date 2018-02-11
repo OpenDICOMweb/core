@@ -7,10 +7,10 @@
 export 'package:core/src/element/a_type.dart';
 export 'package:core/src/element/base/element.dart';
 export 'package:core/src/element/base/float.dart';
-export 'package:core/src/element/base/integer.dart';
+export 'package:core/src/element/base/integer/integer.dart';
 export 'package:core/src/element/base/meta.dart';
 export 'package:core/src/element/base/mixin/undefined_length_mixin.dart';
-export 'package:core/src/element/base/pixel_data.dart';
+export 'package:core/src/element/base/integer/pixel_data.dart';
 export 'package:core/src/element/base/private.dart';
 export 'package:core/src/element/base/sequence.dart';
 export 'package:core/src/element/base/string.dart';

@@ -234,7 +234,7 @@ void main() {
         final vList1 = rsg.getAEList(1, 1);
         final bytes = AE.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final ae1 = new AEtag.fromBytes(PTag.kPerformedStationAETitle, bytes);
+        final ae1 = AEtag.fromBytes(PTag.kPerformedStationAETitle, bytes);
         log.debug('ae1: ${ae1.info}');
         expect(ae1.hasValidValues, true);
       }
@@ -859,7 +859,7 @@ void main() {
         final vList1 = rsg.getCSList(1, 1);
         final bytes = CS.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final cs1 = new CStag.fromBytes(PTag.kGeometryOfKSpaceTraversal, bytes);
+        final cs1 = CStag.fromBytes(PTag.kGeometryOfKSpaceTraversal, bytes);
         log.debug('cs1: ${cs1.info}');
         expect(cs1.hasValidValues, true);
       }
@@ -1635,7 +1635,7 @@ void main() {
         final vList1 = rsg.getUIList(1, 1);
         final bytes = UI.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final ui0 = new UItag.fromBytes(PTag.kSOPInstanceUID, bytes);
+        final ui0 = UItag.fromBytes(PTag.kSOPInstanceUID, bytes);
         log.debug('$i: ui0: ${ui0.info}');
         expect(ui0.hasValidValues, true);
       }
@@ -2203,7 +2203,7 @@ void main() {
         final vList1 = rsg.getURList(1, 1);
         final bytes = UR.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final ur0 = new URtag.fromBytes(PTag.kRetrieveURL, bytes);
+        final ur0 = URtag.fromBytes(PTag.kRetrieveURL, bytes);
         log.debug('ur0: ${ur0.info}');
         expect(ur0.hasValidValues, true);
       }
@@ -2256,7 +2256,7 @@ void main() {
         expect(dbTxt0, equals(vList1));
 
         final dbTxt1 =
-        StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
+            StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
         log.debug('dbTxt1: $dbTxt1');
         expect(dbTxt1, equals(vList1));
       }

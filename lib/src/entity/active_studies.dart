@@ -9,7 +9,6 @@ import 'dart:collection';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/date_time/date.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/instance.dart';
 import 'package:core/src/entity/patient/patient.dart';
@@ -17,7 +16,8 @@ import 'package:core/src/entity/patient/person_name.dart';
 import 'package:core/src/entity/series.dart';
 import 'package:core/src/entity/study.dart';
 import 'package:core/src/logger/formatter.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/constants.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/uid/uid.dart';
 
 // ignore_for_file: only_throw_errors

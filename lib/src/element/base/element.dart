@@ -11,14 +11,13 @@ import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/element/errors.dart';
-import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/hash/hash64.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/vr/vr.dart';
 
 typedef bool ElementTest(Element e);
@@ -322,10 +321,6 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns the Ascii Padding Character for this [Element],
   /// if it has one; otherwise returns -1;
   int get padChar;
-
-  /// Returns the [VFFragments] for this Element, if any; otherwise,
-  /// returns _null_.  Only kPixelData Elements can have [fragments].
-  VFFragments get fragments => null;
 
   /// Returns _true_ if [vList] has a valid [length] for _this_.
   /// [vList] defaults to [values].

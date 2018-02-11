@@ -14,7 +14,7 @@ import 'package:core/src/empty_list.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/vr/vr.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic
@@ -95,18 +95,18 @@ abstract class FloatBase extends Element<double> {
 }
 
 /// An abstract class for 32-bit floating point [Element]s.
-abstract class Float32Base extends FloatBase {
-  @override
+abstract class Float32Base {
+  Iterable<double> get values;
+  FloatBase update([Iterable<double> vList]);
+
   int get sizeInBytes => kSizeInBytes;
-  @override
+
   FloatBase get sha256 => update(Sha256.float32(values));
 
-  @override
   Float32List get typedData => fromList(values);
 
   /// Returns a view of [values].
-  @override
-  Float32Base view([int start = 0, int length]) => update(
+  FloatBase view([int start = 0, int length]) => update(
       typedData.buffer.asFloat32List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 4;
@@ -169,7 +169,7 @@ abstract class Float32Base extends FloatBase {
 }
 
 /// FL
-abstract class FL extends Float32Base {
+abstract class FL extends FloatBase with Float32Base {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -249,7 +249,7 @@ abstract class FL extends Float32Base {
   static bool isValidValue(double value, [Issues issues]) => true;
 }
 
-abstract class OF extends Float32Base {
+abstract class OF extends FloatBase with Float32Base {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -316,23 +316,20 @@ abstract class OF extends Float32Base {
 }
 
 /// An abstract class for 64-bit floating point [Element]s.
-abstract class Float64Base extends FloatBase {
-  @override
+abstract class Float64Base {
+  Iterable<double> get values;
+  FloatBase update([Iterable<double> vList]);
+
   int get sizeInBytes => kSizeInBytes;
-  @override
+
   FloatBase get sha256 => update(Sha256.float64(values));
 
-  @override
   Float64List get typedData =>
       (values is Float64List) ? values : new Float64List.fromList(values);
 
   /// Returns a [Float64List.view] of [values].
-  @override
-  Float64Base view([int start = 0, int length]) {
-    if (!checkLength(values)) return invalidValuesLengthError(tag, values);
-    return update(typedData.buffer
-        .asFloat64List(start, _toLength(length, values.length)));
-  }
+  FloatBase view([int start = 0, int length]) => update(
+      typedData.buffer.asFloat64List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 8;
 
@@ -393,7 +390,7 @@ abstract class Float64Base extends FloatBase {
       (vList.offsetInBytes % kSizeInBytes) != 0;
 }
 
-abstract class FD extends Float64Base {
+abstract class FD extends FloatBase with Float64Base {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -456,7 +453,7 @@ abstract class FD extends Float64Base {
       FloatBase.isValidValues(tag, vList, issues, kMaxLength);
 }
 
-abstract class OD extends Float64Base {
+abstract class OD extends FloatBase with Float64Base {
   @override
   int get vrIndex => kVRIndex;
   @override

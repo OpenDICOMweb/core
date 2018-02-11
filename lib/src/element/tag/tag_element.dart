@@ -8,20 +8,22 @@ import 'dart:typed_data';
 
 import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/element/base/integer/integer.dart';
+import 'package:core/src/element/base/integer/pixel_data.dart';
 import 'package:core/src/element/base/mixin/tag_mixin_base.dart';
 import 'package:core/src/element/base/string.dart';
-import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/tag/export.dart';
 import 'package:core/src/string/ascii.dart';
-import 'package:core/src/tag/tag_lib.dart';
+import 'package:core/src/tag/export.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 import 'package:core/src/vr/vr.dart';
 
 typedef Element TagElementMaker(Tag tag, Iterable vList, [int vfLengthField]);
 typedef TagElement MakeFrom(Element e);
-typedef TagElement MakeFromBytes(ByteData bd);
-typedef Element MakeFromBD(BDElement bd);
+typedef TagElement MakeFromByteData(ByteData bd);
+typedef Element MakeFromBDE(Element e);
+typedef IntBase MakeFromPixelDataBDE(IntBase e, [TransferSyntax ts]);
 
 /// Tag Mixin Class
 ///
@@ -177,13 +179,26 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 
 //  static Null _sqError(EBytes eb) => invalidElementIndex(0);
 
-  static Element fromBDE(BDElement bd, [int vrIndex]) {
+  static Element fromBDE(Element bd, int vrIndex, [TransferSyntax ts]) {
     print('fromBD vrIndex: $vrIndex');
     if (vrIndex > 30) throw 'bad vrIndex $bd';
-    return _bdElementMakers[vrIndex](bd);
+    if (bd is PixelData)
+      return _bdePixelMakers[vrIndex](bd, ts);
+    return _bdeMakers[vrIndex](bd);
   }
 
-  static final List<MakeFromBD> _bdElementMakers = <MakeFromBD>[
+  static final List<MakeFromPixelDataBDE> _bdePixelMakers =
+  const <MakeFromPixelDataBDE>[
+    _vrIndexPixelDataError,
+    OBtagPixelData.fromBDE,
+    OWtagPixelData.fromBDE,
+    UNtagPixelData.fromBDE
+    ];
+
+  static Null _vrIndexPixelDataError(Element bd, [TransferSyntax ts]) =>
+      invalidElementIndex(0);
+
+  static final List<MakeFromBDE> _bdeMakers = const <MakeFromBDE>[
     _vrIndexError,
     // Maybe Undefined Lengths
     _vrIndexError, _vrIndexError, _vrIndexError, // No reformat
@@ -202,9 +217,10 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     UItag.fromBDE, ULtag.fromBDE, UStag.fromBDE,
   ];
 
-  static Null _vrIndexError(BDElement bd) => invalidElementIndex(0);
+  static Null _vrIndexError(Element bd) => invalidElementIndex(0);
 
-  static Element maybeUndefinedFromPDE(PTag tag, BDElement e, int vrIndex) {
+  static Element maybeUndefinedFromBDE(Element e, int vrIndex) {
+    assert(vrIndex == e.vrIndex);
     switch (vrIndex) {
       case kOBIndex:
         return OBtag.fromBDE(e);
@@ -217,8 +233,8 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     }
   }
 
-  static Element pixelDataFromBDE(Element e, int vrIndex,
-      [TransferSyntax ts]) {
+  static Element pixelDataFromBDE(Element e, TransferSyntax ts, int vrIndex) {
+    assert(vrIndex == e.vrIndex);
     if (e.tag != PTag.kPixelData)
       return invalidKey(e.tag, 'Invalid Tag Code for PixelData');
     switch (vrIndex) {
