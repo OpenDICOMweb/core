@@ -77,10 +77,10 @@ void main() {
     test('Create Encapsulated UNtagPixelData', () {
       final frags = new VFFragments(fragments);
       final un0 =
-          new UNtagPixelData(PTag.kNoName0, frame, kUndefinedLength, ts, frags);
+          new UNtagPixelData(PTag.kNoName0, frame, kUndefinedLength, frags, ts);
 
       final un1 = new UNtagPixelData(
-          PTag.kSelectorUNValue, frame, kUndefinedLength, ts, frags);
+          PTag.kSelectorUNValue, frame, kUndefinedLength, frags, ts);
 
       expect(un0.tag == PTag.kNoName0, true);
       expect(un0.vrIndex == kUNIndex, true);
@@ -113,11 +113,11 @@ void main() {
     test('Create Encapsulated UNtagPixelData hashCode and ==', () {
       final frags = new VFFragments(fragments);
       final un0 = new UNtagPixelData(
-          PTag.kPixelData, frame, kUndefinedLength, ts, frags);
+          PTag.kPixelData, frame, kUndefinedLength, frags, ts);
       final un1 = new UNtagPixelData(
-          PTag.kPixelData, frame, kUndefinedLength, ts, frags);
+          PTag.kPixelData, frame, kUndefinedLength, frags, ts);
       final un2 = new UNtagPixelData(
-          PTag.kVariablePixelData, frame, kUndefinedLength, ts, frags);
+          PTag.kVariablePixelData, frame, kUndefinedLength, frags, ts);
 
       expect(un0.hashCode == un1.hashCode, true);
       expect(un0 == un1, true);
@@ -241,10 +241,10 @@ void main() {
       final frags = new VFFragments(fragments);
 
       final un0 = UNtagPixelData.fromBase64(
-          PTag.kNoName0, base64, frame.lengthInBytes, ts, frags);
+          PTag.kNoName0, base64, frame.lengthInBytes, frags, ts);
 
       /*final un1 = UNtagPixelData.fromBase64(
-          PTag.kDate, base64, frame.lengthInBytes, ts, frags);*/
+          PTag.kDate, base64, frame.lengthInBytes, frags, ts);*/
 
       expect(un0.tag == PTag.kNoName0, true);
       expect(un0.vrIndex == kUNIndex, true);
@@ -278,11 +278,11 @@ void main() {
       final frags = new VFFragments(fragments);
 
       final un0 = UNtagPixelData.fromBase64(
-          PTag.kNoName0, base64, frame.lengthInBytes, ts, frags);
+          PTag.kNoName0, base64, frame.lengthInBytes, frags, ts);
       final un1 = UNtagPixelData.fromBase64(
-          PTag.kNoName0, base64, frame.lengthInBytes, ts, frags);
+          PTag.kNoName0, base64, frame.lengthInBytes, frags, ts);
       final un2 = UNtagPixelData.fromBase64(
-          PTag.kVariablePixelData, base64, frame.lengthInBytes, ts, frags);
+          PTag.kVariablePixelData, base64, frame.lengthInBytes, frags, ts);
 
       expect(un0.hashCode == un1.hashCode, true);
       expect(un0.hashCode == un2.hashCode, false);
@@ -353,7 +353,7 @@ void main() {
       expect(
           un0,
           equals(UNtagPixelData.fromBytes(
-              PTag.kNoName0, frame, frame.lengthInBytes, ts, frags)));
+              PTag.kNoName0, frame, frame.lengthInBytes, frags, ts)));
 
       expect(un0.tag == PTag.kNoName0, true);
       expect(un0.vrIndex == kUNIndex, true);
@@ -406,14 +406,14 @@ void main() {
       final base64 = BASE64.encode(frame);
       final frags = new VFFragments(fragments);
       final un0 = UNtagPixelData.fromBase64(
-          PTag.kNoName0, base64, base64.length, ts, frags);
+          PTag.kNoName0, base64, base64.length, frags, ts);
       expect(
           un0,
           equals(UNtagPixelData.fromBase64(
-              PTag.kNoName0, base64, base64.length, ts, frags)));
+              PTag.kNoName0, base64, base64.length, frags, ts)));
 
       final un1 = UNtagPixelData.fromBase64(
-          PTag.kSelectorUNValue, base64, base64.length, ts, frags);
+          PTag.kSelectorUNValue, base64, base64.length, frags, ts);
 
       expect(un0.tag == PTag.kNoName0, true);
       expect(un0.vrIndex == kUNIndex, true);
@@ -446,12 +446,12 @@ void main() {
       final base64 = BASE64.encode(frame);
       final frags = new VFFragments(fragments);
       final un0 = UNtagPixelData.fromBase64(
-          PTag.kNoName0, base64, base64.length, ts, frags);
+          PTag.kNoName0, base64, base64.length, frags, ts);
       final un1 = UNtagPixelData.fromBase64(
-          PTag.kNoName0, base64, base64.length, ts, frags);
+          PTag.kNoName0, base64, base64.length, frags, ts);
 
       final un2 = UNtagPixelData.fromBase64(
-          PTag.kVariablePixelData, base64, base64.length, ts, frags);
+          PTag.kVariablePixelData, base64, base64.length, frags, ts);
 
       //hash_code : good and bad
       expect(un0.hashCode == un1.hashCode, true);

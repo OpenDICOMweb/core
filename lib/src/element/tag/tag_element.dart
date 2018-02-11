@@ -217,20 +217,17 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     }
   }
 
-  static Element pixelDataFromBDE(PTag tag, int vrIndex, BDElement e,
+  static Element pixelDataFromBDE(Element e, int vrIndex,
       [TransferSyntax ts]) {
-    if (tag != PTag.kPixelData)
-      return invalidKey(tag, 'Invalid Tag Code for PixelData');
+    if (e.tag != PTag.kPixelData)
+      return invalidKey(e.tag, 'Invalid Tag Code for PixelData');
     switch (vrIndex) {
       case kOBIndex:
-        return OBtagPixelData.fromBytes(
-            tag, e.vfBytes, e.vfLengthField, ts, e.fragments);
+        return OBtagPixelData.fromBDE(e, ts);
       case kUNIndex:
-        return UNtagPixelData.fromBytes(
-            tag, e.vfBytes, e.vfLengthField, ts, e.fragments);
+        return UNtagPixelData.fromBDE(e, ts);
       case kOWIndex:
-        return OWtagPixelData.fromBytes(
-            tag, e.vfBytes, e.vfLengthField, ts, e.fragments);
+        return OWtagPixelData.fromBDE(e, ts);
       default:
         return invalidVRIndex(vrIndex, null, null);
     }

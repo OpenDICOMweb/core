@@ -488,12 +488,12 @@ void main() {
           throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rds.allowDuplicates = true;
-      expect(rds.add(un1), isNull);
-      expect(rds.add(aeOW1), isNull);
+      expect(rds.add(un1), false);
+      expect(rds.add(aeOW1), false);
 
       log
-        ..debug(
-            'rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
+        ..debug('rds.elements.length: ${rds.elements.length}, '
+                'rds.duplicates.length: '
             '${rds.elements.history.duplicates.length}')
         ..debug('rds.total: ${rds.total}');
       rds.elements.history.duplicates = <Element>[];
@@ -503,9 +503,9 @@ void main() {
 
       system.throwOnError = false;
       log.debug('system.throwOnError:$system.throwOnError');
-      expect(rds.add(un1), isNull);
-      expect(rds.add(aeOB0), isNull);
-      expect(rds.add(aeOW1), isNull);
+      expect(rds.add(un1), false);
+      expect(rds.add(aeOB0), false);
+      expect(rds.add(aeOW1), false);
     });
   });
 
@@ -599,8 +599,8 @@ void main() {
       final values = rootDS0.getStringList(kReceiveCoilManufacturerName);
       log
         ..debug('values: $values')
-        ..debug(
-            'isString: ${isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex)}')
+        ..debug('isString: '
+                    '${isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex)}')
         ..debug(isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex));
 
       expect(rootDS0.getStringList(kReceiveCoilManufacturerName),
@@ -924,7 +924,8 @@ void main() {
       system.throwOnError = true;
       rootDS0.add(ob0);
       log.debug(
-          'rds.elements.length: ${rootDS0.elements.length}, rds.duplicates.length: '
+          'rds.elements.length: ${rootDS0.elements.length}, '
+              'rds.duplicates.length: '
           '${rootDS0.elements.history.duplicates.length}');
       //adding duplicates
       rootDS0.allowDuplicates = false;
@@ -932,11 +933,11 @@ void main() {
           throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rootDS0.allowDuplicates = true;
-      expect(rootDS0.add(ob1), isNull);
+      expect(rootDS0.add(ob1), false);
 
       system.throwOnError = false;
       log.debug('system.throwOnError:$system.throwOnError');
-      expect(rootDS0.add(ob1), isNull);
+      expect(rootDS0.add(ob1), false);
 
       //has Duplicates
       expect(rootDS0.hasDuplicates, true);

@@ -40,9 +40,9 @@ void main() {
       expect(frags0.lengthInBytes == 0, true);
 
       final ob0 = new OBtagPixelData(PTag.kPixelData, frame1,
-                                         kUndefinedLength,ts, frags0);
+                                         kUndefinedLength, frags0, ts);
       final ob1 = new OBtagPixelData(PTag.kPixelData, frame1,
-                                         kUndefinedLength,ts, frags0);
+                                         kUndefinedLength, frags0, ts);
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
@@ -64,8 +64,10 @@ void main() {
 
     test('Create VFFragments with non-empty offsets', () {
       final frags = new VFFragments(fragments);
-      final ob0 = new OBtagPixelData(PTag.kPixelData, frame, kUndefinedLength,ts, frags);
-      final ob1 = new OBtagPixelData(PTag.kPixelData, frame, kUndefinedLength,ts, frags);
+      final ob0 = new OBtagPixelData(PTag.kPixelData,
+                                         frame, kUndefinedLength,frags, ts);
+      final ob1 = new OBtagPixelData(PTag.kPixelData,
+                                         frame, kUndefinedLength,frags, ts);
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
@@ -88,9 +90,9 @@ void main() {
     test('Create  VFFragments.fromBytes', () {
       final frags = new VFFragments(fragments);
       final ob0 = OBtagPixelData.fromBytes(
-          PTag.kPixelData, frame, frame.lengthInBytes,ts, frags);
+          PTag.kPixelData, frame, frame.lengthInBytes,frags, ts);
       final ob1 = OBtagPixelData.fromBytes(
-          PTag.kPixelData, frame, frame.lengthInBytes,ts, frags);
+          PTag.kPixelData, frame, frame.lengthInBytes,frags, ts);
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);

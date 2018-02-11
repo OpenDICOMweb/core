@@ -37,9 +37,9 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
   /// Creates an [OBtagPixelData] Element from a [Iterable<int>]
   /// of byte values (0 - 255).
   factory OBtagPixelData(Tag tag, Iterable<int> vList,
-      [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
+      [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
     final bytes = Uint8Base.fromList(vList, asView: true);
-    return _makeChecking(tag, bytes, vfLengthField, ts, fragments);
+    return fromBytes(tag, bytes, vfLengthField, fragments, ts);
   }
 
   OBtagPixelData._(
@@ -47,29 +47,24 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
 
   @override
   OBtagPixelData update([Iterable<int> vList = kEmptyIntList]) =>
-      new OBtagPixelData(tag, vList, vfLength, ts, fragments);
-
-/*
-  @override
-  OBtagPixelData updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new OBtagPixelData(tag, f(values), vfLength, ts, fragments);
-*/
+      new OBtagPixelData(tag, vList, vfLength, fragments, ts);
 
   static OBtagPixelData make(Tag tag, Iterable<int> vList) =>
       new OBtagPixelData(tag, vList, vList.length);
 
   static OBtagPixelData fromBase64(Tag tag, String base64,
-          [int vfLengthField, TransferSyntax ts, VFFragments fragments]) =>
-      _makeChecking(tag, BASE64.decode(base64), vfLengthField, ts, fragments);
+          [int vfLengthField, VFFragments fragments, TransferSyntax ts]) =>
+      fromBytes(tag, BASE64.decode(base64), vfLengthField, fragments, ts);
+
+  /// Creates an [OBtagPixelData] Element from a [Uint8List].
+  /// Returns a [Uint16List].
+  static OBtagPixelData fromBDE(OBPixelData e, [TransferSyntax ts]) =>
+      fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
   static OBtagPixelData fromBytes(Tag tag, Uint8List bytes,
-          [int vfLengthField, TransferSyntax ts, VFFragments fragments]) =>
-      _makeChecking(tag, bytes, vfLengthField, ts, fragments);
-
-  static OBtagPixelData _makeChecking(Tag tag, Uint8List bytes,
-      [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
+      [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
     vfLengthField ??= bytes.lengthInBytes;
     if (!Tag.isValidVR(tag, kOBIndex))
       return invalidTagError(tag, OBtagPixelData);
@@ -97,44 +92,38 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
   /// Creates an [UNtagPixelData] Element from a [Iterable<int>]
   /// of byte values (0 - 255).
   factory UNtagPixelData(Tag tag, Iterable<int> vList, int vfLengthField,
-      [TransferSyntax ts, VFFragments fragments]) {
+      [VFFragments fragments, TransferSyntax ts]) {
     final bytes = Uint8Base.fromList(vList, asView: true);
-    return _fromBytes(tag, bytes, vfLengthField, ts, fragments);
+    return fromBytes(tag, bytes, vfLengthField, fragments, ts);
   }
 
   UNtagPixelData._(
-      this.tag, this.values, this.vfLengthField, this.ts, this.fragments);
+      this.tag, this.values, this.vfLengthField, this.fragments, this.ts);
 
   @override
   UNtagPixelData update([Iterable<int> vList = kEmptyIntList]) =>
-      new UNtagPixelData(tag, vList, vfLength, ts, fragments);
-
-/*
-  @override
-  UNtagPixelData updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new UNtagPixelData(tag, f(values), vfLength, ts, fragments);
-*/
+      new UNtagPixelData(tag, vList, vfLength, fragments, ts);
 
   static UNtagPixelData make(Tag tag, Iterable<int> vList) =>
       new UNtagPixelData(tag, vList, vList.length);
 
   static UNtagPixelData fromBase64(Tag tag, String base64, int vfLengthField,
-          [TransferSyntax ts, VFFragments fragments]) =>
-      _fromBytes(tag, BASE64.decode(base64), vfLengthField, ts, fragments);
+          [VFFragments fragments, TransferSyntax ts]) =>
+      fromBytes(tag, BASE64.decode(base64), vfLengthField, fragments, ts);
+
+  /// Creates an [OBtagPixelData] Element from a [Uint8List].
+  /// Returns a [Uint16List].
+  static UNtagPixelData fromBDE(UNPixelData e, [TransferSyntax ts]) =>
+      fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
   static UNtagPixelData fromBytes(Tag tag, Uint8List bytes, int vfLengthField,
-          [TransferSyntax ts, VFFragments fragments]) =>
-      _fromBytes(tag, bytes, vfLengthField, ts, fragments);
-
-  static UNtagPixelData _fromBytes(
-      Tag tag, Uint8List bytes, int vfLengthField,
-      [TransferSyntax ts, VFFragments fragments]) {
+      [VFFragments fragments, TransferSyntax ts]) {
     if (!Tag.isValidVR(tag, kUNIndex))
       return invalidTagError(tag, UNtagPixelData);
     final vflf = _checkVFL(bytes.lengthInBytes, vfLengthField);
-    return new UNtagPixelData._(tag, bytes, vflf, ts, fragments);
+    return new UNtagPixelData._(tag, bytes, vflf, fragments, ts);
   }
 }
 
@@ -157,27 +146,23 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
   /// Creates an [OWtagPixelData] Element from a [Iterable<int>]
   /// of byte values (0 - kMax16BitValue).
   factory OWtagPixelData(Tag tag, Iterable<int> vList,
-          [int vfLengthField, TransferSyntax ts, VFFragments fragments]) =>
-      _fromList(tag, vList, vfLengthField, ts, fragments);
+          [int vfLengthField, VFFragments fragments, TransferSyntax ts]) =>
+      _fromList(tag, vList, vfLengthField, fragments, ts);
 
   OWtagPixelData._(
-      this.tag, this.values, this.vfLengthField, this.ts, this.fragments);
+      this.tag, this.values, this.vfLengthField, this.fragments,
+  this.ts);
 
   @override
   OWtagPixelData update([Iterable<int> vList = kEmptyIntList]) =>
-      new OWtagPixelData(tag, vList, vfLength, ts, fragments);
+      new OWtagPixelData(tag, vList, vfLength, fragments, ts);
 
-/*
-  @override
-  OWtagPixelData updateF(Iterable<int> f(Iterable<int> vList)) =>
-      new OWtagPixelData(tag, f(values), vfLength, ts, fragments);
-*/
   static OWtagPixelData _fromList(Tag tag, List<int> vList,
-      [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
+      [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
     if (_isNotValidTag(tag, kOWIndex)) return null;
     final td = Uint16Base.fromList(vList);
     final vflf = _getVFLF(td.lengthInBytes, vfLengthField);
-    return new OWtagPixelData._(tag, td, vflf, ts, fragments);
+    return new OWtagPixelData._(tag, td, vflf, fragments, ts);
   }
 
   /// Creates an [OWtagPixelData] Element from a [Iterable<int>].
@@ -187,19 +172,20 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
   /// Creates an [OWtagPixelData] Element from a [BASE64] [String].
   static OWtagPixelData fromBase64(Tag tag, String base64,
           [int vfLengthField, VFFragments fragments]) =>
-      _fromBytes(tag, BASE64.decode(base64), vfLengthField);
+      fromBytes(tag, BASE64.decode(base64), vfLengthField);
+
+  /// Creates an [OBtagPixelData] Element from a [Uint8List].
+  /// Returns a [Uint16List].
+  static OWtagPixelData fromBDE(OWPixelData e, [TransferSyntax ts]) =>
+      fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [OWtagPixelData] Element from a [Uint8List].
-  static OWtagPixelData fromBytes(Tag tag, Uint8List bytes, int vfLengthField,
-          [TransferSyntax ts, VFFragments fragments]) =>
-      _fromBytes(tag, bytes, vfLengthField, ts, fragments);
-
-  static OWtagPixelData _fromBytes(Tag tag, Uint8List bytes,
-      [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
+  static OWtagPixelData fromBytes(Tag tag, Uint8List bytes,
+      int vfLengthField, [VFFragments fragments, TransferSyntax ts]) {
     if (_isNotValidTag(tag, kOWIndex)) return null;
     final vList = Uint16Base.fromBytes(bytes);
     final vflf = _getVFLF(vList.lengthInBytes, vfLengthField);
-    return new OWtagPixelData._(tag, vList, vflf, ts, fragments);
+    return new OWtagPixelData._(tag, vList, vflf, fragments, ts);
   }
 }
 
@@ -215,7 +201,5 @@ int _getVFLF(int vfLength, int vfLengthField) =>
 /// Returns [vfLengthField] is it is valid.
 int _checkVFL(int vfLength, int vfLengthField) =>
     (vfLengthField == kUndefinedLength || vfLengthField == vfLength)
-    ? vfLengthField
-    : null;
-
-
+        ? vfLengthField
+        : null;

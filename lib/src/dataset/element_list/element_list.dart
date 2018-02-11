@@ -248,9 +248,8 @@ ElementList Summary
 
   /// Adds an [Element] to _this_.
   @override
-  void add(Element e, [Issues issues]) {
-    tryAdd(e, issues);
-  }
+  bool add(Element e, [Issues issues]) => tryAdd(e, issues);
+
 
   static const List emptyList = const <dynamic>[];
 

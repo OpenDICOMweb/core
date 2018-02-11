@@ -72,7 +72,7 @@ abstract class Dataset extends ListBase<Element> {
   @override
   void operator []=(int index, Element e) {
     if (index != e.index) return invalidElementIndex(index, element: e);
-    return elements.add(e);
+    elements.add(e);
   }
 
   // TODO: when are 2 Datasets equal
@@ -170,7 +170,7 @@ $runtimeType(#$hashCode):
       elements.getElementsInRange(min, max);
 
   @override
-  void add(Element e, [Issues issues]) => elements.add(e);
+  bool add(Element e, [Issues issues]) => elements.add(e);
 
   bool tryAdd(Element e, [Issues issues]) => elements.tryAdd(e);
 
