@@ -259,8 +259,6 @@ abstract class TagStringMixin {
   int get vfLengthField;
   StringBase update([Iterable<String> vList]);
 
-  // Urgent: remove after all element/base classes have this method
-  StringBase updateF(Iterable<String> f(Iterable<String> vList));
   // **** End interface
 
   /// Returns the actual length in bytes after removing any padding chars.
