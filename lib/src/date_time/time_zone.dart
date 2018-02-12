@@ -49,15 +49,12 @@ class TimeZone implements Comparable<TimeZone> {
 
   const TimeZone._(this.index, this.hour, this.minute, this.microseconds, this.token);
 
-  //TODO: unit test
   @override
   bool operator ==(Object other) =>
       other is TimeZone && microseconds == other.microseconds;
 
-  //TODO: unit test
   bool operator >(TimeZone other) => microseconds > other.microseconds;
 
-  //TODO: unit test
   bool operator <(TimeZone other) => !(microseconds > other.microseconds);
 
   /// The sign of the Time Zone, where -1 is before UTC, 0 is UTC, and +1 is after UTC.

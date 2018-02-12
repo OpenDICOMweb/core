@@ -325,6 +325,7 @@ Uint8List _uint8ListToBytes(List<int> data, {bool coerce = true}) {
 /// Can optionally be provided a [Uint8List] to write into.
 Uint8List _parseToBytes(
     String s, Uint8List data, OnUuidBytesError onError, int targetLength) {
+  //if (s == null || (s.length != targetLength && s.length != kUuidAsUidStringLength))
   if (s == null || s.length != targetLength)
     return invalidUuidParseToBytesError(s, targetLength);
   final bytes = _getDataBuffer(data);
@@ -338,6 +339,7 @@ Uint8List _parseToBytes(
       _toBytes(s, bytes, 8, 19, 23);
       _toBytes(s, bytes, 10, 24, kUuidStringLength);
     } else if (targetLength == kUuidAsUidStringLength) {
+      //TODO: Unit test
       _toBytes(s, bytes, 0, 0, kUuidAsUidStringLength);
     } else {
       return invalidUuidStringLengthError(s, targetLength);

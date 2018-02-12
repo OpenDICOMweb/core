@@ -703,45 +703,6 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
-/* Flush
-    test('AS fromBase64 good values', () {
-      system.throwOnError = false;
-      final vList1 = rsg.getASList(1, 1);
-      expect(AS.fromBase64(vList1), equals(vList1));
-    });
-
-    test('AS fromBase64 bad values length', () {
-      system.throwOnError = false;
-      final vList0 = rsg.getASList(AS.kMaxVFLength + 1, AS.kMaxVFLength + 1);
-      expect(AS.fromBase64(vList0), isNull);
-      system.throwOnError = true;
-      expect(() => AS.fromBase64(vList0),
-          throwsA(const isInstanceOf<InvalidVFLengthError>()));
-    });
-
-    test('AS toBase64 good values', () {
-      system.throwOnError = false;
-      var vList0 = ['01M'];
-      expect(AS.toBase64(vList0), equals(vList0));
-
-      vList0 = ['001M'];
-      expect(AS.toBase64(vList0), equals(vList0));
-
-      system.throwOnError = false;
-      final vList1 = rsg.getASList(1, 1);
-      expect(AS.toBase64(vList1), equals(vList1));
-    });
-
-    test('AS toBase64 bad values length', () {
-      system.throwOnError = false;
-      final vList0 = rsg.getASList(AS.kMaxVFLength + 1, AS.kMaxVFLength + 1);
-      expect(AS.toBase64(vList0), isNull);
-      system.throwOnError = true;
-      expect(() => AS.toBase64(vList0),
-          throwsA(const isInstanceOf<InvalidVFLengthError>()));
-    });
-*/
-
     test('AS tryDecodeVF values', () {
       final vList1 = ['001M'];
       final bytes = AS.toBytes(vList1);
@@ -1534,50 +1495,6 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
-/* Flush
-    test('DA fromBase64 good values', () {
-      system.throwOnError = false;
-      for (var s in goodDAList) {
-        final v0 = DA.fromBase64(s);
-        expect(v0, isNotNull);
-      }
-
-      final v1 = DA.fromBase64(['20161229']);
-      expect(v1, isNotNull);
-
-      final v2 = DA.fromBase64(['19950224']);
-      expect(v2, isNotNull);
-    });
-
-    test('DA fromBase64 bad values length', () {
-      system.throwOnError = false;
-      final vList0 = rsg.getDAList(DA.kMaxVFLength + 1, DA.kMaxVFLength + 1);
-      expect(DA.fromBase64(vList0), isNull);
-      system.throwOnError = true;
-      expect(() => DA.fromBase64(vList0),
-          throwsA(const isInstanceOf<InvalidVFLengthError>()));
-    });
-
-
-    test('DA toBase64 good values', () {
-      //final s = BASE64.encode(testFrame);
-      for (var v in goodDAList) {
-        expect(DA.toBase64(v), equals(v));
-      }
-      final vList1 = ['20161229'];
-      //final s0 = ASCII.encode(vList0[0]);
-      expect(DA.toBase64(vList1), equals(vList1));
-    });
-
-    test('DA toBase64 bad values length', () {
-      system.throwOnError = false;
-      final vList0 = rsg.getDAList(DA.kMaxVFLength + 1, DA.kMaxVFLength + 1);
-      expect(DA.toBase64(vList0), isNull);
-      system.throwOnError = true;
-      expect(() => DA.toBase64(vList0),
-          throwsA(const isInstanceOf<InvalidVFLengthError>()));
-    });
-*/
     test('DA tryDecodeVF', () {
       final vList1 = ['19500712'];
       final bytes = DA.toBytes(vList1);
@@ -2429,50 +2346,6 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
-/*
-    test('DT fromBase64 good values', () {
-      system.throwOnError = false;
-      for (var s in goodDTList) {
-        final v0 = DT.fromBase64(s);
-        expect(v0, isNotNull);
-      }
-
-      final v1 = DT.fromBase64(['20161229000000']);
-      expect(v1, isNotNull);
-
-      final v2 = DT.fromBase64(['21231229000000']);
-      expect(v2, isNotNull);
-    });
-
-    test('DT fromBase64 bad values length', () {
-      system.throwOnError = false;
-      final vList0 = rsg.getDTList(DT.kMaxVFLength + 1, DT.kMaxVFLength + 1);
-      expect(DT.fromBase64(vList0), isNull);
-      system.throwOnError = true;
-      expect(() => DT.fromBase64(vList0),
-          throwsA(const isInstanceOf<InvalidVFLengthError>()));
-    });
-
-    test('DT toBase64 good values', () {
-      //final s = BASE64.encode(testFrame);
-      for (var v in goodDTList) {
-        expect(DT.toBase64(v), equals(v));
-      }
-      final vList1 = ['20161229000000'];
-      //final s0 = ASCII.encode(vList0[0]);
-      expect(DT.toBase64(vList1), equals(vList1));
-    });
-
-    test('DT toBase64 bad values length', () {
-      system.throwOnError = false;
-      final vList0 = rsg.getDTList(DT.kMaxVFLength + 1, DT.kMaxVFLength + 1);
-      expect(DT.toBase64(vList0), isNull);
-      system.throwOnError = true;
-      expect(() => DT.toBase64(vList0),
-          throwsA(const isInstanceOf<InvalidVFLengthError>()));
-    });
-*/
-
     test('DT tryDecodeVF', () {
       final vList1 = ['19500718105630'];
       final bytes = DT.toBytes(vList1);
@@ -2483,7 +2356,6 @@ void main() {
   });
 
   group('TM Test', () {
-//    system.level = Level.debug2;
     log
       ..debug('kMinEpochMicroseconds: $kMinEpochMicrosecond')
       ..debug('kMaxEpochMicroseconds: $kMaxEpochMicrosecond')
@@ -2552,9 +2424,7 @@ void main() {
     ];
 
     test('TM hasValidValues good values random', () {
-//      system.level = Level.debug2;
       for (var i = 0; i < 10; i++) {
-//        system.level = Level.debug2;
         final vList0 = rsg.getTMList(1, 1);
         log.debug('vList0: $vList0');
         final tm0 = new TMtag(PTag.kModifiedImageTime, vList0);
@@ -2772,9 +2642,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getTMList(1, 1);
         final bytes = TM.toBytes(vList1);
-// Urgent Sharath: invalid tag in next line
-//        final tm0 = TMtag.fromBytes(PTag.kTagAngleSecondAxis, bytes);
-//        expect(tm0.hasValidValues, true);
+        final tm0 = TMtag.fromBytes(PTag.kTime, bytes);
+        expect(tm0.hasValidValues, true);
       }
     });
 
@@ -3240,48 +3109,6 @@ void main() {
       expect(() => TM.toBytes(vList0),
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
-
-/*
-    test('TM fromBase64 good values', () {
-      system.throwOnError = false;
-      final vList1 = rsg.getTMList(1, 1);
-
-      final v0 = TM.fromBase64(vList1);
-      expect(v0, isNotNull);
-
-      final v1 = TM.fromBase64(['19010112345657']);
-      expect(v1, isNotNull);
-
-      final v2 = TM.fromBase64(['19010112345657']);
-      expect(v2, isNotNull);
-    });
-
-    test('TM fromBase64 bad values length', () {
-      system.throwOnError = false;
-      final vList0 = rsg.getTMList(TM.kMaxVFLength + 1, TM.kMaxVFLength + 1);
-      expect(TM.fromBase64(vList0), isNull);
-      system.throwOnError = true;
-      expect(() => TM.fromBase64(vList0),
-          throwsA(const isInstanceOf<InvalidVFLengthError>()));
-    });
-
-    test('TM toBase64 good values', () {
-      final vList0 = rsg.getTMList(1, 1);
-      expect(TM.toBase64(vList0), equals(vList0));
-
-      final vList1 = ['19010112345657'];
-      expect(TM.toBase64(vList1), equals(vList1));
-    });
-
-    test('TM toBase64 bad values length', () {
-      system.throwOnError = false;
-      final vList0 = rsg.getTMList(TM.kMaxVFLength + 1, TM.kMaxVFLength + 1);
-      expect(TM.toBase64(vList0), isNull);
-      system.throwOnError = true;
-      expect(() => TM.toBase64(vList0),
-          throwsA(const isInstanceOf<InvalidVFLengthError>()));
-    });
-*/
 
     test('TM tryDecodeVF', () {
       final vList1 = rsg.getTMList(1, 1);

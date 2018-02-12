@@ -21,7 +21,7 @@ final int kMaxYear = system.maxYear;
 final int kMinYearInMicroseconds =
     dateToEpochDay(kMinYear, 1, 1) * kMicrosecondsPerDay;
 final int kMaxYearInMicroseconds =
-    dateToEpochDay(kMinYear, 1, 1) * kMicrosecondsPerDay;
+    dateToEpochDay(kMaxYear, 1, 1) * kMicrosecondsPerDay;
 
 /// The minimum Unix Epoch day for this [System].
 final int kMinEpochDay = _dateToEpochDay(kMinYear, 1, 1);

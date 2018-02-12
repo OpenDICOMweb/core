@@ -55,24 +55,19 @@ class Time implements Comparable<Time> {
   bool operator ==(Object other) =>
       (other is Time) ? uSeconds == other.uSeconds : false;
 
-  //TODO: unit test
   bool operator >(Time other) => uSeconds > other.uSeconds;
 
-  //TODO: unit test
   bool operator <(Time other) => !(uSeconds > other.uSeconds);
 
-  //TODO: unit test to verify
   /// Returns `true` if this Duration is the same object as [other].
   Time operator +(Time other) => new Time._(uSeconds + other.uSeconds);
 
-  //TODO: unit test to verify
   /// Returns `true` if this Duration is the same object as [other].
   Time operator -(Time other) => new Time._(uSeconds - other.uSeconds);
 
   @override
   int get hashCode => uSeconds.hashCode;
 
-  //TODO: unit test
   /// Returns a new [Time] containing the [hash] of _this_.
   Time get hash => new Time._(hashTimeMicroseconds(uSeconds));
 
