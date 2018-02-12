@@ -747,7 +747,7 @@ void main() {
       final bytes = AS.toBytes(vList1);
       log.debug('AS.fromBytes(bytes): ${AS.fromBytes(
             bytes)}, bytes: $bytes');
-      expect(AS.tryDecodeVF(bytes), equals(vList1));
+      expect(AS.fromBytes(bytes), equals(vList1));
     });
 
     test('AS checkList good values', () {
@@ -1583,7 +1583,7 @@ void main() {
       final bytes = DA.toBytes(vList1);
       log.debug('DA.fromBytes(bytes): ${DA.fromBytes(
             bytes)}, bytes: $bytes');
-      expect(DA.tryDecodeVF(bytes), equals(vList1));
+      expect(DA.fromBytes(bytes), equals(vList1));
     });
 
     test('DA checkList good values', () {
@@ -2478,7 +2478,7 @@ void main() {
       final bytes = DT.toBytes(vList1);
       log.debug('DT.fromBytes(bytes): ${DT.fromBytes(
             bytes)}, bytes: $bytes');
-      expect(DT.tryDecodeVF(bytes), equals(vList1));
+      expect(DT.fromBytes(bytes), equals(vList1));
     });
   });
 
@@ -3288,7 +3288,7 @@ void main() {
       final bytes = TM.toBytes(vList1);
       log.debug('TM.fromBytes(bytes): ${TM.fromBytes(
             bytes)}, bytes: $bytes');
-      expect(TM.tryDecodeVF(bytes), equals(vList1));
+      expect(TM.fromBytes(bytes), equals(vList1));
     });
 
     test('TM checkList good values', () {
