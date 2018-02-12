@@ -110,15 +110,12 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   /// _Note_: All arguments MUST be valid.
   DcmDateTime._(this.microseconds);
 
-  //TODO: unit test
   @override
   bool operator ==(Object other) =>
       other is DcmDateTime && microseconds == other.microseconds;
 
-  //TODO: unit test
   bool operator >(DcmDateTime other) => microseconds > other.microseconds;
 
-  //TODO: unit test
   bool operator <(DcmDateTime other) => !(microseconds > other.microseconds);
 
   @override

@@ -55,18 +55,14 @@ class Date implements Comparable<Date> {
   /// Creates a [Date].
   Date._(this.microseconds);
 
-  //TODO: unit test
   @override
   bool operator ==(Object other) =>
       other is Date && microseconds == other.microseconds;
 
-  //TODO: unit test
   bool operator >(Date other) => microseconds > other.microseconds;
 
-  //TODO: unit test
   bool operator <(Date other) => !(microseconds > other.microseconds);
 
-  //TODO: unit test
   @override
   int get hashCode => microseconds.hashCode;
 
@@ -122,11 +118,9 @@ class Date implements Comparable<Date> {
   /// Returns a [String] containing the name (in English) of the [day].
   String get weekdayName => weekdayNames[weekday];
 
-  //TODO: unit test
   /// Returns true if this occurs after other.
   bool isAfter(Date other) => microseconds > other.microseconds;
 
-  //TODO: unit test
   /// Returns true if this occurs before other.
   bool isBefore(Date other) => !isAfter(other);
 

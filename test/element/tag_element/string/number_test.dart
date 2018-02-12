@@ -104,7 +104,7 @@ void main() {
     test('DS isValidValue good values', () {
       for (var vList in goodDSList) {
         system.throwOnError = false;
-        print('s: "$vList"');
+        log.debug('s: "$vList"');
         expect(DS.isValidValue(vList[0]), true);
       }
     });
@@ -112,7 +112,7 @@ void main() {
     test('DS hasValidValues good values', () {
       for (var s in goodDSList) {
         system.throwOnError = false;
-        print('s: "$s"');
+        log.debug('s: "$s"');
         final ds0 = new DStag(PTag.kProcedureStepProgress, s);
         expect(ds0.hasValidValues, true);
 
@@ -596,7 +596,7 @@ void main() {
     test('DS isValidValueLength bad values', () {
       for (var s in badDSLengthValues) {
         for (var a in s) {
-          print(a);
+          log.debug(a);
           expect(DS.isValidValueLength(a), false);
         }
       }
@@ -911,7 +911,7 @@ void main() {
 
     test('DS decodeBinaryVF', () {
       //  system.level = Level.debug;;
-      final vList1 = rsg.getCSList(1, 1);
+      final vList1 = rsg.getDSList(1, 1);
       final bytes = DS.toBytes(vList1);
       log.debug(
           'DS.decodeBinaryVF(bytes): ${DS.toBytes(vList1)}, bytes: $bytes');
@@ -929,32 +929,6 @@ void main() {
       final values = ASCII.encode(vList1[0]);
       expect(DS.toBytes(vList1), equals(values));
     });
-
-/*
-    test('DS fromBase64', () {
-      system.throwOnError = false;
-      final vList1 = rsg.getDSList(1, 1);
-
-      final v0 = DS.fromBase64(vList1);
-      expect(v0, isNotNull);
-
-      final v1 = DS.fromBase64(['-6.1e-1']);
-      expect(v1, isNotNull);
-
-      final v2 = DS.fromBase64(['567']);
-      expect(v2, isNotNull);
-    });
-
-    test(' DS toBase64', () {
-      //final s = BASE64.encode(testFrame);
-      final vList0 = rsg.getDSList(1, 1);
-      expect(DS.toBase64(vList0), equals(vList0));
-
-      final vList1 = ['-6.1e-1'];
-      //final s0 = ASCII.encode(vList0[0]);
-      expect(DS.toBase64(vList1), equals(vList1));
-    });
-*/
 
     test('DS tryParse', () {
       system.throwOnError = false;
@@ -1039,6 +1013,37 @@ void main() {
         system.throwOnError = true;
         expect(() => DS.checkList(PTag.kPatientSize, s),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+    });
+
+    test('DS decodeBinaryStringVF', () {
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getDSList(1, i);
+        final bytes = DS.toBytes(vList1);
+        final dbStr0 = StringBase.decodeBinaryStringVF(bytes, kMaxShortVF);
+        log.debug('dbStr0: $dbStr0');
+        expect(dbStr0, vList1);
+
+        final dbStr1 =
+            StringBase.decodeBinaryStringVF(bytes, kMaxShortVF, isAscii: false);
+        log.debug('dbStr1: $dbStr1');
+        expect(dbStr1, vList1);
+      }
+      final bytes = DS.toBytes([]);
+      expect(StringBase.decodeBinaryStringVF(bytes, kMaxShortVF), <String>[]);
+    });
+
+
+    test('DS fromByteData', () {
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getDSList(1, i);
+        final bytes = DS.toBytes(vList1);
+        final bd = bytes.buffer.asByteData();
+        log
+          ..debug('vList1 : $vList1')
+          ..debug('DS.fromByteData(bd) ; ${DS.fromByteData(bd)}');
+
+        expect(DS.fromByteData(bd), equals(vList1));
       }
     });
   });
@@ -1778,7 +1783,7 @@ void main() {
 
     test('IS decodeBinaryVF', () {
       //  system.level = Level.debug;;
-      final vList1 = rsg.getCSList(1, 1);
+      final vList1 = rsg.getISList(1, 1);
       final bytes = IS.toBytes(vList1);
       log.debug(
           'IS.decodeBinaryVF(bytes): ${IS.toBytes(vList1)}, bytes: $bytes');
@@ -1796,32 +1801,6 @@ void main() {
       final values = ASCII.encode(vList1[0]);
       expect(IS.toBytes(vList1), equals(values));
     });
-/*
-
-    test('IS fromBase64', () {
-      system.throwOnError = false;
-      final vList1 = rsg.getISList(1, 1);
-
-      final v0 = IS.fromBase64(vList1);
-      expect(v0, isNotNull);
-
-      final v1 = IS.fromBase64(['123']);
-      expect(v1, isNotNull);
-
-      final v2 = IS.fromBase64(['PIA']);
-      expect(v2, isNotNull);
-    });
-
-    test('IS toBase64', () {
-      //final s = BASE64.encode(testFrame);
-      final vList0 = rsg.getISList(1, 1);
-      expect(IS.toBase64(vList0), equals(vList0));
-
-      final vList1 = ['123'];
-      //final s0 = ASCII.encode(vList0[0]);
-      expect(IS.toBase64(vList1), equals(vList1));
-    });
-*/
 
     test('IS tryParse', () {
       system.throwOnError = false;
@@ -1951,6 +1930,19 @@ void main() {
         system.throwOnError = true;
         expect(() => IS.checkList(PTag.kBeamOrderIndexTrial, s),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+    });
+
+    test('IS fromByteData', () {
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getDSList(1, i);
+        final bytes = IS.toBytes(vList1);
+        final bd = bytes.buffer.asByteData();
+        log
+          ..debug('vList1 : $vList1')
+          ..debug('IS.fromByteData(bd) ; ${IS.fromByteData(bd)}');
+
+        expect(IS.fromByteData(bd), equals(vList1));
       }
     });
   });

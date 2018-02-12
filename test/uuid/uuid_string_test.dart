@@ -25,12 +25,25 @@ void main() {
   Server.initialize(name: 'uuid_string_test', level: Level.info);
 
   group('Uuid Tests', () {
+    final goodUuidList0 = <String>[
+      '09bb1d8c-4965-4788-94f7-31b151eaba4e',
+      '23d57c30-afe7-41e4-ab7d-12e3f512a338',
+      '6ba7b810-9dad-41d1-80b4-00c04fd43034',
+      '6ba7b810-9dad-41d4-80b4-00c04fd430c8',
+    ];
+
+    final badUuidList0 = <String>[
+      '09bb1d8c-4965-4788-94f7-31b1eaba4e',
+      '23d57c30-afe7-11e4-ab7-d12e3f512a338',
+      '6ba7b810-9dad-41d1-80b4-00c04fd430',
+      '6ba7b810-9dad-11d4-80-b400c04fd430c8',
+      '23d57c30afe741e4ab7d1-3f512a338',
+      '6ba7b810-9dad41d48-0b400c04fd430c8'
+    ];
     // The data in this test is in data.dart
     test('Uuid Test with seed', () {
       final uuid0 = new Uuid.seededPseudo();
-      log
-        ..debug('seed: ${Uuid.seed}')
-        ..debug('Uuid: $uuid0');
+      log..debug('seed: ${Uuid.seed}')..debug('Uuid: $uuid0');
       expect(uuid0.asString, equals(s0));
 
       final uuid1 = new Uuid.seededPseudo();
@@ -71,25 +84,67 @@ void main() {
 
       //fixes issue #1 (character casing correct at col 19)
       expect(Uuid.isValidString('97a90793-4898-4abe-b255-e8dc6967ed40'), true);
+
+      for (var uuid in goodUuidList0) {
+        system.throwOnError = false;
+        final uuid0 = Uuid.isValidString(uuid);
+        expect(uuid0, true);
+      }
     });
 
-    /*test("UUid", (){
-      Uuid uuid0 = new Uuid('6ba7b810-9dad-41d1-80b4-00c04fd430c8');
-      log.debug(uuid0.bytes);
-      log.debug(uuid0.isValid);//check once
-    });
-    test("parse", () {
-      String uuid0 = "6ba7b810-9dad-41d1-80b4-00c04fd430c8";
-      Uuid uuid2 = Uuid.parse(uuid0);
-      Uuid uuid3 = new Uuid('6ba7b810-9dad-41d1-80b4-00c04fd430c8');
-      log.debug('Uuid.parse: ${uuid2}, uuid0: $uuid0');
-      log.debug('uuid2.bytes: ${uuid2.bytes}, uuid3.bytes: ${uuid3.bytes}');
-    });
-    test("isNotValidString", (){
+    test('isValid', () {
+      system.level = Level.debug;
+      final uuid0 = new Uuid();
+      expect(uuid0.isValid, true);
 
-      String uuid0 = "6ba7b810-9dad-41d1-80b4-00c04fd430";
-      String uuid1 = "6ba7b810-9dad-41d1-80b4-00c04fd430c8";
-      String uuid2 = "6ba7b810-9dad-11d4-80b4-00c04fd430c8";
+      final uuid1 = new Uuid.pseudo();
+      expect(uuid1.isValid, true);
+
+      final uuid2 = new Uuid.seededPseudo();
+      expect(uuid2.isValid, true);
+
+      for (var uuid in goodUuidList0) {
+        final uuid3 = Uuid.parse(uuid);
+        expect(uuid3.isValid, true);
+      }
+
+      for (var uuid in badUuidList0) {
+        system.throwOnError = false;
+        final uuid34 = Uuid.parse(uuid);
+        expect(uuid34, isNull);
+
+        system.throwOnError = true;
+
+        expect(() => Uuid.parse(uuid),
+            throwsA(const isInstanceOf<InvalidUuidError>()));
+      }
+    });
+    test('parse', () {
+      final uuidString0 = '6ba7b810-9dad-41d1-80b4-00c04fd430c8';
+      final uuid0 = Uuid.parse(uuidString0);
+      expect(uuid0.asString, equals(uuidString0));
+
+      for (var uuid in goodUuidList0) {
+        system.throwOnError = false;
+        final uuid1 = Uuid.parse(uuid);
+        expect(uuid1.asString, equals(uuid));
+      }
+
+      for (var uuid in badUuidList0) {
+        system.throwOnError = false;
+        final uuid2 = Uuid.parse(uuid);
+        expect(uuid2, isNull);
+
+        system.throwOnError = true;
+        expect(() => Uuid.parse(uuid),
+            throwsA(const isInstanceOf<InvalidUuidError>()));
+      }
+    });
+
+    test('isNotValidString', () {
+      final uuid0 = '6ba7b810-9dad-41d1-80b4-00c04fd430';
+      final uuid1 = '6ba7b810-9dad-41d1-80b4-00c04fd430c8';
+      final uuid2 = '6ba7b810-9dad-11d4-80b4-00c04fd430c8';
 
       expect(Uuid.isNotValidString(uuid0), true);
       expect(Uuid.isNotValidString(uuid0, 1), true);
@@ -97,38 +152,42 @@ void main() {
       expect(Uuid.isNotValidString(uuid1, 4), false);
       expect(Uuid.isNotValidString(uuid2, 1), false);
       expect(Uuid.isNotValidString(uuid1), false);
-
     });
-    test("isValidData", (){
-      const List<int> uuidList = const <int>[
+
+    test('isValidData', () {
+      const uuidList = const <int>[
         149, 236, 195, 128, 175, 233, 17, 228, // No reformat
         155, 108, 117, 27, 102, 221, 84, 30
       ];
-      //log.debug(Uuid.isValidData(uuidList, 1));
-      //expect(Uuid.isValidData(uuidList, 1),true);
-      log.debug(Uuid.initialize(seed: 16));
+      final uInt8List = new Uint8List.fromList(uuidList);
+      //final bytes = uInt8List.buffer.asUint8List();
+      log.debug('uInt8List: $uInt8List');
+      expect(Uuid.isValidData(uInt8List, 1), true);
+      expect(Uuid.isValidData(uInt8List, 3), false);
+
+      expect(Uuid.isValidData(uInt8List, 5), false);
+
+      expect(Uuid.isValidData(uInt8List), true);
+
+      expect(() => Uuid.isValidData(uInt8List, 6),
+          throwsA(const isInstanceOf<UuidError>()));
     });
 
-    test(" == and hashCode ", (){
-      String uuidV1 = "6ba7b810-9dad-11d4-80b4-00c04fd430c8";
-      String uuidV2 = "6ba7b810-9dad-11d4-80b4-00c04fd430c8";
-      String uuidV4 = "6ba7b810-9dad-41d4-80b4-00c04fd430c8";
-      Uuid uuid0 = new Uuid(uuidV1);
-      Uuid uuid1 = new Uuid(uuidV2);
-      Uuid uuid2 = new Uuid(uuidV4);
+    test(' == and hashCode ', () {
+      final uuidV1 = '6ba7b810-9dad-41d4-80b4-00c04fd430c8';
+      final uuidV2 = '6ba7b810-9dad-41d4-80b4-00c04fd430c8';
+      final uuidV3 = '6ba7b810-9dad-4788-80b4-00c04fd430c8';
+      final uuid0 = Uuid.parse(uuidV1);
+      final uuid1 = Uuid.parse(uuidV2);
+      final uuid2 = Uuid.parse(uuidV3);
 
-      expect(uuid0, equals(uuid1));
-      expect(uuid0, isNot(uuid2));
-
-      expect(uuid0.bytes, equals(uuid1.bytes));
-      expect(uuid0.bytes, isNot(uuid2.bytes));
-
-      //hashCode
-      //expect(uuid0.hashCode, equals(uuid1.hashCode));
-      log.debug(uuid0.isSecure);
-      //expect(uuid0.asHex, equals(uuidV1.replaceAll("-", "")));
-      expect(uuid0.variant,equals(UuidVariant.rfc4122));
-
-    });*/
+      expect(uuid0 == uuid1, true);
+      expect(uuid0 == uuid2, false);
+      system.level = Level.debug;
+      log.debug('uuid0: $uuid0, uuid1: $uuid1');
+      //expect(uuid0.data.hashCode, equals(uuid1.data.hashCode));
+      expect(uuid0.asHex, equals(uuidV1.replaceAll('-', '')));
+      expect(uuid0.variant, equals(UuidVariant.rfc4122));
+    });
   });
 }

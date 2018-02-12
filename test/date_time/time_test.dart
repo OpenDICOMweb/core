@@ -301,6 +301,25 @@ void main() {
       expect(t2.hash, isNot(t3.hash));
     });
 
+    test('sha256', () {
+      for (var s in goodDcmTimes) {
+        final t0 = Time.parse(s);
+        final t1 = Time.parse(s);
+        log
+          ..debug('t0.sha256: ${t0.sha256}')
+          ..debug('t0.value:${t0.toString()}, t0.sha256:${t0.sha256}')
+          ..debug('t1.value:${t1.toString()}, t1.sha256:${t1.sha256}');
+        expect(t0.sha256, equals(t1.sha256));
+      }
+      final t2 = Time.parse(goodDcmTimes[0]);
+      final t3 = Time.parse(goodDcmTimes[1]);
+      log
+        ..debug('t2.value:${t2.toString()}, t2.sha256:${t2.sha256}')
+        ..debug('t3.value:${t3.toString()}, t3.sha256:${t3.sha256}');
+
+      expect(t2.sha256, isNot(t3.sha256));
+    });
+
     test('hashCode', () {
       for (var s in goodDcmTimes) {
         final t0 = Time.parse(s);

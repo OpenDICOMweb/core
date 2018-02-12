@@ -240,6 +240,58 @@ void main() {
       }
     });
 
+    test('AE make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, 1);
+        final make0 = AEtag.make(PTag.kPerformedStationAETitle, vList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 =
+            AEtag.make(PTag.kScheduledStudyLocationAETitle, <String>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<String>[]));
+      }
+    });
+
+    test('AE make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getAEList(2, 2);
+        system.throwOnError = false;
+        final make0 = AEtag.make(PTag.kPerformedStationAETitle, vList0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => AEtag.make(PTag.kPerformedStationAETitle, vList0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+
+      system.throwOnError = false;
+      final ae1 =
+          AEtag.make(PTag.kScheduledStudyLocationAETitle, <String>[null]);
+      log.debug('ae1: $ae1');
+      expect(ae1, isNull);
+
+      system.throwOnError = true;
+      expect(
+          () => AEtag.make(PTag.kScheduledStudyLocationAETitle, <String>[null]),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+    });
+
+      /*test('AE fromBDE good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, 1);
+        system.throwOnError = false;
+        final ae1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+        final bytes = AE.toBytes(vList0);
+        final bd = bytes.buffer.asByteData();
+        final e0 = BDElement.make(ae1.code, ae1.vrIndex, bd);
+        final make0 = AEtag.fromBDE(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });*/
+
     test('AE checkLength good values', () {
       final vList0 = rsg.getAEList(1, 1);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, vList0);
