@@ -423,6 +423,15 @@ void main() {
     expect(date2.hash, isNot(date3.hash));
   });
 
+  test('Hash Dates', () {
+    final date1 = new Date(1969, 12, 31);
+    system.level = Level.debug;
+    log.debug(
+        'date: $date1, year:${date1.year}, month: ${date1.month}, day: ${date1.day}, microseconds: ${date1.microseconds}');
+    final hash1 = date1.hash;
+    log.debug('hash1: $hash1, year: ${hash1.year}, y: ${hash1.y}');
+  });
+
   test('hashCode', () {
     for (var s in goodDcmDateList) {
       final date0 = Date.parse(s);

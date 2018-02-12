@@ -4,7 +4,6 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/core.dart';
@@ -50,9 +49,6 @@ class AEtag extends AE with TagElement<String> {
   static AEtag make(Tag tag, Iterable<String> vList) =>
       new AEtag(tag, vList ?? kEmptyStringList);
 
-  static AEtag fromBase64(Tag tag, String base64) =>
-      new AEtag._fromBytes(tag, BASE64.decode(base64));
-
   static AEtag fromBytes(Tag tag, Uint8List bytes) =>
       new AEtag._fromBytes(tag, bytes);
 
@@ -81,9 +77,6 @@ class CStag extends CS with TagElement<String> {
 
   static CStag make(Tag tag, Iterable<String> vList) =>
       new CStag(tag, vList ?? kEmptyStringList);
-
-  static CStag fromBase64(Tag tag, String base64) =>
-      new CStag._fromBytes(tag, BASE64.decode(base64));
 
   static CStag fromBytes(Tag tag, Uint8List bytes) =>
       new CStag._fromBytes(tag, bytes);
@@ -114,9 +107,6 @@ class DStag extends DS with TagElement<String> {
   static DStag make(Tag tag, Iterable<String> vList) =>
       new DStag(tag, vList ?? kEmptyStringList);
 
-  static DStag fromBase64(Tag tag, String base64) =>
-      new DStag._fromBytes(tag, BASE64.decode(base64));
-
   static DStag fromBytes(Tag tag, Uint8List bytes) =>
       new DStag._fromBytes(tag, bytes);
 
@@ -145,9 +135,6 @@ class IStag extends IS with TagElement<String> {
 
   static IStag make(Tag tag, Iterable<String> vList) =>
       new IStag(tag, vList ?? kEmptyStringList);
-
-  static IStag fromBase64(Tag tag, String base64) =>
-      new IStag._fromBytes(tag, BASE64.decode(base64));
 
   static IStag fromBytes(Tag tag, Uint8List bytes) =>
       new IStag._fromBytes(tag, bytes);
@@ -182,9 +169,6 @@ class LOtag extends LO with TagElement<String> {
   static LOtag make(Tag tag, Iterable<String> vList) =>
       new LOtag(tag, vList ?? kEmptyStringList);
 
-  static LOtag fromBase64(Tag tag, String base64) =>
-      new LOtag._fromBytes(tag, BASE64.decode(base64));
-
   static LOtag fromBytes(Tag tag, Uint8List bytes) =>
       new LOtag._fromBytes(tag, bytes);
 
@@ -214,9 +198,6 @@ class LTtag extends LT with TagElement<String> {
 
   static LTtag make(Tag tag, Iterable<String> vList) =>
       new LTtag(tag, vList ?? kEmptyStringList);
-
-  static LTtag fromBase64(Tag tag, String base64) =>
-      new LTtag._fromBytes(tag, BASE64.decode(base64));
 
   static LTtag fromBytes(Tag tag, Uint8List bytes) =>
       new LTtag._fromBytes(tag, bytes);
@@ -248,9 +229,6 @@ class PNtag extends PN with TagElement<String> {
   static PNtag make(Tag tag, Iterable<String> vList) =>
       new PNtag(tag, vList ?? kEmptyStringList);
 
-  static PNtag fromBase64(Tag tag, String base64) =>
-      new PNtag._fromBytes(tag, BASE64.decode(base64));
-
   static PNtag fromBytes(Tag tag, Uint8List bytes) =>
       new PNtag._fromBytes(tag, bytes);
 
@@ -280,9 +258,6 @@ class SHtag extends SH with TagElement<String> {
 
   static SHtag make(Tag tag, Iterable<String> vList) =>
       new SHtag(tag, vList ?? kEmptyStringList);
-
-  static SHtag fromBase64(Tag tag, String base64) =>
-      new SHtag._fromBytes(tag, BASE64.decode(base64));
 
   static SHtag fromBytes(Tag tag, Uint8List bytes) =>
       new SHtag._fromBytes(tag, bytes);
@@ -314,9 +289,6 @@ class STtag extends ST with TagElement<String> {
   static STtag make(Tag tag, Iterable<String> vList) =>
       new STtag(tag, vList ?? kEmptyStringList);
 
-  static STtag fromBase64(Tag tag, String base64) =>
-      new STtag._fromBytes(tag, BASE64.decode(base64));
-
   static STtag fromBytes(Tag tag, Uint8List bytes) =>
       new STtag._fromBytes(tag, bytes);
 
@@ -346,9 +318,6 @@ class UCtag extends UC with TagElement<String> {
 
   static UCtag make(Tag tag, Iterable<String> vList) =>
       new UCtag(tag, vList ?? kEmptyStringList);
-
-  static UCtag fromBase64(Tag tag, String base64) =>
-      new UCtag._fromBytes(tag, BASE64.decode(base64));
 
   static UCtag fromBytes(Tag tag, Uint8List bytes) =>
       new UCtag._fromBytes(tag, bytes);
@@ -387,16 +356,10 @@ class UItag extends UI with TagElement<String> {
   static UItag make(Tag tag, Iterable<String> vList) =>
       new UItag.fromStrings(tag, vList ?? kEmptyStringList);
 
-  static UItag fromBase64(Tag tag, String base64) =>
-      new UItag._fromBytes(tag, BASE64.decode(base64));
-
   static UItag fromBytes(Tag tag, Uint8List bytes) =>
       new UItag._fromBytes(tag, bytes);
 
   static UItag fromBDE(Element e) => new UItag._fromBytes(e.tag, e.vfBytes);
-
-  static UItag parseBase64(Tag tag, String s, int vfLength) =>
-      new UItag._fromBytes(tag, BASE64.decode(s));
 
   static Iterable<Uid> parse(List<String> vList) {
     final uids = new List<Uid>(vList.length);
@@ -434,9 +397,6 @@ class URtag extends UR with TagElement<String> {
   static URtag make(Tag tag, Iterable<String> vList) =>
       new URtag(tag, vList ?? kEmptyStringList);
 
-  static URtag fromBase64(Tag tag, String base64) =>
-      new URtag._fromBytes(tag, BASE64.decode(base64));
-
   static URtag fromBytes(Tag tag, Uint8List bytes) =>
       new URtag._fromBytes(tag, bytes);
 
@@ -466,9 +426,6 @@ class UTtag extends UT with TagElement<String> {
 
   static UTtag make(Tag tag, Iterable<String> vList) =>
       new UTtag(tag, vList ?? kEmptyStringList);
-
-  static UTtag fromBase64(Tag tag, String base64) =>
-      new UTtag._fromBytes(tag, BASE64.decode(base64));
 
   static UTtag fromBytes(Tag tag, Uint8List bytes) =>
       new UTtag._fromBytes(tag, bytes);
@@ -507,9 +464,6 @@ class AStag extends AS with TagElement<String> {
   static AStag make(Tag tag, Iterable<String> vList) =>
       new AStag(tag, vList ?? kEmptyStringList);
 
-  static AStag fromBase64(Tag tag, String base64) =>
-      new AStag._fromBytes(tag, BASE64.decode(base64));
-
   static AStag fromBytes(Tag tag, Uint8List bytes) =>
       new AStag._fromBytes(tag, bytes);
 
@@ -547,9 +501,6 @@ class DAtag extends DA with TagElement<String> {
   static DAtag make(Tag tag, Iterable<String> vList) =>
       new DAtag(tag, vList ?? kEmptyStringList);
 
-  static DAtag fromBase64(Tag tag, String base64) =>
-      new DAtag._fromBytes(tag, BASE64.decode(base64));
-
   static DAtag fromBytes(Tag tag, Uint8List bytes) =>
       new DAtag._fromBytes(tag, bytes);
 
@@ -583,9 +534,6 @@ class DTtag extends DT with TagElement<String> {
   static DTtag make(Tag tag, Iterable<String> vList) =>
       new DTtag(tag, vList ?? kEmptyStringList);
 
-  static DTtag fromBase64(Tag tag, String base64) =>
-      new DTtag._fromBytes(tag, BASE64.decode(base64));
-
   static DTtag fromBytes(Tag tag, Uint8List bytes) =>
       new DTtag._fromBytes(tag, bytes);
 
@@ -618,9 +566,6 @@ class TMtag extends TM with TagElement<String> {
 
   static TMtag make(Tag tag, Iterable<String> vList) =>
       new TMtag(tag, vList ?? kEmptyStringList);
-
-  static TMtag fromBase64(Tag tag, String base64) =>
-      new TMtag._fromBytes(tag, BASE64.decode(base64));
 
   static TMtag fromBytes(Tag tag, Uint8List bytes) =>
       new TMtag._fromBytes(tag, bytes);

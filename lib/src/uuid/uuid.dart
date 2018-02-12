@@ -121,8 +121,10 @@ class Uuid {
     return sb.toString();
   }
 
+  /// Returns a [String] of decimal numbers that corresponds to _this_.
   String get asDecimal => _toDecimalString(data, '');
 
+  /// Returns a [String] of decimal numbers that corresponds to _this_.
   String get asUid => _toDecimalString(data, '2.25.1');
 
   /// Returns the version number of _this_.
@@ -267,7 +269,6 @@ class Uuid {
     final v = bytes.buffer.asUint32List();
     for (var i = 0; i < v.length; i++) sb.write(v[i].toString());
     final s = sb.toString();
-    print('uid (${s.length})"$s"');
     return s;
   }
 }

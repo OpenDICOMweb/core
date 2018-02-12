@@ -47,8 +47,10 @@ class Date implements Comparable<Date> {
     }
   }
 
+  //Urgent Jim
   //Issue: Internal constructor - should be hidden when exported:
-  factory Date.fromEpochDay(int epochDay) => new Date._(epochDay);
+  factory Date.fromEpochDay(int epochDay) =>
+      new Date._(epochDay * kMicrosecondsPerDay);
 
   /// Creates a [Date].
   Date._(this.microseconds);
@@ -68,10 +70,13 @@ class Date implements Comparable<Date> {
   @override
   int get hashCode => microseconds.hashCode;
 
-  //TODO: unit test
+  //Urgent Jim to fix
+  //Urgent Sharath: unit test
   /// Returns a new [Date] containing the [System].[hash] hash of [microseconds].
   Date get hash => new Date._(hashDateMicroseconds(microseconds));
 
+  //Urgent Jim to fix
+  //Urgent Sharath: unit test
   //TODO: unit test
   /// Returns a new [Date] containing the SHA-256 hash of [microseconds].
   Date get sha256 => new Date._(sha256Microseconds(microseconds));
@@ -155,11 +160,11 @@ class Date implements Comparable<Date> {
   /// otherwise, returns _null_.
   static Date parse(String s,
       {int start = 0, int end, ParseIssues issues, OnDateParseError onError}) {
-    final epochDay = parseDcmDate(s, start: start, end: end);
-    if (epochDay == null) {
+    final us = parseDcmDate(s, start: start, end: end);
+    if (us == null) {
       return (onError != null) ? onError(s) : invalidDateString(s, issues);
     }
-    return new Date._(epochDay);
+    return new Date._(us);
   }
 
   /// Returns _true_ if [s] is a valid DICOM [Date] [String].

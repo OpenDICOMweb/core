@@ -901,11 +901,8 @@ void main() {
                       'bd1: ${bd1.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), isNot(bd0.buffer.asUint8List()));
         expect(lBd2.buffer == bd0.buffer, false);
-// Urgent Sharath: toByteData returns null if check is true
         final lBd3 = Int16Base.toByteData(int32list0, asView: false);
         expect(lBd3, isNull);
-//        expect(lBd3.buffer.asUint8List(), isNot(bd1.buffer.asUint8List()));
-//        expect(lBd3.buffer == bd1.buffer, false);
 
         final lBd4 =
             Int16Base.toByteData(int16list0, asView: false, check: false);

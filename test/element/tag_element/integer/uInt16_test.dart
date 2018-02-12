@@ -1071,17 +1071,13 @@ void main() {
         final uint32list0 = rng.uint32List(1, 1);
         assert(uint32list0 is TypedData);
         final bd1 = uint32list0.buffer.asByteData();
-// Urgent Sharath discuss: this now returns null or throws
         final lBd2 = Uint16Base.toByteData(uint32list0, check: false);
         log.debug('lBd0: ${lBd2.buffer.asUint8List()}, '
                       'bd1: ${bd1.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), isNot(bd0.buffer.asUint8List()));
         expect(lBd2.buffer == bd0.buffer, false);
-// Urgent Sharath: with check: true (the default) this now returns null
         final lBd3 = Uint16Base.toByteData(uint32list0, asView: false);
         expect(lBd3, isNull);
-//        expect(lBd3.buffer.asUint8List(), isNot(bd1.buffer.asUint8List()));
-//        expect(lBd3.buffer == bd1.buffer, false);
 
         final lBd4 =
             Uint16Base.toByteData(uInt16list0, asView: false, check: false);
