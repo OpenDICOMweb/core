@@ -8,8 +8,10 @@ part of odw.sdk.core.parser;
 int parseDate(String s,
         {int start = 0, int end, Issues issues, OnParseError onError}) =>
     (s.contains('-'))
-        ? parseInternetDate(s, start: start, end: end, issues: issues, onError: onError)
-        : parseDcmDate(s, start: start, end: end, issues: issues, onError: onError);
+        ? parseInternetDate(s,
+            start: start, end: end, issues: issues, onError: onError)
+        : parseDcmDate(s,
+            start: start, end: end, issues: issues, onError: onError);
 
 /// Returns the Epoch Day in microseconds, which is negative if before
 /// Epoch Day Zero, if [s] is valid; otherwise, returns [kInvalidEpochMicroseconds].
@@ -24,7 +26,7 @@ int parseDcmDate(String s,
       return null;
     }
     _checkArgs(s, start, end, 8, 8, 'parseDcmDate', issues);
-    final eDayUS = _parseDate(s, start, issues);
+    final eDayUS = _parseDcmDate(s, start, issues);
     if (eDayUS == null) return (onError != null) ? onError(s) : null;
     return eDayUS;
   } on FormatException {
@@ -37,10 +39,11 @@ int parseInternetDate(String s,
     {int start = 0, int end, Issues issues, int onError(String s)}) {
   try {
     end ??= s.length;
-    if (s.length == 1 && s.codeUnitAt(0) == kZ || s.codeUnitAt(0) == kz) return 0;
+    if (s.length == 1 && s.codeUnitAt(0) == kZ || s.codeUnitAt(0) == kz)
+      return 0;
     _checkArgs(s, start, end, 10, 10, 'parseInternetDate', issues);
     final v = s.replaceAll('-', '');
-    final eDayUS = _parseDate(v, start, issues);
+    final eDayUS = _parseInternetDate(v, start, issues);
     if (eDayUS == null) return (onError != null) ? onError(s) : null;
     return eDayUS;
   } on FormatException {
@@ -53,9 +56,12 @@ int parseInternetDate(String s,
 /// Returns true is [s] contains a valid DICOM date.
 // Note: checkArgs is done by [parseDcmDate].
 bool isValidDcmDateString(String s, {int start = 0, int end, Issues issues}) =>
-    (parseDcmDate(s, start: start, end: end, issues: issues) == null) ? false : true;
+    (parseDcmDate(s, start: start, end: end, issues: issues) == null)
+        ? false
+        : true;
 
-List<int> dateStringListToMicroseconds(List<String> daList) => daList.map(parseDcmDate);
+List<int> dateStringListToMicroseconds(List<String> daList) =>
+    daList.map(parseDcmDate);
 
 /// Returns a _normalized_ DICOM date (DA) [String], based on the _original_
 /// date [String] and the _enrollment_ date [String}.
@@ -70,7 +76,8 @@ String normalizeDcmDateString(String s, String enrollment) {
 typedef String OnHashDateStringError(String s);
 
 /// Returns a new date [String] that is the hash of [s], which is a .
-String hashDcmDateString(String s, {Issues issues, OnHashDateStringError onError}) {
+String hashDcmDateString(String s,
+    {Issues issues, OnHashDateStringError onError}) {
   final us = parseDcmDate(s);
   if (us == null) {
     if (onError != null) return onError(s);
@@ -101,20 +108,29 @@ int _parseDay(int y, int m, String s, int start, Issues issues) {
   assert(y != null && m != null && s != null && start != null);
   final max = daysInLeapYearMonth[m];
   final d = _parse2Digits(s, start, issues, 1, max, 'day');
-  return (m != 2) ? d : _checkDigitRange(d, 1, lastDayOfMonth(y, m), 'day', issues);
+  return (m != 2)
+      ? d
+      : _checkDigitRange(d, 1, lastDayOfMonth(y, m), 'day', issues);
 }
 
 /// Returns a valid Epoch Day in microseconds or _null_.
-int _parseDate(String s, int start, Issues issues) {
+int _parseDcmDate(String s, int start, Issues issues) {
   assert(s != null && start != null);
-  final y = _parse4Digits(s, start, issues, system.minYear, system.maxYear, 'year');
-  assert(y != null);
-  final m = _parse2Digits(s, start + 4, issues, 1, 12, 'month');
-  assert(m != null);
-  final max = daysInLeapYearMonth[m];
-  var d = _parse2Digits(s, start + 6, issues, 1, max, 'day');
-  assert(d != null);
-  d = (m != 2) ? d : _checkDigitRange(d, 1, lastDayOfMonth(y, m), 'day', issues);
-  assert(d != null);
-  return dateToEpochMicroseconds(y, m, d);
+  final y = _parseYear(s, start, issues);
+  final m = _parseMonth(s, start + 4, issues);
+  final d = _parseDay(y, m, s, start + 6, issues);
+  return (y == null || m == null || d == null)
+     ? invalidDateString('Invalid Date: "${s.substring(start, start + 8)}')
+  : dateToEpochMicroseconds(y, m, d);
+}
+
+/// Returns a valid Epoch Day in microseconds or _null_.
+int _parseInternetDate(String s, int start, Issues issues) {
+  assert(s != null && start != null);
+  final y = _parseYear(s, start, issues);
+  final m = _parseMonth(s, start + 5, issues);
+  final d = _parseDay(y, m, s, start + 8, issues);
+  return (y == null || m == null || d == null)
+         ? invalidDateString('Invalid Date: "${s.substring(start, start + 8)}')
+         : dateToEpochMicroseconds(y, m, d);
 }
