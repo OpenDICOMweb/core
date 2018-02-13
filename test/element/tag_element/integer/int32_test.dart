@@ -353,11 +353,29 @@ void main() {
       expect(sl0.hasValidValues, true);
     });
 
-    test('SL make', () {
+    test('SL make good values', () {
       for (var i = 0; i < 10; i++) {
         final int32list0 = rng.int32List(1, 1);
-        final sl0 = SLtag.make(PTag.kReferencePixelX0, int32list0);
-        expect(sl0.hasValidValues, true);
+        final make0 = SLtag.make(PTag.kReferencePixelX0, int32list0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = SLtag.make(PTag.kReferencePixelX0, <int>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<int>[]));
+      }
+    });
+
+    test('SL make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final int32list0 = rng.int32List(2, 2);
+        system.throwOnError = false;
+        final make0 = SLtag.make(PTag.kReferencePixelX0, int32list0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => SLtag.make(PTag.kReferencePixelX0, int32list0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 

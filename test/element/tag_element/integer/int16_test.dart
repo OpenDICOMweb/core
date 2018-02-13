@@ -375,11 +375,29 @@ void main() {
       expect(ss1.hasValidValues, true);
     });
 
-    test('SS make', () {
+    test('SS make good values', () {
       for (var i = 0; i < 10; i++) {
         final int16list0 = rng.int16List(1, 1);
-        final ss0 = SStag.make(PTag.kTagAngleSecondAxis, int16list0);
-        expect(ss0.hasValidValues, true);
+        final make0 = SStag.make(PTag.kTagAngleSecondAxis, int16list0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = SStag.make(PTag.kTagAngleSecondAxis, <int>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<int>[]));
+      }
+    });
+
+    test('SS make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final int16list0 = rng.int16List(2, 2);
+        system.throwOnError = false;
+        final make0 = SStag.make(PTag.kTagAngleSecondAxis, int16list0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => SStag.make(PTag.kTagAngleSecondAxis, int16list0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 
@@ -898,7 +916,7 @@ void main() {
         final bd1 = int32list0.buffer.asByteData();
         final lBd2 = Int16Base.toByteData(int32list0, check: false);
         log.debug('lBd0: ${lBd2.buffer.asUint8List()}, '
-                      'bd1: ${bd1.buffer.asUint8List()}');
+            'bd1: ${bd1.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), isNot(bd0.buffer.asUint8List()));
         expect(lBd2.buffer == bd0.buffer, false);
         final lBd3 = Int16Base.toByteData(int32list0, asView: false);

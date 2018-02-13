@@ -8,8 +8,7 @@ import 'dart:typed_data';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
-
-import '../pixel_data/test_pixel_data.dart';
+import 'test_pixel_data.dart';
 
 final Uint8List frame = new Uint8List.fromList(testFrame);
 

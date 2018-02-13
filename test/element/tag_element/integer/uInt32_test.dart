@@ -356,11 +356,29 @@ void main() {
       expect(ul0.hasValidValues, true);
     });
 
-    test('UL make', () {
+    test('UL make good values', () {
       for (var i = 0; i < 10; i++) {
         final uInt32list0 = rng.uint32List(1, 1);
-        final ul0 = ULtag.make(PTag.kNumberOfWaveformSamples, uInt32list0);
-        expect(ul0.hasValidValues, true);
+        final make0 = ULtag.make(PTag.kNumberOfWaveformSamples, uInt32list0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = ULtag.make(PTag.kNumberOfWaveformSamples, <int>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<int>[]));
+      }
+    });
+
+    test('UL make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final uInt32list0 = rng.uint32List(2, 2);
+        system.throwOnError = false;
+        final make0 = ULtag.make(PTag.kNumberOfWaveformSamples, uInt32list0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => ULtag.make(PTag.kNumberOfWaveformSamples, uInt32list0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 

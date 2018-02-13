@@ -318,6 +318,32 @@ void main() {
       }
     });
 
+    test('FL make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(1, 1);
+        final make0 = FLtag.make(PTag.kAbsoluteChannelDisplayScale, floatList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = FLtag.make(PTag.kAbsoluteChannelDisplayScale, <double>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<double>[]));
+      }
+    });
+
+    test('FL make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(2, 2);
+        system.throwOnError = false;
+        final make0 = FLtag.make(PTag.kAbsoluteChannelDisplayScale, floatList0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => FLtag.make(PTag.kAbsoluteChannelDisplayScale, floatList0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+    });
+
     test('FL fromBase64', () {
       final fString = Float32Base.toBase64(<double>[78678.11]);
       final fl0 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, fString);
@@ -1141,6 +1167,19 @@ void main() {
             OFtag.fromBytes(PTag.kFirstOrderPhaseCorrectionAngle, bytes0);
         log.debug('of1: ${of1.info}');
         expect(of1.hasValidValues, true);
+      }
+    });
+
+    test('OF make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(1, 1);
+        final make0 = OFtag.make(PTag.kVectorGridData, floatList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = OFtag.make(PTag.kVectorGridData, <double>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<double>[]));
       }
     });
 
