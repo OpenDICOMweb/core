@@ -24,6 +24,14 @@ import 'package:core/src/uid/uid.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 
+// Meaning of method names:
+//    lookup:
+//    add:
+//    update
+//    replace(int index, Iterable<V>: Replaces
+//    noValue: Replaces an Element in the Dataset with one with an empty value.
+//    delete: Removes an Element from the Dataset
+
 // Design Note:
 //   Only [keyToTag] and [keys] use the Type variable <K>. All other
 //   Getters and Methods are defined in terms of [Element] [index].
@@ -170,7 +178,7 @@ $runtimeType(#$hashCode):
       elements.getElementsInRange(min, max);
 
   @override
-  bool add(Element e, [Issues issues]) => elements.add(e);
+  void add(Element e, [Issues issues]) => elements.add(e);
 
   bool tryAdd(Element e, [Issues issues]) => elements.tryAdd(e);
 
@@ -184,37 +192,103 @@ $runtimeType(#$hashCode):
     return old;
   }
 
-  /// Replaces the element with [index] with a new element with the same [Tag],
-  /// but with _values_ of [f(e.values)]. Returns the original element.
+  /// Returns a new [Element] with the same [index] and [Type],
+  /// but with [Element.values] containing [f]([List<V>]).
+  ///
+  /// If updating the [Element] fails, the current element is left in
+  /// place and _null_ is returned.
   Element updateF<V>(int index, Iterable f(Iterable<V> vList),
       {bool required = false}) {
-    final old = elements.lookup(index, required: required);
-    if (old != null) elements[index] = old.updateF(f);
+    final old = lookup(index, required: required);
+    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old != null) this[index] = old.updateF(f);
     return old;
   }
 
-  /// Updates all elements with [index] in _this_, or any Sequence ([SQ])
-  /// Items contained in it, with a new element whose values are [f(this.values)].
-  /// Returns a list containing all [Element]s that were replaced.
-  List<List> updateAll<V>(int index, Iterable<V> vList) =>
-      elements.updateAll(index, vList: vList);
+  /// Updates all Elements with [index] in _this_, or any Sequence ([SQ])
+  /// Items contained in _this_, with a new element whose values are
+  /// [f(this.values)]. Returns a list containing all [Element]s that were
+  /// replaced.
+  List<Element> updateAll<V>(int index,
+      {Iterable<V> vList, bool required = false}) {
+    vList ??= const <V>[];
+    final v = update(index, vList, required: required);
+    final result = <Element>[]..add(v);
+    for (var e in this)
+      if (e is SQ) {
+        result.addAll(e.updateAll<V>(index, vList, required: required));
+      } else {
+        result.add(e.replace(e.values));
+      }
+    return result;
+  }
 
-  /// Updates all elements with [index] in _this_, or any Sequence ([SQ])
-  /// Items contained in it, with a new element whose values are [f(this.values)].
-  /// Returns a list containing all [Element]s that were replaced.
-  List<Element> updateAllF<V>(int index, Iterable f(Iterable<V> vList)) =>
-      elements.updateAllF<V>(index, f);
+  /// Updates all Elements with [index] in _this_, or any Sequence ([SQ])
+  /// Items contained in it, with a new element whose values are
+  /// [f(this.values)]. Returns a list containing all [Element]s that were
+  /// replaced.
+  List<Element> updateAllF<V>(int index, Iterable<V> f(Iterable<V> vList),
+      {bool required = false}) {
+    final v = updateF(index, f, required: required);
+    final result = <Element>[]..add(v);
+    for (var e in this)
+      if (e is SQ) {
+        result.addAll(e.updateAllF<V>(index, f, required: required));
+      } else {
+        result.add(e.replace(e.values));
+      }
+    return result;
+  }
 
-  Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) =>
-      elements.updateUid(index, uids);
+//  Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) =>
+//      elements.updateUid(index, uids);
 
-  Element updateUidString(int index, Iterable<String> uids,
+  Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) {
+    assert(index != null && uids != null);
+    final old = lookup(index, required: required);
+    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old is! UI) return invalidUidElement(old);
+    add(old.update(uids.toList(growable: false)));
+    return old;
+  }
+
+  /// Replace the UIDs in an [Element]. If [required] is _true_ and the
+  /// [Element] is not present a [elementNotPresentError] is called.
+  /// It is an error if [sList] is _null_.  It is an error if the [Element]
+  /// corresponding to [index] does not have a VR of UI.
+  Element updateUidList(int index, Iterable<String> sList,
+      {bool recursive = true, bool required = false}) {
+    assert(index != null && sList != null);
+    final old = lookup(index, required: required);
+    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old is! UI) return invalidUidElement(old);
+
+    // If [e] has noValues, and [uids] == null, just return [e],
+    // because there is no discernible difference.
+    if (old.values.isEmpty && sList.isEmpty) return old;
+    return old.update(sList);
+  }
+
+  Element updateUidStrings(int index, Iterable<String> uids,
           {bool required = false}) =>
-      elements.updateUidList(index, uids);
+      updateUidList(index, uids);
 
-  List<Element> updateAllUids(int index, Iterable<Uid> uids) =>
-      elements.updateAllUids(index, uids);
+  List<Element> updateAllUids(int index, Iterable<Uid> uids) {
+    final v = updateUid(index, uids);
+    final result = <Element>[]..add(v);
+    for (var e in this)
+      if (e is SQ) {
+        result.addAll(e.updateAllUids(index, uids));
+      } else {
+        result.add(e.replace(e.values));
+      }
+    return result;
+  }
 
+//  List<Element> updateAllUids(int index, Iterable<Uid> uids) =>
+//      elements.updateAllUids(index, uids);
+
+/*
   /// Replaces the _values_ of the [Element] with [index] with [vList].
   /// Returns the original _values_.
   Iterable<V> replace<V>(int index, Iterable<V> vList,
@@ -225,44 +299,187 @@ $runtimeType(#$hashCode):
     e.values = vList;
     return old;
   }
+*/
+
+  /// Replaces the [Element.values] at [index] with [vList].
+  /// Returns the original [Element.values], or _null_ if no
+  /// [Element] with [index] was not present.
+  Iterable<V> replace<V>(int index, Iterable<V> vList,
+      {bool required = false}) {
+    assert(index != null && vList != null);
+    final e = lookup(index, required: required);
+    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    final v = e.values;
+    e.replace(vList);
+    return v;
+  }
+
+  /// Replaces the [Element.values] at [index] with [f(vList)].
+  /// Returns the original [Element.values], or _null_ if no
+  /// [Element] with [index] was not present.
+  Iterable<V> replaceF<V>(int index, Iterable<V> f(Iterable<V> vList),
+      {bool required = false}) {
+    assert(index != null && f != null);
+    final e = lookup(index, required: required);
+    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    final v = e.values;
+    e.replace(f(v));
+    return v;
+  }
 
   /// Replaces all elements with [index] in _this_ and any [Item]s
   /// descended from it, with a new element that has [vList<V>] as its
   /// values. Returns a list containing all [Element]s that were replaced.
-  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) =>
-      elements.replaceAll(index, vList);
+//  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) =>
+//      elements.replaceAll(index, vList);
 
+/*
   Iterable<Iterable<V>> replaceAllF<V>(
           int index, Iterable<V> f(Iterable vList)) =>
       elements.replaceAllF<V>(index, f);
+*/
 
+  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
+    assert(index != null && vList != null);
+    final result = <List<V>>[]..add(replace(index, vList));
+    for (var e in elements)
+      if (e is SQ) {
+        result.addAll(e.replaceAll(index, vList));
+      } else {
+        result.add(e.replace(e.values));
+      }
+    return result;
+  }
+
+  Iterable<Iterable<V>> replaceAllF<V>(
+      int index, Iterable<V> f(Iterable<V> vList)) {
+    assert(index != null && f != null);
+    final result = <List<V>>[]..add(replaceF(index, f));
+    for (var e in elements)
+      if (e is SQ) {
+        result.addAll(e.replaceAllF(index, f));
+      } else {
+        result.add(e.replace(f(e.values)));
+      }
+    return result;
+  }
+
+/*
   Iterable<String> replaceUid(int index, Iterable<Uid> uids,
           {bool required = false}) =>
       elements.replaceUid(index, uids);
+*/
 
+  List<String> replaceUid(int index, Iterable<Uid> uids,
+      {bool required = false}) {
+    final old = lookup(index);
+    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old is UI) {
+      old.replaceUid(uids);
+      return old;
+    }
+    return invalidUidElement(old);
+  }
+
+/*
   Iterable<Element> replaceAllUids(int index, Iterable<Uid> uids) =>
       elements.replaceAllUids(index, uids);
+*/
+
+  List<Element> replaceAllUids(int index, Iterable<Uid> uids) {
+    final v = updateUid(index, uids);
+    final result = <Element>[]..add(v);
+    for (var e in elements)
+      if (e is SQ) {
+        result.addAll(e.updateAllUids(index, uids));
+      } else {
+        result.add(e.replace(e.values));
+      }
+    return result;
+  }
 
   /// Replaces the element with [index] with a new element that is
   /// the same except it has no values.  Returns the original element.
-  Element noValues(int index, {bool required = false}) =>
-      elements.noValues(index, required: required);
+//  Element noValues(int index, {bool required = false}) =>
+//      elements.noValues(index, required: required);
+
+  /// Replaces the element with [index] with a new element that is
+  /// the same except it has no values.  Returns the original element.
+  Element noValues(int index, {bool required = false}) {
+    final old = lookup(index, required: required);
+    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    final nv = old.noValues;
+    elements.replaceElement(index, nv);
+ //   elements.add(nv);
+    return old;
+  }
 
   /// Replaces all elements with [index] in _this_ and any [Item]s
   /// descended from it, with a new element that is the same except
   /// it has no values. Returns a list containing all [Element]s
   /// that were replaced.
-  Iterable<Element> noValuesAll(int index, {bool recursive = false}) =>
-      elements.noValuesAll(index);
+//  Iterable<Element> noValuesAll(int index, {bool recursive = false}) =>
+//      elements.noValuesAll(index);
 
+  /// Updates all [Element.values] with [index] in _this_ or in any
+  /// Sequences (SQ) contained in _this_ with an empty list.
+  /// Returns a List<Element>] of the original [Element.values] that
+  /// were updated.
+  List<Element> noValuesAll(int index) {
+    assert(index != null);
+    final result = <Element>[]..add(noValues(index));
+    for (var e in elements) {
+      if (e is SQ) {
+        result.addAll(e.noValuesAll(index));
+      } else if (e.index == index) {
+        result.add(e);
+        this[index] = e.noValues;
+      }
+    }
+    return result;
+  }
+
+/*
   Element delete(int index, {bool required = false, bool recursive = false}) =>
       (recursive)
           ? elements.deleteAll(index, recursive: recursive)
           : elements.delete(index, required: required);
+*/
 
+  /// Removes the [Element] with [index] from _this_.
+  Element delete(int index, {bool required = false}) {
+    assert(index != null, 'Invalid index: $index');
+    final e = lookup(index, required: required);
+    return (e == null)
+        ? (required) ? elementNotPresentError<int>(index) : null
+        : elements.delete(index);
+  }
+
+/*
   Iterable<Element> deleteAll(int index, {bool recursive = false}) =>
       elements.deleteAll(index, recursive: recursive);
+*/
 
+  List<Element> deleteAll(int index, {bool recursive = false}) {
+    assert(index != null, 'Invalid index: $index');
+    final results = <Element>[];
+    final e = delete(index);
+    if (e != null) results.add(e);
+    assert(this[index] == null);
+    if (recursive)
+      for (var e in elements) {
+        if (e is SQ) {
+          for (var item in e.items) {
+            final deleted = item.delete(index);
+            if (deleted != null) print('item $item deleted: $deleted');
+            if (deleted != null) results.add(deleted);
+          }
+        }
+      }
+    return results;
+  }
+
+  // Urgent Jim: Fix - maybe remove recursive call
   List<Element> deleteIfTrue(bool test(Element e), {bool recursive = false}) {
     final deleted = <Element>[];
     for (var e in elements) {
@@ -279,8 +496,107 @@ $runtimeType(#$hashCode):
     return deleted;
   }
 
-  Iterable<Element> deleteAllPrivate({bool recursive = false}) =>
-      deleteIfTrue((e) => e.isPrivate, recursive: recursive);
+  Iterable<Element> copyWhere(bool test(Element e)) {
+    final result = <Element>[];
+    for (var e in elements) {
+      if (test(e)) result.add(e);
+    }
+    return result;
+  }
+
+  Iterable<Element> findWhere(bool test(Element e)) {
+    final result = <Element>[];
+    for (var e in elements) {
+      if (test(e)) result.add(e);
+    }
+    return result;
+  }
+
+  Iterable<dynamic> findAllWhere(bool test(Element e)) {
+    final result = <dynamic>[];
+    for (var e in elements) if (test(e)) result.add(e);
+    return result;
+  }
+
+  Map<SQ, Element> findSQWhere(bool test(Element e)) {
+    final map = <SQ, Element>{};
+    for (var e in elements) {
+      if (e is SQ) {
+        for (var item in e.items) {
+          final eList = item.findAllWhere(test);
+          if (eList.isNotEmpty) {
+            map[e];
+          }
+        }
+      }
+    }
+    return map;
+  }
+
+  bool isUI(Element e) => e is UI;
+  Iterable<Element> findUids() => findAllWhere(isUI);
+
+  bool isSequence(Element e) => e.isPrivate;
+  Iterable<Element> findSequences() => findWhere(isSequence);
+
+  bool isPrivate(Element e) => e.isPrivate;
+  Iterable<Element> findAllPrivate() => findAllWhere(isPrivate);
+
+  Iterable<Element> deleteAllPrivate({bool recursive = false}) {
+    // deleteIfTrue((e) => e.isPrivate, recursive: recursive);
+    final deleted = <Element>[];
+    final private = findAllPrivate();
+    for (var e in private)
+       deleted.add( delete(e.index, required: true));
+    return deleted;
+  }
+
+  // final sequences = findAllSequences();
+  /*
+    for (var e in elements) {
+      if (e.group.isOdd) print('Odd: $e');
+      if (e.isPrivate) {
+        final v = delete(e.code);
+        if (v != null) deleted.add(e);
+        if (v != null) print('DPrivate: $v');
+      }
+    }
+    if (deleted != null) print('DeletedPrivate: (${deleted.length})$deleted');
+
+    for (var e in elements) {
+      if (e.isPrivate) {
+        deleted.add(delete(e.code));
+      }
+      print('DeletedPrivate: (${deleted.length})$deleted');
+    }
+*/
+/*
+
+    final deletedInSQ = <Element>[];
+    var count = 0;
+    print('sequences: $sequences');
+    for (var e in sequences) {
+      if (e is SQ) {
+        count++;
+        print('sq: $e');
+        for (var item in e.items) {
+          print(' item: $item');
+          for(var v in item.elements) {
+            if (v.isPrivate) {
+              print('  Deleted: $v');
+              deletedInSQ.add(delete(v.code));
+            }
+          }
+        }
+      }
+    }
+    print('SQ.length: ${sequences.length}');
+        print('SQ.count: $count');
+        deleted.addAll(deletedInSQ);
+    print('DeletedPrivate: (${deleted.length})$deleted');
+    return deleted;
+  }
+*/
 
   Iterable<Element> deletePrivateGroup(int group, {bool recursive = false}) =>
       deleteIfTrue((e) => e.isPrivate && e.group.isOdd, recursive: recursive);
@@ -291,7 +607,13 @@ $runtimeType(#$hashCode):
     return dList;
   }
 
-    // **** end Element interface
+  @override
+  bool remove(Object o) => elements.remove(o);
+
+  /// Removes the [Element] with key from _this_.
+  @override
+  Element removeAt(int index, {bool required = false}) =>
+      elements.removeAt(index, required: required);
 
   // **** Getters for [values]s.
 
@@ -470,7 +792,6 @@ $runtimeType(#$hashCode):
   List<int> _getPixelData(int bitsAllocated) {
     final pd = elements[kPixelData];
     if (pd == null || bitsAllocated == null) return pixelDataNotPresent();
-    //    return (throwOnError) ? throw 'Dataset $this Missing Pixel Data' : null;
     if (pd.code == kPixelData) {
       if (pd is OWPixelData) {
         assert(bitsAllocated == 16);

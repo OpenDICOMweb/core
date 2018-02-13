@@ -14,7 +14,7 @@ import 'package:core/src/integer/integer.dart';
 
 // TODO: before V0.9.0 decide what these values should be.
 //const int kDefaultMinYear = -10000 - 1970;
-const int kDefaultMinYear = 1970;
+const int kDefaultMinYear = 1900;
 const int kDefaultMaxYear = 2050;
 
 const int kInvalidEpochMicroseconds = kDartMinSMInt;

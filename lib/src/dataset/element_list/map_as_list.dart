@@ -56,7 +56,6 @@ class MapAsList extends ElementList {
   @override
   bool checkIssuesOnAccess = false;
 
-
   MapAsList([this._dataset, List<SQ> sequences, this._history])
       : sequences = (sequences == null) ? <SQ>[] : sequences,
         eMap = <int, Element>{};
@@ -117,8 +116,9 @@ class MapAsList extends ElementList {
   Element lookup(int index, {bool required = false}) {
     final e = eMap[index];
     return (e == null && required == true)
-    // TODO: which error to throw - invalidElementIndex or
-     ? elementNotPresentError(index) : e;
+        // TODO: which error to throw - invalidElementIndex or
+        ? elementNotPresentError(index)
+        : e;
   }
 
   @override
@@ -129,13 +129,16 @@ class MapAsList extends ElementList {
   int get hashCode => system.hasher.nList(eMap.values);
 
   @override
-  Iterable<Element> get elements => eMap.values;
+  Iterable<Element> get values => eMap.values;
 
   @override
   Element elementAt(int index) => eMap.values.elementAt(index);
 
   @override
-  List<Element> get elementsList => elements.toList();
+  List<Element> get asList => values.toList();
+
+  @override
+  Map<int, Element> asMap() => eMap;
 
   @override
   Iterable<int> get keys => eMap.keys;
@@ -156,6 +159,100 @@ class MapAsList extends ElementList {
     return sb.toString();
   }
 
+  void replaceElement(int index, Element e) => eMap[index] = e;
+
+  /// Removes the [Element] with [index] from _this_.
+  @override
+  Element delete(int index, {bool required = false}) {
+    assert(index != null, 'Invalid index: $index');
+    final e = lookup(index, required: required);
+    if (e == null)
+      return (required) ? elementNotPresentError<int>(index) : null;
+    if (e is SQ) sequences.remove(e);
+    return eMap.remove(index);
+  }
+
+  @override
+  List<Element> deleteAll(int index, {bool recursive = false}) {
+    assert(index != null, 'Invalid index: $index');
+    final results = <Element>[];
+    final e = delete(index);
+    if (e != null) results.add(e);
+    assert(this[index] == null);
+    // If index is not a Sequence walk all
+    // Sequences recursively, and remove index.
+    if (recursive)
+      for (var sq in sequences)
+        for (var item in sq.items) {
+          final deleted = item.delete(index);
+          if (deleted != null) print('item $item deleted: $deleted');
+          if (deleted != null) results.add(deleted);
+        }
+    return results;
+  }
+
+/*
+  @override
+  Iterable<Element> deleteAllPrivate({bool recursive = false}) {
+    // deleteIfTrue((e) => e.isPrivate, recursive: recursive);
+    final deleted = <Element>[];
+
+    for (var e in eMap.values) {
+      if (e.group.isOdd) print('Odd: $e');
+      if (e.isPrivate) {
+        final v = delete(e.code);
+        if (v != null) deleted.add(e);
+        if (v != null) print('DPrivate: $v');
+      }
+
+    }
+    if (deleted != null) print('DeletedPrivate: (${deleted.length})$deleted');
+*/
+/*
+    for (var e in elements) {
+      if (e.isPrivate) {
+        deleted.add(delete(e.code));
+      }
+      print('DeletedPrivate: (${deleted.length})$deleted');
+    }
+*/ /*
+
+
+    final deletedInSQ = <Element>[];
+    var count = 0;
+    print('sequences: $sequences');
+    for (var e in sequences) {
+      if (e is SQ) {
+        count++;
+        print('sq: $e');
+        for (var item in e.items) {
+          print(' item: $item');
+          for(var v in item.elements) {
+            if (v.isPrivate) {
+              print('  Deleted: $v');
+              deletedInSQ.add(delete(v.code));
+            }
+          }
+        }
+      }
+    }
+    print('SQ.length: ${sequences.length}');
+    print('SQ.count: $count');
+    print('DeletedPrivate: (${deleted.length})$deleted');
+    deleted.addAll(deletedInSQ);
+    return deleted;
+  }
+*/
+
+  @override
+  bool remove(Object o) {
+    if (o is Element) {
+      final e = delete(o.index);
+      return e != null;
+    }
+    return false;
+  }
+
   /// Removes the [Element] with key from _this_.
   @override
   Element removeAt(int index, {bool required = false}) => eMap.remove(index);
@@ -164,7 +261,7 @@ class MapAsList extends ElementList {
   MapAsList copy([Dataset dataset]) => new MapAsList.from(this, dataset);
 
   @override
-  String toString() => '$elementsList';
+  String toString() => '$asList';
 
   // static const MapEquality<int, Element> _equality = const MapEquality();
 }

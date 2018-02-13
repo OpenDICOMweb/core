@@ -1,0 +1,76 @@
+// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
+// Use of this source code is governed by the open source license
+// that can be found in the LICENSE file.
+// Original author: Jim Philbin <jfphilbin@gmail.edu> - 
+// See the AUTHORS file for other contributors.
+
+import 'package:core/src/tag/constants.dart';
+import 'package:core/src/tag/p_tag.dart';
+
+const List<int> deIdUidTagCodes = const <int>[
+  kAffectedSOPInstanceUID,
+  kRequestedSOPInstanceUID,
+  kMediaStorageSOPInstanceUID,
+  kReferencedSOPInstanceUIDInFile,
+  kInstanceCreatorUID,
+  kSOPInstanceUID,
+  kFailedSOPInstanceUIDList,
+  kContextGroupExtensionCreatorUID,
+  kReferencedSOPInstanceUID,
+  kTransactionUID,
+  kIrradiationEventUID,
+  kCreatorVersionUID,
+  kDeviceUID,
+  kStudyInstanceUID,
+  kSeriesInstanceUID,
+  kFrameOfReferenceUID,
+  kSynchronizationFrameOfReferenceUID,
+  kConcatenationUID,
+  kDimensionOrganizationUID,
+  kPaletteColorLookupTableUID,
+  kLargePaletteColorLookupTableUID,
+  kReferencedGeneralPurposeScheduledProcedureStepTransactionUID,
+  kUID,
+  kTemplateExtensionOrganizationUID,
+  kTemplateExtensionCreatorUID,
+  kFiducialUID,
+  kStorageMediaFileSetUID,
+  kDigitalSignatureUID,
+  kReferencedFrameOfReferenceUID,
+  kRelatedFrameOfReferenceUID,
+  kDoseReferenceUID,
+];
+
+const List<PTag> deIdUidTags = const <PTag>[
+  PTag.kAffectedSOPInstanceUID,
+  PTag.kRequestedSOPInstanceUID,
+  PTag.kMediaStorageSOPInstanceUID,
+  PTag.kReferencedSOPInstanceUIDInFile,
+  PTag.kInstanceCreatorUID,
+  PTag.kSOPInstanceUID,
+  PTag.kFailedSOPInstanceUIDList,
+  PTag.kContextGroupExtensionCreatorUID,
+  PTag.kReferencedSOPInstanceUID,
+  PTag.kTransactionUID,
+  PTag.kIrradiationEventUID,
+  PTag.kCreatorVersionUID,
+  PTag.kDeviceUID,
+  PTag.kStudyInstanceUID,
+  PTag.kSeriesInstanceUID,
+  PTag.kFrameOfReferenceUID,
+  PTag.kSynchronizationFrameOfReferenceUID,
+  PTag.kConcatenationUID,
+  PTag.kDimensionOrganizationUID,
+  PTag.kPaletteColorLookupTableUID,
+  PTag.kLargePaletteColorLookupTableUID,
+  PTag.kReferencedGeneralPurposeScheduledProcedureStepTransactionUID,
+  PTag.kUID,
+  PTag.kTemplateExtensionOrganizationUID,
+  PTag.kTemplateExtensionCreatorUID,
+  PTag.kFiducialUID,
+  PTag.kStorageMediaFileSetUID,
+  PTag.kDigitalSignatureUID,
+  PTag.kReferencedFrameOfReferenceUID,
+  PTag.kRelatedFrameOfReferenceUID,
+  PTag.kDoseReferenceUID,
+];

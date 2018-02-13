@@ -8,11 +8,11 @@ import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 void main() {
-  Server.initialize(name: 'dataset/tag_dataset_test', level: Level.info);
+  Server.initialize(
+      name: 'dataset/tag_dataset_test', level: Level.info, throwOnError: false);
+
   final rsg = new RSG(seed: 1);
   final rng = new RNG(1);
-
-  system.throwOnError = false;
 
   group('Data set adding different types of elements', () {
     Dataset rootDS = new TagRootDataset();
@@ -74,8 +74,8 @@ void main() {
       tag = PTag.lookupByCode(kTransferSyntaxUID); // Transfer Syntax UID
       rootDS.add(new UItag.fromStrings(tag, [kExplicitVRLittleEndian]));
       tag = PTag.lookupByCode(kStudyInstanceUID); // Study Instance UID
-      rootDS.add(
-          new UItag.fromStrings(tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']));
+      rootDS.add(new UItag.fromStrings(
+          tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']));
     });
   });
 
@@ -88,8 +88,8 @@ void main() {
     final tag4 = PTag.lookupByCode(kSeriesTime);
     final tag5 = PTag.lookupByCode(kAcquisitionDate);
     rootDS0
-      ..add(
-          new UItag.fromStrings(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+      ..add(new UItag.fromStrings(
+          tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
       ..add(new UItag.fromStrings(tag2, [kExplicitVRLittleEndian]))
       ..add(new UItag.fromStrings(tag3,
           ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
@@ -292,9 +292,9 @@ void main() {
 
       system.throwOnError = false;
       log.debug('system.throwOnError: $system.throwOnError');
-      expect(rds.add(ae0), isNull);
-      expect(rds.add(ae1), isNull);
-      expect(rds.add(ae2), isNull);
+      expect(rds.tryAdd(ae0), isNull);
+      expect(rds.tryAdd(ae1), isNull);
+      expect(rds.tryAdd(ae2), isNull);
     });
 
     test('update', () {
@@ -488,12 +488,12 @@ void main() {
           throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rds.allowDuplicates = true;
-      expect(rds.add(un1), false);
-      expect(rds.add(aeOW1), false);
+      expect(rds.tryAdd(un1), false);
+      expect(rds.tryAdd(aeOW1), false);
 
       log
         ..debug('rds.elements.length: ${rds.elements.length}, '
-                'rds.duplicates.length: '
+            'rds.duplicates.length: '
             '${rds.elements.history.duplicates.length}')
         ..debug('rds.total: ${rds.total}');
       rds.elements.history.duplicates = <Element>[];
@@ -503,9 +503,9 @@ void main() {
 
       system.throwOnError = false;
       log.debug('system.throwOnError:$system.throwOnError');
-      expect(rds.add(un1), false);
-      expect(rds.add(aeOB0), false);
-      expect(rds.add(aeOW1), false);
+      expect(rds.tryAdd(un1), false);
+      expect(rds.tryAdd(aeOB0), false);
+      expect(rds.tryAdd(aeOW1), false);
     });
   });
 
@@ -600,7 +600,7 @@ void main() {
       log
         ..debug('values: $values')
         ..debug('isString: '
-                    '${isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex)}')
+            '${isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex)}')
         ..debug(isStringVR(PTag.kReceiveCoilManufacturerName.vrIndex));
 
       expect(rootDS0.getStringList(kReceiveCoilManufacturerName),
@@ -923,9 +923,8 @@ void main() {
 
       system.throwOnError = true;
       rootDS0.add(ob0);
-      log.debug(
-          'rds.elements.length: ${rootDS0.elements.length}, '
-              'rds.duplicates.length: '
+      log.debug('rds.elements.length: ${rootDS0.elements.length}, '
+          'rds.duplicates.length: '
           '${rootDS0.elements.history.duplicates.length}');
       //adding duplicates
       rootDS0.allowDuplicates = false;
@@ -933,11 +932,11 @@ void main() {
           throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rootDS0.allowDuplicates = true;
-      expect(rootDS0.add(ob1), false);
+      expect(rootDS0.tryAdd(ob1), false);
 
       system.throwOnError = false;
       log.debug('system.throwOnError:$system.throwOnError');
-      expect(rootDS0.add(ob1), false);
+      expect(rootDS0.tryAdd(ob1), false);
 
       //has Duplicates
       expect(rootDS0.hasDuplicates, true);
@@ -981,7 +980,7 @@ void main() {
         ..debug('rootDS0.elements: ${rootDS0.elements}')
         ..debug('elms: $elms')
         ..debug('elements: ${rootDS0.elements}');
-      expect(rootDS0.elements.elementsList, equals(elms));
+      expect(rootDS0.elements.asList, equals(elms));
     });
 
     test('keys and ids', () {

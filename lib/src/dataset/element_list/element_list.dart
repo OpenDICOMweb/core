@@ -29,7 +29,7 @@ import 'package:core/src/vr/vr.dart';
 // - There should be no references to keys;
 
 ///
-abstract class ElementList extends ListBase<Element> {
+abstract class ElementList extends ListBase<Element>{
   /// If _true_ duplicate [Element]s are stored in the duplicate Map
   /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
   bool get allowDuplicates;
@@ -59,27 +59,6 @@ abstract class ElementList extends ListBase<Element> {
   /// A [History] of the [Element]s modified in _this_.
   History get history;
 
-/*
-  ElementList([this._dataset, List<SQ> sequences, this._history])
-      : sequences = sequences ?? <SQ>[];
-*/
-
-  /// Returns the [Element] with [index], or _null_.
-  @override
-  Element operator [](int index);
-
-  /// Stores the [Element] at [index] in _this_. If [e] == _null_
-  /// the [Element] at that [index] is removed.
-  //
-  // Design Note: [index] is ignored and [e.index] is used instead.
-  @override
-  void operator []=(int index, Element e);
-
-  @override
-  bool operator ==(Object other);
-
-  @override
-  int get hashCode;
 
   // Enhancement: in the future turn this into a 2 lists, one for tagCode
   // and one for values, and used binary search to lookup the tagCode.
@@ -87,24 +66,23 @@ abstract class ElementList extends ListBase<Element> {
   /// An [Iterable] of the [Element]s in _this_.
   // _Design Note_: It is expected that [elements] will have it's own
   // specialized implementation for correctness and efficiency.
-  Iterable<Element> get elements;
+  Iterable<Element> get values;
 
-  List<Element> get elementsList;
+  List<Element> get asList;
 
   Iterable<int> get keys;
 
   List<int> get keysList;
 
-  /// Removes [Element]s from _this_.
-  @override
-  void clear();
+  void replaceElement(int index, Element e);
+
 
   ///
 
   bool recordNotFound = false;
 
   Iterable<int> get indices =>
-      elements.map((e) => (e is Element) ? e.index : null);
+      asList.map((e) => (e is Element) ? e.index : null);
 
   /// An [List] of the duplicate [Element]s in _this_.
   List<Element> get duplicates => history.duplicates;
@@ -137,7 +115,7 @@ abstract class ElementList extends ListBase<Element> {
   /// Note: It ignores duplicates.
   int counter(ElementTest test) {
     var count = 0;
-    for (var e in elements)
+    for (var e in asList)
       if (e is SQ) {
         count += e.counter(test);
       } else {
@@ -151,7 +129,7 @@ abstract class ElementList extends ListBase<Element> {
   // **** Other Getters and Methods
 
   /// Returns a formatted [String]. See [Formatter].
- // String format(Formatter z) => z.fmt(this, elements);
+  // String format(Formatter z) => z.fmt(this, elements);
 
   String get summary => '$runtimeType\n$subSummary';
 
@@ -176,11 +154,11 @@ ElementList Summary
   int indexOf(Object e, [int _]) => (e is Element) ? e.code : -1;
 
   @override
-  void forEach(void f(Element e)) => elements.forEach(f);
+  void forEach(void f(Element e)) => asList.forEach(f);
 
   @override
   T fold<T>(T initialValue, T combine(T previous, Element e)) =>
-      elements.fold(initialValue, combine);
+      asList.fold(initialValue, combine);
 
   void forEachSequence(void f(Element e)) => sequences.forEach(f);
 
@@ -248,8 +226,7 @@ ElementList Summary
 
   /// Adds an [Element] to _this_.
   @override
-  bool add(Element e, [Issues issues]) => tryAdd(e, issues);
-
+  void add(Element e, [Issues issues]) => tryAdd(e, issues);
 
   static const List emptyList = const <dynamic>[];
 
@@ -271,6 +248,8 @@ ElementList Summary
     return old;
   }
 
+
+/*
   /// Returns a new [Element] with the same [index] and [Type],
   /// but with [Element.values] containing [f]([List<V>]).
   ///
@@ -283,6 +262,8 @@ ElementList Summary
     this[index] = old.update(f(old.values) ?? const <V>[]);
     return old;
   }
+*/
+/*
 
   /// Updates all [Element.values] with [index] in _this_ or in any
   /// Sequences (SQ) contained in _this_ with [vList]. Returns a [List<Element>]
@@ -292,7 +273,7 @@ ElementList Summary
     vList ??= const <V>[];
     final v = update(index, vList, required: required);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (var e in asList)
       if (e is SQ) {
         result.addAll(e.updateAll<V>(index, vList, required: required));
       } else {
@@ -309,7 +290,7 @@ ElementList Summary
       {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (var e in asList)
       if (e is SQ) {
         result.addAll(e.updateAllF<V>(index, f, required: required));
       } else {
@@ -317,6 +298,7 @@ ElementList Summary
       }
     return result;
   }
+*/
 
   Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) {
     assert(index != null && uids != null);
@@ -344,6 +326,7 @@ ElementList Summary
   }
 */
 
+/*
   /// Replace the UIDs in an [Element]. If [required] is _true_ and the
   /// [Element] is not present a [elementNotPresentError] is called.
   /// It is an error if [sList] is _null_.  It is an error if the [Element]
@@ -364,7 +347,7 @@ ElementList Summary
   List<Element> updateAllUids(int index, Iterable<Uid> uids) {
     final v = updateUid(index, uids);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (var e in asList)
       if (e is SQ) {
         result.addAll(e.updateAllUids(index, uids));
       } else {
@@ -372,6 +355,8 @@ ElementList Summary
       }
     return result;
   }
+*/
+/*
 
   /// Replaces the element with [index] with a new element that is
   /// the same except it has no values.  Returns the original element.
@@ -389,7 +374,7 @@ ElementList Summary
   List<Element> noValuesAll(int index) {
     assert(index != null);
     final result = <Element>[]..add(noValues(index));
-    for (var e in elements) {
+    for (var e in asList) {
       if (e is SQ) {
         result.addAll(e.noValuesAll(index));
       } else if (e.index == index) {
@@ -399,7 +384,9 @@ ElementList Summary
     }
     return result;
   }
+*/
 
+/*
   /// Replaces the [Element.values] at [index] with [vList].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
@@ -429,7 +416,7 @@ ElementList Summary
   Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
     final result = <List<V>>[]..add(replace(index, vList));
-    for (var e in elements)
+    for (var e in asList)
       if (e is SQ) {
         result.addAll(e.replaceAll(index, vList));
       } else {
@@ -442,7 +429,7 @@ ElementList Summary
       int index, Iterable<V> f(Iterable<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
-    for (var e in elements)
+    for (var e in asList)
       if (e is SQ) {
         result.addAll(e.replaceAllF(index, f));
       } else {
@@ -465,7 +452,7 @@ ElementList Summary
   List<Element> replaceAllUids(int index, Iterable<Uid> uids) {
     final v = updateUid(index, uids);
     final result = <Element>[]..add(v);
-    for (var e in elements)
+    for (var e in asList)
       if (e is SQ) {
         result.addAll(e.updateAllUids(index, uids));
       } else {
@@ -473,37 +460,17 @@ ElementList Summary
       }
     return result;
   }
+*/
 
   /// Removes the [Element] with index from _this_.
   // Design Note: Can't use remove
   @override
-  Element removeAt(int index, {bool required = false}) {
-    final e = lookup(index, required: required);
-    this[index] == null;
-    return (e == null && required) ? elementNotPresentError(index) : e;
-  }
+  Element removeAt(int index, {bool required = false});
 
   /// Removes the [Element] with [index] from _this_.
-  Element delete(int index, {bool required = false}) {
-    assert(index != null, 'Invalid index: $index');
-    final e = removeAt(index);
-    if (e == null) return (required) ? elementNotPresentError<int>(index) : e;
-    return e;
-  }
+  Element delete(int index, {bool required = false});
 
-  List<Element> deleteAll(int index, {bool recursive = false}) {
-    assert(index != null, 'Invalid index: $index');
-    final results = <Element>[];
-    final e = delete(index);
-    if (e != null) results.add(e);
-    assert(this[index] == null);
-    // If index is not a Sequence walk all
-    // Sequences recursively, and remove index.
-    if (recursive)
-      for (var sq in sequences)
-        for (var item in sq.items) results.add(item.delete(index));
-    return results;
-  }
+  List<Element> deleteAll(int index, {bool recursive = false});
 
   /// Returns a copy of _this_. If [parent] is _null_ the
   /// [parent] of the copy is _this_ [parent].
@@ -539,13 +506,13 @@ ElementList Summary
   /// Returns a [Map] of the Elements that satisfy [min] <= e.code <= [max].
   List<Element> getElementsInRange(int min, int max) {
     final fmi = <Element>[];
-    for (var e in elements) if (e.code >= min && e.code < max) fmi.add(e);
+    for (var e in asList) if (e.code >= min && e.code < max) fmi.add(e);
     return fmi;
   }
 
   //Enhancement: test
   bool hasElementsInRange(int min, int max) {
-    for (var e in elements) if (e.code >= min && e.code <= max) return true;
+    for (var e in asList) if (e.code >= min && e.code <= max) return true;
     return false;
   }
 

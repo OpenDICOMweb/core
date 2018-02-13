@@ -5,6 +5,7 @@
 // See the AUTHORS file for other contributors.
 part of odw.sdk.core.parser;
 
+// TODO: The code in this file can be simplified.
 int parseDate(String s,
         {int start = 0, int end, Issues issues, OnParseError onError}) =>
     (s.contains('-'))

@@ -16,8 +16,12 @@ RSG rsg = new RSG(seed: 1);
 
 void main() {
   // minYear and maxYear can be passed as an argument
-  Server.initialize(name: 'string/date_time_test', level: Level.info);
-  system.throwOnError = false;
+  Server.initialize(
+      name: 'string/date_time_test',
+      level: Level.info,
+      minYear: 0000,
+      maxYear: 2100,
+      throwOnError: false);
 
   group('ASTag', () {
     const goodAgeList = const <List<String>>[
@@ -786,6 +790,7 @@ void main() {
     test('DA hasValidValues good values', () {
       for (var s in goodDAList) {
         system.throwOnError = false;
+        log.debug('DA: "$s"');
         final da0 = new DAtag(PTag.kCreationDate, s);
         expect(da0.hasValidValues, true);
       }

@@ -151,6 +151,7 @@ void main() {
       map0[fd0.code] = fd0;
       map0[as0.code] = as0;
 
+/*
       var noValues0 = map0.noValues(fd0.key);
       expect(noValues0 == fd0, true);
       expect(noValues0.values.isEmpty, false);
@@ -158,7 +159,9 @@ void main() {
       noValues0 = map0.noValues(fd0.key);
       expect(noValues0.values.isEmpty, true);
       log.debug('noValues0: $noValues0');
-    });
+*/
+
+    }, skip: 'MapAsList no longer handles noValues');
 
     test('noValuesAll', () {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
@@ -175,11 +178,12 @@ void main() {
       valuesList.add(new TagItem.fromList(rds, map0));
       final sq0 = new SQtag(PTag.kPatientSizeCodeSequence, rds);
       map0[sq0.code] = sq0;
-      final noV = map0.noValuesAll(sq0.index);
-      print(noV);
+//      final noV = map0.noValuesAll(sq0.index);
+//      print(noV);
 
       map0[as0.code] = as0;
 
+/*
       var noValues0 = map0.noValuesAll(as0.key);
       expect(noValues0.isEmpty, false);
 
@@ -189,6 +193,7 @@ void main() {
         expect(e.values.isEmpty, true);
         log.debug('noValues0: $noValues0');
       }
+*/
     });
 
     test('update (String)', () {
@@ -301,17 +306,17 @@ void main() {
 
     test('Simple UItag, replace, and replaceUid test', () {
       final uidString0 = '1.2.840.10008.5.1.4.34.5';
-      final uidString0a = '1.2.840.10008.5.1.4.34';
+//      final uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
-      final uidStringList0a = [uidString0a];
+//      final uidStringList0a = [uidString0a];
       final uid0 = new Uid(uidString0);
-      final uid0a = new Uid(uidString0a);
+//      final uid0a = new Uid(uidString0a);
       final uidList0 = [uid0];
-      final uidList0a = [uid0a];
+//      final uidList0a = [uid0a];
 
       // Create element and check values and uids
       final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
-      final map0 = new MapAsList()..add(ui0);
+//      final map0 = new MapAsList()..add(ui0);
       print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));
@@ -320,6 +325,7 @@ void main() {
       expect(ui0.uids.elementAt(0), equals(uid0));
 
 
+/*
       // Test replace
       final uidStringList0b = map0.replace(ui0.code, uidStringList0a);
       expect(uidStringList0b, equals(uidStringList0));
@@ -330,21 +336,23 @@ void main() {
       print('uidList0b: $uidList0b');
       expect(uidList0b, equals(uidStringList0a));
       expect(uidList0b.elementAt(0), equals(uidStringList0a[0]));
-    });
+*/
+
+    }, skip: 'MapAsList no longer handles replace or replaceUid');
 
     test('Simple UItag.fromString, replace, and replaceUid test', () {
       final uidString0 = '1.2.840.10008.5.1.4.34.5';
-      final uidString0a = '1.2.840.10008.5.1.4.34';
+//      final uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
-      final uidStringList0a = [uidString0a];
+//      final uidStringList0a = [uidString0a];
       final uid0 = new Uid(uidString0);
-      final uid0a = new Uid(uidString0a);
+//      final uid0a = new Uid(uidString0a);
       final uidList0 = [uid0];
-      final uidList0a = [uid0a];
+//      final uidList0a = [uid0a];
 
       // Create element and check values and uids
       final ui0 = new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
-      final map0 = new MapAsList()..add(ui0);
+//      final map0 = new MapAsList()..add(ui0);
       print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidStringList0[0]));
@@ -352,6 +360,7 @@ void main() {
       expect(ui0.uids, equals(uidList0));
       expect(ui0.uids.elementAt(0), equals(uidList0[0]));
 
+/*
       // Test replace
       final uidStringList0b = map0.replace(ui0.code, uidStringList0a);
       expect(uidStringList0b, equals(uidStringList0));
@@ -362,9 +371,12 @@ void main() {
       print('uidList0b: $uidList0b');
       expect(uidList0b, equals(uidStringList0a));
       expect(uidList0b.elementAt(0), equals(uidStringList0a[0]));
-    });
+*/
+
+    }, skip: 'MapAsList no longer handles replace or replaceUid');
 
     test('Simple Random UItag, replace, and replaceUid test', () {
+/*
       final count = 8;
       for(var i = 1; i < count; i++) {
         final uidList0 = Uid.randomList(count);
@@ -372,7 +384,7 @@ void main() {
         final uidStringList0 = UI.toStringList(uidList0);
         final uidStringList0a = UI.toStringList(uidList0a);
 
-        // Create element and check values and uids
+       // Create element and check values and uids
         print('uidList0: $uidList0');
         final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
         print('ui0: $ui0');
@@ -396,7 +408,8 @@ void main() {
         expect(uidList0b, equals(uidStringList0a));
         expect(uidList0b.elementAt(0), equals(uidStringList0a[0]));
       }
-    });
+*/
+    }, skip: 'MapAsList no longer handles replace or replaceUid');
 
     test('Simple Random UItag.fromString, replace, and replaceUid test', () {
       final rsg = new RSG(seed: 1);
@@ -405,15 +418,14 @@ void main() {
         final uidStringList0 = rsg.getUIList(1, 1);
         final uidStringList0a = rsg.getUIList(1, 1);
         final uid0 = new Uid(uidStringList0[0]);
-        final uid0a = new Uid(uidStringList0a[0]);
+//        final uid0a = new Uid(uidStringList0a[0]);
         final uidList0 = [uid0];
-        final uidList0a = [uid0a];
+//        final uidList0a = [uid0a];
 
         // Create element and check values and uids
         final ui0 = new UItag.fromStrings(
             PTag.kSelectorUIValue, uidStringList0);
-        final map0 = new MapAsList()
-          ..add(ui0);
+//        final map0 = new MapAsList()..add(ui0);
         print('values: ${ui0.values}');
         expect(ui0.values, equals(uidStringList0));
         expect(ui0.value, equals(uidStringList0[0]));
@@ -426,13 +438,16 @@ void main() {
         expect(uidStringList0b, equals(uidStringList0));
         expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
 
+/*
         // Test replaceUid
         final uidList0b = map0.replaceUid(ui0.code, uidList0a);
         print('uidList0b: $uidList0b');
         expect(uidList0b, equals(uidStringList0a));
         expect(uidList0b.elementAt(0), equals(uidStringList0a[0]));
+*/
+
       }
-    });
+    }, skip: 'MapAsList no longer handles replace or replaceUid');
 
     test('replace', () {
       final map = new MapAsList();
@@ -440,7 +455,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       map.add(fd0);
 
-//      system.level = Level.debug;
+/*
       final vList1 = [123];
       expect(map.replace(fd0.index, vList1), equals(vList0));
       log.debug('fd0.values: ${fd0.values}');
@@ -453,7 +468,9 @@ void main() {
       //expect(map.replace(as0.index, vList3), equals(vList2));
       expect(() => map.replace(as0.index, vList3, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
-    });
+*/
+
+    }, skip: 'MapAsList no longer handles replace or replaceUid');
 
     test('replaceAll', () {
       final map = new MapAsList();
@@ -461,14 +478,16 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       map.add(fd0);
 
-//      system.level = Level.debug;
+/*
       final vList1 = [123];
       final replaceA0 = map.replaceAll(fd0.index, vList1);
       log.debug('replaceA0 : $replaceA0');
       expect(replaceA0, equals([vList0, vList1]));
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList1));
-    });
+*/
+
+    }, skip: 'MapAsList no longer handles replace or replaceUid');
 
     test('== and hashCode', () {
       final map0 = new MapAsList();
@@ -503,8 +522,8 @@ void main() {
 
       map0[as0.code] = as0;
 
-      expect(map0.elements, equals([as0]));
-      expect(map0.elementsList, equals([as0]));
+      expect(map0.asList, equals([as0]));
+      expect(map0.asList, equals([as0]));
       expect(map0.keys, equals([as0.key]));
       expect(map0.keysList, equals([as0.key]));
       expect(map0.length == as0.length, true);

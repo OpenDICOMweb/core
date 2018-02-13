@@ -26,10 +26,10 @@ class DeIdProfile {
   static bool _isEmpty<V>(Iterable<V> values, bool emptyAllowed) =>
       values == const <V>[] || emptyAllowed;
 
- //FLush or Fix
+  //FLush or Fix
   //TODO: deidentifySequence has to be at a higher level
   /// Keep (unchanged for non-sequence attributes, cleaned for sequences)';
- // static void retain(Dataset ds, Tag tag) => ds.retain(tag);
+  // static void retain(Dataset ds, Tag tag) => ds.retain(tag);
 
 /* FLush or Fix
   //TODO: deidentifySequence has to be at a higher level
@@ -138,9 +138,8 @@ class DeIdProfile {
       const DeIdProfile(PTag.kRequestedSOPInstanceUID, 'U', replaceUids);
   static const DeIdProfile kMediaStorageSOPInstanceUID =
       const DeIdProfile(PTag.kMediaStorageSOPInstanceUID, 'U', replaceUids);
-  static const DeIdProfile kReferencedSOPInstanceUIDinFile =
-      const DeIdProfile(
-          PTag.kReferencedSOPInstanceUIDInFile, 'U', replaceUids);
+  static const DeIdProfile kReferencedSOPInstanceUIDInFile =
+      const DeIdProfile(PTag.kReferencedSOPInstanceUIDInFile, 'U', replaceUids);
   static const DeIdProfile kInstanceCreatorUID =
       const DeIdProfile(PTag.kInstanceCreatorUID, 'U', replaceUids);
   static const DeIdProfile kSOPInstanceUID =
@@ -181,18 +180,17 @@ class DeIdProfile {
       const DeIdProfile(PTag.kInstitutionAddress, 'X', remove);
   static const DeIdProfile kInstitutionCodeSequence = const DeIdProfile(
       PTag.kInstitutionCodeSequence, 'XZD', removeUnlessZeroOrDummy);
-  static const DeIdProfile kReferringPhysiciansName =
+  static const DeIdProfile kReferringPhysicianName =
       const DeIdProfile(PTag.kReferringPhysicianName, 'Z', replaceWithZero);
-  static const DeIdProfile kReferringPhysiciansAddress =
+  static const DeIdProfile kReferringPhysicianAddress =
       const DeIdProfile(PTag.kReferringPhysicianAddress, 'X', remove);
-  static const DeIdProfile kReferringPhysiciansTelephoneNumbers =
+  static const DeIdProfile kReferringPhysicianTelephoneNumbers =
       const DeIdProfile(PTag.kReferringPhysicianTelephoneNumbers, 'X', remove);
-  static const DeIdProfile kReferringPhysiciansIdentificationSequence =
+  static const DeIdProfile kReferringPhysicianIdentificationSequence =
       const DeIdProfile(
           PTag.kReferringPhysicianIdentificationSequence, 'X', remove);
-  static const DeIdProfile kContextGroupExtensionCreatorUID =
-      const DeIdProfile(
-          PTag.kContextGroupExtensionCreatorUID, 'U', replaceUids);
+  static const DeIdProfile kContextGroupExtensionCreatorUID = const DeIdProfile(
+      PTag.kContextGroupExtensionCreatorUID, 'U', replaceUids);
   static const DeIdProfile kTimezoneOffsetFromUTC =
       const DeIdProfile(PTag.kTimezoneOffsetFromUTC, 'X', remove);
   static const DeIdProfile kStationName =
@@ -205,24 +203,23 @@ class DeIdProfile {
       const DeIdProfile(PTag.kInstitutionalDepartmentName, 'X', remove);
   static const DeIdProfile kPhysicianOfRecord =
       const DeIdProfile(PTag.kPhysiciansOfRecord, 'X', remove);
-  static const DeIdProfile kPhysician0xsofRecordIdentificationSequence =
+  static const DeIdProfile kPhysiciansOfRecordIdentificationSequence =
       const DeIdProfile(
           PTag.kPhysiciansOfRecordIdentificationSequence, 'X', remove);
-  static const DeIdProfile kPerformingPhysiciansName =
+  static const DeIdProfile kPerformingPhysicianName =
       const DeIdProfile(PTag.kPerformingPhysicianName, 'X', remove);
   static const DeIdProfile kPerformingPhysicianIdentificationSequence =
       const DeIdProfile(
           PTag.kPerformingPhysicianIdentificationSequence, 'X', remove);
-  static const DeIdProfile kNameofPhysician0xsReadingStudy =
+  static const DeIdProfile kNameOfPhysiciansReadingStudy =
       const DeIdProfile(PTag.kNameOfPhysiciansReadingStudy, 'X', remove);
-  static const DeIdProfile kPhysician0xsReadingStudyIdentificationSequence =
+  static const DeIdProfile kPhysiciansReadingStudyIdentificationSequence =
       const DeIdProfile(
           PTag.kPhysiciansReadingStudyIdentificationSequence, 'X', remove);
   static const DeIdProfile kOperatorsName =
       const DeIdProfile(PTag.kOperatorsName, 'XZD', removeUnlessZeroOrDummy);
-  static const DeIdProfile kOperatorsIdentificationSequence =
-      const DeIdProfile(
-          PTag.kOperatorIdentificationSequence, 'XD', removeUnlessDummy);
+  static const DeIdProfile kOperatorsIdentificationSequence = const DeIdProfile(
+      PTag.kOperatorIdentificationSequence, 'XD', removeUnlessDummy);
   static const DeIdProfile kAdmittingDiagnosesDescription =
       const DeIdProfile(PTag.kAdmittingDiagnosesDescription, 'X', remove);
   static const DeIdProfile kAdmittingDiagnosesCodeSequence =
@@ -250,23 +247,23 @@ class DeIdProfile {
       const DeIdProfile(PTag.kIdentifyingComments, 'X', remove);
   static const DeIdProfile kCreatorVersionUID =
       const DeIdProfile(PTag.kCreatorVersionUID, 'U', replaceUids);
-  static const DeIdProfile kPatientsName =
+  static const DeIdProfile kPatientName =
       const DeIdProfile(PTag.kPatientName, 'Z', replaceWithZero);
   static const DeIdProfile kPatientID =
       const DeIdProfile(PTag.kPatientID, 'Z', replaceWithZero);
-  static const DeIdProfile kIssuerofPatientID =
+  static const DeIdProfile kIssuerOfPatientID =
       const DeIdProfile(PTag.kIssuerOfPatientID, 'X', remove);
-  static const DeIdProfile kPatientsBirthDate =
+  static const DeIdProfile kPatientBirthDate =
       const DeIdProfile(PTag.kPatientBirthDate, 'Z', replaceWithZero);
-  static const DeIdProfile kPatientsBirthTime =
+  static const DeIdProfile kPatientBirthTime =
       const DeIdProfile(PTag.kPatientBirthTime, 'X', remove);
-  static const DeIdProfile kPatientsSex =
+  static const DeIdProfile kPatientSex =
       const DeIdProfile(PTag.kPatientSex, 'Z', replaceWithZero);
-  static const DeIdProfile kPatientsInsurancePlanCodeSequence =
+  static const DeIdProfile kPatientInsurancePlanCodeSequence =
       const DeIdProfile(PTag.kPatientInsurancePlanCodeSequence, 'X', remove);
-  static const DeIdProfile kPatientsPrimaryLanguageCodeSequence =
+  static const DeIdProfile kPatientPrimaryLanguageCodeSequence =
       const DeIdProfile(PTag.kPatientPrimaryLanguageCodeSequence, 'X', remove);
-  static const DeIdProfile kPatientsPrimaryLanguageModifierCodeSequence =
+  static const DeIdProfile kPatientPrimaryLanguageModifierCodeSequence =
       const DeIdProfile(
           PTag.kPatientPrimaryLanguageModifierCodeSequence, 'X', remove);
   static const DeIdProfile kOtherPatientIDs =
@@ -275,7 +272,7 @@ class DeIdProfile {
       const DeIdProfile(PTag.kOtherPatientNames, 'X', remove);
   static const DeIdProfile kOtherPatientIDsSequence =
       const DeIdProfile(PTag.kOtherPatientIDsSequence, 'X', remove);
-  static const DeIdProfile kPatientsBirthName =
+  static const DeIdProfile kPatientBirthName =
       const DeIdProfile(PTag.kPatientBirthName, 'X', remove);
   static const DeIdProfile kPatientAge =
       const DeIdProfile(PTag.kPatientAge, 'X', remove);
@@ -381,9 +378,8 @@ class DeIdProfile {
       const DeIdProfile(PTag.kDimensionOrganizationUID, 'U', replaceUids);
   static const DeIdProfile kPaletteColorLookupTableUID =
       const DeIdProfile(PTag.kPaletteColorLookupTableUID, 'U', replaceUids);
-  static const DeIdProfile kLargePaletteColorLookupTableUID =
-      const DeIdProfile(
-          PTag.kLargePaletteColorLookupTableUID, 'U', replaceUids);
+  static const DeIdProfile kLargePaletteColorLookupTableUID = const DeIdProfile(
+      PTag.kLargePaletteColorLookupTableUID, 'U', replaceUids);
   static const DeIdProfile kImagePresentationComments =
       const DeIdProfile(PTag.kImagePresentationComments, 'X', remove);
   static const DeIdProfile kStudyIDIssuer =
@@ -449,8 +445,8 @@ class DeIdProfile {
       const DeIdProfile(PTag.kScheduledPerformingPhysicianName, 'X', remove);
   static const DeIdProfile kScheduledProcedureStepDescription =
       const DeIdProfile(PTag.kScheduledProcedureStepDescription, 'X', remove);
-  static const DeIdProfile
-      kScheduledPerformingPhysicianIdentificationSequence = const DeIdProfile(
+  static const DeIdProfile kScheduledPerformingPhysicianIdentificationSequence =
+      const DeIdProfile(
           PTag.kScheduledPerformingPhysicianIdentificationSequence,
           'X',
           remove);
@@ -481,8 +477,7 @@ class DeIdProfile {
   static const DeIdProfile kRequestAttributesSequence =
       const DeIdProfile(PTag.kRequestAttributesSequence, 'X', remove);
   static const DeIdProfile kCommentsOnThePerformedProcedureStep =
-      const DeIdProfile(
-          PTag.kCommentsOnThePerformedProcedureStep, 'X', remove);
+      const DeIdProfile(PTag.kCommentsOnThePerformedProcedureStep, 'X', remove);
   static const DeIdProfile kAcquisitionContextSequence =
       const DeIdProfile(PTag.kAcquisitionContextSequence, 'X', remove);
   static const DeIdProfile kRequestedProcedureID =
@@ -521,7 +516,7 @@ class DeIdProfile {
           PTag.kFillerOrderNumberImagingServiceRequest, 'Z', replaceWithZero);
   static const DeIdProfile kImagingServiceRequestComments =
       const DeIdProfile(PTag.kImagingServiceRequestComments, 'X', remove);
-  static const DeIdProfile kConfidentialityConstraintonPatientDataDescription =
+  static const DeIdProfile kConfidentialityConstraintOnPatientDataDescription =
       const DeIdProfile(
           PTag.kConfidentialityConstraintOnPatientDataDescription, 'X', remove);
   static const DeIdProfile
@@ -544,14 +539,14 @@ class DeIdProfile {
       const DeIdProfile(PTag.kScheduledHumanPerformersSequence, 'X', remove);
   static const DeIdProfile kActualHumanPerformersSequence =
       const DeIdProfile(PTag.kActualHumanPerformersSequence, 'X', remove);
-  static const DeIdProfile kHumanPerformersOrganization =
+  static const DeIdProfile kHumanPerformerOrganization =
       const DeIdProfile(PTag.kHumanPerformerOrganization, 'X', remove);
   static const DeIdProfile kHumanPerformerName =
       const DeIdProfile(PTag.kHumanPerformerName, 'X', remove);
   static const DeIdProfile kVerifyingOrganization =
       const DeIdProfile(PTag.kVerifyingOrganization, 'X', remove);
-  static const DeIdProfile kVerifyingObserverSequence = const DeIdProfile(
-      PTag.kVerifyingObserverSequence, 'D', replaceWithDummy);
+  static const DeIdProfile kVerifyingObserverSequence =
+      const DeIdProfile(PTag.kVerifyingObserverSequence, 'D', replaceWithDummy);
   static const DeIdProfile kVerifyingObserverName =
       const DeIdProfile(PTag.kVerifyingObserverName, 'D', replaceWithDummy);
   static const DeIdProfile kAuthorObserverSequence =
@@ -574,8 +569,8 @@ class DeIdProfile {
           PTag.kTemplateExtensionOrganizationUID, 'U', replaceUids);
   static const DeIdProfile kTemplateExtensionCreatorUID =
       const DeIdProfile(PTag.kTemplateExtensionCreatorUID, 'U', replaceUids);
-  static const DeIdProfile kGraphicAnnotationSequence = const DeIdProfile(
-      PTag.kGraphicAnnotationSequence, 'D', replaceWithDummy);
+  static const DeIdProfile kGraphicAnnotationSequence =
+      const DeIdProfile(PTag.kGraphicAnnotationSequence, 'D', replaceWithDummy);
   static const DeIdProfile kContentCreatorName =
       const DeIdProfile(PTag.kContentCreatorName, 'Z', replaceWithZero);
   static const DeIdProfile kContentCreatorIdentificationCodeSequence =
@@ -692,7 +687,7 @@ class DeIdProfile {
     0x00001000: kAffectedSOPInstanceUID,
     0x00001001: kRequestedSOPInstanceUID,
     0x00020003: kMediaStorageSOPInstanceUID,
-    0x00041511: kReferencedSOPInstanceUIDinFile,
+    0x00041511: kReferencedSOPInstanceUIDInFile,
     0x00080014: kInstanceCreatorUID,
     0x00080018: kSOPInstanceUID,
     0x00080020: kStudyDate,
@@ -713,10 +708,10 @@ class DeIdProfile {
     0x00080080: kInstitutionName,
     0x00080081: kInstitutionAddress,
     0x00080082: kInstitutionCodeSequence,
-    0x00080090: kReferringPhysiciansName,
-    0x00080092: kReferringPhysiciansAddress,
-    0x00080094: kReferringPhysiciansTelephoneNumbers,
-    0x00080096: kReferringPhysiciansIdentificationSequence,
+    0x00080090: kReferringPhysicianName,
+    0x00080092: kReferringPhysicianAddress,
+    0x00080094: kReferringPhysicianTelephoneNumbers,
+    0x00080096: kReferringPhysicianIdentificationSequence,
     0x0008010d: kContextGroupExtensionCreatorUID,
     0x00080201: kTimezoneOffsetFromUTC,
     0x00081010: kStationName,
@@ -724,11 +719,11 @@ class DeIdProfile {
     0x0008103e: kSeriesDescription,
     0x00081040: kInstitutionalDepartmentName,
     0x00081048: kPhysicianOfRecord,
-    0x00081049: kPhysician0xsofRecordIdentificationSequence,
-    0x00081050: kPerformingPhysiciansName,
+    0x00081049: kPhysiciansOfRecordIdentificationSequence,
+    0x00081050: kPerformingPhysicianName,
     0x00081052: kPerformingPhysicianIdentificationSequence,
-    0x00081060: kNameofPhysician0xsReadingStudy,
-    0x00081062: kPhysician0xsReadingStudyIdentificationSequence,
+    0x00081060: kNameOfPhysiciansReadingStudy,
+    0x00081062: kPhysiciansReadingStudyIdentificationSequence,
     0x00081070: kOperatorsName,
     0x00081072: kOperatorsIdentificationSequence,
     0x00081080: kAdmittingDiagnosesDescription,
@@ -744,19 +739,19 @@ class DeIdProfile {
     0x00083010: kIrradiationEventUID,
     0x00084000: kIdentifyingComments,
     0x00089123: kCreatorVersionUID,
-    0x00100010: kPatientsName,
+    0x00100010: kPatientName,
     0x00100020: kPatientID,
-    0x00100021: kIssuerofPatientID,
-    0x00100030: kPatientsBirthDate,
-    0x00100032: kPatientsBirthTime,
-    0x00100040: kPatientsSex,
-    0x00100050: kPatientsInsurancePlanCodeSequence,
-    0x00100101: kPatientsPrimaryLanguageCodeSequence,
-    0x00100102: kPatientsPrimaryLanguageModifierCodeSequence,
+    0x00100021: kIssuerOfPatientID,
+    0x00100030: kPatientBirthDate,
+    0x00100032: kPatientBirthTime,
+    0x00100040: kPatientSex,
+    0x00100050: kPatientInsurancePlanCodeSequence,
+    0x00100101: kPatientPrimaryLanguageCodeSequence,
+    0x00100102: kPatientPrimaryLanguageModifierCodeSequence,
     0x00101000: kOtherPatientIDs,
     0x00101001: kOtherPatientNames,
     0x00101002: kOtherPatientIDsSequence,
-    0x00101005: kPatientsBirthName,
+    0x00101005: kPatientBirthName,
     0x00101010: kPatientAge,
     0x00101020: kPatientSize,
     0x00101030: kPatientWeight,
@@ -873,7 +868,7 @@ class DeIdProfile {
     0x00402016: kPlacerOrderNumberImagingServiceRequest,
     0x00402017: kFillerOrderNumberImagingServiceRequest,
     0x00402400: kImagingServiceRequestComments,
-    0x00403001: kConfidentialityConstraintonPatientDataDescription,
+    0x00403001: kConfidentialityConstraintOnPatientDataDescription,
     0x00404023: kReferencedGeneralPurposeScheduledProcedureStepTransactionUID,
     0x00404025: kScheduledStationNameCodeSequence,
     0x00404027: kScheduledStationGeographicLocationCodeSequence,
@@ -881,7 +876,7 @@ class DeIdProfile {
     0x00404030: kPerformedStationGeographicLocationCodeSequence,
     0x00404034: kScheduledHumanPerformersSequence,
     0x00404035: kActualHumanPerformersSequence,
-    0x00404036: kHumanPerformersOrganization,
+    0x00404036: kHumanPerformerOrganization,
     0x00404037: kHumanPerformerName,
     0x0040a027: kVerifyingOrganization,
     0x0040a073: kVerifyingObserverSequence,
@@ -935,6 +930,254 @@ class DeIdProfile {
     0xfffafffa: kDigitalSignaturesSequence,
     0xfffcfffc: kDataSetTrailingPadding
   };
+
+  static const List<DeIdProfile> deIdTags = const <DeIdProfile>[
+    kAffectedSOPInstanceUID,
+    kRequestedSOPInstanceUID,
+    kMediaStorageSOPInstanceUID,
+    kReferencedSOPInstanceUIDInFile,
+    kInstanceCreatorUID,
+    kSOPInstanceUID,
+    kStudyDate,
+    kSeriesDate,
+    kAcquisitionDate,
+    kContentDate,
+    kOverlayDate,
+    kCurveDate,
+    kAcquisitionDateTime,
+    kStudyTime,
+    kSeriesTime,
+    kAcquisitionTime,
+    kContentTime,
+    kOverlayTime,
+    kCurveTime,
+    kAccessionNumber,
+    kFailedSOPInstanceUIDList,
+    kInstitutionName,
+    kInstitutionAddress,
+    kInstitutionCodeSequence,
+    kReferringPhysicianName,
+    kReferringPhysicianAddress,
+    kReferringPhysicianTelephoneNumbers,
+    kReferringPhysicianIdentificationSequence,
+    kContextGroupExtensionCreatorUID,
+    kTimezoneOffsetFromUTC,
+    kStationName,
+    kStudyDescription,
+    kSeriesDescription,
+    kInstitutionalDepartmentName,
+    kPhysicianOfRecord,
+    kPhysiciansOfRecordIdentificationSequence,
+    kPerformingPhysicianName,
+    kPerformingPhysicianIdentificationSequence,
+    kNameOfPhysiciansReadingStudy,
+    kPhysiciansReadingStudyIdentificationSequence,
+    kOperatorsName,
+    kOperatorsIdentificationSequence,
+    kAdmittingDiagnosesDescription,
+    kAdmittingDiagnosesCodeSequence,
+    kReferencedStudySequence,
+    kReferencedPerformedProcedureStepSequence,
+    kReferencedPatientSequence,
+    kReferencedImageSequence,
+    kReferencedSOPInstanceUID,
+    kTransactionUID,
+    kDerivationDescription,
+    kSourceImageSequence,
+    kIrradiationEventUID,
+    kIdentifyingComments,
+    kCreatorVersionUID,
+    kPatientName,
+    kPatientID,
+    kIssuerOfPatientID,
+    kPatientBirthDate,
+    kPatientBirthTime,
+    kPatientSex,
+    kPatientInsurancePlanCodeSequence,
+    kPatientPrimaryLanguageCodeSequence,
+    kPatientPrimaryLanguageModifierCodeSequence,
+    kOtherPatientIDs,
+    kOtherPatientNames,
+    kOtherPatientIDsSequence,
+    kPatientBirthName,
+    kPatientAge,
+    kPatientSize,
+    kPatientWeight,
+    kPatientAddress,
+    kInsurancePlanIdentification,
+    kPatientMotherBirthName,
+    kMilitaryRank,
+    kBranchOfService,
+    kMedicalRecordLocator,
+    kMedicalAlerts,
+    kAllergies,
+    kCountryOfResidence,
+    kRegionOfResidence,
+    kPatientTelephoneNumbers,
+    kEthnicGroup,
+    kOccupation,
+    kSmokingStatus,
+    kAdditionalPatientHistory,
+    kPregnancyStatus,
+    kLastMenstrualDate,
+    kPatientReligiousPreference,
+    kPatientSexNeutered,
+    kResponsiblePerson,
+    kResponsibleOrganization,
+    kPatientComments,
+    kContrastBolusAgent,
+    kDeviceSerialNumber,
+    kDeviceUID,
+    kPlateID,
+    kGeneratorID,
+    kCassetteID,
+    kGantryID,
+    kProtocolName,
+    kAcquisitionDeviceProcessingDescription,
+    kAcquisitionComments,
+    kDetectorID,
+    kAcquisitionProtocolDescription,
+    kContributionDescription,
+    kStudyInstanceUID,
+    kSeriesInstanceUID,
+    kStudyID,
+    kFrameOfReferenceUID,
+    kSynchronizationFrameOfReferenceUID,
+    kModifyingDeviceID,
+    kModifyingDeviceManufacturer,
+    kModifiedImageDescription,
+    kImageComments,
+    kFrameComments,
+    kConcatenationUID,
+    kDimensionOrganizationUID,
+    kPaletteColorLookupTableUID,
+    kLargePaletteColorLookupTableUID,
+    kImagePresentationComments,
+    kStudyIDIssuer,
+    kScheduledStudyLocation,
+    kScheduledStudyLocationAETitle,
+    kReasonForStudy,
+    kRequestingPhysician,
+    kRequestingService,
+    kRequestedProcedureDescription,
+    kRequestedContrastAgent,
+    kStudyComments,
+    kReferencedPatientAliasSequence,
+    kAdmissionID,
+    kIssuerOfAdmissionID,
+    kScheduledPatientInstitutionResidence,
+    kAdmittingDate,
+    kAdmittingTime,
+    kDischargeDiagnosisDescription,
+    kSpecialNeeds,
+    kServiceEpisodeID,
+    kIssuerOfServiceEpisodeID,
+    kServiceEpisodeDescription,
+    kCurrentPatientLocation,
+    kPatientInstitutionResidence,
+    kPatientState,
+    kVisitComments,
+    kScheduledStationAETitle,
+    kScheduledProcedureStepStartDate,
+    kScheduledProcedureStepStartTime,
+    kScheduledProcedureStepEndDate,
+    kScheduledProcedureStepEndTime,
+    kScheduledPerformingPhysicianName,
+    kScheduledProcedureStepDescription,
+    kScheduledPerformingPhysicianIdentificationSequence,
+    kScheduledStationName,
+    kScheduledProcedureStepLocation,
+    kPreMedication,
+    kPerformedStationAETitle,
+    kPerformedStationName,
+    kPerformedLocation,
+    kPerformedProcedureStepStartDate,
+    kPerformedProcedureStepStartTime,
+    kPerformedProcedureStepEndDate,
+    kPerformedProcedureStepEndTime,
+    kPerformedProcedureStepID,
+    kPerformedProcedureStepDescription,
+    kRequestAttributesSequence,
+    kCommentsOnThePerformedProcedureStep,
+    kAcquisitionContextSequence,
+    kRequestedProcedureID,
+    kPatientTransportArrangements,
+    kRequestedProcedureLocation,
+    kNamesOfIntendedRecipientsOfResults,
+    kIntendedRecipientsOfResultsIdentificationSequence,
+    kPersonIdentificationCodeSequence,
+    kPersonAddress,
+    kPersonTelephoneNumbers,
+    kRequestedProcedureComments,
+    kReasonForTheImagingServiceRequest,
+    kOrderEnteredBy,
+    kOrderEntererLocation,
+    kOrderCallbackPhoneNumber,
+    kPlacerOrderNumberImagingServiceRequest,
+    kFillerOrderNumberImagingServiceRequest,
+    kImagingServiceRequestComments,
+    kConfidentialityConstraintOnPatientDataDescription,
+    kReferencedGeneralPurposeScheduledProcedureStepTransactionUID,
+    kScheduledStationNameCodeSequence,
+    kScheduledStationGeographicLocationCodeSequence,
+    kPerformedStationNameCodeSequence,
+    kPerformedStationGeographicLocationCodeSequence,
+    kScheduledHumanPerformersSequence,
+    kActualHumanPerformersSequence,
+    kHumanPerformerOrganization,
+    kHumanPerformerName,
+    kVerifyingOrganization,
+    kVerifyingObserverSequence,
+    kVerifyingObserverName,
+    kAuthorObserverSequence,
+    kParticipantSequence,
+    kCustodialOrganizationSequence,
+    kVerifyingObserverIdentificationCodeSequence,
+    kPersonName,
+    kUID,
+    kContentSequence,
+    kTemplateExtensionOrganizationUID,
+    kTemplateExtensionCreatorUID,
+    kGraphicAnnotationSequence,
+    kContentCreatorName,
+    kContentCreatorIdentificationCodeSequence,
+    kFiducialUID,
+    kStorageMediaFileSetUID,
+    kIconImageSequence,
+    kTopicTitle,
+    kTopicSubject,
+    kTopicAuthor,
+    kTopicKeywords,
+    kDigitalSignatureUID,
+    kReferencedDigitalSignatureSequence,
+    kReferencedSOPInstanceMACSequence,
+    kMAC,
+    kModifiedAttributesSequence,
+    kOriginalAttributesSequence,
+    kTextString,
+    kReferencedFrameOfReferenceUID,
+    kRelatedFrameOfReferenceUID,
+    kDoseReferenceUID,
+    kReviewerName,
+    kArbitrary,
+    kTextComments,
+    kResultsIDIssuer,
+    kInterpretationRecorder,
+    kInterpretationTranscriber,
+    kInterpretationText,
+    kInterpretationAuthor,
+    kInterpretationApproverSequence,
+    kPhysicianApprovingInterpretation,
+    kInterpretationDiagnosisDescription,
+    kResultsDistributionListSequence,
+    kDistributionName,
+    kDistributionAddress,
+    kInterpretationIDIssuer,
+    kImpressions,
+    kResultsComments,
+    kDigitalSignaturesSequence,
+    kDataSetTrailingPadding,
+  ];
 
   static const List<int> codes = const [
     // No reformat

@@ -766,7 +766,7 @@ abstract class IS extends StringAscii {
 
 abstract class UI extends StringAscii {
   @override
-  final int padChar = kNull;
+  int get padChar => kNull;
   @override
   int get vrIndex => kVRIndex;
   @override

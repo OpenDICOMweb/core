@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'replace_uids', level: Level.info);
+  Server.initialize(name: 'replace_uids', level: Level.debug);
 
   group('RootDataset', () {
     test('update', () {
