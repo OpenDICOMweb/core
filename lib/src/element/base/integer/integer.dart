@@ -38,7 +38,7 @@ abstract class IntBase extends Element<int> {
 
   /// The _canonical_ empty [values] value for Floating Point Elements.
   @override
-  List<int> emptyList = kEmptyList;
+  List<int> get emptyList => kEmptyList;
   static const List<int> kEmptyList = const <int>[];
 
   @override

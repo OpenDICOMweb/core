@@ -180,7 +180,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 //  static Null _sqError(EBytes eb) => invalidElementIndex(0);
 
   static Element fromBDE(Element bd, int vrIndex, [TransferSyntax ts]) {
-    print('fromBD vrIndex: $vrIndex');
+//    print('fromBD vrIndex: $vrIndex');
     if (vrIndex > 30) throw 'bad vrIndex $bd';
     if (bd is PixelData)
       return _bdePixelMakers[vrIndex](bd, ts);
@@ -201,7 +201,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   static final List<MakeFromBDE> _bdeMakers = const <MakeFromBDE>[
     _vrIndexError,
     // Maybe Undefined Lengths
-    _vrIndexError, _vrIndexError, _vrIndexError, // No reformat
+    OBtag.fromBDE, OWtag.fromBDE, UNtag.fromBDE, // No reformat
 
     // EVR Long
     ODtag.fromBDE, OFtag.fromBDE, OLtag.fromBDE,

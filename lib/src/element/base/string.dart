@@ -67,7 +67,7 @@ abstract class StringBase extends Element<String> {
 
   /// The _canonical_ empty [values] value for Floating Point Elements.
   @override
-  List<String> emptyList = kEmptyList;
+  List<String> get emptyList => kEmptyList;
   static const List<String> kEmptyList = const <String>[];
 
   @override

@@ -66,7 +66,7 @@ abstract class FloatBase extends Element<double> {
 
   /// The _canonical_ empty [values] value for Floating Point Elements.
   @override
-  List<double> emptyList = kEmptyList;
+  List<double> get emptyList => kEmptyList;
   static const List<double> kEmptyList = const <double>[];
 
   @override
