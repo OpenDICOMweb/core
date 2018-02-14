@@ -8,6 +8,9 @@ import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/p_tag.dart';
 
 const List<int> deIdDateCodes = const <int>[
+  // Added by JFPhilbin
+  kInstanceCreationDate,
+  // Defined in PS3.15
   kStudyDate,
   kSeriesDate,
   kAcquisitionDate,
@@ -25,6 +28,9 @@ const List<int> deIdDateCodes = const <int>[
 
 
 const List<PTag> deIdDateTags = const <PTag>[
+  // Added by JFPhilbin
+  PTag.kInstanceCreationDate,
+  // Defined in PS3.15
   PTag.kStudyDate,
   PTag.kSeriesDate,
   PTag.kAcquisitionDate,

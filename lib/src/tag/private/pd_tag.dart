@@ -11,21 +11,12 @@ import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr/vr.dart';
 
-class PDTag extends PrivateTag {
-  /// The [PCTag.name]
-  final PCTag creator;
+abstract class PDTag extends PrivateTag {
+  const PDTag._();
 
-  factory PDTag(int code, int vrIndex, [PCTag creator]) {
-    if (creator != null) {
-      final definition = creator.lookupData(code);
-      if (definition != null)
-        return new PDTagKnown(code, vrIndex, creator, definition);
-      return new PDTagUnknown(code, vrIndex, creator);
-    }
-    return new PDTagUnknown(code, vrIndex, PCTagUnknown.kUnknownCreator);
-  }
-
-  const PDTag._(int code, int vrIndex, this.creator) : super(code, vrIndex);
+  /// The Private Creator Tag ([PCTag]) associated with this
+  /// Private Data Tag ([PDTag]).
+  PCTag get creator;
 
   @override
   bool get isPrivateData => true;
@@ -33,28 +24,44 @@ class PDTag extends PrivateTag {
   @override
   VM get vm => VM.k1_n;
 
-  static PDTag make(int code, int vrIndex, [PCTag creator]) =>
-      new PDTag(code, vrIndex, creator);
+  static PDTag make(int code, int vrIndex, PCTag creator) {
+    if (creator != null) {
+      final definition = creator.lookupData(code);
+      return (definition != null)
+          ? new PDTagKnown(code, vrIndex, creator, definition)
+          : new PDTagUnknown(code, vrIndex, creator);
+    }
+    return new PDTagUnknown(code, vrIndex, PCTagUnknown.kUnknownCreator);
+  }
 }
 
 class PDTagUnknown extends PDTag {
-  PDTagUnknown(int code, int vrIndex, PCTag creator)
-   // Flush   [PCTag creator = PCTagUnknown.kUnknownCreator])
-      : super._(code, vrIndex, creator);
+  @override
+  final int code;
+  @override
+  final int vrIndex;
+  @override
+  final PCTag creator;
+  PDTagUnknown(this.code, this.vrIndex, this.creator) : super._();
 
   @override
   bool get isKnown => false;
 
-  // TODO: flush if not used
-  static PDTagUnknown maker(int code, int vrIndex, [PCTag creator]) =>
+  static PDTagUnknown make(int code, int vrIndex, [PCTag creator]) =>
       new PDTagUnknown(code, vrIndex, creator);
 }
 
 class PDTagKnown extends PDTag {
+  @override
+  final int code;
+  @override
+  final int vrIndex;
+  @override
+  final PCTag creator;
   final PDTagDefinition definition;
 
-  const PDTagKnown(int code, int vrIndex, PCTag creator, this.definition)
-      : super._(code, vrIndex, creator);
+  const PDTagKnown(this.code, this.vrIndex, this.creator, this.definition)
+      : super._();
 
   @override
   bool get isKnown => true;
@@ -92,7 +99,6 @@ class PDTagKnown extends PDTag {
   String toString() => '$runtimeType$dcm $name $subgroup($subgroupHex), creator'
       '(${creator.name})';
 
-  // TODO: Flush if not used
   static PDTagKnown make(
           int code, int vrIndex, PCTag creator, PDTagDefinition definition) =>
       new PDTagKnown(code, vrIndex, creator, definition);

@@ -67,6 +67,7 @@ abstract class Tag {
   int get index => code;
   int get code;
   int get vrIndex;
+  String get vrId => vrIdFromIndex(vrIndex);
 
   String get keyword => 'UnknownTag';
   String get name => 'Unknown Tag';
@@ -138,7 +139,7 @@ abstract class Tag {
   bool get hasSpecialVR => isSpecialVRIndex(vrIndex);
 
   bool isValidVRIndex(int index) => vr.isValidIndex(index);
-  
+
   // **** VM Getters
 
   /// The minimum number that MUST be present, if any values are present.
@@ -429,9 +430,9 @@ abstract class Tag {
   static Tag fromCode<T>(int code, int vrIndex, [T creator]) {
     if (Tag.isPublicCode(code)) return Tag.lookupPublicCode(code, vrIndex);
     if (Tag.isPrivateCreatorCode(code) && creator is String)
-      return new PCTag(code, vrIndex, creator);
+      return PCTag.make(code, vrIndex, creator);
     if (Tag.isPrivateDataCode(code) && creator is PCTag)
-      return new PDTag(code, vrIndex, creator);
+      return PDTag.make(code, vrIndex, creator);
     // This should never happen
     return invalidTagCode(code);
   }
@@ -447,8 +448,9 @@ abstract class Tag {
       if (Tag.isPrivateGroupLengthCode(code))
         return new PrivateTagGroupLength(code, vrIndex);
       if (Tag.isPrivateCreatorCode(code))
-        return new PCTag(code, vrIndex, creator);
-      if (Tag.isPrivateDataCode(code)) return new PDTag(code, vrIndex, creator);
+        return PCTag.make(code, vrIndex, creator);
+      if (Tag.isPrivateDataCode(code))
+        return PDTag.make(code, vrIndex, creator);
     }
 //    log.debug('lookupTag: ${Tag.toDcm(code)} $vrIndex, $creator');
     msg = 'Unknown Private Tag Code: creator: $creator';
@@ -524,7 +526,7 @@ abstract class Tag {
   static Tag lookupPrivateCreatorCode(int code, int vrIndex, String token) {
     if (Tag.isPrivateGroupLengthCode(code))
       return new PrivateTagGroupLength(code, vrIndex);
-    if (isPrivateCreatorCode(code)) return new PCTag(code, vrIndex, token);
+    if (isPrivateCreatorCode(code)) return PCTag.make(code, vrIndex, token);
     throw new InvalidTagCodeError(code);
   }
 

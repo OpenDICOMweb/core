@@ -15,22 +15,10 @@ import 'package:core/src/vr/vr.dart';
 
 //TODO: add constant tag for PCTag.kUnknown
 //TODO: this should be done the same way as KnownPublicTags
-class PCTag extends PrivateTag {
+abstract class PCTag extends PrivateTag {
   final int correctVRIndex = kLOIndex;
-  @override
-  final String name;
 
-  factory PCTag(int code, int vrIndex, String name) {
-    final def = PCTagDefinition.lookup(name);
-    if (vrIndex != kLOIndex && vrIndex != kUNIndex)
-      log.error('**** Error: Private Creator Tag with invalid vrIndex: '
-          '$vrIndex');
-    return (def != null)
-        ? new PCTagKnown(code, vrIndex, name, def)
-        : new PCTagUnknown(code, vrIndex, name);
-  }
-
-  const PCTag._(int code, int vrIndex, this.name) : super(code, kLOIndex);
+  const PCTag._();
 
   Map<int, PDTagDefinition> get dataTags => const <int, PDTagDefinition>{};
 
@@ -78,18 +66,50 @@ class PCTag extends PrivateTag {
   @override
   String toString() => '$runtimeType($name) $dcm ${vrIdByIndex[vrIndex]} $vm';
 
-  static PCTag maker(int code, int vrIndex, [Object name]) =>
-      new PCTag(code, vrIndex, name);
 
-  static const PCTag kUnknown =
-      const PCTag._(0x0, kLOIndex, 'Unknown Private Creator Tag');
+   static PCTag make(int code, int vrIndex, String name) {
+    final def = PCTagDefinition.lookup(name);
+    if (vrIndex != kLOIndex && vrIndex != kUNIndex) _error(vrIndex);
+
+    return (def != null)
+           ? new PCTagKnown(code, vrIndex, name, def)
+           : new PCTagUnknown(code, vrIndex, name);
+  }
+
+  static void _error(int vrIndex) =>
+      log.error('**** Private Creator Tag with invalid vrIndex: $vrIndex');
+
+  static const PCTag kUnknown = PCTagUnknown.kUnknownCreator;
 }
 
+class PCTagUnknown extends PCTag {
+  @override
+  final int code;
+  @override
+  final int  vrIndex;
+  @override
+  final String name;
+
+  const PCTagUnknown(this.code, this.vrIndex, this.name) : super._();
+
+  @override
+  String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)}';
+
+  static const PCTagUnknown kUnknownCreator =
+  const PCTagUnknown(0x00, kLOIndex, 'Unknown Creator');
+}
+
+
 class PCTagKnown extends PCTag {
+  @override
+  final int code;
+  @override
+  final int  vrIndex;
+  @override
+  final String name;
   PCTagDefinition definition;
 
-  PCTagKnown(int code, int vrIndex, String name, this.definition)
-      : super._(code, vrIndex, name);
+  PCTagKnown(this.code, this.vrIndex, this.name, this.definition) : super._();
 
   @override
   Map<int, PDTagDefinition> get dataTags => definition.dataTags;
@@ -119,20 +139,6 @@ String _fmtDataTagMap(Map<int, PDTagDefinition> dataTags) {
   });
   sb.write('  }');
   return sb.toString();
-}
-
-class PCTagUnknown extends PCTag {
-  @override
-  final int vrIndex;
-
-  const PCTagUnknown(int code, this.vrIndex, String name)
-      : super._(code, vrIndex, name);
-
-  @override
-  String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)}';
-
-  static const PCTagUnknown kUnknownCreator =
-      const PCTagUnknown(0x00, kLOIndex, 'Unknown Creator');
 }
 
 class PCTagDefinition {

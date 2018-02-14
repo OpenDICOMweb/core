@@ -7,10 +7,12 @@
 import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/p_tag.dart';
 
+const List<int> deIdFmiUidCodes = const <int>[
+  kMediaStorageSOPInstanceUID
+  ];
 const List<int> deIdUidCodes = const <int>[
   kAffectedSOPInstanceUID,
   kRequestedSOPInstanceUID,
-  kMediaStorageSOPInstanceUID,
   kReferencedSOPInstanceUIDInFile,
   kInstanceCreatorUID,
   kSOPInstanceUID,

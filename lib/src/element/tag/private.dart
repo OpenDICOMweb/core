@@ -71,8 +71,8 @@ class TagPrivateCreator extends LOtag {
     const values = const <String>['Phantom Private Creator'];
     final pcIndex = Elt.fromTag(code) >> 8;
     final pcCode = (code << 16) + pcIndex;
-    final pct = new PCTag(pcCode, kLOIndex, 'Phantom Private Creator');
-    final e = new LOtag(pct, values);
+    final tag = new PCTagUnknown(pcCode, kLOIndex, 'Phantom Private Creator');
+    final e = new LOtag(tag, values);
     return new TagPrivateCreator(e);
   }
 

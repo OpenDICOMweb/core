@@ -1,3 +1,0 @@
-Tests needed
-
-- add(Element) : valid tag, invalid tag, valid values, invalid values

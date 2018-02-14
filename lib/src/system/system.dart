@@ -95,7 +95,6 @@ abstract class System {
 
   bool useAscii = false;
 
-
   String dateTimeSeparator = kDefaultTimeSeparator;
 
   System(
@@ -119,9 +118,11 @@ abstract class System {
       : version = (version == null) ? new Version(0, 0, 1) : version,
         log = new Logger(name, level) {
     if (minYear < kMinYearLimit) throw new InvalidYearError(minYear);
-    log.config('minYear: $minYear, minYearLimit: $kMinYearLimit');
     if (maxYear > kMaxYearLimit) throw new InvalidYearError(maxYear);
-    log.config('maxYear:  $maxYear, maxYearLimit:  $kMaxYearLimit');
+    log
+      ..config('minYear: $minYear, minYearLimit: $kMinYearLimit')
+      ..config('maxYear:  $maxYear, maxYearLimit:  $kMaxYearLimit')
+      ..config('log level:  ${log.level}');
     hasher ??= const Hash64();
   }
 
@@ -182,9 +183,11 @@ abstract class System {
   // **** File Meta Information - each client or server should implement.
 
   //TODO: before V0.9.0 document these following
-  Map<String, SupportedTransferSyntax> get supportedTS => SupportedTransferSyntax.map;
+  Map<String, SupportedTransferSyntax> get supportedTS =>
+      SupportedTransferSyntax.map;
 
-  bool isSupportedTransferSyntax(String ts) => SupportedTransferSyntax.isSupported(ts);
+  bool isSupportedTransferSyntax(String ts) =>
+      SupportedTransferSyntax.isSupported(ts);
 
   bool isStorableTransferSyntax(TransferSyntax ts) =>
       SupportedTransferSyntax.map[ts]?.isStorable;
@@ -204,7 +207,8 @@ abstract class System {
   // Date/Time stuff
   static final DateTime startTime = new DateTime.now();
   static final Duration timeZoneOffset = startTime.timeZoneOffset;
-  static final int timeZoneOffsetInMicroseconds = startTime.timeZoneOffset.inMicroseconds;
+  static final int timeZoneOffsetInMicroseconds =
+      startTime.timeZoneOffset.inMicroseconds;
   static final int timeZoneIndex =
       kValidTZMicroseconds.indexOf(timeZoneOffsetInMicroseconds);
   static final String timeZoneName = startTime.timeZoneName;

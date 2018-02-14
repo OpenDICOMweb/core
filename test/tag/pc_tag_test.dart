@@ -11,7 +11,7 @@ void main() {
   Server.initialize(name: 'pc_tag_test', level: Level.info);
 
   test('PrivateCreatorTag ACUSON Test', () {
-    final pTag = new PCTag(0x00090010, kUNIndex, 'ACUSON');
+    final pTag = PCTag.make(0x00090010, kUNIndex, 'ACUSON');
     log.debug('pTag: $pTag');
     expect(pTag is PCTagKnown, true);
     log.debug(pTag.info);
@@ -21,7 +21,7 @@ void main() {
   });
 
   test('PrivateCreatorTag.unknown Test', () {
-    final pTag = new PCTag(0x00090010, kUNIndex, 'foo');
+    final pTag = PCTag.make(0x00090010, kUNIndex, 'foo');
     log.debug('${pTag.info}\n${pTag.name}: ${pTag.dataTags}');
   });
 

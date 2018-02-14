@@ -11,7 +11,7 @@ import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
 import 'package:core/src/dataset/element_list/element_list.dart';
 import 'package:core/src/dataset/element_list/map_as_list.dart';
-import 'package:core/src/dataset/private_group.dart';
+import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/element/base/sequence.dart';
 
 /// An [BDItem] is a DICOM [Dataset], which is contained in an SQ Element.

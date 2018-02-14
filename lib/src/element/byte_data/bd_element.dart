@@ -57,8 +57,8 @@ abstract class BDElement<V> extends Element<V> {
 //  @override
 //  int get vfLengthField;
   Uint8List get vfBytesWithPadding;
- // @override
- // Uint8List get vfBytes;
+  // @override
+  // Uint8List get vfBytes;
   ByteData get vfByteDataWithPadding;
 //  @override
 //  ByteData get vfByteData;
@@ -217,22 +217,6 @@ abstract class BDStringMixin {
   }
 
   StringBase update([Iterable<String> vList]) => unsupportedError();
-
-/* Flush when working
-  //TODO: This should be done in convert
-  ByteData _removePadding(ByteData bd, int vfOffset, [int padChar = kSpace]) {
-    if (bd.lengthInBytes == vfOffset) return bd;
-    assert(bd.lengthInBytes.isEven);
-    final lastIndex = bd.lengthInBytes - 1;
-    final char = bd.getUint8(lastIndex);
-    if (char == kNull || char == kSpace) {
-      log.warn('Removing Padding: $char');
-      return bd.buffer.asByteData(bd.offsetInBytes, bd.lengthInBytes - 1);
-    }
-    return bd;
-  }
-*/
-
 }
 
 /// A Mixin for [String] [Element]s that may only have ASCII values.

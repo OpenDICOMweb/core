@@ -7,40 +7,38 @@
 import 'package:core/src/dataset/tag/tag_root_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/string.dart';
-import 'package:core/src/logger/formatter.dart';
+import 'package:core/src/profile/de_id/deid_uids.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/uid/uid.dart';
 
 final Map<Uid, Uid> uidMap = <Uid, Uid>{};
 
 List<Element> replaceUids(TagRootDataset rds) {
   final old = <Element>[];
-  final fmi = rds.fmi;
   final elements = rds.elements;
 
-  print('**** Normalizing FMI UIDs');
-  for (var e in fmi) {
-    if (e is UI) {
-      final eNew = replaceUI(e);
-      fmi.replace(e.index, eNew);
-      old.add(e);
-    }
-  }
+//  print('**** Normalizing FMI UIDs');
+  final e = rds.fmi.lookup(kMediaStorageSOPInstanceUID);
+  final eNew = replaceUIFast(e);
+  rds.fmi.replace(e.index, eNew);
+  old.add(e);
 
-  print('**** Normalizing Dataset UIDs');
+//  print('**** Normalizing Dataset UIDs');
 
-  for (var e in elements) {
-    if (e is UI) {
-      final eNew = replaceUI(e);
+  for (var code in deIdUidCodes) {
+    final UI e = elements.lookup(code);
+    if (e != null) {
+      final eNew = replaceUIFast(e);
       elements.replace(e.index, eNew);
       old.add(e);
     }
   }
-  final z = new Formatter();
-  print(z.fmt('old: ${old.length}', old));
+//  final z = new Formatter();
+//  print(z.fmt('old: ${old.length}', old));
   return old;
 }
 
-UI replaceUI(UI e) {
+UI replaceUIFast(UI e) {
   final oldUids = e.uids;
   final length = oldUids.length;
   final newUids = new List<String>(length);
@@ -48,13 +46,32 @@ UI replaceUI(UI e) {
     final uid = oldUids.elementAt(i);
     var newUid = uidMap[uid];
     if (newUid != null) {
-      print('Dicom UID: $uid');
+      newUids[i] = newUid.asString;
+    } else {
+      newUid = new Uid();
+      uidMap[uid] = newUid;
+      newUids[i] = newUid.asString;
+    }
+  }
+  printUidValues(e, newUids);
+  return e.update(newUids);
+}
+
+UI replaceUIGeneral(UI e) {
+  final oldUids = e.uids;
+  final length = oldUids.length;
+  final newUids = new List<String>(length);
+  for (var i = 0; i < length; i++) {
+    final uid = oldUids.elementAt(i);
+    var newUid = uidMap[uid];
+    if (newUid != null) {
+//      print('Dicom UID: $uid');
       newUids[i] = newUid.asString;
     } else if (uid.isWellKnown) {
-      print('Well Known UID: $uid');
+//      print('Well Known UID: $uid');
       newUids[i] = uid.asString;
     } else if (Uid.isDicom(uid)) {
-      print('Dicom UID: $uid');
+//      print('Dicom UID: $uid');
       newUids[i] = uid.asString;
     } else {
       newUid = new Uid();

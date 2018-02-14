@@ -60,29 +60,21 @@ abstract class PrivateElement<V> extends Element<V> {
   @override
   TypedData get typedData => e.typedData;
 
-/* Flush if not needed
-  @override
-  Uint8List get vfBytesWithPadding => e.vfBytesWithPadding;
-*/
-
   @override
   Uint8List get vfBytes => e.vfBytes;
-
-/* Flush if not needed
-  @override
-  ByteData get vfByteDataWithPadding => e.vfByteDataWithPadding;
-*/
 
   @override
   ByteData get vfByteData => e.vfByteData;
 
   @override
-  bool checkValues(Iterable<V> vList, [Issues issues]) => e.checkValues(vList, issues);
+  bool checkValues(Iterable<V> vList, [Issues issues]) =>
+      e.checkValues(vList, issues);
 
   @override
   PrivateElement<V> update([Iterable<V> vList]) => e.update(vList);
 
-  PrivateElement<V> view([int start = 0, int end]) => throw new UnimplementedError();
+  PrivateElement<V> view([int start = 0, int end]) =>
+      throw new UnimplementedError();
 }
 
 abstract class PrivateIllegal<V> extends PrivateElement<V> {
@@ -119,5 +111,6 @@ abstract class PrivateCreator extends LO {
   }
 
   @override
-  String toString() => '$runtimeType${tag.dcm} ${tag.name}: ${pData.length} pData';
+  String toString() =>
+      '$runtimeType${tag.dcm} ${tag.name}: ${pData.length} pData';
 }

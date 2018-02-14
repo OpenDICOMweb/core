@@ -198,16 +198,11 @@ class Date implements Comparable<Date> {
     return microsecondToDateString(hd);
   }
 
-
   static int hashDateInMicroseconds(int us) {
     var hd = system.hash(us);
     hd = hd.abs();
     if (hd > kEpochSpan) hd = hd % kEpochSpan;
-    print('epochSpan: $kEpochSpan, min($kMinEpochMicrosecond) <= $hd <= max'
-              '($kMaxEpochMicrosecond)');
-    hd =  hd + kMinEpochMicrosecond;
-    final valid = isValidDateTimeMicroseconds(hd);
-    return hd;
+    return hd + kMinEpochMicrosecond;
   }
 
   static int hashEpochDay(int epochDay) {
@@ -216,7 +211,6 @@ class Date implements Comparable<Date> {
     if (hd > kEpochSpan) hd = hd % kEpochSpan;
     return hd + kMinEpochDay;
   }
-
 
   static int hashDate(Date date) {
     var hash = hashDateInMicroseconds(date.microseconds);

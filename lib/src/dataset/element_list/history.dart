@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/private_group.dart';
+import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/errors.dart';

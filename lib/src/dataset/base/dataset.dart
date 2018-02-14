@@ -10,10 +10,10 @@ import 'dart:typed_data';
 import 'package:core/core.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/item.dart';
+import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/element_list/element_list.dart';
 import 'package:core/src/dataset/errors.dart';
-import 'package:core/src/dataset/private_group.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/pixel_data.dart';
 import 'package:core/src/element/base/string.dart';
@@ -470,7 +470,7 @@ $runtimeType(#$hashCode):
         if (e is SQ) {
           for (var item in e.items) {
             final deleted = item.delete(index);
-            if (deleted != null) print('item $item deleted: $deleted');
+//            if (deleted != null) print('item $item deleted: $deleted');
             if (deleted != null) results.add(deleted);
           }
         }
@@ -532,14 +532,17 @@ $runtimeType(#$hashCode):
     return map;
   }
 
-  bool isUI(Element e) => e is UI;
-  Iterable<Element> findUids() => findAllWhere(isUI);
+  bool _isDA(Element e) => e is DA;
+  Iterable<Element> findDates() => findAllWhere(_isDA);
 
-  bool isSequence(Element e) => e.isPrivate;
-  Iterable<Element> findSequences() => findWhere(isSequence);
+  bool _isUI(Element e) => e is UI;
+  Iterable<Element> findUids() => findAllWhere(_isUI);
 
-  bool isPrivate(Element e) => e.isPrivate;
-  Iterable<Element> findAllPrivate() => findAllWhere(isPrivate);
+  bool _isSQ(Element e) => e is SQ;
+  Iterable<Element> findSequences() => findWhere(_isSQ);
+
+  bool _isPrivate(Element e) => e.isPrivate;
+  Iterable<Element> findAllPrivate() => findAllWhere(_isPrivate);
 
   Iterable<Element> deleteAllPrivate({bool recursive = false}) {
     // deleteIfTrue((e) => e.isPrivate, recursive: recursive);

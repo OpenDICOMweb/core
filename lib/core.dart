@@ -23,7 +23,7 @@ export 'package:core/src/dataset/element_list/map_as_list.dart';
 export 'package:core/src/dataset/errors.dart';
 export 'package:core/src/dataset/parse_info.dart';
 export 'package:core/src/dataset/parse_info.dart';
-export 'package:core/src/dataset/private_group.dart';
+export 'package:core/src/dataset/base/private_group.dart';
 export 'package:core/src/dataset/summary.dart';
 export 'package:core/src/dataset/tag/tag_dataset.dart';
 export 'package:core/src/dataset/tag/tag_item.dart';

@@ -9,10 +9,8 @@ import 'package:core/core.dart';
 
 //FIX or Flush
 void main() {
-
   const creatorCode = 0x00290010;
-  final pcTag =
-      new PCTag(creatorCode, kLOIndex, 'CAMTRONICS IP');
+  final pcTag = PCTag.make(creatorCode, kLOIndex, 'CAMTRONICS IP');
   print('Creator Tag: ${pcTag.info}');
   final lo = new LOtag(pcTag, ['CAMTRONICS IP']);
   print('LO: ${lo.info}');
@@ -20,11 +18,11 @@ void main() {
   print('Creator: ${creator.info}');
   print('cElement: ${dcm(creator.code)}, '
       'pcTag: ${dcm(creator.tag.code)}');
-  const  pDataCode = 0x00291010;
-  final pdTag = new PDTag(pDataCode, kUNIndex, pcTag);
+  const pDataCode = 0x00291010;
+  final pdTag = PDTag.make(pDataCode, kUNIndex, pcTag);
   print('PDTag: ${pdTag.info}');
- // PrivateData data = new PrivateData(pdTag, lo);
- // print('PData: ${data.info}');
+  // PrivateData data = new PrivateData(pdTag, lo);
+  // print('PData: ${data.info}');
 }
 
 /*

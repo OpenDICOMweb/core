@@ -4,35 +4,26 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/dataset/tag/tag_root_dataset.dart';
+import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/date_time/date.dart';
 import 'package:core/src/date_time/primitives/constants.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/logger/log_level.dart';
+import 'package:core/src/profile/de_id/deid_dates.dart';
 import 'package:core/src/system/system.dart';
 
-List<Element> normalizeDates(TagRootDataset rds, Date enrollment) {
+/// Normalize all [Date]s in [RootDataset]. The _normalized_ [Date]
+/// is base on the [enrollment] [Date].
+///
+/// _Note_: There are no Dates in FMI, so it is not changed.
+List<Element> normalizeDates(RootDataset rds, Date enrollment) {
   final old = <Element>[];
-
-  final fmi = rds.fmi;
-  for (var e in fmi) {
-    if (e is DA) {
-      final eNew = e.normalize(enrollment);
-      if (system.level == Level.debug) {
-        print('**** Normalizing FMI Dates');
-        printNormalized(e, eNew, enrollment);
-      }
-      fmi.replaceValues<String>(e.index, eNew);
-      old.add(e);
-    }
-  }
 
   for (var e in rds) {
     if (e is DA) {
       final eNew = e.normalize(enrollment);
       if (system.level == Level.debug) {
-        print('**** Normalizing Dataset Dates');
         printNormalized(e, eNew, enrollment);
       }
       rds.elements.replaceValues<String>(e.index, eNew.values);
@@ -40,6 +31,25 @@ List<Element> normalizeDates(TagRootDataset rds, Date enrollment) {
     }
   }
   print('old: (${old.length})$old');
+  return old;
+}
+
+/// Normalize the de-identification [Date]s specified in PS3.15
+/// in [RootDataset]. The _normalized_ [Date] is base on the
+/// [enrollment] [Date].
+///
+/// _Note_: There are no Dates in FMI, so it is not changed.
+List<Element> normalizeDeIdDates(RootDataset rds, Date enrollment) {
+  final old = <Element>[];
+  final elements = rds.elements;
+  for (var code in deIdDateCodes) {
+    final DA e = elements.lookup(code);
+    if (e != null) {
+      final eNew = e.normalize(enrollment);
+      elements.replace(e.index, eNew);
+      old.add(e);
+    }
+  }
   return old;
 }
 
@@ -52,6 +62,7 @@ void printNormalized(DA eOld, DA eNew, Date enrollment) {
   final oDay = oDates.elementAt(0).epochDay;
   final nDay = nDates.elementAt(0).epochDay;
   print('''   
+Normalizing Dataset Dates:
   eOld: $eOld
   eNew: $eNew
   diff: uSecs $diff days ${diff ~/ kMicrosecondsPerDay}

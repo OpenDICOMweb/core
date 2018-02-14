@@ -6,6 +6,8 @@
 
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/tag/e_type.dart';
+import 'package:core/src/tag/private/pc_tag.dart';
+import 'package:core/src/tag/private/pd_tag.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr/vr.dart';
@@ -13,26 +15,28 @@ import 'package:core/src/vr/vr.dart';
 typedef Tag TagMaker(int code, int vrIndex);
 
 abstract class PrivateTag extends Tag {
-  @override
-  final int code;
-  @override
-  final int vrIndex;
-  @override
-  final VM vm;
+  const PrivateTag() : super();
 
-  const PrivateTag(this.code, [this.vrIndex = kUNIndex, this.vm = VM.k1_n])
-      : super();
+  @override
+   int get code;
+  @override
+  int get vrIndex;
 
+  @override
+  VM get vm => VM.k1_n;
+
+/*
   PrivateTag._(this.code, [this.vrIndex = kUNIndex, this.vm = VM.k1_n]);
+*/
 
   @override
   bool get isPrivate => true;
 
   @override
-  String get name => 'Illegal Private Tag';
+  String get name;
 
   @override
-  int get index => -1;
+  int get index;
 
   /// The Private Subgroup for this Tag.
   // Note: MUST be overridden in all subclasses.
@@ -46,25 +50,44 @@ abstract class PrivateTag extends Tag {
   String get asString => toString();
 
   @override
-  String get info => '$runtimeType$dcm $groupHex, "$name", $eltHex '
+  String get info => '$runtimeType$dcm "$name", $eltHex '
       '${vrIdByIndex[vrIndex]}, $vm';
 
   @override
   String toString() => '$runtimeType$dcm subgroup($subgroup)';
 
-/*  static PrivateTag maker(int code, int vrIndex, String name) =>
-      new PrivateTag._(code, vr);*/
+  /// Returns a new [PrivateTag] based on [code] and [vrIndex].
+  /// [obj] can be either a [String] or [PCTag].
+ static PrivateTag make(int code, int vrIndex, [Object obj]) {
+   if (Tag.isPrivateDataCode(code)) {
+     final PCTag creator = obj;
+     return PDTag.make(code, vrIndex, creator);
+   } else if (Tag.isPrivateCreatorCode(code)) {
+     final String creator = obj;
+     return PCTag.make(code, vrIndex, creator);
+   } else if (Tag.isGroupLengthCode(code)) {
+     return new PrivateTagGroupLength(code, vrIndex);
+   } else {
+     return new PrivateTagIllegal(code, vrIndex);
+   }
+ }
 }
 
 /// Private Group Length Tags have codes that are (gggg,eeee),
 /// where gggg is odd, and eeee is zero.  For example (0009,0000).
 class PrivateTagGroupLength extends PrivateTag {
   static const int kUnknownIndex = -1;
-
-  PrivateTagGroupLength(int code, int vrIndex) : super(code, vrIndex);
-
   @override
-  int get vrIndex => kULIndex;
+  final int code;
+  @override
+  final int vrIndex;
+  @override
+
+  PrivateTagGroupLength(this.code, this.vrIndex) {
+    if (vrIndex != kULIndex) invalidVRIndex(vrIndex, null, correctVRIndex);
+  }
+
+  int get correctVRIndex => kULIndex;
 
   @override
   VM get vm => VM.k1;
@@ -79,9 +102,13 @@ class PrivateTagGroupLength extends PrivateTag {
 // TODO: Flush at v0.9.0 if not used by then
 class PrivateTagIllegal extends PrivateTag {
   static const int kUnknownIndex = -1;
+  @override
+  final int code;
+  @override
+  final int vrIndex;
 
-  PrivateTagIllegal(int code, int vrIndex) : super(code, vrIndex);
+  PrivateTagIllegal(this.code, this.vrIndex);
 
   @override
-  String get name => 'Private Illegal Tag';
+  String get name => 'Illegal Private Tag';
 }

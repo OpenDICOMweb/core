@@ -261,17 +261,6 @@ class OBevr extends OB
 
   OBevr(this.bd);
 
-/* Flush when working
-  @override
-  int get vfLength {
-    final length = bd.lengthInBytes - _longVFOffset;
-    assert(length.isEven);
-    assert((length >= 0 && length <= kUndefinedLength),
-        'length: $length vfLengthField: $vfLengthField');
-    return length;
-  }
-*/
-
   @override
   Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
 
@@ -308,16 +297,6 @@ class UNevr extends UN
   final ByteData bd;
 
   UNevr(this.bd);
-
-/* Flush when working
-  @override
-  int get vfLength {
-    final length = bd.lengthInBytes - vfOffset;
-    assert((length >= 0 && length <= kUndefinedLength),
-        'length: $length vfLengthField: $vfLengthField');
-    return length;
-  }
-*/
 
   @override
   Iterable<int> get values => vfBytes;
@@ -387,16 +366,6 @@ class OWevr extends OW
   final ByteData bd;
 
   OWevr(this.bd);
-
-/* Flush when working
-  @override
-  int get vfLength {
-    final length = bd.lengthInBytes - vfOffset;
-    assert((length >= 0 && length <= kUndefinedLength),
-        'length: $length vfLengthField: $vfLengthField');
-    return length;
-  }
-*/
 
   @override
   Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
@@ -532,7 +501,7 @@ ByteData __removePadding(ByteData bd, int vfOffset, [int padChar = kSpace]) {
   final lastIndex = bd.lengthInBytes - 1;
   final char = bd.getUint8(lastIndex);
   if (char == kNull || char == kSpace) {
-    log.warn('Removing Padding: $char');
+    log.debug1('Removing Padding: $char');
     return bd.buffer.asByteData(bd.offsetInBytes, bd.lengthInBytes - 1);
   }
   return bd;
@@ -894,16 +863,6 @@ class SQevr extends SQ<int>
   final Iterable<Item> values;
 
   SQevr(this.bd, this.parent, this.values);
-
-/* Flush when working
-  @override
-  int get vfLength {
-    final length = bd.lengthInBytes - vfOffset;
-    assert((length >= 0 && length <= kUndefinedLength && length.isEven),
-        'length: $length vfLengthField: $vfLengthField');
-    return length;
-  }
-*/
 
   @override
   int get valuesLength => values.length;

@@ -6,8 +6,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
 import 'package:core/src/dataset/element_list/element_list.dart';
+import 'package:core/src/system/system.dart';
+import 'package:core/src/uid/well_known_uids.dart';
 
 /// The Part 10 Header of the DICOM File Format. See PS3.10.
 class Part10Header<K, V> {

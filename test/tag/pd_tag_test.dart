@@ -15,8 +15,8 @@ void main() {
 void privateDataTag() {
   test('PrivatedataTag Test', () {
     final code = 0x00190010;
-    final pcTag = new PCTag(code, kLOIndex, 'Unknown');
-    final pdt = new PDTag(code, kUNIndex, pcTag);
+    final pcTag = PCTag.make(code, kLOIndex, 'Unknown');
+    final pdt = PDTag.make(code, kUNIndex, pcTag);
     expect((pdt.isPrivate), true);
     expect((pdt.isCreator), false);
     log.debug(pdt.toString());
