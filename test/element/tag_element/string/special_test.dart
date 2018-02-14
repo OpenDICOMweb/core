@@ -278,7 +278,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
-      /*test('AE fromBDE good values', () {
+    /*test('AE fromBDE good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         system.throwOnError = false;
@@ -915,6 +915,42 @@ void main() {
         log.debug('cs1: ${cs1.info}');
         expect(cs1.hasValidValues, true);
       }
+    });
+
+    test('CS make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getCSList(1, 1);
+        final make0 = CStag.make(PTag.kGeometryOfKSpaceTraversal, vList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = CStag.make(PTag.kGeometryOfKSpaceTraversal, <String>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<String>[]));
+      }
+    });
+
+    test('CS make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getCSList(2, 2);
+        system.throwOnError = false;
+        final make0 = CStag.make(PTag.kGeometryOfKSpaceTraversal, vList0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => CStag.make(PTag.kGeometryOfKSpaceTraversal, vList0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+
+      system.throwOnError = false;
+      final make1 = CStag.make(PTag.kGeometryOfKSpaceTraversal, <String>[null]);
+      log.debug('make1: $make1');
+      expect(make1, isNull);
+
+      system.throwOnError = true;
+      expect(
+          () => CStag.make(PTag.kScheduledStudyLocationAETitle, <String>[null]),
+          throwsA(const isInstanceOf<InvalidVRError>()));
     });
 
     test('CS checkLength good values', () {
@@ -1693,6 +1729,41 @@ void main() {
       }
     });
 
+    test('UI make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, 1);
+        final make0 = UItag.make(PTag.kSOPInstanceUID, vList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = UItag.make(PTag.kSOPInstanceUID, <String>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<String>[]));
+      }
+    });
+
+    test('UI make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUIList(2, 2);
+        system.throwOnError = false;
+        final make0 = UItag.make(PTag.kSOPInstanceUID, vList0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => UItag.make(PTag.kSOPInstanceUID, vList0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+
+      system.throwOnError = false;
+      final make1 = UItag.make(PTag.kSOPInstanceUID, <String>[null]);
+      log.debug('make1: $make1');
+      expect(make1, isNull);
+
+      system.throwOnError = true;
+      expect(() => UItag.make(PTag.kSOPInstanceUID, <String>[null]),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+    });
+
     test('UI checkLength good values', () {
       final vList0 = rsg.getUIList(1, 1);
       final ui0 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
@@ -1996,7 +2067,7 @@ void main() {
 
     test('UI fromBytes', () {
       //  system.level = Level.debug;;
-      final vList1 = rsg.getCSList(1, 1);
+      final vList1 = rsg.getUIList(1, 1);
       final bytes = UI.toBytes(vList1);
       log.debug('UI.fromBytes(bytes): ${UI.fromBytes(bytes)}, bytes: $bytes');
       expect(UI.fromBytes(bytes), equals(vList1));
@@ -2123,8 +2194,9 @@ void main() {
     });
 
     test('UR update random', () {
-      final cs0 = new CStag(PTag.kMaskingImage, []);
-      expect(cs0.update(['325435', '4545']).values, equals(['325435', '4545']));
+      system.throwOnError = false;
+      final ur0 = new URtag(PTag.kSelectorURValue, []);
+      expect(ur0.update(['m3ZXGWA_']).values, equals(['m3ZXGWA_']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
@@ -2259,6 +2331,41 @@ void main() {
         log.debug('ur0: ${ur0.info}');
         expect(ur0.hasValidValues, true);
       }
+    });
+
+    test('UR make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getURList(1, 1);
+        final make0 = URtag.make(PTag.kRetrieveURL, vList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = URtag.make(PTag.kRetrieveURL, <String>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<String>[]));
+      }
+    });
+
+    test('UI make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getURList(2, 2);
+        system.throwOnError = false;
+        final make0 = URtag.make(PTag.kRetrieveURL, vList0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => URtag.make(PTag.kRetrieveURL, vList0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+
+      system.throwOnError = false;
+      final make1 = URtag.make(PTag.kRetrieveURL, <String>[null]);
+      log.debug('make1: $make1');
+      expect(make1, isNull);
+
+      system.throwOnError = true;
+      expect(() => URtag.make(PTag.kRetrieveURL, <String>[null]),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('UR checkLength good values', () {
@@ -2563,7 +2670,7 @@ void main() {
 
     test('UR fromBytes', () {
       //  system.level = Level.debug;;
-      final vList1 = rsg.getCSList(1, 1);
+      final vList1 = rsg.getURList(1, 1);
       final bytes = UR.toBytes(vList1);
       log.debug('UR.fromBytes(bytes): ${UR.fromBytes(bytes)}, bytes: $bytes');
       expect(UR.fromBytes(bytes), equals(vList1));

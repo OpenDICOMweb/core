@@ -261,7 +261,7 @@ void main() {
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
         final us0 =
-             UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
+            UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(uInt8ListV11));
         expect(us0.values is Uint16List, true);
@@ -269,8 +269,7 @@ void main() {
 
         // Test Base64
         final base64 = BASE64.encode(uInt8ListV11);
-        final us1 =
-             UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
+        final us1 = UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0 == us1, true);
         expect(us1.value, equals(us0.value));
 
@@ -278,7 +277,7 @@ void main() {
         final uInt16ListV2 = new Uint16List.fromList(uInt16List1);
         final uInt8ListV12 = uInt16ListV2.buffer.asUint8List();
         final us2 =
-             UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV12);
+            UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV12);
         expect(us2.hasValidValues, false);
       }
     });
@@ -287,7 +286,7 @@ void main() {
       final uInt16ListV1 = new Uint16List.fromList(uInt16Min);
       final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
       final us5 =
-           UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
+          UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV11);
       expect(us5.hasValidValues, true);
       expect(us5.vfBytes, equals(uInt8ListV11));
       expect(us5.values is Uint16List, true);
@@ -347,8 +346,7 @@ void main() {
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);
         final uInt16ListV11 = uInt16ListV1.buffer.asUint8List();
         final base64 = BASE64.encode(uInt16ListV11);
-        final us0 =
-             UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
+        final us0 = UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0.hasValidValues, true);
       }
     });
@@ -357,15 +355,33 @@ void main() {
       final uInt16ListV1 = new Uint16List.fromList(uInt16Min);
       final uInt16ListV11 = uInt16ListV1.buffer.asUint8List();
       final base64 = BASE64.encode(uInt16ListV11);
-      final us0 =  UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
+      final us0 = UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
       expect(us0.hasValidValues, true);
     });
 
-    test('US make', () {
+    test('US make good values', () {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
-        final us0 = UStag.make(PTag.kRepresentativeFrameNumber, uInt16List0);
-        expect(us0.hasValidValues, true);
+        final make0 = UStag.make(PTag.kRepresentativeFrameNumber, uInt16List0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = UStag.make(PTag.kRepresentativeFrameNumber, <int>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<int>[]));
+      }
+    });
+
+    test('US make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final uInt16List0 = rng.uint16List(2, 2);
+        system.throwOnError = false;
+        final make0 = UStag.make(PTag.kRepresentativeFrameNumber, uInt16List0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => UStag.make(PTag.kRepresentativeFrameNumber, uInt16List0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 
@@ -375,7 +391,7 @@ void main() {
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV1 = uInt16ListV1.buffer.asUint8List();
         final us0 =
-             UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV1);
+            UStag.fromBytes(PTag.kRepresentativeFrameNumber, uInt8ListV1);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(uInt8ListV1));
         expect(us0.values is Uint16List, true);
@@ -1073,7 +1089,7 @@ void main() {
         final bd1 = uint32list0.buffer.asByteData();
         final lBd2 = Uint16Base.toByteData(uint32list0, check: false);
         log.debug('lBd0: ${lBd2.buffer.asUint8List()}, '
-                      'bd1: ${bd1.buffer.asUint8List()}');
+            'bd1: ${bd1.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), isNot(bd0.buffer.asUint8List()));
         expect(lBd2.buffer == bd0.buffer, false);
         final lBd3 = Uint16Base.toByteData(uint32list0, asView: false);

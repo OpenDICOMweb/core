@@ -357,6 +357,32 @@ void main() {
       }
     });
 
+    test('FD make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final make0 = FDtag.make(PTag.kOverallTemplateSpatialTolerance, floatList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = FDtag.make(PTag.kOverallTemplateSpatialTolerance, <double>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<double>[]));
+      }
+    });
+
+    test('FD make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(2, 2);
+        system.throwOnError = false;
+        final make0 = FDtag.make(PTag.kOverallTemplateSpatialTolerance, floatList0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => FDtag.make(PTag.kOverallTemplateSpatialTolerance, floatList0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+    });
+
     test('FD fromBase64', () {
       final fString = Float64Base.toBase64(<double>[78678.11]);
       final fd0 =
@@ -1177,7 +1203,20 @@ void main() {
       }
     });
 
-    test('FDtag.fromBase64', () {
+    test('OD make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final make0 = ODtag.make(PTag.kSelectorODValue, floatList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        final make1 = ODtag.make(PTag.kSelectorODValue, <double>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<double>[]));
+      }
+    });
+
+    test('ODtag.fromBase64', () {
       system.throwOnError = false;
       final base640 = Float64Base.toBase64(<double>[78678.11, 12345.678]);
       log.debug('b64: $base640');

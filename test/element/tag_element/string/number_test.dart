@@ -339,6 +339,42 @@ void main() {
       }
     });
 
+    test('DS make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getDSList(1, 1);
+        final make0 = DStag.make(PTag.kPatientSize, vList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        system.throwOnError = false;
+        final make1 = DStag.make(PTag.kPatientSize, <String>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<String>[]));
+      }
+    });
+
+    test('DS make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getDSList(2, 2);
+        system.throwOnError = false;
+        final make0 = DStag.make(PTag.kPatientSize, vList0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => DStag.make(PTag.kPatientSize, vList0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+
+      system.throwOnError = false;
+      /*final make1 = DStag.make(PTag.kSelectorDSValue, <String>[null]);
+      log.debug('make1: $make1');
+      expect(make1, isNull);*/
+
+      system.throwOnError = true;
+      expect(() => DStag.make(PTag.kPatientSize, <String>[null]),
+          throwsA(const isInstanceOf<FormatException>()));
+    });
+
     test('DS checkLength good values', () {
       final vList0 = rsg.getDSList(1, 1);
       final ds0 = new DStag(PTag.kSamplingFrequency, vList0);
@@ -1033,7 +1069,6 @@ void main() {
       expect(StringBase.decodeBinaryStringVF(bytes, kMaxShortVF), <String>[]);
     });
 
-
     test('DS fromByteData', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getDSList(1, i);
@@ -1352,6 +1387,42 @@ void main() {
         log.debug('is1: ${is1.info}');
         expect(is1.hasValidValues, true);
       }
+    });
+
+    test('IS make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getISList(1, 1);
+        final make0 = IStag.make(PTag.kWaveformChannelNumber, vList0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+
+        system.throwOnError = false;
+        final make1 = IStag.make(PTag.kWaveformChannelNumber, <String>[]);
+        expect(make1.hasValidValues, true);
+        expect(make1.values, equals(<String>[]));
+      }
+    });
+
+    test('IS make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getISList(2, 2);
+        system.throwOnError = false;
+        final make0 = IStag.make(PTag.kWaveformChannelNumber, vList0);
+        expect(make0, isNull);
+
+        system.throwOnError = true;
+        expect(() => IStag.make(PTag.kWaveformChannelNumber, vList0),
+            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+      }
+
+      system.throwOnError = false;
+      /*final make1 = IStag.make(PTag.kWaveformChannelNumber, <String>[null]);
+      log.debug('make1: $make1');
+      expect(make1, isNull);*/
+
+      system.throwOnError = true;
+      expect(() => IStag.make(PTag.kWaveformChannelNumber, <String>[null]),
+          throwsA(const isInstanceOf<FormatException>()));
     });
 
     test('IS checkLength good values', () {
