@@ -4,24 +4,24 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/uid/uid_type.dart';
+import 'package:core/src/uid/well_known/uid_type.dart';
 import 'package:core/src/uid/well_known/wk_uid.dart';
 
-
 class SopClass extends WKUid {
-  const SopClass(String uid, String keyword, UidType type, String name,
+  const SopClass(String uid, String keyword, UidType _type, String name,
       {bool isRetired = false})
-      : super(uid, keyword, type, name, isRetired: isRetired);
-
-  @override
-  String get info => '$runtimeType($asString)';
-
-  @override
-  String toString() => asString;
+      : super(uid, keyword, _type, name, isRetired: isRetired);
 
   static const String kName = 'SOP Class';
 
-  static SopClass lookup(String s) => map[s];
+  @override
+  UidType get type => UidType.kSOPClass;
+
+  static SopClass lookup(String s) => _map[s];
+
+  static List<SopClass> get uids => _map.values;
+
+  static List<String> get strings => _map.keys;
 
   // TODO: verify that all SOPClass Definitions from PS3.6 are present
   static const SopClass kVerification = const SopClass('1.2.840.10008.1.1',
@@ -988,14 +988,16 @@ class SopClass extends WKUid {
           '1.2.840.10008.5.1.4.1.2.3.1',
           'Patient_StudyOnlyQueryRetrieveInformationModel_FIND_Retired',
           UidType.kSOPClass,
-          'Patient/Study Only Query/Retrieve Information Model - FIND (Retired)',
+          'Patient/Study Only Query/Retrieve Information Model '
+          '- FIND (Retired)',
           isRetired: true);
   static const SopClass kPatientStudyOnlyQueryRetrieveInformationModelMOVE =
       const SopClass(
           '1.2.840.10008.5.1.4.1.2.3.2',
           'Patient_StudyOnlyQueryRetrieveInformationModel_MOVE_Retired',
           UidType.kSOPClass,
-          'Patient/Study Only Query/Retrieve Information Model - MOVE (Retired)',
+          'Patient/Study Only Query/Retrieve Information Model '
+          '- MOVE (Retired)',
           isRetired: true);
   static const SopClass kPatientStudyOnlyQueryRetrieveInformationModelGET =
       const SopClass(
@@ -1298,7 +1300,6 @@ class SopClass extends WKUid {
       UidType.kLdapOid,
       'dicomSOPClass');
 
-
   static const List<SopClass> members = const <SopClass>[
     kVerification,
     kMediaStorageDirectoryStorage,
@@ -1525,7 +1526,7 @@ class SopClass extends WKUid {
     kImplantTemplateGroupInformationModelGET
   ];
 
-  static const Map<String, SopClass> map = const <String, SopClass>{
+  static const Map<String, SopClass> _map = const <String, SopClass>{
     '1.2.840.10008.1.1': SopClass.kVerification,
     '1.2.840.10008.1.3.10': SopClass.kMediaStorageDirectoryStorage,
     '1.2.840.10008.1.9': SopClass.kBasicStudyContentNotification,

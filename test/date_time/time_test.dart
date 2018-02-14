@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'time_test', level: Level.info);
+  Server.initialize(name: 'time_test', level: Level.debug);
 
   const goodDcmTimes = const <String>[
     '000000',
@@ -306,6 +306,8 @@ void main() {
         final t0 = Time.parse(s);
         final t1 = Time.parse(s);
         log
+          ..debug('t0: $t0, us: ${t0.microsecond}')
+          ..debug('t1: $t1, us: ${t1.microsecond}')
           ..debug('t0.sha256: ${t0.sha256}')
           ..debug('t0.value:${t0.toString()}, t0.sha256:${t0.sha256}')
           ..debug('t1.value:${t1.toString()}, t1.sha256:${t1.sha256}');

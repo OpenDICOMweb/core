@@ -135,6 +135,9 @@ abstract class System {
 
   // **** End Interface
 
+  int get minYearInMicroseconds => minYear * kMicrosecondsPerYear;
+  int get maxYearInMicroseconds => maxYear * kMicrosecondsPerYear;
+
   bool showWarnings = false;
 
   void warn(String msg) {
@@ -226,9 +229,6 @@ abstract class System {
 
 /// The system singleton;
 final System system = System.system;
-
-/// The system hash function
-int hash(Object o) => system.hash(o);
 
 /// The top-level [Logger] for the src.
 Logger get log => system.log;

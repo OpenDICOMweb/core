@@ -465,7 +465,7 @@ abstract class Element<V> extends ListBase<V> {
       return '$runtimeType$dcm: $vrId($vrIndex) $_vm $validLength $valid';
     } else {
       //final _vm = vm;
-      return '$runtimeType$dcm: $vrId($vrIndex)  $vfLength';
+      return '$runtimeType$dcm $keyword: $vrId($vrIndex)  vfLength: $vfLength';
     }
   }
 

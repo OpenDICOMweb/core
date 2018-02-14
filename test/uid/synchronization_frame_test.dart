@@ -13,58 +13,45 @@ void main() {
   group('SynchronizationFrameOfReference', () {
     test('String to UID', () {
       Uid uid = Uid.lookup('1.2.840.10008.15.1.1');
-      expect(uid == SynchronizationFrameOfReference.kUniversalCoordinatedTime,
+      expect(uid == WKUid.kUniversalCoordinatedTime,
           true);
 
       uid = Uid.lookup('1.2.840.10008.15.1.1');
-      expect(uid == SynchronizationFrameOfReference.kUniversalCoordinatedTime,
+      expect(uid == WKUid.kUniversalCoordinatedTime,
           true);
 
       uid = Uid.lookup('1.2.840.10008.15.1.2');
-      expect(uid == SynchronizationFrameOfReference.kUniversalCoordinatedTime,
+      expect(uid == WKUid.kUniversalCoordinatedTime,
           false);
     });
 
     test('String to SynchronizationFrameOfReference', () {
-      Uid uid = SynchronizationFrameOfReference.lookup('1.2.840.10008.15.1.1');
-      expect(uid == SynchronizationFrameOfReference.kUniversalCoordinatedTime,
+      Uid uid = WKUid.lookup('1.2.840.10008.15.1.1');
+      expect(uid == WKUid.kUniversalCoordinatedTime,
           true);
 
-      uid = SynchronizationFrameOfReference.lookup('1.2.840.10008.15.1.1');
-      expect(uid == SynchronizationFrameOfReference.kUniversalCoordinatedTime,
+      uid = WKUid.lookup('1.2.840.10008.15.1.1');
+      expect(uid == WKUid.kUniversalCoordinatedTime,
           true);
     });
 
+    // Urgent Sharath: There is only on Synchronization Frame of Reference
     test('Create SynchronizationFrameOfReference', () {
-      final sfr0 = new SynchronizationFrameOfReference(
-          '1.2.840.10008.15.1.1',
-          'UniversalCoordinatedTime',
-          UidType.kSynchronizationFrameOfReference,
-          'Universal Coordinated Time');
+      final sfr0 = WKUid.kUniversalCoordinatedTime;
 
-      final sfr1 = new SynchronizationFrameOfReference(
-          '1.2.840.10008.15.1.1',
-          'UniversalCoordinatedTime',
-          UidType.kSynchronizationFrameOfReference,
-          'Universal Coordinated Time');
-
-      final sfr2 = new SynchronizationFrameOfReference(
-          '1.2.840.10008.3.1.2.5.4',
-          'DetachedResultsManagementMetaSOPClass_Retired',
-          UidType.kMetaSOPClass,
-          'Detached Results Management Meta SOP Class (Retired)');
+      final sfr1 = WKUid.kUniversalCoordinatedTime;
 
       expect(sfr0.hashCode == sfr1.hashCode, true);
-      expect(sfr0.hashCode == sfr2.hashCode, false);
+//      expect(sfr0.hashCode == sfr2.hashCode, false);
 
       expect(sfr0.value == sfr1.value, true);
-      expect(sfr0.value == sfr2.value, false);
+//      expect(sfr0.value == sfr2.value, false);
 
       expect(sfr0.name == 'Universal Coordinated Time', true);
       expect(sfr0.keyword == 'UniversalCoordinatedTime', true);
       expect(sfr0.value == '1.2.840.10008.15.1.1', true);
       expect(sfr0.type == UidType.kSynchronizationFrameOfReference, true);
-      expect(sfr0 is SynchronizationFrameOfReference, true);
+//      expect(sfr0 is SynchronizationFrameOfReference, true);
       expect(sfr0.maxLength == 64, true);
       expect(sfr0.minLength == 6, true);
       expect(sfr0.maxRootLength == 24, true);

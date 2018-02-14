@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final startYear = (1970 -3000);
+  final startYear = (1970 - 3000);
   final endYear = (1970 + 1000);
   Server.initialize(
       name: 'epoch_day_test',
@@ -120,28 +120,39 @@ void main() {
 
       // Base tests
       expect(
-          weekdayFromEpochDay(kEpochDayZeroInMicroseconds ~/ kMicrosecondsPerDay) ==
+          weekdayFromEpochDay(
+                  kEpochDayZeroInMicroseconds ~/ kMicrosecondsPerDay) ==
               kEpochDayZeroWeekday,
           true);
 
       // Dates before Epoch Day
-      expect(dateToEpochMicroseconds(1969, 12, 31) == -1 * kMicrosecondsPerDay, true);
-      expect(dateToEpochMicroseconds(1969, 12, 30) == -2 * kMicrosecondsPerDay, true);
-      expect(dateToEpochMicroseconds(1969, 12, 29) == -3 * kMicrosecondsPerDay, true);
-      log.debug1('1968-12-31 Epoch Day: ${dateToEpochMicroseconds(1968, 12, 31)}');
-      expect(dateToEpochMicroseconds(1968, 12, 31) == -366 * kMicrosecondsPerDay, true);
+      expect(dateToEpochMicroseconds(1969, 12, 31) == -1 * kMicrosecondsPerDay,
+          true);
+      expect(dateToEpochMicroseconds(1969, 12, 30) == -2 * kMicrosecondsPerDay,
+          true);
+      expect(dateToEpochMicroseconds(1969, 12, 29) == -3 * kMicrosecondsPerDay,
+          true);
+      log.debug1(
+          '1968-12-31 Epoch Day: ${dateToEpochMicroseconds(1968, 12, 31)}');
+      expect(
+          dateToEpochMicroseconds(1968, 12, 31) == -366 * kMicrosecondsPerDay,
+          true);
 
       // Dates after Epoch Day
-      expect(dateToEpochMicroseconds(1970, 1, 2) == 1 * kMicrosecondsPerDay, true);
-      expect(dateToEpochMicroseconds(1970, 1, 3) == 2 * kMicrosecondsPerDay, true);
-      expect(dateToEpochMicroseconds(1970, 1, 4) == 3 * kMicrosecondsPerDay, true);
-      expect(dateToEpochMicroseconds(1971, 1, 1) == 365 * kMicrosecondsPerDay, true);
+      expect(
+          dateToEpochMicroseconds(1970, 1, 2) == 1 * kMicrosecondsPerDay, true);
+      expect(
+          dateToEpochMicroseconds(1970, 1, 3) == 2 * kMicrosecondsPerDay, true);
+      expect(
+          dateToEpochMicroseconds(1970, 1, 4) == 3 * kMicrosecondsPerDay, true);
+      expect(dateToEpochMicroseconds(1971, 1, 1) == 365 * kMicrosecondsPerDay,
+          true);
     });
 
     test('Epoch Date Basic Test', () {
       log.debug('Epoch Date Basic Test...');
       final watch = new Stopwatch()..start();
-      for (var i = system.minYear; i < system.maxYear; i++) {
+      for (var i = kMinYear; i < kMaxYear; i++) {
         final List<int> date = epochMicrosecondToDate(i * kMicrosecondsPerDay);
         final y = date[0];
         final m = date[1];
@@ -176,7 +187,8 @@ void main() {
       log.debug1('  Previous Epoch Day: $previousEpochMicroseconds');
       final previousDay =
           weekdayFromEpochDay(previousEpochMicroseconds ~/ kMicrosecondsPerDay);
-      final nextDay = weekdayFromEpochDay(nextEpochMicroseconds ~/ kMicrosecondsPerDay);
+      final nextDay =
+          weekdayFromEpochDay(nextEpochMicroseconds ~/ kMicrosecondsPerDay);
       log.debug1('  Previous Week Day: $previousDay');
       expect(0 <= previousDay && previousDay <= 6, true);
       expect(0 <= nextDay && nextDay <= 6, true);
@@ -188,7 +200,8 @@ void main() {
         log.debug0('    Year: $startYear: ${watch.elapsed}');
         for (var m = 1; m <= 12; m++) {
           final lastDay = lastDayOfMonth(y, m);
-          log.debug1('Year: $y, Month: $m, lastDay: $lastDay, Leap: ${isLeapYear(y)}');
+          log.debug1(
+              'Year: $y, Month: $m, lastDay: $lastDay, Leap: ${isLeapYear(y)}');
           for (var d = 1; d <= lastDay; d++) {
             final z = dateToEpochMicroseconds(y, m, d);
             log
@@ -296,7 +309,9 @@ void main() {
         // log.debug('    $i: day: $day, wd: $wd');
         expect(day == wd, true);
       }
-      log..debug3('    Elapesd: ${watch.elapsed}')..debug3('  weekDayFromDay: days <= 0');
+      log
+        ..debug3('    Elapesd: ${watch.elapsed}')
+        ..debug3('  weekDayFromDay: days <= 0');
       for (var i = 0; i > -10000; i--) {
         final wd = weekdayFromEpochDay(i);
         final day = (zeroWeekDay + i) % 7;

@@ -13,13 +13,9 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(
       name: 'date_test',
-      minYear: kMinYearLimit,
-      maxYear: kMaxYearLimit,
-      level: Level.info);
-  //Good dates
-  const goodDcmDateList = const <String>['19500718', '00000101', '19700101'];
-
-  //Bad dates
+      minYear: 1900,
+      maxYear: 2100,
+      level: Level.debug);
 
   group('Date Tests', () {
     test('Good Dates', () {
@@ -93,12 +89,13 @@ void main() {
     });
 
     test('add and subtract', () {
-      for (var y = 1990; y < 2000; y++) {
+      for (var y = 1990; y < system.maxYear; y++) {
         for (var m = 1; m < 12; m++) {
           for (var d = 1; d < lastDayOfMonth(y, m); d++) {
             final date0 = new Date(y, m, d);
 
             final time0 = Time.parse('235959');
+            log.debug('$date0 - $time0');
             final dateTime0 = date0.add(time0);
             log.debug('dateTime: $dateTime0');
 
@@ -137,18 +134,18 @@ void main() {
       final date1 = new Date(1980, 43, 12); //bad month
       expect(date1, isNull);
 
-      final date2 = new Date(system.maxYear + 1, 05, 01); //bad year
+      final date2 = new Date(kMaxYear + 1, 05, 01); //bad year
       expect(date2, isNull);
 
-      final date3 = new Date(system.minYear - 1, 05, 01); //bad year
+      final date3 = new Date(kMinYear - 1, 05, 01); //bad year
       expect(date3, isNull);
 
       system.throwOnError = true;
 
-      expect(() => new Date(system.maxYear + 1, 05, 01),
+      expect(() => new Date(kMaxYear + 1, 05, 01),
           throwsA(const isInstanceOf<InvalidDateError>())); //bad year
 
-      expect(() => new Date(system.minYear - 1, 05, 01),
+      expect(() => new Date(kMinYear - 1, 05, 01),
           throwsA(const isInstanceOf<InvalidDateError>())); //bad year
 
       expect(() => new Date(2004, 10, 32),
@@ -432,6 +429,13 @@ void main() {
     log.debug('hash1: $hash1, year: ${hash1.year}, y: ${hash1.y}');
   });
 
+  test('date hash',(){
+    final date = new Date(1980, 05, 01);
+    log.debug('date: $date');
+    final hash0 = date.hash;
+    print('hash0: $hash0');
+  });
+
   test('hashCode', () {
     for (var s in goodDcmDateList) {
       final date0 = Date.parse(s);
@@ -452,7 +456,7 @@ void main() {
   });
 
   test('>', () {
-    for (var y = 1800; y < 2000; y++) {
+    for (var y = kMinYear; y < kMaxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           final dt0 = new Date(y, m, d);
@@ -465,7 +469,7 @@ void main() {
   });
 
   test('<', () {
-    for (var y = 1800; y < 2000; y++) {
+    for (var y = kMinYear; y < kMaxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           final dt0 = new Date(y, m, d);
@@ -478,7 +482,7 @@ void main() {
   });
 
   test('isAfter', () {
-    for (var y = 1800; y < 2000; y++) {
+    for (var y = kMinYear; y < kMaxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           final dt0 = new Date(y, m, d);
@@ -491,7 +495,7 @@ void main() {
   });
 
   test('isBefore', () {
-    for (var y = 1800; y < 2000; y++) {
+    for (var y = kMinYear; y < kMaxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           final dt0 = new Date(y, m, d);
@@ -504,7 +508,7 @@ void main() {
   });
 
   test('compareTo', () {
-    for (var y = 1800; y < 2000; y++) {
+    for (var y = kMinYear; y < kMaxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           if (d + 1 < lastDayOfMonth(y, m)) {

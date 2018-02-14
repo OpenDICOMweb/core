@@ -4,23 +4,24 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/uid/uid_type.dart';
+import 'package:core/src/uid/well_known/uid_type.dart';
 import 'package:core/src/uid/well_known/wk_uid.dart';
 
 class MetaSopClass extends WKUid {
-  const MetaSopClass(String uid, String keyword, UidType type, String name,
+  const MetaSopClass(String uid, String keyword, UidType _type, String name,
       {bool isRetired = true})
-      : super(uid, keyword, type, name, isRetired: isRetired);
-
-  @override
-  String get info => '$runtimeType($asString)';
-
-  @override
-  String toString() => asString;
+      : super(uid, keyword, _type, name, isRetired: isRetired);
 
   static const String kName = 'Meta SOP Class';
 
-  static MetaSopClass lookup(String s) => map[s];
+  @override
+  UidType get type => UidType.kMetaSOPClass;
+
+  static MetaSopClass lookup(String s) => _map[s];
+
+  static List<MetaSopClass> get uids => _map.values;
+
+  static List<String> get strings => _map.keys;
 
   static const MetaSopClass kDetachedPatientManagement = const MetaSopClass(
       '1.2.840.10008.3.1.2.1.4',
@@ -49,12 +50,13 @@ class MetaSopClass extends WKUid {
       UidType.kMetaSOPClass,
       'Basic Grayscale Print Management Meta SOP Class');
 
-  static const MetaSopClass kReferencedGrayscalePrintManagement = const MetaSopClass(
-      '1.2.840.10008.5.1.1.9.1',
-      'ReferencedGrayscalePrintManagementMetaSOPClass_Retired',
-      UidType.kMetaSOPClass,
-      'Referenced Grayscale Print Management Meta SOP Class (Retired)',
-      isRetired: true);
+  static const MetaSopClass kReferencedGrayscalePrintManagement =
+      const MetaSopClass(
+          '1.2.840.10008.5.1.1.9.1',
+          'ReferencedGrayscalePrintManagementMetaSOPClass_Retired',
+          UidType.kMetaSOPClass,
+          'Referenced Grayscale Print Management Meta SOP Class (Retired)',
+          isRetired: true);
 
   static const MetaSopClass kBasicColorPrintManagement = const MetaSopClass(
       '1.2.840.10008.5.1.1.18',
@@ -62,12 +64,13 @@ class MetaSopClass extends WKUid {
       UidType.kMetaSOPClass,
       'Basic Color Print Management Meta SOP Class');
 
-  static const MetaSopClass kReferencedColorPrintManagement = const MetaSopClass(
-      '1.2.840.10008.5.1.1.18.1',
-      'ReferencedColorPrintManagementMetaSOPClass_Retired',
-      UidType.kMetaSOPClass,
-      'Referenced Color Print Management Meta SOP Class (Retired)',
-      isRetired: true);
+  static const MetaSopClass kReferencedColorPrintManagement =
+      const MetaSopClass(
+          '1.2.840.10008.5.1.1.18.1',
+          'ReferencedColorPrintManagementMetaSOPClass_Retired',
+          UidType.kMetaSOPClass,
+          'Referenced Color Print Management Meta SOP Class (Retired)',
+          isRetired: true);
 
   static const MetaSopClass kPullStoredPrintManagement = const MetaSopClass(
       '1.2.840.10008.5.1.1.32',
@@ -76,12 +79,13 @@ class MetaSopClass extends WKUid {
       'Pull Stored Print Management Meta SOP Class (Retired)',
       isRetired: true);
 
-  static const MetaSopClass kGeneralPurposeWorklistManagement = const MetaSopClass(
-      '1.2.840.10008.5.1.4.32',
-      'GeneralPurposeWorklistManagementMetaSOPClass_Retired',
-      UidType.kMetaSOPClass,
-      'General Purpose Worklist Management Meta SOP Class (Retired)',
-      isRetired: true);
+  static const MetaSopClass kGeneralPurposeWorklistManagement =
+      const MetaSopClass(
+          '1.2.840.10008.5.1.4.32',
+          'GeneralPurposeWorklistManagementMetaSOPClass_Retired',
+          UidType.kMetaSOPClass,
+          'General Purpose Worklist Management Meta SOP Class (Retired)',
+          isRetired: true);
 
   static const List<MetaSopClass> members = const <MetaSopClass>[
     kDetachedPatientManagement,
@@ -95,7 +99,7 @@ class MetaSopClass extends WKUid {
     kGeneralPurposeWorklistManagement
   ];
 
-  static const Map<String, MetaSopClass> map = const <String, MetaSopClass>{
+  static const Map<String, MetaSopClass> _map = const <String, MetaSopClass>{
     '1.2.840.10008.3.1.2.1.4': kDetachedPatientManagement,
     '1.2.840.10008.3.1.2.5.4': kDetachedResultsManagement,
     '1.2.840.10008.3.1.2.5.5': kDetachedStudyManagement,

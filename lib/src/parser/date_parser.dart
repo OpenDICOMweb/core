@@ -98,7 +98,7 @@ Iterable<String> hashDcmDateDateStringList(List<String> dates) =>
 
 /// Returns a valid year or _null_.  The year must be 4 characters.
 int _parseYear(String s, int start, Issues issues) =>
-    _parse4Digits(s, start, issues, system.minYear, system.maxYear, 'year');
+    _parse4Digits(s, start, issues, kMinYear, kMaxYear, 'year');
 
 /// Returns a valid month or _null_.  The month must be 2 characters.
 int _parseMonth(String s, int start, Issues issues) =>

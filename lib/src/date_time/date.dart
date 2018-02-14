@@ -32,8 +32,9 @@ class Date implements Comparable<Date> {
   /// for de-identifying [Date]s.
   static final int acrBaseline = kACRBaselineMicroseconds;
 
-  /// The integer number of days since the Unix Epoch Day (1970-01-01), where
-  /// positive numbers are after that day, and negative numbers are before that day.
+  /// The integer number of days since the Unix Epoch Day (1970-01-01),
+  /// where positive numbers are after that day, and negative numbers are
+  /// before that day.
   final int microseconds;
 
   /// Creates a [Date].
@@ -68,8 +69,9 @@ class Date implements Comparable<Date> {
 
   //Urgent Jim to fix
   //Urgent Sharath: unit test
-  /// Returns a new [Date] containing the [System].[hash] hash of [microseconds].
-  Date get hash => new Date._(hashDateMicroseconds(microseconds));
+  /// Returns a new [Date] containing the [System].[hash] hash
+  /// of [microseconds].
+  Date get hash => new Date._(hashDateInMicroseconds(microseconds));
 
   //Urgent Jim to fix
   //Urgent Sharath: unit test
@@ -192,21 +194,32 @@ class Date implements Comparable<Date> {
       if (onError != null) return onError(s);
       return invalidParseStringToString('Invalid Date String: $s', issues);
     }
-    final hash = hashDateMicroseconds(us);
-    return microsecondToDateString(hash);
+    final hd = hashDateInMicroseconds(us);
+    return microsecondToDateString(hd);
   }
 
-/*
-  static int hashEpochDay(int epochDay) {
-    int hd = system.hash(epochDay);
+
+  static int hashDateInMicroseconds(int us) {
+    var hd = system.hash(us);
     hd = hd.abs();
     if (hd > kEpochSpan) hd = hd % kEpochSpan;
-    return hd + kMinEpochDays;
+    print('epochSpan: $kEpochSpan, min($kMinEpochMicrosecond) <= $hd <= max'
+              '($kMaxEpochMicrosecond)');
+    hd =  hd + kMinEpochMicrosecond;
+    final valid = isValidDateTimeMicroseconds(hd);
+    return hd;
   }
-*/
+
+  static int hashEpochDay(int epochDay) {
+    var hd = system.hash(epochDay);
+    hd = hd.abs();
+    if (hd > kEpochSpan) hd = hd % kEpochSpan;
+    return hd + kMinEpochDay;
+  }
+
 
   static int hashDate(Date date) {
-    var hash = system.hash(date.microseconds);
+    var hash = hashDateInMicroseconds(date.microseconds);
     hash = hash.abs() % kEpochSpan;
     return hash + kMinEpochDay;
   }

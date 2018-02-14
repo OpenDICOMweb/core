@@ -149,7 +149,7 @@ void dateUnitTest(int startYear, int endYear) {
   final begin = dateToEpochDay(startYear, 1, 1);
   final end = dateToEpochDay(endYear, 12, 31);
   log.info0('  StartYear: $startYear, EndYear: $endYear, Total Years: '
-      '${system.maxYear - system.minYear}'
+      '${kMaxYear - kMinYear}'
       '  Tested ${-begin + end} dates');
 }
 

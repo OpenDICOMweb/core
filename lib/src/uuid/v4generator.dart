@@ -35,12 +35,10 @@ class V4Generator {
   Uint8List get next {
     final rList = new Uint32List(4);
     for (var i = 0; i < 4; i++) rList[i] = rng.nextUint32;
-    print('rList: $rList');
     final bytes = rList.buffer.asUint8List();
     // Set the version and variant bits to the correct values.
     bytes[6] = bytes[6] >> 4 | 0x40;
     bytes[8] = bytes[8] >> 2 | 0x80;
-    print(bytes);
     return bytes;
   }
 

@@ -4,16 +4,17 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
+import 'package:core/src/uid/well_known/application_hosting_model.dart';
+import 'package:core/src/uid/well_known/coding_scheme.dart';
 import 'package:core/src/uid/well_known/frame_of_reference.dart';
 import 'package:core/src/uid/well_known/ldap_oid.dart';
 import 'package:core/src/uid/well_known/meta_sop_class.dart';
+import 'package:core/src/uid/well_known/service_class.dart';
 import 'package:core/src/uid/well_known/sop_class.dart';
 import 'package:core/src/uid/well_known/sop_instance.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 import 'package:core/src/uid/well_known/wk_uid.dart';
 
-//TODO: doc
-//TODO: before V0.9.1 change entries to proper type
 
 const Map<String, WKUid> wellKnownUids = const {
   '1.2.840.10008.1.1': SopClass.kVerification,
@@ -90,21 +91,21 @@ const Map<String, WKUid> wellKnownUids = const {
   '1.2.840.10008.1.4.2.1': FrameOfReference.kICBM452T1FrameOfReference,
   '1.2.840.10008.1.4.2.2':
       FrameOfReference.kICBMSingleSubjectMRIFrameOfReference,
-  '1.2.840.10008.1.5.1': WellKnownSopInstance.kHotIronColorPalette,
-  '1.2.840.10008.1.5.2': WellKnownSopInstance.kPETColorPalette,
-  '1.2.840.10008.1.5.3': WellKnownSopInstance.kHotMetalBlueColorPalette,
-  '1.2.840.10008.1.5.4': WellKnownSopInstance.kPET20StepColorPalette,
+  '1.2.840.10008.1.5.1': SopInstance.kHotIronColorPalette,
+  '1.2.840.10008.1.5.2': SopInstance.kPETColorPalette,
+  '1.2.840.10008.1.5.3': SopInstance.kHotMetalBlueColorPalette,
+  '1.2.840.10008.1.5.4': SopInstance.kPET20StepColorPalette,
   '1.2.840.10008.1.9': SopClass.kBasicStudyContentNotification,
   '1.2.840.10008.1.20.1': SopClass.kStorageCommitmentPushModel,
-  '1.2.840.10008.1.20.1.1': WellKnownSopInstance.kStorageCommitmentPushModel,
+  '1.2.840.10008.1.20.1.1': SopInstance.kStorageCommitmentPushModel,
   '1.2.840.10008.1.20.2': SopClass.kStorageCommitmentPullModel,
-  '1.2.840.10008.1.20.2.1': WellKnownSopInstance.kStorageCommitmentPullModel,
+  '1.2.840.10008.1.20.2.1': SopInstance.kStorageCommitmentPullModel,
   '1.2.840.10008.1.40': SopClass.kProceduralEventLogging,
-  '1.2.840.10008.1.40.1': WellKnownSopInstance.kProceduralEventLogging,
+  '1.2.840.10008.1.40.1': SopInstance.kProceduralEventLogging,
   '1.2.840.10008.1.42': SopClass.kSubstanceAdministrationLogging,
-  '1.2.840.10008.1.42.1': WellKnownSopInstance.kSubstanceAdministrationLogging,
-  '1.2.840.10008.2.6.1': WKUid.kDicomUIDRegistry,
-  '1.2.840.10008.2.16.4': WKUid.kDicomControlledTerminology,
+  '1.2.840.10008.1.42.1': SopInstance.kSubstanceAdministrationLogging,
+  '1.2.840.10008.2.6.1': CodingSchemeUid.kDicomUIDRegistry,
+  '1.2.840.10008.2.16.4': CodingSchemeUid.kDicomControlledTerminology,
   '1.2.840.10008.3.1.1.1': WKUid.kDicomApplicationContextName,
   '1.2.840.10008.3.1.2.1.1': SopClass.kDetachedPatientManagement,
   '1.2.840.10008.3.1.2.1.4': MetaSopClass.kDetachedPatientManagement,
@@ -119,7 +120,7 @@ const Map<String, WKUid> wellKnownUids = const {
   '1.2.840.10008.3.1.2.5.4': MetaSopClass.kDetachedResultsManagement,
   '1.2.840.10008.3.1.2.5.5': MetaSopClass.kDetachedStudyManagement,
   '1.2.840.10008.3.1.2.6.1': SopClass.kDetachedInterpretationManagement,
-  '1.2.840.10008.4.2': WKUid.kStorageServiceClass,
+  '1.2.840.10008.4.2': ServiceClass.kStorageServiceClass,
   '1.2.840.10008.5.1.1.1': SopClass.kBasicFilmSession,
   '1.2.840.10008.5.1.1.2': SopClass.kBasicFilmBox,
   '1.2.840.10008.5.1.1.4': SopClass.kBasicGrayscaleImageBox,
@@ -131,16 +132,15 @@ const Map<String, WKUid> wellKnownUids = const {
   '1.2.840.10008.5.1.1.15': SopClass.kBasicAnnotationBox,
   '1.2.840.10008.5.1.1.16': SopClass.kPrinter,
   '1.2.840.10008.5.1.1.16.376': SopClass.kPrinterConfigurationRetrieval,
-  '1.2.840.10008.5.1.1.17': WellKnownSopInstance.kPrinter,
-  '1.2.840.10008.5.1.1.17.376':
-      WellKnownSopInstance.kPrinterConfigurationRetrieval,
+  '1.2.840.10008.5.1.1.17': SopInstance.kPrinter,
+  '1.2.840.10008.5.1.1.17.376': SopInstance.kPrinterConfigurationRetrieval,
   '1.2.840.10008.5.1.1.18': MetaSopClass.kBasicColorPrintManagement,
   '1.2.840.10008.5.1.1.18.1': MetaSopClass.kReferencedColorPrintManagement,
   '1.2.840.10008.5.1.1.22': SopClass.kVOILUTBox,
   '1.2.840.10008.5.1.1.23': SopClass.kPresentationLUT,
   '1.2.840.10008.5.1.1.24': SopClass.kImageOverlayBox,
   '1.2.840.10008.5.1.1.24.1': SopClass.kBasicPrintImageOverlayBox,
-  '1.2.840.10008.5.1.1.25': WellKnownSopInstance.kPrintQueue,
+  '1.2.840.10008.5.1.1.25': SopInstance.kPrintQueue,
   '1.2.840.10008.5.1.1.26': SopClass.kPrintQueueManagement,
   '1.2.840.10008.5.1.1.27': SopClass.kStoredPrintStorage,
   '1.2.840.10008.5.1.1.29': SopClass.kHardcopyGrayscaleImageStorage,
@@ -215,8 +215,7 @@ const Map<String, WKUid> wellKnownUids = const {
   '1.2.840.10008.5.1.4.1.1.12.1.1': SopClass.kEnhancedXAImageStorage,
   '1.2.840.10008.5.1.4.1.1.12.2': SopClass.kXRayRadiofluoroscopicImageStorage,
   '1.2.840.10008.5.1.4.1.1.12.2.1': SopClass.kEnhancedXRFImageStorage,
-  '1.2.840.10008.5.1.4.1.1.12.3':
-      SopClass.kXRayAngiographicBiPlaneImageStorage,
+  '1.2.840.10008.5.1.4.1.1.12.3': SopClass.kXRayAngiographicBiPlaneImageStorage,
   '1.2.840.10008.5.1.4.1.1.13.1.1': SopClass.kXRay3DAngiographicImageStorage,
   '1.2.840.10008.5.1.4.1.1.13.1.2': SopClass.kXRay3DCraniofacialImageStorage,
   '1.2.840.10008.5.1.4.1.1.13.1.3': SopClass.kBreastTomosynthesisImageStorage,
@@ -346,19 +345,16 @@ const Map<String, WKUid> wellKnownUids = const {
   '1.2.840.10008.5.1.4.34.2': SopClass.kRTConventionalMachineVerificationTrial,
   '1.2.840.10008.5.1.4.34.3': SopClass.kRTIonMachineVerificationTrial,
   '1.2.840.10008.5.1.4.34.4':
-      WKUid.kUnifiedWorklistAndProcedureStepServiceClassTrial,
-  '1.2.840.10008.5.1.4.34.4.1':
-      SopClass.kUnifiedProcedureStepPushSOPClassTrial,
+      ServiceClass.kUnifiedWorklistAndProcedureStepServiceClassTrial,
+  '1.2.840.10008.5.1.4.34.4.1': SopClass.kUnifiedProcedureStepPushSOPClassTrial,
   '1.2.840.10008.5.1.4.34.4.2':
       SopClass.kUnifiedProcedureStepWatchSOPClassTrial,
-  '1.2.840.10008.5.1.4.34.4.3':
-      SopClass.kUnifiedProcedureStepPullSOPClassTrial,
+  '1.2.840.10008.5.1.4.34.4.3': SopClass.kUnifiedProcedureStepPullSOPClassTrial,
   '1.2.840.10008.5.1.4.34.4.4':
       SopClass.kUnifiedProcedureStepEventSOPClassTrial,
-  '1.2.840.10008.5.1.4.34.5':
-      WellKnownSopInstance.kUnifiedWorklistAndProcedureStep,
+  '1.2.840.10008.5.1.4.34.5': SopInstance.kUnifiedWorklistAndProcedureStep,
   '1.2.840.10008.5.1.4.34.6':
-      WKUid.kUnifiedWorklistAndProcedureStepServiceClass,
+      ServiceClass.kUnifiedWorklistAndProcedureStepServiceClass,
   '1.2.840.10008.5.1.4.34.6.1': SopClass.kUnifiedProcedureStepPush,
   '1.2.840.10008.5.1.4.34.6.2': SopClass.kUnifiedProcedureStepWatch,
   '1.2.840.10008.5.1.4.34.6.3': SopClass.kUnifiedProcedureStepPull,
@@ -399,10 +395,10 @@ const Map<String, WKUid> wellKnownUids = const {
       SopClass.kImplantTemplateGroupInformationModelFIND,
   '1.2.840.10008.5.1.4.45.3':
       SopClass.kImplantTemplateGroupInformationModelMOVE,
-  '1.2.840.10008.5.1.4.45.4':
-      SopClass.kImplantTemplateGroupInformationModelGET,
-  '1.2.840.10008.7.1.1': WKUid.kNativeDicomModel,
-  '1.2.840.10008.7.1.2': WKUid.kAbstractMultiDimensionalImageModel,
+  '1.2.840.10008.5.1.4.45.4': SopClass.kImplantTemplateGroupInformationModelGET,
+  '1.2.840.10008.7.1.1': ApplicationHostingModel.kNativeDicomModel,
+  '1.2.840.10008.7.1.2':
+      ApplicationHostingModel.kAbstractMultiDimensionalImageModel,
   '1.2.840.10008.15.0.3.1': LdapOid.kDicomDeviceName,
   '1.2.840.10008.15.0.3.2': LdapOid.kDicomDescription,
   '1.2.840.10008.15.0.3.3': LdapOid.kDicomManufacturer,
@@ -442,5 +438,5 @@ const Map<String, WKUid> wellKnownUids = const {
   '1.2.840.10008.15.0.4.6': LdapOid.kDicomNetworkConnection,
   '1.2.840.10008.15.0.4.7': LdapOid.kDicomUniqueAETitle,
   '1.2.840.10008.15.0.4.8': LdapOid.kDicomTransferCapability,
-  '1.2.840.10008.15.1.1': WKUid.kUniversalCoordinatedTime,
+  '1.2.840.10008.15.1.1': WKUid.kUniversalCoordinatedTime
 };

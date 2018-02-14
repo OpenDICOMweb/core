@@ -120,21 +120,17 @@ void main() {
 
     test('check', () {
       //good
-      for (var s in wellKnownUids.keys) {
-        final check = Uid.check(s);
-        expect(check, isNotNull);
-      }
+      for (var s in wellKnownUids.keys)
+        expect(Uid.isValidString(s), true);
+
       //bad
-      for (var s in badUids) {
-        final check = Uid.check(s);
-        expect(check, isNull);
-      }
+      for (var s in badUids)
+        expect(Uid.isValidString(s), false);
 
-      final check0 = Uid.check('');
-      expect(check0, isNull);
 
-      final check1 = Uid.check(null);
-      expect(check1, isNull);
+      expect(Uid.isValidString(''), false);
+
+      expect(Uid.isValidString(null), false);
     });
 
     test('isDicom', () {

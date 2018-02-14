@@ -142,6 +142,14 @@ abstract class RootDataset extends Dataset {
 ${elements.subSummary}       
 ''';
 
+  @override
+  Iterable<dynamic> findAllWhere(bool test(Element e)) {
+    final result = <dynamic>[];
+    for (var e in fmi) if (test(e)) result.add(e);
+    for (var e in elements) if (test(e)) result.add(e);
+    return result;
+  }
+
   /// Sets [dsBytes] to the empty list, and returns the existing value of [dsBytes].
   RDSBytes clearDSBytes() {
     final dsb = dsBytes;

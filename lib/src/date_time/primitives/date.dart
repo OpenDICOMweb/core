@@ -30,10 +30,10 @@ final int kMinEpochDay = _dateToEpochDay(kMinYear, 1, 1);
 final int kMaxEpochDay = _dateToEpochDay(kMaxYear, 12, 31);
 
 /// The minimum Unix Epoch day for this [System].
-final int kMinEpochMicrosecond = _dateToEpochMicroseconds(kMinYear, 1, 1);
+final int kMinEpochMicrosecond = kMinEpochDay * kMicrosecondsPerDay;
 
 /// The maximum Unix Epoch day for this [System].
-final int kMaxEpochMicrosecond = _dateToEpochMicroseconds(kMaxYear, 12, 31);
+final int kMaxEpochMicrosecond = ((kMaxEpochDay + 1) * kMicrosecondsPerDay) - 1;
 
 /// The total number of Epoch microseconds valid for this [System].
 final int kEpochSpan = kMaxEpochMicrosecond - kMinEpochMicrosecond;
@@ -110,8 +110,12 @@ int dateToEpochMicroseconds(int y, int m, int d) => (_isValidDate(y, m, d))
     ? _dateToEpochMicroseconds(y, m, d)
     : invalidDateError(y, m, d);
 
-int _dateToEpochMicroseconds(int y, int m, int d) =>
-    _dateToEpochDay(y, m, d) * kMicrosecondsPerDay;
+int _dateToEpochMicroseconds(int y, int m, int d) {
+  final day = _dateToEpochDay(y, m, d);
+  return (isValidEpochDay(day))
+      ? day * kMicrosecondsPerDay
+      : invalidDateError(y, m, d);
+}
 
 bool isValidYearInMicroseconds(int us) =>
     us >= kMinYearInMicroseconds && us <= kMaxYearInMicroseconds;
@@ -123,9 +127,11 @@ int toValidYearInMicroseconds(int us) =>
 bool isValidDate(int y, int m, int d) => _isValidDate(y, m, d);
 bool isNotValidDate(int y, int m, int d) => !_isValidDate(y, m, d);
 
-/// Returns _true_ if [year] >= [kMinYear] && [year] <= [kMaxYear].
+/// Returns _true_ if
+/// ```[year] >= kMinYear && [year] <= [kMaxYear]```.
 bool isValidYear(int year) => _isValidYear(year);
 
+bool _isValidYear(int y) => _inRange(y, kMinYear, kMaxYear);
 
 //TODO: remove if only used in tests
 /// Returns [day] if valid; otherwise, calls [invalidEpochDayError].
@@ -232,8 +238,6 @@ int previousWeekday(int weekday, [OnWeekdayError onError]) {
   return weekday > 0 ? weekday - 1 : 6;
 }
 
-typedef int OnDateTimeMicrosecondsError(int x, [int y]);
-
 /// Returns a new Epoch microsecond that is a hash of [us].
 int hashDateMicroseconds(int us, [int onError(int n)]) {
   // Note: Dart [int]s can be larger than 63 bits. This check makes
@@ -249,6 +253,12 @@ int hashDateMicroseconds(int us, [int onError(int n)]) {
       : v % kMaxYearInMicroseconds;
 }
 
+/// Returns a new Epoch microsecond that is a hash of [epochDay].
+int hash(int epochDay, [int onError(int n)]) {
+  final v = system.hash(epochDay);
+  return (v < 0) ? v % kMinEpochDay : v % kMaxEpochDay;
+}
+
 Iterable<int> hashDateMicrosecondsList(Iterable<int> daList) =>
     daList.map(hashDateMicroseconds);
 
@@ -260,7 +270,7 @@ bool dateListsEqual(List<int> date0, List<int> date1) =>
     date0[1] == date1[1] &&
     date0[2] == date1[2];
 
-//TODO: flush at V0.9.0 if not used
+//TODO: flush at V0.9.0 if not used or move to test
 /// Returns a [String] corresponding to [epochDay]. If [asDicom] is _true_
 /// the format is 'yyyyddmm'; otherwise the format is 'yyyy-mm-dd'.
 String epochDayToDateString(int epochDay, {bool asDicom = true}) =>
@@ -277,7 +287,6 @@ String microsecondToDateString(int us, {bool asDicom = true}) {
 
 String epochDayToString(int epochDay, {bool asDicom = false}) =>
     epochDayToDate(epochDay, creator: _dateToString, asDicom: asDicom);
-
 
 /// Returns a [String] containing the date. If [asDicom] is _true_ the
 /// result has the format "yyyymmdd"; otherwise the format is "yyyy-mm-dd".
@@ -300,11 +309,9 @@ bool _isValidEpochDay(int eDay) =>
     eDay != null && eDay >= kMinEpochDay && eDay <= kMaxEpochDay;
 
 bool _isValidEpochMicrosecond(int us) =>
-    us != null && us >= kMinEpochMicrosecond && us <= kMaxEpochMicrosecond;
+    us != null && (us >= kMinEpochMicrosecond) && (us <= kMaxEpochMicrosecond);
 
 bool _isNotValidEpochMicrosecond(int us) => !_isValidEpochMicrosecond(us);
-
-bool _isValidYear(int y) => _inRange(y, system.minYear, system.maxYear);
 
 bool _isValidMonth(int m) => _inRange(m, 1, 12);
 

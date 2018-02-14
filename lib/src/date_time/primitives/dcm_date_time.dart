@@ -13,10 +13,10 @@ import 'package:core/src/string/number.dart';
 import 'package:core/src/system/system.dart';
 
 /// The minimum Unix Epoch day for this [System].
-final int kMinDcmDateTimeMicroseconds = system.minYear * kMicrosecondsPerDay;
+final int kMinDcmDateTimeMicroseconds = kMinYear * kMicrosecondsPerDay;
 
 /// The maximum Unix Epoch day for this [System].
-final int kMaxDcmDateTimeMicroseconds = system.maxYear * kMicrosecondsPerDay;
+final int kMaxDcmDateTimeMicroseconds = kMaxYear * kMicrosecondsPerDay;
 
 /// The total number of Epoch days valid for this [System].
 final int kDcmDateTimeSpan =
@@ -75,6 +75,7 @@ int _hashMicroseconds(int us, int hash(int v), [int onError(int n)]) {
   do {
     v = hash(v);
   } while ((v <= kMicrosecondsPerDay));
+  print('min(0) <= $v <= max($kMicrosecondsPerDay');
   return (v.isNegative)
       ? v % kMinYearInMicroseconds
       : v % kMaxYearInMicroseconds;

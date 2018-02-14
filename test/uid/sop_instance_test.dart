@@ -14,42 +14,42 @@ void main() {
     test('String to UID', () {
       Uid uid = Uid.lookup('1.2.840.10008.5.1.4.34.5');
       expect(
-          uid == WellKnownSopInstance.kUnifiedWorklistAndProcedureStep, true);
+          uid == SopInstance.kUnifiedWorklistAndProcedureStep, true);
 
       uid = Uid.lookup('1.2.840.10008.1.42.1');
-      expect(uid == WellKnownSopInstance.kSubstanceAdministrationLogging, true);
+      expect(uid == SopInstance.kSubstanceAdministrationLogging, true);
 
       uid = Uid.lookup('1.2.840.10008.1.42');
       expect(
-          uid == WellKnownSopInstance.kSubstanceAdministrationLogging, false);
+          uid == SopInstance.kSubstanceAdministrationLogging, false);
     });
 
     test('String to WellKnownSopInstance', () {
-      Uid uid = WellKnownSopInstance.lookup('1.2.840.10008.5.1.4.34.5');
+      Uid uid = SopInstance.lookup('1.2.840.10008.5.1.4.34.5');
       expect(
-          uid == WellKnownSopInstance.kUnifiedWorklistAndProcedureStep, true);
+          uid == SopInstance.kUnifiedWorklistAndProcedureStep, true);
 
-      uid = WellKnownSopInstance.lookup('1.2.840.10008.1.42.1');
-      expect(uid == WellKnownSopInstance.kSubstanceAdministrationLogging, true);
+      uid = SopInstance.lookup('1.2.840.10008.1.42.1');
+      expect(uid == SopInstance.kSubstanceAdministrationLogging, true);
     });
 
     test('Create WellKnownSopInstance', () {
-      final wksI0 = new WellKnownSopInstance(
+      final wksI0 = new SopInstance(
           '1.2.840.10008.5.1.4.34.5',
           'UnifiedWorklistandProcedureStepSOPInstance',
-          UidType.kWellKnownSOPInstance,
+          UidType.kSOPInstance,
           'Unified Worklist and Procedure Step SOP Instance');
 
-      final wksI1 = new WellKnownSopInstance(
+      final wksI1 = new SopInstance(
           '1.2.840.10008.5.1.4.34.5',
           'UnifiedWorklistandProcedureStepSOPInstance',
-          UidType.kWellKnownSOPInstance,
+          UidType.kSOPInstance,
           'Unified Worklist and Procedure Step SOP Instance');
 
-      final wksI2 = new WellKnownSopInstance(
+      final wksI2 = new SopInstance(
           '1.2.840.10008.1.42.1',
           'SubstanceAdministrationLoggingSOPInstance',
-          UidType.kWellKnownSOPInstance,
+          UidType.kSOPInstance,
           'Substance Administration Logging SOP Instance');
 
       expect(wksI0.hashCode == wksI1.hashCode, true);
@@ -63,8 +63,8 @@ void main() {
       expect(wksI0.name == 'Unified Worklist and Procedure Step SOP Instance',
           true);
       expect(wksI0.value == '1.2.840.10008.5.1.4.34.5', true);
-      expect(wksI0.type == UidType.kWellKnownSOPInstance, true);
-      expect(wksI0.isSOPInstance, true);
+      expect(wksI0.type == UidType.kSOPInstance, true);
+      expect(wksI0 is SopInstance, true);
       expect(wksI0.maxLength == 64, true);
       expect(wksI0.minLength == 6, true);
       expect(wksI0.maxRootLength == 24, true);

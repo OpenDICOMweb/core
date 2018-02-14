@@ -17,12 +17,12 @@ void main() {
 
   test('kMinEpochMicrosecond', () {
     log
-      ..debug('minYear: ${system.minYear}')
-      ..debug('maxYear: ${system.maxYear}')
+      ..debug('minYear: $kMinYear')
+      ..debug('maxYear: $kMaxYear')
       ..debug('kMinEpochMicrosecond: $kMinEpochMicrosecond')
       ..debug('kMaxEpochMicrosecond: $kMaxEpochMicrosecond');
-    expect(isValidYear(system.minYear), true);
-    expect(isValidYear(system.maxYear), true);
+    expect(isValidYear(kMinYear), true);
+    expect(isValidYear(kMaxYear), true);
     expect(isValidDateMicroseconds(kMinEpochMicrosecond), true);
     expect(isValidDateMicroseconds(kMaxEpochMicrosecond), true);
   });
@@ -36,21 +36,21 @@ void main() {
     log.debug('dcmDTM1: $dcmDTM1');
 
     final dcmDTM2 =
-        dcmDateTimeInMicroseconds(system.minYear, 11, 12, 05, 29, 24, 48, 456);
+        dcmDateTimeInMicroseconds(kMinYear, 11, 12, 05, 29, 24, 48, 456);
     log.debug('dcmDTM2: $dcmDTM2');
 
     final dcmDTM3 =
-        dcmDateTimeInMicroseconds(system.maxYear, 11, 12, 05, 29, 24, 48, 456);
+        dcmDateTimeInMicroseconds(kMaxYear, 11, 12, 05, 29, 24, 48, 456);
     log.debug('dcmDTM3: $dcmDTM3');
 
     // bad year
-    var dcmDTMInvalid = dcmDateTimeInMicroseconds(
-        system.minYear - 1, 11, 12, 22, 29, 24, 48, 456);
+    var dcmDTMInvalid =
+        dcmDateTimeInMicroseconds(kMinYear - 1, 11, 12, 22, 29, 24, 48, 456);
     expect(dcmDTMInvalid, isNull);
 
     // bad year
-    dcmDTMInvalid = dcmDateTimeInMicroseconds(
-        system.maxYear + 1, 1, 12, 22, 29, 24, 48, 456);
+    dcmDTMInvalid =
+        dcmDateTimeInMicroseconds(kMaxYear + 1, 1, 12, 22, 29, 24, 48, 456);
     expect(dcmDTMInvalid, isNull);
 
     // bad month
@@ -89,12 +89,12 @@ void main() {
 
     expect(
         () => dcmDateTimeInMicroseconds(
-            system.minYear - 1, 11, 12, 05, 29, 24, 48, 456),
+            kMinYear - 1, 11, 12, 05, 29, 24, 48, 456),
         throwsA(equals(const isInstanceOf<InvalidDateError>())));
 
     expect(
         () => dcmDateTimeInMicroseconds(
-            system.maxYear + 1, 10, 12, 05, 29, 24, 48, 456),
+            kMaxYear + 1, 10, 12, 05, 29, 24, 48, 456),
         throwsA(equals(const isInstanceOf<InvalidDateError>())));
 
     expect(() => dcmDateTimeInMicroseconds(1978, 12, 12, 25, 29, 24, 48, 456),
@@ -105,12 +105,10 @@ void main() {
     var validDateTime0 = isValidDateTime(1998, 11, 15, 23, 10, 45, 05, 10);
     expect(validDateTime0, true);
 
-    validDateTime0 =
-        isValidDateTime(system.minYear, 11, 15, 23, 10, 45, 05, 10);
+    validDateTime0 = isValidDateTime(kMinYear, 11, 15, 23, 10, 45, 05, 10);
     expect(validDateTime0, true);
 
-    validDateTime0 =
-        isValidDateTime(system.maxYear, 11, 15, 23, 10, 45, 05, 10);
+    validDateTime0 = isValidDateTime(kMaxYear, 11, 15, 23, 10, 45, 05, 10);
     expect(validDateTime0, true);
 
     final validDateTime1 =
@@ -177,9 +175,10 @@ void main() {
 
   test('dateTimeMicrosecondsToString', () {
     log
-      ..debug('minYear: ${system.minYear} maxYear: ${system.maxYear}')
+      ..debug('minYear: $kMinYear maxYear: $kMaxYear')
       ..debug(
-          'isValidMicrosecond: ${isValidDateTimeMicroseconds(19790512011556789)}');
+          'isValidMicrosecond: '
+              '${isValidDateTimeMicroseconds(19790512011556789)}');
     final dtm0 = microsecondToDateTimeString(19790512011556789, asDicom: false);
     log.debug('dtm0: $dtm0');
 
@@ -355,5 +354,4 @@ System: $dt0
       }
     }
   });
-  
 }

@@ -409,8 +409,7 @@ $runtimeType(#$hashCode):
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     final nv = old.noValues;
-    elements.replaceElement(index, nv);
- //   elements.add(nv);
+    elements.replace(index, nv);
     return old;
   }
 

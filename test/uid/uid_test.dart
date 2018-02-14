@@ -131,7 +131,7 @@ void uidTest() {
     test('bad uid string test',(){
       for(var s in badUids){
         final uid0 = new Uid(s);// checks 's' as valid Uid
-        expect(uid0.value,isNull);
+        expect(uid0,isNull);
       }
     });
   });

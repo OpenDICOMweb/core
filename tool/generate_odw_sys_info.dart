@@ -12,7 +12,8 @@ void main(List<String> args) {
   final inFile = new File('pubspec.yaml');
   final text = inFile.readAsStringSync();
   final Map spec = loadYaml(text);
-  new File('lib/src/system/odw_sys_info.dart')..writeAsStringSync(generateSysInfo(spec));
+  new File('lib/src/system/odw_sys_info.dart')
+    ..writeAsStringSync(generateSysInfo(spec));
 }
 
 String generateSysInfo(Map spec) {
@@ -39,12 +40,9 @@ class OdwSysInfo {
 }
 
 String generateValue(Object v) {
-  if (v is String)
-  	return '"$v"';
-  if (v is List)
-  	return generateList(v);
-  if (v is Map)
-  	return generateMap(v);
+  if (v is String) return '"$v"';
+  if (v is List) return generateList(v);
+  if (v is Map) return generateMap(v);
   throw new UnknownValueTypeError(v);
 }
 

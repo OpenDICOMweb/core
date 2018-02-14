@@ -92,7 +92,7 @@ String timeZoneToString(int sign, int hour, int minute, {bool asDicom = true}) {
 /// ```[kMinTimeZoneHour] <= hash <= [kMaxTimeZoneHour]```.
 int hashTimeZoneMicroseconds(int us) {
   if (!isValidTimeZoneMicroseconds(us)) return invalidTimeMicrosecondsError(us);
-  final h = hash(us) % (kTZLength - 1);
+  final h = system.hash(us) % (kTZLength - 1);
   return kValidTZMicroseconds[h];
 }
 
@@ -101,7 +101,7 @@ int hashTimeZoneMicroseconds(int us) {
 final int kTZLength = kValidDcmTZStrings.length;
 
 int tzIndexHash(int index) {
-  var hIndex = hash(index) % (kTZLength - 1);
+  var hIndex = system.hash(index) % (kTZLength - 1);
   if (hIndex == index) hIndex = (hIndex - kTZLength).abs();
   if (hIndex == -1) log.error('Invalid TZ Hash Index: $hIndex');
   return hIndex;

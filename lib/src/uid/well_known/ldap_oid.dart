@@ -4,26 +4,25 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/uid/uid_type.dart';
+import 'package:core/src/uid/well_known/uid_type.dart';
 import 'package:core/src/uid/well_known/wk_uid.dart';
 
-
 class LdapOid extends WKUid {
-  const LdapOid(String uid, String keyword, UidType type, String name,
+  const LdapOid(String uid, String keyword, UidType _type, String name,
       {bool isRetired = false})
-      : super(uid, keyword, type, name, isRetired: isRetired);
-
-  @override
-  String get info => '$runtimeType($asString)';
-
-  @override
-  String toString() => asString;
-
+      : super(uid, keyword, _type, name, isRetired: isRetired);
 
   // TODO: verify that all SOPClass Definitions from PS3.6 are present
   static const String kName = 'LDAP OID';
 
-  static LdapOid lookup(String s) => map[s];
+  @override
+  UidType get type => UidType.kLdapOid;
+
+  static LdapOid lookup(String s) => _map[s];
+
+  static List<LdapOid> get uids => _map.values;
+
+  static List<String> get strings => _map.keys;
 
   static const LdapOid kDicomDeviceName = const LdapOid(
       '1.2.840.10008.15.0.3.1',
@@ -282,7 +281,7 @@ class LdapOid extends WKUid {
     kDicomTransferCapability
   ];
 
-  static const Map<String, LdapOid> map = const <String, LdapOid>{
+  static const Map<String, LdapOid> _map = const <String, LdapOid>{
     //   '': ,
     '1.2.840.10008.15.0.3.1': kDicomDeviceName,
     '1.2.840.10008.15.0.3.2': kDicomDescription,

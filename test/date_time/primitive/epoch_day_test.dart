@@ -167,7 +167,7 @@ void main() {
     test('Epoch Date Basic Test', () {
       log.debug('Epoch Date Basic Test...');
       final watch = new Stopwatch()..start();
-      for (var i = system.minYear; i < system.maxYear; i++) {
+      for (var i = kMinYear; i < kMaxYear; i++) {
         final List<int> date = epochDayToDate(i);
         final y = date[0];
         final m = date[1];
@@ -331,7 +331,7 @@ void main() {
     });
 
     test('dateToEpochMicroseconds', () {
-      for (var y = system.minYear; y <= system.maxYear; y++) {
+      for (var y = kMinYear; y <= kMaxYear; y++) {
         for (var m = 1; m <= 12; m++) {
           final dtem0 = dateToEpochMicroseconds(y, m, 01);
           log.debug('dtem0: $dtem0');
@@ -340,11 +340,11 @@ void main() {
       }
 
       // bad year
-      var dtemInvalid = dateToEpochMicroseconds(system.minYear - 1, 1, 12);
+      var dtemInvalid = dateToEpochMicroseconds(kMinYear - 1, 1, 12);
       expect(dtemInvalid, isNull);
 
       // bad year
-      dtemInvalid = dateToEpochMicroseconds(system.maxYear + 1, 12, 12);
+      dtemInvalid = dateToEpochMicroseconds(kMaxYear + 1, 12, 12);
       expect(dtemInvalid, isNull);
 
       // bad month
@@ -357,11 +357,11 @@ void main() {
 
       system.throwOnError = true;
       // bad year
-      expect(() => dateToEpochMicroseconds(system.minYear - 1, 13, 12),
+      expect(() => dateToEpochMicroseconds(kMinYear - 1, 13, 12),
           throwsA(equals(const isInstanceOf<InvalidDateError>())));
 
       // bad year
-      expect(() => dateToEpochMicroseconds(system.maxYear + 1, 13, 12),
+      expect(() => dateToEpochMicroseconds(kMaxYear + 1, 13, 12),
           throwsA(equals(const isInstanceOf<InvalidDateError>())));
 
       // bad month

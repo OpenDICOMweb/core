@@ -4,8 +4,6 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-//TODO: add classes to well_known for all these types.  Use transfer_systax
-//   as example.
 //TODO: this class might disappear when all the types are implemented as classes.
 /// Uid Types
 class UidType {
@@ -28,16 +26,15 @@ class UidType {
   // Constructed from Root + leaf
   static const UidType kConstructed = const UidType._(1, 'Constructed');
 
-  // DICOM Well Known Types
+  // Well Known DICOM UID Types
   static const UidType kSOPClass = const UidType._(2, 'SOP Class');
 
   static const UidType kTransferSyntax = const UidType._(3, 'Transfer Syntax');
 
-  static const UidType kWellKnownFrameOfReference =
+  static const UidType kFrameOfReference =
       const UidType._(4, 'Frame Of Reference');
 
-  static const UidType kWellKnownSOPInstance =
-      const UidType._(5, 'SOP Instance');
+  static const UidType kSOPInstance = const UidType._(5, 'SOP Instance');
 
   static const UidType kCodingScheme = const UidType._(6, 'Coding Scheme');
 

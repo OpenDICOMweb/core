@@ -74,10 +74,9 @@ abstract class ElementList extends ListBase<Element>{
 
   List<int> get keysList;
 
-  void replaceElement(int index, Element e);
+  void replace(int index, Element e);
 
-
-  ///
+  bool replaceValues<V>(int index, Iterable<V> vList);
 
   bool recordNotFound = false;
 

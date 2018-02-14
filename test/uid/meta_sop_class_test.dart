@@ -61,7 +61,7 @@ void main() {
           true);
       expect(msc0.value == '1.2.840.10008.3.1.2.1.4', true);
       expect(msc0.type == UidType.kMetaSOPClass, true);
-      expect(msc0.isMetaSOPClass, true);
+      expect(msc0 is MetaSopClass, true);
       expect(msc0 is MetaSopClass, true);
       expect(msc0.maxLength == 64, true);
       expect(msc0.minLength == 6, true);

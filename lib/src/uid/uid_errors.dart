@@ -25,7 +25,7 @@ Null invalidUidString(String uid, [Issues issues]) {
 
 /// Logs an Error entry, and then if [throwOnError] is _true_ throws an
 /// [InvalidUidError]; otherwise, returns _null_.
-Null invalidUid(Uid uid, [Issues issues]) {
+Null invalidUid(Object uid, [Issues issues]) {
   final msg = 'Invalid Uid Error: "$uid"';
   return _doUidError(msg, issues);
 }

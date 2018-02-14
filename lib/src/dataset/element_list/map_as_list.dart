@@ -159,7 +159,17 @@ class MapAsList extends ElementList {
     return sb.toString();
   }
 
-  void replaceElement(int index, Element e) => eMap[index] = e;
+  @override
+  void replace(int index, Element e) => eMap[index] = e;
+
+  @override
+  bool replaceValues<V>(int index, Iterable<V> vList) {
+    final e = eMap[index];
+    if (e == null) return elementNotPresentError(index);
+    if (!e.tag.isValidValues(vList)) return false;
+    e.replace(vList);
+    return true;
+  }
 
   /// Removes the [Element] with [index] from _this_.
   @override

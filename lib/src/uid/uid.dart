@@ -10,7 +10,15 @@ import 'package:core/src/uid/well_known_uids.dart';
 import 'package:core/src/uuid/uuid.dart';
 import 'package:core/src/uuid/v4generator.dart';
 
-// ingnore_for_package: prefer_constructor_over_static;
+export 'package:core/src/uid/constants.dart';
+export 'package:core/src/uid/supported_transfer_syntax.dart';
+export 'package:core/src/uid/supported_uids.dart';
+export 'package:core/src/uid/uid.dart';
+export 'package:core/src/uid/uid_errors.dart';
+export 'package:core/src/uid/uid_string.dart';
+export 'package:core/src/uid/well_known/uid_type.dart';
+
+// ignore_for_package: prefer_constructor_over_static;
 typedef String _Generator();
 typedef Uid OnUidParseError(String s);
 
@@ -31,7 +39,18 @@ class Uid {
   static final _Generator _generator = generateSecureUidString;
   final String value;
 
-  Uid([String s]) : this.value = (s == null) ? _generator() : check(s);
+  factory Uid([String s]) {
+    String v;
+    if (s == null) {
+      v = _generator();
+    } else {
+      v = s.trim();
+      final wk = wellKnownUids[s];
+      if (wk != null) return wk;
+      if (!isValidUidString(v)) return invalidUidString(v);
+    }
+    return new Uid._(v);
+  }
 
   /// Used by internal random generators
   Uid._(this.value);
@@ -59,6 +78,7 @@ class Uid {
 
   /// The minimum length of a [Uid][String].
   int get minLength => kUidMinLength;
+
   /// The maximum length of a [Uid][String].
   int get maxLength => kUidMaxLength;
 
@@ -116,9 +136,6 @@ class Uid {
   /// Returns _true_ is [uid] has the DICOM UID Root (1.2.840.10008).
   static bool isDicom(Uid uid) => uid.asString.indexOf(dicomRoot) == 0;
 
-  /// Returns [s] if it is a valid [Uid] [String]; otherwise, _null_.
-  static String check(String s) => isValidString(s) ? s : null;
-
   /// Returns a [String] containing the name of the organization associated
   /// with the root.
   static String rootType(String uidString) => uidRootType(uidString);
@@ -129,7 +146,7 @@ class Uid {
   /// Returns _true_ if [sList] is empty, i.e. [sList].length == 0, or if each
   /// [String] in the [List] is a valid [Uid].
   static bool isValidStringList(List<String> sList) =>
-      sList != null && (sList.isEmpty || isValidUidStringList(sList));
+      isValidUidStringList(sList);
 
   /// Parse [s] as [Uid] and return its value.
   ///

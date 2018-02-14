@@ -4,120 +4,122 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See /[package]/AUTHORS file for other contributors.
 
-import 'package:core/src/uid/uid_type.dart';
+import 'package:core/src/uid/well_known/uid_type.dart';
 import 'package:core/src/uid/well_known/wk_uid.dart';
 
-//TODO: Finish this class and write Unit test.
-
-class WellKnownSopInstance extends WKUid {
-  const WellKnownSopInstance(String uid, String keyword, UidType type, String name,
+class SopInstance extends WKUid {
+  const SopInstance(
+      String uid, String keyword, UidType _type, String name,
       {bool isRetired = false})
-      : super(uid, keyword, type, name, isRetired: isRetired);
+      : super(uid, keyword, _type, name, isRetired: isRetired);
 
-  //TODO: create UidType class
-  bool get isSopInstance => true;
-
-  @override
-  String get info => '$runtimeType($asString)';
+  static const String kName = 'SOP Instance';
 
   @override
-  String toString() => asString;
+  UidType get type => UidType.kSOPInstance;
 
-  //TODO: when other classes are implemented convert to lookup the uidString
-  //in each class.
-  static WellKnownSopInstance lookup(String s) => map[s];
+  static SopInstance lookup(String s) => _map[s];
 
-  static const WellKnownSopInstance kUnifiedWorklistAndProcedureStep =
-      const WellKnownSopInstance(
+  static List<SopInstance> get uids => _map.values;
+
+  static List<String> get strings => _map.keys;
+
+  static const SopInstance kUnifiedWorklistAndProcedureStep =
+      const SopInstance(
           '1.2.840.10008.5.1.4.34.5',
           'UnifiedWorklistandProcedureStepSOPInstance',
-          UidType.kWellKnownSOPInstance,
+          UidType.kSOPInstance,
           'Unified Worklist and Procedure Step SOP Instance');
 
-  static const WellKnownSopInstance kSubstanceAdministrationLogging =
-      const WellKnownSopInstance(
+  static const SopInstance kSubstanceAdministrationLogging =
+      const SopInstance(
           '1.2.840.10008.1.42.1',
           'SubstanceAdministrationLoggingSOPInstance',
-          UidType.kWellKnownSOPInstance,
+          UidType.kSOPInstance,
           'Substance Administration Logging SOP Instance');
 
-  static const WellKnownSopInstance kProceduralEventLogging = const WellKnownSopInstance(
-      '1.2.840.10008.1.40.1',
-      'ProceduralEventLoggingSOPInstance',
-      UidType.kWellKnownSOPInstance,
-      'Procedural Event Logging SOP Instance');
+  static const SopInstance kProceduralEventLogging =
+      const SopInstance(
+          '1.2.840.10008.1.40.1',
+          'ProceduralEventLoggingSOPInstance',
+          UidType.kSOPInstance,
+          'Procedural Event Logging SOP Instance');
 
-  static const WellKnownSopInstance kHotIronColorPalette = const WellKnownSopInstance(
+  static const SopInstance kHotIronColorPalette =
+      const SopInstance(
     '1.2.840.10008.1.5.1',
     'HotIronColorPaletteSOPInstance',
-    UidType.kWellKnownSOPInstance,
+    UidType.kSOPInstance,
     'Hot Iron Color Palette SOP '
         'Instance',
   );
 
-  static const WellKnownSopInstance kPETColorPalette = const WellKnownSopInstance(
-      '1.2.840.10008.1.5.2',
-      'PETColorPaletteSOPInstance',
-      UidType.kWellKnownSOPInstance,
-      'PET Color Palette SOP Instance');
+  static const SopInstance kPETColorPalette =
+      const SopInstance(
+          '1.2.840.10008.1.5.2',
+          'PETColorPaletteSOPInstance',
+          UidType.kSOPInstance,
+          'PET Color Palette SOP Instance');
 
-  static const WellKnownSopInstance kHotMetalBlueColorPalette =
-      const WellKnownSopInstance(
+  static const SopInstance kHotMetalBlueColorPalette =
+      const SopInstance(
           '1.2.840.10008.1.5.3',
           'HotMetalBlueColorPaletteSOPInstance',
-          UidType.kWellKnownSOPInstance,
+          UidType.kSOPInstance,
           'Hot Metal Blue Color Palette SOP Instance');
 
-  static const WellKnownSopInstance kPET20StepColorPalette = const WellKnownSopInstance(
-      '1.2.840.10008.1.5.4',
-      'PET20StepColorPaletteSOPInstance',
-      UidType.kWellKnownSOPInstance,
-      'PET 20 Step Color Palette SOP Instance');
+  static const SopInstance kPET20StepColorPalette =
+      const SopInstance(
+          '1.2.840.10008.1.5.4',
+          'PET20StepColorPaletteSOPInstance',
+          UidType.kSOPInstance,
+          'PET 20 Step Color Palette SOP Instance');
 
-  static const WellKnownSopInstance kStorageCommitmentPushModel =
-      const WellKnownSopInstance(
+  static const SopInstance kStorageCommitmentPushModel =
+      const SopInstance(
           '1.2.840.10008.1.20.1.1',
           'StorageCommitmentPushModelSOPInstance',
-          UidType.kWellKnownSOPInstance,
+          UidType.kSOPInstance,
           'Storage Commitment Push Model SOP Instance');
 
-  static const WellKnownSopInstance kStorageCommitmentPullModelSOPClass =
-      const WellKnownSopInstance(
+  static const SopInstance kStorageCommitmentPullModelSOPClass =
+      const SopInstance(
           '1.2.840.10008.1.20.2',
           'StorageCommitmentPullModelSOPClass_Retired',
           UidType.kSOPClass,
           'Storage Commitment Pull Model SOP Class (Retired)',
           isRetired: true);
 
-  static const WellKnownSopInstance kStorageCommitmentPullModel =
-      const WellKnownSopInstance(
+  static const SopInstance kStorageCommitmentPullModel =
+      const SopInstance(
           '1.2.840.10008.1.20.2.1',
           'StorageCommitmentPullModelSOPInstance_Retired',
-          UidType.kWellKnownSOPInstance,
+          UidType.kSOPInstance,
           'Storage Commitment Pull Model SOP Instance (Retired)',
           isRetired: true);
 
-  static const WellKnownSopInstance kPrinter = const WellKnownSopInstance(
+  static const SopInstance kPrinter = const SopInstance(
       '1.2.840.10008.5.1.1.17',
       'PrinterSOPInstance',
-      UidType.kWellKnownSOPInstance,
+      UidType.kSOPInstance,
       'Printer SOP Instance');
 
-  static const WellKnownSopInstance kPrinterConfigurationRetrieval =
-      const WellKnownSopInstance(
+  static const SopInstance kPrinterConfigurationRetrieval =
+      const SopInstance(
           '1.2.840.10008.5.1.1.17.376',
           'PrinterConfigurationRetrievalSOPInstance',
-          UidType.kWellKnownSOPInstance,
+          UidType.kSOPInstance,
           'Printer Configuration Retrieval SOP Instance');
 
-  static const WellKnownSopInstance kPrintQueue = const WellKnownSopInstance(
+  static const SopInstance kPrintQueue = const SopInstance(
       '1.2.840.10008.5.1.1.25',
       'PrintQueueSOPInstance_Retired',
-      UidType.kWellKnownSOPInstance,
+      UidType.kSOPInstance,
       'Print Queue SOP Instance (Retired)',
       isRetired: true);
 
-  static const List<WellKnownSopInstance> members = const <WellKnownSopInstance>[
+  static const List<SopInstance> members =
+      const <SopInstance>[
     kUnifiedWorklistAndProcedureStep,
     kSubstanceAdministrationLogging,
     kProceduralEventLogging,
@@ -132,8 +134,8 @@ class WellKnownSopInstance extends WKUid {
     kPrintQueue
   ];
 
-  static const Map<String, WellKnownSopInstance> map =
-      const <String, WellKnownSopInstance>{
+  static const Map<String, SopInstance> _map =
+      const <String, SopInstance>{
     '1.2.840.10008.5.1.4.34.5': kUnifiedWorklistAndProcedureStep,
     '1.2.840.10008.1.42.1': kSubstanceAdministrationLogging,
     '1.2.840.10008.1.40.1': kProceduralEventLogging,
