@@ -13,22 +13,23 @@ import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/tag/export.dart';
 
 // Note: PrivateData Elements are just regular [Element]s
-abstract class PrivateElement<V> extends Element<V> {
+abstract class PrivateElementMixin<V> {
   Element<V> get e;
   bool get wasUN;
 
-  /// Create a [PrivateElement]
-//  PrivateElement(this.e, {this.wasUN = false}) : super(e.tag);
+  int get sgIndex => tag.subGroup;
+
+  PrivateTag get tag => e.tag;
 
   @override
-  bool operator ==(Object other) => other is PrivateElement && e == other.e;
+  bool operator ==(Object other) => other is PrivateElementMixin && e ==
+                                                                    other.e;
 
   @override
   List<V> get emptyList => e.emptyList;
   @override
   int get hashCode => e.hashCode;
-  @override
-  Tag get tag => e.tag;
+
   bool get isKnown => tag.isKnown;
   @override
   int get group => e.tag.group;
@@ -45,6 +46,8 @@ abstract class PrivateElement<V> extends Element<V> {
   VM get vm => tag.vm;
   @override
   int get sizeInBytes => tag.elementSize;
+
+  int get vfLengthField => e.vfLengthField;
   @override
   Iterable<V> get values => e.values;
 
@@ -63,54 +66,46 @@ abstract class PrivateElement<V> extends Element<V> {
   @override
   Uint8List get vfBytes => e.vfBytes;
 
-  @override
+
   ByteData get vfByteData => e.vfByteData;
 
-  @override
+  int get deIdIndex => e.deIdIndex;
+  int get ieIndex => e.ieIndex;
   bool checkValues(Iterable<V> vList, [Issues issues]) =>
       e.checkValues(vList, issues);
 
-  @override
-  PrivateElement<V> update([Iterable<V> vList]) => e.update(vList);
-
-  PrivateElement<V> view([int start = 0, int end]) =>
+  PrivateElementMixin<V> view([int start = 0, int end]) =>
       throw new UnimplementedError();
 }
 
-abstract class PrivateIllegal<V> extends PrivateElement<V> {
-  //PrivateIllegal(Element e) : super(e);
+class PrivateCreator extends LO with PrivateElementMixin<String> {
+  @override
+  final PCTag tag;
+  @override
+  final Element<String> e;
+  @override
+  final bool wasUN;
 
-  // K get key;
-}
-
-abstract class PrivateCreator extends LO {
-  final Map<int, PrivateElement> pData = <int, PrivateElement>{};
-
-  int get sgIndex => tag.elt;
-  PCTag get pcTag => tag;
-  int get base => pcTag.base;
-  int get limit => pcTag.limit;
-  String get token => value;
-
-  bool inSubgroup(int pdCode) {
-    final pdIndex = Elt.fromTag(pdCode);
-    //log.debug('isSubgroup: base: ${Elt.hex(base)}, limit: ${Elt.hex(limit)}');
-    return pdIndex >= base && pdIndex <= limit;
-  }
-
-  void addData(PrivateElement pd) => pData[pd.code] = pd;
-
-  Element lookupData(int code) => pData[code];
-
-  String format(Formatter z) {
-    final sb = new StringBuffer('${z(this)}\n');
-    z.down;
-    sb.write(z(pData.values));
-    z.up;
-    return sb.toString();
-  }
+  PrivateCreator(this.tag, this.e, {this.wasUN});
 
   @override
-  String toString() =>
-      '$runtimeType${tag.dcm} ${tag.name}: ${pData.length} pData';
+  List<String> get values => e.values;
+  @override
+  set values(Iterable<String> vList) => e.values = vList;
+
+  int get base => tag.base;
+  int get limit => tag.limit;
+  String get token => e.value;
+
+  @override
+  PrivateCreator update([Iterable<String> vList]) => e.update(vList);
+
+  bool inSubgroup(int pdCode) => (tag.elt >= base) && (tag.elt <= limit);
+
+
+
+  @override
+  String toString() => '$runtimeType${tag.dcm} ${tag.name}';
 }
+
+

@@ -437,14 +437,14 @@ abstract class DS extends StringAscii {
     if (length == 0) return this;
     final dList = new List<double>(length);
     for (var i = 0; i < length; i++) dList[i] = System.rng.nextDouble();
-    final vList = dList.map(floatToString);
+    final vList = dList.map(floatToDcmString);
     return update(vList);
   }
 
   // TODO: should this be in core/src/string?
   /// Returns a [String] that approximately corresponds to [v],
   /// that has at most 16 characters.
-  String floatToString(double v) {
+  String floatToDcmString(double v) {
     final precision = 10;
     var s = v.toString();
     if (s.length > 16) {
@@ -457,13 +457,11 @@ abstract class DS extends StringAscii {
     return s;
   }
 
-  //TODO needs unit testing when needed
   /// Returns a new [DS] Element with values that are the hash of _this_.
   @override
   DS get hash =>
-      update(numbers.map((n) => floatToString(system.hasher.doubleHash(n))));
+      update(numbers.map((n) => floatToDcmString(system.hasher.doubleHash(n))));
 
-  // TODO: Unit Test when needed
   /// Returns a new [DS] Element with values that are constructed from
   /// the Sha256 hash digest of _this_.
   ///
@@ -473,7 +471,7 @@ abstract class DS extends StringAscii {
   @override
   DS get sha256 {
     final hList =
-        Sha256.float32(numbers).map(floatToString).toList(growable: false);
+        Sha256.float32(numbers).map(floatToDcmString).toList(growable: false);
     return update((vmMax == -1 || vmMax > 8) ? hList : hList.sublist(0, vmMax));
   }
 
@@ -592,7 +590,7 @@ abstract class DS extends StringAscii {
       StringBase.tryParseList(vList, issues, tryParse);
 }
 
-// TODO: make it so that there are three different sources of values.
+
 // In priority order they are:
 //    - _integers
 //    - values
@@ -1046,6 +1044,10 @@ abstract class PC extends LO {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRKeyword;
+  @override
+  String get creator;
+  @override
+  String get name => 'Private Creator - $creator';
 
   static const String kVRKeyword = 'PC';
   static const String kVRName = 'Private Creator';

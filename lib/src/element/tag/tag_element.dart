@@ -181,7 +181,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 
   static Element fromBDE(Element bd, int vrIndex, [TransferSyntax ts]) {
 //    print('fromBD vrIndex: $vrIndex');
-    if (vrIndex > 30) throw 'bad vrIndex $bd';
+    if (vrIndex > 30) return invalidVRIndex(vrIndex, null, null);
     if (bd is PixelData)
       return _bdePixelMakers[vrIndex](bd, ts);
     return _bdeMakers[vrIndex](bd);

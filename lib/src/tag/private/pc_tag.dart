@@ -32,8 +32,9 @@ abstract class PCTag extends PrivateTag {
   @override
   bool get isCreator => true;
 
+  /// In Tag (gggg,00ss) 
   @override
-  int get subgroup => elt & 0xFF;
+  int get subGroup => elt & 0xFF;
 
   int get base => elt << 8;
 
@@ -50,7 +51,7 @@ abstract class PCTag extends PrivateTag {
     final ng = (code >> 16);
     //print('ng: $ng group $group');
     if (group != ng) return false;
-    final elt = (subgroup << 8) + (code & 0xFF);
+    final elt = (subGroup << 8) + (code & 0xFF);
     // print('$baseHex <= ${Tag.toHex(elt)} <= $limitHex');
     if (elt < base || elt > limit) return false;
     return true;

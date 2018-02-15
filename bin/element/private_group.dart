@@ -14,10 +14,9 @@ void main() {
   print('Creator Tag: ${pcTag.info}');
   final lo = new LOtag(pcTag, ['CAMTRONICS IP']);
   print('LO: ${lo.info}');
-  final creator = new TagPrivateCreator(lo);
-  print('Creator: ${creator.info}');
-  print('cElement: ${dcm(creator.code)}, '
-      'pcTag: ${dcm(creator.tag.code)}');
+//  print('Creator: ${creator.info}');
+ // print('cElement: ${dcm(creator.code)}, '
+//      'pcTag: ${dcm(creator.tag.code)}');
   const pDataCode = 0x00291010;
   final pdTag = PDTag.make(pDataCode, kUNIndex, pcTag);
   print('PDTag: ${pdTag.info}');

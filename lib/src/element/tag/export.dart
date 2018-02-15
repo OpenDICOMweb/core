@@ -8,7 +8,6 @@ export 'package:core/src/element/base/element.dart';
 export 'package:core/src/element/tag/float.dart';
 export 'package:core/src/element/tag/integer.dart';
 export 'package:core/src/element/tag/pixel_data.dart';
-export 'package:core/src/element/tag/private.dart';
 export 'package:core/src/element/tag/sequence.dart';
 export 'package:core/src/element/tag/string.dart';
 export 'package:core/src/element/tag/tag_element.dart';

@@ -24,6 +24,10 @@ abstract class PDTag extends PrivateTag {
   @override
   VM get vm => VM.k1_n;
 
+  @override
+  int get subGroup => elt >> 8;
+  int get subGroupOffset => elt & 0x00FF;
+
   static PDTag make(int code, int vrIndex, PCTag creator) {
     if (creator != null) {
       final definition = creator.lookupData(code);
@@ -96,7 +100,7 @@ class PDTagKnown extends PDTag {
       'offset($offsetHex), ${vrIdByIndex[vrIndex]}, $vm, "$name"';
 
   @override
-  String toString() => '$runtimeType$dcm $name $subgroup($subgroupHex), creator'
+  String toString() => '$runtimeType$dcm $name $subGroup($subgroupHex), creator'
       '(${creator.name})';
 
   static PDTagKnown make(

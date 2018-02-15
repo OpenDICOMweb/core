@@ -38,14 +38,18 @@ abstract class PrivateTag extends Tag {
   @override
   int get index;
 
+  // In Private Data Tag (gggg,ssoo) gggg is group, ss is subGroup,
+  // and oo is subGroupOffset.
+
   /// The Private Subgroup for this Tag.
-  // Note: MUST be overridden in all subclasses.
-  int get subgroup => (isCreator) ? code & 0xFF : (code & 0xFF00) >> 8;
+  int get subGroup;
+//  int get subGroup => (isCreator) ? code & 0xFF : (code & 0xFF00) >> 8;
+
 
   @override
   EType get type => EType.k3;
 
-  String get subgroupHex => hex8(subgroup);
+  String get subgroupHex => hex8(subGroup);
 
   String get asString => toString();
 
@@ -54,7 +58,7 @@ abstract class PrivateTag extends Tag {
       '${vrIdByIndex[vrIndex]}, $vm';
 
   @override
-  String toString() => '$runtimeType$dcm subgroup($subgroup)';
+  String toString() => '$runtimeType$dcm subgroup($subGroup)';
 
   /// Returns a new [PrivateTag] based on [code] and [vrIndex].
   /// [obj] can be either a [String] or [PCTag].
@@ -91,7 +95,8 @@ class PrivateTagGroupLength extends PrivateTag {
 
   @override
   VM get vm => VM.k1;
-
+  @override
+  int get subGroup => 0;
   @override
   String get name => 'Private Group Length Tag';
 }
@@ -109,6 +114,8 @@ class PrivateTagIllegal extends PrivateTag {
 
   PrivateTagIllegal(this.code, this.vrIndex);
 
+  @override
+  int get subGroup => 1;
   @override
   String get name => 'Illegal Private Tag';
 }

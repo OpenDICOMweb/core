@@ -46,7 +46,7 @@ export 'package:core/src/element/base/float.dart';
 export 'package:core/src/element/base/integer/integer.dart';
 export 'package:core/src/element/base/integer/integer_mixin.dart';
 export 'package:core/src/element/base/integer/pixel_data.dart';
-export 'package:core/src/element/base/private.dart';
+export 'package:core/src/element/base/private.dart.old';
 export 'package:core/src/element/base/sequence.dart';
 export 'package:core/src/element/base/string.dart';
 export 'package:core/src/element/byte_data/bd_element.dart';

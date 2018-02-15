@@ -709,9 +709,14 @@ abstract class GL extends UL {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRKeyword;
+  @override
+  int get length => value;
 
   static const String kVRKeyword = 'GL';
   static const String kVRName = 'Group Length';
+
+  static bool isValidValues(Tag tag, List<int> vList, [Issues issues]) =>
+      tag.vrIndex == kULIndex && vList.length == 1 && UL.isValidValue(vList[0]);
 }
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
