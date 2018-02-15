@@ -130,9 +130,62 @@ void main() {
         log.debug('dt: $dt, hash $h');
         expect(h, isNotNull);
       }
+
+      system.throwOnError = true;
+      for (var s in goodDcmDateTimeList) {
+        final dt0 = DcmDateTime.parse(s);
+        if (dt0 != null) {
+          log
+            ..debug('dt0:$dt0')
+            ..debug('dt0.value:${dt0.toString()}, dt0.hash:${dt0.hash}');
+          final dt1 = DcmDateTime.parse(s);
+          log
+            ..debug('dt1:$dt1')
+            ..debug('date1.value:${dt1.toString()}, dt1.hash:${dt1.hash}');
+          expect(dt0.hash, equals(dt1.hash));
+        } else {
+          return invalidDateString('Invalid Date String: "$s"');
+        }
+      }
+
+      final dt2 = DcmDateTime.parse(goodDcmDateTimeList[0]);
+      final dt3 = DcmDateTime.parse(goodDcmDateTimeList[1]);
+      log
+        ..debug('dt2.value:${dt2.toString()}, dt2.hash:${dt2.hash}')
+        ..debug('dt3.value:${dt3.toString()}, dt3.hash:${dt3.hash}');
+      expect(dt2.hash, isNot(dt3.hash));
+    });
+
+    test('sha256 date_time', () {
+      final dt1 = new DcmDateTime(1970, 05, 01);
+
+      log.debug('dt1: $dt1');
+      final sha0 = dt1.sha256;
+      log.debug('sha0: $sha0');
+      expect(sha0, isNotNull);
+
+      for (var s in goodDcmDateTimeList) {
+        final dt0 = DcmDateTime.parse(s);
+        final dt1 = DcmDateTime.parse(s);
+        log
+          ..debug('dt0.value:${dt0.toString()}')
+          ..debug('dt1.value:${dt1.toString()}')
+          ..debug('dt0.sha256: ${dt0.sha256}')
+          ..debug('dt0.value:${dt0.toString()}, dt0.sha256:${dt0.sha256}')
+          ..debug('dt1.value:${dt1.toString()}, dt1.sha256:${dt1.sha256}');
+        expect(dt0.sha256, equals(dt0.sha256));
+      }
+      final dt2 = DcmDateTime.parse(goodDcmDateTimeList[0]);
+      final dt3 = DcmDateTime.parse(goodDcmDateTimeList[1]);
+      log
+        ..debug('dt2.value:${dt2.toString()}, dt2.sha256:${dt2.sha256}')
+        ..debug('dt3.value:${dt3.toString()}, dt3.sha256:${dt3.sha256}');
+
+      expect(dt2.sha256, isNot(dt3.sha256));
     });
 
     test('hashString', () {
+      system.throwOnError = false;
       for (var dt in goodDcmDateTimeList) {
         final dateTime0 = DcmDateTime.hashString(dt);
         log.debug('dateTime0: $dateTime0');
@@ -146,6 +199,7 @@ void main() {
     });
 
     test('hashStringList', () {
+      system.throwOnError = false;
       final dateTime0 = DcmDateTime.hashStringList(goodDcmDateTimeList);
       log.debug('dateTime0: $dateTime0');
       for (var s in dateTime0) {
@@ -207,7 +261,7 @@ void main() {
       for (var y = 1900; y < 2000; y++) {
         for (var m = 1; m < 12; m++) {
           for (var d = 1; d < lastDayOfMonth(y, m); d++) {
-            if(d + 1 < lastDayOfMonth(y, m)) {
+            if (d + 1 < lastDayOfMonth(y, m)) {
               final dt0 = new DcmDateTime(y, m, d);
               final dt1 = new DcmDateTime(y, m, d + 1);
               expect(dt0.compareTo(dt1), -1);

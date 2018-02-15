@@ -149,9 +149,25 @@ class FrameOfReference extends WKUid {
           'ICBM Single Subject MRI Frame of Reference');
 
   static const Map<String, FrameOfReference> _map = const {
-  '1.2.840.10008.1.4.1.1': kTalairachBrainAtlasFrameOfReference
-
-    // Urgent Sharath: add rest of entries from the 'static const' above
+    '1.2.840.10008.1.4.1.1': kTalairachBrainAtlasFrameOfReference,
+    '1.2.840.10008.1.4.1.2': kSPM2T1FrameOfReference,
+    '1.2.840.10008.1.4.1.3': kSPM2T2FrameOfReference,
+    '1.2.840.10008.1.4.1.4': kSPM2PDFrameOfReference,
+    '1.2.840.10008.1.4.1.5': kSPM2EPIFrameOfReference,
+    '1.2.840.10008.1.4.1.6': kSPM2FILT1FrameOfReference,
+    '1.2.840.10008.1.4.1.7': kSPM2PETFrameOfReference,
+    '1.2.840.10008.1.4.1.8': kSPM2TRANSMFrameOfReference,
+    '1.2.840.10008.1.4.1.9': kSPM2SPECTFrameOfReference,
+    '1.2.840.10008.1.4.1.10': kSPM2GRAYFrameOfReference,
+    '1.2.840.10008.1.4.1.11': kSPM2WHITEFrameOfReference,
+    '1.2.840.10008.1.4.1.12': kSPM2CSFFrameOfReference,
+    '1.2.840.10008.1.4.1.13': kSPM2BRAINMASKFrameOfReference,
+    '1.2.840.10008.1.4.1.14': kSPM2AVG305T1FrameOfReference,
+    '1.2.840.10008.1.4.1.15': kSPM2AVG152T1FrameOfReference,
+    '1.2.840.10008.1.4.1.16': kSPM2AVG152T2FrameOfReference,
+    '1.2.840.10008.1.4.1.17': kSPM2AVG152PDFrameOfReference,
+    '1.2.840.10008.1.4.1.18': kSPM2SINGLESUBJT1FrameOfReference,
+    '1.2.840.10008.1.4.2.1': kICBM452T1FrameOfReference,
+    '1.2.840.10008.1.4.2.2': kICBMSingleSubjectMRIFrameOfReference
   };
-
 }

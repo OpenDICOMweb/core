@@ -35,23 +35,16 @@ void main() {
           true);
     });
 
-    // Urgent Sharath: There is only on Synchronization Frame of Reference
     test('Create SynchronizationFrameOfReference', () {
       final sfr0 = WKUid.kUniversalCoordinatedTime;
-
       final sfr1 = WKUid.kUniversalCoordinatedTime;
 
       expect(sfr0.hashCode == sfr1.hashCode, true);
-//      expect(sfr0.hashCode == sfr2.hashCode, false);
-
       expect(sfr0.value == sfr1.value, true);
-//      expect(sfr0.value == sfr2.value, false);
-
       expect(sfr0.name == 'Universal Coordinated Time', true);
       expect(sfr0.keyword == 'UniversalCoordinatedTime', true);
       expect(sfr0.value == '1.2.840.10008.15.1.1', true);
       expect(sfr0.type == UidType.kSynchronizationFrameOfReference, true);
-//      expect(sfr0 is SynchronizationFrameOfReference, true);
       expect(sfr0.maxLength == 64, true);
       expect(sfr0.minLength == 6, true);
       expect(sfr0.maxRootLength == 24, true);

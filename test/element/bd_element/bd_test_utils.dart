@@ -72,7 +72,8 @@ ByteData makeIvrHeader(int code, int vfLengthInBytes, ByteData bd) {
 ByteData makeShortEvr(int code, int vrCode, ByteData vfBD) {
   // log.debug('makeEvr: ${hex32(code)}');
   final vfLength = vfBD.lengthInBytes;
-  final eLength = _shortEvrHeaderSize + vfLength;
+  var eLength = _shortEvrHeaderSize + vfLength;
+  if(eLength.isOdd) eLength++;
   final bd = new ByteData(eLength);
   makeShortEvrHeader(code, vrCode, bd);
   copyBDToVF(bd, _shortEvrVFOffset, vfBD);
@@ -102,6 +103,7 @@ ByteData makeIvr(int code, ByteData vfBD) {
 void copyBDToVF(ByteData bd, int vfOffset, ByteData vfBD) {
   for (var i = 0, j = vfOffset; i < vfBD.lengthInBytes; i++, j++)
     bd.setUint8(j, vfBD.getUint8(i));
+  if(vfBD.lengthInBytes.isOdd) bd.setUint8(vfOffset + vfBD.lengthInBytes, 32);
 }
 
 /// Returns the Tag Code from [ByteData].
