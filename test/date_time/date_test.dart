@@ -12,10 +12,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(
-      name: 'date_test',
-      minYear: 1900,
-      maxYear: 2100,
-      level: Level.debug);
+      name: 'date_test', minYear: 1900, maxYear: 2100, level: Level.debug);
 
   group('Date Tests', () {
     test('Good Dates', () {
@@ -358,22 +355,51 @@ void main() {
   });
 
   test('Hash Random Dates', () {
-    final rng = new math.Random();
-
+    final rng = new RNG();
+    system.level = Level.debug;
     for (var i = 0; i < 1000; i++) {
-      final eDay = (rng.nextDouble() * 1000).toInt();
+      final eDay = rng.nextInt(kMinYear, kMaxYear);
       final date0 = new Date.fromEpochDay(eDay);
-      log.debug('date: $date0');
+      log.debug('date0: $date0');
       final hash0 = date0.hash;
       log.debug('hash0: $hash0');
+      expect(hash0, isNotNull);
     }
   });
 
   test('Hash Dates', () {
-    final date1 = new Date(1960, 05, 01);
-    log.debug('date: $date1');
+    final date1 = new Date(1969, 12, 31);
     final hash1 = date1.hash;
-    log..debug('hash1: $hash1')..debug('hash0: $hash1');
+    log.debug('hash1: $hash1, year: ${hash1.year}, y: ${hash1.y}');
+    expect(hash1, isNotNull);
+  });
+
+  test('sha256 Dates', () {
+    final date1 = new Date(1970, 05, 01);
+    log.debug('date1: $date1');
+    final sha0 = date1.sha256;
+    log.debug('sha0: $sha0');
+    expect(sha0, isNotNull);
+
+    for (var s in goodDcmDateList) {
+      final date0 = Date.parse(s);
+      final date1 = Date.parse(s);
+      log
+        ..debug('date0: $date0, us: ${date0.toString()}')
+        ..debug('date1: $date1, us: ${date1.toString()}')
+        ..debug('date0.sha256: ${date0.sha256}')
+        ..debug('date1.value:${date1.toString()}, date0.sha256:${date0.sha256}')
+        ..debug(
+            'date1.value:${date1.toString()}, date1.sha256:${date1.sha256}');
+      expect(date0.sha256, equals(date1.sha256));
+    }
+    final date2 = Date.parse(goodDcmDateList[0]);
+    final date3 = Date.parse(goodDcmDateList[1]);
+    log
+      ..debug('date2.value:${date2.toString()}, date2.sha256:${date2.sha256}')
+      ..debug('date3.value:${date3.toString()}, t3.sha256:${date3.sha256}');
+
+    expect(date2.sha256, isNot(date3.sha256));
   });
 
   test('==', () {
@@ -429,7 +455,7 @@ void main() {
     log.debug('hash1: $hash1, year: ${hash1.year}, y: ${hash1.y}');
   });
 
-  test('date hash',(){
+  test('date hash', () {
     final date = new Date(1980, 05, 01);
     log.debug('date: $date');
     final hash0 = date.hash;

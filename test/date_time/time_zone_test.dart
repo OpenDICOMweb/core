@@ -27,6 +27,24 @@ void main() {
     '+1430'
   ];
 
+  const inValidInternetTimeZoneStrings = const <String>[
+    '-12:30',
+    '-11:40',
+    '-10:30',
+    '-80:930',
+    '-09:45',
+    '-0A:45',
+    '+01:0F',
+    '+32:00',
+    '+03:10',
+    '+03:308',
+    '+0',
+    '+3:0',
+    '+50:0',
+    '+14:45',
+    '+14:30'
+  ];
+
   const List validTimeZones = const <List>[
     // [ index, hour, minute, microsecond, token ]
     const <Object>[-1, -12, 0, -43200000000, 'Y'],
@@ -298,7 +316,7 @@ void main() {
             system.throwOnError = false;
             if (isValidTimeZone(sign, h, m)) {
               final us0 = timeZoneToMicroseconds(sign, h, m);
-              final tzus =TimeZone.microsecondsToTimeZone(us0);
+              final tzus = TimeZone.microsecondsToTimeZone(us0);
               log.debug('us0: $us0, tzus: ${tzus.toString()}');
 
               expect(kValidInetTZStrings.contains(tzus.toString()), true);
@@ -309,37 +327,78 @@ void main() {
     });
 
     test('>', () {
-      for(var i=0; i< kValidInetTZStrings.length; i++) {
-        if(i + 1 < kValidInetTZStrings.length) {
+      for (var i = 0; i < kValidInetTZStrings.length; i++) {
+        if (i + 1 < kValidInetTZStrings.length) {
           final tz1 = TimeZone.parseInternet(kValidInetTZStrings[i]);
           final tz2 = TimeZone.parseInternet(kValidInetTZStrings[i + 1]);
 
-          expect(tz2 > tz1 , true);
+          expect(tz2 > tz1, true);
         }
       }
     });
 
     test('<', () {
-      for(var i=0; i< kValidInetTZStrings.length; i++) {
-        if(i + 1 < kValidInetTZStrings.length) {
+      for (var i = 0; i < kValidInetTZStrings.length; i++) {
+        if (i + 1 < kValidInetTZStrings.length) {
           final tz1 = TimeZone.parseInternet(kValidInetTZStrings[i]);
           final tz2 = TimeZone.parseInternet(kValidInetTZStrings[i + 1]);
 
-          expect(tz1 < tz2 , true);
+          expect(tz1 < tz2, true);
         }
       }
     });
 
     test('compareTo', () {
-      for(var i=0; i< kValidInetTZStrings.length; i++) {
-        if(i + 1 < kValidInetTZStrings.length) {
+      for (var i = 0; i < kValidInetTZStrings.length; i++) {
+        if (i + 1 < kValidInetTZStrings.length) {
           final tz1 = TimeZone.parseInternet(kValidInetTZStrings[i]);
           final tz2 = TimeZone.parseInternet(kValidInetTZStrings[i + 1]);
 
-          expect(tz1.compareTo(tz2) == -1, true);// tz1 < tz2
-          expect(tz2.compareTo(tz1) == 1, true);// tz2 > tz1
-          expect(tz1.compareTo(tz1) == 0, true);// tz1 == tz1
+          expect(tz1.compareTo(tz2) == -1, true); // tz1 < tz2
+          expect(tz2.compareTo(tz1) == 1, true); // tz2 > tz1
+          expect(tz1.compareTo(tz1) == 0, true); // tz1 == tz1
         }
+      }
+    });
+
+    test('parseDicom', () {
+      for (var i = 0; i < kValidDcmTZStrings.length; i++) {
+        final tz0 = TimeZone.parseDicom(kValidDcmTZStrings[i]);
+        expect(tz0, isNotNull);
+      }
+
+      for (var invalid in inValidTimeZoneStrings) {
+        system.throwOnError = false;
+        final tz1 = TimeZone.parseDicom(invalid);
+        expect(tz1, isNull);
+
+        system.throwOnError = true;
+        expect(() => TimeZone.parseDicom(invalid),
+            throwsA(equals(const isInstanceOf<FormatException>())));
+      }
+    });
+
+    test('isValidDcmString', () {
+      for (var s in kValidDcmTZStrings) {
+        final tz = TimeZone.isValidDcmString(s);
+        expect(tz, true);
+      }
+
+      for (var s in inValidTimeZoneStrings) {
+        final tz = TimeZone.isValidDcmString(s);
+        expect(tz, false);
+      }
+    });
+
+    test('isValidInternetString', () {
+      for (var s in kValidInetTZStrings) {
+        final tz = TimeZone.isValidInternetString(s);
+        expect(tz, true);
+      }
+
+      for (var s in inValidInternetTimeZoneStrings) {
+        final tz = TimeZone.isValidInternetString(s);
+        expect(tz, false);
       }
     });
   });

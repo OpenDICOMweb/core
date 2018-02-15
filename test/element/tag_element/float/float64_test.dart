@@ -113,6 +113,23 @@ void main() {
 
       final fd1 = new FDtag(PTag.kSelectorFDValue, float64LstCommon0);
       expect(fd1.update(float64LstCommon0).values, equals(float64LstCommon0));
+
+      const floatUpdateValues = const <double>[
+        546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
+      ];
+      for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
+        final fdValues = floatUpdateValues.take(i).toList();
+        final fd2 = new FDtag(
+            PTag.kSelectorFDValue, new Float64List.fromList(fdValues));
+        expect(
+            fd2.update(
+                new Float64List.fromList(floatUpdateValues.take(i).toList())),
+            equals(
+                new Float64List.fromList(floatUpdateValues.take(i).toList())));
+
+        expect(fd2.update(floatUpdateValues.take(i).toList()).values,
+            equals(floatUpdateValues.take(i).toList()));
+      }
     });
 
     test('FD noValues random', () {
@@ -398,6 +415,15 @@ void main() {
             FDtag.fromBase64(PTag.kOverallTemplateSpatialTolerance, base64);
         expect(fd1.hasValidValues, true);
       }
+    });
+
+    test('Create Elements from floating values(FD)', () {
+      const f64Values = const <double>[2047.99, 2437.437, 764.53];
+
+      final fd0 =
+          new FDtag(PTag.kSelectorFDValue, new Float64List.fromList(f64Values));
+      expect(fd0.values.first.toStringAsPrecision(1),
+          equals((2047.99).toStringAsPrecision(1)));
     });
   });
 
@@ -1056,6 +1082,27 @@ void main() {
 
       final od1 = new ODtag(PTag.kSelectorODValue, float64LstCommon0);
       expect(od1.update(float64LstCommon0).values, equals(float64LstCommon0));
+
+      const floatUpdateValues = const <double>[
+        546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
+      ];
+      for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
+        final odValues = floatUpdateValues.take(i).toList();
+        final od2 = new ODtag(
+            PTag.kSelectorODValue, new Float64List.fromList(odValues));
+        expect(
+            od2.update(
+                new Float64List.fromList(floatUpdateValues.take(i).toList())),
+            equals(
+                new Float64List.fromList(floatUpdateValues.take(i).toList())));
+
+        expect(od2.update(floatUpdateValues.take(1).toList()).values,
+            equals(floatUpdateValues.take(1).toList()));
+      }
+      final od3 = new ODtag(PTag.lookupByCode(0x00720073),
+          new Float64List.fromList(floatUpdateValues));
+      expect(od3.update(new Float64List.fromList(floatUpdateValues)),
+          equals(new Float64List.fromList(floatUpdateValues)));
     });
 
     test('OD noValues random', () {
@@ -1220,7 +1267,7 @@ void main() {
       system.throwOnError = false;
       final base640 = Float64Base.toBase64(<double>[78678.11, 12345.678]);
       log.debug('b64: $base640');
-      final od0 = FDtag.fromBase64(PTag.kSelectorFDValue, base640);
+      final od0 = ODtag.fromBase64(PTag.kSelectorODValue, base640);
       log.debug('od0: $od0');
       expect(od0.hasValidValues, true);
 
@@ -1228,9 +1275,18 @@ void main() {
         final floatList0 = rng.float64List(1, 1);
         final float64List0 = new Float64List.fromList(floatList0);
         final base641 = Float64Base.toBase64(float64List0);
-        final od1 = FDtag.fromBase64(PTag.kSelectorFDValue, base641);
+        final od1 = ODtag.fromBase64(PTag.kSelectorODValue, base641);
         expect(od1.hasValidValues, true);
       }
+    });
+
+    test('Create Elements from floating values(OD)', () {
+      const f64Values = const <double>[2047.99, 2437.437, 764.53];
+
+      final od0 =
+          new ODtag(PTag.kSelectorODValue, new Float64List.fromList(f64Values));
+      expect(od0.values.first.toStringAsPrecision(1),
+          equals((2047.99).toStringAsPrecision(1)));
     });
   });
 

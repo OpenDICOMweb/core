@@ -12236,7 +12236,7 @@ class PTag extends Tag {
           kPNIndex, VM.k1_n, false);
   static const PTag kSelectorTMValue
       //(0072,006B)
-      = const PTag._('SelectorTMValue', 0x00720069, 'Selector TM Value',
+      = const PTag._('SelectorTMValue', 0x0072006B, 'Selector TM Value',
           kTMIndex, VM.k1_n, false);
   static const PTag kSelectorSHValue
       //(0072,006C)

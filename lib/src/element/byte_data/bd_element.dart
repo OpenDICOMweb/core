@@ -72,6 +72,7 @@ abstract class Common {
   ByteData get bd;
   int get vfOffset;
   int get vfLengthField;
+  int get vrIndex;
 
   /// Returns the Tag Code from [ByteData].
   int get code {
@@ -81,7 +82,7 @@ abstract class Common {
     return v;
   }
 
-  Tag get tag => Tag.lookupByCode(code);
+  Tag get tag => Tag.lookupByCode(code, vrIndex);
 
   /// Returns the length in bytes of _this_ Element.
   int get eLength => bd.lengthInBytes;

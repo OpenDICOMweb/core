@@ -111,6 +111,30 @@ void main() {
 
       final fl1 = new FLtag(PTag.kTableOfParameterValues, listFloat32Common0);
       expect(fl1.update(listFloat32Common0).values, equals(listFloat32Common0));
+
+      const floatUpdateValues = const <double>[
+        546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
+      ];
+
+      for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
+        final fl2 = new FLtag(PTag.kSelectorFLValue,
+            new Float32List.fromList(floatUpdateValues.take(i).toList()));
+
+        expect(
+            fl2.update(
+                new Float32List.fromList(floatUpdateValues.take(i).toList())),
+            equals(
+                new Float32List.fromList(floatUpdateValues.take(i).toList())));
+
+        expect(fl2.update(floatUpdateValues.take(i).toList()).values,
+            equals(floatUpdateValues.take(i).toList()));
+
+      }
+      final fl2 = new FLtag(PTag.kSelectorFLValue,
+          new Float32List.fromList(floatUpdateValues.take(1).toList()));
+      expect([fl2.values.elementAt(0)],
+          equals(new Float32List.fromList(floatUpdateValues.take(1).toList())));
+      log.debug(fl2.view());
     });
 
     test('FL noValues random', () {
@@ -357,6 +381,15 @@ void main() {
         final fl1 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, base64);
         expect(fl1.hasValidValues, true);
       }
+    });
+
+    test('Create Elements from floating values(FL)', () {
+      const f32Values = const <double>[2047.99, 2437.437, 764.53];
+
+      final fl0 = new FLtag(PTag.kRecommendedDisplayFrameRateInFloat,
+          new Float32List.fromList(f32Values.take(1).toList()));
+      expect(fl0.values.first.toStringAsPrecision(1),
+          equals((2047.99).toStringAsPrecision(1)));
     });
   });
 
@@ -1015,6 +1048,27 @@ void main() {
 
       final of1 = new OFtag(PTag.kUValueData, listFloat32Common0);
       expect(of1.update(listFloat32Common0).values, equals(listFloat32Common0));
+
+      const floatUpdateValues = const <double>[
+        546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
+      ];
+      for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
+        final of2 = new OFtag(PTag.kSelectorOFValue,
+            new Float32List.fromList(floatUpdateValues.take(i).toList()));
+
+        expect(
+            of2.update(
+                new Float32List.fromList(floatUpdateValues.take(i).toList())),
+            equals(
+                new Float32List.fromList(floatUpdateValues.take(i).toList())));
+
+        expect(of2.update(floatUpdateValues.take(i).toList()).values,
+            equals(floatUpdateValues.take(i).toList()));
+      }
+      final of3 = new OFtag(PTag.lookupByCode(kUValueData),
+          new Float32List.fromList(floatUpdateValues));
+      expect(of3.update(new Float32List.fromList(floatUpdateValues)),
+          equals(new Float32List.fromList(floatUpdateValues)));
     });
 
     test('OF noValues random', () {
