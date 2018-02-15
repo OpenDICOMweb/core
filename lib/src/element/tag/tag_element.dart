@@ -187,7 +187,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     return _bdeMakers[vrIndex](bd);
   }
 
-  static final List<MakeFromPixelDataBDE> _bdePixelMakers =
+  static const List<MakeFromPixelDataBDE> _bdePixelMakers =
   const <MakeFromPixelDataBDE>[
     _vrIndexPixelDataError,
     OBtagPixelData.fromBDE,
@@ -198,7 +198,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   static Null _vrIndexPixelDataError(Element bd, [TransferSyntax ts]) =>
       invalidElementIndex(0);
 
-  static final List<MakeFromBDE> _bdeMakers = const <MakeFromBDE>[
+  static const List<MakeFromBDE> _bdeMakers = const <MakeFromBDE>[
     _vrIndexError,
     // Maybe Undefined Lengths
     OBtag.fromBDE, OWtag.fromBDE, UNtag.fromBDE, // No reformat

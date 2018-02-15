@@ -34,9 +34,11 @@ String _dateToString1(int y, int m, int d, {bool asDicom = false}) {
 
 String _dateToString2(int y, int m, int d, {bool asDicom = true}) {
   final sb = new StringBuffer(digits4(y));
-  if (!asDicom) sb.write('-');
+  if (!asDicom)
+    sb.write('-');
   sb.write(digits2(m));
-  if (!asDicom) sb..write('-');
+  if (!asDicom)
+    sb..write('-');
   sb.write(digits2(d));
   return sb.toString();
 }

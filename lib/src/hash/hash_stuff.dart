@@ -9,30 +9,30 @@
 /// Hash functions for creating hashCodes.
 
 ///  Thomas Wang
-int hash32(int a) {
-  var v = a;
-  v = (a + 0x7ed55d16) + (a << 12);
-  v = (a ^ 0xc761c23c) ^ (a >> 19);
-  v = (a + 0x165667b1) + (a << 5);
-  v = (a + 0xd3a2646c) ^ (a << 9);
-  v = (a + 0xfd7046c5) + (a << 3);
-  v = (a ^ 0xb55a4f09) ^ (a >> 16);
+int hash32(int i) {
+  var v = i;
+  v = (i + 0x7ed55d16) + (i << 12);
+  v = (i ^ 0xc761c23c) ^ (i >> 19);
+  v = (i + 0x165667b1) + (i << 5);
+  v = (i + 0xd3a2646c) ^ (i << 9);
+  v = (i + 0xfd7046c5) + (i << 3);
+  v = (i ^ 0xb55a4f09) ^ (i >> 16);
   return v;
 }
 
-int hash64(int key) {
-  var k = key;
-  k = (~key) + (key << 21);
-  k = (key << 21) - key - 1;
-  k = key ^ (key >> 24);
-  k = (key + (key << 3)) + (key << 8);
-  key * 265;
-  k = key ^ (key >> 14);
-  k = (key + (key << 2)) + (key << 4);
-  key * 21;
-  k = key ^ (key >> 28);
-  k = key + (key << 31);
-  return k;
+int hash64(int i) {
+  var v = i;
+  v = (~i) + (i << 21);
+  v = (i << 21) - i - 1;
+  v = i ^ (i >> 24);
+  v = (i + (i << 3)) + (i << 8);
+  v = i * 265;
+  v = i ^ (i >> 14);
+  v = (i + (i << 2)) + (i << 4);
+  v = i * 21;
+  v = i ^ (i >> 28);
+  v = i + (i << 31);
+  return v;
 }
 
 //TODO: improve usage documentation

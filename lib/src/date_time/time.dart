@@ -13,7 +13,7 @@ import 'package:core/src/parser/parse_errors.dart';
 import 'package:core/src/parser/parser.dart';
 import 'package:core/src/string/number.dart';
 
-typedef Time OnTimeError(int h, int m, int s, int ms, int us);
+typedef Time OnTimeError(int h, int m, int s, int ms, int us, Exception error);
 typedef Time OnTimeParseError(String s);
 typedef String OnTimeHashStringError(String s);
 
@@ -39,7 +39,9 @@ class Time implements Comparable<Time> {
       final uSecs = timeToMicroseconds(h, m, s, ms, us);
       return (uSecs == null) ? null : new Time._(uSecs);
     } on FormatException catch (e) {
-      return invalidTimeError(h, m, s, ms, us, e);
+      return (onError != null)
+          ? onError(h, m, s, ms, us, e)
+          : invalidTimeError(h, m, s, ms, us, issues, e);
     }
   }
   //Internal constructor - hidden when exported:
@@ -71,7 +73,6 @@ class Time implements Comparable<Time> {
   /// Returns a new [Time] containing the [hash] of _this_.
   Time get hash => new Time._(hashTimeMicroseconds(uSeconds));
 
-  //TODO: unit test
   /// Returns a new [Time] containing the SHA-256 hash of [uSeconds].
   Time get sha256 => new Time._(sha256Microseconds(uSeconds));
 
@@ -95,8 +96,7 @@ class Time implements Comparable<Time> {
 
   /// Returns the [minute] as an integer.
   int get minute =>
-      (uSeconds - (inHours * kMicrosecondsPerHour)) ~/
-      kMicrosecondsPerMinute;
+      (uSeconds - (inHours * kMicrosecondsPerHour)) ~/ kMicrosecondsPerMinute;
 
   /// Returns the [second] as an integer.
   int get second =>
@@ -139,7 +139,7 @@ class Time implements Comparable<Time> {
         dt.hour, dt.minute, dt.second, dt.millisecond, dt.millisecond);
   }
 
-  //TODO: test that now and nowNew return the same values
+  //TODO: test that now and nowNew return the same values, remove one
   Time get nowNew {
     final uSecs = (new DateTime.now()).microsecondsSinceEpoch;
     return new Time.fromMicroseconds(uSecs);
@@ -166,7 +166,6 @@ class Time implements Comparable<Time> {
       isValidDcmTimeString(s, start: start, end: end, issues: issues);
 
   // Enhancement: all parse functions should take an onError argument.
-  // Issue: are start, end, min, and max needed.
   /// Returns a [Time] corresponding to [s], if [s] is valid;
   /// otherwise, returns _null_.
   static Time parse(String s,
@@ -177,8 +176,8 @@ class Time implements Comparable<Time> {
     return new Time._(us);
   }
 
-  /// Returns a [ParseIssues] object if there are errors or warnings related to [s];
-  /// otherwise, returns _null_.
+  /// Returns a [ParseIssues] object if there are errors
+  /// or warnings related to [s]; otherwise, returns _null_.
   static ParseIssues issues(
     String s, {
     int start = 0,

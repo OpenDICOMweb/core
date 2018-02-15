@@ -17,7 +17,7 @@ class IndentedStringBuffer implements StringBuffer {
     if (indent == null) throw new ArgumentError('indent: $indent');
     //_indentLength = indent.length;
     _level = 0;
-    _sb = new StringBuffer();
+    _sb = new StringBuffer('$content');
   }
 
   @override

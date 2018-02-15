@@ -39,10 +39,7 @@ class TagRootDataset extends RootDataset with TagDataset {
   /// Creates a [TagRootDataset] from another [TagRootDataset].
   TagRootDataset.from(RootDataset rds,
       {ByteData bd,
-      int fmiEnd,
-      bool recursive = false,
-      bool async = true,
-      bool fast = true})
+      int fmiEnd})
       : dsBytes = new RDSBytes(bd, fmiEnd),
         fmi = new MapAsList.from(rds.fmi),
         elements = new MapAsList.from(rds.elements),

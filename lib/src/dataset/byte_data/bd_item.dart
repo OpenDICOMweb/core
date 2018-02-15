@@ -31,7 +31,7 @@ class BDItem extends Item with DatasetBD {
 
   /// Creates a new empty [BDItem] from [ByteData].
   BDItem(this.parent, {this.sequence, ElementList elements, ByteData bd})
-      : elements = new MapAsList(),
+      : elements = elements ?? new MapAsList(),
         dsBytes = new IDSBytes(bd);
 
   /// Create a new [BDItem] from an existing [BDItem].

@@ -11,7 +11,7 @@ import 'package:core/src/issues.dart';
 import 'package:core/src/parser/parser.dart';
 import 'package:core/src/string/number.dart';
 
-typedef TimeZone OnTimeZoneError(int sign, int h);
+typedef TimeZone OnTimeZoneError(int sign, int h, int m);
 typedef TimeZone OnTimeZoneParseError(String s);
 typedef String OnTimeZoneHashStringError(String s);
 
@@ -29,14 +29,18 @@ class TimeZone implements Comparable<TimeZone> {
   /// positive numbers indicate after UTC>
   final int microseconds;
 
-  /// A single uppercase character that is an abbreviation ([token]) for the time zone.
+  /// A single uppercase character that is an abbreviation ([token])
+  /// for the time zone.
   final String token;
 
   /// Create a new [TimeZone].
   factory TimeZone(int sign, int h, int m,
       {ParseIssues issues, OnTimeZoneError onError}) {
     final us = timeZoneToMicroseconds(sign, h, m);
-    return (us != null) ? _getTimeZone(us) : invalidTimeZoneError(sign, h, m);
+    if (us != null) return _getTimeZone(us);
+    return (onError != null)
+        ? onError(sign, h, m)
+        : invalidTimeZoneError(sign, h, m, issues);
   }
 
   /// Create a new [TimeZone] from the Time Zone minutes.
@@ -47,7 +51,8 @@ class TimeZone implements Comparable<TimeZone> {
         : invalidTimeZoneMicrosecondsError(microseconds);
   }
 
-  const TimeZone._(this.index, this.hour, this.minute, this.microseconds, this.token);
+  const TimeZone._(
+      this.index, this.hour, this.minute, this.microseconds, this.token);
 
   @override
   bool operator ==(Object other) =>
@@ -57,7 +62,8 @@ class TimeZone implements Comparable<TimeZone> {
 
   bool operator <(TimeZone other) => !(microseconds > other.microseconds);
 
-  /// The sign of the Time Zone, where -1 is before UTC, 0 is UTC, and +1 is after UTC.
+  /// The sign of the Time Zone, where -1 is before UTC, 0 is UTC,
+  /// and +1 is after UTC.
   int get sign => microseconds.sign;
 
   /// Returns the [hour] as a 2 digit [String].
@@ -110,14 +116,18 @@ class TimeZone implements Comparable<TimeZone> {
       ParseIssues issues,
       OnParseError onError}) {
     final us = parseTimeZone(s,
-        start: start, end: end, asDicom: asDicom, issues: issues, onError: onError);
+        start: start,
+        end: end,
+        asDicom: asDicom,
+        issues: issues,
+        onError: onError);
     return _getTimeZone(us);
   }
 
   static TimeZone parseDicom(String s,
       {int start = 0, int end, ParseIssues issues, OnParseError onError}) {
-    final us =
-        parseDcmTimeZone(s, start: start, end: end, issues: issues, onError: onError);
+    final us = parseDcmTimeZone(s,
+        start: start, end: end, issues: issues, onError: onError);
     return _getTimeZone(us);
   }
 
@@ -130,16 +140,19 @@ class TimeZone implements Comparable<TimeZone> {
 
   static TimeZone _getTimeZone(int us) {
     final index = kValidTZMicroseconds.indexOf(us);
-//    print('index: $index');
-    return (index == -1) ? invalidTimeZoneMicrosecondsError(us) : kMembers[index];
+    return (index == -1)
+        ? invalidTimeZoneMicrosecondsError(us)
+        : kMembers[index];
   }
 
   /// Returns _true_ if [s] is a valid time tone [String].
-  static bool isValidString(String s, {int start = 0, int end, bool asDicom = true}) =>
+  static bool isValidString(String s,
+          {int start = 0, int end, bool asDicom = true}) =>
       isValidTimeZoneString(s, start: start, end: end);
 
   /// Returns _true_ if [s] is a valid time zone in DICOM format.
-  static bool isValidDcmString(String s, {int start = 0, int end, bool asDicom = true}) =>
+  static bool isValidDcmString(String s,
+          {int start = 0, int end, bool asDicom = true}) =>
       isValidDcmTZString(s.substring(start, end));
 
   /// Returns _true_ if [s] is a valid time zone in Internet format.
@@ -150,19 +163,10 @@ class TimeZone implements Comparable<TimeZone> {
   /// Returns _true_ if [minutes] is a valid Time Zone.
   static bool isValidMinutes(int minutes) => isValidTimeZoneMinutes(minutes);
 
-/*
-  //Enhancement: Add onError argument.
-  //Issue: are start and end useful
-  /// Returns a [TimeZone] corresponding to [s], if valid; otherwise [null].
-  static TimeZone parse(String s, {int start = 0, int end, ParseIssues issues}) {
-    int tzm = parseDcmTimeZone(s, start: start, end: start + 5);
-    return (tzm == null) ? null : new TimeZone._(tzm);
-  }
-*/
-
-  /// Returns a [ParseIssues] object if there are errors or warnings related to [s];
-  /// otherwise, returns _null_.
-  static ParseIssues issues(String s, {int start = 0, int end, ParseIssues issues}) {
+  /// Returns a [ParseIssues] object if there are errors
+  /// or warnings related to [s]; otherwise, returns _null_.
+  static ParseIssues issues(String s,
+      {int start = 0, int end, ParseIssues issues}) {
     issues ??= new ParseIssues('TimeZone', s);
     end ??= s.length;
     parseDcmTimeZone(s, start: start, end: end, issues: issues);
@@ -175,8 +179,8 @@ class TimeZone implements Comparable<TimeZone> {
     return -1;
   }
 
-  /// Returns a new time zone [String] that is the hash of the [TimeZone] argument.
-  //TODO: add Issues
+  /// Returns a new time zone [String] that is the hash
+  /// of the [TimeZone] argument.
   static String hashString(String s, {bool asDicom = true}) =>
       hashTZString(s, asDicom: asDicom);
 

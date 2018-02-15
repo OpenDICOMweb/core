@@ -34,7 +34,7 @@ class BDRootDataset extends RootDataset with DatasetBD {
 
   //Flush at V0.9.0 if not used.
   /// Creates a [BDRootDataset] from another [BDRootDataset].
-  BDRootDataset.from(BDRootDataset rds, {bool async = true, bool fast = true})
+  BDRootDataset.from(BDRootDataset rds)
       : bd = rds.bd,
         dsBytes = rds.dsBytes,
         fmi = rds.fmi ?? new MapAsList(),

@@ -44,7 +44,9 @@ class Date implements Comparable<Date> {
       final microseconds = dateToEpochMicroseconds(y, m, d);
       return (microseconds == null) ? null : new Date._(microseconds);
     } on FormatException catch (e) {
-      return invalidDateError(y, m, d, e);
+      return (onError != null)
+        ? onError(y, m, d)
+        : invalidDateError(y, m, d, issues, e);
     }
   }
 

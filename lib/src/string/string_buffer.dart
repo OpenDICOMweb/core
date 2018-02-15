@@ -14,7 +14,8 @@ List<int> _copyBuffer(List<int> oldBuf, List<int> newBuf) {
   return newBuf;
 }
 
-int _getNewBufferLength(String s) => (s == null || s.length < 32) ? 64 : s.length * 2;
+int _getNewBufferLength(String s) =>
+    (s == null || s.length < 32) ? 64 : s.length * 2;
 
 abstract class StringBufferBase {
   // **** Interface ****
@@ -128,7 +129,7 @@ class Utf8Buffer extends StringBufferBase implements TypedData {
   @override
   Uint16List _sBuffer;
 
-  Utf8Buffer([int length = 16]) : _sBuffer = new Uint16List(16);
+  Utf8Buffer([int length = 16]) : _sBuffer = new Uint16List(length);
 
   @override
   ByteBuffer get buffer => _sBuffer.buffer;
@@ -143,7 +144,8 @@ class Utf8Buffer extends StringBufferBase implements TypedData {
   void writeCharCode(int code) => _sBuffer[index] = _checkValue(code);
 
   @override
-  int _checkValue(int c) => (c < 0 || c > kUint16Max) ? invalidCharacterError(c) : c;
+  int _checkValue(int c) =>
+      (c < 0 || c > kUint16Max) ? invalidCharacterError(c) : c;
 
   @override
   int growBuffer() {

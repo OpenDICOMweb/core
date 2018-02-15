@@ -77,7 +77,8 @@ Message as String: '$outString'
          NIST Hex: '$nistResult': ${hexLengthMsg(nistResult)}
 ''';
   print(out);
-  if (ds != nistResult) throw new BadDigestError('Bad digest: $d');
+  if (ds != nistResult)
+    throw new BadDigestError('Bad digest: $d');
 }
 
 class BadDigestError extends Error {

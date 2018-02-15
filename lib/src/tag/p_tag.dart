@@ -17323,8 +17323,10 @@ class PTagUnknown extends PTag {
 
 /// A [Tag] with a known key, but invalid [vrIndex].
 class PTagInvalidVR extends Tag {
-  PTag tag;
-  PTagInvalidVR(this.tag, int badVRIndex) : super();
+  final PTag tag;
+  final int badVRIndex;
+
+  PTagInvalidVR(this.tag, this.badVRIndex) : super();
 
   @override
   int get code => tag.code;

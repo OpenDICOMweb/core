@@ -13,7 +13,7 @@ const int kUidMinLength = 6;
 const int kUidMaxLength = 64;
 const int kUidMaxRootLength = 24;
 
-final _uidRegExpString = r'[012]((\.0)|(\.[1-9]+\d*))+';
+const _uidRegExpString = r'[012]((\.0)|(\.[1-9]+\d*))+';
 final RegExp uidRegex = new RegExp(_uidRegExpString);
 
 bool _isValidLength(int length) =>

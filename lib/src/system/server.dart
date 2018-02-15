@@ -27,6 +27,9 @@ import 'system.dart';
 class Server extends System {
   Server(
       {String name,
+      int minYear = kDefaultMinYear,
+      int maxYear = kDefaultMaxYear,
+      Hash hasher,
       Version version,
       int buildNumber = -1,
       String mediaStorageSopClassUid = 'TODO',
@@ -34,9 +37,6 @@ class Server extends System {
       String implementationClassUid = '1.2.840.11111111',
       String implementationVersionName = 'Unknown',
       String privateInformationCreatorUid = 'TODO',
-      int minYear = kDefaultMinYear,
-      int maxYear = kDefaultMaxYear,
-      Hash hasher,
       String sdkSourceAETitle = 'Unknown source AETitle',
       String sdkDestinationAETitle = 'Unknown source AETitle',
       Level level = Level.config,
@@ -46,16 +46,19 @@ class Server extends System {
       bool showSdkBanner = false})
       : super(
             name: name,
+      minYear: minYear,
+      maxYear: maxYear,
+      hasher: hasher,
             version: (version == null) ? new Version(0, 6, 1) : version,
             buildNumber: buildNumber,
-            minYear: minYear,
-            maxYear: maxYear,
+
             mediaStorageSopClassUid: mediaStorageSopClassUid,
             mediaStorageSopInstanceUid: mediaStorageSopInstanceUid,
             implementationClassUid: implementationClassUid,
             implementationVersionName: implementationVersionName,
             privateInformationCreatorUid: privateInformationCreatorUid,
-            hasher: hasher,
+            sdkSourceAETitle: sdkSourceAETitle,
+            sdkDestinationAETitle: sdkDestinationAETitle,
             level: level,
             throwOnError: throwOnError,
             isUuidUppercase: uuidsUseUppercase,
@@ -68,7 +71,8 @@ class Server extends System {
   @override
   String get script {
     final script = Platform.script;
-    final s = (script.scheme == 'data') ? '"Unknown script"\n\n' : script.toString();
+    final s =
+        (script.scheme == 'data') ? '"Unknown script"\n\n' : script.toString();
     return s;
   }
 

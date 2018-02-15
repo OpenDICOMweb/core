@@ -4,69 +4,68 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
+import 'package:core/src/issues.dart';
 import 'package:core/src/system/system.dart';
 
 typedef int OnAgeError(String s);
 
 class InvalidAgeError extends Error {
-	final int days;
+  final int days;
 
-	InvalidAgeError(this.days);
+  InvalidAgeError(this.days);
 
-	@override
-	String toString() => _msg(days);
+  @override
+  String toString() => _msg(days);
 
-	static String _msg(int days) => 'InvalidAgeError: $days is an invalid'
+  static String _msg(int days) => 'InvalidAgeError: $days is an invalid'
       ' number of days for Age';
 }
 
 Null invalidAgeError(int age) {
-	final msg = InvalidAgeError._msg(age);
-	log.error(msg);
-	if (throwOnError)
-		throw new InvalidAgeError(age);
-	return null;
+  final msg = InvalidAgeError._msg(age);
+  log.error(msg);
+  if (throwOnError) throw new InvalidAgeError(age);
+  return null;
 }
 
 /// An invalid [DateTime] [Error].
 class InvalidDateError extends Error {
   int y, m, d;
+  Exception error;
 
-  InvalidDateError(this.y, [this.m = 1, this.d = 1]);
+  InvalidDateError(this.y, this.m, this.d, this.error);
 
   @override
-  String toString() => _msg(y, m, d);
+  String toString() => _msg(y, m, d, error);
 
-  static String _msg(int y, int m, int d) =>
-      'InvalidDateError: y = $y, m = $m, d = $d';
+  static String _msg(int y, int m, int d, Exception e) =>
+      'InvalidDateError: $e (y = $y, m = $m, d = $d)';
 }
 
-/// TODO
-Null invalidDateError(int y, int m, int d, [Exception e]) {
-  log.error(InvalidDateError._msg(y, m, d));
-  if (throwOnError)
-  	throw new InvalidDateError(y, m, d);
+Null invalidDateError(int y, int m, int d, [Issues issues, Exception e]) {
+  final msg = InvalidDateError._msg(y, m, d, e);
+  log.error(msg);
+  if (issues != null) issues.add(msg);
+  if (throwOnError) throw new InvalidDateError(y, m, d, e);
   return null;
 }
 
 /// An invalid [DateTime] [Error].
 class InvalidWeekdayError extends Error {
-	int weekday;
+  int weekday;
 
-	InvalidWeekdayError(this.weekday);
+  InvalidWeekdayError(this.weekday);
 
-	@override
-	String toString() => _msg(weekday);
+  @override
+  String toString() => _msg(weekday);
 
-	static String _msg(int weekday) => 'InvalidWeekdayError: $weekday';
+  static String _msg(int weekday) => 'InvalidWeekdayError: $weekday';
 }
 
-/// TODO
 Null invalidWeekdayError(int weekday) {
-	log.error(InvalidWeekdayError._msg(weekday));
-	if (throwOnError)
-		throw new InvalidDateError(weekday);
-	return null;
+  log.error(InvalidWeekdayError._msg(weekday));
+  if (throwOnError) throw new InvalidWeekdayError(weekday);
+  return null;
 }
 
 /// An invalid [DateTime] [Error].
@@ -81,14 +80,11 @@ class InvalidEpochDayError extends Error {
   static String _msg(int epochDay) => 'InvalidEpochDayError: $epochDay';
 }
 
-/// TODO
 Null invalidEpochDayError(int microseconds) {
   log.error(InvalidEpochDayError._msg(microseconds));
-  if (throwOnError)
-  	throw new InvalidEpochDayError(microseconds);
+  if (throwOnError) throw new InvalidEpochDayError(microseconds);
   return null;
 }
-
 
 /// An invalid [DateTime] [Error].
 class InvalidTimeError extends Error {
@@ -102,15 +98,21 @@ class InvalidTimeError extends Error {
   String toString() => _msg(h, m, s, ms, us, error);
 
   static String _msg(int h,
-      [int m = 0, int s = 0, int ms = 0, int us = 0, Exception error]) =>
+          [int m = 0, int s = 0, int ms = 0, int us = 0, Exception error]) =>
       'InvalidTimeError: h = $h, m = $m, s = $s, ms = $ms, us = $us\n  $error';
 }
 
 Null invalidTimeError(int h,
-    [int m = 0, int s = 0, int ms = 0, int us = 0, Exception msg]) {
-  log.error(InvalidTimeError._msg(h, m, s, ms, us, msg));
-  if (throwOnError)
-  	throw new InvalidTimeError(h, m, s, ms, us, msg);
+    [int m = 0,
+    int s = 0,
+    int ms = 0,
+    int us = 0,
+    Issues issues,
+    Exception error]) {
+  final msg = InvalidTimeError._msg(h, m, s, ms, us, error);
+  log.error(msg);
+  if (issues != null) issues.add(msg);
+  if (throwOnError) throw new InvalidTimeError(h, m, s, ms, us, error);
   return null;
 }
 
@@ -128,8 +130,6 @@ class InvalidTimeMicrosecondsError extends Error {
 
 Null invalidTimeMicrosecondsError(int us) {
   log.error(InvalidTimeMicrosecondsError._msg(us));
-  if (throwOnError)
-  	throw new InvalidTimeMicrosecondsError(us);
+  if (throwOnError) throw new InvalidTimeMicrosecondsError(us);
   return null;
 }
-

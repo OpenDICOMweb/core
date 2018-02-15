@@ -59,6 +59,8 @@ abstract class System {
   final String implementationClassUid;
   final String implementationVersionName;
   final String privateInformationCreatorUid;
+  final String sdkSourceAETitle;
+  final String sdkDestinationAETitle;
 
   final int minYear;
   final int maxYear;
@@ -99,6 +101,9 @@ abstract class System {
 
   System(
       {this.name = 'Unknown',
+      this.minYear = kDefaultMinYear,
+      this.maxYear = kDefaultMaxYear,
+      this.hasher,
       Version version,
       this.buildNumber = -1,
       this.mediaStorageSopClassUid,
@@ -106,9 +111,8 @@ abstract class System {
       this.implementationClassUid,
       this.implementationVersionName,
       this.privateInformationCreatorUid,
-      this.minYear = kDefaultMinYear,
-      this.maxYear = kDefaultMaxYear,
-      this.hasher,
+      this.sdkSourceAETitle,
+      this.sdkDestinationAETitle,
       Level level = Level.config,
       this.throwOnError = false,
       this.isUuidUppercase = false,

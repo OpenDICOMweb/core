@@ -45,7 +45,7 @@ class SStag extends SS with TagElement<int> {
       ? null
       : new SStag._(tag, new IntBulkdata(tag.code, url));
 
-  factory SStag._fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) =>
+  factory SStag._fromBytes(Tag tag, Uint8List bytes) =>
       (SS.isNotValidTag(tag)) ? null : new SStag._(tag, _i16FromBytes(bytes));
 
   SStag._(this.tag, this.values);
@@ -85,7 +85,7 @@ class SLtag extends SL with TagElement<int> {
       ? null
       : new SLtag._(tag, new IntBulkdata(tag.code, url));
 
-  factory SLtag._fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) =>
+  factory SLtag._fromBytes(Tag tag, Uint8List bytes) =>
       (SL.isNotValidTag(tag)) ? null : new SLtag._(tag, _i32FromBytes(bytes));
 
   SLtag._(this.tag, this.values);
@@ -211,7 +211,7 @@ class UStag extends US with TagElement<int> {
       ? null
       : new UStag._(tag, new IntBulkdata(tag.code, url));
 
-  factory UStag._fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) =>
+  factory UStag._fromBytes(Tag tag, Uint8List bytes) =>
       (US.isNotValidTag(tag)) ? null : new UStag._(tag, _u16FromBytes(bytes));
 
   UStag._(this.tag, this.values);

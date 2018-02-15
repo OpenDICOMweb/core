@@ -41,28 +41,29 @@ class HtmlFileHandler {
 }
 
 class HtmlRemoteFileHandler {
-	static const _storeName = 'logger.store';
-	final String name;
-	final LogMode mode;
-	bool _doPrint;
-	Storage _store;
+  static const _storeName = 'logger.store';
+  final String name;
+  final LogMode mode;
+  bool _doPrint;
+  Storage _store;
 
-	HtmlRemoteFileHandler(this.name, this.mode, {bool doPrint, Transformer transform})
-			: _doPrint = doPrint {
-		_store = window.localStorage;
-	}
+  HtmlRemoteFileHandler(this.name, this.mode,
+      {bool doPrint, Transformer transform})
+      : _doPrint = doPrint {
+    _store = window.localStorage;
+  }
 
-	String call(LogRecord record) {
-		final entry = '${record.info}\n';
-		final _entries = _store[_storeName];
-		_store[_storeName] = '$_entries$entry';
-		if (_doPrint) print(entry);
-		return entry;
-	}
+  String call(LogRecord record) {
+    final entry = '${record.info}\n';
+    final _entries = _store[_storeName];
+    _store[_storeName] = '$_entries$entry';
+    if (_doPrint) print(entry);
+    return entry;
+  }
 
-	bool get printOn => _doPrint = true;
-	bool get printOff => _doPrint = false;
+  bool get printOn => _doPrint = true;
+  bool get printOff => _doPrint = false;
 
-	@override
-	String toString() => 'HtmlHandler: $name. Type: $runtimeType, Mode: $mode';
+  @override
+  String toString() => 'HtmlHandler: $name. Type: $runtimeType, Mode: $mode';
 }

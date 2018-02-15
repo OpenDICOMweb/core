@@ -36,10 +36,10 @@ class Issues {
   String get info {
     if (issues.isEmpty) return (noisy) ? 'No Issues' : '';
     final sb = new StringBuffer('Issues: $_msg');
-    for (var i = 0; i < issues.length; i++) sb.write('  ${i + 1}: ${issues[i]}\n');
+    for (var i = 0; i < issues.length; i++)
+      sb.write('  ${i + 1}: ${issues[i]}\n');
     return sb.toString();
   }
-
 
   @override
   String toString() =>
@@ -48,14 +48,13 @@ class Issues {
 
 /// A class that contains a [List<String>] describing errors encountered
 /// when parsing a value.
-class ParseIssues  extends Issues {
+class ParseIssues extends Issues {
   final String type;
   final String value;
   final int start;
   final int end;
 
-  ParseIssues(this.type, this.value, [this.start = 0, this.end,
-    List<String>issues]) :super(type);
+  ParseIssues(this.type, this.value, [this.start = 0, this.end]) : super(type);
 
   /// Check the length of a value.
   void checkLength(int length, int min, int max, [String subtype]) {
@@ -66,13 +65,12 @@ class ParseIssues  extends Issues {
       issues.add('$name Invalid length($length) too long - maximum($max)');
   }
 
-
   @override
   String get info {
     if (issues.isEmpty) return (Issues.noisy) ? 'No Issues' : '';
     final sb = new StringBuffer('Issue: $type "$value" $_msg');
-    for(var i = 0; i < issues.length; i++)  sb.write('    ${i + 1}: ${issues[i]}\n');
+    for (var i = 0; i < issues.length; i++)
+      sb.write('    ${i + 1}: ${issues[i]}\n');
     return sb.toString();
   }
-
 }

@@ -20,28 +20,18 @@ import 'time_zone.dart';
 
 //TODO: should implement Comparable, add, subtract
 
+/// The [Type] of [DcmDateTime] error handlers.
 typedef DcmDateTime OnDcmDateTimeError(
     int y, int m, int d, int h, int mm, int s, int ms, int us);
+
+/// The [Type] of [DcmDateTime] parsing error handlers.
 typedef DcmDateTime OnDcmDateTimeParseError(String s);
+
+/// The [Type] of [DcmDateTime] hashing error handlers.
 typedef String OnDcmDateTimeHashStringError(String s);
 
 class DcmDateTime implements Comparable<DcmDateTime> {
-  static const int kMinLength = 4;
-  static const int kMaxLength = 26;
-
-  static final DateTime start = new DateTime.now();
-  static final String localTimeZoneName = start.timeZoneName;
-
-  /// The local time zone offset in minutes.
-  static final int localTZMinute = start.timeZoneOffset.inMinutes;
-
-  /// The local time zone offset in microseconds.
-  static final int localTZMicrosecond = start.timeZoneOffset.inMilliseconds;
-
-  /// The local [TimeZone].
-  static final TimeZone localTimeZone =
-      new TimeZone.fromMicroseconds(localTZMinute);
-
+  /// The [DcmDateTime] in microseconds.
   final int microseconds;
 
   /// Creates a new [DcmDateTime] in the local time zone based on the arguments.
@@ -59,16 +49,16 @@ class DcmDateTime implements Comparable<DcmDateTime> {
       OnDcmDateTimeError onError]) {
     try {
       final date = dateToEpochMicroseconds(y, m, d);
-      if (date == null) return null;
       final time = timeToMicroseconds(h, mm, s, ms, us);
-      if (time == null) return null;
       if (date == null || time == null)
         return (onError != null)
             ? onError(y, m, d, h, mm, s, ms, us)
-            : invalidDcmDateTimeError(y, m, d, h, mm, s, ms, us);
+            : invalidDcmDateTimeError(
+                y, m, d, h, mm, s, ms, us, tzh, tzm, issues);
       return new DcmDateTime._(date + time + localTZMicrosecond);
     } on FormatException catch (e) {
-      return invalidDcmDateTimeError(y, m, d, h, mm, s, ms, us, e);
+      return invalidDcmDateTimeError(
+          y, m, d, h, mm, s, ms, us, tzh, tzm, issues, e);
     }
   }
 
@@ -124,7 +114,6 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   /// Returns a new [DateTime] containing the [System.hash] of _this_.
   DcmDateTime get hash => new DcmDateTime._(hashTimeMicroseconds(microseconds));
 
-  //TODO: unit test
   /// Returns a new [DateTime] containing the SHA-256 hash of [microseconds].
   DcmDateTime get sha256 => new DcmDateTime._(sha256Microseconds(microseconds));
 
@@ -206,6 +195,32 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   /// Returns the current [DcmDateTime].
   static DcmDateTime get now => new DcmDateTime.fromDart(new DateTime.now());
 
+  /// The minimum length of a [DcmDateTime] [String].
+  static const int kMinLength = 4;
+
+  /// The maximum length of a [DcmDateTime] [String].
+  static const int kMaxLength = 26;
+
+  /// The [DateTime] that this package was started.
+  static final DateTime start = new DateTime.now();
+
+  /// The local [TimeZone].
+  static final TimeZone localTimeZone =
+      new TimeZone.fromMicroseconds(localTZMicrosecond);
+
+  /// The Time Zone where this package is running.
+  static final String localTimeZoneName = start.timeZoneName;
+
+  /// The local time zone offset in minutes.
+  static final int localTZHour = start.timeZoneOffset.inHours;
+
+  /// The local time zone offset in minutes.
+  static final int localTZMinute =
+      start.timeZoneOffset.inMinutes - (localTZHour * 60);
+
+  /// The local time zone offset in microseconds.
+  static final int localTZMicrosecond = start.timeZoneOffset.inMicroseconds;
+
   /// Returns _true_ if [s] is a valid DICOM [DcmDateTime] [String] (DT).
   static bool isValidString(String s,
           {int start = 0, int end, Issues issues}) =>
@@ -225,8 +240,8 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     return new DcmDateTime._(dt);
   }
 
-  /// Returns a [ParseIssues] object if there are errors or warnings related to [s];
-  /// otherwise, returns _null_.
+  /// Returns a [ParseIssues] object if there are errors
+  /// or warnings related to [s]; otherwise, returns _null_.
   static ParseIssues issues(String s, {int start = 0, int end}) {
     final issues = new ParseIssues('DcmDateTime', s);
     parseDcmDateTime(s, start: start, end: end, issues: issues);
@@ -239,7 +254,8 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     return -1;
   }
 
-  /// Returns a new DICOM date/time (DT) [String] that is the hash of the argument.
+  /// Returns a new DICOM date/time (DT) [String] that is
+  /// the hash of [dateTime].
   static String hashString(String dateTime) {
     final dt = DcmDateTime.parse(dateTime);
     if (dt == null) return null;
@@ -247,8 +263,9 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     return h.dcm;
   }
 
-  /// Returns a new [List<String>] of DICOM date/time (DT) values, where each element
-  /// in the [List] is the hash of the corresponding element in the argument.
+  /// Returns a new [List<String>] of DICOM date/time (DT) values,
+  /// where each element in the [List] is the hash of the corresponding
+  /// element in the argument.
   static List<String> hashStringList(List<String> dateTimes) {
     final dtList = new List<String>(dateTimes.length);
     // for (String s in dateTimes) dtList.add(hashString(s));
@@ -262,9 +279,10 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
 /// An invalid [DateTime] [Error].
 class InvalidDcmDateTimeError extends Error {
-  int y, m, d, h, mm, s, ms, us;
+  int y, m, d, h, mm, s, ms, us, tzh, tzm;
   Exception error;
 
+  /// Constructor
   InvalidDcmDateTimeError(this.y,
       [this.m = 1,
       this.d = 1,
@@ -273,10 +291,12 @@ class InvalidDcmDateTimeError extends Error {
       this.s = 0,
       this.ms = 0,
       this.us = 0,
+      this.tzh = 0,
+      this.tzm = 0,
       this.error]);
 
   @override
-  String toString() => _msg(y, m, d, h, mm, s, ms, us, error);
+  String toString() => _msg(y, m, d, h, mm, s, ms, us, tzh, tzm, error);
 
   static String _msg(int y,
           [int m = 1,
@@ -286,13 +306,17 @@ class InvalidDcmDateTimeError extends Error {
           int s = 0,
           int ms = 0,
           int us = 0,
-          Exception error]) =>
-      'invalidDcmDateTimeError: y: $y, m: $m, d: $d, '
-      'h: $h, m: $m, s: $s, ms: $ms, us: $us'
-      '\n  $error';
+          int tzh = 0,
+          int tzm = 0,
+          Exception error]) => '''
+InvalidDcmDateTimeError: $error
+    y: $y, m: $m, d: $d, 
+    h: $h, m: $m, s: $s, ms: $ms, us: $us
+    tzh: $tzh, tzm: $tzm                        
+'''  ;
 }
 
-/// TODO
+/// The error handler for invalid [DcmDateTime]s.
 Null invalidDcmDateTimeError(int y,
     [int m,
     int d,
@@ -301,9 +325,14 @@ Null invalidDcmDateTimeError(int y,
     int s = 0,
     int ms = 0,
     int us = 0,
+    int tzh = 0,
+    int tzm = 0,
+    Issues issues,
     Exception error]) {
-  log.error(InvalidDcmDateTimeError._msg(y, m, d, h, mm, s, ms, us, error));
+  final msg = InvalidDcmDateTimeError._msg(y, m, d, h, mm, s, ms, us, tzh, tzm);
+  log.error(msg);
+  if (issues != null) issues.add(msg);
   if (throwOnError)
-    throw new InvalidDcmDateTimeError(y, d, m, h, mm, s, ms, us, error);
+    throw new InvalidDcmDateTimeError(y, d, m, h, mm, s, ms, us, tzh, tzm);
   return null;
 }
