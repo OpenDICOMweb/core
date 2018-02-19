@@ -62,8 +62,6 @@ void main() {
       final v = Uid.isValidStringList(uidList1r);
       log.debug('$uidList1r isValid: $v');
       final ui1r = rootDS1.update(ui1.tag.code, uidList1r);
-// Urgent Sharath: does nothing
-//      rootDS1.elements[ui1.tag.index];
       log.debug('ui1r: $ui1r');
       expect(ui1r is UI, isTrue);
       expect(ui1r.values, equals(uidList1));

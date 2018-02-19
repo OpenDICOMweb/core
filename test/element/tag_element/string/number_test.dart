@@ -512,7 +512,35 @@ void main() {
 
     final invalidVList = rsg.getDSList(DS.kMaxLength + 1, DS.kMaxLength + 1);
 
-    test('DS checkVR good values', () {
+    test('DS isValidTag good values', () {
+      system.throwOnError = false;
+      expect(DS.isValidTag(PTag.kSelectorDSValue), true);
+
+      for (var tag in dsTags0) {
+        final validT0 = DS.isValidTag(tag);
+        expect(validT0, true);
+      }
+    });
+
+    test('DS isValidTag bad values', () {
+      system.throwOnError = false;
+      expect(DS.isValidTag(PTag.kSelectorFDValue), false);
+      system.throwOnError = true;
+      expect(() => DS.isValidTag(PTag.kSelectorFDValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        final validT0 = DS.isValidTag(tag);
+        expect(validT0, false);
+
+        system.throwOnError = true;
+        expect(() => DS.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('DS checkVRIndex good values', () {
       system.throwOnError = false;
       expect(DS.checkVRIndex(kDSIndex), kDSIndex);
 
@@ -522,24 +550,46 @@ void main() {
       }
     });
 
-    test('DS checkVR bad values', () {
+    test('DS checkVRIndex bad values', () {
       system.throwOnError = false;
       expect(DS.checkVRIndex(kAEIndex), isNull);
       system.throwOnError = true;
       expect(() => DS.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
-      for (var tag in dsTags0) {
-        system.throwOnError = false;
-        expect(DS.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-
       for (var tag in otherTags) {
         system.throwOnError = false;
         expect(DS.checkVRIndex(tag.vrIndex), isNull);
 
         system.throwOnError = true;
-        expect(() => DS.checkVRIndex(kAEIndex),
+        expect(() => DS.checkVRIndex(tag.vrIndex),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('DS checkVRCode good values', () {
+      system.throwOnError = false;
+      expect(DS.checkVRCode(kDSCode), kDSCode);
+
+      for (var tag in dsTags0) {
+        system.throwOnError = false;
+        expect(DS.checkVRCode(tag.vrCode), tag.vrCode);
+      }
+    });
+
+    test('DS checkVRCode bad values', () {
+      system.throwOnError = false;
+      expect(DS.checkVRCode(kAECode), isNull);
+      system.throwOnError = true;
+      expect(() => DS.checkVRCode(kAECode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(DS.checkVRCode(tag.vrCode), isNull);
+
+        system.throwOnError = true;
+        expect(() => DS.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
@@ -1069,16 +1119,41 @@ void main() {
       expect(StringBase.decodeBinaryStringVF(bytes, kMaxShortVF), <String>[]);
     });
 
-    test('DS fromByteData', () {
-      for (var i = 1; i < 10; i++) {
-        final vList1 = rsg.getDSList(1, i);
-        final bytes = DS.toBytes(vList1);
-        final bd = bytes.buffer.asByteData();
-        log
-          ..debug('vList1 : $vList1')
-          ..debug('DS.fromByteData(bd) ; ${DS.fromByteData(bd)}');
+    test('DS toByteData', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getDSList(1, 1);
+        system.throwOnError = false;
+        final values = ASCII.encode(vList0[0]);
+        final tbd0 = DS.toByteData(vList0);
+        final tbd1 = DS.toByteData(vList0);
+        log.debug('tbd1: ${tbd0.buffer.asUint8List()}, values: $values');
+        expect(tbd0.buffer.asUint8List(), equals(values));
+        expect(tbd0.buffer == tbd1.buffer, false);
+      }
+      for (var s in goodDSList) {
+        for (var a in s) {
+          final values = ASCII.encode(a);
+          final tbd2 = DS.toByteData(s);
+          final tbd3 = DS.toByteData(s);
+          expect(tbd2.buffer.asUint8List(), equals(values));
+          expect(tbd2.buffer == tbd3.buffer, false);
+        }
+      }
+    });
 
-        expect(DS.fromByteData(bd), equals(vList1));
+    test('DS fromByteData', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getDSList(1, 1);
+        system.throwOnError = false;
+        final bd0 = DS.toByteData(vList0);
+        final fbd0 = DS.fromByteData(bd0);
+        log.debug('fbd0: $fbd0, vList0: $vList0');
+        expect(fbd0, equals(vList0));
+      }
+      for (var s in goodDSList) {
+        final bd0 = DS.toByteData(s);
+        final fbd0 = DS.fromByteData(bd0);
+        expect(fbd0, equals(s));
       }
     });
   });
@@ -1532,9 +1607,46 @@ void main() {
 
     final invalidVList = rsg.getDSList(IS.kMaxLength + 1, IS.kMaxLength + 1);
 
-    test('IS checkVR good values', () {
+    test('IS isValidTag good values', () {
+      system.throwOnError = false;
+      expect(IS.isValidTag(PTag.kSelectorISValue), true);
+
+      for (var tag in isTags0) {
+        final validT0 = IS.isValidTag(tag);
+        expect(validT0, true);
+      }
+    });
+
+    test('IS isValidTag bad values', () {
+      system.throwOnError = false;
+      expect(IS.isValidTag(PTag.kSelectorFDValue), false);
+      system.throwOnError = true;
+      expect(() => IS.isValidTag(PTag.kSelectorFDValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        final validT0 = IS.isValidTag(tag);
+        expect(validT0, false);
+
+        system.throwOnError = true;
+        expect(() => IS.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('IS checkVRIndex good values', () {
       system.throwOnError = false;
       expect(IS.checkVRIndex(kISIndex), kISIndex);
+
+      for (var tag in isTags0) {
+        system.throwOnError = false;
+        expect(IS.checkVRIndex(tag.vrIndex), tag.vrIndex);
+      }
+    });
+
+    test('IS checkVRIndex bad values', () {
+      system.throwOnError = false;
       expect(
           IS.checkVRIndex(
             kAEIndex,
@@ -1544,17 +1656,42 @@ void main() {
       expect(() => IS.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
-      for (var tag in isTags0) {
-        system.throwOnError = false;
-        expect(IS.checkVRIndex(tag.vrIndex), kISIndex);
-      }
-
       for (var tag in otherTags) {
         system.throwOnError = false;
         expect(IS.checkVRIndex(tag.vrIndex), isNull);
 
         system.throwOnError = true;
-        expect(() => IS.checkVRIndex(kAEIndex),
+        expect(() => IS.checkVRIndex(tag.vrIndex),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('IS checkVRCode good values', () {
+      system.throwOnError = false;
+      expect(IS.checkVRCode(kISCode), kISCode);
+
+      for (var tag in isTags0) {
+        system.throwOnError = false;
+        expect(IS.checkVRCode(tag.vrCode), tag.vrCode);
+      }
+    });
+
+    test('IS checkVRCode bad values', () {
+      system.throwOnError = false;
+      expect(
+          IS.checkVRCode(
+            kAECode,
+          ),
+          isNull);
+      system.throwOnError = true;
+      expect(() => IS.checkVRCode(kAECode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(IS.checkVRCode(tag.vrCode), isNull);
+
+        system.throwOnError = true;
+        expect(() => IS.checkVRCode(kAECode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
@@ -1562,17 +1699,20 @@ void main() {
     test('IS isValidVRIndex good values', () {
       system.throwOnError = false;
       expect(IS.isValidVRIndex(kISIndex), true);
-      expect(IS.isValidVRIndex(kSSIndex), false);
-
-      system.throwOnError = true;
-      expect(() => IS.isValidVRIndex(kSSIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in isTags0) {
         system.throwOnError = false;
         expect(IS.isValidVRIndex(tag.vrIndex), true);
       }
+    });
 
+    test('IS isValidVRIndex bad values', () {
+      system.throwOnError = false;
+      expect(IS.isValidVRIndex(kSSIndex), false);
+
+      system.throwOnError = true;
+      expect(() => IS.isValidVRIndex(kSSIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
       for (var tag in otherTags) {
         system.throwOnError = false;
         expect(IS.isValidVRIndex(tag.vrIndex), false);
@@ -1583,19 +1723,22 @@ void main() {
       }
     });
 
-    test('IS isValidVRCode', () {
+    test('IS isValidVRCode good values', () {
       system.throwOnError = false;
       expect(IS.isValidVRCode(kISCode), true);
+
+      for (var tag in isTags0) {
+        expect(IS.isValidVRCode(tag.vrCode), true);
+      }
+    });
+
+    test('IS isValidVRCode bad values', () {
+      system.throwOnError = false;
       expect(IS.isValidVRCode(kAECode), false);
 
       system.throwOnError = true;
       expect(() => IS.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
-
-      for (var tag in isTags0) {
-        expect(IS.isValidVRCode(tag.vrCode), true);
-      }
-
       for (var tag in otherTags) {
         system.throwOnError = false;
         expect(IS.isValidVRCode(tag.vrCode), false);
@@ -2004,16 +2147,43 @@ void main() {
       }
     });
 
-    test('IS fromByteData', () {
-      for (var i = 1; i < 10; i++) {
-        final vList1 = rsg.getDSList(1, i);
-        final bytes = IS.toBytes(vList1);
-        final bd = bytes.buffer.asByteData();
-        log
-          ..debug('vList1 : $vList1')
-          ..debug('IS.fromByteData(bd) ; ${IS.fromByteData(bd)}');
+    test('IS toByteData', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getISList(1, 1);
+        system.throwOnError = false;
+        final values = ASCII.encode(vList0[0]);
+        final tbd0 = IS.toByteData(vList0);
+        final tbd1 = IS.toByteData(vList0);
+        log.debug(
+          'tbd0: ${tbd0.buffer.asUint8List()}, values: $values',
+        );
+        expect(tbd0.buffer.asUint8List(), equals(values));
+        expect(tbd0.buffer == tbd1.buffer, false);
+      }
+      for (var s in goodISList) {
+        for (var a in s) {
+          final values = ASCII.encode(a);
+          final tbd2 = IS.toByteData(s);
+          final tbd3 = IS.toByteData(s);
+          expect(tbd2.buffer.asUint8List(), equals(values));
+          expect(tbd2.buffer == tbd3.buffer, false);
+        }
+      }
+    });
 
-        expect(IS.fromByteData(bd), equals(vList1));
+    test('IS fromByteData', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getISList(1, 1);
+        system.throwOnError = false;
+        final bd0 = IS.toByteData(vList0);
+        final fbd0 = IS.fromByteData(bd0);
+        log.debug('fbd0: $fbd0, vList0: $vList0');
+        expect(fbd0, equals(vList0));
+      }
+      for (var s in goodISList) {
+        final bd0 = IS.toByteData(s);
+        final fbd0 = IS.fromByteData(bd0);
+        expect(fbd0, equals(s));
       }
     });
   });

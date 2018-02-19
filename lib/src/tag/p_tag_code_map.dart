@@ -3839,6 +3839,7 @@ const Map<int, PTag> pTagCodeMap = const <int, PTag>{
   0x60001500: PTag.kOverlayLabel,
   0x60003000: PTag.kOverlayData,
   0x60004000: PTag.kOverlayComments,
+  0x7fe00008: PTag.kFloatPixelData,
   0x7fe00010: PTag.kPixelData,
   0x7fe00020: PTag.kCoefficientsSDVN,
   0x7fe00030: PTag.kCoefficientsSDHN,

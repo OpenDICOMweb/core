@@ -501,6 +501,34 @@ void main() {
 
     final invalidVList = rng.float32List(FD.kMaxLength + 1, FD.kMaxLength + 1);
 
+    test('FD isValidTag good values', () {
+      system.throwOnError = false;
+      expect(FD.isValidTag(PTag.kSelectorFDValue), true);
+
+      for (var tag in fdTags0) {
+        final validT0 = FD.isValidTag(tag);
+        expect(validT0, true);
+      }
+    });
+
+    test('FD isValidTag bad values', () {
+      system.throwOnError = false;
+      expect(FD.isValidTag(PTag.kSelectorFLValue), false);
+      system.throwOnError = true;
+      expect(() => FD.isValidTag(PTag.kSelectorFLValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        final validT0 = FD.isValidTag(tag);
+        expect(validT0, false);
+
+        system.throwOnError = true;
+        expect(() => FD.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
     test('FD isValidVR good values', () {
       system.throwOnError = false;
       expect(FD.isValidVRIndex(kFDIndex), true);
@@ -1307,6 +1335,34 @@ void main() {
       PTag.kDate,
       PTag.kTime
     ];
+
+    test('OD isValidTag good values', () {
+      system.throwOnError = false;
+      expect(OD.isValidTag(PTag.kSelectorODValue), true);
+
+      for (var tag in odTags) {
+        final validT0 = OD.isValidTag(tag);
+        expect(validT0, true);
+      }
+    });
+
+    test('OD isValidTag bad values', () {
+      system.throwOnError = false;
+      expect(OD.isValidTag(PTag.kSelectorFLValue), false);
+      system.throwOnError = true;
+      expect(() => OD.isValidTag(PTag.kSelectorFLValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        final validT0 = OD.isValidTag(tag);
+        expect(validT0, false);
+
+        system.throwOnError = true;
+        expect(() => OD.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
 
     test('OD isValidVR good values', () {
       system.throwOnError = false;
