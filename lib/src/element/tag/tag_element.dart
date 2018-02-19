@@ -111,15 +111,20 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   }
 
   static Element make(Tag tag, Iterable values, int vrIndex,
-          [int vfLengthField]) =>
-      // assert(tag.vr.isValid == vrIndex, 'Tag VR: ${tag.vrIndex}, vrIndex, '
-      //     '$vrIndex');
-      _tagMakers[vrIndex](tag, values);
+          [int vfLengthField]) {
+     assert(tag.vrIndex == vrIndex || vrIndex == kUNIndex,
+     'Tag VR: ${tag.vrIndex}, vrIndex, $vrIndex');
+     print('vrIndex: ${vrIdFromIndex(vrIndex)}');
+    return _tagMakers[vrIndex](tag, values);
+  }
 
-  static Element from(Element e, int vrIndex) => make(e.tag, e.values, vrIndex);
+  static Element from(Element e, int vrIndex) =>
+  // TODO: make work with vfLengthField
+    //  make(e.tag, e.values, vrIndex ?? e.vrIndex, e.vfLengthField);
+  make(e.tag, e.values, vrIndex ?? e.vrIndex);
 
   static final _tagMakers = <Function>[
-    null,
+    SQtag.make,
     // Maybe Undefined Lengths
     OBtag.make, OWtag.make, UNtag.make, // No reformat
 

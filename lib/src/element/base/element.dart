@@ -53,38 +53,17 @@ abstract class Element<V> extends ListBase<V> {
   /// used to locate other values in the [Element] Definition.
   int get index => code;
 
-  String get vrId => vrIdByIndex[vrIndex];
-
   /// The index ([vrIndex]) of the Value Representation for this Element.
   int get vrIndex;
 
-  /// The number of bytes in one value.
-  int get sizeInBytes;
 
-  /// The maximum Value Field length in bytes for this Element.
-  int get maxVFLength;
-
-  /// The size in bytes of the Value Field Length field.
-  int get vflSize => 2;
-
-  /// Returns the Value Representation (VR) integer code [vrCode] for _this_.
-  int get vrCode;
-
-  /// The name of the Value Representation (VR) for _this_.
-  String get vrKeyword;
-
-  /// The name of the Value Representation (VR) for _this_.
-  String get vrName;
-
-  /// Returns _true_ for OB, OD, OF, OL, OW, SQ, UN, and UR, which
-  /// MUST override this Getter; otherwise, false.
-  bool get isLengthAlwaysValid => false;
-
+  // TODO: implement with fast_tag
   /// The Information Entity index of this Element.
-  int get ieIndex;
+//  int get ieIndex;
 
+  // TODO: implement with fast_tag
   /// The DeIdentification Method index for this Element.
-  int get deIdIndex;
+//  int get deIdIndex;
 
   /// Returns the [Iterable<V>] [values] of _this_.
   Iterable<V> get values;
@@ -107,7 +86,7 @@ abstract class Element<V> extends ListBase<V> {
   // **** Some of these Getters may be accessed directly in the element.
 
   /// Returns the [Tag] associated with _this_.
-  Tag get tag => Tag.lookup(code);
+  Tag get tag => Tag.lookupByCode(code);
 
   /// The Tag [code] for this Element.
   int get code => tag.code;
@@ -123,8 +102,7 @@ abstract class Element<V> extends ListBase<V> {
   /// _g_ and _e_ are hexadecimal characters.
   String get dcm {
     assert(code >= 0 && code <= 0xFFFFFFFF, 'code: $code');
-    return '(${hex16(code >> 16, prefix: '')},'
-        '${hex16(code & 0xFFFF, prefix: '')})';
+    return '(${hex16(code >> 16)},${hex16(code & 0xFFFF)})';
   }
 
   /// Returns a DICOM Tag code as a hexadecimal integer.
@@ -171,8 +149,34 @@ abstract class Element<V> extends ListBase<V> {
   // ****** Value Representation related Getters and Methods ******
   // **************************************************************
 
+  /// The size in bytes of the Value Field Length field.
+  int get vlfSize => vr.vlfSize;
+
+  VR get vr => vrByIndex[vrIndex];
+  String get vrId => vr.id;
+
+  /// Returns the Value Representation (VR) integer code [vrCode] for _this_.
+  int get vrCode => vr.code;
+
+  /// The name of the Value Representation (VR) for _this_.
+  String get vrKeyword => 'k${vr.id}';
+
+  /// The name of the Value Representation (VR) for _this_.
+  String get vrName => vrNameByIndex[vrIndex];
+
   /// The [vrCode] as a hexadecimal [String].
   String get vrHex => '0x${hex16(vrCode)}';
+
+  /// The number of bytes in one value.
+  int get sizeInBytes => vr.sizeInBytes;
+
+  /// The maximum Value Field length in bytes for this Element.
+  int get maxVFLength => vr.maxVFLength;
+
+  /// Returns _true_ for OB, OD, OF, OL, OW, SQ, UN, and UR, which
+  /// MUST override this Getter; otherwise, false.
+  bool get isLengthAlwaysValid => false;
+
 
   // ******* Value Multiplicity related Getters and Methods *******
   // **************************************************************
@@ -225,6 +229,8 @@ abstract class Element<V> extends ListBase<V> {
   // ****** Information Entity Interface, Getters, and Methods ******
   // **************************************************************
 
+/*
+  // TODO: implement with fast_tag
   /// The Information Entity Type of this Element.
   IEType get ieType => IEType.kByIndex[ieIndex];
 
@@ -233,6 +239,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// The Information Entity Name of this Element.
   String get ieName => ieType.name;
+*/
 
   // ****** DeIdentification Interface, Getters and Methods ******
   // **************************************************************

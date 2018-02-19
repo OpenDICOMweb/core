@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'logger/indenter_test', level: Level.info);
   test('Basic indent test', () {
-    final z = new Indenter();
+    final z = new Prefixer();
 
     log.debug('"${z.z}"');
     z.down;

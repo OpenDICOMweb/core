@@ -4,9 +4,10 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/dataset//errors.dart';
+import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/element/base/element.dart';
@@ -21,12 +22,24 @@ import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/string/ascii.dart';
+import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
+import 'package:core/src/tag/private/pc_tag.dart';
+import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 import 'package:core/src/vr/vr.dart';
 
 const int _vrOffset = 4;
+
+Tag _tagLookup(int code, int vrIndex, [Uint8List vfBytes]) {
+  if (Tag.isPrivateCreatorCode(code)) {
+    final token = ASCII.decode(vfBytes, allowInvalid: true);
+    final tag = Tag.lookupByCode(code, kLOIndex, token);
+    return tag;
+  }
+  return Tag.lookupByCode(code, vrIndex);
+}
 
 abstract class EvrElement<V> implements BDElement<V> {
   @override
@@ -38,9 +51,11 @@ abstract class EvrElement<V> implements BDElement<V> {
   Iterable<V> get values;
   @override
   set values(Iterable<V> vList) => unsupportedError();
+  bool isEqual(BDElement a, BDElement b);
 
   // **** End of Interface
 
+/*
   @override
   bool operator ==(Object other) {
     if (other is EvrElement) {
@@ -55,6 +70,11 @@ abstract class EvrElement<V> implements BDElement<V> {
     }
     return false;
   }
+*/
+
+  @override
+  bool operator ==(Object other) =>
+      (other is EvrElement && isEqual(this, other));
 
   @override
   int get hashCode => system.hasher.byteData(bd);
@@ -67,6 +87,7 @@ abstract class EvrElement<V> implements BDElement<V> {
   @override
   int get vrCode => bd.getUint16(_vrOffset, Endian.little);
 
+/*
   @override
   bool get hasValidLength {
     if (isLengthAlwaysValid) return true;
@@ -77,6 +98,7 @@ abstract class EvrElement<V> implements BDElement<V> {
             (valuesLength <= maxValues) &&
             (valuesLength % columns == 0));
   }
+*/
 
   Uint8List get asBytes =>
       bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
@@ -150,7 +172,7 @@ abstract class EvrShortMixin<V> {
   int get vfLengthField {
     assert(bd.lengthInBytes >= _shortVFOffset);
     final vflf = bd.getUint16(_shortVFLengthOffset, Endian.little);
-    assert(vflf == vfLength);
+    assert(vflf == vfLength, 'vflf: $vflf != vfLength: $vfLength');
     return vflf;
   }
 
@@ -461,9 +483,9 @@ class ULevr extends UL
   @override
   Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
 
-  static ULevr make(ByteData bd, int vrIndex) {
+  static Element<int> make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kULIndex && bd.lengthInBytes.isEven);
-    return new ULevr(bd);
+    return (bd.getUint16(2) == 0) ? new GLevr(bd) : new ULevr(bd);
   }
 }
 
@@ -501,7 +523,7 @@ ByteData __removePadding(ByteData bd, int vfOffset, [int padChar = kSpace]) {
   final lastIndex = bd.lengthInBytes - 1;
   final char = bd.getUint8(lastIndex);
   if (char == kNull || char == kSpace) {
-    log.debug1('Removing Padding: $char');
+    log.debug3('Removing Padding: $char');
     return bd.buffer.asByteData(bd.offsetInBytes, bd.lengthInBytes - 1);
   }
   return bd;
@@ -690,6 +712,16 @@ class PCevr extends PC
   final ByteData bd;
 
   PCevr(this.bd);
+
+  @override
+  PCTag get tag {
+    if (Tag.isPrivateCreatorCode(code)) {
+      final token = ASCII.decode(vfBytes, allowInvalid: true);
+      final tag = Tag.lookupByCode(code, kLOIndex, token);
+      return tag;
+    }
+    return invalidKey(code, 'Invalid Tag Code ${dcm(code)}');
+  }
 
   static PCevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);

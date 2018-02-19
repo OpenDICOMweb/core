@@ -179,7 +179,7 @@ abstract class FL extends FloatBase with Float32Base {
   @override
   String get vrName => kVRName;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -259,7 +259,7 @@ abstract class OF extends FloatBase with Float32Base {
   @override
   String get vrName => kVRName;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -463,7 +463,7 @@ abstract class OD extends FloatBase with Float64Base {
   @override
   String get vrName => kVRName;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get maxLength => kMaxLength;
   @override

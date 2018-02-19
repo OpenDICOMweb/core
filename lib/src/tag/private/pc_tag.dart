@@ -13,10 +13,7 @@ import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr/vr.dart';
 
-//TODO: add constant tag for PCTag.kUnknown
-//TODO: this should be done the same way as KnownPublicTags
 abstract class PCTag extends PrivateTag {
-  final int correctVRIndex = kLOIndex;
 
   const PCTag._();
 
@@ -25,7 +22,8 @@ abstract class PCTag extends PrivateTag {
   @override
   VM get vm => VM.k1;
 
-  int get expectedVR => kLOIndex;
+  int get correctVRIndex => kLOIndex;
+  int get expectedVRIndex => kLOIndex;
   // fix: when creators have expected codes
   // int get expectedGroup => definition.group;
 
@@ -34,7 +32,7 @@ abstract class PCTag extends PrivateTag {
 
   /// In Tag (gggg,00ss) 
   @override
-  int get subGroup => elt & 0xFF;
+  int get sgNumber => elt & 0xFF;
 
   int get base => elt << 8;
 
@@ -51,7 +49,7 @@ abstract class PCTag extends PrivateTag {
     final ng = (code >> 16);
     //print('ng: $ng group $group');
     if (group != ng) return false;
-    final elt = (subGroup << 8) + (code & 0xFF);
+    final elt = (sgNumber << 8) + (code & 0xFF);
     // print('$baseHex <= ${Tag.toHex(elt)} <= $limitHex');
     if (elt < base || elt > limit) return false;
     return true;
@@ -61,7 +59,7 @@ abstract class PCTag extends PrivateTag {
 
   @override
   String get info =>
-      '$runtimeType["$name"]$dcm $groupHex, subgroup($subgroupHex), '
+      '$runtimeType["$name"]$dcm $groupHex, subgroup($sgNumberHex), '
       'base($baseHex), limit($limitHex), actualVR($vrIndex)';
 
   @override
@@ -102,6 +100,7 @@ class PCTagUnknown extends PCTag {
 
 
 class PCTagKnown extends PCTag {
+
   @override
   final int code;
   @override
@@ -127,7 +126,7 @@ class PCTagKnown extends PCTag {
 
   @override
   String get info =>
-      '$runtimeType["$name"]$dcm $groupHex, subgroup($subgroupHex), '
+      '$runtimeType["$name"]$dcm $groupHex, subgroup($sgNumberHex), '
       'base($baseHex), limit($limitHex), ${vrIdByIndex[vrIndex]}, $vm, '
       'dataTags: ${_fmtDataTagMap(definition.dataTags)}';
 }
@@ -163,7 +162,7 @@ class PCTagDefinition {
 
   static const _empty = const <int, PDTagDefinition>{};
 
-  //Fix: renumber index
+  //TODO: renumber index
   static const PCTagDefinition kUnknown =
       const PCTagDefinition._(-1, 'Unknown Private Creator Tag', _empty);
 

@@ -303,7 +303,7 @@ abstract class UN extends IntBase with Uint8Base, UndefinedLengthMixin {
   @override
   String get vrName => kVRName;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get maxVFLength => kMaxShortVF;
   @override
@@ -350,8 +350,10 @@ abstract class UN extends IntBase with Uint8Base, UndefinedLengthMixin {
 
   // UN values are always true, since the read VR is unknown
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      IntBase._isValidValues(
-          tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      ((vList is Uint8List) && (vList.length <= kMaxVFLength))
+          ? true
+          : IntBase._isValidValues(
+              tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
 }
 
 /// Other Byte [Element].
@@ -434,7 +436,7 @@ abstract class OW extends IntBase with Uint16Base, UndefinedLengthMixin {
   @override
   String get vrName => kVRName;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -576,7 +578,7 @@ abstract class OL extends IntBase with Uint32Base {
   @override
   String get vrName => kVRName;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get maxVFLength => kMaxVFLength;
   @override

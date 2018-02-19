@@ -20,59 +20,59 @@ import 'package:core/src/string/ascii.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/tag.dart';
 
-typedef BDElement DecodeBinaryVF(ByteData bd, int vrIndex);
+typedef Element DecodeBinaryVF(ByteData bd, int vrIndex);
 
 typedef BDElement BDElementMaker(int code, int vrIndex, ByteData bd);
 
-//TODO: move documentation from EVR/IVR
+// TODO: move documentation from EVR/IVR
 abstract class BDElement<V> extends Element<V> {
   static BDElement make(int code, int vrIndex, ByteData bd,
           {bool isEvr = true}) =>
       (isEvr)
           ? EvrElement.make(code, vrIndex, bd)
-          : Ivr.make(code, vrIndex, bd);
+          : IvrElement.make(code, vrIndex, bd);
 
   // **** Start Interface ****
 
   /// The [ByteData] containing this Element.
   ByteData get bd;
-//  @override
-//  Iterable<V> get values;
-//  @override
-//  set values(Iterable<V> vList) => unsupportedError();
-
   /// Returns _true_ if this Element is encoded as Explicit VR Little Endian;
   /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
   bool get isEvr;
-//  @override
-//  Tag get tag;
-//  @override
-//  int get vrCode;
-//  @override
-//  int get vrIndex;
   int get vfLengthOffset;
   int get vfOffset;
-//  @override
-//  int get vfLengthField;
   Uint8List get vfBytesWithPadding;
-  // @override
-  // Uint8List get vfBytes;
   ByteData get vfByteDataWithPadding;
-//  @override
-//  ByteData get vfByteData;
 
-// **** End Interface ****
+  // **** End Interface ****
 }
 
 const int _codeOffset = 0;
+const int _groupOffset = 0;
+const int _eltOffset = 2;
 
 abstract class Common {
   ByteData get bd;
+  bool get isLengthAlwaysValid;
+  int get minValues;
+  int get maxValues;
+  int get columns;
   int get vfOffset;
   int get vfLengthField;
+  int get valuesLength;
   int get vrIndex;
+
+  bool isEqual(BDElement a, BDElement other) {
+      if (bd.lengthInBytes != other.bd.lengthInBytes) return false;
+
+      final offset0 = bd.offsetInBytes;
+      final offset1 = other.bd.offsetInBytes;
+      final length = bd.lengthInBytes;
+      for (var i = offset0, j = offset1; i < length; i++, j++)
+        if (bd.getUint8(i) != other.bd.getUint8(j)) return false;
+      return true;
+  }
 
   /// Returns the Tag Code from [ByteData].
   int get code {
@@ -82,7 +82,8 @@ abstract class Common {
     return v;
   }
 
-  Tag get tag => Tag.lookupByCode(code, vrIndex);
+  int get group => bd.getUint16(_groupOffset, Endian.little);
+  int get elt => bd.getUint16(_eltOffset, Endian.little);
 
   /// Returns the length in bytes of _this_ Element.
   int get eLength => bd.lengthInBytes;
@@ -99,8 +100,18 @@ abstract class Common {
     return len;
   }
 
+  bool get hasValidLength {
+    if (isLengthAlwaysValid) return true;
+// Put print in to see how often it is called
+// print('length: $valuesLength, minValues: $minValues, maxValues: $maxValues');
+    return (valuesLength == 0) ||
+           (valuesLength >= minValues &&
+            (valuesLength <= maxValues) &&
+            (valuesLength % columns == 0));
+  }
+
   //TODO: add correct index
-  int get deIdIndex => unimplementedError();
+//  int get deIdIndex => unimplementedError();
   int get ieIndex => 0;
   bool get allowInvalid => true;
   bool get allowMalformed => true;

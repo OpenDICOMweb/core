@@ -118,7 +118,7 @@ abstract class System {
       this.isUuidUppercase = false,
       this.isHexUppercase = false,
       this.showBanner = true,
-      this.showSdkBanner = false})
+      this.showSdkBanner = true})
       : version = (version == null) ? new Version(0, 0, 1) : version,
         log = new Logger(name, level) {
     if (minYear < kMinYearLimit) throw new InvalidYearError(minYear);

@@ -352,6 +352,38 @@ class ULtag extends UL with TagElement<int> {
       new ULtag._fromBytes(bde.tag, bde.vfBytes);
 }
 
+/// Unsigned Short
+class GLtag extends ULtag {
+  /// Creates an [GLtag] Element.
+  factory GLtag(Tag tag, [Iterable<int> vList = kEmptyIntList]) =>
+      (UL.isValidArgs(tag, vList))
+          ? new GLtag._(tag, vList)
+          : invalidValuesError(vList, tag: tag);
+
+  factory GLtag.bulkdata(Tag tag, String url) =>
+      new GLtag._(tag, new IntBulkdata(tag.code, url));
+
+  factory GLtag._fromBytes(Tag tag, Uint8List bytes) =>
+      (UL.isNotValidTag(tag)) ? null : new GLtag._(tag, _u32FromBytes(bytes));
+
+  GLtag._(Tag tag, Iterable<int> values) : super._(tag, values);
+
+  @override
+  GLtag update([Iterable<int> vList = kEmptyIntList]) => new GLtag(tag, vList);
+
+  static GLtag make<int>(Tag tag, Iterable<int> vList) =>
+      new GLtag(tag, vList ?? kEmptyDoubleList);
+
+  static GLtag fromBase64(Tag tag, String s) =>
+      new GLtag._fromBytes(tag, BASE64.decode(s));
+
+  static GLtag fromBytes(Tag tag, Uint8List bytes) =>
+      new GLtag._fromBytes(tag, bytes);
+
+  static GLtag fromBDE(Element bde) =>
+      new GLtag._fromBytes(bde.tag, bde.vfBytes);
+}
+
 /// Immutable Attribute Tags
 ///
 /// Note: Tags are implemented as a 32-bit integers, not 2 16-bit integers.

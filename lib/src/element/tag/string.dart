@@ -159,8 +159,10 @@ class LOtag extends LO with TagElement<String> {
 
   LOtag._(this.tag, this.values);
 
+/* Flush when working
   // TODO: remove this constructor when
   LOtag.internal(this.tag, this.values);
+*/
 
   @override
   LOtag update([Iterable<String> vList = kEmptyStringList]) =>

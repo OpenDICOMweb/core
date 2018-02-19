@@ -36,7 +36,7 @@ int _getValuesLength(int vfLengthField, int sizeInBytes) {
 const int _vfLengthOffset = 4;
 const int _vfOffset = 8;
 
-abstract class Ivr<V> implements BDElement<V> {
+abstract class IvrElement<V> implements BDElement<V> {
   @override
   ByteData get bd;
   @override
@@ -46,10 +46,16 @@ abstract class Ivr<V> implements BDElement<V> {
   Iterable<V> get values;
   @override
   set values(Iterable<V> vList) => unsupportedError();
+  bool isEqual(BDElement a, BDElement b);
 
   @override
+  bool operator ==(Object other) =>
+      (other is IvrElement && isEqual(this, other));
+
+/*
+  @override
   bool operator ==(Object other) {
-    if (other is Ivr) {
+    if (other is IvrElement) {
       if (bd.lengthInBytes != other.bd.lengthInBytes) return false;
 
       final offset0 = bd.offsetInBytes;
@@ -61,6 +67,7 @@ abstract class Ivr<V> implements BDElement<V> {
     }
     return false;
   }
+*/
 
   @override
   int get hashCode => system.hasher.byteData(bd);
@@ -70,21 +77,26 @@ abstract class Ivr<V> implements BDElement<V> {
   @override
   bool get isEvr => false;
 
-  // TODO: add correct deIdIndex
-  @override
-  int get deIdIndex => unimplementedError();
-  @override
-  int get ieIndex => 0;
-  bool get allowInvalid => true;
-  bool get allowMalformed => true;
-
-  /// Returns the length in bytes of _this_ Element.
-  int get eLength => bd.lengthInBytes;
-
   @override
   int get vrCode => tag.vrCode;
   @override
   int get vrIndex => tag.vrIndex;
+
+
+/*
+  @override
+  bool get hasValidLength {
+    if (isLengthAlwaysValid) return true;
+// Put print in to see how often it is called
+// print('length: $valuesLength, minValues: $minValues, maxValues: $maxValues');
+    return (valuesLength == 0) ||
+           (valuesLength >= minValues &&
+            (valuesLength <= maxValues) &&
+            (valuesLength % columns == 0));
+  }
+*/
+
+
   @override
   int get vfLengthOffset => _vfLengthOffset;
   @override
@@ -155,7 +167,7 @@ abstract class Ivr<V> implements BDElement<V> {
 
 // **** IVR Float Elements (FL, FD, OD, OF)
 
-class FLivr extends FL with Common, Ivr<double>, Float32Mixin {
+class FLivr extends FL with Common, IvrElement<double>, Float32Mixin {
   @override
   final ByteData bd;
 
@@ -170,7 +182,7 @@ class FLivr extends FL with Common, Ivr<double>, Float32Mixin {
   }
 }
 
-class OFivr extends OF with Common, Ivr<double>, Float32Mixin {
+class OFivr extends OF with Common, IvrElement<double>, Float32Mixin {
   @override
   final ByteData bd;
 
@@ -190,7 +202,7 @@ class OFivr extends OF with Common, Ivr<double>, Float32Mixin {
 
 // **** IVR 64-Bit Float Elements (OD, OF)
 
-class FDivr extends FL with Common, Ivr<double>, Float32Mixin {
+class FDivr extends FL with Common, IvrElement<double>, Float32Mixin {
   @override
   final ByteData bd;
 
@@ -208,7 +220,7 @@ class FDivr extends FL with Common, Ivr<double>, Float32Mixin {
   }
 }
 
-class ODivr extends OD with Common, Ivr<double>, Float32Mixin {
+class ODivr extends OD with Common, IvrElement<double>, Float32Mixin {
   @override
   final ByteData bd;
 
@@ -227,7 +239,7 @@ class ODivr extends OD with Common, Ivr<double>, Float32Mixin {
 
 // **** 8-bit Integer Elements (OB, UN)
 
-class OBivr extends OB with Common, Ivr<int>, IntMixin, Int8Mixin {
+class OBivr extends OB with Common, IvrElement<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
 
@@ -243,7 +255,7 @@ class OBivr extends OB with Common, Ivr<int>, IntMixin, Int8Mixin {
 }
 
 class OBivrPixelData extends OBPixelData
-    with Common, Ivr<int>, IntMixin, Int8Mixin {
+    with Common, IvrElement<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
   @override
@@ -263,7 +275,7 @@ class OBivrPixelData extends OBPixelData
   }
 }
 
-class UNivr extends UN with Common, Ivr<int>, IntMixin, Int8Mixin {
+class UNivr extends UN with Common, IvrElement<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
 
@@ -279,7 +291,7 @@ class UNivr extends UN with Common, Ivr<int>, IntMixin, Int8Mixin {
 }
 
 class UNivrPixelData extends UNPixelData
-    with Common, Ivr<int>, IntMixin, Int8Mixin {
+    with Common, IvrElement<int>, IntMixin, Int8Mixin {
   @override
   final ByteData bd;
   @override
@@ -301,7 +313,7 @@ class UNivrPixelData extends UNPixelData
 
 // **** 16-bit Integer Elements (SS, US, OW)
 
-class SSivr extends SS with Common, Ivr<int>, IntMixin, Int16Mixin {
+class SSivr extends SS with Common, IvrElement<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
 
@@ -316,7 +328,7 @@ class SSivr extends SS with Common, Ivr<int>, IntMixin, Int16Mixin {
   }
 }
 
-class USivr extends US with Common, Ivr<int>, IntMixin, Int16Mixin {
+class USivr extends US with Common, IvrElement<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
 
@@ -331,7 +343,7 @@ class USivr extends US with Common, Ivr<int>, IntMixin, Int16Mixin {
   }
 }
 
-class OWivr extends OW with Common, Ivr<int>, IntMixin, Int16Mixin {
+class OWivr extends OW with Common, IvrElement<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
 
@@ -347,7 +359,7 @@ class OWivr extends OW with Common, Ivr<int>, IntMixin, Int16Mixin {
 }
 
 class OWivrPixelData extends OWPixelData
-    with Common, Ivr<int>, IntMixin, Int16Mixin {
+    with Common, IvrElement<int>, IntMixin, Int16Mixin {
   @override
   final ByteData bd;
   @override
@@ -370,7 +382,7 @@ class OWivrPixelData extends OWPixelData
 // **** 32-bit integer Elements (AT, SL, UL, GL)
 
 /// Attribute (Element) Code (AT)
-class ATivr extends AT with Common, Ivr<int>, IntMixin, Int32Mixin {
+class ATivr extends AT with Common, IvrElement<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -386,7 +398,7 @@ class ATivr extends AT with Common, Ivr<int>, IntMixin, Int32Mixin {
 }
 
 /// Other Long (OL)
-class OLivr extends OL with Common, Ivr<int>, IntMixin, Int32Mixin {
+class OLivr extends OL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -402,7 +414,7 @@ class OLivr extends OL with Common, Ivr<int>, IntMixin, Int32Mixin {
 }
 
 /// Signed Long (SL)
-class SLivr extends SL with Common, Ivr<int>, IntMixin, Int32Mixin {
+class SLivr extends SL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -418,7 +430,7 @@ class SLivr extends SL with Common, Ivr<int>, IntMixin, Int32Mixin {
 }
 
 /// Unsigned Long (UL)
-class ULivr extends UL with Common, Ivr<int>, IntMixin, Int32Mixin {
+class ULivr extends UL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -434,7 +446,7 @@ class ULivr extends UL with Common, Ivr<int>, IntMixin, Int32Mixin {
 }
 
 /// Group Length (GL)
-class GLivr extends GL with Common, Ivr<int>, IntMixin, Int32Mixin {
+class GLivr extends GL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   @override
   final ByteData bd;
 
@@ -454,7 +466,8 @@ class GLivr extends GL with Common, Ivr<int>, IntMixin, Int32Mixin {
 
 // **** String Elements
 
-class AEivr extends AE with Common, Ivr<String>, BDStringMixin, AsciiMixin {
+class AEivr extends AE
+    with Common, IvrElement<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -466,7 +479,8 @@ class AEivr extends AE with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   }
 }
 
-class ASivr extends AS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
+class ASivr extends AS
+    with Common, IvrElement<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -478,7 +492,8 @@ class ASivr extends AS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   }
 }
 
-class CSivr extends CS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
+class CSivr extends CS
+    with Common, IvrElement<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -490,7 +505,8 @@ class CSivr extends CS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   }
 }
 
-class DAivr extends DA with Common, Ivr<String>, BDStringMixin, AsciiMixin {
+class DAivr extends DA
+    with Common, IvrElement<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -502,7 +518,8 @@ class DAivr extends DA with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   }
 }
 
-class DSivr extends DS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
+class DSivr extends DS
+    with Common, IvrElement<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -514,7 +531,8 @@ class DSivr extends DS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   }
 }
 
-class DTivr extends DT with Common, Ivr<String>, BDStringMixin, AsciiMixin {
+class DTivr extends DT
+    with Common, IvrElement<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -526,7 +544,8 @@ class DTivr extends DT with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   }
 }
 
-class ISivr extends IS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
+class ISivr extends IS
+    with Common, IvrElement<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -538,7 +557,8 @@ class ISivr extends IS with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   }
 }
 
-class UIivr extends UI with Common, Ivr<String>, BDStringMixin, AsciiMixin {
+class UIivr extends UI
+    with Common, IvrElement<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -550,7 +570,8 @@ class UIivr extends UI with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   }
 }
 
-class LOivr extends LO with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
+class LOivr extends LO
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -562,7 +583,8 @@ class LOivr extends LO with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   }
 }
 
-class PCivr extends PC with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
+class PCivr extends PC
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -574,7 +596,8 @@ class PCivr extends PC with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   }
 }
 
-class PNivr extends PN with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
+class PNivr extends PN
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -586,7 +609,8 @@ class PNivr extends PN with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   }
 }
 
-class SHivr extends SH with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
+class SHivr extends SH
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -598,7 +622,8 @@ class SHivr extends SH with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   }
 }
 
-class LTivr extends LT with Common, Ivr<String>, BDStringMixin, TextMixin {
+class LTivr extends LT
+    with Common, IvrElement<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -612,7 +637,8 @@ class LTivr extends LT with Common, Ivr<String>, BDStringMixin, TextMixin {
   }
 }
 
-class STivr extends ST with Common, Ivr<String>, BDStringMixin, TextMixin {
+class STivr extends ST
+    with Common, IvrElement<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -624,7 +650,8 @@ class STivr extends ST with Common, Ivr<String>, BDStringMixin, TextMixin {
   }
 }
 
-class TMivr extends TM with Common, Ivr<String>, BDStringMixin, AsciiMixin {
+class TMivr extends TM
+    with Common, IvrElement<String>, BDStringMixin, AsciiMixin {
   @override
   final ByteData bd;
 
@@ -636,7 +663,8 @@ class TMivr extends TM with Common, Ivr<String>, BDStringMixin, AsciiMixin {
   }
 }
 
-class UCivr extends UC with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
+class UCivr extends UC
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -648,7 +676,8 @@ class UCivr extends UC with Common, Ivr<String>, BDStringMixin, Utf8Mixin {
   }
 }
 
-class URivr extends UR with Common, Ivr<String>, BDStringMixin, TextMixin {
+class URivr extends UR
+    with Common, IvrElement<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -660,7 +689,8 @@ class URivr extends UR with Common, Ivr<String>, BDStringMixin, TextMixin {
   }
 }
 
-class UTivr extends UT with Common, Ivr<String>, BDStringMixin, TextMixin {
+class UTivr extends UT
+    with Common, IvrElement<String>, BDStringMixin, TextMixin {
   @override
   final ByteData bd;
 
@@ -672,7 +702,8 @@ class UTivr extends UT with Common, Ivr<String>, BDStringMixin, TextMixin {
   }
 }
 
-class SQivr extends SQ<Item> with Ivr<Item> {
+class SQivr extends SQ<int>
+    with Common, IvrElement<Item> {
   @override
   final ByteData bd;
   @override

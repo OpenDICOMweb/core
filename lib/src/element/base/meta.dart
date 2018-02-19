@@ -3,57 +3,62 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
+import 'dart:typed_data';
+
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/errors.dart';
+import 'package:core/src/issues.dart';
 import 'package:core/src/tag/export.dart';
 
-//TODO: each private creator in the same Private Group MUST have a distinct identifier;
-abstract class MetaElement<V> extends Element<V> {
+abstract class MetaElementMixin<V>  {
   Element get e;
 
-  @override
   List<V> get emptyList => e.emptyList;
 
-  @override
   Tag get tag => e.tag;
+
   //Why are these 3 necessary
-  @override
-  int get code => tag.code;
-  @override
-  String get keyword => tag.keyword;
-  @override
-  int get vrIndex => tag.vrIndex;
-  @override
-  int get vrCode => tag.vrCode;
-  @override
-  VM get vm => tag.vm;
-  @override
-  int get sizeInBytes => tag.elementSize;
-  @override
-  List<V> get values => e.values;
-  @override
+  int get code => e.code;
+
+  String get keyword => e.keyword;
+
+  int get vrIndex => e.vrIndex;
+
+  VM get vm => e.vm;
+
+  int get maxLength => e.maxLength;
+  int get maxVFLength => e.maxVFLength;
+  int get vfLengthField => e.vfLengthField;
+
+  int get padChar => e.padChar;
+
+  Iterable<V> get values => e.values;
+
   V get value => e.value;
+
+  TypedData get typedData => e.typedData;
+
+  bool checkValues(Iterable<V> vList, [Issues issues]) =>
+      e.checkValues(vList, issues);
+
+  bool checkValue(V v, {Issues issues, bool allowInvalid = false}) =>
+      e.checkValue(v, issues: issues, allowInvalid: allowInvalid);
+
+  Element<V> update([Iterable<V> vList]) => e.update(vList);
 }
 
 // Must implement Values and Value with reified.
-abstract class BulkdataRef<V> extends Element<V> {
-  Element get e;
-  String get uri;
+class BulkdataRef<V> extends Element<V> with MetaElementMixin<V> {
+  @override
+  Element e;
+  String uri;
+
+  BulkdataRef(this.e, this.uri);
 
   @override
-  List<V> get emptyList => e.emptyList;
+  Iterable<V> get values => _values ??= unimplementedError();
+  Iterable<V> _values;
   @override
-  Tag get tag => e.tag;
-  //Why are these 3 necessary
-  @override
-  int get code => tag.code;
-  @override
-  String get keyword => tag.keyword;
-  @override
-  int get vrIndex => tag.vrIndex;
-  @override
-  int get vrCode => tag.vrCode;
-  @override
-  VM get vm => tag.vm;
-  @override
-  int get sizeInBytes => tag.elementSize;
+ set values(Iterable<V> vList) => _values ??= vList;
+
 }

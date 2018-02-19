@@ -83,7 +83,7 @@ class Uuid {
 
   /// Constructs [Uuid] from a [List<int>] of 16 unsigned 8-bit [int]s.
   Uuid.fromList(List<int> iList, {OnUuidBytesError onError, bool coerce = true})
-      : this.data = _uint8ListToBytes(iList);
+      : this.data = _uint8ListToBytes(iList, onError: onError, coerce: coerce);
 
   /// Two [Uuid]s are [==] if they contain equivalent [data].
   @override
@@ -147,7 +147,6 @@ class Uuid {
   @override
   String toString() => _toUuidFormat(data);
 
-  //TODO: Unit Test
   /// Sets the value of the default generator
   static bool setGenerator(GeneratorType type) {
     switch (type) {
@@ -239,7 +238,6 @@ class Uuid {
 
   /// Unparses (converts [Uuid] to a [String]) [bytes] of bytes and
   /// outputs a proper UUID string.
-  //TODO: Unit test uppercase/lowercase
   static String _toUuidFormat(Uint8List bytes) {
     var i = 0;
     final byteToHex =
@@ -288,7 +286,7 @@ bool _isValidUuid(List<int> bytes, [int version]) {
       bytes.length == 16 && _isISOVariant(bytes) && _hasValidVersion(bytes);
   if (!ok || (version != null && _version(bytes) != version)) return false;
   if (version != 5 || version != 3) return true;
-  //Enhancement
+  //Enhancement add V3 & V5
   // In order to do this we need getters and setters for the various fields.
   throw new UnimplementedError('Version 3 & 5 UUIDs are not yet supported');
 }
@@ -312,8 +310,8 @@ void _setToVersion4(Uint8List bytes) {
   bytes[8] = (bytes[8] & 0x3f) | 0x80;
 }
 
-//TODO: Unit Test Error handling
-Uint8List _uint8ListToBytes(List<int> data, {bool coerce = true}) {
+Uint8List _uint8ListToBytes(List<int> data,
+    {OnUuidBytesError onError, bool coerce = true}) {
   if (data.length != 16)
     return invalidUuidListError(data, 'Invalid Length(${data.length})');
   final bytes = _getDataBuffer(data);
@@ -325,7 +323,8 @@ Uint8List _uint8ListToBytes(List<int> data, {bool coerce = true}) {
 /// Can optionally be provided a [Uint8List] to write into.
 Uint8List _parseToBytes(
     String s, Uint8List data, OnUuidBytesError onError, int targetLength) {
-  //if (s == null || (s.length != targetLength && s.length != kUuidAsUidStringLength))
+  //if (s == null ||
+  // (s.length != targetLength && s.length != kUuidAsUidStringLength))
   if (s == null || s.length != targetLength)
     return invalidUuidParseToBytesError(s, targetLength);
   final bytes = _getDataBuffer(data);
@@ -339,7 +338,6 @@ Uint8List _parseToBytes(
       _toBytes(s, bytes, 8, 19, 23);
       _toBytes(s, bytes, 10, 24, kUuidStringLength);
     } else if (targetLength == kUuidAsUidStringLength) {
-      //TODO: Unit test
       _toBytes(s, bytes, 0, 0, kUuidAsUidStringLength);
     } else {
       return invalidUuidStringLengthError(s, targetLength);

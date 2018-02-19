@@ -37,11 +37,14 @@ class SQtag extends SQ<TagItem> with TagElement<Dataset> {
   @override
   final int vfLengthField;
 
+  final Uint8List bytes;
+
   /// Creates a new [SQtag] instance.
-  SQtag(this.tag, this.parent, [Iterable<TagItem> vList, this.vfLengthField])
+  SQtag(this.tag, this.parent,
+      [Iterable<TagItem> vList, this.vfLengthField, this.bytes])
       : values = (vList == null) ? emptyItemTagList : vList;
 
-  factory SQtag.from(SQtag sq, [Dataset parent]) {
+  factory SQtag.from(SQ sq, [Dataset parent]) {
     final nItems = new List<TagItem>(sq.values.length);
     for (var i = 0; i < sq.values.length; i++) {
       parent = (parent == null) ? sq.parent : parent;
@@ -52,12 +55,13 @@ class SQtag extends SQ<TagItem> with TagElement<Dataset> {
   }
 
   factory SQtag._fromBytes(Tag tag, Dataset parent, List<TagItem> vList,
-      Uint8List bytes, [int vfLengthField]) {
+      [int vfLengthField, Uint8List bytes]) {
     if (tag.vrIndex != kSQIndex) return null;
-    return new SQtag(tag, parent, vList, vfLengthField);
+    return new SQtag(tag, parent, vList, vfLengthField, bytes);
   }
 
-  SQtag.fromDecoder(this.tag, this.parent, this.values, this.vfLengthField);
+  SQtag.fromDecoder(this.tag, this.parent,
+      [this.values, this.vfLengthField, this.bytes]);
 
   @override
   Iterable<Item> get items => values;
@@ -144,5 +148,5 @@ class SQtag extends SQ<TagItem> with TagElement<Dataset> {
       new SQtag(tag, parent, values, vfLength);
 
   static SQtag fromBDE(BDElement e, Dataset parent) =>
-      new SQtag._fromBytes(e.tag, parent, e.values, e.vfBytes, e.vfLengthField);
+      new SQtag._fromBytes(e.tag, parent, e.values, e.vfLengthField, e.vfBytes);
 }

@@ -50,7 +50,7 @@ abstract class SQ<K> extends Element<Item> with UndefinedLengthMixin {
   @override
   int get sizeInBytes => kSizeInBytes;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get padChar => unsupportedError('Float does not have a padChar');
   @override

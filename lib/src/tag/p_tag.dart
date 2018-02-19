@@ -66,6 +66,11 @@ class PTag extends Tag {
         this.type = EType.k3,
         super();
 
+  @override
+  bool get isPublic => true;
+  @override
+  bool get isPrivate => false;
+
   // TODO: make this the definition of index once we have a Tag array in index order,
   // TODO: by frequency
   // int get index => pTagCodes.indexOf(code);
@@ -17328,6 +17333,10 @@ class PTagInvalidVR extends Tag {
 
   PTagInvalidVR(this.tag, this.badVRIndex) : super();
 
+  @override
+  bool get isPublic => tag.isPublic;
+  @override
+  bool get isPrivate => tag.isPrivate;
   @override
   int get code => tag.code;
   @override

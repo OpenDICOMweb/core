@@ -145,27 +145,6 @@ abstract class Tag {
   /// The minimum number that MUST be present, if any values are present.
   int get minValues => vm.min;
 
-//  int get _vfLimit => (vr.hasShortVF) ? kMaxShortVF : kMaxLongVF;
-
-  /// The minimum length of the Value Field.
-//  int get minVFLength => vm.min * vr.minValueLength;
-
-/*
-  /// The maximum length of the Value Field for this [Tag].
-  int get maxVFLength {
-    // Optimization - for most Tags vm.max == 1
-    if (vmMax != 1) return vmMax * vr.elementSize;
-    final excess = maxLength % vmColumns;
-    final actual = maxLength - excess;
-    assert(actual % columns == 0);
-    return actual;
-  }
-*/
-
-  //TODO: Validate that the number of values is legal
-  //TODO write unit tests to ensure this is correct
-  //TODO: make this work for PrivateTags
-
   /// Returns the maximum number of values allowed for this [Tag].
   int get maxValues {
     if (vm.max == -1) {
@@ -198,7 +177,7 @@ abstract class Tag {
   /// Returns true if the Tag is defined by DICOM, false otherwise.
   /// All DICOM Public tags have group numbers that are even integers.
   /// Note: This only checks that the group number is an even.
-  bool get isPublic => code.isEven;
+  bool get isPublic;
 
   bool get isPrivate => false;
 
@@ -275,6 +254,7 @@ abstract class Tag {
   }
 
   bool get isLengthAlwaysValid =>
+      vrIndex == kUNIndex ||
       vrIndex == kOBIndex ||
       vrIndex == kODIndex ||
       vrIndex == kOFIndex ||
@@ -428,16 +408,23 @@ abstract class Tag {
 
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag fromCode<T>(int code, int vrIndex, [T creator]) {
-    if (Tag.isPublicCode(code)) return Tag.lookupPublicCode(code, vrIndex);
-    if (Tag.isPrivateCreatorCode(code) && creator is String)
-      return PCTag.make(code, vrIndex, creator);
-    if (Tag.isPrivateDataCode(code) && creator is PCTag)
-      return PDTag.make(code, vrIndex, creator);
-    // This should never happen
-    return invalidTagCode(code);
+    if (Tag.isPublicCode(code)) {
+      var tag = Tag.lookupPublicCode(code, vrIndex);
+      return tag ??= new PTag.unknown(code, vrIndex);
+    } else {
+      assert(Tag.isPrivateCode(code) == true);
+      final elt = Elt.fromTag(code);
+      if (elt == 0) return new PrivateTagGroupLength(code, vrIndex);
+      if (elt < 0x10) return new PrivateTagIllegal(code, vrIndex);
+      if ((elt >= 0x10) && (elt <= 0xFF) && creator is String)
+        return PCTag.make(code, vrIndex, creator);
+      if ((elt > 0xFF) && (elt <= 0xFFFF) && creator is PCTag)
+        return PDTag.make(code, vrIndex, creator);
+      // This should never happen
+      return invalidTagCode(code);
+    }
   }
-
-  //TODO: redoc
+  //TODO: Flush either fromCode of lookupByCode
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag lookupByCode(int code, [int vrIndex = kUNIndex, Object creator]) {
     String msg;
@@ -445,12 +432,28 @@ abstract class Tag {
       var tag = Tag.lookupPublicCode(code, vrIndex);
       return tag ??= new PTag.unknown(code, vrIndex);
     } else {
+      print('tag code ${hex32(code)}');
+      assert(Tag.isPrivateCode(code) == true);
+      final elt = code & 0xFFFF;
+      if (elt == 0)
+        return new PrivateTagGroupLength(code, vrIndex);
+      if (elt < 0x10)
+        return new PrivateTagIllegal(code, vrIndex);
+      if ((elt >= 0x10) && (elt <= 0xFF))
+        return PCTag.make(code, vrIndex, creator);
+      if ((elt > 0x00FF) && (elt <= 0xFFFF))
+        return PDTag.make(code, vrIndex, creator);
+      // This should never happen
+      return invalidTagCode(code);
+/*
       if (Tag.isPrivateGroupLengthCode(code))
         return new PrivateTagGroupLength(code, vrIndex);
       if (Tag.isPrivateCreatorCode(code))
         return PCTag.make(code, vrIndex, creator);
       if (Tag.isPrivateDataCode(code))
         return PDTag.make(code, vrIndex, creator);
+*/
+
     }
 //    log.debug('lookupTag: ${Tag.toDcm(code)} $vrIndex, $creator');
     msg = 'Unknown Private Tag Code: creator: $creator';
@@ -590,8 +593,11 @@ abstract class Tag {
   }
 
   /// Returns true if [code] is a valid Private Creator Code.
-  static bool isPrivateCreatorCode(int code) =>
-      isPrivateCode(code) && Elt.isPrivateCreator(Elt.fromTag(code));
+  static bool isPrivateCreatorCode(int code) {
+    if ((code >> 16).isEven) return false;
+    final elt = code & 0xFFFF;
+     return elt >= 0x10 && elt <= 0xFF;
+      }
 
   static bool isCreatorCodeInGroup(int code, int group) {
     final g = group << 16;

@@ -24,6 +24,7 @@ import 'package:core/src/string/ascii.dart';
 import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
+import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/vr/vr.dart';
@@ -289,7 +290,6 @@ abstract class AE extends StringAscii {
           {int offset = 0, int length}) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  //Urgent: Add to all Element classes
   static ByteData toByteData(Iterable<String> values) =>
       _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -1041,6 +1041,8 @@ abstract class LO extends StringUtf8 {
 /// of the form (gggg,00cc), where 0x10 <= cc <= 0xFF..
 abstract class PC extends LO {
   @override
+  PCTag get tag;
+  @override
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRKeyword;
@@ -1048,6 +1050,8 @@ abstract class PC extends LO {
   String get creator;
   @override
   String get name => 'Private Creator - $creator';
+
+  int get sgNumber => tag.sgNumber;
 
   static const String kVRKeyword = 'PC';
   static const String kVRName = 'Private Creator';
@@ -1073,7 +1077,6 @@ abstract class PN extends StringUtf8 {
   Iterable<PersonName> get names => _names ??= values.map(PersonName.parse);
   Iterable<PersonName> _names;
 
-  //TODO: implement
   @override
   PN get hash => throw new UnimplementedError();
 
@@ -1291,7 +1294,7 @@ abstract class UC extends StringUtf8 {
   @override
   String get vrName => kVRName;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -1532,8 +1535,6 @@ abstract class ST extends Text {
   @override
   int get maxVFLength => kMaxVFLength;
 
-  //TODO: add issues
-
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
@@ -1635,7 +1636,7 @@ abstract class UR extends Text {
   @override
   String get vrName => kVRName;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -1643,8 +1644,6 @@ abstract class UR extends Text {
 
   Uri get uri => _uri ??= (values.length != 1) ? null : Uri.parse(values.first);
   Uri _uri;
-
-  //TODO: add issues
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
@@ -1777,13 +1776,11 @@ abstract class UT extends Text {
   @override
   String get vrName => kVRName;
   @override
-  int get vflSize => 4;
+  int get vlfSize => 4;
   @override
   int get maxLength => kMaxLength;
   @override
   int get maxVFLength => kMaxVFLength;
-
-  //TODO: add issues
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
@@ -1965,7 +1962,6 @@ abstract class AS extends StringBase {
   static bool isNotValidValueLength(String s, [Issues issues]) =>
       !isValidValueLength(s, issues);
 
-  //TODO: Add issues everywhere
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || isNotValidValueLength(s, issues)) {
@@ -2249,7 +2245,8 @@ abstract class DT extends StringBase {
 /// An abstract class for time ([TM]) [Element]s.
 ///
 /// [Time] [String]s have the following format: HHMMSS.ffffff.
-/// [See PS3.18, TM](http://dicom.nema.org/medical/dicom/current/output/html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
+/// [See PS3.18, TM](http://dicom.nema.org/medical/dicom/current/output/
+/// html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
 abstract class TM extends StringBase {
   @override
   int get vrIndex => kVRIndex;
@@ -2470,7 +2467,6 @@ List<String> stringListFromBytes(TypedData bytes, int maxVFLength,
         {bool isAscii = true}) =>
     _stringListFromTypedData(bytes, maxVFLength, isAscii: isAscii);
 
-//TODO: vfBytes -> vfByteData
 List<String> _stringListFromTypedData(TypedData td, int maxVFLength,
     {bool isAscii = true}) {
   if (td.lengthInBytes == 0) return kEmptyStringList;
@@ -2492,7 +2488,6 @@ List<String> textListFromBytes(TypedData vfBytes, int maxVFLength,
         {bool isAscii = true}) =>
     _textListFromTypedData(vfBytes, maxVFLength, isAscii: isAscii);
 
-//TODO: vfBytes -> vfByteData
 List<String> _textListFromTypedData(TypedData vfBytes, int maxVFLength,
     {bool isAscii = true}) {
   if (vfBytes.lengthInBytes == 0) return kEmptyStringList;

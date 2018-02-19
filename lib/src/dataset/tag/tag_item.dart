@@ -31,10 +31,10 @@ class TagItem extends Item with TagDataset {
       : elements = elements ?? new MapAsList(),
         dsBytes = new IDSBytes(bd);
 
-  /// Creates a new [TagItem] from an existing [TagItem].
+  /// Creates a new [TagItem] from an existing [Item].
   /// If [parent] is _null_ the new [TagItem] has the same
   /// parent as [item].
-  TagItem.from(TagItem item, Dataset parent)
+  TagItem.from(Item item, Dataset parent)
       : parent = (parent == null) ? item.parent : parent,
         elements = new MapAsList.from(item.elements, parent),
         sequence = item.sequence,

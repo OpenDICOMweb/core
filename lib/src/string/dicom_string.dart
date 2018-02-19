@@ -12,8 +12,7 @@ import 'package:core/src/string/hexadecimal.dart';
 /// corresponding to the Tag [code].
 String dcm(int code) {
   assert(code >= 0 && code <= 0xFFFFFFFF, 'code: $code');
-  return '(${hex16(code >> 16, prefix: '')},'
-      '${hex16(code & 0xFFFF, prefix: '')})';
+  return '(${hex16(code >> 16)},${hex16(code & 0xFFFF)})';
 }
 
 /// DICOM Character Set Predicates

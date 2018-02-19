@@ -103,7 +103,7 @@ class DatasetComparitor<K> {
       }
       if (e0 is SQ && e1 is SQ) {
         compareSequences(e0, e1);
-      } else if (e0 is MetaElement && e1 is MetaElement) {
+      } else if (e0 is BulkdataRef && e1 is BulkdataRef) {
         final m0 = e0.e;
         final m1 = e1.e;
         if (m0 is SQ && m1 is SQ) {
@@ -167,7 +167,8 @@ class DatasetComparitor<K> {
       hasDifference = true;
     }
 
-    final len = (sq0.values.length < sq1.length) ? sq0.values.length : sq1.length;
+    final len =
+        (sq0.values.length < sq1.length) ? sq0.values.length : sq1.length;
     final v0 = sq0.values;
     final v1 = sq1.values;
     if (v0.isEmpty && v1.isEmpty) return;
@@ -191,7 +192,8 @@ class DatasetComparitor<K> {
     return hasDifference;
   }
 
-  void addNonMatchingElements(Element e0, Element e1) => bad.add(<Element>[e0, e1]);
+  void addNonMatchingElements(Element e0, Element e1) =>
+      bad.add(<Element>[e0, e1]);
 
   @override
   String toString() => '$runtimeType: $dataset0, $dataset1';
