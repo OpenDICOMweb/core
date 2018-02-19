@@ -52,7 +52,7 @@ ByteData makeLongEvrHeader(int code, int vrCode, ByteData bd) {
     ..setUint16(_evrVROffset, vrCode, Endian.little)
     ..setUint16(_shortEvrVFLengthOffset, 0, Endian.little)
     ..setUint32(_longEvrVFLengthOffset, vfLength, Endian.little);
-  longEvrInfo(bd);
+  //longEvrInfo(bd);
   return bd;
 }
 
@@ -83,7 +83,8 @@ ByteData makeShortEvr(int code, int vrCode, ByteData vfBD) {
 ByteData makeLongEvr(int code, int vrCode, ByteData vfBD) {
   // log.debug('makeEvr: ${hex32(code)}');
   final vfLength = vfBD.lengthInBytes;
-  final eLength = _longEvrHeaderSize + vfLength;
+  var eLength = _longEvrHeaderSize + vfLength;
+  if(eLength.isOdd) eLength++;
   final bd = new ByteData(eLength);
   makeLongEvrHeader(code, vrCode, bd);
   copyBDToVF(bd, _longEvrVFOffset, vfBD);
