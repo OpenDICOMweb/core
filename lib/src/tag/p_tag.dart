@@ -7,9 +7,7 @@
 import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/tag/e_type.dart';
-import 'package:core/src/tag/elt.dart';
 import 'package:core/src/tag/errors.dart';
-import 'package:core/src/tag/group.dart';
 import 'package:core/src/tag/p_tag_code_map.dart';
 import 'package:core/src/tag/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
@@ -82,7 +80,7 @@ class PTag extends Tag {
 
   bool get isWKFmi => fmiTags.contains(code);
 
-  static PTag maker(int code, int vrIndex, [Object name]) {
+  static PTag make(int code, int vrIndex, [Object name]) {
     final tag = lookupByCode(code, vrIndex);
     if (tag != null) return tag;
     return new PTag.unknown(code, vrIndex);
@@ -93,12 +91,13 @@ class PTag extends Tag {
 
   static PTag lookupByCode(int code,
       [int vrIndex = kUNIndex, bool shouldThrow = false]) {
-    assert(Tag.isPublicCode(code));
+    if (Tag.isNotPublicCode(code))
+      return invalidTagCode(code, 'Non-Public Tag Code');
     final tag = pTagCodeMap[code];
     if (tag != null) return tag;
 
     // This is fromTag Group Length Tag
-    if (Elt.fromTag(code) == 0) return new PTagGroupLength(code);
+    if ((code & 0xFFFF) == 0) return new PTagGroupLength(code);
 
     // **** Retired _special case_ codes that still must be handled
     if ((code >= 0x00283100) && (code <= 0x002031FF))
@@ -17310,7 +17309,7 @@ class PTagUnknown extends PTag {
   // Group Length Tags
   PTagUnknown(int code, int vrIndex)
       : super._(
-            'kUnknownPublicTag_${hex16(Group.fromTag(code))}',
+            'kUnknownPublicTag_${hex16(code >> 16)}',
             code,
             'Unknown DICOM Tag ${dcm(code)}',
             vrIndex,

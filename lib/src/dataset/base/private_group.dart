@@ -5,160 +5,122 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/integer/integer.dart';
-import 'package:core/src/element/base/private.dart.old';
+//import 'package:core/src/element/base/private/private.dart';
+import 'package:core/src/element/base/string.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/tag/export.dart';
 
-// Each private creator in the same Private Group
-// SHOULD/MUST have a distinct  identifier;
+//TODO: needed??
+const List<LO> emptyPrivateCreator = const <LO>[];
+
 class PrivateGroup {
   /// The Group number for this group
   final int group;
 
   /// The Group Length Element for this [PrivateGroup].  This
-  /// Private [Element] is retired and normally is not present.
-  GL gLength;
+  /// [Element] is retired and normally is not present.
+  Element gLength;
 
   /// Illegal elements between gggg,0001 - gggg,000F
   List<Element> illegal = [];
 
-  /// A [Map] from [Elt] to [PrivateSubGroup].
-  final Map<int, PrivateSubGroup> subgroups = <int, PrivateSubGroup>{};
-
-  PrivateSubGroup _currentSubGroup;
+  /// A [Map] from sgNumber to [PrivateSubgroup].
+  Map<int, PrivateSubgroup> subgroups = <int, PrivateSubgroup>{};
 
   PrivateGroup(this.group);
 
-  /// Returns the [PrivateSubGroup] that corresponds with.
-  PrivateSubGroup operator [](int pdCode) => subgroups[Elt.fromTag(pdCode)];
+  /// Returns the [PrivateSubgroup] that corresponds with.
+  PrivateSubgroup operator [](int pdCode) => subgroups[pdCode & 0xFFFF];
 
   String get info => '$this\n${subgroups.values.join("  \n")}';
 
   /// Returns _true_ if [code] has a Group number equal to [group].
-  bool inGroup(int code) => Group.fromTag(code) == group;
+  bool inGroup(int code) => code >> 16 == group;
 
-  bool add(Element e) {
-    final tag = e.tag;
-    if (tag is PCTag) {
-      addCreator(e);
-      return true;
-    } else if (tag is PDTag) {
-      if (tag.subGroup == _currentSubGroup.sgIndex) {
-        _currentSubGroup.add(e);
-        return true;
-      } else {
-        final sg = new PrivateSubGroup(e);
-        subgroups[tag.subGroup] = sg;
-        return true;
-      }
-    }
-    return false;
-  }
-
-  bool addCreator(Element pc) {
-    if (pc.tag is PCTag) {
-      final PCTag tag = pc.tag;
-      final sg = new PrivateSubGroup(pc);
-      subgroups[tag.subGroup] = sg;
-      return true;
-    }
-    return false;
-  }
-
-  bool addNoCreator(Element pd) {
-    if (pd.tag is PCTag) {
-      final PDTag tag = pd.tag;
-      final sg = new PrivateSubGroup.noCreator(tag.group, tag.subGroup);
-      subgroups[tag.subGroup] = sg;
-      return true;
-    }
-    return false;
-  }
-/*
-  /// Adds a new [PrivateSubGroup] to _this_ [PrivateGroup].
-  void _add(PrivateSubGroup sg) {
-    final sg0 = subgroups[sg.creator.sgIndex];
+  /// Adds a new [PrivateSubgroup] to _this_ [PrivateGroup].
+  void _add(PrivateSubgroup sg) {
+    final PCTag tag = sg.creator.tag;
+    final sgNumber = tag.sgNumber;
+    final sg0 = subgroups[sgNumber];
     if (sg0 != null)
       throw new SubgroupAlreadyExistsError(
           'Subgroup $sg0 already exists: new $sg');
-    subgroups[sg.creator.sgIndex] = sg;
+    subgroups[sgNumber] = sg;
   }
-*/
 
-  String format(Formatter z) => '${z(this)}\n'
-      '${z.fmt('Subgroups(${subgroups.values.length})', subgroups)}';
+  String format(Formatter z) =>
+      '${z(this)}\n${z.fmt('Subgroups(${subgroups.values.length})',
+                               subgroups)}';
 
   @override
   String toString([String prefix = '']) => '$runtimeType(${hex8(group)}): '
       '${subgroups.length} creators';
 }
 
-//TODO: each private creator in the same Private Group SHOULD/MUST
-//      have a distinct identifier;
-/// Private Creator Element (see PS3.5)
+/// A [PrivateSubgroup] contains a Private [creator] and
+/// a [Map<int, Element] of corresponding Private Data Elements.
 ///
-/// Unlike other Private Tags, which are MetaElements, [PrivateCreator]
-/// extends the LO {Element].  All [PrivateCreator]s must have only
-/// 1 value, which is a [PrivateCreator] token [String].
-///
-/// _Note_: The [PrivateCreator] read from an encoded Dataset might
-/// have a VR of UN, but it will be converted to LO Element when created.
-class PrivateSubGroup {
-  // PrivateSubGroupTag pcTag;
-  final PrivateCreator creator;
+/// _Note_: The [Element] read from an encoded Dataset might
+/// have a VR of UN, but will typically be converted to LO
+/// Element when created.
+class PrivateSubgroup {
+  /// The Private Creator for this [PrivateSubgroup].
+  ///
+  /// _Note_: If no [creator] corresponding to a Private Data Element
+  /// is present in the Dataset, the [creator] will be a Missing Private
+  /// Creator Element.
+  final Element creator;
 
-  /// The Tag (gggg,iiii) Group Number (i.e. gggg).
-  final int group;
+  /// The subgroup key is the Elt number of the Private Data
+  Map<int, Element> pData = {};
 
-  /// An integer between 0x10 and 0xFF inclusive. If a PCTag Code is denoted
-  /// (gggg,00ii), and a PDTag Code is denoted (gggg,iioo) then the Sub-Group
-  /// Index corresponds to ii.
-  final int sgIndex;
-
-  final Map<int, Element> members;
-
-  PrivateSubGroup(this.creator)
-      : assert(creator is PrivateCreator),
-        group = creator.group,
-        sgIndex = creator.sgIndex,
-        members = <int, Element>{};
-
-  PrivateSubGroup.noCreator(this.group, this.sgIndex)
-      : creator = null,
-        members = <int, Element>{};
-
-  String get info => '$runtimeType(${hex16(group)}) $creator\n '
-      '(${members.length})$members';
-
-  Element lookup(int code) =>
-      (code == creator.index) ? creator : members[code];
-
-  bool add(Element pd) {
-    if (pd.tag is PDTag) {
-      members[pd.code] = pd;
-      return true;
-    }
-    return false;
+  factory PrivateSubgroup(PrivateGroup group, Element creator) {
+    final sg = new PrivateSubgroup._(creator);
+    group._add(sg);
+    return sg;
   }
 
-  bool inSubgroup(int pdCode) =>
-      Group.fromTag(pdCode) == group && creator.inSubgroup(Elt.fromTag(pdCode));
+  factory PrivateSubgroup.noCreator(PrivateGroup group, Element creator) {
+    final sg = new PrivateSubgroup._(creator);
+    group._add(sg);
+    return sg;
+  }
+
+  PrivateSubgroup._(this.creator);
+
+  int get group => creator.tag.group;
+
+  /// A integer between 0x10 and 0xFF inclusive. It corresponds to
+  /// a Private Creator's Element field, i.e. eeee in (gggg,eeee).
+  int get sgNumber {
+    final PCTag tag = creator.tag;
+    return tag.sgNumber;
+  }
+
+  String get info => '$runtimeType(${hex16(sgNumber)}) $creator\n '
+      '(${pData.length})$creator.pData';
+
+  void add(Element e) {
+    if (Tag.isValidPDCode(e.code, creator.code)) pData[Tag.toElt];
+  }
+
+  bool inSubgroup(int pdCode) => Tag.isValidPDCode(pdCode, creator.code);
 
   /// Returns a Private Data [Element].
-  Element lookupData(int code) => members[code];
+  Element lookupData(int pdCode) =>
+      (inSubgroup(pdCode)) ? pData[Tag.toElt(pdCode)] : null;
 
   String format(Formatter z) {
     final sb = new StringBuffer('${z(this)}\n');
     z.down;
-    sb.write(z.fmt(creator, members));
+    sb.write(z.fmt(creator, pData));
     z.up;
     return sb.toString();
   }
 
   @override
-  String toString() => '$runtimeType(${creator.sgIndex}): $creator';
+  String toString() => '$runtimeType($sgNumber): $creator';
 }
 
 class SubgroupAlreadyExistsError extends Error {

@@ -33,7 +33,7 @@ import 'package:core/src/vr/vr.dart';
 const int _vrOffset = 4;
 
 Tag _tagLookup(int code, int vrIndex, [Uint8List vfBytes]) {
-  if (Tag.isPrivateCreatorCode(code)) {
+  if (Tag.isPCCode(code)) {
     final token = ASCII.decode(vfBytes, allowInvalid: true);
     final tag = Tag.lookupByCode(code, kLOIndex, token);
     return tag;
@@ -713,11 +713,12 @@ class PCevr extends PC
 
   PCevr(this.bd);
 
+  /// Returns a [PCTag].
   @override
-  PCTag get tag {
-    if (Tag.isPrivateCreatorCode(code)) {
+  Tag get tag {
+    if (Tag.isPCCode(code)) {
       final token = ASCII.decode(vfBytes, allowInvalid: true);
-      final tag = Tag.lookupByCode(code, kLOIndex, token);
+      final tag = PCTag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
     return invalidKey(code, 'Invalid Tag Code ${dcm(code)}');
@@ -727,6 +728,18 @@ class PCevr extends PC
     assert(vrIndex != null && vrIndex == kLOIndex);
     assert(_checkPadding(bd));
     return new PCevr(_removeShortPadding(bd));
+  }
+
+  static PCevr makeEmptyPrivateCreator(int pdTag, int vrIndex) {
+    final group = Tag.privateGroup(pdTag);
+    final sgNumber = (pdTag & 0xFFFF) >> 8;
+    final bd = new ByteData(8)
+      ..setUint16(0, group, Endian.little)
+      ..setUint16(0, sgNumber, Endian.little)
+      ..setUint8(4, kL)
+      ..setUint8(5, kO)
+      ..setUint16(6, 0, Endian.little);
+    return new PCevr(bd);
   }
 }
 

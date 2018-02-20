@@ -124,7 +124,8 @@ void main() {
       final loggerAB = new Logger('a.b');
       final loggerA = loggerAB.parent;
 
-      expect(loggerA.children['b'], same(loggerAB), reason: 'can read Children');
+      expect(loggerA.children['b'], same(loggerAB),
+          reason: 'can read Children');
 
       expect(() {
         loggerAB.children['test'] = null;
@@ -210,7 +211,8 @@ void main() {
         recordingZone = Zone.current;
       });
 
-      runZoned(() => root.log(Level.info0, 'hello', 0, null, null, recordingZone));
+      runZoned(
+          () => root.log(Level.info0, 'hello', 0, null, null, recordingZone));
       expect(records, hasLength(1));
       expect(records.first.zone, equals(recordingZone));
     });
@@ -446,7 +448,9 @@ void main() {
         ..warn0('9')
         ..abort('10');
 
-      log..debug('onrecode: ${root.onRecord}')..debug('root messages: $rootMessages');
+      log
+        ..debug('onrecode: ${root.onRecord}')
+        ..debug('root messages: $rootMessages');
       expect(
           rootMessages,
           equals([
@@ -577,7 +581,12 @@ void main() {
         ..debug('controller: ${c.onRecord}')
         ..debug('messages: $messages')
         ..debug('objects: $objects');
-      root..info0(5)..info0(false)..info0([1, 2, 3])..info0(() => 10)..info0(object);
+      root
+        ..info0(5)
+        ..info0(false)
+        ..info0([1, 2, 3])
+        ..info0(() => 10)
+        ..info0(object);
 
       expect(
           messages,

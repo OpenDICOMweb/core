@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/logger/indenter.dart';
+import 'package:core/src/indenter/prefixer.dart';
 
 abstract class Formattable<T> implements Iterable<T> {
   @override
@@ -23,8 +23,8 @@ class Formatter {
   /// level.  If this number isNegative all Objects will be formatted.
   final int maxDepth;
 
-  /// The [Indenter] used by this formatter.
-  final Indenter indenter;
+  /// The [Prefixer] used by this formatter.
+  final Prefixer indenter;
 
   Formatter(
       {this.maxDepth = 10,
@@ -33,14 +33,14 @@ class Formatter {
       String lineNoPadChar = '0',
       String prefix = ' ',
       int indent = 2})
-      : indenter = new Indenter(
+      : indenter = new Prefixer(
             lineNumberWidth: lineNoWidth,
             lineNoRadix: lineNoRadix,
             lineNoPadChar: lineNoPadChar,
             prefix: prefix,
             indent: indent);
 
-  Formatter.basic([this.maxDepth = -1]) : indenter = Indenter.basic;
+  Formatter.basic([this.maxDepth = -1]) : indenter = Prefixer.basic;
 
   Formatter.withIndenter(this.maxDepth, this.indenter);
 

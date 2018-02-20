@@ -28,7 +28,7 @@ class Prefixer {
   /// The character used to padLeft the [_line] number. Defaults to "0".
   final String lineNoPadChar;
 
-  /// The level of the [Indenter].  Each time the [Indenter] descends into
+  /// The level of the [Prefixer].  Each time the [Prefixer] descends into
   /// a new [Object] the level should be increased by 1 using [down] and
   /// before returning, decreased by 1 using [up].
   int _level = 0;
@@ -72,7 +72,7 @@ class Prefixer {
   String get z => '$lineNo$prefix$spaces';
 
   String get info => '''
-Indenter: z: '$z' spaces: $spaces level: $_level, indent: $indent,
+Prefixer: z: '$z' spaces: $spaces level: $_level, indent: $indent,
   prefix: $prefix, line: $_line, maxLine: $_maxLineNumber,
   width: $lineNumberWidth, radix: $lineNoRadix, padChar: '$lineNoPadChar'
 ''';

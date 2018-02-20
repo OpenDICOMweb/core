@@ -7,6 +7,7 @@
 //TODO: load Element library lazily
 
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
@@ -20,11 +21,25 @@ import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/export.dart';
 import 'package:core/src/vr/vr.dart';
 
+
+/// The base class for DICOM Data Elements
+///
+/// An implementation of this class must provide the following:
+///   1. An implementation of a List<V> of values, where V is
+///      one of [double], [int], [String], or [Item].
+///
+///   2. An implementation of a TypeData Getter typedData.
+///
+
+// TODO: the following typedefs should be replaced with the new
+//       inline Type declarations
+/// The Type of a Method or Function that takes an Element and returns
+/// a [bool].
 typedef bool ElementTest(Element e);
 
-typedef Iterable<V> ValuesConverter<V>(Iterable<V> vList);
+typedef Iterable<V> _ValuesConverter<V>(Iterable<V> vList);
 
-typedef Element<V> ElementConverter<V>(Iterable<V> vList);
+typedef Element<V> _ElementConverter<V>(Iterable<V> vList);
 
 typedef bool Condition(Dataset ds, Element e);
 
@@ -46,7 +61,11 @@ bool doFancy = false;
 abstract class Element<V> extends ListBase<V> {
   // **** Interface
 
-  /// Returns the canonical empty list for [V].
+  /// Returns the [Iterable<V>] [values] of _this_.
+  Iterable<V> get values;
+  set values(Iterable<V> vList);
+
+  /// Returns the canonical empty list for [V] ([List<V>[]]).
   List<V> get emptyList;
 
   /// The [index] of the [Element] Definition for _this_. It is
@@ -65,9 +84,7 @@ abstract class Element<V> extends ListBase<V> {
   /// The DeIdentification Method index for this Element.
 //  int get deIdIndex;
 
-  /// Returns the [Iterable<V>] [values] of _this_.
-  Iterable<V> get values;
-  set values(Iterable<V> vList);
+
 
   /// The actual length in bytes of the Value Field. It does
   /// not include any padding characters.
@@ -324,6 +341,19 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns [values] encoded as a [Uint8List].
   Uint8List get vfBytes =>
       (checkValues(values)) ? typedData.buffer.asUint8List() : null;
+
+  String get vfBytesAsAscii =>
+      ASCII.decode(vfBytes, allowInvalid: true);
+
+  List<String> get vfBytesAsAsciiList =>
+      ASCII.decode(vfBytes, allowInvalid: true).split('\\');
+
+  String get vfBytesAsUtf8 =>
+      UTF8.decode(vfBytes, allowMalformed: true);
+
+  List<String> get vfBytesAsUtf8List =>
+      UTF8.decode(vfBytes, allowMalformed: true).split('\\');
+
 
   /// Returns the Ascii Padding Character for this [Element],
   /// if it has one; otherwise returns -1;

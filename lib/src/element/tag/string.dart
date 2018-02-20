@@ -159,11 +159,6 @@ class LOtag extends LO with TagElement<String> {
 
   LOtag._(this.tag, this.values);
 
-/* Flush when working
-  // TODO: remove this constructor when
-  LOtag.internal(this.tag, this.values);
-*/
-
   @override
   LOtag update([Iterable<String> vList = kEmptyStringList]) =>
       new LOtag(tag, vList ?? kEmptyStringList);
@@ -175,6 +170,43 @@ class LOtag extends LO with TagElement<String> {
       new LOtag._fromBytes(tag, bytes);
 
   static LOtag fromBDE(Element e) => new LOtag._fromBytes(e.tag, e.vfBytes);
+}
+
+class PCtag extends PC with TagElement<String> {
+  @override
+  final Tag tag;
+  @override
+  Iterable<String> values;
+
+  factory PCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
+      (LO.isValidArgs(tag, vList))
+      ? new PCtag._(tag, vList)
+      : invalidValuesError(vList, tag: tag);
+
+  factory PCtag._fromBytes(Tag tag, Uint8List bytes) =>
+      (LO.isNotValidTag(tag)) ? null : new PCtag._(tag, LO.fromBytes(bytes));
+
+  PCtag._(this.tag, this.values);
+
+  @override
+  PCtag update([Iterable<String> vList = kEmptyStringList]) =>
+      new PCtag(tag, vList ?? kEmptyStringList);
+
+  static PCtag make(Tag tag, Iterable<String> vList) =>
+      new PCtag(tag, vList ?? kEmptyStringList);
+
+  static PCtag fromBytes(Tag tag, Uint8List bytes) =>
+      new PCtag._fromBytes(tag, bytes);
+
+  static PCtag fromBDE(Element e) => new PCtag._fromBytes(e.tag, e.vfBytes);
+
+  static PCtag makeEmptyPrivateCreator(int pdTag, int vrIndex) {
+    final group = Tag.privateGroup(pdTag);
+    final sgNumber = (pdTag & 0xFFFF) >> 8;
+    final code = (group << 16) + sgNumber;
+    final tag = new PCTagUnknown(code, kLOIndex, '');
+    return new PCtag(tag, const <String>['']);
+  }
 }
 
 /// An Long Text (LT) Element
@@ -545,7 +577,8 @@ class DTtag extends DT with TagElement<String> {
 /// The DICOM [TM] (Time) [Element].
 ///
 /// [Time] [String]s have the following format: HHMMSS.ffffff. [See PS3.18, TM]
-/// (http://dicom.nema.org/medical/dicom/current/output/html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
+/// (http://dicom.nema.org/medical/dicom/current/output/html/part18.html
+/// #para_3f950ae4-871c-48c5-b200-6bccf821653b)
 class TMtag extends TM with TagElement<String> {
   @override
   final Tag tag;

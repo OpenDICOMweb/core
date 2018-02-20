@@ -6,7 +6,7 @@
 import 'dart:async';
 import 'dart:collection';
 
-import 'package:core/src/logger/indenter.dart';
+import 'package:core/src/indenter/prefixer.dart';
 import 'package:core/src/logger/log_level.dart';
 import 'package:core/src/logger/log_record.dart';
 
@@ -35,8 +35,8 @@ class Logger {
   /// Controller used to notify when log entries are added to this logger.
   StreamController<LogRecord> _controller;
 
-  /// The [Indenter] for this logger.
-  final Indenter indenter;
+  /// The [Prefixer] for this logger.
+  final Prefixer prefixer;
 
   /// The [Level] at or above which logging should be done, by this.
   Level _level;
@@ -74,12 +74,12 @@ class Logger {
   /// It can be useful when you just need a local short-living logger,
   /// which you'd like to be garbage-collected later.
   factory Logger.detached(String name,
-          [Level value = defaultLevel, Indenter indenter]) =>
-      new Logger._(name, null, value);
+          [Level value = defaultLevel, Prefixer indenter]) =>
+      new Logger._(name, null, value, indenter: indenter);
 
-  Logger._(this.name, this.parent, this._level, {Indenter indenter})
+  Logger._(this.name, this.parent, this._level, {Prefixer indenter})
       : _children = <String, Logger>{},
-        indenter = indenter ?? Indenter.basic {
+        prefixer = indenter ?? Prefixer.basic {
     if (parent != null) parent._children[name] = this;
   }
 
@@ -122,10 +122,10 @@ class Logger {
   /// Turn console printing off.
   bool get printOff => doPrint = false;
 
-  int get reset => indenter.reset;
-  int get down => indenter.down;
-  int get up => indenter.up;
-  int get up2 => indenter.up2;
+  int get reset => prefixer.reset;
+  int get down => prefixer.down;
+  int get up => prefixer.up;
+  int get up2 => prefixer.up2;
 
   /// Returns a stream of messages added to this [Logger].
   ///
@@ -167,8 +167,8 @@ class Logger {
       [int indent = 0, Object error, StackTrace stack, Zone zone]) {
     if (logLevel < level) return null;
     Object msg = message;
+    if (message is Function) msg = message();
     Object object;
-    if (msg is Function) msg = msg();
     if (msg is! String) {
       object = msg;
       msg = msg.toString();
@@ -186,13 +186,13 @@ class Logger {
     }
     zone ??= Zone.current;
 
-    if (indent > 0) indenter.inc(indent);
-    msg = '${indenter.z}$msg';
+    if (indent > 0) prefixer.inc(indent);
+    msg = '${prefixer.z}$msg';
     final record =
         new LogRecord(logLevel, msg, fullName, error, trace, zone, object);
     records.add(record);
     if (doPrint) print(record);
-    if (indent < 0) indenter.inc(indent);
+    if (indent < 0) prefixer.inc(indent);
 
     if (isHierarchicalEnabled) {
       var target = this;

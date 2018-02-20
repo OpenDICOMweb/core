@@ -24,7 +24,6 @@ import 'package:core/src/string/ascii.dart';
 import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/vr/vr.dart';
@@ -1041,7 +1040,7 @@ abstract class LO extends StringUtf8 {
 /// of the form (gggg,00cc), where 0x10 <= cc <= 0xFF..
 abstract class PC extends LO {
   @override
-  PCTag get tag;
+  Tag get tag;
   @override
   String get vrKeyword => kVRKeyword;
   @override
@@ -1051,7 +1050,7 @@ abstract class PC extends LO {
   @override
   String get name => 'Private Creator - $creator';
 
-  int get sgNumber => tag.sgNumber;
+  int get sgNumber => code & 0xFF;
 
   static const String kVRKeyword = 'PC';
   static const String kVRName = 'Private Creator';

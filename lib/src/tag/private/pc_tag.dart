@@ -43,7 +43,7 @@ abstract class PCTag extends PrivateTag {
   String get limitHex => hex32(limit);
 
   @override
-  bool get isValid => Tag.isPrivateCreatorCode(code) && vrIndex == kLOIndex;
+  bool get isValid => Tag.isPCCode(code) && vrIndex == kLOIndex;
 
   bool isValidDataCode(int code) {
     final ng = (code >> 16);
@@ -65,15 +65,23 @@ abstract class PCTag extends PrivateTag {
   @override
   String toString() => '$runtimeType($name) $dcm ${vrIdByIndex[vrIndex]} $vm';
 
-
-   static PCTag make(int code, int vrIndex, String name) {
-    final def = PCTagDefinition.lookup(name);
-    if (vrIndex != kLOIndex && vrIndex != kUNIndex) _error(vrIndex);
-
-    return (def != null)
-           ? new PCTagKnown(code, vrIndex, name, def)
-           : new PCTagUnknown(code, vrIndex, name);
+  ///
+  static PCTag lookupByCode(int code, int vrIndex, String creatorName) {
+    if (creatorName == null || creatorName.isEmpty)
+      log.error('Invalid Creator Name: "$creatorName"');
+    final def = PCTagDefinition.lookup(creatorName);
+    return (def == null)
+           ? def
+           : new PCTagKnown(code, vrIndex, creatorName, def);
   }
+
+   static PCTag make(int code, int vrIndex, [String creatorName = '']) {
+     final def = PCTagDefinition.lookup(creatorName);
+     if (vrIndex != kLOIndex && vrIndex != kUNIndex) _error(vrIndex);
+     return (def != null)
+            ? new PCTagKnown(code, vrIndex, creatorName, def)
+            : new PCTagUnknown(code, vrIndex, creatorName);
+   }
 
   static void _error(int vrIndex) =>
       log.error('**** Private Creator Tag with invalid vrIndex: $vrIndex');

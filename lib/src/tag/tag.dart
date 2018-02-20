@@ -16,9 +16,7 @@ import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/e_type.dart';
-import 'package:core/src/tag/elt.dart';
 import 'package:core/src/tag/errors.dart';
-import 'package:core/src/tag/group.dart';
 import 'package:core/src/tag/ie_type.dart';
 import 'package:core/src/tag/p_tag.dart';
 import 'package:core/src/tag/p_tag_keywords.dart';
@@ -50,7 +48,6 @@ typedef bool _ETypePredicate<K>(Dataset ds, K key);
 ///       PCTagUnknown
 ///       PDTag
 ///       PDTagUnknown
-//TODO: is hashCode needed?
 abstract class Tag {
   ///TODO: Tag and Tag.public are inconsistent when new Tag, PrivateTag... files
   ///      are generated make them consistent.
@@ -106,10 +103,10 @@ abstract class Tag {
   /// Returns the [group] number for _this_  in hexadecimal format.
   String get groupHex => hex16(group);
 
-  /// Returns the DICOM element [Elt] number for _this_  [Tag].
+  /// Returns the DICOM element number for _this_  [Tag].
   int get elt => code & kElementMask;
 
-  /// Returns the DICOM element [Elt] number for _this_  in hexadecimal format.
+  /// Returns the DICOM element number for _this_  in hexadecimal format.
   String get eltHex => hex16(elt);
 
   // **** VR Getters
@@ -203,9 +200,10 @@ abstract class Tag {
 
   int get dcmDirMax => kMaxDcmDirTag;
 
-  /// Returns _true_  if [code] is in the range of DICOM Directory [Tag] [code]s.
+  /// Returns _true_  if [code] is in the range of
+  /// DICOM Directory [Tag] [code]s.
   ///
-  /// Note: Does not test tag validity.
+  /// _Note_: Does not test tag validity.
   bool get isDcmDir => kMinDcmDirTag <= code && code <= kMaxDcmDirTag;
 
   /// Returns _true_  if [code] is in the range of DICOM Directory
@@ -287,8 +285,8 @@ abstract class Tag {
 
   bool isNotValidLength(int length) => !isValidLength(length);
 
-  //TODO: unit test
-  /// Returns _true_  if [vfLength] is a valid Value Field length for _this_ [Tag].
+  /// Returns _true_  if [vfLength] is a valid
+  /// Value Field length for _this_ [Tag].
   bool isValidVFLength(int vfLength, [Issues issues]) {
     assert(vfLength >= 0 && vfLength <= vr.maxVFLength);
     if (isVFLengthAlwaysValid(vrIndex)) return true;
@@ -305,61 +303,9 @@ abstract class Tag {
   bool isNotValidVFLength(int vfLength, [Issues issues]) =>
       !isValidVFLength(vfLength, issues);
 
-  /* Flush when working
-  bool get isVFLengthAlwaysValid => isVFLengthValid();
-      vrIndex == kSQIndex ||
-      vrIndex == kUNIndex ||
-      vrIndex == kOBIndex ||
-      vrIndex == kOWIndex ||
-      vrIndex == kOLIndex ||
-      vrIndex == kODIndex ||
-      vrIndex == kOFIndex ||
-      vrIndex == kUCIndex ||
-      vrIndex == kURIndex ||
-      vrIndex == kUTIndex;
-*/
-
   bool isValidColumns<V>(List<V> vList, [Issues issues]) =>
       columns == 0 || (vList.length % columns) == 0;
 
-/*
- //Flush when sure this is less accurate then above.
-  bool isValidVFLength(int lengthInBytes) =>
-      (lengthInBytes >= minVFLength && lengthInBytes <= vr.maxVFLength);
-*/
-
-/*
-  int getMax() {
-    if (vmMax != -1) return vmMax;
-    final excess = vr.maxLength % vmColumns;
-    final actual = maxLength - excess;
-    assert(actual % vmColumns == 0);
-    return actual;
-  }
-
-
-  bool isNotValidLength<V>(Iterable<V> vList, [Issues issues]) =>
-      !isValidLength(vList, issues);
-
-//  List<V> checkLength<V>(Iterable<V> vList) => (isValidLength<V>(vList)) ? vList : null;
-
-  //Flush?
-  String widthError(int length) => 'Invalid Width for Tag$dcm}: '
-      'values length($length) is not a multiple of vmWidth($width)';
-
-  //Flush?
-  String lengthError(int length) =>
-      'Invalid Length: min($minValues) <= length($length) <= max($maxValues)';
-
-
-  Uint8List checkVFLength(Uint8List bytes, int maxVFLength, int sizeInBytes) =>
-      (isValidVFLength(bytes.length, maxVFLength, sizeInBytes)) ? bytes : null;
-
-  //Fix or Flush
-  //Uint8List checkBytes(Uint8List bytes) => vr.checkBytes(bytes);
-
-  V parse<V>(String s) => vr.parse(s);
-*/
   /// Converts a DICOM [keyword] to the equivalent DICOM name.
   ///
   /// Given a keyword in camelCase, returns a [String] with a
@@ -396,7 +342,7 @@ abstract class Tag {
     return '$runtimeType: $dcm $keyword, ${vrIdByIndex[vrIndex]}, $vm$retired';
   }
 
-  //Fix: make this a real index
+  //TODO: make this a real index
   static int codeToIndex(int x) => x;
   static int keywordToIndex(String kw) => pTagKeywords[kw].code;
 
@@ -406,6 +352,7 @@ abstract class Tag {
     return invalidTagKey<K>(key, vrIndex, creator);
   }
 
+  //TODO: Flush either fromCode of lookupByCode
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag fromCode<T>(int code, int vrIndex, [T creator]) {
     if (Tag.isPublicCode(code)) {
@@ -413,9 +360,9 @@ abstract class Tag {
       return tag ??= new PTag.unknown(code, vrIndex);
     } else {
       assert(Tag.isPrivateCode(code) == true);
-      final elt = Elt.fromTag(code);
-      if (elt == 0) return new PrivateTagGroupLength(code, vrIndex);
-      if (elt < 0x10) return new PrivateTagIllegal(code, vrIndex);
+      final elt = code & 0xFF;
+      if (elt == 0) return new GroupLengthPrivateTag(code, vrIndex);
+      if (elt < 0x10) return new IllegalPrivateTag(code, vrIndex);
       if ((elt >= 0x10) && (elt <= 0xFF) && creator is String)
         return PCTag.make(code, vrIndex, creator);
       if ((elt > 0xFF) && (elt <= 0xFFFF) && creator is PCTag)
@@ -424,38 +371,28 @@ abstract class Tag {
       return invalidTagCode(code);
     }
   }
-  //TODO: Flush either fromCode of lookupByCode
+
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag lookupByCode(int code, [int vrIndex = kUNIndex, Object creator]) {
     String msg;
-    if (Tag.isPublicCode(code)) {
-      var tag = Tag.lookupPublicCode(code, vrIndex);
+    if (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)
+      return invalidTagCode(code);
+    final group = code >> 16;
+    if (group.isEven) {
+      var tag = PTag.lookupByCode(code, vrIndex);
       return tag ??= new PTag.unknown(code, vrIndex);
     } else {
       print('tag code ${hex32(code)}');
       assert(Tag.isPrivateCode(code) == true);
       final elt = code & 0xFFFF;
-      if (elt == 0)
-        return new PrivateTagGroupLength(code, vrIndex);
-      if (elt < 0x10)
-        return new PrivateTagIllegal(code, vrIndex);
+      if (elt == 0) return new GroupLengthPrivateTag(code, vrIndex);
+      if (elt < 0x10) return new IllegalPrivateTag(code, vrIndex);
       if ((elt >= 0x10) && (elt <= 0xFF))
         return PCTag.make(code, vrIndex, creator);
       if ((elt > 0x00FF) && (elt <= 0xFFFF))
         return PDTag.make(code, vrIndex, creator);
-      // This should never happen
-      return invalidTagCode(code);
-/*
-      if (Tag.isPrivateGroupLengthCode(code))
-        return new PrivateTagGroupLength(code, vrIndex);
-      if (Tag.isPrivateCreatorCode(code))
-        return PCTag.make(code, vrIndex, creator);
-      if (Tag.isPrivateDataCode(code))
-        return PDTag.make(code, vrIndex, creator);
-*/
-
     }
-//    log.debug('lookupTag: ${Tag.toDcm(code)} $vrIndex, $creator');
+    // This should never happen
     msg = 'Unknown Private Tag Code: creator: $creator';
     return invalidTagCode(code, msg);
   }
@@ -510,7 +447,6 @@ abstract class Tag {
     return true;
   }
 
-  //TODO: needed or used?
   static Tag lookupPublicCode(int code, int vrIndex) {
     final tag = PTag.lookupByCode(code, vrIndex);
     if (tag != null) return tag;
@@ -528,8 +464,8 @@ abstract class Tag {
 
   static Tag lookupPrivateCreatorCode(int code, int vrIndex, String token) {
     if (Tag.isPrivateGroupLengthCode(code))
-      return new PrivateTagGroupLength(code, vrIndex);
-    if (isPrivateCreatorCode(code)) return PCTag.make(code, vrIndex, token);
+      return new GroupLengthPrivateTag(code, vrIndex);
+    if (isPCCode(code)) return PCTag.make(code, vrIndex, token);
     throw new InvalidTagCodeError(code);
   }
 
@@ -567,84 +503,141 @@ abstract class Tag {
     }
     if (length > maxLength) {
       final msg = 'Invalid Length($length) greater than maxLength($maxLength)';
-      msgs = msgs ??= []..add(msg); //TODO: test Not sure this is working
+      msgs = msgs ??= []..add(msg);
     }
     return (msgs == null) ? null : msgs;
   }
 
+  /// Returns_true_ if [code] is a valid Public Code, but
+  /// _does not check that [code] is defined by the DICOM Standard.
+  static bool isPublicCode(int code) {
+    final group = code >> 16;
+    return group.isEven && group >= 0x0002 && group <= 0xFFFC;
+  }
+
+  static bool isNotPublicCode(int code) => !isPublicCode(code);
+
   // *** Private Tag Code methods
-  static bool isPrivateCode(int code) => Group.isPrivate(Group.fromTag(code));
+  /// Groups numbers that shall not be used in PrivateTags.
+  static const List<int> invalidPrivateGroups = const <int>[
+    0x0001, 0x0003, 0x0005, 0x0007, 0xFFFF // Don't reformat
+  ];
 
-  static bool isPublicCode(int code) => Group.isPublic(Group.fromTag(code));
+  /// Returns gggg of (gggg,eeee).
+  static int toGroup(int code) {
+    final group = code >> 16;
+    return (0x0007 < (code >> 16) && (code >> 16) < 0xFFFC) ? group : null;
+  }
 
-  static bool isGroupLengthCode(int code) => Elt.fromTag(code) == 0;
+  /// Returns eeee of (gggg,eeee).
+  static int toElt(int code) => code & 0xFFFF;
+
+  /// Returns_true_ if [code] is a valid Private Code.
+  static bool isPrivateCode(int code) => isPrivateGroup(code >> 16);
+
+  /// Returns_true_ if [group] is a valid Private Group.
+  static bool isPrivateGroup(int group) =>
+      group.isOdd && group > 0x0007 && group < 0xFFFC;
+
+  /// Returns the Group Number for [code], if code is a Private Code.
+  static int privateGroup(int code) {
+    final group = code >> 16;
+    return (isPrivateGroup(group)) ? group : null;
+  }
+
+  static bool isNotPrivateCode(int code) => !isPrivateCode(code);
+
+  static bool isGroupLengthCode(int code) => (code & 0xFFFF) == 0;
 
   static bool isPublicGroupLengthCode(int code) =>
-      Group.isPublic(Group.fromTag(code)) && Elt.fromTag(code) == 0;
+      Tag.isPublicCode(code) && (code & 0xFFFF) == 0;
+
+  static bool isPrivateGroupLengthCode(int code) =>
+      Tag.isPrivateCode(code) && (code & 0xFFFF) == 0;
+
+  static bool isPrivateIllegalCode(int code) =>
+      Tag.isPrivateCode(code) && (code & 0xFFFF) > 0 && code & 0xFFFF < 0x10;
+
+  static bool isNotPrivateIllegalCode(int code) => !isPrivateIllegalCode(code);
 
   static bool isPublicGroupLengthKeyword(String keyword) =>
       keyword == 'PublicGroupLengthKeyword' ||
       isPublicGroupLengthKeywordCode(keyword);
 
-  //TODO: test - needs to handle 'oxGGGGEEEE' and 'GGGGEEEE'
+  //TODO: test - needs to handle '0xGGGGEEEE' and 'GGGGEEEE'
   static bool isPublicGroupLengthKeywordCode(String keywordCode) {
     final code = int.parse(keywordCode, radix: 16, onError: (s) => -1);
-    return (code == -1) ? (Elt.fromTag(code) == 0) ? true : false : false;
+    return (code == -1) ? (code & 0xFFFF) == 0 ? true : false : false;
   }
 
   /// Returns true if [code] is a valid Private Creator Code.
-  static bool isPrivateCreatorCode(int code) {
+  static bool isPCCode(int code) {
     if ((code >> 16).isEven) return false;
     final elt = code & 0xFFFF;
-     return elt >= 0x10 && elt <= 0xFF;
-      }
+    return elt >= 0x10 && elt <= 0xFF;
+  }
 
-  static bool isCreatorCodeInGroup(int code, int group) {
+  static bool isNotPCCode(int code) => !isPCCode(code);
+
+  static bool isPCCodeInGroup(int code, int group) {
     final g = group << 16;
     return (code >= (g + 0x10)) && (code <= (g + 0xFF));
   }
 
-  static bool isPDataCodeInSubgroup(int code, int group, int subgroup) {
+  static bool isPDCodeInSubgroup(int code, int group, int subgroup) {
     final sg = (group << 16) + (subgroup << 8);
     return (code >= sg && (code <= (sg + 0xFF)));
   }
 
-  static bool isPrivateDataCode(int code) =>
-      Group.isPrivate(Group.fromTag(code)) &&
-      Elt.isPrivateData(Elt.fromTag(code));
-
-  static int privateCreatorBase(int code) => Elt.pcBase(Elt.fromTag(code));
-
-  static int privateCreatorLimit(int code) => Elt.pcLimit(Elt.fromTag(code));
-
-  static bool isPrivateGroupLengthCode(int code) =>
-      Group.isPrivate(Group.fromTag(code)) && Elt.fromTag(code) == 0;
-
-  /// Returns true if [pd] is a valid Private Data Code for the
-  /// [pc] the Private Creator Code.
-  ///
-  /// If the [PCTag ]is present, verifies that [pd] and [pc]
-  /// have the same [group], and that [pd] has a valid [Elt].
-  static bool isValidPrivateDataTag(int pd, int pc) {
-    final pdg = Group.checkPrivate(Group.fromTag(pd));
-    final pcg = Group.checkPrivate(Group.fromTag(pc));
-    if (pdg == null || pcg == null || pdg != pcg) return false;
-    return Elt.isValidPrivateData(Elt.fromTag(pd), Elt.fromTag(pc));
+  ///  Returns true if [pdCode] is a valid Private Data Code,
+  ///  and either [pcCode] is zero or [pcCode] is a Private
+  ///  Creator Code for [pdCode].
+  static bool isPDCode(int pdCode, [int pcCode = 0]) {
+    if (Tag.isNotPrivateCode(pdCode)) return false;
+    final pde = pdCode & 0xFFFF;
+    if (pde < 0x1000 || pde > 0xFFFF) return false;
+    return (pcCode == 0) ? true : _isValidPDCode(pdCode, pcCode);
   }
+
+  ///  Returns true if [pdCode] is a valid Private Data Code,
+  ///  and [pcCode] is the correct Private Creator Code for [pdCode].
+  static bool isValidPDCode(int pdCode, int pcCode) {
+    final pdg = Tag.privateGroup(pdCode);
+    final pcg = Tag.privateGroup(pcCode);
+    if (pdg == null || pcg == null || pdg != pcg) return false;
+    return _isValidPDCode(pdCode, pcCode);
+  }
+
+  static bool _isValidPDCode(int pd, int pc) {
+    final pde = pd & 0xFFFF;
+    if (pde < 0x1000 || pde > 0xFFFF) return false;
+    final pce = pc & 0xFFFF;
+    if (pce < 0x10 || pce > 0xFF) return false;
+    final base = pce << 8;
+    final limit = base + 0xFF;
+    return base <= pde && pde <= limit;
+  }
+
+  static int privateCreatorBase(int code) =>
+      (isNotPCCode(code)) ? null : (code & 0xFFFF) << 8;
+
+  static int privateCreatorLimit(int code) =>
+      (isNotPCCode(code)) ? null : ((code & 0xFFFF) << 8) + 0xFF;
 
   //**** Private Tag Code 'Constructors' ****
   static bool isPCIndex(int pcIndex) => 0x0010 <= pcIndex && pcIndex <= 0x00FF;
 
   /// Returns a valid [PCTag], or -1 .
   static int toPrivateCreator(int group, int pcIndex) {
-    if (Group.isPrivate(group) && _isPCIndex(pcIndex))
+    if (group.isOdd && 0x0007 < group && group < 0xFFFF && _isPCIndex(pcIndex))
       return _toPrivateCreator(group, pcIndex);
     return -1;
   }
 
   /// Returns a valid [PDTagKnown], or -1.
   static int toPrivateData(int group, int pcIndex, int pdIndex) {
-    if (Group.isPrivate(group) &&
+    if (group.isOdd &&
+        (0x0007 < group && group < 0xFFFF) &&
         _isPCIndex(pcIndex) &&
         _isPDIndex(pcIndex, pdIndex))
       return _toPrivateData(group, pcIndex, pcIndex);

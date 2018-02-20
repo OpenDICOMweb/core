@@ -56,23 +56,23 @@ abstract class PrivateTag extends Tag {
   /// Returns a new [PrivateTag] based on [code] and [vrIndex].
   /// [obj] can be either a [String] or [PCTag].
  static PrivateTag make(int code, int vrIndex, [Object obj]) {
-   if (Tag.isPrivateDataCode(code)) {
+   if (Tag.isPDCode(code)) {
      final PCTag creator = obj;
      return PDTag.make(code, vrIndex, creator);
-   } else if (Tag.isPrivateCreatorCode(code)) {
+   } else if (Tag.isPCCode(code)) {
      final String creator = obj;
      return PCTag.make(code, vrIndex, creator);
    } else if (Tag.isGroupLengthCode(code)) {
-     return new PrivateTagGroupLength(code, vrIndex);
+     return new GroupLengthPrivateTag(code, vrIndex);
    } else {
-     return new PrivateTagIllegal(code, vrIndex);
+     return new IllegalPrivateTag(code, vrIndex);
    }
  }
 }
 
 /// Private Group Length Tags have codes that are (gggg,eeee),
 /// where gggg is odd, and eeee is zero.  For example (0009,0000).
-class PrivateTagGroupLength extends PrivateTag {
+class GroupLengthPrivateTag extends PrivateTag {
   static const int kUnknownIndex = -1;
   @override
   final int code;
@@ -80,7 +80,7 @@ class PrivateTagGroupLength extends PrivateTag {
   final int vrIndex;
   @override
 
-  PrivateTagGroupLength(this.code, this.vrIndex) {
+  GroupLengthPrivateTag(this.code, this.vrIndex) {
     if (vrIndex != kULIndex) invalidVRIndex(vrIndex, null, correctVRIndex);
   }
 
@@ -98,14 +98,14 @@ class PrivateTagGroupLength extends PrivateTag {
 /// where gggg is odd, and eeee is between 01 and 09 hexadecimal.
 /// For example (0009,0005).
 // TODO: Flush at v0.9.0 if not used by then
-class PrivateTagIllegal extends PrivateTag {
+class IllegalPrivateTag extends PrivateTag {
   static const int kUnknownIndex = -1;
   @override
   final int code;
   @override
   final int vrIndex;
 
-  PrivateTagIllegal(this.code, this.vrIndex);
+  IllegalPrivateTag(this.code, this.vrIndex);
 
   @override
   int get sgNumber => code & 0xFF;

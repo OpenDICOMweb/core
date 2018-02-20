@@ -374,6 +374,8 @@ class GLtag extends ULtag {
   static GLtag make<int>(Tag tag, Iterable<int> vList) =>
       new GLtag(tag, vList ?? kEmptyDoubleList);
 
+  static GLtag from<int>(Element e) => new GLtag(e.tag, e.values);
+
   static GLtag fromBase64(Tag tag, String s) =>
       new GLtag._fromBytes(tag, BASE64.decode(s));
 

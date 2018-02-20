@@ -15,14 +15,15 @@ abstract class HtmlHandler {
   final String name;
   final bool doPrint;
   Storage _store;
+  Transformer _transform;
 
-  HtmlHandler(this.name, {this.doPrint, Transformer transform}) {
-    _store = window.localStorage;
-  }
+  HtmlHandler(this.name, {this.doPrint, Transformer transform})
+      : _store = window.localStorage,
+        _transform = transform;
 
   dynamic call(LogRecord record) {
     final _entries = _store[_storeName];
-    final entry = '$record';
+    final Object entry = (_transform != null) ? _transform(record) : '$record';
     _store[_storeName] = '$_entries$entry';
     if (doPrint) print(entry);
     return entry;

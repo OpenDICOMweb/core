@@ -19,14 +19,16 @@ class HtmlFileHandler {
   final LogMode mode;
   bool _doPrint;
   Storage _store;
+  Transformer _transform;
 
   HtmlFileHandler(this.name, this.mode, {bool doPrint, Transformer transform})
-      : _doPrint = doPrint {
-    _store = window.localStorage;
-  }
+      : _doPrint = doPrint,
+        _store = window.localStorage,
+        _transform = transform;
 
   String call(LogRecord record) {
-    final entry = '${record.info}\n';
+    final Object entry =
+        (_transform != null) ? _transform(record) : '${record.info}\n';
     final _entries = _store[_storeName];
     _store[_storeName] = '$_entries$entry';
     if (_doPrint) print(entry);
@@ -46,15 +48,17 @@ class HtmlRemoteFileHandler {
   final LogMode mode;
   bool _doPrint;
   Storage _store;
+  Transformer _transform;
 
   HtmlRemoteFileHandler(this.name, this.mode,
       {bool doPrint, Transformer transform})
-      : _doPrint = doPrint {
-    _store = window.localStorage;
-  }
+      : _doPrint = doPrint,
+        _store = window.localStorage,
+        _transform = transform;
 
   String call(LogRecord record) {
-    final entry = '${record.info}\n';
+    final Object entry =
+        (_transform != null) ? _transform(record) : '${record.info}\n';
     final _entries = _store[_storeName];
     _store[_storeName] = '$_entries$entry';
     if (_doPrint) print(entry);
