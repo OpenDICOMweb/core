@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 
 // Urgent Sharath: Create something like this for element if it doesn't already exist.
 void main() {
-  final rootDS = new TagRootDataset();
+  final rootDS = new TagRootDataset.empty();
   system.throwOnError = true;
   print('throwOnError: $throwOnError');
   rootDS.checkIssuesOnAdd = true;

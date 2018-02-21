@@ -5,7 +5,6 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/core.dart';
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
@@ -15,8 +14,8 @@ class Compare {
   final List diff = <List>[];
 
   Compare(Dataset ds0, Dataset ds1) {
-    final elements0 = ds0.elements;
-    final elements1 = ds1.elements;
+    final elements0 = ds0.elements.toList(growable: false);
+    final elements1 = ds1.elements.toList(growable: false);
     final length0 = elements0.length;
     final length1 = elements1.length;
     var index0 = 0;
@@ -74,9 +73,10 @@ class Compare {
 
   void compareElements(Element eo, Element e1) {
     // log.debug('Elements:\n\te0: $eo\n\te1: $e1');
-    if (eo.tag != e1.tag) throw new ArgumentError('Incomparable Tags: $eo, $e1');
-    if (eo.vrIndex != e1.vrIndex) throw new ArgumentError('VRs are not equivalent: $eo, '
-                                                           '$e1');
+    if (eo.tag != e1.tag)
+      throw new ArgumentError('Incomparable Tags: $eo, $e1');
+    if (eo.vrIndex != e1.vrIndex)
+      throw new ArgumentError('VRs are not equivalent: $eo, $e1');
     return (eo is SQ) ? compareSequences(eo, e1) : compareValues(eo, e1);
   }
 
@@ -93,8 +93,8 @@ class Compare {
 
   void compareItems(Dataset item0, Dataset item1) {
     // log.debug('item0: $item0\nitem1: $item1');
-    final elements0 = item0.elements;
-    final elements1 = item1.elements;
+    final elements0 = item0.elements.toList(growable: false);
+    final elements1 = item1.elements.toList(growable: false);
     // log.debug('elements0: $elements0\nelements0: $elements0');
 
     if (elements0.length == elements1.length) {
@@ -103,12 +103,10 @@ class Compare {
         // log.debug('zero length items: $item0, $item1');
       }
       for (var i = 0; i < elements0.length; i++) {
-        // log.debug(
-        //    '\telements0[$i]: ${elements0[i]}final\n\telements1[$i]: ${elements1[i]}');
         compareElements(elements0[i], elements1[i]);
       }
     } else {
-      // log.debug('Item: unequal lengths:\n\t$item0\n\t$item1');
+      log.debug('Item: unequal lengths:\n\t$item0\n\t$item1');
     }
   }
 

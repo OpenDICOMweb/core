@@ -85,7 +85,8 @@ void main() {
 
       // FrameDescriptor fields
       expect(ow16a.samplesPerPixel == samplesPerPixel0, true);
-      expect(ow16a.photometricInterpretation == photometricInterpretation0, true);
+      expect(
+          ow16a.photometricInterpretation == photometricInterpretation0, true);
       expect(ow16a.rows == rows4, true);
       expect(ow16a.columns == columns6, true);
       expect(ow16a.bitsAllocated == bitsAllocated16, true);
@@ -98,7 +99,8 @@ void main() {
       //FrameDescriptor
       expect(owFDa.ts == ts0, true);
       expect(owFDa.samplesPerPixel == samplesPerPixel0, true);
-      expect(owFDa.photometricInterpretation == photometricInterpretation0, true);
+      expect(
+          owFDa.photometricInterpretation == photometricInterpretation0, true);
       expect(owFDa.rows == rows4, true);
       expect(owFDa.columns == columns6, true);
       expect(owFDa.length == rows4 * columns6, true);
@@ -173,7 +175,8 @@ void main() {
 
         // FrameDescriptor fields
         expect(ow16b.samplesPerPixel == samplesPerPixel0, true);
-        expect(ow16b.photometricInterpretation == photometricInterpretation1, true);
+        expect(ow16b.photometricInterpretation == photometricInterpretation1,
+            true);
         expect(ow16b.rows == rows4, true);
         expect(ow16b.columns == columns6, true);
         expect(ow16b.bitsAllocated == bitsAllocated16, true);
@@ -186,7 +189,8 @@ void main() {
         //FrameDescriptor
         expect(owFDb.ts == ts0, true);
         expect(owFDb.samplesPerPixel == samplesPerPixel0, true);
-        expect(owFDb.photometricInterpretation == photometricInterpretation1, true);
+        expect(owFDb.photometricInterpretation == photometricInterpretation1,
+            true);
         expect(owFDb.rows == rows4, true);
         expect(owFDb.columns == columns6, true);
         expect(owFDb.length == rows4 * columns6, true);
@@ -196,7 +200,8 @@ void main() {
         expect(owFDb.pixelRepresentation == pixelRepresentation0, true);
         expect(owFDb.planarConfiguration == planarConfiguration0, true);
         expect(owFDb.pixelAspectRatio == pixelAspectRatio0, true);
-        expect(owFDb.lengthInBits == (rows4 * columns6) * bitsAllocated16, true);
+        expect(
+            owFDb.lengthInBits == (rows4 * columns6) * bitsAllocated16, true);
         expect(owFDb.pixelSizeInBits == bitsAllocated16, true);
         expect(owFDb.length == rows4 * columns6, true);
       }
@@ -288,7 +293,8 @@ void main() {
     test('Create FrameList16Bit() Uncompressed fromBytes', () {
       //Frame Descriptor.fromDataSet1
       final ts = TransferSyntax.kExplicitVRLittleEndian;
-      final uiTransferSyntaxUID0 = new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
+      final uiTransferSyntaxUID0 =
+          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['RGB1']);
@@ -301,23 +307,26 @@ void main() {
       final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [2]);
       final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
       final pixelAspectRatioValue0 = 1 / 2;
-      final usSmallestImagePixelValue0 = new UStag(PTag.kSmallestImagePixelValue, [0]);
+      final usSmallestImagePixelValue0 =
+          new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
           new UStag(PTag.kLargestImagePixelValue, [(1 << 16) - 1]);
       final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[], 0);
       final csColorSpace0 = new CStag(PTag.kColorSpace);
 
       system.throwOnError = false;
-      final unPixelPaddingRangeLimit = new UStag(PTag.kPixelPaddingRangeLimit, [65536]);
+      final unPixelPaddingRangeLimit =
+          new UStag(PTag.kPixelPaddingRangeLimit, [65536]);
       expect(unPixelPaddingRangeLimit, isNull);
       system.throwOnError = true;
       expect(() => new UStag(PTag.kPixelPaddingRangeLimit, [65536]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
 
-      final unPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit, [65535]);
+      final unPixelPaddingRangeLimit0 =
+          new UStag(PTag.kPixelPaddingRangeLimit, [65535]);
 
-      final rds0 = new TagRootDataset()
-        ..fmi.add(uiTransferSyntaxUID0)
+      final rds0 = new TagRootDataset.empty()
+        ..fmi[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
         ..add(usRows0)
@@ -372,7 +381,8 @@ void main() {
       // other FrameDescriptor.FromDataSet fields
       expect(ow16c.rows == fd16c.rows, true);
       expect(ow16c.columns == fd16c.columns, true);
-      expect(ow16c.photometricInterpretation == fd16c.photometricInterpretation, true);
+      expect(ow16c.photometricInterpretation == fd16c.photometricInterpretation,
+          true);
       expect(ow16c.bitsAllocated == fd16c.bitsAllocated, true);
       expect(ow16c.bitsStored == fd16c.bitsStored, true);
       expect(ow16c.highBit == fd16c.highBit, true);
@@ -401,7 +411,8 @@ void main() {
       // FrameDescriptor(fromDataSet)
       expect(fd16c.ts == ts, true);
       expect(fd16c.samplesPerPixel, equals(usSamplesPerPixel0.value));
-      expect(fd16c.photometricInterpretation, equals(csPhotometricInterpretation0.value));
+      expect(fd16c.photometricInterpretation,
+          equals(csPhotometricInterpretation0.value));
       expect(fd16c.rows, equals(usRows0.value));
       expect(fd16c.columns, equals(usColumns0.value));
       expect(fd16c.bitsAllocated, equals(usBitsAllocated0.value));
@@ -443,7 +454,8 @@ void main() {
           final frame0 = ow16c[j];
           expect(frame0.index == j, true);
 
-          expect(frame0.lengthInBytes * nFrames0 == ow16c.pixels.lengthInBytes, true);
+          expect(frame0.lengthInBytes * nFrames0 == ow16c.pixels.lengthInBytes,
+              true);
 
           expect(frame0.length == ow16c.desc.length, true);
 
@@ -455,8 +467,10 @@ void main() {
           expect(frame0.bitsAllocated == ow16c.desc.bitsAllocated, true);
           expect(frame0.bitsStored == ow16c.desc.bitsStored, true);
           expect(frame0.highBit == ow16c.desc.highBit, true);
-          expect(frame0.pixelRepresentation == ow16c.desc.pixelRepresentation, true);
-          expect(frame0.planarConfiguration == ow16c.desc.planarConfiguration, true);
+          expect(frame0.pixelRepresentation == ow16c.desc.pixelRepresentation,
+              true);
+          expect(frame0.planarConfiguration == ow16c.desc.planarConfiguration,
+              true);
           expect(frame0.pixelAspectRatio == ow16c.desc.pixelAspectRatio, true);
 
           expect(frame0.parent == ow16c, true);

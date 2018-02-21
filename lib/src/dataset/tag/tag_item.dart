@@ -6,57 +6,47 @@
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/item.dart';
+import 'package:core/src/dataset/base/map_dataset/map_item.dart';
 import 'package:core/src/dataset/byte_data/bd_item.dart';
-import 'package:core/src/dataset/element_list/element_list.dart';
-import 'package:core/src/dataset/element_list/map_as_list.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
+import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
+import 'package:core/src/element/tag/sequence.dart';
 
 /// An [TagItem] is an [Item] contained in an SQtag Element.
-class TagItem extends Item with TagDataset {
-  @override
-  final Dataset parent;
-  // TODO: tighten this type to SQtag
-  @override
-  SQ sequence;
-  @override
-  final MapAsList elements;
-  @override
-  IDSBytes dsBytes;
+class TagItem extends MapItem with TagDataset {
+  // @override
+//  List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
   /// Creates a new [TagItem] from [ByteData].
-  TagItem(this.parent, {this.sequence, ElementList elements, ByteData bd})
-      : elements = elements ?? new MapAsList(),
-        dsBytes = new IDSBytes(bd);
+  TagItem(Dataset parent, Map<int, Element> eMap, [SQ sequence])
+      : super(parent, eMap, sequence);
 
-  /// Creates a new [TagItem] from an existing [Item].
-  /// If [parent] is _null_ the new [TagItem] has the same
+  /// Creates a new empty [BDItem] from [ByteData].
+  TagItem.empty(Dataset parent, Map<int, Element> eMap, [SQ sequence])
+      : super(parent, eMap, sequence);
+
+  /// Create a new [BDItem] from an existing [BDItem].
+  /// If [parent] is _null_the new [BDItem] has the same
   /// parent as [item].
-  TagItem.from(Item item, Dataset parent)
-      : parent = (parent == null) ? item.parent : parent,
-        elements = new MapAsList.from(item.elements, parent),
-        sequence = item.sequence,
-        dsBytes = item.dsBytes;
+  TagItem.from(TagItem item, Dataset parent)
+      : super(parent ?? item.parent, new Map.from(item.eMap), item.sequence);
 
-  // TODO: add SQbd
+  factory TagItem.fromList(Dataset parent, Iterable<Element> elements,
+      [SQtag sequence]) {
+    final eMap = <int, Element>{};
+    for (var e in elements) eMap[e.index] = e;
+    return new TagItem(parent, eMap, sequence);
+  }
+
   /// Creates a new [TagItem] from an existing [TagItem].
   /// If [parent] is _null_ the new [TagItem] has the same
   /// parent as [item].
-  TagItem.fromBD(BDItem item, Dataset parent)
-      : parent = (parent == null) ? item.parent : parent,
-        elements = new MapAsList.from(item.elements, parent),
-        dsBytes = item.dsBytes;
-
-  /// Creates a new [TagItem] from an [MapAsList].
-  TagItem.fromList(this.parent, this.elements, [this.sequence, ByteData bd])
-      : dsBytes = new IDSBytes(bd);
+  TagItem.fromBD(BDItem item, Dataset parent, [SQtag sequence])
+      : super(parent ?? item.parent, new Map.from(item.eMap),
+            sequence ?? item.sequence);
 
   @override
   bool get isImmutable => false;
-
-  @override
-  TagItem copy([Dataset parent]) =>
-      new TagItem.from(this, (parent == null) ? this.parent : parent);
 }

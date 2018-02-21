@@ -7,7 +7,7 @@
 import 'package:core/core.dart';
 
 void main() {
-  final ds = new TagRootDataset();
+  final ds = new TagRootDataset.empty();
   //Map<int, Element> mappedElem = {};
   Tag tag = PTag.lookupByCode(kStudyDate); // Study Date
   final date = new DAtag(tag, ['19990505']);

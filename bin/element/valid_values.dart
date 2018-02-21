@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 
 void main() {
   Server.initialize(name: 'valid_values', level: Level.debug);
-  final rootDS = new TagRootDataset();
+  final rootDS = new TagRootDataset.empty();
   system.throwOnError = false;
   print('throwOnError: $throwOnError');
   rootDS.checkIssuesOnAdd = true;

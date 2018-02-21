@@ -14,7 +14,7 @@ void main() {
     SQtag sq;
 
     final tag = PTag.lookupByCode(kInstanceCreationDate);
-    final rds = new TagRootDataset();
+    final rds = new TagRootDataset.empty();
     final date = new DAtag(tag, ['19990505']);
     rds.add(date);
 

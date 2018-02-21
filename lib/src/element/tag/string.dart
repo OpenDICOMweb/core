@@ -172,7 +172,7 @@ class LOtag extends LO with TagElement<String> {
   static LOtag fromBDE(Element e) => new LOtag._fromBytes(e.tag, e.vfBytes);
 }
 
-class PCtag extends PC with TagElement<String> {
+class PCtag extends LO with PC {
   @override
   final Tag tag;
   @override
@@ -187,6 +187,9 @@ class PCtag extends PC with TagElement<String> {
       (LO.isNotValidTag(tag)) ? null : new PCtag._(tag, LO.fromBytes(bytes));
 
   PCtag._(this.tag, this.values);
+
+  @override
+  String get token => value;
 
   @override
   PCtag update([Iterable<String> vList = kEmptyStringList]) =>

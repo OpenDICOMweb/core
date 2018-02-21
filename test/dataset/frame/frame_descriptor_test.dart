@@ -74,7 +74,7 @@ void main() {
       final usLargestImagePixelValue =
           new UStag(PTag.kLargestImagePixelValue, [255]);
 
-      final rds0 = new TagRootDataset()
+      final rds0 = new TagRootDataset.empty()
         ..add(uiTransFerSyntax)
         ..add(usSamplesPerPixel)
         ..add(csPhotometricInterpretation)

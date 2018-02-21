@@ -87,7 +87,7 @@ class BasicProfile {
   static Element removeUnlessZero<V>(Dataset ds, Tag tag, List<V> values,
       {bool required = false}) {
     if (_isEmpty(values, true)) return ds.noValues(tag.code);
-    return ds.update<V>(tag.code, values);
+    return ds.update(tag.code, values);
   }
 
   /// XD: X unless D is required to maintain IOD conformance
@@ -95,7 +95,7 @@ class BasicProfile {
   static Element removeUnlessDummy<V>(Dataset ds, Tag tag, Iterable<V> values,
       {bool required = false}) {
     if (_isEmpty(values, true)) return ds.delete(tag.code, required: required);
-    return ds.update<V>(tag.code, values);
+    return ds.update(tag.code, values);
   }
 
   /// X unless Z or D is required to maintain IOD conformance
@@ -115,7 +115,7 @@ class BasicProfile {
     if (ds.lookup(tag.code) is! SQ)
       throw new InvalidTagError(tag, SQ);
     if (_isEmpty(values, true)) return ds.noValues(tag.code);
-    return ds.update<V>(tag.code, values);
+    return ds.update(tag.code, values);
   }
 
   static Element addIfMissing<V>(Dataset ds, Tag tag, List<V> values,

@@ -15,21 +15,20 @@ final Map<Uid, Uid> uidMap = <Uid, Uid>{};
 
 List<Element> replaceUids(TagRootDataset rds) {
   final old = <Element>[];
-  final elements = rds.elements;
 
 //  print('**** Normalizing FMI UIDs');
-  final e = rds.fmi.lookup(kMediaStorageSOPInstanceUID);
+  final UI e = rds.fmi[kMediaStorageSOPInstanceUID];
   final eNew = replaceUIFast(e);
-  rds.fmi.replace(e.index, eNew);
+  rds.fmi[e.index] = eNew;
   old.add(e);
 
 //  print('**** Normalizing Dataset UIDs');
 
   for (var code in deIdUidCodes) {
-    final UI e = elements.lookup(code);
+    final UI e = rds.lookup(code);
     if (e != null) {
       final eNew = replaceUIFast(e);
-      elements.replace(e.index, eNew);
+      rds.replace(e.index, eNew);
       old.add(e);
     }
   }

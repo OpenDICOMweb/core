@@ -8,11 +8,9 @@ import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/core.dart';
-import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
-import 'package:core/src/dataset/element_list/element_list.dart';
 import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/pixel_data.dart';
@@ -42,25 +40,28 @@ import 'package:core/src/uid/uid.dart';
 /// used to lookup [Element]s in the [Dataset]].
 abstract class Dataset extends ListBase<Element> {
   // **** Start of Interface ****
-  DSBytes get dsBytes;
 
   /// Returns the [Tag.index] for the corresponding [key].
-  int keyToIndex(int key);
+  // Note: this should be overridden as necessary
+  int keyToIndex(int key) => key;
 
-  Tag getTag(int index);
+  Tag getTag(int index, [int vrIndex, Object creator]) =>
+      Tag.lookupByCode(index, vrIndex, creator);
 
   /// The parent of _this_. If [parent] == _null_, then this is a Root Dataset
   /// (see RootDatasetMixin); otherwise, it is an [Item].
   Dataset get parent;
 
-  /// An [ElementList] of the [Element]s in _this_.
+  /// An [Iterable<int>] of the [Element] [keys] in _this_.
+  Iterable<int> get keys;
+
+  /// An [Iterable<Element>] of the [Element]s contained in _this_.
   ///
   // Design Note: It is expected that [ElementList] will have
   // it's own specialized implementation for correctness and efficiency.
-  ElementList get elements;
+  Iterable<Element> get elements;
 
-  /// _true_ if _this_ is immutable.
-  bool get isImmutable;
+  History history = new History();
 
   /// Returns a Sequence([SQ]) containing any [Element]s that were
   /// modified or removed.
@@ -69,78 +70,95 @@ abstract class Dataset extends ListBase<Element> {
 
   // **** End of Interface ****
 
-  // **** Section Start: ListBase implementation
-  // **** These may be overridden in subclasses.
+ // Element operator [](int key) => this[key];
 
-  /// Returns the [Element] with the [index].
-  @override
-  Element operator [](int index) => elements[index];
+  /// The number of [elements] (and [keys]) in _this_.
+  /// _Note_: Does not include duplicate elements.
+//  @override
+//  int get length => elements.length;
+//  @override
+//  set length(int length) => unsupportedError();
 
-  /// [add]s [Element] to this [Dataset].
-  @override
-  void operator []=(int index, Element e) {
-    if (index != e.index) return invalidElementIndex(index, element: e);
-    elements.add(e);
-  }
 
-  // TODO: when are 2 Datasets equal
+  /// If _true_ [Element]s with invalid values are stored in the
+  /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
+  bool allowInvalidValues = true;
+
+  /// If _true_ duplicate [Element]s are stored in the duplicate Map
+  /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
+  bool allowDuplicates = true;
+
+  /// A field that control whether new [Element]s are checked for
+  /// [Issues] when they are [add]ed to the [Dataset].
+  bool checkIssuesOnAdd = false;
+
+  /// A field that control whether new [Element]s are checked for
+  /// [Issues] when they are accessed from the [Dataset].
+  bool checkIssuesOnAccess = false;
+
+  /// _true_ if _this_ is immutable.
+  bool isImmutable = false;
+
+  // TODO: when are 2 Datasets equal?
   // TODO: should this be checking that parents are equal? It doesn't
   @override
-  bool operator ==(Object other) =>
-      other is Dataset &&
-      elements.length == other.elements.length &&
-      elements == other.elements;
+  bool operator ==(Object other) {
+    if (other is Dataset && length == other.length) {
+      for (var e in elements)
+        if (e != other[e.index]) return false;
+      return true;
+    }
+    return false;
+  }
 
   //Issue: is this good enough?
   @override
   int get hashCode => system.hasher.nList(elements);
 
-  /// An [Iterable] of the [Element] [keys] in _this_.
-  Iterable<int> get keys => elements.keys;
+  int get total => counter((e) => true);
 
-  /// The number of [elements] (and [keys]) in _this_.
-  /// _Note_: Does not include duplicate elements.
-  @override
-  int get length => elements.length;
-  @override
-  set length(int length) {}
+  int doCount(int sum, Element e) => (e is SQ) ? e.total : sum + 1;
 
-  int get eLength => (dsBytes == null) ? -1 : dsBytes.eLength;
+  int get total2 => fold(0, doCount);
+  int get dupTotal => unsupportedError();
 
-  /// The actual length of the Value Field for _this_
-  int get vfLength => (dsBytes != null) ? dsBytes.eLength : null;
-
-  bool get hasULength => dsBytes.hasULength;
-
-  /// The value of the Value Field Length field for _this_.
-  int get vfLengthField => (dsBytes != null) ? dsBytes.eLength : null;
-
-  int get total => elements.total;
-  int get dupTotal => elements.dupTotal;
+  // TODO Enhancement? make private for performance
+  //TODO: make conform to Fold interface
+  /// Walk the [Dataset] recursively and return the count of [Element]s
+  /// for which [test] is true.
+  /// Note: It ignores duplicates.
+  int counter(ElementTest test) {
+    var count = 0;
+    for (var e in elements)
+      if (e is SQ) {
+        count += e.counter(test);
+      } else {
+        if (test(e)) count++;
+      }
+    return count;
+  }
 
   // **** Section Start: Default Operator and Getters
   // **** These may be overridden in subclasses.
 
-  /// The length in bytes of [dsBytes]. If [dsBytes] is _null_ returns -1.
-  int get lengthInBytes => (dsBytes == null) ? -1 : dsBytes.eLength;
-  bool get hasDuplicates => elements.history.duplicates.isNotEmpty;
+  bool get hasDuplicates => history.duplicates.isNotEmpty;
 
-  // TODO: implement private groups and Private elements
-  String get info => '''
-$runtimeType(#$hashCode):
-            Total: ${elements.total}
-        Top Level: $length
-       Duplicates: ${elements.history.duplicates.length}
-  PrivateElements: $nPrivateElements
-    PrivateGroups: $nPrivateGroups
-    ''';
+  List<SQ> get sequences {
+    final results = <SQ>[];
+    for (var e in this) if (e is SQ) add(e);
+    return results;
+  }
 
+/*
   @override
   void forEach(void f(Element e)) => elements.forEach(f);
+*/
 
+/*
   @override
   T fold<T>(T initialValue, T combine(T v, Element e)) =>
       elements.fold(initialValue, combine);
+*/
 
   // **** Section Start: Element related Getters and Methods
 
@@ -153,17 +171,18 @@ $runtimeType(#$hashCode):
   // Design Note: This method should record the index of any Elements
   // not found if [recordNotFound] is _true_.
   Element lookup(int index, {bool required = false}) {
-    final e = elements[index];
+    final e = this[index];
     if (e == null && required == true) return elementNotPresentError(index);
     return e;
   }
 
+
   /// All lookups should be done using this method.
   List<Element> lookupAll(int index) {
     final results = <Element>[];
-    final e = elements[index];
+    final e = this[index];
     e ?? results.add(e);
-    for (var sq in elements.sequences)
+    for (var sq in sequences)
       for (var item in sq.items) {
         final e = item[index];
         e ?? results.add(e);
@@ -171,24 +190,64 @@ $runtimeType(#$hashCode):
     return results;
   }
 
-  bool hasElementsInRange(int min, int max) =>
-      elements.hasElementsInRange(min, max);
+  // TODO: test
+  bool hasElementsInRange(int min, int max) {
+    for (var e in this) if (e.code >= min && e.code <= max) return true;
+    return false;
+  }
 
-  List<Element> getElementsInRange(int min, int max) =>
-      elements.getElementsInRange(min, max);
+  /// Returns a [Map] of the Elements that satisfy [min] <= e.code <= [max].
+  List<Element> getElementsInRange(int min, int max) {
+    final fmi = <Element>[];
+    for (var e in this) if (e.code >= min && e.code < max) fmi.add(e);
+    return fmi;
+  }
 
   @override
-  void add(Element e, [Issues issues]) => elements.add(e);
+  void add(Element e, [Issues issues]) => tryAdd(e);
 
-  bool tryAdd(Element e, [Issues issues]) => elements.tryAdd(e);
+  /// Trys to add an [Element] to a [Dataset].
+  ///
+  /// If the new [Element] is not valid and [allowInvalidValues] is _false_,
+  /// an [invalidValuesError] is thrown; otherwise, the [Element] is added
+  /// to both the [_issues] [Map] and to the [Dataset]. The [_issues] [Map]
+  /// can be used later to return an [Issues] for the [Element].
+  ///
+  /// If an [Element] with the same [Tag] is already contained in the
+  /// [Dataset] and [allowDuplicates] is _false_, a [DuplicateElementError] is
+  /// thrown; otherwise, the [Element] is added to both the [duplicates] [Map]
+  /// and to the [Dataset].
+  bool tryAdd(Element e, [Issues issues]) {
+    final old = lookup(e.code);
+    if (old == null) {
+      if (checkIssuesOnAdd && (issues != null)) {
+        if (!allowInvalidValues && !e.isValid) invalidElementError(e);
+      }
+      this[e.code] = e;
+      if (e is SQ) sequences.add(e);
+      return true;
+    } else if (allowDuplicates) {
+      system.warn('** Duplicate Element:\n\tnew: $e\n\told: $old');
+      if (old.vrIndex != kUNIndex) {
+        history.duplicates.add(e);
+      } else {
+        this[e.index] = e;
+        history.duplicates.add(old);
+      }
+      return false;
+    } else {
+      return duplicateElementError(old, e);
+    }
+  }
 
-  void addList(List<Element> eList) => elements.addAll(eList);
+  @override
+  void addAll(Iterable<Element> eList) => eList.forEach(add);
 
   /// Replaces the element with [index] with a new element with the same [Tag],
   /// but with [vList] as its _values_. Returns the original element.
-  Element update<V>(int index, Iterable<V> vList, {bool required = false}) {
-    final old = elements.lookup(index, required: required);
-    if (old != null) elements[index] = old.update(vList);
+  Element update(int index, Iterable vList, {bool required = false}) {
+    final old = lookup(index, required: required);
+    if (old != null) this[index] = old.update(vList);
     return old;
   }
 
@@ -364,6 +423,15 @@ $runtimeType(#$hashCode):
     return result;
   }
 
+  bool replaceValues<V>(int index, Iterable<V> vList) {
+    final e = this[index];
+    if (e == null) return elementNotPresentError(index);
+    if (!e.tag.isValidValues(vList)) return false;
+    e.replace(vList);
+    return true;
+  }
+
+
 /*
   Iterable<String> replaceUid(int index, Iterable<Uid> uids,
           {bool required = false}) =>
@@ -408,8 +476,8 @@ $runtimeType(#$hashCode):
   Element noValues(int index, {bool required = false}) {
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    final nv = old.noValues;
-    elements.replace(index, nv);
+    final nv = old.emptyList;
+    update(index, nv);
     return old;
   }
 
@@ -438,20 +506,14 @@ $runtimeType(#$hashCode):
     return result;
   }
 
-/*
-  Element delete(int index, {bool required = false, bool recursive = false}) =>
-      (recursive)
-          ? elements.deleteAll(index, recursive: recursive)
-          : elements.delete(index, required: required);
-*/
-
   /// Removes the [Element] with [index] from _this_.
   Element delete(int index, {bool required = false}) {
-    assert(index != null, 'Invalid index: $index');
+    assert(index != null && !index.isNegative, 'Invalid index: $index');
     final e = lookup(index, required: required);
-    return (e == null)
-        ? (required) ? elementNotPresentError<int>(index) : null
-        : elements.delete(index);
+    if (e == null)
+      return (required) ? elementNotPresentError<int>(index) : null;
+    remove(index);
+    return e;
   }
 
 /*
@@ -548,8 +610,7 @@ $runtimeType(#$hashCode):
     // deleteIfTrue((e) => e.isPrivate, recursive: recursive);
     final deleted = <Element>[];
     final private = findAllPrivate();
-    for (var e in private)
-       deleted.add( delete(e.index, required: true));
+    for (var e in private) deleted.add(delete(e.index, required: true));
     return deleted;
   }
 
@@ -609,83 +670,156 @@ $runtimeType(#$hashCode):
     return dList;
   }
 
-  @override
-  bool remove(Object o) => elements.remove(o);
-
-  /// Removes the [Element] with key from _this_.
-  @override
-  Element removeAt(int index, {bool required = false}) =>
-      elements.removeAt(index, required: required);
-
   // **** Getters for [values]s.
+
+  /// Returns the value for the [Element] with [index]. If the [Element]
+  /// is not present or if the [Element] has more than one value,
+  /// either throws or returns _null_;
+  V getValue<V>(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    return _checkOneValue(index, e.values);
+  }
+
+  V _checkOneValue<V>(int index, List<V> values) =>
+      (values == null || values.length != 1)
+          ? invalidValuesLengthError(Tag.lookupByCode(index), values)
+          : values.first;
 
   /// Returns the [int] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
-  V getValue<V>(int index, {bool required = false}) =>
-      elements.getValue(index, required: required);
-
-  List<V> getValues<V>(int index, {bool required = false}) =>
-      elements.getValues(index, required: required);
+  List<V> getValues<V>(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    final List<V> values = e.values;
+    assert(values != null);
+    return (allowInvalidValues) ? e.values : e.isValid;
+  }
 
   // **** Integers
 
-  /// Returns the [int] value for the [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  int getInt(int index, {bool required = false}) =>
-      elements.getInt(index, required: required);
+  /// Returns the [int] value for the [IntBase] Element with [index].
+  /// If the [Element] is not present or if the [Element] has more
+  /// than one value, either throws or returns _null_.
+  int getInt(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    if (e == null || e is! IntBase) return nonIntegerTag(index);
+    return _checkOneValue<int>(index, e.values);
+  }
 
-  /// Returns the [List<int>] values for the [Element] with [index].
+  /// Returns the [List<int>] values for the [IntBase] Element with [index].
   /// If [Element] is not present, either throws or returns _null_;
-  List<int> getIntList(int index, {bool required = false}) =>
-      elements.getIntList(index, required: required);
+  List<int> getIntList(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    if (e == null || e is! IntBase) return nonIntegerTag(index);
+    if (!allowInvalidValues && !e.hasValidValues) return invalidElementError(e);
+    final vList = e.values;
+    //if (vList == null) return nullValueError('getIntList');
+    assert(vList != null);
+    return vList;
+  }
 
   // **** Floating Point
 
-  /// Returns a [double] value for the [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  double getFloat(int index, {bool required = false}) =>
-      elements.getFloat(index, required: required);
+  /// Returns a [double] value for the [FloatBase] Element with
+  /// [index]. If the [Element] is not present or if the [Element] has more
+  /// than one value, either throws or returns _null_.
+  double getFloat(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    if (e == null || e is! FloatBase) return nonFloatTag(index);
+    return _checkOneValue<double>(index, e.values);
+  }
 
-  /// Returns the [List<double>] values for the [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  List<double> getFloatList(int index, {bool required = false}) =>
-      elements.getFloatList(index, required: required);
+  /// Returns the [List<double>] values for the [FloatBase] Element
+  /// with [index]. If [Element] is not present, either throws or returns
+  /// _null_;
+  List<double> getFloatList(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    if (e == null || e is! FloatBase) return invalidFloatElement(e);
+    final vList = e.values;
+    //if (vList == null) return nullValueError('getFloatList');
+    assert(vList != null);
+    return vList;
+  }
 
   // **** String
 
-  /// Returns a [double] value for the [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  String getString(int index, {bool required = false}) =>
-      elements.getString(index, required: required);
+  /// Returns a [double] value for the [StringBase] Element with [index].
+  /// If the [Element] is not present or if the [Element] has more
+  /// than one value, either throws or returns _null_.
+  String getString(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    if (e == null || e is! StringBase) return nonStringTag(index);
+    return (e.isEmpty) ? '' : _checkOneValue<String>(index, e.values);
+  }
 
-  /// Returns the [List<double>] values for the [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  List<String> getStringList(int index, {bool required = false}) =>
-      elements.getStringList(index, required: required);
+  /// Returns the [List<double>] values for the [StringBase] Element
+  /// with [index]. If [Element] is not present, either throws or returns
+  /// _null_;
+  List<String> getStringList(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    if (e == null || e is! StringBase) return nonStringTag(index);
+    if (!allowInvalidValues && !e.hasValidValues) return invalidElementError(e);
+    final vList = e.values;
+    //if (vList == null) return nullValueError('getStringList');
+    assert(vList != null);
+    return vList;
+  }
 
   // **** Item
 
   /// Returns an [Item] value for the [SQ] [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  Item getItem(int index, {bool required = false}) =>
-      elements.getItem(index, required: required);
+  /// If the [Element] is not present or if the [Element] has more
+  /// than one value, either throws or returns _null_.
+  Item getItem(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    if (e == null)
+      return (required == false) ? null : elementNotPresentError(index);
+    if (e is SQ) return _checkOneValue<Item>(index, e.values);
+    return nonSequenceTag(index);
+  }
 
-  /// Returns the [List<double>] values for the [Element] with [index].
+  /// Returns the [List<Item>] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
-  List<Item> getItemList(int index, {bool required = false}) =>
-      elements.getItemList(index, required: required);
+  List<Item> getItemList(int index, {bool required = false}) {
+    final e = lookup(index, required: required);
+    if (e == null)
+      return (required == false) ? null : elementNotPresentError(index);
+    if (e is SQ) {
+      final List<Item> vList = e.values;
+      if (vList == null) return nullValueError('getItemList');
+      return vList;
+    }
+    return nonSequenceTag(index);
+  }
 
   // **** Uid
 
   /// Returns a [Uid] value for the [UI] [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  Uid getUid(int index, {bool required = false}) =>
-      elements.getUid(index, required: required);
+  /// If the [Element] is not present or if the [Element] has more
+  /// than one value, either throws or returns _null_.
+  Uid getUid(int index, {bool required = false}) {
+    final UI e = lookup(index, required: required);
+    return (e == null) ? null : _checkOneValue<Uid>(index, e.uids);
+  }
+
+  // TODO: find a cleaner way to do this!
+  TransferSyntax  fmiTS() {
+    final UI ui = lookup(kTransferSyntaxUID, required: false);
+    print('ui: $ui');
+    return (ui == null) ? null :
+           _checkOneValue<Uid>(kTransferSyntaxUID, ui.uids);
+  }
+
 
   /// Returns the [List<double>] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
-  List<Uid> getUidList(int index, {bool required = false}) =>
-      elements.getUidList(index, required: required);
+  List<Uid> getUidList(int index, {bool required = false}) {
+    final UI e = lookup(index, required: required);
+    if (e == null || e is! UI) return nonUidTag(index);
+    final vList = e.uids;
+    if (vList == null) return nullValueError('getUidList');
+    return vList;
+  }
 
   /// Returns the original [DA] [Element] that was replaced in the
   /// [Dataset] with a new [Element] with a normalized [Date] based
@@ -701,13 +835,21 @@ $runtimeType(#$hashCode):
     return invalidElementError(old, 'Not a DA (date) Element');
   }
 
+  // TODO: implement private groups and Private elements
+  String get info => '''
+$runtimeType(#$hashCode):
+            Total: $total
+        Top Level: $length
+       Duplicates: ${history.duplicates.length}
+  PrivateElements: $nPrivateElements
+    PrivateGroups: $nPrivateGroups
+    ''';
+
   /// Returns a formatted [String]. See [Formatter].
-  String format(Formatter z) => z.fmt(this, elements);
+  String format(Formatter z) => z.fmt('$runtimeType: $length Elements', this);
 
   @override
-  String toString() =>
-      '$runtimeType ${elements.total} Elements, $length Top Level, '
-      '${elements.duplicates.length} Duplicates, isRoot $isRoot';
+  String toString() => '$runtimeType: $length Elements';
 
   // **************** RootDataset related Getters and Methods
 
@@ -717,26 +859,6 @@ $runtimeType(#$hashCode):
   /// The [RootDataset] of _this_.
   /// _Note_: A [RootDataset] is its own [root].
   Dataset get root => (isRoot) ? this : parent.root;
-
-  /// If _true_ duplicate [Element]s are stored in the duplicate Map
-  /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
-  bool get allowDuplicates => elements.allowDuplicates;
-  set allowDuplicates(bool v) => elements.allowDuplicates = v;
-
-  /// If _true_ [Element]s with invalid values are stored in the
-  /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
-  bool get allowInvalidValues => elements.allowInvalidValues;
-  set allowInvalidValues(bool v) => elements.allowInvalidValues = v;
-
-  /// A field that control whether new [Element]s are checked for
-  /// [Issues] when they are [add]ed to the [Dataset].
-  bool get checkIssuesOnAdd => elements.checkIssuesOnAdd;
-  set checkIssuesOnAdd(bool v) => elements.checkIssuesOnAdd = v;
-
-  /// A field that control whether new [Element]s are checked for
-  /// [Issues] when they are accessed from the [Dataset].
-  bool get checkIssuesOnAccess => elements.checkIssuesOnAccess;
-  set checkIssuesOnAccess(bool v) => elements.checkIssuesOnAccess = v;
 
   // **************** Element value accessors
   //TODO: when fast_tag is working replace code with index.
@@ -792,7 +914,7 @@ $runtimeType(#$hashCode):
   }
 
   List<int> _getPixelData(int bitsAllocated) {
-    final pd = elements[kPixelData];
+    final pd = this[kPixelData];
     if (pd == null || bitsAllocated == null) return pixelDataNotPresent();
     if (pd.code == kPixelData) {
       if (pd is OWPixelData) {
@@ -822,11 +944,11 @@ $runtimeType(#$hashCode):
 
   int _privateElementCounter(int count, Element e) =>
       e.isPrivate ? count + 1 : count;
-  int get nPrivateElements => fold(0, _privateElementCounter);
+  int get nPrivateElements => elements.fold(0, _privateElementCounter);
 
   int _privateGroupCounter(int count, Element e) =>
       e.isPrivateCreator ? count + 1 : count;
-  int get nPrivateGroups => fold(0, _privateGroupCounter);
+  int get nPrivateGroups => elements.fold(0, _privateGroupCounter);
 
   // **** Statics
 

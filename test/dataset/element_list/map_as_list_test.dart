@@ -167,7 +167,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final map0 = new MapAsList()..add(as0);
 
-      final rds = new TagRootDataset();
+      final rds = new TagRootDataset.empty();
       final valuesList = <TagItem>[];
       map0[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
       map0[kInstitutionAddress] =

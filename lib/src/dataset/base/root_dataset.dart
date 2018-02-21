@@ -4,57 +4,42 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/element_list/element_list.dart';
 import 'package:core/src/dataset/parse_info.dart';
 import 'package:core/src/dataset/status_report.dart';
 import 'package:core/src/date_time/age.dart';
 import 'package:core/src/date_time/date.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/empty_list.dart';
+import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/patient/person_name.dart';
 import 'package:core/src/entity/patient/sex.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
+import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known/sop_class.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 
+
 /// The Root [Dataset] for a DICOM Entity.
 abstract class RootDataset extends Dataset {
-  // **** interface
-
-  /// Returns a copy of this [RootDataset].
-  RootDataset copy([Null _]);
-
-  // **** End of interface
-
   @override
   Dataset get parent => null;
 
-  ByteData get preamble => (dsBytes != null) ? dsBytes.preamble : kEmptyByteData;
-  ByteData get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyByteData;
-
-  @override
-  RDSBytes get dsBytes;
-  set dsBytes(RDSBytes bd);
-
-  /// Returns the encoded [ByteData] for the File Meta Information (FMI) for
-  /// _this_. [fmiBytes] has _one-time_ setter that is initialized lazily.
-  Uint8List get fmiBytes => dsBytes.fmiBytes;
-
-  /// An [ElementList] of the File Meta Information [Element]s in _this_.
+  /// An [Dataset] of the File Meta Information [Element]s in _this_.
   ///
-  // Design Note: It is expected that [ElementList] will have
+  // Design Note: It is expected that [Dataset] will have
   // it's own specialized implementation for correctness and efficiency.
-  ElementList get fmi;
+  dynamic get fmi;
 
   String get path;
+
+  /// Only supported by some [RootDataset]s. A [lengthInBytes] of -1
+  /// indicates an unknown length.
+  int get lengthInBytes => -1;
+
   /// Returns the parsing information [ParseInfo] for _this_.
   /// [pInfo] has one-time setter that is initialized lazily.
   // ignore: unnecessary_getters_setters
@@ -63,8 +48,8 @@ abstract class RootDataset extends Dataset {
   // ignore: unnecessary_getters_setters
   set pInfo(ParseInfo info) => _pInfo ??= info;
 
-  @override
-  int get vfLengthField => (dsBytes != null) ? dsBytes.vfLengthField : 0;
+ // @override
+ // int get vfLengthField => (dsBytes != null) ? dsBytes.vfLengthField : 0;
 
   bool get hadULength => false;
 
@@ -84,13 +69,18 @@ abstract class RootDataset extends Dataset {
 
   /// The [TransferSyntax].
   TransferSyntax get transferSyntax {
-    final TransferSyntax ts = fmi.getUid(kTransferSyntaxUID, required: true);
+    final ts = fmiTS();
     if (ts == null) {
-//      log.info0('Using system.defaultTransferSyntax: ${system.defaultTransferSyntax}');
+//      log.info0('Using system.defaultTransferSyntax:
+//               ${system.defaultTransferSyntax}');
       return system.defaultTransferSyntax;
     }
     return ts;
   }
+
+
+
+
 
   bool get hasSupportedTransferSyntax =>
       system.isSupportedTransferSyntax(transferSyntax.asString);
@@ -104,7 +94,6 @@ abstract class RootDataset extends Dataset {
   // TODO: tighten the upper bound
   bool get hasCmdElements => hasElementsInRange(0x00000000, 0x0000FFFF);
 
-  // TODO: tighten the upper bound
   bool get hasFmi => fmi != null;
 
   bool get wasShortEncoding => pInfo.wasShortFile;
@@ -132,15 +121,38 @@ abstract class RootDataset extends Dataset {
     return out;
   }
 
-  /// The DICOM Preamble (128 bytes) and Prefix('DICM')
-  // Uint8List get prefix => ASCII.encode('DICM');
+  /// An [List] of the duplicate [Element]s in _this_.
+  List<Element> get duplicates => history.duplicates;
+  List<Element> get added => history.added;
+  List<Element> get removed => history.removed;
+  List<Element> get updated => history.updated;
+  List<int> get requiredNotPresent => history.requiredNotPresent;
+  List<int> get notPresent => history.requiredNotPresent;
+
+  int get nSequences => counter((e) => (e is SQ));
+  int get nPrivate => counter((e) => Tag.isPrivateCode(e.code));
+  int get nPrivateSequences =>
+      counter((e) => Tag.isPrivateCode(e.code) && e is SQ);
 
   /// Returns a formatted summary of _this_.
-  String get summary => '''\n$runtimeType 
+  String get summary {
+    final sqs = sequences;
+    final sb = new StringBuffer('''\n$runtimeType 
              SOP Class: $sopClassUid
        Transfer Syntax: $transferSyntax
-${elements.subSummary}       
-''';
+        Total Elements: $total
+    Top Level Elements: $length
+      Total Duplicates: $dupTotal
+             Sequences: ${sqs.length}
+         Private Total: $nPrivate
+               History: $history''');
+    if (nPrivateSequences != 0)
+      sb.writeln('     Private Sequences: $nPrivateSequences');
+    if (dupTotal != 0) sb.writeln('      Total Duplicates: $dupTotal');
+    if (duplicates.isNotEmpty)
+      sb.writeln('  Top Level Duplicates: ${duplicates.length}');
+    return sb.toString();
+  }
 
   @override
   Iterable<dynamic> findAllWhere(bool test(Element e)) {
@@ -148,13 +160,6 @@ ${elements.subSummary}
     for (var e in fmi) if (test(e)) result.add(e);
     for (var e in elements) if (test(e)) result.add(e);
     return result;
-  }
-
-  /// Sets [dsBytes] to the empty list, and returns the existing value of [dsBytes].
-  RDSBytes clearDSBytes() {
-    final dsb = dsBytes;
-    dsBytes = RDSBytes.kEmpty;
-    return dsb;
   }
 
   /// Returns a formatted [String]. See [Formatter].

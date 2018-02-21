@@ -8,7 +8,6 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
-import 'package:core/src/element/base/mixin/undefined_length_mixin.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/empty_list.dart';
@@ -234,8 +233,33 @@ abstract class SL extends IntBase with Int32Base {
 
 /// Other Byte [Element].
 abstract class OB extends IntBase
-    with OBMixin, Uint8Base, UndefinedLengthMixin {
-//  static const VR kVR = VR.kOB;
+    with OBMixin, Uint8Base {
+
+  @override
+  int get vfLengthField;
+  @override
+  int get vrIndex => kVRIndex;
+  @override
+  int get vrCode => kVRCode;
+  @override
+  String get vrKeyword => kVRKeyword;
+  @override
+  String get vrName => kVRName;
+  @override
+  int get vlfSize => 4;
+  @override
+  int get maxVFLength => kMaxShortVF;
+  @override
+  int get maxLength => kMaxLength;
+  @override
+  bool get isLengthAlwaysValid => true;
+  @override
+  bool get isUndefinedLengthAllowed => true;
+  @override
+  bool get hadULength => vfLengthField == kUndefinedLength;
+  @override
+  int get padChar => 0;
+
   static const int kVRIndex = kOBIndex;
   static const int kVRCode = kOBCode;
   static const String kVRKeyword = 'OB';
@@ -293,7 +317,9 @@ abstract class OB extends IntBase
 }
 
 /// Unknown (UN) [Element].
-abstract class UN extends IntBase with Uint8Base, UndefinedLengthMixin {
+abstract class UN extends IntBase with Uint8Base {
+  @override
+  int get vfLengthField;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -310,6 +336,10 @@ abstract class UN extends IntBase with Uint8Base, UndefinedLengthMixin {
   int get maxLength => kMaxLength;
   @override
   bool get isLengthAlwaysValid => true;
+  @override
+  bool get isUndefinedLengthAllowed => true;
+  @override
+  bool get hadULength => vfLengthField == kUndefinedLength;
   @override
   int get padChar => 0;
 
@@ -426,7 +456,9 @@ abstract class US extends IntBase with Uint16Base {
 }
 
 /// Unknown (OW) [Element].
-abstract class OW extends IntBase with Uint16Base, UndefinedLengthMixin {
+abstract class OW extends IntBase with Uint16Base {
+  @override
+  int get vfLengthField;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -441,9 +473,12 @@ abstract class OW extends IntBase with Uint16Base, UndefinedLengthMixin {
   int get maxLength => kMaxLength;
   @override
   int get maxVFLength => kMaxLongVF;
-
   @override
   bool get isLengthAlwaysValid => true;
+  @override
+  bool get isUndefinedLengthAllowed => true;
+  @override
+  bool get hadULength => vfLengthField == kUndefinedLength;
 
   static const int kVRIndex = kOWIndex;
   static const int kVRCode = kOWCode;

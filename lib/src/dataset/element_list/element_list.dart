@@ -517,10 +517,6 @@ ElementList Summary
 
   // **** Values Getters and Methods
 
-  V _checkOneValue<V>(int index, List<V> values) =>
-      (values == null || values.length != 1)
-          ? invalidValuesLengthError(Tag.lookupByCode(index), values)
-          : values.first;
 
   /// Returns the [int] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
@@ -539,25 +535,6 @@ ElementList Summary
 
   // **** Integers
 
-  /// Returns the [int] value for the [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  int getInt(int index, {bool required = false}) {
-    final e = lookup(index, required: required);
-    if (e == null || e is! IntBase) return nonIntegerTag(index);
-    return _checkOneValue<int>(index, e.values);
-  }
-
-  /// Returns the [List<int>] values for the [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  List<int> getIntList(int index, {bool required = false}) {
-    final e = lookup(index, required: required);
-    if (e == null || e is! IntBase) return nonIntegerTag(index);
-    if (!allowInvalidValues && !e.hasValidValues) return invalidElementError(e);
-    final vList = e.values;
-    //if (vList == null) return nullValueError('getIntList');
-    assert(vList != null);
-    return vList;
-  }
 
   // **** Floating Point
 

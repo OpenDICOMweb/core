@@ -7,8 +7,8 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:core/src/element/frame_descriptor.dart';
-import 'package:core/src/element/frame_list.dart';
+import 'package:core/src/frame/frame_descriptor.dart';
+import 'package:core/src/frame/frame_list.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 
 /// A single image, that is either an independent image, or a single

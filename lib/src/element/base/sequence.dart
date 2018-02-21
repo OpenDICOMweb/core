@@ -9,7 +9,6 @@ import 'dart:typed_data';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/mixin/undefined_length_mixin.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/logger/formatter.dart';
@@ -22,7 +21,7 @@ bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
 int level = 0;
 
-abstract class SQ<K> extends Element<Item> with UndefinedLengthMixin {
+abstract class SQ<K> extends Element<Item> {
   // **** Interface
 
   /// The [tag] corresponding to _this_.
@@ -38,7 +37,6 @@ abstract class SQ<K> extends Element<Item> with UndefinedLengthMixin {
 
   //**** End of Interface
   @override
-//  VR get vr => kVR;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -61,6 +59,10 @@ abstract class SQ<K> extends Element<Item> with UndefinedLengthMixin {
   @override
   int get vfLength => unimplementedError();
 
+  @override
+  int get vfLengthField;
+  @override
+  bool get isUndefinedLengthAllowed => true;
   @override
   bool get hadULength => vfLengthField == kUndefinedLength;
 

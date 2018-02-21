@@ -4,9 +4,6 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-//TODO: update README.md
-
-
 export 'package:core/src/dataset/base/dataset.dart';
 export 'package:core/src/dataset/base/ds_bytes.dart';
 export 'package:core/src/dataset/base/item.dart';
@@ -53,8 +50,6 @@ export 'package:core/src/element/byte_data/evr.dart';
 export 'package:core/src/element/byte_data/ivr.dart';
 export 'package:core/src/element/crypto.dart';
 export 'package:core/src/element/errors.dart';
-export 'package:core/src/element/frame_descriptor.dart';
-export 'package:core/src/element/frame_list.dart';
 export 'package:core/src/element/tag/export.dart';
 export 'package:core/src/element/utils.dart';
 export 'package:core/src/element/vf_fragments.dart';
@@ -72,6 +67,9 @@ export 'package:core/src/entity/patient/sex.dart';
 export 'package:core/src/entity/series.dart';
 export 'package:core/src/entity/study.dart';
 export 'package:core/src/errors.dart';
+export 'package:core/src/frame/frame.dart';
+export 'package:core/src/frame/frame_descriptor.dart';
+export 'package:core/src/frame/frame_list.dart';
 export 'package:core/src/hash/hash.dart';
 export 'package:core/src/hash/hash32.dart';
 export 'package:core/src/hash/hash64.dart';

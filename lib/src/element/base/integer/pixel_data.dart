@@ -8,7 +8,6 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
-import 'package:core/src/element/base/mixin/undefined_length_mixin.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/tag/export.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
@@ -70,21 +69,18 @@ abstract class OBPixelData extends IntBase
         OBMixin,
         Uint8Base,
         PixelData,
-        Uint8PixelDataMixin,
-        UndefinedLengthMixin {}
+        Uint8PixelDataMixin {}
 
 abstract class UNPixelData extends IntBase
     with
         UNMixin,
         Uint8Base,
         PixelData,
-        Uint8PixelDataMixin,
-        UndefinedLengthMixin {}
+        Uint8PixelDataMixin {}
 
 abstract class OWPixelData extends IntBase
     with
         OWMixin,
         Uint16Base,
         PixelData,
-        Uint16PixelDataMixin,
-        UndefinedLengthMixin {}
+        Uint16PixelDataMixin {}

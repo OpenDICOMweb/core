@@ -57,10 +57,6 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 
   // **** Value Field related Getters ****
 
-  // This Getter must be overridden in OB, OW, SQ, and UN;
-  @override
-  int get vfLengthField => vfLength;
-
   @override
   EType get eType => tag.type;
   @override
