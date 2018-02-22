@@ -41,7 +41,7 @@ class SQtag extends SQ<TagItem> with TagElement<Dataset> {
 
   /// Creates a new [SQtag] instance.
   SQtag(this.tag, this.parent,
-      [Iterable<TagItem> vList, this.vfLengthField, this.bytes])
+      [Iterable<Item> vList, this.vfLengthField, this.bytes])
       : values = (vList == null) ? emptyItemTagList : vList;
 
   factory SQtag.from(SQ sq, [Dataset parent]) {

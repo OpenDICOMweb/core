@@ -3,55 +3,36 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
+import 'dart:typed_data';
+
+import 'package:core/src/dataset/base/map_dataset/map_dataset.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/entity/patient/patient.dart';
 
 /// A [MapRootDataset].
-class MapRootDataset extends RootDataset {
+class MapRootDataset extends RootDataset with MapDataset {
   @override
   final Map<int, Element> fmi;
+
   /// A [Map] from key to [Element].
-  final Map<int, Element> eMap;
   @override
-  String path;
+  final Map<int, Element> eMap;
 
-  /// Creates an empty, i.e. without ByteElements, [MapRootDataset].
-  MapRootDataset(this.fmi, this.eMap, this.path) {
-//    print('BDRoot: $this');
-  }
+  /// Creates an [MapRootDataset].
+  MapRootDataset(this.fmi, this.eMap, String path, ByteData bd, int fmiEnd)
+      : super(path, bd, fmiEnd);
 
-  /// Creates an empty, i.e. without ByteElements, [MapRootDataset].
-  MapRootDataset.empty(this.path)
-      : fmi =  <int, Element>{},
-        eMap = <int, Element>{} {
-//    print('BDRoot: $this');
-  }
+  /// Creates an empty, i.e. without [Element]s, [MapRootDataset].
+  MapRootDataset.empty(String path, ByteData bd, int fmiEnd)
+      : fmi = <int, Element>{},
+        eMap = <int, Element>{},
+        super(path, bd, fmiEnd);
 
   /// Creates a [MapRootDataset] from another [MapRootDataset].
   MapRootDataset.from(MapRootDataset rds)
       : fmi = new Map.from(rds.fmi),
-        eMap = new Map.from(rds.eMap);
+        eMap = new Map.from(rds.eMap),
+        super(rds.path, rds.dsBytes.bd, rds.dsBytes.fmiEnd);
 
-  @override
-  Element operator [](int i) => eMap[i];
-
-  @override
-  void operator []=(int i, Element e) => eMap[i] = e;
-
-  @override
-  int get length => elements.length;
-
-  @override
-  set length(int _) => unsupportedError();
-
-  @override
-  Iterable<int> get keys => eMap.keys;
-  @override
-  Iterable<Element> get elements => eMap.values;
-
-  @override
-  Patient get patient => new Patient.fromRDS(this);
-
+  RootDataset copy([RootDataset rds]) => new MapRootDataset.from(rds ?? this);
 }

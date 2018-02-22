@@ -48,6 +48,8 @@ abstract class Dataset extends ListBase<Element> {
   Tag getTag(int index, [int vrIndex, Object creator]) =>
       Tag.lookupByCode(index, vrIndex, creator);
 
+  // *** Urgent: document
+  void store(int index, Element e);
   /// The parent of _this_. If [parent] == _null_, then this is a Root Dataset
   /// (see RootDatasetMixin); otherwise, it is an [Item].
   Dataset get parent;
@@ -61,6 +63,8 @@ abstract class Dataset extends ListBase<Element> {
   // it's own specialized implementation for correctness and efficiency.
   Iterable<Element> get elements;
 
+  DSBytes get dsBytes;
+
   History history = new History();
 
   /// Returns a Sequence([SQ]) containing any [Element]s that were
@@ -70,7 +74,7 @@ abstract class Dataset extends ListBase<Element> {
 
   // **** End of Interface ****
 
- // Element operator [](int key) => this[key];
+  // Element operator [](int key) => this[key];
 
   /// The number of [elements] (and [keys]) in _this_.
   /// _Note_: Does not include duplicate elements.
@@ -78,7 +82,6 @@ abstract class Dataset extends ListBase<Element> {
 //  int get length => elements.length;
 //  @override
 //  set length(int length) => unsupportedError();
-
 
   /// If _true_ [Element]s with invalid values are stored in the
   /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
@@ -104,8 +107,7 @@ abstract class Dataset extends ListBase<Element> {
   @override
   bool operator ==(Object other) {
     if (other is Dataset && length == other.length) {
-      for (var e in elements)
-        if (e != other[e.index]) return false;
+      for (var e in elements) if (e != other[e.index]) return false;
       return true;
     }
     return false;
@@ -176,7 +178,6 @@ abstract class Dataset extends ListBase<Element> {
     return e;
   }
 
-
   /// All lookups should be done using this method.
   List<Element> lookupAll(int index) {
     final results = <Element>[];
@@ -223,7 +224,7 @@ abstract class Dataset extends ListBase<Element> {
       if (checkIssuesOnAdd && (issues != null)) {
         if (!allowInvalidValues && !e.isValid) invalidElementError(e);
       }
-      this[e.code] = e;
+      store(e.code, e);
       if (e is SQ) sequences.add(e);
       return true;
     } else if (allowDuplicates) {
@@ -231,7 +232,7 @@ abstract class Dataset extends ListBase<Element> {
       if (old.vrIndex != kUNIndex) {
         history.duplicates.add(e);
       } else {
-        this[e.index] = e;
+        store(e.index, e);
         history.duplicates.add(old);
       }
       return false;
@@ -247,7 +248,7 @@ abstract class Dataset extends ListBase<Element> {
   /// but with [vList] as its _values_. Returns the original element.
   Element update(int index, Iterable vList, {bool required = false}) {
     final old = lookup(index, required: required);
-    if (old != null) this[index] = old.update(vList);
+    if (old != null) store(index,  old.update(vList));
     return old;
   }
 
@@ -431,22 +432,17 @@ abstract class Dataset extends ListBase<Element> {
     return true;
   }
 
-
 /*
   Iterable<String> replaceUid(int index, Iterable<Uid> uids,
           {bool required = false}) =>
       elements.replaceUid(index, uids);
 */
 
-  List<String> replaceUid(int index, Iterable<Uid> uids,
+  List<Uid> replaceUid(int index, Iterable<Uid> uids,
       {bool required = false}) {
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    if (old is UI) {
-      old.replaceUid(uids);
-      return old;
-    }
-    return invalidUidElement(old);
+    return (old is UI) ? old.replaceUid(uids) : invalidUidElement(old);
   }
 
 /*
@@ -468,17 +464,12 @@ abstract class Dataset extends ListBase<Element> {
 
   /// Replaces the element with [index] with a new element that is
   /// the same except it has no values.  Returns the original element.
-//  Element noValues(int index, {bool required = false}) =>
-//      elements.noValues(index, required: required);
-
-  /// Replaces the element with [index] with a new element that is
-  /// the same except it has no values.  Returns the original element.
   Element noValues(int index, {bool required = false}) {
-    final old = lookup(index, required: required);
-    if (old == null) return (required) ? elementNotPresentError(index) : null;
-    final nv = old.emptyList;
-    update(index, nv);
-    return old;
+    final oldE = lookup(index, required: required);
+    if (oldE == null) return (required) ? elementNotPresentError(index) : null;
+    final newE = oldE.update(oldE.emptyList);
+    store(index, newE);
+    return oldE;
   }
 
   /// Replaces all elements with [index] in _this_ and any [Item]s
@@ -506,14 +497,22 @@ abstract class Dataset extends ListBase<Element> {
     return result;
   }
 
-  /// Removes the [Element] with [index] from _this_.
+  /// Removes the [Element] with [index] from _this_. If no [Element]
+  /// with [index] is contained in _this_ returns _null_.
   Element delete(int index, {bool required = false}) {
     assert(index != null && !index.isNegative, 'Invalid index: $index');
     final e = lookup(index, required: required);
+    print('e: $e');
     if (e == null)
       return (required) ? elementNotPresentError<int>(index) : null;
-    remove(index);
-    return e;
+    return (remove(e)) ? e : null;
+  }
+
+  /// Remove all duplicates from the [Dataset].
+  List<Element> deleteDuplicates() {
+    final dups = history.duplicates;
+    history.duplicates.clear();
+    return dups;
   }
 
 /*
@@ -803,13 +802,13 @@ abstract class Dataset extends ListBase<Element> {
   }
 
   // TODO: find a cleaner way to do this!
-  TransferSyntax  fmiTS() {
+  TransferSyntax fmiTS() {
     final UI ui = lookup(kTransferSyntaxUID, required: false);
     print('ui: $ui');
-    return (ui == null) ? null :
-           _checkOneValue<Uid>(kTransferSyntaxUID, ui.uids);
+    return (ui == null)
+        ? null
+        : _checkOneValue<Uid>(kTransferSyntaxUID, ui.uids);
   }
-
 
   /// Returns the [List<double>] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;

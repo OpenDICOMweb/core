@@ -4,26 +4,56 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
+import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/element/base/sequence.dart';
+import 'package:core/src/tag/constants.dart';
 
 /// Sequence Items -
 abstract class Item extends Dataset {
+  @override
+  final Dataset parent;
+
 	/// The Sequence that contains this Item.
-	/// [sequence] has one-time setter that is initialized lazily.
-  // ignore: unnecessary_getters_setters
-	SQ get sequence;
-  // ignore: unnecessary_getters_setters
-	set sequence(SQ sq);
+	SQ  sequence;
 
 	@override
-	Dataset get parent;
+  IDSBytes dsBytes;
 
-	/// _Deprecated_: Use [sequence] = [sq] instead.
+  Item(this.parent, this.sequence, ByteData bd) : dsBytes = new IDSBytes(bd);
+
+  /// The the Value Field Length of the encoded object (e.g. ByteData,
+  /// JSON [String]...) that _this_was created from, or
+  /// _null_ if _this_was not created by parsing an encoded object.
+  ///
+  /// _Note_: The [vfLengthField] might have a value of [kUndefinedLength],
+  /// which means the length of the Value Field must be determined by
+  /// parsing.
+  int get vfLengthField => dsBytes.vfLengthField;
+
+  /// The actual length of the Value Field for _this_
+  int get vfLength => dsBytes.vfLength;
+
+  /// _true_if _this_was created from an encoded object (e.g. ByteData,
+  /// JSON [String]...) and the Value Field length was [kUndefinedLength].
+  ///
+  /// _Note_: Only Item and its subclasses can have undefined length.
+  ///         RootDatasets cannot.
+  bool get hasULength => vfLengthField == kUndefinedLength;
+
+  /// _Deprecated_: Use [sequence] = [sq] instead.
   @deprecated
   void addSQ(SQ sq) {
     assert(sq is SQ && sq != null);
     sequence = sq;
+  }
+
+  /// Sets [dsBytes] to the empty list.
+  IDSBytes clearDSBytes() {
+    final dsb = dsBytes;
+    dsBytes = IDSBytes.kEmpty;
+    return dsb;
   }
 }

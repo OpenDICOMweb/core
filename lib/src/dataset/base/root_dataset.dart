@@ -4,13 +4,17 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'dart:typed_data';
+
 import 'package:core/src/dataset/base/dataset.dart';
+import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/parse_info.dart';
 import 'package:core/src/dataset/status_report.dart';
 import 'package:core/src/date_time/age.dart';
 import 'package:core/src/date_time/date.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
+import 'package:core/src/empty_list.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/patient/person_name.dart';
 import 'package:core/src/entity/patient/sex.dart';
@@ -22,9 +26,22 @@ import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known/sop_class.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 
-
 /// The Root [Dataset] for a DICOM Entity.
 abstract class RootDataset extends Dataset {
+  String path;
+  @override
+  RDSBytes dsBytes;
+
+  RootDataset(this.path, ByteData bd, int fmiEnd)
+      : dsBytes = (bd == null || bd.lengthInBytes == 0)
+            ? new RDSBytes.empty()
+                  : new RDSBytes(bd, fmiEnd);
+
+  RootDataset.empty() : dsBytes = new RDSBytes.empty();
+
+  ByteData get bd => dsBytes.bd;
+
+  /// The [RootDataset] has no [parent]
   @override
   Dataset get parent => null;
 
@@ -34,22 +51,20 @@ abstract class RootDataset extends Dataset {
   // it's own specialized implementation for correctness and efficiency.
   dynamic get fmi;
 
-  String get path;
+  /// Returns the encoded [ByteData] for the File Meta Information (FMI) for
+  /// _this_. [fmiBytes] has _one-time_ setter that is initialized lazily.
+  Uint8List get fmiBytes => dsBytes.fmiBytes;
+
+  bool get hasFmi => fmi != null;
 
   /// Only supported by some [RootDataset]s. A [lengthInBytes] of -1
   /// indicates an unknown length.
-  int get lengthInBytes => -1;
+  int get lengthInBytes => (dsBytes != null) ? dsBytes.prefix : -1;
 
-  /// Returns the parsing information [ParseInfo] for _this_.
-  /// [pInfo] has one-time setter that is initialized lazily.
-  // ignore: unnecessary_getters_setters
-  ParseInfo get pInfo => _pInfo;
-  ParseInfo _pInfo;
-  // ignore: unnecessary_getters_setters
-  set pInfo(ParseInfo info) => _pInfo ??= info;
+  ByteData get preamble =>
+      (dsBytes != null) ? dsBytes.preamble : kEmptyByteData;
 
- // @override
- // int get vfLengthField => (dsBytes != null) ? dsBytes.vfLengthField : 0;
+  ByteData get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyByteData;
 
   bool get hadULength => false;
 
@@ -64,23 +79,10 @@ abstract class RootDataset extends Dataset {
   /// The [TransferSyntax].
   SopClass get sopClass => SopClass.lookup(sopClassId);
 
-  //TODO: add to RootDataset constructor
   bool get isDicomDir => hasElementsInRange(0x00041130, 0x00031600);
 
   /// The [TransferSyntax].
-  TransferSyntax get transferSyntax {
-    final ts = fmiTS();
-    if (ts == null) {
-//      log.info0('Using system.defaultTransferSyntax:
-//               ${system.defaultTransferSyntax}');
-      return system.defaultTransferSyntax;
-    }
-    return ts;
-  }
-
-
-
-
+  TransferSyntax get transferSyntax => fmiTS() ?? system.defaultTransferSyntax;
 
   bool get hasSupportedTransferSyntax =>
       system.isSupportedTransferSyntax(transferSyntax.asString);
@@ -91,16 +93,8 @@ abstract class RootDataset extends Dataset {
   /// Returns _true_ if the [transferSyntax] is Implicit VR Transfer Syntax.
   bool get isIVR => transferSyntax.isIvr;
 
-  // TODO: tighten the upper bound
+  // TODO: tighten the bounds
   bool get hasCmdElements => hasElementsInRange(0x00000000, 0x0000FFFF);
-
-  bool get hasFmi => fmi != null;
-
-  bool get wasShortEncoding => pInfo.wasShortFile;
-
-  bool get hasIssues => pInfo.hadErrors || pInfo.hadWarnings;
-
-  bool get hasErrors => pInfo.hadParsingErrors || hasIssues;
 
   /// If this value is _true_ after decoding  a [Dataset], then the
   /// [Dataset] contains invalid elements and should not be used further
@@ -121,6 +115,12 @@ abstract class RootDataset extends Dataset {
     return out;
   }
 
+  /// Sets [dsBytes] to the empty list.
+  RDSBytes clearDSBytes() {
+    final dsb = dsBytes;
+    dsBytes = RDSBytes.kEmpty;
+    return dsb;
+  }
   /// An [List] of the duplicate [Element]s in _this_.
   List<Element> get duplicates => history.duplicates;
   List<Element> get added => history.added;
@@ -167,9 +167,7 @@ abstract class RootDataset extends Dataset {
   String format(Formatter z) {
     final sb = new StringBuffer(summary);
     z.down;
-    sb
-      ..write(z.fmt('FMI:', fmi))
-      ..write(z.fmt('Elements:', elements));
+    sb..write(z.fmt('FMI:', fmi))..write(z.fmt('Elements:', elements));
     z.up;
     return sb.toString();
   }
@@ -234,4 +232,19 @@ abstract class RootDataset extends Dataset {
       return false;
     }
   }
+
+  /// Returns the parsing information [ParseInfo] for _this_.
+  /// [pInfo] has one-time setter that is initialized lazily.
+  // ignore: unnecessary_getters_setters
+  ParseInfo get pInfo => _pInfo;
+  ParseInfo _pInfo;
+  // ignore: unnecessary_getters_setters
+  set pInfo(ParseInfo info) => _pInfo ??= info;
+
+/*  bool get wasShortEncoding => pInfo.wasShortFile;
+
+  bool get hasIssues => pInfo.hadErrors || pInfo.hadWarnings;
+
+  bool get hasErrors => pInfo.hadParsingErrors || hasIssues;
+  */
 }

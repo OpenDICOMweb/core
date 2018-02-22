@@ -6,44 +6,43 @@
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/map_dataset/map_item.dart';
 import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/tag/constants.dart';
 
 /// An [BDItem] is a DICOM [Dataset], which is contained in an SQ Element.
 class BDItem extends MapItem with DatasetBD {
-  IDSBytes dsBytes;
 
   @override
   List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
   /// Creates a new empty [BDItem] from [ByteData].
-  BDItem(Dataset parent, Map<int, Element> eMap, ByteData bd, [SQ sequence])
-      : dsBytes = new IDSBytes(bd),
-        super(parent, eMap, sequence);
+  BDItem(Dataset parent, {Map<int, Element> eMap, SQ sequence, ByteData bd})
+      :
+        super(parent, eMap, sequence, bd);
 
   /// Creates a new empty [BDItem] from [ByteData].
-  BDItem.empty(Dataset parent, ByteData bd, [SQ sequence])
-      : dsBytes = new IDSBytes(bd),
-        super(parent, <int, Element>{}, sequence);
+  BDItem.empty(Dataset parent,  [SQ sequence, ByteData bd])
+      :
+        super(parent, <int, Element>{}, sequence, bd);
 
   /// Create a new [BDItem] from an existing [BDItem].
   /// If [parent] is _null_the new [BDItem] has the same
   /// parent as [item].
-  BDItem.from(BDItem item, Dataset parent)
-      : dsBytes = item.dsBytes,
-        super(parent ?? item.parent, new Map.from(item.eMap), item.sequence);
+  BDItem.from(BDItem item, MapItem parent, [SQ sequence])
+      : super.from(item, parent ?? item.parent,
+                       sequence ?? item.sequence);
 
+/*
   /// Creates a new [BDItem] from [ByteData].
   BDItem.fromBD(ByteData bd, MapItem parent, Map<int, Element> eMap,
       [SQ sequence])
-      : dsBytes = new IDSBytes(bd),
+      :
         super(parent, eMap, sequence);
-
+*/
+/*
   /// The length of the Value Field of the encoded object (e.g. ByteData,
   /// JSON [String]...) that _this_was created from, or
   /// _null_ if _this_was not created by parsing an encoded object.
@@ -58,4 +57,5 @@ class BDItem extends MapItem with DatasetBD {
   //   Only Item and its subclasses can have undefined length.
   //   RootDatasets cannot.
   bool get hasULength => vfLengthField == kUndefinedLength;
+ */
 }

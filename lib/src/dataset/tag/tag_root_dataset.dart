@@ -3,34 +3,29 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
+import 'dart:typed_data';
+
 import 'package:core/src/dataset/base/map_dataset/map_root_dataset.dart';
-import 'package:core/src/dataset/byte_data/bd_root_dataset.dart';
+import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/empty_list.dart';
 
 /// A [TagRootDataset].
 class TagRootDataset extends MapRootDataset with TagDataset {
-
   /// Creates an empty, i.e. without TagElements, [TagRootDataset].
   TagRootDataset(Map<int, Element> fmi, Map<int, Element> eMap,
-                 [String path = ''])
-      :  super(fmi, eMap, path);
+      [String path = '', ByteData bd, int fmiEnd])
+      : super(fmi, eMap, path, bd, fmiEnd);
 
   /// Creates an empty [TagRootDataset], i.e. without [Element]s.
-  TagRootDataset.empty([String path = ''])
-      : super.empty(path) {
-//    print('BDRoot: $this');
-  }
-  // TODO: make this work recursively
-  /// Creates a [TagRootDataset] from another [TagRootDataset].
-  TagRootDataset.from(MapRootDataset rds)
-      : super(new Map.from(rds.fmi), new Map.from(rds.eMap), rds.path);
+  TagRootDataset.empty([String path = '', ByteData bd, int fmiEnd = 0])
+      : super.empty(path, bd ?? kEmptyByteData, fmiEnd);
 
   // TODO: make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].
-  TagRootDataset.fromBD(BDRootDataset rds)
-      : super(new Map.from(rds.fmi), new Map.from(rds.eMap), rds.path);
+  TagRootDataset.from(MapRootDataset rds) : super.from(rds);
 
-  TagRootDataset copy([TagRootDataset rds]) =>
-      new TagRootDataset.from(rds ?? this);
+  @override
+  RootDataset copy([RootDataset rds]) => new TagRootDataset.from(rds ?? this);
 }

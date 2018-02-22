@@ -20,19 +20,20 @@ class TagItem extends MapItem with TagDataset {
 //  List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
   /// Creates a new [TagItem] from [ByteData].
-  TagItem(Dataset parent, Map<int, Element> eMap, [SQ sequence])
-      : super(parent, eMap, sequence);
+  TagItem(Dataset parent, Map<int, Element> eMap, [SQ sequence, ByteData bd])
+      : super(parent, eMap, sequence, bd);
 
   /// Creates a new empty [BDItem] from [ByteData].
-  TagItem.empty(Dataset parent, Map<int, Element> eMap, [SQ sequence])
-      : super(parent, eMap, sequence);
+  TagItem.empty(Dataset parent, [SQ sequence, ByteData bd])
+      : super(parent, <int, Element>{}, sequence, bd);
 
   /// Create a new [BDItem] from an existing [BDItem].
   /// If [parent] is _null_the new [BDItem] has the same
   /// parent as [item].
-  TagItem.from(TagItem item, Dataset parent)
-      : super(parent ?? item.parent, new Map.from(item.eMap), item.sequence);
+  TagItem.from(TagItem item, Dataset parent, [SQtag sequence])
+      : super.from(item, parent ?? item.parent, sequence ?? item.sequence);
 
+  // TODO: needed?
   factory TagItem.fromList(Dataset parent, Iterable<Element> elements,
       [SQtag sequence]) {
     final eMap = <int, Element>{};
@@ -40,13 +41,12 @@ class TagItem extends MapItem with TagDataset {
     return new TagItem(parent, eMap, sequence);
   }
 
-  /// Creates a new [TagItem] from an existing [TagItem].
+/*  /// Creates a new [TagItem] from an existing [TagItem].
   /// If [parent] is _null_ the new [TagItem] has the same
   /// parent as [item].
   TagItem.fromBD(BDItem item, Dataset parent, [SQtag sequence])
-      : super(parent ?? item.parent, new Map.from(item.eMap),
-            sequence ?? item.sequence);
-
+      : super.from(item, parent ?? item.parent, sequence ?? item.sequence);
+  */
   @override
   bool get isImmutable => false;
 }

@@ -8,7 +8,8 @@ import 'package:core/core.dart';
 
 void main() {
 
-    final map0 = new MapAsList();
+
+    final map0 = new TagRootDataset.empty();
     //final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
     final as0 = new AStag(PTag.kPatientAge, ['024Y']);
 

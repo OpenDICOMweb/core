@@ -6,7 +6,10 @@
 
 export 'package:core/src/dataset/base/dataset.dart';
 export 'package:core/src/dataset/base/ds_bytes.dart';
+export 'package:core/src/dataset/base/history.dart';
 export 'package:core/src/dataset/base/item.dart';
+export 'package:core/src/dataset/base/map_dataset/map_item.dart';
+export 'package:core/src/dataset/base/map_dataset/map_root_dataset.dart';
 export 'package:core/src/dataset/base/root_dataset.dart';
 export 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
 export 'package:core/src/dataset/byte_data/bd_item.dart';
@@ -14,9 +17,6 @@ export 'package:core/src/dataset/byte_data/bd_root_dataset.dart';
 export 'package:core/src/dataset/compare.dart';
 export 'package:core/src/dataset/compare_datasets.dart';
 export 'package:core/src/dataset/compare_datasets.dart';
-export 'package:core/src/dataset/element_list/element_list.dart';
-export 'package:core/src/dataset/element_list/history.dart';
-export 'package:core/src/dataset/element_list/map_as_list.dart';
 export 'package:core/src/dataset/errors.dart';
 export 'package:core/src/dataset/parse_info.dart';
 export 'package:core/src/dataset/parse_info.dart';
@@ -109,6 +109,9 @@ export 'package:core/src/uuid/errors.dart';
 export 'package:core/src/uuid/uuid.dart';
 export 'package:core/src/uuid/v4generator.dart';
 export 'package:core/src/vr/vr.dart';
+//export 'package:core/src/dataset/element_list/element_list.dart';
+//export 'package:core/src/dataset/element_list/map_as_list.dart';
+
 //export 'package:core/src/dataset/base/private_dataset.dart';
 //export 'package:core/src/dataset/base/private_group.dart';
 
