@@ -53,7 +53,7 @@ class FmiMap extends Fmi {
   FmiMap.from(FmiMap fmi) : eMap = new Map.from(fmi.eMap);
 
   @override
-  Element operator [](int i) => eMap.values.elementAt(i);
+  Element operator [](int i) => eMap[i];
 
   @override
   void operator []=(int code, Element e) => eMap[code] = e;

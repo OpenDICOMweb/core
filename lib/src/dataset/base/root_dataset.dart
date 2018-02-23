@@ -56,7 +56,7 @@ abstract class RootDataset extends Dataset {
   /// _this_. [fmiBytes] has _one-time_ setter that is initialized lazily.
   Uint8List get fmiBytes => dsBytes.fmiBytes;
 
-  bool get hasFmi => fmi != null;
+  bool get hasFmi => fmi.isNotEmpty;
 
   /// Only supported by some [RootDataset]s. A [lengthInBytes] of -1
   /// indicates an unknown length.
