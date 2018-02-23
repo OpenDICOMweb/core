@@ -398,7 +398,7 @@ void main() {
       final valuesList = <TagItem>[];
 
       // Make Item with 3 Elements
-      //final elements0 = new MapAsList();
+      final rds0 = new TagRootDataset.empty();
       rds[kRecognitionCode] =
           new SHtag(PTag.kRecognitionCode, ['foo bar']);
       rds[kInstitutionAddress] =
@@ -488,7 +488,7 @@ void main() {
       final aeOW1 = new OWtag(PTag.kAirCounts, [3]);
 
       final rds = new TagRootDataset.empty();
-      log.debug('system.throwOnError: $system.throwOnError');
+      log.debug('system.throwOnError: ${system.throwOnError}');
       rds.add(un0);
       log.debug(
           'rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '

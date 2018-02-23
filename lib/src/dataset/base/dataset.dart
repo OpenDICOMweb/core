@@ -74,15 +74,6 @@ abstract class Dataset extends ListBase<Element> {
 
   // **** End of Interface ****
 
-  // Element operator [](int key) => this[key];
-
-  /// The number of [elements] (and [keys]) in _this_.
-  /// _Note_: Does not include duplicate elements.
-//  @override
-//  int get length => elements.length;
-//  @override
-//  set length(int length) => unsupportedError();
-
   /// If _true_ [Element]s with invalid values are stored in the
   /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
   bool allowInvalidValues = true;
@@ -197,11 +188,12 @@ abstract class Dataset extends ListBase<Element> {
     return false;
   }
 
-  /// Returns a [Map] of the Elements that satisfy [min] <= e.code <= [max].
+  /// Returns a [List] of the Elements that satisfy [min] <= e.code <= [max].
   List<Element> getElementsInRange(int min, int max) {
-    final fmi = <Element>[];
-    for (var e in this) if (e.code >= min && e.code < max) fmi.add(e);
-    return fmi;
+    final elements = <Element>[];
+    for (var e in this)
+      if (e.code >= min && e.code < max) elements.add(e);
+    return elements;
   }
 
   @override
@@ -799,15 +791,6 @@ abstract class Dataset extends ListBase<Element> {
   Uid getUid(int index, {bool required = false}) {
     final UI e = lookup(index, required: required);
     return (e == null) ? null : _checkOneValue<Uid>(index, e.uids);
-  }
-
-  // TODO: find a cleaner way to do this!
-  TransferSyntax fmiTS() {
-    final UI ui = lookup(kTransferSyntaxUID, required: false);
-    print('ui: $ui');
-    return (ui == null)
-        ? null
-        : _checkOneValue<Uid>(kTransferSyntaxUID, ui.uids);
   }
 
   /// Returns the [List<double>] values for the [Element] with [index].

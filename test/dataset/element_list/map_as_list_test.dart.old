@@ -13,21 +13,21 @@ RSG rsg = new RSG(seed: 1);
 void main() {
   Server.initialize(name: 'map_as_list_test', level: Level.info);
 
-  group('MapAsList', () {
+  group('MapRootDataset', () {
     test('[] and []=', () {
-      final elements = new MapAsList();
+      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
       final ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
           new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');
-      elements[uiTransFerSyntax.index] = uiTransFerSyntax;
-      log.debug('elements: $elements');
-      final v = elements[uiTransFerSyntax.index];
+      rds[uiTransFerSyntax.index] = uiTransFerSyntax;
+      log.debug('elements: $rds');
+      final v = rds[uiTransFerSyntax.index];
       log.debug('elements[${uiTransFerSyntax.index}] = $v');
     });
 
     test('insert and compare', () {
-      final map0 = new MapAsList();
+      final map0 = new TagRootDataset.empty();
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -306,17 +306,17 @@ void main() {
 
     test('Simple UItag, replace, and replaceUid test', () {
       final uidString0 = '1.2.840.10008.5.1.4.34.5';
-//      final uidString0a = '1.2.840.10008.5.1.4.34';
+      final uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
-//      final uidStringList0a = [uidString0a];
+      final uidStringList0a = [uidString0a];
       final uid0 = new Uid(uidString0);
-//      final uid0a = new Uid(uidString0a);
+      final uid0a = new Uid(uidString0a);
       final uidList0 = [uid0];
-//      final uidList0a = [uid0a];
+      final uidList0a = [uid0a];
 
       // Create element and check values and uids
       final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
-//      final map0 = new MapAsList()..add(ui0);
+      final map0 = new MapAsList()..add(ui0);
       print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));

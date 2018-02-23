@@ -17,9 +17,9 @@ List<Element> replaceUids(TagRootDataset rds) {
   final old = <Element>[];
 
 //  print('**** Normalizing FMI UIDs');
-  final UI e = rds.fmi[kMediaStorageSOPInstanceUID];
+  final UI e = rds.fmiMap[kMediaStorageSOPInstanceUID];
   final eNew = replaceUIFast(e);
-  rds.fmi[e.index] = eNew;
+  rds.fmiMap[e.index] = eNew;
   old.add(e);
 
 //  print('**** Normalizing Dataset UIDs');

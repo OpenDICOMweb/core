@@ -30,7 +30,7 @@ class TagItem extends MapItem with TagDataset {
   /// Create a new [BDItem] from an existing [BDItem].
   /// If [parent] is _null_the new [BDItem] has the same
   /// parent as [item].
-  TagItem.from(TagItem item, Dataset parent, [SQtag sequence])
+  TagItem.from(Item item, Dataset parent, [SQtag sequence])
       : super.from(item, parent ?? item.parent, sequence ?? item.sequence);
 
   // TODO: needed?

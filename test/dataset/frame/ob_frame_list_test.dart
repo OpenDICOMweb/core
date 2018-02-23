@@ -332,7 +332,7 @@ void main() {
       final usPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
 
       final rootDS0 = new TagRootDataset.empty()
-        ..fmi[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
+        ..fmiMap[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
         ..add(usRows0)
@@ -349,7 +349,7 @@ void main() {
         ..add(csColorSpace0)
         ..add(usPixelPaddingRangeLimit0);
 
-      print('ui: ${rootDS0.fmi[kTransferSyntaxUID]}');
+      print('ui: ${rootDS0.fmiMap[kTransferSyntaxUID]}');
       log.debug('rootDS0.transferSyntax: ${rootDS0.transferSyntax}');
 
       final ob1FDf = new FrameDescriptor.fromDataset(rootDS0);
@@ -805,7 +805,7 @@ void main() {
       final usPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
 
       final rds0 = new TagRootDataset.empty()
-        ..fmi[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
+        ..fmiMap[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
         ..add(usRows0)

@@ -206,7 +206,7 @@ ElementList Summary
     if (old == null) {
       if (checkIssuesOnAdd && (issues != null)) if (!allowInvalidValues &&
           !e.isValid) invalidElementError(e);
-      this[e.code] = e;
+      store(e.code, e);
       if (e is SQ) sequences.add(e);
       return true;
     } else if (allowDuplicates) {
@@ -214,7 +214,7 @@ ElementList Summary
       if (old.vrIndex != kUNIndex) {
         history.duplicates.add(e);
       } else {
-        this[e.index] = e;
+        store(e.index, e)
         history.duplicates.add(old);
       }
       return false;
@@ -243,7 +243,7 @@ ElementList Summary
     assert(vList != null);
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    this[index] = old.update(vList.toList(growable: false));
+    store(index, old.update(vList.toList(growable: false)));
     return old;
   }
 

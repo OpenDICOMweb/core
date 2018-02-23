@@ -19,14 +19,12 @@ class BDItem extends MapItem with DatasetBD {
   List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
   /// Creates a new empty [BDItem] from [ByteData].
-  BDItem(Dataset parent, {Map<int, Element> eMap, SQ sequence, ByteData bd})
-      :
-        super(parent, eMap, sequence, bd);
+  BDItem(Dataset parent, Map<int, Element> eMap, [SQ sequence, ByteData bd])
+      : super(parent, eMap, sequence, bd);
 
   /// Creates a new empty [BDItem] from [ByteData].
   BDItem.empty(Dataset parent,  [SQ sequence, ByteData bd])
-      :
-        super(parent, <int, Element>{}, sequence, bd);
+      : super(parent, <int, Element>{}, sequence, bd);
 
   /// Create a new [BDItem] from an existing [BDItem].
   /// If [parent] is _null_the new [BDItem] has the same
@@ -35,27 +33,8 @@ class BDItem extends MapItem with DatasetBD {
       : super.from(item, parent ?? item.parent,
                        sequence ?? item.sequence);
 
-/*
   /// Creates a new [BDItem] from [ByteData].
-  BDItem.fromBD(ByteData bd, MapItem parent, Map<int, Element> eMap,
-      [SQ sequence])
-      :
-        super(parent, eMap, sequence);
-*/
-/*
-  /// The length of the Value Field of the encoded object (e.g. ByteData,
-  /// JSON [String]...) that _this_was created from, or
-  /// _null_ if _this_was not created by parsing an encoded object.
-  int get vfLengthField => dsBytes.vfLengthField;
-
-  /// The actual length of the Value Field for _this_
-  int get vfLength => (dsBytes != null) ? dsBytes.eLength - 8 : null;
-
-  /// _true_if _this_was created from an encoded object (e.g. [ByteData],
-  /// JSON [String]...) and the Value Field length was [kUndefinedLength].
-  // Design Note:
-  //   Only Item and its subclasses can have undefined length.
-  //   RootDatasets cannot.
-  bool get hasULength => vfLengthField == kUndefinedLength;
- */
+  BDItem.fromBD(Dataset parent, Map<int, Element> eMap,
+      [SQ sequence, ByteData bd])
+      : super(parent, eMap, sequence, bd);
 }

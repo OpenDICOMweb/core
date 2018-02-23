@@ -35,7 +35,6 @@ abstract class MapDataset {
   bool tryAdd(Element e, [Issues issues]);
   History get history;
 
-
   Element operator [](int i) => eMap[i];
 
   void operator []=(int i, Element e) => tryAdd(e);
@@ -59,7 +58,6 @@ abstract class MapDataset {
     }
   }
 */
-
   // *** Primitive only for internal use Stores e in eMap
   void store(int index, Element e) {
     assert(index == e.code);

@@ -98,7 +98,7 @@ Summary $tag
     for (var item in items) {
       for (var e in item) {
         count += (e is SQ)
-                 ? counter(test)
+                 ? e.counter(test)
                  : 1;
       }
     }

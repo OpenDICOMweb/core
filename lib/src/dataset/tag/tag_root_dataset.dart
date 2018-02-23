@@ -14,7 +14,7 @@ import 'package:core/src/empty_list.dart';
 /// A [TagRootDataset].
 class TagRootDataset extends MapRootDataset with TagDataset {
   /// Creates an empty, i.e. without TagElements, [TagRootDataset].
-  TagRootDataset(Map<int, Element> fmi, Map<int, Element> eMap,
+  TagRootDataset(FmiMap fmi, Map<int, Element> eMap,
       [String path = '', ByteData bd, int fmiEnd])
       : super(fmi, eMap, path, bd, fmiEnd);
 

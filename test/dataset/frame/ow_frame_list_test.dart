@@ -326,7 +326,7 @@ void main() {
           new UStag(PTag.kPixelPaddingRangeLimit, [65535]);
 
       final rds0 = new TagRootDataset.empty()
-        ..fmi[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
+        ..fmiMap[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
         ..add(usRows0)

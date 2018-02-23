@@ -4,6 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
@@ -35,7 +36,7 @@ abstract class RootDataset extends Dataset {
   RootDataset(this.path, ByteData bd, int fmiEnd)
       : dsBytes = (bd == null || bd.lengthInBytes == 0)
             ? new RDSBytes.empty()
-                  : new RDSBytes(bd, fmiEnd);
+            : new RDSBytes(bd, fmiEnd);
 
   RootDataset.empty() : dsBytes = new RDSBytes.empty();
 
@@ -49,7 +50,7 @@ abstract class RootDataset extends Dataset {
   ///
   // Design Note: It is expected that [Dataset] will have
   // it's own specialized implementation for correctness and efficiency.
-  dynamic get fmi;
+  Fmi get fmi;
 
   /// Returns the encoded [ByteData] for the File Meta Information (FMI) for
   /// _this_. [fmiBytes] has _one-time_ setter that is initialized lazily.
@@ -82,7 +83,8 @@ abstract class RootDataset extends Dataset {
   bool get isDicomDir => hasElementsInRange(0x00041130, 0x00031600);
 
   /// The [TransferSyntax].
-  TransferSyntax get transferSyntax => fmiTS() ?? system.defaultTransferSyntax;
+  TransferSyntax get transferSyntax =>
+      fmi.uidLookup(kTransferSyntaxUID) ?? system.defaultTransferSyntax;
 
   bool get hasSupportedTransferSyntax =>
       system.isSupportedTransferSyntax(transferSyntax.asString);
@@ -121,6 +123,7 @@ abstract class RootDataset extends Dataset {
     dsBytes = RDSBytes.kEmpty;
     return dsb;
   }
+
   /// An [List] of the duplicate [Element]s in _this_.
   List<Element> get duplicates => history.duplicates;
   List<Element> get added => history.added;
@@ -142,13 +145,13 @@ abstract class RootDataset extends Dataset {
        Transfer Syntax: $transferSyntax
         Total Elements: $total
     Top Level Elements: $length
-      Total Duplicates: $dupTotal
+      Total Duplicates: Fix: \$dupTotal
              Sequences: ${sqs.length}
          Private Total: $nPrivate
                History: $history''');
     if (nPrivateSequences != 0)
       sb.writeln('     Private Sequences: $nPrivateSequences');
-    if (dupTotal != 0) sb.writeln('      Total Duplicates: $dupTotal');
+// Fix    if (dupTotal != 0) sb.writeln('      Total Duplicates: $dupTotal');
     if (duplicates.isNotEmpty)
       sb.writeln('  Top Level Duplicates: ${duplicates.length}');
     return sb.toString();
@@ -247,4 +250,8 @@ abstract class RootDataset extends Dataset {
 
   bool get hasErrors => pInfo.hadParsingErrors || hasIssues;
   */
+}
+
+abstract class Fmi extends ListBase<Element> {
+  Uid uidLookup(int index);
 }

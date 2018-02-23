@@ -13,19 +13,19 @@ import 'package:core/src/element/base/element.dart';
 class BDRootDataset extends MapRootDataset with DatasetBD {
 
   /// Creates an empty, i.e. without ByteElements, [BDRootDataset].
-  BDRootDataset(Map<int, Element> fmi, Map<int, Element> eMap, String path,
+  BDRootDataset(FmiMap fmi, Map<int, Element> eMap, String path,
       ByteData bd, int fmiEnd)
       : super(fmi, eMap, path, bd, fmiEnd);
 
   /// Creates an empty, i.e. without ByteElements, [BDRootDataset].
   BDRootDataset.empty([String path = '', ByteData bd, int fmiEnd])
-      : super(<int, Element>{}, <int, Element>{}, path, bd, fmiEnd);
+      : super(new FmiMap.empty(), <int, Element>{}, path, bd, fmiEnd);
 
   /// Creates a [BDRootDataset] from another [BDRootDataset].
   BDRootDataset.from(BDRootDataset rds)
       : super.from(rds);
 
-  static BDRootDataset fromBytes(Map<int, Element> fmi,
+  static BDRootDataset fromBytes(FmiMap fmi,
           Map<int, Element> eMap, String path, ByteData bd, int fmiEnd) =>
       new BDRootDataset(fmi, eMap, path, bd, fmiEnd);
 }
