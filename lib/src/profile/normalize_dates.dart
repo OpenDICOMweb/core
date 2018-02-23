@@ -26,7 +26,7 @@ List<Element> normalizeDates(RootDataset rds, Date enrollment) {
       if (system.level == Level.debug) {
         printNormalized(e, eNew, enrollment);
       }
-      rds.elements.replaceValues<String>(e.index, eNew.values);
+      rds.replaceValues<String>(e.index, eNew.values);
       old.add(e);
     }
   }
@@ -41,12 +41,11 @@ List<Element> normalizeDates(RootDataset rds, Date enrollment) {
 /// _Note_: There are no Dates in FMI, so it is not changed.
 List<Element> normalizeDeIdDates(RootDataset rds, Date enrollment) {
   final old = <Element>[];
-  final elements = rds.elements;
   for (var code in deIdDateCodes) {
-    final DA e = elements.lookup(code);
+    final DA e = rds.lookup(code);
     if (e != null) {
       final eNew = e.normalize(enrollment);
-      elements.replace(e.index, eNew);
+      rds.replace(e.index, eNew);
       old.add(e);
     }
   }

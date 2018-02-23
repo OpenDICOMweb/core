@@ -206,7 +206,7 @@ ElementList Summary
     if (old == null) {
       if (checkIssuesOnAdd && (issues != null)) if (!allowInvalidValues &&
           !e.isValid) invalidElementError(e);
-      this[e.code] = e;
+      store(e.code, e);
       if (e is SQ) sequences.add(e);
       return true;
     } else if (allowDuplicates) {
@@ -214,7 +214,7 @@ ElementList Summary
       if (old.vrIndex != kUNIndex) {
         history.duplicates.add(e);
       } else {
-        this[e.index] = e;
+        store(e.index, e)
         history.duplicates.add(old);
       }
       return false;
@@ -243,7 +243,7 @@ ElementList Summary
     assert(vList != null);
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    this[index] = old.update(vList.toList(growable: false));
+    store(index, old.update(vList.toList(growable: false)));
     return old;
   }
 
@@ -517,10 +517,6 @@ ElementList Summary
 
   // **** Values Getters and Methods
 
-  V _checkOneValue<V>(int index, List<V> values) =>
-      (values == null || values.length != 1)
-          ? invalidValuesLengthError(Tag.lookupByCode(index), values)
-          : values.first;
 
   /// Returns the [int] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
@@ -539,25 +535,6 @@ ElementList Summary
 
   // **** Integers
 
-  /// Returns the [int] value for the [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  int getInt(int index, {bool required = false}) {
-    final e = lookup(index, required: required);
-    if (e == null || e is! IntBase) return nonIntegerTag(index);
-    return _checkOneValue<int>(index, e.values);
-  }
-
-  /// Returns the [List<int>] values for the [Element] with [index].
-  /// If [Element] is not present, either throws or returns _null_;
-  List<int> getIntList(int index, {bool required = false}) {
-    final e = lookup(index, required: required);
-    if (e == null || e is! IntBase) return nonIntegerTag(index);
-    if (!allowInvalidValues && !e.hasValidValues) return invalidElementError(e);
-    final vList = e.values;
-    //if (vList == null) return nullValueError('getIntList');
-    assert(vList != null);
-    return vList;
-  }
 
   // **** Floating Point
 

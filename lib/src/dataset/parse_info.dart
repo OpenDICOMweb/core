@@ -50,7 +50,8 @@ class ParseInfo {
   /// Where Group Length Elements (gggg,0000) present in the Dataset.
   bool hadGroupLengths = false;
 
-  /// The Object had Sequence or Item delimiters that had length fields that were not zero.
+  /// The Object had Sequence or Item delimiters that
+  /// had length fields that were not zero.
   int nonZeroDelimiterLengths = 0;
 
   /// The number of Value Fields that had an odd length value.
@@ -91,14 +92,18 @@ class ParseInfo {
   /// The total number of Elements read or written.
   int nElements = 0;
 
-  /// The total number of EVR Short Elements (16-bit length field) read or written.
+  /// The total number of EVR Short Elements
+  /// (16-bit length field) read or written.
+  ///
   /// _Note_: Only relevant for EVR.
   int nShortElements = 0;
 
-  /// The total number of EVR/IVR Long Elements (32-bit length field) read or written.
+  /// The total number of EVR/IVR Long Elements
+  /// (32-bit length field) read or written.
   int nLongElements = 0;
 
-  /// The total number of Elements, of potentially _undefined length_ read or written.
+  /// The total number of Elements,
+  /// of potentially _undefined length_, read or written.
   int nMaybeUndefinedElements = 0;
 
   /// The total number of Elements with _defined length_ read or written.
@@ -316,7 +321,8 @@ Non-Zero Delimiter Lengths: $nonZeroDelimiterLengths
   String get pixelDataProblems {
     final sb = new StringBuffer();
     final length = pixelDataEnd - pixelDataStart;
-    if (length != pixelDataLength) sb.writeln('*** Pixel Data stats inconsistent');
+    if (length != pixelDataLength)
+      sb.writeln('*** Pixel Data stats inconsistent');
     if (pixelDataVRIndex != kOBIndex ||
         pixelDataVRIndex != kOWIndex ||
         pixelDataVRIndex != kUNIndex)
@@ -365,7 +371,8 @@ $summary
 $errorMsg
   ''';*/
 
-  String get fileLengthsMsg => (nTrailingBytes + rds.lengthInBytes != fileLengthInBytes)
+  String get fileLengthsMsg =>
+      (nTrailingBytes + rds.lengthInBytes != fileLengthInBytes)
       ? '''
 *** Inconsistent Lengths Error:
 		  File length: $fileLengthInBytes' is not equal to
@@ -392,7 +399,7 @@ short + defined + undefined: $totalElements
               Duplicates DS: ${rds.dupTotal}
 
             Sequences read: $nSequences
-              Sequences DS: ${rds.elements.sequences.length}
+              Sequences DS: ${rds.sequences.length}
                   Datasets: $nDatasets
          ''';
 
@@ -413,7 +420,7 @@ short + defined + undefined: $totalElements
   Unefined Length Datasets: $nUndefinedLengthDatasets
 
             Sequences read: $nSequences
-              Sequences DS: ${rds.elements.sequences.length}
+              Sequences DS: ${rds.sequences.length}
           DefinedSequences: $nDefinedLengthSequences
         UndefinedSequences: $nUndefinedLengthSequences 
          Private Sequences: $nPrivateSequences 

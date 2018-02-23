@@ -6,9 +6,8 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/empty_list.dart';
-import 'package:core/src/errors.dart';
+import 'package:core/src/tag/constants.dart';
 
 /// Dataset Bytes ([DSBytes]).
 abstract class DSBytes {
@@ -17,15 +16,27 @@ abstract class DSBytes {
   /// The [ByteData] containing this Dataset.
   ByteData get bd;
 
-  int get dsStart;
+  /// The index of the first byte of the Dataset in [bd].
+  int get dsStart => bd.offsetInBytes;
 
   /// The number of bytes from the beginning to the end of the Dataset.
-  int get dsEnd;
+  int get dsLength => bd.lengthInBytes;
+
+  /// The index of the last byte of the Dataset in [bd].
+  int get dsEnd => dsStart + dsLength;
+
+  /// The length of the entire Dataset including header, trailer, preamble, etc.
+  // int get eLength => bd.lengthInBytes;
+
+  /// Returns the length in bytes of the Value Field.
+  int get vfLength;
 
   /// Returns the Value Field Length field, if any.
   int get vfLengthField;
 
-  bool get hasULength;
+  /// Returns _true_ if the Value Field Length field contained
+  /// [kUndefinedLength].
+  bool get hasULength => vfLengthField == kUndefinedLength;
 
   /// The number of bytes from the beginning of the Element to the Value Field.
   int get vfOffset;
@@ -47,17 +58,12 @@ abstract class DSBytes {
   @override
   int get hashCode => bd.hashCode;
 
-  /// The length of the entire Dataset including header, trailer, preamble, etc.
-  int get eLength => bd.lengthInBytes;
-
-  /// Returns _true_ if the Value Field Length field contained [kUndefinedLength].
-  //bool get hasULength;
-
   /// Returns the Value Field as a [ByteData].
   ByteData get vfByteData => bd;
 
   /// Returns the Value Field as a [Uint8List].
-  Uint8List get vfBytes => bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
+  Uint8List get vfBytes =>
+      bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
 
   // **** Internal Stuff ****
 
@@ -102,26 +108,24 @@ class RDSBytes extends DSBytes {
         fmiEnd = 0,
         hasPrefix = false;
 
-  ByteData get preamble => bd.buffer.asByteData(kPreambleOffset, kPreambleLength);
+  ByteData get preamble =>
+      bd.buffer.asByteData(kPreambleOffset, kPreambleLength);
   ByteData get prefix => bd.buffer.asByteData(kPrefixOffset, kPrefixLength);
 
   int get startDelimiter => getUint32(kPrefixOffset);
-  @override
-  int get dsStart => bd.offsetInBytes;
-  @override
-  int get dsEnd => bd.lengthInBytes;
 
   int get fmiStart => bd.offsetInBytes;
   int get rdsStart => fmiEnd;
   int get rdsEnd => dsEnd;
 
-  Uint8List get fmiBytes =>
-      (hasPrefix) ? bd.buffer.asUint8List(bd.offsetInBytes, 132) : kEmptyUint8List;
-  @override
-  int get vfLengthField => unsupportedError('Root Datasets do not have a vfLengthField');
+  Uint8List get fmiBytes => (hasPrefix)
+      ? bd.buffer.asUint8List(bd.offsetInBytes, 132)
+      : kEmptyUint8List;
 
   @override
-  bool get hasULength => false;
+  int get vfLength => dsLength - 132;
+  @override
+  int get vfLengthField => vfLength;
 
   @override
   Uint8List get vfBytes =>
@@ -152,30 +156,32 @@ class IDSBytes extends DSBytes {
 
   IDSBytes(this.bd);
 
-  Uint8List get preamble => null;
-  Uint8List get prefix => null;
+  IDSBytes.empty() : bd = kEmptyByteData;
 
   int get startDelimiter => getUint32(kStartDelimiterOffset);
+
+  /// The actual length of the Value Field for _this_
+  @override
+  int get vfLength => dsLength - 8;
 
   /// Returns the value in the Value Field Length field.
   @override
   int get vfLengthField => bd.getUint32(kVFLengthFieldOffset);
-  int get endDelimiter => (hasULength) ? getUint32(eLength - kTrailerSize) : null;
-  int get trailerLengthField => (hasULength) ? getUint32(eLength - kTrailerSize) : 0;
 
-  bool get isValidItem => startDelimiter == kStartDelimiter && hasValidEndDelimiter;
+  int get endDelimiter =>
+      (hasULength) ? getUint32(dsLength - kTrailerSize) : null;
+  int get trailerLengthField =>
+      (hasULength) ? getUint32(dsLength - kTrailerSize) : 0;
 
-  bool get hasValidEndDelimiter =>
-      (hasULength) ? endDelimiter == kEndDelimiter && trailerLengthField == 0 : true;
+  bool get isValidItem =>
+      startDelimiter == kStartDelimiter && hasValidEndDelimiter;
 
-  @override
-  int get dsStart => bd.offsetInBytes;
+  bool get hasValidEndDelimiter => (hasULength)
+      ? endDelimiter == kEndDelimiter && trailerLengthField == 0
+      : true;
 
-  /// The length of the enclosed Dataset.
-  @override
-  int get dsEnd => bd.lengthInBytes;
-
-  /// Returns _true_ if the Value Field Length field contained [kUndefinedLength].
+  /// Returns _true_ if the Value Field Length field
+  /// contained [kUndefinedLength].
   @override
   bool get hasULength => vfLengthField == kUndefinedLength;
 
@@ -193,7 +199,7 @@ class IDSBytes extends DSBytes {
   static const int kStartDelimiter = kItem32BitLE;
   static const int kEndDelimiter = kItemDelimitationItem32BitLE;
 
-//  static final IDSBytes kEmpty = new IDSBytes.empty();
+  static final IDSBytes kEmpty = new IDSBytes.empty();
 
   static IDSBytes make(ByteData bd) => new IDSBytes(bd);
 }

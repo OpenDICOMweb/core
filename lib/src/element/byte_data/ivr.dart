@@ -583,12 +583,11 @@ class LOivr extends LO
   }
 }
 
-class PCivr extends PC
-    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
-  @override
-  final ByteData bd;
+class PCivr extends LOivr with PC {
+  PCivr(ByteData bd) : super(bd);
 
-  PCivr(this.bd);
+  @override
+  String get token => vfBytesAsUtf8;
 
   static PCivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);

@@ -4,12 +4,11 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
+import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/float.dart';
 import 'package:core/src/element/base/integer/integer.dart';
@@ -31,15 +30,6 @@ import 'package:core/src/uid/well_known/transfer_syntax.dart';
 import 'package:core/src/vr/vr.dart';
 
 const int _vrOffset = 4;
-
-Tag _tagLookup(int code, int vrIndex, [Uint8List vfBytes]) {
-  if (Tag.isPCCode(code)) {
-    final token = ASCII.decode(vfBytes, allowInvalid: true);
-    final tag = Tag.lookupByCode(code, kLOIndex, token);
-    return tag;
-  }
-  return Tag.lookupByCode(code, vrIndex);
-}
 
 abstract class EvrElement<V> implements BDElement<V> {
   @override
@@ -697,32 +687,34 @@ class LOevr extends LO
   static LOevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);
     assert(_checkPadding(bd));
-    return new LOevr(_removeShortPadding(bd));
+    final v = _removeShortPadding(bd);
+    // Read code elt.
+    final group = bd.getUint16(0, Endian.little);
+    final elt = bd.getUint16(2, Endian.little);
+    return (Tag.isPrivateGroup(group) && elt >= 0x10 && elt <= 0xFF)
+           ? new PCevr(v)
+           : new LOevr(v);
   }
 }
 
-class PCevr extends PC
-    with
-        Common,
-        EvrElement<String>,
-        EvrShortMixin<String>,
-        BDStringMixin,
-        Utf8Mixin {
-  @override
-  final ByteData bd;
-
-  PCevr(this.bd);
+class PCevr extends LOevr with PC {
+  PCevr(ByteData bd) : super(bd) {
+    print('PCevr: $dcm $tag');
+  }
 
   /// Returns a [PCTag].
   @override
   Tag get tag {
     if (Tag.isPCCode(code)) {
-      final token = ASCII.decode(vfBytes, allowInvalid: true);
+      final token = vfBytesAsAscii;
       final tag = PCTag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
     return invalidKey(code, 'Invalid Tag Code ${dcm(code)}');
   }
+
+  @override
+  String get token => vfBytesAsAscii;
 
   static PCevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);

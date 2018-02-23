@@ -63,12 +63,6 @@ abstract class TagMixinBase<K, V> {
 
   // **** Value Field related Getters ****
 
-  /// Returns the unsigned integer value contained in the Value Field.
-  ///
-  /// _Note_: If this is kUndefinedLength (0xFFFFFFFF), then the length
-  /// is undefined. Only OB, OW, SQ, and UN can have undefined lengths.
-  int get vfLengthField;
-
   /// The actual length in bytes of the Value Field.
   int get vfLength;
 

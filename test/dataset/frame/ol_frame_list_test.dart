@@ -8,6 +8,7 @@ import 'dart:typed_data';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
+
 import 'test_pixel_data.dart';
 
 final Uint8List frame = new Uint8List.fromList(testFrame);
@@ -317,8 +318,8 @@ void main() {
       final csColorSpace0 = new CStag(PTag.kColorSpace);
       final unPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
 
-      final rds0 = new TagRootDataset()
-        ..fmi.add(uiTransferSyntaxUID0)
+      final rds0 = new TagRootDataset.empty()
+        ..fmiMap[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
         ..add(usRows0)

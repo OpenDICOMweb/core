@@ -9,7 +9,7 @@ import 'package:core/server.dart';
 void main() {
   Server.initialize();
 
-  final rootDS = new TagRootDataset()..checkIssuesOnAdd = true;
+  final rootDS = new TagRootDataset.empty()..checkIssuesOnAdd = true;
   print('doCheckIssuesOnAdd: ${rootDS.checkIssuesOnAdd}');
 
   final SL sl0 = new SLtag(PTag.kReferencePixelX0, [kInt32Min]);

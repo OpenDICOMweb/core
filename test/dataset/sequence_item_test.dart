@@ -14,41 +14,41 @@ void main() {
     SQtag sq;
 
     final tag = PTag.lookupByCode(kInstanceCreationDate);
-    final rds = new TagRootDataset();
+    var rds = new TagRootDataset.empty();
     final date = new DAtag(tag, ['19990505']);
     rds.add(date);
 
-    var elements = new MapAsList();
-    elements[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
-    elements[kInstitutionAddress] =
+  //  var elements = new TagRootDataset.empty();
+    rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
+    rds[kInstitutionAddress] =
         new STtag(PTag.kInstitutionAddress, ['foo bar']);
-    elements[kExtendedCodeMeaning] =
+    rds[kExtendedCodeMeaning] =
         new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
-    itemsList.add(new TagItem.fromList(rds, elements));
+    itemsList.add(new TagItem.fromList(rds, rds));
 
-    elements = new MapAsList();
-    elements[PTag.kRecognitionCode.code] =
+    rds = new TagRootDataset.empty();
+    rds[PTag.kRecognitionCode.code] =
         new SHtag(PTag.kRecognitionCode, ['abc']);
-    elements[PTag.kInstitutionAddress.code] =
+    rds[PTag.kInstitutionAddress.code] =
         new STtag(PTag.kInstitutionAddress, ['abc']);
-    elements[PTag.kExtendedCodeMeaning.code] =
+    rds[PTag.kExtendedCodeMeaning.code] =
         new LTtag(PTag.kExtendedCodeMeaning, ['abc']);
-    itemsList.add(new TagItem.fromList(null, elements));
+    itemsList.add(new TagItem.fromList(null, rds));
 
-    elements = new MapAsList();
+    rds = new TagRootDataset.empty();
     final lt = new LTtag(PTag.kApprovalStatusFurtherDescription, ['foo bar']);
     final lo = new LOtag(PTag.kProductName, ['foo bar']);
     final ss = new SStag(PTag.kTagAngleSecondAxis, [123]);
     final sl = new SLtag(PTag.kReferencePixelX0, [13]);
     final ob = new OBtag(PTag.kICCProfile, <int>[123, 255], 2);
 
-    elements[lt.code] = lt;
-    elements[lo.code] = lo;
-    elements[ss.code] = ss;
-    elements[sl.code] = sl;
-    elements[ob.code] = ob;
-    itemsList.add(new TagItem.fromList(rds, elements));
+    rds[lt.code] = lt;
+    rds[lo.code] = lo;
+    rds[ss.code] = ss;
+    rds[sl.code] = sl;
+    rds[ob.code] = ob;
+    itemsList.add(new TagItem.fromList(rds, rds));
 
     //TODO: this should be adding a real parent and verifying it.
     sq = new SQtag(tag, null, itemsList, SQ.kMaxVFLength);
@@ -110,17 +110,17 @@ void main() {
     });
 
     test('Test for update', () {
-      final elements = new MapAsList();
+      final rds0 = new TagRootDataset.empty();
       final fl = new FLtag(PTag.kTableOfParameterValues, [12.33, 34.4, 56.25]);
       final of = new OFtag(PTag.kVectorGridData, [132.33]);
       final fd = new FDtag(PTag.kOverallTemplateSpatialTolerance);
       final od = new ODtag(PTag.kSelectorODValue, <double>[2.33]);
 
-      elements[fl.code] = fl;
-      elements[of.code] = of;
-      elements[fd.code] = fd;
-      elements[od.code] = od;
-      itemsList = <TagItem>[]..add(new TagItem.fromList(rds, elements));
+      rds0[fl.code] = fl;
+      rds0[of.code] = of;
+      rds0[fd.code] = fd;
+      rds0[od.code] = od;
+      itemsList = <TagItem>[]..add(new TagItem.fromList(rds, rds0));
 
       final sq2 = sq.update(itemsList);
       log.debug(sq2.info);
@@ -131,18 +131,18 @@ void main() {
     test('Test for items,novalues', () {
       log..debug(sq.items)..debug(sq.noValues);
 
-      final elements = new MapAsList();
+      final rds0 =new TagRootDataset.empty();
       final fl =
           new FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
       final of = new OFtag(PTag.kVectorGridData, <double>[34.4]);
       final fd = new FDtag(PTag.kOverallTemplateSpatialTolerance);
       final od = new ODtag(PTag.kSelectorODValue, <double>[2.33]);
 
-      elements[fl.code] = fl;
-      elements[of.code] = of;
-      elements[fd.code] = fd;
-      elements[od.code] = od;
-      itemsList = <TagItem>[]..add(new TagItem.fromList(rds, elements));
+      rds0[fl.code] = fl;
+      rds0[of.code] = of;
+      rds0[fd.code] = fd;
+      rds0[od.code] = od;
+      itemsList = <TagItem>[]..add(new TagItem.fromList(rds, rds0));
 
       final sq2 = sq.update(itemsList);
       log..debug(sq2.items)..debug(sq2.noValues);

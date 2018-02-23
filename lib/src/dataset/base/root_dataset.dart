@@ -4,16 +4,17 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/element_list/element_list.dart';
 import 'package:core/src/dataset/parse_info.dart';
 import 'package:core/src/dataset/status_report.dart';
 import 'package:core/src/date_time/age.dart';
 import 'package:core/src/date_time/date.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/empty_list.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/patient/person_name.dart';
@@ -21,50 +22,50 @@ import 'package:core/src/entity/patient/sex.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
+import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known/sop_class.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 
 /// The Root [Dataset] for a DICOM Entity.
 abstract class RootDataset extends Dataset {
-  // **** interface
+  String path;
+  @override
+  RDSBytes dsBytes;
 
-  /// Returns a copy of this [RootDataset].
-  RootDataset copy([Null _]);
+  RootDataset(this.path, ByteData bd, int fmiEnd)
+      : dsBytes = (bd == null || bd.lengthInBytes == 0)
+            ? new RDSBytes.empty()
+            : new RDSBytes(bd, fmiEnd);
 
-  // **** End of interface
+  RootDataset.empty() : dsBytes = new RDSBytes.empty();
 
+  ByteData get bd => dsBytes.bd;
+
+  /// The [RootDataset] has no [parent]
   @override
   Dataset get parent => null;
 
-  ByteData get preamble => (dsBytes != null) ? dsBytes.preamble : kEmptyByteData;
-  ByteData get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyByteData;
-
-  @override
-  RDSBytes get dsBytes;
-  set dsBytes(RDSBytes bd);
+  /// An [Dataset] of the File Meta Information [Element]s in _this_.
+  ///
+  // Design Note: It is expected that [Dataset] will have
+  // it's own specialized implementation for correctness and efficiency.
+  Fmi get fmi;
 
   /// Returns the encoded [ByteData] for the File Meta Information (FMI) for
   /// _this_. [fmiBytes] has _one-time_ setter that is initialized lazily.
   Uint8List get fmiBytes => dsBytes.fmiBytes;
 
-  /// An [ElementList] of the File Meta Information [Element]s in _this_.
-  ///
-  // Design Note: It is expected that [ElementList] will have
-  // it's own specialized implementation for correctness and efficiency.
-  ElementList get fmi;
+  bool get hasFmi => fmi.isNotEmpty;
 
-  String get path;
-  /// Returns the parsing information [ParseInfo] for _this_.
-  /// [pInfo] has one-time setter that is initialized lazily.
-  // ignore: unnecessary_getters_setters
-  ParseInfo get pInfo => _pInfo;
-  ParseInfo _pInfo;
-  // ignore: unnecessary_getters_setters
-  set pInfo(ParseInfo info) => _pInfo ??= info;
+  /// Only supported by some [RootDataset]s. A [lengthInBytes] of -1
+  /// indicates an unknown length.
+  int get lengthInBytes => (dsBytes != null) ? dsBytes.prefix : -1;
 
-  @override
-  int get vfLengthField => (dsBytes != null) ? dsBytes.vfLengthField : 0;
+  ByteData get preamble =>
+      (dsBytes != null) ? dsBytes.preamble : kEmptyByteData;
+
+  ByteData get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyByteData;
 
   bool get hadULength => false;
 
@@ -79,18 +80,11 @@ abstract class RootDataset extends Dataset {
   /// The [TransferSyntax].
   SopClass get sopClass => SopClass.lookup(sopClassId);
 
-  //TODO: add to RootDataset constructor
   bool get isDicomDir => hasElementsInRange(0x00041130, 0x00031600);
 
   /// The [TransferSyntax].
-  TransferSyntax get transferSyntax {
-    final TransferSyntax ts = fmi.getUid(kTransferSyntaxUID, required: true);
-    if (ts == null) {
-//      log.info0('Using system.defaultTransferSyntax: ${system.defaultTransferSyntax}');
-      return system.defaultTransferSyntax;
-    }
-    return ts;
-  }
+  TransferSyntax get transferSyntax =>
+      fmi.uidLookup(kTransferSyntaxUID) ?? system.defaultTransferSyntax;
 
   bool get hasSupportedTransferSyntax =>
       system.isSupportedTransferSyntax(transferSyntax.asString);
@@ -101,17 +95,8 @@ abstract class RootDataset extends Dataset {
   /// Returns _true_ if the [transferSyntax] is Implicit VR Transfer Syntax.
   bool get isIVR => transferSyntax.isIvr;
 
-  // TODO: tighten the upper bound
+  // TODO: tighten the bounds
   bool get hasCmdElements => hasElementsInRange(0x00000000, 0x0000FFFF);
-
-  // TODO: tighten the upper bound
-  bool get hasFmi => fmi != null;
-
-  bool get wasShortEncoding => pInfo.wasShortFile;
-
-  bool get hasIssues => pInfo.hadErrors || pInfo.hadWarnings;
-
-  bool get hasErrors => pInfo.hadParsingErrors || hasIssues;
 
   /// If this value is _true_ after decoding  a [Dataset], then the
   /// [Dataset] contains invalid elements and should not be used further
@@ -132,15 +117,45 @@ abstract class RootDataset extends Dataset {
     return out;
   }
 
-  /// The DICOM Preamble (128 bytes) and Prefix('DICM')
-  // Uint8List get prefix => ASCII.encode('DICM');
+  /// Sets [dsBytes] to the empty list.
+  RDSBytes clearDSBytes() {
+    final dsb = dsBytes;
+    dsBytes = RDSBytes.kEmpty;
+    return dsb;
+  }
+
+  /// An [List] of the duplicate [Element]s in _this_.
+  List<Element> get duplicates => history.duplicates;
+  List<Element> get added => history.added;
+  List<Element> get removed => history.removed;
+  List<Element> get updated => history.updated;
+  List<int> get requiredNotPresent => history.requiredNotPresent;
+  List<int> get notPresent => history.requiredNotPresent;
+
+  int get nSequences => counter((e) => (e is SQ));
+  int get nPrivate => counter((e) => Tag.isPrivateCode(e.code));
+  int get nPrivateSequences =>
+      counter((e) => Tag.isPrivateCode(e.code) && e is SQ);
 
   /// Returns a formatted summary of _this_.
-  String get summary => '''\n$runtimeType 
+  String get summary {
+    final sqs = sequences;
+    final sb = new StringBuffer('''\n$runtimeType 
              SOP Class: $sopClassUid
        Transfer Syntax: $transferSyntax
-${elements.subSummary}       
-''';
+        Total Elements: $total
+    Top Level Elements: $length
+      Total Duplicates: Fix: \$dupTotal
+             Sequences: ${sqs.length}
+         Private Total: $nPrivate
+               History: $history''');
+    if (nPrivateSequences != 0)
+      sb.writeln('     Private Sequences: $nPrivateSequences');
+// Fix    if (dupTotal != 0) sb.writeln('      Total Duplicates: $dupTotal');
+    if (duplicates.isNotEmpty)
+      sb.writeln('  Top Level Duplicates: ${duplicates.length}');
+    return sb.toString();
+  }
 
   @override
   Iterable<dynamic> findAllWhere(bool test(Element e)) {
@@ -150,21 +165,12 @@ ${elements.subSummary}
     return result;
   }
 
-  /// Sets [dsBytes] to the empty list, and returns the existing value of [dsBytes].
-  RDSBytes clearDSBytes() {
-    final dsb = dsBytes;
-    dsBytes = RDSBytes.kEmpty;
-    return dsb;
-  }
-
   /// Returns a formatted [String]. See [Formatter].
   @override
   String format(Formatter z) {
     final sb = new StringBuffer(summary);
     z.down;
-    sb
-      ..write(z.fmt('FMI:', fmi))
-      ..write(z.fmt('Elements:', elements));
+    sb..write(z.fmt('FMI:', fmi))..write(z.fmt('Elements:', elements));
     z.up;
     return sb.toString();
   }
@@ -229,4 +235,23 @@ ${elements.subSummary}
       return false;
     }
   }
+
+  /// Returns the parsing information [ParseInfo] for _this_.
+  /// [pInfo] has one-time setter that is initialized lazily.
+  // ignore: unnecessary_getters_setters
+  ParseInfo get pInfo => _pInfo;
+  ParseInfo _pInfo;
+  // ignore: unnecessary_getters_setters
+  set pInfo(ParseInfo info) => _pInfo ??= info;
+
+/*  bool get wasShortEncoding => pInfo.wasShortFile;
+
+  bool get hasIssues => pInfo.hadErrors || pInfo.hadWarnings;
+
+  bool get hasErrors => pInfo.hadParsingErrors || hasIssues;
+  */
+}
+
+abstract class Fmi extends ListBase<Element> {
+  Uid uidLookup(int index);
 }

@@ -7,8 +7,8 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/frame_descriptor.dart';
-import 'package:core/src/element/frame_list.dart';
+import 'package:core/src/frame/frame_descriptor.dart';
+import 'package:core/src/frame/frame_list.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/system/system.dart';
@@ -127,8 +127,8 @@ class InvalidValuesLength<V> extends Error {
   String toString() => _msg(vmMin, vmMax, values);
 
   static String _msg<V>(int vmMin, int vmMax, Iterable<V> values) =>
-      'InvalidValuesLengthError: vmMin($vmMin) <= ${values.length} <= vmMax($vmMax) '
-      'values: $values';
+      'InvalidValuesLengthError: vmMin($vmMin) <= ${values.length} '
+          '<= vmMax($vmMax) values: $values';
 }
 
 Null invalidValuesLength<V>(int vmMin, int vmMax, Iterable<V> values,
@@ -309,7 +309,8 @@ class InvalidCharacterInStringError extends ParseError {
 */
 
 /*
-Null invalidCharacterInString(String s, String char, int index, [Issues issues]) {
+Null invalidCharacterInString(String s, String char, int index,
+    [Issues issues]) {
   final msg =  InvalidCharacterInStringError._msg(s, char, index);
   log.error(msg);
   if (issues != null) issues.add(msg);

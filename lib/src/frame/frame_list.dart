@@ -8,8 +8,8 @@ import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/src/element/errors.dart';
-import 'package:core/src/element/frame.dart';
-import 'package:core/src/element/frame_descriptor.dart';
+import 'package:core/src/frame/frame.dart';
+import 'package:core/src/frame/frame_descriptor.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 

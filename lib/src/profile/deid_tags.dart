@@ -69,7 +69,7 @@ class DeIdTags {
 
   /// U: Replace with a non-zero length UID that is internally consistent
   /// within a set of Instances in the Study or Series;
-  static Iterable<String> replaceUids(Dataset ds, Tag tag, Iterable<Uid> values,
+  static Iterable<Uid> replaceUids(Dataset ds, Tag tag, Iterable<Uid> values,
           {bool required = false}) =>
       ds.replaceUid(tag.code, values);
 
@@ -87,7 +87,7 @@ class DeIdTags {
   static Element removeUnlessZero<V>(Dataset ds, Tag tag, List<V> values,
       {bool required = false}) {
     if (_isEmpty(values, true)) return ds.noValues(tag.code);
-    return ds.update<V>(tag.code, values);
+    return ds.update(tag.code, values);
   }
 
   /// XD: X unless D is required to maintain IOD conformance
@@ -95,7 +95,7 @@ class DeIdTags {
   static Element removeUnlessDummy<V>(Dataset ds, Tag tag, Iterable<V> values,
       {bool required = false}) {
     if (_isEmpty(values, true)) return ds.delete(tag.code, required: required);
-    return ds.update<V>(tag.code, values);
+    return ds.update(tag.code, values);
   }
 
   /// X unless Z or D is required to maintain IOD conformance
@@ -114,7 +114,7 @@ class DeIdTags {
       {bool required = false}) {
     if (ds.lookup(tag.code) is! SQ) throw new InvalidTagError(tag, SQ);
     if (_isEmpty(values, true)) return ds.noValues(tag.code);
-    return ds.update<V>(tag.code, values);
+    return ds.update(tag.code, values);
   }
 
   static Element addIfMissing<V>(Dataset ds, Tag tag, List<V> values,
@@ -189,8 +189,8 @@ class DeIdTags {
   static const DeIdTags kReferringPhysicianIdentificationSequence =
       const DeIdTags(
           PTag.kReferringPhysicianIdentificationSequence, 'X', remove);
-  static const DeIdTags kContextGroupExtensionCreatorUID = const DeIdTags(
-      PTag.kContextGroupExtensionCreatorUID, 'U', replaceUids);
+  static const DeIdTags kContextGroupExtensionCreatorUID =
+      const DeIdTags(PTag.kContextGroupExtensionCreatorUID, 'U', replaceUids);
   static const DeIdTags kTimezoneOffsetFromUTC =
       const DeIdTags(PTag.kTimezoneOffsetFromUTC, 'X', remove);
   static const DeIdTags kStationName =
@@ -326,18 +326,16 @@ class DeIdTags {
       const DeIdTags(PTag.kPatientComments, 'X', remove);
   static const DeIdTags kContrastBolusAgent =
       const DeIdTags(PTag.kContrastBolusAgent, 'XD', removeUnlessDummy);
-  static const DeIdTags kDeviceSerialNumber = const DeIdTags(
-      PTag.kDeviceSerialNumber, 'XZD', removeUnlessZeroOrDummy);
+  static const DeIdTags kDeviceSerialNumber =
+      const DeIdTags(PTag.kDeviceSerialNumber, 'XZD', removeUnlessZeroOrDummy);
   static const DeIdTags kDeviceUID =
       const DeIdTags(PTag.kDeviceUID, 'U', replaceUids);
-  static const DeIdTags kPlateID =
-      const DeIdTags(PTag.kPlateID, 'X', remove);
+  static const DeIdTags kPlateID = const DeIdTags(PTag.kPlateID, 'X', remove);
   static const DeIdTags kGeneratorID =
       const DeIdTags(PTag.kGeneratorID, 'X', remove);
   static const DeIdTags kCassetteID =
       const DeIdTags(PTag.kCassetteID, 'X', remove);
-  static const DeIdTags kGantryID =
-      const DeIdTags(PTag.kGantryID, 'X', remove);
+  static const DeIdTags kGantryID = const DeIdTags(PTag.kGantryID, 'X', remove);
   static const DeIdTags kProtocolName =
       const DeIdTags(PTag.kProtocolName, 'XD', removeUnlessDummy);
   static const DeIdTags kAcquisitionDeviceProcessingDescription =
@@ -359,9 +357,8 @@ class DeIdTags {
       const DeIdTags(PTag.kStudyID, 'Z', replaceWithZero);
   static const DeIdTags kFrameOfReferenceUID =
       const DeIdTags(PTag.kFrameOfReferenceUID, 'U', replaceUids);
-  static const DeIdTags kSynchronizationFrameOfReferenceUID =
-      const DeIdTags(
-          PTag.kSynchronizationFrameOfReferenceUID, 'U', replaceUids);
+  static const DeIdTags kSynchronizationFrameOfReferenceUID = const DeIdTags(
+      PTag.kSynchronizationFrameOfReferenceUID, 'U', replaceUids);
   static const DeIdTags kModifyingDeviceID =
       const DeIdTags(PTag.kModifyingDeviceID, 'X', remove);
   static const DeIdTags kModifyingDeviceManufacturer =
@@ -378,8 +375,8 @@ class DeIdTags {
       const DeIdTags(PTag.kDimensionOrganizationUID, 'U', replaceUids);
   static const DeIdTags kPaletteColorLookupTableUID =
       const DeIdTags(PTag.kPaletteColorLookupTableUID, 'U', replaceUids);
-  static const DeIdTags kLargePaletteColorLookupTableUID = const DeIdTags(
-      PTag.kLargePaletteColorLookupTableUID, 'U', replaceUids);
+  static const DeIdTags kLargePaletteColorLookupTableUID =
+      const DeIdTags(PTag.kLargePaletteColorLookupTableUID, 'U', replaceUids);
   static const DeIdTags kImagePresentationComments =
       const DeIdTags(PTag.kImagePresentationComments, 'X', remove);
   static const DeIdTags kStudyIDIssuer =
@@ -407,8 +404,7 @@ class DeIdTags {
   static const DeIdTags kIssuerOfAdmissionID =
       const DeIdTags(PTag.kIssuerOfAdmissionID, 'X', remove);
   static const DeIdTags kScheduledPatientInstitutionResidence =
-      const DeIdTags(
-          PTag.kScheduledPatientInstitutionResidence, 'X', remove);
+      const DeIdTags(PTag.kScheduledPatientInstitutionResidence, 'X', remove);
   static const DeIdTags kAdmittingDate =
       const DeIdTags(PTag.kAdmittingDate, 'X', remove);
   static const DeIdTags kAdmittingTime =
@@ -446,10 +442,8 @@ class DeIdTags {
   static const DeIdTags kScheduledProcedureStepDescription =
       const DeIdTags(PTag.kScheduledProcedureStepDescription, 'X', remove);
   static const DeIdTags kScheduledPerformingPhysicianIdentificationSequence =
-      const DeIdTags(
-          PTag.kScheduledPerformingPhysicianIdentificationSequence,
-          'X',
-          remove);
+      const DeIdTags(PTag.kScheduledPerformingPhysicianIdentificationSequence,
+          'X', remove);
   static const DeIdTags kScheduledStationName =
       const DeIdTags(PTag.kScheduledStationName, 'X', remove);
   static const DeIdTags kScheduledProcedureStepLocation =
@@ -491,9 +485,8 @@ class DeIdTags {
   static const DeIdTags kIntendedRecipientsOfResultsIdentificationSequence =
       const DeIdTags(
           PTag.kIntendedRecipientsOfResultsIdentificationSequence, 'X', remove);
-  static const DeIdTags kPersonIdentificationCodeSequence =
-      const DeIdTags(
-          PTag.kPersonIdentificationCodeSequence, 'D', replaceWithDummy);
+  static const DeIdTags kPersonIdentificationCodeSequence = const DeIdTags(
+      PTag.kPersonIdentificationCodeSequence, 'D', replaceWithDummy);
   static const DeIdTags kPersonAddress =
       const DeIdTags(PTag.kPersonAddress, 'X', remove);
   static const DeIdTags kPersonTelephoneNumbers =
@@ -560,13 +553,11 @@ class DeIdTags {
           replaceWithZero);
   static const DeIdTags kPersonName =
       const DeIdTags(PTag.kPersonName, 'D', replaceWithDummy);
-  static const DeIdTags kUID =
-      const DeIdTags(PTag.kUID, 'U', replaceUids);
+  static const DeIdTags kUID = const DeIdTags(PTag.kUID, 'U', replaceUids);
   static const DeIdTags kContentSequence =
       const DeIdTags(PTag.kContentSequence, 'X', remove);
   static const DeIdTags kTemplateExtensionOrganizationUID =
-      const DeIdTags(
-          PTag.kTemplateExtensionOrganizationUID, 'U', replaceUids);
+      const DeIdTags(PTag.kTemplateExtensionOrganizationUID, 'U', replaceUids);
   static const DeIdTags kTemplateExtensionCreatorUID =
       const DeIdTags(PTag.kTemplateExtensionCreatorUID, 'U', replaceUids);
   static const DeIdTags kGraphicAnnotationSequence =

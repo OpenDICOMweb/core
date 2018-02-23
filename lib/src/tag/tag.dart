@@ -378,23 +378,30 @@ abstract class Tag {
     if (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)
       return invalidTagCode(code);
     final group = code >> 16;
+    Tag tag;
     if (group.isEven) {
-      var tag = PTag.lookupByCode(code, vrIndex);
-      return tag ??= new PTag.unknown(code, vrIndex);
+      tag = PTag.lookupByCode(code, vrIndex);
+      tag ??= new PTag.unknown(code, vrIndex);
     } else {
-      print('tag code ${hex32(code)}');
+//      print('tag code ${hex32(code)}');
       assert(Tag.isPrivateCode(code) == true);
       final elt = code & 0xFFFF;
-      if (elt == 0) return new GroupLengthPrivateTag(code, vrIndex);
-      if (elt < 0x10) return new IllegalPrivateTag(code, vrIndex);
-      if ((elt >= 0x10) && (elt <= 0xFF))
-        return PCTag.make(code, vrIndex, creator);
-      if ((elt > 0x00FF) && (elt <= 0xFFFF))
-        return PDTag.make(code, vrIndex, creator);
+      if (elt == 0) {
+        tag = new GroupLengthPrivateTag(code, vrIndex);
+      } else if (elt < 0x10) {
+        tag = new IllegalPrivateTag(code, vrIndex);
+      } else if ((elt >= 0x10) && (elt <= 0xFF)) {
+        tag = PCTag.make(code, vrIndex, creator);
+      } else if ((elt > 0x00FF) && (elt <= 0xFFFF)) {
+        tag = PDTag.make(code, vrIndex, creator);
+      } else {
+        // This should never happen
+        msg = 'Unknown Private Tag Code: creator: $creator';
+        return invalidTagCode(code, msg);
+      }
     }
-    // This should never happen
-    msg = 'Unknown Private Tag Code: creator: $creator';
-    return invalidTagCode(code, msg);
+ //   print('$creator tag: $tag');
+    return tag;
   }
 
   static Tag lookupByKeyword(String keyword,
@@ -579,6 +586,8 @@ abstract class Tag {
 
   static bool isNotPCCode(int code) => !isPCCode(code);
 
+  static int pcSubgroup(int code) => code & 0xFF;
+
   static bool isPCCodeInGroup(int code, int group) {
     final g = group << 16;
     return (code >= (g + 0x10)) && (code <= (g + 0xFF));
@@ -602,20 +611,25 @@ abstract class Tag {
   ///  Returns true if [pdCode] is a valid Private Data Code,
   ///  and [pcCode] is the correct Private Creator Code for [pdCode].
   static bool isValidPDCode(int pdCode, int pcCode) {
-    final pdg = Tag.privateGroup(pdCode);
-    final pcg = Tag.privateGroup(pcCode);
-    if (pdg == null || pcg == null || pdg != pcg) return false;
+    final pdGroup = Tag.privateGroup(pdCode);
+    final pcGroup = Tag.privateGroup(pcCode);
+    if (pdGroup == null || pcGroup == null || pdGroup != pcGroup) return false;
     return _isValidPDCode(pdCode, pcCode);
   }
 
   static bool _isValidPDCode(int pd, int pc) {
-    final pde = pd & 0xFFFF;
-    if (pde < 0x1000 || pde > 0xFFFF) return false;
-    final pce = pc & 0xFFFF;
-    if (pce < 0x10 || pce > 0xFF) return false;
-    final base = pce << 8;
+    final pdOffset = pd & 0xFFFF;
+    final pdsg = pdOffset >> 8;
+    final pcsg = (pc & 0xFF);
+//    print('pdsg: ${hex8(pdsg)} pcsg: ${hex8(pcsg)}');
+    if (pcsg < 0x10 || pcsg > 0xFF || pdsg != pcsg) return false;
+//    final pce = pc & 0xFFFF;
+//    if (pce < 0x10 || pce > 0xFF) return false;
+    final base = pcsg << 8;
     final limit = base + 0xFF;
-    return base <= pde && pde <= limit;
+//    print('base(${hex16(base)}) <= offset(${hex16(pdOffset)}) '
+//        '<= limit(${hex16(limit)})');
+    return base <= pdOffset && pdOffset <= limit;
   }
 
   static int privateCreatorBase(int code) =>

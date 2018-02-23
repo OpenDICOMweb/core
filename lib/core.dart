@@ -4,12 +4,12 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-//TODO: update README.md
-
-
 export 'package:core/src/dataset/base/dataset.dart';
 export 'package:core/src/dataset/base/ds_bytes.dart';
+export 'package:core/src/dataset/base/history.dart';
 export 'package:core/src/dataset/base/item.dart';
+export 'package:core/src/dataset/base/map_dataset/map_item.dart';
+export 'package:core/src/dataset/base/map_dataset/map_root_dataset.dart';
 export 'package:core/src/dataset/base/root_dataset.dart';
 export 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
 export 'package:core/src/dataset/byte_data/bd_item.dart';
@@ -17,9 +17,6 @@ export 'package:core/src/dataset/byte_data/bd_root_dataset.dart';
 export 'package:core/src/dataset/compare.dart';
 export 'package:core/src/dataset/compare_datasets.dart';
 export 'package:core/src/dataset/compare_datasets.dart';
-export 'package:core/src/dataset/element_list/element_list.dart';
-export 'package:core/src/dataset/element_list/history.dart';
-export 'package:core/src/dataset/element_list/map_as_list.dart';
 export 'package:core/src/dataset/errors.dart';
 export 'package:core/src/dataset/parse_info.dart';
 export 'package:core/src/dataset/parse_info.dart';
@@ -53,8 +50,6 @@ export 'package:core/src/element/byte_data/evr.dart';
 export 'package:core/src/element/byte_data/ivr.dart';
 export 'package:core/src/element/crypto.dart';
 export 'package:core/src/element/errors.dart';
-export 'package:core/src/element/frame_descriptor.dart';
-export 'package:core/src/element/frame_list.dart';
 export 'package:core/src/element/tag/export.dart';
 export 'package:core/src/element/utils.dart';
 export 'package:core/src/element/vf_fragments.dart';
@@ -72,6 +67,9 @@ export 'package:core/src/entity/patient/sex.dart';
 export 'package:core/src/entity/series.dart';
 export 'package:core/src/entity/study.dart';
 export 'package:core/src/errors.dart';
+export 'package:core/src/frame/frame.dart';
+export 'package:core/src/frame/frame_descriptor.dart';
+export 'package:core/src/frame/frame_list.dart';
 export 'package:core/src/hash/hash.dart';
 export 'package:core/src/hash/hash32.dart';
 export 'package:core/src/hash/hash64.dart';
@@ -111,9 +109,10 @@ export 'package:core/src/uuid/errors.dart';
 export 'package:core/src/uuid/uuid.dart';
 export 'package:core/src/uuid/v4generator.dart';
 export 'package:core/src/vr/vr.dart';
+//export 'package:core/src/dataset/element_list/element_list.dart';
+//export 'package:core/src/dataset/element_list/map_as_list.dart';
+
 //export 'package:core/src/dataset/base/private_dataset.dart';
 //export 'package:core/src/dataset/base/private_group.dart';
 
 //export 'package:core/src/dataset/status_report.dart';
-
-

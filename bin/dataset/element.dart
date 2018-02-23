@@ -26,7 +26,7 @@ void main() {
     'd'
   ];
 
-  final ds = new TagRootDataset();
+  final ds = new TagRootDataset.empty();
 
   final ae0 = new AEtag(PTag.kSpecificCharacterSet, titles);
   ds[ae0.code] = ae0;

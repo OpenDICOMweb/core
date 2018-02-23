@@ -8,6 +8,7 @@ import 'dart:typed_data';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
+
 import 'test_pixel_data.dart';
 
 final Uint8List frame = new Uint8List.fromList(testFrame);
@@ -92,7 +93,8 @@ void main() {
 
       //other FrameDescriptor fields
       expect(ob1FLa.samplesPerPixel == samplesPerPixel0, true);
-      expect(ob1FLa.photometricInterpretation == photometricInterpretation0, true);
+      expect(
+          ob1FLa.photometricInterpretation == photometricInterpretation0, true);
       expect(ob1FLa.rows == rows4, true);
       expect(ob1FLa.columns == columns6, true);
       expect(ob1FLa.bitsAllocated == bitsAllocated1, true);
@@ -108,7 +110,8 @@ void main() {
       //FrameDescriptor
       expect(ob1FDa.ts == ts0, true);
       expect(ob1FDa.samplesPerPixel == samplesPerPixel0, true);
-      expect(ob1FDa.photometricInterpretation == photometricInterpretation0, true);
+      expect(
+          ob1FDa.photometricInterpretation == photometricInterpretation0, true);
       expect(ob1FDa.rows == rows4, true);
       expect(ob1FDa.columns == columns6, true);
       expect(ob1FDa.length == rows4 * columns6, true);
@@ -188,7 +191,8 @@ void main() {
 
         // other FrameDescriptor fields
         expect(ob1FLb.samplesPerPixel == samplesPerPixel0, true);
-        expect(ob1FLb.photometricInterpretation == photometricInterpretation0, true);
+        expect(ob1FLb.photometricInterpretation == photometricInterpretation0,
+            true);
         expect(ob1FLb.rows == rows4, true);
         expect(ob1FLb.columns == columns6, true);
         expect(ob1FLb.bitsAllocated == bitsAllocated1, true);
@@ -201,7 +205,8 @@ void main() {
         //FrameDescriptor
         expect(ob1FDb.ts == ts0, true);
         expect(ob1FDb.samplesPerPixel == samplesPerPixel0, true);
-        expect(ob1FDb.photometricInterpretation == photometricInterpretation0, true);
+        expect(ob1FDb.photometricInterpretation == photometricInterpretation0,
+            true);
         expect(ob1FDb.rows == rows4, true);
         expect(ob1FDb.columns == columns6, true);
         expect(ob1FDb.length == rows4 * columns6, true);
@@ -211,7 +216,8 @@ void main() {
         expect(ob1FDb.pixelRepresentation == pixelRepresentation0, true);
         expect(ob1FDb.planarConfiguration == planarConfiguration0, true);
         expect(ob1FDb.pixelAspectRatio == pixelAspectRatio0, true);
-        expect(ob1FDb.lengthInBits == (rows4 * columns6) * bitsAllocated1, true);
+        expect(
+            ob1FDb.lengthInBits == (rows4 * columns6) * bitsAllocated1, true);
         expect(ob1FDb.pixelSizeInBits == bitsAllocated1, true);
         expect(ob1FDb.length == rows4 * columns6, true);
 
@@ -303,8 +309,8 @@ void main() {
     test('Create Uncompressed FrameList1Bit (FrameDescriptor.fromDataset)', () {
       //Frame Descriptor.fromDataSet1
       final ts = TransferSyntax.kExplicitVRLittleEndian;
-      final uiTransferSyntaxUID0 = new UItag.fromStrings(PTag
-                                                             .kTransferSyntaxUID, [ts.asString]);
+      final uiTransferSyntaxUID0 =
+          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
@@ -317,14 +323,16 @@ void main() {
       final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [7]);
       final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
       final pixelAspectRatioValue0 = 1 / 2;
-      final usSmallestImagePixelValue0 = new UStag(PTag.kSmallestImagePixelValue, [0]);
-      final usLargestImagePixelValue0 = new UStag(PTag.kLargestImagePixelValue, [1]);
+      final usSmallestImagePixelValue0 =
+          new UStag(PTag.kSmallestImagePixelValue, [0]);
+      final usLargestImagePixelValue0 =
+          new UStag(PTag.kLargestImagePixelValue, [1]);
       final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[], 0);
       final csColorSpace0 = new CStag(PTag.kColorSpace);
       final usPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
 
-      final rootDS0 = new TagRootDataset()
-        ..fmi.add(uiTransferSyntaxUID0)
+      final rootDS0 = new TagRootDataset.empty()
+        ..fmiMap[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
         ..add(usRows0)
@@ -341,6 +349,7 @@ void main() {
         ..add(csColorSpace0)
         ..add(usPixelPaddingRangeLimit0);
 
+      print('ui: ${rootDS0.fmi[kTransferSyntaxUID]}');
       log.debug('rootDS0.transferSyntax: ${rootDS0.transferSyntax}');
 
       final ob1FDf = new FrameDescriptor.fromDataset(rootDS0);
@@ -384,7 +393,8 @@ void main() {
       //  other FrameDescriptor.FromDataSet fields
       expect(ob1c.rows == ob1FDf.rows, true);
       expect(ob1c.columns == ob1FDf.columns, true);
-      expect(ob1c.photometricInterpretation == ob1FDf.photometricInterpretation, true);
+      expect(ob1c.photometricInterpretation == ob1FDf.photometricInterpretation,
+          true);
       expect(ob1c.bitsAllocated == ob1FDf.bitsAllocated, true);
       expect(ob1c.bitsStored == ob1FDf.bitsStored, true);
       expect(ob1c.highBit == ob1FDf.highBit, true);
@@ -413,8 +423,8 @@ void main() {
       // FrameDescriptor(fromDataSet)
       expect(ob1FDf.ts == ts, true);
       expect(ob1FDf.samplesPerPixel, equals(usSamplesPerPixel0.value));
-      expect(
-          ob1FDf.photometricInterpretation, equals(csPhotometricInterpretation0.value));
+      expect(ob1FDf.photometricInterpretation,
+          equals(csPhotometricInterpretation0.value));
       expect(ob1FDf.rows, equals(usRows0.value));
       expect(ob1FDf.columns, equals(usColumns0.value));
       expect(ob1FDf.bitsAllocated, equals(usBitsAllocated0.value));
@@ -458,7 +468,8 @@ void main() {
           final frame0 = ob1FLb[j];
           expect(frame0.index == j, true);
 
-          expect(frame0.lengthInBytes * nFrames0 == ob1FLb.pixels.lengthInBytes, true);
+          expect(frame0.lengthInBytes * nFrames0 == ob1FLb.pixels.lengthInBytes,
+              true);
 
           expect(frame0.length == ob1FLb.desc.length, true);
 
@@ -470,8 +481,10 @@ void main() {
           expect(frame0.bitsAllocated == ob1FLb.desc.bitsAllocated, true);
           expect(frame0.bitsStored == ob1FLb.desc.bitsStored, true);
           expect(frame0.highBit == ob1FLb.desc.highBit, true);
-          expect(frame0.pixelRepresentation == ob1FLb.desc.pixelRepresentation, true);
-          expect(frame0.planarConfiguration == ob1FLb.desc.planarConfiguration, true);
+          expect(frame0.pixelRepresentation == ob1FLb.desc.pixelRepresentation,
+              true);
+          expect(frame0.planarConfiguration == ob1FLb.desc.planarConfiguration,
+              true);
           expect(frame0.pixelAspectRatio == ob1FLb.desc.pixelAspectRatio, true);
 
           expect(frame0.parent == ob1FLb, true);
@@ -552,7 +565,8 @@ void main() {
 
       //other FrameDescriptor fields
       expect(ob8a.samplesPerPixel == samplesPerPixel0, true);
-      expect(ob8a.photometricInterpretation == photometricInterpretation0, true);
+      expect(
+          ob8a.photometricInterpretation == photometricInterpretation0, true);
       expect(ob8a.rows == rows4, true);
       expect(ob8a.columns == columns6, true);
       expect(ob8a.bitsAllocated == bitsAllocated8, true);
@@ -565,7 +579,8 @@ void main() {
       // FrameDescriptor
       expect(ob8FDa.ts == ts0, true);
       expect(ob8FDa.samplesPerPixel == samplesPerPixel0, true);
-      expect(ob8FDa.photometricInterpretation == photometricInterpretation0, true);
+      expect(
+          ob8FDa.photometricInterpretation == photometricInterpretation0, true);
       expect(ob8FDa.rows == rows4, true);
       expect(ob8FDa.columns == columns6, true);
       expect(ob8FDa.length == rows4 * columns6, true);
@@ -646,7 +661,8 @@ void main() {
 
         // other FrameDescriptor fields
         expect(ob8b.samplesPerPixel == samplesPerPixel0, true);
-        expect(ob8b.photometricInterpretation == photometricInterpretation1, true);
+        expect(
+            ob8b.photometricInterpretation == photometricInterpretation1, true);
         expect(ob8b.rows == rows5, true);
         expect(ob8b.columns == columns7, true);
         expect(ob8b.bitsAllocated == bitsAllocated8, true);
@@ -659,7 +675,8 @@ void main() {
         // FrameDescriptor
         expect(ob8FDb.ts == ts0, true);
         expect(ob8FDb.samplesPerPixel == samplesPerPixel0, true);
-        expect(ob8FDb.photometricInterpretation == photometricInterpretation1, true);
+        expect(ob8FDb.photometricInterpretation == photometricInterpretation1,
+            true);
         expect(ob8FDb.rows == rows5, true);
         expect(ob8FDb.columns == columns7, true);
         expect(ob8FDb.length == rows5 * columns7, true);
@@ -669,7 +686,8 @@ void main() {
         expect(ob8FDb.pixelRepresentation == pixelRepresentation0, true);
         expect(ob8FDb.planarConfiguration == planarConfiguration0, true);
         expect(ob8FDb.pixelAspectRatio == pixelAspectRatio0, true);
-        expect(ob8FDb.lengthInBits == (rows5 * columns7) * bitsAllocated8, true);
+        expect(
+            ob8FDb.lengthInBits == (rows5 * columns7) * bitsAllocated8, true);
         expect(ob8FDb.pixelSizeInBits == bitsAllocated8, true);
         expect(ob8FDb.length == rows5 * columns7, true);
 
@@ -764,7 +782,8 @@ void main() {
     test('Create Uncompressed FrameList8Bit (FrameDescriptor.fromDataset)', () {
       //Frame Descriptor.fromDataSet1
       final ts = TransferSyntax.kExplicitVRLittleEndian;
-      final uiTransferSyntaxUID0 = new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
+      final uiTransferSyntaxUID0 =
+          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
@@ -777,14 +796,16 @@ void main() {
       final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [5]);
       final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
       final pixelAspectRatioValue0 = 1 / 2;
-      final usSmallestImagePixelValue0 = new UStag(PTag.kSmallestImagePixelValue, [0]);
-      final usLargestImagePixelValue0 = new UStag(PTag.kLargestImagePixelValue, [255]);
+      final usSmallestImagePixelValue0 =
+          new UStag(PTag.kSmallestImagePixelValue, [0]);
+      final usLargestImagePixelValue0 =
+          new UStag(PTag.kLargestImagePixelValue, [255]);
       final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[], 0);
       final csColorSpace0 = new CStag(PTag.kColorSpace);
       final usPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
 
-      final rds0 = new TagRootDataset()
-        ..fmi.add(uiTransferSyntaxUID0)
+      final rds0 = new TagRootDataset.empty()
+        ..fmiMap[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
         ..add(usRows0)
@@ -837,7 +858,8 @@ void main() {
       // other FrameDescriptor.FromDataSet fields
       expect(ob8d.rows == ob8FDe.rows, true);
       expect(ob8d.columns == ob8FDe.columns, true);
-      expect(ob8d.photometricInterpretation == ob8FDe.photometricInterpretation, true);
+      expect(ob8d.photometricInterpretation == ob8FDe.photometricInterpretation,
+          true);
       expect(ob8d.bitsAllocated == ob8FDe.bitsAllocated, true);
       expect(ob8d.bitsStored == ob8FDe.bitsStored, true);
       expect(ob8d.highBit == ob8FDe.highBit, true);
@@ -866,8 +888,8 @@ void main() {
       // FrameDescriptor(fromDataSet)
       expect(ob8FDe.ts == ts, true);
       expect(ob8FDe.samplesPerPixel, equals(usSamplesPerPixel0.value));
-      expect(
-          ob8FDe.photometricInterpretation, equals(csPhotometricInterpretation0.value));
+      expect(ob8FDe.photometricInterpretation,
+          equals(csPhotometricInterpretation0.value));
       expect(ob8FDe.rows, equals(usRows0.value));
       expect(ob8FDe.columns, equals(usColumns0.value));
       expect(ob8FDe.bitsAllocated, equals(usBitsAllocated0.value));
@@ -920,8 +942,10 @@ void main() {
           expect(frame0.bitsAllocated == ob8e.desc.bitsAllocated, true);
           expect(frame0.bitsStored == ob8e.desc.bitsStored, true);
           expect(frame0.highBit == ob8e.desc.highBit, true);
-          expect(frame0.pixelRepresentation == ob8e.desc.pixelRepresentation, true);
-          expect(frame0.planarConfiguration == ob8e.desc.planarConfiguration, true);
+          expect(frame0.pixelRepresentation == ob8e.desc.pixelRepresentation,
+              true);
+          expect(frame0.planarConfiguration == ob8e.desc.planarConfiguration,
+              true);
           expect(frame0.pixelAspectRatio == ob8e.desc.pixelAspectRatio, true);
           expect(frame0.parent == ob8e, true);
           expect(frame0.length == ob8e.frameLength, true);
@@ -1003,7 +1027,8 @@ void main() {
       // FrameDescriptor
       expect(c8FDa.ts == ts0, true);
       expect(c8FDa.samplesPerPixel == samplesPerPixel0, true);
-      expect(c8FDa.photometricInterpretation == photometricInterpretation0, true);
+      expect(
+          c8FDa.photometricInterpretation == photometricInterpretation0, true);
       expect(c8FDa.rows == rows4, true);
       expect(c8FDa.columns == columns6, true);
       expect(c8FDa.length == rows4 * columns6, true);
@@ -1074,7 +1099,8 @@ void main() {
         // transferSyntax
         expect(c8b.ts == ts0, true);
         expect(c8b.samplesPerPixel == samplesPerPixel0, true);
-        expect(c8b.photometricInterpretation == photometricInterpretation1, true);
+        expect(
+            c8b.photometricInterpretation == photometricInterpretation1, true);
         expect(c8b.rows == rows4, true);
         expect(c8b.columns == columns6, true);
         expect(c8b.bitsAllocated == bitsAllocated8, true);
@@ -1088,7 +1114,8 @@ void main() {
         // FrameDescriptor
         expect(c8FDb.ts == ts0, true);
         expect(c8FDb.samplesPerPixel == samplesPerPixel0, true);
-        expect(c8FDb.photometricInterpretation == photometricInterpretation1, true);
+        expect(c8FDb.photometricInterpretation == photometricInterpretation1,
+            true);
         expect(c8FDb.rows == rows4, true);
         expect(c8FDb.columns == columns6, true);
         expect(c8FDb.length == rows4 * columns6, true);
@@ -1131,7 +1158,8 @@ void main() {
       final bulkdata0 = new Uint8List(0);
 
       log.debug('nFrames: $nFrames0');
-      expect(() => new CompressedFrameList(bulkdata0, offsets0, nFrames0, c8FDc),
+      expect(
+          () => new CompressedFrameList(bulkdata0, offsets0, nFrames0, c8FDc),
           throwsA(const isInstanceOf<InvalidFrameListError>()));
 
       // Invalid offsets and bulkdata
@@ -1178,7 +1206,8 @@ void main() {
       final offsets2 = new Uint32List.fromList([0, 4]);
       final bulkdata2 = new Uint8List(0);
 
-      expect(() => new CompressedFrameList(bulkdata2, offsets2, nFrames2, c8FDe),
+      expect(
+          () => new CompressedFrameList(bulkdata2, offsets2, nFrames2, c8FDe),
           throwsA(const isInstanceOf<InvalidFrameListError>()));
 
       // Invalid Offsets
@@ -1212,7 +1241,8 @@ void main() {
       final fragments = [emptyOffsetsAsBytes1, bulkData];
       final vfFragments = new VFFragments(fragments);
 
-      final c8c = new CompressedFrameList.fromVFFragments(vfFragments, nFrames0, cFDb);
+      final c8c =
+          new CompressedFrameList.fromVFFragments(vfFragments, nFrames0, cFDb);
 
       expect(c8c.pixelSizeInBits == cFDb.pixelSizeInBits, true);
 
@@ -1247,7 +1277,8 @@ void main() {
       // FrameDescriptor
       expect(cFDb.ts == ts0, true);
       expect(cFDb.samplesPerPixel == samplesPerPixel0, true);
-      expect(cFDb.photometricInterpretation == photometricInterpretation1, true);
+      expect(
+          cFDb.photometricInterpretation == photometricInterpretation1, true);
       expect(cFDb.rows == rows4, true);
       expect(cFDb.columns == columns6, true);
       expect(cFDb.length == rows4 * columns6, true);
@@ -1298,7 +1329,8 @@ void main() {
             'offSetList: $offSetList, nFrames + 1: ${nFrames1 + 1}, offSets: ${offsets.length}');
         final vfFragments = new VFFragments(fragments);
 
-        final c8d = new CompressedFrameList.fromVFFragments(vfFragments, nFrames1, cFDc);
+        final c8d = new CompressedFrameList.fromVFFragments(
+            vfFragments, nFrames1, cFDc);
 
         expect(c8d.pixelSizeInBits == cFDc.pixelSizeInBits, true);
 
@@ -1319,7 +1351,8 @@ void main() {
         // transferSyntax
         expect(c8d.ts == ts0, true);
         expect(c8d.samplesPerPixel == samplesPerPixel0, true);
-        expect(c8d.photometricInterpretation == photometricInterpretation2, true);
+        expect(
+            c8d.photometricInterpretation == photometricInterpretation2, true);
         expect(c8d.rows == rows4, true);
         expect(c8d.columns == columns6, true);
         expect(c8d.bitsAllocated == bitsAllocated8, true);
@@ -1333,7 +1366,8 @@ void main() {
         // FrameDescriptor
         expect(cFDc.ts == ts0, true);
         expect(cFDc.samplesPerPixel == samplesPerPixel0, true);
-        expect(cFDc.photometricInterpretation == photometricInterpretation2, true);
+        expect(
+            cFDc.photometricInterpretation == photometricInterpretation2, true);
         expect(cFDc.rows == rows4, true);
         expect(cFDc.columns == columns6, true);
         expect(cFDc.length == rows4 * columns6, true);
@@ -1375,7 +1409,9 @@ void main() {
       final fragments0 = [bulkData0];
       final vfFragments0 = new VFFragments(fragments0);
 
-      expect(() => new CompressedFrameList.fromVFFragments(vfFragments0, nFrames0, cFDb),
+      expect(
+          () => new CompressedFrameList.fromVFFragments(
+              vfFragments0, nFrames0, cFDb),
           throwsA(const isInstanceOf<InvalidFrameListError>()));
 
       // Invalid offset
@@ -1401,7 +1437,9 @@ void main() {
       final fragments1 = [emptyOffsetsAsBytes, bulkData1];
       final vfFragments1 = new VFFragments(fragments1);
 
-      expect(() => new CompressedFrameList.fromVFFragments(vfFragments1, nFrames1, cFDc),
+      expect(
+          () => new CompressedFrameList.fromVFFragments(
+              vfFragments1, nFrames1, cFDc),
           throwsA(const isInstanceOf<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
@@ -1427,7 +1465,9 @@ void main() {
       final fragments2 = [emptyOffsetsAsBytes1, bulkData2];
       final vfFragments2 = new VFFragments(fragments2);
 
-      expect(() => new CompressedFrameList.fromVFFragments(vfFragments2, nFrames2, cFDd),
+      expect(
+          () => new CompressedFrameList.fromVFFragments(
+              vfFragments2, nFrames2, cFDd),
           throwsA(const isInstanceOf<InvalidFrameListError>()));
     });
 
@@ -1462,7 +1502,8 @@ void main() {
         log.debug(
             'frame0.lengthInBytes: ${frame0.lengthInBytes}, c8c.offsets[${j+ 1}] - c8c.offsets[$j]: ${c8c.offsets[j+ 1] - c8c.offsets[j]}');
 
-        expect(frame0.lengthInBytes == c8c.offsets[j + 1] - c8c.offsets[j], true);
+        expect(
+            frame0.lengthInBytes == c8c.offsets[j + 1] - c8c.offsets[j], true);
         expect(frame0.length == c8c.offsets[j + 1] - c8c.offsets[j], true);
         //expect(frame0.length == c8c.desc.length, true);
 
@@ -1473,8 +1514,10 @@ void main() {
         expect(frame0.bitsAllocated == c8c.desc.bitsAllocated, true);
         expect(frame0.bitsStored == c8c.desc.bitsStored, true);
         expect(frame0.highBit == c8c.desc.highBit, true);
-        expect(frame0.pixelRepresentation == c8c.desc.pixelRepresentation, true);
-        expect(frame0.planarConfiguration == c8c.desc.planarConfiguration, true);
+        expect(
+            frame0.pixelRepresentation == c8c.desc.pixelRepresentation, true);
+        expect(
+            frame0.planarConfiguration == c8c.desc.planarConfiguration, true);
         expect(frame0.pixelAspectRatio == c8c.desc.pixelAspectRatio, true);
 
         expect(frame0.parent == c8c, true);

@@ -16,22 +16,24 @@ void main() {
           PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
       log.debug('ui0: $ui0');
 
-      final rootDS0 = new TagRootDataset();
+      final rootDS0 = new TagRootDataset.empty();
 
       // Test for element not present with system.throwOnError
       system.throwOnError = false;
       expect(rootDS0.update(ui0.tag.index, <Uid>[]), isNull);
       expect(rootDS0.update(ui0.tag.index, <Uid>[], required: true), isNull);
-      expect(rootDS0.update(ui0.tag.index, ['1.804.35.0.89']), isNull);
-      expect(rootDS0.update(ui0.tag.index, ['1.804.35.0.89'], required: true),
+      expect(rootDS0.update(ui0.tag.index, <String>['1.804.35.0.89']), isNull);
+      expect(
+          rootDS0.update(ui0.tag.index, <String>['1.804.35.0.89'],
+              required: true),
           isNull);
 
       system.throwOnError = true;
       expect(() => rootDS0.update(ui0.tag.index, <Uid>[], required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
       expect(
-          () =>
-              rootDS0.update(ui0.tag.index, ['1.804.35.0.89'], required: true),
+          () => rootDS0.update(ui0.tag.index, <String>['1.804.35.0.89'],
+              required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
 
@@ -42,7 +44,7 @@ void main() {
           PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
       log.debug('ui0: $ui0');
 
-      final rootDS0 = new TagRootDataset();
+      final rootDS0 = new TagRootDataset.empty();
 
       // Test for element not present with system.throwOnError
       system.throwOnError = true;
@@ -56,7 +58,7 @@ void main() {
       // Test for non empty list
       final uidList1 = ['2.16.840.1.113662.2.1.1519.11582'];
       final ui1 = new UItag.fromStrings(PTag.kStudyInstanceUID, uidList1);
-      final rootDS1 = new TagRootDataset()..add(ui1);
+      final rootDS1 = new TagRootDataset.empty()..add(ui1);
       log.debug('ui1: $ui1');
       final uidList1r = ['1.2.840.10008.5.1.1.16.376'];
       final v = Uid.isValidStringList(uidList1r);
@@ -69,7 +71,7 @@ void main() {
 
       final uidList2 = ['1.2.840.10008.3.1.2.5.4'];
       final ui2 = new UItag.fromStrings(PTag.kSeriesInstanceUID, uidList2);
-      final rootDS2 = new TagRootDataset()..add(ui2);
+      final rootDS2 = new TagRootDataset.empty()..add(ui2);
       final uidList2r = ['1.2.840.10008.1.4.1.13'];
       expect(Uid.isValidStringList(uidList2r), true);
       final ui2r = rootDS2.update(ui2.tag.code, uidList2r);
@@ -77,7 +79,7 @@ void main() {
       expect(ui2r.values, equals(uidList2));
       expect(ui2r.value == uidList2[0], true);
 
-      final rootDS4 = new TagRootDataset();
+      final rootDS4 = new TagRootDataset.empty();
       final uidList3 = ['2.16.840.1.113662.2.1.1519.11582'];
       final ui4 = new UItag.fromStrings(PTag.kStudyInstanceUID, uidList3);
       rootDS4.add(ui4);
@@ -90,19 +92,20 @@ void main() {
 
       //Passing values greater than valid VM
       system.throwOnError = false;
-      final ui4r1 = rootDS4.update(ui4.tag.code, ['1.2.840.10008.5.1.4.1.1.1']);
+      final ui4r1 =
+          rootDS4.update(ui4.tag.code, <String>['1.2.840.10008.5.1.4.1.1.1']);
       log.debug('ui4r1:$ui4r1');
       expect(ui4r1, isNotNull);
 
       //Passing values greater than valid VM
       system.throwOnError = false;
-      final ui5r =
-          rootDS4.update(PTag.kAbortReason.code, ['1.2.840.10008.5.1.4.1.1.1']);
+      final ui5r = rootDS4.update(
+          PTag.kAbortReason.code, <String>['1.2.840.10008.5.1.4.1.1.1']);
       log.debug('ui4r1:$ui4r1');
       expect(ui5r, isNull);
 
       //Testing noValue on RootDatasetTag
-      final rootDSNV = new TagRootDataset();
+      final rootDSNV = new TagRootDataset.empty();
       final uidListNV = ['2.16.840.1.113662.2.1.1519.11582'];
       final uiNV = new UItag.fromStrings(PTag.kStudyInstanceUID, uidListNV);
       rootDSNV.add(uiNV);
@@ -121,7 +124,7 @@ void main() {
       final uidList4 = ['1.2.840.10008.1.2.1', '1.2.840.10008.5.1.1.9'];
       final ui6 = new UItag.fromStrings(
           PTag.kReferencedRelatedGeneralSOPClassUIDInFile, uidList4);
-      final rootDS6 = new TagRootDataset()..add(ui6);
+      final rootDS6 = new TagRootDataset.empty()..add(ui6);
       log.debug('ui6: $ui6');
       final uidList4r = [
         '1.2.840.10008.5.1.4.1.1.30',
@@ -135,7 +138,7 @@ void main() {
       expect(ui6r.value == uidList4[0], true);
 
       //Testing noValue on RootDatasetTag
-      final rootDSNV1 = new TagRootDataset();
+      final rootDSNV1 = new TagRootDataset.empty();
       final uidListNV1 = [
         '1.2.840.10008.5.1.4.1.1.1',
         '1.2.840.10008.5.1.4.1.1.5'
@@ -155,7 +158,7 @@ void main() {
 
       // Applying noValues on UI Element and adding the result element to
       // RootDatasetTag
-      final rootDS10 = new TagRootDataset();
+      final rootDS10 = new TagRootDataset.empty();
       final uidList9 = <String>[
         '1.2.840.10008.5.1.1.40.1',
         '1.2.840.10008.5.1.4.1.1.1'

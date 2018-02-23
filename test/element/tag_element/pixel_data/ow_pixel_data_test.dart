@@ -178,7 +178,7 @@ void main() {
     test('getPixelData', () {
       final pd0 = new OWtagPixelData(PTag.kPixelData, [123, 101], 1);
       final ba0 = new UStag(PTag.kBitsAllocated, [16]);
-      final ds = new TagRootDataset()..add(pd0)..add(ba0);
+      final ds = new TagRootDataset.empty()..add(pd0)..add(ba0);
       final pixels = ds.getPixelData();
       log..debug('pixels: $pixels')..debug('pixel.length: ${pixels.length}');
       expect(pixels.length == 2, true);
@@ -187,7 +187,7 @@ void main() {
 
       final ba1 = new UStag(PTag.kBitsAllocated, []);
       final ba2 = new UStag(PTag.kBitsAllocated, []);
-      final ds1 = new TagRootDataset()..add(ba1);
+      final ds1 = new TagRootDataset.empty()..add(ba1);
       final pixels1 = ds1.getPixelData();
       expect(pixels1 == null, true);
 
@@ -201,7 +201,7 @@ void main() {
       //Missing Pixel Data
       final pd1 = new OWtagPixelData(PTag.kOverlayData, [123, 101]);
       final ba3 = new UStag(PTag.kBitsAllocated, [16]);
-      final ds2 = new TagRootDataset()..add(pd1)..add(ba3);
+      final ds2 = new TagRootDataset.empty()..add(pd1)..add(ba3);
       expect(
           ds2.getPixelData, throwsA(const isInstanceOf<PixelDataNotPresent>()));
     });

@@ -29,6 +29,7 @@ class PDTagDefinition  {
 
   int get offset => code & 0xFFFF;
 
+  String get keyword => token;
   String get hex => hex32(code);
   String get dcm => fmt.dcm(code);
 
@@ -38,7 +39,8 @@ class PDTagDefinition  {
   String toString() => '$runtimeType[$index]$dcm: "$name" creator("$token")';
 
   static const PDTagDefinition kUnknown =
-      const PDTagDefinition._(0, '', 0, kUNIndex, VM.k1_n, 'Unknown Private Data');
+      const PDTagDefinition._(0, 'UnknownPDTag', 0, kUNIndex, VM.k1_n,
+                                  'Unknown Private Data Tag');
   static const PDTagDefinition kNoCreator = const PDTagDefinition._(
       0, '', 0, kUNIndex, VM.k1_n, 'Unknown Private Data w/o Creator');
   static const PDTagDefinition k1 = const PDTagDefinition._(

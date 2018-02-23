@@ -6,47 +6,35 @@
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
-import 'package:core/src/dataset/element_list/element_list.dart';
-import 'package:core/src/dataset/element_list/map_as_list.dart';
+import 'package:core/src/dataset/base/map_dataset/map_item.dart';
 import 'package:core/src/dataset/base/private_group.dart';
+import 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
+import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
 
 /// An [BDItem] is a DICOM [Dataset], which is contained in an SQ Element.
-class BDItem extends Item with DatasetBD {
-  @override
-  final Dataset parent;
-  // TODO: tighten this type to SQtag
-  @override
-  SQ sequence;
-  @override
-  final MapAsList elements;
-  @override
-  IDSBytes dsBytes;
+class BDItem extends MapItem with DatasetBD {
 
   @override
-  final List<PrivateGroup> privateGroups = <PrivateGroup>[];
+  List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
   /// Creates a new empty [BDItem] from [ByteData].
-  BDItem(this.parent, {this.sequence, ElementList elements, ByteData bd})
-      : elements = elements ?? new MapAsList(),
-        dsBytes = new IDSBytes(bd);
+  BDItem(Dataset parent, Map<int, Element> eMap, [SQ sequence, ByteData bd])
+      : super(parent, eMap, sequence, bd);
+
+  /// Creates a new empty [BDItem] from [ByteData].
+  BDItem.empty(Dataset parent,  [SQ sequence, ByteData bd])
+      : super(parent, <int, Element>{}, sequence, bd);
 
   /// Create a new [BDItem] from an existing [BDItem].
   /// If [parent] is _null_the new [BDItem] has the same
   /// parent as [item].
-  BDItem.from(BDItem item, Dataset parent)
-      : parent = (parent == null) ? item.parent : parent,
-        elements = new MapAsList.from(item.elements),
-        dsBytes = item.dsBytes;
+  BDItem.from(BDItem item, MapItem parent, [SQ sequence])
+      : super.from(item, parent ?? item.parent,
+                       sequence ?? item.sequence);
 
   /// Creates a new [BDItem] from [ByteData].
-  BDItem.fromList(this.parent, this.elements, [ByteData bd])
-      : dsBytes = new IDSBytes(bd);
-
-  @override
-  BDItem copy([Dataset parent]) =>
-      new BDItem.from(this, (parent == null) ? this.parent : parent);
+  BDItem.fromBD(Dataset parent, Map<int, Element> eMap,
+      [SQ sequence, ByteData bd])
+      : super(parent, eMap, sequence, bd);
 }

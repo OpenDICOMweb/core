@@ -10,7 +10,7 @@ void main() {
   Server.initialize(name: 'entity_test', level: Level.info);
 
   group('Entity Tests', () {
-    final rootDataset = new TagRootDataset();
+    final rootDataset = new TagRootDataset.empty();
 
     test('Patient', () {
       final subjectUid0 = new Uid();

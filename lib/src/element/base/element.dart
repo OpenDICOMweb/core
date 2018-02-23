@@ -37,10 +37,6 @@ import 'package:core/src/vr/vr.dart';
 /// a [bool].
 typedef bool ElementTest(Element e);
 
-typedef Iterable<V> _ValuesConverter<V>(Iterable<V> vList);
-
-typedef Element<V> _ElementConverter<V>(Iterable<V> vList);
-
 typedef bool Condition(Dataset ds, Element e);
 
 Iterable<V> _toList<V>(Iterable v) =>
@@ -48,7 +44,7 @@ Iterable<V> _toList<V>(Iterable v) =>
 
 
 bool doTestValidity = true;
-bool doFancy = false;
+
 
 /// All add, replace, and remove operations should
 /// be done by calling add, replace, and remove methods in [Dataset].
@@ -103,7 +99,7 @@ abstract class Element<V> extends ListBase<V> {
   // **** Some of these Getters may be accessed directly in the element.
 
   /// Returns the [Tag] associated with _this_.
-  Tag get tag => Tag.lookupByCode(code);
+  Tag get tag => Tag.lookupByCode(code, vrIndex);
 
   /// The Tag [code] for this Element.
   int get code => tag.code;
@@ -270,9 +266,7 @@ abstract class Element<V> extends ListBase<V> {
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************
 
-  /// Returns _false_ for all Elements except SQ, OB, OW, and UN.
-  /// Items are also allowed to have undefined length.
-  bool get undefinedLengthAllowed => false;
+
 
   /// The Value Length field value, that is, the 32-bit [int]
   /// contained in the Value Field of _this_. If the returned value
@@ -280,9 +274,13 @@ abstract class Element<V> extends ListBase<V> {
   /// the Value Field was undefined.
   ///
   /// _Note_: [kUndefinedLength] may only appear in VRs of OB, OW, SQ,
-  /// and UN Elements (and in Item [Dataset]s).
+  /// and UN Elements (and in Item [Dataset]s). _This method MUST
+  /// be overridden for those elements.
+  int get vfLengthField => vfLength;
 
-  int get vfLengthField;
+  /// Returns _false_ for all Elements except SQ, OB, OW, and UN.
+  /// Items are also allowed to have undefined length.
+  bool get isUndefinedLengthAllowed => false;
 
   /// _true_ if this [Element] had an undefined length token in the
   /// Value Length field. It may only be true for OB, OW, SQ, and
@@ -320,7 +318,7 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns a single value from a [List] with [length] == 1.
   V get value {
     if (length != 1) {
-      log.warn('Invalid access: $this does not have just 1 value');
+      log.warn('Invalid value access: $this has ${values.length} values');
       if (length == 0) return null;
     }
     return values.first;
@@ -490,6 +488,7 @@ abstract class Element<V> extends ListBase<V> {
  // String format(Formatter z) => '${z(info)}\n';
  // String format(Formatter z) => z.fmt(this, elements);
 
+  bool doFancy = false;
   @override
   String toString() {
     if (doFancy) {
@@ -501,8 +500,8 @@ abstract class Element<V> extends ListBase<V> {
           : 'vm($vmMin<= $_lengthAsString <=$_vmMax)';
       return '$runtimeType$dcm: $vrId($vrIndex) $_vm $validLength $valid';
     } else {
-      //final _vm = vm;
-      return '$runtimeType$dcm $keyword: $vrId($vrIndex)  vfLength: $vfLength';
+      return '$runtimeType$dcm ${tag.keyword} '
+          '$vrId($vrIndex)  vfLength: $vfLength';
     }
   }
 
