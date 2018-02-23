@@ -44,32 +44,33 @@ class MapRootDataset extends RootDataset with MapDataset {
 }
 
 class FmiMap extends Fmi {
-  final Map <int, Element> fmiMap;
+  final Map <int, Element> eMap;
 
-  FmiMap(this.fmiMap);
+  FmiMap(this.eMap);
 
-  FmiMap.empty() : fmiMap = <int, Element>{};
+  FmiMap.empty() : eMap = <int, Element>{};
 
-  FmiMap.from(FmiMap fmi) : fmiMap = new Map.from(fmi.fmiMap);
-
-  @override
-  Element operator [](int code) => fmiMap[code];
+  FmiMap.from(FmiMap fmi) : eMap = new Map.from(fmi.eMap);
 
   @override
-  void operator []=(int code, Element e) => fmiMap[code] = e;
+  Element operator [](int i) => eMap.values.elementAt(i);
 
   @override
-  int get length => fmiMap.length;
+  void operator []=(int code, Element e) => eMap[code] = e;
+
+  @override
+  int get length => eMap.length;
 
   @override
   set length(int _) => unsupportedError();
 
   @override
   Uid uidLookup(int code) {
-    final e = fmiMap[code];
+    final e = eMap[code];
     if (e == null) return null;
     return (e is UI) ? e.uids.elementAt(0) : nonUidTag(code);
   }
 
-
+  @override
+  String toString() => '$runtimeType: $length elements';
 }
