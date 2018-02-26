@@ -15,6 +15,7 @@ import 'package:core/src/date_time/age.dart';
 import 'package:core/src/date_time/date.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
+import 'package:core/src/element/base/string.dart';
 import 'package:core/src/empty_list.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/patient/person_name.dart';
@@ -22,6 +23,7 @@ import 'package:core/src/entity/patient/sex.dart';
 import 'package:core/src/logger/formatter.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
+import 'package:core/src/tag/errors.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/uid.dart';
 import 'package:core/src/uid/well_known/sop_class.dart';
@@ -160,7 +162,7 @@ abstract class RootDataset extends Dataset {
   @override
   Iterable<dynamic> findAllWhere(bool test(Element e)) {
     final result = <dynamic>[];
-    for (var e in fmi) if (test(e)) result.add(e);
+    for (var e in fmi.elements) if (test(e)) result.add(e);
     for (var e in elements) if (test(e)) result.add(e);
     return result;
   }
@@ -244,14 +246,22 @@ abstract class RootDataset extends Dataset {
   // ignore: unnecessary_getters_setters
   set pInfo(ParseInfo info) => _pInfo ??= info;
 
-/*  bool get wasShortEncoding => pInfo.wasShortFile;
+/*
+  bool get wasShortEncoding => pInfo.wasShortFile;
 
   bool get hasIssues => pInfo.hadErrors || pInfo.hadWarnings;
 
   bool get hasErrors => pInfo.hadParsingErrors || hasIssues;
-  */
+*/
 }
 
 abstract class Fmi extends ListBase<Element> {
-  Uid uidLookup(int index);
+
+  Iterable<Element> get elements;
+
+  Uid uidLookup(int code) {
+    final e = this[code];
+    if (e == null) return null;
+    return (e is UI) ? e.uids.elementAt(0) : nonUidTag(code);
+  }
 }

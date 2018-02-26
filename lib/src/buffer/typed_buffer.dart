@@ -8,9 +8,9 @@ import 'dart:typed_data';
 
 // Base Types
 //  - List<T>
-//  - BufferedData implements TypedData
-//  - ByteData implements TypedData
-//  - BufferedList<T> extends List<T> with TypedData
+//  -   BufferedData implements TypedData
+//  -   ByteData implements TypedData
+//  -   BufferedList<T> extends List<T> with TypedData
 //  - Int8List extends BufferedList<int>
 //  - Float32List extends TypedBuffer<double>
 //  - Uint8List extends TypedBuffer<int> implements ByteData

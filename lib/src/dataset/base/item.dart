@@ -11,15 +11,15 @@ import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/tag/constants.dart';
 
-/// Sequence Items -
+/// Sequence Items
 abstract class Item extends Dataset {
   @override
   final Dataset parent;
 
-	/// The Sequence that contains this Item.
-	SQ  sequence;
+  /// The Sequence that contains this Item.
+  SQ sequence;
 
-	@override
+  @override
   IDSBytes dsBytes;
 
   Item(this.parent, this.sequence, ByteData bd) : dsBytes = new IDSBytes(bd);
@@ -36,13 +36,6 @@ abstract class Item extends Dataset {
   /// The actual length of the Value Field for _this_
   int get vfLength => dsBytes.vfLength;
 
-  /// _true_if _this_was created from an encoded object (e.g. ByteData,
-  /// JSON [String]...) and the Value Field length was [kUndefinedLength].
-  ///
-  /// _Note_: Only Item and its subclasses can have undefined length.
-  ///         RootDatasets cannot.
-  bool get hasULength => vfLengthField == kUndefinedLength;
-
   /// _Deprecated_: Use [sequence] = [sq] instead.
   @deprecated
   void addSQ(SQ sq) {
@@ -57,3 +50,4 @@ abstract class Item extends Dataset {
     return dsb;
   }
 }
+

@@ -96,7 +96,7 @@ void main() {
       final uInt64ListV1 = new Uint64List.fromList(uInt64List0);
       final uInt8ListV1 = uInt64ListV1.buffer.asUint8List();
 
-      final be0 = bytesEqual(uInt8ListV0, uInt8ListV1);
+      final be0 = uint8ListEqual(uInt8ListV0, uInt8ListV1);
       log.debug('be0: $be0');
       expect(be0, true);
 
@@ -107,15 +107,15 @@ void main() {
       final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
       final uInt8ListV3 = uInt32ListV1.buffer.asUint8List();
 
-      final be1 = bytesEqual(uInt8ListV2, uInt8ListV3);
+      final be1 = uint8ListEqual(uInt8ListV2, uInt8ListV3);
       log.debug('be1: $be1');
       expect(be1, true);
 
-      final be2 = bytesEqual(uInt8ListV0, uInt8ListV3);
+      final be2 = uint8ListEqual(uInt8ListV0, uInt8ListV3);
       log.debug('be2: $be2');
       expect(be2, false);
 
-      final be3 = bytesEqual(uInt8ListV0, uInt8ListV2);
+      final be3 = uint8ListEqual(uInt8ListV0, uInt8ListV2);
       log.debug('be3: $be3');
       expect(be3, false);
 
@@ -126,32 +126,32 @@ void main() {
       final uInt16ListV1 = new Uint16List.fromList(uInt32List0);
       final uInt8ListV5 = uInt16ListV1.buffer.asUint8List();
 
-      final be4 = bytesEqual(uInt8ListV4, uInt8ListV5);
+      final be4 = uint8ListEqual(uInt8ListV4, uInt8ListV5);
       log.debug('be4: $be4');
       expect(be4, false);
 
-      final be5 = bytesEqual(uInt8ListV4, uInt8ListV0);
+      final be5 = uint8ListEqual(uInt8ListV4, uInt8ListV0);
       log.debug('be5: $be5');
       expect(be5, false);
 
-      final be6 = bytesEqual(uInt8ListV4, uInt8ListV1);
+      final be6 = uint8ListEqual(uInt8ListV4, uInt8ListV1);
       log.debug('be6: $be6');
       expect(be6, false);
 
-      final be7 = bytesEqual(uInt8ListV4, uInt8ListV2);
+      final be7 = uint8ListEqual(uInt8ListV4, uInt8ListV2);
       log.debug('be7: $be7');
       expect(be7, false);
 
       final uInt8List0 = rng.uint8List(1, 1);
       final uInt8ListV6 = new Uint8List.fromList(uInt8List0);
 
-      final be8 = bytesEqual(uInt8ListV0, uInt8ListV6);
+      final be8 = uint8ListEqual(uInt8ListV0, uInt8ListV6);
       log.debug('be8: $be8');
       expect(be8, false);
     }
   });
 
-  test('bytesEqual', () {
+  test('uint8ListEqual', () {
     final uInt8List0 = new Uint8List.fromList([10, 20]);
     final uInt8ListV0 = uInt8List0.buffer.asUint8List();
 
@@ -161,11 +161,11 @@ void main() {
     final uInt8List2 = new Uint8List.fromList([10, 20, 89]);
     final uInt8ListV2 = uInt8List2.buffer.asUint8List();
 
-    final be0 = bytesEqual(uInt8ListV0, uInt8ListV1);
+    final be0 = uint8ListEqual(uInt8ListV0, uInt8ListV1);
     log.debug('be0: $be0');
     expect(be0, true);
 
-    final be1 = bytesEqual(uInt8ListV0, uInt8ListV2);
+    final be1 = uint8ListEqual(uInt8ListV0, uInt8ListV2);
     log.debug('be1: $be1');
     expect(be1, false);
   });

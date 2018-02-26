@@ -6,15 +6,14 @@
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/base/map_dataset/map_item.dart';
 import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
+import 'package:core/src/dataset/map_dataset/map_item.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
 
 /// An [BDItem] is a DICOM [Dataset], which is contained in an SQ Element.
 class BDItem extends MapItem with DatasetBD {
-
   @override
   List<PrivateGroup> privateGroups = <PrivateGroup>[];
 

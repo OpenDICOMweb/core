@@ -5,8 +5,8 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/base/map_dataset/map_root_dataset.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
+import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/empty_list.dart';

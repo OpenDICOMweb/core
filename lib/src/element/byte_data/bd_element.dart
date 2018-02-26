@@ -7,6 +7,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:core/src/bytes/bytes.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/float.dart';
 import 'package:core/src/element/base/integer/integer.dart';
@@ -274,6 +275,11 @@ abstract class TextMixin {
 
 bool ensureExactLength = true;
 
+/// Returns _true_ if all bytes in [bytes0] and [bytes1] are the same.
+/// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
+bool bytesEqual(Bytes bytes0, Bytes bytes1) =>
+    byteDataEqual(bytes0.asByteData(), bytes0.asByteData());
+
 /// Returns _true_ if all bytes in [bd0] and [bd1] are the same.
 /// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
 bool byteDataEqual(ByteData bd0, ByteData bd1, {bool doFast = false}) {
@@ -285,6 +291,16 @@ bool byteDataEqual(ByteData bd0, ByteData bd1, {bool doFast = false}) {
         : bytesEqualSlow(bd0, bd1);
   log.error('Invalid Length: b0($b0Length) b1($b1Length)');
   return false;
+}
+
+/// Returns _true_ if all bytes in [bytes0] and [bytes1] are the same.
+/// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
+bool uint8ListEqual(Uint8List bytes0, Uint8List bytes1) {
+  final bd0 =
+  bytes0.buffer.asByteData(bytes0.offsetInBytes, bytes0.lengthInBytes);
+  final bd1 =
+  bytes1.buffer.asByteData(bytes1.offsetInBytes, bytes1.lengthInBytes);
+  return byteDataEqual(bd0, bd1);
 }
 
 bool bytesEqualSlow(ByteData bd0, ByteData bd1) {
@@ -341,15 +357,7 @@ void _toBytes(int i, ByteData bd0, ByteData bd1) {
 /// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
 bool bdEqual(ByteData bd0, ByteData bd1) => byteDataEqual(bd0, bd1);
 
-/// Returns _true_ if all bytes in [bytes0] and [bytes1] are the same.
-/// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
-bool bytesEqual(Uint8List bytes0, Uint8List bytes1) {
-  final bd0 =
-      bytes0.buffer.asByteData(bytes0.offsetInBytes, bytes0.lengthInBytes);
-  final bd1 =
-      bytes1.buffer.asByteData(bytes1.offsetInBytes, bytes1.lengthInBytes);
-  return byteDataEqual(bd0, bd1);
-}
+
 
 int getLength(Uint8List vfBytes, int unitSize) {
   if (ensureExactLength && ((vfBytes.length % unitSize) != 0))
@@ -363,4 +371,26 @@ int _getValuesLength(int vfLengthField, int sizeInBytes) {
       vfLengthField.isEven &&
       (vfLengthField % sizeInBytes == 0));
   return length;
+}
+
+//TODO: This should be done in convert
+bool checkPadding(ByteData bd, [int padChar = kSpace]) {
+  final lastIndex = bd.lengthInBytes - 1;
+  final char = bd.getUint8(lastIndex);
+  if ((char == kNull || char == kSpace) && char != padChar)
+    log.warn('Invalid PadChar: $char should be $padChar');
+  return true;
+}
+
+//TODO: This should be done in convert
+ByteData removePadding(ByteData bd, int vfOffset, [int padChar = kSpace]) {
+  if (bd.lengthInBytes == vfOffset) return bd;
+  assert(bd.lengthInBytes.isEven);
+  final lastIndex = bd.lengthInBytes - 1;
+  final char = bd.getUint8(lastIndex);
+  if (char == kNull || char == kSpace) {
+    log.debug3('Removing Padding: $char');
+    return bd.buffer.asByteData(bd.offsetInBytes, bd.lengthInBytes - 1);
+  }
+  return bd;
 }

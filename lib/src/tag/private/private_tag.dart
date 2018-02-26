@@ -81,7 +81,8 @@ class GroupLengthPrivateTag extends PrivateTag {
   @override
 
   GroupLengthPrivateTag(this.code, this.vrIndex) {
-    if (vrIndex != kULIndex) invalidVRIndex(vrIndex, null, correctVRIndex);
+    if (vrIndex != kULIndex && vrIndex != kUNIndex)
+      invalidVRIndex(vrIndex, null, correctVRIndex);
   }
 
   int get correctVRIndex => kULIndex;

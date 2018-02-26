@@ -20,8 +20,12 @@ import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/errors.dart';
 import 'package:core/src/element/vf_fragments.dart';
 import 'package:core/src/errors.dart';
+import 'package:core/src/string/ascii.dart';
+import 'package:core/src/string/dicom_string.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/constants.dart';
+import 'package:core/src/tag/private/pc_tag.dart';
+import 'package:core/src/tag/tag.dart';
 import 'package:core/src/uid/well_known/transfer_syntax.dart';
 import 'package:core/src/vr/vr.dart';
 
@@ -35,6 +39,10 @@ int _getValuesLength(int vfLengthField, int sizeInBytes) {
 
 const int _vfLengthOffset = 4;
 const int _vfOffset = 8;
+
+ByteData _removePadding(ByteData bd, [int padChar = kSpace]) =>
+    removePadding(bd, _vfOffset, padChar);
+
 
 abstract class IvrElement<V> implements BDElement<V> {
   @override
@@ -475,7 +483,8 @@ class AEivr extends AE
 
   static AEivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new AEivr(bd);
+    assert(checkPadding(bd));
+    return new AEivr(_removePadding(bd));
   }
 }
 
@@ -501,7 +510,8 @@ class CSivr extends CS
 
   static CSivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new CSivr(bd);
+    assert(checkPadding(bd));
+    return new CSivr(_removePadding(bd));
   }
 }
 
@@ -527,7 +537,8 @@ class DSivr extends DS
 
   static DSivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new DSivr(bd);
+    assert(checkPadding(bd));
+    return new DSivr(_removePadding(bd));
   }
 }
 
@@ -540,7 +551,8 @@ class DTivr extends DT
 
   static DTivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new DTivr(bd);
+    assert(checkPadding(bd));
+    return new DTivr(_removePadding(bd));
   }
 }
 
@@ -553,7 +565,8 @@ class ISivr extends IS
 
   static ISivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new ISivr(bd);
+    assert(checkPadding(bd));
+    return new ISivr(_removePadding(bd));
   }
 }
 
@@ -566,7 +579,8 @@ class UIivr extends UI
 
   static UIivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new UIivr(bd);
+    assert(checkPadding(bd, kNull));
+    return new UIivr(_removePadding(bd));
   }
 }
 
@@ -578,20 +592,40 @@ class LOivr extends LO
   LOivr(this.bd);
 
   static LOivr make(ByteData bd, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
-    return new LOivr(bd);
+    assert(vrIndex != null && vrIndex == kLOIndex);
+    assert(checkPadding(bd));
+    final v = _removePadding(bd);
+    // Read code elt.
+    final group = bd.getUint16(0, Endian.little);
+    final elt = bd.getUint16(2, Endian.little);
+    return (Tag.isPrivateGroup(group) && elt >= 0x10 && elt <= 0xFF)
+           ? new PCivr(v)
+           : new LOivr(v);
   }
 }
 
-class PCivr extends LOivr with PC {
-  PCivr(ByteData bd) : super(bd);
-
+class PCivr extends LO
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
-  String get token => vfBytesAsUtf8;
+  final ByteData bd;
+
+  PCivr(this.bd);
+
+  /// Returns a [PCTag].
+  @override
+  Tag get tag {
+    if (Tag.isPCCode(code)) {
+      final token = vfBytesAsAscii;
+      final tag = PCTag.lookupByCode(code, kLOIndex, token);
+      return tag;
+    }
+    return invalidKey(code, 'Invalid Tag Code ${dcm(code)}');
+  }
 
   static PCivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new PCivr(bd);
+    assert(checkPadding(bd));
+    return new PCivr(_removePadding(bd));
   }
 }
 
@@ -604,7 +638,8 @@ class PNivr extends PN
 
   static PNivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new PNivr(bd);
+    assert(checkPadding(bd));
+    return new PNivr(_removePadding(bd));
   }
 }
 
@@ -617,7 +652,8 @@ class SHivr extends SH
 
   static SHivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new SHivr(bd);
+    assert(checkPadding(bd));
+    return new SHivr(_removePadding(bd));
   }
 }
 
@@ -632,7 +668,8 @@ class LTivr extends LT
   Iterable<String> get values => LT.fromByteData(vfByteData);
   static LTivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new LTivr(bd);
+    assert(checkPadding(bd));
+    return new LTivr(_removePadding(bd));
   }
 }
 
@@ -645,7 +682,8 @@ class STivr extends ST
 
   static STivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new STivr(bd);
+    assert(checkPadding(bd));
+    return new STivr(_removePadding(bd));
   }
 }
 
@@ -658,7 +696,8 @@ class TMivr extends TM
 
   static TMivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new TMivr(bd);
+    assert(checkPadding(bd));
+    return new TMivr(_removePadding(bd));
   }
 }
 
@@ -671,7 +710,8 @@ class UCivr extends UC
 
   static UCivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new UCivr(bd);
+    assert(checkPadding(bd));
+    return new UCivr(_removePadding(bd));
   }
 }
 
@@ -684,7 +724,8 @@ class URivr extends UR
 
   static URivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new URivr(bd);
+    assert(checkPadding(bd));
+    return new URivr(_removePadding(bd));
   }
 }
 
@@ -697,7 +738,8 @@ class UTivr extends UT
 
   static UTivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
-    return new UTivr(bd);
+    assert(checkPadding(bd));
+    return new UTivr(_removePadding(bd));
   }
 }
 

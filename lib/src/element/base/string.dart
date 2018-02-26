@@ -1038,14 +1038,18 @@ abstract class LO extends StringUtf8 {
 
 /// A Private Creator [Element] is a subtype of [LO]. It always has a tag
 /// of the form (gggg,00cc), where 0x10 <= cc <= 0xFF..
-abstract class PC {
-  int get code;
-  Tag get tag;
-  String get token;
+abstract class PC extends LO {
+
+  /// The Value Field which contains a [String] that identifies the
+  /// PrivateSubgroup.
+  String get id => vfBytesAsUtf8;
+  @override
   String get vrKeyword => kVRKeyword;
+  @override
   String get vrName => kVRKeyword;
 
-  String get name => 'Private Creator - $token';
+  @override
+  String get name => 'Private Creator - $id';
 
   int get sgNumber => code & 0xFF;
 

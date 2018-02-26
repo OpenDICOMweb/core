@@ -5,8 +5,8 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/base/map_dataset/map_root_dataset.dart';
 import 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
+import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 
 /// A [BDRootDataset].

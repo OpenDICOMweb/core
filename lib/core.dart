@@ -4,12 +4,13 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+export 'package:core/src/bytes/buffer/read_buffer.dart';
+export 'package:core/src/bytes/buffer/write_buffer.dart';
+export 'package:core/src/bytes/bytes.dart';
 export 'package:core/src/dataset/base/dataset.dart';
 export 'package:core/src/dataset/base/ds_bytes.dart';
 export 'package:core/src/dataset/base/history.dart';
 export 'package:core/src/dataset/base/item.dart';
-export 'package:core/src/dataset/base/map_dataset/map_item.dart';
-export 'package:core/src/dataset/base/map_dataset/map_root_dataset.dart';
 export 'package:core/src/dataset/base/root_dataset.dart';
 export 'package:core/src/dataset/byte_data/bd_dataset_mixin.dart';
 export 'package:core/src/dataset/byte_data/bd_item.dart';
@@ -18,6 +19,8 @@ export 'package:core/src/dataset/compare.dart';
 export 'package:core/src/dataset/compare_datasets.dart';
 export 'package:core/src/dataset/compare_datasets.dart';
 export 'package:core/src/dataset/errors.dart';
+export 'package:core/src/dataset/map_dataset/map_item.dart';
+export 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 export 'package:core/src/dataset/parse_info.dart';
 export 'package:core/src/dataset/parse_info.dart';
 export 'package:core/src/dataset/summary.dart';

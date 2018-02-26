@@ -174,7 +174,7 @@ const int _shortVFLengthOffset = 6;
 const int _shortVFOffset = 8;
 
 ByteData _removeShortPadding(ByteData bd, [int padChar = kSpace]) =>
-    __removePadding(bd, _shortVFOffset, padChar);
+    removePadding(bd, _shortVFOffset, padChar);
 
 abstract class EvrLongMixin<V> {
   ByteData get bd;
@@ -198,7 +198,7 @@ const int _longVFLengthOffset = 8;
 const int _longVFOffset = 12;
 
 ByteData _removeLongPadding(ByteData bd, [int padChar = kSpace]) =>
-    __removePadding(bd, _longVFOffset, padChar);
+    removePadding(bd, _longVFOffset, padChar);
 
 class FLevr extends FL
     with Common, EvrElement<double>, EvrShortMixin<double>, Float32Mixin {
@@ -497,27 +497,6 @@ class GLevr extends GL
 }
 
 // **** String Elements
-//TODO: This should be done in convert
-bool _checkPadding(ByteData bd, [int padChar = kSpace]) {
-  final lastIndex = bd.lengthInBytes - 1;
-  final char = bd.getUint8(lastIndex);
-  if ((char == kNull || char == kSpace) && char != padChar)
-    log.warn('Invalid PadChar: $char should be $padChar');
-  return true;
-}
-
-//TODO: This should be done in convert
-ByteData __removePadding(ByteData bd, int vfOffset, [int padChar = kSpace]) {
-  if (bd.lengthInBytes == vfOffset) return bd;
-  assert(bd.lengthInBytes.isEven);
-  final lastIndex = bd.lengthInBytes - 1;
-  final char = bd.getUint8(lastIndex);
-  if (char == kNull || char == kSpace) {
-    log.debug3('Removing Padding: $char');
-    return bd.buffer.asByteData(bd.offsetInBytes, bd.lengthInBytes - 1);
-  }
-  return bd;
-}
 
 class AEevr extends AE
     with
@@ -533,7 +512,7 @@ class AEevr extends AE
 
   static AEevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kAEIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new AEevr(_removeShortPadding(bd));
   }
 }
@@ -572,7 +551,7 @@ class CSevr extends CS
 
   static CSevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kCSIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new CSevr(_removeShortPadding(bd));
   }
 }
@@ -629,7 +608,7 @@ class DTevr extends DT
 
   static DTevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kDTIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new DTevr(_removeShortPadding(bd));
   }
 }
@@ -648,7 +627,7 @@ class ISevr extends IS
 
   static ISevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kISIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new ISevr(_removeShortPadding(bd));
   }
 }
@@ -667,7 +646,7 @@ class UIevr extends UI
 
   static UIevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kUIIndex);
-    assert(_checkPadding(bd, kNull));
+    assert(checkPadding(bd, kNull));
     return new UIevr(_removeShortPadding(bd, kNull));
   }
 }
@@ -684,23 +663,30 @@ class LOevr extends LO
 
   LOevr(this.bd);
 
-  static LOevr make(ByteData bd, int vrIndex) {
+  static Element make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     final v = _removeShortPadding(bd);
     // Read code elt.
     final group = bd.getUint16(0, Endian.little);
     final elt = bd.getUint16(2, Endian.little);
     return (Tag.isPrivateGroup(group) && elt >= 0x10 && elt <= 0xFF)
-           ? new PCevr(v)
-           : new LOevr(v);
+        ? new PCevr(v)
+        : new LOevr(v);
   }
 }
 
-class PCevr extends LOevr with PC {
-  PCevr(ByteData bd) : super(bd) {
-    print('PCevr: $dcm $tag');
-  }
+class PCevr extends PC
+    with
+        Common,
+        EvrElement<String>,
+        EvrShortMixin<String>,
+        BDStringMixin,
+        Utf8Mixin {
+  @override
+  final ByteData bd;
+
+  PCevr(this.bd);
 
   /// Returns a [PCTag].
   @override
@@ -714,11 +700,11 @@ class PCevr extends LOevr with PC {
   }
 
   @override
-  String get token => vfBytesAsAscii;
+  String get id => vfBytesAsAscii;
 
   static PCevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new PCevr(_removeShortPadding(bd));
   }
 
@@ -749,7 +735,7 @@ class PNevr extends PN
 
   static PNevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kPNIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new PNevr(_removeShortPadding(bd));
   }
 }
@@ -768,7 +754,7 @@ class SHevr extends SH
 
   static SHevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kSHIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new SHevr(_removeShortPadding(bd));
   }
 }
@@ -789,7 +775,7 @@ class LTevr extends LT
   Iterable<String> get values => LT.fromByteData(vfByteData);
   static LTevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLTIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new LTevr(_removeShortPadding(bd));
   }
 }
@@ -808,7 +794,7 @@ class STevr extends ST
 
   static STevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kSTIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new STevr(_removeShortPadding(bd));
   }
 }
@@ -828,7 +814,7 @@ class TMevr extends TM
   static TMevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kTMIndex,
         'vrIndex: $vrIndex, vr: ${vrIdByIndex[vrIndex]}');
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new TMevr(_removeShortPadding(bd));
   }
 }
@@ -847,7 +833,7 @@ class UCevr extends UC
 
   static UCevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kUCIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new UCevr(_removeLongPadding(bd));
   }
 }
@@ -866,7 +852,7 @@ class URevr extends UR
 
   static URevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kURIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new URevr(_removeLongPadding(bd));
   }
 }
@@ -885,7 +871,7 @@ class UTevr extends UT
 
   static UTevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null && vrIndex == kUTIndex);
-    assert(_checkPadding(bd));
+    assert(checkPadding(bd));
     return new UTevr(_removeLongPadding(bd));
   }
 }

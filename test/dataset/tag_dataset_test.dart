@@ -169,11 +169,6 @@ void main() {
       expect(rootDS0 == ds1, true);
       expect(rootDS0 == ds2, true);
 
-/*  // Urgent Sharath: let's discuss
-          expect(rootDS0.elements == ds1.elements, true);
-          expect(rootDS0.elements == ds2.elements, true);
-          expect(ds1.elements == ds2.elements, true);
-*/
       log
         ..debug('rootDS0: ${rootDS0.info}')
         ..debug('ds1: ${ds1.info}')
@@ -398,7 +393,7 @@ void main() {
       final valuesList = <TagItem>[];
 
       // Make Item with 3 Elements
-      final rds0 = new TagRootDataset.empty();
+  //    final rds0 = new TagRootDataset.empty();
       rds[kRecognitionCode] =
           new SHtag(PTag.kRecognitionCode, ['foo bar']);
       rds[kInstitutionAddress] =
@@ -443,20 +438,15 @@ void main() {
       //Sequence Elements
       rds.add(sq);
 
-/* //Urgent Sharath: let's discuss
       // Only 1 Element at top level
       print('rds.length: ${rds.length}');
-      expect(rds.length == 1, true);
-*/
+      expect(rds.length == 4, true);
       /// 2 Items with 8 elements + sq itself = 9
       log
         ..debug('rootDS: ${rds.info}')
         ..debug('rootDS: ${rds.elements}')
         ..debug('total: ${rds.total}');
-
-/* //Urgent Sharath: let's discuss
-      expect(rds.total == 9, true);
-*/
+      expect(rds.total == 12, true);
 
       final sq1 = rds.lookup(sqTag.code);
       expect((sq == sq1), true);
@@ -474,10 +464,8 @@ void main() {
         ..debug('length: ${rds.length}, total: ${rds.total} ')
         ..debug('rootDS0.total: ${rds.total}, sq.total: ${sq.total}');
 
-/* //Urgent Sharath: let's discuss
       // No of SQtag Elements in top level of rootDS0
-      expect(rds.length == 3, true);
-*/
+      expect(rds.length == 6, true);
 
     });
 
@@ -905,7 +893,8 @@ void main() {
       system.throwOnError = true;
       rootDS0.allowDuplicates = false;
       expect(rootDS0[lo0.key] == lo0, true);
-      expect(() => rootDS0[lo0.key] = lo0,
+   //   rootDS0[lo0.key] = lo0;
+      expect(() => rootDS0.add(lo0),
           throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rootDS0.allowDuplicates = true;

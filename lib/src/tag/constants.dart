@@ -232,6 +232,15 @@ const int kCodingSchemeExternalID = 0x00080114;
 const int kCodingSchemeName = 0x00080115;
 const int kCodingSchemeResponsibleOrganization = 0x00080116;
 const int kContextUID = 0x00080117;
+
+const int kMappingResourceUID = 0x00080118;
+const int kLongCodeValue = 0x00080119;
+const int kURNCodeValue = 0x00080120;
+const int kEquivalentCodeSequence = 0x00080121;
+const int kMappingResourceName = 0x00080122;
+const int kContextGroupIdentificationSequence = 0x00080123;
+const int kMappingResourceIdentificationSequence = 0x00080124;
+
 const int kTimezoneOffsetFromUTC = 0x00080201;
 const int kNetworkID = 0x00081000;
 const int kStationName = 0x00081010;

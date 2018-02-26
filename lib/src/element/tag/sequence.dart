@@ -20,7 +20,7 @@ import 'package:core/src/vr/vr.dart';
 ///
 /// A Sequence contains a [List] of [TagItem]s, where each
 /// [TagItem] is a TagDataset.
-class SQtag extends SQ<TagItem> with TagElement<Dataset> {
+class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   @override
   final Tag tag;
 

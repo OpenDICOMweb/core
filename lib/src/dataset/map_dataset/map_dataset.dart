@@ -5,10 +5,10 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:collection/collection.dart';
-import 'package:core/src/dataset/base/history.dart';
+import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/errors.dart';
-import 'package:core/src/issues.dart';
+
 
 // Urgent Sharath:
 //  create MapItem and MapRootDataset
@@ -31,33 +31,35 @@ int mapHash(Map<int, Element> map) => mapEquality.hash(map);
 abstract class MapDataset {
   /// A [Map] from key to [Element].
   Map<int, Element> get eMap;
-  bool get allowDuplicates;
-  bool tryAdd(Element e, [Issues issues]);
-  History get history;
+//  bool get allowDuplicates;
+ // bool tryAdd(Element e, [Issues issues]);
+ // History get history;
 
   Element operator [](int i) => eMap[i];
 
-  void operator []=(int i, Element e) => tryAdd(e);
-/*
-  void operator []=(int i, Element e) {
-    print('   e: $e');
-    final oldE = eMap.putIfAbsent(i, () => e);
-    print('oldE: $oldE');
-    if (oldE == e) {
-      store(e.index, e);
-    } else if (allowDuplicates) {
-      system.warn('** Duplicate Element:\n\tnew: $e\n\told: $oldE');
-      if (oldE.vrIndex != kUNIndex) {
-        history.duplicates.add(e);
-      } else {
-        store(e.index, e);
-        history.duplicates.add(oldE);
-      }
+  void operator []=(int code, Element e) {
+    assert(code == e.code);
+    _tryAdd(code, e);
+  }
+
+//  bool tryAdd(Element e) => _tryAdd(e.code, e);
+
+  bool _tryAdd(int code, Element e) {
+    final old = eMap[e.code];
+    if (old == null) {
+      eMap[e.code] = e;
+      return true;
     } else {
-      duplicateElementError(oldE, e);
+      final result = eMap.putIfAbsent(e.code, () => e);
+      if (result != e) {
+        duplicateElementError(result, e);
+        return false;
+      }
+      return true;
     }
   }
-*/
+ // void operator []=(int i, Element e) => tryAdd(e);
+
   // *** Primitive only for internal use Stores e in eMap
   void store(int index, Element e) {
     assert(index == e.code);
@@ -80,6 +82,7 @@ abstract class MapDataset {
 
   Iterable<Element> get elements => eMap.values;
 
+  // TODO(high): determine how expensive this is?
   Element elementAt(int index) => eMap.values.elementAt(index);
 
   Map<int, Element> asMap() => eMap;

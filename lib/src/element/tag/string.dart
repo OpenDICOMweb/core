@@ -172,7 +172,7 @@ class LOtag extends LO with TagElement<String> {
   static LOtag fromBDE(Element e) => new LOtag._fromBytes(e.tag, e.vfBytes);
 }
 
-class PCtag extends LO with PC {
+class PCtag extends PC with TagElement<String> {
   @override
   final Tag tag;
   @override
@@ -189,9 +189,6 @@ class PCtag extends LO with PC {
   PCtag._(this.tag, this.values);
 
   @override
-  String get token => value;
-
-  @override
   PCtag update([Iterable<String> vList = kEmptyStringList]) =>
       new PCtag(tag, vList ?? kEmptyStringList);
 
@@ -203,9 +200,9 @@ class PCtag extends LO with PC {
 
   static PCtag fromBDE(Element e) => new PCtag._fromBytes(e.tag, e.vfBytes);
 
-  static PCtag makeEmptyPrivateCreator(int pdTag, int vrIndex) {
-    final group = Tag.privateGroup(pdTag);
-    final sgNumber = (pdTag & 0xFFFF) >> 8;
+  static PCtag makeEmptyPrivateCreator(int pdCode, int vrIndex) {
+    final group = Tag.privateGroup(pdCode);
+    final sgNumber = (pdCode & 0xFFFF) >> 8;
     final code = (group << 16) + sgNumber;
     final tag = new PCTagUnknown(code, kLOIndex, '');
     return new PCtag(tag, const <String>['']);

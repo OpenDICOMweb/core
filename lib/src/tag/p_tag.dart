@@ -738,10 +738,45 @@ class PTag extends Tag {
       //(0008,0117)
       = const PTag._(
           'ContextUID', 0x00080117, 'Context UID', kUIIndex, VM.k1, false);
+
+  static const PTag kMappingResourceUID
+      //(0008,0118)
+      = const PTag._('MappingResourceUID', 0x00080118, 'Mapping Resource UID',
+          kUIIndex, VM.k1, false);
+  static const PTag kLongCodeValue
+      //(0008,0119)
+      = const PTag._('LongCodeValue', 0x00080119, 'Long Code Value', kUCIndex,
+          VM.k1, false);
+
+  static const PTag kURNCodeValue
+      //(0008,0120)
+      = const PTag._(
+          'URNCodeValue', 0x00080120, 'URN Code Value', kURIndex, VM.k1, false);
+
+  static const PTag kEquivalentCodeSequence
+      //(0008,0121)
+      = const PTag._('EquivalentCodeSequence', 0x00080121,
+          'Equivalent Code Sequence', kSQIndex, VM.k1, false);
+
+  static const PTag kMappingResourceName
+      //(0008,0122)
+      = const PTag._('MappingResourceName', 0x00080122, 'Mapping Resource Name',
+          kLOIndex, VM.k1, false);
+
+  static const PTag kContextGroupIdentificationSequence
+      //(0008,0123)
+      = const PTag._('ContextGroupIdentificationSequence', 0x00080123,
+          'Context Group Identification Sequence', kSQIndex, VM.k1, false);
+
+  static const PTag kMappingResourceIdentificationSequence
+      //(0008,0124)
+      = const PTag._('MappingResourceIdentificationSequence', 0x00080124,
+          'Mapping Resource Identification Sequence', kSQIndex, VM.k1, false);
+
   static const PTag kTimezoneOffsetFromUTC
       //(0008,0201)
-      = const PTag._('TimezoneOffsetFromUTC', 0x00080201,
-          'Timezone Offset From UTC', kSHIndex, VM.k1, false);
+      = const PTag._(
+          'URNCodeValue', 0x00080201, 'URN Code Value', kURIndex, VM.k1, false);
 
   static const PTag kPrivateDataElementCharacteristicsSequence = const PTag._(
       'PrivateDataElementCharacteristicsSequence',

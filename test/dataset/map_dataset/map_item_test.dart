@@ -166,28 +166,28 @@ void main() {
 
     test('noValuesAll', () {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final item = new MapItem.empty(rds, null)..add(as0);
+      final item0 = new TagItem.empty(rds, null)..add(as0);
 
-      final item1 = new TagRootDataset.empty();
-      final valuesList = <TagItem>[];
-      item[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
-      item[kInstitutionAddress] =
+      final rds1 = new TagRootDataset.empty();
+      final itemList = <Item>[];
+      item0[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      item0[kInstitutionAddress] =
           new STtag(PTag.kInstitutionAddress, ['foo bar']);
-      item[kExtendedCodeMeaning] =
+      item0[kExtendedCodeMeaning] =
           new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
-      valuesList.add(new TagItem.fromList(item1, item));
-      final sq0 = new SQtag(PTag.kPatientSizeCodeSequence, item1);
-      item[sq0.code] = sq0;
+      itemList.add(new TagItem.fromList(rds1, item0.elements));
+      final sq0 = new SQtag(PTag.kPatientSizeCodeSequence, rds1);
+      item0[sq0.code] = sq0;
 
       // Urgent Sharath: as expect for next line
-      final noV = item.noValuesAll(sq0.index);
-      item[as0.code] = as0;
+      final noV = item0.noValuesAll(sq0.index);
+      item0[as0.code] = as0;
 
-      var noValues0 = item.noValuesAll(as0.key);
+      var noValues0 = item0.noValuesAll(as0.key);
       expect(noValues0.isEmpty, false);
 
-      noValues0 = item.noValuesAll(as0.key);
+      noValues0 = item0.noValuesAll(as0.key);
       for (var e in noValues0) {
         print('noValues: $e');
         expect(e.values.isEmpty, true);
