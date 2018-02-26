@@ -179,8 +179,9 @@ void main() {
       final sq0 = new SQtag(PTag.kPatientSizeCodeSequence, rds1);
       rds[sq0.code] = sq0;
 
-      // Urgent Sharath: as expect for next line
       final noV = rds.noValuesAll(sq0.index);
+      expect(noV.isEmpty, false);
+
       rds[as0.code] = as0;
 
       var noValues0 = rds.noValuesAll(as0.key);

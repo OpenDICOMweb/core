@@ -180,8 +180,9 @@ void main() {
       final sq0 = new SQtag(PTag.kPatientSizeCodeSequence, rds1);
       item0[sq0.code] = sq0;
 
-      // Urgent Sharath: as expect for next line
       final noV = item0.noValuesAll(sq0.index);
+      expect(noV.isEmpty, false);
+
       item0[as0.code] = as0;
 
       var noValues0 = item0.noValuesAll(as0.key);
@@ -245,12 +246,9 @@ void main() {
         ..add(ob0)
         ..add(ae0);
 
-/* Urgent add History to item
-
-      final dup = item.duplicates;
+      final dup = item.history;
       log.debug('item: $item, dup: $dup');
       expect(dup, isNotNull);
-*/
     });
 
     test('removeDuplicates', () {
@@ -272,16 +270,14 @@ void main() {
         ..add(ob0)
         ..add(ae0);
 
-/* Urgent add History to item
 //      system.level = Level.debug;
-      final dup = item.duplicates;
+      final dup = item.history;
       log.debug('item: $item, dup: $dup');
       expect(dup, isNotNull);
       final removeDup = item.deleteDuplicates();
       log.debug('item: $item, removeDup: $removeDup');
-      expect(dup, equals(<Element>[]));
+      //expect(dup, equals(<Element>[]));
       expect(removeDup, <Element>[]);
-*/
     });
 
     test('getElementsInRange', () {
