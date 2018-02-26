@@ -48,6 +48,10 @@ abstract class DatasetMixin {
   // not found if [recordNotFound] is _true_.
   Element lookup(int index, {bool required = false});
 
+  Element internalLookup(int index);
+
+  Element deleteCode(int index);
+
   /// Store [Element] [e] at [index] in _this_.
   void store(int index, Element e);
 
@@ -134,7 +138,8 @@ abstract class DatasetMixin {
 
   List<SQ> get sequences {
     final results = <SQ>[];
-    for (var e in elements) if (e is SQ) add(e);
+    for (var e in elements)
+      if (e is SQ) add(e);
     return results;
   }
 
@@ -156,7 +161,8 @@ abstract class DatasetMixin {
   }
 
   bool hasElementsInRange(int min, int max) {
-    for (var e in elements) if (e.code >= min && e.code <= max) return true;
+    for (var e in elements)
+      if (e.code >= min && e.code <= max) return true;
     return false;
   }
 
@@ -188,9 +194,10 @@ abstract class DatasetMixin {
         if (!allowInvalidValues && !e.isValid) invalidElementError(e);
       }
       store(e.code, e);
-      if (e is SQ) sequences.add(e);
+ //     if (e is SQ) sequences.add(e);
       return true;
-    } else if (allowDuplicates) {
+    } else
+    if (allowDuplicates) {
       system.warn('** Duplicate Element:\n\tnew: $e\n\told: $old');
       if (old.vrIndex != kUNIndex) {
         history.duplicates.add(e);
@@ -210,7 +217,7 @@ abstract class DatasetMixin {
   /// but with [vList] as its _values_. Returns the original element.
   Element update(int index, Iterable vList, {bool required = false}) {
     final old = lookup(index, required: required);
-    if (old != null) store(index,  old.update(vList));
+    if (old != null) store(index, old.update(vList));
     return old;
   }
 
@@ -220,7 +227,7 @@ abstract class DatasetMixin {
   /// If updating the [Element] fails, the current element is left in
   /// place and _null_ is returned.
   Element updateF<V>(int index, Iterable f(Iterable<V> vList),
-      {bool required = false}) {
+                     {bool required = false}) {
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     if (old != null) store(index, old.updateF(f));
@@ -232,7 +239,7 @@ abstract class DatasetMixin {
   /// [f(this.values)]. Returns a list containing all [Element]s that were
   /// replaced.
   List<Element> updateAll<V>(int index,
-      {Iterable<V> vList, bool required = false}) {
+                             {Iterable<V> vList, bool required = false}) {
     vList ??= const <V>[];
     final v = update(index, vList, required: required);
     final result = <Element>[]..add(v);
@@ -250,7 +257,7 @@ abstract class DatasetMixin {
   /// [f(this.values)]. Returns a list containing all [Element]s that were
   /// replaced.
   List<Element> updateAllF<V>(int index, Iterable<V> f(Iterable<V> vList),
-      {bool required = false}) {
+                              {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);
     for (var e in elements)
@@ -279,7 +286,7 @@ abstract class DatasetMixin {
   /// It is an error if [sList] is _null_.  It is an error if the [Element]
   /// corresponding to [index] does not have a VR of UI.
   Element updateUidList(int index, Iterable<String> sList,
-      {bool recursive = true, bool required = false}) {
+                        {bool recursive = true, bool required = false}) {
     assert(index != null && sList != null);
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
@@ -292,7 +299,7 @@ abstract class DatasetMixin {
   }
 
   Element updateUidStrings(int index, Iterable<String> uids,
-          {bool required = false}) =>
+                           {bool required = false}) =>
       updateUidList(index, uids);
 
   List<Element> updateAllUids(int index, Iterable<Uid> uids) {
@@ -327,7 +334,7 @@ abstract class DatasetMixin {
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
   Iterable<V> replace<V>(int index, Iterable<V> vList,
-      {bool required = false}) {
+                         {bool required = false}) {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
@@ -340,7 +347,7 @@ abstract class DatasetMixin {
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
   Iterable<V> replaceF<V>(int index, Iterable<V> f(Iterable<V> vList),
-      {bool required = false}) {
+                          {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
@@ -373,8 +380,8 @@ abstract class DatasetMixin {
     return result;
   }
 
-  Iterable<Iterable<V>> replaceAllF<V>(
-      int index, Iterable<V> f(Iterable<V> vList)) {
+  Iterable<Iterable<V>> replaceAllF<V>(int index,
+                                       Iterable<V> f(Iterable<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
     for (var e in elements)
@@ -400,8 +407,7 @@ abstract class DatasetMixin {
       elements.replaceUid(index, uids);
 */
 
-  List<Uid> replaceUid(int index, Iterable<Uid> uids,
-      {bool required = false}) {
+  List<Uid> replaceUid(int index, Iterable<Uid> uids, {bool required = false}) {
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     return (old is UI) ? old.replaceUid(uids) : invalidUidElement(old);
@@ -451,7 +457,8 @@ abstract class DatasetMixin {
     for (var e in elements) {
       if (e is SQ) {
         result.addAll(e.noValuesAll(index));
-      } else if (e.index == index) {
+      } else
+      if (e.index == index) {
         result.add(e);
         store(index, e.noValues);
       }
@@ -459,15 +466,26 @@ abstract class DatasetMixin {
     return result;
   }
 
-  /// Removes the [Element] with [index] from _this_. If no [Element]
-  /// with [index] is contained in _this_ returns _null_.
-  Element delete(int index, {bool required = false}) {
-    assert(index != null && !index.isNegative, 'Invalid index: $index');
-    final e = lookup(index, required: required);
-//    print('e: $e');
-    if (e == null)
-      return (required) ? elementNotPresentError<int>(index) : null;
+  /// Removes the [Element] with [code] from _this_. If no [Element]
+  /// with [code] is contained in _this_ returns _null_.
+  Element delete(int code, {bool required = false}) {
+    assert(code != null && !code.isNegative, 'Invalid index: $code');
+    final e = lookup(code, required: required);
+    if (e == null) return (required) ? elementNotPresentError<int>(code) : null;
     return (remove(e)) ? e : null;
+  }
+
+  /// Deletes all [Element]s in _this_ that have a Tag Code in [codes].
+  /// If there is no [Element] with one of the codes _this_ does nothing.
+  List<Element> deleteCodes(List<int> codes) {
+  //  print('codes: $codes');
+    assert(codes != null && codes.isNotEmpty);
+    final deleted = <Element>[];
+    for (var code in codes) {
+      final e = deleteCode(code);
+      if (e != null) deleted.add(e);
+    }
+    return deleted;
   }
 
   /// Remove all duplicates from the [Dataset].
@@ -488,16 +506,15 @@ abstract class DatasetMixin {
     final e = delete(index);
     if (e != null) results.add(e);
     assert(lookup(index) == null);
-    if (recursive)
-      for (var e in elements) {
-        if (e is SQ) {
-          for (var item in e.items) {
-            final deleted = item.delete(index);
+    if (recursive) for (var e in elements) {
+      if (e is SQ) {
+        for (var item in e.items) {
+          final deleted = item.delete(index);
 //            if (deleted != null) print('item $item deleted: $deleted');
-            if (deleted != null) results.add(deleted);
-          }
+          if (deleted != null) results.add(deleted);
         }
       }
+    }
     return results;
   }
 
@@ -508,7 +525,8 @@ abstract class DatasetMixin {
       if (test(e)) {
         delete(e.index);
         deleted.add(e);
-      } else if (e is SQ) {
+      } else
+      if (e is SQ) {
         for (var item in e.items) {
           final dList = item.deleteIfTrue(test, recursive: recursive);
           deleted.addAll(dList);
@@ -536,7 +554,8 @@ abstract class DatasetMixin {
 
   Iterable<dynamic> findAllWhere(bool test(Element e)) {
     final result = <dynamic>[];
-    for (var e in elements) if (test(e)) result.add(e);
+    for (var e in elements)
+      if (test(e)) result.add(e);
     return result;
   }
 
@@ -565,13 +584,42 @@ abstract class DatasetMixin {
   Iterable<Element> findSequences() => findWhere(_isSQ);
 
   bool _isPrivate(Element e) => e.isPrivate;
-  Iterable<Element> findAllPrivate() => findAllWhere(_isPrivate);
+  Iterable<Element> findAllPrivate0() => findAllWhere(_isPrivate);
 
-  Iterable<Element> deleteAllPrivate({bool recursive = false}) {
-    // deleteIfTrue((e) => e.isPrivate, recursive: recursive);
+  List<int> findAllPrivateCodes({bool recursive: false}) {
+    final privates = <int>[];
+    for (var e in elements)
+      if (e.isPrivate) privates.add(e.code);
+    return privates;
+  }
+
+  List<Element> deleteAllPrivate({bool recursive = false}) {
+    final privates = findAllPrivateCodes(recursive: recursive);
+    final deleted = deleteCodes(privates);
+    if (recursive) {
+      // Fix: you cant tell what sequence the element was in.
+      for (var sq in sequences) {
+        for (var i = 0; i < sq.items.length; i++) {
+          final Iterable<int> codes = sq.items.elementAt(i)
+              .findAllPrivateCodes();
+          final elements = deleteCodes(codes);
+          deleted.addAll(elements);
+        }
+      }
+    }
+    return deleted;
+  }
+
+  /// Deletes all Private Elements in Public Sequences.
+  // Urgent: doesn't implement recursion
+  List<Element> deleteAllPrivateInPublicSQs({bool recursive = false}) {
     final deleted = <Element>[];
-    final private = findAllPrivate();
-    for (var e in private) deleted.add(delete(e.index, required: true));
+    for (var sq in sequences) {
+      for (var item in sq.items) {
+        final privates = item.deleteAllPrivate();
+        if (privates.isNotEmpty) deleted.addAll(privates);
+      }
+    }
     return deleted;
   }
 

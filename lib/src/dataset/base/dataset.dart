@@ -73,6 +73,19 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     return e;
   }
 
+  @override
+  Element internalLookup(int index) => this[index];
+
+/*
+  @override
+  Element deleteCode(int code) {
+    print('index: $code');
+    final e = this[code];
+    if (e != null) rCode(code);
+    return e;
+  }
+*/
+
   static const List<Dataset> empty = const <Dataset>[];
 
   static final ByteData emptyByteData = new ByteData(0);
