@@ -11,7 +11,7 @@ import 'package:core/src/profile/de_id/deid_uids.dart';
 import 'package:core/src/tag/constants.dart';
 import 'package:core/src/uid/uid.dart';
 
-final Map<Uid, Uid> uidMap = <Uid, Uid>{};
+final Map<Uid, Uid> idedToDeIded = <Uid, Uid>{};
 
 List<Element> replaceUids(TagRootDataset rds) {
   final old = <Element>[];
@@ -43,12 +43,12 @@ UI replaceUIFast(UI e) {
   final newUids = new List<String>(length);
   for (var i = 0; i < length; i++) {
     final uid = oldUids.elementAt(i);
-    var newUid = uidMap[uid];
+    var newUid = idedToDeIded[uid];
     if (newUid != null) {
       newUids[i] = newUid.asString;
     } else {
       newUid = new Uid();
-      uidMap[uid] = newUid;
+      idedToDeIded[uid] = newUid;
       newUids[i] = newUid.asString;
     }
   }
@@ -62,7 +62,7 @@ UI replaceUIGeneral(UI e) {
   final newUids = new List<String>(length);
   for (var i = 0; i < length; i++) {
     final uid = oldUids.elementAt(i);
-    var newUid = uidMap[uid];
+    var newUid = idedToDeIded[uid];
     if (newUid != null) {
 //      print('Dicom UID: $uid');
       newUids[i] = newUid.asString;
@@ -74,7 +74,7 @@ UI replaceUIGeneral(UI e) {
       newUids[i] = uid.asString;
     } else {
       newUid = new Uid();
-      uidMap[uid] = newUid;
+      idedToDeIded[uid] = newUid;
       newUids[i] = newUid.asString;
     }
   }

@@ -36,6 +36,9 @@ abstract class Item extends Dataset {
   /// The actual length of the Value Field for _this_
   int get vfLength => dsBytes.vfLength;
 
+  /// Returns _true_ if [vfLengthField] equals[kUndefinedLength].
+  bool get hasULength => vfLengthField == kUndefinedLength;
+
   /// _Deprecated_: Use [sequence] = [sq] instead.
   @deprecated
   void addSQ(SQ sq) {

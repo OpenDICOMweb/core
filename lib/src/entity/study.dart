@@ -5,12 +5,12 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/dataset/base/root_dataset.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/instance.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/series.dart';
+import 'package:core/src/tag/constants.dart';
 import 'package:core/src/uid/uid.dart';
 
 /// A DICOM [Study] in SOP Instance format.
@@ -77,3 +77,4 @@ class Study extends Entity {
     return sb.toString();
   }
 }
+
