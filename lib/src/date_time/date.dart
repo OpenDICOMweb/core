@@ -69,15 +69,10 @@ class Date implements Comparable<Date> {
   @override
   int get hashCode => microseconds.hashCode;
 
-  //Urgent Jim to fix
-  //Urgent Sharath: unit test
   /// Returns a new [Date] containing the [System].[hash] hash
   /// of [microseconds].
   Date get hash => new Date._(hashDateInMicroseconds(microseconds));
 
-  //Urgent Jim to fix
-  //Urgent Sharath: unit test
-  //TODO: unit test
   /// Returns a new [Date] containing the SHA-256 hash of [microseconds].
   Date get sha256 => new Date._(sha256Microseconds(microseconds));
 
