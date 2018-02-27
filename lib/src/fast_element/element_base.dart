@@ -20,7 +20,6 @@ import 'package:core/src/tag/export.dart';
 import 'package:core/src/vr/vr.dart';
 // import 'package:core/src/element/base/bulkdata.dart';
 
-
 /// The base class for DICOM Data Elements
 ///
 /// An implementation of this class must provide the following:
@@ -88,6 +87,7 @@ abstract class FastElementBase<V> {
   int get vfLength => length * sizeInBytes;
 
   bool get isLengthAlwaysValid => false;
+
   /// Returns a copy of [values]
   Iterable<V> get valuesCopy => new List.from(values, growable: false);
 
@@ -128,8 +128,6 @@ abstract class FastElementBase<V> {
   /// Returns a [ByteData] created from [vList];
   static ByteData toByteData(Iterable<double> vList, {bool asView = true}) =>
       _asByteData(fromList(vList, asView: asView));
-
-
 }
 
 // ignore_for_file: avoid_annotating_with_dynamic
@@ -148,9 +146,9 @@ abstract class FastElementBase<V> {
 /// is invoked [values] is always a [Uint8List]; however, when
 ///     ```[new] Foo(key, [List<double>])```
 /// is invoked [values] may be either [TypedData] or [List<double>].
-abstract class Float extends FastElementBase<double>  {
+abstract class Float extends FastElementBase<double> {
   @override
- final Iterable<double> values;
+  final Iterable<double> values;
 
   Float(int bits, this.values) : super(bits);
 
@@ -200,7 +198,6 @@ abstract class Float32Mixin {
       typedData.buffer.asFloat32List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 4;
-
 
   /// Returns a [Float32List] with the same length as [vList]. If
   /// [vList] is a [Float32List] and [asView] is _true_, then [vList] is
@@ -300,15 +297,15 @@ abstract class FL extends Float with Float32Mixin {
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
-                                                           ? vrIndex
-                                                           : invalidVRIndex(vrIndex, issues, kVRIndex);
+      ? vrIndex
+      : invalidVRIndex(vrIndex, issues, kVRIndex);
 
   /// Returns
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length,
-                              [int min = 0, int max = kMaxVFLength]) =>
+          [int min = 0, int max = kMaxVFLength]) =>
       _isValidVFLength(length, min, max, kSizeInBytes);
 
   static bool isValidLength(Tag tag, Iterable<double> vList, [Issues issues]) {
@@ -380,8 +377,8 @@ abstract class OF extends Float with Float32Mixin {
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
-                                                           ? vrIndex
-                                                           : invalidVRIndex(vrIndex, issues, kVRIndex);
+      ? vrIndex
+      : invalidVRIndex(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
@@ -516,14 +513,14 @@ abstract class FD extends Float with Float64Mixin {
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
-                                                           ? vrIndex
-                                                           : invalidVRIndex(vrIndex, issues, kVRIndex);
+      ? vrIndex
+      : invalidVRIndex(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length,
-                              [int min = 0, int max = kMaxVFLength]) =>
+          [int min = 0, int max = kMaxVFLength]) =>
       _isValidVFLength(length, min, max, kSizeInBytes);
 
   static bool isValidLength(Tag tag, Iterable<double> vList, [Issues issues]) =>
@@ -584,8 +581,8 @@ abstract class OD extends Float with Float64Mixin {
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
-                                                           ? vrIndex
-                                                           : invalidVRIndex(vrIndex, issues, kVRIndex);
+      ? vrIndex
+      : invalidVRIndex(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
@@ -619,4 +616,3 @@ ByteData _asByteData(TypedData td) {
   if (td.lengthInBytes == 0) return kEmptyByteData;
   return td.buffer.asByteData(td.offsetInBytes, td.lengthInBytes);
 }
-

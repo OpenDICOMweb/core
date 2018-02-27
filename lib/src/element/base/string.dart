@@ -178,6 +178,18 @@ abstract class StringBase extends Element<String> {
 
   static Uint8List toBytes(List<String> sList, int maxVFLength) =>
       _stringListToBytes(sList, maxVFLength);
+
+  @override
+  String getValuesAsString(int max) {
+    final v = values;
+    final length = v.length;
+    if (length == 0) return '""';
+    if (length == 1) return '"$v"';
+    final vList = (v.length > max) ? v.take(max) : v;
+    final sList = values.map((s) => '"$s"');
+    final s = '[${sList.join(', ')}]';
+    return '(${vList.length})$s';
+  }
 }
 
 abstract class StringAscii extends StringBase {
@@ -588,7 +600,6 @@ abstract class DS extends StringAscii {
           [Issues issues]) =>
       StringBase.tryParseList(vList, issues, tryParse);
 }
-
 
 // In priority order they are:
 //    - _integers
@@ -1039,7 +1050,6 @@ abstract class LO extends StringUtf8 {
 /// A Private Creator [Element] is a subtype of [LO]. It always has a tag
 /// of the form (gggg,00cc), where 0x10 <= cc <= 0xFF..
 abstract class PC extends LO {
-
   /// The Value Field which contains a [String] that identifies the
   /// PrivateSubgroup.
   String get id => vfBytesAsUtf8;

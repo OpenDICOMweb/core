@@ -192,13 +192,13 @@ ByteData makeAE(int code, List<String> vList) =>
     makeShortEvr(code, kAECode, makeAsciiBD(vList));
 
 ByteData makeFL(int code, List<double> vList) =>
-    makeShortEvr(code, kFLCode, Float32Base.toByteData(vList));
+    makeShortEvr(code, kFLCode, Float32Mixin.toByteData(vList));
 
 ByteData makeFD(int code, List<double> vList) =>
-    makeShortEvr(code, kFDCode, Float64Base.toByteData(vList));
+    makeShortEvr(code, kFDCode, Float64Mixin.toByteData(vList));
 
 ByteData makeOF(int code, List<double> vList) =>
-    makeLongEvr(code, kOFCode, Float32Base.toByteData(vList));
+    makeLongEvr(code, kOFCode, Float32Mixin.toByteData(vList));
 
 ByteData makeOD(int code, List<double> vList) =>
-    makeLongEvr(code, kODCode, Float64Base.toByteData(vList));
+    makeLongEvr(code, kODCode, Float64Mixin.toByteData(vList));
