@@ -64,6 +64,8 @@ abstract class Common {
   int get valuesLength;
   int get vrIndex;
 
+ // Element update<V>(List<V> vList) => unsupportedError();
+
   bool isEqual(BDElement a, BDElement other) {
       if (bd.lengthInBytes != other.bd.lengthInBytes) return false;
 
@@ -82,6 +84,8 @@ abstract class Common {
     final v = (group << 16) + elt;
     return v;
   }
+
+  int get padChar => 0;
 
   int get group => bd.getUint16(_groupOffset, Endian.little);
   int get elt => bd.getUint16(_eltOffset, Endian.little);
@@ -139,24 +143,24 @@ abstract class Common {
 
 const _float32SizeInBytes = 4;
 
-abstract class Float32Mixin {
+abstract class BDFloat32Mixin {
   int get vfLengthField;
 
   int get valuesLength => _getValuesLength(vfLengthField, _float32SizeInBytes);
 
-  FloatBase update([Iterable<double> vList]) => unsupportedError();
+  Float update([Iterable<double> vList]) => unsupportedError();
 }
 
 // **** EVR Long Float Elements (OD, OF)
 
 const _float64SizeInBytes = 8;
 
-abstract class Float64Mixin {
+abstract class BDFloat64Mixin {
   int get vfLengthField;
 
   int get valuesLength => _getValuesLength(vfLengthField, _float64SizeInBytes);
 
-  FloatBase update([Iterable<double> vList]) => unsupportedError();
+  Float update([Iterable<double> vList]) => unsupportedError();
 }
 
 abstract class IntMixin {

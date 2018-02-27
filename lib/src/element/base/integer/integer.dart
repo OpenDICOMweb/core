@@ -26,10 +26,10 @@ abstract class IntBase extends Element<int> {
   @override
   set values(Iterable<int> vList) => unsupportedError('IntBase.values');
 
-  bool get isBinary => true;
-
   @override
-  int get padChar => unsupportedError('IntBase does not have a padChar');
+  int get padChar => 0;
+
+  bool get isBinary => true;
 
   /// Returns a copy of [values]
   @override

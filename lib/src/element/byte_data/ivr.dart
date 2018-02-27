@@ -175,14 +175,14 @@ abstract class IvrElement<V> implements BDElement<V> {
 
 // **** IVR Float Elements (FL, FD, OD, OF)
 
-class FLivr extends FL with Common, IvrElement<double>, Float32Mixin {
+class FLivr extends FL with Common, IvrElement<double>, BDFloat32Mixin {
   @override
   final ByteData bd;
 
   FLivr(this.bd);
 
   @override
-  Iterable<double> get values => Float32Base.fromByteData(vfByteData);
+  Iterable<double> get values => Float32Mixin.fromByteData(vfByteData);
 
   static FLivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -190,7 +190,7 @@ class FLivr extends FL with Common, IvrElement<double>, Float32Mixin {
   }
 }
 
-class OFivr extends OF with Common, IvrElement<double>, Float32Mixin {
+class OFivr extends OF with Common, IvrElement<double>, BDFloat32Mixin {
   @override
   final ByteData bd;
 
@@ -200,7 +200,7 @@ class OFivr extends OF with Common, IvrElement<double>, Float32Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, sizeInBytes);
 
   @override
-  Iterable<double> get values => Float32Base.fromByteData(vfByteData);
+  Iterable<double> get values => Float32Mixin.fromByteData(vfByteData);
 
   static OFivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -210,7 +210,7 @@ class OFivr extends OF with Common, IvrElement<double>, Float32Mixin {
 
 // **** IVR 64-Bit Float Elements (OD, OF)
 
-class FDivr extends FL with Common, IvrElement<double>, Float32Mixin {
+class FDivr extends FL with Common, IvrElement<double>, BDFloat32Mixin {
   @override
   final ByteData bd;
 
@@ -220,7 +220,7 @@ class FDivr extends FL with Common, IvrElement<double>, Float32Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, sizeInBytes);
 
   @override
-  Iterable<double> get values => Float64Base.fromByteData(vfByteData);
+  Iterable<double> get values => Float64Mixin.fromByteData(vfByteData);
 
   static FDivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -228,14 +228,14 @@ class FDivr extends FL with Common, IvrElement<double>, Float32Mixin {
   }
 }
 
-class ODivr extends OD with Common, IvrElement<double>, Float32Mixin {
+class ODivr extends OD with Common, IvrElement<double>, BDFloat32Mixin {
   @override
   final ByteData bd;
 
   ODivr(this.bd);
 
   @override
-  Iterable<double> get values => Float64Base.fromByteData(vfByteData);
+  Iterable<double> get values => Float64Mixin.fromByteData(vfByteData);
 
   static ODivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
