@@ -201,14 +201,14 @@ ByteData _removeLongPadding(ByteData bd, [int padChar = kSpace]) =>
     removePadding(bd, _longVFOffset, padChar);
 
 class FLevr extends FL
-    with Common, EvrElement<double>, EvrShortMixin<double>, Float32Mixin {
+    with Common, EvrElement<double>, EvrShortMixin<double>, BDFloat32Mixin {
   @override
   final ByteData bd;
 
   FLevr(this.bd);
 
   @override
-  Iterable<double> get values => Float32Base.fromByteData(vfByteData);
+  Iterable<double> get values => Float32Mixin.fromByteData(vfByteData);
 
   static FLevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kFLIndex && bd.lengthInBytes.isEven);
@@ -217,14 +217,14 @@ class FLevr extends FL
 }
 
 class OFevr extends OF
-    with Common, EvrElement<double>, EvrLongMixin<double>, Float32Mixin {
+    with Common, EvrElement<double>, EvrLongMixin<double>, BDFloat64Mixin {
   @override
   final ByteData bd;
 
   OFevr(this.bd);
 
   @override
-  Iterable<double> get values => Float32Base.fromByteData(vfByteData);
+  Iterable<double> get values => Float32Mixin.fromByteData(vfByteData);
 
   static OFevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kOFIndex && bd.lengthInBytes.isEven);
@@ -233,14 +233,14 @@ class OFevr extends OF
 }
 
 class FDevr extends FD
-    with Common, EvrElement<double>, EvrShortMixin<double>, Float64Mixin {
+    with Common, EvrElement<double>, EvrShortMixin<double>, BDFloat64Mixin {
   @override
   final ByteData bd;
 
   FDevr(this.bd);
 
   @override
-  Iterable<double> get values => Float64Base.fromByteData(vfByteData);
+  Iterable<double> get values => Float64Mixin.fromByteData(vfByteData);
 
   static FDevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kFDIndex && bd.lengthInBytes.isEven);
@@ -249,14 +249,14 @@ class FDevr extends FD
 }
 
 class ODevr extends OD
-    with Common, EvrElement<double>, EvrLongMixin<double>, Float64Mixin {
+    with Common, EvrElement<double>, EvrLongMixin<double>, BDFloat64Mixin {
   @override
   final ByteData bd;
 
   ODevr(this.bd);
 
   @override
-  Iterable<double> get values => Float64Base.fromByteData(vfByteData);
+  Iterable<double> get values => Float64Mixin.fromByteData(vfByteData);
 
   static ODevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kODIndex && bd.lengthInBytes.isEven);

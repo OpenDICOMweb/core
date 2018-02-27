@@ -729,21 +729,21 @@ abstract class DatasetMixin {
 
   // **** Floating Point
 
-  /// Returns a [double] value for the [FloatBase] Element with
+  /// Returns a [double] value for the [Float] Element with
   /// [index]. If the [Element] is not present or if the [Element] has more
   /// than one value, either throws or returns _null_.
   double getFloat(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null || e is! FloatBase) return nonFloatTag(index);
+    if (e == null || e is! Float) return nonFloatTag(index);
     return _checkOneValue<double>(index, e.values);
   }
 
-  /// Returns the [List<double>] values for the [FloatBase] Element
+  /// Returns the [List<double>] values for the [Float] Element
   /// with [index]. If [Element] is not present, either throws or returns
   /// _null_;
   List<double> getFloatList(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null || e is! FloatBase) return invalidFloatElement(e);
+    if (e == null || e is! Float) return invalidFloatElement(e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getFloatList');
     assert(vList != null);

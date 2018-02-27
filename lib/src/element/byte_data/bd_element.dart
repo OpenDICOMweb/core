@@ -139,24 +139,24 @@ abstract class Common {
 
 const _float32SizeInBytes = 4;
 
-abstract class Float32Mixin {
+abstract class BDFloat32Mixin {
   int get vfLengthField;
 
   int get valuesLength => _getValuesLength(vfLengthField, _float32SizeInBytes);
 
-  FloatBase update([Iterable<double> vList]) => unsupportedError();
+  Float update([Iterable<double> vList]) => unsupportedError();
 }
 
 // **** EVR Long Float Elements (OD, OF)
 
 const _float64SizeInBytes = 8;
 
-abstract class Float64Mixin {
+abstract class BDFloat64Mixin {
   int get vfLengthField;
 
   int get valuesLength => _getValuesLength(vfLengthField, _float64SizeInBytes);
 
-  FloatBase update([Iterable<double> vList]) => unsupportedError();
+  Float update([Iterable<double> vList]) => unsupportedError();
 }
 
 abstract class IntMixin {

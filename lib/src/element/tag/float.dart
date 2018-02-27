@@ -91,7 +91,7 @@ class OFtag extends OF with TagElement<double> {
   static OFtag fromBDE(Element e) => new OFtag._fromBytes(e.tag, e.vfBytes);
 }
 
-Float32List _f32FromBytes(Uint8List bytes) => Float32Base.fromBytes(bytes);
+Float32List _f32FromBytes(Uint8List bytes) => Float32Mixin.fromBytes(bytes);
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.
 /// Max Array length is ((2^16)-4)/ 4)
@@ -170,4 +170,4 @@ class ODtag extends OD with TagElement<double> {
   static ODtag fromBDE(Element e) => new ODtag._fromBytes(e.tag, e.vfBytes);
 }
 
-Float64List _f64FromBytes(Uint8List bytes) => Float64Base.fromBytes(bytes);
+Float64List _f64FromBytes(Uint8List bytes) => Float64Mixin.fromBytes(bytes);

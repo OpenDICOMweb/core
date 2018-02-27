@@ -45,8 +45,8 @@ class Date implements Comparable<Date> {
       return (microseconds == null) ? null : new Date._(microseconds);
     } on FormatException catch (e) {
       return (onError != null)
-        ? onError(y, m, d)
-        : invalidDateError(y, m, d, issues, e);
+          ? onError(y, m, d)
+          : invalidDateError(y, m, d, issues, e);
     }
   }
 
@@ -152,8 +152,14 @@ class Date implements Comparable<Date> {
   /// Returns a [Date] corresponding to [s], if [s] is valid;
   /// otherwise, returns _null_.
   static Date parse(String s,
-      {int start = 0, int end, ParseIssues issues, OnDateParseError onError}) {
-    final us = parseDcmDate(s, start: start, end: end);
+      {int start = 0,
+      int end,
+      ParseIssues issues,
+      bool isDicom = true,
+      OnDateParseError onError}) {
+    final us = (isDicom)
+        ? parseDcmDate(s, start: start, end: end)
+        : parseInternetDate(s, start: start, end: end);
     if (us == null) {
       return (onError != null) ? onError(s) : invalidDateString(s, issues);
     }

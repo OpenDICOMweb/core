@@ -11036,6 +11036,15 @@ class PTag extends Tag {
       //(0062,0012)
       = const PTag._('UsedSegmentsSequence', 0x00620012,
           'Used Segments Sequence', kSQIndex, VM.k1, false);
+
+  static const PTag kTrackingID
+  //(0062,0020)
+  = const PTag._('TrackingID', 0x00620020,
+                     'TrackingID', kUTIndex, VM.k1, false);
+  static const PTag kTrackingUID
+  //(0062,0021)
+  = const PTag._('TrackingUID', 0x00620021,
+                     'Tracking UID', kUIIndex, VM.k1, false);
   static const PTag kDeformableRegistrationSequence
       //(0064,0002)
       = const PTag._('DeformableRegistrationSequence', 0x00640002,
@@ -12103,6 +12112,7 @@ class PTag extends Tag {
       //(0070,0405)
       = const PTag._('BlendingPosition', 0x00700405, 'Blending Position',
           kCSIndex, VM.k1, false);
+  // Urgent Sharath: Enter 00701101 to 00701B14 here
   static const PTag kHangingProtocolName
       //(0072,0002)
       = const PTag._('HangingProtocolName', 0x00720002, 'Hanging Protocol Name',

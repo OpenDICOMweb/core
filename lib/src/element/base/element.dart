@@ -504,29 +504,29 @@ abstract class Element<V> extends ListBase<V> {
     final _vm = (isLengthAlwaysValid)
         ? 'vm(1<= $_lengthAsString <=N'
         : 'vm($vmMin<= $_lengthAsString <=$_vmMax)';
-    final values = (withValues) ? getValues() : '';
+    final vs = (withValues) ? getValuesAsString(maxVListLength) : '';
     return '$runtimeType$dcm: ${tag.keyword} $vrId($vrIndex) $_vm '
-        '$validLength $valid $values';
+        '$validLength $valid $vs';
   }
 
-  int maxValuesListLength = 5;
+  int maxVListLength = 5;
 
-  String getValues() {
+  // Urgent: move to Float, Integer, String and Sequence
+  String getValuesAsString(int max) {
     final v = values;
     if (v == null) return nullElementError();
-    List<V> vList = _toList<V>(values);
-    vList = (vList.length > maxValuesListLength)
-            ? vList.sublist(0, maxValuesListLength)
-            : values;
-    return '(${vList.length})${vList.map((v) => '"$v"')}';
+    final vList = (v.length > max) ? v.take(max) : v;
+    final s = '[${vList.join(', ')}]';
+    return '(${vList.length})$s';
   }
+
   String toStringWithValues() =>
     '$runtimeType$dcm ${tag.keyword} '
-        '$vrId($vrIndex)  vfLength: $vfLength ${getValues()}';
+        '$vrId($vrIndex)  vfLength: $vfLength '
+        '${getValuesAsString(maxVListLength)}';
 
   String get _lengthAsString {
     if (vfLength != null || vfLength != -1) return '$length';
-
     final vfl = vfLengthField;
     if (vfl == null) return '*null*';
     return (vfl == 0xFFFFFFFF) ? '0xFFFFFFFF' : '$vfl';
