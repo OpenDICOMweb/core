@@ -162,7 +162,7 @@ abstract class EvrShortMixin<V> {
   int get vfLengthField {
     assert(bd.lengthInBytes >= _shortVFOffset);
     final vflf = bd.getUint16(_shortVFLengthOffset, Endian.little);
-    assert(vflf == vfLength, 'vflf: $vflf != vfLength: $vfLength');
+//    assert(vflf == vfLength, 'vflf: $vflf != vfLength: $vfLength');
     return vflf;
   }
 
