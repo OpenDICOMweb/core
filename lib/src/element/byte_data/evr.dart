@@ -162,7 +162,7 @@ abstract class EvrShortMixin<V> {
   int get vfLengthField {
     assert(bd.lengthInBytes >= _shortVFOffset);
     final vflf = bd.getUint16(_shortVFLengthOffset, Endian.little);
-    assert(vflf == vfLength, 'vflf: $vflf != vfLength: $vfLength');
+//    assert(vflf == vfLength, 'vflf: $vflf != vfLength: $vfLength');
     return vflf;
   }
 
@@ -217,7 +217,7 @@ class FLevr extends FL
 }
 
 class OFevr extends OF
-    with Common, EvrElement<double>, EvrLongMixin<double>, BDFloat32Mixin {
+    with Common, EvrElement<double>, EvrLongMixin<double>, BDFloat64Mixin {
   @override
   final ByteData bd;
 

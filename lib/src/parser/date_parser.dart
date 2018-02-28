@@ -44,7 +44,7 @@ int parseInternetDate(String s,
       return 0;
     _checkArgs(s, start, end, 10, 10, 'parseInternetDate', issues);
     final v = s.replaceAll('-', '');
-    final eDayUS = _parseInternetDate(v, start, issues);
+    final eDayUS = _parseDcmDate(v, start, issues);
     if (eDayUS == null) return (onError != null) ? onError(s) : null;
     return eDayUS;
   } on FormatException {

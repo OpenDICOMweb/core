@@ -10,13 +10,28 @@ import 'dart:typed_data';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/crypto.dart';
+import 'package:core/src/element/errors.dart';
 import 'package:core/src/empty_list.dart';
+import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/export.dart';
 import 'package:core/src/vr/vr.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic
+
+class FloatBulkdata extends BulkdataRef<double> {
+  @override
+  int code;
+  @override
+  String uri;
+
+  FloatBulkdata(this.code, this.uri);
+
+  @override
+  List<double> get values => _values ??= getBulkdata(code, uri);
+  List<double> _values;
+}
 
 // **** Float Elements
 
@@ -34,19 +49,17 @@ import 'package:core/src/vr/vr.dart';
 /// is invoked [values] may be either [TypedData] or [List<double>].
 abstract class Float extends Element<double> {
   @override
-  int get length;
-  @override
-  int get sizeInBytes;
-  @override
-  TypedData get typedData;
-
-  @override
   Iterable<double> get values;
   @override
-  Float update([Iterable<double> vList]);
+  set values(Iterable<double> vList) => unsupportedError('IntBase.values');
+
+  bool get isBinary => true;
 
   @override
   int get vfLength => length * sizeInBytes;
+
+  @override
+  int get padChar => unsupportedError('Float does not have a padChar');
 
   /// Returns a copy of [values]
   @override
@@ -67,9 +80,6 @@ abstract class Float extends Element<double> {
   Float get noValues => update(kEmptyList);
 
   @override
-  int get padChar => 0;
-
-  @override
   bool checkValue(double value, {Issues issues, bool allowInvalid = false}) =>
       true;
 
@@ -82,6 +92,15 @@ abstract class Float extends Element<double> {
     if (!Element.isValidVListLength(tag, vList, issues, maxVListLength))
       return false;
     return true;
+  }
+
+  @override
+  String getValuesAsString(int max) {
+    final v = values;
+    if (v == null) return nullElementError();
+    final vList = (v.length > max) ? v.take(max) : v;
+    final s = '[${vList.join(', ')}]';
+    return '(${vList.length})$s';
   }
 }
 
@@ -102,6 +121,18 @@ abstract class Float32Mixin {
 
   static const int kSizeInBytes = 4;
 
+  /// Returns a [BASE64] [String] created from [vList];
+  static String toBase64(Iterable<double> vList, {bool asView = true}) =>
+      BASE64.encode(toBytes(vList, asView: asView));
+
+  /// Returns a [Uint8List] created from [vList];
+  static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
+      _asUint8List(fromList(vList, asView: asView));
+
+  /// Returns a [ByteData] created from [vList];
+  static ByteData toByteData(Iterable<double> vList, {bool asView = true}) =>
+      _asByteData(fromList(vList, asView: asView));
+
   /// Returns a [Float32List] with the same length as [vList]. If
   /// [vList] is a [Float32List] and [asView] is _true_, then [vList] is
   /// returned; otherwise, a copy of vList is returned. No value checking
@@ -113,18 +144,6 @@ abstract class Float32Mixin {
       return (asView) ? vList : new Float32List.fromList(vList);
     return new Float32List.fromList(vList);
   }
-
-  /// Returns a [Uint8List] created from [vList];
-  static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
-      _asUint8List(fromList(vList, asView: asView));
-
-  /// Returns a [BASE64] [String] created from [vList];
-  static String toBase64(Iterable<double> vList, {bool asView = true}) =>
-      BASE64.encode(toBytes(vList, asView: asView));
-
-  /// Returns a [ByteData] created from [vList];
-  static ByteData toByteData(Iterable<double> vList, {bool asView = true}) =>
-      _asByteData(fromList(vList, asView: asView));
 
   /// Returns a [Float32List] from a [BASE64] [String].
   static Float32List fromBase64(String s) =>
@@ -507,21 +526,6 @@ abstract class OD extends Float with Float64Mixin {
       isValidVRIndex(tag.vrIndex) &&
       Float.isValidValues(tag, vList, issues, kMaxLength);
 }
-
-
-class FloatBulkdata extends BulkdataRef<double> {
-  @override
-  int code;
-  @override
-  String uri;
-
-  FloatBulkdata(this.code, this.uri);
-
-  @override
-  List<double> get values => _values ??= getBulkdata(code, uri);
-  List<double> _values;
-}
-
 
 int _toLength(int length, int vLength) =>
     (length == null || length > vLength) ? vLength : length;

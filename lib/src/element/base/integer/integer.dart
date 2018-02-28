@@ -87,6 +87,17 @@ abstract class IntBase extends Element<int> {
     }
     return result;
   }
+
+  // TODO: this is the same as in Float create a number_mixing and move
+  //       common functions there
+  @override
+  String getValuesAsString(int max) {
+    final v = values;
+    if (v == null) return nullElementError();
+    final vList = (v.length > max) ? v.take(max) : v;
+    final s = '[${vList.join(', ')}]';
+    return '(${vList.length})$s';
+  }
 }
 
 /// Signed Short [Element].

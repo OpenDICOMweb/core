@@ -258,6 +258,9 @@ Summary $tag
   /// Returns a formatted [String]. See [Formatter].
   String format(Formatter z) => z.fmt(this, items);
 
+  @override
+  String getValuesAsString(int max) => '${values.length} Items';
+
 //  static const VR kVR = VR.kSQ;
   static const int kVRIndex = kSQIndex;
   static const int kVRCode = kSQCode;

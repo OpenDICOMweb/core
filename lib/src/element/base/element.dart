@@ -21,7 +21,6 @@ import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/export.dart';
 import 'package:core/src/vr/vr.dart';
 
-
 /// The base class for DICOM Data Elements
 ///
 /// An implementation of this class must provide the following:
@@ -42,9 +41,7 @@ typedef bool Condition(Dataset ds, Element e);
 Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
 
-
 bool doTestValidity = true;
-
 
 /// All add, replace, and remove operations should
 /// be done by calling add, replace, and remove methods in [Dataset].
@@ -71,7 +68,6 @@ abstract class Element<V> extends ListBase<V> {
   /// The index ([vrIndex]) of the Value Representation for this Element.
   int get vrIndex;
 
-
   // TODO: implement with fast_tag
   /// The Information Entity index of this Element.
 //  int get ieIndex;
@@ -79,8 +75,6 @@ abstract class Element<V> extends ListBase<V> {
   // TODO: implement with fast_tag
   /// The DeIdentification Method index for this Element.
 //  int get deIdIndex;
-
-
 
   /// The actual length in bytes of the Value Field. It does
   /// not include any padding characters.
@@ -190,7 +184,6 @@ abstract class Element<V> extends ListBase<V> {
   /// MUST override this Getter; otherwise, false.
   bool get isLengthAlwaysValid => false;
 
-
   // ******* Value Multiplicity related Getters and Methods *******
   // **************************************************************
 
@@ -266,8 +259,6 @@ abstract class Element<V> extends ListBase<V> {
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************
 
-
-
   /// The Value Length field value, that is, the 32-bit [int]
   /// contained in the Value Field of _this_. If the returned value
   /// is 0xFFFFFFFF ([kUndefinedLength]), it means the length of
@@ -340,18 +331,15 @@ abstract class Element<V> extends ListBase<V> {
   Uint8List get vfBytes =>
       (checkValues(values)) ? typedData.buffer.asUint8List() : null;
 
-  String get vfBytesAsAscii =>
-      ASCII.decode(vfBytes, allowInvalid: true);
+  String get vfBytesAsAscii => ASCII.decode(vfBytes, allowInvalid: true);
 
   List<String> get vfBytesAsAsciiList =>
       ASCII.decode(vfBytes, allowInvalid: true).split('\\');
 
-  String get vfBytesAsUtf8 =>
-      UTF8.decode(vfBytes, allowMalformed: true);
+  String get vfBytesAsUtf8 => UTF8.decode(vfBytes, allowMalformed: true);
 
   List<String> get vfBytesAsUtf8List =>
       UTF8.decode(vfBytes, allowMalformed: true).split('\\');
-
 
   /// Returns the Ascii Padding Character for this [Element],
   /// if it has one; otherwise returns -1;
@@ -485,10 +473,11 @@ abstract class Element<V> extends ListBase<V> {
   int counter(ElementTest test) => test(this) ? 1 : 0;
 
   /// Returns a formatted [String] representation of _this_.
- // String format(Formatter z) => '${z(info)}\n';
- // String format(Formatter z) => z.fmt(this, elements);
+  // String format(Formatter z) => '${z(info)}\n';
+  // String format(Formatter z) => z.fmt(this, elements);
 
   bool doFancy = false;
+  bool withValues = true;
   @override
   String toString() {
     if (doFancy) {
@@ -498,16 +487,46 @@ abstract class Element<V> extends ListBase<V> {
       final _vm = (isLengthAlwaysValid)
           ? 'vm(1<= $_lengthAsString <=N'
           : 'vm($vmMin<= $_lengthAsString <=$_vmMax)';
-      return '$runtimeType$dcm: $vrId($vrIndex) $_vm $validLength $valid';
+      return '$runtimeType$dcm: ${tag.keyword} $vrId($vrIndex) $_vm '
+          '$validLength $valid';
     } else {
-      return '$runtimeType$dcm ${tag.keyword} '
-          '$vrId($vrIndex)  vfLength: $vfLength';
+      return toStringWithValues();
     }
   }
 
+  String toSimpleString() => '$runtimeType$dcm ${tag.keyword} '
+      '$vrId($vrIndex)  vfLength: $vfLength';
+
+  String toFancyString() {
+    final _vmMax = (vmMax == -1) ? 'N' : '$vmMax';
+    final validLength = (hasValidLength) ? '' : 'Bad VM';
+    final valid = (hasValidValues) ? '' : 'Bad Values';
+    final _vm = (isLengthAlwaysValid)
+        ? 'vm(1<= $_lengthAsString <=N'
+        : 'vm($vmMin<= $_lengthAsString <=$_vmMax)';
+    final vs = (withValues) ? getValuesAsString(maxVListLength) : '';
+    return '$runtimeType$dcm: ${tag.keyword} $vrId($vrIndex) $_vm '
+        '$validLength $valid $vs';
+  }
+
+  int maxVListLength = 5;
+
+  // Urgent: move to Float, Integer, String and Sequence
+  String getValuesAsString(int max) {
+    final v = values;
+    if (v == null) return nullElementError();
+    final vList = (v.length > max) ? v.take(max) : v;
+    final s = '[${vList.join(', ')}]';
+    return '(${vList.length})$s';
+  }
+
+  String toStringWithValues() =>
+    '$runtimeType$dcm ${tag.keyword} '
+        '$vrId($vrIndex)  vfLength: $vfLength '
+        '${getValuesAsString(maxVListLength)}';
+
   String get _lengthAsString {
     if (vfLength != null || vfLength != -1) return '$length';
-
     final vfl = vfLengthField;
     if (vfl == null) return '*null*';
     return (vfl == 0xFFFFFFFF) ? '0xFFFFFFFF' : '$vfl';

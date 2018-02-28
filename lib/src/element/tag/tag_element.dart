@@ -106,11 +106,12 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     return bd;
   }
 
+  // Urgent Jim: make sure private tags are not unknown
   static Element make(Tag oldTag, Iterable values, int vrIndex,
           [int vfLengthField]) {
      assert(oldTag.vrIndex == vrIndex || vrIndex == kUNIndex,
      'Tag VR: ${oldTag.vrIndex}, vrIndex, $vrIndex');
-     print('vrIndex: ${vrIdFromIndex(vrIndex)}');
+//     print('vrIndex: ${vrIdFromIndex(vrIndex)}');
      final newTag = Tag.lookupByCode(oldTag.code);
      if (oldTag != newTag) print('changed from $oldTag to $newTag');
     return _tagMakers[vrIndex](oldTag, values);

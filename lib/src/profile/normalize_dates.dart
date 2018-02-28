@@ -30,7 +30,7 @@ List<Element> normalizeDates(RootDataset rds, Date enrollment) {
       old.add(e);
     }
   }
-  print('old: (${old.length})$old');
+ // print('old: (${old.length})$old');
   return old;
 }
 

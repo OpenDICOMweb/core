@@ -8,7 +8,6 @@ import 'package:core/src/dataset/tag/tag_root_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/profile/de_id/deid_uids.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/uid/uid.dart';
 
 final Map<Uid, Uid> idedToDeIded = <Uid, Uid>{};
@@ -17,10 +16,14 @@ List<Element> replaceUids(TagRootDataset rds) {
   final old = <Element>[];
 
 //  print('**** Normalizing FMI UIDs');
+
+/*
+  // Issue: Does this ever get replaced
   final UI e = rds.fmi[kMediaStorageSOPInstanceUID];
   final eNew = replaceUIFast(e);
-  rds.fmi[e.index] = eNew;
+  rds.fmi.store(e.code, eNew);
   old.add(e);
+*/
 
 //  print('**** Normalizing Dataset UIDs');
 

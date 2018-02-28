@@ -7,7 +7,9 @@
 import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/p_tag.dart';
 
-const List<int> deIdNonUidCodes = const <int>[
+/// A [List] of Tag Code that should be deleted from according to
+/// the DICOM Basic De-Identification Profile (see PS3.15 Annex E).
+const List<int> basicDeIdCodes = const <int>[
   kStudyDate,
   kSeriesDate,
   kAcquisitionDate,
@@ -659,5 +661,7 @@ const Map<int, String> deIdNonUidCodeToKeywordMap = const <int, String>{
   0xfffafffa: 'DigitalSignaturesSequence',
   0xfffcfffc: 'DataSetTrailingPadding',
 };
+
+
 
 
