@@ -32,9 +32,6 @@ typedef bool ElementTest(FastElementBase e);
 
 typedef bool Condition(Dataset ds, FastElementBase e);
 
-Iterable<V> _toList<V>(Iterable v) =>
-    (v is Iterable) ? v.toList(growable: false) : v;
-
 bool doTestValidity = true;
 
 /// All add, replace, and remove operations should

@@ -124,14 +124,3 @@ int _parseDcmDate(String s, int start, Issues issues) {
      ? invalidDateString('Invalid Date: "${s.substring(start, start + 8)}')
   : dateToEpochMicroseconds(y, m, d);
 }
-
-/// Returns a valid Epoch Day in microseconds or _null_.
-int _parseInternetDate(String s, int start, Issues issues) {
-  assert(s != null && start != null);
-  final y = _parseYear(s, start, issues);
-  final m = _parseMonth(s, start + 5, issues);
-  final d = _parseDay(y, m, s, start + 8, issues);
-  return (y == null || m == null || d == null)
-         ? invalidDateString('Invalid Date: "${s.substring(start, start + 8)}')
-         : dateToEpochMicroseconds(y, m, d);
-}
