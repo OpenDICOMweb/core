@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/core.dart';
+import 'package:core/src/base.dart';
 
 /// A library for handling DICOM File Meta Information Tags.
 

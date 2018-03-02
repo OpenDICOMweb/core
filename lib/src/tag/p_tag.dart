@@ -4,16 +4,14 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/string/dicom_string.dart';
-import 'package:core/src/string/hexadecimal.dart';
+import 'package:core/src/base.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/errors.dart';
 import 'package:core/src/tag/p_tag_code_map.dart';
 import 'package:core/src/tag/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr/vr.dart';
-// import 'package:core/src/tag/p_tag_codes.dart';
+import 'package:core/src/vr.dart';
 
 //TODO: is hashCode needed?
 class PTag extends Tag {
@@ -17654,7 +17652,7 @@ class PTagGroupLength extends PTag {
       : super._(
             'kPublicGroupLength${hex(code)}',
             code,
-            'Public Group Length for ${dcm(code)}',
+            'Public Group Length for ${toDcm(code)}',
             kULIndex,
             VM.k1,
             true,
@@ -17685,7 +17683,7 @@ class PTagUnknown extends PTag {
       : super._(
             'kUnknownPublicTag_${hex16(code >> 16)}',
             code,
-            'Unknown DICOM Tag ${dcm(code)}',
+            'Unknown DICOM Tag ${toDcm(code)}',
             vrIndex,
             VM.k1_n,
             false,

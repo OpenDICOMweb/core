@@ -7,10 +7,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
-import 'package:core/src/element/base/float.dart';
-import 'package:core/src/element/errors.dart';
+import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
+import 'package:core/src/utils/empty_list.dart';
 import 'package:core/src/tag/tag.dart';
 
 /// Float - Array of IEEE single precision (32-bit) floating point numbers.
@@ -48,7 +47,7 @@ class FLtag extends FL with TagElement<double> {
   static FLtag fromBytes(Tag tag, Uint8List bytes) =>
       new FLtag._fromBytes(tag, bytes);
 
-  static FLtag fromBDE(Element e) => new FLtag._fromBytes(e.tag, e.vfBytes);
+  static FLtag from(Element e) => new FLtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// Other Float - Array of IEEE single precision
@@ -88,7 +87,7 @@ class OFtag extends OF with TagElement<double> {
   static OFtag fromBytes(Tag tag, Uint8List bytes) =>
       new OFtag._fromBytes(tag, bytes);
 
-  static OFtag fromBDE(Element e) => new OFtag._fromBytes(e.tag, e.vfBytes);
+  static OFtag from(Element e) => new OFtag._fromBytes(e.tag, e.vfBytes);
 }
 
 Float32List _f32FromBytes(Uint8List bytes) => Float32Mixin.fromBytes(bytes);
@@ -128,7 +127,7 @@ class FDtag extends FD with TagElement<double> {
   static FDtag fromBytes(Tag tag, Uint8List bytes) =>
       new FDtag._fromBytes(tag, bytes);
 
-  static FDtag fromBDE(Element e) => new FDtag._fromBytes(e.tag, e.vfBytes);
+  static FDtag from(Element e) => new FDtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.
@@ -167,7 +166,7 @@ class ODtag extends OD with TagElement<double> {
   static ODtag fromBytes(Tag tag, Uint8List bytes) =>
       new ODtag._fromBytes(tag, bytes);
 
-  static ODtag fromBDE(Element e) => new ODtag._fromBytes(e.tag, e.vfBytes);
+  static ODtag from(Element e) => new ODtag._fromBytes(e.tag, e.vfBytes);
 }
 
 Float64List _f64FromBytes(Uint8List bytes) => Float64Mixin.fromBytes(bytes);

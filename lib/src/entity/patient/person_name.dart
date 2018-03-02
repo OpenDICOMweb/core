@@ -5,10 +5,9 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:collection/collection.dart';
-import 'package:core/src/issues.dart';
-import 'package:core/src/string/ascii.dart';
-import 'package:core/src/string/string.dart';
-import 'package:core/src/system/system.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/utils/string.dart';
 
 /// The DICOM PersonName Types
 enum PersonNameType { alphabetic, ideographic, phonetic }

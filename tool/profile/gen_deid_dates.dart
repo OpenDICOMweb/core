@@ -17,8 +17,8 @@ void main() {
 const String outDir = 'C:/acr/odw/sdk/core/tool/profile/output';
 const String outFile = '$outDir//deid_dates.dart';
 const String imports = '''
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/p_tag.dart';
+import 'package:core/src/constants.dart';
+import 'package:core/src/tag.dart';
 ''';
 
 

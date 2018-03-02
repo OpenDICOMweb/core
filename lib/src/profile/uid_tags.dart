@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/tag/constants.dart';
+import 'package:core/src/base.dart';
 import 'package:core/src/tag/p_tag.dart';
 
 const List<int> deIdUidTagCodes = const <int>[

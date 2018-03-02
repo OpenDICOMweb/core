@@ -1,6 +1,6 @@
 # Element
 
-//TODO: This is incorrect re-document
+//TODO: This is out of date and incorrect re-document
 /// Element
 ///
 /// Notes:

@@ -7,13 +7,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
-import 'package:core/src/element/base/bulkdata.dart';
-import 'package:core/src/element/base/integer/integer.dart';
-import 'package:core/src/element/base/integer/integer_mixin.dart';
-import 'package:core/src/element/errors.dart';
+import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
-import 'package:core/src/tag/export.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/utils/empty_list.dart';
 
 class IntBulkdata extends BulkdataRef<int> {
   @override
@@ -62,7 +59,7 @@ class SStag extends SS with TagElement<int> {
   static SStag fromBytes(Tag tag, Uint8List bytes) =>
       new SStag._fromBytes(tag, bytes);
 
-  static SStag fromBDE(Element bde) =>
+  static SStag from(Element bde) =>
       new SStag._fromBytes(bde.tag, bde.vfBytes);
 }
 
@@ -102,7 +99,7 @@ class SLtag extends SL with TagElement<int> {
   static SLtag fromBytes(Tag tag, Uint8List bytes) =>
       new SLtag._fromBytes(tag, bytes);
 
-  static SLtag fromBDE(Element bde) =>
+  static SLtag from(Element bde) =>
       new SLtag._fromBytes(bde.tag, bde.vfBytes);
 }
 
@@ -146,7 +143,7 @@ class OBtag extends OB with TagElement<int> {
   static OBtag fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) =>
       new OBtag._fromBytes(tag, bytes, vfLengthField);
 
-  static OBtag fromBDE(Element bde, [int vfLengthField]) =>
+  static OBtag from(Element bde, [int vfLengthField]) =>
       new OBtag._fromBytes(bde.tag, bde.vfBytes, vfLengthField);
 }
 
@@ -188,7 +185,7 @@ class UNtag extends UN with TagElement<int> {
   static UNtag fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) =>
       new UNtag._fromBytes(tag, bytes, vfLengthField);
 
-  static UNtag fromBDE(Element bde, [int vfLengthField]) =>
+  static UNtag from(Element bde, [int vfLengthField]) =>
       new UNtag._fromBytes(bde.tag, bde.vfBytes, vfLengthField);
 }
 
@@ -229,7 +226,7 @@ class UStag extends US with TagElement<int> {
   static UStag fromBytes(Tag tag, Uint8List bytes) =>
       new UStag._fromBytes(tag, bytes);
 
-  static UStag fromBDE(Element bde) =>
+  static UStag from(Element bde) =>
       new UStag._fromBytes(bde.tag, bde.vfBytes);
 }
 
@@ -272,7 +269,7 @@ class OWtag extends OW with TagElement<int> {
   static OWtag fromBytes(Tag tag, Uint8List bytes, [int vfLengthField]) =>
       new OWtag._fromBytes(tag, bytes, vfLengthField);
 
-  static OWtag fromBDE(Element bde, [int vfLengthField]) =>
+  static OWtag from(Element bde, [int vfLengthField]) =>
       new OWtag._fromBytes(bde.tag, bde.vfBytes, vfLengthField);
 }
 
@@ -311,7 +308,7 @@ class OLtag extends OL with TagElement<int> {
   static OLtag fromBytes(Tag tag, Uint8List bytes) =>
       new OLtag._fromBytes(tag, bytes);
 
-  static OLtag fromBDE(Element bde) =>
+  static OLtag from(Element bde) =>
       new OLtag._fromBytes(bde.tag, bde.vfBytes);
 }
 
@@ -348,7 +345,7 @@ class ULtag extends UL with TagElement<int> {
   static ULtag fromBytes(Tag tag, Uint8List bytes) =>
       new ULtag._fromBytes(tag, bytes);
 
-  static ULtag fromBDE(Element bde) =>
+  static ULtag from(Element bde) =>
       new ULtag._fromBytes(bde.tag, bde.vfBytes);
 }
 
@@ -374,7 +371,7 @@ class GLtag extends ULtag {
   static GLtag make<int>(Tag tag, Iterable<int> vList) =>
       new GLtag(tag, vList ?? kEmptyDoubleList);
 
-  static GLtag from<int>(Element e) => new GLtag(e.tag, e.values);
+  //static GLtag from<int>(Element e) => new GLtag(e.tag, e.values);
 
   static GLtag fromBase64(Tag tag, String s) =>
       new GLtag._fromBytes(tag, BASE64.decode(s));
@@ -382,8 +379,8 @@ class GLtag extends ULtag {
   static GLtag fromBytes(Tag tag, Uint8List bytes) =>
       new GLtag._fromBytes(tag, bytes);
 
-  static GLtag fromBDE(Element bde) =>
-      new GLtag._fromBytes(bde.tag, bde.vfBytes);
+  static GLtag from(Element e) =>
+      new GLtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// Immutable Attribute Tags
@@ -422,7 +419,7 @@ class ATtag extends AT with TagElement<int> {
   static ATtag fromBytes(Tag tag, Uint8List bytes) =>
       new ATtag._fromBytes(tag, bytes);
 
-  static ATtag fromBDE(Element bde) =>
+  static ATtag from(Element bde) =>
       new ATtag._fromBytes(bde.tag, bde.vfBytes);
 }
 

@@ -3,7 +3,8 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'package:core/core.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element.dart';
 
 typedef Element DeIdAdd<V>(Dataset ds, int index, Element<V> e);
 typedef List<Element> DeIdAddAll<V>(Dataset ds, int index, List<Element<V>> e);

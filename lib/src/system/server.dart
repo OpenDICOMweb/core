@@ -8,9 +8,9 @@
 
 import 'dart:io';
 
-import 'package:core/src/date_time/primitives/constants.dart';
-import 'package:core/src/hash/hash.dart';
-import 'package:core/src/logger/log_level.dart';
+import 'package:core/src/utils/hash.dart';
+import 'package:core/src/utils/logger.dart';
+import 'package:core/src/value/date_time.dart';
 import 'package:version/version.dart';
 
 import 'system.dart';

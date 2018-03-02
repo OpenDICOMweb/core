@@ -330,7 +330,7 @@ void main() {
       expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
 
       // Test replaceUid
-      final uidList0b = item.replaceUid(ui0.code, uidList0a);
+      final uidList0b = item.replaceUids(ui0.code, uidList0a);
       log.debug('uidList0b: $uidList0b');
       expect(uidList0b, equals(uidList0));
       expect(uidList0b.elementAt(0), equals(uidList0[0]));
@@ -362,7 +362,7 @@ void main() {
       expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
 
       // Test replaceUid
-      final uidList0b = item.replaceUid(ui0.code, uidList0a);
+      final uidList0b = item.replaceUids(ui0.code, uidList0a);
       print('uidList0b: $uidList0b');
       expect(uidList0b, equals(uidList0));
       expect(uidList0b.elementAt(0), equals(uidList0[0]));
@@ -394,7 +394,7 @@ void main() {
         expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
 
         // Test replaceUid
-        final uidList0b = item.replaceUid(ui0.code, uidList0a);
+        final uidList0b = item.replaceUids(ui0.code, uidList0a);
         print('uidList0b: $uidList0b');
         expect(uidList0b, equals(uidList0));
         expect(uidList0b.elementAt(0), equals(uidList0[0]));
@@ -429,7 +429,7 @@ void main() {
         expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
 
         // Test replaceUid
-        final uidList0b = item.replaceUid(ui0.code, uidList0a);
+        final uidList0b = item.replaceUids(ui0.code, uidList0a);
         print('uidList0b: $uidList0b');
         expect(uidList0b, equals(uidList0b));
         expect(uidList0b.elementAt(0), equals(uidList0b[0]));

@@ -7,10 +7,10 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
 import 'package:core/src/dataset/base/dataset_mixin.dart';
-import 'package:core/src/dataset/errors.dart';
+import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/system.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 
@@ -31,9 +31,6 @@ import 'package:core/src/element/base/element.dart';
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
 abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
-  @override
-  final History history = new History();
-
   @override
   Element operator [](int i) => lookup(i);
   @override

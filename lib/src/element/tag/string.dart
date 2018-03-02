@@ -6,12 +6,13 @@
 
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
-import 'package:core/src/element/base/bulkdata.dart';
-import 'package:core/src/element/base/string.dart';
-import 'package:core/src/element/errors.dart';
+import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
-import 'package:core/src/tag/export.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/value/date_time.dart';
+import 'package:core/src/value/uid.dart';
+import 'package:core/src/vr.dart';
 
 class StringBulkdata extends BulkdataRef<int> {
   @override
@@ -52,7 +53,7 @@ class AEtag extends AE with TagElement<String> {
   static AEtag fromBytes(Tag tag, Uint8List bytes) =>
       new AEtag._fromBytes(tag, bytes);
 
-  static AEtag fromBDE(Element e) => new AEtag._fromBytes(e.tag, e.vfBytes);
+  static AEtag from(Element e) => new AEtag._fromBytes(e.tag, e.vfBytes);
 }
 
 class CStag extends CS with TagElement<String> {
@@ -81,7 +82,7 @@ class CStag extends CS with TagElement<String> {
   static CStag fromBytes(Tag tag, Uint8List bytes) =>
       new CStag._fromBytes(tag, bytes);
 
-  static CStag fromBDE(Element e) => new CStag._fromBytes(e.tag, e.vfBytes);
+  static CStag from(Element e) => new CStag._fromBytes(e.tag, e.vfBytes);
 }
 
 class DStag extends DS with TagElement<String> {
@@ -110,7 +111,7 @@ class DStag extends DS with TagElement<String> {
   static DStag fromBytes(Tag tag, Uint8List bytes) =>
       new DStag._fromBytes(tag, bytes);
 
-  static DStag fromBDE(Element e) => new DStag._fromBytes(e.tag, e.vfBytes);
+  static DStag from(Element e) => new DStag._fromBytes(e.tag, e.vfBytes);
 }
 
 class IStag extends IS with TagElement<String> {
@@ -139,7 +140,7 @@ class IStag extends IS with TagElement<String> {
   static IStag fromBytes(Tag tag, Uint8List bytes) =>
       new IStag._fromBytes(tag, bytes);
 
-  static IStag fromBDE(Element e) => new IStag._fromBytes(e.tag, e.vfBytes);
+  static IStag from(Element e) => new IStag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// A Long String (LO) Element
@@ -169,7 +170,7 @@ class LOtag extends LO with TagElement<String> {
   static LOtag fromBytes(Tag tag, Uint8List bytes) =>
       new LOtag._fromBytes(tag, bytes);
 
-  static LOtag fromBDE(Element e) => new LOtag._fromBytes(e.tag, e.vfBytes);
+  static LOtag from(Element e) => new LOtag._fromBytes(e.tag, e.vfBytes);
 }
 
 class PCtag extends PC with TagElement<String> {
@@ -198,7 +199,7 @@ class PCtag extends PC with TagElement<String> {
   static PCtag fromBytes(Tag tag, Uint8List bytes) =>
       new PCtag._fromBytes(tag, bytes);
 
-  static PCtag fromBDE(Element e) => new PCtag._fromBytes(e.tag, e.vfBytes);
+  static PCtag from(Element e) => new PCtag._fromBytes(e.tag, e.vfBytes);
 
   static PCtag makeEmptyPrivateCreator(int pdCode, int vrIndex) {
     final group = Tag.privateGroup(pdCode);
@@ -236,7 +237,7 @@ class LTtag extends LT with TagElement<String> {
   static LTtag fromBytes(Tag tag, Uint8List bytes) =>
       new LTtag._fromBytes(tag, bytes);
 
-  static LTtag fromBDE(Element e) => new LTtag._fromBytes(e.tag, e.vfBytes);
+  static LTtag from(Element e) => new LTtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// A Person Name ([PN]) Element.
@@ -266,7 +267,7 @@ class PNtag extends PN with TagElement<String> {
   static PNtag fromBytes(Tag tag, Uint8List bytes) =>
       new PNtag._fromBytes(tag, bytes);
 
-  static PNtag fromBDE(Element e) => new PNtag._fromBytes(e.tag, e.vfBytes);
+  static PNtag from(Element e) => new PNtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// A Short String (SH) Element
@@ -296,7 +297,7 @@ class SHtag extends SH with TagElement<String> {
   static SHtag fromBytes(Tag tag, Uint8List bytes) =>
       new SHtag._fromBytes(tag, bytes);
 
-  static SHtag fromBDE(Element e) => new SHtag._fromBytes(e.tag, e.vfBytes);
+  static SHtag from(Element e) => new SHtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// An Short Text (ST) Element
@@ -326,7 +327,7 @@ class STtag extends ST with TagElement<String> {
   static STtag fromBytes(Tag tag, Uint8List bytes) =>
       new STtag._fromBytes(tag, bytes);
 
-  static STtag fromBDE(Element e) => new STtag._fromBytes(e.tag, e.vfBytes);
+  static STtag from(Element e) => new STtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// An Unlimited Characters (UC) Element
@@ -356,7 +357,7 @@ class UCtag extends UC with TagElement<String> {
   static UCtag fromBytes(Tag tag, Uint8List bytes) =>
       new UCtag._fromBytes(tag, bytes);
 
-  static UCtag fromBDE(Element e) => new UCtag._fromBytes(e.tag, e.vfBytes);
+  static UCtag from(Element e) => new UCtag._fromBytes(e.tag, e.vfBytes);
 }
 
 class UItag extends UI with TagElement<String> {
@@ -393,7 +394,7 @@ class UItag extends UI with TagElement<String> {
   static UItag fromBytes(Tag tag, Uint8List bytes) =>
       new UItag._fromBytes(tag, bytes);
 
-  static UItag fromBDE(Element e) => new UItag._fromBytes(e.tag, e.vfBytes);
+  static UItag from(Element e) => new UItag._fromBytes(e.tag, e.vfBytes);
 
   static Iterable<Uid> parse(List<String> vList) {
     final uids = new List<Uid>(vList.length);
@@ -434,7 +435,7 @@ class URtag extends UR with TagElement<String> {
   static URtag fromBytes(Tag tag, Uint8List bytes) =>
       new URtag._fromBytes(tag, bytes);
 
-  static URtag fromBDE(Element e) => new URtag._fromBytes(e.tag, e.vfBytes);
+  static URtag from(Element e) => new URtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// An Unlimited Text (UT) Element
@@ -464,7 +465,7 @@ class UTtag extends UT with TagElement<String> {
   static UTtag fromBytes(Tag tag, Uint8List bytes) =>
       new UTtag._fromBytes(tag, bytes);
 
-  static UTtag fromBDE(Element e) => new UTtag._fromBytes(e.tag, e.vfBytes);
+  static UTtag from(Element e) => new UTtag._fromBytes(e.tag, e.vfBytes);
 }
 
 // **** Date/Time classes
@@ -501,7 +502,7 @@ class AStag extends AS with TagElement<String> {
   static AStag fromBytes(Tag tag, Uint8List bytes) =>
       new AStag._fromBytes(tag, bytes);
 
-  static AStag fromBDE(Element e) => new AStag._fromBytes(e.tag, e.vfBytes);
+  static AStag from(Element e) => new AStag._fromBytes(e.tag, e.vfBytes);
 
   static AStag parse(String s, {String onError(String s)}) => new AStag(
       PTag.kPatientAge,
@@ -538,7 +539,7 @@ class DAtag extends DA with TagElement<String> {
   static DAtag fromBytes(Tag tag, Uint8List bytes) =>
       new DAtag._fromBytes(tag, bytes);
 
-  static DAtag fromBDE(Element e) => new DAtag._fromBytes(e.tag, e.vfBytes);
+  static DAtag from(Element e) => new DAtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// A DICOM DateTime [DT] [Element].
@@ -571,7 +572,7 @@ class DTtag extends DT with TagElement<String> {
   static DTtag fromBytes(Tag tag, Uint8List bytes) =>
       new DTtag._fromBytes(tag, bytes);
 
-  static DTtag fromBDE(Element e) => new DTtag._fromBytes(e.tag, e.vfBytes);
+  static DTtag from(Element e) => new DTtag._fromBytes(e.tag, e.vfBytes);
 }
 
 /// The DICOM [TM] (Time) [Element].
@@ -605,5 +606,5 @@ class TMtag extends TM with TagElement<String> {
   static TMtag fromBytes(Tag tag, Uint8List bytes) =>
       new TMtag._fromBytes(tag, bytes);
 
-  static TMtag fromBDE(Element e) => new TMtag._fromBytes(e.tag, e.vfBytes);
+  static TMtag from(Element e) => new TMtag._fromBytes(e.tag, e.vfBytes);
 }

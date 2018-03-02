@@ -7,17 +7,15 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:core/src/base.dart';
 import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/integer/pixel_data.dart';
+import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/element/tag/tag_element.dart';
-import 'package:core/src/element/vf_fragments.dart';
-import 'package:core/src/empty_list.dart';
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/errors.dart';
-import 'package:core/src/tag/tag.dart';
-import 'package:core/src/uid/well_known/transfer_syntax.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/value/uid.dart';
+import 'package:core/src/vr.dart';
 
 /// 8-bit Pixel Data.
 /// If encapsulated (compressed) then [fragments] must not be _null_. If
@@ -59,7 +57,7 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static OBtagPixelData fromBDE(IntBase e, [TransferSyntax ts]) =>
+  static OBtagPixelData from(IntBase e, [TransferSyntax ts]) =>
       fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
@@ -114,7 +112,7 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static UNtagPixelData fromBDE(IntBase e, [TransferSyntax ts]) =>
+  static UNtagPixelData from(IntBase e, [TransferSyntax ts]) =>
       fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
@@ -177,7 +175,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static OWtagPixelData fromBDE(IntBase e, [TransferSyntax ts]) =>
+  static OWtagPixelData from(IntBase e, [TransferSyntax ts]) =>
       fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [OWtagPixelData] Element from a [Uint8List].

@@ -6,16 +6,15 @@
 
 import 'dart:typed_data';
 
+import 'package:core/src/base.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
-import 'package:core/src/element/errors.dart';
-import 'package:core/src/element/vf_fragments.dart';
-import 'package:core/src/empty_list.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/issues.dart';
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/export.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/element/base/vf_fragments.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/utils/empty_list.dart';
+import 'package:core/src/utils/errors.dart';
+import 'package:core/src/vr.dart';
 
 abstract class IntBase extends Element<int> {
   @override

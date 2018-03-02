@@ -12,7 +12,7 @@ import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/errors.dart';
 import 'package:core/src/issues.dart';
 import 'package:core/src/tag/export.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/vr.dart';
 
 
 // Note: PrivateData Elements are just regular [Element]s

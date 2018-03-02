@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
-import 'package:core/src/date_time/primitives/date_time.dart';
+import 'package:core/src/value/date_time/primitives/date_time.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 

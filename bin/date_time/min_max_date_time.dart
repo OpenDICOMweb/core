@@ -7,6 +7,7 @@
 import 'dart:math';
 
 import 'package:core/server.dart';
+import 'package:core/src/value/date_time/date.dart';
 
 final int min63BitInt = -pow(2, 62);
 final int max63BitInt = pow(2, 62) - 1;
@@ -31,8 +32,8 @@ void main() {
   print('Min years: ${minDays ~/ 366}');
   print('Max years: ${maxDays ~/ 366}');
 
-  final minDate = new Date.fromEpochDay(minDays);
-  final maxDate = new Date.fromEpochDay(maxDays);
+  final minDate = Date.fromEpochDay(minDays);
+  final maxDate = Date.fromEpochDay(maxDays);
   print('min date: $minDate');
   print('max date: $maxDate');
 }

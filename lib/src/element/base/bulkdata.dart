@@ -5,7 +5,8 @@
 
 import 'dart:collection';
 
-import 'package:core/src/errors.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/utils/errors.dart';
 
 /*
 class BulkdataIterator<E> {
@@ -28,6 +29,13 @@ class BulkdataIterator<E> {
 abstract class BulkdataRef<E> extends IterableBase<E> {
   int get code;
   String get uri;
+
+  @override
+  bool operator ==(Object other) =>
+     (other is BulkdataRef) && code == other.code && uri == other.uri;
+
+  @override
+  int get hashCode => system.hasher.n2(code, uri);
 
   List<E> _values;
   List<E> get values => _values ??= getBulkdata(code, uri);

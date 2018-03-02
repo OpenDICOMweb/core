@@ -6,28 +6,15 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/dataset/errors.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/float.dart';
-import 'package:core/src/element/base/integer/integer.dart';
-import 'package:core/src/element/base/integer/integer_mixin.dart';
-import 'package:core/src/element/base/integer/pixel_data.dart';
-import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/element/base/string.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element/base.dart';
+import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
-import 'package:core/src/element/errors.dart';
-import 'package:core/src/element/vf_fragments.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/string/ascii.dart';
-import 'package:core/src/string/dicom_string.dart';
-import 'package:core/src/system/system.dart';
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/private/pc_tag.dart';
-import 'package:core/src/tag/tag.dart';
-import 'package:core/src/uid/well_known/transfer_syntax.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/value/uid.dart';
+import 'package:core/src/vr.dart';
 
 const int _vrOffset = 4;
 
@@ -45,23 +32,6 @@ abstract class EvrElement<V> implements BDElement<V> {
 
   // **** End of Interface
 
-/*
-  @override
-  bool operator ==(Object other) {
-    if (other is EvrElement) {
-      if (bd.lengthInBytes != other.bd.lengthInBytes) return false;
-
-      final offset0 = bd.offsetInBytes;
-      final offset1 = other.bd.offsetInBytes;
-      final length = bd.lengthInBytes;
-      for (var i = offset0, j = offset1; i < length; i++, j++)
-        if (bd.getUint8(i) != other.bd.getUint8(j)) return false;
-      return true;
-    }
-    return false;
-  }
-*/
-
   @override
   bool operator ==(Object other) =>
       (other is EvrElement && isEqual(this, other));
@@ -77,23 +47,10 @@ abstract class EvrElement<V> implements BDElement<V> {
   @override
   int get vrCode => bd.getUint16(_vrOffset, Endian.little);
 
-/*
-  @override
-  bool get hasValidLength {
-    if (isLengthAlwaysValid) return true;
-// Put print in to see how often it is called
-// print('length: $valuesLength, minValues: $minValues, maxValues: $maxValues');
-    return (valuesLength == 0) ||
-        (valuesLength >= minValues &&
-            (valuesLength <= maxValues) &&
-            (valuesLength % columns == 0));
-  }
-*/
-
   Uint8List get asBytes =>
       bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
 
-  static BDElement make(int code, int vrIndex, ByteData bd) =>
+  static Element make(int code, int vrIndex, ByteData bd) =>
       _evrBDMakers[vrIndex](bd, vrIndex);
 
   static final List<DecodeBinaryVF> _evrBDMakers = <DecodeBinaryVF>[
@@ -696,7 +653,7 @@ class PCevr extends PC
       final tag = PCTag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
-    return invalidKey(code, 'Invalid Tag Code ${dcm(code)}');
+    return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
   }
 
   @override

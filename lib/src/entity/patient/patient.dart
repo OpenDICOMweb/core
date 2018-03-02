@@ -4,19 +4,18 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/dataset/base/root_dataset.dart';
-import 'package:core/src/dataset/errors.dart';
-import 'package:core/src/date_time/date.dart';
-import 'package:core/src/element/errors.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element.dart';
 import 'package:core/src/entity/active_studies.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/patient/person_name.dart';
 import 'package:core/src/entity/patient/sex.dart';
 import 'package:core/src/entity/study.dart';
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/export.dart';
-import 'package:core/src/uid/uid.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/value/date_time.dart';
+import 'package:core/src/value/uid.dart';
 
 // ignore_for_file: only_throw_errors
 

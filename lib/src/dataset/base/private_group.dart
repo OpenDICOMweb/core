@@ -4,12 +4,10 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/element/base/element.dart';
-//import 'package:core/src/element/base/private/private.dart';
-import 'package:core/src/element/base/string.dart';
-import 'package:core/src/logger/formatter.dart';
-import 'package:core/src/string/hexadecimal.dart';
-import 'package:core/src/tag/export.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/element.dart';
+import 'package:core/src/utils/logger.dart';
+import 'package:core/src/tag.dart';
 
 //TODO: needed??
 const List<LO> emptyPrivateCreator = const <LO>[];

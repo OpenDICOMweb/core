@@ -8,13 +8,14 @@ import 'dart:typed_data';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/empty_list.dart';
+import 'package:core/src/element.dart';
+import 'package:core/src/utils/empty_list.dart';
 
 /// A [TagRootDataset].
 class TagRootDataset extends MapRootDataset with TagDataset {
+
   /// Creates an empty, i.e. without TagElements, [TagRootDataset].
-  TagRootDataset(FmiMap fmi, Map<int, Element> eMap,
+  TagRootDataset(Fmi fmi, Map<int, Element> eMap,
       [String path = '', ByteData bd, int fmiEnd])
       : super(fmi, eMap, path, bd, fmiEnd);
 
@@ -24,7 +25,7 @@ class TagRootDataset extends MapRootDataset with TagDataset {
 
   // TODO: make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].
-  TagRootDataset.from(MapRootDataset rds) : super.from(rds);
+  TagRootDataset.from(RootDataset rds) : super.from(rds);
 
   @override
   RootDataset copy([RootDataset rds]) => new TagRootDataset.from(rds ?? this);

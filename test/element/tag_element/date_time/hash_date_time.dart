@@ -43,6 +43,7 @@ void main() {
     system.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
+    dt0.sha256;
     expect(() => dt0.sha256, throwsA(const isInstanceOf<Sha256UnsupportedError>()));
 
     log.debug(

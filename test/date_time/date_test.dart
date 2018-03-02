@@ -4,8 +4,8 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'package:core/date_time_test_data/date_data.dart';
 import 'package:core/server.dart';
-import 'package:core/src/date_time/data/date_data.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -357,7 +357,7 @@ void main() {
     system.level = Level.debug;
     for (var i = 0; i < 1000; i++) {
       final eDay = rng.nextInt(kMinYear, kMaxYear);
-      final date0 = new Date.fromEpochDay(eDay);
+      final date0 = Date.fromEpochDay(eDay);
       log.debug('date0: $date0');
       final hash0 = date0.hash;
       log.debug('hash0: $hash0');

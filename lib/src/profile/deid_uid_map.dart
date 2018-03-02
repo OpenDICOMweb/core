@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 
-import 'package:core/src/uid/uid.dart';
+import 'package:core/src/value/uid.dart';
 
 /*
 class StudyUids {

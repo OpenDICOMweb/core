@@ -18,7 +18,7 @@ void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.debug);
 
   group('AEtag', () {
-    test('AEtag fromBDE VM.k1', () {
+    test('AEtag from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         system.throwOnError = false;
@@ -32,13 +32,13 @@ void main() {
         final bd1 = makeShortEvr(ae1.code, ae1.vrIndex, bd0);
         final e0 = EvrElement.make(ae1.code, ae1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = AEtag.fromBDE(e0);
+        final make0 = AEtag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('AEtag fromBDE VM.k1_n', () {
+    test('AEtag from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getAEList(1, i);
         system.throwOnError = false;
@@ -51,7 +51,7 @@ void main() {
         final bd1 = makeShortEvr(ae1.code, ae1.vrIndex, bd0);
         final e0 = EvrElement.make(ae1.code, ae1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = AEtag.fromBDE(e0);
+        final make0 = AEtag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -59,7 +59,7 @@ void main() {
   });
 
   group('DStag', () {
-    test('DStag fromBDE VM.k1', () {
+    test('DStag from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
         system.throwOnError = false;
@@ -72,13 +72,13 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.make(ds1.code, ds1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = DStag.fromBDE(e0);
+        final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('DStag fromBDE VM.k2', () {
+    test('DStag from VM.k2', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
         system.throwOnError = false;
@@ -91,13 +91,13 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.make(ds1.code, ds1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = DStag.fromBDE(e0);
+        final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('DStag fromBDE VM.k3', () {
+    test('DStag from VM.k3', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(3, 3);
         system.throwOnError = false;
@@ -110,13 +110,13 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.make(ds1.code, ds1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = DStag.fromBDE(e0);
+        final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('DStag fromBDE VM.k4', () {
+    test('DStag from VM.k4', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(4, 4);
         system.throwOnError = false;
@@ -129,13 +129,13 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.make(ds1.code, ds1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = DStag.fromBDE(e0);
+        final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('DStag fromBDE VM.k6', () {
+    test('DStag from VM.k6', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(6, 6);
         system.throwOnError = false;
@@ -148,13 +148,13 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.make(ds1.code, ds1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = DStag.fromBDE(e0);
+        final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('DStag fromBDE VM.k1_n', () {
+    test('DStag from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(1, i);
         system.throwOnError = false;
@@ -167,13 +167,13 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.make(ds1.code, ds1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = DStag.fromBDE(e0);
+        final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('DStag fromBDE VM.k1_2', () {
+    test('DStag from VM.k1_2', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 2);
         system.throwOnError = false;
@@ -186,13 +186,13 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.make(ds1.code, ds1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = DStag.fromBDE(e0);
+        final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('DStag fromBDE VM.k2_2n', () {
+    test('DStag from VM.k2_2n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(10, 10);
         system.throwOnError = false;
@@ -205,13 +205,13 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.make(ds1.code, ds1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = DStag.fromBDE(e0);
+        final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('DStag fromBDE VM.k3_3n', () {
+    test('DStag from VM.k3_3n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(9, 9);
         system.throwOnError = false;
@@ -224,7 +224,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.make(ds1.code, ds1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = DStag.fromBDE(e0);
+        final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -233,7 +233,7 @@ void main() {
 
   group('OFtag', () {
     final rng = new RNG(1);
-    test('OFtag fromBDE VM.k1', () {
+    test('OFtag from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         //final float32List0 = new Float32List.fromList(floatList0);
@@ -248,13 +248,13 @@ void main() {
         final bd1 = makeLongEvr(of1.code, of1.vrIndex, bd0);
         final e0 = EvrElement.make(of1.code, of1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = OFtag.fromBDE(e0);
+        final make0 = OFtag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
 
-    test('OFtag fromBDE VM.k1_n', () {
+    test('OFtag from VM.k1_n', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         system.throwOnError = false;
@@ -267,7 +267,7 @@ void main() {
         final bd1 = makeLongEvr(of1.code, of1.vrIndex, bd0);
         final e0 = EvrElement.make(of1.code, of1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = OFtag.fromBDE(e0);
+        final make0 = OFtag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -275,7 +275,7 @@ void main() {
   });
 
   group('UTtag', () {
-    test('UTtag fromBDE VM.k1', () {
+    test('UTtag from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         system.throwOnError = false;
@@ -289,7 +289,7 @@ void main() {
         final bd1 = makeLongEvr(ut1.code, ut1.vrIndex, bd0);
         final e0 = EvrElement.make(ut1.code, ut1.vrIndex, bd1);
         log.debug('e0:$e0');
-        final make0 = UTtag.fromBDE(e0);
+        final make0 = UTtag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }

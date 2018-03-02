@@ -6,14 +6,15 @@
 
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
-import 'package:core/src/dataset/errors.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/series.dart';
 import 'package:core/src/entity/study.dart';
+import 'package:core/src/value/uid.dart';
 
 class Instance extends Entity {
   /// Pixel Data

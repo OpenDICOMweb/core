@@ -6,15 +6,12 @@
 
 import 'dart:convert';
 
-import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/element/errors.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/issues.dart';
-import 'package:core/src/string/ascii.dart';
-import 'package:core/src/string/dicom_string.dart' as fmt;
-import 'package:core/src/string/hexadecimal.dart';
-import 'package:core/src/system/system.dart';
-import 'package:core/src/tag/constants.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/utils/string.dart';
+import 'package:core/src/system.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/errors.dart';
 import 'package:core/src/tag/ie_type.dart';
@@ -24,7 +21,7 @@ import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/private/pd_tag.dart';
 import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/vr.dart';
 
 const int kGroupMask = 0xFFFF0000;
 const int kElementMask = 0x0000FFFF;
@@ -95,7 +92,7 @@ abstract class Tag {
   // **** Code Getters
 
   /// Returns a [String] for the [code] in DICOM format, i.e. (gggg,eeee).
-  String get dcm => '${fmt.dcm(code)}';
+  String get dcm => '${toDcm(code)}';
 
   /// Returns the [group] number for _this_  [Tag].
   int get group => code >> 16;
@@ -244,7 +241,7 @@ abstract class Tag {
       return false;
     }
     for (var v in vList)
-      if (vr.isNotValidValue(v, issues)) {
+      if (vr.isNotValidValue(v, issues: issues)) {
         invalidTagValuesError<V>(this, vList);
         return false;
       }
@@ -400,7 +397,7 @@ abstract class Tag {
         return invalidTagCode(code, msg);
       }
     }
- //   print('$creator tag: $tag');
+    //   print('$creator tag: $tag');
     return tag;
   }
 
@@ -487,7 +484,7 @@ abstract class Tag {
   static String toMsg<T>(T tag) {
     String msg;
     if (tag is int) {
-      msg = 'Code ${fmt.dcm(tag)}';
+      msg = 'Code ${toDcm(tag)}';
     } else if (tag is String) {
       msg = 'Keyword "$tag"';
     } else {
@@ -707,7 +704,7 @@ abstract class Tag {
 */
 
   /// Returns a [List] of DICOM tag codes in '(gggg,eeee)' format
-  static Iterable<String> listToDcm(List<int> tags) => tags.map(fmt.dcm);
+  static Iterable<String> listToDcm(List<int> tags) => tags.map(toDcm);
 
   /// Takes a [String] in format '(gggg,eeee)' and returns [int].
   static int toInt(String s) {

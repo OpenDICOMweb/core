@@ -7,15 +7,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:core/src/base.dart';
+import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/base/integer/integer.dart';
-import 'package:core/src/element/crypto.dart';
-import 'package:core/src/element/errors.dart';
-import 'package:core/src/empty_list.dart';
-import 'package:core/src/issues.dart';
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/export.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/vr.dart';
 
 
 abstract class Int8Base {

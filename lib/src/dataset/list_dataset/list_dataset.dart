@@ -5,8 +5,8 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:collection/collection.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/errors.dart';
+import 'package:core/src/utils/errors.dart';
+import 'package:core/src/element/base.dart';
 
 // Urgent Sharath:
 //  create MapItem and MapRootDataset

@@ -18,8 +18,8 @@ void main() {
 const String outputDir = 'C:/acr/odw/sdk/core/tool/profile/output';
 
 const String imports = '''
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/p_tag.dart';
+import 'package:core/src/constants.dart';
+import 'package:core/src/tag.dart';
 ''';
 
 

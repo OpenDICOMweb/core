@@ -1,10 +1,28 @@
-# system
+# Core
 
-The foundation of the ODW SDK.
+The Core package is the foundation of the ODW SDK.
 
-It supports:
-1. errors
-2. logging
+It defines DICOM objects such as:
+
+1. Tags
+2. Elements
+3. Datasets
+4. Entities
+
+It defines DICOM values such as:
+
+1. Ages
+2. Dates
+3. DateTimes
+4. Frames
+5. Times
+5. Uids
+6. Uuids
+
+It also defines DICOM utility classes such as:
+
+1.
+
 3. throwOnError
 4. client package
 5. server package

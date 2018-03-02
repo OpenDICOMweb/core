@@ -4,11 +4,10 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/dataset/tag/tag_root_dataset.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/string.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element.dart';
 import 'package:core/src/profile/de_id/deid_uids.dart';
-import 'package:core/src/uid/uid.dart';
+import 'package:core/src/value/uid.dart';
 
 final Map<Uid, Uid> idedToDeIded = <Uid, Uid>{};
 

@@ -9,16 +9,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/crypto.dart';
-import 'package:core/src/empty_list.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/issues.dart';
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/export.dart';
-import 'package:core/src/vr/vr.dart';
-// import 'package:core/src/element/base/bulkdata.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/vr.dart';
 
 /// The base class for DICOM Data Elements
 ///

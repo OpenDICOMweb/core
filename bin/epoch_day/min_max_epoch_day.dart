@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/date_time/primitives/date.dart';
+import 'package:core/core.dart';
 
 /// Calculates the kDefaultMinEpochDay and kDefaultMaxEpochDay for System;
 void main() {

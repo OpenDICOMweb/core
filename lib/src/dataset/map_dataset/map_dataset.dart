@@ -5,9 +5,9 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:collection/collection.dart';
-import 'package:core/src/dataset/errors.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/errors.dart';
+import 'package:core/src/dataset/base.dart';
+import 'package:core/src/element/base.dart';
+import 'package:core/src/utils/errors.dart';
 
 
 // Urgent Sharath:
@@ -31,9 +31,7 @@ int mapHash(Map<int, Element> map) => mapEquality.hash(map);
 abstract class MapDataset {
   /// A [Map] from key to [Element].
   Map<int, Element> get eMap;
-//  bool get allowDuplicates;
- // bool tryAdd(Element e, [Issues issues]);
- // History get history;
+ final History history = new History();
 
   Element operator [](int i) => eMap[i];
 

@@ -6,16 +6,14 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/base/item.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/issues.dart';
-import 'package:core/src/logger/formatter.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/tag.dart';
-import 'package:core/src/uid/uid.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/utils/logger.dart';
+import 'package:core/src/value/uid.dart';
+import 'package:core/src/vr.dart';
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 

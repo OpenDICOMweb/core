@@ -8,9 +8,9 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
-import 'package:core/src/element/vf_fragments.dart';
-import 'package:core/src/tag/export.dart';
-import 'package:core/src/uid/well_known/transfer_syntax.dart';
+import 'package:core/src/element/base/vf_fragments.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/value/uid.dart';
 
 /// PixelDataMixin class
 abstract class PixelData {

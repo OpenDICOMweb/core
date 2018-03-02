@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/date_time/date.dart';
+import 'package:core/src/value/date_time.dart';
 import 'package:core/src/entity/patient/address.dart';
 import 'package:core/src/entity/patient/person_name.dart';
 import 'package:core/src/entity/patient/sex.dart';

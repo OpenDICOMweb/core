@@ -7,9 +7,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:core/src/logger/log_level.dart';
-import 'package:core/src/logger/logger.dart';
-import 'package:core/src/timer/timer.dart';
+import 'package:core/core.dart';
 
 Logger log = new Logger('test_double', Level.info0);
 void main() {
