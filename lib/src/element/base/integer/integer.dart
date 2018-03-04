@@ -756,8 +756,7 @@ abstract class GL extends UL {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRKeyword;
-  @override
-  int get length => value;
+  int get groupLength => value;
 
   static const String kVRKeyword = 'GL';
   static const String kVRName = 'Group Length';

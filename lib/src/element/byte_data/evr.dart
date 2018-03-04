@@ -722,7 +722,7 @@ class LTevr extends LT
         EvrElement<String>,
         EvrShortMixin<String>,
         BDStringMixin,
-        TextMixin {
+        Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -743,7 +743,7 @@ class STevr extends ST
         EvrElement<String>,
         EvrShortMixin<String>,
         BDStringMixin,
-        TextMixin {
+        Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -801,7 +801,7 @@ class URevr extends UR
         EvrElement<String>,
         EvrLongMixin<String>,
         BDStringMixin,
-        TextMixin {
+        Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -820,7 +820,7 @@ class UTevr extends UT
         EvrElement<String>,
         EvrLongMixin<String>,
         BDStringMixin,
-        TextMixin {
+        Utf8Mixin {
   @override
   final ByteData bd;
 

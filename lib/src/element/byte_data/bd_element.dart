@@ -251,6 +251,19 @@ abstract class Utf8Mixin {
   }
 }
 
+abstract class StringMixin {
+  ByteData get bd;
+  int get vfOffset;
+  Uint8List get vfBytes;
+  bool get allowMalformed;
+
+  int get valuesLength => 1;
+
+  String get value => UTF8.decode(vfBytes, allowMalformed: allowMalformed);
+
+//  Iterable<String> get values => (valuesLength == 0) ? [] : [value];
+}
+
 abstract class TextMixin {
   ByteData get bd;
   int get vfOffset;
@@ -259,10 +272,9 @@ abstract class TextMixin {
 
   int get valuesLength => 1;
 
-  Iterable<String> get values {
-    if (valuesLength == 0) return <String>[];
-    return [UTF8.decode(vfBytes, allowMalformed: allowMalformed)];
-  }
+  String get value => UTF8.decode(vfBytes, allowMalformed: allowMalformed);
+
+//  Iterable<String> get values => (valuesLength == 0) ? [] : [value];
 }
 
 bool ensureExactLength = true;
@@ -370,7 +382,7 @@ bool checkPadding(ByteData bd, [int padChar = kSpace]) {
   final lastIndex = bd.lengthInBytes - 1;
   final char = bd.getUint8(lastIndex);
   if ((char == kNull || char == kSpace) && char != padChar)
-    log.warn('Invalid PadChar: $char should be $padChar');
+    log.info1('Invalid PadChar: $char should be $padChar');
   return true;
 }
 

@@ -15,6 +15,7 @@ import 'package:core/src/value/uid.dart';
 /// PixelDataMixin class
 abstract class PixelData {
   Tag get tag;
+  int get code;
   int get vfLengthField;
   Uint8List get vfBytes;
 

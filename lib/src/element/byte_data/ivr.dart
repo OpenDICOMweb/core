@@ -6,8 +6,8 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dataset.dart';
 import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/base/float.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
@@ -613,7 +613,7 @@ class SHivr extends SH
 }
 
 class LTivr extends LT
-    with Common, IvrElement<String>, BDStringMixin, TextMixin {
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -629,7 +629,7 @@ class LTivr extends LT
 }
 
 class STivr extends ST
-    with Common, IvrElement<String>, BDStringMixin, TextMixin {
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -671,7 +671,7 @@ class UCivr extends UC
 }
 
 class URivr extends UR
-    with Common, IvrElement<String>, BDStringMixin, TextMixin {
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 
@@ -685,7 +685,7 @@ class URivr extends UR
 }
 
 class UTivr extends UT
-    with Common, IvrElement<String>, BDStringMixin, TextMixin {
+    with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
   @override
   final ByteData bd;
 

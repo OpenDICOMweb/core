@@ -10,3 +10,5 @@ export 'package:core/src/utils/empty_list.dart';
 export 'package:core/src/utils/errors.dart';
 export 'package:core/src/utils/issues.dart';
 export 'package:core/src/utils/string/hexadecimal.dart';
+
+String spaces(int count) => ''.padRight(count);
