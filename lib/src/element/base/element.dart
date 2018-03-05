@@ -10,12 +10,12 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/dataset.dart';
 import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/errors.dart';
-import 'package:core/src/utils.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
 /// The base class for DICOM Data Elements
@@ -508,7 +508,6 @@ abstract class Element<V> extends ListBase<V> {
 
   int maxVListLength = 5;
 
-  // Urgent: move to Float, Integer, String and Sequence
   String getValuesAsString(int max) {
     final v = values;
     if (v == null) return nullElementError();

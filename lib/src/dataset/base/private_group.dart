@@ -37,16 +37,6 @@ class PublicGroup implements GroupBase {
   PublicGroup(this.gNumber) : assert(gNumber.isEven);
 
   @override
-  String get info {
-    final sb = new Indenter('$runtimeType(${hex16(gNumber)}): '
-        '${members.values.length}')
-      ..down;
-    members.values.forEach(sb.writeln);
-    sb.up;
-    return '$sb';
-  }
-
-  @override
   void add(Element e0) {
     // members[e.code] = new SQtag.from(sq);
     members[e0.code] = e0;
@@ -55,6 +45,16 @@ class PublicGroup implements GroupBase {
       for (var item in e0.items)
         for (var e1 in item.elements) if (e1.group.isOdd) privateSQs.add(e0);
     }
+  }
+
+  @override
+  String get info {
+    final sb = new Indenter('$runtimeType(${hex16(gNumber)}): '
+                                '${members.values.length}')
+      ..down;
+    members.values.forEach(sb.writeln);
+    sb.up;
+    return '$sb';
   }
 
   String format(Formatter z) => z.fmt(
@@ -97,7 +97,7 @@ class PrivateGroup implements GroupBase {
   String get info => '$this\n${subgroups.values.join("  \n")}';
 
   /// Returns _true_ if [code] has a Group number equal to [gNumber].
-  bool inGroup(int code) => code >> 16 == gNumber;
+  bool inGroup(int code) => (code >> 16) == gNumber;
 
 /*
   /// Adds a new [PrivateSubgroup] to _this_ [PrivateGroup].

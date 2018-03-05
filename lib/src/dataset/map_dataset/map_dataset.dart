@@ -87,13 +87,16 @@ abstract class MapDataset {
 
  // Element replace(Element e) => eMap.remove()
 
+  /// Removes the [Element] [e] from _this_.
   bool remove(Object e) => (e is Element) ? e == eMap.remove(e.code) : false;
 
+  /// Removes the [Element] with [code] from _this_.
   Element deleteCode(int code) =>  eMap.remove(code);
 
   /// Removes the [Element] with key from _this_.
   Element removeAt(int index, {bool required = false}) => eMap.remove(index);
 
+  /// Returns the [Element]s in _this_ as a [List<Element>]
   List<Element> toList({bool growable: true}) =>
       elements.toList(growable: false);
 

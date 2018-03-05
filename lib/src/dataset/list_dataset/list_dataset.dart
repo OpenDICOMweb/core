@@ -5,8 +5,9 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:collection/collection.dart';
-import 'package:core/src/utils/errors.dart';
+import 'package:core/src/dataset/base.dart';
 import 'package:core/src/element/base.dart';
+import 'package:core/src/utils/errors.dart';
 
 // Urgent Sharath:
 //  create MapItem and MapRootDataset
@@ -32,6 +33,8 @@ abstract class ListDataset {
 
   /// A sorted [List] of [Element]s in Tag Code order.
   List<Element> get elementList;
+
+  final History history = new History();
 
   Element operator [](int code) {
     final index = codeList.indexOf(code);
@@ -62,7 +65,7 @@ abstract class ListDataset {
 
   set length(int _) => unsupportedError();
 
-  int indexOf(Element e) => codeList.indexOf(e.code);
+  int indexOf(Element e, [int start = 0]) => codeList.indexOf(e.code, start);
   Iterable<int> get keys => codeList;
   Iterable<int> get codes => keys;
 
@@ -77,12 +80,17 @@ abstract class ListDataset {
     return false;
   }
 
-  /// Removes the [Element] with key from _this_.
+  /// Removes the [Element] with [code] from _this_.
   Element removeAt(int code, {bool required = false}) {
     final index = codeList.indexOf(code);
+    codeList.removeAt(index);
     return elementList.removeAt(index);
   }
 
+  /// Removes the [Element] with [code] from _this_.
+  Element deleteCode(int code) => removeAt(code);
+
+  /// Returns the [Element]s in _this_ as a [List<Element>]
   List<Element> toList({bool growable: true}) =>
       elements.toList(growable: false);
 

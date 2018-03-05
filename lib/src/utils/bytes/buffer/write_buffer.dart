@@ -211,7 +211,7 @@ class WriteBuffer extends BufferBase {
   /// the new [bytes].
   bool ensureRemaining(int remaining) => ensureCapacity(wIndex_ + remaining);
 
-  //Urgent: move to write and read)_write_buf
+  //Urgent: move to write and read_write_buf
   /// Ensures that [bytes] is at least [capacity] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureCapacity(int capacity) =>
