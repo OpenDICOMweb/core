@@ -9,18 +9,6 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/utils/errors.dart';
 
-
-// Urgent Sharath:
-//  create MapItem and MapRootDataset
-//  create some Elements
-//  insert and remove and compare for identity (identical(a, b)
-//
-//  create a second MapItem and MapRootDataset
-//  insert same elements in both list
-//  compare for equality and hashCode
-//  compare list.keys and list.elements for equality
-//
-//  confirm that removeAt and copy work.
 MapEquality<int, Element> mapEquality = const MapEquality<int, Element>();
 
 bool mapsEqual(Map<int, Element> map0, Map<int, Element> map1) =>

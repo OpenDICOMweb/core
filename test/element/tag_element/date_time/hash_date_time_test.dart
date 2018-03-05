@@ -1,4 +1,3 @@
-
 // Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
 // Use of this source code is governed by the open source license
 // that can be found in the LICENSE file.
@@ -21,13 +20,12 @@ void main() {
     system.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
-    expect(() => da0.sha256,
-        throwsA(const isInstanceOf<Sha256UnsupportedError>()));
+    expect(() => da0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
     log.debug(
         'da0.hash: ${da0.hash}, da1.hash: ${da1.hash}, da2.hash: ${da2.hash}');
 
     expect(da0.hash, equals(da1.hash));
-    expect(da0.hash, isNot(da2.hash));
+    expect(da0.hash, equals(da2.hash));
 
     //DA.normalization
     final nDate = da0.normalize(Date.parse('19930822'));
@@ -43,13 +41,14 @@ void main() {
     system.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
-    dt0.sha256;
-    expect(() => dt0.sha256, throwsA(const isInstanceOf<Sha256UnsupportedError>()));
+//    dt0.sha256;
+    expect(() => dt0.sha256,
+        throwsA(const isInstanceOf<UnsupportedError>()));
 
     log.debug(
         'dt0.hash: ${dt0.hash}, dt1.hash: ${dt1.hash}, dt2.hash: ${dt2.hash}');
     expect(dt0.hash, equals(dt1.hash));
-    expect(dt0.hash, isNot(dt2.hash));
+    expect(dt0.hash, equals(dt2.hash));
   });
 
   test('String Time', () {
@@ -61,11 +60,11 @@ void main() {
     system.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
-    expect(() => tm0.sha256, throwsA(const isInstanceOf<Sha256UnsupportedError>()));
+    expect(() => tm0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
 
     log.debug(
         'tm0.hash: ${tm0.hash}, tm1.hash: ${tm1.hash}, tm2.hash: ${tm2.hash}');
     expect(tm0.hash, equals(tm1.hash));
-    expect(tm0.hash, isNot(tm2.hash));
+    expect(tm0.hash, equals(tm2.hash));
   });
 }
