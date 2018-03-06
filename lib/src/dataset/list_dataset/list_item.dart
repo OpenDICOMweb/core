@@ -16,28 +16,28 @@ import 'package:core/src/element/base/sequence.dart';
 class ListItem extends Item with ListDataset {
   /// A sorted [List] of Tag Codes increasing order.
   @override
-  List<int> codeList;
+  List<int> codes;
 
   /// A sorted [List] of [Element]s in Tag Code order.
   @override
-  List<Element> elementList;
+  List<Element> elements;
 
   // TODO: decide if we need these constructors
   /// Creates a [ListItem].
   ListItem(
-      Dataset parent, this.codeList, this.elementList, SQ sequence, ByteData bd)
+      Dataset parent, this.codes, this.elements, SQ sequence, ByteData bd)
       : super(parent, sequence, bd);
 
   /// Creates an empty, i.e. without [Element]s, [ListItem].
   ListItem.empty(Dataset parent, SQ sequence)
-      : codeList = <int>[],
-        elementList = <Element>[],
+      : codes = <int>[],
+        elements = <Element>[],
         super(parent, sequence, null);
 
   /// Creates a [ListItem] from another [ListItem].
   ListItem.from(ListItem item, Dataset parent, SQ sequence)
-      : codeList = new List<int>.from(item.codeList),
-        elementList = new List<Element>.from(item.elementList),
+      : codes = new List<int>.from(item.codes),
+        elements = new List<Element>.from(item.elements),
         super(
             parent ?? item.parent, sequence ?? item.sequence, item.dsBytes.bd);
 

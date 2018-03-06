@@ -52,5 +52,14 @@ class FmiMap extends Fmi with MapDataset {
   FmiMap.from(FmiMap fmi) : eMap = new Map.from(fmi.eMap);
 
   @override
+  Element operator[](int code) => eMap[code];
+  @override
+  void operator[]=(int code, Element e) => eMap[code] = e;
+  @override
+  int get length => eMap.length;
+  @override
+  set length(int n) {}
+
+  @override
   String toString() => '$runtimeType: $length elements';
 }

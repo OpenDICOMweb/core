@@ -14,19 +14,6 @@ import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
-class StringBulkdata extends BulkdataRef<int> {
-  @override
-  int code;
-  @override
-  String uri;
-
-  StringBulkdata(this.code, this.uri);
-
-  @override
-  List<int> get values => _values ??= getBulkdata(code, uri);
-  List<int> _values;
-}
-
 class AEtag extends AE with TagElement<String> {
   @override
   final Tag tag;
@@ -38,8 +25,10 @@ class AEtag extends AE with TagElement<String> {
           ? new AEtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory AEtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (AE.isNotValidTag(tag)) ? null : new AEtag._(tag, AE.fromBytes(bytes));
+  factory AEtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (AE.isNotValidTag(tag))
+          ? null
+          : new AEtag._(tag, AE.fromUint8List(bytes));
 
   AEtag._(this.tag, this.values);
 
@@ -50,10 +39,10 @@ class AEtag extends AE with TagElement<String> {
   static AEtag make(Tag tag, Iterable<String> vList) =>
       new AEtag(tag, vList ?? kEmptyStringList);
 
-  static AEtag fromBytes(Tag tag, Uint8List bytes) =>
-      new AEtag._fromBytes(tag, bytes);
+  static AEtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new AEtag._fromUint8List(tag, bytes);
 
-  static AEtag from(Element e) => new AEtag._fromBytes(e.tag, e.vfBytes);
+  static AEtag from(Element e) => new AEtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 class CStag extends CS with TagElement<String> {
@@ -67,8 +56,10 @@ class CStag extends CS with TagElement<String> {
           ? new CStag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory CStag._fromBytes(Tag tag, Uint8List bytes) =>
-      (CS.isNotValidTag(tag)) ? null : new CStag._(tag, CS.fromBytes(bytes));
+  factory CStag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (CS.isNotValidTag(tag))
+          ? null
+          : new CStag._(tag, CS.fromUint8List(bytes));
 
   CStag._(this.tag, this.values);
 
@@ -79,10 +70,10 @@ class CStag extends CS with TagElement<String> {
   static CStag make(Tag tag, Iterable<String> vList) =>
       new CStag(tag, vList ?? kEmptyStringList);
 
-  static CStag fromBytes(Tag tag, Uint8List bytes) =>
-      new CStag._fromBytes(tag, bytes);
+  static CStag fromUint8List(Tag tag, Uint8List bytes) =>
+      new CStag._fromUint8List(tag, bytes);
 
-  static CStag from(Element e) => new CStag._fromBytes(e.tag, e.vfBytes);
+  static CStag from(Element e) => new CStag._fromUint8List(e.tag, e.vfBytes);
 }
 
 class DStag extends DS with TagElement<String> {
@@ -96,8 +87,10 @@ class DStag extends DS with TagElement<String> {
           ? new DStag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory DStag._fromBytes(Tag tag, Uint8List bytes) =>
-      (DS.isNotValidTag(tag)) ? null : new DStag._(tag, DS.fromBytes(bytes));
+  factory DStag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (DS.isNotValidTag(tag))
+          ? null
+          : new DStag._(tag, DS.fromUint8List(bytes));
 
   DStag._(this.tag, this.values);
 
@@ -108,10 +101,10 @@ class DStag extends DS with TagElement<String> {
   static DStag make(Tag tag, Iterable<String> vList) =>
       new DStag(tag, vList ?? kEmptyStringList);
 
-  static DStag fromBytes(Tag tag, Uint8List bytes) =>
-      new DStag._fromBytes(tag, bytes);
+  static DStag fromUint8List(Tag tag, Uint8List bytes) =>
+      new DStag._fromUint8List(tag, bytes);
 
-  static DStag from(Element e) => new DStag._fromBytes(e.tag, e.vfBytes);
+  static DStag from(Element e) => new DStag._fromUint8List(e.tag, e.vfBytes);
 }
 
 class IStag extends IS with TagElement<String> {
@@ -125,8 +118,10 @@ class IStag extends IS with TagElement<String> {
           ? new IStag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory IStag._fromBytes(Tag tag, Uint8List bytes) =>
-      (IS.isNotValidTag(tag)) ? null : new IStag._(tag, IS.fromBytes(bytes));
+  factory IStag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (IS.isNotValidTag(tag))
+          ? null
+          : new IStag._(tag, IS.fromUint8List(bytes));
 
   IStag._(this.tag, this.values);
 
@@ -137,10 +132,10 @@ class IStag extends IS with TagElement<String> {
   static IStag make(Tag tag, Iterable<String> vList) =>
       new IStag(tag, vList ?? kEmptyStringList);
 
-  static IStag fromBytes(Tag tag, Uint8List bytes) =>
-      new IStag._fromBytes(tag, bytes);
+  static IStag fromUint8List(Tag tag, Uint8List bytes) =>
+      new IStag._fromUint8List(tag, bytes);
 
-  static IStag from(Element e) => new IStag._fromBytes(e.tag, e.vfBytes);
+  static IStag from(Element e) => new IStag._fromUint8List(e.tag, e.vfBytes);
 }
 
 /// A Long String (LO) Element
@@ -155,8 +150,10 @@ class LOtag extends LO with TagElement<String> {
           ? new LOtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory LOtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (LO.isNotValidTag(tag)) ? null : new LOtag._(tag, LO.fromBytes(bytes));
+  factory LOtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (LO.isNotValidTag(tag))
+          ? null
+          : new LOtag._(tag, LO.fromUint8List(bytes));
 
   LOtag._(this.tag, this.values);
 
@@ -167,10 +164,10 @@ class LOtag extends LO with TagElement<String> {
   static LOtag make(Tag tag, Iterable<String> vList) =>
       new LOtag(tag, vList ?? kEmptyStringList);
 
-  static LOtag fromBytes(Tag tag, Uint8List bytes) =>
-      new LOtag._fromBytes(tag, bytes);
+  static LOtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new LOtag._fromUint8List(tag, bytes);
 
-  static LOtag from(Element e) => new LOtag._fromBytes(e.tag, e.vfBytes);
+  static LOtag from(Element e) => new LOtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 class PCtag extends PC with TagElement<String> {
@@ -181,11 +178,13 @@ class PCtag extends PC with TagElement<String> {
 
   factory PCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LO.isValidArgs(tag, vList))
-      ? new PCtag._(tag, vList)
-      : invalidValuesError(vList, tag: tag);
+          ? new PCtag._(tag, vList)
+          : invalidValuesError(vList, tag: tag);
 
-  factory PCtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (LO.isNotValidTag(tag)) ? null : new PCtag._(tag, LO.fromBytes(bytes));
+  factory PCtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (LO.isNotValidTag(tag))
+          ? null
+          : new PCtag._(tag, LO.fromUint8List(bytes));
 
   PCtag._(this.tag, this.values);
 
@@ -196,10 +195,10 @@ class PCtag extends PC with TagElement<String> {
   static PCtag make(Tag tag, Iterable<String> vList) =>
       new PCtag(tag, vList ?? kEmptyStringList);
 
-  static PCtag fromBytes(Tag tag, Uint8List bytes) =>
-      new PCtag._fromBytes(tag, bytes);
+  static PCtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new PCtag._fromUint8List(tag, bytes);
 
-  static PCtag from(Element e) => new PCtag._fromBytes(e.tag, e.vfBytes);
+  static PCtag from(Element e) => new PCtag._fromUint8List(e.tag, e.vfBytes);
 
   static PCtag makeEmptyPrivateCreator(int pdCode, int vrIndex) {
     final group = Tag.privateGroup(pdCode);
@@ -222,8 +221,10 @@ class LTtag extends LT with TagElement<String> {
           ? new LTtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory LTtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (LT.isNotValidTag(tag)) ? null : new LTtag._(tag, LT.fromBytes(bytes));
+  factory LTtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (LT.isNotValidTag(tag))
+          ? null
+          : new LTtag._(tag, LT.fromUint8List(bytes));
 
   LTtag._(this.tag, this.values);
 
@@ -234,10 +235,10 @@ class LTtag extends LT with TagElement<String> {
   static LTtag make(Tag tag, Iterable<String> vList) =>
       new LTtag(tag, vList ?? kEmptyStringList);
 
-  static LTtag fromBytes(Tag tag, Uint8List bytes) =>
-      new LTtag._fromBytes(tag, bytes);
+  static LTtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new LTtag._fromUint8List(tag, bytes);
 
-  static LTtag from(Element e) => new LTtag._fromBytes(e.tag, e.vfBytes);
+  static LTtag from(Element e) => new LTtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 /// A Person Name ([PN]) Element.
@@ -252,8 +253,10 @@ class PNtag extends PN with TagElement<String> {
           ? new PNtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory PNtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (PN.isNotValidTag(tag)) ? null : new PNtag._(tag, PN.fromBytes(bytes));
+  factory PNtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (PN.isNotValidTag(tag))
+          ? null
+          : new PNtag._(tag, PN.fromUint8List(bytes));
 
   PNtag._(this.tag, this.values);
 
@@ -264,10 +267,10 @@ class PNtag extends PN with TagElement<String> {
   static PNtag make(Tag tag, Iterable<String> vList) =>
       new PNtag(tag, vList ?? kEmptyStringList);
 
-  static PNtag fromBytes(Tag tag, Uint8List bytes) =>
-      new PNtag._fromBytes(tag, bytes);
+  static PNtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new PNtag._fromUint8List(tag, bytes);
 
-  static PNtag from(Element e) => new PNtag._fromBytes(e.tag, e.vfBytes);
+  static PNtag from(Element e) => new PNtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 /// A Short String (SH) Element
@@ -282,8 +285,10 @@ class SHtag extends SH with TagElement<String> {
           ? new SHtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory SHtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (SH.isNotValidTag(tag)) ? null : new SHtag._(tag, SH.fromBytes(bytes));
+  factory SHtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (SH.isNotValidTag(tag))
+          ? null
+          : new SHtag._(tag, SH.fromUint8List(bytes));
 
   SHtag._(this.tag, this.values);
 
@@ -294,10 +299,10 @@ class SHtag extends SH with TagElement<String> {
   static SHtag make(Tag tag, Iterable<String> vList) =>
       new SHtag(tag, vList ?? kEmptyStringList);
 
-  static SHtag fromBytes(Tag tag, Uint8List bytes) =>
-      new SHtag._fromBytes(tag, bytes);
+  static SHtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new SHtag._fromUint8List(tag, bytes);
 
-  static SHtag from(Element e) => new SHtag._fromBytes(e.tag, e.vfBytes);
+  static SHtag from(Element e) => new SHtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 /// An Short Text (ST) Element
@@ -312,8 +317,10 @@ class STtag extends ST with TagElement<String> {
           ? new STtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory STtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (ST.isNotValidTag(tag)) ? null : new STtag._(tag, ST.fromBytes(bytes));
+  factory STtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (ST.isNotValidTag(tag))
+          ? null
+          : new STtag._(tag, ST.fromUint8List(bytes));
 
   STtag._(this.tag, this.values);
 
@@ -324,10 +331,10 @@ class STtag extends ST with TagElement<String> {
   static STtag make(Tag tag, Iterable<String> vList) =>
       new STtag(tag, vList ?? kEmptyStringList);
 
-  static STtag fromBytes(Tag tag, Uint8List bytes) =>
-      new STtag._fromBytes(tag, bytes);
+  static STtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new STtag._fromUint8List(tag, bytes);
 
-  static STtag from(Element e) => new STtag._fromBytes(e.tag, e.vfBytes);
+  static STtag from(Element e) => new STtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 /// An Unlimited Characters (UC) Element
@@ -342,8 +349,10 @@ class UCtag extends UC with TagElement<String> {
           ? new UCtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory UCtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (UC.isNotValidTag(tag)) ? null : new UCtag._(tag, UC.fromBytes(bytes));
+  factory UCtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (UC.isNotValidTag(tag))
+          ? null
+          : new UCtag._(tag, UC.fromUint8List(bytes));
 
   UCtag._(this.tag, this.values);
 
@@ -354,10 +363,10 @@ class UCtag extends UC with TagElement<String> {
   static UCtag make(Tag tag, Iterable<String> vList) =>
       new UCtag(tag, vList ?? kEmptyStringList);
 
-  static UCtag fromBytes(Tag tag, Uint8List bytes) =>
-      new UCtag._fromBytes(tag, bytes);
+  static UCtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new UCtag._fromUint8List(tag, bytes);
 
-  static UCtag from(Element e) => new UCtag._fromBytes(e.tag, e.vfBytes);
+  static UCtag from(Element e) => new UCtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 class UItag extends UI with TagElement<String> {
@@ -379,8 +388,10 @@ class UItag extends UI with TagElement<String> {
           ? invalidValuesError(sList, tag: tag)
           : new UItag._(tag, sList);
 
-  factory UItag._fromBytes(Tag tag, Uint8List bytes) =>
-      (UI.isNotValidTag(tag)) ? null : new UItag._(tag, UI.fromBytes(bytes));
+  factory UItag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (UI.isNotValidTag(tag))
+          ? null
+          : new UItag._(tag, UI.fromUint8List(bytes));
 
   UItag._(this.tag, this.values);
 
@@ -391,10 +402,10 @@ class UItag extends UI with TagElement<String> {
   static UItag make(Tag tag, Iterable<String> vList) =>
       new UItag.fromStrings(tag, vList ?? kEmptyStringList);
 
-  static UItag fromBytes(Tag tag, Uint8List bytes) =>
-      new UItag._fromBytes(tag, bytes);
+  static UItag fromUint8List(Tag tag, Uint8List bytes) =>
+      new UItag._fromUint8List(tag, bytes);
 
-  static UItag from(Element e) => new UItag._fromBytes(e.tag, e.vfBytes);
+  static UItag from(Element e) => new UItag._fromUint8List(e.tag, e.vfBytes);
 
   static Iterable<Uid> parse(List<String> vList) {
     final uids = new List<Uid>(vList.length);
@@ -420,8 +431,10 @@ class URtag extends UR with TagElement<String> {
           ? new URtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory URtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (UR.isNotValidTag(tag)) ? null : new URtag._(tag, UR.fromBytes(bytes));
+  factory URtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (UR.isNotValidTag(tag))
+          ? null
+          : new URtag._(tag, UR.fromUint8List(bytes));
 
   URtag._(this.tag, this.values);
 
@@ -432,10 +445,10 @@ class URtag extends UR with TagElement<String> {
   static URtag make(Tag tag, Iterable<String> vList) =>
       new URtag(tag, vList ?? kEmptyStringList);
 
-  static URtag fromBytes(Tag tag, Uint8List bytes) =>
-      new URtag._fromBytes(tag, bytes);
+  static URtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new URtag._fromUint8List(tag, bytes);
 
-  static URtag from(Element e) => new URtag._fromBytes(e.tag, e.vfBytes);
+  static URtag from(Element e) => new URtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 /// An Unlimited Text (UT) Element
@@ -450,8 +463,10 @@ class UTtag extends UT with TagElement<String> {
           ? new UTtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory UTtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (UT.isNotValidTag(tag)) ? null : new UTtag._(tag, UT.fromBytes(bytes));
+  factory UTtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (UT.isNotValidTag(tag))
+          ? null
+          : new UTtag._(tag, UT.fromUint8List(bytes));
 
   UTtag._(this.tag, this.values);
 
@@ -462,10 +477,10 @@ class UTtag extends UT with TagElement<String> {
   static UTtag make(Tag tag, Iterable<String> vList) =>
       new UTtag(tag, vList ?? kEmptyStringList);
 
-  static UTtag fromBytes(Tag tag, Uint8List bytes) =>
-      new UTtag._fromBytes(tag, bytes);
+  static UTtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new UTtag._fromUint8List(tag, bytes);
 
-  static UTtag from(Element e) => new UTtag._fromBytes(e.tag, e.vfBytes);
+  static UTtag from(Element e) => new UTtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 // **** Date/Time classes
@@ -481,8 +496,10 @@ class AStag extends AS with TagElement<String> {
           ? new AStag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory AStag._fromBytes(Tag tag, Uint8List bytes) =>
-      (AS.isNotValidTag(tag)) ? null : new AStag._(tag, AS.fromBytes(bytes));
+  factory AStag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (AS.isNotValidTag(tag))
+          ? null
+          : new AStag._(tag, AS.fromUint8List(bytes));
 
   AStag._(this.tag, this.values);
 
@@ -499,10 +516,10 @@ class AStag extends AS with TagElement<String> {
   static AStag make(Tag tag, Iterable<String> vList) =>
       new AStag(tag, vList ?? kEmptyStringList);
 
-  static AStag fromBytes(Tag tag, Uint8List bytes) =>
-      new AStag._fromBytes(tag, bytes);
+  static AStag fromUint8List(Tag tag, Uint8List bytes) =>
+      new AStag._fromUint8List(tag, bytes);
 
-  static AStag from(Element e) => new AStag._fromBytes(e.tag, e.vfBytes);
+  static AStag from(Element e) => new AStag._fromUint8List(e.tag, e.vfBytes);
 
   static AStag parse(String s, {String onError(String s)}) => new AStag(
       PTag.kPatientAge,
@@ -524,8 +541,10 @@ class DAtag extends DA with TagElement<String> {
           ? new DAtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory DAtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (DA.isNotValidTag(tag)) ? null : new DAtag._(tag, DA.fromBytes(bytes));
+  factory DAtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (DA.isNotValidTag(tag))
+          ? null
+          : new DAtag._(tag, DA.fromUint8List(bytes));
 
   DAtag._(this.tag, this.values);
 
@@ -536,10 +555,10 @@ class DAtag extends DA with TagElement<String> {
   static DAtag make(Tag tag, Iterable<String> vList) =>
       new DAtag(tag, vList ?? kEmptyStringList);
 
-  static DAtag fromBytes(Tag tag, Uint8List bytes) =>
-      new DAtag._fromBytes(tag, bytes);
+  static DAtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new DAtag._fromUint8List(tag, bytes);
 
-  static DAtag from(Element e) => new DAtag._fromBytes(e.tag, e.vfBytes);
+  static DAtag from(Element e) => new DAtag(e.tag, e.values);
 }
 
 /// A DICOM DateTime [DT] [Element].
@@ -557,8 +576,10 @@ class DTtag extends DT with TagElement<String> {
           ? new DTtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory DTtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (DT.isNotValidTag(tag)) ? null : new DTtag._(tag, DT.fromBytes(bytes));
+  factory DTtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (DT.isNotValidTag(tag))
+          ? null
+          : new DTtag._(tag, DT.fromUint8List(bytes));
 
   DTtag._(this.tag, this.values);
 
@@ -569,10 +590,10 @@ class DTtag extends DT with TagElement<String> {
   static DTtag make(Tag tag, Iterable<String> vList) =>
       new DTtag(tag, vList ?? kEmptyStringList);
 
-  static DTtag fromBytes(Tag tag, Uint8List bytes) =>
-      new DTtag._fromBytes(tag, bytes);
+  static DTtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new DTtag._fromUint8List(tag, bytes);
 
-  static DTtag from(Element e) => new DTtag._fromBytes(e.tag, e.vfBytes);
+  static DTtag from(Element e) => new DTtag._fromUint8List(e.tag, e.vfBytes);
 }
 
 /// The DICOM [TM] (Time) [Element].
@@ -591,8 +612,10 @@ class TMtag extends TM with TagElement<String> {
           ? new TMtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory TMtag._fromBytes(Tag tag, Uint8List bytes) =>
-      (TM.isNotValidTag(tag)) ? null : new TMtag._(tag, TM.fromBytes(bytes));
+  factory TMtag._fromUint8List(Tag tag, Uint8List bytes) =>
+      (TM.isNotValidTag(tag))
+          ? null
+          : new TMtag._(tag, TM.fromUint8List(bytes));
 
   TMtag._(this.tag, this.values);
 
@@ -603,8 +626,8 @@ class TMtag extends TM with TagElement<String> {
   static TMtag make(Tag tag, Iterable<String> vList) =>
       new TMtag(tag, vList ?? kEmptyStringList);
 
-  static TMtag fromBytes(Tag tag, Uint8List bytes) =>
-      new TMtag._fromBytes(tag, bytes);
+  static TMtag fromUint8List(Tag tag, Uint8List bytes) =>
+      new TMtag._fromUint8List(tag, bytes);
 
-  static TMtag from(Element e) => new TMtag._fromBytes(e.tag, e.vfBytes);
+  static TMtag from(Element e) => new TMtag._fromUint8List(e.tag, e.vfBytes);
 }

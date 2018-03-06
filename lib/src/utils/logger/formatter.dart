@@ -134,7 +134,6 @@ class Formatter {
       {
         down;
         if (values is Iterable) {
-//          print('fmt: $o values: "$values"');
           var depth = 0;
           for (var value in values) {
             try {

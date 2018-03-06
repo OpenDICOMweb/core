@@ -241,7 +241,7 @@ void main() {
         system.throwOnError = false;
         final of1 = new OFtag(PTag.kFloatPixelData, floatList0);
         log.debug('of1:$of1');
-        final bd0 = Float32Mixin.toByteData(floatList0);
+        final bd0 = Float32.toByteData(floatList0);
         log
           ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
           ..debug('of1.vrIndex: ${of1.vrIndex}');
@@ -260,7 +260,7 @@ void main() {
         system.throwOnError = false;
         final of1 = new OFtag(PTag.kSelectorOFValue, floatList0);
         log.debug('of1:$of1');
-        final bd0 = Float32Mixin.toByteData(floatList0);
+        final bd0 = Float32.toByteData(floatList0);
         log
           ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
           ..debug('of1.vrIndex: ${of1.vrIndex}');

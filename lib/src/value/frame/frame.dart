@@ -22,12 +22,8 @@ abstract class Frame extends ListBase<int> {
 
   /// Creates an image [Frame].
   Frame(this.parent, this.index) {
-    // TODO: add all relevant assertions
-//    print('length: $length');
-//    print('parent.desc.length: ${parent.desc.length}');
-//    print('lengthInBytes: $lengthInBytes');
-//    print('parent.desc.lengthInBytes: ${parent.desc.lengthInBytes}');
-    assert(length == parent.desc.length && lengthInBytes == parent.desc.lengthInBytes);
+    assert(length == parent.desc.length &&
+        lengthInBytes == parent.desc.lengthInBytes);
   }
 
   Frame.compressed(this.parent, this.index);
@@ -57,7 +53,8 @@ abstract class Frame extends ListBase<int> {
   int get length => pixels.length;
 
   @override
-  set length(int i) => throw new UnsupportedError('Frame pixels may not be changed');
+  set length(int i) =>
+      throw new UnsupportedError('Frame pixels may not be changed');
 
   /// Returns the number of bytes in [pixels].
   int get lengthInBytes => bulkdata.lengthInBytes;
@@ -151,7 +148,7 @@ class Frame8Bit extends Frame {
 
   @override
   Uint8List get bulkdata =>
-		  pixels.buffer.asUint8List(pixels.offsetInBytes, pixels.lengthInBytes);
+      pixels.buffer.asUint8List(pixels.offsetInBytes, pixels.lengthInBytes);
 }
 
 /// A fixed size [Frame] where each pixel is 16-bits.
@@ -165,7 +162,7 @@ class Frame16Bit extends Frame {
 
   @override
   Uint8List get bulkdata =>
-		  pixels.buffer.asUint8List(pixels.offsetInBytes, pixels.lengthInBytes);
+      pixels.buffer.asUint8List(pixels.offsetInBytes, pixels.lengthInBytes);
 }
 
 /// A fixed size [Frame] where each pixel is 32-bits.
@@ -179,7 +176,7 @@ class Frame32Bit extends Frame {
 
   @override
   Uint8List get bulkdata =>
-		  pixels.buffer.asUint8List(pixels.offsetInBytes, pixels.lengthInBytes);
+      pixels.buffer.asUint8List(pixels.offsetInBytes, pixels.lengthInBytes);
 }
 
 /// A compressed [Frame] stored as bytes.
@@ -191,8 +188,8 @@ class CompressedFrame extends Frame {
       : super.compressed(parent, index);
 
   @override
-  int operator [](int i) =>
-      throw new UnsupportedError('Compressed Frames don\'t support the [] operator');
+  int operator [](int i) => throw new UnsupportedError(
+      'Compressed Frames don\'t support the [] operator');
 
   /// Returns the number of bytes in [bulkdata].
   @override

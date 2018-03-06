@@ -9,17 +9,17 @@ import 'dart:typed_data';
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/base/item.dart';
+import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/dataset/base/history.dart';
+import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
-import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
-import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
 // ignore_for_file: unnecessary_getters_setters
@@ -142,8 +142,11 @@ abstract class DatasetMixin {
 
   List<SQ> get sequences {
     final results = <SQ>[];
-    for (var e in elements)
-      if (e is SQ) add(e);
+    for (var e in elements) {
+      if (e is SQ) {
+        results.add(e);
+      }
+    }
     return results;
   }
 

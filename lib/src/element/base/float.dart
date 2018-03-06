@@ -7,27 +7,35 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:core/src/base.dart';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/vr.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic
 
-class FloatBulkdata extends BulkdataRef<double> {
+class FloatBulkdataRef extends DelegatingList<double> with BulkdataRef<double> {
   @override
-  int code;
+  final int code;
   @override
-  String uri;
+  final Uri uri;
+  List<double> _values;
 
-  FloatBulkdata(this.code, this.uri);
+  FloatBulkdataRef(this.code, this.uri, [this._values]) : super(_values);
+
+  FloatBulkdataRef.fromString(this.code, String s, [this._values])
+      : uri = Uri.parse(s),
+        super(_values);
+
+  List<double> get delegate => _values;
 
   @override
   List<double> get values => _values ??= getBulkdata(code, uri);
-  List<double> _values;
 }
 
 // **** Float Elements
@@ -101,8 +109,8 @@ abstract class Float extends Element<double> {
   }
 }
 
-/// An abstract class for 32-bit floating point [Element]s.
-abstract class Float32Mixin {
+/// A mixin class for 32-bit floating point [Element]s.
+abstract class Float32 {
   Iterable<double> get values;
   Float update([Iterable<double> vList]);
 
@@ -144,10 +152,10 @@ abstract class Float32Mixin {
 
   /// Returns a [Float32List] from a [BASE64] [String].
   static Float32List fromBase64(String s) =>
-      (s.isEmpty) ? kEmptyFloat32List : fromBytes(BASE64.decode(s));
+      (s.isEmpty) ? kEmptyFloat32List : fromUint8List(BASE64.decode(s));
 
   /// Returns a [Float32List] from a [Uint8List].
-  static Float32List fromBytes(Uint8List bytes, {bool asView = true}) =>
+  static Float32List fromUint8List(Uint8List bytes, {bool asView = true}) =>
       _fromByteData(bytes.buffer.asByteData());
 
   /// Returns a [Float32List] from a [ByteData].
@@ -173,10 +181,25 @@ abstract class Float32Mixin {
 
   static bool _isNotAligned(TypedData vList) =>
       (vList.offsetInBytes % kSizeInBytes) != 0;
+
+  /// Returns a [Float32List] from a [ByteData].
+  static Float32List fromBytes(Bytes bytes, {bool asView = true}) =>
+      bytes.asFloat32List();
+
+  static List<double> fromValueField(Iterable vf) {
+    if (vf == null) return kEmptyDoubleList;
+    if (vf is Float64List ||
+        vf is Iterable<double> ||
+        vf.isEmpty ||
+        vf is FloatBulkdataRef) return vf;
+    if (vf is Bytes) return vf.asFloat64List();
+    if (vf is Uint8List) return fromUint8List(vf);
+    return invalidValuesError(vf);
+  }
 }
 
 /// FL
-abstract class FL extends Float with Float32Mixin {
+abstract class FL extends Float with Float32 {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -256,7 +279,7 @@ abstract class FL extends Float with Float32Mixin {
   static bool isValidValue(double value, [Issues issues]) => true;
 }
 
-abstract class OF extends Float with Float32Mixin {
+abstract class OF extends Float with Float32 {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -322,8 +345,8 @@ abstract class OF extends Float with Float32Mixin {
       Float.isValidValues(tag, vList, issues, kMaxLength);
 }
 
-/// An abstract class for 64-bit floating point [Element]s.
-abstract class Float64Mixin {
+/// A mixin class for 64-bit floating point [Element]s.
+abstract class Float64 {
   Iterable<double> get values;
   Float update([Iterable<double> vList]);
 
@@ -366,38 +389,49 @@ abstract class Float64Mixin {
 
   /// Returns a [Float64List] from a [BASE64] [String].
   static Float64List fromBase64(String s, {bool asView = true}) =>
-      (s.isEmpty) ? kEmptyFloat64List : fromBytes(BASE64.decode(s));
+      (s.isEmpty) ? kEmptyFloat64List : fromUint8List(BASE64.decode(s));
 
   /// Returns a [Float64List] from a [Uint8List].
-  static Float64List fromBytes(Uint8List bytes, {bool asView = true}) =>
+  static Float64List fromUint8List(Uint8List bytes, {bool asView = true}) =>
       _fromByteData(_asByteData(bytes), asView: asView);
 
   /// Returns a [Float64List] from a [ByteData].
   static Float64List fromByteData(ByteData bd, {bool asView = true}) =>
       _fromByteData(bd, asView: asView);
 
-  /// /// Returns a [Float64List] from a [ByteData].
-  static Float64List _fromByteData(ByteData bd, {bool asView = true}) {
-    assert(bd != null && bd.lengthInBytes >= 0);
-    if (bd.lengthInBytes == 0) return kEmptyFloat64List;
-    assert((bd.lengthInBytes % kSizeInBytes) == 0, 'lib: ${bd.lengthInBytes}');
-    final length = bd.lengthInBytes ~/ kSizeInBytes;
+  /// /// Returns a [Float64List] from a [ByteData] or [Uint8List].
+  static Float64List _fromByteData(ByteData td, {bool asView = true}) {
+    assert(td != null && td.lengthInBytes >= 0);
+    if (td.lengthInBytes == 0) return kEmptyFloat64List;
+    assert((td.lengthInBytes % kSizeInBytes) == 0, 'lib: ${td.lengthInBytes}');
+    final length = td.lengthInBytes ~/ kSizeInBytes;
 
-    if (_isNotAligned(bd)) {
+    if (_isNotAligned(td)) {
       final nList = new Float64List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
-        nList[i] = bd.getFloat64(oib, Endian.little);
+        nList[i] = td.getFloat64(oib, Endian.little);
       return nList;
     }
-    final f64List = bd.buffer.asFloat64List(bd.offsetInBytes, length);
+    final f64List = td.buffer.asFloat64List(td.offsetInBytes, length);
     return (asView) ? f64List : new Float64List.fromList(f64List);
   }
 
   static bool _isNotAligned(TypedData vList) =>
       (vList.offsetInBytes % kSizeInBytes) != 0;
+
+  static List<double> fromValueField(Iterable vf) {
+    if (vf == null) return kEmptyDoubleList;
+    if (vf is Float64List ||
+        vf is Iterable<double> ||
+        vf.isEmpty ||
+        vf is FloatBulkdataRef) return vf;
+    if (vf is Bytes) return vf.asFloat64List();
+    if (vf is Uint8List) return fromUint8List(vf);
+    return invalidValuesError(vf);
+  }
 }
 
-abstract class FD extends Float with Float64Mixin {
+abstract class FD extends Float with Float64 {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -460,7 +494,7 @@ abstract class FD extends Float with Float64Mixin {
       Float.isValidValues(tag, vList, issues, kMaxLength);
 }
 
-abstract class OD extends Float with Float64Mixin {
+abstract class OD extends Float with Float64 {
   @override
   int get vrIndex => kVRIndex;
   @override

@@ -9,8 +9,6 @@ import 'dart:convert';
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/utils.dart';
-import 'package:core/src/utils/string.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/errors.dart';
@@ -21,6 +19,8 @@ import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/private/pd_tag.dart';
 import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/vm.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
 
 const int kGroupMask = 0xFFFF0000;
@@ -590,6 +590,8 @@ abstract class Tag {
     return (code >= (g + 0x10)) && (code <= (g + 0xFF));
   }
 
+  static int pdSubgroup(int code) => (code & 0xFFFF) >> 8;
+
   static bool isPDCodeInSubgroup(int code, int group, int subgroup) {
     final sg = (group << 16) + (subgroup << 8);
     return (code >= sg && (code <= (sg + 0xFF)));
@@ -599,8 +601,9 @@ abstract class Tag {
   ///  and either [pcCode] is zero or [pcCode] is a Private
   ///  Creator Code for [pdCode].
   static bool isPDCode(int pdCode, [int pcCode = 0]) {
-    if (Tag.isNotPrivateCode(pdCode)) return false;
+    if ((pdCode >> 16).isEven) return false;
     final pde = pdCode & 0xFFFF;
+    print('pde = $pde');
     if (pde < 0x1000 || pde > 0xFFFF) return false;
     return (pcCode == 0) ? true : _isValidPDCode(pdCode, pcCode);
   }

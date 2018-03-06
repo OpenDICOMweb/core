@@ -137,7 +137,7 @@ class FLivr extends FL with Common, IvrElement<double>, BDFloat32Mixin {
   FLivr(this.bd);
 
   @override
-  Iterable<double> get values => Float32Mixin.fromByteData(vfByteData);
+  Iterable<double> get values => Float32.fromByteData(vfByteData);
 
   static FLivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -155,7 +155,7 @@ class OFivr extends OF with Common, IvrElement<double>, BDFloat32Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, sizeInBytes);
 
   @override
-  Iterable<double> get values => Float32Mixin.fromByteData(vfByteData);
+  Iterable<double> get values => Float32.fromByteData(vfByteData);
 
   static OFivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -175,7 +175,7 @@ class FDivr extends FL with Common, IvrElement<double>, BDFloat32Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, sizeInBytes);
 
   @override
-  Iterable<double> get values => Float64Mixin.fromByteData(vfByteData);
+  Iterable<double> get values => Float64.fromByteData(vfByteData);
 
   static FDivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -190,7 +190,7 @@ class ODivr extends OD with Common, IvrElement<double>, BDFloat32Mixin {
   ODivr(this.bd);
 
   @override
-  Iterable<double> get values => Float64Mixin.fromByteData(vfByteData);
+  Iterable<double> get values => Float64.fromByteData(vfByteData);
 
   static ODivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -209,7 +209,7 @@ class OBivr extends OB with Common, IvrElement<int>, IntMixin, Int8Mixin {
   OBivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint8.fromByteData(vfByteData);
 
   static OBivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -229,7 +229,7 @@ class OBivrPixelData extends OBPixelData
   OBivrPixelData(this.bd, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint8.fromByteData(vfByteData);
 
   static OBivrPixelData make(ByteData bd, int vrIndex,
       [TransferSyntax ts, VFFragments fragments]) {
@@ -245,7 +245,7 @@ class UNivr extends UN with Common, IvrElement<int>, IntMixin, Int8Mixin {
   UNivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint8.fromByteData(vfByteData);
 
   static UNivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -265,7 +265,7 @@ class UNivrPixelData extends UNPixelData
   UNivrPixelData(this.bd, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint8.fromByteData(vfByteData);
 
   static UNivrPixelData make(ByteData bd, int vrIndex,
       [TransferSyntax ts, VFFragments fragments]) {
@@ -283,7 +283,7 @@ class SSivr extends SS with Common, IvrElement<int>, IntMixin, Int16Mixin {
   SSivr(this.bd);
 
   @override
-  Iterable<int> get values => Int16Base.fromByteData(vfByteData);
+  Iterable<int> get values => Int16.fromByteData(vfByteData);
 
   static SSivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -298,7 +298,7 @@ class USivr extends US with Common, IvrElement<int>, IntMixin, Int16Mixin {
   USivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint16.fromByteData(vfByteData);
 
   static USivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -313,7 +313,7 @@ class OWivr extends OW with Common, IvrElement<int>, IntMixin, Int16Mixin {
   OWivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint16.fromByteData(vfByteData);
 
   static OWivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -333,7 +333,7 @@ class OWivrPixelData extends OWPixelData
   OWivrPixelData(this.bd, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint16.fromByteData(vfByteData);
 
   static OWivrPixelData make(ByteData bd, int vrIndex,
       [TransferSyntax ts, VFFragments fragments]) {
@@ -352,7 +352,7 @@ class ATivr extends AT with Common, IvrElement<int>, IntMixin, Int32Mixin {
   ATivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint32.fromByteData(vfByteData);
 
   static ATivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -368,7 +368,7 @@ class OLivr extends OL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   OLivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint32.fromByteData(vfByteData);
 
   static OLivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -384,7 +384,7 @@ class SLivr extends SL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   SLivr(this.bd);
 
   @override
-  Iterable<int> get values => Int32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Int32.fromByteData(vfByteData);
 
   static SLivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -400,7 +400,7 @@ class ULivr extends UL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   ULivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint32.fromByteData(vfByteData);
 
   static ULivr make(ByteData bd, int vrIndex) {
     assert(vrIndex == null || vrIndex == kFLIndex);
@@ -416,7 +416,7 @@ class GLivr extends GL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   GLivr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint32.fromByteData(vfByteData);
 
   static const String kVRKeyword = 'GL';
   static const String kVRName = 'Group Length';

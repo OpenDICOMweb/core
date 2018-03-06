@@ -21,17 +21,12 @@ abstract class PrivateTag extends Tag {
   bool get isPrivate => true;
   @override
   bool get isPublic => false;
-  @override
-   int get code;
-  @override
-  int get vrIndex;
 
+  // Only Private Tags have Subgroup Numbers.
   int get sgNumber;
   String get sgNumberHex => hex8(sgNumber);
 
-//  int get sgOffset;
-
-
+  // The default VM if n=unknown
   @override
   VM get vm => VM.k1_n;
 

@@ -165,7 +165,7 @@ class FLevr extends FL
   FLevr(this.bd);
 
   @override
-  Iterable<double> get values => Float32Mixin.fromByteData(vfByteData);
+  Iterable<double> get values => Float32.fromByteData(vfByteData);
 
   static FLevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kFLIndex && bd.lengthInBytes.isEven);
@@ -181,7 +181,7 @@ class OFevr extends OF
   OFevr(this.bd);
 
   @override
-  Iterable<double> get values => Float32Mixin.fromByteData(vfByteData);
+  Iterable<double> get values => Float32.fromByteData(vfByteData);
 
   static OFevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kOFIndex && bd.lengthInBytes.isEven);
@@ -197,7 +197,7 @@ class FDevr extends FD
   FDevr(this.bd);
 
   @override
-  Iterable<double> get values => Float64Mixin.fromByteData(vfByteData);
+  Iterable<double> get values => Float64.fromByteData(vfByteData);
 
   static FDevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kFDIndex && bd.lengthInBytes.isEven);
@@ -213,7 +213,7 @@ class ODevr extends OD
   ODevr(this.bd);
 
   @override
-  Iterable<double> get values => Float64Mixin.fromByteData(vfByteData);
+  Iterable<double> get values => Float64.fromByteData(vfByteData);
 
   static ODevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kODIndex && bd.lengthInBytes.isEven);
@@ -231,7 +231,7 @@ class OBevr extends OB
   OBevr(this.bd);
 
   @override
-  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint8.fromByteData(vfByteData);
 
   static OBevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kOBIndex && bd.lengthInBytes.isEven);
@@ -251,7 +251,7 @@ class OBevrPixelData extends OBPixelData
   OBevrPixelData(this.bd, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint8.fromByteData(vfByteData);
 
   static OBevrPixelData make(int code, int vrIndex, ByteData bd,
       [TransferSyntax ts, VFFragments fragments]) {
@@ -288,7 +288,7 @@ class UNevrPixelData extends UNPixelData
   UNevrPixelData(this.bd, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values => Uint8Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint8.fromByteData(vfByteData);
 
   static UNevrPixelData make(int code, int vrIndex, ByteData bd,
       [TransferSyntax ts, VFFragments fragments]) {
@@ -305,7 +305,7 @@ class SSevr extends SS
   SSevr(this.bd);
 
   @override
-  Iterable<int> get values => Int16Base.fromByteData(vfByteData);
+  Iterable<int> get values => Int16.fromByteData(vfByteData);
 
   static SSevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kSSIndex && bd.lengthInBytes.isEven);
@@ -321,7 +321,7 @@ class USevr extends US
   USevr(this.bd);
 
   @override
-  Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint16.fromByteData(vfByteData);
 
   static USevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kUSIndex && bd.lengthInBytes.isEven);
@@ -337,7 +337,7 @@ class OWevr extends OW
   OWevr(this.bd);
 
   @override
-  Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint16.fromByteData(vfByteData);
 
   static OWevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kOWIndex && bd.lengthInBytes.isEven);
@@ -357,7 +357,7 @@ class OWevrPixelData extends OWPixelData
   OWevrPixelData(this.bd, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values => Uint16Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint16.fromByteData(vfByteData);
 
   static OWevrPixelData make(int code, int vrIndex, ByteData bd,
       [TransferSyntax ts, VFFragments fragments]) {
@@ -377,7 +377,7 @@ class ATevr extends AT
   ATevr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint32.fromByteData(vfByteData);
 
   static ATevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kATIndex && bd.lengthInBytes.isEven);
@@ -394,7 +394,7 @@ class OLevr extends OL
   OLevr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint32.fromByteData(vfByteData);
 
   static OLevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kOLIndex && bd.lengthInBytes.isEven);
@@ -411,7 +411,7 @@ class SLevr extends SL
   SLevr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint32.fromByteData(vfByteData);
 
   static SLevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kSLIndex && bd.lengthInBytes.isEven);
@@ -428,7 +428,7 @@ class ULevr extends UL
   ULevr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint32.fromByteData(vfByteData);
 
   static Element<int> make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kULIndex && bd.lengthInBytes.isEven);
@@ -445,7 +445,7 @@ class GLevr extends GL
   GLevr(this.bd);
 
   @override
-  Iterable<int> get values => Uint32Base.fromByteData(vfByteData);
+  Iterable<int> get values => Uint32.fromByteData(vfByteData);
 
   static GLevr make(ByteData bd, int vrIndex) {
     assert(vrIndex != null || vrIndex == kULIndex && bd.lengthInBytes.isEven);

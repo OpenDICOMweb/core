@@ -63,6 +63,8 @@ class Bytes extends ListBase<int> {
       : _bd = td.buffer.asByteData(
             td.offsetInBytes + offset, length * td.elementSizeInBytes);
 
+  Bytes._([this.endian = Endian.little]) : _bd = new ByteData(0);
+
   // Core accessor NOT to be exported?
   ByteData get bd => _bd;
 
@@ -279,6 +281,12 @@ class Bytes extends ListBase<int> {
               _bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 8))
           : getFloat64List(offset, length);
 
+  List<String> asAsciiList([int offset = 0, int length]) =>
+      getAscii(offset, length).split('\\');
+
+  List<String> asUtf8List([int offset = 0, int length]) =>
+      getUtf8(offset, length).split('\\');
+
   // **** ByteData Setters
 
   void setInt8(int wIndex, int value) => _bd.setInt8(wIndex, value);
@@ -302,6 +310,24 @@ class Bytes extends ListBase<int> {
 
   void setFloat64(int wIndex, double value) =>
       _bd.setFloat64(wIndex, value, endian);
+
+  // **** String Setters
+
+  void setAscii(String s, [int offset = 0, int length]) {
+    length ??= s.length;
+    final v = (offset == 0 && length == s.length)
+              ? s
+              : s.substring(offset, offset + length);
+    setUint8List(ASCII.encode(v), offset, length);
+  }
+
+  void setUtf8(String s, [int offset = 0, int length]) {
+    length ??= s.length;
+    final v = (offset == 0 && length == s.length)
+              ? s
+              : s.substring(offset, offset + length);
+    setUint8List(ASCII.encode(v), offset, length);
+  }
 
   // **** TypedData List Setters
 
@@ -384,21 +410,22 @@ class Bytes extends ListBase<int> {
   }
 
   // **** String Setters
-  // TODO: decide if these should be included
-  void setAscii(String s, [int offset = 0, int length]) {
-    length ??= s.length;
-    final v = (offset == 0 && length == s.length)
-        ? s
-        : s.substring(offset, offset + length);
-    setUint8List(ASCII.encode(v), offset, length);
+
+  String _toString(List<String> sList, int offset, int length) {
+    final v = (offset == 0 && length == sList.length)
+              ? sList
+              : sList.sublist(offset, offset + length);
+    return v.join('\\');
   }
 
-  void setUtf8(String s, [int offset = 0, int length]) {
-    length ??= s.length;
-    final v = (offset == 0 && length == s.length)
-        ? s
-        : s.substring(offset, offset + length);
-    setUint8List(ASCII.encode(v), offset, length);
+  void setAsciiList(List<String> sList, [int offset = 0, int length]) {
+    final s = _toString(sList, offset,  length ??= sList.length);
+    return setAscii(s, offset, s.length);
+  }
+
+  void setUtf8List(List<String>  sList, [int offset = 0, int length,]) {
+    final s = _toString(sList, offset,  length ??= sList.length);
+    return setUtf8(s, offset, s.length);
   }
 
   static const int kInt8Size = 1;
@@ -435,6 +462,8 @@ class Bytes extends ListBase<int> {
   static const int kUint64MaxValue = 0xFFFFFFFFFFFFFFFF;
 
   static const int kDefaultLength = 1024;
+
+  static final Bytes kEmptyBytes = new Bytes._();
 
   bool isInt8(int i) => i > kInt8MinValue && i <= kInt8MaxValue;
   bool isInt16(int i) => i > kInt16MinValue && i <= kInt16MaxValue;

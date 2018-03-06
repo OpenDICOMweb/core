@@ -76,10 +76,7 @@ String hashAgeString(String s) {
   system.level = Level.debug;
   final days = parseAgeString(s);
   if (days == null || days == -1) return null;
- // final hash = System.rng.nextInt(kMaxAgeInDays);
- // final hash = system.hash(days) % kMaxAgeInDays;
   final hash = hashAgeInDays(days);
-//  print('s: "$s", days: $days, hash: $hash');
   return ageToString(hash);
 }
 

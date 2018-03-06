@@ -75,7 +75,6 @@ int _hashMicroseconds(int us, int hash(int v), [int onError(int n)]) {
   do {
     v = hash(v);
   } while ((v <= kMicrosecondsPerDay));
-//  print('min(0) <= $v <= max($kMicrosecondsPerDay');
   return (v.isNegative)
       ? v % kMinYearInMicroseconds
       : v % kMaxYearInMicroseconds;

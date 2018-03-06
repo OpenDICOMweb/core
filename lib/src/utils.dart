@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 export 'package:core/src/utils/ascii.dart';
-export 'package:core/src/utils/bytes/bytes.dart';
+export 'package:core/src/utils/bytes.dart';
 export 'package:core/src/utils/date_time.dart';
 export 'package:core/src/utils/dicom.dart';
 export 'package:core/src/utils/empty_list.dart';

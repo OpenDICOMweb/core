@@ -6,7 +6,9 @@
 
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:core/src/base.dart';
+import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
@@ -15,6 +17,25 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/empty_list.dart';
 import 'package:core/src/utils/errors.dart';
 import 'package:core/src/vr.dart';
+
+class IntBulkdataRef extends DelegatingList<int> with BulkdataRef<int>{
+  @override
+  int code;
+  @override
+  Uri uri;
+  List<int> _values;
+
+  IntBulkdataRef(this.code, this.uri, [this._values]) : super(_values);
+
+  IntBulkdataRef.fromString(this.code, String s, [this._values])
+      : uri = Uri.parse(s),
+        super(_values);
+
+  List<int> get delegate => _values;
+
+  @override
+  List<int> get values => _values ??= getBulkdata(code, uri);
+}
 
 abstract class IntBase extends Element<int> {
   @override
@@ -100,7 +121,7 @@ abstract class IntBase extends Element<int> {
 }
 
 /// Signed Short [Element].
-abstract class SS extends IntBase with Int16Base {
+abstract class SS extends IntBase with Int16 {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -172,7 +193,7 @@ abstract class SS extends IntBase with Int16Base {
 }
 
 /// Signed Long ([SL]) [Element].
-abstract class SL extends IntBase with Int32Base {
+abstract class SL extends IntBase with Int32 {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -243,7 +264,7 @@ abstract class SL extends IntBase with Int32Base {
 
 /// Other Byte [Element].
 abstract class OB extends IntBase
-    with OBMixin, Uint8Base {
+    with OBMixin, Uint8 {
 
   @override
   int get vfLengthField;
@@ -327,7 +348,7 @@ abstract class OB extends IntBase
 }
 
 /// Unknown (UN) [Element].
-abstract class UN extends IntBase with Uint8Base {
+abstract class UN extends IntBase with Uint8 {
   @override
   int get vfLengthField;
   @override
@@ -397,7 +418,7 @@ abstract class UN extends IntBase with Uint8Base {
 }
 
 /// Other Byte [Element].
-abstract class US extends IntBase with Uint16Base {
+abstract class US extends IntBase with Uint16 {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -466,7 +487,7 @@ abstract class US extends IntBase with Uint16Base {
 }
 
 /// Unknown (OW) [Element].
-abstract class OW extends IntBase with Uint16Base {
+abstract class OW extends IntBase with Uint16 {
   @override
   int get vfLengthField;
   @override
@@ -543,7 +564,7 @@ abstract class OW extends IntBase with Uint16Base {
 }
 
 /// Attribute Tag [Element].
-abstract class AT extends IntBase with Uint32Base {
+abstract class AT extends IntBase with Uint32 {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -613,7 +634,7 @@ abstract class AT extends IntBase with Uint32Base {
 /// Other Long [Element].
 ///
 /// VFLength and Values length are always valid.
-abstract class OL extends IntBase with Uint32Base {
+abstract class OL extends IntBase with Uint32 {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -682,7 +703,7 @@ abstract class OL extends IntBase with Uint32Base {
 }
 
 /// Unsigned Long [Element].
-abstract class UL extends IntBase with Uint32Base {
+abstract class UL extends IntBase with Uint32 {
   @override
   int get vrIndex => kVRIndex;
   @override

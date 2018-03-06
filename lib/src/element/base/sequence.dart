@@ -72,6 +72,21 @@ abstract class SQ<K> extends Element<Item> {
   @override
   int get total => counter((e) => true);
 
+  List sqMap(dynamic f(Element e)) {
+    final iList = new List<dynamic>(items.length);
+    for (var item in items) {
+      final eList = new List<dynamic>(item.length);
+      iList.add(eList);
+      for (var e in item)
+        if (e is SQ) {
+          eList.add(sqMap(f));
+        } else {
+          eList.add(f(e));
+        }
+    }
+    return iList;
+  }
+
   /// Returns a [String] containing a summary of the sequence.
   String get summary => '''
 Summary $tag
@@ -95,9 +110,7 @@ Summary $tag
     var count = 1;
     for (var item in items) {
       for (var e in item) {
-        count += (e is SQ)
-                 ? e.counter(test)
-                 : 1;
+        count += (e is SQ) ? e.counter(test) : 1;
       }
     }
     return count;
@@ -148,7 +161,6 @@ Summary $tag
     items.elementAt(itemIndex)..add(e);
   }
 
-
   @override
   List<Item> get emptyList => kEmptyList;
   static const List<Item> kEmptyList = const <Item>[];
@@ -165,7 +177,6 @@ Summary $tag
     }
     return result;
   }
-
 
   @override
   SQ update([Iterable<Item> vList = kEmptyList]);

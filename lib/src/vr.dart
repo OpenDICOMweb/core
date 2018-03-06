@@ -462,25 +462,25 @@ class VRInt extends VR<int> {
       kOBIndex, 'OB', kOBCode, 4, kLongVF, 1, 0, 255, OB.isValidVRIndex, true);
 
   static const kSS = const VRInt(kSSIndex, 'SS', kSSCode, 2, kShortVF, 2,
-      Int16Base.kMinValue, Int16Base.kMaxValue, SS.isValidVRIndex);
+      Int16.kMinValue, Int16.kMaxValue, SS.isValidVRIndex);
 
   static const kUS = const VRInt(kUSIndex, 'US', kUSCode, 2, kShortVF, 2,
-      Uint16Base.kMinValue, Uint16Base.kMaxValue, US.isValidVRIndex);
+      Uint16.kMinValue, Uint16.kMaxValue, US.isValidVRIndex);
 
   static const kOW = const VRInt(kOWIndex, 'OW', kOWCode, 4, kLongVF, 2,
-      Uint16Base.kMinValue, Uint16Base.kMaxValue, OW.isValidVRIndex, true);
+      Uint16.kMinValue, Uint16.kMaxValue, OW.isValidVRIndex, true);
 
   static const kSL = const VRInt(kSLIndex, 'SL', kSLCode, 2, kShortVF, 4,
-      Int32Base.kMinValue, Int32Base.kMaxValue, SL.isValidVRIndex);
+      Int32.kMinValue, Int32.kMaxValue, SL.isValidVRIndex);
 
   static const kUL = const VRInt(kULIndex, 'UL', kULCode, 2, kShortVF, 4,
-      Uint32Base.kMinValue, Uint32Base.kMaxValue, UL.isValidVRIndex);
+      Uint32.kMinValue, Uint32.kMaxValue, UL.isValidVRIndex);
 
   static const kAT = const VRInt(kATIndex, 'AT', kATCode, 2, kShortVF, 4,
-      Uint32Base.kMinValue, Uint32Base.kMaxValue, AT.isValidVRIndex);
+      Uint32.kMinValue, Uint32.kMaxValue, AT.isValidVRIndex);
 
   static const kOL = const VRInt(kOLIndex, 'OL', kOLCode, 4, kLongVF, 4,
-      Uint32Base.kMinValue, Uint32Base.kMaxValue, OL.isValidVRIndex, true);
+      Uint32.kMinValue, Uint32.kMaxValue, OL.isValidVRIndex, true);
 }
 
 typedef bool IsValidString(String s, {Issues issues, bool allowInvalid});

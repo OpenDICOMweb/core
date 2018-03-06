@@ -12,10 +12,14 @@ RSG rsg = new RSG(seed: 1);
 void main() {
   Server.initialize(name: 'element/hash_number_test', level: Level.info);
   test('Integer Strings', () {
+
+// Urgent Sharath: Shouldn't this be in a loop?
     final stringList0 = rsg.getISList(1, 1);
     final is0 = new IStag(PTag.kEvaluatorNumber, stringList0);
-    final is1 = new IStag(PTag.kEvaluatorNumber, stringList0);
-    final is2 = new IStag(PTag.kEvaluationAttempt, stringList0);
+ //   final is1 = new IStag(PTag.kEvaluatorNumber, stringList0);
+ //   final is2 = new IStag(PTag.kEvaluationAttempt, stringList0);
+    final is1 = new IStag(PTag.kEvaluatorNumber, rsg.getISList(1, 1));
+    final is2 = new IStag(PTag.kEvaluationAttempt, rsg.getISList(1, 1));
 
     system.throwOnError = true;
     final hash0 = Sha256.stringList(stringList0);
@@ -23,11 +27,33 @@ void main() {
     expect(() => is0.sha256,
         throwsA(const isInstanceOf<Sha256UnsupportedError>()));
 
+/* Urgent Sharath: IS.hash now works please test
     expect(
         () => is1.hash, throwsA(const isInstanceOf<Sha256UnsupportedError>()));
     expect(
         () => is2.hash, throwsA(const isInstanceOf<Sha256UnsupportedError>()));
-    //expect(is0.hash != is2.hash, true);
+*/
+// Urgent Sharath: Jim add lines from here
+    expect(is0.hash.hasValidValues, true);
+    expect(is1.hash.hasValidValues, true);
+    expect(is2.hash.hasValidValues, true);
+
+    // Test hash is consistent
+    expect(is0.hash == is0.hash, true);
+    expect(is1.hash == is1.hash, true);
+    expect(is2.hash == is2.hash, true);
+
+    // Test hash is not the same
+    print(is0.hash);
+    print(is1.hash);
+    print(is2.hash);
+    expect(is0.hash != is1.hash, true);
+    expect(is1.hash != is2.hash, true);
+    expect(is2.hash != is0.hash, true);
+    final is3 = is0.hash;
+    expect(is3.hasValidValues, true);
+// Urgent Sharath: to here
+
 
     final stringList1 = rsg.getDSList(1, 1);
     final ds0 = new DStag(PTag.kDeadTimeFactor, stringList1);

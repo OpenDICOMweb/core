@@ -127,7 +127,7 @@ void main() {
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBytes', () {
-      final un0 = UNtagPixelData.fromBytes(
+      final un0 = UNtagPixelData.fromUint8List(
           PTag.kNoName0, frame, frame.lengthInBytes);
 
       final un1 =
@@ -166,11 +166,11 @@ void main() {
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBytes hashCode and ==', () {
-      final un0 = UNtagPixelData.fromBytes(
+      final un0 = UNtagPixelData.fromUint8List(
           PTag.kNoName0, frame, frame.lengthInBytes);
-      final un1 = UNtagPixelData.fromBytes(
+      final un1 = UNtagPixelData.fromUint8List(
           PTag.kNoName0, frame, frame.lengthInBytes);
-      final un2 = UNtagPixelData.fromBytes(
+      final un2 = UNtagPixelData.fromUint8List(
           PTag.kVariablePixelData, frame, frame.lengthInBytes);
 
       expect(un0.hashCode == un1.hashCode, true);
@@ -348,11 +348,11 @@ void main() {
 
     test('new UNtagPixelData.fromBytes', () {
       final frags = new VFFragments(fragments);
-      final un0 = UNtagPixelData.fromBytes(
+      final un0 = UNtagPixelData.fromUint8List(
           PTag.kNoName0, frame, frame.lengthInBytes);
       expect(
           un0,
-          equals(UNtagPixelData.fromBytes(
+          equals(UNtagPixelData.fromUint8List(
               PTag.kNoName0, frame, frame.lengthInBytes, frags, ts)));
 
       expect(un0.tag == PTag.kNoName0, true);
@@ -386,13 +386,13 @@ void main() {
     });
 
     test('new UNtagPixelData.fromBytes hashCode and ==', () {
-      final un0 = UNtagPixelData.fromBytes(
+      final un0 = UNtagPixelData.fromUint8List(
           PTag.kNoName0, frame, frame.lengthInBytes);
 
-      final un1 = UNtagPixelData.fromBytes(
+      final un1 = UNtagPixelData.fromUint8List(
           PTag.kNoName0, frame, frame.lengthInBytes);
 
-      final un2 = UNtagPixelData.fromBytes(
+      final un2 = UNtagPixelData.fromUint8List(
           PTag.kVariablePixelData, frame, frame.lengthInBytes);
 
       expect(un0.hashCode == un1.hashCode, true);
@@ -583,7 +583,7 @@ void main() {
     });
 
     test('Create Uint8Base.fromBytes', () {
-      expect(Uint8Base.fromBytes(frame), equals(frame));
+      expect(Uint8.fromUint8List(frame), equals(frame));
     });
 
     test('Create Uint8Base.fromBytes', () {
@@ -592,29 +592,29 @@ void main() {
       const uInt16Max = const [kUint16Max];
       final uInt8ListV1 = new Uint8List.fromList(uInt8Max);
       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-      expect(Uint8Base.fromBytes(uInt8ListV11), equals(uInt8Max));
+      expect(Uint8.fromUint8List(uInt8ListV11), equals(uInt8Max));
 
-      expect(Uint8Base.fromBytes(frame), equals(frame));
+      expect(Uint8.fromUint8List(frame), equals(frame));
 
       final uInt16ListV1 = new Uint16List.fromList(uInt16Max);
       final uInt8ListV12 = uInt16ListV1.buffer.asUint8List();
-      expect(Uint8Base.fromBytes(uInt8ListV12), uInt8ListV12);
+      expect(Uint8.fromUint8List(uInt8ListV12), uInt8ListV12);
     });
 
     test('Create Uint32Base.fromBase64', () {
-      final s = Uint8Base.toBase64(testFrame);
-      expect(Uint8Base.fromBase64(s), equals(testFrame));
+      final s = Uint8.toBase64(testFrame);
+      expect(Uint8.fromBase64(s), equals(testFrame));
     });
 
     test('Create Uint32Base.fromBytes', () {
-      final bytes = Uint8Base.toBytes(testFrame);
+      final bytes = Uint8.toBytes(testFrame);
       log.debug('s: "$bytes"');
-      expect(Uint8Base.fromBytes(bytes), bytes);
+      expect(Uint8.fromUint8List(bytes), bytes);
     });
 
     test('Create Uint32Base.fromByteData', () {
-      final bd = Uint8Base.toByteData(testFrame);
-      expect(Uint8Base.fromByteData(bd), equals(frame));
+      final bd = Uint8.toByteData(testFrame);
+      expect(Uint8.fromByteData(bd), equals(frame));
     });
   });
 }

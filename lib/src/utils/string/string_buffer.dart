@@ -116,9 +116,7 @@ class AsciiBuffer extends StringBufferBase implements TypedData {
 
   @override
   int growBuffer() {
-//    print('_sBuffer.length: ${_sBuffer.length}');
     _sBuffer = _copyBuffer(_sBuffer, new Uint8List(length * 2));
-//    print('_sBuffer.length: ${_sBuffer.length}');
     return remaining;
   }
 

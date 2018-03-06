@@ -12,12 +12,12 @@ import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/parse_info.dart';
 import 'package:core/src/dataset/utils/status_report.dart';
-import 'package:core/src/value/date_time.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity.dart';
-import 'package:core/src/utils/logger.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/logger.dart';
+import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
 
 
@@ -134,7 +134,7 @@ abstract class RootDataset extends Dataset {
   /// Returns a formatted summary of _this_.
   String get summary {
     final sqs = sequences;
-    final sb = new StringBuffer('''\n$runtimeType 
+    final sb = new StringBuffer('''\n$runtimeType: 
              SOP Class: $sopClassUid
        Transfer Syntax: $transferSyntax
         Total Elements: $total

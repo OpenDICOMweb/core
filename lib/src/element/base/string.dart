@@ -7,7 +7,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:core/src/base.dart';
+import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/dicom_string.dart';
 import 'package:core/src/element/base/element.dart';
@@ -15,6 +17,7 @@ import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/entity.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/issues.dart';
 import 'package:core/src/utils/parser/parse_errors.dart';
 import 'package:core/src/value/date_time.dart';
@@ -22,6 +25,24 @@ import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 //import 'package:core/src/errors.dart';
 
+class StringBulkdata extends DelegatingList<String> with BulkdataRef<String> {
+  @override
+  final int code;
+  @override
+  final Uri uri;
+  List<String> _values;
+
+  StringBulkdata(this.code, this.uri, [this._values]) : super(_values);
+
+  StringBulkdata.fromString(this.code, String s, [this._values])
+      : uri = Uri.parse(s),
+        super(_values);
+
+  List<String> get delegate => _values;
+
+  @override
+  List<String> get values => _values ??= getBulkdata(code, uri);
+}
 
 // TODO: For each class add the following static fields:
 //       bool areLeadingSpacesAllowed = x;
@@ -75,6 +96,8 @@ abstract class StringBase extends Element<String> {
   bool get isSingleValued => false;
   @override
   int get padChar => kSpace;
+
+  StringBase blank([int n = 1]) => update([_blanks(n)]);
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false});
@@ -188,11 +211,41 @@ abstract class StringBase extends Element<String> {
 }
 
 abstract class StringAscii extends StringBase {
-  Iterable<String> get valuesFromBytes =>
+  Iterable<String> get valuesFromUint8List =>
       _stringListFromTypedData(vfBytes, maxVFLength, isAscii: true);
 
-  Uint8List get bytesFromValues =>
+  Uint8List get uint8ListFromValues =>
       _stringListToBytes(values, maxVFLength, isAscii: true);
+
+  static List<String> fromValueField(Iterable vf, int maxVFLength,
+      {bool isAscii: true}) {
+    if (vf == null) return kEmptyStringList;
+    if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
+    if (vf is Bytes) return vf.asAsciiList();
+    if (vf is Uint8List)
+      return _stringListFromTypedData(vf, maxVFLength, isAscii: true);
+    return invalidValuesError(vf);
+  }
+}
+
+abstract class StringUtf8 extends StringBase {
+
+
+  List<String> valuesFromUint8List(Uint8List bytes) =>
+      _stringListFromTypedData(vfBytes, maxVFLength, isAscii: false);
+
+  Uint8List uint8ListFromValues(List<String> vList) =>
+      _stringListToBytes(values, maxVFLength, isAscii: false);
+
+  static List<String> fromValueField(Iterable vf, int maxVFLength,
+      {bool isAscii: true}) {
+    if (vf == null) return kEmptyStringList;
+    if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
+    if (vf is Bytes) return vf.asUtf8List();
+    if (vf is Uint8List)
+      return _stringListFromTypedData(vf, maxVFLength, isAscii: true);
+    return invalidValuesError(vf);
+  }
 }
 
 /// A Application Entity Title ([AE]) Element
@@ -292,7 +345,7 @@ abstract class AE extends StringAscii {
   static Uint8List toBytes(Iterable<String> values) =>
       _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -323,7 +376,7 @@ abstract class CS extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  CS blank([int n = 1]) => update([_blanks(n)]);
+//  CS blank([int n = 1]) => update([_blanks(n)]);
 
   static const bool kIsAsciiRequired = true;
   static bool allowLowerCase = false;
@@ -405,7 +458,7 @@ abstract class CS extends StringAscii {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -554,7 +607,7 @@ abstract class UI extends StringAscii {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -574,16 +627,6 @@ abstract class UI extends StringAscii {
       sList[i] = uids.elementAt(i).toString();
     return sList;
   }
-}
-
-abstract class StringUtf8 extends StringBase {
-  StringBase blank([int n = 1]) => update([_blanks(n)]);
-
-  List<String> valuesFromBytes(Uint8List bytes) =>
-      _stringListFromTypedData(vfBytes, maxVFLength, isAscii: false);
-
-  Uint8List bytesFromValues(List<String> vList) =>
-      _stringListToBytes(values, maxVFLength, isAscii: false);
 }
 
 /// A Long String (LO) Element
@@ -680,7 +723,7 @@ abstract class LO extends StringUtf8 {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -817,7 +860,7 @@ abstract class PN extends StringUtf8 {
       isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -926,7 +969,7 @@ abstract class SH extends StringUtf8 {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -1036,7 +1079,7 @@ abstract class UC extends StringUtf8 {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -1166,7 +1209,7 @@ abstract class LT extends Text {
   static Uint8List toBytes(Iterable<String> values) =>
       _textListToBytes(values, kMaxVFLength);
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -1269,7 +1312,7 @@ abstract class ST extends Text {
   static Uint8List toBytes(Iterable<String> values) =>
       _textListToBytes(values, kMaxVFLength);
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -1388,7 +1431,7 @@ abstract class UR extends Text {
   static Uint8List toBytes(Iterable<String> values) =>
       _textListToBytes(values, kMaxVFLength);
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -1512,7 +1555,7 @@ abstract class UT extends Text {
   static Uint8List toBytes(Iterable<String> values) =>
       _textListToBytes(values, kMaxVFLength);
 
-  static Iterable<String> fromBytes(Uint8List bytes,
+  static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
@@ -1643,7 +1686,7 @@ abstract class AS extends StringBase {
   static Uint8List toBytes(Iterable<String> values) =>
       _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static List<String> fromBytes(Uint8List bytes) =>
+  static List<String> fromUint8List(Uint8List bytes) =>
       _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
   static ByteData toByteData(Iterable<String> values) =>
@@ -1774,7 +1817,7 @@ abstract class DA extends StringBase {
   static Uint8List toBytes(Iterable<String> values) =>
       _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBytes(Uint8List bytes) =>
+  static Iterable<String> fromUint8List(Uint8List bytes) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
   static ByteData toByteData(Iterable<String> values) =>
@@ -1890,7 +1933,7 @@ abstract class DT extends StringBase {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromBytes(Uint8List bytes) =>
+  static Iterable<String> fromUint8List(Uint8List bytes) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
   static Uint8List toBytes(Iterable<String> values) =>
@@ -2014,7 +2057,7 @@ abstract class TM extends StringBase {
   static Uint8List toBytes(Iterable<String> values) =>
       _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
-  static Iterable<String> fromBytes(Uint8List bytes) =>
+  static Iterable<String> fromUint8List(Uint8List bytes) =>
       _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
 
   static ByteData toByteData(Iterable<String> values) =>
@@ -2024,11 +2067,374 @@ abstract class TM extends StringBase {
       _stringListFromTypedData(bd, kMaxVFLength, isAscii: true);
 }
 
+abstract class DS extends StringAscii {
+  @override
+  int get vrIndex => kVRIndex;
+  @override
+  int get vrCode => kVRCode;
+  @override
+  String get vrKeyword => kVRKeyword;
+  @override
+  String get vrName => kVRName;
+  @override
+  int get maxLength => kMaxLength;
+  @override
+  int get maxVFLength => kMaxVFLength;
+
+  Iterable<double> get numbers => _numbers ??= tryParseList(values);
+  Iterable<double> _numbers;
+
+  /// Returns a new [DS] [Element] with a random list of [values] with
+  /// the same [length] as _this_.
+  DS get random {
+    if (length == 0) return this;
+    final dList = new List<double>(length);
+    for (var i = 0; i < length; i++) dList[i] = System.rng.nextDouble();
+    final vList = dList.map(floatToDcmString);
+    return update(vList);
+  }
+
+  // TODO: should this be in core/src/string?
+  /// Returns a [String] that approximately corresponds to [v],
+  /// that has at most 16 characters.
+  String floatToDcmString(double v) {
+    final precision = 10;
+    var s = v.toString();
+    if (s.length > 16) {
+      for (var i = precision; i > 0; i--) {
+        s = v.toStringAsPrecision(i);
+        if (s.length <= 16) break;
+      }
+    }
+    assert(s.length <= 16, '"$s" exceeds max DS length of 16');
+    return s;
+  }
+
+  // Urgent Sharath: unit test
+  /// Returns a new [DS] Element with values that are the hash of _this_.
+  @override
+  DS get hash =>
+      update(numbers.map((n) => floatToDcmString(system.hasher.doubleHash(n))));
+
+  /// Returns a new [DS] Element with values that are constructed from
+  /// the Sha256 hash digest of _this_.
+  ///
+  /// _Note_: The _digest_ is 32 bytes (128 bits) long; therefore, the length
+  /// of the new [values] is at most 8. The [values] try to conform to the
+  /// [vmMin] of for the Element.
+  @override
+  DS get sha256 {
+    final hList =
+        Sha256.float32(numbers).map(floatToDcmString).toList(growable: false);
+    return update((vmMax == -1 || vmMax > 8) ? hList : hList.sublist(0, vmMax));
+  }
+
+  @override
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  static const bool kIsAsciiRequired = true;
+  static const int kVRIndex = kDSIndex;
+  static const int kVRCode = kDSCode;
+  static const String kVRKeyword = 'DS';
+  static const String kVRName = 'Decimal String';
+  static const int kMaxVFLength = kMaxShortVF;
+  static const int kMaxLength = kMaxShortVF ~/ 2;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 16;
+
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
+
+  static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
+
+  static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
+
+  static bool isValidVListLength(Tag tag, Iterable<String> vList,
+          [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
+
+  static bool isValidVRIndex(int vrIndex, [Issues issues]) {
+    if (vrIndex == kVRIndex) return true;
+    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return false;
+  }
+
+  static bool isValidVRCode(int vrCode, [Issues issues]) {
+    if (vrCode == kVRCode) return true;
+    invalidVRCode(vrCode, issues, kVRIndex);
+    return false;
+  }
+
+  static int checkVRIndex(int vrIndex, [Issues issues]) =>
+      (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
+
+  static int checkVRCode(int vrCode, [Issues issues]) =>
+      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+
+  static bool isValidVFLength(int length, [Issues issues]) =>
+      _inRange(length, 0, kMaxVFLength);
+
+  static bool isNotValidVFLength(int length, [Issues issues]) =>
+      !isValidVFLength(length, issues);
+
+  static bool isValidValueLength(String s, [Issues issues]) => StringBase
+      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+
+  static bool isNotValidValueLength(String s, [Issues issues]) =>
+      !isValidValueLength(s, issues);
+
+  static bool isValidValue(String s,
+      {Issues issues, bool allowInvalid = false}) {
+    if (s == null || isNotValidValueLength(s, issues)) {
+      invalidStringLength(s);
+      return false;
+    }
+    final n = tryParse(s);
+    if (n != null) return true;
+    invalidString('Invalid Decimal (DS) String: "$s"');
+    return false;
+  }
+
+  static bool isNotValidValue(String s,
+          {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
+      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
+
+  static Iterable<String> checkList(Tag tag, Iterable<String> vList,
+          [Issues issues]) =>
+      (isValidValues(tag, vList, issues)) ? vList : null;
+
+  static Iterable<String> fromUint8List(Uint8List bytes,
+          {int offset = 0, int length}) =>
+      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+
+  static Uint8List toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+
+  static ByteData toByteData(Iterable<String> values) =>
+      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+
+  static Iterable<String> fromByteData(ByteData bd,
+          {int offset = 0, int length}) =>
+      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+
+  //TODO: Sharath add tests with leading and trailing spaces,
+  // and all spaces (blank).
+  /// Parse a [DS] [String]. Leading and trailing spaces allowed,
+  /// but all spaces is illegal.
+  static double tryParse(String s, [Issues issues]) {
+    //TODO: change to double.tryParse when available
+    final v = double.parse(s, _onError);
+    if (v == null) {
+      if (issues != null) issues.add('Invalid Digital String (DS): "$s"');
+      return invalidString('$s', issues);
+    }
+    return v;
+  }
+
+  // ignore: avoid_returning_null
+  static double _onError(String s) => null;
+
+  static Iterable<double> tryParseList(Iterable<String> vList,
+          [Issues issues]) =>
+      StringBase.tryParseList(vList, issues, tryParse);
+}
+
+// In priority order they are:
+//    - _integers
+//    - values
+//    - vfBytes
+// Since any of these can be null, they are checked in order. An implementation
+// may override this order.
+//
+//   T update<T>(Iterable<T> vList);
+abstract class IS extends StringAscii {
+  @override
+  int get vrIndex => kVRIndex;
+  @override
+  int get vrCode => kVRCode;
+  @override
+  String get vrKeyword => kVRKeyword;
+  @override
+  String get vrName => kVRName;
+  @override
+  int get maxLength => kMaxLength;
+  @override
+  int get maxVFLength => kMaxVFLength;
+
+  List<int> get integers => _integers ??= tryParseList(values);
+  List<int> _integers;
+
+  // Urgent Sharath: unit test
+  @override
+  IS get hash {
+    final sList = new List<String>(integers.length);
+    for (var i = 0; i < integers.length; i++) {
+      var h = system.hash(integers[i]);
+      h = (h.isNegative) ? h % kMinValue : h % kMaxValue;
+      sList[i] = h.toString();
+    }
+    return update(sList);
+  }
+
+  @override
+  IS get sha256 => sha256UnsupportedError(this);
+
+  // TODO: decide if needed
+  List<String> hashStringList(List<String> vList) {
+    final iList = new List<String>(vList.length);
+    for (var i = 0; i < vList.length; i++)
+      iList[i] = vList[i].hashCode.toString();
+    return iList;
+  }
+
+  // TODO: decide if needed
+  List<int> hashIntList(List<int> vList) {
+    final iList = new Int32List(vList.length);
+    for (var i = 0; i < vList.length; i++) iList[i] = vList[i].hashCode;
+    return iList;
+  }
+
+  @override
+  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  static const bool kIsAsciiRequired = true;
+  static const int kVRIndex = kISIndex;
+  static const int kVRCode = kISCode;
+  static const String kVRKeyword = 'IS';
+  static const String kVRName = 'Integer String';
+  static const int kMaxVFLength = kMaxShortVF;
+  static const int kMaxLength = kMaxShortVF ~/ 2;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 12;
+  static const int kMinValue = -99999999999;
+  static const int kMaxValue = 999999999999;
+
+  static bool _notInRange(int n) => n < kMinValue || n > kMaxValue;
+
+  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
+      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
+
+  static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
+
+  static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
+
+  static bool isValidVListLength(Tag tag, Iterable<String> vList,
+          [Issues issues]) =>
+      Element.isValidVListLength(tag, vList, issues, kMaxLength);
+
+  static bool isValidVRIndex(int vrIndex, [Issues issues]) {
+    if (vrIndex == kVRIndex) return true;
+    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return false;
+  }
+
+  static bool isValidVRCode(int vrCode, [Issues issues]) {
+    if (vrCode == kVRCode) return true;
+    invalidVRCode(vrCode, issues, kVRIndex);
+    return false;
+  }
+
+  static int checkVRIndex(int vrIndex, [Issues issues]) =>
+      (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
+
+  static int checkVRCode(int vrCode, [Issues issues]) =>
+      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+
+  static bool isValidVFLength(int length, [Issues issues]) =>
+      _inRange(length, 0, kMaxVFLength);
+
+  static bool isNotValidVFLength(int length, [Issues issues]) =>
+      !isValidVFLength(length, issues);
+
+  static bool isValidValueLength(String s, [Issues issues]) => StringBase
+      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+
+  static bool isNotValidValueLength(String s, [Issues issues]) =>
+      !isValidValueLength(s, issues);
+
+  static bool isValidValue(String s,
+      {Issues issues, bool allowInvalid = false}) {
+    if (s == null || isNotValidValueLength(s, issues)) {
+      invalidStringLength(s, issues);
+      return false;
+    }
+    final n = tryParse(s);
+    if (n == null || _notInRange(n)) {
+      invalidString(s, issues);
+      return false;
+    }
+    return true;
+  }
+
+  static bool isNotValidValue(String s,
+          {Issues issues, bool allowInvalid = false}) =>
+      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
+      isValidVRIndex(tag.vrIndex) &&
+      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
+
+  static Iterable<String> checkList(Tag tag, Iterable<String> vList,
+          [Issues issues]) =>
+      (isValidValues(tag, vList, issues)) ? vList : null;
+
+  static Iterable<String> fromUint8List(Uint8List bytes,
+          {int offset = 0, int length}) =>
+      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+
+  static Uint8List toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+
+  static ByteData toByteData(Iterable<String> values) =>
+      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+
+  static Iterable<String> fromByteData(ByteData bd,
+          {int offset = 0, int length}) =>
+      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+
+  static int tryParse(String s, [Issues issues]) {
+    //TODO: replace with tryParse when available
+    final n = int.parse(s, onError: _onError);
+    if (n == null || _notInRange(n)) {
+      if (issues != null) issues.add('Invalid Integer String (IS): "$s"');
+      return invalidString(s, issues);
+    }
+    return n;
+  }
+
+  // Avoids creating the lambda on each parse.
+  // ignore: avoid_returning_null
+  static int _onError(String s) => null;
+
+  static List<int> tryParseList(Iterable<String> sList, [Issues issues]) {
+    final result = <int>[];
+    for (var s in sList) {
+      final v = tryParse(s, issues);
+      if (v == null) return null;
+      result.add(v);
+    }
+    return result;
+  }
+
+  static List<int> parseBytes(Uint8List vfBytes) =>
+      tryParseList(_stringListFromTypedData(vfBytes, kMaxVFLength));
+
+  static Iterable<String> validateValueField(Uint8List vfBytes) =>
+      _stringListFromTypedData(vfBytes, kMaxVFLength,
+          isAscii: kIsAsciiRequired);
+}
+
 typedef V _TryParser<V>(String s, Issues issues);
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
-//TODO: this does not handle escape sequences
+//TODO: this should handle escape sequences
 bool _isFilteredString(String s, int min, int max, bool filter(int c),
     {bool allowLeadingSpaces = false,
     bool allowTrailingSpaces = false,
@@ -2158,352 +2564,4 @@ List<String> _textListFromTypedData(TypedData vfBytes, int maxVFLength,
   if (!_isValidVFL(vfBytes.lengthInBytes, maxVFLength))
     return invalidVFLength(vfBytes.lengthInBytes, maxVFLength);
   return <String>[_typedDataToString(vfBytes, isAscii)];
-}
-
-
-abstract class DS extends StringAscii {
-  @override
-  int get vrIndex => kVRIndex;
-  @override
-  int get vrCode => kVRCode;
-  @override
-  String get vrKeyword => kVRKeyword;
-  @override
-  String get vrName => kVRName;
-  @override
-  int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
-
-  Iterable<double> get numbers => _numbers ??= tryParseList(values);
-  Iterable<double> _numbers;
-
-  /// Returns a new [DS] [Element] with a random list of [values] with
-  /// the same [length] as _this_.
-  DS get random {
-    if (length == 0) return this;
-    final dList = new List<double>(length);
-    for (var i = 0; i < length; i++) dList[i] = System.rng.nextDouble();
-    final vList = dList.map(floatToDcmString);
-    return update(vList);
-  }
-
-  // TODO: should this be in core/src/string?
-  /// Returns a [String] that approximately corresponds to [v],
-  /// that has at most 16 characters.
-  String floatToDcmString(double v) {
-    final precision = 10;
-    var s = v.toString();
-    if (s.length > 16) {
-      for (var i = precision; i > 0; i--) {
-        s = v.toStringAsPrecision(i);
-        if (s.length <= 16) break;
-      }
-    }
-    assert(s.length <= 16, '"$s" exceeds max DS length of 16');
-    return s;
-  }
-
-  /// Returns a new [DS] Element with values that are the hash of _this_.
-  @override
-  DS get hash =>
-      update(numbers.map((n) => floatToDcmString(system.hasher.doubleHash(n))));
-
-  /// Returns a new [DS] Element with values that are constructed from
-  /// the Sha256 hash digest of _this_.
-  ///
-  /// _Note_: The _digest_ is 32 bytes (128 bits) long; therefore, the length
-  /// of the new [values] is at most 8. The [values] try to conform to the
-  /// [vmMin] of for the Element.
-  @override
-  DS get sha256 {
-    final hList =
-    Sha256.float32(numbers).map(floatToDcmString).toList(growable: false);
-    return update((vmMax == -1 || vmMax > 8) ? hList : hList.sublist(0, vmMax));
-  }
-
-  @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = true;
-  static const int kVRIndex = kDSIndex;
-  static const int kVRCode = kDSCode;
-  static const String kVRKeyword = 'DS';
-  static const String kVRName = 'Decimal String';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxShortVF ~/ 2;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 16;
-
-  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
-      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
-
-  static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
-
-  static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
-
-  static bool isValidVListLength(Tag tag, Iterable<String> vList,
-                                 [Issues issues]) =>
-      Element.isValidVListLength(tag, vList, issues, kMaxLength);
-
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) {
-    if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
-    return false;
-  }
-
-  static bool isValidVRCode(int vrCode, [Issues issues]) {
-    if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
-  }
-
-  static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
-
-  static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
-
-  static bool isValidVFLength(int length, [Issues issues]) =>
-      _inRange(length, 0, kMaxVFLength);
-
-  static bool isNotValidVFLength(int length, [Issues issues]) =>
-      !isValidVFLength(length, issues);
-
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
-
-  static bool isNotValidValueLength(String s, [Issues issues]) =>
-      !isValidValueLength(s, issues);
-
-  static bool isValidValue(String s,
-                           {Issues issues, bool allowInvalid = false}) {
-    if (s == null || isNotValidValueLength(s, issues)) {
-      invalidStringLength(s);
-      return false;
-    }
-    final v = tryParse(s);
-    if (v != null) return true;
-    invalidString('Invalid Decimal (DS) String: "$s"');
-    return false;
-  }
-
-  static bool isNotValidValue(String s,
-                              {Issues issues, bool allowInvalid = false}) =>
-      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      isValidVRIndex(tag.vrIndex) &&
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
-
-  static Iterable<String> checkList(Tag tag, Iterable<String> vList,
-                                    [Issues issues]) =>
-      (isValidValues(tag, vList, issues)) ? vList : null;
-
-  static Iterable<String> fromBytes(Uint8List bytes,
-                                    {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static Iterable<String> fromByteData(ByteData bd,
-                                       {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  //TODO: Sharath add tests with leading and trailing spaces,
-  // and all spaces (blank).
-  /// Parse a [DS] [String]. Leading and trailing spaces allowed,
-  /// but all spaces is illegal.
-  static double tryParse(String s, [Issues issues]) {
-    //TODO: change to double.tryParse when available
-    final v = double.parse(s, _onError);
-    if (v == null) {
-      if (issues != null) issues.add('Invalid Digital String (DS): "$s"');
-      return invalidString('$s', issues);
-    }
-    return v;
-  }
-
-  // ignore: avoid_returning_null
-  static double _onError(String s) => null;
-
-  static Iterable<double> tryParseList(Iterable<String> vList,
-                                       [Issues issues]) =>
-      StringBase.tryParseList(vList, issues, tryParse);
-}
-
-// In priority order they are:
-//    - _integers
-//    - values
-//    - vfBytes
-// Since any of these can be null, they are checked in order. An implementation
-// may override this order.
-//
-//   T update<T>(Iterable<T> vList);
-abstract class IS extends StringAscii {
-  @override
-  int get vrIndex => kVRIndex;
-  @override
-  int get vrCode => kVRCode;
-  @override
-  String get vrKeyword => kVRKeyword;
-  @override
-  String get vrName => kVRName;
-  @override
-  int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
-
-  Iterable<int> get integers => _integers ??= tryParseList(values);
-  Iterable<int> _integers;
-
-  @override
-  IS get hash;
-
-  @override
-  IS get sha256 => sha256UnsupportedError(this);
-
-  @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = true;
-  static const int kVRIndex = kISIndex;
-  static const int kVRCode = kISCode;
-  static const String kVRKeyword = 'IS';
-  static const String kVRName = 'Integer String';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxShortVF ~/ 2;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 12;
-
-  static bool isValidArgs(Tag tag, Iterable<String> vList) =>
-      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
-
-  static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
-
-  static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
-
-  static bool isValidVListLength(Tag tag, Iterable<String> vList,
-                                 [Issues issues]) =>
-      Element.isValidVListLength(tag, vList, issues, kMaxLength);
-
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) {
-    if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
-    return false;
-  }
-
-  static bool isValidVRCode(int vrCode, [Issues issues]) {
-    if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
-  }
-
-  static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
-
-  static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
-
-  static bool isValidVFLength(int length, [Issues issues]) =>
-      _inRange(length, 0, kMaxVFLength);
-
-  static bool isNotValidVFLength(int length, [Issues issues]) =>
-      !isValidVFLength(length, issues);
-
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
-
-  static bool isNotValidValueLength(String s, [Issues issues]) =>
-      !isValidValueLength(s, issues);
-
-  static bool isValidValue(String s,
-                           {Issues issues, bool allowInvalid = false}) {
-    if (s == null || isNotValidValueLength(s, issues)) {
-      invalidStringLength(s, issues);
-      return false;
-    }
-    final n = tryParse(s);
-    if (n == null) {
-      invalidString(s, issues);
-      return false;
-    }
-    return true;
-  }
-
-  static bool isNotValidValue(String s,
-                              {Issues issues, bool allowInvalid = false}) =>
-      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      isValidVRIndex(tag.vrIndex) &&
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
-
-  static Iterable<String> checkList(Tag tag, Iterable<String> vList,
-                                    [Issues issues]) =>
-      (isValidValues(tag, vList, issues)) ? vList : null;
-
-  static Iterable<String> fromBytes(Uint8List bytes,
-                                    {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static Iterable<String> fromByteData(ByteData bd,
-                                       {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static int tryParse(String s, [Issues issues]) {
-    //TODO: replace with tryParse when available
-    final v = int.parse(s, onError: _onError);
-    if (v == null) {
-      if (issues != null) issues.add('Invalid Digital String (DS): "$s"');
-      return invalidString(s, issues);
-    }
-    return v;
-  }
-
-  // Avoids creating the lambda on each parse.
-  // ignore: avoid_returning_null
-  static int _onError(String s) => null;
-
-  static Iterable<int> tryParseList(Iterable<String> vList, [Issues issues]) {
-    final result = <int>[];
-    for (var s in vList) {
-      final v = tryParse(s, issues);
-      if (v == null) return null;
-      result.add(v);
-    }
-    return result;
-  }
-
-  static Iterable<int> parseBytes(Uint8List vfBytes) =>
-      tryParseList(_stringListFromTypedData(vfBytes, kMaxVFLength));
-
-  static Iterable<String> validateValueField(Uint8List vfBytes) =>
-      _stringListFromTypedData(vfBytes, kMaxVFLength,
-                                   isAscii: kIsAsciiRequired);
-
-  Iterable<String> hashStringList(List<String> vList) {
-    final iList = new List<String>(vList.length);
-    for (var i = 0; i < vList.length; i++)
-      iList[i] = vList[i].hashCode.toString();
-    return iList;
-  }
-
-  Iterable<int> hashIntList(List<int> vList) {
-    final iList = new Int32List(vList.length);
-    for (var i = 0; i < vList.length; i++) iList[i] = vList[i].hashCode;
-    return iList;
-  }
 }

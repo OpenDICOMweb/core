@@ -77,11 +77,9 @@ Prefixer: z: '$z' spaces: $spaces level: $_level, indent: $indent,
   width: $lineNumberWidth, radix: $lineNoRadix, padChar: '$lineNoPadChar'
 ''';
 
-
   String call(String s, [String pre]) {
     final p = (pre == null) ? prefix : pre;
     final out = '$lineNo$p$spaces$s';
-//    print('out: $out');
     return out;
   }
 

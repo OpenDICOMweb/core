@@ -57,20 +57,6 @@ abstract class BufferBase {
   Uint8List asUint8List([int offset, int length]) =>
       bytes.asUint8List(offset ?? rIndex_, length ?? wIndex_);
 
-/*
-  Bytes asBytes([int offset, int length]) {
-    print('rIndex: $rIndex_ wIndex: $wIndex_');
-    bytes.asBytes(offset ?? rIndex_, length ?? wIndex_);
-  }
-
-  ByteData asByteData([int offset = 0, int length]) =>
-      //  final offset = _getOffset(offset, length);
-  bytes.asByteData(offset, length ?? lengthInBytes);
-
-  Uint8List asUint8List([int offset = 0, int length]) =>
-      bytes.asUint8List(offset, length ?? lengthInBytes);
-*/
-
   bool checkAllZeros(int offset, int end) {
     for (var i = offset; i < end; i++) if (bytes.getUint8(i) != 0) return false;
     return true;

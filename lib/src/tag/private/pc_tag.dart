@@ -47,10 +47,9 @@ abstract class PCTag extends PrivateTag {
 
   bool isValidDataCode(int code) {
     final ng = (code >> 16);
-    //print('ng: $ng group $group');
     if (group != ng) return false;
-    final elt = (sgNumber << 8) + (code & 0xFF);
-    // print('$baseHex <= ${Tag.toHex(elt)} <= $limitHex');
+    //final elt = (sgNumber << 8) + (code & 0xFF);
+    final elt = code & 0xFFFF;
     if (elt < base || elt > limit) return false;
     return true;
   }
@@ -79,8 +78,8 @@ abstract class PCTag extends PrivateTag {
      final def = PCTagDefinition.lookup(creatorName);
      if (vrIndex != kLOIndex && vrIndex != kUNIndex) _error(vrIndex);
      return (def != null)
-            ? new PCTagKnown(code, vrIndex, creatorName, def)
-            : new PCTagUnknown(code, vrIndex, creatorName);
+            ? new PCTagKnown(code, kLOIndex, creatorName, def)
+            : new PCTagUnknown(code, kLOIndex, creatorName);
    }
 
   static void _error(int vrIndex) =>
@@ -97,10 +96,12 @@ class PCTagUnknown extends PCTag {
   @override
   final String name;
 
-  const PCTagUnknown(this.code, this.vrIndex, this.name) : super._();
+  const PCTagUnknown(this.code, this.vrIndex, String name)
+      : name = name ?? 'NoName',
+        super._();
 
   @override
-  String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)}';
+  String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)} "$name"';
 
   static const PCTagUnknown kUnknownCreator =
   const PCTagUnknown(0x00, kLOIndex, 'Unknown Creator');
@@ -163,8 +164,6 @@ class PCTagDefinition {
 
   static PCTagDefinition lookup(String name) {
     final tag = privateCreatorMap[name];
-    //print('$name definition: $definition');
-    //return (definition == null) ? kUnknown : definition;
     return tag;
   }
 
