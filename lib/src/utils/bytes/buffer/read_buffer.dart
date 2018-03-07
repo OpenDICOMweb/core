@@ -50,6 +50,14 @@ class ReadBuffer extends BufferBase {
         wIndex_ = td.lengthInBytes,
         bytes = new Bytes.fromTypedData(td, endian);
 
+/* Urgent: Jim todo
+  ReadBuffer.fromString(String s, [Endian endian])
+      : endian = endian ??= Endian.host,
+        rIndex_ = 0,
+        wIndex_ = td.lengthInBytes,
+        bytes = new Bytes.fromTypedData(td, endian);
+*/
+
   // **** ReadBuffer specific Getters and Methods
 
   int get index => rIndex_;
@@ -123,6 +131,24 @@ class ReadBuffer extends BufferBase {
     final v = bytes.getUint64(rIndex_);
     rIndex_ += 8;
     return v;
+  }
+
+  String readAscii(int length) {
+    final s = bytes.getAscii(rIndex_, length);
+    rIndex_ += length;
+    return s;
+  }
+  String readUtf8(int length) {
+    final s = bytes.getUtf8(rIndex_, length);
+    rIndex_ += length;
+    return s;
+  }
+
+  String readString(int length) => readUtf8(length);
+
+  List<String> readStringList(int length) {
+    final s = readString(length);
+    return s.split('\\');
   }
 
   /// Peek at next tag - doesn't move the [rIndex_].

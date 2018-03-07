@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
-export 'package:core/src/dataset/base.dart';
-export 'package:core/src/dataset/byte.dart';
-export 'package:core/src/dataset/tag.dart';
-export 'package:core/src/dataset/utils.dart';
+export 'package:core/src/dataset/utils/compare.dart';
+export 'package:core/src/dataset/utils/compare_datasets.dart';
+export 'package:core/src/dataset/utils/modification.dart';
+//export 'package:core/src/dataset/utils/status_report.dart';

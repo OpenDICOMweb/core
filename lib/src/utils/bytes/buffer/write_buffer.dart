@@ -10,7 +10,6 @@ import 'dart:typed_data';
 import 'package:core/src/utils/bytes/buffer/buffer_base.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
 
-
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
 
@@ -96,7 +95,7 @@ class WriteBuffer extends BufferBase {
   /// Writes a 16-bit unsigned integer (Uint16) value to _this_.
   void writeInt16(int value) {
     assert(
-    value >= -0x7FFF && value <= 0x7FFF - 1, 'Value out of range: $value');
+        value >= -0x7FFF && value <= 0x7FFF - 1, 'Value out of range: $value');
     _maybeGrow(2);
     bytes.setInt16(wIndex_, value);
     wIndex_ += 2;
@@ -107,7 +106,7 @@ class WriteBuffer extends BufferBase {
   /// Writes a 32-bit unsigned integer (Uint32) value to _this_.
   void writeInt32(int value) {
     assert(value >= -0x7FFFFFFF && value <= 0x7FFFFFFF - 1,
-    'Value out if range: $value');
+        'Value out if range: $value');
     _maybeGrow(4);
     bytes.setInt32(wIndex_, value);
     wIndex_ += 4;
@@ -118,7 +117,7 @@ class WriteBuffer extends BufferBase {
   /// Writes a 64-bit unsigned integer (Uint32) value to _this_.
   void writeInt64(int value) {
     assert(value >= -0x7FFFFFFFFFFFFFFF && value <= 0x7FFFFFFFFFFFFFFF - 1,
-    'Value out of range: $value');
+        'Value out of range: $value');
     _maybeGrow(8);
     bytes.setInt64(wIndex_, value);
     wIndex_ += 8;
@@ -159,7 +158,7 @@ class WriteBuffer extends BufferBase {
   /// Writes a 64-bit unsigned integer (Uint32) value to _this_.
   void writeUint64(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFFFFFFFFFF,
-    'Value out of range: $value');
+        'Value out of range: $value');
     _maybeGrow(8);
     bytes.setUint64(wIndex_, value);
     wIndex_ += 8;
@@ -168,6 +167,8 @@ class WriteBuffer extends BufferBase {
   void writeAscii(String s) => writeUint8List(ASCII.encode(s));
 
   void writeUtf8(String s) => writeUint8List(UTF8.encode(s));
+
+  void writeString(String s) => writeUtf8(s);
 
   /// Writes [bytes] to _this_.
   void writeUint8List(Uint8List bytes) => write(bytes);
@@ -179,10 +180,10 @@ class WriteBuffer extends BufferBase {
   void write(TypedData td) {
     final offset = td.offsetInBytes;
     final length = td.lengthInBytes;
-    final uint8List = (td is Uint8List) ? td : td.buffer.asUint8List(offset, length);
+    final uint8List =
+        (td is Uint8List) ? td : td.buffer.asUint8List(offset, length);
     _maybeGrow(length);
-    for (var i = 0, j = wIndex_; i < length; i++, j++)
-      bytes[j] = uint8List[i];
+    for (var i = 0, j = wIndex_; i < length; i++, j++) bytes[j] = uint8List[i];
     wIndex_ += length;
   }
 
@@ -223,7 +224,8 @@ class WriteBuffer extends BufferBase {
   bool _maybeGrow([int size = 1]) =>
       (wIndex_ + size < lengthInBytes) ? false : grow(wIndex_ + size);
 
-  bool  _isClosed = false;
+  bool _isClosed = false;
+
   /// Returns _true_ if _this_ is no longer writable.
   bool get isClosed => (_isClosed == null) ? false : true;
 
@@ -243,7 +245,8 @@ class WriteBuffer extends BufferBase {
   ByteData rClose() {
     final view = asByteData(0, rIndex_);
     if (isNotEmpty) {
-      //  warn('End of Data with rIndex_($rIndex) != length(${view.lengthInBytes})');
+      print('End of Data with rIndex_($rIndex) != '
+          'length(${view.lengthInBytes})');
       _hadTrailingZeros = checkAllZeros(rIndex_, wIndex_);
     }
     _isClosed = true;
@@ -303,5 +306,4 @@ class LoggingWriteBuffer extends WriteBuffer {
   void warn(Object msg) => print('** Warning: $msg $_www');
 
   void error(Object msg) => throw new Exception('**** Error: $msg $_www');
-
 }
