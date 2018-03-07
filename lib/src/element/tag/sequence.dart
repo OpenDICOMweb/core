@@ -6,15 +6,12 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/dataset/tag/tag_item.dart';
+import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/element/tag/tag_element.dart';
-import 'package:core/src/logger/formatter.dart';
-import 'package:core/src/tag/export.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/utils/logger.dart';
+import 'package:core/src/vr.dart';
 
 /// A Sequence ([SQ]) Element.
 ///
@@ -43,22 +40,6 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   SQtag(this.tag, this.parent,
       [Iterable<Item> vList, this.vfLengthField, this.bytes])
       : values = (vList == null) ? emptyItemTagList : vList;
-
-  factory SQtag.from(SQ sq, [Dataset parent]) {
-    final nItems = new List<TagItem>(sq.values.length);
-    for (var i = 0; i < sq.values.length; i++) {
-      parent = (parent == null) ? sq.parent : parent;
-      final item = sq.values.elementAt(i);
-      nItems[i] = new TagItem.from(item, parent);
-    }
-    return new SQtag(sq.tag, parent, nItems, sq.vfLengthField);
-  }
-
-  factory SQtag._fromBytes(Tag tag, Dataset parent, List<TagItem> vList,
-      [int vfLengthField, Uint8List bytes]) {
-    if (tag.vrIndex != kSQIndex) return null;
-    return new SQtag(tag, parent, vList, vfLengthField, bytes);
-  }
 
   SQtag.fromDecoder(this.tag, this.parent,
       [this.values, this.vfLengthField, this.bytes]);
@@ -147,6 +128,24 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
           [int vfLength, Dataset parent]) =>
       new SQtag(tag, parent, values, vfLength);
 
-  static SQtag fromBDE(BDElement e, Dataset parent) =>
+  static SQtag from(SQ sq, [Dataset parent]) {
+    final nItems = new List<TagItem>(sq.values.length);
+    parent ??= sq.parent;
+    for (var i = 0; i < sq.values.length; i++) {
+      final item = sq.values.elementAt(i);
+      nItems[i] = new TagItem.from(item, parent);
+    }
+    return new SQtag(sq.tag, parent, nItems, sq.vfLengthField);
+  }
+
+/*
+  static SQtag from(Element e, Dataset parent) =>
       new SQtag._fromBytes(e.tag, parent, e.values, e.vfLengthField, e.vfBytes);
+*/
+
+  static SQtag fromBytes(Tag tag, Dataset parent, List<TagItem> vList,
+                           [int vfLengthField, Uint8List bytes]) {
+    if (tag.vrIndex != kSQIndex) return null;
+    return new SQtag(tag, parent, vList, vfLengthField, bytes);
+  }
 }

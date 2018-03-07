@@ -233,7 +233,7 @@ void main() {
         final vList1 = rsg.getAEList(1, 1);
         final bytes = AE.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final ae1 = AEtag.fromBytes(PTag.kPerformedStationAETitle, bytes);
+        final ae1 = AEtag.fromUint8List(PTag.kPerformedStationAETitle, bytes);
         log.debug('ae1: ${ae1.info}');
         expect(ae1.hasValidValues, true);
       }
@@ -669,8 +669,8 @@ void main() {
       //  system.level = Level.debug;;
       final vList1 = rsg.getAEList(1, 1);
       final bytes = AE.toBytes(vList1);
-      log.debug('AE.fromBytes(bytes): ${AE.fromBytes(bytes)}, bytes: $bytes');
-      expect(AE.fromBytes(bytes), equals(vList1));
+      log.debug('AE.fromUint8List(bytes): ${AE.fromUint8List(bytes)}, bytes: $bytes');
+      expect(AE.fromUint8List(bytes), equals(vList1));
     });
 
     test('AE toBytes', () {
@@ -994,7 +994,7 @@ void main() {
         final vList1 = rsg.getCSList(1, 1);
         final bytes = CS.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final cs1 = CStag.fromBytes(PTag.kGeometryOfKSpaceTraversal, bytes);
+        final cs1 = CStag.fromUint8List(PTag.kGeometryOfKSpaceTraversal, bytes);
         log.debug('cs1: ${cs1.info}');
         expect(cs1.hasValidValues, true);
       }
@@ -1545,8 +1545,8 @@ void main() {
       //  system.level = Level.debug;;
       final vList1 = rsg.getCSList(1, 1);
       final bytes = CS.toBytes(vList1);
-      log.debug('CS.fromBytes(bytes): ${CS.fromBytes(bytes)}, bytes: $bytes');
-      expect(CS.fromBytes(bytes), equals(vList1));
+      log.debug('CS.fromUint8List(bytes): ${CS.fromUint8List(bytes)}, bytes: $bytes');
+      expect(CS.fromUint8List(bytes), equals(vList1));
     });
 
     test('CS toBytes', () {
@@ -1902,7 +1902,7 @@ void main() {
         final vList1 = rsg.getUIList(1, 1);
         final bytes = UI.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final ui0 = UItag.fromBytes(PTag.kSOPInstanceUID, bytes);
+        final ui0 = UItag.fromUint8List(PTag.kSOPInstanceUID, bytes);
         log.debug('$i: ui0: ${ui0.info}');
         expect(ui0.hasValidValues, true);
       }
@@ -2307,8 +2307,8 @@ void main() {
       //  system.level = Level.debug;;
       final vList1 = rsg.getUIList(1, 1);
       final bytes = UI.toBytes(vList1);
-      log.debug('UI.fromBytes(bytes): ${UI.fromBytes(bytes)}, bytes: $bytes');
-      expect(UI.fromBytes(bytes), equals(vList1));
+      log.debug('UI.fromUint8List(bytes): ${UI.fromUint8List(bytes)}, bytes: $bytes');
+      expect(UI.fromUint8List(bytes), equals(vList1));
     });
 
     test('UI toBytes', () {
@@ -2603,7 +2603,7 @@ void main() {
         final vList1 = rsg.getURList(1, 1);
         final bytes = UR.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final ur0 = URtag.fromBytes(PTag.kRetrieveURL, bytes);
+        final ur0 = URtag.fromUint8List(PTag.kRetrieveURL, bytes);
         log.debug('ur0: ${ur0.info}');
         expect(ur0.hasValidValues, true);
       }
@@ -3007,8 +3007,8 @@ void main() {
       //  system.level = Level.debug;;
       final vList1 = rsg.getURList(1, 1);
       final bytes = UR.toBytes(vList1);
-      log.debug('UR.fromBytes(bytes): ${UR.fromBytes(bytes)}, bytes: $bytes');
-      expect(UR.fromBytes(bytes), equals(vList1));
+      log.debug('UR.fromUint8List(bytes): ${UR.fromUint8List(bytes)}, bytes: $bytes');
+      expect(UR.fromUint8List(bytes), equals(vList1));
     });
 
     test('UR toBytes', () {

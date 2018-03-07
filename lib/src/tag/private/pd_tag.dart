@@ -4,12 +4,12 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/private/pd_tag_definitions.dart';
 import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/utils/string.dart';
+import 'package:core/src/vr.dart';
 
 abstract class PDTag extends PrivateTag {
   const PDTag._();

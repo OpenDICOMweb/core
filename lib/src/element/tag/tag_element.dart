@@ -6,23 +6,24 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/errors.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/integer/integer.dart';
-import 'package:core/src/element/base/integer/pixel_data.dart';
-import 'package:core/src/element/base/mixin/tag_mixin_base.dart';
-import 'package:core/src/element/base/string.dart';
-import 'package:core/src/element/errors.dart';
-import 'package:core/src/element/tag/export.dart';
-import 'package:core/src/string/ascii.dart';
-import 'package:core/src/tag/export.dart';
-import 'package:core/src/uid/well_known/transfer_syntax.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element/base.dart';
+import 'package:core/src/element/tag.dart';
+import 'package:core/src/element/tag/integer.dart';
+import 'package:core/src/element/tag/pixel_data.dart';
+import 'package:core/src/element/tag/sequence.dart';
+import 'package:core/src/element/tag/string.dart';
+import 'package:core/src/element/tag/tag_mixin.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/utils/string.dart';
+import 'package:core/src/value/uid.dart';
+import 'package:core/src/vr.dart';
 
 typedef Element TagElementMaker(Tag tag, Iterable vList, [int vfLengthField]);
 typedef TagElement MakeFrom(Element e);
 typedef TagElement MakeFromByteData(ByteData bd);
-typedef Element MakeFromBDE(Element e);
+typedef Element Makefrom(Element e);
 typedef IntBase MakeFromPixelDataBDE(IntBase e, [TransferSyntax ts]);
 
 /// Tag Mixin Class
@@ -107,22 +108,19 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   }
 
   // Urgent Jim: make sure private tags are not unknown
-  static Element make(Tag oldTag, Iterable values, int vrIndex,
-          [int vfLengthField]) {
-     assert(oldTag.vrIndex == vrIndex || vrIndex == kUNIndex,
-     'Tag VR: ${oldTag.vrIndex}, vrIndex, $vrIndex');
-//     print('vrIndex: ${vrIdFromIndex(vrIndex)}');
-     final newTag = Tag.lookupByCode(oldTag.code);
-     if (oldTag != newTag) print('changed from $oldTag to $newTag');
-    return _tagMakers[vrIndex](oldTag, values);
+  static Element make(Tag tag, Iterable values, int vrIndex,
+      [int vfLengthField]) {
+    if (tag.vrIndex == vrIndex || vrIndex == kUNIndex)
+      log.warn('Tag VR: ${tag.vrIndex}, vrIndex, $vrIndex');
+    //    final newTag = Tag.lookupByCode(tag.code);
+    //    if (tag != newTag)
+    //      log.warn('Changed from $tag to $newTag');
+    return _tagMakers[vrIndex](tag, values);
   }
 
   static Element from(Element e, int vrIndex, [int vfLengthField]) =>
-    // TODO: make work with vfLengthField
-    //  make(e.tag, e.values, vrIndex ?? e.vrIndex, e.vfLengthField);
-
-     make(e.tag, e.values, vrIndex ?? e.vrIndex);
-
+      make(e.tag, e.values, vrIndex ?? e.vrIndex,
+          vfLengthField ?? e.vfLengthField);
 
   static final _tagMakers = <Function>[
     SQtag.make,
@@ -147,13 +145,13 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
       Tag tag, Iterable values, int vfLengthField, int vrIndex) {
     switch (vrIndex) {
       case kOBIndex:
-        return OBtagPixelData.fromBytes(tag, values, vfLengthField);
+        return OBtagPixelData.fromUint8List(tag, values, vfLengthField);
       case kUNIndex:
-        return UNtagPixelData.fromBytes(tag, values, vfLengthField);
+        return UNtagPixelData.fromUint8List(tag, values, vfLengthField);
       case kOWIndex:
-        return OWtagPixelData.fromBytes(tag, values, vfLengthField);
+        return OWtagPixelData.fromUint8List(tag, values, vfLengthField);
       case kSQIndex:
-        return OWtagPixelData.fromBytes(tag, values, vfLengthField);
+        return OWtagPixelData.fromUint8List(tag, values, vfLengthField);
       default:
         return invalidVRIndex(vrIndex, null, null);
     }
@@ -185,71 +183,70 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 
 //  static Null _sqError(EBytes eb) => invalidElementIndex(0);
 
-  static Element fromBDE(Element bd, int vrIndex, [TransferSyntax ts]) {
+  static Element tagElementFrom(Element e, int vrIndex, [TransferSyntax ts]) {
 //    print('fromBD vrIndex: $vrIndex');
     if (vrIndex > 30) return invalidVRIndex(vrIndex, null, null);
-    if (bd is PixelData)
-      return _bdePixelMakers[vrIndex](bd, ts);
-    return _bdeMakers[vrIndex](bd);
+    if (e is PixelData) return _bdePixelMakers[vrIndex](e, ts);
+    return _bdeMakers[vrIndex](e);
   }
 
   static const List<MakeFromPixelDataBDE> _bdePixelMakers =
-  const <MakeFromPixelDataBDE>[
+      const <MakeFromPixelDataBDE>[
     _vrIndexPixelDataError,
-    OBtagPixelData.fromBDE,
-    OWtagPixelData.fromBDE,
-    UNtagPixelData.fromBDE
-    ];
+    OBtagPixelData.from,
+    OWtagPixelData.from,
+    UNtagPixelData.from
+  ];
 
-  static Null _vrIndexPixelDataError(Element bd, [TransferSyntax ts]) =>
+  static Null _vrIndexPixelDataError(Element e, [TransferSyntax ts]) =>
       invalidElementIndex(0);
 
-  static const List<MakeFromBDE> _bdeMakers = const <MakeFromBDE>[
+  static const List<Makefrom> _bdeMakers = const <Makefrom>[
     _vrIndexError,
     // Maybe Undefined Lengths
-    OBtag.fromBDE, OWtag.fromBDE, UNtag.fromBDE, // No reformat
+    OBtag.from, OWtag.from, UNtag.from, // No reformat
 
     // EVR Long
-    ODtag.fromBDE, OFtag.fromBDE, OLtag.fromBDE,
-    UCtag.fromBDE, URtag.fromBDE, UTtag.fromBDE,
+    ODtag.from, OFtag.from, OLtag.from,
+    UCtag.from, URtag.from, UTtag.from,
 
     // EVR Short
-    AEtag.fromBDE, AStag.fromBDE, ATtag.fromBDE,
-    CStag.fromBDE, DAtag.fromBDE, DStag.fromBDE,
-    DTtag.fromBDE, FDtag.fromBDE, FLtag.fromBDE,
-    IStag.fromBDE, LOtag.fromBDE, LTtag.fromBDE,
-    PNtag.fromBDE, SHtag.fromBDE, SLtag.fromBDE,
-    SStag.fromBDE, STtag.fromBDE, TMtag.fromBDE,
-    UItag.fromBDE, ULtag.fromBDE, UStag.fromBDE,
+    AEtag.from, AStag.from, ATtag.from,
+    CStag.from, DAtag.from, DStag.from,
+    DTtag.from, FDtag.from, FLtag.from,
+    IStag.from, LOtag.from, LTtag.from,
+    PNtag.from, SHtag.from, SLtag.from,
+    SStag.from, STtag.from, TMtag.from,
+    UItag.from, ULtag.from, UStag.from,
   ];
 
   static Null _vrIndexError(Element bd) => invalidElementIndex(0);
 
-  static Element maybeUndefinedFromBDE(Element e, int vrIndex) {
+  static Element maybeUndefinedFrom(Element e, int vrIndex) {
     assert(vrIndex == e.vrIndex);
     switch (vrIndex) {
       case kOBIndex:
-        return OBtag.fromBDE(e);
+        return OBtag.from(e);
       case kUNIndex:
-        return UNtag.fromBDE(e);
+        return UNtag.from(e);
       case kOWIndex:
-        return OWtag.fromBDE(e);
+        return OWtag.from(e);
       default:
         return invalidVRIndex(vrIndex, null, null);
     }
   }
 
-  static Element pixelDataFromBDE(Element e, TransferSyntax ts, int vrIndex) {
+  static Element pixelDataFrom(Element e, TransferSyntax ts, int vrIndex) {
     assert(vrIndex == e.vrIndex);
     if (e.tag != PTag.kPixelData)
       return invalidKey(e.tag, 'Invalid Tag Code for PixelData');
     switch (vrIndex) {
       case kOBIndex:
-        return OBtagPixelData.fromBDE(e, ts);
+        return OBtagPixelData.from(e, ts);
       case kUNIndex:
-        return UNtagPixelData.fromBDE(e, ts);
+        return UNtagPixelData.from(e, ts);
       case kOWIndex:
-        return OWtagPixelData.fromBDE(e, ts);
+        return OWtagPixelData.from(e, ts);
       default:
         return invalidVRIndex(vrIndex, null, null);
     }

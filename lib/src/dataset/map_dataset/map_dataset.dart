@@ -5,22 +5,10 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:collection/collection.dart';
-import 'package:core/src/dataset/errors.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/errors.dart';
+import 'package:core/src/dataset/base.dart';
+import 'package:core/src/element/base.dart';
+import 'package:core/src/utils/errors.dart';
 
-
-// Urgent Sharath:
-//  create MapItem and MapRootDataset
-//  create some Elements
-//  insert and remove and compare for identity (identical(a, b)
-//
-//  create a second MapItem and MapRootDataset
-//  insert same elements in both list
-//  compare for equality and hashCode
-//  compare list.keys and list.elements for equality
-//
-//  confirm that removeAt and copy work.
 MapEquality<int, Element> mapEquality = const MapEquality<int, Element>();
 
 bool mapsEqual(Map<int, Element> map0, Map<int, Element> map1) =>
@@ -31,9 +19,7 @@ int mapHash(Map<int, Element> map) => mapEquality.hash(map);
 abstract class MapDataset {
   /// A [Map] from key to [Element].
   Map<int, Element> get eMap;
-//  bool get allowDuplicates;
- // bool tryAdd(Element e, [Issues issues]);
- // History get history;
+ final History history = new History();
 
   Element operator [](int i) => eMap[i];
 
@@ -89,13 +75,16 @@ abstract class MapDataset {
 
  // Element replace(Element e) => eMap.remove()
 
+  /// Removes the [Element] [e] from _this_.
   bool remove(Object e) => (e is Element) ? e == eMap.remove(e.code) : false;
 
+  /// Removes the [Element] with [code] from _this_.
   Element deleteCode(int code) =>  eMap.remove(code);
 
   /// Removes the [Element] with key from _this_.
   Element removeAt(int index, {bool required = false}) => eMap.remove(index);
 
+  /// Returns the [Element]s in _this_ as a [List<Element>]
   List<Element> toList({bool growable: true}) =>
       elements.toList(growable: false);
 

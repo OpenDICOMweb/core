@@ -6,16 +6,14 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/dataset/base/item.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/issues.dart';
-import 'package:core/src/logger/formatter.dart';
-import 'package:core/src/tag/constants.dart';
 import 'package:core/src/tag/tag.dart';
-import 'package:core/src/uid/uid.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/utils/logger.dart';
+import 'package:core/src/value/uid.dart';
+import 'package:core/src/vr.dart';
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
@@ -74,6 +72,21 @@ abstract class SQ<K> extends Element<Item> {
   @override
   int get total => counter((e) => true);
 
+  List sqMap(dynamic f(Element e)) {
+    final iList = new List<dynamic>(items.length);
+    for (var item in items) {
+      final eList = new List<dynamic>(item.length);
+      iList.add(eList);
+      for (var e in item)
+        if (e is SQ) {
+          eList.add(sqMap(f));
+        } else {
+          eList.add(f(e));
+        }
+    }
+    return iList;
+  }
+
   /// Returns a [String] containing a summary of the sequence.
   String get summary => '''
 Summary $tag
@@ -97,9 +110,7 @@ Summary $tag
     var count = 1;
     for (var item in items) {
       for (var e in item) {
-        count += (e is SQ)
-                 ? e.counter(test)
-                 : 1;
+        count += (e is SQ) ? e.counter(test) : 1;
       }
     }
     return count;
@@ -150,7 +161,6 @@ Summary $tag
     items.elementAt(itemIndex)..add(e);
   }
 
-
   @override
   List<Item> get emptyList => kEmptyList;
   static const List<Item> kEmptyList = const <Item>[];
@@ -167,7 +177,6 @@ Summary $tag
     }
     return result;
   }
-
 
   @override
   SQ update([Iterable<Item> vList = kEmptyList]);

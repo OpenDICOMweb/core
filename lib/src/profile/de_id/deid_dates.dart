@@ -4,8 +4,8 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for contributors.
 
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/p_tag.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/tag.dart';
 
 const List<int> deIdDateCodes = const <int>[
   // Added by JFPhilbin

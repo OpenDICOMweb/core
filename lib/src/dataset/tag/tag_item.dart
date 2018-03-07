@@ -8,11 +8,9 @@ import 'dart:typed_data';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/map_dataset/map_item.dart';
-import 'package:core/src/dataset/byte_data/bd_item.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/element/tag/sequence.dart';
+import 'package:core/src/element.dart';
+
 
 /// An [TagItem] is an [Item] contained in an SQtag Element.
 class TagItem extends MapItem with TagDataset {
@@ -23,17 +21,16 @@ class TagItem extends MapItem with TagDataset {
   TagItem(Dataset parent, Map<int, Element> eMap, [SQ sequence, ByteData bd])
       : super(parent, eMap, sequence, bd);
 
-  /// Creates a new empty [BDItem] from [ByteData].
+  /// Creates a new empty [Item] from [ByteData].
   TagItem.empty(Dataset parent, [SQ sequence, ByteData bd])
       : super(parent, <int, Element>{}, sequence, bd);
 
-  /// Create a new [BDItem] from an existing [BDItem].
-  /// If [parent] is _null_the new [BDItem] has the same
+  /// Create a new [TagItem] from an existing [TagItem].
+  /// If [parent] is _null_the new [TagItem] has the same
   /// parent as [item].
   TagItem.from(Item item, Dataset parent, [SQtag sequence])
       : super.from(item, parent ?? item.parent, sequence ?? item.sequence);
 
-  // TODO: needed?
   factory TagItem.fromList(Dataset parent, Iterable<Element> elements,
       [SQtag sequence]) {
     final eMap = <int, Element>{};
@@ -41,12 +38,6 @@ class TagItem extends MapItem with TagDataset {
     return new TagItem(parent, eMap, sequence);
   }
 
-/*  /// Creates a new [TagItem] from an existing [TagItem].
-  /// If [parent] is _null_ the new [TagItem] has the same
-  /// parent as [item].
-  TagItem.fromBD(BDItem item, Dataset parent, [SQtag sequence])
-      : super.from(item, parent ?? item.parent, sequence ?? item.sequence);
-  */
   @override
   bool get isImmutable => false;
 }

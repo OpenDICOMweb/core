@@ -5,8 +5,9 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:collection/collection.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/errors.dart';
+import 'package:core/src/dataset/base.dart';
+import 'package:core/src/element/base.dart';
+import 'package:core/src/utils/errors.dart';
 
 // Urgent Sharath:
 //  create MapItem and MapRootDataset
@@ -28,64 +29,69 @@ int mapHash(List<Element> list) => listEquality.hash(list);
 
 abstract class ListDataset {
   /// A sorted [List] of Tag Codes increasing order.
-  List<int> get codeList;
+  List<int> get codes;
 
   /// A sorted [List] of [Element]s in Tag Code order.
-  List<Element> get elementList;
+  List<Element> get elements;
+
+  final History history = new History();
 
   Element operator [](int code) {
-    final index = codeList.indexOf(code);
-    return elementList[index];
+    final index = codes.indexOf(code);
+    return elements[index];
   }
 
   void operator []=(int code, Element e) {
     assert(code == e.code);
-    codeList[code] = e.code;
-    elementList[code] = e;
+    codes[code] = e.code;
+    elements[code] = e;
   }
   // void operator []=(int i, Element e) => tryAdd(e);
 
   // *** Primitive only for internal use Stores e in eMap
   void store(int index, Element e) {
     assert(index == e.code);
-    elementList[e.code] = e;
+    elements[e.code] = e;
   }
 
   @override
   bool operator ==(Object other) =>
-      (other is ListDataset && listsEqual(elementList, other.elementList));
+      (other is ListDataset && listsEqual(elements, other.elements));
 
   @override
-  int get hashCode => mapHash(elementList);
+  int get hashCode => mapHash(elements);
 
-  int get length => elementList.length;
+  int get length => elements.length;
 
   set length(int _) => unsupportedError();
 
-  int indexOf(Element e) => codeList.indexOf(e.code);
-  Iterable<int> get keys => codeList;
-  Iterable<int> get codes => keys;
+  int indexOf(Element e, [int start = 0]) => codes.indexOf(e.code, start);
 
-  Iterable<Element> get elements => elementList;
+  Iterable<int> get keys => codes;
 
-  Element elementAt(int index) => elementList.elementAt(index);
+  Element elementAt(int index) => elements.elementAt(index);
 
-  Map<int, Element> asMap() => elementList.asMap();
+  Map<int, Element> asMap() => elements.asMap();
 
   bool remove(Object e) {
-    if (e is Element) return codeList.remove(e.code) && elementList.remove(e);
+    if (e is Element) return codes.remove(e.code) && elements.remove(e);
     return false;
   }
 
-  /// Removes the [Element] with key from _this_.
+  /// Removes the [Element] with [code] from _this_.
   Element removeAt(int code, {bool required = false}) {
-    final index = codeList.indexOf(code);
-    return elementList.removeAt(index);
+    final index = codes.indexOf(code);
+    codes.removeAt(index);
+    return elements.removeAt(index);
   }
 
+  /// Removes the [Element] with [code] from _this_.
+  Element deleteCode(int code) => removeAt(code);
+
+  /// Returns the [Element]s in _this_ as a [List<Element>]
   List<Element> toList({bool growable: true}) =>
       elements.toList(growable: false);
 
   @override
-  String toString() => '$runtimeType: ${elementList.length} elements';
+  String toString() => '$runtimeType: ${elements.length} elements';
 }

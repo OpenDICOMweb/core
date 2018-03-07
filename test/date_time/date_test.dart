@@ -4,8 +4,8 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'package:core/date_time_test_data/date_data.dart';
 import 'package:core/server.dart';
-import 'package:core/src/date_time/data/date_data.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -357,7 +357,7 @@ void main() {
     system.level = Level.debug;
     for (var i = 0; i < 1000; i++) {
       final eDay = rng.nextInt(kMinYear, kMaxYear);
-      final date0 = new Date.fromEpochDay(eDay);
+      final date0 = Date.fromEpochDay(eDay);
       log.debug('date0: $date0');
       final hash0 = date0.hash;
       log.debug('hash0: $hash0');
@@ -457,7 +457,7 @@ void main() {
     final date = new Date(1980, 05, 01);
     log.debug('date: $date');
     final hash0 = date.hash;
-    print('hash0: $hash0');
+    log.debug('hash0: $hash0');
   });
 
   test('hashCode', () {
@@ -545,6 +545,47 @@ void main() {
           }
         }
       }
+    }
+  });
+
+  test('parseDate', () {
+    const goodDateList = const [
+      '19500718',
+      '19000101',
+      '19700101',
+      '19931010',
+      '20171231',
+      '20171130',
+      '20501231',
+      '2018-03-05',
+      '1998-12-19'
+    ];
+
+    for (var date in goodDateList) {
+      final pd0 = parseDate(date);
+      log.debug('pd0: $pd0');
+      expect(pd0, isNotNull);
+    }
+
+    for (var date in badDcmDateList) {
+      system.throwOnError = false;
+      final pd0 = parseDate(date);
+      log.debug('pd0: $pd0');
+      expect(pd0, isNull);
+    }
+  });
+
+  test('hashDcmDateString', () {
+    for (var i = 0; i < goodDcmDateList.length; i++) {
+      final ns1 = hashDcmDateString(goodDcmDateList[i]);
+      log.debug('ns1:$ns1, ${goodDcmDateList[i]}');
+      expect(ns1, isNotNull);
+    }
+
+    for (var badDate in badDcmDateList) {
+      final ns1 = hashDcmDateString(badDate);
+      log.debug('ns1:$ns1, $badDate');
+      expect(ns1, isNull);
     }
   });
 }

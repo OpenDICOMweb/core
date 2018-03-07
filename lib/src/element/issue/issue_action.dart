@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/string/dicom_string.dart';
+import 'package:core/src/base.dart';
 
 //typedef String _Msg(object);
 

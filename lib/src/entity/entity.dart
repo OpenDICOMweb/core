@@ -4,13 +4,12 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/dataset/base/root_dataset.dart';
-import 'package:core/src/dataset/errors.dart';
-import 'package:core/src/element/base/element.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element.dart';
 import 'package:core/src/entity/ie_level.dart';
-import 'package:core/src/logger/formatter.dart';
-import 'package:core/src/uid/uid.dart';
-import 'package:core/src/tag/tag.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/utils/logger.dart';
+import 'package:core/src/value/uid.dart';
 
 /// DICOM Information Entities
 ///

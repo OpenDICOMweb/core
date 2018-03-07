@@ -89,9 +89,9 @@ void main() {
 
     test('Create  VFFragments.fromBytes', () {
       final frags = new VFFragments(fragments);
-      final ob0 = OBtagPixelData.fromBytes(
+      final ob0 = OBtagPixelData.fromUint8List(
           PTag.kPixelData, frame, frame.lengthInBytes,frags, ts);
-      final ob1 = OBtagPixelData.fromBytes(
+      final ob1 = OBtagPixelData.fromUint8List(
           PTag.kPixelData, frame, frame.lengthInBytes,frags, ts);
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);

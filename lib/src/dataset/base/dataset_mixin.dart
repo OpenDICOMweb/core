@@ -6,18 +6,21 @@
 
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset/base/dataset.dart';
+import 'package:core/src/dataset/base/ds_bytes.dart';
+import 'package:core/src/dataset/base/errors.dart';
+import 'package:core/src/dataset/base/history.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
-import 'package:core/src/dataset/errors.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/integer/pixel_data.dart';
-import 'package:core/src/element/base/string.dart';
-import 'package:core/src/element/errors.dart';
-import 'package:core/src/issues.dart';
-import 'package:core/src/tag/export.dart';
-import 'package:core/src/uid/uid.dart';
+import 'package:core/src/element.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/value/date_time.dart';
+import 'package:core/src/value/uid.dart';
+import 'package:core/src/vr.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 
@@ -46,6 +49,7 @@ abstract class DatasetMixin {
   ///
   // Design Note: This method should record the index of any Elements
   // not found if [recordNotFound] is _true_.
+  // TODO: turn required into an EType test
   Element lookup(int index, {bool required = false});
 
   Element internalLookup(int index);
@@ -61,7 +65,7 @@ abstract class DatasetMixin {
 
   /// The parent of _this_. If [parent] == _null_, then this is a Root Dataset
   /// (see RootDatasetMixin); otherwise, it is an [Item].
-  Dataset get parent;
+  DatasetMixin get parent;
 
   /// An [Iterable<int>] of the [Element] [keys] in _this_.
   Iterable<int> get keys;
@@ -138,8 +142,11 @@ abstract class DatasetMixin {
 
   List<SQ> get sequences {
     final results = <SQ>[];
-    for (var e in elements)
-      if (e is SQ) add(e);
+    for (var e in elements) {
+      if (e is SQ) {
+        results.add(e);
+      }
+    }
     return results;
   }
 
@@ -407,7 +414,7 @@ abstract class DatasetMixin {
       elements.replaceUid(index, uids);
 */
 
-  List<Uid> replaceUid(int index, Iterable<Uid> uids, {bool required = false}) {
+  List<Uid> replaceUids(int index, Iterable<Uid> uids, {bool required = false}) {
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     return (old is UI) ? old.replaceUid(uids) : invalidUidElement(old);
@@ -857,7 +864,7 @@ $runtimeType(#$hashCode):
 
   /// The [RootDataset] of _this_.
   /// _Note_: A [RootDataset] is its own [root].
-  Dataset get root => (isRoot) ? this : parent.root;
+  DatasetMixin get root => (isRoot) ? this : parent.root;
 
   // **************** Element value accessors
   //TODO: when fast_tag is working replace code with index.

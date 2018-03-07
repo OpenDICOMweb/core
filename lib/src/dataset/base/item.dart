@@ -6,10 +6,10 @@
 
 import 'dart:typed_data';
 
+import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/tag/constants.dart';
+import 'package:core/src/element/base.dart';
 
 /// Sequence Items
 abstract class Item extends Dataset {

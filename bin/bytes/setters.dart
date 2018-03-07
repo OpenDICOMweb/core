@@ -6,7 +6,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 
 void main(List<String> args) {
 

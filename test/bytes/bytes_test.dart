@@ -6,10 +6,11 @@
 
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
+import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
+  Server.initialize(name: 'bytes_test.dart', level: Level.debug);
   group('Bytes Tests', () {
     test('Test getters and initial zeros', () {
       final count = 12;
@@ -28,11 +29,63 @@ void main() {
 
         expect(bytes.hashCode is int, true);
 
-        // Verify that all elements are zero
         for (var i = 0; i < bytes.length; i++) {
           expect(bytes[i] == 0, true);
           expect(bytes.getUint8(i) == 0, true);
         }
+
+        for (var i = 0; i < bytes.length; i += 2) {
+          expect(bytes[i] == 0, true);
+          expect(bytes.getUint16(i) == 0, true);
+        }
+        for (var i = 0; i < bytes.length; i += 4) {
+          expect(bytes[i] == 0, true);
+          expect(bytes.getUint32(i) == 0, true);
+        }
+        for (var i = 0; i < bytes.length - 4; i += 8) {
+          expect(bytes[i] == 0, true);
+          expect(bytes.getUint64(i) == 0, true);
+        }
+        for (var i = 0; i < bytes.length; i++) {
+          expect(bytes[i] == 0, true);
+          expect(bytes.getInt8(i) == 0, true);
+        }
+        for (var i = 0; i < bytes.length; i += 2) {
+          expect(bytes[i] == 0, true);
+          expect(bytes.getInt16(i) == 0, true);
+        }
+
+        for (var i = 0; i < bytes.length; i += 4) {
+          expect(bytes[i] == 0, true);
+          expect(bytes.getInt32(i) == 0, true);
+        }
+
+        for (var i = 0; i < bytes.length - 4; i += 8) {
+          expect(bytes[i] == 0, true);
+          expect(bytes.getInt64(i) == 0, true);
+        }
+
+        for (var i = 0; i < bytes.length; i += 4) {
+          expect(bytes[i] == 0, true);
+          expect(bytes.getFloat32(i) == 0, true);
+        }
+
+        for (var i = 0; i < bytes.length - 4; i += 8) {
+          expect(bytes[i] == 0, true);
+          expect(bytes.getFloat64(i) == 0, true);
+        }
+
+        final bytes0 = new Bytes.from(bytes);
+        expect(bytes0.endian == Endian.little, true);
+
+        expect(bytes0.elementSizeInBytes == 1, true);
+        expect(bytes0.offsetInBytes == 0, true);
+        expect(bytes0.buffer == bytes.bd.buffer, true);
+        expect(bytes0.length == count, true);
+        expect(bytes0.lengthInBytes == count, true);
+        expect(bytes0.length == bytes.lengthInBytes, true);
+
+        expect(bytes0.hashCode is int, true);
       }
     });
 

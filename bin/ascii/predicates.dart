@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/string/ascii.dart';
+import 'package:core/core.dart';
 
 void main() {
   var c = toUppercaseChar(ka);

@@ -17,18 +17,11 @@
 
 import 'dart:math';
 
-import 'package:core/src/date_time/primitives/constants.dart';
-import 'package:core/src/date_time/primitives/time_zone.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/hash/hash.dart';
-import 'package:core/src/hash/hash64.dart';
-import 'package:core/src/logger/log_level.dart';
-import 'package:core/src/logger/logger.dart';
 import 'package:core/src/system/sdk.dart';
 import 'package:core/src/system/sys_info.dart';
-import 'package:core/src/uid/supported_transfer_syntax.dart';
-import 'package:core/src/uid/uid.dart';
-import 'package:core/src/uid/well_known/transfer_syntax.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/value/date_time.dart';
+import 'package:core/src/value/uid.dart';
 import 'package:version/version.dart';
 
 //TODO: add a createFMI method to convert writer that uses the system object

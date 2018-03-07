@@ -3,37 +3,25 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:collection';
-
-import 'package:core/src/errors.dart';
-
-/*
-class BulkdataIterator<E> {
-  int index = -1;
-  final List<E> values;
-
-  BulkdataIterator(this.values);
-
-  E get current => values[index];
-
-  bool moveNext() {
-    if (index < -1 || index >= values.length) return false;
-    index++;
-    return true;
-  }
-}
-*/
+import 'package:core/src/system.dart';
+import 'package:core/src/utils/errors.dart';
+//import 'package:core/src/values/errors.dart';
 
 // Must implement Values and Value with reified.
-abstract class BulkdataRef<E> extends IterableBase<E> {
+abstract class BulkdataRef<E> {
   int get code;
-  String get uri;
+  Uri get uri;
 
-  List<E> _values;
-  List<E> get values => _values ??= getBulkdata(code, uri);
+  List<E> get values;
 
   @override
+  bool operator ==(Object other) =>
+      (other is BulkdataRef) && code == other.code && uri == other.uri;
+
+  @override
+  int get hashCode => system.hasher.n2(code, uri);
+
   Iterator<E> get iterator => values.iterator;
 
-  List<E> getBulkdata(int code, String uri) => unimplementedError();
+  List<E> getBulkdata(int code, Uri uri) => unimplementedError();
 }

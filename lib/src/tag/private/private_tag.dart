@@ -4,13 +4,13 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/string/hexadecimal.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/private/pd_tag.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/utils/string.dart';
+import 'package:core/src/vr.dart';
 
 typedef Tag TagMaker(int code, int vrIndex);
 
@@ -21,17 +21,12 @@ abstract class PrivateTag extends Tag {
   bool get isPrivate => true;
   @override
   bool get isPublic => false;
-  @override
-   int get code;
-  @override
-  int get vrIndex;
 
+  // Only Private Tags have Subgroup Numbers.
   int get sgNumber;
   String get sgNumberHex => hex8(sgNumber);
 
-//  int get sgOffset;
-
-
+  // The default VM if n=unknown
   @override
   VM get vm => VM.k1_n;
 

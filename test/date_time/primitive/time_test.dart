@@ -5,8 +5,9 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
-import 'package:core/src/date_time/primitives/time.dart';
 import 'package:test/test.dart';
+
+import 'package:core/src/value/date_time/primitives/time.dart';
 
 void main() {
   Server.initialize(name: 'time_test', level: Level.info);
@@ -21,7 +22,9 @@ void main() {
       expect(v == kMicrosecondsPerDay, true);
       expect(timeToMicroseconds(23, 59, 59, 999, 999), kMicrosecondsPerDay - 1);
 
-      v = kMicrosecondsPerHour + kMicrosecondsPerMinute + kMicrosecondsPerSecond;
+      v = kMicrosecondsPerHour +
+          kMicrosecondsPerMinute +
+          kMicrosecondsPerSecond;
       expect(timeToMicroseconds(1, 1, 1) == v, true);
 
       v = kMicrosecondsPerHour +
@@ -201,7 +204,7 @@ void main() {
     });
 
     test('isValidMinute', () {
-      for (var  m = 0; m < 60; m++) {
+      for (var m = 0; m < 60; m++) {
         final isValid = isValidMinute(m);
         log.debug('minute :$m');
         expect(isValid, true);
@@ -214,7 +217,7 @@ void main() {
     });
 
     test('isValidSecond', () {
-      for (var  s = 0; s < 60; s++) {
+      for (var s = 0; s < 60; s++) {
         final isValid = isValidSecond(s);
         log.debug('Second: $s');
         expect(isValid, true);
@@ -227,7 +230,7 @@ void main() {
     });
 
     test('isValidMillisecond', () {
-      for (var  ms = 0; ms < 1000; ms++) {
+      for (var ms = 0; ms < 1000; ms++) {
         final isValid = isValidMillisecond(ms);
         log.debug('Millisecond: $ms');
         expect(isValid, true);
@@ -240,7 +243,7 @@ void main() {
     });
 
     test('isValidMicrosecond', () {
-      for (var  us = 0; us < 1000; us++) {
+      for (var us = 0; us < 1000; us++) {
         final isValid = isValidMicrosecond(us);
         log.debug('Microsecond: $us');
         expect(isValid, true);
@@ -253,7 +256,7 @@ void main() {
     });
 
     test('isValidSecondFraction', () {
-      for (var  sf = 0; sf < 1000000; sf++) {
+      for (var sf = 0; sf < 1000000; sf++) {
         final isValid = isValidSecondFraction(sf);
         log.debug('SecondFraction: $sf');
         expect(isValid, true);
@@ -458,10 +461,10 @@ void main() {
       expect(tms3, isNotNull);
       expect(tms3, equals('000000.000000'));
     });
-
   });
 }
 
-void maybeLog(String name, int h, int m, int s, int ms, int us, int v, int ex) =>
+void maybeLog(
+        String name, int h, int m, int s, int ms, int us, int v, int ex) =>
     log.debug('us per $name: h:$h, m:$m, s: $s, ms: $ms, us: $us, v: $v, ex: '
         '$ex');

@@ -9,8 +9,7 @@
 import 'dart:html';
 
 import 'package:core/src/system/system.dart';
-import 'package:core/src/uid/uid.dart';
-import 'package:core/src/uid/well_known/transfer_syntax.dart';
+import 'package:core/src/value/uid.dart';
 import 'package:version/version.dart';
 
 

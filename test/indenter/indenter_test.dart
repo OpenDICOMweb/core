@@ -14,31 +14,34 @@ void main() {
     final sb = new Indenter();
 
     final expected = '''
+
 | 0
   | 1
     | 2
-      |
+      | 3
     | 2
   | 1
 | 0
 ''';
     sb
-      ..down('| ${sb.depth}')
-      ..down('| ${sb.depth}')
-      ..down('| ${sb.depth}')
-      ..writeln('|')
-      ..up('| ${sb.depth - 1}')
-      ..up('| ${sb.depth - 1}')
-      ..up('| ${sb.depth - 1}');
+      ..indent('\n| ${sb.depth}')
+      ..indent('| ${sb.depth}')
+      ..indent('| ${sb.depth}')
+      ..writeln('| ${sb.depth}')
+      ..outdent('| ${sb.depth - 1}')
+      ..outdent('| ${sb.depth - 1}')
+      ..outdent('| ${sb.depth - 1}');
 
     final s = '$sb';
-    log..debug('"$expected"')..debug('"$s"');
+    log..debug('"$expected"')..debug('"\n$s"');
     expect('$sb' == expected, true);
   });
 
   test('Basic indent test without depth', () {
     final sb = new Indenter();
-    final expected = '''  
+    final expected =
+    '''  
+
 |
   |
     |
@@ -48,13 +51,13 @@ void main() {
 |
 ''';
     sb
-      ..down('|')
-      ..down('|')
-      ..down('|')
+      ..indent('\n|')
+      ..indent('|')
+      ..indent('|')
       ..writeln('|')
-      ..up('|')
-      ..up('|')
-      ..up('|');
+      ..outdent('|')
+      ..outdent('|')
+      ..outdent('|');
 
     final s = '$sb';
     log..debug('"$expected"')..debug('"$s"');
@@ -66,17 +69,17 @@ void main() {
 
     sb
       ..writeln('|')
-      ..down('| ${sb.depth}')
+      ..indent('| ${sb.depth}')
       ..writeln('|')
-      ..down('| ${sb.depth}')
+      ..indent('| ${sb.depth}')
       ..writeln('|')
-      ..down('| ${sb.depth}')
+      ..indent('| ${sb.depth}')
       ..writeln('|')
-      ..up('| ${sb.depth}')
+      ..outdent('| ${sb.depth}')
       ..writeln('|')
-      ..up('| ${sb.depth}')
+      ..outdent('| ${sb.depth}')
       ..writeln('|')
-      ..up('| ${sb.depth}')
+      ..outdent('| ${sb.depth}')
       ..writeln('|');
     print('$sb');
   });

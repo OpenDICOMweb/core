@@ -7,28 +7,20 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/bytes/bytes.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/float.dart';
-import 'package:core/src/element/base/integer/integer.dart';
-import 'package:core/src/element/base/string.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/element/base.dart';
 import 'package:core/src/element/byte_data/evr.dart';
 import 'package:core/src/element/byte_data/ivr.dart';
-import 'package:core/src/element/errors.dart';
-import 'package:core/src/empty_list.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/string/ascii.dart';
-import 'package:core/src/string/hexadecimal.dart';
-import 'package:core/src/system/system.dart';
-import 'package:core/src/tag/constants.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/utils.dart';
 
 typedef Element DecodeBinaryVF(ByteData bd, int vrIndex);
 
-typedef BDElement BDElementMaker(int code, int vrIndex, ByteData bd);
+typedef Element BDElementMaker(int code, int vrIndex, ByteData bd);
 
 // TODO: move documentation from EVR/IVR
 abstract class BDElement<V> extends Element<V> {
-  static BDElement make(int code, int vrIndex, ByteData bd,
+  static Element make(int code, int vrIndex, ByteData bd,
           {bool isEvr = true}) =>
       (isEvr)
           ? EvrElement.make(code, vrIndex, bd)
@@ -64,16 +56,14 @@ abstract class Common {
   int get valuesLength;
   int get vrIndex;
 
- // Element update<V>(List<V> vList) => unsupportedError();
+  bool isEqual(BDElement a, BDElement b) {
+      if (a.bd.lengthInBytes != b.bd.lengthInBytes) return false;
 
-  bool isEqual(BDElement a, BDElement other) {
-      if (bd.lengthInBytes != other.bd.lengthInBytes) return false;
-
-      final offset0 = bd.offsetInBytes;
-      final offset1 = other.bd.offsetInBytes;
-      final length = bd.lengthInBytes;
+      final offset0 = a.bd.offsetInBytes;
+      final offset1 = b.bd.offsetInBytes;
+      final length = a.lengthInBytes;
       for (var i = offset0, j = offset1; i < length; i++, j++)
-        if (bd.getUint8(i) != other.bd.getUint8(j)) return false;
+        if (a.bd.getUint8(i) != b.bd.getUint8(j)) return false;
       return true;
   }
 
@@ -84,8 +74,6 @@ abstract class Common {
     final v = (group << 16) + elt;
     return v;
   }
-
-  int get padChar => 0;
 
   int get group => bd.getUint16(_groupOffset, Endian.little);
   int get elt => bd.getUint16(_eltOffset, Endian.little);
@@ -263,6 +251,19 @@ abstract class Utf8Mixin {
   }
 }
 
+abstract class StringMixin {
+  ByteData get bd;
+  int get vfOffset;
+  Uint8List get vfBytes;
+  bool get allowMalformed;
+
+  int get valuesLength => 1;
+
+  String get value => UTF8.decode(vfBytes, allowMalformed: allowMalformed);
+
+//  Iterable<String> get values => (valuesLength == 0) ? [] : [value];
+}
+
 abstract class TextMixin {
   ByteData get bd;
   int get vfOffset;
@@ -271,10 +272,9 @@ abstract class TextMixin {
 
   int get valuesLength => 1;
 
-  Iterable<String> get values {
-    if (valuesLength == 0) return <String>[];
-    return [UTF8.decode(vfBytes, allowMalformed: allowMalformed)];
-  }
+  String get value => UTF8.decode(vfBytes, allowMalformed: allowMalformed);
+
+//  Iterable<String> get values => (valuesLength == 0) ? [] : [value];
 }
 
 bool ensureExactLength = true;
@@ -382,7 +382,7 @@ bool checkPadding(ByteData bd, [int padChar = kSpace]) {
   final lastIndex = bd.lengthInBytes - 1;
   final char = bd.getUint8(lastIndex);
   if ((char == kNull || char == kSpace) && char != padChar)
-    log.warn('Invalid PadChar: $char should be $padChar');
+    log.info1('Invalid PadChar: $char should be $padChar');
   return true;
 }
 

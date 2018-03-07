@@ -4,16 +4,14 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/string/dicom_string.dart';
-import 'package:core/src/string/hexadecimal.dart';
+import 'package:core/src/base.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/errors.dart';
 import 'package:core/src/tag/p_tag_code_map.dart';
 import 'package:core/src/tag/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr/vr.dart';
-// import 'package:core/src/tag/p_tag_codes.dart';
+import 'package:core/src/vr.dart';
 
 //TODO: is hashCode needed?
 class PTag extends Tag {
@@ -11038,13 +11036,13 @@ class PTag extends Tag {
           'Used Segments Sequence', kSQIndex, VM.k1, false);
 
   static const PTag kTrackingID
-  //(0062,0020)
-  = const PTag._('TrackingID', 0x00620020,
-                     'TrackingID', kUTIndex, VM.k1, false);
+      //(0062,0020)
+      = const PTag._(
+          'TrackingID', 0x00620020, 'TrackingID', kUTIndex, VM.k1, false);
   static const PTag kTrackingUID
-  //(0062,0021)
-  = const PTag._('TrackingUID', 0x00620021,
-                     'Tracking UID', kUIIndex, VM.k1, false);
+      //(0062,0021)
+      = const PTag._(
+          'TrackingUID', 0x00620021, 'Tracking UID', kUIIndex, VM.k1, false);
   static const PTag kDeformableRegistrationSequence
       //(0064,0002)
       = const PTag._('DeformableRegistrationSequence', 0x00640002,
@@ -12112,7 +12110,336 @@ class PTag extends Tag {
       //(0070,0405)
       = const PTag._('BlendingPosition', 0x00700405, 'Blending Position',
           kCSIndex, VM.k1, false);
-  // Urgent Sharath: Enter 00701101 to 00701B14 here
+  static const PTag kPresentationDisplayCollectionUID
+      //(0070,1101)
+      = const PTag._('PresentationDisplayCollectionUID', 0x00701101,
+          'Presentation DisplayCollection UID', kUIIndex, VM.k1, false);
+  static const PTag kPresentationSequenceCollectionUID
+      //(0070,1102)
+      = const PTag._('PresentationSequenceCollectionUID', 0x00701102,
+          'Presentation Sequence Collection UID', kUIIndex, VM.k1, false);
+  static const PTag kPresentationSequencePositionIndex
+      //(0070,1103)
+      = const PTag._('PresentationSequencePositionIndex', 0x00701103,
+          'Presentation Sequence Position Index', kUSIndex, VM.k1, false);
+  static const PTag kRenderedImageReferenceSequence
+      //(0070,1104)
+      = const PTag._('RenderedImageReferenceSequence', 0x00701104,
+          'Rendered Image Reference Sequence', kSQIndex, VM.k1, false);
+  static const PTag kVolumetricPresentationStateInputSequence
+      //(0070,1201)
+      = const PTag._(
+          'VolumetricPresentationStateInputSequence',
+          0x00701201,
+          'Volumetric Presentation State Input Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kPresentationInputType
+      //(0070,1202)
+      = const PTag._('PresentationInputType', 0x00701202,
+          'Presentation Input Type', kCSIndex, VM.k1, false);
+  static const PTag kInputSequencePositionIndex
+      //(0070,1203)
+      = const PTag._('InputSequencePositionIndex', 0x00701203,
+          'Input Sequence Position Index', kUSIndex, VM.k1, false);
+  static const PTag kCrop
+      //(0070,1204)
+      = const PTag._('Crop', 0x00701204, 'Crop', kCSIndex, VM.k1, false);
+  static const PTag kCroppingSpecificationIndex
+      //(0070,1205)
+      = const PTag._('CroppingSpecificationIndex', 0x00701205,
+          'Cropping Specification Index', kUSIndex, VM.k1_n, false);
+  static const PTag kCompositingMethod
+      //(0070,1206)
+      = const PTag._('CompositingMethod', 0x00701206, 'Compositing Method',
+          kCSIndex, VM.k1, false);
+  static const PTag kVolumetricPresentationInputNumber
+      //(0070,1207)
+      = const PTag._('VolumetricPresentationInputNumber', 0x00701207,
+          'Volumetric Presentation Input Number', kUSIndex, VM.k1, false);
+  static const PTag kImageVolumeGeometry
+      //(0070,1208)
+      = const PTag._('ImageVolumeGeometry', 0x00701208, 'Image Volume Geometry',
+          kCSIndex, VM.k1, false);
+  static const PTag kVolumetricPresentationInputSetUID
+      //(0070,1209)
+      = const PTag._('VolumetricPresentationInputSetUID', 0x00701209,
+          'Volumetric Presentation Input Set UID', kUIIndex, VM.k1, false);
+  static const PTag kVolumetricPresentationInputSetSequence
+      //(0070,120A)
+      = const PTag._('VolumetricPresentationInputSetSequence', 0x0070120A,
+          'Volumetric Presentation Input Set Sequence', kSQIndex, VM.k1, false);
+  static const PTag kGlobalCrop
+      //(0070,120B)
+      = const PTag._(
+          'GlobalCrop', 0x0070120B, 'Global Crop', kCSIndex, VM.k1, false);
+  static const PTag kGlobalCroppingSpecificationIndex
+      //(0070,120C)
+      = const PTag._('GlobalCroppingSpecificationIndex', 0x0070120C,
+          'Global​Cropping​Specification​Index', kUSIndex, VM.k1_n, false);
+  static const PTag kRenderingMethod
+      //(0070,120D)
+      = const PTag._('RenderingMethod', 0x0070120D, 'Rendering​Method',
+          kCSIndex, VM.k1, false);
+  static const PTag kVolumeCroppingSequence
+      //(0070,1301)
+      = const PTag._('VolumeCroppingSequence', 0x00701301,
+          'Volume Cropping Sequence', kSQIndex, VM.k1, false);
+  static const PTag kVolumeCroppingMethod
+      //(0070,1302)
+      = const PTag._('VolumeCroppingMethod', 0x00701302,
+          'Volume Cropping Method', kCSIndex, VM.k1, false);
+  static const PTag kBoundingBoxCrop
+      //(0070,1303)
+      = const PTag._('BoundingBoxCrop', 0x00701303, 'Bounding Box Crop',
+          kFDIndex, VM.k6, false);
+  static const PTag kObliqueCroppingPlaneSequence
+      //(0070,1304)
+      = const PTag._('ObliqueCroppingPlaneSequence', 0x00701304,
+          'Oblique Cropping Plane Sequence', kSQIndex, VM.k1, false);
+  static const PTag kPlane
+      //(0070,1305)
+      = const PTag._('Plane', 0x00701305, 'Plane', kFDIndex, VM.k4, false);
+  static const PTag kPlaneNormal
+      //(0070,1306)
+      = const PTag._(
+          'PlaneNormal', 0x00701306, 'Plane Normal', kFDIndex, VM.k3, false);
+  static const PTag kCroppingSpecificationNumber
+      //(0070,1309)
+      = const PTag._('CroppingSpecificationNumber', 0x00701309,
+          'Cropping Specification Number', kUSIndex, VM.k1, false);
+  static const PTag kMultiPlanarReconstructionStyle
+      //(0070,1501)
+      = const PTag._('MultiPlanarReconstructionStyle', 0x00701501,
+          'Multi-Planar Reconstruction Style', kCSIndex, VM.k1, false);
+  static const PTag kMPRThicknessType
+      //(0070,1502)
+      = const PTag._('MPRThicknessType', 0x00701502, 'MPR Thickness Type',
+          kCSIndex, VM.k1, false);
+  static const PTag kMPRSlabThickness
+      //(0070,1503)
+      = const PTag._('MPRSlabThickness', 0x00701503, 'MPR Slab Thickness',
+          kFDIndex, VM.k1, false);
+  static const PTag kMPRTopLeftHandCorner
+      //(0070,1505)
+      = const PTag._('MPRTopLeftHandCorner', 0x00701505,
+          'MPR Top Left Hand Corner', kFDIndex, VM.k3, false);
+  static const PTag kMPRViewWidthDirection
+      //(0070,1507)
+      = const PTag._('MPRViewWidthDirection', 0x00701507,
+          'MPR View Width Direction', kFDIndex, VM.k3, false);
+  static const PTag kMPRViewWidth
+      //(0070,1508)
+      = const PTag._(
+          'MPRViewWidth', 0x00701508, 'MPR View Width', kFDIndex, VM.k1, false);
+  static const PTag kNumberofVolumetricCurvePoints
+      //(0070,150C)
+      = const PTag._('NumberofVolumetricCurvePoints', 0x0070150C,
+          'Number of Volumetric Curve Points', kULIndex, VM.k1, false);
+  static const PTag kVolumetricCurvePoints
+      //(0070,150D)
+      = const PTag._('VolumetricCurvePoints', 0x0070150D,
+          'Volumetric Curve Points', kODIndex, VM.k1, false);
+  static const PTag kMPRViewHeightDirection
+      //(0070,1511)
+      = const PTag._('MPRViewHeightDirection', 0x00701511,
+          'MPR View Height Direction', kFDIndex, VM.k3, false);
+  static const PTag kMPRViewHeight
+      //(0070,1512)
+      = const PTag._('MPRViewHeight', 0x00701512, 'MPR View Height', kFDIndex,
+          VM.k1, false);
+  static const PTag kRenderProjection
+      //(0070,1602)
+      = const PTag._('RenderProjection', 0x00701602, 'Render Projection',
+          kCSIndex, VM.k1, false);
+  static const PTag kViewpointPosition
+      //(0070,1603)
+      = const PTag._('ViewpointPosition', 0x00701603, 'Viewpoint Position',
+          kFDIndex, VM.k3, false);
+  static const PTag kViewpointLookAtPoint
+      //(0070,1604)
+      = const PTag._('ViewpointLookAtPoint', 0x00701604,
+          'Viewpoint LookAt Point', kFDIndex, VM.k3, false);
+  static const PTag kViewpointUpDirection
+      //(0070,1605)
+      = const PTag._('ViewpointUpDirection', 0x00701605,
+          'Viewpoint Up Direction', kFDIndex, VM.k3, false);
+  static const PTag kRenderFieldofView
+      //(0070,1606)
+      = const PTag._('RenderFieldofView', 0x00701606, 'Render Field of View',
+          kFDIndex, VM.k6, false);
+  static const PTag kSamplingStepSize
+      //(0070,1607)
+      = const PTag._('SamplingStepSize', 0x00701607, 'Sampling Step Size',
+          kFDIndex, VM.k1, false);
+  static const PTag kShadingStyle
+      //(0070,1701)
+      = const PTag._(
+          'ShadingStyle', 0x00701701, 'Shading Style', kCSIndex, VM.k1, false);
+  static const PTag kAmbientReflectionIntensity
+      //(0070,17012)
+      = const PTag._('AmbientReflectionIntensity', 0x00701702,
+          'Ambient Reflection Intensity', kFDIndex, VM.k1, false);
+  static const PTag kLightDirection
+      //(0070,1703)
+      = const PTag._('LightDirection', 0x00701703, 'Light Direction', kFDIndex,
+          VM.k3, false);
+  static const PTag kDiffuseReflectionIntensity
+      //(0070,1704)
+      = const PTag._('DiffuseReflectionIntensity', 0x00701704,
+          'Diffuse Reflection Intensity', kFDIndex, VM.k1, false);
+  static const PTag kSpecularReflectionIntensity
+      //(0070,1705)
+      = const PTag._('SpecularReflectionIntensity', 0x00701705,
+          'Specular Reflection Intensity', kFDIndex, VM.k1, false);
+  static const PTag kShininess
+      //(0070,1706)
+      = const PTag._(
+          'Shininess', 0x00701706, 'Shininess', kFDIndex, VM.k1, false);
+  static const PTag kPresentationStateClassificationComponentSequence
+      //(0070,1801)
+      = const PTag._(
+          'PresentationStateClassificationComponentSequence',
+          0x00701801,
+          'Presentation State Classification Component Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kComponentType
+      //(0070,1802)
+      = const PTag._('ComponentType', 0x00701802, 'Component Type', kCSIndex,
+          VM.k1, false);
+  static const PTag kComponentInputSequence
+      //(0070,1803)
+      = const PTag._('ComponentInputSequence', 0x00701803,
+          'Component Input Sequence', kSQIndex, VM.k1, false);
+  static const PTag kVolumetricPresentationInputIndex
+      //(0070,1804)
+      = const PTag._('VolumetricPresentationInputIndex', 0x00701804,
+          'Volumetric Presentation Input Index', kUSIndex, VM.k1, false);
+  static const PTag kPresentationStateCompositorComponentSequence
+      //(0070,1805)
+      = const PTag._(
+          'PresentationStateCompositorComponentSequence',
+          0x00701805,
+          'Presentation State Compositor Component Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kWeightingTransferFunctionSequence
+      //(0070,1806)
+      = const PTag._('WeightingTransferFunctionSequence', 0x00701806,
+          'Weighting Transfer Function Sequence', kSQIndex, VM.k1, false);
+  static const PTag kWeightingLookupTableDescriptor
+      //(0070,1807)
+      = const PTag._('WeightingLookupTableDescriptor', 0x00701807,
+          'Weighting Lookup Table Descriptor', kUSIndex, VM.k3, false);
+  static const PTag kWeightingLookupTableData
+      //(0070,1808)
+      = const PTag._('WeightingLookupTableData', 0x00701808,
+          'Weighting Lookup Table Data', kOBIndex, VM.k1, false);
+  static const PTag kVolumetricAnnotationSequence
+      //(0070,1901)
+      = const PTag._('VolumetricAnnotationSequence', 0x00701901,
+          'Volumetric Annotation Sequence', kSQIndex, VM.k1, false);
+  static const PTag kReferencedStructuredContextSequence
+      //(0070,1903)
+      = const PTag._('ReferencedStructuredContextSequence', 0x00701903,
+          'Referenced Structured Context Sequence', kSQIndex, VM.k1, false);
+  static const PTag kReferencedContentItem
+      //(0070,1904)
+      = const PTag._('ReferencedContentItem', 0x00701904,
+          'Referenced Content Item', kUIIndex, VM.k1, false);
+  static const PTag kVolumetricPresentationInputAnnotationSequence
+      //(0070,1905)
+      = const PTag._(
+          'VolumetricPresentationInputAnnotationSequence',
+          0x00701905,
+          'Volumetric Presentation Input Annotation Sequence',
+          kSQIndex,
+          VM.k1,
+          false);
+  static const PTag kAnnotationClipping
+      //(0070,1907)
+      = const PTag._('AnnotationClipping', 0x00701907, 'Annotation Clipping',
+          kCSIndex, VM.k1, false);
+  static const PTag kPresentationAnimationStyle
+      //(0070,1A01)
+      = const PTag._('PresentationAnimationStyle', 0x00701A01,
+          'Presentation Animation Style', kCSIndex, VM.k1, false);
+  static const PTag kRecommendedAnimationRate
+      //(0070,1A03)
+      = const PTag._('RecommendedAnimationRate', 0x00701A03,
+          'Recommended Animation Rate', kFDIndex, VM.k1, false);
+  static const PTag kAnimationCurveSequence
+      //(0070,1A04)
+      = const PTag._('AnimationCurveSequence', 0x00701A04,
+          'Animation CurveSequence', kSQIndex, VM.k1, false);
+  static const PTag kAnimationStepSize
+      //(0070,1A05)
+      = const PTag._('AnimationStepSize', 0x00701A05, 'Animation Step Size',
+          kFDIndex, VM.k1, false);
+  static const PTag kSwivelRange
+      //(0070,1A06)
+      = const PTag._(
+          'SwivelRange', 0x00701A06, 'Swivel Range', kFDIndex, VM.k1, false);
+  static const PTag kVolumetricCurveUpDirections
+      //(0070,1A07)
+      = const PTag._('VolumetricCurveUpDirections', 0x00701A07,
+          'Volumetric Curve Up Directions', kODIndex, VM.k1, false);
+  static const PTag kVolumeStreamSequence
+      //(0070,1A08)
+      = const PTag._('VolumeStreamSequence', 0x00701A08,
+          'Volume Stream Sequence', kSQIndex, VM.k1, false);
+  static const PTag kRGBATransferFunctionDescription
+      //(0070,1A09)
+      = const PTag._('RGBATransferFunctionDescription', 0x00701A09,
+          'RGBA Transfer Function Description', kLOIndex, VM.k1, false);
+  static const PTag kAdvancedBlendingSequence
+      //(0070,1B01)
+      = const PTag._('AdvancedBlendingSequence', 0x00701B01,
+          'Advanced Blending Sequence', kSQIndex, VM.k1, false);
+  static const PTag kBlendingInputNumber
+      //(0070,1B02)
+      = const PTag._('BlendingInputNumber', 0x00701B02, 'Blending Input Number',
+          kUSIndex, VM.k1, false);
+  static const PTag kBlendingDisplayInputSequence
+      //(0070,1B03)
+      = const PTag._('BlendingDisplayInputSequence', 0x00701B03,
+          'Blending Display Input Sequence', kSQIndex, VM.k1, false);
+  static const PTag kBlendingDisplaySequence
+      //(0070,1B04)
+      = const PTag._('BlendingDisplaySequence', 0x00701B04,
+          'Blending Display Sequence', kSQIndex, VM.k1, false);
+  static const PTag kBlendingMode
+      //(0070,1B06)
+      = const PTag._(
+          'BlendingMode', 0x00701B06, 'Blending Mode', kCSIndex, VM.k1, false);
+  static const PTag kTimeSeriesBlending
+      //(0070,1B07)
+      = const PTag._('TimeSeriesBlending', 0x00701B07, 'Time Series Blending',
+          kCSIndex, VM.k1, false);
+  static const PTag kGeometryforDisplay
+      //(0070,1B08)
+      = const PTag._('GeometryforDisplay', 0x00701B08, 'Geometry for Display',
+          kCSIndex, VM.k1, false);
+  static const PTag kThresholdSequence
+      //(0070,1B11)
+      = const PTag._('ThresholdSequence', 0x00701B11, 'Threshold Sequence',
+          kSQIndex, VM.k1, false);
+  static const PTag kThresholdValueSequence
+      //(0070,1B12)
+      = const PTag._('ThresholdValueSequence', 0x00701B12,
+          'Threshold Value Sequence', kSQIndex, VM.k1, false);
+  static const PTag kThresholdType
+      //(0070,1B13)
+      = const PTag._('ThresholdType', 0x00701B13, 'Threshold Type', kCSIndex,
+          VM.k1, false);
+  static const PTag kThresholdValue
+      //(0070,1B14)
+      = const PTag._('ThresholdValue', 0x00701B14, 'Threshold Value', kFDIndex,
+          VM.k1, false);
   static const PTag kHangingProtocolName
       //(0072,0002)
       = const PTag._('HangingProtocolName', 0x00720002, 'Hanging Protocol Name',
@@ -17325,7 +17652,7 @@ class PTagGroupLength extends PTag {
       : super._(
             'kPublicGroupLength${hex(code)}',
             code,
-            'Public Group Length for ${dcm(code)}',
+            'Public Group Length for ${toDcm(code)}',
             kULIndex,
             VM.k1,
             true,
@@ -17356,7 +17683,7 @@ class PTagUnknown extends PTag {
       : super._(
             'kUnknownPublicTag_${hex16(code >> 16)}',
             code,
-            'Unknown DICOM Tag ${dcm(code)}',
+            'Unknown DICOM Tag ${toDcm(code)}',
             vrIndex,
             VM.k1_n,
             false,

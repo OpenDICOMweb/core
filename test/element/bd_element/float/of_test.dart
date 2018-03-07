@@ -40,14 +40,13 @@ void main() {
     });
 
     test('OF hasValidValues random', () {
-
       for (var i = 0; i < 10; i++) {
         float32List = rng.float32List(1, 10);
         expect(float32List is Float32List, true);
         log.debug('i: $i, float32List: $float32List');
         final bd = makeOF(kFirstOrderPhaseCorrectionAngle, float32List);
         final of0 = new OFevr(bd);
-  //      log.debug('of:$of0');
+        //      log.debug('of:$of0');
         expect(of0[0], equals(float32List[0]));
         expect(of0.hasValidValues, true);
       }
@@ -124,30 +123,30 @@ void main() {
       final of0 = new OFevr(bd0);
       final of1 = new OFevr(bd0);
       log
-        ..debug(
-            'listFloat32Common0:$listFloat32Common0 , of1.hash_code:${of1.hashCode}')
-        ..debug(
-            'listFloat32Common0:$listFloat32Common0 , of1.hash_code:${of1.hashCode}');
+        ..debug('listFloat32Common0:$listFloat32Common0 , '
+            'of1.hash_code:${of1.hashCode}')
+        ..debug('listFloat32Common0:$listFloat32Common0 , '
+            'of1.hash_code:${of1.hashCode}');
       expect(of1.hashCode == of1.hashCode, true);
       expect(of1 == of1, true);
 
       final bd2 = makeOF(kPointCoordinatesData, listFloat32Common0);
       final of2 = new OFevr(bd2);
-      log.debug(
-          'listFloat32Common0:$listFloat32Common0 , of2.hash_code:${of2.hashCode}');
+      log.debug('listFloat32Common0:$listFloat32Common0 , '
+          'of2.hash_code:${of2.hashCode}');
       expect(of0.hashCode == of2.hashCode, false);
       expect(of0 == of2, false);
 
       final bd3 = makeOF(kUValueData, listFloat32Common0);
       final of3 = new OFevr(bd3);
-      log.debug(
-          'listFloat32Common0:$listFloat32Common0 , of3.hash_code:${of3.hashCode}');
+      log.debug('listFloat32Common0:$listFloat32Common0 , '
+          'of3.hash_code:${of3.hashCode}');
       expect(of0.hashCode == of3.hashCode, false);
       expect(of0 == of3, false);
 
       final of4 = new OFevr(bd2);
-      log.debug(
-          'listFloat32Common0:$listFloat32Common0 , of4.hash_code:${of4.hashCode}');
+      log.debug('listFloat32Common0:$listFloat32Common0 , '
+          'of4.hash_code:${of4.hashCode}');
       expect(of1.hashCode == of4.hashCode, false);
       expect(of1 == of4, false);
     });

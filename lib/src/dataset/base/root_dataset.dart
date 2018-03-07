@@ -7,27 +7,19 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
+import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/parse_info.dart';
-import 'package:core/src/dataset/status_report.dart';
-import 'package:core/src/date_time/age.dart';
-import 'package:core/src/date_time/date.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/element/base/string.dart';
-import 'package:core/src/empty_list.dart';
-import 'package:core/src/entity/patient/patient.dart';
-import 'package:core/src/entity/patient/person_name.dart';
-import 'package:core/src/entity/patient/sex.dart';
-import 'package:core/src/logger/formatter.dart';
-import 'package:core/src/system/system.dart';
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/tag/errors.dart';
-import 'package:core/src/tag/tag.dart';
-import 'package:core/src/uid/uid.dart';
-import 'package:core/src/uid/well_known/sop_class.dart';
-import 'package:core/src/uid/well_known/transfer_syntax.dart';
+import 'package:core/src/dataset/base/parse_info.dart';
+import 'package:core/src/dataset/utils/status_report.dart';
+import 'package:core/src/element.dart';
+import 'package:core/src/entity.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/utils/logger.dart';
+import 'package:core/src/value/date_time.dart';
+import 'package:core/src/value/uid.dart';
+
 
 /// The Root [Dataset] for a DICOM Entity.
 abstract class RootDataset extends Dataset {
@@ -142,7 +134,7 @@ abstract class RootDataset extends Dataset {
   /// Returns a formatted summary of _this_.
   String get summary {
     final sqs = sequences;
-    final sb = new StringBuffer('''\n$runtimeType 
+    final sb = new StringBuffer('''\n$runtimeType: 
              SOP Class: $sopClassUid
        Transfer Syntax: $transferSyntax
         Total Elements: $total

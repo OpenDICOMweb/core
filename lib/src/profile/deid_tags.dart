@@ -4,13 +4,10 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/tag/errors.dart';
-import 'package:core/src/tag/p_tag.dart';
-import 'package:core/src/tag/tag.dart';
-import 'package:core/src/uid/uid.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/value/uid.dart';
 
 /// Basic De-Identification Profile.
 class DeIdTags {
@@ -71,7 +68,7 @@ class DeIdTags {
   /// within a set of Instances in the Study or Series;
   static Iterable<Uid> replaceUids(Dataset ds, Tag tag, Iterable<Uid> values,
           {bool required = false}) =>
-      ds.replaceUid(tag.code, values);
+      ds.replaceUids(tag.code, values);
 
   /// ZD: Z unless D is required to maintain
   /// IOD conformance (Type 2 versus Type 1)';

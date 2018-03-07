@@ -6,9 +6,9 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/errors.dart';
-import 'package:core/src/issues.dart';
-import 'package:core/src/tag/export.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/utils/errors.dart';
+import 'package:core/src/utils/issues.dart';
 
 abstract class MetaElementMixin<V>  {
   Element get e;

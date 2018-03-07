@@ -8,7 +8,7 @@ import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/errors.dart';
+import 'package:core/src/utils/errors.dart';
 
 /// A history of all changes to a [Dataset].
 class History {

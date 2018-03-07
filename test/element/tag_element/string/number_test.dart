@@ -333,7 +333,7 @@ void main() {
         final vList1 = rsg.getDSList(1, 1);
         final bytes = DS.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final ds1 = DStag.fromBytes(PTag.kSamplingFrequency, bytes);
+        final ds1 = DStag.fromUint8List(PTag.kSamplingFrequency, bytes);
         log.debug('ds1: ${ds1.info}');
         expect(ds1.hasValidValues, true);
       }
@@ -1458,7 +1458,7 @@ void main() {
         final vList1 = rsg.getISList(1, 1);
         final bytes = IS.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final is1 = IStag.fromBytes(PTag.kWaveformChannelNumber, bytes);
+        final is1 = IStag.fromUint8List(PTag.kWaveformChannelNumber, bytes);
         log.debug('is1: ${is1.info}');
         expect(is1.hasValidValues, true);
       }

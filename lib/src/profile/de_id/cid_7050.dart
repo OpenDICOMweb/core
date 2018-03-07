@@ -4,7 +4,10 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/core.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element.dart';
+import 'package:core/src/tag.dart';
 
 class ContextGroup {
   final String dcmType = 'ContextGroup';

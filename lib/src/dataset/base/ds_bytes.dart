@@ -6,8 +6,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/empty_list.dart';
-import 'package:core/src/tag/constants.dart';
+import 'package:core/src/base.dart';
 
 /// Dataset Bytes ([DSBytes]).
 abstract class DSBytes {

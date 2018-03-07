@@ -8,13 +8,14 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
-import 'package:core/src/element/vf_fragments.dart';
-import 'package:core/src/tag/export.dart';
-import 'package:core/src/uid/well_known/transfer_syntax.dart';
+import 'package:core/src/element/base/vf_fragments.dart';
+import 'package:core/src/tag.dart';
+import 'package:core/src/value/uid.dart';
 
 /// PixelDataMixin class
 abstract class PixelData {
   Tag get tag;
+  int get code;
   int get vfLengthField;
   Uint8List get vfBytes;
 
@@ -47,7 +48,7 @@ abstract class Uint8PixelDataMixin {
 
   /// The [Uint8List] of pixels, possibly compressed.
   Uint8List get pixels => _pixels ??=
-      (isEncapsulated) ? fragments.bulkdata : Uint8Base.fromList(values);
+      (isEncapsulated) ? fragments.bulkdata : Uint8.fromList(values);
   Uint8List _pixels;
 }
 
@@ -60,27 +61,27 @@ abstract class Uint16PixelDataMixin {
 
   /// The [Uint16List] of pixels, possibly compressed.
   Uint16List get pixels => _pixels ??=
-      (isEncapsulated) ? fragments.bulkdata : Uint16Base.fromList(values);
+      (isEncapsulated) ? fragments.bulkdata : Uint16.fromList(values);
   Uint16List _pixels;
 }
 
 abstract class OBPixelData extends IntBase
     with
         OBMixin,
-        Uint8Base,
+        Uint8,
         PixelData,
         Uint8PixelDataMixin {}
 
 abstract class UNPixelData extends IntBase
     with
         UNMixin,
-        Uint8Base,
+        Uint8,
         PixelData,
         Uint8PixelDataMixin {}
 
 abstract class OWPixelData extends IntBase
     with
         OWMixin,
-        Uint16Base,
+        Uint16,
         PixelData,
         Uint16PixelDataMixin {}

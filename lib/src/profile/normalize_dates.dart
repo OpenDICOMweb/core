@@ -4,12 +4,10 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/dataset/base/root_dataset.dart';
-import 'package:core/src/date_time/date.dart';
-import 'package:core/src/date_time/primitives/constants.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/string.dart';
-import 'package:core/src/logger/log_level.dart';
+import 'package:core/src/dataset.dart';
+import 'package:core/src/value/date_time.dart';
+import 'package:core/src/element.dart';
+import 'package:core/src/utils/logger.dart';
 import 'package:core/src/profile/de_id/deid_dates.dart';
 import 'package:core/src/system/system.dart';
 

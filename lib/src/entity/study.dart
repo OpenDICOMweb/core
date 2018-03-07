@@ -4,20 +4,22 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/dataset/base/root_dataset.dart';
+import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/instance.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/series.dart';
-import 'package:core/src/tag/constants.dart';
-import 'package:core/src/uid/uid.dart';
+import 'package:core/src/value/uid.dart';
 
 /// A DICOM [Study] in SOP Instance format.
 class Study extends Entity {
   /// Creates a new Study.
-  Study(Patient subject, Uid uid, RootDataset dataset, [Map<Uid, Series> series])
-      : super(subject, uid, dataset, (series == null) ? <Uid, Series>{} : series);
+  Study(Patient subject, Uid uid, RootDataset dataset,
+      [Map<Uid, Series> series])
+      : super(
+            subject, uid, dataset, (series == null) ? <Uid, Series>{} : series);
 
   /// Returns a copy of _this_ [Series], but with a new [Uid]. If [parent]
   /// is _null_ the new [Instance] is in the same [Series] as _this_.
@@ -77,4 +79,3 @@ class Study extends Entity {
     return sb.toString();
   }
 }
-
