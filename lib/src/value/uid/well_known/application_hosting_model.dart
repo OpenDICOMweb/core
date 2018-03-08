@@ -24,13 +24,13 @@ class ApplicationHostingModel extends WKUid {
 
   static List<String> get strings => _map.keys;
 
-  static const WKUid kNativeDicomModel = const WKUid(
+  static const ApplicationHostingModel kNativeDicomModel = const ApplicationHostingModel(
       '1.2.840.10008.7.1.1',
       'NativeDICOMModel',
       UidType.kApplicationHostingModel,
       'Native DICOM Model');
 
-  static const WKUid kAbstractMultiDimensionalImageModel = const WKUid(
+  static const ApplicationHostingModel kAbstractMultiDimensionalImageModel = const ApplicationHostingModel(
       '1.2.840.10008.7.1.2',
       'AbstractMulti_DimensionalImageModel',
       UidType.kApplicationHostingModel,

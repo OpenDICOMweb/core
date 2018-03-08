@@ -23,33 +23,33 @@ class CodingSchemeUid extends WKUid {
 
   static List<String> get strings => _map.keys;
 
-  static const WKUid kDicomUIDRegistry = const WKUid('1.2.840.10008.2.6.1',
+  static const CodingSchemeUid kDicomUIDRegistry = const CodingSchemeUid('1.2.840.10008.2.6.1',
       'DICOMUIDRegistry', UidType.kCodingScheme, 'DICOM UID Registry');
 
-  static const WKUid kDicomControlledTerminology = const WKUid(
+  static const CodingSchemeUid kDicomControlledTerminology = const CodingSchemeUid(
     '1.2.840.10008.2.16.4',
     'DICOMControlledTerminology',
     UidType.kCodingScheme,
     'DICOM Controlled Terminology',
   );
 
-  static const WKUid kAdultMouseAnatomyTerminology = const WKUid(
+  static const CodingSchemeUid kAdultMouseAnatomyTerminology = const CodingSchemeUid(
     '1.2.840.10008.2.16.5',
     'AdultMouseAnatomyTerminology',
     UidType.kCodingScheme,
     'Adult Mouse Anatomy Terminology',
   );
 
-  static const WKUid kUberonTerminology = const WKUid(
+  static const CodingSchemeUid kUberonTerminology = const CodingSchemeUid(
     '1.2.840.10008.2.16.6',
     'UberonTerminology',
     UidType.kCodingScheme,
     'Uberon Terminology',
   );
 
-  static const WKUid
+  static const CodingSchemeUid
       kIntegratedTaxonomicInformationSystemAndTaxonomicSerialNumber =
-      const WKUid(
+      const CodingSchemeUid(
     '1.2.840.10008.2.16.7',
     'IntegratedTaxonomicInformationSystemAndTaxonomicSerialNumber',
     UidType.kCodingScheme,
@@ -57,14 +57,14 @@ class CodingSchemeUid extends WKUid {
         'Taxonomic Serial Number (TSN)',
   );
 
-  static const WKUid kMouseGenomeInitiative = const WKUid(
+  static const CodingSchemeUid kMouseGenomeInitiative = const CodingSchemeUid(
     '1.2.840.10008.2.16.8',
     'MouseGenomeInitiative',
     UidType.kCodingScheme,
     'Mouse Genome Initiative (MGI)',
   );
 
-  static const WKUid kPubChemCmpoundCID = const WKUid(
+  static const CodingSchemeUid kPubChemCmpoundCID = const CodingSchemeUid(
     '1.2.840.10008.2.16.9',
     'PubChemCmpoundCID',
     UidType.kCodingScheme,

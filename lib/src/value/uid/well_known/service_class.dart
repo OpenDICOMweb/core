@@ -24,18 +24,18 @@ class ServiceClass extends WKUid {
   static List<String> get strings => _map.keys;
 
 
-  static const WKUid kStorageServiceClass = const WKUid('1.2.840.10008.4.2',
+  static const ServiceClass kStorageServiceClass = const ServiceClass('1.2.840.10008.4.2',
       'StorageServiceClass', UidType.kServiceClass, 'Storage Service Class');
 
-  static const WKUid kUnifiedWorklistAndProcedureStepServiceClassTrial =
-      const WKUid(
+  static const ServiceClass kUnifiedWorklistAndProcedureStepServiceClassTrial =
+      const ServiceClass(
           '1.2.840.10008.5.1.4.34.4',
           'UnifiedWorklistAndProcedureStepServiceClass_Trial_Retired',
           UidType.kServiceClass,
           'Unified Worklist and Procedure Step Service Class - Trial (Retired)',
           isRetired: true);
 
-  static const WKUid kUnifiedWorklistAndProcedureStepServiceClass = const WKUid(
+  static const ServiceClass kUnifiedWorklistAndProcedureStepServiceClass = const ServiceClass(
     '1.2.840.10008.5.1.4.34.6',
     'UnifiedWorklistAndProcedureStepServiceClass',
     UidType.kServiceClass,
