@@ -2,11 +2,11 @@
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
+    "version": "2.0.0-dev.30.0",
     "configurations": [
         {
             "name": "Dart",
-            "program": "${workspaceRoot}/bin/main.dart",
+            "program": "C:/tools/dart/dev/sdk/bin/dart.exe",
             "request": "launch",
             "type": "dart"
         }

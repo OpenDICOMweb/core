@@ -170,23 +170,6 @@ class WriteBuffer extends BufferBase {
 
   void writeString(String s) => writeUtf8(s);
 
-  /// Writes [bytes] to _this_.
-  void writeUint8List(Uint8List bytes) => write(bytes);
-
-  /// Writes [bd] to _this_.
-  void writeByteData(ByteData bd) => write(bd);
-
-  /// Writes [td] to _this_.
-  void write(TypedData td) {
-    final offset = td.offsetInBytes;
-    final length = td.lengthInBytes;
-    final uint8List =
-        (td is Uint8List) ? td : td.buffer.asUint8List(offset, length);
-    _maybeGrow(length);
-    for (var i = 0, j = wIndex_; i < length; i++, j++) bytes[j] = uint8List[i];
-    wIndex_ += length;
-  }
-
   /// Writes [length] zeros to _this_.
   bool writeZeros(int length) {
     _maybeGrow(length);
@@ -207,12 +190,100 @@ class WriteBuffer extends BufferBase {
     wIndex_ += 4;
   }
 
+  void writeInt8List(Int8List list) {
+    bytes.setInt8List(list, wIndex_, list.length);
+    wIndex_ += list.length;
+  }
+
+  void writeInt16List(Int16List list) {
+    bytes.setInt16List(list, wIndex_, list.length);
+    wIndex_ += (list.length * 2);
+  }
+
+  void writeInt32List(Int32List list) {
+    bytes.setInt32List(list, wIndex_, list.length);
+    wIndex_ += (list.length * 4);
+  }
+
+  void writeInt64List(Int64List list) {
+    bytes.setInt64List(list, wIndex_, list.length);
+    wIndex_ += (list.length * 8);
+  }
+
+  void writeUint8List(Uint8List list) =>
+    _writeTypedData(list);
+
+  void writeByteData(ByteData bd) =>
+      _writeTypedData(bd);
+
+  void _writeTypedData(TypedData td) {
+    final length = td.lengthInBytes;
+    bytes.setByteData(td, wIndex_, length);
+    wIndex_ += length;
+  }
+
+/* TODO: is there any advantage to doing it this way?
+  /// Writes [bytes] to _this_.
+  void writeUint8List(Uint8List bytes) => _write(bytes);
+
+  /// Writes [bd] to _this_.
+//  void _writeByteData(ByteData bd) => write(bd);
+
+  /// Writes [td] to _this_.
+  void _write(TypedData td) {
+    final offset = td.offsetInBytes;
+    final length = td.lengthInBytes;
+    final uint8List =
+    (td is Uint8List) ? td : td.buffer.asUint8List(offset, length);
+    _maybeGrow(length);
+    for (var i = 0, j = wIndex_; i < length; i++, j++)
+      bytes[j] = uint8List[i];
+    wIndex_ += length;
+  }
+
+*/
+
+  void writeUint16List(Uint16List list) {
+    bytes.setUint16List(list, wIndex_, list.length);
+    wIndex_ += (list.length * 2);
+    }
+
+  void writeUint32List(Uint32List list) {
+    bytes.setUint32List(list, wIndex_, list.length);
+    wIndex_ += (list.length * 4);
+    }
+
+  void writeUint64List(Uint64List list) {
+    bytes.setUint64List(list, wIndex_, list.length);
+    wIndex_ += (list.length * 8);
+  }
+
+  void writeFloat32List(Float32List list) {
+    bytes.setFloat32List(list, wIndex_, list.length);
+    wIndex_ += (list.length * 4);
+  }
+
+  void writeFloat64List(Float64List list) {
+    bytes.setFloat64List(list, wIndex_, list.length);
+    wIndex_ += (list.length * 8);
+  }
+
+  void writeAsciiList(List<String> list) =>
+    wIndex_ += bytes.setAsciiList(list, wIndex_, list.length);
+
+  void writeUtf8List(List<String> list) =>
+      wIndex_ += bytes.setUtf8List(list, wIndex_, list.length);
+
+  void writeStringList(List<String> list) =>
+      writeUtf8List(list);
+
+
   /// Ensures that [bytes] has at least [remaining] writable bytes.
   /// The [bytes] is grows if necessary, and copies existing bytes into
   /// the new [bytes].
   bool ensureRemaining(int remaining) => ensureCapacity(wIndex_ + remaining);
 
-  //Urgent: move to write and read_write_buf
+  // Urgent: move to write and read_write_buf
   /// Ensures that [bytes] is at least [capacity] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureCapacity(int capacity) =>

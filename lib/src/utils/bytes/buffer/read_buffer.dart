@@ -146,11 +146,6 @@ class ReadBuffer extends BufferBase {
 
   String readString(int length) => readUtf8(length);
 
-  List<String> readStringList(int length) {
-    final s = readString(length);
-    return s.split('\\');
-  }
-
   /// Peek at next tag - doesn't move the [rIndex_].
   int peekCode() {
     assert(rIndex_.isEven && hasRemaining(4), '@$rIndex_ : $remaining');
@@ -186,6 +181,81 @@ class ReadBuffer extends BufferBase {
   }
 
   Uint8List readUint8View(int length) => uint8View(rIndex_, length);
+
+  Int8List readInt8List(int length) {
+    final v = bytes.getInt8List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  Int16List readInt16List(int length) {
+    final v = bytes.getInt16List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  Int32List readInt32List(int length) {
+    final v = bytes.getInt32List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  Int64List readInt64List(int length) {
+    final v = bytes.getInt64List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  Uint8List readUint8List(int length) {
+    final v = bytes.getUint8List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  Uint16List readUint16List(int length) {
+    final v = bytes.getUint16List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  Uint32List readUint32List(int length) {
+    final v = bytes.getUint32List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  Uint64List readUint64List(int length) {
+    final v = bytes.getUint64List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  Float32List readFloat32List(int length) {
+    final v = bytes.getFloat32List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  Float64List readFloat64List(int length) {
+    final v = bytes.getFloat64List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  List<String> readAsciiList(int length) {
+    final v = bytes.asAsciiList(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  List<String> readUtf8List(int length) {
+    final v = bytes.asUtf8List(rIndex_, length);
+    rIndex_ += length;
+    return v;
+  }
+
+  List<String> readStringList(int length) =>
+      readUtf8List(length);
 
   int _getOffset(int start, int length) {
     final offset = bytes.offsetInBytes + start;

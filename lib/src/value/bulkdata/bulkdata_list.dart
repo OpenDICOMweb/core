@@ -55,7 +55,7 @@ class BulkdataList {
     final index = getIndex();
     wb
       // Write identifer 'Bulkdata'
-      ..write(token)
+      ..writeUint8List(token)
       // Write length of Index
       ..writeUint32(index.length);
 

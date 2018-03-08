@@ -6,6 +6,7 @@
 
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 export 'package:core/src/utils/bytes/buffer/read_buffer.dart';
@@ -49,7 +50,9 @@ class Bytes extends ListBase<int> {
       : _bd = bytes.asByteData(offset, length ?? bytes.lengthInBytes);
 
   Bytes.fromList(List<int> list, [this.endian = Endian.little])
-      : _bd = _listToByteData(list);
+      : _bd = (list is Uint8List)
+            ? list.buffer.asByteData()
+            : (new Uint8List.fromList(list)).buffer.asByteData();
 
   Bytes.fromTypedData(TypedData td, [this.endian = Endian.little])
       : _bd = td.buffer.asByteData();
@@ -65,10 +68,11 @@ class Bytes extends ListBase<int> {
 
   Bytes._([this.endian = Endian.little]) : _bd = new ByteData(0);
 
-  // Core accessor NOT to be exported?
-  ByteData get bd => _bd;
+  @override
+  int operator [](int i) => _bd.getUint8(i);
 
-  // **** Object overrides
+  @override
+  void operator []=(int i, int v) => _bd.setUint8(i, v);
 
   @override
   bool operator ==(Object other) {
@@ -80,6 +84,11 @@ class Bytes extends ListBase<int> {
     }
     return false;
   }
+
+  // Core accessor NOT to be exported?
+  ByteData get bd => _bd;
+
+  // **** Object overrides
 
   @override
   int get hashCode {
@@ -101,12 +110,6 @@ class Bytes extends ListBase<int> {
   @override
   set length(int length) =>
       throw new UnsupportedError('$runtimeType: length is not modifiable');
-
-  @override
-  int operator [](int i) => _bd.getUint8(i);
-
-  @override
-  void operator []=(int i, int v) => _bd.setUint8(i, v);
 
   @override
   Bytes sublist(int start, [int end]) =>
@@ -221,6 +224,9 @@ class Bytes extends ListBase<int> {
   String getUtf8([int offset = 0, int length]) =>
       UTF8.decode(asUint8List(offset, length ?? lengthInBytes));
 
+  String getString([int offset = 0, int length]) =>
+      getUtf8(offset, length);
+
   // **** TypedData Views
 
   // Returns the absolute offset in the ByteBuffer.
@@ -287,6 +293,9 @@ class Bytes extends ListBase<int> {
   List<String> asUtf8List([int offset = 0, int length]) =>
       getUtf8(offset, length).split('\\');
 
+  List<String> asStringList([int offset = 0, int length]) =>
+      asUtf8List(offset, length);
+
   // **** ByteData Setters
 
   void setInt8(int wIndex, int value) => _bd.setInt8(wIndex, value);
@@ -316,22 +325,25 @@ class Bytes extends ListBase<int> {
   void setAscii(String s, [int offset = 0, int length]) {
     length ??= s.length;
     final v = (offset == 0 && length == s.length)
-              ? s
-              : s.substring(offset, offset + length);
+        ? s
+        : s.substring(offset, offset + length);
     setUint8List(ASCII.encode(v), offset, length);
   }
 
   void setUtf8(String s, [int offset = 0, int length]) {
     length ??= s.length;
     final v = (offset == 0 && length == s.length)
-              ? s
-              : s.substring(offset, offset + length);
+        ? s
+        : s.substring(offset, offset + length);
     setUint8List(ASCII.encode(v), offset, length);
   }
 
+  void setString(String s, [int offset = 0, int length] ) =>
+      setUtf8(s, offset, length);
+
   // **** TypedData List Setters
 
-  void setInt8List(Uint8List list, [int offset = 0, int length]) {
+  void setInt8List(Int8List list, [int offset = 0, int length]) {
     length ??= list.length;
     _checkLength(offset, length, kInt8Size);
     for (var i = offset; i < length ?? list.length; i++)
@@ -364,6 +376,13 @@ class Bytes extends ListBase<int> {
     _checkLength(offset, length, kUint8Size);
     for (var i = offset; i < length ?? list.length; i++)
       _bd.setUint8(i, list[i]);
+  }
+
+  void setByteData(ByteData bd, [int offset = 0, int length]) {
+    length ??= bd.lengthInBytes;
+    _checkLength(offset, length, kUint8Size);
+    for (var i = offset; i < length; i++)
+      _bd.setUint8(i, bd.getUint8(i));
   }
 
   void setUint16List(Uint16List list, [int offset = 0, int length]) {
@@ -413,20 +432,36 @@ class Bytes extends ListBase<int> {
 
   String _toString(List<String> sList, int offset, int length) {
     final v = (offset == 0 && length == sList.length)
-              ? sList
-              : sList.sublist(offset, offset + length);
+        ? sList
+        : sList.sublist(offset, offset + length);
     return v.join('\\');
   }
 
-  void setAsciiList(List<String> sList, [int offset = 0, int length]) {
-    final s = _toString(sList, offset,  length ??= sList.length);
-    return setAscii(s, offset, s.length);
+  int setAsciiList(List<String> sList, [int offset = 0, int length]) {
+    final s = _toString(sList, offset, length ??= sList.length);
+    setAscii(s, offset, s.length);
+    return s.length;
   }
 
-  void setUtf8List(List<String>  sList, [int offset = 0, int length,]) {
-    final s = _toString(sList, offset,  length ??= sList.length);
-    return setUtf8(s, offset, s.length);
+  int setUtf8List(
+    List<String> sList, [
+    int offset = 0,
+    int length,
+  ]) {
+    final s = _toString(sList, offset, length ??= sList.length);
+    setUtf8(s, offset, s.length);
+    return s.length;
   }
+
+  bool isInt8(int i) => i > kInt8MinValue && i <= kInt8MaxValue;
+  bool isInt16(int i) => i > kInt16MinValue && i <= kInt16MaxValue;
+  bool isInt32(int i) => i > kInt32MinValue && i <= kInt32MaxValue;
+  bool isInt64(int i) => i > kInt64MinValue && i <= kInt64MaxValue;
+
+  bool isUint8(int i) => i > kUint8MinValue && i <= kUint8MaxValue;
+  bool isUint16(int i) => i > kUint16MinValue && i <= kUint16MaxValue;
+  bool isUint32(int i) => i > kUint32MinValue && i <= kUint32MaxValue;
+  bool isUint64(int i) => i > kUint64MinValue && i <= kUint64MaxValue;
 
   static const int kInt8Size = 1;
   static const int kInt16Size = 2;
@@ -465,15 +500,22 @@ class Bytes extends ListBase<int> {
 
   static final Bytes kEmptyBytes = new Bytes._();
 
-  bool isInt8(int i) => i > kInt8MinValue && i <= kInt8MaxValue;
-  bool isInt16(int i) => i > kInt16MinValue && i <= kInt16MaxValue;
-  bool isInt32(int i) => i > kInt32MinValue && i <= kInt32MaxValue;
-  bool isInt64(int i) => i > kInt64MinValue && i <= kInt64MaxValue;
+  /// Returns a [Bytes] buffer containing the contents of [File].
+  // TODO: add async
+  // TODO: unit test
+  static Bytes fromFile(File file,
+      {Endian endian = Endian.little, bool doAsync = false}) {
+    final Uint8List iList = file.readAsBytesSync();
+    return new Bytes.fromTypedData(iList, endian);
+  }
 
-  bool isUint8(int i) => i > kUint8MinValue && i <= kUint8MaxValue;
-  bool isUint16(int i) => i > kUint16MinValue && i <= kUint16MaxValue;
-  bool isUint32(int i) => i > kUint32MinValue && i <= kUint32MaxValue;
-  bool isUint64(int i) => i > kUint64MinValue && i <= kUint64MaxValue;
+  /// Returns a [Bytes] buffer containing the contents of the
+  /// [File] at [path].
+  // TODO: add async
+  // TODO: unit test
+  static Bytes fromPath(String path,
+      {Endian endian = Endian.little, bool doAsync = false}) =>
+      fromFile(new File(path), endian: endian, doAsync: doAsync);
 }
 
 class GrowableBytes extends Bytes {
@@ -541,6 +583,8 @@ class GrowableBytes extends Bytes {
 
 // ***  Internals
 
+/*
 ByteData _listToByteData(List<int> list) => (list is Uint8List)
     ? list.buffer.asByteData()
     : (new Uint8List.fromList(list)).buffer.asByteData();
+*/
