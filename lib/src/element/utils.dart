@@ -5,17 +5,17 @@
 // See the AUTHORS file for other contributors.
 
 import 'dart:collection';
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
 
 //TODO: maybe move base64Encode/decode & toDcmString
 /// Returns a Base64 [String] encoded from the [Uint8List] of [bytes].
-String base64Encode(Uint8List bytes) => BASE64.encode(bytes);
+String base64Encode(Uint8List bytes) => cvt.base64.encode(bytes);
 
 /// Returns a [Uint8List] decoded from the [String] [s].
-Uint8List base64Decode(String s) => BASE64.decode(s);
+Uint8List base64Decode(String s) => cvt.base64.decode(s);
 
 /// _Deprecated_: use [dcmString].
 String toDcmString(List<String> list) => '"${list.join("\\")}"';
@@ -126,7 +126,7 @@ class UnalignedUint32List extends ListBase<int> {
   void _unsupported() =>
       throw new UnsupportedError('Unmodifiable UnassignedUint32List');
 
-  int _getUint16(int offset) => bd.getUint16(offset, Endianness.LITTLE_ENDIAN);
+  int _getUint16(int offset) => bd.getUint16(offset, Endian.little);
 
   int _getUint32(int i) {
     final offset = i * 4;

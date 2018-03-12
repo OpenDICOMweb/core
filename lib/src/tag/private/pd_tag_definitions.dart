@@ -9,8 +9,12 @@ import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr.dart';
 
 class PDTagDefinition {
+  // Internal index of _this_.
   final int index;
+  // Creator ID.
   final String token;
+  // Code in format 0xgggg00nn, where gggg is the group number, which must
+  // be odd and nn is this private subgroup offset
   final int code;
   final int vrIndex;
   final VM vm;

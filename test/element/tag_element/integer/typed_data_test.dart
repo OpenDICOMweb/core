@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -91,7 +91,7 @@ void main() {
       final uInt32List0 = rng.uint32List(1, i);
       final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
       final uInt8List = uInt32ListV1.buffer.asUint8List();
-      final s = BASE64.encode(uInt8List);
+      final s = cvt.base64.encode(uInt8List);
       final s0 = Uint32.fromBase64(s);
       log.debug('s0 : $s0, s : $s');
       expect(s0 is Uint32List, true);
@@ -103,7 +103,7 @@ void main() {
       final uInt32List0 = rng.uint32List(1, i);
       final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
       final bd = uInt32ListV1.buffer.asUint8List();
-      final base64 = BASE64.encode(bd);
+      final base64 = cvt.base64.encode(bd);
       final s0 = Uint32.toBase64(uInt32List0);
       log.debug('s0 : $s0, base64 : $base64');
       //expect(s0, equals(base64));

@@ -70,10 +70,10 @@ abstract class DSBytes {
   int getUint8(int offset) => bd.getUint16(offset);
 
   /// Return a Uint16 value at [offset].
-  int getUint16(int offset) => bd.getUint16(offset, Endianness.LITTLE_ENDIAN);
+  int getUint16(int offset) => bd.getUint16(offset, Endian.little);
 
   /// Return a Uint32 value at [offset].
-  int getUint32(int offset) => bd.getUint32(offset, Endianness.LITTLE_ENDIAN);
+  int getUint32(int offset) => bd.getUint32(offset, Endian.little);
 
   int getToken() {
     final group = getUint16(0);

@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/element/base.dart';
@@ -42,7 +42,7 @@ class SStag extends SS with TagElement<int> {
       new SStag(tag, Int16.fromValueField(vf));
 
   static SStag fromBase64(Tag tag, String s) =>
-      new SStag._fromBytes(tag, BASE64.decode(s));
+      new SStag._fromBytes(tag, cvt.base64.decode(s));
 
   static SStag fromUint8List(Tag tag, Uint8List bytes) =>
       new SStag._fromBytes(tag, bytes);
@@ -84,7 +84,7 @@ class SLtag extends SL with TagElement<int> {
       new SLtag(tag, Int32.fromValueField(vf));
 
   static SLtag fromBase64(Tag tag, String s) =>
-      new SLtag._fromBytes(tag, BASE64.decode(s));
+      new SLtag._fromBytes(tag, cvt.base64.decode(s));
 
   static SLtag fromUint8List(Tag tag, Uint8List bytes) =>
       new SLtag._fromBytes(tag, bytes);
@@ -130,7 +130,7 @@ class OBtag extends OB with TagElement<int> {
       new OBtag(tag, Uint8.fromValueField(vf), vfLengthField);
 
   static OBtag fromBase64(Tag tag, String s) =>
-      new OBtag._fromBytes(tag, BASE64.decode(s));
+      new OBtag._fromBytes(tag, cvt.base64.decode(s));
 
   static OBtag fromUint8List(Tag tag, Uint8List bytes, [int vfLengthField]) =>
       new OBtag._fromBytes(tag, bytes, vfLengthField);
@@ -175,7 +175,7 @@ class UNtag extends UN with TagElement<int> {
       new UNtag(tag, Uint8.fromValueField(vf), vfLengthField);
 
   static UNtag fromBase64(Tag tag, String s) =>
-      new UNtag._fromBytes(tag, BASE64.decode(s));
+      new UNtag._fromBytes(tag, cvt.base64.decode(s));
 
   static UNtag fromUint8List(Tag tag, Uint8List bytes, [int vfLengthField]) =>
       new UNtag._fromBytes(tag, bytes, vfLengthField);
@@ -218,7 +218,7 @@ class UStag extends US with TagElement<int> {
       new UStag(tag, vList ?? kEmptyUint16List);
 
   static UStag fromBase64(Tag tag, String s) =>
-      new UStag._fromBytes(tag, BASE64.decode(s));
+      new UStag._fromBytes(tag, cvt.base64.decode(s));
 
   static UStag fromUint8List(Tag tag, Uint8List bytes) =>
       new UStag._fromBytes(tag, bytes);
@@ -263,7 +263,7 @@ class OWtag extends OW with TagElement<int> {
       new OWtag._(tag, Uint16.fromValueField(vf), vfLengthField);
 
   static OWtag fromBase64(Tag tag, String s) =>
-      new OWtag._fromBytes(tag, BASE64.decode(s));
+      new OWtag._fromBytes(tag, cvt.base64.decode(s));
 
   static OWtag fromUint8List(Tag tag, Uint8List bytes, [int vfLengthField]) =>
       new OWtag._fromBytes(tag, bytes, vfLengthField);
@@ -305,7 +305,7 @@ class OLtag extends OL with TagElement<int> {
       new OLtag(tag, Uint32.fromValueField(vf));
 
   static OLtag fromBase64(Tag tag, String s) =>
-      new OLtag._fromBytes(tag, BASE64.decode(s));
+      new OLtag._fromBytes(tag, cvt.base64.decode(s));
 
   static OLtag fromUint8List(Tag tag, Uint8List bytes) =>
       new OLtag._fromBytes(tag, bytes);
@@ -344,7 +344,7 @@ class ULtag extends UL with TagElement<int> {
       new ULtag(tag, Uint32.fromValueField(vf));
 
   static ULtag fromBase64(Tag tag, String s) =>
-      new ULtag._fromBytes(tag, BASE64.decode(s));
+      new ULtag._fromBytes(tag, cvt.base64.decode(s));
 
   static ULtag fromUint8List(Tag tag, Uint8List bytes) =>
       new ULtag._fromBytes(tag, bytes);
@@ -380,7 +380,7 @@ class GLtag extends ULtag {
   //static GLtag from<int>(Element e) => new GLtag(e.tag, e.values);
 
   static GLtag fromBase64(Tag tag, String s) =>
-      new GLtag._fromBytes(tag, BASE64.decode(s));
+      new GLtag._fromBytes(tag, cvt.base64.decode(s));
 
   static GLtag fromUint8List(Tag tag, Uint8List bytes) =>
       new GLtag._fromBytes(tag, bytes);
@@ -422,7 +422,7 @@ class ATtag extends AT with TagElement<int> {
       new ATtag(tag, Uint32.fromValueField(vf));
 
   static ATtag fromBase64(Tag tag, String s) =>
-      new ATtag._fromBytes(tag, BASE64.decode(s));
+      new ATtag._fromBytes(tag, cvt.base64.decode(s));
 
   static ATtag fromUint8List(Tag tag, Uint8List bytes) =>
       new ATtag._fromBytes(tag, bytes);

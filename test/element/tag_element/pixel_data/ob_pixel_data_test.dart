@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -314,7 +314,7 @@ void main() {
       final ob7 = ob6.update(testFrame);
       expect(ob6 == ob7, true);
 
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final ob8 =
           OBtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
       final ob9 = ob8.update(testFrame);
@@ -358,7 +358,7 @@ void main() {
     });
 
     test('Create Unencapsulated OBtagPixelData.fromBase64', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final ob0 =
           OBtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
       final ob1 = OBtagPixelData.fromBase64(
@@ -407,7 +407,7 @@ void main() {
     });
 
     test('Create Unencapsulated OBtagPixelData.fromBase64 hashCode and ==', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final ob0 =
           OBtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
       final ob1 =
@@ -433,7 +433,7 @@ void main() {
     });
 
     test('Create encapsulated OBtagPixelData.fromBase64', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final frags = new VFFragments(fragments);
 
       final ob0 = OBtagPixelData.fromBase64(
@@ -478,7 +478,7 @@ void main() {
     });
 
     test('Create encapsulated OBtagPixelData.fromBase64 hashCode and ==', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final frags = new VFFragments(fragments);
 
       final ob0 = OBtagPixelData.fromBase64(
@@ -663,7 +663,7 @@ void main() {
     });
 
     test('OBtagPixelData.fromB64', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final frags = new VFFragments(fragments);
       final ob0 = OBtagPixelData.fromBase64(
           PTag.kPixelData, base64, base64.length, frags, ts);
@@ -710,7 +710,7 @@ void main() {
     });
 
     test('OBtagPixelData.fromBase64 hashCode and ==', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final frags = new VFFragments(fragments);
       final ob0 = OBtagPixelData.fromBase64(
           PTag.kPixelData, base64, base64.length, frags, ts);
@@ -759,12 +759,12 @@ void main() {
     });
 
     test('Create Uint8Base.fromBase64', () {
-      final s = BASE64.encode(testFrame);
+      final s = cvt.base64.encode(testFrame);
       expect(Uint8.fromBase64(s), equals(testFrame));
     });
 
     test('Create Uint8Base.listToBase64', () {
-      final s = BASE64.encode(testFrame);
+      final s = cvt.base64.encode(testFrame);
       log.debug('s: $s');
       expect(Uint8.toBase64(testFrame), s);
     });

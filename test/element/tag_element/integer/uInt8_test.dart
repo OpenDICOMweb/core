@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -241,7 +241,7 @@ void main() {
         expect(ob0.values, equals(uInt8ListV1));
 
         // Test Base64
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         final ob1 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
         expect(ob0 == ob1, true);
         expect(ob1.value, equals(ob0.value));
@@ -333,7 +333,7 @@ void main() {
         final uInt8list0 = rng.uint8List(1, 1);
         final uInt8ListV1 = new Uint8List.fromList(uInt8list0);
         final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8ListV11);
+        final base64 = cvt.base64.encode(uInt8ListV11);
         final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
         expect(ob0.hasValidValues, true);
       }
@@ -342,7 +342,7 @@ void main() {
     test('OB BASE64', () {
       final uInt8ListV1 = new Uint8List.fromList(uInt8Min);
       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-      final base64 = BASE64.encode(uInt8ListV11);
+      final base64 = cvt.base64.encode(uInt8ListV11);
       final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
       expect(ob0.hasValidValues, true);
     });
@@ -374,8 +374,8 @@ void main() {
         final uInt8list0 = rng.uint8List(1, 1);
         final uInt8ListV1 = new Uint8List.fromList(uInt8list0);
         final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8ListV11);
-        final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
+        final b64 = cvt.base64.encode(uInt8ListV11);
+        final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, b64);
         expect(ob0.hasValidValues, true);
       }
     });
@@ -835,7 +835,7 @@ void main() {
         final uInt8list0 = rng.uint8List(0, i);
         final uInt8ListV1 = new Uint8List.fromList(uInt8list0);
         final bd = uInt8ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('OB.base64: "$base64"');
 
         final obList = Uint8.fromBase64(base64);
@@ -850,7 +850,7 @@ void main() {
         final uInt8list0 = rng.uint8List(0, i);
         final uInt8ListV1 = new Uint8List.fromList(uInt8list0);
         final bd = uInt8ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         expect(Uint8.toBase64(uInt8list0), equals(s));
       }
     });
@@ -863,7 +863,7 @@ void main() {
         final bd = uInt8ListV1.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('OB.base64: "$base64"');
         final s = Uint8.toBase64(uInt8list0);
         log.debug('  OB.json: "$s"');

@@ -114,11 +114,11 @@ const int kItemDelimitationItem32BitLE = 0xe00dfffe; //feff0de0;
 const int kSequenceDelimitationItem32BitLE = 0xe0ddfffe;
 
 /// The value appended to odd length UID Value Fields to make them even length.
-const int kUidPaddingChar = kNull; // equal to ascii.kNull;
+const int kUidPaddingChar = kNull; // equal to cvt.ascii.kNull;
 
 /// The value appended to odd length [String] Value Fields to make them
 /// even length.
-const int kStringPaddingChar = kSpace; // Equal to ascii.kSpace;
+const int kStringPaddingChar = kSpace; // Equal to cvt.ascii.kSpace;
 
 /// The value appended to odd length Uint8 Value Fields (OB, UN) to make
 /// them even length.

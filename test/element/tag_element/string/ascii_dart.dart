@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
@@ -16,8 +16,8 @@ void main() {
   group('Ascii Tests', () {
     test('Simple Ascii Test', () {
       final s0 = r'>3\$Wgz>yD_&Mu}'; //--> consists of (backslash(\))
-      final bytes0 = ASCII.encode(s0);
-      final s1 = ASCII.decode(bytes0, allowInvalid: true);
+      final bytes0 = cvt.ascii.encode(s0);
+      final s1 = cvt.ascii.decode(bytes0, allowInvalid: true);
       log.debug('s0: "$s0" == s1: "$s1"');
       expect(s0 == s1, true);
     });
@@ -76,9 +76,9 @@ void main() {
   group('UTF8 Test', () {
     test('simple UTF8 test', () {
       final s0 = '¥ŁņĤŒ£¦§µÆĦǍƸƻƫƩƱƵϢΨϩώβαγδηθμξѤѠ₮₹₴Ɐ';
-      final bytes0 = UTF8.encode(s0);
+      final bytes0 = cvt.utf8.encode(s0);
       log.debug('bytes0 : $bytes0');
-      final s1 = UTF8.decode(bytes0, allowMalformed: true);
+      final s1 = cvt.utf8.decode(bytes0, allowMalformed: true);
       log.debug('s0: "$s0" == s1: "$s1"');
       expect(s0 == s1, true);
     });

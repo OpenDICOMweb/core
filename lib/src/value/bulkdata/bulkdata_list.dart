@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'dart:async';
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -15,7 +15,7 @@ import 'package:path/path.dart' as path;
 
 
 class BulkdataList {
-  final Uint8List token = ASCII.encode('Bulkdata');
+  final Uint8List token = cvt.ascii.encode('Bulkdata');
   final String filePath;
   List<Bulkdata> entries = <Bulkdata>[];
   int offset = 0;

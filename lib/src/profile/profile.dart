@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 
 import 'package:core/src/element/base/element.dart';
 
@@ -128,10 +128,10 @@ class Profile {
     "@type": "Clinical Study Profile",
     "name": "$name",
     "path": "$url",
-    "parameters": ${JSON.encode(parameters)},
+    "parameters": ${cvt.json.encode(parameters)},
     "rules": $rulesToJson,
-    "comments": ${JSON.encode(comments)},
-    "errors": ${JSON.encode(errors)}
+    "comments": ${cvt.json.encode(comments)},
+    "errors": ${cvt.json.encode(errors)}
 }''';
 
   String format([ProfileFormat format]) {
@@ -156,7 +156,7 @@ class Profile {
   String toString() => 'Profile: $name';
 
   static Profile parse(String s) {
-    final Map map = JSON.decode(s);
+    final Map map = cvt.json.decode(s);
     return new Profile._(
         map['name'],
         map['url'],

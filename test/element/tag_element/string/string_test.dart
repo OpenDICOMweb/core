@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
@@ -745,7 +745,7 @@ void main() {
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(LO.toBytes(vList1), equals(values));
     });
 
@@ -788,7 +788,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = LO.toByteData(vList0);
         final tbd1 = LO.toByteData(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -797,7 +797,7 @@ void main() {
       }
       for (var s in goodLOList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = LO.toByteData(s);
           final tbd3 = LO.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -1470,11 +1470,11 @@ void main() {
     test('LT toBytes', () {
       final vList1 = rsg.getLTList(1, 1);
       log.debug('LT.toBytes(vList1): ${LT.toBytes(vList1)}');
-      /* final val = ASCII.encode('s6V&:;s%?Q1g5v');
+      /* final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
         expect(LT.toBytes(['s6V&:;s%?Q1g5v']), equals(val));*/
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(LT.toBytes(vList1), equals(values));
     });
 
@@ -1513,7 +1513,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = LT.toByteData(vList0);
         final tbd1 = LT.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -1522,7 +1522,7 @@ void main() {
       }
       for (var s in goodLTList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = LT.toByteData(s);
           final tbd3 = LT.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -2217,7 +2217,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = PN.toByteData(vList0);
         final tbd1 = PN.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -2226,7 +2226,7 @@ void main() {
       }
       for (var s in goodPNList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = PN.toByteData(s);
           final tbd3 = PN.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -2265,7 +2265,7 @@ void main() {
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(PN.toBytes(vList1), equals(values));
     });
   });
@@ -2966,7 +2966,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = SH.toByteData(vList0);
         final tbd1 = SH.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -2975,7 +2975,7 @@ void main() {
       }
       for (var s in goodSHList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = SH.toByteData(s);
           final tbd3 = SH.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -3013,7 +3013,7 @@ void main() {
       log.debug('SH.toBytes(vList1): ${SH.toBytes(vList1)}');
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(SH.toBytes(vList1), equals(values));
     });
 
@@ -3711,7 +3711,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = ST.toByteData(vList0);
         final tbd1 = ST.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -3720,7 +3720,7 @@ void main() {
       }
       for (var s in goodSTList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = ST.toByteData(s);
           final tbd3 = ST.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -3758,7 +3758,7 @@ void main() {
       log.debug('ST.toBytes(vList1): ${ST.toBytes(vList1)}');
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(ST.toBytes(vList1), equals(values));
     });
   });
@@ -4422,7 +4422,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = UC.toByteData(vList0);
         final tbd1 = UC.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -4431,7 +4431,7 @@ void main() {
       }
       for (var s in goodUCList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = UC.toByteData(s);
           final tbd3 = UC.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -4470,7 +4470,7 @@ void main() {
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(UC.toBytes(vList1), equals(values));
     });
 
@@ -5098,7 +5098,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = UT.toByteData(vList0);
         final tbd1 = UT.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -5107,7 +5107,7 @@ void main() {
       }
       for (var s in goodUTList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = UT.toByteData(s);
           final tbd3 = UT.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -5145,7 +5145,7 @@ void main() {
       log.debug('UT.toBytes(vList1): ${UT.toBytes(vList1)}');
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(UT.toBytes(vList1), equals(values));
     });
   });

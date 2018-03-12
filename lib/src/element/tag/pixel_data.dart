@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
@@ -53,7 +53,7 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
 
   static OBtagPixelData fromBase64(Tag tag, String base64,
           [int vfLengthField, VFFragments fragments, TransferSyntax ts]) =>
-      fromUint8List(tag, BASE64.decode(base64), vfLengthField, fragments, ts);
+      fromUint8List(tag, cvt.base64.decode(base64), vfLengthField, fragments, ts);
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
@@ -108,7 +108,7 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
 
   static UNtagPixelData fromBase64(Tag tag, String base64, int vfLengthField,
           [VFFragments fragments, TransferSyntax ts]) =>
-      fromUint8List(tag, BASE64.decode(base64), vfLengthField, fragments, ts);
+      fromUint8List(tag, cvt.base64.decode(base64), vfLengthField, fragments, ts);
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
@@ -171,7 +171,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
   /// Creates an [OWtagPixelData] Element from a [BASE64] [String].
   static OWtagPixelData fromBase64(Tag tag, String base64,
           [int vfLengthField, VFFragments fragments]) =>
-      fromUint8List(tag, BASE64.decode(base64), vfLengthField);
+      fromUint8List(tag, cvt.base64.decode(base64), vfLengthField);
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].

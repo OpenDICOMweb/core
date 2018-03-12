@@ -7,7 +7,7 @@
 //TODO: load Element library lazily
 
 import 'dart:collection';
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
@@ -328,15 +328,15 @@ abstract class Element<V> extends ListBase<V> {
   Uint8List get vfBytes =>
       (checkValues(values)) ? typedData.buffer.asUint8List() : null;
 
-  String get vfBytesAsAscii => ASCII.decode(vfBytes, allowInvalid: true);
+  String get vfBytesAsAscii => cvt.ascii.decode(vfBytes, allowInvalid: true);
 
   List<String> get vfBytesAsAsciiList =>
-      ASCII.decode(vfBytes, allowInvalid: true).split('\\');
+      cvt.ascii.decode(vfBytes, allowInvalid: true).split('\\');
 
-  String get vfBytesAsUtf8 => UTF8.decode(vfBytes, allowMalformed: true);
+  String get vfBytesAsUtf8 => cvt.utf8.decode(vfBytes, allowMalformed: true);
 
   List<String> get vfBytesAsUtf8List =>
-      UTF8.decode(vfBytes, allowMalformed: true).split('\\');
+      cvt.utf8.decode(vfBytes, allowMalformed: true).split('\\');
 
   /// Returns the Ascii Padding Character for this [Element],
   /// if it has one; otherwise returns -1;

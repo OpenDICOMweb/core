@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
@@ -679,7 +679,7 @@ void main() {
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(AE.toBytes(vList1), equals(values));
     });
 
@@ -722,7 +722,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = AE.toByteData(vList0);
         final tbd1 = AE.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, '
@@ -732,7 +732,7 @@ void main() {
       }
       for (var s in goodAEList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = AE.toByteData(s);
           final tbd3 = AE.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -1552,12 +1552,12 @@ void main() {
     test('CS toBytes', () {
       final vList1 = rsg.getCSList(1, 1);
       log.debug('CS.toBytes(vList1): ${CS.toBytes(vList1)}');
-      final val = ASCII.encode('s6V&:;s%?Q1g5v');
+      final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
       expect(CS.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(CS.toBytes(vList1), equals(values));
     });
 
@@ -1599,7 +1599,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = CS.toByteData(vList0);
         final tbd1 = CS.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -1608,7 +1608,7 @@ void main() {
       }
       for (var s in goodCSList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = CS.toByteData(s);
           final tbd3 = CS.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -2314,12 +2314,12 @@ void main() {
     test('UI toBytes', () {
       final vList1 = rsg.getUIList(1, 1);
       log.debug('UI.toBytes(vList1): ${UI.toBytes(vList1)}');
-      final val = ASCII.encode('s6V&:;s%?Q1g5v');
+      final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
       expect(UI.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(UI.toBytes(vList1), equals(values));
     });
 
@@ -2364,7 +2364,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = UI.toByteData(vList0);
         final tbd1 = UI.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -2373,7 +2373,7 @@ void main() {
       }
       for (var s in goodUIList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = UI.toByteData(s);
           final tbd3 = UI.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -3014,12 +3014,12 @@ void main() {
     test('UR toBytes', () {
       final vList1 = rsg.getURList(1, 1);
       log.debug('UR.toBytes(vList1): ${UR.toBytes(vList1)}');
-      final val = ASCII.encode('s6V&:;s%?Q1g5v');
+      final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
       expect(UR.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(UR.toBytes(vList1), equals(values));
     });
 
@@ -3091,7 +3091,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = UR.toByteData(vList0);
         final tbd1 = UR.toByteData(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -3100,7 +3100,7 @@ void main() {
       }
       for (var s in goodURList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = UR.toByteData(s);
           final tbd3 = UR.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));

@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
@@ -30,6 +30,7 @@ abstract class BDElement<V> extends Element<V> {
 
   /// The [ByteData] containing this Element.
   ByteData get bd;
+
   /// Returns _true_ if this Element is encoded as Explicit VR Little Endian;
   /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
   bool get isEvr;
@@ -57,14 +58,14 @@ abstract class Common {
   int get vrIndex;
 
   bool isEqual(BDElement a, BDElement b) {
-      if (a.bd.lengthInBytes != b.bd.lengthInBytes) return false;
+    if (a.bd.lengthInBytes != b.bd.lengthInBytes) return false;
 
-      final offset0 = a.bd.offsetInBytes;
-      final offset1 = b.bd.offsetInBytes;
-      final length = a.lengthInBytes;
-      for (var i = offset0, j = offset1; i < length; i++, j++)
-        if (a.bd.getUint8(i) != b.bd.getUint8(j)) return false;
-      return true;
+    final offset0 = a.bd.offsetInBytes;
+    final offset1 = b.bd.offsetInBytes;
+    final length = a.lengthInBytes;
+    for (var i = offset0, j = offset1; i < length; i++, j++)
+      if (a.bd.getUint8(i) != b.bd.getUint8(j)) return false;
+    return true;
   }
 
   /// Returns the Tag Code from [ByteData].
@@ -98,7 +99,7 @@ abstract class Common {
 // Put print in to see how often it is called
 // print('length: $valuesLength, minValues: $minValues, maxValues: $maxValues');
     return (valuesLength == 0) ||
-           (valuesLength >= minValues &&
+        (valuesLength >= minValues &&
             (valuesLength <= maxValues) &&
             (valuesLength % columns == 0));
   }
@@ -232,7 +233,7 @@ abstract class AsciiMixin {
 
   Iterable<String> get values {
     if (valuesLength == 0) return <String>[];
-    final s = ASCII.decode(vfBytes, allowInvalid: allowInvalid);
+    final s = cvt.ascii.decode(vfBytes, allowInvalid: allowInvalid);
     return s.split('\\');
   }
 }
@@ -246,7 +247,7 @@ abstract class Utf8Mixin {
 
   Iterable<String> get values {
     if (valuesLength == 0) return <String>[];
-    final s = UTF8.decode(vfBytes, allowMalformed: allowMalformed);
+    final s = cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
     return s.split('\\');
   }
 }
@@ -259,7 +260,7 @@ abstract class StringMixin {
 
   int get valuesLength => 1;
 
-  String get value => UTF8.decode(vfBytes, allowMalformed: allowMalformed);
+  String get value => cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
 
 //  Iterable<String> get values => (valuesLength == 0) ? [] : [value];
 }
@@ -272,7 +273,7 @@ abstract class TextMixin {
 
   int get valuesLength => 1;
 
-  String get value => UTF8.decode(vfBytes, allowMalformed: allowMalformed);
+  String get value => cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
 
 //  Iterable<String> get values => (valuesLength == 0) ? [] : [value];
 }
@@ -301,9 +302,9 @@ bool byteDataEqual(ByteData bd0, ByteData bd1, {bool doFast = false}) {
 /// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
 bool uint8ListEqual(Uint8List bytes0, Uint8List bytes1) {
   final bd0 =
-  bytes0.buffer.asByteData(bytes0.offsetInBytes, bytes0.lengthInBytes);
+      bytes0.buffer.asByteData(bytes0.offsetInBytes, bytes0.lengthInBytes);
   final bd1 =
-  bytes1.buffer.asByteData(bytes1.offsetInBytes, bytes1.lengthInBytes);
+      bytes1.buffer.asByteData(bytes1.offsetInBytes, bytes1.lengthInBytes);
   return byteDataEqual(bd0, bd1);
 }
 
@@ -351,17 +352,15 @@ void _toBytes(int i, ByteData bd0, ByteData bd1) {
   log.warn('    $bytes0');
   final bytes1 = bd1.buffer.asUint8List(i, 8);
   log.warn('    $bytes1');
-  final s0 = ASCII.decode(bytes0, allowInvalid: true);
+  final s0 = cvt.ascii.decode(bytes0, allowInvalid: true);
   log.warn('    $s0');
-  final s1 = ASCII.decode(bytes1, allowInvalid: true);
+  final s1 = cvt.ascii.decode(bytes1, allowInvalid: true);
   log.warn('    $s1');
 }
 
 /// Returns _true_ if all bytes in [bd0] and [bd1] are the same.
 /// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
 bool bdEqual(ByteData bd0, ByteData bd1) => byteDataEqual(bd0, bd1);
-
-
 
 int getLength(Uint8List vfBytes, int unitSize) {
   if (ensureExactLength && ((vfBytes.length % unitSize) != 0))

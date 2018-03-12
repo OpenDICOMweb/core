@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'dart:collection';
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -25,7 +25,7 @@ const int kMinLength = 16;
 const int kDefaultLength = 1024;
 const int kDefaultLimit = _k1GB;
 
-const Endianness kDefaultEndian = Endian.little;
+const Endian kDefaultEndian = Endian.little;
 
 bool _isMaxCapacityExceeded(int length, [int maxLength]) {
   maxLength ??= kDefaultLimit;
@@ -219,10 +219,10 @@ class Bytes extends ListBase<int> {
   // **** String getters
   // TODO: decide if these should be included
   String getAscii([int offset = 0, int length]) =>
-      ASCII.decode(asUint8List(offset, length ?? lengthInBytes));
+      cvt.ascii.decode(asUint8List(offset, length ?? lengthInBytes));
 
   String getUtf8([int offset = 0, int length]) =>
-      UTF8.decode(asUint8List(offset, length ?? lengthInBytes));
+      cvt.utf8.decode(asUint8List(offset, length ?? lengthInBytes));
 
   String getString([int offset = 0, int length]) =>
       getUtf8(offset, length);
@@ -327,7 +327,7 @@ class Bytes extends ListBase<int> {
     final v = (offset == 0 && length == s.length)
         ? s
         : s.substring(offset, offset + length);
-    setUint8List(ASCII.encode(v), offset, length);
+    setUint8List(cvt.ascii.encode(v), offset, length);
   }
 
   void setUtf8(String s, [int offset = 0, int length]) {
@@ -335,7 +335,7 @@ class Bytes extends ListBase<int> {
     final v = (offset == 0 && length == s.length)
         ? s
         : s.substring(offset, offset + length);
-    setUint8List(ASCII.encode(v), offset, length);
+    setUint8List(cvt.ascii.encode(v), offset, length);
   }
 
   void setString(String s, [int offset = 0, int length] ) =>

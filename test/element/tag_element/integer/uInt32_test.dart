@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -255,7 +255,7 @@ void main() {
         expect(ul0.values, equals(uInt32ListV1));
 
         // Test Base64
-        final base64 = BASE64.encode(uInt8ListV11);
+        final base64 = cvt.base64.encode(uInt8ListV11);
         final ul1 = ULtag.fromBase64(PTag.kNumberOfWaveformSamples, base64);
         expect(ul0 == ul1, true);
         expect(ul0.value, equals(ul1.value));
@@ -342,7 +342,7 @@ void main() {
         final uInt32list0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final uInt32ListV11 = uInt32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt32ListV11);
+        final base64 = cvt.base64.encode(uInt32ListV11);
         final ul0 = ULtag.fromBase64(PTag.kNumberOfWaveformSamples, base64);
         expect(ul0.hasValidValues, true);
       }
@@ -351,7 +351,7 @@ void main() {
     test('UL BASE64', () {
       final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
       final uInt32ListV11 = uInt32ListV1.buffer.asUint8List();
-      final base64 = BASE64.encode(uInt32ListV11);
+      final base64 = cvt.base64.encode(uInt32ListV11);
       final ul0 = ULtag.fromBase64(PTag.kNumberOfWaveformSamples, base64);
       expect(ul0.hasValidValues, true);
     });
@@ -401,7 +401,7 @@ void main() {
         final uInt32list0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final uInt32ListV11 = uInt32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt32ListV11);
+        final base64 = cvt.base64.encode(uInt32ListV11);
         final ul0 = ULtag.fromBase64(PTag.kNumberOfWaveformSamples, base64);
         expect(ul0.hasValidValues, true);
       }
@@ -925,7 +925,7 @@ void main() {
         final uInt32list0 = rng.uint32List(0, i);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('UL.base64: "$base64"');
 
         final ulList = Uint32.fromBase64(base64);
@@ -940,7 +940,7 @@ void main() {
         final uInt32list0 = rng.uint32List(0, i);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         expect(Uint32.toBase64(uInt32list0), equals(s));
       }
     });
@@ -953,7 +953,7 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('UL.base64: "$base64"');
         final s = Uint32.toBase64(uInt32list0);
         log.debug('  UL.json: "$s"');
@@ -1230,7 +1230,7 @@ void main() {
         expect(at0.values, equals(uInt32ListV1));
 
         // Test Base64
-        final base64 = BASE64.encode(uInt8ListV11);
+        final base64 = cvt.base64.encode(uInt8ListV11);
         final at1 = ATtag.fromBase64(PTag.kOriginalImageIdentification, base64);
         expect(at0 == at1, true);
         expect(at0.value, equals(at1.value));
@@ -1317,7 +1317,7 @@ void main() {
         final uInt32list0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final uInt32ListV11 = uInt32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt32ListV11);
+        final base64 = cvt.base64.encode(uInt32ListV11);
         final at0 = ATtag.fromBase64(PTag.kFunctionalGroupPointer, base64);
         expect(at0.hasValidValues, true);
       }
@@ -1326,7 +1326,7 @@ void main() {
     test('AT BASE64', () {
       final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
       final uInt32ListV11 = uInt32ListV1.buffer.asUint8List();
-      final base64 = BASE64.encode(uInt32ListV11);
+      final base64 = cvt.base64.encode(uInt32ListV11);
       final at0 = ATtag.fromBase64(PTag.kFunctionalGroupPointer, base64);
       expect(at0.hasValidValues, true);
     });
@@ -1748,7 +1748,7 @@ void main() {
         final uInt32list0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         expect(Uint32.fromBase64(s), equals(uInt32ListV1));
       }
     });
@@ -1759,7 +1759,7 @@ void main() {
         final uInt32list0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         expect(Uint32.toBase64(uInt32list0), equals(s));
       }
     });
@@ -2015,7 +2015,7 @@ void main() {
         expect(ol0.values, equals(uInt32ListV1));
 
         // Test Base64
-        final base64 = BASE64.encode(uInt8ListV11);
+        final base64 = cvt.base64.encode(uInt8ListV11);
         final ol1 = OLtag.fromBase64(PTag.kLongVertexPointIndexList, base64);
         expect(ol0 == ol1, true);
         expect(ol0.value, equals(ol1.value));
@@ -2102,7 +2102,7 @@ void main() {
         final uInt32list0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final uInt32ListV11 = uInt32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt32ListV11);
+        final base64 = cvt.base64.encode(uInt32ListV11);
         final ol0 = OLtag.fromBase64(PTag.kLongVertexPointIndexList, base64);
         expect(ol0.hasValidValues, true);
       }
@@ -2111,7 +2111,7 @@ void main() {
     test('OL BASE64', () {
       final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
       final uInt32ListV11 = uInt32ListV1.buffer.asUint8List();
-      final base64 = BASE64.encode(uInt32ListV11);
+      final base64 = cvt.base64.encode(uInt32ListV11);
       final ol0 = OLtag.fromBase64(PTag.kLongVertexPointIndexList, base64);
       expect(ol0.hasValidValues, true);
     });
@@ -2143,7 +2143,7 @@ void main() {
         final uInt32list0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final uInt32ListV11 = uInt32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt32ListV11);
+        final base64 = cvt.base64.encode(uInt32ListV11);
         final ol0 = OLtag.fromBase64(PTag.kLongVertexPointIndexList, base64);
         expect(ol0.hasValidValues, true);
       }
@@ -2488,7 +2488,7 @@ void main() {
         final uInt32list0 = rng.uint32List(0, i);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('OL.base64: "$base64"');
 
         final olList = Uint32.fromBase64(base64);
@@ -2503,7 +2503,7 @@ void main() {
         final uInt32list0 = rng.uint32List(0, i);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
         final bd = uInt32ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         expect(Uint32.toBase64(uInt32list0), equals(s));
       }
     });
@@ -2516,7 +2516,7 @@ void main() {
         final bd = uInt32ListV1.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('OL.base64: "$base64"');
         final s = Uint32.toBase64(uInt32list0);
         log.debug('  OL.json: "$s"');

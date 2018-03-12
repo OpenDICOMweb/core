@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
@@ -174,8 +174,8 @@ abstract class StringBase extends Element<String> {
     if (vfBytes.isEmpty) return kEmptyStringList;
     final allow = system.allowInvalidCharacterEncodings;
     final s = (isAscii || system.useAscii)
-        ? ASCII.decode(vfBytes, allowInvalid: allow)
-        : UTF8.decode(vfBytes, allowMalformed: allow);
+        ? cvt.ascii.decode(vfBytes, allowInvalid: allow)
+        : cvt.utf8.decode(vfBytes, allowMalformed: allow);
     return s.split('\\');
   }
 
@@ -190,8 +190,8 @@ abstract class StringBase extends Element<String> {
       return invalidVFLength(length, maxVFLength);
     final allow = system.allowInvalidCharacterEncodings;
     return (isAscii || system.useAscii)
-        ? <String>[ASCII.decode(vfBytes, allowInvalid: allow)]
-        : <String>[UTF8.decode(vfBytes, allowMalformed: allow)];
+        ? <String>[cvt.ascii.decode(vfBytes, allowInvalid: allow)]
+        : <String>[cvt.utf8.decode(vfBytes, allowMalformed: allow)];
   }
 
   static Uint8List toBytes(List<String> sList, int maxVFLength) =>
@@ -1671,7 +1671,7 @@ abstract class AS extends StringBase {
     }
     if (Age.isValidString(s, issues)) return true;
     if (issues != null) issues.add('Invalid Age String (AS): "$s"');
-    invalidAgeString('Invalid Age String: "$s"');
+    invalidAgeString('Invalid Age String (AS): "$s"');
     return false;
   }
 
@@ -2501,7 +2501,8 @@ Uint8List _stringListToBytes(List<String> sList, int maxVFLength,
 }
 
 Uint8List _bytesFromString(String s, int maxVFLength, bool isAscii) {
-  final vf = (isAscii || system.useAscii) ? ASCII.encode(s) : UTF8.encode(s);
+  final vf = (isAscii || system.useAscii) 
+      ? cvt.ascii.encode(s) : cvt.utf8.encode(s);
   if (!_isValidVFL(vf.length, maxVFLength))
     return invalidVFLength(vf.length, maxVFLength);
   return vf;
@@ -2550,8 +2551,8 @@ String _typedDataToString(TypedData vf, bool isAscii) {
   final vfBytes = vf.buffer.asUint8List(vf.offsetInBytes, vf.lengthInBytes);
   final allow = system.allowInvalidCharacterEncodings;
   return (isAscii || system.useAscii)
-      ? ASCII.decode(vfBytes, allowInvalid: allow)
-      : UTF8.decode(vfBytes, allowMalformed: allow);
+      ? cvt.ascii.decode(vfBytes, allowInvalid: allow)
+      : cvt.utf8.decode(vfBytes, allowMalformed: allow);
 }
 
 List<String> textListFromBytes(TypedData vfBytes, int maxVFLength,

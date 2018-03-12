@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -181,7 +181,7 @@ void main() {
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBase64', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final un0 =
           UNtagPixelData.fromBase64(PTag.kNoName0, base64, base64.length);
 
@@ -222,7 +222,7 @@ void main() {
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBase64 hashCode and ==', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final un0 =
           UNtagPixelData.fromBase64(PTag.kNoName0, base64, base64.length);
       final un1 =
@@ -237,7 +237,7 @@ void main() {
     });
 
     test('Create encapsulated UNtagPixelData.fromBase64', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final frags = new VFFragments(fragments);
 
       final un0 = UNtagPixelData.fromBase64(
@@ -274,7 +274,7 @@ void main() {
     });
 
     test('Create encapsulated UNtagPixelData.fromBase64 hashCode and ==', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final frags = new VFFragments(fragments);
 
       final un0 = UNtagPixelData.fromBase64(
@@ -403,7 +403,7 @@ void main() {
     });
 
     test('UNtagPixelData.fromB64', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final frags = new VFFragments(fragments);
       final un0 = UNtagPixelData.fromBase64(
           PTag.kNoName0, base64, base64.length, frags, ts);
@@ -443,7 +443,7 @@ void main() {
     });
 
     test('UNtagPixelData.fromB64 hashCode and ==', () {
-      final base64 = BASE64.encode(frame);
+      final base64 = cvt.base64.encode(frame);
       final frags = new VFFragments(fragments);
       final un0 = UNtagPixelData.fromBase64(
           PTag.kNoName0, base64, base64.length, frags, ts);

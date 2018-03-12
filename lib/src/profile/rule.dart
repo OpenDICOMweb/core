@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 
 import 'package:core/src/tag/p_tag.dart';
 import 'package:core/src/tag/tag.dart';
@@ -94,7 +94,7 @@ class Rule {
     'scripts': scripts,
   };
 
-  String get json => JSON.encode(map);
+  String get json => cvt.json.encode(map);
 
 
   @override

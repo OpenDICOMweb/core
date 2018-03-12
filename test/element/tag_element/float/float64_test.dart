@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -414,7 +414,7 @@ void main() {
         final floatList0 = rng.float64List(1, 1);
         final float64List0 = new Float64List.fromList(floatList0);
         final uInt8List0 = float64List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         final fd1 =
             FDtag.fromBase64(PTag.kOverallTemplateSpatialTolerance, base64);
         expect(fd1.hasValidValues, true);
@@ -951,7 +951,7 @@ void main() {
         final floatList0 = rng.float64List(1, 1);
         final float64List0 = new Float64List.fromList(floatList0);
         final uInt8List0 = float64List0.buffer.asUint8List();
-        //final base64 = BASE64.encode(uInt8List0);
+        //final base64 = cvt.base64.encode(uInt8List0);
         final base64 = Float64.toBytes(float64List0);
         expect(base64, equals(uInt8List0));
       }
@@ -982,7 +982,7 @@ void main() {
         final floatList0 = rng.float64List(0, i);
         final float64List0 = new Float64List.fromList(floatList0);
         final uInt8List0 = float64List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         log.debug('FD.base64: "$base64"');
 
         final fdList = Float64.fromBase64(base64);
@@ -997,7 +997,7 @@ void main() {
         final floatList0 = rng.float64List(0, i);
         final float64List0 = new Float64List.fromList(floatList0);
         final uInt8List0 = float64List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         final fd0 = Float64.toBase64(floatList0);
         expect(fd0, equals(base64));
       }
@@ -1011,7 +1011,7 @@ void main() {
         final uInt8List0 = float64List0.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         log.debug('FD.base64: "$base64"');
         final s = Float64.toBase64(floatList0);
         log.debug('  FD.json: "$s"');
@@ -1597,7 +1597,7 @@ void main() {
         final floatList0 = rng.float64List(1, 1);
         final float64List0 = new Float64List.fromList(floatList0);
         final uInt8List0 = float64List0.buffer.asUint8List();
-        //final base64 = BASE64.encode(uInt8List0);
+        //final base64 = cvt.base64.encode(uInt8List0);
         final base64 = Float64.toBytes(float64List0);
         expect(base64, equals(uInt8List0));
       }
@@ -1609,8 +1609,8 @@ void main() {
         final float64List0 = new Float64List.fromList(floatList0);
         expect(floatList0.lengthInBytes.isEven, true);
         final uInt8List0 = float64List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
-        final uInt8List1 = BASE64.decode(base64);
+        final base64 = cvt.base64.encode(uInt8List0);
+        final uInt8List1 = cvt.base64.decode(base64);
         final uInt8List2 = Float64.toBytes(floatList0);
         expect(uInt8List0, equals(uInt8List1));
         expect(uInt8List0, equals(uInt8List1));
@@ -1627,7 +1627,7 @@ void main() {
         final floatList0 = rng.float64List(0, i);
         final float64List0 = new Float64List.fromList(floatList0);
         final uInt8List0 = float64List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         expect(Float64.fromBase64(base64), floatList0);
         expect(Float64.fromBase64(base64), float64List0);
       }

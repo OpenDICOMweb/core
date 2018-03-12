@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -355,7 +355,7 @@ void main() {
         final int16list0 = rng.int16List(1, 1);
         final int16ListV1 = new Int16List.fromList(int16list0);
         final uInt8ListV1 = int16ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8ListV1);
+        final base64 = cvt.base64.encode(uInt8ListV1);
         final ss0 = SStag.fromBase64(PTag.kTagAngleSecondAxis, base64);
         expect(ss0.hasValidValues, true);
       }
@@ -364,13 +364,13 @@ void main() {
     test('SS BASE64 ', () {
       final int16ListV1 = new Int16List.fromList(int16Min);
       final uInt8ListV1 = int16ListV1.buffer.asUint8List();
-      final base64 = BASE64.encode(uInt8ListV1);
+      final base64 = cvt.base64.encode(uInt8ListV1);
       final ss0 = SStag.fromBase64(PTag.kTagAngleSecondAxis, base64);
       expect(ss0.hasValidValues, true);
 
       final int16ListV2 = new Int16List.fromList([rng.nextInt32]);
       final int16ListV3 = int16ListV2.buffer.asUint8List();
-      final bas64 = BASE64.encode(int16ListV3);
+      final bas64 = cvt.base64.encode(int16ListV3);
       final ss1 = SStag.fromBase64(PTag.kTagAngleSecondAxis, bas64);
       expect(ss1.hasValidValues, true);
     });
@@ -419,7 +419,7 @@ void main() {
         final int16list0 = rng.int16List(1, 1);
         final int16ListV1 = new Int16List.fromList(int16list0);
         final uInt8ListV1 = int16ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8ListV1);
+        final base64 = cvt.base64.encode(uInt8ListV1);
         final ss0 = SStag.fromBase64(PTag.kTagAngleSecondAxis, base64);
         expect(ss0.hasValidValues, true);
       }
@@ -946,7 +946,7 @@ void main() {
         final int16list0 = rng.int16List(0, i);
         final int16ListV1 = new Int16List.fromList(int16list0);
         final bd = int16ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         log.debug('SS.base64: "$s"');
 
         final ssList = Int16.fromBase64(s);
@@ -961,7 +961,7 @@ void main() {
         final int16list0 = rng.int16List(0, i);
         final int16ListV1 = new Int16List.fromList(int16list0);
         final bd = int16ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         expect(Int16.toBase64(int16list0), equals(s));
       }
     });
@@ -974,7 +974,7 @@ void main() {
         final bd = int16ListV1.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('Int16Base.base64: "$base64"');
         final s = Int16.toBase64(int16list0);
         log.debug('  Int16Base.json: "$s"');

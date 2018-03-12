@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
@@ -1007,12 +1007,12 @@ void main() {
     test('DS.toBytes', () {
       final vList1 = rsg.getDSList(1, 1);
       log.debug('DS.toBytes(vList1): ${DS.toBytes(vList1)}');
-      final val = ASCII.encode('s6V&:;s%?Q1g5v');
+      final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
       expect(DS.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(DS.toBytes(vList1), equals(values));
     });
 
@@ -1123,7 +1123,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = DS.toByteData(vList0);
         final tbd1 = DS.toByteData(vList0);
         log.debug('tbd1: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -1132,7 +1132,7 @@ void main() {
       }
       for (var s in goodDSList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = DS.toByteData(s);
           final tbd3 = DS.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -2007,12 +2007,12 @@ void main() {
     test('IS.toBytes', () {
       final vList1 = rsg.getISList(1, 1);
       log.debug('IS.toBytes(vList1): ${IS.toBytes(vList1)}');
-      final val = ASCII.encode('s6V&:;s%?Q1g5v');
+      final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
       expect(IS.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = ASCII.encode(vList1[0]);
+      final values = cvt.ascii.encode(vList1[0]);
       expect(IS.toBytes(vList1), equals(values));
     });
 
@@ -2151,7 +2151,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 1);
         system.throwOnError = false;
-        final values = ASCII.encode(vList0[0]);
+        final values = cvt.ascii.encode(vList0[0]);
         final tbd0 = IS.toByteData(vList0);
         final tbd1 = IS.toByteData(vList0);
         log.debug(
@@ -2162,7 +2162,7 @@ void main() {
       }
       for (var s in goodISList) {
         for (var a in s) {
-          final values = ASCII.encode(a);
+          final values = cvt.ascii.encode(a);
           final tbd2 = IS.toByteData(s);
           final tbd3 = IS.toByteData(s);
           expect(tbd2.buffer.asUint8List(), equals(values));

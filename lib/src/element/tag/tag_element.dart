@@ -108,19 +108,18 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   }
 
   // Urgent Jim: make sure private tags are not unknown
-  static Element make(Tag tag, Iterable values, int vrIndex,
+  static Element make(int code, Iterable values, int vrIndex,
       [int vfLengthField]) {
-    if (tag.vrIndex == vrIndex || vrIndex == kUNIndex)
-      log.warn('Tag VR: ${tag.vrIndex}, vrIndex, $vrIndex');
+    if (vrIndex == vrIndex || vrIndex == kUNIndex)
+      log.warn('Tag VR: $vrIndex, vrIndex, $vrIndex');
     //    final newTag = Tag.lookupByCode(tag.code);
     //    if (tag != newTag)
     //      log.warn('Changed from $tag to $newTag');
-    return _tagMakers[vrIndex](tag, values);
+    return _tagMakers[vrIndex](code, values);
   }
 
-  static Element from(Element e, int vrIndex, [int vfLengthField]) =>
-      make(e.tag, e.values, vrIndex ?? e.vrIndex,
-          vfLengthField ?? e.vfLengthField);
+  static Element from(Element e, int vrIndex, [int vfLengthField]) => make(
+      e.code, e.values, vrIndex ?? e.vrIndex, vfLengthField ?? e.vfLengthField);
 
   static final _tagMakers = <Function>[
     SQtag.make,

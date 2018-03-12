@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -378,7 +378,7 @@ void main() {
         final floatList0 = rng.float32List(1, 1);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         final fl1 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, base64);
         expect(fl1.hasValidValues, true);
       }
@@ -945,7 +945,7 @@ void main() {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         final fl0 = Float32.fromBase64(base64);
         log
           ..debug('  floatList0: $floatList0')
@@ -961,7 +961,7 @@ void main() {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         final s = Float32.toBase64(floatList0);
         expect(s, equals(base64));
       }
@@ -974,7 +974,7 @@ void main() {
         final uInt8List0 = float32List0.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         log.debug('FL.base64: "$base64"');
         final s = Float32.toBase64(floatList0);
         log.debug('  FL.json: "$s"');
@@ -1275,7 +1275,7 @@ void main() {
         final floatList0 = rng.float32List(1, 1);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         final of1 = OFtag.fromBase64(PTag.kVectorGridData, base64);
         expect(of1.hasValidValues, true);
       }
@@ -1562,7 +1562,7 @@ void main() {
         final floatList0 = rng.float32List(1, 1);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        //final base64 = BASE64.encode(uInt8List0);
+        //final base64 = cvt.base64.encode(uInt8List0);
         expect(Float32.toBytes(float32List0), equals(uInt8List0));
       }
     });
@@ -1573,7 +1573,7 @@ void main() {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         final of0 = Float32.fromBase64(base64);
         log
           ..debug('  floatList0: $floatList0')
@@ -1589,7 +1589,7 @@ void main() {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         final of0 = Float32.toBase64(floatList0);
         expect(of0, equals(base64));
       }
@@ -1602,7 +1602,7 @@ void main() {
         final uInt8List0 = float32List0.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         log.debug('OF.base64: "$base64"');
         final s = Float32.toBase64(floatList0);
         log.debug('  OF.json: "$s"');

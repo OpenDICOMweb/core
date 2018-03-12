@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
@@ -322,7 +322,7 @@ abstract class Tag {
       if (isUppercaseChar(char)) name.add(kSpace);
       name.add(char);
     }
-    return UTF8.decode(name);
+    return cvt.utf8.decode(name);
   }
 
   String stringToKeyword(String s) {

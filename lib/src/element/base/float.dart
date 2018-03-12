@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
@@ -126,9 +126,9 @@ abstract class Float32 {
 
   static const int kSizeInBytes = 4;
 
-  /// Returns a [BASE64] [String] created from [vList];
+  /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<double> vList, {bool asView = true}) =>
-      BASE64.encode(toBytes(vList, asView: asView));
+      cvt.base64.encode(toBytes(vList, asView: asView));
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
@@ -150,9 +150,9 @@ abstract class Float32 {
     return new Float32List.fromList(vList);
   }
 
-  /// Returns a [Float32List] from a [BASE64] [String].
+  /// Returns a [Float32List] from a [base64] [String].
   static Float32List fromBase64(String s) =>
-      (s.isEmpty) ? kEmptyFloat32List : fromUint8List(BASE64.decode(s));
+      (s.isEmpty) ? kEmptyFloat32List : fromUint8List(cvt.base64.decode(s));
 
   /// Returns a [Float32List] from a [Uint8List].
   static Float32List fromUint8List(Uint8List bytes, {bool asView = true}) =>
@@ -363,9 +363,9 @@ abstract class Float64 {
 
   static const int kSizeInBytes = 8;
 
-  /// Returns a [BASE64] [String] created from [vList];
+  /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<double> vList) =>
-      BASE64.encode(toBytes(vList));
+      cvt.base64.encode(toBytes(vList));
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
@@ -387,9 +387,9 @@ abstract class Float64 {
     return new Float64List.fromList(vList);
   }
 
-  /// Returns a [Float64List] from a [BASE64] [String].
+  /// Returns a [Float64List] from a [base64] [String].
   static Float64List fromBase64(String s, {bool asView = true}) =>
-      (s.isEmpty) ? kEmptyFloat64List : fromUint8List(BASE64.decode(s));
+      (s.isEmpty) ? kEmptyFloat64List : fromUint8List(cvt.base64.decode(s));
 
   /// Returns a [Float64List] from a [Uint8List].
   static Float64List fromUint8List(Uint8List bytes, {bool asView = true}) =>

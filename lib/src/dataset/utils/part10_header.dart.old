@@ -5,7 +5,7 @@
 
 // TODO: update to independently of Dataset
 // Replace Fmi in all RootDatasets
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/fmi.dart';
@@ -58,7 +58,7 @@ class Part10Header<K, V> {
   /// Returns true if [bd] has a DICOM Prefix.
   static bool checkPrefix(ByteData bd) {
     if (bd == null || bd.lengthInBytes < 132) return false;
-    final s = ASCII.decode(bd.buffer.asUint8List(128, 4));
+    final s = cvt.ascii.decode(bd.buffer.asUint8List(128, 4));
     return (s == prefix);
   }
 }

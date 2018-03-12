@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/date_time/age.dart';
@@ -52,7 +52,7 @@ class AStag extends AS with TagElement<String> {
       new AStag(tag, vList ?? kEmptyStringList);
 
   static AStag fromB64(Tag tag, String base64) =>
-      new AStag.fromBytes(tag, BASE64.decode(base64));
+      new AStag.fromBytes(tag, cvt.base64.decode(base64));
 
   static AStag fromBD(BDElement bd) => new AStag.fromBytes(bd.tag, bd.vfBytes);
 }
@@ -86,7 +86,7 @@ class DAtag extends DA with TagElement<String> {
       new DAtag(tag, f(values));
 
   static DAtag fromB64(Tag tag, String base64) =>
-      new DAtag.fromBytes(tag, BASE64.decode(base64));
+      new DAtag.fromBytes(tag, cvt.base64.decode(base64));
 
   static DAtag make<String>(Tag tag, Iterable<String> vList) =>
       new DAtag(tag, vList ?? kEmptyStringList);
@@ -123,7 +123,7 @@ class DTtag extends DT with TagElement<String> {
       new DTtag(tag, f(values));
 
   static DTtag fromB64(Tag tag, String base64) =>
-      new DTtag.fromBytes(tag, BASE64.decode(base64));
+      new DTtag.fromBytes(tag, cvt.base64.decode(base64));
 
   static DTtag make<String>(Tag tag, Iterable<String> vList) =>
       new DTtag(tag, vList ?? kEmptyStringList);
@@ -161,7 +161,7 @@ class TMtag extends TM with TagElement<String> {
       new TMtag(tag, f(values));
 
   static TMtag fromB64(Tag tag, String base64) =>
-      new TMtag.fromBytes(tag, BASE64.decode(base64));
+      new TMtag.fromBytes(tag, cvt.base64.decode(base64));
 
   static TMtag make<String>(Tag tag, Iterable<String> vList) =>
       new TMtag(tag, vList ?? kEmptyStringList);

@@ -6,7 +6,7 @@
 
 //TODO: load Element library lazily
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
@@ -111,7 +111,7 @@ abstract class FastElementBase<V> {
 
   /// Returns a [BASE64] [String] created from [vList];
   static String toBase64(Iterable<double> vList, {bool asView = true}) =>
-      BASE64.encode(toBytes(vList, asView: asView));
+      cvt.base64.encode(toBytes(vList, asView: asView));
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
@@ -205,7 +205,7 @@ abstract class Float32Mixin {
 
   /// Returns a [Float32List] from a [BASE64] [String].
   static Float32List fromBase64(String s) =>
-      (s.isEmpty) ? kEmptyFloat32List : fromBytes(BASE64.decode(s));
+      (s.isEmpty) ? kEmptyFloat32List : fromBytes(cvt.base64.decode(s));
 
   /// Returns a [Float32List] from a [Uint8List].
   static Float32List fromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -404,7 +404,7 @@ abstract class Float64Mixin {
 
   /// Returns a [BASE64] [String] created from [vList];
   static String toBase64(Iterable<double> vList) =>
-      BASE64.encode(toBytes(vList));
+      cvt.base64.encode(toBytes(vList));
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
@@ -428,7 +428,7 @@ abstract class Float64Mixin {
 
   /// Returns a [Float64List] from a [BASE64] [String].
   static Float64List fromBase64(String s, {bool asView = true}) =>
-      (s.isEmpty) ? kEmptyFloat64List : fromBytes(BASE64.decode(s));
+      (s.isEmpty) ? kEmptyFloat64List : fromBytes(cvt.base64.decode(s));
 
   /// Returns a [Float64List] from a [Uint8List].
   static Float64List fromBytes(Uint8List bytes, {bool asView = true}) =>

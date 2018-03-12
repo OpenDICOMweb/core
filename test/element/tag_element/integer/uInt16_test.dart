@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -268,7 +268,7 @@ void main() {
         expect(us0.values, equals(uInt16ListV1));
 
         // Test Base64
-        final base64 = BASE64.encode(uInt8ListV11);
+        final base64 = cvt.base64.encode(uInt8ListV11);
         final us1 = UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0 == us1, true);
         expect(us1.value, equals(us0.value));
@@ -345,7 +345,7 @@ void main() {
         final uInt16list0 = rng.uint16List(1, 1);
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);
         final uInt16ListV11 = uInt16ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt16ListV11);
+        final base64 = cvt.base64.encode(uInt16ListV11);
         final us0 = UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0.hasValidValues, true);
       }
@@ -354,7 +354,7 @@ void main() {
     test('US BASE64', () {
       final uInt16ListV1 = new Uint16List.fromList(uInt16Min);
       final uInt16ListV11 = uInt16ListV1.buffer.asUint8List();
-      final base64 = BASE64.encode(uInt16ListV11);
+      final base64 = cvt.base64.encode(uInt16ListV11);
       final us0 = UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
       expect(us0.hasValidValues, true);
     });
@@ -404,7 +404,7 @@ void main() {
         final uInt16List0 = rng.uint16List(1, 1);
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8ListV11);
+        final base64 = cvt.base64.encode(uInt8ListV11);
         final us0 = UStag.fromBase64(PTag.kRepresentativeFrameNumber, base64);
         expect(us0.hasValidValues, true);
       }
@@ -1117,7 +1117,7 @@ void main() {
         final uInt16list0 = rng.uint16List(1, 1);
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);
         final bd = uInt16ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('US.base64: "$base64"');
 
         final usList = Uint16.fromBase64(base64);
@@ -1132,7 +1132,7 @@ void main() {
         final uInt16list0 = rng.uint16List(1, 1);
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);
         final bd = uInt16ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         expect(Uint16.toBase64(uInt16list0), equals(s));
       }
     });
@@ -1145,7 +1145,7 @@ void main() {
         final bd = uInt16ListV1.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('US.base64: "$base64"');
         final s = Uint16.toBase64(uInt16list0);
         log.debug('  US.json: "$s"');
@@ -1484,7 +1484,7 @@ void main() {
         final uInt16List0 = rng.uint16List(1, 1);
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
         final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8ListV11);
+        final base64 = cvt.base64.encode(uInt8ListV11);
         final ow0 = OWtag.fromBase64(PTag.kEdgePointIndexList, base64);
         expect(ow0.hasValidValues, true);
       }
@@ -1870,7 +1870,7 @@ void main() {
         final uInt16list0 = rng.uint16List(0, i);
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);
         final bd = uInt16ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('OW.base64: "$base64"');
 
         final owList = Uint16.fromBase64(base64);
@@ -1885,7 +1885,7 @@ void main() {
         final uInt16list0 = rng.uint16List(0, i);
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);
         final bd = uInt16ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         expect(Uint16.toBase64(uInt16list0), equals(s));
       }
     });
@@ -1898,7 +1898,7 @@ void main() {
         final bd = uInt16ListV1.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('OW.base64: "$base64"');
         final s = Uint16.toBase64(uInt16list0);
         log.debug('  OW.json: "$s"');

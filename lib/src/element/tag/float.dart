@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/element/base.dart';
@@ -43,7 +43,7 @@ class FLtag extends FL with TagElement<double> {
       new FLtag(tag, vList ?? kEmptyDoubleList);
 
   static FLtag fromBase64(Tag tag, String s) =>
-      new FLtag._fromBytes(tag, BASE64.decode(s));
+      new FLtag._fromBytes(tag, cvt.base64.decode(s));
 
   static FLtag fromUint8List(Tag tag, Uint8List bytes) =>
       new FLtag._fromBytes(tag, bytes);
@@ -86,7 +86,7 @@ class OFtag extends OF with TagElement<double> {
       new OFtag(tag, vList ?? kEmptyDoubleList);
 
   static OFtag fromBase64(Tag tag, String s) =>
-      new OFtag._fromBytes(tag, BASE64.decode(s));
+      new OFtag._fromBytes(tag, cvt.base64.decode(s));
 
   static OFtag fromBytes(Tag tag, Bytes bytes, [int offset = 0, int length]) =>
       new OFtag(tag, bytes.asFloat64List(offset, length ?? bytes.length));
@@ -129,7 +129,7 @@ class FDtag extends FD with TagElement<double> {
       new FDtag(tag, vList ?? kEmptyDoubleList);
 
   static FDtag fromBase64(Tag tag, String s) =>
-      new FDtag._fromBytes(tag, BASE64.decode(s));
+      new FDtag._fromBytes(tag, cvt.base64.decode(s));
 
   static FDtag fromBytes(Tag tag, Bytes bytes, [int offset = 0, int length]) =>
       new FDtag(tag, bytes.asFloat64List(offset, length ?? bytes.length));
@@ -171,7 +171,7 @@ class ODtag extends OD with TagElement<double> {
       new ODtag(tag, Float64.fromValueField(vf));
 
   static ODtag fromBase64(Tag tag, String s) =>
-      new ODtag._fromBytes(tag, BASE64.decode(s));
+      new ODtag._fromBytes(tag, cvt.base64.decode(s));
 
   static ODtag fromBytes(Tag tag, Bytes bytes, [int offset = 0, int length]) =>
       new ODtag(tag, bytes.asFloat64List(offset, length ?? bytes.length));

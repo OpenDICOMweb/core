@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:bignum/bignum.dart';
@@ -21,7 +21,7 @@ void main() {
   print('i0: $i0');
   final s0 = i0.toString();
   print('s0[${s0.length}]: $s0');
-  final b1 = ASCII.encode(s0);
+  final b1 = cvt.ascii.encode(s0);
   print('b1[${b1.length}]: $b1');
   final i1 = new BigInteger.fromBytes(1, b1);
   print('i1: $i1');
@@ -32,7 +32,7 @@ void main() {
 // ASCII Space code
 const int kSpace = 32;
 String bytesToDecimal(Uint8List bytes) {
-  final digits = ASCII.encode('0123456789');
+  final digits = cvt.ascii.encode('0123456789');
   final output = new Uint8List(bytes.length * 4);
   for (var j = 0; j < bytes.length; j++) {
     final v = bytes[j] & 0xFF;
@@ -41,5 +41,5 @@ String bytesToDecimal(Uint8List bytes) {
     output[j * 4 + 2] = digits[v % 10];
     output[j * 4 + 3] = kSpace;
   }
-  return ASCII.decode(output);
+  return cvt.ascii.decode(output);
 }

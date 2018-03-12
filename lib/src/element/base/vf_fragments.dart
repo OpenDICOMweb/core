@@ -71,7 +71,7 @@ class VFFragments {
 
     // Read 32-bit Little Endian unsigned integer.
     int readUint32() {
-      final v = bd.getUint32(rIndex, Endianness.LITTLE_ENDIAN);
+      final v = bd.getUint32(rIndex, Endian.little);
       rIndex += 4;
       return v;
     }

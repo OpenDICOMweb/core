@@ -5,14 +5,14 @@
 // See the AUTHORS file for other contributors.
 
 import 'dart:async';
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/value/bulkdata/bulkdata.dart';
 
-final Uint8List kBulkdataFileToken = ASCII.encode('Bulkdata');
+final Uint8List kBulkdataFileToken = cvt.ascii.encode('Bulkdata');
 
 class BulkdataFile {
   String path;

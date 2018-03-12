@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -339,7 +339,7 @@ void main() {
         final int32list0 = rng.int32List(1, 1);
         final int32ListV1 = new Int32List.fromList(int32list0);
         final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8ListV1);
+        final base64 = cvt.base64.encode(uInt8ListV1);
         final sl0 = SLtag.fromBase64(PTag.kRationalNumeratorValue, base64);
         expect(sl0.hasValidValues, true);
       }
@@ -348,7 +348,7 @@ void main() {
     test('SL BASE64 ', () {
       final int32ListV1 = new Int32List.fromList(int32Max);
       final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-      final base64 = BASE64.encode(uInt8ListV1);
+      final base64 = cvt.base64.encode(uInt8ListV1);
       final sl0 = SLtag.fromBase64(PTag.kRationalNumeratorValue, base64);
       expect(sl0.hasValidValues, true);
     });
@@ -397,7 +397,7 @@ void main() {
         final int32list0 = rng.int32List(1, 1);
         final int32ListV1 = new Int32List.fromList(int32list0);
         final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8ListV1);
+        final base64 = cvt.base64.encode(uInt8ListV1);
         final sl0 = SLtag.fromBase64(PTag.kReferencePixelX0, base64);
         expect(sl0.hasValidValues, true);
       }
@@ -950,7 +950,7 @@ void main() {
         final intList0 = rng.int32List(0, i);
         final int32List0 = new Int32List.fromList(intList0);
         final uInt8List0 = int32List0.buffer.asUint8List();
-        final base64 = BASE64.encode(uInt8List0);
+        final base64 = cvt.base64.encode(uInt8List0);
         log.debug('SL.base64: "$base64"');
 
         final slList = Int32.fromBase64(base64);
@@ -965,7 +965,7 @@ void main() {
         final int32list0 = rng.int32List(0, i);
         final int32ListV1 = new Int32List.fromList(int32list0);
         final bd = int32ListV1.buffer.asUint8List();
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         final s = Int32.toBase64(int32list0);
         expect(s, equals(base64));
       }
@@ -976,7 +976,7 @@ void main() {
         final int32list0 = rng.int32List(1, 1);
         final int32ListV1 = new Int32List.fromList(int32list0);
         final bd = int32ListV1.buffer.asUint8List();
-        final s = BASE64.encode(bd);
+        final s = cvt.base64.encode(bd);
         expect(Int32.toBase64(int32list0), equals(s));
       }
     });
@@ -989,7 +989,7 @@ void main() {
         final bd = int32ListV1.buffer.asUint8List();
 
         // Encode
-        final base64 = BASE64.encode(bd);
+        final base64 = cvt.base64.encode(bd);
         log.debug('SL.base64: "$base64"');
         final s = Int32.toBase64(int32list0);
         log.debug('  SL.json: "$s"');

@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes/buffer/buffer_base.dart';
@@ -164,9 +164,9 @@ class WriteBuffer extends BufferBase {
     wIndex_ += 8;
   }
 
-  void writeAscii(String s) => writeUint8List(ASCII.encode(s));
+  void writeAscii(String s) => writeUint8List(cvt.ascii.encode(s));
 
-  void writeUtf8(String s) => writeUint8List(UTF8.encode(s));
+  void writeUtf8(String s) => writeUint8List(cvt.utf8.encode(s));
 
   void writeString(String s) => writeUtf8(s);
 
@@ -210,11 +210,9 @@ class WriteBuffer extends BufferBase {
     wIndex_ += (list.length * 8);
   }
 
-  void writeUint8List(Uint8List list) =>
-    _writeTypedData(list);
+  void writeUint8List(Uint8List list) => _writeTypedData(list);
 
-  void writeByteData(ByteData bd) =>
-      _writeTypedData(bd);
+  void writeByteData(ByteData bd) => _writeTypedData(bd);
 
   void _writeTypedData(TypedData td) {
     final length = td.lengthInBytes;
@@ -246,12 +244,12 @@ class WriteBuffer extends BufferBase {
   void writeUint16List(Uint16List list) {
     bytes.setUint16List(list, wIndex_, list.length);
     wIndex_ += (list.length * 2);
-    }
+  }
 
   void writeUint32List(Uint32List list) {
     bytes.setUint32List(list, wIndex_, list.length);
     wIndex_ += (list.length * 4);
-    }
+  }
 
   void writeUint64List(Uint64List list) {
     bytes.setUint64List(list, wIndex_, list.length);
@@ -269,14 +267,12 @@ class WriteBuffer extends BufferBase {
   }
 
   void writeAsciiList(List<String> list) =>
-    wIndex_ += bytes.setAsciiList(list, wIndex_, list.length);
+      wIndex_ += bytes.setAsciiList(list, wIndex_, list.length);
 
   void writeUtf8List(List<String> list) =>
       wIndex_ += bytes.setUtf8List(list, wIndex_, list.length);
 
-  void writeStringList(List<String> list) =>
-      writeUtf8List(list);
-
+  void writeStringList(List<String> list) => writeUtf8List(list);
 
   /// Ensures that [bytes] has at least [remaining] writable bytes.
   /// The [bytes] is grows if necessary, and copies existing bytes into
