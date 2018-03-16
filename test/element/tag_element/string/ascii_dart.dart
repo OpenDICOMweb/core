@@ -15,7 +15,7 @@ void main() {
 
   group('Ascii Tests', () {
     test('Simple Ascii Test', () {
-      final s0 = r'>3\$Wgz>yD_&Mu}'; //--> consists of (backslash(\))
+      const s0 = r'>3\$Wgz>yD_&Mu}'; //--> consists of (backslash(\))
       final bytes0 = cvt.ascii.encode(s0);
       final s1 = cvt.ascii.decode(bytes0, allowInvalid: true);
       log.debug('s0: "$s0" == s1: "$s1"');
@@ -75,7 +75,7 @@ void main() {
 
   group('UTF8 Test', () {
     test('simple UTF8 test', () {
-      final s0 = '¥ŁņĤŒ£¦§µÆĦǍƸƻƫƩƱƵϢΨϩώβαγδηθμξѤѠ₮₹₴Ɐ';
+      const s0 = '¥ŁņĤŒ£¦§µÆĦǍƸƻƫƩƱƵϢΨϩώβαγδηθμξѤѠ₮₹₴Ɐ';
       final bytes0 = cvt.utf8.encode(s0);
       log.debug('bytes0 : $bytes0');
       final s1 = cvt.utf8.decode(bytes0, allowMalformed: true);

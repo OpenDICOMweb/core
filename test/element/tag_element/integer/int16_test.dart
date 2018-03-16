@@ -929,7 +929,7 @@ void main() {
         expect(lBd4.buffer == bd0.buffer, false);
       }
 
-      final int32Max = const <int>[kInt32Max];
+      const int32Max = const <int>[kInt32Max];
       expect(Int16.toBytes(int32Max).isEmpty, true);
 
       const int32Min = const [kInt32Min];

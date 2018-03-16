@@ -1104,7 +1104,7 @@ void main() {
       }
 
       system.throwOnError = false;
-      final uInt32Max = const <int>[kUint32Max];
+      const uInt32Max = const <int>[kUint32Max];
       expect(Uint16.toByteData(uInt32Max), isNull);
 
       system.throwOnError = true;

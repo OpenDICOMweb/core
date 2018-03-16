@@ -933,7 +933,7 @@ void main() {
         expect(lBd2.buffer == bd0.buffer, false);
       }
 
-      final int32Max = const <int>[kInt32Max + 1];
+      const int32Max = const <int>[kInt32Max + 1];
       expect(Int32.toByteData(int32Max), isNull);
 
       const int32Min = const [kInt32Min - 1];

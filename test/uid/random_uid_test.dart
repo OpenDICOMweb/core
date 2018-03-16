@@ -134,7 +134,7 @@ void main() {
     });
 
     test('isDicom', () {
-      final goodUids = const <String>[
+      const goodUids = const <String>[
         '1.2.840.10008.1.1',
         '1.2.840.10008.1.2',
         '1.2.840.10008.1.2.1',

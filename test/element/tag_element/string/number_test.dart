@@ -1021,13 +1021,13 @@ void main() {
       final vList0 = rsg.getDSList(1, 1);
       expect(DS.tryParse(vList0[0]), double.parse(vList0[0]));
 
-      final vList1 = '123';
+      const vList1 = '123';
       expect(DS.tryParse(vList1), double.parse(vList1));
 
-      final vList2 = '12.34';
+      const vList2 = '12.34';
       expect(DS.tryParse(vList2), double.parse(vList2));
 
-      final vList3 = 'abc';
+      const vList3 = 'abc';
       expect(DS.tryParse(vList3), isNull);
 
       system.throwOnError = true;
@@ -2021,13 +2021,13 @@ void main() {
       final vList0 = rsg.getISList(1, 1);
       expect(IS.tryParse(vList0[0]), int.parse(vList0[0]));
 
-      final vList1 = '123';
+      const vList1 = '123';
       expect(IS.tryParse(vList1), int.parse(vList1));
 
-      final vList2 = '12.34';
+      const vList2 = '12.34';
       expect(IS.tryParse(vList2), isNull);
 
-      final vList3 = 'abc';
+      const vList3 = 'abc';
       expect(IS.tryParse(vList3), isNull);
 
       system.throwOnError = true;

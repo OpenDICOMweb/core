@@ -61,7 +61,7 @@ bool isValidUintString(String s,
 ///     2. All the parsers might throw so callers should use try/catch.
 int parseInt(String s,
     [int start = 0, int end, Issues issues, int minLength = 1, int maxLength = 20]) {
-  final name = 'parseInt';
+  const name = 'parseInt';
   int sign, value, index = start;
   end ??= s.length;
   _checkArgs(s, start, end, minLength, maxLength, name, issues);
@@ -105,7 +105,7 @@ int parseFraction(String s,
     {int start = 0, int end, int minLength: 2, int max: 7, Issues issues}) {
   try {
     end ??= s.length;
-    final name = 'parseFraction';
+    const name = 'parseFraction';
     _checkArgs(s, start, end, minLength, max, name, issues);
     _parseDecimalPoint(s, start, issues, name);
     return _parseUint(s, start + 1, issues, end, name);

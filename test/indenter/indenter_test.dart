@@ -13,7 +13,7 @@ void main() {
   test('Basic indent test with depth', () {
     final sb = new Indenter();
 
-    final expected = '''
+    const expected = '''
 
 | 0
   | 1
@@ -39,7 +39,7 @@ void main() {
 
   test('Basic indent test without depth', () {
     final sb = new Indenter();
-    final expected =
+    const expected =
     '''  
 
 |

@@ -15,7 +15,7 @@ void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
 
-  final float64LstCommon0 = const <double>[
+  const float64LstCommon0 = const <double>[
     0.1,
     1.2,
     1.11,

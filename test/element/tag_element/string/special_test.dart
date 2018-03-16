@@ -3028,13 +3028,13 @@ void main() {
       final vList0 = rsg.getISList(1, 1);
       expect(UR.parse(vList0[0]), Uri.parse(vList0[0]));
 
-      final vList1 = '123';
+      const vList1 = '123';
       expect(UR.parse(vList1), Uri.parse(vList1));
 
-      final vList2 = '12.34';
+      const vList2 = '12.34';
       expect(UR.parse(vList2), Uri.parse(vList2));
 
-      final vList3 = 'abc';
+      const vList3 = 'abc';
       expect(UR.parse(vList3), Uri.parse(vList3));
     });
 
@@ -3043,13 +3043,13 @@ void main() {
       final vList0 = rsg.getISList(1, 1);
       expect(UR.tryParse(vList0[0]), Uri.parse(vList0[0]));
 
-      final vList1 = '123';
+      const vList1 = '123';
       expect(UR.tryParse(vList1), Uri.parse(vList1));
 
-      final vList2 = '12.34';
+      const vList2 = '12.34';
       expect(UR.tryParse(vList2), Uri.parse(vList2));
 
-      final vList3 = 'abc';
+      const vList3 = 'abc';
       expect(UR.tryParse(vList3), Uri.parse(vList3));
     });
 

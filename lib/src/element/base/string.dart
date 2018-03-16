@@ -2142,7 +2142,7 @@ abstract class DS extends StringAscii {
   /// Returns a [String] that approximately corresponds to [v],
   /// that has at most 16 characters.
   String floatToDcmString(double v) {
-    final precision = 10;
+    const precision = 10;
     var s = v.toString();
     if (s.length > 16) {
       for (var i = precision; i > 0; i--) {

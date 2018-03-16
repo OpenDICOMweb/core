@@ -14,7 +14,7 @@ void main() {
   Server.initialize(name: 'element/float64_test', level: Level.info);
   final rng = new RNG(1);
 
-  final float64LstCommon0 = const <double>[
+  const float64LstCommon0 = const <double>[
     0.1,
     1.2,
     1.11,
@@ -1054,7 +1054,7 @@ void main() {
 
   group('ODtags', () {
     test('OD hasValidValues good values', () {
-      final float64LstCommon0 = const <double>[1.0];
+      const float64LstCommon0 = const <double>[1.0];
       system.throwOnError = false;
 
       final od0 = new ODtag(PTag.kSelectorODValue, float64LstCommon0);

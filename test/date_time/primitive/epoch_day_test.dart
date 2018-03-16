@@ -11,8 +11,8 @@ void main() {
   // These next two values are used throughout the test
   // They can be changed to make the tests longer or shorter
   // Note: startYear and endYear must be initialized before calling Server.initialize
-  final startYear = -10000 + 1970;
-  final endYear = 10000 - 1970;
+  const startYear = -10000 + 1970;
+  const endYear = 10000 - 1970;
 
   Server.initialize(
       name: 'epoch_day_test',

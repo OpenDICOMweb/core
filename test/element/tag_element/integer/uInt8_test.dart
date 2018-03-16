@@ -817,12 +817,12 @@ void main() {
       }
 
       system.throwOnError = false;
-      final uInt16Max = const <int>[kUint16Max];
+      const uInt16Max = const <int>[kUint16Max];
 
       expect(Uint8.toByteData(uInt16Max), isNull);
 
       system.throwOnError = false;
-      final uInt32Max = const <int>[kUint32Max];
+      const uInt32Max = const <int>[kUint32Max];
       expect(Uint8.toByteData(uInt32Max), isNull);
 
       system.throwOnError = true;

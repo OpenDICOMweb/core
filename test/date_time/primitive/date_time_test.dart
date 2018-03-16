@@ -194,9 +194,9 @@ void main() {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           for (var h = 1; h < 24; h++) {
             for (var mm = 1; mm < 60; mm++) {
-              final s = 10;
-              final ms = 600;
-              final us = 600;
+              const s = 10;
+              const ms = 600;
+              const us = 600;
               final dt0 = inetDateTimeString(y, m, d, h, mm, s, ms, us);
               final mx = digits2(m);
               final dx = digits2(d);
@@ -253,8 +253,8 @@ void main() {
       for (var h = 1; h < 24; h++) {
         for (var m = 1; m < 60; m++) {
           for (var s = 1; s < 59; s++) {
-            final ms = 600;
-            final us = 600;
+            const ms = 600;
+            const us = 600;
             final dt0 = new DateTime(y, h, m, s, ms, us);
             //final yx = digits4(dt0.year);
             final hx = digits2(dt0.hour);
@@ -291,9 +291,9 @@ void main() {
         for (var d = 1; d <= lastDayOfMonth(y, m); d++) {
           for (var h = 0; h < 24; h++) {
             for (var mm = 0; mm < 60; mm++) {
-              final s = 10;
-              final ms = 600;
-              final us = 600;
+              const s = 10;
+              const ms = 600;
+              const us = 600;
               final dt0 = new DateTime.utc(y, m, d, h, mm, s, ms, us);
               final mx = digits2(m);
               final dx = digits2(d);
@@ -332,9 +332,9 @@ dt0:
         for (var d = 1; d <= lastDayOfMonth(y, m); d++) {
           for (var h = 0; h < 24; h++) {
             for (var mm = 0; mm < 60; mm++) {
-              final s = 10;
-              final ms = 600;
-              final us = 600;
+              const s = 10;
+              const ms = 600;
+              const us = 600;
               final dt0 = new DateTime.utc(y, m, d, h, mm, s, ms, us);
               final mx = digits2(m);
               final dx = digits2(d);

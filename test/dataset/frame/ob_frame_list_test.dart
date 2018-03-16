@@ -308,7 +308,7 @@ void main() {
 
     test('Create Uncompressed FrameList1Bit (FrameDescriptor.fromDataset)', () {
       //Frame Descriptor.fromDataSet1
-      final ts = TransferSyntax.kExplicitVRLittleEndian;
+      const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
           new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
@@ -322,7 +322,7 @@ void main() {
       final usPixelRepresentation0 = new UStag(PTag.kPixelRepresentation, [2]);
       final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [7]);
       final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
-      final pixelAspectRatioValue0 = 1 / 2;
+      const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
           new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
@@ -354,7 +354,7 @@ void main() {
 
       final ob1FDf = new FrameDescriptor.fromDataset(rootDS0);
 
-      final nFrames0 = 1;
+      const nFrames0 = 1;
       final pixels0 = new Uint8List(ob1FDf.lengthInBytes);
 
       final ob1c = new FrameList1Bit(pixels0, nFrames0, ob1FDf);
@@ -781,7 +781,7 @@ void main() {
 
     test('Create Uncompressed FrameList8Bit (FrameDescriptor.fromDataset)', () {
       //Frame Descriptor.fromDataSet1
-      final ts = TransferSyntax.kExplicitVRLittleEndian;
+      const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
           new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
@@ -795,7 +795,7 @@ void main() {
       final usPixelRepresentation0 = new UStag(PTag.kPixelRepresentation, [3]);
       final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [5]);
       final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
-      final pixelAspectRatioValue0 = 1 / 2;
+      const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
           new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
@@ -824,7 +824,7 @@ void main() {
 
       final ob8FDe = new FrameDescriptor.fromDataset(rds0);
 
-      final nFrames0 = 1;
+      const nFrames0 = 1;
       final pixels0 = new Uint8List(ob8FDe.lengthInBytes);
 
       final ob8d = new FrameList8Bit(pixels0, nFrames0, ob8FDe);

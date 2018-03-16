@@ -45,7 +45,7 @@ void main() {
     // **** Hours
 
     test('Hours Test', () {
-      final m = 0, s = 0, ms = 0, us = 0;
+      const m = 0, s = 0, ms = 0, us = 0;
       var h = 0;
       log.debug('hours test');
       for (var i = 0; i < 24; i++) {
@@ -68,7 +68,7 @@ void main() {
     // **** Minutes
 
     test('Minutes Test', () {
-      final h = 0, s = 0, ms = 0, us = 0;
+      const h = 0, s = 0, ms = 0, us = 0;
       var m = 0;
       log.debug('Minutes Test');
 
@@ -91,7 +91,7 @@ void main() {
     });
 
     test('Seconds Test', () {
-      final h = 0, ms = 0, us = 0;
+      const h = 0, ms = 0, us = 0;
       var m = 0, s = 0;
       log.debug('Seconds Test');
 
@@ -114,7 +114,7 @@ void main() {
     });
 
     test('Milliseconds Test', () {
-      final h = 0, m = 0, s = 0, us = 0;
+      const h = 0, m = 0, s = 0, us = 0;
       var ms = 0;
       log.debug('Milliseconds Test');
 
@@ -137,7 +137,7 @@ void main() {
     });
 
     test('Microseconds Test', () {
-      final h = 0, m = 0, s = 0, ms = 0;
+      const h = 0, m = 0, s = 0, ms = 0;
       var us = 0;
       log.debug('Microseconds Test');
 
@@ -160,8 +160,8 @@ void main() {
     });
 
     test('Time and Time Hash', () {
-      final x = 3;
-      final y = 101;
+      const x = 3;
+      const y = 101;
       log.debug('x: $x, y: $y');
       for (var h = 0; h < 24; h += x) {
         log.debug1('hour: $h');
@@ -197,7 +197,7 @@ void main() {
         expect(isValid, true);
       }
 
-      final inValidHour = 24;
+      const inValidHour = 24;
       final isValid = isValidHour(inValidHour);
       log.debug('inValidHour: $inValidHour');
       expect(isValid, false);
@@ -210,7 +210,7 @@ void main() {
         expect(isValid, true);
       }
 
-      final inValidMinute = 60;
+      const inValidMinute = 60;
       final isValid = isValidMinute(inValidMinute);
       log.debug('inValidMinute: $inValidMinute');
       expect(isValid, false);
@@ -223,7 +223,7 @@ void main() {
         expect(isValid, true);
       }
 
-      final inValidSecond = 60;
+      const inValidSecond = 60;
       final isValid = isValidSecond(inValidSecond);
       log.debug('inValidSecond: $inValidSecond');
       expect(isValid, false);
@@ -236,7 +236,7 @@ void main() {
         expect(isValid, true);
       }
 
-      final inValidMillisecond = 1000;
+      const inValidMillisecond = 1000;
       final isValid = isValidHour(inValidMillisecond);
       log.debug('inValidMillisecond: $inValidMillisecond');
       expect(isValid, false);
@@ -249,7 +249,7 @@ void main() {
         expect(isValid, true);
       }
 
-      final inValidMicrosecond = 1000;
+      const inValidMicrosecond = 1000;
       final isValid = isValidMicrosecond(inValidMicrosecond);
       log.debug('inValidMicrosecond: $inValidMicrosecond');
       expect(isValid, false);
@@ -262,7 +262,7 @@ void main() {
         expect(isValid, true);
       }
 
-      final inValidSecondFraction = 1000000;
+      const inValidSecondFraction = 1000000;
       final isValid = isValidSecondFraction(inValidSecondFraction);
       log.debug('inValidSecondFraction: $inValidSecondFraction');
       expect(isValid, false);

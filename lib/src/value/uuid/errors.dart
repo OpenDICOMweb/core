@@ -43,7 +43,7 @@ Uint8List invalidUuidStringLengthError(String s, int targetLength, [Issues issue
 }
 
 Uint8List invalidUuidNullStringError([Issues issues]) {
-  final msg = 'Invalid null string';
+  const msg = 'Invalid null string';
   return _doUuidError(msg, issues);
 }
 

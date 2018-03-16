@@ -16,7 +16,7 @@ void main() {
   final rng = new RNG(1);
 //  List<double> float32List;
 
-  final listFloat32Common0 = const <double>[
+  const listFloat32Common0 = const <double>[
     1.1,
     1.11,
     1.111,

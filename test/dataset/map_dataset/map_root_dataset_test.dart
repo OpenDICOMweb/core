@@ -290,8 +290,8 @@ void main() {
     });
 
     test('Simple UItag, replace, and replaceUid test', () {
-      final uidString0 = '1.2.840.10008.5.1.4.34.5';
-      final uidString0a = '1.2.840.10008.5.1.4.34';
+      const uidString0 = '1.2.840.10008.5.1.4.34.5';
+      const uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
       final uidStringList0a = [uidString0a];
       final uid0 = new Uid(uidString0);
@@ -322,8 +322,8 @@ void main() {
     });
 
     test('Simple UItag.fromString, replace, and replaceUid test', () {
-      final uidString0 = '1.2.840.10008.5.1.4.34.5';
-      final uidString0a = '1.2.840.10008.5.1.4.34';
+      const uidString0 = '1.2.840.10008.5.1.4.34.5';
+      const uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
       final uidStringList0a = [uidString0a];
       final uid0 = new Uid(uidString0);
@@ -354,7 +354,7 @@ void main() {
     });
 
     test('Simple Random UItag, replace, and replaceUid test', () {
-      final count = 8;
+      const count = 8;
       for (var i = 1; i < count; i++) {
         final uidList0 = Uid.randomList(count);
         final uidList0a = Uid.randomList(count);
@@ -388,7 +388,7 @@ void main() {
 
     test('Simple Random UItag.fromString, replace, and replaceUid test', () {
       final rsg = new RSG(seed: 1);
-      final count = 8;
+      const count = 8;
       for (var i = 1; i < count; i++) {
         final uidStringList0 = rsg.getUIList(1, 1);
         final uidStringList0a = rsg.getUIList(1, 1);

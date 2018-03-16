@@ -13,7 +13,7 @@ void main() {
   Server.initialize(name: 'bytes_test.dart', level: Level.info);
   group('Bytes Tests', () {
     test('Test getters and initial zeros', () {
-      final count = 12;
+      const count = 12;
 
       // Check initialized with zeros
       for (var i = 0; i < count; i++) {
@@ -90,7 +90,7 @@ void main() {
     });
 
     test('Test List interface: initial zeroed, equality, hashCode', () {
-      final count = 255;
+      const count = 255;
       final a = new Bytes(count);
       final b = new Bytes(count);
 
@@ -128,7 +128,7 @@ void main() {
 
     //TODO: finish tests
     test('Test List Int16', () {
-      final loopCount = 100;
+      const loopCount = 100;
 
       for (var i = 0; i < loopCount; i++) {
         final a = new Bytes(0xFFFF * Bytes.kInt16Size);
