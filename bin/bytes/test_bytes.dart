@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 
 void main(List<String> args) {
 
-  final count = 12;
+  const count = 12;
 
   for (var i = 0; i < count; i++) {
     final a = new Bytes(count);

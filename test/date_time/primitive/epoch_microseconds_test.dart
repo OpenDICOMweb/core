@@ -171,10 +171,10 @@ void main() {
     });
 
     test('Epoch Date Performance Test', () {
-      log.debug('Epoch Date Performance Test...');
-//      system.level = Level.info0;
-      log.debug1('  startMicrosecond: $startMicrosecond, endMicrosecond: '
-          '$endMicrosecond');
+      log
+        ..debug('Epoch Date Performance Test...')
+        ..debug1('  startMicrosecond: $startMicrosecond, endMicrosecond: '
+            '$endMicrosecond');
 
       final startMicroseconds = dateToEpochMicroseconds(startYear, 1, 1);
       log.debug1('  Epoch Start Microseconds: $startMicroseconds');

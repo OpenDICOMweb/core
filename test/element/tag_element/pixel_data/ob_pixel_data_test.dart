@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -314,7 +314,7 @@ void main() {
       final ob7 = ob6.update(testFrame);
       expect(ob6 == ob7, true);
 
-      final base64 = base64Encode(frame);
+      final base64 = cvt.base64Encode(frame);
       final ob8 =
           OBtagPixelData.fromBase64(PTag.kPixelData, base64, base64.length);
       final ob9 = ob8.update(testFrame);
@@ -759,14 +759,14 @@ void main() {
     });
 
     test('Create Uint8Base.fromBase64', () {
-      final s = base64.encode(testFrame);
-      expect(base64.decode(s), equals(testFrame));
+      final s = cvt.base64Encode(testFrame);
+      expect(cvt.base64Decode(s), equals(testFrame));
     });
 
     test('Create Uint8Base.listToBase64', () {
-      final s = base64.encode(testFrame);
+      final s = cvt.base64Encode(testFrame);
       log.debug('s: $s');
-      expect(base64.decode(s), testFrame);
+      expect(cvt.base64Decode(s), testFrame);
     });
 
     test('Create Uint8Base.fromByteData', () {

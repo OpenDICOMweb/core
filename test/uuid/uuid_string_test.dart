@@ -120,7 +120,7 @@ void main() {
       }
     });
     test('parse', () {
-      final uuidString0 = '6ba7b810-9dad-41d1-80b4-00c04fd430c8';
+      const uuidString0 = '6ba7b810-9dad-41d1-80b4-00c04fd430c8';
       final uuid0 = Uuid.parse(uuidString0);
       expect(uuid0.asString, equals(uuidString0));
 
@@ -142,9 +142,9 @@ void main() {
     });
 
     test('isNotValidString', () {
-      final uuid0 = '6ba7b810-9dad-41d1-80b4-00c04fd430';
-      final uuid1 = '6ba7b810-9dad-41d1-80b4-00c04fd430c8';
-      final uuid2 = '6ba7b810-9dad-11d4-80b4-00c04fd430c8';
+      const uuid0 = '6ba7b810-9dad-41d1-80b4-00c04fd430';
+      const uuid1 = '6ba7b810-9dad-41d1-80b4-00c04fd430c8';
+      const uuid2 = '6ba7b810-9dad-11d4-80b4-00c04fd430c8';
 
       expect(Uuid.isNotValidString(uuid0), true);
       expect(Uuid.isNotValidString(uuid0, 1), true);
@@ -174,9 +174,9 @@ void main() {
     });
 
     test(' == and hashCode ', () {
-      final uuidV1 = '6ba7b810-9dad-41d4-80b4-00c04fd430c8';
-      final uuidV2 = '6ba7b810-9dad-41d4-80b4-00c04fd430c8';
-      final uuidV3 = '6ba7b810-9dad-4788-80b4-00c04fd430c8';
+      const uuidV1 = '6ba7b810-9dad-41d4-80b4-00c04fd430c8';
+      const uuidV2 = '6ba7b810-9dad-41d4-80b4-00c04fd430c8';
+      const uuidV3 = '6ba7b810-9dad-4788-80b4-00c04fd430c8';
       final uuid0 = Uuid.parse(uuidV1);
       final uuid1 = Uuid.parse(uuidV2);
       final uuid2 = Uuid.parse(uuidV3);

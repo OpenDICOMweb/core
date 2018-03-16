@@ -4,7 +4,6 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/core.dart';
@@ -179,7 +178,7 @@ String shortEvrToString(Bytes bd) {
 
 Bytes makeAsciiBD(List<String> vList) {
   final s = vList.join('\\');
-  final Uint8List bList = ascii.encode(s);
+  final  bList = asciiEncode(s);
   return new Bytes.fromTypedData(bList);
 }
 

@@ -15,7 +15,7 @@ void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   List<double> float32List;
 
-  final listFloat32Common0 = const <double>[
+  const listFloat32Common0 = const <double>[
     1.1,
     1.11,
     1.111,
@@ -47,8 +47,6 @@ void main() {
         final bd = makeOF(kFirstOrderPhaseCorrectionAngle, float32List);
         log.debug('  OF Bytes: (${bd.lengthInBytes})$bd');
         final of0 = new OFevr(bd);
-        final v = of0.vfBytes;
-        log.debug('  of:$of0');
         expect(of0[0], equals(float32List[0]));
         expect(of0.hasValidValues, true);
       }

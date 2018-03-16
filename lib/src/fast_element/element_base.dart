@@ -6,7 +6,7 @@
 
 //TODO: load Element library lazily
 
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
@@ -207,7 +207,7 @@ abstract class Float32Mixin {
 
   /// Returns a [Float32List] from a [BASE64] [String].
   static Float32List fromBase64(String s) =>
-      (s.isEmpty) ? kEmptyFloat32List : fromBytes(base64.decode(s));
+      (s.isEmpty) ? kEmptyFloat32List : fromBytes(cvt.base64.decode(s));
 
   /// Returns a [Float32List] from a [Uint8List].
   static Float32List fromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -430,7 +430,7 @@ abstract class Float64Mixin {
 
   /// Returns a [Float64List] from a [BASE64] [String].
   static Float64List fromBase64(String s, {bool asView = true}) =>
-      (s.isEmpty) ? kEmptyFloat64List : fromBytes(base64.decode(s));
+      (s.isEmpty) ? kEmptyFloat64List : fromBytes(cvt.base64.decode(s));
 
   /// Returns a [Float64List] from a [Uint8List].
   static Float64List fromBytes(Uint8List bytes, {bool asView = true}) =>

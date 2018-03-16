@@ -186,9 +186,9 @@ void main() {
     });
 
     test('Epoch Date Performance Test', () {
-      log.debug('Epoch Date Performance Test...');
-//      system.level = Level.info0;
-      log.debug1('  startYear: $startYear, endYear: $endYear');
+      log
+        ..debug('Epoch Date Performance Test...')
+        ..debug1('  startYear: $startYear, endYear: $endYear');
 
       final eStart = dateToEpochDay(startYear, 1, 1);
       log.debug1('  Epoch Start Day: $eStart');

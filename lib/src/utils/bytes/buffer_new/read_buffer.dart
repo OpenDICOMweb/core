@@ -31,7 +31,7 @@ class ReadBufferNew extends BufferBase {
         bytes = new Bytes.typedDataView(bd, endian: endian);
 
   ReadBufferNew.from(ReadBufferNew rb,
-      [int offset = 0, int length, Endian endian = Endian.little])
+      [int offset = 0, int length])
       : rIndex_ = offset,
         wIndex_ = offset + (length ?? rb.lengthInBytes),
         bytes = new Bytes.from(rb.bytes, offset, length);

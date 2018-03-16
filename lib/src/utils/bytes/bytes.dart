@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'dart:collection';
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -400,7 +400,7 @@ class Bytes extends ListBase<int> implements TypedData {
     final v = (offset == 0 && length == s.length)
         ? s
         : s.substring(offset, offset + length);
-    setUint8List(ascii.encode(v), offset, length);
+    setUint8List(cvt.ascii.encode(v), offset, length);
   }
 
   void setUtf8(String s, [int offset = 0, int length]) {
@@ -408,7 +408,7 @@ class Bytes extends ListBase<int> implements TypedData {
     final v = (offset == 0 && length == s.length)
         ? s
         : s.substring(offset, offset + length);
-    setUint8List(utf8.encode(v), offset, length);
+    setUint8List(cvt.utf8.encode(v), offset, length);
   }
 
   void setString(String s, [int offset = 0, int length]) =>
@@ -416,7 +416,7 @@ class Bytes extends ListBase<int> implements TypedData {
 
   void setBase64(TypedData td, [int offset = 0, int length]) {
     final view = td.buffer.asUint8List(offset, length);
-    final s = base64.encode(view);
+    final s = cvt.base64Encode(view);
     setAscii(s);
   }
   // **** TypedData List Setters

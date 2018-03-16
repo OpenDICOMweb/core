@@ -244,7 +244,7 @@ bool get hexUseUppercase => system.isHexUppercase;
 
 /// Returns a [Uint8List] containing [s] encoded in US-ASCII.
 Bytes asciiEncode(String s) {
-  final Uint8List bList = ascii.encode(s);
+  final bList = ascii.encode(s);
   return new Bytes.fromTypedData(bList);
 }
 
