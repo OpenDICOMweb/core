@@ -9,6 +9,7 @@ import 'dart:typed_data';
 import 'package:core/src/base.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/string.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/tag.dart';
 
 // Note: PrivateData Elements are just regular [Element]s
@@ -49,9 +50,11 @@ abstract class ElementTagMixin<V> {
 
   TypedData get typedData => e.typedData;
 
-  Uint8List get vfBytes => e.vfBytes;
+  Bytes get vfBytes => e.vfBytes;
 
+/*
   ByteData get vfByteData => e.vfByteData;
+*/
 
 /* TODO: uncomment when fast_tag implemented
   int get deIdIndex => e.deIdIndex;
@@ -103,9 +106,11 @@ abstract class PrivateElementMixin<V> {
 
   TypedData get typedData => e.typedData;
 
-  Uint8List get vfBytes => e.vfBytes;
+  Bytes get vfBytes => e.vfBytes;
 
+/*
   ByteData get vfByteData => e.vfByteData;
+*/
 
   bool checkValues(Iterable<V> vList, [Issues issues]) =>
       e.checkValues(vList, issues);

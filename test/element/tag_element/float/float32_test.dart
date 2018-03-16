@@ -53,7 +53,7 @@ void main() {
     });
 
     test('FL hasValidValues good values random', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final float32List = rng.float32List(1, 1);
         expect(float32List is Float32List, true);
@@ -323,9 +323,9 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
-        final bytes = float.buffer.asUint8List();
+        final bytes = new Bytes.fromTypedData(float);
         final fl0 =
-            FLtag.fromUint8List(PTag.kAbsoluteChannelDisplayScale, bytes);
+           new FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
         log.debug('fl0: ${fl0.info}');
         expect(fl0.hasValidValues, true);
       }
@@ -335,9 +335,9 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList1 = rng.float32List(3, 3);
         final float0 = new Float32List.fromList(floatList1);
-        final bytes0 = float0.buffer.asUint8List();
+        final bytes0 = new Bytes.fromTypedData(float0);
         final fl1 =
-            FLtag.fromUint8List(PTag.kAbsoluteChannelDisplayScale, bytes0);
+            new FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes0);
         log.debug('fl1: ${fl1.info}');
         expect(fl1.hasValidValues, false);
       }
@@ -892,12 +892,12 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
-        final bd = float.buffer.asUint8List();
-        expect(Float32.fromUint8List(bd), equals(floatList0));
+        final bd = new Bytes.fromTypedData(float);
+        expect(Float32.fromBytes(bd), equals(floatList0));
       }
       final float0 = new Float32List.fromList(<double>[]);
-      final bd0 = float0.buffer.asUint8List();
-      expect(Float32.fromUint8List(bd0), equals(<double>[]));
+      final bd0 = new Bytes.fromTypedData(float0);
+      expect(Float32.fromBytes(bd0), equals(<double>[]));
     });
 
     test('Float32Base toBytes', () {
@@ -915,13 +915,13 @@ void main() {
         final floatList0 = rng.float32List(1, 1);
         final float32List0 = new Float32List.fromList(floatList0);
         final bd0 = float32List0.buffer.asByteData();
-        final lBd0 = Float32.toByteData(float32List0);
+        final lBd0 = Float32.toBytes(float32List0);
         log.debug(
             'lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd0.buffer == bd0.buffer, true);
 
-        final lBd1 = Float32.toByteData(float32List0, asView: false);
+        final lBd1 = Float32.toBytes(float32List0, asView: false);
         log.debug(
             'lBd1: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -930,7 +930,7 @@ void main() {
         final floatList1 = rng.float64List(1, 1);
         final float64List0 = new Float64List.fromList(floatList1);
         final bd1 = float64List0.buffer.asByteData();
-        final lBd2 = Float32.toByteData(float64List0);
+        final lBd2 = Float32.toBytes(float64List0);
 
         log.debug(
             'lBd2: ${lBd2.buffer.asUint8List()}, bd1: ${bd1.buffer.asUint8List()}');
@@ -940,7 +940,7 @@ void main() {
     });
 
     test('Float32Base decodeJsonVF', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);
@@ -995,24 +995,24 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
-        final bd = float.buffer.asUint8List();
-        expect(Float32.fromUint8List(bd), equals(floatList0));
+        final bd = new Bytes.fromTypedData(float);
+        expect(Float32.fromBytes(bd), equals(floatList0));
       }
       final float0 = new Float32List.fromList(<double>[]);
-      final bd0 = float0.buffer.asUint8List();
-      expect(Float32.fromUint8List(bd0), equals(<double>[]));
+      final bd0 =new Bytes.fromTypedData(float0);
+      expect(Float32.fromBytes(bd0), equals(<double>[]));
     });
 
-    test('Float32Base.fromByteData', () {
+    test('Float32Base.fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
-        final byteData0 = float.buffer.asByteData();
-        expect(Float32.fromByteData(byteData0), equals(floatList0));
+        final byteData0 = new Bytes.fromTypedData(float);
+        expect(Float32.fromBytes(byteData0), equals(floatList0));
       }
       final float0 = new Float32List.fromList(<double>[]);
-      final bd0 = float0.buffer.asByteData();
-      expect(Float32.fromByteData(bd0), equals(<double>[]));
+      final bd0 = new Bytes.fromTypedData(float0);
+      expect(Float32.fromBytes(bd0), equals(<double>[]));
     });
   });
 
@@ -1238,16 +1238,16 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
-        final bytes = float.buffer.asUint8List();
-        final of0 = OFtag.fromUint8List(PTag.kVectorGridData, bytes);
+        final bytes = new Bytes.fromTypedData(float);
+        final of0 = new OFtag.fromBytes(PTag.kVectorGridData, bytes);
         log.debug('of0: ${of0.info}');
         expect(of0.hasValidValues, true);
 
         final floatList1 = rng.float32List(3, 3);
         final float0 = new Float32List.fromList(floatList1);
-        final bytes0 = float0.buffer.asUint8List();
+        final bytes0 = new Bytes.fromTypedData(float0);
         final of1 =
-            OFtag.fromUint8List(PTag.kFirstOrderPhaseCorrectionAngle, bytes0);
+            new OFtag.fromBytes(PTag.kFirstOrderPhaseCorrectionAngle, bytes0);
         log.debug('of1: ${of1.info}');
         expect(of1.hasValidValues, true);
       }
@@ -1549,12 +1549,12 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
-        final bd = float.buffer.asUint8List();
-        expect(Float32.fromUint8List(bd), equals(floatList0));
+        final bd = new Bytes.fromTypedData(float);
+        expect(Float32.fromBytes(bd), equals(floatList0));
       }
       final float0 = new Float32List.fromList(<double>[]);
-      final bd0 = float0.buffer.asUint8List();
-      expect(Float32.fromUint8List(bd0), equals(<double>[]));
+      final bd0 = new Bytes.fromTypedData(float0);
+      expect(Float32.fromBytes(bd0), equals(<double>[]));
     });
 
     test('Float32Base.toBytes', () {
@@ -1568,7 +1568,7 @@ void main() {
     });
 
     test('Float32Base.fromBase64', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);
@@ -1623,24 +1623,24 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
-        final bd = float.buffer.asUint8List();
-        expect(Float32.fromUint8List(bd), equals(floatList0));
+        final bd = new Bytes.fromTypedData(float);
+        expect(Float32.fromBytes(bd), equals(floatList0));
       }
       final float0 = new Float32List.fromList(<double>[]);
-      final bd0 = float0.buffer.asUint8List();
-      expect(Float32.fromUint8List(bd0), equals(<double>[]));
+      final bd0 = new Bytes.fromTypedData(float0);
+      expect(Float32.fromBytes(bd0), equals(<double>[]));
     });
 
-    test('Float32Base.fromByteData', () {
+    test('Float32Base.fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
-        final byteData0 = float.buffer.asByteData();
-        expect(Float32.fromByteData(byteData0), equals(floatList0));
+        final byteData0 = new Bytes.fromTypedData(float);
+        expect(Float32.fromBytes(byteData0), equals(floatList0));
       }
       final float0 = new Float32List.fromList(<double>[]);
-      final bd0 = float0.buffer.asByteData();
-      expect(Float32.fromByteData(bd0), equals(<double>[]));
+      final bd0 = new Bytes.fromTypedData(float0);
+      expect(Float32.fromBytes(bd0), equals(<double>[]));
     });
   });
 }

@@ -333,7 +333,7 @@ void main() {
         final vList1 = rsg.getDSList(1, 1);
         final bytes = DS.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final ds1 = DStag.fromUint8List(PTag.kSamplingFrequency, bytes);
+        final ds1 = new DStag.fromBytes(PTag.kSamplingFrequency, bytes);
         log.debug('ds1: ${ds1.info}');
         expect(ds1.hasValidValues, true);
       }
@@ -1124,8 +1124,8 @@ void main() {
         final vList0 = rsg.getDSList(1, 1);
         system.throwOnError = false;
         final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = DS.toByteData(vList0);
-        final tbd1 = DS.toByteData(vList0);
+        final tbd0 = DS.toBytes(vList0);
+        final tbd1 = DS.toBytes(vList0);
         log.debug('tbd1: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -1133,8 +1133,8 @@ void main() {
       for (var s in goodDSList) {
         for (var a in s) {
           final values = cvt.ascii.encode(a);
-          final tbd2 = DS.toByteData(s);
-          final tbd3 = DS.toByteData(s);
+          final tbd2 = DS.toBytes(s);
+          final tbd3 = DS.toBytes(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -1145,14 +1145,14 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
         system.throwOnError = false;
-        final bd0 = DS.toByteData(vList0);
-        final fbd0 = DS.fromByteData(bd0);
+        final bd0 = DS.toBytes(vList0);
+        final fbd0 = DS.fromBytes(bd0);
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodDSList) {
-        final bd0 = DS.toByteData(s);
-        final fbd0 = DS.fromByteData(bd0);
+        final bd0 = DS.toBytes(s);
+        final fbd0 = DS.fromBytes(bd0);
         expect(fbd0, equals(s));
       }
     });
@@ -1175,7 +1175,7 @@ void main() {
 
   group('Integer String Tests', () {
     test('Is valid integer string -  good values', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var s in goodIntegerStrings) {
         system.throwOnError = false;
         log.debug('s: "$s"');
@@ -1458,7 +1458,7 @@ void main() {
         final vList1 = rsg.getISList(1, 1);
         final bytes = IS.toBytes(vList1);
         log.debug('bytes:$bytes');
-        final is1 = IStag.fromUint8List(PTag.kWaveformChannelNumber, bytes);
+        final is1 = new IStag.fromBytes(PTag.kWaveformChannelNumber, bytes);
         log.debug('is1: ${is1.info}');
         expect(is1.hasValidValues, true);
       }
@@ -2152,8 +2152,8 @@ void main() {
         final vList0 = rsg.getISList(1, 1);
         system.throwOnError = false;
         final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = IS.toByteData(vList0);
-        final tbd1 = IS.toByteData(vList0);
+        final tbd0 = IS.toBytes(vList0);
+        final tbd1 = IS.toBytes(vList0);
         log.debug(
           'tbd0: ${tbd0.buffer.asUint8List()}, values: $values',
         );
@@ -2163,26 +2163,26 @@ void main() {
       for (var s in goodISList) {
         for (var a in s) {
           final values = cvt.ascii.encode(a);
-          final tbd2 = IS.toByteData(s);
-          final tbd3 = IS.toByteData(s);
+          final tbd2 = IS.toBytes(s);
+          final tbd3 = IS.toBytes(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
       }
     });
 
-    test('IS fromByteData', () {
+    test('IS fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 1);
         system.throwOnError = false;
-        final bd0 = IS.toByteData(vList0);
-        final fbd0 = IS.fromByteData(bd0);
+        final bd0 = IS.toBytes(vList0);
+        final fbd0 = IS.fromBytes(bd0);
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodISList) {
-        final bd0 = IS.toByteData(s);
-        final fbd0 = IS.fromByteData(bd0);
+        final bd0 = IS.toBytes(s);
+        final fbd0 = IS.fromBytes(bd0);
         expect(fbd0, equals(s));
       }
     });

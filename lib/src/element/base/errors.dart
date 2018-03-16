@@ -7,6 +7,7 @@
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
@@ -76,7 +77,7 @@ Null invalidElementError(Element e, [String msg]) {
 }
 
 class InvalidValueFieldError extends Error {
-  final Uint8List vfBytes;
+  final Bytes vfBytes;
   final String msg;
 
   InvalidValueFieldError(this.vfBytes, this.msg);
@@ -85,7 +86,7 @@ class InvalidValueFieldError extends Error {
   String toString() => msg;
 }
 
-Null invalidValueField(String msg, Uint8List vfBytes) {
+Null invalidValueField(String msg, Bytes vfBytes) {
   final s =
       'Invalid Value Field Error: $msg - vfLength(${vfBytes.lengthInBytes})';
   log.error(msg);

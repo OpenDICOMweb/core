@@ -4,16 +4,20 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert' as cvt;
+// TODO: replace all cvt.base64.encode/decode with base64Encode/base64Decode
+// TODO: same for JSON, ascii, utf8,...
+
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
+import 'package:core/src/system.dart';
 import 'package:core/src/tag/tag.dart';
+import 'package:core/src/utils/bytes.dart';
 
 abstract class JsonMixin<V> {
 	Tag get tag;
 	List<V> get values;
-	Uint8List get bytes;
+	Bytes get bytes;
 	int get vrIndex;
 	String get vrId;
 //	VR get vr;
@@ -21,7 +25,7 @@ abstract class JsonMixin<V> {
 	/// Returns a comma-separated [String] of [List][values].
 	String get valuesAsString => values.join(', ');
 
-	String get base64 => cvt.base64.encode(bytes);
+	String get base64 => base64Encode(bytes);
 
 	/// Returns a [String] containing an array of JSON [num].
 	//TODO: decide if this is needed
@@ -31,14 +35,14 @@ abstract class JsonMixin<V> {
 	String get toJson => '"${tag.code}": {vr: $vrId, values: $toJsonVF';
 
 	/// Returns the [values] encoded as a [Base64] [String].
-	String get vfBase64 => cvt.base64.encode(bytes);
+	String get vfBase64 => base64Encode(bytes);
 
-	Uint8List bytesFromB64(String s) => cvt.base64.decode(s);
+	Bytes bytesFromB64(String s) => base64Decode(s);
 
 	/// Returns a [base64] [String] containing [bytes].
-	String base64FromVFBytes(Uint8List bytes) => cvt.base64.encode(bytes);
+	String base64FromVFBytes(Bytes bytes) => base64Encode(bytes);
 
 	/// Returns a [Uint8List] containing [bytes].
-	Uint8List bytesFromBase64(String s) => cvt.base64.decode(s);
+	Bytes bytesFromBase64(String s) => base64Decode(s);
 
 }

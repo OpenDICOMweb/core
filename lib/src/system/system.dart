@@ -15,7 +15,9 @@
 //  3. Uses version for system version info
 //  4. Uses logging to be the root of Logger
 
+import 'dart:convert';
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:core/src/system/sdk.dart';
 import 'package:core/src/system/sys_info.dart';
@@ -37,7 +39,7 @@ const int kMinYearLimit = -144169;
 /// The maximum Epoch Year using a 63-bit integer as microseconds.
 const int kMaxYearLimit = 148108;
 
-const String kDefaultTimeSeparator = ' ';
+const String kDefaultTimeSeparator = 'T';
 
 /// An abstract class that is the foundation of both Servers and Clients.
 abstract class System {
@@ -77,19 +79,18 @@ abstract class System {
   /// _Note_: This field is mutable.
   bool showSdkBanner;
 
-  /// This setting determines whether UUIDs print in upper or lowercase.
-  /// _Note_: This field is mutable.
-  //TODO: how to make this work with Uuid package?
+  /// If _true_ hexadecimal characters in UUIDs are printed in uppercase.
   bool isUuidUppercase;
 
+  /// If _true_ hexadecimal characters are printed in uppercase.
   bool isHexUppercase;
 
-  bool allowInvalidCharacterEncodings = true;
-  bool allowInvalidAscii = true;
-  bool allowMalformedUtf8 = true;
+  /// If _true_ then invalid ASCII and UTF8 character codes are allowed
+  /// when decoding [Uint8List]s.
+  bool allowInvalidEncodings;
 
-  bool useAscii = false;
-
+  /// The character that separates the date from the time in a DateTime
+  /// [String] - defaults to
   String dateTimeSeparator = kDefaultTimeSeparator;
 
   System(
@@ -110,6 +111,7 @@ abstract class System {
       this.throwOnError = false,
       this.isUuidUppercase = false,
       this.isHexUppercase = false,
+      this.allowInvalidEncodings = true,
       this.showBanner = true,
       this.showSdkBanner = true})
       : version = (version == null) ? new Version(0, 0, 1) : version,
@@ -138,9 +140,7 @@ abstract class System {
 
   bool showWarnings = false;
 
-  void warn(String msg) {
-    if (showWarnings) log.warn(msg);
-  }
+  void warn(String msg) => (showWarnings) ? log.warn(msg) : null;
 
   /// The initial [Logger] [Level].
   Level get level => log.level;
@@ -241,3 +241,44 @@ bool get throwOnError => system.throwOnError;
 bool get uuidsUseUppercase => system.isUuidUppercase;
 
 bool get hexUseUppercase => system.isHexUppercase;
+
+/// Returns a [Uint8List] containing [s] encoded in US-ASCII.
+Bytes asciiEncode(String s) {
+  final Uint8List bList = ascii.encode(s);
+  return new Bytes.fromTypedData(bList);
+}
+
+/// Returns a [Uint8List] containing [s] encoded in UTF-8.
+Bytes utf8Encode(String s) {
+  final Uint8List bList = utf8.encode(s);
+  return new Bytes.fromTypedData(bList);
+}
+
+/*
+/// Returns a [Uint8List] containing [s] encoded in US-ASCII if [useAscii]
+/// is _true_; otherwise in UTF8.
+Uint8List encodeString(String s, {bool useAscii = false}) =>
+    (useAscii) ? asciiEncode(s) : utf8Encode(s);
+*/
+
+String decodeUint8List(Bytes bytes,
+        {bool useAscii = false, bool allowInvalid = true}) =>
+    (useAscii)
+        ? asciiDecode(bytes, allowInvalid: allowInvalid)
+        : utf8Decode(bytes, allowMalformed: allowInvalid);
+
+/// Returns a [String] decoded from the [Uint8List] containing US-ASCII.
+String asciiDecode(Bytes bytes, {bool allowInvalid = true}) =>
+    ascii.decode(bytes, allowInvalid: allowInvalid);
+
+/// Returns a [String] decoded from the [Uint8List] containing UTF-8
+/// code points.
+String utf8Decode(Bytes bytes, {bool allowMalformed = true}) =>
+    utf8.decode(bytes, allowMalformed: allowMalformed);
+
+/// Returns a [String] containing [bytes] encoded Base64.
+String base64Encode(Bytes bytes) => base64.encode(bytes.asUint8List());
+
+/// Returns a [Uint8List] containing a decoding of [s],
+/// a Base65 [String].
+Bytes base64Decode(String s) => new Bytes.fromTypedData(base64.decode(s));

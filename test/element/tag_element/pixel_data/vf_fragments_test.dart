@@ -20,7 +20,6 @@ void main() {
   final ts = TransferSyntax.kDefaultForDicomWeb;
 
   group('VFFragments Tests', () {
-
     final pixels = new List<int>(1024);
     for (var i = 0; i < pixels.length; i++) pixels[i] = 128;
 
@@ -39,10 +38,10 @@ void main() {
       log.debug('frags0.lengthInBytes:${frags0.lengthInBytes}');
       expect(frags0.lengthInBytes == 0, true);
 
-      final ob0 = new OBtagPixelData(PTag.kPixelData, frame1,
-                                         kUndefinedLength, frags0, ts);
-      final ob1 = new OBtagPixelData(PTag.kPixelData, frame1,
-                                         kUndefinedLength, frags0, ts);
+      final ob0 = new OBtagPixelData(
+          PTag.kPixelData, frame1, kUndefinedLength, frags0, ts);
+      final ob1 = new OBtagPixelData(
+          PTag.kPixelData, frame1, kUndefinedLength, frags0, ts);
 
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
@@ -50,7 +49,7 @@ void main() {
       expect(ob0.fragments == frags0, true);
       expect(ob0.offsets == frags0.offsets, true);
       expect(ob0.isEncapsulated == true, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == frame1.length, true);
       expect(ob0.pixels is List<int>, true);
       expect(ob0.pixels == frags0.bulkdata, true);
@@ -64,17 +63,17 @@ void main() {
 
     test('Create VFFragments with non-empty offsets', () {
       final frags = new VFFragments(fragments);
-      final ob0 = new OBtagPixelData(PTag.kPixelData,
-                                         frame, kUndefinedLength,frags, ts);
-      final ob1 = new OBtagPixelData(PTag.kPixelData,
-                                         frame, kUndefinedLength,frags, ts);
+      final ob0 = new OBtagPixelData(
+          PTag.kPixelData, frame, kUndefinedLength, frags, ts);
+      final ob1 = new OBtagPixelData(
+          PTag.kPixelData, frame, kUndefinedLength, frags, ts);
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
       expect(ob0.isEncapsulated == true, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == frame.length, true);
       expect(ob0.pixels is List<int>, true);
       expect(ob0.pixels == frags.bulkdata, true);
@@ -89,17 +88,17 @@ void main() {
 
     test('Create  VFFragments.fromBytes', () {
       final frags = new VFFragments(fragments);
-      final ob0 = OBtagPixelData.fromUint8List(
-          PTag.kPixelData, frame, frame.lengthInBytes,frags, ts);
-      final ob1 = OBtagPixelData.fromUint8List(
-          PTag.kPixelData, frame, frame.lengthInBytes,frags, ts);
+      final ob0 = OBtagPixelData.fromBytes(PTag.kPixelData,
+          new Bytes.fromTypedData(frame), frame.lengthInBytes, frags, ts);
+      final ob1 = OBtagPixelData.fromBytes(PTag.kPixelData,
+          new Bytes.fromTypedData(frame), frame.lengthInBytes, frags, ts);
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
       expect(ob0.isEncapsulated == true, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == frame.lengthInBytes, true);
       expect(ob0.pixels is Uint8List, true);
       expect(ob0.pixels == frags.bulkdata, true);

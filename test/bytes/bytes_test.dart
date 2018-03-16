@@ -10,7 +10,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'bytes_test.dart', level: Level.debug);
+  Server.initialize(name: 'bytes_test.dart', level: Level.info);
   group('Bytes Tests', () {
     test('Test getters and initial zeros', () {
       final count = 12;
@@ -75,7 +75,7 @@ void main() {
           expect(bytes.getFloat64(i) == 0, true);
         }
 
-        final bytes0 = new Bytes.from(bytes);
+        final bytes0 = new Bytes.fromTypedData(bytes);
         expect(bytes0.endian == Endian.little, true);
 
         expect(bytes0.elementSizeInBytes == 1, true);

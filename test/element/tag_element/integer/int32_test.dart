@@ -878,7 +878,7 @@ void main() {
       expect(Int32.toBytes(int32Max), uaInt8List);
 
       const int64Max = const [kInt64Max];
-      expect(Int32.toBytes(int64Max), isNull);
+      expect(Int32.toBytes(int64Max).isEmpty, true);
 
       system.throwOnError = true;
       expect(() => Int32.toBytes(int64Max),
@@ -886,7 +886,7 @@ void main() {
     });
 
     test('Int32Base toByteData good values', () {
-      system.level = Level.debug;
+//      system.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final int32list0 = rng.int32List(1, 1);
@@ -945,7 +945,7 @@ void main() {
     });
 
     test('SL fromBase64', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final intList0 = rng.int32List(0, i);
         final int32List0 = new Int32List.fromList(intList0);
@@ -982,7 +982,7 @@ void main() {
     });
 
     test('SL encodeDecodeJsonVF', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final int32list0 = rng.int32List(0, i);
         final int32ListV1 = new Int32List.fromList(int32list0);

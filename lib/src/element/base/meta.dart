@@ -7,10 +7,11 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/utils/errors.dart';
 import 'package:core/src/utils/issues.dart';
 
-abstract class MetaElementMixin<V>  {
+abstract class MetaElementMixin<V> {
   Element get e;
 
   List<V> get emptyList => e.emptyList;
@@ -59,6 +60,8 @@ class BulkdataRef<V> extends Element<V> with MetaElementMixin<V> {
   Iterable<V> get values => _values ??= unimplementedError();
   Iterable<V> _values;
   @override
- set values(Iterable<V> vList) => _values ??= vList;
+  set values(Iterable<V> vList) => _values ??= vList;
 
+  @override
+  Bytes get vfBytes => e.vfBytes;
 }

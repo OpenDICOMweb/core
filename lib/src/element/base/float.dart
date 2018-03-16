@@ -4,7 +4,6 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
@@ -13,6 +12,7 @@ import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/errors.dart';
+import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/vr.dart';
@@ -76,10 +76,7 @@ abstract class Float extends Element<double> {
   static const List<double> kEmptyList = const <double>[];
 
   @override
-  ByteData get vfByteData => typedData.buffer.asByteData();
-
-  @override
-  Uint8List get vfBytes => typedData.buffer.asUint8List();
+  Bytes get vfBytes => new Bytes.fromTypedData(typedData);
 
   @override
   Float get noValues => update(kEmptyList);
@@ -128,15 +125,15 @@ abstract class Float32 {
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<double> vList, {bool asView = true}) =>
-      cvt.base64.encode(toBytes(vList, asView: asView));
+      base64Encode(toBytes(vList, asView: asView));
 
   /// Returns a [Uint8List] created from [vList];
-  static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
+  static Uint8List toUint8List(Iterable<double> vList, {bool asView = true}) =>
       _asUint8List(fromList(vList, asView: asView));
 
   /// Returns a [ByteData] created from [vList];
-  static ByteData toByteData(Iterable<double> vList, {bool asView = true}) =>
-      _asByteData(fromList(vList, asView: asView));
+  static Bytes toBytes(Iterable<double> vList, {bool asView = true}) =>
+      new Bytes.fromTypedData(fromList(vList, asView: asView));
 
   /// Returns a [Float32List] with the same length as [vList]. If
   /// [vList] is a [Float32List] and [asView] is _true_, then [vList] is
@@ -152,18 +149,21 @@ abstract class Float32 {
 
   /// Returns a [Float32List] from a [base64] [String].
   static Float32List fromBase64(String s) =>
-      (s.isEmpty) ? kEmptyFloat32List : fromUint8List(cvt.base64.decode(s));
+      (s.isEmpty) ? kEmptyFloat32List : fromBytes(base64Decode(s));
 
+/*
   /// Returns a [Float32List] from a [Uint8List].
-  static Float32List fromUint8List(Uint8List bytes, {bool asView = true}) =>
-      _fromByteData(bytes.buffer.asByteData());
+  static Float32List fromUint8List(Uint8List bList, {bool asView = true}) =>
+      _fromBytes(bList.buffer.asByteData());
 
   /// Returns a [Float32List] from a [ByteData].
-  static Float32List fromByteData(ByteData bd, {bool asView = true}) =>
-      _fromByteData(bd);
+  static Float32List fromBytes(Bytes bd, {bool asView = true}) =>
+      _fromBytes(bd);
+*/
 
+/*
   /// /// Returns a [Float32List] from a [ByteData].
-  static Float32List _fromByteData(ByteData bd, {bool asView = true}) {
+  static Float32List _fromBytes(Bytes bd, {bool asView = true}) {
     assert(bd != null && bd.lengthInBytes >= 0);
     if (bd.lengthInBytes == 0) return kEmptyFloat32List;
     assert((bd.lengthInBytes % kSizeInBytes) == 0, 'lib: ${bd.lengthInBytes}');
@@ -178,6 +178,7 @@ abstract class Float32 {
     final f32List = bd.buffer.asFloat32List(bd.offsetInBytes, length);
     return (asView) ? f32List : new Float32List.fromList(f32List);
   }
+*/
 
   static bool _isNotAligned(TypedData vList) =>
       (vList.offsetInBytes % kSizeInBytes) != 0;
@@ -186,6 +187,7 @@ abstract class Float32 {
   static Float32List fromBytes(Bytes bytes, {bool asView = true}) =>
       bytes.asFloat32List();
 
+/*
   static List<double> fromValueField(Iterable vf) {
     if (vf == null) return kEmptyDoubleList;
     if (vf is Float64List ||
@@ -196,6 +198,8 @@ abstract class Float32 {
     if (vf is Uint8List) return fromUint8List(vf);
     return invalidValuesError(vf);
   }
+*/
+
 }
 
 /// FL
@@ -365,15 +369,15 @@ abstract class Float64 {
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<double> vList) =>
-      cvt.base64.encode(toBytes(vList));
+      base64Encode(toBytes(vList));
 
   /// Returns a [Uint8List] created from [vList];
-  static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
+  static Uint8List toUint8List(Iterable<double> vList, {bool asView = true}) =>
       _asUint8List(fromList(vList, asView: asView));
 
   /// Returns a [ByteData] view of from [vList].
-  static ByteData toByteData(List<double> vList, {bool asView = true}) =>
-      _asByteData(fromList(vList, asView: asView));
+  static Bytes toBytes(List<double> vList, {bool asView = true}) =>
+      new Bytes.fromTypedData(fromList(vList, asView: asView));
 
   /// Returns a [Float64List] with the same length as [vList]. If
   /// [vList] is a [Float64List] and [asView] is _true_, then [vList] is
@@ -389,37 +393,42 @@ abstract class Float64 {
 
   /// Returns a [Float64List] from a [base64] [String].
   static Float64List fromBase64(String s, {bool asView = true}) =>
-      (s.isEmpty) ? kEmptyFloat64List : fromUint8List(cvt.base64.decode(s));
+      (s.isEmpty) ? kEmptyFloat64List : fromBytes(base64Decode(s));
 
+/*
   /// Returns a [Float64List] from a [Uint8List].
   static Float64List fromUint8List(Uint8List bytes, {bool asView = true}) =>
-      _fromByteData(_asByteData(bytes), asView: asView);
+      _fromBytes(_asByteData(bytes), asView: asView);
+*/
 
   /// Returns a [Float64List] from a [ByteData].
-  static Float64List fromByteData(ByteData bd, {bool asView = true}) =>
-      _fromByteData(bd, asView: asView);
+  static Float64List fromBytes(Bytes bytes, {bool asView = true}) => (asView)
+      ? bytes.asFloat64List()
+      : new Float32List.fromList(bytes.asFloat32List());
 
-  /// /// Returns a [Float64List] from a [ByteData] or [Uint8List].
-  static Float64List _fromByteData(ByteData td, {bool asView = true}) {
-    assert(td != null && td.lengthInBytes >= 0);
-    if (td.lengthInBytes == 0) return kEmptyFloat64List;
-    assert((td.lengthInBytes % kSizeInBytes) == 0, 'lib: ${td.lengthInBytes}');
-    final length = td.lengthInBytes ~/ kSizeInBytes;
+/*
+  /// Returns a [Float64List] from a [ByteData] or [Uint8List].
+  static Float64List _fromBytes(Bytes bd, {bool asView = true}) {
+    assert(bd != null && bd.lengthInBytes >= 0);
+    if (bd.lengthInBytes == 0) return kEmptyFloat64List;
+    assert((bd.lengthInBytes % kSizeInBytes) == 0, 'lib: ${bd.lengthInBytes}');
+    final length = bd.lengthInBytes ~/ kSizeInBytes;
 
-    if (_isNotAligned(td)) {
+    if (_isNotAligned(bd)) {
       final nList = new Float64List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
-        nList[i] = td.getFloat64(oib, Endian.little);
+        nList[i] = bd.getFloat64(oib, Endian.little);
       return nList;
     }
-    final f64List = td.buffer.asFloat64List(td.offsetInBytes, length);
+    final f64List = bd.asFloat64List(bd.offsetInBytes, length);
     return (asView) ? f64List : new Float64List.fromList(f64List);
   }
+*/
 
   static bool _isNotAligned(TypedData vList) =>
       (vList.offsetInBytes % kSizeInBytes) != 0;
 
-  static List<double> fromValueField(Iterable vf) {
+/*  static List<double> fromValueField(Iterable vf) {
     if (vf == null) return kEmptyDoubleList;
     if (vf is Float64List ||
         vf is Iterable<double> ||
@@ -429,6 +438,7 @@ abstract class Float64 {
     if (vf is Uint8List) return fromUint8List(vf);
     return invalidValuesError(vf);
   }
+  */
 }
 
 abstract class FD extends Float with Float64 {

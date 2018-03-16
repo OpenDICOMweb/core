@@ -38,7 +38,7 @@ void main() {
     });
 
     test('FL hasValidValues random: good values', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final float32List = rng.float32List(1, 10);
         expect(float32List is Float32List, true);
@@ -57,7 +57,7 @@ void main() {
     });
 
     test('FL hasValidValues: good values', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final float32List = rng.float32List(2, 2);
         final bd = makeFL(kCornealVertexLocation, float32List);

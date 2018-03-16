@@ -11,7 +11,7 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'map_root_dataset_test', level: Level.debug);
+  Server.initialize(name: 'map_root_dataset_test', level: Level.info);
 
   group('MapRootDataset', () {
     test('[] and []=', () {

@@ -25,7 +25,7 @@ void main() {
   final endMicrosecond = dateToEpochMicroseconds(endYear, 1, 1);
 
   group('Test Day Part of String', () {
-    system.level = Level.info0;
+//    system.level = Level.info0;
 
     test('Leap Year Basic Test', () {
       for (var y in goodBasicLeapYears) {
@@ -172,7 +172,7 @@ void main() {
 
     test('Epoch Date Performance Test', () {
       log.debug('Epoch Date Performance Test...');
-      system.level = Level.info0;
+//      system.level = Level.info0;
       log.debug1('  startMicrosecond: $startMicrosecond, endMicrosecond: '
           '$endMicrosecond');
 

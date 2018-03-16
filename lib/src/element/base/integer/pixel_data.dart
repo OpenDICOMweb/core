@@ -10,6 +10,7 @@ import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/value/uid.dart';
 
 /// PixelDataMixin class
@@ -17,7 +18,7 @@ abstract class PixelData {
   Tag get tag;
   int get code;
   int get vfLengthField;
-  Uint8List get vfBytes;
+  Bytes get vfBytes;
 
   /// Returns the [VFFragments] for this Element, if any; otherwise,
   /// returns _null_.  Only kPixelData Elements can have [fragments].

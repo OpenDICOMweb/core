@@ -11,7 +11,7 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'map_item_test', level: Level.debug);
+  Server.initialize(name: 'map_item_test', level: Level.info);
   final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
 
   group('MapItem', () {

@@ -41,12 +41,14 @@ void main() {
 
     test('OF hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
-        float32List = rng.float32List(1, 10);
+        final float32List = rng.float32List(1, 10);
         expect(float32List is Float32List, true);
         log.debug('i: $i, float32List: $float32List');
         final bd = makeOF(kFirstOrderPhaseCorrectionAngle, float32List);
+        log.debug('  OF Bytes: (${bd.lengthInBytes})$bd');
         final of0 = new OFevr(bd);
-        //      log.debug('of:$of0');
+        final v = of0.vfBytes;
+        log.debug('  of:$of0');
         expect(of0[0], equals(float32List[0]));
         expect(of0.hasValidValues, true);
       }

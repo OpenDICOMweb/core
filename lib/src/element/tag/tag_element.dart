@@ -144,13 +144,13 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
       Tag tag, Iterable values, int vfLengthField, int vrIndex) {
     switch (vrIndex) {
       case kOBIndex:
-        return OBtagPixelData.fromUint8List(tag, values, vfLengthField);
+        return OBtagPixelData.fromBytes(tag, values, vfLengthField);
       case kUNIndex:
-        return UNtagPixelData.fromUint8List(tag, values, vfLengthField);
+        return UNtagPixelData.fromBytes(tag, values, vfLengthField);
       case kOWIndex:
-        return OWtagPixelData.fromUint8List(tag, values, vfLengthField);
+        return OWtagPixelData.fromBytes(tag, values, vfLengthField);
       case kSQIndex:
-        return OWtagPixelData.fromUint8List(tag, values, vfLengthField);
+        return OWtagPixelData.fromBytes(tag, values, vfLengthField);
       default:
         return invalidVRIndex(vrIndex, null, null);
     }

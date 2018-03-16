@@ -1037,7 +1037,7 @@ void main() {
       expect(Uint16.toBytes(uInt16Max), uInt16List);
 
       const uInt32Max = const [kUint32Max];
-      expect(Uint16.toBytes(uInt32Max), isNull);
+      expect(Uint16.toBytes(uInt32Max).isEmpty, true);
 
       system.throwOnError = true;
       expect(() => Uint16.toBytes(uInt32Max),
@@ -1045,7 +1045,7 @@ void main() {
     });
 
     test('Uint16Base listToByteData good values', () {
-      system.level = Level.debug;
+//      system.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final uInt16list0 = rng.uint16List(1, 1);
@@ -1138,7 +1138,7 @@ void main() {
     });
 
     test('US encodeDecodeJsonVF', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt16list0 = rng.uint16List(0, i);
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);
@@ -1891,7 +1891,7 @@ void main() {
     });
 
     test('OW encodeDecodeJsonVF', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt16list0 = rng.uint16List(0, i);
         final uInt16ListV1 = new Uint16List.fromList(uInt16list0);

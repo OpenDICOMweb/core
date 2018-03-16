@@ -749,7 +749,7 @@ void main() {
       expect(Uint8.toBytes(uInt8Max), uint8List);
 
       const uInt16Max = const [kUint16Max];
-      expect(Uint8.toBytes(uInt16Max), isNull);
+      expect(Uint8.toBytes(uInt16Max).isEmpty, true);
 
       system.throwOnError = true;
       expect(() => Uint8.toBytes(uInt16Max),
@@ -757,7 +757,7 @@ void main() {
     });
 
     test('Uint8Base listToByteData good values', () {
-      system.level = Level.debug;
+//      system.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final uInt8list0 = rng.uint8List(1, 1);
@@ -856,7 +856,7 @@ void main() {
     });
 
     test('OB encodeDecodeJsonVF', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt8list0 = rng.uint8List(0, i);
         final uInt8ListV1 = new Uint8List.fromList(uInt8list0);

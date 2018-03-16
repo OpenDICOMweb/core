@@ -569,9 +569,22 @@ abstract class Tag {
       isPublicGroupLengthKeywordCode(keyword);
 
   //TODO: test - needs to handle '0xGGGGEEEE' and 'GGGGEEEE'
-  static bool isPublicGroupLengthKeywordCode(String keywordCode) {
-    final code = int.parse(keywordCode, radix: 16, onError: (s) => -1);
-    return (code == -1) ? (code & 0xFFFF) == 0 ? true : false : false;
+  /// Returns _true_ if [s] is a DICOM public Group Length _code_, that is
+  /// [s] a hexadecimal [String] 8 characters long and has the format
+  /// 0xGGGG0000 or GGGG0000, where GGGG is a valid public Group Number,
+  /// and 0000 is equal to zero.
+  /// corresponding to an even integer
+  static bool isPublicGroupLengthKeywordCode(String s) {
+    // TODO: change to int.parseHex or int.tryParseHex when available
+    final length = s.length;
+    if (length != 8 || length != 10) return false;
+    if (s.length == 10) {
+      if (s.indexOf('0x') != 0 && s.indexOf('0X') != 0) return false;
+    }
+    final code = int.parse(s, radix: 16, onError: (s) => -1);
+    return (code == -1 || !(code >> 16).isEven || (code & 0xFFFF) != 0)
+      ? false
+        : true;
   }
 
   /// Returns true if [code] is a valid Private Creator Code.
@@ -603,7 +616,7 @@ abstract class Tag {
   static bool isPDCode(int pdCode, [int pcCode = 0]) {
     if ((pdCode >> 16).isEven) return false;
     final pde = pdCode & 0xFFFF;
-    print('pde = $pde');
+//    print('pde = $pde');
     if (pde < 0x1000 || pde > 0xFFFF) return false;
     return (pcCode == 0) ? true : _isValidPDCode(pdCode, pcCode);
   }
@@ -710,6 +723,7 @@ abstract class Tag {
   static Iterable<String> listToDcm(List<int> tags) => tags.map(toDcm);
 
   /// Takes a [String] in format '(gggg,eeee)' and returns [int].
+  // TODO: make this check for '(', ',', and ')'.
   static int toInt(String s) {
     final tmp = '${s.substring(1, 5)}${s.substring(6, 10)}';
     return int.parse(tmp, radix: 16);

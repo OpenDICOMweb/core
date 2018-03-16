@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert' as cvt;
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
@@ -64,7 +64,7 @@ abstract class StringBase extends Element<String> {
   // **** Getters that MUST be supported by every Element Type.
 
   @override
-  TypedData get typedData => _stringListToBytes(values, maxVFLength);
+  Bytes get vfBytes => _stringListToBytes(values, maxVFLength, isAsciiRequired);
 
   @override
   StringBase get hash => sha256;
@@ -168,34 +168,33 @@ abstract class StringBase extends Element<String> {
   /// Returns a [Iterable<String>] from [vfBytes].
   // Design Note:
   //   - [vfBytes] MUST have any padding character removed.
-  static Iterable<String> decodeBinaryStringVF(
-      Uint8List vfBytes, int maxVFLength,
+  static Iterable<String> decodeBinaryStringVF(Bytes vfBytes, int maxVFLength,
       {bool isAscii = true}) {
     if (vfBytes.isEmpty) return kEmptyStringList;
-    final allow = system.allowInvalidCharacterEncodings;
-    final s = (isAscii || system.useAscii)
-        ? cvt.ascii.decode(vfBytes, allowInvalid: allow)
-        : cvt.utf8.decode(vfBytes, allowMalformed: allow);
+    final allow = system.allowInvalidEncodings;
+    final s = (isAscii)
+        ? ascii.decode(vfBytes, allowInvalid: allow)
+        : utf8.decode(vfBytes, allowMalformed: allow);
     return s.split('\\');
   }
 
   /// Returns a [Iterable<String>] of length 0 or 1 from [vfBytes].
   // Design Note:
   //   - [vfBytes] MUST have any padding character removed.
-  static Iterable<String> decodeBinaryTextVF(Uint8List vfBytes, int maxVFLength,
+  static Iterable<String> decodeBinaryTextVF(Bytes vfBytes, int maxVFLength,
       {bool isAscii = true}) {
     if (vfBytes.isEmpty) return kEmptyStringList;
     final length = vfBytes.length;
     if (!_inRange(length, 0, maxVFLength))
       return invalidVFLength(length, maxVFLength);
-    final allow = system.allowInvalidCharacterEncodings;
-    return (isAscii || system.useAscii)
-        ? <String>[cvt.ascii.decode(vfBytes, allowInvalid: allow)]
-        : <String>[cvt.utf8.decode(vfBytes, allowMalformed: allow)];
+    final allow = system.allowInvalidEncodings;
+    return (isAscii)
+        ? <String>[ascii.decode(vfBytes, allowInvalid: allow)]
+        : <String>[utf8.decode(vfBytes, allowMalformed: allow)];
   }
 
-  static Uint8List toBytes(List<String> sList, int maxVFLength) =>
-      _stringListToBytes(sList, maxVFLength);
+  static Bytes toBytes(List<String> sList, int maxVFLength) =>
+      _stringListToBytes(sList, maxVFLength, kIsAsciiRequired);
 
   @override
   String getValuesAsString(int max) {
@@ -211,41 +210,47 @@ abstract class StringBase extends Element<String> {
 }
 
 abstract class StringAscii extends StringBase {
-  Iterable<String> get valuesFromUint8List =>
-      _stringListFromTypedData(vfBytes, maxVFLength, isAscii: true);
+  Iterable<String> get valuesFromBytes =>
+      _stringListFromBytes(vfBytes, maxVFLength, true);
 
-  Uint8List get uint8ListFromValues =>
-      _stringListToBytes(values, maxVFLength, isAscii: true);
+  Bytes get uint8ListFromValues =>
+      _stringListToBytes(values, maxVFLength, true);
 
-  static List<String> fromValueField(Iterable vf, int maxVFLength,
-      {bool isAscii: true}) {
+/*
+  static List<String> _fromValueField(Iterable vf, int maxVFLength,
+      {bool  true}) {
     if (vf == null) return kEmptyStringList;
-    if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.asAsciiList();
+    if (vf is Iterable<String> || vf.isEmpty || vf is StringBulkdata) return vf;
+    if (vf is Bytes) return vf.asString(isAscii);
     if (vf is Uint8List)
-      return _stringListFromTypedData(vf, maxVFLength, isAscii: true);
+       return _stringListFromBytes(vf, maxVFLength,  true);
     return invalidValuesError(vf);
   }
+*/
+
 }
 
 abstract class StringUtf8 extends StringBase {
+  List<String> valuesFromBytes(Bytes bytes) =>
+      _stringListFromBytes(vfBytes, maxVFLength, false);
 
+  Bytes uint8ListFromValues(List<String> vList) =>
+      _stringListToBytes(values, maxVFLength, false);
 
-  List<String> valuesFromUint8List(Uint8List bytes) =>
-      _stringListFromTypedData(vfBytes, maxVFLength, isAscii: false);
-
-  Uint8List uint8ListFromValues(List<String> vList) =>
-      _stringListToBytes(values, maxVFLength, isAscii: false);
-
-  static List<String> fromValueField(Iterable vf, int maxVFLength,
-      {bool isAscii: true}) {
-    if (vf == null) return kEmptyStringList;
-    if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.asUtf8List();
-    if (vf is Uint8List)
-      return _stringListFromTypedData(vf, maxVFLength, isAscii: true);
+/*
+  static List<String> _fromValueField(Bytes vf, int maxVFLength,
+      {bool  true}) {
+    if (vf == null || vf.isEmpty) return kEmptyStringList;
+    if (vf.length > maxVFLength)
+      return invalidValueField('${vf.length} is longer than '
+          'maxLength($maxVFLength)', vf);
+    if (vf is StringBulkdata) return vf.retrieveStrings;
+    if (vf is Bytes) return vf.asStringList();
+    if (vf is Uint8List) return vf.asStringList();
     return invalidValuesError(vf);
   }
+*/
+
 }
 
 /// A Application Entity Title ([AE]) Element
@@ -342,19 +347,19 @@ abstract class AE extends StringAscii {
       isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
-          {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static List<String> fromBytes(Bytes bytes, {int offset = 0, int length}) =>
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+/*  static ByteData toByteData(Iterable<String> values) =>
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+  */
 }
 
 /// A Code String ([CS]) Element
@@ -458,19 +463,23 @@ abstract class CS extends StringAscii {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
+
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
+*/
 
-  static Iterable<String> fromByteData(ByteData bd,
+/*  static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+  */
 }
 
 abstract class UI extends StringAscii {
@@ -490,8 +499,8 @@ abstract class UI extends StringAscii {
   int get maxLength => kMaxLength;
   @override
   int get maxVFLength => kMaxVFLength;
-  @override
-  TypedData get typedData => _stringListToBytes(values, kNull);
+//  @override
+//  Bytes get bytes => Bytes.fromStrings(values, asAscii: true);
 
   Iterable<Uid> get uids => _uids ??= Uid.parseList(values);
   Iterable<Uid> _uids;
@@ -607,19 +616,22 @@ abstract class UI extends StringAscii {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: true);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, true);
+/*
 
   static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
-
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
+*/
+/*
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
 
   static List<String> toStringList(Iterable<Uid> uids) {
     final sList = new List<String>(uids.length);
@@ -723,19 +735,22 @@ abstract class LO extends StringUtf8 {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
+
 }
 
 /// A Private Creator [Element] is a subtype of [LO]. It always has a tag
@@ -860,19 +875,22 @@ abstract class PN extends StringUtf8 {
       isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
+
 }
 
 /// A Short String (SH) Element
@@ -969,19 +987,22 @@ abstract class SH extends StringUtf8 {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
+
 }
 
 /// An Unlimited Characters (UC) Element
@@ -1079,19 +1100,20 @@ abstract class UC extends StringUtf8 {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
-  static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+/*  static ByteData toByteData(Iterable<String> values) =>
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+ */
 }
 
 abstract class Text extends StringUtf8 {
@@ -1100,8 +1122,8 @@ abstract class Text extends StringUtf8 {
   @override
   bool get isSingleValued => false;
 
-  @override
-  TypedData get typedData => _textListToBytes(values, maxVFLength);
+//  @override
+//  Bytes get bytes => _textListToBytes(values, maxVFLength);
 
   @override
   bool checkLength([Iterable<String> vList, Issues issues]) =>
@@ -1110,8 +1132,8 @@ abstract class Text extends StringUtf8 {
   @override
   StringBase blank([int n = 1]) => update([_blanks(n)]);
 
-  Iterable<String> valueFromBytes(Uint8List vfBytes) =>
-      _textListFromTypedData(vfBytes, maxVFLength, isAscii: isAsciiRequired);
+  Iterable<String> valueFromBytes(Bytes vfBytes) =>
+      _textListFromBytes(vfBytes, maxVFLength, isAsciiRequired);
 }
 
 /// An Long Text (LT) Element
@@ -1206,19 +1228,22 @@ abstract class LT extends Text {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Uint8List toBytes(Iterable<String> values) =>
+  static Bytes toBytes(Iterable<String> values) =>
       _textListToBytes(values, kMaxVFLength);
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _textListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
       _textListToByteData(values, kMaxVFLength);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _textListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _textListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
+
 }
 
 /// An Short Text (ST) Element
@@ -1309,19 +1334,22 @@ abstract class ST extends Text {
       isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
-  static Uint8List toBytes(Iterable<String> values) =>
+  static Bytes toBytes(Iterable<String> values) =>
       _textListToBytes(values, kMaxVFLength);
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _textListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
       _textListToByteData(values, kMaxVFLength);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _textListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _textListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
+
 }
 
 /// Value Representation of [Uri].
@@ -1428,19 +1456,21 @@ abstract class UR extends Text {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Uint8List toBytes(Iterable<String> values) =>
+  static Bytes toBytes(Iterable<String> values) =>
       _textListToBytes(values, kMaxVFLength);
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _textListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
       _textListToByteData(values, kMaxVFLength);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _textListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _textListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
 
   static Uri parse(String s,
       {int start = 0, int end, Issues issues, Uri onError(String s)}) {
@@ -1552,19 +1582,22 @@ abstract class UT extends Text {
       isValidVRIndex(tag.vrIndex) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
 
-  static Uint8List toBytes(Iterable<String> values) =>
+  static Bytes toBytes(Iterable<String> values) =>
       _textListToBytes(values, kMaxVFLength);
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _textListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
       _textListToByteData(values, kMaxVFLength);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _textListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _textListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
+
 }
 
 // **** Date/Time Elements
@@ -1596,8 +1629,8 @@ abstract class AS extends StringBase {
     return invalidValuesError(values);
   }
 
-  @override
-  TypedData get typedData => _textListToBytes(values, kMaxVFLength);
+//  @override
+//  Bytes get bytes => _textListToBytes(values, kMaxVFLength);
 
   Age get age => _age ??= Age.parse(value);
   Age _age;
@@ -1683,17 +1716,21 @@ abstract class AS extends StringBase {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
-  static List<String> fromUint8List(Uint8List bytes) =>
-      _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static List<String> fromBytes(Bytes bytes) =>
+      _textListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+/*
+  static Bytes toByteData(Iterable<String> values) =>
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
+*/
 
+/*
   static List<String> fromByteData(ByteData bd) =>
       _textListFromTypedData(bd, kMaxVFLength);
+*/
 
   static Age tryParse(String s, {bool allowLowerCase = false}) =>
       Age.tryParse(s, allowLowercase: false);
@@ -1814,17 +1851,20 @@ abstract class DA extends StringBase {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
-  static Iterable<String> fromUint8List(Uint8List bytes) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Iterable<String> fromBytes(Bytes bytes) =>
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
 
   static Iterable<String> fromByteData(ByteData bd) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: true);
+      _stringListFromBytes(bd, kMaxVFLength,  true);
+*/
+
 }
 
 /// An abstract class for time ([TM]) [Element]s.
@@ -1933,17 +1973,18 @@ abstract class DT extends StringBase {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromUint8List(Uint8List bytes) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Iterable<String> fromBytes(Bytes bytes) =>
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
-  static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+/*  static ByteData toByteData(Iterable<String> values) =>
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
 
   static Iterable<String> fromByteData(ByteData bd) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: true);
+      _stringListFromBytes(bd, kMaxVFLength,  true);
+ */
 }
 
 /// An abstract class for time ([TM]) [Element]s.
@@ -2054,17 +2095,20 @@ abstract class TM extends StringBase {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
-  static Iterable<String> fromUint8List(Uint8List bytes) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Iterable<String> fromBytes(Bytes bytes) =>
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
 
   static Iterable<String> fromByteData(ByteData bd) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: true);
+      _stringListFromBytes(bd, kMaxVFLength,  true);
+*/
+
 }
 
 abstract class DS extends StringAscii {
@@ -2208,19 +2252,21 @@ abstract class DS extends StringAscii {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
 
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
 
   //TODO: Sharath add tests with leading and trailing spaces,
   // and all spaces (blank).
@@ -2384,19 +2430,22 @@ abstract class IS extends StringAscii {
           [Issues issues]) =>
       (isValidValues(tag, vList, issues)) ? vList : null;
 
-  static Iterable<String> fromUint8List(Uint8List bytes,
+  static Iterable<String> fromBytes(Bytes bytes,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bytes, kMaxVFLength, kIsAsciiRequired);
 
-  static Uint8List toBytes(Iterable<String> values) =>
-      _stringListToBytes(values, kMaxVFLength, isAscii: kIsAsciiRequired);
+  static Bytes toBytes(Iterable<String> values) =>
+      _stringListToBytes(values, kMaxVFLength, kIsAsciiRequired);
 
+/*
   static ByteData toByteData(Iterable<String> values) =>
-      _stringListToByteData(values, kMaxVFLength, isAscii: kIsAsciiRequired);
-
+      _stringListToByteData(values, kMaxVFLength,  kIsAsciiRequired);
+*/
+/*
   static Iterable<String> fromByteData(ByteData bd,
           {int offset = 0, int length}) =>
-      _stringListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
+      _stringListFromBytes(bd, kMaxVFLength,  kIsAsciiRequired);
+*/
 
   static int tryParse(String s, [Issues issues]) {
     //TODO: replace with tryParse when available
@@ -2422,12 +2471,11 @@ abstract class IS extends StringAscii {
     return result;
   }
 
-  static List<int> parseBytes(Uint8List vfBytes) =>
-      tryParseList(_stringListFromTypedData(vfBytes, kMaxVFLength));
+  static List<int> parseBytes(Bytes vfBytes) => tryParseList(
+      _stringListFromBytes(vfBytes, kMaxVFLength, kIsAsciiRequired));
 
-  static Iterable<String> validateValueField(Uint8List vfBytes) =>
-      _stringListFromTypedData(vfBytes, kMaxVFLength,
-          isAscii: kIsAsciiRequired);
+  static Iterable<String> validateValueField(Bytes vfBytes) =>
+      _stringListFromBytes(vfBytes, kMaxVFLength, kIsAsciiRequired);
 }
 
 typedef V _TryParser<V>(String s, Issues issues);
@@ -2486,23 +2534,21 @@ bool _isNotDcmText(String s, int max) => !_isDcmText(s, max);
 
 String _blanks(int n) => ''.padRight(n, ' ');
 
-/// Returns a [Uint8List] corresponding to a binary Value Field.
-Uint8List stringListToBytes(List<String> sList, int maxVFLength,
+/// Returns a [Bytes] corresponding to a binary Value Field.
+Bytes stringListToBytes(List<String> sList, int maxVFLength,
         {bool isAscii = true}) =>
-    _stringListToBytes(sList, maxVFLength, isAscii: isAscii);
+    _stringListToBytes(sList, maxVFLength, isAscii);
 
-/// Returns a [Uint8List] corresponding to a binary Value Field.
-Uint8List _stringListToBytes(List<String> sList, int maxVFLength,
-    {bool isAscii = true}) {
+/// Returns a [Bytes] corresponding to a binary Value Field.
+Bytes _stringListToBytes(List<String> sList, int maxVFLength, bool isAscii) {
   if (sList == null) return nullValueError();
-  if (sList.isEmpty) return kEmptyUint8List;
+  if (sList.isEmpty) return kEmptyBytes;
   final s = (sList.length == 1 ? sList[0] : sList.join('\\'));
   return _bytesFromString(s, maxVFLength, isAscii);
 }
 
-Uint8List _bytesFromString(String s, int maxVFLength, bool isAscii) {
-  final vf = (isAscii || system.useAscii) 
-      ? cvt.ascii.encode(s) : cvt.utf8.encode(s);
+Bytes _bytesFromString(String s, int maxVFLength, bool isAscii) {
+  final vf = (isAscii) ? asciiEncode(s) : utf8Encode(s);
   if (!_isValidVFL(vf.length, maxVFLength))
     return invalidVFLength(vf.length, maxVFLength);
   return vf;
@@ -2510,57 +2556,67 @@ Uint8List _bytesFromString(String s, int maxVFLength, bool isAscii) {
 
 bool _isValidVFL(int v, int max) => v >= 0 && v <= max;
 
-/// Returns a [Uint8List] corresponding to a binary Value Field.
+/*
+/// Returns a [Bytes] corresponding to a binary Value Field.
 ByteData _stringListToByteData(List<String> sList, int maxVFLength,
     {bool isAscii = true}) {
-  final bytes = _stringListToBytes(sList, maxVFLength, isAscii: isAscii);
+  final bytes = _stringListToBytes(sList, maxVFLength,  isAscii);
   return bytes.buffer.asByteData();
 }
+*/
 
-/// Returns a [Uint8List] corresponding to a binary Value Field.
-Uint8List _textListToBytes(Iterable<String> values, int maxVFLength) {
-  if (values.isEmpty) return kEmptyUint8List;
-  if (values.length == 1) {
-    final s = values.elementAt(0);
-    if (s == null) return nullValueError();
-    if (s.isEmpty) return kEmptyUint8List;
-    return _bytesFromString(s, maxVFLength, false);
-  }
-  return invalidValuesLength(1, 1, values);
+/// Returns a [Bytes] corresponding to a binary Value Field.
+Bytes _textListToBytes(Iterable<String> values, int maxVFLength) {
+  if (values.isEmpty) return kEmptyBytes;
+  if (values.length != 1) return invalidValuesLength(1, 1, values);
+  final s = values.elementAt(0);
+  return (s == null || s.isEmpty)
+      ? kEmptyBytes
+      : _bytesFromString(s, maxVFLength, false);
 }
 
+/*
 ByteData _textListToByteData(Iterable<String> values, int maxVFLength) {
   final bytes = _textListToBytes(values, maxVFLength);
   return bytes.buffer.asByteData();
 }
+*/
 
-List<String> stringListFromBytes(TypedData bytes, int maxVFLength,
+// Urgent: move to Bytes
+List<String> stringListFromBytes(Bytes bytes, int maxVFLength,
         {bool isAscii = true}) =>
-    _stringListFromTypedData(bytes, maxVFLength, isAscii: isAscii);
+    _stringListFromBytes(bytes, maxVFLength, isAscii);
 
-List<String> _stringListFromTypedData(TypedData td, int maxVFLength,
-    {bool isAscii = true}) {
-  if (td.lengthInBytes == 0) return kEmptyStringList;
-  if (!_isValidVFL(td.lengthInBytes, maxVFLength))
-    return invalidVFLength(td.lengthInBytes, maxVFLength);
-  final s = _typedDataToString(td, isAscii);
+List<String> _stringListFromBytes(Bytes bd, int maxVFLength, bool isAscii) {
+  if (bd.isEmpty) return kEmptyStringList;
+  if (!_isValidVFL(bd.length, maxVFLength))
+    return invalidVFLength(bd.length, maxVFLength);
+  final s = _typedDataToString(bd, isAscii);
   return s.split('\\');
 }
 
-String _typedDataToString(TypedData vf, bool isAscii) {
-  final vfBytes = vf.buffer.asUint8List(vf.offsetInBytes, vf.lengthInBytes);
-  final allow = system.allowInvalidCharacterEncodings;
-  return (isAscii || system.useAscii)
-      ? cvt.ascii.decode(vfBytes, allowInvalid: allow)
-      : cvt.utf8.decode(vfBytes, allowMalformed: allow);
+List<String> _stringListFromUint8List(Bytes bd, int maxVFLength,
+    {bool isAscii = true}) {
+  if (bd.isEmpty) return kEmptyStringList;
+  if (!_isValidVFL(bd.length, maxVFLength))
+    return invalidVFLength(bd.length, maxVFLength);
+  final s = _typedDataToString(bd, isAscii);
+  return s.split('\\');
 }
 
-List<String> textListFromBytes(TypedData vfBytes, int maxVFLength,
-        {bool isAscii = true}) =>
-    _textListFromTypedData(vfBytes, maxVFLength, isAscii: isAscii);
+String _typedDataToString(Bytes vfBytes, bool isAscii) {
+ // final vfBytes = bytes.asBytes();
+  final allow = system.allowInvalidEncodings;
+  return (isAscii)
+      ? ascii.decode(vfBytes, allowInvalid: allow)
+      : utf8.decode(vfBytes, allowMalformed: allow);
+}
 
-List<String> _textListFromTypedData(TypedData vfBytes, int maxVFLength,
-    {bool isAscii = true}) {
+List<String> textListFromBytes(Bytes vfBytes, int maxVFLength,
+        {bool isAscii = true}) =>
+    _textListFromBytes(vfBytes, maxVFLength, isAscii);
+
+List<String> _textListFromBytes(Bytes vfBytes, int maxVFLength, bool isAscii) {
   if (vfBytes.lengthInBytes == 0) return kEmptyStringList;
   if (!_isValidVFL(vfBytes.lengthInBytes, maxVFLength))
     return invalidVFLength(vfBytes.lengthInBytes, maxVFLength);

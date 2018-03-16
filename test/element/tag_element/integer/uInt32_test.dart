@@ -856,7 +856,7 @@ void main() {
       expect(Uint32.toBytes(uInt32Max), uInt32List);
 
       const uInt64Max = const [kUint64Max];
-      expect(Uint32.toBytes(uInt64Max), isNull);
+      expect(Uint32.toBytes(uInt64Max).isEmpty, true);
 
       system.throwOnError = true;
       expect(() => Uint32.toBytes(uInt64Max),
@@ -864,7 +864,7 @@ void main() {
     });
 
     test('Uint32Base toByteData good values', () {
-      system.level = Level.debug;
+//      system.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final uInt32list0 = rng.uint32List(1, 1);
@@ -946,7 +946,7 @@ void main() {
     });
 
     test('UL encodeDecodeJsonVF', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt32list0 = rng.uint32List(0, i);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);
@@ -1736,7 +1736,7 @@ void main() {
       expect(Uint32.toBytes(uInt32Max), uInt32List);
 
       const uInt64Max = const [kUint64Max];
-      expect(Uint32.toBytes(uInt64Max), isNull);
+      expect(Uint32.toBytes(uInt64Max).isEmpty, true);
 
       system.throwOnError = true;
       expect(() => Uint32.toBytes(uInt64Max),
@@ -2476,7 +2476,7 @@ void main() {
       expect(Uint32.toBytes(uInt32Max), uInt32List);
 
       const uInt64Max = const [kUint64Max];
-      expect(Uint32.toBytes(uInt64Max), isNull);
+      expect(Uint32.toBytes(uInt64Max).isEmpty, true);
 
       system.throwOnError = true;
       expect(() => Uint32.toBytes(uInt64Max),
@@ -2509,7 +2509,7 @@ void main() {
     });
 
     test('OL encodeDecodeJsonVF', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt32list0 = rng.uint32List(0, i);
         final uInt32ListV1 = new Uint32List.fromList(uInt32list0);

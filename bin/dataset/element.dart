@@ -31,9 +31,9 @@ void main() {
   final ae0 = new AEtag(PTag.kSpecificCharacterSet, titles);
   ds[ae0.code] = ae0;
   log.debug('ae0 info: ${ae0.info}');
-  final bytes = ae0.vfBytes;
-
-  final ae1 = AEtag.fromUint8List(PTag.kSpecificCharacterSet, bytes);
+  
+  final ae1 =
+      new AEtag.fromBytes(PTag.kSpecificCharacterSet, ae0.vfBytes);
   ds.add(ae1);
   log.debug('ae1 info: ${ae1.info}');
   final v = ae1.values;
@@ -47,11 +47,11 @@ void main() {
   ds[sh0.code] = sh0;
   log.debug('sh0 info: ${sh0.info}');
   final b0 = sh0.vfBytes;
-  log.debug('vfBytes: $b0');
+ // log.debug('vfBytes: ${sh0.vfBytes}');
   final s0 = new String.fromCharCodes(sh0.vfBytes);
   log.debug('S from vfBytes: $s0');
 
-  final sh1 = SHtag.fromUint8List(PTag.kSpecificCharacterSet, b0);
+  final sh1 = new SHtag.fromBytes(PTag.kSpecificCharacterSet, b0);
   ds.add(sh1);
   log.debug('sh1 info: ${sh1.info}');
   final v1 = sh1.values;

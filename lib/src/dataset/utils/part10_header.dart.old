@@ -5,7 +5,7 @@
 
 // TODO: update to independently of Dataset
 // Replace Fmi in all RootDatasets
-import 'dart:convert' as cvt;
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/fmi.dart';

@@ -6,16 +6,8 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:core/src/system.dart';
-
-/// getXXXX(int index) - returns a single value created from the bytes starting
-///                      at index.
-/// setXXXX(int index, XXXX value) - sets the bytes starting at index
-///                      to [value].
-/// asXXXX(int offset, int length) - returns an XXXX view of _this_.
 // TODO: defer loading of convert
 // TODO: Unit Test
 // TODO: Document
@@ -32,45 +24,39 @@ import 'package:core/src/system.dart';
 class Bytes extends ListBase<int> implements TypedData {
   ByteData _bd;
 
-  ///  final Endian endian;
-
   /// Creates a new [Bytes]. If [length] is not specified it defaults
   /// to [kDefaultLength]. If [endian] is not specified it defaults to
   /// [Endian.little].
-  Bytes([int length = kDefaultLength]) : _bd = new ByteData(length);
+  factory Bytes(int length, [Endian endian = Endian.little]) =>
+      (endian == Endian.little)
+          ? new BytesLittleEndian(length)
+          : new BytesBigEndian(length);
+
+  Bytes._(int length) : _bd = new ByteData(length);
+
+  Bytes._fromBD(this._bd);
 
   /// Creates a new [Bytes] from [bytes] of [length], starting at the current
   /// [bytes].[offset] plus [offset]. If [length]
   /// is not specified it defaults to [length] of [bytes] minus [offset].
   /// if [offset] is not specified it defaults to 0. if of the
-  /// to [kDefaultLength]. If [endian] is not specified it defaults to
-  /// [Endian.little].
-  Bytes.from(Bytes bytes, [int offset = 0, int length])
-      : _bd = _copyByteData(bytes._bd, offset, length);
+  /// to [kDefaultLength]. The new Bytes has the same [Endian]ness as [bytes].
+  Bytes.from(Bytes bytes, int offset, int length)
+      : _bd = bytes.asByteData(offset, length ?? bytes.lengthInBytes);
 
   Bytes.fromList(List<int> list)
       : _bd = (list is Uint8List)
             ? list.buffer.asByteData()
             : (new Uint8List.fromList(list)).buffer.asByteData();
 
-  /// Creates a new Bytes containing a view of [td].
-  Bytes.fromTypedData(TypedData td, [int offset = 0, int length])
-      : _bd = td.buffer
-            .asByteData(td.offsetInBytes + offset, length ?? td.lengthInBytes) {
-//    print('td: ${td.buffer.asFloat32List()}');
-//    print('_bd: ${_bd.buffer.asFloat32List()}');
-  }
+  Bytes.view(Bytes bytes, int offset, int length)
+      : _bd = bytes.asByteData(offset, length ?? bytes.lengthInBytes);
 
-  Bytes.view(Bytes bytes, [int offset = 0, int length])
-      : _bd = bytes._bd.buffer.asByteData(offset, length);
-
-/*
-  Bytes.typedDataView(TypedData td, {int offset = 0, int length, bool asView = true})
-      : _bd = td.buffer.asByteData(
-            td.offsetInBytes + offset, length * td.elementSizeInBytes);
-*/
-
-  Bytes._() : _bd = new ByteData(0);
+  factory Bytes.typedDataView(TypedData td,
+          {int offset = 0, int length, Endian endian = Endian.little}) =>
+      (endian == Endian.little)
+          ? new BytesLittleEndian.typedDataView(td, offset, length)
+          : new BytesBigEndian.typedDataView(td, offset, length);
 
   @override
   int operator [](int i) => _bd.getUint8(i);
@@ -92,7 +78,7 @@ class Bytes extends ListBase<int> implements TypedData {
   //Returns the underlying [ByteBuffer] for _this_.
   ByteData get bd => _bd;
 
-  Endian get endian => Endian.little;
+  Endian get endian => Endian.host;
 
   // Returns the absolute offset in the ByteBuffer.
   int _bdOffset([int offset = 0]) => _bd.offsetInBytes + offset;
@@ -100,37 +86,22 @@ class Bytes extends ListBase<int> implements TypedData {
   // Returns the absolute offset in the ByteBuffer.
   int _bdLength([int length]) => _bd.offsetInBytes + (length ?? 0);
 
-  Uint8List _toUint8View([int offset, int length]) {
+  Uint8List _toUint8List([int offset, int length]) {
     offset ??= _bd.offsetInBytes;
     length ??= _bd.lengthInBytes;
     return _bd.buffer.asUint8List(offset, length);
-  }
-
-  Bytes _toBytes([int offset, int length]) {
-    offset ??= _bd.offsetInBytes;
-    length ??= _bd.lengthInBytes;
-    return new Bytes.fromTypedData(_bd, offset, length);
-  }
-
-  static ByteData _toByteDataView(TypedData td, [int offset, int length]) {
-    offset ??= td.offsetInBytes;
-    length ??= td.lengthInBytes;
-    return td.buffer.asByteData(offset, length);
   }
 
   // **** Object overrides
 
   /// Return the [hashCode] of the underlying [ByteData].
   @override
-  int get hashCode => system.hasher.intList(asUint8List());
+  int get hashCode => _bd.hashCode;
 
   // **** TypedData interface.
 
   @override
   int get elementSizeInBytes => 1;
-
-  /// The [offsetInBytes] of the underlying [ByteData].
-  int get offset => _bd.offsetInBytes;
   @override
   int get offsetInBytes => _bd.offsetInBytes;
   @override
@@ -146,10 +117,6 @@ class Bytes extends ListBase<int> implements TypedData {
   set length(int length) =>
       throw new UnsupportedError('$runtimeType: length is not modifiable');
 
-  @override
-  Bytes sublist(int start, [int end]) =>
-      new Bytes.from(this, start, (end ?? length) - offset);
-
   // **** Extensions
 
   bool _isAligned(int offset, int size) =>
@@ -159,21 +126,8 @@ class Bytes extends ListBase<int> implements TypedData {
   bool isAligned32(int offset) => _isAligned(offset, 4);
   bool isAligned64(int offset) => _isAligned(offset, 8);
 
-  ByteData getByteData({int offset = 0, int length, bool asView = true}) {
-    final off = _bdOffset(offset);
-    final len = length ?? _bd.lengthInBytes;
-    return (asView)
-        ? _bd.buffer.asByteData(off, length)
-        : _copyByteData(_bd, off, len);
-  }
-
-  static ByteData _copyByteData(ByteData bd, int offset, int length) {
-    final len = length ?? bd.lengthInBytes;
-    final newBD = new ByteData(len);
-    for (var i = 0, j = offset; i < len; i++, j++)
-      newBD.setUint8(i, bd.getUint8(j));
-    return newBD;
-  }
+  /// The [offsetInBytes] of the underlying [ByteData].
+  int get offset => _bd.offsetInBytes;
 
   // **** ByteData Getters
 
@@ -196,12 +150,6 @@ class Bytes extends ListBase<int> implements TypedData {
   double getFloat32(int rIndex) => _bd.getFloat32(rIndex, endian);
 
   double getFloat64(int rIndex) => _bd.getFloat64(rIndex, endian);
-
-  int getCode(int rIndex) {
-    final group = getUint16(rIndex);
-    final elt = getUint16(rIndex + 2);
-    return (group << 16) + elt;
-  }
 
   // **** TypedData List Getters
 
@@ -231,7 +179,7 @@ class Bytes extends ListBase<int> implements TypedData {
 
   // **** Unsigned Integer List
   Uint8List getUint8List([int offset = 0, int length]) =>
-      new Uint8List.fromList(_toUint8View(offset, length));
+      new Uint8List.fromList(_bd.buffer.asUint8List(offset, length ?? length));
 
   Uint16List getUint16List([int offset = 0, int length]) {
     length ??= _bd.lengthInBytes ~/ Uint16List.bytesPerElement;
@@ -276,88 +224,74 @@ class Bytes extends ListBase<int> implements TypedData {
   // **** String getters
   // TODO: decide if these should be included
   String getAscii([int offset = 0, int length]) =>
-      asciiDecode(_toBytes(offset, length));
+      ascii.decode(asUint8List(offset, length ?? lengthInBytes));
 
   String getUtf8([int offset = 0, int length]) =>
-      utf8Decode(_toBytes(offset, length));
+      utf8.decode(asUint8List(offset, length ?? lengthInBytes));
 
+/*
   String getString({int offset, int length, bool useAscii = false}) =>
-      (useAscii) ? getAscii(offset, length) : getUtf8(offset, length);
-
-  String getBase64([int offset = 0, int length]) =>
-      base64Encode(_toBytes(offset, length));
+      decodeString(_toUint8List(
+          offset ?? _bd.offsetInBytes, length ?? _bd.lengthInBytes));
+*/
 
   /// The various methods that are named _as_... return a _view_ of the
   /// underlying [ByteData] buffer.
 
   /// Returns a view of _this_.
   Bytes asBytes([int offset = 0, int length]) =>
-      new Bytes.fromTypedData(_bd.buffer.asByteData(offset, length));
+      new Bytes.view(this, _bdOffset(offset), length ?? lengthInBytes);
 
   ByteData asByteData([int offset = 0, int length]) =>
-      _bd.buffer.asByteData(offset, length);
+      _bd.buffer.asByteData(_bdOffset(offset), length ?? _bd.lengthInBytes);
 
   Int8List asInt8List([int offset = 0, int length]) =>
       _bd.buffer.asInt8List(_bdOffset(offset), length ?? _bd.lengthInBytes);
 
-  Int16List asInt16List([int offset = 0, int length]) {
-    length ??= _bd.lengthInBytes ~/ 2;
-    return (isAligned16(offset))
-        ? _bd.buffer.asInt16List(_bdOffset(offset), length)
-        : getInt16List(offset, length);
-  }
+  Int16List asInt16List([int offset = 0, int length]) => (isAligned16(offset))
+      ? _bd.buffer
+          .asInt16List(_bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 2))
+      : getInt16List(offset, length);
 
-  Int32List asInt32List([int offset = 0, int length]) {
-    length ??= _bd.lengthInBytes ~/ 4;
-    return (isAligned32(offset))
-        ? _bd.buffer.asInt32List(_bdOffset(offset), length)
-        : getInt32List(offset, length);
-  }
+  Int32List asInt32List([int offset = 0, int length]) => (isAligned32(offset))
+      ? _bd.buffer
+          .asInt32List(_bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 4))
+      : getInt32List(offset, length);
 
-  Int64List asInt64List([int offset = 0, int length]) {
-    length ??= _bd.lengthInBytes ~/ 8;
-    return (isAligned64(offset))
-        ? _bd.buffer.asInt64List(_bdOffset(offset), length)
-        : getInt64List(offset, length);
-  }
+  Int64List asInt64List([int offset = 0, int length]) => (isAligned64(offset))
+      ? _bd.buffer
+          .asInt64List(_bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 8))
+      : getInt64List(offset, length);
 
   Uint8List asUint8List([int offset = 0, int length]) =>
-      _toUint8View(offset, length);
+      _bd.buffer.asUint8List(_bdOffset(offset), length ?? _bd.lengthInBytes);
 
-  Uint16List asUint16List([int offset = 0, int length]) {
-    length ??= _bd.lengthInBytes ~/ 2;
-    return (isAligned16(offset))
-        ? _bd.buffer.asUint16List(_bdOffset(offset), length)
-        : getUint16List(offset, length);
-  }
+  Uint16List asUint16List([int offset = 0, int length]) => (isAligned16(offset))
+      ? _bd.buffer
+          .asUint16List(_bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 2))
+      : getUint16List(offset, length);
 
-  Uint32List asUint32List([int offset = 0, int length]) {
-    length ??= _bd.lengthInBytes ~/ 4;
-    return (isAligned32(offset))
-        ? _bd.buffer.asUint32List(_bdOffset(offset), length)
-        : getUint32List(offset, length);
-  }
+  Uint32List asUint32List([int offset = 0, int length]) => (isAligned32(offset))
+      ? _bd.buffer
+          .asUint32List(_bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 4))
+      : getUint32List(offset, length);
 
-  Uint64List asUint64List([int offset = 0, int length]) {
-    length ??= _bd.lengthInBytes ~/ 8;
-    return (isAligned64(offset))
-        ? _bd.buffer.asUint64List(_bdOffset(offset), length)
-        : getUint64List(offset, length);
-  }
+  Uint64List asUint64List([int offset = 0, int length]) => (isAligned64(offset))
+      ? _bd.buffer
+          .asUint64List(_bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 8))
+      : getUint64List(offset, length);
 
-  Float32List asFloat32List([int offset = 0, int length]) {
-    length ??= _bd.lengthInBytes ~/ 4;
-    return (isAligned32(offset))
-        ? _bd.buffer.asFloat32List(_bdOffset(offset), length)
-        : getFloat32List(offset, length);
-  }
+  Float32List asFloat32List([int offset = 0, int length]) =>
+      (isAligned32(offset))
+          ? _bd.buffer.asFloat32List(
+              _bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 4))
+          : getFloat32List(offset, length);
 
-  Float64List asFloat64List([int offset = 0, int length]) {
-    length ??= _bd.lengthInBytes ~/ 8;
-    return (isAligned64(offset))
-        ? _bd.buffer.asFloat64List(_bdOffset(offset), length)
-        : getFloat64List(offset, length);
-  }
+  Float64List asFloat64List([int offset = 0, int length]) =>
+      (isAligned64(offset))
+          ? _bd.buffer.asFloat64List(
+              _bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 8))
+          : getFloat64List(offset, length);
 
   List<String> asAsciiList([int offset = 0, int length]) =>
       getAscii(offset, length).split('\\');
@@ -365,9 +299,12 @@ class Bytes extends ListBase<int> implements TypedData {
   List<String> asUtf8List([int offset = 0, int length]) =>
       getUtf8(offset, length).split('\\');
 
-  List<String> asStringList(
-          {int offset = 0, int length, bool useAscii = false}) =>
-      (useAscii) ? asAsciiList(offset, length) : asUtf8List(offset, length);
+/*
+  List<String> asStringList([int offset = 0, int length]) =>
+      (defaultToAscii)
+          ? asAsciiList(offset, length)
+          : asUtf8List(offset, length);
+*/
 
   // **** ByteData Setters
 
@@ -408,17 +345,12 @@ class Bytes extends ListBase<int> implements TypedData {
     final v = (offset == 0 && length == s.length)
         ? s
         : s.substring(offset, offset + length);
-    setUint8List(utf8.encode(v), offset, length);
+    setUint8List(ascii.encode(v), offset, length);
   }
 
   void setString(String s, [int offset = 0, int length]) =>
       setUtf8(s, offset, length);
 
-  void setBase64(TypedData td, [int offset = 0, int length]) {
-    final view = td.buffer.asUint8List(offset, length);
-    final s = base64.encode(view);
-    setAscii(s);
-  }
   // **** TypedData List Setters
 
   void setInt8List(Int8List list, [int offset = 0, int length]) {
@@ -579,78 +511,107 @@ class Bytes extends ListBase<int> implements TypedData {
   static const int kDefaultLength = 1024;
 
   /// The default maximum [length] of any [Bytes] object.
-  static const int kDefaultLimit = _k1GB;
+  static const int kDefaultLimit = k1GB;
 
   /// The default [Endian]ness of a [Bytes] object.
   static const Endian kDefaultEndian = Endian.little;
 
-  static final Bytes kEmptyBytes = new Bytes._();
+  static final Bytes kEmptyBytes = new Bytes(0);
 
   static Bytes fromStrings(List<String> sList,
       {bool asAscii = false, Endian endian = Endian.little}) {
     final s = sList.join('\\');
-    return (asAscii) ? asciiEncode(s) : utf8Encode(s);
+    final Uint8List bytes = (asAscii) ? ascii.encode(s) : utf8.encode(s);
+    return (endian == Endian.little)
+        ? new BytesLittleEndian.typedDataView(bytes)
+        : new BytesBigEndian.typedDataView(bytes);
   }
 
-  static Bytes fromBase64(String s) => base64Decode(s);
-
-  /// Returns a [Bytes] buffer containing the contents of [File].
-  // TODO: add async
-  // TODO: unit test
-  static Bytes fromFile(File file,
-      {Endian endian = Endian.little, bool doAsync = false}) {
-    final Uint8List iList = file.readAsBytesSync();
-    return new Bytes.fromTypedData(iList);
+  static Bytes fromBase64(String s, [Endian endian = Endian.little]) {
+    final bytes = base64.decode(s);
+    return (endian == Endian.little)
+        ? new BytesLittleEndian.typedDataView(bytes)
+        : new BytesBigEndian.typedDataView(bytes);
   }
-
-  /// Returns a [Bytes] buffer containing the contents of the
-  /// [File] at [path].
-  // TODO: add async
-  // TODO: unit test
-  static Bytes fromPath(String path,
-          {Endian endian = Endian.little, bool doAsync = false}) =>
-      fromFile(new File(path), endian: endian, doAsync: doAsync);
 }
 
-/*
 class BytesLittleEndian extends Bytes {
+  BytesLittleEndian([int length = Bytes.kDefaultLength]) : super._(length);
+
+  BytesLittleEndian.from(Bytes bytes, [int offset = 0, int length])
+      : super.from(bytes, offset, length);
+
+  BytesLittleEndian.fromList(List<int> list) : super.fromList(list);
+
+  BytesLittleEndian.view(Bytes bytes, [int offset = 0, int length])
+      : super.view(bytes, offset, length);
+
+  BytesLittleEndian.typedDataView(TypedData td, [int offset = 0, int length])
+      : super._fromBD(td.buffer.asByteData(offset, length ?? td.lengthInBytes));
+
+  @override
+  BytesLittleEndian sublist(int start, [int end]) =>
+      new BytesLittleEndian.from(this, start, end ?? length);
+
+  @override
   Endian get endian => Endian.little;
 }
-*/
 
 class BytesBigEndian extends Bytes {
+  BytesBigEndian([int length = Bytes.kDefaultLength]) : super._(length);
+
+  BytesBigEndian.from(Bytes bytes, [int offset = 0, int length])
+      : super.from(bytes, offset, length);
+
+  BytesBigEndian.fromList(List<int> list) : super.fromList(list);
+
+  BytesBigEndian.view(Bytes bytes, [int offset = 0, int length])
+      : super.view(bytes, offset, length);
+
+  BytesBigEndian.typedDataView(TypedData td, [int offset = 0, int length])
+      : super._fromBD(td.buffer.asByteData(offset, length ?? td.lengthInBytes));
+  @override
+  BytesLittleEndian sublist(int start, [int end]) =>
+      new BytesLittleEndian.from(this, start, end ?? length);
+
   @override
   Endian get endian => Endian.big;
 }
 
 class GrowableBytes extends Bytes {
+  /// Returns a new [Bytes] of [length].
+  factory GrowableBytes(int length, [Endian endian = Endian.little]) =>
+      (endian == Endian.little)
+          ? new GrowableBytesLittleEndian(length)
+          : new GrowableBytesBigEndian(length);
+
+  GrowableBytes._(int length) : super._(length);
+
+  GrowableBytes._fromBD(ByteData bd) : super._fromBD(bd);
+
+  factory GrowableBytes.typedDataView(TypedData td,
+          {int limit = k1GB, Endian endian = Endian.little}) =>
+      (endian == Endian.little)
+          ? new GrowableBytesLittleEndian.typedDataView(td, limit)
+          : new GrowableBytesBigEndian.typedDataView(td, limit);
+
   /// The upper bound on the length of this [Bytes]. If [limit]
   /// is _null_ then its length cannot be changed.
-  final int limit;
-
-  /// Returns a new [Bytes] of [length].
-  GrowableBytes(int length, [this.limit = Bytes.kDefaultLimit]) : super(length);
-
-  /// Returns a new [Bytes] starting at [offset] of [length].
-  GrowableBytes.from(GrowableBytes bytes,
-      [int offset = 0, int length, this.limit = _k1GB])
-      : super.from(bytes, offset, length);
-
-  GrowableBytes.fromTypedData(TypedData td, [this.limit = _k1GB])
-      : super.fromTypedData(td);
+  int get limit => kDefaultLimit;
 
   @override
-  set length(int newLength) {
-    if (newLength < _bd.lengthInBytes) return;
-    grow(newLength);
-  }
+  set length(int newLength) => (newLength < _bd.lengthInBytes)
+      ? _bd.buffer.asByteData(_bd.offsetInBytes, newLength)
+      : grow(newLength);
 
-  /// Ensures that [_bd] is at least [length] long, and grows
+  /// Ensures that [bd] is at least [length] long, and grows
   /// the buf if necessary, preserving existing data.
-  bool ensureLength(int length) => (length > lengthInBytes) ? grow() : false;
+  bool ensureLength(int length) =>
+      (length > _bd.lengthInBytes) ? grow(limit) : false;
 
-  /// Creates a new buffer at least double the size of the current buffer,
-  /// and copies the contents of the current buffer into it.
+  /// If [minLength] is greater than the current length of the buffer,
+  /// then a new buffer at least double the size of the current buffer is
+  /// created, and the contents of the current buffer are copied into it.
   ///
   /// If [minLength] is null the new buffer will be twice the size of the
   /// current buffer. If [minLength] is not null, the new buffer will be at
@@ -663,7 +624,7 @@ class GrowableBytes extends Bytes {
     var newLength = _bd.lengthInBytes;
     while (newLength < minLength) newLength *= 2;
 
-    if (_isMaxCapacityExceeded(newLength)) return false;
+    if (_isMaxCapacityExceeded(newLength, limit)) return false;
 
     final newBD = new ByteData(newLength);
     for (var i = 0; i < _bd.lengthInBytes; i++)
@@ -677,23 +638,39 @@ class GrowableBytes extends Bytes {
     return true;
   }
 
-  static const int kMinLength = 16;
+  static const int kMinLength = 1024;
+  static const int kDefaultLimit = k1GB;
+}
 
-  static const int kMaximumLength = Bytes.kDefaultLimit;
-  static final Bytes kEmptyBytes = new Bytes._();
+class GrowableBytesLittleEndian extends GrowableBytes {
+  GrowableBytesLittleEndian([int length = Bytes.kDefaultLength])
+      : super._(length);
+
+  GrowableBytesLittleEndian.typedDataView(TypedData td,
+      [int offset = 0, int length])
+      : super._fromBD(td.buffer.asByteData(offset, length));
+
+  @override
+  BytesLittleEndian sublist(int start, [int end]) =>
+      new BytesLittleEndian.from(this, start, end ?? length);
+
+  @override
+  Endian get endian => Endian.little;
+}
+
+class GrowableBytesBigEndian extends GrowableBytes {
+  GrowableBytesBigEndian([int length = Bytes.kDefaultLength]) : super._(length);
+
+  GrowableBytesBigEndian.typedDataView(TypedData td,
+      [int offset = 0, int length])
+      : super._fromBD(td.buffer.asByteData(offset, length));
+
+  @override
+  Endian get endian => Endian.big;
 }
 
 // ***  Internals
 
-bool _isMaxCapacityExceeded(int length, [int maxLength]) {
-  maxLength ??= Bytes.kDefaultLimit;
-  return length >= maxLength;
-}
+bool _isMaxCapacityExceeded(int length, int maxLength) => length >= maxLength;
 
-const int _k1GB = 1024 * 1024 * 1024;
-
-/*
-ByteData _listToByteData(List<int> list) => (list is Uint8List)
-    ? list.buffer.asByteData()
-    : (new Uint8List.fromList(list)).buffer.asByteData();
-*/
+const int k1GB = 1024 * 1024 * 1024;

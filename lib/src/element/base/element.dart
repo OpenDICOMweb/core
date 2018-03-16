@@ -7,7 +7,6 @@
 //TODO: load Element library lazily
 
 import 'dart:collection';
-import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
@@ -21,10 +20,11 @@ import 'package:core/src/vr.dart';
 /// The base class for DICOM Data Elements
 ///
 /// An implementation of this class must provide the following:
-///   1. An implementation of a List<V> of values, where V is
+///   1. An implementation of an Iterable<V> of values, where V is
 ///      one of [double], [int], [String], or [Item].
 ///
-///   2. An implementation of a TypeData Getter typedData.
+///   2. An implementation of a TypeData Getter _typedData_ for all
+///      subclasses of [IntBase] and [FloatBase].
 ///
 
 // TODO: the following typedefs should be replaced with the new
@@ -316,27 +316,24 @@ abstract class Element<V> extends ListBase<V> {
   // *Note*: This Getter could be using [growable]: [false].
   Iterable<V> get valuesCopy => new List.from(values);
 
-  /// Returns [values] encoded as an [TypedData]. The subtype of [TypedData]
-  /// depends on the VR.
-  TypedData get typedData;
+  /// Returns a List<V> that is a subclass of [TypedData].
+  ///
+  /// _Note_: Subclasses of StringBase and Item do not support
+  /// this Getter.
+  TypedData get typedData =>
+      unsupportedError('String and Item do not support TypedData');
 
-  /// Returns [values] encoded as [ByteData].
-  ByteData get vfByteData =>
-      (checkValues(values)) ? typedData.buffer.asByteData() : null;
+  /// Returns [values] encoded as [Bytes].
+  Bytes get vfBytes;
+//      (checkValues(values)) ? new Bytes.fromTypedData(typedData) : null;
 
-  /// Returns [values] encoded as a [Uint8List].
-  Uint8List get vfBytes =>
-      (checkValues(values)) ? typedData.buffer.asUint8List() : null;
+  String get vfBytesAsAscii => vfBytes.getAscii();
 
-  String get vfBytesAsAscii => cvt.ascii.decode(vfBytes, allowInvalid: true);
+  List<String> get vfBytesAsAsciiList => vfBytes.asAsciiList();
 
-  List<String> get vfBytesAsAsciiList =>
-      cvt.ascii.decode(vfBytes, allowInvalid: true).split('\\');
+  String get vfBytesAsUtf8 => vfBytes.getUtf8();
 
-  String get vfBytesAsUtf8 => cvt.utf8.decode(vfBytes, allowMalformed: true);
-
-  List<String> get vfBytesAsUtf8List =>
-      cvt.utf8.decode(vfBytes, allowMalformed: true).split('\\');
+  List<String> get vfBytesAsUtf8List => vfBytes.asAsciiList();
 
   /// Returns the Ascii Padding Character for this [Element],
   /// if it has one; otherwise returns -1;
@@ -473,8 +470,10 @@ abstract class Element<V> extends ListBase<V> {
   // String format(Formatter z) => '${z(info)}\n';
   // String format(Formatter z) => z.fmt(this, elements);
 
-  bool doFancy = false;
-  bool withValues = true;
+  static bool doFancy = false;
+  static bool withValues = true;
+  static int maxVListLength = 5;
+
   @override
   String toString() {
     if (doFancy) {
@@ -506,8 +505,6 @@ abstract class Element<V> extends ListBase<V> {
         '$validLength $valid $vs';
   }
 
-  int maxVListLength = 5;
-
   String getValuesAsString(int max) {
     final v = values;
     if (v == null) return nullElementError();
@@ -516,10 +513,9 @@ abstract class Element<V> extends ListBase<V> {
     return '(${vList.length})$s';
   }
 
-  String toStringWithValues() =>
-    '$runtimeType$dcm ${tag.keyword} '
-        '$vrId($vrIndex)  vfLength: $vfLength '
-        '${getValuesAsString(maxVListLength)}';
+  String toStringWithValues() => '$runtimeType$dcm ${tag.keyword} '
+      '$vrId($vrIndex)  vfLength: $vfLength '
+      '${getValuesAsString(maxVListLength)}';
 
   String get _lengthAsString {
     if (vfLength != null || vfLength != -1) return '$length';

@@ -14,6 +14,7 @@ import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/empty_list.dart';
 import 'package:core/src/utils/errors.dart';
 import 'package:core/src/vr.dart';
@@ -63,12 +64,14 @@ abstract class IntBase extends Element<int> {
   @override
   IntBase get noValues => update(kEmptyList);
 
+/*
   @override
   ByteData get vfByteData => typedData.buffer
       .asByteData(typedData.offsetInBytes, typedData.lengthInBytes);
+*/
 
   @override
-  Uint8List get vfBytes => _asUint8List(typedData);
+  Bytes get vfBytes => new Bytes.fromTypedData(typedData);
 
   VFFragments get fragments => unsupportedError();
 
@@ -791,8 +794,8 @@ bool _inRange(int v, int min, int max) => v >= min && v <= max;
 bool _isValidVFLength(int vfl, int minBytes, int maxBytes, int sizeInBytes) =>
     _inRange(vfl, minBytes, maxBytes) && (vfl % sizeInBytes == 0);
 
-Uint8List _asUint8List(TypedData td) {
-  if (td == null) return null;
-  if (td.lengthInBytes == 0) return kEmptyUint8List;
-  return td.buffer.asUint8List(td.offsetInBytes, td.lengthInBytes);
+Bytes _asUint8List(Bytes bd) {
+  if (bd == null) return null;
+  if (bd.lengthInBytes == 0) return kEmptyBytes;
+  return bd.asBytes(bd.offsetInBytes, bd.lengthInBytes);
 }

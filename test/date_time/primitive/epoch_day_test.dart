@@ -26,7 +26,7 @@ void main() {
   final endEpochDay = dateToEpochDay(endYear, 1, 1);
 
   group('Test Day Part of String', () {
-    system.level = Level.info0;
+//    system.level = Level.info0;
 
     test('Leap Year Basic Test', () {
       for (var y in goodBasicLeapYears) {
@@ -87,7 +87,7 @@ void main() {
     });
 
     test('Leap Year Performance Test', () {
-      system.level = Level.info0;
+//      system.level = Level.info0;
       log.debug('Leap Year Perfermance Test: $startYear - $endYear');
       final watch = new Stopwatch()..start();
 
@@ -187,7 +187,7 @@ void main() {
 
     test('Epoch Date Performance Test', () {
       log.debug('Epoch Date Performance Test...');
-      system.level = Level.info0;
+//      system.level = Level.info0;
       log.debug1('  startYear: $startYear, endYear: $endYear');
 
       final eStart = dateToEpochDay(startYear, 1, 1);

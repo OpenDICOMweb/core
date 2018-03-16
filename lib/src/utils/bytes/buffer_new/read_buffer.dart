@@ -6,13 +6,13 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes/buffer/buffer_base.dart';
-import 'package:core/src/utils/bytes/bytes.dart';
+import 'package:core/src/utils/bytes/buffer_new/buffer_base.dart';
+import 'package:core/src/utils/bytes/bytes_new.dart';
 
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
 
-class ReadBuffer extends BufferBase {
+class ReadBufferNew extends BufferBase {
   @override
   final Bytes bytes;
 
@@ -25,36 +25,39 @@ class ReadBuffer extends BufferBase {
   @override
   int wIndex_;
 
-  ReadBuffer(ByteData bd)
+  ReadBufferNew(ByteData bd, [Endian endian = Endian.little])
       : rIndex_ = 0,
         wIndex_ = bd.lengthInBytes,
-        bytes = new Bytes.fromTypedData(bd);
+        bytes = new Bytes.typedDataView(bd, endian: endian);
 
-  ReadBuffer.from(ReadBuffer rb, [int offset = 0, int length])
+  ReadBufferNew.from(ReadBufferNew rb,
+      [int offset = 0, int length, Endian endian = Endian.little])
       : rIndex_ = offset,
         wIndex_ = offset + (length ?? rb.lengthInBytes),
-        bytes = new Bytes.from(rb.bytes, offset);
+        bytes = new Bytes.from(rb.bytes, offset, length);
 
-  ReadBuffer.fromBytes(this.bytes)
+  ReadBufferNew.fromBytes(this.bytes)
       : rIndex_ = 0,
         wIndex_ = bytes.lengthInBytes;
 
-  ReadBuffer.fromList(List<int> list)
+  ReadBufferNew.fromList(List<int> list, [Endian endian = Endian.little])
       : rIndex_ = 0,
         wIndex_ = list.length,
-        bytes = new Bytes.fromTypedData(new Uint8List.fromList(list));
+        bytes = new Bytes.typedDataView(new Uint8List.fromList(list),
+            endian: endian);
 
-  ReadBuffer.fromTypedData(TypedData td)
+
+  ReadBufferNew.typedDataView(TypedData td, [Endian endian = Endian.little])
       : rIndex_ = 0,
         wIndex_ = td.lengthInBytes,
-        bytes = new Bytes.fromTypedData(td);
+        bytes = new Bytes.typedDataView(td, endian: endian);
 
 /* Urgent: Jim todo
   ReadBuffer.fromString(String s, [Endian endian])
       : endian = endian ??= Endian.host,
         rIndex_ = 0,
         wIndex_ = td.lengthInBytes,
-        bytes = new Bytes.fromTypedData(td, endian);
+        bytes = new Bytes.typedDataView(td, endian);
 */
 
   // **** ReadBuffer specific Getters and Methods
@@ -293,18 +296,19 @@ class ReadBuffer extends BufferBase {
   }
 }
 
-class LoggingReadBuffer extends ReadBuffer {
-  factory LoggingReadBuffer(ByteData bd, [int offset = 0, int length]) =>
-      new LoggingReadBuffer._(bd.buffer.asByteData(offset, length));
+class LoggingReadBuffer extends ReadBufferNew {
+  factory LoggingReadBuffer(ByteData bd,
+          [int offset = 0, int length, Endian endian = Endian.little]) =>
+      new LoggingReadBuffer._(bd.buffer.asByteData(offset, length), endian);
 
   factory LoggingReadBuffer.fromUint8List(Uint8List bytes,
-      [int offset = 0, int length]) {
+      [int offset = 0, int length, Endian endian = Endian.little]) {
     final bd = bytes.buffer.asByteData(offset, length);
-    return new LoggingReadBuffer._(bd);
+    return new LoggingReadBuffer._(bd, endian);
   }
 
-  LoggingReadBuffer._(TypedData td)
-      : super.fromTypedData(td.buffer.asByteData());
+  LoggingReadBuffer._(TypedData td, Endian endian)
+      : super.typedDataView(td.buffer.asByteData(), endian);
 
   /// The current readIndex as a string.
   String get _rrr => 'R@${rIndex_.toString().padLeft(5, '0')}';

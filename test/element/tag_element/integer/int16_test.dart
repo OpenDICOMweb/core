@@ -853,36 +853,36 @@ void main() {
         final bd = int16ListV1.buffer.asUint8List();
         log
           ..debug('int16list0 : $int16list0')
-          ..debug('SS.toBytes(int16list0) ; ${Int16.toBytes(int16list0)}');
-        expect(Int16.toBytes(int16list0), equals(bd));
+          ..debug('SS.toBytes(int16list0) ; ${Int16.toUint8List(int16list0)}');
+        expect(Int16.toUint8List(int16list0), equals(bd));
       }
 
       const int16Max = const [kInt16Max];
       final int16List = new Int16List.fromList(int16Max);
       final uint8List = int16List.buffer.asUint8List();
-      expect(Int16.toBytes(int16Max), uint8List);
+      expect(Int16.toUint8List(int16Max), uint8List);
 
       const int32Max = const [kInt32Max];
-      expect(Int16.toBytes(int32Max), isNull);
+      expect(Int16.toInt16List(int32Max), isNull);
 
       system.throwOnError = true;
-      expect(() => Int16.toBytes(int32Max),
+      expect(() => Int16.toInt16List(int32Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('Int16Base listToByteData good values', () {
-      system.level = Level.debug;
+//      system.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final int16list0 = rng.int16List(1, 1);
         final bd0 = int16list0.buffer.asByteData();
-        final lBd0 = Int16.toByteData(int16list0);
+        final lBd0 = Int16.toBytes(int16list0);
         log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
                 .asUint8List()}');
         expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd0.buffer == bd0.buffer, true);
 
-        final lBd1 = Int16.toByteData(int16list0, check: false);
+        final lBd1 = Int16.toBytes(int16list0, check: false);
         log.debug('lBd3: ${lBd1.buffer.asUint8List()}, '
             'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -892,7 +892,7 @@ void main() {
       const int16Max = const [kInt16Max];
       final int16List = new Int16List.fromList(int16Max);
       final bd1 = int16List.buffer.asByteData();
-      final lBd2 = Int16.toByteData(int16List);
+      final lBd2 = Int16.toBytes(int16List);
       log.debug('bd: ${bd1.buffer.asUint8List()}, '
           'lBd2: ${lBd2.buffer.asUint8List()}');
       expect(lBd2.buffer.asUint8List(), equals(bd1.buffer.asUint8List()));
@@ -904,7 +904,7 @@ void main() {
         system.throwOnError = false;
         final int16list0 = rng.int16List(1, 1);
         final bd0 = int16list0.buffer.asByteData();
-        final lBd1 = Int16.toByteData(int16list0, asView: false);
+        final lBd1 = Int16.toBytes(int16list0, asView: false);
         log.debug('lBd1: ${lBd1.buffer.asUint8List()}, '
             'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -914,16 +914,15 @@ void main() {
         assert(int32list0 is TypedData);
         //final int32ListV0 = new Int32List.fromList(int32list0);
         final bd1 = int32list0.buffer.asByteData();
-        final lBd2 = Int16.toByteData(int32list0, check: false);
+        final lBd2 = Int16.toBytes(int32list0, check: false);
         log.debug('lBd0: ${lBd2.buffer.asUint8List()}, '
             'bd1: ${bd1.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), isNot(bd0.buffer.asUint8List()));
         expect(lBd2.buffer == bd0.buffer, false);
-        final lBd3 = Int16.toByteData(int32list0, asView: false);
-        expect(lBd3, isNull);
+        final lBd3 = Int16.toBytes(int32list0, asView: false);
+        expect(lBd3.isEmpty, true);
 
-        final lBd4 =
-            Int16.toByteData(int16list0, asView: false, check: false);
+        final lBd4 = Int16.toBytes(int16list0, asView: false, check: false);
         log.debug('lBd4: ${lBd4.buffer.asUint8List()}, '
             'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd4.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -931,13 +930,13 @@ void main() {
       }
 
       final int32Max = const <int>[kInt32Max];
-      expect(Int16.toByteData(int32Max), isNull);
+      expect(Int16.toBytes(int32Max).isEmpty, true);
 
       const int32Min = const [kInt32Min];
-      expect(Int16.toByteData(int32Min), isNull);
+      expect(Int16.toBytes(int32Min).isEmpty, true);
 
       system.throwOnError = true;
-      expect(() => Int16.toByteData(int32Max),
+      expect(() => Int16.toBytes(int32Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -967,7 +966,7 @@ void main() {
     });
 
     test('SS to/from Base64', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final int16list0 = rng.int16List(0, i);
         final int16ListV1 = new Int16List.fromList(int16list0);

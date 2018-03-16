@@ -10,7 +10,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(
-      name: 'date_test', minYear: 1900, maxYear: 2100, level: Level.debug);
+      name: 'date_test', minYear: 1900, maxYear: 2100, level: Level.info);
 
   group('Date Tests', () {
     test('Good Dates', () {
@@ -354,7 +354,7 @@ void main() {
 
   test('Hash Random Dates', () {
     final rng = new RNG();
-    system.level = Level.debug;
+//    system.level = Level.debug;
     for (var i = 0; i < 1000; i++) {
       final eDay = rng.nextInt(kMinYear, kMaxYear);
       final date0 = Date.fromEpochDay(eDay);
@@ -446,7 +446,7 @@ void main() {
 
   test('Hash Dates', () {
     final date1 = new Date(1969, 12, 31);
-    system.level = Level.debug;
+//    system.level = Level.debug;
     log.debug(
         'date: $date1, year:${date1.year}, month: ${date1.month}, day: ${date1.day}, microseconds: ${date1.microseconds}');
     final hash1 = date1.hash;

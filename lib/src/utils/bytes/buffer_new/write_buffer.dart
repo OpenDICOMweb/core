@@ -7,8 +7,8 @@
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:core/src/utils/bytes/buffer/buffer_base.dart';
-import 'package:core/src/utils/bytes/bytes.dart';
+import 'package:core/src/utils/bytes/buffer_new/buffer_base.dart';
+import 'package:core/src/utils/bytes/bytes_new.dart';
 
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
@@ -21,37 +21,43 @@ class WriteBuffer extends BufferBase {
   @override
   int wIndex_;
 
-  WriteBuffer([int length = kDefaultLength])
+  WriteBuffer([int length = kDefaultLength, Endian endian = Endian.little])
       : rIndex_ = 0,
         wIndex_ = 0,
-        bytes = new GrowableBytes(length);
+        bytes = new GrowableBytes(length, endian);
 
-  WriteBuffer.from(WriteBuffer wb, [int offset = 0, int length])
+/*
+  WriteBuffer.from(WriteBuffer wb,
+      [int offset = 0, int length, Endian endian = Endian.little])
       : rIndex_ = offset,
         wIndex_ = offset,
-        bytes = new GrowableBytes.from(wb.bytes, offset, length);
+        bytes = new GrowableBytes.from(wb.bytes, offset, length, endian);
+*/
 
-  WriteBuffer.fromByteData(ByteData bd)
+  WriteBuffer.fromByteData(ByteData bd, [Endian endian = Endian.little])
       : rIndex_ = 0,
         wIndex_ = bd.lengthInBytes,
-        bytes = new GrowableBytes.fromTypedData(bd);
+        bytes = new GrowableBytes.typedDataView(bd, endian: endian);
 
-  WriteBuffer.fromUint8List(Uint8List uint8List)
+  WriteBuffer.fromUint8List(Uint8List uint8List,
+      [Endian endian = Endian.little])
       : rIndex_ = 0,
         wIndex_ = uint8List.lengthInBytes,
-        bytes = new GrowableBytes.fromTypedData(uint8List);
+        bytes = new GrowableBytes.typedDataView(uint8List, endian: endian);
 
-  WriteBuffer._(int length)
+  WriteBuffer._(int length, Endian endian)
       : rIndex_ = 0,
         wIndex_ = 0,
-        bytes = new GrowableBytes(length);
+        bytes = new GrowableBytes(length, endian);
 
-  WriteBuffer._fromTD(TypedData td)
+  WriteBuffer._fromTD(TypedData td, Endian endian)
       : rIndex_ = 0,
         wIndex_ = td.lengthInBytes,
-        bytes = new GrowableBytes.fromTypedData(td);
+        bytes = new GrowableBytes.typedDataView(td, endian: endian);
 
   // **** WriteBuffer specific Getters and Methods
+
+  int get limit => Bytes.kDefaultLimit;
 
   @override
   ByteData get bd => (isClosed) ? null : bytes.bd;
@@ -59,7 +65,6 @@ class WriteBuffer extends BufferBase {
   int get index => wIndex_;
   @override
   Endian get endian => bytes.endian;
-  int get limit => bytes.limit;
 
   /// Returns the number of bytes left in the current _this_.
   int get remaining => wRemaining;
@@ -328,17 +333,19 @@ class WriteBuffer extends BufferBase {
 
 class LoggingWriteBuffer extends WriteBuffer {
   LoggingWriteBuffer(
-      [int length = Bytes.kDefaultLength])
-      : super._(length);
+      [int length = Bytes.kDefaultLength, Endian endian = Endian.little])
+      : super._(length, endian);
 
-  factory LoggingWriteBuffer.fromByteData(ByteData bd) =>
-      new LoggingWriteBuffer.fromTypedData(bd);
+  factory LoggingWriteBuffer.fromByteData(ByteData bd,
+          [Endian endian = Endian.little]) =>
+      new LoggingWriteBuffer.fromTypedData(bd, endian);
 
-  factory LoggingWriteBuffer.fromBytes(Uint8List td) =>
-      new LoggingWriteBuffer.fromTypedData(td, );
+  factory LoggingWriteBuffer.fromBytes(Uint8List td,
+          [Endian endian = Endian.little]) =>
+      new LoggingWriteBuffer.fromTypedData(td, endian);
 
-  LoggingWriteBuffer.fromTypedData(TypedData td)
-      : super._fromTD(td);
+  LoggingWriteBuffer.fromTypedData(TypedData td, Endian endian)
+      : super._fromTD(td, endian);
 
   /// The current readIndex as a string.
   String get _www => 'W@${wIndex.toString().padLeft(5, '0')}';

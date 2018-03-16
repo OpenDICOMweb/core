@@ -747,8 +747,8 @@ void main() {
       final vList1 = rsg.getASList(1, 1);
       final bytes = AS.toBytes(vList1);
       log.debug(
-          'AS.fromUint8List(bytes): ${AS.fromUint8List(bytes)}, bytes: $bytes');
-      expect(AS.fromUint8List(bytes), equals(vList1));
+          'AS.fromUint8List(bytes): ${AS.fromBytes(bytes)}, bytes: $bytes');
+      expect(AS.fromBytes(bytes), equals(vList1));
     });
 
     test('AS toBytes good values', () {
@@ -770,9 +770,9 @@ void main() {
     test('AS tryDecodeVF values', () {
       final vList1 = ['001M'];
       final bytes = AS.toBytes(vList1);
-      log.debug('AS.fromUint8List(bytes): ${AS.fromUint8List(
+      log.debug('AS.fromUint8List(bytes): ${AS.fromBytes(
             bytes)}, bytes: $bytes');
-      expect(AS.fromUint8List(bytes), equals(vList1));
+      expect(AS.fromBytes(bytes), equals(vList1));
     });
 
     test('AS checkList good values', () {
@@ -823,8 +823,8 @@ void main() {
         final vList0 = rsg.getASList(1, 1);
         system.throwOnError = false;
         final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = AS.toByteData(vList0);
-        final tbd1 = AS.toByteData(vList0);
+        final tbd0 = AS.toBytes(vList0);
+        final tbd1 = AS.toBytes(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -832,8 +832,8 @@ void main() {
       for (var s in goodAgeList) {
         for (var a in s) {
           final values = cvt.ascii.encode(a);
-          final tbd2 = AS.toByteData(s);
-          final tbd3 = AS.toByteData(s);
+          final tbd2 = AS.toBytes(s);
+          final tbd3 = AS.toBytes(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -844,14 +844,14 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
         system.throwOnError = false;
-        final bd0 = AS.toByteData(vList0);
-        final fbd0 = AS.fromByteData(bd0);
+        final bd0 = AS.toBytes(vList0);
+        final fbd0 = AS.fromBytes(bd0);
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodAgeList) {
-        final bd0 = AS.toByteData(s);
-        final fbd0 = AS.fromByteData(bd0);
+        final bd0 = AS.toBytes(s);
+        final fbd0 = AS.fromBytes(bd0);
         expect(fbd0, equals(s));
       }
     });
@@ -1631,9 +1631,9 @@ void main() {
       //    	system.level = Level.debug;
       for (var s in goodDAList) {
         final bytes = DA.toBytes(s);
-        log.debug('DA.fromUint8List(bytes): ${DA.fromUint8List(
+        log.debug('DA.fromUint8List(bytes): ${DA.fromBytes(
               bytes)}, bytes: $bytes');
-        expect(DA.fromUint8List(bytes), equals(s));
+        expect(DA.fromBytes(bytes), equals(s));
       }
     });
 
@@ -1660,9 +1660,9 @@ void main() {
     test('DA tryDecodeVF', () {
       final vList1 = ['19500712'];
       final bytes = DA.toBytes(vList1);
-      log.debug('DA.fromUint8List(bytes): ${DA.fromUint8List(
+      log.debug('DA.fromUint8List(bytes): ${DA.fromBytes(
             bytes)}, bytes: $bytes');
-      expect(DA.fromUint8List(bytes), equals(vList1));
+      expect(DA.fromBytes(bytes), equals(vList1));
     });
 
     test('DA checkList good values', () {
@@ -1708,8 +1708,8 @@ void main() {
         final vList0 = rsg.getDAList(1, 1);
         system.throwOnError = false;
         final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = DA.toByteData(vList0);
-        final tbd1 = DA.toByteData(vList0);
+        final tbd0 = DA.toBytes(vList0);
+        final tbd1 = DA.toBytes(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -1717,26 +1717,26 @@ void main() {
       for (var s in goodDAList) {
         for (var a in s) {
           final values = cvt.ascii.encode(a);
-          final tbd2 = DA.toByteData(s);
-          final tbd3 = DA.toByteData(s);
+          final tbd2 = DA.toBytes(s);
+          final tbd3 = DA.toBytes(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
       }
     });
 
-    test('DA fromByteData', () {
+    test('DA fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
         system.throwOnError = false;
-        final bd0 = DA.toByteData(vList0);
-        final fbd0 = DA.fromByteData(bd0);
+        final bd0 = DA.toBytes(vList0);
+        final fbd0 = DA.fromBytes(bd0);
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodDAList) {
-        final bd0 = DA.toByteData(s);
-        final fbd0 = DA.fromByteData(bd0);
+        final bd0 = DA.toBytes(s);
+        final fbd0 = DA.fromBytes(bd0);
         expect(fbd0, equals(s));
       }
     });
@@ -2579,9 +2579,9 @@ void main() {
       //    	system.level = Level.debug;
       for (var s in goodDTList) {
         final bytes = DT.toBytes(s);
-        log.debug('DT.fromUint8List(bytes): ${DT.fromUint8List(
+        log.debug('DT.fromUint8List(bytes): ${DT.fromBytes(
               bytes)}, bytes: $bytes');
-        expect(DT.fromUint8List(bytes), equals(s));
+        expect(DT.fromBytes(bytes), equals(s));
       }
     });
 
@@ -2608,9 +2608,9 @@ void main() {
     test('DT tryDecodeVF', () {
       final vList1 = ['19500718105630'];
       final bytes = DT.toBytes(vList1);
-      log.debug('DT.fromUint8List(bytes): ${DT.fromUint8List(
+      log.debug('DT.fromUint8List(bytes): ${DT.fromBytes(
             bytes)}, bytes: $bytes');
-      expect(DT.fromUint8List(bytes), equals(vList1));
+      expect(DT.fromBytes(bytes), equals(vList1));
     });
 
     test('DT toByteData', () {
@@ -2618,8 +2618,8 @@ void main() {
         final vList0 = rsg.getDTList(1, 1);
         system.throwOnError = false;
         final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = DT.toByteData(vList0);
-        final tbd1 = DT.toByteData(vList0);
+        final tbd0 = DT.toBytes(vList0);
+        final tbd1 = DT.toBytes(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -2627,26 +2627,26 @@ void main() {
       for (var s in goodDTList) {
         for (var a in s) {
           final values = cvt.ascii.encode(a);
-          final tbd2 = DT.toByteData(s);
-          final tbd3 = DT.toByteData(s);
+          final tbd2 = DT.toBytes(s);
+          final tbd3 = DT.toBytes(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
       }
     });
 
-    test('DT fromByteData', () {
+    test('DT fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
         system.throwOnError = false;
-        final bd0 = DT.toByteData(vList0);
-        final fbd0 = DT.fromByteData(bd0);
+        final bd0 = DT.toBytes(vList0);
+        final fbd0 = DT.fromBytes(bd0);
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodDTList) {
-        final bd0 = DT.toByteData(s);
-        final fbd0 = DT.fromByteData(bd0);
+        final bd0 = DT.toBytes(s);
+        final fbd0 = DT.fromBytes(bd0);
         expect(fbd0, equals(s));
       }
     });
@@ -3439,9 +3439,9 @@ void main() {
       //    	system.level = Level.debug;
       final vList1 = rsg.getTMList(1, 1);
       final bytes = TM.toBytes(vList1);
-      log.debug('TM.fromUint8List(bytes): ${TM.fromUint8List(
+      log.debug('TM.fromUint8List(bytes): ${TM.fromBytes(
                 bytes)}, bytes: $bytes');
-      expect(TM.fromUint8List(bytes), equals(vList1));
+      expect(TM.fromBytes(bytes), equals(vList1));
     });
 
     test('TM toBytes good values', () {
@@ -3468,9 +3468,9 @@ void main() {
     test('TM tryDecodeVF', () {
       final vList1 = rsg.getTMList(1, 1);
       final bytes = TM.toBytes(vList1);
-      log.debug('TM.fromUint8List(bytes): ${TM.fromUint8List(
+      log.debug('TM.fromUint8List(bytes): ${TM.fromBytes(
             bytes)}, bytes: $bytes');
-      expect(TM.fromUint8List(bytes), equals(vList1));
+      expect(TM.fromBytes(bytes), equals(vList1));
     });
 
     test('TM checkList good values', () {
@@ -3522,8 +3522,8 @@ void main() {
         final vList0 = rsg.getTMList(1, 1);
         system.throwOnError = false;
         final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = TM.toByteData(vList0);
-        final tbd1 = TM.toByteData(vList0);
+        final tbd0 = TM.toBytes(vList0);
+        final tbd1 = TM.toBytes(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -3531,26 +3531,26 @@ void main() {
       for (var s in goodTMList) {
         for (var a in s) {
           final values = cvt.ascii.encode(a);
-          final tbd2 = TM.toByteData(s);
-          final tbd3 = TM.toByteData(s);
+          final tbd2 = TM.toBytes(s);
+          final tbd3 = TM.toBytes(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
       }
     });
 
-    test('TM fromByteData', () {
+    test('TM fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1);
         system.throwOnError = false;
-        final bd0 = TM.toByteData(vList0);
-        final fbd0 = TM.fromByteData(bd0);
+        final bd0 = TM.toBytes(vList0);
+        final fbd0 = TM.fromBytes(bd0);
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodTMList) {
-        final bd0 = TM.toByteData(s);
-        final fbd0 = TM.fromByteData(bd0);
+        final bd0 = TM.toBytes(s);
+        final fbd0 = TM.fromBytes(bd0);
         expect(fbd0, equals(s));
       }
     });

@@ -6,12 +6,14 @@
 
 //TODO: load Element library lazily
 
-import 'dart:convert' as cvt;
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/vr.dart';
 
@@ -111,10 +113,10 @@ abstract class FastElementBase<V> {
 
   /// Returns a [BASE64] [String] created from [vList];
   static String toBase64(Iterable<double> vList, {bool asView = true}) =>
-      cvt.base64.encode(toBytes(vList, asView: asView));
+      base64Encode(toBytes(vList, asView: asView));
 
   /// Returns a [Uint8List] created from [vList];
-  static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
+  static Bytes toBytes(Iterable<double> vList, {bool asView = true}) =>
       _asUint8List(fromList(vList, asView: asView));
 
   /// Returns a [ByteData] created from [vList];
@@ -205,7 +207,7 @@ abstract class Float32Mixin {
 
   /// Returns a [Float32List] from a [BASE64] [String].
   static Float32List fromBase64(String s) =>
-      (s.isEmpty) ? kEmptyFloat32List : fromBytes(cvt.base64.decode(s));
+      (s.isEmpty) ? kEmptyFloat32List : fromBytes(base64.decode(s));
 
   /// Returns a [Float32List] from a [Uint8List].
   static Float32List fromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -404,10 +406,10 @@ abstract class Float64Mixin {
 
   /// Returns a [BASE64] [String] created from [vList];
   static String toBase64(Iterable<double> vList) =>
-      cvt.base64.encode(toBytes(vList));
+      base64Encode(toBytes(vList));
 
   /// Returns a [Uint8List] created from [vList];
-  static Uint8List toBytes(Iterable<double> vList, {bool asView = true}) =>
+  static Bytes toBytes(Iterable<double> vList, {bool asView = true}) =>
       _asUint8List(fromList(vList, asView: asView));
 
   /// Returns a [ByteData] view of from [vList].
@@ -428,7 +430,7 @@ abstract class Float64Mixin {
 
   /// Returns a [Float64List] from a [BASE64] [String].
   static Float64List fromBase64(String s, {bool asView = true}) =>
-      (s.isEmpty) ? kEmptyFloat64List : fromBytes(cvt.base64.decode(s));
+      (s.isEmpty) ? kEmptyFloat64List : fromBytes(base64.decode(s));
 
   /// Returns a [Float64List] from a [Uint8List].
   static Float64List fromBytes(Uint8List bytes, {bool asView = true}) =>
@@ -596,10 +598,10 @@ bool _inRange(int v, int min, int max) => v >= min && v <= max;
 bool _isValidVFLength(int vfl, int min, int max, int sizeInBytes) =>
     _inRange(vfl, min, max) && (vfl % sizeInBytes == 0);
 
-Uint8List _asUint8List(TypedData td) {
+Bytes _asUint8List(TypedData td) {
   if (td == null) return null;
-  if (td.lengthInBytes == 0) return kEmptyUint8List;
-  return td.buffer.asUint8List(td.offsetInBytes, td.lengthInBytes);
+  if (td.lengthInBytes == 0) return kEmptyBytes;
+  return new Bytes.fromTypedData(td);
 }
 
 /// Returns a [ByteData] created from [td];

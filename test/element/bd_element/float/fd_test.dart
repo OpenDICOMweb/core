@@ -44,7 +44,7 @@ void main() {
     });
 
     test('FD hasValidValues random: good values', () {
-      system.level = Level.info;
+//      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final float64List = rng.float64List(1, 1);
         expect(float64List is Float64List, true);

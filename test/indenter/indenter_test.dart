@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'indenter/indenter_test', level: Level.debug);
+  Server.initialize(name: 'indenter/indenter_test', level: Level.info);
 
   test('Basic indent test with depth', () {
     final sb = new Indenter();

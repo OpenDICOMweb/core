@@ -3,8 +3,6 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:convert' as cvt;
-
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
@@ -588,7 +586,7 @@ class VRUtf8 extends VR<String> {
     if (s.isEmpty || allowInvalid) return true;
     if (s.length < minVLength || s.length > maxVLength) return false;
     try {
-      cvt.utf8.encode(s);
+      utf8Encode(s);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       return false;
@@ -623,7 +621,7 @@ class VRText extends VR<String> {
         s.isEmpty ||
         (s.length <= maxVFLength && allowInvalid == true)) return true;
     try {
-      cvt.utf8.encode(s);
+      utf8Encode(s);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       return false;
