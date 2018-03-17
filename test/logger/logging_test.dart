@@ -41,7 +41,7 @@ void main() {
     });
 
     test('levels are comparable', () {
-      const unsorted = const <Level>[
+      List<Level> unsorted = <Level>[
         Level.info0,
         Level.config,
         Level.debug1,
