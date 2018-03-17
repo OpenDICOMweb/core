@@ -3,13 +3,12 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/map_dataset/map_item.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/utils/bytes.dart';
 
 
 /// An [TagItem] is an [Item] contained in an SQtag Element.
@@ -17,13 +16,13 @@ class TagItem extends MapItem with TagDataset {
   // @override
 //  List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
-  /// Creates a new [TagItem] from [ByteData].
-  TagItem(Dataset parent, Map<int, Element> eMap, [SQ sequence, ByteData bd])
-      : super(parent, eMap, sequence, bd);
+  /// Creates a new [TagItem] from [Bytes].
+  TagItem(Dataset parent, Map<int, Element> eMap, [SQ sequence, Bytes bd])
+      : super(parent, sequence, eMap,  bd);
 
-  /// Creates a new empty [Item] from [ByteData].
-  TagItem.empty(Dataset parent, [SQ sequence, ByteData bd])
-      : super(parent, <int, Element>{}, sequence, bd);
+  /// Creates a new empty [Item] from [Bytes].
+  TagItem.empty(Dataset parent, [SQ sequence, Bytes bd])
+      : super(parent, sequence, <int, Element>{},  bd);
 
   /// Create a new [TagItem] from an existing [TagItem].
   /// If [parent] is _null_the new [TagItem] has the same

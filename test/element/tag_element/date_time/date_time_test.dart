@@ -148,7 +148,7 @@ void main() {
     });
 
     test('AS invalidLength random', () {
-      //  system.level = Level.debug;2;
+      //  system.level = Level.info;2;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(2, 5);
         system.throwOnError = false;
@@ -334,12 +334,12 @@ void main() {
     });
 
     test('AS fromBytes random', () {
-      //     system.level = Level.debug;
+      //     system.level = Level.info;
       system.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getASList(1, 1);
         //final bytes = encodeStringListValueField(vList1);
-        final bytes = AS.toBytes(vList1);
+        final bytes = AS.toUint8List(vList1);
         log.debug('bytes:$bytes');
         final as0 = AStag.fromUint8List(PTag.kPatientAge, bytes);
         log.debug('as0: ${as0.info}');
@@ -745,7 +745,7 @@ void main() {
 
     test('AS fromBytes values', () {
       final vList1 = rsg.getASList(1, 1);
-      final bytes = AS.toBytes(vList1);
+      final bytes = AS.toUint8List(vList1);
       log.debug(
           'AS.fromUint8List(bytes): ${AS.fromUint8List(bytes)}, bytes: $bytes');
       expect(AS.fromUint8List(bytes), equals(vList1));
@@ -753,23 +753,23 @@ void main() {
 
     test('AS toBytes good values', () {
       final vList1 = rsg.getASList(1, 1);
-      log.debug('AS.toBytes(vList1): ${AS.toBytes(vList1)}');
+      log.debug('AS.toUint8List(vList1): ${AS.toUint8List(vList1)}');
       final values = cvt.ascii.encode(vList1[0]);
-      expect(AS.toBytes(vList1), equals(values));
+      expect(AS.toUint8List(vList1), equals(values));
     });
 
     test('AS toBytes bad values length', () {
       system.throwOnError = false;
       final vList0 = rsg.getASList(AS.kMaxVFLength + 1, AS.kMaxVFLength + 1);
-      expect(AS.toBytes(vList0), isNull);
+      expect(AS.toUint8List(vList0), isNull);
       system.throwOnError = true;
-      expect(() => AS.toBytes(vList0),
+      expect(() => AS.toUint8List(vList0),
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
     test('AS tryDecodeVF values', () {
       final vList1 = ['001M'];
-      final bytes = AS.toBytes(vList1);
+      final bytes = AS.toUint8List(vList1);
       log.debug('AS.fromUint8List(bytes): ${AS.fromUint8List(
             bytes)}, bytes: $bytes');
       expect(AS.fromUint8List(bytes), equals(vList1));
@@ -1187,7 +1187,7 @@ void main() {
     test('DA formBytes', () {
       for (var s in goodDAList) {
         //final bytes = encodeStringListValueField(vList1);
-        final bytes = DA.toBytes(s);
+        final bytes = DA.toUint8List(s);
         log.debug('bytes:$bytes');
         final da0 = DAtag.fromUint8List(PTag.kCreationDate, bytes);
         log.debug('da0: ${da0.info}');
@@ -1196,10 +1196,10 @@ void main() {
     });
 
     test('DA fromBytes random', () {
-      //    	system.level = Level.debug;
+      //    	system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDAList(1, 1);
-        final bytes = DA.toBytes(vList1);
+        final bytes = DA.toUint8List(vList1);
         log.debug('bytes:$bytes');
         final da0 = DAtag.fromUint8List(PTag.kCreationDate, bytes);
         log.debug('da0: ${da0.info}');
@@ -1628,9 +1628,9 @@ void main() {
     });
 
     test('DA fromBytes', () {
-      //    	system.level = Level.debug;
+      //    	system.level = Level.info;
       for (var s in goodDAList) {
-        final bytes = DA.toBytes(s);
+        final bytes = DA.toUint8List(s);
         log.debug('DA.fromUint8List(bytes): ${DA.fromUint8List(
               bytes)}, bytes: $bytes');
         expect(DA.fromUint8List(bytes), equals(s));
@@ -1639,27 +1639,27 @@ void main() {
 
     test('DA toBytes good values', () {
       for (var s in goodDAList) {
-        log.debug('DA.toBytes(s): ${DA.toBytes(s)}');
+        log.debug('DA.toUint8List(s): ${DA.toUint8List(s)}');
 
         if (s[0].length.isOdd) s[0] = '${s[0]} ';
         log.debug('s:"$s"');
         final values = cvt.ascii.encode(s[0]);
-        expect(DA.toBytes(s), equals(values));
+        expect(DA.toUint8List(s), equals(values));
       }
     });
 
     test('DA toBytes bad values length', () {
       system.throwOnError = false;
       final vList0 = rsg.getDAList(DA.kMaxVFLength + 1, DA.kMaxVFLength + 1);
-      expect(DA.toBytes(vList0), isNull);
+      expect(DA.toUint8List(vList0), isNull);
       system.throwOnError = true;
-      expect(() => DA.toBytes(vList0),
+      expect(() => DA.toUint8List(vList0),
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
     test('DA tryDecodeVF', () {
       final vList1 = ['19500712'];
-      final bytes = DA.toBytes(vList1);
+      final bytes = DA.toUint8List(vList1);
       log.debug('DA.fromUint8List(bytes): ${DA.fromUint8List(
             bytes)}, bytes: $bytes');
       expect(DA.fromUint8List(bytes), equals(vList1));
@@ -1794,10 +1794,10 @@ void main() {
 
     test('DT fromBytes', () {
       //fromBytes
-//      system.level = Level.debug2;
+//      system.level = Level.info2;
       for (var s in goodDTList) {
         //final bytes = encodeStringListValueField(vList1);
-        final bytes = DT.toBytes(s);
+        final bytes = DT.toUint8List(s);
         log.debug('bytes:$bytes');
         final dt0 = DTtag.fromUint8List(PTag.kDateTime, bytes);
         log.debug('dt0: ${dt0.info}');
@@ -1806,11 +1806,11 @@ void main() {
     });
 
     test('DT fromBytes random', () {
-      //    	system.level = Level.debug;
+      //    	system.level = Level.info;
       //fromBytes
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDTList(1, 1);
-        final bytes = DT.toBytes(vList1);
+        final bytes = DT.toUint8List(vList1);
         log.debug('bytes:$bytes');
         final dt0 = DTtag.fromUint8List(PTag.kDateTime, bytes);
         log.debug('dt0: ${dt0.info}');
@@ -2576,9 +2576,9 @@ void main() {
     });
 
     test('DT fromBytes', () {
-      //    	system.level = Level.debug;
+      //    	system.level = Level.info;
       for (var s in goodDTList) {
-        final bytes = DT.toBytes(s);
+        final bytes = DT.toUint8List(s);
         log.debug('DT.fromUint8List(bytes): ${DT.fromUint8List(
               bytes)}, bytes: $bytes');
         expect(DT.fromUint8List(bytes), equals(s));
@@ -2587,27 +2587,27 @@ void main() {
 
     test('DT toBytes', () {
       for (var s in goodDTList) {
-        log.debug('DT.toBytes(s): ${DT.toBytes(s)}');
+        log.debug('DT.toUint8List(s): ${DT.toUint8List(s)}');
 
         if (s[0].length.isOdd) s[0] = '${s[0]} ';
         log.debug('s:"$s"');
         final values = cvt.ascii.encode(s[0]);
-        expect(DT.toBytes(s), equals(values));
+        expect(DT.toUint8List(s), equals(values));
       }
     });
 
     test('DT toBytes bad values length', () {
       system.throwOnError = false;
       final vList0 = rsg.getDTList(DT.kMaxVFLength + 1, DT.kMaxVFLength + 1);
-      expect(DT.toBytes(vList0), isNull);
+      expect(DT.toUint8List(vList0), isNull);
       system.throwOnError = true;
-      expect(() => DT.toBytes(vList0),
+      expect(() => DT.toUint8List(vList0),
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
     test('DT tryDecodeVF', () {
       final vList1 = ['19500718105630'];
-      final bytes = DT.toBytes(vList1);
+      final bytes = DT.toUint8List(vList1);
       log.debug('DT.fromUint8List(bytes): ${DT.fromUint8List(
             bytes)}, bytes: $bytes');
       expect(DT.fromUint8List(bytes), equals(vList1));
@@ -2938,7 +2938,7 @@ void main() {
     test('TM fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getTMList(1, 1);
-        final bytes = TM.toBytes(vList1);
+        final bytes = TM.toUint8List(vList1);
         final tm0 = TMtag.fromUint8List(PTag.kTime, bytes);
         expect(tm0.hasValidValues, true);
       }
@@ -2947,7 +2947,7 @@ void main() {
     test('TM formBytes', () {
       for (var s in goodTMList) {
         //final bytes = encodeStringListValueField(vList1);
-        final bytes = TM.toBytes(s);
+        final bytes = TM.toUint8List(s);
         log.debug('bytes:$bytes');
         final tm0 = TMtag.fromUint8List(PTag.kModifiedImageTime, bytes);
         log.debug('tm0: ${tm0.info}');
@@ -3436,9 +3436,9 @@ void main() {
     });
 
     test('TM fromBytes', () {
-      //    	system.level = Level.debug;
+      //    	system.level = Level.info;
       final vList1 = rsg.getTMList(1, 1);
-      final bytes = TM.toBytes(vList1);
+      final bytes = TM.toUint8List(vList1);
       log.debug('TM.fromUint8List(bytes): ${TM.fromUint8List(
                 bytes)}, bytes: $bytes');
       expect(TM.fromUint8List(bytes), equals(vList1));
@@ -3446,28 +3446,28 @@ void main() {
 
     test('TM toBytes good values', () {
       final vList1 = rsg.getTMList(1, 1);
-      log.debug('TM.toBytes(vList1): ${TM.toBytes(vList1)}');
+      log.debug('TM.toUint8List(vList1): ${TM.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
-      expect(TM.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
+      expect(TM.toUint8List(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = cvt.ascii.encode(vList1[0]);
-      expect(TM.toBytes(vList1), equals(values));
+      expect(TM.toUint8List(vList1), equals(values));
     });
 
     test('AS toBytes bad values length', () {
       system.throwOnError = false;
       final vList0 = rsg.getTMList(TM.kMaxVFLength + 1, TM.kMaxVFLength + 1);
-      expect(TM.toBytes(vList0), isNull);
+      expect(TM.toUint8List(vList0), isNull);
       system.throwOnError = true;
-      expect(() => TM.toBytes(vList0),
+      expect(() => TM.toUint8List(vList0),
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
     test('TM tryDecodeVF', () {
       final vList1 = rsg.getTMList(1, 1);
-      final bytes = TM.toBytes(vList1);
+      final bytes = TM.toUint8List(vList1);
       log.debug('TM.fromUint8List(bytes): ${TM.fromUint8List(
             bytes)}, bytes: $bytes');
       expect(TM.fromUint8List(bytes), equals(vList1));

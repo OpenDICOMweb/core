@@ -16,6 +16,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/entity.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
@@ -27,14 +28,14 @@ abstract class RootDataset extends Dataset {
   @override
   RDSBytes dsBytes;
 
-  RootDataset(this.path, ByteData bd, int fmiEnd)
+  RootDataset(this.path, Bytes bd, int fmiEnd)
       : dsBytes = (bd == null || bd.lengthInBytes == 0)
             ? new RDSBytes.empty()
             : new RDSBytes(bd, fmiEnd);
 
   RootDataset.empty() : dsBytes = new RDSBytes.empty();
 
-  ByteData get bd => dsBytes.bd;
+  Bytes get bd => dsBytes.bytes;
 
   /// The [RootDataset] has no [parent]
   @override
@@ -46,7 +47,7 @@ abstract class RootDataset extends Dataset {
   // it's own specialized implementation for correctness and efficiency.
   Fmi get fmi;
 
-  /// Returns the encoded [ByteData] for the File Meta Information (FMI) for
+  /// Returns the encoded [Bytes] for the File Meta Information (FMI) for
   /// _this_. [fmiBytes] has _one-time_ setter that is initialized lazily.
   Uint8List get fmiBytes => dsBytes.fmiBytes;
 
@@ -56,10 +57,10 @@ abstract class RootDataset extends Dataset {
   /// indicates an unknown length.
   int get lengthInBytes => (dsBytes != null) ? dsBytes.prefix : -1;
 
-  ByteData get preamble =>
-      (dsBytes != null) ? dsBytes.preamble : kEmptyByteData;
+  Bytes get preamble =>
+      (dsBytes != null) ? dsBytes.preamble : kEmptyBytes;
 
-  ByteData get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyByteData;
+  Bytes get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyBytes;
 
   bool get hadULength => false;
 

@@ -11,8 +11,8 @@ void main() {
   // These next two values are used throughout the test
   // They can be changed to make the tests longer or shorter
   // Note: startYear and endYear must be initialized before calling Server.initialize
-  final startYear = -10000 + 1970;
-  final endYear = 10000 - 1970;
+  const startYear = -10000 + 1970;
+  const endYear = 10000 - 1970;
 
   Server.initialize(
       name: 'epoch_day_test',
@@ -374,7 +374,7 @@ void main() {
     });
 
     test('checkEpochDay', () {
-      //     system.level = Level.debug;
+      //     system.level = Level.info;
 
       final ced0 = checkEpochDay(kMinEpochDay);
       log.debug('ced0:$ced0');
@@ -400,7 +400,7 @@ void main() {
     });
 
     test('epochMicrosecondsToDate', () {
-//      system.level = Level.debug2;
+//      system.level = Level.info2;
       final List<int> emd0 = epochMicrosecondToDate(kMinEpochMicrosecond);
       log.debug('emd0: "$emd0"');
       expect(emd0, isNotNull);

@@ -4,6 +4,15 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
+import 'dart:math';
+
+import 'package:core/src/system/sdk.dart';
+import 'package:core/src/system/sys_info.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/value/date_time.dart';
+import 'package:core/src/value/uid.dart';
+import 'package:version/version.dart';
+
 // **** Note: this file cannot have any dependencies on dart:io or dart:html.
 
 //TODO: add a createFMI method to convert writer that uses the system object
@@ -14,15 +23,6 @@
 //  2. uses uuid for random uid generation TODO: finish organization
 //  3. Uses version for system version info
 //  4. Uses logging to be the root of Logger
-
-import 'dart:math';
-
-import 'package:core/src/system/sdk.dart';
-import 'package:core/src/system/sys_info.dart';
-import 'package:core/src/utils.dart';
-import 'package:core/src/value/date_time.dart';
-import 'package:core/src/value/uid.dart';
-import 'package:version/version.dart';
 
 //TODO: add a createFMI method to convert writer that uses the system object
 //      to generate the new FMI.

@@ -306,7 +306,7 @@ void main() {
       final usPixelRepresentation0 = new UStag(PTag.kPixelRepresentation, [0]);
       final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [2]);
       final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
-      final pixelAspectRatioValue0 = 1 / 2;
+      const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
           new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
@@ -344,7 +344,7 @@ void main() {
         ..add(unPixelPaddingRangeLimit0);
 
       final fd16c = new FrameDescriptor.fromDataset(rds0);
-      final nFrames0 = 1;
+      const nFrames0 = 1;
       final pixels0 = new Uint16List(fd16c.length * nFrames0);
       final ow16c = new FrameList16Bit(pixels0, nFrames0, fd16c);
 

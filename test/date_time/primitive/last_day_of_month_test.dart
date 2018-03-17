@@ -12,8 +12,8 @@ void main() {
 
   group('epochTest', () {
     test('Test for epochDay', () {
-      final startDay = -1;
-      final endDay = 1;
+      const startDay = -1;
+      const endDay = 1;
 
       //     int y = 1970;
       for (var i = 1; i <= 24; i++) {

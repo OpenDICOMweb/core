@@ -11,8 +11,8 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'map_item_test', level: Level.debug);
-  final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+  Server.initialize(name: 'map_item_test', level: Level.info);
+  final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
 
   group('MapItem', () {
     test('[] and []=', () {
@@ -270,7 +270,7 @@ void main() {
         ..add(ob0)
         ..add(ae0);
 
-//      system.level = Level.debug;
+//      system.level = Level.info;
       final dup = item.history;
       log.debug('item: $item, dup: $dup');
       expect(dup, isNotNull);
@@ -289,7 +289,7 @@ void main() {
 
       item..add(fd0)..add(as0)..add(ob0)..add(ae0);
 
-//      system.level = Level.debug;
+//      system.level = Level.info;
       final inRange0 = item.getElementsInRange(0, fd0.code);
       final inRange1 = item.getElementsInRange(0, fd0.code + 1);
       final inRange2 = item.getElementsInRange(0, ae0.code);
@@ -305,8 +305,8 @@ void main() {
     });
 
     test('Simple UItag, replace, and replaceUid test', () {
-      final uidString0 = '1.2.840.10008.5.1.4.34.5';
-      final uidString0a = '1.2.840.10008.5.1.4.34';
+      const uidString0 = '1.2.840.10008.5.1.4.34.5';
+      const uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
       final uidStringList0a = [uidString0a];
       final uid0 = new Uid(uidString0);
@@ -337,8 +337,8 @@ void main() {
     });
 
     test('Simple UItag.fromString, replace, and replaceUid test', () {
-      final uidString0 = '1.2.840.10008.5.1.4.34.5';
-      final uidString0a = '1.2.840.10008.5.1.4.34';
+      const uidString0 = '1.2.840.10008.5.1.4.34.5';
+      const uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
       final uidStringList0a = [uidString0a];
       final uid0 = new Uid(uidString0);
@@ -369,7 +369,7 @@ void main() {
     });
 
     test('Simple Random UItag, replace, and replaceUid test', () {
-      final count = 8;
+      const count = 8;
       for (var i = 1; i < count; i++) {
         final uidList0 = Uid.randomList(count);
         final uidList0a = Uid.randomList(count);
@@ -403,7 +403,7 @@ void main() {
 
     test('Simple Random UItag.fromString, replace, and replaceUid test', () {
       final rsg = new RSG(seed: 1);
-      final count = 8;
+      const count = 8;
       for (var i = 1; i < count; i++) {
         final uidStringList0 = rsg.getUIList(1, 1);
         final uidStringList0a = rsg.getUIList(1, 1);

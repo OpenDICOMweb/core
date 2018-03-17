@@ -14,12 +14,11 @@ void main() {
 
   group('getLength tests of RNG', () {
     final rng = new RNG(0);
-    final count = 10;
-
-    final minMin = 3;
-    final maxMin = 31;
-    final minMax = 32;
-    final maxMax = 255;
+    const count = 10;
+    const minMin = 3;
+    const maxMin = 31;
+    const minMax = 32;
+    const maxMax = 255;
 
     test('getLength test', () {
       for (var i = 0; i < count; i++) {
@@ -52,10 +51,10 @@ void main() {
 
   group('Integer tests of Random Number Generator(RNG)', () {
     final rng = new RNG(0);
-    final minMin = 3;
-    final maxMin = 31;
-    final minMax = 32;
-    final maxMax = 255;
+    const minMin = 3;
+    const maxMin = 31;
+    const minMax = 32;
+    const maxMax = 255;
     final minLength = rng.nextUint(minMin, maxMin);
     final maxLength =
         rng.nextUint(minLength, minLength + rng.nextUint(minMax, maxMax));

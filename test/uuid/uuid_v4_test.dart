@@ -50,8 +50,8 @@ void main() {
   group('[Parse/Unparse Tests]', () {
     test('Parsing a UUID', () {
       // Note: s0 and s1 are different at position 14.
-      final s0 = '00112233-4455-6677-8899-aabbccddeeff';
-      final s1 = '00112233-4455-4677-8899-aabbccddeeff';
+      const s0 = '00112233-4455-6677-8899-aabbccddeeff';
+      const s1 = '00112233-4455-4677-8899-aabbccddeeff';
       //           --------------^---------------------
 
       final uuid = Uuid.parse(s0, onError: (id) => null);

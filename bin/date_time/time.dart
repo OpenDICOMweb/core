@@ -10,7 +10,7 @@ void main() {
   Server.initialize(name: 'bin/test_time', level: Level.info0);
 
   log.debug('Good parseDcmTime');
-  final s = '24, 10, 20';
+  const s = '24, 10, 20';
   log.debug('  parseDcmTime: $s');
   final us = parseDcmTime(s);
   log.debug('    parseDcmTime: $us');

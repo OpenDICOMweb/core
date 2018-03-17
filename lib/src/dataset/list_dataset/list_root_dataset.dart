@@ -3,11 +3,10 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/list_dataset/list_dataset.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/utils/bytes.dart';
 
 /// A [ListRootDataset].
 class ListRootDataset extends RootDataset with ListDataset {
@@ -24,11 +23,11 @@ class ListRootDataset extends RootDataset with ListDataset {
 
   /// Creates an [ListRootDataset].
   ListRootDataset(this.fmi, this.codes, this.elements, String path,
-      ByteData bd, int fmiEnd)
+      Bytes bd, int fmiEnd)
       : super(path, bd, fmiEnd);
 
   /// Creates an empty, i.e. without [Element]s, [ListRootDataset].
-  ListRootDataset.empty(String path, ByteData bd, int fmiEnd)
+  ListRootDataset.empty(String path, Bytes bd, int fmiEnd)
       : fmi = new FmiList.empty(),
         codes = <int>[],
         elements = <Element>[],
@@ -39,7 +38,7 @@ class ListRootDataset extends RootDataset with ListDataset {
       : fmi = new FmiList.from(rds.fmi),
         codes = new List<int>.from(rds.codes),
         elements = new List<Element>.from(rds.elements),
-        super(rds.path, rds.dsBytes.bd, rds.dsBytes.fmiEnd);
+        super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
 
   RootDataset copy([RootDataset rds]) => new ListRootDataset.from(rds ?? this);
 }

@@ -8,8 +8,8 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final startYear = (1970 - 3000);
-  final endYear = (1970 + 1000);
+  const startYear = 1970 - 3000;
+  const endYear = 1970 + 1000;
   Server.initialize(
       name: 'epoch_day_test',
       // These next two values allow this program to run all valid
@@ -85,7 +85,7 @@ void main() {
     });
 
     test('Leap Year Performance Test', () {
-//      system.level = Level.debug2;
+//      system.level = Level.info2;
       log.debug('Leap Year Perfermance Test: $startYear - $endYear');
       final watch = new Stopwatch()..start();
 

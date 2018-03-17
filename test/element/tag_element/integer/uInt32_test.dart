@@ -864,7 +864,7 @@ void main() {
     });
 
     test('Uint32Base toByteData good values', () {
-      system.level = Level.debug;
+      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final uInt32list0 = rng.uint32List(1, 1);
@@ -912,7 +912,7 @@ void main() {
       }
 
       system.throwOnError = false;
-      final uInt32Max = const <int>[kUint32Max + 1];
+      const uInt32Max = const <int>[kUint32Max + 1];
       expect(Uint32.toByteData(uInt32Max), isNull);
 
       system.throwOnError = true;

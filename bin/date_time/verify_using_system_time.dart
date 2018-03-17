@@ -45,7 +45,7 @@ void checkSystemTime0() {
   final odwEpochDay = dateToEpochDay(dt.year, dt.month, dt.day);
   print('odwEpochDay:    $odwEpochDay');
 
-  final maxTimeInUS = 24 * 60 * 60 * 1000000;
+  const maxTimeInUS = 24 * 60 * 60 * 1000000;
   print('maxTimeinUS:    $maxTimeInUS');
   print('us/day:         $kMicrosecondsPerDay');
 

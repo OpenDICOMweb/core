@@ -231,7 +231,7 @@ void main() {
     test('AE formBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getAEList(1, 1);
-        final bytes = AE.toBytes(vList1);
+        final bytes = AE.toUint8List(vList1);
         log.debug('bytes:$bytes');
         final ae1 = AEtag.fromUint8List(PTag.kPerformedStationAETitle, bytes);
         log.debug('ae1: ${ae1.info}');
@@ -666,21 +666,21 @@ void main() {
     });
 
     test('AE fromBytes', () {
-      //  system.level = Level.debug;;
+      //  system.level = Level.info;;
       final vList1 = rsg.getAEList(1, 1);
-      final bytes = AE.toBytes(vList1);
+      final bytes = AE.toUint8List(vList1);
       log.debug('AE.fromUint8List(bytes): ${AE.fromUint8List(bytes)}, bytes: $bytes');
       expect(AE.fromUint8List(bytes), equals(vList1));
     });
 
     test('AE toBytes', () {
       final vList1 = rsg.getAEList(1, 1);
-      log.debug('AE.toBytes(vList1): ${AE.toBytes(vList1)}');
+      log.debug('AE.toUint8List(vList1): ${AE.toUint8List(vList1)}');
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = cvt.ascii.encode(vList1[0]);
-      expect(AE.toBytes(vList1), equals(values));
+      expect(AE.toUint8List(vList1), equals(values));
     });
 
     test('AE checkList good values', () {
@@ -992,7 +992,7 @@ void main() {
     test('CS formBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getCSList(1, 1);
-        final bytes = CS.toBytes(vList1);
+        final bytes = CS.toUint8List(vList1);
         log.debug('bytes:$bytes');
         final cs1 = CStag.fromUint8List(PTag.kGeometryOfKSpaceTraversal, bytes);
         log.debug('cs1: ${cs1.info}');
@@ -1542,23 +1542,23 @@ void main() {
     });
 
     test('CS fromBytes', () {
-      //  system.level = Level.debug;;
+      //  system.level = Level.info;;
       final vList1 = rsg.getCSList(1, 1);
-      final bytes = CS.toBytes(vList1);
+      final bytes = CS.toUint8List(vList1);
       log.debug('CS.fromUint8List(bytes): ${CS.fromUint8List(bytes)}, bytes: $bytes');
       expect(CS.fromUint8List(bytes), equals(vList1));
     });
 
     test('CS toBytes', () {
       final vList1 = rsg.getCSList(1, 1);
-      log.debug('CS.toBytes(vList1): ${CS.toBytes(vList1)}');
+      log.debug('CS.toUint8List(vList1): ${CS.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
-      expect(CS.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
+      expect(CS.toUint8List(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = cvt.ascii.encode(vList1[0]);
-      expect(CS.toBytes(vList1), equals(values));
+      expect(CS.toUint8List(vList1), equals(values));
     });
 
     test('CS checkList good values', () {
@@ -1900,7 +1900,7 @@ void main() {
     test('UI formBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUIList(1, 1);
-        final bytes = UI.toBytes(vList1);
+        final bytes = UI.toUint8List(vList1);
         log.debug('bytes:$bytes');
         final ui0 = UItag.fromUint8List(PTag.kSOPInstanceUID, bytes);
         log.debug('$i: ui0: ${ui0.info}');
@@ -2304,23 +2304,23 @@ void main() {
     });
 
     test('UI fromBytes', () {
-      //  system.level = Level.debug;;
+      //  system.level = Level.info;;
       final vList1 = rsg.getUIList(1, 1);
-      final bytes = UI.toBytes(vList1);
+      final bytes = UI.toUint8List(vList1);
       log.debug('UI.fromUint8List(bytes): ${UI.fromUint8List(bytes)}, bytes: $bytes');
       expect(UI.fromUint8List(bytes), equals(vList1));
     });
 
     test('UI toBytes', () {
       final vList1 = rsg.getUIList(1, 1);
-      log.debug('UI.toBytes(vList1): ${UI.toBytes(vList1)}');
+      log.debug('UI.toUint8List(vList1): ${UI.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
-      expect(UI.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
+      expect(UI.toUint8List(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = cvt.ascii.encode(vList1[0]);
-      expect(UI.toBytes(vList1), equals(values));
+      expect(UI.toUint8List(vList1), equals(values));
     });
 
     test('UI checkList good values', () {
@@ -2601,7 +2601,7 @@ void main() {
     test('UR formBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getURList(1, 1);
-        final bytes = UR.toBytes(vList1);
+        final bytes = UR.toUint8List(vList1);
         log.debug('bytes:$bytes');
         final ur0 = URtag.fromUint8List(PTag.kRetrieveURL, bytes);
         log.debug('ur0: ${ur0.info}');
@@ -2685,7 +2685,7 @@ void main() {
     test('UR decodeBinaryTextVF', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getURList(1, 1);
-        final bytes = UR.toBytes(vList1);
+        final bytes = UR.toUint8List(vList1);
         final dbTxt0 = StringBase.decodeBinaryTextVF(bytes, kMaxShortVF);
         log.debug('dbTxt0: $dbTxt0');
         expect(dbTxt0, equals(vList1));
@@ -3004,23 +3004,23 @@ void main() {
     });
 
     test('UR fromBytes', () {
-      //  system.level = Level.debug;;
+      //  system.level = Level.info;;
       final vList1 = rsg.getURList(1, 1);
-      final bytes = UR.toBytes(vList1);
+      final bytes = UR.toUint8List(vList1);
       log.debug('UR.fromUint8List(bytes): ${UR.fromUint8List(bytes)}, bytes: $bytes');
       expect(UR.fromUint8List(bytes), equals(vList1));
     });
 
     test('UR toBytes', () {
       final vList1 = rsg.getURList(1, 1);
-      log.debug('UR.toBytes(vList1): ${UR.toBytes(vList1)}');
+      log.debug('UR.toUint8List(vList1): ${UR.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
-      expect(UR.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
+      expect(UR.toUint8List(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = cvt.ascii.encode(vList1[0]);
-      expect(UR.toBytes(vList1), equals(values));
+      expect(UR.toUint8List(vList1), equals(values));
     });
 
     test('UR parse', () {
@@ -3028,13 +3028,13 @@ void main() {
       final vList0 = rsg.getISList(1, 1);
       expect(UR.parse(vList0[0]), Uri.parse(vList0[0]));
 
-      final vList1 = '123';
+      const vList1 = '123';
       expect(UR.parse(vList1), Uri.parse(vList1));
 
-      final vList2 = '12.34';
+      const vList2 = '12.34';
       expect(UR.parse(vList2), Uri.parse(vList2));
 
-      final vList3 = 'abc';
+      const vList3 = 'abc';
       expect(UR.parse(vList3), Uri.parse(vList3));
     });
 
@@ -3043,13 +3043,13 @@ void main() {
       final vList0 = rsg.getISList(1, 1);
       expect(UR.tryParse(vList0[0]), Uri.parse(vList0[0]));
 
-      final vList1 = '123';
+      const vList1 = '123';
       expect(UR.tryParse(vList1), Uri.parse(vList1));
 
-      final vList2 = '12.34';
+      const vList2 = '12.34';
       expect(UR.tryParse(vList2), Uri.parse(vList2));
 
-      final vList3 = 'abc';
+      const vList3 = 'abc';
       expect(UR.tryParse(vList3), Uri.parse(vList3));
     });
 

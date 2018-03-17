@@ -69,7 +69,7 @@ void main() {
       '1.2.840.10008.1.2.4.61'
     ];
 
-    final badUids = const <String>[
+    const badUids = const <String>[
       '',
       '1.2.3', // Invalid Length : length less than 6
       '3.2.840.10008.1.2.0', // '3.': not valid root
@@ -134,7 +134,7 @@ void main() {
     });
 
     test('isDicom', () {
-      final goodUids = const <String>[
+      const goodUids = const <String>[
         '1.2.840.10008.1.1',
         '1.2.840.10008.1.2',
         '1.2.840.10008.1.2.1',

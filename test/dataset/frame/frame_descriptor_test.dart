@@ -54,7 +54,7 @@ void main() {
     });
 
     test('Create FrameDescriptor.fromDataset', () {
-      final ts = TransferSyntax.kExplicitVRLittleEndian;
+      const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
           new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel = new UStag(PTag.kSamplesPerPixel, [1]);
@@ -68,7 +68,7 @@ void main() {
       final usPixelRepresentation = new UStag(PTag.kPixelRepresentation, [0]);
       final usPlanarConfiguration = new UStag(PTag.kPlanarConfiguration, [2]);
       final isPixelAspectRatio = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
-      final pixelAspectRatioValue = 1 / 2;
+      const pixelAspectRatioValue = 1 / 2;
       final usSmallestImagePixelValue =
           new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue =

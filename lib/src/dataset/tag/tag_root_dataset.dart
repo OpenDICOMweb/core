@@ -3,25 +3,23 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/utils/empty_list.dart';
+import 'package:core/src/utils/bytes.dart';
 
 /// A [TagRootDataset].
 class TagRootDataset extends MapRootDataset with TagDataset {
 
   /// Creates an empty, i.e. without TagElements, [TagRootDataset].
   TagRootDataset(Fmi fmi, Map<int, Element> eMap,
-      [String path = '', ByteData bd, int fmiEnd])
+      [String path = '', Bytes bd, int fmiEnd])
       : super(fmi, eMap, path, bd, fmiEnd);
 
   /// Creates an empty [TagRootDataset], i.e. without [Element]s.
-  TagRootDataset.empty([String path = '', ByteData bd, int fmiEnd = 0])
-      : super.empty(path, bd ?? kEmptyByteData, fmiEnd);
+  TagRootDataset.empty([String path = '', Bytes bd, int fmiEnd = 0])
+      : super.empty(path, bd ?? Bytes.kEmptyBytes, fmiEnd);
 
   // TODO: make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].

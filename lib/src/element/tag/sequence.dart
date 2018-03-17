@@ -9,6 +9,8 @@ import 'dart:typed_data';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/tag/tag_element.dart';
+import 'package:core/src/utils/errors.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/vr.dart';
@@ -47,11 +49,8 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   @override
   Iterable<Item> get items => values;
   @override
-  Uint8List get vfBytes => throw new UnimplementedError('vfBytes in SQtag');
-
-  @override
-  ByteData get vfByteData => throw new UnimplementedError('vfBytes in SQtag');
-
+  Bytes get vfBytes => unimplementedError('vfBytes in SQtag');
+  
   @override
   SQtag get noValues => update(emptyItemTagList);
 

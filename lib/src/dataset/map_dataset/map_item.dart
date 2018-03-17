@@ -4,13 +4,12 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/map_dataset/map_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
+import 'package:core/src/utils/bytes.dart';
 
 /// An [MapItem] implemented using a [Map].
 class MapItem extends Item with MapDataset {
@@ -20,7 +19,7 @@ class MapItem extends Item with MapDataset {
 
   // TODO: decide if we need these constructors
   /// Creates a [MapItem].
-  MapItem(Dataset parent, this.eMap, SQ sequence, ByteData bd)
+  MapItem(Dataset parent, SQ sequence, this.eMap, Bytes bd)
       : super(parent, sequence, bd);
 
   /// Creates an empty, i.e. without [Element]s, [MapItem].
@@ -32,7 +31,7 @@ class MapItem extends Item with MapDataset {
   MapItem.from(MapItem item, Dataset parent, SQ sequence)
       : eMap = new Map.from(item.eMap),
         super(
-            parent ?? item.parent, sequence ?? item.sequence, item.dsBytes.bd);
+            parent ?? item.parent, sequence ?? item.sequence, item.dsBytes.bytes);
 
   MapItem copy([MapItem item, Dataset parent, SQ sequence]) {
     item ??= this;

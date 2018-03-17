@@ -1045,7 +1045,7 @@ void main() {
     });
 
     test('Uint16Base listToByteData good values', () {
-      system.level = Level.debug;
+      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final uInt16list0 = rng.uint16List(1, 1);
@@ -1104,7 +1104,7 @@ void main() {
       }
 
       system.throwOnError = false;
-      final uInt32Max = const <int>[kUint32Max];
+      const uInt32Max = const <int>[kUint32Max];
       expect(Uint16.toByteData(uInt32Max), isNull);
 
       system.throwOnError = true;

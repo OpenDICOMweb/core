@@ -15,7 +15,7 @@ void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
 
-  final float64LstCommon0 = const <double>[
+  const float64LstCommon0 = const <double>[
     0.1,
     1.2,
     1.11,
@@ -44,7 +44,7 @@ void main() {
     });
 
     test('OD hasValidValues random: good values', () {
-//      system.level = Level.debug;
+//      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final float64List = rng.float64List(1, 1);
         expect(float64List is Float64List, true);
@@ -86,7 +86,7 @@ void main() {
     // test('OD null as values', () {});
 
     test('OD hashCode and == random', () {
- //     system.level = Level.debug;
+ //     system.level = Level.info;
       system.throwOnError = false;
       final rng = new RNG(1);
 

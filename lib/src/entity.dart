@@ -4,7 +4,6 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
-export 'package:core/src/utils/empty_list.dart';
 export 'package:core/src/entity/active_studies.dart';
 export 'package:core/src/entity/entity.dart';
 export 'package:core/src/entity/ie_level.dart';

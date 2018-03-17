@@ -14,6 +14,7 @@ import 'package:core/src/element/base/integer/pixel_data.dart';
 import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
@@ -40,7 +41,7 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
     final bytes = Uint8.fromList(vList, asView: true);
     return fromUint8List(tag, bytes, vfLengthField, fragments, ts);
   }
-
+  
   OBtagPixelData._(
       this.tag, this.values, this.vfLengthField, this.ts, this.fragments);
 
@@ -58,8 +59,18 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
   static OBtagPixelData from(IntBase e, [TransferSyntax ts]) =>
-      fromUint8List(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
+      fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
+  /// Creates an [OBtagPixelData] Element from a [Uint8List].
+  /// Returns a [Uint16List].
+  static OBtagPixelData fromBytes(Tag tag, Bytes bytes,
+      [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
+    vfLengthField ??= bytes.lengthInBytes;
+    if (!Tag.isValidVR(tag, kOBIndex))
+      return invalidTagError(tag, OBtagPixelData);
+    final vflf = _checkVFL(bytes.lengthInBytes, vfLengthField);
+    return new OBtagPixelData._(tag, bytes.asUint8List(), vflf, ts, fragments);
+  }
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
   static OBtagPixelData fromUint8List(Tag tag, Uint8List bytes,
@@ -113,16 +124,26 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
   static UNtagPixelData from(IntBase e, [TransferSyntax ts]) =>
-      fromUint8List(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
+      fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static UNtagPixelData fromUint8List(Tag tag, Uint8List bytes, int vfLengthField,
+  static UNtagPixelData fromBytes(Tag tag, Bytes bytes, int vfLengthField,
       [VFFragments fragments, TransferSyntax ts]) {
     if (!Tag.isValidVR(tag, kUNIndex))
       return invalidTagError(tag, UNtagPixelData);
     final vflf = _checkVFL(bytes.lengthInBytes, vfLengthField);
-    return new UNtagPixelData._(tag, bytes, vflf, fragments, ts);
+    return new UNtagPixelData._(tag, bytes.asUint8List(), vflf, fragments, ts);
+  }
+  
+  /// Creates an [UNtagPixelData] Element from a [Uint8List].
+  /// Returns a [Uint16List].
+  static UNtagPixelData fromUint8List(Tag tag, Uint8List bList, int vfLengthField,
+      [VFFragments fragments, TransferSyntax ts]) {
+    if (!Tag.isValidVR(tag, kUNIndex))
+      return invalidTagError(tag, UNtagPixelData);
+    final vflf = _checkVFL(bList.lengthInBytes, vfLengthField);
+    return new UNtagPixelData._(tag, bList, vflf, fragments, ts);
   }
 }
 
@@ -176,8 +197,17 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
   static OWtagPixelData from(IntBase e, [TransferSyntax ts]) =>
-      fromUint8List(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
+      fromBytes(e.tag, e.vfBytes, e.vfLengthField, e.fragments, ts);
 
+  /// Creates an [OWtagPixelData] Element from a [Uint8List].
+  static OWtagPixelData fromBytes(Tag tag, Bytes bytes,
+      int vfLengthField, [VFFragments fragments, TransferSyntax ts]) {
+    if (_isNotValidTag(tag, kOWIndex)) return null;
+    final vList = bytes.asUint16List();
+    final vflf = _getVFLF(vList.lengthInBytes, vfLengthField);
+    return new OWtagPixelData._(tag, vList, vflf, fragments, ts);
+  }
+  
   /// Creates an [OWtagPixelData] Element from a [Uint8List].
   static OWtagPixelData fromUint8List(Tag tag, Uint8List bytes,
       int vfLengthField, [VFFragments fragments, TransferSyntax ts]) {

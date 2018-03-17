@@ -12,26 +12,26 @@ void main() {
 
   group('Logger Tests', () {
     test('level comparison is a valid comparator', () {
-      final level1 = const Level('N3', 'NOT_REAL1', 253);
+      const level1 = const Level('N3', 'NOT_REAL1', 253);
       expect(level1 == level1, isTrue);
       expect(level1 <= level1, isTrue);
       expect(level1 >= level1, isTrue);
       expect(level1 < level1, isFalse);
       expect(level1 > level1, isFalse);
 
-      final level2 = const Level('N3', 'NOT_REAL2', 455);
+      const level2 = const Level('N3', 'NOT_REAL2', 455);
       expect(level1 <= level2, isTrue);
       expect(level1 < level2, isTrue);
       expect(level2 >= level1, isTrue);
       expect(level2 > level1, isTrue);
 
-      final level3 = const Level('N3', 'NOT_REAL3', 253);
+      const level3 = const Level('N3', 'NOT_REAL3', 253);
       expect(level1, isNot(same(level3))); // different instances
       expect(level1, equals(level3)); // same value.
     });
 
     test('default levels are in order', () {
-      final levels = Level.levels;
+      const levels = Level.levels;
 
       for (var i = 0; i < levels.length; i++) {
         for (var j = i + 1; j < levels.length; j++) {
@@ -41,7 +41,7 @@ void main() {
     });
 
     test('levels are comparable', () {
-      final unsorted = [
+      const unsorted = const <Level>[
         Level.info0,
         Level.config,
         Level.debug1,
@@ -59,7 +59,7 @@ void main() {
         Level.quarantine
       ];
 
-      final sorted = Level.levels;
+      const sorted = Level.levels;
 
       expect(unsorted, isNot(orderedEquals(sorted)));
 

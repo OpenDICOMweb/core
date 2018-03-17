@@ -16,7 +16,7 @@ void main() {
   List<double> float32List;
   system.throwOnError = false;
 
-  final listFloat32Common0 = const <double>[
+  const listFloat32Common0 = const <double>[
     1.1,
     1.11,
     1.111,

@@ -11,7 +11,7 @@ void main() {
 
   group('Private Creator tests', () {
     test('Valid Unknown Private Creator ', () {
-      final name0 = 'Unknown Creator Tag';
+      const name0 = 'Unknown Creator Tag';
       final pcTag0 = PCTag.make(0x00090010, kLOIndex, name0);
       log.debug('pcTag0: ${pcTag0.info}');
       expect(pcTag0.isValid, true);
@@ -19,7 +19,7 @@ void main() {
       log.debug('pc0: ${pc0.info}');
       expect(pcTag0.isValidValues(pc0.values), true);
 
-      final name1 = 'Foo';
+      const name1 = 'Foo';
       final pcTag1 = PCTag.make(0x000900FF, kLOIndex, name1);
       log.debug('pcTag1: ${pcTag1.info}');
       expect(pcTag1.isValid, true);
@@ -29,7 +29,7 @@ void main() {
     });
 
     test('Invalid Unknown Private Creator ', () {
-      final name0 = 'Bad Offset';
+      const name0 = 'Bad Offset';
       final pcTag0 = PCTag.make(0x00090009, kLOIndex, name0);
       log.debug('pcTag0: ${pcTag0.info}');
       expect(pcTag0.isValid, false);
@@ -39,14 +39,14 @@ void main() {
       expect(() => new LOtag(pcTag0, [name0, 'FOO']),
           throwsA(const isInstanceOf<InvalidValuesLengthError>()));
 
-      final name1 = 'Bad Offset';
+      const name1 = 'Bad Offset';
       final pcTag1 = PCTag.make(0x00090100, kLOIndex, name1);
       log.debug('pcTag1: ${pcTag1.info}');
       expect(pcTag1.isValid, false);
       expect(() => new LOtag(pcTag0, [name1, null]),
           throwsA(const isInstanceOf<InvalidValuesLengthError>()));
 
-      final name2 = 'Bad Offset';
+      const name2 = 'Bad Offset';
       final pcTag2 = PCTag.make(0x00090000, kLOIndex, name2);
       log.debug('pcTag2: ${pcTag2.info}');
       expect(pcTag1.isValid, false);
@@ -59,7 +59,7 @@ void main() {
       expect(() => new LOtag(pcTag1, [name2, '']),
           throwsA(const isInstanceOf<InvalidValuesLengthError>()));
 
-      final name3 = 'Bad Tag';
+      const name3 = 'Bad Tag';
       final pcTag3 = PCTag.make(0x00090000, kLOIndex, name3);
       log.debug('pcTag3: ${pcTag3.info}');
       expect(pcTag1.isValid, false);
@@ -74,7 +74,7 @@ void main() {
     });
 
     test('Valid Known Private Creator ', () {
-      final name0 = 'AGFA';
+      const name0 = 'AGFA';
       final pcTag0 = PCTag.make(0x00090010, kLOIndex, name0);
       log.debug('pcTag0: ${pcTag0.info}');
       expect(pcTag0.isValid, true);
@@ -82,7 +82,7 @@ void main() {
       log.debug('pc0: ${pc0.info}');
       expect(pcTag0.isValidValues(pc0.values), true);
 
-      final name1 = 'ACUSON';
+      const name1 = 'ACUSON';
       final pcTag1 = PCTag.make(0x000900FF, kLOIndex, name1);
       log.debug('pcTag1: ${pcTag1.info}');
       expect(pcTag1.isValid, true);
@@ -93,7 +93,7 @@ void main() {
 
     test('Valid Agfa 0009 Private Data', () {
       // Group 0009 creator
-      final agfa = 'AGFA';
+      const agfa = 'AGFA';
       final pcTag0 = PCTag.make(0x00090010, kLOIndex, agfa);
       expect(pcTag0.isValid, true);
       log.debug('pcTag0: $pcTag0');
@@ -102,7 +102,7 @@ void main() {
       log.debug('pc0: ${pc0.info}');
 
       // valid LOtag data
-      final value1 = 'Some Random Data String';
+      const value1 = 'Some Random Data String';
       final pdTag1 = PDTag.make(0x00091010, kLOIndex, pcTag0);
       log.debug('pdTag1.isValid: ${pdTag1.info}');
       expect(pdTag1.isValid, true);
@@ -113,7 +113,7 @@ void main() {
     });
 
     test('Valid Agfa 0019 Private Data', () {
-      final agfa = 'AGFA';
+      const agfa = 'AGFA';
 
       // Group 0019 creator
       final pcTag = PCTag.make(0x001900FF, kLOIndex, agfa);
@@ -125,7 +125,7 @@ void main() {
 
       // Urgent Sharath: make this separate test
       system.throwOnError = false;
-      final value0 = 'Some Random Data String';
+      const value0 = 'Some Random Data String';
       final pdTag0 = PDTag.make(0x0019FF05, kSTIndex, pcTag);
       log.debug('pdTag0: ${pdTag0.info}');
       expect(pdTag0.isValid, true);

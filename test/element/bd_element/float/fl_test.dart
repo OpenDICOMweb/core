@@ -16,7 +16,7 @@ void main() {
   final rng = new RNG(1);
 //  List<double> float32List;
 
-  final listFloat32Common0 = const <double>[
+  const listFloat32Common0 = const <double>[
     1.1,
     1.11,
     1.111,
@@ -42,8 +42,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final float32List = rng.float32List(1, 10);
         expect(float32List is Float32List, true);
-        final bd = makeFL(kSelectorFDValue, float32List);
-        final fl0 = new FLevr(bd);
+        final bytes = makeFL(kSelectorFDValue, float32List);
+        final fl0 = new FLevr(bytes);
         expect(fl0[0], equals(float32List[0]));
         expect(fl0.hasValidValues, true);
 

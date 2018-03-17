@@ -286,7 +286,7 @@ void main() {
     });
 
     test('getDcmTimeZoneStringHashIndex', () {
-//    	system.level = Level.debug;
+//    	system.level = Level.info;
 	    for (var i = 1; i < kTZLength; i++) {
 	    	final tz = kValidDcmTZStrings[i];
 		    final htz = dcmTZStringHash(tz);
@@ -298,11 +298,11 @@ void main() {
     });
 
     test('getDcmTimeZoneStringHashIndex-Random', () {
-	//    	system.level = Level.debug;
+	//    	system.level = Level.info;
     	const iterations = 1000;
     	final rng = new Random(0);
 
-	//    	system.level = Level.debug;
+	//    	system.level = Level.info;
 	    for (var i = 1; i < iterations; i++) {
 	    	final index = rng.nextInt(kTZLength - 1);
 		    final tz = kValidDcmTZStrings[index];
@@ -315,7 +315,7 @@ void main() {
     });
 
     test('getInetTimeZoneStringHashIndex', () {
-	//    	system.level = Level.debug;
+	//    	system.level = Level.info;
 	    for (var i = 1; i < kTZLength; i++) {
 		    final tz = kValidInetTZStrings[i];
 		    final htz = inetTZStringHash(tz);
@@ -327,11 +327,11 @@ void main() {
     });
 
     test('getInetTimeZoneStringHashIndex-Random', () {
-	//    	system.level = Level.debug;
+	//    	system.level = Level.info;
 	    const iterations = 1000;
 	    final rng = new Random(0);
 
-	//    	system.level = Level.debug;
+	//    	system.level = Level.info;
 	    for (var i = 1; i < iterations; i++) {
 		    final index = rng.nextInt(kTZLength - 1);
 		    final tz = kValidInetTZStrings[index];

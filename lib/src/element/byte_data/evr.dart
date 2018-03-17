@@ -13,6 +13,7 @@ import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/element/byte_data/bd_element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
@@ -20,7 +21,7 @@ const int _vrOffset = 4;
 
 abstract class EvrElement<V> implements BDElement<V> {
   @override
-  ByteData get bd;
+  Bytes get bytes;
   @override
   int get vfLength;
   int get valuesLength;
@@ -37,7 +38,7 @@ abstract class EvrElement<V> implements BDElement<V> {
       (other is EvrElement && isEqual(this, other));
 
   @override
-  int get hashCode => system.hasher.byteData(bd);
+  int get hashCode => system.hasher.intList(bytes);
 
   /// Returns _true_ if this Element is encoded as Explicit VR Little Endian;
   /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
@@ -45,13 +46,17 @@ abstract class EvrElement<V> implements BDElement<V> {
   bool get isEvr => true;
 
   @override
-  int get vrCode => bd.getUint16(_vrOffset, Endian.little);
+  int get vrCode => bytes.getUint16(_vrOffset);
 
   Uint8List get asBytes =>
-      bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
+      bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
 
-  static Element make(int code, int vrIndex, ByteData bd) =>
-      _evrBDMakers[vrIndex](bd, vrIndex);
+  static Element make(
+    int code,
+    Bytes bytes,
+    int vrIndex,
+  ) =>
+      _evrBDMakers[vrIndex](bytes, vrIndex);
 
   static final List<DecodeBinaryVF> _evrBDMakers = <DecodeBinaryVF>[
     _sqError, // stop reformat
@@ -72,43 +77,42 @@ abstract class EvrElement<V> implements BDElement<V> {
     UIevr.make, ULevr.make, USevr.make,
   ];
 
-  static Null _sqError(ByteData bd, [int vrIndex]) =>
-      invalidElementIndex(vrIndex);
+  static Null _sqError(Bytes bytes, [int vrIndex]) => invalidElementIndex(vrIndex);
 
-  static Element makePixelData(int code, int vrIndex, ByteData bd,
+  static Element makePixelData(int code, Bytes bytes, int vrIndex,
       [TransferSyntax ts, VFFragments fragments]) {
     if (code != kPixelData)
       return invalidKey(code, 'Invalid Tag Code for PixelData');
     switch (vrIndex) {
       case kOBIndex:
-        return OBevrPixelData.make(code, vrIndex, bd, ts, fragments);
+        return OBevrPixelData.make(code, vrIndex, bytes, ts, fragments);
       case kUNIndex:
-        return UNevrPixelData.make(code, vrIndex, bd, ts, fragments);
+        return UNevrPixelData.make(code, vrIndex, bytes, ts, fragments);
       case kOWIndex:
-        return OWevrPixelData.make(code, vrIndex, bd, ts, fragments);
+        return OWevrPixelData.make(code, vrIndex, bytes, ts, fragments);
       default:
         return invalidVRIndex(vrIndex, null, null);
     }
   }
 
-  /// Returns a new [SQevr], where [bd] is [ByteData] for complete sequence.
-  static SQevr makeSequence(
-          int code, ByteData bd, Dataset parent, Iterable<Item> items) =>
-      new SQevr(bd, parent, items);
+  /// Returns a new [SQevr], where [bytes] is [Bytes] for complete sequence.
+  static SQevr makeSequence(int code, Dataset parent,
+          [Iterable<Item> items, Bytes bytes]) =>
+      new SQevr(parent, items, bytes);
 }
 
 // This private function should only be used by EvrShortMixin, and EvrLongMixin
-int __vfLength(ByteData bd, int vfOffset) {
-  final length = bd.lengthInBytes - vfOffset;
+int __vfLength(Bytes bytes, int vfOffset) {
+  final length = bytes.lengthInBytes - vfOffset;
   assert(length.isEven);
-  assert(bd.lengthInBytes >= vfOffset);
+  assert(bytes.lengthInBytes >= vfOffset);
   assert((length >= 0 && length <= kUndefinedLength), 'length: $length');
   return length;
 }
 
 abstract class EvrShortMixin<V> {
   // **** Interface
-  ByteData get bd;
+  Bytes get bytes;
   int get eLength;
   // **** End interface
 
@@ -117,107 +121,107 @@ abstract class EvrShortMixin<V> {
 
   /// Returns the Value Field Length field.
   int get vfLengthField {
-    assert(bd.lengthInBytes >= _shortVFOffset);
-    final vflf = bd.getUint16(_shortVFLengthOffset, Endian.little);
+    assert(bytes.lengthInBytes >= _shortVFOffset);
+    final vflf = bytes.getUint16(_shortVFLengthOffset);
 //    assert(vflf == vfLength, 'vflf: $vflf != vfLength: $vfLength');
     return vflf;
   }
 
-  int get vfLength => __vfLength(bd, _shortVFOffset);
+  int get vfLength => __vfLength(bytes, _shortVFOffset);
 }
 
 // These private fields and functions should only be used by EvrShortMixin
 const int _shortVFLengthOffset = 6;
 const int _shortVFOffset = 8;
 
-ByteData _removeShortPadding(ByteData bd, [int padChar = kSpace]) =>
-    removePadding(bd, _shortVFOffset, padChar);
+Bytes _removeShortPadding(Bytes bytes, [int padChar = kSpace]) =>
+    removePadding(bytes, _shortVFOffset, padChar);
 
 abstract class EvrLongMixin<V> {
-  ByteData get bd;
+  Bytes get bytes;
 
   int get vfLengthOffset => _longVFLengthOffset;
   int get vfOffset => _longVFOffset;
 
   /// Returns the Value Field Length field.
   int get vfLengthField {
-    assert(bd.lengthInBytes >= _longVFOffset);
-    final vflf = bd.getUint32(_longVFLengthOffset, Endian.little);
+    assert(bytes.lengthInBytes >= _longVFOffset);
+    final vflf = bytes.getUint32(_longVFLengthOffset);
     assert(vflf == vfLength || vflf == kUndefinedLength);
     return vflf;
   }
 
-  int get vfLength => __vfLength(bd, _longVFOffset);
+  int get vfLength => __vfLength(bytes, _longVFOffset);
 }
 
 // These private fields and functions should only be used by EvrLongMixin
 const int _longVFLengthOffset = 8;
 const int _longVFOffset = 12;
 
-ByteData _removeLongPadding(ByteData bd, [int padChar = kSpace]) =>
-    removePadding(bd, _longVFOffset, padChar);
+Bytes _removeLongPadding(Bytes bytes, [int padChar = kSpace]) =>
+    removePadding(bytes, _longVFOffset, padChar);
 
 class FLevr extends FL
     with Common, EvrElement<double>, EvrShortMixin<double>, BDFloat32Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  FLevr(this.bd);
+  FLevr(this.bytes);
 
   @override
-  Iterable<double> get values => Float32.fromByteData(vfByteData);
+  Float32List get values => vfBytes.asFloat32List();
 
-  static FLevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kFLIndex && bd.lengthInBytes.isEven);
-    return new FLevr(bd);
+  static FLevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kFLIndex && bytes.lengthInBytes.isEven);
+    return new FLevr(bytes);
   }
 }
 
 class OFevr extends OF
     with Common, EvrElement<double>, EvrLongMixin<double>, BDFloat64Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  OFevr(this.bd);
+  OFevr(this.bytes);
 
   @override
-  Iterable<double> get values => Float32.fromByteData(vfByteData);
+  Float32List get values => vfBytes.asFloat32List();
 
-  static OFevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kOFIndex && bd.lengthInBytes.isEven);
-    return new OFevr(bd);
+  static OFevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kOFIndex && bytes.lengthInBytes.isEven);
+    return new OFevr(bytes);
   }
 }
 
 class FDevr extends FD
     with Common, EvrElement<double>, EvrShortMixin<double>, BDFloat64Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  FDevr(this.bd);
+  FDevr(this.bytes);
 
   @override
-  Iterable<double> get values => Float64.fromByteData(vfByteData);
+  Float64List get values => vfBytes.asFloat64List();
 
-  static FDevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kFDIndex && bd.lengthInBytes.isEven);
-    return new FDevr(bd);
+  static FDevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kFDIndex && bytes.lengthInBytes.isEven);
+    return new FDevr(bytes);
   }
 }
 
 class ODevr extends OD
     with Common, EvrElement<double>, EvrLongMixin<double>, BDFloat64Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  ODevr(this.bd);
+  ODevr(this.bytes);
 
   @override
-  Iterable<double> get values => Float64.fromByteData(vfByteData);
+  Float64List get values => vfBytes.asFloat64List();
 
-  static ODevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kODIndex && bd.lengthInBytes.isEven);
-    return new ODevr(bd);
+  static ODevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kODIndex && bytes.lengthInBytes.isEven);
+    return new ODevr(bytes);
   }
 }
 
@@ -226,143 +230,143 @@ class ODevr extends OD
 class OBevr extends OB
     with Common, EvrElement<int>, EvrLongMixin<int>, IntMixin, Int8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  OBevr(this.bd);
+  OBevr(this.bytes);
 
   @override
-  Iterable<int> get values => Uint8.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint8List();
 
-  static OBevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kOBIndex && bd.lengthInBytes.isEven);
-    return new OBevr(bd);
+  static OBevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kOBIndex && bytes.lengthInBytes.isEven);
+    return new OBevr(bytes);
   }
 }
 
 class OBevrPixelData extends OBPixelData
     with Common, EvrElement<int>, EvrLongMixin<int>, IntMixin, Int8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
   @override
   TransferSyntax ts;
   @override
   VFFragments fragments;
 
-  OBevrPixelData(this.bd, [this.ts, this.fragments]);
+  OBevrPixelData(this.bytes, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values => Uint8.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint8List();
 
-  static OBevrPixelData make(int code, int vrIndex, ByteData bd,
+  static OBevrPixelData make(int code, int vrIndex, Bytes bytes,
       [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kOBIndex && bd.lengthInBytes.isEven);
-    return new OBevrPixelData(bd, ts, fragments);
+    assert(vrIndex != null || vrIndex == kOBIndex && bytes.lengthInBytes.isEven);
+    return new OBevrPixelData(bytes, ts, fragments);
   }
 }
 
 class UNevr extends UN
     with Common, EvrElement<int>, EvrLongMixin<int>, IntMixin, Int8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  UNevr(this.bd);
+  UNevr(this.bytes);
 
   @override
   Iterable<int> get values => vfBytes;
 
-  static UNevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kUNIndex && bd.lengthInBytes.isEven);
-    return new UNevr(bd);
+  static UNevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kUNIndex && bytes.lengthInBytes.isEven);
+    return new UNevr(bytes);
   }
 }
 
 class UNevrPixelData extends UNPixelData
     with Common, EvrElement<int>, EvrLongMixin<int>, IntMixin, Int8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
   @override
   TransferSyntax ts;
   @override
   VFFragments fragments;
 
-  UNevrPixelData(this.bd, [this.ts, this.fragments]);
+  UNevrPixelData(this.bytes, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values => Uint8.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint8List();
 
-  static UNevrPixelData make(int code, int vrIndex, ByteData bd,
+  static UNevrPixelData make(int code, int vrIndex, Bytes bytes,
       [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kUNIndex && bd.lengthInBytes.isEven);
-    return new UNevrPixelData(bd, ts, fragments);
+    assert(vrIndex != null || vrIndex == kUNIndex && bytes.lengthInBytes.isEven);
+    return new UNevrPixelData(bytes, ts, fragments);
   }
 }
 
 class SSevr extends SS
     with Common, EvrElement<int>, EvrShortMixin<int>, IntMixin, Int16Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  SSevr(this.bd);
+  SSevr(this.bytes);
 
   @override
-  Iterable<int> get values => Int16.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asInt16List();
 
-  static SSevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kSSIndex && bd.lengthInBytes.isEven);
-    return new SSevr(bd);
+  static SSevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kSSIndex && bytes.lengthInBytes.isEven);
+    return new SSevr(bytes);
   }
 }
 
 class USevr extends US
     with Common, EvrElement<int>, EvrShortMixin<int>, IntMixin, Int16Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  USevr(this.bd);
+  USevr(this.bytes);
 
   @override
-  Iterable<int> get values => Uint16.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint16List();
 
-  static USevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kUSIndex && bd.lengthInBytes.isEven);
-    return new USevr(bd);
+  static USevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kUSIndex && bytes.lengthInBytes.isEven);
+    return new USevr(bytes);
   }
 }
 
 class OWevr extends OW
     with Common, EvrElement<int>, EvrLongMixin<int>, IntMixin, Int16Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  OWevr(this.bd);
+  OWevr(this.bytes);
 
   @override
-  Iterable<int> get values => Uint16.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint16List();
 
-  static OWevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kOWIndex && bd.lengthInBytes.isEven);
-    return new OWevr(bd);
+  static OWevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kOWIndex && bytes.lengthInBytes.isEven);
+    return new OWevr(bytes);
   }
 }
 
 class OWevrPixelData extends OWPixelData
     with Common, EvrElement<int>, EvrLongMixin<int>, IntMixin, Int16Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
   @override
   TransferSyntax ts;
   @override
   VFFragments fragments;
 
-  OWevrPixelData(this.bd, [this.ts, this.fragments]);
+  OWevrPixelData(this.bytes, [this.ts, this.fragments]);
 
   @override
-  Iterable<int> get values => Uint16.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint16List();
 
-  static OWevrPixelData make(int code, int vrIndex, ByteData bd,
+  static OWevrPixelData make(int code, int vrIndex, Bytes bytes,
       [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kOWIndex && bd.lengthInBytes.isEven);
-    return new OWevrPixelData(bd, ts, fragments);
+    assert(vrIndex != null || vrIndex == kOWIndex && bytes.lengthInBytes.isEven);
+    return new OWevrPixelData(bytes, ts, fragments);
   }
 }
 
@@ -372,16 +376,16 @@ class OWevrPixelData extends OWPixelData
 class ATevr extends AT
     with Common, EvrElement<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  ATevr(this.bd);
+  ATevr(this.bytes);
 
   @override
-  Iterable<int> get values => Uint32.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint32List();
 
-  static ATevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kATIndex && bd.lengthInBytes.isEven);
-    return new ATevr(bd);
+  static ATevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kATIndex && bytes.lengthInBytes.isEven);
+    return new ATevr(bytes);
   }
 }
 
@@ -389,16 +393,16 @@ class ATevr extends AT
 class OLevr extends OL
     with Common, EvrElement<int>, EvrLongMixin<int>, IntMixin, Int32Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  OLevr(this.bd);
+  OLevr(this.bytes);
 
   @override
-  Iterable<int> get values => Uint32.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint32List();
 
-  static OLevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kOLIndex && bd.lengthInBytes.isEven);
-    return new OLevr(bd);
+  static OLevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kOLIndex && bytes.lengthInBytes.isEven);
+    return new OLevr(bytes);
   }
 }
 
@@ -406,16 +410,16 @@ class OLevr extends OL
 class SLevr extends SL
     with Common, EvrElement<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  SLevr(this.bd);
+  SLevr(this.bytes);
 
   @override
-  Iterable<int> get values => Uint32.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint32List();
 
-  static SLevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kSLIndex && bd.lengthInBytes.isEven);
-    return new SLevr(bd);
+  static SLevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kSLIndex && bytes.lengthInBytes.isEven);
+    return new SLevr(bytes);
   }
 }
 
@@ -423,16 +427,16 @@ class SLevr extends SL
 class ULevr extends UL
     with Common, EvrElement<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  ULevr(this.bd);
+  ULevr(this.bytes);
 
   @override
-  Iterable<int> get values => Uint32.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint32List();
 
-  static Element<int> make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kULIndex && bd.lengthInBytes.isEven);
-    return (bd.getUint16(2) == 0) ? new GLevr(bd) : new ULevr(bd);
+  static Element<int> make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kULIndex && bytes.lengthInBytes.isEven);
+    return (bytes.getUint16(2) == 0) ? new GLevr(bytes) : new ULevr(bytes);
   }
 }
 
@@ -440,16 +444,16 @@ class ULevr extends UL
 class GLevr extends GL
     with Common, EvrElement<int>, EvrShortMixin<int>, IntMixin, Int32Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  GLevr(this.bd);
+  GLevr(this.bytes);
 
   @override
-  Iterable<int> get values => Uint32.fromByteData(vfByteData);
+  Iterable<int> get values => vfBytes.asUint32List();
 
-  static GLevr make(ByteData bd, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kULIndex && bd.lengthInBytes.isEven);
-    return new GLevr(bd);
+  static GLevr make(Bytes bytes, int vrIndex) {
+    assert(vrIndex != null || vrIndex == kULIndex && bytes.lengthInBytes.isEven);
+    return new GLevr(bytes);
   }
 }
 
@@ -463,14 +467,14 @@ class AEevr extends AE
         BDStringMixin,
         AsciiMixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  AEevr(this.bd);
+  AEevr(this.bytes);
 
-  static AEevr make(ByteData bd, int vrIndex) {
+  static AEevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kAEIndex);
-    assert(checkPadding(bd));
-    return new AEevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new AEevr(_removeShortPadding(bytes));
   }
 }
 
@@ -482,15 +486,15 @@ class ASevr extends AS
         BDStringMixin,
         AsciiMixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  ASevr(this.bd);
+  ASevr(this.bytes);
 
-  static ASevr make(ByteData bd, int vrIndex) {
+  static ASevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kASIndex);
-    if (bd.lengthInBytes != 12)
-      log.error('Invalid Age (AS) length: ${bd.lengthInBytes}');
-    return new ASevr(bd);
+    if (bytes.lengthInBytes != 12)
+      log.error('Invalid Age (AS) length: ${bytes.lengthInBytes}');
+    return new ASevr(bytes);
   }
 }
 
@@ -502,14 +506,14 @@ class CSevr extends CS
         BDStringMixin,
         AsciiMixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  CSevr(this.bd);
+  CSevr(this.bytes);
 
-  static CSevr make(ByteData bd, int vrIndex) {
+  static CSevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kCSIndex);
-    assert(checkPadding(bd));
-    return new CSevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new CSevr(_removeShortPadding(bytes));
   }
 }
 
@@ -521,15 +525,15 @@ class DAevr extends DA
         BDStringMixin,
         AsciiMixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  DAevr(this.bd);
+  DAevr(this.bytes);
 
-  static DAevr make(ByteData bd, int vrIndex) {
+  static DAevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kDAIndex);
-    if (bd.lengthInBytes != 16 && bd.lengthInBytes != 8)
-      log.error('Invalid Date (DA) length: ${bd.lengthInBytes}');
-    return new DAevr(bd);
+    if (bytes.lengthInBytes != 16 && bytes.lengthInBytes != 8)
+      log.error('Invalid Date (DA) length: ${bytes.lengthInBytes}');
+    return new DAevr(bytes);
   }
 }
 
@@ -541,13 +545,13 @@ class DSevr extends DS
         BDStringMixin,
         AsciiMixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  DSevr(this.bd);
+  DSevr(this.bytes);
 
-  static DSevr make(ByteData bd, int vrIndex) {
+  static DSevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kDSIndex);
-    return new DSevr(_removeShortPadding(bd));
+    return new DSevr(_removeShortPadding(bytes));
   }
 }
 
@@ -559,14 +563,14 @@ class DTevr extends DT
         BDStringMixin,
         AsciiMixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  DTevr(this.bd);
+  DTevr(this.bytes);
 
-  static DTevr make(ByteData bd, int vrIndex) {
+  static DTevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kDTIndex);
-    assert(checkPadding(bd));
-    return new DTevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new DTevr(_removeShortPadding(bytes));
   }
 }
 
@@ -578,14 +582,14 @@ class ISevr extends IS
         BDStringMixin,
         AsciiMixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  ISevr(this.bd);
+  ISevr(this.bytes);
 
-  static ISevr make(ByteData bd, int vrIndex) {
+  static ISevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kISIndex);
-    assert(checkPadding(bd));
-    return new ISevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new ISevr(_removeShortPadding(bytes));
   }
 }
 
@@ -597,14 +601,14 @@ class UIevr extends UI
         BDStringMixin,
         AsciiMixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  UIevr(this.bd);
+  UIevr(this.bytes);
 
-  static UIevr make(ByteData bd, int vrIndex) {
+  static UIevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kUIIndex);
-    assert(checkPadding(bd, kNull));
-    return new UIevr(_removeShortPadding(bd, kNull));
+    assert(checkPadding(bytes, kNull));
+    return new UIevr(_removeShortPadding(bytes, kNull));
   }
 }
 
@@ -616,17 +620,17 @@ class LOevr extends LO
         BDStringMixin,
         Utf8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  LOevr(this.bd);
+  LOevr(this.bytes);
 
-  static Element make(ByteData bd, int vrIndex) {
+  static Element make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);
-    assert(checkPadding(bd));
-    final v = _removeShortPadding(bd);
+    assert(checkPadding(bytes));
+    final v = _removeShortPadding(bytes);
     // Read code elt.
-    final group = bd.getUint16(0, Endian.little);
-    final elt = bd.getUint16(2, Endian.little);
+    final group = bytes.getUint16(0);
+    final elt = bytes.getUint16(2);
     return (Tag.isPrivateGroup(group) && elt >= 0x10 && elt <= 0xFF)
         ? new PCevr(v)
         : new LOevr(v);
@@ -641,9 +645,9 @@ class PCevr extends PC
         BDStringMixin,
         Utf8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  PCevr(this.bd);
+  PCevr(this.bytes);
 
   /// Returns a [PCTag].
   @override
@@ -659,22 +663,22 @@ class PCevr extends PC
   @override
   String get id => vfBytesAsAscii;
 
-  static PCevr make(ByteData bd, int vrIndex) {
+  static PCevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);
-    assert(checkPadding(bd));
-    return new PCevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new PCevr(_removeShortPadding(bytes));
   }
 
   static PCevr makeEmptyPrivateCreator(int pdTag, int vrIndex) {
     final group = Tag.privateGroup(pdTag);
     final sgNumber = (pdTag & 0xFFFF) >> 8;
-    final bd = new ByteData(8)
-      ..setUint16(0, group, Endian.little)
-      ..setUint16(0, sgNumber, Endian.little)
+    final bytes = new Bytes(8)
+      ..setUint16(0, group)
+      ..setUint16(0, sgNumber)
       ..setUint8(4, kL)
       ..setUint8(5, kO)
-      ..setUint16(6, 0, Endian.little);
-    return new PCevr(bd);
+      ..setUint16(6, 0);
+    return new PCevr(bytes);
   }
 }
 
@@ -686,14 +690,14 @@ class PNevr extends PN
         BDStringMixin,
         Utf8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  PNevr(this.bd);
+  PNevr(this.bytes);
 
-  static PNevr make(ByteData bd, int vrIndex) {
+  static PNevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kPNIndex);
-    assert(checkPadding(bd));
-    return new PNevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new PNevr(_removeShortPadding(bytes));
   }
 }
 
@@ -705,14 +709,14 @@ class SHevr extends SH
         BDStringMixin,
         Utf8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  SHevr(this.bd);
+  SHevr(this.bytes);
 
-  static SHevr make(ByteData bd, int vrIndex) {
+  static SHevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kSHIndex);
-    assert(checkPadding(bd));
-    return new SHevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new SHevr(_removeShortPadding(bytes));
   }
 }
 
@@ -724,16 +728,16 @@ class LTevr extends LT
         BDStringMixin,
         Utf8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  LTevr(this.bd);
+  LTevr(this.bytes);
 
   @override
-  Iterable<String> get values => LT.fromByteData(vfByteData);
-  static LTevr make(ByteData bd, int vrIndex) {
+  Iterable<String> get values => [vfBytes.getUtf8()];
+  static LTevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLTIndex);
-    assert(checkPadding(bd));
-    return new LTevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new LTevr(_removeShortPadding(bytes));
   }
 }
 
@@ -745,14 +749,14 @@ class STevr extends ST
         BDStringMixin,
         Utf8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  STevr(this.bd);
+  STevr(this.bytes);
 
-  static STevr make(ByteData bd, int vrIndex) {
+  static STevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kSTIndex);
-    assert(checkPadding(bd));
-    return new STevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new STevr(_removeShortPadding(bytes));
   }
 }
 
@@ -764,15 +768,15 @@ class TMevr extends TM
         BDStringMixin,
         AsciiMixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  TMevr(this.bd);
+  TMevr(this.bytes);
 
-  static TMevr make(ByteData bd, int vrIndex) {
+  static TMevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kTMIndex,
         'vrIndex: $vrIndex, vr: ${vrIdByIndex[vrIndex]}');
-    assert(checkPadding(bd));
-    return new TMevr(_removeShortPadding(bd));
+    assert(checkPadding(bytes));
+    return new TMevr(_removeShortPadding(bytes));
   }
 }
 
@@ -784,14 +788,14 @@ class UCevr extends UC
         BDStringMixin,
         Utf8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  UCevr(this.bd);
+  UCevr(this.bytes);
 
-  static UCevr make(ByteData bd, int vrIndex) {
+  static UCevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kUCIndex);
-    assert(checkPadding(bd));
-    return new UCevr(_removeLongPadding(bd));
+    assert(checkPadding(bytes));
+    return new UCevr(_removeLongPadding(bytes));
   }
 }
 
@@ -803,14 +807,14 @@ class URevr extends UR
         BDStringMixin,
         Utf8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  URevr(this.bd);
+  URevr(this.bytes);
 
-  static URevr make(ByteData bd, int vrIndex) {
+  static URevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kURIndex);
-    assert(checkPadding(bd));
-    return new URevr(_removeLongPadding(bd));
+    assert(checkPadding(bytes));
+    return new URevr(_removeLongPadding(bytes));
   }
 }
 
@@ -822,27 +826,27 @@ class UTevr extends UT
         BDStringMixin,
         Utf8Mixin {
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
-  UTevr(this.bd);
+  UTevr(this.bytes);
 
-  static UTevr make(ByteData bd, int vrIndex) {
+  static UTevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kUTIndex);
-    assert(checkPadding(bd));
-    return new UTevr(_removeLongPadding(bd));
+    assert(checkPadding(bytes));
+    return new UTevr(_removeLongPadding(bytes));
   }
 }
 
 class SQevr extends SQ<int>
     with Common, EvrElement<Item>, EvrLongMixin<String> {
   @override
-  final ByteData bd;
-  @override
   final Dataset parent;
   @override
   final Iterable<Item> values;
+  @override
+  final Bytes bytes;
 
-  SQevr(this.bd, this.parent, this.values);
+  SQevr(this.parent, this.values, this.bytes);
 
   @override
   int get valuesLength => values.length;
@@ -852,6 +856,6 @@ class SQevr extends SQ<int>
   @override
   SQ updateF(Iterable<Item> f(Iterable<Item> vList)) => unsupportedError();
 
-  static SQevr make(ByteData bd, Dataset parent, Iterable<Item> values) =>
-      new SQevr(bd, parent, values);
+  static SQevr make(Dataset parent, [SQ sequence, Iterable<Item> values, Bytes bytes]) =>
+      new SQevr(parent, values, bytes);
 }

@@ -7,21 +7,22 @@
 import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
+import 'package:core/src/utils/bytes.dart';
 
 /// Dataset Bytes ([DSBytes]).
 abstract class DSBytes {
   // **** Interface ****
 
-  /// The [ByteData] containing this Dataset.
-  ByteData get bd;
+  /// The [Bytes] containing this Dataset.
+  Bytes get bytes;
 
-  /// The index of the first byte of the Dataset in [bd].
-  int get dsStart => bd.offsetInBytes;
+  /// The index of the first byte of the Dataset in [bytes].
+  int get dsStart => bytes.offsetInBytes;
 
   /// The number of bytes from the beginning to the end of the Dataset.
-  int get dsLength => bd.lengthInBytes;
+  int get dsLength => bytes.lengthInBytes;
 
-  /// The index of the last byte of the Dataset in [bd].
+  /// The index of the last byte of the Dataset in [bytes].
   int get dsEnd => dsStart + dsLength;
 
   /// The length of the entire Dataset including header, trailer, preamble, etc.
@@ -48,32 +49,32 @@ abstract class DSBytes {
     if (other is DSBytes) {
       if (dsEnd != other.dsEnd) return false;
       for (var i = 0; i < dsEnd; i++)
-        if (bd.getUint8(i) != other.bd.getUint8(i)) return false;
+        if (bytes.getUint8(i) != other.bytes.getUint8(i)) return false;
       return true;
     }
     return false;
   }
 
   @override
-  int get hashCode => bd.hashCode;
+  int get hashCode => bytes.hashCode;
 
-  /// Returns the Value Field as a [ByteData].
-  ByteData get vfByteData => bd;
+  /// Returns the Value Field as a [Bytes].
+  Bytes get vfBytes => bytes;
 
   /// Returns the Value Field as a [Uint8List].
-  Uint8List get vfBytes =>
-      bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
+  Uint8List get vfAsUint8List =>
+      bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
 
   // **** Internal Stuff ****
 
   /// Return a Uint16 value at [offset].
-  int getUint8(int offset) => bd.getUint16(offset);
+  int getUint8(int offset) => bytes.getUint16(offset);
 
   /// Return a Uint16 value at [offset].
-  int getUint16(int offset) => bd.getUint16(offset, Endian.little);
+  int getUint16(int offset) => bytes.getUint16(offset);
 
   /// Return a Uint32 value at [offset].
-  int getUint32(int offset) => bd.getUint32(offset, Endian.little);
+  int getUint32(int offset) => bytes.getUint32(offset);
 
   int getToken() {
     final group = getUint16(0);
@@ -88,37 +89,37 @@ class RDSBytes extends DSBytes {
   @override
   final int vfOffset = kValueFieldOffset;
 
-  /// The [ByteData] for a RootDataset. It spans from the first byte
+  /// The [Bytes] for a RootDataset. It spans from the first byte
   /// successfully read to the end of the last byte successfully read.
-  /// The [bd].buffer might have bytes before and/or after this [bd].
+  /// The [bytes].buffer might have bytes before and/or after this [bytes].
   @override
-  final ByteData bd;
+  final Bytes bytes;
 
   final bool hasPrefix;
 
-  /// The [ByteData] from index 0 to end of last FMI element in [bd].
+  /// The [Bytes] from index 0 to end of last FMI element in [bytes].
   /// If FMI was not successfully read this will be null.
   final int fmiEnd;
 
-  RDSBytes(this.bd, this.fmiEnd, {this.hasPrefix = true});
+  RDSBytes(this.bytes, this.fmiEnd, {this.hasPrefix = true});
 
   RDSBytes.empty()
-      : bd = kEmptyByteData,
+      : bytes = kEmptyBytes,
         fmiEnd = 0,
         hasPrefix = false;
 
-  ByteData get preamble =>
-      bd.buffer.asByteData(kPreambleOffset, kPreambleLength);
-  ByteData get prefix => bd.buffer.asByteData(kPrefixOffset, kPrefixLength);
+  Bytes get preamble =>
+      bytes.asBytes(kPreambleOffset, kPreambleLength);
+  Bytes get prefix => bytes.asBytes(kPrefixOffset, kPrefixLength);
 
   int get startDelimiter => getUint32(kPrefixOffset);
 
-  int get fmiStart => bd.offsetInBytes;
+  int get fmiStart => bytes.offsetInBytes;
   int get rdsStart => fmiEnd;
   int get rdsEnd => dsEnd;
 
   Uint8List get fmiBytes => (hasPrefix)
-      ? bd.buffer.asUint8List(bd.offsetInBytes, 132)
+      ? bytes.buffer.asUint8List(bytes.offsetInBytes, 132)
       : kEmptyUint8List;
 
   @override
@@ -127,8 +128,8 @@ class RDSBytes extends DSBytes {
   int get vfLengthField => vfLength;
 
   @override
-  Uint8List get vfBytes =>
-      bd.buffer.asUint8List(bd.offsetInBytes + kHeaderSize, bd.lengthInBytes);
+  Uint8List get vfAsUint8List =>
+      bytes.buffer.asUint8List(bytes.offsetInBytes + kHeaderSize, bytes.lengthInBytes);
 
 //  static const int kToken = kDcmPrefix;
   static const int kPreambleOffset = 0;
@@ -140,7 +141,7 @@ class RDSBytes extends DSBytes {
 
   static final RDSBytes kEmpty = new RDSBytes.empty();
 
-  static RDSBytes make(ByteData bd, [int fmiEnd]) => new RDSBytes(bd, fmiEnd);
+  static RDSBytes make(Bytes bd, [int fmiEnd]) => new RDSBytes(bd, fmiEnd);
 }
 
 /// Item Dataset Bytes ([IDSBytes]).
@@ -150,12 +151,12 @@ class IDSBytes extends DSBytes {
   final int vfOffset = kValueFieldOffset;
   @override
 
-  /// The [ByteData] from which _this_ was read.
-  final ByteData bd;
+  /// The [Bytes] from which _this_ was read.
+  final Bytes bytes;
 
-  IDSBytes(this.bd);
+  IDSBytes(this.bytes);
 
-  IDSBytes.empty() : bd = kEmptyByteData;
+  IDSBytes.empty() : bytes = kEmptyBytes;
 
   int get startDelimiter => getUint32(kStartDelimiterOffset);
 
@@ -165,7 +166,7 @@ class IDSBytes extends DSBytes {
 
   /// Returns the value in the Value Field Length field.
   @override
-  int get vfLengthField => bd.getUint32(kVFLengthFieldOffset);
+  int get vfLengthField => bytes.getUint32(kVFLengthFieldOffset);
 
   int get endDelimiter =>
       (hasULength) ? getUint32(dsLength - kTrailerSize) : null;
@@ -187,8 +188,8 @@ class IDSBytes extends DSBytes {
   int get trailerLength => (hasULength) ? kTrailerSize : 0;
 
   @override
-  Uint8List get vfBytes =>
-      bd.buffer.asUint8List(bd.offsetInBytes + kValueFieldOffset, dsEnd);
+  Bytes get vfBytes =>
+      bytes.asBytes(bytes.offsetInBytes + kValueFieldOffset, dsEnd);
 
   static const int kStartDelimiterOffset = 0;
   static const int kVFLengthFieldOffset = 4;
@@ -200,5 +201,5 @@ class IDSBytes extends DSBytes {
 
   static final IDSBytes kEmpty = new IDSBytes.empty();
 
-  static IDSBytes make(ByteData bd) => new IDSBytes(bd);
+  static IDSBytes make(Bytes bd) => new IDSBytes(bd);
 }

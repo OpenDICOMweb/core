@@ -8,7 +8,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'time_test', level: Level.debug);
+  Server.initialize(name: 'time_test', level: Level.info);
 
   const goodDcmTimes = const <String>[
     '000000',

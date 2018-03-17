@@ -85,7 +85,7 @@ String makeDeIdNonUidList() {
   sb1.writeln('];\n\n');
   sb2.writeln('};\n\n');
   final out = '$sb0$sb1$sb2';
-  final outDir = '$outputDir/deid_uids.dart';
+  const outDir = '$outputDir/deid_uids.dart';
   print('outDir: $outDir');
   new File('$outputDir/deid_non_uids.dart')..writeAsStringSync(out);
 

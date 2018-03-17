@@ -10,7 +10,7 @@ import 'package:test_tools/tools.dart';
 void main() {
   Server.initialize(
       name: 'dataset/tag_dataset_test',
-      level: Level.debug,
+      level: Level.info,
       throwOnError: false);
 
   final rsg = new RSG(seed: 1);
@@ -730,7 +730,7 @@ void main() {
     });
 
     test('getItem', () {
-//      system.level = Level.debug;
+//      system.level = Level.info;
       final rootDS0 = new TagRootDataset.empty();
       final valuesList = <TagItem>[];
 

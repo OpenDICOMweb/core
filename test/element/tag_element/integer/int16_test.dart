@@ -871,7 +871,7 @@ void main() {
     });
 
     test('Int16Base listToByteData good values', () {
-      system.level = Level.debug;
+      system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final int16list0 = rng.int16List(1, 1);
@@ -930,7 +930,7 @@ void main() {
         expect(lBd4.buffer == bd0.buffer, false);
       }
 
-      final int32Max = const <int>[kInt32Max];
+      const int32Max = const <int>[kInt32Max];
       expect(Int16.toByteData(int32Max), isNull);
 
       const int32Min = const [kInt32Min];

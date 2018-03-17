@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
+import 'package:core/src/utils/bytes.dart';
 
 const String bulkdataFileExtension = '.bd';
 
@@ -14,7 +14,7 @@ class Bulkdata {
   /// The byte offset of this in the Bulkdata File.
   int offset;
   /// Value Field
-  Uint8List vf;
+  Bytes vf;
 
   Bulkdata(this.code, this.offset, this.vf);
 

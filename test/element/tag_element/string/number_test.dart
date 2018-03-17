@@ -331,7 +331,7 @@ void main() {
     test('DS formBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDSList(1, 1);
-        final bytes = DS.toBytes(vList1);
+        final bytes = DS.toUint8List(vList1);
         log.debug('bytes:$bytes');
         final ds1 = DStag.fromUint8List(PTag.kSamplingFrequency, bytes);
         log.debug('ds1: ${ds1.info}');
@@ -996,24 +996,24 @@ void main() {
     });
 
     test('DS decodeBinaryVF', () {
-      //  system.level = Level.debug;;
+      //  system.level = Level.info;;
       final vList1 = rsg.getDSList(1, 1);
-      final bytes = DS.toBytes(vList1);
+      final bytes = DS.toUint8List(vList1);
       log.debug(
-          'DS.decodeBinaryVF(bytes): ${DS.toBytes(vList1)}, bytes: $bytes');
-      expect(DS.toBytes(vList1), equals(bytes));
+          'DS.decodeBinaryVF(bytes): ${DS.toUint8List(vList1)}, bytes: $bytes');
+      expect(DS.toUint8List(vList1), equals(bytes));
     });
 
     test('DS.toBytes', () {
       final vList1 = rsg.getDSList(1, 1);
-      log.debug('DS.toBytes(vList1): ${DS.toBytes(vList1)}');
+      log.debug('DS.toUint8List(vList1): ${DS.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
-      expect(DS.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
+      expect(DS.toUint8List(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = cvt.ascii.encode(vList1[0]);
-      expect(DS.toBytes(vList1), equals(values));
+      expect(DS.toUint8List(vList1), equals(values));
     });
 
     test('DS tryParse', () {
@@ -1021,13 +1021,13 @@ void main() {
       final vList0 = rsg.getDSList(1, 1);
       expect(DS.tryParse(vList0[0]), double.parse(vList0[0]));
 
-      final vList1 = '123';
+      const vList1 = '123';
       expect(DS.tryParse(vList1), double.parse(vList1));
 
-      final vList2 = '12.34';
+      const vList2 = '12.34';
       expect(DS.tryParse(vList2), double.parse(vList2));
 
-      final vList3 = 'abc';
+      const vList3 = 'abc';
       expect(DS.tryParse(vList3), isNull);
 
       system.throwOnError = true;
@@ -1105,7 +1105,7 @@ void main() {
     test('DS decodeBinaryStringVF', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getDSList(1, i);
-        final bytes = DS.toBytes(vList1);
+        final bytes = DS.toUint8List(vList1);
         final dbStr0 = StringBase.decodeBinaryStringVF(bytes, kMaxShortVF);
         log.debug('dbStr0: $dbStr0');
         expect(dbStr0, vList1);
@@ -1115,7 +1115,7 @@ void main() {
         log.debug('dbStr1: $dbStr1');
         expect(dbStr1, vList1);
       }
-      final bytes = DS.toBytes([]);
+      final bytes = DS.toUint8List([]);
       expect(StringBase.decodeBinaryStringVF(bytes, kMaxShortVF), <String>[]);
     });
 
@@ -1456,7 +1456,7 @@ void main() {
     test('IS formBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getISList(1, 1);
-        final bytes = IS.toBytes(vList1);
+        final bytes = IS.toUint8List(vList1);
         log.debug('bytes:$bytes');
         final is1 = IStag.fromUint8List(PTag.kWaveformChannelNumber, bytes);
         log.debug('is1: ${is1.info}');
@@ -1996,24 +1996,24 @@ void main() {
     });
 
     test('IS decodeBinaryVF', () {
-      //  system.level = Level.debug;;
+      //  system.level = Level.info;;
       final vList1 = rsg.getISList(1, 1);
-      final bytes = IS.toBytes(vList1);
+      final bytes = IS.toUint8List(vList1);
       log.debug(
-          'IS.decodeBinaryVF(bytes): ${IS.toBytes(vList1)}, bytes: $bytes');
-      expect(IS.toBytes(vList1), equals(bytes));
+          'IS.decodeBinaryVF(bytes): ${IS.toUint8List(vList1)}, bytes: $bytes');
+      expect(IS.toUint8List(vList1), equals(bytes));
     });
 
     test('IS.toBytes', () {
       final vList1 = rsg.getISList(1, 1);
-      log.debug('IS.toBytes(vList1): ${IS.toBytes(vList1)}');
+      log.debug('IS.toUint8List(vList1): ${IS.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
-      expect(IS.toBytes(['s6V&:;s%?Q1g5v']), equals(val));
+      expect(IS.toUint8List(['s6V&:;s%?Q1g5v']), equals(val));
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = cvt.ascii.encode(vList1[0]);
-      expect(IS.toBytes(vList1), equals(values));
+      expect(IS.toUint8List(vList1), equals(values));
     });
 
     test('IS tryParse', () {
@@ -2021,13 +2021,13 @@ void main() {
       final vList0 = rsg.getISList(1, 1);
       expect(IS.tryParse(vList0[0]), int.parse(vList0[0]));
 
-      final vList1 = '123';
+      const vList1 = '123';
       expect(IS.tryParse(vList1), int.parse(vList1));
 
-      final vList2 = '12.34';
+      const vList2 = '12.34';
       expect(IS.tryParse(vList2), isNull);
 
-      final vList3 = 'abc';
+      const vList3 = 'abc';
       expect(IS.tryParse(vList3), isNull);
 
       system.throwOnError = true;
@@ -2059,21 +2059,21 @@ void main() {
     test('IS parseBytes', () {
       system.throwOnError = false;
       final vList0 = rsg.getISList(1, 1);
-      final bytes0 = IS.toBytes(vList0);
+      final bytes0 = IS.toUint8List(vList0);
       final parse0 = int.parse(vList0[0]);
       expect(IS.parseBytes(bytes0), [parse0]);
 
       final vList1 = ['123'];
-      final bytes1 = IS.toBytes(vList1);
+      final bytes1 = IS.toUint8List(vList1);
       final parse1 = int.parse(vList1[0]);
       expect(IS.parseBytes(bytes1), <int>[parse1]);
 
       final vList2 = ['12.34'];
-      final bytes2 = IS.toBytes(vList2);
+      final bytes2 = IS.toUint8List(vList2);
       expect(IS.parseBytes(bytes2), isNull);
 
       final vList3 = ['abc'];
-      final bytes3 = IS.toBytes(vList3);
+      final bytes3 = IS.toUint8List(vList3);
       expect(IS.parseBytes(bytes3), isNull);
 
       system.throwOnError = true;
@@ -2084,19 +2084,19 @@ void main() {
     test('IS validateValueField', () {
       system.throwOnError = false;
       final vList0 = rsg.getISList(1, 1);
-      final bytes0 = IS.toBytes(vList0);
+      final bytes0 = IS.toUint8List(vList0);
       expect(IS.validateValueField(bytes0), vList0);
 
       final vList1 = ['123'];
-      final bytes1 = IS.toBytes(vList1);
+      final bytes1 = IS.toUint8List(vList1);
       expect(IS.validateValueField(bytes1), vList1);
 
       final vList2 = ['12.34'];
-      final bytes2 = IS.toBytes(vList2);
+      final bytes2 = IS.toUint8List(vList2);
       expect(IS.validateValueField(bytes2), vList2);
 
       final vList3 = ['abc'];
-      final bytes3 = IS.toBytes(vList3);
+      final bytes3 = IS.toUint8List(vList3);
       expect(IS.validateValueField(bytes3), vList3);
     });
 

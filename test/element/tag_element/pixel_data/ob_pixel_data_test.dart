@@ -50,7 +50,7 @@ void main() {
       log.debug(ob0.values);
       expect(ob0.hasValidValues, true);
       log.debug('bytes: ${ob0.vfBytes}');
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == 1024, true);
       expect(ob0.pixels is Uint8List, true);
       expect(ob0.pixels.length == 1024, true);
@@ -110,7 +110,7 @@ void main() {
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
       expect(ob0.isEncapsulated == true, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == frame.length, true);
       expect(ob0.pixels is List<int>, true);
       expect(ob0.pixels == frags.bulkdata, true);
@@ -178,7 +178,7 @@ void main() {
       expect(ob0.fragments == null, true);
       expect(ob0.offsets == null, true);
       expect(ob0.isEncapsulated == false, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       log
         ..debug('ob0.vfBytes.length: ${ob0.vfBytes.length}')
         ..debug('ob0.values.length: ${ob0.values.length}')
@@ -253,7 +253,7 @@ void main() {
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
       expect(ob0.isEncapsulated == true, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == frame.lengthInBytes, true);
       expect(ob0.pixels is Uint8List, true);
       expect(ob0.pixels == frags.bulkdata, true);
@@ -378,7 +378,7 @@ void main() {
       expect(ob0.fragments == null, true);
       expect(ob0.offsets == null, true);
       expect(ob0.isEncapsulated == false, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       log
         ..debug('ob0.vfBytes.length: ${ob0.vfBytes.length}')
         ..debug('ob0.values.length: ${ob0.values.length}')
@@ -456,7 +456,7 @@ void main() {
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
       expect(ob0.isEncapsulated == true, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == frame.lengthInBytes, true);
       expect(ob0.pixels is Uint8List, true);
       expect(ob0.pixels == frags.bulkdata, true);
@@ -540,7 +540,7 @@ void main() {
       log.debug(ob0.values);
       expect(ob0.hasValidValues, true);
       log.debug('bytes: ${ob0.vfBytes}');
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == 1024, true);
       expect(ob0.pixels is Uint8List, true);
       expect(ob0.pixels.length == 1024, true);
@@ -606,7 +606,7 @@ void main() {
       expect(ob0.fragments == null, true);
       expect(ob0.offsets == null, true);
       expect(ob0.isEncapsulated == false, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       log
         ..debug('ob0.vfBytes.length: ${ob0.vfBytes.length}')
         ..debug('ob0.values.length: ${ob0.values.length}')
@@ -688,7 +688,7 @@ void main() {
       expect(ob0.fragments == frags, true);
       expect(ob0.offsets == frags.offsets, true);
       expect(ob0.isEncapsulated == true, true);
-      expect(ob0.vfBytes is Uint8List, true);
+      expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == frame.lengthInBytes, true);
       expect(ob0.pixels is Uint8List, true);
       expect(ob0.pixels == frags.bulkdata, true);

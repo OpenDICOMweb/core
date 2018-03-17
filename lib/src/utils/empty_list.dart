@@ -6,6 +6,10 @@
 
 import 'dart:typed_data';
 
+import 'package:core/src/utils/bytes/bytes.dart';
+
+final Bytes kEmptyBytes = Bytes.kEmptyBytes;
+
 const List<String> kEmptyStringList = const <String>[];
 
 const List<int> kEmptyIntList = const <int>[];

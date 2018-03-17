@@ -18,7 +18,7 @@ void main(){
   final foo1  = base64Test(bar);
   print('foo1: $foo1');
 
-  final loop0Count = 0;
+  const loop0Count = 10;
   for(var i = 0; i <= loop0Count; i++) {
     final d = rng.nextDouble;
     final x = rng.nextInt();
@@ -27,7 +27,7 @@ void main(){
       print('*** (${s.length})"$s"');
   }
 
-  final loop1Count = 0;
+  const loop1Count = 10;
   for(var i = 0; i< loop1Count; i++) {
     final dList = rng.listOfDouble();
     print('$i: dList: $dList');
@@ -35,7 +35,7 @@ void main(){
       print('$i: sList: $sList');
   }
 
-  final loop2Count = 1000;
+  const loop2Count = 1000;
   for(var i = 0; i< loop2Count; i++) {
     final dList = rng.listOfDouble();
     print('$i: dList: $dList');
@@ -59,7 +59,7 @@ Iterable<String> randomListOfDouble(List<double> dList) {
 }
 
 String floatToString(double v) {
-  final precision = 10;
+  const precision = 10;
   var s = v.toString();
   if (s.length > 16) {
     s = v.toStringAsPrecision(precision);

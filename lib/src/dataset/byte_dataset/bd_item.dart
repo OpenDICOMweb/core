@@ -3,35 +3,32 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
 import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/byte_dataset/bd_mixin.dart';
 import 'package:core/src/dataset/map_dataset/map_item.dart';
 import 'package:core/src/element/base.dart';
+import 'package:core/src/utils/bytes.dart';
 
 /// An [BDItem] is a DICOM [Dataset], which is contained in an SQ Element.
 class BDItem extends MapItem with BDMixin {
   @override
   List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
-  /// Creates a new empty [BDItem] from [ByteData].
-  BDItem(Dataset parent, Map<int, Element> eMap, [SQ sequence, ByteData bd])
-      : super(parent, eMap, sequence, bd);
+  /// Creates a new empty [BDItem] from [Bytes].
+  BDItem(Dataset parent, [SQ sequence, Map<int, Element> eMap, Bytes bd])
+      : super(parent, sequence, eMap, bd);
 
-  /// Creates a new empty [BDItem] from [ByteData].
-  BDItem.empty(Dataset parent,  [SQ sequence, ByteData bd])
-      : super(parent, <int, Element>{}, sequence, bd);
+  /// Creates a new empty [BDItem] from [Bytes].
+  BDItem.empty(Dataset parent, [SQ sequence, Bytes bd])
+      : super(parent, sequence, <int, Element>{}, bd);
 
   /// Create a new [BDItem] from an existing [BDItem].
   /// If [parent] is _null_the new [BDItem] has the same
   /// parent as [item].
   BDItem.from(BDItem item, MapItem parent, [SQ sequence])
-      : super.from(item, parent ?? item.parent,
-                       sequence ?? item.sequence);
+      : super.from(item, parent ?? item.parent, sequence ?? item.sequence);
 
-  /// Creates a new [BDItem] from [ByteData].
-  BDItem.fromBD(Dataset parent, Map<int, Element> eMap,
-      [SQ sequence, ByteData bd])
-      : super(parent, eMap, sequence, bd);
+  /// Creates a new [BDItem] from [Bytes].
+  BDItem.fromBD(Dataset parent, [SQ sequence, Map<int, Element> eMap, Bytes bd])
+      : super(parent, sequence, eMap,  bd);
 }

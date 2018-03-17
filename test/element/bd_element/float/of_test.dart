@@ -15,7 +15,7 @@ void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   List<double> float32List;
 
-  final listFloat32Common0 = const <double>[
+  const listFloat32Common0 = const <double>[
     1.1,
     1.11,
     1.111,
@@ -64,12 +64,12 @@ void main() {
 
     test('OF []', () {
       system.throwOnError = false;
-      var bd = makeOF(kVectorGridData, []);
+      var bd = makeOF(kVectorGridData, kEmptyFloat32List);
       final of0 = new OFevr(bd);
       expect(of0.hasValidValues, true);
       expect(of0.values, equals(<double>[]));
 
-      bd = makeOF(kVectorGridData, []);
+      bd = makeOF(kVectorGridData, kEmptyFloat32List);
       final of1 = new OFevr(bd);
       expect(of1.hasValidValues, true);
       expect(of1.values.isEmpty, true);

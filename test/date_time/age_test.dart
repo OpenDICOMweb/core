@@ -103,7 +103,7 @@ void main() {
     });
 
     test('acr', () {
-      final d = '089Y';
+      const d = '089Y';
       for (var s in goodDcmAge) {
         final a0 = Age.tryParse(s);
         log.debug('a0.acr:${a0.acr}');

@@ -10,6 +10,7 @@ import 'package:core/src/base.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/string.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes.dart';
 
 // Note: PrivateData Elements are just regular [Element]s
 abstract class ElementTagMixin<V> {
@@ -49,7 +50,7 @@ abstract class ElementTagMixin<V> {
 
   TypedData get typedData => e.typedData;
 
-  Uint8List get vfBytes => e.vfBytes;
+  Bytes get vfBytes => e.vfBytes;
 
   ByteData get vfByteData => e.vfByteData;
 
@@ -103,7 +104,7 @@ abstract class PrivateElementMixin<V> {
 
   TypedData get typedData => e.typedData;
 
-  Uint8List get vfBytes => e.vfBytes;
+  Bytes get vfBytes => e.vfBytes;
 
   ByteData get vfByteData => e.vfByteData;
 

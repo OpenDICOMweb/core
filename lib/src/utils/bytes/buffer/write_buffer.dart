@@ -63,7 +63,7 @@ class WriteBuffer extends BufferBase {
   // **** WriteBuffer specific Getters and Methods
 
   @override
-  ByteData get bd => (isClosed) ? null : bytes.bd;
+  ByteData get bd => (isClosed) ? null : bytes.asByteData();
 
   int get index => wIndex_;
   @override
@@ -80,6 +80,13 @@ class WriteBuffer extends BufferBase {
 
   @override
   bool wHasRemaining(int n) => (wIndex_ + n) <= bytes.lengthInBytes;
+
+  void write(Bytes bytes, [int offset = 0, int length]) {
+    length ??= bytes.length;
+    for (var i = offset, j = wIndex_; i < length; i++, j++)
+      bytes.setUint8(j, bytes[i]);
+    wIndex_ += length;
+  }
 
   void setInt8(int n) => bytes.setInt8(wIndex_, n);
 

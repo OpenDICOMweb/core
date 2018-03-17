@@ -4,13 +4,12 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/list_dataset/list_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
+import 'package:core/src/utils/bytes.dart';
 
 /// An [ListItem] implemented using a [List].
 class ListItem extends Item with ListDataset {
@@ -25,7 +24,7 @@ class ListItem extends Item with ListDataset {
   // TODO: decide if we need these constructors
   /// Creates a [ListItem].
   ListItem(
-      Dataset parent, this.codes, this.elements, SQ sequence, ByteData bd)
+      Dataset parent, this.codes, this.elements, SQ sequence, Bytes bd)
       : super(parent, sequence, bd);
 
   /// Creates an empty, i.e. without [Element]s, [ListItem].
@@ -39,7 +38,7 @@ class ListItem extends Item with ListDataset {
       : codes = new List<int>.from(item.codes),
         elements = new List<Element>.from(item.elements),
         super(
-            parent ?? item.parent, sequence ?? item.sequence, item.dsBytes.bd);
+            parent ?? item.parent, sequence ?? item.sequence, item.dsBytes.bytes);
 
   ListItem copy([ListItem item, Dataset parent, SQ sequence]) {
     item ??= this;

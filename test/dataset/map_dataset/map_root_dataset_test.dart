@@ -11,11 +11,11 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'map_root_dataset_test', level: Level.debug);
+  Server.initialize(name: 'map_root_dataset_test', level: Level.info);
 
   group('MapRootDataset', () {
     test('[] and []=', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
           new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('insert and compare', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -48,7 +48,7 @@ void main() {
     });
 
     test('removeAt', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -78,7 +78,7 @@ void main() {
     });
 
     test('delete', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -116,7 +116,7 @@ void main() {
     });
 
     test('deleteAll', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -147,7 +147,7 @@ void main() {
     });
 
     test('noValues', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
 
@@ -165,7 +165,7 @@ void main() {
 
     test('noValuesAll', () {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0)..add(as0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0)..add(as0);
 
       final rds1 = new TagRootDataset.empty();
       final valuesList = <TagItem>[];
@@ -196,7 +196,7 @@ void main() {
     });
 
     test('update (String)', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       rds[as0.code] = as0;
 
@@ -205,7 +205,7 @@ void main() {
     });
 
     test('update (int)', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [kInt16Min];
       final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
       rds.add(ss0);
@@ -219,7 +219,7 @@ void main() {
     });
 
     test('update (float)', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       rds.add(fd0);
       final update1 = rds.update(fd0.key, <double>[]);
@@ -227,7 +227,7 @@ void main() {
     });
 
     test('duplicate', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
@@ -244,7 +244,7 @@ void main() {
     });
 
     test('removeDuplicates', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
@@ -255,7 +255,7 @@ void main() {
 
       rds..add(fd0)..add(fd1)..add(as0)..add(as1)..add(as2)..add(ob0)..add(ae0);
 
-//      system.level = Level.debug;
+//      system.level = Level.info;
       final dup = rds.duplicates;
       log.debug('rds: $rds, dup: $dup');
       expect(dup, isNotNull);
@@ -266,7 +266,7 @@ void main() {
     });
 
     test('getElementsInRange', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
@@ -274,7 +274,7 @@ void main() {
 
       rds..add(fd0)..add(as0)..add(ob0)..add(ae0);
 
-//      system.level = Level.debug;
+//      system.level = Level.info;
       final inRange0 = rds.getElementsInRange(0, fd0.code);
       final inRange1 = rds.getElementsInRange(0, fd0.code + 1);
       final inRange2 = rds.getElementsInRange(0, ae0.code);
@@ -290,8 +290,8 @@ void main() {
     });
 
     test('Simple UItag, replace, and replaceUid test', () {
-      final uidString0 = '1.2.840.10008.5.1.4.34.5';
-      final uidString0a = '1.2.840.10008.5.1.4.34';
+      const uidString0 = '1.2.840.10008.5.1.4.34.5';
+      const uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
       final uidStringList0a = [uidString0a];
       final uid0 = new Uid(uidString0);
@@ -309,7 +309,7 @@ void main() {
       expect(ui0.uids.elementAt(0), equals(uid0));
 
       // Test replace
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0)..add(ui0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
       final uidStringList0b = rds.replace(ui0.code, uidStringList0a);
       expect(uidStringList0b, equals(uidStringList0));
       expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
@@ -322,8 +322,8 @@ void main() {
     });
 
     test('Simple UItag.fromString, replace, and replaceUid test', () {
-      final uidString0 = '1.2.840.10008.5.1.4.34.5';
-      final uidString0a = '1.2.840.10008.5.1.4.34';
+      const uidString0 = '1.2.840.10008.5.1.4.34.5';
+      const uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
       final uidStringList0a = [uidString0a];
       final uid0 = new Uid(uidString0);
@@ -333,7 +333,7 @@ void main() {
 
       // Create element and check values and uids
       final ui0 = new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0)..add(ui0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
       print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidStringList0[0]));
@@ -354,7 +354,7 @@ void main() {
     });
 
     test('Simple Random UItag, replace, and replaceUid test', () {
-      final count = 8;
+      const count = 8;
       for (var i = 1; i < count; i++) {
         final uidList0 = Uid.randomList(count);
         final uidList0a = Uid.randomList(count);
@@ -365,7 +365,7 @@ void main() {
         print('uidList0: $uidList0');
         final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
         print('ui0: $ui0');
-        final rds = new MapRootDataset.empty('', kEmptyByteData, 0)..add(ui0);
+        final rds = new MapRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
         print('values: ${ui0.values}');
         expect(ui0.values, equals(uidStringList0));
         expect(ui0.value, equals(uidStringList0[0]));
@@ -388,7 +388,7 @@ void main() {
 
     test('Simple Random UItag.fromString, replace, and replaceUid test', () {
       final rsg = new RSG(seed: 1);
-      final count = 8;
+      const count = 8;
       for (var i = 1; i < count; i++) {
         final uidStringList0 = rsg.getUIList(1, 1);
         final uidStringList0a = rsg.getUIList(1, 1);
@@ -400,7 +400,7 @@ void main() {
         // Create element and check values and uids
         final ui0 =
             new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
-        final rds = new MapRootDataset.empty('', kEmptyByteData, 0)..add(ui0);
+        final rds = new MapRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
         print('values: ${ui0.values}');
         expect(ui0.values, equals(uidStringList0));
         expect(ui0.value, equals(uidStringList0[0]));
@@ -422,7 +422,7 @@ void main() {
     });
 
     test('replace', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [15.24];
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       rds.add(fd0);
@@ -442,7 +442,7 @@ void main() {
     });
 
     test('replaceAll', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [15.24];
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       rds.add(fd0);
@@ -456,9 +456,9 @@ void main() {
     });
 
     test('== and hashCode', () {
-      final rds0 = new MapRootDataset.empty('', kEmptyByteData, 0);
-      final rds1 = new MapRootDataset.empty('', kEmptyByteData, 0);
-      final rds2 = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds0 = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final rds1 = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final rds2 = new MapRootDataset.empty('', kEmptyBytes, 0);
 
       final cs0 = new CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);
       final cs1 = new CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);
@@ -483,7 +483,7 @@ void main() {
     });
 
     test('others', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
 
       rds[as0.code] = as0;
@@ -496,7 +496,7 @@ void main() {
     });
 
     test('copy', () {
-      final rds = new MapRootDataset.empty('', kEmptyByteData, 0);
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);

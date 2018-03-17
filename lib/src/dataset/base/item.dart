@@ -4,12 +4,11 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/element/base.dart';
+import 'package:core/src/utils/bytes.dart';
 
 /// Sequence Items
 abstract class Item extends Dataset {
@@ -22,9 +21,9 @@ abstract class Item extends Dataset {
   @override
   IDSBytes dsBytes;
 
-  Item(this.parent, this.sequence, ByteData bd) : dsBytes = new IDSBytes(bd);
+  Item(this.parent, this.sequence, Bytes bd) : dsBytes = new IDSBytes(bd);
 
-  /// The the Value Field Length of the encoded object (e.g. ByteData,
+  /// The the Value Field Length of the encoded object (e.g. Bytes,
   /// JSON [String]...) that _this_was created from, or
   /// _null_ if _this_was not created by parsing an encoded object.
   ///

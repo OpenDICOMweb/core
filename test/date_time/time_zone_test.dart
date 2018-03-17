@@ -166,7 +166,7 @@ void main() {
     });
 
     test('hash', () {
-//    	system.level == Level.debug;
+//    	system.level == Level.info;
       for (var i = 1; i < validTimeZones.length; i++) {
         final tz0 = new TimeZone(
             validTimeZones[i][0], validTimeZones[i][1], validTimeZones[i][2]);

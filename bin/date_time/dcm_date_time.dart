@@ -10,7 +10,7 @@ void main() {
   Server.initialize(name: 'bin/date_time', level: Level.debug);
 
   log.debug('Test Dates');
-  final s = '230718.1234';
+  const s = '230718.1234';
   final dt = parseDcmDateTime(s);
   log.debug('  Time "$s": $dt');
 

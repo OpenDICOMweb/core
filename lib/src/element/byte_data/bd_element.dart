@@ -12,32 +12,31 @@ import 'package:core/src/element/base.dart';
 import 'package:core/src/element/byte_data/evr.dart';
 import 'package:core/src/element/byte_data/ivr.dart';
 import 'package:core/src/system.dart';
-import 'package:core/src/utils.dart';
+import 'package:core/src/utils/bytes.dart';
 
-typedef Element DecodeBinaryVF(ByteData bd, int vrIndex);
+typedef Element DecodeBinaryVF(Bytes bytes, int vrIndex);
 
-typedef Element BDElementMaker(int code, int vrIndex, ByteData bd);
+typedef Element BDElementMaker(int code, int vrIndex, Bytes bytes);
 
 // TODO: move documentation from EVR/IVR
 abstract class BDElement<V> extends Element<V> {
-  static Element make(int code, int vrIndex, ByteData bd,
+  static Element make(int code, int vrIndex, Bytes bytes,
           {bool isEvr = true}) =>
       (isEvr)
-          ? EvrElement.make(code, vrIndex, bd)
-          : IvrElement.make(code, vrIndex, bd);
+          ? EvrElement.make(code, bytes, vrIndex)
+          : IvrElement.make(code, bytes, vrIndex);
 
   // **** Start Interface ****
 
-  /// The [ByteData] containing this Element.
-  ByteData get bd;
+  /// The [Bytes] containing this Element.
+  Bytes get bytes;
 
   /// Returns _true_ if this Element is encoded as Explicit VR Little Endian;
   /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
   bool get isEvr;
   int get vfLengthOffset;
   int get vfOffset;
-  Uint8List get vfBytesWithPadding;
-  ByteData get vfByteDataWithPadding;
+  Bytes get vfBytesWithPadding;
 
   // **** End Interface ****
 }
@@ -47,7 +46,7 @@ const int _groupOffset = 0;
 const int _eltOffset = 2;
 
 abstract class Common {
-  ByteData get bd;
+  Bytes get bytes;
   bool get isLengthAlwaysValid;
   int get minValues;
   int get maxValues;
@@ -58,35 +57,35 @@ abstract class Common {
   int get vrIndex;
 
   bool isEqual(BDElement a, BDElement b) {
-    if (a.bd.lengthInBytes != b.bd.lengthInBytes) return false;
+    if (a.bytes.lengthInBytes != b.bytes.lengthInBytes) return false;
 
-    final offset0 = a.bd.offsetInBytes;
-    final offset1 = b.bd.offsetInBytes;
+    final offset0 = a.bytes.offsetInBytes;
+    final offset1 = b.bytes.offsetInBytes;
     final length = a.lengthInBytes;
     for (var i = offset0, j = offset1; i < length; i++, j++)
-      if (a.bd.getUint8(i) != b.bd.getUint8(j)) return false;
+      if (a.bytes.getUint8(i) != b.bytes.getUint8(j)) return false;
     return true;
   }
 
-  /// Returns the Tag Code from [ByteData].
+  /// Returns the Tag Code from [Bytes].
   int get code {
-    final group = bd.getUint16(_codeOffset, Endian.little);
-    final elt = bd.getUint16(_codeOffset + 2, Endian.little);
+    final group = bytes.getUint16(_codeOffset);
+    final elt = bytes.getUint16(_codeOffset + 2);
     final v = (group << 16) + elt;
     return v;
   }
 
-  int get group => bd.getUint16(_groupOffset, Endian.little);
-  int get elt => bd.getUint16(_eltOffset, Endian.little);
+  int get group => bytes.getUint16(_groupOffset);
+  int get elt => bytes.getUint16(_eltOffset);
 
   /// Returns the length in bytes of _this_ Element.
-  int get eLength => bd.lengthInBytes;
+  int get eLength => bytes.lengthInBytes;
 
   /// Returns the actual length in bytes after removing any padding chars.
   // Floats always have a valid (defined length) vfLengthField.
   int get vfLength {
     final vfo = vfOffset;
-    final len = bd.lengthInBytes - vfo;
+    final len = bytes.lengthInBytes - vfo;
 //    print('vfo: $vfo, len:$len');
     final vfl = vfLengthField;
 //    print('vfl: $vfl, ${vfl.toRadixString(16)}');
@@ -112,21 +111,13 @@ abstract class Common {
 
   bool get hasValidValues => true;
 
-  Uint8List get vfBytesWithPadding => (bd.lengthInBytes == vfOffset)
-      ? kEmptyUint8List
-      : bd.buffer.asUint8List(bd.offsetInBytes + vfOffset, vfLength);
+  Bytes get vfBytesWithPadding => (bytes.lengthInBytes == vfOffset)
+      ? kEmptyBytes
+      : bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
 
-  Uint8List get vfBytes => (bd.lengthInBytes == vfOffset)
-      ? kEmptyUint8List
-      : bd.buffer.asUint8List(bd.offsetInBytes + vfOffset, vfLength);
-
-  ByteData get vfByteDataWithPadding => (bd.lengthInBytes == vfOffset)
-      ? kEmptyByteData
-      : bd.buffer.asByteData(bd.offsetInBytes + vfOffset, vfLength);
-
-  ByteData get vfByteData => (bd.lengthInBytes == vfOffset)
-      ? kEmptyByteData
-      : bd.buffer.asByteData(bd.offsetInBytes + vfOffset, vfLength);
+  Bytes get vfBytes => (bytes.lengthInBytes == vfOffset)
+      ? kEmptyBytes
+      : bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
 }
 // **** EVR Float Elements (FL, FD, OD, OF)
 
@@ -153,7 +144,7 @@ abstract class BDFloat64Mixin {
 }
 
 abstract class IntMixin {
-  ByteData get bd;
+  Bytes get bytes;
   int get vfOffset;
 
   IntBase update([Iterable<int> vList]) => unsupportedError();
@@ -176,7 +167,7 @@ const _int16SizeInBytes = 2;
 
 abstract class Int16Mixin {
   // **** Interface
-  ByteData get bd;
+  Bytes get bytes;
   int get vfLength;
   // **** End interface
 
@@ -189,7 +180,7 @@ const _int32SizeInBytes = 4;
 
 abstract class Int32Mixin {
   // **** Interface
-  ByteData get bd;
+  Bytes get bytes;
   int get vfLengthField;
 
   int get valuesLength => _getValuesLength(vfLengthField, _int32SizeInBytes);
@@ -197,7 +188,7 @@ abstract class Int32Mixin {
 
 abstract class BDStringMixin {
   // **** Interface
-  ByteData get bd;
+  Bytes get bytes;
   int get eLength;
   int get padChar;
   int get vfOffset;
@@ -208,7 +199,7 @@ abstract class BDStringMixin {
   // Floats always have a valid (defined length) vfLengthField.
   int get vfLength {
     final vf0 = vfOffset;
-    final lib = bd.lengthInBytes;
+    final lib = bytes.lengthInBytes;
     final length = lib - vf0;
     assert(length >= 0);
     return length;
@@ -218,7 +209,7 @@ abstract class BDStringMixin {
     if (vfLength == 0) return 0;
     var count = 1;
     for (var i = vfOffset; i < eLength; i++)
-      if (bd.getUint8(i) == kBackslash) count++;
+      if (bytes.getUint8(i) == kBackslash) count++;
     return count;
   }
 
@@ -227,7 +218,7 @@ abstract class BDStringMixin {
 
 /// A Mixin for [String] [Element]s that may only have ASCII values.
 abstract class AsciiMixin {
-  Uint8List get vfBytes;
+  Bytes get vfBytes;
   bool get allowInvalid;
   int get valuesLength;
 
@@ -240,8 +231,8 @@ abstract class AsciiMixin {
 
 /// A Mixin for [String] [Element]s that may have UTF-8 values.
 abstract class Utf8Mixin {
-  ByteData get bd;
-  Uint8List get vfBytes;
+  Bytes get bytes;
+  Bytes get vfBytes;
   bool get allowMalformed;
   int get valuesLength;
 
@@ -253,9 +244,9 @@ abstract class Utf8Mixin {
 }
 
 abstract class StringMixin {
-  ByteData get bd;
+  Bytes get bytes;
   int get vfOffset;
-  Uint8List get vfBytes;
+  Bytes get vfBytes;
   bool get allowMalformed;
 
   int get valuesLength => 1;
@@ -266,9 +257,9 @@ abstract class StringMixin {
 }
 
 abstract class TextMixin {
-  ByteData get bd;
+  Bytes get bytes;
   int get vfOffset;
-  Uint8List get vfBytes;
+  Bytes get vfBytes;
   bool get allowMalformed;
 
   int get valuesLength => 1;
@@ -281,38 +272,31 @@ abstract class TextMixin {
 bool ensureExactLength = true;
 
 /// Returns _true_ if all bytes in [bytes0] and [bytes1] are the same.
-/// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
-bool bytesEqual(Bytes bytes0, Bytes bytes1) =>
-    byteDataEqual(bytes0.asByteData(), bytes0.asByteData());
-
-/// Returns _true_ if all bytes in [bd0] and [bd1] are the same.
-/// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
-bool byteDataEqual(ByteData bd0, ByteData bd1, {bool doFast = false}) {
-  final b0Length = bd0.lengthInBytes;
-  final b1Length = bd1.lengthInBytes;
+/// _Note_: This assumes the [Bytes] is aligned on a 2 byte boundary.
+bool bytesEqual(Bytes bytes0, Bytes bytes1, {bool doFast = false}) {
+  final b0Length = bytes0.lengthInBytes;
+  final b1Length = bytes1.lengthInBytes;
   if (b0Length.isEven && b1Length.isEven && b0Length == b1Length)
     return (doFast && (b0Length % 4) == 0)
-        ? bytesEqualFast(bd0, bd1)
-        : bytesEqualSlow(bd0, bd1);
+        ? bytesEqualFast(bytes0, bytes1)
+        : bytesEqualSlow(bytes0, bytes1);
   log.error('Invalid Length: b0($b0Length) b1($b1Length)');
   return false;
 }
 
-/// Returns _true_ if all bytes in [bytes0] and [bytes1] are the same.
-/// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
-bool uint8ListEqual(Uint8List bytes0, Uint8List bytes1) {
-  final bd0 =
-      bytes0.buffer.asByteData(bytes0.offsetInBytes, bytes0.lengthInBytes);
-  final bd1 =
-      bytes1.buffer.asByteData(bytes1.offsetInBytes, bytes1.lengthInBytes);
-  return byteDataEqual(bd0, bd1);
+/// Returns _true_ if all bytes in [bList0] and [bList1] are the same.
+/// _Note_: This assumes the [Bytes] is aligned on a 2 byte boundary.
+bool uint8ListEqual(Uint8List bList0, Uint8List bList1) {
+  final bytes0 = new Bytes.fromTypedData(bList0);
+  final bytes1 = new Bytes.fromTypedData(bList1);
+  return bytesEqual(bytes0, bytes1);
 }
 
-bool bytesEqualSlow(ByteData bd0, ByteData bd1) {
+bool bytesEqualSlow(Bytes bytes0, Bytes bytes1) {
   var ok = true;
-  for (var i = 0; i < bd0.lengthInBytes; i++) {
-    final a = bd0.getUint8(i);
-    final b = bd1.getUint8(i);
+  for (var i = 0; i < bytes0.lengthInBytes; i++) {
+    final a = bytes0.getUint8(i);
+    final b = bytes1.getUint8(i);
     if (a != b) {
       ok = false;
       if ((a == 0 && b == 32) || (a == 32 && b == 0)) {
@@ -330,37 +314,30 @@ $i: $a | $b')
 }
 
 // Note: optimized to use 4 byte boundary
-bool bytesEqualFast(ByteData bd0, ByteData bd1) {
+bool bytesEqualFast(Bytes bytes0, Bytes bytes1) {
   var ok = true;
-  for (var i = 0; i < bd0.lengthInBytes; i += 4) {
-    final a = bd0.getUint32(i);
-    final b = bd1.getUint32(i);
+  for (var i = 0; i < bytes0.lengthInBytes; i += 4) {
+    final a = bytes0.getUint32(i);
+    final b = bytes1.getUint32(i);
     if (a != b) {
       log.warn('''
 $i: $a | $b')
 	  ${hex32(a)} | ${hex32(b)}
 ''');
-      _toBytes(i, bd0, bd1);
+      _toBytes(i, bytes0, bytes1);
       ok = false;
     }
   }
   return ok;
 }
 
-void _toBytes(int i, ByteData bd0, ByteData bd1) {
-  final bytes0 = bd0.buffer.asUint8List(i, 8);
-  log.warn('    $bytes0');
-  final bytes1 = bd1.buffer.asUint8List(i, 8);
-  log.warn('    $bytes1');
-  final s0 = cvt.ascii.decode(bytes0, allowInvalid: true);
-  log.warn('    $s0');
-  final s1 = cvt.ascii.decode(bytes1, allowInvalid: true);
-  log.warn('    $s1');
+void _toBytes(int i, Bytes bytes0, Bytes bytes1) {
+  log
+    ..warn('    $bytes0')
+    ..warn('    $bytes1')
+    ..warn('    ${bytes0.getAscii()}')
+    ..warn('    ${bytes1.getAscii()}');
 }
-
-/// Returns _true_ if all bytes in [bd0] and [bd1] are the same.
-/// _Note_: This assumes the [ByteData] is aligned on a 2 byte boundary.
-bool bdEqual(ByteData bd0, ByteData bd1) => byteDataEqual(bd0, bd1);
 
 int getLength(Uint8List vfBytes, int unitSize) {
   if (ensureExactLength && ((vfBytes.length % unitSize) != 0))
@@ -377,23 +354,23 @@ int _getValuesLength(int vfLengthField, int sizeInBytes) {
 }
 
 //TODO: This should be done in convert
-bool checkPadding(ByteData bd, [int padChar = kSpace]) {
-  final lastIndex = bd.lengthInBytes - 1;
-  final char = bd.getUint8(lastIndex);
+bool checkPadding(Bytes bytes, [int padChar = kSpace]) {
+  final lastIndex = bytes.lengthInBytes - 1;
+  final char = bytes.getUint8(lastIndex);
   if ((char == kNull || char == kSpace) && char != padChar)
     log.info1('Invalid PadChar: $char should be $padChar');
   return true;
 }
 
 //TODO: This should be done in convert
-ByteData removePadding(ByteData bd, int vfOffset, [int padChar = kSpace]) {
-  if (bd.lengthInBytes == vfOffset) return bd;
-  assert(bd.lengthInBytes.isEven);
-  final lastIndex = bd.lengthInBytes - 1;
-  final char = bd.getUint8(lastIndex);
+Bytes removePadding(Bytes bytes, int vfOffset, [int padChar = kSpace]) {
+  if (bytes.lengthInBytes == vfOffset) return bytes;
+  assert(bytes.lengthInBytes.isEven);
+  final lastIndex = bytes.lengthInBytes - 1;
+  final char = bytes.getUint8(lastIndex);
   if (char == kNull || char == kSpace) {
     log.debug3('Removing Padding: $char');
-    return bd.buffer.asByteData(bd.offsetInBytes, bd.lengthInBytes - 1);
+    return bytes.asBytes(bytes.offsetInBytes, bytes.lengthInBytes - 1);
   }
-  return bd;
+  return bytes;
 }

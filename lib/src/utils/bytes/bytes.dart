@@ -5,7 +5,7 @@
 // See the AUTHORS file for other contributors.
 
 import 'dart:collection';
-import 'dart:convert' as cvt;
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -219,13 +219,12 @@ class Bytes extends ListBase<int> {
   // **** String getters
   // TODO: decide if these should be included
   String getAscii([int offset = 0, int length]) =>
-      cvt.ascii.decode(asUint8List(offset, length ?? lengthInBytes));
+      ascii.decode(asUint8List(offset, length ?? lengthInBytes));
 
   String getUtf8([int offset = 0, int length]) =>
-      cvt.utf8.decode(asUint8List(offset, length ?? lengthInBytes));
+      utf8.decode(asUint8List(offset, length ?? lengthInBytes));
 
-  String getString([int offset = 0, int length]) =>
-      getUtf8(offset, length);
+  String getString([int offset = 0, int length]) => getUtf8(offset, length);
 
   // **** TypedData Views
 
@@ -281,11 +280,12 @@ class Bytes extends ListBase<int> {
               _bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 4))
           : getFloat32List(offset, length);
 
-  Float64List asFloat64List([int offset = 0, int length]) =>
-      (isAligned64(offset))
-          ? _bd.buffer.asFloat64List(
-              _bdOffset(offset), length ?? (_bd.lengthInBytes ~/ 8))
-          : getFloat64List(offset, length);
+  Float64List asFloat64List([int offset = 0, int length]) {
+    length ??= _bd.lengthInBytes ~/ 8;
+    return (isAligned64(offset))
+        ? _bd.buffer.asFloat64List(_bdOffset(offset), length)
+        : getFloat64List(offset, length);
+  }
 
   List<String> asAsciiList([int offset = 0, int length]) =>
       getAscii(offset, length).split('\\');
@@ -327,7 +327,7 @@ class Bytes extends ListBase<int> {
     final v = (offset == 0 && length == s.length)
         ? s
         : s.substring(offset, offset + length);
-    setUint8List(cvt.ascii.encode(v), offset, length);
+    setUint8List(ascii.encode(v), offset, length);
   }
 
   void setUtf8(String s, [int offset = 0, int length]) {
@@ -335,10 +335,10 @@ class Bytes extends ListBase<int> {
     final v = (offset == 0 && length == s.length)
         ? s
         : s.substring(offset, offset + length);
-    setUint8List(cvt.ascii.encode(v), offset, length);
+    setUint8List(ascii.encode(v), offset, length);
   }
 
-  void setString(String s, [int offset = 0, int length] ) =>
+  void setString(String s, [int offset = 0, int length]) =>
       setUtf8(s, offset, length);
 
   // **** TypedData List Setters
@@ -381,8 +381,7 @@ class Bytes extends ListBase<int> {
   void setByteData(ByteData bd, [int offset = 0, int length]) {
     length ??= bd.lengthInBytes;
     _checkLength(offset, length, kUint8Size);
-    for (var i = offset; i < length; i++)
-      _bd.setUint8(i, bd.getUint8(i));
+    for (var i = offset; i < length; i++) _bd.setUint8(i, bd.getUint8(i));
   }
 
   void setUint16List(Uint16List list, [int offset = 0, int length]) {
@@ -498,8 +497,6 @@ class Bytes extends ListBase<int> {
 
   static const int kDefaultLength = 1024;
 
-  static final Bytes kEmptyBytes = new Bytes._();
-
   /// Returns a [Bytes] buffer containing the contents of [File].
   // TODO: add async
   // TODO: unit test
@@ -514,8 +511,27 @@ class Bytes extends ListBase<int> {
   // TODO: add async
   // TODO: unit test
   static Bytes fromPath(String path,
-      {Endian endian = Endian.little, bool doAsync = false}) =>
+          {Endian endian = Endian.little, bool doAsync = false}) =>
       fromFile(new File(path), endian: endian, doAsync: doAsync);
+
+  static final Bytes kEmptyBytes = new Bytes._();
+
+
+  static Bytes base64Decode(String s) =>
+      new Bytes.fromTypedData(base64.decode(s));
+
+  static String base64Encode(Bytes bytes) => base64.encode(bytes.asUint8List());
+
+  static String asciiDecode(Bytes bytes, {bool allowInvalid = true}) =>
+      ascii.decode(bytes.asUint8List(), allowInvalid: allowInvalid);
+
+  static Bytes asciiEncode(String s) =>
+      new Bytes.fromTypedData(ascii.encode(s));
+
+  static String utf8Decode(Bytes bytes, {bool allowMalformed = true}) =>
+      utf8.decode(bytes.asUint8List(), allowMalformed: allowMalformed);
+
+  static Bytes utf8Encode(String s) => new Bytes.fromTypedData(ascii.encode(s));
 }
 
 class GrowableBytes extends Bytes {
@@ -581,10 +597,4 @@ class GrowableBytes extends Bytes {
   static int kMaximumLength = kDefaultLimit;
 }
 
-// ***  Internals
 
-/*
-ByteData _listToByteData(List<int> list) => (list is Uint8List)
-    ? list.buffer.asByteData()
-    : (new Uint8List.fromList(list)).buffer.asByteData();
-*/

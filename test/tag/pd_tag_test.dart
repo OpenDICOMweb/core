@@ -14,7 +14,7 @@ void main() {
 
 void privateDataTag() {
   test('PrivatedataTag Test', () {
-    final code = 0x00190010;
+    const code = 0x00190010;
     final pcTag = PCTag.make(code, kLOIndex, 'Unknown');
     final pdt = PDTag.make(code, kUNIndex, pcTag);
     expect((pdt.isPrivate), true);

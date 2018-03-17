@@ -13,7 +13,6 @@ import 'package:core/core.dart';
 import 'package:core/src/value/bulkdata/bulkdata.dart';
 import 'package:path/path.dart' as path;
 
-
 class BulkdataList {
   final Uint8List token = cvt.ascii.encode('Bulkdata');
   final String filePath;
@@ -27,7 +26,7 @@ class BulkdataList {
 
   int get length => entries.length;
 
-  BulkdataUri add(int code, Uint8List valueField) {
+  BulkdataUri add(int code, Bytes valueField) {
     final bd = new Bulkdata(code, entries.length, valueField);
     lengthInBytes += valueField.lengthInBytes;
     entries.add(bd);
@@ -63,7 +62,7 @@ class BulkdataList {
     for (var i = 0; i < index.length; i++) wb.writeUint32(index[i]);
 
     // Write Bulkdata
-    for (var i = 0; i < entries.length; i++) wb.writeUint8List(entries[i].vf);
+    for (var i = 0; i < entries.length; i++) wb.write(entries[i].vf);
 
     wb.asUint8List(0, wb.lengthInBytes);
 

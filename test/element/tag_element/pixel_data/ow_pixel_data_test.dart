@@ -47,7 +47,7 @@ void main() {
       expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
-      expect(ow0.vfBytes is Uint8List, true);
+      expect(ow0.vfBytes is Bytes, true);
       expect(ow0.vfBytes.length == 2048, true);
       expect(ow0.pixels is Uint16List, true);
       expect(ow0.pixels.length == 1024, true);
@@ -110,7 +110,7 @@ void main() {
       expect(ow0.vrIndex == kOBOWIndex || ow0.vrIndex == kUNIndex, false);
       expect(ow0.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
-      expect(ow0.vfBytes is Uint8List, true);
+      expect(ow0.vfBytes is Bytes, true);
       expect(ow0.vfBytes.length == bytes1.lengthInBytes, true);
       expect(ow0.pixels is Uint16List, true);
       print('first: ${ow0.pixels.first}');
@@ -225,7 +225,7 @@ void main() {
       expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
-      expect(ow0.vfBytes is Uint8List, true);
+      expect(ow0.vfBytes is Bytes, true);
       expect(ow0.pixels is Uint16List, true);
       expect(ow0.length == ow0.pixels.length, true);
       expect(ow0.vfBytes.length == 139782, true);
@@ -282,7 +282,7 @@ void main() {
       expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
-      expect(ow0.vfBytes is Uint8List, true);
+      expect(ow0.vfBytes is Bytes, true);
       expect(ow0.vfBytes.length == 2048, true);
       expect(ow0.pixels is Uint16List, true);
       expect(ow0.pixels.length == 1024, true);
@@ -338,7 +338,7 @@ void main() {
       expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
-      expect(ow0.vfBytes is Uint8List, true);
+      expect(ow0.vfBytes is Bytes, true);
       expect(ow0.vfBytes.length == 139782, true);
       expect(ow0.pixels is Uint16List, true);
       expect(ow0.pixels.length == 69891, true);
@@ -397,7 +397,7 @@ void main() {
       expect(ow0.vrIndex == kOWIndex, true);
       expect(ow1.vrIndex == kOWIndex, true);
       expect(ow0.isEncapsulated == false, true);
-      expect(ow0.vfBytes is Uint8List, true);
+      expect(ow0.vfBytes is Bytes, true);
       expect(ow0.vfBytes.length == 139782, true);
       expect(ow0.pixels is Uint16List, true);
       expect(ow0.pixels.length == 69891, true);
@@ -503,7 +503,7 @@ void main() {
     });
 
     test('Create Uint16Base.listToBase64', () {
-      //  system.level = Level.debug;;
+      //  system.level = Level.info;;
       final frame0 = [1, 2, 3];
       final bdFrame0 = new Uint16List.fromList(frame0);
       log..debug('frame:$frame0')..debug('bdFrame: $bdFrame0');

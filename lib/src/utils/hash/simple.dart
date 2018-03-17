@@ -38,7 +38,7 @@ int hash4(Object o0, Object o1, Object o2, Object o3) => _finish32(_combine32(
     o3.hashCode));
 
 int hashList<T>(List<T> vList) {
-  final hash = 0;
+  const hash = 0;
   for (var i = 0; i < vList.length; i++) {
     _combine32(hash, vList[i].hashCode);
   }

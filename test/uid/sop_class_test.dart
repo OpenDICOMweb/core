@@ -33,7 +33,7 @@ void main() {
     });
   });
 
-  final badUids = const <String>[
+  const badUids = const <String>[
     '1.2.3', // Invalid Length : length less than 6
     '3.2.840.10008.1.2.0', // '3.': not valid root
     '1.02.840.10008.1.2', // '.02': '0' can only be followed by '.'

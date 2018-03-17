@@ -8,7 +8,6 @@ export 'package:core/src/utils/ascii.dart';
 export 'package:core/src/utils/bytes.dart';
 export 'package:core/src/utils/date_time.dart';
 export 'package:core/src/utils/dicom.dart';
-export 'package:core/src/utils/empty_list.dart';
 export 'package:core/src/utils/errors.dart';
 export 'package:core/src/utils/hash.dart';
 export 'package:core/src/utils/indenter.dart';

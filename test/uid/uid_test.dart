@@ -91,11 +91,11 @@ void uidTest() {
 
     test('Bad String to UID should fail', () {
       // Bad letter 'Z'
-      final s0 = '1.2.8z0.10008.1.2';
+      const s0 = '1.2.8z0.10008.1.2';
       var uid = Uid.parse(s0, onError: (s) => null);
       log.debug('uid: $uid');
       expect(uid == null, true);
-      final s1 = '4.2.840.10008.1.2';
+      const s1 = '4.2.840.10008.1.2';
       uid = Uid.parse(s1, onError: (s) => null);
       log.debug('uid: $uid');
       expect(uid == null, true);

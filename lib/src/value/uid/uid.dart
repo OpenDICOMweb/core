@@ -35,7 +35,7 @@ typedef Uid OnUidParseError(String s);
 class Uid {
   // A generator function for random [Uid]s. This should be
   // set to either [
-  static final _Generator _generator = generateSecureUidString;
+  static const _Generator _generator = generateSecureUidString;
   final String value;
 
   factory Uid([String s]) {

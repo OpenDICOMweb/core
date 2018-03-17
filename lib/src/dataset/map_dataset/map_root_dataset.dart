@@ -3,11 +3,10 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_dataset.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/utils/bytes.dart';
 
 /// A [MapRootDataset].
 class MapRootDataset extends RootDataset with MapDataset {
@@ -19,11 +18,11 @@ class MapRootDataset extends RootDataset with MapDataset {
   final Map<int, Element> eMap;
 
   /// Creates an [MapRootDataset].
-  MapRootDataset(this.fmi, this.eMap, String path, ByteData bd, int fmiEnd)
+  MapRootDataset(this.fmi, this.eMap, String path, Bytes bd, int fmiEnd)
       : super(path, bd, fmiEnd);
 
   /// Creates an empty, i.e. without [Element]s, [MapRootDataset].
-  MapRootDataset.empty(String path, ByteData bd, int fmiEnd)
+  MapRootDataset.empty(String path, Bytes bd, int fmiEnd)
       : fmi = new FmiMap.empty(),
         eMap = <int, Element>{},
         super(path, bd, fmiEnd);
@@ -32,7 +31,7 @@ class MapRootDataset extends RootDataset with MapDataset {
   MapRootDataset.from(MapRootDataset rds)
       : fmi = new FmiMap.from(rds.fmi),
         eMap = new Map.from(rds.eMap),
-        super(rds.path, rds.dsBytes.bd, rds.dsBytes.fmiEnd);
+        super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
 
 //  @override
 //  Fmi get fmi => fmiMap;

@@ -25,10 +25,9 @@ class ReadBuffer extends BufferBase {
   @override
   int wIndex_;
 
-  ReadBuffer(ByteData bd, [Endian endian = Endian.little])
+  ReadBuffer(this.bytes)
       : rIndex_ = 0,
-        wIndex_ = bd.lengthInBytes,
-        bytes = new Bytes.fromTypedData(bd, endian);
+        wIndex_ = bytes.lengthInBytes;
 
   ReadBuffer.from(ReadBuffer rb,
       [int offset = 0, int length, Endian endian = Endian.little])
@@ -36,9 +35,10 @@ class ReadBuffer extends BufferBase {
         wIndex_ = offset + (length ?? rb.lengthInBytes),
         bytes = new Bytes.from(rb.bytes, offset, length, endian);
 
-  ReadBuffer.fromBytes(this.bytes)
-      : rIndex_ = 0,
-        wIndex_ = bytes.lengthInBytes;
+  ReadBuffer.fromByteData(ByteData bd, [Endian endian = Endian.little])
+      :   rIndex_ = 0,
+        wIndex_ = bd.lengthInBytes,
+        bytes = new Bytes.fromTypedData(bd, endian);
 
   ReadBuffer.fromList(List<int> list, [Endian endian = Endian.little])
       : rIndex_ = 0,

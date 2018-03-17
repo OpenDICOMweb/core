@@ -79,7 +79,7 @@ abstract class Float extends Element<double> {
   ByteData get vfByteData => typedData.buffer.asByteData();
 
   @override
-  Uint8List get vfBytes => typedData.buffer.asUint8List();
+  Bytes get vfBytes => new Bytes.fromTypedData(typedData);
 
   @override
   Float get noValues => update(kEmptyList);

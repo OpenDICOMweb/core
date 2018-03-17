@@ -15,7 +15,8 @@ import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils.dart';
+import 'package:core/src/utils/hash.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/vr.dart';
 
 /// The base class for DICOM Data Elements
@@ -324,14 +325,13 @@ abstract class Element<V> extends ListBase<V> {
   ByteData get vfByteData =>
       (checkValues(values)) ? typedData.buffer.asByteData() : null;
 
-  /// Returns [values] encoded as a [Uint8List].
-  Uint8List get vfBytes =>
-      (checkValues(values)) ? typedData.buffer.asUint8List() : null;
+  /// Returns [values] encoded as a [Bytes].
+  Bytes get vfBytes =>
+      (checkValues(values)) ? new Bytes.fromTypedData(typedData) : null;
 
-  String get vfBytesAsAscii => cvt.ascii.decode(vfBytes, allowInvalid: true);
+  String get vfBytesAsAscii => vfBytes.getAscii();
 
-  List<String> get vfBytesAsAsciiList =>
-      cvt.ascii.decode(vfBytes, allowInvalid: true).split('\\');
+  List<String> get vfBytesAsAsciiList => vfBytes.asAsciiList();
 
   String get vfBytesAsUtf8 => cvt.utf8.decode(vfBytes, allowMalformed: true);
 
@@ -516,10 +516,9 @@ abstract class Element<V> extends ListBase<V> {
     return '(${vList.length})$s';
   }
 
-  String toStringWithValues() =>
-    '$runtimeType$dcm ${tag.keyword} '
-        '$vrId($vrIndex)  vfLength: $vfLength '
-        '${getValuesAsString(maxVListLength)}';
+  String toStringWithValues() => '$runtimeType$dcm ${tag.keyword} '
+      '$vrId($vrIndex)  vfLength: $vfLength '
+      '${getValuesAsString(maxVListLength)}';
 
   String get _lengthAsString {
     if (vfLength != null || vfLength != -1) return '$length';
