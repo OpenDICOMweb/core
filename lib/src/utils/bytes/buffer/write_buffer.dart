@@ -81,10 +81,10 @@ class WriteBuffer extends BufferBase {
   @override
   bool wHasRemaining(int n) => (wIndex_ + n) <= bytes.lengthInBytes;
 
-  void write(Bytes bytes, [int offset = 0, int length]) {
-    length ??= bytes.length;
+  void write(Bytes bList, [int offset = 0, int length]) {
+    length ??= bList.length;
     for (var i = offset, j = wIndex_; i < length; i++, j++)
-      bytes.setUint8(j, bytes[i]);
+      bytes.setUint8(j, bList[i]);
     wIndex_ += length;
   }
 
@@ -217,13 +217,12 @@ class WriteBuffer extends BufferBase {
     wIndex_ += (list.length * 8);
   }
 
-  void writeUint8List(Uint8List list) => _writeTypedData(list);
+  void writeUint8List(Uint8List bList) =>
+      writeByteData(bList.buffer.asByteData());
 
-  void writeByteData(ByteData bd) => _writeTypedData(bd);
-
-  void _writeTypedData(TypedData td) {
-    final length = td.lengthInBytes;
-    bytes.setByteData(td, wIndex_, length);
+  void writeByteData(ByteData bd) {
+    final length = bd.lengthInBytes;
+    bytes.setByteData(bd.buffer.asByteData(), wIndex_, length);
     wIndex_ += length;
   }
 

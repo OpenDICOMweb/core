@@ -46,10 +46,19 @@ abstract class BufferBase {
   bool rHasRemaining(int n) => (rIndex_ + n) <= wIndex_;
   bool wHasRemaining(int n) => (wIndex_ + n) <= end;
 
-  Bytes asBytes([int offset, int length]) {
-    print('rIndex: $rIndex_ wIndex: $wIndex_');
-   return bytes.asBytes(offset ?? rIndex_, length ?? wIndex_);
-  }
+  /// Returns a _view_ of [bytes] containing the bytes from [start] inclusive
+  /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
+  /// An error occurs if [start] is outside the range 0 .. [length],
+  /// or if [end] is outside the range [start] .. [length].
+  /// [lengthInBytes].
+  Bytes subbytes([int start = 0, int end]) =>
+      new Bytes.view(bytes, start, (end ?? length) -  start);
+
+  /// Return a view of _this_ of [length], starting at [start]. If [length]
+  /// is _null_ it defaults to [lengthInBytes].
+  Bytes asBytes([int start = 0, int length]) =>
+      bytes.asBytes(start, length ?? lengthInBytes);
+
 
   ByteData asByteData([int offset, int length]) =>
       bytes.asByteData(offset ?? rIndex_, length ?? wIndex_);

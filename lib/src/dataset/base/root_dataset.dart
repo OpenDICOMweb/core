@@ -55,7 +55,7 @@ abstract class RootDataset extends Dataset {
 
   /// Only supported by some [RootDataset]s. A [lengthInBytes] of -1
   /// indicates an unknown length.
-  int get lengthInBytes => (dsBytes != null) ? dsBytes.prefix : -1;
+  int get lengthInBytes => (dsBytes != null) ? dsBytes.vfLength : -1;
 
   Bytes get preamble =>
       (dsBytes != null) ? dsBytes.preamble : kEmptyBytes;

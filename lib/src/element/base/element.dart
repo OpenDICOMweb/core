@@ -15,8 +15,8 @@ import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/hash.dart';
 import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/hash.dart';
 import 'package:core/src/vr.dart';
 
 /// The base class for DICOM Data Elements
@@ -44,8 +44,8 @@ bool doTestValidity = true;
 /// All add, replace, and remove operations should
 /// be done by calling add, replace, and remove methods in [Dataset].
 
-/// The base class for DICOM Data Elements. The type variable [V]
-/// is for the type of the Values [List].
+bool doFancy = false;
+bool withValues = true;
 
 /// The base class for DICOM Data Elements. The [Type] variable [V]
 /// is the [Type] of the [values] of the [Element].
@@ -473,8 +473,7 @@ abstract class Element<V> extends ListBase<V> {
   // String format(Formatter z) => '${z(info)}\n';
   // String format(Formatter z) => z.fmt(this, elements);
 
-  bool doFancy = false;
-  bool withValues = true;
+
   @override
   String toString() {
     if (doFancy) {

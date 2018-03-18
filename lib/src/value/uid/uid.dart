@@ -179,6 +179,7 @@ class Uid {
   /// its values is stored in the  result. If no [onError] is provided,
   /// an [InvalidUidError] is thrown.
   static List<Uid> parseList(List<String> sList, {OnUidParseError onError}) {
+    if (sList.isEmpty) return kEmptyList;
     final uids = new List<Uid>(sList.length);
     for (var i = 0; i < sList.length; i++)
       uids[i] = Uid.parse(sList[i], onError: onError);

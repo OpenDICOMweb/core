@@ -115,6 +115,7 @@ abstract class Common {
       ? kEmptyBytes
       : bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
 
+  /// Returns a [Bytes] containing the Value Field of [this].
   Bytes get vfBytes => (bytes.lengthInBytes == vfOffset)
       ? kEmptyBytes
       : bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
@@ -249,9 +250,9 @@ abstract class StringMixin {
   Bytes get vfBytes;
   bool get allowMalformed;
 
-  int get valuesLength => 1;
+ // int get valuesLength => 1;
 
-  String get value => cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
+//  String get value => cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
 
 //  Iterable<String> get values => (valuesLength == 0) ? [] : [value];
 }
@@ -262,7 +263,7 @@ abstract class TextMixin {
   Bytes get vfBytes;
   bool get allowMalformed;
 
-  int get valuesLength => 1;
+//  int get valuesLength => 1;
 
   String get value => cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
 

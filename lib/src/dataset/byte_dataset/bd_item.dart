@@ -15,8 +15,9 @@ class BDItem extends MapItem with BDMixin {
   List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
   /// Creates a new empty [BDItem] from [Bytes].
-  BDItem(Dataset parent, [SQ sequence, Map<int, Element> eMap, Bytes bd])
-      : super(parent, sequence, eMap, bd);
+  BDItem(Dataset parent, 
+      [SQ sequence, Map<int, Element> eMap, Bytes bd])
+      : super(parent, sequence, eMap ?? <int, Element>{}, bd);
 
   /// Creates a new empty [BDItem] from [Bytes].
   BDItem.empty(Dataset parent, [SQ sequence, Bytes bd])
