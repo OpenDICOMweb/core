@@ -16,15 +16,18 @@ import 'package:core/src/element/tag/string.dart';
 import 'package:core/src/element/tag/tag_mixin.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
 typedef Element TagElementMaker(Tag tag, Iterable vList, [int vfLengthField]);
 typedef TagElement MakeFrom(Element e);
-typedef TagElement MakeFromByteData(ByteData bd);
-typedef Element Makefrom(Element e);
+typedef Element MakeFromBytes(Tag tag, Bytes bytes, [int vfLengthField]);
 typedef IntBase MakeFromPixelDataBDE(IntBase e, [TransferSyntax ts]);
+typedef Element Makefrom(Element e);
+typedef IntBase MakePixelDataFromBytes(Tag tag, Bytes bytes,
+    [int vfLengthField, VFFragments fragments, TransferSyntax ts]);
 
 /// Tag Mixin Class
 ///
@@ -108,18 +111,21 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   }
 
   // Urgent Jim: make sure private tags are not unknown
-  static Element make(int code, Iterable values, int vrIndex,
+  static Element make(Tag tag, Iterable values, int vrIndex,
       [int vfLengthField]) {
     if (vrIndex == vrIndex || vrIndex == kUNIndex)
       log.warn('Tag VR: $vrIndex, vrIndex, $vrIndex');
-    //    final newTag = Tag.lookupByCode(tag.code);
-    //    if (tag != newTag)
-    //      log.warn('Changed from $tag to $newTag');
-    return _tagMakers[vrIndex](code, values);
+    return _tagMakers[vrIndex](tag, values);
+  }
+  
+  static SQtag makeSequence(int code, Dataset parent, List<Item> items,
+      int vfLengthField, Bytes bytes) {
+    final tag = Tag.lookupByCode(code, kSQIndex);
+    return new SQtag(tag, parent, items, vfLengthField, bytes);
   }
 
   static Element from(Element e, int vrIndex, [int vfLengthField]) => make(
-      e.code, e.values, vrIndex ?? e.vrIndex, vfLengthField ?? e.vfLengthField);
+      e.tag, e.values, vrIndex ?? e.vrIndex, vfLengthField ?? e.vfLengthField);
 
   static final _tagMakers = <Function>[
     SQtag.make,
@@ -156,32 +162,52 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     }
   }
 
-/*
-  static Element fromEB(EBytes eb, [int vrIndex]) => _eByteMakers[vrIndex](eb);
+  static Element makeFromBytes(int code, Bytes bytes, int vrIndex, 
+      [int vfLengthField]) {
+    final tag = Tag.lookupByCode(code, vrIndex);
+    return _byteMakers[vrIndex](tag, bytes);
+  }
 
-
-  static final List<MakeFromEBytes> _eByteMakers = <MakeFromEBytes>[
+  static final List<MakeFromBytes> _byteMakers = <MakeFromBytes>[
     _sqError,
     // Maybe Undefined Lengths
-    OBtag.fromEBytes, OWtag.fromEBytes, UNtag.fromEBytes, // No reformat
+    OBtag.fromBytes, OWtag.fromBytes, UNtag.fromBytes, // No reformat
 
     // EVR Long
-    ODtag.fromEBytes, OFtag.fromEBytes, OLtag.fromEBytes,
-    UCtag.fromEBytes, URtag.fromEBytes, UTtag.fromEBytes,
+    ODtag.fromBytes, OFtag.fromBytes, OLtag.fromBytes,
+    UCtag.fromBytes, URtag.fromBytes, UTtag.fromBytes,
 
     // EVR Short
-    AEtag.fromEBytes, AStag.fromEBytes, ATtag.fromEBytes,
-    CStag.fromEBytes, DAtag.fromEBytes, DStag.fromEBytes,
-    DTtag.fromEBytes, FDtag.fromEBytes, FLtag.fromEBytes,
-    IStag.fromEBytes, LOtag.fromEBytes, LTtag.fromEBytes,
-    PNtag.fromEBytes, SHtag.fromEBytes, SLtag.fromEBytes,
-    SStag.fromEBytes, STtag.fromEBytes, TMtag.fromEBytes,
-    UItag.fromEBytes, ULtag.fromEBytes, UStag.fromEBytes,
+    AEtag.fromBytes, AStag.fromBytes, ATtag.fromBytes,
+    CStag.fromBytes, DAtag.fromBytes, DStag.fromBytes,
+    DTtag.fromBytes, FDtag.fromBytes, FLtag.fromBytes,
+    IStag.fromBytes, LOtag.fromBytes, LTtag.fromBytes,
+    PNtag.fromBytes, SHtag.fromBytes, SLtag.fromBytes,
+    SStag.fromBytes, STtag.fromBytes, TMtag.fromBytes,
+    UItag.fromBytes, ULtag.fromBytes, UStag.fromBytes,
   ];
-*/
 
-//  static Null _sqError(EBytes eb) => invalidElementIndex(0);
+  static Null _sqError(Tag tag, Bytes eb, [int vfLengthField]) => invalidElementIndex(0);
 
+  static Element makePixelDataFromBytes(int code, int vrIndex, Bytes bytes,
+      [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
+    assert(vrIndex >= kOBIndex && vrIndex <= kUNIndex);
+    final tag = Tag.lookupByCode(code, vrIndex);
+    return _bytePixelDataMakers[vrIndex](tag, bytes, vfLengthField, fragments, ts);
+  }
+
+  static const List<MakePixelDataFromBytes> _bytePixelDataMakers =
+  const <MakePixelDataFromBytes>[
+    _vrIndexPixelDataFromError,
+    OBtagPixelData.fromBytes,
+    OWtagPixelData.fromBytes,
+    UNtagPixelData.fromBytes
+  ];
+
+  static Null _vrIndexPixelDataFromError(Tag tag, Bytes bytes,
+      [int vfLengthField, VFFragments fragments, TransferSyntax ts]) =>
+      invalidElementIndex(0);
+  
   static Element tagElementFrom(Element e, int vrIndex, [TransferSyntax ts]) {
 //    print('fromBD vrIndex: $vrIndex');
     if (vrIndex > 30) return invalidVRIndex(vrIndex, null, null);

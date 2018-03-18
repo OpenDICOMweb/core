@@ -12,7 +12,6 @@ import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 
-
 /// Float - Array of IEEE single precision (32-bit) floating point numbers.
 /// Max Array length is ((2^16)-4)/ 4).
 class FLtag extends FL with TagElement<double> {
@@ -27,9 +26,6 @@ class FLtag extends FL with TagElement<double> {
           ? new FLtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory FLtag.fromBytes(Tag tag, Bytes bytes) =>
-      (FL.isNotValidTag(tag)) ? null : new FLtag._(tag, bytes.asFloat32List());
-
   factory FLtag.bulkdata(Tag tag, Uri url) =>
       new FLtag._(tag, new FloatBulkdataRef(tag.code, url));
 
@@ -43,12 +39,15 @@ class FLtag extends FL with TagElement<double> {
       new FLtag(tag, vList ?? kEmptyDoubleList);
 
   static FLtag fromBase64(Tag tag, String s) =>
-      new FLtag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static FLtag fromUint8List(Tag tag, Uint8List bList) =>
-      new FLtag.fromBytes(tag, new Bytes.fromTypedData(bList));
-  
-  static FLtag from(Element e) => new FLtag.fromBytes(e.tag, e.vfBytes);
+      fromBytes(tag, new Bytes.fromTypedData(bList));
+
+  static FLtag from(Element e) => fromBytes(e.tag, e.vfBytes);
+
+  static FLtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (FL.isNotValidTag(tag)) ? null : new FLtag._(tag, bytes.asFloat32List());
 }
 
 /// Other Float - Array of IEEE single precision
@@ -67,9 +66,6 @@ class OFtag extends OF with TagElement<double> {
           ? new OFtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory OFtag.fromBytes(Tag tag, Bytes bytes) =>
-      (OF.isNotValidTag(tag)) ? null : new OFtag._(tag, bytes.asFloat32List());
-
   factory OFtag.bulkdata(Tag tag, Uri url) =>
       new OFtag._(tag, new FloatBulkdataRef(tag.code, url));
 
@@ -83,12 +79,15 @@ class OFtag extends OF with TagElement<double> {
       new OFtag(tag, vList ?? kEmptyDoubleList);
 
   static OFtag fromBase64(Tag tag, String s) =>
-      new OFtag.fromBytes(tag, Bytes.base64Decode(s));
-  
-  static OFtag fromUint8List(Tag tag, Uint8List bList) =>
-      new OFtag.fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, Bytes.base64Decode(s));
 
-  static OFtag from(Element e) => new OFtag.fromBytes(e.tag, e.vfBytes);
+  static OFtag fromUint8List(Tag tag, Uint8List bList) =>
+      fromBytes(tag, new Bytes.fromTypedData(bList));
+
+  static OFtag from(Element e) => fromBytes(e.tag, e.vfBytes);
+
+  static OFtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (OF.isNotValidTag(tag)) ? null : new OFtag._(tag, bytes.asFloat32List());
 }
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.
@@ -105,9 +104,6 @@ class FDtag extends FD with TagElement<double> {
           ? new FDtag._(tag, vList)
           : invalidValuesError(vList, tag: tag);
 
-  factory FDtag.fromBytes(Tag tag, Bytes bytes) =>
-      (FD.isNotValidTag(tag)) ? null : new FDtag._(tag, bytes.asFloat64List());
-
   factory FDtag.bulkdata(Tag tag, Uri url) =>
       new FDtag._(tag, new FloatBulkdataRef(tag.code, url));
 
@@ -121,12 +117,15 @@ class FDtag extends FD with TagElement<double> {
       new FDtag(tag, vList ?? kEmptyDoubleList);
 
   static FDtag fromBase64(Tag tag, String s) =>
-      new FDtag.fromBytes(tag, Bytes.base64Decode(s));
-  
-  static FDtag fromUint8List(Tag tag, Uint8List bList) =>
-      new FDtag.fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, Bytes.base64Decode(s));
 
-  static FDtag from(Element e) => new FDtag.fromBytes(e.tag, e.vfBytes);
+  static FDtag fromUint8List(Tag tag, Uint8List bList) =>
+      fromBytes(tag, new Bytes.fromTypedData(bList));
+
+  static FDtag from(Element e) => fromBytes(e.tag, e.vfBytes);
+
+  static FDtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (FD.isNotValidTag(tag)) ? null : new FDtag._(tag, bytes.asFloat64List());
 }
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.
@@ -147,9 +146,6 @@ class ODtag extends OD with TagElement<double> {
   factory ODtag.bulkdata(Tag tag, Uri url) =>
       new ODtag._(tag, new FloatBulkdataRef(tag.code, url));
 
-  factory ODtag.fromBytes(Tag tag, Bytes bytes) =>
-      (OD.isNotValidTag(tag)) ? null : new ODtag._(tag, bytes.asFloat64List());
-
   ODtag._(this.tag, this.values);
 
   @override
@@ -160,10 +156,13 @@ class ODtag extends OD with TagElement<double> {
       new ODtag(tag, Float64.fromValueField(vf));
 
   static ODtag fromBase64(Tag tag, String s) =>
-      new ODtag.fromBytes(tag, Bytes.base64Decode(s));
-  
-  static ODtag fromUint8List(Tag tag, Uint8List bList) =>
-      new ODtag.fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, Bytes.base64Decode(s));
 
-  static ODtag from(Element e) => new ODtag.fromBytes(e.tag, e.vfBytes);
+  static ODtag fromUint8List(Tag tag, Uint8List bList) =>
+      fromBytes(tag, new Bytes.fromTypedData(bList));
+
+  static ODtag from(Element e) => fromBytes(e.tag, e.vfBytes);
+  
+  static ODtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (OD.isNotValidTag(tag)) ? null : new ODtag._(tag, bytes.asFloat64List());
 }

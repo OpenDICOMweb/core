@@ -29,9 +29,6 @@ class SStag extends SS with TagElement<int> {
       ? null
       : new SStag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory SStag.fromBytes(Tag tag, Bytes bytes) =>
-      (SS.isNotValidTag(tag)) ? null : new SStag._(tag, bytes.asInt16List());
-
   SStag._(this.tag, this.values);
 
   @override
@@ -41,12 +38,15 @@ class SStag extends SS with TagElement<int> {
       new SStag(tag, Int16.fromValueField(vf));
 
   static SStag fromBase64(Tag tag, String s) =>
-      new SStag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static SStag fromUint8List(Tag tag, Uint8List bytes) =>
-      new SStag.fromBytes(tag, new Bytes.fromTypedData(bytes));
+      fromBytes(tag, new Bytes.fromTypedData(bytes));
 
-  static SStag from(Element bde) => new SStag.fromBytes(bde.tag, bde.vfBytes);
+  static SStag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
+
+  static SStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (SS.isNotValidTag(tag)) ? null : new SStag._(tag, bytes.asInt16List());
 }
 
 /// Short VRLength Signed Long
@@ -66,9 +66,6 @@ class SLtag extends SL with TagElement<int> {
       ? null
       : new SLtag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory SLtag.fromBytes(Tag tag, Bytes bytes) =>
-      (SL.isNotValidTag(tag)) ? null : new SLtag._(tag, bytes.asInt32List());
-
   SLtag._(this.tag, this.values);
 
   @override
@@ -78,12 +75,15 @@ class SLtag extends SL with TagElement<int> {
       new SLtag(tag, Int32.fromValueField(vf));
 
   static SLtag fromBase64(Tag tag, String s) =>
-      new SLtag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static SLtag fromUint8List(Tag tag, Uint8List bList) =>
-      new SLtag.fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, new Bytes.fromTypedData(bList));
+
+  static SLtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
   
-  static SLtag from(Element bde) => new SLtag.fromBytes(bde.tag, bde.vfBytes);
+  static SLtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (SL.isNotValidTag(tag)) ? null : new SLtag._(tag, bytes.asInt32List());
 }
 
 /// 8-bit unsigned integer.
@@ -105,11 +105,6 @@ class OBtag extends OB with TagElement<int> {
   factory OBtag.bulkdata(Tag tag, Uri url, [int vfLengthField]) =>
       new OBtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField);
 
-  factory OBtag.fromBytes(Tag tag, Bytes bytes, [int vfLengthField]) =>
-      (OB.isNotValidTag(tag))
-          ? null
-          : new OBtag._(tag, bytes.asUint8List(), vfLengthField);
-
   OBtag._(this.tag, this.values, this.vfLengthField);
 
   @override
@@ -119,13 +114,18 @@ class OBtag extends OB with TagElement<int> {
       new OBtag(tag, Uint8.fromValueField(vf), vfLengthField);
 
   static OBtag fromBase64(Tag tag, String s) =>
-      new OBtag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static OBtag fromUint8List(Tag tag, Uint8List bList, [int vfLengthField]) =>
-      new OBtag.fromBytes(tag, new Bytes.fromTypedData(bList), vfLengthField);
-  
+      fromBytes(tag, new Bytes.fromTypedData(bList), vfLengthField);
+
   static OBtag from(Element bde, [int vfLengthField]) =>
-      new OBtag.fromBytes(bde.tag, bde.vfBytes, vfLengthField);
+      fromBytes(bde.tag, bde.vfBytes, vfLengthField);
+
+  static OBtag fromBytes(Tag tag, Bytes bytes, [int vfLengthField]) =>
+      (OB.isNotValidTag(tag))
+          ? null
+          : new OBtag._(tag, bytes.asUint8List(), vfLengthField);
 }
 
 /// Unsigned 8-bit integer with unknown VR (VR.kUN).
@@ -147,11 +147,6 @@ class UNtag extends UN with TagElement<int> {
   factory UNtag.bulkdata(Tag tag, Uri url, [int vfLengthField]) =>
       new UNtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField);
 
-  factory UNtag.fromBytes(Tag tag, Bytes bytes, [int vfLengthField]) =>
-      (UN.isNotValidTag(tag))
-          ? null
-          : new UNtag._(tag, bytes.asUint8List(), vfLengthField);
-
   UNtag._(this.tag, this.values, this.vfLengthField);
 
   @override
@@ -161,13 +156,18 @@ class UNtag extends UN with TagElement<int> {
       new UNtag(tag, Uint8.fromValueField(vf), vfLengthField);
 
   static UNtag fromBase64(Tag tag, String s) =>
-      new UNtag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static UNtag fromUint8List(Tag tag, Uint8List bList, [int vfLengthField]) =>
-      new UNtag.fromBytes(tag, new Bytes.fromTypedData(bList), vfLengthField);
-  
+      fromBytes(tag, new Bytes.fromTypedData(bList), vfLengthField);
+
   static UNtag from(Element bde, [int vfLengthField]) =>
-      new UNtag.fromBytes(bde.tag, bde.vfBytes, vfLengthField);
+      fromBytes(bde.tag, bde.vfBytes, vfLengthField);
+
+  static UNtag fromBytes(Tag tag, Bytes bytes, [int vfLengthField]) =>
+      (UN.isNotValidTag(tag))
+          ? null
+          : new UNtag._(tag, bytes.asUint8List(), vfLengthField);
 }
 
 /// Unsigned Short
@@ -187,9 +187,6 @@ class UStag extends US with TagElement<int> {
       ? null
       : new UStag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory UStag.fromBytes(Tag tag, Bytes bytes) =>
-      (US.isNotValidTag(tag)) ? null : new UStag._(tag, bytes.asUint16List());
-
   UStag._(this.tag, this.values);
 
   @override
@@ -199,12 +196,15 @@ class UStag extends US with TagElement<int> {
       new UStag(tag, vList ?? kEmptyUint16List);
 
   static UStag fromBase64(Tag tag, String s) =>
-      new UStag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static UStag fromUint8List(Tag tag, Uint8List bytes) =>
-      new UStag.fromBytes(tag, new Bytes.fromTypedData(bytes));
-  
-  static UStag from(Element bde) => new UStag.fromBytes(bde.tag, bde.vfBytes);
+      fromBytes(tag, new Bytes.fromTypedData(bytes));
+
+  static UStag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
+
+  static UStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (US.isNotValidTag(tag)) ? null : new UStag._(tag, bytes.asUint16List());
 }
 
 /// Other Word VR
@@ -227,11 +227,6 @@ class OWtag extends OW with TagElement<int> {
   factory OWtag.bulkdata(Tag tag, Uri url, [int vfLengthField]) =>
       new OWtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField);
 
-  factory OWtag.fromBytes(Tag tag, Bytes bytes, [int vfLengthField]) =>
-      (OW.isNotValidTag(tag))
-          ? null
-          : new OWtag._(tag, bytes.asUint16List(), vfLengthField);
-
   OWtag._(this.tag, this.values, this.vfLengthField);
 
   @override
@@ -241,13 +236,18 @@ class OWtag extends OW with TagElement<int> {
       new OWtag._(tag, Uint16.fromValueField(vf), vfLengthField);
 
   static OWtag fromBase64(Tag tag, String s) =>
-      new OWtag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static OWtag fromUint8List(Tag tag, Uint8List bList, [int vfLengthField]) =>
-      new OWtag.fromBytes(tag, new Bytes.fromTypedData(bList), vfLengthField);
+      fromBytes(tag, new Bytes.fromTypedData(bList), vfLengthField);
 
   static OWtag from(Element bde, [int vfLengthField]) =>
-      new OWtag.fromBytes(bde.tag, bde.vfBytes, vfLengthField);
+      fromBytes(bde.tag, bde.vfBytes, vfLengthField);
+  
+  static OWtag fromBytes(Tag tag, Bytes bytes, [int vfLengthField]) =>
+      (OW.isNotValidTag(tag))
+          ? null
+          : new OWtag._(tag, bytes.asUint16List(), vfLengthField);
 }
 
 /// Other Long
@@ -266,9 +266,6 @@ class OLtag extends OL with TagElement<int> {
   factory OLtag.bulkdata(Tag tag, Uri url) =>
       new OLtag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory OLtag.fromBytes(Tag tag, Bytes bytes) =>
-      (OL.isNotValidTag(tag)) ? null : new OLtag._(tag, bytes.asUint32List());
-
   OLtag._(this.tag, this.values);
 
   @override
@@ -278,12 +275,15 @@ class OLtag extends OL with TagElement<int> {
       new OLtag(tag, Uint32.fromValueField(vf));
 
   static OLtag fromBase64(Tag tag, String s) =>
-      new OLtag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static OLtag fromUint8List(Tag tag, Uint8List bytes) =>
-      new OLtag.fromBytes(tag, new Bytes.fromTypedData(bytes));
-  
-  static OLtag from(Element bde) => new OLtag.fromBytes(bde.tag, bde.vfBytes);
+      fromBytes(tag, new Bytes.fromTypedData(bytes));
+
+  static OLtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
+
+  static OLtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (OL.isNotValidTag(tag)) ? null : new OLtag._(tag, bytes.asUint32List());
 }
 
 /// Unsigned Short
@@ -302,9 +302,6 @@ class ULtag extends UL with TagElement<int> {
   factory ULtag.bulkdata(Tag tag, Uri url) =>
       new ULtag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory ULtag.fromBytes(Tag tag, Bytes bytes) =>
-      (UL.isNotValidTag(tag)) ? null : new ULtag._(tag, bytes.asUint32List());
-
   ULtag._(this.tag, this.values);
 
   @override
@@ -314,12 +311,15 @@ class ULtag extends UL with TagElement<int> {
       new ULtag(tag, Uint32.fromValueField(vf));
 
   static ULtag fromBase64(Tag tag, String s) =>
-      new ULtag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static ULtag fromUint8List(Tag tag, Uint8List bytes) =>
-      new ULtag.fromBytes(tag, new Bytes.fromTypedData(bytes));
-  
-  static ULtag from(Element bde) => new ULtag.fromBytes(bde.tag, bde.vfBytes);
+      fromBytes(tag, new Bytes.fromTypedData(bytes));
+
+  static ULtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
+
+  static ULtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (UL.isNotValidTag(tag)) ? null : new ULtag._(tag, bytes.asUint32List());
 }
 
 /// Unsigned Short
@@ -333,9 +333,6 @@ class GLtag extends ULtag {
   factory GLtag.bulkdata(Tag tag, Uri url) =>
       new GLtag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory GLtag.fromBytes(Tag tag, Bytes bytes) =>
-      (UL.isNotValidTag(tag)) ? null : new GLtag._(tag, bytes.asUint32List());
-
   GLtag._(Tag tag, Iterable<int> values) : super._(tag, values);
 
   @override
@@ -347,12 +344,15 @@ class GLtag extends ULtag {
   //static GLtag from<int>(Element e) => new GLtag(e.tag, e.values);
 
   static GLtag fromBase64(Tag tag, String s) =>
-      new GLtag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static GLtag fromUint8List(Tag tag, Uint8List bytes) =>
-      new GLtag.fromBytes(tag, new Bytes.fromTypedData(bytes));
+      fromBytes(tag, new Bytes.fromTypedData(bytes));
 
-  static GLtag from(Element e) => new GLtag.fromBytes(e.tag, e.vfBytes);
+  static GLtag from(Element e) => fromBytes(e.tag, e.vfBytes);
+
+  static GLtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (UL.isNotValidTag(tag)) ? null : new GLtag._(tag, bytes.asUint32List());
 }
 
 /// Immutable Attribute Tags
@@ -374,9 +374,6 @@ class ATtag extends AT with TagElement<int> {
   factory ATtag.bulkdata(Tag tag, Uri url) =>
       new ATtag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory ATtag.fromBytes(Tag tag, Bytes bytes) =>
-      (AT.isNotValidTag(tag)) ? null : new ATtag._(tag, bytes.asUint32List());
-
   ATtag._(this.tag, this.values);
 
   @override
@@ -386,10 +383,13 @@ class ATtag extends AT with TagElement<int> {
       new ATtag(tag, Uint32.fromValueField(vf));
 
   static ATtag fromBase64(Tag tag, String s) =>
-      new ATtag.fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.base64Decode(s));
 
   static ATtag fromUint8List(Tag tag, Uint8List bList) =>
-      new ATtag.fromBytes(tag, new Bytes.fromTypedData(bList));
-  
-  static ATtag from(Element bde) => new ATtag.fromBytes(bde.tag, bde.vfBytes);
+      fromBytes(tag, new Bytes.fromTypedData(bList));
+
+  static ATtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
+
+  static ATtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      (AT.isNotValidTag(tag)) ? null : new ATtag._(tag, bytes.asUint32List());
 }

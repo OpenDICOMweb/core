@@ -41,7 +41,7 @@ void main() {
     });
 
     test('levels are comparable', () {
-      List<Level> unsorted = <Level>[
+      final unsorted = <Level>[
         Level.info0,
         Level.config,
         Level.debug1,

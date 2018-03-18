@@ -9,9 +9,9 @@ import 'dart:typed_data';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/tag/tag_element.dart';
-import 'package:core/src/utils/errors.dart';
-import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/errors.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/vr.dart';
 
@@ -36,7 +36,7 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   @override
   final int vfLengthField;
 
-  final Uint8List bytes;
+  final Bytes bytes;
 
   /// Creates a new [SQtag] instance.
   SQtag(this.tag, this.parent,
@@ -143,7 +143,7 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
 */
 
   static SQtag fromBytes(Tag tag, Dataset parent, List<TagItem> vList,
-                           [int vfLengthField, Uint8List bytes]) {
+                           [int vfLengthField, Bytes bytes]) {
     if (tag.vrIndex != kSQIndex) return null;
     return new SQtag(tag, parent, vList, vfLengthField, bytes);
   }

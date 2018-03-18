@@ -1233,9 +1233,11 @@ abstract class LT extends Text {
   static Uint8List toUint8List(Iterable<String> values) =>
       _textListToUint8List(values, kMaxVFLength);
 
-  static Bytes toBytes(List<String> sList, int maxVFLength) =>
-      _stringListToBytes(sList, maxVFLength);
-  
+  static Bytes toBytes(List<String> sList, int maxVFLength) {
+    assert(sList.length <= 1);
+    return _stringListToBytes(sList, maxVFLength);
+  }
+
   static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -1339,8 +1341,10 @@ abstract class ST extends Text {
   static Uint8List toUint8List(Iterable<String> values) =>
       _textListToUint8List(values, kMaxVFLength);
 
-  static Bytes toBytes(List<String> sList, int maxVFLength) =>
-      _stringListToBytes(sList, maxVFLength);
+  static Bytes toBytes(List<String> sList, int maxVFLength) {
+    assert(sList.length <= 1);
+    return _stringListToBytes(sList, maxVFLength);
+  }
   
   static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
@@ -1461,8 +1465,10 @@ abstract class UR extends Text {
   static Uint8List toUint8List(Iterable<String> values) =>
       _textListToUint8List(values, kMaxVFLength);
 
-  static Bytes toBytes(List<String> sList, int maxVFLength) =>
-      _stringListToBytes(sList, maxVFLength);
+  static Bytes toBytes(List<String> sList, int maxVFLength) {
+    assert(sList.length <= 1);
+    return _stringListToBytes(sList, maxVFLength);
+  }
   
   static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
@@ -1588,9 +1594,11 @@ abstract class UT extends Text {
   static Uint8List toUint8List(Iterable<String> values) =>
       _textListToUint8List(values, kMaxVFLength);
 
-  static Bytes toBytes(List<String> sList, int maxVFLength) =>
-      _stringListToBytes(sList, maxVFLength);
-  
+  static Bytes toBytes(List<String> sList, int maxVFLength) {
+    assert(sList.length <= 1);
+    return _stringListToBytes(sList, maxVFLength);
+  }
+
   static Iterable<String> fromUint8List(Uint8List bytes,
           {int offset = 0, int length}) =>
       _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
@@ -2605,7 +2613,7 @@ Uint8List _textListToUint8List(Iterable<String> values, int maxVFLength) {
   return invalidValuesLength(1, 1, values);
 }
 
-
+/*
 /// Returns a [Uint8List] corresponding to a binary Value Field.
 Bytes _textListToBytes(Iterable<String> values, int maxVFLength) {
   if (values.isEmpty) return kEmptyBytes;
@@ -2617,6 +2625,7 @@ Bytes _textListToBytes(Iterable<String> values, int maxVFLength) {
   }
   return invalidValuesLength(1, 1, values);
 }
+*/
 
 ByteData _textListToByteData(Iterable<String> values, int maxVFLength) {
   final bytes = _textListToUint8List(values, maxVFLength);

@@ -26,6 +26,7 @@ class BulkdataList {
 
   int get length => entries.length;
 
+  /// Return a URL for the [Bulkdata] Value FIeld that is add to _this_.
   BulkdataUri add(int code, Bytes valueField) {
     final bd = new Bulkdata(code, entries.length, valueField);
     lengthInBytes += valueField.lengthInBytes;
