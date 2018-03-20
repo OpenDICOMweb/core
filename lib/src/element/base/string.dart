@@ -2166,7 +2166,6 @@ abstract class DS extends StringAscii {
     return s;
   }
 
-  // Urgent Sharath: unit test
   /// Returns a new [DS] Element with values that are the hash of _this_.
   @override
   DS get hash =>
@@ -2328,7 +2327,6 @@ abstract class IS extends StringAscii {
   List<int> get integers => _integers ??= tryParseList(values);
   List<int> _integers;
 
-  // Urgent Sharath: unit test
   @override
   IS get hash {
     final sList = new List<String>(integers.length);
