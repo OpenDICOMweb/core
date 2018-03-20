@@ -38,24 +38,24 @@ class ReadBuffer extends BufferBase {
   ReadBuffer.fromByteData(ByteData bd, [Endian endian = Endian.little])
       :   rIndex_ = 0,
         wIndex_ = bd.lengthInBytes,
-        bytes = new Bytes.fromTypedData(bd, endian);
+        bytes = new Bytes.typedDataView(bd);
 
   ReadBuffer.fromList(List<int> list, [Endian endian = Endian.little])
       : rIndex_ = 0,
         wIndex_ = list.length,
-        bytes = new Bytes.fromTypedData(new Uint8List.fromList(list), endian);
+        bytes = new Bytes.typedDataView(new Uint8List.fromList(list));
 
-  ReadBuffer.fromTypedData(TypedData td, [Endian endian = Endian.little])
+  ReadBuffer.typedDataView(TypedData td, [Endian endian = Endian.little])
       : rIndex_ = 0,
         wIndex_ = td.lengthInBytes,
-        bytes = new Bytes.fromTypedData(td, endian);
+        bytes = new Bytes.typedDataView(td);
 
 /* Urgent: Jim todo
   ReadBuffer.fromString(String s, [Endian endian])
       : endian = endian ??= Endian.host,
         rIndex_ = 0,
         wIndex_ = td.lengthInBytes,
-        bytes = new Bytes.fromTypedData(td, endian);
+        bytes = new Bytes.typedDataView(td, endian);
 */
 
   // **** ReadBuffer specific Getters and Methods
@@ -306,7 +306,7 @@ class LoggingReadBuffer extends ReadBuffer {
   }
 
   LoggingReadBuffer._(TypedData td, Endian endian)
-      : super.fromTypedData(td.buffer.asByteData(), endian);
+      : super.typedDataView(td.buffer.asByteData(), endian);
 
   /// The current readIndex as a string.
   String get _rrr => 'R@${rIndex_.toString().padLeft(5, '0')}';

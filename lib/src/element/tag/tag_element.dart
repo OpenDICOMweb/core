@@ -189,8 +189,8 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
 
   static Null _sqError(Tag tag, Bytes eb, [int vfLengthField]) => invalidElementIndex(0);
 
-  static Element makePixelDataFromBytes(int code, int vrIndex, Bytes bytes,
-      [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
+  static Element makePixelDataFromBytes(int code, Bytes bytes, int vrIndex,
+      [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
     assert(vrIndex >= kOBIndex && vrIndex <= kUNIndex);
     final tag = Tag.lookupByCode(code, vrIndex);
     return _bytePixelDataMakers[vrIndex](tag, bytes, vfLengthField, fragments, ts);

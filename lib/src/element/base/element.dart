@@ -90,7 +90,7 @@ abstract class Element<V> extends ListBase<V> {
   // **************************************************************
   // **** Some of these Getters may be accessed directly in the element.
 
-  /// Returns the [Tag] associated with _this_.
+  /// Returns the [Tag] associated with [code].
   Tag get tag => Tag.lookupByCode(code, vrIndex);
 
   /// The Tag [code] for this Element.
@@ -327,7 +327,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Returns [values] encoded as a [Bytes].
   Bytes get vfBytes =>
-      (checkValues(values)) ? new Bytes.fromTypedData(typedData) : null;
+      (checkValues(values)) ? new Bytes.typedDataView(typedData) : null;
 
   String get vfBytesAsAscii => vfBytes.getAscii();
 

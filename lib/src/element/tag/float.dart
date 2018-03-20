@@ -42,7 +42,7 @@ class FLtag extends FL with TagElement<double> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static FLtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, new Bytes.typedDataView(bList));
 
   static FLtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
@@ -82,7 +82,7 @@ class OFtag extends OF with TagElement<double> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static OFtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, new Bytes.typedDataView(bList));
 
   static OFtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
@@ -120,7 +120,7 @@ class FDtag extends FD with TagElement<double> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static FDtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, new Bytes.typedDataView(bList));
 
   static FDtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
@@ -159,7 +159,7 @@ class ODtag extends OD with TagElement<double> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static ODtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, new Bytes.typedDataView(bList));
 
   static ODtag from(Element e) => fromBytes(e.tag, e.vfBytes);
   

@@ -164,17 +164,27 @@ Bytes _removeLongPadding(Bytes bytes, [int padChar = kSpace]) =>
 
 class FLevr extends FL
     with Common, EvrElement<double>, EvrShortMixin<double>, BDFloat32Mixin {
+  /// The bytes read without padding.
   @override
   final Bytes bytes;
+  @override
+  Tag _tag;
+  Float32List _values;
 
-  FLevr(this.bytes);
+  FLevr(this.bytes, [this._tag]);
 
   @override
-  Float32List get values => vfBytes.asFloat32List();
+  Tag get tag => _tag ??= Tag.lookupByCode(code, FL.kVRIndex);
+  @override
+  Float32List get values => _values ??= vfBytes.asFloat32List();
 
-  static FLevr make(Bytes bytes, int vrIndex) {
-    assert(
-        vrIndex != null || vrIndex == kFLIndex && bytes.lengthInBytes.isEven);
+  static FLevr make2(Bytes bytes, [Tag tag]) {
+    assert(bytes.getUint16(4) == FL.kVRCode && bytes.lengthInBytes.isEven);
+    return new FLevr(bytes, tag);
+  }
+
+  static FLevr make(Bytes bytes) {
+    assert(bytes.getUint16(4) == FL.kVRCode && bytes.lengthInBytes.isEven);
     return new FLevr(bytes);
   }
 }

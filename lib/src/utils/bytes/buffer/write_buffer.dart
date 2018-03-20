@@ -42,13 +42,13 @@ class WriteBuffer extends BufferBase {
       [Endian endian = Endian.little, int limit = kDefaultLimit])
       : rIndex_ = 0,
         wIndex_ = bd.lengthInBytes,
-        bytes = new GrowableBytes.fromTypedData(bd, endian, limit);
+        bytes = new GrowableBytes.typedDataView(bd, endian, limit);
 
   WriteBuffer.fromUint8List(Uint8List uint8List,
       [Endian endian = Endian.little, int limit = kDefaultLimit])
       : rIndex_ = 0,
         wIndex_ = uint8List.lengthInBytes,
-        bytes = new GrowableBytes.fromTypedData(uint8List, endian, limit);
+        bytes = new GrowableBytes.typedDataView(uint8List, endian, limit);
 
   WriteBuffer._(int length, Endian endian, int limit)
       : rIndex_ = 0,
@@ -58,7 +58,7 @@ class WriteBuffer extends BufferBase {
   WriteBuffer._fromTD(TypedData td, Endian endian, int limit)
       : rIndex_ = 0,
         wIndex_ = td.lengthInBytes,
-        bytes = new GrowableBytes.fromTypedData(td, endian, limit);
+        bytes = new GrowableBytes.typedDataView(td, endian, limit);
 
   // **** WriteBuffer specific Getters and Methods
 
@@ -218,11 +218,12 @@ class WriteBuffer extends BufferBase {
   }
 
   void writeUint8List(Uint8List bList) =>
-      writeByteData(bList.buffer.asByteData());
+      writeByteData(bList.buffer.asByteData(bList.offsetInBytes,
+          bList.lengthInBytes));
 
   void writeByteData(ByteData bd) {
     final length = bd.lengthInBytes;
-    bytes.setByteData(bd.buffer.asByteData(), wIndex_, length);
+    bytes.setByteData(bd, wIndex_, length);
     wIndex_ += length;
   }
 
@@ -352,13 +353,13 @@ class LoggingWriteBuffer extends WriteBuffer {
 
   factory LoggingWriteBuffer.fromByteData(ByteData bd,
           [Endian endian = Endian.little, int limit = kDefaultLimit]) =>
-      new LoggingWriteBuffer.fromTypedData(bd, endian, limit);
+      new LoggingWriteBuffer.typedDataView(bd, endian, limit);
 
   factory LoggingWriteBuffer.fromBytes(Uint8List td,
           [Endian endian = Endian.little, int limit = kDefaultLimit]) =>
-      new LoggingWriteBuffer.fromTypedData(td, endian, limit);
+      new LoggingWriteBuffer.typedDataView(td, endian, limit);
 
-  LoggingWriteBuffer.fromTypedData(TypedData td, Endian endian, int limit)
+  LoggingWriteBuffer.typedDataView(TypedData td, Endian endian, int limit)
       : super._fromTD(td, endian, limit);
 
   /// The current readIndex as a string.

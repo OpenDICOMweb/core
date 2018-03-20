@@ -19,7 +19,7 @@ class TagRootDataset extends MapRootDataset with TagDataset {
 
   /// Creates an empty [TagRootDataset], i.e. without [Element]s.
   TagRootDataset.empty([String path = '', Bytes bd, int fmiEnd = 0])
-      : super.empty(path, bd ?? Bytes.kEmptyBytes, fmiEnd);
+      : super.empty(path, bd ?? LEBytes.kEmptyList, fmiEnd);
 
   // TODO: make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].

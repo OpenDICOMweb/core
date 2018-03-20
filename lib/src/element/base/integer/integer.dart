@@ -68,7 +68,7 @@ abstract class IntBase extends Element<int> {
       .asByteData(typedData.offsetInBytes, typedData.lengthInBytes);
 
   @override
-  Bytes get vfBytes => new Bytes.fromTypedData(typedData);
+  Bytes get vfBytes => new Bytes.typedDataView(typedData);
 
   VFFragments get fragments => unsupportedError();
 

@@ -6,7 +6,6 @@
 
 import 'dart:collection';
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 export 'package:core/src/utils/bytes/buffer/read_buffer.dart';
@@ -32,48 +31,117 @@ bool _isMaxCapacityExceeded(int length, [int maxLength]) {
   return length >= maxLength;
 }
 
+class LEBytes extends Bytes {
+  ByteData _bd;
+  @override
+  final Endian endian = Endian.little;
+
+  LEBytes._(int length)
+      : _bd = new ByteData(length),
+        super._();
+
+  LEBytes._view(LEBytes bytes, int offset, int length)
+      : _bd =
+            bytes._bd.buffer.asByteData(offset, length ?? bytes.lengthInBytes),
+        super._();
+
+  LEBytes._fromTypedData(TypedData td, [int offset = 0, int lengthInBytes])
+      : _bd = td.buffer.asByteData(
+            td.offsetInBytes + offset, lengthInBytes ??= td.lengthInBytes),
+        super._();
+
+  LEBytes get emptyList => kEmptyList;
+
+  // Returns a view of _this_, with same [endian]ness.
+  @override
+  LEBytes subbytes([int start = 0, int end]) =>
+      new LEBytes._view(this, start, end ?? length);
+
+  static final LEBytes kEmptyList = new LEBytes._(0);
+}
+
+class BEBytes extends Bytes {
+  @override
+  ByteData _bd;
+  @override
+  final Endian endian = Endian.big;
+
+  BEBytes._(int length)
+      : _bd = new ByteData(length),
+        super._();
+
+  BEBytes._view(BEBytes bytes, int offset, int length)
+      : _bd = bytes._bd.buffer
+            .asByteData(offset, length ?? bytes._bd.lengthInBytes),
+        super._();
+
+  BEBytes._fromTypedData(TypedData td, [int offset = 0, int lengthInBytes])
+      : _bd = td.buffer.asByteData(
+            td.offsetInBytes + offset, lengthInBytes ??= td.lengthInBytes),
+        super._();
+
+  BEBytes get emptyList => kEmptyList;
+
+  // Returns a view of _this_, with same [endian]ness.
+  @override
+  BEBytes subbytes([int start = 0, int end]) =>
+      new BEBytes._view(this, start, end ?? length);
+
+  static final BEBytes kEmptyList = new BEBytes._(0);
+}
+
 // TODO: Figure out the best way to be closed over [endian] in order to avoid
 //       having it as a local variable. It seams like ByteData primitives
 //       should be divided into getUintXLittleEndian and getUintXBigEndian
 /// [Bytes] is a class that provides a read-only byte array that supports both
 /// [Uint8List] and [ByteData] interfaces.
-class Bytes extends ListBase<int> {
-  ByteData _bd;
-  final Endian endian;
+abstract class Bytes extends Object with ListMixin<int> {
+  Bytes._();
 
-  /// Returns a
-  Bytes([int length = kDefaultLength, this.endian = Endian.little])
-      : _bd = new ByteData(length);
+  factory Bytes([int length = kDefaultLength, Endian endian = Endian.little]) =>
+      (endian == Endian.little) ? new LEBytes._(length) : new BEBytes._(length);
 
-  Bytes.from(Bytes bytes,
-      [int offset = 0, int length, this.endian = Endian.little])
-      : _bd = bytes.asByteData(offset, length ?? bytes.lengthInBytes);
+  factory Bytes.view(Bytes bytes,
+          [int offset = 0, int length, Endian endian = Endian.little]) =>
+     new Bytes.typedDataView(bytes._bd, offset, length, endian);
 
-  Bytes.fromList(List<int> list, [this.endian = Endian.little])
-      : _bd = (list is Uint8List)
-            ? list.buffer.asByteData()
-            : (new Uint8List.fromList(list)).buffer.asByteData();
+  factory Bytes.fromList(List<int> list, [Endian endian = Endian.little]) {
+    final u8List = new Uint8List.fromList(list);
+    return (endian == Endian.little)
+        ? new LEBytes._fromTypedData(u8List)
+        : new BEBytes._fromTypedData(u8List);
+  }
 
-  Bytes.fromTypedData(TypedData td, [this.endian = Endian.little])
-      : _bd = td.buffer.asByteData();
+  factory Bytes.typedDataView(TypedData td,
+      [int offset = 0, int length, Endian endian = Endian.little]) {
+    length ??= td.lengthInBytes ~/ td.elementSizeInBytes;
+    final _bd = td.buffer
+        .asByteData(td.offsetInBytes + offset, length * td.elementSizeInBytes);
+    return (endian == Endian.little)
+        ? new LEBytes._fromTypedData(td, offset, length)
+        : new BEBytes._fromTypedData(td, offset, length);
+  }
 
-  Bytes.view(Bytes bytes,
-      [int offset = 0, int length, this.endian = Endian.little])
-      : _bd = bytes.asByteData(offset, length ?? bytes.lengthInBytes);
+  ByteData get _bd;
+  ByteData get bd => _bd;
+  Endian get endian;
+  Bytes get emptyList;
 
-
-  Bytes.typedDataView(TypedData td,
-      [int offset = 0, int length, this.endian = Endian.little])
-      : _bd = td.buffer.asByteData(
-            td.offsetInBytes + offset, length * td.elementSizeInBytes);
-
-  Bytes._([this.endian = Endian.little]) : _bd = new ByteData(0);
+  // *** List interface
 
   @override
   int operator [](int i) => _bd.getUint8(i);
 
   @override
   void operator []=(int i, int v) => _bd.setUint8(i, v);
+
+  @override
+  int get length => _bd.lengthInBytes;
+  @override
+  set length(int length) =>
+      throw new UnsupportedError('$runtimeType: length is not modifiable');
+
+  // **** Object overrides
 
   @override
   bool operator ==(Object other) {
@@ -85,11 +153,6 @@ class Bytes extends ListBase<int> {
     }
     return false;
   }
-
-  // Core accessor NOT to be exported?
-  ByteData get bd => _bd;
-
-  // **** Object overrides
 
   @override
   int get hashCode {
@@ -104,17 +167,6 @@ class Bytes extends ListBase<int> {
   int get lengthInBytes => _bd.lengthInBytes;
   ByteBuffer get buffer => _bd.buffer;
 
-  // *** List interface
-
-  @override
-  int get length => _bd.lengthInBytes;
-  @override
-  set length(int length) =>
-      throw new UnsupportedError('$runtimeType: length is not modifiable');
-
-  @override
-  Bytes sublist(int start, [int end]) =>
-      new Bytes.from(this, start, end ?? length, endian);
 
   // **** Extensions
 
@@ -235,10 +287,6 @@ class Bytes extends ListBase<int> {
   int _bdOffset(int offset) => _bd.offsetInBytes + offset;
 
   // Returns a view of _this_.
-  Bytes subbytes([int start = 0, int end]) =>
-      new Bytes.view(this, start, end ?? length);
-
-  // Returns a view of _this_.
   Bytes asBytes([int offset = 0, int length]) =>
       new Bytes.view(this, offset, length ?? lengthInBytes);
 
@@ -265,7 +313,7 @@ class Bytes extends ListBase<int> {
   Int64List asInt64List([int offset = 0, int length]) {
     length ??= _bd.lengthInBytes ~/ 8;
     return (isAligned64(offset))
-        ? _bd.buffer.asInt64List(_bdOffset(offset), length )
+        ? _bd.buffer.asInt64List(_bdOffset(offset), length)
         : getInt64List(offset, length);
   }
 
@@ -280,10 +328,10 @@ class Bytes extends ListBase<int> {
   }
 
   Uint32List asUint32List([int offset = 0, int length]) {
-      length ??= _bd.lengthInBytes ~/ 4;
-     return  (isAligned32(offset))
-      ? _bd.buffer.asUint32List(_bdOffset(offset), length )
-      : getUint32List(offset, length);
+    length ??= _bd.lengthInBytes ~/ 4;
+    return (isAligned32(offset))
+        ? _bd.buffer.asUint32List(_bdOffset(offset), length)
+        : getUint32List(offset, length);
   }
 
   Uint64List asUint64List([int offset = 0, int length]) {
@@ -293,265 +341,270 @@ class Bytes extends ListBase<int> {
         : getUint64List(offset, length);
   }
 
-    Float32List asFloat32List([int offset = 0, int length]) {
-      length ??= _bd.lengthInBytes ~/ 4;
-      return (isAligned32(offset))
-          ? _bd.buffer.asFloat32List(_bdOffset(offset), length)
-          : getFloat32List(offset, length);
-    }
+  Float32List asFloat32List([int offset = 0, int length]) {
+    length ??= _bd.lengthInBytes ~/ 4;
+    return (isAligned32(offset))
+        ? _bd.buffer.asFloat32List(_bdOffset(offset), length)
+        : getFloat32List(offset, length);
+  }
 
-    Float64List asFloat64List([int offset = 0, int length]) {
-      length ??= _bd.lengthInBytes ~/ 8;
-      return (isAligned64(offset))
-          ? _bd.buffer.asFloat64List(_bdOffset(offset), length)
-          : getFloat64List(offset, length);
-    }
+  Float64List asFloat64List([int offset = 0, int length]) {
+    length ??= _bd.lengthInBytes ~/ 8;
+    return (isAligned64(offset))
+        ? _bd.buffer.asFloat64List(_bdOffset(offset), length)
+        : getFloat64List(offset, length);
+  }
 
-    List<String> asAsciiList([int offset = 0, int length]) =>
-        getAscii(offset, length).split('\\');
+  List<String> asAsciiList([int offset = 0, int length]) =>
+      getAscii(offset, length).split('\\');
 
-    List<String> asUtf8List([int offset = 0, int length]) =>
-        getUtf8(offset, length).split('\\');
+  List<String> asUtf8List([int offset = 0, int length]) =>
+      getUtf8(offset, length).split('\\');
 
-    List<String> asStringList([int offset = 0, int length]) =>
-        asUtf8List(offset, length);
+  List<String> asStringList([int offset = 0, int length]) =>
+      asUtf8List(offset, length);
 
-    // **** ByteData Setters
+  // **** ByteData Setters
 
-    void setInt8(int wIndex, int value) => _bd.setInt8(wIndex, value);
+  void setInt8(int wIndex, int value) => _bd.setInt8(wIndex, value);
 
-    void setUint8(int wIndex, int value) => _bd.setUint8(wIndex, value);
+  void setUint8(int wIndex, int value) => _bd.setUint8(wIndex, value);
 
-    void setUint16(int wIndex, int value) => _bd.setUint16(wIndex, value, endian);
+  void setUint16(int wIndex, int value) => _bd.setUint16(wIndex, value, endian);
 
-    void setInt16(int wIndex, int value) => _bd.setInt16(wIndex, value, endian);
+  void setInt16(int wIndex, int value) => _bd.setInt16(wIndex, value, endian);
 
-    void setUint32(int wIndex, int value) => _bd.setUint32(wIndex, value, endian);
+  void setUint32(int wIndex, int value) => _bd.setUint32(wIndex, value, endian);
 
-    void setInt32(int wIndex, int value) => _bd.setInt32(wIndex, value, endian);
+  void setInt32(int wIndex, int value) => _bd.setInt32(wIndex, value, endian);
 
-    void setUint64(int wIndex, int value) => _bd.setUint64(wIndex, value, endian);
+  void setUint64(int wIndex, int value) => _bd.setUint64(wIndex, value, endian);
 
-    void setInt64(int wIndex, int value) => _bd.setInt64(wIndex, value, endian);
+  void setInt64(int wIndex, int value) => _bd.setInt64(wIndex, value, endian);
 
-    void setFloat32(int wIndex, double value) =>
-        _bd.setFloat32(wIndex, value, endian);
+  void setFloat32(int wIndex, double value) =>
+      _bd.setFloat32(wIndex, value, endian);
 
-    void setFloat64(int wIndex, double value) =>
-        _bd.setFloat64(wIndex, value, endian);
+  void setFloat64(int wIndex, double value) =>
+      _bd.setFloat64(wIndex, value, endian);
 
-    // **** String Setters
+  // **** String Setters
 
-    void setAscii(String s, [int offset = 0, int length]) {
-      length ??= s.length;
-      final v = (offset == 0 && length == s.length)
-          ? s
-          : s.substring(offset, offset + length);
-      setUint8List(ascii.encode(v), offset, length);
-    }
+  void setAscii(String s, [int offset = 0, int length]) {
+    length ??= s.length;
+    final v = (offset == 0 && length == s.length)
+        ? s
+        : s.substring(offset, offset + length);
+    setUint8List(ascii.encode(v), offset, length);
+  }
 
-    void setUtf8(String s, [int offset = 0, int length]) {
-      length ??= s.length;
-      final v = (offset == 0 && length == s.length)
-          ? s
-          : s.substring(offset, offset + length);
-      setUint8List(ascii.encode(v), offset, length);
-    }
+  void setUtf8(String s, [int offset = 0, int length]) {
+    length ??= s.length;
+    final v = (offset == 0 && length == s.length)
+        ? s
+        : s.substring(offset, offset + length);
+    setUint8List(ascii.encode(v), offset, length);
+  }
 
-    void setString(String s, [int offset = 0, int length]) =>
-        setUtf8(s, offset, length);
+  void setString(String s, [int offset = 0, int length]) =>
+      setUtf8(s, offset, length);
 
-    // **** TypedData List Setters
+  // **** TypedData List Setters
 
-    void setInt8List(Int8List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kInt8Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setInt8(i, list[i]);
-    }
+  void setInt8List(Int8List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kInt8Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setInt8(i, list[i]);
+  }
 
-    void setInt16List(Int16List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kInt16Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setInt16(i, list[i]);
-    }
+  void setInt16List(Int16List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kInt16Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setInt16(i, list[i]);
+  }
 
-    void setInt32List(Int32List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kInt32Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setInt32(i, list[i]);
-    }
+  void setInt32List(Int32List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kInt32Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setInt32(i, list[i]);
+  }
 
-    void setInt64List(Int64List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kInt64Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setInt64(i, list[i]);
-    }
+  void setInt64List(Int64List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kInt64Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setInt64(i, list[i]);
+  }
 
-    void setUint8List(Uint8List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kUint8Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setUint8(i, list[i]);
-    }
+  void setUint8List(Uint8List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kUint8Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setUint8(i, list[i]);
+  }
 
-    void setByteData(ByteData bd, [int offset = 0, int length]) {
-      length ??= bd.lengthInBytes;
-      _checkLength(offset, length, kUint8Size);
-      for (var i = offset; i < length; i++) _bd.setUint8(i, bd.getUint8(i));
-    }
+  void setByteData(ByteData bd, [int offset = 0, int length]) {
+    length ??= bd.lengthInBytes;
+    _checkLength(offset, length, kUint8Size);
+    for (var i = offset; i < length; i++) _bd.setUint8(i, bd.getUint8(i));
+  }
 
-    void setUint16List(Uint16List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kUint16Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setUint16(i, list[i]);
-    }
+  void setUint16List(Uint16List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kUint16Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setUint16(i, list[i]);
+  }
 
-    void setUint32List(Uint32List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kUint32Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setUint32(i, list[i]);
-    }
+  void setUint32List(Uint32List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kUint32Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setUint32(i, list[i]);
+  }
 
-    void setUint64List(Uint64List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kUint64Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setUint64(i, list[i]);
-    }
+  void setUint64List(Uint64List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kUint64Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setUint64(i, list[i]);
+  }
 
-    void setFloat32List(Float32List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kFloat32Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setFloat32(i, list[i]);
-    }
+  void setFloat32List(Float32List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kFloat32Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setFloat32(i, list[i]);
+  }
 
-    void setFloat64List(Float64List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kFloat64Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setFloat64(i, list[i]);
-    }
+  void setFloat64List(Float64List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kFloat64Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setFloat64(i, list[i]);
+  }
 
-    void _checkLength(int offset, int length, int size) {
-      final lLength = length * size;
-      final bLength = _bd.lengthInBytes - (_bd.offsetInBytes + offset);
-      if (length > bLength)
-        throw new RangeError('List ($lLength bytes) is to large for '
-            'Bytes($bLength bytes');
-    }
+  void _checkLength(int offset, int length, int size) {
+    final lLength = length * size;
+    final bLength = _bd.lengthInBytes - (_bd.offsetInBytes + offset);
+    if (length > bLength)
+      throw new RangeError('List ($lLength bytes) is to large for '
+          'Bytes($bLength bytes');
+  }
 
-    // **** String Setters
+  // **** String Setters
 
-    String _toString(List<String> sList, int offset, int length) {
-      final v = (offset == 0 && length == sList.length)
-          ? sList
-          : sList.sublist(offset, offset + length);
-      return v.join('\\');
-    }
+  String _toString(List<String> sList, int offset, int length) {
+    final v = (offset == 0 && length == sList.length)
+        ? sList
+        : sList.sublist(offset, offset + length);
+    return v.join('\\');
+  }
 
-    int setAsciiList(List<String> sList, [int offset = 0, int length]) {
-      final s = _toString(sList, offset, length ??= sList.length);
-      setAscii(s, offset, s.length);
-      return s.length;
-    }
+  int setAsciiList(List<String> sList, [int offset = 0, int length]) {
+    final s = _toString(sList, offset, length ??= sList.length);
+    setAscii(s, offset, s.length);
+    return s.length;
+  }
 
-    int setUtf8List(
-        List<String> sList, [
-          int offset = 0,
-          int length,
-        ]) {
-      final s = _toString(sList, offset, length ??= sList.length);
-      setUtf8(s, offset, s.length);
-      return s.length;
-    }
+  int setUtf8List(
+    List<String> sList, [
+    int offset = 0,
+    int length,
+  ]) {
+    final s = _toString(sList, offset, length ??= sList.length);
+    setUtf8(s, offset, s.length);
+    return s.length;
+  }
 
-    bool isInt8(int i) => i > kInt8MinValue && i <= kInt8MaxValue;
-    bool isInt16(int i) => i > kInt16MinValue && i <= kInt16MaxValue;
-    bool isInt32(int i) => i > kInt32MinValue && i <= kInt32MaxValue;
-    bool isInt64(int i) => i > kInt64MinValue && i <= kInt64MaxValue;
+  bool isInt8(int i) => i > kInt8MinValue && i <= kInt8MaxValue;
+  bool isInt16(int i) => i > kInt16MinValue && i <= kInt16MaxValue;
+  bool isInt32(int i) => i > kInt32MinValue && i <= kInt32MaxValue;
+  bool isInt64(int i) => i > kInt64MinValue && i <= kInt64MaxValue;
 
-    bool isUint8(int i) => i > kUint8MinValue && i <= kUint8MaxValue;
-    bool isUint16(int i) => i > kUint16MinValue && i <= kUint16MaxValue;
-    bool isUint32(int i) => i > kUint32MinValue && i <= kUint32MaxValue;
-    bool isUint64(int i) => i > kUint64MinValue && i <= kUint64MaxValue;
+  bool isUint8(int i) => i > kUint8MinValue && i <= kUint8MaxValue;
+  bool isUint16(int i) => i > kUint16MinValue && i <= kUint16MaxValue;
+  bool isUint32(int i) => i > kUint32MinValue && i <= kUint32MaxValue;
+  bool isUint64(int i) => i > kUint64MinValue && i <= kUint64MaxValue;
 
-    static const int kInt8Size = 1;
-    static const int kInt16Size = 2;
-    static const int kInt32Size = 4;
-    static const int kInt64Size = 8;
+  static const int kInt8Size = 1;
+  static const int kInt16Size = 2;
+  static const int kInt32Size = 4;
+  static const int kInt64Size = 8;
 
-    static const int kUint8Size = 1;
-    static const int kUint16Size = 2;
-    static const int kUint32Size = 4;
-    static const int kUint64Size = 8;
+  static const int kUint8Size = 1;
+  static const int kUint16Size = 2;
+  static const int kUint32Size = 4;
+  static const int kUint64Size = 8;
 
-    static const int kFloat32Size = 4;
-    static const int kFloat64Size = 8;
+  static const int kFloat32Size = 4;
+  static const int kFloat64Size = 8;
 
-    static const int kInt8MinValue = -0x7F - 1;
-    static const int kInt16MinValue = -0x7FFF - 1;
-    static const int kInt32MinValue = -0x7FFFFFFF - 1;
-    static const int kInt64MinValue = -0x7FFFFFFFFFFFFFFF - 1;
+  static const int kInt8MinValue = -0x7F - 1;
+  static const int kInt16MinValue = -0x7FFF - 1;
+  static const int kInt32MinValue = -0x7FFFFFFF - 1;
+  static const int kInt64MinValue = -0x7FFFFFFFFFFFFFFF - 1;
 
-    static const int kUint8MinValue = 0;
-    static const int kUint16MinValue = 0;
-    static const int kUint32MinValue = 0;
-    static const int kUint64MinValue = 0;
+  static const int kUint8MinValue = 0;
+  static const int kUint16MinValue = 0;
+  static const int kUint32MinValue = 0;
+  static const int kUint64MinValue = 0;
 
-    static const int kInt8MaxValue = 0x7F;
-    static const int kInt16MaxValue = 0x7FFF;
-    static const int kInt32MaxValue = 0x7FFFFFFF;
-    static const int kInt64MaxValue = 0x7FFFFFFFFFFFFFFF;
+  static const int kInt8MaxValue = 0x7F;
+  static const int kInt16MaxValue = 0x7FFF;
+  static const int kInt32MaxValue = 0x7FFFFFFF;
+  static const int kInt64MaxValue = 0x7FFFFFFFFFFFFFFF;
 
-    static const int kUint8MaxValue = 0xFF;
-    static const int kUint16MaxValue = 0xFFFF;
-    static const int kUint32MaxValue = 0xFFFFFFFF;
-    static const int kUint64MaxValue = 0xFFFFFFFFFFFFFFFF;
+  static const int kUint8MaxValue = 0xFF;
+  static const int kUint16MaxValue = 0xFFFF;
+  static const int kUint32MaxValue = 0xFFFFFFFF;
+  static const int kUint64MaxValue = 0xFFFFFFFFFFFFFFFF;
 
-    static const int kDefaultLength = 1024;
+  static const int kDefaultLength = 1024;
 
-    /// Returns a [Bytes] buffer containing the contents of [File].
-    // TODO: add async
-    // TODO: unit test
-    static Bytes fromFile(File file,
-        {Endian endian = Endian.little, bool doAsync = false}) {
-      final Uint8List iList = file.readAsBytesSync();
-      return new Bytes.fromTypedData(iList, endian);
-    }
+/*
+  /// Returns a [Bytes] buffer containing the contents of [File].
+  // TODO: add async
+  // TODO: unit test
+  static Bytes fromFile(File file,
+      {Endian endian = Endian.little, bool doAsync = false}) {
+    final Uint8List iList = file.readAsBytesSync();
+    return new Bytes.typedDataView(iList, endian);
+  }
 
-    /// Returns a [Bytes] buffer containing the contents of the
-    /// [File] at [path].
-    // TODO: add async
-    // TODO: unit test
-    static Bytes fromPath(String path,
-        {Endian endian = Endian.little, bool doAsync = false}) =>
-        fromFile(new File(path), endian: endian, doAsync: doAsync);
+  /// Returns a [Bytes] buffer containing the contents of the
+  /// [File] at [path].
+  // TODO: add async
+  // TODO: unit test
+  static Bytes fromPath(String path,
+          {Endian endian = Endian.little, bool doAsync = false}) =>
+      fromFile(new File(path), endian: endian, doAsync: doAsync);
+*/
 
-    static final Bytes kEmptyBytes = new Bytes._();
+//  static final Bytes kEmptyList = new LEBytes._();
 
+  static Bytes base64Decode(String s) =>
+      new Bytes.typedDataView(base64.decode(s));
 
-    static Bytes base64Decode(String s) =>
-    new Bytes.fromTypedData(base64.decode(s));
+  static String base64Encode(Bytes bytes) => base64.encode(bytes.asUint8List());
 
-    static String base64Encode(Bytes bytes) => base64.encode(bytes.asUint8List());
+  static String asciiDecode(Bytes bytes, {bool allowInvalid = true}) =>
+      ascii.decode(bytes.asUint8List(), allowInvalid: allowInvalid);
 
-    static String asciiDecode(Bytes bytes, {bool allowInvalid = true}) =>
-        ascii.decode(bytes.asUint8List(), allowInvalid: allowInvalid);
+  static Bytes asciiEncode(String s) =>
+      new Bytes.typedDataView(ascii.encode(s));
 
-    static Bytes asciiEncode(String s) =>
-    new Bytes.fromTypedData(ascii.encode(s));
+  static String utf8Decode(Bytes bytes, {bool allowMalformed = true}) =>
+      utf8.decode(bytes.asUint8List(), allowMalformed: allowMalformed);
 
-    static String utf8Decode(Bytes bytes, {bool allowMalformed = true}) =>
-        utf8.decode(bytes.asUint8List(), allowMalformed: allowMalformed);
+  static Bytes utf8Encode(String s) => new Bytes.typedDataView(ascii.encode(s));
 
-    static Bytes utf8Encode(String s) => new Bytes.fromTypedData(ascii.encode(s));
+  String get _endian => (endian == Endian.little) ? 'LE' : 'BE';
+
+  String toString() => 'Bytes($_endian)[$length]';
 }
 
 class GrowableBytes extends Bytes {
@@ -572,9 +625,9 @@ class GrowableBytes extends Bytes {
       this.limit = _k1GB])
       : super.from(bytes, offset, length, endian);
 
-  GrowableBytes.fromTypedData(TypedData td,
+  GrowableBytes.typedDataView(TypedData td,
       [Endian endian = Endian.little, this.limit = _k1GB])
-      : super.fromTypedData(td, endian);
+      : super.typedDataView(td, endian);
 
   @override
   set length(int newLength) {
@@ -616,5 +669,3 @@ class GrowableBytes extends Bytes {
 
   static int kMaximumLength = kDefaultLimit;
 }
-
-

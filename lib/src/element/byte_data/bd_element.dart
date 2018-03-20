@@ -84,12 +84,13 @@ abstract class Common {
   /// Returns the actual length in bytes after removing any padding chars.
   // Floats always have a valid (defined length) vfLengthField.
   int get vfLength {
+    print('bytes: $bytes');
     final vfo = vfOffset;
     final len = bytes.lengthInBytes - vfo;
-//    print('vfo: $vfo, len:$len');
     final vfl = vfLengthField;
+    print('vfo: $vfo, len:$len vfl: $vfl');
 //    print('vfl: $vfl, ${vfl.toRadixString(16)}');
-    assert(vfl == kUndefinedLength || len == vfl);
+    assert(vfl == kUndefinedLength || vfl == len);
     return len;
   }
 
@@ -288,8 +289,8 @@ bool bytesEqual(Bytes bytes0, Bytes bytes1, {bool doFast = false}) {
 /// Returns _true_ if all bytes in [bList0] and [bList1] are the same.
 /// _Note_: This assumes the [Bytes] is aligned on a 2 byte boundary.
 bool uint8ListEqual(Uint8List bList0, Uint8List bList1) {
-  final bytes0 = new Bytes.fromTypedData(bList0);
-  final bytes1 = new Bytes.fromTypedData(bList1);
+  final bytes0 = new Bytes.typedDataView(bList0);
+  final bytes1 = new Bytes.typedDataView(bList1);
   return bytesEqual(bytes0, bytes1);
 }
 

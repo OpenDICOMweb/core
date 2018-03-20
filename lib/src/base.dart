@@ -15,7 +15,7 @@ export 'package:core/src/utils/issues.dart';
 export 'package:core/src/utils/string/hexadecimal.dart';
 
 
-final Bytes kEmptyBytes = Bytes.kEmptyBytes;
+final Bytes kEmptyBytes = LEBytes.kEmptyList;
 
 const List<String> kEmptyStringList = const <String>[];
 

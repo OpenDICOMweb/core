@@ -176,7 +176,7 @@ String shortEvrToString(Bytes bytes) {
 
 Bytes makeAsciiBD(List<String> vList) => Bytes.asciiEncode(vList.join('\\'));
 
-Bytes uint8ListToBytes(Uint8List bList) => new Bytes.fromTypedData(bList);
+Bytes uint8ListToBytes(Uint8List bList) => new Bytes.typedDataView(bList);
 
 String vfToString(List vList, Bytes vfBytes) =>
     'vList: $vList vfBD: ${vfBytes.asUtf8List()}';
@@ -187,7 +187,7 @@ Bytes makeAE(int code, List<String> vList) =>
 Bytes makeFloat32Bytes(List<double> vList) {
   if (vList.isEmpty) return kEmptyBytes;
   final list = new Float32List.fromList(vList);
-  return new Bytes.fromTypedData(list.buffer.asByteData());
+  return new Bytes.typedDataView(list.buffer.asByteData());
 }
 
 Bytes makeFL(int code, List<double> vList) =>
@@ -199,7 +199,7 @@ Bytes makeOF(int code, List<double> vList) =>
 Bytes makeFloat64Bytes(List<double> vList) {
   if (vList.isEmpty) return kEmptyBytes;
   final list = new Float64List.fromList(vList);
-  return new Bytes.fromTypedData(list.buffer.asByteData());
+  return new Bytes.typedDataView(list.buffer.asByteData());
 }
 
 Bytes makeFD(int code, List<double> vList) =>
