@@ -159,8 +159,8 @@ void main() {
     });
 
     test('Create Unencapsulated OBtagPixelData.fromBytes', () {
-      final ob0 =
-          OBtagPixelData.fromUint8List(PTag.kPixelData, frame, frame.lengthInBytes);
+      final ob0 = OBtagPixelData.fromUint8List(
+          PTag.kPixelData, frame, frame.lengthInBytes);
       final ob1 = OBtagPixelData.fromUint8List(
           PTag.kPrivateInformation, frame, frame.lengthInBytes);
 
@@ -208,10 +208,10 @@ void main() {
     });
 
     test('Create Unencapsulated OBtagPixelData.fromBytes hashCode and ==', () {
-      final ob0 =
-          OBtagPixelData.fromUint8List(PTag.kPixelData, frame, frame.lengthInBytes);
-      final ob1 =
-          OBtagPixelData.fromUint8List(PTag.kPixelData, frame, frame.lengthInBytes);
+      final ob0 = OBtagPixelData.fromUint8List(
+          PTag.kPixelData, frame, frame.lengthInBytes);
+      final ob1 = OBtagPixelData.fromUint8List(
+          PTag.kPixelData, frame, frame.lengthInBytes);
       final ob2 = OBtagPixelData.fromUint8List(
           PTag.kVariablePixelData, frame, frame.lengthInBytes);
       final ob3 = OBtagPixelData.fromUint8List(
@@ -582,8 +582,8 @@ void main() {
 
     test('OBtagPixelData.fromBytes', () {
       final frags = new VFFragments(fragments);
-      final ob0 =
-          OBtagPixelData.fromUint8List(PTag.kPixelData, frame, frame.lengthInBytes);
+      final ob0 = OBtagPixelData.fromUint8List(
+          PTag.kPixelData, frame, frame.lengthInBytes);
       expect(
           ob0,
           equals(OBtagPixelData.fromUint8List(
@@ -634,11 +634,11 @@ void main() {
     });
 
     test('OBtagPixelData.fromBytes hashCode and ==', () {
-      final ob0 =
-          OBtagPixelData.fromUint8List(PTag.kPixelData, frame, frame.lengthInBytes);
+      final ob0 = OBtagPixelData.fromUint8List(
+          PTag.kPixelData, frame, frame.lengthInBytes);
 
-      final ob1 =
-          OBtagPixelData.fromUint8List(PTag.kPixelData, frame, frame.lengthInBytes);
+      final ob1 = OBtagPixelData.fromUint8List(
+          PTag.kPixelData, frame, frame.lengthInBytes);
 
       final ob2 = OBtagPixelData.fromUint8List(
           PTag.kVariablePixelData, frame, frame.lengthInBytes);
@@ -736,10 +736,82 @@ void main() {
       expect(ob0.hashCode == ob4.hashCode, false);
       expect(ob0 == ob4, false);
     });
+
+    test('OBPixelData from', () {
+      final ob0 =
+          new OBtagPixelData(PTag.kPrivateInformation, pixels, pixels.length);
+      final obfrom0 = OBtagPixelData.from(ob0);
+
+      expect(obfrom0.tag == PTag.kPrivateInformation, true);
+      expect(obfrom0.vrIndex == kOBOWIndex, false);
+      expect(obfrom0.vrIndex == kOBIndex, true);
+      expect(obfrom0.values is List<int>, true);
+      expect(obfrom0.fragments == null, true);
+      expect(obfrom0.offsets == null, true);
+      expect(obfrom0.isEncapsulated == false, true);
+      log.debug(obfrom0.values);
+      expect(obfrom0.hasValidValues, true);
+      log.debug('bytes: ${obfrom0.vfBytes}');
+      expect(obfrom0.vfBytes is Bytes, true);
+      expect(obfrom0.vfBytes.length == 1024, true);
+      expect(obfrom0.pixels is Uint8List, true);
+      expect(obfrom0.pixels.length == 1024, true);
+      expect(obfrom0.length == 1024, true);
+      expect(obfrom0.valuesCopy, equals(obfrom0.pixels));
+      expect(obfrom0.typedData is Uint8List, true);
+
+      final s = Sha256.uint8(pixels);
+      expect(obfrom0.sha256, equals(obfrom0.update(s)));
+
+      for (var s in frame) {
+        expect(obfrom0.checkValue(s), true);
+      }
+
+      expect(obfrom0.checkValue(kUint8Max), true);
+      expect(obfrom0.checkValue(kUint8Min), true);
+      expect(obfrom0.checkValue(kUint8Max + 1), false);
+      expect(obfrom0.checkValue(kUint8Min - 1), false);
+    });
+
+    test('OBPixelData fromBytes', () {
+      final bytes0 = new Bytes.fromList(testFrame);
+      final fBytes0 =
+          OBtagPixelData.fromBytes(PTag.kPrivateInformation, bytes0);
+
+      expect(fBytes0,
+          equals(OBtagPixelData.fromBytes(PTag.kPrivateInformation, bytes0)));
+
+      system.throwOnError = true;
+      expect(() => OBtagPixelData.fromBytes(PTag.kSelectorAEValue, bytes0),
+          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+
+      system.throwOnError = false;
+      expect(fBytes0.tag == PTag.kPrivateInformation, true);
+      expect(fBytes0.vrIndex == kOBOWIndex, false);
+      expect(fBytes0.vrIndex == kOBIndex, true);
+      expect(fBytes0.values is List<int>, true);
+      expect(fBytes0.fragments == null, true);
+      expect(fBytes0.offsets == null, true);
+      expect(fBytes0.isEncapsulated == false, true);
+      log.debug(fBytes0.values);
+      expect(fBytes0.hasValidValues, true);
+      log.debug('bytes: ${fBytes0.vfBytes}');
+      expect(fBytes0.vfBytes is Bytes, true);
+      expect(fBytes0.vfBytes.length == 139782, true);
+      expect(fBytes0.pixels is Uint8List, true);
+      expect(fBytes0.pixels.length == 139782, true);
+      expect(fBytes0.length == 139782, true);
+      expect(fBytes0.valuesCopy, equals(fBytes0.pixels));
+      expect(fBytes0.typedData is Uint8List, true);
+
+      expect(fBytes0.checkValue(kUint8Max), true);
+      expect(fBytes0.checkValue(kUint8Min), true);
+      expect(fBytes0.checkValue(kUint8Max + 1), false);
+      expect(fBytes0.checkValue(kUint8Min - 1), false);
+    });
   });
 
   group('OBPixelData', () {
-
     test('Create Uint8Base.fromBytes', () {
       expect(Uint8.fromUint8List(frame), equals(frame));
     });
