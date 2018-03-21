@@ -115,7 +115,7 @@ abstract class Common {
       ? kEmptyBytes
       : bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
 
-  /// Returns a [Bytes] containing the Value Field of [this].
+  /// Returns a [Bytes] containing the Value Field of _this_.
   Bytes get vfBytes => (bytes.lengthInBytes == vfOffset)
       ? kEmptyBytes
       : bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
