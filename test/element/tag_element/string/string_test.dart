@@ -261,7 +261,7 @@ void main() {
       }
     });
 
-    test('LO fromBytes random', () {
+    test('LO fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 1);
         final bytes = LO.toUint8List(vList1);
@@ -269,6 +269,36 @@ void main() {
         final lo0 = LOtag.fromUint8List(PTag.kReceiveCoilManufacturerName, bytes);
         log.debug('lo0: ${lo0.info}');
         expect(lo0.hasValidValues, true);
+      }
+    });
+
+    test('LO fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getLOList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final lo1 = LOtag.fromBytes(PTag.kSelectorLOValue, bytes0);
+          log.debug('lo1: ${lo1.info}');
+          expect(lo1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('LO fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getLOList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final lo1 = LOtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          expect(lo1, isNull);
+
+          system.throwOnError = true;
+          expect(() => LOtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 
@@ -1037,7 +1067,7 @@ void main() {
       }
     });
 
-    test('LT fromBytes random', () {
+    test('LT fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 1);
         log.debug('vList1:$vList1');
@@ -1046,6 +1076,36 @@ void main() {
         final lt0 = LTtag.fromUint8List(PTag.kImageComments, bytes);
         log.debug('lt0: ${lt0.info}');
         expect(lt0.hasValidValues, true);
+      }
+    });
+
+    test('LT fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getLTList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final lt1 = LTtag.fromBytes(PTag.kSelectorLTValue, bytes0);
+          log.debug('lt1: ${lt1.info}');
+          expect(lt1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('LT fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getLTList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final lt1 = LTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          expect(lt1, isNull);
+
+          system.throwOnError = true;
+          expect(() => LTtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 
@@ -1797,6 +1857,36 @@ void main() {
       }
     });
 
+    test('PN fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getPNList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final pn1 = PNtag.fromBytes(PTag.kSelectorPNValue, bytes0);
+          log.debug('pn1: ${pn1.info}');
+          expect(pn1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('PN fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getPNList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final pn1 = PNtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          expect(pn1, isNull);
+
+          system.throwOnError = true;
+          expect(() => PNtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
+      }
+    });
+
     test('PN make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
@@ -2521,6 +2611,36 @@ void main() {
         final sh0 = SHtag.fromUint8List(PTag.kTextureLabel, bytes);
         log.debug('sh0: ${sh0.info}');
         expect(sh0.hasValidValues, true);
+      }
+    });
+
+    test('SH fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getSHList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final sh1 = SHtag.fromBytes(PTag.kSelectorSHValue, bytes0);
+          log.debug('sh1: ${sh1.info}');
+          expect(sh1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('SH fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getSHList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final sh1 = SHtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          expect(sh1, isNull);
+
+          system.throwOnError = true;
+          expect(() => SHtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 
@@ -3292,6 +3412,36 @@ void main() {
       }
     });
 
+    test('ST fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getSTList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final st1 = STtag.fromBytes(PTag.kSelectorSTValue, bytes0);
+          log.debug('st1: ${st1.info}');
+          expect(st1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('ST fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getSTList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final st1 = STtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          expect(st1, isNull);
+
+          system.throwOnError = true;
+          expect(() => STtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
+      }
+    });
+
     test('ST make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
@@ -4018,6 +4168,36 @@ void main() {
       }
     });
 
+    test('UC fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getUCList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final uc1 = UCtag.fromBytes(PTag.kSelectorUCValue, bytes0);
+          log.debug('uc1: ${uc1.info}');
+          expect(uc1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('UC fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getUCList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final uc1 = UCtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          expect(uc1, isNull);
+
+          system.throwOnError = true;
+          expect(() => UCtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
+      }
+    });
+
     test('UC make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
@@ -4728,6 +4908,36 @@ void main() {
         final ut0 = UTtag.fromUint8List(PTag.kUniversalEntityID, bytes);
         log.debug('ut0: ${ut0.info}');
         expect(ut0.hasValidValues, true);
+      }
+    });
+
+    test('UT fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getUTList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final ut1 = UTtag.fromBytes(PTag.kSelectorUTValue, bytes0);
+          log.debug('ut1: ${ut1.info}');
+          expect(ut1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('UT fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getUTList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final ut1 = UTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          expect(ut1, isNull);
+
+          system.throwOnError = true;
+          expect(() => UTtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 

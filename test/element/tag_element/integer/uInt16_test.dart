@@ -255,7 +255,7 @@ void main() {
       expect(us0 == us2, false);
     });
 
-    test('US fromBytes random', () {
+    test('US fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
@@ -282,7 +282,7 @@ void main() {
       }
     });
 
-    test('US fromBytes', () {
+    test('US fromUint8List', () {
       final uInt16ListV1 = new Uint16List.fromList(uInt16Min);
       final uInt8ListV11 = uInt16ListV1.buffer.asUint8List();
       final us5 =
@@ -291,6 +291,31 @@ void main() {
       expect(us5.vfBytes, equals(uInt8ListV11));
       expect(us5.values is Uint16List, true);
       expect(us5.values, equals(uInt16ListV1));
+    });
+
+    test('UC fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint16List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final uc0 = UCtag.fromBytes(PTag.kSelectorUCValue, bytes0);
+        log.debug('uc0: ${uc0.info}');
+        expect(uc0.hasValidValues, true);
+      }
+    });
+
+    test('UC fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint16List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final uc0 = UCtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        expect(uc0, isNull);
+
+        system.throwOnError = true;
+        expect(() => UCtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
     });
 
     test('US checkLength random', () {
@@ -1458,7 +1483,7 @@ void main() {
       }
     });
 
-    test('OW fromBytes', () {
+    test('OW fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
         final uInt16ListV1 = new Uint16List.fromList(uInt16List0);
@@ -1476,6 +1501,31 @@ void main() {
         final ow1 = OWtag.fromUint8List(
             PTag.kEdgePointIndexList, uInt8ListV2, uInt8ListV2.lengthInBytes);
         expect(ow1.hasValidValues, true);
+      }
+    });
+
+    test('OW fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint16List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final ow0 = OWtag.fromBytes(PTag.kSelectorOWValue, bytes0);
+        log.debug('ow0: ${ow0.info}');
+        expect(ow0.hasValidValues, true);
+      }
+    });
+
+    test('OW fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint16List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final ow0 = OWtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        expect(ow0, isNull);
+
+        system.throwOnError = true;
+        expect(() => OWtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 

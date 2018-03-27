@@ -328,7 +328,7 @@ void main() {
       expect(ds1, isNull);
     });
 
-    test('DS formBytes', () {
+    test('DS fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDSList(1, 1);
         final bytes = DS.toUint8List(vList1);
@@ -336,6 +336,34 @@ void main() {
         final ds1 = DStag.fromUint8List(PTag.kSamplingFrequency, bytes);
         log.debug('ds1: ${ds1.info}');
         expect(ds1.hasValidValues, true);
+      }
+    });
+
+    test('DS fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getDSList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          final ur1 = DStag.fromBytes(PTag.kSelectorDSValue, bytes0);
+          log.debug('ur1: ${ur1.info}');
+          expect(ur1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('DS fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getDSList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          final ur1 = DStag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          expect(ur1, isNull);
+
+          system.throwOnError = true;
+          expect(() => DStag.fromBytes(PTag.kSelectorAEValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 
@@ -1453,7 +1481,7 @@ void main() {
       expect(is0, isNull);
     });
 
-    test('IS formBytes', () {
+    test('IS fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getISList(1, 1);
         final bytes = IS.toUint8List(vList1);
@@ -1461,6 +1489,34 @@ void main() {
         final is1 = IStag.fromUint8List(PTag.kWaveformChannelNumber, bytes);
         log.debug('is1: ${is1.info}');
         expect(is1.hasValidValues, true);
+      }
+    });
+
+    test('IS fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getISList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          final ur1 = IStag.fromBytes(PTag.kSelectorISValue, bytes0);
+          log.debug('ur1: ${ur1.info}');
+          expect(ur1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('IS fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getISList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          final ur1 = IStag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          expect(ur1, isNull);
+
+          system.throwOnError = true;
+          expect(() => IStag.fromBytes(PTag.kSelectorAEValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 
@@ -1605,7 +1661,7 @@ void main() {
       PTag.kTime
     ];
 
-    final invalidVList = rsg.getDSList(IS.kMaxLength + 1, IS.kMaxLength + 1);
+    final invalidVList = rsg.getISList(IS.kMaxLength + 1, IS.kMaxLength + 1);
 
     test('IS isValidTag good values', () {
       system.throwOnError = false;

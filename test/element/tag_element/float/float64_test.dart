@@ -354,7 +354,7 @@ void main() {
       expect(fd2.values, equals(<double>[]));
     });
 
-    test('FD fromBytes', () {
+    test('FD fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
         final float = new Float64List.fromList(floatList0);
@@ -371,6 +371,34 @@ void main() {
             FDtag.fromUint8List(PTag.kOverallTemplateSpatialTolerance, bytes0);
         log.debug('fd1: ${fd1.info}');
         expect(fd1.hasValidValues, false);
+      }
+    });
+
+    test('FD fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float = new Float64List.fromList(floatList0);
+        //final bytes = float.buffer.asUint8List();
+        final bytes0 = Bytes.asciiEncode(float.toString());
+        //final bytes0 = new Bytes();
+        final fd0 = FDtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        log.debug('fd0: ${fd0.info}');
+        expect(fd0.hasValidValues, true);
+      }
+    });
+
+    test('FD fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final floatList0 = rng.float64List(1, 10);
+        final float = new Float64List.fromList(floatList0);
+        final bytes0 = Bytes.asciiEncode(float.toString());
+        final fd0 = FDtag.fromBytes(PTag.kSelectorSSValue, bytes0);
+        expect(fd0, isNull);
+
+        system.throwOnError = true;
+        expect(() => FDtag.fromBytes(PTag.kSelectorSSValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
@@ -934,7 +962,7 @@ void main() {
       }
     });
 
-    test('Float64Mixin.fromBytes', () {
+    test('Float64Mixin.fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
         final float = new Float64List.fromList(floatList0);
@@ -1028,7 +1056,7 @@ void main() {
       }
     });
 
-    test('Float64Mixin.fromBytes', () {
+    test('Float64Mixin.fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
         final float64List0 = new Float64List.fromList(floatList0);
@@ -1263,7 +1291,7 @@ void main() {
       expect(od2.values, equals(<double>[]));
     });
 
-    test('OD fromBytes', () {
+    test('OD fromUint8List', () {
       system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
@@ -1279,6 +1307,33 @@ void main() {
         final od1 = ODtag.fromUint8List(PTag.kSelectorODValue, bytes0);
         log.debug('od1 ${od1.info}');
         expect(od1.hasValidValues, true);
+      }
+    });
+
+    test('OD fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        final float = new Float64List.fromList(floatList0);
+        final bytes0 = Bytes.asciiEncode(float.toString());
+        //final bytes0 = new Bytes();
+        final od0 = ODtag.fromBytes(PTag.kSelectorODValue, bytes0);
+        log.debug('od0: ${od0.info}');
+        expect(od0.hasValidValues, true);
+      }
+    });
+
+    test('OD fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final floatList0 = rng.float64List(1, 10);
+        final float = new Float64List.fromList(floatList0);
+        final bytes0 = Bytes.asciiEncode(float.toString());
+        final od0 = ODtag.fromBytes(PTag.kSelectorSSValue, bytes0);
+        expect(od0, isNull);
+
+        system.throwOnError = true;
+        expect(() => ODtag.fromBytes(PTag.kSelectorSSValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
@@ -1580,7 +1635,7 @@ void main() {
       }
     });
 
-    test('Float64Mixin.fromBytes', () {
+    test('Float64Mixin.fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
         final float = new Float64List.fromList(floatList0);
@@ -1633,7 +1688,7 @@ void main() {
       }
     });
 
-    test('OD.fromBytes', () {
+    test('OD.fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(0, i);
         final float64List0 = new Float64List.fromList(floatList0);
