@@ -228,7 +228,7 @@ void main() {
       expect(ae2.values, equals(<String>[]));
     });
 
-    test('AE formBytes random', () {
+    test('AE fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getAEList(1, 1);
         final bytes = AE.toUint8List(vList1);
@@ -236,6 +236,36 @@ void main() {
         final ae1 = AEtag.fromUint8List(PTag.kPerformedStationAETitle, bytes);
         log.debug('ae1: ${ae1.info}');
         expect(ae1.hasValidValues, true);
+      }
+    });
+
+    test('AE fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getAEList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final ae1 = AEtag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          log.debug('ae1: ${ae1.info}');
+          expect(ae1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('AE fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getAEList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          //final bytes0 = new Bytes();
+          final ae1 = AEtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          expect(ae1, isNull);
+
+          system.throwOnError = true;
+          expect(() => AEtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 
@@ -669,7 +699,8 @@ void main() {
       //  system.level = Level.info;;
       final vList1 = rsg.getAEList(1, 1);
       final bytes = AE.toUint8List(vList1);
-      log.debug('AE.fromUint8List(bytes): ${AE.fromUint8List(bytes)}, bytes: $bytes');
+      log.debug(
+          'AE.fromUint8List(bytes): ${AE.fromUint8List(bytes)}, bytes: $bytes');
       expect(AE.fromUint8List(bytes), equals(vList1));
     });
 
@@ -997,6 +1028,34 @@ void main() {
         final cs1 = CStag.fromUint8List(PTag.kGeometryOfKSpaceTraversal, bytes);
         log.debug('cs1: ${cs1.info}');
         expect(cs1.hasValidValues, true);
+      }
+    });
+
+    test('CS fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getCSList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          final cs1 = CStag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          log.debug('cs1: ${cs1.info}');
+          expect(cs1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('CS fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getCSList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          final cs1 = CStag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          expect(cs1, isNull);
+
+          system.throwOnError = true;
+          expect(() => CStag.fromBytes(PTag.kSelectorAEValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 
@@ -1545,7 +1604,8 @@ void main() {
       //  system.level = Level.info;;
       final vList1 = rsg.getCSList(1, 1);
       final bytes = CS.toUint8List(vList1);
-      log.debug('CS.fromUint8List(bytes): ${CS.fromUint8List(bytes)}, bytes: $bytes');
+      log.debug(
+          'CS.fromUint8List(bytes): ${CS.fromUint8List(bytes)}, bytes: $bytes');
       expect(CS.fromUint8List(bytes), equals(vList1));
     });
 
@@ -1897,7 +1957,7 @@ void main() {
       expect(ui2.values, equals(<String>[]));
     });
 
-    test('UI formBytes random', () {
+    test('UI fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUIList(1, 1);
         final bytes = UI.toUint8List(vList1);
@@ -1905,6 +1965,34 @@ void main() {
         final ui0 = UItag.fromUint8List(PTag.kSOPInstanceUID, bytes);
         log.debug('$i: ui0: ${ui0.info}');
         expect(ui0.hasValidValues, true);
+      }
+    });
+
+    test('UI fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getUIList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          final ui1 = UItag.fromBytes(PTag.kSelectorUIValue, bytes0);
+          log.debug('ui1: ${ui1.info}');
+          expect(ui1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('UI fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getUIList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          final ui1 = UItag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          expect(ui1, isNull);
+
+          system.throwOnError = true;
+          expect(() => UItag.fromBytes(PTag.kSelectorAEValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 
@@ -2307,7 +2395,8 @@ void main() {
       //  system.level = Level.info;;
       final vList1 = rsg.getUIList(1, 1);
       final bytes = UI.toUint8List(vList1);
-      log.debug('UI.fromUint8List(bytes): ${UI.fromUint8List(bytes)}, bytes: $bytes');
+      log.debug(
+          'UI.fromUint8List(bytes): ${UI.fromUint8List(bytes)}, bytes: $bytes');
       expect(UI.fromUint8List(bytes), equals(vList1));
     });
 
@@ -2598,7 +2687,7 @@ void main() {
       expect(ur2.values, equals(<String>[]));
     });
 
-    test('UR formBytes random', () {
+    test('UR fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getURList(1, 1);
         final bytes = UR.toUint8List(vList1);
@@ -2606,6 +2695,34 @@ void main() {
         final ur0 = URtag.fromUint8List(PTag.kRetrieveURL, bytes);
         log.debug('ur0: ${ur0.info}');
         expect(ur0.hasValidValues, true);
+      }
+    });
+
+    test('UR fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getURList(1, 10);
+        for (var listS in vList1) {
+          final bytes0 = Bytes.asciiEncode(listS);
+          final ur1 = URtag.fromBytes(PTag.kSelectorURValue, bytes0);
+          log.debug('ur1: ${ur1.info}');
+          expect(ur1.hasValidValues, true);
+        }
+      }
+    });
+
+    test('UR fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getURList(1, 10);
+        for (var listS in vList1) {
+          system.throwOnError = false;
+          final bytes0 = Bytes.asciiEncode(listS);
+          final ur1 = URtag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          expect(ur1, isNull);
+
+          system.throwOnError = true;
+          expect(() => URtag.fromBytes(PTag.kSelectorAEValue, bytes0),
+              throwsA(const isInstanceOf<InvalidVRError>()));
+        }
       }
     });
 
@@ -2622,7 +2739,7 @@ void main() {
       }
     });
 
-    test('UI make bad values', () {
+    test('UR make bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(2, 2);
         system.throwOnError = false;
@@ -3007,7 +3124,8 @@ void main() {
       //  system.level = Level.info;;
       final vList1 = rsg.getURList(1, 1);
       final bytes = UR.toUint8List(vList1);
-      log.debug('UR.fromUint8List(bytes): ${UR.fromUint8List(bytes)}, bytes: $bytes');
+      log.debug(
+          'UR.fromUint8List(bytes): ${UR.fromUint8List(bytes)}, bytes: $bytes');
       expect(UR.fromUint8List(bytes), equals(vList1));
     });
 

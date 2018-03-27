@@ -319,7 +319,7 @@ void main() {
       expect(fl2.values, equals(<double>[]));
     });
 
-    test('FL fromBytes good values', () {
+    test('FL fromUint8List good values', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
@@ -331,7 +331,7 @@ void main() {
       }
     });
 
-    test('FL fromBytes bad values', () {
+    test('FL fromUint8List bad values', () {
       for (var i = 0; i < 10; i++) {
         final floatList1 = rng.float32List(3, 3);
         final float0 = new Float32List.fromList(floatList1);
@@ -340,6 +340,34 @@ void main() {
             FLtag.fromUint8List(PTag.kAbsoluteChannelDisplayScale, bytes0);
         log.debug('fl1: ${fl1.info}');
         expect(fl1.hasValidValues, false);
+      }
+    });
+
+    test('FL fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(1, 10);
+        final float = new Float32List.fromList(floatList0);
+        //final bytes = float.buffer.asUint8List();
+        final bytes0 = Bytes.asciiEncode(float.toString());
+        //final bytes0 = new Bytes();
+        final fl0 = FLtag.fromBytes(PTag.kSelectorFLValue, bytes0);
+        log.debug('fl0: ${fl0.info}');
+        expect(fl0.hasValidValues, true);
+      }
+    });
+
+    test('FL fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final floatList0 = rng.float32List(1, 10);
+        final float = new Float32List.fromList(floatList0);
+        final bytes0 = Bytes.asciiEncode(float.toString());
+        final fl0 = FLtag.fromBytes(PTag.kSelectorSSValue, bytes0);
+        expect(fl0, isNull);
+
+        system.throwOnError = true;
+        expect(() => FLtag.fromBytes(PTag.kSelectorSSValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
@@ -888,7 +916,7 @@ void main() {
       }
     });
 
-    test('Float32Base fromBytes', () {
+    test('Float32Base fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
@@ -991,7 +1019,7 @@ void main() {
       }
     });
 
-    test('Float32Base fromBytes', () {
+    test('Float32Base fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
@@ -1234,7 +1262,7 @@ void main() {
       expect(of2.values, equals(<double>[]));
     });
 
-    test('OF fromBytes', () {
+    test('OF fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
@@ -1250,6 +1278,34 @@ void main() {
             OFtag.fromUint8List(PTag.kFirstOrderPhaseCorrectionAngle, bytes0);
         log.debug('of1: ${of1.info}');
         expect(of1.hasValidValues, true);
+      }
+    });
+
+    test('OF fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(1, 1);
+        final float = new Float32List.fromList(floatList0);
+        //final bytes = float.buffer.asUint8List();
+        final bytes0 = Bytes.asciiEncode(float.toString());
+        //final bytes0 = new Bytes();
+        final of0 = OFtag.fromBytes(PTag.kSelectorOFValue, bytes0);
+        log.debug('of0: ${of0.info}');
+        expect(of0.hasValidValues, true);
+      }
+    });
+
+    test('OF fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final floatList0 = rng.float32List(1, 10);
+        final float = new Float32List.fromList(floatList0);
+        final bytes0 = Bytes.asciiEncode(float.toString());
+        final of0 = OFtag.fromBytes(PTag.kSelectorSSValue, bytes0);
+        expect(of0, isNull);
+
+        system.throwOnError = true;
+        expect(() => OFtag.fromBytes(PTag.kSelectorSSValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
@@ -1545,7 +1601,7 @@ void main() {
       }
     });
 
-    test('Float32Base.fromBytes', () {
+    test('Float32Base.fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
@@ -1619,7 +1675,7 @@ void main() {
       }
     });
 
-    test('Float32Base.fromBytes', () {
+    test('Float32Base.fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
