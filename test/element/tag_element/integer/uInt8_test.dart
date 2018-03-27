@@ -229,7 +229,7 @@ void main() {
       expect(ob0 == ob2, false);
     });
 
-    test('OB fromBytes random', () {
+    test('OB fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final uInt8List0 = rng.uint8List(1, 1);
         final uInt8ListV1 = new Uint8List.fromList(uInt8List0);
@@ -254,13 +254,38 @@ void main() {
       }
     });
 
-    test('OB fromBytes', () {
+    test('OB fromUint8List', () {
       final uInt8ListV1 = new Uint8List.fromList(uInt8Min);
       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
       final ob5 = OBtag.fromUint8List(PTag.kPrivateInformation, uInt8ListV11, 10);
       expect(ob5.vfBytes, equals(uInt8ListV11));
       expect(ob5.values is Uint8List, true);
       expect(ob5.values, equals(uInt8ListV1));
+    });
+
+    test('OB fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint8List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final ob0 = OBtag.fromBytes(PTag.kSelectorOBValue, bytes0);
+        log.debug('ob0: ${ob0.info}');
+        expect(ob0.hasValidValues, true);
+      }
+    });
+
+    test('OB fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint8List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final ob0 = OBtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        expect(ob0, isNull);
+
+        system.throwOnError = true;
+        expect(() => OBtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
     });
 
     test('OB checkLength random', () {

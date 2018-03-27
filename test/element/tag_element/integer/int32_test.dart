@@ -242,7 +242,7 @@ void main() {
       expect(sl0 == sl2, false);
     });
 
-    test('SL fromBytes good values random', () {
+    test('SL fromUint8List good values random', () {
       for (var i = 0; i < 10; i++) {
         final int32list0 = rng.int32List(1, 1);
         final int32ListV1 = new Int32List.fromList(int32list0);
@@ -256,7 +256,7 @@ void main() {
       }
     });
 
-    test('SL fromBytes good values random', () {
+    test('SL fromUint8List good values random', () {
       for (var i = 0; i < 10; i++) {
         final int32list1 = rng.int32List(2, 2);
         final int32ListV2 = new Int32List.fromList(int32list1);
@@ -266,7 +266,7 @@ void main() {
       }
     });
 
-    test('SL fromBytes ', () {
+    test('SL fromUint8List ', () {
       final int32ListV1 = new Int32List.fromList(int32Max);
       final uInt8ListV1 = int32ListV1.buffer.asUint8List();
       final sl0 = SLtag.fromUint8List(PTag.kReferencePixelX0, uInt8ListV1);
@@ -274,6 +274,31 @@ void main() {
       expect(sl0.vfBytes, equals(uInt8ListV1));
       expect(sl0.values is Int32List, true);
       expect(sl0.values, equals(int32ListV1));
+    });
+
+    test('SL fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.int32List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final sl0 = SLtag.fromBytes(PTag.kSelectorSLValue, bytes0);
+        log.debug('sl0: ${sl0.info}');
+        expect(sl0.hasValidValues, true);
+      }
+    });
+
+    test('SL fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.int32List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final sl0 = SLtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        expect(sl0, isNull);
+
+        system.throwOnError = true;
+        expect(() => SLtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
     });
 
     test('SL isValidLength random', () {
@@ -868,8 +893,7 @@ void main() {
         final bd = int32ListV1.buffer.asUint8List();
         log
           ..debug('int32ListV1 : $int32ListV1')
-          ..debug(
-              'SL.toBytes(int32ListV1) ; ${Int32.toBytes(int32ListV1)}');
+          ..debug('SL.toBytes(int32ListV1) ; ${Int32.toBytes(int32ListV1)}');
         expect(Int32.toBytes(int32ListV1), equals(bd));
       }
       const int32Max = const [kInt32Max];
@@ -925,8 +949,7 @@ void main() {
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd1.buffer == bd0.buffer, false);
 
-        final lBd2 =
-            Int32.toByteData(int32list0, asView: false, check: false);
+        final lBd2 = Int32.toByteData(int32list0, asView: false, check: false);
         log.debug('lBd2: ${lBd2.buffer.asUint8List()}, '
             'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));

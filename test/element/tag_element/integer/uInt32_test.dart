@@ -242,7 +242,7 @@ void main() {
       expect(ul0 == ul2, false);
     });
 
-    test('UL fromBytes random', () {
+    test('UL fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final uInt32List0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
@@ -269,7 +269,7 @@ void main() {
       }
     });
 
-    test('UL fromBytes', () {
+    test('UL fromUint8List', () {
       final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
       final uInt8ListV11 = uInt32ListV1.buffer.asUint8List();
       final ul5 = ULtag.fromUint8List(PTag.kNumberOfWaveformSamples, uInt8ListV11);
@@ -277,6 +277,31 @@ void main() {
       expect(ul5.vfBytes, equals(uInt8ListV11));
       expect(ul5.values is Uint32List, true);
       expect(ul5.values, equals(uInt32ListV1));
+    });
+
+    test('UL fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint32List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final ul0 = ULtag.fromBytes(PTag.kSelectorULValue, bytes0);
+        log.debug('ul0: ${ul0.info}');
+        expect(ul0.hasValidValues, true);
+      }
+    });
+
+    test('UL fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint32List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final ul0 = ULtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        expect(ul0, isNull);
+
+        system.throwOnError = true;
+        expect(() => ULtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
     });
 
     test('UL checkLength random', () {
@@ -1217,7 +1242,7 @@ void main() {
       expect(at0 == at2, false);
     });
 
-    test('AT fromBytes random', () {
+    test('AT fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final uInt32List0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
@@ -1243,7 +1268,7 @@ void main() {
       }
     });
 
-    test('AT fromBytes', () {
+    test('AT fromUint8List', () {
       final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
       final uInt8ListV11 = uInt32ListV1.buffer.asUint8List();
       final at0 =
@@ -1252,6 +1277,31 @@ void main() {
       expect(at0.vfBytes, equals(uInt8ListV11));
       expect(at0.values is Uint32List, true);
       expect(at0.values, equals(uInt32ListV1));
+    });
+
+    test('AT fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint32List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final at0 = ATtag.fromBytes(PTag.kSelectorATValue, bytes0);
+        log.debug('at0: ${at0.info}');
+        expect(at0.hasValidValues, true);
+      }
+    });
+
+    test('AT fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint32List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final at0 = ATtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        expect(at0, isNull);
+
+        system.throwOnError = true;
+        expect(() => ATtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
     });
 
     test('AT checkLength random', () {
@@ -2002,7 +2052,7 @@ void main() {
       expect(ol0 == ol2, false);
     });
 
-    test('OL fromBytes random', () {
+    test('OL fromUint8List random', () {
       for (var i = 0; i < 10; i++) {
         final uInt32List0 = rng.uint32List(1, 1);
         final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
@@ -2029,7 +2079,7 @@ void main() {
       }
     });
 
-    test('OL fromBytes', () {
+    test('OL fromUint8List', () {
       final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
       final uInt8ListV11 = uInt32ListV1.buffer.asUint8List();
       final ol0 = OLtag.fromUint8List(PTag.kLongVertexPointIndexList, uInt8ListV11);
@@ -2037,6 +2087,31 @@ void main() {
       expect(ol0.vfBytes, equals(uInt8ListV11));
       expect(ol0.values is Uint32List, true);
       expect(ol0.values, equals(uInt32ListV1));
+    });
+
+    test('OL fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint32List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final ol0 = OLtag.fromBytes(PTag.kSelectorOLValue, bytes0);
+        log.debug('ol0: ${ol0.info}');
+        expect(ol0.hasValidValues, true);
+      }
+    });
+
+    test('OL fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        system.throwOnError = false;
+        final intList0 = rng.uint32List(1, 10);
+        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final ol0 = OLtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        expect(ol0, isNull);
+
+        system.throwOnError = true;
+        expect(() => OLtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
     });
 
     test('OL checkLength random', () {
