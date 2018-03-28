@@ -55,13 +55,14 @@ const int kUSSSOWIndex = 33;
 const int kUSSSIndex = 32;
 
 const int kVRIndexMin = 0;
+const int kVREvrLongIndexMin = 1; // OB
 const int kVRMaybeUndefinedIndexMin = 1; // OB
 const int kVRMaybeUndefinedIndexMax = 3; // UN
 
-const int kVRIvrDefinedIndexMin = 4; // OD
-const int kVRIvrDefinedIndexMax = 30; // US
+const int kVRDefinedLongIndexMin = 4; // OD
+const int kVRIvrLongIndexMax = 30; // US
 
-const int kVREvrLongIndexMin = 4; // OD
+const int kVREvrDefinedLongIndexMin = 4; // OD
 const int kVREvrLongIndexMax = 9; // UT
 const int kVREvrShortIndexMin = 10; // AE
 const int kVREvrShortIndexMax = 30; // US
@@ -103,7 +104,7 @@ bool isEvrShortVRIndex(int vrIndex) =>
     vrIndex >= kVREvrShortIndexMin && vrIndex <= kVREvrShortIndexMax;
 
 bool isIvrDefinedLengthVRIndex(int vrIndex) =>
-    vrIndex >= kVRIvrDefinedIndexMin && vrIndex <= kVRIvrDefinedIndexMax;
+    vrIndex >= kVRDefinedLongIndexMin && vrIndex <= kVRNormalIndexMax;
 
 bool isFloatVR(int vrIndex) =>
     vrIndex == kFLIndex ||
@@ -115,10 +116,10 @@ bool isStringVR(int vrIndex) =>
     isShortStringVR(vrIndex) || isLongStringVR(vrIndex);
 
 bool isShortStringVR(int vrIndex) =>
-    vrIndex >= kVRIvrDefinedIndexMin && vrIndex <= kVRIvrDefinedIndexMax;
+    vrIndex >= kVRDefinedLongIndexMin && vrIndex <= kVRNormalIndexMax;
 
 bool isLongStringVR(int vrIndex) =>
-    vrIndex >= kVRIvrDefinedIndexMin && vrIndex <= kVRIvrDefinedIndexMax;
+    vrIndex >= kUCIndex && vrIndex <= kUTIndex;
 
 /// Returns _true_ if the VR with _vrIndex_
 /// is, by definition, always a valid length.

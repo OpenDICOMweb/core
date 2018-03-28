@@ -32,7 +32,7 @@ void main() {
     expect(VR.kOD.index == kODIndex,  true);
     expect(VR.kOD.index == 4, true);
 
-    expect(VR.kOD.index == kVREvrLongIndexMin, true);
+    expect(VR.kOD.index == kVREvrDefinedLongIndexMin, true);
     expect(VR.kOD.index == 4, true);
 
     expect(VR.kOF.index == kOFIndex,  true);

@@ -12,7 +12,7 @@ import 'package:core/src/utils/bytes/bytes.dart';
 // ignore_for_file: prefer_initializing_formals
 
 abstract class BufferBase {
-  Bytes get bytes;
+  Bytes get buffer;
   int get rIndex_;
   set rIndex_(int position);
   int get wIndex_;
@@ -23,12 +23,12 @@ abstract class BufferBase {
 
   ByteData get bd;
 
-  Endian get endian => bytes.endian;
+  Endian get endian => buffer.endian;
 
-  int get offsetInBytes => bytes.offsetInBytes;
-  int get start => bytes.offsetInBytes;
-  int get length => bytes.length;
-  int get lengthInBytes => bytes.lengthInBytes;
+  int get offsetInBytes => buffer.offsetInBytes;
+  int get start => buffer.offsetInBytes;
+  int get length => buffer.length;
+  int get lengthInBytes => buffer.lengthInBytes;
   int get end => start + lengthInBytes;
 
   int get rRemaining => wIndex_ - rIndex_;
@@ -46,28 +46,28 @@ abstract class BufferBase {
   bool rHasRemaining(int n) => (rIndex_ + n) <= wIndex_;
   bool wHasRemaining(int n) => (wIndex_ + n) <= end;
 
-  /// Returns a _view_ of [bytes] containing the bytes from [start] inclusive
+  /// Returns a _view_ of [buffer] containing the bytes from [start] inclusive
   /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
   /// An error occurs if [start] is outside the range 0 .. [length],
   /// or if [end] is outside the range [start] .. [length].
   /// [lengthInBytes].
   Bytes subbytes([int start = 0, int end]) =>
-      new Bytes.view(bytes, start, (end ?? length) -  start);
+      new Bytes.view(buffer, start, (end ?? length) -  start);
 
   /// Return a view of _this_ of [length], starting at [start]. If [length]
   /// is _null_ it defaults to [lengthInBytes].
   Bytes asBytes([int start = 0, int length]) =>
-      bytes.asBytes(start, length ?? lengthInBytes);
+      buffer.asBytes(start, length ?? lengthInBytes);
 
 
   ByteData asByteData([int offset, int length]) =>
-      bytes.asByteData(offset ?? rIndex_, length ?? wIndex_);
+      buffer.asByteData(offset ?? rIndex_, length ?? wIndex_);
 
   Uint8List asUint8List([int offset, int length]) =>
-      bytes.asUint8List(offset ?? rIndex_, length ?? wIndex_);
+      buffer.asUint8List(offset ?? rIndex_, length ?? wIndex_);
 
   bool checkAllZeros(int offset, int end) {
-    for (var i = offset; i < end; i++) if (bytes.getUint8(i) != 0) return false;
+    for (var i = offset; i < end; i++) if (buffer.getUint8(i) != 0) return false;
     return true;
   }
 
@@ -87,24 +87,24 @@ abstract class BufferBase {
   }
 
   Uint8List get contentsRead =>
-      bytes.buffer.asUint8List(bytes.offsetInBytes, rIndex_);
-  Uint8List get contentsUnread => bytes.buffer.asUint8List(rIndex_, wIndex_);
+      buffer.buffer.asUint8List(buffer.offsetInBytes, rIndex_);
+  Uint8List get contentsUnread => buffer.buffer.asUint8List(rIndex_, wIndex_);
 
   // *** wIndex
   int get wIndex => wIndex_;
   set wIndex(int n) {
-    if (wIndex_ <= rIndex_ || wIndex_ > bytes.lengthInBytes)
-      throw new RangeError.range(wIndex_, rIndex_, bytes.lengthInBytes);
+    if (wIndex_ <= rIndex_ || wIndex_ > buffer.lengthInBytes)
+      throw new RangeError.range(wIndex_, rIndex_, buffer.lengthInBytes);
     wIndex_ = n;
   }
 
   /// Moves the [wIndex] forward/backward. Returns the new [wIndex].
   int wSkip(int n) {
     final v = wIndex_ + n;
-    if (v <= rIndex_ || v >= bytes.lengthInBytes)
-      throw new RangeError.range(v, 0, bytes.lengthInBytes);
+    if (v <= rIndex_ || v >= buffer.lengthInBytes)
+      throw new RangeError.range(v, 0, buffer.lengthInBytes);
     return wIndex_ = v;
   }
 
-  Uint8List get contentsWritten => bytes.buffer.asUint8List(rIndex_, wIndex);
+  Uint8List get contentsWritten => buffer.buffer.asUint8List(rIndex_, wIndex);
 }

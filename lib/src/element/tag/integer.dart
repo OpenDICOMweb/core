@@ -318,8 +318,8 @@ class ULtag extends UL with TagElement<int> {
 
   static ULtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
 
-  static ULtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (UL.isNotValidTag(tag)) ? null : new ULtag._(tag, bytes.asUint32List());
+  static ULtag fromBytes(Tag tag, Bytes vf, [int _]) =>
+      (UL.isNotValidTag(tag)) ? null : new ULtag._(tag, vf.asUint32List());
 }
 
 /// Unsigned Short

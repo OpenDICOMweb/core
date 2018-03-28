@@ -9,8 +9,8 @@ import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/byte_data/evr.dart';
-import 'package:core/src/element/byte_data/ivr.dart';
+import 'package:core/src/element/bytes/evr.dart';
+import 'package:core/src/element/bytes/ivr.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/utils/bytes.dart';
 
@@ -23,8 +23,8 @@ abstract class BDElement<V> extends Element<V> {
   static Element make(int code, int vrIndex, Bytes bytes,
           {bool isEvr = true}) =>
       (isEvr)
-          ? EvrElement.make(code, bytes, vrIndex)
-          : IvrElement.make(code, bytes, vrIndex);
+          ? EvrElement.makeFromBytes(code, bytes, vrIndex)
+          : IvrElement.makeFromBytes(code, bytes, vrIndex);
 
   // **** Start Interface ****
 

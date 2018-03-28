@@ -9,9 +9,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-export 'package:core/src/utils/bytes/buffer/read_buffer.dart';
-export 'package:core/src/utils/bytes/buffer/write_buffer.dart';
-export 'package:core/src/utils/bytes/bytes.dart';
+import 'package:core/src/system/system.dart';
+import 'package:core/src/utils/ascii.dart';
 
 // TODO: defer loading of convert
 // TODO: Unit Test
@@ -60,7 +59,6 @@ class Bytes extends ListBase<int> {
   Bytes.view(Bytes bytes,
       [int offset = 0, int length, this.endian = Endian.little])
       : _bd = bytes.asByteData(offset, length ?? bytes.lengthInBytes);
-
 
   Bytes.typedDataView(TypedData td,
       [int offset = 0, int length, this.endian = Endian.little])
@@ -221,14 +219,25 @@ class Bytes extends ListBase<int> {
 
   // **** String getters
   // TODO: decide if these should be included
-  String getAscii([int offset = 0, int length]) =>
-      ascii.decode(asUint8List(offset, length ?? lengthInBytes));
+  String getAscii([int offset = 0, int length]) {
+    final len = _lengthWithoutPadding(offset, length ?? lengthInBytes);
+    return ascii.decode(asUint8List(offset, len));
+  }
 
-  String getUtf8([int offset = 0, int length]) =>
-      utf8.decode(asUint8List(offset, length ?? lengthInBytes));
+  String getUtf8([int offset = 0, int length]) {
+    final len = _lengthWithoutPadding(offset, length ?? lengthInBytes);
+    return utf8.decode(asUint8List(offset, len));
+  }
 
   String getString([int offset = 0, int length]) => getUtf8(offset, length);
 
+  int _lengthWithoutPadding([int offset = 0, int length]) {
+    length ?? lengthInBytes;
+    if (length == 0) return length;
+    final newLen = length - 1;
+    final last = _bd.getUint8(offset + length - 1);
+    return (last == kSpace || last == kNull) ? newLen : length;
+  }
   // **** TypedData Views
 
   // Returns the absolute offset in the ByteBuffer.
@@ -265,7 +274,7 @@ class Bytes extends ListBase<int> {
   Int64List asInt64List([int offset = 0, int length]) {
     length ??= _bd.lengthInBytes ~/ 8;
     return (isAligned64(offset))
-        ? _bd.buffer.asInt64List(_bdOffset(offset), length )
+        ? _bd.buffer.asInt64List(_bdOffset(offset), length)
         : getInt64List(offset, length);
   }
 
@@ -280,10 +289,10 @@ class Bytes extends ListBase<int> {
   }
 
   Uint32List asUint32List([int offset = 0, int length]) {
-      length ??= _bd.lengthInBytes ~/ 4;
-     return  (isAligned32(offset))
-      ? _bd.buffer.asUint32List(_bdOffset(offset), length )
-      : getUint32List(offset, length);
+    length ??= _bd.lengthInBytes ~/ 4;
+    return (isAligned32(offset))
+        ? _bd.buffer.asUint32List(_bdOffset(offset), length)
+        : getUint32List(offset, length);
   }
 
   Uint64List asUint64List([int offset = 0, int length]) {
@@ -293,265 +302,277 @@ class Bytes extends ListBase<int> {
         : getUint64List(offset, length);
   }
 
-    Float32List asFloat32List([int offset = 0, int length]) {
-      length ??= _bd.lengthInBytes ~/ 4;
-      return (isAligned32(offset))
-          ? _bd.buffer.asFloat32List(_bdOffset(offset), length)
-          : getFloat32List(offset, length);
+  Float32List asFloat32List([int offset = 0, int length]) {
+    length ??= _bd.lengthInBytes ~/ 4;
+    return (isAligned32(offset))
+        ? _bd.buffer.asFloat32List(_bdOffset(offset), length)
+        : getFloat32List(offset, length);
+  }
+
+  Float64List asFloat64List([int offset = 0, int length]) {
+    length ??= _bd.lengthInBytes ~/ 8;
+    return (isAligned64(offset))
+        ? _bd.buffer.asFloat64List(_bdOffset(offset), length)
+        : getFloat64List(offset, length);
+  }
+
+  List<String> asAsciiList([int offset = 0, int length]) =>
+      getAscii(offset, length).split('\\');
+
+  List<String> asUtf8List([int offset = 0, int length]) =>
+      getUtf8(offset, length).split('\\');
+
+  List<String> asStringList([int offset = 0, int length]) =>
+      asUtf8List(offset, length);
+
+  // **** ByteData Setters
+
+  void setInt8(int wIndex, int value) => _bd.setInt8(wIndex, value);
+
+  void setUint8(int wIndex, int value) => _bd.setUint8(wIndex, value);
+
+  void setUint16(int wIndex, int value) => _bd.setUint16(wIndex, value, endian);
+
+  void setInt16(int wIndex, int value) => _bd.setInt16(wIndex, value, endian);
+
+  void setUint32(int wIndex, int value) => _bd.setUint32(wIndex, value, endian);
+
+  void setInt32(int wIndex, int value) => _bd.setInt32(wIndex, value, endian);
+
+  void setUint64(int wIndex, int value) => _bd.setUint64(wIndex, value, endian);
+
+  void setInt64(int wIndex, int value) => _bd.setInt64(wIndex, value, endian);
+
+  void setFloat32(int wIndex, double value) =>
+      _bd.setFloat32(wIndex, value, endian);
+
+  void setFloat64(int wIndex, double value) =>
+      _bd.setFloat64(wIndex, value, endian);
+
+  // **** String Setters
+
+  void setAscii(String s, [int offset = 0, int length]) {
+    length ??= s.length;
+    final v = (offset == 0 && length == s.length)
+        ? s
+        : s.substring(offset, offset + length);
+    setUint8List(ascii.encode(v), offset, length);
+  }
+
+  void setUtf8(String s, [int offset = 0, int length]) {
+    length ??= s.length;
+    final v = (offset == 0 && length == s.length)
+        ? s
+        : s.substring(offset, offset + length);
+    setUint8List(ascii.encode(v), offset, length);
+  }
+
+  void setString(String s, [int offset = 0, int length]) =>
+      setUtf8(s, offset, length);
+
+  // **** TypedData List Setters
+
+  void setInt8List(Int8List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kInt8Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setInt8(i, list[i]);
+  }
+
+  void setInt16List(Int16List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kInt16Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setInt16(i, list[i]);
+  }
+
+  void setInt32List(Int32List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kInt32Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setInt32(i, list[i]);
+  }
+
+  void setInt64List(Int64List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kInt64Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setInt64(i, list[i]);
+  }
+
+  void setUint8List(Uint8List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kUint8Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setUint8(i, list[i]);
+  }
+
+  void setByteData(ByteData bd, [int offset = 0, int length]) {
+    length ??= bd.lengthInBytes;
+    _checkLength(offset, length, kUint8Size);
+    for (var i = offset; i < length; i++) _bd.setUint8(i, bd.getUint8(i));
+  }
+
+  void setUint16List(Uint16List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kUint16Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setUint16(i, list[i]);
+  }
+
+  void setUint32List(Uint32List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kUint32Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setUint32(i, list[i]);
+  }
+
+  void setUint64List(Uint64List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kUint64Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setUint64(i, list[i]);
+  }
+
+  void setFloat32List(Float32List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kFloat32Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setFloat32(i, list[i]);
+  }
+
+  void setFloat64List(Float64List list, [int offset = 0, int length]) {
+    length ??= list.length;
+    _checkLength(offset, length, kFloat64Size);
+    for (var i = offset; i < length ?? list.length; i++)
+      _bd.setFloat64(i, list[i]);
+  }
+
+  void _checkLength(int offset, int length, int size) {
+    final lLength = length * size;
+    final bLength = _bd.lengthInBytes - (_bd.offsetInBytes + offset);
+    if (length > bLength)
+      throw new RangeError('List ($lLength bytes) is to large for '
+          'Bytes($bLength bytes');
+  }
+
+  // **** String Setters
+
+  String _toString(List<String> sList, int offset, int length) {
+    final v = (offset == 0 && length == sList.length)
+        ? sList
+        : sList.sublist(offset, offset + length);
+    return v.join('\\');
+  }
+
+  int setAsciiList(List<String> sList, [int offset = 0, int length]) {
+    final s = _toString(sList, offset, length ??= sList.length);
+    setAscii(s, offset, s.length);
+    return s.length;
+  }
+
+  int setUtf8List(
+    List<String> sList, [
+    int offset = 0,
+    int length,
+  ]) {
+    final s = _toString(sList, offset, length ??= sList.length);
+    setUtf8(s, offset, s.length);
+    return s.length;
+  }
+
+  bool isInt8(int i) => i > kInt8MinValue && i <= kInt8MaxValue;
+  bool isInt16(int i) => i > kInt16MinValue && i <= kInt16MaxValue;
+  bool isInt32(int i) => i > kInt32MinValue && i <= kInt32MaxValue;
+  bool isInt64(int i) => i > kInt64MinValue && i <= kInt64MaxValue;
+
+  bool isUint8(int i) => i > kUint8MinValue && i <= kUint8MaxValue;
+  bool isUint16(int i) => i > kUint16MinValue && i <= kUint16MaxValue;
+  bool isUint32(int i) => i > kUint32MinValue && i <= kUint32MaxValue;
+  bool isUint64(int i) => i > kUint64MinValue && i <= kUint64MaxValue;
+
+  static const int kInt8Size = 1;
+  static const int kInt16Size = 2;
+  static const int kInt32Size = 4;
+  static const int kInt64Size = 8;
+
+  static const int kUint8Size = 1;
+  static const int kUint16Size = 2;
+  static const int kUint32Size = 4;
+  static const int kUint64Size = 8;
+
+  static const int kFloat32Size = 4;
+  static const int kFloat64Size = 8;
+
+  static const int kInt8MinValue = -0x7F - 1;
+  static const int kInt16MinValue = -0x7FFF - 1;
+  static const int kInt32MinValue = -0x7FFFFFFF - 1;
+  static const int kInt64MinValue = -0x7FFFFFFFFFFFFFFF - 1;
+
+  static const int kUint8MinValue = 0;
+  static const int kUint16MinValue = 0;
+  static const int kUint32MinValue = 0;
+  static const int kUint64MinValue = 0;
+
+  static const int kInt8MaxValue = 0x7F;
+  static const int kInt16MaxValue = 0x7FFF;
+  static const int kInt32MaxValue = 0x7FFFFFFF;
+  static const int kInt64MaxValue = 0x7FFFFFFFFFFFFFFF;
+
+  static const int kUint8MaxValue = 0xFF;
+  static const int kUint16MaxValue = 0xFFFF;
+  static const int kUint32MaxValue = 0xFFFFFFFF;
+  static const int kUint64MaxValue = 0xFFFFFFFFFFFFFFFF;
+
+  static const int kDefaultLength = 1024;
+
+  /// Returns a [Bytes] buffer containing the contents of [File].
+  // TODO: add async
+  // TODO: unit test
+  static Bytes fromFile(File file,
+      {Endian endian = Endian.little, bool doAsync = false}) {
+    final Uint8List iList = file.readAsBytesSync();
+    return new Bytes.fromTypedData(iList, endian);
+  }
+
+  /// Returns a [Bytes] buffer containing the contents of the
+  /// [File] at [path].
+  // TODO: add async
+  // TODO: unit test
+  static Bytes fromPath(String path,
+          {Endian endian = Endian.little, bool doAsync = false}) =>
+      fromFile(new File(path), endian: endian, doAsync: doAsync);
+
+  static final Bytes kEmptyBytes = new Bytes._();
+
+  static Bytes base64Decode(String s) =>
+      new Bytes.fromTypedData(base64.decode(s));
+
+  static String base64Encode(Bytes bytes) => base64.encode(bytes.asUint8List());
+
+  static String asciiDecode(Bytes bytes, {bool allowInvalid = true}) =>
+      ascii.decode(bytes.asUint8List(), allowInvalid: allowInvalid);
+
+  static Bytes asciiEncode(String s) =>
+      new Bytes.fromTypedData(ascii.encode(s));
+
+  static String utf8Decode(Bytes bytes, {bool allowMalformed = true}) =>
+      utf8.decode(bytes.asUint8List(), allowMalformed: allowMalformed);
+
+  static Bytes utf8Encode(String s) => new Bytes.fromTypedData(ascii.encode(s));
+
+  //TODO: This should be done in convert
+  static Bytes removePadding(Bytes bytes, int vfOffset, [int padChar = kSpace]) {
+    if (bytes.lengthInBytes == vfOffset) return bytes;
+    assert(bytes.lengthInBytes.isEven);
+    final lastIndex = bytes.lengthInBytes - 1;
+    final char = bytes.getUint8(lastIndex);
+    if (char == kNull || char == kSpace) {
+      log.debug3('Removing Padding: $char');
+      return bytes.asBytes(bytes.offsetInBytes, bytes.lengthInBytes - 1);
     }
-
-    Float64List asFloat64List([int offset = 0, int length]) {
-      length ??= _bd.lengthInBytes ~/ 8;
-      return (isAligned64(offset))
-          ? _bd.buffer.asFloat64List(_bdOffset(offset), length)
-          : getFloat64List(offset, length);
-    }
-
-    List<String> asAsciiList([int offset = 0, int length]) =>
-        getAscii(offset, length).split('\\');
-
-    List<String> asUtf8List([int offset = 0, int length]) =>
-        getUtf8(offset, length).split('\\');
-
-    List<String> asStringList([int offset = 0, int length]) =>
-        asUtf8List(offset, length);
-
-    // **** ByteData Setters
-
-    void setInt8(int wIndex, int value) => _bd.setInt8(wIndex, value);
-
-    void setUint8(int wIndex, int value) => _bd.setUint8(wIndex, value);
-
-    void setUint16(int wIndex, int value) => _bd.setUint16(wIndex, value, endian);
-
-    void setInt16(int wIndex, int value) => _bd.setInt16(wIndex, value, endian);
-
-    void setUint32(int wIndex, int value) => _bd.setUint32(wIndex, value, endian);
-
-    void setInt32(int wIndex, int value) => _bd.setInt32(wIndex, value, endian);
-
-    void setUint64(int wIndex, int value) => _bd.setUint64(wIndex, value, endian);
-
-    void setInt64(int wIndex, int value) => _bd.setInt64(wIndex, value, endian);
-
-    void setFloat32(int wIndex, double value) =>
-        _bd.setFloat32(wIndex, value, endian);
-
-    void setFloat64(int wIndex, double value) =>
-        _bd.setFloat64(wIndex, value, endian);
-
-    // **** String Setters
-
-    void setAscii(String s, [int offset = 0, int length]) {
-      length ??= s.length;
-      final v = (offset == 0 && length == s.length)
-          ? s
-          : s.substring(offset, offset + length);
-      setUint8List(ascii.encode(v), offset, length);
-    }
-
-    void setUtf8(String s, [int offset = 0, int length]) {
-      length ??= s.length;
-      final v = (offset == 0 && length == s.length)
-          ? s
-          : s.substring(offset, offset + length);
-      setUint8List(ascii.encode(v), offset, length);
-    }
-
-    void setString(String s, [int offset = 0, int length]) =>
-        setUtf8(s, offset, length);
-
-    // **** TypedData List Setters
-
-    void setInt8List(Int8List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kInt8Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setInt8(i, list[i]);
-    }
-
-    void setInt16List(Int16List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kInt16Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setInt16(i, list[i]);
-    }
-
-    void setInt32List(Int32List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kInt32Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setInt32(i, list[i]);
-    }
-
-    void setInt64List(Int64List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kInt64Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setInt64(i, list[i]);
-    }
-
-    void setUint8List(Uint8List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kUint8Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setUint8(i, list[i]);
-    }
-
-    void setByteData(ByteData bd, [int offset = 0, int length]) {
-      length ??= bd.lengthInBytes;
-      _checkLength(offset, length, kUint8Size);
-      for (var i = offset; i < length; i++) _bd.setUint8(i, bd.getUint8(i));
-    }
-
-    void setUint16List(Uint16List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kUint16Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setUint16(i, list[i]);
-    }
-
-    void setUint32List(Uint32List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kUint32Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setUint32(i, list[i]);
-    }
-
-    void setUint64List(Uint64List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kUint64Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setUint64(i, list[i]);
-    }
-
-    void setFloat32List(Float32List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kFloat32Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setFloat32(i, list[i]);
-    }
-
-    void setFloat64List(Float64List list, [int offset = 0, int length]) {
-      length ??= list.length;
-      _checkLength(offset, length, kFloat64Size);
-      for (var i = offset; i < length ?? list.length; i++)
-        _bd.setFloat64(i, list[i]);
-    }
-
-    void _checkLength(int offset, int length, int size) {
-      final lLength = length * size;
-      final bLength = _bd.lengthInBytes - (_bd.offsetInBytes + offset);
-      if (length > bLength)
-        throw new RangeError('List ($lLength bytes) is to large for '
-            'Bytes($bLength bytes');
-    }
-
-    // **** String Setters
-
-    String _toString(List<String> sList, int offset, int length) {
-      final v = (offset == 0 && length == sList.length)
-          ? sList
-          : sList.sublist(offset, offset + length);
-      return v.join('\\');
-    }
-
-    int setAsciiList(List<String> sList, [int offset = 0, int length]) {
-      final s = _toString(sList, offset, length ??= sList.length);
-      setAscii(s, offset, s.length);
-      return s.length;
-    }
-
-    int setUtf8List(
-        List<String> sList, [
-          int offset = 0,
-          int length,
-        ]) {
-      final s = _toString(sList, offset, length ??= sList.length);
-      setUtf8(s, offset, s.length);
-      return s.length;
-    }
-
-    bool isInt8(int i) => i > kInt8MinValue && i <= kInt8MaxValue;
-    bool isInt16(int i) => i > kInt16MinValue && i <= kInt16MaxValue;
-    bool isInt32(int i) => i > kInt32MinValue && i <= kInt32MaxValue;
-    bool isInt64(int i) => i > kInt64MinValue && i <= kInt64MaxValue;
-
-    bool isUint8(int i) => i > kUint8MinValue && i <= kUint8MaxValue;
-    bool isUint16(int i) => i > kUint16MinValue && i <= kUint16MaxValue;
-    bool isUint32(int i) => i > kUint32MinValue && i <= kUint32MaxValue;
-    bool isUint64(int i) => i > kUint64MinValue && i <= kUint64MaxValue;
-
-    static const int kInt8Size = 1;
-    static const int kInt16Size = 2;
-    static const int kInt32Size = 4;
-    static const int kInt64Size = 8;
-
-    static const int kUint8Size = 1;
-    static const int kUint16Size = 2;
-    static const int kUint32Size = 4;
-    static const int kUint64Size = 8;
-
-    static const int kFloat32Size = 4;
-    static const int kFloat64Size = 8;
-
-    static const int kInt8MinValue = -0x7F - 1;
-    static const int kInt16MinValue = -0x7FFF - 1;
-    static const int kInt32MinValue = -0x7FFFFFFF - 1;
-    static const int kInt64MinValue = -0x7FFFFFFFFFFFFFFF - 1;
-
-    static const int kUint8MinValue = 0;
-    static const int kUint16MinValue = 0;
-    static const int kUint32MinValue = 0;
-    static const int kUint64MinValue = 0;
-
-    static const int kInt8MaxValue = 0x7F;
-    static const int kInt16MaxValue = 0x7FFF;
-    static const int kInt32MaxValue = 0x7FFFFFFF;
-    static const int kInt64MaxValue = 0x7FFFFFFFFFFFFFFF;
-
-    static const int kUint8MaxValue = 0xFF;
-    static const int kUint16MaxValue = 0xFFFF;
-    static const int kUint32MaxValue = 0xFFFFFFFF;
-    static const int kUint64MaxValue = 0xFFFFFFFFFFFFFFFF;
-
-    static const int kDefaultLength = 1024;
-
-    /// Returns a [Bytes] buffer containing the contents of [File].
-    // TODO: add async
-    // TODO: unit test
-    static Bytes fromFile(File file,
-        {Endian endian = Endian.little, bool doAsync = false}) {
-      final Uint8List iList = file.readAsBytesSync();
-      return new Bytes.fromTypedData(iList, endian);
-    }
-
-    /// Returns a [Bytes] buffer containing the contents of the
-    /// [File] at [path].
-    // TODO: add async
-    // TODO: unit test
-    static Bytes fromPath(String path,
-        {Endian endian = Endian.little, bool doAsync = false}) =>
-        fromFile(new File(path), endian: endian, doAsync: doAsync);
-
-    static final Bytes kEmptyBytes = new Bytes._();
-
-
-    static Bytes base64Decode(String s) =>
-    new Bytes.fromTypedData(base64.decode(s));
-
-    static String base64Encode(Bytes bytes) => base64.encode(bytes.asUint8List());
-
-    static String asciiDecode(Bytes bytes, {bool allowInvalid = true}) =>
-        ascii.decode(bytes.asUint8List(), allowInvalid: allowInvalid);
-
-    static Bytes asciiEncode(String s) =>
-    new Bytes.fromTypedData(ascii.encode(s));
-
-    static String utf8Decode(Bytes bytes, {bool allowMalformed = true}) =>
-        utf8.decode(bytes.asUint8List(), allowMalformed: allowMalformed);
-
-    static Bytes utf8Encode(String s) => new Bytes.fromTypedData(ascii.encode(s));
+    return bytes;
+  }
 }
 
 class GrowableBytes extends Bytes {
@@ -616,5 +637,3 @@ class GrowableBytes extends Bytes {
 
   static int kMaximumLength = kDefaultLimit;
 }
-
-

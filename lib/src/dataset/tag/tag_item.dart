@@ -17,7 +17,7 @@ class TagItem extends MapItem with TagDataset {
 //  List<PrivateGroup> privateGroups = <PrivateGroup>[];
 
   /// Creates a new [TagItem] from [Bytes].
-  TagItem(Dataset parent, Map<int, Element> eMap, [SQ sequence, Bytes bd])
+  TagItem(Dataset parent, [SQ sequence, Map<int, Element> eMap, Bytes bd])
       : super(parent, sequence, eMap,  bd);
 
   /// Creates a new empty [Item] from [Bytes].
@@ -34,7 +34,7 @@ class TagItem extends MapItem with TagDataset {
       [SQtag sequence]) {
     final eMap = <int, Element>{};
     for (var e in elements) eMap[e.index] = e;
-    return new TagItem(parent, eMap, sequence);
+    return new TagItem(parent, sequence, eMap);
   }
 
   @override

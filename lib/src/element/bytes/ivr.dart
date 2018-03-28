@@ -10,7 +10,7 @@ import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/base/float.dart';
-import 'package:core/src/element/byte_data/bd_element.dart';
+import 'package:core/src/element/bytes/bd_element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -55,11 +55,19 @@ abstract class IvrElement<V> implements BDElement<V> {
   /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
   @override
   bool get isEvr => false;
-
+  @override
+  Tag get tag => Tag.lookupByCode(code);
   @override
   int get vrCode => tag.vrCode;
   @override
-  int get vrIndex => tag.vrIndex;
+  int get vrIndex {
+    final vrIndex = tag.vrIndex;
+    if (isSpecialVRIndex(vrIndex)) {
+      log.warn('Using kUNIndex for $tag');
+     return kUNIndex;
+    }
+    return vrIndex;
+  }
 
   @override
   int get vfLengthOffset => _vfLengthOffset;
@@ -80,7 +88,7 @@ abstract class IvrElement<V> implements BDElement<V> {
   static Null _sqError(Bytes bytes, [int vrIndex]) =>
       invalidElementIndex(vrIndex);
 
-  static Element make(int code, Bytes bytes, int vrIndex) =>
+  static Element makeFromBytes(int code, Bytes bytes, int vrIndex) =>
       _ivrBDMakers[vrIndex](bytes, vrIndex);
 
   static final List<DecodeBinaryVF> _ivrBDMakers = <DecodeBinaryVF>[
@@ -154,7 +162,7 @@ class OFivr extends OF with Common, IvrElement<double>, BDFloat32Mixin {
   Float32List get values => vfBytes.asFloat32List();
 
   static OFivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kOFIndex);
     return new OFivr(bytes);
   }
 }
@@ -174,7 +182,7 @@ class FDivr extends FL with Common, IvrElement<double>, BDFloat32Mixin {
   Float64List get values => vfBytes.asFloat64List();
 
   static FDivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kFDIndex);
     return new FDivr(bytes);
   }
 }
@@ -189,7 +197,7 @@ class ODivr extends OD with Common, IvrElement<double>, BDFloat32Mixin {
   Float64List get values => vfBytes.asFloat64List();
 
   static ODivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kODIndex);
     return new ODivr(bytes);
   }
 }
@@ -208,7 +216,7 @@ class OBivr extends OB with Common, IvrElement<int>, IntMixin, Int8Mixin {
   Uint8List get values => vfBytes.asUint8List();
 
   static OBivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kOBIndex);
     return new OBivr(bytes);
   }
 }
@@ -229,7 +237,7 @@ class OBivrPixelData extends OBPixelData
 
   static OBivrPixelData make(Bytes bytes, int vrIndex,
       [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kFLIndex);
+    assert(vrIndex != null || vrIndex == kOBIndex);
     return new OBivrPixelData(bytes, ts, fragments);
   }
 }
@@ -244,7 +252,7 @@ class UNivr extends UN with Common, IvrElement<int>, IntMixin, Int8Mixin {
   Uint8List get values => vfBytes.asUint8List();
 
   static UNivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kUNIndex);
     return new UNivr(bytes);
   }
 }
@@ -265,7 +273,7 @@ class UNivrPixelData extends UNPixelData
 
   static UNivrPixelData make(Bytes bytes, int vrIndex,
       [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kFLIndex);
+    assert(vrIndex != null || vrIndex == kUNIndex);
     return new UNivrPixelData(bytes, ts, fragments);
   }
 }
@@ -282,7 +290,7 @@ class SSivr extends SS with Common, IvrElement<int>, IntMixin, Int16Mixin {
   Int16List get values => vfBytes.asInt16List();
 
   static SSivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kSSIndex);
     return new SSivr(bytes);
   }
 }
@@ -297,7 +305,7 @@ class USivr extends US with Common, IvrElement<int>, IntMixin, Int16Mixin {
   Uint16List get values => vfBytes.asUint16List();
 
   static USivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kUSIndex);
     return new USivr(bytes);
   }
 }
@@ -312,7 +320,7 @@ class OWivr extends OW with Common, IvrElement<int>, IntMixin, Int16Mixin {
   Uint16List get values => vfBytes.asUint16List();
 
   static OWivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kOWIndex);
     return new OWivr(bytes);
   }
 }
@@ -351,7 +359,7 @@ class ATivr extends AT with Common, IvrElement<int>, IntMixin, Int32Mixin {
   Uint32List get values => vfBytes.asUint32List();
 
   static ATivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kATIndex);
     return new ATivr(bytes);
   }
 }
@@ -367,7 +375,7 @@ class OLivr extends OL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   Uint32List get values => vfBytes.asUint32List();
 
   static OLivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kOLIndex);
     return new OLivr(bytes);
   }
 }
@@ -383,7 +391,7 @@ class SLivr extends SL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   Int32List get values => vfBytes.asInt32List();
 
   static SLivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kSLIndex);
     return new SLivr(bytes);
   }
 }
@@ -399,7 +407,7 @@ class ULivr extends UL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   Uint32List get values => vfBytes.asUint32List();
 
   static ULivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kULIndex);
     return new ULivr(bytes);
   }
 }
@@ -418,7 +426,7 @@ class GLivr extends GL with Common, IvrElement<int>, IntMixin, Int32Mixin {
   static const String kVRName = 'Group Length';
 
   static GLivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kULIndex);
     return new GLivr(bytes);
   }
 }
@@ -433,7 +441,7 @@ class AEivr extends AE
   AEivr(this.bytes);
 
   static AEivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kAEIndex);
     assert(checkPadding(bytes));
     return new AEivr(_removePadding(bytes));
   }
@@ -447,7 +455,7 @@ class ASivr extends AS
   ASivr(this.bytes);
 
   static ASivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kASIndex);
     return new ASivr(bytes);
   }
 }
@@ -460,7 +468,7 @@ class CSivr extends CS
   CSivr(this.bytes);
 
   static CSivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kCSIndex);
     assert(checkPadding(bytes));
     return new CSivr(_removePadding(bytes));
   }
@@ -474,7 +482,7 @@ class DAivr extends DA
   DAivr(this.bytes);
 
   static DAivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kDAIndex);
     return new DAivr(bytes);
   }
 }
@@ -487,7 +495,7 @@ class DSivr extends DS
   DSivr(this.bytes);
 
   static DSivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kDSIndex);
     assert(checkPadding(bytes));
     return new DSivr(_removePadding(bytes));
   }
@@ -501,7 +509,7 @@ class DTivr extends DT
   DTivr(this.bytes);
 
   static DTivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kDTIndex);
     assert(checkPadding(bytes));
     return new DTivr(_removePadding(bytes));
   }
@@ -515,7 +523,7 @@ class ISivr extends IS
   ISivr(this.bytes);
 
   static ISivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kISIndex);
     assert(checkPadding(bytes));
     return new ISivr(_removePadding(bytes));
   }
@@ -529,7 +537,7 @@ class UIivr extends UI
   UIivr(this.bytes);
 
   static UIivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kUIIndex);
     assert(checkPadding(bytes, kNull));
     return new UIivr(_removePadding(bytes));
   }
@@ -555,12 +563,19 @@ class LOivr extends LO
   }
 }
 
-class PCivr extends LO
+class PCivr extends LOivr
     with Common, IvrElement<String>, BDStringMixin, Utf8Mixin {
-  @override
-  final Bytes bytes;
 
-  PCivr(this.bytes);
+  PCivr(Bytes bytes) : super(bytes);
+
+  @override
+  String get vrKeyword => PC.kVRKeyword;
+  @override
+  String get vrName => PC.kVRKeyword;
+  @override
+  String get name => 'Private Creator - $id';
+
+  int get sgNumber => code & 0xFF;
 
   /// Returns a [PCTag].
   @override
@@ -573,10 +588,24 @@ class PCivr extends LO
     return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
   }
 
+  String get id => vfBytesAsAscii;
+
   static PCivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kLOIndex);
     assert(checkPadding(bytes));
     return new PCivr(_removePadding(bytes));
+  }
+
+  static PCivr makeEmptyPrivateCreator(int pdTag, int vrIndex) {
+    final group = Tag.privateGroup(pdTag);
+    final sgNumber = (pdTag & 0xFFFF) >> 8;
+    final bytes = new Bytes(8)
+      ..setUint16(0, group)
+      ..setUint16(0, sgNumber)
+      ..setUint16(4, kLOIndex)
+ //     ..setUint8(5, kO)
+      ..setUint16(6, 0);
+    return new PCivr(bytes);
   }
 }
 
@@ -588,7 +617,7 @@ class PNivr extends PN
   PNivr(this.bytes);
 
   static PNivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kPNIndex);
     assert(checkPadding(bytes));
     return new PNivr(_removePadding(bytes));
   }
@@ -602,7 +631,7 @@ class SHivr extends SH
   SHivr(this.bytes);
 
   static SHivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kSHIndex);
     assert(checkPadding(bytes));
     return new SHivr(_removePadding(bytes));
   }
@@ -618,7 +647,7 @@ class LTivr extends LT
   @override
   List<String> get values => [vfBytes.getUtf8()];
   static LTivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kLTIndex);
     assert(checkPadding(bytes));
     return new LTivr(_removePadding(bytes));
   }
@@ -632,7 +661,7 @@ class STivr extends ST
   STivr(this.bytes);
 
   static STivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kSTIndex);
     assert(checkPadding(bytes));
     return new STivr(_removePadding(bytes));
   }
@@ -646,7 +675,7 @@ class TMivr extends TM
   TMivr(this.bytes);
 
   static TMivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kTMIndex);
     assert(checkPadding(bytes));
     return new TMivr(_removePadding(bytes));
   }
@@ -660,7 +689,7 @@ class UCivr extends UC
   UCivr(this.bytes);
 
   static UCivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kUCIndex);
     assert(checkPadding(bytes));
     return new UCivr(_removePadding(bytes));
   }
@@ -674,7 +703,7 @@ class URivr extends UR
   URivr(this.bytes);
 
   static URivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kURIndex);
     assert(checkPadding(bytes));
     return new URivr(_removePadding(bytes));
   }
@@ -688,7 +717,7 @@ class UTivr extends UT
   UTivr(this.bytes);
 
   static UTivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
+    assert(vrIndex == null || vrIndex == kUTIndex);
     assert(checkPadding(bytes));
     return new UTivr(_removePadding(bytes));
   }

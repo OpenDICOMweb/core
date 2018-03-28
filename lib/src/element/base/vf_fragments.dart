@@ -17,8 +17,6 @@ import 'package:core/src/element/utils.dart';
 class VFFragments {
   /// The fragments contained in the Value Field without their Item headers.
   final List<Uint8List> fragments;
-  int _lengthInBytes;
-  Uint8List _bulkdata;
 
   /// Creates a [VFFragments].
   VFFragments(this.fragments);
@@ -39,6 +37,7 @@ class VFFragments {
           length += fragments[j].length;
         return length;
       }();
+  int _lengthInBytes;
 
   /// Returns a [Uint8List] that combines the bytes in [fragments].
   /// Note: The [bulkdata] is contained in fragments 1 to n. Fragment 0
@@ -54,6 +53,8 @@ class VFFragments {
         }
         return v;
       }();
+  Uint8List _bulkdata;
+
 
   String get info =>
       '$this\n  offsets(${offsets.length}) Bulkdata $lengthInBytes bytes';

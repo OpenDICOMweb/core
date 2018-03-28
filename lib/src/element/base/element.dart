@@ -515,7 +515,9 @@ abstract class Element<V> extends ListBase<V> {
     return '(${vList.length})$s';
   }
 
-  String toStringWithValues() => '$runtimeType$dcm ${tag.keyword} '
+  String get _keywordString => (tag == null) ? '*Unknown Tag*' : tag.keyword;
+
+  String toStringWithValues() => '$runtimeType$dcm $_keywordString '
       '$vrId($vrIndex)  vfLength: $vfLength '
       '${getValuesAsString(maxVListLength)}';
 

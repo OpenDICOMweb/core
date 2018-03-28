@@ -10,7 +10,7 @@ import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/base/vf_fragments.dart';
-import 'package:core/src/element/byte_data/bd_element.dart';
+import 'package:core/src/element/bytes/bd_element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -51,11 +51,7 @@ abstract class EvrElement<V> implements BDElement<V> {
   Uint8List get asBytes =>
       bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
 
-  static Element make(
-    int code,
-    Bytes bytes,
-    int vrIndex,
-  ) =>
+  static Element makeFromBytes(int code, Bytes bytes, int vrIndex) =>
       _evrBDMakers[vrIndex](bytes, vrIndex);
 
   static final List<DecodeBinaryVF> _evrBDMakers = <DecodeBinaryVF>[
@@ -147,7 +143,7 @@ abstract class EvrLongMixin<V> {
   int get vfLengthField {
     assert(bytes.lengthInBytes >= _longVFOffset);
     final vflf = bytes.getUint32(_longVFLengthOffset);
-    assert(vflf == vfLength || vflf == kUndefinedLength);
+    assert(vflf == vfLength || vflf == kUndefinedLength, 'vflf: $vflf');
     return vflf;
   }
 
@@ -675,8 +671,8 @@ class PCevr extends PC
     final bytes = new Bytes(8)
       ..setUint16(0, group)
       ..setUint16(0, sgNumber)
-      ..setUint8(4, kL)
-      ..setUint8(5, kO)
+      ..setUint8(4, kLOIndex)
+ //     ..setUint8(5, kO)
       ..setUint16(6, 0);
     return new PCevr(bytes);
   }

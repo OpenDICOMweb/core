@@ -35,7 +35,7 @@ class FLtag extends FL with TagElement<double> {
   FLtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new FLtag(tag, vList);
 
-  static FLtag make(Tag tag, Iterable<double> vList) =>
+  static FLtag make(Tag tag, Iterable<double> vList, [int _]) =>
       new FLtag(tag, vList ?? kEmptyDoubleList);
 
   static FLtag fromBase64(Tag tag, String s) =>
@@ -75,8 +75,8 @@ class OFtag extends OF with TagElement<double> {
   OFtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new OFtag(tag, vList);
 
-  static OFtag make(Tag tag, Iterable<double> vList) =>
-      new OFtag(tag, vList ?? kEmptyDoubleList);
+  static OFtag make(Tag tag, Iterable<double> vList, [int _]) =>
+      new OFtag._(tag, vList ?? kEmptyDoubleList);
 
   static OFtag fromBase64(Tag tag, String s) =>
       fromBytes(tag, Bytes.base64Decode(s));
@@ -113,7 +113,7 @@ class FDtag extends FD with TagElement<double> {
   FDtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new FDtag(tag, vList);
 
-  static FDtag make(Tag tag, Iterable<double> vList) =>
+  static FDtag make(Tag tag, Iterable<double> vList, [int _]) =>
       new FDtag(tag, vList ?? kEmptyDoubleList);
 
   static FDtag fromBase64(Tag tag, String s) =>
@@ -152,8 +152,8 @@ class ODtag extends OD with TagElement<double> {
   ODtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new ODtag(tag, vList);
 
-  static ODtag make(Tag tag, Iterable<double> vf) =>
-      new ODtag(tag, Float64.fromValueField(vf));
+  static ODtag make(Tag tag, Iterable<double> vList, [int _]) =>
+      new ODtag._(tag, vList);
 
   static ODtag fromBase64(Tag tag, String s) =>
       fromBytes(tag, Bytes.base64Decode(s));

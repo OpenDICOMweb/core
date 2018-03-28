@@ -10,7 +10,6 @@ import 'dart:typed_data';
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/base/parse_info.dart';
 import 'package:core/src/dataset/utils/status_report.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity.dart';
@@ -136,7 +135,7 @@ abstract class RootDataset extends Dataset {
   String get summary {
     final sqs = sequences;
     final sb = new StringBuffer('''\n$runtimeType: 
-             SOP Class: $sopClassUid
+             SOP Class: ${sopClassUid.info}
        Transfer Syntax: $transferSyntax
         Total Elements: $total
     Top Level Elements: $length
@@ -231,6 +230,7 @@ abstract class RootDataset extends Dataset {
     }
   }
 
+/*
   /// Returns the parsing information [ParseInfo] for _this_.
   /// [pInfo] has one-time setter that is initialized lazily.
   // ignore: unnecessary_getters_setters
@@ -238,6 +238,7 @@ abstract class RootDataset extends Dataset {
   ParseInfo _pInfo;
   // ignore: unnecessary_getters_setters
   set pInfo(ParseInfo info) => _pInfo ??= info;
+*/
 
 /*
   bool get wasShortEncoding => pInfo.wasShortFile;

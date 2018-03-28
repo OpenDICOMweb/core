@@ -39,9 +39,8 @@ void addDeIdMethodCodeSequence(RootDataset rds, DeIdMethod deIdMethod) {
     kURNCodeValue: new URtag(PTag.kURNCodeValue, [acrDeIdUrn])
   };
 
-  final item = new TagItem(rds, map);
-  final sq = new SQtag(PTag.kDeidentificationMethodCodeSequence, rds, [item]);
-  item.sequence = sq;
+  final sq = new SQtag(PTag.kDeidentificationMethodCodeSequence, rds, <Item>[]);
+  final item = new TagItem(rds, sq, map);
   rds.replace(kDeidentificationMethodCodeSequence, [item]);
 }
 

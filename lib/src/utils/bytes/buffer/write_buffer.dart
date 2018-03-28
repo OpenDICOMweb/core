@@ -15,7 +15,7 @@ import 'package:core/src/utils/bytes/bytes.dart';
 
 class WriteBuffer extends BufferBase {
   @override
-  final GrowableBytes bytes;
+  final GrowableBytes buffer;
   @override
   int rIndex_;
   @override
@@ -27,7 +27,7 @@ class WriteBuffer extends BufferBase {
       int limit = kDefaultLimit])
       : rIndex_ = 0,
         wIndex_ = 0,
-        bytes = new GrowableBytes(length, endian, limit);
+        buffer = new GrowableBytes(length, endian, limit);
 
   WriteBuffer.from(WriteBuffer wb,
       [int offset = 0,
@@ -36,39 +36,40 @@ class WriteBuffer extends BufferBase {
       int limit = kDefaultLimit])
       : rIndex_ = offset,
         wIndex_ = offset,
-        bytes = new GrowableBytes.from(wb.bytes, offset, length, endian, limit);
+        buffer =
+            new GrowableBytes.from(wb.buffer, offset, length, endian, limit);
 
   WriteBuffer.fromByteData(ByteData bd,
       [Endian endian = Endian.little, int limit = kDefaultLimit])
       : rIndex_ = 0,
         wIndex_ = bd.lengthInBytes,
-        bytes = new GrowableBytes.fromTypedData(bd, endian, limit);
+        buffer = new GrowableBytes.fromTypedData(bd, endian, limit);
 
   WriteBuffer.fromUint8List(Uint8List uint8List,
       [Endian endian = Endian.little, int limit = kDefaultLimit])
       : rIndex_ = 0,
         wIndex_ = uint8List.lengthInBytes,
-        bytes = new GrowableBytes.fromTypedData(uint8List, endian, limit);
+        buffer = new GrowableBytes.fromTypedData(uint8List, endian, limit);
 
   WriteBuffer._(int length, Endian endian, int limit)
       : rIndex_ = 0,
         wIndex_ = 0,
-        bytes = new GrowableBytes(length, endian, limit);
+        buffer = new GrowableBytes(length, endian, limit);
 
   WriteBuffer._fromTD(TypedData td, Endian endian, int limit)
       : rIndex_ = 0,
         wIndex_ = td.lengthInBytes,
-        bytes = new GrowableBytes.fromTypedData(td, endian, limit);
+        buffer = new GrowableBytes.fromTypedData(td, endian, limit);
 
   // **** WriteBuffer specific Getters and Methods
 
   @override
-  ByteData get bd => (isClosed) ? null : bytes.asByteData();
+  ByteData get bd => (isClosed) ? null : buffer.asByteData();
 
   int get index => wIndex_;
   @override
-  Endian get endian => bytes.endian;
-  int get limit => bytes.limit;
+  Endian get endian => buffer.endian;
+  int get limit => buffer.limit;
 
   /// Returns the number of bytes left in the current _this_.
   int get remaining => wRemaining;
@@ -79,95 +80,96 @@ class WriteBuffer extends BufferBase {
   bool hasRemaining(int n) => wHasRemaining(n);
 
   @override
-  bool wHasRemaining(int n) => (wIndex_ + n) <= bytes.lengthInBytes;
+  bool wHasRemaining(int n) => (wIndex_ + n) <= buffer.lengthInBytes;
 
   void write(Bytes bList, [int offset = 0, int length]) {
     length ??= bList.length;
+    ensureRemaining(length + 1);
     for (var i = offset, j = wIndex_; i < length; i++, j++)
-      bytes.setUint8(j, bList[i]);
+      buffer.setUint8(j, bList[i]);
     wIndex_ += length;
   }
 
-  void setInt8(int n) => bytes.setInt8(wIndex_, n);
+  void setInt8(int n) => buffer.setInt8(wIndex_, n);
 
   void writeInt8(int n) {
     assert(n >= -128 && n <= 127, 'Value out of range: $n');
     _maybeGrow(1);
-    bytes.setInt8(wIndex_, n);
+    buffer.setInt8(wIndex_, n);
     wIndex_++;
   }
 
-  void setInt16(int n) => bytes.setInt16(wIndex_, n);
+  void setInt16(int n) => buffer.setInt16(wIndex_, n);
 
   /// Writes a 16-bit unsigned integer (Uint16) value to _this_.
   void writeInt16(int value) {
     assert(
         value >= -0x7FFF && value <= 0x7FFF - 1, 'Value out of range: $value');
     _maybeGrow(2);
-    bytes.setInt16(wIndex_, value);
+    buffer.setInt16(wIndex_, value);
     wIndex_ += 2;
   }
 
-  void setInt32(int n) => bytes.setInt32(wIndex_, n);
+  void setInt32(int n) => buffer.setInt32(wIndex_, n);
 
   /// Writes a 32-bit unsigned integer (Uint32) value to _this_.
   void writeInt32(int value) {
     assert(value >= -0x7FFFFFFF && value <= 0x7FFFFFFF - 1,
         'Value out if range: $value');
     _maybeGrow(4);
-    bytes.setInt32(wIndex_, value);
+    buffer.setInt32(wIndex_, value);
     wIndex_ += 4;
   }
 
-  void setInt64(int n) => bytes.setInt64(wIndex_, n);
+  void setInt64(int n) => buffer.setInt64(wIndex_, n);
 
   /// Writes a 64-bit unsigned integer (Uint32) value to _this_.
   void writeInt64(int value) {
     assert(value >= -0x7FFFFFFFFFFFFFFF && value <= 0x7FFFFFFFFFFFFFFF - 1,
         'Value out of range: $value');
     _maybeGrow(8);
-    bytes.setInt64(wIndex_, value);
+    buffer.setInt64(wIndex_, value);
     wIndex_ += 8;
   }
 
-  void setUint8(int n) => bytes.setUint8(wIndex_, n);
+  void setUint8(int n) => buffer.setUint8(wIndex_, n);
 
   /// Writes a byte (Uint8) value to _this_.
   void writeUint8(int value) {
     assert(value >= 0 && value <= 255, 'Value out of range: $value');
     _maybeGrow(1);
-    bytes.setUint8(wIndex_, value);
+    buffer.setUint8(wIndex_, value);
     wIndex_++;
   }
 
-  void setUint16(int n) => bytes.setUint16(wIndex_, n);
+  void setUint16(int n) => buffer.setUint16(wIndex_, n);
 
   /// Writes a 16-bit unsigned integer (Uint16) value to _this_.
   void writeUint16(int value) {
     assert(value >= 0 && value <= 0xFFFF, 'Value out of range: $value');
     _maybeGrow(2);
-    bytes.setUint16(wIndex_, value);
+    buffer.setUint16(wIndex_, value);
     wIndex_ += 2;
   }
 
-  void setUint32(int n) => bytes.setUint32(wIndex_, n);
+  void setUint32(int n) => buffer.setUint32(wIndex_, n);
 
   /// Writes a 32-bit unsigned integer (Uint32) value to _this_.
   void writeUint32(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFF, 'Value out if range: $value');
     _maybeGrow(4);
-    bytes.setUint32(wIndex_, value);
+    buffer.setUint32(wIndex_, value);
     wIndex_ += 4;
   }
 
-  void setUint64(int n) => bytes.setUint64(wIndex_, n);
+  void setUint64(int n) => buffer.setUint64(wIndex_, n);
 
   /// Writes a 64-bit unsigned integer (Uint32) value to _this_.
   void writeUint64(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFFFFFFFFFF,
         'Value out of range: $value');
     _maybeGrow(8);
-    bytes.setUint64(wIndex_, value);
+    buffer.setUint64(wIndex_, value);
     wIndex_ += 8;
   }
 
@@ -180,7 +182,7 @@ class WriteBuffer extends BufferBase {
   /// Writes [length] zeros to _this_.
   bool writeZeros(int length) {
     _maybeGrow(length);
-    for (var i = 0, j = wIndex_; i < length; i++, j++) bytes[j] = 0;
+    for (var i = 0, j = wIndex_; i < length; i++, j++) buffer[j] = 0;
     wIndex_ += length;
     return true;
   }
@@ -191,38 +193,42 @@ class WriteBuffer extends BufferBase {
     assert(code >= 0 && code < kItem, 'Value out of range: $code');
     assert(wIndex_.isEven && wHasRemaining(4));
     _maybeGrow(4);
-    bytes
+    buffer
       ..setUint16(wIndex_, code >> 16)
       ..setUint16(wIndex_ + 2, code & 0xFFFF);
     wIndex_ += 4;
   }
 
   void writeInt8List(Int8List list) {
-    bytes.setInt8List(list, wIndex_, list.length);
+    buffer.setInt8List(list, wIndex_, list.length);
     wIndex_ += list.length;
   }
 
   void writeInt16List(Int16List list) {
-    bytes.setInt16List(list, wIndex_, list.length);
+    buffer.setInt16List(list, wIndex_, list.length);
     wIndex_ += (list.length * 2);
   }
 
   void writeInt32List(Int32List list) {
-    bytes.setInt32List(list, wIndex_, list.length);
+    buffer.setInt32List(list, wIndex_, list.length);
     wIndex_ += (list.length * 4);
   }
 
   void writeInt64List(Int64List list) {
-    bytes.setInt64List(list, wIndex_, list.length);
+    buffer.setInt64List(list, wIndex_, list.length);
     wIndex_ += (list.length * 8);
   }
 
-  void writeUint8List(Uint8List bList) =>
-      writeByteData(bList.buffer.asByteData());
+  void writeUint8List(Uint8List bList) {
+    if (bList.lengthInBytes == 0) return;
+    writeByteData(bList.buffer.asByteData(bList.offsetInBytes, bList.length));
+  }
 
   void writeByteData(ByteData bd) {
     final length = bd.lengthInBytes;
-    bytes.setByteData(bd.buffer.asByteData(), wIndex_, length);
+    if (length == 0) return;
+    ensureRemaining(length);
+    buffer.setByteData(bd.buffer.asByteData(), wIndex_, length);
     wIndex_ += length;
   }
 
@@ -248,50 +254,50 @@ class WriteBuffer extends BufferBase {
 */
 
   void writeUint16List(Uint16List list) {
-    bytes.setUint16List(list, wIndex_, list.length);
+    buffer.setUint16List(list, wIndex_, list.length);
     wIndex_ += (list.length * 2);
   }
 
   void writeUint32List(Uint32List list) {
-    bytes.setUint32List(list, wIndex_, list.length);
+    buffer.setUint32List(list, wIndex_, list.length);
     wIndex_ += (list.length * 4);
   }
 
   void writeUint64List(Uint64List list) {
-    bytes.setUint64List(list, wIndex_, list.length);
+    buffer.setUint64List(list, wIndex_, list.length);
     wIndex_ += (list.length * 8);
   }
 
   void writeFloat32List(Float32List list) {
-    bytes.setFloat32List(list, wIndex_, list.length);
+    buffer.setFloat32List(list, wIndex_, list.length);
     wIndex_ += (list.length * 4);
   }
 
   void writeFloat64List(Float64List list) {
-    bytes.setFloat64List(list, wIndex_, list.length);
+    buffer.setFloat64List(list, wIndex_, list.length);
     wIndex_ += (list.length * 8);
   }
 
   void writeAsciiList(List<String> list) =>
-      wIndex_ += bytes.setAsciiList(list, wIndex_, list.length);
+      wIndex_ += buffer.setAsciiList(list, wIndex_, list.length);
 
   void writeUtf8List(List<String> list) =>
-      wIndex_ += bytes.setUtf8List(list, wIndex_, list.length);
+      wIndex_ += buffer.setUtf8List(list, wIndex_, list.length);
 
   void writeStringList(List<String> list) => writeUtf8List(list);
 
-  /// Ensures that [bytes] has at least [remaining] writable bytes.
-  /// The [bytes] is grows if necessary, and copies existing bytes into
-  /// the new [bytes].
+  /// Ensures that [buffer] has at least [remaining] writable bytes.
+  /// The [buffer] is grows if necessary, and copies existing bytes into
+  /// the new [buffer].
   bool ensureRemaining(int remaining) => ensureCapacity(wIndex_ + remaining);
 
   // Urgent: move to write and read_write_buf
-  /// Ensures that [bytes] is at least [capacity] long, and grows
+  /// Ensures that [buffer] is at least [capacity] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureCapacity(int capacity) =>
-      (capacity > lengthInBytes) ? grow() : false;
+      (capacity > lengthInBytes) ? grow(capacity) : false;
 
-  bool grow([int capacity]) => bytes.grow(capacity);
+  bool grow([int capacity]) => buffer.grow(capacity);
 
   /// Grow the buf if the _wIndex_ is at, or beyond, the end of the current buf.
   bool _maybeGrow([int size = 1]) =>
@@ -304,8 +310,8 @@ class WriteBuffer extends BufferBase {
 
   ByteData close() {
     if (hadTrailingBytes)
-      _hadTrailingZeros = bytes.checkAllZeros(wIndex_, bytes.lengthInBytes);
-    final bd = bytes.asByteData(0, wIndex_);
+      _hadTrailingZeros = buffer.checkAllZeros(wIndex_, buffer.lengthInBytes);
+    final bd = buffer.asByteData(0, wIndex_);
     _isClosed = true;
     return bd;
   }
@@ -318,7 +324,7 @@ class WriteBuffer extends BufferBase {
   ByteData rClose() {
     final view = asByteData(0, rIndex_);
     if (isNotEmpty) {
-      print('End of Data with rIndex_($rIndex) != '
+      error('End of Data with rIndex_($rIndex) != '
           'length(${view.lengthInBytes})');
       _hadTrailingZeros = checkAllZeros(rIndex_, wIndex_);
     }
@@ -336,6 +342,9 @@ class WriteBuffer extends BufferBase {
   @override
   String toString() => '$runtimeType($length)[$wIndex_] maxLength: $limit';
 
+  void warn(Object msg) => print('** Warning(@$wIndex_): $msg');
+
+  void error(Object msg) => throw new Exception('**** Error(@$wIndex_): $msg');
   // Internal methods
 
   static const int kDefaultLength = 4096;
@@ -376,7 +385,9 @@ class LoggingWriteBuffer extends WriteBuffer {
 
   String get pad => ''.padRight('$_www'.length);
 
+  @override
   void warn(Object msg) => print('** Warning: $msg $_www');
 
+  @override
   void error(Object msg) => throw new Exception('**** Error: $msg $_www');
 }

@@ -814,8 +814,16 @@ abstract class DatasetMixin {
   /// If the [Element] is not present or if the [Element] has more
   /// than one value, either throws or returns _null_.
   Uid getUid(int index, {bool required = false}) {
-    final UI e = lookup(index, required: required);
-    return (e == null) ? null : _checkOneValue<Uid>(index, e.uids);
+    // Note: this might be UI or UN
+    final e = lookup(index, required: required);
+    if (e == null) return null;
+    if (e is UI) return _checkOneValue<Uid>(index, e.uids);
+    if (e is UN) {
+      var s = e.vfBytesAsAscii;
+      if (s.codeUnitAt(s.length -1) == 0) s = s.substring(0, s.length -1);
+      return new Uid(s);
+    }
+      return invalidElementError(e);
   }
 
   /// Returns the [List<double>] values for the [Element] with [index].

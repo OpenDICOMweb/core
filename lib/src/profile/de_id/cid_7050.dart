@@ -53,7 +53,7 @@ class DeIdMethod extends ContextGroup {
           new SHtag(PTag.kCodingSchemeDesignator, [designator]),
       kCodeMeaning: new LOtag(PTag.kCodeMeaning, [meaning])
     };
-    return new TagItem(parent, map, sq);
+    return new TagItem(parent, sq, map);
   }
 
   @override
