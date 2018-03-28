@@ -21,11 +21,11 @@ import 'package:core/src/utils/string.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
-typedef TagElement TagElementMaker(Tag tag, Iterable vList, [int vfLengthField]);
-typedef TagElement MakeFrom(Element e);
-typedef TagElement MakeFromBytes(Tag tag, Bytes bytes, [int vfLengthField]);
-typedef TagElement MakeFromPixelDataBDE(IntBase e, [TransferSyntax ts]);
-typedef TagElement MakePixelDataFromBytes(Tag tag, Bytes bytes,
+typedef Element TagElementMaker(Tag tag, Iterable vList, [int vfLengthField]);
+typedef Element MakeFrom(Element e);
+typedef Element MakeFromBytes(Tag tag, Bytes bytes, [int vfLengthField]);
+typedef Element MakeFromPixelDataBDE(IntBase e, [TransferSyntax ts]);
+typedef Element MakePixelDataFromBytes(Tag tag, Bytes bytes,
     [int vfLengthField, VFFragments fragments, TransferSyntax ts]);
 
 /// Tag Mixin Class
@@ -174,7 +174,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     }
   }
 
-  static TagElement makeFromBytes(int code, Bytes eBytes, int vrIndex, int vfOffset,
+  static Element makeFromBytes(int code, Bytes eBytes, int vrIndex, int vfOffset,
       [int vfLengthField]) {
     final tag = Tag.lookupByCode(code, vrIndex);
     final vf = eBytes.asBytes(eBytes.offsetInBytes + vfOffset, eBytes.length - vfOffset);
@@ -203,7 +203,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   static Null _sqError(Tag tag, Bytes eb, [int vfLengthField]) =>
       invalidElementIndex(0);
 
-  static TagElement makePixelData(int code, Bytes bytes, int vrIndex, int vfOffset,
+  static Element makePixelData(int code, Bytes bytes, int vrIndex, int vfOffset,
       [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
     assert(vrIndex >= kOBIndex && vrIndex <= kUNIndex);
     final tag = Tag.lookupByCode(code, vrIndex);
@@ -211,7 +211,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
         tag, bytes, vfLengthField, fragments, ts);
   }
 
-  static TagElement makePixelDataFromBytes(int code, Bytes bytes, int vrIndex, int vfOffset,
+  static Element makePixelDataFromBytes(int code, Bytes bytes, int vrIndex, int vfOffset,
       [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
     assert(vrIndex >= kOBIndex && vrIndex <= kUNIndex);
     final tag = Tag.lookupByCode(code, vrIndex);
@@ -230,7 +230,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
           [int vfLengthField, VFFragments fragments, TransferSyntax ts]) =>
       invalidElementIndex(0);
 
-  static TagElement tagElementFrom(Element e, int vrIndex, [TransferSyntax ts]) {
+  static Element tagElementFrom(Element e, int vrIndex, [TransferSyntax ts]) {
 //    print('fromBD vrIndex: $vrIndex');
     if (vrIndex > 30) return invalidVRIndex(vrIndex, null, null);
     if (e is PixelData) return _bdePixelMakers[vrIndex](e, ts);
