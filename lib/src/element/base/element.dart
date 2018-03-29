@@ -491,7 +491,7 @@ abstract class Element<V> extends ListBase<V> {
   }
 
   String toSimpleString() => '$runtimeType$dcm ${tag.keyword} '
-      '$vrId($vrIndex)  vfLength: $vfLength';
+      '$vrId($vrIndex)  vfl: $vfLength';
 
   String toFancyString() {
     final _vmMax = (vmMax == -1) ? 'N' : '$vmMax';
@@ -518,14 +518,14 @@ abstract class Element<V> extends ListBase<V> {
   String get _keywordString => (tag == null) ? '*Unknown Tag*' : tag.keyword;
 
   String toStringWithValues() => '$runtimeType$dcm $_keywordString '
-      '$vrId($vrIndex)  vfLength: $vfLength '
+      '$vrId($vrIndex)  vlf: $vfLength '
       '${getValuesAsString(maxVListLength)}';
 
   String get _lengthAsString {
     if (vfLength != null || vfLength != -1) return '$length';
-    final vfl = vfLengthField;
-    if (vfl == null) return '*null*';
-    return (vfl == 0xFFFFFFFF) ? '0xFFFFFFFF' : '$vfl';
+    final vlf = vfLengthField;
+    if (vlf == null) return '*null*';
+    return (vlf == 0xFFFFFFFF) ? '0xFFFFFFFF' : '$vlf';
   }
 
   // ***************** Static Getters and Methods *****************

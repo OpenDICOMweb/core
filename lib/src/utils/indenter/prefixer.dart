@@ -83,7 +83,11 @@ Prefixer: z: '$z' spaces: $spaces level: $_level, indent: $indent,
     return out;
   }
 
-  int inc([int n = 1]) => _level += n;
+  int inc([int n = 1]) {
+    _level += n;
+    if (_level < 0) _level = 0;
+    return _level;
+  }
 
   int dec([int n = 1]) => _level -= n;
 

@@ -192,7 +192,7 @@ class Logger {
         new LogRecord(logLevel, msg, fullName, error, trace, zone, object);
     records.add(record);
     if (doPrint) print(record);
-    if (indent < 0) prefixer.inc(indent);
+
 
     if (isHierarchicalEnabled) {
       var target = this;
@@ -203,6 +203,7 @@ class Logger {
     } else {
       root._publish(record);
     }
+    if (indent < 0) prefixer.inc(indent);
     return record;
   }
 
