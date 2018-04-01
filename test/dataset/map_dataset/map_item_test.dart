@@ -147,6 +147,34 @@ void main() {
       expect(item.deleteAll(od0.key), <Element>[]);
     });
 
+    test('remove', () {
+      system.level = Level.debug;
+      final item = new MapItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      log.debug('item : $item');
+
+      expect(item.elements.contains(as0), true);
+      final remove0 = item.remove(as0);
+      log..debug('remove0: $remove0')..debug('item: $item');
+      expect(item.elements.contains(as0), false);
+
+      expect(item.elements.contains(ss0), true);
+      final remove1 = item.remove(ss0);
+      log..debug('remove1: $remove1')..debug('item: $item');
+      expect(item.elements.contains(ss0), false);
+
+      expect(item.elements.contains(fd0), true);
+      final remove2 = item.remove(fd0);
+      log..debug('remove2: $remove2')..debug('item: $item');
+      expect(item.elements.contains(fd0), false);
+    });
+
     test('noValues', () {
       final item = new MapItem.empty(rds, null);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
