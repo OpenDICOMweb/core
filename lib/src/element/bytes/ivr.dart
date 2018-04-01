@@ -101,7 +101,7 @@ abstract class IvrElement<V> implements BDElement<V> {
     UCivr.make, URivr.make, UTivr.make,
 
     // IVR Short
-    TMivr.make, ASivr.make, ATivr.make,
+    AEivr.make, ASivr.make, ATivr.make,
     CSivr.make, DAivr.make, DSivr.make,
     DTivr.make, FDivr.make, FLivr.make,
     ISivr.make, LOivr.make, LTivr.make,
@@ -581,7 +581,7 @@ class PCivr extends LOivr
   @override
   Tag get tag {
     if (Tag.isPCCode(code)) {
-      final token = vfBytesAsAscii;
+      final token = vfBytesAsUtf8;
       final tag = PCTag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
@@ -675,7 +675,8 @@ class TMivr extends TM
   TMivr(this.bytes);
 
   static TMivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kTMIndex);
+    assert(vrIndex == null || vrIndex == kTMIndex || vrIndex == kUNIndex,
+    'vrIndex: $vrIndex');
     assert(checkPadding(bytes));
     return new TMivr(_removePadding(bytes));
   }

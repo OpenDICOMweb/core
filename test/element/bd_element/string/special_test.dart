@@ -13,7 +13,7 @@ import '../bd_test_utils.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'bd_element/special_test', level: Level.info);
+  Server.initialize(name: 'bd_element/special_test', level: Level.debug);
 
   group('AEtag', () {
     test('AEtag from VM.k1', () {

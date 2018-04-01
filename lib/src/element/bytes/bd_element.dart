@@ -86,17 +86,15 @@ abstract class Common {
   int get vfLength {
     final vfo = vfOffset;
     final len = bytes.lengthInBytes - vfo;
-//    print('vfo: $vfo, len:$len');
-    final vfl = vfLengthField;
-//    print('vfl: $vfl, ${vfl.toRadixString(16)}');
-    assert(vfl == kUndefinedLength || len == vfl);
+    final vlf = vfLengthField;
+    if (vlf != kUndefinedLength && len != vlf)
+      print('len: $len, vlf: $vlf');
+  //  assert(vlf == kUndefinedLength || len == vlf, 'len: $len, vlf: $vlf');
     return len;
   }
 
   bool get hasValidLength {
     if (isLengthAlwaysValid) return true;
-// Put print in to see how often it is called
-// print('length: $valuesLength, minValues: $minValues, maxValues: $maxValues');
     return (valuesLength == 0) ||
         (valuesLength >= minValues &&
             (valuesLength <= maxValues) &&

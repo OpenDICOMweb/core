@@ -14,7 +14,6 @@ import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr.dart';
 
 abstract class PCTag extends PrivateTag {
-
   const PCTag._();
 
   Map<int, PDTagDefinition> get dataTags => const <int, PDTagDefinition>{};
@@ -30,7 +29,7 @@ abstract class PCTag extends PrivateTag {
   @override
   bool get isCreator => true;
 
-  /// In Tag (gggg,00ss) 
+  /// In Tag (gggg,00ss)
   @override
   int get sgNumber => elt & 0xFF;
 
@@ -67,23 +66,26 @@ abstract class PCTag extends PrivateTag {
   ///
   static PCTag lookupByCode(int code, int vrIndex, String creatorName) {
     if (creatorName == null || creatorName.isEmpty)
-      log.error('Invalid Creator Name: "$creatorName"');
+      log.warn1('Empty Creator Name: "$creatorName" for $code');
     final def = PCTagDefinition.lookup(creatorName);
     return (def == null)
-           ? def
-           : new PCTagKnown(code, vrIndex, creatorName, def);
+        ? def
+        : new PCTagKnown(code, vrIndex, creatorName, def);
   }
 
-   static PCTag make(int code, int vrIndex, [String creatorName = '']) {
-     final def = PCTagDefinition.lookup(creatorName);
-     if (vrIndex != kLOIndex && vrIndex != kUNIndex) _error(vrIndex);
-     return (def != null)
-            ? new PCTagKnown(code, kLOIndex, creatorName, def)
-            : new PCTagUnknown(code, kLOIndex, creatorName);
-   }
+  static PCTag make(int code, int vrIndex, [String creatorName = '']) {
+    final def = PCTagDefinition.lookup(creatorName);
+    final tag = (def != null)
+        ? new PCTagKnown(code, kLOIndex, creatorName, def)
+        : new PCTagUnknown(code, kLOIndex, creatorName);
+    if (vrIndex != kLOIndex && vrIndex != kUNIndex)
+      _error(tag, vrIndex, creatorName);
+    return tag;
+  }
 
-  static void _error(int vrIndex) =>
-      log.error('**** Private Creator Tag with invalid vrIndex: $vrIndex');
+  static void _error(Tag tag, int vrIndex, String name) =>
+      log.error('**** Private Creator  $tag\n  '
+          'with invalid vrIndex($vrIndex) name("$name")');
 
   static const PCTag kUnknown = PCTagUnknown.kUnknownCreator;
 }
@@ -92,7 +94,7 @@ class PCTagUnknown extends PCTag {
   @override
   final int code;
   @override
-  final int  vrIndex;
+  final int vrIndex;
   @override
   final String name;
 
@@ -104,16 +106,14 @@ class PCTagUnknown extends PCTag {
   String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)} "$name"';
 
   static const PCTagUnknown kUnknownCreator =
-  const PCTagUnknown(0x00, kLOIndex, 'Unknown Creator');
+      const PCTagUnknown(0x00, kLOIndex, 'Unknown Creator');
 }
 
-
 class PCTagKnown extends PCTag {
-
   @override
   final int code;
   @override
-  final int  vrIndex;
+  final int vrIndex;
   @override
   final String name;
   PCTagDefinition definition;

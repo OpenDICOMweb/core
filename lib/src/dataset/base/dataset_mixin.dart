@@ -819,7 +819,7 @@ abstract class DatasetMixin {
     if (e == null) return null;
     if (e is UI) return _checkOneValue<Uid>(index, e.uids);
     if (e is UN) {
-      var s = e.vfBytesAsAscii;
+      var s = e.vfBytesAsUtf8;
       if (s.codeUnitAt(s.length -1) == 0) s = s.substring(0, s.length -1);
       return new Uid(s);
     }

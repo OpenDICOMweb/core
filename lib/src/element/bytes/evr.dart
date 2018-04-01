@@ -488,7 +488,7 @@ class ASevr extends AS
 
   static ASevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kASIndex);
-    if (bytes.lengthInBytes != 12)
+    if (bytes.lengthInBytes != 12 && bytes.lengthInBytes != 8)
       log.error('Invalid Age (AS) length: ${bytes.lengthInBytes}');
     return new ASevr(bytes);
   }
@@ -513,7 +513,7 @@ class CSevr extends CS
   }
 }
 
-class DAevr extends DA
+class DAevr extends DA 
     with
         Common,
         EvrElement<String>,
@@ -527,8 +527,10 @@ class DAevr extends DA
 
   static DAevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kDAIndex);
-    if (bytes.lengthInBytes != 16 && bytes.lengthInBytes != 8)
-      log.error('Invalid Date (DA) length: ${bytes.lengthInBytes}');
+    final length = bytes.lengthInBytes;
+    if (length != 16 && length != 8)
+      log.error('Invalid Date (DA)  length: $length '
+          '${bytes.getUtf8(8, length - 8)}');
     return new DAevr(bytes);
   }
 }
@@ -649,8 +651,8 @@ class PCevr extends PC
   @override
   Tag get tag {
     if (Tag.isPCCode(code)) {
-      final token = vfBytesAsAscii;
-      final tag = PCTag.lookupByCode(code, kLOIndex, token);
+      final token = vfBytesAsUtf8;
+      final tag = Tag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
     return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');

@@ -279,7 +279,7 @@ class Bytes extends ListBase<int> {
   }
 
   Uint8List asUint8List([int offset = 0, int length]) =>
-      _bd.buffer.asUint8List(_bdOffset(offset), length ?? _bd.lengthInBytes);
+      _bd.buffer.asUint8List(_bdOffset(offset), length ?? lengthInBytes);
 
   Uint16List asUint16List([int offset = 0, int length]) {
     length ??= _bd.lengthInBytes ~/ 2;
