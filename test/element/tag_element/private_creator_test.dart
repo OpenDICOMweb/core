@@ -122,10 +122,13 @@ void main() {
       final pc0 = new LOtag(pcTag, [agfa]);
       expect(pcTag.isValidValues(pc0.values), true);
       log.debug('pc0: ${pc0.info}');
+    });
 
-      // Urgent Sharath: make this separate test
+    test('Valid Agfa Private Data', () {
       system.throwOnError = false;
-      const value0 = 'Some Random Data String';
+      const agfa = 'AGFA';
+      final pcTag = PCTag.make(0x001900FF, kLOIndex, agfa);
+      final value0 = 'Some Random Data String';
       final pdTag0 = PDTag.make(0x0019FF05, kSTIndex, pcTag);
       log.debug('pdTag0: ${pdTag0.info}');
       expect(pdTag0.isValid, true);
