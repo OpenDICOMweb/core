@@ -189,5 +189,23 @@ void main() {
       expect(uuid0.asHex, equals(uuidV1.replaceAll('-', '')));
       expect(uuid0.variant, equals(UuidVariant.rfc4122));
     });
+
+    test('toUid', () {
+      final bytes = new Uint8List.fromList(uuidList);
+      final toUid0 = Uuid.toUid(bytes);
+      log.debug('toUid0: $toUid0');
+      expect(toUid0 == '2.25.121603237333826379183460680347508878182', true);
+    });
+
+    test('setGenerator', () {
+      final generator0 = Uuid.setGenerator(GeneratorType.pseudo);
+      expect(generator0,  true);
+
+      final generator1 = Uuid.setGenerator(GeneratorType.secure);
+      expect(generator1,  true);
+
+      final generator2 = Uuid.setGenerator(GeneratorType.seededPseudo);
+      expect(generator2,  true);
+    });
   });
 }
