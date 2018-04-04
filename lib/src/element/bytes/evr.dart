@@ -99,11 +99,11 @@ abstract class EvrElement<V> implements BDElement<V> {
 
 // This private function should only be used by EvrShortMixin, and EvrLongMixin
 int __vfLength(Bytes bytes, int vfOffset) {
-  final length = bytes.lengthInBytes - vfOffset;
-  assert(length.isEven);
+  final vfLength = bytes.lengthInBytes - vfOffset;
+  if (vfLength.isOdd) log.warn('vfLength($vfLength) is odd');
   assert(bytes.lengthInBytes >= vfOffset);
-  assert((length >= 0 && length <= kUndefinedLength), 'length: $length');
-  return length;
+  assert((vfLength >= 0 && vfLength <= kUndefinedLength), 'vfLength: $vfLength');
+  return vfLength;
 }
 
 abstract class EvrShortMixin<V> {
