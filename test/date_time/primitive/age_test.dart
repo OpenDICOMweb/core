@@ -33,12 +33,39 @@ void main() {
       expect(vam5, false);
     });
 
+    test('randomAgeDays', () {
+      final vam0 = randomAgeInDays(kMaxAgeInDays);
+      expect(vam0, isNotNull);
+
+      final vam1 = randomAgeInDays(kMinAge);
+      expect(vam1, isNotNull);
+
+      final vam2 = randomAgeInDays(0);
+      expect(vam2, isNotNull);
+    });
+
     test('hashAgeMicroseconds', () {
       final ham0 = hashAgeInDays(kMaxAge);
       expect(ham0, isNotNull);
 
       final ham1 = hashAgeInDays(kMinAge);
       expect(ham1, isNotNull);
+    });
+
+    test('sha256AgeInDays', () {
+      final ham0 = sha256AgeInDays(kMaxAge);
+      expect(ham0, isNotNull);
+
+      final ham1 = sha256AgeInDays(kMinAge);
+      expect(ham1, isNotNull);
+    });
+
+    test('sha256AgeAsString', () {
+      final ham0 = sha256AgeAsString(kMaxAge);
+      expect(ham0 == '573D', true);
+
+      final ham1 = sha256AgeAsString(kMinAge);
+      expect(ham1 == '965D', true);
     });
 
     test('ageToString', () {
