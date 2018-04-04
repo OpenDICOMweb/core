@@ -526,9 +526,12 @@ class Bytes extends ListBase<int> {
 
   static const int kDefaultLength = 1024;
 
+  /// Returns a new [Bytes] containing the contents of [bd].
+  static Bytes fromByteData(ByteData bd, {Endian endian = Endian.little}) =>
+      new Bytes.fromTypedData(bd, endian);
+
   /// Returns a [Bytes] buffer containing the contents of [File].
-  // TODO: add async
-  // TODO: unit test
+  // TODO: maybe finish doAsync
   static Bytes fromFile(File file,
       {Endian endian = Endian.little, bool doAsync = false}) {
     final Uint8List iList = file.readAsBytesSync();
@@ -545,16 +548,14 @@ class Bytes extends ListBase<int> {
 
   static final Bytes kEmptyBytes = new Bytes._();
 
-  static Bytes base64Decode(String s) =>
-      new Bytes.fromTypedData(base64.decode(s));
+  static Bytes base64Decode(String s) => new Bytes.fromTypedData(base64.decode(s));
 
   static String base64Encode(Bytes bytes) => base64.encode(bytes.asUint8List());
 
   static String asciiDecode(Bytes bytes, {bool allowInvalid = true}) =>
       ascii.decode(bytes.asUint8List(), allowInvalid: allowInvalid);
 
-  static Bytes asciiEncode(String s) =>
-      new Bytes.fromTypedData(ascii.encode(s));
+  static Bytes asciiEncode(String s) => new Bytes.fromTypedData(ascii.encode(s));
 
   static String utf8Decode(Bytes bytes, {bool allowMalformed = true}) =>
       utf8.decode(bytes.asUint8List(), allowMalformed: allowMalformed);
@@ -562,7 +563,8 @@ class Bytes extends ListBase<int> {
   static Bytes utf8Encode(String s) => new Bytes.fromTypedData(ascii.encode(s));
 
   //TODO: This should be done in convert
-  static Bytes removePadding(Bytes bytes, int vfOffset, [int padChar = kSpace]) {
+  static Bytes removePadding(Bytes bytes, int vfOffset,
+      [int padChar = kSpace]) {
     if (bytes.lengthInBytes == vfOffset) return bytes;
     assert(bytes.lengthInBytes.isEven);
     final lastIndex = bytes.lengthInBytes - 1;

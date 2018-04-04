@@ -128,7 +128,7 @@ void main() {
       system.throwOnError = false;
       const agfa = 'AGFA';
       final pcTag = PCTag.make(0x001900FF, kLOIndex, agfa);
-      final value0 = 'Some Random Data String';
+      const value0 = 'Some Random Data String';
       final pdTag0 = PDTag.make(0x0019FF05, kSTIndex, pcTag);
       log.debug('pdTag0: ${pdTag0.info}');
       expect(pdTag0.isValid, true);

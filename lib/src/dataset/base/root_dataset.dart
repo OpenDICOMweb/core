@@ -20,7 +20,6 @@ import 'package:core/src/utils/logger.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
 
-
 /// The Root [Dataset] for a DICOM Entity.
 abstract class RootDataset extends Dataset {
   String path;
@@ -56,8 +55,7 @@ abstract class RootDataset extends Dataset {
   /// indicates an unknown length.
   int get lengthInBytes => (dsBytes != null) ? dsBytes.vfLength : -1;
 
-  Bytes get preamble =>
-      (dsBytes != null) ? dsBytes.preamble : kEmptyBytes;
+  Bytes get preamble => (dsBytes != null) ? dsBytes.preamble : kEmptyBytes;
 
   Bytes get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyBytes;
 
@@ -250,12 +248,17 @@ abstract class RootDataset extends Dataset {
 }
 
 abstract class Fmi extends ListBase<Element> {
-
   Iterable<Element> get elements;
 
   Uid uidLookup(int code) {
     final e = this[code];
     if (e == null) return null;
-    return (e is UI) ? e.uids.elementAt(0) : nonUidTag(code);
+    if (e is UI) {
+      return e.uids.elementAt(0);
+    } else if (e is UN) {
+      return new Uid(e.vfBytesAsAscii);
+    } else {
+      return invalidElementError(e);
+    }
   }
 }

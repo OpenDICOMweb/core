@@ -372,6 +372,7 @@ abstract class Tag {
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag lookupByCode(int code, [int vrIndex = kUNIndex, Object creator]) {
     String msg;
+//    print('code $code ${hex32(code)} ${toDcm(code)} vrIndex $vrIndex');
     if (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)
       return invalidTagCode(code);
     final group = code >> 16;

@@ -81,6 +81,10 @@ abstract class DSBytes {
     final elt = getUint16(2);
     return (group << 16) + elt;
   }
+
+  @override
+  String toString() =>
+      '$runtimeType: start($dsStart) end($dsEnd) vfLength($vfLength)';
 }
 
 /// Root Dataset Bytes ([RDSBytes]).
