@@ -145,5 +145,54 @@ void main() {
         }
       }
     });
+
+    test('bytes from', () {
+      final rng = new RNG();
+      final list0 = rng.uint8List(1, 1);
+      final bytes = Bytes.asciiEncode(list0.toString());
+      final byteF0 = new Bytes.from(bytes);
+      expect(byteF0, equals(bytes));
+
+      expect(byteF0.endian == Endian.little, true);
+      expect(byteF0.elementSizeInBytes == 1, true);
+      expect(byteF0.offsetInBytes == 0, true);
+      expect(byteF0.buffer == byteF0.bd.buffer, true);
+      expect(byteF0.length == bytes.length, true);
+      expect(byteF0.lengthInBytes == bytes.lengthInBytes, true);
+      expect(byteF0.length == byteF0.lengthInBytes, true);
+      expect(byteF0.hashCode is int, true);
+    });
+
+    test('bytes fromList', () {
+      final rng = new RNG();
+      final list0 = rng.uint8List(1, 1);
+      final byteFL0 = new Bytes.fromList(list0);
+      expect(byteFL0, equals(list0));
+
+      expect(byteFL0.endian == Endian.little, true);
+      expect(byteFL0.elementSizeInBytes == 1, true);
+      expect(byteFL0.offsetInBytes == 0, true);
+      expect(byteFL0.buffer == byteFL0.bd.buffer, true);
+      expect(byteFL0.length == list0.length, true);
+      expect(byteFL0.lengthInBytes == byteFL0.lengthInBytes, true);
+      expect(byteFL0.length == byteFL0.lengthInBytes, true);
+      expect(byteFL0.hashCode is int, true);
+    });
+
+    test('bytes fromTypedData', () {
+      final rng = new RNG();
+      final list0 = rng.uint8List(1, 1);
+      final byteFTD0 = new Bytes.fromTypedData(list0);
+      expect(byteFTD0, equals(list0));
+
+      expect(byteFTD0.endian == Endian.little, true);
+      expect(byteFTD0.elementSizeInBytes == 1, true);
+      expect(byteFTD0.offsetInBytes == 0, true);
+      expect(byteFTD0.buffer == byteFTD0.bd.buffer, true);
+      expect(byteFTD0.length == list0.length, true);
+      expect(byteFTD0.lengthInBytes == byteFTD0.lengthInBytes, true);
+      expect(byteFTD0.length == byteFTD0.lengthInBytes, true);
+      expect(byteFTD0.hashCode is int, true);
+    });
   });
 }
