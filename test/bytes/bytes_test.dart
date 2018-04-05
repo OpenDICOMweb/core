@@ -11,6 +11,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'bytes_test.dart', level: Level.info);
+  final rng = new RNG();
   group('Bytes Tests', () {
     test('Test getters and initial zeros', () {
       const count = 12;
@@ -147,7 +148,6 @@ void main() {
     });
 
     test('bytes from', () {
-      final rng = new RNG();
       final list0 = rng.uint8List(1, 1);
       final bytes = Bytes.asciiEncode(list0.toString());
       final byteF0 = new Bytes.from(bytes);
@@ -164,7 +164,6 @@ void main() {
     });
 
     test('bytes fromList', () {
-      final rng = new RNG();
       final list0 = rng.uint8List(1, 1);
       final byteFL0 = new Bytes.fromList(list0);
       expect(byteFL0, equals(list0));
@@ -180,7 +179,6 @@ void main() {
     });
 
     test('bytes fromTypedData', () {
-      final rng = new RNG();
       final list0 = rng.uint8List(1, 1);
       final byteFTD0 = new Bytes.fromTypedData(list0);
       expect(byteFTD0, equals(list0));
