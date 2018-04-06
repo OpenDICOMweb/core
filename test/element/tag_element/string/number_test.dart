@@ -1058,8 +1058,23 @@ void main() {
       const vList3 = 'abc';
       expect(DS.tryParse(vList3), isNull);
 
+      const vList4 = ' 1245';
+      expect(DS.tryParse(vList4), double.parse(vList4));
+
+      const vList5 = '1245 ';
+      expect(DS.tryParse(vList5), double.parse(vList5));
+
+      const vList6 = ' 1245  ';
+      expect(DS.tryParse(vList6), double.parse(vList6));
+
+      const vList7 = '12 45';
+      expect(DS.tryParse(vList7), isNull);
+
       system.throwOnError = true;
       expect(() => DS.tryParse(vList3),
+          throwsA(const isInstanceOf<InvalidStringError>()));
+
+      expect(() => DS.tryParse(vList7),
           throwsA(const isInstanceOf<InvalidStringError>()));
     });
 
@@ -1080,8 +1095,26 @@ void main() {
       final vList3 = ['abc'];
       expect(DS.tryParseList(vList3), isNull);
 
+      final vList4 = [' 1245'];
+      final parse3 = double.parse(vList4[0]);
+      expect(DS.tryParseList(vList4), <double>[parse3]);
+
+      final vList5 = ['1245 '];
+      final parse4 = double.parse(vList4[0]);
+      expect(DS.tryParseList(vList5), <double>[parse4]);
+
+      final vList6 = [' 1245  '];
+      final parse5 = double.parse(vList4[0]);
+      expect(DS.tryParseList(vList6), <double>[parse5]);
+
+      final vList7 = ['12 45'];
+      expect(DS.tryParseList(vList7), isNull);
+
       system.throwOnError = true;
       expect(() => DS.tryParseList(vList3),
+          throwsA(const isInstanceOf<InvalidStringError>()));
+
+      expect(() => DS.tryParseList(vList7),
           throwsA(const isInstanceOf<InvalidStringError>()));
     });
 
