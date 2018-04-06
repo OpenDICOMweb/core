@@ -5,13 +5,11 @@
 // See the AUTHORS file for other contributors.
 
 import 'dart:convert' as cvt;
-import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/evr.dart';
 import 'package:core/src/element/bytes/ivr.dart';
-import 'package:core/src/system.dart';
 import 'package:core/src/utils/bytes.dart';
 
 typedef Element DecodeBinaryVF(Bytes bytes, int vrIndex);
@@ -88,7 +86,7 @@ abstract class Common {
     final len = bytes.lengthInBytes - vfo;
     final vlf = vfLengthField;
     if (vlf != kUndefinedLength && len != vlf)
-      print('len: $len, vlf: $vlf');
+      print('${dcm(code)} $vrIndex len: $len, vlf: $vlf : ${len / vlf}');
   //  assert(vlf == kUndefinedLength || len == vlf, 'len: $len, vlf: $vlf');
     return len;
   }
@@ -261,87 +259,7 @@ abstract class TextMixin {
   Bytes get vfBytes;
   bool get allowMalformed;
 
-//  int get valuesLength => 1;
-
   String get value => cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
-
-//  Iterable<String> get values => (valuesLength == 0) ? [] : [value];
-}
-
-bool ensureExactLength = true;
-
-/// Returns _true_ if all bytes in [bytes0] and [bytes1] are the same.
-/// _Note_: This assumes the [Bytes] is aligned on a 2 byte boundary.
-bool bytesEqual(Bytes bytes0, Bytes bytes1, {bool doFast = false}) {
-  final b0Length = bytes0.lengthInBytes;
-  final b1Length = bytes1.lengthInBytes;
-  if (b0Length.isEven && b1Length.isEven && b0Length == b1Length)
-    return (doFast && (b0Length % 4) == 0)
-        ? bytesEqualFast(bytes0, bytes1)
-        : bytesEqualSlow(bytes0, bytes1);
-  log.error('Invalid Length: b0($b0Length) b1($b1Length)');
-  return false;
-}
-
-/// Returns _true_ if all bytes in [bList0] and [bList1] are the same.
-/// _Note_: This assumes the [Bytes] is aligned on a 2 byte boundary.
-bool uint8ListEqual(Uint8List bList0, Uint8List bList1) {
-  final bytes0 = new Bytes.fromTypedData(bList0);
-  final bytes1 = new Bytes.fromTypedData(bList1);
-  return bytesEqual(bytes0, bytes1);
-}
-
-bool bytesEqualSlow(Bytes bytes0, Bytes bytes1) {
-  var ok = true;
-  for (var i = 0; i < bytes0.lengthInBytes; i++) {
-    final a = bytes0.getUint8(i);
-    final b = bytes1.getUint8(i);
-    if (a != b) {
-      ok = false;
-      if ((a == 0 && b == 32) || (a == 32 && b == 0)) {
-        log.warn('$i $a | $b Padding char difference');
-      } else {
-        log.warn('''
-$i: $a | $b')
-	  ${hex8(a)} | ${hex8(b)}
-	  "${new String.fromCharCode(a)}" | "${new String.fromCharCode(b)}"
-''');
-      }
-    }
-  }
-  return ok;
-}
-
-// Note: optimized to use 4 byte boundary
-bool bytesEqualFast(Bytes bytes0, Bytes bytes1) {
-  var ok = true;
-  for (var i = 0; i < bytes0.lengthInBytes; i += 4) {
-    final a = bytes0.getUint32(i);
-    final b = bytes1.getUint32(i);
-    if (a != b) {
-      log.warn('''
-$i: $a | $b')
-	  ${hex32(a)} | ${hex32(b)}
-''');
-      _toBytes(i, bytes0, bytes1);
-      ok = false;
-    }
-  }
-  return ok;
-}
-
-void _toBytes(int i, Bytes bytes0, Bytes bytes1) {
-  log
-    ..warn('    $bytes0')
-    ..warn('    $bytes1')
-    ..warn('    ${bytes0.getAscii()}')
-    ..warn('    ${bytes1.getAscii()}');
-}
-
-int getLength(Uint8List vfBytes, int unitSize) {
-  if (ensureExactLength && ((vfBytes.length % unitSize) != 0))
-    return invalidVFLength(vfBytes.length, unitSize);
-  return vfBytes.lengthInBytes ~/ unitSize;
 }
 
 int _getValuesLength(int vfLengthField, int sizeInBytes) {
@@ -352,19 +270,23 @@ int _getValuesLength(int vfLengthField, int sizeInBytes) {
   return length;
 }
 
+/*
 //TODO: This should be done in convert
 bool checkPadding(Bytes bytes, [int padChar = kSpace]) {
   final lastIndex = bytes.lengthInBytes - 1;
   final char = bytes.getUint8(lastIndex);
   if ((char == kNull || char == kSpace) && char != padChar)
-    log.info1('Invalid PadChar: $char should be $padChar');
+    log.debug('** Invalid PadChar: $char should be $padChar');
   return true;
 }
+*/
 
+/*
 //TODO: This should be done in convert
 Bytes removePadding(Bytes bytes, int vfOffset, [int padChar = kSpace]) {
+  assert(bytes.lengthInBytes.isEven && bytes.lengthInBytes >= vfOffset,
+  'bytes.length: ${bytes.lengthInBytes}');
   if (bytes.lengthInBytes == vfOffset) return bytes;
-  assert(bytes.lengthInBytes.isEven);
   final lastIndex = bytes.lengthInBytes - 1;
   final char = bytes.getUint8(lastIndex);
   if (char == kNull || char == kSpace) {
@@ -373,3 +295,4 @@ Bytes removePadding(Bytes bytes, int vfOffset, [int padChar = kSpace]) {
   }
   return bytes;
 }
+*/

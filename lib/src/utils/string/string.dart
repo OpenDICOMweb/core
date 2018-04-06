@@ -11,6 +11,8 @@ import 'package:core/src/utils/string/hexadecimal.dart';
 
 // **** This file contains low-level [String] functions
 
+/// Returns a [String] containing [count] _space_ (' ') characters.
+String spaces(int count) => ''.padRight(count);
 
 /// Returns an [Iterable] of [s], where is is split by the
 /// separator and then each component of the [Iterable] has

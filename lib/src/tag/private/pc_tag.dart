@@ -84,7 +84,7 @@ abstract class PCTag extends PrivateTag {
   }
 
   static void _error(Tag tag, int vrIndex, String name) =>
-      log.error('**** Private Creator  $tag\n  '
+      log.error('**** Private Creator $tag '
           'with invalid vrIndex($vrIndex) name("$name")');
 
   static const PCTag kUnknown = PCTagUnknown.kUnknownCreator;
@@ -99,7 +99,7 @@ class PCTagUnknown extends PCTag {
   final String name;
 
   const PCTagUnknown(this.code, this.vrIndex, String name)
-      : name = name ?? 'NoName',
+      : name = name ?? '** Unknown **',
         super._();
 
   @override

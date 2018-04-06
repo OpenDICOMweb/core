@@ -7,4 +7,5 @@
 export 'package:core/src/dataset/utils/compare.dart';
 export 'package:core/src/dataset/utils/compare_datasets.dart';
 export 'package:core/src/dataset/utils/modification.dart';
+export 'package:core/src/dataset/utils/validate.dart';
 //export 'package:core/src/dataset/utils/status_report.dart';

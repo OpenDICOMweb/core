@@ -11,6 +11,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/system/system.dart';
 import 'package:core/src/utils/ascii.dart';
+import 'package:core/src/utils/string.dart';
 
 // TODO: defer loading of convert
 // TODO: Unit Test
@@ -73,16 +74,11 @@ class Bytes extends ListBase<int> {
   @override
   void operator []=(int i, int v) => _bd.setUint8(i, v);
 
+  bool ignorePadding = true;
+  bool allowUnequalLengths = false;
   @override
-  bool operator ==(Object other) {
-    if (other is Bytes) {
-      if (_bd.lengthInBytes != other._bd.lengthInBytes) return false;
-      for (var i = 0; i < length; i++)
-        if (_bd.getUint8(i) != other._bd.getUint8(i)) return false;
-      return true;
-    }
-    return false;
-  }
+  bool operator ==(Object other) =>
+      (other is Bytes) ? _bytesEqual(this, other) : false;
 
   // Core accessor NOT to be exported?
   ByteData get bd => _bd;
@@ -103,7 +99,6 @@ class Bytes extends ListBase<int> {
   ByteBuffer get buffer => _bd.buffer;
 
   // *** List interface
-
   @override
   int get length => _bd.lengthInBytes;
   @override
@@ -548,14 +543,16 @@ class Bytes extends ListBase<int> {
 
   static final Bytes kEmptyBytes = new Bytes._();
 
-  static Bytes base64Decode(String s) => new Bytes.fromTypedData(base64.decode(s));
+  static Bytes base64Decode(String s) =>
+      new Bytes.fromTypedData(base64.decode(s));
 
   static String base64Encode(Bytes bytes) => base64.encode(bytes.asUint8List());
 
   static String asciiDecode(Bytes bytes, {bool allowInvalid = true}) =>
       ascii.decode(bytes.asUint8List(), allowInvalid: allowInvalid);
 
-  static Bytes asciiEncode(String s) => new Bytes.fromTypedData(ascii.encode(s));
+  static Bytes asciiEncode(String s) =>
+      new Bytes.fromTypedData(ascii.encode(s));
 
   static String utf8Decode(Bytes bytes, {bool allowMalformed = true}) =>
       utf8.decode(bytes.asUint8List(), allowMalformed: allowMalformed);
@@ -639,3 +636,146 @@ class GrowableBytes extends Bytes {
 
   static int kMaximumLength = kDefaultLimit;
 }
+
+bool ensureExactLength = true;
+
+/// Returns _true_ if all bytes in [a] and [b] are the same.
+/// _Note_: This assumes the [Bytes] is aligned on a 2 byte boundary.
+bool uint8ListEqual(Uint8List a, Uint8List b) {
+  final length = a.lengthInBytes;
+  if (length != b.lengthInBytes) return false;
+  for (var i = 0; i < length; i++) if (a[i] != b[i]) return false;
+  return true;
+}
+
+// TODO: for performance add _uint16EQual and _uint32Equal
+bool _bytesEqual(Bytes a, Bytes b, [bool ignorePadding = false]) {
+  final length = a.lengthInBytes;
+  if (length != b.lengthInBytes) return false;
+  for (var i = 0; i < length; i++) if (a[i] != b[i]) return false;
+  return true;
+}
+
+/// Returns _true_ if all bytes in [a] and [b] are the same.
+/// _Note_: This assumes the [Bytes] is aligned on a 2 byte boundary.
+bool _bytesEqual2(Bytes a, Bytes b, {bool ignorePadding = false}) {
+  final len0 = a.lengthInBytes;
+  final len1 = b.lengthInBytes;
+  if (len0.isOdd || len1.isOdd || len0 != len1) return false;
+  if ((len0 % 4) == 0) {
+    return _uint32Equal(a, b, ignorePadding);
+  } else if ((len0 % 2) == 0) {
+    return _uint16Equal(a, b, ignorePadding);
+  } else {
+    return _bytesEqual(a, b, ignorePadding);
+  }
+}
+
+// Note: optimized to use 4 byte boundary
+bool _uint16Equal(Bytes a, Bytes b, bool ignorePadding) {
+  for (var i = 0; i < a.lengthInBytes; i += 2) {
+    final x = a._bd.getUint16(i);
+    final y = b._bd.getUint16(i);
+    if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
+  }
+  return true;
+}
+
+// Note: optimized to use 4 byte boundary
+bool _uint32Equal(Bytes a, Bytes b, bool ignorePadding) {
+  for (var i = 0; i < a.lengthInBytes; i += 4) {
+    final x = a.getUint32(i);
+    final y = b.getUint32(i);
+    if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
+  }
+  return true;
+}
+
+
+int errorCount = 0;
+
+bool _bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
+  if ((a[i] == 0 && b[i] == 32) || (a[i] == 32 && b[i] == 0)) {
+    log.warn('$i ${a[i]} | ${b[i]} Padding char difference');
+    return (ignorePadding) ? true : false;
+  } else {
+    final x = a[i];
+    final y = b[i];
+    errorCount++;
+    log.warn('''
+$i: $x | $y')
+	  ${hex8(x)} | ${hex8(y)}
+	  "${new String.fromCharCode(x)}" | "${new String.fromCharCode(y)}"
+	  ${_toBytes(i, a, b)}
+''');
+    if (throwOnError) {
+      if (errorCount > 3) throw 'different';
+    }
+  }
+  return false;
+}
+
+void _toBytes(int i, Bytes a, Bytes b) {
+  log
+    ..warn('    $a')
+    ..warn('    $b')
+    ..warn('    ${a.getAscii()}')
+    ..warn('    ${b.getAscii()}');
+}
+
+bool checkPadding(Bytes bytes, [int padChar = kSpace]) =>
+    _checkPadding(bytes, padChar);
+
+bool _checkPadding(Bytes bytes, int padChar) {
+  final lastIndex = bytes.lengthInBytes - 1;
+  final char = bytes.getUint8(lastIndex);
+  if ((char == kNull || char == kSpace) && char != padChar)
+    log.debug('** Invalid PadChar: $char should be $padChar');
+  return true;
+}
+
+Bytes removePadding(Bytes bytes, int vfOffset, [int padChar = kSpace]) =>
+    _removePadding(bytes, vfOffset, padChar);
+
+Bytes _removePadding(Bytes bytes, int vfOffset, int padChar) {
+  assert(bytes.lengthInBytes.isEven && bytes.lengthInBytes >= vfOffset,
+      'bytes.length: ${bytes.lengthInBytes}');
+  if (bytes.lengthInBytes == vfOffset) return bytes;
+  final lastIndex = bytes.lengthInBytes - 1;
+  final char = bytes.getUint8(lastIndex);
+  if (char == kNull || char == kSpace) {
+    log.debug3('Removing Padding: $char');
+    return bytes.asBytes(bytes.offsetInBytes, bytes.lengthInBytes - 1);
+  }
+  return bytes;
+}
+
+/*
+int _getLength(Uint8List vfBytes, int unitSize) {
+  final length = vfBytes.lengthInBytes % unitSize;
+  return (ensureExactLength && (length != 0))
+      ? invalidLength(length, unitSize)
+      : length;
+}
+
+Null invalidLength(int length, int maxVFLength) {
+  log.error(InvalidLengthError._msg(length, maxVFLength));
+  if (throwOnError) throw new InvalidLengthError(length, maxVFLength);
+  return null;
+}
+
+class InvalidLengthError extends Error {
+  final int length;
+  final int maxLength;
+
+  InvalidLengthError(this.length, this.maxLength) {
+    log.error(toString());
+  }
+
+  @override
+  String toString() => _msg(length, maxLength);
+
+  static String _msg(int length, int maxVFLength) =>
+      'InvalidLengthError: lengthInBytes($length maxLength($maxVFLength)';
+}
+*/

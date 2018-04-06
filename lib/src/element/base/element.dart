@@ -423,7 +423,7 @@ abstract class Element<V> extends ListBase<V> {
       result.add('Invalid VR for $tag');
     }
     checkLength(values, result ?? _getIssues());
-    checkValues(values, result ?? _getIssues);
+    checkValues(values, result ?? _getIssues());
     return result;
   }
 

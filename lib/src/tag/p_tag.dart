@@ -94,7 +94,7 @@ class PTag extends Tag {
     final tag = pTagCodeMap[code];
     if (tag != null) return tag;
 
-    // This is fromTag Group Length Tag
+    // This is a Group Length Tag
     if ((code & 0xFFFF) == 0) return new PTagGroupLength(code);
 
     // **** Retired _special case_ codes that still must be handled

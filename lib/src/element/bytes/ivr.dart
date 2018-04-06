@@ -76,7 +76,7 @@ abstract class IvrElement<V> implements BDElement<V> {
 
   /// Returns the Value Field Length field.
   @override
-  int get vfLengthField => bytes.getUint16(_vfLengthOffset);
+  int get vfLengthField => bytes.getUint32(_vfLengthOffset);
 
   @override
   Bytes get vfBytesWithPadding => 
