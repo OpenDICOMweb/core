@@ -6,17 +6,17 @@
 
 /// A class that contains a [List<String>] describing errors encountered
 /// when parsing a value.
-class ParseIssues {
+class Issues {
   final String type;
   final String value;
   final int start;
   final int end;
   List<String> _issues;
 
-  ParseIssues(this.type, this.value, [this.start = 0, this.end, this._issues]);
+  Issues(this.type, this.value, [this.start = 0, this.end, this._issues]);
 
 /*
-  ParseIssues operator +(String issue) {
+  Issues operator +(String issue) {
     add(issue);
     return this;
   }

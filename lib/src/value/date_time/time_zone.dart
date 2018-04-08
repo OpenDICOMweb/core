@@ -33,7 +33,7 @@ class TimeZone implements Comparable<TimeZone> {
 
   /// Create a new [TimeZone].
   factory TimeZone(int sign, int h, int m,
-      {ParseIssues issues, OnTimeZoneError onError}) {
+      {Issues issues, OnTimeZoneError onError}) {
     final us = timeZoneToMicroseconds(sign, h, m);
     if (us != null) return _getTimeZone(us);
     return (onError != null)
@@ -111,7 +111,7 @@ class TimeZone implements Comparable<TimeZone> {
       {int start = 0,
       int end,
       bool asDicom = true,
-      ParseIssues issues,
+      Issues issues,
       OnParseError onError}) {
     final us = parseTimeZone(s,
         start: start,
@@ -123,14 +123,14 @@ class TimeZone implements Comparable<TimeZone> {
   }
 
   static TimeZone parseDicom(String s,
-      {int start = 0, int end, ParseIssues issues, OnParseError onError}) {
+      {int start = 0, int end, Issues issues, OnParseError onError}) {
     final us = parseDcmTimeZone(s,
         start: start, end: end, issues: issues, onError: onError);
     return _getTimeZone(us);
   }
 
   static TimeZone parseInternet(String s,
-      {int start = 0, int end, ParseIssues issues, OnParseError onError}) {
+      {int start = 0, int end, Issues issues, OnParseError onError}) {
     final us = parseInternetTimeZone(s,
         start: start, end: end, issues: issues, onError: onError);
     return _getTimeZone(us);
@@ -161,11 +161,11 @@ class TimeZone implements Comparable<TimeZone> {
   /// Returns _true_ if [minutes] is a valid Time Zone.
   static bool isValidMinutes(int minutes) => isValidTimeZoneMinutes(minutes);
 
-  /// Returns a [ParseIssues] object if there are errors
+  /// Returns a [Issues] object if there are errors
   /// or warnings related to [s]; otherwise, returns _null_.
-  static ParseIssues issues(String s,
-      {int start = 0, int end, ParseIssues issues}) {
-    issues ??= new ParseIssues('TimeZone', s);
+  static Issues issues(String s,
+      {int start = 0, int end, Issues issues}) {
+    issues ??= new Issues('TimeZone: $s');
     end ??= s.length;
     parseDcmTimeZone(s, start: start, end: end, issues: issues);
     return issues;

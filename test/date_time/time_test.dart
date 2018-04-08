@@ -108,7 +108,7 @@ void main() {
         final time = Time.parse(s);
         log.debug('    Time: $time');
         if (time == null) {
-          final issues = new ParseIssues('Good Time to Time', s);
+          final issues = new Issues('Good Time to Time: "$s"');
           Time.parse(s, issues: issues);
           log.debug('    Issues: $issues');
         }

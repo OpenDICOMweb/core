@@ -18,7 +18,7 @@ void main() {
       ..debug('  tzm: $tz, ${goodTimeZonesValues[i]}');
     final valid = TimeZone.isValidString(s);
     log.debug('  isValid: $valid');
-    final issues = new ParseIssues('parseTimeZone', s);
+    final issues = new Issues('parseTimeZone: "$s"');
     TimeZone.parse(s, issues: issues);
     log.debug('  Issues: "$issues"');
   }
@@ -30,7 +30,7 @@ void main() {
     ..debug('  tzm: $tz');
     final valid = TimeZone.isValidString(s);
     log.debug('  isValid: $valid, valid==$valid');
-    final issues = new ParseIssues('parseTimeZone', s);
+    final issues = new Issues('parseTimeZone: "$s"');
     TimeZone.parse(s, issues: issues);
     log.debug('  Issues: "$issues"');
   }
@@ -66,7 +66,7 @@ void timeZoneTest() {
         log.debug('Good parseTimeZone: "$s", tzm: $tz');
         expect(tz, isNotNull);
         expect(TimeZone.isValidString(s), true);
-        final issues = new ParseIssues('parseTimeZone', s);
+        final issues = new Issues('parseTimeZone: "$s"');
         TimeZone.parse(s, issues: issues);
         log.debug('Issues: $issues');
         expect(issues, equals(''));

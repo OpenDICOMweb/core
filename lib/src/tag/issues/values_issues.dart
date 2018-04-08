@@ -12,18 +12,18 @@ class ValuesIssues<E> {
   final String name;
   final Tag tag;
   final List<E> values;
-  List<ParseIssues> _vIssues;
+  List<Issues> _vIssues;
 
   ValuesIssues(this.name, this.tag, this.values);
 
-  ValuesIssues operator +(ParseIssues issue) {
+  ValuesIssues operator +(Issues issue) {
     add(issue);
     return this;
   }
 
   bool get isValidLength => tag.isValidLength(values.length);
 
-  List<ParseIssues> get issues => _vIssues ??= <ParseIssues>[];
+  List<Issues> get issues => _vIssues ??= <Issues>[];
 
   bool get isEmpty => issues.isEmpty;
 
@@ -33,7 +33,7 @@ class ValuesIssues<E> {
     return 'has the following issues:\n ';
   }
 
-  ValuesIssues add(ParseIssues pIssues) {
+  ValuesIssues add(Issues pIssues) {
     if (issues.isNotEmpty) issues.add(pIssues);
     return this;
   }

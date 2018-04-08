@@ -4,8 +4,8 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/utils/issues.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/utils/issues.dart';
 import 'package:core/src/value/uid/uid.dart';
 
 /// Logs an Error entry, and then if [throwOnError] is _true_ throws an

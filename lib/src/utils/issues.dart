@@ -4,7 +4,7 @@
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-//TODO: unify Issues and ParseIssues?
+//TODO: unify Issues and Issues?
 /// A class that contains a [List<String>] describing errors encountered
 /// when parsing a value.
 class Issues {
@@ -55,6 +55,9 @@ class ParseIssues extends Issues {
   final int end;
 
   ParseIssues(this.type, this.value, [this.start = 0, this.end]) : super(type);
+
+//  ParseIssues.from(Issues issues)
+
 
   /// Check the length of a value.
   void checkLength(int length, int min, int max, [String subtype]) {

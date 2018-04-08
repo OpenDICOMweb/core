@@ -69,7 +69,7 @@ void main() {
     test('issues', () {
       for (var s in goodDcmDateList) {
         expect(Date.isValidString(s), true);
-        final issues = new ParseIssues('Date', s);
+        final issues = new Issues('Date: "$s"');
         Date.parse(s, issues: issues);
         expect(issues.isEmpty, true);
       }
@@ -77,7 +77,7 @@ void main() {
       for (var s in badDcmDateList) {
         system.throwOnError = false;
         expect(Date.isValidString(s), false);
-        final issues = new ParseIssues('Date', s);
+        final issues = new Issues('Date: "$s"');
         Date.parse(s, issues: issues);
         expect(issues.isEmpty, false);
       }

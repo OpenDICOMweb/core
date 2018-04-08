@@ -86,7 +86,7 @@ void main() {
   for (var i = 0; i < badTimeStringsWOFractions.length; i++) {
     final s = badTimeStringsWOFractions[i];
     log.debug('  Parse Bad Time Fraction: "$s"');
-    final issues = new ParseIssues('Bad Time Fraction', s);
+    final issues = new Issues('Bad Time Fraction: "$s"');
     parseDcmTime(s, issues: issues);
     log.debug('  $issues');
     if (issues.isEmpty)

@@ -10,18 +10,18 @@ class Issues<V> {
   final String name;
   final Tag tag;
   final Iterable<V> values;
-  List<ParseIssues> _vIssues;
+  List<Issues> _vIssues;
 
   Issues(this.name, this.tag, this.values);
 
-  Issues operator +(ParseIssues issue) {
+  Issues operator +(Issues issue) {
     add(issue);
     return this;
   }
 
   bool get isValidLength => tag.isValidLength<V>(values);
 
-  List<ParseIssues> get issues => _vIssues ??= <ParseIssues>[];
+  List<Issues> get issues => _vIssues ??= <Issues>[];
 
   bool get isEmpty => issues.isEmpty;
 
@@ -31,7 +31,7 @@ class Issues<V> {
     return 'has the following issues:\n ';
   }
 
-  Issues add(ParseIssues pIssues) {
+  Issues add(Issues pIssues) {
     if (issues.isNotEmpty) issues.add(pIssues);
     return this;
   }

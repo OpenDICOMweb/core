@@ -43,7 +43,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
       int us = 0,
       int tzh = 0,
       int tzm = 0,
-      ParseIssues issues,
+      Issues issues,
       OnDcmDateTimeError onError]) {
     try {
       final date = dateToEpochMicroseconds(y, m, d);
@@ -228,7 +228,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   static DcmDateTime parse(String s,
       {int start = 0,
       int end,
-      ParseIssues issues,
+      Issues issues,
       OnDcmDateTimeParseError onError}) {
     final dt = parseDcmDateTime(s, start: start, end: end);
     if (dt == null)
@@ -238,10 +238,10 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     return new DcmDateTime._(dt);
   }
 
-  /// Returns a [ParseIssues] object if there are errors
+  /// Returns a [Issues] object if there are errors
   /// or warnings related to [s]; otherwise, returns _null_.
-  static ParseIssues issues(String s, {int start = 0, int end}) {
-    final issues = new ParseIssues('DcmDateTime', s);
+  static Issues issues(String s, {int start = 0, int end}) {
+    final issues = new Issues('DcmDateTime: "$s"');
     parseDcmDateTime(s, start: start, end: end, issues: issues);
     return issues;
   }

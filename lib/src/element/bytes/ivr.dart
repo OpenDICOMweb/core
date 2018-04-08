@@ -587,7 +587,7 @@ class PCivr extends LOivr
   Tag get tag {
     if (Tag.isPCCode(code)) {
       final token = vfBytesAsUtf8;
-      final tag = PCTag.lookupByCode(code, kLOIndex, token);
+      final tag = Tag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
     return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');

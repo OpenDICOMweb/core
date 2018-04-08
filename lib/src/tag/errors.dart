@@ -7,6 +7,7 @@
 import 'package:core/src/base.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/tag.dart';
+import 'package:core/src/utils/issues.dart';
 import 'package:core/src/vr.dart';
 
 class InvalidTagError extends Error {

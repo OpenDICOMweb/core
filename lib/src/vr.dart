@@ -9,6 +9,7 @@ import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
+import 'package:core/src/utils.dart';
 
 
 // Sequence is 0

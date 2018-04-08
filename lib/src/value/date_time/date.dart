@@ -5,7 +5,6 @@
 
 import 'package:core/src/system.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/value/date_time/primitives/date.dart';
 import 'package:core/src/value/date_time/primitives/dcm_date_time.dart';
 import 'package:core/src/value/date_time/primitives/errors.dart';
@@ -36,7 +35,7 @@ class Date implements Comparable<Date> {
 
   /// Creates a [Date].
   factory Date(int y,
-      [int m = 0, int d = 0, ParseIssues issues, OnDateError onError]) {
+      [int m = 0, int d = 0, Issues issues, OnDateError onError]) {
     try {
       final microseconds = dateToEpochMicroseconds(y, m, d);
       return (microseconds == null) ? null : new Date._(microseconds);
@@ -151,7 +150,7 @@ class Date implements Comparable<Date> {
   static Date parse(String s,
       {int start = 0,
       int end,
-      ParseIssues issues,
+      Issues issues,
       bool isDicom = true,
       OnDateParseError onError}) {
     final us = (isDicom)
@@ -168,11 +167,11 @@ class Date implements Comparable<Date> {
           {int start = 0, int end, Issues issues}) =>
       isValidDcmDateString(s, start: start, end: end, issues: issues);
 
-  /// Returns a [ParseIssues] object if there are errors or warnings related to [s];
+  /// Returns a [Issues] object if there are errors or warnings related to [s];
   /// otherwise, returns _null_.
-  static ParseIssues issues(String s,
+  static Issues issues(String s,
       {int start = 0, int end, int min = 0, int max}) {
-    final issues = new ParseIssues('Date', s);
+    final issues = new Issues('Date: "$s"');
     parseDcmDate(s, issues: issues);
     return issues;
   }
@@ -188,7 +187,7 @@ class Date implements Comparable<Date> {
 
   /// Returns a new date [String] that is the hash of the argument.
   static String hashString(String s,
-      {ParseIssues issues, OnDateHashStringError onError}) {
+      {Issues issues, OnDateHashStringError onError}) {
     final us = parseDcmDate(s);
     if (us == null) {
       if (onError != null) return onError(s);

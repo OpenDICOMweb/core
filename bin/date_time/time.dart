@@ -79,7 +79,7 @@ const List<String> goodDcmTimeList = const <String>[
     test('Good getDcmTimeIssues', () {
       for (String s in goodDcmTimeList) {
         log.debug('  getDcmTimeIssues: $s');
-        var issues = new ParseIssues('getDcmTimeIssues', s);
+        var issues = new Issues('getDcmTimeIssues', s);
         getDcmTimeIssues(s, issues);
         log.debug('    getDcmTimeIssues: "$s", issues: $issues');
         expect(issues.isEmpty, true);

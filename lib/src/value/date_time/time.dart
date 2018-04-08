@@ -30,7 +30,7 @@ class Time implements Comparable<Time> {
       int s = 0,
       int ms = 0,
       int us = 0,
-      ParseIssues issues,
+      Issues issues,
       OnTimeError onError]) {
     try {
       final uSecs = timeToMicroseconds(h, m, s, ms, us);
@@ -166,21 +166,21 @@ class Time implements Comparable<Time> {
   /// Returns a [Time] corresponding to [s], if [s] is valid;
   /// otherwise, returns _null_.
   static Time parse(String s,
-      {int start = 0, int end, ParseIssues issues, OnTimeParseError onError}) {
+      {int start = 0, int end, Issues issues, OnTimeParseError onError}) {
     final us = parseDcmTime(s, start: start, end: end);
     if (us == null)
       return (onError != null) ? onError(s) : invalidTimeString(s, issues);
     return new Time._(us);
   }
 
-  /// Returns a [ParseIssues] object if there are errors
+  /// Returns a [Issues] object if there are errors
   /// or warnings related to [s]; otherwise, returns _null_.
-  static ParseIssues issues(
+  static Issues issues(
     String s, {
     int start = 0,
     int end,
   }) {
-    final issues = new ParseIssues('Time', s);
+    final issues = new Issues('Time: "$s"');
     parseDcmTime(s, issues: issues);
     return issues;
   }

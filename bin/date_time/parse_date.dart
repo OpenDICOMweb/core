@@ -27,7 +27,7 @@ void main(List<String> args) {
 }
 
 void testPrintIssues() {
-  final issues = new ParseIssues('testPrintIssues', '')
+  final issues = new Issues('testPrintIssues')
     ..add('first issue')
     ..add('second issue')
     ..add('third issue')
@@ -39,7 +39,7 @@ void testPrintIssues() {
 /*  Flush? parseYear has been removed
 void testOneYearIssues() {
   String year = '0bc';
-  var issues = new ParseIssues('Date', year);
+  var issues = new Issues('Date', year);
   try {
     parseYear(year, 0, issues);
     log.error('Bad year '$year' did not generate an error');
@@ -57,7 +57,7 @@ void testYearLengthOnlyIssues() {
   for (int i = 0; i < numbers.length; i++) {
     var year = numbers[i];
     log.debug('  year: $year');
-    var issues = new ParseIssues('Date', year);
+    var issues = new Issues('Date', year);
     try {
       parseYear(year, 0, issues);
       log.error('Bad year '$year' did not generate an error');
@@ -76,7 +76,7 @@ void testYearLengthAndCharIssues() {
   for (int i = 0; i < numbers.length; i++) {
     var year = numbers[i];
     log.debug('  year: $year');
-    var issues = new ParseIssues('Date', year);
+    var issues = new Issues('Date', year);
     try {
       parseYear(year, 0, issues);
       log.error('Bad year '$year' did not generate an error');
@@ -95,7 +95,7 @@ void testGoodMonthLengthAndCharIssues() {
   for (int i = 0; i < numbers.length; i++) {
     var year = numbers[i];
     log.debug('  year: $year');
-    var issues = new ParseIssues('Date', year);
+    var issues = new Issues('Date', year);
     try {
       parseYear(year, 0, issues);
     } catch(e) {
@@ -112,7 +112,7 @@ void testBadMonthLengthAndCharIssues() {
   for (var i = 0; i < numbers.length; i++) {
     final year = numbers[i];
     log.debug('  year: $year');
-    final issues = new ParseIssues('Date', year);
+    final issues = new Issues('Date Year: $year');
     if (issues.isNotEmpty)
       log.debug('  ${issues.info}');
   }
@@ -124,7 +124,7 @@ void testGoodDateIssues() {
   for (var i = 0; i < dates.length; i++) {
     final date = dates[i];
     log.debug('  date: $date');
-    final issues = new ParseIssues('Date', date);
+    final issues = new Issues('Date: $date');
     if (issues.isNotEmpty)
       log.debug('  ${issues.info}');
   }
@@ -141,7 +141,7 @@ void testBadDateIssues() {
   for (var i = 0; i < dates.length; i++) {
     final date = dates[i];
     log.debug('  date: $date');
-    final issues = new ParseIssues('Date', date);
+    final issues = new Issues('Date: $date');
     if (issues.isNotEmpty)
       log.debug('  ${issues.info}');
   }
