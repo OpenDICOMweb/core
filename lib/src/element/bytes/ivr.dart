@@ -80,10 +80,10 @@ abstract class IvrElement<V> implements BDElement<V> {
 
   @override
   Bytes get vfBytesWithPadding => 
-      bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
+      bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
 
   @override
-  Bytes get vfBytes => bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
+  Bytes get vfBytes => bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
 
   static Null _sqError(Bytes bytes, [int vrIndex]) =>
       invalidElementIndex(vrIndex);
@@ -127,9 +127,14 @@ abstract class IvrElement<V> implements BDElement<V> {
   }
 
   /// Returns a new [SQivr], where [bytes] is [Bytes] for complete sequence.
-  static SQivr makeSequence(
+  static SQivr makeSequenceFromCode(
           int code, Dataset parent, Iterable<Item> items, [Bytes bytes,]) =>
       new SQivr(bytes, parent, items);
+
+  /// Returns a new [SQivr], where [bytes] is [Bytes] for complete sequence.
+  static SQivr makeSequenceFromTag(
+      Tag tag, Dataset parent, Iterable<Item> items, [Bytes bytes,]) =>
+      unsupportedError();
 }
 
 // **** IVR Float Elements (FL, FD, OD, OF)

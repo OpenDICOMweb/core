@@ -38,7 +38,7 @@ class BulkdataFile {
     final code = entry[0];
     final offset = entry[1];
     final length = entry[2];
-    final vf = bytes.asBytes(vfStart + offset, length);
+    final vf = bytes.toBytes(vfStart + offset, length);
     return new Bulkdata(code, i, vf);
   }
 
@@ -48,7 +48,7 @@ class BulkdataFile {
       if (index[i][0] == code) {
         final offset = vfStart + index[i][1];
         final length = index[i][2];
-        final vf = bytes.asBytes(offset, length);
+        final vf = bytes.toBytes(offset, length);
         return new Bulkdata(code, i, vf);
       }
     }

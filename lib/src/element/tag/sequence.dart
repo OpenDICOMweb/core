@@ -23,13 +23,13 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   @override
   final Tag tag;
 
-  /// The [Iterable<ItemTag>] that are the [values] of _this_.
-  @override
-  Iterable<Item> values;
-
   /// The [Dataset] that contains _this_.
   @override
   final Dataset parent;
+
+  /// The [Iterable<ItemTag>] that are the [values] of _this_.
+  @override
+  Iterable<Item> values;
 
   /// The length of the Value Field from which this [SQtag] was decoded.
   /// If _null_ _this_ what not created from an encoding.
@@ -41,7 +41,7 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   /// Creates a new [SQtag] instance.
   SQtag(this.tag, this.parent,
       [Iterable<Item> vList, this.vfLengthField, this.bytes])
-      : values = (vList == null) ? emptyItemTagList : vList;
+      : values = (vList == null) ? emptyTagItemList : vList;
 
   SQtag.fromDecoder(this.tag, this.parent,
       [this.values, this.vfLengthField, this.bytes]);
@@ -52,7 +52,7 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   Bytes get vfBytes => unimplementedError('vfBytes in SQtag');
   
   @override
-  SQtag get noValues => update(emptyItemTagList);
+  SQtag get noValues => update(emptyTagItemList);
 
   @override
   SQtag get sha256 => throw new UnsupportedError('Can\t hash a sequence');
@@ -70,7 +70,7 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
 
   /// Returns a copy of _this_ Sequence, with a new [List] of [Item]s.
   @override
-  SQtag update([Iterable<Item> vList = emptyItemTagList]) =>
+  SQtag update([Iterable<Item> vList = emptyTagItemList]) =>
       new SQtag(tag, parent, vList);
 
   /// Returns a copy of _this_ Sequence, with a new [List] of Tag[Item]s.
@@ -121,9 +121,9 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   @override
   String toString() => '$runtimeType $dcm ${tag.keyword} ${items.length} items';
 
-  static const Iterable<TagItem> emptyItemTagList = const <TagItem>[];
+  static const Iterable<Item> emptyTagItemList = const <TagItem>[];
 
-  static SQtag make(Tag tag, Iterable<TagItem> values,
+  static SQtag make(Tag tag, Iterable<Item> values,
           [int vfLength, Dataset parent]) =>
       new SQtag(tag, parent, values, vfLength);
 

@@ -6,6 +6,7 @@
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
+import 'package:core/src/dataset/tag/tag_item.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/utils/bytes.dart';
 
@@ -27,4 +28,18 @@ class TagRootDataset extends MapRootDataset with TagDataset {
 
   @override
   RootDataset copy([RootDataset rds]) => new TagRootDataset.from(rds ?? this);
+
+  TagRootDataset convert<V>(RootDataset rds) {
+    final tagRDS = new TagRootDataset.from(rds);
+    for(var e in elements) {
+      if (e is SQ) {
+        final tagItems = <TagItem>[];
+        for(var item in e.items)
+          tagItems.add(TagItem.convert<V>(tagRDS, item));
+      } else {
+        tagRDS.add(TagElement.makeFromElement(e));
+      }
+    }
+    return tagRDS;
+  }
 }

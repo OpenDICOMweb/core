@@ -581,7 +581,7 @@ abstract class DatasetMixin {
     return map;
   }
 
-  bool _isDA(Element e) => e is DA;
+    bool _isDA(Element e) => e is DA;
   Iterable<Element> findDates() => findAllWhere(_isDA);
 
   bool _isUI(Element e) => e is UI;

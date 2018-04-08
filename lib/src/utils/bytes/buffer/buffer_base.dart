@@ -57,7 +57,7 @@ abstract class BufferBase {
   /// Return a view of _this_ of [length], starting at [start]. If [length]
   /// is _null_ it defaults to [lengthInBytes].
   Bytes asBytes([int start = 0, int length]) =>
-      buffer.asBytes(start, length ?? lengthInBytes);
+      buffer.toBytes(start, length ?? lengthInBytes);
 
 
   ByteData asByteData([int offset, int length]) =>

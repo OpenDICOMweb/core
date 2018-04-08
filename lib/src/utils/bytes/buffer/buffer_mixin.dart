@@ -45,7 +45,7 @@ abstract class BufferMixin {
 
   Bytes asBytes([int offset = 0, int length]) =>
     //final offset = _getOffset(offset, length);
-     bytes.asBytes(offset, length ?? lengthInBytes);
+     bytes.toBytes(offset, length ?? lengthInBytes);
 
 
   ByteData asByteData([int offset = 0, int length]) =>

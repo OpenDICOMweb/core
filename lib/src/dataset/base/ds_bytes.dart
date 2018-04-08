@@ -113,8 +113,8 @@ class RDSBytes extends DSBytes {
         hasPrefix = false;
 
   Bytes get preamble =>
-      bytes.asBytes(kPreambleOffset, kPreambleLength);
-  Bytes get prefix => bytes.asBytes(kPrefixOffset, kPrefixLength);
+      bytes.toBytes(kPreambleOffset, kPreambleLength);
+  Bytes get prefix => bytes.toBytes(kPrefixOffset, kPrefixLength);
 
   int get startDelimiter => getUint32(kPrefixOffset);
 
@@ -193,7 +193,7 @@ class IDSBytes extends DSBytes {
 
   @override
   Bytes get vfBytes =>
-      bytes.asBytes(bytes.offsetInBytes + kValueFieldOffset, dsEnd);
+      bytes.toBytes(bytes.offsetInBytes + kValueFieldOffset, dsEnd);
 
   static const int kStartDelimiterOffset = 0;
   static const int kVFLengthFieldOffset = 4;

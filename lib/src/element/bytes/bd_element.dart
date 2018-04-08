@@ -109,12 +109,12 @@ abstract class Common {
 
   Bytes get vfBytesWithPadding => (bytes.lengthInBytes == vfOffset)
       ? kEmptyBytes
-      : bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
+      : bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
 
   /// Returns a [Bytes] containing the Value Field of _this_.
   Bytes get vfBytes => (bytes.lengthInBytes == vfOffset)
       ? kEmptyBytes
-      : bytes.asBytes(bytes.offsetInBytes + vfOffset, vfLength);
+      : bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
 }
 // **** EVR Float Elements (FL, FD, OD, OF)
 

@@ -39,6 +39,7 @@ bool _isMaxCapacityExceeded(int length, [int maxLength]) {
 /// [Uint8List] and [ByteData] interfaces.
 class Bytes extends ListBase<int> {
   ByteData _bd;
+  // TODO: create BytesLittleEndian and BytesBigEndian and remove [endian].
   final Endian endian;
 
   /// Returns a
@@ -54,19 +55,36 @@ class Bytes extends ListBase<int> {
             ? list.buffer.asByteData()
             : (new Uint8List.fromList(list)).buffer.asByteData();
 
-  Bytes.fromTypedData(TypedData td, [this.endian = Endian.little])
-      : _bd = td.buffer.asByteData();
-
-  Bytes.view(Bytes bytes,
-      [int offset = 0, int length, this.endian = Endian.little])
-      : _bd = bytes.asByteData(offset, length ?? bytes.lengthInBytes);
-
   Bytes.typedDataView(TypedData td,
       [int offset = 0, int length, this.endian = Endian.little])
       : _bd = td.buffer.asByteData(
-            td.offsetInBytes + offset, length * td.elementSizeInBytes);
+      td.offsetInBytes + offset, length * td.elementSizeInBytes);
 
-  Bytes._([this.endian = Endian.little]) : _bd = new ByteData(0);
+  Bytes.fromTypedData(TypedData td, [this.endian = Endian.little])
+      : _bd = td.buffer.asByteData();
+
+  Bytes.view(Bytes bytes, [int offset = 0, int length])
+      : endian = bytes.endian,
+        _bd = bytes.asByteData(offset, length ?? bytes.lengthInBytes);
+
+  Bytes._(ByteData bd,
+      [int offset = 0, int length, this.endian = Endian.little])
+      : _bd = _toByteData(bd, offset, length);
+
+  // [offset] is from bd[0] and must be inRange. [offset] + [length]
+  // must be less than bd.lengthInBytes
+  static ByteData _toByteData(ByteData bd, [int offset = 0, int length]) =>
+      bd.buffer.asByteData(offset, length);
+
+  // Returns the absolute offset in the ByteBuffer.
+  int _bdOffset(int offset) => _bd.offsetInBytes + offset;
+
+  // Returns a view of _this_.
+  Bytes subbytes([int start = 0, int end]) => new Bytes._(_bd, start, end);
+
+  // Returns a view of _this_.
+  Bytes toBytes([int offset = 0, int length]) =>
+      new Bytes._(_bd, offset, length);
 
   @override
   int operator [](int i) => _bd.getUint8(i);
@@ -234,17 +252,6 @@ class Bytes extends ListBase<int> {
     return (last == kSpace || last == kNull) ? newLen : length;
   }
   // **** TypedData Views
-
-  // Returns the absolute offset in the ByteBuffer.
-  int _bdOffset(int offset) => _bd.offsetInBytes + offset;
-
-  // Returns a view of _this_.
-  Bytes subbytes([int start = 0, int end]) =>
-      new Bytes.view(this, start, end ?? length);
-
-  // Returns a view of _this_.
-  Bytes asBytes([int offset = 0, int length]) =>
-      new Bytes.view(this, offset, length ?? lengthInBytes);
 
   ByteData asByteData([int offset = 0, int length]) =>
       _bd.buffer.asByteData(offset, length ?? _bd.lengthInBytes);
@@ -486,6 +493,27 @@ class Bytes extends ListBase<int> {
   bool isUint32(int i) => i > kUint32MinValue && i <= kUint32MaxValue;
   bool isUint64(int i) => i > kUint64MinValue && i <= kUint64MaxValue;
 
+  // **** Binary DICOM specific methods
+
+  int getCode(int offset) {
+    final group = getUint16(offset);
+    final elt = getUint16(offset + 2);
+    return (group << 16) + elt;
+  }
+
+  // Note: this method should only be called from String VRs, OB or UN.
+  Bytes toBytesWOPadding(int start, int length, int vfOffset,
+      [int padChar = kSpace]) {
+    assert(start.isEven && length.isEven && (vfOffset == 8 || vfOffset == 12));
+    if (length == vfOffset) return toBytes(start, length);
+    final lastIndex = start + length - 1;
+    final char = _bd.getUint8(lastIndex);
+    final len = (char == kNull || char == kSpace) ? length - 1 : length;
+    if (len != length) log.debug3('Removing Padding: $char');
+    return new Bytes._(_bd, start, len);
+  }
+
+  // **** End Binary DICOM specific methods
   static const int kInt8Size = 1;
   static const int kInt16Size = 2;
   static const int kInt32Size = 4;
@@ -541,7 +569,7 @@ class Bytes extends ListBase<int> {
           {Endian endian = Endian.little, bool doAsync = false}) =>
       fromFile(new File(path), endian: endian, doAsync: doAsync);
 
-  static final Bytes kEmptyBytes = new Bytes._();
+  static final Bytes kEmptyBytes = new Bytes(0);
 
   static Bytes base64Decode(String s) =>
       new Bytes.fromTypedData(base64.decode(s));
@@ -558,20 +586,6 @@ class Bytes extends ListBase<int> {
       utf8.decode(bytes.asUint8List(), allowMalformed: allowMalformed);
 
   static Bytes utf8Encode(String s) => new Bytes.fromTypedData(ascii.encode(s));
-
-  //TODO: This should be done in convert
-  static Bytes removePadding(Bytes bytes, int vfOffset,
-      [int padChar = kSpace]) {
-    if (bytes.lengthInBytes == vfOffset) return bytes;
-    assert(bytes.lengthInBytes.isEven);
-    final lastIndex = bytes.lengthInBytes - 1;
-    final char = bytes.getUint8(lastIndex);
-    if (char == kNull || char == kSpace) {
-      log.debug3('Removing Padding: $char');
-      return bytes.asBytes(bytes.offsetInBytes, bytes.lengthInBytes - 1);
-    }
-    return bytes;
-  }
 }
 
 class GrowableBytes extends Bytes {
@@ -650,15 +664,19 @@ bool uint8ListEqual(Uint8List a, Uint8List b) {
 
 // TODO: for performance add _uint16EQual and _uint32Equal
 bool _bytesEqual(Bytes a, Bytes b, [bool ignorePadding = false]) {
-  final length = a.lengthInBytes;
-  if (length != b.lengthInBytes) return false;
-  for (var i = 0; i < length; i++) if (a[i] != b[i]) return false;
+  if (ignorePadding) return __bytesEqual(a, b, true);
+  final aLen = a.lengthInBytes;
+  if (aLen != b.lengthInBytes) return false;
+  for (var i = 0; i < aLen; i++) if (a[i] != b[i]) return false;
   return true;
 }
 
 /// Returns _true_ if all bytes in [a] and [b] are the same.
 /// _Note_: This assumes the [Bytes] is aligned on a 2 byte boundary.
-bool _bytesEqual2(Bytes a, Bytes b, {bool ignorePadding = false}) {
+bool bytesEqual(Bytes a, Bytes b, {bool ignorePadding = false}) =>
+    __bytesEqual(a, b, ignorePadding);
+
+bool __bytesEqual(Bytes a, Bytes b, bool ignorePadding) {
   final len0 = a.lengthInBytes;
   final len1 = b.lengthInBytes;
   if (len0.isOdd || len1.isOdd || len0 != len1) return false;
@@ -691,7 +709,6 @@ bool _uint32Equal(Bytes a, Bytes b, bool ignorePadding) {
   return true;
 }
 
-
 int errorCount = 0;
 
 bool _bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
@@ -709,7 +726,7 @@ $i: $x | $y')
 	  ${_toBytes(i, a, b)}
 ''');
     if (throwOnError) {
-      if (errorCount > 3) throw 'different';
+      if (errorCount > 3) throw new ArgumentError('Unequal');
     }
   }
   return false;
@@ -745,7 +762,7 @@ Bytes _removePadding(Bytes bytes, int vfOffset, int padChar) {
   final char = bytes.getUint8(lastIndex);
   if (char == kNull || char == kSpace) {
     log.debug3('Removing Padding: $char');
-    return bytes.asBytes(bytes.offsetInBytes, bytes.lengthInBytes - 1);
+    return bytes.toBytes(bytes.offsetInBytes, bytes.lengthInBytes - 1);
   }
   return bytes;
 }
