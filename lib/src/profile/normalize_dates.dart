@@ -5,11 +5,11 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/src/dataset.dart';
-import 'package:core/src/value/date_time.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/utils/logger.dart';
 import 'package:core/src/profile/de_id/deid_dates.dart';
 import 'package:core/src/system/system.dart';
+import 'package:core/src/utils/logger.dart';
+import 'package:core/src/value/date_time.dart';
 
 /// Normalize all [Date]s in [RootDataset]. The _normalized_ [Date]
 /// is base on the [enrollment] [Date].
@@ -51,7 +51,7 @@ List<Element> normalizeDeIdDates(RootDataset rds, Date enrollment) {
 }
 
 void printNormalized(DA eOld, DA eNew, Date enrollment) {
-  final acr = Date.acrBaseline;
+  const acr = Date.acrBaseline;
   final enroll = enrollment.microseconds;
   final diff = enroll - acr;
   final oDates = eOld.dates;

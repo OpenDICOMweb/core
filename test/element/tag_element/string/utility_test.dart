@@ -8,7 +8,6 @@ import 'dart:typed_data';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
-import 'package:test_tools/tools.dart';
 
 bool testElementCopy(Element e0) {
   final e1 = e0.copy;
@@ -28,7 +27,6 @@ bool testElementUpdate(Element e0, List values) {
 void main() {
   Server.initialize(name: 'String/utility.dart', level: Level.info);
   final rng = new RNG(1);
-  final rsg = new RSG();
 
   test('bytesToAttributeTags random', () {
     for (var i = 0; i < 10; i++) {

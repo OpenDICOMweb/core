@@ -30,19 +30,19 @@ void main() {
     });
 
     test('Create MetaSopClass', () {
-      final msc0 = new MetaSopClass(
+      const msc0 = const MetaSopClass(
           '1.2.840.10008.3.1.2.1.4',
           'DetachedPatientManagementMetaSOPClass_Retired',
           UidType.kMetaSOPClass,
           'Detached Patient Management Meta SOP Class (Retired)');
 
-      final msc1 = new MetaSopClass(
+      const msc1 = const MetaSopClass(
           '1.2.840.10008.3.1.2.1.4',
           'DetachedPatientManagementMetaSOPClass_Retired',
           UidType.kMetaSOPClass,
           'Detached Patient Management Meta SOP Class (Retired)');
 
-      final msc2 = new MetaSopClass(
+      const msc2 = const MetaSopClass(
           '1.2.840.10008.3.1.2.5.4',
           'DetachedResultsManagementMetaSOPClass_Retired',
           UidType.kMetaSOPClass,

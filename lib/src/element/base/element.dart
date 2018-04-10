@@ -418,10 +418,8 @@ abstract class Element<V> extends ListBase<V> {
 
   Issues get issues {
     Issues result;
-    if (tag is PTagInvalidVR) {
-      result ?? _getIssues();
-      result.add('Invalid VR for $tag');
-    }
+    if (tag is PTagInvalidVR)
+      (result ?? _getIssues()).add('Invalid VR for $tag');
     checkLength(values, result ?? _getIssues());
     checkValues(values, result ?? _getIssues());
     return result;
@@ -436,7 +434,7 @@ abstract class Element<V> extends ListBase<V> {
     if (v == null) return nullElementError();
     List<V> vList = _toList<V>(values);
     vList = (vList.length > 10) ? vList.sublist(0, 10) : values;
-    final s = '(${vList.length})${vList.map((v) => '"$v"')}';
+    final s = '(${vList.length})${vList.map((v) => '$v')}';
     return '$runtimeType$dcm: $s';
   }
 

@@ -31,15 +31,15 @@ void main() {
     });
 
     test('Create FrameOfReference', () {
-      final fr0 = new FrameOfReference(
+      const fr0 = const FrameOfReference(
           '1.2.840.10008.1.4.1.2', 'SPM2T1FrameofReference',
           UidType.kFrameOfReference, 'SPM2 T1 Frame of Reference');
 
-      final fr1 = new FrameOfReference(
+      const fr1 = const FrameOfReference(
           '1.2.840.10008.1.4.1.2', 'SPM2T1FrameofReference',
           UidType.kFrameOfReference, 'SPM2 T1 Frame of Reference');
 
-      final fr2 = new FrameOfReference(
+      const fr2 = const FrameOfReference(
           '1.2.840.10008.1.4.1.3', 'SPM2T2FrameofReference',
           UidType.kFrameOfReference, 'SPM2 T2 Frame of Reference');
 

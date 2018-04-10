@@ -16,7 +16,7 @@ void main() {
   group('MapRootDataset', () {
     test('[] and []=', () {
       final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
-      final ts = TransferSyntax.kExplicitVRLittleEndian;
+      const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
           new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');

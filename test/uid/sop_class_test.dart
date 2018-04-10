@@ -84,13 +84,13 @@ void main() {
     });
 
     test('Create SopClass', () {
-      final sop0 = new SopClass('1.2.840.10008.1.1', 'VerificationSOPClass',
+      const sop0 = const SopClass('1.2.840.10008.1.1', 'VerificationSOPClass',
           UidType.kSOPClass, 'Verification SOP Class');
 
-      final sop1 = new SopClass('1.2.840.10008.1.1', 'VerificationSOPClass',
+      const sop1 = const SopClass('1.2.840.10008.1.1', 'VerificationSOPClass',
           UidType.kSOPClass, 'Verification SOP Class');
 
-      final sop2 = new SopClass(
+      const sop2 = const SopClass(
           '1.2.840.10008.1.3.10',
           'MediaStorageDirectoryStorage',
           UidType.kSOPClass,

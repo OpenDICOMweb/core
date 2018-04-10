@@ -34,19 +34,19 @@ void main() {
     });
 
     test('Create WellKnownSopInstance', () {
-      final wksI0 = new SopInstance(
+      const wksI0 = const SopInstance(
           '1.2.840.10008.5.1.4.34.5',
           'UnifiedWorklistandProcedureStepSOPInstance',
           UidType.kSOPInstance,
           'Unified Worklist and Procedure Step SOP Instance');
 
-      final wksI1 = new SopInstance(
+      const wksI1 = const SopInstance(
           '1.2.840.10008.5.1.4.34.5',
           'UnifiedWorklistandProcedureStepSOPInstance',
           UidType.kSOPInstance,
           'Unified Worklist and Procedure Step SOP Instance');
 
-      final wksI2 = new SopInstance(
+      const wksI2 = const SopInstance(
           '1.2.840.10008.1.42.1',
           'SubstanceAdministrationLoggingSOPInstance',
           UidType.kSOPInstance,

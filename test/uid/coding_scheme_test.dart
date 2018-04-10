@@ -31,19 +31,19 @@ void main() {
     });
 
     test('Create CodingSchemeUid', () {
-      final cs0 = new CodingSchemeUid(
+      const cs0 = const CodingSchemeUid(
           '1.2.840.10008.2.16.5',
           'AdultMouseAnatomyTerminology',
           UidType.kCodingScheme,
           'Adult Mouse Anatomy Terminology');
 
-      final cs1 = new CodingSchemeUid(
+      const cs1 = const CodingSchemeUid(
           '1.2.840.10008.2.16.5',
           'AdultMouseAnatomyTerminology',
           UidType.kCodingScheme,
           'Adult Mouse Anatomy Terminology');
 
-      final cs2 = new CodingSchemeUid(
+      const cs2 = const CodingSchemeUid(
           '1.2.840.10008.2.16.8',
           'MouseGenomeInitiative',
           UidType.kCodingScheme,

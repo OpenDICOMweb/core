@@ -17,7 +17,7 @@ final List<Uint8List> fragments = [emptyOffsetsAsBytes, testFrame];
 
 void main() {
   Server.initialize(name: 'element/vf_fragments_test', level: Level.info);
-  final ts = TransferSyntax.kDefaultForDicomWeb;
+  const ts = TransferSyntax.kDefaultForDicomWeb;
 
   group('VFFragments Tests', () {
 

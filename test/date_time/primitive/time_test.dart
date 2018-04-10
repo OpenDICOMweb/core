@@ -5,16 +5,15 @@
 // See the AUTHORS file for other contributors.
 
 import 'package:core/server.dart';
-import 'package:test/test.dart';
-
 import 'package:core/src/value/date_time/primitives/time.dart';
+import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'time_test', level: Level.info);
 
   group('Time Tests', () {
     test('Check Time', () {
-      final max = kMicrosecondsPerDay;
+      const max = kMicrosecondsPerDay;
       log.debug('max: $max');
       var v = 24 * 60 * 60 * 1000 * 1000;
       log.debug('max as v: $v');

@@ -19,7 +19,7 @@ final List<Uint8List> fragments = [emptyOffsetsAsBytes, testFrame];
 void main() {
   Server.initialize(name: 'element/ob_pixel_data_test', level: Level.info);
 
-  final ts = TransferSyntax.kDefaultForDicomWeb;
+  const ts = TransferSyntax.kDefaultForDicomWeb;
   group('OBtagPixelData Tests', () {
     final pixels = new List<int>(1024);
     for (var i = 0; i < pixels.length; i++) pixels[i] = 128;

@@ -430,7 +430,7 @@ void main() {
       expect(rds1.length == 5, true);
 
       // Create SQtag and add to rootDS0
-      final sqTag = PTag.kReferencedStudySequence;
+      const sqTag = PTag.kReferencedStudySequence;
       final sq = new SQtag(sqTag, rds, valuesList, SQ.kMaxVFLength);
       log..debug('sq: ${sq.info}');
       expect(sq.length == 2, true);
@@ -750,7 +750,7 @@ void main() {
           new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
 
       // Create SQtag and add to rootDS0
-      final sqTag = PTag.kReferencedStudySequence;
+      const sqTag = PTag.kReferencedStudySequence;
       final sq = new SQtag(sqTag, rootDS0, valuesList, SQ.kMaxVFLength);
       log.debug('sq: ${sq.info}');
       expect(sq.length == 1, true);
@@ -793,7 +793,7 @@ void main() {
           new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
 
       // Create SQtag and add to rootDS0
-      final sqTag = PTag.kReferencedStudySequence;
+      const sqTag = PTag.kReferencedStudySequence;
       final sq = new SQtag(sqTag, rootDS0, valuesList, SQ.kMaxVFLength);
       log.debug('sq: ${sq.info}');
       expect(sq.length == 1, true);

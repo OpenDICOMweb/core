@@ -17,7 +17,7 @@ void main() {
   group('MapItem', () {
     test('[] and []=', () {
       final item = new MapItem.empty(rds, null);
-      final ts = TransferSyntax.kExplicitVRLittleEndian;
+      const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
           new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');

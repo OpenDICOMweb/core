@@ -308,7 +308,7 @@ void main() {
     test('weekDayFromEpochDay', () {
       log.debug('weekDayFromEpochDay');
       final watch = new Stopwatch();
-      final zeroWeekDay = kThursday;
+      const zeroWeekDay = kThursday;
       watch.start();
       for (var i = 0; i < 10000; i++) {
         final day = (zeroWeekDay + i) % 7;

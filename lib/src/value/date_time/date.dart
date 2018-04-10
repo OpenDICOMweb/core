@@ -26,7 +26,7 @@ class Date implements Comparable<Date> {
 
   /// The American College of Radiology _baseline_ date in microseconds
   /// for de-identifying [Date]s.
-  static final int acrBaseline = kACRBaselineMicroseconds;
+  static const int acrBaseline = kACRBaselineMicroseconds;
 
   /// The integer number of days since the Unix Epoch Day (1970-01-01),
   /// where positive numbers are after that day, and negative numbers are

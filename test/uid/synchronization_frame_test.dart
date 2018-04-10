@@ -36,8 +36,8 @@ void main() {
     });
 
     test('Create SynchronizationFrameOfReference', () {
-      final sfr0 = WKUid.kUniversalCoordinatedTime;
-      final sfr1 = WKUid.kUniversalCoordinatedTime;
+      const sfr0 = WKUid.kUniversalCoordinatedTime;
+      const sfr1 = WKUid.kUniversalCoordinatedTime;
 
       expect(sfr0.hashCode == sfr1.hashCode, true);
       expect(sfr0.value == sfr1.value, true);

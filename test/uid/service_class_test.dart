@@ -32,15 +32,15 @@ void main() {
     });
 
     test('Create ServiceClass', () {
-      final sc0 = new ServiceClass(
+      const sc0 = const ServiceClass(
           '1.2.840.10008.4.2',
           'StorageServiceClass', UidType.kServiceClass, 'Storage Service Class');
 
-      final fr1 = new ServiceClass(
+      const fr1 = const ServiceClass(
           '1.2.840.10008.4.2',
           'StorageServiceClass', UidType.kServiceClass, 'Storage Service Class');
 
-      final fr2 = new ServiceClass(
+      const fr2 = const ServiceClass(
           '1.2.840.10008.5.1.4.34.4',
           'UnifiedWorklistAndProcedureStepServiceClass_Trial_Retired',
           UidType.kServiceClass,

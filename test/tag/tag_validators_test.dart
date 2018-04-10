@@ -12,7 +12,7 @@ import 'package:test_tools/tools.dart' as rsg;
 void main() {
   Server.initialize(name: 'tag_validators_test', level: Level.info);
 
-  final tagCS0 = PTag.kSpecificCharacterSet;
+  const tagCS0 = PTag.kSpecificCharacterSet;
 //  final tagCS1 = PTag.kImageType;
   //   new Tag.public('Image​Type', 0x00080008, 'Image Type', VR.kCS, VM.k2_n);
 //  final tagSQ = PTag.kLanguageCodeSequence;
