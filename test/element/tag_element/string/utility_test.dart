@@ -8,6 +8,7 @@ import 'dart:typed_data';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
+import 'package:test_tools/tools.dart';
 
 bool testElementCopy(Element e0) {
   final e1 = e0.copy;
@@ -27,6 +28,7 @@ bool testElementUpdate(Element e0, List values) {
 void main() {
   Server.initialize(name: 'String/utility.dart', level: Level.info);
   final rng = new RNG(1);
+  final rsg = new RSG();
 
   test('bytesToAttributeTags random', () {
     for (var i = 0; i < 10; i++) {
@@ -87,7 +89,7 @@ void main() {
     expect(bta3, isNull);
   });
 
-  test('bytesEqual random', () {
+  test('uint8ListEqual random', () {
     for (var i = 0; i < 10; i++) {
       final uInt64List0 = rng.uint64List(1, 1);
       final uInt64ListV0 = new Uint64List.fromList(uInt64List0);
@@ -168,5 +170,64 @@ void main() {
     final be1 = uint8ListEqual(uInt8ListV0, uInt8ListV2);
     log.debug('be1: $be1');
     expect(be1, false);
+  });
+
+  test('parse_integer', () {
+    const goodIntegerStrings = const <String>[
+      '+8',
+      ' +8',
+      '+8 ',
+      ' +8 ',
+      '-8',
+      ' -8',
+      '-8 ',
+      ' -8 ',
+      '-6',
+      '560',
+      '0',
+      '-67',
+    ];
+
+    for (var s in goodIntegerStrings) {
+      final n = int.parse(s);
+      log.debug('s: "$s" n: $n');
+      expect(n, isNotNull);
+    }
+  });
+
+  test('parse_decimal', () {
+    const goodDecimalStrings = const <String>[
+      '567',
+      ' 567',
+      '567 ',
+      ' 567 ',
+      '-6.60',
+      '-6.60 ',
+      ' -6.60 ',
+      ' -6.60 ',
+      '+6.60',
+      '+6.60 ',
+      ' +6.60 ',
+      ' +6.60 ',
+      '0.7591109678',
+      '-6.1e-1',
+      ' -6.1e-1',
+      '-6.1e-1 ',
+      ' -6.1e-1 ',
+      '+6.1e+1',
+      ' +6.1e+1',
+      '+6.1e+1 ',
+      ' +6.1e+1 ',
+      '+1.5e-1',
+      ' +1.5e-1',
+      '+1.5e-1 ',
+      ' +1.5e-1 '
+    ];
+
+    for (var s in goodDecimalStrings) {
+      final n = double.parse(s);
+      log.debug('s: "$s" n: $n');
+      expect(s, isNotNull);
+    }
   });
 }
