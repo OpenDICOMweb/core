@@ -412,6 +412,7 @@ class UItag extends UI with TagElement<String> {
     final uids = new List<Uid>(vList.length);
     for (var i = 0; i < vList.length; i++) {
       final uid = Uid.parse(vList[i]);
+      uids[i] = uid;
       if (uid == null) return null;
     }
     return uids;
