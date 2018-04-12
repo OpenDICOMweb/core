@@ -1023,16 +1023,16 @@ void main() {
       }
     });
 
-    test('DS decodeBinaryVF', () {
+    test('DS fromUint8List', () {
       //  system.level = Level.info;;
       final vList1 = rsg.getDSList(1, 1);
       final bytes = DS.toUint8List(vList1);
       log.debug(
-          'DS.decodeBinaryVF(bytes): ${DS.toUint8List(vList1)}, bytes: $bytes');
-      expect(DS.toUint8List(vList1), equals(bytes));
+          'DS.decodeBinaryVF(bytes): ${DS.fromUint8List(bytes)}, bytes: $bytes');
+      expect(DS.fromUint8List(bytes), equals(vList1));
     });
 
-    test('DS.toBytes', () {
+    test('DS toUint8List', () {
       final vList1 = rsg.getDSList(1, 1);
       log.debug('DS.toUint8List(vList1): ${DS.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
@@ -1216,6 +1216,38 @@ void main() {
         final fbd0 = DS.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('DS toBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getDSList(1, 10);
+        system.throwOnError = false;
+        final toB0 = DS.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodDSList) {
+        final toB1 = DS.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = DS.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = DS.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
+
+      final toB4 = DS.toBytes(null, kMaxShortVF);
+      expect(toB4, isNull);
+
+      system.throwOnError = true;
+      expect(() => DS.toBytes(null, kMaxShortVF),
+          throwsA(const isInstanceOf<NullValueError>()));
     });
   });
 
@@ -2084,16 +2116,16 @@ void main() {
       }
     });
 
-    test('IS decodeBinaryVF', () {
+    test('IS toUint8List', () {
       //  system.level = Level.info;;
       final vList1 = rsg.getISList(1, 1);
       final bytes = IS.toUint8List(vList1);
       log.debug(
-          'IS.decodeBinaryVF(bytes): ${IS.toUint8List(vList1)}, bytes: $bytes');
-      expect(IS.toUint8List(vList1), equals(bytes));
+          'IS.decodeBinaryVF(bytes): ${IS.fromUint8List(bytes)}, bytes: $bytes');
+      expect(IS.fromUint8List(bytes), equals(vList1));
     });
 
-    test('IS.toBytes', () {
+    test('IS.toUint8List', () {
       final vList1 = rsg.getISList(1, 1);
       log.debug('IS.toUint8List(vList1): ${IS.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
@@ -2274,6 +2306,38 @@ void main() {
         final fbd0 = IS.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('IS toBytes ', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getISList(1, 10);
+        system.throwOnError = false;
+        final toB0 = IS.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodISList) {
+        final toB1 = IS.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = IS.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = IS.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
+
+      final toB4 = IS.toBytes(null, kMaxShortVF);
+      expect(toB4, isNull);
+
+      system.throwOnError = true;
+      expect(() => IS.toBytes(null, kMaxShortVF),
+          throwsA(const isInstanceOf<NullValueError>()));
     });
   });
 }

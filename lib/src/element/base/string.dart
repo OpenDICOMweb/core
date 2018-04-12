@@ -2088,8 +2088,8 @@ abstract class TM extends StringBase {
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
-    assert(s != null);
-    if (isNotValidValueLength(s, issues)) return false;
+    //assert(s != null);
+    if (s == null || isNotValidValueLength(s, issues)) return false;
     if (!Time.isValidString(s, issues: issues)) {
       if (issues != null) issues.add('Invalid Time String (TM): "$s"');
       return false;
