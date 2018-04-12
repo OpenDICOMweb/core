@@ -2068,6 +2068,57 @@ void main() {
         }
       }
     });
+
+    test('UI parse', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, 1);
+        system.throwOnError = false;
+        final parse0 = UItag.parse(vList0);
+        expect(parse0.elementAt(0).value, equals(vList0[0]));
+      }
+
+      for (var s in goodUIList) {
+        final parse1 = UItag.parse(s);
+        expect(parse1.elementAt(0).value, equals(s[0]));
+      }
+
+      for (var s in badUIList) {
+        system.throwOnError = false;
+        final parse2 = UItag.parse(s);
+        expect(parse2, isNull);
+
+        system.throwOnError = true;
+        expect(() => UItag.parse(s),
+            throwsA(const isInstanceOf<InvalidUidError>()));
+      }
+
+      system.throwOnError = false;
+      final parse3 = UItag.parse(['1.3.5']);
+      expect(parse3, isNull);
+
+      final parse4 = UItag.parse([
+        '1.2.840.10008.5.1.4.34.5.345.22.5467456.5.1.4.34.5.345.22.5467456.55.45'
+      ]);
+      expect(parse4, isNull);
+
+      system.throwOnError = true;
+      expect(() => UItag.parse(['1.3.5']),
+          throwsA(const isInstanceOf<InvalidUidError>()));
+    });
+
+    test('UI update random', () {
+      system.throwOnError = false;
+      final ui0 = new UItag(PTag.kSelectorUIValue, []);
+      expect(ui0.update(['1.2.840.10008.5.1.4.34.5']).values,
+          equals(['1.2.840.10008.5.1.4.34.5']));
+
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, 1);
+        final ui1 = new UItag.fromStrings(PTag.kSOPInstanceUID, vList0);
+        final vList1 = rsg.getUIList(1, 1);
+        expect(ui1.update(vList1).values, equals(vList1));
+      }
+    });
   });
 
   group('UI', () {
@@ -2470,6 +2521,8 @@ void main() {
         }
       }
     });
+
+    test('UI updateUid', () {});
 
     test('UI fromByteData', () {
       for (var i = 0; i < 10; i++) {
