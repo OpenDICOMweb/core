@@ -21,7 +21,6 @@ import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 //import 'package:core/src/element/tag/tag_mixin.dart';
 
-
 // typedef Element _MakeFromTag<V>(Tag tag, Iterable<V> vList, [int vfLengthField]);
 typedef Element _MakeFromElement(Element e);
 typedef Element _MakeFromBytes(Tag tag, Bytes bytes, [int vfLengthField]);
@@ -213,21 +212,21 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   static Null __vrIndexError(Tag tag, Bytes eb, [int vfLengthField]) =>
       invalidElementIndex(0);
 
-  static Element makePixelData(int code, Bytes bytes, int vrIndex, int vfOffset,
+  static Element makePixelData(int code, Bytes vfBytes, int vrIndex,
       [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
     assert(vrIndex >= kOBIndex && vrIndex <= kUNIndex);
     final tag = Tag.lookupByCode(code, vrIndex);
     return _tagPixelDataMakers[vrIndex](
-        tag, bytes, vfLengthField, fragments, ts);
+        tag, vfBytes, vfLengthField, fragments, ts);
   }
 
-  static Element makePixelDataFromBytes(
-      int code, Bytes bytes, int vrIndex, int vfOffset,
+  // Note: this uses [vfBytes] not [eBytes].
+  static Element makePixelDataFromBytes(int code, Bytes vfBytes, int vrIndex,
       [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
     assert(vrIndex >= kOBIndex && vrIndex <= kUNIndex);
     final tag = Tag.lookupByCode(code, vrIndex);
     return _tagPixelDataMakers[vrIndex](
-        tag, bytes, vfLengthField, fragments, ts);
+        tag, vfBytes, vfLengthField, fragments, ts);
   }
 
   static const List<_MakePixelDataFromBytes> _tagPixelDataMakers =

@@ -39,7 +39,7 @@ void main() {
   test('digestLengthMsg', () {
     final msgList = [message0, message1, message2];
     for (var msg in msgList) {
-      final bytes = ASCII.encode(msg);
+      final bytes = ascii.encode(msg);
       final digest0 = new Digest(bytes);
       final dlM0 = digestLengthMsg(digest0);
       log.debug('dlM0: $dlM0');
@@ -53,7 +53,7 @@ void main() {
 
     final nistResult = [nistResult0, nistResult1, nistResult2];
     for (var msg in nistResult) {
-      final bytes = ASCII.encode(msg);
+      final bytes = ascii.encode(msg);
       final digest0 = new Digest(bytes);
       final dlM0 = digestLengthMsg(digest0);
       log.debug('dlM0: $dlM0');
@@ -87,7 +87,7 @@ void main() {
   test('bytesAsString', () {
     final msgList = [message0, message1, message2];
     for (var msg in msgList) {
-      final bytes = ASCII.encode(msg);
+      final bytes = ascii.encode(msg);
       final uint8List0 = new Uint8List.fromList(bytes);
       if (uint8List0.length > 12) {
         final baS0 = bytesAsString(uint8List0);
@@ -106,7 +106,7 @@ void main() {
   test('bytesLength', () {
     final msgList = [message0, message1, message2];
     for (var msg in msgList) {
-      final bytes = ASCII.encode(msg);
+      final bytes = ascii.encode(msg);
       final uint8List0 = new Uint8List.fromList(bytes);
       final bL0 = bytesLength(uint8List0);
       log.debug('bL0: $bL0, ${bL0.length}');
@@ -117,7 +117,7 @@ void main() {
 
     final nistResult = [nistResult0, nistResult1, nistResult2];
     for (var msg in nistResult) {
-      final bytes = ASCII.encode(msg);
+      final bytes = ascii.encode(msg);
       final uint8List0 = new Uint8List.fromList(bytes);
       final bL0 = bytesLength(uint8List0);
       log.debug('bL0: $bL0, ${bL0.length}');

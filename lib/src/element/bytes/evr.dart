@@ -75,17 +75,17 @@ abstract class EvrElement<V> implements BDElement<V> {
 
   static Null _sqError(Bytes bytes, [int vrIndex]) => invalidElementIndex(vrIndex);
 
-  static Element makePixelData(int code, Bytes bytes, int vrIndex,
-      [TransferSyntax ts, VFFragments fragments]) {
+  static Element makePixelData(int code, Bytes eBytes, int vrIndex,
+      [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
     if (code != kPixelData)
       return invalidKey(code, 'Invalid Tag Code for PixelData');
     switch (vrIndex) {
       case kOBIndex:
-        return OBevrPixelData.make(code, vrIndex, bytes, ts, fragments);
+        return OBevrPixelData.make(code, vrIndex, eBytes, ts, fragments);
       case kUNIndex:
-        return UNevrPixelData.make(code, vrIndex, bytes, ts, fragments);
+        return UNevrPixelData.make(code, vrIndex, eBytes, ts, fragments);
       case kOWIndex:
-        return OWevrPixelData.make(code, vrIndex, bytes, ts, fragments);
+        return OWevrPixelData.make(code, vrIndex, eBytes, ts, fragments);
       default:
         return invalidVRIndex(vrIndex, null, null);
     }

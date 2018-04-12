@@ -111,7 +111,7 @@ abstract class IvrElement<V> implements BDElement<V> {
   ];
 
   static Element makePixelData(int code, Bytes bytes, int vrIndex,
-      [TransferSyntax ts, VFFragments fragments]) {
+      [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
     if (code != kPixelData)
       return invalidKey(code, 'Invalid Tag Code for PixelData');
     switch (vrIndex) {
@@ -128,7 +128,7 @@ abstract class IvrElement<V> implements BDElement<V> {
 
   /// Returns a new [SQivr], where [bytes] is [Bytes] for complete sequence.
   static SQivr makeSequenceFromCode(
-          int code, Dataset parent, Iterable<Item> items, [Bytes bytes,]) =>
+          int code, Dataset parent, Iterable<Item> items, [Bytes bytes]) =>
       new SQivr(bytes, parent, items);
 
   /// Returns a new [SQivr], where [bytes] is [Bytes] for complete sequence.
