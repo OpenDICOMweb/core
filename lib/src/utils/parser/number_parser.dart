@@ -11,7 +11,11 @@ part of odw.sdk.core.parser;
 ///
 /// Note: we're using this because Dart doesn't provide a Uint parser.
 int parseUint(String s,
-    {int start = 0, int end, Issues issues, int minLength = 1, int maxLength = 20}) {
+    {int start = 0,
+    int end,
+    Issues issues,
+    int minLength = 1,
+    int maxLength = 20}) {
   end ??= s.length;
   try {
     _checkArgs(s, start, end, minLength, maxLength, 'parseUint', issues);
@@ -43,7 +47,11 @@ int parseUintRadix(String s,
 }
 
 bool isValidUintString(String s,
-        [int start = 0, int end, Issues issues, int minLength = 0, int maxLength = 20]) =>
+        [int start = 0,
+        int end,
+        Issues issues,
+        int minLength = 0,
+        int maxLength = 20]) =>
     parseUint(s,
         start: start,
         end: end,
@@ -60,16 +68,33 @@ bool isValidUintString(String s,
 ///     1. Does not do bounds checking
 ///     2. All the parsers might throw so callers should use try/catch.
 int parseInt(String s,
-    [int start = 0, int end, Issues issues, int minLength = 1, int maxLength = 20]) {
+    [int start = 0,
+    int end,
+    Issues issues,
+    int minLength = 1,
+    int maxLength = 20]) {
   const name = 'parseInt';
   int sign, value, index = start;
   end ??= s.length;
   _checkArgs(s, start, end, minLength, maxLength, name, issues);
   sign = _parseSign(s, start, issues, name);
-  index += (sign < 0) ? 1 : sign;
+  if (sign != 0) index++;
   value = _parseUint(s, index, issues, end, name);
-  return (sign == null || value == null) ? null : value * sign;
+  return (value == null) ? null : (sign == -1) ? - value : value;
 }
+
+
+/// Parses a '+' or '-' character immediately proceeding an integer.
+/// Returns 1 for '+', -1 for '-', and 0 if the character is a digit (0-9);
+/// otherwise, either throws a [ParseError] appends a message to [issues].
+int _parseSign(String s, int start, Issues issues, String name) {
+  final c = s.codeUnitAt(start);
+  if (c == kMinusSign) return -1;
+  if (c == kPlusSign) return 1;
+  if (isDigitChar(c)) return 0;
+  return parseError(_invalidSign(s, start, name), issues);
+}
+
 
 const int minIntegerStringValue = -99999999999;
 const int maxIntegerStringValue = 999999999999;
@@ -95,7 +120,11 @@ List<String> hashIntegerStringList(List<String> sList, {Issues issues}) =>
     sList.map((s) => hashIntegerString(s, issues: issues));
 
 bool isValidIntString(String s,
-        [int start = 0, int end, Issues issues, int minLength = 1, int maxLength = 20]) =>
+        [int start = 0,
+        int end,
+        Issues issues,
+        int minLength = 1,
+        int maxLength = 20]) =>
     parseInt(s, start, end, issues, minLength, maxLength) != null;
 
 /// Returns a valid fraction of a second or _null_.  The fraction must be
@@ -149,29 +178,32 @@ int _parseUint(String s, int start, Issues issues, int end, String name) {
   return value;
 }
 
-int _parse2Digits(
-    String s, int start, Issues issues, int minValue, int maxValue, String name) {
+int _parse2Digits(String s, int start, Issues issues, int minValue,
+    int maxValue, String name) {
   final end = start + 2;
   assert(s != null && start != null && end <= s.length);
   final v = _parseUint(s, start, issues, end, name);
   return _checkDigitRange(v, minValue, maxValue, name, issues);
 }
 
-int _parse4Digits(
-    String s, int start, Issues issues, int minValue, int maxValue, String name) {
+int _parse4Digits(String s, int start, Issues issues, int minValue,
+    int maxValue, String name) {
   final end = start + 4;
   assert(s != null && start != null && end <= s.length);
   final v = _parseUint(s, start, issues, end, name);
   return _checkDigitRange(v, minValue, maxValue, name, issues);
 }
 
-int _checkDigitRange(int v, int minValue, int maxValue, String name, Issues issues) =>
+int _checkDigitRange(
+        int v, int minValue, int maxValue, String name, Issues issues) =>
     (v == null || v < minValue || v > maxValue)
         ? _rangeError(v, minValue, maxValue, name, issues)
         : v;
 
-int _rangeError(int v, int minValue, int maxValue, String name, [Issues issues]) {
-  final msg = 'Range Error: minValue($minValue) <= value($v) <= maxValue($maxValue)';
+int _rangeError(int v, int minValue, int maxValue, String name,
+    [Issues issues]) {
+  final msg =
+      'Range Error: minValue($minValue) <= value($v) <= maxValue($maxValue)';
   return parseError(msg, issues);
 }
 
@@ -209,16 +241,6 @@ int _parseFixedInt(String s, [int start = 0, int end, Issues issues, bool isVali
 
 String _invalidSign(String s, int index, String name) =>
     'Invalid sign char "${s[index]} at pos($index).';
-
-/// Parses a '+' or '-' character immediately proceeding an integer.
-/// Returns 1 for '+'. -1 for '-', or 0 if the character is a digit (0-9);
-/// otherwise, either throws a [ParseError] appends a message to [issues].
-int _parseSign(String s, int start, Issues issues, String name) {
-  final c = s.codeUnitAt(start);
-  if (c == kMinusSign) return -1;
-  if (c == kPlusSign || isDigitChar(c)) return 1;
-  return parseError(_invalidSign(s, start, name), issues);
-}
 
 int _parseFraction(String s, int start, Issues issues, int end, String name) {
   _parseDecimalPoint(s, start, issues, name);
