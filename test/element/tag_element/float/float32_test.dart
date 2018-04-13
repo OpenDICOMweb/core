@@ -1042,6 +1042,51 @@ void main() {
       final bd0 = float0.buffer.asByteData();
       expect(Float32.fromByteData(bd0), equals(<double>[]));
     });
+
+    test('Float32Base fromBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(1, 1);
+        final float = new Float32List.fromList(floatList0);
+        final byte0 = Bytes.asciiEncode(float.join('\\'));
+        final fb0 = Float32.fromBytes(byte0);
+        final float32List0 = byte0.asFloat32List();
+        log.debug('formBytes: $fb0, Flaot32List: $float32List0');
+        expect(fb0, equals(float32List0));
+      }
+    });
+
+    test('Float32Bae fromValueField', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(1, 1);
+        final fvF0 = Float32.fromValueField(floatList0);
+        expect(fvF0, equals(floatList0));
+
+        final fvF1 = Float32.fromValueField(null);
+        expect(fvF1, equals(<double>[]));
+
+        final fvF2 = Float32.fromValueField(<double>[]);
+        expect(fvF2, equals(<double>[]));
+
+        final fvF3 = Float32.fromValueField(<double>[123.54]);
+        expect(fvF3, equals(<double>[123.54]));
+
+        final byte0 = Bytes.asciiEncode(floatList0.join('\\'));
+        final fvF4 = Float32.fromValueField(byte0);
+        expect(fvF4, isNotNull);
+
+        final uInt8List0 = floatList0.buffer.asUint8List();
+        final fvF5 = Float32.fromValueField(uInt8List0);
+        final data = Float32.fromUint8List(uInt8List0);
+        expect(fvF5, equals(data));
+      }
+      system.throwOnError = false;
+      final fvF6 = Float32.fromValueField(<String>['foo']);
+      expect(fvF6, isNull);
+
+      system.throwOnError = true;
+      expect(() => Float32.fromValueField(<String>['foo']),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+    });
   });
 
   group('OFTag', () {

@@ -2586,8 +2586,6 @@ void main() {
       }
     });
 
-    test('UI updateUid', () {});
-
     test('UI fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
