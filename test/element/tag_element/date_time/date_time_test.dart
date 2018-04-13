@@ -806,7 +806,7 @@ void main() {
       }
     });
 
-    test('AS fromBytes values', () {
+    test('AS fromUint8List values', () {
       final vList1 = rsg.getASList(1, 1);
       final bytes = AS.toUint8List(vList1);
       log.debug(
@@ -814,14 +814,14 @@ void main() {
       expect(AS.fromUint8List(bytes), equals(vList1));
     });
 
-    test('AS toBytes good values', () {
+    test('AS toUint8List good values', () {
       final vList1 = rsg.getASList(1, 1);
       log.debug('AS.toUint8List(vList1): ${AS.toUint8List(vList1)}');
       final values = cvt.ascii.encode(vList1[0]);
       expect(AS.toUint8List(vList1), equals(values));
     });
 
-    test('AS toBytes bad values length', () {
+    test('AS toUint8List bad values length', () {
       system.throwOnError = false;
       final vList0 = rsg.getASList(AS.kMaxVFLength + 1, AS.kMaxVFLength + 1);
       expect(AS.toUint8List(vList0), isNull);
@@ -830,7 +830,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
-    test('AS tryDecodeVF values', () {
+    test('AS fromUint8List values', () {
       final vList1 = ['001M'];
       final bytes = AS.toUint8List(vList1);
       log.debug('AS.fromUint8List(bytes): ${AS.fromUint8List(
@@ -917,6 +917,38 @@ void main() {
         final fbd0 = AS.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('AS toBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getASList(1, 10);
+        system.throwOnError = false;
+        final toB0 = AS.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodAgeList) {
+        final toB1 = AS.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = AS.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = AS.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
+
+      final toB4 = AS.toBytes(null, kMaxShortVF);
+      expect(toB4, isNull);
+
+      system.throwOnError = true;
+      expect(() => AS.toBytes(null, kMaxShortVF),
+          throwsA(const isInstanceOf<NullValueError>()));
     });
   });
 
@@ -1753,7 +1785,7 @@ void main() {
       }
     });
 
-    test('DA fromBytes', () {
+    test('DA fromUint8List', () {
       //    	system.level = Level.info;
       for (var s in goodDAList) {
         final bytes = DA.toUint8List(s);
@@ -1763,7 +1795,7 @@ void main() {
       }
     });
 
-    test('DA toBytes good values', () {
+    test('DA toUint8List good values', () {
       for (var s in goodDAList) {
         log.debug('DA.toUint8List(s): ${DA.toUint8List(s)}');
 
@@ -1774,7 +1806,7 @@ void main() {
       }
     });
 
-    test('DA toBytes bad values length', () {
+    test('DA toUint8List bad values length', () {
       system.throwOnError = false;
       final vList0 = rsg.getDAList(DA.kMaxVFLength + 1, DA.kMaxVFLength + 1);
       expect(DA.toUint8List(vList0), isNull);
@@ -1783,7 +1815,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
-    test('DA tryDecodeVF', () {
+    test('DA fromUint8List', () {
       final vList1 = ['19500712'];
       final bytes = DA.toUint8List(vList1);
       log.debug('DA.fromUint8List(bytes): ${DA.fromUint8List(
@@ -1865,6 +1897,38 @@ void main() {
         final fbd0 = DA.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('DA toBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getDAList(1, 10);
+        system.throwOnError = false;
+        final toB0 = DA.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodDAList) {
+        final toB1 = DA.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = DA.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = DA.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
+
+      final toB4 = DA.toBytes(null, kMaxShortVF);
+      expect(toB4, isNull);
+
+      system.throwOnError = true;
+      expect(() => DA.toBytes(null, kMaxShortVF),
+          throwsA(const isInstanceOf<NullValueError>()));
     });
   });
 
@@ -2764,7 +2828,7 @@ void main() {
       }
     });
 
-    test('DT fromBytes', () {
+    test('DT fromUint8List', () {
       //    	system.level = Level.info;
       for (var s in goodDTList) {
         final bytes = DT.toUint8List(s);
@@ -2774,7 +2838,7 @@ void main() {
       }
     });
 
-    test('DT toBytes', () {
+    test('DT toUint8List', () {
       for (var s in goodDTList) {
         log.debug('DT.toUint8List(s): ${DT.toUint8List(s)}');
 
@@ -2785,7 +2849,7 @@ void main() {
       }
     });
 
-    test('DT toBytes bad values length', () {
+    test('DT toUint8List bad values length', () {
       system.throwOnError = false;
       final vList0 = rsg.getDTList(DT.kMaxVFLength + 1, DT.kMaxVFLength + 1);
       expect(DT.toUint8List(vList0), isNull);
@@ -2794,7 +2858,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
-    test('DT tryDecodeVF', () {
+    test('DT fromUint8List', () {
       final vList1 = ['19500718105630'];
       final bytes = DT.toUint8List(vList1);
       log.debug('DT.fromUint8List(bytes): ${DT.fromUint8List(
@@ -2838,6 +2902,38 @@ void main() {
         final fbd0 = DT.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('DT toBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getDTList(1, 10);
+        system.throwOnError = false;
+        final toB0 = DT.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodDTList) {
+        final toB1 = DT.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = DT.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = DT.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
+
+      final toB4 = DT.toBytes(null, kMaxShortVF);
+      expect(toB4, isNull);
+
+      system.throwOnError = true;
+      expect(() => DT.toBytes(null, kMaxShortVF),
+          throwsA(const isInstanceOf<NullValueError>()));
     });
   });
 
@@ -3687,7 +3783,7 @@ void main() {
       }
     });
 
-    test('TM fromBytes', () {
+    test('TM fromUint8List', () {
       //    	system.level = Level.info;
       final vList1 = rsg.getTMList(1, 1);
       final bytes = TM.toUint8List(vList1);
@@ -3696,7 +3792,7 @@ void main() {
       expect(TM.fromUint8List(bytes), equals(vList1));
     });
 
-    test('TM toBytes good values', () {
+    test('TM toUint8List good values', () {
       final vList1 = rsg.getTMList(1, 1);
       log.debug('TM.toUint8List(vList1): ${TM.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
@@ -3708,7 +3804,7 @@ void main() {
       expect(TM.toUint8List(vList1), equals(values));
     });
 
-    test('TM toBytes bad values length', () {
+    test('TM toUint8List bad values length', () {
       system.throwOnError = false;
       final vList0 = rsg.getTMList(TM.kMaxVFLength + 1, TM.kMaxVFLength + 1);
       expect(TM.toUint8List(vList0), isNull);
@@ -3717,7 +3813,7 @@ void main() {
           throwsA(const isInstanceOf<InvalidVFLengthError>()));
     });
 
-    test('TM tryDecodeVF', () {
+    test('TM fromUint8List', () {
       final vList1 = rsg.getTMList(1, 1);
       final bytes = TM.toUint8List(vList1);
       log.debug('TM.fromUint8List(bytes): ${TM.fromUint8List(
@@ -3805,6 +3901,38 @@ void main() {
         final fbd0 = TM.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('TM toBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getTMList(1, 10);
+        system.throwOnError = false;
+        final toB0 = TM.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodTMList) {
+        final toB1 = TM.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = TM.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = TM.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
+
+      final toB4 = TM.toBytes(null, kMaxShortVF);
+      expect(toB4, isNull);
+
+      system.throwOnError = true;
+      expect(() => TM.toBytes(null, kMaxShortVF),
+          throwsA(const isInstanceOf<NullValueError>()));
     });
   });
 }

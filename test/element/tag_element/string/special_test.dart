@@ -695,7 +695,7 @@ void main() {
       }
     });
 
-    test('AE fromBytes', () {
+    test('AE fromUint8List', () {
       //  system.level = Level.info;;
       final vList1 = rsg.getAEList(1, 1);
       final bytes = AE.toUint8List(vList1);
@@ -704,7 +704,7 @@ void main() {
       expect(AE.fromUint8List(bytes), equals(vList1));
     });
 
-    test('AE toBytes', () {
+    test('AE toUint8List', () {
       final vList1 = rsg.getAEList(1, 1);
       log.debug('AE.toUint8List(vList1): ${AE.toUint8List(vList1)}');
 
@@ -786,6 +786,38 @@ void main() {
         final fbd0 = AE.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('AE toBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getAEList(1, 10);
+        system.throwOnError = false;
+        final toB0 = AE.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodAEList) {
+        final toB1 = AE.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = AE.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = AE.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
+
+      final toB4 = AE.toBytes(null, kMaxShortVF);
+      expect(toB4, isNull);
+
+      system.throwOnError = true;
+      expect(() => AE.toBytes(null, kMaxShortVF),
+          throwsA(const isInstanceOf<NullValueError>()));
     });
   });
 
@@ -1600,7 +1632,7 @@ void main() {
       }
     });
 
-    test('CS fromBytes', () {
+    test('CS fromUint8List', () {
       //  system.level = Level.info;;
       final vList1 = rsg.getCSList(1, 1);
       final bytes = CS.toUint8List(vList1);
@@ -1609,7 +1641,7 @@ void main() {
       expect(CS.fromUint8List(bytes), equals(vList1));
     });
 
-    test('CS toBytes', () {
+    test('CS toUint8List', () {
       final vList1 = rsg.getCSList(1, 1);
       log.debug('CS.toUint8List(vList1): ${CS.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
@@ -1691,6 +1723,38 @@ void main() {
         final fbd0 = CS.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('CS toBytes ', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getCSList(1, 10);
+        system.throwOnError = false;
+        final toB0 = CS.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodCSList) {
+        final toB1 = CS.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = CS.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = CS.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
+
+      final toB4 = CS.toBytes(null, kMaxShortVF);
+      expect(toB4, isNull);
+
+      system.throwOnError = true;
+      expect(() => CS.toBytes(null, kMaxShortVF),
+          throwsA(const isInstanceOf<NullValueError>()));
     });
   });
 
@@ -2442,7 +2506,7 @@ void main() {
       }
     });
 
-    test('UI fromBytes', () {
+    test('UI fromUint8List', () {
       //  system.level = Level.info;;
       final vList1 = rsg.getUIList(1, 1);
       final bytes = UI.toUint8List(vList1);
@@ -2451,7 +2515,7 @@ void main() {
       expect(UI.fromUint8List(bytes), equals(vList1));
     });
 
-    test('UI toBytes', () {
+    test('UI toUint8List', () {
       final vList1 = rsg.getUIList(1, 1);
       log.debug('UI.toUint8List(vList1): ${UI.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
@@ -2522,8 +2586,6 @@ void main() {
       }
     });
 
-    test('UI updateUid', () {});
-
     test('UI fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
@@ -2538,6 +2600,38 @@ void main() {
         final fbd0 = UI.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('UI toBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getUIList(1, 10);
+        system.throwOnError = false;
+        final toB0 = UI.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodUIList) {
+        final toB1 = UI.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = UI.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = UI.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
+
+      final toB4 = UI.toBytes(null, kMaxShortVF);
+      expect(toB4, isNull);
+
+      system.throwOnError = true;
+      expect(() => UI.toBytes(null, kMaxShortVF),
+          throwsA(const isInstanceOf<NullValueError>()));
     });
   });
 
@@ -3173,7 +3267,7 @@ void main() {
       }
     });
 
-    test('UR fromBytes', () {
+    test('UR fromUint8List', () {
       //  system.level = Level.info;;
       final vList1 = rsg.getURList(1, 1);
       final bytes = UR.toUint8List(vList1);
@@ -3182,7 +3276,7 @@ void main() {
       expect(UR.fromUint8List(bytes), equals(vList1));
     });
 
-    test('UR toBytes', () {
+    test('UR toUint8List', () {
       final vList1 = rsg.getURList(1, 1);
       log.debug('UR.toUint8List(vList1): ${UR.toUint8List(vList1)}');
       final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
@@ -3294,6 +3388,31 @@ void main() {
         final fbd0 = UR.fromByteData(bd0);
         expect(fbd0, equals(s));
       }
+    });
+
+    test('UR toBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final sList0 = rsg.getURList(1, 10);
+        system.throwOnError = false;
+        final toB0 = UR.toBytes(sList0, kMaxShortVF);
+        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        log.debug('toBytes:$toB0, bytes0: $bytes0');
+        expect(toB0, equals(bytes0));
+      }
+
+      for (var s in goodURList) {
+        final toB1 = UR.toBytes(s, kMaxShortVF);
+        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        log.debug('toBytes:$toB1, bytes1: $bytes1');
+        expect(toB1, equals(bytes1));
+      }
+
+      system.throwOnError = false;
+      final toB2 = UR.toBytes([''], kMaxShortVF);
+      expect(toB2, equals(<String>[]));
+
+      final toB3 = UR.toBytes([], kMaxShortVF);
+      expect(toB3, equals(<String>[]));
     });
   });
 }
