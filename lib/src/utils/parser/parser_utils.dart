@@ -5,6 +5,15 @@
 // See the AUTHORS file for other contributors.
 part of odw.sdk.core.new_parser;
 
+bool _parseSeparator(String s, int index, Issues issues, int separator) {
+  assert(s != null && index != null && index < s.length);
+  final char = s.codeUnitAt(index);
+  return (char != separator)
+      ? parseError(
+          'Invalid separator("${s[index]}") at pos $index in "$s"', issues)
+      : true;
+}
+
 /// Return the [value] if it satisfies the range; otherwise,
 ///   - creates an error message,
 ///   - If [issues] is not _null_, adds message to issues,
@@ -52,7 +61,7 @@ bool _notInRange(int v, int min, int max, [Issues issues]) =>
 /// Assumption: non of the arguments are null.
 void _checkArgs(String s, int start, int end, int min, int max, String fName,
     Issues issues) {
-  final _end= end ?? s.length;
+  final _end = end ?? s.length;
   final _max = max ?? _end - start;
   assert(s != null &&
       start != null &&

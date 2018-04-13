@@ -35,7 +35,6 @@ void main() {
   });
 
   test('parseInt', () {
-    system.level = Level.debug;
     final list0 = rng.int8List(1, 10);
     for (var v in list0) {
       final pI0 = parseInt(v.toString());

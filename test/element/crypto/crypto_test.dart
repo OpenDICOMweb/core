@@ -8,9 +8,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:test/test.dart';
-
 import 'package:crypto/crypto.dart';
+import 'package:test/test.dart';
 
 String hexOut =
     'ab530a13e45914982b79f9b7e3fba994cfd1f3fb22f71cea1afbf02b460c6d1d';
@@ -34,7 +33,7 @@ String nistResult2 =
 String nistResult2LC = nistResult2.toLowerCase();
 
 void main() {
-  Server.initialize(name: 'element/crypto_test.dart', level: Level.debug);
+  Server.initialize(name: 'element/crypto_test.dart', level: Level.info);
 
   test('digestLengthMsg', () {
     final msgList = [message0, message1, message2];

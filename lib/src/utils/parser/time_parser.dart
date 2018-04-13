@@ -142,14 +142,6 @@ int _parseTime(String s, int start, int end, Issues issues,
   return timeToMicroseconds(h, m, ss, f ~/ 1000, f % 1000);
 }
 
-bool _parseSeparator(String s, int index, Issues issues, int separator) {
-  assert(s != null && index != null && index < s.length);
-  final char = s.codeUnitAt(index);
-  if (char != separator)
-    return parseError(
-        'Invalid separator("${s[index]}") at pos $index in "$s"', issues);
-}
-
 bool _isNotValidTimeStringLength(int length) =>
     (kValidTimeStringLengths.contains(length) || (length > 8 && length <= 13))
         ? false

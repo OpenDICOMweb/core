@@ -10,7 +10,7 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'element/hash_number_test', level: Level.debug);
+  Server.initialize(name: 'element/hash_number_test', level: Level.info);
   group('Integer Strings', () {
     test('IS', () {
       for (var i = 0; i <= 10; i++) {

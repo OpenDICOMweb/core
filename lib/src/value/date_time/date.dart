@@ -154,7 +154,7 @@ class Date implements Comparable<Date> {
       bool isDicom = true,
       OnDateParseError onError}) {
     final us = (isDicom)
-        ? parseDcmDate(s, start: start, end: end)
+        ? parseDicomDate(s, start: start, end: end)
         : parseInternetDate(s, start: start, end: end);
     if (us == null) {
       return (onError != null) ? onError(s) : invalidDateString(s, issues);
@@ -172,7 +172,7 @@ class Date implements Comparable<Date> {
   static Issues issues(String s,
       {int start = 0, int end, int min = 0, int max}) {
     final issues = new Issues('Date: "$s"');
-    parseDcmDate(s, issues: issues);
+    parseDicomDate(s, issues: issues);
     return issues;
   }
 
@@ -188,7 +188,7 @@ class Date implements Comparable<Date> {
   /// Returns a new date [String] that is the hash of the argument.
   static String hashString(String s,
       {Issues issues, OnDateHashStringError onError}) {
-    final us = parseDcmDate(s);
+    final us = parseDicomDate(s);
     if (us == null) {
       if (onError != null) return onError(s);
       return invalidParseStringToString('Invalid Date String: $s', issues);
@@ -233,7 +233,7 @@ class Date implements Comparable<Date> {
   /// date [String] and the _enrollment_ date [String}.
   static String normalizeString(String date, Date enrollment) {
     if (date == null || enrollment == null) return null;
-    final dateInUSecs = parseDcmDate(date);
+    final dateInUSecs = parseDicomDate(date);
     if (dateInUSecs == null) return null;
     final offsetFromBaseline = enrollment.microseconds - acrBaseline;
     final normalInUSecs = dateInUSecs - offsetFromBaseline;
@@ -257,3 +257,36 @@ class Date implements Comparable<Date> {
   int _monthFromEpochDay(int z) => epochDayToDate(z)[1];
   int _dayFromEpochDay(int z) => epochDayToDate(z)[2];
 }
+
+List<int> dateStringListToMicroseconds(List<String> daList) =>
+    daList.map(parseDicomDate);
+
+/// Returns a _normalized_ DICOM date (DA) [String], based on the _original_
+/// date [String] and the _enrollment_ date [String}.
+String normalizeDcmDateString(String s, String enrollment) {
+  final oDay = parseDicomDate(s);
+  if (oDay == null) return null;
+  final eDay = parseDicomDate(enrollment);
+  if (eDay == null) return null;
+  return microsecondToDateString(oDay - (eDay - kACRBaselineDay));
+}
+
+typedef String OnHashDateStringError(String s);
+
+/// Returns a new date [String] that is the hash of [s], which is a .
+String hashDcmDateString(String s,
+                         {Issues issues, OnHashDateStringError onError}) {
+  final us = parseDicomDate(s);
+  if (us == null) {
+    if (onError != null) return onError(s);
+    return invalidDateString(s, issues);
+  }
+  return microsecondToDateString(hashDateMicroseconds(us));
+}
+
+/// Returns a new [List<String>] of DICOM date (DA) values, where
+/// each element in the [List] is the hash of the corresponding
+/// element in the argument.
+Iterable<String> hashDcmDateDateStringList(List<String> dates) =>
+    dates.map(hashDcmDateString);
+

@@ -132,13 +132,13 @@ int parseInt(String s,
   int sign, value, index = start;
   try {
     sign = _parseSign(s, start, issues, _intName);
-    index += (sign < 0) ? 1 : sign;
+    if (sign != 0) index++;
     value = _parseBase10(s, index, issues, end, _intName, onError);
   } on FormatException {
     // ignore: avoid_returning_null
     return null;
   }
-  return (value == null) ? null : (sign == -1) ? value * sign : value;
+  return (value == null) ? null : (sign == -1) ? - value : value;
 }
 
 /// Tries to parse [s] from [start] to [end] as a signed base 10 integer, and
@@ -330,6 +330,7 @@ String _invalidIntCharMsg(String s, int index, Issues issues, String name) {
   return msg;
 }
 
+// Parse an unsigned base10 integer
 int __parseBase10(String s, int start, Issues issues, int end) {
   var value = 0;
   for (var i = start; i < end; i++) {

@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(
-      name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.debug);
+      name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.info);
 
   const goodDcmDateTimeList = const <String>[
     '19500718105630',
@@ -58,7 +58,6 @@ void main() {
   ];
   group('DcmDateTime', () {
     test('Good DcmDateTime', () {
-      //DcmDateTime d=new DcmDateTime(1505,12,4);
       log.debug('Good DcmDateTime');
       for (var dt in goodDcmDateTimeList) {
         log.debug('date and time:$dt');
@@ -66,11 +65,9 @@ void main() {
         expect(datetime, isNotNull);
       }
     });
-    test('Bad DcmDateTime', () {
-      //DcmDateTime datetim=DcmDateTime.parse(dt);
 
+    test('Bad DcmDateTime', () {
       log.debug('Bad DcmDateTime');
-      //final dts = DcmDateTime.parse('20170223122334.111111');
       for (var dt in badDcmDateTimeList) {
         log.debug('dt: $dt');
         final dateTime = DcmDateTime.parse(dt);
@@ -98,7 +95,6 @@ void main() {
     });
 
     test('issues', () {
-      //     var dt = new DcmDateTime(2016, 05, 15, 04, 22, 14);
       for (var s in goodDcmDateTimeList) {
         final issues = DcmDateTime.issues(s);
         expect(issues.isEmpty, true);
@@ -122,7 +118,6 @@ void main() {
     });
 
     test('hash', () {
-//      system.level = Level.info;
       for (var s in goodDcmDateTimeList) {
         log.debug('s: $s');
         final dt = DcmDateTime.parse(s);

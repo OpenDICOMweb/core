@@ -237,7 +237,6 @@ void main() {
     test('AS hashCode and == good values random', () {
       system.throwOnError = false;
       List<String> stringList0;
-//      List<String> stringList1;
 
       for (var i = 0; i < 10; i++) {
         stringList0 = rsg.getASList(1, 1);
@@ -953,7 +952,8 @@ void main() {
   });
 
   group('DA Tests', () {
-    const goodDAList = const <List<String>>[
+
+    const goodDateValuesList = const <List<String>>[
       const <String>['19930822'],
       const <String>['19930822'],
       const <String>['19500718'],
@@ -964,7 +964,7 @@ void main() {
       //const <String>['19931010', '20171231'],
     ];
 
-    const badDAList = const <List<String>>[
+    const badDateValuesList = const <List<String>>[
       const <String>['19501318'], // bad month
       const <String>['20041313'], // bad month
       const <String>['19804312'], //bad month
@@ -976,12 +976,17 @@ void main() {
       const <String>['1970a101'], // bad character in year
       const <String>['19700b01'], // bad character in year
       const <String>['1970011a'], // bad character in month
-      const <String>['197812345'], // invalid length
       //const <String>['19931010', '20171231'],
     ];
 
+    // Urgent: the tests should include more values with bad length
+    const badDateValueLengthList = const <List<String>>[
+      const <String>['1978123'], // invalid length
+      const <String>['197812345'], // invalid length
+    ];
+
     test('DA hasValidValues good values', () {
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         system.throwOnError = false;
         log.debug('DA: "$s"');
         final da0 = new DAtag(PTag.kCreationDate, s);
@@ -994,15 +999,16 @@ void main() {
       expect(da1.values, equals(<String>[]));
     });
 
-    test('DA hasValidValues good values', () {
-      for (Iterable<String> s in badDAList) {
+    test('DA hasValidValues for bad year, month, and day values', () {
+      for (Iterable<String> s in badDateValuesList) {
         system.throwOnError = false;
         final da1 = new DAtag(PTag.kCreationDate, s);
         expect(da1, isNull);
 
         system.throwOnError = true;
+        print('s: $s');
         expect(() => new DAtag(PTag.kCreationDate, s),
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const isInstanceOf<InvalidDateStringError>()));
       }
 
       system.throwOnError = false;
@@ -1013,6 +1019,28 @@ void main() {
       system.throwOnError = true;
       expect(() => new DAtag(PTag.kCreationDate, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
+    });
+
+    test('DA hasValidValues for bad value length', () {
+      for (Iterable<String> s in badDateValueLengthList) {
+        system.throwOnError = false;
+        final da1 = new DAtag(PTag.kCreationDate, s);
+        expect(da1, isNull);
+
+        system.throwOnError = true;
+        print('s: $s');
+        expect(() => new DAtag(PTag.kCreationDate, s),
+                   throwsA(const isInstanceOf<InvalidValuesError>()));
+      }
+
+      system.throwOnError = false;
+      final da1 = new DAtag(PTag.kCreationDate, null);
+      log.debug('da1: $da1');
+      expect(da1, isNull);
+
+      system.throwOnError = true;
+      expect(() => new DAtag(PTag.kCreationDate, null),
+                 throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('DA hasValidValues good values random', () {
@@ -1052,7 +1080,7 @@ void main() {
       expect(da2 == da4, false);
       expect(da3 == da4, true);
 
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         final da5 = new DAtag(PTag.kCreationDate, s);
         final da6 = da5.update(['20150817']);
         final da7 = da5.update(['20150817']);
@@ -1078,7 +1106,7 @@ void main() {
       expect(daNoValues1.values.isEmpty, true);
       log.debug('daNoValues1:$daNoValues1');
 
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         final da1 = new DAtag(PTag.kCreationDate, s);
         final daNoValues1 = da1.noValues;
         expect(daNoValues1.values.isEmpty, true);
@@ -1111,7 +1139,7 @@ void main() {
       expect(da2 == da3, true);
       expect(da2.hashCode == da3.hashCode, true);
 
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         final da4 = new DAtag(PTag.kCreationDate, s);
         final da5 = da4.copy;
         expect(da4 == da5, true);
@@ -1188,7 +1216,7 @@ void main() {
     });
 
     test('DA valuesCopy ranodm', () {
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         final da0 = new DAtag(PTag.kCalibrationDate, s);
         expect(s, equals(da0.valuesCopy));
       }
@@ -1201,7 +1229,7 @@ void main() {
     });
 
     test('DA isValidLength', () {
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         final da0 = new DAtag(PTag.kCreationDate, s);
         expect(da0.tag.isValidValuesLength(da0.values), true);
       }
@@ -1217,7 +1245,7 @@ void main() {
 
     test('DA isValidValues good values', () {
       system.throwOnError = false;
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         final da0 = new DAtag(PTag.kCreationDate, s);
         expect(da0.hasValidValues, true);
       }
@@ -1225,7 +1253,7 @@ void main() {
 
     test('DA isValidValues bad values', () {
       system.throwOnError = false;
-      for (var s in badDAList) {
+      for (var s in badDateValuesList) {
         system.throwOnError = false;
         final da0 = new DAtag(PTag.kCreationDate, s);
         expect(da0, isNull);
@@ -1280,7 +1308,7 @@ void main() {
     });
 
     test('DA fromUint8List', () {
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = DA.toUint8List(s);
         log.debug('bytes:$bytes');
@@ -1333,7 +1361,7 @@ void main() {
     test('DA checkLength', () {
       system.throwOnError = false;
       final da0 = new DAtag(PTag.kCreationDate, ['19930822']);
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         expect(da0.checkLength(s), true);
       }
       final da1 = new DAtag(PTag.kCreationDate, ['19930822']);
@@ -1347,7 +1375,7 @@ void main() {
     test('DA checkLength good values random', () {
       final vList0 = rsg.getDAList(1, 1);
       final da0 = new DAtag(PTag.kCreationDate, vList0);
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         expect(da0.checkLength(s), true);
       }
       final da1 = new DAtag(PTag.kCreationDate, vList0);
@@ -1363,7 +1391,7 @@ void main() {
 
     test('DA checkValue good values', () {
       final da0 = new DAtag(PTag.kCreationDate, ['19930822']);
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         for (var a in s) {
           expect(da0.checkValue(a), true);
         }
@@ -1372,7 +1400,7 @@ void main() {
 
     test('DA checkValue bad values', () {
       final da0 = new DAtag(PTag.kCreationDate, ['19930822']);
-      for (var s in badDAList) {
+      for (var s in badDateValuesList) {
         for (var a in s) {
           system.throwOnError = false;
           expect(da0.checkValue(a), false);
@@ -1384,7 +1412,7 @@ void main() {
       system.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
       final da0 = new DAtag(PTag.kCreationDate, vList0);
-      for (var s in goodDAList) {
+      for (var s in goodDateValuesList) {
         for (var a in s) {
           expect(da0.checkValue(a), true);
         }
@@ -1394,7 +1422,7 @@ void main() {
       system.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
       final da0 = new DAtag(PTag.kCreationDate, vList0);
-      for (var s in badDAList) {
+      for (var s in badDateValuesList) {
         for (var a in s) {
           system.throwOnError = false;
           expect(da0.checkValue(a), false);
@@ -1439,6 +1467,7 @@ void main() {
   });
 
   group('DA Element', () {
+    //Urgent Sharath: these shouldn't be reproduced. They already exist above.
     const goodDAList = const <List<String>>[
       const <String>['19930822'],
       const <String>['19930822'],
@@ -1450,7 +1479,7 @@ void main() {
       //const <String>['19931010', '20171231'],
     ];
 
-    const badDAList = const <List<String>>[
+    const badDateValueList = const <List<String>>[
       const <String>['19501318'], // bad month
       const <String>['20041313'], // bad month
       const <String>['19804312'], //bad month
@@ -1462,10 +1491,14 @@ void main() {
       const <String>['1970a101'], // bad character in year
       const <String>['19700b01'], // bad character in year
       const <String>['1970011a'], // bad character in month
-      const <String>['197812345'], // invalid length
-      //const <String>['19931010', '20171231'],
     ];
-    const badDALengthList = const <List<String>>[
+
+    const badDateValueLengthList = const <List<String>>[
+      const <String>['1978123'], // invalid length
+      const <String>['197812345'], // invalid length
+    ];
+
+    const badDateValuesLengthList = const <List<String>>[
       const <String>['197812345', '1b700101'],
       const <String>['19800541', '1970011a'],
       const <String>['00000032', '19501318'],
@@ -1709,7 +1742,7 @@ void main() {
 
     test('DA isValidValue bad values', () {
       system.throwOnError = false;
-      for (var s in badDAList) {
+      for (var s in badDateValueList) {
         for (var a in s) {
           system.throwOnError = false;
           expect(DA.isValidValue(a), false);
@@ -1726,19 +1759,31 @@ void main() {
 
     test('DA isValidValues bad values', () {
       system.throwOnError = false;
-      for (var s in badDAList) {
+      for (var s in badDateValueList) {
         system.throwOnError = false;
         expect(DA.isValidValues(PTag.kDate, s), false);
 
         system.throwOnError = true;
         expect(() => DA.isValidValues(PTag.kDate, s),
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const isInstanceOf<InvalidDateStringError>()));
+      }
+    });
+
+    test('DA isValidValues bad date value length', () {
+      system.throwOnError = false;
+      for (var s in badDateValueLengthList) {
+        system.throwOnError = false;
+        expect(DA.isValidValues(PTag.kDate, s), false);
+
+        system.throwOnError = true;
+        expect(() => DA.isValidValues(PTag.kDate, s),
+                   throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
     test('DA isValidValues bad values length', () {
       system.throwOnError = false;
-      for (var s in badDALengthList) {
+      for (var s in badDateValuesLengthList) {
         system.throwOnError = false;
         expect(DA.isValidValues(PTag.kDate, s), false);
 
@@ -1841,15 +1886,16 @@ void main() {
 
       system.throwOnError = true;
       expect(() => DA.checkList(PTag.kDate, vList1),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const isInstanceOf<InvalidDateStringError>()));
 
-      for (var s in badDAList) {
+      for (var s in badDateValueList) {
         system.throwOnError = false;
         expect(DA.checkList(PTag.kDate, s), isNull);
 
         system.throwOnError = true;
+        print('s: $s');
         expect(() => DA.checkList(PTag.kDate, s),
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const isInstanceOf<InvalidDateStringError>()));
       }
     });
 
