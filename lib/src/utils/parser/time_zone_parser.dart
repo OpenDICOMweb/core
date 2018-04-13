@@ -2,7 +2,7 @@
 // Use of this source code is governed by the open source license
 // that can be found in the LICENSE file.
 // See the AUTHORS file for contributors.
-part of odw.sdk.core.parser;
+part of odw.sdk.core.new_parser;
 
 //TODO: redo doc
 

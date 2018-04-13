@@ -8,16 +8,14 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:core/src/utils/ascii.dart';
-import 'package:core/src/utils/integer.dart';
 import 'package:core/src/value/date_time.dart';
-//import 'package:core/src/utils/.dart';
+import 'package:core/src/value/integer.dart';
 
 typedef bool _CharPredicate(int char);
 
 /// Random Number Generator with useful utilities.
 //TODO: document
 class RNG {
-  //Enhancement: these values could be arguments to RNG.
   final bool isSecure;
   final int defaultMinStringLength;
   final int defaultMaxStringLength;
@@ -76,7 +74,7 @@ class RNG {
   /// Returns a [double] between 0 and 1.
   double get nextDouble => generator.nextDouble();
 
-  //TODO: This hasn't been tested.
+  //TODO: Unit test.
   /// Returns a [double] between the most-negative and most-positive 32-bit
   /// signed integers.
   double get nextFloat => nextDouble * nextInt32;
@@ -85,9 +83,9 @@ class RNG {
 
   /// Returns a double in the range of an IEEE 32-bit floating point number.
   double get nextFloat32 {
-    //TODO: remove after confirming NaNs are not generated
     final n = nextDouble;
     _float32[0] = n;
+    //TODO: remove after confirming NaNs are not generated
     // ignore: only_throw_errors
     if (_float32[0].isNaN) throw 'NaN: ${_float32[0]}';
     return _float32[0];
@@ -237,8 +235,22 @@ class RNG {
     return limit;
   }
 
-  // TODO: when Dart moves to 64-bit small integers this should change,
-  // TODO: but it is a breaking change; so, Major version must increase by 1.
+  // TODO: See _nextSMInt issue is same
+  /// Returns a 63-bit random unsigned integer _n_, in the range
+  /// [kDartMinSMUint; >= n <= [kDartMaxSMUint]
+  int _nextSMUint() {
+    final upper = generator.nextInt(kMaxRandom30BitInt);
+    final lower = generator.nextInt(kMaxRandomIntExclusive);
+    final n = (upper << 32) | lower;
+    assert(n >= 0 && n <= kDartMaxSMInt);
+    return n;
+  }
+
+  // TODO:
+  // This was designed for V1 with only supported 63-bit [int]s.
+  // Currently the V2 DartVM supports 64-but [int]s, and this should
+  // change; but JavaScript only supports 54-bit [int]s.
+  // However, it is a breaking change; so, Major version must increase by 1.
   /// Returns a 63-bit random signed integer _n_, in the range
   /// [kDartMinSMInt >= n <= [kDartMaxSMInt]
   int _nextSMInt() {
@@ -253,8 +265,7 @@ class RNG {
 
   static const int kMaxRandom30BitInt = 0x3FFFFFFF;
 
-  // TODO: when Dart moves to 64-bit small integers this should change,
-  // TODO: but it is a breaking change; so, Major version must increase by 1.
+  // TODO: See _nextSMInt issue is same
   /// Returns a 63-bit random number between [min] and [max] inclusive,
   /// Where [min] >= 0, and [max] >= min && [max] <= 0xFFFFFFFF.
   int nextUint([int min = 0, int max = kDartMaxSMInt]) {
@@ -268,18 +279,6 @@ class RNG {
     return (limit < kUint32Max)
         ? generator.nextInt(limit + 1) + min
         : _nextSMUint().remainder(limit + 1);
-  }
-
-  // TODO: when Dart moves to 64-bit small integers this should change,
-  // TODO: but it is a breaking change; so, Major version must increase by 1.
-  /// Returns a 63-bit random unsigned integer _n_, in the range
-  /// [kDartMinSMUint; >= n <= [kDartMaxSMUint]
-  int _nextSMUint() {
-    final upper = generator.nextInt(kMaxRandom30BitInt);
-    final lower = generator.nextInt(kMaxRandomIntExclusive);
-    final n = (upper << 32) | lower;
-    assert(n >= 0 && n <= kDartMaxSMInt);
-    return n;
   }
 
   /// Returns [String] containing visible ASCII code points, i.e. between

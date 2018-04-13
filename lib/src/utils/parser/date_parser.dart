@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
-part of odw.sdk.core.parser;
+part of odw.sdk.core.new_parser;
 
 // TODO: The code in this file can be simplified.
 int parseDate(String s,
@@ -98,20 +98,18 @@ Iterable<String> hashDcmDateDateStringList(List<String> dates) =>
 
 /// Returns a valid year or _null_.  The year must be 4 characters.
 int _parseYear(String s, int start, Issues issues) =>
-    _parse4Digits(s, start, issues, kMinYear, kMaxYear, 'year');
+    _parse4Digits(s, start, issues, kMinYear, kMaxYear);
 
 /// Returns a valid month or _null_.  The month must be 2 characters.
 int _parseMonth(String s, int start, Issues issues) =>
-    _parse2Digits(s, start, issues, 1, 12, 'month');
+    _parse2Digits(s, start, issues, 1, 12);
 
 /// Returns a valid day or _null_.  The day must be 2 characters.
 int _parseDay(int y, int m, String s, int start, Issues issues) {
   assert(y != null && m != null && s != null && start != null);
   final max = daysInLeapYearMonth[m];
-  final d = _parse2Digits(s, start, issues, 1, max, 'day');
-  return (m != 2)
-      ? d
-      : _checkDigitRange(d, 1, lastDayOfMonth(y, m), 'day', issues);
+  final d = _parse2Digits(s, start, issues, 1, max);
+  return (m != 2) ? d : _checkDigitRange(d, issues, 1, lastDayOfMonth(y, m));
 }
 
 /// Returns a valid Epoch Day in microseconds or _null_.
@@ -121,6 +119,6 @@ int _parseDcmDate(String s, int start, Issues issues) {
   final m = _parseMonth(s, start + 4, issues);
   final d = _parseDay(y, m, s, start + 6, issues);
   return (y == null || m == null || d == null)
-     ? invalidDateString('Invalid Date: "${s.substring(start, start + 8)}')
-  : dateToEpochMicroseconds(y, m, d);
+      ? invalidDateString('Invalid Date: "${s.substring(start, start + 8)}')
+      : dateToEpochMicroseconds(y, m, d);
 }

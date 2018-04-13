@@ -1,10 +1,14 @@
 // Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
 // Use of this source code is governed by the open source license
 // that can be found in the LICENSE file.
-// Author: Jim Philbin <jfphilbin@gmail.edu>
+// Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
 import 'dart:math';
+
+import 'package:core/src/system/system.dart';
+import 'package:core/src/utils/issues.dart';
+import 'package:core/src/utils/parser.dart';
 
 const int k1KB = 1024;
 const int k1MB = k1KB * 1024;
@@ -63,26 +67,74 @@ const int kUint64Max = kDartMaxSMUint;
 const int kDartMinSMInt = -4611686018427387904;
 
 /// The maximum integer value, in Dart, that can be stored without boxing.
-const int kDartMaxSMInt =  4611686018427387903;
+const int kDartMaxSMInt = 4611686018427387903;
 
-/// The maximum unsigned integer value, in Dart, that can be stored without boxing.
-const int kDartMaxSMUint =  0x3FFFFFFFFFFFFFFF;
+/// The maximum unsigned integer value, in Dart, that can be stored
+/// without boxing.
+const int kDartMaxSMUint = 0x3FFFFFFFFFFFFFFF;
 
 final int kMin63BitInt = -pow(2, 62);
 final int kMax63BitInt = pow(2, 62) - 1;
 
 //TODO: reDoc
-/// Return the [value] if it satisfies the range; otherwise, throws a [RangeError].
+/// Return [value], if it satisfies [min] <= [value] <= [max];
+/// otherwise, throws a [RangeError].
 int checkRange(int value, int min, int max, {bool throwOnError = false}) {
   if (value < min || value > max) {
     return (throwOnError)
-           ? throw new RangeError('$value is not in range $min to $max')
-           : null;
+        ? throw new RangeError('$value is not in range $min to $max')
+        : null;
   }
   return value;
 }
 
-/// Returns _true_ if [min] <= [value] <= max.
-bool inRange(int value, int min, int max) =>
-    (checkRange(value, min, max) == null) ? false : true;
+/// Returns _true_ if [s] is a valid unsigned integer [String].
+bool isValidUintString(String s,
+        [int start = 0,
+        int end,
+        Issues issues,
+        int minLength = 0,
+        int maxLength = 20]) =>
+    tryParseUint(s,
+        start: start,
+        end: end,
+        issues: issues,
+        minLength: minLength,
+        maxLength: maxLength) !=
+    null;
 
+/// Returns _true_ if [s] is a valid signed integer [String].
+bool isValidIntString(String s,
+        [int start = 0,
+        int end,
+        Issues issues,
+        int minLength = 1,
+        int maxLength = 20]) =>
+    tryParseInt(s, start, end, issues, minLength, maxLength) != null;
+
+/// The smallest integer contained in an IS Element
+const int kMinIntegerStringValue = -99999999999;
+
+/// The largest integer contained in an IS Element
+const int kMaxIntegerStringValue = 999999999999;
+
+/// The smallest hash of a DICOM IS Element value
+const int kMinIntegerStringHashValue = -99999999999;
+
+/// The largest hash of a DICOM IS Element value
+// _Note_: the hash is a signed int, so this value is different from
+// maxIntegerStringValue
+const int kMaxIntegerStringHashValue = 99999999999;
+
+/// Returns the hash of a DICOM IS Element value
+String hashIntegerString(String s, {Issues issues}) {
+  final i = parseInt(s);
+  if (i < kMinIntegerStringValue || i > kMaxIntegerStringValue)
+    return parseError('Invalid Integer String: $s', issues);
+  final sign = (i.isOdd) ? -1 : 1;
+  final hash = sign * System.rng.nextInt(kMaxIntegerStringHashValue);
+  return hash.toString();
+}
+
+List<String> hashIntegerStringList(List<String> sList, {Issues issues}) =>
+    sList.map((s) => hashIntegerString(s, issues: issues));

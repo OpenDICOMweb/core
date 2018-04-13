@@ -7,5 +7,6 @@
 export 'package:core/src/value/bulkdata.dart';
 export 'package:core/src/value/date_time.dart';
 export 'package:core/src/value/frame.dart';
+export 'package:core/src/value/integer.dart';
 export 'package:core/src/value/uid.dart';
 export 'package:core/src/value/uuid.dart';

@@ -3,23 +3,21 @@
 // that can be found in the LICENSE file.
 // See the AUTHORS file for other contributors.
 
-import 'dart:typed_data';
-import 'dart:convert';
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'number_parse_test.dart', level: Level.info);
+  Server.initialize(name: 'number_parse_test.dart', level: Level.debug);
 
   final rng = new RNG();
 
   test('parseUint', () {
     final list0 = rng.uint8List(1, 10);
-    for (var a in list0) {
-      final pu0 = parseUint(a.toString());
-      log.debug('pu0: $pu0');
-      expect(pu0 == a, true);
-      expect(pu0, equals(a));
+    for (var v in list0) {
+      final pu0 = parseUint(v.toString());
+      log.debug('v: $v pu0: $pu0');
+      expect(pu0 == v, true);
+      expect(pu0, equals(v));
     }
 
     final list1 = rng.uint16List(1, 10);
@@ -37,11 +35,12 @@ void main() {
   });
 
   test('parseInt', () {
+    system.level = Level.debug;
     final list0 = rng.int8List(1, 10);
-    for (var a in list0) {
-      final pI0 = parseInt(a.toString());
-      log.debug('pI0: $pI0');
-      expect(pI0, equals(a));
+    for (var v in list0) {
+      final pI0 = parseInt(v.toString());
+      log.debug('v: $v pI0: $pI0');
+      expect(pI0, equals(v));
     }
 
     final list1 = rng.int16List(1, 10);
@@ -56,7 +55,7 @@ void main() {
   test('parseUnitRadix', () {
     final list0 = rng.uint8List(1, 10);
     for (var a in list0) {
-      final pur0 = parseUintRadix(a.toString());
+      final pur0 = parseRadix(a.toString());
       log.debug('pur0: $pur0');
       expect(pur0, isNotNull);
     }

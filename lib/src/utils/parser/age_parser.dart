@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // Author: Jim Philbin <jfphilbin@gmail.edu>
 // See the AUTHORS file for other contributors.
-part of odw.sdk.core.parser;
+part of odw.sdk.core.new_parser;
 
 /*
 const String kAgeTokens = 'DWMY';

@@ -3,8 +3,7 @@
 // that can be found in the LICENSE file.
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
-part of odw.sdk.core.parser;
-
+part of odw.sdk.core.new_parser;
 
 /// Return the [value] if it satisfies the range; otherwise,
 ///   - creates an error message,
@@ -15,7 +14,7 @@ part of odw.sdk.core.parser;
 int _checkRange(int value, int min, int max, [Issues issues]) {
   assert(value != null);
   if (value < min || value > max) {
-	  final msg = 'Range Error: min($min) <= value($value) <= max($max)';
+    final msg = 'Range Error: min($min) <= value($value) <= max($max)';
     parseError(msg, issues);
   }
   return value;
@@ -39,7 +38,7 @@ bool _notInRange(int v, int min, int max, [Issues issues]) =>
 ///
 /// Checks that [start], [end], [min], and [max] are all valid for
 /// the [String] [s].  If any of the values are not valid:
-///     - if [issues] is not _null_, it add a message to [issues]
+///     - if [issues] is not _null_, a message is add a message to [issues]
 ///     - throws a [parseError] with message.
 ///
 /// For the arguments to be valid:
@@ -51,13 +50,14 @@ bool _notInRange(int v, int min, int max, [Issues issues]) =>
 ///     |....|. ...|.....|....|
 ///
 /// Assumption: non of the arguments are null.
-void _checkArgs(
-    String s, int start, int end, int min, int max, String fName, Issues issues) {
+void _checkArgs(String s, int start, int end, int min, int max, String fName,
+    Issues issues) {
+  final _end= end ?? s.length;
+  final _max = max ?? _end - start;
   assert(s != null &&
       start != null &&
-      end != null &&
+      _end != null &&
       min != null &&
-      max != null &&
       fName != null);
   final sb = new StringBuffer();
   if (s == null) {
@@ -69,22 +69,23 @@ void _checkArgs(
     parseError(sb.toString(), issues);
   }
   if (start >= s.length) {
-    sb.writeln(_badArg('s', '$s', 'start($start) >= s.length(${s.length})', fName));
+    sb.writeln(
+        _badArg('s', '$s', 'start($start) >= s.length(${s.length})', fName));
     parseError(sb.toString(), issues);
   }
-  if (s.length < end) {
-	  final msg = 'end($end) => s.length(${s.length}) for "$s"';
-    sb.writeln(_badArg('end', '$end', msg, fName));
+  if (s.length < _end) {
+    final msg = 'end($_end) => s.length(${s.length}) for "$s"';
+    sb.writeln(_badArg('end', '$_end', msg, fName));
     parseError(sb.toString(), issues);
   }
-  if (end < start + min) {
-    sb.writeln('The argument "end($end)" is less than start($start) plus '
+  if (_end < start + min) {
+    sb.writeln('The argument "end($_end)" is less than start($start) plus '
         'the minimum length($min) of s(${s.length})"$s"');
     parseError(sb.toString(), issues);
   }
-  if (end > start + max) {
-    sb.writeln('The argument "end($end)" is less than start($start) plus '
-        'the maximum length($max) of s(${s.length})"$s"');
+  if (_end > start + _max) {
+    sb.writeln('The argument "end($_end)" is less than start($start) plus '
+        'the maximum length($_max) of s(${s.length})"$s"');
     parseError(sb.toString(), issues);
   }
 }
@@ -102,7 +103,15 @@ String _invalidValueMsg(int v, int index, String name) {
 }
 */
 
+Null _invalidCharError(String s, int index, Issues issues, String name) {
+  final msg = _invalidCharMsg(s, index, issues, name);
+  return parseError(msg, issues);
+}
+
 /// Returns an invalid character [String].
-String _invalidCharMsg(String s, int index, [String name = '']) =>
-    'Invalid $name character "${s[index]}"(${s.codeUnitAt(index)}'
-    ' at pos($index) in String:"$s" with length: ${s.length})';
+String _invalidCharMsg(String s, int index, [Issues issues, String name = '']) {
+  final msg = 'Invalid $name character "${s[index]}"(${s.codeUnitAt(index)}'
+      ' at pos($index) in String:"$s" with length: ${s.length})';
+  if (issues != null) issues.add(msg);
+  return msg;
+}
