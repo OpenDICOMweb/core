@@ -110,14 +110,18 @@ abstract class StringBase extends Element<String> {
   static const int kSizeInBits = kSizeInBytes * 8;
 
   static bool isValidValueLength(
-      String v, Issues issues, int minLength, int maxLength) {
-    final length = v.length;
+      String value, Issues issues, int minLength, int maxLength) {
+    if (value == null) {
+      if (issues != null) issues.add('Invalid null value');
+      return false;
+    }
+    final length = value.length;
     if (length < minLength || length > maxLength) {
       if (issues != null) {
         if (length < minLength)
-          issues.add('Invalid Value($v) under minimum($minLength)');
+          issues.add('Invalid Value($value) under minimum($minLength)');
         if (length < minLength)
-          issues.add('Invalid Value($v) over maximum($maxLength)');
+          issues.add('Invalid Value($value) over maximum($maxLength)');
       }
       return false;
     }
@@ -2088,8 +2092,8 @@ abstract class TM extends StringBase {
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
-    //assert(s != null);
-    if (s == null || isNotValidValueLength(s, issues)) return false;
+    // Note: isNotValidValueLength checks for null
+    if (isNotValidValueLength(s, issues)) return false;
     if (!Time.isValidString(s, issues: issues)) {
       if (issues != null) issues.add('Invalid Time String (TM): "$s"');
       return false;
