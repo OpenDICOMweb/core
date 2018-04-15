@@ -1,16 +1,18 @@
-// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
-// Use of this source code is governed by the open source license
-// that can be found in the LICENSE file.
-// Author: Jim Philbin <jfphilbin@gmail.edu> -
-// See the AUTHORS file for other contributors.
+//  Copyright (c) 2016, 2017, 2018,
+//  Poplar Hill Informatics and the American College of Radiology
+//  All rights reserved.
+//  Use of this source code is governed by the open source license
+//  that can be found in the odw/LICENSE file.
+//  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
+//  See the AUTHORS file for other contributors.
+//
 
 import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:test/test.dart';
-
 import 'package:crypto/crypto.dart';
+import 'package:test/test.dart';
 
 String hexOut =
     'ab530a13e45914982b79f9b7e3fba994cfd1f3fb22f71cea1afbf02b460c6d1d';

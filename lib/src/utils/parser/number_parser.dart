@@ -1,8 +1,11 @@
-// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
-// Use of this source code is governed by the open source license
-// that can be found in the LICENSE file.
-// Original author: Jim Philbin <jfphilbin@gmail.edu> -
-// See the AUTHORS file for other contributors.
+//  Copyright (c) 2016, 2017, 2018,
+//  Poplar Hill Informatics and the American College of Radiology
+//  All rights reserved.
+//  Use of this source code is governed by the open source license
+//  that can be found in the odw/LICENSE file.
+//  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
+//  See the AUTHORS file for other contributors.
+//
 part of odw.sdk.core.parser;
 
 /// Parses an unsigned [int] from [start] to [end], and returns
@@ -145,15 +148,12 @@ int parseFraction(String s,
 }
 
 String hashDecimalString(String s, {Issues issues}) {
-  final n = double.parse(s, _onHashDecimalError);
+  final n = double.tryParse(s);
   if (n == null) return parseError('Invalid Decimal String: $s', issues);
   final sign = (System.rng.nextBool()) ? -1 : 1;
   final hash = sign * System.rng.nextDouble();
   return hash.toString();
 }
-
-// ignore: avoid_returning_null,
-double _onHashDecimalError(String s) => null;
 
 Iterable<String> hashDecimalStringList(List<String> sList, {Issues issues}) =>
     sList.map((s) => hashDecimalString(s, issues: issues));
