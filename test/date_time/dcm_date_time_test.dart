@@ -62,7 +62,6 @@ void main() {
   ];
   group('DcmDateTime', () {
     test('Good DcmDateTime', () {
-      //DcmDateTime d=new DcmDateTime(1505,12,4);
       log.debug('Good DcmDateTime');
       for (var dt in goodDcmDateTimeList) {
         log.debug('date and time:$dt');
@@ -70,11 +69,9 @@ void main() {
         expect(datetime, isNotNull);
       }
     });
-    test('Bad DcmDateTime', () {
-      //DcmDateTime datetim=DcmDateTime.parse(dt);
 
+    test('Bad DcmDateTime', () {
       log.debug('Bad DcmDateTime');
-      //final dts = DcmDateTime.parse('20170223122334.111111');
       for (var dt in badDcmDateTimeList) {
         log.debug('dt: $dt');
         final dateTime = DcmDateTime.parse(dt);
@@ -102,7 +99,6 @@ void main() {
     });
 
     test('issues', () {
-      //     var dt = new DcmDateTime(2016, 05, 15, 04, 22, 14);
       for (var s in goodDcmDateTimeList) {
         final issues = DcmDateTime.issues(s);
         expect(issues.isEmpty, true);
@@ -126,7 +122,6 @@ void main() {
     });
 
     test('hash', () {
-//      system.level = Level.info;
       for (var s in goodDcmDateTimeList) {
         log.debug('s: $s');
         final dt = DcmDateTime.parse(s);

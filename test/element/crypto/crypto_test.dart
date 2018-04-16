@@ -36,7 +36,7 @@ String nistResult2 =
 String nistResult2LC = nistResult2.toLowerCase();
 
 void main() {
-  Server.initialize(name: 'element/crypto_test.dart', level: Level.debug);
+  Server.initialize(name: 'element/crypto_test.dart', level: Level.info);
 
   test('digestLengthMsg', () {
     final msgList = [message0, message1, message2];

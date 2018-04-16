@@ -14,7 +14,6 @@ export 'package:core/src/utils/dicom.dart';
 export 'package:core/src/utils/errors.dart';
 export 'package:core/src/utils/hash.dart';
 export 'package:core/src/utils/indenter.dart';
-export 'package:core/src/utils/integer.dart';
 export 'package:core/src/utils/issues.dart';
 export 'package:core/src/utils/logger.dart';
 export 'package:core/src/utils/parser.dart';

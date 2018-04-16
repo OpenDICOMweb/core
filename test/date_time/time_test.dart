@@ -156,12 +156,13 @@ void main() {
       2310202705, // bad milliSecond
       23102007053234 //bad microSecond
     ];
+
     test('Time.parse with Bad Times', () {
       for (var s in badDcmTimes) {
         log.debug('  Time.parse: $s');
         final time = Time.parse(s);
-        expect(time == null, true);
         log.debug('    Time.parse: "$s": time: $time');
+        expect(time == null, true);
       }
     });
 

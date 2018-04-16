@@ -212,6 +212,7 @@ void main() {
     });
 
     test('normalizeString', () {
+      system.throwOnError = false;
       var date = Date.parse('19821010');
       final ns0 = Date.normalizeString('19931010', date);
       expect(ns0, isNotNull);
@@ -552,6 +553,8 @@ void main() {
   });
 
   test('parseDate', () {
+//    system.throwOnError = false;
+
     const goodDateList = const [
       '19500718',
       '19000101',
@@ -566,7 +569,7 @@ void main() {
 
     for (var date in goodDateList) {
       final pd0 = parseDate(date);
-      log.debug('pd0: $pd0');
+      log.debug('date: $date pd0: $pd0');
       expect(pd0, isNotNull);
     }
 
@@ -579,6 +582,7 @@ void main() {
   });
 
   test('hashDcmDateString', () {
+    system.throwOnError = false;
     for (var i = 0; i < goodDcmDateList.length; i++) {
       final ns1 = hashDcmDateString(goodDcmDateList[i]);
       log.debug('ns1:$ns1, ${goodDcmDateList[i]}');

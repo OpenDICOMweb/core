@@ -151,7 +151,6 @@ void main() {
     });
 
     test('remove', () {
-      system.level = Level.debug;
       final item = new MapItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);

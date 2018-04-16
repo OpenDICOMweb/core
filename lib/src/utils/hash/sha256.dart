@@ -9,7 +9,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/utils/integer.dart';
+import 'package:core/src/value/integer.dart';
 import 'package:crypto/crypto.dart';
 
 /// SHA-256 Cryptographic Hash Functions
@@ -23,33 +23,38 @@ List<V> _trim<V>(List<V> vList, List<V> vHash) =>
 /// See https://tools.ietf.org/html/rfc6234
 
 /// Returns a Message [Digest] from a [List<int>].
-Uint8List uint8(List<int> v) => sha256.convert(v).bytes;
+Uint8List uint8(List<int> vList) => sha256.convert(vList).bytes;
 
 /// Returns a Message [Digest] from a [List<int>].
-Uint16List uint16(List<int> v) => _trim(v, uint8(v).buffer.asUint16List());
+Uint16List uint16(List<int> vList) =>
+    _trim(vList, uint8(vList).buffer.asUint16List());
 
 /// Returns a Message [Digest] from a [List<int>].
-Uint32List uint32(List<int> v) => _trim(v, uint8(v).buffer.asUint32List());
+Uint32List uint32(List<int> vList) =>
+    _trim(vList, uint8(vList).buffer.asUint32List());
 
 /// Returns a Message [Digest] from a [List<int>].
-Int16List int16(List<int> v) => _trim(v, uint8(v).buffer.asInt16List());
+Int16List int16(List<int> vList) =>
+    _trim(vList, uint8(vList).buffer.asInt16List());
 
 /// Returns a Message [Digest] from a [List<int>].
-Int32List int32(List<int> v) => _trim(v, uint8(v).buffer.asInt32List());
+Int32List int32(List<int> vList) =>
+    _trim(vList, uint8(vList).buffer.asInt32List());
 
 /// Returns a Message [Digest] from a [List<int>].
-Int64List int64(List<int> v) => _trim(v, uint8(v).buffer.asInt64List());
+Int64List int64(List<int> vList) =>
+    _trim(vList, uint8(vList).buffer.asInt64List());
 
 /// Returns a Message [Digest] from a [List<double>].
-Float32List float32(List<double> v) {
-  final v32 = (v is Float32List) ? v : new Float32List.fromList(v);
-  return _trim(v, uint8(v32.buffer.asUint8List()).buffer.asFloat32List());
+Float32List float32(List<double> vList) {
+  final v32 = (vList is Float32List) ? vList : new Float32List.fromList(vList);
+  return _trim(vList, uint8(v32.buffer.asUint8List()).buffer.asFloat32List());
 }
 
 /// Returns a Message [Digest] from a [List<double>].
-Float64List float64(List<double> v) {
-  final v64 = (v is Float64List) ? v : new Float64List.fromList(v);
-  return _trim(v, uint8(v64.buffer.asUint8List()).buffer.asFloat64List());
+Float64List float64(List<double> vList) {
+  final v64 = (vList is Float64List) ? vList : new Float64List.fromList(vList);
+  return _trim(vList, uint8(v64.buffer.asUint8List()).buffer.asFloat64List());
 }
 
 final _sha256Buffer = new Uint64List(8);
@@ -70,7 +75,8 @@ int int63(int value) {
 String string(String s) => fromString(s);
 
 /// Returns a Message [Digest] from a [List<String>].
-List<String> stringList(List<String> sList) => <String>[fromString(sList.join())];
+List<String> stringList(List<String> sList) =>
+    <String>[fromString(sList.join())];
 
 /// Returns a Message [Digest] from a [String].
 //TODO: finish doc

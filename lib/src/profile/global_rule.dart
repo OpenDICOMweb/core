@@ -86,7 +86,8 @@ class GlobalRuleType {
   final List<String> argTypes;
   final Function argPredicate;
 
-  const GlobalRuleType(this.name, this.vrType, this.min, this.max, this.nScripts,
+  const GlobalRuleType(
+      this.name, this.vrType, this.min, this.max, this.nScripts,
       [this.argTypes, this.argPredicate]);
 
   bool get hasArgs => min > 0;
@@ -96,8 +97,9 @@ class GlobalRuleType {
   bool validArgs(List args) => argPredicate(args);
 
   // Whitespace is allowed but ignored.  'RESET' might be present
-  static const GlobalRuleType deIdentificationMethodCodeSeq = const GlobalRuleType(
-      '@DeIdentificationMethodCodeSeq', 'SQ', 1, 1, 0, const ['string']);
+  static const GlobalRuleType deIdentificationMethodCodeSeq =
+      const GlobalRuleType(
+          '@DeIdentificationMethodCodeSeq', 'SQ', 1, 1, 0, const ['string']);
 
   static const GlobalRuleType keepGroup =
       const GlobalRuleType('@keepGroup', 'uint', 1, 1, 1);
@@ -148,8 +150,8 @@ class GlobalRuleType {
       const GlobalRuleType('@ifBlank', 'string', 1, 1, 2, const ['tag']);
   static const GlobalRuleType ifEquals =
       const GlobalRuleType('@ifEquals', '*', 2, 2, 2, const ['tag', 'string']);
-  static const GlobalRuleType ifContains =
-      const GlobalRuleType('@ifContains', 'string', 2, 2, 2, const ['tag', 'string']);
+  static const GlobalRuleType ifContains = const GlobalRuleType(
+      '@ifContains', 'string', 2, 2, 2, const ['tag', 'string']);
   static const GlobalRuleType ifMatches =
       const GlobalRuleType('@ifMatches', '*', 2, 2, 2, const ['tag', 'string']);
 

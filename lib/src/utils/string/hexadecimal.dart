@@ -10,7 +10,6 @@
 // **** Convert integer to hexadecimal String
 
 import 'package:core/src/system/system.dart';
-import 'package:core/src/utils/string/string_buffer.dart';
 
 // Constants for hexadecimal [String]s.
 const String lowercaseRadixDigits = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -29,7 +28,7 @@ String _padString(String s, int length, [String padChar = '0']) {
 }
 
 String __toRadixString(int n, int base, int length, String padChar) {
-  final sb = new AsciiBuffer();
+  final sb = new StringBuffer();
   final radixDigits = getRadixDigits();
 
   void toString(int n, int base) {

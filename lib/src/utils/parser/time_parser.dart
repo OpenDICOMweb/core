@@ -26,15 +26,33 @@ int parseDcmTime(String s,
   }
 }
 
-//TODO: make this work
-int parseInternetTime(String s,
-        {int start = 0, int end, Issues issues, OnParseError onError}) =>
-    parseDcmTime(s.replaceAll(':', ''),
-        start: start, end: end - 2, issues: issues, onError: onError);
+//TODO: unit test and when working replace parseDcmTime
+int parseTime(String s,
+    {int start = 0,
+    int end,
+    Issues issues,
+    OnParseError onError,
+    bool asInternet = true}) {
+  try {
+    //Note: max is 13 because padding should have been removed.
+    end ??= s.length;
+    if (_isNotValidTimeStringLength(end - start))
+      invalidStringLength(s, issues, start, end);
+    if (kValidTimeStringLengths.contains(end - start))
+      _checkArgs(s, start, end, 2, 13, 'parseDcmTime', issues);
+    final us = _parseTime(s, start, end, issues, true);
+    assert(us != null);
+    return us;
+  } on FormatException {
+    return (onError != null) ? onError(s) : null;
+  }
+}
 
 /// Returns _true_ if [s] represents a valid DICOM time [String].
 bool isValidDcmTimeString(String s, {int start = 0, int end, Issues issues}) =>
-    parseDcmTime(s, start: start, end: end, issues: issues) == null ? false : true;
+    parseDcmTime(s, start: start, end: end, issues: issues) == null
+        ? false
+        : true;
 
 const List<int> kValidTimeStringLengths = const <int>[2, 4, 6, 8];
 
@@ -43,11 +61,13 @@ int microsecondsToHour(int us) => us ~/ kMicrosecondsPerHour;
 
 /// Returns the minute part of microseconds ([us]).
 int microsecondToMinute(int us) =>
-    (us - (microsecondsToHour(us) * kMicrosecondsPerHour)) ~/ kMicrosecondsPerMinute;
+    (us - (microsecondsToHour(us) * kMicrosecondsPerHour)) ~/
+    kMicrosecondsPerMinute;
 
 /// Returns the second part of microseconds ([us]).
 int microsecondsToSecond(int us) =>
-    (us - (microsecondToMinute(us) * kMicrosecondsPerMinute)) ~/ kMicrosecondsPerSecond;
+    (us - (microsecondToMinute(us) * kMicrosecondsPerMinute)) ~/
+    kMicrosecondsPerSecond;
 
 /// Returns the millisecond part of microseconds ([us]).
 int microsecondsToMillisecond(int us) =>
@@ -94,7 +114,32 @@ int _parseDcmTime(String s, int start, int end, Issues issues) {
     if ((index += 2) < _end) {
       ss = _parseSecond(s, index, issues);
       if ((index += 2) < _end) {
-        f = _parseTimeFraction(s, index, _end, issues);
+        f = _parseTimeFraction(s, index, issues, _end);
+      }
+    }
+  }
+  return timeToMicroseconds(h, m, ss, f ~/ 1000, f % 1000);
+}
+
+//TODO: unit test
+/// Returns the time in microseconds.
+int _parseTime(String s, int start, int end, Issues issues,
+    [bool asInternet = true]) {
+  const separator = kColon;
+  final _end = end ?? s.length;
+  int h, m = 0, ss = 0, f = 0;
+  //Note: max is 13 because padding should have been removed.
+  _checkArgs(s, start, _end, 2, 13, 'parseDcmTime', issues);
+  var index = start;
+  h = _parseHour(s, index, issues);
+  if (asInternet) _parseSeparator(s, index++, issues, separator);
+  if ((index += 2) < _end) {
+    m = _parseMinute(s, index, issues);
+    if (asInternet) _parseSeparator(s, index++, issues, separator);
+    if ((index += 2) < _end) {
+      ss = _parseSecond(s, index, issues);
+      if ((index += 2) < _end) {
+        f = _parseTimeFraction(s, index, issues, _end);
       }
     }
   }
@@ -108,20 +153,20 @@ bool _isNotValidTimeStringLength(int length) =>
 
 /// Returns a valid hour or _null_.  The hour must be 2 characters.
 int _parseHour(String s, int start, Issues issues) =>
-    _parse2Digits(s, start, issues, 0, 23, 'hour');
+    _parse2Digits(s, start, issues, 0, 23);
 
 /// Returns a valid minute or _null_.  The minute must be 2 characters.
 int _parseMinute(String s, int start, Issues issues) =>
-    _parse2Digits(s, start, issues, 0, 59, 'minute');
+    _parse2Digits(s, start, issues, 0, 59);
 
 //TODO: doen't handle leap seconds
 /// Returns a valid second or _null_.  The second must be 2 characters.
 int _parseSecond(String s, int start, Issues issues) =>
-    _parse2Digits(s, start, issues, 0, 59, 'second');
+    _parse2Digits(s, start, issues, 0, 59);
 
-int _parseTimeFraction(String s, int start, int end, Issues issues) {
+int _parseTimeFraction(String s, int start, Issues issues, int end) {
   assert(end != null);
-  final f = _parseFraction(s, start, issues, end, 'parseDcmTime');
+  final f = _parseFraction(s, start, issues, end);
   final us = _fractionToUSeconds(f, issues);
   return _checkRange(us, 0, 999999, issues);
 }

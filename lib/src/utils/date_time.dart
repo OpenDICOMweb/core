@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/utils/integer.dart';
+import 'package:core/src/value/integer.dart';
 
 /// The naming convention is that the plural form is a total, and the singular
 /// form is a component. For example the minimum microsecond corresponds to

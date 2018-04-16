@@ -25,7 +25,8 @@ class ParseError extends Error {
 
 /// An [Error] was encountered when parsing a [String].
 ///
-/// _Note_: The [throw] inside this error MUST always be caught by the parser.
+/// _Note_: This _always_ [throw]s. The [throw] MUST always be
+/// caught by the parser.
 Null parseError(String msg, [Issues issues]) {
   log.error(ParseError.getMsg(msg));
   if (issues != null) issues.add(msg);
