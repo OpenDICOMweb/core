@@ -1,8 +1,11 @@
-// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
-// Use of this source code is governed by the open source license
-// that can be found in the LICENSE file.
-// Original author: Jim Philbin <jfphilbin@gmail.edu> -
-// See the AUTHORS file for other contributors.
+//  Copyright (c) 2016, 2017, 2018,
+//  Poplar Hill Informatics and the American College of Radiology
+//  All rights reserved.
+//  Use of this source code is governed by the open source license
+//  that can be found in the odw/LICENSE file.
+//  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
+//  See the AUTHORS file for other contributors.
+//
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/profile/profile.dart';
@@ -153,7 +156,7 @@ class GlobalRuleType {
   bool blankArgPredicate(List args) {
     if (args.isEmpty) return true;
     if (args.length == 1) {
-      final val = int.parse(args[0], onError: (s) => null);
+      final val = int.tryParse(args[0]);
       if (val != null) return true;
     }
     return false;

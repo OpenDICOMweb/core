@@ -1,8 +1,11 @@
-// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
-// Use of this source code is governed by the open source license
-// that can be found in the LICENSE file.
-// Original author: Jim Philbin <jfphilbin@gmail.edu> -
-// See the AUTHORS file for other contributors.
+//  Copyright (c) 2016, 2017, 2018,
+//  Poplar Hill Informatics and the American College of Radiology
+//  All rights reserved.
+//  Use of this source code is governed by the open source license
+//  that can be found in the odw/LICENSE file.
+//  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
+//  See the AUTHORS file for other contributors.
+//
 part of odw.sdk.core.new_parser;
 
 // TODO: add tryParse methods for all top-level entries
@@ -69,11 +72,7 @@ int tryParseBinary(String s,
 ///
 /// Note: we're using this because Dart doesn't provide a Uint parser.
 int parseUint(String s,
-        {int start = 0,
-        int end,
-        Issues issues,
-        int minLength = 1,
-        int maxLength,
+    {int start = 0, int end, Issues issues, int minLength = 1, int maxLength ,
         int onError(String source) = _defaultParseIntError}) =>
 //    _parseRadix(s, start, issues, end ??= s.length, minLength, maxLength, 10,
 //        'parseUint', onError);
@@ -343,35 +342,29 @@ int __parseBase10(String s, int start, Issues issues, int end) {
   return value;
 }
 
-int _parse2Digits(
-    String s, int start, Issues issues, int minValue, int maxValue) {
+int _parse2Digits(String s, int start, Issues issues, int minValue,
+    int maxValue) {
   final end = start + 2;
   assert(s != null && start != null && end <= s.length);
   final v = __parseBase10(s, start, issues, end);
   return _checkDigitRange(v, issues, minValue, maxValue);
 }
 
-int _parse4Digits(
-    String s, int start, Issues issues, int minValue, int maxValue) {
+int _parse4Digits(String s, int start, Issues issues, int minValue,
+    int maxValue) {
   final end = start + 4;
   assert(s != null && start != null && end <= s.length);
   final v = __parseBase10(s, start, issues, end);
   return _checkDigitRange(v, issues, minValue, maxValue);
 }
 
-int _checkDigitRange(
-  int v,
-  Issues issues,
-  int minValue,
-  int maxValue,
-) =>
+int _checkDigitRange(int v,Issues issues, int minValue, int maxValue, ) =>
     (v == null || v < minValue || v > maxValue)
         ? _rangeError(v, minValue, maxValue, issues)
         : v;
 
-int _rangeError(int v, int minValue, int maxValue, [Issues issues]) {
-  final msg =
-      'Range Error: minValue($minValue) <= value($v) <= maxValue($maxValue)';
+int _rangeError(int v, int minValue, int maxValue,  [Issues issues]) {
+  final msg = 'Range Error: minValue($minValue) <= value($v) <= maxValue($maxValue)';
   return parseError(msg, issues);
 }
 

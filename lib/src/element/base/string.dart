@@ -1,8 +1,11 @@
-// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
-// Use of this source code is governed by the open source license
-// that can be found in the LICENSE file.
-// Author: Jim Philbin <jfphilbin@gmail.edu>
-// See the AUTHORS file for other contributors.
+//  Copyright (c) 2016, 2017, 2018,
+//  Poplar Hill Informatics and the American College of Radiology
+//  All rights reserved.
+//  Use of this source code is governed by the open source license
+//  that can be found in the odw/LICENSE file.
+//  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
+//  See the AUTHORS file for other contributors.
+//
 
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
@@ -2288,16 +2291,13 @@ abstract class DS extends StringAscii {
   /// but all spaces is illegal.
   static double tryParse(String s, [Issues issues]) {
     //TODO: change to double.tryParse when available
-    final v = double.parse(s, _onError);
+    final v = double.tryParse(s);
     if (v == null) {
       if (issues != null) issues.add('Invalid Digital String (DS): "$s"');
       return invalidString('$s', issues);
     }
     return v;
   }
-
-  // ignore: avoid_returning_null
-  static double _onError(String s) => null;
 
   static Iterable<double> tryParseList(Iterable<String> vList,
           [Issues issues]) =>
@@ -2462,17 +2462,13 @@ abstract class IS extends StringAscii {
 
   static int tryParse(String s, [Issues issues]) {
     //TODO: replace with tryParse when available
-    final n = int.parse(s, onError: _onError);
+    final n = int.tryParse(s);
     if (n == null || _notInRange(n)) {
       if (issues != null) issues.add('Invalid Integer String (IS): "$s"');
       return invalidString(s, issues);
     }
     return n;
   }
-
-  // Avoids creating the lambda on each parse.
-  // ignore: avoid_returning_null
-  static int _onError(String s) => null;
 
   static List<int> tryParseList(Iterable<String> sList, [Issues issues]) {
     final result = <int>[];

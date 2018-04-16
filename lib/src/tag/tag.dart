@@ -1,8 +1,11 @@
-// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
-// Use of this source code is governed by the open source license
-// that can be found in the LICENSE file.
-// Author: Jim Philbin <jfphilbin@gmail.edu> -
-// See the AUTHORS file for other contributors.
+//  Copyright (c) 2016, 2017, 2018,
+//  Poplar Hill Informatics and the American College of Radiology
+//  All rights reserved.
+//  Use of this source code is governed by the open source license
+//  that can be found in the odw/LICENSE file.
+//  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
+//  See the AUTHORS file for other contributors.
+//
 
 import 'dart:convert' as cvt;
 
@@ -555,10 +558,12 @@ abstract class Tag {
   static bool isGroupLengthCode(int code) => (code & 0xFFFF) == 0;
 
   static bool isPublicGroupLengthCode(int code) =>
-      Tag.isPublicCode(code) && (code & 0xFFFF) == 0;
+      // Public Tags have bit #16 must equal 0.
+      Tag.isPublicCode(code) && (code & 0x1FFFF) == 0;
 
   static bool isPrivateGroupLengthCode(int code) =>
-      Tag.isPrivateCode(code) && (code & 0xFFFF) == 0;
+      // Private Tags have bit #16 must equal 1.
+      Tag.isPrivateCode(code) && (code & 0x1FFFF) == 0x10000;
 
   static bool isPrivateIllegalCode(int code) =>
       Tag.isPrivateCode(code) && (code & 0xFFFF) > 0 && code & 0xFFFF < 0x10;
@@ -569,10 +574,11 @@ abstract class Tag {
       keyword == 'PublicGroupLengthKeyword' ||
       isPublicGroupLengthKeywordCode(keyword);
 
-  //TODO: test - needs to handle '0xGGGGEEEE' and 'GGGGEEEE'
+  //TODO: unit test - needs to handle '0xGGGGEEEE' and 'GGGGEEEE'
   static bool isPublicGroupLengthKeywordCode(String keywordCode) {
-    final code = int.parse(keywordCode, radix: 16, onError: (s) => -1);
-    return (code == -1) ? (code & 0xFFFF) == 0 ? true : false : false;
+    final code = int.tryParse(keywordCode);
+    if (code == null) return false;
+    return (code & 0x1FFFF) == 0 ? true : false;
   }
 
   /// Returns true if [code] is a valid Private Creator Code.
