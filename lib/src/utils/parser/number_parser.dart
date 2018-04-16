@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.core.new_parser;
+part of odw.sdk.core.parser;
 
 // TODO: add tryParse methods for all top-level entries
 // TODO: make sure this is true and then move to parse.

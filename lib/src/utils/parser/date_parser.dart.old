@@ -3,7 +3,7 @@
 // that can be found in the LICENSE file.
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
-part of odw.sdk.core.new_parser;
+part of odw.sdk.core.parser;
 
 // TODO: The code in this file can be simplified.
 int parseDate(String s,

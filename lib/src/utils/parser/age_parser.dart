@@ -25,52 +25,50 @@ const int kMaxYearAge = kMaxCount * kDaysInYear;
 /// Returns the number of days corresponding to [s], which is a 4 character
 /// DICOM age (AS) [String]. [s] must be in the format: 'dddt', where 'd' is a decimal
 /// digit and 't' is an age token, one of "D", "W", "M", "Y".
-int parseAgeString(String s, {int onError(String s), bool allowLowercase = false}) {
-	if (s == null || s.length != 4)
-		return _onError(s, onError, 'Invalid age String');
+int parseAgeString(String s,
+    {int onError(String s), bool allowLowercase = false}) {
+  if (s == null || s.length != 4)
+    return _onError(s, onError, 'Invalid age String');
 
-	final token = (allowLowercase) ? s[3].toUpperCase() : s[3];
-	if (!kAgeTokens.contains(token))
-		return _onError(s, onError, 'IInvalid age Token');
+  final token = (allowLowercase) ? s[3].toUpperCase() : s[3];
+  if (!kAgeTokens.contains(token))
+    return _onError(s, onError, 'IInvalid age Token');
 
-	final n = tryParseAgeString(s);
-	if (n < 0) _onError(s.substring(0, 3), onError, 'Invalid age number');
-	return n;
+  final n = tryParseAgeString(s);
+  if (n < 0) _onError(s.substring(0, 3), onError, 'Invalid age number');
+  return n;
 }
 
 int _onError(String s, int onError(String s), String errorMsg) =>
-	 (onError != null) ? onError(s) : invalidAgeString('$errorMsg: "$s"');
-
+    (onError != null) ? onError(s) : invalidAgeString('$errorMsg: "$s"');
 
 /// Returns the number of days corresponding to [s], which is a
 /// 4 character DICOM age (AS) [String]. [s] must be in the
 /// format: 'dddt', where 'd' is a decimal digit and 't' is an age
 /// token, one of "D", "W", "M", "Y". If [s] is invalid returns -1.
 int tryParseAgeString(String s, {bool allowLowercase = false}) {
-	if (s == null || s.length != 4) return -1;
+  if (s == null || s.length != 4) return -1;
 
-	final token = (allowLowercase) ? s[3].toUpperCase() : s[3];
-	if (!kAgeTokens.contains(token)) return -1;
+  final token = (allowLowercase) ? s[3].toUpperCase() : s[3];
+  if (!kAgeTokens.contains(token)) return -1;
 
-	final n = int.tryParse(s.substring(0, 3));
-	if (n == null || n < 0 || (n == 0 && token != 'D')) return -1;
-	switch (token) {
-		case 'D':
-			return n;
-		case 'W':
-			return n * kDaysInWeek;
-		case 'M':
-			return n * kAgeDaysInMonth;
-		case 'Y':
-			return n * kAgeDaysInYear;
-		default:
-			return -1;
-	}
+  final n = int.tryParse(s.substring(0, 3));
+  if (n == null || n < 0 || (n == 0 && token != 'D')) return -1;
+  switch (token) {
+    case 'D':
+      return n;
+    case 'W':
+      return n * kDaysInWeek;
+    case 'M':
+      return n * kAgeDaysInMonth;
+    case 'Y':
+      return n * kAgeDaysInYear;
+    default:
+      return -1;
+  }
 }
 
-
-bool isValidAgeString(String s) =>
-    tryParseAgeString(s) == -1 ? false : true;
+bool isValidAgeString(String s) => tryParseAgeString(s) == -1 ? false : true;
 
 /// Returns a random age between 0 days and 999 years, if [s] is valid;
 /// otherwise, returns _null_.
@@ -82,4 +80,5 @@ String hashAgeString(String s) {
   return ageToString(hash);
 }
 
-Iterable<String> hashAgeStringList(List<String> vList) => vList.map(hashAgeString);
+Iterable<String> hashAgeStringList(List<String> vList) =>
+    vList.map(hashAgeString);

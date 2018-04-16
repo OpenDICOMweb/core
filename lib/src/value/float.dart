@@ -9,15 +9,12 @@ import 'package:core/src/utils/issues.dart';
 import 'package:core/src/utils/parser.dart';
 
 String hashDecimalString(String s, {Issues issues}) {
-  final n = double.parse(s, _onHashDecimalError);
+  final n = double.tryParse(s);
   if (n == null) return parseError('Invalid Decimal String: $s', issues);
   final sign = (System.rng.nextBool()) ? -1 : 1;
   final hash = sign * System.rng.nextDouble();
   return hash.toString();
 }
-
-// ignore: avoid_returning_null,
-double _onHashDecimalError(String s) => null;
 
 Iterable<String> hashDecimalStringList(List<String> sList, {Issues issues}) =>
     sList.map((s) => hashDecimalString(s, issues: issues));

@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.core.new_parser;
+part of odw.sdk.core.parser;
 
 //TODO: redo doc
 

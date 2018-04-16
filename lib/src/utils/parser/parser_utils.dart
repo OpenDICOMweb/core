@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.core.new_parser;
+part of odw.sdk.core.parser;
 
 bool _parseSeparator(String s, int index, Issues issues, int separator) {
   assert(s != null && index != null && index < s.length);
