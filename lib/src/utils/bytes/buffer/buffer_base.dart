@@ -110,4 +110,7 @@ abstract class BufferBase {
   }
 
   Uint8List get contentsWritten => buffer.buffer.asUint8List(rIndex_, wIndex);
+
+  @override
+  String toString() => '$runtimeType: @R$rIndex @W$wIndex $buffer';
 }

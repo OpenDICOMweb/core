@@ -69,8 +69,12 @@ abstract class RootDataset extends Dataset {
   /// The SopClass Uid for _this_ as a [String].
   String get sopClassId => getString(kSOPClassUID);
 
+  // TODO Jim: determine whether MetaSopClass is a subtype of SopClass
   /// The SopClass of _this_.
-  SopClass get sopClassUid => getUid(kSOPClassUID);
+  Uid get sopClassUid {
+    final uids = getUidList(kSOPClassUID);
+    return (uids == null || uids.length != 1) ? null : uids[0];
+  }
 
   /// The [TransferSyntax].
   SopClass get sopClass => SopClass.lookup(sopClassId);
@@ -136,7 +140,7 @@ abstract class RootDataset extends Dataset {
   String get summary {
     final sqs = sequences;
     final sb = new StringBuffer('''\n$runtimeType: 
-             SOP Class: ${sopClassUid.info}
+             SOP Class: $sopClassUid
        Transfer Syntax: $transferSyntax
         Total Elements: $total
     Top Level Elements: $length

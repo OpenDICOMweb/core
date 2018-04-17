@@ -49,9 +49,9 @@ class Bytes extends ListBase<int> {
   Bytes([int length = kDefaultLength, this.endian = Endian.little])
       : _bd = new ByteData(length);
 
-  Bytes.from(Bytes bytes,
-      [int offset = 0, int length, this.endian = Endian.little])
-      : _bd = bytes.asByteData(offset, length ?? bytes.lengthInBytes);
+  Bytes.from(Bytes bytes, [int offset, int length, this.endian = Endian.little])
+      : _bd = bytes.asByteData(
+            offset ?? bytes.offsetInBytes, length ?? bytes.lengthInBytes);
 
   Bytes.fromList(List<int> list, [this.endian = Endian.little])
       : _bd = (list is Uint8List)
@@ -61,7 +61,7 @@ class Bytes extends ListBase<int> {
   Bytes.typedDataView(TypedData td,
       [int offset = 0, int length, this.endian = Endian.little])
       : _bd = td.buffer.asByteData(
-      td.offsetInBytes + offset, length * td.elementSizeInBytes);
+            td.offsetInBytes + offset, length * td.elementSizeInBytes);
 
   Bytes.fromTypedData(TypedData td, [this.endian = Endian.little])
       : _bd = td.buffer.asByteData();
@@ -86,8 +86,8 @@ class Bytes extends ListBase<int> {
   Bytes subbytes([int start = 0, int end]) => new Bytes._(_bd, start, end);
 
   // Returns a view of _this_.
-  Bytes toBytes([int offset = 0, int length]) =>
-      new Bytes._(_bd, offset, length);
+  Bytes toBytes([int offset = 0, int length, Endian endian = Endian.little]) =>
+      new Bytes._(_bd, offset, length, endian);
 
   @override
   int operator [](int i) => _bd.getUint8(i);
@@ -118,6 +118,9 @@ class Bytes extends ListBase<int> {
   int get offsetInBytes => _bd.offsetInBytes;
   int get lengthInBytes => _bd.lengthInBytes;
   ByteBuffer get buffer => _bd.buffer;
+
+  String get endianness =>
+      (endian == Endian.little) ? 'Endian.little' : 'Endian.big';
 
   // *** List interface
   @override
@@ -504,6 +507,12 @@ class Bytes extends ListBase<int> {
     return (group << 16) + elt;
   }
 
+  int getVRCode(int offset) {
+    final first = getUint8(offset);
+    final second = getUint8(offset + 1);
+    return (second << 8) + first;
+  }
+
   // Note: this method should only be called from String VRs, OB or UN.
   Bytes toBytesWOPadding(int start, int length, int vfOffset,
       [int padChar = kSpace]) {
@@ -515,6 +524,9 @@ class Bytes extends ListBase<int> {
     if (len != length) log.debug3('Removing Padding: $char');
     return new Bytes._(_bd, start, len);
   }
+
+  @override
+  String toString() => '$runtimeType: $endianness length: ${_bd.lengthInBytes}';
 
   // **** End Binary DICOM specific methods
   static const int kInt8Size = 1;
@@ -747,6 +759,7 @@ bool checkPadding(Bytes bytes, [int padChar = kSpace]) =>
     _checkPadding(bytes, padChar);
 
 bool _checkPadding(Bytes bytes, int padChar) {
+  assert(bytes.lengthInBytes.isEven, 'bytes.length: ${bytes.lengthInBytes}');
   final lastIndex = bytes.lengthInBytes - 1;
   final char = bytes.getUint8(lastIndex);
   if ((char == kNull || char == kSpace) && char != padChar)
@@ -765,7 +778,8 @@ Bytes _removePadding(Bytes bytes, int vfOffset, int padChar) {
   final char = bytes.getUint8(lastIndex);
   if (char == kNull || char == kSpace) {
     log.debug3('Removing Padding: $char');
-    return bytes.toBytes(bytes.offsetInBytes, bytes.lengthInBytes - 1);
+    return bytes.toBytes(
+        bytes.offsetInBytes, bytes.lengthInBytes - 1, bytes.endian);
   }
   return bytes;
 }

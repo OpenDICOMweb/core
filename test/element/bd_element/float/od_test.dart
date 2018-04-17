@@ -47,23 +47,26 @@ void main() {
     });
 
     test('OD hasValidValues random: good values', () {
-//      system.level = Level.info;
+      system.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         final float64List = rng.float64List(1, 1);
         expect(float64List is Float64List, true);
         expect(float64List.length, 1);
-        log.debug('float64List: $float64List');
-        final bd = makeOD(kSelectorODValue, float64List);
-        longEvrInfo(bd);
-        final od0 = ODevr.make(bd, kODIndex);
+        log.debug('$i: float64List: $float64List');
+        final bytes = makeOD(kSelectorODValue, float64List);
+        log.debug('bd: $bytes');
+        longEvrInfo(bytes);
+        final od0 = ODevr.make(bytes, kODIndex);
         log.debug('od0: $od0');
         expect(od0.hasValidValues, true);
 
         log
+          ..debug('bytes: $od0')
           ..debug('od0: $od0, values: ${od0.values}')
           ..debug('od0: ${od0.info}')
           ..debug('float64List: $float64List')
-          ..debug('        od0: ${od0.values}');
+          ..debug('        od0: ${od0.values}')
+          ..debug('        vfBytes: ${od0.vfBytes}');
         expect(od0.values, equals(float64List));
       }
     });
@@ -89,7 +92,7 @@ void main() {
     // test('OD null as values', () {});
 
     test('OD hashCode and == random', () {
- //     system.level = Level.info;
+      //     system.level = Level.info;
       system.throwOnError = false;
       final rng = new RNG(1);
 
@@ -122,9 +125,7 @@ void main() {
       for (var i = 0; i <= float64LstCommon0.length - 1; i++) {
         final bd = makeOD(kSelectorODValue, <double>[float64LstCommon0[i]]);
         final of0 = new ODevr(bd);
-        expect(
-            OD.isValidValues(PTag.kDoubleFloatPixelData, of0.values),
-            true);
+        expect(OD.isValidValues(PTag.kDoubleFloatPixelData, of0.values), true);
       }
     });
   });

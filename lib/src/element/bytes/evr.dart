@@ -463,7 +463,7 @@ class AEevr extends AE
         Common,
         EvrElement<String>,
         EvrShortMixin<int>,
-        BDStringMixin,
+        ByteStringMixin,
         AsciiMixin {
   @override
   final Bytes bytes;
@@ -482,7 +482,7 @@ class ASevr extends AS
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         AsciiMixin {
   @override
   final Bytes bytes;
@@ -502,7 +502,7 @@ class CSevr extends CS
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         AsciiMixin {
   @override
   final Bytes bytes;
@@ -521,7 +521,7 @@ class DAevr extends DA
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         AsciiMixin {
   @override
   final Bytes bytes;
@@ -543,7 +543,7 @@ class DSevr extends DS
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         AsciiMixin {
   @override
   final Bytes bytes;
@@ -561,7 +561,7 @@ class DTevr extends DT
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         AsciiMixin {
   @override
   final Bytes bytes;
@@ -580,7 +580,7 @@ class ISevr extends IS
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         AsciiMixin {
   @override
   final Bytes bytes;
@@ -599,7 +599,7 @@ class UIevr extends UI
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         AsciiMixin {
   @override
   final Bytes bytes;
@@ -618,7 +618,7 @@ class LOevr extends LO
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         Utf8Mixin {
   @override
   final Bytes bytes;
@@ -643,7 +643,7 @@ class PCevr extends PC
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         Utf8Mixin {
   @override
   final Bytes bytes;
@@ -658,6 +658,7 @@ class PCevr extends PC
       final tag = Tag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
+    log.debug('PC code ${dcm(code)}');
     return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
   }
 
@@ -688,7 +689,7 @@ class PNevr extends PN
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         Utf8Mixin {
   @override
   final Bytes bytes;
@@ -707,7 +708,7 @@ class SHevr extends SH
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         Utf8Mixin {
   @override
   final Bytes bytes;
@@ -726,7 +727,7 @@ class LTevr extends LT
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         Utf8Mixin {
   @override
   final Bytes bytes;
@@ -747,7 +748,7 @@ class STevr extends ST
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         Utf8Mixin {
   @override
   final Bytes bytes;
@@ -766,7 +767,7 @@ class TMevr extends TM
         Common,
         EvrElement<String>,
         EvrShortMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         AsciiMixin {
   @override
   final Bytes bytes;
@@ -786,7 +787,7 @@ class UCevr extends UC
         Common,
         EvrElement<String>,
         EvrLongMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         Utf8Mixin {
   @override
   final Bytes bytes;
@@ -805,7 +806,7 @@ class URevr extends UR
         Common,
         EvrElement<String>,
         EvrLongMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         Utf8Mixin {
   @override
   final Bytes bytes;
@@ -824,7 +825,7 @@ class UTevr extends UT
         Common,
         EvrElement<String>,
         EvrLongMixin<String>,
-        BDStringMixin,
+        ByteStringMixin,
         Utf8Mixin {
   @override
   final Bytes bytes;

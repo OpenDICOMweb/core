@@ -259,6 +259,7 @@ static const Map<int, VR> vrByCode = const <int, VR>{
 };
 */
 
+
 // Const [VR.code]s as 16-bit littleendian values.
 // This allows the code to be retrieved in one instruction instead of two.
 const int kAECode = 0X4541;

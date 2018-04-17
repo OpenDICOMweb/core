@@ -87,9 +87,9 @@ abstract class Common {
   int get vfLength {
     final vfo = vfOffset;
     final len = bytes.lengthInBytes - vfo;
-    final vlf = vfLengthField;
-    if (vlf != kUndefinedLength && len != vlf)
-      print('${dcm(code)} $vrIndex len: $len, vlf: $vlf : ${len / vlf}');
+//    final vlf = vfLengthField;
+//    if (vlf != kUndefinedLength && len != vlf)
+//      print('${dcm(code)} $vrIndex len: $len, vlf: $vlf : ${len / vlf}');
   //  assert(vlf == kUndefinedLength || len == vlf, 'len: $len, vlf: $vlf');
     return len;
   }
@@ -186,7 +186,7 @@ abstract class Int32Mixin {
   int get valuesLength => _getValuesLength(vfLengthField, _int32SizeInBytes);
 }
 
-abstract class BDStringMixin {
+abstract class ByteStringMixin {
   // **** Interface
   Bytes get bytes;
   int get eLength;

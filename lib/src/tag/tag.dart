@@ -34,6 +34,9 @@ const int kElementMask = 0x0000FFFF;
 /// requirements for the SopClass of the [Dataset].
 typedef bool _ETypePredicate<K>(Dataset ds, K key);
 
+//TODO: move to system
+bool allowInvalidTags = true;
+
 /// //Fix:
 /// A [Tag] defines the [Type] of a DICOM Attribute.  There are different
 /// types of Tags in the following class hierarchy:
@@ -374,17 +377,18 @@ abstract class Tag {
 
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag lookupByCode(int code, [int vrIndex = kUNIndex, Object creator]) {
-    String msg;
-//    print('code $code ${hex32(code)} ${toDcm(code)} vrIndex $vrIndex');
-    if (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)
+
+    if (!allowInvalidTags &&
+        (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)) {
+      print('code $code ${hex32(code)} ${toDcm(code)} vrIndex $vrIndex');
       return invalidTagCode(code);
+    }
     final group = code >> 16;
     Tag tag;
     if (group.isEven) {
       tag = PTag.lookupByCode(code, vrIndex);
       tag ??= new PTag.unknown(code, vrIndex);
     } else {
-//      print('tag code ${hex32(code)}');
       assert(Tag.isPrivateCode(code) == true);
       final elt = code & 0xFFFF;
       if (elt == 0) {
@@ -397,7 +401,7 @@ abstract class Tag {
         tag = PDTag.make(code, vrIndex, creator);
       } else {
         // This should never happen
-        msg = 'Unknown Private Tag Code: creator: $creator';
+        final msg = 'Unknown Private Tag Code: creator: $creator';
         return invalidTagCode(code, msg);
       }
     }
@@ -516,14 +520,19 @@ abstract class Tag {
     return (msgs == null) ? null : msgs;
   }
 
+  //Urgent: make checkRange part of system
   /// Returns_true_ if [code] is a valid Public Code, but
   /// _does not check that [code] is defined by the DICOM Standard.
-  static bool isPublicCode(int code) {
+  static bool isPublicCode(int code, {bool checkRange = true}) {
     final group = code >> 16;
-    return group.isEven && group >= 0x0002 && group <= 0xFFFC;
+    if (group.isEven) {
+      return (checkRange) ? group >= 0x0002 && group <= 0xFFFC : true;
+    }
+    return false;
   }
 
-  static bool isNotPublicCode(int code) => !isPublicCode(code);
+  static bool isNotPublicCode(int code, {bool checkRange: true}) =>
+      !isPublicCode(code, checkRange: checkRange);
 
   // *** Private Tag Code methods
   /// Groups numbers that shall not be used in PrivateTags.

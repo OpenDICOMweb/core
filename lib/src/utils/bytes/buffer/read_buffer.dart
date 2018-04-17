@@ -31,10 +31,12 @@ class ReadBuffer extends BufferBase {
         wIndex_ = _buffer.lengthInBytes;
 
   ReadBuffer.from(ReadBuffer rb,
-      [int offset = 0, int length, Endian endian = Endian.little])
-      : rIndex_ = offset,
-        wIndex_ = offset + (length ?? rb.lengthInBytes),
-        _buffer = new Bytes.from(rb.buffer, offset, length, endian);
+      [int offset, int length, Endian endian = Endian.little])
+      : rIndex_ = offset ?? rb.rIndex,
+        wIndex_ = length ?? rb.wIndex,
+        _buffer = new Bytes.from(rb.buffer, rb.buffer.offsetInBytes,
+                                     length ?? rb.buffer.lengthInBytes,
+                                     endian);
 
   ReadBuffer.fromByteData(ByteData bd, [Endian endian = Endian.little])
       :   rIndex_ = 0,
@@ -154,6 +156,7 @@ class ReadBuffer extends BufferBase {
     rIndex_ += length;
     return s;
   }
+
   String readUtf8(int length) {
     final s = _buffer.getUtf8(rIndex_, length);
     rIndex_ += length;
@@ -163,12 +166,7 @@ class ReadBuffer extends BufferBase {
   String readString(int length) => readUtf8(length);
 
   /// Peek at next tag - doesn't move the [rIndex_].
-  int peekCode() {
-    assert(rIndex_.isEven && hasRemaining(4), '@$rIndex_ : $remaining');
-    final group = _buffer.getUint16(rIndex_);
-    final elt = _buffer.getUint16(rIndex_ + 2);
-    return (group << 16) + elt;
-  }
+  int peekCode() => _buffer.getCode(rIndex_);
 
   int getCode(int start) => peekCode();
 
@@ -178,6 +176,14 @@ class ReadBuffer extends BufferBase {
     return code;
   }
 
+  /// Peek at next tag - doesn't move the [rIndex_].
+  int readVRCode() {
+    assert(rIndex_.isEven && hasRemaining(4), '@$rIndex_ : $remaining');
+    final vr = _buffer.getVRCode(rIndex_);
+    rIndex_ += 2;
+    return vr;
+  }
+  
   bool getUint32AndCompare(int target) {
     final delimiter = _buffer.getUint32(rIndex_);
     final v = target == delimiter;

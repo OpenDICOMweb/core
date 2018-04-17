@@ -71,23 +71,25 @@ Bytes makeIvrHeader(int code, int vfLengthInBytes, Bytes bytes) {
   return bytes;
 }
 
-Bytes makeShortEvr(int code, int vrCode, Bytes vfBytes) {
+Bytes makeShortEvr(int code, int vrCode, Bytes vfBytes,
+    [Endian endian = Endian.little]) {
   // log.debug('makeEvr: ${hex32(code)}');
   final vfLength = vfBytes.lengthInBytes;
   var eLength = _shortEvrHeaderSize + vfLength;
   if (eLength.isOdd) eLength++;
-  final bytes = new Bytes(eLength);
+  final bytes = new Bytes(eLength, endian);
   makeShortEvrHeader(code, vrCode, bytes);
   copyBytesToVF(bytes, _shortEvrVFOffset, vfBytes);
   return bytes;
 }
 
-Bytes makeLongEvr(int code, int vrCode, Bytes vfBytes) {
+Bytes makeLongEvr(int code, int vrCode, Bytes vfBytes,
+    [Endian endian = Endian.little]) {
   // log.debug('makeEvr: ${hex32(code)}');
   final vfLength = vfBytes.lengthInBytes;
   var eLength = _longEvrHeaderSize + vfLength;
   if (eLength.isOdd) eLength++;
-  final bytes = new Bytes(eLength);
+  final bytes = new Bytes(eLength, endian);
   makeLongEvrHeader(code, vrCode, bytes);
   copyBytesToVF(bytes, _longEvrVFOffset, vfBytes);
   return bytes;
@@ -164,7 +166,7 @@ String longEvrInfo(Bytes bytes) {
   final code = dcm(getCode(bytes));
   final vr = getVRId(bytes);
   final vfLength = getLongVFLength(bytes);
-  final msg = 'LongEvr(${bytes.lengthInBytes}): $code $vr $vfLength';
+  final msg = 'LongEvrInfo(${bytes}): $code $vr $vfLength';
   log.debug(msg);
   return msg;
 }
@@ -199,10 +201,10 @@ Bytes makeFL(int code, List<double> vList) =>
 Bytes makeOF(int code, List<double> vList) =>
     makeLongEvr(code, kOFCode, makeFloat32Bytes(vList));
 
-Bytes makeFloat64Bytes(List<double> vList) {
+Bytes makeFloat64Bytes(List<double> vList, [Endian endian = Endian.little]) {
   if (vList.isEmpty) return kEmptyBytes;
   final list = new Float64List.fromList(vList);
-  return new Bytes.fromTypedData(list.buffer.asByteData());
+  return new Bytes.fromTypedData(list.buffer.asByteData(), endian);
 }
 
 Bytes makeFD(int code, List<double> vList) =>

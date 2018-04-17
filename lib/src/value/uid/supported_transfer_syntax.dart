@@ -36,8 +36,8 @@ class SupportedTransferSyntax {
           isStorable: true, isDecodable: true, isEncodable: true, isDisplayable: true);
   static const SupportedTransferSyntax kDeflatedExplicitVRLittleEndian =
       const SupportedTransferSyntax(TransferSyntax.kDeflatedExplicitVRLittleEndian);
-//  static const SupportedTransferSyntax kExplicitVRBigEndian =
-//      const SupportedTransferSyntax(TransferSyntax.kExplicitVRBigEndian);
+  static const SupportedTransferSyntax kExplicitVRBigEndian =
+     const SupportedTransferSyntax(TransferSyntax.kExplicitVRBigEndian);
   static const SupportedTransferSyntax kJpegBaseline1 =
       const SupportedTransferSyntax(TransferSyntax.kJpegBaseline1);
   static const SupportedTransferSyntax kJpegExtended2_4 =
@@ -121,7 +121,7 @@ class SupportedTransferSyntax {
     '1.2.840.10008.1.2': kImplicitVRLittleEndian,
     '1.2.840.10008.1.2.1': kExplicitVRLittleEndian,
     '1.2.840.10008.1.2.1.99': kDeflatedExplicitVRLittleEndian,
-//    '1.2.840.10008.1.2.2' : kExplicitVRBigEndian,
+    '1.2.840.10008.1.2.2' : kExplicitVRBigEndian,
     '1.2.840.10008.1.2.4.50': kJpegBaseline1,
     '1.2.840.10008.1.2.4.51': kJpegExtended2_4,
     '1.2.840.10008.1.2.4.52': kJpegExtended3_5,

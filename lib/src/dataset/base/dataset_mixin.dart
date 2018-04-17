@@ -700,9 +700,9 @@ abstract class DatasetMixin {
   }
 
   V _checkOneValue<V>(int index, List<V> values) =>
-      (values == null || values.length != 1)
-          ? invalidValuesLengthError(Tag.lookupByCode(index), values)
-          : values.first;
+    (values == null || values.length != 1)
+      ? invalidValuesLengthError(Tag.lookupByCode(index), values)
+      : values.first;
 
   /// Returns the [int] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
@@ -833,10 +833,16 @@ abstract class DatasetMixin {
   /// If [Element] is not present, either throws or returns _null_;
   List<Uid> getUidList(int index, {bool required = false}) {
     final UI e = lookup(index, required: required);
-    if (e == null || e is! UI) return nonUidTag(index);
-    final vList = e.uids;
-    if (vList == null) return nullValueError('getUidList');
-    return vList;
+    if (e == null) {
+      log.warn('${dcm(index)} not present');
+      return null;
+    } else if (e is! UI) {
+      return nonUidTag(index);
+    } else {
+      final vList = e.uids;
+      if (vList == null) return nullValueError('getUidList');
+      return vList;
+    }
   }
 
   /// Returns the original [DA] [Element] that was replaced in the
