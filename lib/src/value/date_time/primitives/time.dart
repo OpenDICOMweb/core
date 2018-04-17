@@ -78,8 +78,8 @@ dynamic microsecondToTime(int time, TimeToObject creator, {bool asDicom = true})
   final h = _hourFromTimeInUS(time);
   final m = _minuteFromTimeInUS(time % kMicrosecondsPerHour);
   final s = _secondFromTimeInUS(time % kMicrosecondsPerMinute);
-  final ms = _hourFromTimeInUS(time % kMicrosecondsPerSecond);
-  final us = _hourFromTimeInUS(time % kMicrosecondsPerMillisecond);
+  final ms = _millisecondFromTimeInUS(time % kMicrosecondsPerSecond);
+  final us = _microsecondFromTimeInUS(time % kMicrosecondsPerMillisecond);
   return (creator != null)
       ? creator(h, m, s, ms, us, asDicom: asDicom)
       : _timeInUSToList(h, m, s, ms, us);

@@ -166,7 +166,7 @@ String longEvrInfo(Bytes bytes) {
   final code = dcm(getCode(bytes));
   final vr = getVRId(bytes);
   final vfLength = getLongVFLength(bytes);
-  final msg = 'LongEvrInfo(${bytes}): $code $vr $vfLength';
+  final msg = 'LongEvrInfo($bytes): $code $vr $vfLength';
   log.debug(msg);
   return msg;
 }

@@ -12,6 +12,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes/buffer/buffer_base.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
+import 'package:core/src/utils/dicom.dart';
 
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
@@ -169,8 +170,8 @@ class WriteBuffer extends BufferBase {
 
   /// Writes a 64-bit unsigned integer (Uint32) value to _this_.
   void writeUint64(int value) {
-    assert(value >= 0 && value <= 0xFFFFFFFFFFFFFFFF,
-        'Value out of range: $value');
+      assert(value >= 0 &&
+             value <= 0xFFFFFFFFFFFFFFFF, 'Value out of range: $value');
     _maybeGrow(8);
     buffer.setUint64(wIndex_, value);
     wIndex_ += 8;
@@ -190,10 +191,14 @@ class WriteBuffer extends BufferBase {
     return true;
   }
 
+  // Urgent Jim: move to system
+  bool allowInvalidTagCode = true;
   /// Write a DICOM Tag Code to _this_.
   void writeCode(int code) {
-    const kItem = 0xfffee000;
-    assert(code >= 0 && code < kItem, 'Value out of range: $code');
+    if (!allowInvalidTagCode) {
+      assert(code >= 0x00020000 && code <= kSequenceDelimitationItem,
+      'Value out of range: $code (${dcm(code)})');
+    }
     assert(wIndex_.isEven && wHasRemaining(4));
     _maybeGrow(4);
     buffer
@@ -234,27 +239,6 @@ class WriteBuffer extends BufferBase {
     buffer.setByteData(bd.buffer.asByteData(), wIndex_, length);
     wIndex_ += length;
   }
-
-/* TODO: is there any advantage to doing it this way?
-  /// Writes [bytes] to _this_.
-  void writeUint8List(Uint8List bytes) => _write(bytes);
-
-  /// Writes [bd] to _this_.
-//  void _writeByteData(ByteData bd) => write(bd);
-
-  /// Writes [td] to _this_.
-  void _write(TypedData td) {
-    final offset = td.offsetInBytes;
-    final length = td.lengthInBytes;
-    final uint8List =
-    (td is Uint8List) ? td : td.buffer.asUint8List(offset, length);
-    _maybeGrow(length);
-    for (var i = 0, j = wIndex_; i < length; i++, j++)
-      bytes[j] = uint8List[i];
-    wIndex_ += length;
-  }
-
-*/
 
   void writeUint16List(Uint16List list) {
     buffer.setUint16List(list, wIndex_, list.length);

@@ -264,8 +264,10 @@ void main() {
     });
 
     test('now', () {
-      final time0 = new Time(07, 13, 40);
-      log.debug('time0.now: ${time0.now}');
+      final t0 = Time.now;
+      final us = t0.inMicroseconds;
+      print('t0: $t0 us: $us');
+
     });
 
     test('==', () {

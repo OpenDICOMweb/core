@@ -291,7 +291,6 @@ void main() {
     });
 
     test('minuteFromMicrosecond', () {
-//      system.level = Level.info;
       final mfm0 = minuteFromMicrosecond(kMicrosecondsPerDay);
       log.debug('mfm0: $mfm0');
       expect(mfm0, isNotNull);
@@ -449,19 +448,22 @@ void main() {
       final tms0 = microsecondToTimeString(122334);
       log.debug('tms0:$tms0');
       expect(tms0, isNotNull);
+      expect(tms0, equals('000000.122334'));
 
       final tms1 = microsecondToTimeString(201458, asDicom: false);
       log.debug('tms1:$tms1');
       expect(tms1, isNotNull);
+      expect(tms1, equals('00:00:00.201458'));
 
       final tms2 = microsecondToTimeString(kMicrosecondsPerDay);
       log.debug('tms2:$tms2');
       expect(tms2, isNotNull);
+      expect(tms2, equals('000000.000000'));
 
       final tms3 = microsecondToTimeString(kMicrosecondsPerDay + 1);
       log.debug('tms3:$tms3');
       expect(tms3, isNotNull);
-      expect(tms3, equals('000000.000000'));
+      expect(tms3, equals('000000.000001'));
     });
   });
 }

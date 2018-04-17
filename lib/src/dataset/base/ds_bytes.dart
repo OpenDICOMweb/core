@@ -117,6 +117,7 @@ class RDSBytes extends DSBytes {
 
   Bytes get preamble =>
       bytes.toBytes(kPreambleOffset, kPreambleLength);
+  
   Bytes get prefix => bytes.toBytes(kPrefixOffset, kPrefixLength);
 
   int get startDelimiter => getUint32(kPrefixOffset);

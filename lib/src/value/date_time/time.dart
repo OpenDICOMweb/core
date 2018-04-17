@@ -20,9 +20,9 @@ typedef String OnTimeHashStringError(String s);
 //Enhancement: should implement Comparable, add, subtract
 /// A span of time. Similar to [Duration], but handles DICOM time (TM) values.
 class Time implements Comparable<Time> {
-  static const Time midnight = const Time._(0);
-  static const Time zero = midnight;
-  static const Time kMidnight = const Time._(0);
+  static const Time kMidnight = const Time.fromMicroseconds(0);
+  static const Time zero = kMidnight;
+  static const Time midnight = kMidnight;
 
   /// Internally [Time] is stored in microseconds.
   final int uSeconds;
@@ -37,20 +37,15 @@ class Time implements Comparable<Time> {
       OnTimeError onError]) {
     try {
       final uSecs = timeToMicroseconds(h, m, s, ms, us);
-      return (uSecs == null) ? null : new Time._(uSecs);
+      return (uSecs == null) ? null : new Time.fromMicroseconds(uSecs);
     } on FormatException catch (e) {
       return (onError != null)
           ? onError(h, m, s, ms, us, e)
           : invalidTimeError(h, m, s, ms, us, issues, e);
     }
   }
-  //Internal constructor - hidden when exported:
-  factory Time.fromMicroseconds(int uSecs) {
-    if (uSecs > kMicrosecondsPerDay) return invalidTimeMicrosecondsError(uSecs);
-    return new Time._(uSecs);
-  }
 
-  const Time._(this.uSeconds);
+  const Time.fromMicroseconds(int us) : uSeconds = us % kMicrosecondsPerDay;
 
   /// Returns `true` if this [Time] is the same as [other].
   @override
@@ -62,19 +57,21 @@ class Time implements Comparable<Time> {
   bool operator <(Time other) => !(uSeconds > other.uSeconds);
 
   /// Returns `true` if this Duration is the same object as [other].
-  Time operator +(Time other) => new Time._(uSeconds + other.uSeconds);
+  Time operator +(Time other) =>
+      new Time.fromMicroseconds(uSeconds + other.uSeconds);
 
   /// Returns `true` if this Duration is the same object as [other].
-  Time operator -(Time other) => new Time._(uSeconds - other.uSeconds);
+  Time operator -(Time other) =>
+      new Time.fromMicroseconds(uSeconds - other.uSeconds);
 
   @override
   int get hashCode => uSeconds.hashCode;
 
   /// Returns a new [Time] containing the [hash] of _this_.
-  Time get hash => new Time._(hashTimeMicroseconds(uSeconds));
+  Time get hash => new Time.fromMicroseconds(hashTimeMicroseconds(uSeconds));
 
   /// Returns a new [Time] containing the SHA-256 hash of [uSeconds].
-  Time get sha256 => new Time._(sha256Microseconds(uSeconds));
+  Time get sha256 => new Time.fromMicroseconds(sha256Microseconds(uSeconds));
 
   /// Returns the total number of _microseconds_ in _this_.
   int get inMicroseconds => uSeconds;
@@ -133,18 +130,6 @@ class Time implements Comparable<Time> {
   /// Returns the [fraction] as a 6 digit [String].
   String get f => digits6(millisecond * 1000 + microsecond);
 
-  Time get now {
-    final dt = new DateTime.now();
-    return new Time(
-        dt.hour, dt.minute, dt.second, dt.millisecond, dt.millisecond);
-  }
-
-  //TODO: test that now and nowNew return the same values, remove one
-  Time get nowNew {
-    final uSecs = (new DateTime.now()).microsecondsSinceEpoch;
-    return new Time.fromMicroseconds(uSecs);
-  }
-
   /// Returns _this_ as a [String] in DICOM time (TM) format.
   String get dcm => microsecondToTimeString(uSeconds, asDicom: true);
 
@@ -160,12 +145,18 @@ class Time implements Comparable<Time> {
   @override
   String toString() => inet;
 
+  /// Returns the current [Time].
+  static Time get now {
+    final dt = new DateTime.now();
+    return new Time.fromMicroseconds(
+        dt.microsecondsSinceEpoch + dt.timeZoneOffset.inMicroseconds);
+  }
+
   /// Returns _true_ if [s] is a valid DICOM [Time] [String].
   static bool isValidString(String s,
           {int start = 0, int end, Issues issues}) =>
       isValidDcmTimeString(s, start: start, end: end, issues: issues);
 
-  // Enhancement: all parse functions should take an onError argument.
   /// Returns a [Time] corresponding to [s], if [s] is valid;
   /// otherwise, returns _null_.
   static Time parse(String s,
@@ -173,7 +164,7 @@ class Time implements Comparable<Time> {
     final us = parseDcmTime(s, start: start, end: end);
     if (us == null)
       return (onError != null) ? onError(s) : invalidTimeString(s, issues);
-    return new Time._(us);
+    return new Time.fromMicroseconds(us);
   }
 
   /// Returns a [Issues] object if there are errors
