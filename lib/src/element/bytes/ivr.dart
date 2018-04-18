@@ -65,7 +65,7 @@ abstract class IvrElement<V> implements BDElement<V> {
   int get vrIndex {
     final vrIndex = tag.vrIndex;
     if (isSpecialVRIndex(vrIndex)) {
-      log.warn('Using kUNIndex for $tag');
+      log.debug('Using kUNIndex for $tag');
       return kUNIndex;
     }
     return vrIndex;
