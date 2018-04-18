@@ -26,47 +26,47 @@ void main() {
       maxYear: 2100,
       throwOnError: false);
 
+  const goodASList = const <List<String>>[
+    // Note: 000D is valid, but others (000M...) are not.
+    const <String>['000D'],
+    const <String>['024Y'],
+    const <String>['998Y'],
+    const <String>['999Y'],
+    const <String>['021D'],
+    const <String>['120D'],
+    const <String>['999D'],
+    const <String>['005W'],
+    const <String>['010W'],
+    const <String>['999W'],
+    const <String>['001M'],
+    const <String>['011M'],
+    const <String>['999M'],
+  ];
+
+  const badASList = const <List<String>>[
+    const <String>[''],
+    const <String>['000Y'],
+    const <String>['000W'],
+    const <String>['000M'],
+    const <String>['1'],
+    const <String>['A'],
+    const <String>['1y'],
+    const <String>['24Y'],
+    const <String>['024A'],
+    const <String>['024y'],
+    const <String>['034d'],
+    const <String>['023w'],
+    const <String>['003m'],
+    const <String>['1234'],
+    const <String>['abcd'],
+    const <String>['12ym'],
+    const <String>['012Y7'],
+    const <String>['012YU7'],
+  ];
+
   group('ASTag', () {
-    const goodAgeList = const <List<String>>[
-      // Note: 000D is valid, but others (000M...) are not.
-      const <String>['000D'],
-      const <String>['024Y'],
-      const <String>['998Y'],
-      const <String>['999Y'],
-      const <String>['021D'],
-      const <String>['120D'],
-      const <String>['999D'],
-      const <String>['005W'],
-      const <String>['010W'],
-      const <String>['999W'],
-      const <String>['001M'],
-      const <String>['011M'],
-      const <String>['999M'],
-    ];
-
-    const badAgeList = const <List<String>>[
-      const <String>[''],
-      const <String>['000Y'],
-      const <String>['000W'],
-      const <String>['000M'],
-      const <String>['1'],
-      const <String>['A'],
-      const <String>['1y'],
-      const <String>['24Y'],
-      const <String>['024A'],
-      const <String>['024y'],
-      const <String>['034d'],
-      const <String>['023w'],
-      const <String>['003m'],
-      const <String>['1234'],
-      const <String>['abcd'],
-      const <String>['12ym'],
-      const <String>['012Y7'],
-      const <String>['012YU7'],
-    ];
-
     test('AS hasValidValues Element good values', () {
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         system.throwOnError = false;
         final as0 = new AStag(PTag.kPatientAge, s);
         log.debug('as0 $as0');
@@ -75,7 +75,7 @@ void main() {
     });
 
     test('AS hasValidValues Element bad values', () {
-      for (var s in badAgeList) {
+      for (var s in badASList) {
         system.throwOnError = false;
         final as1 = new AStag(PTag.kPatientAge, s);
         expect(as1, isNull);
@@ -380,7 +380,7 @@ void main() {
     test('AS checkLength good values', () {
       final vList0 = rsg.getASList(1, 1);
       final as0 = new AStag(PTag.kPatientAge, vList0);
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         expect(as0.checkLength(s), true);
       }
       final as1 = new AStag(PTag.kPatientAge, vList0);
@@ -397,7 +397,7 @@ void main() {
     test('AS checkValue good values', () {
       final vList0 = rsg.getASList(1, 1);
       final as0 = new AStag(PTag.kPatientAge, vList0);
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         for (var a in s) {
           expect(as0.checkValue(a), true);
         }
@@ -407,7 +407,7 @@ void main() {
     test('AS checkValue bad values', () {
       final vList0 = rsg.getASList(1, 1);
       final as0 = new AStag(PTag.kPatientAge, vList0);
-      for (var s in badAgeList) {
+      for (var s in badASList) {
         for (var a in s) {
           system.throwOnError = false;
           expect(as0.checkValue(a), false);
@@ -456,44 +456,6 @@ void main() {
   });
 
   group('AS Element', () {
-    const goodAgeList = const <List<String>>[
-      // Note: 000D is valid, but others (000M...) are not.
-      const <String>['000D'],
-      const <String>['024Y'],
-      const <String>['998Y'],
-      const <String>['999Y'],
-      const <String>['021D'],
-      const <String>['120D'],
-      const <String>['999D'],
-      const <String>['005W'],
-      const <String>['010W'],
-      const <String>['999W'],
-      const <String>['001M'],
-      const <String>['011M'],
-      const <String>['999M'],
-    ];
-
-    const badAgeList = const <List<String>>[
-      const <String>[''],
-      const <String>['000Y'],
-      const <String>['000W'],
-      const <String>['000M'],
-      const <String>['1'],
-      const <String>['A'],
-      const <String>['1y'],
-      const <String>['24Y'],
-      const <String>['024A'],
-      const <String>['024y'],
-      const <String>['034d'],
-      const <String>['023w'],
-      const <String>['003m'],
-      const <String>['1234'],
-      const <String>['abcd'],
-      const <String>['12ym'],
-      const <String>['012Y7'],
-      const <String>['012YU7'],
-    ];
-
     const badAgeLengthList = const <String>[
       '',
       '1',
@@ -690,7 +652,7 @@ void main() {
 
     test('AS isValidValueLength good values', () {
       for (var i = 0; i < 10; i++) {
-        for (var s in goodAgeList) {
+        for (var s in goodASList) {
           for (var a in s) {
             expect(AS.isValidValueLength(a), true);
           }
@@ -707,7 +669,7 @@ void main() {
     });
 
     test('AS isNotValidValueLength good values', () {
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         for (var a in s) {
           expect(AS.isNotValidValueLength(a), false);
         }
@@ -723,7 +685,7 @@ void main() {
     });
 
     test('AS isValidValue good values', () {
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         for (var a in s) {
           expect(AS.isValidValue(a), true);
         }
@@ -731,7 +693,7 @@ void main() {
     });
 
     test('AS isValidValue bad values', () {
-      for (var s in badAgeList) {
+      for (var s in badASList) {
         for (var a in s) {
           system.throwOnError = false;
           expect(AS.isValidValue(a), false);
@@ -745,14 +707,14 @@ void main() {
 
     test('AS isValidValues good values', () {
       system.throwOnError = false;
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         expect(AS.isValidValues(PTag.kPatientAge, s), true);
       }
     });
 
     test('AS isValidValues bad values', () {
       system.throwOnError = false;
-      for (var s in badAgeList) {
+      for (var s in badASList) {
         system.throwOnError = false;
         expect(AS.isValidValues(PTag.kPatientAge, s), false);
 
@@ -849,7 +811,7 @@ void main() {
       final vList1 = ['024Y'];
       expect(AS.checkList(PTag.kPatientAge, vList1), vList1);
 
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         system.throwOnError = false;
         expect(AS.checkList(PTag.kPatientAge, s), s);
       }
@@ -864,7 +826,7 @@ void main() {
       expect(() => AS.checkList(PTag.kPatientAge, vList2),
           throwsA(const isInstanceOf<InvalidAgeStringError>()));
 
-      for (var s in badAgeList) {
+      for (var s in badASList) {
         system.throwOnError = false;
         expect(AS.checkList(PTag.kPatientAge, s), isNull);
 
@@ -894,7 +856,7 @@ void main() {
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         for (var a in s) {
           final values = cvt.ascii.encode(a);
           final tbd2 = AS.toByteData(s);
@@ -914,7 +876,7 @@ void main() {
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         final bd0 = AS.toByteData(s);
         final fbd0 = AS.fromByteData(bd0);
         expect(fbd0, equals(s));
@@ -931,7 +893,7 @@ void main() {
         expect(toB0, equals(bytes0));
       }
 
-      for (var s in goodAgeList) {
+      for (var s in goodASList) {
         final toB1 = AS.toBytes(s, kMaxShortVF);
         final bytes1 = Bytes.asciiEncode(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
@@ -954,42 +916,46 @@ void main() {
     });
   });
 
+  const goodDAList = const <List<String>>[
+    const <String>['19930822'],
+    const <String>['19930822'],
+    const <String>['19500718'],
+    const <String>['00000101'],
+    const <String>['19700101'],
+    const <String>['20171231'],
+    const <String>['19931010'],
+    //const <String>['19931010', '20171231'],
+  ];
+
+  const badDAList = const <List<String>>[
+    const <String>['19501318'], // bad month
+    const <String>['20041313'], // bad month
+    const <String>['19804312'], //bad month
+    const <String>['00000032'], // bad month and day
+    const <String>['00000000'], //bad day
+    const <String>['19800541'], // bad day
+    const <String>['-9700101'], // bad character in year
+    const <String>['1b700101'], // bad character in year
+    const <String>['1970a101'], // bad character in year
+    const <String>['19700b01'], // bad character in year
+    const <String>['1970011a'], // bad character in month
+    //const <String>['19931010', '20171231'],
+  ];
+
+  const badDALengthList = const <List<String>>[
+    const <String>['1978123'], // invalid length
+    const <String>['197812345'], // invalid length
+    const <String>['201'],
+    const <String>['2018'],
+    const <String>['20156'],
+    const <String>['199815'],
+    const <String>['12'],
+    const <String>['9']
+  ];
+
   group('DA Tests', () {
-
-    const goodDateValuesList = const <List<String>>[
-      const <String>['19930822'],
-      const <String>['19930822'],
-      const <String>['19500718'],
-      const <String>['00000101'],
-      const <String>['19700101'],
-      const <String>['20171231'],
-      const <String>['19931010'],
-      //const <String>['19931010', '20171231'],
-    ];
-
-    const badDateValuesList = const <List<String>>[
-      const <String>['19501318'], // bad month
-      const <String>['20041313'], // bad month
-      const <String>['19804312'], //bad month
-      const <String>['00000032'], // bad month and day
-      const <String>['00000000'], //bad day
-      const <String>['19800541'], // bad day
-      const <String>['-9700101'], // bad character in year
-      const <String>['1b700101'], // bad character in year
-      const <String>['1970a101'], // bad character in year
-      const <String>['19700b01'], // bad character in year
-      const <String>['1970011a'], // bad character in month
-      //const <String>['19931010', '20171231'],
-    ];
-
-    // Urgent: the tests should include more values with bad length
-    const badDateValueLengthList = const <List<String>>[
-      const <String>['1978123'], // invalid length
-      const <String>['197812345'], // invalid length
-    ];
-
     test('DA hasValidValues good values', () {
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         system.throwOnError = false;
         log.debug('DA: "$s"');
         final da0 = new DAtag(PTag.kCreationDate, s);
@@ -1003,7 +969,7 @@ void main() {
     });
 
     test('DA hasValidValues for bad year, month, and day values', () {
-      for (Iterable<String> s in badDateValuesList) {
+      for (Iterable<String> s in badDAList) {
         system.throwOnError = false;
         final da1 = new DAtag(PTag.kCreationDate, s);
         expect(da1, isNull);
@@ -1025,7 +991,7 @@ void main() {
     });
 
     test('DA hasValidValues for bad value length', () {
-      for (Iterable<String> s in badDateValueLengthList) {
+      for (Iterable<String> s in badDALengthList) {
         system.throwOnError = false;
         final da1 = new DAtag(PTag.kCreationDate, s);
         expect(da1, isNull);
@@ -1033,7 +999,7 @@ void main() {
         system.throwOnError = true;
         print('s: $s');
         expect(() => new DAtag(PTag.kCreationDate, s),
-                   throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
       system.throwOnError = false;
@@ -1043,7 +1009,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => new DAtag(PTag.kCreationDate, null),
-                 throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('DA hasValidValues good values random', () {
@@ -1083,7 +1049,7 @@ void main() {
       expect(da2 == da4, false);
       expect(da3 == da4, true);
 
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         final da5 = new DAtag(PTag.kCreationDate, s);
         final da6 = da5.update(['20150817']);
         final da7 = da5.update(['20150817']);
@@ -1109,7 +1075,7 @@ void main() {
       expect(daNoValues1.values.isEmpty, true);
       log.debug('daNoValues1:$daNoValues1');
 
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         final da1 = new DAtag(PTag.kCreationDate, s);
         final daNoValues1 = da1.noValues;
         expect(daNoValues1.values.isEmpty, true);
@@ -1142,7 +1108,7 @@ void main() {
       expect(da2 == da3, true);
       expect(da2.hashCode == da3.hashCode, true);
 
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         final da4 = new DAtag(PTag.kCreationDate, s);
         final da5 = da4.copy;
         expect(da4 == da5, true);
@@ -1219,7 +1185,7 @@ void main() {
     });
 
     test('DA valuesCopy ranodm', () {
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         final da0 = new DAtag(PTag.kCalibrationDate, s);
         expect(s, equals(da0.valuesCopy));
       }
@@ -1232,7 +1198,7 @@ void main() {
     });
 
     test('DA isValidLength', () {
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         final da0 = new DAtag(PTag.kCreationDate, s);
         expect(da0.tag.isValidValuesLength(da0.values), true);
       }
@@ -1248,7 +1214,7 @@ void main() {
 
     test('DA isValidValues good values', () {
       system.throwOnError = false;
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         final da0 = new DAtag(PTag.kCreationDate, s);
         expect(da0.hasValidValues, true);
       }
@@ -1256,7 +1222,7 @@ void main() {
 
     test('DA isValidValues bad values', () {
       system.throwOnError = false;
-      for (var s in badDateValuesList) {
+      for (var s in badDAList) {
         system.throwOnError = false;
         final da0 = new DAtag(PTag.kCreationDate, s);
         expect(da0, isNull);
@@ -1311,7 +1277,7 @@ void main() {
     });
 
     test('DA fromUint8List', () {
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = DA.toUint8List(s);
         log.debug('bytes:$bytes');
@@ -1364,7 +1330,7 @@ void main() {
     test('DA checkLength', () {
       system.throwOnError = false;
       final da0 = new DAtag(PTag.kCreationDate, ['19930822']);
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         expect(da0.checkLength(s), true);
       }
       final da1 = new DAtag(PTag.kCreationDate, ['19930822']);
@@ -1378,7 +1344,7 @@ void main() {
     test('DA checkLength good values random', () {
       final vList0 = rsg.getDAList(1, 1);
       final da0 = new DAtag(PTag.kCreationDate, vList0);
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         expect(da0.checkLength(s), true);
       }
       final da1 = new DAtag(PTag.kCreationDate, vList0);
@@ -1394,7 +1360,7 @@ void main() {
 
     test('DA checkValue good values', () {
       final da0 = new DAtag(PTag.kCreationDate, ['19930822']);
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         for (var a in s) {
           expect(da0.checkValue(a), true);
         }
@@ -1403,7 +1369,7 @@ void main() {
 
     test('DA checkValue bad values', () {
       final da0 = new DAtag(PTag.kCreationDate, ['19930822']);
-      for (var s in badDateValuesList) {
+      for (var s in badDAList) {
         for (var a in s) {
           system.throwOnError = false;
           expect(da0.checkValue(a), false);
@@ -1415,7 +1381,7 @@ void main() {
       system.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
       final da0 = new DAtag(PTag.kCreationDate, vList0);
-      for (var s in goodDateValuesList) {
+      for (var s in goodDAList) {
         for (var a in s) {
           expect(da0.checkValue(a), true);
         }
@@ -1425,7 +1391,7 @@ void main() {
       system.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
       final da0 = new DAtag(PTag.kCreationDate, vList0);
-      for (var s in badDateValuesList) {
+      for (var s in badDAList) {
         for (var a in s) {
           system.throwOnError = false;
           expect(da0.checkValue(a), false);
@@ -1470,37 +1436,6 @@ void main() {
   });
 
   group('DA Element', () {
-    //Urgent Sharath: these shouldn't be reproduced. They already exist above.
-    const goodDAList = const <List<String>>[
-      const <String>['19930822'],
-      const <String>['19930822'],
-      const <String>['19500718'],
-      const <String>['00000101'],
-      const <String>['19700101'],
-      const <String>['20171231'],
-      const <String>['19931010'],
-      //const <String>['19931010', '20171231'],
-    ];
-
-    const badDateValueList = const <List<String>>[
-      const <String>['19501318'], // bad month
-      const <String>['20041313'], // bad month
-      const <String>['19804312'], //bad month
-      const <String>['00000032'], // bad month and day
-      const <String>['00000000'], //bad day
-      const <String>['19800541'], // bad day
-      const <String>['-9700101'], // bad character in year
-      const <String>['1b700101'], // bad character in year
-      const <String>['1970a101'], // bad character in year
-      const <String>['19700b01'], // bad character in year
-      const <String>['1970011a'], // bad character in month
-    ];
-
-    const badDateValueLengthList = const <List<String>>[
-      const <String>['1978123'], // invalid length
-      const <String>['197812345'], // invalid length
-    ];
-
     const badDateValuesLengthList = const <List<String>>[
       const <String>['197812345', '1b700101'],
       const <String>['19800541', '1970011a'],
@@ -1745,7 +1680,7 @@ void main() {
 
     test('DA isValidValue bad values', () {
       system.throwOnError = false;
-      for (var s in badDateValueList) {
+      for (var s in badDAList) {
         for (var a in s) {
           system.throwOnError = false;
           expect(DA.isValidValue(a), false);
@@ -1762,7 +1697,7 @@ void main() {
 
     test('DA isValidValues bad values', () {
       system.throwOnError = false;
-      for (var s in badDateValueList) {
+      for (var s in badDAList) {
         system.throwOnError = false;
         expect(DA.isValidValues(PTag.kDate, s), false);
 
@@ -1774,13 +1709,13 @@ void main() {
 
     test('DA isValidValues bad date value length', () {
       system.throwOnError = false;
-      for (var s in badDateValueLengthList) {
+      for (var s in badDALengthList) {
         system.throwOnError = false;
         expect(DA.isValidValues(PTag.kDate, s), false);
 
         system.throwOnError = true;
         expect(() => DA.isValidValues(PTag.kDate, s),
-                   throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -1891,7 +1826,7 @@ void main() {
       expect(() => DA.checkList(PTag.kDate, vList1),
           throwsA(const isInstanceOf<InvalidDateStringError>()));
 
-      for (var s in badDateValueList) {
+      for (var s in badDAList) {
         system.throwOnError = false;
         expect(DA.checkList(PTag.kDate, s), isNull);
 
@@ -1981,56 +1916,56 @@ void main() {
     });
   });
 
+  final goodDTList = <List<String>>[
+    <String>['19500718105630'],
+    <String>['00000101010101'],
+    <String>['19700101000000'],
+    <String>['20161229000000'],
+    <String>['19991025235959'],
+    <String>['20170223122334.111111'],
+    <String>['20170223122334.111111+1100'],
+    <String>['20170223122334.111111-1000'],
+    <String>['20170223122334.111111+0930'],
+    <String>['20120228105630'], // leap year
+    <String>['20080229105630'], // leap year
+    <String>['20160229105630'], // leap year
+    <String>['20200125105630'], // leap year
+    <String>['20240229105630'] // leap year
+  ];
+
+  const badDTList = const <List<String>>[
+    const <String>['19501318'],
+    const <String>['19501318105630'], //bad months
+    const <String>['19501032105630'], // bad day
+    const <String>['00000000000000'], // bad month and day
+    const <String>['19501032105660'], // bad day and second
+    const <String>['00000032240212'], // bad month and day and hour
+    const <String>['20161229006100'], // bad minute
+    const <String>['-9700101226a22'], // bad character in year minute
+    const <String>['1b7001012a1045'], // bad character in year and hour
+    const <String>['19c001012210a2'], // bad character in year and sec
+    const <String>['197d0101105630'], // bad character in year
+    const <String>['1970a101105630'], // bad character in month
+    const <String>['19700b01105630'], // bad character in month
+    const <String>['197001a1105630'], // bad character in day
+    const <String>['1970011a105630'], // bad character in day
+    const <String>['20120230105630'], // bad day in leap year
+    const <String>['20160231105630'], // bad day in leap year
+    const <String>['20130229105630'], // bad day in year
+    const <String>['20230229105630'], // bad day in year
+    const <String>['20210229105630'], // bad day in year
+    const <String>['20170223122334.111111+0'], // bad timezone
+    const <String>['20170223122334.111111+01'], // bad timezone
+    const <String>['20170223122334.111111+013'], // bad timezone
+    const <String>['20170223122334.111111+1545'], // bad timezone
+    const <String>['20170223122334.111111-1015'], // bad timezone
+    const <String>['20170223122334.111111+0960'], // bad timezone
+    const <String>[
+      '20170223122334.111111*0945'
+    ], // bad timezone: special character
+  ];
+
   group('DT Tests', () {
-    final goodDTList = <List<String>>[
-      <String>['19500718105630'],
-      <String>['00000101010101'],
-      <String>['19700101000000'],
-      <String>['20161229000000'],
-      <String>['19991025235959'],
-      <String>['20170223122334.111111'],
-      <String>['20170223122334.111111+1100'],
-      <String>['20170223122334.111111-1000'],
-      <String>['20170223122334.111111+0930'],
-      <String>['20120228105630'], // leap year
-      <String>['20080229105630'], // leap year
-      <String>['20160229105630'], // leap year
-      <String>['20200125105630'], // leap year
-      <String>['20240229105630'] // leap year
-    ];
-
-    const badDTList = const <List<String>>[
-      const <String>['19501318'],
-      const <String>['19501318105630'], //bad months
-      const <String>['19501032105630'], // bad day
-      const <String>['00000000000000'], // bad month and day
-      const <String>['19501032105660'], // bad day and second
-      const <String>['00000032240212'], // bad month and day and hour
-      const <String>['20161229006100'], // bad minute
-      const <String>['-9700101226a22'], // bad character in year minute
-      const <String>['1b7001012a1045'], // bad character in year and hour
-      const <String>['19c001012210a2'], // bad character in year and sec
-      const <String>['197d0101105630'], // bad character in year
-      const <String>['1970a101105630'], // bad character in month
-      const <String>['19700b01105630'], // bad character in month
-      const <String>['197001a1105630'], // bad character in day
-      const <String>['1970011a105630'], // bad character in day
-      const <String>['20120230105630'], // bad day in leap year
-      const <String>['20160231105630'], // bad day in leap year
-      const <String>['20130229105630'], // bad day in year
-      const <String>['20230229105630'], // bad day in year
-      const <String>['20210229105630'], // bad day in year
-      const <String>['20170223122334.111111+0'], // bad timezone
-      const <String>['20170223122334.111111+01'], // bad timezone
-      const <String>['20170223122334.111111+013'], // bad timezone
-      const <String>['20170223122334.111111+1545'], // bad timezone
-      const <String>['20170223122334.111111-1015'], // bad timezone
-      const <String>['20170223122334.111111+0960'], // bad timezone
-      const <String>[
-        '20170223122334.111111*0945'
-      ], // bad timezone: special character
-    ];
-
     test('DT fromUint8List', () {
       //fromBytes
 //      system.level = Level.info2;
@@ -2457,54 +2392,6 @@ void main() {
   });
 
   group('DT Element', () {
-    final goodDTList = <List<String>>[
-      <String>['19500718105630'],
-      <String>['00000101010101'],
-      <String>['19700101000000'],
-      <String>['20161229000000'],
-      <String>['19991025235959'],
-      <String>['20170223122334.111111'],
-      <String>['20170223122334.111111+1100'],
-      <String>['20170223122334.111111-1000'],
-      <String>['20170223122334.111111+0930'],
-      <String>['20120228105630'], // leap year
-      <String>['20080229105630'], // leap year
-      <String>['20160229105630'], // leap year
-      <String>['20200125105630'], // leap year
-      <String>['20240229105630'] // leap year
-    ];
-
-    const badDTList = const <List<String>>[
-      const <String>['19501318'],
-      const <String>['19501318105630'], //bad months
-      const <String>['19501032105630'], // bad day
-      const <String>['00000000000000'], // bad month and day
-      const <String>['19501032105660'], // bad day and second
-      const <String>['00000032240212'], // bad month and day and hour
-      const <String>['20161229006100'], // bad minute
-      const <String>['-9700101226a22'], // bad character in year minute
-      const <String>['1b7001012a1045'], // bad character in year and hour
-      const <String>['19c001012210a2'], // bad character in year and sec
-      const <String>['197d0101105630'], // bad character in year
-      const <String>['1970a101105630'], // bad character in month
-      const <String>['19700b01105630'], // bad character in month
-      const <String>['197001a1105630'], // bad character in day
-      const <String>['1970011a105630'], // bad character in day
-      const <String>['20120230105630'], // bad day in leap year
-      const <String>['20160231105630'], // bad day in leap year
-      const <String>['20130229105630'], // bad day in year
-      const <String>['20230229105630'], // bad day in year
-      const <String>['20210229105630'], // bad day in year
-      const <String>['20170223122334.111111+0'], // bad timezone
-      const <String>['20170223122334.111111+01'], // bad timezone
-      const <String>['20170223122334.111111+013'], // bad timezone
-      const <String>['20170223122334.111111+1545'], // bad timezone
-      const <String>['20170223122334.111111-1015'], // bad timezone
-      const <String>['20170223122334.111111+0960'], // bad timezone
-      const <String>[
-        '20170223122334.111111*0945'
-      ], // bad timezone: special character
-    ];
     const badDTLengthList = const <List<String>>[
       const <String>['20120230105630', '1970011a105630'],
       const <String>['20120230105630', '1970011a105630'],
@@ -2986,73 +2873,73 @@ void main() {
     });
   });
 
+  const goodTMList = const <List<String>>[
+    const <String>['000000'],
+    const <String>['190101'],
+    const <String>['235959'],
+    const <String>['010101.1'],
+    const <String>['010101.11'],
+    const <String>['010101.111'],
+    const <String>['010101.1111'],
+    const <String>['010101.11111'],
+    const <String>['010101.111111'],
+    const <String>['000000.0'],
+    const <String>['000000.00'],
+    const <String>['000000.000'],
+    const <String>['000000.0000'],
+    const <String>['000000.00000'],
+    const <String>['000000.000000'],
+    const <String>['00'],
+    const <String>['0000'],
+    const <String>['000000'],
+    const <String>['000000.1'],
+    const <String>['000000.111111'],
+    const <String>['01'],
+    const <String>['0101'],
+    const <String>['010101'],
+    const <String>['010101.1'],
+    const <String>['010101.111111'],
+    const <String>['10'],
+    const <String>['1010'],
+    const <String>['101010'],
+    const <String>['101010.1'],
+    const <String>['101010.111111'],
+    const <String>['22'],
+    const <String>['2222'],
+    const <String>['222222'],
+    const <String>['222222.1'],
+    const <String>['222222.111111'],
+    const <String>['23'],
+    const <String>['2323'],
+    const <String>['232323'],
+    const <String>['232323.1'],
+    const <String>['232323.111111'],
+    const <String>['23'],
+    const <String>['2359'],
+    const <String>['235959'],
+    const <String>['235959.1'],
+    const <String>['235959.111111'],
+  ];
+  const badTMList = const <List<String>>[
+    const <String>['241318'], // bad hour
+    const <String>['006132'], // bad minute
+    const <String>['006060'], // bad minute and second
+    const <String>['000060'], // bad month and day
+    const <String>['-00101'], // bad character in hour
+    const <String>['a00101'], // bad character in hour
+    const <String>['0a0101'], // bad character in hour
+    const <String>['ad0101'], // bad characters in hour
+    const <String>['19a101'], // bad character in minute
+    const <String>['190b01'], // bad character in minute
+    const <String>['1901a1'], // bad character in second
+    const <String>['19011a'], // bad character in second
+  ];
+
   group('TM Test', () {
     log
       ..debug('kMinEpochMicroseconds: $kMinEpochMicrosecond')
       ..debug('kMaxEpochMicroseconds: $kMaxEpochMicrosecond')
       ..debug('kMicrosecondsPerDay: $kMicrosecondsPerDay');
-
-    const goodTMList = const <List<String>>[
-      const <String>['000000'],
-      const <String>['190101'],
-      const <String>['235959'],
-      const <String>['010101.1'],
-      const <String>['010101.11'],
-      const <String>['010101.111'],
-      const <String>['010101.1111'],
-      const <String>['010101.11111'],
-      const <String>['010101.111111'],
-      const <String>['000000.0'],
-      const <String>['000000.00'],
-      const <String>['000000.000'],
-      const <String>['000000.0000'],
-      const <String>['000000.00000'],
-      const <String>['000000.000000'],
-      const <String>['00'],
-      const <String>['0000'],
-      const <String>['000000'],
-      const <String>['000000.1'],
-      const <String>['000000.111111'],
-      const <String>['01'],
-      const <String>['0101'],
-      const <String>['010101'],
-      const <String>['010101.1'],
-      const <String>['010101.111111'],
-      const <String>['10'],
-      const <String>['1010'],
-      const <String>['101010'],
-      const <String>['101010.1'],
-      const <String>['101010.111111'],
-      const <String>['22'],
-      const <String>['2222'],
-      const <String>['222222'],
-      const <String>['222222.1'],
-      const <String>['222222.111111'],
-      const <String>['23'],
-      const <String>['2323'],
-      const <String>['232323'],
-      const <String>['232323.1'],
-      const <String>['232323.111111'],
-      const <String>['23'],
-      const <String>['2359'],
-      const <String>['235959'],
-      const <String>['235959.1'],
-      const <String>['235959.111111'],
-    ];
-    const badTMList = const <List<String>>[
-      const <String>['241318'], // bad hour
-      const <String>['006132'], // bad minute
-      const <String>['006060'], // bad minute and second
-      const <String>['000060'], // bad month and day
-      const <String>['-00101'], // bad character in hour
-      const <String>['a00101'], // bad character in hour
-      const <String>['0a0101'], // bad character in hour
-      const <String>['ad0101'], // bad characters in hour
-      const <String>['19a101'], // bad character in minute
-      const <String>['190b01'], // bad character in minute
-      const <String>['1901a1'], // bad character in second
-      const <String>['19011a'], // bad character in second
-    ];
 
     test('TM hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
@@ -3454,68 +3341,6 @@ void main() {
   });
 
   group('TM Element', () {
-    const goodTMList = const <List<String>>[
-      const <String>['000000'],
-      const <String>['190101'],
-      const <String>['235959'],
-      const <String>['010101.1'],
-      const <String>['010101.11'],
-      const <String>['010101.111'],
-      const <String>['010101.1111'],
-      const <String>['010101.11111'],
-      const <String>['010101.111111'],
-      const <String>['000000.0'],
-      const <String>['000000.00'],
-      const <String>['000000.000'],
-      const <String>['000000.0000'],
-      const <String>['000000.00000'],
-      const <String>['000000.000000'],
-      const <String>['00'],
-      const <String>['0000'],
-      const <String>['000000'],
-      const <String>['000000.1'],
-      const <String>['000000.111111'],
-      const <String>['01'],
-      const <String>['0101'],
-      const <String>['010101'],
-      const <String>['010101.1'],
-      const <String>['010101.111111'],
-      const <String>['10'],
-      const <String>['1010'],
-      const <String>['101010'],
-      const <String>['101010.1'],
-      const <String>['101010.111111'],
-      const <String>['22'],
-      const <String>['2222'],
-      const <String>['222222'],
-      const <String>['222222.1'],
-      const <String>['222222.111111'],
-      const <String>['23'],
-      const <String>['2323'],
-      const <String>['232323'],
-      const <String>['232323.1'],
-      const <String>['232323.111111'],
-      const <String>['23'],
-      const <String>['2359'],
-      const <String>['235959'],
-      const <String>['235959.1'],
-      const <String>['235959.111111'],
-    ];
-    const badTMList = const <List<String>>[
-      const <String>['241318'], // bad hour
-      const <String>['006132'], // bad minute
-      const <String>['006060'], // bad minute and second
-      const <String>['000060'], // bad month and day
-      const <String>['-00101'], // bad character in hour
-      const <String>['a00101'], // bad character in hour
-      const <String>['0a0101'], // bad character in hour
-      const <String>['ad0101'], // bad characters in hour
-      const <String>['19a101'], // bad character in minute
-      const <String>['190b01'], // bad character in minute
-      const <String>['1901a1'], // bad character in second
-      const <String>['19011a'], // bad character in second
-    ];
-
     const badTMLengthList = const <List<String>>[
       const <String>['999999.9999', '999999.99999', '999999.999999'],
       const <String>['999999.9', '999999.99', '999999.999']
