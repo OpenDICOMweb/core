@@ -87,7 +87,7 @@ abstract class DSBytes {
 
   @override
   String toString() =>
-      '$runtimeType: start($dsStart) end($dsEnd) vfLength($vfLength)';
+      '$runtimeType: ${bytes.endian} $dsStart-$dsEnd:${bytes.lengthInBytes}';
 }
 
 /// Root Dataset Bytes ([RDSBytes]).
@@ -115,9 +115,8 @@ class RDSBytes extends DSBytes {
         fmiEnd = 0,
         hasPrefix = false;
 
-  Bytes get preamble =>
-      bytes.toBytes(kPreambleOffset, kPreambleLength);
-  
+  Bytes get preamble => bytes.toBytes(kPreambleOffset, kPreambleLength);
+
   Bytes get prefix => bytes.toBytes(kPrefixOffset, kPrefixLength);
 
   int get startDelimiter => getUint32(kPrefixOffset);
@@ -136,8 +135,17 @@ class RDSBytes extends DSBytes {
   int get vfLengthField => vfLength;
 
   @override
-  Uint8List get vfAsUint8List =>
-      bytes.buffer.asUint8List(bytes.offsetInBytes + kHeaderSize, bytes.lengthInBytes);
+  Uint8List get vfAsUint8List => bytes.buffer
+      .asUint8List(bytes.offsetInBytes + kHeaderSize, bytes.lengthInBytes);
+
+  @override
+  String toString() {
+    final fmiLength = fmiEnd - 132;
+    final dsLength = dsEnd - dsStart;
+    return '$runtimeType: FMI 132-$fmiEnd:$fmiLength '
+        'RDS $dsStart-$dsEnd:$dsLength';
+  }
+
 
 //  static const int kToken = kDcmPrefix;
   static const int kPreambleOffset = 0;

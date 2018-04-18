@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+import 'dart:typed_data';
+
 import 'package:core/src/value/uid/uid.dart';
 import 'package:core/src/value/uid/well_known/uid_type.dart';
 import 'package:core/src/value/uid/well_known/wk_uid.dart';
@@ -20,10 +22,13 @@ class TransferSyntax extends WKUid {
 
   final bool mayHaveFragments;
 
+  final Endian endian;
+
   const TransferSyntax(String uid, String keyword, String name, this.mediaType,
       {bool isRetired = false,
       this.isEncapsulated = true,
-      this.mayHaveFragments = true})
+      this.mayHaveFragments = true,
+      this.endian = Endian.little})
       : super(uid, keyword, UidType.kTransferSyntax, name,
             isRetired: isRetired);
 
@@ -38,6 +43,9 @@ class TransferSyntax extends WKUid {
 
   /// _true_ if _this_ is an Explicit VR Transfer Syntax.
   bool get isEvr => !isIvr;
+
+  Endian get endianness =>
+      (endian == Endian.little) ? Endian.little : Endian.big;
 
   bool get isNativeFormat => !isEncapsulated;
 
@@ -112,7 +120,8 @@ class TransferSyntax extends WKUid {
       'image/bigEndian',
       isRetired: true,
       isEncapsulated: false,
-      mayHaveFragments: false);
+      mayHaveFragments: false,
+      endian: Endian.big);
 
   static const TransferSyntax kJpegBaseline1 = const TransferSyntax(
       '1.2.840.10008.1.2.4.50',

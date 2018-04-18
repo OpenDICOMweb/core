@@ -61,7 +61,7 @@ const int kUSSSIndex = 32;
 
 const int kVRIndexMin = 0;
 const int kVREvrLongIndexMin = 1; // OB
-const int kVRMaybeUndefinedIndexMin = 1; // OB
+const int kVRMaybeUndefinedIndexMin = 0; // OB
 const int kVRMaybeUndefinedIndexMax = 3; // UN
 
 const int kVRDefinedLongIndexMin = 4; // OD

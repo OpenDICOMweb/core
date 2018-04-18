@@ -43,13 +43,14 @@ bool _isMaxCapacityExceeded(int length, [int maxLength]) {
 class Bytes extends ListBase<int> {
   ByteData _bd;
   // TODO: create BytesLittleEndian and BytesBigEndian and remove [endian].
-  final Endian endian;
+  Endian endian;
 
   /// Returns a
-  Bytes([int length = kDefaultLength, this.endian = Endian.little])
-      : _bd = new ByteData(length);
+  Bytes([int length, this.endian = Endian.little])
+      : _bd = new ByteData(length ?? kDefaultLength);
 
-  Bytes.from(Bytes bytes, [int offset, int length, this.endian = Endian.little])
+  Bytes.from(Bytes bytes, [int offset, int length, this.endian = Endian
+      .little])
       : _bd = bytes.asByteData(
             offset ?? bytes.offsetInBytes, length ?? bytes.lengthInBytes);
 
@@ -95,11 +96,12 @@ class Bytes extends ListBase<int> {
   @override
   void operator []=(int i, int v) => _bd.setUint8(i, v);
 
-  bool ignorePadding = true;
-  bool allowUnequalLengths = false;
   @override
   bool operator ==(Object other) =>
       (other is Bytes) ? _bytesEqual(this, other) : false;
+
+  bool ignorePadding = true;
+  bool allowUnequalLengths = false;
 
   // Core accessor NOT to be exported?
   ByteData get bd => _bd;
@@ -526,7 +528,13 @@ class Bytes extends ListBase<int> {
   }
 
   @override
-  String toString() => '$runtimeType: $endianness length: ${_bd.lengthInBytes}';
+  String toString() {
+    final start = _bd.offsetInBytes;
+    final length = _bd.lengthInBytes;
+    final end = start + length;
+    return '$runtimeType: $endianness $start-$end:$length';
+  }
+
 
   // **** End Binary DICOM specific methods
   static const int kInt8Size = 1;
@@ -755,6 +763,7 @@ void _toBytes(int i, Bytes a, Bytes b) {
     ..warn('    ${b.getAscii()}');
 }
 
+/*
 bool checkPadding(Bytes bytes, [int padChar = kSpace]) =>
     _checkPadding(bytes, padChar);
 
@@ -766,6 +775,7 @@ bool _checkPadding(Bytes bytes, int padChar) {
     log.debug('** Invalid PadChar: $char should be $padChar');
   return true;
 }
+*/
 
 Bytes removePadding(Bytes bytes, int vfOffset, [int padChar = kSpace]) =>
     _removePadding(bytes, vfOffset, padChar);
@@ -777,7 +787,9 @@ Bytes _removePadding(Bytes bytes, int vfOffset, int padChar) {
   final lastIndex = bytes.lengthInBytes - 1;
   final char = bytes.getUint8(lastIndex);
   if (char == kNull || char == kSpace) {
-    log.debug3('Removing Padding: $char');
+    if (char != padChar)
+      log.debug1('** Invalid PadChar: $char should be $padChar');
+    log.debug2('Removing Padding: $char');
     return bytes.toBytes(
         bytes.offsetInBytes, bytes.lengthInBytes - 1, bytes.endian);
   }

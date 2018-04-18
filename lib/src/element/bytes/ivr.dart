@@ -34,7 +34,6 @@ const int _vfOffset = 8;
 Bytes _removePadding(Bytes bytes, [int padChar = kSpace]) =>
     removePadding(bytes, _vfOffset, padChar);
 
-
 abstract class IvrElement<V> implements BDElement<V> {
   @override
   Bytes get bytes;
@@ -67,7 +66,7 @@ abstract class IvrElement<V> implements BDElement<V> {
     final vrIndex = tag.vrIndex;
     if (isSpecialVRIndex(vrIndex)) {
       log.warn('Using kUNIndex for $tag');
-     return kUNIndex;
+      return kUNIndex;
     }
     return vrIndex;
   }
@@ -82,7 +81,7 @@ abstract class IvrElement<V> implements BDElement<V> {
   int get vfLengthField => bytes.getUint32(_vfLengthOffset);
 
   @override
-  Bytes get vfBytesWithPadding => 
+  Bytes get vfBytesWithPadding =>
       bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
 
   @override
@@ -131,12 +130,17 @@ abstract class IvrElement<V> implements BDElement<V> {
 
   /// Returns a new [SQivr], where [bytes] is [Bytes] for complete sequence.
   static SQivr makeSequenceFromCode(
-          int code, Dataset parent, Iterable<Item> items, [Bytes bytes]) =>
+          int code, Dataset parent, Iterable<Item> items,
+          [Bytes bytes]) =>
       new SQivr(bytes, parent, items);
 
   /// Returns a new [SQivr], where [bytes] is [Bytes] for complete sequence.
   static SQivr makeSequenceFromTag(
-      Tag tag, Dataset parent, Iterable<Item> items, [Bytes bytes,]) =>
+    Tag tag,
+    Dataset parent,
+    Iterable<Item> items, [
+    Bytes bytes,
+  ]) =>
       unsupportedError();
 }
 
@@ -450,7 +454,7 @@ class AEivr extends AE
 
   static AEivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kAEIndex);
-    assert(checkPadding(bytes));
+
     return new AEivr(_removePadding(bytes));
   }
 }
@@ -477,7 +481,6 @@ class CSivr extends CS
 
   static CSivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kCSIndex);
-    assert(checkPadding(bytes));
     return new CSivr(_removePadding(bytes));
   }
 }
@@ -504,7 +507,6 @@ class DSivr extends DS
 
   static DSivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kDSIndex);
-    assert(checkPadding(bytes));
     return new DSivr(_removePadding(bytes));
   }
 }
@@ -518,7 +520,6 @@ class DTivr extends DT
 
   static DTivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kDTIndex);
-    assert(checkPadding(bytes));
     return new DTivr(_removePadding(bytes));
   }
 }
@@ -532,7 +533,6 @@ class ISivr extends IS
 
   static ISivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kISIndex);
-    assert(checkPadding(bytes));
     return new ISivr(_removePadding(bytes));
   }
 }
@@ -546,7 +546,6 @@ class UIivr extends UI
 
   static UIivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kUIIndex);
-    assert(checkPadding(bytes, kNull));
     return new UIivr(_removePadding(bytes));
   }
 }
@@ -560,20 +559,18 @@ class LOivr extends LO
 
   static LOivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);
-    assert(checkPadding(bytes));
     final v = _removePadding(bytes);
     // Read code elt.
     final group = bytes.getUint16(0);
     final elt = bytes.getUint16(2);
     return (Tag.isPrivateGroup(group) && elt >= 0x10 && elt <= 0xFF)
-           ? new PCivr(v)
-           : new LOivr(v);
+        ? new PCivr(v)
+        : new LOivr(v);
   }
 }
 
 class PCivr extends LOivr
     with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
-
   PCivr(Bytes bytes) : super(bytes);
 
   @override
@@ -600,7 +597,6 @@ class PCivr extends LOivr
 
   static PCivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kLOIndex);
-    assert(checkPadding(bytes));
     return new PCivr(_removePadding(bytes));
   }
 
@@ -611,7 +607,7 @@ class PCivr extends LOivr
       ..setUint16(0, group)
       ..setUint16(0, sgNumber)
       ..setUint16(4, kLOIndex)
- //     ..setUint8(5, kO)
+      //     ..setUint8(5, kO)
       ..setUint16(6, 0);
     return new PCivr(bytes);
   }
@@ -626,7 +622,6 @@ class PNivr extends PN
 
   static PNivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kPNIndex);
-    assert(checkPadding(bytes));
     return new PNivr(_removePadding(bytes));
   }
 }
@@ -637,10 +632,9 @@ class SHivr extends SH
   final Bytes bytes;
 
   SHivr(this.bytes);
-
   static SHivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kSHIndex);
-    assert(checkPadding(bytes));
+
     return new SHivr(_removePadding(bytes));
   }
 }
@@ -656,7 +650,6 @@ class LTivr extends LT
   List<String> get values => [vfBytes.getUtf8()];
   static LTivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kLTIndex);
-    assert(checkPadding(bytes));
     return new LTivr(_removePadding(bytes));
   }
 }
@@ -670,7 +663,6 @@ class STivr extends ST
 
   static STivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kSTIndex);
-    assert(checkPadding(bytes));
     return new STivr(_removePadding(bytes));
   }
 }
@@ -684,8 +676,7 @@ class TMivr extends TM
 
   static TMivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kTMIndex || vrIndex == kUNIndex,
-    'vrIndex: $vrIndex');
-    assert(checkPadding(bytes));
+        'vrIndex: $vrIndex');
     return new TMivr(_removePadding(bytes));
   }
 }
@@ -699,7 +690,6 @@ class UCivr extends UC
 
   static UCivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kUCIndex);
-    assert(checkPadding(bytes));
     return new UCivr(_removePadding(bytes));
   }
 }
@@ -713,7 +703,6 @@ class URivr extends UR
 
   static URivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kURIndex);
-    assert(checkPadding(bytes));
     return new URivr(_removePadding(bytes));
   }
 }
@@ -727,13 +716,11 @@ class UTivr extends UT
 
   static UTivr make(Bytes bytes, int vrIndex) {
     assert(vrIndex == null || vrIndex == kUTIndex);
-    assert(checkPadding(bytes));
     return new UTivr(_removePadding(bytes));
   }
 }
 
-class SQivr extends SQ<int>
-    with Common, IvrElement<Item> {
+class SQivr extends SQ<int> with Common, IvrElement<Item> {
   @override
   final Bytes bytes;
   @override

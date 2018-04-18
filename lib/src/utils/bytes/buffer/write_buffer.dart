@@ -199,7 +199,7 @@ class WriteBuffer extends BufferBase {
       assert(code >= 0x00020000 && code <= kSequenceDelimitationItem,
       'Value out of range: $code (${dcm(code)})');
     }
-    assert(wIndex_.isEven && wHasRemaining(4));
+    assert(wIndex_.isEven);
     _maybeGrow(4);
     buffer
       ..setUint16(wIndex_, code >> 16)
