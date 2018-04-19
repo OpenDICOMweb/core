@@ -31,6 +31,8 @@ abstract class PixelData {
   List<int> get pixels;
   TransferSyntax get ts;
 
+  // **** End Interface
+
   int get vfOffset => ts.isEvr ? 12 : 8;
 
   /// Returns _true_ if encapsulated (i.e. compressed).

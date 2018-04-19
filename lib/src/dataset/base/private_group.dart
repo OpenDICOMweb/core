@@ -125,7 +125,7 @@ class PrivateGroup implements GroupBase {
     final tag = e.tag;
     if (tag is PrivateTag) {
       final sgNumber = tag.sgNumber;
-      // log.debug('currentSGIndex $_currentSGNumber sgNumber $sgNumber');
+      print('currentSGIndex $_currentSGNumber sgNumber $sgNumber');
       if (sgNumber < _currentSGNumber) {
         // privateSubgroupOutOfOrder(_currentSubgroupNumber, sgNumber, e);
         throw 'Private Subgroup out of order: '

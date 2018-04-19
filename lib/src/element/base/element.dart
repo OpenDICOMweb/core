@@ -44,11 +44,8 @@ Iterable<V> _toList<V>(Iterable v) =>
 
 bool doTestValidity = true;
 
-/// All add, replace, and remove operations should
-/// be done by calling add, replace, and remove methods in [Dataset].
-
-bool doFancy = false;
-bool withValues = true;
+// All add, replace, and remove operations should
+// be done by calling add, replace, and remove methods in [Dataset].
 
 /// The base class for DICOM Data Elements. The [Type] variable [V]
 /// is the [Type] of the [values] of the [Element].
@@ -109,15 +106,22 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns a DICOM Tag code in the format (gggg,eeee), where
   /// _g_ and _e_ are hexadecimal characters.
   String get dcm {
-    assert(code >= 0 && code <= 0xFFFFFFFF, 'code: $code');
-    return '(${hex16(code >> 16)},${hex16(code & 0xFFFF)})';
+    final c = code;
+    assert(c >= 0 && c <= 0xFFFFFFFF, 'code: $c');
+    return '(${hex16(c >> 16)},${hex16(c & 0xFFFF)})';
   }
 
   /// Returns a DICOM Tag code as a hexadecimal integer.
-  String get hex => '${hex32(code)}';
+  String get hex {
+    final c = code;
+    return '${hex32(c)}';
+  }
 
   /// _true_ if [code] is a File Meta Information Tag Code.
-  bool get isFMI => code >= 0x00020000 && code <= 0x00020102;
+  bool get isFMI {
+    final c = code;
+    return c >= 0x00020000 && c <= 0x00020102;
+  }
 
   // The Tag Code Group of _this_.
   int get group => code >> 16;
@@ -474,60 +478,58 @@ abstract class Element<V> extends ListBase<V> {
   // String format(Formatter z) => '${z(info)}\n';
   // String format(Formatter z) => z.fmt(this, elements);
 
+  bool doFancy = false;
+  bool withValues = true;
 
   @override
-  String toString() {
-    if (doFancy) {
-      final _vmMax = (vmMax == -1) ? 'N' : '$vmMax';
-      final validLength = (hasValidLength) ? '' : 'Bad VM';
-      final valid = (hasValidValues) ? '' : 'Bad Values';
-      final _vm = (isLengthAlwaysValid)
-          ? 'vm(1<= $_lengthAsString <=N'
-          : 'vm($vmMin<= $_lengthAsString <=$_vmMax)';
-      return '$runtimeType$dcm: ${tag.keyword} $vrId($vrIndex) $_vm '
-          '$validLength $valid';
-    } else {
-      return toStringWithValues();
-    }
+  String toString() =>
+      (doFancy) ? _toFancyString(withValues) : _toStringWithValues();
+
+  String _toFancyString(bool withValues) =>
+      '$runtimeType$_tag $_vfLength $_values()';
+
+  String _toStringWithValues() =>
+      '$runtimeType: $_tag vlf: $vfLength ${_values()}';
+
+  String toSimpleString() => '$runtimeType $_tag vlf: $vfLength';
+
+  // **** These are local methods for [toString]
+  String get _keyword {
+    final t = tag;
+    return (t == null) ? '*Unknown Tag*' : t.keyword;
+  }
+  String get _vr => '$vrId($vrIndex)';
+  String get _vmMax => (vmMax == -1) ? 'N' : '$vmMax';
+  String get _vm => (isLengthAlwaysValid)
+      ? 'vm(1<= $_vfLength <=N'
+      : 'vm($vmMin<= $_vfLength <=$_vmMax)';
+  String get _tag => '$dcm $_keyword $_vr $_vm';
+
+  String get _vfLength {
+    final _vfLength = vfLength;
+    final _vflf = vfLengthField;
+    assert(_vfLength != null || _vfLength != -1);
+    final _vfl = 'vfl: $_vfLength';
+    if (_vflf == null) return _vfl;
+    final s = (_vflf == 0xFFFFFFFF) ? 'kUndefineLength' : 'vlf: $_vflf';
+    return '$s, $_vfl';
   }
 
-  String toSimpleString() => '$runtimeType$dcm ${tag.keyword} '
-      '$vrId($vrIndex)  vfl: $vfLength';
+  /// The maximum number of values to print when an [Element]'s values
+  /// are printed by [toString].
+  static int truncatedValuesLength = 5;
 
-  String toFancyString() {
-    final _vmMax = (vmMax == -1) ? 'N' : '$vmMax';
-    final validLength = (hasValidLength) ? '' : 'Bad VM';
-    final valid = (hasValidValues) ? '' : 'Bad Values';
-    final _vm = (isLengthAlwaysValid)
-        ? 'vm(1<= $_lengthAsString <=N'
-        : 'vm($vmMin<= $_lengthAsString <=$_vmMax)';
-    final vs = (withValues) ? getValuesAsString(maxVListLength) : '';
-    return '$runtimeType$dcm: ${tag.keyword} $vrId($vrIndex) $_vm '
-        '$validLength $valid $vs';
+  String _values([int max]) {
+    if (!withValues) return '';
+    assert(values != null);
+    max ??= truncatedValuesLength;
+    final length = values.length;
+    final vLength = (hasValidLength) ? '' : '-*Invalid Length*';
+    final valid = (hasValidValues) ? '' : '*Bad Values*';
+    final vList = (length > max) ? values.take(max) : values;
+    return '$valid($length$vLength)[${vList.join(', ')}]';
   }
-
-  int maxVListLength = 5;
-
-  String getValuesAsString(int max) {
-    final v = values;
-    if (v == null) return nullElementError();
-    final vList = (v.length > max) ? v.take(max) : v;
-    final s = '[${vList.join(', ')}]';
-    return '(${vList.length})$s';
-  }
-
-  String get _keywordString => (tag == null) ? '*Unknown Tag*' : tag.keyword;
-
-  String toStringWithValues() => '$runtimeType$dcm $_keywordString '
-      '$vrId($vrIndex)  vlf: $vfLength '
-      '${getValuesAsString(maxVListLength)}';
-
-  String get _lengthAsString {
-    if (vfLength != null || vfLength != -1) return '$length';
-    final vlf = vfLengthField;
-    if (vlf == null) return '*null*';
-    return (vlf == 0xFFFFFFFF) ? '0xFFFFFFFF' : '$vlf';
-  }
+  // **** End of local methods for [toString]
 
   // ***************** Static Getters and Methods *****************
   // **************************************************************

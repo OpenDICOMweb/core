@@ -342,6 +342,10 @@ abstract class VR<T> {
   bool isValidIndex(int vrIndex) => vrIndex == index;
 
   VR byIndex(int index) => vrByIndex[index];
+
+  @override
+  String toString() => '$runtimeType($index) $id code(${hex16(code)}';
+
   // Sequence == 0,
   static const kSQ = VRSequence.kSQ;
 

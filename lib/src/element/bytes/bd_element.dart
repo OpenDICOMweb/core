@@ -57,6 +57,8 @@ abstract class Common {
   int get valuesLength;
   int get vrIndex;
 
+  // End Interface
+
   bool isEqual(BDElement a, BDElement b) {
     if (a.bytes.lengthInBytes != b.bytes.lengthInBytes) return false;
 
@@ -90,7 +92,7 @@ abstract class Common {
 //    final vlf = vfLengthField;
 //    if (vlf != kUndefinedLength && len != vlf)
 //      print('${dcm(code)} $vrIndex len: $len, vlf: $vlf : ${len / vlf}');
-  //  assert(vlf == kUndefinedLength || len == vlf, 'len: $len, vlf: $vlf');
+    //  assert(vlf == kUndefinedLength || len == vlf, 'len: $len, vlf: $vlf');
     return len;
   }
 
@@ -144,8 +146,6 @@ abstract class BDFloat64Mixin {
 }
 
 abstract class IntMixin {
-  Bytes get bytes;
-  int get vfOffset;
 
   IntBase update([Iterable<int> vList]) => unsupportedError();
 }
@@ -155,10 +155,9 @@ abstract class IntMixin {
 const int _int8SizeInBytes = 1;
 
 abstract class Int8Mixin {
-  int get vfLength;
   int get vfLengthField;
 
-  int get valuesLength => _getValuesLength(vfLength, _int8SizeInBytes);
+  int get valuesLength => _getValuesLength(vfLengthField, _int8SizeInBytes);
 }
 
 // **** 16-bit Integer Elements (SS, US, OW)
@@ -166,12 +165,9 @@ abstract class Int8Mixin {
 const _int16SizeInBytes = 2;
 
 abstract class Int16Mixin {
-  // **** Interface
-  Bytes get bytes;
-  int get vfLength;
-  // **** End interface
+  int get vfLengthField;
 
-  int get valuesLength => _getValuesLength(vfLength, _int16SizeInBytes);
+  int get valuesLength => _getValuesLength(vfLengthField, _int16SizeInBytes);
 }
 
 // **** 32-bit integer Elements (AT, SL, UL, GL)
@@ -179,8 +175,6 @@ abstract class Int16Mixin {
 const _int32SizeInBytes = 4;
 
 abstract class Int32Mixin {
-  // **** Interface
-  Bytes get bytes;
   int get vfLengthField;
 
   int get valuesLength => _getValuesLength(vfLengthField, _int32SizeInBytes);
@@ -190,7 +184,6 @@ abstract class ByteStringMixin {
   // **** Interface
   Bytes get bytes;
   int get eLength;
-  int get padChar;
   int get vfOffset;
   int get vfLengthField;
   // **** End interface
@@ -231,7 +224,6 @@ abstract class AsciiMixin {
 
 /// A Mixin for [String] [Element]s that may have UTF-8 values.
 abstract class Utf8Mixin {
-  Bytes get bytes;
   Bytes get vfBytes;
   bool get allowMalformed;
   int get valuesLength;
@@ -243,22 +235,7 @@ abstract class Utf8Mixin {
   }
 }
 
-abstract class StringMixin {
-  Bytes get bytes;
-  int get vfOffset;
-  Bytes get vfBytes;
-  bool get allowMalformed;
-
- // int get valuesLength => 1;
-
-//  String get value => cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
-
-//  Iterable<String> get values => (valuesLength == 0) ? [] : [value];
-}
-
 abstract class TextMixin {
-  Bytes get bytes;
-  int get vfOffset;
   Bytes get vfBytes;
   bool get allowMalformed;
 
@@ -266,36 +243,9 @@ abstract class TextMixin {
 }
 
 int _getValuesLength(int vfLengthField, int sizeInBytes) {
-  final length = vfLengthField ~/ sizeInBytes;
-  assert(vfLengthField >= 0 &&
-      vfLengthField.isEven &&
-      (vfLengthField % sizeInBytes == 0));
+  final vflf = vfLengthField;
+  final length = vflf ~/ sizeInBytes;
+  assert(vflf >= 0 && vflf.isEven, 'vfLengthField: $vflf');
+  assert(vflf % sizeInBytes == 0, 'vflf: $vflf sizeInBytes $sizeInBytes');
   return length;
 }
-
-/*
-//TODO: This should be done in convert
-bool checkPadding(Bytes bytes, [int padChar = kSpace]) {
-  final lastIndex = bytes.lengthInBytes - 1;
-  final char = bytes.getUint8(lastIndex);
-  if ((char == kNull || char == kSpace) && char != padChar)
-    log.debug('** Invalid PadChar: $char should be $padChar');
-  return true;
-}
-*/
-
-/*
-//TODO: This should be done in convert
-Bytes removePadding(Bytes bytes, int vfOffset, [int padChar = kSpace]) {
-  assert(bytes.lengthInBytes.isEven && bytes.lengthInBytes >= vfOffset,
-  'bytes.length: ${bytes.lengthInBytes}');
-  if (bytes.lengthInBytes == vfOffset) return bytes;
-  final lastIndex = bytes.lengthInBytes - 1;
-  final char = bytes.getUint8(lastIndex);
-  if (char == kNull || char == kSpace) {
-    log.debug3('Removing Padding: $char');
-    return bytes.asBytes(bytes.offsetInBytes, bytes.lengthInBytes - 1);
-  }
-  return bytes;
-}
-*/

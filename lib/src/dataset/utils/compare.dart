@@ -21,7 +21,7 @@ class Compare {
     final length0 = elements0.length;
     final length1 = elements1.length;
     var index0 = 0;
-    var index1 = 1;
+    var index1 = 0;
     while ((index0 < length0) && (index1 < length1)) {
       final e0 = elements0[index0];
       final e1 = elements0[index1];
@@ -50,7 +50,7 @@ class Compare {
     final elements1 = ds1.elements.toList(growable: false);
     final length1 = elements1.length;
     var index0 = 0;
-    var index1 = 1;
+    var index1 = 0;
     while ((index0 < length0) && (index1 < length1)) {
       final e0 = elements0[index0];
       final e1 = elements0[index1];

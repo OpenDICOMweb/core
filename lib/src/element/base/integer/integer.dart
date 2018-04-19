@@ -268,9 +268,11 @@ abstract class SL extends IntBase with Int32 {
 /// Other Byte [Element].
 abstract class OB extends IntBase
     with OBMixin, Uint8 {
-
+// *** End Interface
   @override
   int get vfLengthField;
+  // *** End Interface
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -354,6 +356,7 @@ abstract class OB extends IntBase
 abstract class UN extends IntBase with Uint8 {
   @override
   int get vfLengthField;
+  // End Interface
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -493,6 +496,7 @@ abstract class US extends IntBase with Uint16 {
 abstract class OW extends IntBase with Uint16 {
   @override
   int get vfLengthField;
+  // End Interface
   @override
   int get vrIndex => kVRIndex;
   @override

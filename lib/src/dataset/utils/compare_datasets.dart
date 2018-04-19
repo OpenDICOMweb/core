@@ -146,8 +146,10 @@ class DatasetComparitor<K> {
     final v0 = e0.values.toList(growable: false);
     final v1 = e1.values.toList(growable: false);
     for (var i = 0; i < len; i++) {
-      if (v0[i] != v1[i]) {
-        // log.debug('!= values[$i] E0: ${v0[i]}, E1: ${v1[i]}');
+      final Object a = v0[i];
+      final Object b = v1[i];
+      if (a != b) {
+        log.debug('!= values[$i] E0: $a, E1: $b');
         hasDifference = true;
       }
     }

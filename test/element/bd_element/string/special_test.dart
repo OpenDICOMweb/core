@@ -821,7 +821,7 @@ void main() {
         system.throwOnError = false;
         final at1 = new ATtag(PTag.kDimensionIndexPointer, vList0);
         log.debug('at1:$at1');
-        final bd0 = new Bytes.fromList(vList0);
+        final bd0 = new Bytes.fromTypedData(vList0);
         log
           ..debug('bd0: $bd0')
           ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
@@ -841,7 +841,7 @@ void main() {
         system.throwOnError = false;
         final at1 = new ATtag(PTag.kSelectorATValue, vList0);
         log.debug('at1:$at1');
-        final bd0 = new Bytes.fromList(vList0);
+        final bd0 = new Bytes.fromTypedData(vList0);
         log
           ..debug('bd0: $bd0')
           ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
@@ -864,7 +864,7 @@ void main() {
         system.throwOnError = false;
         final ul1 = new ULtag(PTag.kRegionFlags, vList0);
         log.debug('ul1:$ul1');
-        final bd0 = new Bytes.fromList(vList0);
+        final bd0 = new Bytes.fromTypedData(vList0);
         log
           ..debug('bd0: $bd0')
           ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
@@ -904,7 +904,7 @@ void main() {
         system.throwOnError = false;
         final ul1 = new ULtag(PTag.kSelectorULValue, vList0);
         log.debug('ul1:$ul1');
-        final bd0 = new Bytes.fromList(vList0);
+        final bd0 = new Bytes.fromTypedData(vList0);
         log
           ..debug('bd0: $bd0')
           ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')

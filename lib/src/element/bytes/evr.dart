@@ -76,7 +76,8 @@ abstract class EvrElement<V> implements BDElement<V> {
     UIevr.make, ULevr.make, USevr.make,
   ];
 
-  static Null _sqError(Bytes bytes, [int vrIndex]) => invalidElementIndex(vrIndex);
+  static Null _sqError(Bytes bytes, [int vrIndex]) =>
+      invalidElementIndex(vrIndex);
 
   static Element makePixelData(int code, Bytes eBytes, int vrIndex,
       [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
@@ -105,7 +106,8 @@ int __vfLength(Bytes bytes, int vfOffset) {
   final vfLength = bytes.lengthInBytes - vfOffset;
   if (vfLength.isOdd) log.warn('vfLength($vfLength) is odd');
   assert(bytes.lengthInBytes >= vfOffset);
-  assert((vfLength >= 0 && vfLength <= kUndefinedLength), 'vfLength: $vfLength');
+  assert(
+      (vfLength >= 0 && vfLength <= kUndefinedLength), 'vfLength: $vfLength');
   return vfLength;
 }
 
@@ -145,13 +147,11 @@ abstract class EvrLongMixin<V> {
   /// Returns the Value Field Length field.
   int get vfLengthField {
     assert(bytes.lengthInBytes >= _longVFOffset);
+    final vfl = vfLength;
     final vflf = bytes.getUint32(_longVFLengthOffset);
-    assert(vflf == vfLength ||
-           vflf == (vfLength + 1)
-           || vflf == kUndefinedLength,
-       'vflf: $vflf vfLength: $vfLength');
-    if (vflf == (vfLength + 1))
-      log.warn('** Odd length field: $this');
+    assert(vflf == vfl || vflf == (vfl + 1) || vflf == kUndefinedLength,
+        'vflf: $vflf vfLength: $vfl');
+    if (vflf == (vfl + 1)) log.warn('** vfLengthField: Odd length field: $vfl');
     return vflf;
   }
 
@@ -176,7 +176,8 @@ class FLevr extends FL
   Float32List get values => vfBytes.asFloat32List();
 
   static FLevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kFLIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kFLIndex && bytes.lengthInBytes.isEven);
     return new FLevr(bytes);
   }
 }
@@ -192,7 +193,8 @@ class OFevr extends OF
   Float32List get values => vfBytes.asFloat32List();
 
   static OFevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kOFIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kOFIndex && bytes.lengthInBytes.isEven);
     return new OFevr(bytes);
   }
 }
@@ -208,7 +210,8 @@ class FDevr extends FD
   Float64List get values => vfBytes.asFloat64List();
 
   static FDevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kFDIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kFDIndex && bytes.lengthInBytes.isEven);
     return new FDevr(bytes);
   }
 }
@@ -224,7 +227,8 @@ class ODevr extends OD
   Float64List get values => vfBytes.asFloat64List();
 
   static ODevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kODIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kODIndex && bytes.lengthInBytes.isEven);
     return new ODevr(bytes);
   }
 }
@@ -242,7 +246,8 @@ class OBevr extends OB
   Iterable<int> get values => vfBytes.asUint8List();
 
   static OBevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kOBIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kOBIndex && bytes.lengthInBytes.isEven);
     return new OBevr(bytes);
   }
 }
@@ -263,7 +268,8 @@ class OBevrPixelData extends OBPixelData
 
   static OBevrPixelData make(int code, int vrIndex, Bytes bytes,
       [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kOBIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kOBIndex && bytes.lengthInBytes.isEven);
     return new OBevrPixelData(bytes, ts, fragments);
   }
 }
@@ -279,7 +285,8 @@ class UNevr extends UN
   Iterable<int> get values => vfBytes;
 
   static UNevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kUNIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kUNIndex && bytes.lengthInBytes.isEven);
     return new UNevr(bytes);
   }
 }
@@ -300,7 +307,8 @@ class UNevrPixelData extends UNPixelData
 
   static UNevrPixelData make(int code, int vrIndex, Bytes bytes,
       [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kUNIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kUNIndex && bytes.lengthInBytes.isEven);
     return new UNevrPixelData(bytes, ts, fragments);
   }
 }
@@ -316,7 +324,8 @@ class SSevr extends SS
   Iterable<int> get values => vfBytes.asInt16List();
 
   static SSevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kSSIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kSSIndex && bytes.lengthInBytes.isEven);
     return new SSevr(bytes);
   }
 }
@@ -332,7 +341,8 @@ class USevr extends US
   Iterable<int> get values => vfBytes.asUint16List();
 
   static USevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kUSIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kUSIndex && bytes.lengthInBytes.isEven);
     return new USevr(bytes);
   }
 }
@@ -348,7 +358,8 @@ class OWevr extends OW
   Iterable<int> get values => vfBytes.asUint16List();
 
   static OWevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kOWIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kOWIndex && bytes.lengthInBytes.isEven);
     return new OWevr(bytes);
   }
 }
@@ -369,7 +380,8 @@ class OWevrPixelData extends OWPixelData
 
   static OWevrPixelData make(int code, int vrIndex, Bytes bytes,
       [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kOWIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kOWIndex && bytes.lengthInBytes.isEven);
     return new OWevrPixelData(bytes, ts, fragments);
   }
 }
@@ -388,7 +400,8 @@ class ATevr extends AT
   Iterable<int> get values => vfBytes.asUint32List();
 
   static ATevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kATIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kATIndex && bytes.lengthInBytes.isEven);
     return new ATevr(bytes);
   }
 }
@@ -405,7 +418,8 @@ class OLevr extends OL
   Iterable<int> get values => vfBytes.asUint32List();
 
   static OLevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kOLIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kOLIndex && bytes.lengthInBytes.isEven);
     return new OLevr(bytes);
   }
 }
@@ -422,7 +436,8 @@ class SLevr extends SL
   Iterable<int> get values => vfBytes.asUint32List();
 
   static SLevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kSLIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kSLIndex && bytes.lengthInBytes.isEven);
     return new SLevr(bytes);
   }
 }
@@ -439,7 +454,8 @@ class ULevr extends UL
   Iterable<int> get values => vfBytes.asUint32List();
 
   static Element<int> make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kULIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kULIndex && bytes.lengthInBytes.isEven);
     return (bytes.getUint16(2) == 0) ? new GLevr(bytes) : new ULevr(bytes);
   }
 }
@@ -456,7 +472,8 @@ class GLevr extends GL
   Iterable<int> get values => vfBytes.asUint32List();
 
   static GLevr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null || vrIndex == kULIndex && bytes.lengthInBytes.isEven);
+    assert(
+        vrIndex != null || vrIndex == kULIndex && bytes.lengthInBytes.isEven);
     return new GLevr(bytes);
   }
 }
@@ -521,7 +538,7 @@ class CSevr extends CS
   }
 }
 
-class DAevr extends DA 
+class DAevr extends DA
     with
         Common,
         EvrElement<String>,
@@ -574,7 +591,7 @@ class DTevr extends DT
 
   static DTevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kDTIndex);
-    
+
     return new DTevr(_removeShortPadding(bytes));
   }
 }
@@ -593,7 +610,7 @@ class ISevr extends IS
 
   static ISevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kISIndex);
-    
+
     return new ISevr(_removeShortPadding(bytes));
   }
 }
@@ -630,7 +647,7 @@ class LOevr extends LO
 
   static Element make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);
-    
+
     final v = _removeShortPadding(bytes);
     // Read code elt.
     final group = bytes.getUint16(0);
@@ -670,7 +687,7 @@ class PCevr extends PC
 
   static PCevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLOIndex);
-    
+
     return new PCevr(_removeShortPadding(bytes));
   }
 
@@ -681,7 +698,7 @@ class PCevr extends PC
       ..setUint16(0, group)
       ..setUint16(0, sgNumber)
       ..setUint8(4, kLOIndex)
- //     ..setUint8(5, kO)
+      //     ..setUint8(5, kO)
       ..setUint16(6, 0);
     return new PCevr(bytes);
   }
@@ -701,7 +718,7 @@ class PNevr extends PN
 
   static PNevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kPNIndex);
-    
+
     return new PNevr(_removeShortPadding(bytes));
   }
 }
@@ -720,7 +737,7 @@ class SHevr extends SH
 
   static SHevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kSHIndex);
-    
+
     return new SHevr(_removeShortPadding(bytes));
   }
 }
@@ -741,7 +758,7 @@ class LTevr extends LT
   Iterable<String> get values => [vfBytes.getUtf8()];
   static LTevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLTIndex);
-    
+
     return new LTevr(_removeShortPadding(bytes));
   }
 }
@@ -760,7 +777,7 @@ class STevr extends ST
 
   static STevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kSTIndex);
-    
+
     return new STevr(_removeShortPadding(bytes));
   }
 }
@@ -780,7 +797,7 @@ class TMevr extends TM
   static TMevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kTMIndex,
         'vrIndex: $vrIndex, vr: ${vrIdByIndex[vrIndex]}');
-    
+
     return new TMevr(_removeShortPadding(bytes));
   }
 }
@@ -799,7 +816,7 @@ class UCevr extends UC
 
   static UCevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kUCIndex);
-    
+
     return new UCevr(_removeLongPadding(bytes));
   }
 }
@@ -818,7 +835,7 @@ class URevr extends UR
 
   static URevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kURIndex);
-    
+
     return new URevr(_removeLongPadding(bytes));
   }
 }
@@ -837,7 +854,7 @@ class UTevr extends UT
 
   static UTevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kUTIndex);
-    
+
     return new UTevr(_removeLongPadding(bytes));
   }
 }
@@ -861,6 +878,7 @@ class SQevr extends SQ<int>
   @override
   SQ updateF(Iterable<Item> f(Iterable<Item> vList)) => unsupportedError();
 
-  static SQevr make(Dataset parent, [SQ sequence, Iterable<Item> values, Bytes bytes]) =>
+  static SQevr make(Dataset parent,
+          [SQ sequence, Iterable<Item> values, Bytes bytes]) =>
       new SQevr(parent, values, bytes);
 }
