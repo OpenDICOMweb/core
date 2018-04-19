@@ -12,6 +12,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/indenter.dart';
 import 'package:core/src/utils/logger.dart';
+import 'package:core/src/vr.dart';
 
 // ignore_for_file: only_throw_errors
 
@@ -53,7 +54,7 @@ class PublicGroup implements GroupBase {
   @override
   String get info {
     final sb = new Indenter('$runtimeType(${hex16(gNumber)}): '
-                                '${members.values.length}')
+        '${members.values.length}')
       ..down;
     members.values.forEach(sb.writeln);
     sb.up;
@@ -124,16 +125,16 @@ class PrivateGroup implements GroupBase {
     final tag = e.tag;
     if (tag is PrivateTag) {
       final sgNumber = tag.sgNumber;
-     // log.debug('currentSGIndex $_currentSGNumber sgNumber $sgNumber');
-      if (_currentSGNumber < sgNumber) {
+      // log.debug('currentSGIndex $_currentSGNumber sgNumber $sgNumber');
+      if (sgNumber < _currentSGNumber) {
         // privateSubgroupOutOfOrder(_currentSubgroupNumber, sgNumber, e);
         throw 'Private Subgroup out of order: '
             'current($_currentSGNumber) e($sgNumber): $e';
       } else if (sgNumber > _currentSGNumber) {
-        _getNewSubgroup(sgNumber);
+        _getNewSubgroup(sgNumber, e);
       }
       if (tag is PCTag) {
-        _currentSubgroup.creator = e;
+        if (_currentSubgroup.creator != e) throw 'Invalid subgroup creator: $e';
       } else if (tag is PDTag) {
         _currentSubgroup.addPD(e);
       } else if (tag is GroupLengthPrivateTag) {
@@ -150,11 +151,11 @@ class PrivateGroup implements GroupBase {
   }
 
   void _getNewSubgroup(int sgNumber, [Element creator]) {
-    assert(creator.tag is PCTag || creator == null);
+    assert(creator == null || creator.tag is PCTag);
     _currentSGNumber = sgNumber;
     _currentSubgroup = new PrivateSubgroup(this, sgNumber, creator);
     subgroups[sgNumber] = _currentSubgroup;
-    _currentSubgroup.creator = creator;
+    // _currentSubgroup.creator = creator;
   }
 
   bool addCreator(Element pc) {
@@ -199,6 +200,7 @@ class PrivateGroup implements GroupBase {
 /// Element when created.
 class PrivateSubgroup {
   final PrivateGroup group;
+
   /// An integer between 0x10 and 0xFF inclusive. If a PCTag Code is denoted
   /// (gggg,00ii), and a PDTag Code is denoted (gggg,iioo) then the Sub-Group
   /// Index corresponds to ii.
@@ -217,11 +219,13 @@ class PrivateSubgroup {
 //  Map<int, Element> pData = {};
 
   factory PrivateSubgroup(PrivateGroup group, int sgNumber, Element _creator) {
-    final tag = _creator.tag;
-    return (_creator.group == group.gNumber &&
-            Tag.pcSubgroup(_creator.code) == sgNumber)
-           ? new PrivateSubgroup._(group, sgNumber, _creator)
-           : invalidTagError(tag, LO);
+    if (_creator.group == group.gNumber &&
+        Tag.pcSubgroup(_creator.code) == sgNumber)
+      return new PrivateSubgroup._(group, sgNumber, _creator);
+    final tag = (_creator == null)
+        ? new PCTagUnknown(group.gNumber, kLOIndex, '--Phantom--')
+        : _creator.tag;
+    return invalidTagError(tag, LO);
   }
 /*
   factory PrivateSubgroup(PrivateGroup group, Element creator) {
@@ -264,8 +268,7 @@ class PrivateSubgroup {
 
   int get groupNumber => group.gNumber;
 
-
- // int get group => creator.tag.group;
+  // int get group => creator.tag.group;
 
   /// A integer between 0x10 and 0xFF inclusive. It corresponds to
   /// a Private Creator's Element field, i.e. eeee in (gggg,eeee).
@@ -278,7 +281,7 @@ class PrivateSubgroup {
 
   String get info {
     final sb = new Indenter('$runtimeType(${hex16(sgNumber)}): '
-                                '${pData.values.length}')
+        '${pData.values.length}')
       ..down;
     pData.values.forEach(sb.writeln);
     sb.up;
@@ -307,7 +310,6 @@ class PrivateSubgroup {
 
   /// Returns a Private Data [Element].
   Element lookupData(int code) => pData[code];
-
 
   bool inSubgroup(int pdCode) => Tag.isValidPDCode(pdCode, creator.code);
 

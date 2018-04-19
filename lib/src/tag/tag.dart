@@ -69,8 +69,8 @@ abstract class Tag {
   int get vrIndex;
   String get vrId => vrIdFromIndex(vrIndex);
 
-  String get keyword => 'UnknownTag';
-  String get name => 'Unknown Tag';
+  String get keyword;// => 'UnknownTag';
+  String get name; // => 'Unknown Tag';
   VM get vm => VM.k1_n;
   int get vmMin => vm.min;
   int get vmMax => vm.max;

@@ -195,7 +195,7 @@ class UStag extends US with TagElement<int> {
   @override
   UStag update([Iterable<int> vf]) => new UStag(tag, Uint16.fromValueField(vf));
 
-  static UStag make(Tag tag, Iterable<int> vList) =>
+  static UStag make(Tag tag, Iterable<int> vList, [int _]) =>
       new UStag(tag, vList ?? kEmptyUint16List);
 
   static UStag fromBase64(Tag tag, String s) =>
@@ -310,7 +310,7 @@ class ULtag extends UL with TagElement<int> {
   @override
   ULtag update([Iterable<int> vList = kEmptyIntList]) => new ULtag(tag, vList);
 
-  static ULtag make<int>(Tag tag, Iterable<int> vf) =>
+  static ULtag make<int>(Tag tag, Iterable<int> vf, [int _]) =>
       new ULtag(tag, Uint32.fromValueField(vf));
 
   static ULtag fromBase64(Tag tag, String s) =>

@@ -35,7 +35,7 @@ class AEtag extends AE with TagElement<String> {
   AEtag update([Iterable<String> vList = kEmptyStringList]) =>
       new AEtag(tag, vList ?? kEmptyStringList);
 
-  static AEtag make(Tag tag, Iterable<String> vList) =>
+  static AEtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new AEtag(tag, vList ?? kEmptyStringList);
 
   static AEtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -66,7 +66,7 @@ class CStag extends CS with TagElement<String> {
   CStag update([Iterable<String> vList = kEmptyStringList]) =>
       new CStag(tag, vList ?? kEmptyStringList);
 
-  static CStag make(Tag tag, Iterable<String> vList) =>
+  static CStag make(Tag tag, Iterable<String> vList, [int _]) =>
       new CStag(tag, vList ?? kEmptyStringList);
 
   static CStag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -97,7 +97,7 @@ class DStag extends DS with TagElement<String> {
   DStag update([Iterable<String> vList = kEmptyStringList]) =>
       new DStag(tag, vList ?? kEmptyStringList);
 
-  static DStag make(Tag tag, Iterable<String> vList) =>
+  static DStag make(Tag tag, Iterable<String> vList, [int _]) =>
       new DStag(tag, vList ?? kEmptyStringList);
 
   static DStag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -128,7 +128,7 @@ class IStag extends IS with TagElement<String> {
   IStag update([Iterable<String> vList = kEmptyStringList]) =>
       new IStag(tag, vList ?? kEmptyStringList);
 
-  static IStag make(Tag tag, Iterable<String> vList) =>
+  static IStag make(Tag tag, Iterable<String> vList, [int _]) =>
       new IStag(tag, vList ?? kEmptyStringList);
 
   static IStag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -160,7 +160,7 @@ class LOtag extends LO with TagElement<String> {
   LOtag update([Iterable<String> vList = kEmptyStringList]) =>
       new LOtag(tag, vList ?? kEmptyStringList);
 
-  static LOtag make(Tag tag, Iterable<String> vList) =>
+  static LOtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new LOtag(tag, vList ?? kEmptyStringList);
 
   static LOtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -191,7 +191,7 @@ class PCtag extends PC with TagElement<String> {
   PCtag update([Iterable<String> vList = kEmptyStringList]) =>
       new PCtag(tag, vList ?? kEmptyStringList);
 
-  static PCtag make(Tag tag, Iterable<String> vList) =>
+  static PCtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new PCtag(tag, vList ?? kEmptyStringList);
 
   static PCtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -231,7 +231,7 @@ class LTtag extends LT with TagElement<String> {
   LTtag update([Iterable<String> vList = kEmptyStringList]) =>
       new LTtag(tag, vList ?? kEmptyStringList);
 
-  static LTtag make(Tag tag, Iterable<String> vList) =>
+  static LTtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new LTtag(tag, vList ?? kEmptyStringList);
 
   static LTtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -263,7 +263,7 @@ class PNtag extends PN with TagElement<String> {
   PNtag update([Iterable<String> vList = kEmptyStringList]) =>
       new PNtag(tag, vList ?? kEmptyStringList);
 
-  static PNtag make(Tag tag, Iterable<String> vList) =>
+  static PNtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new PNtag(tag, vList ?? kEmptyStringList);
 
   static PNtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -295,7 +295,7 @@ class SHtag extends SH with TagElement<String> {
   SHtag update([Iterable<String> vList = kEmptyStringList]) =>
       new SHtag(tag, vList ?? kEmptyStringList);
 
-  static SHtag make(Tag tag, Iterable<String> vList) =>
+  static SHtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new SHtag(tag, vList ?? kEmptyStringList);
 
   static SHtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -327,7 +327,7 @@ class STtag extends ST with TagElement<String> {
   STtag update([Iterable<String> vList = kEmptyStringList]) =>
       new STtag(tag, vList ?? kEmptyStringList);
 
-  static STtag make(Tag tag, Iterable<String> vList) =>
+  static STtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new STtag(tag, vList ?? kEmptyStringList);
 
   static STtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -359,7 +359,7 @@ class UCtag extends UC with TagElement<String> {
   UCtag update([Iterable<String> vList = kEmptyStringList]) =>
       new UCtag(tag, vList ?? kEmptyStringList);
 
-  static UCtag make(Tag tag, Iterable<String> vList) =>
+  static UCtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new UCtag(tag, vList ?? kEmptyStringList);
 
   static UCtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -398,7 +398,7 @@ class UItag extends UI with TagElement<String> {
   UItag update([Iterable<String> vList = kEmptyStringList]) =>
       new UItag.fromStrings(tag, vList);
 
-  static UItag make(Tag tag, Iterable<String> vList) =>
+  static UItag make(Tag tag, Iterable<String> vList, [int _]) =>
       new UItag.fromStrings(tag, vList ?? kEmptyStringList);
 
   static UItag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -442,7 +442,7 @@ class URtag extends UR with TagElement<String> {
   URtag update([Iterable<String> vList = kEmptyStringList]) =>
       new URtag(tag, vList ?? kEmptyStringList);
 
-  static URtag make(Tag tag, Iterable<String> vList) =>
+  static URtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new URtag(tag, vList ?? kEmptyStringList);
 
   static URtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -474,7 +474,7 @@ class UTtag extends UT with TagElement<String> {
   UTtag update([Iterable<String> vList = kEmptyStringList]) =>
       new UTtag(tag, vList ?? kEmptyStringList);
 
-  static UTtag make(Tag tag, Iterable<String> vList) =>
+  static UTtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new UTtag(tag, vList ?? kEmptyStringList);
 
   static UTtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -513,7 +513,7 @@ class AStag extends AS with TagElement<String> {
   AStag updateF(Iterable<String> f(Iterable<String> vList)) =>
       new AStag(tag, f(values));
 
-  static AStag make(Tag tag, Iterable<String> vList) =>
+  static AStag make(Tag tag, Iterable<String> vList, [int _]) =>
       new AStag(tag, vList ?? kEmptyStringList);
 
   static AStag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -552,7 +552,7 @@ class DAtag extends DA with TagElement<String> {
   DAtag update([Iterable<String> vList = kEmptyStringList]) =>
       new DAtag(tag, vList ?? kEmptyStringList);
 
-  static DAtag make(Tag tag, Iterable<String> vList) =>
+  static DAtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new DAtag(tag, vList ?? kEmptyStringList);
 
   static DAtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -587,7 +587,7 @@ class DTtag extends DT with TagElement<String> {
   DTtag update([Iterable<String> vList = kEmptyStringList]) =>
       new DTtag(tag, vList ?? kEmptyStringList);
 
-  static DTtag make(Tag tag, Iterable<String> vList) =>
+  static DTtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new DTtag(tag, vList ?? kEmptyStringList);
 
   static DTtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -623,7 +623,7 @@ class TMtag extends TM with TagElement<String> {
   TMtag update([Iterable<String> vList = kEmptyStringList]) =>
       new TMtag(tag, vList ?? kEmptyStringList);
 
-  static TMtag make(Tag tag, Iterable<String> vList) =>
+  static TMtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new TMtag(tag, vList ?? kEmptyStringList);
 
   static TMtag fromUint8List(Tag tag, Uint8List bytes) =>

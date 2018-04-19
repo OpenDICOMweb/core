@@ -17653,7 +17653,7 @@ class PTagGroupLength extends PTag {
   // Group Length Tags
   PTagGroupLength(int code)
       : super._(
-            'kPublicGroupLength${hex(code)}',
+            'kPublicGroupLength_${hex(code)}',
             code,
             'Public Group Length for ${toDcm(code)}',
             kULIndex,
@@ -17663,7 +17663,7 @@ class PTagGroupLength extends PTag {
 
   PTagGroupLength.keyword(String keyword)
       : super._(
-            'kPublicGroupLength$keyword',
+            'kPublicGroupLength_$keyword',
             int.parse(keyword),
             'Public Group Length for $keyword',
             kULIndex,
@@ -17707,6 +17707,10 @@ class PTagInvalidVR extends Tag {
 
   PTagInvalidVR(this.tag, this.badVRIndex) : super();
 
+  @override
+  String get keyword => 'PublicTagWithInvalidVR_$tag';
+  @override
+  String get name => 'Public Tag With Invalid VR $tag';
   @override
   bool get isPublic => tag.isPublic;
   @override

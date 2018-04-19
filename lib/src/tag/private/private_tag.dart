@@ -27,6 +27,7 @@ abstract class PrivateTag extends Tag {
 
   // Only Private Tags have Subgroup Numbers.
   int get sgNumber;
+
   String get sgNumberHex => hex8(sgNumber);
 
   // The default VM if n=unknown
@@ -53,19 +54,21 @@ abstract class PrivateTag extends Tag {
 
   /// Returns a new [PrivateTag] based on [code] and [vrIndex].
   /// [obj] can be either a [String] or [PCTag].
- static PrivateTag make(int code, int vrIndex, [Object obj]) {
-   if (Tag.isPDCode(code)) {
-     final PCTag creator = obj;
-     return PDTag.make(code, vrIndex, creator);
-   } else if (Tag.isPCCode(code)) {
-     final String creator = obj;
-     return PCTag.make(code, vrIndex, creator);
-   } else if (Tag.isGroupLengthCode(code)) {
-     return new GroupLengthPrivateTag(code, vrIndex);
-   } else {
-     return new IllegalPrivateTag(code, vrIndex);
-   }
- }
+  static PrivateTag make(int code, int vrIndex, [Object obj]) {
+    if (Tag.isPDCode(code)) {
+      final PCTag creator = obj;
+      return PDTag.make(code, vrIndex, creator);
+    } else
+    if (Tag.isPCCode(code)) {
+      final String creator = obj;
+      return PCTag.make(code, vrIndex, creator);
+    } else
+    if (Tag.isGroupLengthCode(code)) {
+      return new GroupLengthPrivateTag(code, vrIndex);
+    } else {
+      return new IllegalPrivateTag(code, vrIndex);
+    }
+  }
 }
 
 /// Private Group Length Tags have codes that are (gggg,eeee),
@@ -77,11 +80,16 @@ class GroupLengthPrivateTag extends PrivateTag {
   @override
   final int vrIndex;
   @override
-
   GroupLengthPrivateTag(this.code, this.vrIndex) {
-    if (vrIndex != kULIndex && vrIndex != kUNIndex)
-      invalidVRIndex(vrIndex, null, correctVRIndex);
+    if (vrIndex != kULIndex && vrIndex != kUNIndex) invalidVRIndex(
+        vrIndex, null, correctVRIndex);
   }
+
+  @override
+  String get keyword => 'PrivateGroupLenthTag';
+
+  @override
+  String get name => 'Private Group Lenth Tag';
 
   int get correctVRIndex => kULIndex;
 
@@ -89,8 +97,6 @@ class GroupLengthPrivateTag extends PrivateTag {
   VM get vm => VM.k1;
   @override
   int get sgNumber => 0;
-  @override
-  String get name => 'Private Group Length Tag';
 }
 
 /// Private Illegal Tags have have codes that are (gggg,eeee),
@@ -107,7 +113,10 @@ class IllegalPrivateTag extends PrivateTag {
   IllegalPrivateTag(this.code, this.vrIndex);
 
   @override
-  int get sgNumber => code & 0xFF;
+  String get keyword => 'IllegalPrivateTag';
   @override
   String get name => 'Illegal Private Tag';
+
+  @override
+  int get sgNumber => code & 0xFF;
 }

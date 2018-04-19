@@ -34,7 +34,7 @@ abstract class SQ<K> extends Element<Item> {
   set values(Iterable<Item> vList) => unsupportedError('StringBase.values');
 
   /// The DICOM name for Sequence values, which are Items.
-  Iterable<Item> get items => values;
+  List<Item> get items => (values is List) ? values : values.toList();
 
   //**** End of Interface
   @override
@@ -152,7 +152,8 @@ Summary $tag
 
   /// Returns a [Iterable<Element>] containing the [Element] corresponding
   /// to the [index] in each Item of [items].  If the Item does not
-  /// contain the [index], _null_ is inserted in the returned [Iterable<Element].
+  /// contain the [index], _null_ is inserted in the returned
+  /// [Iterable<Element].
   Iterable<Element> getAll(int index) {
     final eList = <Element>[];
     for (var item in items) eList.addAll(item.map<Element>((e) => e));
@@ -273,7 +274,6 @@ Summary $tag
   @override
   String getValuesAsString(int max) => '${values.length} Items';
 
-//  static const VR kVR = VR.kSQ;
   static const int kVRIndex = kSQIndex;
   static const int kVRCode = kSQCode;
   static const String kVRKeyword = 'SQ';
@@ -284,14 +284,6 @@ Summary $tag
   static const int kMaxLength = kMaxVFLength ~/ kMinItemLength;
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
-
-/*
-  static bool isValidVR(VR vr, [Issues issues]) {
-    if (vr == kVR) return true;
-    invalidVR(vr.index, issues, kVRIndex);
-    return false;
-  }
-*/
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
@@ -315,7 +307,6 @@ Summary $tag
 
   static bool isValidVListLength(int vfl) => true;
 
-  //TODO: make sure this is good enough
   static bool isValidValue(Item item,
           {Issues issues, bool allowInvalid = false}) =>
       true;

@@ -7,13 +7,13 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/utils/string.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/private/pc_tag_map.dart';
 import 'package:core/src/tag/private/pd_tag_definitions.dart';
 import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
+import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
 
 abstract class PCTag extends PrivateTag {
@@ -29,6 +29,10 @@ abstract class PCTag extends PrivateTag {
   // fix: when creators have expected codes
   // int get expectedGroup => definition.group;
 
+  @override
+  String get keyword => 'UnknownPrivateCreatorTag';
+  @override
+  String get name => 'Unknown Private Creator Tag';
   @override
   bool get isCreator => true;
 
@@ -102,14 +106,14 @@ class PCTagUnknown extends PCTag {
   final String name;
 
   const PCTagUnknown(this.code, this.vrIndex, String name)
-      : name = name ?? '** Unknown **',
+      : name = name ?? '--UnknownPCTag--',
         super._();
 
   @override
   String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)} "$name"';
 
   static const PCTagUnknown kUnknownCreator =
-      const PCTagUnknown(0x00, kLOIndex, 'Unknown Creator');
+      const PCTagUnknown(0x00, kLOIndex, '--UnknownPCTag--');
 }
 
 class PCTagKnown extends PCTag {

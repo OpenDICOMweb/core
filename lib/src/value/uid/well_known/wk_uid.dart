@@ -25,6 +25,8 @@ class WKUid extends Uid {
 
   UidType get type => _type;
 
+  @override
+  bool get isWellKnown => true;
   bool get isNotRetired => !isRetired;
 
   @override

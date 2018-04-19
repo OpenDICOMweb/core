@@ -145,15 +145,17 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
           vfLengthField ?? e.vfLengthField);
 
   static Element makeFromTag(Tag tag, Iterable values, int vrIndex,
-          [int vfLengthField]) =>
-      _fromTagMakers[vrIndex](tag, values, vfLengthField);
+          [int vfLengthField]) {
+    final vr = (isSpecialVRIndex(tag.vrIndex)) ? vrIndex : tag.vrIndex;
+    return _fromTagMakers[vr](tag, values, vfLengthField);
+  }
 
   static final _fromTagMakers = <Function>[
     // SQtag.make
     __vrIndexError,
     // Maybe Undefined Lengths
-    //  OBtag.make, OWtag.make, UNtag.make, // No reformat
-    __vrIndexError, __vrIndexError, __vrIndexError,
+      OBtag.make, OWtag.make, UNtag.make, // No reformat
+  //  __vrIndexError, __vrIndexError, __vrIndexError,
     // EVR Long
     ODtag.make, OFtag.make, OLtag.make,
     UCtag.make, URtag.make, UTtag.make,
@@ -297,7 +299,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
   }
 
   static Element pixelDataFrom(Element e, [TransferSyntax ts, int vrIndex]) {
-    assert(vrIndex == e.vrIndex);
+    //assert(vrIndex == e.vrIndex);
     if (e.tag != PTag.kPixelData)
       return invalidKey(e.tag, 'Invalid Tag Code for PixelData');
     switch (vrIndex) {

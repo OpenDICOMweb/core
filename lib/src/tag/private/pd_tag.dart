@@ -28,6 +28,11 @@ abstract class PDTag extends PrivateTag {
   VM get vm => VM.k1_n;
 
   @override
+  String get keyword => 'UnknownPrivateDataTag';
+  @override
+  String get name => 'Unknown Private Data Tag';
+
+  @override
   int get sgNumber => elt >> 8;
   int get sgOffset => elt & 0x00FF;
   String get sgOffsetHex => hex8(sgOffset);

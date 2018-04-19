@@ -495,8 +495,10 @@ class ASevr extends AS
 
   static ASevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null || vrIndex == kASIndex);
-    if (bytes.lengthInBytes != 12 && bytes.lengthInBytes != 8)
-      log.error('Invalid Age (AS) length: ${bytes.lengthInBytes}');
+    if (bytes.lengthInBytes != 12 && bytes.lengthInBytes != 8) {
+      final length = bytes.lengthInBytes;
+      log.warn('Invalid Age (AS) "${bytes.getUtf8(8, length - 8)}"');
+    }
     return new ASevr(bytes);
   }
 }
@@ -535,8 +537,7 @@ class DAevr extends DA
     assert(vrIndex != null || vrIndex == kDAIndex);
     final length = bytes.lengthInBytes;
     if (length != 16 && length != 8)
-      log.error('Invalid Date (DA)  length: $length '
-          '${bytes.getUtf8(8, length - 8)}');
+      log.debug('Invalid Date (DA) "${bytes.getUtf8(8, length - 8)}"');
     return new DAevr(bytes);
   }
 }

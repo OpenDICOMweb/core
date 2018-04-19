@@ -16,11 +16,9 @@ void main() {
   test('VR Index', () {
     expect(VR.kSQ.index == kSQIndex, true);
     expect(VR.kSQ.index == 0, true);
+    expect(VR.kSQ.index == kVRMaybeUndefinedIndexMin, true);
 
     expect(VR.kOB.index == kOBIndex,  true);
-    expect(VR.kOB.index == 1, true);
-
-    expect(VR.kOB.index == kVRMaybeUndefinedIndexMin, true);
     expect(VR.kOB.index == 1, true);
 
     expect(VR.kOW.index == kOWIndex,  true);
