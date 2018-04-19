@@ -55,7 +55,6 @@ abstract class ListDataset {
   // *** Primitive only for internal use Stores e in eMap
   void store(int index, Element e) {
     assert(index == e.code);
-    //elements[e.code] = e;
     elements.add(e);
   }
 
