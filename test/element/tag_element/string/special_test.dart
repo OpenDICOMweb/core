@@ -20,30 +20,29 @@ void main() {
   Server.initialize(name: 'string/special_test', level: Level.info);
   system.throwOnError = false;
 
+  const goodAEList = const <List<String>>[
+    const <String>['d9E8tO'],
+    const <String>['mrZeo|^P> -6{t, '],
+    const <String>['mrZeo|^P> -6{t,'],
+    const <String>['1wd7'],
+    const <String>['mrZeo|^P> -6{t,']
+  ];
+
+  const badAEList = const <List<String>>[
+    const <String>['\b'], //	Backspace
+    const <String>['\t '], //horizontal tab (HT)
+    const <String>['\n'], //linefeed (LF)
+    const <String>['\f '], // form feed (FF)
+    const <String>['\r '], //carriage return (CR)
+    const <String>['\v'], //vertical tab
+    const <String>[r'\'],
+    const <String>['B\\S'],
+    const <String>['1\\9'],
+    const <String>['a\\4'],
+    const <String>[r'^`~\\?'],
+    const <String>[r'^\?']
+  ];
   group('AEtag', () {
-    const goodAEList = const <List<String>>[
-      const <String>['d9E8tO'],
-      const <String>['mrZeo|^P> -6{t, '],
-      const <String>['mrZeo|^P> -6{t,'],
-      const <String>['1wd7'],
-      const <String>['mrZeo|^P> -6{t,']
-    ];
-
-    const badAEList = const <List<String>>[
-      const <String>['\b'], //	Backspace
-      const <String>['\t '], //horizontal tab (HT)
-      const <String>['\n'], //linefeed (LF)
-      const <String>['\f '], // form feed (FF)
-      const <String>['\r '], //carriage return (CR)
-      const <String>['\v'], //vertical tab
-      const <String>[r'\'],
-      const <String>['B\\S'],
-      const <String>['1\\9'],
-      const <String>['a\\4'],
-      const <String>[r'^`~\\?'],
-      const <String>[r'^\?']
-    ];
-
     test('AE hasValidValues good values', () {
       for (var s in goodAEList) {
         system.throwOnError = false;
@@ -355,29 +354,6 @@ void main() {
   });
 
   group('AE ', () {
-    const goodAEList = const <List<String>>[
-      const <String>['d9E8tO'],
-      const <String>['mrZeo|^P> -6{t, '],
-      const <String>['mrZeo|^P> -6{t,'],
-      const <String>['1wd7'],
-      const <String>['mrZeo|^P> -6{t,']
-    ];
-
-    const badAEList = const <List<String>>[
-      const <String>['\b'], //	Backspace
-      const <String>['\t '], //horizontal tab (HT)
-      const <String>['\n'], //linefeed (LF)
-      const <String>['\f '], // form feed (FF)
-      const <String>['\r '], //carriage return (CR)
-      const <String>['\v'], //vertical tab
-      const <String>[r'\'],
-      const <String>['B\\S'],
-      const <String>['1\\9'],
-      const <String>['a\\4'],
-      const <String>[r'^`~\\?'],
-      const <String>[r'^\?']
-    ];
-
     const badAELengthList = const <String>[
       'mrZeo|^P> -6{t,mrZeo|^P> -6{t,mrZeo|^P> -6{td9E8tO'
     ];
@@ -825,32 +801,31 @@ void main() {
     });
   });
 
+  const goodCSList = const <List<String>>[
+    const <String>['KEZ5HZZZR2'],
+    const <String>['LUA '],
+    const <String>['DAP3Q'],
+    const <String>['GAEGBPO'],
+    const <String>['EGM_']
+  ];
+
+  const badCSList = const <List<String>>[
+    const <String>['\b'], //	Backspace
+    const <String>['\t '], //horizontal tab (HT)
+    const <String>['\n'], //linefeed (LF)
+    const <String>['\f '], // form feed (FF)
+    const <String>['\r '], //carriage return (CR)
+    const <String>['\v'], //vertical tab
+    const <String>[r'\'],
+    const <String>['B\\S'],
+    const <String>['1\\9'],
+    const <String>['a\\4'],
+    const <String>[r'^`~\\?'],
+    const <String>[r'^\?'],
+    const <String>['T 2@+nEZKu/J'],
+    const <String>['123.45']
+  ];
   group('CStag', () {
-    const goodCSList = const <List<String>>[
-      const <String>['KEZ5HZZZR2'],
-      const <String>['LUA '],
-      const <String>['DAP3Q'],
-      const <String>['GAEGBPO'],
-      const <String>['EGM_']
-    ];
-
-    const badCSList = const <List<String>>[
-      const <String>['\b'], //	Backspace
-      const <String>['\t '], //horizontal tab (HT)
-      const <String>['\n'], //linefeed (LF)
-      const <String>['\f '], // form feed (FF)
-      const <String>['\r '], //carriage return (CR)
-      const <String>['\v'], //vertical tab
-      const <String>[r'\'],
-      const <String>['B\\S'],
-      const <String>['1\\9'],
-      const <String>['a\\4'],
-      const <String>[r'^`~\\?'],
-      const <String>[r'^\?'],
-      const <String>['T 2@+nEZKu/J'],
-      const <String>['123.45']
-    ];
-
     test('CS hasValidValues good values', () {
       for (var s in goodCSList) {
         system.throwOnError = false;
@@ -1175,30 +1150,6 @@ void main() {
   });
 
   group('CS', () {
-    const goodCSList = const <List<String>>[
-      const <String>['KEZ5HZZZR2'],
-      const <String>['LUA '],
-      const <String>['DAP3Q'],
-      const <String>['GAEGBPO'],
-      const <String>['EGM_']
-    ];
-
-    const badCSList = const <List<String>>[
-      const <String>['\b'], //	Backspace
-      const <String>['\t '], //horizontal tab (HT)
-      const <String>['\n'], //linefeed (LF)
-      const <String>['\f '], // form feed (FF)
-      const <String>['\r '], //carriage return (CR)
-      const <String>['\v'], //vertical tab
-      const <String>[r'\'],
-      const <String>['B\\S'],
-      const <String>['1\\9'],
-      const <String>['a\\4'],
-      const <String>[r'^`~\\?'],
-      const <String>[r'^\?'],
-      const <String>['T 2@+nEZKu/J'],
-      const <String>['123.45']
-    ];
     //VM.k1
     const csTags0 = const <PTag>[
       PTag.kFileSetID,
@@ -1762,30 +1713,29 @@ void main() {
     });
   });
 
+  const goodUIList = const <List<String>>[
+    const <String>['1.2.840.10008.5.1.4.34.5'],
+    const <String>['1.2.840.10008.1.2.4.51'],
+    const <String>['1.2.840.10008.5.1.4.1.1.77.1.1'],
+    const <String>['1.2.840.10008.5.1.4.1.1.66.4'],
+  ];
+
+  const badUIList = const <List<String>>[
+    const <String>['\b'], //	Backspace
+    const <String>['\t '], //horizontal tab (HT)
+    const <String>['\n'], //linefeed (LF)
+    const <String>['\f '], // form feed (FF)
+    const <String>['\r '], //carriage return (CR)
+    const <String>['\v'], //vertical tab
+    const <String>[r'\'],
+    const <String>['B\\S'],
+    const <String>['1\\9'],
+    const <String>['a\\4'],
+    const <String>[r'^`~\\?'],
+    const <String>[r'^\?'],
+    const <String>['1.a.840.10008.5.1.4.1.1.66.4'],
+  ];
   group('UItag', () {
-    const goodUIList = const <List<String>>[
-      const <String>['1.2.840.10008.5.1.4.34.5'],
-      const <String>['1.2.840.10008.1.2.4.51'],
-      const <String>['1.2.840.10008.5.1.4.1.1.77.1.1'],
-      const <String>['1.2.840.10008.5.1.4.1.1.66.4'],
-    ];
-
-    const badUIList = const <List<String>>[
-      const <String>['\b'], //	Backspace
-      const <String>['\t '], //horizontal tab (HT)
-      const <String>['\n'], //linefeed (LF)
-      const <String>['\f '], // form feed (FF)
-      const <String>['\r '], //carriage return (CR)
-      const <String>['\v'], //vertical tab
-      const <String>[r'\'],
-      const <String>['B\\S'],
-      const <String>['1\\9'],
-      const <String>['a\\4'],
-      const <String>[r'^`~\\?'],
-      const <String>[r'^\?'],
-      const <String>['1.a.840.10008.5.1.4.1.1.66.4'],
-    ];
-
     test('UI hasValidValues good values', () {
       for (var s in goodUIList) {
         system.throwOnError = false;
@@ -2190,28 +2140,6 @@ void main() {
   });
 
   group('UI', () {
-    const goodUIList = const <List<String>>[
-      const <String>['1.2.840.10008.5.1.4.34.5'],
-      const <String>['1.2.840.10008.1.2.4.51'],
-      const <String>['1.2.840.10008.5.1.4.1.1.77.1.1'],
-      const <String>['1.2.840.10008.5.1.4.1.1.66.4'],
-    ];
-
-    const badUIList = const <List<String>>[
-      const <String>['\b'], //	Backspace
-      const <String>['\t '], //horizontal tab (HT)
-      const <String>['\n'], //linefeed (LF)
-      const <String>['\f '], // form feed (FF)
-      const <String>['\r '], //carriage return (CR)
-      const <String>['\v'], //vertical tab
-      const <String>[r'\'],
-      const <String>['B\\S'],
-      const <String>['1\\9'],
-      const <String>['a\\4'],
-      const <String>[r'^`~\\?'],
-      const <String>[r'^\?'],
-      const <String>['1.a.840.10008.5.1.4.1.1.66.4'],
-    ];
     //VM.k1
     const uiTags0 = const <PTag>[
       PTag.kAffectedSOPInstanceUID,
@@ -2639,24 +2567,23 @@ void main() {
     });
   });
 
+  const goodURList = const <List<String>>[
+    const <String>['http:/TVc8mR/swk/jvNtF/Uy6'],
+    const <String>['iaWlVR'],
+    const <String>['http:/l_YB2r8/LQIo9'],
+    const <String>['_m3G9go/OkgpQ'],
+    const <String>['\b'], //	Backspace
+    const <String>['\t '], //horizontal tab (HT)
+    const <String>['\n'], //linefeed (LF)
+    const <String>['\f '], // form feed (FF)
+    const <String>['\r '], //carriage return (CR)
+    const <String>['\v'], //vertical tab
+  ];
+
+  const badURList = const <List<String>>[
+    const <String>[' asdf sdf  ']
+  ];
   group('URtag', () {
-    const goodURList = const <List<String>>[
-      const <String>['http:/TVc8mR/swk/jvNtF/Uy6'],
-      const <String>['iaWlVR'],
-      const <String>['http:/l_YB2r8/LQIo9'],
-      const <String>['_m3G9go/OkgpQ'],
-      const <String>['\b'], //	Backspace
-      const <String>['\t '], //horizontal tab (HT)
-      const <String>['\n'], //linefeed (LF)
-      const <String>['\f '], // form feed (FF)
-      const <String>['\r '], //carriage return (CR)
-      const <String>['\v'], //vertical tab
-    ];
-
-    const badURList = const <List<String>>[
-      const <String>[' asdf sdf  ']
-    ];
-
     test('UR hasValidValues good values', () {
       for (var s in goodURList) {
         system.throwOnError = false;
@@ -2967,22 +2894,6 @@ void main() {
   });
 
   group('UR', () {
-    const goodURList = const <List<String>>[
-      const <String>['http:/TVc8mR/swk/jvNtF/Uy6'],
-      const <String>['iaWlVR'],
-      const <String>['http:/l_YB2r8/LQIo9'],
-      const <String>['_m3G9go/OkgpQ'],
-      const <String>['\b'], //	Backspace
-      const <String>['\t '], //horizontal tab (HT)
-      const <String>['\n'], //linefeed (LF)
-      const <String>['\f '], // form feed (FF)
-      const <String>['\r '], //carriage return (CR)
-      const <String>['\v'], //vertical tab
-    ];
-
-    const badURList = const <List<String>>[
-      const <String>[' asdf sdf  ']
-    ];
     //VM.k1
     const urTags0 = const <PTag>[
       PTag.kRetrieveURL,

@@ -41,20 +41,21 @@ abstract class ListDataset {
 
   Element operator [](int code) {
     final index = codes.indexOf(code);
+    if(index < 0) throw new ArgumentError();
     return elements[index];
   }
 
   void operator []=(int code, Element e) {
     assert(code == e.code);
-    codes[code] = e.code;
-    elements[code] = e;
+    codes.add(code);
+    elements.add(e);
   }
   // void operator []=(int i, Element e) => tryAdd(e);
 
   // *** Primitive only for internal use Stores e in eMap
   void store(int index, Element e) {
     assert(index == e.code);
-    elements[e.code] = e;
+    elements.add(e);
   }
 
   @override
@@ -84,6 +85,7 @@ abstract class ListDataset {
   /// Removes the [Element] with [code] from _this_.
   Element removeAt(int code, {bool required = false}) {
     final index = codes.indexOf(code);
+    if(index < 0) throw new ArgumentError();
     codes.removeAt(index);
     return elements.removeAt(index);
   }

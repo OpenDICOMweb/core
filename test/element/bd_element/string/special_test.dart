@@ -32,7 +32,7 @@ void main() {
           ..debug('ae1.vrIndex: ${ae1.vrIndex}');
         //final bd = bytes.buffer.asByteData();
         final bd1 = makeShortEvr(ae1.code, ae1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ae1.code,  bd1, ae1.vrIndex);
+        final e0 = EvrElement.makeFromBytes(ae1.code, bd1, ae1.vrIndex);
         log.debug('e0:$e0');
         final make0 = AEtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -714,7 +714,7 @@ void main() {
         final floatList0 = rng.float64List(1, 1);
         system.throwOnError = false;
         final fd1 =
-        new FDtag(PTag.kOverallTemplateSpatialTolerance, floatList0);
+            new FDtag(PTag.kOverallTemplateSpatialTolerance, floatList0);
         log.debug('fd1:$fd1');
         final bd0 = makeFloat64Bytes(floatList0);
         log
@@ -807,6 +807,257 @@ void main() {
         final e0 = EvrElement.makeFromBytes(ut1.code, bd1, ut1.vrIndex);
         log.debug('e0:$e0');
         final make0 = UTtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+  });
+
+  group('ATtag', () {
+    system.level = Level.debug;
+    test('ATtag from VM.k1', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+        system.throwOnError = false;
+        final at1 = new ATtag(PTag.kDimensionIndexPointer, vList0);
+        log.debug('at1:$at1');
+        final bd0 = new Bytes.fromList(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('at1.vrIndex: ${at1.vrIndex}');
+        final bd1 = makeShortEvr(at1.code, at1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(at1.code, bd1, at1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = ATtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+
+    test('ATtag from VM.k1_n', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint32List(1, i);
+        system.throwOnError = false;
+        final at1 = new ATtag(PTag.kSelectorATValue, vList0);
+        log.debug('at1:$at1');
+        final bd0 = new Bytes.fromList(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('at1.vrIndex: ${at1.vrIndex}');
+        final bd1 = makeShortEvr(at1.code, at1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(at1.code, bd1, at1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = ATtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+  });
+
+  group('ULtag', () {
+    system.level = Level.debug;
+    test('ULtag from VM.k1', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+        system.throwOnError = false;
+        final ul1 = new ULtag(PTag.kRegionFlags, vList0);
+        log.debug('ul1:$ul1');
+        final bd0 = new Bytes.fromList(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('ul1.vrIndex: ${ul1.vrIndex}');
+        final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = ULtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+
+    test('ULtag from VM.k3', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(3, 3);
+        system.throwOnError = false;
+        final ul1 = new ULtag(PTag.kGridDimensions, vList0);
+        log.debug('ul1:$ul1');
+        final bd0 = new Bytes.fromTypedData(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('us1.vrIndex: ${ul1.vrIndex}');
+        final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = ULtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+
+    test('ULtag from VM.k1_n', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint32List(1, i);
+        system.throwOnError = false;
+        final ul1 = new ULtag(PTag.kSelectorULValue, vList0);
+        log.debug('ul1:$ul1');
+        final bd0 = new Bytes.fromList(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('ul1.vrIndex: ${ul1.vrIndex}');
+        final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = ULtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+  });
+
+  group('UStag', () {
+    test('UStag from VM.k1', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint16List(1, 1);
+        system.throwOnError = false;
+        final us1 = new UStag(PTag.kContrastFrameAveraging, vList0);
+        log.debug('us1:$us1');
+        final bd0 = new Bytes.fromTypedData(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('us1.vrIndex: ${us1.vrIndex}');
+        final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(us1.code, bd1, us1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = UStag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+
+    test('UStag from VM.k2', () {
+      system.level = Level.debug;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint16List(2, 2);
+        system.throwOnError = false;
+        final us1 = new UStag(PTag.kRelativeTime, vList0);
+        log.debug('us1:$us1');
+        final bd0 = new Bytes.fromTypedData(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('us1.vrIndex: ${us1.vrIndex}');
+        final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(us1.code, bd1, us1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = UStag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+
+    test('UStag from VM.k3', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint16List(3, 3);
+        system.throwOnError = false;
+        final us1 = new UStag(PTag.kEscapeTriplet, vList0);
+        log.debug('us1:$us1');
+        final bd0 = new Bytes.fromTypedData(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('us1.vrIndex: ${us1.vrIndex}');
+        final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(us1.code, bd1, us1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = UStag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+
+    test('UStag from VM.k1_n', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint16List(1, i);
+        system.throwOnError = false;
+        final us1 = new UStag(PTag.kSelectorUSValue, vList0);
+        log.debug('us1:$us1');
+        final bd0 = new Bytes.fromList(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('us1.vrIndex: ${us1.vrIndex}');
+        final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(us1.code, bd1, us1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = UStag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+  });
+  group('SStag', () {
+    system.level = Level.debug;
+    test('SStag from VM.k1', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.int16List(1, 1);
+        system.throwOnError = false;
+        final ul1 = new SStag(PTag.kTIDOffset, vList0);
+        log.debug('ul1:$ul1');
+        final bd0 = new Bytes.fromList(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('ul1.vrIndex: ${ul1.vrIndex}');
+        final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = SStag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+
+    test('SStag from VM.k2', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.int16List(2, 2);
+        system.throwOnError = false;
+        final ul1 = new SStag(PTag.kOverlayOrigin, vList0);
+        log.debug('ul1:$ul1');
+        final bd0 = new Bytes.fromTypedData(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('ul1.vrIndex: ${ul1.vrIndex}');
+        final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = SStag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+      }
+    });
+
+    test('SStag from VM.k1_n', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.int16List(1, i);
+        system.throwOnError = false;
+        final ul1 = new SStag(PTag.kSelectorSSValue, vList0);
+        log.debug('ul1:$ul1');
+        final bd0 = new Bytes.fromList(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('ul1.vrIndex: ${ul1.vrIndex}');
+        final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        log.debug('e0:$e0');
+        final make0 = SStag.from(e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
