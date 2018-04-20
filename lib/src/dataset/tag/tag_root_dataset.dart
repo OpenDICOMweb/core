@@ -37,12 +37,14 @@ class TagRootDataset extends MapRootDataset with TagDataset {
 
   // TODO: make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].
-  TagRootDataset.from(RootDataset rds)
+  factory TagRootDataset.from(RootDataset rds) => convert(rds);
+/*
       : pGroups = new PrivateGroups(),
         //TODO: fill private groups
         super.from(rds) {
     pGroups.ds = this;
   }
+*/
 
   @override
   bool tryAdd(Element e, [Issues issues]) {
@@ -57,16 +59,13 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   @override
   RootDataset copy([RootDataset rds]) => new TagRootDataset.from(rds ?? this);
 
-  TagRootDataset convert(RootDataset rds) {
-    final tagRDS = new TagRootDataset.from(rds);
-    for (var e in elements) {
-      if (e is SQ) {
-        final tagItems = <TagItem>[];
-        for (var item in e.items)
-          tagItems.add(TagItem.convert(tagRDS, item));
-      } else {
-        tagRDS.add(TagElement.makeFromElement(e));
-      }
+  static TagRootDataset convert(RootDataset rds) {
+    const makeE = TagElement.makeFromElement;
+
+    final tagRDS = new TagRootDataset.empty();
+    for (var e in rds.elements) {
+      final te = (e is SQ) ? SQtag.convert(e) : makeE(e);
+      tagRDS.add(te);
     }
     return tagRDS;
   }

@@ -13,7 +13,7 @@ import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/base/float.dart';
-import 'package:core/src/element/bytes/bd_element.dart';
+import 'package:core/src/element/bytes/byte_element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -34,7 +34,7 @@ const int _vfOffset = 8;
 Bytes _removePadding(Bytes bytes, [int padChar = kSpace]) =>
     removePadding(bytes, _vfOffset, padChar);
 
-abstract class IvrElement<V> implements BDElement<V> {
+abstract class IvrElement<V> implements ByteElement<V> {
   @override
   Bytes get bytes;
   @override

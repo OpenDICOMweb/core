@@ -13,7 +13,7 @@ import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/base/vf_fragments.dart';
-import 'package:core/src/element/bytes/bd_element.dart';
+import 'package:core/src/element/bytes/byte_element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -22,7 +22,7 @@ import 'package:core/src/vr.dart';
 
 const int _vrOffset = 4;
 
-abstract class EvrElement<V> implements BDElement<V> {
+abstract class EvrElement<V> implements ByteElement<V> {
   @override
   Bytes get bytes;
   @override
@@ -32,7 +32,7 @@ abstract class EvrElement<V> implements BDElement<V> {
   Iterable<V> get values;
   @override
   set values(Iterable<V> vList) => unsupportedError();
-  bool isEqual(BDElement a, BDElement b);
+  bool isEqual(ByteElement a, ByteElement b);
 
   // **** End of Interface
 

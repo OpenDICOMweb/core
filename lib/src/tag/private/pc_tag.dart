@@ -13,10 +13,13 @@ import 'package:core/src/tag/private/pd_tag_definitions.dart';
 import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/utils/string.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
 abstract class PCTag extends PrivateTag {
+  PDTagDefinition lookupData(int code);
+  // **** End Interface
+
   const PCTag._();
 
   Map<int, PDTagDefinition> get dataTags => const <int, PDTagDefinition>{};
@@ -59,8 +62,6 @@ abstract class PCTag extends PrivateTag {
     if (elt < base || elt > limit) return false;
     return true;
   }
-
-  PDTagDefinition lookupData(int code) => null;
 
   @override
   String get info =>
@@ -108,6 +109,9 @@ class PCTagUnknown extends PCTag {
   const PCTagUnknown(this.code, this.vrIndex, String name)
       : name = name ?? '--UnknownPCTag--',
         super._();
+
+  @override
+  PDTagDefinition lookupData(int code) => unsupportedError();
 
   @override
   String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)} "$name"';

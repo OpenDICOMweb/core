@@ -20,7 +20,7 @@ typedef Element DecodeBinaryVF(Bytes bytes, int vrIndex);
 typedef Element BDElementMaker(int code, int vrIndex, Bytes bytes);
 
 // TODO: move documentation from EVR/IVR
-abstract class BDElement<V> extends Element<V> {
+abstract class ByteElement<V> extends Element<V> {
   static Element make(int code, int vrIndex, Bytes bytes,
           {bool isEvr = true}) =>
       (isEvr)
@@ -59,7 +59,7 @@ abstract class Common {
 
   // End Interface
 
-  bool isEqual(BDElement a, BDElement b) {
+  bool isEqual(ByteElement a, ByteElement b) {
     if (a.bytes.lengthInBytes != b.bytes.lengthInBytes) return false;
 
     final offset0 = a.bytes.offsetInBytes;
@@ -215,6 +215,7 @@ abstract class AsciiMixin {
   bool get allowInvalid;
   int get valuesLength;
 
+  // Note: Assumes if vfBytes length is odd, padding has already been removed.
   Iterable<String> get values {
     if (valuesLength == 0) return <String>[];
     final bytes = vfBytes;
@@ -230,6 +231,7 @@ abstract class Utf8Mixin {
   bool get allowMalformed;
   int get valuesLength;
 
+  // Note: Assumes if vfBytes length is odd, padding has already been removed.
   Iterable<String> get values {
     if (valuesLength == 0) return <String>[];
     final bytes = vfBytes;

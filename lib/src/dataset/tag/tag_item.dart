@@ -14,7 +14,6 @@ import 'package:core/src/dataset/map_dataset/map_item.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/vr.dart';
 
 /// An [TagItem] is an [Item] contained in an SQtag Element.
 class TagItem extends MapItem with TagDataset {
@@ -38,12 +37,16 @@ class TagItem extends MapItem with TagDataset {
   /// Create a new [TagItem] from an existing [TagItem].
   /// If [parent] is _null_the new [TagItem] has the same
   /// parent as [item].
-  TagItem.from(Item item, Dataset parent, [SQtag sequence])
+  factory TagItem.from(Dataset parent, Item item, [SQtag sequence]) =>
+      convert(parent, item, sequence);
+
+/*
       : // TODO: add check for if empty
         pGroups = new PrivateGroups(),
         super.from(item, parent ?? item.parent, sequence ?? item.sequence) {
     pGroups.ds = this;
   }
+*/
 
   factory TagItem.fromList(Dataset parent, Iterable<Element> elements,
       [SQtag sequence]) {
@@ -55,9 +58,10 @@ class TagItem extends MapItem with TagDataset {
 
   @override
   bool tryAdd(Element e, [Issues issues]) {
-    final v = super.tryAdd(e, issues);
-    if (e.isPrivate) pGroups.add(e);
-    return v;
+    var eNew = e;
+    // [e] MUST be added to the pGroups before it is added to the Dataset.
+    if (e.isPrivate) eNew = pGroups.add(e);
+    return super.tryAdd(eNew, issues);
   }
 
   @override
@@ -65,17 +69,13 @@ class TagItem extends MapItem with TagDataset {
 
   void addPrivate(Element e) => pGroups.add(e);
 
-  static TagItem convert(Dataset parent, Item item) {
-    final Dataset tagItem = new TagItem(parent);
+  static TagItem convert(Dataset parent, Item item, SQ sequence) {
+    const makeE = TagElement.makeFromElement;
+
+    final Dataset tagItem = new TagItem(parent, sequence);
     for (var e in item.elements) {
-      if (e is SQ) {
-        final tagItems = <TagItem>[];
-        for (var item in e.items) tagItems.add(convert(tagItem, item));
-        TagElement.makeSequenceFromTag(
-            e.tag, tagItem, tagItems, e.vfLengthField);
-      } else {
-        tagItem.add(TagElement.makeFromElement(e, kSQIndex));
-      }
+      final te = (e is SQ) ? SQtag.convert(e) : makeE(e);
+      tagItem.add(te);
     }
     return tagItem;
   }

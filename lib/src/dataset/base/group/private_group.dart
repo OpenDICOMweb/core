@@ -30,12 +30,12 @@ class PrivateGroups {
   PrivateGroup _currentGroup;
 
   /// Add an [Element] to the [PrivateGroups] for the containing [Dataset].
-  void add(Element e) {
+  Element add(Element e) {
     assert(e.isPrivate);
     final gNumber = e.group;
     assert(gNumber.isOdd);
     if (gNumber == _currentGNumber) {
-      _currentGroup.add(e);
+      return _currentGroup.add(e);
     } else if (gNumber < _currentGNumber) {
       invalidElementError(e, '$gNumber > $_currentGNumber');
     } else {
@@ -43,7 +43,7 @@ class PrivateGroups {
       _currentGroup = new PrivateGroup(e);
       final gp = _groups.putIfAbsent(gNumber, () => _currentGroup);
       if (gp != _currentGroup) invalidGroupError(gNumber);
-      _currentGroup.add(e);
+      return _currentGroup.add(e);
     }
   }
 
@@ -57,13 +57,27 @@ class PrivateGroups {
 
 /// A container for all private [Element]s in a
 /// [Dataset] with the same Group number.
+///
+/// All [Element]s in a [PrivateGroup] have the same Group Number.
+/// A [PrivateGroup] is created with the first [Element] encountered with
+/// its Group Number in the [Dataset].  There are four possibilities for the
+/// _first_ element encountered in a Group:
+///     - A Group Length ([GL]) [Element] with a [code] ending in 0x10000
+///     - An _illegal_ Private [Element] with the low order 8-bits having
+///       a value between 0x01 and 0x0F inclusive.
+///     - A Private Creator [Element] with the low order 16-bits having a
+///       value between 0x0010 and 0x00FF inclusive.
+///     - A Private Data [Element] _without_ a corresponding Private Creator
+///       [Element].
 class PrivateGroup implements GroupBase {
-  /// The Group number of this group
+  /// The Group number of this group. The value must be an odd integer
+  /// between 0x0009 and 0xFFFD inclusive.
+  // TODO: is 0xFFFD correct
   @override
   final int gNumber;
 
   /// The Group Length Element for this [PrivateGroup].  This
-  /// [Element] is retired and normally is not present.
+  /// [Element] is retired and is normally not present.
   final Element gLength;
 
   /// Illegal elements between gggg,0001 - gggg,000F
@@ -74,7 +88,7 @@ class PrivateGroup implements GroupBase {
 
   PrivateGroup(Element e)
       : gNumber = e.group,
-        assert(gNumber.isOdd),
+        assert(e.group.isOdd),
         gLength = (e.elt == 0) ? e : null {
     final elt = e.elt;
     (elt > 0 || elt < 0x10) ? illegal.add(e) : add(e);
@@ -99,49 +113,56 @@ class PrivateGroup implements GroupBase {
 
   ///
   @override
-  void add(Element e) {
+  Element add(Element e) {
     assert(e.isPrivate);
     final tag = e.tag;
     if (tag is PrivateTag) {
       final sgNumber = tag.sgNumber;
       print('currentSGIndex $_currentSGNumber sgNumber $sgNumber');
       if (sgNumber < _currentSGNumber) {
-        // privateSubgroupOutOfOrder(_currentSubgroupNumber, sgNumber, e);
         throw 'Private Subgroup out of order: '
             'current($_currentSGNumber) e($sgNumber): $e';
       } else if (sgNumber > _currentSGNumber) {
-        _getNewSubgroup(sgNumber, e);
+        return _getNewSubgroup(sgNumber, e);
       }
       if (tag is PCTag) {
         if (_currentSubgroup.creator != e) throw 'Invalid subgroup creator: $e';
       } else if (tag is PDTag) {
-        _currentSubgroup.addPD(e);
+        return _currentSubgroup.add(e);
       } else if (tag is GroupLengthPrivateTag) {
         if (gLength != null)
           throw 'Duplicate Group Length Element: 1st: $gLength 2nd: e';
-        gLength ?? e;
       } else if (tag is IllegalPrivateTag) {
         illegal.add(e);
       } else {
         throw '**** Internal Error: $e';
       }
+    } else {
+      print('Non-Private Element: $e');
+      return invalidElementError(e);
     }
-//    log.debug('Non-Private Element: $e');
   }
 
-  void _getNewSubgroup(int sgNumber, [Element creator]) {
+  Element _getNewSubgroup(int sgNumber, [Element creator]) {
     assert(creator == null || creator.tag is PCTag);
     _currentSGNumber = sgNumber;
     _currentSubgroup = new PrivateSubgroup(this, sgNumber, creator);
     subgroups[sgNumber] = _currentSubgroup;
     // _currentSubgroup.creator = creator;
+    return creator;
   }
 
-  bool addCreator(Element pc) {
-    if (pc.tag is PCTag) {
-      final PCTag tag = pc.tag;
-      final sg = new PrivateSubgroup(this, tag.sgNumber, pc);
-      subgroups[tag.sgNumber] = sg;
+  bool addCreator(PC pc) {
+    final tag = pc.tag;
+    var npc = pc;
+    if (tag is PCTag) {
+      if (tag is PCTagUnknown) {
+        final nTag = PCTag.lookupByCode(pc.code, pc.vrIndex, pc.value);
+        if (nTag is! PCTagUnknown) npc = new PCtag(nTag, pc.values);
+      }
+      final sgNumber = tag.sgNumber;
+      final sg = new PrivateSubgroup(this, sgNumber, npc);
+      subgroups[sgNumber] = sg;
       return true;
     }
     return false;
@@ -184,124 +205,87 @@ class PrivateSubgroup {
   /// (gggg,00ii), and a PDTag Code is denoted (gggg,iioo) then the Sub-Group
   /// Index corresponds to ii.
   final int sgNumber;
-
-  final Map<int, Object> pData;
-
   /// The Private Creator for this [PrivateSubgroup].
   ///
   /// _Note_: If no [creator] corresponding to a Private Data Element
   /// is present in the Dataset, the [creator] will be a Missing Private
   /// Creator Element.
-//  final Element creator;
+  final PC creator;
 
-  /// The subgroup key is the Elt number of the Private Data
-//  Map<int, Element> pData = {};
+  /// The Private Data [Element]s in this Subgroup.
+  final Map<int, Object> members;
 
-  factory PrivateSubgroup(PrivateGroup group, int sgNumber, Element _creator) {
-    if (_creator.group == group.gNumber &&
-        Tag.pcSubgroup(_creator.code) == sgNumber)
-      return new PrivateSubgroup._(group, sgNumber, _creator);
-    final tag = (_creator == null)
-        ? new PCTagUnknown(group.gNumber, kLOIndex, '--Phantom--')
-        : _creator.tag;
-    return invalidTagError(tag, LO);
-  }
-/*
-  factory PrivateSubgroup(PrivateGroup group, Element creator) {
-    final sg = new PrivateSubgroup._(creator);
-    group._add(sg);
-    return sg;
-  }
-*/
-/*
+  factory PrivateSubgroup(PrivateGroup group, int sgNumber, Element e) {
+    final code = e.code;
+    assert(Tag.toGroup(code) == group.gNumber);
+    if (Tag.isPCCode(code)) {
+      assert(Tag.pcSubgroup(code) == sgNumber);
+        return new PrivateSubgroup._(group, sgNumber, e);
 
-  factory PrivateSubgroup.noCreator(PrivateGroup group) {
-    final sg = new PrivateSubgroup._(creator);
-    group._add(sg);
-    return sg;
-  }
-*/
+    } else if (Tag.isPDCode(code)) {
+      assert(Tag.pdSubgroup(code) == sgNumber);
+      final nTag = new PCTagUnknown(group.gNumber, kLOIndex, '--Phantom--');
+      final eNew = TagElement.makeFromTag(nTag, e.values, kLOIndex);
+        return new PrivateSubgroup._(group, sgNumber, eNew);
 
-  //PrivateSubgroup._(this.creator);
-
-  PrivateSubgroup._(this.group, this.sgNumber, [this._creator])
-      : pData = <int, Element>{};
-
-  Map<int, Object> get members => pData;
-
-  /// The Private Creator for this [PrivateSubgroup].
-  ///
-  /// _Note_: If no [creator] corresponding to a Private Data Element
-  /// is present in the Dataset, the [creator] will be a Missing Private
-  /// Creator Element.
-  Element get creator => _creator;
-  Element _creator;
-  set creator(Element e) {
-    assert(e.tag is PCTag);
-    if (creator != null)
-      throw 'Duplicate Subgroup Creator($sgNumber) 1st: $creator 2nd: $e';
-    _creator ??= e;
+    } else {
+      return invalidTagError(e.tag, LO);
+    }
   }
 
-  PCTag get tag => _creator.tag;
+  PrivateSubgroup._(this.group, this.sgNumber, this.creator)
+      : members = <int, Element>{};
 
   int get groupNumber => group.gNumber;
 
-  // int get group => creator.tag.group;
-
-  /// A integer between 0x10 and 0xFF inclusive. It corresponds to
-  /// a Private Creator's Element field, i.e. eeee in (gggg,eeee).
-/*
-  int get sgNumber {
-    final PCTag tag = creator.tag;
-    return tag.sgNumber;
-  }
-*/
-
   String get info {
     final sb = new Indenter('$runtimeType(${hex16(sgNumber)}): '
-        '${pData.values.length}')
+        '${members.values.length}')
       ..down;
-    pData.values.forEach(sb.writeln);
+    members.values.forEach(sb.writeln);
     sb.up;
     return '$sb';
   }
 
-/*
-  String get info => '$runtimeType(${hex16(sgNumber)}) $creator\n '
-      '(${pData.length})$creator.pData';
-*/
+  Element add(Element pd) {
+    final tag = pd.tag;
+    final cTag = creator.tag;
+    if (cTag is PCTagKnown && tag is PDTagUnknown) {
+      final pdTag = cTag.definition.dataTags[pd.code];
+      if (pdTag != null) {
+        final pdNew = TagElement.makeFromTag(pdTag, pd.values, pd.vrIndex);
+      }
 
-/*
-  void add(Element e) {
-    if (Tag.isValidPDCode(e.code, creator.code)) pData[Tag.toElt];
-  }
-*/
-
-  void addPD(Element pd) {
+    }
     final code = pd.code;
-    if (Tag.isValidPDCode(code, _creator.code)) {
-      pData[code] = pd;
+    if (Tag.isValidPDCode(code, creator.code)) {
+
+      members[code] = pd;
     } else {
       throw 'Invalid PD Element: $pd';
     }
   }
 
   /// Returns a Private Data [Element].
-  Element lookupData(int code) => pData[code];
+  Element lookup(int code) => members[code];
 
   bool inSubgroup(int pdCode) => Tag.isValidPDCode(pdCode, creator.code);
 
-/*
-  /// Returns a Private Data [Element].
-  Element lookupData(int pdCode) =>
-      (inSubgroup(pdCode)) ? pData[Tag.toElt(pdCode)] : null;
-*/
+
+  @override
+  String toString() => '${hex8(sgNumber)} $runtimeType: '
+      '$creator Members: ${members.length}';
+}
+
+class FormattedPrivateSubgroup {
+  final PrivateSubgroup subgroup;
+
+  FormattedPrivateSubgroup.from(this.subgroup);
 
   String format(Formatter z) {
-    final sb = new StringBuffer('${z(this)}\n');
+    final sb = new StringBuffer('${z(subgroup)}\n');
     z.down;
-    sb.write(z.fmt(creator, pData));
+    sb.write(z.fmt(subgroup.creator, subgroup.members));
     z.up;
     return sb.toString();
   }
@@ -312,9 +296,6 @@ class PrivateSubgroup {
       members);
 */
 
-  @override
-  String toString() => '${hex8(sgNumber)} $runtimeType: '
-      '$creator Members: ${members.length}';
 }
 
 class SubgroupAlreadyExistsError extends Error {

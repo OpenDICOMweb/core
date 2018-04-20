@@ -10,6 +10,7 @@
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
+import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag.dart';
@@ -140,14 +141,21 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
     return new SQtag(sq.tag, parent, nItems, sq.vfLengthField);
   }
 
-/*
-  static SQtag from(Element e, Dataset parent) =>
-      new SQtag._fromBytes(e.tag, parent, e.values, e.vfLengthField, e.vfBytes);
-*/
-
   static SQtag fromBytes(Tag tag, Dataset parent, List<TagItem> vList,
                            [int vfLengthField, Bytes bytes]) {
     if (tag.vrIndex != kSQIndex) return null;
     return new SQtag(tag, parent, vList, vfLengthField, bytes);
+  }
+
+  static SQtag convert(SQ e) {
+    const makeSQ = TagElement.makeSequenceFromTag;
+
+    final tagItems = <TagItem>[];
+    final sq = makeSQ(e.tag, e.parent, tagItems, e.vfLengthField);
+    for (var item in e.items) {
+      final tItem = TagItem.convert(sq.parent, item, sq);
+      tagItems.add(tItem);
+    }
+    return sq;
   }
 }
