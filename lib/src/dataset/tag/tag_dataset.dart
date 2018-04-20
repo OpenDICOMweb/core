@@ -12,7 +12,8 @@ import 'package:core/src/tag.dart';
 
 /// An [TagDataset] is a Dataset containing TagElements.
 abstract class TagDataset {
-  History get history;
+  PrivateGroups get pGroups;
+
   /// If _true_ Elements with invalid values are stored in the
   /// [Dataset]; otherwise, an InvalidValuesError is thrown.
   bool allowInvalidValues = true;

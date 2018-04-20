@@ -267,6 +267,7 @@ void main() {
       final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
+      system.throwOnError = false;
       item
         ..add(fd0)
         ..add(fd1)

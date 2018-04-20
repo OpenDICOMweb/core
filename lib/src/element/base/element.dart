@@ -529,6 +529,9 @@ abstract class Element<V> extends ListBase<V> {
     final vList = (length > max) ? values.take(max) : values;
     return '$valid($length$vLength)[${vList.join(', ')}]';
   }
+
+  String getValuesAsString([int max]) => _values(max);
+
   // **** End of local methods for [toString]
 
   // ***************** Static Getters and Methods *****************

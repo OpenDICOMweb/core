@@ -8,6 +8,8 @@
 //
 
 import 'package:core/src/base.dart';
+import 'package:core/src/dataset/base/dataset.dart';
+import 'package:core/src/dataset/base/group/group_base.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/indenter.dart';
@@ -16,72 +18,53 @@ import 'package:core/src/vr.dart';
 
 // ignore_for_file: only_throw_errors
 
-//TODO: needed??
-const List<LO> emptyPrivateCreator = const <LO>[];
+class PrivateGroups {
+  Dataset ds;
+  final _groups = <int, PrivateGroup>{};
 
-abstract class GroupBase {
-  int get gNumber;
-  Map<int, dynamic> get members;
-  String get info;
+  PrivateGroups();
 
-  void add(Element e);
-}
+  PrivateGroup operator [](int gNumber) => _groups[gNumber];
 
-/// A [PublicGroup] can only contain Sequences ([SQ]) that
-/// contain Public pElement]s.
-class PublicGroup implements GroupBase {
-  @override
-  final int gNumber;
-  List<SQ> sequences = <SQ>[];
-  List<SQ> privateSQs = <SQ>[];
+  var _currentGNumber = 0;
+  PrivateGroup _currentGroup;
 
-  @override
-  Map<int, Element> members = <int, Element>{};
-
-  PublicGroup(this.gNumber) : assert(gNumber.isEven);
-
-  @override
-  void add(Element e0) {
-    // members[e.code] = new SQtag.from(sq);
-    members[e0.code] = e0;
-    if (e0 is SQ) {
-      sequences.add(e0);
-      for (var item in e0.items)
-        for (var e1 in item.elements) if (e1.group.isOdd) privateSQs.add(e0);
+  /// Add an [Element] to the [PrivateGroups] for the containing [Dataset].
+  void add(Element e) {
+    assert(e.isPrivate);
+    final gNumber = e.group;
+    assert(gNumber.isOdd);
+    if (gNumber == _currentGNumber) {
+      _currentGroup.add(e);
+    } else if (gNumber < _currentGNumber) {
+      invalidElementError(e, '$gNumber > $_currentGNumber');
+    } else {
+      _currentGNumber = gNumber;
+      _currentGroup = new PrivateGroup(e);
+      final gp = _groups.putIfAbsent(gNumber, () => _currentGroup);
+      if (gp != _currentGroup) invalidGroupError(gNumber);
+      _currentGroup.add(e);
     }
   }
 
   @override
-  String get info {
-    final sb = new Indenter('$runtimeType(${hex16(gNumber)}): '
-        '${members.values.length}')
-      ..down;
-    members.values.forEach(sb.writeln);
-    sb.up;
+  String toString() {
+    final sb = new StringBuffer();
+    _groups.forEach((gNum, pGroup) => sb.writeln('$gNum: $pGroup'));
     return '$sb';
   }
-
-  String format(Formatter z) => z.fmt(
-      '$runtimeType(${hex16(gNumber)}): '
-      '${members.length} Groups',
-      members);
-  String format0(Formatter z) =>
-      '${z(this)}\n${z.fmt('Groups(${members.values.length})',
-                               members)}';
-
-  @override
-  String toString() =>
-      '$runtimeType(${hex16(gNumber)}) ${members.values.length} members';
 }
 
+/// A container for all private [Element]s in a
+/// [Dataset] with the same Group number.
 class PrivateGroup implements GroupBase {
-  /// The Group number for this group
+  /// The Group number of this group
   @override
   final int gNumber;
 
   /// The Group Length Element for this [PrivateGroup].  This
   /// [Element] is retired and normally is not present.
-  Element gLength;
+  final Element gLength;
 
   /// Illegal elements between gggg,0001 - gggg,000F
   List<Element> illegal = [];
@@ -89,13 +72,21 @@ class PrivateGroup implements GroupBase {
   /// A [Map] from sgNumber to [PrivateSubgroup].
   Map<int, PrivateSubgroup> subgroups = <int, PrivateSubgroup>{};
 
-  PrivateGroup(this.gNumber) : assert(gNumber.isOdd);
+  PrivateGroup(Element e)
+      : gNumber = e.group,
+        assert(gNumber.isOdd),
+        gLength = (e.elt == 0) ? e : null {
+    final elt = e.elt;
+    (elt > 0 || elt < 0x10) ? illegal.add(e) : add(e);
+  }
 
   /// Returns the [PrivateSubgroup] that corresponds with.
   PrivateSubgroup operator [](int pdCode) => subgroups[pdCode & 0xFFFF];
 
   @override
   Map<int, PrivateSubgroup> get members => subgroups;
+  @override
+  int get length => members.length;
 
   @override
   String get info => '$this\n${subgroups.values.join("  \n")}';
@@ -103,22 +94,10 @@ class PrivateGroup implements GroupBase {
   /// Returns _true_ if [code] has a Group number equal to [gNumber].
   bool inGroup(int code) => (code >> 16) == gNumber;
 
-/*
-  /// Adds a new [PrivateSubgroup] to _this_ [PrivateGroup].
-  void _add(PrivateSubgroup sg) {
-    final PCTag tag = sg.creator.tag;
-    final sgNumber = tag.sgNumber;
-    final sg0 = subgroups[sgNumber];
-    if (sg0 != null)
-      throw new SubgroupAlreadyExistsError(
-          'Subgroup $sg0 already exists: new $sg');
-    subgroups[sgNumber] = sg;
-  }
-*/
-
   var _currentSGNumber = 0;
   PrivateSubgroup _currentSubgroup;
 
+  ///
   @override
   void add(Element e) {
     assert(e.isPrivate);

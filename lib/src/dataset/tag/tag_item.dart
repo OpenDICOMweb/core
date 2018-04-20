@@ -9,47 +9,68 @@
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/item.dart';
+import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/map_dataset/map_item.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
 /// An [TagItem] is an [Item] contained in an SQtag Element.
 class TagItem extends MapItem with TagDataset {
-  // @override
-//  List<PrivateGroup> privateGroups = <PrivateGroup>[];
+  @override
+  final PrivateGroups pGroups;
 
   /// Creates a new [TagItem] from [Bytes].
   TagItem(Dataset parent, [SQ sequence, Map<int, Element> eMap, Bytes bd])
-      : super(parent, sequence, eMap, bd);
+      : pGroups = new PrivateGroups(),
+        super(parent, sequence, eMap, bd) {
+    pGroups.ds = this;
+  }
 
   /// Creates a new empty [Item] from [Bytes].
   TagItem.empty(Dataset parent, [SQ sequence, Bytes bd])
-      : super(parent, sequence, <int, Element>{}, bd);
+      : pGroups = new PrivateGroups(),
+        super(parent, sequence, <int, Element>{}, bd) {
+    pGroups.ds = this;
+  }
 
   /// Create a new [TagItem] from an existing [TagItem].
   /// If [parent] is _null_the new [TagItem] has the same
   /// parent as [item].
   TagItem.from(Item item, Dataset parent, [SQtag sequence])
-      : super.from(item, parent ?? item.parent, sequence ?? item.sequence);
+      : // TODO: add check for if empty
+        pGroups = new PrivateGroups(),
+        super.from(item, parent ?? item.parent, sequence ?? item.sequence) {
+    pGroups.ds = this;
+  }
 
   factory TagItem.fromList(Dataset parent, Iterable<Element> elements,
       [SQtag sequence]) {
     final eMap = <int, Element>{};
     for (var e in elements) eMap[e.index] = e;
+    //TODO: handle PrivateGroups
     return new TagItem(parent, sequence, eMap);
+  }
+
+  @override
+  bool tryAdd(Element e, [Issues issues]) {
+    final v = super.tryAdd(e, issues);
+    if (e.isPrivate) pGroups.add(e);
+    return v;
   }
 
   @override
   bool get isImmutable => false;
 
-  static TagItem convert<V>(Dataset parent, Item item) {
+  void addPrivate(Element e) => pGroups.add(e);
+
+  static TagItem convert(Dataset parent, Item item) {
     final Dataset tagItem = new TagItem(parent);
     for (var e in item.elements) {
       if (e is SQ) {
         final tagItems = <TagItem>[];
-        for (var item in e.items) tagItems.add(convert<V>(tagItem, item));
+        for (var item in e.items) tagItems.add(convert(tagItem, item));
         TagElement.makeSequenceFromTag(
             e.tag, tagItem, tagItems, e.vfLengthField);
       } else {

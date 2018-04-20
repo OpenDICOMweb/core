@@ -12,16 +12,12 @@ import 'dart:typed_data';
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/base/errors.dart';
-import 'package:core/src/dataset/base/history.dart';
+import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/dataset/base/private_group.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/vr.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 
@@ -79,24 +75,6 @@ abstract class DatasetMixin {
 
   DSBytes get dsBytes;
 
-  History get history;
-
-  /// If _true_ [Element]s with invalid values are stored in the
-  /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
-  bool get allowInvalidValues => true;
-
-  /// If _true_ duplicate [Element]s are stored in the duplicate Map
-  /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
-  bool get allowDuplicates => true;
-
-  /// A field that control whether new [Element]s are checked for
-  /// [Issues] when they are [add]ed to the [Dataset].
-  bool get checkIssuesOnAdd => false;
-
-  /// A field that control whether new [Element]s are checked for
-  /// [Issues] when they are accessed from the [Dataset].
-  bool get checkIssuesOnAccess => false;
-
   /// Returns a Sequence([SQ]) containing any [Element]s that were
   /// modified or removed.
   // TODO: complete and test
@@ -152,31 +130,10 @@ abstract class DatasetMixin {
   // **** Section Start: Default Operator and Getters
   // **** These may be overridden in subclasses.
 
-  bool get hasDuplicates => history.duplicates.isNotEmpty;
-
-  List<SQ> get sequences {
-    final results = <SQ>[];
-    for (var e in elements)
-      if (e is SQ) add(e);
-    return results;
-  }
-
   // **** Section Start: Element related Getters and Methods
 
   // Dataset<K> copy([Dataset<K> parent]);
 
-  /// All lookups should be done using this method.
-  List<Element> lookupAll(int index) {
-    final results = <Element>[];
-    final e = lookup(index);
-    e ?? results.add(e);
-    for (var sq in sequences)
-      for (var item in sq.items) {
-        final e = item[index];
-        e ?? results.add(e);
-      }
-    return results;
-  }
 
   bool hasElementsInRange(int min, int max) {
     for (var e in elements)
@@ -191,44 +148,6 @@ abstract class DatasetMixin {
       if (e.code >= min && e.code < max) elements.add(e);
     return elements;
   }
-
-  void add(Element e, [Issues issues]) => tryAdd(e);
-
-  /// Trys to add an [Element] to a [Dataset].
-  ///
-  /// If the new [Element] is not valid and [allowInvalidValues] is _false_,
-  /// an [invalidValuesError] is thrown; otherwise, the [Element] is added
-  /// to both the [_issues] [Map] and to the [Dataset]. The [_issues] [Map]
-  /// can be used later to return an [Issues] for the [Element].
-  ///
-  /// If an [Element] with the same [Tag] is already contained in the
-  /// [Dataset] and [allowDuplicates] is _false_, a [DuplicateElementError] is
-  /// thrown; otherwise, the [Element] is added to both the [duplicates] [Map]
-  /// and to the [Dataset].
-  bool tryAdd(Element e, [Issues issues]) {
-    final old = lookup(e.code);
-    if (old == null) {
-      if (checkIssuesOnAdd && (issues != null)) {
-        if (!allowInvalidValues && !e.isValid) invalidElementError(e);
-      }
-      store(e.code, e);
-      return true;
-    } else
-    if (allowDuplicates) {
-      system.warn('** Duplicate Element:\n\tnew: $e\n\told: $old');
-      if (old.vrIndex != kUNIndex) {
-        history.duplicates.add(e);
-      } else {
-        store(e.index, e);
-        history.duplicates.add(old);
-      }
-      return false;
-    } else {
-      return duplicateElementError(old, e);
-    }
-  }
-
-  void addAll(Iterable<Element> eList) => eList.forEach(add);
 
   Iterable<Element> copyWhere(bool test(Element e)) {
     final result = <Element>[];
@@ -340,16 +259,6 @@ abstract class DatasetMixin {
     //TODO: finish
     return dList;
   }
-
-
-  String get info => '''
-$runtimeType(#$hashCode):
-            Total: $total
-        Top Level: $length
-       Duplicates: ${history.duplicates.length}
-  PrivateElements: $nPrivateElements
-    PrivateGroups: $nPrivateGroups
-    ''';
 
   /// Returns a formatted [String]. See [Formatter].
   String format(Formatter z) => z.fmt('$runtimeType: $length Elements', this);

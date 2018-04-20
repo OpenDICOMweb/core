@@ -14,11 +14,12 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'list_item_test', level: Level.info);
+  Server.initialize(name: 'list_item_test', level: Level.debug);
 
   final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
 
   group('ListItem', () {
+    // Urgent Sharath Fix: no expect in test
     test('[] and []=', () {
       final item = new ListItem.empty(rds, null);
       const ts = TransferSyntax.kExplicitVRLittleEndian;
@@ -79,7 +80,7 @@ void main() {
 
       noValues0 = item0.noValuesAll(as0.key);
       for (var e in noValues0) {
-        print('noValues: $e');
+        log.debug('noValues: $e');
         expect(e.values.isEmpty, true);
         log.debug('noValues0: $noValues0');
       }

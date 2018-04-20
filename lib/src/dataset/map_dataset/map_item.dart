@@ -33,8 +33,8 @@ class MapItem extends Item with MapDataset {
   /// Creates a [MapItem] from another [MapItem].
   MapItem.from(MapItem item, Dataset parent, SQ sequence)
       : eMap = new Map.from(item.eMap),
-        super(
-            parent ?? item.parent, sequence ?? item.sequence, item.dsBytes.bytes);
+        super(parent ?? item.parent, sequence ?? item.sequence,
+            item.dsBytes.bytes);
 
   MapItem copy([MapItem item, Dataset parent, SQ sequence]) {
     item ??= this;

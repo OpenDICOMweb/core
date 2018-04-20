@@ -8,9 +8,8 @@
 //
 
 import 'package:collection/collection.dart';
-import 'package:core/src/dataset/base.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/utils/errors.dart';
+import 'package:core/src/utils.dart';
 
 MapEquality<int, Element> mapEquality = const MapEquality<int, Element>();
 
@@ -22,32 +21,9 @@ int mapHash(Map<int, Element> map) => mapEquality.hash(map);
 abstract class MapDataset {
   /// A [Map] from key to [Element].
   Map<int, Element> get eMap;
- final History history = new History();
 
-  Element operator [](int i) => eMap[i];
-
-  void operator []=(int code, Element e) {
-    assert(code == e.code);
-    _tryAdd(code, e);
-  }
-
-//  bool tryAdd(Element e) => _tryAdd(e.code, e);
-
-  bool _tryAdd(int code, Element e) {
-    final old = eMap[e.code];
-    if (old == null) {
-      eMap[e.code] = e;
-      return true;
-    } else {
-      final result = eMap.putIfAbsent(e.code, () => e);
-      if (result != e) {
-        duplicateElementError(result, e);
-        return false;
-      }
-      return true;
-    }
-  }
- // void operator []=(int i, Element e) => tryAdd(e);
+  /// Returns the [Element] with [code].
+  Element operator [](int code) => eMap[code];
 
   // *** Primitive only for internal use Stores e in eMap
   void store(int index, Element e) {
@@ -76,13 +52,11 @@ abstract class MapDataset {
 
   Map<int, Element> asMap() => eMap;
 
- // Element replace(Element e) => eMap.remove()
-
   /// Removes the [Element] [e] from _this_.
   bool remove(Object e) => (e is Element) ? e == eMap.remove(e.code) : false;
 
   /// Removes the [Element] with [code] from _this_.
-  Element deleteCode(int code) =>  eMap.remove(code);
+  Element deleteCode(int code) => eMap.remove(code);
 
   /// Removes the [Element] with key from _this_.
   Element removeAt(int index, {bool required = false}) => eMap.remove(index);

@@ -10,8 +10,8 @@
 import 'package:core/src/dataset/base.dart';
 import 'package:core/src/tag.dart';
 
-/// A [BDMixin] is a DICOM [Dataset].
-abstract class BDMixin {
+/// A [ByteDataset] is a DICOM [Dataset].
+abstract class ByteDataset {
 
 	bool get isImmutable => true;
 
