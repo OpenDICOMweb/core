@@ -41,8 +41,7 @@ abstract class ListDataset {
 
   Element operator [](int code) {
     final index = codes.indexOf(code);
-    if(index < 0) throw new ArgumentError();
-    return elements[index];
+    return (index < 0) ? null : elements[index];
   }
 
   void operator []=(int code, Element e) {
