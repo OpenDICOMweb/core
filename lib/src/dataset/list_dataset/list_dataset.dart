@@ -39,7 +39,13 @@ abstract class ListDataset {
   /// Returns the [Element] with [code].
   Element operator [](int code) {
     final index = codes.indexOf(code);
-    return (index == -1) ? null : elements[index];
+    return (index < 0) ? null : elements[index];
+  }
+
+  void operator []=(int code, Element e) {
+    assert(code == e.code);
+    codes.add(code);
+    elements.add(e);
   }
 
   // *** Primitive only for internal use Stores e in eMap
