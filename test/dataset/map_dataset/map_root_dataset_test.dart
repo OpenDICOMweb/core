@@ -239,6 +239,7 @@ void main() {
       final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
+      system.throwOnError = false;
       rds..add(fd0)..add(fd1)..add(as0)..add(as1)..add(as2)..add(ob0)..add(ae0);
 
       final dup = rds.duplicates;

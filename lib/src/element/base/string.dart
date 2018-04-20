@@ -207,7 +207,8 @@ abstract class StringBase extends Element<String> {
       _stringListToBytes(sList, maxVFLength);
 
   @override
-  String getValuesAsString(int max) {
+  String getValuesAsString([int max]) {
+    max ??= Element.truncatedValuesLength;
     final v = values;
     final length = v.length;
     if (length == 0) return '""';

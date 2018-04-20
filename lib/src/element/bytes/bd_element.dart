@@ -217,7 +217,9 @@ abstract class AsciiMixin {
 
   Iterable<String> get values {
     if (valuesLength == 0) return <String>[];
-    final s = cvt.ascii.decode(vfBytes, allowInvalid: allowInvalid);
+    final bytes = vfBytes;
+    final vf = (bytes.length.isEven) ? removePadding(vfBytes, 0): bytes;
+    final s = cvt.ascii.decode(vf, allowInvalid: allowInvalid);
     return s.split('\\');
   }
 }
@@ -230,7 +232,9 @@ abstract class Utf8Mixin {
 
   Iterable<String> get values {
     if (valuesLength == 0) return <String>[];
-    final s = cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
+    final bytes = vfBytes;
+    final vf = (bytes.length.isEven) ? removePadding(vfBytes, 0): bytes;
+    final s = cvt.utf8.decode(vf, allowMalformed: allowMalformed);
     return s.split('\\');
   }
 }

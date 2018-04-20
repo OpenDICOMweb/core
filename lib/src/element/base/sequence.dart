@@ -272,7 +272,10 @@ Summary $tag
   String format(Formatter z) => z.fmt(this, items);
 
   @override
-  String getValuesAsString(int max) => '${values.length} Items';
+  String getValuesAsString([int max]) {
+    max ??= Element.truncatedValuesLength;
+    return '${values.length} Items';
+  }
 
   static const int kVRIndex = kSQIndex;
   static const int kVRCode = kSQCode;

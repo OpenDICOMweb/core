@@ -257,6 +257,9 @@ abstract class RootDataset extends Dataset {
 abstract class Fmi extends ListBase<Element> {
   Iterable<Element> get elements;
 
+  @override
+  int get length => elements.length;
+
   Uid uidLookup(int code) {
     final e = this[code];
     if (e == null) return null;

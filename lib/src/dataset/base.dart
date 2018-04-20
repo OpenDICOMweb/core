@@ -10,11 +10,13 @@
 export 'package:core/src/dataset/base/dataset.dart';
 export 'package:core/src/dataset/base/ds_bytes.dart';
 export 'package:core/src/dataset/base/errors.dart';
+export 'package:core/src/dataset/base/group/group_base.dart';
+export 'package:core/src/dataset/base/group/private_group.dart';
+export 'package:core/src/dataset/base/group/public_group.dart';
 export 'package:core/src/dataset/base/history.dart';
 export 'package:core/src/dataset/base/item.dart';
-export 'package:core/src/dataset/base/private_group.dart';
 export 'package:core/src/dataset/base/root_dataset.dart';
 export 'package:core/src/dataset/base/summary.dart';
 
-// TODO: flush or move to extra
+// TODO: needed
 //export 'package:core/src/dataset/base/fmi.dart';

@@ -7,10 +7,11 @@
 //  See the AUTHORS file for other contributors.
 //
 
+import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/list_dataset/list_dataset.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils.dart';
 
 /// A [ListRootDataset].
 class ListRootDataset extends RootDataset with ListDataset {
@@ -65,6 +66,35 @@ class FmiList extends Fmi with ListDataset {
   FmiList.from(FmiList fmi)
       : codes = new List<int>.from(fmi.codes),
         elements = new List<Element>.from(fmi.elements);
+
+  @override
+  Element operator [](int code) {
+    final index = codes.indexOf(code);
+    return elements[index];
+  }
+
+  @override
+  void operator []=(int code, Element e) {
+    assert(code == e.code);
+    tryAdd(e);
+  }
+
+  bool tryAdd(Element e) {
+    final code = e.code;
+    final index = codes.indexOf(code);
+    if (index == -1) {
+      codes.add(code);
+      elements.add(e);
+      return true;
+    } else {
+      final old = elements[code];
+      if (old != null) {
+        duplicateElementError(old, e);
+        return false;
+      }
+      return true;
+    }
+  }
 
   @override
   String toString() => '$runtimeType: $length elements';

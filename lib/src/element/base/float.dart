@@ -101,15 +101,6 @@ abstract class Float extends Element<double> {
       return false;
     return true;
   }
-
-  @override
-  String getValuesAsString(int max) {
-    final v = values;
-    if (v == null) return nullElementError();
-    final vList = (v.length > max) ? v.take(max) : v;
-    final s = '[${vList.join(', ')}]';
-    return '(${vList.length})$s';
-  }
 }
 
 /// A mixin class for 32-bit floating point [Element]s.

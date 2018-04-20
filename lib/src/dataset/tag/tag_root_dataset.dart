@@ -8,38 +8,62 @@
 //
 
 import 'package:core/src/dataset/base/root_dataset.dart';
+import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
 import 'package:core/src/dataset/tag/tag_item.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils.dart';
 
 /// A [TagRootDataset].
 class TagRootDataset extends MapRootDataset with TagDataset {
+  @override
+  final PrivateGroups pGroups;
 
   /// Creates an empty, i.e. without TagElements, [TagRootDataset].
   TagRootDataset(Fmi fmi, Map<int, Element> eMap,
       [String path = '', Bytes bd, int fmiEnd])
-      : super(fmi, eMap, path, bd, fmiEnd);
+      : pGroups = new PrivateGroups(),
+        super(fmi, eMap, path, bd, fmiEnd) {
+    pGroups.ds = this;
+  }
 
   /// Creates an empty [TagRootDataset], i.e. without [Element]s.
   TagRootDataset.empty([String path = '', Bytes bd, int fmiEnd = 0])
-      : super.empty(path, bd ?? Bytes.kEmptyBytes, fmiEnd);
+      : pGroups = new PrivateGroups(),
+        super.empty(path, bd ?? Bytes.kEmptyBytes, fmiEnd) {
+    pGroups.ds = this;
+  }
 
   // TODO: make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].
-  TagRootDataset.from(RootDataset rds) : super.from(rds);
+  TagRootDataset.from(RootDataset rds)
+      : pGroups = new PrivateGroups(),
+        //TODO: fill private groups
+        super.from(rds) {
+    pGroups.ds = this;
+  }
+
+  @override
+  bool tryAdd(Element e, [Issues issues]) {
+    final v = super.tryAdd(e, issues);
+    if (e.group.isOdd) {
+      print('private: $e');
+      pGroups.add(e);
+    }
+    return v;
+  }
 
   @override
   RootDataset copy([RootDataset rds]) => new TagRootDataset.from(rds ?? this);
 
-  TagRootDataset convert<V>(RootDataset rds) {
+  TagRootDataset convert(RootDataset rds) {
     final tagRDS = new TagRootDataset.from(rds);
-    for(var e in elements) {
+    for (var e in elements) {
       if (e is SQ) {
         final tagItems = <TagItem>[];
-        for(var item in e.items)
-          tagItems.add(TagItem.convert<V>(tagRDS, item));
+        for (var item in e.items)
+          tagItems.add(TagItem.convert(tagRDS, item));
       } else {
         tagRDS.add(TagElement.makeFromElement(e));
       }

@@ -7,10 +7,11 @@
 //  See the AUTHORS file for other contributors.
 //
 
+import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_dataset.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils.dart';
 
 /// A [MapRootDataset].
 class MapRootDataset extends RootDataset with MapDataset {
@@ -37,9 +38,6 @@ class MapRootDataset extends RootDataset with MapDataset {
         eMap = new Map.from(rds.eMap),
         super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
 
-//  @override
-//  Fmi get fmi => fmiMap;
-
   RootDataset copy([RootDataset rds]) => new MapRootDataset.from(rds ?? this);
 }
 
@@ -55,13 +53,34 @@ class FmiMap extends Fmi with MapDataset {
   FmiMap.from(FmiMap fmi) : eMap = new Map.from(fmi.eMap);
 
   @override
-  Element operator[](int code) => eMap[code];
+  Element operator [](int code) => eMap[code];
+
   @override
-  void operator[]=(int code, Element e) => eMap[code] = e;
+  void operator []=(int code, Element e) {
+    assert(code == e.code);
+    tryAdd(e);
+  }
+
+  bool tryAdd(Element e) {
+    final old = eMap[e.code];
+    if (old == null) {
+      eMap[e.code] = e;
+      return true;
+    } else {
+      final result = eMap.putIfAbsent(e.code, () => e);
+      if (result != e) {
+        duplicateElementError(result, e);
+        return false;
+      }
+      return true;
+    }
+  }
+
   @override
   int get length => eMap.length;
+
   @override
-  set length(int n) {}
+  set length(int n) => unsupportedError();
 
   @override
   String toString() => '$runtimeType: $length elements';

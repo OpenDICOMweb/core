@@ -12,8 +12,11 @@ import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset_mixin.dart';
 import 'package:core/src/dataset/base/errors.dart';
-import 'package:core/src/element/base/element.dart';
+import 'package:core/src/dataset/base/history.dart';
+import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/vr.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 
@@ -34,10 +37,18 @@ import 'package:core/src/system.dart';
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
 abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
+  final History history = new History();
+
+  // Note: super classes must implement
   @override
-  Element operator [](int i) => lookup(i);
+  Element operator [](int i);
+
+  // Note: super classes should not override
   @override
-  void operator []=(int i, Element e) => tryAdd(e);
+  void operator []=(int i, Element e) {
+    assert(i == e.index);
+    tryAdd(e);
+  }
 
   // TODO: when are 2 Datasets equal?
   // TODO: should this be checking that parents are equal? It doesn't
@@ -55,10 +66,13 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   int get hashCode => system.hasher.nList(elements);
 
   @override
-  bool remove(Object e) =>
-     (e is Element) ? elements.remove(e) : false;
+  bool remove(Object e) => (e is Element) ? elements.remove(e) : false;
 
   // **** Section Start: Element related Getters and Methods
+
+  /// A field that control whether new [Element]s are checked for
+  /// [Issues] when they are accessed from the [Dataset].
+  bool get checkIssuesOnAccess => false;
 
   /// Returns the Element with [index], if present; otherwise, returns _null_.
   ///
@@ -73,8 +87,92 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     return e;
   }
 
+  /// All lookups should be done using this method.
+  List<Element> lookupAll(int index) {
+    final results = <Element>[];
+    final e = lookup(index);
+    e ?? results.add(e);
+    for (var sq in sequences)
+      for (var item in sq.items) {
+        final e = item[index];
+        e ?? results.add(e);
+      }
+    return results;
+  }
+
   @override
   Element internalLookup(int index) => this[index];
+
+  /// Adds an [Element] to a [Dataset].
+  @override
+  void add(Element e, [Issues issues]) => tryAdd(e, issues);
+
+  @override
+  void addAll(Iterable<Element> eList) => eList.forEach(add);
+
+  /// If _true_ [Element]s with invalid values are stored in the
+  /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
+  @override
+  bool get allowInvalidValues => true;
+
+  /// If _true_ duplicate [Element]s are stored in the duplicate Map
+  /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
+  bool get allowDuplicates => true;
+
+  /// A field that control whether new [Element]s are checked for
+  /// [Issues] when they are [add]ed to the [Dataset].
+  bool get checkIssuesOnAdd => false;
+
+  /// Tries to add an [Element] to a [Dataset]. Return _true_ if successful.
+  ///
+  /// If the new [Element] is not valid and [allowInvalidValues] is _false_,
+  /// an [invalidValuesError] is thrown; otherwise, the [Element] is added
+  /// to both the [_issues] [Map] and to the [Dataset]. The [_issues] [Map]
+  /// can be used later to return an [Issues] for the [Element].
+  ///
+  /// If an [Element] with the same Tag is already contained in the
+  /// [Dataset] and [allowDuplicates] is _false_, a [DuplicateElementError] is
+  /// thrown; otherwise, the [Element] is added to both the [duplicates] [Map]
+  /// and to the [Dataset].
+  @override
+  bool tryAdd(Element e, [Issues issues]) {
+    final old = lookup(e.code);
+    if (old == null) {
+      if (checkIssuesOnAdd && (issues != null)) {
+        if (!allowInvalidValues && !e.isValid) invalidElementError(e);
+      }
+      store(e.code, e);
+      //     if (e is SQ) sequences.add(e);
+      return true;
+    } else if (allowDuplicates) {
+      system.warn('** Duplicate Element:\n\tnew: $e\n\told: $old');
+      if (old.vrIndex != kUNIndex) {
+        history.duplicates.add(e);
+      } else {
+        store(e.index, e);
+        history.duplicates.add(old);
+      }
+      return false;
+    } else {
+      return duplicateElementError(old, e);
+    }
+  }
+
+  bool get hasDuplicates => history.duplicates.isNotEmpty;
+
+  /// Remove all duplicates from the [Dataset].
+  List<Element> deleteDuplicates() {
+    final dups = history.duplicates;
+    history.duplicates.clear();
+    return dups;
+  }
+
+  @override
+  List<SQ> get sequences {
+    final results = <SQ>[];
+    for (var e in elements) if (e is SQ) results.add(e);
+    return results;
+  }
 
 /*
   @override
@@ -85,6 +183,15 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     return e;
   }
 */
+
+  String get info => '''
+$runtimeType(#$hashCode):
+            Total: $total
+        Top Level: $length
+       Duplicates: ${history.duplicates.length}
+  PrivateElements: $nPrivateElements
+    PrivateGroups: $nPrivateGroups
+    ''';
 
   static const List<Dataset> empty = const <Dataset>[];
 

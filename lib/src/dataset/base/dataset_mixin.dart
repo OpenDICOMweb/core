@@ -13,9 +13,8 @@ import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/errors.dart';
-import 'package:core/src/dataset/base/history.dart';
 import 'package:core/src/dataset/base/item.dart';
-import 'package:core/src/dataset/base/private_group.dart';
+import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
@@ -23,7 +22,6 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
-import 'package:core/src/vr.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 
@@ -57,6 +55,10 @@ abstract class DatasetMixin {
 
   Element internalLookup(int index);
 
+  void add(Element e, [Issues issues]);
+
+  bool tryAdd(Element e, [Issues issues]);
+
   Element deleteCode(int index);
 
   /// Store [Element] [e] at [index] in _this_.
@@ -79,25 +81,11 @@ abstract class DatasetMixin {
   // it's own specialized implementation for correctness and efficiency.
   List<Element> get elements;
 
+  List<SQ> get sequences;
+
   DSBytes get dsBytes;
 
-  History get history;
-
-  /// If _true_ [Element]s with invalid values are stored in the
-  /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
-  bool get allowInvalidValues => true;
-
-  /// If _true_ duplicate [Element]s are stored in the duplicate Map
-  /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
-  bool get allowDuplicates => true;
-
-  /// A field that control whether new [Element]s are checked for
-  /// [Issues] when they are [add]ed to the [Dataset].
-  bool get checkIssuesOnAdd => false;
-
-  /// A field that control whether new [Element]s are checked for
-  /// [Issues] when they are accessed from the [Dataset].
-  bool get checkIssuesOnAccess => false;
+  bool get allowInvalidValues;
 
   /// Returns a Sequence([SQ]) containing any [Element]s that were
   /// modified or removed.
@@ -141,87 +129,21 @@ abstract class DatasetMixin {
   // **** Section Start: Default Operator and Getters
   // **** These may be overridden in subclasses.
 
-  bool get hasDuplicates => history.duplicates.isNotEmpty;
-
-  List<SQ> get sequences {
-    final results = <SQ>[];
-    for (var e in elements) {
-      if (e is SQ) {
-        results.add(e);
-      }
-    }
-    return results;
-  }
-
   // **** Section Start: Element related Getters and Methods
 
   // Dataset<K> copy([Dataset<K> parent]);
 
-  /// All lookups should be done using this method.
-  List<Element> lookupAll(int index) {
-    final results = <Element>[];
-    final e = lookup(index);
-    e ?? results.add(e);
-    for (var sq in sequences)
-      for (var item in sq.items) {
-        final e = item[index];
-        e ?? results.add(e);
-      }
-    return results;
-  }
-
   bool hasElementsInRange(int min, int max) {
-    for (var e in elements)
-      if (e.code >= min && e.code <= max) return true;
+    for (var e in elements) if (e.code >= min && e.code <= max) return true;
     return false;
   }
 
   /// Returns a [List] of the Elements that satisfy [min] <= e.code <= [max].
   List<Element> getElementsInRange(int min, int max) {
     final elements = <Element>[];
-    for (var e in elements)
-      if (e.code >= min && e.code < max) elements.add(e);
+    for (var e in elements) if (e.code >= min && e.code < max) elements.add(e);
     return elements;
   }
-
-  void add(Element e, [Issues issues]) => tryAdd(e);
-
-  /// Trys to add an [Element] to a [Dataset].
-  ///
-  /// If the new [Element] is not valid and [allowInvalidValues] is _false_,
-  /// an [invalidValuesError] is thrown; otherwise, the [Element] is added
-  /// to both the [_issues] [Map] and to the [Dataset]. The [_issues] [Map]
-  /// can be used later to return an [Issues] for the [Element].
-  ///
-  /// If an [Element] with the same [Tag] is already contained in the
-  /// [Dataset] and [allowDuplicates] is _false_, a [DuplicateElementError] is
-  /// thrown; otherwise, the [Element] is added to both the [duplicates] [Map]
-  /// and to the [Dataset].
-  bool tryAdd(Element e, [Issues issues]) {
-    final old = lookup(e.code);
-    if (old == null) {
-      if (checkIssuesOnAdd && (issues != null)) {
-        if (!allowInvalidValues && !e.isValid) invalidElementError(e);
-      }
-      store(e.code, e);
- //     if (e is SQ) sequences.add(e);
-      return true;
-    } else
-    if (allowDuplicates) {
-      system.warn('** Duplicate Element:\n\tnew: $e\n\told: $old');
-      if (old.vrIndex != kUNIndex) {
-        history.duplicates.add(e);
-      } else {
-        store(e.index, e);
-        history.duplicates.add(old);
-      }
-      return false;
-    } else {
-      return duplicateElementError(old, e);
-    }
-  }
-
-  void addAll(Iterable<Element> eList) => eList.forEach(add);
 
   /// Replaces the element with [index] with a new element with the same [Tag],
   /// but with [vList] as its _values_. Returns the original element.
@@ -237,7 +159,7 @@ abstract class DatasetMixin {
   /// If updating the [Element] fails, the current element is left in
   /// place and _null_ is returned.
   Element updateF<V>(int index, Iterable f(Iterable<V> vList),
-                     {bool required = false}) {
+      {bool required = false}) {
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     if (old != null) store(index, old.updateF(f));
@@ -249,7 +171,7 @@ abstract class DatasetMixin {
   /// [f(this.values)]. Returns a list containing all [Element]s that were
   /// replaced.
   List<Element> updateAll<V>(int index,
-                             {Iterable<V> vList, bool required = false}) {
+      {Iterable<V> vList, bool required = false}) {
     vList ??= const <V>[];
     final v = update(index, vList, required: required);
     final result = <Element>[]..add(v);
@@ -267,7 +189,7 @@ abstract class DatasetMixin {
   /// [f(this.values)]. Returns a list containing all [Element]s that were
   /// replaced.
   List<Element> updateAllF<V>(int index, Iterable<V> f(Iterable<V> vList),
-                              {bool required = false}) {
+      {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);
     for (var e in elements)
@@ -296,7 +218,7 @@ abstract class DatasetMixin {
   /// It is an error if [sList] is _null_.  It is an error if the [Element]
   /// corresponding to [index] does not have a VR of UI.
   Element updateUidList(int index, Iterable<String> sList,
-                        {bool recursive = true, bool required = false}) {
+      {bool recursive = true, bool required = false}) {
     assert(index != null && sList != null);
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
@@ -309,7 +231,7 @@ abstract class DatasetMixin {
   }
 
   Element updateUidStrings(int index, Iterable<String> uids,
-                           {bool required = false}) =>
+          {bool required = false}) =>
       updateUidList(index, uids);
 
   List<Element> updateAllUids(int index, Iterable<Uid> uids) {
@@ -344,7 +266,7 @@ abstract class DatasetMixin {
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
   Iterable<V> replace<V>(int index, Iterable<V> vList,
-                         {bool required = false}) {
+      {bool required = false}) {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
@@ -357,7 +279,7 @@ abstract class DatasetMixin {
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
   Iterable<V> replaceF<V>(int index, Iterable<V> f(Iterable<V> vList),
-                          {bool required = false}) {
+      {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
@@ -390,8 +312,8 @@ abstract class DatasetMixin {
     return result;
   }
 
-  Iterable<Iterable<V>> replaceAllF<V>(int index,
-                                       Iterable<V> f(Iterable<V> vList)) {
+  Iterable<Iterable<V>> replaceAllF<V>(
+      int index, Iterable<V> f(Iterable<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
     for (var e in elements)
@@ -417,7 +339,8 @@ abstract class DatasetMixin {
       elements.replaceUid(index, uids);
 */
 
-  List<Uid> replaceUids(int index, Iterable<Uid> uids, {bool required = false}) {
+  List<Uid> replaceUids(int index, Iterable<Uid> uids,
+      {bool required = false}) {
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     return (old is UI) ? old.replaceUid(uids) : invalidUidElement(old);
@@ -467,8 +390,7 @@ abstract class DatasetMixin {
     for (var e in elements) {
       if (e is SQ) {
         result.addAll(e.noValuesAll(index));
-      } else
-      if (e.index == index) {
+      } else if (e.index == index) {
         result.add(e);
         store(index, e.noValues);
       }
@@ -488,7 +410,7 @@ abstract class DatasetMixin {
   /// Deletes all [Element]s in _this_ that have a Tag Code in [codes].
   /// If there is no [Element] with one of the codes _this_ does nothing.
   List<Element> deleteCodes(List<int> codes) {
-  //  print('codes: $codes');
+    //  print('codes: $codes');
     assert(codes != null && codes.isNotEmpty);
     final deleted = <Element>[];
     for (var code in codes) {
@@ -496,13 +418,6 @@ abstract class DatasetMixin {
       if (e != null) deleted.add(e);
     }
     return deleted;
-  }
-
-  /// Remove all duplicates from the [Dataset].
-  List<Element> deleteDuplicates() {
-    final dups = history.duplicates;
-    history.duplicates.clear();
-    return dups;
   }
 
 /*
@@ -516,15 +431,16 @@ abstract class DatasetMixin {
     final e = delete(index);
     if (e != null) results.add(e);
     assert(lookup(index) == null);
-    if (recursive) for (var e in elements) {
-      if (e is SQ) {
-        for (var item in e.items) {
-          final deleted = item.delete(index);
+    if (recursive)
+      for (var e in elements) {
+        if (e is SQ) {
+          for (var item in e.items) {
+            final deleted = item.delete(index);
 //            if (deleted != null) print('item $item deleted: $deleted');
-          if (deleted != null) results.add(deleted);
+            if (deleted != null) results.add(deleted);
+          }
         }
       }
-    }
     return results;
   }
 
@@ -535,8 +451,7 @@ abstract class DatasetMixin {
       if (test(e)) {
         delete(e.index);
         deleted.add(e);
-      } else
-      if (e is SQ) {
+      } else if (e is SQ) {
         for (var item in e.items) {
           final dList = item.deleteIfTrue(test, recursive: recursive);
           deleted.addAll(dList);
@@ -564,8 +479,7 @@ abstract class DatasetMixin {
 
   Iterable<dynamic> findAllWhere(bool test(Element e)) {
     final result = <dynamic>[];
-    for (var e in elements)
-      if (test(e)) result.add(e);
+    for (var e in elements) if (test(e)) result.add(e);
     return result;
   }
 
@@ -584,7 +498,7 @@ abstract class DatasetMixin {
     return map;
   }
 
-    bool _isDA(Element e) => e is DA;
+  bool _isDA(Element e) => e is DA;
   Iterable<Element> findDates() => findAllWhere(_isDA);
 
   bool _isUI(Element e) => e is UI;
@@ -598,8 +512,7 @@ abstract class DatasetMixin {
 
   List<int> findAllPrivateCodes({bool recursive: false}) {
     final privates = <int>[];
-    for (var e in elements)
-      if (e.isPrivate) privates.add(e.code);
+    for (var e in elements) if (e.isPrivate) privates.add(e.code);
     return privates;
   }
 
@@ -610,8 +523,8 @@ abstract class DatasetMixin {
       // Fix: you cant tell what sequence the element was in.
       for (var sq in sequences) {
         for (var i = 0; i < sq.items.length; i++) {
-          final Iterable<int> codes = sq.items.elementAt(i)
-              .findAllPrivateCodes();
+          final Iterable<int> codes =
+              sq.items.elementAt(i).findAllPrivateCodes();
           final elements = deleteCodes(codes);
           deleted.addAll(elements);
         }
@@ -700,9 +613,9 @@ abstract class DatasetMixin {
   }
 
   V _checkOneValue<V>(int index, List<V> values) =>
-    (values == null || values.length != 1)
-      ? invalidValuesLengthError(Tag.lookupByCode(index), values)
-      : values.first;
+      (values == null || values.length != 1)
+          ? invalidValuesLengthError(Tag.lookupByCode(index), values)
+          : values.first;
 
   /// Returns the [int] value for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
@@ -823,10 +736,10 @@ abstract class DatasetMixin {
     if (e is UI) return _checkOneValue<Uid>(index, e.uids);
     if (e is UN) {
       var s = e.vfBytesAsUtf8;
-      if (s.codeUnitAt(s.length -1) == 0) s = s.substring(0, s.length -1);
+      if (s.codeUnitAt(s.length - 1) == 0) s = s.substring(0, s.length - 1);
       return new Uid(s);
     }
-      return invalidElementError(e);
+    return invalidElementError(e);
   }
 
   /// Returns the [List<double>] values for the [Element] with [index].
@@ -858,15 +771,6 @@ abstract class DatasetMixin {
     }
     return invalidElementError(old, 'Not a DA (date) Element');
   }
-
-  String get info => '''
-$runtimeType(#$hashCode):
-            Total: $total
-        Top Level: $length
-       Duplicates: ${history.duplicates.length}
-  PrivateElements: $nPrivateElements
-    PrivateGroups: $nPrivateGroups
-    ''';
 
   /// Returns a formatted [String]. See [Formatter].
   String format(Formatter z) => z.fmt('$runtimeType: $length Elements', this);

@@ -8,7 +8,6 @@
 //
 
 import 'package:core/src/dataset/base/errors.dart';
-import 'package:core/src/dataset/base/history.dart';
 import 'package:core/src/element.dart';
 
 abstract class DeleteMixin {
@@ -18,7 +17,6 @@ abstract class DeleteMixin {
   // it's own specialized implementation for correctness and efficiency.
   List<Element> get elements;
   List<SQ> get sequences;
-  History get history;
 
   /// Store [Element] [e] at [index] in _this_.
   void store(int index, Element e);
@@ -61,18 +59,6 @@ abstract class DeleteMixin {
     }
     return deleted;
   }
-
-  /// Remove all duplicates from _this_.
-  List<Element> deleteDuplicates() {
-    final dups = history.duplicates;
-    history.duplicates.clear();
-    return dups;
-  }
-
-/*
-  Iterable<Element> deleteAll(int index, {bool recursive = false}) =>
-      elements.deleteAll(index, recursive: recursive);
-*/
 
   List<Element> deleteAll(int index, {bool recursive = false}) {
     assert(index != null, 'Invalid index: $index');

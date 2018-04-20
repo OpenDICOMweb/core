@@ -7,10 +7,10 @@
 //  See the AUTHORS file for other contributors.
 //
 
-export 'package:core/src/dataset/byte_dataset/bd_item.dart';
-export 'package:core/src/dataset/byte_dataset/bd_mixin.dart';
-export 'package:core/src/dataset/byte_dataset/bd_root_dataset.dart';
-export 'package:core/src/dataset/map_dataset/map_item.dart';
-export 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
+export 'package:core/src/dataset/byte_dataset/byte_dataset.dart';
+export 'package:core/src/dataset/byte_dataset/byte_item.dart';
+export 'package:core/src/dataset/byte_dataset/byte_root_dataset.dart';
 export 'package:core/src/dataset/list_dataset/list_item.dart';
 export 'package:core/src/dataset/list_dataset/list_root_dataset.dart';
+export 'package:core/src/dataset/map_dataset/map_item.dart';
+export 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
