@@ -44,9 +44,7 @@ class AEtag extends AE with TagElement<String> {
   static AEtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static AEtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (AE.isNotValidTag(tag))
-          ? null
-          : new AEtag._(tag, bytes.asAsciiList());
+      (AE.isNotValidTag(tag)) ? null : new AEtag._(tag, bytes.asAsciiList());
 }
 
 class CStag extends CS with TagElement<String> {
@@ -75,9 +73,7 @@ class CStag extends CS with TagElement<String> {
   static CStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static CStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (CS.isNotValidTag(tag))
-          ? null
-          : new CStag._(tag, bytes.asAsciiList());
+      (CS.isNotValidTag(tag)) ? null : new CStag._(tag, bytes.asAsciiList());
 }
 
 class DStag extends DS with TagElement<String> {
@@ -106,9 +102,7 @@ class DStag extends DS with TagElement<String> {
   static DStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static DStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (DS.isNotValidTag(tag))
-          ? null
-          : new DStag._(tag, bytes.asAsciiList());
+      (DS.isNotValidTag(tag)) ? null : new DStag._(tag, bytes.asAsciiList());
 }
 
 class IStag extends IS with TagElement<String> {
@@ -137,9 +131,7 @@ class IStag extends IS with TagElement<String> {
   static IStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static IStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (IS.isNotValidTag(tag))
-          ? null
-          : new IStag._(tag, bytes.asAsciiList());
+      (IS.isNotValidTag(tag)) ? null : new IStag._(tag, bytes.asAsciiList());
 }
 
 /// A Long String (LO) Element
@@ -169,9 +161,7 @@ class LOtag extends LO with TagElement<String> {
   static LOtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static LOtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (LO.isNotValidTag(tag))
-          ? null
-          : new LOtag._(tag, bytes.asUtf8List());
+      (LO.isNotValidTag(tag)) ? null : new LOtag._(tag, bytes.asUtf8List());
 }
 
 class PCtag extends PC with TagElement<String> {
@@ -198,11 +188,16 @@ class PCtag extends PC with TagElement<String> {
       fromBytes(tag, new Bytes.fromTypedData(bytes));
 
   static PCtag from(Element e) => fromBytes(e.tag, e.vfBytes);
-  
+
   static PCtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (LO.isNotValidTag(tag))
-          ? null
-          : new PCtag._(tag, bytes.asUtf8List());
+      (LO.isNotValidTag(tag)) ? null : new PCtag._(tag, bytes.asUtf8List());
+
+  static PCtag makePhantom(int group, int subgroup) {
+    const name = PDTag.phantomName;
+    final code = (group << 16) + subgroup;
+    final tag = new PCTagUnknown(code, kLOIndex, name);
+    return new PCtag(tag, const <String>[name]);
+  }
 
   static PCtag makeEmptyPrivateCreator(int pdCode, int vrIndex) {
     final group = Tag.privateGroup(pdCode);
@@ -240,9 +235,7 @@ class LTtag extends LT with TagElement<String> {
   static LTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static LTtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (LT.isNotValidTag(tag))
-          ? null
-          : new LTtag._(tag, [bytes.getUtf8()]);
+      (LT.isNotValidTag(tag)) ? null : new LTtag._(tag, [bytes.getUtf8()]);
 }
 
 /// A Person Name ([PN]) Element.
@@ -272,9 +265,7 @@ class PNtag extends PN with TagElement<String> {
   static PNtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static PNtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (PN.isNotValidTag(tag))
-          ? null
-          : new PNtag._(tag, bytes.asUtf8List());
+      (PN.isNotValidTag(tag)) ? null : new PNtag._(tag, bytes.asUtf8List());
 }
 
 /// A Short String (SH) Element
@@ -304,9 +295,7 @@ class SHtag extends SH with TagElement<String> {
   static SHtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static SHtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (SH.isNotValidTag(tag))
-          ? null
-          : new SHtag._(tag, bytes.asUtf8List());
+      (SH.isNotValidTag(tag)) ? null : new SHtag._(tag, bytes.asUtf8List());
 }
 
 /// An Short Text (ST) Element
@@ -336,9 +325,7 @@ class STtag extends ST with TagElement<String> {
   static STtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static STtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (ST.isNotValidTag(tag))
-          ? null
-          : new STtag._(tag, [bytes.getUtf8()]);
+      (ST.isNotValidTag(tag)) ? null : new STtag._(tag, [bytes.getUtf8()]);
 }
 
 /// An Unlimited Characters (UC) Element
@@ -368,9 +355,7 @@ class UCtag extends UC with TagElement<String> {
   static UCtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static UCtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (UC.isNotValidTag(tag))
-          ? null
-          : new UCtag._(tag, bytes.asUtf8List());
+      (UC.isNotValidTag(tag)) ? null : new UCtag._(tag, bytes.asUtf8List());
 }
 
 class UItag extends UI with TagElement<String> {
@@ -407,9 +392,7 @@ class UItag extends UI with TagElement<String> {
   static UItag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static UItag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (UI.isNotValidTag(tag))
-          ? null
-          : new UItag._(tag, bytes.asAsciiList());
+      (UI.isNotValidTag(tag)) ? null : new UItag._(tag, bytes.asAsciiList());
 
   static Iterable<Uid> parse(List<String> vList) {
     final uids = new List<Uid>(vList.length);
@@ -451,9 +434,7 @@ class URtag extends UR with TagElement<String> {
   static URtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static URtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (UR.isNotValidTag(tag))
-          ? null
-          : new URtag._(tag, [bytes.getUtf8()]);
+      (UR.isNotValidTag(tag)) ? null : new URtag._(tag, [bytes.getUtf8()]);
 }
 
 /// An Unlimited Text (UT) Element
@@ -483,9 +464,7 @@ class UTtag extends UT with TagElement<String> {
   static UTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static UTtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (UT.isNotValidTag(tag))
-          ? null
-          : new UTtag._(tag, [bytes.getUtf8()]);
+      (UT.isNotValidTag(tag)) ? null : new UTtag._(tag, [bytes.getUtf8()]);
 }
 
 // **** Date/Time classes
@@ -522,9 +501,7 @@ class AStag extends AS with TagElement<String> {
   static AStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static AStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (AS.isNotValidTag(tag))
-          ? null
-          : new AStag._(tag, bytes.asAsciiList());
+      (AS.isNotValidTag(tag)) ? null : new AStag._(tag, bytes.asAsciiList());
 
   static AStag parse(String s, {String onError(String s)}) => new AStag(
       PTag.kPatientAge,
@@ -534,7 +511,6 @@ class AStag extends AS with TagElement<String> {
 }
 
 /// A DICOM Date ([DA]) [Element].
-/// TODO: add link to standard
 class DAtag extends DA with TagElement<String> {
   @override
   final Tag tag;
@@ -561,9 +537,7 @@ class DAtag extends DA with TagElement<String> {
   static DAtag from(Element e) => new DAtag(e.tag, e.values);
 
   static DAtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (DA.isNotValidTag(tag))
-          ? null
-          : new DAtag._(tag, bytes.asAsciiList());
+      (DA.isNotValidTag(tag)) ? null : new DAtag._(tag, bytes.asAsciiList());
 }
 
 /// A DICOM DateTime [DT] [Element].
@@ -596,9 +570,7 @@ class DTtag extends DT with TagElement<String> {
   static DTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static DTtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (DT.isNotValidTag(tag))
-          ? null
-          : new DTtag._(tag, bytes.asAsciiList());
+      (DT.isNotValidTag(tag)) ? null : new DTtag._(tag, bytes.asAsciiList());
 }
 
 /// The DICOM [TM] (Time) [Element].
@@ -632,7 +604,5 @@ class TMtag extends TM with TagElement<String> {
   static TMtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static TMtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (TM.isNotValidTag(tag))
-          ? null
-          : new TMtag._(tag, bytes.asAsciiList());
+      (TM.isNotValidTag(tag)) ? null : new TMtag._(tag, bytes.asAsciiList());
 }

@@ -38,6 +38,9 @@ class MapRootDataset extends RootDataset with MapDataset {
         eMap = new Map.from(rds.eMap),
         super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
 
+  /// Returns the [Element] with [code].
+  Element operator [](int code) => eMap[code];
+
   RootDataset copy([RootDataset rds]) => new MapRootDataset.from(rds ?? this);
 }
 

@@ -28,24 +28,21 @@ abstract class PDTag extends PrivateTag {
   VM get vm => VM.k1_n;
 
   @override
-  String get keyword => 'UnknownPrivateDataTag';
-  @override
-  String get name => 'Unknown Private Data Tag';
-
-  @override
   int get sgNumber => elt >> 8;
   int get sgOffset => elt & 0x00FF;
   String get sgOffsetHex => hex8(sgOffset);
 
+  static const String phantomName = '--<PhantomCreator>--';
 
   static PDTag make(int code, int vrIndex, PCTag creator) {
     if (creator != null) {
-      final definition = creator.lookupData(code);
+      final definition = creator.lookupPDCode(code);
       return (definition != null)
           ? new PDTagKnown(code, vrIndex, creator, definition)
           : new PDTagUnknown(code, vrIndex, creator);
     }
-    return new PDTagUnknown(code, vrIndex, PCTagUnknown.kUnknownCreator);
+    final pcTag = new PCTagUnknown(code, kLOIndex, phantomName);
+    return new PDTagUnknown(code, vrIndex, pcTag);
   }
 }
 
@@ -60,6 +57,11 @@ class PDTagUnknown extends PDTag {
 
   @override
   bool get isKnown => false;
+
+  @override
+  String get keyword => 'UnknownPrivateDataTag';
+  @override
+  String get name => 'Unknown Private Data Tag';
 
   static PDTagUnknown make(int code, int vrIndex, [PCTag creator]) =>
       new PDTagUnknown(code, vrIndex, creator);
@@ -83,6 +85,8 @@ class PDTagKnown extends PDTag {
   @override
   VM get vm => definition.vm;
 
+  @override
+  String get keyword => (definition == null) ? 'Unknown' : definition.keyword;
   @override
   String get name => (definition == null) ? 'Unknown' : definition.name;
 

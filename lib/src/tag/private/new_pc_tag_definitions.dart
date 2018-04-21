@@ -8,20 +8,24 @@
 //
 
 import 'package:core/src/tag/private/pd_tag_definitions.dart';
-import 'package:core/src/tag/private/pc_tag_definitions.dart';
 
-bool isWKCreator(String id) => pcTagDefinitions[id] != null;
+//bool isWKCreator(String id) => pcTagDefinitions[id] != null;
 
 // '([\w\.\_\d]+)': const (\<[\w\,\s]+\>)(\{[\w\s\d:\.\,]+\})\,
 
-const Map<int, PDTagDefinition> pseudo_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> kEmptyPDTagDefinition =
+    const <int, PDTagDefinition>{};
+
+const Map<int, PDTagDefinition> Uid_1_2_840_113681 =
+    const <int, PDTagDefinition>{
   0x00191000: PDTagDefinition.k1,
   0x00191100: PDTagDefinition.k2,
   0x00191200: PDTagDefinition.k3,
   0x00191300: PDTagDefinition.k4
 };
 
-const Map<int, PDTagDefinition> pseudo_2 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Uid_1_2_840_113708_794_1_1_2_0 =
+    const <int, PDTagDefinition>{
   0x00871000: PDTagDefinition.k5,
   0x00872000: PDTagDefinition.k6,
   0x00875000: PDTagDefinition.k7,
@@ -29,7 +33,7 @@ const Map<int, PDTagDefinition> pseudo_2 = const <int, PDTagDefinition>{
   0x00874000: PDTagDefinition.k4452
 };
 
-const Map<int, PDTagDefinition> ACUSON = <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ACUSON = const <int, PDTagDefinition>{
   0x00090000: PDTagDefinition.k8,
   0x00090100: PDTagDefinition.k9,
   0x00090200: PDTagDefinition.k10,
@@ -54,7 +58,7 @@ const Map<int, PDTagDefinition> ACUSON = <int, PDTagDefinition>{
   0x00091500: PDTagDefinition.k29
 };
 
-const Map<int, PDTagDefinition> AEGIS_DICOM_200 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AEGIS_DICOM_2_00 = const <int, PDTagDefinition>{
   0x00030000: PDTagDefinition.k30,
   0x00050000: PDTagDefinition.k31,
   0x00090000: PDTagDefinition.k32,
@@ -105,7 +109,7 @@ const Map<int, PDTagDefinition> CAMTRONICS = const <int, PDTagDefinition>{
   0x00299000: PDTagDefinition.k51
 };
 
-const Map<int, PDTagDefinition> ARDIO_D_R__1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> CARDIO_D_R__1_0 = const <int, PDTagDefinition>{
   0x00090000: PDTagDefinition.k52,
   0x00090100: PDTagDefinition.k53,
   0x00094000: PDTagDefinition.k54,
@@ -6921,7 +6925,7 @@ const Map<int, PDTagDefinition>
     const <int, PDTagDefinition>{0x00290100: PDTagDefinition.k4827};
 
 //TODO: determine the prefix for uid tokens
-const Map<int, PDTagDefinition> Uid2_16_840_1_114059_1_1_6_1_50_1 =
+const Map<int, PDTagDefinition> Uid_2_16_840_1_114059_1_1_6_1_50_1 =
     const <int, PDTagDefinition>{
   0x00292000: PDTagDefinition.k4828,
   0x00292100: PDTagDefinition.k4829,
@@ -7532,7 +7536,7 @@ const Map<int, PDTagDefinition> HOLOGIC__Inc_ = const <int, PDTagDefinition>{
   0x7f011200: PDTagDefinition.k5034
 };
 
-const Map<int, PDTagDefinition> Uid1_2_840_113663_1 =
+const Map<int, PDTagDefinition> Uid_1_2_840_113663_1 =
     const <int, PDTagDefinition>{
   0x00290000: PDTagDefinition.k5035,
   0x00290100: PDTagDefinition.k5036
@@ -8421,7 +8425,7 @@ const Map<int, PDTagDefinition> IMS_s_r_l__Biopsy_Private_Code =
   0x12692400: PDTagDefinition.k5802
 };
 
-const Map<int, PDTagDefinition> IMS_s_r_l_Mammography_Private_Code =
+const Map<int, PDTagDefinition> IMS_s_r_l__Mammography_Private_Code =
     const <int, PDTagDefinition>{
   0x12710100: PDTagDefinition.k5803,
   0x12710200: PDTagDefinition.k5804,
@@ -9869,7 +9873,7 @@ const Map<int, PDTagDefinition> Philips_Imaging_DD_073 =
 const Map<int, PDTagDefinition> Philips_NM_Private_Group =
     const <int, PDTagDefinition>{0x70430000: PDTagDefinition.k7852};
 
-const Map<int, PDTagDefinition> PHILIPS_NM_Private =
+const Map<int, PDTagDefinition> PHILIPS_NM__Private =
     const <int, PDTagDefinition>{
   0x70510000: PDTagDefinition.k7853,
   0x70510100: PDTagDefinition.k7854,

@@ -37,10 +37,9 @@ class PDTagDefinition {
   String get hex => hex32(code);
   String get dcm => toDcm(code);
 
-  String get info => '${toString()}${vrIdByIndex[vrIndex]}, $vm';
-
   @override
-  String toString() => '$runtimeType[$index]$dcm: "$name" creator("$token")';
+  String toString() => '$runtimeType[$index]$dcm ${vrIdByIndex[vrIndex]} '
+      '$vm: "$name" C("$token")';
 
   static const PDTagDefinition kUnknown = const PDTagDefinition._(
       0, 'UnknownPDTag', 0, kUNIndex, VM.k1_n, 'Unknown Private Data Tag');

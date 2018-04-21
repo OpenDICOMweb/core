@@ -18,8 +18,8 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     const <String, Map<int, PDTagDefinition>>{}
 */
 const Map<String, String> pseudonyms = <String, String>{
-  'pseudo_1': '1.2.840.113681',
-  'pseudo_2': '1.2.840.113708.794.1.1.2.0',
+  '1.2.840.113681': 'Uid1_2_840_113681',
+  '1.2.840.113708.794.1.1.2.0': 'Uid1_2_840_113708_794_1_1_2_0',
   'AEGIS_DICOM_2.00': 'AEGIS_DICOM_200',
   'CAMTRONICS IP': 'CAMTRONICS_IP',
   'CARDIO-D.R. 1.0': 'CARDIO-D.R. 1.0',

@@ -25,12 +25,12 @@ abstract class GroupBase {
   void add(Element e);
 }
 
-class Groups {
+class DatasetGroups {
   Dataset ds;
   final Map<int, PrivateGroup> privateGroups = <int, PrivateGroup>{};
   final Map<int, PrivateGroup> publicGroups = <int, PrivateGroup>{};
 
-  Groups();
+  DatasetGroups();
 
   PrivateGroup operator [](int gNumber) => privateGroups[gNumber];
 

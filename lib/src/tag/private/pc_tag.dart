@@ -9,6 +9,7 @@
 
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/private/pc_tag_map.dart';
+import 'package:core/src/tag/private/new_pc_tag_definitions.dart';
 import 'package:core/src/tag/private/pd_tag_definitions.dart';
 import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/tag.dart';
@@ -17,12 +18,13 @@ import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
 abstract class PCTag extends PrivateTag {
-  PDTagDefinition lookupData(int code);
-  // **** End Interface
-
   const PCTag._();
 
-  Map<int, PDTagDefinition> get dataTags => const <int, PDTagDefinition>{};
+  // **** Interface
+  PDTagDefinition lookupPDCode(int code);
+  // **** End Interface
+
+  Map<int, PDTagDefinition> get dataTags => kEmptyPDTagDefinition;
 
   @override
   VM get vm => VM.k1;
@@ -71,14 +73,15 @@ abstract class PCTag extends PrivateTag {
   @override
   String toString() => '$runtimeType($name) $dcm ${vrIdByIndex[vrIndex]} $vm';
 
-  ///
-  static PCTag lookupByCode(int code, int vrIndex, String creatorName) {
-    if (creatorName == null || creatorName.isEmpty)
-      log.warn1('Empty Creator Name: "$creatorName" for $code');
-    final def = PCTagDefinition.lookup(creatorName);
-    return (def == null)
-        ? def
-        : new PCTagKnown(code, vrIndex, creatorName, def);
+  static PCTag lookupByToken(int pcCode, int vrIndex, String creatorName) {
+    if (creatorName == null || creatorName.isEmpty) {
+      log.warn1('Empty Creator Name: "$creatorName" for $pcCode');
+      return null;
+    }
+    final defs = PCTagDefinition.lookup(creatorName);
+    return (defs == null)
+           ? null
+           : new PCTagKnown(pcCode, vrIndex, creatorName, defs);
   }
 
   static PCTag make(int code, int vrIndex, [String creatorName = '']) {
@@ -94,8 +97,6 @@ abstract class PCTag extends PrivateTag {
   static void _error(Tag tag, int vrIndex, String name) =>
       log.error('**** Private Creator $tag '
           'with invalid vrIndex($vrIndex) name("$name")');
-
-  static const PCTag kUnknown = PCTagUnknown.kUnknownCreator;
 }
 
 class PCTagUnknown extends PCTag {
@@ -106,18 +107,15 @@ class PCTagUnknown extends PCTag {
   @override
   final String name;
 
-  const PCTagUnknown(this.code, this.vrIndex, String name)
+  const PCTagUnknown(this.code, this.vrIndex, [String name])
       : name = name ?? '--UnknownPCTag--',
         super._();
 
   @override
-  PDTagDefinition lookupData(int code) => unsupportedError();
+  PDTagDefinition lookupPDCode(int code) => null;
 
   @override
   String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)} "$name"';
-
-  static const PCTagUnknown kUnknownCreator =
-      const PCTagUnknown(0x00, kLOIndex, '--UnknownPCTag--');
 }
 
 class PCTagKnown extends PCTag {
@@ -138,9 +136,9 @@ class PCTagKnown extends PCTag {
   /// [PDTagDefinition] matching [code] it returns that; otherwise,
   /// a new [PDTagDefinition] is created.
   @override
-  PDTagDefinition lookupData(int code) {
+  PDTagDefinition lookupPDCode(int code) {
     final pdDefCode = code & 0xFFFF00FF;
-    final pdDef = definition.dataTags[pdDefCode];
+    final pdDef = dataTags[pdDefCode];
     return (pdDef == null) ? PDTagDefinition.kUnknown : pdDef;
   }
 
@@ -155,7 +153,7 @@ String _fmtDataTagMap(Map<int, PDTagDefinition> dataTags) {
   if (dataTags.isEmpty) return '{}';
   final sb = new StringBuffer('  {\n');
   dataTags.forEach((code, pdDef) {
-    sb.write('    ${pdDef.info}\n');
+    sb.write('    $pdDef\n');
   });
   sb.write('  }');
   return sb.toString();

@@ -10,7 +10,6 @@
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
-import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag.dart';
@@ -65,7 +64,7 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   SQtag copySQ([Dataset parent]) {
     final nItems = new List<TagItem>(length);
     for (var i = 0; i < items.length; i++)
-      nItems[i] = new TagItem.from(items.elementAt(i), parent);
+      nItems[i] = new TagItem.from(parent, items.elementAt(i), this);
     return update(nItems);
   }
 

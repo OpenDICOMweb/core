@@ -34,11 +34,20 @@ class TagItem extends MapItem with TagDataset {
     pGroups.ds = this;
   }
 
+  static const _makeE = TagElement.makeFromElement;
   /// Create a new [TagItem] from an existing [TagItem].
   /// If [parent] is _null_the new [TagItem] has the same
   /// parent as [item].
-  factory TagItem.from(Dataset parent, Item item, [SQtag sequence]) =>
-      convert(parent, item, sequence);
+  TagItem.from(Dataset parent, Item item, [SQtag sequence])
+      : pGroups = new PrivateGroups(),
+        super(parent, sequence, <int, Element>{}, null) {
+    pGroups.ds = this;
+    for (var e in item.elements) {
+      final te = (e is SQ) ? SQtag.convert(e) : _makeE(e);
+      add(te);
+    }
+  }
+
 
 /*
       : // TODO: add check for if empty

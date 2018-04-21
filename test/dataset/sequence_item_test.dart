@@ -15,8 +15,11 @@ void main() {
 
   group('Items and Sequences', () {
     var itemsList = <TagItem>[];
+    // Urgent Sharath fix: don't use global variables in tests. They make
+    //   it hard to understand what is going on. Please fix!
     SQtag sq;
 
+    // Urgent Sharath: this is not a sequence tag
     final tag = PTag.lookupByCode(kInstanceCreationDate);
     var rds = new TagRootDataset.empty();
     final date = new DAtag(tag, ['19990505']);
@@ -89,6 +92,8 @@ void main() {
     });
 
     test('Test for copySequence', () {
+      print('sq: $sq');
+      // Urgent Sharath fix: sq is a DAtag not an SQtag
       final sqCopy = sq.copySQ(rds);
       log.debug(sqCopy.info);
       expect(sqCopy.getAll(kRecognitionCode), isNotNull);
@@ -104,6 +109,7 @@ void main() {
     test('Test for values', () {
       expect(itemsList, equals(sq.items));
 
+      print('sq: $sq');
       final sq2 = sq.update(itemsList);
       expect(itemsList, equals(sq2.items));
       expect(sq.items, equals(sq2.items));
@@ -147,7 +153,7 @@ void main() {
       rds0[fd.code] = fd;
       rds0[od.code] = od;
       itemsList = <TagItem>[]..add(new TagItem.fromList(rds, rds0));
-
+      print('sq: $sq');
       final sq2 = sq.update(itemsList);
       log..debug(sq2.items)..debug(sq2.noValues);
 
