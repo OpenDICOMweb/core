@@ -8,7 +8,7 @@
 //
 
 import 'package:core/src/tag.dart';
-import 'package:core/src/tag/private/new_pc_tag_definitions.dart';
+import 'package:core/src/tag/private/new_tag/pc_tag_definitions.dart';
 
 PDTagDefinition lookupPCTag(String creatorToken, int pdCode) {
   final pdTags = creatorIdMap[creatorToken];

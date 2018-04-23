@@ -96,7 +96,6 @@ abstract class StringBase extends Element<String> {
   // **** String specific Getters
   bool get isAsciiRequired => true;
   bool get isSingleValued => false;
-  @override
   int get padChar => kSpace;
 
   StringBase blank([int n = 1]) => update([_blanks(n)]);

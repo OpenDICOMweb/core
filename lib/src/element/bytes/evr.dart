@@ -12,8 +12,7 @@ import 'dart:typed_data';
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/base/vf_fragments.dart';
-import 'package:core/src/element/bytes/byte_element.dart';
+import 'package:core/src/element/bytes.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -54,8 +53,13 @@ abstract class EvrElement<V> implements ByteElement<V> {
   Uint8List get asBytes =>
       bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
 
-  static Element makeFromBytes(int code, Bytes bytes, int vrIndex) =>
-      _evrBDMakers[vrIndex](bytes, vrIndex);
+  static Element makeFromBytes(int code, Bytes bytes, int vrIndex) {
+    final pCode = code & 0x1FFFF;
+    final e = (pCode >= 0x10010 && pCode <= 0x100FF)
+        ? new PCevr(bytes)
+        : _evrBDMakers[vrIndex](bytes, vrIndex);
+    return (pCode >= 0x10010 && pCode <= 0x100FF) ? new PrivateData(e) : e;
+  }
 
   static final List<DecodeBinaryVF> _evrBDMakers = <DecodeBinaryVF>[
     _sqError, // stop reformat
@@ -674,7 +678,7 @@ class PCevr extends PC
   @override
   Tag get tag {
     if (Tag.isPCCode(code)) {
-      final token = vfBytesAsUtf8;
+      final token = vfBytes.getUtf8();
       final tag = Tag.lookupByCode(code, kLOIndex, token);
       return tag;
     }

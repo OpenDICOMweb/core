@@ -8,11 +8,14 @@
 //
 
 import 'package:core/src/base.dart';
+import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
+import 'package:core/src/dataset/tag/tag_item.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/indenter.dart';
 import 'package:core/src/utils/logger.dart';
+import 'package:core/src/vr.dart';
 
 /// A [PrivateSubgroup] contains a Private [creator] and a set of Private
 /// Data Elements contained in the [PrivateSubgroup].
@@ -44,12 +47,21 @@ class PrivateSubgroup {
   /// The Private Data [Element]s in this Subgroup.
   final Map<int, Object> members;
 
-  PrivateSubgroup(this.group, this.sgNumber) : members = <int, Element>{};
+  PrivateSubgroup(this.group, this.sgNumber) : members = <int, Element>{} {
+    print('    PSG created ${hex(group.gNumber)}: ${hex(sgNumber)}');
+  }
 
   int get gNumber => group.gNumber;
 
-  PC get creator => _creator ??= PCtag.makePhantom(gNumber, sgNumber);
-  PC _creator;
+  int get length => members.length;
+
+  PCtag get creator => _creator ??= PCtag.makePhantom(gNumber, sgNumber);
+  PCtag _creator;
+
+  PCTag get pcTag => _pcTag ??=
+      PCTag.lookupByToken(creator.code, creator.vrIndex, creator.value);
+
+  PCTag _pcTag;
 
   /// Returns a Private Data [Element].
   Element lookup(int code) => members[code];
@@ -57,18 +69,24 @@ class PrivateSubgroup {
   bool inSubgroup(int pdCode) => Tag.isValidPDCode(pdCode, creator.code);
 
   PC addCreator(Element pc) {
+    print('    PSG addCreator: $pc');
     var pcNew = pc;
     final pcCode = pc.code;
-    assert(Tag.isPCCode(pcCode));
-    final sg = Tag.pcSubgroup(pcCode);
-    if (sg != sgNumber) print('** Invalid Subgroup: $pc');
-    var tag = pc.tag;
-    if (pc is! LO) print('Bad VR for Private Creator: $pc');
-    if (pcNew is! PC) {
-      if (tag is! PCTagUnknown) {
-        final String token = pc.value;
-        final tagNew = PCTag.lookupByToken(pcCode, pc.vrIndex, token);
-        if (tagNew != null) tag = tagNew;
+    final sg = pcCode & 0xFFFF;
+    assert((pcCode >> 16).isOdd);
+    assert((sg >= 0x10 && sg <= 0xFF) && sg == sgNumber,
+        '** Invalid Subgroup ($sg) Creator: $pc');
+    final vrIndex = pc.vrIndex;
+    if (vrIndex != kLOIndex) print('Bad VR for Private Creator: $pc');
+
+    print('pc: $pc');
+    if (pc is! PC) {
+      var tag = pc.tag;
+      if (tag is! PCTagKnown) {
+        final String token =
+            (pc is ByteElement) ? pc.vfBytes.getUtf8() : pc.value;
+        final tagNew = PCTag.lookupByToken(pcCode, vrIndex, token);
+        if (tagNew is PCTagKnown) tag = tagNew;
       }
       pcNew = new PCtag(tag, pc.values);
     }
@@ -76,28 +94,42 @@ class PrivateSubgroup {
   }
 
   /// Add a Private Data [Element] to _this_;
-  Element addData(Element pd) {
+  Element addData(Element pd, Dataset sqParent) {
+    print('    PSG addData: $pd');
     var pdNew = pd;
     final pdCode = pd.code;
     assert(Tag.isPDCode(pdCode));
-    if (!Tag.isValidPDCode(pdCode, creator.code))
-      return invalidElementError(
-          pd, 'pdCode ${dcm(pdCode)} not valid for Subgroup: $sgNumber');
-    final sg = Tag.pdSubgroup(pdCode);
-    if (sg != sgNumber) print('** Invalid Subgroup: $pd');
+    _isNotValidPDCode(pdCode, pd);
+
     final tag = pd.tag;
     if (tag is PDTagUnknown) {
       final cTag = creator.tag;
       if (cTag is PCTagKnown) {
         final pdDef = cTag.lookupPDCode(pd.code);
+        print('lookup PData${dcm(pd.code)} $pdDef');
         if (pdDef != null) {
           final pdTag = new PDTagKnown(pdCode, pd.vrIndex, cTag, pdDef);
-          pdNew = TagElement.makeFromTag(pdTag, pd.values, pd.vrIndex);
+          print('New PDataTag: $pdTag');
+
+          pdNew = (pd.vrIndex == kSQIndex)
+          ? TagElement.makeSequenceFromTag(sqParent, tag, <TagItem>[])
+          : TagElement.makeFromTag(pdTag, pd.values, pd.vrIndex);
         }
       }
     }
-
+    print('returning from addData: $pdNew');
     return members[pdCode] = pdNew;
+  }
+
+  bool _isNotValidPDCode(int pdCode, Element pd) {
+    final pdSG = (pdCode & 0xFFFF) >> 8;
+    if (pdSG != sgNumber) {
+      print('** Invalid Subgroup($pdSG is not $sgNumber): $pd');
+      invalidElementError(
+          pd, 'pdCode ${dcm(pdCode)} invalid Subgroup($pdSG != $sgNumber)');
+      return false;
+    }
+    return true;
   }
 
   String get info {
@@ -126,13 +158,6 @@ class FormattedPrivateSubgroup {
     z.up;
     return sb.toString();
   }
-
-/*
-  String format(Formatter z) => z.fmt(
-      '$runtimeType(${hex16(sgNumber)}): ${members.length} Subroups $_creator',
-      members);
-*/
-
 }
 
 class SubgroupAlreadyExistsError extends Error {

@@ -12,9 +12,11 @@ import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset_mixin.dart';
 import 'package:core/src/dataset/base/errors.dart';
+import 'package:core/src/dataset/base/group/creators.dart';
 import 'package:core/src/dataset/base/history.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
+import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
@@ -37,6 +39,9 @@ import 'package:core/src/vr.dart';
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
 abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
+  /// [PCTag]s for [PC] [Element]s in _this_.
+  final PrivateCreatorTags pcTags = new PrivateCreatorTags();
+  /// A history of changes to _this_.
   final History history = new History();
 
   // Note: super classes must implement
@@ -136,11 +141,13 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   /// and to the [Dataset].
   @override
   bool tryAdd(Element e, [Issues issues]) {
-    final old = lookup(e.code);
+    final code = e.code;
+    final old = lookup(code);
     if (old == null) {
       if (checkIssuesOnAdd && (issues != null)) {
         if (!allowInvalidValues && !e.isValid) invalidElementError(e);
       }
+      if (Tag.isPCCode(code)) pcTags.tryAdd(e.tag);
       store(e.code, e);
       //     if (e is SQ) sequences.add(e);
       return true;
@@ -192,6 +199,9 @@ $runtimeType(#$hashCode):
   PrivateElements: $nPrivateElements
     PrivateGroups: $nPrivateGroups
     ''';
+
+  @override
+  String toString() => '$runtimeType: $length Elements';
 
   static const List<Dataset> empty = const <Dataset>[];
 

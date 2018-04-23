@@ -9,14 +9,17 @@
 
 import 'package:core/src/system.dart';
 import 'package:core/src/utils/errors.dart';
-//import 'package:core/src/values/errors.dart';
 
 // Must implement Values and Value with reified.
-abstract class BulkdataRef<E> {
+abstract class BulkdataRef<V> {
   int get code;
+  //TODO: add Element?
+  //  Element get e;
   Uri get uri;
 
-  List<E> get values;
+  Iterable<V> get values => _values ??= unimplementedError();
+  Iterable<V> _values;
+  set values(Iterable<V> vList) => _values ??= vList;
 
   @override
   bool operator ==(Object other) =>
@@ -25,7 +28,9 @@ abstract class BulkdataRef<E> {
   @override
   int get hashCode => system.hasher.n2(code, uri);
 
-  Iterator<E> get iterator => values.iterator;
+  Iterator<V> get iterator => values.iterator;
 
-  List<E> getBulkdata(int code, Uri uri) => unimplementedError();
+  List<V> getBulkdata(int code, Uri uri) => unimplementedError();
 }
+
+

@@ -27,7 +27,9 @@ abstract class MapDataset {
 
   // *** Primitive only for internal use Stores e in eMap
   void store(int index, Element e) {
-    assert(index == e.code);
+    final code = e.code;
+    assert(index == code);
+
     eMap[e.code] = e;
   }
 

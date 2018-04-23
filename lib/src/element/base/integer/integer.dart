@@ -49,9 +49,6 @@ abstract class IntBase extends Element<int> {
   @override
   set values(Iterable<int> vList) => unsupportedError('IntBase.values');
 
-  @override
-  int get padChar => 0;
-
   bool get isBinary => true;
 
   /// Returns a copy of [values]
@@ -282,8 +279,6 @@ abstract class OB extends IntBase
   bool get isUndefinedLengthAllowed => true;
   @override
   bool get hadULength => vfLengthField == kUndefinedLength;
-  @override
-  int get padChar => 0;
 
   static const int kVRIndex = kOBIndex;
   static const int kVRCode = kOBCode;
@@ -366,10 +361,7 @@ abstract class UN extends IntBase with Uint8 {
   bool get isUndefinedLengthAllowed => true;
   @override
   bool get hadULength => vfLengthField == kUndefinedLength;
-  @override
-  int get padChar => 0;
 
-//  static const VR kVR = VR.kUN;
   static const int kVRIndex = kUNIndex;
   static const int kVRCode = kUNCode;
   static const String kVRKeyword = 'UN';

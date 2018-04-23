@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:convert' as cvt;
+import 'dart:convert';
 
 import 'package:core/src/base.dart';
 import 'package:core/src/element/base.dart';
@@ -21,25 +21,54 @@ typedef Element BDElementMaker(int code, int vrIndex, Bytes bytes);
 
 // TODO: move documentation from EVR/IVR
 abstract class ByteElement<V> extends Element<V> {
-  static Element make(int code, int vrIndex, Bytes bytes,
-          {bool isEvr = true}) =>
-      (isEvr)
-          ? EvrElement.makeFromBytes(code, bytes, vrIndex)
-          : IvrElement.makeFromBytes(code, bytes, vrIndex);
-
-  // **** Start Interface ****
-
   /// The [Bytes] containing this Element.
   Bytes get bytes;
-
   /// Returns _true_ if this Element is encoded as Explicit VR Little Endian;
   /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
   bool get isEvr;
+  /// Returns the Value Field Length field offset from the beginning of bytes.
   int get vfLengthOffset;
+  /// Returns the Value Field offset from the beginning of bytes.
   int get vfOffset;
-  Bytes get vfBytesWithPadding;
+  /// Returns the Value Field [Bytes] without trailing [kSpace] or [kNull]
+  /// characters.
+  Bytes get vfBytesWithoutPadding;
 
   // **** End Interface ****
+
+  static Element make<V>(int code, int vrIndex, Bytes bytes,
+      {bool isEvr = true}) {
+    final e = (isEvr)
+        ? EvrElement.makeFromBytes(code, bytes, vrIndex)
+        : IvrElement.makeFromBytes(code, bytes, vrIndex);
+    return (code >= 0x10010 && code <= 0x100FF) ? new PrivateData(e) : e;
+  }
+}
+
+class PrivateData extends ByteElement<Object> with MetaElementMixin<Object> {
+  @override
+  final ByteElement e;
+
+  PrivateData(this.e);
+
+  @override
+  Bytes get bytes => e.bytes;
+  @override
+  bool get isEvr => e.isEvr;
+  @override
+  int get vfLengthOffset => e.vfLengthOffset;
+  @override
+  int get vfOffset => e.vfOffset;
+  @override
+  Bytes get vfBytesWithoutPadding => e.vfBytesWithoutPadding;
+
+
+  static PrivateData make<V>(int code, int vrIndex, Bytes bytes,
+      {bool isEvr = true}) {
+    assert(vrIndex != null && bytes.lengthInBytes.isEven);
+    final e = ByteElement.make<V>(code, vrIndex, bytes, isEvr: true);
+    return new PrivateData(e);
+  }
 }
 
 const int _codeOffset = 0;
@@ -112,17 +141,15 @@ abstract class Common {
 
   bool get hasValidValues => true;
 
-  Bytes get vfBytesWithPadding => (bytes.lengthInBytes == vfOffset)
-      ? kEmptyBytes
-      : bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
+  Bytes get vfBytesWithoutPadding => removePadding(bytes, vfOffset);
 
   /// Returns a [Bytes] containing the Value Field of _this_.
   Bytes get vfBytes => (bytes.lengthInBytes == vfOffset)
       ? kEmptyBytes
       : bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
 }
-// **** EVR Float Elements (FL, FD, OD, OF)
 
+// **** EVR Float Elements (FL, FD, OD, OF)
 const _float32SizeInBytes = 4;
 
 abstract class BDFloat32Mixin {
@@ -146,7 +173,6 @@ abstract class BDFloat64Mixin {
 }
 
 abstract class IntMixin {
-
   IntBase update([Iterable<int> vList]) => unsupportedError();
 }
 
@@ -219,8 +245,8 @@ abstract class AsciiMixin {
   Iterable<String> get values {
     if (valuesLength == 0) return <String>[];
     final bytes = vfBytes;
-    final vf = (bytes.length.isEven) ? removePadding(vfBytes, 0): bytes;
-    final s = cvt.ascii.decode(vf, allowInvalid: allowInvalid);
+    final vf = (bytes.length.isEven) ? removePadding(vfBytes, 0) : bytes;
+    final s = ascii.decode(vf, allowInvalid: allowInvalid);
     return s.split('\\');
   }
 }
@@ -235,8 +261,8 @@ abstract class Utf8Mixin {
   Iterable<String> get values {
     if (valuesLength == 0) return <String>[];
     final bytes = vfBytes;
-    final vf = (bytes.length.isEven) ? removePadding(vfBytes, 0): bytes;
-    final s = cvt.utf8.decode(vf, allowMalformed: allowMalformed);
+    final vf = (bytes.length.isEven) ? removePadding(vfBytes, 0) : bytes;
+    final s = utf8.decode(vf, allowMalformed: allowMalformed);
     return s.split('\\');
   }
 }
@@ -245,7 +271,7 @@ abstract class TextMixin {
   Bytes get vfBytes;
   bool get allowMalformed;
 
-  String get value => cvt.utf8.decode(vfBytes, allowMalformed: allowMalformed);
+  String get value => utf8.decode(vfBytes, allowMalformed: allowMalformed);
 }
 
 int _getValuesLength(int vfLengthField, int sizeInBytes) {

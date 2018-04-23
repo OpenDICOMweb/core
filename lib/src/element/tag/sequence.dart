@@ -9,7 +9,8 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/dataset.dart';
+import 'package:core/src/dataset/base.dart';
+import 'package:core/src/dataset/tag.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag.dart';
@@ -42,18 +43,18 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   final Bytes bytes;
 
   /// Creates a new [SQtag] instance.
-  SQtag(this.tag, this.parent,
+  SQtag(this.parent, this.tag,
       [Iterable<Item> vList, this.vfLengthField, this.bytes])
       : values = (vList == null) ? emptyTagItemList : vList;
 
-  SQtag.fromDecoder(this.tag, this.parent,
+  SQtag.fromDecoder(this.parent, this.tag,
       [this.values, this.vfLengthField, this.bytes]);
 
   @override
   List<Item> get items => values;
   @override
   Bytes get vfBytes => unimplementedError('vfBytes in SQtag');
-  
+
   @override
   SQtag get noValues => update(emptyTagItemList);
 
@@ -74,11 +75,11 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   /// Returns a copy of _this_ Sequence, with a new [List] of [Item]s.
   @override
   SQtag update([Iterable<Item> vList = emptyTagItemList]) =>
-      new SQtag(tag, parent, vList);
+      new SQtag(parent, tag, vList);
 
   /// Returns a copy of _this_ Sequence, with a new [List] of Tag[Item]s.
   SQtag updateSQtag(Iterable<TagItem> items, Dataset parent) =>
-      new SQtag(tag, parent, items, null);
+      new SQtag(parent, tag, items, null);
 
   Uint8List getValuesToBytes({bool addHeader, bool isAscii = true}) {
     throw new UnimplementedError('toDcm');
@@ -128,31 +129,31 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
 
   static SQtag make(Tag tag, Iterable<Item> values,
           [int vfLength, Dataset parent]) =>
-      new SQtag(tag, parent, values, vfLength);
+      new SQtag(parent, tag, values, vfLength);
 
-  static SQtag from(SQ sq, [Dataset parent]) {
+  static SQtag from(Dataset parent, SQ sq) {
     final nItems = new List<TagItem>(sq.values.length);
-    parent ??= sq.parent;
     for (var i = 0; i < sq.values.length; i++) {
       final item = sq.values.elementAt(i);
-      nItems[i] = new TagItem.from(item, parent);
+      nItems[i] = TagItem.convert(parent, item, sq);
     }
-    return new SQtag(sq.tag, parent, nItems, sq.vfLengthField);
+    return new SQtag(parent, sq.tag, nItems, sq.vfLengthField);
   }
 
   static SQtag fromBytes(Tag tag, Dataset parent, List<TagItem> vList,
-                           [int vfLengthField, Bytes bytes]) {
+      [int vfLengthField, Bytes bytes]) {
     if (tag.vrIndex != kSQIndex) return null;
-    return new SQtag(tag, parent, vList, vfLengthField, bytes);
+    return new SQtag(parent, tag, vList, vfLengthField, bytes);
   }
 
-  static SQtag convert(SQ e) {
-    const makeSQ = TagElement.makeSequenceFromTag;
+  static SQtag convert(Dataset parent, SQ e) {
+    const makeSQ = TagElement.makeSequenceFromCode;
 
+    print('    converting SQ: $e');
     final tagItems = <TagItem>[];
-    final sq = makeSQ(e.tag, e.parent, tagItems, e.vfLengthField);
+    final sq = makeSQ(parent, e.code, tagItems, e.vfLengthField);
     for (var item in e.items) {
-      final tItem = TagItem.convert(sq.parent, item, sq);
+      final tItem = TagItem.convert(parent, item, sq);
       tagItems.add(tItem);
     }
     return sq;

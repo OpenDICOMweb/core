@@ -24,15 +24,14 @@ class DeIdentify {
   void addPatientIdentityRemoved(TagRootDataset rds) {}
 }
 
-
 // TODO: Determine the correct codeValue and URL.
 const acrDeIdCodeValue = 'ACR OpenDICOMWeb SDK De-Identifier';
 const acrDeIdUrn = 'http://dicom.acr.org/odw/deidentifier.html';
 
 void addDeIdMethodCodeSequence(RootDataset rds, DeIdMethod deIdMethod) {
   rds
-    ..replace<String>(kPatientIdentityRemoved, const<String>['Yes'])
-    ..replace<String>(kDeidentificationMethod, const<String>['Yes']);
+    ..replace<String>(kPatientIdentityRemoved, const <String>['Yes'])
+    ..replace<String>(kDeidentificationMethod, const <String>['Yes']);
   final map = <int, Element>{
     // TODO: create the ability to have const Element
     kCodeValue: new SHtag(PTag.kCodeValue, [acrDeIdCodeValue]),
@@ -42,7 +41,7 @@ void addDeIdMethodCodeSequence(RootDataset rds, DeIdMethod deIdMethod) {
     kURNCodeValue: new URtag(PTag.kURNCodeValue, [acrDeIdUrn])
   };
 
-  final sq = new SQtag(PTag.kDeidentificationMethodCodeSequence, rds, <Item>[]);
+  final sq = new SQtag(rds, PTag.kDeidentificationMethodCodeSequence, <Item>[]);
   final item = new TagItem(rds, sq, map);
   rds.replace(kDeidentificationMethodCodeSequence, [item]);
 }

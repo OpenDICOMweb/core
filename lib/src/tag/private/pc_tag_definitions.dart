@@ -11,6 +11,9 @@ import 'package:core/src/tag/private/pd_tag_definitions.dart';
 
 bool isWKCreator(String id) => pcTagDefinitions[id] != null;
 
+const Map<int, PDTagDefinition> kEmptyPDTagDefinition =
+    const <int, PDTagDefinition>{};
+
 const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     const <String, Map<int, PDTagDefinition>>{
   // '@type': 'CreatorMap',
@@ -6475,13 +6478,15 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     //'@type': 'PrivateDataTag',
     0x00456700: PDTagDefinition.k4482
   },
-  'Applicare/Centricity Radiology Web/Version 1.0': const <int, PDTagDefinition>{
+  'Applicare/Centricity Radiology Web/Version 1.0':
+      const <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x41090100: PDTagDefinition.k4483,
     0x41090200: PDTagDefinition.k4484,
     0x41090300: PDTagDefinition.k4485
   },
-  'Applicare/Centricity Radiology Web/Version 2.0': const <int, PDTagDefinition>{
+  'Applicare/Centricity Radiology Web/Version 2.0':
+      const <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x41110100: PDTagDefinition.k4486,
     0x41110200: PDTagDefinition.k4487
@@ -6869,7 +6874,8 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00210400: PDTagDefinition.k4807,
     0x00210500: PDTagDefinition.k4808
   },
-  'SCHICK TECHNOLOGIES - Image Security Creator ID': const <int, PDTagDefinition>{
+  'SCHICK TECHNOLOGIES - Image Security Creator ID':
+      const <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k4827
   },
@@ -7549,7 +7555,8 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x80033000: PDTagDefinition.k5306,
     0x80034000: PDTagDefinition.k5307
   },
-  'ObjectModel (ID, Version, Place, PlaceDescription)': const <int, PDTagDefinition>{
+  'ObjectModel (ID, Version, Place, PlaceDescription)':
+      const <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x81010000: PDTagDefinition.k5308,
     0x81011000: PDTagDefinition.k5309
@@ -12107,7 +12114,8 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x300bf000: PDTagDefinition.k10142,
     0x300bf100: PDTagDefinition.k10143
   },
-  'SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING':
+      const <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fd10100: PDTagDefinition.k10144,
     0x7fd10900: PDTagDefinition.k10145,

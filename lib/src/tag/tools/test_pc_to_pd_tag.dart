@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/tag/private/pc_token_to_pds.dart';
+import 'package:core/src/tag/private/new_tag/pc_token_to_pds.dart';
 
 void main() {
   const codes = const [

@@ -8,6 +8,8 @@
 //
 
 import 'package:core/src/dataset/base.dart';
+import 'package:core/src/dataset/tag.dart';
+import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
 
 /// An [TagDataset] is a Dataset containing TagElements.
@@ -30,10 +32,22 @@ abstract class TagDataset {
   /// Issues when they are accessed from the Dataset.
   bool checkIssuesOnAccess = false;
 
-
   bool isImmutable = false;
 
-	int keyToIndex(int code) => code;
+  int keyToIndex(int code) => code;
 
-	Tag getTag(int key) => Tag.lookupByCode(key);
+  Tag getTag(int key) => Tag.lookupByCode(key);
+
+
+  static const _makeSQ = TagElement.makeSequenceFromCode;
+
+  static Dataset convert(Dataset parent, Dataset dsOld, Dataset dsNew) {
+    for (var e in dsOld.elements) {
+      final eNew = (e is SQ)
+          ? _makeSQ(parent, e.code, <TagItem>[], e.vfLengthField)
+          : TagElement.makeFromElement(parent, e);
+      dsNew.add(eNew);
+    }
+    return dsNew;
+  }
 }

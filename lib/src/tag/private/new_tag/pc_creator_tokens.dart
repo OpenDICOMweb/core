@@ -7,16 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/tag/private/pd_tag_definitions.dart';
-import 'package:core/src/tag/private/pc_tag_definitions.dart';
-
-bool isWKCreator(String id) => pcTagDefinitions[id] != null;
-
-// '([\w\.\_\d]+)': const (\<[\w\,\s]+\>)(\{[\w\s\d:\.\,]+\})\,
-/*
-const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
-    const <String, Map<int, PDTagDefinition>>{}
-*/
 const Map<String, String> pseudonyms = <String, String>{
   '1.2.840.113681': 'Uid1_2_840_113681',
   '1.2.840.113708.794.1.1.2.0': 'Uid1_2_840_113708_794_1_1_2_0',
@@ -67,10 +57,9 @@ const Map<String, String> pseudonyms = <String, String>{
   'SIEMENS CT VA0  RAW': 'SIEMENS_CT_VA0__RAW',
   'SIEMENS DICOM': 'SIEMENS_DICOM',
   'SIEMENS DLR.01': 'SIEMENS_DLR_01',
-'SIEMENS SMS-AX  ACQ 1.0': 'SIEMENS_SMS_AX__ACQ_1_0',
-
-'SIEMENS SMS-AX  ORIGINAL IMAGE INFO 1.0': 'SIEMENS_SMS_AX__ORIGINAL_IMAGE_INFO_1_0',
-'SIEMENS SMS-AX  QUANT 1.0': 'SIEMENS_SMS_AX__QUANT_1_0',
-'SIEMENS SMS-AX  VIEW 1.0':  'SIEMENS_SMS_AX__VIEW_1_0',
-
+  'SIEMENS SMS-AX  ACQ 1.0': 'SIEMENS_SMS_AX__ACQ_1_0',
+  'SIEMENS SMS-AX  ORIGINAL IMAGE INFO 1.0':
+      'SIEMENS_SMS_AX__ORIGINAL_IMAGE_INFO_1_0',
+  'SIEMENS SMS-AX  QUANT 1.0': 'SIEMENS_SMS_AX__QUANT_1_0',
+  'SIEMENS SMS-AX  VIEW 1.0': 'SIEMENS_SMS_AX__VIEW_1_0',
 };

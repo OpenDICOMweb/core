@@ -66,9 +66,6 @@ abstract class Float extends Element<double> {
   @override
   int get vfLength => length * sizeInBytes;
 
-  @override
-  int get padChar => unsupportedError('Float does not have a padChar');
-
   /// Returns a copy of [values]
   @override
   Iterable<double> get valuesCopy => new List.from(values, growable: false);

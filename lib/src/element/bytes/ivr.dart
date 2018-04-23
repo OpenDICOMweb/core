@@ -12,8 +12,7 @@ import 'dart:typed_data';
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/base/float.dart';
-import 'package:core/src/element/bytes/byte_element.dart';
+import 'package:core/src/element/bytes.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -81,8 +80,8 @@ abstract class IvrElement<V> implements ByteElement<V> {
   int get vfLengthField => bytes.getUint32(_vfLengthOffset);
 
   @override
-  Bytes get vfBytesWithPadding =>
-      bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
+  Bytes get vfBytesWithoutPadding =>
+      bytes.toBytesWOPadding(bytes.offsetInBytes + vfOffset, vfLength);
 
   @override
   Bytes get vfBytes => bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
@@ -90,8 +89,13 @@ abstract class IvrElement<V> implements ByteElement<V> {
   static Null _sqError(Bytes bytes, [int vrIndex]) =>
       invalidElementIndex(vrIndex);
 
-  static Element makeFromBytes(int code, Bytes bytes, int vrIndex) =>
-      _ivrBDMakers[vrIndex](bytes, vrIndex);
+  static Element makeFromBytes(int code, Bytes bytes, int vrIndex) {
+    final pCode = code & 0x1FFFF;
+    final e = (pCode >= 0x10010 && pCode <= 0x100FF)
+        ? new PCivr(bytes)
+        : _ivrBDMakers[vrIndex](bytes, vrIndex);
+    return (pCode >= 0x10010 && pCode <= 0x100FF) ? new PrivateData(e) : e;
+  }
 
   static final List<DecodeBinaryVF> _ivrBDMakers = <DecodeBinaryVF>[
     _sqError, // stop reformat

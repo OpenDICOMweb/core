@@ -28,35 +28,23 @@ class TagItem extends MapItem with TagDataset {
   }
 
   /// Creates a new empty [Item] from [Bytes].
-  TagItem.empty(Dataset parent, [SQ sequence, Bytes bd])
+  TagItem.empty(Dataset parent, [SQ sequence])
       : pGroups = new PrivateGroups(),
-        super(parent, sequence, <int, Element>{}, bd) {
+        super.empty(parent, sequence) {
     pGroups.ds = this;
   }
 
-  static const _makeE = TagElement.makeFromElement;
   /// Create a new [TagItem] from an existing [TagItem].
   /// If [parent] is _null_the new [TagItem] has the same
   /// parent as [item].
-  TagItem.from(Dataset parent, Item item, [SQtag sequence])
+  TagItem.from(Dataset parent, Item item, SQtag sequence)
       : pGroups = new PrivateGroups(),
         super(parent, sequence, <int, Element>{}, null) {
     pGroups.ds = this;
-    for (var e in item.elements) {
-      final te = (e is SQ) ? SQtag.convert(e) : _makeE(e);
-      add(te);
-    }
+    convert(parent, item, sequence);
   }
 
-
-/*
-      : // TODO: add check for if empty
-        pGroups = new PrivateGroups(),
-        super.from(item, parent ?? item.parent, sequence ?? item.sequence) {
-    pGroups.ds = this;
-  }
-*/
-
+  // TODO: this is only used by test - create a local version in test.
   factory TagItem.fromList(Dataset parent, Iterable<Element> elements,
       [SQtag sequence]) {
     final eMap = <int, Element>{};
@@ -69,23 +57,18 @@ class TagItem extends MapItem with TagDataset {
   bool tryAdd(Element e, [Issues issues]) {
     var eNew = e;
     // [e] MUST be added to the pGroups before it is added to the Dataset.
-    if (e.isPrivate) eNew = pGroups.add(e);
+    if (e.isPrivate) {
+      print('TagItem add private: $e');
+      eNew = pGroups.add(e, this);
+    }
     return super.tryAdd(eNew, issues);
   }
 
   @override
   bool get isImmutable => false;
 
-  void addPrivate(Element e) => pGroups.add(e);
-
-  static TagItem convert(Dataset parent, Item item, SQ sequence) {
-    const makeE = TagElement.makeFromElement;
-
-    final Dataset tagItem = new TagItem(parent, sequence);
-    for (var e in item.elements) {
-      final te = (e is SQ) ? SQtag.convert(e) : makeE(e);
-      tagItem.add(te);
-    }
-    return tagItem;
+  static Dataset convert(Dataset parent, TagItem item, SQ sequence) {
+    final Dataset tagItem = new TagItem.empty(parent, sequence);
+    return TagDataset.convert(parent, item, tagItem);
   }
 }

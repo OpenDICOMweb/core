@@ -51,8 +51,6 @@ abstract class SQ<K> extends Element<Item> {
   @override
   int get vlfSize => 4;
   @override
-  int get padChar => unsupportedError('Float does not have a padChar');
-  @override
   int get maxVFLength => kMaxVFLength;
   Dataset get parent;
   @override

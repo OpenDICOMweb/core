@@ -9,7 +9,7 @@
 
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/private/pc_tag_map.dart';
-import 'package:core/src/tag/private/new_pc_tag_definitions.dart';
+import 'package:core/src/tag/private/pc_tag_definitions.dart';
 import 'package:core/src/tag/private/pd_tag_definitions.dart';
 import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/tag.dart';
@@ -67,11 +67,12 @@ abstract class PCTag extends PrivateTag {
 
   @override
   String get info =>
-      '$runtimeType["$name"]$dcm $groupHex, subgroup($sgNumberHex), '
+      '$runtimeType["$name"]${dcm(code)} $groupHex, subgroup($sgNumberHex), '
       'base($baseHex), limit($limitHex), actualVR($vrIndex)';
 
   @override
-  String toString() => '$runtimeType($name) $dcm ${vrIdByIndex[vrIndex]} $vm';
+  String toString() => '$runtimeType($name) ${dcm(code)} '
+      '${vrIdByIndex[vrIndex]} $vm';
 
   static PCTag lookupByToken(int pcCode, int vrIndex, String creatorName) {
     if (creatorName == null || creatorName.isEmpty) {
@@ -138,6 +139,7 @@ class PCTagKnown extends PCTag {
   @override
   PDTagDefinition lookupPDCode(int code) {
     final pdDefCode = code & 0xFFFF00FF;
+    print('pdDefCode ${dcm(pdDefCode)}');
     final pdDef = dataTags[pdDefCode];
     return (pdDef == null) ? PDTagDefinition.kUnknown : pdDef;
   }
@@ -172,8 +174,8 @@ class PCTagDefinition {
   String toString() => '$runtimeType[$index]: $name';
 
   static PCTagDefinition lookup(String name) {
-    final tag = privateCreatorMap[name];
-    return tag;
+    final def = privateCreatorMap[name];
+    return def;
   }
 
   static const _empty = const <int, PDTagDefinition>{};

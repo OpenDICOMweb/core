@@ -169,7 +169,7 @@ abstract class RootDataset extends Dataset {
   String format(Formatter z) {
     final sb = new StringBuffer(summary);
     z.down;
-    sb..write(z.fmt('FMI:', fmi))..write(z.fmt('Elements:', elements));
+    sb..write(z.fmt('FMI:', fmi.elements))..write(z.fmt('Elements:', elements));
     z.up;
     return sb.toString();
   }
@@ -259,6 +259,7 @@ abstract class Fmi extends ListBase<Element> {
 
   @override
   int get length => elements.length;
+
 
   Uid uidLookup(int code) {
     final e = this[code];

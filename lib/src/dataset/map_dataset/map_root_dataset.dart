@@ -39,14 +39,14 @@ class MapRootDataset extends RootDataset with MapDataset {
         super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
 
   /// Returns the [Element] with [code].
+  @override
   Element operator [](int code) => eMap[code];
 
   RootDataset copy([RootDataset rds]) => new MapRootDataset.from(rds ?? this);
 }
 
-class FmiMap extends Fmi with MapDataset {
+class FmiMap extends Fmi {
   /// A [Map] from key to [Element].
-  @override
   final Map<int, Element> eMap;
 
   FmiMap(this.eMap);
@@ -63,6 +63,12 @@ class FmiMap extends Fmi with MapDataset {
     assert(code == e.code);
     tryAdd(e);
   }
+
+  @override
+  Iterable<Element> get elements => eMap.values;
+
+  @override
+  void add(Element e) => tryAdd(e);
 
   bool tryAdd(Element e) {
     final old = eMap[e.code];

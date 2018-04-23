@@ -12,6 +12,7 @@ import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/base/group/public_group.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils.dart';
 
 // ignore_for_file: only_throw_errors
 
@@ -22,7 +23,7 @@ abstract class GroupBase {
 
   int get length;
 
-  void add(Element e);
+  void add(Element e, Dataset sqParent);
 }
 
 class DatasetGroups {
@@ -38,33 +39,35 @@ class DatasetGroups {
   GroupBase currentGroup;
 
   /// Add an [Element] to the [PrivateGroups] for the containing [Dataset].
-  void add(Element e) {
+  void add(Element e, Dataset sqParent) {
     final gNumber = e.group;
     if (gNumber < currentGNumber) {
       invalidElementError(e, '$gNumber > $currentGNumber');
     } else if (gNumber == currentGNumber) {
-      currentGroup.add(e);
+      currentGroup.add(e, sqParent);
     } else {
       // new group
       currentGNumber = gNumber;
       GroupBase gp;
       if (gNumber.isEven) {
-        currentGroup = new PublicGroup(e);
+        currentGroup = new PublicGroup(e, sqParent);
         gp = publicGroups.putIfAbsent(gNumber, () => currentGroup);
-        } else {
+      } else {
         currentGroup = new PrivateGroup(e);
         gp = privateGroups.putIfAbsent(gNumber, () => currentGroup);
       }
       if (gp != currentGroup) invalidGroupError(currentGNumber);
-      currentGroup.add(e);
+      currentGroup.add(e, sqParent);
     }
   }
 
   @override
   String toString() {
     final sb = new StringBuffer();
-    publicGroups.forEach((gNum, pGroup) => sb.writeln('$gNum: $pGroup'));
-    privateGroups.forEach((gNum, pGroup) => sb.writeln('$gNum: $pGroup'));
+    publicGroups
+        .forEach((gNum, pGroup) => sb.writeln('${hex16(gNum)}: $pGroup'));
+    privateGroups
+        .forEach((gNum, pGroup) => sb.writeln('${hex16(gNum)}: $pGroup'));
     return '$sb';
   }
 }

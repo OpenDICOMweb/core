@@ -10,8 +10,10 @@
 export 'package:core/src/dataset/base/dataset.dart';
 export 'package:core/src/dataset/base/ds_bytes.dart';
 export 'package:core/src/dataset/base/errors.dart';
+export 'package:core/src/dataset/base/group/creators.dart';
 export 'package:core/src/dataset/base/group/group_base.dart';
 export 'package:core/src/dataset/base/group/private_group.dart';
+export 'package:core/src/dataset/base/group/private_subgroup.dart';
 export 'package:core/src/dataset/base/group/public_group.dart';
 export 'package:core/src/dataset/base/history.dart';
 export 'package:core/src/dataset/base/item.dart';

@@ -12,7 +12,7 @@ import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/map_dataset/map_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils.dart';
 
 /// An [MapItem] implemented using a [Map].
 class MapItem extends Item with MapDataset {
@@ -20,7 +20,6 @@ class MapItem extends Item with MapDataset {
   @override
   final Map<int, Element> eMap;
 
-  // TODO: decide if we need these constructors
   /// Creates a [MapItem].
   MapItem(Dataset parent, SQ sequence, this.eMap, Bytes bd)
       : super(parent, sequence, bd);
@@ -36,8 +35,6 @@ class MapItem extends Item with MapDataset {
         super(parent ?? item.parent, sequence ?? item.sequence,
             item.dsBytes.bytes);
 
-  /// Returns the [Element] with [code].
-  Element operator [](int code) => eMap[code];
 
   MapItem copy([MapItem item, Dataset parent, SQ sequence]) {
     item ??= this;

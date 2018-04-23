@@ -11,7 +11,6 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/errors.dart';
 import 'package:core/src/utils/issues.dart';
 
 abstract class MetaElementMixin<V>  {
@@ -34,9 +33,8 @@ abstract class MetaElementMixin<V>  {
   int get maxVFLength => e.maxVFLength;
   int get vfLengthField => e.vfLengthField;
 
-  int get padChar => e.padChar;
-
   Iterable<V> get values => e.values;
+  set values(Iterable<Object> vList) => e.values = vList;
 
   V get value => e.value;
 
@@ -51,18 +49,3 @@ abstract class MetaElementMixin<V>  {
   Element<V> update([Iterable<V> vList]) => e.update(vList);
 }
 
-// Must implement Values and Value with reified.
-class BulkdataRef<V> extends Element<V> with MetaElementMixin<V> {
-  @override
-  Element e;
-  String uri;
-
-  BulkdataRef(this.e, this.uri);
-
-  @override
-  Iterable<V> get values => _values ??= unimplementedError();
-  Iterable<V> _values;
-  @override
- set values(Iterable<V> vList) => _values ??= vList;
-
-}

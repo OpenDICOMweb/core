@@ -12,6 +12,7 @@ import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/group_base.dart';
 import 'package:core/src/dataset/base/group/private_subgroup.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/logger.dart';
 
@@ -29,26 +30,29 @@ class PrivateGroups {
   PrivateGroup _currentGroup;
 
   /// Add an [Element] to the [PrivateGroups] for the containing [Dataset].
-  Element add(Element e) {
+  Element add(Element e, Dataset sqParent) {
     assert(e.isPrivate);
     final gNumber = e.group;
     assert(gNumber.isOdd);
     if (gNumber == _currentGNumber) {
-      return _currentGroup.add(e);
+      return _currentGroup.add(e, sqParent);
     } else if (gNumber < _currentGNumber) {
       return invalidElementError(e, '$gNumber > $_currentGNumber');
     } else {
       _currentGNumber = gNumber;
       _currentGroup = new PrivateGroup(e);
       final gp = _groups.putIfAbsent(gNumber, () => _currentGroup);
-      if (gp != _currentGroup) invalidGroupError(gNumber);
-      return _currentGroup.add(e);
+      if (gp != _currentGroup) {
+        if (throwOnError) throw 'Group $gNumber already exits';
+        system.warn('Group $gNumber already exits');
+      }
+      return _currentGroup.add(e, sqParent);
     }
   }
 
   @override
   String toString() {
-    final sb = new StringBuffer();
+    final sb = new StringBuffer('Dataset: $ds');
     _groups.forEach((gNum, pGroup) => sb.writeln('$gNum: $pGroup'));
     return '$sb';
   }
@@ -90,7 +94,8 @@ class PrivateGroup implements GroupBase {
         assert(e.group.isOdd),
         gLength = (e.elt == 0) ? e : null {
     final elt = e.elt;
-    (elt > 0 || elt < 0x10) ? illegal.add(e) : add(e);
+    print(' PrivateGroup created with $e');
+    (elt > 0 || elt < 0x10) ? illegal.add(e) : add(e, null);
   }
 
   /// Returns the [PrivateSubgroup] that corresponds with.
@@ -118,7 +123,7 @@ class PrivateGroup implements GroupBase {
   /// or Illegal Private Element) or in the [PrivateSubgroup] (Private
   /// Creator or Private Data).
   @override
-  Element add(Element e) {
+  Element add(Element e, Dataset sqParent) {
     assert(e.isPrivate);
     final code = e.code;
     final group = code >> 16;
@@ -131,13 +136,16 @@ class PrivateGroup implements GroupBase {
     var eNew = e;
     if (Tag.isPDCode(code)) {
       final sgNumber = Tag.pdSubgroup(code);
+      print('  PG add PData Code ${dcm(code)}');
       _checkSubgroup(sgNumber);
-      eNew = _currentSubgroup.addData(e);
+      eNew = _currentSubgroup.addData(e, sqParent);
     } else if (Tag.isPCCode(code)) {
       final sgNumber = Tag.pcSubgroup(code);
+      print('  PG add PCreator Code ${dcm(code)}');
       _checkSubgroup(sgNumber);
       eNew = _currentSubgroup.addCreator(e);
     } else if (Tag.isPrivateIllegalCode(code)) {
+      print('  PG add Illegal private ${dcm(code)}');
       illegal.add(e);
     } else {
       throw '**** Internal Error: $e';
@@ -146,7 +154,7 @@ class PrivateGroup implements GroupBase {
   }
 
   void _checkSubgroup(int sgNumber) {
-    print('currentSGIndex $_currentSGNumber sgNumber $sgNumber');
+    print('  current ${hex16(_currentSGNumber)} this ${hex8(sgNumber)}');
     if (sgNumber < _currentSGNumber) {
       invalidSubgroupNumber(_currentSGNumber, sgNumber);
     } else if (sgNumber > _currentSGNumber) {
@@ -156,17 +164,19 @@ class PrivateGroup implements GroupBase {
     }
   }
 
-/*  String format(Formatter z) =>
-      '${z(this)}\n${z.fmt('Subgroups(${subgroups.values.length})',
-                               subgroups)}';
- */
+  int get _getPDataCount {
+    var count = 0;
+    for (var sg in subgroups.values) count += sg.members.length;
+    return count;
+  }
+
   String format(Formatter z) => z.fmt(
       '$runtimeType(${hex16(gNumber)}): ${subgroups.length} Subroups',
       subgroups);
 
   @override
-  String toString([String prefix = '']) =>
-      '$runtimeType(${hex16(gNumber)}): ${subgroups.values.length} creators';
+  String toString([String prefix = '']) => '$runtimeType(${hex16(gNumber)}): '
+      '${subgroups.length} PCreators $_getPDataCount PData';
 }
 
 Null invalidSubgroupNumber(int currentSGNumber, int sgNumber) {

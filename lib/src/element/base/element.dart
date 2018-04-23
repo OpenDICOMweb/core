@@ -84,6 +84,14 @@ abstract class Element<V> extends ListBase<V> {
   /// The end of an element in and encoding.
   int get eEnd => -1;
 
+  /// Returns _true_ if [value] is valid for _this_.
+  bool checkValue(V v, {Issues issues, bool allowInvalid = false});
+
+  /// Returns a copy of _this_ with [values] replaced by [vList].
+  Element<V> update([Iterable<V> vList]);
+
+
+
   // **** end Interface
 
   // ********* Tag Identifier related interface, Getters, and Methods
@@ -345,10 +353,6 @@ abstract class Element<V> extends ListBase<V> {
   List<String> get vfBytesAsUtf8List =>
       cvt.utf8.decode(vfBytes, allowMalformed: true).split('\\');
 
-  /// Returns the Ascii Padding Character for this [Element],
-  /// if it has one; otherwise returns -1;
-  int get padChar;
-
   /// Returns _true_ if [vList] has a valid [length] for _this_.
   /// [vList] defaults to [values].
   bool checkLength([Iterable<V> vList, Issues issues]) {
@@ -358,9 +362,6 @@ abstract class Element<V> extends ListBase<V> {
     return (length == 0) ||
         (length >= minValues && length <= maxValues && (length % columns == 0));
   }
-
-  /// Returns _true_ if [value] is valid for _this_.
-  bool checkValue(V v, {Issues issues, bool allowInvalid = false});
 
   /// Returns _true_ if [values] are valid for _this_.
   bool checkValues(Iterable<V> vList, [Issues issues]) {
@@ -449,9 +450,6 @@ abstract class Element<V> extends ListBase<V> {
 
   /// _true_ if the [Element] is valid.
   bool get isValid => hasValidVR && hasValidLength && hasValidValues;
-
-  /// Returns a copy of _this_ with [values] replaced by [vList].
-  Element<V> update([Iterable<V> vList]);
 
   /// Returns a copy of _this_ with [values] [f]([values]).
   Element updateF(Iterable<V> f(Iterable<V> vList)) => update(f(values));

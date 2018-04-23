@@ -181,6 +181,9 @@ class PCtag extends PC with TagElement<String> {
   PCtag update([Iterable<String> vList = kEmptyStringList]) =>
       new PCtag(tag, vList ?? kEmptyStringList);
 
+  @override
+  String toString() => '$runtimeType $tag $value';
+
   static PCtag make(Tag tag, Iterable<String> vList, [int _]) =>
       new PCtag(tag, vList ?? kEmptyStringList);
 

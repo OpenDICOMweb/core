@@ -47,8 +47,6 @@ abstract class ElementTagMixin<V> {
 
   bool get isPrivate => true;
 
-  int get padChar => e.padChar;
-
   Element get sha256 => e.sha256;
 
   TypedData get typedData => e.typedData;
@@ -100,8 +98,6 @@ abstract class PrivateElementMixin<V> {
   Iterable<V> get values => e.values;
 
   bool get isPrivate => true;
-
-  int get padChar => e.padChar;
 
   Element get sha256 => e.sha256;
 

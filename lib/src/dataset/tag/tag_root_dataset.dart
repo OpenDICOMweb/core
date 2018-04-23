@@ -11,7 +11,6 @@ import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 import 'package:core/src/dataset/tag/tag_dataset.dart';
-import 'package:core/src/dataset/tag/tag_item.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/utils.dart';
 
@@ -38,35 +37,24 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   // TODO: make this work recursively
   /// Creates a [TagRootDataset] from another [TagRootDataset].
   factory TagRootDataset.from(RootDataset rds) => convert(rds);
-/*
-      : pGroups = new PrivateGroups(),
-        //TODO: fill private groups
-        super.from(rds) {
-    pGroups.ds = this;
-  }
-*/
 
   @override
   bool tryAdd(Element e, [Issues issues]) {
-    final v = super.tryAdd(e, issues);
+    var eNew = e;
     if (e.group.isOdd) {
-      print('private: $e');
-      pGroups.add(e);
+      print('TagRootDataset add private: $e');
+      eNew = pGroups.add(e, this);
     }
-    return v;
+    return super.tryAdd(eNew, issues);
   }
 
   @override
   RootDataset copy([RootDataset rds]) => new TagRootDataset.from(rds ?? this);
 
   static TagRootDataset convert(RootDataset rds) {
-    const makeE = TagElement.makeFromElement;
-
-    final tagRDS = new TagRootDataset.empty();
-    for (var e in rds.elements) {
-      final te = (e is SQ) ? SQtag.convert(e) : makeE(e);
-      tagRDS.add(te);
-    }
-    return tagRDS;
+    final tagRds = new TagRootDataset.empty();
+    for (var e in rds.fmi.elements)
+      tagRds.fmi.add(TagElement.makeFromElement(rds, e, e.vrIndex));
+    return TagDataset.convert(null, rds, tagRds);
   }
 }

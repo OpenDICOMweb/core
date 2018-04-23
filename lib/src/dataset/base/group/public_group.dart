@@ -8,6 +8,7 @@
 //
 
 import 'package:core/src/base.dart';
+import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/utils/indenter.dart';
 import 'package:core/src/utils/logger.dart';
@@ -27,17 +28,17 @@ class PublicGroup implements GroupBase {
   @override
   Map<int, Element> members = <int, Element>{};
 
-  PublicGroup(Element e)
+  PublicGroup(Element e, Dataset sqParent)
       : gNumber = e.group,
         assert(gNumber.isEven) {
-    add(e);
+    add(e, sqParent);
   }
 
   @override
   int get length => members.length;
 
   @override
-  void add(Element e0) {
+  void add(Element e0, Dataset sqParent) {
     // members[e.code] = new SQtag.from(sq);
     members[e0.code] = e0;
     if (e0 is SQ) {
@@ -58,7 +59,7 @@ class PublicGroup implements GroupBase {
 
   String format(Formatter z) => z.fmt(
       '$runtimeType(${hex16(gNumber)}): '
-      '${members.length} Groups',
+      '${members.values.length} Groups',
       members);
 
   String format0(Formatter z) =>

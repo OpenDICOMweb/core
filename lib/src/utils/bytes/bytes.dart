@@ -239,12 +239,16 @@ class Bytes extends ListBase<int> {
   }
 
   // **** String getters
-  // TODO: decide if these should be included
+
+  /// Returns an ASCII [String] with trailing [kSpace] or [kNull]
+  /// removed if length is an even number.
   String getAscii([int offset = 0, int length]) {
     final len = _lengthWithoutPadding(offset, length ?? lengthInBytes);
     return ascii.decode(asUint8List(offset, len));
   }
 
+  /// Returns a UTF-8 [String] with trailing [kSpace] or [kNull] removed
+  /// if length is an even number.
   String getUtf8([int offset = 0, int length]) {
     final len = _lengthWithoutPadding(offset, length ?? lengthInBytes);
     return utf8.decode(asUint8List(offset, len));
@@ -254,7 +258,7 @@ class Bytes extends ListBase<int> {
 
   int _lengthWithoutPadding([int offset = 0, int length]) {
     length ?? lengthInBytes;
-    if (length == 0) return length;
+    if (length == 0 || length.isOdd) return length;
     final newLen = length - 1;
     final last = _bd.getUint8(offset + length - 1);
     return (last == kSpace || last == kNull) ? newLen : length;
@@ -502,7 +506,7 @@ class Bytes extends ListBase<int> {
   bool isUint64(int i) => i > kUint64MinValue && i <= kUint64MaxValue;
 
   // **** Binary DICOM specific methods
-
+  // TODO: make DicomBytes a subclass of Bytes.
   int getCode(int offset) {
     final group = getUint16(offset);
     final elt = getUint16(offset + 2);
@@ -515,15 +519,19 @@ class Bytes extends ListBase<int> {
     return (second << 8) + first;
   }
 
+  //TODO: Jim clean up all uses of removePadding and other padding routines
+  //      all padding should be handled by Bytes.
   // Note: this method should only be called from String VRs, OB or UN.
-  Bytes toBytesWOPadding(int start, int length, int vfOffset,
-      [int padChar = kSpace]) {
-    assert(start.isEven && length.isEven && (vfOffset == 8 || vfOffset == 12));
-    if (length == vfOffset) return toBytes(start, length);
-    final lastIndex = start + length - 1;
-    final char = _bd.getUint8(lastIndex);
-    final len = (char == kNull || char == kSpace) ? length - 1 : length;
-    if (len != length) log.debug3('Removing Padding: $char');
+  Bytes toBytesWOPadding(int start, int length, [int padChar = kSpace]) {
+    assert(start.isEven && length.isEven);
+    if (length == 0) return kEmptyBytes;
+    int len;
+    if (length.isEven) {
+      final lastIndex = start + length - 1;
+      final char = _bd.getUint8(lastIndex);
+      len = (char == kNull || char == kSpace) ? length - 1 : length;
+      if (len != length) log.debug3('Removing Padding: $char');
+    }
     return new Bytes._(_bd, start, len);
   }
 

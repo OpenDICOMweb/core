@@ -58,7 +58,7 @@ void main() {
     itemsList.add(new TagItem.fromList(rds, rds));
 
     //TODO: this should be adding a real parent and verifying it.
-    sq = new SQtag(tag, null, itemsList, SQ.kMaxVFLength);
+    sq = new SQtag(null, tag, itemsList, SQ.kMaxVFLength);
 
     test('Test for getAllTItemElements', () {
       expect(sq.getAll(kRecognitionCode), isNotNull);

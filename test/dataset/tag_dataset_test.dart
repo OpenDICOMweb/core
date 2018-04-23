@@ -13,9 +13,7 @@ import 'package:test_tools/tools.dart';
 
 void main() {
   Server.initialize(
-      name: 'dataset/tag_dataset_test',
-      level: Level.info,
-      throwOnError: false);
+      name: 'dataset/tag_dataset_test', level: Level.info, throwOnError: false);
 
   final rsg = new RSG(seed: 1);
   final rng = new RNG(1);
@@ -397,9 +395,8 @@ void main() {
       final valuesList = <TagItem>[];
 
       // Make Item with 3 Elements
-  //    final rds0 = new TagRootDataset.empty();
-      rds[kRecognitionCode] =
-          new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      //    final rds0 = new TagRootDataset.empty();
+      rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
       rds[kInstitutionAddress] =
           new STtag(PTag.kInstitutionAddress, ['foo bar']);
       rds[kExtendedCodeMeaning] =
@@ -435,7 +432,7 @@ void main() {
 
       // Create SQtag and add to rootDS0
       const sqTag = PTag.kReferencedStudySequence;
-      final sq = new SQtag(sqTag, rds, valuesList, SQ.kMaxVFLength);
+      final sq = new SQtag(rds, sqTag, valuesList, SQ.kMaxVFLength);
       log..debug('sq: ${sq.info}');
       expect(sq.length == 2, true);
 
@@ -445,6 +442,7 @@ void main() {
       // Only 1 Element at top level
       print('rds.length: ${rds.length}');
       expect(rds.length == 4, true);
+
       /// 2 Items with 8 elements + sq itself = 9
       log
         ..debug('rootDS: ${rds.info}')
@@ -470,7 +468,6 @@ void main() {
 
       // No of SQtag Elements in top level of rootDS0
       expect(rds.length == 6, true);
-
     });
 
     test('removeDuplicates', () {
@@ -740,12 +737,10 @@ void main() {
 
       // Make Item with 3 Elements
       final rds = new TagRootDataset.empty();
-      rds[kRecognitionCode] =
-          new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
       rds[kImagerPixelSpacing] =
           new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
-      rds[kTagAngleSecondAxis] =
-          new SStag(PTag.kTagAngleSecondAxis, [12]);
+      rds[kTagAngleSecondAxis] = new SStag(PTag.kTagAngleSecondAxis, [12]);
 
       valuesList.add(new TagItem.fromList(rootDS0, rds));
       expect(rds.length == 3, true);
@@ -755,7 +750,7 @@ void main() {
 
       // Create SQtag and add to rootDS0
       const sqTag = PTag.kReferencedStudySequence;
-      final sq = new SQtag(sqTag, rootDS0, valuesList, SQ.kMaxVFLength);
+      final sq = new SQtag(rootDS0, sqTag, valuesList, SQ.kMaxVFLength);
       log.debug('sq: ${sq.info}');
       expect(sq.length == 1, true);
 
@@ -783,12 +778,10 @@ void main() {
 
       // Make Item with 3 Elements
       final rds = new TagRootDataset.empty();
-      rds[kRecognitionCode] =
-          new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
       rds[kImagerPixelSpacing] =
           new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
-      rds[kTagAngleSecondAxis] =
-          new SStag(PTag.kTagAngleSecondAxis, [12]);
+      rds[kTagAngleSecondAxis] = new SStag(PTag.kTagAngleSecondAxis, [12]);
 
       valuesList.add(new TagItem.fromList(rootDS0, rds));
       expect(rds.length == 3, true);
@@ -798,7 +791,7 @@ void main() {
 
       // Create SQtag and add to rootDS0
       const sqTag = PTag.kReferencedStudySequence;
-      final sq = new SQtag(sqTag, rootDS0, valuesList, SQ.kMaxVFLength);
+      final sq = new SQtag(rootDS0, sqTag, valuesList, SQ.kMaxVFLength);
       log.debug('sq: ${sq.info}');
       expect(sq.length == 1, true);
 
@@ -897,7 +890,7 @@ void main() {
       system.throwOnError = true;
       rootDS0.allowDuplicates = false;
       expect(rootDS0[lo0.key] == lo0, true);
-   //   rootDS0[lo0.key] = lo0;
+      //   rootDS0[lo0.key] = lo0;
       expect(() => rootDS0.add(lo0),
           throwsA(const isInstanceOf<DuplicateElementError>()));
 

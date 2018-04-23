@@ -179,7 +179,7 @@ void main() {
           new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
       valuesList.add(new TagItem.fromList(rds1, rds));
-      final sq0 = new SQtag(PTag.kPatientSizeCodeSequence, rds1);
+      final sq0 = new SQtag(rds1, PTag.kPatientSizeCodeSequence);
       rds[sq0.code] = sq0;
 
       final noV = rds.noValuesAll(sq0.index);
