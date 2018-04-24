@@ -15,28 +15,21 @@ void main() {
 
   group('Items and Sequences', () {
     var itemsList = <TagItem>[];
-    // Urgent Sharath fix: don't use global variables in tests. They make
-    //   it hard to understand what is going on. Please fix!
-    SQtag sq;
 
-    // Urgent Sharath: this is not a sequence tag
-    final tag = PTag.lookupByCode(kInstanceCreationDate);
     var rds = new TagRootDataset.empty();
-    final date = new DAtag(tag, ['19990505']);
+    final date = new DAtag(PTag.kInstanceCreationDate, ['19990505']);
     rds.add(date);
 
-  //  var elements = new TagRootDataset.empty();
+    //  var elements = new TagRootDataset.empty();
     rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
-    rds[kInstitutionAddress] =
-        new STtag(PTag.kInstitutionAddress, ['foo bar']);
+    rds[kInstitutionAddress] = new STtag(PTag.kInstitutionAddress, ['foo bar']);
     rds[kExtendedCodeMeaning] =
         new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
     itemsList.add(new TagItem.fromList(rds, rds));
 
     rds = new TagRootDataset.empty();
-    rds[PTag.kRecognitionCode.code] =
-        new SHtag(PTag.kRecognitionCode, ['abc']);
+    rds[PTag.kRecognitionCode.code] = new SHtag(PTag.kRecognitionCode, ['abc']);
     rds[PTag.kInstitutionAddress.code] =
         new STtag(PTag.kInstitutionAddress, ['abc']);
     rds[PTag.kExtendedCodeMeaning.code] =
@@ -58,7 +51,8 @@ void main() {
     itemsList.add(new TagItem.fromList(rds, rds));
 
     //TODO: this should be adding a real parent and verifying it.
-    sq = new SQtag(null, tag, itemsList, SQ.kMaxVFLength);
+    final sq = new SQtag(
+        null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
 
     test('Test for getAllTItemElements', () {
       expect(sq.getAll(kRecognitionCode), isNotNull);
@@ -92,8 +86,6 @@ void main() {
     });
 
     test('Test for copySequence', () {
-      print('sq: $sq');
-      // Urgent Sharath fix: sq is a DAtag not an SQtag
       final sqCopy = sq.copySQ(rds);
       log.debug(sqCopy.info);
       expect(sqCopy.getAll(kRecognitionCode), isNotNull);
@@ -109,7 +101,6 @@ void main() {
     test('Test for values', () {
       expect(itemsList, equals(sq.items));
 
-      print('sq: $sq');
       final sq2 = sq.update(itemsList);
       expect(itemsList, equals(sq2.items));
       expect(sq.items, equals(sq2.items));
@@ -141,7 +132,7 @@ void main() {
     test('Test for items,novalues', () {
       log..debug(sq.items)..debug(sq.noValues);
 
-      final rds0 =new TagRootDataset.empty();
+      final rds0 = new TagRootDataset.empty();
       final fl =
           new FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
       final of = new OFtag(PTag.kVectorGridData, <double>[34.4]);
@@ -153,7 +144,6 @@ void main() {
       rds0[fd.code] = fd;
       rds0[od.code] = od;
       itemsList = <TagItem>[]..add(new TagItem.fromList(rds, rds0));
-      print('sq: $sq');
       final sq2 = sq.update(itemsList);
       log..debug(sq2.items)..debug(sq2.noValues);
 
