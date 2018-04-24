@@ -63,10 +63,8 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
 
 //  @override
   SQtag copySQ([Dataset parent]) {
-    final nItems = new List<TagItem>(length);
-    for (var i = 0; i < items.length; i++)
-      nItems[i] = new TagItem.from(parent, items.elementAt(i), this);
-    return update(nItems);
+    parent ??= this.parent;
+    return convert(parent, this);
   }
 
   @override
@@ -156,6 +154,6 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
       final tItem = TagItem.convert(parent, item, sq);
       tagItems.add(tItem);
     }
-    return sq;
+    return sq.update(tagItems);
   }
 }

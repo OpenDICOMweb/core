@@ -37,7 +37,7 @@ class SStag extends SS with TagElement<int> {
   @override
   SStag update([Iterable<int> vList = kEmptyIntList]) => new SStag(tag, vList);
 
-  static SStag make<int>(Tag tag, Iterable<int> vf) =>
+  static SStag make(Tag tag, Iterable<int> vf, [int vfLengthField]) =>
       new SStag(tag, Int16.fromValueField(vf));
 
   static SStag fromBase64(Tag tag, String s) =>
@@ -74,7 +74,7 @@ class SLtag extends SL with TagElement<int> {
   @override
   SLtag update([Iterable<int> vList = kEmptyIntList]) => new SLtag(tag, vList);
 
-  static SLtag make<int>(Tag tag, Iterable<int> vf) =>
+  static SLtag make<int>(Tag tag, Iterable<int> vf, [int vfLengthField]) =>
       new SLtag(tag, Int32.fromValueField(vf));
 
   static SLtag fromBase64(Tag tag, String s) =>
