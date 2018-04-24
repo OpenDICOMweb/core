@@ -130,7 +130,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
       Dataset parent, int code, List<TagDataset> items,
       [int vfLengthField, Bytes bytes]) {
     final tag = _lookupTagByCode(parent, code, items, kSQIndex);
-    //assert(tag.vrIndex == kSQIndex);
+    assert(tag.vrIndex == kSQIndex);
     return new SQtag(parent, tag, <TagItem>[], vfLengthField, bytes);
   }
 
