@@ -22,7 +22,7 @@ bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
 int level = 0;
 
-abstract class SQ<K> extends Element<Item> {
+abstract class SQ extends Element<Item> {
   // **** Interface
 
   /// The [tag] corresponding to _this_.
@@ -181,7 +181,7 @@ Summary $tag
   }
 
   @override
-  SQ update([Iterable<Item> vList = kEmptyList]);
+  SQ update([Iterable<Item> vList = kEmptyList]) => unsupportedError();
 
   Iterable<Element> updateAll<V>(int index, Iterable<V> vList,
       {bool required = false}) {

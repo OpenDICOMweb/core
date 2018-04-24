@@ -8,8 +8,10 @@
 //
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:core/src/base.dart';
+import 'package:core/src/dataset/base.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/evr.dart';
 import 'package:core/src/element/bytes/ivr.dart';
@@ -23,24 +25,42 @@ typedef Element BDElementMaker(int code, int vrIndex, Bytes bytes);
 abstract class ByteElement<V> extends Element<V> {
   /// The [Bytes] containing this Element.
   Bytes get bytes;
+
   /// Returns _true_ if this Element is encoded as Explicit VR Little Endian;
   /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
   bool get isEvr;
+
   /// Returns the Value Field Length field offset from the beginning of bytes.
-  int get vfLengthOffset;
+ // int get vfLengthOffset;
+
   /// Returns the Value Field offset from the beginning of bytes.
-  int get vfOffset;
+ // int get vfOffset;
+
+  @override
+  int get vfLength;
+
+  int get valuesLength;
+
   /// Returns the Value Field [Bytes] without trailing [kSpace] or [kNull]
   /// characters.
-  Bytes get vfBytesWithoutPadding;
+//  Bytes get vfBytesWithoutPadding;
+
+  /// The Value Field [Bytes] of this Element without padding character.
+  @override
+  Bytes get vfBytes;
+
+  /// The Value Field [Bytes] of this Element with padding character.
+  Bytes get vfBytesWithPadding;
 
   // **** End Interface ****
 
-  static Element make<V>(int code, int vrIndex, Bytes bytes,
+  static Element make<V>(Dataset ds, int code, int vrIndex, Bytes bytes,
       {bool isEvr = true}) {
+    final tag = lookupTagByCode(ds, code, vrIndex);
+    final tagVRIndex = tag.vrIndex;
     final e = (isEvr)
-        ? EvrElement.makeFromBytes(code, bytes, vrIndex)
-        : IvrElement.makeFromBytes(code, bytes, vrIndex);
+        ? EvrElement.makeFromCode(ds, code, bytes, tagVRIndex)
+        : IvrElement.makeFromCode(ds, code, bytes, tagVRIndex);
     return (code >= 0x10010 && code <= 0x100FF) ? new PrivateData(e) : e;
   }
 }
@@ -55,229 +75,164 @@ class PrivateData extends ByteElement<Object> with MetaElementMixin<Object> {
   Bytes get bytes => e.bytes;
   @override
   bool get isEvr => e.isEvr;
+//  @override
+//  int get vfLengthOffset => e.vfLengthOffset;
+//  @override
+//  int get vfOffset => e.vfOffset;
+//  @override
+//  Bytes get vfBytes => e.vfBytes;
   @override
-  int get vfLengthOffset => e.vfLengthOffset;
+  Bytes get vfBytesWithPadding => e.vfBytesWithPadding;
   @override
-  int get vfOffset => e.vfOffset;
+  int get valuesLength => e.valuesLength;
   @override
-  Bytes get vfBytesWithoutPadding => e.vfBytesWithoutPadding;
+  Iterable get values => e.values;
+  @override
+  set values(Iterable vList) => e.values = vList;
 
-
-  static PrivateData make<V>(int code, int vrIndex, Bytes bytes,
+  static PrivateData make<V>(Dataset ds, int code, int vrIndex, Bytes bytes,
       {bool isEvr = true}) {
-    assert(vrIndex != null && bytes.lengthInBytes.isEven);
-    final e = ByteElement.make<V>(code, vrIndex, bytes, isEvr: true);
+    assert(vrIndex != null && bytes.length.isEven);
+    final e = ByteElement.make<V>(ds, code, vrIndex, bytes, isEvr: true);
     return new PrivateData(e);
   }
 }
 
-const int _codeOffset = 0;
-const int _groupOffset = 0;
-const int _eltOffset = 2;
-
-abstract class Common {
-  Bytes get bytes;
-  bool get isLengthAlwaysValid;
-  int get minValues;
-  int get maxValues;
-  int get columns;
-  int get vfOffset;
+/// 32-bit Float Elements (FL, OF)
+abstract class Float32Mixin {
   int get vfLengthField;
-  int get valuesLength;
-  int get vrIndex;
-
-  // End Interface
-
-  bool isEqual(ByteElement a, ByteElement b) {
-    if (a.bytes.lengthInBytes != b.bytes.lengthInBytes) return false;
-
-    final offset0 = a.bytes.offsetInBytes;
-    final offset1 = b.bytes.offsetInBytes;
-    final length = a.lengthInBytes;
-    for (var i = offset0, j = offset1; i < length; i++, j++)
-      if (a.bytes.getUint8(i) != b.bytes.getUint8(j)) return false;
-    return true;
-  }
-
-  /// Returns the Tag Code from [Bytes].
-  int get code {
-    final group = bytes.getUint16(_codeOffset);
-    final elt = bytes.getUint16(_codeOffset + 2);
-    final v = (group << 16) + elt;
-    return v;
-  }
-
-  int get group => bytes.getUint16(_groupOffset);
-  int get elt => bytes.getUint16(_eltOffset);
-
-  /// Returns the length in bytes of _this_ Element.
-  int get eLength => bytes.lengthInBytes;
-
-  /// Returns the actual length in bytes after removing any padding chars.
-  // Floats always have a valid (defined length) vfLengthField.
-  int get vfLength {
-    final vfo = vfOffset;
-    final len = bytes.lengthInBytes - vfo;
-//    final vlf = vfLengthField;
-//    if (vlf != kUndefinedLength && len != vlf)
-//      print('${dcm(code)} $vrIndex len: $len, vlf: $vlf : ${len / vlf}');
-    //  assert(vlf == kUndefinedLength || len == vlf, 'len: $len, vlf: $vlf');
-    return len;
-  }
-
-  bool get hasValidLength {
-    if (isLengthAlwaysValid) return true;
-    return (valuesLength == 0) ||
-        (valuesLength >= minValues &&
-            (valuesLength <= maxValues) &&
-            (valuesLength % columns == 0));
-  }
-
-  //TODO: add correct index
-//  int get deIdIndex => unimplementedError();
-  int get ieIndex => 0;
-  bool get allowInvalid => true;
-  bool get allowMalformed => true;
-
-  bool get hasValidValues => true;
-
-  Bytes get vfBytesWithoutPadding => removePadding(bytes, vfOffset);
-
-  /// Returns a [Bytes] containing the Value Field of _this_.
-  Bytes get vfBytes => (bytes.lengthInBytes == vfOffset)
-      ? kEmptyBytes
-      : bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
-}
-
-// **** EVR Float Elements (FL, FD, OD, OF)
-const _float32SizeInBytes = 4;
-
-abstract class BDFloat32Mixin {
-  int get vfLengthField;
+  Bytes get vfBytes;
 
   int get valuesLength => _getValuesLength(vfLengthField, _float32SizeInBytes);
 
-  Float update([Iterable<double> vList]) => unsupportedError();
+  Float32List get values => vfBytes.asFloat32List();
+
+  static const _float32SizeInBytes = 4;
 }
 
-// **** EVR Long Float Elements (OD, OF)
-
-const _float64SizeInBytes = 8;
-
-abstract class BDFloat64Mixin {
+/// Long Float Elements (FD, OD)
+abstract class Float64Mixin {
   int get vfLengthField;
+  Bytes get vfBytes;
 
   int get valuesLength => _getValuesLength(vfLengthField, _float64SizeInBytes);
 
-  Float update([Iterable<double> vList]) => unsupportedError();
+  Float64List get values => vfBytes.asFloat64List();
+
+  static const _float64SizeInBytes = 8;
 }
 
-abstract class IntMixin {
-  IntBase update([Iterable<int> vList]) => unsupportedError();
-}
-
-// **** 8-bit Integer Elements (OB, UN)
-
-const int _int8SizeInBytes = 1;
-
-abstract class Int8Mixin {
+/// 8-bit Integer Elements (OB, UN)
+abstract class Uint8Mixin {
   int get vfLengthField;
+  Bytes get vfBytes;
 
   int get valuesLength => _getValuesLength(vfLengthField, _int8SizeInBytes);
+
+  Iterable<int> get values => vfBytes.asUint8List();
+
+  static const int _int8SizeInBytes = 1;
 }
 
-// **** 16-bit Integer Elements (SS, US, OW)
-
-const _int16SizeInBytes = 2;
-
+/// **** 16-bit signed integer Elements (SS)
 abstract class Int16Mixin {
   int get vfLengthField;
+  Bytes get vfBytes;
 
   int get valuesLength => _getValuesLength(vfLengthField, _int16SizeInBytes);
+
+  Iterable<int> get values => vfBytes.asInt16List();
+
+  static const _int16SizeInBytes = 2;
 }
 
-// **** 32-bit integer Elements (AT, SL, UL, GL)
+/// 16-bit unsigned integer Elements (US, OW)
+abstract class Uint16Mixin {
+  int get vfLengthField;
+  Bytes get vfBytes;
 
-const _int32SizeInBytes = 4;
+  int get valuesLength => _getValuesLength(vfLengthField, _int16SizeInBytes);
 
+  Iterable<int> get values => vfBytes.asUint16List();
+
+  static const _int16SizeInBytes = 2;
+}
+
+/// 32-bit signed integer Elements (SL)
 abstract class Int32Mixin {
   int get vfLengthField;
+  Bytes get vfBytes;
 
   int get valuesLength => _getValuesLength(vfLengthField, _int32SizeInBytes);
+
+  Iterable<int> get values => vfBytes.asInt32List();
+
+  static const _int32SizeInBytes = 4;
 }
 
-abstract class ByteStringMixin {
-  // **** Interface
-  Bytes get bytes;
-  int get eLength;
-  int get vfOffset;
+/// 32-bit unsigned integer Elements (AT, UL, GL, OL)
+abstract class Uint32Mixin {
   int get vfLengthField;
-  // **** End interface
+  Bytes get vfBytes;
 
-  /// Returns the actual length in bytes after removing any padding chars.
-  // Floats always have a valid (defined length) vfLengthField.
-  int get vfLength {
-    final vf0 = vfOffset;
-    final lib = bytes.lengthInBytes;
-    final length = lib - vf0;
-    assert(length >= 0);
-    return length;
-  }
+  int get valuesLength => _getValuesLength(vfLengthField, _int32SizeInBytes);
+
+  Iterable<int> get values => vfBytes.asUint32List();
+
+  static const _int32SizeInBytes = 4;
+}
+
+/// All [String] Elements
+abstract class ByteStringMixin {
+  Bytes get vfBytes;
 
   int get valuesLength {
-    if (vfLength == 0) return 0;
+    if (vfBytes.isEmpty) return 0;
     var count = 1;
-    for (var i = vfOffset; i < eLength; i++)
-      if (bytes.getUint8(i) == kBackslash) count++;
+    for (var i = 0; i < vfBytes.length; i++)
+      if (vfBytes[i] == kBackslash) count++;
     return count;
   }
-
-  StringBase update([Iterable<String> vList]) => unsupportedError();
 }
 
-/// A Mixin for [String] [Element]s that may only have ASCII values.
+/// [String] [Element]s that only have ASCII values.
 abstract class AsciiMixin {
   Bytes get vfBytes;
-  bool get allowInvalid;
-  int get valuesLength;
 
-  // Note: Assumes if vfBytes length is odd, padding has already been removed.
-  Iterable<String> get values {
-    if (valuesLength == 0) return <String>[];
-    final bytes = vfBytes;
-    final vf = (bytes.length.isEven) ? removePadding(vfBytes, 0) : bytes;
-    final s = ascii.decode(vf, allowInvalid: allowInvalid);
-    return s.split('\\');
-  }
+  bool  allowInvalid = true;
+
+  String get vfString => vfBytes.getAscii(allowInvalid: allowInvalid);
+
+  Iterable<String> get values => vfString.split('\\');
 }
 
-/// A Mixin for [String] [Element]s that may have UTF-8 values.
+/// [String] [Element]s that may have UTF-8 values.
 abstract class Utf8Mixin {
   Bytes get vfBytes;
-  bool get allowMalformed;
-  int get valuesLength;
 
-  // Note: Assumes if vfBytes length is odd, padding has already been removed.
-  Iterable<String> get values {
-    if (valuesLength == 0) return <String>[];
-    final bytes = vfBytes;
-    final vf = (bytes.length.isEven) ? removePadding(vfBytes, 0) : bytes;
-    final s = utf8.decode(vf, allowMalformed: allowMalformed);
-    return s.split('\\');
-  }
+  bool  allowMalformed = true;
+
+  String get vfString => vfBytes.getUtf8(allowMalformed: allowMalformed);
+
+  Iterable<String> get values => vfString.split('\\');
 }
 
+/// Text ([String]) [Element]s that may only have 1 UTF-8 value.
 abstract class TextMixin {
   Bytes get vfBytes;
-  bool get allowMalformed;
 
-  String get value => utf8.decode(vfBytes, allowMalformed: allowMalformed);
+  bool allowMalformed = true;
+
+  String get vfString => utf8.decode(vfBytes, allowMalformed: allowMalformed);
+  String get value => vfString;
+  Iterable<String> get values => [vfString];
+
 }
 
 int _getValuesLength(int vfLengthField, int sizeInBytes) {
-  final vflf = vfLengthField;
-  final length = vflf ~/ sizeInBytes;
-  assert(vflf >= 0 && vflf.isEven, 'vfLengthField: $vflf');
-  assert(vflf % sizeInBytes == 0, 'vflf: $vflf sizeInBytes $sizeInBytes');
+  final vlf = vfLengthField;
+  final length = vlf ~/ sizeInBytes;
+  assert(vlf >= 0 && vlf.isEven, 'vfLengthField: $vlf');
+  assert(vlf % sizeInBytes == 0, 'vflf: $vlf sizeInBytes $sizeInBytes');
   return length;
 }

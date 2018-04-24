@@ -31,7 +31,7 @@ Bytes makeShortEvrHeader(int code, int vrCode, Bytes bytes) {
   // log.debug('mkShort: group: ${hex16(group)} elt: ${hex16(elt)}');
   // final v = group << 16)
   // log.debug('mkShortCode: ')
-  final vfLength = bytes.lengthInBytes - _shortEvrHeaderSize;
+  final vfLength = bytes.length - _shortEvrHeaderSize;
   bytes
     ..setUint16(0, group)
     ..setUint16(2, elt)
@@ -43,7 +43,7 @@ Bytes makeShortEvrHeader(int code, int vrCode, Bytes bytes) {
 Bytes makeLongEvrHeader(int code, int vrCode, Bytes bytes) {
   final group = code >> 16;
   final elt = code & 0xFFFF;
-  final vfLength = bytes.lengthInBytes - _longEvrHeaderSize;
+  final vfLength = bytes.length - _longEvrHeaderSize;
   log.debug('vfLength: $vfLength');
   // log.debug('mkShort: group: ${hex16(group)} elt: ${hex16(elt)}');
   // final v = group << 16)
@@ -74,7 +74,7 @@ Bytes makeIvrHeader(int code, int vfLengthInBytes, Bytes bytes) {
 Bytes makeShortEvr(int code, int vrCode, Bytes vfBytes,
     [Endian endian = Endian.little]) {
   // log.debug('makeEvr: ${hex32(code)}');
-  final vfLength = vfBytes.lengthInBytes;
+  final vfLength = vfBytes.length;
   var eLength = _shortEvrHeaderSize + vfLength;
   if (eLength.isOdd) eLength++;
   final bytes = new Bytes(eLength, endian);
@@ -86,7 +86,7 @@ Bytes makeShortEvr(int code, int vrCode, Bytes vfBytes,
 Bytes makeLongEvr(int code, int vrCode, Bytes vfBytes,
     [Endian endian = Endian.little]) {
   // log.debug('makeEvr: ${hex32(code)}');
-  final vfLength = vfBytes.lengthInBytes;
+  final vfLength = vfBytes.length;
   var eLength = _longEvrHeaderSize + vfLength;
   if (eLength.isOdd) eLength++;
   final bytes = new Bytes(eLength, endian);
@@ -97,7 +97,7 @@ Bytes makeLongEvr(int code, int vrCode, Bytes vfBytes,
 
 Bytes makeIvr(int code, Bytes vfBytes) {
   // log.debug('makeEvr: ${hex32(code)}');
-  final vfLength = vfBytes.lengthInBytes;
+  final vfLength = vfBytes.length;
   final eLength = _ivrHeaderSize + vfLength;
   final bd = new Bytes(eLength);
   makeIvrHeader(code, vfLength, bd);
@@ -106,10 +106,9 @@ Bytes makeIvr(int code, Bytes vfBytes) {
 }
 
 void copyBytesToVF(Bytes bytes, int vfOffset, Bytes vfBytes) {
-  for (var i = 0, j = vfOffset; i < vfBytes.lengthInBytes; i++, j++)
+  for (var i = 0, j = vfOffset; i < vfBytes.length; i++, j++)
     bytes.setUint8(j, vfBytes.getUint8(i));
-  if (vfBytes.lengthInBytes.isOdd)
-    bytes.setUint8(vfOffset + vfBytes.lengthInBytes, 32);
+  if (vfBytes.length.isOdd) bytes.setUint8(vfOffset + vfBytes.length, 32);
 }
 
 /// Returns the Tag Code from [Bytes].
@@ -181,7 +180,7 @@ String shortEvrToString(Bytes bytes) {
 
 Bytes makeAsciiBD(List<String> vList) => Bytes.asciiEncode(vList.join('\\'));
 
-Bytes uint8ListToBytes(Uint8List bList) => new Bytes.fromTypedData(bList);
+Bytes uint8ListToBytes(Uint8List bList) => new Bytes.typedDataView(bList);
 
 String vfToString(List vList, Bytes vfBytes) =>
     'vList: $vList vfBD: ${vfBytes.asUtf8List()}';
@@ -192,7 +191,7 @@ Bytes makeAE(int code, List<String> vList) =>
 Bytes makeFloat32Bytes(List<double> vList) {
   if (vList.isEmpty) return kEmptyBytes;
   final list = new Float32List.fromList(vList);
-  return new Bytes.fromTypedData(list.buffer.asByteData());
+  return new Bytes.typedDataView(list.buffer.asByteData());
 }
 
 Bytes makeFL(int code, List<double> vList) =>
@@ -204,7 +203,8 @@ Bytes makeOF(int code, List<double> vList) =>
 Bytes makeFloat64Bytes(List<double> vList, [Endian endian = Endian.little]) {
   if (vList.isEmpty) return kEmptyBytes;
   final list = new Float64List.fromList(vList);
-  return new Bytes.fromTypedData(list.buffer.asByteData(), endian);
+  return new Bytes.typedDataView(
+      list.buffer.asByteData(), 0, vList.length, endian ?? Endian.little);
 }
 
 Bytes makeFD(int code, List<double> vList) =>

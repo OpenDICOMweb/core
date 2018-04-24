@@ -12,6 +12,7 @@ import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
 import 'package:core/src/base.dart';
+import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/dicom_string.dart';
@@ -20,11 +21,8 @@ import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/entity.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/issues.dart';
-import 'package:core/src/utils/parser/parse_errors.dart';
-import 'package:core/src/value/date_time.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/value.dart';
 import 'package:core/src/vr.dart';
 
 class StringBulkdata extends DelegatingList<String> with BulkdataRef<String> {
@@ -760,6 +758,8 @@ abstract class LO extends StringUtf8 {
 /// A Private Creator [Element] is a subtype of [LO]. It always has a tag
 /// of the form (gggg,00cc), where 0x10 <= cc <= 0xFF..
 abstract class PC extends LO {
+  String get token;
+
   /// The Value Field which contains a [String] that identifies the
   /// PrivateSubgroup.
   String get id => vfBytesAsUtf8;
@@ -772,6 +772,16 @@ abstract class PC extends LO {
   String get name => 'Private Creator - $id';
 
   int get sgNumber => code & 0xFF;
+
+  /// Returns a [PCTag].
+  @override
+  Tag get tag {
+    if (Tag.isPCCode(code)) {
+      final tag = Tag.lookupByCode(code, kLOIndex, token);
+      return tag;
+    }
+    return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
+  }
 
   static const String kVRKeyword = 'PC';
   static const String kVRName = 'Private Creator';

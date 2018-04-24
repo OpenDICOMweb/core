@@ -63,16 +63,34 @@ abstract class Element<V> extends ListBase<V> {
   /// used to locate other values in the [Element] Definition.
   int get index => code;
 
-  /// The index ([vrIndex]) of the Value Representation for this Element.
-  int get vrIndex;
-
   // TODO: implement with fast_tag
   /// The Information Entity index of this Element.
-//  int get ieIndex;
+  //  int get ieIndex;
 
   // TODO: implement with fast_tag
   /// The DeIdentification Method index for this Element.
-//  int get deIdIndex;
+  //  int get deIdIndex;
+
+  // **** End of Interface
+
+  /// Returns the [Tag] that corresponds to this [code].
+  ///
+  /// _Note_: If the [code] is private (i.e. odd) then an either an
+  /// [PCTagUnknown] or [PDTagUnknown] will be returned. This should be
+  /// overridden whenever possible.
+  Tag get tag => Tag.lookupByCode(code);
+
+  /// The index ([vrIndex]) of the Value Representation for this Element.
+  /// Since this depends on the [tag] lookkup, the [vrIndex] might be
+  /// [kUNIndex] for Private [Element]s.
+  int get vrIndex {
+    final vrIndex = tag.vrIndex;
+    if (isSpecialVRIndex(vrIndex)) {
+      log.debug('Using kUNIndex for $tag');
+      return kUNIndex;
+    }
+    return vrIndex;
+  }
 
   /// The actual length in bytes of the Value Field. It does
   /// not include any padding characters.
@@ -88,18 +106,12 @@ abstract class Element<V> extends ListBase<V> {
   bool checkValue(V v, {Issues issues, bool allowInvalid = false});
 
   /// Returns a copy of _this_ with [values] replaced by [vList].
-  Element<V> update([Iterable<V> vList]);
-
-
-
+  Element<V> update([Iterable<V> vList]) => unsupportedError();
   // **** end Interface
 
   // ********* Tag Identifier related interface, Getters, and Methods
   // **************************************************************
   // **** Some of these Getters may be accessed directly in the element.
-
-  /// Returns the [Tag] associated with _this_.
-  Tag get tag => Tag.lookupByCode(code, vrIndex);
 
   /// The Tag [code] for this Element.
   int get code => tag.code;
@@ -342,7 +354,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Returns [values] encoded as a [Bytes].
   Bytes get vfBytes =>
-      (checkValues(values)) ? new Bytes.fromTypedData(typedData) : null;
+      (checkValues(values)) ? new Bytes.typedDataView(typedData) : null;
 
   String get vfBytesAsAscii => vfBytes.getAscii();
 

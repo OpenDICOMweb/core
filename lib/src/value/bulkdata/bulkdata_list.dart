@@ -32,7 +32,7 @@ class BulkdataList {
   /// Return a URL for the [Bulkdata] Value FIeld that is add to _this_.
   BulkdataUri add(int code, Bytes valueField) {
     final bd = new Bulkdata(code, entries.length, valueField);
-    lengthInBytes += valueField.lengthInBytes;
+    lengthInBytes += valueField.length;
     entries.add(bd);
     return new BulkdataUri(filePath, offset, valueField.length);
   }
@@ -68,7 +68,7 @@ class BulkdataList {
     // Write Bulkdata
     for (var i = 0; i < entries.length; i++) wb.write(entries[i].vf);
 
-    wb.asUint8List(0, wb.lengthInBytes);
+    wb.asUint8List(0, wb.length);
 
     if (doAsync) {
       await file.writeAsBytes(wb.asUint8List());

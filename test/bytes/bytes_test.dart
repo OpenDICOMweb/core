@@ -25,11 +25,11 @@ void main() {
         expect(bytes.endian == Endian.little, true);
 
         expect(bytes.elementSizeInBytes == 1, true);
-        expect(bytes.offsetInBytes == 0, true);
+        expect(bytes.offset == 0, true);
         expect(bytes.buffer == bytes.bd.buffer, true);
         expect(bytes.length == count, true);
-        expect(bytes.lengthInBytes == count, true);
-        expect(bytes.length == bytes.lengthInBytes, true);
+        expect(bytes.length == count, true);
+        expect(bytes.length == bytes.length, true);
 
         expect(bytes.hashCode is int, true);
 
@@ -83,11 +83,11 @@ void main() {
         expect(bytes0.endian == Endian.little, true);
 
         expect(bytes0.elementSizeInBytes == 1, true);
-        expect(bytes0.offsetInBytes == 0, true);
+        expect(bytes0.offset == 0, true);
         expect(bytes0.buffer == bytes.bd.buffer, true);
         expect(bytes0.length == count, true);
-        expect(bytes0.lengthInBytes == count, true);
-        expect(bytes0.length == bytes.lengthInBytes, true);
+        expect(bytes0.length == count, true);
+        expect(bytes0.length == bytes.length, true);
 
         expect(bytes0.hashCode is int, true);
       }
@@ -158,11 +158,11 @@ void main() {
 
       expect(byteF0.endian == Endian.little, true);
       expect(byteF0.elementSizeInBytes == 1, true);
-      expect(byteF0.offsetInBytes == 0, true);
+      expect(byteF0.offset == 0, true);
       expect(byteF0.buffer == byteF0.bd.buffer, true);
       expect(byteF0.length == bytes.length, true);
-      expect(byteF0.lengthInBytes == bytes.lengthInBytes, true);
-      expect(byteF0.length == byteF0.lengthInBytes, true);
+      expect(byteF0.length == bytes.length, true);
+      expect(byteF0.length == byteF0.length, true);
       expect(byteF0.hashCode is int, true);
     });
 
@@ -173,26 +173,26 @@ void main() {
 
       expect(byteFL0.endian == Endian.little, true);
       expect(byteFL0.elementSizeInBytes == 1, true);
-      expect(byteFL0.offsetInBytes == 0, true);
+      expect(byteFL0.offset == 0, true);
       expect(byteFL0.buffer == byteFL0.bd.buffer, true);
       expect(byteFL0.length == list0.length, true);
-      expect(byteFL0.lengthInBytes == byteFL0.lengthInBytes, true);
-      expect(byteFL0.length == byteFL0.lengthInBytes, true);
+      expect(byteFL0.length == byteFL0.length, true);
+      expect(byteFL0.length == byteFL0.length, true);
       expect(byteFL0.hashCode is int, true);
     });
 
     test('bytes fromTypedData', () {
       final list0 = rng.uint8List(1, 1);
-      final byteFTD0 = new Bytes.fromTypedData(list0);
+      final byteFTD0 = new Bytes.typedDataView(list0);
       expect(byteFTD0, equals(list0));
 
       expect(byteFTD0.endian == Endian.little, true);
       expect(byteFTD0.elementSizeInBytes == 1, true);
-      expect(byteFTD0.offsetInBytes == 0, true);
+      expect(byteFTD0.offset == 0, true);
       expect(byteFTD0.buffer == byteFTD0.bd.buffer, true);
       expect(byteFTD0.length == list0.length, true);
-      expect(byteFTD0.lengthInBytes == byteFTD0.lengthInBytes, true);
-      expect(byteFTD0.length == byteFTD0.lengthInBytes, true);
+      expect(byteFTD0.length == byteFTD0.length, true);
+      expect(byteFTD0.length == byteFTD0.length, true);
       expect(byteFTD0.hashCode is int, true);
     });
   });

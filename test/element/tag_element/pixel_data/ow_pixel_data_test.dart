@@ -101,7 +101,7 @@ void main() {
           PTag.kCoefficientsSDDN, bytes1, bytes1.lengthInBytes);
 
       print('bytes1: ${bytes1.lengthInBytes}');
-      print('ow0.vfBytes.length: ${ow0.vfBytes.lengthInBytes}');
+      print('ow0.vfBytes.length: ${ow0.vfBytes.length}');
       system.throwOnError = true;
       expect(
           () => OWtagPixelData.fromUint8List(

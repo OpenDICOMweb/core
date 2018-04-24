@@ -12,89 +12,52 @@ import 'dart:typed_data';
 import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/bytes.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/element/bytes/byte_element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
-int _getValuesLength(int vfLengthField, int sizeInBytes) {
-  final length = vfLengthField ~/ sizeInBytes;
-  assert(vfLengthField >= 0 &&
-      vfLengthField.isEven &&
-      (vfLengthField % sizeInBytes == 0));
-  return length;
-}
-
-const int _vfLengthOffset = 4;
-const int _vfOffset = 8;
-
-Bytes _removePadding(Bytes bytes, [int padChar = kSpace]) =>
-    removePadding(bytes, _vfOffset, padChar);
-
 abstract class IvrElement<V> implements ByteElement<V> {
   @override
-  Bytes get bytes;
-  @override
-  int get vfLength;
-  int get valuesLength;
+  IvrBytes get bytes;
   @override
   Iterable<V> get values;
-  @override
-  set values(Iterable<V> vList) => unsupportedError();
-  bool isEqual(Element a, Element b);
+  // **** End of Interface
 
+  @override
+  set values(Iterable<V> vList) =>
+      unsupportedError('ByteElements are not settable.');
+
+  /// Returns _true_ if _this_ and [other] are the same [IvrElement] and
+  /// equal byte for byte.
   @override
   bool operator ==(Object other) =>
-      (other is IvrElement && isEqual(this, other));
-
+      (other is IvrElement) ? bytes == other.bytes : false;
   @override
-  int get hashCode => system.hasher.intList(bytes);
-
-  /// Returns _true_ if this Element is encoded as Explicit VR Little Endian;
-  /// otherwise, it is encoded as Implicit VR Little Endian, which is retired.
+  int get hashCode => bytes.hashCode;
   @override
   bool get isEvr => false;
-  @override
-  Tag get tag => Tag.lookupByCode(code);
+
+  /// _Note_: Because this relies on [tag], the [vrCode] might be UN
+  ///         more often than for EVR Elements.
   @override
   int get vrCode => tag.vrCode;
-  @override
-  int get vrIndex {
-    final vrIndex = tag.vrIndex;
-    if (isSpecialVRIndex(vrIndex)) {
-      log.debug('Using kUNIndex for $tag');
-      return kUNIndex;
-    }
-    return vrIndex;
-  }
 
   @override
-  int get vfLengthOffset => _vfLengthOffset;
+  Bytes get vfBytes => bytes.vfBytes;
   @override
-  int get vfOffset => _vfOffset;
+  Bytes get vfBytesWithPadding => bytes.vfBytesWithPadding;
 
-  /// Returns the Value Field Length field.
-  @override
-  int get vfLengthField => bytes.getUint32(_vfLengthOffset);
-
-  @override
-  Bytes get vfBytesWithoutPadding =>
-      bytes.toBytesWOPadding(bytes.offsetInBytes + vfOffset, vfLength);
-
-  @override
-  Bytes get vfBytes => bytes.toBytes(bytes.offsetInBytes + vfOffset, vfLength);
-
-  static Null _sqError(Bytes bytes, [int vrIndex]) =>
-      invalidElementIndex(vrIndex);
-
-  static Element makeFromBytes(int code, Bytes bytes, int vrIndex) {
+  static Element makeFromCode(Dataset ds, int code, Bytes bytes, int vrIndex) {
+    assert(vrIndex != kSQIndex);
     final pCode = code & 0x1FFFF;
-    final e = (pCode >= 0x10010 && pCode <= 0x100FF)
-        ? new PCivr(bytes)
-        : _ivrBDMakers[vrIndex](bytes, vrIndex);
-    return (pCode >= 0x10010 && pCode <= 0x100FF) ? new PrivateData(e) : e;
+    if (pCode >= 0x10010 && pCode <= 0x100FF) return new PCivr(bytes);
+    final tag = lookupTagByCode(ds, code, vrIndex);
+    final tagVRIndex = tag.vrIndex;
+    final e = _ivrBDMakers[vrIndex](bytes, tagVRIndex);
+    return (pCode >= 0x11000 && pCode <= 0x1FFFF) ? new PrivateData(e) : e;
   }
 
   static final List<DecodeBinaryVF> _ivrBDMakers = <DecodeBinaryVF>[
@@ -116,6 +79,9 @@ abstract class IvrElement<V> implements ByteElement<V> {
     UIivr.make, ULivr.make, USivr.make,
   ];
 
+  static Null _sqError(Bytes bytes, [int vrIndex]) =>
+      invalidElementIndex(vrIndex);
+
   static Element makePixelData(int code, Bytes bytes, int vrIndex,
       [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
     if (code != kPixelData)
@@ -136,7 +102,7 @@ abstract class IvrElement<V> implements ByteElement<V> {
   static SQivr makeSequenceFromCode(
           int code, Dataset parent, Iterable<Item> items,
           [Bytes bytes]) =>
-      new SQivr(bytes, parent, items);
+      new SQivr(parent, items, bytes);
 
   /// Returns a new [SQivr], where [bytes] is [Bytes] for complete sequence.
   static SQivr makeSequenceFromTag(
@@ -150,97 +116,61 @@ abstract class IvrElement<V> implements ByteElement<V> {
 
 // **** IVR Float Elements (FL, FD, OD, OF)
 
-class FLivr extends FL with Common, IvrElement<double>, BDFloat32Mixin {
+class FLivr extends FL with IvrElement<double>, Float32Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   FLivr(this.bytes);
 
-  @override
-  Float32List get values => vfBytes.asFloat32List();
-
-  static FLivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFLIndex);
-    return new FLivr(bytes);
-  }
+  static FLivr make(Bytes bytes, int vrIndex) => new FLivr(bytes);
 }
 
-class OFivr extends OF with Common, IvrElement<double>, BDFloat32Mixin {
+class OFivr extends OF with IvrElement<double>, Float32Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   OFivr(this.bytes);
 
-  @override
-  int get valuesLength => _getValuesLength(vfLengthField, sizeInBytes);
-
-  @override
-  Float32List get values => vfBytes.asFloat32List();
-
-  static OFivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kOFIndex);
-    return new OFivr(bytes);
-  }
+  static OFivr make(Bytes bytes, int vrIndex) => new OFivr(bytes);
 }
 
 // **** IVR 64-Bit Float Elements (OD, OF)
 
-class FDivr extends FL with Common, IvrElement<double>, BDFloat32Mixin {
+class FDivr extends FL with IvrElement<double>, Float64Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   FDivr(this.bytes);
 
-  @override
-  int get valuesLength => _getValuesLength(vfLengthField, sizeInBytes);
-
-  @override
-  Float64List get values => vfBytes.asFloat64List();
-
-  static FDivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kFDIndex);
-    return new FDivr(bytes);
-  }
+  static FDivr make(Bytes bytes, int vrIndex) => new FDivr(bytes);
 }
 
-class ODivr extends OD with Common, IvrElement<double>, BDFloat32Mixin {
+class ODivr extends OD with IvrElement<double>, Float64Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   ODivr(this.bytes);
 
-  @override
-  Float64List get values => vfBytes.asFloat64List();
-
-  static ODivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kODIndex);
-    return new ODivr(bytes);
-  }
+  static ODivr make(Bytes bytes, int vrIndex) => new ODivr(bytes);
 }
 
 // **** Integer Elements
 
 // **** 8-bit Integer Elements (OB, UN)
 
-class OBivr extends OB with Common, IvrElement<int>, IntMixin, Int8Mixin {
+class OBivr extends OB with IvrElement<int>, Uint8Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   OBivr(this.bytes);
 
-  @override
-  Uint8List get values => vfBytes.asUint8List();
-
-  static OBivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kOBIndex);
-    return new OBivr(bytes);
-  }
+  static OBivr make(Bytes bytes, int vrIndex) => new OBivr(bytes);
 }
 
 class OBivrPixelData extends OBPixelData
-    with Common, IvrElement<int>, IntMixin, Int8Mixin {
+    with IvrElement<int>, Uint8Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
   @override
   TransferSyntax ts;
   @override
@@ -248,35 +178,27 @@ class OBivrPixelData extends OBPixelData
 
   OBivrPixelData(this.bytes, [this.ts, this.fragments]);
 
-  @override
-  Uint8List get values => vfBytes.asUint8List();
-
   static OBivrPixelData make(Bytes bytes, int vrIndex,
-      [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kOBIndex);
-    return new OBivrPixelData(bytes, ts, fragments);
-  }
+          [TransferSyntax ts, VFFragments fragments]) =>
+      new OBivrPixelData(bytes, ts, fragments);
 }
 
-class UNivr extends UN with Common, IvrElement<int>, IntMixin, Int8Mixin {
+class UNivr extends UN with IvrElement<int>, Uint8Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   UNivr(this.bytes);
 
   @override
   Uint8List get values => vfBytes.asUint8List();
 
-  static UNivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kUNIndex);
-    return new UNivr(bytes);
-  }
+  static UNivr make(Bytes bytes, int vrIndex) => new UNivr(bytes);
 }
 
 class UNivrPixelData extends UNPixelData
-    with Common, IvrElement<int>, IntMixin, Int8Mixin {
+    with IvrElement<int>, Uint8Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
   @override
   TransferSyntax ts;
   @override
@@ -288,63 +210,43 @@ class UNivrPixelData extends UNPixelData
   Uint8List get values => vfBytes.asUint8List();
 
   static UNivrPixelData make(Bytes bytes, int vrIndex,
-      [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kUNIndex);
-    return new UNivrPixelData(bytes, ts, fragments);
-  }
+          [TransferSyntax ts, VFFragments fragments]) =>
+      new UNivrPixelData(bytes, ts, fragments);
 }
 
 // **** 16-bit Integer Elements (SS, US, OW)
 
-class SSivr extends SS with Common, IvrElement<int>, IntMixin, Int16Mixin {
+class SSivr extends SS with IvrElement<int>, Int16Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   SSivr(this.bytes);
 
-  @override
-  Int16List get values => vfBytes.asInt16List();
-
-  static SSivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kSSIndex);
-    return new SSivr(bytes);
-  }
+  static SSivr make(Bytes bytes, int vrIndex) => new SSivr(bytes);
 }
 
-class USivr extends US with Common, IvrElement<int>, IntMixin, Int16Mixin {
+class USivr extends US with IvrElement<int>, Uint16Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   USivr(this.bytes);
 
-  @override
-  Uint16List get values => vfBytes.asUint16List();
-
-  static USivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kUSIndex);
-    return new USivr(bytes);
-  }
+  static USivr make(Bytes bytes, int vrIndex) => new USivr(bytes);
 }
 
-class OWivr extends OW with Common, IvrElement<int>, IntMixin, Int16Mixin {
+class OWivr extends OW with IvrElement<int>, Uint16Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   OWivr(this.bytes);
 
-  @override
-  Uint16List get values => vfBytes.asUint16List();
-
-  static OWivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kOWIndex);
-    return new OWivr(bytes);
-  }
+  static OWivr make(Bytes bytes, int vrIndex) => new OWivr(bytes);
 }
 
 class OWivrPixelData extends OWPixelData
-    with Common, IvrElement<int>, IntMixin, Int16Mixin {
+    with IvrElement<int>, Uint16Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
   @override
   TransferSyntax ts;
   @override
@@ -352,258 +254,167 @@ class OWivrPixelData extends OWPixelData
 
   OWivrPixelData(this.bytes, [this.ts, this.fragments]);
 
-  @override
-  Uint16List get values => vfBytes.asUint16List();
-
   static OWivrPixelData make(Bytes bytes, int vrIndex,
-      [TransferSyntax ts, VFFragments fragments]) {
-    assert(vrIndex != null || vrIndex == kOWIndex);
-    return new OWivrPixelData(bytes, ts, fragments);
-  }
+          [TransferSyntax ts, VFFragments fragments]) =>
+      new OWivrPixelData(bytes, ts, fragments);
 }
 
 // **** 32-bit integer Elements (AT, SL, UL, GL)
 
 /// Attribute (Element) Code (AT)
-class ATivr extends AT with Common, IvrElement<int>, IntMixin, Int32Mixin {
+class ATivr extends AT with IvrElement<int>, Uint32Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   ATivr(this.bytes);
 
-  @override
-  Uint32List get values => vfBytes.asUint32List();
-
-  static ATivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kATIndex);
-    return new ATivr(bytes);
-  }
+  static ATivr make(Bytes bytes, int vrIndex) => new ATivr(bytes);
 }
 
 /// Other Long (OL)
-class OLivr extends OL with Common, IvrElement<int>, IntMixin, Int32Mixin {
+class OLivr extends OL with IvrElement<int>, Uint32Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   OLivr(this.bytes);
 
-  @override
-  Uint32List get values => vfBytes.asUint32List();
-
-  static OLivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kOLIndex);
-    return new OLivr(bytes);
-  }
+  static OLivr make(Bytes bytes, int vrIndex) => new OLivr(bytes);
 }
 
 /// Signed Long (SL)
-class SLivr extends SL with Common, IvrElement<int>, IntMixin, Int32Mixin {
+class SLivr extends SL with IvrElement<int>, Int32Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   SLivr(this.bytes);
 
-  @override
-  Int32List get values => vfBytes.asInt32List();
-
-  static SLivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kSLIndex);
-    return new SLivr(bytes);
-  }
+  static SLivr make(Bytes bytes, int vrIndex) => new SLivr(bytes);
 }
 
 /// Unsigned Long (UL)
-class ULivr extends UL with Common, IvrElement<int>, IntMixin, Int32Mixin {
+class ULivr extends UL with IvrElement<int>, Uint32Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   ULivr(this.bytes);
 
-  @override
-  Uint32List get values => vfBytes.asUint32List();
-
-  static ULivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kULIndex);
-    return new ULivr(bytes);
-  }
+  static ULivr make(Bytes bytes, int vrIndex) => new ULivr(bytes);
 }
 
 /// Group Length (GL)
-class GLivr extends GL with Common, IvrElement<int>, IntMixin, Int32Mixin {
+class GLivr extends GL with IvrElement<int>, Uint32Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   GLivr(this.bytes);
-
-  @override
-  Uint32List get values => vfBytes.asUint32List();
 
   static const String kVRKeyword = 'GL';
   static const String kVRName = 'Group Length';
 
-  static GLivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kULIndex);
-    return new GLivr(bytes);
-  }
+  static GLivr make(Bytes bytes, int vrIndex) => new GLivr(bytes);
 }
 
 // **** String Elements
 
-class AEivr extends AE
-    with Common, IvrElement<String>, ByteStringMixin, AsciiMixin {
+class AEivr extends AE with IvrElement<String>, ByteStringMixin, AsciiMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   AEivr(this.bytes);
 
-  static AEivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kAEIndex);
-
-    return new AEivr(_removePadding(bytes));
-  }
+  static AEivr make(Bytes bytes, int vrIndex) => new AEivr(bytes);
 }
 
-class ASivr extends AS
-    with Common, IvrElement<String>, ByteStringMixin, AsciiMixin {
+class ASivr extends AS with IvrElement<String>, ByteStringMixin, AsciiMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   ASivr(this.bytes);
 
-  static ASivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kASIndex);
-    return new ASivr(bytes);
-  }
+  static ASivr make(Bytes bytes, int vrIndex) => new ASivr(bytes);
 }
 
-class CSivr extends CS
-    with Common, IvrElement<String>, ByteStringMixin, AsciiMixin {
+class CSivr extends CS with IvrElement<String>, ByteStringMixin, AsciiMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   CSivr(this.bytes);
 
-  static CSivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kCSIndex);
-    return new CSivr(_removePadding(bytes));
-  }
+  static CSivr make(Bytes bytes, int vrIndex) => new CSivr(bytes);
 }
 
-class DAivr extends DA
-    with Common, IvrElement<String>, ByteStringMixin, AsciiMixin {
+class DAivr extends DA with IvrElement<String>, ByteStringMixin, AsciiMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   DAivr(this.bytes);
 
-  static DAivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kDAIndex);
-    return new DAivr(bytes);
-  }
+  static DAivr make(Bytes bytes, int vrIndex) => new DAivr(bytes);
 }
 
-class DSivr extends DS
-    with Common, IvrElement<String>, ByteStringMixin, AsciiMixin {
+class DSivr extends DS with IvrElement<String>, ByteStringMixin, AsciiMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   DSivr(this.bytes);
 
-  static DSivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kDSIndex);
-    return new DSivr(_removePadding(bytes));
-  }
+  static DSivr make(Bytes bytes, int vrIndex) => new DSivr(bytes);
 }
 
-class DTivr extends DT
-    with Common, IvrElement<String>, ByteStringMixin, AsciiMixin {
+class DTivr extends DT with IvrElement<String>, ByteStringMixin, AsciiMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   DTivr(this.bytes);
 
-  static DTivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kDTIndex);
-    return new DTivr(_removePadding(bytes));
-  }
+  static DTivr make(Bytes bytes, int vrIndex) => new DTivr(bytes);
 }
 
-class ISivr extends IS
-    with Common, IvrElement<String>, ByteStringMixin, AsciiMixin {
+class ISivr extends IS with IvrElement<String>, ByteStringMixin, AsciiMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   ISivr(this.bytes);
 
-  static ISivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kISIndex);
-    return new ISivr(_removePadding(bytes));
-  }
+  static ISivr make(Bytes bytes, int vrIndex) => new ISivr(bytes);
 }
 
-class UIivr extends UI
-    with Common, IvrElement<String>, ByteStringMixin, AsciiMixin {
+class UIivr extends UI with IvrElement<String>, ByteStringMixin, AsciiMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   UIivr(this.bytes);
 
-  static UIivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kUIIndex);
-    return new UIivr(_removePadding(bytes));
-  }
+  static UIivr make(Bytes bytes, int vrIndex) => new UIivr(bytes);
 }
 
-class LOivr extends LO
-    with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class LOivr extends LO with IvrElement<String>, ByteStringMixin, Utf8Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   LOivr(this.bytes);
 
   static LOivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex != null && vrIndex == kLOIndex);
-    final v = _removePadding(bytes);
-    // Read code elt.
     final group = bytes.getUint16(0);
     final elt = bytes.getUint16(2);
-    return (Tag.isPrivateGroup(group) && elt >= 0x10 && elt <= 0xFF)
-        ? new PCivr(v)
-        : new LOivr(v);
+    return (group.isOdd && elt >= 0x10 && elt <= 0xFF)
+        ? new PCivr(bytes)
+        : new LOivr(bytes);
   }
 }
 
-class PCivr extends LOivr
-    with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
-  PCivr(Bytes bytes) : super(bytes);
+class PCivr extends PC with IvrElement<String>, ByteStringMixin, Utf8Mixin {
+  @override
+  final IvrBytes bytes;
+
+  PCivr(this.bytes);
 
   @override
-  String get vrKeyword => PC.kVRKeyword;
-  @override
-  String get vrName => PC.kVRKeyword;
-  @override
-  String get name => 'Private Creator - $id';
+  String get token => vfString;
 
-  int get sgNumber => code & 0xFF;
+  static PCivr make(Bytes bytes, int vrIndex) => new PCivr(bytes);
 
-  /// Returns a [PCTag].
-  @override
-  Tag get tag {
-    if (Tag.isPCCode(code)) {
-      final token = vfBytesAsUtf8;
-      final tag = Tag.lookupByCode(code, kLOIndex, token);
-      return tag;
-    }
-    return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
-  }
-
-  String get id => vfBytesAsAscii;
-
-  static PCivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kLOIndex);
-    return new PCivr(_removePadding(bytes));
-  }
-
+  // Urgent: remove when working
   static PCivr makeEmptyPrivateCreator(int pdTag, int vrIndex) {
     final group = Tag.privateGroup(pdTag);
     final sgNumber = (pdTag & 0xFFFF) >> 8;
@@ -617,131 +428,90 @@ class PCivr extends LOivr
   }
 }
 
-class PNivr extends PN
-    with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class PNivr extends PN with IvrElement<String>, ByteStringMixin, Utf8Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   PNivr(this.bytes);
 
-  static PNivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kPNIndex);
-    return new PNivr(_removePadding(bytes));
-  }
+  static PNivr make(Bytes bytes, int vrIndex) => new PNivr(bytes);
 }
 
-class SHivr extends SH
-    with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class SHivr extends SH with IvrElement<String>, ByteStringMixin, Utf8Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   SHivr(this.bytes);
-  static SHivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kSHIndex);
-
-    return new SHivr(_removePadding(bytes));
-  }
+  static SHivr make(Bytes bytes, int vrIndex) => new SHivr(bytes);
 }
 
-class LTivr extends LT
-    with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class LTivr extends LT with IvrElement<String>, ByteStringMixin, TextMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   LTivr(this.bytes);
 
-  @override
-  List<String> get values => [vfBytes.getUtf8()];
-  static LTivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kLTIndex);
-    return new LTivr(_removePadding(bytes));
-  }
+  static LTivr make(Bytes bytes, int vrIndex) => new LTivr(bytes);
 }
 
-class STivr extends ST
-    with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class STivr extends ST with IvrElement<String>, ByteStringMixin, TextMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   STivr(this.bytes);
 
-  static STivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kSTIndex);
-    return new STivr(_removePadding(bytes));
-  }
+  static STivr make(Bytes bytes, int vrIndex) => new STivr(bytes);
 }
 
-class TMivr extends TM
-    with Common, IvrElement<String>, ByteStringMixin, AsciiMixin {
+class TMivr extends TM with IvrElement<String>, ByteStringMixin, AsciiMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   TMivr(this.bytes);
 
-  static TMivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kTMIndex || vrIndex == kUNIndex,
-        'vrIndex: $vrIndex');
-    return new TMivr(_removePadding(bytes));
-  }
+  static TMivr make(Bytes bytes, int vrIndex) => new TMivr(bytes);
 }
 
-class UCivr extends UC
-    with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class UCivr extends UC with IvrElement<String>, ByteStringMixin, Utf8Mixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   UCivr(this.bytes);
 
-  static UCivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kUCIndex);
-    return new UCivr(_removePadding(bytes));
-  }
+  static UCivr make(Bytes bytes, int vrIndex) => new UCivr(bytes);
 }
 
-class URivr extends UR
-    with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class URivr extends UR with IvrElement<String>, ByteStringMixin, TextMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   URivr(this.bytes);
 
-  static URivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kURIndex);
-    return new URivr(_removePadding(bytes));
-  }
+  static URivr make(Bytes bytes, int vrIndex) => new URivr(bytes);
 }
 
-class UTivr extends UT
-    with Common, IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class UTivr extends UT with IvrElement<String>, ByteStringMixin, TextMixin {
   @override
-  final Bytes bytes;
+  final IvrBytes bytes;
 
   UTivr(this.bytes);
 
-  static UTivr make(Bytes bytes, int vrIndex) {
-    assert(vrIndex == null || vrIndex == kUTIndex);
-    return new UTivr(_removePadding(bytes));
-  }
+  static UTivr make(Bytes bytes, int vrIndex) => new UTivr(bytes);
 }
 
-class SQivr extends SQ<int> with Common, IvrElement<Item> {
-  @override
-  final Bytes bytes;
+class SQivr extends SQ with IvrElement<Item> {
   @override
   final Dataset parent;
   @override
-  final Iterable<Item> values;
+  Iterable<Item> values;
+  @override
+  final IvrBytes bytes;
 
-  SQivr(this.bytes, this.parent, this.values);
+  SQivr(this.parent, this.values, this.bytes);
 
   @override
   int get valuesLength => values.length;
 
-  @override
-  SQ update([Iterable<Item> vList]) => unsupportedError();
-  @override
-  SQ updateF(Iterable<Item> f(Iterable<Item> vList)) => unsupportedError();
-
-  static SQivr make(Bytes bytes, Dataset parent, Iterable<Item> values) =>
-      new SQivr(bytes, parent, values);
+  static SQivr make(Dataset parent, Iterable<Item> values, Bytes bytes) =>
+      new SQivr(parent, values, bytes);
 }

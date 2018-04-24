@@ -23,7 +23,7 @@ import 'package:core/src/vr.dart';
 ///
 /// A Sequence contains a [List] of [TagItem]s, where each
 /// [TagItem] is a TagDataset.
-class SQtag extends SQ<TagItem> with TagElement<TagItem> {
+class SQtag extends SQ with TagElement<TagItem> {
   @override
   final Tag tag;
 
@@ -60,14 +60,6 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
 
   @override
   SQtag get sha256 => throw new UnsupportedError('Can\t hash a sequence');
-
-//  @override
-  SQtag copySQ([Dataset parent]) {
-    final nItems = new List<TagItem>(length);
-    for (var i = 0; i < items.length; i++)
-      nItems[i] = new TagItem.from(parent, items.elementAt(i), this);
-    return update(nItems);
-  }
 
   @override
   String get info => '$tag: Items:${values.length}, total Elements: $total';
@@ -119,6 +111,18 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   }
 */
 
+//  @override
+  SQtag copySQ([Dataset parent]) {
+    parent ??= this.parent;
+    return convert(parent, this);
+
+/*    final nItems = new List<TagItem>(length);
+    for (var i = 0; i < items.length; i++)
+      nItems[i] = new TagItem.from(parent, items.elementAt(i), this);
+    return update(nItems);
+    */
+  }
+
   @override
   String format(Formatter z) => z.fmt(this, items);
 
@@ -146,16 +150,20 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
     return new SQtag(parent, tag, vList, vfLengthField, bytes);
   }
 
+  static const _makeSQ = TagElement.makeSequenceFromCode;
+
   static SQtag convert(Dataset parent, SQ e) {
-    const makeSQ = TagElement.makeSequenceFromCode;
+    final items = e.values.toList();
+   final length = items.length;
 
     print('    converting SQ: $e');
-    final tagItems = <TagItem>[];
-    final sq = makeSQ(parent, e.code, tagItems, e.vfLengthField);
-    for (var item in e.items) {
-      final tItem = TagItem.convert(parent, item, sq);
-      tagItems.add(tItem);
+    final tagItems = new List<TagItem>(e.items.length);
+    final sq = _makeSQ(parent, e.code, tagItems, e.vfLengthField);
+    for (var i = 0; i < length; i++) {
+      final tItem = TagItem.convert(parent, items[i], sq);
+      tagItems[i] = tItem;
     }
+    sq.values = tagItems;
     return sq;
   }
 }

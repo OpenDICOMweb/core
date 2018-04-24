@@ -6,5 +6,17 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:core/src/utils.dart';
+import 'package:core/src/utils/bytes/bytes.dart';
 
-export 'package:core/src/utils/bytes/bytes.dart';
+abstract class BufferBase {
+  // **** Interface
+  /// The underlying [Bytes] for the buffer.
+  Object get _buf;
+
+  int get _rIndex;
+  set _rIndex(int n);
+  int get _wIndex;
+  set _wIndex(int n) => unsupportedError();
+}
+

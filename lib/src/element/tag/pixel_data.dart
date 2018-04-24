@@ -66,10 +66,10 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
   /// Returns a [Uint16List].
   static OBtagPixelData fromBytes(Tag tag, Bytes bytes,
       [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
-    vfLengthField ??= bytes.lengthInBytes;
+    vfLengthField ??= bytes.length;
     if (!Tag.isValidVR(tag, kOBIndex))
       return invalidTagError(tag, OBtagPixelData);
-    final vflf = _checkVFL(bytes.lengthInBytes, vfLengthField);
+    final vflf = _checkVFL(bytes.length, vfLengthField);
     return new OBtagPixelData._(tag, bytes.asUint8List(), vflf, ts, fragments);
   }
 
@@ -77,10 +77,10 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
   /// Returns a [Uint16List].
   static OBtagPixelData fromUint8List(Tag tag, Uint8List bytes,
       [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
-    vfLengthField ??= bytes.lengthInBytes;
+    vfLengthField ??= bytes.length;
     if (!Tag.isValidVR(tag, kOBIndex))
       return invalidTagError(tag, OBtagPixelData);
-    final vflf = _checkVFL(bytes.lengthInBytes, vfLengthField);
+    final vflf = _checkVFL(bytes.length, vfLengthField);
     return new OBtagPixelData._(tag, bytes, vflf, ts, fragments);
   }
 }
@@ -135,7 +135,7 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
   [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
     if (!Tag.isValidVR(tag, kUNIndex))
       return invalidTagError(tag, UNtagPixelData);
-    final vflf = _checkVFL(bytes.lengthInBytes, vfLengthField);
+    final vflf = _checkVFL(bytes.length, vfLengthField);
     return new UNtagPixelData._(tag, bytes.asUint8List(), vflf, fragments, ts);
   }
 
@@ -146,7 +146,7 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
       [VFFragments fragments, TransferSyntax ts]) {
     if (!Tag.isValidVR(tag, kUNIndex))
       return invalidTagError(tag, UNtagPixelData);
-    final vflf = _checkVFL(bList.lengthInBytes, vfLengthField);
+    final vflf = _checkVFL(bList.length, vfLengthField);
     return new UNtagPixelData._(tag, bList, vflf, fragments, ts);
   }
 }
@@ -184,7 +184,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
       [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
     if (_isNotValidTag(tag, kOWIndex)) return null;
     final td = Uint16.fromList(vList);
-    final vflf = _getVFLF(td.lengthInBytes, vfLengthField);
+    final vflf = _getVFLF(td.length, vfLengthField);
     return new OWtagPixelData._(tag, td, vflf, fragments, ts);
   }
 
@@ -207,7 +207,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
       [int vfLengthField, VFFragments fragments, TransferSyntax ts]) {
     if (_isNotValidTag(tag, kOWIndex)) return null;
     final vList = bytes.asUint16List();
-    final vflf = _getVFLF(vList.lengthInBytes, vfLengthField);
+    final vflf = _getVFLF(vList.length, vfLengthField);
     return new OWtagPixelData._(tag, vList, vflf, fragments, ts);
   }
 
@@ -217,7 +217,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
       [VFFragments fragments, TransferSyntax ts]) {
     if (_isNotValidTag(tag, kOWIndex)) return null;
     final vList = Uint16.fromUint8List(bytes);
-    final vflf = _getVFLF(vList.lengthInBytes, vfLengthField);
+    final vflf = _getVFLF(vList.length, vfLengthField);
     return new OWtagPixelData._(tag, vList, vflf, fragments, ts);
   }
 }

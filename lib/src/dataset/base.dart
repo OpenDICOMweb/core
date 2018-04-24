@@ -19,6 +19,8 @@ export 'package:core/src/dataset/base/history.dart';
 export 'package:core/src/dataset/base/item.dart';
 export 'package:core/src/dataset/base/root_dataset.dart';
 export 'package:core/src/dataset/base/summary.dart';
+export 'package:core/src/element/base/tag_utils.dart';
+
 
 // TODO: needed
 //export 'package:core/src/dataset/base/fmi.dart';

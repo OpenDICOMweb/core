@@ -19,6 +19,7 @@ RNG rng = new RNG(1);
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
+  final rds = new TagRootDataset.empty();
   group('AEtag', () {
     test('AEtag from VM.k1', () {
       for (var i = 0; i < 10; i++) {
@@ -28,11 +29,11 @@ void main() {
         log.debug('ae1:$ae1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ae1.vrIndex: ${ae1.vrIndex}');
         //final bd = bytes.buffer.asByteData();
         final bd1 = makeShortEvr(ae1.code, ae1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ae1.code, bd1, ae1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ae1.code, bd1, ae1.vrIndex);
         log.debug('e0:$e0');
         final make0 = AEtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -48,10 +49,10 @@ void main() {
         log.debug('ae1:$ae1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ae1.vrIndex: ${ae1.vrIndex}');
         final bd1 = makeShortEvr(ae1.code, ae1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ae1.code, bd1, ae1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ae1.code, bd1, ae1.vrIndex);
         log.debug('e0:$e0');
         final make0 = AEtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -69,10 +70,10 @@ void main() {
         log.debug('ds1:$ds1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ds1.vrIndex: ${ds1.vrIndex}');
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ds1.code, bd1, ds1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds,  ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -88,10 +89,10 @@ void main() {
         log.debug('ds1:$ds1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ds1.vrIndex: ${ds1.vrIndex}');
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ds1.code, bd1, ds1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds,  ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -107,10 +108,10 @@ void main() {
         log.debug('ds1:$ds1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ds1.vrIndex: ${ds1.vrIndex}');
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ds1.code, bd1, ds1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds,  ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -126,10 +127,10 @@ void main() {
         log.debug('ds1:$ds1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ds1.vrIndex: ${ds1.vrIndex}');
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ds1.code, bd1, ds1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds,  ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -145,10 +146,10 @@ void main() {
         log.debug('ds1:$ds1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ds1.vrIndex: ${ds1.vrIndex}');
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ds1.code, bd1, ds1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -164,10 +165,10 @@ void main() {
         log.debug('ds1:$ds1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ds1.vrIndex: ${ds1.vrIndex}');
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ds1.code, bd1, ds1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -183,10 +184,10 @@ void main() {
         log.debug('ds1:$ds1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ds1.vrIndex: ${ds1.vrIndex}');
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ds1.code, bd1, ds1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -202,10 +203,10 @@ void main() {
         log.debug('ds1:$ds1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ds1.vrIndex: ${ds1.vrIndex}');
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ds1.code, bd1, ds1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -221,10 +222,10 @@ void main() {
         log.debug('ds1:$ds1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ds1.vrIndex: ${ds1.vrIndex}');
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ds1.code, bd1, ds1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -242,10 +243,10 @@ void main() {
         log.debug('is1:$is1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('is1.vrIndex: ${is1.vrIndex}');
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(is1.code, bd1, is1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
         final make0 = IStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -261,10 +262,10 @@ void main() {
         log.debug('is1:$is1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('is1.vrIndex: ${is1.vrIndex}');
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(is1.code, bd1, is1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
         final make0 = IStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -280,10 +281,10 @@ void main() {
         log.debug('is1:$is1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('is1.vrIndex: ${is1.vrIndex}');
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(is1.code, bd1, is1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
         final make0 = IStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -299,10 +300,10 @@ void main() {
         log.debug('is1:$is1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('is1.vrIndex: ${is1.vrIndex}');
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(is1.code, bd1, is1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
         final make0 = IStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -318,10 +319,10 @@ void main() {
         log.debug('is1:$is1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('is1.vrIndex: ${is1.vrIndex}');
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(is1.code, bd1, is1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
         final make0 = IStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -339,10 +340,10 @@ void main() {
         log.debug('as1:$as1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('as1.vrIndex: ${as1.vrIndex}');
         final bd1 = makeShortEvr(as1.code, as1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(as1.code, bd1, as1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, as1.code, bd1, as1.vrIndex);
         log.debug('e0:$e0');
         final make0 = AStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -358,10 +359,10 @@ void main() {
         log.debug('as1:$as1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('as1.vrIndex: ${as1.vrIndex}');
         final bd1 = makeShortEvr(as1.code, as1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(as1.code, bd1, as1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, as1.code, bd1, as1.vrIndex);
         log.debug('e0:$e0');
         final make0 = AStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -379,10 +380,10 @@ void main() {
         log.debug('cs1:$cs1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('cs1.vrIndex: ${cs1.vrIndex}');
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(cs1.code, bd1, cs1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
         final make0 = CStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -398,10 +399,10 @@ void main() {
         log.debug('cs1:$cs1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('cs1.vrIndex: ${cs1.vrIndex}');
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(cs1.code, bd1, cs1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
         final make0 = CStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -417,10 +418,10 @@ void main() {
         log.debug('cs1:$cs1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('cs1.vrIndex: ${cs1.vrIndex}');
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(cs1.code, bd1, cs1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
         final make0 = CStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -435,10 +436,10 @@ void main() {
         log.debug('cs1:$cs1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('cs1.vrIndex: ${cs1.vrIndex}');
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(cs1.code, bd1, cs1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
         final make0 = CStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -454,10 +455,10 @@ void main() {
         log.debug('cs1:$cs1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('cs1.vrIndex: ${cs1.vrIndex}');
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(cs1.code, bd1, cs1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
         final make0 = CStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -475,10 +476,10 @@ void main() {
         log.debug('dt1:$dt1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('dt1.vrIndex: ${dt1.vrIndex}');
         final bd1 = makeShortEvr(dt1.code, dt1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(dt1.code, bd1, dt1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, dt1.code, bd1, dt1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DTtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -494,10 +495,10 @@ void main() {
         log.debug('dt1:$dt1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('dt1.vrIndex: ${dt1.vrIndex}');
         final bd1 = makeShortEvr(dt1.code, dt1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(dt1.code, bd1, dt1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, dt1.code, bd1, dt1.vrIndex);
         log.debug('e0:$e0');
         final make0 = DTtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -515,10 +516,10 @@ void main() {
         log.debug('tm1:$tm1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('tm1.vrIndex: ${tm1.vrIndex}');
         final bd1 = makeShortEvr(tm1.code, tm1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(tm1.code, bd1, tm1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, tm1.code, bd1, tm1.vrIndex);
         log.debug('e0:$e0');
         final make0 = TMtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -534,10 +535,10 @@ void main() {
         log.debug('tm1:$tm1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('tm1.vrIndex: ${tm1.vrIndex}');
         final bd1 = makeShortEvr(tm1.code, tm1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(tm1.code, bd1, tm1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, tm1.code, bd1, tm1.vrIndex);
         log.debug('e0:$e0');
         final make0 = TMtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -555,10 +556,10 @@ void main() {
         log.debug('lo1:$lo1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('lo1.vrIndex: ${lo1.vrIndex}');
         final bd1 = makeShortEvr(lo1.code, lo1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(lo1.code, bd1, lo1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, lo1.code, bd1, lo1.vrIndex);
         log.debug('e0:$e0');
         final make0 = LOtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -574,10 +575,10 @@ void main() {
         log.debug('lo1:$lo1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('lo1.vrIndex: ${lo1.vrIndex}');
         final bd1 = makeShortEvr(lo1.code, lo1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(lo1.code, bd1, lo1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, lo1.code, bd1, lo1.vrIndex);
         log.debug('e0:$e0');
         final make0 = LOtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -595,10 +596,10 @@ void main() {
         log.debug('pn1:$pn1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('pn1.vrIndex: ${pn1.vrIndex}');
         final bd1 = makeShortEvr(pn1.code, pn1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(pn1.code, bd1, pn1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, pn1.code, bd1, pn1.vrIndex);
         log.debug('e0:$e0');
         final make0 = PNtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -614,10 +615,10 @@ void main() {
         log.debug('pn1:$pn1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('pn1.vrIndex: ${pn1.vrIndex}');
         final bd1 = makeShortEvr(pn1.code, pn1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(pn1.code, bd1, pn1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, pn1.code, bd1, pn1.vrIndex);
         log.debug('e0:$e0');
         final make0 = PNtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -635,10 +636,10 @@ void main() {
         log.debug('sh1:$sh1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('sh1.vrIndex: ${sh1.vrIndex}');
         final bd1 = makeShortEvr(sh1.code, sh1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(sh1.code, bd1, sh1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, sh1.code, bd1, sh1.vrIndex);
         log.debug('e0:$e0');
         final make0 = SHtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -654,10 +655,10 @@ void main() {
         log.debug('sh1:$sh1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('sh1.vrIndex: ${sh1.vrIndex}');
         final bd1 = makeShortEvr(sh1.code, sh1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(sh1.code, bd1, sh1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, sh1.code, bd1, sh1.vrIndex);
         log.debug('e0:$e0');
         final make0 = SHtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -675,10 +676,10 @@ void main() {
         log.debug('lt1:$lt1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('lt1.vrIndex: ${lt1.vrIndex}');
         final bd1 = makeShortEvr(lt1.code, lt1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(lt1.code, bd1, lt1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, lt1.code, bd1, lt1.vrIndex);
         log.debug('e0:$e0');
         final make0 = LTtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -696,10 +697,10 @@ void main() {
         log.debug('st1:$st1');
         final bd0 = Bytes.asciiEncode(vList0.join('\\'));
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('st1.vrIndex: ${st1.vrIndex}');
         final bd1 = makeShortEvr(st1.code, st1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(st1.code, bd1, st1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, st1.code, bd1, st1.vrIndex);
         log.debug('e0:$e0');
         final make0 = STtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -718,10 +719,10 @@ void main() {
         log.debug('fd1:$fd1');
         final bd0 = makeFloat64Bytes(floatList0);
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('fd1.vrIndex: ${fd1.vrIndex}');
         final bd1 = makeLongEvr(fd1.code, fd1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(fd1.code, bd1, fd1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, fd1.code, bd1, fd1.vrIndex);
         log.debug('e0:$e0');
         final make0 = FDtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -737,10 +738,10 @@ void main() {
         log.debug('fd1:$fd1');
         final bd0 = makeFloat64Bytes(floatList0);
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('fd1.vrIndex: ${fd1.vrIndex}');
         final bd1 = makeLongEvr(fd1.code, fd1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(fd1.code, bd1, fd1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, fd1.code, bd1, fd1.vrIndex);
         log.debug('e0:$e0');
         final make0 = FDtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -760,10 +761,10 @@ void main() {
         log.debug('of1:$of1');
         final bd0 = makeFloat32Bytes(floatList0);
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('of1.vrIndex: ${of1.vrIndex}');
         final bd1 = makeLongEvr(of1.code, of1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(of1.code, bd1, of1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, of1.code, bd1, of1.vrIndex);
         log.debug('e0:$e0');
         final make0 = OFtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -779,10 +780,10 @@ void main() {
         log.debug('of1:$of1');
         final bd0 = makeFloat32Bytes(floatList0);
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('of1.vrIndex: ${of1.vrIndex}');
         final bd1 = makeLongEvr(of1.code, of1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(of1.code, bd1, of1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, of1.code, bd1, of1.vrIndex);
         log.debug('e0:$e0');
         final make0 = OFtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -800,11 +801,11 @@ void main() {
         log.debug('ut1:$ut1');
         final bd0 = Bytes.utf8Encode(vList0[0]);
         log
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ut1.vrIndex: ${ut1.vrIndex}');
         //final bd = bytes.buffer.asByteData();
         final bd1 = makeLongEvr(ut1.code, ut1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ut1.code, bd1, ut1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ut1.code, bd1, ut1.vrIndex);
         log.debug('e0:$e0');
         final make0 = UTtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -821,13 +822,13 @@ void main() {
         system.throwOnError = false;
         final at1 = new ATtag(PTag.kDimensionIndexPointer, vList0);
         log.debug('at1:$at1');
-        final bd0 = new Bytes.fromTypedData(vList0);
+        final bd0 = new Bytes.typedDataView(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('at1.vrIndex: ${at1.vrIndex}');
         final bd1 = makeShortEvr(at1.code, at1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(at1.code, bd1, at1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, at1.code, bd1, at1.vrIndex);
         log.debug('e0:$e0');
         final make0 = ATtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -841,13 +842,13 @@ void main() {
         system.throwOnError = false;
         final at1 = new ATtag(PTag.kSelectorATValue, vList0);
         log.debug('at1:$at1');
-        final bd0 = new Bytes.fromTypedData(vList0);
+        final bd0 = new Bytes.typedDataView(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('at1.vrIndex: ${at1.vrIndex}');
         final bd1 = makeShortEvr(at1.code, at1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(at1.code, bd1, at1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, at1.code, bd1, at1.vrIndex);
         log.debug('e0:$e0');
         final make0 = ATtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -864,13 +865,13 @@ void main() {
         system.throwOnError = false;
         final ul1 = new ULtag(PTag.kRegionFlags, vList0);
         log.debug('ul1:$ul1');
-        final bd0 = new Bytes.fromTypedData(vList0);
+        final bd0 = new Bytes.typedDataView(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ul1.vrIndex: ${ul1.vrIndex}');
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
         final make0 = ULtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -884,13 +885,13 @@ void main() {
         system.throwOnError = false;
         final ul1 = new ULtag(PTag.kGridDimensions, vList0);
         log.debug('ul1:$ul1');
-        final bd0 = new Bytes.fromTypedData(vList0);
+        final bd0 = new Bytes.typedDataView(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('us1.vrIndex: ${ul1.vrIndex}');
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
         final make0 = ULtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -904,13 +905,13 @@ void main() {
         system.throwOnError = false;
         final ul1 = new ULtag(PTag.kSelectorULValue, vList0);
         log.debug('ul1:$ul1');
-        final bd0 = new Bytes.fromTypedData(vList0);
+        final bd0 = new Bytes.typedDataView(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ul1.vrIndex: ${ul1.vrIndex}');
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
         final make0 = ULtag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -926,13 +927,13 @@ void main() {
         system.throwOnError = false;
         final us1 = new UStag(PTag.kContrastFrameAveraging, vList0);
         log.debug('us1:$us1');
-        final bd0 = new Bytes.fromTypedData(vList0);
+        final bd0 = new Bytes.typedDataView(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('us1.vrIndex: ${us1.vrIndex}');
         final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(us1.code, bd1, us1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, us1.code, bd1, us1.vrIndex);
         log.debug('e0:$e0');
         final make0 = UStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -947,13 +948,13 @@ void main() {
         system.throwOnError = false;
         final us1 = new UStag(PTag.kRelativeTime, vList0);
         log.debug('us1:$us1');
-        final bd0 = new Bytes.fromTypedData(vList0);
+        final bd0 = new Bytes.typedDataView(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('us1.vrIndex: ${us1.vrIndex}');
         final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(us1.code, bd1, us1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, us1.code, bd1, us1.vrIndex);
         log.debug('e0:$e0');
         final make0 = UStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -967,13 +968,13 @@ void main() {
         system.throwOnError = false;
         final us1 = new UStag(PTag.kEscapeTriplet, vList0);
         log.debug('us1:$us1');
-        final bd0 = new Bytes.fromTypedData(vList0);
+        final bd0 = new Bytes.typedDataView(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('us1.vrIndex: ${us1.vrIndex}');
         final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(us1.code, bd1, us1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, us1.code, bd1, us1.vrIndex);
         log.debug('e0:$e0');
         final make0 = UStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -990,10 +991,10 @@ void main() {
         final bd0 = new Bytes.fromList(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('us1.vrIndex: ${us1.vrIndex}');
         final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(us1.code, bd1, us1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, us1.code, bd1, us1.vrIndex);
         log.debug('e0:$e0');
         final make0 = UStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -1012,10 +1013,10 @@ void main() {
         final bd0 = new Bytes.fromList(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ul1.vrIndex: ${ul1.vrIndex}');
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
         final make0 = SStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -1029,13 +1030,13 @@ void main() {
         system.throwOnError = false;
         final ul1 = new SStag(PTag.kOverlayOrigin, vList0);
         log.debug('ul1:$ul1');
-        final bd0 = new Bytes.fromTypedData(vList0);
+        final bd0 = new Bytes.typedDataView(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ul1.vrIndex: ${ul1.vrIndex}');
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
         final make0 = SStag.from(e0);
         log.debug('make0: ${make0.info}');
@@ -1052,10 +1053,10 @@ void main() {
         final bd0 = new Bytes.fromList(vList0);
         log
           ..debug('bd0: $bd0')
-          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('bd.length: ${bd0.length}')
           ..debug('ul1.vrIndex: ${ul1.vrIndex}');
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromBytes(ul1.code, bd1, ul1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
         final make0 = SStag.from(e0);
         log.debug('make0: ${make0.info}');

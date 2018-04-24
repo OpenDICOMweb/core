@@ -44,7 +44,7 @@ class SStag extends SS with TagElement<int> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static SStag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(tag, new Bytes.fromTypedData(bytes));
+      fromBytes(tag, new Bytes.typedDataView(bytes));
 
   static SStag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
 
@@ -81,7 +81,7 @@ class SLtag extends SL with TagElement<int> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static SLtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, new Bytes.typedDataView(bList));
 
   static SLtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
   
@@ -120,7 +120,7 @@ class OBtag extends OB with TagElement<int> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static OBtag fromUint8List(Tag tag, Uint8List bList, [int vfLengthField]) =>
-      fromBytes(tag, new Bytes.fromTypedData(bList), vfLengthField);
+      fromBytes(tag, new Bytes.typedDataView(bList), vfLengthField);
 
   static OBtag from(Element bde, [int vfLengthField]) =>
       fromBytes(bde.tag, bde.vfBytes, vfLengthField);
@@ -162,7 +162,7 @@ class UNtag extends UN with TagElement<int> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static UNtag fromUint8List(Tag tag, Uint8List bList, [int vfLengthField]) =>
-      fromBytes(tag, new Bytes.fromTypedData(bList), vfLengthField);
+      fromBytes(tag, new Bytes.typedDataView(bList), vfLengthField);
 
   static UNtag from(Element bde, [int vfLengthField]) =>
       fromBytes(bde.tag, bde.vfBytes, vfLengthField);
@@ -202,7 +202,7 @@ class UStag extends US with TagElement<int> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static UStag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(tag, new Bytes.fromTypedData(bytes));
+      fromBytes(tag, new Bytes.typedDataView(bytes));
 
   static UStag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
 
@@ -242,7 +242,7 @@ class OWtag extends OW with TagElement<int> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static OWtag fromUint8List(Tag tag, Uint8List bList, [int vfLengthField]) =>
-      fromBytes(tag, new Bytes.fromTypedData(bList), vfLengthField);
+      fromBytes(tag, new Bytes.typedDataView(bList), vfLengthField);
 
   static OWtag from(Element bde, [int vfLengthField]) =>
       fromBytes(bde.tag, bde.vfBytes, vfLengthField);
@@ -281,7 +281,7 @@ class OLtag extends OL with TagElement<int> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static OLtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(tag, new Bytes.fromTypedData(bytes));
+      fromBytes(tag, new Bytes.typedDataView(bytes));
 
   static OLtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
 
@@ -317,7 +317,7 @@ class ULtag extends UL with TagElement<int> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static ULtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(tag, new Bytes.fromTypedData(bytes));
+      fromBytes(tag, new Bytes.typedDataView(bytes));
 
   static ULtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
 
@@ -350,7 +350,7 @@ class GLtag extends ULtag {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static GLtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(tag, new Bytes.fromTypedData(bytes));
+      fromBytes(tag, new Bytes.typedDataView(bytes));
 
   static GLtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
@@ -389,7 +389,7 @@ class ATtag extends AT with TagElement<int> {
       fromBytes(tag, Bytes.base64Decode(s));
 
   static ATtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.fromTypedData(bList));
+      fromBytes(tag, new Bytes.typedDataView(bList));
 
   static ATtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
 

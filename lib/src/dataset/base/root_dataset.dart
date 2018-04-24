@@ -29,10 +29,10 @@ abstract class RootDataset extends Dataset {
   @override
   RDSBytes dsBytes;
 
-  RootDataset(this.path, Bytes bd, int fmiEnd)
-      : dsBytes = (bd == null || bd.lengthInBytes == 0)
+  RootDataset(this.path, Bytes bytes, int fmiEnd)
+      : dsBytes = (bytes == null || bytes.isEmpty)
             ? new RDSBytes.empty()
-            : new RDSBytes(bd, fmiEnd);
+            : new RDSBytes(bytes, fmiEnd);
 
   RootDataset.empty() : dsBytes = new RDSBytes.empty();
 

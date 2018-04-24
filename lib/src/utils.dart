@@ -8,6 +8,7 @@
 //
 
 export 'package:core/src/utils/ascii.dart';
+export 'package:core/src/utils/buffer.dart';
 export 'package:core/src/utils/bytes.dart';
 export 'package:core/src/utils/date_time.dart';
 export 'package:core/src/utils/dicom.dart';
