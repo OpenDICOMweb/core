@@ -460,6 +460,32 @@ void main() {
       expect(fd0.values.first.toStringAsPrecision(1),
           equals((2047.99).toStringAsPrecision(1)));
     });
+
+    test('FD checkLength good values', () {
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float64List(1, i);
+        final fd0 = new FDtag(PTag.kSelectorFDValue, floatList0);
+        expect(fd0.checkLength(fd0.values), true);
+      }
+    });
+
+    test('FD checkLength bad values', () {
+      system.throwOnError = false;
+      final fd0 = new FDtag(PTag.kTubeAngle, float64LstCommon0);
+      expect(fd0, isNull);
+
+      system.throwOnError = true;
+      expect(() => new FDtag(PTag.kTubeAngle, float64LstCommon0),
+          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+    });
+
+    test('FD checkValues', () {
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float64List(1, i);
+        final fd0 = new FDtag(PTag.kSelectorFDValue, floatList0);
+        expect(fd0.checkValues(fd0.values), true);
+      }
+    });
   });
 
   group('FD Element', () {
@@ -1377,6 +1403,22 @@ void main() {
           new ODtag(PTag.kSelectorODValue, new Float64List.fromList(f64Values));
       expect(od0.values.first.toStringAsPrecision(1),
           equals((2047.99).toStringAsPrecision(1)));
+    });
+
+    test('OD checkLength good values', () {
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float64List(1, i);
+        final od0 = new ODtag(PTag.kSelectorODValue, floatList0);
+        expect(od0.checkLength(od0.values), true);
+      }
+    });
+
+    test('OD checkValues', () {
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float64List(1, i);
+        final od0 = new ODtag(PTag.kSelectorODValue, floatList0);
+        expect(od0.checkValues(od0.values), true);
+      }
     });
   });
 
