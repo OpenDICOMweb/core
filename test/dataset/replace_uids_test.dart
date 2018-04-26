@@ -9,6 +9,9 @@
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
+import 'package:test_tools/tools.dart';
+
+final rsg = new RSG();
 
 void main() {
   Server.initialize(name: 'replace_uids', level: Level.info);
@@ -176,6 +179,76 @@ void main() {
       final ui11NVR = rootDS10.update(ui11NV.tag.index, uidList9);
       expect(ui11NVR is UI, true);
       expect(ui11NVR.values.isEmpty, true);
+    });
+
+    test('updateUidList', () {
+      final rootDS0 = new TagRootDataset.empty();
+      final uiList0 = rsg.getUIList(1, 1);
+      final ui0 =
+          new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, uiList0);
+
+      final updateUidList0 = rootDS0.updateUidList(ui0.index, uiList0);
+      log.debug('updateUidList0: $updateUidList0');
+      expect(updateUidList0, isNull);
+      expect(updateUidList0 == ui0, false);
+      expect(updateUidList0 is UI, false);
+
+      system.throwOnError = false;
+      final updateUidList1 =
+          rootDS0.updateUidList(ui0.index, uiList0, required: true);
+      log.debug('updateUidList1: $updateUidList1');
+      expect(updateUidList1, isNull);
+      expect(updateUidList1 == ui0, false);
+      expect(updateUidList1 is UI, false);
+
+      system.throwOnError = true;
+      expect(() => rootDS0.updateUidList(ui0.index, uiList0, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+
+      system.throwOnError = false;
+      rootDS0.add(ui0);
+      final updateUidList2 = rootDS0.updateUidList(ui0.index, uiList0);
+      log.debug('updateUidList1: $updateUidList2');
+      expect(updateUidList2 == ui0, true);
+      expect(updateUidList2 is UI, true);
+      expect(updateUidList2.isEmpty, false);
+      expect(updateUidList2, isNotNull);
+
+      final aeList0 = rsg.getAEList(1, 1);
+      final ae0 = new AEtag(PTag.kSelectorAEValue, aeList0);
+      final updateUidList3 = rootDS0.updateUidList(ae0.index, aeList0);
+      log.debug('updateUidList3: $updateUidList3');
+      expect(updateUidList3, isNull);
+      expect(updateUidList3 == ae0, false);
+      expect(updateUidList3 is AE, false);
+
+      rootDS0.add(ae0);
+      final updateUidList4 = rootDS0.updateUidList(ae0.index, aeList0);
+      log.debug('updateUidList4: $updateUidList4');
+      expect(updateUidList4, isNull);
+
+      system.throwOnError = true;
+      expect(() => rootDS0.updateUidList(ae0.index, aeList0),
+          throwsA(const isInstanceOf<InvalidElementTypeError>()));
+    });
+
+    test('replaceValues', () {
+      final rootDS0 = new TagRootDataset.empty();
+      final aeList0 = rsg.getAEList(1, 1);
+      final ae0 = new AEtag(PTag.kSelectorAEValue, aeList0);
+      rootDS0.add(ae0);
+      final replaceValues0 = rootDS0.replaceValues(ae0.index, aeList0);
+      expect(replaceValues0, true);
+
+      system.throwOnError = false;
+      final stList0 = rsg.getSTList(1, 1);
+      final st0 = new STtag(PTag.kSelectorSTValue, stList0);
+      final replaceValues1 = rootDS0.replaceValues(st0.index, stList0);
+      expect(replaceValues1, null);
+
+      system.throwOnError = true;
+      expect(() => rootDS0.replaceValues(st0.index, stList0),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
   });
 }
