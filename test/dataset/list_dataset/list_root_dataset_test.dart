@@ -560,5 +560,57 @@ void main() {
       log.debug('item: $item, removeDup: $removeDup');
       expect(removeDup, <Element>[]);
     });
+
+    test('getValue', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = item.getValue<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.value));
+
+      final getValues1 = item.getValue<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1.toString(), equals(as0.value));
+
+      final getValues2 = item.getValue<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => item.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('getValues', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = item.getValues<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.values));
+
+      final getValues1 = item.getValues<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1, equals(as0.values));
+
+      final getValues2 = item.getValues<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => item.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
   });
 }

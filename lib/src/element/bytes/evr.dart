@@ -752,17 +752,14 @@ class LTevr extends LT
         EvrElement<String>,
         EvrShortMixin<String>,
         ByteStringMixin,
-        Utf8Mixin {
+        TextMixin {
   @override
   final Bytes bytes;
 
   LTevr(this.bytes);
 
-  @override
-  Iterable<String> get values => [vfBytes.getUtf8()];
   static LTevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kLTIndex);
-
     return new LTevr(_removeShortPadding(bytes));
   }
 }
@@ -773,7 +770,7 @@ class STevr extends ST
         EvrElement<String>,
         EvrShortMixin<String>,
         ByteStringMixin,
-        Utf8Mixin {
+        TextMixin {
   @override
   final Bytes bytes;
 
@@ -781,7 +778,6 @@ class STevr extends ST
 
   static STevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kSTIndex);
-
     return new STevr(_removeShortPadding(bytes));
   }
 }
@@ -831,7 +827,7 @@ class URevr extends UR
         EvrElement<String>,
         EvrLongMixin<String>,
         ByteStringMixin,
-        Utf8Mixin {
+        TextMixin {
   @override
   final Bytes bytes;
 
@@ -850,7 +846,7 @@ class UTevr extends UT
         EvrElement<String>,
         EvrLongMixin<String>,
         ByteStringMixin,
-        Utf8Mixin {
+        TextMixin {
   @override
   final Bytes bytes;
 
@@ -858,7 +854,6 @@ class UTevr extends UT
 
   static UTevr make(Bytes bytes, int vrIndex) {
     assert(vrIndex != null && vrIndex == kUTIndex);
-
     return new UTevr(_removeLongPadding(bytes));
   }
 }

@@ -557,5 +557,97 @@ void main() {
       expect(copy0, equals(new MapItem.from(item, rds, null)));
       expect(copy0, equals(item));
     });
+
+    test('getUid', () {
+      final item = new MapItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final uidList = ['1.2.840.10008.5.1.1.16.376'];
+      final ui0 = new UItag.fromStrings(PTag.kStudyInstanceUID, uidList);
+      final ui1 = new UItag.fromStrings(PTag.kSelectorUIValue, uidList);
+      final un0 = new UNtag(PTag.kNoName0, [123]);
+
+      item[as0.code] = as0;
+      item..add(ui0)..add(un0);
+
+      system.throwOnError = false;
+      final uid0 = item.getUid(ui0.index);
+      expect(uid0.toString() == uidList[0], true);
+
+      final uid1 = item.getUid(ui1.index);
+      expect(uid1, isNull);
+
+      system.throwOnError = true;
+      expect(() => item.getUid(ui1.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+
+      system.throwOnError = false;
+      final uid2 = item.getUid(as0.index);
+      expect(uid2, isNull);
+
+      system.throwOnError = true;
+      expect(() => item.getUid(as0.index),
+          throwsA(const isInstanceOf<InvalidElementError>()));
+    });
+
+    test('getValue', () {
+      final item = new MapItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = item.getValue<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.value));
+
+      final getValues1 = item.getValue<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1.toString(), equals(as0.value));
+
+      final getValues2 = item.getValue<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => item.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('getValues', () {
+      final item = new MapItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = item.getValues<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.values));
+
+      final getValues1 = item.getValues<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1, equals(as0.values));
+
+      final getValues2 = item.getValues<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => item.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('updateAll', () {
+      final item = new MapItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      item[as0.code] = as0;
+
+      final update0 = item.updateAll<String>(as0.key, vList: as0.values);
+      expect(update0.isEmpty, false);
+    });
   });
 }
