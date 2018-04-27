@@ -351,7 +351,7 @@ void main() {
       ..debug('${date0.weekday}')
       ..debug('${date0.weekdayName}')
       ..debug('date0: $date0');
-    final weekDayName0 = date0.weekdayName; //check once
+    final weekDayName0 = date0.weekdayName;
     log.debug('weekDayName0: $weekDayName0');
     //}
   });
@@ -594,5 +594,24 @@ void main() {
       log.debug('ns1:$ns1, $badDate');
       expect(ns1, isNull);
     }
+  });
+
+  test('isValidYearInMicroseconds', () {
+    system.throwOnError = false;
+    final us = dateToEpochDay(1971, 1, 1);
+    final vym0 = isValidYearInMicroseconds(us);
+    expect(vym0, true);
+
+    final vym1 = isValidYearInMicroseconds(kMinYearInMicroseconds);
+    expect(vym1, true);
+
+    final vym2 = isValidYearInMicroseconds(kMaxYearInMicroseconds);
+    expect(vym2, true);
+
+    final vym3 = isValidYearInMicroseconds(kMaxYearInMicroseconds + 1);
+    expect(vym3, false);
+
+    final vym4 = isValidYearInMicroseconds(kMinYearInMicroseconds - 1);
+    expect(vym4, false);
   });
 }
