@@ -272,6 +272,8 @@ abstract class TextMixin {
   bool get allowMalformed;
 
   String get value => utf8.decode(vfBytes, allowMalformed: allowMalformed);
+
+  Iterable<String> get values => [vfBytes.getUtf8()];
 }
 
 int _getValuesLength(int vfLengthField, int sizeInBytes) {

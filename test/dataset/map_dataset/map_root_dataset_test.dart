@@ -515,5 +515,57 @@ void main() {
       expect(copy0, equals(new MapRootDataset.from(rds)));
       expect(copy0, equals(rds));
     });
+
+    test('getValue', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      rds[as0.code] = as0;
+      rds[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = rds.getValue<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.value));
+
+      final getValues1 = rds.getValue<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1.toString(), equals(as0.value));
+
+      final getValues2 = rds.getValue<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => rds.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('getValues', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      rds[as0.code] = as0;
+      rds[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = rds.getValues<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.values));
+
+      final getValues1 = rds.getValues<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1, equals(as0.values));
+
+      final getValues2 = rds.getValues<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => rds.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
   });
 }

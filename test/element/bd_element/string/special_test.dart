@@ -1629,4 +1629,32 @@ void main() {
       }
     });
   });
+
+  group('STtag', () {
+    test('STtag from VM.k1', () {
+      system.level = Level.debug;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getSTList(1, 1);
+        log.debug('vList0: $vList0');
+        system.throwOnError = false;
+        final st1 = new STtag(PTag.kSelectorSTValue, vList0);
+        expect(st1.hasValidValues, true);
+        log.debug('st1:$st1');
+        final bd0 = Bytes.asciiEncode(vList0.join('\\'));
+        log
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('st1.vrIndex: ${st1.vrIndex}');
+        final bd1 = makeShortEvr(st1.code, st1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(st1.code, bd1, st1.vrIndex);
+        log.debug('e0:$e0');
+        expect(e0.hasValidValues, true);
+        e0.values;
+        expect(e0.values, equals(vList0));
+        final make0 = STtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+        expect(make0.values, equals(vList0));
+      }
+    });
+  });
 }
