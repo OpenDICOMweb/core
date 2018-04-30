@@ -567,5 +567,73 @@ void main() {
       expect(() => rds.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
+
+    test('hasElementsInRange', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kSelectorASValue, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+
+      rds[as0.code] = as0;
+      rds[ss0.code] = ss0;
+      rds[fd0.code] = fd0;
+      log.debug('rds : $rds');
+
+      final inRange0 = rds.hasElementsInRange(0, as0.code);
+      final inRange1 = rds.hasElementsInRange(0, as0.code + 1);
+      final inRange2 = rds.hasElementsInRange(0, ss0.code);
+      final inRange3 = rds.hasElementsInRange(0, ss0.code + 1);
+
+      log
+        ..debug('inRange0: $inRange0')
+        ..debug('inRange1: $inRange1')
+        ..debug('inRange2: $inRange2')
+        ..debug('inRange3: $inRange3');
+
+      expect(inRange0, true);
+      expect(inRange1, true);
+      expect(inRange2, true);
+      expect(inRange3, true);
+
+      final rds0 = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final inRange4 = rds0.hasElementsInRange(0, od0.code);
+      expect(inRange4, false);
+    });
+
+    test('deleteCodes', () {
+      system.level = Level.debug;
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      rds[as0.code] = as0;
+      rds[ss0.code] = ss0;
+      rds[fd0.code] = fd0;
+      log..debug('rds : $rds')..debug('rds.Codes: ${rds.codes}');
+
+      expect(rds.codes.isEmpty, false);
+      expect(rds.codes.first == as0.code, true);
+      expect(rds.codes.last == fd0.code, true);
+
+      final deleteCodes0 = rds.deleteCodes(rds.codes.toList());
+      log
+        ..debug('rds.codes: ${rds.codes}')
+        ..debug('deleteCodes0: $deleteCodes0');
+      expect(rds.codes.isEmpty, true);
+
+      final deleteCodes1 = rds.deleteCodes([as0.code]);
+      log.debug('deleteCodes1: $deleteCodes1');
+      expect(deleteCodes1, equals(<Element>[]));
+
+      final deleteCodes2 = rds.deleteCodes([ss0.code]);
+      log.debug('deleteCodes2: $deleteCodes2');
+      expect(deleteCodes2, equals(<Element>[]));
+
+      final deleteCodes3 = rds.deleteCodes([fd0.code]);
+      log.debug('deleteCodes3: $deleteCodes3');
+      expect(deleteCodes3, equals(<Element>[]));
+    });
   });
 }

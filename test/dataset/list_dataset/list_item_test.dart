@@ -622,5 +622,74 @@ void main() {
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
+
+    test('hasElementsInRange', () {
+      final item = new ListItem.empty(rds, null);
+      final as0 = new AStag(PTag.kSelectorASValue, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      log.debug('item : $item');
+
+      final inRange0 = item.hasElementsInRange(0, as0.code);
+      final inRange1 = item.hasElementsInRange(0, as0.code + 1);
+      final inRange2 = item.hasElementsInRange(0, ss0.code);
+      final inRange3 = item.hasElementsInRange(0, ss0.code + 1);
+
+      log
+        ..debug('inRange0: $inRange0')
+        ..debug('inRange1: $inRange1')
+        ..debug('inRange2: $inRange2')
+        ..debug('inRange3: $inRange3');
+
+      expect(inRange0, true);
+      expect(inRange1, true);
+      expect(inRange2, true);
+      expect(inRange3, true);
+
+      final item0 = new ListItem.empty(rds, null);
+      final inRange4 = item0.hasElementsInRange(0, od0.code);
+      expect(inRange4, false);
+    });
+
+    test('deleteCodes', () {
+      system.level = Level.debug;
+      final item = new ListItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      log..debug('item : $item')..debug('item.Codes: ${item.codes}');
+
+      expect(item.codes.isEmpty, false);
+      expect(item.codes.first == as0.code, true);
+      expect(item.codes.last == fd0.code, true);
+
+      final deleteCodes0 = item.deleteCodes(item.codes.toList());
+      log
+        ..debug('item.codes: ${item.codes}')
+        ..debug('deleteCodes0: $deleteCodes0');
+      expect(item.codes.isEmpty, true);
+
+      final deleteCodes1 = item.deleteCodes([as0.code]);
+      log.debug('deleteCodes1: $deleteCodes1');
+      expect(deleteCodes1, equals(<Element>[]));
+
+      final deleteCodes2 = item.deleteCodes([ss0.code]);
+      log.debug('deleteCodes2: $deleteCodes2');
+      expect(deleteCodes2, equals(<Element>[]));
+
+      final deleteCodes3 = item.deleteCodes([fd0.code]);
+      log.debug('deleteCodes3: $deleteCodes3');
+      expect(deleteCodes3, equals(<Element>[]));
+    });
+
   });
 }
