@@ -196,7 +196,7 @@ abstract class DatasetMixin {
       if (e is SQ) {
         result.addAll(e.updateAllF<V>(index, f, required: required));
       } else {
-        result.add(e.replace(e.values));
+        result.add(e.update(e.values));
       }
     return result;
   }

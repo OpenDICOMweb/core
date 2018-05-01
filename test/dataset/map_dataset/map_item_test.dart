@@ -235,6 +235,17 @@ void main() {
       expect(update0.isEmpty, false);
     });
 
+    test('updateF(String)', () {
+      system.level = Level.debug;
+      final item = new MapItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      item[as0.code] = as0;
+
+      final update0 = item.updateF<String>(as0.index, (n) => n);
+      log.debug('as0: $as0, update0: $update0');
+      expect(update0.isEmpty, false);
+    });
+
     test('update (int)', () {
       final item = new MapItem.empty(rds, null);
       final vList0 = [kInt16Min];
@@ -249,11 +260,30 @@ void main() {
       expect(update2.values.isEmpty, false);
     });
 
+    test('updateF (int)', () {
+      final item = new MapItem.empty(rds, null);
+      final vList0 = [kInt16Min];
+      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      item.add(ss0);
+
+      final update2 = item.updateF<int>(ss0.key, (n) => n);
+      expect(update2.values.isEmpty, false);
+    });
+
     test('update (float)', () {
       final item = new MapItem.empty(rds, null);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
       final update1 = item.update(fd0.key, <double>[]);
+      expect(update1.isEmpty, false);
+    });
+
+    test('updateF (float)', () {
+      final item = new MapItem.empty(rds, null);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item.add(fd0);
+
+      final update1 = item.updateF<double>(fd0.key, (n) => n);
       expect(update1.isEmpty, false);
     });
 
@@ -487,6 +517,23 @@ void main() {
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
 
+    test('replaceF', () {
+      final item = new MapItem.empty(rds, null);
+      final vList0 = [15.24];
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
+      item.add(fd0);
+
+      expect(item.replaceF<int>(fd0.index, (n) => n), equals(vList0));
+      log.debug('fd0.values: ${fd0.values}');
+      expect(fd0.values, equals(vList0));
+
+      system.throwOnError = true;
+      final vList2 = ['024Y'];
+      final as0 = new AStag(PTag.kPatientAge, vList2);
+      expect(() => item.replaceF<String>(as0.index, (n) => n, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
     test('replaceAll', () {
       final item = new MapItem.empty(rds, null);
       final vList0 = [15.24];
@@ -641,13 +688,60 @@ void main() {
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
 
-    test('updateAll', () {
+    test('updateAll(string)', () {
       final item = new MapItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       item[as0.code] = as0;
 
       final update0 = item.updateAll<String>(as0.key, vList: as0.values);
       expect(update0.isEmpty, false);
+    });
+
+    test('updateAllF(string)', () {
+      final item = new MapItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      item[as0.code] = as0;
+
+      final update0 = item.updateAllF<String>(as0.key, (n) => n);
+      expect(update0.isEmpty, false);
+    });
+
+    test('updateAll (int)', () {
+      final item = new MapItem.empty(rds, null);
+      final vList0 = [kInt16Min];
+      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      item.add(ss0);
+
+      final update2 = item.updateAll<int>(ss0.key, vList: <int>[]);
+      expect(update2.isEmpty, false);
+    });
+
+    test('updateAllF (int)', () {
+      final item = new MapItem.empty(rds, null);
+      final vList0 = [kInt16Min];
+      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      item.add(ss0);
+
+      final update2 = item.updateAllF<int>(ss0.key, (n) => n);
+      expect(update2.isEmpty, false);
+    });
+
+    test('updateAll (float)', () {
+      final item = new MapItem.empty(rds, null);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item.add(fd0);
+
+      final update1 = item.updateAll<double>(fd0.key, vList: <double>[]);
+      expect(update1.isEmpty, false);
+    });
+
+    test('updateAllF (float)', () {
+      final item = new MapItem.empty(rds, null);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item.add(fd0);
+
+      final update1 = item.updateAllF<double>(fd0.key, (n) => n);
+      expect(update1.isEmpty, false);
     });
 
     test('hasElementsInRange', () {
@@ -718,5 +812,28 @@ void main() {
       expect(deleteCodes3, equals(<Element>[]));
     });
 
+    test('getTag', () {
+      final item = new MapItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      log..debug('item : $item')..debug('item.Codes: ${item.codes}');
+
+      final getTag0 = item.getTag(as0.index, as0.vrIndex);
+      log..debug('as0 :${as0.info}')..debug('getTag0: $getTag0');
+      expect(getTag0, equals(as0.tag));
+      expect(getTag0.code, equals(as0.tag.code));
+
+      final getTag1 = item.getTag(ss0.index, ss0.vrIndex);
+      log..debug('ss0 :${ss0.info}')..debug('getTag1 $getTag1');
+      expect(getTag1, equals(ss0.tag));
+
+      final getTag3 = item.getTag(fd0.index);
+      log..debug('fd0 :${fd0.info}')..debug('getTag1 $getTag1');
+      expect(getTag3, equals(fd0.tag));
+    });
   });
 }
