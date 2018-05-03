@@ -1657,4 +1657,105 @@ void main() {
       }
     });
   });
+
+  group('SLtag', () {
+    test('SLtag from VM.k1', () {
+      //Urgent: Jim
+      system.level = Level.debug;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.int32List(1, 1);
+        log.debug('vList0: $vList0');
+        system.throwOnError = false;
+        final sl1 = new SLtag(PTag.kReferencePixelX0, vList0);
+        expect(sl1.hasValidValues, true);
+        log.debug('sl1:$sl1');
+        final bd0 = new Bytes.fromTypedData(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('sl1.vrIndex: ${sl1.vrIndex}');
+        final bd1 = makeShortEvr(sl1.code, sl1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(sl1.code, bd1, sl1.vrIndex);
+        log.debug('e0:$e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.values, equals(vList0));
+        final make0 = SLtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+        expect(make0.values, equals(vList0));
+      }
+    });
+
+    test('SLtag from VM.k2', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.int32List(2, 2);
+        system.throwOnError = false;
+        final sl1 = new SLtag(PTag.kDisplayedAreaTopLeftHandCorner, vList0);
+        expect(sl1.hasValidValues, true);
+        log.debug('sl1:$sl1');
+        final bd0 = new Bytes.fromTypedData(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('sl1.vrIndex: ${sl1.vrIndex}');
+        final bd1 = makeShortEvr(sl1.code, sl1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(sl1.code, bd1, sl1.vrIndex);
+        log.debug('e0:$e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.values, equals(vList0));
+        final make0 = SLtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+        expect(make0.values, equals(vList0));
+      }
+    });
+
+    test('SLtag from VM.k2_2n', () {
+      for (var i = 2; i < 10; i++) {
+        final vList0 = rng.int32List(2, 2);
+        system.throwOnError = false;
+        final sl1 = new SLtag(PTag.kPixelCoordinatesSetTrial, vList0);
+        expect(sl1.hasValidValues, true);
+        log.debug('sl1:$sl1');
+        final bd0 = new Bytes.fromTypedData(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('sl1.vrIndex: ${sl1.vrIndex}');
+        final bd1 = makeShortEvr(sl1.code, sl1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(sl1.code, bd1, sl1.vrIndex);
+        log.debug('e0:$e0');
+        expect(e0.hasValidValues, true);
+        //expect(e0.values, equals(vList0));
+        final make0 = SLtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+        expect(make0.values, equals(vList0));
+      }
+    });
+
+    test('SLtag from VM.k1_n', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.int32List(1, i);
+        system.throwOnError = false;
+        final sl1 = new SLtag(PTag.kSelectorSLValue, vList0);
+        expect(sl1.hasValidValues, true);
+        log.debug('sl1:$sl1');
+        final bd0 = new Bytes.fromTypedData(vList0);
+        log
+          ..debug('bd0: $bd0')
+          ..debug('bd.lengthInBytes: ${bd0.lengthInBytes}')
+          ..debug('sl1.vrIndex: ${sl1.vrIndex}');
+        final bd1 = makeShortEvr(sl1.code, sl1.vrIndex, bd0);
+        final e0 = EvrElement.makeFromBytes(sl1.code, bd1, sl1.vrIndex);
+        log.debug('e0:$e0');
+        expect(e0.hasValidValues, true);
+        //expect(e0.values, equals(vList0));
+        final make0 = SLtag.from(e0);
+        log.debug('make0: ${make0.info}');
+        expect(make0.hasValidValues, true);
+        expect(make0.values, equals(vList0));
+      }
+    });
+  });
 }

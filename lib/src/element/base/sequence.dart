@@ -126,7 +126,7 @@ Summary $tag
 
   Element lookup(int index, {bool required = false}) {
     for (var item in items) {
-      final e = item.lookup(index);
+      final e = item.lookup(index, required: required);
       if (e != null) return e;
     }
     return null;
@@ -135,7 +135,7 @@ Summary $tag
   Iterable<Element> lookupAll(int index, {bool required = false}) {
     final result = <Element>[];
     for (var item in items) {
-      final e = item.lookup(index);
+      final e = item.lookup(index, required: required);
       if (e != null) result.add(e);
     }
     return result;
