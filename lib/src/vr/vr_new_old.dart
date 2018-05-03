@@ -7,8 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
 import 'package:core/src/system.dart';
+import 'package:core/src/value/empty_list.dart';
 
 /// VR Constants and Primitives
 /// **** New design - not yet implemented ****

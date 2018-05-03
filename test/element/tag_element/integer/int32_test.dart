@@ -248,34 +248,36 @@ void main() {
 
     test('SL fromUint8List good values random', () {
       for (var i = 0; i < 10; i++) {
-        final int32list0 = rng.int32List(1, 1);
-        final int32ListV1 = new Int32List.fromList(int32list0);
-        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-        final sl0 = SLtag.fromUint8List(PTag.kReferencePixelX0, uInt8ListV1);
+        final int32List0 = rng.int32List(1, 1);
+//        final int32ListV1 = new Int32List.fromList(int32list0);
+//        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
+        final bytes = new Bytes.typedDataView(int32List0);
+        final sl0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes);
         expect(sl0.hasValidValues, true);
-        expect(sl0.values, equals(int32ListV1));
-        expect(sl0.vfBytes, equals(uInt8ListV1));
+        expect(sl0.values, equals(int32List0));
+        expect(sl0.vfBytes, equals(bytes));
         expect(sl0.values is Int32List, true);
-        expect(sl0.values, equals(int32ListV1));
+        expect(sl0.values, equals(int32List0));
       }
     });
 
-    test('SL fromUint8List good values random', () {
+    test('SL fromUint8List bad random values', () {
       for (var i = 0; i < 10; i++) {
-        final int32list1 = rng.int32List(2, 2);
-        final int32ListV2 = new Int32List.fromList(int32list1);
-        final uInt8ListV2 = int32ListV2.buffer.asUint8List();
-        final sl1 = SLtag.fromUint8List(PTag.kReferencePixelX0, uInt8ListV2);
-        expect(sl1.hasValidValues, false);
+        final int32List0 = rng.int32List(2, 10);
+        final bytes = new Bytes.typedDataView(int32List0);
+//        final uInt8ListV2 = int32ListV2.buffer.asUint8List();
+        final sl1 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes);
+        expect(sl1, isNull);
       }
     });
 
     test('SL fromUint8List ', () {
       final int32ListV1 = new Int32List.fromList(int32Max);
-      final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-      final sl0 = SLtag.fromUint8List(PTag.kReferencePixelX0, uInt8ListV1);
+ //     final uInt8ListV1 = int32ListV1.buffer.asUint8List();
+      final bytes = new Bytes.typedDataView(int32ListV1);
+      final sl0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes);
       expect(sl0.hasValidValues, true);
-      expect(sl0.vfBytes, equals(uInt8ListV1));
+      expect(sl0.vfBytes, equals(bytes));
       expect(sl0.values is Int32List, true);
       expect(sl0.values, equals(int32ListV1));
     });
@@ -366,30 +368,35 @@ void main() {
     test('SL BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final int32list0 = rng.int32List(1, 1);
-        final int32ListV1 = new Int32List.fromList(int32list0);
-        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8ListV1);
-        final sl0 = SLtag.fromBase64(PTag.kRationalNumeratorValue, base64);
+        final bytes0 = new Bytes.typedDataView(int32list0);
+//        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
+//        final base64 = cvt.base64.encode(uInt8ListV1);
+        final base64 = bytes0.asBase64();
+        final bytes1 = Bytes.fromBase64(base64);
+        final sl0 = SLtag.fromBytes(PTag.kRationalNumeratorValue, bytes1);
         expect(sl0.hasValidValues, true);
       }
     });
 
     test('SL BASE64 ', () {
-      final int32ListV1 = new Int32List.fromList(int32Max);
-      final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-      final base64 = cvt.base64.encode(uInt8ListV1);
-      final sl0 = SLtag.fromBase64(PTag.kRationalNumeratorValue, base64);
+      final int32list0 = new Int32List.fromList(int32Max);
+      final bytes0 = new Bytes.typedDataView(int32list0);
+ //     final uInt8ListV1 = int32ListV1.buffer.asUint8List();
+//      final base64 = cvt.base64.encode(uInt8ListV1);
+      final base64 = bytes0.asBase64();
+      final bytes1 = Bytes.fromBase64(base64);
+      final sl0 = SLtag.fromBytes(PTag.kRationalNumeratorValue, bytes1);
       expect(sl0.hasValidValues, true);
     });
 
     test('SL make good values', () {
       for (var i = 0; i < 10; i++) {
         final int32list0 = rng.int32List(1, 1);
-        final make0 = SLtag.make(PTag.kReferencePixelX0, int32list0);
+        final make0 = SLtag.fromValues(PTag.kReferencePixelX0, int32list0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = SLtag.make(PTag.kReferencePixelX0, <int>[]);
+        final make1 = SLtag.fromValues(PTag.kReferencePixelX0, <int>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<int>[]));
       }
@@ -399,11 +406,11 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final int32list0 = rng.int32List(2, 2);
         system.throwOnError = false;
-        final make0 = SLtag.make(PTag.kReferencePixelX0, int32list0);
+        final make0 = SLtag.fromValues(PTag.kReferencePixelX0, int32list0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => SLtag.make(PTag.kReferencePixelX0, int32list0),
+        expect(() => SLtag.fromValues(PTag.kReferencePixelX0, int32list0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
@@ -411,23 +418,27 @@ void main() {
     test('SL fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final int32list0 = rng.int32List(1, 1);
-        final int32ListV1 = new Int32List.fromList(int32list0);
-        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-        final sl0 = SLtag.fromUint8List(PTag.kReferencePixelX0, uInt8ListV1);
+        final bytes = new Bytes.typedDataView(int32list0);
+//        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
+        final sl0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes);
         expect(sl0.hasValidValues, true);
-        expect(sl0.vfBytes, equals(uInt8ListV1));
+        expect(sl0.vfBytes, equals(bytes));
         expect(sl0.values is Int32List, true);
-        expect(sl0.values, equals(int32ListV1));
+        expect(sl0.values, equals(int32list0));
       }
     });
 
     test('SL fromBase64', () {
       for (var i = 0; i < 10; i++) {
         final int32list0 = rng.int32List(1, 1);
-        final int32ListV1 = new Int32List.fromList(int32list0);
-        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8ListV1);
-        final sl0 = SLtag.fromBase64(PTag.kReferencePixelX0, base64);
+        final bytes0 = new Bytes.typedDataView(int32list0);
+//        final int32ListV1 = new Int32List.fromList(int32list0);
+//        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
+//        final base64 = cvt.base64.encode(uInt8ListV1);
+        final base64 = bytes0.asBase64();
+        final bytes1 = Bytes.fromBase64(base64);
+
+        final sl0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes1);
         expect(sl0.hasValidValues, true);
       }
     });

@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/group_base.dart';
 import 'package:core/src/dataset/base/group/private_subgroup.dart';
@@ -15,6 +14,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/logger.dart';
+import 'package:core/src/value/empty_list.dart';
 
 // ignore_for_file: only_throw_errors
 

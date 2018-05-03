@@ -13,7 +13,7 @@ import 'package:core/src/tag/private/pd_tag.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils/string.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 typedef Tag TagMaker(int code, int vrIndex);
 

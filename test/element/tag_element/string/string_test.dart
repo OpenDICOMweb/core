@@ -309,11 +309,13 @@ void main() {
     test('LO make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        final make0 = LOtag.make(PTag.kReceiveCoilManufacturerName, vList0);
+        final make0 =
+            LOtag.fromValues(PTag.kReceiveCoilManufacturerName, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = LOtag.make(PTag.kReceiveCoilManufacturerName, <String>[]);
+        final make1 =
+            LOtag.fromValues(PTag.kReceiveCoilManufacturerName, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -323,23 +325,26 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(2, 2);
         system.throwOnError = false;
-        final make0 = LOtag.make(PTag.kReceiveCoilManufacturerName, vList0);
+        final make0 =
+            LOtag.fromValues(PTag.kReceiveCoilManufacturerName, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => LOtag.make(PTag.kReceiveCoilManufacturerName, vList0),
+        expect(
+            () => LOtag.fromValues(PTag.kReceiveCoilManufacturerName, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
       final make1 =
-          LOtag.make(PTag.kReceiveCoilManufacturerName, <String>[null]);
+          LOtag.fromValues(PTag.kReceiveCoilManufacturerName, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
       expect(
-          () => LOtag.make(PTag.kReceiveCoilManufacturerName, <String>[null]),
+          () => LOtag
+              .fromValues(PTag.kReceiveCoilManufacturerName, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -1129,11 +1134,11 @@ void main() {
     test('LT make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final make0 = LTtag.make(PTag.kImageComments, vList0);
+        final make0 = LTtag.fromValues(PTag.kImageComments, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = LTtag.make(PTag.kImageComments, <String>[]);
+        final make1 = LTtag.fromValues(PTag.kImageComments, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -1143,21 +1148,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(2, 2);
         system.throwOnError = false;
-        final make0 = LTtag.make(PTag.kImageComments, vList0);
+        final make0 = LTtag.fromValues(PTag.kImageComments, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => LTtag.make(PTag.kImageComments, vList0),
+        expect(() => LTtag.fromValues(PTag.kImageComments, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = LTtag.make(PTag.kImageComments, <String>[null]);
+      final make1 = LTtag.fromValues(PTag.kImageComments, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => LTtag.make(PTag.kImageComments, <String>[null]),
+      expect(() => LTtag.fromValues(PTag.kImageComments, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -1927,11 +1932,11 @@ void main() {
     test('PN make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final make0 = PNtag.make(PTag.kOrderEnteredBy, vList0);
+        final make0 = PNtag.fromValues(PTag.kOrderEnteredBy, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = PNtag.make(PTag.kOrderEnteredBy, <String>[]);
+        final make1 = PNtag.fromValues(PTag.kOrderEnteredBy, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -1941,21 +1946,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(2, 2);
         system.throwOnError = false;
-        final make0 = PNtag.make(PTag.kOrderEnteredBy, vList0);
+        final make0 = PNtag.fromValues(PTag.kOrderEnteredBy, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => PNtag.make(PTag.kOrderEnteredBy, vList0),
+        expect(() => PNtag.fromValues(PTag.kOrderEnteredBy, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = PNtag.make(PTag.kOrderEnteredBy, <String>[null]);
+      final make1 = PNtag.fromValues(PTag.kOrderEnteredBy, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => PNtag.make(PTag.kOrderEnteredBy, <String>[null]),
+      expect(() => PNtag.fromValues(PTag.kOrderEnteredBy, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -2703,11 +2708,11 @@ void main() {
     test('SH make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        final make0 = SHtag.make(PTag.kTextureLabel, vList0);
+        final make0 = SHtag.fromValues(PTag.kTextureLabel, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = SHtag.make(PTag.kTextureLabel, <String>[]);
+        final make1 = SHtag.fromValues(PTag.kTextureLabel, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -2717,21 +2722,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(2, 2);
         system.throwOnError = false;
-        final make0 = SHtag.make(PTag.kTextureLabel, vList0);
+        final make0 = SHtag.fromValues(PTag.kTextureLabel, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => SHtag.make(PTag.kTextureLabel, vList0),
+        expect(() => SHtag.fromValues(PTag.kTextureLabel, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = SHtag.make(PTag.kTextureLabel, <String>[null]);
+      final make1 = SHtag.fromValues(PTag.kTextureLabel, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => SHtag.make(PTag.kTextureLabel, <String>[null]),
+      expect(() => SHtag.fromValues(PTag.kTextureLabel, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -3510,11 +3515,11 @@ void main() {
     test('ST make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final make0 = STtag.make(PTag.kSelectorSTValue, vList0);
+        final make0 = STtag.fromValues(PTag.kSelectorSTValue, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = STtag.make(PTag.kSelectorSTValue, <String>[]);
+        final make1 = STtag.fromValues(PTag.kSelectorSTValue, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -3524,21 +3529,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(2, 2);
         system.throwOnError = false;
-        final make0 = STtag.make(PTag.kSelectorSTValue, vList0);
+        final make0 = STtag.fromValues(PTag.kSelectorSTValue, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => STtag.make(PTag.kSelectorSTValue, vList0),
+        expect(() => STtag.fromValues(PTag.kSelectorSTValue, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = STtag.make(PTag.kSelectorSTValue, <String>[null]);
+      final make1 = STtag.fromValues(PTag.kSelectorSTValue, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => STtag.make(PTag.kSelectorSTValue, <String>[null]),
+      expect(() => STtag.fromValues(PTag.kSelectorSTValue, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -4286,11 +4291,11 @@ void main() {
     test('UC make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final make0 = UCtag.make(PTag.kStrainDescription, vList0);
+        final make0 = UCtag.fromValues(PTag.kStrainDescription, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = UCtag.make(PTag.kStrainDescription, <String>[]);
+        final make1 = UCtag.fromValues(PTag.kStrainDescription, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -4300,21 +4305,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(2, 2);
         system.throwOnError = false;
-        final make0 = UCtag.make(PTag.kStrainDescription, vList0);
+        final make0 = UCtag.fromValues(PTag.kStrainDescription, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => UCtag.make(PTag.kStrainDescription, vList0),
+        expect(() => UCtag.fromValues(PTag.kStrainDescription, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = UCtag.make(PTag.kStrainDescription, <String>[null]);
+      final make1 = UCtag.fromValues(PTag.kStrainDescription, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => UCtag.make(PTag.kStrainDescription, <String>[null]),
+      expect(() => UCtag.fromValues(PTag.kStrainDescription, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -5042,11 +5047,11 @@ void main() {
     test('UT make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final make0 = UTtag.make(PTag.kUniversalEntityID, vList0);
+        final make0 = UTtag.fromValues(PTag.kUniversalEntityID, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = UTtag.make(PTag.kUniversalEntityID, <String>[]);
+        final make1 = UTtag.fromValues(PTag.kUniversalEntityID, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -5056,21 +5061,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(2, 2);
         system.throwOnError = false;
-        final make0 = UTtag.make(PTag.kUniversalEntityID, vList0);
+        final make0 = UTtag.fromValues(PTag.kUniversalEntityID, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => UTtag.make(PTag.kUniversalEntityID, vList0),
+        expect(() => UTtag.fromValues(PTag.kUniversalEntityID, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = UTtag.make(PTag.kUniversalEntityID, <String>[null]);
+      final make1 = UTtag.fromValues(PTag.kUniversalEntityID, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => UTtag.make(PTag.kUniversalEntityID, <String>[null]),
+      expect(() => UTtag.fromValues(PTag.kUniversalEntityID, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 

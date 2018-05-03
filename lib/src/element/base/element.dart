@@ -6,20 +6,18 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-//TODO: load Element library lazily
-
 import 'dart:collection';
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/hash.dart';
+import 'package:core/src/vr_base.dart';
 import 'package:core/src/vr.dart';
 
 /// The base class for DICOM Data Elements
@@ -52,6 +50,54 @@ bool doTestValidity = true;
 abstract class Element<V> extends ListBase<V> {
   // **** Interface
 
+  /// Returns the identifier ([index]), used to locate
+  /// the Attributes associated with this Element.
+  int get index;
+
+  /// Returns the Tag Code ([code]) associated with this Element
+  int get code;
+
+  /// Returns the _keyword_ associated with this Element.
+  String get keyword;
+
+  /// Returns the _name_ associated with this Element.
+  String get name;
+
+  // **** VR related Getters ****
+
+  /// The index ([vrIndex]) of the Value Representation for this Element.
+  int get vrIndex;
+
+  /// The _minimum_ length of a non-empty Value Field for this Element.
+  int get vmMin;
+
+  /// The _maximum_ length of a non-empty Value Field for this Element.
+  int get vmMax;
+
+  /// The _rank_ or _width_, i.e. the number of columns in the
+  /// Value Field for this Element. _Note_: The Element values
+  /// length must be a multiple of this number.
+  int get vmColumns;
+
+  /// The Element Type index of this Element.
+ // int get eTypeIndex;
+
+  /// The Information Entity index of this Element.
+  //  int get ieIndex;
+
+  /// The DeIdentification Method index for this Element.
+  //  int get deIdIndex;
+
+  /// The Information Entity level of this Element.
+ // String get ieLevel;
+
+  /// Returns true if _this_ is a Data Element defined by the DICOM Standard.
+  bool get isPublic;
+
+  /// _true_ if this Element has been retired, i.e. is no longer
+  /// defined by the current DICOM Standard.
+  bool get isRetired;
+
   /// Returns the [Iterable<V>] [values] of _this_.
   Iterable<V> get values;
   set values(Iterable<V> vList);
@@ -59,19 +105,12 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns the canonical empty list for [V] ([List<V>[]]).
   List<V> get emptyList;
 
-  /// The [index] of the [Element] Definition for _this_. It is
-  /// used to locate other values in the [Element] Definition.
-  int get index => code;
 
-  // TODO: implement with fast_tag
-  /// The Information Entity index of this Element.
-  //  int get ieIndex;
-
-  // TODO: implement with fast_tag
-  /// The DeIdentification Method index for this Element.
-  //  int get deIdIndex;
 
   // **** End of Interface
+
+  /// Returns the Value Representation (VR) integer code [vrCode] for _this_.
+  int get vrCode => vrCodeByIndex[vrIndex];
 
   /// Returns the [Tag] that corresponds to this [code].
   ///
@@ -79,18 +118,6 @@ abstract class Element<V> extends ListBase<V> {
   /// [PCTagUnknown] or [PDTagUnknown] will be returned. This should be
   /// overridden whenever possible.
   Tag get tag => Tag.lookupByCode(code);
-
-  /// The index ([vrIndex]) of the Value Representation for this Element.
-  /// Since this depends on the [tag] lookkup, the [vrIndex] might be
-  /// [kUNIndex] for Private [Element]s.
-  int get vrIndex {
-    final vrIndex = tag.vrIndex;
-    if (isSpecialVRIndex(vrIndex)) {
-      log.debug('Using kUNIndex for $tag');
-      return kUNIndex;
-    }
-    return vrIndex;
-  }
 
   /// The actual length in bytes of the Value Field. It does
   /// not include any padding characters.
@@ -112,15 +139,6 @@ abstract class Element<V> extends ListBase<V> {
   // ********* Tag Identifier related interface, Getters, and Methods
   // **************************************************************
   // **** Some of these Getters may be accessed directly in the element.
-
-  /// The Tag [code] for this Element.
-  int get code => tag.code;
-
-  /// Returns the [keyword] identifier for _this_
-  String get keyword => tag.keyword;
-
-  /// Returns the [name] identifier for _this_
-  String get name => tag.name;
 
   // Copied from system package to avoid name conflict
   /// Returns a DICOM Tag code in the format (gggg,eeee), where
@@ -166,14 +184,6 @@ abstract class Element<V> extends ListBase<V> {
 
   bool get isPrivateCreator => isPrivate && (elt >= 0x10 && elt < 0xFF);
 
-  /// Returns _true_ if _this_ is a Data [Element] defined by the DICOM
-  /// Standard.
-  bool get isPublic => !isPrivate;
-
-  /// Returns _true_ if _this_ is a Data [Element] has been retired by
-  /// the DICOM Standard, or if a private [Element] by an implementation
-  bool get isRetired => tag.isRetired;
-
   /// Returns the creator token for _this_.
   /// _Note_: This Getter MUST be overridden for [PrivateTag]s.
   String get creator => 'DICOM';
@@ -186,9 +196,6 @@ abstract class Element<V> extends ListBase<V> {
 
   VR get vr => vrByIndex[vrIndex];
   String get vrId => vr.id;
-
-  /// Returns the Value Representation (VR) integer code [vrCode] for _this_.
-  int get vrCode => vr.code;
 
   /// The name of the Value Representation (VR) for _this_.
   String get vrKeyword => 'k${vr.id}';
@@ -215,17 +222,6 @@ abstract class Element<V> extends ListBase<V> {
   /// The Value Multiplicity ([vm]) for this Element.
   VM get vm => tag.vm;
 
-  /// The _minimum_ length of a non-empty Value Field for this Element.
-  int get vmMin => tag.vmMin;
-
-  /// The _maximum_ length of a non-empty Value Field for this Element.
-  int get vmMax => tag.vmMax;
-
-  /// The _rank_ or _width_, i.e. the number of columns in the
-  /// Value Field for this Element. _Note_: The Element values
-  /// length must be a multiple of this number.
-  int get vmColumns => tag.vmColumns;
-
   /// The minimum number of values that MUST be present for _this_,
   /// if any values are present.
   int get minValues => vmMin;
@@ -251,35 +247,8 @@ abstract class Element<V> extends ListBase<V> {
   /// The Element Type of this Element.
   EType get eType => tag.eType;
 
-  /// The Element Type index of this Element.
-  int get eTypeIndex => eType.index;
-
   /// The Element Type predicate of this Element.
   Condition get eTypePredicate => unimplementedError();
-
-  // ****** Information Entity Interface, Getters, and Methods ******
-  // **************************************************************
-
-/*
-  // TODO: implement with fast_tag
-  /// The Information Entity Type of this Element.
-  IEType get ieType => IEType.kByIndex[ieIndex];
-
-  /// The Information Entity level of this Element.
-  String get ieLevel => ieType.level;
-
-  /// The Information Entity Name of this Element.
-  String get ieName => ieType.name;
-*/
-
-  // ****** DeIdentification Interface, Getters and Methods ******
-  // **************************************************************
-
-  /// The DeIdentification Method name for this Element.
-/*
-  DeIdMethod getDeIdMethod(DeIdOption option) =>
-		  option.lookupByIndex(deIdIndex).method;
-*/
 
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************
@@ -322,7 +291,7 @@ abstract class Element<V> extends ListBase<V> {
   @override
   int get length {
     if (values == null) return nullValueError();
-    return values.length;
+    return  values.length;
   }
 
   @override
@@ -358,7 +327,7 @@ abstract class Element<V> extends ListBase<V> {
 
   String get vfBytesAsAscii => vfBytes.getAscii();
 
-  List<String> get vfBytesAsAsciiList => vfBytes.asAsciiList();
+  List<String> get vfBytesAsAsciiList => vfBytes.getAsciiList();
 
   String get vfBytesAsUtf8 => cvt.utf8.decode(vfBytes, allowMalformed: true);
 

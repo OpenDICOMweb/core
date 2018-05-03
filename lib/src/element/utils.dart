@@ -11,7 +11,7 @@ import 'dart:collection';
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 
 //TODO: maybe move base64Encode/decode & toDcmString
 /// Returns a Base64 [String] encoded from the [Uint8List] of [bytes].

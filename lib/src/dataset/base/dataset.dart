@@ -18,7 +18,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 

@@ -143,11 +143,22 @@ abstract class WriteBufferMixin {
     _wIndex += 8;
   }
 
-  void writeAscii(String s) => writeUint8List(ascii.encode(s));
+  // **** String writing methods
+  void writeAscii(String s, [int offset = 0, int length]) =>
+      writeUint8List(ascii.encode(s), offset, length);
 
-  void writeUtf8(String s) => writeUint8List(utf8.encode(s));
+  void writeUtf8(String s, [int offset = 0, int length]) =>
+      _writeUtf8(s, offset, length);
 
-  void writeString(String s) => writeUtf8(s);
+  void _writeUtf8(String s, [int offset = 0, int length]) {
+    final _s = (offset == 0 && length == null)
+        ? s
+        : s.substring(offset, offset + length);
+    return writeUint8List(utf8.encode(_s));
+  }
+
+  void writeString(String s, [int offset = 0, int length]) =>
+      _writeUtf8(s, offset, length);
 
   /// Writes [length] zeros to _this_.
   bool writeZeros(int length) {
@@ -157,69 +168,71 @@ abstract class WriteBufferMixin {
     return true;
   }
 
-  void writeInt8List(Int8List list) {
-    _buf.setInt8List(list, _wIndex, list.length);
+  // **** List writing methods
+
+  void writeInt8List(Int8List list, [int offset = 0, int length]) {
+    _buf.setInt8List(_wIndex, list, offset, length);
     _wIndex += list.length;
   }
 
-  void writeInt16List(Int16List list) {
-    _buf.setInt16List(list, _wIndex, list.length);
+  void writeInt16List(Int16List list, [int offset = 0, int length]) {
+    _buf.setInt16List(_wIndex, list, offset, length);
     _wIndex += (list.length * 2);
   }
 
-  void writeInt32List(Int32List list) {
-    _buf.setInt32List(list, _wIndex, list.length);
+  void writeInt32List(Int32List list, [int offset = 0, int length]) {
+    _buf.setInt32List(_wIndex, list, offset, length);
     _wIndex += (list.length * 4);
   }
 
-  void writeInt64List(Int64List list) {
-    _buf.setInt64List(list, _wIndex, list.length);
+  void writeInt64List(Int64List list, [int offset = 0, int length]) {
+    _buf.setInt64List(_wIndex, list, offset, length);
     _wIndex += (list.length * 8);
   }
 
-  void writeUint8List(Uint8List bList) {
+  void writeUint8List(Uint8List bList, [int offset = 0, int length]) {
     if (bList.lengthInBytes == 0) return;
     writeByteData(bList.buffer.asByteData(bList.offsetInBytes, bList.length));
   }
 
-  void writeByteData(ByteData bd) {
+  void writeByteData(ByteData bd, [int offset = 0, int length]) {
     final length = bd.lengthInBytes;
     if (length == 0) return;
     ensureRemaining(length);
-    _buf.setByteData(bd.buffer.asByteData(), _wIndex, length);
+    _buf.setByteData(_wIndex, bd, offset, length);
     _wIndex += length;
   }
 
-  void writeUint16List(Uint16List list) {
-    _buf.setUint16List(list, _wIndex, list.length);
+  void writeUint16List(Uint16List list, [int offset = 0, int length]) {
+    _buf.setUint16List(_wIndex, list, offset, length);
     _wIndex += (list.length * 2);
   }
 
-  void writeUint32List(Uint32List list) {
-    _buf.setUint32List(list, _wIndex, list.length);
+  void writeUint32List(Uint32List list, [int offset = 0, int length]) {
+    _buf.setUint32List(_wIndex, list, offset, length);
     _wIndex += (list.length * 4);
   }
 
-  void writeUint64List(Uint64List list) {
-    _buf.setUint64List(list, _wIndex, list.length);
+  void writeUint64List(Uint64List list, [int offset = 0, int length]) {
+    _buf.setUint64List(_wIndex, list, offset, length);
     _wIndex += (list.length * 8);
   }
 
-  void writeFloat32List(Float32List list) {
-    _buf.setFloat32List(list, _wIndex, list.length);
+  void writeFloat32List(Float32List list, [int offset = 0, int length]) {
+    _buf.setFloat32List(_wIndex, list, offset, length);
     _wIndex += (list.length * 4);
   }
 
-  void writeFloat64List(Float64List list) {
-    _buf.setFloat64List(list, _wIndex, list.length);
+  void writeFloat64List(Float64List list, [int offset = 0, int length]) {
+    _buf.setFloat64List(_wIndex, list, offset, length);
     _wIndex += (list.length * 8);
   }
 
-  void writeAsciiList(List<String> list) =>
-      _wIndex += _buf.setAsciiList(list, _wIndex, list.length);
+  void writeAsciiList(List<String> list, [int offset = 0, int length]) =>
+      _wIndex += _buf.setAsciiList(_wIndex, list, offset, length);
 
-  void writeUtf8List(List<String> list) =>
-      _wIndex += _buf.setUtf8List(list, _wIndex, list.length);
+  void writeUtf8List(List<String> list, [int offset = 0, int length]) =>
+      _wIndex += _buf.setUtf8List(_wIndex, list, offset, length);
 
   void writeStringList(List<String> list) => writeUtf8List(list);
 
@@ -229,7 +242,6 @@ abstract class WriteBufferMixin {
   bool ensureRemaining(int remaining) => _ensureRemaining(remaining);
   bool _ensureRemaining(int remaining) => _ensureCapacity(_wIndex + remaining);
 
-  // Urgent: move to write and read_write_buf
   /// Ensures that [_buf] is at least [capacity] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureCapacity(int capacity) => _ensureCapacity(capacity);

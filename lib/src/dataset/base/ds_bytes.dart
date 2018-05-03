@@ -9,8 +9,8 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/value/empty_list.dart';
 
 /// Dataset Bytes ([DSBytes]).
 abstract class DSBytes {
@@ -115,9 +115,9 @@ class RDSBytes extends DSBytes {
         fmiEnd = 0,
         hasPrefix = false;
 
-  Bytes get preamble => bytes.toBytes(kPreambleOffset, kPreambleLength);
+  Bytes get preamble => bytes.asBytes(kPreambleOffset, kPreambleLength);
 
-  Bytes get prefix => bytes.toBytes(kPrefixOffset, kPrefixLength);
+  Bytes get prefix => bytes.asBytes(kPrefixOffset, kPrefixLength);
 
   int get startDelimiter => getUint32(kPrefixOffset);
 
@@ -205,7 +205,7 @@ class IDSBytes extends DSBytes {
 
   @override
   Bytes get vfBytes =>
-      bytes.toBytes(bytes.offset + kValueFieldOffset, dsEnd);
+      bytes.asBytes(bytes.offset + kValueFieldOffset, dsEnd);
 
   static const int kStartDelimiterOffset = 0;
   static const int kVFLengthFieldOffset = 4;

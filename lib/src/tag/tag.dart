@@ -9,7 +9,6 @@
 
 import 'dart:convert' as cvt;
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
@@ -24,7 +23,9 @@ import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/string.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 const int kGroupMask = 0xFFFF0000;
 const int kElementMask = 0x0000FFFF;

@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/tag/tag_item.dart';
@@ -15,7 +14,8 @@ import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/indenter.dart';
 import 'package:core/src/utils/logger.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/vr_base.dart';
 
 /// A [PrivateSubgroup] contains a Private [creator] and a set of Private
 /// Data Elements contained in the [PrivateSubgroup].

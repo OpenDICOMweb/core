@@ -20,7 +20,7 @@ class WriteBuffer extends BytesBufferBase with WriteBufferMixin {
   int _wIndex;
 
   factory WriteBuffer(
-          [int length = kDefaultLength,
+          [int length = Bytes.kDefaultLength,
           Endian endian,
           int limit = kDefaultLimit]) =>
       new WriteBuffer._(length, endian, limit);

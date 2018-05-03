@@ -10,7 +10,7 @@
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/errors.dart';
@@ -19,9 +19,9 @@ import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/errors.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
-class IntBulkdataRef extends DelegatingList<int> with BulkdataRef<int>{
+class IntBulkdataRef extends DelegatingList<int> with BulkdataRef<int> {
   @override
   int code;
   @override
@@ -43,6 +43,7 @@ class IntBulkdataRef extends DelegatingList<int> with BulkdataRef<int>{
 abstract class IntBase extends Element<int> {
   @override
   Iterable<int> get values;
+
   @override
   IntBase update([Iterable<int> vList]);
 
@@ -96,15 +97,15 @@ abstract class IntBase extends Element<int> {
 
   static bool _isValidValues(Tag tag, Iterable<int> vList, Issues issues,
       int minVLength, int maxVLength, int maxVFListLength) {
-    if (!Element.isValidVListLength(tag, vList, issues, maxVFListLength))
-      return false;
     var result = true;
-    for (var v in vList)
-      result = _isValidValue(v, issues, minVLength, maxVLength);
-    if (result == false) {
-      invalidValuesError(vList, issues: issues);
-      return false;
+    if (vList == null ||
+        !Element.isValidVListLength(tag, vList, issues, maxVFListLength)) {
+      result = false;
+    } else {
+      for (var v in vList)
+        result = _isValidValue(v, issues, minVLength, maxVLength);
     }
+    if (result == false) invalidValuesError(vList, issues: issues);
     return result;
   }
 }
@@ -151,14 +152,13 @@ abstract class SS extends IntBase with Int16 {
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
-    if (vrIndex == kVRIndex || vrIndex == kUSSSIndex || vrIndex == kUSSSOWIndex)
-      return true;
+    if (vrIndex == kVRIndex || vrIndex > 30) return true;
     invalidVRIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
-    final vrIndex = vrIndexFromCodeMap[vrCode];
+    final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
     invalidVRCode(vrCode, issues, kVRIndex);
     return false;
@@ -179,6 +179,9 @@ abstract class SS extends IntBase with Int16 {
       isValidVRIndex(tag.vrIndex) &&
       IntBase._isValidValues(
           tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+
+  static bool isNotValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      !isValidValues(tag, vList, issues);
 }
 
 /// Signed Long ([SL]) [Element].
@@ -228,7 +231,7 @@ abstract class SL extends IntBase with Int32 {
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
-    final vrIndex = vrIndexFromCodeMap[vrCode];
+    final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
     invalidVRCode(vrCode, issues, kVRIndex);
     return false;
@@ -249,11 +252,13 @@ abstract class SL extends IntBase with Int32 {
       isValidVRIndex(tag.vrIndex) &&
       IntBase._isValidValues(
           tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+
+  static bool isNotValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      !isValidValues(tag, vList, issues);
 }
 
 /// Other Byte [Element].
-abstract class OB extends IntBase
-    with OBMixin, Uint8 {
+abstract class OB extends IntBase with OBMixin, Uint8 {
 // *** End Interface
   @override
   int get vfLengthField;
@@ -312,7 +317,7 @@ abstract class OB extends IntBase
       vrIndex == kOBIndex || vrIndex == kOBOWIndex;
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
-    final vrIndex = vrIndexFromCodeMap[vrCode];
+    final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
     invalidVRCode(vrCode, issues, kVRIndex);
     return false;
@@ -334,6 +339,9 @@ abstract class OB extends IntBase
       isValidVRIndex(tag.vrIndex) &&
       IntBase._isValidValues(
           tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+
+  static bool isNotValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      !isValidValues(tag, vList, issues);
 }
 
 /// Unknown (UN) [Element].
@@ -402,6 +410,9 @@ abstract class UN extends IntBase with Uint8 {
           ? true
           : IntBase._isValidValues(
               tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+
+  static bool isNotValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      !isValidValues(tag, vList, issues);
 }
 
 /// Other Byte [Element].
@@ -450,7 +461,7 @@ abstract class US extends IntBase with Uint16 {
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
-    final vrIndex = vrIndexFromCodeMap[vrCode];
+    final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
     invalidVRCode(vrCode, issues, kVRIndex);
     return false;
@@ -471,6 +482,9 @@ abstract class US extends IntBase with Uint16 {
       isValidVRIndex(tag.vrIndex) &&
       IntBase._isValidValues(
           tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+
+  static bool isNotValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      !isValidValues(tag, vList, issues);
 }
 
 /// Unknown (OW) [Element].
@@ -527,7 +541,7 @@ abstract class OW extends IntBase with Uint16 {
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
-    final vrIndex = vrIndexFromCodeMap[vrCode];
+    final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
     invalidVRCode(vrCode, issues, kVRIndex);
     return false;
@@ -549,6 +563,9 @@ abstract class OW extends IntBase with Uint16 {
       isValidVRIndex(tag.vrIndex) &&
       IntBase._isValidValues(
           tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+
+  static bool isNotValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      !isValidValues(tag, vList, issues);
 }
 
 /// Attribute Tag [Element].
@@ -596,7 +613,7 @@ abstract class AT extends IntBase with Uint32 {
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
-    final vrIndex = vrIndexFromCodeMap[vrCode];
+    final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
     invalidVRCode(vrCode, issues, kVRIndex);
     return false;
@@ -617,6 +634,9 @@ abstract class AT extends IntBase with Uint32 {
       isValidVRIndex(tag.vrIndex) &&
       IntBase._isValidValues(
           tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+
+  static bool isNotValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      !isValidValues(tag, vList, issues);
 }
 
 /// Other Long [Element].
@@ -666,7 +686,7 @@ abstract class OL extends IntBase with Uint32 {
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
-    final vrIndex = vrIndexFromCodeMap[vrCode];
+    final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
     invalidVRCode(vrCode, issues, kVRIndex);
     return false;
@@ -688,6 +708,9 @@ abstract class OL extends IntBase with Uint32 {
       isValidVRIndex(tag.vrIndex) &&
       IntBase._isValidValues(
           tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+
+  static bool isNotValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      !isValidValues(tag, vList, issues);
 }
 
 /// Unsigned Long [Element].
@@ -735,7 +758,7 @@ abstract class UL extends IntBase with Uint32 {
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
-    final vrIndex = vrIndexFromCodeMap[vrCode];
+    final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
     invalidVRCode(vrCode, issues, kVRIndex);
     return false;
@@ -756,6 +779,9 @@ abstract class UL extends IntBase with Uint32 {
       isValidVRIndex(tag.vrIndex) &&
       IntBase._isValidValues(
           tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+
+  static bool isNotValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
+      !isValidValues(tag, vList, issues);
 }
 
 /// Group Length [Element] is a subtype of [UL]. It always has a tag
@@ -778,4 +804,3 @@ bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
 bool _isValidVFLength(int vfl, int minBytes, int maxBytes, int sizeInBytes) =>
     _inRange(vfl, minBytes, maxBytes) && (vfl % sizeInBytes == 0);
-

@@ -63,22 +63,22 @@ void main() {
       item[fd0.code] = fd0;
       log.debug('item : $item');
 
-      final remove0 = item.removeAt(as0.key);
+      final remove0 = item.removeAt(as0.code);
       expect(remove0, isNotNull);
-      expect(item.removeAt(as0.key), isNull);
+      expect(item.removeAt(as0.code), isNull);
       log.debug('remove0 : $remove0');
 
-      final remove1 = item.removeAt(ss0.key);
+      final remove1 = item.removeAt(ss0.code);
       expect(remove1, isNotNull);
-      expect(item.removeAt(ss0.key), isNull);
+      expect(item.removeAt(ss0.code), isNull);
       log.debug('remove1 : $remove1');
 
-      final remove2 = item.removeAt(fd0.key);
+      final remove2 = item.removeAt(fd0.code);
       expect(remove2, isNotNull);
-      expect(item.removeAt(fd0.key), isNull);
+      expect(item.removeAt(fd0.code), isNull);
       log.debug('remove2 : $remove2');
 
-      expect(item.removeAt(od0.key), isNull);
+      expect(item.removeAt(od0.code), isNull);
     });
 
     test('delete', () {
@@ -101,21 +101,21 @@ void main() {
       expect(remove1, isNull);
       log.debug('remove0 : $remove0');
 
-      final remove2 = item.delete(ss0.key);
+      final remove2 = item.delete(ss0.code);
       expect(remove2, isNotNull);
-      expect(item.delete(ss0.key), isNull);
+      expect(item.delete(ss0.code), isNull);
       log.debug('remove1 : $remove2');
 
-      final remove3 = item.delete(fd0.key);
+      final remove3 = item.delete(fd0.code);
       expect(remove3, isNotNull);
-      expect(item.delete(fd0.key), isNull);
+      expect(item.delete(fd0.code), isNull);
       log.debug('remove2 : $remove3');
 
-      expect(item.delete(od0.key), isNull);
+      expect(item.delete(od0.code), isNull);
 
       system.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
-      expect(() => item.delete(sl0.key, required: true),
+      expect(() => item.delete(sl0.code, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
 
@@ -132,22 +132,22 @@ void main() {
 
       log.debug('item: $item');
 
-      final removeAll0 = item.deleteAll(as0.key);
+      final removeAll0 = item.deleteAll(as0.code);
       expect(removeAll0[0] == as0, true);
-      expect(item.deleteAll(as0.key), <Element>[]);
+      expect(item.deleteAll(as0.code), <Element>[]);
       log.debug('removeAll0: $removeAll0');
 
-      final removeAll1 = item.deleteAll(ss0.key);
+      final removeAll1 = item.deleteAll(ss0.code);
       expect(removeAll1[0] == ss0, true);
-      expect(item.deleteAll(ss0.key), <Element>[]);
+      expect(item.deleteAll(ss0.code), <Element>[]);
       log.debug('removeAll1 : $removeAll1');
 
-      final removeAll2 = item.deleteAll(fd0.key);
+      final removeAll2 = item.deleteAll(fd0.code);
       expect(removeAll2[0] == fd0, true);
-      expect(item.deleteAll(fd0.key), <Element>[]);
+      expect(item.deleteAll(fd0.code), <Element>[]);
       log.debug('removeAll2 : $removeAll2');
 
-      expect(item.deleteAll(od0.key), <Element>[]);
+      expect(item.deleteAll(od0.code), <Element>[]);
     });
 
     test('remove', () {
@@ -185,11 +185,11 @@ void main() {
       item[fd0.code] = fd0;
       item[as0.code] = as0;
 
-      var noValues0 = item.noValues(fd0.key);
+      var noValues0 = item.noValues(fd0.code);
       expect(noValues0 == fd0, true);
       expect(noValues0.values.isEmpty, false);
 
-      noValues0 = item.noValues(fd0.key);
+      noValues0 = item.noValues(fd0.code);
       expect(noValues0.values.isEmpty, true);
       log.debug('noValues0: $noValues0');
     });
@@ -215,10 +215,10 @@ void main() {
 
       item0[as0.code] = as0;
 
-      var noValues0 = item0.noValuesAll(as0.key);
+      var noValues0 = item0.noValuesAll(as0.code);
       expect(noValues0.isEmpty, false);
 
-      noValues0 = item0.noValuesAll(as0.key);
+      noValues0 = item0.noValuesAll(as0.code);
       for (var e in noValues0) {
         print('noValues: $e');
         expect(e.values.isEmpty, true);
@@ -231,7 +231,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       item[as0.code] = as0;
 
-      final update0 = item.update(as0.key, <String>[]);
+      final update0 = item.update(as0.code, <String>[]);
       expect(update0.isEmpty, false);
     });
 
@@ -242,10 +242,10 @@ void main() {
       item.add(ss0);
 
       final vList1 = [kInt16Max];
-      final update1 = item.update(ss0.key, vList1).values;
+      final update1 = item.update(ss0.code, vList1).values;
       expect(update1, equals(vList0));
 
-      final update2 = item.update(ss0.key, <int>[]);
+      final update2 = item.update(ss0.code, <int>[]);
       expect(update2.values.isEmpty, false);
     });
 
@@ -253,7 +253,7 @@ void main() {
       final item = new MapItem.empty(rds, null);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
-      final update1 = item.update(fd0.key, <double>[]);
+      final update1 = item.update(fd0.code, <double>[]);
       expect(update1.isEmpty, false);
     });
 
@@ -536,8 +536,8 @@ void main() {
 
       expect(item.toList(), equals([as0]));
       expect(item.toList(), equals([as0]));
-      expect(item.keys, equals([as0.key]));
-      expect(item.keys, equals([as0.key]));
+      expect(item.codes, equals([as0.code]));
+      expect(item.codes, equals([as0.code]));
       expect(item.length == as0.length, true);
     });
 

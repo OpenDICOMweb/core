@@ -10,7 +10,7 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/utils/status_report.dart';

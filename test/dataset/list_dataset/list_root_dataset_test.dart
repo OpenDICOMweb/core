@@ -56,7 +56,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       rds[as0.code] = as0;
 
-      final update0 = rds.update(as0.key, <String>[]);
+      final update0 = rds.update(as0.code, <String>[]);
       expect(update0.isEmpty, false);
     });
 
@@ -69,10 +69,10 @@ void main() {
       rds[ss0.code] = ss0;
 
       final vList1 = [kInt16Max];
-      final update1 = rds.update(ss0.key, vList1).values;
+      final update1 = rds.update(ss0.code, vList1).values;
       expect(update1, equals(vList0));
 
-      final update2 = rds.update(ss0.key, <int>[]);
+      final update2 = rds.update(ss0.code, <int>[]);
       expect(update2.values.isEmpty, false);
     });
 
@@ -82,7 +82,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
 
       rds[fd0.code] = fd0;
-      final update1 = rds.update(fd0.key, <double>[]);
+      final update1 = rds.update(fd0.code, <double>[]);
       expect(update1.isEmpty, false);
     });
 
@@ -371,8 +371,8 @@ void main() {
 
       expect(rds.toList(), equals([as0]));
       expect(rds.toList(), equals([as0]));
-      expect(rds.keys, equals([as0.key]));
-      expect(rds.keys, equals([as0.key]));
+      expect(rds.codes, equals([as0.code]));
+      expect(rds.codes, equals([as0.code]));
       expect(rds.length == as0.length, true);
     });
 

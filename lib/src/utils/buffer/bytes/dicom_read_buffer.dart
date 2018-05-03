@@ -49,16 +49,15 @@ abstract class DicomReadMixin {
   int readShortVLF() {
     assert(_rIndex.isEven && _rHasRemaining(2), '@$_rIndex : $_rRemaining');
     final vlf = _buf.getShortVLF(_rIndex);
-    (_rIndex);
     _rIndex += 2;
     return vlf;
   }
 
-  /// Read an EVR short Value Field Length.
-  int readLongVLF() {
+
+  /// Read a 32-bit Value Field Length field.
+  int _readLongVLF() {
     assert(_rIndex.isEven && _rHasRemaining(4), '@$_rIndex : $_rRemaining');
-    final vlf = _buf.getLongVLF(_rIndex);
-    (_rIndex);
+    final vlf = _buf.getUint32(_rIndex);
     _rIndex += 4;
     return vlf;
   }

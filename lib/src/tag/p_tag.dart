@@ -7,14 +7,14 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/errors.dart';
 import 'package:core/src/tag/p_tag_code_map.dart';
 import 'package:core/src/tag/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 //TODO: is hashCode needed?
 class PTag extends Tag {

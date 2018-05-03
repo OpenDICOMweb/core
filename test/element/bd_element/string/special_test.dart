@@ -8,10 +8,9 @@
 //
 
 import 'package:core/server.dart';
+import 'package:core/src/element/bytes/bd_test_utils.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
-
-import '../bd_test_utils.dart';
 
 RSG rsg = new RSG(seed: 1);
 RNG rng = new RNG(1);
@@ -35,7 +34,7 @@ void main() {
         final bd1 = makeShortEvr(ae1.code, ae1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ae1.code, bd1, ae1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = AEtag.from(e0);
+        final make0 = AEtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -54,7 +53,7 @@ void main() {
         final bd1 = makeShortEvr(ae1.code, ae1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ae1.code, bd1, ae1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = AEtag.from(e0);
+        final make0 = AEtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -75,7 +74,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds,  ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DStag.from(e0);
+        final make0 = DStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -94,7 +93,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds,  ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DStag.from(e0);
+        final make0 = DStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -113,7 +112,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds,  ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DStag.from(e0);
+        final make0 = DStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -132,7 +131,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds,  ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DStag.from(e0);
+        final make0 = DStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -151,7 +150,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DStag.from(e0);
+        final make0 = DStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -170,7 +169,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DStag.from(e0);
+        final make0 = DStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -189,7 +188,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DStag.from(e0);
+        final make0 = DStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -208,7 +207,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DStag.from(e0);
+        final make0 = DStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -227,7 +226,7 @@ void main() {
         final bd1 = makeShortEvr(ds1.code, ds1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ds1.code, bd1, ds1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DStag.from(e0);
+        final make0 = DStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -248,7 +247,7 @@ void main() {
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = IStag.from(e0);
+        final make0 = IStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -267,7 +266,7 @@ void main() {
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = IStag.from(e0);
+        final make0 = IStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -286,7 +285,7 @@ void main() {
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = IStag.from(e0);
+        final make0 = IStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -305,7 +304,7 @@ void main() {
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = IStag.from(e0);
+        final make0 = IStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -324,7 +323,7 @@ void main() {
         final bd1 = makeShortEvr(is1.code, is1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, is1.code, bd1, is1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = IStag.from(e0);
+        final make0 = IStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -345,7 +344,7 @@ void main() {
         final bd1 = makeShortEvr(as1.code, as1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, as1.code, bd1, as1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = AStag.from(e0);
+        final make0 = AStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -364,7 +363,7 @@ void main() {
         final bd1 = makeShortEvr(as1.code, as1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, as1.code, bd1, as1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = AStag.from(e0);
+        final make0 = AStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -385,7 +384,7 @@ void main() {
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = CStag.from(e0);
+        final make0 = CStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -404,7 +403,7 @@ void main() {
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = CStag.from(e0);
+        final make0 = CStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -423,7 +422,7 @@ void main() {
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = CStag.from(e0);
+        final make0 = CStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -441,7 +440,7 @@ void main() {
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = CStag.from(e0);
+        final make0 = CStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -460,7 +459,7 @@ void main() {
         final bd1 = makeShortEvr(cs1.code, cs1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, cs1.code, bd1, cs1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = CStag.from(e0);
+        final make0 = CStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -481,7 +480,7 @@ void main() {
         final bd1 = makeShortEvr(dt1.code, dt1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, dt1.code, bd1, dt1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DTtag.from(e0);
+        final make0 = DTtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -500,7 +499,7 @@ void main() {
         final bd1 = makeShortEvr(dt1.code, dt1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, dt1.code, bd1, dt1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = DTtag.from(e0);
+        final make0 = DTtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -521,7 +520,7 @@ void main() {
         final bd1 = makeShortEvr(tm1.code, tm1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, tm1.code, bd1, tm1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = TMtag.from(e0);
+        final make0 = TMtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -540,7 +539,7 @@ void main() {
         final bd1 = makeShortEvr(tm1.code, tm1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, tm1.code, bd1, tm1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = TMtag.from(e0);
+        final make0 = TMtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -561,7 +560,7 @@ void main() {
         final bd1 = makeShortEvr(lo1.code, lo1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, lo1.code, bd1, lo1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = LOtag.from(e0);
+        final make0 = LOtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -580,7 +579,7 @@ void main() {
         final bd1 = makeShortEvr(lo1.code, lo1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, lo1.code, bd1, lo1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = LOtag.from(e0);
+        final make0 = LOtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -601,7 +600,7 @@ void main() {
         final bd1 = makeShortEvr(pn1.code, pn1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, pn1.code, bd1, pn1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = PNtag.from(e0);
+        final make0 = PNtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -620,7 +619,7 @@ void main() {
         final bd1 = makeShortEvr(pn1.code, pn1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, pn1.code, bd1, pn1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = PNtag.from(e0);
+        final make0 = PNtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -641,7 +640,7 @@ void main() {
         final bd1 = makeShortEvr(sh1.code, sh1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, sh1.code, bd1, sh1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = SHtag.from(e0);
+        final make0 = SHtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -660,7 +659,7 @@ void main() {
         final bd1 = makeShortEvr(sh1.code, sh1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, sh1.code, bd1, sh1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = SHtag.from(e0);
+        final make0 = SHtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -681,7 +680,7 @@ void main() {
         final bd1 = makeShortEvr(lt1.code, lt1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, lt1.code, bd1, lt1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = LTtag.from(e0);
+        final make0 = LTtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -700,31 +699,30 @@ void main() {
           ..debug('bd.length: ${bd0.length}')
           ..debug('st1.vrIndex: ${st1.vrIndex}');
         final bd1 = makeShortEvr(st1.code, st1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromCode(rds, st1.code, bd1, st1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, st1.code, bd1);
         log.debug('e0:$e0');
-        final make0 = STtag.from(e0);
+        final make0 = STtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
     });
   });
 
-  group('FDtag', () {
+  group('FDevr', () {
     test('FDtag from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
         system.throwOnError = false;
-        final fd1 =
-            new FDtag(PTag.kOverallTemplateSpatialTolerance, floatList0);
+        final fd1 = makeFD(kOverallTemplateSpatialTolerance, floatList0);
         log.debug('fd1:$fd1');
-        final bd0 = makeFloat64Bytes(floatList0);
+/*        final bd0 = new Bytes.typedDataView(floatList0);
         log
           ..debug('bd.length: ${bd0.length}')
           ..debug('fd1.vrIndex: ${fd1.vrIndex}');
         final bd1 = makeLongEvr(fd1.code, fd1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromCode(rds, fd1.code, bd1, fd1.vrIndex);
-        log.debug('e0:$e0');
-        final make0 = FDtag.from(e0);
+        final e0 = EvrElement.makeFromCode(rds, fd1.code, bd1);
+        log.debug('e0:$e0');*/
+        final make0 = FDtag.fromValues(fd1.tag, fd1.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -734,16 +732,17 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final floatList0 = rng.float64List(1, i);
         system.throwOnError = false;
-        final fd1 = new FDtag(PTag.kSelectorFDValue, floatList0);
+        final fd1 = makeFD(kSelectorFDValue, floatList0);
+        final s = fd1.toString();
         log.debug('fd1:$fd1');
-        final bd0 = makeFloat64Bytes(floatList0);
+/*        final bd0 = new Bytes.typedDataView(floatList0);
         log
           ..debug('bd.length: ${bd0.length}')
           ..debug('fd1.vrIndex: ${fd1.vrIndex}');
         final bd1 = makeLongEvr(fd1.code, fd1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromCode(rds, fd1.code, bd1, fd1.vrIndex);
-        log.debug('e0:$e0');
-        final make0 = FDtag.from(e0);
+        final e0 = EvrElement.makeFromCode(rds, fd1.code, bd1);
+        log.debug('e0:$e0');*/
+        final make0 = FDtag.fromValues(fd1.tag, fd1.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -766,7 +765,7 @@ void main() {
         final bd1 = makeLongEvr(of1.code, of1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, of1.code, bd1, of1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = OFtag.from(e0);
+        final make0 = OFtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -785,7 +784,7 @@ void main() {
         final bd1 = makeLongEvr(of1.code, of1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, of1.code, bd1, of1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = OFtag.from(e0);
+        final make0 = OFtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -807,7 +806,7 @@ void main() {
         final bd1 = makeLongEvr(ut1.code, ut1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ut1.code, bd1, ut1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = UTtag.from(e0);
+        final make0 = UTtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -830,7 +829,8 @@ void main() {
         final bd1 = makeShortEvr(at1.code, at1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, at1.code, bd1, at1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = ATtag.from(e0);
+        // Urgent Sharath: this now needs a Dataset (ds) argument
+        final make0 = TagElement.makeFromElement(rds, e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -850,7 +850,8 @@ void main() {
         final bd1 = makeShortEvr(at1.code, at1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, at1.code, bd1, at1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = ATtag.from(e0);
+        // Urgent Sharath: this now needs a Dataset (ds) argument
+        final make0 = TagElement.makeFromElement(rds, e0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -873,7 +874,7 @@ void main() {
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = ULtag.from(e0);
+        final make0 = ULtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -893,7 +894,7 @@ void main() {
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = ULtag.from(e0);
+        final make0 = ULtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -913,7 +914,7 @@ void main() {
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = ULtag.from(e0);
+        final make0 = ULtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -935,7 +936,7 @@ void main() {
         final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, us1.code, bd1, us1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = UStag.from(e0);
+        final make0 = UStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -956,7 +957,7 @@ void main() {
         final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, us1.code, bd1, us1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = UStag.from(e0);
+        final make0 = UStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -976,7 +977,7 @@ void main() {
         final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, us1.code, bd1, us1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = UStag.from(e0);
+        final make0 = UStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -996,7 +997,7 @@ void main() {
         final bd1 = makeShortEvr(us1.code, us1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, us1.code, bd1, us1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = UStag.from(e0);
+        final make0 = UStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -1018,7 +1019,7 @@ void main() {
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = SStag.from(e0);
+        final make0 = SStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -1038,7 +1039,7 @@ void main() {
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = SStag.from(e0);
+        final make0 = SStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }
@@ -1058,7 +1059,7 @@ void main() {
         final bd1 = makeShortEvr(ul1.code, ul1.vrIndex, bd0);
         final e0 = EvrElement.makeFromCode(rds, ul1.code, bd1, ul1.vrIndex);
         log.debug('e0:$e0');
-        final make0 = SStag.from(e0);
+        final make0 = SStag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
       }

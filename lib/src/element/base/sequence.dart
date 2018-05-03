@@ -9,14 +9,14 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/value/uid.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 

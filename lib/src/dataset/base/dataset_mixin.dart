@@ -9,18 +9,18 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/errors.dart';
-import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
+import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/value/date_time.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/value/uid.dart';
 
 // ignore_for_file: unnecessary_getters_setters
@@ -300,6 +300,10 @@ abstract class DatasetMixin {
       elements.replaceAllF<V>(index, f);
 */
 
+  /// Replaces all Elements with [index] in _this_, or any Sequence ([SQ])
+  /// Items contained in _this_, with a new element whose values are
+  /// [vList]. Returns a list containing all [Element]s that were
+  /// replaced.
   Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
     final result = <List<V>>[]..add(replace(index, vList));

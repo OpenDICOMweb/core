@@ -8,3 +8,4 @@
 //
 
 export 'package:core/src/utils/bytes/bytes.dart';
+export 'package:core/src/utils/bytes/primitives.dart';

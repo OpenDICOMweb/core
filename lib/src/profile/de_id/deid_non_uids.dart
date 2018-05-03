@@ -7,8 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/value/empty_list.dart';
 
 /// A [List] of Tag Code that should be deleted from according to
 /// the DICOM Basic De-Identification Profile (see PS3.15 Annex E).

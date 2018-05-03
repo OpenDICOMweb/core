@@ -17,7 +17,7 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/errors.dart';
 import 'package:core/src/utils/logger.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 /// A Sequence ([SQ]) Element.
 ///
@@ -131,7 +131,7 @@ class SQtag extends SQ with TagElement<TagItem> {
 
   static const Iterable<Item> emptyTagItemList = const <TagItem>[];
 
-  static SQtag make(Tag tag, Iterable<Item> values,
+  static SQtag fromValues(Tag tag, Iterable<Item> values,
           [int vfLength, Dataset parent]) =>
       new SQtag(parent, tag, values, vfLength);
 
@@ -158,7 +158,7 @@ class SQtag extends SQ with TagElement<TagItem> {
 
     print('    converting SQ: $e');
     final tagItems = new List<TagItem>(e.items.length);
-    final sq = _makeSQ(parent, e.code, tagItems, e.vfLengthField);
+    final sq = _makeSQ(parent, e.code, tagItems, e.vfLengthField, null);
     for (var i = 0; i < length; i++) {
       final tItem = TagItem.convert(parent, items[i], sq);
       tagItems[i] = tItem;

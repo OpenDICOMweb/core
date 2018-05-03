@@ -325,10 +325,10 @@ void main() {
     test('FL fromUint8List good values', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
-        final float = new Float32List.fromList(floatList0);
-        final bytes = float.buffer.asUint8List();
-        final fl0 =
-            FLtag.fromUint8List(PTag.kAbsoluteChannelDisplayScale, bytes);
+   //     final float = new Float32List.fromList(floatList0);
+   //     final bytes = float.buffer.asUint8List();
+        final bytes = new Bytes.typedDataView(floatList0);
+        final fl0 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
         log.debug('fl0: ${fl0.info}');
         expect(fl0.hasValidValues, true);
       }
@@ -337,10 +337,10 @@ void main() {
     test('FL fromUint8List bad values', () {
       for (var i = 0; i < 10; i++) {
         final floatList1 = rng.float32List(3, 3);
-        final float0 = new Float32List.fromList(floatList1);
-        final bytes0 = float0.buffer.asUint8List();
-        final fl1 =
-            FLtag.fromUint8List(PTag.kAbsoluteChannelDisplayScale, bytes0);
+        //    final float0 = new Float32List.fromList(floatList1);
+        //    final bytes0 = float0.buffer.asUint8List();
+        final bytes = new Bytes.typedDataView(floatList1);
+        final fl1 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
         log.debug('fl1: ${fl1.info}');
         expect(fl1.hasValidValues, false);
       }
@@ -377,11 +377,13 @@ void main() {
     test('FL make good values', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
-        final make0 = FLtag.make(PTag.kAbsoluteChannelDisplayScale, floatList0);
+        final make0 =
+            FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, floatList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = FLtag.make(PTag.kAbsoluteChannelDisplayScale, <double>[]);
+        final make1 =
+            FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, <double>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<double>[]));
       }
@@ -391,31 +393,35 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(2, 2);
         system.throwOnError = false;
-        final make0 = FLtag.make(PTag.kAbsoluteChannelDisplayScale, floatList0);
+        final make0 =
+            FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, floatList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => FLtag.make(PTag.kAbsoluteChannelDisplayScale, floatList0),
+        expect(
+            () =>
+                FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, floatList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
 
-    test('FL fromBase64', () {
-      final fString = Float32.toBase64(<double>[78678.11]);
-      final fl0 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, fString);
-      expect(fl0.hasValidValues, true);
+    // Urgent Sharath: I don't think we need these any more
+/*    test('FL fromBase64', () {
+    //  final fString = Float32.toBase64(<double>[78678.11]);
+   // final fl0 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, fString);
+   //   expect(fl0.hasValidValues, true);
 
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8List0);
-        final fl1 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, base64);
-        expect(fl1.hasValidValues, true);
+    //    final base64 = cvt.base64.encode(uInt8List0);
+   //   final fl1 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, base64);
+   //     expect(fl1.hasValidValues, true);
       }
     });
 
-    test('Create Elements from floating values(FL)', () {
+ */   test('Create Elements from floating values(FL)', () {
       const f32Values = const <double>[2047.99, 2437.437, 764.53];
 
       final fl0 = new FLtag(PTag.kRecommendedDisplayFrameRateInFloat,
@@ -947,14 +953,14 @@ void main() {
         final float32List0 = new Float32List.fromList(floatList0);
         final bd0 = float32List0.buffer.asByteData();
         final lBd0 = Float32.toByteData(float32List0);
-        log.debug(
-            'lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        log.debug('lBd0: ${lBd0.buffer.asUint8List()}, '
+            'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd0.buffer == bd0.buffer, true);
 
         final lBd1 = Float32.toByteData(float32List0, asView: false);
-        log.debug(
-            'lBd1: ${lBd1.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+        log.debug('lBd1: ${lBd1.buffer.asUint8List()}, '
+            'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd1.buffer == bd0.buffer, false);
 
@@ -963,8 +969,8 @@ void main() {
         final bd1 = float64List0.buffer.asByteData();
         final lBd2 = Float32.toByteData(float64List0);
 
-        log.debug(
-            'lBd2: ${lBd2.buffer.asUint8List()}, bd1: ${bd1.buffer.asUint8List()}');
+        log.debug('lBd2: ${lBd2.buffer.asUint8List()}, '
+            'bd1: ${bd1.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), isNot(bd1.buffer.asUint8List()));
         expect(lBd2.buffer == bd1.buffer, false);
       }
@@ -1273,20 +1279,20 @@ void main() {
       final of0 = new OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
       final of2 =
           new OFtag(PTag.kPointCoordinatesData, listFloat32Common0.take(1));
-      log.debug(
-          'listFloat32Common0:$listFloat32Common0 , of2.hash_code:${of2.hashCode}');
+      log.debug('listFloat32Common0:$listFloat32Common0,'
+          ' of2.hash_code:${of2.hashCode}');
       expect(of0.hashCode == of2.hashCode, false);
       expect(of0 == of2, false);
 
       final of3 = new OFtag(PTag.kUValueData, listFloat32Common0);
-      log.debug(
-          'listFloat32Common0:$listFloat32Common0 , of3.hash_code:${of3.hashCode}');
+      log.debug('listFloat32Common0:$listFloat32Common0, '
+          'of3.hash_code:${of3.hashCode}');
       expect(of0.hashCode == of3.hashCode, false);
       expect(of0 == of3, false);
 
       final of4 = new OFtag(PTag.kSelectorOFValue, listFloat32Common0);
-      log.debug(
-          'listFloat32Common0:$listFloat32Common0 , of4.hash_code:${of4.hashCode}');
+      log.debug('listFloat32Common0:$listFloat32Common0, '
+          'of4.hash_code:${of4.hashCode}');
       expect(of0.hashCode == of4.hashCode, false);
       expect(of0 == of4, false);
     });
@@ -1313,17 +1319,19 @@ void main() {
     test('OF fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
-        final float = new Float32List.fromList(floatList0);
-        final bytes = float.buffer.asUint8List();
-        final of0 = OFtag.fromUint8List(PTag.kVectorGridData, bytes);
+    //    final float = new Float32List.fromList(floatList0);
+    //    final bytes = float.buffer.asUint8List();
+        final bytes0 = new Bytes.typedDataView(floatList0);
+        final of0 = OFtag.fromBytes(PTag.kVectorGridData, bytes0);
         log.debug('of0: ${of0.info}');
         expect(of0.hasValidValues, true);
 
         final floatList1 = rng.float32List(3, 3);
-        final float0 = new Float32List.fromList(floatList1);
-        final bytes0 = float0.buffer.asUint8List();
+        //    final float0 = new Float32List.fromList(floatList1);
+        //    final bytes0 = float0.buffer.asUint8List();
+        final bytes1 = new Bytes.typedDataView(floatList1);
         final of1 =
-            OFtag.fromUint8List(PTag.kFirstOrderPhaseCorrectionAngle, bytes0);
+            OFtag.fromBytes(PTag.kFirstOrderPhaseCorrectionAngle, bytes1);
         log.debug('of1: ${of1.info}');
         expect(of1.hasValidValues, true);
       }
@@ -1360,11 +1368,11 @@ void main() {
     test('OF make good values', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
-        final make0 = OFtag.make(PTag.kVectorGridData, floatList0);
+        final make0 = OFtag.fromValues(PTag.kVectorGridData, floatList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = OFtag.make(PTag.kVectorGridData, <double>[]);
+        final make1 = OFtag.fromValues(PTag.kVectorGridData, <double>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<double>[]));
       }

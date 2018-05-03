@@ -8,7 +8,7 @@
 //
 
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 //TODO: add these to DED and then create a Map from this file.
 class DcmDir {
@@ -19,11 +19,12 @@ class DcmDir {
   final VM vm;
   final bool isRetired;
 
-  const DcmDir(
-      this.keyword, this.code, this.name, this.vrIndex, this.vm, {this.isRetired});
+  const DcmDir(this.keyword, this.code, this.name, this.vrIndex, this.vm,
+      {this.isRetired});
 
   static const DcmDir kFileSetID = const DcmDir(
-      'FileSetID', 0x00041130, 'File-set ID', kCSIndex, VM.k1, isRetired: false);
+      'FileSetID', 0x00041130, 'File-set ID', kCSIndex, VM.k1,
+      isRetired: false);
 
   static const DcmDir kFileSetDescriptorFileID = const DcmDir(
       'FileSetDescriptorFileID',
@@ -34,12 +35,8 @@ class DcmDir {
       isRetired: false);
 
   static const DcmDir kSpecificCharacterSetOfFileSetDescriptorFile =
-      const DcmDir(
-          'SpecificCharacterSetOfFileSetDescriptorFile',
-          0x00041142,
-          'Specific Character Set of File Set Descriptor File',
-          kCSIndex,
-          VM.k1,
+      const DcmDir('SpecificCharacterSetOfFileSetDescriptorFile', 0x00041142,
+          'Specific Character Set of File Set Descriptor File', kCSIndex, VM.k1,
           isRetired: false);
 
   static const DcmDir kOffsetOfTheFirstDirectoryRecordOfTheRootDirectoryEntity =
@@ -84,26 +81,26 @@ class DcmDir {
       VM.k1,
       isRetired: false);
 
-  static const DcmDir kRecordInUseFlag = const DcmDir('RecordInUseFlag',
-      0x00041410, 'Record In-use Flag', kUSIndex, VM.k1, isRetired: false);
+  static const DcmDir kRecordInUseFlag = const DcmDir(
+      'RecordInUseFlag', 0x00041410, 'Record In-use Flag', kUSIndex, VM.k1,
+      isRetired: false);
 
   static const DcmDir kOffsetOfReferencedLowerLevelDirectoryEntity =
-      const DcmDir(
-          'OffsetOfReferencedLowerLevelDirectoryEntity',
-          0x00041420,
-          'Offset of Referenced Lower-Level Directory Entity',
-          kULIndex,
-          VM.k1,
+      const DcmDir('OffsetOfReferencedLowerLevelDirectoryEntity', 0x00041420,
+          'Offset of Referenced Lower-Level Directory Entity', kULIndex, VM.k1,
           isRetired: false);
 
   static const DcmDir kDirectoryRecordType = const DcmDir('DirectoryRecordType',
-      0x00041430, 'Directory​Record​Type', kCSIndex, VM.k1, isRetired: false);
+      0x00041430, 'Directory​Record​Type', kCSIndex, VM.k1,
+      isRetired: false);
 
   static const DcmDir kPrivateRecordUID = const DcmDir(
-      'PrivateRecordUID', 0x0004, 'Private Record UID', kUIIndex, VM.k1, isRetired: false);
+      'PrivateRecordUID', 0x0004, 'Private Record UID', kUIIndex, VM.k1,
+      isRetired: false);
 
-  static const DcmDir kReferencedFileID = const DcmDir('ReferencedFileID',
-      0x00041500, 'Referenced File ID', kCSIndex, VM.k1_8, isRetired: false);
+  static const DcmDir kReferencedFileID = const DcmDir(
+      'ReferencedFileID', 0x00041500, 'Referenced File ID', kCSIndex, VM.k1_8,
+      isRetired: false);
 
   static const DcmDir kMRDRDirectoryRecordOffset = const DcmDir(
       'MRDRDirectoryRecordOffset',
@@ -145,8 +142,9 @@ class DcmDir {
       VM.k1_n,
       isRetired: false);
 
-  static const DcmDir kNumberOfReferences = const DcmDir('NumberOfReferences',
-      0x00041600, 'Number of References', kULIndex, VM.k1, isRetired: true);
+  static const DcmDir kNumberOfReferences = const DcmDir(
+      'NumberOfReferences', 0x00041600, 'Number of References', kULIndex, VM.k1,
+      isRetired: true);
 
   static const List<DcmDir> dcmDirTags = const <DcmDir>[
     kFileSetID, // (0004,1130)

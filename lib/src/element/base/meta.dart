@@ -18,16 +18,22 @@ abstract class MetaElementMixin<V>  {
 
   List<V> get emptyList => e.emptyList;
 
-  Tag get tag => e.tag;
-
-  //Why are these 3 necessary
+  int get index => e.index;
   int get code => e.code;
-
   String get keyword => e.keyword;
-
+  String get name => e.name;
   int get vrIndex => e.vrIndex;
 
+  int get vmMin => e.vmMin;
+  int get vmMax => e.vmMax;
+  int get vmColumns => e.vmColumns;
   VM get vm => e.vm;
+
+  bool get isPublic => e.isPublic;
+
+  bool get isRetired => e.isRetired;
+
+  Tag get tag => e.tag;
 
   int get maxLength => e.maxLength;
   int get maxVFLength => e.maxVFLength;

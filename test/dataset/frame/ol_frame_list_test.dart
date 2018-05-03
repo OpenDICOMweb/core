@@ -19,7 +19,7 @@ final Uint8List frame = new Uint8List.fromList(testFrame);
 void main() {
   Server.initialize(name: 'element/ol_frame_list_test', level: Level.info);
 
-  /// OLtag Frame List Tests
+  /// OLevr Frame List Tests
   group(' FrameList32Bit ', () {
     const ts0 = TransferSyntax.kExplicitVRLittleEndian;
     const samplesPerPixel0 = 1;
@@ -300,26 +300,26 @@ void main() {
       //Frame Descriptor.fromDataSet
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
-          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
-      final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
+          new UIevr.fromStrings(kTransferSyntaxUID, Bytes.asAscii(ts.asString));
+      final usSamplesPerPixel0 = new USevr(kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
-          new CStag(PTag.kPhotometricInterpretation, ['RGB1']);
-      final usRows0 = new UStag(PTag.kRows, [4]);
-      final usColumns0 = new UStag(PTag.kColumns, [6]);
-      final usBitsAllocated0 = new UStag(PTag.kBitsAllocated, [32]);
-      final usBitsStored0 = new UStag(PTag.kBitsStored, [32]);
-      final usHighBit0 = new UStag(PTag.kHighBit, [31]);
-      final usPixelRepresentation0 = new UStag(PTag.kPixelRepresentation, [0]);
-      final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [2]);
-      final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
+          makeCS(kPhotometricInterpretation, ['RGB1']);
+      final usRows0 = new USevr(kRows, [4]);
+      final usColumns0 = new USevr(kColumns, [6]);
+      final usBitsAllocated0 = new USevr(kBitsAllocated, [32]);
+      final usBitsStored0 = new USevr(kBitsStored, [32]);
+      final usHighBit0 = new USevr(kHighBit, [31]);
+      final usPixelRepresentation0 = new USevr(kPixelRepresentation, [0]);
+      final usPlanarConfiguration0 = new USevr(kPlanarConfiguration, [2]);
+      final isPixelAspectRatio0 = new ISevr(kPixelAspectRatio, ['1', '2']);
       const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
-          new UStag(PTag.kSmallestImagePixelValue, [0]);
+          new USevr(kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
-          new UStag(PTag.kLargestImagePixelValue, [(1 << 16) - 1]);
-      final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[], 0);
-      final csColorSpace0 = new CStag(PTag.kColorSpace);
-      final unPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
+          new USevr(kLargestImagePixelValue, [(1 << 16) - 1]);
+      final obIccProfile0 = new OBevr(kICCProfile, <int>[], 0);
+      final csColorSpace0 = new CSevr(kColorSpace);
+      final unPixelPaddingRangeLimit0 = new USevr(kPixelPaddingRangeLimit);
 
       final rds0 = new TagRootDataset.empty()
         ..fmi[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0

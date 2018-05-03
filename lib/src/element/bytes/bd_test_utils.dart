@@ -74,10 +74,11 @@ Bytes makeIvrHeader(int code, int vfLengthInBytes, Bytes bytes) {
 Bytes makeShortEvr(int code, int vrCode, Bytes vfBytes,
     [Endian endian = Endian.little]) {
   // log.debug('makeEvr: ${hex32(code)}');
-  final vfLength = vfBytes.length;
-  var eLength = _shortEvrHeaderSize + vfLength;
-  if (eLength.isOdd) eLength++;
-  final bytes = new Bytes(eLength, endian);
+  // final vfLength = vfBytes.length;
+  // var eLength = _shortEvrHeaderSize + vfLength;
+  // if (eLength.isOdd) eLength++;
+  final bytes = EvrShortBytes.makeFromBytes(code, vrCode, vfBytes, endian);
+
   makeShortEvrHeader(code, vrCode, bytes);
   copyBytesToVF(bytes, _shortEvrVFOffset, vfBytes);
   return bytes;
@@ -112,7 +113,7 @@ void copyBytesToVF(Bytes bytes, int vfOffset, Bytes vfBytes) {
 }
 
 /// Returns the Tag Code from [Bytes].
-int getCode(Bytes bytes) {
+int getCode(DicomBytes bytes) {
   final group = bytes.getUint16(0);
   final elt = bytes.getUint16(2);
   return (group << 16) + elt;
@@ -134,25 +135,21 @@ String vrToString(int vr) {
   return sb.toString();
 }
 
-int getVRCode(Bytes bytes) => bytes.getUint16(_evrVROffset);
+String getVRId(DicomBytes bytes) => vrIdByIndex[bytes.getVRCode(4)];
 
-int getVRIndex(Bytes bytes) => vrIndexFromCodeMap[getVRCode(bytes)];
-
-String getVRId(Bytes bytes) => vrIdByIndex[getVRIndex(bytes)];
-
-int getShortVFLength(Bytes bytes) {
-  final vfl = bytes.getUint16(_shortEvrVFLengthOffset);
+int getShortVFLength(EvrBytes bytes) {
+  final vfl = bytes.vfLengthField;
   log.debug('vfl: $vfl');
   return vfl;
 }
 
-int getLongVFLength(Bytes bd) {
+int getLongVFLength(EvrBytes bd) {
   final vfl = bd.getUint32(_longEvrVFLengthOffset);
   log.debug('vfl: $vfl');
   return vfl;
 }
 
-String shortEvrInfo(Bytes bytes) {
+String shortEvrInfo(EvrBytes bytes) {
   final code = dcm(getCode(bytes));
   final vr = getVRId(bytes);
   final vfLength = getShortVFLength(bytes);
@@ -161,32 +158,37 @@ String shortEvrInfo(Bytes bytes) {
   return msg;
 }
 
-String longEvrInfo(Bytes bytes) {
-  final code = dcm(getCode(bytes));
-  final vr = getVRId(bytes);
-  final vfLength = getLongVFLength(bytes);
+String longEvrInfo(EvrBytes bytes) {
+  final code = dcm(bytes.code);
+  final vr = bytes.vrId;
+  final vfLength = bytes.vfLength;
   final msg = 'LongEvrInfo($bytes): $code $vr $vfLength';
   log.debug(msg);
   return msg;
 }
 
-String shortEvrToString(Bytes bytes) {
+String shortEvrToString(EvrBytes bytes) {
   final sb = new StringBuffer()
-    ..write('${codeToString(getCode(bytes))}')
-    ..write(' ${vrToString(getVRCode(bytes))} ')
-    ..write(getShortVFLength(bytes));
+    ..write('${dcm(bytes.code)}')
+    ..write(' ${vrToString(bytes.vrCode)} ')
+    ..write(bytes.vfLength);
   return sb.toString();
 }
 
-Bytes makeAsciiBD(List<String> vList) => Bytes.asciiEncode(vList.join('\\'));
+Bytes asciiListToBytes(List<String> vList) => Bytes.asAscii(vList.join('\\'));
 
 Bytes uint8ListToBytes(Uint8List bList) => new Bytes.typedDataView(bList);
 
 String vfToString(List vList, Bytes vfBytes) =>
-    'vList: $vList vfBD: ${vfBytes.asUtf8List()}';
+    'vList: $vList vfBD: ${vfBytes.getUtf8List()}';
 
-Bytes makeAE(int code, List<String> vList) =>
-    makeShortEvr(code, kAECode, makeAsciiBD(vList));
+AEevr makeAE(int code, List<String> vList) {
+  final vfBytes = Bytes.asciiFromList(vList);
+  final vfLength = vfBytes.length;
+  final evr = EvrShortBytes.makeEmpty(code, kFLCode, vfLength)
+    ..setAsciiList(_shortEvrVFOffset, vList);
+  return AEevr.makeFromBytes(evr);
+}
 
 Bytes makeFloat32Bytes(List<double> vList) {
   if (vList.isEmpty) return kEmptyBytes;
@@ -194,21 +196,74 @@ Bytes makeFloat32Bytes(List<double> vList) {
   return new Bytes.typedDataView(list.buffer.asByteData());
 }
 
-Bytes makeFL(int code, List<double> vList) =>
-    makeShortEvr(code, kFLCode, makeFloat32Bytes(vList));
+const int _f32ElementSize = 4;
 
-Bytes makeOF(int code, List<double> vList) =>
-    makeLongEvr(code, kOFCode, makeFloat32Bytes(vList));
+FLevr makeFL(int code, List<double> vList) {
+  final vfLength = vList.length * _f32ElementSize;
+  print('|vList: (${vList.length})$vList');
+  final evr = EvrShortBytes.makeEmpty(code, kFLCode, vfLength);
+  _writeFloat32VF(evr, _shortEvrVFOffset, vList);
+  print('|evr: $evr');
+  print('|values.length: ${evr.vfLength ~/ 4}');
+  print('|vfBytes: ${evr.vfBytes}');
+  print('|asFloat32List: ${evr.vfBytes.asFloat32List()}');
 
-Bytes makeFloat64Bytes(List<double> vList, [Endian endian = Endian.little]) {
-  if (vList.isEmpty) return kEmptyBytes;
-  final list = new Float64List.fromList(vList);
-  return new Bytes.typedDataView(
-      list.buffer.asByteData(), 0, vList.length, endian ?? Endian.little);
+  final e =  FLevr.makeFromBytes(evr);
+  print('values: ${e.values}');
+  return e;
 }
 
-Bytes makeFD(int code, List<double> vList) =>
-    makeShortEvr(code, kFDCode, makeFloat64Bytes(vList));
+OFevr makeOF(int code, List<double> vList) {
+  final vfLength = vList.length * _f32ElementSize;
+  final evr = EvrLongBytes.makeEmpty(code, kFLCode, vfLength);
+  _writeFloat32VF(evr, _longEvrVFOffset, vList);
+/*
+  for (var i = 0, j = 8; i < vList.length; i++, j += 4)
+    evr.setFloat32(j, vList[i]);
+*/
+  print(evr);
+  return OFevr.makeFromBytes(evr);
+}
 
-Bytes makeOD(int code, List<double> vList) =>
-    makeLongEvr(code, kODCode, makeFloat64Bytes(vList));
+void _writeFloat32VF(EvrBytes evr, int vfOffset, List<double> vList) {
+  for (var i = 0, j = vfOffset; i < vList.length; i++, j += _f32ElementSize) {
+    print('vList[$i]: ${vList[i]}');
+    evr.setFloat32(j, vList[i]);
+    print('values: ${evr.vfBytes.asFloat32List()}');
+  }
+}
+
+const int _f64ElementSize = 8;
+
+FDevr makeFD(int code, List<double> vList) {
+  final vfLength = vList.length * _f64ElementSize;
+  final evr = EvrShortBytes.makeEmpty(code, kFDCode, vfLength);
+  print('vList.length: ${vList.length}');
+  _writeFloat64VF(evr, _shortEvrVFOffset, vList);
+/*  for (var i = 0, j = _shortEvrVFOffset; i < vList.length; i++, j += 8)
+    evr.setFloat64(j, vList[i]);*/
+  print(evr);
+  print(evr.vfBytes);
+  print(evr.vfBytes.asFloat64List());
+  return FDevr.makeFromBytes(evr);
+}
+
+ODevr makeOD(int code, List<double> vList) {
+  final vfLength = vList.length * _f64ElementSize;
+  final evr = EvrLongBytes.makeEmpty(code, kODCode, vfLength);
+  print('vList.length: ${vList.length}');
+  _writeFloat64VF(evr, _longEvrVFOffset, vList);
+  print(evr);
+  print(evr.asFloat64List());
+  return ODevr.makeFromBytes(evr);
+}
+
+void _writeFloat64VF(EvrBytes evr, int vfOffset, List<double> vList) {
+  for (var i = 0, j = vfOffset; i < vList.length; i++, j += _f64ElementSize) {
+    print('vList[$i]: ${vList[i]}');
+    evr.setFloat64(j, vList[i]);
+  }
+  final vf = evr.vfBytes;
+  final rList = vf.asFloat64List();
+  print('values: ${evr.vfBytes.asFloat64List()}');
+}

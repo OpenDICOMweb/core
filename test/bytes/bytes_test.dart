@@ -25,6 +25,7 @@ void main() {
         expect(bytes.endian == Endian.little, true);
 
         expect(bytes.elementSizeInBytes == 1, true);
+        log.debug('offset: ${bytes.offset}');
         expect(bytes.offset == 0, true);
         expect(bytes.buffer == bytes.bd.buffer, true);
         expect(bytes.length == count, true);
@@ -84,7 +85,6 @@ void main() {
 
         expect(bytes0.elementSizeInBytes == 1, true);
         expect(bytes0.offset == 0, true);
-        expect(bytes0.buffer == bytes.bd.buffer, true);
         expect(bytes0.length == count, true);
         expect(bytes0.length == count, true);
         expect(bytes0.length == bytes.length, true);
@@ -135,16 +135,16 @@ void main() {
       const loopCount = 100;
 
       for (var i = 0; i < loopCount; i++) {
-        final a = new Bytes(0xFFFF * Bytes.kInt16Size);
-        assert(a.length == 0xFFFF * Bytes.kInt16Size, true);
+        final a = new Bytes(0xFFFF * kInt16Size);
+        assert(a.length == 0xFFFF * kInt16Size, true);
 
         for (var i = 0, j = -10; i <= 10; i++, j += 2) {
           a.setInt16(i * 2, j);
-          print('i: $i, j: $j, v: ${a.getInt16(i)}');
+          log.debug('i: $i, j: $j, v: ${a.getInt16(i)}');
           expect(a.getInt16(i * 2) == j, true);
         }
         for (var i = 0, j = -10; i <= 10; i++, j += 2) {
-          print('i: $i, j: $j, v: ${a.getInt16(i)}');
+          log.debug('i: $i, j: $j, v: ${a.getInt16(i)}');
           expect(a.getInt16(i * 2) == j, true);
         }
       }
@@ -152,7 +152,7 @@ void main() {
 
     test('bytes from', () {
       final list0 = rng.uint8List(1, 1);
-      final bytes = Bytes.asciiEncode(list0.toString());
+      final bytes = new Bytes.typedDataView(list0);
       final byteF0 = new Bytes.from(bytes);
       expect(byteF0, equals(bytes));
 

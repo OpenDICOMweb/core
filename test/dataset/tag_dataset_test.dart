@@ -281,17 +281,17 @@ void main() {
       // Adding same element twice
       expect(() => rds.add(ae0),
           throwsA(const isInstanceOf<DuplicateElementError>()));
-      expect(rds[ae0.key] == ae0, true);
+      expect(rds[ae0.code] == ae0, true);
 
       // Adding element with same [id]
       expect(() => rds.add(ae2),
           throwsA(const isInstanceOf<DuplicateElementError>()));
-      expect(rds[ae2.key] == ae0, true);
+      expect(rds[ae2.code] == ae0, true);
 
       // Adding Invalid element
       expect(() => rds.add(ae1),
           throwsA(const isInstanceOf<DuplicateElementError>()));
-      expect(rds[ae1.key] == ae0, true);
+      expect(rds[ae1.code] == ae0, true);
 
       system.throwOnError = false;
       log.debug('system.throwOnError: $system.throwOnError');
@@ -883,23 +883,23 @@ void main() {
       final lt0 = new LTtag(PTag.kAcquisitionProtocolDescription, stringList1);
 
       //adding a new element
-      rootDS0[lt0.key] = lt0;
+      rootDS0[lt0.code] = lt0;
       expect(rootDS0.total == 3, true);
 
       //adding a duplicate element
       system.throwOnError = true;
       rootDS0.allowDuplicates = false;
-      expect(rootDS0[lo0.key] == lo0, true);
-      //   rootDS0[lo0.key] = lo0;
+      expect(rootDS0[lo0.code] == lo0, true);
+      //   rootDS0[lo0.code] = lo0;
       expect(() => rootDS0.add(lo0),
           throwsA(const isInstanceOf<DuplicateElementError>()));
 
       rootDS0.allowDuplicates = true;
-      expect((rootDS0[lo0.key] = lo0) == lo0, true);
+      expect((rootDS0[lo0.code] = lo0) == lo0, true);
 
       system.throwOnError = false;
       log.debug('system.throwOnError:${system.throwOnError }');
-      expect(rootDS0[lo0.key] = lo0, lo0);
+      expect(rootDS0[lo0.code] = lo0, lo0);
       //rootDS0[lo0.tag]=ut0;
     });
 

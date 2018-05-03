@@ -6,7 +6,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag/tag.dart';
@@ -35,9 +35,10 @@ class FLtag extends FL with TagElement<double> {
   FLtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new FLtag(tag, vList);
 
-  static FLtag make(Tag tag, Iterable<double> vList, [int _]) =>
+  static FLtag fromValues(Tag tag, Iterable<double> vList, [int _]) =>
       new FLtag(tag, vList ?? kEmptyDoubleList);
 
+/*
   static FLtag fromBase64(Tag tag, String s) =>
       fromBytes(tag, Bytes.base64Decode(s));
 
@@ -45,6 +46,7 @@ class FLtag extends FL with TagElement<double> {
       fromBytes(tag, new Bytes.typedDataView(bList));
 
   static FLtag from(Element e) => fromBytes(e.tag, e.vfBytes);
+*/
 
   static FLtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
       (FL.isNotValidTag(tag)) ? null : new FLtag._(tag, bytes.asFloat32List());
@@ -75,11 +77,11 @@ class OFtag extends OF with TagElement<double> {
   OFtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new OFtag(tag, vList);
 
-  static OFtag make(Tag tag, Iterable<double> vList, [int _]) =>
-      new OFtag._(tag, vList ?? kEmptyDoubleList);
+  static OFtag fromValues(Tag tag, Iterable<double> vList, [int _]) =>
+      new OFtag(tag, vList ?? kEmptyDoubleList);
 
   static OFtag fromBase64(Tag tag, String s) =>
-      fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.fromBase64(s));
 
   static OFtag fromUint8List(Tag tag, Uint8List bList) =>
       fromBytes(tag, new Bytes.typedDataView(bList));
@@ -113,11 +115,11 @@ class FDtag extends FD with TagElement<double> {
   FDtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new FDtag(tag, vList);
 
-  static FDtag make(Tag tag, Iterable<double> vList, [int _]) =>
+  static FDtag fromValues(Tag tag, Iterable<double> vList, [int _]) =>
       new FDtag(tag, vList ?? kEmptyDoubleList);
 
   static FDtag fromBase64(Tag tag, String s) =>
-      fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.fromBase64(s));
 
   static FDtag fromUint8List(Tag tag, Uint8List bList) =>
       fromBytes(tag, new Bytes.typedDataView(bList));
@@ -152,11 +154,11 @@ class ODtag extends OD with TagElement<double> {
   ODtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       new ODtag(tag, vList);
 
-  static ODtag make(Tag tag, Iterable<double> vList, [int _]) =>
+  static ODtag fromValues(Tag tag, Iterable<double> vList, [int _]) =>
       new ODtag._(tag, vList);
 
   static ODtag fromBase64(Tag tag, String s) =>
-      fromBytes(tag, Bytes.base64Decode(s));
+      fromBytes(tag, Bytes.fromBase64(s));
 
   static ODtag fromUint8List(Tag tag, Uint8List bList) =>
       fromBytes(tag, new Bytes.typedDataView(bList));

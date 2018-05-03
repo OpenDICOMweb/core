@@ -6,17 +6,15 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/bytes/byte_element.dart';
+import 'package:core/src/element/bytes/bytes_element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/value/uid.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 abstract class EvrElement<V> implements ByteElement<V> {
   @override
@@ -24,6 +22,11 @@ abstract class EvrElement<V> implements ByteElement<V> {
   @override
   Iterable<V> get values;
   // **** End of Interface
+
+  /// The [index] of the [Element] Definition for _this_. It is
+  /// used to locate other values in the [Element] Definition.
+  @override
+  int get index => code;
 
   @override
   set values(Iterable<V> vList) =>
@@ -35,123 +38,141 @@ abstract class EvrElement<V> implements ByteElement<V> {
   bool operator ==(Object other) =>
       (other is EvrElement) ? bytes == other.bytes : false;
   @override
+  int get length => bytes.length;
+  @override
   int get hashCode => bytes.hashCode;
   @override
   bool get isEvr => true;
   @override
+  int get code => bytes.code;
+  @override
+  bool get isPublic => code.isEven;
+  @override
   int get vrCode => bytes.vrCode;
+  @override
+  int get vrIndex => bytes.vrIndex;
+  @override
+  int get vfLengthOffset => bytes.vfLengthOffset;
+  @override
+  int get vfLengthField => bytes.vfLengthField;
+  @override
+  int get vfLength => bytes.vfLength;
+  @override
+  int get vfOffset => bytes.vfOffset;
   @override
   Bytes get vfBytes => bytes.vfBytes;
   @override
-  Bytes get vfBytesWithPadding => bytes.vfBytesWithPadding;
+  Bytes get vfBytesWOPadding => bytes.vfBytesWOPadding;
+  @override
+  Tag get tag => Tag.lookupByCode(code, vrIndex);
+  @override
+  bool get isRetired => tag.isRetired;
 
-  static Element makeFromCode(Dataset ds, int code, Bytes bytes, int vrIndex) {
-    assert(vrIndex != kSQIndex);
+  static Element makeFromCode(Dataset ds, int code, EvrBytes bytes) {
     final pCode = code & 0x1FFFF;
     if (pCode >= 0x10010 && pCode <= 0x100FF) return new PCevr(bytes);
-
+    final vrIndex = bytes.vrIndex;
     final tag = lookupTagByCode(ds, code, vrIndex);
     final tagVRIndex = tag.vrIndex;
-    final e = _evrBDMakers[vrIndex](bytes, tagVRIndex);
+    assert(tagVRIndex != kSQIndex);
+    final ByteElement e = _evrBDMakers[vrIndex](bytes, tagVRIndex);
     return (pCode >= 0x11000 && pCode <= 0x1FFFF) ? new PrivateData(e) : e;
   }
 
-  static final List<DecodeBinaryVF> _evrBDMakers = <DecodeBinaryVF>[
+  static final List<Function> _evrBDMakers = <Function>[
     _sqError, // stop reformat
     // Maybe Undefined Lengths
-    OBevr.make, OWevr.make, UNevr.make,
+    OBevr.makeFromBytes, OWevr.makeFromBytes, UNevr.makeFromBytes,
 
     // EVR Long
-    ODevr.make, OFevr.make, OLevr.make,
-    UCevr.make, URevr.make, UTevr.make,
+    ODevr.makeFromBytes, OFevr.makeFromBytes, OLevr.makeFromBytes,
+    UCevr.makeFromBytes, URevr.makeFromBytes, UTevr.makeFromBytes,
 
     // EVR Short
-    AEevr.make, ASevr.make, ATevr.make,
-    CSevr.make, DAevr.make, DSevr.make,
-    DTevr.make, FDevr.make, FLevr.make,
-    ISevr.make, LOevr.make, LTevr.make,
-    PNevr.make, SHevr.make, SLevr.make,
-    SSevr.make, STevr.make, TMevr.make,
-    UIevr.make, ULevr.make, USevr.make,
+    AEevr.makeFromBytes, ASevr.makeFromBytes, ATevr.makeFromBytes,
+    CSevr.makeFromBytes, DAevr.makeFromBytes, DSevr.makeFromBytes,
+    DTevr.makeFromBytes, FDevr.makeFromBytes, FLevr.makeFromBytes,
+    ISevr.makeFromBytes, LOevr.makeFromBytes, LTevr.makeFromBytes,
+    PNevr.makeFromBytes, SHevr.makeFromBytes, SLevr.makeFromBytes,
+    SSevr.makeFromBytes, STevr.makeFromBytes, TMevr.makeFromBytes,
+    UIevr.makeFromBytes, ULevr.makeFromBytes, USevr.makeFromBytes,
   ];
 
-  static Null _sqError(Bytes bytes, [int vrIndex]) =>
+  static Null _sqError(EvrBytes bytes, [int vrIndex]) =>
       invalidElementIndex(vrIndex);
 
-  static Element makePixelData(int code, Bytes eBytes, int vrIndex,
+  static Element makeFromBytesPixelData(int code, EvrBytes eBytes,
       [int vfLengthField, TransferSyntax ts, VFFragments fragments]) {
     if (code != kPixelData)
       return invalidKey(code, 'Invalid Tag Code for PixelData');
+    final vrIndex = eBytes.vrIndex;
     switch (vrIndex) {
       case kOBIndex:
-        return OBevrPixelData.make(code, vrIndex, eBytes, ts, fragments);
+        return OBevrPixelData.makeFromBytes(code, eBytes, ts, fragments);
       case kUNIndex:
-        return UNevrPixelData.make(code, vrIndex, eBytes, ts, fragments);
+        return UNevrPixelData.makeFromBytes(code, eBytes, ts, fragments);
       case kOWIndex:
-        return OWevrPixelData.make(code, vrIndex, eBytes, ts, fragments);
+        return OWevrPixelData.makeFromBytes(code, eBytes, ts, fragments);
       default:
         return invalidVRIndex(vrIndex, null, null);
     }
   }
 
   /// Returns a new [SQevr], where [bytes] is [Bytes] for complete sequence.
-  static SQevr makeSequence(int code, Dataset parent,
-          [Iterable<Item> items, Bytes bytes]) =>
+  static SQevr makeFromBytesSequence(int code, Dataset parent,
+          [Iterable<Item> items, EvrBytes bytes]) =>
       new SQevr(parent, items, bytes);
 }
 
-
-
-
-class FLevr extends FL with EvrElement<double>, Float32Mixin {
+class FLevr extends FL with TagMixin, EvrElement<double>, Float32Mixin {
   @override
   final EvrShortBytes bytes;
 
   FLevr(this.bytes);
 
-  static FLevr make(Bytes bytes, int vrIndex) => new FLevr(bytes);
+  static FLevr makeFromBytes(EvrBytes bytes) => new FLevr(bytes);
 }
 
-class OFevr extends OF with EvrElement<double>, Float32Mixin {
+class OFevr extends OF with TagMixin, EvrElement<double>, Float32Mixin {
   @override
   final EvrLongBytes bytes;
 
   OFevr(this.bytes);
 
-  static OFevr make(Bytes bytes, int vrIndex) => new OFevr(bytes);
+  static OFevr makeFromBytes(EvrBytes bytes) => new OFevr(bytes);
 }
 
-class FDevr extends FD with EvrElement<double>, Float64Mixin {
+class FDevr extends FD with TagMixin, EvrElement<double>, Float64Mixin {
   @override
   final EvrShortBytes bytes;
 
   FDevr(this.bytes);
 
-  static FDevr make(Bytes bytes, int vrIndex) => new FDevr(bytes);
+  static FDevr makeFromBytes(EvrBytes bytes) => new FDevr(bytes);
 }
 
-class ODevr extends OD with EvrElement<double>, Float64Mixin {
+class ODevr extends OD with TagMixin, EvrElement<double>, Float64Mixin {
   @override
   final EvrLongBytes bytes;
 
   ODevr(this.bytes);
 
-  static ODevr make(Bytes bytes, int vrIndex) => new ODevr(bytes);
+  static ODevr makeFromBytes(EvrBytes bytes) => new ODevr(bytes);
 }
 
 // **** Integer Elements
 
-class OBevr extends OB with EvrElement<int>, Uint8Mixin {
+class OBevr extends OB with TagMixin, EvrElement<int>, Uint8Mixin {
   @override
   final EvrLongBytes bytes;
 
   OBevr(this.bytes);
 
-  static OBevr make(Bytes bytes, int vrIndex) => new OBevr(bytes);
+  static OBevr makeFromBytes(EvrBytes bytes) => new OBevr(bytes);
 }
 
 class OBevrPixelData extends OBPixelData
-    with EvrElement<int>, Uint8Mixin {
+    with TagMixin, EvrElement<int>, Uint8Mixin {
   @override
   final EvrLongBytes bytes;
   @override
@@ -161,22 +182,22 @@ class OBevrPixelData extends OBPixelData
 
   OBevrPixelData(this.bytes, [this.ts, this.fragments]);
 
-  static OBevrPixelData make(int code, int vrIndex, Bytes bytes,
+  static OBevrPixelData makeFromBytes(int code, EvrBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
       new OBevrPixelData(bytes, ts, fragments);
 }
 
-class UNevr extends UN with EvrElement<int>, Uint8Mixin {
+class UNevr extends UN with TagMixin, EvrElement<int>, Uint8Mixin {
   @override
   final EvrLongBytes bytes;
 
   UNevr(this.bytes);
 
-  static UNevr make(Bytes bytes, int vrIndex) => new UNevr(bytes);
+  static UNevr makeFromBytes(EvrBytes bytes) => new UNevr(bytes);
 }
 
 class UNevrPixelData extends UNPixelData
-    with EvrElement<int>, Uint8Mixin {
+    with TagMixin, EvrElement<int>, Uint8Mixin {
   @override
   final EvrLongBytes bytes;
   @override
@@ -186,40 +207,40 @@ class UNevrPixelData extends UNPixelData
 
   UNevrPixelData(this.bytes, [this.ts, this.fragments]);
 
-  static UNevrPixelData make(int code, int vrIndex, Bytes bytes,
+  static UNevrPixelData makeFromBytes(int code, EvrBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
       new UNevrPixelData(bytes, ts, fragments);
 }
 
-class SSevr extends SS with EvrElement<int>, Int16Mixin {
+class SSevr extends SS with TagMixin, EvrElement<int>, Int16Mixin {
   @override
   final EvrShortBytes bytes;
 
   SSevr(this.bytes);
 
-  static SSevr make(Bytes bytes, int vrIndex) => new SSevr(bytes);
+  static SSevr makeFromBytes(EvrBytes bytes) => new SSevr(bytes);
 }
 
-class USevr extends US with EvrElement<int>, Uint16Mixin {
+class USevr extends US with TagMixin, EvrElement<int>, Uint16Mixin {
   @override
   final EvrShortBytes bytes;
 
   USevr(this.bytes);
 
-  static USevr make(Bytes bytes, int vrIndex) => new USevr(bytes);
+  static USevr makeFromBytes(EvrBytes bytes) => new USevr(bytes);
 }
 
-class OWevr extends OW with EvrElement<int>, Uint16Mixin {
+class OWevr extends OW with TagMixin, EvrElement<int>, Uint16Mixin {
   @override
   final EvrLongBytes bytes;
 
   OWevr(this.bytes);
 
-  static OWevr make(Bytes bytes, int vrIndex) => new OWevr(bytes);
+  static OWevr makeFromBytes(EvrBytes bytes) => new OWevr(bytes);
 }
 
 class OWevrPixelData extends OWPixelData
-    with EvrElement<int>, Uint16Mixin {
+    with TagMixin, EvrElement<int>, Uint16Mixin {
   @override
   final EvrLongBytes bytes;
   @override
@@ -229,7 +250,7 @@ class OWevrPixelData extends OWPixelData
 
   OWevrPixelData(this.bytes, [this.ts, this.fragments]);
 
-  static OWevrPixelData make(int code, int vrIndex, Bytes bytes,
+  static OWevrPixelData makeFromBytes(int code, EvrBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
       new OWevrPixelData(bytes, ts, fragments);
 }
@@ -237,75 +258,75 @@ class OWevrPixelData extends OWPixelData
 // **** 32-bit integer Elements (AT, SL, UL, GL)
 
 /// Attribute (Element) Code (AT)
-class ATevr extends AT with EvrElement<int>, Uint32Mixin {
+class ATevr extends AT with TagMixin, EvrElement<int>, Uint32Mixin {
   @override
   final EvrShortBytes bytes;
 
   ATevr(this.bytes);
 
-  static ATevr make(Bytes bytes, int vrIndex) => new ATevr(bytes);
+  static ATevr makeFromBytes(EvrBytes bytes) => new ATevr(bytes);
 }
 
 /// Other Long (OL)
-class OLevr extends OL with EvrElement<int>, Uint32Mixin {
+class OLevr extends OL with TagMixin, EvrElement<int>, Uint32Mixin {
   @override
   final EvrLongBytes bytes;
 
   OLevr(this.bytes);
 
-  static OLevr make(Bytes bytes, int vrIndex) => new OLevr(bytes);
+  static OLevr makeFromBytes(EvrBytes bytes) => new OLevr(bytes);
 }
 
 /// Signed Long (SL)
-class SLevr extends SL with EvrElement<int>, Int32Mixin {
+class SLevr extends SL with TagMixin, EvrElement<int>, Int32Mixin {
   @override
   final EvrShortBytes bytes;
 
   SLevr(this.bytes);
 
-  static SLevr make(Bytes bytes, int vrIndex) => new SLevr(bytes);
+  static SLevr makeFromBytes(EvrBytes bytes) => new SLevr(bytes);
 }
 
 /// Unsigned Long (UL)
-class ULevr extends UL with EvrElement<int>, Uint32Mixin {
+class ULevr extends UL with TagMixin, EvrElement<int>, Uint32Mixin {
   @override
   final EvrShortBytes bytes;
 
   ULevr(this.bytes);
 
-  static Element<int> make(Bytes bytes, int vrIndex) =>
+  static Element<int> makeFromBytes(EvrBytes bytes) =>
       // If the code is (gggg,0000) create a Group Length element
       (bytes.getUint16(2) == 0) ? new GLevr(bytes) : new ULevr(bytes);
 }
 
 /// Group Length (GL)
-class GLevr extends GL with EvrElement<int>, Uint32Mixin {
+class GLevr extends GL with TagMixin, EvrElement<int>, Uint32Mixin {
   @override
   final EvrShortBytes bytes;
 
   GLevr(this.bytes);
 
-  static GLevr make(Bytes bytes, int vrIndex) => new GLevr(bytes);
+  static GLevr makeFromBytes(EvrBytes bytes) => new GLevr(bytes);
 }
 
 // **** String Elements
 
-class AEevr extends AE with EvrElement<String>, ByteStringMixin, AsciiMixin {
+class AEevr extends AE with TagMixin, EvrElement<String>, AsciiMixin {
   @override
   final EvrShortBytes bytes;
 
   AEevr(this.bytes);
 
-  static AEevr make(Bytes bytes, int vrIndex) => new AEevr(bytes);
+  static AEevr makeFromBytes(EvrBytes bytes) => new AEevr(bytes);
 }
 
-class ASevr extends AS with EvrElement<String>, ByteStringMixin, AsciiMixin {
+class ASevr extends AS with TagMixin, EvrElement<String>, AsciiMixin {
   @override
   final EvrShortBytes bytes;
 
   ASevr(this.bytes);
 
-  static ASevr make(Bytes bytes, int vrIndex) {
+  static ASevr makeFromBytes(EvrBytes bytes) {
     final length = bytes.length;
     if (length != 12 && length != 8)
       log.warn('Invalid Age (AS) "${bytes.getUtf8()}"');
@@ -313,22 +334,22 @@ class ASevr extends AS with EvrElement<String>, ByteStringMixin, AsciiMixin {
   }
 }
 
-class CSevr extends CS with EvrElement<String>, ByteStringMixin, AsciiMixin {
+class CSevr extends CS with TagMixin, EvrElement<String>, AsciiMixin {
   @override
   final EvrShortBytes bytes;
 
   CSevr(this.bytes);
 
-  static CSevr make(Bytes bytes, int vrIndex) => new CSevr(bytes);
+  static CSevr makeFromBytes(EvrBytes bytes) => new CSevr(bytes);
 }
 
-class DAevr extends DA with EvrElement<String>, ByteStringMixin, AsciiMixin {
+class DAevr extends DA with TagMixin, EvrElement<String>, AsciiMixin {
   @override
   final EvrShortBytes bytes;
 
   DAevr(this.bytes);
 
-  static DAevr make(Bytes bytes, int vrIndex) {
+  static DAevr makeFromBytes(EvrBytes bytes) {
     final length = bytes.length;
     if (length != 16 && length != 8)
       log.debug('Invalid Date (DA) "${bytes.getUtf8()}"');
@@ -336,49 +357,49 @@ class DAevr extends DA with EvrElement<String>, ByteStringMixin, AsciiMixin {
   }
 }
 
-class DSevr extends DS with EvrElement<String>, ByteStringMixin, AsciiMixin {
+class DSevr extends DS with TagMixin, EvrElement<String>, AsciiMixin {
   @override
   final EvrShortBytes bytes;
 
   DSevr(this.bytes);
 
-  static DSevr make(Bytes bytes, int vrIndex) => new DSevr(bytes);
+  static DSevr makeFromBytes(EvrBytes bytes) => new DSevr(bytes);
 }
 
-class DTevr extends DT with EvrElement<String>, ByteStringMixin, AsciiMixin {
+class DTevr extends DT with TagMixin, EvrElement<String>, AsciiMixin {
   @override
   final EvrShortBytes bytes;
 
   DTevr(this.bytes);
 
-  static DTevr make(Bytes bytes, int vrIndex) => new DTevr(bytes);
+  static DTevr makeFromBytes(EvrBytes bytes) => new DTevr(bytes);
 }
 
-class ISevr extends IS with EvrElement<String>, ByteStringMixin, AsciiMixin {
+class ISevr extends IS with TagMixin, EvrElement<String>, AsciiMixin {
   @override
   final EvrShortBytes bytes;
 
   ISevr(this.bytes);
 
-  static ISevr make(Bytes bytes, int vrIndex) => new ISevr(bytes);
+  static ISevr makeFromBytes(EvrBytes bytes) => new ISevr(bytes);
 }
 
-class UIevr extends UI with EvrElement<String>, ByteStringMixin, AsciiMixin {
+class UIevr extends UI with TagMixin, EvrElement<String>, AsciiMixin {
   @override
   final EvrShortBytes bytes;
 
   UIevr(this.bytes);
 
-  static UIevr make(Bytes bytes, int vrIndex) => new UIevr(bytes);
+  static UIevr makeFromBytes(EvrBytes bytes) => new UIevr(bytes);
 }
 
-class LOevr extends LO with EvrElement<String>, ByteStringMixin, Utf8Mixin {
+class LOevr extends LO with TagMixin, EvrElement<String>, Utf8Mixin {
   @override
   final EvrShortBytes bytes;
 
   LOevr(this.bytes);
 
-  static Element make(Bytes bytes, int vrIndex) {
+  static Element makeFromBytes(EvrBytes bytes) {
     final group = bytes.getUint16(0);
     final elt = bytes.getUint16(2);
     return (group.isOdd && elt >= 0x10 && elt <= 0xFF)
@@ -387,7 +408,7 @@ class LOevr extends LO with EvrElement<String>, ByteStringMixin, Utf8Mixin {
   }
 }
 
-class PCevr extends PC with EvrElement<String>, ByteStringMixin, Utf8Mixin {
+class PCevr extends PC with TagMixin, EvrElement<String>, Utf8Mixin {
   @override
   final EvrShortBytes bytes;
 
@@ -396,13 +417,13 @@ class PCevr extends PC with EvrElement<String>, ByteStringMixin, Utf8Mixin {
   @override
   String get token => vfString;
 
-  static PCevr make(Bytes bytes, int vrIndex) => new PCevr(bytes);
+  static PCevr makeFromBytes(EvrBytes bytes) => new PCevr(bytes);
 
   // Urgent: remove when working
-  static PCevr makeEmptyPrivateCreator(int pdTag, int vrIndex) {
+/*  static PCevr makeFromBytesEmptyPrivateCreator(int pdTag) {
     final group = Tag.privateGroup(pdTag);
     final sgNumber = (pdTag & 0xFFFF) >> 8;
-    final bytes = new Bytes(8)
+    final bytes = new EvrShortBytes(8)
       ..setUint16(0, group)
       ..setUint16(0, sgNumber)
       ..setUint8(4, kLOIndex)
@@ -410,81 +431,82 @@ class PCevr extends PC with EvrElement<String>, ByteStringMixin, Utf8Mixin {
       ..setUint16(6, 0);
     return new PCevr(bytes);
   }
+  */
 }
 
-class PNevr extends PN with EvrElement<String>, ByteStringMixin, Utf8Mixin {
+class PNevr extends PN with TagMixin, EvrElement<String>, Utf8Mixin {
   @override
   final EvrShortBytes bytes;
 
   PNevr(this.bytes);
 
-  static PNevr make(Bytes bytes, int vrIndex) => new PNevr(bytes);
+  static PNevr makeFromBytes(EvrBytes bytes) => new PNevr(bytes);
 }
 
-class SHevr extends SH with EvrElement<String>, ByteStringMixin, Utf8Mixin {
+class SHevr extends SH with TagMixin, EvrElement<String>, Utf8Mixin {
   @override
   final EvrShortBytes bytes;
 
   SHevr(this.bytes);
 
-  static SHevr make(Bytes bytes, int vrIndex) => new SHevr(bytes);
+  static SHevr makeFromBytes(EvrBytes bytes) => new SHevr(bytes);
 }
 
-class LTevr extends LT with EvrElement<String>, ByteStringMixin, TextMixin {
+class LTevr extends LT with TagMixin, EvrElement<String>, TextMixin {
   @override
   final EvrShortBytes bytes;
 
   LTevr(this.bytes);
 
-  static LTevr make(Bytes bytes, int vrIndex) => new LTevr(bytes);
+  static LTevr makeFromBytes(EvrBytes bytes) => new LTevr(bytes);
 }
 
-class STevr extends ST with EvrElement<String>, ByteStringMixin, TextMixin {
+class STevr extends ST with TagMixin, EvrElement<String>, TextMixin {
   @override
   final EvrShortBytes bytes;
 
   STevr(this.bytes);
 
-  static STevr make(Bytes bytes, int vrIndex) => new STevr(bytes);
+  static STevr makeFromBytes(EvrBytes bytes) => new STevr(bytes);
 }
 
-class TMevr extends TM with EvrElement<String>, ByteStringMixin, AsciiMixin {
+class TMevr extends TM with TagMixin, EvrElement<String>, AsciiMixin {
   @override
   final EvrShortBytes bytes;
 
   TMevr(this.bytes);
 
-  static TMevr make(Bytes bytes, int vrIndex) => new TMevr(bytes);
+  static TMevr makeFromBytes(EvrBytes bytes) => new TMevr(bytes);
 }
 
-class UCevr extends UC with EvrElement<String>, ByteStringMixin, Utf8Mixin {
+class UCevr extends UC with TagMixin, EvrElement<String>, Utf8Mixin {
   @override
   final EvrLongBytes bytes;
 
   UCevr(this.bytes);
 
-  static UCevr make(Bytes bytes, int vrIndex) => new UCevr(bytes);
+  static UCevr makeFromBytes(EvrBytes bytes) => new UCevr(bytes);
 }
 
-class URevr extends UR with EvrElement<String>, ByteStringMixin, TextMixin {
+class URevr extends UR with TagMixin, EvrElement<String>, TextMixin {
   @override
   final EvrLongBytes bytes;
 
   URevr(this.bytes);
 
-  static URevr make(Bytes bytes, int vrIndex) => new URevr(bytes);
+  static URevr makeFromBytes(EvrBytes bytes) => new URevr(bytes);
 }
 
-class UTevr extends UT with EvrElement<String>, ByteStringMixin, TextMixin {
+class UTevr extends UT with TagMixin, EvrElement<String>, TextMixin {
   @override
   final EvrLongBytes bytes;
 
   UTevr(this.bytes);
 
-  static UTevr make(Bytes bytes, int vrIndex) => new UTevr(bytes);
+  static UTevr makeFromBytes(EvrBytes bytes) => new UTevr(bytes);
 }
 
-class SQevr extends SQ with EvrElement<Item> {
+class SQevr extends SQ with TagMixin, EvrElement<Item> {
   @override
   final Dataset parent;
   @override
@@ -497,7 +519,7 @@ class SQevr extends SQ with EvrElement<Item> {
   @override
   int get valuesLength => values.length;
 
-  static SQevr make(Dataset parent,
-          [SQ sequence, Iterable<Item> values, Bytes bytes]) =>
+  static SQevr makeFromBytes(Dataset parent,
+          [SQ sequence, Iterable<Item> values, EvrBytes bytes]) =>
       new SQevr(parent, values, bytes);
 }

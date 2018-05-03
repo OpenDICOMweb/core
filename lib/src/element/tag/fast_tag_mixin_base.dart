@@ -16,9 +16,8 @@ import 'package:core/src/utils/issues.dart';
 ///
 /// This mixin defines the interface to DICOM Tags, where a Tag is
 /// a semantic identifier for an element.
-abstract class TagMixinBase<K, V> {
+abstract class TagMixinBase<V> {
   int get field;
-  Tag get tag;
 
   // **** Tag Identifiers
   /// Returns the DICOM integer tag code.
@@ -26,10 +25,11 @@ abstract class TagMixinBase<K, V> {
   int get code;
   String get keyword;
   String get name;
+  Tag get tag;
 
   /// Returns the identifier ([key]), used as key to locate the
   /// Element in a Dataset<K,V>.
-  K get key;
+  int get key;
 
   // **** VR related Getters
 //  VR get vr;

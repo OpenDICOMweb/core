@@ -11,7 +11,7 @@ import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
@@ -23,7 +23,7 @@ import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/value.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 class StringBulkdata extends DelegatingList<String> with BulkdataRef<String> {
   @override
@@ -228,7 +228,7 @@ abstract class StringAscii extends StringBase {
       {bool isAscii: true}) {
     if (vf == null) return kEmptyStringList;
     if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.asAsciiList();
+    if (vf is Bytes) return vf.getAsciiList();
     if (vf is Uint8List)
       return _stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return invalidValuesError(vf);
@@ -246,7 +246,7 @@ abstract class StringUtf8 extends StringBase {
       {bool isAscii: true}) {
     if (vf == null) return kEmptyStringList;
     if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.asUtf8List();
+    if (vf is Bytes) return vf.getUtf8List();
     if (vf is Uint8List)
       return _stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return invalidValuesError(vf);
@@ -2592,7 +2592,7 @@ Uint8List _uint8ListFromString(String s, int maxVFLength, bool isAscii) {
 
 Bytes _bytesFromString(String s, int maxVFLength, bool isAscii) {
   final vf =
-      (isAscii || system.useAscii) ? Bytes.asciiEncode(s) : Bytes.utf8Encode(s);
+      (isAscii || system.useAscii) ? Bytes.asAscii(s) : Bytes.asUtf8(s);
   if (!_isValidVFL(vf.length, maxVFLength))
     return invalidVFLength(vf.length, maxVFLength);
   return vf;

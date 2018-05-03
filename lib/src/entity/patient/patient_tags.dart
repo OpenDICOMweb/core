@@ -8,7 +8,7 @@
 //
 
 import 'package:core/src/tag.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 // TODO: move to dictionary
 class PatientTag {
@@ -68,8 +68,8 @@ class PatientTag {
       EType.kUnknown,
       isRetired: false);
 
-  static const PatientTag kPatientSex = const PatientTag(
-      'PatientSex', 0x00100040, 'Patient\'s Sex', kCSIndex, VM.k1, EType.kUnknown,
+  static const PatientTag kPatientSex = const PatientTag('PatientSex',
+      0x00100040, 'Patient\'s Sex', kCSIndex, VM.k1, EType.kUnknown,
       isRetired: false);
 
   static const PatientTag kPatientInsurancePlanCodeSequence = const PatientTag(
@@ -142,8 +142,8 @@ class PatientTag {
       VM.k1,
       EType.kUnknown,
       isRetired: false);
-  static const PatientTag kPatientAge = const PatientTag(
-      'PatientAge', 0x00101010, 'Patient\'s Age', kASIndex, VM.k1, EType.kUnknown,
+  static const PatientTag kPatientAge = const PatientTag('PatientAge',
+      0x00101010, 'Patient\'s Age', kASIndex, VM.k1, EType.kUnknown,
       isRetired: false);
   static const PatientTag kPatientSize = const PatientTag('PatientSize',
       0x00101020, 'Patient\'s Size', kDSIndex, VM.k1, EType.kUnknown,
@@ -232,8 +232,8 @@ class PatientTag {
       VM.k1_n,
       EType.kUnknown,
       isRetired: false);
-  static const PatientTag kEthnicGroup = const PatientTag(
-      'EthnicGroup', 0x00102160, 'Ethnic Group', kSHIndex, VM.k1, EType.kUnknown,
+  static const PatientTag kEthnicGroup = const PatientTag('EthnicGroup',
+      0x00102160, 'Ethnic Group', kSHIndex, VM.k1, EType.kUnknown,
       isRetired: false);
   static const PatientTag kOccupation = const PatientTag(
       'Occupation', 0x00102180, 'Occupation', kSHIndex, VM.k1, EType.kUnknown,

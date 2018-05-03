@@ -9,15 +9,15 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/bytes/byte_element.dart';
+import 'package:core/src/element/bytes/bytes_element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/value/uid.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 abstract class IvrElement<V> implements ByteElement<V> {
   @override
@@ -40,23 +40,26 @@ abstract class IvrElement<V> implements ByteElement<V> {
   @override
   bool get isEvr => false;
 
-  /// _Note_: Because this relies on [tag], the [vrCode] might be UN
-  ///         more often than for EVR Elements.
   @override
-  int get vrCode => tag.vrCode;
-
+  int get code => bytes.code;
+  @override
+  int get vfLengthOffset => bytes.vfLengthOffset;
+  @override
+  int get vfOffset => bytes.vfOffset;
   @override
   Bytes get vfBytes => bytes.vfBytes;
   @override
-  Bytes get vfBytesWithPadding => bytes.vfBytesWithPadding;
+  Bytes get vfBytesWOPadding => bytes.vfBytesWOPadding;
+  @override
+  Tag get tag => Tag.lookupByCode(code, vrIndex);
 
-  static Element makeFromCode(Dataset ds, int code, Bytes bytes, int vrIndex) {
-    assert(vrIndex != kSQIndex);
+  static Element makeFromCode(Dataset ds, int code, Bytes bytes) {
     final pCode = code & 0x1FFFF;
     if (pCode >= 0x10010 && pCode <= 0x100FF) return new PCivr(bytes);
-    final tag = lookupTagByCode(ds, code, vrIndex);
+    final tag = lookupTagByCode(ds, code, kUNIndex);
     final tagVRIndex = tag.vrIndex;
-    final e = _ivrBDMakers[vrIndex](bytes, tagVRIndex);
+    assert(tagVRIndex != kSQIndex);
+    final e = _ivrBDMakers[tagVRIndex](bytes, tagVRIndex);
     return (pCode >= 0x11000 && pCode <= 0x1FFFF) ? new PrivateData(e) : e;
   }
 
@@ -116,7 +119,7 @@ abstract class IvrElement<V> implements ByteElement<V> {
 
 // **** IVR Float Elements (FL, FD, OD, OF)
 
-class FLivr extends FL with IvrElement<double>, Float32Mixin {
+class FLivr extends FL with TagMixin, IvrElement<double>, Float32Mixin {
   @override
   final IvrBytes bytes;
 
@@ -125,7 +128,7 @@ class FLivr extends FL with IvrElement<double>, Float32Mixin {
   static FLivr make(Bytes bytes, int vrIndex) => new FLivr(bytes);
 }
 
-class OFivr extends OF with IvrElement<double>, Float32Mixin {
+class OFivr extends OF with TagMixin, IvrElement<double>, Float32Mixin {
   @override
   final IvrBytes bytes;
 
@@ -136,7 +139,7 @@ class OFivr extends OF with IvrElement<double>, Float32Mixin {
 
 // **** IVR 64-Bit Float Elements (OD, OF)
 
-class FDivr extends FL with IvrElement<double>, Float64Mixin {
+class FDivr extends FL with TagMixin, IvrElement<double>, Float64Mixin {
   @override
   final IvrBytes bytes;
 
@@ -145,7 +148,7 @@ class FDivr extends FL with IvrElement<double>, Float64Mixin {
   static FDivr make(Bytes bytes, int vrIndex) => new FDivr(bytes);
 }
 
-class ODivr extends OD with IvrElement<double>, Float64Mixin {
+class ODivr extends OD with TagMixin, IvrElement<double>, Float64Mixin {
   @override
   final IvrBytes bytes;
 
@@ -158,7 +161,7 @@ class ODivr extends OD with IvrElement<double>, Float64Mixin {
 
 // **** 8-bit Integer Elements (OB, UN)
 
-class OBivr extends OB with IvrElement<int>, Uint8Mixin {
+class OBivr extends OB with TagMixin, IvrElement<int>, Uint8Mixin {
   @override
   final IvrBytes bytes;
 
@@ -168,7 +171,7 @@ class OBivr extends OB with IvrElement<int>, Uint8Mixin {
 }
 
 class OBivrPixelData extends OBPixelData
-    with IvrElement<int>, Uint8Mixin {
+    with TagMixin, IvrElement<int>, Uint8Mixin {
   @override
   final IvrBytes bytes;
   @override
@@ -183,7 +186,7 @@ class OBivrPixelData extends OBPixelData
       new OBivrPixelData(bytes, ts, fragments);
 }
 
-class UNivr extends UN with IvrElement<int>, Uint8Mixin {
+class UNivr extends UN with TagMixin, IvrElement<int>, Uint8Mixin {
   @override
   final IvrBytes bytes;
 
@@ -196,7 +199,7 @@ class UNivr extends UN with IvrElement<int>, Uint8Mixin {
 }
 
 class UNivrPixelData extends UNPixelData
-    with IvrElement<int>, Uint8Mixin {
+    with TagMixin, IvrElement<int>, Uint8Mixin {
   @override
   final IvrBytes bytes;
   @override
@@ -216,7 +219,7 @@ class UNivrPixelData extends UNPixelData
 
 // **** 16-bit Integer Elements (SS, US, OW)
 
-class SSivr extends SS with IvrElement<int>, Int16Mixin {
+class SSivr extends SS with TagMixin, IvrElement<int>, Int16Mixin {
   @override
   final IvrBytes bytes;
 
@@ -225,7 +228,7 @@ class SSivr extends SS with IvrElement<int>, Int16Mixin {
   static SSivr make(Bytes bytes, int vrIndex) => new SSivr(bytes);
 }
 
-class USivr extends US with IvrElement<int>, Uint16Mixin {
+class USivr extends US with TagMixin, IvrElement<int>, Uint16Mixin {
   @override
   final IvrBytes bytes;
 
@@ -234,7 +237,7 @@ class USivr extends US with IvrElement<int>, Uint16Mixin {
   static USivr make(Bytes bytes, int vrIndex) => new USivr(bytes);
 }
 
-class OWivr extends OW with IvrElement<int>, Uint16Mixin {
+class OWivr extends OW with TagMixin, IvrElement<int>, Uint16Mixin {
   @override
   final IvrBytes bytes;
 
@@ -244,7 +247,7 @@ class OWivr extends OW with IvrElement<int>, Uint16Mixin {
 }
 
 class OWivrPixelData extends OWPixelData
-    with IvrElement<int>, Uint16Mixin {
+    with TagMixin, IvrElement<int>, Uint16Mixin {
   @override
   final IvrBytes bytes;
   @override
@@ -262,7 +265,7 @@ class OWivrPixelData extends OWPixelData
 // **** 32-bit integer Elements (AT, SL, UL, GL)
 
 /// Attribute (Element) Code (AT)
-class ATivr extends AT with IvrElement<int>, Uint32Mixin {
+class ATivr extends AT with TagMixin, IvrElement<int>, Uint32Mixin {
   @override
   final IvrBytes bytes;
 
@@ -272,7 +275,7 @@ class ATivr extends AT with IvrElement<int>, Uint32Mixin {
 }
 
 /// Other Long (OL)
-class OLivr extends OL with IvrElement<int>, Uint32Mixin {
+class OLivr extends OL with TagMixin, IvrElement<int>, Uint32Mixin {
   @override
   final IvrBytes bytes;
 
@@ -282,7 +285,7 @@ class OLivr extends OL with IvrElement<int>, Uint32Mixin {
 }
 
 /// Signed Long (SL)
-class SLivr extends SL with IvrElement<int>, Int32Mixin {
+class SLivr extends SL with TagMixin, IvrElement<int>, Int32Mixin {
   @override
   final IvrBytes bytes;
 
@@ -292,7 +295,7 @@ class SLivr extends SL with IvrElement<int>, Int32Mixin {
 }
 
 /// Unsigned Long (UL)
-class ULivr extends UL with IvrElement<int>, Uint32Mixin {
+class ULivr extends UL with TagMixin, IvrElement<int>, Uint32Mixin {
   @override
   final IvrBytes bytes;
 
@@ -302,7 +305,7 @@ class ULivr extends UL with IvrElement<int>, Uint32Mixin {
 }
 
 /// Group Length (GL)
-class GLivr extends GL with IvrElement<int>, Uint32Mixin {
+class GLivr extends GL with TagMixin, IvrElement<int>, Uint32Mixin {
   @override
   final IvrBytes bytes;
 
@@ -316,7 +319,7 @@ class GLivr extends GL with IvrElement<int>, Uint32Mixin {
 
 // **** String Elements
 
-class AEivr extends AE with IvrElement<String>, ByteStringMixin, AsciiMixin {
+class AEivr extends AE with TagMixin, IvrElement<String>, AsciiMixin {
   @override
   final IvrBytes bytes;
 
@@ -325,7 +328,7 @@ class AEivr extends AE with IvrElement<String>, ByteStringMixin, AsciiMixin {
   static AEivr make(Bytes bytes, int vrIndex) => new AEivr(bytes);
 }
 
-class ASivr extends AS with IvrElement<String>, ByteStringMixin, AsciiMixin {
+class ASivr extends AS with TagMixin, IvrElement<String>, AsciiMixin {
   @override
   final IvrBytes bytes;
 
@@ -334,7 +337,7 @@ class ASivr extends AS with IvrElement<String>, ByteStringMixin, AsciiMixin {
   static ASivr make(Bytes bytes, int vrIndex) => new ASivr(bytes);
 }
 
-class CSivr extends CS with IvrElement<String>, ByteStringMixin, AsciiMixin {
+class CSivr extends CS with TagMixin, IvrElement<String>, AsciiMixin {
   @override
   final IvrBytes bytes;
 
@@ -343,7 +346,7 @@ class CSivr extends CS with IvrElement<String>, ByteStringMixin, AsciiMixin {
   static CSivr make(Bytes bytes, int vrIndex) => new CSivr(bytes);
 }
 
-class DAivr extends DA with IvrElement<String>, ByteStringMixin, AsciiMixin {
+class DAivr extends DA with TagMixin, IvrElement<String>, AsciiMixin {
   @override
   final IvrBytes bytes;
 
@@ -352,7 +355,7 @@ class DAivr extends DA with IvrElement<String>, ByteStringMixin, AsciiMixin {
   static DAivr make(Bytes bytes, int vrIndex) => new DAivr(bytes);
 }
 
-class DSivr extends DS with IvrElement<String>, ByteStringMixin, AsciiMixin {
+class DSivr extends DS with TagMixin, IvrElement<String>, AsciiMixin {
   @override
   final IvrBytes bytes;
 
@@ -361,7 +364,7 @@ class DSivr extends DS with IvrElement<String>, ByteStringMixin, AsciiMixin {
   static DSivr make(Bytes bytes, int vrIndex) => new DSivr(bytes);
 }
 
-class DTivr extends DT with IvrElement<String>, ByteStringMixin, AsciiMixin {
+class DTivr extends DT with TagMixin, IvrElement<String>, AsciiMixin {
   @override
   final IvrBytes bytes;
 
@@ -370,7 +373,7 @@ class DTivr extends DT with IvrElement<String>, ByteStringMixin, AsciiMixin {
   static DTivr make(Bytes bytes, int vrIndex) => new DTivr(bytes);
 }
 
-class ISivr extends IS with IvrElement<String>, ByteStringMixin, AsciiMixin {
+class ISivr extends IS with TagMixin, IvrElement<String>, AsciiMixin {
   @override
   final IvrBytes bytes;
 
@@ -379,7 +382,7 @@ class ISivr extends IS with IvrElement<String>, ByteStringMixin, AsciiMixin {
   static ISivr make(Bytes bytes, int vrIndex) => new ISivr(bytes);
 }
 
-class UIivr extends UI with IvrElement<String>, ByteStringMixin, AsciiMixin {
+class UIivr extends UI with TagMixin, IvrElement<String>, AsciiMixin {
   @override
   final IvrBytes bytes;
 
@@ -388,7 +391,7 @@ class UIivr extends UI with IvrElement<String>, ByteStringMixin, AsciiMixin {
   static UIivr make(Bytes bytes, int vrIndex) => new UIivr(bytes);
 }
 
-class LOivr extends LO with IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class LOivr extends LO with TagMixin, IvrElement<String>, Utf8Mixin {
   @override
   final IvrBytes bytes;
 
@@ -403,7 +406,7 @@ class LOivr extends LO with IvrElement<String>, ByteStringMixin, Utf8Mixin {
   }
 }
 
-class PCivr extends PC with IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class PCivr extends PC with TagMixin, IvrElement<String>, Utf8Mixin {
   @override
   final IvrBytes bytes;
 
@@ -415,6 +418,7 @@ class PCivr extends PC with IvrElement<String>, ByteStringMixin, Utf8Mixin {
   static PCivr make(Bytes bytes, int vrIndex) => new PCivr(bytes);
 
   // Urgent: remove when working
+/*
   static PCivr makeEmptyPrivateCreator(int pdTag, int vrIndex) {
     final group = Tag.privateGroup(pdTag);
     final sgNumber = (pdTag & 0xFFFF) >> 8;
@@ -426,9 +430,11 @@ class PCivr extends PC with IvrElement<String>, ByteStringMixin, Utf8Mixin {
       ..setUint16(6, 0);
     return new PCivr(bytes);
   }
+*/
+
 }
 
-class PNivr extends PN with IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class PNivr extends PN with TagMixin, IvrElement<String>, Utf8Mixin {
   @override
   final IvrBytes bytes;
 
@@ -437,7 +443,7 @@ class PNivr extends PN with IvrElement<String>, ByteStringMixin, Utf8Mixin {
   static PNivr make(Bytes bytes, int vrIndex) => new PNivr(bytes);
 }
 
-class SHivr extends SH with IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class SHivr extends SH with TagMixin, IvrElement<String>, Utf8Mixin {
   @override
   final IvrBytes bytes;
 
@@ -445,7 +451,7 @@ class SHivr extends SH with IvrElement<String>, ByteStringMixin, Utf8Mixin {
   static SHivr make(Bytes bytes, int vrIndex) => new SHivr(bytes);
 }
 
-class LTivr extends LT with IvrElement<String>, ByteStringMixin, TextMixin {
+class LTivr extends LT with TagMixin, IvrElement<String>, TextMixin {
   @override
   final IvrBytes bytes;
 
@@ -454,7 +460,7 @@ class LTivr extends LT with IvrElement<String>, ByteStringMixin, TextMixin {
   static LTivr make(Bytes bytes, int vrIndex) => new LTivr(bytes);
 }
 
-class STivr extends ST with IvrElement<String>, ByteStringMixin, TextMixin {
+class STivr extends ST with TagMixin, IvrElement<String>, TextMixin {
   @override
   final IvrBytes bytes;
 
@@ -463,7 +469,7 @@ class STivr extends ST with IvrElement<String>, ByteStringMixin, TextMixin {
   static STivr make(Bytes bytes, int vrIndex) => new STivr(bytes);
 }
 
-class TMivr extends TM with IvrElement<String>, ByteStringMixin, AsciiMixin {
+class TMivr extends TM with TagMixin, IvrElement<String>, AsciiMixin {
   @override
   final IvrBytes bytes;
 
@@ -472,7 +478,7 @@ class TMivr extends TM with IvrElement<String>, ByteStringMixin, AsciiMixin {
   static TMivr make(Bytes bytes, int vrIndex) => new TMivr(bytes);
 }
 
-class UCivr extends UC with IvrElement<String>, ByteStringMixin, Utf8Mixin {
+class UCivr extends UC with TagMixin, IvrElement<String>, Utf8Mixin {
   @override
   final IvrBytes bytes;
 
@@ -481,7 +487,7 @@ class UCivr extends UC with IvrElement<String>, ByteStringMixin, Utf8Mixin {
   static UCivr make(Bytes bytes, int vrIndex) => new UCivr(bytes);
 }
 
-class URivr extends UR with IvrElement<String>, ByteStringMixin, TextMixin {
+class URivr extends UR with TagMixin, IvrElement<String>, TextMixin {
   @override
   final IvrBytes bytes;
 
@@ -490,7 +496,7 @@ class URivr extends UR with IvrElement<String>, ByteStringMixin, TextMixin {
   static URivr make(Bytes bytes, int vrIndex) => new URivr(bytes);
 }
 
-class UTivr extends UT with IvrElement<String>, ByteStringMixin, TextMixin {
+class UTivr extends UT with TagMixin, IvrElement<String>, TextMixin {
   @override
   final IvrBytes bytes;
 
@@ -499,7 +505,7 @@ class UTivr extends UT with IvrElement<String>, ByteStringMixin, TextMixin {
   static UTivr make(Bytes bytes, int vrIndex) => new UTivr(bytes);
 }
 
-class SQivr extends SQ with IvrElement<Item> {
+class SQivr extends SQ with TagMixin, IvrElement<Item> {
   @override
   final Dataset parent;
   @override

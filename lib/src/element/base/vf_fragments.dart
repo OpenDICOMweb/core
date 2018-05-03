@@ -11,8 +11,8 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/element/utils.dart';
+import 'package:core/src/value/empty_list.dart';
 
 /// [VFFragments[ contains the Value Field of an _encapsulated_
 /// (i.e. compressed) OBPixelData Element. This class is used

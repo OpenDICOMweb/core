@@ -9,7 +9,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/value/uid.dart';

@@ -409,12 +409,12 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
         final make0 =
-            FDtag.make(PTag.kOverallTemplateSpatialTolerance, floatList0);
+            FDtag.fromValues(PTag.kOverallTemplateSpatialTolerance, floatList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
         final make1 =
-            FDtag.make(PTag.kOverallTemplateSpatialTolerance, <double>[]);
+            FDtag.fromValues(PTag.kOverallTemplateSpatialTolerance, <double>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<double>[]));
       }
@@ -425,12 +425,13 @@ void main() {
         final floatList0 = rng.float64List(2, 2);
         system.throwOnError = false;
         final make0 =
-            FDtag.make(PTag.kOverallTemplateSpatialTolerance, floatList0);
+            FDtag.fromValues(PTag.kOverallTemplateSpatialTolerance, floatList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
         expect(
-            () => FDtag.make(PTag.kOverallTemplateSpatialTolerance, floatList0),
+            () => FDtag.fromValues(
+                PTag.kOverallTemplateSpatialTolerance, floatList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
     });
@@ -956,8 +957,7 @@ void main() {
     });
 
     test('Float64Mixin.fromList', () {
-      expect(
-          Float64.fromList(float64LstCommon0), equals(float64LstCommon0));
+      expect(Float64.fromList(float64LstCommon0), equals(float64LstCommon0));
 
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
@@ -1343,11 +1343,11 @@ void main() {
     test('OD make good values', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
-        final make0 = ODtag.make(PTag.kSelectorODValue, floatList0);
+        final make0 = ODtag.fromValues(PTag.kSelectorODValue, floatList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = ODtag.make(PTag.kSelectorODValue, <double>[]);
+        final make1 = ODtag.fromValues(PTag.kSelectorODValue, <double>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<double>[]));
       }
@@ -1669,7 +1669,7 @@ void main() {
         final uInt8List0 = float64List0.buffer.asUint8List();
         final base64 = cvt.base64.encode(uInt8List0);
         final uInt8List1 = cvt.base64.decode(base64);
-        final uInt8List2 = Float64.toBytes(floatList0);
+        final uInt8List2 = Float64.toUint8List(floatList0);
         expect(uInt8List0, equals(uInt8List1));
         expect(uInt8List0, equals(uInt8List1));
         expect(uInt8List0, equals(uInt8List2));

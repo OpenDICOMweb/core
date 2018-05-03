@@ -23,7 +23,6 @@ abstract class ReadBufferMixin {
   ByteData asByteData([int offset, int length]);
   void rError(Object msg);
 
-
   // *** Reader specific Getters and Methods
 
   int get rIndex => _rIndex;
@@ -198,13 +197,15 @@ abstract class ReadBufferMixin {
   }
 
   List<String> readAsciiList(int length) {
-    final v = _buf.asAsciiList(_rIndex, length);
+    final v =
+        _buf.getAsciiList(offset: _rIndex, length: length, allowInvalid: true);
     _rIndex += length;
     return v;
   }
 
   List<String> readUtf8List(int length) {
-    final v = _buf.asUtf8List(_rIndex, length);
+    final v =
+        _buf.getUtf8List(offset: _rIndex, length: length, allowMalformed: true);
     _rIndex += length;
     return v;
   }
@@ -218,10 +219,8 @@ abstract class ReadBufferMixin {
     return offset;
   }
 
-  Uint8List get contentsRead =>
-      _buf.buffer.asUint8List(_buf.offset, _rIndex);
+  Uint8List get contentsRead => _buf.buffer.asUint8List(_buf.offset, _rIndex);
   Uint8List get contentsUnread => _buf.buffer.asUint8List(_rIndex, _wIndex);
-
 
   Uint8List get contentsWritten => _buf.buffer.asUint8List(_rIndex, _wIndex);
 

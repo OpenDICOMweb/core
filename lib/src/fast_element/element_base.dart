@@ -12,11 +12,11 @@
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/vr_base.dart';
 
 /// The base class for DICOM Data Elements
 ///

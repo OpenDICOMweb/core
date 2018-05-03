@@ -7,9 +7,9 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 class PDTagDefinition {
   // Internal index of _this_.

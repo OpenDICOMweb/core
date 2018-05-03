@@ -8,6 +8,6 @@
 //
 
 export 'package:core/src/element/base.dart';
-export 'package:core/src/element/bytes/byte_element.dart';
+export 'package:core/src/element/bytes/bytes_element.dart';
 export 'package:core/src/element/bytes/evr.dart';
 export 'package:core/src/element/bytes/ivr.dart';

@@ -422,11 +422,11 @@ void main() {
     test('AS make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
-        final make0 = AStag.make(PTag.kPatientAge, vList0);
+        final make0 = AStag.fromValues(PTag.kPatientAge, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = AStag.make(PTag.kPatientAge, <String>[]);
+        final make1 = AStag.fromValues(PTag.kPatientAge, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -436,21 +436,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(2, 2);
         system.throwOnError = false;
-        final make0 = AStag.make(PTag.kPatientAge, vList0);
+        final make0 = AStag.fromValues(PTag.kPatientAge, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => AStag.make(PTag.kPatientAge, vList0),
+        expect(() => AStag.fromValues(PTag.kPatientAge, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = AStag.make(PTag.kPatientAge, <String>[null]);
+      final make1 = AStag.fromValues(PTag.kPatientAge, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => AStag.make(PTag.kPatientAge, <String>[null]),
+      expect(() => AStag.fromValues(PTag.kPatientAge, <String>[null]),
           throwsA(const isInstanceOf<InvalidAgeStringError>()));
     });
   });
@@ -1402,11 +1402,11 @@ void main() {
     test('DA make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        final make0 = DAtag.make(PTag.kDate, vList0);
+        final make0 = DAtag.fromValues(PTag.kDate, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = DAtag.make(PTag.kDate, <String>[]);
+        final make1 = DAtag.fromValues(PTag.kDate, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -1416,21 +1416,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(2, 2);
         system.throwOnError = false;
-        final make0 = DAtag.make(PTag.kDate, vList0);
+        final make0 = DAtag.fromValues(PTag.kDate, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => DAtag.make(PTag.kDate, vList0),
+        expect(() => DAtag.fromValues(PTag.kDate, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = DAtag.make(PTag.kDate, <String>[null]);
+      final make1 = DAtag.fromValues(PTag.kDate, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => DAtag.make(PTag.kDate, <String>[null]),
+      expect(() => DAtag.fromValues(PTag.kDate, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
   });
@@ -2358,11 +2358,11 @@ void main() {
     test('DT make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        final make0 = DTtag.make(PTag.kDateTime, vList0);
+        final make0 = DTtag.fromValues(PTag.kDateTime, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = DTtag.make(PTag.kDateTime, <String>[]);
+        final make1 = DTtag.fromValues(PTag.kDateTime, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -2372,21 +2372,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(2, 2);
         system.throwOnError = false;
-        final make0 = DTtag.make(PTag.kDateTime, vList0);
+        final make0 = DTtag.fromValues(PTag.kDateTime, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => DTtag.make(PTag.kDateTime, vList0),
+        expect(() => DTtag.fromValues(PTag.kDateTime, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = DTtag.make(PTag.kDateTime, <String>[null]);
+      final make1 = DTtag.fromValues(PTag.kDateTime, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => DTtag.make(PTag.kDateTime, <String>[null]),
+      expect(() => DTtag.fromValues(PTag.kDateTime, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
   });
@@ -3307,11 +3307,11 @@ void main() {
     test('TM make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1);
-        final make0 = TMtag.make(PTag.kTime, vList0);
+        final make0 = TMtag.fromValues(PTag.kTime, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = TMtag.make(PTag.kTime, <String>[]);
+        final make1 = TMtag.fromValues(PTag.kTime, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -3321,21 +3321,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(2, 2);
         system.throwOnError = false;
-        final make0 = TMtag.make(PTag.kTime, vList0);
+        final make0 = TMtag.fromValues(PTag.kTime, vList0);
         expect(make0, isNull);
 
         system.throwOnError = true;
-        expect(() => TMtag.make(PTag.kTime, vList0),
+        expect(() => TMtag.fromValues(PTag.kTime, vList0),
             throwsA(const isInstanceOf<InvalidValuesLengthError>()));
       }
 
       system.throwOnError = false;
-      final make1 = TMtag.make(PTag.kTime, <String>[null]);
+      final make1 = TMtag.fromValues(PTag.kTime, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
       system.throwOnError = true;
-      expect(() => TMtag.make(PTag.kDateTime, <String>[null]),
+      expect(() => TMtag.fromValues(PTag.kDateTime, <String>[null]),
           throwsA(const isInstanceOf<InvalidVRError>()));
     });
   });

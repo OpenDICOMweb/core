@@ -43,9 +43,9 @@ abstract class BufferMixin {
   bool rHasRemaining(int n) => (rIndex_ + n) <= wIndex_;
   bool wHasRemaining(int n) => (wIndex_ + n) <= end;
 
-  Bytes asBytes([int offset = 0, int length]) =>
+  Bytes asBytes([int offset = 0, int length, Endian endian]) =>
     //final offset = _getOffset(offset, length);
-     bytes.toBytes(offset, length ?? length);
+     bytes.asBytes(offset, length ?? length, endian);
 
 
   ByteData asByteData([int offset = 0, int length]) =>

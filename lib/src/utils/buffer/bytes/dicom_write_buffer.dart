@@ -12,7 +12,7 @@ part of odw.sdk.utils.buffer;
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
 
-abstract class DicomWriteMixin  {
+abstract class DicomWriteBufferMixin  {
   DicomGrowableBytes get _buf;
   int get _wIndex;
   set _wIndex(int index);
@@ -39,7 +39,7 @@ abstract class DicomWriteMixin  {
   /// Peek at next tag - doesn't move the [_wIndex].
   void writeVRCode(int code) {
     assert(_wIndex.isEven && _wHasRemaining(4), '@$_wIndex : $_wRemaining');
-    _buf.setVRCode(_wIndex, code);
+    _buf.setVRCode(code);
     _wIndex += 2;
   }
 
@@ -48,7 +48,7 @@ abstract class DicomWriteMixin  {
 //    _checkEvrShortHeader(code, vrCode, vlf);
     assert(_wIndex.isEven);
     _maybeGrow(8);
-    _buf.evrSetShortHeader(_wIndex, code, vrCode, vlf);
+    _buf.evrSetShortHeader(code, vrCode, vlf);
     _wIndex += 8;
   }
 
@@ -57,7 +57,7 @@ abstract class DicomWriteMixin  {
 //    _checkEvrLongHeader(code, vrCode, vlf);
     assert(_wIndex.isEven);
     _maybeGrow(12);
-    _buf.evrSetLongHeader(_wIndex, code, vrCode, vlf);
+    _buf.evrSetLongHeader(code, vrCode, vlf);
     _wIndex += 12;
   }
 
@@ -66,7 +66,7 @@ abstract class DicomWriteMixin  {
 //    _checkIvrHeader(code, vrCode, vlf);
     assert(_wIndex.isEven);
     _maybeGrow(8);
-    _buf.ivrSetHeader(_wIndex, code, vrCode, vlf);
+    _buf.ivrSetHeader(_wIndex, code, vlf);
     _wIndex += 8;
   }
 
@@ -102,10 +102,10 @@ void _checkLongHeader(int code, int vrCode, int vlf) {
 
 }
 
-class DicomWriteBuffer extends WriteBuffer with DicomWriteMixin {
+class DicomWriteBuffer extends WriteBuffer with DicomWriteBufferMixin {
 
   DicomWriteBuffer(
-      [int length = kDefaultLength,
+      [int length = Bytes.kDefaultLength,
         Endian endian,
         int limit = kDefaultLimit])
       : super._(length, endian, limit);

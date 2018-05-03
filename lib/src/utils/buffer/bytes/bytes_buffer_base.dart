@@ -12,9 +12,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/utils.dart';
-import 'package:core/src/utils/buffer/buffer_base.dart';
-import 'package:core/src/utils/bytes/bytes.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/vr_base.dart';
 
 part 'package:core/src/utils/buffer/buffer_mixin.dart';
 part 'package:core/src/utils/buffer/bytes/buffer.dart';
@@ -26,7 +25,7 @@ part 'package:core/src/utils/buffer/bytes/write_buffer.dart';
 part 'package:core/src/utils/buffer/bytes/write_mixin.dart';
 
 /// The base class for Buffer
-abstract class BytesBufferBase implements BufferBase {
+abstract class BytesBufferBase {
   // **** Interface
   /// The underlying [Bytes] for the buffer.
   Bytes get _buf;
@@ -118,19 +117,13 @@ abstract class BytesBufferBase implements BufferBase {
   /// An error occurs if [start] is outside the range 0 .. [length],
   /// or if [end] is outside the range [start] .. [length].
   /// [length].
-  Bytes subbytes([int start = 0, int end]) =>
+  Bytes sublist([int start = 0, int end]) =>
       new Bytes.from(_buf, start, (end ?? length) - start);
-
-  ByteData toByteData(int offset, int length) =>
-      _buf.buffer.asByteData(buffer.offset + offset, length);
-
-  Uint8List toUint8List(int offset, int length) =>
-      buffer.buffer.asUint8List(buffer.offset + offset, length);
 
   /// Return a view of _this_ of [length], starting at [start]. If [length]
   /// is _null_ it defaults to [length].
-  Bytes asBytes([int start = 0, int length]) =>
-      _buf.toBytes(start, length ?? length);
+  Bytes view([int start = 0, int length]) =>
+      _buf.asBytes(start, length ?? length);
 
   ByteData asByteData([int offset, int length]) =>
       _buf.asByteData(offset ?? _rIndex, length ?? _wIndex);
