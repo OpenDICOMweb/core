@@ -94,7 +94,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       rds[fd0.code] = fd0;
@@ -117,7 +117,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       rds[fd0.code] = fd0;
@@ -141,7 +141,7 @@ void main() {
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       rds[fd0.code] = fd0;
@@ -423,22 +423,22 @@ void main() {
       item[fd0.code] = fd0;
       log.debug('item : $item');
 
-      final remove0 = item.removeAt(as0.key);
+      final remove0 = item.removeAt(as0.index);
       expect(remove0, isNotNull);
-      expect(item.removeAt(as0.key), isNull);
+      expect(item.removeAt(as0.index), isNull);
       log.debug('remove0 : $remove0');
 
-      final remove1 = item.removeAt(ss0.key);
+      final remove1 = item.removeAt(ss0.index);
       expect(remove1, isNotNull);
-      expect(item.removeAt(ss0.key), isNull);
+      expect(item.removeAt(ss0.index), isNull);
       log.debug('remove1 : $remove1');
 
-      final remove2 = item.removeAt(fd0.key);
+      final remove2 = item.removeAt(fd0.index);
       expect(remove2, isNotNull);
-      expect(item.removeAt(fd0.key), isNull);
+      expect(item.removeAt(fd0.index), isNull);
       log.debug('remove2 : $remove2');
 
-      expect(item.removeAt(od0.key), isNull);
+      expect(item.removeAt(od0.index), isNull);
     });
 
     test('delete', () {
@@ -461,21 +461,21 @@ void main() {
       expect(remove1, isNull);
       log.debug('remove0 : $remove0');
 
-      final remove2 = item.delete(ss0.key);
+      final remove2 = item.delete(ss0.index);
       expect(remove2, isNotNull);
-      expect(item.delete(ss0.key), isNull);
+      expect(item.delete(ss0.index), isNull);
       log.debug('remove1 : $remove2');
 
-      final remove3 = item.delete(fd0.key);
+      final remove3 = item.delete(fd0.index);
       expect(remove3, isNotNull);
-      expect(item.delete(fd0.key), isNull);
+      expect(item.delete(fd0.index), isNull);
       log.debug('remove2 : $remove3');
 
-      expect(item.delete(od0.key), isNull);
+      expect(item.delete(od0.index), isNull);
 
       system.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
-      expect(() => item.delete(sl0.key, required: true),
+      expect(() => item.delete(sl0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
 
@@ -492,29 +492,29 @@ void main() {
 
       log.debug('item: $item');
 
-      final removeAll0 = item.deleteAll(as0.key);
+      final removeAll0 = item.deleteAll(as0.index);
       expect(removeAll0[0] == as0, true);
-      expect(item.deleteAll(as0.key), <Element>[]);
+      expect(item.deleteAll(as0.index), <Element>[]);
       log.debug('removeAll0: $removeAll0');
 
-      final removeAll1 = item.deleteAll(ss0.key);
+      final removeAll1 = item.deleteAll(ss0.index);
       expect(removeAll1[0] == ss0, true);
-      expect(item.deleteAll(ss0.key), <Element>[]);
+      expect(item.deleteAll(ss0.index), <Element>[]);
       log.debug('removeAll1 : $removeAll1');
 
-      final removeAll2 = item.deleteAll(fd0.key);
+      final removeAll2 = item.deleteAll(fd0.index);
       expect(removeAll2[0] == fd0, true);
-      expect(item.deleteAll(fd0.key), <Element>[]);
+      expect(item.deleteAll(fd0.index), <Element>[]);
       log.debug('removeAll2 : $removeAll2');
 
-      expect(item.deleteAll(od0.key), <Element>[]);
+      expect(item.deleteAll(od0.index), <Element>[]);
     });
 
     test('getElementsInRange', () {
       final item = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       item[fd0.code] = fd0;
@@ -542,7 +542,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       item[fd0.code] = fd0;

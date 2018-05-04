@@ -15,10 +15,11 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 RNG rng = new RNG(1);
 
+// Urgent Jim: add dataset arguments and change tag to evr.
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new TagRootDataset.empty();
+  final rds = new ByteRootDataset.empty();
   group('AEtag', () {
     test('AEtag from VM.k1', () {
       for (var i = 0; i < 10; i++) {
@@ -32,7 +33,7 @@ void main() {
           ..debug('ae1.vrIndex: ${ae1.vrIndex}');
         //final bd = bytes.buffer.asByteData();
         final bd1 = makeShortEvr(ae1.code, ae1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromCode( ae1.code, bd1, ae1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ae1.code, bd1);
         log.debug('e0:$e0');
         final make0 = AEtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');
@@ -44,14 +45,14 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getAEList(1, i);
         system.throwOnError = false;
-        final ae1 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final ae1 = new AEevr(kSelectorAEValue, vList0);
         log.debug('ae1:$ae1');
-        final bd0 = Bytes.toAscii(vList0.join('\\'));
+        final bd0 = DicomBytes.toAscii(vList0.join('\\'));
         log
           ..debug('bd.length: ${bd0.length}')
           ..debug('ae1.vrIndex: ${ae1.vrIndex}');
         final bd1 = makeShortEvr(ae1.code, ae1.vrIndex, bd0);
-        final e0 = EvrElement.makeFromCode( ae1.code, bd1, ae1.vrIndex);
+        final e0 = EvrElement.makeFromCode(rds, ae1.code, bd1);
         log.debug('e0:$e0');
         final make0 = AEtag.fromValues(e0.tag, e0.values);
         log.debug('make0: ${make0.info}');

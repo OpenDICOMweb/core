@@ -18,7 +18,6 @@ import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr_base.dart';
 
-
 abstract class TagStringMixin {
   // **** Interface
   ByteData get bd;
@@ -66,7 +65,8 @@ class AEtag extends AE with TagElement<String> {
   AEtag update([Iterable<String> vList = kEmptyStringList]) =>
       new AEtag(tag, vList ?? kEmptyStringList);
 
-  static AEtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static AEtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new AEtag(tag, vList ?? kEmptyStringList);
 
   static AEtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -74,7 +74,7 @@ class AEtag extends AE with TagElement<String> {
 
   static AEtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static AEtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static AEtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (AE.isNotValidTag(tag)) ? null : new AEtag._(tag, bytes.getAsciiList());
 }
 
@@ -95,7 +95,8 @@ class CStag extends CS with TagElement<String> {
   CStag update([Iterable<String> vList = kEmptyStringList]) =>
       new CStag(tag, vList ?? kEmptyStringList);
 
-  static CStag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static CStag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new CStag(tag, vList ?? kEmptyStringList);
 
   static CStag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -103,7 +104,7 @@ class CStag extends CS with TagElement<String> {
 
   static CStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static CStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static CStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (CS.isNotValidTag(tag)) ? null : new CStag._(tag, bytes.getAsciiList());
 }
 
@@ -124,7 +125,8 @@ class DStag extends DS with TagElement<String> {
   DStag update([Iterable<String> vList = kEmptyStringList]) =>
       new DStag(tag, vList ?? kEmptyStringList);
 
-  static DStag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static DStag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new DStag(tag, vList ?? kEmptyStringList);
 
   static DStag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -132,7 +134,7 @@ class DStag extends DS with TagElement<String> {
 
   static DStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static DStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static DStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (DS.isNotValidTag(tag)) ? null : new DStag._(tag, bytes.getAsciiList());
 }
 
@@ -153,7 +155,8 @@ class IStag extends IS with TagElement<String> {
   IStag update([Iterable<String> vList = kEmptyStringList]) =>
       new IStag(tag, vList ?? kEmptyStringList);
 
-  static IStag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static IStag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new IStag(tag, vList ?? kEmptyStringList);
 
   static IStag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -161,7 +164,7 @@ class IStag extends IS with TagElement<String> {
 
   static IStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static IStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static IStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (IS.isNotValidTag(tag)) ? null : new IStag._(tag, bytes.getAsciiList());
 }
 
@@ -183,7 +186,8 @@ class LOtag extends LO with TagElement<String> {
   LOtag update([Iterable<String> vList = kEmptyStringList]) =>
       new LOtag(tag, vList ?? kEmptyStringList);
 
-  static LOtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static LOtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new LOtag(tag, vList ?? kEmptyStringList);
 
   static LOtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -191,7 +195,7 @@ class LOtag extends LO with TagElement<String> {
 
   static LOtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static LOtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static LOtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (LO.isNotValidTag(tag)) ? null : new LOtag._(tag, bytes.getUtf8List());
 }
 
@@ -218,7 +222,8 @@ class PCtag extends PC with TagElement<String> {
   @override
   String toString() => '$runtimeType $tag $value';
 
-  static PCtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static PCtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new PCtag(tag, vList ?? kEmptyStringList);
 
   static PCtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -226,7 +231,7 @@ class PCtag extends PC with TagElement<String> {
 
   static PCtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static PCtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static PCtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (LO.isNotValidTag(tag)) ? null : new PCtag._(tag, bytes.getUtf8List());
 
   static PCtag makePhantom(int group, int subgroup) {
@@ -263,7 +268,8 @@ class LTtag extends LT with TagElement<String> {
   LTtag update([Iterable<String> vList = kEmptyStringList]) =>
       new LTtag(tag, vList ?? kEmptyStringList);
 
-  static LTtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static LTtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new LTtag(tag, vList ?? kEmptyStringList);
 
   static LTtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -271,7 +277,7 @@ class LTtag extends LT with TagElement<String> {
 
   static LTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static LTtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static LTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (LT.isNotValidTag(tag)) ? null : new LTtag._(tag, [bytes.getUtf8()]);
 }
 
@@ -293,7 +299,8 @@ class PNtag extends PN with TagElement<String> {
   PNtag update([Iterable<String> vList = kEmptyStringList]) =>
       new PNtag(tag, vList ?? kEmptyStringList);
 
-  static PNtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static PNtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new PNtag(tag, vList ?? kEmptyStringList);
 
   static PNtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -301,7 +308,7 @@ class PNtag extends PN with TagElement<String> {
 
   static PNtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static PNtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static PNtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (PN.isNotValidTag(tag)) ? null : new PNtag._(tag, bytes.getUtf8List());
 }
 
@@ -323,7 +330,8 @@ class SHtag extends SH with TagElement<String> {
   SHtag update([Iterable<String> vList = kEmptyStringList]) =>
       new SHtag(tag, vList ?? kEmptyStringList);
 
-  static SHtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static SHtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new SHtag(tag, vList ?? kEmptyStringList);
 
   static SHtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -331,7 +339,7 @@ class SHtag extends SH with TagElement<String> {
 
   static SHtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static SHtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static SHtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (SH.isNotValidTag(tag)) ? null : new SHtag._(tag, bytes.getUtf8List());
 }
 
@@ -353,7 +361,8 @@ class STtag extends ST with TagElement<String> {
   STtag update([Iterable<String> vList = kEmptyStringList]) =>
       new STtag(tag, vList ?? kEmptyStringList);
 
-  static STtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static STtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new STtag(tag, vList ?? kEmptyStringList);
 
   static STtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -361,7 +370,7 @@ class STtag extends ST with TagElement<String> {
 
   static STtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static STtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static STtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (ST.isNotValidTag(tag)) ? null : new STtag._(tag, [bytes.getUtf8()]);
 }
 
@@ -383,7 +392,8 @@ class UCtag extends UC with TagElement<String> {
   UCtag update([Iterable<String> vList = kEmptyStringList]) =>
       new UCtag(tag, vList ?? kEmptyStringList);
 
-  static UCtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static UCtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new UCtag(tag, vList ?? kEmptyStringList);
 
   static UCtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -391,7 +401,7 @@ class UCtag extends UC with TagElement<String> {
 
   static UCtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static UCtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static UCtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (UC.isNotValidTag(tag)) ? null : new UCtag._(tag, bytes.getUtf8List());
 }
 
@@ -420,7 +430,8 @@ class UItag extends UI with TagElement<String> {
   UItag update([Iterable<String> vList = kEmptyStringList]) =>
       new UItag.fromStrings(tag, vList);
 
-  static UItag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static UItag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new UItag.fromStrings(tag, vList ?? kEmptyStringList);
 
   static UItag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -428,7 +439,7 @@ class UItag extends UI with TagElement<String> {
 
   static UItag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static UItag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static UItag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (UI.isNotValidTag(tag)) ? null : new UItag._(tag, bytes.getAsciiList());
 
   static Iterable<Uid> parse(List<String> vList) {
@@ -462,7 +473,8 @@ class URtag extends UR with TagElement<String> {
   URtag update([Iterable<String> vList = kEmptyStringList]) =>
       new URtag(tag, vList ?? kEmptyStringList);
 
-  static URtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static URtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new URtag(tag, vList ?? kEmptyStringList);
 
   static URtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -470,7 +482,7 @@ class URtag extends UR with TagElement<String> {
 
   static URtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static URtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static URtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (UR.isNotValidTag(tag)) ? null : new URtag._(tag, [bytes.getUtf8()]);
 }
 
@@ -492,7 +504,8 @@ class UTtag extends UT with TagElement<String> {
   UTtag update([Iterable<String> vList = kEmptyStringList]) =>
       new UTtag(tag, vList ?? kEmptyStringList);
 
-  static UTtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static UTtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new UTtag(tag, vList ?? kEmptyStringList);
 
   static UTtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -500,7 +513,7 @@ class UTtag extends UT with TagElement<String> {
 
   static UTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static UTtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static UTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (UT.isNotValidTag(tag)) ? null : new UTtag._(tag, [bytes.getUtf8()]);
 }
 
@@ -529,7 +542,8 @@ class AStag extends AS with TagElement<String> {
   AStag updateF(Iterable<String> f(Iterable<String> vList)) =>
       new AStag(tag, f(values));
 
-  static AStag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static AStag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new AStag(tag, vList ?? kEmptyStringList);
 
   static AStag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -537,7 +551,7 @@ class AStag extends AS with TagElement<String> {
 
   static AStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static AStag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static AStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (AS.isNotValidTag(tag)) ? null : new AStag._(tag, bytes.getAsciiList());
 
   static AStag parse(String s, {String onError(String s)}) => new AStag(
@@ -565,7 +579,8 @@ class DAtag extends DA with TagElement<String> {
   DAtag update([Iterable<String> vList = kEmptyStringList]) =>
       new DAtag(tag, vList ?? kEmptyStringList);
 
-  static DAtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static DAtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new DAtag(tag, vList ?? kEmptyStringList);
 
   static DAtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -573,7 +588,7 @@ class DAtag extends DA with TagElement<String> {
 
   static DAtag from(Element e) => new DAtag(e.tag, e.values);
 
-  static DAtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static DAtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (DA.isNotValidTag(tag)) ? null : new DAtag._(tag, bytes.getAsciiList());
 }
 
@@ -598,7 +613,8 @@ class DTtag extends DT with TagElement<String> {
   DTtag update([Iterable<String> vList = kEmptyStringList]) =>
       new DTtag(tag, vList ?? kEmptyStringList);
 
-  static DTtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static DTtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new DTtag(tag, vList ?? kEmptyStringList);
 
   static DTtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -606,7 +622,7 @@ class DTtag extends DT with TagElement<String> {
 
   static DTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static DTtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static DTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (DT.isNotValidTag(tag)) ? null : new DTtag._(tag, bytes.getAsciiList());
 }
 
@@ -632,7 +648,8 @@ class TMtag extends TM with TagElement<String> {
   TMtag update([Iterable<String> vList = kEmptyStringList]) =>
       new TMtag(tag, vList ?? kEmptyStringList);
 
-  static TMtag fromValues(Tag tag, Iterable<String> vList, [int _]) =>
+  static TMtag fromValues(Tag tag, Iterable<String> vList,
+          [int _, TransferSyntax __]) =>
       new TMtag(tag, vList ?? kEmptyStringList);
 
   static TMtag fromUint8List(Tag tag, Uint8List bytes) =>
@@ -640,6 +657,6 @@ class TMtag extends TM with TagElement<String> {
 
   static TMtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static TMtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+  static TMtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (TM.isNotValidTag(tag)) ? null : new TMtag._(tag, bytes.getAsciiList());
 }

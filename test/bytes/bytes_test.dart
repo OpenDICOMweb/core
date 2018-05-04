@@ -197,7 +197,7 @@ void main() {
 
       final floats = <double>[0.0, 1.0, 2.0, 3.0];
       final fl32List0 = new Float32List.fromList(floats);
-      final fl32Bytes0 = new Bytes.fromTypedData(fl32List0);
+      final fl32Bytes0 = new Bytes.typedDataView(fl32List0);
       expect(fl32Bytes0.getFloat32(0) == fl32List0[0], true);
       expect(fl32Bytes0.getFloat32(4) == fl32List0[1], true);
       expect(fl32Bytes0.getFloat32(8) == fl32List0[2], true);

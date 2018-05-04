@@ -299,7 +299,8 @@ void main() {
     test('SS fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final intList0 = rng.int16List(1, 10);
-        final bytes0 = DicomBytes.toAscii(intList0.toString());
+    //    final bytes0 = DicomBytes.toAscii(intList0.toString());
+        final bytes0 = new Bytes.typedDataView(intList0);
         final ss0 = SStag.fromBytes(PTag.kSelectorSSValue, bytes0);
         log.debug('ss0: ${ss0.info}');
         expect(ss0.hasValidValues, true);
@@ -313,9 +314,10 @@ void main() {
         final intList0 = rng.int16List(1, 10);
         print('$i: ssList: $intList0');
         system.throwOnError = false;
+        // Urgent Sharath: why was this converting to String first?
         // DicomBytes.toAscii does padding
-        final bytes0 = DicomBytes.toAscii(intList0.toString());
-
+        // final bytes0 = DicomBytes.toAscii(intList0.toString());
+        final bytes0 = new Bytes.typedDataView(intList0);
         print('throwOnError: $throwOnError');
         final ss0 = SStag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ss0, isNull);

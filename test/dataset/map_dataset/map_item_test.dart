@@ -266,7 +266,7 @@ void main() {
       final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
       item.add(ss0);
 
-      final update2 = item.updateF<int>(ss0.key, (n) => n);
+      final update2 = item.updateF<int>(ss0.index, (n) => n);
       expect(update2.values.isEmpty, false);
     });
 
@@ -283,7 +283,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
 
-      final update1 = item.updateF<double>(fd0.key, (n) => n);
+      final update1 = item.updateF<double>(fd0.index, (n) => n);
       expect(update1.isEmpty, false);
     });
 
@@ -294,7 +294,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       system.throwOnError = false;
@@ -319,7 +319,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       item
@@ -345,7 +345,7 @@ void main() {
       final item = new MapItem.empty(rds, null);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       item..add(fd0)..add(as0)..add(ob0)..add(ae0);
@@ -693,7 +693,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       item[as0.code] = as0;
 
-      final update0 = item.updateAll<String>(as0.key, vList: as0.values);
+      final update0 = item.updateAll<String>(as0.index, vList: as0.values);
       expect(update0.isEmpty, false);
     });
 
@@ -702,7 +702,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       item[as0.code] = as0;
 
-      final update0 = item.updateAllF<String>(as0.key, (n) => n);
+      final update0 = item.updateAllF<String>(as0.index, (n) => n);
       expect(update0.isEmpty, false);
     });
 
@@ -712,7 +712,7 @@ void main() {
       final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
       item.add(ss0);
 
-      final update2 = item.updateAll<int>(ss0.key, vList: <int>[]);
+      final update2 = item.updateAll<int>(ss0.index, vList: <int>[]);
       expect(update2.isEmpty, false);
     });
 
@@ -722,7 +722,7 @@ void main() {
       final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
       item.add(ss0);
 
-      final update2 = item.updateAllF<int>(ss0.key, (n) => n);
+      final update2 = item.updateAllF<int>(ss0.index, (n) => n);
       expect(update2.isEmpty, false);
     });
 
@@ -731,7 +731,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
 
-      final update1 = item.updateAll<double>(fd0.key, vList: <double>[]);
+      final update1 = item.updateAll<double>(fd0.index, vList: <double>[]);
       expect(update1.isEmpty, false);
     });
 
@@ -740,7 +740,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
 
-      final update1 = item.updateAllF<double>(fd0.key, (n) => n);
+      final update1 = item.updateAllF<double>(fd0.index, (n) => n);
       expect(update1.isEmpty, false);
     });
 

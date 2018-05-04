@@ -13,7 +13,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/uint16_test', level: Level.info);
+  Server.initialize(name: 'element/uint16_test', level: Level.debug);
   final rng = new RNG(1);
 
   const uint16MinMax = const [kUint16Min, kUint16Max];
@@ -192,6 +192,7 @@ void main() {
         expect(us0 == us1, true);
       }
     });
+
     test('US hashCode and == bad values random', () {
       system.throwOnError = false;
       List<int> uint16List0;
@@ -310,7 +311,9 @@ void main() {
         expect(uc0.hasValidValues, true);
       }
     });
+/*
 
+    // Urgent Sharath: why testing UC
     test('UC fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
@@ -324,6 +327,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('US checkLength random', () {
       for (var i = 0; i < 10; i++) {
@@ -372,7 +376,7 @@ void main() {
       expect(us0.replace(uint16List1), equals(uint16List0));
     });
 
-/*
+/* Urgent Sharath: DO you still think we need this?
     test('US BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final uint16List0 = rng.uint16List(1, 1);
@@ -438,8 +442,8 @@ void main() {
         expect(us0.values, equals(uint16List0));
       }
     });
-/*
 
+/*  Urgent Sharath: DO you still think we need this?
     test('US fromB64', () {
       for (var i = 0; i < 10; i++) {
         final uint16List0 = rng.uint16List(1, 1);
@@ -1088,7 +1092,10 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
-    test('Uint16Base listToByteData good values', () {
+    // Urgent Sharath: I think Uint16 should be in a separate file.
+    //       we should create test/values/integer/uint16 and similar for
+    //       this kind of test.
+    test('Uint16 listToByteData good values', () {
       system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
@@ -1238,6 +1245,10 @@ void main() {
     });
   });
 
+  // Urgent Sharath: I think each Tag Element Test should be in a separate
+  //                 file, e.g. tag_element/integer/ow_test ... ob_test ...
+  //                 and the structure of each file should be the same or
+  //                 at least similar.
   group('OWTag', () {
     test('OW hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
@@ -1503,6 +1514,7 @@ void main() {
     test('OW make', () {
       for (var i = 0; i < 10; i++) {
         final uint16List0 = rng.uint16List(1, 1);
+        log.debug('uint16List0: $uint16List0');
         final ow0 = OWtag.fromValues(PTag.kEdgePointIndexList, uint16List0);
         expect(ow0.hasValidValues, true);
       }
@@ -1514,9 +1526,13 @@ void main() {
 //        final uint16List1 = new Uint16List.fromList(uint16List0);
 //        final uint8List1 = uint16List1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(uint16List0);
+        log.debug(bytes);
         final ow0 =
             OWtag.fromBytes(PTag.kEdgePointIndexList, bytes, bytes.length);
+        log.debug(ow0);
         expect(ow0.hasValidValues, true);
+        expect(ow0.values.length == 1, true);
+        expect(ow0.values, equals(uint16List0));
         expect(ow0.vfBytes, equals(bytes));
         expect(ow0.values is Uint16List, true);
         expect(ow0.values, equals(uint16List0));
@@ -1535,9 +1551,12 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint16List(1, 10);
-        final bytes0 = Bytes.toAscii(intList0.toString());
-        final ow0 = OWtag.fromBytes(PTag.kSelectorOWValue, bytes0);
-        log.debug('ow0: ${ow0.info}');
+// Urgent Sharath: why toAscii
+//        final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = new Bytes.typedDataView(intList0);
+        final ow0 =
+            OWtag.fromBytes(PTag.kSelectorOWValue, bytes0, bytes0.length);
+        log.debug('ow0: $ow0');
         expect(ow0.hasValidValues, true);
       }
     });
@@ -1546,7 +1565,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint16List(1, 10);
-        final bytes0 = Bytes.toAscii(intList0.toString());
+//        final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = new Bytes.typedDataView(intList0);
         final ow0 = OWtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ow0, isNull);
 
@@ -1565,7 +1585,8 @@ void main() {
 //        final base64 = cvt.base64.encode(uint8List11);
         final base64 = bytes.getBase64();
         final bytes2 = Bytes.fromBase64(base64);
-        final ow0 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes2);
+        final ow0 =
+            OWtag.fromBytes(PTag.kEdgePointIndexList, bytes2, kUndefinedLength);
         expect(ow0.hasValidValues, true);
       }
     });
@@ -1657,8 +1678,8 @@ void main() {
     test('OW isValidVListLength', () {
       system.throwOnError = false;
       // Urgent Sharath: please fix
- //     expect(OW.isValidVListLength(OW.kMaxLength), true);
- //     expect(OW.isValidVListLength(0), true);
+      //     expect(OW.isValidVListLength(OW.kMaxLength), true);
+      //     expect(OW.isValidVListLength(0), true);
     });
 
     test('OW isValidTag good values', () {
@@ -1862,6 +1883,7 @@ void main() {
     });
 
     test('OW isValidVFLength bad values', () {
+      system.throwOnError = false;
       expect(OW.isValidVFLength(OW.kMaxVFLength + 1, kUndefinedLength), false);
       expect(OW.isValidVFLength(-1, 0), false);
     });

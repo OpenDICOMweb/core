@@ -16,6 +16,7 @@ import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr_base.dart';
 
 /// Tag Mixin Class
@@ -86,7 +87,8 @@ abstract class TagElement<V> {
       [int vfLengthField]) {
     final tag = lookupTagByCode(ds, code, vrIndex);
     final tagVRIndex = tag.vrIndex;
-    return _fromValuesMakers[tagVRIndex](tag, values, vfLengthField);
+ //   return _fromValuesMakers[tagVRIndex](code, values, vfLengthField);
+    return makeFromTag(tag, values, tagVRIndex, vfLengthField);
   }
 
   static Element makeFromBase64(int code, String s, int vrIndex, Dataset ds,
@@ -105,8 +107,8 @@ abstract class TagElement<V> {
   /// Return a new [TagElement]. This assumes the caller has handled
   /// Private Elements, etc.
   static Element makeFromTag(Tag tag, Iterable values, int vrIndex,
-          [int vfLengthField]) =>
-      _fromValuesMakers[vrIndex](tag, values, vfLengthField);
+          [int vfLengthField, TransferSyntax ts]) =>
+      _fromValuesMakers[vrIndex](tag, values, vfLengthField, ts);
 
   static Element makeMaybeUndefinedLength(
       Tag tag, Iterable values, int vfLengthField, int vrIndex) {

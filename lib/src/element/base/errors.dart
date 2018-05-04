@@ -8,11 +8,11 @@
 //
 import 'dart:typed_data';
 
-import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/issues.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/value/frame.dart';
 
 /// A [NullElementError] should be thrown whenever an [Element] has
@@ -166,7 +166,18 @@ class InvalidValuesError extends Error {
   String toString() => msg;
 }
 
-Null invalidValuesError(Iterable values, {Tag tag, Issues issues, String msg}) {
+Null badValuesError(Iterable values, {Tag tag, Issues issues, String msg}) {
+  _invalidValuesError(values, tag: tag, issues: issues, msg: msg);
+  return null;
+}
+
+bool isValidValuesError(Iterable values, {Tag tag, Issues issues, String msg}) {
+  _invalidValuesError(values, tag: tag, issues: issues, msg: msg);
+  return false;
+}
+
+void _invalidValuesError(Iterable values,
+    {Tag tag, Issues issues, String msg}) {
   final sb = new StringBuffer('Invalid Values Error');
   if (tag != null) sb.write(' for $tag');
   sb..write(': values = $values');
@@ -175,7 +186,6 @@ Null invalidValuesError(Iterable values, {Tag tag, Issues issues, String msg}) {
   log.error(errMsg);
   if (issues != null) issues.add(errMsg);
   if (throwOnError) throw new InvalidValuesError(errMsg, values);
-  return null;
 }
 
 class InvalidValueError extends Error {

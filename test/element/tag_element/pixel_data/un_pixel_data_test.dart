@@ -620,11 +620,11 @@ void main() {
     });
 
     test('Create UN.isValidVFLength', () {
-      expect(UN.isValidVFLength(UN.kMaxVFLength), true);
-      expect(UN.isValidVFLength(UN.kMaxVFLength + 1), false);
+      expect(UN.isValidVFLength(UN.kMaxVFLength, UN.kMaxVFLength), true);
+      expect(UN.isValidVFLength(UN.kMaxVFLength + 1, kUndefinedLength), false);
 
-      expect(UN.isValidVFLength(0), true);
-      expect(UN.isValidVFLength(-1), false);
+      expect(UN.isValidVFLength(0, 0), true);
+      expect(UN.isValidVFLength(-1, 1), false);
     });
 
     test('Create UN.isValidValue', () {

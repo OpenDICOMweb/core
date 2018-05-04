@@ -41,7 +41,7 @@ void main() {
     final lo = new LOtag(PTag.kProductName, ['foo bar']);
     final ss = new SStag(PTag.kTagAngleSecondAxis, [123]);
     final sl = new SLtag(PTag.kReferencePixelX0, [13]);
-    final ob = new OBtag(PTag.kICCProfile, <int>[123, 255], 2);
+    final ob = new OBtag(PTag.kICCProfile, <int>[123, 255]);
 
     rds[lt.code] = lt;
     rds[lo.code] = lo;

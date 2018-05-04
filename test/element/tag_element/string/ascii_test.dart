@@ -79,7 +79,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 10);
         final bytes0 = stringListToUint8List(vList0, kMaxShortVF);
-        final bytes = Bytes.asciiEncode(vList0.join('\\'));
+        final bytes = Bytes.toAscii(vList0.join('\\'));
         final vList1 = stringListFromBytes(bytes, kMaxShortVF);
         log
           ..debug('vList0: $vList0')

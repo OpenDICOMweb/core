@@ -14,7 +14,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/int32_test', level: Level.info);
+  Server.initialize(name: 'element/int32_test', level: Level.debug);
   final rng = new RNG(1);
 
   group('SLTag', () {
@@ -286,14 +286,14 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.int32List(1, 10);
-/*
         // Urgent Sharath: what is this test trying to achieve? let's discuss
-        final bytes0 = DicomBytes.toAscii(intList0.toString());
+        //final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = new Bytes.typedDataView(intList0);
+        log.debug('bytes0: $bytes0');
         print('blength: ${bytes0.length}');
         final sl0 = SLtag.fromBytes(PTag.kSelectorSLValue, bytes0);
-        log.debug('sl0: ${sl0.info}');
+        log.debug('sl0: $sl0');
         expect(sl0.hasValidValues, true);
-*/
 
       }
     });

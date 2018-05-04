@@ -10,15 +10,15 @@ import 'dart:collection';
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/hash.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/vr.dart';
+import 'package:core/src/vr_base.dart';
 
 /// The base class for DICOM Data Elements
 ///
@@ -348,8 +348,8 @@ abstract class Element<V> extends ListBase<V> {
   bool checkValues(Iterable<V> vList, [Issues issues]) {
     final ok = checkLength(vList, issues);
     if (!ok) return false;
-    for (var v in vList)
-      if (!checkValue(v, issues: issues)) {
+    for (var i = 0; i < vList.length; i++)
+      if (!checkValue(vList.elementAt(i), issues: issues)) {
         invalidValuesError(vList, issues: issues);
         return false;
       }

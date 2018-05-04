@@ -413,13 +413,13 @@ void main() {
 
       system.throwOnError = false;
       //Next line throws InvalidValuesError because 345 is not valid
-      final ob0 = new OBtag(PTag.kICCProfile, [123, 345], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123, 345]);
       expect(ob0, isNull);
       system.throwOnError = true;
-      expect(() => new OBtag(PTag.kICCProfile, [123, 345], 2),
+      expect(() => new OBtag(PTag.kICCProfile, [123, 345]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
 
-      final ob = new OBtag(PTag.kICCProfile, [123, 255], 2);
+      final ob = new OBtag(PTag.kICCProfile, [123, 255]);
 
       print('allow: ${rds.allowDuplicates}');
       rds1[lt.code] = lt;
