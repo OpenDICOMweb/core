@@ -429,6 +429,32 @@ void main() {
       expect(fl0.values.first.toStringAsPrecision(1),
           equals((2047.99).toStringAsPrecision(1)));
     });
+
+    test('FL checkLength good values', () {
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float32List(1, i);
+        final fl0 = new FLtag(PTag.kSelectorFLValue, floatList0);
+        expect(fl0.checkLength(fl0.values), true);
+      }
+    });
+
+    test('FL checkLength bad values', () {
+      system.throwOnError = false;
+      final fl0 = new FLtag(PTag.kBeamAngle, listFloat32Common0);
+      expect(fl0, isNull);
+
+      system.throwOnError = true;
+      expect(() => new FLtag(PTag.kBeamAngle, listFloat32Common0),
+          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+    });
+
+    test('FL checkValues', () {
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float32List(1, i);
+        final fl0 = new FLtag(PTag.kSelectorFLValue, floatList0);
+        expect(fl0.checkValues(fl0.values), true);
+      }
+    });
   });
 
   group('FL Element', () {
@@ -1390,6 +1416,22 @@ void main() {
         final base64 = cvt.base64.encode(uInt8List0);
         final of1 = OFtag.fromBase64(PTag.kVectorGridData, base64);
         expect(of1.hasValidValues, true);
+      }
+    });
+
+    test('OF checkLength random', () {
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float32List(1, i);
+        final of0 = new OFtag(PTag.kSelectorOFValue, floatList0);
+        expect(of0.checkLength(of0.values), true);
+      }
+    });
+
+    test('OF checkValues', () {
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float32List(1, i);
+        final of0 = new OFtag(PTag.kSelectorOFValue, floatList0);
+        expect(of0.checkValues(of0.values), true);
       }
     });
   });

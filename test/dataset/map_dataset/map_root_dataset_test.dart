@@ -207,6 +207,16 @@ void main() {
       expect(update0.isEmpty, false);
     });
 
+    test('updateF(String)', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      rds[as0.code] = as0;
+
+      final update0 = rds.updateF<String>(as0.index, (n) => n);
+      log.debug('update0: $update0');
+      expect(update0.isEmpty, false);
+    });
+
     test('update (int)', () {
       final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [kInt16Min];
@@ -221,11 +231,30 @@ void main() {
       expect(update2.values.isEmpty, false);
     });
 
+    test('updateF (int)', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final vList0 = [kInt16Min];
+      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      rds.add(ss0);
+
+      final update2 = rds.updateF<int>(ss0.key, (n) => n);
+      expect(update2.values.isEmpty, false);
+    });
+
     test('update (float)', () {
       final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       rds.add(fd0);
       final update1 = rds.update(fd0.code, <double>[]);
+      expect(update1.isEmpty, false);
+    });
+
+    test('updateF (float)', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      rds.add(fd0);
+
+      final update1 = rds.updateF<double>(fd0.key, (n) => n);
       expect(update1.isEmpty, false);
     });
 
@@ -514,6 +543,182 @@ void main() {
       log.debug('copy0: $copy0');
       expect(copy0, equals(new MapRootDataset.from(rds)));
       expect(copy0, equals(rds));
+    });
+
+    test('getValue', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      rds[as0.code] = as0;
+      rds[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = rds.getValue<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.value));
+
+      final getValues1 = rds.getValue<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1.toString(), equals(as0.value));
+
+      final getValues2 = rds.getValue<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => rds.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('getValues', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      rds[as0.code] = as0;
+      rds[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = rds.getValues<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.values));
+
+      final getValues1 = rds.getValues<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1, equals(as0.values));
+
+      final getValues2 = rds.getValues<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => rds.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('hasElementsInRange', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kSelectorASValue, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+
+      rds[as0.code] = as0;
+      rds[ss0.code] = ss0;
+      rds[fd0.code] = fd0;
+      log.debug('rds : $rds');
+
+      final inRange0 = rds.hasElementsInRange(0, as0.code);
+      final inRange1 = rds.hasElementsInRange(0, as0.code + 1);
+      final inRange2 = rds.hasElementsInRange(0, ss0.code);
+      final inRange3 = rds.hasElementsInRange(0, ss0.code + 1);
+
+      log
+        ..debug('inRange0: $inRange0')
+        ..debug('inRange1: $inRange1')
+        ..debug('inRange2: $inRange2')
+        ..debug('inRange3: $inRange3');
+
+      expect(inRange0, true);
+      expect(inRange1, true);
+      expect(inRange2, true);
+      expect(inRange3, true);
+
+      final rds0 = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final inRange4 = rds0.hasElementsInRange(0, od0.code);
+      expect(inRange4, false);
+    });
+
+    test('deleteCodes', () {
+      system.level = Level.debug;
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      rds[as0.code] = as0;
+      rds[ss0.code] = ss0;
+      rds[fd0.code] = fd0;
+      log..debug('rds : $rds')..debug('rds.Codes: ${rds.codes}');
+
+      expect(rds.codes.isEmpty, false);
+      expect(rds.codes.first == as0.code, true);
+      expect(rds.codes.last == fd0.code, true);
+
+      final deleteCodes0 = rds.deleteCodes(rds.codes.toList());
+      log
+        ..debug('rds.codes: ${rds.codes}')
+        ..debug('deleteCodes0: $deleteCodes0');
+      expect(rds.codes.isEmpty, true);
+
+      final deleteCodes1 = rds.deleteCodes([as0.code]);
+      log.debug('deleteCodes1: $deleteCodes1');
+      expect(deleteCodes1, equals(<Element>[]));
+
+      final deleteCodes2 = rds.deleteCodes([ss0.code]);
+      log.debug('deleteCodes2: $deleteCodes2');
+      expect(deleteCodes2, equals(<Element>[]));
+
+      final deleteCodes3 = rds.deleteCodes([fd0.code]);
+      log.debug('deleteCodes3: $deleteCodes3');
+      expect(deleteCodes3, equals(<Element>[]));
+    });
+
+    test('updateAll(string)', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      rds[as0.code] = as0;
+
+      final update0 = rds.updateAll<String>(as0.key, vList: as0.values);
+      expect(update0.isEmpty, false);
+    });
+
+    test('updateAllF(string)', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      rds[as0.code] = as0;
+
+      final update0 = rds.updateAllF<String>(as0.key, (n) => n);
+      expect(update0.isEmpty, false);
+    });
+
+    test('updateAll (int)', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final vList0 = [kInt16Min];
+      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      rds.add(ss0);
+
+      final update2 = rds.updateAll<int>(ss0.key, vList: <int>[]);
+      expect(update2.isEmpty, false);
+    });
+
+    test('updateAllF (int)', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final vList0 = [kInt16Min];
+      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      rds.add(ss0);
+
+      final update2 = rds.updateAllF<int>(ss0.key, (n) => n);
+      expect(update2.isEmpty, false);
+    });
+
+    test('updateAll (float)', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      rds.add(fd0);
+
+      final update1 = rds.updateAll<double>(fd0.key, vList: <double>[]);
+      expect(update1.isEmpty, false);
+    });
+
+    test('updateAllF (float)', () {
+      final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      rds.add(fd0);
+
+      final update1 = rds.updateAllF<double>(fd0.key, (n) => n);
+      expect(update1.isEmpty, false);
     });
   });
 }

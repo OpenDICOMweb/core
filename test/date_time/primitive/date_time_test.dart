@@ -357,4 +357,52 @@ System: $dt0
       }
     }
   });
+
+  test('hashMicroseconds', () {
+    final hm0 = hashMicroseconds(kMicrosecondsPerDay);
+    log.debug('hm0: $hm0');
+    expect(hm0, isNotNull);
+
+    final hm1 = hashMicroseconds(kMinYearInMicroseconds);
+    log.debug('hm1: $hm1');
+    expect(hm1, isNotNull);
+
+    expect(() => hashMicroseconds(kMinYearInMicroseconds - 1),
+        throwsA(const isInstanceOf<Error>()));
+
+    final hm3 = hashMicroseconds(kMaxYearInMicroseconds);
+    log.debug('hm3: $hm3');
+    expect(hm3, isNotNull);
+
+    expect(() => hashMicroseconds(kMaxYearInMicroseconds + 1),
+        throwsA(const isInstanceOf<Error>()));
+  });
+
+  test('dicomDateTimeString', () {
+    system.throwOnError = false;
+
+    for (var y = 1999; y < 2000; y++) {
+      for (var m = 1; m <= 12; m++) {
+        for (var d = 1; d <= lastDayOfMonth(y, m); d++) {
+          for (var h = 0; h < 24; h++) {
+            for (var mm = 0; mm < 60; mm++) {
+              const s = 10;
+              const ms = 600;
+              const us = 600;
+              final dicomDT0 = dicomDateTimeString(y, m, d, h, mm, s, ms, us);
+              final mx = digits2(m);
+              final dx = digits2(d);
+              final hx = digits2(h);
+              final mmx = digits2(mm);
+              final fx =
+              (us == 0 && ms == 0) ? '' : '.${digits3(ms)}${digits3(us)}';
+              final inet ='$y$mx$dx$hx$mmx$s$fx';
+              log.debug('dicomDT0: $dicomDT0, $inet');
+              expect(dicomDT0 == inet, true);
+            }
+          }
+        }
+      }
+    }
+  });
 }

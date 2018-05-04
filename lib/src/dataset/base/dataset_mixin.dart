@@ -179,7 +179,7 @@ abstract class DatasetMixin {
       if (e is SQ) {
         result.addAll(e.updateAll<V>(index, vList, required: required));
       } else {
-        result.add(e.replace(e.values));
+        result.add(e.update(e.values));
       }
     return result;
   }
@@ -196,7 +196,7 @@ abstract class DatasetMixin {
       if (e is SQ) {
         result.addAll(e.updateAllF<V>(index, f, required: required));
       } else {
-        result.add(e.replace(e.values));
+        result.add(e.update(e.values));
       }
     return result;
   }
@@ -613,6 +613,7 @@ abstract class DatasetMixin {
   /// either throws or returns _null_;
   V getValue<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
+    if (e == null) return (required) ? elementNotPresentError(index) : null;
     return _checkOneValue(index, e.values);
   }
 

@@ -27,6 +27,7 @@ void main() {
       log.debug('elements: $rds');
       final v = rds[uiTransFerSyntax.index];
       log.debug('elements[${uiTransFerSyntax.index}] = $v');
+      expect(uiTransFerSyntax, equals(v));
     });
 
     test('insert and compare', () {
@@ -392,5 +393,293 @@ void main() {
       expect(copy0, equals(new ListRootDataset.from(rds)));
       expect(copy0, equals(rds));
     });
+
+    test('noValues', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+
+      item[fd0.code] = fd0;
+      item[as0.code] = as0;
+
+      var noValues0 = item.noValues(fd0.code);
+      expect(noValues0 == fd0, true);
+      expect(noValues0.values.isEmpty, false);
+
+      noValues0 = item.noValues(fd0.code);
+      log.debug('noValues0: ${noValues0.values}');
+      expect(noValues0.values.isEmpty, true);
+    });
+
+    test('removeAt', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      log.debug('item : $item');
+
+      final remove0 = item.removeAt(as0.key);
+      expect(remove0, isNotNull);
+      expect(item.removeAt(as0.key), isNull);
+      log.debug('remove0 : $remove0');
+
+      final remove1 = item.removeAt(ss0.key);
+      expect(remove1, isNotNull);
+      expect(item.removeAt(ss0.key), isNull);
+      log.debug('remove1 : $remove1');
+
+      final remove2 = item.removeAt(fd0.key);
+      expect(remove2, isNotNull);
+      expect(item.removeAt(fd0.key), isNull);
+      log.debug('remove2 : $remove2');
+
+      expect(item.removeAt(od0.key), isNull);
+    });
+
+    test('delete', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      log.debug('item : $item');
+
+      final remove0 = item.delete(as0.code);
+      log.debug('remove0 : $remove0');
+      expect(remove0, isNotNull);
+      final remove1 = item.delete(as0.code);
+      log.debug('remove1 : $remove1');
+      expect(remove1, isNull);
+      log.debug('remove0 : $remove0');
+
+      final remove2 = item.delete(ss0.key);
+      expect(remove2, isNotNull);
+      expect(item.delete(ss0.key), isNull);
+      log.debug('remove1 : $remove2');
+
+      final remove3 = item.delete(fd0.key);
+      expect(remove3, isNotNull);
+      expect(item.delete(fd0.key), isNull);
+      log.debug('remove2 : $remove3');
+
+      expect(item.delete(od0.key), isNull);
+
+      system.throwOnError = true;
+      final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
+      expect(() => item.delete(sl0.key, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('deleteAll', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+
+      log.debug('item: $item');
+
+      final removeAll0 = item.deleteAll(as0.key);
+      expect(removeAll0[0] == as0, true);
+      expect(item.deleteAll(as0.key), <Element>[]);
+      log.debug('removeAll0: $removeAll0');
+
+      final removeAll1 = item.deleteAll(ss0.key);
+      expect(removeAll1[0] == ss0, true);
+      expect(item.deleteAll(ss0.key), <Element>[]);
+      log.debug('removeAll1 : $removeAll1');
+
+      final removeAll2 = item.deleteAll(fd0.key);
+      expect(removeAll2[0] == fd0, true);
+      expect(item.deleteAll(fd0.key), <Element>[]);
+      log.debug('removeAll2 : $removeAll2');
+
+      expect(item.deleteAll(od0.key), <Element>[]);
+    });
+
+    test('getElementsInRange', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
+
+      item[fd0.code] = fd0;
+      item[as0.code] = as0;
+      item[ob0.code] = ob0;
+
+      final inRange0 = item.getElementsInRange(0, fd0.code);
+      final inRange1 = item.getElementsInRange(0, fd0.code + 1);
+      final inRange2 = item.getElementsInRange(0, ae0.code);
+      final inRange3 = item.getElementsInRange(0, ae0.code + 1);
+      log
+        ..debug('item: $item')
+        ..debug('inRange0: $inRange0')
+        ..debug('inRange1: $inRange1')
+        ..debug('inRange2: $inRange2')
+        ..debug('inRange3: $inRange3');
+
+      expect(inRange0, isNotNull);
+    });
+
+    test('removeDuplicates', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final as1 = new AStag(PTag.kPatientAge, ['024Y']);
+      final as2 = new AStag(PTag.kPatientAge, ['012M']);
+      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
+
+      item[fd0.code] = fd0;
+      item[fd1.code] = fd1;
+      item[as0.code] = as0;
+      item[as1.code] = as1;
+      item[as2.code] = as2;
+      item[ob0.code] = ob0;
+      item[ae0.code] = ae0;
+
+      final dup = item.history;
+      log.debug('item: $item, dup: $dup');
+      expect(dup, isNotNull);
+      final removeDup = item.deleteDuplicates();
+      log.debug('item: $item, removeDup: $removeDup');
+      expect(removeDup, <Element>[]);
+    });
+
+    test('getValue', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = item.getValue<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.value));
+
+      final getValues1 = item.getValue<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1.toString(), equals(as0.value));
+
+      final getValues2 = item.getValue<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => item.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('getValues', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+
+      system.throwOnError = false;
+      final getValues0 = item.getValues<int>(ss0.index);
+      log.debug('getValues0: $getValues0');
+      expect(getValues0, equals(ss0.values));
+
+      final getValues1 = item.getValues<String>(as0.index);
+      log.debug('getValues1: $getValues1');
+      expect(getValues1, equals(as0.values));
+
+      final getValues2 = item.getValues<double>(fd0.index);
+      expect(getValues2, isNull);
+
+      system.throwOnError = true;
+      expect(() => item.getValues<double>(fd0.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('hasElementsInRange', () {
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kSelectorASValue, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      log.debug('item : $item');
+
+      final inRange0 = item.hasElementsInRange(0, as0.code);
+      final inRange1 = item.hasElementsInRange(0, as0.code + 1);
+      final inRange2 = item.hasElementsInRange(0, ss0.code);
+      final inRange3 = item.hasElementsInRange(0, ss0.code + 1);
+
+      log
+        ..debug('inRange0: $inRange0')
+        ..debug('inRange1: $inRange1')
+        ..debug('inRange2: $inRange2')
+        ..debug('inRange3: $inRange3');
+
+      expect(inRange0, true);
+      expect(inRange1, true);
+      expect(inRange2, true);
+      expect(inRange3, true);
+
+      final item0 = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final inRange4 = item0.hasElementsInRange(0, od0.code);
+      expect(inRange4, false);
+    });
+
+    test('deleteCodes', () {
+      system.level = Level.debug;
+      final item = new ListRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      log..debug('item : $item')..debug('item.Codes: ${item.codes}');
+
+      expect(item.codes.isEmpty, false);
+      expect(item.codes.first == as0.code, true);
+      expect(item.codes.last == fd0.code, true);
+
+      final deleteCodes0 = item.deleteCodes(item.codes.toList());
+      log
+        ..debug('item.codes: ${item.codes}')
+        ..debug('deleteCodes0: $deleteCodes0');
+      expect(item.codes.isEmpty, true);
+
+      final deleteCodes1 = item.deleteCodes([as0.code]);
+      log.debug('deleteCodes1: $deleteCodes1');
+      expect(deleteCodes1, equals(<Element>[]));
+
+      final deleteCodes2 = item.deleteCodes([ss0.code]);
+      log.debug('deleteCodes2: $deleteCodes2');
+      expect(deleteCodes2, equals(<Element>[]));
+
+      final deleteCodes3 = item.deleteCodes([fd0.code]);
+      log.debug('deleteCodes3: $deleteCodes3');
+      expect(deleteCodes3, equals(<Element>[]));
+    });
+
   });
 }

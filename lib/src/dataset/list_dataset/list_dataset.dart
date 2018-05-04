@@ -52,8 +52,11 @@ abstract class ListDataset {
   void store(int index, Element e) {
     final code = e.code;
     assert(index == code);
-    codes.add(code);
-    elements.add(e);
+    //codes.add(code);
+    //elements.add(e);
+    final v = codes.indexOf(code);
+    elements[v] = e;
+
   }
 
   @override
@@ -83,7 +86,7 @@ abstract class ListDataset {
   /// Removes the [Element] with [code] from _this_.
   Element removeAt(int code, {bool required = false}) {
     final index = codes.indexOf(code);
-    if(index < 0) throw new ArgumentError();
+    if(index < 0) return null;
     codes.removeAt(index);
     return elements.removeAt(index);
   }

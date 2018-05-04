@@ -194,6 +194,35 @@ void main() {
       expect(byteFTD0.length == byteFTD0.length, true);
       expect(byteFTD0.length == byteFTD0.length, true);
       expect(byteFTD0.hashCode is int, true);
+
+      final floats = <double>[0.0, 1.0, 2.0, 3.0];
+      final fl32List0 = new Float32List.fromList(floats);
+      final fl32Bytes0 = new Bytes.fromTypedData(fl32List0);
+      expect(fl32Bytes0.getFloat32(0) == fl32List0[0], true);
+      expect(fl32Bytes0.getFloat32(4) == fl32List0[1], true);
+      expect(fl32Bytes0.getFloat32(8) == fl32List0[2], true);
+      expect(fl32Bytes0.getFloat32(12) == fl32List0[3], true);
+
+      final fl32List1 = fl32Bytes0.asFloat32List();
+
+      for (var i = 0; i < fl32List0.length; i++)
+        expect(fl32List0[i] == fl32List1[i], true);
+
+      // Unaligned
+      final fl32b = new Bytes(20)
+        ..setFloat32(2, floats[0])
+        ..setFloat32(6, floats[1])
+        ..setFloat32(10, floats[2])
+        ..setFloat32(14, floats[3]);
+      expect(fl32b.getFloat32(2) == fl32List0[0], true);
+      expect(fl32b.getFloat32(6) == fl32List0[1], true);
+      expect(fl32b.getFloat32(10) == fl32List0[2], true);
+      expect(fl32b.getFloat32(14) == fl32List0[3], true);
+
+      final fl32List3 = fl32b.getFloat32List(2, 4);
+
+      for (var i = 0; i < fl32List0.length; i++)
+        expect(fl32List0[i] == fl32List3[i], true);
     });
   });
 }

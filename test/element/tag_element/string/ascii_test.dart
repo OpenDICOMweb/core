@@ -74,6 +74,25 @@ void main() {
       }
     });
 
+    test('Ascii Multi-String value field Test', () {
+      final rsg = new RSG();
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getSHList(1, 10);
+        final bytes0 = stringListToUint8List(vList0, kMaxShortVF);
+        final bytes = Bytes.asciiEncode(vList0.join('\\'));
+        final vList1 = stringListFromBytes(bytes, kMaxShortVF);
+        log
+          ..debug('vList0: $vList0')
+          ..debug('vList1: $vList1')
+          ..debug('bytes0: $bytes0');
+
+        expect(vList0.length == vList1.length, true);
+        for (var i = 0; i < vList0.length; i++) {
+          log.debug('value0[$i]: "${vList0[i]}", value1[$i]: "${vList1[i]}"');
+          expect(vList0[i] == vList1[i], true);
+        }
+      }
+    });
   });
 
   group('UTF8 Test', () {

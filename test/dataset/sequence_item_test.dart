@@ -15,28 +15,21 @@ void main() {
 
   group('Items and Sequences', () {
     var itemsList = <TagItem>[];
-    // Urgent Sharath fix: don't use global variables in tests. They make
-    //   it hard to understand what is going on. Please fix!
-    SQtag sq;
 
-    // Urgent Sharath: this is not a sequence tag
-    final tag = PTag.lookupByCode(kInstanceCreationDate);
     var rds = new TagRootDataset.empty();
-    final date = new DAtag(tag, ['19990505']);
+    final date = new DAtag(PTag.kInstanceCreationDate, ['19990505']);
     rds.add(date);
 
-  //  var elements = new TagRootDataset.empty();
+    //  var elements = new TagRootDataset.empty();
     rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
-    rds[kInstitutionAddress] =
-        new STtag(PTag.kInstitutionAddress, ['foo bar']);
+    rds[kInstitutionAddress] = new STtag(PTag.kInstitutionAddress, ['foo bar']);
     rds[kExtendedCodeMeaning] =
         new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
     itemsList.add(new TagItem.fromList(rds, rds));
 
     rds = new TagRootDataset.empty();
-    rds[PTag.kRecognitionCode.code] =
-        new SHtag(PTag.kRecognitionCode, ['abc']);
+    rds[PTag.kRecognitionCode.code] = new SHtag(PTag.kRecognitionCode, ['abc']);
     rds[PTag.kInstitutionAddress.code] =
         new STtag(PTag.kInstitutionAddress, ['abc']);
     rds[PTag.kExtendedCodeMeaning.code] =
@@ -58,7 +51,8 @@ void main() {
     itemsList.add(new TagItem.fromList(rds, rds));
 
     //TODO: this should be adding a real parent and verifying it.
-    sq = new SQtag(null, tag, itemsList, SQ.kMaxVFLength);
+    final sq = new SQtag(
+        null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
 
     test('Test for getAllTItemElements', () {
       expect(sq.getAll(kRecognitionCode), isNotNull);
@@ -92,8 +86,6 @@ void main() {
     });
 
     test('Test for copySequence', () {
-      print('sq: $sq');
-      // Urgent Sharath fix: sq is a DAtag not an SQtag
       final sqCopy = sq.copySQ(rds);
       log.debug(sqCopy.info);
       expect(sqCopy.getAll(kRecognitionCode), isNotNull);
@@ -109,7 +101,6 @@ void main() {
     test('Test for values', () {
       expect(itemsList, equals(sq.items));
 
-      print('sq: $sq');
       final sq2 = sq.update(itemsList);
       expect(itemsList, equals(sq2.items));
       expect(sq.items, equals(sq2.items));
@@ -139,9 +130,9 @@ void main() {
     });
 
     test('Test for items,novalues', () {
-      log..debug(sq.items)..debug(sq.noValues);
+      log..debug('sq.items: ${sq.items}')..debug('sq.noValues: ${sq.noValues}');
 
-      final rds0 =new TagRootDataset.empty();
+      final rds0 = new TagRootDataset.empty();
       final fl =
           new FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
       final of = new OFtag(PTag.kVectorGridData, <double>[34.4]);
@@ -153,13 +144,284 @@ void main() {
       rds0[fd.code] = fd;
       rds0[od.code] = od;
       itemsList = <TagItem>[]..add(new TagItem.fromList(rds, rds0));
-      print('sq: $sq');
       final sq2 = sq.update(itemsList);
-      log..debug(sq2.items)..debug(sq2.noValues);
+      expect(sq2.values.isEmpty, false);
+      log.debug('sq2.items: ${sq2.items}');
+
+      final noValues0 = sq2.noValues;
+      log.debug('sq2.noValues: $noValues0');
+      expect(noValues0.values.isEmpty, true);
 
       final sqCopy = sq.copySQ(rds);
-      log..debug(sqCopy.items)..debug(sqCopy.noValues);
+      log.debug('sqCopy.items: ${sqCopy.items}');
+      expect(sqCopy.values.isEmpty, false);
+
+      final noValues1 = sqCopy.noValues;
+      log.debug('sqCopy.noValues: $noValues1');
       expect(sq.items, equals(sqCopy.items));
+      expect(noValues1.values.isEmpty, true);
+    });
+
+    test('Test for lookup', () {
+      final rds0 = new TagRootDataset.empty();
+      final fl =
+          new FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
+      final sh = new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      final fd = new FDtag(PTag.kOverallTemplateSpatialTolerance);
+      final od = new ODtag(PTag.kSelectorODValue, <double>[2.33]);
+
+      rds0[fl.code] = fl;
+      rds0[sh.code] = sh;
+      rds0[fd.code] = fd;
+
+      final itemsList = <TagItem>[]..add(new TagItem.fromList(rds0, rds0));
+      final sq = new SQtag(
+          null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
+
+      system.throwOnError = false;
+      final lookup0 = sq.lookup(fl.index);
+      log.debug('lookup0: $lookup0');
+      expect(lookup0, equals(fl));
+
+      final lookup1 = sq.lookup(sh.index);
+      log.debug('lookup1: $lookup1');
+      expect(lookup1, equals(sh));
+
+      final lookup2 = sq.lookup(od.index);
+      log.debug('lookup2:$lookup2');
+      expect(lookup2, isNull);
+
+      final lookup3 = sq.lookup(od.index, required: true);
+      log.debug('lookup3:$lookup3');
+      expect(lookup3, isNull);
+
+      system.throwOnError = true;
+      expect(() => sq.lookup(od.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+
+    test('Test for lookupAll', () {
+      final rds0 = new TagRootDataset.empty();
+      final fl =
+          new FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
+      final sh = new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      final fd = new FDtag(PTag.kOverallTemplateSpatialTolerance);
+      final od = new ODtag(PTag.kSelectorODValue, <double>[2.33]);
+
+      rds0[fl.code] = fl;
+      rds0[sh.code] = sh;
+      rds0[fd.code] = fd;
+
+      final itemsList = <TagItem>[]..add(new TagItem.fromList(rds0, rds0));
+      final sq = new SQtag(
+          null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
+
+      system.throwOnError = false;
+      final lookup0 = sq.lookupAll(fl.index);
+      log.debug('lookup0: $lookup0');
+      expect(lookup0, equals([fl]));
+
+      final lookup1 = sq.lookupAll(sh.index);
+      log.debug('lookup1: $lookup1');
+      expect(lookup1, equals([sh]));
+
+      final lookup2 = sq.lookupAll(od.index);
+      log.debug('lookup2:$lookup2');
+      expect(lookup2, <double>[]);
+
+      final lookup3 = sq.lookupAll(od.index, required: true);
+      log.debug('lookup3:$lookup3');
+      expect(lookup2, <double>[]);
+
+      system.throwOnError = true;
+      expect(() => sq.lookupAll(od.index, required: true),
+          throwsA(const isInstanceOf<ElementNotPresentError>()));
+    });
+  });
+
+  group('SQ', () {
+    //VM.k1
+    const sqTags0 = const <PTag>[
+      PTag.kLanguageCodeSequence,
+      PTag.kIssuerOfAccessionNumberSequence,
+      PTag.kInstitutionCodeSequence,
+      PTag.kCodingSchemeIdentificationSequence,
+      PTag.kEquivalentCodeSequence,
+      PTag.kContextGroupIdentificationSequence,
+      PTag.kMappingResourceIdentificationSequence,
+      PTag.kProcedureCodeSequence,
+      PTag.kReferencedStudySequence,
+      PTag.kReferencedVisitSequence,
+      PTag.kPatientPrimaryLanguageCodeSequence,
+      PTag.kReceiveProbeSequence,
+      PTag.kChannelSettingsSequence,
+      PTag.kMRImagingModifierSequence,
+    ];
+
+    const otherTags = const <PTag>[
+      PTag.kColumnAngulationPatient,
+      PTag.kAcquisitionProtocolDescription,
+      PTag.kCTDIvol,
+      PTag.kAcquisitionType,
+      PTag.kPerformedStationAETitle,
+      PTag.kSelectorSTValue,
+      PTag.kDate,
+      PTag.kTime
+    ];
+
+    test('SQ isValidTag good values', () {
+      system.throwOnError = false;
+      final isValidTag0 = SQ.isValidTag(PTag.kMRImageFrameTypeSequence);
+      expect(isValidTag0, true);
+
+      for (var tag in sqTags0) {
+        final isValidTag0 = SQ.isValidTag(tag);
+        expect(isValidTag0, true);
+      }
+    });
+
+    test('SQ isValidTag bad values', () {
+      system.throwOnError = false;
+      final isValidTag0 = SQ.isValidTag(PTag.kSelectorSHValue);
+      expect(isValidTag0, false);
+
+      system.throwOnError = true;
+      expect(() => SQ.isValidTag(PTag.kSelectorFDValue),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        final isValidTag0 = SQ.isValidTag(tag);
+        expect(isValidTag0, false);
+
+        system.throwOnError = true;
+        expect(() => SQ.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('SQ isValidVRIndex good values', () {
+      system.throwOnError = false;
+      expect(SQ.isValidVRIndex(kSQIndex), true);
+      for (var tag in sqTags0) {
+        system.throwOnError = false;
+        expect(SQ.isValidVRIndex(tag.vrIndex), true);
+      }
+    });
+    test('SQ isValidVRIndex bad values', () {
+      system.throwOnError = false;
+      expect(SQ.isValidVRIndex(kAEIndex), false);
+
+      system.throwOnError = true;
+      expect(() => SQ.isValidVRIndex(kAEIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(SQ.isValidVRIndex(tag.vrIndex), false);
+
+        system.throwOnError = true;
+        expect(() => SQ.isValidVRIndex(tag.vrIndex),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('SQ isValidVRCode good values', () {
+      system.throwOnError = false;
+      expect(SQ.isValidVRCode(kSQCode), true);
+
+      for (var tag in sqTags0) {
+        expect(SQ.isValidVRCode(tag.vrCode), true);
+      }
+    });
+
+    test('SQ isValidVRCode bad values', () {
+      system.throwOnError = false;
+      expect(SQ.isValidVRCode(kAECode), false);
+
+      system.throwOnError = true;
+      expect(() => SQ.isValidVRCode(kAECode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(SQ.isValidVRCode(tag.vrCode), false);
+
+        system.throwOnError = true;
+        expect(() => SQ.isValidVRCode(tag.vrCode),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('SQ checkVRIndex good values', () {
+      system.throwOnError = false;
+      expect(SQ.checkVRIndex(kSQIndex), kSQIndex);
+
+      for (var tag in sqTags0) {
+        system.throwOnError = false;
+        expect(SQ.checkVRIndex(tag.vrIndex), tag.vrIndex);
+      }
+    });
+
+    test('SQ checkVRIndex bad values', () {
+      system.throwOnError = false;
+      expect(
+          SQ.checkVRIndex(
+            kAEIndex,
+          ),
+          isNull);
+      system.throwOnError = true;
+      expect(() => SQ.checkVRIndex(kAEIndex),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(SQ.checkVRIndex(tag.vrIndex), isNull);
+
+        system.throwOnError = true;
+        expect(() => SQ.checkVRIndex(tag.vrIndex),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('SQ checkVRCode good values', () {
+      system.throwOnError = false;
+      expect(SQ.checkVRCode(kSQCode), kSQCode);
+
+      for (var tag in sqTags0) {
+        system.throwOnError = false;
+        expect(SQ.checkVRCode(tag.vrCode), tag.vrCode);
+      }
+    });
+
+    test('SQ checkVRCode bad values', () {
+      system.throwOnError = false;
+      expect(
+          SQ.checkVRCode(
+            kAECode,
+          ),
+          isNull);
+      system.throwOnError = true;
+      expect(() => SQ.checkVRCode(kAECode),
+          throwsA(const isInstanceOf<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        system.throwOnError = false;
+        expect(SQ.checkVRCode(tag.vrCode), isNull);
+
+        system.throwOnError = true;
+        expect(() => SQ.checkVRCode(tag.vrCode),
+            throwsA(const isInstanceOf<InvalidVRError>()));
+      }
+    });
+
+    test('SQ isValidVFLength good values', () {
+      expect(SQ.isValidVFLength(SQ.kMaxVFLength), true);
+      expect(SQ.isValidVFLength(0), true);
+    });
+
+    test('SQ isValidVFLength bad values', () {
+      expect(SQ.isValidVFLength(SQ.kMaxVFLength + 1), false);
+      expect(SQ.isValidVFLength(-1), false);
     });
   });
 }
