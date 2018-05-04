@@ -300,7 +300,7 @@ abstract class Tag {
     final msg = 'Invalid Value Field length: '
         'min($minValues) <= $vfLength <= max($maxValues)';
     if (issues != null) issues.add(msg);
-    if (throwOnError) return invalidVFLength(vfLength, vr.maxVFLength);
+    if (throwOnError) return isValidVFLengthError(vfLength, vr.maxVFLength);
     return false;
   }
 

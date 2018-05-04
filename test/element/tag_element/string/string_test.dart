@@ -280,7 +280,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final lo1 = LOtag.fromBytes(PTag.kSelectorLOValue, bytes0);
           log.debug('lo1: ${lo1.info}');
@@ -294,7 +294,7 @@ void main() {
         final vList1 = rsg.getLOList(1, 10);
         for (var listS in vList1) {
           system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final lo1 = LOtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(lo1, isNull);
@@ -846,14 +846,14 @@ void main() {
         final sList0 = rsg.getLOList(1, 10);
         system.throwOnError = false;
         final toB0 = LO.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        final bytes0 = Bytes.toAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodLOList) {
         final toB1 = LO.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final bytes1 = Bytes.toAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
@@ -1105,7 +1105,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final lt1 = LTtag.fromBytes(PTag.kSelectorLTValue, bytes0);
           log.debug('lt1: ${lt1.info}');
@@ -1119,7 +1119,7 @@ void main() {
         final vList1 = rsg.getLTList(1, 10);
         for (var listS in vList1) {
           system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final lt1 = LTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(lt1, isNull);
@@ -1623,14 +1623,14 @@ void main() {
         final sList0 = rsg.getLTList(1, 1);
         system.throwOnError = false;
         final toB0 = LT.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        final bytes0 = Bytes.toAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodLTList) {
         final toB1 = LT.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final bytes1 = Bytes.toAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
@@ -1903,7 +1903,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getPNList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final pn1 = PNtag.fromBytes(PTag.kSelectorPNValue, bytes0);
           log.debug('pn1: ${pn1.info}');
@@ -1917,7 +1917,7 @@ void main() {
         final vList1 = rsg.getPNList(1, 10);
         for (var listS in vList1) {
           system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final pn1 = PNtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(pn1, isNull);
@@ -2392,14 +2392,14 @@ void main() {
         final sList0 = rsg.getPNList(1, 10);
         system.throwOnError = false;
         final toB0 = PN.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        final bytes0 = Bytes.toAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodPNList) {
         final toB1 = PN.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final bytes1 = Bytes.toAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
@@ -2679,7 +2679,7 @@ void main() {
         final vList1 = rsg.getSHList(1, 1000);
         system.throwOnError = false;
 //        for (var listS in vList1) {
-        final bytes0 = Bytes.asciiEncode(vList1.join('\\'));
+        final bytes0 = Bytes.toAscii(vList1.join('\\'));
         //final bytes0 = new Bytes();
         final sh1 = SHtag.fromBytes(PTag.kSelectorSHValue, bytes0);
         log.debug('sh1: ${sh1.info}');
@@ -2693,7 +2693,7 @@ void main() {
         final vList1 = rsg.getSHList(1, 10);
         for (var listS in vList1) {
           system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final sh1 = SHtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(sh1, isNull);
@@ -3216,14 +3216,14 @@ void main() {
         final sList0 = rsg.getSHList(1, 10);
         system.throwOnError = false;
         final toB0 = SH.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        final bytes0 = Bytes.toAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodSHList) {
         final toB1 = SH.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final bytes1 = Bytes.toAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
@@ -3486,7 +3486,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSTList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final st1 = STtag.fromBytes(PTag.kSelectorSTValue, bytes0);
           log.debug('st1: ${st1.info}');
@@ -3500,7 +3500,7 @@ void main() {
         final vList1 = rsg.getSTList(1, 10);
         for (var listS in vList1) {
           system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final st1 = STtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(st1, isNull);
@@ -3975,14 +3975,14 @@ void main() {
         final sList0 = rsg.getSTList(1, 1);
         system.throwOnError = false;
         final toB0 = ST.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        final bytes0 = Bytes.toAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodSTList) {
         final toB1 = ST.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final bytes1 = Bytes.toAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
@@ -4262,7 +4262,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUCList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final uc1 = UCtag.fromBytes(PTag.kSelectorUCValue, bytes0);
           log.debug('uc1: ${uc1.info}');
@@ -4276,7 +4276,7 @@ void main() {
         final vList1 = rsg.getUCList(1, 10);
         for (var listS in vList1) {
           system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final uc1 = UCtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(uc1, isNull);
@@ -4764,14 +4764,14 @@ void main() {
         final sList0 = rsg.getUCList(1, 10);
         system.throwOnError = false;
         final toB0 = UC.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        final bytes0 = Bytes.toAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodUCList) {
         final toB1 = UC.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final bytes1 = Bytes.toAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
@@ -5018,7 +5018,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final ut1 = UTtag.fromBytes(PTag.kSelectorUTValue, bytes0);
           log.debug('ut1: ${ut1.info}');
@@ -5032,7 +5032,7 @@ void main() {
         final vList1 = rsg.getUTList(1, 10);
         for (var listS in vList1) {
           system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.toAscii(listS);
           //final bytes0 = new Bytes();
           final ut1 = UTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(ut1, isNull);
@@ -5455,14 +5455,14 @@ void main() {
         final sList0 = rsg.getUTList(1, 1);
         system.throwOnError = false;
         final toB0 = UT.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        final bytes0 = Bytes.toAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodUTList) {
         final toB1 = UT.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final bytes1 = Bytes.toAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }

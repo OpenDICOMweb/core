@@ -114,7 +114,7 @@ abstract class EvrElement<V> implements ByteElement<V> {
       case kOWIndex:
         return OWevrPixelData.makeFromBytes(code, eBytes, ts, fragments);
       default:
-        return invalidVRIndex(vrIndex, null, null);
+        return badVRIndex(vrIndex, null, null);
     }
   }
 

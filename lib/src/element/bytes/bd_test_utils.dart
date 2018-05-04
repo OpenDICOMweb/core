@@ -175,7 +175,7 @@ String shortEvrToString(EvrBytes bytes) {
   return sb.toString();
 }
 
-Bytes asciiListToBytes(List<String> vList) => Bytes.asAscii(vList.join('\\'));
+Bytes asciiListToBytes(List<String> vList) => Bytes.toAscii(vList.join('\\'));
 
 Bytes uint8ListToBytes(Uint8List bList) => new Bytes.typedDataView(bList);
 

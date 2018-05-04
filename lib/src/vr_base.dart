@@ -6,8 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/system.dart';
+import 'package:core/src/value/empty_list.dart';
 
 // Sequence is 0
 const int kSQIndex = 0;
@@ -302,14 +302,30 @@ Null invalidVR(int vrIndex, Issues issues, int correctVRIndex) {
   return _doError(msg, issues, correctVRIndex);
 }
 
-Null invalidVRIndex(int vrIndex, Issues issues, int correctVRIndex) {
+Null badVRIndex(int vrIndex, Issues issues, int correctVRIndex) {
   final msg = 'Invalid VR index($vrIndex == ${vrIdByIndex[vrIndex]})';
   return _doError(msg, issues, correctVRIndex);
 }
 
-Null invalidVRCode(int vrCode, Issues issues, int correctVRIndex) {
+bool isValidVRIndexError(int vrIndex, Issues issues, int correctVRIndex) {
+  badVRIndex(vrIndex, issues, correctVRIndex);
+  return false;
+}
+
+Null _invalidVRCode(int vrCode, Issues issues, int correctVRIndex) {
   final msg = 'Invalid VR code(${vrIdByIndex[vrIndexByCode[vrCode]]})';
   return _doError(msg, issues, correctVRIndex);
+}
+
+Null badVRCode(int vrCode, Issues issues, int correctVRIndex) {
+  _invalidVRCode(vrCode, issues, correctVRIndex);
+  return null;
+}
+
+bool isValidVRCodeError(int vrCode, Issues issues, int correctVRCode) {
+  final vrIndex = vrIndexByCode[vrCode];
+  _invalidVRCode(vrCode, issues, vrIndex);
+  return false;
 }
 
 class InvalidVRError extends Error {
@@ -322,6 +338,7 @@ class InvalidVRError extends Error {
 }
 
 Null _doError(String message, Issues issues, int correctVRIndex) {
+
   final msg = '$message - correct VR is ${vrIdByIndex[correctVRIndex]}';
   log.error(msg);
   if (issues != null) issues.add(msg);

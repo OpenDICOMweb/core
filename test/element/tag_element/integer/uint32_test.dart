@@ -290,7 +290,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final bytes0 = Bytes.toAscii(intList0.toString());
         final ul0 = ULtag.fromBytes(PTag.kSelectorULValue, bytes0);
         log.debug('ul0: ${ul0.info}');
         expect(ul0.hasValidValues, true);
@@ -301,7 +301,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final bytes0 = Bytes.toAscii(intList0.toString());
         final ul0 = ULtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ul0, isNull);
 
@@ -972,7 +972,7 @@ void main() {
 //        final bd = uint32List1.buffer.asUint8List();
 //        final base64 = cvt.base64.encode(bd);
         final bytes = new Bytes.typedDataView(uint32List0);
-        final base64 = bytes.asBase64();
+        final base64 = bytes.getBase64();
         log.debug('UL.base64: "$base64"');
 
         final ulList = Uint32.fromBase64(base64);
@@ -989,7 +989,7 @@ void main() {
 //        final bd = uint32List1.buffer.asUint8List();
 //        final s = cvt.base64.encode(bd);
         final bytes = new Bytes.typedDataView(uint32List0);
-        final base64 = bytes.asBase64();
+        final base64 = bytes.getBase64();
         expect(Uint32.toBase64(uint32List0), equals(base64));
       }
     });
@@ -1003,7 +1003,7 @@ void main() {
         // Encode
 //       final base64 = cvt.base64.encode(bd);
         final bytes = new Bytes.typedDataView(uint32List0);
-        final base64 = bytes.asBase64();
+        final base64 = bytes.getBase64();
         log.debug('UL.base64: "$base64"');
         final s = Uint32.toBase64(uint32List0);
         log.debug('  UL.json: "$s"');
@@ -1318,7 +1318,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final bytes0 = Bytes.toAscii(intList0.toString());
         final at0 = ATtag.fromBytes(PTag.kSelectorATValue, bytes0);
         log.debug('at0: ${at0.info}');
         expect(at0.hasValidValues, true);
@@ -1329,7 +1329,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final bytes0 = Bytes.toAscii(intList0.toString());
         final at0 = ATtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(at0, isNull);
 
@@ -2151,7 +2151,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final bytes0 = Bytes.toAscii(intList0.toString());
         final ol0 = OLtag.fromBytes(PTag.kSelectorOLValue, bytes0);
         log.debug('ol0: ${ol0.info}');
         expect(ol0.hasValidValues, true);
@@ -2162,7 +2162,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.asciiEncode(intList0.toString());
+        final bytes0 = Bytes.toAscii(intList0.toString());
         final ol0 = OLtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ol0, isNull);
 
@@ -2668,7 +2668,7 @@ void main() {
 // Encode
 //       final base64 = cvt.base64.encode(bd);
         final bytes = new Bytes.typedDataView(uint32List0);
-        final base64 = bytes.asBase64();
+        final base64 = bytes.getBase64();
         log.debug('OL.base64: "$base64"');
         final s = Uint32.toBase64(uint32List0);
         log.debug('  OL.json: "$s"');

@@ -351,7 +351,7 @@ void main() {
         final floatList0 = rng.float32List(1, 10);
         final float = new Float32List.fromList(floatList0);
         //final bytes = float.buffer.asUint8List();
-        final bytes0 = Bytes.asciiEncode(float.toString());
+        final bytes0 = Bytes.toAscii(float.toString());
         //final bytes0 = new Bytes();
         final fl0 = FLtag.fromBytes(PTag.kSelectorFLValue, bytes0);
         log.debug('fl0: ${fl0.info}');
@@ -364,7 +364,7 @@ void main() {
         system.throwOnError = false;
         final floatList0 = rng.float32List(1, 10);
         final float = new Float32List.fromList(floatList0);
-        final bytes0 = Bytes.asciiEncode(float.toString());
+        final bytes0 = Bytes.toAscii(float.toString());
         final fl0 = FLtag.fromBytes(PTag.kSelectorSSValue, bytes0);
         expect(fl0, isNull);
 
@@ -1056,7 +1056,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
-        final byte0 = Bytes.asciiEncode(float.join('\\'));
+        final byte0 = Bytes.toAscii(float.join('\\'));
         final fb0 = Float32.fromBytes(byte0);
         final float32List0 = byte0.asFloat32List();
         log.debug('formBytes: $fb0, Flaot32List: $float32List0');
@@ -1079,7 +1079,7 @@ void main() {
         final fvF3 = Float32.fromValueField(<double>[123.54]);
         expect(fvF3, equals(<double>[123.54]));
 
-        final byte0 = Bytes.asciiEncode(floatList0.join('\\'));
+        final byte0 = Bytes.toAscii(floatList0.join('\\'));
         final fvF4 = Float32.fromValueField(byte0);
         expect(fvF4, isNotNull);
 
@@ -1342,7 +1342,7 @@ void main() {
         final floatList0 = rng.float32List(1, 1);
         final float = new Float32List.fromList(floatList0);
         //final bytes = float.buffer.asUint8List();
-        final bytes0 = Bytes.asciiEncode(float.toString());
+        final bytes0 = Bytes.toAscii(float.toString());
         //final bytes0 = new Bytes();
         final of0 = OFtag.fromBytes(PTag.kSelectorOFValue, bytes0);
         log.debug('of0: ${of0.info}');
@@ -1355,7 +1355,7 @@ void main() {
         system.throwOnError = false;
         final floatList0 = rng.float32List(1, 10);
         final float = new Float32List.fromList(floatList0);
-        final bytes0 = Bytes.asciiEncode(float.toString());
+        final bytes0 = Bytes.toAscii(float.toString());
         final of0 = OFtag.fromBytes(PTag.kSelectorSSValue, bytes0);
         expect(of0, isNull);
 

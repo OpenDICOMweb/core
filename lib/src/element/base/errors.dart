@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/src/value/empty_list.dart';
@@ -107,12 +106,27 @@ class InvalidVFLengthError extends Error {
   String toString() => msg;
 }
 
-Null invalidVFLength(int length, int maxVFLength) {
-  final s = 'Invalid Value Field Length: $length exceeds maximum($maxVFLength)';
+Null badVFLength(int vfLength, int maxVFLength,
+    [int eSize, int vfLengthField]) {
+  final sb = new StringBuffer('Invalid Value Field Length:\n');
+  if (vfLength > maxVFLength)
+    sb.writeln('\t$vfLength exceeds maximum($maxVFLength)');
+  if (eSize != null && vfLength % eSize == 0)
+    sb.writeln('$vfLength is not a multiple of element size($eSize)');
+  if (vfLengthField != null &&
+      (vfLengthField != vfLength || vfLengthField != kUndefinedLength))
+    sb.writeln('Invalid vfLengthField($vfLengthField) != vfLength($vfLength) '
+        'and not equal to kUndefinedLength($kUndefinedLength');
+  final s = '$sb';
   log.error(s);
-  if (throwOnError) throw new InvalidVFLengthError(length, s);
-
+  if (throwOnError) throw new InvalidVFLengthError(vfLength, s);
   return null;
+}
+
+bool isValidVFLengthError(int vfLength, int maxVFLength,
+    [int eSize, int vfLengthField]) {
+  badVFLength(vfLength, maxVFLength);
+  return false;
 }
 
 // Change name to InvalidValuesLengthError when Tag is removed
@@ -130,7 +144,7 @@ class InvalidValuesLength<V> extends Error {
 
   static String _msg<V>(int vmMin, int vmMax, Iterable<V> values) =>
       'InvalidValuesLengthError: vmMin($vmMin) <= ${values.length} '
-          '<= vmMax($vmMax) values: $values';
+      '<= vmMax($vmMax) values: $values';
 }
 
 Null invalidValuesLength<V>(int vmMin, int vmMax, Iterable<V> values,

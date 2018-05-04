@@ -9,12 +9,12 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/logger.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr_base.dart';
 
@@ -288,21 +288,20 @@ Summary $tag
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    badVRIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
   }
 
   static int checkVRIndex(int index, [Issues issues]) =>
-      (index == kVRIndex) ? index : invalidVRIndex(index, issues, kVRIndex);
+      (index == kVRIndex) ? index : badVRIndex(index, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 

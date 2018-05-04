@@ -11,7 +11,6 @@ import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
-import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
@@ -23,6 +22,7 @@ import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/value.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/vr_base.dart';
 
 class StringBulkdata extends DelegatingList<String> with BulkdataRef<String> {
@@ -190,7 +190,7 @@ abstract class StringBase extends Element<String> {
     if (vfBytes.isEmpty) return kEmptyStringList;
     final length = vfBytes.length;
     if (!_inRange(length, 0, maxVFLength))
-      return invalidVFLength(length, maxVFLength);
+      return badVFLength(length, maxVFLength);
     final allow = system.allowInvalidCharacterEncodings;
     return (isAscii || system.useAscii)
         ? <String>[cvt.ascii.decode(vfBytes, allowInvalid: allow)]
@@ -295,23 +295,21 @@ abstract class AE extends StringAscii {
           [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) {
-    if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
-    return false;
-  }
+  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
+      (vrIndex == kVRIndex) ? true
+      : isValidVRIndexError(vrIndex, issues, kVRIndex);
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -330,7 +328,7 @@ abstract class AE extends StringAscii {
     if (s == null || isNotValidValueLength(s, issues)) return false;
     if (!_isDcmString(s, 16, allowLeading: true)) {
       if (issues != null) issues.add('Invalid AETitle String (AE): "$s"');
-      return false;
+
     }
     return true;
   }
@@ -411,21 +409,20 @@ abstract class CS extends StringAscii {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
-    return false;
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -567,21 +564,20 @@ abstract class UI extends StringAscii {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
-    return false;
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -685,23 +681,21 @@ abstract class LO extends StringUtf8 {
           [Issues issues]) =>
       Element.isValidVListLength(tag, vList, issues, kMaxLength);
 
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) {
-    if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
-    return false;
-  }
+  static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
+     (vrIndex == kVRIndex) ? true
+    : isValidVRIndexError(vrIndex, issues, kVRIndex);
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -843,21 +837,21 @@ abstract class PN extends StringUtf8 {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -951,21 +945,20 @@ abstract class SH extends StringUtf8 {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
-    return false;
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -1063,21 +1056,21 @@ abstract class UC extends StringUtf8 {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -1194,21 +1187,21 @@ abstract class LT extends Text {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -1306,21 +1299,21 @@ abstract class ST extends Text {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -1422,21 +1415,21 @@ abstract class UR extends Text {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxShortVF);
@@ -1563,21 +1556,21 @@ abstract class UT extends Text {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length) => _inRange(length, 0, kMaxVFLength);
 
@@ -1693,21 +1686,21 @@ abstract class AS extends StringBase {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -1829,21 +1822,21 @@ abstract class DA extends StringBase {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -1951,21 +1944,21 @@ abstract class DT extends StringBase {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -2075,21 +2068,21 @@ abstract class TM extends StringBase {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -2226,21 +2219,21 @@ abstract class DS extends StringAscii {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -2399,21 +2392,21 @@ abstract class IS extends StringAscii {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    return isValidVRIndexError(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
+
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? vrIndex : invalidVR(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length, [Issues issues]) =>
       _inRange(length, 0, kMaxVFLength);
@@ -2586,15 +2579,15 @@ Uint8List _uint8ListFromString(String s, int maxVFLength, bool isAscii) {
   final vf =
       (isAscii || system.useAscii) ? cvt.ascii.encode(s) : cvt.utf8.encode(s);
   if (!_isValidVFL(vf.length, maxVFLength))
-    return invalidVFLength(vf.length, maxVFLength);
+    return badVFLength(vf.length, maxVFLength);
   return vf;
 }
 
 Bytes _bytesFromString(String s, int maxVFLength, bool isAscii) {
   final vf =
-      (isAscii || system.useAscii) ? Bytes.asAscii(s) : Bytes.asUtf8(s);
+      (isAscii || system.useAscii) ? Bytes.toAscii(s) : Bytes.toUtf8(s);
   if (!_isValidVFL(vf.length, maxVFLength))
-    return invalidVFLength(vf.length, maxVFLength);
+    return badVFLength(vf.length, maxVFLength);
   return vf;
 }
 
@@ -2646,7 +2639,7 @@ List<String> _stringListFromTypedData(TypedData td, int maxVFLength,
     {bool isAscii = true}) {
   if (td.lengthInBytes == 0) return kEmptyStringList;
   if (!_isValidVFL(td.lengthInBytes, maxVFLength))
-    return invalidVFLength(td.lengthInBytes, maxVFLength);
+    return badVFLength(td.lengthInBytes, maxVFLength);
   final s = _typedDataToString(td, isAscii);
   return s.split('\\');
 }
@@ -2667,6 +2660,6 @@ List<String> _textListFromTypedData(TypedData vfBytes, int maxVFLength,
     {bool isAscii = true}) {
   if (vfBytes.lengthInBytes == 0) return kEmptyStringList;
   if (!_isValidVFL(vfBytes.lengthInBytes, maxVFLength))
-    return invalidVFLength(vfBytes.lengthInBytes, maxVFLength);
+    return badVFLength(vfBytes.lengthInBytes, maxVFLength);
   return <String>[_typedDataToString(vfBytes, isAscii)];
 }

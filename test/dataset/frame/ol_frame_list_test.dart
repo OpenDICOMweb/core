@@ -300,7 +300,7 @@ void main() {
       //Frame Descriptor.fromDataSet
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
-          new UIevr.fromStrings(kTransferSyntaxUID, Bytes.asAscii(ts.asString));
+          new UIevr.fromStrings(kTransferSyntaxUID, Bytes.toAscii(ts.asString));
       final usSamplesPerPixel0 = new USevr(kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           makeCS(kPhotometricInterpretation, ['RGB1']);

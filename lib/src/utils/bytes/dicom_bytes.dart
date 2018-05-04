@@ -14,17 +14,19 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   DicomBytes._from(Bytes bytes, int start, int end, Endian endian)
       : super._from(bytes, start, end, endian);
 
+  // Allows the removal of padding characters.
   @override
   String _getAscii(int offset, int length,
           [bool allow = true, int padChar = kSpace]) =>
       ascii.decode(asUint8List(offset, length, padChar), allowInvalid: allow);
 
+  // Allows the removal of padding characters.
   @override
   String _getUtf8(int offset, int length,
           [bool allow = true, int padChar = kSpace]) =>
-      utf8.decode(asUint8List(offset, length), allowMalformed: allow);
+      utf8.decode(asUint8List(offset, length, padChar), allowMalformed: allow);
 
-  @override
+  // Allows the removal of padding characters.
   @override
   Uint8List asUint8List([int offset = 0, int length, int padChar]) {
     assert(padChar == null || padChar == kSpace || padChar == kNull);
@@ -88,9 +90,53 @@ abstract class DicomBytes extends Bytes with DicomMixin {
     }
     return length;
   }
+
+  /// Returns a [Bytes] containing the ASCII encoding of [s].
+  /// If [s].length is odd, [padChar] is appended to [s] before
+  /// encoding it.
+  static Bytes toAscii(String s, [String padChar = ' ']) =>
+      Bytes.toAscii(_maybePad(s, padChar));
+
+  static String _maybePad(String s, String p) => s.length.isOdd ? '$s$p' : s;
+
+  /// Returns a [Bytes] containing ASCII code units.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as ASCII. The result is returns as [Bytes].
+  static Bytes asciiFromList(List<String> vList,
+          [String separator = '\\', String padChar = ' ']) =>
+      vList.isEmpty ? kEmptyBytes : toAscii(vList.join(separator), padChar);
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  static Bytes toUtf8(String s, [String padChar = ' ']) =>
+      Bytes.toUtf8(_maybePad(s, padChar));
+
+  /// Returns a [Bytes] containing UTF-8 code units.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as ASCII. The result is returns as [Bytes].
+  static Bytes fromUtf8List(List<String> vList,
+          [String separator = '\\']) =>
+      (vList.isEmpty) ? kEmptyBytes : toUtf8(vList.join('\\'));
+
+  /// Returns a [Bytes] containing UTF-8 code units. See [fromUtf8List].
+  static Bytes fromStringList(List<String> vList, [String separator = '\\']) =>
+      (vList.isEmpty) ? kEmptyBytes : toUtf8(vList.join('\\'));
+
+  /// Returns a [ByteData] that is a copy of the specified region of _this_.
+  static ByteData copyBDRegion(ByteData bd, int offset, int length) {
+    final _length = length ?? bd.lengthInBytes;
+    final _nLength = _length.isOdd ? _length + 1 : length;
+    final bdNew = new ByteData(_nLength);
+    for (var i = 0, j = offset; i < _length; i++, j++)
+      bdNew.setUint8(i, bd.getUint8(j));
+    return bdNew;
+  }
 }
 
-class DicomGrowableBytes extends GrowableBytes with DicomWriteMixin {
+class DicomGrowableBytes extends GrowableBytes with DicomWriterMixin {
   /// Returns a new [Bytes] of [length].
   DicomGrowableBytes([int length, Endian endian, int limit = kDefaultLimit])
       : super._(length, endian, limit);

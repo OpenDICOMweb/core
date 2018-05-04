@@ -9,13 +9,13 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/bytes_element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
+import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr_base.dart';
 
@@ -97,7 +97,7 @@ abstract class IvrElement<V> implements ByteElement<V> {
       case kOWIndex:
         return OWivrPixelData.make(bytes, vrIndex, ts, fragments);
       default:
-        return invalidVRIndex(vrIndex, null, null);
+        return badVRIndex(vrIndex, null, null);
     }
   }
 

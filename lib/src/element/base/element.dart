@@ -347,7 +347,7 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns _true_ if [values] are valid for _this_.
   bool checkValues(Iterable<V> vList, [Issues issues]) {
     final ok = checkLength(vList, issues);
-    if (!ok) return ok;
+    if (!ok) return false;
     for (var v in vList)
       if (!checkValue(v, issues: issues)) {
         invalidValuesError(vList, issues: issues);

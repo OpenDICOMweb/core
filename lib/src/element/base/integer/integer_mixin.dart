@@ -630,7 +630,7 @@ abstract class OBMixin {
 
   static bool isValidTag(Tag tag, [Issues issues]) {
     if (_isValidVRIndex(tag.vrIndex)) return true;
-    invalidTagError(tag, OB, issues);
+    isValidTagError(tag, issues, OB);
     return false;
   }
 
@@ -638,7 +638,7 @@ abstract class OBMixin {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (_isValidVRIndex(vrIndex)) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    badVRIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
@@ -648,8 +648,7 @@ abstract class OBMixin {
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
@@ -708,7 +707,7 @@ abstract class UNMixin {
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (isValidVRIndex(vrIndex))
           ? vrIndex
-          : invalidVRIndex(vrIndex, issues, kVRIndex);
+          : badVRIndex(vrIndex, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
@@ -891,15 +890,14 @@ abstract class OWMixin {
         vrIndex == kOBOWIndex ||
         vrIndex == kUSSSOWIndex ||
         vrIndex == kUNIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    badVRIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return isValidVRCodeError(vrCode, issues, kVRIndex);
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>

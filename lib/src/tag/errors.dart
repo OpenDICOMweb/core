@@ -22,17 +22,25 @@ class InvalidTagError extends Error {
   @override
   String toString() => _msg(tag, type);
 
-  static String _msg(Tag tag, Type type) =>
-      'InvalidTag for $type: $tag';
+  static String _msg(Tag tag, Type type) => 'InvalidTag for $type: $tag';
 }
 
-//TODO: jim figure out best way to handel invalid tags
-Object invalidTagError(Tag tag, Type type, [Issues issues]) {
+void _invalidTagError(Tag tag, Issues issues, Type type) {
   final msg = InvalidTagError._msg(tag, type);
   if (issues != null) issues.add(msg);
-  log.error(InvalidTagKeyError._msg(tag));
+  log.error(InvalidTagError._msg(tag, type));
+  print('throwOnError: $throwOnError');
   if (throwOnError) throw new InvalidTagError(tag, type);
-  return tag;
+}
+
+Null badTagError(Tag tag, Type type, [Issues issues]) {
+  _invalidTagError(tag, issues, type);
+  return null;
+}
+
+bool isValidTagError(Tag tag, Issues issues, Type type) {
+  _invalidTagError(tag, issues, type);
+  return false;
 }
 
 class InvalidTagTypeError extends Error {
@@ -46,24 +54,24 @@ class InvalidTagTypeError extends Error {
 }
 
 Null nonIntegerTag(int index, [Issues issues]) =>
-		_doTagError(index, issues, 'Non-Integer Tag');
+    _doTagError(index, issues, 'Non-Integer Tag');
 
 Null nonFloatTag(int index, [Issues issues]) =>
-		_doTagError(index, issues, 'Non-Float Tag');
+    _doTagError(index, issues, 'Non-Float Tag');
 
 Null nonStringTag(int index, [Issues issues]) =>
-		_doTagError(index, issues, 'Non-String Tag');
+    _doTagError(index, issues, 'Non-String Tag');
 
 Null nonSequenceTag(int index, [Issues issues]) =>
-		_doTagError(index, issues, 'Non-Sequence Tag');
+    _doTagError(index, issues, 'Non-Sequence Tag');
 
 Null nonUidTag(int index, [Issues issues]) =>
-		_doTagError(index, issues, 'Non-Uid Tag');
+    _doTagError(index, issues, 'Non-Uid Tag');
 
 Object _doTagError(int index, Issues issues,
-                   [String msg = 'Invalid Tag Type']) {
-	final tag = Tag.lookup(index);
-	final s =  '$msg: $tag';
+    [String msg = 'Invalid Tag Type']) {
+  final tag = Tag.lookup(index);
+  final s = '$msg: $tag';
   if (issues != null) issues.add(s);
   log.error(s);
   if (throwOnError) throw new InvalidTagTypeError(tag, s);
@@ -231,11 +239,10 @@ class InvalidValuesLengthError<V> extends Error {
   String toString() => _msg(tag, values);
 
   static String _msg<V>(Tag tag, Iterable<V> values) {
-  	if (tag == null || tag is! Tag) return '$tag is not a $Tag';
-  	// TODO: use truncated list of values
-	  return 'InvalidValuesLengthError:\n  $tag\n  values: $values';
+    if (tag == null || tag is! Tag) return '$tag is not a $Tag';
+    // TODO: use truncated list of values
+    return 'InvalidValuesLengthError:\n  $tag\n  values: $values';
   }
-
 }
 
 Null invalidValuesLengthError<V>(Tag tag, Iterable<V> values, [Issues issues]) {

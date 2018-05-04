@@ -25,7 +25,7 @@ class PrivateCreatorTags {
   bool tryAdd(PCTag tag) {
     _checkPCTagCode(tag.code);
     final result = tags.putIfAbsent(tag.code, () => tag);
-    return (result != tag) ? invalidTagError(tag, PCTag) : true;
+    return (result != tag) ? isValidTagError(tag, null, PCTag) : true;
   }
 
   //TODO: move to base.dart

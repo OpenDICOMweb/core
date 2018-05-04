@@ -41,7 +41,6 @@ abstract class TagElement<V> {
   String get keyword => tag.keyword;
   String get name => tag.name;
 
-
   /// The index ([vrIndex]) of the Value Representation for this Element.
   /// Since this depends on the [tag] lookkup, the [vrIndex] might be
   /// [kUNIndex] for Private [Element]s.
@@ -53,7 +52,6 @@ abstract class TagElement<V> {
     }
     return vrIndex;
   }
-
 
   int get vmMin => tag.vmMin;
   int get vmMax => tag.vmMax;
@@ -122,7 +120,7 @@ abstract class TagElement<V> {
       case kSQIndex:
         return OWtagPixelData.fromValues(tag, values, vfLengthField);
       default:
-        return invalidVRIndex(vrIndex, null, null);
+        return badVRIndex(vrIndex, null, null);
     }
   }
 
@@ -149,9 +147,9 @@ abstract class TagElement<V> {
   /// Creates a [TagElement] from [DicomBytes] containing a binary encoded
   /// [Element].
   static Element makeFromBytes(
-      Dataset ds, int code, DicomBytes eBytes, int vrIndex, int vfOffset,
+      Dataset ds, int code, DicomBytes bytes, int vrIndex, int vfOffset,
       [int vfLengthField]) {
-    final vf = eBytes.view(eBytes.offset + vfOffset, eBytes.length - vfOffset);
+    final vf = bytes.asBytes(bytes.offset + vfOffset, bytes.length - vfOffset);
     final tag = lookupTagByCode(ds, code, vrIndex);
     return _fromBytesMakers[vrIndex](tag, vf, vfLengthField);
   }

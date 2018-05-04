@@ -9,15 +9,11 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/base/integer/integer.dart';
-import 'package:core/src/element/base/integer/integer_mixin.dart';
-import 'package:core/src/element/base/integer/pixel_data.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/value/empty_list.dart';
-import 'package:core/src/value/uid.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/value/uid/well_known/transfer_syntax.dart';
 
 /// Short VRLength Signed Short
 class SStag extends SS with TagElement<int> {
@@ -33,12 +29,12 @@ class SStag extends SS with TagElement<int> {
       new SStag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory SStag._(Tag tag, Iterable<int> vList) {
-    if (SS.isNotValidValues(tag, vList)) return null;
+    if (SS.isNotValidArgs(tag, vList)) return null;
     final v = (vList.isEmpty) ? kEmptyUint8List : vList;
     return new SStag._x(tag, v);
   }
 
-  SStag._x(this.tag, this.values);
+  SStag._x(this.tag, this.values) : assert(tag.vrIndex == kSSIndex);
 
   @override
   SStag update([Iterable<int> vList]) => new SStag._(tag, vList);
@@ -47,7 +43,9 @@ class SStag extends SS with TagElement<int> {
       new SStag(tag, Int32.fromValueField(vf));
 
   static SStag fromBytes(Tag tag, Bytes bytes) =>
-      new SStag._(tag, bytes.asInt16List());
+      SS.isValidBytesArgs(tag, bytes)
+          ? new SStag._x(tag, bytes.asInt16List())
+          : badTagError(tag, SS);
 }
 
 /// Short VRLength Signed Long
@@ -78,7 +76,9 @@ class SLtag extends SL with TagElement<int> {
       new SLtag(tag, Int32.fromValueField(vf));
 
   static SLtag fromBytes(Tag tag, Bytes bytes) =>
-      new SLtag._(tag, bytes.asInt32List());
+      SL.isValidBytesArgs(tag, bytes)
+          ? badTagError(tag, SL)
+          : new SLtag._(tag, bytes.asInt32List());
 }
 
 /// 8-bit unsigned integer.
@@ -119,7 +119,9 @@ class OBtag extends OB with TagElement<int> {
 
   static OBtag fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
-      new OBtag._(tag, bytes.asUint8List(), vfLengthField, ts);
+      OB.isValidBytesArgs(tag, bytes, vfLengthField)
+          ? new OBtag._(tag, bytes.asUint8List(), vfLengthField, ts)
+          : badTagError(tag, OB);
 }
 
 /// 8-bit Pixel Data.
@@ -169,7 +171,9 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
   /// Returns a [Uint16List].
   static OBtagPixelData fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
-      new OBtagPixelData._(tag, bytes.asUint8List(), vfLengthField, ts);
+      OB.isValidBytesArgs(tag, bytes, vfLengthField)
+          ? new OBtagPixelData._(tag, bytes.asUint8List(), vfLengthField, ts)
+          : badTagError(tag, OB);
 }
 
 /// Unsigned 8-bit integer with unknown VR (VR.kUN).
@@ -210,7 +214,9 @@ class UNtag extends UN with TagElement<int> {
 
   static UNtag fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
-      new UNtag._(tag, bytes.asUint8List(), vfLengthField, ts);
+      OB.isValidBytesArgs(tag, bytes, vfLengthField)
+          ? new UNtag._(tag, bytes.asUint8List(), vfLengthField, ts)
+          : badTagError(tag, UN);
 }
 
 /// 8-bit Pixel Data.
@@ -260,7 +266,9 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
   /// Returns a [Uint16List].
   static UNtagPixelData fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
-      new UNtagPixelData._(tag, bytes.asUint8List(), vfLengthField, ts);
+      UN.isValidBytesArgs(tag, bytes, vfLengthField)
+          ? new UNtagPixelData._(tag, bytes.asUint8List(), vfLengthField, ts)
+          : badTagError(tag, UN);
 }
 
 /// Unsigned Short
@@ -291,7 +299,9 @@ class UStag extends US with TagElement<int> {
       new UStag(tag, Int16.fromValueField(vf));
 
   static UStag fromBytes(Tag tag, Bytes bytes) =>
-      new UStag._(tag, bytes.asInt16List());
+      US.isValidBytesArgs(tag, bytes)
+          ? new UStag._(tag, bytes.asUint16List())
+          : badTagError(tag, US);
 }
 
 /// Other Word VR
@@ -333,7 +343,9 @@ class OWtag extends OW with TagElement<int> {
 
   static OWtag fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
-      new OWtag._(tag, bytes.asUint8List(), vfLengthField, ts);
+      OW.isValidBytesArgs(tag, bytes, vfLengthField)
+          ? new OWtag._(tag, bytes.asUint8List(), vfLengthField, ts)
+          : badTagError(tag, OW);
 }
 
 /// 8-bit Pixel Data.
@@ -381,7 +393,9 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
   /// Creates an [OWtagPixelData] Element from a [Uint8List].
   static OWtagPixelData fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
-      new OWtagPixelData._(tag, bytes.asUint16List(), vfLengthField, ts);
+      OW.isValidBytesArgs(tag, bytes, vfLengthField)
+          ? new OWtagPixelData._(tag, bytes.asUint16List(), vfLengthField, ts)
+          : badTagError(tag, OW);
 }
 
 /// Other Long
@@ -412,7 +426,9 @@ class OLtag extends OL with TagElement<int> {
       new OLtag(tag, Int32.fromValueField(vf));
 
   static OLtag fromBytes(Tag tag, Bytes bytes) =>
-      new OLtag._(tag, bytes.asUint32List());
+      OL.isValidBytesArgs(tag, bytes)
+          ? new OLtag._(tag, bytes.asUint32List())
+          : badTagError(tag, OL);
 }
 
 /// Unsigned Short
@@ -421,36 +437,6 @@ class ULtag extends UL with TagElement<int> {
   final Tag tag;
   @override
   Iterable<int> values;
-
-/*
-  /// Creates an [ULtag] Element.
-  factory ULtag(Tag tag, [Iterable<int> vList = kEmptyIntList]) =>
-      (UL.isValidArgs(tag, vList))
-          ? new ULtag._(tag, vList)
-          : invalidValuesError(vList, tag: tag);
-
-  factory ULtag.bulkdata(Tag tag, Uri url) =>
-      new ULtag._(tag, new IntBulkdataRef(tag.code, url));
-
-  ULtag._(this.tag, this.values);
-
-  @override
-  ULtag update([Iterable<int> vList = kEmptyIntList]) => new ULtag(tag, vList);
-
-  static ULtag fromValues(Tag tag, Iterable<int> vf, [int _]) =>
-      new ULtag(tag, Uint32.fromValueField(vf));
-
-  static ULtag fromBase64(Tag tag, String s) =>
-      fromBytes(tag, Bytes.base64Decode(s));
-
-  static ULtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(tag, new Bytes.typedDataView(bytes));
-
-  static ULtag from(Element bde) => fromBytes(bde.tag, bde.vfBytes);
-
-  static ULtag fromBytes(Tag tag, Bytes vf, [int _]) =>
-      (UL.isNotValidTag(tag)) ? null : new ULtag._(tag, vf.asUint32List());
-*/
 
   /// Creates an [ULtag] Element.
   factory ULtag(Tag tag, [Iterable<int> vList]) => new ULtag._(tag, vList);
@@ -473,7 +459,9 @@ class ULtag extends UL with TagElement<int> {
       new ULtag(tag, Int32.fromValueField(vf));
 
   static ULtag fromBytes(Tag tag, Bytes bytes) =>
-      new ULtag._(tag, bytes.asUint32List());
+      UL.isValidBytesArgs(tag, bytes)
+          ? new ULtag._(tag, bytes.asUint32List())
+          : badTagError(tag, UL);
 }
 
 /// Unsigned Short
@@ -498,8 +486,10 @@ class GLtag extends ULtag {
   static GLtag fromValues(Tag tag, Iterable<int> vf) =>
       new GLtag(tag, Uint8.fromValueField(vf));
 
-  static GLtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (UL.isNotValidTag(tag)) ? null : new GLtag._(tag, bytes.asUint32List());
+  static GLtag fromBytes(Tag tag, Bytes bytes, [int _]) => GL.isValidBytesArgs(
+          tag, bytes)
+      ? (UL.isNotValidTag(tag)) ? null : new GLtag._(tag, bytes.asUint32List())
+      : badTagError(tag, UL);
 }
 
 /// Immutable Attribute Tags
@@ -533,13 +523,15 @@ class ATtag extends AT with TagElement<int> {
       new ATtag(tag, Int32.fromValueField(vf));
 
   static ATtag fromBytes(Tag tag, Bytes bytes) =>
-      new ATtag._(tag, bytes.asUint32List());
+      (AT.isValidBytesArgs(tag, bytes))
+          ? new ATtag._(tag, bytes.asUint32List())
+          : badTagError(tag, AT);
 }
 
 bool _isNotOK(Tag tag, int vrIndex) {
   assert(tag.code == kPixelData);
   if (Tag.isValidVR(tag, vrIndex)) return false;
-  invalidTagError(tag, OWtagPixelData);
+  badTagError(tag, OWtagPixelData);
   return true;
 }
 

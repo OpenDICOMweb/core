@@ -47,13 +47,21 @@ void main() {
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       log.debug('uInt32List0 : $uInt32List0');
-      final s0 = Uint32.toBytes(uInt32List0);
+      final s0 = Uint32.toUint8List(uInt32List0);
       //expect(s0, equals(s0.buffer.asUint8List()));
       expect(s0 is Uint8List, true);
       final result0 = s0.buffer.asUint16List();
       log.debug('s0: $s0, result0: $result0');
       final uInt32List1 = Uint32.fromUint8List(s0);
       expect(uInt32List1, equals(uInt32List0));
+
+      final s1 = Uint32.toBytes(uInt32List0);
+      //expect(s0, equals(s0.buffer.asUint8List()));
+      expect(s0 is Uint8List, true);
+      final result1 = s0.buffer.asUint16List();
+      log.debug('s0: $s0, result0: $result1');
+      final uInt32List2 = Uint32.fromBytes(s1);
+      expect(uInt32List2, equals(uInt32List0));
     }
   });
 

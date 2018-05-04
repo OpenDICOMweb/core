@@ -382,7 +382,7 @@ void main() {
         final floatList0 = rng.float64List(1, 1);
         final float = new Float64List.fromList(floatList0);
         //final bytes = float.buffer.asUint8List();
-        final bytes0 = Bytes.asciiEncode(float.toString());
+        final bytes0 = Bytes.toAscii(float.toString());
         //final bytes0 = new Bytes();
         final fd0 = FDtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         log.debug('fd0: ${fd0.info}');
@@ -395,7 +395,7 @@ void main() {
         system.throwOnError = false;
         final floatList0 = rng.float64List(1, 10);
         final float = new Float64List.fromList(floatList0);
-        final bytes0 = Bytes.asciiEncode(float.toString());
+        final bytes0 = Bytes.toAscii(float.toString());
         final fd0 = FDtag.fromBytes(PTag.kSelectorSSValue, bytes0);
         expect(fd0, isNull);
 
@@ -1317,7 +1317,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
         final float = new Float64List.fromList(floatList0);
-        final bytes0 = Bytes.asciiEncode(float.toString());
+        final bytes0 = Bytes.toAscii(float.toString());
         //final bytes0 = new Bytes();
         final od0 = ODtag.fromBytes(PTag.kSelectorODValue, bytes0);
         log.debug('od0: ${od0.info}');
@@ -1330,7 +1330,7 @@ void main() {
         system.throwOnError = false;
         final floatList0 = rng.float64List(1, 10);
         final float = new Float64List.fromList(floatList0);
-        final bytes0 = Bytes.asciiEncode(float.toString());
+        final bytes0 = Bytes.toAscii(float.toString());
         final od0 = ODtag.fromBytes(PTag.kSelectorSSValue, bytes0);
         expect(od0, isNull);
 

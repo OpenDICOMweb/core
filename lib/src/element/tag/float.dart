@@ -6,11 +6,11 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
-import 'package:core/src/tag/tag.dart';
+import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/value/empty_list.dart';
 
 /// Float - Array of IEEE single precision (32-bit) floating point numbers.
 /// Max Array length is ((2^16)-4)/ 4).
@@ -22,14 +22,20 @@ class FLtag extends FL with TagElement<double> {
 
   /// Creates an [FLtag] from a [List<double].
   factory FLtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
-      (FL.isValidArgs(tag, vList))
-          ? new FLtag._(tag, vList)
-          : invalidValuesError(vList, tag: tag);
+      new FLtag._(tag, vList);
+
 
   factory FLtag.bulkdata(Tag tag, Uri url) =>
       new FLtag._(tag, new FloatBulkdataRef(tag.code, url));
 
-  FLtag._(this.tag, this.values);
+  factory FLtag._(Tag tag, Iterable<double> vList) {
+
+    if (FL.isNotValidValues(tag, vList)) return null;
+    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
+    return new FLtag._x(tag, v);
+  }
+
+  FLtag._x(this.tag, this.values) : assert(tag.vrIndex == kFLIndex);
 
   @override
   FLtag update([Iterable<double> vList = kEmptyDoubleList]) =>
@@ -48,8 +54,13 @@ class FLtag extends FL with TagElement<double> {
   static FLtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 */
 
-  static FLtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (FL.isNotValidTag(tag)) ? null : new FLtag._(tag, bytes.asFloat32List());
+  static FLtag fromBytes(Tag tag, Bytes bytes,
+          [int _]) =>
+      (tag.vrIndex != kFLIndex)
+          ? isValidTagError(tag, null, FL)
+          : (FL.isNotValidTag(tag))
+              ? null
+              : new FLtag._(tag, bytes.asFloat32List());
 }
 
 /// Other Float - Array of IEEE single precision
@@ -88,8 +99,13 @@ class OFtag extends OF with TagElement<double> {
 
   static OFtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static OFtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (OF.isNotValidTag(tag)) ? null : new OFtag._(tag, bytes.asFloat32List());
+  static OFtag fromBytes(Tag tag, Bytes bytes,
+          [int _]) =>
+      (tag.vrIndex != kOFIndex)
+          ? isValidTagError(tag, null, OF)
+          : (OF.isNotValidTag(tag))
+              ? null
+              : new OFtag._(tag, bytes.asFloat32List());
 }
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.
@@ -126,8 +142,13 @@ class FDtag extends FD with TagElement<double> {
 
   static FDtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static FDtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (FD.isNotValidTag(tag)) ? null : new FDtag._(tag, bytes.asFloat64List());
+  static FDtag fromBytes(Tag tag, Bytes bytes,
+          [int _]) =>
+      (tag.vrIndex != kFDIndex)
+          ? isValidTagError(tag, null, FD)
+          : (FD.isNotValidTag(tag))
+              ? null
+              : new FDtag._(tag, bytes.asFloat64List());
 }
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.
@@ -164,7 +185,12 @@ class ODtag extends OD with TagElement<double> {
       fromBytes(tag, new Bytes.typedDataView(bList));
 
   static ODtag from(Element e) => fromBytes(e.tag, e.vfBytes);
-  
-  static ODtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      (OD.isNotValidTag(tag)) ? null : new ODtag._(tag, bytes.asFloat64List());
+
+  static ODtag fromBytes(Tag tag, Bytes bytes,
+          [int _]) =>
+      (tag.vrIndex != kODIndex)
+          ? isValidTagError(tag, null, FD)
+          : (OD.isNotValidTag(tag))
+              ? null
+              : new ODtag._(tag, bytes.asFloat64List());
 }
