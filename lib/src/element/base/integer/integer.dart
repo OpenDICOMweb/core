@@ -1016,10 +1016,13 @@ bool _isValidVFL(int vfl, int max, int eSize) => (__isValidVFL(vfl, max, eSize))
 /// Checks the the vfLengthField equal either the vfLength or
 /// [kUndefinedLength]; and then checks that vfLength (vfl) is
 /// in range and the right size, based on the element size (eSize).
-bool _isValidUVFL(int vfl, int max, int eSize, int vlf) =>
-    ((vlf == vfl || vlf == kUndefinedLength) && __isValidVFL(vfl, max, eSize))
-        ? true
-        : isValidVFLengthError(vfl, max, eSize, vlf);
+bool _isValidUVFL(int vfl, int max, int eSize, int vlf) {
+  assert(vlf != null);
+  return ((vlf == vfl || vlf == kUndefinedLength) &&
+          __isValidVFL(vfl, max, eSize))
+      ? true
+      : isValidVFLengthError(vfl, max, eSize, vlf);
+}
 
 /// Returns true if [vfLength] is in the range 0 <= [vfLength] <= [max],
 /// and [vfLength] is a multiple of of value size in bytes ([eSize]),

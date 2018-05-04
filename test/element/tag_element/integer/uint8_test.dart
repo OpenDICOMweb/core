@@ -238,8 +238,8 @@ void main() {
         system.throwOnError = false;
         final uInt8List0 = rng.uint8List(1, 1);
         final bytes0 = new Bytes.typedDataView(uInt8List0);
- //       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-        final ob0 = OBtag.fromBytes(PTag.kPrivateInformation, bytes0, 10);
+        //       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
+        final ob0 = OBtag.fromBytes(PTag.kPrivateInformation, bytes0, 1);
         expect(ob0.hasValidValues, true);
         expect(ob0.vfBytes, equals(bytes0));
         expect(ob0.values is Uint8List, true);
@@ -251,10 +251,11 @@ void main() {
 //        expect(ob0 == ob1, true);
 //        expect(ob1.value, equals(ob0.value));
 
-        final uInt8List1 = rng.uint8List(2, 2);
-        final bytes1 = new Bytes.typedDataView(uInt8List1);
+        final uint8List1 = rng.uint8List(2, 2);
+        final bytes1 = new Bytes.typedDataView(uint8List1);
 //        final uInt8ListV12 = uInt8ListV2.buffer.asUint8List();
-        final ob2 = OBtag.fromBytes(PTag.kPrivateInformation, bytes1, 10);
+        final ob2 = OBtag.fromBytes(
+            PTag.kPrivateInformation, bytes1, uint8List1.length);
         expect(ob2.hasValidValues, true);
       }
     });
@@ -262,7 +263,7 @@ void main() {
     test('OB fromBytes', () {
       final bytes = new Bytes.fromList(uint8Min);
 //      final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-      final ob5 = OBtag.fromBytes(PTag.kPrivateInformation, bytes, 10);
+      final ob5 = OBtag.fromBytes(PTag.kPrivateInformation, bytes, 1);
       expect(ob5.vfBytes, equals(bytes));
       expect(ob5.values is Uint8List, true);
       expect(ob5.values, equals(uint8Min));
@@ -273,7 +274,8 @@ void main() {
         system.throwOnError = false;
         final intList0 = rng.uint8List(1, 10);
         final bytes0 = DicomBytes.toAscii(intList0.toString());
-        final ob0 = OBtag.fromBytes(PTag.kSelectorOBValue, bytes0);
+        final ob0 =
+            OBtag.fromBytes(PTag.kSelectorOBValue, bytes0, kUndefinedLength);
         log.debug('ob0: ${ob0.info}');
         expect(ob0.hasValidValues, true);
       }
@@ -392,8 +394,8 @@ void main() {
         final bytes = new Bytes.typedDataView(uInt8List0);
 //        final uInt8ListV11 = bytes.buffer.asUint8List();
         log.debug('bytes.length: ${bytes.length}');
-        final ob0 = OBtag.fromBytes(
-            PTag.kPrivateInformation, bytes, bytes.length);
+        final ob0 =
+            OBtag.fromBytes(PTag.kPrivateInformation, bytes, bytes.length);
         expect(ob0.hasValidValues, true);
         expect(ob0.vfBytes, equals(bytes));
         expect(ob0.values is Uint8List, true);
@@ -496,8 +498,8 @@ void main() {
     test('OB isValidVListLength', () {
       system.throwOnError = false;
       // Urgent Sharath: please fix
- //     expect(OB.isValidVListLength(PTag.kPixelData, OB.kMaxLength), true);
- //     expect(OB.isValidVListLength(0), true);
+      //     expect(OB.isValidVListLength(PTag.kPixelData, OB.kMaxLength), true);
+      //     expect(OB.isValidVListLength(0), true);
     });
 
     test('OB isValidTag good values', () {
@@ -693,13 +695,13 @@ void main() {
 
     test('OB isValidVFLength good values', () {
       expect(OB.isValidVFLength(OB.kMaxVFLength, kUndefinedLength), true);
-      expect(OB.isValidVFLength(0), true);
+      expect(OB.isValidVFLength(0, 0), true);
     });
 
     test('OB isValidVFLength bad values', () {
       system.throwOnError = false;
-      expect(OB.isValidVFLength(OB.kMaxVFLength + 1), false);
-      expect(OB.isValidVFLength(-1), false);
+      expect(OB.isValidVFLength(OB.kMaxVFLength + 1, kUndefinedLength), false);
+      expect(OB.isValidVFLength(-1, 1), false);
     });
 
     test('OB isValidValue good values', () {
@@ -838,7 +840,7 @@ void main() {
         final bd1 = uint16List0.buffer.asByteData();
         final lBd2 = Uint16.toByteData(uint16List0);
         log.debug('lBd0: ${lBd2.buffer.asUint8List()}, '
-                      'bd1: ${bd1.buffer.asUint8List()}');
+            'bd1: ${bd1.buffer.asUint8List()}');
         expect(lBd2.buffer.asUint8List(), isNot(bd0.buffer.asUint8List()));
         expect(lBd2.buffer == bd0.buffer, false);
 

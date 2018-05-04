@@ -278,12 +278,14 @@ void main() {
         expect(us0 == us1, true);
         expect(us1.value, equals(us0.value));
 
+        system.throwOnError = false;
         final uint16List1 = rng.uint16List(2, 2);
 //        final uint16List2 = new Uint16List.fromList(uint16List1);
 //       final uint8List12 = uint16List2.buffer.asUint8List();
         final bytes1 = new Bytes.typedDataView(uint16List1);
         final us2 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes1);
-        expect(us2.hasValidValues, false);
+        log.debug('us2: $us2');
+        expect(us2, isNull);
       }
     });
 
@@ -735,7 +737,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => US.isValidTag(PTag.kSelectorAEValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         system.throwOnError = false;
@@ -743,7 +745,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => US.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -764,7 +766,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => US.isNotValidTag(PTag.kSelectorAEValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         system.throwOnError = false;
@@ -772,7 +774,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => US.isNotValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -911,6 +913,7 @@ void main() {
     });
 
     test('US isValidVFLength bad values', () {
+      system.throwOnError = false;
       expect(US.isValidVFLength(US.kMaxVFLength + 1), false);
       expect(US.isValidVFLength(-1), false);
     });
@@ -1549,7 +1552,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => OWtag.fromBytes(PTag.kSelectorFDValue, bytes0),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -1679,7 +1682,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => OW.isValidTag(PTag.kSelectorAEValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         system.throwOnError = false;
@@ -1687,7 +1690,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => OW.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -1711,7 +1714,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => OW.isNotValidTag(PTag.kSelectorAEValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         system.throwOnError = false;
@@ -1719,7 +1722,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => OW.isNotValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -1854,13 +1857,13 @@ void main() {
     });
 
     test('OW isValidVFLength good values', () {
-      expect(OW.isValidVFLength(OW.kMaxVFLength), true);
-      expect(OW.isValidVFLength(0), true);
+      expect(OW.isValidVFLength(OW.kMaxVFLength, kUndefinedLength), true);
+      expect(OW.isValidVFLength(0, 0), true);
     });
 
     test('OW isValidVFLength bad values', () {
-      expect(OW.isValidVFLength(OW.kMaxVFLength + 1), false);
-      expect(OW.isValidVFLength(-1), false);
+      expect(OW.isValidVFLength(OW.kMaxVFLength + 1, kUndefinedLength), false);
+      expect(OW.isValidVFLength(-1, 0), false);
     });
 
     test('OW isValidValue good values', () {
