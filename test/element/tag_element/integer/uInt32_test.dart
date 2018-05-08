@@ -2636,5 +2636,51 @@ void main() {
         expect(Uint32.fromByteData(byteData), equals(uInt32ListV1));
       }
     });
+
+    test('Uint32 fromValueField', () {
+      for (var i = 1; i <= 10; i++) {
+        final uInt32List0 = rng.uint32List(1, i);
+        final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
+        final fvf0 = Uint32.fromValueField(uInt32ListV1);
+        log.debug('fromValueField0: $fvf0');
+        expect(fvf0, equals(uInt32ListV1));
+        expect(fvf0 is Uint32List, true);
+        expect(fvf0 is List<int>, true);
+        expect(fvf0.isEmpty, false);
+        expect(fvf0 is Bytes, false);
+      }
+
+      final fvf1 = Uint32.fromValueField(null);
+      expect(fvf1, <Uint32>[]);
+      expect(fvf1 == kEmptyUint32List, true);
+      expect(fvf1.isEmpty, true);
+      expect(fvf1 is Uint32List, true);
+
+      final fvf12 = Uint32.fromValueField(<int>[]);
+      expect(fvf12, <Uint32>[]);
+      expect(fvf12.length == kEmptyIntList.length, true);
+      expect(fvf12.isEmpty, true);
+
+      final uInt32List0 = rng.uint32List(1, 1);
+      final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
+      //final byte0 = Bytes.asciiEncode(uInt32ListV1.join('\\'));
+      final byte0 = new Bytes.fromList(uInt32ListV1) ;
+      final fvf3 = Uint32.fromValueField(byte0);
+      expect(fvf3, isNotNull);
+      expect(fvf3 is Bytes, true);
+
+      final uInt8list0 = uInt32ListV1.buffer.asUint8List();
+      final fvf4 = Uint32.fromValueField(uInt8list0);
+      expect(fvf4, isNotNull);
+      expect(fvf4 is Uint8List, true);
+
+      system.throwOnError = false;
+      final fvf5 = Uint32.fromValueField(<String>['foo']);
+      expect(fvf5, isNull);
+
+      system.throwOnError = true;
+      expect(() => Uint32.fromValueField(<String>['foo']),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+    });
   });
 }

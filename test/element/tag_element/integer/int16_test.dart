@@ -1042,5 +1042,51 @@ void main() {
         expect(Int16.fromByteData(byteData), equals(int16list0));
       }
     });
+
+    test('Int16 fromValueField', () {
+      for (var i = 1; i <= 10; i++) {
+        final int16List0 = rng.int16List(1, i);
+        final int16ListV1 = new Int16List.fromList(int16List0);
+        final fvf0 = Int16.fromValueField(int16ListV1);
+        log.debug('fromValueField0: $fvf0');
+        expect(fvf0, equals(int16ListV1));
+        expect(fvf0 is Int16List, true);
+        expect(fvf0 is List<int>, true);
+        expect(fvf0.isEmpty, false);
+        expect(fvf0 is Bytes, false);
+        expect(fvf0 is Uint8List, false);
+      }
+
+      final fvf1 = Int16.fromValueField(null);
+      expect(fvf1, <Int16>[]);
+      expect(fvf1 == kEmptyInt16List, true);
+      expect(fvf1.isEmpty, true);
+      expect(fvf1 is Int16List, true);
+
+      final fvf2 = Int16.fromValueField(<int>[]);
+      expect(fvf2, <Int16>[]);
+      expect(fvf2.length == kEmptyIntList.length, true);
+      expect(fvf2.isEmpty, true);
+
+      final int16List0 = rng.int16List(1, 1);
+      final int16ListV1 = new Int16List.fromList(int16List0);
+      final byte0 = new Bytes.fromList(int16ListV1) ;
+      final fvf3 = Int16.fromValueField(byte0);
+      expect(fvf3, isNotNull);
+      expect(fvf3 is Bytes, true);
+
+      final uInt8list0 = int16ListV1.buffer.asUint8List();
+      final fvf4 = Int16.fromValueField(uInt8list0);
+      expect(fvf4, isNotNull);
+      expect(fvf4 is Uint8List, true);
+
+      system.throwOnError = false;
+      final fvf5 = Int16.fromValueField(<String>['foo']);
+      expect(fvf5, isNull);
+
+      system.throwOnError = true;
+      expect(() => Int16.fromValueField(<String>['foo']),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+    });
   });
 }

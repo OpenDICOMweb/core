@@ -933,5 +933,45 @@ void main() {
         expect(Uint8.fromByteData(byteData), equals(uInt8list0));
       }
     });
+
+    test('Uint8 fromValueField', () {
+      for (var i = 1; i <= 10; i++) {
+        final uInt8List0 = rng.uint8List(1, i);
+        final uInt8ListV1 = new Uint8List.fromList(uInt8List0);
+        final fvf0 = Uint8.fromValueField(uInt8ListV1);
+        log.debug('fromValueField0: $fvf0');
+        expect(fvf0, equals(uInt8ListV1));
+        expect(fvf0 is Uint8List, true);
+        expect(fvf0 is List<int>, true);
+        expect(fvf0.isEmpty, false);
+        expect(fvf0 is Bytes, false);
+      }
+
+      final fvf1 = Uint8.fromValueField(null);
+      expect(fvf1, <Uint8>[]);
+      expect(fvf1 == kEmptyUint8List, true);
+      expect(fvf1.isEmpty, true);
+      expect(fvf1 is Uint8List, true);
+
+      final fvf2 = Uint8.fromValueField(<int>[]);
+      expect(fvf2, <Uint8>[]);
+      expect(fvf2.length == kEmptyIntList.length, true);
+      expect(fvf2.isEmpty, true);
+
+      final uInt8List0 = rng.uint8List(1, 1);
+      final uInt8ListV1 = new Uint8List.fromList(uInt8List0);
+      final byte0 = new Bytes.fromList(uInt8ListV1) ;
+      final fvf3 = Uint8.fromValueField(byte0);
+      expect(fvf3, isNotNull);
+      expect(fvf3 is Bytes, true);
+
+      system.throwOnError = false;
+      final fvf4 = Uint8.fromValueField(<String>['foo']);
+      expect(fvf4, isNull);
+
+      system.throwOnError = true;
+      expect(() => Uint8.fromValueField(<String>['foo']),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+    });
   });
 }
