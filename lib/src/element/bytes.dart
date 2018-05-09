@@ -6,8 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 export 'package:core/src/element/base.dart';
-export 'package:core/src/element/bytes/bytes_element.dart';
-export 'package:core/src/element/bytes/evr.dart';
-export 'package:core/src/element/bytes/ivr.dart';
+export 'package:core/src/element/bytes/bytes.dart';
+export 'package:core/src/element/bytes/bytes_mixin.dart';

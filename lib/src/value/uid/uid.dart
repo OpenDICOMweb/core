@@ -150,6 +150,7 @@ class Uid {
   static bool isValidStringList(List<String> sList) =>
       isValidUidStringList(sList);
 
+  // Issue: shout this be deprecated
   /// Parse [s] as [Uid] and return its value.
   ///
   /// If [s] is valid and a WellKnownUid([WKUid]), the canonical
@@ -160,8 +161,9 @@ class Uid {
   /// its argument, and its value is returned as the value of the [parse]
   /// expression. If no [onError] is provided, an [InvalidUidError] is thrown.
   ///
-  /// The onError handler can be chosen to return null. This is preferable
-  /// to to throwing and then immediately catching the FormatException.
+  /// The onError handler can be chosen to return null. [tryParse] should
+  /// be used. This is preferable to to throwing and then immediately
+  /// catching the FormatException.
   static Uid parse(String s, {OnUidParseError onError}) {
     final v = s.trim();
     if (!Uid.isValidString(v)) {
@@ -175,6 +177,25 @@ class Uid {
     return (wk != null) ? wk : new Uid(s);
   }
 
+
+  /// Tries to parse [s] as [Uid] and return its value.
+  ///
+  /// First trims any leading or trailing spaces.
+  /// If [s] is valid and a WellKnownUid([WKUid]), the canonical
+  /// WellKnownUid([WKUid]) is returned; otherwise, a new [Uid] is
+  /// created and returned.
+  ///
+  /// If [s] is not a valid [Uid] null is returns
+  static Uid tryParse(String s) {
+    final v = s.trim();
+    if (Uid.isValidString(v)) {
+      final wk = wellKnownUids[s];
+      return (wk != null) ? wk : new Uid(v);
+    }
+    return null;
+  }
+
+  // Issue: shout this be deprecated
   /// Parses a [List] of [String]s as [Uid]s and returns a new
   /// [List] containing the corresponding [Uid]s.
   ///
@@ -186,6 +207,19 @@ class Uid {
     final uids = new List<Uid>(sList.length);
     for (var i = 0; i < sList.length; i++)
       uids[i] = Uid.parse(sList[i], onError: onError);
+    return uids;
+  }
+
+  /// Tries to parse a [List] of [String]s as [Uid]s and returns a new
+  /// [List] containing the corresponding [Uid]s.
+  ///
+  /// If any member of [sList] is not valid, _null_ will be placed
+  /// at the corresponding position in the resulting list.
+  static List<Uid> tryParseList(List<String> sList) {
+    if (sList.isEmpty) return kEmptyList;
+    final uids = new List<Uid>(sList.length);
+    for (var i = 0; i < sList.length; i++)
+      uids[i] = tryParse(sList[i]);
     return uids;
   }
 

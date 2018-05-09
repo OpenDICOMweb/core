@@ -9,7 +9,6 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/tag.dart';

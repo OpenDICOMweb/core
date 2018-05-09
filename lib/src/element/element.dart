@@ -10,5 +10,5 @@
 export 'package:core/src/element/base.dart';
 export 'package:core/src/element/bytes.dart';
 export 'package:core/src/element/tag.dart';
-//export 'package:core/src/element/transfer_syntax_option.dart';
+
 

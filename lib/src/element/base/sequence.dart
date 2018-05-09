@@ -14,9 +14,9 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/logger.dart';
-import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/vr.dart';
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
@@ -269,11 +269,13 @@ Summary $tag
   /// Returns a formatted [String]. See [Formatter].
   String format(Formatter z) => z.fmt(this, items);
 
+/* flush
   @override
   String getValuesAsString([int max]) {
     max ??= Element.truncatedValuesLength;
     return '${values.length} Items';
   }
+*/
 
   static const int kVRIndex = kSQIndex;
   static const int kVRCode = kSQCode;
@@ -288,20 +290,20 @@ Summary $tag
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    badVRIndex(vrIndex, issues, kVRIndex);
+    VR.badIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    return isValidVRCodeError(vrCode, issues, kVRIndex);
+    return VR.invalidCode(vrCode, issues, kVRIndex);
   }
 
   static int checkVRIndex(int index, [Issues issues]) =>
-      (index == kVRIndex) ? index : badVRIndex(index, issues, kVRIndex);
+      (index == kVRIndex) ? index : VR.badIndex(index, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 

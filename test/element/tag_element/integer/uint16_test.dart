@@ -305,7 +305,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint16List(1, 10);
-        final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = Bytes.fromAscii(intList0.toString());
         final uc0 = UCtag.fromBytes(PTag.kSelectorUCValue, bytes0);
         log.debug('uc0: ${uc0.info}');
         expect(uc0.hasValidValues, true);
@@ -424,7 +424,7 @@ void main() {
         expect(
             () =>
                 UStag.fromValues(PTag.kRepresentativeFrameNumber, uint16List0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -602,9 +602,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => US.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => US.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -634,9 +634,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => US.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => US.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -666,9 +666,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => US.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => US.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -698,9 +698,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => US.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => US.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -1033,13 +1033,13 @@ void main() {
 
       system.throwOnError = true;
       expect(() => US.isValidValues(PTag.kWarningReason, uint16MinMax),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => US.isValidValues(PTag.kLightPathFilterPassBand, uint16Min),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => US.isValidValues(PTag.kTextColorCIELabValue, uint16Min),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => US.isValidValues(PTag.kAcquisitionMatrix, uint16Max),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('US toUint16List', () {

@@ -7,25 +7,60 @@
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:core/src/element/bytes/bd_test_utils.dart';
 
 void main() {
   Server.initialize(throwOnError: true, level: Level.debug);
 
-  final vList = <double>[1.0];
-  final float32List = new Float32List.fromList(vList);
+  final rds = new ByteRootDataset.empty();
+  final vList = <double>[1.0, 1.1, 1.2];
 
-  final bytes = new Bytes.typedDataView(float32List);
-  final bytes1 = Float32.toBytes(vList);
-  final fl = makeFL(kRecommendedDisplayFrameRateInFloat, vList);
- // final short = EvrShortBytes.make(kInversionTimes, kFDCode, bytes);
-  printEvr(fl, kFLCode, bytes1);
+  final fl = FLbytes.fromValues(kSelectorFLValue, vList);
+  assert(fl.bytes is DicomBytes);
+  assert(fl.vfBytes is Bytes);
+  assert(fl.hasValidValues);
+  printEvr(fl, kFLCode, fl.vfBytes);
 
- // final uint8List1 = new Bytes.typedDataView(float32List);
-  final of = makeOF(kVectorGridData, vList);
- // final long = EvrLongBytes.make(kInversionTimes, kFDCode, uint8List1);
-  printEvr(of, kOFCode, bytes);
+  final fl1 = ByteElement.makeFromCode(fl.bytes, rds);
+  assert(fl1.bytes is DicomBytes);
+  assert(fl1.vfBytes is Bytes);
+  assert(fl1.hasValidValues);
+  printEvr(fl1, kFLCode, fl1.vfBytes);
 
+  final of = OFbytes.fromValues(kSelectorOFValue, vList);
+  assert(of.bytes is DicomBytes);
+  assert(of.vfBytes is Bytes);
+  assert(of.hasValidValues);
+  printEvr(of, kOFCode, of.vfBytes);
+
+  final of1 = ByteElement.makeFromCode(of.bytes, rds);
+  assert(of1.bytes is DicomBytes);
+  assert(of1.vfBytes is Bytes);
+  assert(of1.hasValidValues);
+  printEvr(of1, kOFCode, of1.vfBytes);
+
+  final fd = FDbytes.fromValues(kSelectorOFValue, vList);
+  assert(fd.bytes is DicomBytes);
+  assert(fd.vfBytes is Bytes);
+  assert(fd.hasValidValues);
+  printEvr(fd, kOFCode, fd.vfBytes);
+
+  final fd1 = ByteElement.makeFromCode(fd.bytes, rds);
+  assert(fd1.bytes is DicomBytes);
+  assert(fd1.vfBytes is Bytes);
+  assert(fd1.hasValidValues);
+  printEvr(fd1, kOFCode, fd1.vfBytes);
+
+  final od = ODbytes.fromValues(kSelectorOFValue, vList);
+  assert(od.bytes is DicomBytes);
+  assert(od.vfBytes is Bytes);
+  assert(od.hasValidValues);
+  printEvr(od, kOFCode, od.vfBytes);
+
+  final od1 = ByteElement.makeFromCode(od.bytes, rds);
+  assert(od1.bytes is DicomBytes);
+  assert(od1.vfBytes is Bytes);
+  assert(od1.hasValidValues);
+  printEvr(od1, kOFCode, od1.vfBytes);
 }
 
 /*
@@ -35,13 +70,13 @@ EvrBytes makeFD(int code, List<double> vList) {
 }
 */
 
-void printEvr(EvrElement e, int actualVRCode, Bytes vf) {
+void printEvr(ByteElement e, int actualVRCode, Bytes vf) {
   final bytes = e.bytes;
 //  print('${e.bytes.asUint8List()}');
   print('$e');
   print('\n        length: ${e.length} bytes: ${bytes.length} '
-            'vfOffset(${e.vfOffset}) + vfLength(${ vf.length}) '
-            '= ${e.vfOffset + e.vfLength} ');
+      'vfOffset(${e.vfOffset}) + vfLength(${ vf.length}) '
+      '= ${e.vfOffset + e.vfLength} ');
   print('vfLengthOffset: ${e.vfLengthOffset}');
   print(' vfLengthField: ${e.vfLengthField}  actual ${bytes.vfLengthField}');
   print('      vfLength: ${e.vfLength} vf: ${vf.length}');
@@ -55,9 +90,7 @@ void printEvr(EvrElement e, int actualVRCode, Bytes vf) {
   print('        values: ${e.vfBytes.asFloat32List()}');
   print('e as Uint8List: ${e.bytes.asUint8List()}');
   print('   vfUint8List: ${vf.asUint8List()}\n ****\n');
-
 }
-
 
 void printIvr(EvrBytes e, Uint8List uint8List) {
   print('${e.bd.buffer.asUint8List()}');
@@ -75,5 +108,4 @@ void printIvr(EvrBytes e, Uint8List uint8List) {
   print('          e as bytes: ${e.asUint8List()}');
   print('          e.v: ${e.asUint8List()}');
   print('   vfUint8List: ${e.vfUint8List}');
-
 }

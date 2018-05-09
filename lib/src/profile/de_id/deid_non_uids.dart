@@ -8,7 +8,7 @@
 //
 
 import 'package:core/src/tag.dart';
-import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/utils/primitives.dart';
 
 /// A [List] of Tag Code that should be deleted from according to
 /// the DICOM Basic De-Identification Profile (see PS3.15 Annex E).

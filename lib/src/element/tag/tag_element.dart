@@ -15,9 +15,9 @@ import 'package:core/src/element/tag/string.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/vr.dart';
 
 /// Tag Mixin Class
 ///
@@ -25,6 +25,7 @@ import 'package:core/src/vr_base.dart';
 /// a semantic identifier for an element.
 abstract class TagElement<V> {
   V get value;
+  Iterable<V> get values;
 
   /// The DICOM Element Definition. In the _ODW_ _SDK_ this is called a "_Tag_".
   Tag get tag {
@@ -122,7 +123,7 @@ abstract class TagElement<V> {
       case kSQIndex:
         return OWtagPixelData.fromValues(tag, values, vfLengthField);
       default:
-        return badVRIndex(vrIndex, null, null);
+        return VR.badIndex(vrIndex, null, null);
     }
   }
 

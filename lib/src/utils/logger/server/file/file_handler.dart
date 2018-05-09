@@ -65,6 +65,6 @@ class FileHandler {
     if ((name.mode == LogMode.delete) && (file.existsSync())) file.deleteSync();
     // Written with double quotes in case it's a json file;
     final msg = '"Open DICOMweb log file (opened at $dt)"\n';
-    return file.openSync(mode: FileMode.APPEND)..writeStringSync(msg);
+    return file.openSync(mode: FileMode.append)..writeStringSync(msg);
   }
 }

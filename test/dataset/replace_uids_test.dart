@@ -11,14 +11,14 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-final rsg = new RSG();
+final RSG rsg = new RSG();
 
 void main() {
   Server.initialize(name: 'replace_uids', level: Level.info);
 
   group('RootDataset', () {
     test('update', () {
-      final ui0 = new UItag.fromStrings(
+      final ui0 = new UItag(
           PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
       log.debug('ui0: $ui0');
 
@@ -46,7 +46,7 @@ void main() {
     test('updateUid', () {
       //Begin: Test for updateUid on Elements with VM.k1
       system.throwOnError = false;
-      final ui0 = new UItag.fromStrings(
+      final ui0 = new UItag(
           PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
       log.debug('ui0: $ui0');
 
@@ -63,7 +63,7 @@ void main() {
 
       // Test for non empty list
       final uidList1 = ['2.16.840.1.113662.2.1.1519.11582'];
-      final ui1 = new UItag.fromStrings(PTag.kStudyInstanceUID, uidList1);
+      final ui1 = new UItag(PTag.kStudyInstanceUID, uidList1);
       final rootDS1 = new TagRootDataset.empty()..add(ui1);
       log.debug('ui1: $ui1');
       final uidList1r = ['1.2.840.10008.5.1.1.16.376'];
@@ -76,7 +76,7 @@ void main() {
       expect(ui1r.value == uidList1[0], true);
 
       final uidList2 = ['1.2.840.10008.3.1.2.5.4'];
-      final ui2 = new UItag.fromStrings(PTag.kSeriesInstanceUID, uidList2);
+      final ui2 = new UItag(PTag.kSeriesInstanceUID, uidList2);
       final rootDS2 = new TagRootDataset.empty()..add(ui2);
       final uidList2r = ['1.2.840.10008.1.4.1.13'];
       expect(Uid.isValidStringList(uidList2r), true);
@@ -87,7 +87,7 @@ void main() {
 
       final rootDS4 = new TagRootDataset.empty();
       final uidList3 = ['2.16.840.1.113662.2.1.1519.11582'];
-      final ui4 = new UItag.fromStrings(PTag.kStudyInstanceUID, uidList3);
+      final ui4 = new UItag(PTag.kStudyInstanceUID, uidList3);
       rootDS4.add(ui4);
       final uidList3r = ['1.2.840.10008.5.1.1.17'];
       expect(Uid.isValidStringList(uidList3r), true);
@@ -113,7 +113,7 @@ void main() {
       //Testing noValue on RootDatasetTag
       final rootDSNV = new TagRootDataset.empty();
       final uidListNV = ['2.16.840.1.113662.2.1.1519.11582'];
-      final uiNV = new UItag.fromStrings(PTag.kStudyInstanceUID, uidListNV);
+      final uiNV = new UItag(PTag.kStudyInstanceUID, uidListNV);
       rootDSNV.add(uiNV);
 
       var old = rootDSNV.noValues(uiNV.code);
@@ -128,7 +128,7 @@ void main() {
 
       //Test for valid list values
       final uidList4 = ['1.2.840.10008.1.2.1', '1.2.840.10008.5.1.1.9'];
-      final ui6 = new UItag.fromStrings(
+      final ui6 = new UItag(
           PTag.kReferencedRelatedGeneralSOPClassUIDInFile, uidList4);
       final rootDS6 = new TagRootDataset.empty()..add(ui6);
       log.debug('ui6: $ui6');
@@ -150,7 +150,7 @@ void main() {
         '1.2.840.10008.5.1.4.1.1.5'
       ];
       final uiNV1 =
-          new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, uidListNV1);
+          new UItag(PTag.kRelatedGeneralSOPClassUID, uidListNV1);
       rootDSNV1.add(uiNV1);
       old = rootDSNV1.noValues(uiNV1.code);
       expect(old, equals(uiNV1));
@@ -170,7 +170,7 @@ void main() {
         '1.2.840.10008.5.1.4.1.1.1'
       ];
       final ui11 =
-          new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, uidList9);
+          new UItag(PTag.kRelatedGeneralSOPClassUID, uidList9);
       log.debug('ui11: $ui11');
       final ui11NV = ui11.noValues;
       log.debug('ui11NV: $ui11NV');
@@ -185,7 +185,7 @@ void main() {
       final rootDS0 = new TagRootDataset.empty();
       final uiList0 = rsg.getUIList(1, 1);
       final ui0 =
-          new UItag.fromStrings(PTag.kRelatedGeneralSOPClassUID, uiList0);
+          new UItag(PTag.kRelatedGeneralSOPClassUID, uiList0);
 
       final updateUidList0 = rootDS0.updateUidList(ui0.index, uiList0);
       log.debug('updateUidList0: $updateUidList0');

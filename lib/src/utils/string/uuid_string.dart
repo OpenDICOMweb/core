@@ -6,11 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:core/src/utils/character/ascii.dart';
+import 'package:core/src/utils/string/errors.dart';
 
-import 'package:core/src/utils/ascii.dart';
-import 'package:core/src/value/uuid/errors.dart';
-
-// **** String functions for UUID [String]s.
+// **** UUID [String]s.
 
 // Uuid constants
 const int kUuidStringLength = 36;
@@ -36,7 +35,7 @@ const List<int> kEnds = const <int>[8, 13, 18, 23, kUuidStringLength];
 
 /// The ASCII value for the dash (-) character.
 //const int kDash = 0x2D;
-
+const List<int> _kISOVariantAsLetter = const <int>[k8, k9, ka, kb];
 
 // Returns _true_ if [uuidString] is a valid [Uuid]. If [type] is _null_
 /// it just validates the format; otherwise, [type] must have a value
@@ -69,8 +68,6 @@ bool _isValidStringVersion(String s, int version) {
 }
 
 int _getVersionNumberFromString(String s) => s.codeUnitAt(14) - k0;
-
-const List<int> _kISOVariantAsLetter = const <int>[k8, k9, ka, kb];
 
 bool _isISOVariantFromString(String s) {
   final subType = s.codeUnitAt(19);

@@ -15,7 +15,7 @@ import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/vr.dart';
 
 abstract class PCTag extends PrivateTag {
   const PCTag._();

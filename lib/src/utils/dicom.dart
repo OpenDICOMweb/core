@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/utils/ascii.dart';
+import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/utils/string/hexadecimal.dart';
 
 //**** DICOM Constants ****
@@ -2876,8 +2876,12 @@ const int kSelectorAttributeVR = 0x00720050;
 const int kSelectorSequencePointer = 0x00720052;
 const int kSelectorSequencePointerPrivateCreator = 0x00720054;
 const int kSelectorAttributePrivateCreator = 0x00720056;
+const int kSelectorAEValue = 0x0072005e;
+const int kSelectorASValue = 0x0072005f;
 const int kSelectorATValue = 0x00720060;
+const int kSelectorDAValue = 0x00720061;
 const int kSelectorCSValue = 0x00720062;
+const int kSelectorDTValue = 0x00720063;
 const int kSelectorISValue = 0x00720064;
 const int kSelectorOBValue = 0x00720065;
 const int kSelectorLOValue = 0x00720066;
@@ -2885,9 +2889,13 @@ const int kSelectorOFValue = 0x00720067;
 const int kSelectorLTValue = 0x00720068;
 const int kSelectorOWValue = 0x00720069;
 const int kSelectorPNValue = 0x0072006a;
+const int kSelectorTMValue = 0x0072006b;
 const int kSelectorSHValue = 0x0072006c;
+const int kSelectorUNValue = 0x0072006d;
 const int kSelectorSTValue = 0x0072006e;
+const int kSelectorUCValue = 0x0072006f;
 const int kSelectorUTValue = 0x00720070;
+const int kSelectorURValue = 0x00720071;
 const int kSelectorDSValue = 0x00720072;
 const int kSelectorODValue = 0x00720073;
 const int kSelectorFDValue = 0x00720074;
@@ -2897,6 +2905,7 @@ const int kSelectorULValue = 0x00720078;
 const int kSelectorUSValue = 0x0072007a;
 const int kSelectorSLValue = 0x0072007c;
 const int kSelectorSSValue = 0x0072007e;
+const int kSelectorUIValue = 0x0072007f;
 const int kSelectorCodeSequenceValue = 0x00720080;
 const int kNumberOfScreens = 0x00720100;
 const int kNominalScreenDefinitionSequence = 0x00720102;

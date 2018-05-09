@@ -20,7 +20,7 @@ void main(List<String> args) {
   for (var i = 0; i < 100; i++) {
     vList0 = rsg.getUIList(1, 1);
     print('$i: vList0: $vList0');
-    final ui = new UItag.fromStrings(PTag.kStudyInstanceUID, vList0);
+    final ui = new UItag(PTag.kStudyInstanceUID, vList0);
     assert(ui.hasValidValues, true);
   }
 }

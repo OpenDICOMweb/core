@@ -13,17 +13,18 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:core/src/value/empty_list.dart';
-import 'package:core/src/utils/bytes/primitives.dart';
 import 'package:core/src/system.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/utils/bytes/primitives.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/utils/string.dart';
+import 'package:core/src/vr.dart';
 
 part 'package:core/src/utils/bytes/bytes_mixin.dart';
 part 'package:core/src/utils/bytes/dicom_bytes.dart';
 part 'package:core/src/utils/bytes/dicom_mixin.dart';
 part 'package:core/src/utils/bytes/evr.dart';
-part 'package:core/src/utils/bytes/ivr.dart';
 part 'package:core/src/utils/bytes/growable.dart';
+part 'package:core/src/utils/bytes/ivr.dart';
 
 /// Bytes Package Overview
 ///
@@ -59,7 +60,7 @@ class Bytes extends ListBase<int> with BytesMixin {
 
   Bytes._from(Bytes bytes, int offset, int length, Endian endian)
       : endian = endian ?? Endian.host,
-        _bd = copyBDRegion(bytes._bd, offset, length ?? bytes.length);
+        _bd = _copyByteData(bytes._bd, offset, length ?? bytes.length);
 
   /// Creates a new [Bytes] from [bd]. [endian] defaults to [Endian.host].
   Bytes.fromByteData(ByteData bd, [Endian endian])
@@ -97,8 +98,8 @@ class Bytes extends ListBase<int> with BytesMixin {
   @override
   bool operator ==(Object other) => (other is Bytes)
       ? (ignorePadding)
-          ? __bytesEqual(this, other, ignorePadding)
-          : _bytesEqual(this, other)
+          ? _bytesEqual(this, other)
+          : __bytesEqual(this, other, ignorePadding)
       : false;
 
   bool _bytesEqual(Bytes a, Bytes b) {
@@ -226,42 +227,61 @@ $i: $x | $y')
       (s.isEmpty) ? kEmptyBytes : new Bytes.typedDataView(base64.decode(s));
 
   /// Returns a [Bytes] containing the ASCII encoding of [s].
-  static Bytes toAscii(String s) =>
+  static Bytes fromAscii(String s) =>
       (s.isEmpty) ? kEmptyBytes : new Bytes.typedDataView(ascii.encode(s));
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  static Bytes fromUtf8(String s) {
+    if (s.isEmpty) return kEmptyBytes;
+    final Uint8List u8List = utf8.encode(s);
+    return new Bytes.typedDataView(u8List);
+  }
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  static Bytes fromString(String s, {bool isAscii: false}) {
+    if (s.isEmpty) return kEmptyBytes;
+    return (isAscii) ? fromAscii(s) : fromUtf8(s);
+  }
 
   /// Returns a [Bytes] containing ASCII code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as ASCII. The result is returns as [Bytes].
-  static Bytes asciiFromList(List<String> vList, [String separator = '\\']) =>
-      (vList.isEmpty) ? kEmptyBytes : toAscii(vList.join(separator));
-
-  /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  static Bytes toUtf8(String s) {
-    if (s.isEmpty) return kEmptyBytes;
-    final Uint8List u8List = utf8.encode(s);
-    return new Bytes.typedDataView(u8List);
-  }
+  static Bytes fromAsciiList(List<String> vList,
+          [int maxLength, String separator = '\\']) =>
+      _fromList(vList, maxLength, separator, fromUtf8);
 
   /// Returns a [Bytes] containing UTF-8 code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
-  /// then they are encoded as ASCII. The result is returns as [Bytes].
-  static Bytes fromUtf8List(List<String> vList, [String separator = '\\']) =>
-      (vList.isEmpty) ? kEmptyBytes : toUtf8(vList.join('\\'));
+  /// then they are encoded as UTF-8. The result is returns as [Bytes].
+  static Bytes fromUtf8List(List<String> vList,
+          [int maxLength, String separator = '\\']) =>
+      _fromList(vList, maxLength, separator, fromUtf8);
+
+  static Bytes _fromList(List<String> vList, int maxLength, String separator,
+      Bytes encoder(String s)) {
+    final s = stringListToString(vList, separator);
+    if (s == null || s.length > maxLength) return null;
+    return (s.isEmpty) ? kEmptyBytes : encoder(vList.join('\\'));
+  }
 
   /// Returns a [Bytes] containing UTF-8 code units. See [fromUtf8List].
-  static Bytes fromStringList(List<String> vList, [String separator = '\\']) =>
-      (vList.isEmpty) ? kEmptyBytes : toUtf8(vList.join('\\'));
+  static Bytes fromStrings(List<String> vList,
+          {int maxLength, bool isAscii = false, String separator = '\\'}) =>
+      (isAscii)
+          ? fromAsciiList(vList, maxLength, separator)
+          : fromUtf8List(vList, maxLength, separator);
+}
 
-  /// Returns a [ByteData] that is a copy of the specified region of _this_.
-  static ByteData copyBDRegion(ByteData bd, int offset, int length) {
-    final _length = length ?? bd.lengthInBytes;
-    final bdNew = new ByteData(_length);
-    for (var i = 0, j = offset; i < _length; i++, j++)
-      bdNew.setUint8(i, bd.getUint8(j));
-    return bdNew;
-  }
+//TODO: move this to the appropriate place
+/// Returns a [ByteData] that is a copy of the specified region of _this_.
+ByteData _copyByteData(ByteData bd, int offset, int length) {
+  final _length = length ?? bd.lengthInBytes;
+  final bdNew = new ByteData(_length);
+  for (var i = 0, j = offset; i < _length; i++, j++)
+    bdNew.setUint8(i, bd.getUint8(j));
+  return bdNew;
 }

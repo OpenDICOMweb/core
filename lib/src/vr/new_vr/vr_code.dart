@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/vr/vr_index.dart';
+import 'package:core/src/vr/new_vr/vr_index.dart';
 
 // Const vrCodes as 16-bit values
 

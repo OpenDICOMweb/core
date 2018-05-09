@@ -273,7 +273,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint8List(1, 10);
-        final bytes0 = DicomBytes.toAscii(intList0.toString());
+        final bytes0 = DicomBytes.fromAscii(intList0.toString());
         final ob0 =
             OBtag.fromBytes(PTag.kSelectorOBValue, bytes0, kUndefinedLength);
         log.debug('ob0: ${ob0.info}');
@@ -285,7 +285,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint8List(1, 10);
-        final bytes0 = DicomBytes.toAscii(intList0.toString());
+        final bytes0 = DicomBytes.fromAscii(intList0.toString());
         final ob0 = OBtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ob0, isNull);
         system.throwOnError = true;

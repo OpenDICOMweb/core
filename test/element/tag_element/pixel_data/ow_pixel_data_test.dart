@@ -205,7 +205,7 @@ void main() {
 
       //Uint8List pixels2 = ds.getPixelData();
       expect(ds1.getPixelData,
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
 
       //Missing Pixel Data
       final pd1 = new OWtagPixelData(PTag.kOverlayData, [123, 101]);

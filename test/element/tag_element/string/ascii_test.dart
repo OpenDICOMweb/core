@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 void main() {
-  Server.initialize(name: 'ascii_test.dart', level: Level.info);
+  Server.initialize(name: 'ascii_test.dart', level: Level.debug);
 
   group('Ascii Tests', () {
     test('Simple Ascii Test', () {
@@ -30,9 +30,9 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(0, 1);
-        final bytes0 = StringBase.toUint8List(vList0, kMaxShortVF);
+        final bytes0 = Bytes.fromAsciiList(vList0, kMaxShortVF);
         final sList0 = vList0.map((v) => '$v');
-        final vList1 = textListFromBytes(bytes0, kMaxShortVF, isAscii: true);
+        final vList1 = bytes0.getAsciiList();
         final sList1 = vList1.map((v) => '$v');
         log
           ..debug('vList0: $vList0')
@@ -55,21 +55,24 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(0, 10);
-        final bytes0 = stringListToBytes(vList0, kMaxShortVF);
-//        final sList0 = vList0.map((v) => '$v');
-        final vList1 = stringListFromBytes(bytes0, kMaxShortVF);
-//        final sList1 = vList1.map((v) => '$v');
+        final bytes0 = Bytes.fromAsciiList(vList0);
+        final sList0 = vList0.map((v) => '"$v"');
+        final vList1 = bytes0.getAsciiList();
+        final sList1 = vList1.map((v) => '"$v"');
         log
           ..debug('vList0: $vList0')
           ..debug('vList1: $vList1')
-          //  ..debug('sList0: $sList0')
-          //  ..debug('sList1: $sList1')
-          ..debug('bytes0: $bytes0');
-
+            ..debug('sList0: $sList0')
+            ..debug('sList1: $sList1')
+          ..debug('bytes0: $bytes0')
+          ..debug('vList0.length: ${vList0.length}')
+          ..debug('vList1.length: ${vList1.length}');
         expect(vList0.length == vList1.length, true);
-        for (var i = 0; i < vList0.length; i++) {
-          log.debug('value0[$i]: "${vList0[i]}", value1[$i]: "${vList1[i]}"');
-          expect(vList0[i] == vList1[i], true);
+        if (vList0.isNotEmpty) {
+          for (var i = 0; i < vList0.length; i++) {
+            log.debug('value0[$i]: "${vList0[i]}", value1[$i]: "${vList1[i]}"');
+            expect(vList0[i] == vList1[i], true);
+          }
         }
       }
     });
@@ -78,9 +81,9 @@ void main() {
       final rsg = new RSG();
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 10);
-        final bytes0 = stringListToUint8List(vList0, kMaxShortVF);
-        final bytes = Bytes.toAscii(vList0.join('\\'));
-        final vList1 = stringListFromBytes(bytes, kMaxShortVF);
+        final bytes0 = Bytes.fromAsciiList(vList0, kMaxShortVF);
+        final bytes = Bytes.fromAscii(vList0.join('\\'));
+        final vList1 = bytes.getStringList();
         log
           ..debug('vList0: $vList0')
           ..debug('vList1: $vList1')

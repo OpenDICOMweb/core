@@ -15,10 +15,10 @@ import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/errors.dart';
+import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
-import 'package:core/src/value/empty_list.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic
 
@@ -60,7 +60,9 @@ abstract class Float extends Element<double> {
   Iterable<double> get values;
   @override
   set values(Iterable<double> vList) => unsupportedError('IntBase.values');
+  // **** End of Interface ****
 
+  @deprecated
   bool get isBinary => true;
 
   @override
@@ -78,8 +80,13 @@ abstract class Float extends Element<double> {
   @override
   ByteData get vfByteData => typedData.buffer.asByteData();
 
+  // Note: Always Bytes not DicomBytes
   @override
-  Bytes get vfBytes => new Bytes.typedDataView(typedData);
+  Bytes get vBytes => new Bytes.typedDataView(typedData);
+
+  // Note: Always Bytes not DicomBytes
+  @override
+  Bytes get vfBytes => vBytes;
 
   @override
   Float get noValues => update(kEmptyList);
@@ -107,7 +114,9 @@ abstract class Float extends Element<double> {
 abstract class Float32 {
   Iterable<double> get values;
   Float update([Iterable<double> vList]);
+  // **** End of Interface ****
 
+  /// The number of bytes in a [Float32] element.
   int get sizeInBytes => kSizeInBytes;
 
   Float get sha256 => update(Sha256.float32(values));
@@ -119,7 +128,21 @@ abstract class Float32 {
   Float view([int start = 0, int length]) => update(
       typedData.buffer.asFloat32List(start, _toLength(length, values.length)));
 
+  /// The number of bytes in a [Float32] element.
   static const int kSizeInBytes = 4;
+
+  bool equal(DicomBytes a, DicomBytes b) {
+    for (var i = 0; i < a.length; i += 4) {
+      final x = a.getFloat32(i);
+      final y = b.getFloat32(i);
+      if (x != y) return false;
+    }
+    return true;
+  }
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Uint8List] created from [vList];
   static Bytes toBytes(Iterable<double> vList, {bool asView = true}) =>
@@ -193,164 +216,8 @@ abstract class Float32 {
         vf is FloatBulkdataRef) return vf;
     if (vf is Bytes) return vf.asFloat64List();
     if (vf is Uint8List) return fromUint8List(vf);
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
-}
-
-/// FL
-abstract class FL extends Float with Float32 {
-  @override
-  int get vrIndex => kVRIndex;
-  @override
-  int get vrCode => kVRCode;
-  @override
-  String get vrKeyword => kVRKeyword;
-  @override
-  String get vrName => kVRName;
-  @override
-  int get vlfSize => 4;
-  @override
-  int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
-
-//  static const VR kVR = VR.kFL;
-  static const int kVRIndex = kFLIndex;
-  static const int kVRCode = kFLCode;
-  static const String kVRKeyword = 'FL';
-  static const String kVRName = 'Floating Point Single';
-  static const int kSizeInBytes = 4;
-  static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
-
-  static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
-
-  static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
-
-  static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
-
-  static bool isValidVR(int vrIndex, [Issues issues]) {
-    if (vrIndex == kVRIndex) return true;
-    invalidVR(vrIndex, issues, kVRIndex);
-    return false;
-  }
-
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) {
-    if (vrIndex == kVRIndex) return true;
-    badVRIndex(vrIndex, issues, kVRIndex);
-    return false;
-  }
-
-  static bool isValidVRCode(int vrCode, [Issues issues]) {
-    if (vrCode == kVRCode) return true;
-    return isValidVRCodeError(vrCode, issues, kVRIndex);
-  }
-
-  static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
-      ? vrIndex
-      : badVRIndex(vrIndex, issues, kVRIndex);
-
-  /// Returns
-  static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
-
-  static bool isValidVFLength(int length,
-          [int min = 0, int max = kMaxVFLength]) =>
-      _isValidVFLength(length, min, max, kSizeInBytes);
-
-  static bool isValidLength(Tag tag, Iterable<double> vList, [Issues issues]) {
-    if (tag.vrIndex != kVRIndex) {
-      invalidVRIndexForTag(tag, kVRIndex);
-      return false;
-    }
-    return tag.isValidValuesLength(vList, issues);
-  }
-
-  /// Returns _true_ if [value] is valid for [FL] VR.
-  static bool isValidValue(double value, [Issues issues]) => true;
-
-  /// Returns _true_ if each value in [vList] is valid.
-  static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
-      isValidVRIndex(tag.vrIndex) &&
-      Float.isValidValues(tag, vList, issues, kMaxLength);
-
-  static bool isNotValidValues(Tag tag, Iterable<double> vList,
-          [Issues issues]) =>
-      !isValidValues(tag, vList, issues);
-}
-
-abstract class OF extends Float with Float32 {
-  @override
-  int get vrIndex => kVRIndex;
-  @override
-  int get vrCode => kVRCode;
-  @override
-  String get vrKeyword => kVRKeyword;
-  @override
-  String get vrName => kVRName;
-  @override
-  int get vlfSize => 4;
-  @override
-  int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
-  @override
-  bool get isLengthAlwaysValid => true;
-  @override
-  int get vfLength => length * sizeInBytes;
-
-//  static const VR kVR = VR.kOF;
-  static const int kVRIndex = kOFIndex;
-  static const int kVRCode = kOFCode;
-  static const String kVRKeyword = 'OF';
-  static const String kVRName = 'Other Float';
-  static const int kSizeInBytes = 4;
-  static const int kShiftValue = 2;
-  static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = kMax32BitLongVF;
-  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
-
-  static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
-
-  static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
-
-  static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
-
-  static bool isValidVRIndex(int vrIndex, [Issues issues]) {
-    if (vrIndex == kVRIndex) return true;
-    badVRIndex(vrIndex, issues, kVRIndex);
-    return false;
-  }
-
-  static bool isValidVRCode(int vrCode, [Issues issues]) {
-    if (vrCode == kVRCode) return true;
-    return isValidVRCodeError(vrCode, issues, kVRIndex);
-  }
-
-  static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
-      ? vrIndex
-      : badVRIndex(vrIndex, issues, kVRIndex);
-
-  static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode :  badVRCode(vrCode, issues, kVRIndex);
-
-  static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
-
-  static bool isValidLength(int vfl) => true;
-
-  static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
-      isValidVRIndex(tag.vrIndex) &&
-      Float.isValidValues(tag, vList, issues, kMaxLength);
-
-  /// Returns _true_ if [value] is valid for [FL] VR.
-  static bool isValidValue(double value, [Issues issues]) => true;
-
-  static bool isNotValidValues(Tag tag, Iterable<double> vList,
-          [Issues issues]) =>
-      !isValidValues(tag, vList, issues);
 }
 
 /// A mixin class for 64-bit floating point [Element]s.
@@ -358,6 +225,7 @@ abstract class Float64 {
   Iterable<double> get values;
   Float update([Iterable<double> vList]);
 
+  /// The number of bytes in a [Float32] element.
   int get sizeInBytes => kSizeInBytes;
 
   Float get sha256 => update(Sha256.float64(values));
@@ -369,7 +237,21 @@ abstract class Float64 {
   Float view([int start = 0, int length]) => update(
       typedData.buffer.asFloat64List(start, _toLength(length, values.length)));
 
+  /// The number of bytes in a [Float32] element.
   static const int kSizeInBytes = 8;
+
+  bool equal(Bytes a, Bytes b) {
+    for (var i = 0; i < a.length; i += 8) {
+      final x = a.getFloat64(i);
+      final y = b.getFloat64(i);
+      if (x != y) return false;
+    }
+    return true;
+  }
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Uint8List] created from [vList]. If [asView] is _true_
   /// and [vList] is a [Float32List] a view of [vList] is returned;
@@ -444,156 +326,12 @@ abstract class Float64 {
         vf is FloatBulkdataRef) return vf;
     if (vf is Bytes) return vf.asFloat64List();
     if (vf is Uint8List) return fromUint8List(vf);
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
-}
-
-abstract class FD extends Float with Float64 {
-  @override
-  int get vrIndex => kVRIndex;
-  @override
-  int get vrCode => kVRCode;
-  @override
-  String get vrKeyword => kVRKeyword;
-  @override
-  String get vrName => kVRName;
-  @override
-  int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
-
-//  static const VR kVR = VR.kFD;
-  static const int kVRIndex = kFDIndex;
-  static const int kVRCode = kFDCode;
-  static const String kVRKeyword = 'FD';
-  static const String kVRName = 'Floating Point Double';
-  static const int kSizeInBytes = 8;
-  static const int kShiftValue = 3;
-  static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
-
-  static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
-
-  static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
-
-  static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
-
-  static bool isValidVRIndex(int index, [Issues issues]) {
-    if (index == kVRIndex) return true;
-    badVRIndex(index, issues, kVRIndex);
-    return false;
-  }
-
-  static bool isValidVRCode(int vrCode, [Issues issues]) {
-    if (vrCode == kVRCode) return true;
-    return isValidVRCodeError(vrCode, issues, kVRIndex);
-  }
-
-  static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
-      ? vrIndex
-      : badVRIndex(vrIndex, issues, kVRIndex);
-
-  static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode :  badVRCode(vrCode, issues, kVRIndex);
-
-  static bool isValidVFLength(int length,
-          [int min = 0, int max = kMaxVFLength]) =>
-      _isValidVFLength(length, min, max, kSizeInBytes);
-
-  static bool isValidLength(Tag tag, Iterable<double> vList, [Issues issues]) =>
-      Element.isValidVListLength(tag, vList, issues, kMaxLength);
-
-  /// Returns _true_ if [value] is valid for [FL] VR.
-  static bool isValidValue(double value, [Issues issues]) => true;
-
-  static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
-      isValidVRIndex(tag.vrIndex) &&
-      Float.isValidValues(tag, vList, issues, kMaxLength);
-
-  static bool isNotValidValues(Tag tag, Iterable<double> vList,
-          [Issues issues]) =>
-      !isValidValues(tag, vList, issues);
-}
-
-abstract class OD extends Float with Float64 {
-  @override
-  int get vrIndex => kVRIndex;
-  @override
-  int get vrCode => kVRCode;
-  @override
-  String get vrKeyword => kVRKeyword;
-  @override
-  String get vrName => kVRName;
-  @override
-  int get vlfSize => 4;
-  @override
-  int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
-  @override
-  bool get isLengthAlwaysValid => true;
-
-//  static const VR kVR = VR.kOD;
-  static const int kVRIndex = kODIndex;
-  static const int kVRCode = kODCode;
-  static const String kVRKeyword = 'OD';
-  static const String kVRName = 'Other Double';
-  static const int kSizeInBytes = 8;
-  static const int kShiftValue = 3;
-  static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = kMax64BitLongVF;
-  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
-
-  static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
-
-  static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
-
-  static bool isNotValidTag(Tag tag) => !isValidVRIndex(tag.vrIndex);
-
-  static bool isValidVRIndex(int index, [Issues issues]) {
-    if (index == kVRIndex) return true;
-    badVRIndex(index, issues, kVRIndex);
-    return false;
-  }
-
-  static bool isValidVRCode(int vrCode, [Issues issues]) {
-    if (vrCode == kVRCode) return true;
-    return isValidVRCodeError(vrCode, issues, kVRIndex);
-  }
-
-  static int checkVRIndex(int vrIndex, [Issues issues]) => (vrIndex == kVRIndex)
-      ? vrIndex
-      : badVRIndex(vrIndex, issues, kVRIndex);
-
-  static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
-
-  static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
-
-  static bool isValidLength(int vfl) => true;
-
-  /// Returns _true_ if [value] is valid for [FL] VR.
-  static bool isValidValue(double value, [Issues issues]) => true;
-
-  static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
-      isValidVRIndex(tag.vrIndex) &&
-      Float.isValidValues(tag, vList, issues, kMaxLength);
-
-  static bool isNotValidValues(Tag tag, Iterable<double> vList,
-          [Issues issues]) =>
-      !isValidValues(tag, vList, issues);
 }
 
 int _toLength(int length, int vLength) =>
     (length == null || length > vLength) ? vLength : length;
-
-bool _inRange(int v, int min, int max) => v >= min && v <= max;
-
-bool _isValidVFLength(int vfl, int min, int max, int sizeInBytes) =>
-    _inRange(vfl, min, max) && (vfl % sizeInBytes == 0);
 
 Uint8List _asUint8List(TypedData td) {
   if (td == null) return null;

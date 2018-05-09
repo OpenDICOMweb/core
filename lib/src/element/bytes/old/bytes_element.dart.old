@@ -14,11 +14,7 @@ import 'package:core/src/element/bytes/evr.dart';
 import 'package:core/src/element/bytes/ivr.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/value/empty_list.dart';
-
-typedef Element DecodeBinaryVF(Bytes bytes, int vrIndex);
-
-typedef Element BDElementMaker(int code, int vrIndex, Bytes bytes);
+import 'package:core/src/utils/primitives.dart';
 
 // TODO: move documentation from EVR/IVR
 abstract class ByteElement<V> extends Element<V> {
@@ -44,18 +40,17 @@ abstract class ByteElement<V> extends Element<V> {
   @override
   int get vfLength;
 
-  int get valuesLength;
-
-  /// Returns the Value Field [Bytes] without trailing [kSpace] or [kNull]
-  /// characters.
-//  Bytes get vfBytesWithoutPadding;
-
-  /// The Value Field [Bytes] of this Element without padding character.
+  /// The Value Field [Bytes] of this Element with padding character, if any.
   @override
   Bytes get vfBytes;
 
-  /// The Value Field [Bytes] of this Element with padding character.
-  Bytes get vfBytesWOPadding;
+  int get vfBytesLast => bytes.getUint8(vfLength - 1);
+
+  int get vLength;
+
+  /// The Value Field [Bytes] of this Element without any padding character.
+  @override
+  Bytes get vBytes;
 
   // **** End Interface ****
 
@@ -63,15 +58,14 @@ abstract class ByteElement<V> extends Element<V> {
   Tag get tag => Tag.lookupByCode(code, vrIndex);
 
   static Element make<V>(Dataset ds, int code, Bytes bytes,
-      {bool isEvr = true}) {
-    final e = (isEvr)
+      {bool isEvr = true}) =>
+     (isEvr)
         ? EvrElement.makeFromCode(ds, code, bytes)
         : IvrElement.makeFromCode(ds, code, bytes);
-    return (code >= 0x10010 && code <= 0x100FF) ? new PrivateData(e) : e;
-  }
 }
 
-class PrivateData extends ByteElement<Object> with MetaElementMixin<Object> {
+/*
+class PrivateData extends ByteElement<Object> with MetaElementMixin {
   @override
   final ByteElement e;
 
@@ -88,7 +82,9 @@ class PrivateData extends ByteElement<Object> with MetaElementMixin<Object> {
   @override
   Bytes get vfBytes => e.vfBytes;
   @override
-  Bytes get vfBytesWOPadding => e.vfBytesWOPadding;
+  int get vfBytesLast => e.vfBytesLast;
+  @override
+  Bytes get vBytes => e.vBytes;
   @override
   int get valuesLength => e.valuesLength;
   @override
@@ -103,26 +99,7 @@ class PrivateData extends ByteElement<Object> with MetaElementMixin<Object> {
     return new PrivateData(e);
   }
 }
-
-/// 16-bit signed integer Elements (SS)
-abstract class TagMixin {
-  int get code;
-  Tag get tag;
-
-  int get index => code;
-
-  int get vmMin => tag.vmMin;
-  int get vmMax => tag.vmMax;
-  int get vmColumns => tag.vmColumns;
-  bool get isPublic => code.isEven;
-  bool get isPrivate => !code.isEven;
-  bool get isRetired => tag.isRetired;
-
-  String get keyword => tag.keyword;
-  String get name => tag.name;
-
-}
-
+*/
 
 /// 16-bit signed integer Elements (SS)
 abstract class Int16Mixin {
@@ -148,6 +125,11 @@ abstract class Int32Mixin {
 abstract class Uint8Mixin {
   int get vfLengthField;
   Bytes get vfBytes;
+  int get vfBytesLast;
+
+  bool get hasPadding => vfBytesLast == 0;
+  bool get hasValidPadding => hasPadding;
+  int get paddingCharacter => vfBytesLast;
 
   int get valuesLength => _fixedSizeLength(vfLengthField, Uint8.kSizeInBytes);
 
@@ -223,40 +205,60 @@ abstract class ByteStringMixin {
 */
 
 /// [String] [Element]s that only have ASCII values.
-abstract class AsciiMixin {
+abstract class StringMixin {
+  int get vfLength;
   Bytes get vfBytes;
+  Bytes get vBytes;
+  int get vfBytesLast;
+  String get vfString;
 
+  /// Returns _true if [vfBytes] ends with a padding character.
+  bool get hasPadding => vfLength.isEven && vfBytesLast == 0;
+
+  /// Returns _true if the padding character, if any, is valid for _this_.
+  bool get hasValidPadding => hasPadding && (padChar == kSpace);
+
+  /// If [vfLength] is not empty and [vfLength] is not equal to zero,
+  /// returns the last Uint8 element in [vfBytes]; otherwise, returns null;
+  int get padChar => ( vfLength != 0 && vfLength.isEven) ? vfBytesLast : null;
+
+  /// Returns the number of values in [vfBytes].
   int get valuesLength => _stringValuesLength(vfBytes);
+
+  Iterable<String> get values => vfString.split('\\');
+}
+
+/// [String] [Element]s that only have ASCII values.
+abstract class AsciiMixin {
+  Bytes get vBytes;
 
   bool allowInvalid = true;
 
-  String get vfString => vfBytes.getAscii(allowInvalid: allowInvalid);
+  String get vfString => vBytes.getAscii(allowInvalid: allowInvalid);
 
   Iterable<String> get values => vfString.split('\\');
 }
 
 /// [String] [Element]s that may have UTF-8 values.
 abstract class Utf8Mixin {
-  Bytes get vfBytes;
+  Bytes get vBytes;
 
-  int get valuesLength => _stringValuesLength(vfBytes);
+  int get valuesLength => _stringValuesLength(vBytes);
 
   bool allowMalformed = true;
 
-  String get vfString => vfBytes.getUtf8(allowMalformed: allowMalformed);
-
-  Iterable<String> get values => vfString.split('\\');
+  String get vfString => vBytes.getUtf8(allowMalformed: allowMalformed);
 }
 
 /// Text ([String]) [Element]s that may only have 1 UTF-8 value.
 abstract class TextMixin {
-  Bytes get vfBytes;
+  Bytes get vBytes;
 
   int get valuesLength => 1;
 
   bool allowMalformed = true;
 
-  String get vfString => vfBytes.getUtf8(allowMalformed: allowMalformed);
+  String get vfString => vBytes.getUtf8(allowMalformed: allowMalformed);
   String get value => vfString;
   Iterable<String> get values => [vfString];
 }

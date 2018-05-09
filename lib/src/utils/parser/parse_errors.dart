@@ -37,89 +37,8 @@ Null parseError(String msg, [Issues issues]) {
 Null parseNullError([Issues issues]) =>
     parseError('Invalid attempt to parse a null value', issues);
 
-class InvalidAgeStringError extends ParseError {
-  InvalidAgeStringError(String msg) : super(msg);
 
-  @override
-  String toString() => _msg(msg);
 
-  static String _msg(String msg) => 'InvalidAgeStringError: $msg';
-}
-
-int invalidAgeString(String msg, [Issues issues]) {
-  if (issues != null) issues.add(msg);
-  log.error(InvalidAgeStringError._msg(msg));
-  if (throwOnError) throw new InvalidAgeStringError(msg);
-  return -1;
-}
-
-/// An invalid [DateTime] [String] [Error].
-class InvalidDateStringError extends ParseError {
-  InvalidDateStringError(String msg) : super(msg);
-
-  @override
-  String toString() => _msg(msg);
-
-  static String _msg(String msg) => 'InvalidDateStringError: "$msg"';
-}
-
-String invalidDateString(String msg, [Issues issues]) {
-  log.error(InvalidDateStringError._msg(msg));
-  if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidDateStringError('$msg');
-  return null;
-}
-
-/// An invalid [DateTime] [Error].
-class InvalidTimeStringError extends ParseError {
-  InvalidTimeStringError(String msg) : super(msg);
-
-  @override
-  String toString() => _msg(msg);
-
-  static String _msg(String s) => 'InvalidTimeStringError: "$s"';
-}
-
-Null invalidTimeString(String msg, [Issues issues]) {
-  log.error(InvalidTimeStringError._msg(msg));
-  if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidTimeStringError('$msg');
-  return null;
-}
-
-/// An invalid [DateTime] [Error].
-class InvalidTimeZoneStringError extends ParseError {
-  InvalidTimeZoneStringError(String msg) : super(msg);
-
-  @override
-  String toString() => _msg(msg);
-
-  static String _msg(String s) => 'InvalidTimeZoneStringError: "$s"';
-}
-
-Null invalidTimeZoneString(String msg, [Issues issues]) {
-  log.error(InvalidTimeZoneStringError._msg(msg));
-  if (issues != null) issues.add(msg);
-  if (throwOnError) throw new FormatException(msg);
-  return null;
-}
-
-/// An invalid [DateTime] [Error].
-class InvalidDcmDateTimeStringError extends ParseError {
-  InvalidDcmDateTimeStringError(String msg) : super(msg);
-
-  @override
-  String toString() => _msg(msg);
-
-  static String _msg(String s) => 'InvalidDcmDateTimeStringError: "$s"';
-}
-
-Null invalidDcmDateTimeString(String msg, [Issues issues]) {
-  log.error(InvalidDcmDateTimeStringError._msg(msg));
-  if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidDcmDateTimeStringError('$msg');
-  return null;
-}
 
 /// An invalid [DateTime] [Error].
 class InvalidParseStringToStringError extends ParseError {
@@ -138,22 +57,6 @@ Null invalidParseStringToString(String msg, [Issues issues]) {
   return null;
 }
 
-/// An invalid [Uri] [String] [Error].
-class InvalidUriStringError extends ParseError {
-  InvalidUriStringError(String msg) : super(msg);
-
-  @override
-  String toString() => _msg(msg);
-
-  static String _msg(String s) => 'InvalidUriStringError: "$s"';
-}
-
-Null invalidUriString(String msg, [Issues issues]) {
-  log.error(InvalidUriStringError._msg(msg));
-  if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidUriStringError('$msg');
-  return null;
-}
 
 /*
 /// An invalid [Uuid] [String] [Error].
@@ -174,6 +77,7 @@ Null invalidUuidString(String msg, [Issues issues]) {
 }
 */
 
+/*
 /// An invalid [Uuid] [String] [Error].
 class InvalidCharacterInStringError extends ParseError {
   final String s;
@@ -190,7 +94,9 @@ class InvalidCharacterInStringError extends ParseError {
         'codeUnits: $cUnits';
   }
 }
+*/
 
+/*
 Null invalidCharacterInString(String s, int index, [Issues issues]) {
   final msg = InvalidCharacterInStringError._msg(s, index);
   log.error(msg);
@@ -198,7 +104,9 @@ Null invalidCharacterInString(String s, int index, [Issues issues]) {
   if (throwOnError) throw new InvalidCharacterInStringError(s, index);
   return null;
 }
+*/
 
+/*
 /// An invalid [Uuid] [String] [Error].
 class InvalidStringError extends ParseError {
   final String s;
@@ -210,7 +118,9 @@ class InvalidStringError extends ParseError {
 
   static String _msg(String s) => 'Invalid String($s)';
 }
+*/
 
+/*
 //TODO: improve message
 void invalidStringLength(String s, [Issues issues, int start, int end]) {
   final msg = 'Invalid Length: "$s", start($start), end($end)';
@@ -225,3 +135,4 @@ Null invalidString(String s, [Issues issues]) {
   if (throwOnError) throw new InvalidStringError(s);
   return null;
 }
+*/

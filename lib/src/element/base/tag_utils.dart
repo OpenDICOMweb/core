@@ -10,10 +10,12 @@
 import 'package:core/src/dataset/base.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/value/empty_list.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/vr.dart';
 
+// ignore_for_file: only_throw_errors
 // Urgent: verify that tag.vr is newVRIndex when appropriate
+
 Tag lookupTagByCode(Dataset ds, int code, int vrIndex) {
   assert(_isNotPCTagCode(code));
   final group = code >> 16;

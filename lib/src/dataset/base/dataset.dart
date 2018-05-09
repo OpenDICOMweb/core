@@ -18,7 +18,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/vr.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 
@@ -41,6 +41,7 @@ import 'package:core/src/vr_base.dart';
 abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   /// [PCTag]s for [PC] [Element]s in _this_.
   final PrivateCreatorTags pcTags = new PrivateCreatorTags();
+
   /// A history of changes to _this_.
   final History history = new History();
 
@@ -55,7 +56,6 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     tryAdd(e);
   }
 
-  // TODO: when are 2 Datasets equal?
   // TODO: should this be checking that parents are equal? It doesn't
   @override
   bool operator ==(Object other) {
@@ -131,7 +131,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   /// Tries to add an [Element] to a [Dataset]. Return _true_ if successful.
   ///
   /// If the new [Element] is not valid and [allowInvalidValues] is _false_,
-  /// an [invalidValuesError] is thrown; otherwise, the [Element] is added
+  /// an [invalidElement] is thrown; otherwise, the [Element] is added
   /// to both the [_issues] [Map] and to the [Dataset]. The [_issues] [Map]
   /// can be used later to return an [Issues] for the [Element].
   ///
@@ -145,7 +145,8 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     final old = lookup(code);
     if (old == null) {
       if (checkIssuesOnAdd && (issues != null)) {
-        if (!allowInvalidValues && !e.isValid) invalidElementError(e);
+        if (!allowInvalidValues && !e.isValid)
+          invalidElement('Invalid Values: $e', e);
       }
       if (Tag.isPCCode(code)) pcTags.tryAdd(e.tag);
       store(e.code, e);

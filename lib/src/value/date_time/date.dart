@@ -246,7 +246,8 @@ class Date implements Comparable<Date> {
 
   /// Returns a [List<String>] of DICOM date (DA) values, where each element in the
   /// [List] is the _normalized_ value of the corresponding element in the argument.
-  static List<String> normalizeStrings(List<String> sList, Date enrollment) {
+  static Iterable<String> normalizeStrings(
+      List<String> sList, Date enrollment) {
     final rList = new List<String>(sList.length);
     for (var i = 0; i < rList.length; i++) {
       final nDate = normalizeString(sList[i], enrollment);
@@ -279,11 +280,11 @@ typedef String OnHashDateStringError(String s);
 
 /// Returns a new date [String] that is the hash of [s], which is a .
 String hashDcmDateString(String s,
-                         {Issues issues, OnHashDateStringError onError}) {
+    {Issues issues, OnHashDateStringError onError}) {
   final us = parseDicomDate(s);
   if (us == null) {
     if (onError != null) return onError(s);
-    return invalidDateString(s, issues);
+    return badDateString(s, issues);
   }
   return microsecondToDateString(hashDateMicroseconds(us));
 }
@@ -293,4 +294,3 @@ String hashDcmDateString(String s,
 /// element in the argument.
 Iterable<String> hashDcmDateDateStringList(List<String> dates) =>
     dates.map(hashDcmDateString);
-

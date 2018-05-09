@@ -13,7 +13,7 @@ import 'package:core/src/tag/private/pd_tag.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils/string.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/vr.dart';
 
 typedef Tag TagMaker(int code, int vrIndex);
 
@@ -81,7 +81,7 @@ class GroupLengthPrivateTag extends PrivateTag {
   final int vrIndex;
   @override
   GroupLengthPrivateTag(this.code, this.vrIndex) {
-    if (vrIndex != kULIndex && vrIndex != kUNIndex) badVRIndex(
+    if (vrIndex != kULIndex && vrIndex != kUNIndex) VR.badIndex(
         vrIndex, null, correctVRIndex);
   }
 

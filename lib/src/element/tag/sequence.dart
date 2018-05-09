@@ -17,7 +17,7 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/errors.dart';
 import 'package:core/src/utils/logger.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/vr.dart';
 
 /// A Sequence ([SQ]) Element.
 ///
@@ -26,14 +26,16 @@ import 'package:core/src/vr_base.dart';
 class SQtag extends SQ with TagElement<TagItem> {
   @override
   final Tag tag;
+  @override
+  final Iterable<TagItem> values;
 
   /// The [Dataset] that contains _this_.
   @override
   final Dataset parent;
 
   /// The [Iterable<ItemTag>] that are the [values] of _this_.
-  @override
-  Iterable<Item> values;
+//  @override
+ // Iterable<Item> values;
 
   /// The length of the Value Field from which this [SQtag] was decoded.
   /// If _null_ _this_ what not created from an encoding.
@@ -51,7 +53,7 @@ class SQtag extends SQ with TagElement<TagItem> {
       [this.values, this.vfLengthField, this.bytes]);
 
   @override
-  List<Item> get items => values;
+  List<Item> get items => values.toList(growable: false);
   @override
   Bytes get vfBytes => unimplementedError('vfBytes in SQtag');
 

@@ -23,7 +23,7 @@ void main() {
       final item = new ListItem.empty(rds, null);
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
-          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
+          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');
       //item.add(uiTransFerSyntax);
       item[uiTransFerSyntax.index] = uiTransFerSyntax;
@@ -154,7 +154,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+      final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
       log.debug('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));
@@ -186,7 +186,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+      final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
       final item = new MapItem.empty(rds, null)..add(ui0);
       log.debug('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
@@ -217,7 +217,7 @@ void main() {
 
         // Create element and check values and uids
         log.debug('uidList0: $uidList0');
-        final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+        final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
         log.debug('ui0: $ui0');
         final item = new MapItem.empty(rds, null)..add(ui0);
         log.debug('values: ${ui0.values}');
@@ -253,7 +253,7 @@ void main() {
 
         // Create element and check values and uids
         final ui0 =
-            new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+            new UItag(PTag.kSelectorUIValue, uidStringList0);
         final item = new MapItem.empty(rds, null)..add(ui0);
         log.debug('values: ${ui0.values}');
         expect(ui0.values, equals(uidStringList0));

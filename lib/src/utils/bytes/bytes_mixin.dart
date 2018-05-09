@@ -51,8 +51,7 @@ abstract class BytesMixin {
 
   ByteBuffer get buffer => _bd.buffer;
 
-  String get endianness =>
-      (endian == Endian.little) ? 'Endian.little' : 'Endian.big';
+  String get endianness => (endian == Endian.little) ? 'LE' : 'BE';
 
   // **** Primitive ByteData Getters
 
@@ -127,29 +126,29 @@ abstract class BytesMixin {
   /// Returns the absolute index of [offset] in the underlying [ByteBuffer].
   int _absIndex(int offset) => _bdOffset + offset;
 
-  /// Returns the number of 32-bit elements from [index] to
-  /// [_bd].lengthInBytes, where [index] is the absolute offset in [_bd].
-  int _length16(int index) {
-    final _length = _bdLength - index;
-    assert((_length % 2) == 0);
-    return _length ~/ 2;
+  /// Returns the number of 32-bit elements from [offset] to
+  /// [_bd].lengthInBytes, where [offset] is the absolute offset in [_bd].
+  int _length16(int offset) {
+    final length = _bdLength - offset;
+    assert((length % 2) == 0);
+    return length ~/ 2;
   }
 
-  /// Returns the number of 32-bit elements from [index] to
-  /// [_bd].lengthInBytes, where [index] is the absolute offset in [_bd].
-  int _length32(int index) {
-    final _length = _bdLength - index;
-    assert((_length % 4) == 0, '_length: $_length');
-    return _length ~/ 4;
+  /// Returns the number of 32-bit elements from [offset] to
+  /// [_bd].lengthInBytes, where [offset] is the absolute offset in [_bd].
+  int _length32(int offset) {
+    final length = _bdLength - offset;
+    //  final length = _bdLength;
+    assert((length % 4) == 0, 'length: $length');
+    return length ~/ 4;
   }
 
-  /// Returns the number of 32-bit elements from [index] to
-  /// [_bd].lengthInBytes, where [index] is the absolute offset in [_bd].
-  int _length64(int index) {
-    final _length = _bdLength - index;
-    // !Must be 4 on next line because long header is 12 bytes!
-    assert((_length % 4) == 0);
-    return _length ~/ 8;
+  /// Returns the number of 32-bit elements from [offset] to
+  /// [_bd].lengthInBytes, where [offset] is the absolute offset in [_bd].
+  int _length64(int offset) {
+    final length = _bdLength - offset;
+    assert((length % 8) == 0, 'length: $length');
+    return length ~/ 8;
   }
 
   bool _isAligned(int index, int size) => (index % size) == 0;
@@ -162,8 +161,10 @@ abstract class BytesMixin {
   // **** TypedData views
 
   /// Returns an [ByteData] view of the specified region of _this_.
-  ByteData _viewOfBDRegion([int offset = 0, int length]) =>
-      _bd.buffer.asByteData(offset, length ??= _bdLength);
+  ByteData _viewOfBDRegion([int offset = 0, int length]) {
+    length ??= _bdLength - offset;
+    return _bd.buffer.asByteData(_absIndex(offset), length);
+  }
 
   /// Returns a view of the specified region of _this_. [endian] defaults
   /// to the same [endian]ness as _this_.
@@ -174,19 +175,22 @@ abstract class BytesMixin {
 
   /// Creates an [ByteData] view of the specified region of _this_.
   ByteData asByteData([int offset = 0, int length]) =>
-      _viewOfBDRegion(offset, length);
+      _viewOfBDRegion(offset, (length ??= _bdLength) - offset);
 
   /// Creates an [Int8List] view of the specified region of _this_.
-  Int8List asInt8List([int offset = 0, int length]) =>
-      _bd.buffer.asInt8List(_absIndex(offset), length ?? _bdLength);
+  Int8List asInt8List([int offset = 0, int length]) {
+    length ??= _bdLength - offset;
+    return _bd.buffer.asInt8List(_absIndex(offset), length);
+  }
 
   /// If [offset] is aligned on an 8-byte boundary, returns a [Int16List]
   /// view of the specified region; otherwise, creates a [Int16List] that
   /// is a copy of the specified region and returns it.
   Int16List asInt16List([int offset = 0, int length]) {
     final index = _absIndex(offset);
+    length ??= _length16(offset);
     return (_isAligned16(index))
-        ? _bd.buffer.asInt16List(index, length ?? _length16(index))
+        ? _bd.buffer.asInt16List(index, length)
         : getInt16List(offset, length);
   }
 
@@ -195,7 +199,7 @@ abstract class BytesMixin {
   /// is a copy of the specified region and returns it.
   Int32List asInt32List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    length ??= _length32(index);
+    length ??= _length32(offset);
     return (_isAligned32(index))
         ? _bd.buffer.asInt32List(index, length)
         : getInt32List(offset, length);
@@ -206,21 +210,23 @@ abstract class BytesMixin {
   /// is a copy of the specified region and returns it.
   Int64List asInt64List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    length ??= _length64(index);
+    length ??= _length64(offset);
     return (_isAligned64(index))
         ? _bd.buffer.asInt64List(index, length)
         : getInt64List(offset, length);
   }
 
-  Uint8List asUint8List([int offset = 0, int length]) =>
-      _bd.buffer.asUint8List(_absIndex(offset), length ?? _bdLength);
+  Uint8List asUint8List([int offset = 0, int length]) {
+    length ??= _bdLength - offset;
+    return _bd.buffer.asUint8List(_absIndex(offset), length);
+  }
 
   /// If [offset] is aligned on an 8-byte boundary, returns a [Uint16List]
   /// view of the specified region; otherwise, creates a [Uint16List] that
   /// is a copy of the specified region and returns it.
   Uint16List asUint16List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    length ??= _length16(index);
+    length ??= _length16(length);
     return (_isAligned16(index))
         ? _bd.buffer.asUint16List(index, length)
         : getUint16List(offset, length);
@@ -231,7 +237,7 @@ abstract class BytesMixin {
   /// is a copy of the specified region and returns it.
   Uint32List asUint32List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    length ??= _length32(index);
+    length ??= _length32(offset);
     return (_isAligned32(index))
         ? _bd.buffer.asUint32List(index, length)
         : getUint32List(offset, length);
@@ -242,7 +248,7 @@ abstract class BytesMixin {
   /// is a copy of the specified region and returns it.
   Uint64List asUint64List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    length ??= _length64(index);
+    length ??= _length64(offset);
     return (_isAligned64(index))
         ? _bd.buffer.asUint64List(index, length)
         : getUint64List(offset, length);
@@ -253,7 +259,7 @@ abstract class BytesMixin {
   /// is a copy of the specified region and returns it.
   Float32List asFloat32List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    length ??= _length32(index);
+    length ??= _length32(offset);
     return (_isAligned32(index))
         ? _bd.buffer.asFloat32List(index, length)
         : getFloat32List(offset, length);
@@ -264,7 +270,7 @@ abstract class BytesMixin {
   /// is a copy of the specified region and returns it.
   Float64List asFloat64List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    length ??= _length64(index);
+    length ??= _length64(offset);
     return (_isAligned64(index))
         ? _bd.buffer.asFloat64List(index, length)
         : getFloat64List(offset, length);
@@ -404,11 +410,13 @@ abstract class BytesMixin {
   /// the specified region as _ASCII_, and then _split_ing the
   /// resulting [String] using the [separator].
   List<String> getAsciiList(
-          {int offset = 0,
-          int length,
-          bool allowInvalid: true,
-          String separator = '\\'}) =>
-      _getAscii(offset, length, allowInvalid).split(separator);
+      {int offset = 0,
+      int length,
+      bool allowInvalid: true,
+      String separator = '\\'}) {
+    final s = _getAscii(offset, length, allowInvalid);
+    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+  }
 
   String _getAscii(int offset, int length, [bool allow]) {
     final bList = asUint8List(offset, length);
@@ -423,11 +431,13 @@ abstract class BytesMixin {
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
   List<String> getUtf8List(
-          {int offset = 0,
-          int length,
-          bool allowMalformed: true,
-          String separator = '\\'}) =>
-      _getUtf8(offset, length, allowMalformed).split('\\');
+      {int offset = 0,
+      int length,
+      bool allowMalformed: true,
+      String separator = '\\'}) {
+    final s = _getUtf8(offset, length, allowMalformed);
+    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+  }
 
   String _getUtf8(int offset, int length, [bool allow]) =>
       utf8.decode(asUint8List(offset, length), allowMalformed: allow);
@@ -444,7 +454,11 @@ abstract class BytesMixin {
           int length,
           bool allowMalformed: true,
           String separator = '\\'}) =>
-      _getUtf8(offset, length, allowMalformed).split('\\');
+      getUtf8List(
+          offset: offset,
+          length: length,
+          allowMalformed: allowMalformed,
+          separator: separator);
 
   // ********************** Setters ********************************
 
@@ -568,44 +582,49 @@ abstract class BytesMixin {
       _setUint8(j, other.getUint8(i));
   }
 
-  void setInt8List(int start, Int8List list, [int offset = 0, int length]) {
+  /// Returns the number of bytes set.
+  int setInt8List(int start, List<int> list, [int offset = 0, int length]) {
     length ??= list.length;
-//    final index = _absIndex(start);
     assert(_checkLength(offset, length, kInt8Size));
     for (var i = 0, j = offset; i < length; i++, j++) _setInt8(j, list[i]);
+    return length;
   }
 
-  void setInt16List(int start, Int16List list, [int offset = 0, int length]) {
+  int setInt16List(int start, List<int> list, [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kInt16Size));
     for (var i = 0, j = offset; i < length; i++, j += 2) _setInt16(j, list[i]);
+    return length * 2;
   }
 
-  void setInt32List(int start, Int32List list, [int offset = 0, int length]) {
+  int setInt32List(int start, List<int> list, [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat64Size));
     for (var i = 0, j = offset; i < length; i++, j += 4) _setInt32(j, list[i]);
+    return length * 4;
   }
 
-  void setInt32x4List(int start, Int32x4List list,
+  int setInt32x4List(int start, Int32x4List list,
       [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat64Size));
     for (var i = 0, j = offset; i < length; i++, j += 16)
       _setInt32x4(j, list[i]);
+    return length * 16;
   }
 
-  void setInt64List(int start, Int64List list, [int offset = 0, int length]) {
+  int setInt64List(int start, List<int> list, [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kInt64Size));
     for (var i = 0, j = offset; i < length; i++, j += 8) setInt64(j, list[i]);
+    return length * 6;
   }
 
-  int setUint8List(int start, Uint8List list, [int offset = 0, int length]) =>
+  int setUint8List(int start, List<int> list, [int offset = 0, int length]) =>
       _setUint8List(start, list, offset, length);
 
   int _setUint8List(int start, Uint8List list, [int offset = 0, int length]) {
@@ -617,88 +636,106 @@ abstract class BytesMixin {
     return length;
   }
 
-  void setUint16List(int start, Uint16List list, [int offset = 0, int length]) {
+  int setUint16List(int start, List<int> list, [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint16Size));
     for (var i = 0, j = offset; i < length; i++, j += 2) _setUint16(i, list[i]);
+    return length * 2;
   }
 
-  void setUint32List(int start, Uint32List list, [int offset = 0, int length]) {
+  int setUint32List(int start, List<int> list, [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint32Size));
     for (var i = 0, j = offset; i < length; i++, j += 4) _setUint32(i, list[i]);
+    return length * 4;
   }
 
-  void setUint64List(int start, Uint64List list, [int offset = 0, int length]) {
+  int setUint64List(int start, List<int> list, [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint64Size));
     for (var i = 0, j = offset; i < length; i++, j += 8) _setUint64(i, list[i]);
+    return length * 8;
   }
 
-  void setFloat32List(int start, Float32List list,
+  int setFloat32List(int start, List<double> list,
       [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat32Size));
     for (var i = 0, j = offset; i < length; i++, j += 4)
       _setFloat32(i, list[i]);
+    return length * 4;
   }
 
-  void setFloat32x4List(int start, Float32x4List list,
+  int setFloat32x4List(int start, Float32x4List list,
       [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, list.length * 16));
     for (var i = 0, j = offset; i < length; i++, j += 16)
       _setFloat32x4(j, list[i]);
+    return length * 16;
   }
 
-  void setFloat64List(int start, Float64List list,
+  int setFloat64List(int start, List<double> list,
       [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat64Size));
     for (var i = 0, j = offset; i < length; i++, j += 8)
       _setFloat64(i, list[i]);
+    return length * 8;
   }
 
-  void setFloat64x2List(int start, Float64x2List list,
+  int setFloat64x2List(int start, Float64x2List list,
       [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat64Size));
     for (var i = 0, j = offset; i < length; i++, j += 16)
       _setFloat64x2(j, list[i]);
+    return length * 16;
   }
 
   // **** String List Setters
 
   int setAsciiList(int start, List<String> sList,
-      [int offset = 0, int length]) {
+      [int offset = 0, int length, String separator = '']) {
+    if (sList.isEmpty) return 0;
+    // Improvement: this could be optimized to allocate no storage
     final s = _stringListToString(sList, offset, length ??= sList.length);
     setAscii(start, s, offset, s.length);
     return s.length;
   }
 
-  int setUtf8List(int start, List<String> sList, [int offset = 0, int length]) {
+  int setUtf8List(int start, List<String> sList,
+      [int offset = 0, int length, String separator = '']) {
+    if (sList.isEmpty) return 0;
     final s = _stringListToString(sList, offset, length ??= sList.length);
     setUtf8(start, s, offset, s.length);
     return s.length;
   }
 
+  String _stringListToString(List<String> sList, int offset, int length) {
+    final v = (offset == 0 && length == sList.length)
+              ? sList
+              : sList.sublist(offset, offset + length);
+    return v.join('\\');
+  }
+
   // **** Other
 
   @override
-  String toString() => '$runtimeType: $endianness ${toBDDescriptor(_bd)}}';
+  String toString() => '$endianness $runtimeType: ${toBDDescriptor(_bd)}}';
 
-  String toBDDescriptor(ByteData b) {
-    final start = _bdOffset;
-    final length = _bdLength;
+  String toBDDescriptor(ByteData bd) {
+    final start = bd.offsetInBytes;
+    final length = bd.lengthInBytes;
     final end = start + length;
-    return '$start-$end:$length ${asUint8List()}';
+    return '$start-$end:$length ${bd.buffer.asUint8List(start, length)}';
   }
 
   // **** Internals
@@ -712,12 +749,5 @@ abstract class BytesMixin {
           'Bytes($bdLength bytes');
     }
     return true;
-  }
-
-  String _stringListToString(List<String> sList, int offset, int length) {
-    final v = (offset == 0 && length == sList.length)
-        ? sList
-        : sList.sublist(offset, offset + length);
-    return v.join('\\');
   }
 }

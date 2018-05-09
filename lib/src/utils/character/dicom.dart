@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/utils/ascii.dart';
+import 'package:core/src/utils/character/ascii.dart';
 
 /// DICOM Character Set Predicates
 

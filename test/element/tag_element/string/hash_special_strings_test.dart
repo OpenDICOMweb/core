@@ -17,7 +17,7 @@ void main() {
   Server.initialize(name: 'element/hash_special_test', level: Level.info);
   test('UI', () {
     final stringList1 = rsg.getUIList(1, 1);
-    final ui0 = new UItag.fromStrings(PTag.kStudyInstanceUID, stringList1);
+    final ui0 = new UItag(PTag.kStudyInstanceUID, stringList1);
 
     final sha2 = Sha256.stringList(stringList1);
     log.debug('stringList1: $stringList1;, sha2: $sha2');

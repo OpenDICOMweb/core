@@ -42,7 +42,7 @@ class DatasetGroups {
   void add(Element e, Dataset sqParent) {
     final gNumber = e.group;
     if (gNumber < currentGNumber) {
-      invalidElementError(e, '$gNumber > $currentGNumber');
+      badElement('$gNumber > $currentGNumber', e);
     } else if (gNumber == currentGNumber) {
       currentGroup.add(e, sqParent);
     } else {

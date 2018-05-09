@@ -10,7 +10,7 @@ import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/utils/primitives.dart';
 
 /// Float - Array of IEEE single precision (32-bit) floating point numbers.
 /// Max Array length is ((2^16)-4)/ 4).
@@ -57,7 +57,7 @@ class FLtag extends FL with TagElement<double> {
   static FLtag fromBytes(Tag tag, Bytes bytes,
           [int _]) =>
       (tag.vrIndex != kFLIndex)
-          ? isValidTagError(tag, null, FL)
+          ? Tag.isValidTag(tag, null, kFLIndex, FL)
           : (FL.isNotValidTag(tag))
               ? null
               : new FLtag._(tag, bytes.asFloat32List());
@@ -77,7 +77,7 @@ class OFtag extends OF with TagElement<double> {
   factory OFtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       (OF.isValidArgs(tag, vList))
           ? new OFtag._(tag, vList)
-          : invalidValuesError(vList, tag: tag);
+          : badValues(vList, tag: tag);
 
   factory OFtag.bulkdata(Tag tag, Uri url) =>
       new OFtag._(tag, new FloatBulkdataRef(tag.code, url));
@@ -102,7 +102,7 @@ class OFtag extends OF with TagElement<double> {
   static OFtag fromBytes(Tag tag, Bytes bytes,
           [int _]) =>
       (tag.vrIndex != kOFIndex)
-          ? isValidTagError(tag, null, OF)
+          ? Tag.isValidTag(tag, null, kOFIndex,OF)
           : (OF.isNotValidTag(tag))
               ? null
               : new OFtag._(tag, bytes.asFloat32List());
@@ -120,7 +120,7 @@ class FDtag extends FD with TagElement<double> {
   factory FDtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       (FD.isValidArgs(tag, vList))
           ? new FDtag._(tag, vList)
-          : invalidValuesError(vList, tag: tag);
+          : badValues(vList, tag: tag);
 
   factory FDtag.bulkdata(Tag tag, Uri url) =>
       new FDtag._(tag, new FloatBulkdataRef(tag.code, url));
@@ -145,7 +145,7 @@ class FDtag extends FD with TagElement<double> {
   static FDtag fromBytes(Tag tag, Bytes bytes,
           [int _]) =>
       (tag.vrIndex != kFDIndex)
-          ? isValidTagError(tag, null, FD)
+          ? Tag.isValidTag(tag, null, kFDIndex, FD)
           : (FD.isNotValidTag(tag))
               ? null
               : new FDtag._(tag, bytes.asFloat64List());
@@ -164,7 +164,7 @@ class ODtag extends OD with TagElement<double> {
   factory ODtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       (OD.isValidArgs(tag, vList))
           ? new ODtag._(tag, vList)
-          : invalidValuesError(vList, tag: tag);
+          : badValues(vList, tag: tag);
 
   factory ODtag.bulkdata(Tag tag, Uri url) =>
       new ODtag._(tag, new FloatBulkdataRef(tag.code, url));
@@ -189,7 +189,7 @@ class ODtag extends OD with TagElement<double> {
   static ODtag fromBytes(Tag tag, Bytes bytes,
           [int _]) =>
       (tag.vrIndex != kODIndex)
-          ? isValidTagError(tag, null, FD)
+          ? Tag.isValidTag(tag, null, kFDIndex, FD)
           : (OD.isNotValidTag(tag))
               ? null
               : new ODtag._(tag, bytes.asFloat64List());

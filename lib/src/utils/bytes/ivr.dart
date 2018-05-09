@@ -11,8 +11,17 @@ part of odw.sdk.utils.bytes;
 class IvrBytes extends DicomBytes {
   IvrBytes(int eLength) : super._(eLength, Endian.little);
 
-  IvrBytes.from(Bytes bytes, int start, int end, Endian endian)
-      : super._from(bytes, start, end, endian ?? Endian.host);
+  IvrBytes.from(Bytes bytes, int start, int end)
+      : super._from(bytes, start, end, Endian.little);
+
+  @override
+  bool get isEvr => false;
+  @override
+  int get vrCode => _bd.getUint16(kVROffset, Endian.little);
+  @override
+  int get vrIndex => vrIndexFromCode(vrCode);
+  @override
+  String get vrId => vrIdFromIndex(vrIndex);
 
   @override
   int get vfOffset => kVFOffset;
@@ -26,32 +35,34 @@ class IvrBytes extends DicomBytes {
     return vlf;
   }
 
-  @override
-  int getVLF(int offset) => _bd.getUint32(offset);
-
-  /// Write a short EVR header.
-  @override
-  void ivrSetHeader(int code, int vrCode, int vlf) {
-    _bd
-      ..setUint16(0, code >> 16)
-      ..setUint16(2, code & 0xFFFF)
-      ..setUint32(6, vlf);
-  }
-
+  static const int kVROffset = 4;
   static const int kVFLengthOffset = 4;
   static const int kVFOffset = 8;
   static const int kHeaderLength = 8;
 
-  static IvrBytes make(int code, int vrCode, Uint8List vfBytes,
-      [Endian endian = Endian.little]) {
-    var vfLength = vfBytes.length;
-    if (vfLength.isOdd) vfLength++;
+  static IvrBytes makeEmpty(
+    int code,
+    int vfLength,
+    int vrCode,
+  ) {
+    assert(vfLength.isEven);
     final e = new IvrBytes(kHeaderLength + vfLength)
-      ..ivrSetHeader(code, vrCode, vfLength);
+      ..ivrSetHeader(code, vfLength, vrCode);
+    print('e: $e');
+    return e;
+  }
 
-    print('    code: ${dcm(e.code)}');
-    print('vfLength: ${e.vfLength}');
-    print(' vfBytes: ${e.vfBytes}');
+  static IvrBytes makeFromBytes(
+    int code,
+    Bytes vfBytes,
+    int vrCode,
+  ) {
+    final vfLength = vfBytes.length;
+    assert(vfLength.isEven);
+    final e = new IvrBytes(kHeaderLength + vfLength)
+      ..ivrSetHeader(code, vfLength, vrCode)
+      ..setByteData(kVFOffset, vfBytes._bd);
+    print('e: $e');
     return e;
   }
 }

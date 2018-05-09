@@ -8,7 +8,7 @@
 //
 
 import 'package:core/src/tag/vm.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/vr.dart';
 
 //TODO: add these to DED and then create a Map from this file.
 class DcmDir {

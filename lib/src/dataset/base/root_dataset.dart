@@ -10,7 +10,6 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/utils/status_report.dart';
@@ -20,6 +19,7 @@ import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/logger.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
 
@@ -234,24 +234,6 @@ abstract class RootDataset extends Dataset {
       return false;
     }
   }
-
-/*
-  /// Returns the parsing information [ParseInfo] for _this_.
-  /// [pInfo] has one-time setter that is initialized lazily.
-  // ignore: unnecessary_getters_setters
-  ParseInfo get pInfo => _pInfo;
-  ParseInfo _pInfo;
-  // ignore: unnecessary_getters_setters
-  set pInfo(ParseInfo info) => _pInfo ??= info;
-*/
-
-/*
-  bool get wasShortEncoding => pInfo.wasShortFile;
-
-  bool get hasIssues => pInfo.hadErrors || pInfo.hadWarnings;
-
-  bool get hasErrors => pInfo.hadParsingErrors || hasIssues;
-*/
 }
 
 abstract class Fmi extends ListBase<Element> {
@@ -259,7 +241,6 @@ abstract class Fmi extends ListBase<Element> {
 
   @override
   int get length => elements.length;
-
 
   Uid uidLookup(int code) {
     final e = this[code];
@@ -269,7 +250,7 @@ abstract class Fmi extends ListBase<Element> {
     } else if (e is UN) {
       return new Uid(e.vfBytesAsAscii);
     } else {
-      return invalidElementError(e);
+      return badElement('Wrong Type ${e.runtimeType}: $e', e);
     }
   }
 }

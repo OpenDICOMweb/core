@@ -17,7 +17,7 @@ import 'package:core/src/entity/patient/sex.dart';
 import 'package:core/src/entity/study.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/value/date_time.dart';
-import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 
 // ignore_for_file: only_throw_errors
@@ -39,7 +39,7 @@ class Patient extends Entity {
       : _name = subject.name,
         _dob = subject._dob,
         _sex = subject._sex,
-        super(null, new Uid(), rds, new Map<Uid,Study>.from(subject.children));
+        super(null, new Uid(), rds, new Map<Uid, Study>.from(subject.children));
 
   /// Returns a new [Patient] created from the [RootDataset].
   factory Patient.fromRDS(RootDataset rds) {
@@ -92,15 +92,14 @@ class Subject extends Patient {
   /// Creates a new [Subject].
   Subject(String pid, Uid uid, RootDataset rds,
       {Map<Uid, Study> studies, PersonName name, Date dob, Sex sex})
-      : super(
-            pid, uid, rds, (studies == null) ? <Uid, Study>{} : studies, name, dob, sex);
+      : super(pid, uid, rds, (studies == null) ? <Uid, Study>{} : studies, name,
+            dob, sex);
 
   /// Returns a new [Subject] created from the [RootDataset].
   factory Subject.fromRDS(RootDataset rds) {
     final e = rds[kPatientID];
     if (e == null) return elementNotPresentError(e);
-    if (!e.hasValidValues) invalidValuesError(e.value);
-    //TODO: decide if this is rigth thing to do?
+    if (!e.hasValidValues) return badValues(e.value);
     final uid = new Uid();
     final String pid = e.value;
     return new Subject(pid, uid, rds);
@@ -132,7 +131,9 @@ class AssigningFacilitySequence {
 
   AssigningFacilitySequence(
       this.localNamespaceEntityID, this.universalEntityID, this.type) {
-    if (localNamespaceEntityID == null && universalEntityID != null && type != null)
+    if (localNamespaceEntityID == null &&
+        universalEntityID != null &&
+        type != null)
       throw 'AssigningFacilitySequence must have either '
           'localNamespaceEntityID or universalEntityID';
   }
@@ -145,7 +146,8 @@ class CodeSequence {
   List<String> longValue;
   String urnValue;
 
-  CodeSequence(this.designator, this.value, this.meaning, this.longValue, this.urnValue);
+  CodeSequence(
+      this.designator, this.value, this.meaning, this.longValue, this.urnValue);
 }
 
 class CodingScheme {
@@ -166,14 +168,14 @@ class UniversalEntityIDType {
   static const UniversalEntityIDType kEUI64 = const UniversalEntityIDType(
       'EUI64', 'IEEE Extended Unique Idnetifier', Term.kEUI64);
 
-  static const UniversalEntityIDType kISO = const UniversalEntityIDType(
-      'ISO', 'An International Standards Organization Object Identifier', Term.kISO);
+  static const UniversalEntityIDType kISO = const UniversalEntityIDType('ISO',
+      'An International Standards Organization Object Identifier', Term.kISO);
 
-  static const UniversalEntityIDType kURI =
-      const UniversalEntityIDType('URI', 'Universal Resource Identifier', Term.kURI);
+  static const UniversalEntityIDType kURI = const UniversalEntityIDType(
+      'URI', 'Universal Resource Identifier', Term.kURI);
 
-  static const UniversalEntityIDType kUUID =
-      const UniversalEntityIDType('UUID', 'Universal Unique Identifier', Term.kUUID);
+  static const UniversalEntityIDType kUUID = const UniversalEntityIDType(
+      'UUID', 'Universal Unique Identifier', Term.kUUID);
 
   static const UniversalEntityIDType kX400 =
       const UniversalEntityIDType('X400', 'X400 MHS Identifier', Term.kX400);

@@ -119,7 +119,7 @@ void main() {
         system.throwOnError = true;
 
         expect(() => Uuid.parse(uuid),
-            throwsA(const isInstanceOf<InvalidUuidError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
     test('parse', () {
@@ -140,7 +140,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => Uuid.parse(uuid),
-            throwsA(const isInstanceOf<InvalidUuidError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 

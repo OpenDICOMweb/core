@@ -7,10 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:typed_data';
-
-//TODO: make private and public versions of these
-//Note: the following do no error checking.
+//Note: the following do NO error checking.
 String digits2(int n) {
   if (n > 99) return null;
   if (n >= 10) return '$n';
@@ -56,30 +53,32 @@ String digits6(int n) {
 /// _Note_: If [padding] has a [maxLength] greater than 1 the result
 /// will not have a length equal to [maxLength]. See [String] padLeft
 /// for details.
-String toDec(int n, {int maxLength = 0, String padding = '0'}) =>
+String dec(int n, {int maxLength = 0, String padding = '0'}) =>
     n.toRadixString(10).padLeft(maxLength);
 
-/// Returns a decimal [String] corresponding to [v] as a 32-bit
-/// integer. If the length of the result is less than 10, it is
+/// Returns a decimal [String] corresponding to [n] as an 8-bit
+/// integer. If the length of the result is less than 3, it is
 /// left padded with zeros.
-String toDec32(int v) => toDec(v, maxLength: 10);
+String dec8(int n) {
+  assert(n >= -0xFF && n <= 0xFF);
+  return dec(n, maxLength: 3);
+}
 
-/// Returns a decimal [String] corresponding to [v] as a 16-bit
+
+/// Returns a decimal [String] corresponding to [n] as a 16-bit
 /// integer. If the length of the result is less than 5, it is
 /// left padded with zeros.
-String toDec16(int v) => toDec(v, maxLength: 5);
+String dec16(int n) {
+  assert(n >= -0xFFFF && n <= 0xFFFF);
+  return dec(n, maxLength: 5);
+}
 
-/// Returns a decimal [String] corresponding to [v] as a 8-bit
+/// Returns a decimal [String] corresponding to [n] as a 32-bit
 /// integer. If the length of the result is less than 10, it is
 /// left padded with zeros.
-String toDec8(int v) => toDec(v, maxLength: 3);
-
-/// Returns a hexadecimal [String] corresponding to [bytes].
-String bytesToHex(Uint8List bytes, [int start = 0, int end]) {
-  end ??= bytes.lengthInBytes - start;
-  final sb = new StringBuffer();
-  for (var i = start; i < end; i++) sb.write(i.toRadixString(16).padLeft(2, '0'));
-  return sb.toString();
+String dec32(int n) {
+  assert(n >= -0x8FFFFFFF && n <= 0x8FFFFFFF);
+  return dec(n, maxLength: 10);
 }
 
 /// Returns a [String] that approximately corresponds to [v],
@@ -97,3 +96,17 @@ String floatToString(double v) {
   return s;
 }
 
+/// _Deprecated_: Use [floatToString] instead.
+@deprecated
+String floatToDcmString(double v) {
+  const precision = 10;
+  var s = v.toString();
+  if (s.length > 16) {
+    for (var i = precision; i > 0; i--) {
+      s = v.toStringAsPrecision(i);
+      if (s.length <= 16) break;
+    }
+  }
+  assert(s.length <= 16, '"$s" exceeds max DS length of 16');
+  return s;
+}

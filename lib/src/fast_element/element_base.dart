@@ -15,8 +15,8 @@ import 'dart:typed_data';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/value/empty_list.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/vr.dart';
 
 /// The base class for DICOM Data Elements
 ///
@@ -275,24 +275,24 @@ abstract class FL extends Float with Float32Mixin {
 
   static bool isValidVR(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVR(vrIndex, issues, kVRIndex);
+    VR.badIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex)
           ? true
-          : isValidVRIndexError(vrIndex, issues, kVRIndex);
+          : VR.invalidIndex(vrIndex, issues, kVRIndex);
 
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? true : isValidVRCodeError(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? true :VR.invalidCode(vrCode, issues, kVRIndex);
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : badVRIndex(vrIndex, issues, kVRIndex);
+      (vrIndex == kVRIndex) ? vrIndex : VR.badIndex(vrIndex, issues, kVRIndex);
 
   /// Returns
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length,
           [int min = 0, int max = kMaxVFLength]) =>
@@ -357,16 +357,16 @@ abstract class OF extends Float with Float32Mixin {
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex)
           ? true
-          : isValidVRIndexError(vrIndex, issues, kVRIndex);
+          : VR.invalidIndex(vrIndex, issues, kVRIndex);
 
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? true : isValidVRCodeError(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? true :VR.invalidCode(vrCode, issues, kVRIndex);
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : badVRIndex(vrIndex, issues, kVRIndex);
+      (vrIndex == kVRIndex) ? vrIndex : VR.badIndex(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
@@ -488,16 +488,16 @@ abstract class FD extends Float with Float64Mixin {
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex)
           ? true
-          : isValidVRIndexError(vrIndex, issues, kVRIndex);
+          : VR.invalidIndex(vrIndex, issues, kVRIndex);
 
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? true : isValidVRCodeError(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? true :VR.invalidCode(vrCode, issues, kVRIndex);
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : badVRIndex(vrIndex, issues, kVRIndex);
+      (vrIndex == kVRIndex) ? vrIndex : VR.badIndex(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int length,
           [int min = 0, int max = kMaxVFLength]) =>
@@ -551,16 +551,16 @@ abstract class OD extends Float with Float64Mixin {
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex)
           ? true
-          : isValidVRIndexError(vrIndex, issues, kVRIndex);
+          : VR.invalidIndex(vrIndex, issues, kVRIndex);
 
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? true : isValidVRCodeError(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? true :VR.invalidCode(vrCode, issues, kVRIndex);
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
-      (vrIndex == kVRIndex) ? vrIndex : badVRIndex(vrIndex, issues, kVRIndex);
+      (vrIndex == kVRIndex) ? vrIndex : VR.badIndex(vrIndex, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : badVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 

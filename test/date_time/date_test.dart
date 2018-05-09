@@ -65,7 +65,7 @@ void main() {
       for (var s in badDcmDateList) {
         log.debug('Bad date: $s');
         expect(() => Date.parse(s),
-            throwsA(const isInstanceOf<InvalidDateStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
@@ -102,20 +102,19 @@ void main() {
           }
         }
       }
-      /*final s = '19500718';
-      final dt = Date.parse(s);
-      log.debug(dt);
-      // Enhancement
-      DcmDateTime ddt1 = dt.add(new Time(hours: 4, minutes: 20, seconds: 56));
-      log.debug(ddt1.hour);
-      log.debug(ddt1.minute);
-      log.debug(ddt1.second);
 
-      DcmDateTime ddt2 =
-          dt.subtract(new Time(hours: 2, minutes: 5, seconds: 26));
-      log.debug(ddt2.hour);
-      log.debug(ddt2.minute);
-      log.debug(ddt2.second);*/
+      // Urgent Sharath: what is this testing?
+      const s = '19500718';
+      final date = Date.parse(s);
+      log.debug(date);
+
+      // Enhancement
+      final date1 = date.add(new Time(4,  20, 56));
+      log.debug(date1);
+
+    //  final date2 = date.subtract(new Time(2, 5, 26));
+    //  log.debug(date2);
+
     });
 
     test('hash Date (throwOnError = false)', () {
@@ -452,7 +451,8 @@ void main() {
     final date1 = new Date(1969, 12, 31);
     system.level = Level.info;
     log.debug(
-        'date: $date1, year:${date1.year}, month: ${date1.month}, day: ${date1.day}, microseconds: ${date1.microseconds}');
+        'date: $date1, year:${date1.year}, month: ${date1.month}, '
+            'day: ${date1.day}, microseconds: ${date1.microseconds}');
     final hash1 = date1.hash;
     log.debug('hash1: $hash1, year: ${hash1.year}, y: ${hash1.y}');
   });

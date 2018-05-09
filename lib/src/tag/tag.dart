@@ -23,9 +23,9 @@ import 'package:core/src/tag/private/private_tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/string.dart';
-import 'package:core/src/value/empty_list.dart';
-import 'package:core/src/vr.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/vr/vr.dart';
+import 'package:core/src/vr/vr_base.dart';
 
 const int kGroupMask = 0xFFFF0000;
 const int kElementMask = 0x0000FFFF;
@@ -70,7 +70,7 @@ abstract class Tag {
   int get vrIndex;
   String get vrId => vrIdFromIndex(vrIndex);
 
-  String get keyword;// => 'UnknownTag';
+  String get keyword; // => 'UnknownTag';
   String get name; // => 'Unknown Tag';
   VM get vm => VM.k1_n;
   int get vmMin => vm.min;
@@ -139,7 +139,7 @@ abstract class Tag {
   bool get hasNormalVR => isNormalVRIndex(vrIndex);
   bool get hasSpecialVR => isSpecialVRIndex(vrIndex);
 
-  bool isValidVRIndex(int index) => vr.isValidIndex(index);
+  bool isValidVRIndex(int index) => VR.isValidIndex(index, null, vrIndex);
 
   // **** VM Getters
 
@@ -226,35 +226,6 @@ abstract class Tag {
   /// conform to the DICOM Standard.
   bool get isValid => false;
 
-  /// Returns True if [vList].length, i.e. is valid for this [Tag].
-  ///
-  /// _Note_: A length of zero is always valid.
-  ///
-  /// [min]: The minimum number of values.
-  /// [max]: The maximum number of values. If -1 then max length of
-  ///     Value Field; otherwise, must be greater than or equal to [min].
-  /// [width]: The [columns] of the matrix of values. If [columns == 0,
-  /// then singleton; otherwise must be greater than 0;
-  //TODO: should be modified when EType info is available.
-  bool isValidValues<V>(Iterable<V> vList, [Issues issues]) {
-    if (vList == null) {
-      nullValueError();
-      return false;
-    }
-    if (vrIndex == kUNIndex || vList.isEmpty) return true;
-
-    if (isNotValidValuesLength(vList, issues)) {
-      invalidValuesLengthError(this, vList);
-      return false;
-    }
-    for (var v in vList)
-      if (vr.isNotValidValue(v, issues: issues)) {
-        invalidTagValuesError<V>(this, vList);
-        return false;
-      }
-    return true;
-  }
-
   bool get isLengthAlwaysValid =>
       vrIndex == kUNIndex ||
       vrIndex == kOBIndex ||
@@ -271,7 +242,7 @@ abstract class Tag {
   bool isValidValuesLength<V>(Iterable<V> vList, [Issues issues]) {
     assert(vList != null);
     if (isValidLength(vList.length)) return true;
-    invalidValuesLengthError(this, vList, issues);
+    isValidValuesLengthError(this, vList, issues);
     return false;
   }
 
@@ -300,7 +271,7 @@ abstract class Tag {
     final msg = 'Invalid Value Field length: '
         'min($minValues) <= $vfLength <= max($maxValues)';
     if (issues != null) issues.add(msg);
-    if (throwOnError) return isValidVFLengthError(vfLength, vr.maxVFLength);
+    if (throwOnError) return invalidVFLength(vfLength, vr.maxVFLength);
     return false;
   }
 
@@ -378,7 +349,6 @@ abstract class Tag {
 
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag lookupByCode(int code, [int vrIndex = kUNIndex, Object creator]) {
-
     if (!allowInvalidTags &&
         (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)) {
       print('code $code ${hex32(code)} ${toDcm(code)} vrIndex $vrIndex');
@@ -434,7 +404,7 @@ abstract class Tag {
 
   // Returns _true_ if [vrIndex] is valid for [tag].
   static bool isValidVR(Tag tag, int vrIndex) {
-    if (tag.vr.isValidIndex(vrIndex)) return true;
+    if (tag.vr.isValid(vrIndex)) return true;
     log.warn('Invalid VR ${vrIdFromIndex(vrIndex)} for $tag');
     if (allowInvalidVR) return true;
     if (throwOnError) invalidVRForTag(tag, vrIndex);
@@ -736,4 +706,56 @@ abstract class Tag {
     final msg = 'Invalid tag: $tag not in $min <= x <= $max';
     throw new RangeError(msg);
   }
+
+  /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
+  /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
+  /// is used.
+  static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
+      (doTestValidity && tag.vrIndex != targetVR)
+          ? invalidTag(tag, issues, type)
+          : true;
+
+  /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
+  /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
+  /// is used.
+  static bool isValidSpecialTag(
+      Tag tag, Issues issues, int targetVR, Type type) {
+    final vrIndex = tag.vrIndex;
+    return (doTestValidity &&
+            (vrIndex == targetVR ||
+                (vrIndex >= kVRSpecialIndexMin &&
+                    vrIndex <= kVRSpecialIndexMax)))
+        ? true
+        : invalidTag(tag, issues, type);
+  }
+
+  static Null badTag(Tag tag, Type type, [Issues issues]) {
+    _invalidTagError(tag, issues, type);
+    return null;
+  }
+
+  static bool invalidTag(Tag tag, Issues issues, Type type) {
+    _invalidTagError(tag, issues, type);
+    return false;
+  }
+
+  static void _invalidTagError(Tag tag, Issues issues, Type type) {
+    final msg = InvalidTagError._msg(tag, type);
+    if (issues != null) issues.add(msg);
+    log.error(InvalidTagError._msg(tag, type));
+    print('throwOnError: $throwOnError');
+    if (throwOnError) throw new InvalidTagError(tag, type);
+  }
+}
+
+class InvalidTagError extends Error {
+  Tag tag;
+  Type type;
+
+  InvalidTagError(this.tag, this.type);
+
+  @override
+  String toString() => _msg(tag, type);
+
+  static String _msg(Tag tag, Type type) => 'InvalidTag for $type: $tag';
 }

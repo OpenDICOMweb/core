@@ -29,7 +29,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final int16List0 = rng.int16List(1, 1);
         final ss0 = new SStag(PTag.kTagAngleSecondAxis, int16List0);
-        log.debug('ss0: ${ss0}');
+        log.debug('ss0: $ss0');
         expect(ss0.hasValidValues, true);
 
         log
@@ -443,7 +443,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => SStag.fromValues(PTag.kTagAngleSecondAxis, int16list0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -567,9 +567,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => SS.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => SS.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -600,9 +600,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => SS.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => SS.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -859,9 +859,9 @@ void main() {
 
       system.throwOnError = true;
       expect(() => SS.isValidValues(PTag.kTagAngleSecondAxis, int16MinMax),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => SS.isValidValues(PTag.kVisualAcuityModifiers, int16Max),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('Int16Base.fromList', () {

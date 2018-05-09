@@ -8,7 +8,7 @@
 //
 
 import 'package:core/src/tag.dart';
-import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/utils/primitives.dart';
 
 const List<int> deIdDateCodes = const <int>[
   // Added by JFPhilbin

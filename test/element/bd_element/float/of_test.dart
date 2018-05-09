@@ -10,7 +10,6 @@
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
-import 'package:core/src/element/bytes/bd_test_utils.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -36,7 +35,7 @@ void main() {
 
     test('OF hasValidValues: good values', () {
       system.throwOnError = false;
-      final of0 = makeOF(kSelectorOFValue, doubleList);
+      final of0 = OFbytes.fromValues(kSelectorOFValue, doubleList);
       expect(of0.hasValidValues, true);
     });
 
@@ -46,9 +45,9 @@ void main() {
         log.debug('float32List: $float32List');
         expect(float32List is Float32List, true);
         log.debug('i: $i, float32List: $float32List');
-        final of0 = makeOF(kFirstOrderPhaseCorrectionAngle, float32List);
+        final of0 =
+            OFbytes.fromValues(kFirstOrderPhaseCorrectionAngle, float32List);
         log.debug('of:$of0');
-        final a = of0[0];
         expect(of0[0], equals(float32List[0]));
         expect(of0.hasValidValues, true);
       }
@@ -58,18 +57,19 @@ void main() {
       for (var i = 0; i < 100; i++) {
         float32List = rng.float32List(2, 10);
         log.debug('i: $i, float32List: $float32List');
-        final of0 = makeOF(kFirstOrderPhaseCorrectionAngle, float32List);
+        final of0 =
+            OFbytes.fromValues(kFirstOrderPhaseCorrectionAngle, float32List);
         expect(of0.hasValidValues, true);
       }
     });
 
     test('OF []', () {
       system.throwOnError = false;
-      final of0 = makeOF(kVectorGridData, kEmptyFloat32List);
+      final of0 = OFbytes.fromValues(kVectorGridData, kEmptyFloat32List);
       expect(of0.hasValidValues, true);
       expect(of0.values, equals(<double>[]));
 
-      final of1 = makeOF(kVectorGridData, kEmptyFloat32List);
+      final of1 = OFbytes.fromValues(kVectorGridData, kEmptyFloat32List);
       expect(of1.hasValidValues, true);
       expect(of1.values.isEmpty, true);
     });
@@ -83,8 +83,8 @@ void main() {
       log.debug('OF hashCode and ==');
       for (var i = 0; i < 10; i++) {
         floatList0 = rng.float32List(1, 1);
-        final of0 = makeOF(kVectorGridData, floatList0);
-        final of1 = makeOF(kVectorGridData, floatList0);
+        final of0 = OFbytes.fromValues(kVectorGridData, floatList0);
+        final of1 = OFbytes.fromValues(kVectorGridData, floatList0);
         log
           ..debug('floatList0:$floatList0 , of1.hash_code:${of1.hashCode}')
           ..debug('floatList0:$floatList0 , of1.hash_code:${of1.hashCode}');
@@ -92,19 +92,19 @@ void main() {
         expect(of1 == of1, true);
 
         floatList1 = rng.float32List(1, 1);
-        final of2 = makeOF(kPointCoordinatesData, floatList1);
+        final of2 = OFbytes.fromValues(kPointCoordinatesData, floatList1);
         log.debug('floatList1:$floatList1 , of2.hash_code:${of2.hashCode}');
         expect(of0.hashCode == of2.hashCode, false);
         expect(of0 == of2, false);
 
         floatList2 = rng.float32List(1, 2);
-        final of3 = makeOF(kUValueData, floatList2);
+        final of3 = OFbytes.fromValues(kUValueData, floatList2);
         log.debug('floatList2:$floatList2 , of3.hash_code:${of3.hashCode}');
         expect(of0.hashCode == of3.hashCode, false);
         expect(of0 == of3, false);
 
         floatList3 = rng.float32List(2, 3);
-        final of4 = makeOF(kPointCoordinatesData, floatList3);
+        final of4 = OFbytes.fromValues(kPointCoordinatesData, floatList3);
         log.debug('floatList3:$floatList3 , of4.hash_code:${of4.hashCode}');
         expect(of1.hashCode == of4.hashCode, false);
         expect(of1 == of4, false);
@@ -114,8 +114,8 @@ void main() {
     test('OF hashCode and ==', () {
       log.debug('OF hashCode and ==');
 
-      final of0 = makeOF(kVectorGridData, doubleList);
-      final of1 = makeOF(kVectorGridData, doubleList);
+      final of0 = OFbytes.fromValues(kVectorGridData, doubleList);
+      final of1 = OFbytes.fromValues(kVectorGridData, doubleList);
       log
         ..debug('listFloat32Common0:$doubleList , '
             'of1.hash_code:${of1.hashCode}')
@@ -124,19 +124,19 @@ void main() {
       expect(of1.hashCode == of1.hashCode, true);
       expect(of1 == of1, true);
 
-      final of2 = makeOF(kPointCoordinatesData, doubleList);
+      final of2 = OFbytes.fromValues(kPointCoordinatesData, doubleList);
       log.debug('listFloat32Common0:$doubleList , '
           'of2.hash_code:${of2.hashCode}');
       expect(of0.hashCode == of2.hashCode, false);
       expect(of0 == of2, false);
 
-      final of3 = makeOF(kUValueData, doubleList);
+      final of3 = OFbytes.fromValues(kUValueData, doubleList);
       log.debug('listFloat32Common0:$doubleList , '
           'of3.hash_code:${of3.hashCode}');
       expect(of0.hashCode == of3.hashCode, false);
       expect(of0 == of3, false);
 
-      final of4 = makeOF(of2.code, of2.values);
+      final of4 = OFbytes.fromValues(of2.code, of2.values);
       log.debug('listFloat32Common0:$doubleList , '
           'of4.hash_code:${of4.hashCode}');
       expect(of1.hashCode == of4.hashCode, false);
@@ -146,7 +146,8 @@ void main() {
     test('Create OF.isValidValues', () {
       system.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
-        final of0 = makeOF(kVectorGridData, <double>[doubleList[i]]);
+        final of0 =
+            OFbytes.fromValues(kVectorGridData, <double>[doubleList[i]]);
         expect(OF.isValidValues(PTag.kVectorGridData, of0.values), true);
       }
     });

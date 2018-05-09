@@ -14,7 +14,7 @@ import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/instance.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/study.dart';
-import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 
 /// A DICOM [Series] Instance in SOP Instance format.

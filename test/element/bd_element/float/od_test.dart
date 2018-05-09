@@ -12,8 +12,6 @@ import 'dart:typed_data';
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 
-import 'package:core/src/element/bytes/bd_test_utils.dart';
-
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
@@ -41,7 +39,7 @@ void main() {
   group('OD Tests', () {
     test('OD hasValidValues: good values', () {
       system.throwOnError = false;
-      final od0 = makeOD(kSelectorODValue, doubleList);
+      final od0 = ODbytes.fromValues(kSelectorODValue, doubleList);
       print('code: ${dcm(od0.code)}');
       print('vrCode: ${hex16(od0.vrCode)}');
       print('vfLength: ${od0.vfLength}');
@@ -56,14 +54,14 @@ void main() {
         expect(float64List0 is Float64List, true);
         expect(float64List0.length, 1);
         log.debug('$i: float64List0: $float64List0');
-        final od0 = makeOD(kSelectorODValue, float64List0);
+        final od0 = ODbytes.fromValues(kSelectorODValue, float64List0);
         log.debug('od0: $od0');
         expect(od0.hasValidValues, true);
 
         log
           ..debug('bytes: $od0')
           ..debug('od0: $od0, values: ${od0.values}')
-          ..debug('od0: ${od0.info}')
+          ..debug('od0: $od0')
           ..debug('float64List0: $float64List0')
           ..debug('        od0: ${od0.values}')
           ..debug('        vfBytes: ${od0.vfBytes}');
@@ -75,13 +73,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final float64List0 = rng.float64List(3, 4);
         log.debug('$i: float64List0: $float64List0');
-        final od0 = makeOD(kDoubleFloatPixelData, float64List0);
+        final od0 = ODbytes.fromValues(kDoubleFloatPixelData, float64List0);
         final od1 = new FLtag(od0.tag, od0.values);
         expect(od1, isNull);
       }
     });
     test('OD [] as values', () {
-      final od0 = makeOD(kDoubleFloatPixelData, []);
+      final od0 = ODbytes.fromValues(kDoubleFloatPixelData, []);
       expect(od0.hasValidValues, true);
       expect(od0.values, equals(<double>[]));
     });
@@ -99,8 +97,8 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         floatList0 = rng.float64List(1, 1);
-        final od0 = makeOD(kDoubleFloatPixelData, floatList0);
-        final od1 = makeOD(kDoubleFloatPixelData, floatList0);
+        final od0 = ODbytes.fromValues(kDoubleFloatPixelData, floatList0);
+        final od1 = ODbytes.fromValues(kDoubleFloatPixelData, floatList0);
         log
           ..debug('floatList0:$floatList0, od0.hash_code:${od0.hashCode}')
           ..debug('floatList0:$floatList0, od1.hash_code:${od1.hashCode}');
@@ -108,7 +106,7 @@ void main() {
         expect(od0 == od1, true);
 
         floatList1 = rng.float64List(1, 1);
-        final od2 = makeOD(kSelectorODValue, floatList1);
+        final od2 = ODbytes.fromValues(kSelectorODValue, floatList1);
         log.debug('floatList1:$floatList1 , od2.hash_code:${od2.hashCode}');
         expect(od0.hashCode == od2.hashCode, false);
         expect(od0 == od2, false);
@@ -118,7 +116,7 @@ void main() {
     test('OD isValidValues', () {
       system.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
-        final od0 = makeOD(kSelectorODValue, <double>[doubleList[i]]);
+        final od0 = ODbytes.fromValues(kSelectorODValue, <double>[doubleList[i]]);
         expect(OD.isValidValues(PTag.kDoubleFloatPixelData, od0.values), true);
       }
     });

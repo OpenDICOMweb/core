@@ -10,12 +10,12 @@ import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes/bytes.dart';
 
-export 'package:core/src/utils/ascii.dart';
+export 'package:core/src/utils/character/ascii.dart';
 export 'package:core/src/utils/dicom.dart';
 export 'package:core/src/utils/errors.dart';
 export 'package:core/src/utils/issues.dart';
 export 'package:core/src/utils/string/hexadecimal.dart';
-export 'package:core/src/vr_base.dart';
+export 'package:core/src/vr.dart';
 
 final Bytes kEmptyBytes = Bytes.kEmptyBytes;
 

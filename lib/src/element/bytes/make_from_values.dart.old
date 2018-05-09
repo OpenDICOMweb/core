@@ -1,0 +1,151 @@
+//  Copyright (c) 2016, 2017, 2018,
+//  Poplar Hill Informatics and the American College of Radiology
+//  All rights reserved.
+//  Use of this source code is governed by the open source license
+//  that can be found in the odw/LICENSE file.
+//  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
+//  See the AUTHORS file for other contributors.
+//
+import 'package:core/src/dataset.dart';
+import 'package:core/src/element/base.dart';
+import 'package:core/src/element/bytes/bytes.dart';
+import 'package:core/src/element/bytes/bytes_mixin.dart';
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/string.dart';
+import 'package:core/src/utils/primitives.dart';
+
+ByteElement makeFromValues<V>(Dataset ds, DicomBytes bytes) {
+  final code = bytes.code;
+  final pCode = code & 0x1FFFF;
+  if (pCode >= 0x10010 && pCode <= 0x100FF) return new PCbytes(bytes);
+  final vrIndex = bytes.vrIndex;
+  final tag = lookupTagByCode(ds, code, vrIndex);
+  final tagVRIndex = tag.vrIndex;
+  assert(tagVRIndex != kSQIndex);
+  return _bytesBDMakers[vrIndex](bytes, tagVRIndex);
+}
+
+final List<Function> _bytesBDMakers = <Function>[
+  SQbytes.makeFromBytes, // stop reformat
+  // Maybe Undefined Lengths
+  OBbytes.makeFromBytes, OWbytes.makeFromBytes, UNbytes.makeFromBytes,
+
+  // EVR Long
+  makeOD, makeOF, OLbytes.makeFromBytes,
+  UCbytes.makeFromBytes, URbytes.makeFromBytes, UTbytes.makeFromBytes,
+
+  // EVR Short
+  makeAE, ASbytes.makeFromBytes, makeAT,
+  CSbytes.makeFromBytes, DAbytes.makeFromBytes, DSbytes.makeFromBytes,
+  DTbytes.makeFromBytes, makeFD, makeFL,
+  ISbytes.makeFromBytes, LObytes.makeFromBytes, LTbytes.makeFromBytes,
+  PNbytes.makeFromBytes, SHbytes.makeFromBytes, SLbytes.makeFromBytes,
+  SSbytes.makeFromBytes, STbytes.makeFromBytes, TMbytes.makeFromBytes,
+  UIbytes.makeFromBytes, ULbytes.makeFromBytes, USbytes.makeFromBytes,
+];
+
+ByteElement makeAE(int code, Iterable<String> vList, {bool isEvr = true}) {
+  final vfLength = stringListLength(vList);
+  assert(vfLength <= AT.kMaxVFLength);
+  final bytes = (isEvr)
+      ? EvrShortBytes.makeEmpty(code, kATCode, vfLength)
+      : IvrBytes.makeEmpty(code, kATCode, vfLength)
+    ..writeAsciiVF(vList);
+  assert(bytes is DicomBytes);
+  return ATbytes.makeFromBytes(bytes);
+
+}
+
+ByteElement makeAT(int code, Iterable<int> vList, {bool isEvr = true}) {
+  final vfLength = Int32.getLength(vList);
+  assert(vfLength <= AT.kMaxVFLength);
+  final bytes = (isEvr)
+      ? EvrShortBytes.makeEmpty(code, kATCode, vfLength)
+      : IvrBytes.makeEmpty(code, kATCode, vfLength)
+    ..writeUint32VF(vList);
+  assert(bytes is DicomBytes);
+  final vfBytes = bytes.vfBytes;
+
+  print('|asFloat32List: ${vfBytes.asFloat32List()}');
+
+  return ATbytes.makeFromBytes(bytes);
+}
+
+ByteElement makeDS(int code, Iterable<String> vList, {bool isEvr = true}) {
+  final vfLength = stringListLength(vList);
+  assert(vfLength <= AT.kMaxVFLength);
+  final bytes = (isEvr)
+                ? EvrShortBytes.makeEmpty(code, kATCode, vfLength)
+                : IvrBytes.makeEmpty(code, kATCode, vfLength)
+                  ..writeAsciiVF(vList);
+  assert(bytes is DicomBytes);
+  final vfBytes = bytes.vfBytes;
+
+  print('|asFloat32List: ${vfBytes.asFloat32List()}');
+
+  final e = ATbytes.makeFromBytes(bytes);
+
+  return e;
+}
+
+ByteElement makeFD(int code, Iterable<double> vList, {bool isEvr = true}) {
+  final vLength = vList.length;
+  assert(vLength <= FD.kMaxLength);
+  final vfLength = vLength * Float64.kSizeInBytes;
+  assert(vfLength <= FD.kMaxVFLength);
+  final bytes = (isEvr)
+                ? EvrShortBytes.makeEmpty(code, kFDCode, vfLength)
+                : IvrBytes.makeEmpty(code, kFDCode, vfLength)
+                  ..writeFloat64VF(vList);
+  assert(bytes is DicomBytes);
+  final e = FDbytes.makeFromBytes(bytes);
+  return e;
+}
+
+
+ByteElement makeFL(int code, Iterable<double> vList, {bool isEvr = true}) {
+  final vfLength = vList.length * Float32.kSizeInBytes;
+  assert(vfLength <= OF.kMaxVFLength);
+  final bytes = (isEvr)
+      ? EvrShortBytes.makeEmpty(code, kFLCode, vfLength)
+      : IvrBytes.makeEmpty(code, kFLCode, vfLength)
+    ..writeFloat32VF(vList);
+  assert(bytes is DicomBytes);
+  final vfBytes = bytes.vfBytes;
+
+  print('|asFloat32List: ${vfBytes.asFloat32List()}');
+
+  final e = FLbytes.makeFromBytes(bytes);
+
+  return e;
+}
+
+ByteElement makeOD(int code, Iterable<double> vList, {bool isEvr = true}) {
+  final vLength = vList.length;
+  assert(vLength <= OD.kMaxLength);
+  final vfLength = vLength * Float64.kSizeInBytes;
+  assert(vfLength <= OD.kMaxVFLength);
+  final bytes = (isEvr)
+                ? EvrLongBytes.makeEmpty(code, kODCode, vfLength)
+                : IvrBytes.makeEmpty(code, kODCode, vfLength)
+                  ..writeFloat64VF(vList);
+  assert(bytes is DicomBytes);
+  final e = ODbytes.makeFromBytes(bytes);
+  return e;
+}
+
+ByteElement makeOF(int code, Iterable<double> vList, {bool isEvr = true}) {
+  final vLength = vList.length;
+  assert(vLength <= OF.kMaxLength);
+  final vfLength = vLength * Float32.kSizeInBytes;
+  assert(vfLength <= OF.kMaxVFLength);
+  final bytes = (isEvr)
+      ? EvrLongBytes.makeEmpty(code, kOFCode, vfLength)
+      : IvrBytes.makeEmpty(code, kOFCode, vfLength)
+    ..writeFloat32VF(vList);
+  assert(bytes is DicomBytes);
+  final e = OFbytes.makeFromBytes(bytes);
+  return e;
+}
+
+

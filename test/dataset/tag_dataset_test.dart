@@ -68,17 +68,17 @@ void main() {
       // Uids (UI)
       tag = PTag.lookupByCode(
           kMediaStorageSOPClassUID); // Media Storage SOP Class UID
-      rootDS.add(new UItag.fromStrings(tag, [kCTImageStorage]));
+      rootDS.add(new UItag(tag, [kCTImageStorage]));
 
       tag = PTag.lookupByCode(
           kMediaStorageSOPInstanceUID); // Media Storage SOP Instance UID
 
-      rootDS.add(new UItag.fromStrings(tag,
+      rootDS.add(new UItag(tag,
           ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']));
       tag = PTag.lookupByCode(kTransferSyntaxUID); // Transfer Syntax UID
-      rootDS.add(new UItag.fromStrings(tag, [kExplicitVRLittleEndian]));
+      rootDS.add(new UItag(tag, [kExplicitVRLittleEndian]));
       tag = PTag.lookupByCode(kStudyInstanceUID); // Study Instance UID
-      rootDS.add(new UItag.fromStrings(
+      rootDS.add(new UItag(
           tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']));
     });
   });
@@ -92,10 +92,10 @@ void main() {
     final tag4 = PTag.lookupByCode(kSeriesTime);
     final tag5 = PTag.lookupByCode(kAcquisitionDate);
     rootDS0
-      ..add(new UItag.fromStrings(
+      ..add(new UItag(
           tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-      ..add(new UItag.fromStrings(tag2, [kExplicitVRLittleEndian]))
-      ..add(new UItag.fromStrings(tag3,
+      ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
+      ..add(new UItag(tag3,
           ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
       ..add(new TMtag(tag4, ['105234.530000']))
       ..add(new DAtag(tag5, ['19990505']));
@@ -190,20 +190,20 @@ void main() {
       final tag4 = PTag.lookupByCode(kSeriesTime);
       final tag5 = PTag.lookupByCode(kAcquisitionDate);
       rootDS0
-        ..add(new UItag.fromStrings(
+        ..add(new UItag(
             tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-        ..add(new UItag.fromStrings(tag2, [kExplicitVRLittleEndian]))
-        ..add(new UItag.fromStrings(tag3,
+        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
+        ..add(new UItag(tag3,
             ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
         ..add(new TMtag(tag4, ['105234.530000']))
         ..add(new DAtag(tag5, ['19990505']));
 
       // rootDS1
       final rootDS1 = new TagRootDataset.empty()
-        ..add(new UItag.fromStrings(
+        ..add(new UItag(
             tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-        ..add(new UItag.fromStrings(tag2, [kExplicitVRLittleEndian]))
-        ..add(new UItag.fromStrings(tag3,
+        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
+        ..add(new UItag(tag3,
             ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
         ..add(new TMtag(tag4, ['105234.530000']))
         ..add(new DAtag(tag5, ['19990505']));
@@ -213,10 +213,10 @@ void main() {
 
       // rootDS2
       final rootDS2 = new TagRootDataset.empty()
-        ..add(new UItag.fromStrings(
+        ..add(new UItag(
             tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-        ..add(new UItag.fromStrings(tag2, [kExplicitVRLittleEndian]))
-        ..add(new UItag.fromStrings(tag3,
+        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
+        ..add(new UItag(tag3,
             ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']));
 
       expect(rootDS0 == rootDS2, false);
@@ -233,7 +233,7 @@ void main() {
     test('test for noValue', () {
       // Setup and confirm
       final tag1 = PTag.lookupByCode(kStudyInstanceUID);
-      final studyUid0 = new UItag.fromStrings(tag1, ['1.2.840.10008.0']);
+      final studyUid0 = new UItag(tag1, ['1.2.840.10008.0']);
       final rds0 = new TagRootDataset.empty()..add(studyUid0);
       expect(rds0[kStudyInstanceUID], equals(studyUid0));
 
@@ -650,7 +650,7 @@ void main() {
       log.debug('system.throwOnError:${system.throwOnError}');
       //string type VR : with VM more than 1
       expect(() => rootDS0.getString(kImagerPixelSpacing, required: true),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
 
       //integer type VR
       expect(() => rootDS0.getString(kTagAngleSecondAxis),
@@ -719,7 +719,7 @@ void main() {
       system.throwOnError = true;
       //string type VR : with VM more than 1
       expect(() => rootDS0.getFloat(kAnatomicStructureReferencePoint),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
 
       //integer type VR
       expect(() => rootDS0.getFloat(kReferencePixelX0),
@@ -815,7 +815,7 @@ void main() {
 
     test('getUid', () {
       final stringList0 = rsg.getUIList(1, 1);
-      final ui0 = new UItag.fromStrings(PTag.kSpecimenUID, stringList0);
+      final ui0 = new UItag(PTag.kSpecimenUID, stringList0);
       final rootDS0 = new TagRootDataset.empty()..add(ui0);
 
       expect(rootDS0.getUid(kSpecimenUID), equals(Uid.parse(stringList0[0])));
@@ -830,7 +830,7 @@ void main() {
 
     test('getUidList', () {
       final stringList0 = rsg.getUIList(1, 1);
-      final ui0 = new UItag.fromStrings(PTag.kSpecimenUID, stringList0);
+      final ui0 = new UItag(PTag.kSpecimenUID, stringList0);
       final rootDS0 = new TagRootDataset.empty()..add(ui0);
 
       expect(

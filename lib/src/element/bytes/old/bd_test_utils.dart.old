@@ -9,7 +9,14 @@
 
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
+import 'package:core/src/element/bytes/bytes_element.dart';
+import 'package:core/src/element/bytes/evr.dart';
+import 'package:core/src/element/bytes/ivr.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/dicom.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/vr.dart';
 
 const _evrVROffset = 4;
 
@@ -175,7 +182,7 @@ String shortEvrToString(EvrBytes bytes) {
   return sb.toString();
 }
 
-Bytes asciiListToBytes(List<String> vList) => Bytes.toAscii(vList.join('\\'));
+Bytes asciiListToBytes(List<String> vList) => Bytes.fromAscii(vList.join('\\'));
 
 Bytes uint8ListToBytes(Uint8List bList) => new Bytes.typedDataView(bList);
 
@@ -183,7 +190,7 @@ String vfToString(List vList, Bytes vfBytes) =>
     'vList: $vList vfBD: ${vfBytes.getUtf8List()}';
 
 AEevr makeAE(int code, List<String> vList) {
-  final vfBytes = Bytes.asciiFromList(vList);
+  final vfBytes = Bytes.fromAsciiList(vList);
   final vfLength = vfBytes.length;
   final evr = EvrShortBytes.makeEmpty(code, kFLCode, vfLength)
     ..setAsciiList(_shortEvrVFOffset, vList);
@@ -229,8 +236,8 @@ void _writeFloat32VF(EvrBytes evr, int vfOffset, List<double> vList) {
   for (var i = 0, j = vfOffset; i < vList.length; i++, j += _f32ElementSize) {
     print('vList[$i]: ${vList[i]}');
     evr.setFloat32(j, vList[i]);
-    print('values: ${evr.vfBytes.asFloat32List()}');
   }
+  print('values: ${evr.vfBytes.asFloat32List()}');
 }
 
 const int _f64ElementSize = 8;
@@ -263,7 +270,5 @@ void _writeFloat64VF(EvrBytes evr, int vfOffset, List<double> vList) {
     print('vList[$i]: ${vList[i]}');
     evr.setFloat64(j, vList[i]);
   }
-  final vf = evr.vfBytes;
-  final rList = vf.asFloat64List();
   print('values: ${evr.vfBytes.asFloat64List()}');
 }

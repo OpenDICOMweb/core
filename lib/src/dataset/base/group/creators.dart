@@ -6,7 +6,7 @@
 
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/value/empty_list.dart';
+import 'package:core/src/utils/primitives.dart';
 
 class PrivateCreatorTags {
   Map<int, PCTag> tags;
@@ -25,7 +25,7 @@ class PrivateCreatorTags {
   bool tryAdd(PCTag tag) {
     _checkPCTagCode(tag.code);
     final result = tags.putIfAbsent(tag.code, () => tag);
-    return (result != tag) ? isValidTagError(tag, null, PCTag) : true;
+    return (result != tag) ? Tag.isValidTag(tag, null, kLOIndex, PCTag) : true;
   }
 
   //TODO: move to base.dart

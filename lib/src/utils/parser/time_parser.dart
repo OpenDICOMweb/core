@@ -26,7 +26,7 @@ int parseDcmTime(String s,
   }
 }
 
-//TODO: unit test and when working replace parseDcmTime
+// TODO: unit test and when working replace parseDcmTime
 int parseTime(String s,
     {int start = 0,
     int end,
@@ -121,7 +121,6 @@ int _parseDcmTime(String s, int start, int end, Issues issues) {
   return timeToMicroseconds(h, m, ss, f ~/ 1000, f % 1000);
 }
 
-//TODO: unit test
 /// Returns the time in microseconds.
 int _parseTime(String s, int start, int end, Issues issues,
     [bool asInternet = true]) {
@@ -159,7 +158,7 @@ int _parseHour(String s, int start, Issues issues) =>
 int _parseMinute(String s, int start, Issues issues) =>
     _parse2Digits(s, start, issues, 0, 59);
 
-//TODO: doen't handle leap seconds
+// TODO: doesn't handle leap seconds
 /// Returns a valid second or _null_.  The second must be 2 characters.
 int _parseSecond(String s, int start, Issues issues) =>
     _parse2Digits(s, start, issues, 0, 59);
@@ -179,5 +178,5 @@ int _fractionToUSeconds(int fraction, Issues issues) {
   if (f < 10000) return f *= 100;
   if (f < 100000) return f *= 10;
   if (f < 1000000) return f;
-  return invalidTimeString('Fraction too large', issues);
+  return badTimeString('Fraction too large', issues);
 }

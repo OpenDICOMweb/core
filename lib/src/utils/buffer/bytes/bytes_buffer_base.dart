@@ -13,7 +13,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/vr.dart';
 
 part 'package:core/src/utils/buffer/buffer_mixin.dart';
 part 'package:core/src/utils/buffer/bytes/buffer.dart';

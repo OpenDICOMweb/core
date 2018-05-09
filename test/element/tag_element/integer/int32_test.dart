@@ -297,12 +297,12 @@ void main() {
 
       }
     });
-
+/*
     test('SL fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.int32List(1, 10);
-/*
+
         // Urgent Sharath: what is this test trying to achieve? let's discuss
         final bytes0 = DicomBytes.toAscii(intList0.toString());
         final sl0 = SLtag.fromBytes(PTag.kSelectorFDValue, bytes0);
@@ -311,11 +311,11 @@ void main() {
         system.throwOnError = true;
         expect(() => SLtag.fromBytes(PTag.kSelectorFDValue, bytes0),
             throwsA(const isInstanceOf<InvalidVRError>()));
-*/
+
 
       }
     });
-
+*/
     test('SL isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final int32List = rng.int32List(1, 10);
@@ -420,7 +420,7 @@ void main() {
 
         system.throwOnError = true;
         expect(() => SLtag.fromValues(PTag.kReferencePixelX0, int32list0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -554,9 +554,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => SL.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => SL.isValidVListLength(tag, validMinVList0),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -591,9 +591,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => SL.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => SL.isValidVListLength(tag, validMinVList0),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -636,9 +636,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => SL.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => SL.isValidVListLength(tag, validMinVList0),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -881,11 +881,11 @@ void main() {
 
       system.throwOnError = true;
       expect(() => SL.isValidValues(PTag.kReferencePixelX0, int32MinMax),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(
           () =>
               SL.isValidValues(PTag.kDisplayedAreaTopLeftHandCorner, int32Max),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('SL fromList', () {

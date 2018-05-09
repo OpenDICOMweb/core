@@ -10,14 +10,98 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
+import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/base/integer/integer.dart';
+import 'package:core/src/element/base/utils.dart';
+import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/value/empty_list.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/vr.dart';
+
+class IntBulkdataRef extends DelegatingList<int> with BulkdataRef<int> {
+  @override
+  int code;
+  @override
+  Uri uri;
+  List<int> _values;
+
+  IntBulkdataRef(this.code, this.uri, [this._values]) : super(_values);
+
+  IntBulkdataRef.fromString(this.code, String s, [this._values])
+      : uri = Uri.parse(s),
+        super(_values);
+
+  List<int> get delegate => _values;
+
+  @override
+  List<int> get values => _values ??= getBulkdata(code, uri);
+}
+
+abstract class IntBase extends Element<int> {
+  @override
+  Iterable<int> get values;
+
+  @override
+  IntBase update([Iterable<int> vList]);
+
+  @override
+  set values(Iterable<int> vList) => unsupportedError('IntBase.values');
+
+  bool get isBinary => true;
+
+  /// Returns a copy of [values]
+  @override
+  Iterable<int> get valuesCopy => new List.from(values, growable: false);
+
+  /// The _canonical_ empty [values] value for Floating Point Elements.
+  @override
+  List<int> get emptyList => kEmptyList;
+  static const List<int> kEmptyList = const <int>[];
+
+  @override
+  IntBase get noValues => update(kEmptyList);
+
+  @override
+  ByteData get vfByteData => typedData.buffer
+      .asByteData(typedData.offsetInBytes, typedData.lengthInBytes);
+
+  @override
+  Bytes get vfBytes => new Bytes.typedDataView(typedData);
+
+  VFFragments get fragments => unsupportedError();
+
+  /// Returns a [view] of this [Element] with [values] replaced by [TypedData].
+  IntBase view([int start = 0, int length]);
+
+  /// Returns true if [v] is in the range [min] <= [v] <= [max].
+  static bool isValidValue(int v, Issues issues, int min, int max) {
+    if (v < min || v > max) {
+      if (issues != null) {
+        if (v < min) issues.add('Invalid Value($v) under minimum($min)');
+        if (v < min) issues.add('Invalid Value($v) over maximum($max)');
+      }
+      return false;
+    }
+    return true;
+  }
+
+  /// Returns true if [vList] has a valid length for [tag], and each value in
+  /// [vList] is valid for [tag]..
+  static bool isValidValues(Tag tag, Iterable<int> vList, Issues issues,
+      int minValue, int maxValue, int maxLength) {
+    assert(vList != null);
+    if (!doTestValidity || vList.isEmpty) return true;
+    var ok = true;
+    if (!Element.isValidVListLength(tag, vList, issues, maxLength)) ok = false;
+    for (var v in vList) ok = isValidValue(v, issues, minValue, maxValue);
+    return (ok) ? true : invalidValues(vList, issues: issues);
+  }
+}
 
 /// A mixin class for 8-bit signed integer [Element]s.
 abstract class Int8 {
@@ -43,6 +127,10 @@ abstract class Int8 {
   static const int kSizeInBits = kSizeInBytes * 8;
   static const int kMinValue = -(1 << (kSizeInBits - 1));
   static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
@@ -75,7 +163,7 @@ abstract class Int8 {
   ///
   /// If [vList] is not a [Int8List], then if [vList] has valid values,
   /// a new [Int8List] is created and the values of [vList] are copied
-  /// into it and returned; otherwise, [invalidValuesError] is called.
+  /// into it and returned; otherwise, [badValues] is called.
   static Int8List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
@@ -98,7 +186,7 @@ abstract class Int8 {
     assert(vList != null);
     if (vList is Int8List) return vList;
     if ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
-      return invalidValuesError(vList);
+      return badValues(vList);
     return new Int8List.fromList(vList);
   }
 
@@ -133,7 +221,7 @@ abstract class Int8 {
       return vf;
     if (vf is Bytes) return vf.asInt8List();
     if (vf is Uint8List) return fromUint8List(vf);
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
 }
 
@@ -161,6 +249,10 @@ abstract class Int16 {
   static const int kSizeInBits = kSizeInBytes * 8;
   static const int kMinValue = -(1 << (kSizeInBits - 1));
   static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
@@ -193,7 +285,7 @@ abstract class Int16 {
   ///
   /// If [vList] is not a [Int16List], then if [vList] has valid values,
   /// a new [Int16List] is created and the values of [vList] are copied
-  /// into it and returned; otherwise, [invalidValuesError] is called.
+  /// into it and returned; otherwise, [badValues] is called.
   static Int16List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
@@ -249,7 +341,7 @@ abstract class Int16 {
         vf is IntBulkdataRef) return vf;
     if (vf is Bytes) return vf.asInt16List();
     if (vf is Uint8List) return fromUint8List(vf);
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
 }
 
@@ -278,6 +370,10 @@ abstract class Int32 {
   static const int kSizeInBits = kSizeInBytes * 8;
   static const int kMinValue = -(1 << (kSizeInBits - 1));
   static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
@@ -310,7 +406,7 @@ abstract class Int32 {
   ///
   /// If [vList] is not a [Int32List], then if [vList] has valid values,
   /// a new [Int32List] is created and the values of [vList] are copied
-  /// into it and returned; otherwise, [invalidValuesError] is called.
+  /// into it and returned; otherwise, [badValues] is called.
   static Int32List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
@@ -364,7 +460,7 @@ abstract class Int32 {
         vf is IntBulkdataRef) return vf;
     if (vf is Bytes) return vf.asInt32List();
     if (vf is Uint8List) return fromUint8List(vf);
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
 }
 
@@ -389,6 +485,10 @@ abstract class Int64 {
   static const int kSizeInBits = kSizeInBytes * 8;
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
@@ -419,7 +519,7 @@ abstract class Int64 {
   ///
   /// If [vList] is not a [Int64List], then if [vList] has valid values,
   /// a new [Int64List] is created and the values of [vList] are copied
-  /// into it and returned; otherwise, [invalidValuesError] is called.
+  /// into it and returned; otherwise, [badValues] is called.
   static Int64List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
@@ -474,7 +574,7 @@ abstract class Int64 {
         vf is IntBulkdataRef) return vf;
     if (vf is Bytes) return vf.asInt64List();
     if (vf is Uint8List) return fromUint8List(vf);
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
 }
 
@@ -506,6 +606,7 @@ abstract class Uint8 {
   static const int kMaxVFLength = kMax8BitLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
+  //TODO: add equal to other classes
   /// Returns _true_ if all bytes in [a] and [b] are the same.
   /// _Note_: This assumes the [Bytes] is aligned on a 2 byte boundary.
   static bool equal(Uint8List a, Uint8List b) {
@@ -514,6 +615,10 @@ abstract class Uint8 {
     for (var i = 0; i < length; i++) if (a[i] != b[i]) return false;
     return true;
   }
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Uint8List] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
@@ -542,7 +647,7 @@ abstract class Uint8 {
   ///
   /// If [vList] is not a [Uint8List], then if [vList] has valid values,
   /// a new [Uint8List] is created and the values of [vList] are copied
-  /// into it and returned; otherwise, [invalidValuesError] is called.
+  /// into it and returned; otherwise, [badValues] is called.
   static Uint8List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
@@ -590,7 +695,7 @@ abstract class Uint8 {
         vf.isEmpty ||
         vf is IntBulkdataRef) return vf;
     if (vf is Bytes) return vf.asUint8List();
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
 }
 
@@ -630,7 +735,7 @@ abstract class OBMixin {
 
   static bool isValidTag(Tag tag, [Issues issues]) {
     if (_isValidVRIndex(tag.vrIndex)) return true;
-    isValidTagError(tag, issues, OB);
+    Tag.invalidTag(tag, issues, OB);
     return false;
   }
 
@@ -638,7 +743,7 @@ abstract class OBMixin {
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (_isValidVRIndex(vrIndex)) return true;
-    badVRIndex(vrIndex, issues, kVRIndex);
+    VR.badIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
@@ -648,13 +753,13 @@ abstract class OBMixin {
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
-    return isValidVRCodeError(vrCode, issues, kVRIndex);
+    return VR.invalidCode(vrCode, issues, kVRIndex);
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (isValidVRIndex(vrIndex))
           ? vrIndex
-          : invalidVR(vrIndex, issues, kVRIndex);
+          : VR.badIndex(vrIndex, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
@@ -707,7 +812,7 @@ abstract class UNMixin {
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (isValidVRIndex(vrIndex))
           ? vrIndex
-          : badVRIndex(vrIndex, issues, kVRIndex);
+          : VR.badIndex(vrIndex, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
@@ -747,7 +852,7 @@ abstract class Uint16 {
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
-  // Note: optimized to use 4 byte boundary
+  // Note: optimized to use 2 byte boundary
   bool equal(Bytes a, Bytes b) {
     for (var i = 0; i < a.length; i += 2) {
       final x = a.getUint16(i);
@@ -756,6 +861,10 @@ abstract class Uint16 {
     }
     return true;
   }
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
@@ -788,7 +897,7 @@ abstract class Uint16 {
   ///
   /// If [vList] is not a [Uint16List], then if [vList] has valid values,
   /// a new [Uint16List] is created and the values of [vList] are copied
-  /// into it and returned; otherwise, [invalidValuesError] is called.
+  /// into it and returned; otherwise, [badValues] is called.
   static Uint16List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
@@ -852,7 +961,7 @@ abstract class Uint16 {
         vf is IntBulkdataRef) return vf;
     if (vf is Bytes) return vf.asUint16List();
     if (vf is Uint8List) return fromUint8List(vf);
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
 }
 
@@ -890,20 +999,20 @@ abstract class OWMixin {
         vrIndex == kOBOWIndex ||
         vrIndex == kUSSSOWIndex ||
         vrIndex == kUNIndex) return true;
-    badVRIndex(vrIndex, issues, kVRIndex);
+    VR.badIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     final vrIndex = vrIndexByCode[vrCode];
     if (isValidVRIndex(vrIndex)) return true;
-    return isValidVRCodeError(vrCode, issues, kVRIndex);
+    return VR.invalidCode(vrCode, issues, kVRIndex);
   }
 
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       (isValidVRIndex(vrIndex))
           ? vrIndex
-          : invalidVR(vrIndex, issues, kVRIndex);
+          : VR.badIndex(vrIndex, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
@@ -943,7 +1052,6 @@ abstract class Uint32 {
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
-  // Note: optimized to use 4 byte boundary
   bool equal(Bytes a, Bytes b) {
     for (var i = 0; i < a.length; i += 4) {
       final x = a.getUint32(i);
@@ -952,6 +1060,10 @@ abstract class Uint32 {
     }
     return true;
   }
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
@@ -984,7 +1096,7 @@ abstract class Uint32 {
   ///
   /// If [vList] is not a [Uint32List], then if [vList] has valid values,
   /// a new [Uint32List] is created and the values of [vList] are copied
-  /// into it and returned; otherwise, [invalidValuesError] is called.
+  /// into it and returned; otherwise, [badValues] is called.
   static Uint32List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
@@ -1043,7 +1155,7 @@ abstract class Uint32 {
         vf is IntBulkdataRef) return vf;
     if (vf is Bytes) return vf.asUint32List();
     if (vf is Uint8List) return fromUint8List(vf);
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
 }
 
@@ -1068,6 +1180,19 @@ abstract class Uint64 {
   static const int kSizeInBits = kSizeInBytes * 8;
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;
+
+  bool equal(Bytes a, Bytes b) {
+    for (var i = 0; i < a.length; i += 8) {
+      final x = a.getUint64(i);
+      final y = b.getUint64(i);
+      if (x != y) return false;
+    }
+    return true;
+  }
+
+  /// Returns the [values] length that corresponds to [vfLength].
+  static int getLength(int vfLength) =>
+      vfLengthToLength(vfLength, kSizeInBytes);
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
@@ -1100,7 +1225,7 @@ abstract class Uint64 {
   ///
   /// If [vList] is not a [Uint64List], then if [vList] has valid values,
   /// a new [Uint64List] is created and the values of [vList] are copied
-  /// into it and returned; otherwise, [invalidValuesError] is called.
+  /// into it and returned; otherwise, [badValues] is called.
   static Uint64List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     assert(vList != null);
@@ -1159,7 +1284,7 @@ abstract class Uint64 {
         vf is IntBulkdataRef) return vf;
     if (vf is Bytes) return vf.asUint64List();
     if (vf is Uint8List) return fromUint8List(vf);
-    return invalidValuesError(vf);
+    return badValues(vf);
   }
 }
 
@@ -1202,9 +1327,7 @@ List<int> _copyList(List<int> vList, List<int> td, int min, int max) {
   assert(vList.length == td.length);
   for (var i = 0; i < vList.length; i++) {
     final v = vList[i];
-    if (v < min || v > max)
-      // Enhancement: this could truncate or clamp the value if desired
-      return invalidValuesError(vList);
+    if (v < min || v > max) return badValues(vList);
     td[i] = v;
   }
   return td;

@@ -11,7 +11,7 @@ import 'package:core/src/system.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/utils/issues.dart';
 import 'package:core/src/utils/parser.dart';
-import 'package:core/src/utils/string/number.dart';
+import 'package:core/src/utils/string.dart';
 import 'package:core/src/value/date_time/primitives/date.dart';
 import 'package:core/src/value/date_time/primitives/dcm_date_time.dart';
 import 'package:core/src/value/date_time/primitives/time.dart';
@@ -238,7 +238,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     if (dt == null)
       return (onError != null)
           ? onError(s)
-          : invalidDcmDateTimeString(s, issues);
+          : badDateTimeString(s, issues);
     return new DcmDateTime._(dt);
   }
 

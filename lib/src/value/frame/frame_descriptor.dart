@@ -6,10 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-
 import 'package:core/src/dataset/base.dart';
-import 'package:core/src/element/base.dart';
+import 'package:core/src/system/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/value/frame/frame.dart';
 import 'package:core/src/value/frame/frame_list.dart';
@@ -271,4 +269,23 @@ $runtimeType
     return false;
   }
 }
+
+class InvalidFrameDescriptorError extends Error {
+  final FrameDescriptor desc;
+
+  InvalidFrameDescriptorError(this.desc);
+
+  @override
+  String toString() => _msg(desc);
+
+  static String _msg(FrameDescriptor desc) =>
+      'InvalidFrameDescriptorError: $desc';
+}
+
+Null invalidFrameDescriptorError(FrameDescriptor desc) {
+  log.error(InvalidFrameDescriptorError._msg(desc));
+  if (throwOnError) throw new InvalidFrameDescriptorError(desc);
+  return null;
+}
+
 

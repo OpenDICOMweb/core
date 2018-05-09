@@ -8,7 +8,7 @@
 //
 
 import 'package:core/src/tag.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/vr.dart';
 
 // TODO: move to dictionary
 class PatientTag {

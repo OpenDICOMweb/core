@@ -22,7 +22,7 @@ void main() {
       final item = new MapItem.empty(rds, null);
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
-          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
+          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');
       item[uiTransFerSyntax.index] = uiTransFerSyntax;
       log.debug('elements: $item');
@@ -376,7 +376,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+      final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
       print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));
@@ -408,7 +408,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+      final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
       final item = new MapItem.empty(rds, null)..add(ui0);
       print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
@@ -439,7 +439,7 @@ void main() {
 
         // Create element and check values and uids
         print('uidList0: $uidList0');
-        final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+        final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
         print('ui0: $ui0');
         final item = new MapItem.empty(rds, null)..add(ui0);
         print('values: ${ui0.values}');
@@ -475,7 +475,7 @@ void main() {
 
         // Create element and check values and uids
         final ui0 =
-            new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+            new UItag(PTag.kSelectorUIValue, uidStringList0);
         final item = new MapItem.empty(rds, null)..add(ui0);
         print('values: ${ui0.values}');
         expect(ui0.values, equals(uidStringList0));
@@ -609,8 +609,8 @@ void main() {
       final item = new MapItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final uidList = ['1.2.840.10008.5.1.1.16.376'];
-      final ui0 = new UItag.fromStrings(PTag.kStudyInstanceUID, uidList);
-      final ui1 = new UItag.fromStrings(PTag.kSelectorUIValue, uidList);
+      final ui0 = new UItag(PTag.kStudyInstanceUID, uidList);
+      final ui1 = new UItag(PTag.kSelectorUIValue, uidList);
       final un0 = new UNtag(PTag.kNoName0, [123]);
 
       item[as0.code] = as0;

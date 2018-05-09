@@ -290,7 +290,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = Bytes.fromAscii(intList0.toString());
         final ul0 = ULtag.fromBytes(PTag.kSelectorULValue, bytes0);
         log.debug('ul0: ${ul0.info}');
         expect(ul0.hasValidValues, true);
@@ -301,7 +301,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = Bytes.fromAscii(intList0.toString());
         final ul0 = ULtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ul0, isNull);
 
@@ -417,7 +417,7 @@ void main() {
         system.throwOnError = true;
         expect(
             () => ULtag.fromValues(PTag.kNumberOfWaveformSamples, uint32List0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -560,9 +560,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => UL.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => UL.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -590,9 +590,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => UL.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => UL.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -849,11 +849,11 @@ void main() {
 
       system.throwOnError = true;
       expect(() => UL.isValidValues(PTag.kLengthToEnd, uint32MinMax),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => UL.isValidValues(PTag.kGridDimensions, uint32Min),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => UL.isValidValues(PTag.kGridDimensions, uint32MinMaxPlus),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('UL fromList', () {
@@ -1318,7 +1318,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = Bytes.fromAscii(intList0.toString());
         final at0 = ATtag.fromBytes(PTag.kSelectorATValue, bytes0);
         log.debug('at0: ${at0.info}');
         expect(at0.hasValidValues, true);
@@ -1329,7 +1329,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = Bytes.fromAscii(intList0.toString());
         final at0 = ATtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(at0, isNull);
 
@@ -1539,9 +1539,9 @@ void main() {
 
           system.throwOnError = true;
           expect(() => AT.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => AT.isValidVListLength(tag, invalidVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -1787,7 +1787,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => AT.isValidValues(PTag.kSelectorAttribute, uint32MinMax),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('AT fromList', () {
@@ -2151,7 +2151,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = Bytes.fromAscii(intList0.toString());
         final ol0 = OLtag.fromBytes(PTag.kSelectorOLValue, bytes0);
         log.debug('ol0: ${ol0.info}');
         expect(ol0.hasValidValues, true);
@@ -2162,7 +2162,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         system.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.toAscii(intList0.toString());
+        final bytes0 = Bytes.fromAscii(intList0.toString());
         final ol0 = OLtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ol0, isNull);
 

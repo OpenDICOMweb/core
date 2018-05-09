@@ -14,15 +14,15 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'list_root_dataset_test', level: Level.info);
+  Server.initialize(name: 'list_root_dataset_test', level: Level.debug);
 
   group('ListRootDataset', () {
     test('[] and []=', () {
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
-          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
-      log.debug('ui: $uiTransFerSyntax');
+          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+      log..debug('ts: "${ts.asString}"')..debug('ui: $uiTransFerSyntax');
       rds[uiTransFerSyntax.index] = uiTransFerSyntax;
       log.debug('elements: $rds');
       final v = rds[uiTransFerSyntax.index];
@@ -174,7 +174,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+      final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
       log.debug('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));
@@ -208,7 +208,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+      final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       rds[ui0.code] = ui0;
 
@@ -241,7 +241,7 @@ void main() {
 
         // Create element and check values and uids
         log.debug('uidList0: $uidList0');
-        final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+        final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
         log.debug('ui0: $ui0');
         final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
         rds[ui0.code] = ui0;
@@ -278,8 +278,7 @@ void main() {
         final uidList0a = [uid0a];
 
         // Create element and check values and uids
-        final ui0 =
-            new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+        final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
         final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
         rds[ui0.code] = ui0;
 
@@ -680,6 +679,5 @@ void main() {
       log.debug('deleteCodes3: $deleteCodes3');
       expect(deleteCodes3, equals(<Element>[]));
     });
-
   });
 }

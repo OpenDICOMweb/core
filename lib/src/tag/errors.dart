@@ -7,41 +7,12 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/value/empty_list.dart';
 import 'package:core/src/system/system.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils/issues.dart';
-import 'package:core/src/vr_base.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/vr/vr_base.dart';
 
-class InvalidTagError extends Error {
-  Tag tag;
-  Type type;
-
-  InvalidTagError(this.tag, this.type);
-
-  @override
-  String toString() => _msg(tag, type);
-
-  static String _msg(Tag tag, Type type) => 'InvalidTag for $type: $tag';
-}
-
-void _invalidTagError(Tag tag, Issues issues, Type type) {
-  final msg = InvalidTagError._msg(tag, type);
-  if (issues != null) issues.add(msg);
-  log.error(InvalidTagError._msg(tag, type));
-  print('throwOnError: $throwOnError');
-  if (throwOnError) throw new InvalidTagError(tag, type);
-}
-
-Null badTagError(Tag tag, Type type, [Issues issues]) {
-  _invalidTagError(tag, issues, type);
-  return null;
-}
-
-bool isValidTagError(Tag tag, Issues issues, Type type) {
-  _invalidTagError(tag, issues, type);
-  return false;
-}
 
 class InvalidTagTypeError extends Error {
   String msg;
@@ -227,11 +198,11 @@ Null invalidValuesTypeError<V>(Tag tag, Iterable<V> values) {
   return null;
 }
 
-class InvalidValuesLengthError<V> extends Error {
+class InvalidTagValuesLengthError<V> extends Error {
   final Tag tag;
   final Iterable<V> values;
 
-  InvalidValuesLengthError(this.tag, this.values) {
+  InvalidTagValuesLengthError(this.tag, this.values) {
     if (log != null) log.error(toString());
   }
 
@@ -245,12 +216,22 @@ class InvalidValuesLengthError<V> extends Error {
   }
 }
 
-Null invalidValuesLengthError<V>(Tag tag, Iterable<V> values, [Issues issues]) {
-  final msg = InvalidValuesLengthError._msg(tag, values);
+Null badTagValuesLength<V>(Tag tag, Iterable<V> values, [Issues issues]) {
+  _invalidTagValuesLengthError<V>(tag, values, issues);
+  return null;
+}
+
+bool isValidValuesLengthError<V>(Tag tag, Iterable<V> values, [Issues issues]) {
+  _invalidTagValuesLengthError<V>(tag, values, issues);
+  return false;
+}
+
+void _invalidTagValuesLengthError<V>(
+    Tag tag, Iterable<V> values, Issues issues) {
+  final msg = InvalidTagValuesLengthError._msg(tag, values);
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidValuesLengthError(tag, values);
-  return null;
+  if (throwOnError) throw new InvalidTagValuesLengthError(tag, values);
 }
 
 class InvalidTagValuesError<V> extends Error {
@@ -266,11 +247,21 @@ class InvalidTagValuesError<V> extends Error {
       'InvalidValuesError: ${tag.info}\n  values: $values';
 }
 
-Null invalidTagValuesError<V>(Tag tag, Iterable<V> values) {
-  if (log != null) log.error(InvalidTagValuesError._msg<V>(tag, values));
-  if (throwOnError) throw new InvalidTagValuesError<V>(tag, values);
+Null badTagValuesError<V>(Tag tag, Iterable<V> values, [Issues issues]) {
+  _invalidTagValuesError<V>(tag, values, issues);
   return null;
 }
+bool isValidTagValuesError<V>(Tag tag, Iterable<V> values, [Issues issues]) {
+  _invalidTagValuesError<V>(tag, values, issues);
+  return false;
+}
+
+// TODO: issue processing
+void _invalidTagValuesError<V>(Tag tag, Iterable<V> values, Issues issues) {
+  if (log != null) log.error(InvalidTagValuesError._msg<V>(tag, values));
+  if (throwOnError) throw new InvalidTagValuesError<V>(tag, values);
+}
+
 
 /// An invalid DICOM Group number [Error].
 /// Note: Don't use this directly, use [invalidGroupError] instead.

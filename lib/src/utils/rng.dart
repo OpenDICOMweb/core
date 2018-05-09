@@ -10,7 +10,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:core/src/utils/ascii.dart';
+import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/integer.dart';
 

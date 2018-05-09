@@ -14,9 +14,9 @@ abstract class GrowableMixin {
   int get limit;
   ByteData get _bd;
 
-  int get _length => _bd.lengthInBytes;
+  int get length => _bd.lengthInBytes;
 
-  set _length(int newLength) {
+  set length(int newLength) {
     if (newLength < _bd.lengthInBytes) return;
     grow(newLength);
   }

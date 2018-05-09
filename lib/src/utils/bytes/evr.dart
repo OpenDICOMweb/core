@@ -14,27 +14,16 @@ abstract class EvrBytes extends DicomBytes {
   EvrBytes._from(Bytes bytes, int start, int end, Endian endian)
       : super._from(bytes, start, end, endian ?? Endian.host);
 
-  int get vrCode => _bd.getUint16(_kVROffset, endian);
+  @override
+  bool get isEvr => true;
+  @override
+  int get vrCode => _bd.getUint16(kVROffset, endian);
+  @override
   int get vrIndex => vrIndexFromCode(vrCode);
+  @override
   String get vrId => vrIdFromIndex(vrIndex);
 
-  static const _kVROffset = 4;
-
-  @override
-  String toString() {
-    final vrc = vrCode;
-    final vri = vrIndex;
-    final vr = vrId;
-    return '$runtimeType ${dcm(code)} $vr($vri, ${hex16(vrc)}) '
-        'vlf($vfLengthField) vfl($vfLength) ${toBDDescriptor(_bd)})';
-  }
-
-/*
-  @override
-  String toString() =>
-      '$runtimeType ${dcm(code)} ${hex16(vrCode)} $vfLengthField $vfLength';
-*/
-
+  static const int kVROffset = 4;
 }
 
 class EvrShortBytes extends EvrBytes {
@@ -55,16 +44,11 @@ class EvrShortBytes extends EvrBytes {
     return vlf;
   }
 
-  // ** Primitive Getters
-  @override
-  int getVLF(int offset) => _bd.getUint16(offset, endian);
-
-  static const int kVROffset = 4;
   static const int kVFLengthOffset = 6;
   static const int kVFOffset = 8;
   static const int kHeaderLength = kVFOffset;
 
-  static EvrShortBytes makeEmpty(int code, int vrCode, int vfLength,
+  static EvrShortBytes makeEmpty(int code, int vfLength, int vrCode,
       [Endian endian]) {
     assert(vfLength.isEven);
     final e = new EvrShortBytes(kHeaderLength + vfLength, endian)
@@ -73,12 +57,12 @@ class EvrShortBytes extends EvrBytes {
     return e;
   }
 
-  static EvrShortBytes makeFromBytes(int code, int vrCode, Bytes vfBytes,
+  static EvrShortBytes makeFromBytes(int code, Bytes vfBytes, int vrCode,
       [Endian endian = Endian.little]) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
     final e = new EvrShortBytes(kHeaderLength + vfLength, endian)
-      ..evrSetShortHeader(code, vrCode, vfLength)
+      ..evrSetShortHeader(code, vfLength, vrCode)
       ..setByteData(kVFOffset, vfBytes._bd);
     print('e: $e');
     return e;
@@ -103,29 +87,26 @@ class EvrLongBytes extends EvrBytes {
     return vlf;
   }
 
-  @override
-  int getVLF(int offset) => _bd.getUint32(offset);
-
   static const int kVROffset = 4;
   static const int kVFLengthOffset = 8;
   static const int kVFOffset = 12;
   static const int kHeaderLength = kVFOffset;
 
-  static EvrLongBytes makeEmpty(int code, int vrCode, int vfLength,
+  static EvrLongBytes makeEmpty(int code, int vfLength, int vrCode,
       [Endian endian]) {
     assert(vfLength.isEven);
     final e = new EvrLongBytes(kHeaderLength + vfLength, endian)
-      ..evrSetLongHeader(code, vrCode, vfLength);
+      ..evrSetLongHeader(code, vfLength, vrCode);
     print('e: $e');
     return e;
   }
 
-  static EvrLongBytes makeFromBytes(int code, int vrCode, Bytes vfBytes,
+  static EvrLongBytes makeFromBytes(int code, Bytes vfBytes, int vrCode,
       [Endian endian]) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
     final e = new EvrLongBytes(kHeaderLength + vfLength, endian)
-      ..evrSetLongHeader(code, vrCode, vfLength)
+      ..evrSetLongHeader(code, vfLength, vrCode)
       ..setByteData(kVFOffset, vfBytes._bd);
     print('e: $e');
     return e;

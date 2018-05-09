@@ -299,8 +299,9 @@ void main() {
     test('Create FrameList32Bit Uncompressed fromDataset', () {
       //Frame Descriptor.fromDataSet
       const ts = TransferSyntax.kExplicitVRLittleEndian;
+      final bytes = Bytes.toAscii(ts.asString);
       final uiTransferSyntaxUID0 =
-          new UIevr.fromStrings(kTransferSyntaxUID, Bytes.toAscii(ts.asString));
+           new UIevr.makeFromBytes(kTransferSyntaxUID, bytes);
       final usSamplesPerPixel0 = new USevr(kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           makeCS(kPhotometricInterpretation, ['RGB1']);

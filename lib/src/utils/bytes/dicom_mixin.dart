@@ -9,24 +9,71 @@
 part of odw.sdk.utils.bytes;
 
 abstract class DicomMixin {
+  bool get isEvr;
   ByteData get _bd;
   ByteData get bd;
 //  set bd(ByteData bd);
+  int get vrCode;
+  int get vrIndex;
+  String get vrId;
   Endian get endian;
   int get _bdOffset;
   int get _bdLength;
   int get vfOffset;
   int get vfLengthOffset;
   int get vfLengthField;
+
+  int _getInt8(int offset);
+  int _getInt16(int offset);
+  int _getInt32(int offset);
+  int _getInt64(int offset);
+
   int _getUint8(int offset);
   int _getUint16(int offset);
   int _getUint32(int offset);
+  int _getUint64(int offset);
+
+  double _getFloat32(int offset);
+  double _getFloat64(int offset);
+
+  int _setInt8(int offset, int value);
+  int _setInt16(int offset, int value);
+  int _setInt32(int offset, int value);
+  int _setInt64(int offset, int value);
 
   int _setUint8(int offset, int value);
   int _setUint16(int offset, int value);
   int _setUint32(int offset, int value);
-  int getVLF(int offset);
+  int _setUint64(int offset, int value);
+
+  double _setFloat32(int offset, double value);
+  double _setFloat64(int offset, double value);
+
+  int setInt8List(int start, List<int> list, [int offset = 0, int length]);
+  int setInt16List(int start, List<int> list, [int offset = 0, int length]);
+  int setInt32List(int start, Int32List list, [int offset = 0, int length]);
+  int setInt64List(int start, Int64List list, [int offset = 0, int length]);
+
+  int setUint8List(int start, List<int> list, [int offset = 0, int length]);
+  int setUint16List(int start, List<int> list, [int offset = 0, int length]);
+  int setUint32List(int start, List<int> list, [int offset = 0, int length]);
+  int setUint64List(int start, List<int> list, [int offset = 0, int length]);
+
+  int setFloat32List(int start, List<double> list,
+      [int offset = 0, int length]);
+  int setFloat64List(int start, List<double> list,
+      [int offset = 0, int length]);
+
+  String toBDDescriptor(ByteData bd);
+
+  String _maybeGetSubstring(String s, int offset, int length);
+
+  int _absIndex(int offset);
+
   Bytes asBytes([int offset = 0, int length, Endian endian]);
+
+  // Note: special internal interface for writing padChars
+  int _setUint8List(int start, Uint8List list, [int offset = 0, int length]);
 
   // **** End of Interface
 
@@ -55,7 +102,14 @@ abstract class DicomMixin {
   Bytes get vfBytes => asBytes(vfOffset, vfLength);
 
   /// Returns the Value Field bytes _without_ padding.
-  Bytes get vfBytesWOPadding => asBytes(vfOffset, _vflWOPadding(vfOffset));
+  Bytes get vBytes => asBytes(vfOffset, _vflWOPadding(vfOffset));
+
+  /// Returns the last Uint8 element in [vfBytes], if [vfBytes]
+  /// is not empty; otherwise, returns _null_.
+  int get vfBytesLast {
+    final len = eLength;
+    return (len == 0) ? null : _getUint8(len - 1);
+  }
 
   /// Returns the Value Field as a Uint8List.
   Uint8List get vfUint8List =>
@@ -104,8 +158,7 @@ abstract class DicomMixin {
     _setUint16(0, code >> 16);
     _setUint16(2, code & 0xFFFF);
     _setUint16(4, vrCode);
-// This field is zero, but GC takes care of  that
-//    _setUint16( 6, 0)
+    // The Uint16 field at offset 6 is already zero.
     _setUint32(8, vlf);
   }
 
@@ -114,6 +167,40 @@ abstract class DicomMixin {
     _setUint16(offset, code >> 16);
     _setUint16(2, code & 0xFFFF);
     _setUint32(4, vlf);
+  }
+
+  void writeInt8VF(List<int> vList) => setInt8List(vfOffset, vList);
+  void writeInt16VF(List<int> vList) => setInt16List(vfOffset, vList);
+  void writeInt32VF(List<int> vList) => setInt32List(vfOffset, vList);
+  void writeInt64VF(List<int> vList) => setInt64List(vfOffset, vList);
+
+  void writeUint8VF(List<int> vList) => setUint8List(vfOffset, vList);
+  void writeUint16VF(List<int> vList) => setUint16List(vfOffset, vList);
+  void writeUint32VF(List<int> vList) => setUint32List(vfOffset, vList);
+  void writeUint64VF(List<int> vList) => setUint64List(vfOffset, vList);
+
+  void writeFloat32VF(List<double> vList) => setFloat32List(vfOffset, vList);
+  void writeFloat64VF(List<double> vList) => setFloat32List(vfOffset, vList);
+
+  void writeAsciiVF(List<String> vList) => setAscii(vfOffset, vList.join('\\'));
+  void writeUtf8VF(List<String> vList) => setUtf8(vfOffset, vList.join('\\'));
+  void writeTextVF(List<String> vList) => setUtf8(vfOffset, vList[0]);
+
+  int writeAsciiVFFast(int offset, List<String> vList, [int padChar]) {
+    var index = offset;
+    if (vList.isEmpty) return index;
+
+    final last = vList.length - 1;
+    for (var i = 0; i < vList.length; i++) {
+      final s = vList[i];
+      for (var j = 0; j < s.length; j++) _setUint8(index, s.codeUnitAt(i));
+      if (i != last) {
+        _setUint8(index++, kBackslash);
+      } else {
+        if (index.isOdd && padChar != null) _setUint8(index++, padChar);
+      }
+    }
+    return index;
   }
 
   /// Returns the length in bytes of this Byte Element without padding.
@@ -125,9 +212,83 @@ abstract class DicomMixin {
     return (last == kSpace || last == kNull) ? newLen : length;
   }
 
+  // Allows the removal of padding characters.
+  String _getAscii(int offset, int length,
+          [bool allow = true, int padChar = kSpace]) =>
+      ascii.decode(asUint8List(offset, length, padChar), allowInvalid: allow);
+
+  // Allows the removal of padding characters.
+  String _getUtf8(int offset, int length,
+          [bool allow = true, int padChar = kSpace]) =>
+      utf8.decode(asUint8List(offset, length, padChar), allowMalformed: allow);
+
+  // Allows the removal of padding characters.
+  Uint8List asUint8List([int offset = 0, int length, int padChar = 0]) {
+    assert(padChar == null || padChar == kSpace || padChar == kNull);
+    length ??= vfLength;
+    final index = _absIndex(vfOffset + offset);
+//    final _length = _maybeRemovePadChar(index, length, padChar);
+    return _bd.buffer.asUint8List(index, length);
+  }
+
+  int _maybeRemovePadChar(int index, int vfLength, [int padChar]) {
+    if (padChar != null && vfLength.isEven) {
+      final last = index + vfLength - 1;
+      final c = _getUint8(last);
+      if (c == kSpace || c == kNull) {
+        if (c != padChar) log.warn('Expected $padChar but got $c instead');
+        return vfLength - 1;
+      }
+    }
+    return vfLength;
+  }
+
+  /// Ascii encodes the specified range of [s] and then writes the
+  /// code units to _this_ starting at [start]. If [padChar] is not
+  /// _null_ and [s].length is odd, then [padChar] is written after
+  /// the code units of [s] have been written.
+  int setAscii(int start, String s,
+      [int offset = 0, int length, int padChar = kSpace]) {
+    length ??= s.length;
+    final v = _maybeGetSubstring(s, offset, length);
+    return __setUint8List(start, ascii.encode(v), offset, length, padChar);
+  }
+
+  /// UTF-8 encodes the specified range of [s] and then writes the
+  /// code units to _this_ starting at [start]. If [padChar] is not
+  /// _null_ and [s].length is odd, then [padChar] is written after
+  /// the code units of [s] have been written.
+  int setUtf8(int start, String s,
+      [int offset = 0, int length, int padChar = kSpace]) {
+    length ??= s.length;
+    final v = _maybeGetSubstring(s, offset, length);
+    return __setUint8List(start, utf8.encode(v), offset, length, padChar);
+  }
+
+  /// Writes the elements of the specified region of [list] to
+  /// _this_ starting at [start]. If [pad] is _true_ and [length]
+  /// is odd, then a 0 is written after the other elements have
+  /// been written.
+  int __setUint8List(int start, Uint8List list, int offset,
+      [int length, int pad]) {
+    length ??= list.length;
+    _setUint8List(start, list, offset, length);
+    if (length.isOdd && pad != null) {
+      final index = start + length;
+      _setUint8(index, pad);
+      return index + 1;
+    }
+    return length;
+  }
+
   @override
-  String toString() =>
-      '$runtimeType ${dcm(code)} vlf: $vfLengthField vfl: $vfLength $vfBytes)';
+  String toString() {
+    final vrc = vrCode;
+    final vri = vrIndex;
+    final vr = vrId;
+    return '$runtimeType ${dcm(code)} $vr($vri, ${hex16(vrc)}) '
+        'vlf($vfLengthField) vfl($vfLength) $vfBytes';
+  }
 
   static const int _kGroupOffset = 0;
   static const int _kEltOffset = 0;
@@ -176,8 +337,7 @@ abstract class DicomReaderMixin {
   Bytes get vfBytesWOPadding => asBytes(vfOffset, _vflWOPadding(vfOffset));
 
   /// Returns the Value Field as a Uint8List.
-  Uint8List get vfUint8List =>
-      asUint8List(_bdOffset + vfOffset, vfLength);
+  Uint8List get vfUint8List => asUint8List(_bdOffset + vfOffset, vfLength);
 
   /// Returns the Value Field as a Uint8List _without_ padding.
   Uint8List get vfUint8ListWOPadding =>
@@ -206,9 +366,11 @@ abstract class DicomReaderMixin {
     return (last == kSpace || last == kNull) ? newLen : length;
   }
 
+/*
   @override
   String toString() =>
       '$runtimeType ${dcm(code)} vlf: $vfLengthField vfl: $vfLength $vfBytes)';
+*/
 
   static const int _kGroupOffset = 0;
   static const int _kEltOffset = 0;
