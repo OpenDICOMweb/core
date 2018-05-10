@@ -11,6 +11,7 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/list_dataset/list_dataset.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/error/dataset_errors.dart';
 import 'package:core/src/utils.dart';
 
 /// A [ListRootDataset].

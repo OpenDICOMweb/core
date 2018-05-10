@@ -7,10 +7,10 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/element.dart';
+import 'package:core/src/error/issues.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/issues.dart';
 import 'package:core/src/utils/primitives.dart';
 
 class InvalidElementError extends Error {
@@ -23,7 +23,7 @@ class InvalidElementError extends Error {
   String toString() => msg;
 }
 
-Null badElement(String message, [Element e, Issues issues]) {
+Null elementError(String message, [Element e, Issues issues]) {
   log.error(message);
   if (issues != null) issues.add(message);
   if (throwOnError) throw new InvalidElementError(message);
@@ -31,7 +31,7 @@ Null badElement(String message, [Element e, Issues issues]) {
 }
 
 bool invalidElement(String message, [Element e]) {
-  badElement(message, e);
+  elementError(message, e);
   return false;
 }
 
@@ -40,7 +40,44 @@ bool invalidElement(String message, [Element e]) {
 /// values should have a values field containing and empty [List].
 Null nullElement([String message = '']) {
   final msg = 'NullElementError: $message';
-  return badElement(msg);
+  return elementError(msg);
+}
+
+Null _badElementType(String msg, [Element e]) {
+  log.error(msg);
+  if (throwOnError) throw new InvalidElementError(msg, e);
+  return null;
+}
+
+Null badIntElement(Element e, [Issues issues]) {
+  final msg = 'Invalid Integer Element: $e';
+  return elementError(msg, e, issues);
+
+}
+
+Null badFloatElement(Element e, [Issues issues]) {
+  final msg = 'Invalid Floating Point Element: $e';
+  return elementError(msg, e, issues);
+}
+
+Null badStringElement(Element e, [Issues issues]) {
+  final msg = 'Invalid String Element: $e';
+  return elementError(msg, e, issues);
+}
+
+Null badSequenceElement(Element e, [Issues issues]) {
+  final msg = 'Invalid Floating Point Element: $e';
+  return elementError(msg, e, issues);
+}
+
+Null badUidElement(Element e, [Issues issues]) {
+  final msg = 'Invalid UI (uid) Element: $e';
+  return elementError(msg, e, issues);
+}
+
+Null sha256Unsupported(Element e, [Issues issues]) {
+  final msg = 'SHA256 not supported for this Element: $e';
+  return throw new UnsupportedError(msg);
 }
 
 class InvalidElementIndexError extends Error {
@@ -48,32 +85,6 @@ class InvalidElementIndexError extends Error {
   final String msg;
 
   InvalidElementIndexError(this.index, [this.msg]);
-
-  @override
-  String toString() => msg;
-}
-
-Null badElementIndex(int index,
-    {Element e, bool required = false, Issues issues}) {
-  final code = dcm(index);
-  final msg = (required)
-      ? 'InvalidRequiredElementIndex: $code'
-      : 'InvalidElementIndex: $code';
-  if (issues != null) issues.add(msg);
-  return badElement(msg, e, issues);
-}
-
-bool invalidElementIndex(int index,
-    {Element e, bool required = false, Issues issues}) {
-  badElementIndex(index, e: e, required: required, issues: issues);
-  return false;
-}
-
-class InvalidValueFieldError extends Error {
-  final String msg;
-  final Bytes vfBytes;
-
-  InvalidValueFieldError(this.msg, [this.vfBytes]);
 
   @override
   String toString() => msg;
@@ -132,21 +143,19 @@ Null _badValues(String msg, Object values, Issues issues) {
   return null;
 }
 
-Null badValues(Iterable values, {Tag tag, Issues issues, String message = ''}) {
+Null badValues(Iterable values, [Issues issues, Tag tag]) {
   final sb = new StringBuffer('Invalid Values Error');
   if (tag != null) sb.write(' for $tag');
-  sb..write(': values = $values');
-  if (message != null) sb.write('\n  $message');
   return _badValues('$sb', values, issues);
 }
 
-bool invalidValues(Iterable values, {Tag tag, Issues issues}) {
-  badValues(values, tag: tag, issues: issues);
+bool invalidValues(Iterable values, [Issues issues, Tag tag]) {
+  badValues(values, issues, tag);
   return false;
 }
 
 Null badValuesLength<V>(Iterable<V> values, int vmMin, int vmMax,
-    [Issues issues]) {
+    [Issues issues, Tag tag]) {
   final msg = 'InvalidValuesLengthError: vmMin($vmMin) <= ${values.length} '
       '<= vmMax($vmMax) values: $values';
   log.error(msg);
@@ -164,24 +173,6 @@ bool invalidValuesLength<V>(Iterable<V> values, int vmMin, int vmMax,
 Null valueOutOfRangeError<V>(V value, Issues issues, int min, int max) {
   final msg = 'Value out of range:\n\n  values: $value';
   _badValues(msg, <V>[value], issues);
-  return null;
-}
-
-
-class Sha256UnsupportedError extends Error {
-  String message;
-  Element e;
-
-  Sha256UnsupportedError(this.message, [this.e]);
-
-  @override
-  String toString() => message;
-}
-
-Null sha256Unsupported(Element e) {
-  final msg = 'SHA256 not supported for this Element: $e';
-  log.error(msg);
-  if (throwOnError) throw new Sha256UnsupportedError(msg, e);
   return null;
 }
 

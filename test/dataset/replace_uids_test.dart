@@ -25,7 +25,7 @@ void main() {
       final rootDS0 = new TagRootDataset.empty();
 
       // Test for element not present with system.throwOnError
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(rootDS0.update(ui0.tag.index, <Uid>[]), isNull);
       expect(rootDS0.update(ui0.tag.index, <Uid>[], required: true), isNull);
       expect(rootDS0.update(ui0.tag.index, <String>['1.804.35.0.89']), isNull);
@@ -34,7 +34,7 @@ void main() {
               required: true),
           isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => rootDS0.update(ui0.tag.index, <Uid>[], required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
       expect(
@@ -45,7 +45,7 @@ void main() {
 
     test('updateUid', () {
       //Begin: Test for updateUid on Elements with VM.k1
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ui0 = new UItag(
           PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
       log.debug('ui0: $ui0');
@@ -53,11 +53,11 @@ void main() {
       final rootDS0 = new TagRootDataset.empty();
 
       // Test for element not present with system.throwOnError
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(rootDS0.updateUid(ui0.tag.index, <Uid>[]), isNull);
 
       // Test for element not present without system.throwOnError
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           rootDS0.updateUid(ui0.tag.index, <Uid>[], required: false), isNull);
 
@@ -97,14 +97,14 @@ void main() {
       expect(ui4r.value, equals(uidList3[0]));
 
       //Passing values greater than valid VM
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ui4r1 =
           rootDS4.update(ui4.tag.code, <String>['1.2.840.10008.5.1.4.1.1.1']);
       log.debug('ui4r1:$ui4r1');
       expect(ui4r1, isNotNull);
 
       //Passing values greater than valid VM
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ui5r = rootDS4.update(
           PTag.kAbortReason.code, <String>['1.2.840.10008.5.1.4.1.1.1']);
       log.debug('ui4r1:$ui4r1');
@@ -193,7 +193,7 @@ void main() {
       expect(updateUidList0 == ui0, false);
       expect(updateUidList0 is UI, false);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final updateUidList1 =
           rootDS0.updateUidList(ui0.index, uiList0, required: true);
       log.debug('updateUidList1: $updateUidList1');
@@ -201,11 +201,11 @@ void main() {
       expect(updateUidList1 == ui0, false);
       expect(updateUidList1 is UI, false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => rootDS0.updateUidList(ui0.index, uiList0, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       rootDS0.add(ui0);
       final updateUidList2 = rootDS0.updateUidList(ui0.index, uiList0);
       log.debug('updateUidList1: $updateUidList2');
@@ -227,9 +227,9 @@ void main() {
       log.debug('updateUidList4: $updateUidList4');
       expect(updateUidList4, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => rootDS0.updateUidList(ae0.index, aeList0),
-          throwsA(const isInstanceOf<InvalidElementTypeError>()));
+          throwsA(const isInstanceOf<InvalidElementError>()));
     });
 
     test('replaceValues', () {
@@ -240,13 +240,13 @@ void main() {
       final replaceValues0 = rootDS0.replaceValues(ae0.index, aeList0);
       expect(replaceValues0, true);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final stList0 = rsg.getSTList(1, 1);
       final st0 = new STtag(PTag.kSelectorSTValue, stList0);
       final replaceValues1 = rootDS0.replaceValues(st0.index, stList0);
       expect(replaceValues1, null);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => rootDS0.replaceValues(st0.index, stList0),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });

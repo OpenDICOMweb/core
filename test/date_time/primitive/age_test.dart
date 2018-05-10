@@ -82,16 +82,16 @@ void main() {
       final as2 = ageToString(1);
       expect(as2, '001D');
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final as3 = ageToString(-1);
       expect(as3, null);
 
       final as4 = ageToString(999999942341299999);
       expect(as4, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => ageToString(999999942341299999),
-          throwsA(equals(const isInstanceOf<InvalidAgeError>())));
+          throwsA(equals(const isInstanceOf<DateTimeError>())));
     });
   });
 }

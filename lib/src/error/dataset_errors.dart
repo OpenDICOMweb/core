@@ -6,103 +6,39 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/error/utils.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/value/uid.dart';
 
-/*
-/// Read Error
-class ReadError extends Error {
+Null badElementIndex(int index,
+                     {Element e, bool required = false, Issues issues}) {
+  final code = dcm(index);
+  final msg = (required)
+              ? 'InvalidRequiredElementIndex: $code'
+              : 'InvalidElementIndex: $code';
+  if (issues != null) issues.add(msg);
+  return elementError(msg, e, issues);
+}
+
+bool invalidElementIndex(int index,
+                         {Element e, bool required = false, Issues issues}) {
+  badElementIndex(index, e: e, required: required, issues: issues);
+  return false;
+}
+
+class InvalidValueFieldError extends Error {
   final String msg;
+  final Bytes vfBytes;
 
-  ReadError(this.msg);
-
-  @override
-  String toString() => _msg(msg);
-
-  static String _msg(String msg) => 'ReadError: $msg';
-}
-
-/// Read Error
-Null readError(String msg) {
-  log.error(ReadError._msg(msg));
-  if (throwOnError) throw new ReadError(msg);
-  return null;
-}
-*/
-
-String _toMsgString<K>(K key) {
-  if (key is int) {
-    return 'Code ${dcm(key)}';
-  } else if (key is String) {
-    return 'Keyword "$key"';
-  } else if (key is Tag) {
-    return '$key';
-  }
-  return 'Error: bad Tag($key) in _toMsgString($key)';
-}
-
-class InvalidKeyError<K> extends Error {
-  K key;
-  String msg;
-
-  InvalidKeyError(this.key, [this.msg]);
+  InvalidValueFieldError(this.msg, [this.vfBytes]);
 
   @override
-  String toString() => (msg == null) ? 'InvalidKeyError: ${_toMsgString(key)}' : msg;
-}
-
-Null invalidKey<K>(K key, [String msg]) {
-  final msg = 'InvalidKeyError: ${_toMsgString(key)}';
-  log.error(msg);
-  if (throwOnError) throw new InvalidKeyError(key);
-  return null;
-}
-
-class InvalidElementTypeError<V> extends Error {
-	Element e;
-	String msg;
-
-	InvalidElementTypeError(this.e, [this.msg]);
-
-	@override
-	String toString() =>  msg;
-}
-
-Null invalidElementType(Element e, [String msg]) {
-	log.error(msg);
-	if (throwOnError) throw new InvalidElementTypeError<int>(e, msg);
-	return null;
-}
-Null invalidIntElement(Element e) {
-	final msg = 'Invalid Integer Element: $e';
-	return invalidElementType(e, msg);
-
-}
-
-Null invalidFloatElement(Element e) {
-	final msg = 'Invalid Floating Point Element: $e';
-	return invalidElementType(e, msg);
-}
-
-Null invalidStringElement(Element e) {
-	final msg = 'Invalid String Element: $e';
-	return invalidElementType(e, msg);
-}
-
-Null invalidSequenceElement(Element e) {
-	final msg = 'Invalid Floating Point Element: $e';
-	return invalidElementType(e, msg);
-}
-
-Null invalidUidElement(Element e) {
-	final msg = 'Invalid UI (uid) Element: $e';
-	return invalidElementType(e, msg);
+  String toString() => msg;
 }
 
 
@@ -111,13 +47,14 @@ class RetainedElementError<K> extends Error {
   K key;
   String msg;
 
-  RetainedElementError(this.key, [this.msg = 'Attempt to change a Retained Element']);
+  RetainedElementError(this.key,
+  [this.msg = 'Attempt to change a Retained Element']);
 
   @override
   String toString() => _msg(key, msg);
 
   static String _msg<K>(K key, String msg) =>
-      'RetainedElementError: ${_toMsgString(key)}';
+      'RetainedElementError: ${keyTypeString(key)}';
 }
 
 Null retainedElementError<K>(K key, [String msg]) {
@@ -137,7 +74,7 @@ class DeletedElementError<K> extends Error {
 
   static String _msg<K>(K key) =>
       'Error: Invalid Attempt to add an Element that is on the Remove '
-      'List: ${_toMsgString(key)}';
+      'List: ${keyTypeString(key)}';
 }
 
 Null deletedElementError<K>(K key) {
@@ -155,7 +92,7 @@ class ElementNotPresentError extends Error {
   String toString() => '${_msg(key)}';
 
   static String _msg<K>(K key) =>
-      'Error: Element not present in Dataset: ${_toMsgString(key)}';
+      'Error: Element not present in Dataset: ${keyTypeString(key)}';
 }
 
 Null elementNotPresentError<K>(K key) {

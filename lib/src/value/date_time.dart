@@ -7,6 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
+export 'package:core/src/error/date_time_errors.dart';
 export 'package:core/src/utils/date_time.dart';
 export 'package:core/src/value/date_time/age.dart';
 export 'package:core/src/value/date_time/date.dart';
@@ -14,7 +15,6 @@ export 'package:core/src/value/date_time/dcm_date_time.dart';
 export 'package:core/src/value/date_time/primitives/age.dart';
 export 'package:core/src/value/date_time/primitives/date.dart';
 export 'package:core/src/value/date_time/primitives/dcm_date_time.dart';
-export 'package:core/src/value/date_time/primitives/errors.dart';
 export 'package:core/src/value/date_time/primitives/time.dart'
     hide internalTimeInMicroseconds;
 export 'package:core/src/value/date_time/primitives/time_zone.dart';

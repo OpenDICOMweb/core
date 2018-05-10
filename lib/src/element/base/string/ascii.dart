@@ -10,17 +10,16 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/crypto.dart';
-import 'package:core/src/utils/character/dicom.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/base/string/string.dart';
 import 'package:core/src/element/base/string/string_bulkdata.dart';
-import 'package:core/src/utils/string/errors.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/value.dart';
+import 'package:core/src/utils/character/dicom.dart';
 import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/value.dart';
 import 'package:core/src/vr.dart';
 
 // TODO: For each class add the following static fields:
@@ -45,7 +44,7 @@ abstract class StringAscii extends StringBase {
       stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
 
   List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.getAsciiList(allowInvalid: system.allowInvalidAscii);
+      bytes.getAsciiList(allowInvalid: global.allowInvalidAscii);
 
   Uint8List uint8ListFromValues(List<String> vList) =>
       stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
@@ -118,7 +117,7 @@ abstract class AE extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -128,7 +127,7 @@ abstract class AE extends StringAscii {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       inRange(vfBytes.length, 0, kMaxVFLength);
@@ -137,7 +136,7 @@ abstract class AE extends StringAscii {
       !isValidBytesArgs(tag, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE);
 
@@ -145,22 +144,22 @@ abstract class AE extends StringAscii {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns [vrIndex] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       VR.checkIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kAECode);
 
   /// Returns [vrCode] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
@@ -176,7 +175,7 @@ abstract class AE extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, AE))
-      return Tag.invalidTag(tag, issues, AE);
+      return invalidTag(tag, issues, AE);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -244,7 +243,7 @@ abstract class AS extends StringAscii {
   int get hashCode {
     if (values.isEmpty) return 0;
     return (values.length == 1 && Age.isValidString(values.elementAt(0)))
-        ? system.hash(age.nDays)
+        ? global.hash(age.nDays)
         : badValues(values);
   }
 
@@ -306,7 +305,7 @@ abstract class AS extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -316,7 +315,7 @@ abstract class AS extends StringAscii {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       inRange(vfBytes.length, 0, kMaxVFLength);
@@ -325,7 +324,7 @@ abstract class AS extends StringAscii {
       !isValidBytesArgs(tag, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE);
 
@@ -333,22 +332,22 @@ abstract class AS extends StringAscii {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns [vrIndex] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       VR.checkIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kAECode);
 
   /// Returns [vrCode] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
@@ -364,7 +363,7 @@ abstract class AS extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, AE))
-      return Tag.invalidTag(tag, issues, AE);
+      return invalidTag(tag, issues, AE);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -470,7 +469,7 @@ abstract class CS extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -480,7 +479,7 @@ abstract class CS extends StringAscii {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       inRange(vfBytes.length, 0, kMaxVFLength);
@@ -489,7 +488,7 @@ abstract class CS extends StringAscii {
       !isValidBytesArgs(tag, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE);
 
@@ -497,22 +496,22 @@ abstract class CS extends StringAscii {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns [vrIndex] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       VR.checkIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kAECode);
 
   /// Returns [vrCode] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
@@ -528,7 +527,7 @@ abstract class CS extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, AE))
-      return Tag.invalidTag(tag, issues, AE);
+      return invalidTag(tag, issues, AE);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -661,7 +660,7 @@ abstract class UI extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kUIIndex, AE) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -671,7 +670,7 @@ abstract class UI extends StringAscii {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       inRange(vfBytes.length, 0, kMaxVFLength);
@@ -680,7 +679,7 @@ abstract class UI extends StringAscii {
       !isValidBytesArgs(tag, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE);
 
@@ -688,22 +687,22 @@ abstract class UI extends StringAscii {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns [vrIndex] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       VR.checkIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kAECode);
 
   /// Returns [vrCode] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
@@ -719,7 +718,7 @@ abstract class UI extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, AE))
-      return Tag.invalidTag(tag, issues, AE);
+      return invalidTag(tag, issues, AE);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -769,7 +768,6 @@ abstract class UI extends StringAscii {
     return sList;
   }
 
-
   static Uid tryParse(String s, [Issues issues]) => Uid.parse(s);
 
   static List<Uid> parseList(List<String> vList) {
@@ -808,7 +806,7 @@ abstract class DA extends StringBase {
   Iterable<Date> _dates;
 
   Date get date =>
-      (dates.length == 1) ? dates.first : badValues(values, tag: tag);
+      (dates.length == 1) ? dates.first : badValues(values, null, tag);
 
   @override
   DA get hash {
@@ -870,7 +868,7 @@ abstract class DA extends StringBase {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -880,7 +878,7 @@ abstract class DA extends StringBase {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       inRange(vfBytes.length, 0, kMaxVFLength);
@@ -889,7 +887,7 @@ abstract class DA extends StringBase {
       !isValidBytesArgs(tag, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE);
 
@@ -897,22 +895,22 @@ abstract class DA extends StringBase {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns [vrIndex] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       VR.checkIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kAECode);
 
   /// Returns [vrCode] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
@@ -928,7 +926,7 @@ abstract class DA extends StringBase {
   static bool isValidVListLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, AE))
-      return Tag.invalidTag(tag, issues, AE);
+      return invalidTag(tag, issues, AE);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -983,7 +981,7 @@ abstract class DT extends StringBase {
   Iterable<DcmDateTime> _dateTimes;
 
   DcmDateTime get dateTime =>
-      (dateTimes.length == 1) ? dateTimes.first : badValues(values, tag: tag);
+      (dateTimes.length == 1) ? dateTimes.first : badValues(values, null, tag);
 
   @override
   DT get hash {
@@ -1038,7 +1036,7 @@ abstract class DT extends StringBase {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -1048,7 +1046,7 @@ abstract class DT extends StringBase {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       inRange(vfBytes.length, 0, kMaxVFLength);
@@ -1057,7 +1055,7 @@ abstract class DT extends StringBase {
       !isValidBytesArgs(tag, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE);
 
@@ -1065,22 +1063,22 @@ abstract class DT extends StringBase {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns [vrIndex] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       VR.checkIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kAECode);
 
   /// Returns [vrCode] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
@@ -1096,7 +1094,7 @@ abstract class DT extends StringBase {
   static bool isValidVListLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, AE))
-      return Tag.invalidTag(tag, issues, AE);
+      return invalidTag(tag, issues, AE);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -1154,7 +1152,7 @@ abstract class TM extends StringBase {
   Iterable<Time> _times;
 
   Time get time =>
-      (times.length == 1) ? times.first : badValues(values, tag: tag);
+      (times.length == 1) ? times.first : badValues(values, null, tag);
 
   @override
   TM get hash {
@@ -1210,7 +1208,7 @@ abstract class TM extends StringBase {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -1220,7 +1218,7 @@ abstract class TM extends StringBase {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       inRange(vfBytes.length, 0, kMaxVFLength);
@@ -1229,7 +1227,7 @@ abstract class TM extends StringBase {
       !isValidBytesArgs(tag, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE);
 
@@ -1237,22 +1235,22 @@ abstract class TM extends StringBase {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns [vrIndex] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       VR.checkIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kAECode);
 
   /// Returns [vrCode] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
@@ -1268,7 +1266,7 @@ abstract class TM extends StringBase {
   static bool isValidVListLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, AE))
-      return Tag.invalidTag(tag, issues, AE);
+      return invalidTag(tag, issues, AE);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -1328,7 +1326,7 @@ abstract class DS extends StringAscii {
   DS get random {
     if (length == 0) return this;
     final dList = new List<double>(length);
-    for (var i = 0; i < length; i++) dList[i] = System.rng.nextDouble();
+    for (var i = 0; i < length; i++) dList[i] = Global.rng.nextDouble();
     final vList = dList.map(floatToString);
     return update(vList);
   }
@@ -1336,7 +1334,7 @@ abstract class DS extends StringAscii {
   /// Returns a new [DS] Element with values that are the hash of _this_.
   @override
   DS get hash =>
-      update(numbers.map((n) => floatToString(system.hasher.doubleHash(n))));
+      update(numbers.map((n) => floatToString(global.hasher.doubleHash(n))));
 
   /// Returns a new [DS] Element with values that are constructed from
   /// the Sha256 hash digest of _this_.
@@ -1392,7 +1390,7 @@ abstract class DS extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -1402,7 +1400,7 @@ abstract class DS extends StringAscii {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       inRange(vfBytes.length, 0, kMaxVFLength);
@@ -1411,7 +1409,7 @@ abstract class DS extends StringAscii {
       !isValidBytesArgs(tag, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE);
 
@@ -1419,22 +1417,22 @@ abstract class DS extends StringAscii {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns [vrIndex] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       VR.checkIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kAECode);
 
   /// Returns [vrCode] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
@@ -1450,7 +1448,7 @@ abstract class DS extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, AE))
-      return Tag.invalidTag(tag, issues, AE);
+      return invalidTag(tag, issues, AE);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -1525,7 +1523,7 @@ abstract class IS extends StringAscii {
     final length = values.length;
     final sList = new List<String>(length);
     for (var i = 0; i < length; i++) {
-      var h = system.hash(values.elementAt(i));
+      var h = global.hash(values.elementAt(i));
       h = (h.isNegative) ? h % kMinValue : h % kMaxValue;
       sList[i] = h.toString();
     }
@@ -1593,7 +1591,7 @@ abstract class IS extends StringAscii {
       !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
@@ -1603,7 +1601,7 @@ abstract class IS extends StringAscii {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE) &&
       inRange(vfBytes.length, 0, kMaxVFLength);
@@ -1612,7 +1610,7 @@ abstract class IS extends StringAscii {
       !isValidBytesArgs(tag, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, AE);
 
@@ -1620,22 +1618,22 @@ abstract class IS extends StringAscii {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns [vrIndex] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
       VR.checkIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kAECode);
 
   /// Returns [vrCode] if it is valid for [AE].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
@@ -1651,7 +1649,7 @@ abstract class IS extends StringAscii {
   static bool isValidVListLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, AE))
-      return Tag.invalidTag(tag, issues, AE);
+      return invalidTag(tag, issues, AE);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 

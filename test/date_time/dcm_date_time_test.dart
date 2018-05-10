@@ -130,7 +130,7 @@ void main() {
         expect(h, isNotNull);
       }
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       for (var s in goodDcmDateTimeList) {
         final dt0 = DcmDateTime.parse(s);
         if (dt0 != null) {
@@ -184,7 +184,7 @@ void main() {
     });
 
     test('hashString', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var dt in goodDcmDateTimeList) {
         final dateTime0 = DcmDateTime.hashString(dt);
         log.debug('dateTime0: $dateTime0');
@@ -198,7 +198,7 @@ void main() {
     });
 
     test('hashStringList', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final dateTime0 = DcmDateTime.hashStringList(goodDcmDateTimeList);
       log.debug('dateTime0: $dateTime0');
       for (var s in dateTime0) {

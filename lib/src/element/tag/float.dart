@@ -8,6 +8,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -77,7 +78,7 @@ class OFtag extends OF with TagElement<double> {
   factory OFtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       (OF.isValidArgs(tag, vList))
           ? new OFtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   factory OFtag.bulkdata(Tag tag, Uri url) =>
       new OFtag._(tag, new FloatBulkdataRef(tag.code, url));
@@ -120,7 +121,7 @@ class FDtag extends FD with TagElement<double> {
   factory FDtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       (FD.isValidArgs(tag, vList))
           ? new FDtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   factory FDtag.bulkdata(Tag tag, Uri url) =>
       new FDtag._(tag, new FloatBulkdataRef(tag.code, url));
@@ -164,7 +165,7 @@ class ODtag extends OD with TagElement<double> {
   factory ODtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       (OD.isValidArgs(tag, vList))
           ? new ODtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   factory ODtag.bulkdata(Tag tag, Uri url) =>
       new ODtag._(tag, new FloatBulkdataRef(tag.code, url));

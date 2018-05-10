@@ -7,9 +7,9 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/error/dataset_errors.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -47,7 +47,7 @@ abstract class NoValuesMixin {
 
   V _checkOneValue<V>(int index, List<V> values) =>
       (values == null || values.length != 1)
-          ? badTagValuesLength(Tag.lookupByCode(index), values)
+          ? badValuesLength(values, 0, 1, null, Tag.lookupByCode(index), )
           : values.first;
 
   /// Returns the [int] value for the [Element] with [index].
@@ -94,7 +94,7 @@ abstract class NoValuesMixin {
     //   print('PAR list: $list');
     if (list == null || list.isEmpty) return 1.0;
     if (list.length != 2) {
-      badValues(list, tag: PTag.kPixelAspectRatio);
+      badValues(list, null, PTag.kPixelAspectRatio);
       //Issue: is this reasonable?
       return 1.0;
     }
@@ -119,7 +119,7 @@ abstract class NoValuesMixin {
     final e = lookup(index, required: required);
     if (e == null || e is! IntBase) return nonIntegerTag(index);
     if (!allowInvalidValues && !e.hasValidValues)
-      return badElement('Invalid Element: $e', e);
+      return elementError('Invalid Element: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getIntList');
     assert(vList != null);
@@ -142,7 +142,7 @@ abstract class NoValuesMixin {
   /// _null_;
   List<double> getFloatList(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null || e is! Float) return invalidFloatElement(e);
+    if (e == null || e is! Float) return badFloatElement(e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getFloatList');
     assert(vList != null);
@@ -167,7 +167,7 @@ abstract class NoValuesMixin {
     final e = lookup(index, required: required);
     if (e == null || e is! StringBase) return nonStringTag(index);
     if (!allowInvalidValues && !e.hasValidValues)
-      return badElement('Invalid Element: $e', e);
+      return elementError('Invalid Element: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getStringList');
     assert(vList != null);
@@ -247,7 +247,7 @@ abstract class NoValuesMixin {
         assert(bitsAllocated == 8 || bitsAllocated == 1);
         return pd.pixels;
       } else {
-        return badElement('$pd is bad Pixel Data', pd);
+        return elementError('$pd is bad Pixel Data', pd);
       }
     }
     if (throwOnError) return null;

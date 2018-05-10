@@ -13,9 +13,9 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/tag.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/tag/tag_element.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/errors.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/vr.dart';
 

@@ -10,6 +10,7 @@
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
+import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/utils/string/uuid_string.dart';
 import 'package:core/src/value/uuid/errors.dart';

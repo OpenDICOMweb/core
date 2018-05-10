@@ -44,7 +44,7 @@ void main() {
       final ow1 = new OWtagPixelData(
           PTag.kCoefficientsSDVN, pixels0, pixels0.length);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(
           () => new OWtagPixelData(
               PTag.kVariableNextDataGroup, pixels0, pixels0.length),
@@ -108,7 +108,7 @@ void main() {
 
       print('bytes1: ${bytes1.length}');
       print('ow0.vfBytes.length: ${ow0.vfBytes.length}');
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(
           () => OWtagPixelData.fromBytes(
               PTag.kVariableNextDataGroup, bytes1, bytes1.length),
@@ -192,7 +192,7 @@ void main() {
       log..debug('pixels: $pixels')..debug('pixel.length: ${pixels.length}');
       expect(pixels.length == 2, true);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
 
       final ba1 = new UStag(PTag.kBitsAllocated, []);
       final ba2 = new UStag(PTag.kBitsAllocated, []);
@@ -200,7 +200,7 @@ void main() {
       final pixels1 = ds1.getPixelData();
       expect(pixels1 == null, true);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       ds1.add(ba2);
 
       //Uint8List pixels2 = ds.getPixelData();
@@ -285,9 +285,9 @@ void main() {
       final ow0 = OWtagPixelData.fromValues(PTag.kPixelData, pixels0);
       final ow1 = OWtagPixelData.fromValues(PTag.kCoefficientsSDVN, pixels0);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => OWtagPixelData.fromValues(PTag.kSelectorSTValue, pixels0),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow1.tag == PTag.kCoefficientsSDVN, true);
@@ -339,11 +339,11 @@ void main() {
       final ow1 = OWtagPixelData.fromBytes(
           PTag.kCoefficientsSDVN, u8Frame, u8Frame.length);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(
           () => OWtagPixelData.fromBytes(
               PTag.kSelectorSTValue, u8Frame, u8Frame.length),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow1.tag == PTag.kCoefficientsSDVN, true);
@@ -403,7 +403,7 @@ void main() {
       expect(
           () => OWtagPixelData.fromBase64(
               PTag.kSelectorSTValue, base64, base64.length),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       expect(ow0.tag == PTag.kPixelData, true);
       expect(ow1.tag == PTag.kCoefficientsSDVN, true);
@@ -494,9 +494,9 @@ void main() {
       expect(fBytes0,
           equals(OWtagPixelData.fromBytes(PTag.kCoefficientsSDVN, bytes0)));
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => OBtagPixelData.fromBytes(PTag.kSelectorAEValue, bytes0),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       expect(fBytes0.tag == PTag.kCoefficientsSDVN, true);
       expect(fBytes0.vrIndex == kOBOWIndex, false);
@@ -538,7 +538,7 @@ void main() {
     });
 
     test('Create Uint16Base.listToBytes', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rng = new RNG(1);
 
       for (var i = 0; i < 10; i++) {
@@ -560,7 +560,7 @@ void main() {
 
       expect(Uint16.toBytes(uInt32Max), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => Uint16.toBytes(uInt32Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });

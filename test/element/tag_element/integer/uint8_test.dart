@@ -51,7 +51,7 @@ void main() {
     });
 
     test('OB hasValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ob0 =
           new OBtag(PTag.kPrivateInformation, uint8Min, uint8Min.length);
       final ob1 =
@@ -66,7 +66,7 @@ void main() {
       expect(ob2.hasValidValues, true);
       expect(ob3.hasValidValues, true);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ob4 = new OBtag(PTag.kICCProfile, <int>[], 0);
       expect(ob4.hasValidValues, true);
       log.debug('ob0:${ob0.info}');
@@ -82,22 +82,22 @@ void main() {
           PTag.kPrivateInformation, uInt8MinMinus, uInt8MaxPlus.length);
       expect(ob2, isNull);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ob3 = new OBtag(PTag.kPrivateInformation, uint8Min);
       final uInt16List0 = rng.uint16List(1, 1);
       ob3.values = uInt16List0;
       expect(ob3.hasValidValues, false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => ob3.hasValidValues,
           throwsA(const isInstanceOf<InvalidValuesError>()));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ob4 = new OBtag(PTag.kICCProfile, null, 0);
       log.debug('ob4: $ob4');
       expect(ob4, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new OBtag(PTag.kICCProfile, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -174,7 +174,7 @@ void main() {
     });
 
     test('OB hashCode and == good values random', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rng = new RNG(1);
       List<int> uInt8List0;
 
@@ -235,7 +235,7 @@ void main() {
 
     test('OB fromBytes random', () {
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uInt8List0 = rng.uint8List(1, 1);
         final bytes0 = new Bytes.typedDataView(uInt8List0);
         //       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
@@ -271,7 +271,7 @@ void main() {
 
     test('OB fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final intList0 = rng.uint8List(1, 10);
         final bytes0 = DicomBytes.fromAscii(intList0.toString());
         final ob0 =
@@ -283,12 +283,12 @@ void main() {
 
     test('OB fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final intList0 = rng.uint8List(1, 10);
         final bytes0 = DicomBytes.fromAscii(intList0.toString());
         final ob0 = OBtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ob0, isNull);
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => OBtag.fromBytes(PTag.kSelectorFDValue, bytes0),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
@@ -496,14 +496,14 @@ void main() {
     ];
 
     test('OB isValidVListLength', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       // Urgent Sharath: please fix
       //     expect(OB.isValidVListLength(PTag.kPixelData, OB.kMaxLength), true);
       //     expect(OB.isValidVListLength(0), true);
     });
 
     test('OB isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isValidTag(PTag.kSelectorOBValue), true);
       expect(OB.isValidTag(PTag.kAudioSampleData), true);
 
@@ -518,25 +518,25 @@ void main() {
     });
 
     test('OB isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isValidTag(PTag.kSelectorUSValue), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => OB.isValidTag(PTag.kSelectorUSValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(OB.isValidTag(tag), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => OB.isValidTag(tag),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
     test('OB isNotValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isNotValidTag(PTag.kSelectorOBValue), false);
       expect(OB.isNotValidTag(PTag.kAudioSampleData), false);
 
@@ -550,29 +550,29 @@ void main() {
     });
 
     test('OB isNotValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isNotValidTag(PTag.kSelectorUSValue), true);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => OB.isNotValidTag(PTag.kSelectorUSValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(OB.isNotValidTag(tag), true);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => OB.isNotValidTag(tag),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
     test('OB isValidVR good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isValidVRIndex(kOBIndex), true);
 
       for (var tag in obTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(OB.isValidVRIndex(tag.vrIndex), true);
       }
 
@@ -582,34 +582,34 @@ void main() {
       }
 
       for (var tag in obTags1) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(OB.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('OB isValidVR bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isValidVRIndex(kAEIndex), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => OB.isValidVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(OB.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => OB.isValidVRIndex(kAEIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('OB checkVR good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.checkVRIndex(kOBIndex), kOBIndex);
 
       for (var tag in obTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(OB.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
 
@@ -619,24 +619,24 @@ void main() {
       }
     });
     test('OB checkVR bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.checkVRIndex(kAEIndex), isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => OB.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(OB.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => OB.checkVRIndex(kAEIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('OB isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isValidVRIndex(kOBIndex), true);
 
       for (var tag in obTags0) {
@@ -650,25 +650,25 @@ void main() {
     });
 
     test('OB isValidVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isValidVRIndex(kCSIndex), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => OB.isValidVRIndex(kCSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(OB.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => OB.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('OB isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isValidVRCode(kOBCode), true);
       for (var tag in obTags0) {
         expect(OB.isValidVRCode(tag.vrCode), true);
@@ -676,18 +676,18 @@ void main() {
     });
 
     test('OB isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => OB.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(OB.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => OB.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
@@ -699,7 +699,7 @@ void main() {
     });
 
     test('OB isValidVFLength bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(OB.isValidVFLength(OB.kMaxVFLength + 1, kUndefinedLength), false);
       expect(OB.isValidVFLength(-1, 1), false);
     });
@@ -715,7 +715,7 @@ void main() {
     });
 
     test('OB isValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       const uInt8MinMax = const [kUint8Min, kUint8Max];
       const uInt8Min = const [kUint8Min];
       const uInt8Max = const [kUint8Max];
@@ -738,7 +738,7 @@ void main() {
       expect(OB.isValidValues(PTag.kICCProfile, uInt8MaxPlus), false);
       expect(OB.isValidValues(PTag.kICCProfile, uInt8MinMinus), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => OB.isValidValues(PTag.kICCProfile, uInt8MaxPlus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => OB.isValidValues(PTag.kICCProfile, uInt8MinMinus),
@@ -769,7 +769,7 @@ void main() {
     });
 
     test('Uint8Base.ListToBytes', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final uInt8List0 = rng.uint8List(1, 1);
         final uInt8ListV1 = new Bytes.typedDataView(uInt8List0);
@@ -790,15 +790,15 @@ void main() {
       final uInt16List2 = Uint16.fromList(uInt16Max);
       expect(Uint8.toUint8List(uInt16List2), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => Uint8.toBytes(uInt16Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('Uint8Base ListToByteData good values', () {
-      system.level = Level.info;
+      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uInt8List0 = rng.uint8List(1, 1);
         final bd0 = uInt8List0.buffer.asByteData();
         final lBd0 = Uint8.toByteData(uInt8List0);
@@ -826,7 +826,7 @@ void main() {
 
     test('Uint8Base toByteData bad values', () {
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uInt8List0 = rng.uint8List(1, 1);
         final bd0 = uInt8List0.buffer.asByteData();
         final lBd1 = Uint8.toByteData(uInt8List0);
@@ -855,16 +855,16 @@ void main() {
         expect(lBd4.buffer == bd0.buffer, true);
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       const uInt16Max = const <int>[kUint16Max];
 
       expect(Uint8.toByteData(uInt16Max), isNull);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       const uInt32Max = const <int>[kUint32Max];
       expect(Uint8.toByteData(uInt32Max), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => Uint8.toByteData(uInt16Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -895,7 +895,7 @@ void main() {
     });
 
     test('OB encodeDecodeJsonVF', () {
-      system.level = Level.info;
+      global.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final uInt8List0 = rng.uint8List(0, i);
         final uInt8ListV1 = new Bytes.typedDataView(uInt8List0);

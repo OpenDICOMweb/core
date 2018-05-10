@@ -6,8 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/error/dataset_errors.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
@@ -123,7 +123,7 @@ abstract class ReplaceMixin<V> {
       {bool required = false}) {
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    return (old is UI) ? old.replaceUid(uids) : invalidUidElement(old);
+    return (old is UI) ? old.replaceUid(uids) : badUidElement(old);
   }
 
 /*
@@ -154,6 +154,6 @@ abstract class ReplaceMixin<V> {
       old.replace(vList);
       return old;
     }
-    return badElement('Not a DA (date) Element', old);
+    return elementError('Not a DA (date) Element', old);
   }
 }

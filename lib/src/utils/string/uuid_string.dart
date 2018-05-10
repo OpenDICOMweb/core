@@ -6,8 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/utils/character/ascii.dart';
-import 'package:core/src/utils/string/errors.dart';
+
 
 // **** UUID [String]s.
 

@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/system/system.dart';
+import 'package:core/src/global.dart';
 
 class RadixEncoder {
   final int radix;
@@ -36,7 +36,7 @@ class RadixEncoder {
   }
 
   /// Returns a [String] containing all the digits used for [radix]
-  static String digits([int radix]) => (system.isHexUppercase)
+  static String digits([int radix]) => (global.isHexUppercase)
       ? uppercaseDigits.substring(0, radix)
       : lowercaseDigits.substring(0, radix);
 

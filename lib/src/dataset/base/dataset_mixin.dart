@@ -11,12 +11,12 @@ import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/error.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -208,7 +208,7 @@ abstract class DatasetMixin {
     assert(index != null && uids != null);
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    if (old is! UI) return invalidUidElement(old);
+    if (old is! UI) return badUidElement(old);
     add(old.update(uids.toList(growable: false)));
     return old;
   }
@@ -222,7 +222,7 @@ abstract class DatasetMixin {
     assert(index != null && sList != null);
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    if (old is! UI) return invalidUidElement(old);
+    if (old is! UI) return badUidElement(old);
 
     // If [e] has noValues, and [uids] == null, just return [e],
     // because there is no discernible difference.
@@ -347,7 +347,7 @@ abstract class DatasetMixin {
       {bool required = false}) {
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    return (old is UI) ? old.replaceUid(uids) : invalidUidElement(old);
+    return (old is UI) ? old.replaceUid(uids) : badUidElement(old);
   }
 
 /*
@@ -619,7 +619,7 @@ abstract class DatasetMixin {
 
   V _checkOneValue<V>(int index, List<V> values) =>
       (values == null || values.length != 1)
-          ? badTagValuesLength(Tag.lookupByCode(index), values)
+          ? badValuesLength(values, 0, 1, null, Tag.lookupByCode(index))
           : values.first;
 
   /// Returns the [int] value for the [Element] with [index].
@@ -649,7 +649,7 @@ abstract class DatasetMixin {
     final e = lookup(index, required: required);
     if (e == null || e is! IntBase) return nonIntegerTag(index);
     if (!allowInvalidValues && !e.hasValidValues)
-      return badElement('Invalud Values: $e', e);
+      return elementError('Invalud Values: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getIntList');
     assert(vList != null);
@@ -672,7 +672,7 @@ abstract class DatasetMixin {
   /// _null_;
   List<double> getFloatList(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null || e is! Float) return invalidFloatElement(e);
+    if (e == null || e is! Float) return badFloatElement(e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getFloatList');
     assert(vList != null);
@@ -697,7 +697,7 @@ abstract class DatasetMixin {
     final e = lookup(index, required: required);
     if (e == null || e is! StringBase) return nonStringTag(index);
     if (!allowInvalidValues && !e.hasValidValues)
-      return badElement('Invalud Values: $e', e);
+      return elementError('Invalud Values: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getStringList');
     assert(vList != null);
@@ -746,7 +746,7 @@ abstract class DatasetMixin {
       if (s.codeUnitAt(s.length - 1) == 0) s = s.substring(0, s.length - 1);
       return new Uid(s);
     }
-    return badElement('Invalud Values: $e', e);
+    return elementError('Invalud Values: $e', e);
   }
 
   /// Returns the [List<double>] values for the [Element] with [index].
@@ -776,7 +776,7 @@ abstract class DatasetMixin {
       replace(index, e);
       return old;
     }
-    return badElement('Not a DA (date) Element', old);
+    return elementError('Not a DA (date) Element', old);
   }
 
   /// Returns a formatted [String]. See [Formatter].
@@ -823,7 +823,7 @@ abstract class DatasetMixin {
     //   print('PAR list: $list');
     if (vList == null || vList.isEmpty) return 1.0;
     if (vList.length != 2) {
-      badTagValuesLength(PTag.kPixelAspectRatio, vList);
+      badValuesLength(vList, 2, 2, null, PTag.kPixelAspectRatio);
       //Issue: is this reasonable?
       return 1.0;
     }
@@ -859,7 +859,7 @@ abstract class DatasetMixin {
         assert(bitsAllocated == 8 || bitsAllocated == 1);
         return pd.pixels;
       } else {
-        return badElement('$pd is bad Pixel Data', pd);
+        return elementError('$pd is bad Pixel Data', pd);
       }
     }
     if (throwOnError) return null;

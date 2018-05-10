@@ -506,11 +506,11 @@ void main() {
 
       expect(fBytes0, equals(UNtagPixelData.fromBytes(PTag.kNoName0, bytes0)));
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UNtagPixelData.fromBytes(PTag.kSelectorAEValue, bytes0),
-          throwsA(const isInstanceOf<InvalidVRForTagError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(fBytes0.tag == PTag.kNoName0, true);
       expect(fBytes0.vrIndex == kOBOWIndex, false);
       expect(fBytes0.vrIndex == kUNIndex, true);
@@ -551,7 +551,7 @@ void main() {
       PTag.kTime
     ];
     test('Create UN.isValidTag', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final un0 = Tag.isValidVR(PTag.kPixelData, UN.kVRIndex);
       expect(un0, true);
 
@@ -566,13 +566,13 @@ void main() {
       expect(un2, true);
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UN.isValidTag(tag), true);
       }
     });
 
     test('Create UN.checkVR', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UN.checkVRIndex(kUNIndex), kUNIndex);
       expect(UN.checkVRIndex(kAEIndex), kAEIndex);
       expect(UN.isValidVRIndex(kUNIndex), true);
@@ -584,13 +584,13 @@ void main() {
       }
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UN.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('Create UN.isValidVRIndex', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UN.isValidVRIndex(kUNIndex), true);
       expect(UN.isValidVRIndex(kCSIndex), true);
 
@@ -599,13 +599,13 @@ void main() {
       }
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UN.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('Create UN.isValidVRCode', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UN.isValidVRCode(kUNCode), true);
       expect(UN.isValidVRCode(kAECode), true);
 
@@ -614,7 +614,7 @@ void main() {
       }
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UN.isValidVRCode(tag.vrCode), true);
       }
     });
@@ -636,7 +636,7 @@ void main() {
     });
 
     test('Create UN.isValidValues', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       const uInt8Min = const [UN.kMinValue];
       const uInt8Max = const [UN.kMaxValue];
       const uInt8MaxPlus = const [UN.kMaxValue + 1];
@@ -648,7 +648,7 @@ void main() {
       expect(UN.isValidValues(PTag.kPixelData, uInt8MaxPlus), false);
       expect(UN.isValidValues(PTag.kPixelData, uInt8MinMinus), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UN.isValidValues(PTag.kPixelData, uInt8MaxPlus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => UN.isValidValues(PTag.kPixelData, uInt8MinMinus),
@@ -660,7 +660,7 @@ void main() {
     });
 
     test('Create Uint8Base.fromBytes', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       const uInt8Max = const [UN.kMaxValue];
       const uInt16Max = const [kUint16Max];
       final bytes0 = new Bytes.fromList(uInt8Max);

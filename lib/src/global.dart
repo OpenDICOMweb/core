@@ -9,6 +9,7 @@
 
 import 'dart:math';
 
+import 'package:core/src/error/general_errors.dart';
 import 'package:core/src/system/sdk.dart';
 import 'package:core/src/system/sys_info.dart';
 import 'package:core/src/utils.dart';
@@ -18,19 +19,11 @@ import 'package:version/version.dart';
 
 // **** Note: this file cannot have any dependencies on dart:io or dart:html.
 
-//TODO: add a createFMI method to convert writer that uses the system object
-//      to generate the new FMI.
-
 // System imports
-//  1. uses uid for transfer syntax TODO: anything else?
-//  2. uses uuid for random uid generation TODO: finish organization
+//  1. uses uid for transfer syntax
+//  2. uses uuid for random uid generation
 //  3. Uses version for system version info
 //  4. Uses logging to be the root of Logger
-
-//TODO: add a createFMI method to convert writer that uses the system object
-//      to generate the new FMI.
-
-//TODO: add a way to log to a file called <project>/output/<script>.out
 
 const String kSystemBuildNumber = '00000';
 
@@ -43,11 +36,19 @@ const int kMaxYearLimit = 148108;
 const String kDefaultTimeSeparator = ' ';
 
 /// An abstract class that is the foundation of both Servers and Clients.
-abstract class System {
-  /// The name of this [System].
+abstract class Global {
+  /// The name of this [Global].
   final String name;
   final Version version;
   final int buildNumber;
+  /// If _true_ the [banner] is displayed.
+  bool showBanner;
+
+  /// If _true_ the SDK [banner] is displayed.
+  bool showSdkBanner;
+
+  final int minYear;
+  final int maxYear;
 
   /// FMI Values
   final String mediaStorageSopClassUid;
@@ -58,13 +59,10 @@ abstract class System {
   final String sdkSourceAETitle;
   final String sdkDestinationAETitle;
 
-  final int minYear;
-  final int maxYear;
-
-  /// The Root [Logger] for the [System].
+  /// The Root [Logger] for the [Global].
   final Logger log;
 
-  /// The default hasher is for this [System];
+  /// The default hasher is for this [Global];
   /// _Note_: This field is mutable.
   Hash hasher;
 
@@ -72,30 +70,20 @@ abstract class System {
   /// _Note_: This field is mutable.
   bool throwOnError;
 
-  /// If _true_ the [banner] is displayed.
-  /// _Note_: This field is mutable.
-  bool showBanner;
-
-  /// If _true_ the [banner] is displayed.
-  /// _Note_: This field is mutable.
-  bool showSdkBanner;
-
   /// This setting determines whether UUIDs print in upper or lowercase.
-  /// _Note_: This field is mutable.
-  //TODO: how to make this work with Uuid package?
   bool isUuidUppercase;
 
+  /// This setting determines whether hexadecimal numbers print
+  /// in upper or lowercase.
   bool isHexUppercase;
-
   bool allowInvalidCharacterEncodings = true;
   bool allowInvalidAscii = true;
   bool allowMalformedUtf8 = true;
-
   bool useAscii = false;
-
   String dateTimeSeparator = kDefaultTimeSeparator;
+  bool doTestElementValidity = true;
 
-  System(
+  Global(
       {this.name = 'Unknown',
       this.minYear = kDefaultMinYear,
       this.maxYear = kDefaultMaxYear,
@@ -115,15 +103,14 @@ abstract class System {
       this.isHexUppercase = false,
       this.showBanner = true,
       this.showSdkBanner = true})
-      : version = (version == null) ? new Version(0, 0, 1) : version,
+      : assert(_isValidYearRange(minYear, maxYear)),
+        version = (version == null) ? new Version(0, 0, 1) : version,
         log = new Logger(name, level) {
-    if (minYear < kMinYearLimit) throw new InvalidYearError(minYear);
-    if (maxYear > kMaxYearLimit) throw new InvalidYearError(maxYear);
+    hasher = hasher ??= const Hash64();
     log
       ..config('minYear: $minYear, minYearLimit: $kMinYearLimit')
       ..config('maxYear:  $maxYear, maxYearLimit:  $kMaxYearLimit')
       ..config('log level:  ${log.level}');
-    hasher ??= const Hash64();
   }
 
   // **** Interface
@@ -161,28 +148,17 @@ abstract class System {
       ? '$name($runtimeType V$version): $script\n  Running on ${sdk.info}'
       : '$name($runtimeType V$version): $script';
 
-  /// Returns a [String] containing information about this [System].
+  /// Returns a [String] containing information about this [Global].
   SysInfo get sysInfo => new SysInfo();
 
   String get versionName => '$name\_$version';
 
-  int truncatedListLength = 5;
-  String truncate(List v) {
-    if (v.length > truncatedListLength) {
-      final x = v.sublist(0, truncatedListLength).join(', ');
-      return '[$x, ...]';
-    }
-    return v.toString();
-  }
-
-  //TODO: finish
   String get info => '''
   TODO: finish
   ''';
 
   // **** File Meta Information - each client or server should implement.
 
-  //TODO: before V0.9.0 document these following
   Map<String, SupportedTransferSyntax> get supportedTS =>
       SupportedTransferSyntax.map;
 
@@ -213,17 +189,17 @@ abstract class System {
       kValidTZMicroseconds.indexOf(timeZoneOffsetInMicroseconds);
   static final String timeZoneName = startTime.timeZoneName;
 
-  /// The random number generator for the system.
+  /// The random number generator for the [global].
   static final Random rng = new Random.secure();
 
-  /// Returns the [System] singleton, which is and instance
+  /// Returns the [Global] singleton, which is and instance
   /// of Browser, Client, or Server. It has a lazy one-time
   /// Setter.
   // ignore: unnecessary_getters_setters
-  static System get system => _system;
-  static System _system;
+  static Global get global => _globals;
+  static Global _globals;
   // ignore: unnecessary_getters_setters
-  static set system(System system) => _system ??= system;
+  static set global(Global global) => _globals ??= global;
 
   static String dcm(int code) => dcm(code);
   static String hex8(int v) => hex8(v);
@@ -231,16 +207,39 @@ abstract class System {
   static String hex32(int v) => hex32(v);
 }
 
-/// The system singleton;
-final System system = System.system;
+/// The [global] singleton;
+final Global global = Global.global;
 
 /// The top-level [Logger] for the src.
-Logger get log => system.log;
+Logger get log => global.log;
 
 /// Should functions throw or return null.
-bool get throwOnError => system.throwOnError;
+bool get throwOnError => global.throwOnError;
 
 /// Should [Uuid] [String]s use upper or lowercase hexadecimal.
-bool get uuidsUseUppercase => system.isUuidUppercase;
+bool get uuidsUseUppercase => global.isUuidUppercase;
 
-bool get hexUseUppercase => system.isHexUppercase;
+bool get hexUseUppercase => global.isHexUppercase;
+
+bool get doTestElementValidity => global.doTestElementValidity;
+
+int truncatedListLength = 5;
+
+String truncate(List v) {
+  if (v.length > truncatedListLength) {
+    final x = v.sublist(0, truncatedListLength).join(', ');
+    return '[$x, ...]';
+  }
+  return v.toString();
+}
+
+bool _isValidYearRange(int minYear, int maxYear) {
+  if (minYear < kMinYearLimit ||
+      minYear >= maxYear ||
+      maxYear > kMaxYearLimit) {
+    final msg = 'Invalid System Year Range: '
+        'min($kMinYearLimit) <= $minYear < $maxYear <= max($kMaxYearLimit)';
+    internalError(msg);
+  }
+  return true;
+}

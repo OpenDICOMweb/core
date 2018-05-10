@@ -129,12 +129,12 @@ void main() {
       }
 
       for (var i in invalidTimeZones) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         log.debug('throwOnError: $throwOnError');
         final tz = new TimeZone(i[0], i[1], i[2]);
         expect(tz, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
         expect(() => new TimeZone(i[0], i[1], i[2]),
             throwsA(equals(const isInstanceOf<InvalidTimeZoneError>())));
@@ -148,15 +148,15 @@ void main() {
       }
 
       for (String s in inValidTimeZoneStrings) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         log.debug('throwOnError: $throwOnError');
         final tz = TimeZone.parse(s);
         expect(tz, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
         expect(() => TimeZone.parse(s),
-            throwsA(equals(const isInstanceOf<FormatException>())));
+            throwsA(equals(const isInstanceOf<StringError>())));
       }
     });
 
@@ -188,16 +188,16 @@ void main() {
       }
 
       for (String s in inValidTimeZoneStrings) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         log..debug('s: $s')..debug('throwOnError: $throwOnError');
         final issues = TimeZone.issues(s, start: 0);
         log.debug('issues: "$issues"');
         expect(issues.isEmpty, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
         expect(() => TimeZone.issues(s, start: 0),
-            throwsA(equals(const isInstanceOf<FormatException>())));
+            throwsA(equals(const isInstanceOf<StringError>())));
       }
     });
 
@@ -223,12 +223,12 @@ void main() {
       }
 
       for (var i in invalidTimeZones) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         log.debug('throwOnError: $throwOnError');
         final tz = timeZoneToMicroseconds(i[0], i[1], i[2]);
         expect(tz, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
         expect(() => timeZoneToMicroseconds(i[0], i[1], i[2]),
             throwsA(equals(const isInstanceOf<InvalidTimeZoneError>())));
@@ -243,13 +243,13 @@ void main() {
       }
 
       for (var s in inValidTimeZoneStrings) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         log.debug('throwOnError: $throwOnError');
         final hs0 = TimeZone.hashString(s);
         log.debug('hs0: $hs0');
         expect(hs0, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
         expect(TimeZone.hashString(s), isNull);
       }
@@ -317,7 +317,7 @@ void main() {
 
         if (h >= -12 && h <= 14) {
           for (var m = 0; m < 60; m++) {
-            system.throwOnError = false;
+            global.throwOnError = false;
             if (isValidTimeZone(sign, h, m)) {
               final us0 = timeZoneToMicroseconds(sign, h, m);
               final tzus = TimeZone.microsecondsToTimeZone(us0);
@@ -372,13 +372,13 @@ void main() {
       }
 
       for (var invalid in inValidTimeZoneStrings) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final tz1 = TimeZone.parseDicom(invalid);
         expect(tz1, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => TimeZone.parseDicom(invalid),
-            throwsA(equals(const isInstanceOf<FormatException>())));
+            throwsA(equals(const isInstanceOf<StringError>())));
       }
     });
 

@@ -3,6 +3,6 @@
 // that can be found in the LICENSE file.
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
-
-export 'package:core/src/vr/vr.dart';
+//
 export 'package:core/src/vr/vr_base.dart';
+export 'package:core/src/vr/vr_external.dart';

@@ -11,6 +11,7 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_dataset.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/utils.dart';
 
 /// A [MapRootDataset].

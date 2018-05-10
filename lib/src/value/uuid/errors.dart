@@ -6,8 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/system/system.dart';
-import 'package:core/src/utils/issues.dart';
+import 'package:core/src/error/issues.dart';
+import 'package:core/src/global.dart';
 
 class UuidError extends Error {
   String msg;

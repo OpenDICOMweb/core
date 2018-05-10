@@ -8,7 +8,7 @@
 //
 
 import 'package:collection/collection.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/string.dart';
 
@@ -59,7 +59,7 @@ class PersonName {
   bool operator ==(Object pn) => pn is PersonName && eq.equals(groups, pn.groups);
 
   @override
-  int get hashCode => system.hasher.nList(groups);
+  int get hashCode => global.hasher.nList(groups);
 
   Name get alphabetic => groups[0];
 
@@ -146,7 +146,7 @@ class Name {
       (name is Name) && eq.equals(components.toList(), name.components.toList());
 
   @override
-  int get hashCode => system.hash(components);
+  int get hashCode => global.hash(components);
 
   /// Family name.
   String get family => _getComponent(0);

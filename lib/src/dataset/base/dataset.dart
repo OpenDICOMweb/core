@@ -11,11 +11,11 @@ import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/dataset_mixin.dart';
-import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/dataset/base/group/creators.dart';
 import 'package:core/src/dataset/base/history.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/error/dataset_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
@@ -68,7 +68,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
 
   // Implement Equality
   @override
-  int get hashCode => system.hasher.nList(elements);
+  int get hashCode => global.hasher.nList(elements);
 
   @override
   bool remove(Object e) => (e is Element) ? elements.remove(e) : false;
@@ -153,7 +153,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
       //     if (e is SQ) sequences.add(e);
       return true;
     } else if (allowDuplicates) {
-      system.warn('** Duplicate Element:\n\tnew: $e\n\told: $old');
+      global.warn('** Duplicate Element:\n\tnew: $e\n\told: $old');
       if (old.vrIndex != kUNIndex) {
         history.duplicates.add(e);
       } else {

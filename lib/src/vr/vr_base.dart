@@ -277,9 +277,8 @@ const int kUTCode = 0X5455;
 const int kUTMaxLength = kMaxLongVF;
 
 int vrIndexFromCode(int vrCode) => vrIndexByCode[vrCode];
+String vrIdFromCode(int vrCode) => vrIdByIndex[vrIndexByCode[vrCode]];
 
-// TODO: would it be better to order this table
-//      by value rather than alphabetically?
 const Map<int, int> vrIndexByCode = const <int, int>{
   0x4541: kAEIndex, 0x5341: kASIndex, 0x5441: kATIndex, 0x5343: kCSIndex,
   0x4144: kDAIndex, 0x5344: kDSIndex, 0x5444: kDTIndex, 0x4446: kFDIndex,
@@ -291,14 +290,4 @@ const Map<int, int> vrIndexByCode = const <int, int>{
   0x5255: kURIndex, 0x5355: kUSIndex, 0x5455: kUTIndex // No reformat
 };
 
-// ignore_for_file: type_annotate_public_apis
-
-class InvalidVRError extends Error {
-  String msg;
-
-  InvalidVRError(this.msg);
-
-  @override
-  String toString() => '$msg';
-}
 

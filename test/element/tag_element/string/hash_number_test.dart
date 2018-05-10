@@ -25,11 +25,11 @@ void main() {
         final is3 = new IStag(PTag.kEvaluatorNumber, rsg.getISList(1, 1));
         final is4 = new IStag(PTag.kEvaluationAttempt, rsg.getISList(1, 1));
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         final hash0 = Sha256.stringList(stringList0);
         log.debug('stringList0: $stringList0, hash0: $hash0');
         expect(() => is0.sha256,
-            throwsA(const isInstanceOf<Sha256UnsupportedError>()));
+            throwsA(const isInstanceOf<UnsupportedError>()));
 
         expect(is0.hash, equals(is1.hash));
         expect(is0.hash, equals(is2.hash));
@@ -66,7 +66,7 @@ void main() {
         final ds3 = new DStag(PTag.kDeadTimeFactor, rsg.getDSList(1, 1));
         final ds4 = new DStag(PTag.kDeadTimeFactor, rsg.getDSList(1, 1));
 
-        system.throwOnError = false;
+        global.throwOnError = false;
         final hash1 = Sha256.stringList(stringList1);
         log.debug('stringList1: $stringList1, hash1: $hash1');
         expect(ds0.sha256, isNotNull);

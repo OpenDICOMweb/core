@@ -9,11 +9,11 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/system/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/utils/character/dicom.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/utils/string/errors.dart';
+import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/utils/string/hexadecimal.dart';
 
 // **** This file contains low-level [String] functions
@@ -47,7 +47,7 @@ String trimWhitespace(String s, [End end]) {
 Uint8List stringToUint8List(String s, {bool isAscii = false}) {
   if (s == null) return null;
   if (s.isEmpty) return kEmptyUint8List;
-  return (isAscii || system.useAscii) ? ascii.encode(s) : utf8.encode(s);
+  return (isAscii || global.useAscii) ? ascii.encode(s) : utf8.encode(s);
 }
 
 ByteData stringToByteData(String s, {bool isAscii = false}) {

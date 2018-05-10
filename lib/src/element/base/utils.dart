@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/element/base/errors.dart';
+import 'package:core/src/error.dart';
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 

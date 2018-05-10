@@ -83,10 +83,10 @@ abstract class RootDataset extends Dataset {
 
   /// The [TransferSyntax].
   TransferSyntax get transferSyntax =>
-      fmi.uidLookup(kTransferSyntaxUID) ?? system.defaultTransferSyntax;
+      fmi.uidLookup(kTransferSyntaxUID) ?? global.defaultTransferSyntax;
 
   bool get hasSupportedTransferSyntax =>
-      system.isSupportedTransferSyntax(transferSyntax.asString);
+      global.isSupportedTransferSyntax(transferSyntax.asString);
 
   /// Returns _true_ if the [transferSyntax] is Explicit VR Transfer Syntax.
   bool get isEvr => transferSyntax.isEvr;
@@ -250,7 +250,7 @@ abstract class Fmi extends ListBase<Element> {
     } else if (e is UN) {
       return new Uid(e.vfBytesAsAscii);
     } else {
-      return badElement('Wrong Type ${e.runtimeType}: $e', e);
+      return elementError('Wrong Type ${e.runtimeType}: $e', e);
     }
   }
 }

@@ -11,7 +11,6 @@ import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/base/group/public_group.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 
 // ignore_for_file: only_throw_errors
@@ -42,7 +41,7 @@ class DatasetGroups {
   void add(Element e, Dataset sqParent) {
     final gNumber = e.group;
     if (gNumber < currentGNumber) {
-      badElement('$gNumber > $currentGNumber', e);
+      elementError('$gNumber > $currentGNumber', e);
     } else if (gNumber == currentGNumber) {
       currentGroup.add(e, sqParent);
     } else {
@@ -56,7 +55,7 @@ class DatasetGroups {
         currentGroup = new PrivateGroup(e);
         gp = privateGroups.putIfAbsent(gNumber, () => currentGroup);
       }
-      if (gp != currentGroup) invalidGroupError(currentGNumber);
+      if (gp != currentGroup) badGroupError(currentGNumber);
       currentGroup.add(e, sqParent);
     }
   }

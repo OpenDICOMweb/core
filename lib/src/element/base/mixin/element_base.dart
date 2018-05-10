@@ -10,14 +10,13 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
-import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/element_formatter.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/vr/vr_external.dart';
 
 /// The base class for DICOM Data Elements
 ///
@@ -27,7 +26,6 @@ import 'package:core/src/vr/vr.dart';
 ///
 ///   2. An implementation of a TypeData Getter typedData.
 ///
-
 
 Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
@@ -192,7 +190,7 @@ abstract class ElementBase<V> {
   // **************************************************************
 
   /// The Value Multiplicity (vm) for this ElementBase.
- // VM get vm => tag.vm;
+  // VM get vm => tag.vm;
 
   /// The minimum number of values that MUST be present for _this_,
   /// if any values are present.
@@ -220,7 +218,7 @@ abstract class ElementBase<V> {
 //  EType get eType => tag.eType;
 
   /// The Element Type predicate of this Element.
- // Condition get eTypePredicate => unimplementedError();
+  // Condition get eTypePredicate => unimplementedError();
 
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************
@@ -233,9 +231,7 @@ abstract class ElementBase<V> {
   /// _Note_: [kUndefinedLength] may only appear in VRs of OB, OW, SQ,
   /// and UN Elements (and in Item [Dataset]s). _This method MUST
   /// be overridden for those elements.
- // int get vfLengthField => vfLength;
-
-
+  // int get vfLengthField => vfLength;
 
   /// _true_ if this [ElementBase] had an undefined length token in the
   /// Value Length field. It may only be true for OB, OW, SQ, and
@@ -320,7 +316,7 @@ abstract class ElementBase<V> {
     if (!ok) return false;
     for (var i = 0; i < vList.length; i++) {
       if (!checkValue(vList.elementAt(i), issues: issues))
-        return invalidValues(vList, issues: issues);
+        return invalidValues(vList, issues);
     }
     return true;
   }
@@ -342,9 +338,6 @@ abstract class ElementBase<V> {
   // Note: this SHOULD NOT be implemented by any subclasses
   /// Returns _true_ if all [values] are valid for _this_.
   bool get hasValidValues => checkValues(values);
-
-
-
 
   /// Returns a copy of _this_ with an empty [values] [List].
   ElementBase<V> get noValues => update(emptyList);
@@ -399,8 +392,6 @@ abstract class ElementBase<V> {
 
   // **** Methods
 
-
-
   /// Returns a copy of _this_ with [values] [f]([values]).
   ElementBase updateF(Iterable<V> f(Iterable<V> vList)) => update(f(values));
 
@@ -428,7 +419,7 @@ abstract class ElementBase<V> {
 
   final SimpleElementFormatter eFormat = new SimpleElementFormatter();
 
- // String toString() => eFormat.asString(this);
+  // String toString() => eFormat.asString(this);
 
   // ***************** Static Getters and Methods *****************
   // **************************************************************
@@ -458,7 +449,7 @@ abstract class ElementBase<V> {
     if (length >= tag.vmMin &&
         (length <= tag.vmMax || (tag.vmMax == -1 && length <= maxLength)) &&
         (length % tag.vmColumns == 0)) return true;
-    return isValidTagValuesError(tag, vList, issues);
+    return invalidValues(vList, issues, tag);
   }
 
   static bool isNotValidVListLength<V>(

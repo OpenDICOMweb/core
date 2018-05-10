@@ -4,7 +4,7 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 
@@ -35,7 +35,7 @@ class PrivateCreatorTags {
     if (v >= 0x10010 && v <= 0x100FF) return true;
     final msg = 'Invalid PCTag Code ${dcm(code)}';
     log.error(msg);
-    return invalidTagCode(code, msg);
+    return invalidCode(code, msg);
   }
 
   @override

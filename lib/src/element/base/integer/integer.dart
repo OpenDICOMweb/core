@@ -8,8 +8,9 @@
 //
 
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
+import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -46,7 +47,7 @@ abstract class SS extends IntBase with Int16 {
   static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [SS].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [SS] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) =>
@@ -57,7 +58,7 @@ abstract class SS extends IntBase with Int16 {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if [tag] is valid for [SS].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [SS] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidTag(Tag tag, [Issues issues]) =>
@@ -67,14 +68,14 @@ abstract class SS extends IntBase with Int16 {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [SS].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [SS] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ VR.isValidSpecialIndex] is used.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
        VR.isValidSpecialIndex(vrIndex, issues, kSSIndex);
 
   /// Returns _true_ if [vrCode] is valid for [SS].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [SS] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ VR.isValidSpecialCode] is used.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
@@ -82,7 +83,7 @@ abstract class SS extends IntBase with Int16 {
 
   // TODO: should this be checkSpecialVRIndex
   /// Returns [vrIndex] if it is valid for [SS].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
        VR.checkIndex(vrIndex, issues, kSSIndex);
 
@@ -93,7 +94,7 @@ abstract class SS extends IntBase with Int16 {
       _isValidVFLength(vfLength, max, kSizeInBytes);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [SS].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [SS] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
@@ -104,7 +105,7 @@ abstract class SS extends IntBase with Int16 {
   static bool isValidVListLength(Tag tag, Iterable<int> vList,
       [Issues issues]) {
     if (! Tag.isValidSpecialTag(tag, issues, kSSIndex, SS))
-      return Tag.invalidTag(tag, issues, SS);
+      return invalidTag(tag, issues, SS);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -149,7 +150,7 @@ abstract class SL extends IntBase with Int32 {
   static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [SL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) =>
        Tag.isValidTag(tag, issues, kSLIndex, SL) &&
       _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
@@ -158,7 +159,7 @@ abstract class SL extends IntBase with Int32 {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [SL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
        Tag.isValidTag(tag, issues, kSLIndex, SL) &&
       _isValidVFLength(vfBytes.length, kMaxVFLength, kSizeInBytes);
@@ -168,7 +169,7 @@ abstract class SL extends IntBase with Int32 {
       !isValidBytesArgs(tag, vList, issues);
 
   /// Returns _true_ if [tag] is valid for [SL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
        Tag.isValidTag(tag, issues, kSLIndex, SL);
 
@@ -176,17 +177,17 @@ abstract class SL extends IntBase with Int32 {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [SL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kSLIndex);
 
   /// Returns _true_ if [vrCode] is valid for [SL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kSLCode);
 
   /// Returns [vrIndex] if it is valid for [SL]
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
        VR.checkIndex(vrIndex, issues, kSLIndex);
 
@@ -200,7 +201,7 @@ abstract class SL extends IntBase with Int32 {
   static bool isValidVListLength(Tag tag, Iterable<int> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kSLIndex, SL))
-      return Tag.invalidTag(tag, issues, SL);
+      return invalidTag(tag, issues, SL);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -256,7 +257,7 @@ abstract class OB extends IntBase with OBMixin, Uint8 {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OB] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidArgs(Tag tag, Iterable<int> vList,
@@ -271,7 +272,7 @@ abstract class OB extends IntBase with OBMixin, Uint8 {
       !isValidArgs(tag, vList, vfLengthField, ts, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [OB].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OB] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
@@ -281,7 +282,7 @@ abstract class OB extends IntBase with OBMixin, Uint8 {
           vfBytes.length, kMaxVFLength, kSizeInBytes, vfLengthField);
 
   /// Returns _true_ if [tag] is valid for [OB].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OB] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidTag(Tag tag, [Issues issues]) =>
@@ -291,21 +292,21 @@ abstract class OB extends IntBase with OBMixin, Uint8 {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [OB].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OB] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ VR.isValidSpecialIndex] is used.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
        VR.isValidSpecialIndex(vrIndex, issues, kOBIndex);
 
   /// Returns _true_ if [vrCode] is valid for [OB].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OB] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ VR.isValidSpecialCode] is used.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
        VR.isValidSpecialCode(vrCode, issues, kOBCode);
 
   /// Returns [vrIndex] if it is valid for [OB].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
        VR.checkSpecialIndex(vrIndex, issues, kOBIndex);
 
@@ -320,7 +321,7 @@ abstract class OB extends IntBase with OBMixin, Uint8 {
   static bool isValidVListLength(Tag tag, Iterable<int> vList,
       [Issues issues]) {
     if (! Tag.isValidSpecialTag(tag, issues, kOBIndex, OB))
-      return Tag.invalidTag(tag, issues, OB);
+      return invalidTag(tag, issues, OB);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -374,7 +375,7 @@ abstract class UN extends IntBase with Uint8 {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [UN].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<int> vList,
           [int vfLengthField, TransferSyntax ts, Issues issues]) =>
       _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength) &&
@@ -385,28 +386,28 @@ abstract class UN extends IntBase with Uint8 {
       !isValidArgs(tag, vList, vfLengthField, ts, issues);
 
   /// Returns _true_ if [vfBytes] are valid for [UN]. Ignores [tag].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag _, Bytes vfBytes, int vfLengthField,
           [Issues issues]) =>
       _isValidUVFLength(
           vfBytes.length, kMaxVFLength, kSizeInBytes, vfLengthField);
 
   /// Returns _true_ if [tag] is valid for [UN].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) => true;
 
   /// Returns _true_ if [vrIndex] is valid for [UN].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
        VR.isValidSpecialIndex(vrIndex, issues, kUNIndex);
 
   /// Returns _true_ if [vrCode] is valid for[UN].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
        VR.isValidSpecialCode(vrCode, issues, kUNCode);
 
   /// Returns [vrIndex] if it is valid for [UN].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
        VR.checkSpecialIndex(vrIndex, issues, kUNIndex);
 
@@ -459,7 +460,7 @@ abstract class US extends IntBase with Uint16 {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [US].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [US] VRs, such as
   // [kUUSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) =>
@@ -470,7 +471,7 @@ abstract class US extends IntBase with Uint16 {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if [tag] is valid for [US].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [US] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidTag(Tag tag, [Issues issues]) =>
@@ -480,21 +481,21 @@ abstract class US extends IntBase with Uint16 {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [US].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [US] VRs, such as
   // [kUUSSIndex] and [kUSSSOWIndex], so [ VR.isValidSpecialIndex] is used.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
        VR.isValidSpecialIndex(vrIndex, issues, kUSIndex);
 
   /// Returns _true_ if [vrCode] is valid for [US].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [US] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ VR.isValidSpecialCode] is used.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
        VR.isValidSpecialCode(vrCode, issues, kUSCode);
 
   /// Returns [vrIndex] if it is valid for [US].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
        VR.checkIndex(vrIndex, issues, kUSIndex);
 
@@ -505,7 +506,7 @@ abstract class US extends IntBase with Uint16 {
       _isValidVFLength(vfLength, max, kSizeInBytes);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [US].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [US] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
@@ -516,7 +517,7 @@ abstract class US extends IntBase with Uint16 {
   static bool isValidVListLength(Tag tag, Iterable<int> vList,
       [Issues issues]) {
     if (! Tag.isValidSpecialTag(tag, issues, kUSIndex, US))
-      return Tag.invalidTag(tag, issues, US);
+      return invalidTag(tag, issues, US);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -570,7 +571,7 @@ abstract class OW extends IntBase with Uint16 {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [OW].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OW] VRs, such as
   // [kOBOWIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidArgs(Tag tag, Iterable<int> vList,
@@ -585,7 +586,7 @@ abstract class OW extends IntBase with Uint16 {
       !isValidArgs(tag, vList, vfLengthField, ts, issues);
 
   /// Returns _true_ if [tag] is valid for [OW].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OW] VRs, such as
   // [kOBOWIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidTag(Tag tag, [Issues issues]) =>
@@ -595,21 +596,21 @@ abstract class OW extends IntBase with Uint16 {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [OW].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OW] VRs, such as
   // [kOBOWIndex] and [kUSSSOWIndex], so [ VR.isValidSpecialIndex] is used.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
        VR.isValidSpecialIndex(vrIndex, issues, kOWIndex);
 
   /// Returns _true_ if [vrCode] is valid for [OW].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OW] VRs, such as
   // [kOBOWIndex] and [kUSSSOWIndex], so [ VR.isValidSpecialCode] is used.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
        VR.isValidSpecialCode(vrCode, issues, kOWCode);
 
   /// Returns [vrIndex] if it is valid for [OW].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
        VR.checkSpecialIndex(vrIndex, issues, kOWIndex);
 
@@ -621,7 +622,7 @@ abstract class OW extends IntBase with Uint16 {
       _isValidUVFLength(vfLength, max, kSizeInBytes, vfLengthField);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [OW].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OW] VRs, such as
   // [kOBOWIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
@@ -634,7 +635,7 @@ abstract class OW extends IntBase with Uint16 {
   static bool isValidVListLength(Tag tag, Iterable<int> vList,
       [Issues issues]) {
     if (! Tag.isValidSpecialTag(tag, issues, kOWIndex, OW))
-      return Tag.invalidTag(tag, issues, OW);
+      return invalidTag(tag, issues, OW);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -677,7 +678,7 @@ abstract class AT extends IntBase with Uint32 {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [AT].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) =>
        Tag.isValidTag(tag, issues, kATIndex, AT) &&
       _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
@@ -686,7 +687,7 @@ abstract class AT extends IntBase with Uint32 {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if [tag] is valid for [AT].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
        Tag.isValidTag(tag, issues, kATIndex, AT);
 
@@ -694,17 +695,17 @@ abstract class AT extends IntBase with Uint32 {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [AT].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kATIndex);
 
   /// Returns _true_ if [vrCode] is valid for [AT].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kATCode);
 
   /// Returns [vrIndex] if it is valid for [AT].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
        VR.checkIndex(vrIndex, issues, kATIndex);
 
@@ -715,7 +716,7 @@ abstract class AT extends IntBase with Uint32 {
       _isValidVFLength(vfLength, max, kSizeInBytes);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AT].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
        Tag.isValidTag(tag, issues, kATIndex, AT) &&
       _isValidVFLength(vfBytes.length, kMaxVFLength, kSizeInBytes);
@@ -724,7 +725,7 @@ abstract class AT extends IntBase with Uint32 {
   static bool isValidVListLength(Tag tag, Iterable<int> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kATIndex, AT))
-      return Tag.invalidTag(tag, issues, AT);
+      return invalidTag(tag, issues, AT);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -774,7 +775,7 @@ abstract class OL extends IntBase with Uint32 {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [OL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kOLIndex, OL) &&
       _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
@@ -783,7 +784,7 @@ abstract class OL extends IntBase with Uint32 {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if [tag] is valid for [OL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kOLIndex, OL);
 
@@ -791,17 +792,17 @@ abstract class OL extends IntBase with Uint32 {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [OL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kOLIndex);
 
   /// Returns _true_ if [vrCode] is valid for [OL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kOLCode);
 
   /// Returns [vrIndex] if it is valid for [OL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
        VR.checkIndex(vrIndex, issues, kOLIndex);
 
@@ -812,7 +813,7 @@ abstract class OL extends IntBase with Uint32 {
       _isValidVFLength(vfLength, max, kSizeInBytes);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [OL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kOLIndex, OL) &&
       _isValidVFLength(vfBytes.length, kMaxVFLength, kSizeInBytes);
@@ -821,7 +822,7 @@ abstract class OL extends IntBase with Uint32 {
   static bool isValidVListLength(Tag tag, Iterable<int> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kOLIndex, OL))
-      return Tag.invalidTag(tag, issues, OL);
+      return invalidTag(tag, issues, OL);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -864,7 +865,7 @@ abstract class UL extends IntBase with Uint32 {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [UL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kULIndex, UL) &&
       _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
@@ -873,7 +874,7 @@ abstract class UL extends IntBase with Uint32 {
       !isValidArgs(tag, vList, issues);
 
   /// Returns _true_ if [tag] is valid for [UL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
        Tag.isValidTag(tag, issues, kULIndex, UL);
 
@@ -881,17 +882,17 @@ abstract class UL extends IntBase with Uint32 {
       !isValidTag(tag, issues);
 
   /// Returns _true_ if [vrIndex] is valid for [UL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
       VR.isValidIndex(vrIndex, issues, kULIndex);
 
   /// Returns _true_ if [vrCode] is valid for [UL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       VR.isValidCode(vrCode, issues, kULCode);
 
   /// Returns [vrIndex] if it is valid for [UL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static int checkVRIndex(int vrIndex, [Issues issues]) =>
        VR.checkIndex(vrIndex, issues, kULIndex);
 
@@ -902,7 +903,7 @@ abstract class UL extends IntBase with Uint32 {
       _isValidVFLength(vfLength, max, kSizeInBytes);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [UL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
        Tag.isValidTag(tag, issues, kULIndex, UL) &&
       _isValidVFLength(vfBytes.length, kMaxVFLength, kSizeInBytes);
@@ -911,7 +912,7 @@ abstract class UL extends IntBase with Uint32 {
   static bool isValidVListLength(Tag tag, Iterable<int> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kULIndex, UL))
-      return Tag.invalidTag(tag, issues, UL);
+      return invalidTag(tag, issues, UL);
     return Element.isValidVListLength(tag, vList, issues, kMaxLength);
   }
 
@@ -940,12 +941,12 @@ abstract class GL extends UL {
   static const String kVRName = 'Group Length';
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [UL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) =>
       UL.isValidArgs(tag, vList);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [UL].
-  /// If [doTestValidity] is _false_ then no checking is done.
+  /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
       UL.isValidBytesArgs(tag, vfBytes);
 
@@ -969,7 +970,7 @@ bool _isValidVFLength(int vfl, int max, int eSize) =>
 /// [kUndefinedLength]; and then checks that vfLength (vfl) is
 /// in range and the right size, based on the element size (eSize).
 bool _isValidUVFLength(int vfl, int max, int eSize, int vlf) {
-  if (!doTestValidity || vlf == null) return true;
+  if (!doTestElementValidity || vlf == null) return true;
   return ((vlf == vfl || vlf == kUndefinedLength) &&
           __isValidVFL(vfl, max, eSize))
       ? true

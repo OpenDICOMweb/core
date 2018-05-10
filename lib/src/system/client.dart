@@ -11,13 +11,14 @@
 
 import 'dart:html';
 
-import 'package:core/src/system/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:version/version.dart';
 
 
-//TODO: and initialize arguments for client and browers that are same as server.dart
-//TODO: add a way to log to a file called <project>/output/<script>.out
+//TODO: and initialize arguments for client and browers that
+// are same as server.dart
+
 
 /// A singleton class used to handle system-wide values and methods.
 ///
@@ -26,7 +27,7 @@ import 'package:version/version.dart';
 ///     Client.initialize();
 /// Then access it as follows:
 ///     print(system.info);
-class Client extends System {
+class Client extends Global {
   @override
   final Uid defaultTransferSyntax = TransferSyntax.kDefaultForDicomWeb;
 
@@ -44,7 +45,7 @@ class Client extends System {
   //TODO: add call to new System
   // Create the singleton [Server].
   static void initialize() {
-    System.system = new Client();
+    Global.global = new Client();
   }
 }
 
@@ -55,7 +56,7 @@ class Client extends System {
 ///     Client.initialize();
 /// Then access it as follows:
 ///     print(system.info);
-class Browser extends System {
+class Browser extends Global {
   @override
   final Uid defaultTransferSyntax = TransferSyntax.kDefaultForDicomWeb;
 
@@ -75,6 +76,6 @@ class Browser extends System {
   //TODO: add call to new System
   // Create the singleton [Server].
   static void initialize() {
-    System.system = new Client();
+    Global.global = new Client();
   }
 }

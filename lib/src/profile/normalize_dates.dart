@@ -9,8 +9,8 @@
 
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/profile/de_id/deid_dates.dart';
-import 'package:core/src/system/system.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/value/date_time.dart';
 
@@ -24,7 +24,7 @@ List<Element> normalizeDates(RootDataset rds, Date enrollment) {
   for (var e in rds) {
     if (e is DA) {
       final eNew = e.normalize(enrollment);
-      if (system.level == Level.debug) {
+      if (global.level == Level.debug) {
         printNormalized(e, eNew, enrollment);
       }
       rds.replaceValues<String>(e.index, eNew.values);

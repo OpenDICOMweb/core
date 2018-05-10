@@ -90,7 +90,7 @@ void main() {
     });
 
     test('timeZoneMicrosecondToString', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final tzms0 = timeZoneMicrosecondsToString(kMicrosecondsPerDay);
       log.debug('tzms0: $tzms0');
       expect(tzms0, isNull);
@@ -170,7 +170,7 @@ void main() {
     });
 
     test('timeZoneToString', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var h = kMinTimeZoneHour; h < kMaxTimeZoneHour; h++) {
         final sign = (h.sign.isNegative) ? -1 : 1;
 
@@ -182,11 +182,11 @@ void main() {
               log.debug('  tzs0: $tzs0');
               expect(tzs0, isNotNull);
             } else {
-              system.throwOnError = true;
+              global.throwOnError = true;
               expect(() => timeZoneToString(sign, h, m),
                   throwsA(equals(const isInstanceOf<InvalidTimeZoneError>())));
 
-              system.throwOnError = false;
+              global.throwOnError = false;
               final tzs2 = timeZoneToString(sign, h, m);
               log.debug('  tzs2: $tzs2');
               expect(tzs2, isNull);
@@ -204,7 +204,7 @@ void main() {
     });
 
     test('timeZoneToMinutes', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var h = kMinTimeZoneHour; h < kMaxTimeZoneHour; h++) {
         final sign = (h.sign.isNegative) ? -1 : 1;
 
@@ -216,11 +216,11 @@ void main() {
               log.debug('  tzm0: $tzm0');
               expect(tzm0, isNotNull);
             } else {
-              system.throwOnError = true;
+              global.throwOnError = true;
               expect(() => timeZoneToMinutes(sign, h, m),
                   throwsA(equals(const isInstanceOf<InvalidTimeZoneError>())));
 
-              system.throwOnError = false;
+              global.throwOnError = false;
               final tzm1 = timeZoneToMinutes(sign, h, m);
               log.debug('  tzm1: $tzm1');
               expect(tzm1, isNull);
@@ -231,7 +231,7 @@ void main() {
     });
 
     test('timeZoneHour', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var h = kMinTimeZoneHour; h < kMaxTimeZoneHour; h++) {
         final sign = (h.sign.isNegative) ? -1 : 1;
 
@@ -260,7 +260,7 @@ void main() {
     });
 
     test('timeZoneMinute', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var h = kMinTimeZoneHour; h < kMaxTimeZoneHour; h++) {
         final sign = (h.sign.isNegative) ? -1 : 1;
 
@@ -355,7 +355,7 @@ void main() {
     });
 
     test('isValidTimeZoneMinutes', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var h = kMinTimeZoneHour; h < kMaxTimeZoneHour; h++) {
         final sign = (h.sign.isNegative) ? -1 : 1;
 

@@ -52,7 +52,7 @@ void main() {
     });
 
     test('update (String)', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       rds[as0.code] = as0;
@@ -62,7 +62,7 @@ void main() {
     });
 
     test('update (int)', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [kInt16Min];
       final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
@@ -78,7 +78,7 @@ void main() {
     });
 
     test('update (float)', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
 
@@ -313,11 +313,11 @@ void main() {
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList1));
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final vList2 = ['024Y'];
       final as0 = new AStag(PTag.kPatientAge, vList2);
       final vList3 = [123];
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => rds.replace(as0.index, vList3, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -472,7 +472,7 @@ void main() {
 
       expect(item.delete(od0.index), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
       expect(() => item.delete(sl0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
@@ -569,7 +569,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValue<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.value));
@@ -581,7 +581,7 @@ void main() {
       final getValues2 = item.getValue<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -595,7 +595,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValues<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.values));
@@ -607,7 +607,7 @@ void main() {
       final getValues2 = item.getValues<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -646,7 +646,7 @@ void main() {
     });
 
     test('deleteCodes', () {
-      system.level = Level.debug;
+      global.level = Level.debug;
       final item = new ListRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);

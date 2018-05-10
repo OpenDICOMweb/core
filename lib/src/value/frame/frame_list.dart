@@ -12,7 +12,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/element.dart';
 import 'package:core/src/element/base/vf_fragments.dart';
-import 'package:core/src/system/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/value/frame/frame.dart';
 import 'package:core/src/value/frame/frame_descriptor.dart';
 import 'package:core/src/value/uid.dart';

@@ -286,7 +286,7 @@ void main() {
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList1));
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final vList2 = ['024Y'];
       final as0 = new AStag(PTag.kPatientAge, vList2);
       final vList3 = [123];
@@ -381,7 +381,7 @@ void main() {
       final remove0 = item.delete(as0.code);
       log.debug('remove0 : $remove0');
       expect(remove0, isNotNull);
-      system.throwOnError = false;
+      global.throwOnError = false;
       final remove1 = item.delete(as0.code);
       log.debug('remove1 : $remove1');
       expect(remove1, isNull);
@@ -398,7 +398,7 @@ void main() {
 
       expect(item.delete(od0.code), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
       expect(() => item.delete(sl0.code, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
@@ -483,7 +483,7 @@ void main() {
 
       expect(item.delete(od0.index), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
       expect(() => item.delete(sl0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
@@ -580,7 +580,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValue<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.value));
@@ -592,7 +592,7 @@ void main() {
       final getValues2 = item.getValue<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -606,7 +606,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValues<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.values));
@@ -618,7 +618,7 @@ void main() {
       final getValues2 = item.getValues<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -657,7 +657,7 @@ void main() {
     });
 
     test('deleteCodes', () {
-      system.level = Level.debug;
+      global.level = Level.debug;
       final item = new ListItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);

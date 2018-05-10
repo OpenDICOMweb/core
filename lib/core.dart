@@ -14,8 +14,7 @@ export 'package:core/src/profile.dart';
 export 'package:core/src/system.dart';
 export 'package:core/src/tag.dart';
 export 'package:core/src/utils.dart';
-export 'package:core/src/utils/primitives.dart';
 export 'package:core/src/value.dart';
-export 'package:core/src/vr.dart';
-export 'package:core/src/vr/vr.dart';
+export 'package:core/src/vr/vr_base.dart';
+export 'package:core/src/vr/vr_external.dart';
 

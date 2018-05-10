@@ -34,11 +34,11 @@ void main() {
     -11.000453,
   ];
 
-  system.throwOnError = false;
+  global.throwOnError = false;
 
   group('OD Tests', () {
     test('OD hasValidValues: good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final od0 = ODbytes.fromValues(kSelectorODValue, doubleList);
       print('code: ${dcm(od0.code)}');
       print('vrCode: ${hex16(od0.vrCode)}');
@@ -48,7 +48,7 @@ void main() {
     });
 
     test('OD hasValidValues random: good values', () {
-      system.level = Level.debug;
+      global.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         final float64List0 = rng.float64List(1, 1);
         expect(float64List0 is Float64List, true);
@@ -89,7 +89,7 @@ void main() {
 
     test('OD hashCode and == random', () {
       //     system.level = Level.info;
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rng = new RNG(1);
 
       List<double> floatList0;
@@ -114,7 +114,7 @@ void main() {
     });
 
     test('OD isValidValues', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
         final od0 = ODbytes.fromValues(kSelectorODValue, <double>[doubleList[i]]);
         expect(OD.isValidValues(PTag.kDoubleFloatPixelData, od0.values), true);

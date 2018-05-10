@@ -9,10 +9,10 @@
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/bytes_mixin.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/dicom.dart';
-import 'package:core/src/utils/errors.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 

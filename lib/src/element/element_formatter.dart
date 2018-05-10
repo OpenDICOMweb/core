@@ -66,7 +66,7 @@ abstract class ElementFormatterBase {
       _values(e.values, maxValues);
 
   String _values(List values, [int max = kDefaultTruncatedValuesLength]) =>
-      (values.length >= max)
+      (values.length <= max)
           ? _valuesList(values)
           : _truncatedList(values, max);
 

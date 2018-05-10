@@ -6,10 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
+import 'package:core/src/error/issues.dart';
+import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/utils/date_time.dart';
-import 'package:core/src/utils/issues.dart';
 import 'package:core/src/utils/parser.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/value/date_time/primitives/date.dart';
@@ -113,7 +113,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   @override
   int get hashCode => microseconds.hashCode;
 
-  /// Returns a new [DateTime] containing the [System.hash] of _this_.
+  /// Returns a new [DateTime] containing the [Global.hash] of _this_.
   DcmDateTime get hash => new DcmDateTime._(hashTimeMicroseconds(microseconds));
 
   /// Returns a new [DateTime] containing the SHA-256 hash of [microseconds].

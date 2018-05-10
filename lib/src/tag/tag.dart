@@ -9,11 +9,11 @@
 
 import 'dart:convert' as cvt;
 
+import 'package:core/src/error.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag/e_type.dart';
-import 'package:core/src/tag/errors.dart';
 import 'package:core/src/tag/ie_type.dart';
 import 'package:core/src/tag/p_tag.dart';
 import 'package:core/src/tag/p_tag_keywords.dart';
@@ -24,8 +24,8 @@ import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/vr/vr.dart';
 import 'package:core/src/vr/vr_base.dart';
+import 'package:core/src/vr/vr_external.dart';
 
 const int kGroupMask = 0xFFFF0000;
 const int kElementMask = 0x0000FFFF;
@@ -38,7 +38,7 @@ typedef bool _ETypePredicate<K>(Dataset ds, K key);
 //TODO: move to system
 bool allowInvalidTags = true;
 
-/// //Fix:
+//Fix:
 /// A [Tag] defines the [Type] of a DICOM Attribute.  There are different
 /// types of Tags in the following class hierarchy:
 ///   Tag <abstract>
@@ -53,8 +53,8 @@ bool allowInvalidTags = true;
 ///       PDTag
 ///       PDTagUnknown
 abstract class Tag {
-  ///TODO: Tag and Tag.public are inconsistent when new Tag, PrivateTag... files
-  ///      are generated make them consistent.
+  //TODO: Tag and Tag.public are inconsistent when new Tag, PrivateTag... files
+  //      are generated make them consistent.
   const Tag();
 
   //TODO: When regenerating Tag rework constructors as follows:
@@ -69,6 +69,7 @@ abstract class Tag {
   int get code;
   int get vrIndex;
   String get vrId => vrIdFromIndex(vrIndex);
+  VR get vr => vrByIndex[vrIndex];
 
   String get keyword; // => 'UnknownTag';
   String get name; // => 'Unknown Tag';
@@ -114,8 +115,6 @@ abstract class Tag {
   String get eltHex => hex16(elt);
 
   // **** VR Getters
-
-  VR get vr => vrByIndex[vrIndex];
 
 //  int get vrIndex => vr.index;
   int get vrCode => vrCodeByIndex[vrIndex];
@@ -242,7 +241,7 @@ abstract class Tag {
   bool isValidValuesLength<V>(Iterable<V> vList, [Issues issues]) {
     assert(vList != null);
     if (isValidLength(vList.length)) return true;
-    isValidValuesLengthError(this, vList, issues);
+    invalidValuesLength<V>(vList, vmMin, vmMax, issues);
     return false;
   }
 
@@ -324,7 +323,7 @@ abstract class Tag {
   static Tag lookup<K>(K key, [int vrIndex = kUNIndex, String creator]) {
     if (key is int) return lookupByCode(key, vrIndex, creator);
     if (key is String) return lookupByKeyword(key, vrIndex, creator);
-    return invalidTagKey<K>(key, vrIndex, creator);
+    return badKey<K>(key, vrIndex, creator);
   }
 
   //TODO: Flush either fromCode of lookupByCode
@@ -343,7 +342,7 @@ abstract class Tag {
       if ((elt > 0xFF) && (elt <= 0xFFFF) && creator is PCTag)
         return PDTag.make(code, vrIndex, creator);
       // This should never happen
-      return invalidTagCode(code);
+      return badCode(code);
     }
   }
 
@@ -352,7 +351,7 @@ abstract class Tag {
     if (!allowInvalidTags &&
         (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)) {
       print('code $code ${hex32(code)} ${toDcm(code)} vrIndex $vrIndex');
-      return invalidTagCode(code);
+      return badCode(code);
     }
     final group = code >> 16;
     Tag tag;
@@ -373,7 +372,7 @@ abstract class Tag {
       } else {
         // This should never happen
         final msg = 'Unknown Private Tag Code: creator: $creator';
-        return invalidTagCode(code, msg);
+        return badCode(code, msg);
       }
     }
     //   print('$creator tag: $tag');
@@ -407,7 +406,7 @@ abstract class Tag {
     if (tag.vr.isValid(vrIndex)) return true;
     log.warn('Invalid VR ${vrIdFromIndex(vrIndex)} for $tag');
     if (allowInvalidVR) return true;
-    if (throwOnError) invalidVRForTag(tag, vrIndex);
+    if (throwOnError) invalidVRIndex(vrIndex, null, tag.vrIndex, tag);
     return false;
   }
 
@@ -449,14 +448,8 @@ abstract class Tag {
     if (Tag.isPrivateGroupLengthCode(code))
       return new GroupLengthPrivateTag(code, vrIndex);
     if (isPCCode(code)) return PCTag.make(code, vrIndex, token);
-    throw new InvalidTagCodeError(code);
+    return badCode(code);
   }
-
-/*  static PDTagKnown lookupPrivateDataCode(
-      int code, int vrIndex, PCTag creator) =>
-      (creator is PCTagKnown) ? creator.lookupData(code)
-          : new PDTagUnknown(code, vr, creator);
-  */
 
   /// Returns a [String] corresponding to [tag], which might be an
   /// [int], [String], or [Tag].
@@ -711,7 +704,7 @@ abstract class Tag {
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
   /// is used.
   static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
-      (doTestValidity && tag.vrIndex != targetVR)
+      (doTestElementValidity && tag.vrIndex != targetVR)
           ? invalidTag(tag, issues, type)
           : true;
 
@@ -721,41 +714,11 @@ abstract class Tag {
   static bool isValidSpecialTag(
       Tag tag, Issues issues, int targetVR, Type type) {
     final vrIndex = tag.vrIndex;
-    return (doTestValidity &&
+    return (doTestElementValidity &&
             (vrIndex == targetVR ||
                 (vrIndex >= kVRSpecialIndexMin &&
                     vrIndex <= kVRSpecialIndexMax)))
         ? true
         : invalidTag(tag, issues, type);
   }
-
-  static Null badTag(Tag tag, Type type, [Issues issues]) {
-    _invalidTagError(tag, issues, type);
-    return null;
-  }
-
-  static bool invalidTag(Tag tag, Issues issues, Type type) {
-    _invalidTagError(tag, issues, type);
-    return false;
-  }
-
-  static void _invalidTagError(Tag tag, Issues issues, Type type) {
-    final msg = InvalidTagError._msg(tag, type);
-    if (issues != null) issues.add(msg);
-    log.error(InvalidTagError._msg(tag, type));
-    print('throwOnError: $throwOnError');
-    if (throwOnError) throw new InvalidTagError(tag, type);
-  }
-}
-
-class InvalidTagError extends Error {
-  Tag tag;
-  Type type;
-
-  InvalidTagError(this.tag, this.type);
-
-  @override
-  String toString() => _msg(tag, type);
-
-  static String _msg(Tag tag, Type type) => 'InvalidTag for $type: $tag';
 }

@@ -11,15 +11,16 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
-import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/element_formatter.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/hash.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/vr/vr.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/vr/vr_base.dart';
+import 'package:core/src/vr/vr_external.dart';
+
 
 /// The base class for DICOM Data Elements
 ///
@@ -40,8 +41,6 @@ typedef bool Condition(Dataset ds, Element e);
 
 Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
-
-bool doTestValidity = true;
 
 // All add, replace, and remove operations should
 // be done by calling add, replace, and remove methods in [Dataset].
@@ -181,7 +180,9 @@ abstract class Element<V> extends ListBase<V> {
   /// The size in bytes of the Value Field Length field.
   int get vlfSize => vr.vlfSize;
 
+  // Urgent Jim: make this a Mixin
   VR get vr => vrByIndex[vrIndex];
+
   String get vrId => vr.id;
 
   /// The name of the Value Representation (VR) for _this_.
@@ -343,7 +344,7 @@ abstract class Element<V> extends ListBase<V> {
     if (!ok) return false;
     for (var i = 0; i < vList.length; i++) {
       if (!checkValue(vList.elementAt(i), issues: issues))
-        return invalidValues(vList, issues: issues);
+        return invalidValues(vList, issues);
     }
     return true;
   }
@@ -482,10 +483,19 @@ abstract class Element<V> extends ListBase<V> {
     if (length >= tag.vmMin &&
         (length <= tag.vmMax || (tag.vmMax == -1 && length <= maxLength)) &&
         (length % tag.vmColumns == 0)) return true;
-    return isValidTagValuesError(tag, vList, issues);
+    return invalidValues(vList, issues, tag);
   }
 
   static bool isNotValidVListLength<V>(
           Tag tag, Iterable<V> vList, Issues issues, int maxLength) =>
       !isValidVListLength(tag, vList, issues, maxLength);
+
+  /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
+  /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
+  /// is used.
+  static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
+      (doTestElementValidity && tag.vrIndex != targetVR)
+      ? invalidTag(tag, issues, type)
+      : true;
+
 }

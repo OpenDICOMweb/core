@@ -21,7 +21,7 @@ void main() {
   final rds = new ByteRootDataset.empty();
   group('AEbytes', () {
     test('AEbytes from VM.k1', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
@@ -56,7 +56,7 @@ void main() {
     });
 
     test('AEbytes from VM.k1_n', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
 
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getAEList(1, i);
@@ -74,7 +74,7 @@ void main() {
   });
 
   group('DSbytes', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
 
     test('DSbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
@@ -95,7 +95,7 @@ void main() {
     test('DSbytes from VM.k2', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DSbytes.fromValues(kRTImagePosition, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -108,7 +108,7 @@ void main() {
     test('DSbytes from VM.k3', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(3, 3);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DSbytes.fromValues(kNormalizationPoint, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -121,7 +121,7 @@ void main() {
     test('DSbytes from VM.k4', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(4, 4);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DSbytes.fromValues(kDiaphragmPosition, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -134,7 +134,7 @@ void main() {
     test('DSbytes from VM.k6', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(6, 6);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DSbytes.fromValues(kImageOrientation, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -147,7 +147,7 @@ void main() {
     test('DSbytes from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DSbytes.fromValues(kSelectorDSValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -160,7 +160,7 @@ void main() {
     test('DSbytes from VM.k1_2', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 2);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DSbytes.fromValues(kDetectorActiveDimensions, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -174,7 +174,7 @@ void main() {
     test('DSbytes from VM.k2_2n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(10, 10);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DSbytes.fromValues(kDVHData, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -187,7 +187,7 @@ void main() {
     test('DSbytes from VM.k3_3n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(9, 9);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DSbytes.fromValues(kContourData, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -202,7 +202,7 @@ void main() {
     test('ISbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ISbytes.fromValues(kStageNumber, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -215,7 +215,7 @@ void main() {
     test('ISbytes from VM.k2', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(2, 2);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ISbytes.fromValues(kCenterOfCircularShutter, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -228,7 +228,7 @@ void main() {
     test('ISbytes from VM.k3', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(3, 3);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ISbytes.fromValues(kROIDisplayColor, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -242,7 +242,7 @@ void main() {
     test('ISbytes from VM.k2_2n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(10, 10);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ISbytes.fromValues(kVerticesOfThePolygonalShutter, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -256,7 +256,7 @@ void main() {
     test('ISbytes from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getISList(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ISbytes.fromValues(kSelectorISValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -272,7 +272,7 @@ void main() {
     test('ASbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ASbytes.fromValues(kPatientAge, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -286,7 +286,7 @@ void main() {
     test('ASbytes from VM.k1_n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ASbytes.fromValues(kSelectorASValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -302,7 +302,7 @@ void main() {
     test('CSTag from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = CSbytes.fromValues(kLaterality, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -316,7 +316,7 @@ void main() {
     test('CSTag from VM.k2', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(2, 2);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = CSbytes.fromValues(kPatientOrientation, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -330,7 +330,7 @@ void main() {
     test('CSTag from VM.k2_n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(2, 2);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = CSbytes.fromValues(kImageType, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -342,7 +342,7 @@ void main() {
     test('CSTag from VM.k4', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(4, 4);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = CSbytes.fromValues(kFrameType, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -355,7 +355,7 @@ void main() {
     test('CSTag from VM.k1_n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = CSbytes.fromValues(kSelectorCSValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -370,7 +370,7 @@ void main() {
     test('DTbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DTbytes.fromValues(kDateTime, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -383,7 +383,7 @@ void main() {
     test('DTbytes from VM.k1_n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = DTbytes.fromValues(kSelectorDTValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -398,7 +398,7 @@ void main() {
     test('TMbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = TMbytes.fromValues(kTime, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -411,7 +411,7 @@ void main() {
     test('TMbytes from VM.k1_n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = TMbytes.fromValues(kSelectorTMValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -426,7 +426,7 @@ void main() {
     test('LObytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = LObytes.fromValues(kManufacturer, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -439,7 +439,7 @@ void main() {
     test('LObytes from VM.k1_n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = LObytes.fromValues(kSelectorLOValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -454,7 +454,7 @@ void main() {
     test('PNbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = PNbytes.fromValues(kEvaluatorName, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -467,7 +467,7 @@ void main() {
     test('PNbytes from VM.k1_n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = PNbytes.fromValues(kSelectorPNValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -482,7 +482,7 @@ void main() {
     test('SHbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = SHbytes.fromValues(kCodeValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -495,7 +495,7 @@ void main() {
     test('SHbytes from VM.k1_n', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = SHbytes.fromValues(kSelectorSHValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -510,7 +510,7 @@ void main() {
     test('LTbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = LTbytes.fromValues(kPatientComments, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -525,7 +525,7 @@ void main() {
     test('STbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = STbytes.fromValues(kSelectorSTValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
@@ -540,7 +540,7 @@ void main() {
     test('FDbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 =
             FDbytes.fromValues(kOverallTemplateSpatialTolerance, floatList0);
         log.debug('e0: $e0');
@@ -553,7 +553,7 @@ void main() {
     test('FDbytes from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final floatList0 = rng.float64List(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = FDbytes.fromValues(kSelectorFDValue, floatList0);
 /*
         final s = fd1.toString();
@@ -577,7 +577,7 @@ void main() {
         final floatList0 = rng.float32List(1, 1);
         //final float32List0 = new Float32List.fromList(floatList0);
         //final bytes = float32List0.buffer.asByteData();
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = OFbytes.fromValues(kFloatPixelData, floatList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -589,7 +589,7 @@ void main() {
     test('OFbytes from VM.k1_n', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = OFbytes.fromValues(kSelectorOFValue, floatList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -603,7 +603,7 @@ void main() {
     test('UTbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = UTbytes.fromValues(kSelectorUTValue, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -614,11 +614,11 @@ void main() {
   });
 
   group('ATbytes', () {
-    system.level = Level.debug;
+    global.level = Level.debug;
     test('ATbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ATbytes.fromValues(kDimensionIndexPointer, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -630,7 +630,7 @@ void main() {
     test('ATbytes from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint32List(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ATbytes.fromValues(kSelectorATValue, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -641,11 +641,11 @@ void main() {
   });
 
   group('ULbytes', () {
-    system.level = Level.debug;
+    global.level = Level.debug;
     test('ULbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ULbytes.fromValues(kRegionFlags, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -657,7 +657,7 @@ void main() {
     test('ULbytes from VM.k3', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(3, 3);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ULbytes.fromValues(kGridDimensions, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -669,7 +669,7 @@ void main() {
     test('ULbytes from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint32List(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = ULbytes.fromValues(kSelectorULValue, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -683,7 +683,7 @@ void main() {
     test('USbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = USbytes.fromValues(kContrastFrameAveraging, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -693,10 +693,10 @@ void main() {
     });
 
     test('USbytes from VM.k2', () {
-      system.level = Level.debug;
+      global.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(2, 2);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = USbytes.fromValues(kRelativeTime, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -708,7 +708,7 @@ void main() {
     test('USbytes from VM.k3', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(3, 3);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = USbytes.fromValues(kEscapeTriplet, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -720,7 +720,7 @@ void main() {
     test('USbytes from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = USbytes.fromValues(kSelectorUSValue, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -731,11 +731,11 @@ void main() {
   });
 
   group('SSbytes', () {
-    system.level = Level.debug;
+    global.level = Level.debug;
     test('SSbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = SSbytes.fromValues(kTIDOffset, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -747,7 +747,7 @@ void main() {
     test('SSbytes from VM.k2', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(2, 2);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = SSbytes.fromValues(kOverlayOrigin, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
@@ -759,7 +759,7 @@ void main() {
     test('SSbytes from VM.k1_n', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.int16List(1, i);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final e0 = SSbytes.fromValues(kSelectorSSValue, vList0);
         log.debug('e0: $e0');
 

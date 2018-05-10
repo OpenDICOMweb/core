@@ -213,14 +213,13 @@ void main() {
     });
 
     test('Bad Times, throwOnError = true', () {
-      system.throwOnError = true;
+      global.throwOnError = true;
       log.debug('throwOnError: $throwOnError');
       for (var i in badDcmTimesInt) {
-        expect(
-            () => new Time(i), throwsA(const isInstanceOf<InvalidTimeError>()));
+        expect(() => new Time(i), throwsA(const isInstanceOf<DateTimeError>()));
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       log.debug('throwOnError: $throwOnError');
       for (var i in badDcmTimesInt) {
         final t = new Time(i);
@@ -229,7 +228,7 @@ void main() {
     });
 
     test('Bad Times, throwOnError = false', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       log.debug('throwOnError: $throwOnError');
 
       for (var i in badDcmTimesInt) {
@@ -267,7 +266,6 @@ void main() {
       final t0 = Time.now;
       final us = t0.inMicroseconds;
       print('t0: $t0 us: $us');
-
     });
 
     test('==', () {
@@ -405,7 +403,7 @@ void main() {
       for (var h = 1; h < 24; h++) {
         for (var m = 1; m < 60; m++) {
           for (var s = 1; s < 60; s++) {
-            if(s + 1 < 60) {
+            if (s + 1 < 60) {
               final t0 = new Time(h, m, s);
               final t1 = new Time(h, m, s + 1);
 

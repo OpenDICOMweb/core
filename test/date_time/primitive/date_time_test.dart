@@ -86,22 +86,22 @@ void main() {
     dcmDTMInvalid = dcmDateTimeInMicroseconds(2017, 1, 2, 25, 29, 24, 48, 1000);
     expect(dcmDTMInvalid, isNull);
 
-    system.throwOnError = true;
+    global.throwOnError = true;
     expect(() => dcmDateTimeInMicroseconds(1978, 13, 12, 05, 29, 24, 48, 456),
-        throwsA(equals(const isInstanceOf<InvalidDateError>())));
+        throwsA(equals(const isInstanceOf<DateTimeError>())));
 
     expect(
         () => dcmDateTimeInMicroseconds(
             kMinYear - 1, 11, 12, 05, 29, 24, 48, 456),
-        throwsA(equals(const isInstanceOf<InvalidDateError>())));
+        throwsA(equals(const isInstanceOf<DateTimeError>())));
 
     expect(
         () => dcmDateTimeInMicroseconds(
             kMaxYear + 1, 10, 12, 05, 29, 24, 48, 456),
-        throwsA(equals(const isInstanceOf<InvalidDateError>())));
+        throwsA(equals(const isInstanceOf<DateTimeError>())));
 
     expect(() => dcmDateTimeInMicroseconds(1978, 12, 12, 25, 29, 24, 48, 456),
-        throwsA(equals(const isInstanceOf<InvalidTimeError>())));
+        throwsA(equals(const isInstanceOf<DateTimeError>())));
   });
 
   test('isValidDateTime', () {
@@ -173,7 +173,7 @@ void main() {
     final dt2 =
         dateTimeString(1998, 11, 15, 23, 10, 45, 05, 10, asDicom: false);
     log.debug(dt2);
-    expect(dt2, '1998-11-15${system.dateTimeSeparator}23:10:45.005010');
+    expect(dt2, '1998-11-15${global.dateTimeSeparator}23:10:45.005010');
   });
 
   test('dateTimeMicrosecondsToString', () {
@@ -206,7 +206,7 @@ void main() {
               final hx = digits2(h);
               final mmx = digits2(mm);
 
-              final inet = '$y-$mx-$dx${system.dateTimeSeparator}'
+              final inet = '$y-$mx-$dx${global.dateTimeSeparator}'
                   '$hx:$mmx:$s.$ms$us';
               log.debug('dt0: $dt0, $inet');
               expect(dt0 == inet, true);
@@ -218,16 +218,16 @@ void main() {
 
     final dt0 = inetDateTimeString(1998, 11, 15, 23, 10, 45, 05, 10);
     log.debug(dt0);
-    expect(dt0, '1998-11-15${system.dateTimeSeparator}23:10:45.005010');
+    expect(dt0, '1998-11-15${global.dateTimeSeparator}23:10:45.005010');
 
     final dt1 =
         inetDateTimeString(1998, 11, 15, 23, 10, 45, 0, 0, truncate: true);
     log.debug(dt1);
-    expect(dt1, '1998-11-15${system.dateTimeSeparator}23:10:45');
+    expect(dt1, '1998-11-15${global.dateTimeSeparator}23:10:45');
 
     final dt2 = inetDateTimeString(1998, 11, 15, 23, 10, 45, 05, 10);
     log.debug(dt2);
-    expect(dt2, '1998-11-15${system.dateTimeSeparator}23:10:45.005010');
+    expect(dt2, '1998-11-15${global.dateTimeSeparator}23:10:45.005010');
   });
 
   test('dtToDateString', () {
@@ -302,7 +302,7 @@ void main() {
               final dx = digits2(d);
               final hx = digits2(h);
               final mmx = digits2(mm);
-              final dtSep = system.dateTimeSeparator;
+              final dtSep = global.dateTimeSeparator;
               log.debug('''
 dt0: 
   $dt0 
@@ -343,7 +343,7 @@ dt0:
               final dx = digits2(d);
               final hx = digits2(h);
               final mmx = digits2(mm);
-              final dtSep = system.dateTimeSeparator;
+              final dtSep = global.dateTimeSeparator;
               log.debug('''
 System: $dt0 
   Test: $y-$mx-$dx$dtSep$hx:$mmx:$s.$ms$us\Z''');
@@ -379,7 +379,7 @@ System: $dt0
   });
 
   test('dicomDateTimeString', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
 
     for (var y = 1999; y < 2000; y++) {
       for (var m = 1; m <= 12; m++) {

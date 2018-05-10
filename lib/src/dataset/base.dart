@@ -9,7 +9,6 @@
 
 export 'package:core/src/dataset/base/dataset.dart';
 export 'package:core/src/dataset/base/ds_bytes.dart';
-export 'package:core/src/dataset/base/errors.dart';
 export 'package:core/src/dataset/base/group/creators.dart';
 export 'package:core/src/dataset/base/group/group_base.dart';
 export 'package:core/src/dataset/base/group/private_group.dart';
@@ -20,6 +19,7 @@ export 'package:core/src/dataset/base/item.dart';
 export 'package:core/src/dataset/base/root_dataset.dart';
 export 'package:core/src/dataset/base/summary.dart';
 export 'package:core/src/element/base/tag_utils.dart';
+export 'package:core/src/error/dataset_errors.dart';
 
 
 // TODO: needed

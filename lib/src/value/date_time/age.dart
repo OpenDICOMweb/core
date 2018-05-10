@@ -7,16 +7,11 @@
 //  See the AUTHORS file for other contributors.
 //
 
+import 'package:core/src/error.dart';
 import 'package:core/src/utils/date_time.dart';
-import 'package:core/src/utils/errors.dart';
-import 'package:core/src/utils/issues.dart';
 import 'package:core/src/utils/parser.dart';
 import 'package:core/src/utils/string/decimal.dart';
-import 'package:core/src/utils/string/errors.dart';
 import 'package:core/src/value/date_time/primitives/age.dart';
-
-//TODO: convert age string to duration
-// TODO: before V0.9.0 document
 
 bool _inRange(int v, int min, int max) => v != null && v >= min && v <= max;
 bool _inAgeRange(int v) => _inRange(v, kMinAge, kMaxAge);
@@ -115,7 +110,7 @@ class Age {
       return true;
     } else {
       if (issues != null) issues.add('Invalid Age String: "$s"');
-      return badAgeString(s);
+      return invalidAgeString(s);
     }
   }
 
@@ -125,7 +120,7 @@ class Age {
     if (_inWeekRange(count)) return weeks;
     if (_inMonthRange(count)) return months;
     if (_inYearRange(count)) return years;
-    return throw new InternalError('Invalid number of days: $count');
+    return throw new GeneralError('Invalid number of days: $count');
   }
 
   /// Returns a valid [Age] [String] in highest precision.

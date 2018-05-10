@@ -14,10 +14,11 @@ import 'package:collection/collection.dart';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/element/base/vf_fragments.dart';
+import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -94,12 +95,17 @@ abstract class IntBase extends Element<int> {
   /// [vList] is valid for [tag]..
   static bool isValidValues(Tag tag, Iterable<int> vList, Issues issues,
       int minValue, int maxValue, int maxLength) {
-    assert(vList != null);
-    if (!doTestValidity || vList.isEmpty) return true;
+    if (!doTestElementValidity || vList.isEmpty) return true;
     var ok = true;
     if (!Element.isValidVListLength(tag, vList, issues, maxLength)) ok = false;
-    for (var v in vList) ok = isValidValue(v, issues, minValue, maxValue);
-    return (ok) ? true : invalidValues(vList, issues: issues);
+    // Urgent: change test that pass null to unconditionally catch error
+    // i.e. even if throwOnError is false
+//    assert(vList != null);
+    if (vList == null) return false;
+    for (var v in vList) {
+      if (ok && !isValidValue(v, issues, minValue, maxValue)) ok = false;
+    }
+    return (ok) ? true : invalidValues(vList, issues);
   }
 }
 
@@ -731,11 +737,11 @@ abstract class OBMixin {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
+      vList != null && (doTestElementValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag, [Issues issues]) {
     if (_isValidVRIndex(tag.vrIndex)) return true;
-    Tag.invalidTag(tag, issues, OB);
+    invalidTag(tag, issues, OB);
     return false;
   }
 
@@ -799,7 +805,7 @@ abstract class UNMixin {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
+      vList != null && (doTestElementValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -988,7 +994,7 @@ abstract class OWMixin {
   static const int kMaxValue = (1 << kSizeInBits) - 1;
 
   static bool isValidArgs(Tag tag, Iterable<int> vList) =>
-      vList != null && (doTestValidity ? isValidValues(tag, vList) : true);
+      vList != null && (doTestElementValidity ? isValidValues(tag, vList) : true);
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 

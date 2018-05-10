@@ -16,7 +16,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'element/int16_test', level: Level.info);
   final rng = new RNG(1);
-  system.throwOnError = false;
+  global.throwOnError = false;
 
   group('SSTag', () {
     const int16VMinMax = const [kInt16Min, kInt16Max];
@@ -61,7 +61,7 @@ void main() {
     });
 
     test('SS hasValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ss0 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
       final ss1 = new SStag(PTag.kTIDOffset, int16Min);
       expect(ss0.hasValidValues, true);
@@ -72,7 +72,7 @@ void main() {
       expect(ss2.hasValidValues, true);
       expect(ss3.hasValidValues, true);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ss4 = new SStag(PTag.kSelectorSSValue, []);
       expect(ss4.hasValidValues, true);
       expect(ss4.values, equals(<int>[]));
@@ -91,22 +91,22 @@ void main() {
       final ss3 = new SStag(PTag.kTagAngleSecondAxis, [rng.nextInt32]);
       expect(ss3, isNull);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ss4 = new SStag(PTag.kOCTZOffsetCorrection, int16Min);
       final int32List0 = rng.int32List(1, 1);
       ss4.values = int32List0;
       expect(ss4.hasValidValues, false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => ss4.hasValidValues,
           throwsA(const isInstanceOf<InvalidValuesError>()));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ss5 = new SStag(PTag.kSelectorSSValue, null);
       log.debug('ss5: $ss5');
       expect(ss5, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new SStag(PTag.kSelectorSSValue, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -178,7 +178,7 @@ void main() {
     });
 
     test('SS hashCode and == good values random', () {
-      system.throwOnError = true;
+      global.throwOnError = true;
       final rng = new RNG(1);
       List<int> int16list0;
 
@@ -250,7 +250,7 @@ void main() {
     });
 
     test('SS fromBytes good values random', () {
-      system.level = Level.debug;
+      global.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         final intList0 = rng.int16List(1, 1);
         final bytes0 = new Bytes.typedDataView(intList0);
@@ -266,7 +266,7 @@ void main() {
     });
 
     test('SS fromBytes bad values random', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final int16list1 = rng.int16List(2, 2);
         final bytes0 = Int16.toBytes(int16list1);
@@ -309,11 +309,11 @@ void main() {
 
     test('SS fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         print('throwOnError: $throwOnError');
         final intList0 = rng.int16List(1, 10);
         print('$i: ssList: $intList0');
-        system.throwOnError = false;
+        global.throwOnError = false;
         // Urgent Sharath: why was this converting to String first?
         // DicomBytes.toAscii does padding
         // final bytes0 = DicomBytes.toAscii(intList0.toString());
@@ -321,7 +321,7 @@ void main() {
         print('throwOnError: $throwOnError');
         final ss0 = SStag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ss0, isNull);
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SStag.fromBytes(PTag.kSelectorFDValue, bytes0),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
@@ -349,7 +349,7 @@ void main() {
     });
 
     test('SS checkValues', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ss0 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
       expect(ss0.checkValues(ss0.values), true);
 
@@ -437,11 +437,11 @@ void main() {
     test('SS make bad values', () {
       for (var i = 0; i < 10; i++) {
         final int16list0 = rng.int16List(2, 2);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final make0 = SStag.fromValues(PTag.kTagAngleSecondAxis, int16list0);
         expect(make0, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SStag.fromValues(PTag.kTagAngleSecondAxis, int16list0),
             throwsA(const isInstanceOf<InvalidValuesError>()));
       }
@@ -541,7 +541,7 @@ void main() {
     final invalidVList = rng.int16List(SS.kMaxLength + 1, SS.kMaxLength + 1);
 
     test('SS isValidVListLength VM.k1 good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.int16List(1, 1);
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
@@ -561,11 +561,11 @@ void main() {
         final validMinVList = rng.int16List(2, i + 2);
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
         for (var tag in ssTags0) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(SS.isValidVListLength(tag, validMinVList), false);
           expect(SS.isValidVListLength(tag, invalidVList), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => SS.isValidVListLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => SS.isValidVListLength(tag, validMinVList),
@@ -577,7 +577,7 @@ void main() {
     test('SS isValidVListLength VM.k2 good values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.int16List(2, 2);
-        system.throwOnError = false;
+        global.throwOnError = false;
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
         for (var tag in ssTags1) {
           expect(SS.isValidVListLength(tag, validMinVList), true);
@@ -594,11 +594,11 @@ void main() {
       for (var i = 2; i < 10; i++) {
         final validMinVList = rng.int16List(3, i + 1);
         for (var tag in ssTags1) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(SS.isValidVListLength(tag, validMinVList), false);
           expect(SS.isValidVListLength(tag, invalidVList), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => SS.isValidVListLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
           expect(() => SS.isValidVListLength(tag, validMinVList),
@@ -621,7 +621,7 @@ void main() {
     });
 
     test('SS isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isValidTag(PTag.kSelectorSSValue), true);
       expect(SS.isValidTag(PTag.kZeroVelocityPixelValue), true);
       expect(SS.isValidTag(PTag.kGrayLookupTableData), true);
@@ -632,25 +632,25 @@ void main() {
     });
 
     test('SS isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isValidTag(PTag.kSelectorUSValue), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SS.isValidTag(PTag.kSelectorUSValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SS.isValidTag(tag), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SS.isValidTag(tag),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
     test('SS isNotValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isNotValidTag(PTag.kSelectorSSValue), false);
       expect(SS.isNotValidTag(PTag.kZeroVelocityPixelValue), false);
       expect(SS.isNotValidTag(PTag.kGrayLookupTableData), false);
@@ -661,121 +661,121 @@ void main() {
     });
 
     test('SS isNotValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isNotValidTag(PTag.kSelectorUSValue), true);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SS.isNotValidTag(PTag.kSelectorUSValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SS.isNotValidTag(tag), true);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SS.isNotValidTag(tag),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
     test('SS isValidVR good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isValidVRIndex(kSSIndex), true);
       for (var tag in ssTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SS.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('SS isValidVR bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isValidVRIndex(kAEIndex), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SS.isValidVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SS.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SS.isValidVRIndex(kAEIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('SS checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.checkVRIndex(kSSIndex), kSSIndex);
 
       for (var tag in ssTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SS.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('SS checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.checkVRIndex(kAEIndex), isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SS.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SS.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SS.checkVRIndex(kAEIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('SS isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isValidVRIndex(kSSIndex), true);
 
       for (var tag in ssTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SS.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('SS isValidVRIndex bad values', () {
       expect(SS.isValidVRIndex(kCSIndex), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SS.isValidVRIndex(kCSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SS.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SS.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('SS isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isValidVRCode(kSSCode), true);
       for (var tag in ssTags0) {
         expect(SS.isValidVRCode(tag.vrCode), true);
       }
     });
     test('SS isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SS.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SS.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SS.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
@@ -787,7 +787,7 @@ void main() {
     });
 
     test('SS isValidVFLength bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SS.isValidVFLength(SS.kMaxVFLength + 1), false);
       expect(SS.isValidVFLength(-1), false);
     });
@@ -803,7 +803,7 @@ void main() {
     });
 
     test('SS isValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       const int16MinMax = const [kInt16Min, kInt16Max];
       const int16Min = const [kInt16Min];
       const int16Max = const [kInt16Max];
@@ -822,7 +822,7 @@ void main() {
     });
 
     test('SS isValidValues bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       const int16MaxPlus = const [kInt16Max + 1];
       const int16MinMinus = const [kInt16Min - 1];
 
@@ -834,7 +834,7 @@ void main() {
       expect(
           SS.isValidValues(PTag.kVisualAcuityModifiers, int16MaxPlus), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SS.isValidValues(PTag.kTagAngleSecondAxis, int16MaxPlus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => SS.isValidValues(PTag.kTagAngleSecondAxis, int16MinMinus),
@@ -842,7 +842,7 @@ void main() {
     });
 
     test('SS isValidValues bad values length', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       const int16MinMax = const [kInt16Min, kInt16Max];
       const int16MinMaxPlus = const [kInt16Min, kInt16Max, kInt8Min];
       const int16Min = const [kInt16Min];
@@ -857,7 +857,7 @@ void main() {
       expect(SS.isValidValues(PTag.kVisualAcuityModifiers, int16MinMaxPlus),
           false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SS.isValidValues(PTag.kTagAngleSecondAxis, int16MinMax),
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => SS.isValidValues(PTag.kVisualAcuityModifiers, int16Max),
@@ -899,7 +899,7 @@ void main() {
     });
 
     test('SS toBytes', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final int16list0 = rng.int16List(1, 1);
         final int16List1 = new Int16List.fromList(int16list0);
@@ -918,15 +918,15 @@ void main() {
       const int32Max = const [kInt32Max];
       expect(Int16.toBytes(int32Max), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => Int16.toBytes(int32Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('Int16Base listToByteData good values', () {
-      system.level = Level.info;
+      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final int16list0 = rng.int16List(1, 1);
         final bd0 = int16list0.buffer.asByteData();
         final lBd0 = Int16.toByteData(int16list0);
@@ -954,7 +954,7 @@ void main() {
 
     test('Int16Base listToByteData bad values', () {
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final int16list0 = rng.int16List(1, 1);
         final bd0 = int16list0.buffer.asByteData();
         final lBd1 = Int16.toByteData(int16list0, asView: false);
@@ -988,7 +988,7 @@ void main() {
       const int32Min = const [kInt32Min];
       expect(Int16.toByteData(int32Min), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => Int16.toByteData(int32Max),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -1023,7 +1023,7 @@ void main() {
     });
 
     test('SS to/from Base64', () {
-      system.level = Level.info;
+      global.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final int16list0 = rng.int16List(0, i);
 //        final int16List1 = new Int16List.fromList(int16list0);

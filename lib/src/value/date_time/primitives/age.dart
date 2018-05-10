@@ -7,11 +7,11 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/system/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/utils/hash/sha256.dart' as sha256;
 import 'package:core/src/utils/string.dart';
-import 'package:core/src/value/date_time/primitives/errors.dart';
+import 'package:core/src/error/date_time_errors.dart';
 
 // DICOM Age (AS) constants.
 
@@ -43,12 +43,11 @@ const int kAgeDaysInYear = 365;
 /// The maximum Age that can be expressed in years (nnnY).
 const int kMaxAgeYearsInDays = kMaxAgeInteger * kAgeDaysInYear;
 
-
 bool isValidAge(int nDays) => nDays >= kMinAge && nDays <= kMaxAge;
 
-int randomAgeInDays(int nDays) => System.rng.nextInt(kMaxAgeInDays);
+int randomAgeInDays(int nDays) => Global.rng.nextInt(kMaxAgeInDays);
 
-int hashAgeInDays(int nDays) => system.hash(nDays) % kMaxAgeInDays;
+int hashAgeInDays(int nDays) => global.hash(nDays) % kMaxAgeInDays;
 
 int sha256AgeInDays(int nDays) => sha256.int63(nDays) % kMaxAgeInDays;
 
@@ -58,7 +57,7 @@ String sha256AgeAsString(int nDays) => ageToString(sha256AgeInDays(nDays));
 /// The [String] is in the format: 'dddt', where 'd' is a decimal
 /// digit and 't' is an age token, one of "D", "W", "M", "Y".
 String ageToString(int nDays) {
-  if (nDays < 0 || nDays > kMaxAge) return invalidAgeError(nDays);
+  if (nDays < 0 || nDays > kMaxAge) return badAge(nDays);
 
   String s;
   if (nDays >= 0 && nDays <= kMaxAgeInDays) {
@@ -81,12 +80,15 @@ String _daysToString(int nDays, int units, String token) {
 }
 
 String canonicalAgeString(int nDays) {
-	if (nDays < 0 || nDays > kMaxAge) return null;
-	if (nDays <= kMaxAgeInDays) return _daysToString(nDays, kMaxAgeInDays,'D');
-	if (nDays <= kMaxAgeWeeksInDays) return _daysToString(nDays, kMaxAgeWeeksInDays,'D');
-	if (nDays <= kMaxAgeMonthsInDays) return _daysToString(nDays, kMaxAgeMonthsInDays,'D');
-	if (nDays <= kMaxAgeYearsInDays) return _daysToString(nDays, kMaxAgeYearsInDays,'D');
-	return null;
+  if (nDays < 0 || nDays > kMaxAge) return null;
+  if (nDays <= kMaxAgeInDays) return _daysToString(nDays, kMaxAgeInDays, 'D');
+  if (nDays <= kMaxAgeWeeksInDays)
+    return _daysToString(nDays, kMaxAgeWeeksInDays, 'D');
+  if (nDays <= kMaxAgeMonthsInDays)
+    return _daysToString(nDays, kMaxAgeMonthsInDays, 'D');
+  if (nDays <= kMaxAgeYearsInDays)
+    return _daysToString(nDays, kMaxAgeYearsInDays, 'D');
+  return null;
 }
 
 //Flush if not used by V0.9.0
@@ -104,7 +106,7 @@ String ageInDaysToString(int nDays) {
   } else if (nDays <= kMaxAgeYearsInDays) {
     s = '${digits3(nDays ~/ 365)}Y';
   } else {
-    return invalidAgeError(nDays);
+    return badAge(nDays);
   }
   // log.debug('nDays: $nDays Age String: "$s"');
   return s;

@@ -11,6 +11,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
+import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -56,7 +57,7 @@ class AEtag extends AE with TagElement<String> {
   factory AEtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (AE.isValidArgs(tag, vList))
           ? new AEtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   AEtag._(this.tag, this.values);
 
@@ -86,7 +87,7 @@ class CStag extends CS with TagElement<String> {
   factory CStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (CS.isValidArgs(tag, vList))
           ? new CStag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   CStag._(this.tag, this.values);
 
@@ -116,7 +117,7 @@ class DStag extends DS with TagElement<String> {
   factory DStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (DS.isValidArgs(tag, vList))
           ? new DStag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   DStag._(this.tag, this.values);
 
@@ -146,7 +147,7 @@ class IStag extends IS with TagElement<String> {
   factory IStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (IS.isValidArgs(tag, vList))
           ? new IStag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   IStag._(this.tag, this.values);
 
@@ -177,7 +178,7 @@ class LOtag extends LO with TagElement<String> {
   factory LOtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LO.isValidArgs(tag, vList))
           ? new LOtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   LOtag._(this.tag, this.values);
 
@@ -207,7 +208,7 @@ class PCtag extends PC with TagElement<String> {
   factory PCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LO.isValidArgs(tag, vList))
           ? new PCtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   PCtag._(this.tag, this.values);
 
@@ -259,7 +260,7 @@ class LTtag extends LT with TagElement<String> {
   factory LTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LT.isValidArgs(tag, vList))
           ? new LTtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   LTtag._(this.tag, this.values);
 
@@ -290,7 +291,7 @@ class PNtag extends PN with TagElement<String> {
   factory PNtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (PN.isValidArgs(tag, vList))
           ? new PNtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   PNtag._(this.tag, this.values);
 
@@ -321,7 +322,7 @@ class SHtag extends SH with TagElement<String> {
   factory SHtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (SH.isValidArgs(tag, vList))
           ? new SHtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   SHtag._(this.tag, this.values);
 
@@ -352,7 +353,7 @@ class STtag extends ST with TagElement<String> {
   factory STtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (ST.isValidArgs(tag, vList))
           ? new STtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   STtag._(this.tag, this.values);
 
@@ -383,7 +384,7 @@ class UCtag extends UC with TagElement<String> {
   factory UCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (UC.isValidArgs(tag, vList))
           ? new UCtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   UCtag._(this.tag, this.values);
 
@@ -412,20 +413,20 @@ class UItag extends UI with TagElement<String> {
   factory UItag(Tag tag, Iterable<String> vList, {bool validate = true}) {
     vList ??= kEmptyStringList;
     return (validate && !UI.isValidArgs(tag, vList))
-        ? badValues(vList, tag: tag)
+        ? badValues(vList, null, tag)
         : new UItag._(tag, vList, null);
   }
 
   factory UItag.fromStrings(Tag tag, Iterable<String> sList,
                             {bool validate = true}) =>
       (sList == null || (validate && !UI.isValidArgs(tag, sList)))
-      ? badValues(sList, tag: tag)
+      ? badValues(sList, null, tag)
       : new UItag._(tag, sList, null);
 
   factory UItag.fromUids(Tag tag, Iterable<Uid> vList,
           {bool validate = true}) =>
       (vList == null || (validate && !UI.isValidUidArgs(tag, vList)))
-          ? badValues(vList, tag: tag)
+          ? badValues(vList, null, tag)
           : new UItag._(tag, null, vList);
 
   UItag._(this.tag, this._values, this._uids);
@@ -468,7 +469,7 @@ class URtag extends UR with TagElement<String> {
   factory URtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (UR.isValidArgs(tag, vList))
           ? new URtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   URtag._(this.tag, this.values);
 
@@ -499,7 +500,7 @@ class UTtag extends UT with TagElement<String> {
   factory UTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (UT.isValidArgs(tag, vList))
           ? new UTtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   UTtag._(this.tag, this.values);
 
@@ -531,7 +532,7 @@ class AStag extends AS with TagElement<String> {
   factory AStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (AS.isValidArgs(tag, vList))
           ? new AStag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   AStag._(this.tag, this.values);
 
@@ -577,7 +578,7 @@ class DAtag extends DA with TagElement<String> {
   factory DAtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (DA.isValidArgs(tag, vList))
           ? new DAtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   DAtag._(this.tag, this.values);
 
@@ -611,7 +612,7 @@ class DTtag extends DT with TagElement<String> {
   factory DTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (DT.isValidArgs(tag, vList))
           ? new DTtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   DTtag._(this.tag, this.values);
 
@@ -646,7 +647,7 @@ class TMtag extends TM with TagElement<String> {
   factory TMtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (TM.isValidArgs(tag, vList))
           ? new TMtag._(tag, vList)
-          : badValues(vList, tag: tag);
+          : badValues(vList, null, tag);
 
   TMtag._(this.tag, this.values);
 

@@ -10,8 +10,8 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/error/issues.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/issues.dart';
 
 abstract class MetaElementMixin  {
   Element get e;

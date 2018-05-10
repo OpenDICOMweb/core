@@ -30,11 +30,11 @@ void main() {
 
   final float32List = new Float32List.fromList(doubleList);
 
-  system.throwOnError = false;
+  global.throwOnError = false;
 
   // group('FL Tests', () {
   test('FL hasValidValues: good values', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
     log.debug('vList: $float32List');
     final fl0 = FLbytes.fromValues(kVectorAccuracy, doubleList);
     expect(fl0.hasValidValues, true);
@@ -92,7 +92,7 @@ void main() {
   // test('FL null as values', () {});
 
   test('FL hashCode and == random', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
     final rng = new RNG(1);
 
     List<double> floatList0;
@@ -152,7 +152,7 @@ void main() {
   });
 
   test('Create FL.isValidValues', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
     for (var i = 0; i <= doubleList.length - 1; i++) {
       final fl0 =
           FLbytes.fromValues(kExaminedBodyThickness, <double>[doubleList[i]]);

@@ -33,7 +33,7 @@ void main() {
       log.debug(activeStudies);
       expect(subject4 == subject0, true);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final subject5 = new Patient('A001', subjectUid0, rootDataset);
       expect(() => activeStudies.addPatientIfAbsent(subject5),
           throwsA(const isInstanceOf<DuplicateEntityError>()));
@@ -74,7 +74,7 @@ void main() {
       subject0.putIfAbsent(study0);
       log.debug(subject0);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       //Adding duplicate Entity
       expect(() => subject0.putIfAbsent(study1),
           throwsA(const isInstanceOf<DuplicateEntityError>()));
@@ -140,12 +140,12 @@ void main() {
       expect(instance0.hashCode == instance1.hashCode, false);
       expect(instance0.uid, isNotNull);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       //Adding Entity
       series0.putIfAbsent(instance0);
       log.debug(series0);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       //Adding duplicate Entity
       expect(() => series0.putIfAbsent(instance1),
           throwsA(const isInstanceOf<DuplicateEntityError>()));

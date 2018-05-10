@@ -12,8 +12,8 @@ import 'package:core/server.dart';
 void main() {
 
   print('${sdk.info}');
-  print('system: $system');
+  print('system: $global');
   Server.initialize(name: 'Test');
-  print('system: $system');
+  print('system: $global');
 
 }

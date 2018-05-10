@@ -9,8 +9,8 @@
 
 import 'dart:math';
 
-import 'package:core/src/system/system.dart';
-import 'package:core/src/utils/issues.dart';
+import 'package:core/src/error/issues.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/parser.dart';
 
 const int k1KB = 1024;
@@ -79,7 +79,6 @@ const int kDartMaxSMUint = 0x3FFFFFFFFFFFFFFF;
 final int kMin63BitInt = -pow(2, 62);
 final int kMax63BitInt = pow(2, 62) - 1;
 
-//TODO: reDoc
 /// Return [value], if it satisfies [min] <= [value] <= [max];
 /// otherwise, throws a [RangeError].
 int checkRange(int value, int min, int max, {bool throwOnError = false}) {
@@ -131,11 +130,11 @@ const int kMaxIntegerStringHashValue = 99999999999;
 
 /// Returns the hash of a DICOM IS Element value
 String hashIntegerString(String s, {Issues issues}) {
-  final i = parseInt(s);
-  if (i < kMinIntegerStringValue || i > kMaxIntegerStringValue)
+  final i = tryParseInt(s);
+  if (i == null || i < kMinIntegerStringValue || i > kMaxIntegerStringValue)
     return parseError('Invalid Integer String: $s', issues);
   final sign = (i.isOdd) ? -1 : 1;
-  final hash = sign * System.rng.nextInt(kMaxIntegerStringHashValue);
+  final hash = sign * Global.rng.nextInt(kMaxIntegerStringHashValue);
   return hash.toString();
 }
 

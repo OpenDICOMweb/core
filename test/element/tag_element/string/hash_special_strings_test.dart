@@ -21,9 +21,9 @@ void main() {
 
     final sha2 = Sha256.stringList(stringList1);
     log.debug('stringList1: $stringList1;, sha2: $sha2');
-    system.throwOnError = true;
+    global.throwOnError = true;
     expect(() => ui0.sha256,
-        throwsA(const isInstanceOf<Sha256UnsupportedError>()));
+        throwsA(const isInstanceOf<UnsupportedError>()));
     expect(() => ui0.hash, throwsA(const isInstanceOf<UnsupportedError>()));
   });
 

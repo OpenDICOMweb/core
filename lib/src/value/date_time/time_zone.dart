@@ -7,9 +7,9 @@
 //  See the AUTHORS file for other contributors.
 //
 
+import 'package:core/src/error/date_time_errors.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/date_time.dart';
-import 'package:core/src/value/date_time/primitives/errors.dart';
 import 'package:core/src/value/date_time/primitives/time_zone.dart';
 
 typedef TimeZone OnTimeZoneError(int sign, int h, int m);
@@ -107,7 +107,7 @@ class TimeZone implements Comparable<TimeZone> {
 
   static TimeZone microsecondsToTimeZone(int us) {
     final index = kValidTZMicroseconds.indexOf(us);
-    return (index == -1) ? invalidTimeMicrosecondsError(us) : kMembers[index];
+    return (index == -1) ? badTimeMicroseconds(us) : kMembers[index];
   }
 
   static TimeZone parse(String s,

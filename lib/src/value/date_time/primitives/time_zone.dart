@@ -7,10 +7,10 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/system/system.dart';
+import 'package:core/src/error/date_time_errors.dart';
+import 'package:core/src/error/issues.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/date_time.dart';
-import 'package:core/src/utils/issues.dart';
-import 'package:core/src/value/date_time/primitives/errors.dart';
 import 'package:core/src/value/date_time/primitives/time.dart';
 
 /// Returns the total number of minutes from UTC.
@@ -138,8 +138,8 @@ String timeZoneToString(int sign, int hour, int minute, {bool asDicom = true}) {
 /// is always zero, and the hash of the hour values is in the range:
 /// ```[kMinTimeZoneHour] <= hash <= [kMaxTimeZoneHour]```.
 int hashTimeZoneMicroseconds(int us) {
-  if (!isValidTimeZoneMicroseconds(us)) return invalidTimeMicrosecondsError(us);
-  final h = system.hash(us) % (kTZLength - 1);
+  if (!isValidTimeZoneMicroseconds(us)) return badTimeMicroseconds(us);
+  final h = global.hash(us) % (kTZLength - 1);
   return kValidTZMicroseconds[h];
 }
 
@@ -148,7 +148,7 @@ int hashTimeZoneMicroseconds(int us) {
 final int kTZLength = kValidDcmTZStrings.length;
 
 int tzIndexHash(int index) {
-  var hIndex = system.hash(index) % (kTZLength - 1);
+  var hIndex = global.hash(index) % (kTZLength - 1);
   if (hIndex == index) hIndex = (hIndex - kTZLength).abs();
   if (hIndex == -1) log.error('Invalid TZ Hash Index: $hIndex');
   return hIndex;
@@ -245,7 +245,7 @@ String hashTZString(String s, {int start = 0, int end, bool asDicom = true}) =>
     (asDicom) ? dcmTZStringHash(s) : inetTZStringHash(s);
 
 int getRandomTimeZoneIndex() =>
-    System.rng.nextInt(kValidTZMicroseconds.length - 1);
+    Global.rng.nextInt(kValidTZMicroseconds.length - 1);
 
 /// Return a new random (but valid) time zone string in the specified format.
 /// The default format is DICOM.

@@ -8,10 +8,10 @@
 //
 
 
-import 'package:core/src/system/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/utils/string.dart';
-import 'package:core/src/value/date_time/primitives/errors.dart';
+import 'package:core/src/error/date_time_errors.dart';
 
 /// A set of functions for handling dates in terms of
 /// [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time) days,
@@ -20,26 +20,26 @@ import 'package:core/src/value/date_time/primitives/errors.dart';
 /// The algorithms for [dateToEpochDay] and [epochDayToDate] come from
 /// http://howardhinnant.github.io/date_algorithms.html
 
-final int kMinYear = system.minYear;
-final int kMaxYear = system.maxYear;
+final int kMinYear = global.minYear;
+final int kMaxYear = global.maxYear;
 final int kMinYearInMicroseconds =
     dateToEpochDay(kMinYear, 1, 1) * kMicrosecondsPerDay;
 final int kMaxYearInMicroseconds =
     dateToEpochDay(kMaxYear, 1, 1) * kMicrosecondsPerDay;
 
-/// The minimum Unix Epoch day for this [System].
+/// The minimum Unix Epoch day for this [Global].
 final int kMinEpochDay = _dateToEpochDay(kMinYear, 1, 1);
 
-/// The maximum Unix Epoch day for this [System].
+/// The maximum Unix Epoch day for this [Global].
 final int kMaxEpochDay = _dateToEpochDay(kMaxYear, 12, 31);
 
-/// The minimum Unix Epoch day for this [System].
+/// The minimum Unix Epoch day for this [Global].
 final int kMinEpochMicrosecond = kMinEpochDay * kMicrosecondsPerDay;
 
-/// The maximum Unix Epoch day for this [System].
+/// The maximum Unix Epoch day for this [Global].
 final int kMaxEpochMicrosecond = ((kMaxEpochDay + 1) * kMicrosecondsPerDay) - 1;
 
-/// The total number of Epoch microseconds valid for this [System].
+/// The total number of Epoch microseconds valid for this [Global].
 final int kEpochSpan = kMaxEpochMicrosecond - kMinEpochMicrosecond;
 
 bool isValidEpochMicroseconds(int us) => _isValidEpochMicrosecond(us);
@@ -95,7 +95,7 @@ int toDateMicroseconds(int us) {
 //   - nm: normalized month number - March is 1
 int dateToEpochDay(int y, int m, int d) => (_isValidDate(y, m, d))
     ? _dateToEpochDay(y, m, d)
-    : invalidDateError(y, m, d);
+    : invalidDate(y, m, d);
 
 // This should only be called when y, m, and d are already validated.
 int _dateToEpochDay(int y, int m, int d) {
@@ -112,13 +112,13 @@ int _dateToEpochDay(int y, int m, int d) {
 
 int dateToEpochMicroseconds(int y, int m, int d) => (_isValidDate(y, m, d))
     ? _dateToEpochMicroseconds(y, m, d)
-    : invalidDateError(y, m, d);
+    : badDate(y, m, d);
 
 int _dateToEpochMicroseconds(int y, int m, int d) {
   final day = _dateToEpochDay(y, m, d);
   return (isValidEpochDay(day))
       ? day * kMicrosecondsPerDay
-      : invalidDateError(y, m, d);
+      : invalidDate(y, m, d);
 }
 
 bool isValidYearInMicroseconds(int us) =>
@@ -138,9 +138,9 @@ bool isValidYear(int year) => _isValidYear(year);
 bool _isValidYear(int y) => _inRange(y, kMinYear, kMaxYear);
 
 //TODO: remove if only used in tests
-/// Returns [day] if valid; otherwise, calls [invalidEpochDayError].
+/// Returns [day] if valid; otherwise, calls [invalidEpochDay].
 int checkEpochDay(int day) =>
-    _isValidEpochDay(day) ? day : invalidEpochDayError(day);
+    _isValidEpochDay(day) ? day : badEpochDay(day);
 
 typedef dynamic DateToObject(int y, int m, int d, {bool asDicom});
 
@@ -173,7 +173,7 @@ const int daysInEra = 146097;
 
 dynamic _epochDayToDate(int epochDay,
     {DateToObject creator, bool asDicom = true}) {
-  if (isNotValidEpochDay(epochDay)) return invalidEpochDayError(epochDay);
+  if (isNotValidEpochDay(epochDay)) return invalidEpochDay(epochDay);
   final z = epochDay + 719468;
   final era = ((z >= 0) ? z : z - 146096) ~/ 146097;
   final doe = z - (era * 146097);
@@ -250,7 +250,7 @@ int hashDateMicroseconds(int us, [int onError(int n)]) {
     return (onError == null) ? throw new Error() : onError(us);
   var v = us;
   do {
-    v = system.hash(v);
+    v = global.hash(v);
   } while ((v <= kMicrosecondsPerDay));
   return (v.isNegative)
       ? v % kMinYearInMicroseconds
@@ -259,7 +259,7 @@ int hashDateMicroseconds(int us, [int onError(int n)]) {
 
 /// Returns a new Epoch microsecond that is a hash of [epochDay].
 int hash(int epochDay, [int onError(int n)]) {
-  final v = system.hash(epochDay);
+  final v = global.hash(epochDay);
   return (v < 0) ? v % kMinEpochDay : v % kMaxEpochDay;
 }
 

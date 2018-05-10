@@ -40,7 +40,7 @@ void main() {
       log.debug('pcTag0: ${pcTag0.info}');
       expect(pcTag0.isValid, false);
       // Test for exception thrown
-      system.throwOnError = true;
+      global.throwOnError = true;
 
       expect(() => new LOtag(pcTag0, [name0, 'FOO']),
           throwsA(const isInstanceOf<InvalidValuesError>()));
@@ -57,11 +57,11 @@ void main() {
       log.debug('pcTag2: ${pcTag2.info}');
       expect(pcTag1.isValid, false);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final pc2 = new LOtag(pcTag1, [name2, '']);
       expect(pc2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new LOtag(pcTag1, [name2, '']),
           throwsA(const isInstanceOf<InvalidValuesError>()));
 
@@ -70,11 +70,11 @@ void main() {
       log.debug('pcTag3: ${pcTag3.info}');
       expect(pcTag1.isValid, false);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final pc3 = new LOtag(pcTag3, [name3, '']);
       expect(pc3, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new LOtag(pcTag3, [name3, '']),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -135,7 +135,7 @@ void main() {
     });
 
     test('Valid Agfa Private Data', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       const agfa = 'AGFA';
       final pcTag = PCTag.make(0x001900FF, kLOIndex, agfa);
       const value0 = 'Some Random Data String';

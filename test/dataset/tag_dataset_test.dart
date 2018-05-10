@@ -244,12 +244,12 @@ void main() {
       final noValuesElement = rds0[tag1.code];
       log.debug('No Values : $noValuesElement');
       expect(noValuesElement.values.isEmpty, true);
-      system.throwOnError = true;
+      global.throwOnError = true;
     });
   });
 
   group('DataSet methods - 2', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
 
     test('add', () {
       final rds = new TagRootDataset.empty();
@@ -257,11 +257,11 @@ void main() {
       final ae0 = new AEtag(PTag.kRetrieveAETitle, stringAEList0);
       final ae1 = new AEtag(PTag.kRetrieveAETitle, stringAEList0);
       final ae2 = new AEtag(PTag.kRetrieveAETitle, stringAEList0);
-      system.throwOnError = true;
+      global.throwOnError = true;
       rds.allowDuplicates = false;
       log
         ..debug('allowDuplicates: ${rds.allowDuplicates}')
-        ..debug('system.throwOnError: ${system.throwOnError}')
+        ..debug('system.throwOnError: ${global.throwOnError}')
         ..debug('ae0: ${ae0.info} isValid: ${ae0.isValid}');
       rds.add(ae0);
       log.debug('rds: $rds');
@@ -277,7 +277,7 @@ void main() {
 
       rds.allowDuplicates = false;
       log.debug('allow: ${rds.allowDuplicates}');
-      system.throwOnError = true;
+      global.throwOnError = true;
       // Adding same element twice
       expect(() => rds.add(ae0),
           throwsA(const isInstanceOf<DuplicateElementError>()));
@@ -293,8 +293,8 @@ void main() {
           throwsA(const isInstanceOf<DuplicateElementError>()));
       expect(rds[ae1.code] == ae0, true);
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError: $system.throwOnError');
+      global.throwOnError = false;
+      log.debug('system.throwOnError: $global.throwOnError');
       expect(rds.tryAdd(ae0), isNull);
       expect(rds.tryAdd(ae1), isNull);
       expect(rds.tryAdd(ae2), isNull);
@@ -344,7 +344,7 @@ void main() {
       log.debug('stringDSList1: $stringDSList1, ds1.values: ${ds1.values}');
       expect(ds1.values, equals(stringDSList1));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final te0 = rootDS.update(kQueryRetrieveLevel, stringDSList1);
       expect(te0, isNull);
       old = rootDS.update(kCompoundGraphicInstanceID, stringDSList1);
@@ -353,7 +353,7 @@ void main() {
       expect(rootDS.update(kQueryRetrieveLevel, stringDSList1), isNull);
       expect(rootDS.update(kCompoundGraphicInstanceID, stringDSList1), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
 
       expect(
           () =>
@@ -411,11 +411,11 @@ void main() {
       final ss = new SStag(PTag.kTagAngleSecondAxis, <int>[123]);
       final sl = new SLtag(PTag.kReferencePixelX0, <int>[13]);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       //Next line throws InvalidValuesError because 345 is not valid
       final ob0 = new OBtag(PTag.kICCProfile, [123, 345]);
       expect(ob0, isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new OBtag(PTag.kICCProfile, [123, 345]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
 
@@ -477,14 +477,14 @@ void main() {
       final aeOW1 = new OWtag(PTag.kAirCounts, [3]);
 
       final rds = new TagRootDataset.empty();
-      log.debug('system.throwOnError: ${system.throwOnError}');
+      log.debug('system.throwOnError: ${global.throwOnError}');
       rds.add(un0);
       log.debug(
           'rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
           '${rds.history.duplicates.length}');
 
       rds.allowDuplicates = false;
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => rds.add(un1),
           throwsA(const isInstanceOf<DuplicateElementError>()));
       rds.add(aeOB0);
@@ -505,8 +505,8 @@ void main() {
           'rds.elements.length: ${rds.elements.length}, rds.duplicates.length: '
           '${rds.history.duplicates.length}');
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError:$system.throwOnError');
+      global.throwOnError = false;
+      log.debug('system.throwOnError:$global.throwOnError');
       expect(rds.tryAdd(un1), false);
       expect(rds.tryAdd(aeOB0), false);
       expect(rds.tryAdd(aeOW1), false);
@@ -514,7 +514,7 @@ void main() {
   });
 
   group('All ListValues', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
 
     test('getIntList', () {
       const int16Min = const [kInt16Min];
@@ -526,8 +526,8 @@ void main() {
       //integer type VR
       expect(rootDS0.getIntList(kTagAngleSecondAxis), equals(int16Min));
 
-      system.throwOnError = true;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      global.throwOnError = true;
+      log.debug('system.throwOnError:${global.throwOnError}');
 
       //string type VR
       expect(() => rootDS0.getIntList(kPerformedLocation),
@@ -542,15 +542,15 @@ void main() {
               required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      global.throwOnError = false;
+      log.debug('system.throwOnError:${global.throwOnError}');
       expect(rootDS0.getIntList(kAbsoluteChannelDisplayScale), isNull);
       expect(rootDS0.getIntList(kDisplayedAreaBottomRightHandCorner), isNull);
       expect(rootDS0.getIntList(kPerformedLocation), isNull);
     });
 
     test('getInt', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       const int32Min = const [kInt16Min];
       final sl0 = new SLtag(PTag.kReferencePixelX0, int32Min);
       final sl1 = new SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
@@ -568,14 +568,14 @@ void main() {
       //integer type VR
       expect(rootDS0.getInt(kReferencePixelX0), equals(int32Min[0]));
 
-      log.debug('system.throwOnError:${system.throwOnError}');
+      log.debug('system.throwOnError:${global.throwOnError}');
       expect(rootDS0.getInt(kDisplayedAreaTopLeftHandCorner), isNull);
       expect(rootDS0.getInt(kDetectorDescription), isNull);
       expect(rootDS0.getInt(kAbsoluteChannelDisplayScale), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       rootDS0.allowInvalidValues = false;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      log.debug('system.throwOnError:${global.throwOnError}');
 
       //integer type VR : with VM more then one
       expect(
@@ -610,13 +610,13 @@ void main() {
       expect(rootDS0.getStringList(kReceiveCoilManufacturerName),
           equals(stringList0));
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      global.throwOnError = false;
+      log.debug('system.throwOnError:${global.throwOnError}');
       expect(rootDS0.getStringList(kAbsoluteChannelDisplayScale), isNull);
       expect(rootDS0.getStringList(kTagAngleSecondAxis), isNull);
 
-      system.throwOnError = true;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      global.throwOnError = true;
+      log.debug('system.throwOnError:${global.throwOnError}');
       //integer type VR
       expect(() => rootDS0.getStringList(kTagAngleSecondAxis),
           throwsA(const isInstanceOf<InvalidTagTypeError>()));
@@ -641,13 +641,13 @@ void main() {
         ..add(ds0)
         ..add(fl0);
 
-      log.debug('system.throwOnError:$system.throwOnError');
+      log.debug('system.throwOnError:$global.throwOnError');
       //string type VR
       expect(rootDS0.getString(kReceiveCoilManufacturerName),
           equals(stringList0[0]));
 
-      system.throwOnError = true;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      global.throwOnError = true;
+      log.debug('system.throwOnError:${global.throwOnError}');
       //string type VR : with VM more than 1
       expect(() => rootDS0.getString(kImagerPixelSpacing, required: true),
           throwsA(const isInstanceOf<InvalidValuesError>()));
@@ -660,8 +660,8 @@ void main() {
       expect(() => rootDS0.getString(kAbsoluteChannelDisplayScale),
           throwsA(const isInstanceOf<InvalidTagTypeError>()));
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      global.throwOnError = false;
+      log.debug('system.throwOnError:${global.throwOnError}');
 
       // TODO: required parameter has no use
       // Code differences with other get methods
@@ -679,20 +679,20 @@ void main() {
       expect(rootDS0.getFloatList(kAbsoluteChannelDisplayScale),
           equals(float32List0));
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      global.throwOnError = false;
+      log.debug('system.throwOnError:${global.throwOnError}');
       expect(rootDS0.getFloatList(kReferencePixelX0), isNull);
       expect(rootDS0.getFloatList(kStudyDate), isNull);
 
-      system.throwOnError = true;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      global.throwOnError = true;
+      log.debug('system.throwOnError:${global.throwOnError}');
       //integer type VR
       expect(() => rootDS0.getFloatList(kReferencePixelX0),
-          throwsA(const isInstanceOf<InvalidElementTypeError>()));
+          throwsA(const isInstanceOf<InvalidElementError>()));
 
       //string type VR
       expect(() => rootDS0.getFloatList(kStudyDate),
-          throwsA(const isInstanceOf<InvalidElementTypeError>()));
+          throwsA(const isInstanceOf<InvalidElementError>()));
     });
 
     test('getFloat', () {
@@ -712,11 +712,11 @@ void main() {
       expect(rootDS0.getFloat(kAbsoluteChannelDisplayScale),
           equals(float32List0[0]));
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError:${system.throwOnError}');
+      global.throwOnError = false;
+      log.debug('system.throwOnError:${global.throwOnError}');
       expect(rootDS0.getFloat(kAnatomicStructureReferencePoint), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       //string type VR : with VM more than 1
       expect(() => rootDS0.getFloat(kAnatomicStructureReferencePoint),
           throwsA(const isInstanceOf<InvalidValuesError>()));
@@ -761,11 +761,11 @@ void main() {
 
       expect(rootDS0.getItem(kReferencedStudySequence), equals(valuesList[0]));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(rootDS0.getItem(kAnatomicStructureReferencePoint, required: true),
           isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(
           () =>
               rootDS0.getItem(kAnatomicStructureReferencePoint, required: true),
@@ -801,12 +801,12 @@ void main() {
 
       expect(rootDS0.getItemList(kReferencedStudySequence), equals(valuesList));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           rootDS0.getItemList(kAnatomicStructureReferencePoint, required: true),
           isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(
           () => rootDS0.getItemList(kAnatomicStructureReferencePoint,
               required: true),
@@ -820,10 +820,10 @@ void main() {
 
       expect(rootDS0.getUid(kSpecimenUID), equals(Uid.parse(stringList0[0])));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(rootDS0.getUid(kFalseNegativesQuantity, required: true), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => rootDS0.getUid(kFalseNegativesQuantity, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -836,17 +836,17 @@ void main() {
       expect(
           rootDS0.getUidList(kSpecimenUID), equals(Uid.parseList(stringList0)));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           rootDS0.getUidList(kFalseNegativesQuantity, required: true), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => rootDS0.getUidList(kFalseNegativesQuantity, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
 
     test('normalizeDate', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
       log.debug('vList0: $vList0');
       final da0 = new DAtag(PTag.kCreationDate, vList0);
@@ -864,7 +864,7 @@ void main() {
       final ut0 = new UTtag(PTag.kUniversalEntityID, ['dfg']);
       final rootDS0 = new TagRootDataset.empty()..add(lo0)..add(ut0);
 
-      log.debug('system.throwOnError:${system.throwOnError}');
+      log.debug('system.throwOnError:${global.throwOnError}');
       //[]
       final element0 = rootDS0[lo0.code];
       log.debug('lo0: $lo0, Element0: $element0');
@@ -887,7 +887,7 @@ void main() {
       expect(rootDS0.total == 3, true);
 
       //adding a duplicate element
-      system.throwOnError = true;
+      global.throwOnError = true;
       rootDS0.allowDuplicates = false;
       expect(rootDS0[lo0.code] == lo0, true);
       //   rootDS0[lo0.code] = lo0;
@@ -897,8 +897,8 @@ void main() {
       rootDS0.allowDuplicates = true;
       expect((rootDS0[lo0.code] = lo0) == lo0, true);
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError:${system.throwOnError }');
+      global.throwOnError = false;
+      log.debug('system.throwOnError:${global.throwOnError }');
       expect(rootDS0[lo0.code] = lo0, lo0);
       //rootDS0[lo0.tag]=ut0;
     });
@@ -914,7 +914,7 @@ void main() {
       final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
       rootDS0.add(fl0);
 
-      log.debug('system.throwOnError:${system.throwOnError }');
+      log.debug('system.throwOnError:${global.throwOnError }');
 
       //no duplicates
       expect(rootDS0.hasDuplicates, false);
@@ -922,7 +922,7 @@ void main() {
       final ob0 = new OBtag(PTag.kAirCounts, [1]);
       final ob1 = new OBtag(PTag.kAirCounts, [1, 2, 3]);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       rootDS0.add(ob0);
       log.debug('rds.elements.length: ${rootDS0.elements.length}, '
           'rds.duplicates.length: '
@@ -935,8 +935,8 @@ void main() {
       rootDS0.allowDuplicates = true;
       expect(rootDS0.tryAdd(ob1), false);
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError:$system.throwOnError');
+      global.throwOnError = false;
+      log.debug('system.throwOnError:$global.throwOnError');
       expect(rootDS0.tryAdd(ob1), false);
 
       //has Duplicates

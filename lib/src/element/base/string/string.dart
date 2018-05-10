@@ -12,7 +12,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/errors.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
@@ -93,8 +93,8 @@ abstract class StringBase extends Element<String> {
   Iterable<String> decodeBinaryStringVF(Uint8List vfBytes, int maxVFLength,
       {bool isAscii = true}) {
     if (vfBytes.isEmpty) return kEmptyStringList;
-    final allow = system.allowInvalidCharacterEncodings;
-    final s = (isAscii || system.useAscii)
+    final allow = global.allowInvalidCharacterEncodings;
+    final s = (isAscii || global.useAscii)
         ? ascii.decode(vfBytes, allowInvalid: allow)
         : utf8.decode(vfBytes, allowMalformed: allow);
     return s.split('\\');
@@ -111,8 +111,8 @@ abstract class StringBase extends Element<String> {
     final length = vfBytes.length;
     if (!inRange(length, 0, maxVFLength))
       return badVFLength(length, maxVFLength);
-    final allow = system.allowInvalidCharacterEncodings;
-    return (isAscii || system.useAscii)
+    final allow = global.allowInvalidCharacterEncodings;
+    return (isAscii || global.useAscii)
         ? <String>[ascii.decode(vfBytes, allowInvalid: allow)]
         : <String>[utf8.decode(vfBytes, allowMalformed: allow)];
   }
@@ -151,11 +151,14 @@ abstract class StringBase extends Element<String> {
       bool isValidValue(String s, {Issues issues, bool allowInvalid}),
       int maxLength) {
     assert(vList != null);
-    if (!doTestValidity || vList.isEmpty) return true;
+    if (!doTestElementValidity || vList.isEmpty) return true;
+
+    // Walk through length and all values to gather Issues.
     var ok = true;
-    if (!Element.isValidVListLength(tag, vList, issues, maxLength)) ok = false;
-    for (var v in vList) ok = isValidValue(v, issues: issues);
-    return (ok) ? true : invalidValues(vList, issues: issues);
+    if (!Element.isValidVListLength(tag, vList, issues, maxLength))
+      return ok = false;
+    for (var v in vList) if (ok && !isValidValue(v, issues: issues)) ok = false;
+    return (ok) ? true : invalidValues(vList, issues);
   }
 
   static List<V> reallyTryParseList<V>(Iterable<String> vList, Issues issues,

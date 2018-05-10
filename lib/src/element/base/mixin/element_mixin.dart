@@ -10,14 +10,14 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
-import 'package:core/src/element/base/errors.dart';
 import 'package:core/src/element/element_formatter.dart';
+import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr.dart';
-import 'package:core/src/vr/vr.dart';
+import 'package:core/src/vr/vr_external.dart';
 
 /// The base class for DICOM Data Elements
 ///
@@ -315,7 +315,7 @@ abstract class ElementMixin<V> {
     if (!ok) return false;
     for (var i = 0; i < vList.length; i++) {
       if (!checkValue(vList.elementAt(i), issues: issues))
-        return invalidValues(vList, issues: issues);
+        return invalidValues(vList, issues);
     }
     return true;
   }
@@ -337,7 +337,6 @@ abstract class ElementMixin<V> {
   // Note: this SHOULD NOT be implemented by any subclasses
   /// Returns _true_ if all [values] are valid for _this_.
   bool get hasValidValues => checkValues(values);
-
 
   /// Returns a copy of _this_ with an empty [values] [List].
   ElementMixin<V> get noValues => update(emptyList);
@@ -377,7 +376,7 @@ abstract class ElementMixin<V> {
   }
 */
 
- // Issues _getIssues() => new Issues('$this\n  $values');
+  // Issues _getIssues() => new Issues('$this\n  $values');
 
   String get asString => toString();
 
@@ -393,7 +392,7 @@ abstract class ElementMixin<V> {
   // **** Methods
 
   /// _true_ if the [ElementMixin] is valid.
- // bool get isValid => hasValidVR && hasValidLength && hasValidValues;
+  // bool get isValid => hasValidVR && hasValidLength && hasValidValues;
 
   /// Returns a copy of _this_ with [values] [f]([values]).
 //  Element updateF(Iterable<V> f(Iterable<V> vList)) => update(f(values));

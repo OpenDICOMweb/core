@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/primitives.dart';
 
 /// VR Constants and Primitives

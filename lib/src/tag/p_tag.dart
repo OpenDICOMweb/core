@@ -6,10 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/tag/e_type.dart';
-import 'package:core/src/tag/errors.dart';
+import 'package:core/src/error/tag_errors.dart';
 import 'package:core/src/tag/p_tag_code_map.dart';
 import 'package:core/src/tag/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
@@ -93,7 +92,7 @@ class PTag extends Tag {
   static PTag lookupByCode(int code,
       [int vrIndex = kUNIndex, bool shouldThrow = false]) {
     if (Tag.isNotPublicCode(code, checkRange: false))
-      return invalidTagCode(code, 'Non-Public Tag Code');
+      return badCode(code, 'Non-Public Tag Code');
     final tag = pTagCodeMap[code];
     if (tag != null) return tag;
 
@@ -148,7 +147,7 @@ class PTag extends Tag {
     // TODO: 0x7Fxx,yyyy Elements
 
     // No match return [null]
-    if (shouldThrow) throw new InvalidTagCodeError(code);
+    if (shouldThrow) badCode(code);
     return new PTag.unknown(code, vrIndex);
   }
 
@@ -228,7 +227,7 @@ class PTag extends Tag {
     //TODO: 0x7Fxx,yyyy Elements
 */
     // No match return [null]
-    return tagKeywordError(keyword);
+    return keywordError(keyword);
   }
 
   //**** Message Data Elements begin here ****

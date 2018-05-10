@@ -11,7 +11,7 @@ import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/group_base.dart';
 import 'package:core/src/dataset/base/group/private_subgroup.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -37,14 +37,14 @@ class PrivateGroups {
     if (gNumber == _currentGNumber) {
       return _currentGroup.add(e, sqParent);
     } else if (gNumber < _currentGNumber) {
-      return badElement('$gNumber > $_currentGNumber', e);
+      return elementError('$gNumber > $_currentGNumber', e);
     } else {
       _currentGNumber = gNumber;
       _currentGroup = new PrivateGroup(e);
       final gp = _groups.putIfAbsent(gNumber, () => _currentGroup);
       if (gp != _currentGroup) {
         if (throwOnError) throw 'Group $gNumber already exits';
-        system.warn('Group $gNumber already exits');
+        global.warn('Group $gNumber already exits');
       }
       return _currentGroup.add(e, sqParent);
     }
@@ -127,9 +127,9 @@ class PrivateGroup implements GroupBase {
     assert(e.isPrivate);
     final code = e.code;
     final group = code >> 16;
-    if (group.isEven) return badElement('Non Private Element: $e', e);
+    if (group.isEven) return elementError('Non Private Element: $e', e);
     if (group != gNumber)
-      return badElement('${hex16(group)} != ${hex16(gNumber)}', e);
+      return elementError('${hex16(group)} != ${hex16(gNumber)}', e);
 
     assert(!Tag.isPrivateGroupLengthCode(code));
 

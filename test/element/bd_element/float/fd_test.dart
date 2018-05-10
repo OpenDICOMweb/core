@@ -34,11 +34,11 @@ void main() {
     -11.000453,
   ];
 
-  system.throwOnError = false;
+  global.throwOnError = false;
 
   group('FD Tests', () {
     test('FD hasValidValues: good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final fd0 = FDbytes.fromValues(kInversionTimes, doubleList);
       print('code: ${dcm(fd0.code)}');
       print('vrCode: ${hex16(fd0.vrCode)}');
@@ -107,7 +107,7 @@ void main() {
     // test('FD null as values', () {});
 
     test('FD hashCode and == random', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rng = new RNG(1);
 
       List<double> floatList0;
@@ -161,7 +161,7 @@ void main() {
     });
 
     test('FD isValidValues', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
         final fd0 = FDbytes.fromValues(kTagThickness, <double>[doubleList[i]]);
         expect(

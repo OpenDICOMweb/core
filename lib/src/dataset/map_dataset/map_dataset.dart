@@ -9,7 +9,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/utils.dart';
+import 'package:core/src/error/general_errors.dart';
 
 MapEquality<int, Element> mapEquality = const MapEquality<int, Element>();
 

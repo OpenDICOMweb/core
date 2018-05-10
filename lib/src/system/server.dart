@@ -11,14 +11,11 @@
 
 import 'dart:io';
 
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/hash.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:version/version.dart';
-
-import 'system.dart';
-
-//TODO: add a way to log to a file called <project>/output/<script>.out
 
 /// A singleton class used to handle system-wide values and methods.
 ///
@@ -27,7 +24,7 @@ import 'system.dart';
 ///     Server.initialize();
 /// Then access it as follows:
 ///     print(system.info);
-class Server extends System {
+class Server extends Global {
   Server(
       {String name,
       int minYear = kDefaultMinYear,
@@ -67,7 +64,7 @@ class Server extends System {
             isUuidUppercase: uuidsUseUppercase,
             showBanner: showBanner,
             showSdkBanner: showSdkBanner) {
-    System.system = this;
+    Global.global = this;
   }
 
   /// Synonym for name.
@@ -82,7 +79,7 @@ class Server extends System {
   /// Exit handler for [Server]s.
   @override
   void exit(int code, [String msg]) {
-    stdout.writeln('Exiting ${System.system.name} with status $code');
+    stdout.writeln('Exiting ${Global.global.name} with status $code');
     exit(code);
   }
 
@@ -104,7 +101,7 @@ class Server extends System {
       bool uuidsUseUppercase = false,
       bool showBanner = true,
       bool showSdkBanner = false}) {
-    System.system = new Server(
+    Global.global = new Server(
         name: name,
         version: (version == null) ? new Version(0, 6, 1) : version,
         buildNumber: buildNumber,
@@ -122,7 +119,7 @@ class Server extends System {
         showBanner: showBanner,
         showSdkBanner: showSdkBanner);
     _initialized = true;
-    if (showBanner) stdout.writeln(System.system.banner);
+    if (showBanner) stdout.writeln(Global.global.banner);
     return true;
   }
 }

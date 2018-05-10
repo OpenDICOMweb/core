@@ -11,6 +11,7 @@ library odw.sdk.utils.buffer;
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:core/src/error/general_errors.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/vr.dart';

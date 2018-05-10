@@ -29,12 +29,12 @@ void main() {
   ];
 
   group('OF Tests', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
 
     final rng = new RNG(1);
 
     test('OF hasValidValues: good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final of0 = OFbytes.fromValues(kSelectorOFValue, doubleList);
       expect(of0.hasValidValues, true);
     });
@@ -64,7 +64,7 @@ void main() {
     });
 
     test('OF []', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final of0 = OFbytes.fromValues(kVectorGridData, kEmptyFloat32List);
       expect(of0.hasValidValues, true);
       expect(of0.values, equals(<double>[]));
@@ -144,7 +144,7 @@ void main() {
     });
 
     test('Create OF.isValidValues', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
         final of0 =
             OFbytes.fromValues(kVectorGridData, <double>[doubleList[i]]);

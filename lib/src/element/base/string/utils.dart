@@ -7,7 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/errors.dart';
+import 'package:core/src/error.dart';
+import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -39,22 +40,19 @@ bool isValidValues(
     bool isValidValue(String s, {Issues issues, bool allowInvalid}),
     int maxLength) {
   assert(vList != null);
-  if (!doTestValidity || vList.isEmpty) return true;
+  if (!doTestElementValidity || vList.isEmpty) return true;
   var ok = true;
   if (!Element.isValidVListLength(tag, vList, issues, maxLength)) ok = false;
   for (var v in vList) ok = isValidValue(v, issues: issues);
-  return (ok) ? true : invalidValues(vList, issues: issues);
+  return (ok) ? true : invalidValues(vList, issues);
 }
-
-
-
 
 /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
 /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
 /// is used.
 bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
-    (doTestValidity && tag.vrIndex != targetVR)
-        ? Tag.invalidTag(tag, issues, type)
+    (doTestElementValidity && tag.vrIndex != targetVR)
+        ? invalidTag(tag, issues, type)
         : true;
 
 /// Returns _true_ if [vrIndex] is equal to [target], which MUST be a valid
@@ -70,11 +68,9 @@ int checkVRIndex(int vrIndex, Issues issues, int target) =>
 /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
 /// is be used.
 bool isValidVRCode(int vrCode, Issues issues, int target) =>
-    (vrCode == target) ? true :VR.invalidCode(vrCode, issues, target);
+    (vrCode == target) ? true : VR.invalidCode(vrCode, issues, target);
 
 /// Checks that vfLength (vfl) is in range and the right size, based on the
 /// element size (eSize).
 bool isValidVFL(int vfl, int max) =>
     (vfl >= 0 && vfl <= max) ? true : invalidVFLength(vfl, max);
-
-

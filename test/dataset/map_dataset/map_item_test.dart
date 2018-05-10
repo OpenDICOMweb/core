@@ -113,7 +113,7 @@ void main() {
 
       expect(item.delete(od0.code), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
       expect(() => item.delete(sl0.code, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
@@ -236,7 +236,7 @@ void main() {
     });
 
     test('updateF(String)', () {
-      system.level = Level.debug;
+      global.level = Level.debug;
       final item = new MapItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       item[as0.code] = as0;
@@ -297,7 +297,7 @@ void main() {
       final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       item
         ..add(fd0)
         ..add(fd1)
@@ -508,7 +508,7 @@ void main() {
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList1));
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final vList2 = ['024Y'];
       final as0 = new AStag(PTag.kPatientAge, vList2);
       final vList3 = [123];
@@ -527,7 +527,7 @@ void main() {
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList0));
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final vList2 = ['024Y'];
       final as0 = new AStag(PTag.kPatientAge, vList2);
       expect(() => item.replaceF<String>(as0.index, (n) => n, required: true),
@@ -616,22 +616,22 @@ void main() {
       item[as0.code] = as0;
       item..add(ui0)..add(un0);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final uid0 = item.getUid(ui0.index);
       expect(uid0.toString() == uidList[0], true);
 
       final uid1 = item.getUid(ui1.index);
       expect(uid1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getUid(ui1.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final uid2 = item.getUid(as0.index);
       expect(uid2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getUid(as0.index),
           throwsA(const isInstanceOf<InvalidElementError>()));
     });
@@ -645,7 +645,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValue<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.value));
@@ -657,7 +657,7 @@ void main() {
       final getValues2 = item.getValue<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -671,7 +671,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValues<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.values));
@@ -683,7 +683,7 @@ void main() {
       final getValues2 = item.getValues<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -778,7 +778,7 @@ void main() {
     });
 
     test('deleteCodes', () {
-      system.level = Level.debug;
+      global.level = Level.debug;
       final item = new MapItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);

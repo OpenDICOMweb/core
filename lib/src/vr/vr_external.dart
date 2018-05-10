@@ -161,11 +161,12 @@ abstract class VR<T> {
     return invalidCode(vrCode, issues, target);
   }
 
-  static Null _doError(String message, Issues issues, int correctVRIndex) {
-    final msg = '$message - correct VR is ${vrIdByIndex[correctVRIndex]}';
+  static Null _doError(String message, Issues issues,
+      [int badIndex, int goodIndex]) {
+    final msg = '$message - correct VR is ${vrIdByIndex[goodIndex]}';
     log.error(msg);
     if (issues != null) issues.add(msg);
-    if (throwOnError) throw new InvalidVRError(msg);
+    if (throwOnError) throw new InvalidVRError(msg, badIndex, goodIndex);
     return null;
   }
 }

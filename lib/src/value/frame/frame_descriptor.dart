@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/dataset/base.dart';
-import 'package:core/src/system/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/value/frame/frame.dart';
 import 'package:core/src/value/frame/frame_list.dart';

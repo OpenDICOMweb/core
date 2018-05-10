@@ -9,8 +9,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/element/base/errors.dart';
-import 'package:core/src/system/system.dart';
+import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/global.dart';
+import 'package:core/src/error/general_errors.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string/string.dart';
@@ -75,8 +76,8 @@ List<String> stringListFromTypedData(TypedData td, int maxLength,
 
 String typedDataToString(TypedData vf, {bool isAscii = false}) {
   final vfBytes = vf.buffer.asUint8List(vf.offsetInBytes, vf.lengthInBytes);
-  final allow = system.allowInvalidCharacterEncodings;
-  return (isAscii || system.useAscii)
+  final allow = global.allowInvalidCharacterEncodings;
+  return (isAscii || global.useAscii)
          ? ascii.decode(vfBytes, allowInvalid: allow)
          : utf8.decode(vfBytes, allowMalformed: allow);
 }

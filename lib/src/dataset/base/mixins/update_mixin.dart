@@ -7,8 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/error/dataset_errors.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 
@@ -98,7 +98,7 @@ abstract class UpdateMixin {
     assert(index != null && uids != null);
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    if (old is! UI) return invalidUidElement(old);
+    if (old is! UI) return badUidElement(old);
     add(old.update(uids.toList(growable: false)));
     return old;
   }
@@ -112,7 +112,7 @@ abstract class UpdateMixin {
     assert(index != null && sList != null);
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    if (old is! UI) return invalidUidElement(old);
+    if (old is! UI) return badUidElement(old);
 
     // If [e] has noValues, and [uids] == null, just return [e],
     // because there is no discernible difference.

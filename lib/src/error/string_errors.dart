@@ -7,8 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/system/system.dart';
-import 'package:core/src/utils/issues.dart';
+import 'package:core/src/error/issues.dart';
+import 'package:core/src/global.dart';
 
 /// A class for handling string errors.
 class StringError extends Error {
@@ -52,16 +52,16 @@ bool invalidStringLength(String s, [Issues issues, int start, int end]) {
 
 Null badAgeString(String message, [Issues issues]) {
   badString('InvalidAgeStringError: $message');
-  return -1;
+  return null;
 }
 
-int invalidAgeString(String msg, [Issues issues]) {
+bool invalidAgeString(String msg, [Issues issues]) {
   badAgeString(msg, issues);
-  return -1;
+  return false;
 }
 
 Null badDateString(String message, [Issues issues]) {
-  badString('InvalidDateStringError: $message');
+  badString('InvalidDateStringError: $message', issues);
   return null;
 }
 

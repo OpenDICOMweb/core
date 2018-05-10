@@ -9,7 +9,7 @@
 export 'package:core/src/utils/character/ascii.dart';
 export 'package:core/src/utils/character/dicom.dart';
 export 'package:core/src/utils/string/decimal.dart';
-export 'package:core/src/utils/string/errors.dart';
+export 'package:core/src/error/string_errors.dart';
 export 'package:core/src/utils/string/hexadecimal.dart';
 export 'package:core/src/utils/string/string.dart';
 export 'package:core/src/utils/string/string_list.dart';
