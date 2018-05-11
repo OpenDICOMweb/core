@@ -95,6 +95,7 @@ abstract class IntBase extends Element<int> {
   /// [vList] is valid for [tag]..
   static bool isValidValues(Tag tag, Iterable<int> vList, Issues issues,
       int minValue, int maxValue, int maxLength) {
+    if (vList == null) return false;
     if (!doTestElementValidity || vList.isEmpty) return true;
     var ok = true;
     if (!Element.isValidVListLength(tag, vList, issues, maxLength)) ok = false;

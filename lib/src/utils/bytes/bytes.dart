@@ -250,7 +250,7 @@ $i: $x | $y')
   /// then they are encoded as ASCII. The result is returns as [Bytes].
   static Bytes fromAsciiList(List<String> vList,
           [int maxLength, String separator = '\\']) =>
-      _fromList(vList, maxLength, separator, fromUtf8);
+      _fromList(vList, maxLength, separator, fromAscii);
 
   /// Returns a [Bytes] containing UTF-8 code units.
   ///
@@ -263,8 +263,9 @@ $i: $x | $y')
 
   static Bytes _fromList(List<String> vList, int maxLength, String separator,
       Bytes encoder(String s)) {
+    if (vList == null) return nullValueError();
     final s = stringListToString(vList, separator);
-    if (s == null || s.length > maxLength) return null;
+    if (s == null || s.length > (maxLength ?? s.length)) return null;
     return (s.isEmpty) ? kEmptyBytes : encoder(vList.join('\\'));
   }
 

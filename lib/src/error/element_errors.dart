@@ -43,12 +43,6 @@ Null nullElement([String message = '']) {
   return elementError(msg);
 }
 
-Null _badElementType(String msg, [Element e]) {
-  log.error(msg);
-  if (throwOnError) throw new InvalidElementError(msg, e);
-  return null;
-}
-
 Null badIntElement(Element e, [Issues issues]) {
   final msg = 'Invalid Integer Element: $e';
   return elementError(msg, e, issues);
@@ -80,6 +74,7 @@ Null sha256Unsupported(Element e, [Issues issues]) {
   return throw new UnsupportedError(msg);
 }
 
+/*
 class InvalidElementIndexError extends Error {
   final int index;
   final String msg;
@@ -89,6 +84,7 @@ class InvalidElementIndexError extends Error {
   @override
   String toString() => msg;
 }
+*/
 
 Null badValueField(String message, [Bytes vfBytes, Issues issues]) {
   final msg = _invalidVFMsg(message, vfBytes);
@@ -98,8 +94,10 @@ Null badValueField(String message, [Bytes vfBytes, Issues issues]) {
   return null;
 }
 
-String _invalidVFMsg(String msg, [Bytes vfBytes]) =>
-    'Invalid Value Field Error: $msg - vfLength(${vfBytes.length})';
+String _invalidVFMsg(String msg, [Bytes vfBytes]) {
+  final msg1 = (vfBytes != null) ?  '- vfLength(${vfBytes.length})' : '';
+    'Invalid Value Field Error: $msg$msg1';
+}
 
 bool invalidValueField(String message, [Bytes vfBytes]) {
   badValueField(message, vfBytes);
@@ -136,17 +134,17 @@ class InvalidValuesError extends Error {
   String toString() => msg;
 }
 
-Null _badValues(String msg, Object values, Issues issues) {
-  log.error(msg);
-  if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidValuesError(msg, values);
+Null _badValuesError(String msg, Object vList, Issues issues, Tag tag) {
+  final s = '$msg${(tag == null) ? "" : " for $tag"}';
+  log.error(s);
+  if (issues != null) issues.add(s);
+  if (throwOnError) throw new InvalidValuesError(s, vList);
   return null;
 }
 
 Null badValues(Iterable values, [Issues issues, Tag tag]) {
-  final sb = new StringBuffer('Invalid Values Error');
-  if (tag != null) sb.write(' for $tag');
-  return _badValues('$sb', values, issues);
+  const msg = 'Invalid Values Error';
+  return _badValuesError(msg, values, issues, tag);
 }
 
 bool invalidValues(Iterable values, [Issues issues, Tag tag]) {
@@ -154,25 +152,24 @@ bool invalidValues(Iterable values, [Issues issues, Tag tag]) {
   return false;
 }
 
-Null badValuesLength<V>(Iterable<V> values, int vmMin, int vmMax,
+Null badValuesLength(Iterable values, int vmMin, int vmMax,
     [Issues issues, Tag tag]) {
-  final msg = 'InvalidValuesLengthError: vmMin($vmMin) <= ${values.length} '
-      '<= vmMax($vmMax) values: $values';
-  log.error(msg);
-  if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidValuesError(msg, values);
-  return null;
+  final length = values.length;
+  final s = length == null ? 'null' : '$length';
+  final msg = 'InvalidValuesLengthError: '
+      'vmMin($vmMin) <= $s <= vmMax($vmMax) values: $values';
+  return _badValuesError(msg, values, issues, tag);
 }
 
-bool invalidValuesLength<V>(Iterable<V> values, int vmMin, int vmMax,
+bool invalidValuesLength(Iterable values, int vmMin, int vmMax,
     [Issues issues]) {
-  badValuesLength<V>(values, vmMin, vmMax, issues);
+  badValuesLength(values, vmMin, vmMax, issues);
   return false;
 }
 
-Null valueOutOfRangeError<V>(V value, Issues issues, int min, int max) {
+Null valueOutOfRangeError(Object value, Issues issues, int min, int max) {
   final msg = 'Value out of range:\n\n  values: $value';
-  _badValues(msg, <V>[value], issues);
+  _badValuesError(msg, [value], issues, null);
   return null;
 }
 

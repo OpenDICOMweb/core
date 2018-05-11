@@ -722,6 +722,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+/*
 
     test('SL checkVR good values', () {
       global.throwOnError = false;
@@ -749,6 +750,7 @@ void main() {
       }
     });
 
+*/
     test('SL isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(SL.isValidVRIndex(kSLIndex), true);

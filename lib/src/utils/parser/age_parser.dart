@@ -32,7 +32,7 @@ int parseAgeString(String s,
 
   final token = (allowLowercase) ? s[3].toUpperCase() : s[3];
   if (!kAgeTokens.contains(token))
-    return _onError(s, onError, 'IInvalid age Token');
+    return _onError(s, onError, 'Invalid age Token');
 
   final n = tryParseAgeString(s);
   if (n < 0) _onError(s.substring(0, 3), onError, 'Invalid age number');
@@ -40,7 +40,7 @@ int parseAgeString(String s,
 }
 
 int _onError(String s, int onError(String s), String errorMsg) =>
-    (onError != null) ? onError(s) : badAgeString('$errorMsg: "$s"');
+    (onError != null) ? onError(s) : badAgeParse('$errorMsg: "$s"');
 
 /// Returns the number of days corresponding to [s], which is a
 /// 4 character DICOM age (AS) [String]. [s] must be in the

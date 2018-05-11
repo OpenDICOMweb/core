@@ -25,14 +25,12 @@ class FLtag extends FL with TagElement<double> {
   factory FLtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
       new FLtag._(tag, vList);
 
-
   factory FLtag.bulkdata(Tag tag, Uri url) =>
       new FLtag._(tag, new FloatBulkdataRef(tag.code, url));
 
   factory FLtag._(Tag tag, Iterable<double> vList) {
-
-    if (FL.isNotValidValues(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
+    if (!FL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = (vList.isEmpty) ? kEmptyFloat32List : vList;
     return new FLtag._x(tag, v);
   }
 
@@ -45,23 +43,10 @@ class FLtag extends FL with TagElement<double> {
   static FLtag fromValues(Tag tag, Iterable<double> vList, [int _]) =>
       new FLtag(tag, vList ?? kEmptyDoubleList);
 
-/*
-  static FLtag fromBase64(Tag tag, String s) =>
-      fromBytes(tag, Bytes.base64Decode(s));
-
-  static FLtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.typedDataView(bList));
-
-  static FLtag from(Element e) => fromBytes(e.tag, e.vfBytes);
-*/
-
-  static FLtag fromBytes(Tag tag, Bytes bytes,
-          [int _]) =>
-      (tag.vrIndex != kFLIndex)
-          ? Tag.isValidTag(tag, null, kFLIndex, FL)
-          : (FL.isNotValidTag(tag))
-              ? null
-              : new FLtag._(tag, bytes.asFloat32List());
+  static FLtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      FL.isValidBytesArgs(tag, bytes)
+          ? new FLtag._x(tag, bytes.asFloat32List())
+          : badTag(tag, null, FL);
 }
 
 /// Other Float - Array of IEEE single precision
@@ -103,7 +88,7 @@ class OFtag extends OF with TagElement<double> {
   static OFtag fromBytes(Tag tag, Bytes bytes,
           [int _]) =>
       (tag.vrIndex != kOFIndex)
-          ? Tag.isValidTag(tag, null, kOFIndex,OF)
+          ? Tag.isValidTag(tag, null, kOFIndex, OF)
           : (OF.isNotValidTag(tag))
               ? null
               : new OFtag._(tag, bytes.asFloat32List());
@@ -143,13 +128,8 @@ class FDtag extends FD with TagElement<double> {
 
   static FDtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
-  static FDtag fromBytes(Tag tag, Bytes bytes,
-          [int _]) =>
-      (tag.vrIndex != kFDIndex)
-          ? Tag.isValidTag(tag, null, kFDIndex, FD)
-          : (FD.isNotValidTag(tag))
-              ? null
-              : new FDtag._(tag, bytes.asFloat64List());
+  static FDtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      FD.isValidTag(tag) ? new FDtag._(tag, bytes.asFloat64List()) : null;
 }
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.

@@ -53,10 +53,10 @@ abstract class ElementFormatterBase {
   }
 
   /// Returns [values] in [List] format.
-  String _valuesList(List values) => '[${values.join(', ')}]';
+  String _valuesList(Iterable values) => '[${values.join(', ')}]';
 
   /// Returns a truncated value list
-  String _truncatedList(List values, int max) {
+  String _truncatedList(Iterable values, int max) {
     assert(values.length > max);
     final vList = values.take(max);
     return '[${vList.join(', ')}...]';
@@ -65,7 +65,7 @@ abstract class ElementFormatterBase {
   String values(Element e, [int maxValues = kDefaultTruncatedValuesLength]) =>
       _values(e.values, maxValues);
 
-  String _values(List values, [int max = kDefaultTruncatedValuesLength]) =>
+  String _values(Iterable values, [int max = kDefaultTruncatedValuesLength]) =>
       (values.length <= max)
           ? _valuesList(values)
           : _truncatedList(values, max);

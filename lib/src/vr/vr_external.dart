@@ -129,27 +129,19 @@ abstract class VR<T> {
     return invalidIndex(vrIndex, issues, target);
   }
 
-  /// Returns [vrIndex] if it is equal to [target], which MUST be a valid
-  /// _VR Index_. Typically, one of the constants (k_XX_Index) is used.
-  static int checkSpecialIndex(int vrIndex, Issues issues, int target) =>
-      (vrIndex == target ||
-              (vrIndex >= kVRSpecialIndexMin && vrIndex <= kVRSpecialIndexMax))
-          ? vrIndex
-          : badIndex(vrIndex, issues, target);
-
   /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
   /// is be used.
   static bool isValidCode(int vrCode, Issues issues, int target) =>
       (vrCode == target) ? true : invalidCode(vrCode, issues, target);
 
   static Null badCode(int vrCode, Issues issues, int correctVRIndex) {
-    invalidCode(vrCode, issues, correctVRIndex);
-    return null;
-  }
-
-  static Null invalidCode(int vrCode, Issues issues, int correctVRIndex) {
     final msg = 'Invalid VR code(${vrIdByIndex[vrIndexByCode[vrCode]]})';
     return _doError(msg, issues, correctVRIndex);
+  }
+
+  static bool invalidCode(int vrCode, Issues issues, int correctVRIndex) {
+    badCode(vrCode, issues, correctVRIndex);
+    return false;
   }
 
   /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
@@ -163,7 +155,10 @@ abstract class VR<T> {
 
   static Null _doError(String message, Issues issues,
       [int badIndex, int goodIndex]) {
-    final msg = '$message - correct VR is ${vrIdByIndex[goodIndex]}';
+    final sb = new StringBuffer(message);
+    if (goodIndex != null)
+      sb.write(' - correct VR is ${vrIdByIndex[goodIndex]}');
+    final msg = '$sb';
     log.error(msg);
     if (issues != null) issues.add(msg);
     if (throwOnError) throw new InvalidVRError(msg, badIndex, goodIndex);

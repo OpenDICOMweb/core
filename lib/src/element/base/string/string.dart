@@ -150,14 +150,17 @@ abstract class StringBase extends Element<String> {
       Issues issues,
       bool isValidValue(String s, {Issues issues, bool allowInvalid}),
       int maxLength) {
-    assert(vList != null);
+//    assert(vList != null);
+    if (vList == null) return false;
     if (!doTestElementValidity || vList.isEmpty) return true;
 
     // Walk through length and all values to gather Issues.
     var ok = true;
     if (!Element.isValidVListLength(tag, vList, issues, maxLength))
       return ok = false;
-    for (var v in vList) if (ok && !isValidValue(v, issues: issues)) ok = false;
+    for (var v in vList) {
+      if (ok && !isValidValue(v, issues: issues)) ok = false;
+    }
     return (ok) ? true : invalidValues(vList, issues);
   }
 

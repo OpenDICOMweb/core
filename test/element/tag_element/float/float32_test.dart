@@ -56,7 +56,9 @@ void main() {
     });
 
     test('FL hasValidValues good values random', () {
+
       global.level = Level.info;
+
       for (var i = 0; i < 10; i++) {
         final float32List = rng.float32List(1, 1);
         expect(float32List is Float32List, true);
@@ -65,7 +67,7 @@ void main() {
 
         log
           ..debug('fl0: $fl0, values: ${fl0.values}')
-          ..debug('fl0: ${fl0.info}')
+          ..debug('fl0: $fl0')
           ..debug('float32List: $float32List')
           ..debug('        fl0: ${fl0.values}');
         expect(fl0.values, equals(float32List));
@@ -78,7 +80,7 @@ void main() {
 
         log
           ..debug('fl0: $fl0, values: ${fl0.values}')
-          ..debug('fl0: ${fl0.info}');
+          ..debug('fl0: $fl0');
         expect(fl0[0], equals(float32List[0]));
       }
     });
@@ -329,7 +331,7 @@ void main() {
    //     final bytes = float.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(floatList0);
         final fl0 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
-        log.debug('fl0: ${fl0.info}');
+        log.debug('fl0: $fl0');
         expect(fl0.hasValidValues, true);
       }
     });
@@ -341,7 +343,7 @@ void main() {
         //    final bytes0 = float0.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(floatList1);
         final fl1 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
-        log.debug('fl1: ${fl1.info}');
+        log.debug('fl1: $fl1');
         expect(fl1.hasValidValues, false);
       }
     });
@@ -354,7 +356,7 @@ void main() {
         final bytes0 = Bytes.fromAscii(float.toString());
         //final bytes0 = new Bytes();
         final fl0 = FLtag.fromBytes(PTag.kSelectorFLValue, bytes0);
-        log.debug('fl0: ${fl0.info}');
+        log.debug('fl0: $fl0');
         expect(fl0.hasValidValues, true);
       }
     });
@@ -1158,7 +1160,7 @@ void main() {
         float32List = rng.float32List(1, 10);
         log.debug('i: $i, float32List: $float32List');
         final of0 = new OFtag(PTag.kUValueData, float32List);
-        log.debug('of:${of0.info}');
+        log.debug('of:$of0');
         expect(of0[0], equals(float32List[0]));
         expect(of0.hasValidValues, true);
       }
@@ -1351,7 +1353,7 @@ void main() {
     //    final bytes = float.buffer.asUint8List();
         final bytes0 = new Bytes.typedDataView(floatList0);
         final of0 = OFtag.fromBytes(PTag.kVectorGridData, bytes0);
-        log.debug('of0: ${of0.info}');
+        log.debug('of0: $of0');
         expect(of0.hasValidValues, true);
 
         final floatList1 = rng.float32List(3, 3);
@@ -1360,7 +1362,7 @@ void main() {
         final bytes1 = new Bytes.typedDataView(floatList1);
         final of1 =
             OFtag.fromBytes(PTag.kFirstOrderPhaseCorrectionAngle, bytes1);
-        log.debug('of1: ${of1.info}');
+        log.debug('of1: $of1');
         expect(of1.hasValidValues, true);
       }
     });
@@ -1373,7 +1375,7 @@ void main() {
         final bytes0 = Bytes.fromAscii(float.toString());
         //final bytes0 = new Bytes();
         final of0 = OFtag.fromBytes(PTag.kSelectorOFValue, bytes0);
-        log.debug('of0: ${of0.info}');
+        log.debug('of0: $of0');
         expect(of0.hasValidValues, true);
       }
     });

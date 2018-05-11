@@ -40,8 +40,10 @@ String stringListToString(List<String> sList, [String separator = '\\']) {
 
 /// Returns a [Uint8List] encoding of [sList].
 Uint8List stringListToUint8List(List<String> sList,
-    {int maxLength, bool isAscii = false, String separator = '\\', int
-    padChar}) {
+    {int maxLength,
+    bool isAscii = false,
+    String separator = '\\',
+    int padChar}) {
   final s = stringListToString(sList);
   if (s == null || s.length > maxLength) return null;
   return stringToUint8List(s, isAscii: isAscii);
@@ -57,16 +59,14 @@ ByteData stringListToByteData(List<String> sList,
   return (bList == null) ? null : bList.buffer.asByteData();
 }
 
-
-
 /// _Deprecated_: Use Bytes.fromStringList instead.
 @deprecated
 List<String> stringListFromBytes(Bytes bytes, int maxVFLength,
-                                 {bool isAscii = true}) =>
+        {bool isAscii = true}) =>
     stringListFromTypedData(bytes.asByteData(), maxVFLength, isAscii: isAscii);
 
 List<String> stringListFromTypedData(TypedData td, int maxLength,
-                                     {bool isAscii = true}) {
+    {bool isAscii = true}) {
   if (td.lengthInBytes == 0) return kEmptyStringList;
   if (td.lengthInBytes > maxLength)
     return badVFLength(td.lengthInBytes, maxLength);
@@ -78,22 +78,21 @@ String typedDataToString(TypedData vf, {bool isAscii = false}) {
   final vfBytes = vf.buffer.asUint8List(vf.offsetInBytes, vf.lengthInBytes);
   final allow = global.allowInvalidCharacterEncodings;
   return (isAscii || global.useAscii)
-         ? ascii.decode(vfBytes, allowInvalid: allow)
-         : utf8.decode(vfBytes, allowMalformed: allow);
+      ? ascii.decode(vfBytes, allowInvalid: allow)
+      : utf8.decode(vfBytes, allowMalformed: allow);
 }
 
-List<String> textListFromBytes(TypedData vfBytes, {int maxLength,
-                               bool isAscii = true}) =>
+List<String> textListFromBytes(TypedData vfBytes,
+        {int maxLength, bool isAscii = true}) =>
     textListFromTypedData(vfBytes, maxLength: maxLength, isAscii: isAscii);
 
-List<String> textListFromTypedData(TypedData td, {int maxLength,
-                                   bool isAscii = true}) {
+List<String> textListFromTypedData(TypedData td,
+    {int maxLength, bool isAscii = true}) {
   if (td == null) return null;
-  if (td.lengthInBytes == 0) return
-    kEmptyStringList;
+  if (td.lengthInBytes == 0) return kEmptyStringList;
   if ((td.lengthInBytes > maxLength))
     return badVFLength(td.lengthInBytes, maxLength);
-  return <String>[typedDataToString(td, isAscii:isAscii)];
+  return <String>[typedDataToString(td, isAscii: isAscii)];
 }
 
 /// Returns a [Uint8List] corresponding to a binary Value Field.
@@ -109,17 +108,13 @@ Uint8List textListToUint8List(Iterable<String> values, int maxVFLength) {
 }
 
 /// Returns a [Uint8List] corresponding to a binary Value Field.
-Bytes  textListToBytes(Iterable<String> values) {
+Bytes textListToBytes(Iterable<String> values) {
   if (values.isEmpty) return kEmptyBytes;
   if (values.length == 1) {
     final s = values.elementAt(0);
     if (s == null) return nullValueError();
     if (s.isEmpty) return kEmptyBytes;
-    return  Bytes.fromUtf8(s);
+    return Bytes.fromUtf8(s);
   }
   return badValuesLength(values, 1, 1);
 }
-
-
-
-

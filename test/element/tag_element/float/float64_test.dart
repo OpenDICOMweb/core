@@ -17,7 +17,7 @@ void main() {
   Server.initialize(name: 'element/float64_test', level: Level.info);
   final rng = new RNG(1);
 
-  const float64LstCommon0 = const <double>[
+  const float64GoodList = const <double>[
     0.1,
     1.2,
     1.11,
@@ -39,11 +39,11 @@ void main() {
 
   group('FDtags', () {
     test('FD hasValidValues good values', () {
-      final fd0 = new FDtag(PTag.kSelectorFDValue, float64LstCommon0);
+      global.throwOnError = false;
+      final fd0 = new FDtag(PTag.kSelectorFDValue, float64GoodList);
       expect(fd0.hasValidValues, true);
 
       // empty list and null as values
-      global.throwOnError = false;
       final fd1 = new FDtag(PTag.kSelectorFDValue, []);
       expect(fd1.hasValidValues, true);
       expect(fd1.values, equals(<double>[]));
@@ -114,8 +114,8 @@ void main() {
       final fd0 = new FDtag(PTag.kSelectorFDValue, []);
       expect(fd0.update([1.0, 2.0]).values, equals([1.0, 2.0]));
 
-      final fd1 = new FDtag(PTag.kSelectorFDValue, float64LstCommon0);
-      expect(fd1.update(float64LstCommon0).values, equals(float64LstCommon0));
+      final fd1 = new FDtag(PTag.kSelectorFDValue, float64GoodList);
+      expect(fd1.update(float64GoodList).values, equals(float64GoodList));
 
       const floatUpdateValues = const <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
@@ -152,7 +152,7 @@ void main() {
       log.debug('fd0: ${fd0.noValues}');
 
       final fd1 =
-          new FDtag(PTag.kOverallTemplateSpatialTolerance, float64LstCommon0);
+          new FDtag(PTag.kOverallTemplateSpatialTolerance, float64GoodList);
       log.debug('fd1: $fd1');
       expect(fdNoValues.values.isEmpty, true);
       expect(fd1, isNull);
@@ -174,7 +174,7 @@ void main() {
       expect(fd1 == fd0, true);
       expect(fd1.hashCode == fd0.hashCode, true);
 
-      final fd2 = new FDtag(PTag.kSelectorFDValue, float64LstCommon0);
+      final fd2 = new FDtag(PTag.kSelectorFDValue, float64GoodList);
       final FDtag fd3 = fd2.copy;
       expect(fd3 == fd2, true);
       expect(fd3.hashCode == fd2.hashCode, true);
@@ -276,13 +276,13 @@ void main() {
     test('FD hashCode and == good values', () {
       global.throwOnError = false;
       final fd0 = new FDtag(
-          PTag.kOverallTemplateSpatialTolerance, float64LstCommon0.take(1));
+          PTag.kOverallTemplateSpatialTolerance, float64GoodList.take(1));
       final fd1 = new FDtag(
-          PTag.kOverallTemplateSpatialTolerance, float64LstCommon0.take(1));
+          PTag.kOverallTemplateSpatialTolerance, float64GoodList.take(1));
       log
-        ..debug('float64LstCommon0:$float64LstCommon0, fd0.hash_code:${fd0
+        ..debug('float64LstCommon0:$float64GoodList, fd0.hash_code:${fd0
               .hashCode}')
-        ..debug('float64LstCommon0:$float64LstCommon0, fd1.hash_code:${fd1
+        ..debug('float64LstCommon0:$float64GoodList, fd1.hash_code:${fd1
               .hashCode}');
       expect(fd0.hashCode == fd1.hashCode, true);
       expect(fd0 == fd1, true);
@@ -291,47 +291,47 @@ void main() {
     test('FD hashCode and == bad values', () {
       global.throwOnError = false;
       final fd0 = new FDtag(
-          PTag.kOverallTemplateSpatialTolerance, float64LstCommon0.take(1));
+          PTag.kOverallTemplateSpatialTolerance, float64GoodList.take(1));
       final fd2 =
-          new FDtag(PTag.kCineRelativeToRealTime, float64LstCommon0.take(1));
-      log.debug('float64LstCommon0:$float64LstCommon0 , '
+          new FDtag(PTag.kCineRelativeToRealTime, float64GoodList.take(1));
+      log.debug('float64LstCommon0:$float64GoodList , '
           'fd2.hash_code:${fd2.hashCode}');
       expect(fd0.hashCode == fd2.hashCode, false);
       expect(fd0 == fd2, false);
 
-      final fd3 = new FDtag(PTag.kTwoDMatingPoint, float64LstCommon0.take(2));
-      log.debug('float64LstCommon0:$float64LstCommon0, '
+      final fd3 = new FDtag(PTag.kTwoDMatingPoint, float64GoodList.take(2));
+      log.debug('float64LstCommon0:$float64GoodList, '
           'fd3.hash_code:${fd3.hashCode}');
       expect(fd0.hashCode == fd3.hashCode, false);
       expect(fd0 == fd3, false);
 
-      final fd4 = new FDtag(PTag.kGridResolution, float64LstCommon0.take(3));
-      log.debug('float64LstCommon0:$float64LstCommon0, '
+      final fd4 = new FDtag(PTag.kGridResolution, float64GoodList.take(3));
+      log.debug('float64LstCommon0:$float64GoodList, '
           'fd4.hash_code:${fd4.hashCode}');
       expect(fd0.hashCode == fd4.hashCode, false);
       expect(fd0 == fd4, false);
 
-      final fd5 = new FDtag(PTag.kBoundingRectangle, float64LstCommon0.take(4));
-      log.debug('float64LstCommon0:$float64LstCommon0, '
+      final fd5 = new FDtag(PTag.kBoundingRectangle, float64GoodList.take(4));
+      log.debug('float64LstCommon0:$float64GoodList, '
           'fd5.hash_code:${fd5.hashCode}');
       expect(fd0.hashCode == fd5.hashCode, false);
       expect(fd0 == fd5, false);
 
       final fd6 =
-          new FDtag(PTag.kImageOrientationVolume, float64LstCommon0.take(6));
-      log.debug('float64LstCommon0:$float64LstCommon0, '
+          new FDtag(PTag.kImageOrientationVolume, float64GoodList.take(6));
+      log.debug('float64LstCommon0:$float64GoodList, '
           'fd6.hash_code:${fd6.hashCode}');
       expect(fd0.hashCode == fd6.hashCode, false);
       expect(fd0 == fd6, false);
 
-      final fd7 = new FDtag(PTag.kThreeDMatingAxes, float64LstCommon0.take(9));
-      log.debug('float64LstCommon0:$float64LstCommon0, '
+      final fd7 = new FDtag(PTag.kThreeDMatingAxes, float64GoodList.take(9));
+      log.debug('float64LstCommon0:$float64GoodList, '
           'fd7.hash_code:${fd7.hashCode}');
       expect(fd0.hashCode == fd7.hashCode, false);
       expect(fd0 == fd7, false);
 
-      final fd8 = new FDtag(PTag.kSelectorFDValue, float64LstCommon0);
-      log.debug('float64LstCommon0:$float64LstCommon0, '
+      final fd8 = new FDtag(PTag.kSelectorFDValue, float64GoodList);
+      log.debug('float64LstCommon0:$float64GoodList, '
           'fd8.hash_code:${fd8.hashCode}');
       expect(fd0.hashCode == fd8.hashCode, false);
       expect(fd0 == fd8, false);
@@ -379,11 +379,8 @@ void main() {
 
     test('FD fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float64List(1, 1);
-        final float = new Float64List.fromList(floatList0);
-        //final bytes = float.buffer.asUint8List();
-        final bytes0 = Bytes.fromAscii(float.toString());
-        //final bytes0 = new Bytes();
+        final floatList = rng.float64List(1, 1);
+        final bytes0 = new Bytes.typedDataView(floatList);
         final fd0 = FDtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         log.debug('fd0: ${fd0.info}');
         expect(fd0.hasValidValues, true);
@@ -393,15 +390,14 @@ void main() {
     test('FD fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final floatList0 = rng.float64List(1, 10);
-        final float = new Float64List.fromList(floatList0);
-        final bytes0 = Bytes.fromAscii(float.toString());
-        final fd0 = FDtag.fromBytes(PTag.kSelectorSSValue, bytes0);
+        final float64List = rng.float64List(1, 10);
+        final bytes = new Bytes.typedDataView(float64List);
+        final fd0 = FDtag.fromBytes(PTag.kSelectorSSValue, bytes);
         expect(fd0, isNull);
 
         global.throwOnError = true;
-        expect(() => FDtag.fromBytes(PTag.kSelectorSSValue, bytes0),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+        expect(() => FDtag.fromBytes(PTag.kSelectorSSValue, bytes),
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -472,11 +468,11 @@ void main() {
 
     test('FD checkLength bad values', () {
       global.throwOnError = false;
-      final fd0 = new FDtag(PTag.kTubeAngle, float64LstCommon0);
+      final fd0 = new FDtag(PTag.kTubeAngle, float64GoodList);
       expect(fd0, isNull);
 
       global.throwOnError = true;
-      expect(() => new FDtag(PTag.kTubeAngle, float64LstCommon0),
+      expect(() => new FDtag(PTag.kTubeAngle, float64GoodList),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -937,55 +933,55 @@ void main() {
     test('FD isValidValues good values', () {
       global.throwOnError = false;
       //VM.k1
-      for (var i = 0; i <= float64LstCommon0.length - 1; i++) {
+      for (var i = 0; i <= float64GoodList.length - 1; i++) {
         expect(
             FD.isValidValues(
-                PTag.kEffectiveEchoTime, <double>[float64LstCommon0[i]]),
+                PTag.kEffectiveEchoTime, <double>[float64GoodList[i]]),
             true);
       }
 
       //VM.k2
       expect(
           FD.isValidValues(
-              PTag.kReconstructionFieldOfView, float64LstCommon0.take(2)),
+              PTag.kReconstructionFieldOfView, float64GoodList.take(2)),
           true);
 
       //VM.k3
-      expect(FD.isValidValues(PTag.kGridResolution, float64LstCommon0.take(3)),
+      expect(FD.isValidValues(PTag.kGridResolution, float64GoodList.take(3)),
           true);
 
       //VM.k4
       expect(
-          FD.isValidValues(PTag.kBoundingRectangle, float64LstCommon0.take(4)),
+          FD.isValidValues(PTag.kBoundingRectangle, float64GoodList.take(4)),
           true);
 
       //VM.k6
       expect(
           FD.isValidValues(
-              PTag.kImageOrientationVolume, float64LstCommon0.take(6)),
+              PTag.kImageOrientationVolume, float64GoodList.take(6)),
           true);
 
       //VM.k9
       expect(
-          FD.isValidValues(PTag.kThreeDMatingAxes, float64LstCommon0.take(9)),
+          FD.isValidValues(PTag.kThreeDMatingAxes, float64GoodList.take(9)),
           true);
 
       //VM.k1_n
-      expect(FD.isValidValues(PTag.kSelectorFDValue, float64LstCommon0), true);
+      expect(FD.isValidValues(PTag.kSelectorFDValue, float64GoodList), true);
     });
 
     test('FD isValidValues bad values length', () {
       global.throwOnError = false;
       expect(
-          FD.isValidValues(PTag.kEffectiveEchoTime, float64LstCommon0), false);
+          FD.isValidValues(PTag.kEffectiveEchoTime, float64GoodList), false);
 
       global.throwOnError = true;
-      expect(() => FD.isValidValues(PTag.kEffectiveEchoTime, float64LstCommon0),
+      expect(() => FD.isValidValues(PTag.kEffectiveEchoTime, float64GoodList),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('Float64Mixin.fromList', () {
-      expect(Float64.fromList(float64LstCommon0), equals(float64LstCommon0));
+      expect(Float64.fromList(float64GoodList), equals(float64GoodList));
 
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);
@@ -1171,8 +1167,8 @@ void main() {
       final od0 = new ODtag(PTag.kSelectorODValue, []);
       expect(od0.update([1.0, 2.0]).values, equals([1.0, 2.0]));
 
-      final od1 = new ODtag(PTag.kSelectorODValue, float64LstCommon0);
-      expect(od1.update(float64LstCommon0).values, equals(float64LstCommon0));
+      final od1 = new ODtag(PTag.kSelectorODValue, float64GoodList);
+      expect(od1.update(float64GoodList).values, equals(float64GoodList));
 
       const floatUpdateValues = const <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
@@ -1211,7 +1207,7 @@ void main() {
       expect(odNoValues.values.isEmpty, true);
       log.debug('od0: ${od0.noValues}');
 
-      final od1 = new ODtag(PTag.kSelectorODValue, float64LstCommon0);
+      final od1 = new ODtag(PTag.kSelectorODValue, float64GoodList);
       log.debug('od1: $od1');
       expect(odNoValues.values.isEmpty, true);
       log.debug('od1: ${od1.noValues}');
@@ -1233,7 +1229,7 @@ void main() {
       expect(od1 == od0, true);
       expect(od1.hashCode == od0.hashCode, true);
 
-      final od2 = new ODtag(PTag.kDoubleFloatPixelData, float64LstCommon0);
+      final od2 = new ODtag(PTag.kDoubleFloatPixelData, float64GoodList);
       final ODtag od3 = od2.copy;
       expect(od3 == od2, true);
       expect(od3.hashCode == od2.hashCode, true);
@@ -1282,22 +1278,22 @@ void main() {
     });
 
     test('OD hashCode and == good values', () {
-      final od0 = new ODtag(PTag.kSelectorODValue, float64LstCommon0.take(1));
-      final od1 = new ODtag(PTag.kSelectorODValue, float64LstCommon0.take(1));
+      final od0 = new ODtag(PTag.kSelectorODValue, float64GoodList.take(1));
+      final od1 = new ODtag(PTag.kSelectorODValue, float64GoodList.take(1));
       log
-        ..debug('floatList0:$float64LstCommon0, od0.hash_code:${od0
+        ..debug('floatList0:$float64GoodList, od0.hash_code:${od0
           .hashCode}')
-        ..debug('floatList0:$float64LstCommon0, od1.hash_code:${od1.hashCode}');
+        ..debug('floatList0:$float64GoodList, od1.hash_code:${od1.hashCode}');
       expect(od0.hashCode == od1.hashCode, true);
       expect(od0 == od1, true);
     });
 
     test('OD hashCode and == bad values', () {
-      final od0 = new ODtag(PTag.kSelectorODValue, float64LstCommon0.take(1));
+      final od0 = new ODtag(PTag.kSelectorODValue, float64GoodList.take(1));
 
       final od1 =
-          new ODtag(PTag.kDoubleFloatPixelData, float64LstCommon0.take(1));
-      log.debug('float64LstCommon0:$float64LstCommon0 , '
+          new ODtag(PTag.kDoubleFloatPixelData, float64GoodList.take(1));
+      log.debug('float64LstCommon0:$float64GoodList , '
           'od1.hash_code:${od1.hashCode}');
       expect(od0.hashCode == od1.hashCode, false);
       expect(od0 == od1, false);
@@ -1667,16 +1663,16 @@ void main() {
 
     test('OD.isValidValues', () {
       global.throwOnError = false;
-      for (var i = 0; i <= float64LstCommon0.length - 1; i++) {
+      for (var i = 0; i <= float64GoodList.length - 1; i++) {
         expect(
             OD.isValidValues(
-                PTag.kSelectorODValue, <double>[float64LstCommon0[i]]),
+                PTag.kSelectorODValue, <double>[float64GoodList[i]]),
             true);
       }
     });
 
     test('Flaot64Base.fromList', () {
-      expect(Float64.fromList(float64LstCommon0), float64LstCommon0);
+      expect(Float64.fromList(float64GoodList), float64GoodList);
 
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float64List(1, 1);

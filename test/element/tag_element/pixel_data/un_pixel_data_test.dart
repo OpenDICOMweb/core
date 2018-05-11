@@ -570,6 +570,7 @@ void main() {
         expect(UN.isValidTag(tag), true);
       }
     });
+/*
 
     test('Create UN.checkVR', () {
       global.throwOnError = false;
@@ -588,6 +589,7 @@ void main() {
         expect(UN.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
+*/
 
     test('Create UN.isValidVRIndex', () {
       global.throwOnError = false;

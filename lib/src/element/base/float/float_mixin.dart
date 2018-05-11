@@ -101,12 +101,14 @@ abstract class Float extends Element<double> {
   @override
   String toString() => '$runtimeType ${dcm(code)} ($vr) $values';
 
-  /// Returns _true_ if each value in [vList] is valid.
+  /// Returns _true_ if [tag] and each value in [vList] is valid.
   static bool isValidValues(
-      Tag tag, Iterable<double> vList, Issues issues, int maxVListLength) {
-    if (!Element.isValidVListLength(tag, vList, issues, maxVListLength))
-      return false;
-    return true;
+          Tag tag, Iterable<double> vList, Issues issues, int maxVListLength) {
+    assert(tag != null);
+    if (vList == null) return invalidValues(vList, issues, tag);
+    return Element.isValidVListLength(tag, vList, issues, maxVListLength)
+    ? true
+    : false;
   }
 }
 

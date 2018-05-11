@@ -36,7 +36,7 @@ class FLbytes extends FL with ByteElement<double>, Float32Mixin {
   @override
   final DicomBytes bytes;
 
-  FLbytes(this.bytes);
+  FLbytes(this.bytes) : assert(bytes != null);
 
   static FLbytes makeFromBytes(DicomBytes bytes) => new FLbytes(bytes);
 

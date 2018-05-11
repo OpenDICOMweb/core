@@ -138,7 +138,6 @@ abstract class BytesMixin {
   /// [_bd].lengthInBytes, where [offset] is the absolute offset in [_bd].
   int _length32(int offset) {
     final length = _bdLength - offset;
-    //  final length = _bdLength;
     assert((length % 4) == 0, 'length: $length');
     return length ~/ 4;
   }

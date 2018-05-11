@@ -808,6 +808,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+/*
 
     test('US checkVR VM.k1 good values', () {
       global.throwOnError = false;
@@ -842,6 +843,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('US isValidVRIndex VM.k1 good values', () {
       global.throwOnError = false;
@@ -1784,6 +1786,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+/*
 
     test('OW checkVR  good values', () {
       global.throwOnError = false;
@@ -1816,6 +1819,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('OW.isValidVRIndex good values', () {
       global.throwOnError = false;

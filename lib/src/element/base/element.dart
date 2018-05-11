@@ -21,7 +21,6 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr/vr_base.dart';
 import 'package:core/src/vr/vr_external.dart';
 
-
 /// The base class for DICOM Data Elements
 ///
 /// An implementation of this class must provide the following:
@@ -477,11 +476,14 @@ abstract class Element<V> extends ListBase<V> {
 
   static bool isValidVListLength<V>(
       Tag tag, Iterable<V> vList, Issues issues, int maxLength) {
-    assert(tag != null && vList != null);
+    if (tag == null) return invalidTag(tag, null, Element);
+    final min = tag.vmMin;
+    final max = tag.vmMax;
+    if (vList == null) return invalidValuesLength(vList, min, max);
     if (tag.isLengthAlwaysValid || vList.isEmpty) return true;
     final length = vList.length;
-    if (length >= tag.vmMin &&
-        (length <= tag.vmMax || (tag.vmMax == -1 && length <= maxLength)) &&
+    if (length >= min &&
+        (length <= max || (max == -1 && length <= maxLength)) &&
         (length % tag.vmColumns == 0)) return true;
     return invalidValues(vList, issues, tag);
   }
@@ -495,7 +497,6 @@ abstract class Element<V> extends ListBase<V> {
   /// is used.
   static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
       (doTestElementValidity && tag.vrIndex != targetVR)
-      ? invalidTag(tag, issues, type)
-      : true;
-
+          ? invalidTag(tag, issues, type)
+          : true;
 }

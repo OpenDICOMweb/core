@@ -411,17 +411,17 @@ class UItag extends UI with TagElement<String> {
   Iterable<String> _values;
 
   factory UItag(Tag tag, Iterable<String> vList, {bool validate = true}) {
-    vList ??= kEmptyStringList;
-    return (validate && !UI.isValidArgs(tag, vList))
+    if (vList == null) return badValues(vList, null, tag);
+    return (validate && vList == null || !UI.isValidArgs(tag, vList))
         ? badValues(vList, null, tag)
         : new UItag._(tag, vList, null);
   }
 
   factory UItag.fromStrings(Tag tag, Iterable<String> sList,
-                            {bool validate = true}) =>
+          {bool validate = true}) =>
       (sList == null || (validate && !UI.isValidArgs(tag, sList)))
-      ? badValues(sList, null, tag)
-      : new UItag._(tag, sList, null);
+          ? badValues(sList, null, tag)
+          : new UItag._(tag, sList, null);
 
   factory UItag.fromUids(Tag tag, Iterable<Uid> vList,
           {bool validate = true}) =>
@@ -432,9 +432,9 @@ class UItag extends UI with TagElement<String> {
   UItag._(this.tag, this._values, this._uids);
 
   @override
-  Iterable<String> get values => _values  ??= uids.map((uid) => toString());
+  Iterable<String> get values => _values ??= uids.map((uid) => toString());
   @override
-  set values(Iterable<String> vList) => _values  = vList;
+  set values(Iterable<String> vList) => _values = vList;
 
   @override
   Iterable<Uid> get uids => _uids ??= Uid.parseList(values);
@@ -556,7 +556,9 @@ class AStag extends AS with TagElement<String> {
   static AStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static AStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (AS.isNotValidTag(tag)) ? null : new AStag._(tag, bytes.getAsciiList());
+      (bytes == null || AS.isNotValidTag(tag))
+          ? null
+          : new AStag(tag, bytes.getAsciiList());
 
 /* TODO: needed?
   static AStag parse(String s, {String onError(String s)}) => new AStag(

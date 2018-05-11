@@ -91,12 +91,12 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
         final as0 = new AStag(PTag.kPatientAge, vList0);
-        log.debug('as0:${as0.info}');
+        log.debug('as0:$as0');
         expect(as0.hasValidValues, true);
 
         log
           ..debug('as0: $as0, values: ${as0.values}')
-          ..debug('as0: ${as0.info}');
+          ..debug('as0: $as0');
         expect(as0[0], equals(vList0[0]));
       }
 
@@ -112,7 +112,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1, 1, 50);
         final as0 = new AStag(PTag.kPatientAge, vList0);
-        log.debug('as0:${as0.info}');
+        log.debug('as0:$as0');
         expect(as0.hasValidValues, true);
       }
 
@@ -342,10 +342,11 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getASList(1, 1);
         //final bytes = encodeStringListValueField(vList1);
+        log.debug('vList1: $vList1');
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
         final as0 = AStag.fromBytes(PTag.kPatientAge, bytes);
-        log.debug('as0: ${as0.info}');
+        log.debug('as0: $as0');
         expect(as0.hasValidValues, true);
       }
     });
@@ -356,7 +357,7 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           final as1 = AStag.fromBytes(PTag.kSelectorASValue, bytes0);
-          log.debug('as1: ${as1.info}');
+          log.debug('as1: $as1');
           expect(as1.hasValidValues, true);
         }
       }
@@ -502,7 +503,7 @@ void main() {
       expect(AS.isValidTag(PTag.kSelectorFDValue), false);
       global.throwOnError = true;
       expect(() => AS.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -511,10 +512,10 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AS.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
-
+/*
     test('AS checkVRIndex good values', () {
       global.throwOnError = false;
       expect(AS.checkVRIndex(kASIndex), kASIndex);
@@ -534,7 +535,7 @@ void main() {
           isNull);
       global.throwOnError = true;
       expect(() => AS.checkVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -577,7 +578,7 @@ void main() {
       }
     });
 
-    test('AS isValidVRIndex good values', () {
+ */   test('AS isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(AS.isValidVRIndex(kASIndex), true);
 
@@ -1281,7 +1282,7 @@ void main() {
         final bytes = Bytes.fromAsciiList(s);
         log.debug('bytes:$bytes');
         final da0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
-        log.debug('da0: ${da0.info}');
+        log.debug('da0: $da0');
         expect(da0.hasValidValues, true);
       }
     });
@@ -1293,7 +1294,7 @@ void main() {
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
         final da0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
-        log.debug('da0: ${da0.info}');
+        log.debug('da0: $da0');
         expect(da0.hasValidValues, true);
       }
     });
@@ -1304,7 +1305,7 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           final da1 = DAtag.fromBytes(PTag.kSelectorDAValue, bytes0);
-          log.debug('da1: ${da1.info}');
+          log.debug('da1: $da1');
           expect(da1.hasValidValues, true);
         }
       }
@@ -1506,6 +1507,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+/*
 
     test('DA checkVRIndex good values', () {
       global.throwOnError = false;
@@ -1568,6 +1570,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('DA isValidVRIndex good values', () {
       global.throwOnError = false;
@@ -1971,7 +1974,7 @@ void main() {
         final bytes = Bytes.fromAsciiList(s);
         log.debug('bytes:$bytes');
         final dt0 = DTtag.fromBytes(PTag.kDateTime, bytes);
-        log.debug('dt0: ${dt0.info}');
+        log.debug('dt0: $dt0');
         expect(dt0.hasValidValues, true);
       }
     });
@@ -1984,7 +1987,7 @@ void main() {
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
         final dt0 = DTtag.fromBytes(PTag.kDateTime, bytes);
-        log.debug('dt0: ${dt0.info}');
+        log.debug('dt0: $dt0');
         expect(dt0.hasValidValues, true);
       }
     });
@@ -1995,7 +1998,7 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           final dt1 = DTtag.fromBytes(PTag.kSelectorDTValue, bytes0);
-          log.debug('dt1: ${dt1.info}');
+          log.debug('dt1: $dt1');
           expect(dt1.hasValidValues, true);
         }
       }
@@ -2455,6 +2458,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+/*
 
     test('DT checkVRIndex good values', () {
       global.throwOnError = false;
@@ -2517,6 +2521,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('DT isValidVRIndex good values', () {
       global.throwOnError = false;
@@ -2941,12 +2946,12 @@ void main() {
         final vList0 = rsg.getTMList(1, 1);
         log.debug('vList0: $vList0');
         final tm0 = new TMtag(PTag.kModifiedImageTime, vList0);
-        log.debug('tm0: ${tm0.info}');
+        log.debug('tm0: $tm0');
         expect(tm0.hasValidValues, true);
 
         log
           ..debug('tm0: $tm0, values: ${tm0.values}')
-          ..debug('tm0: ${tm0.info}');
+          ..debug('tm0: $tm0');
         expect(tm0[0], equals(vList0[0]));
       }
 
@@ -2957,7 +2962,7 @@ void main() {
 
         log
           ..debug('tm0: $tm0, values: ${tm0.values}')
-          ..debug('ss0: ${tm0.info}');
+          ..debug('ss0: $tm0');
         expect(tm0[0], equals(vList1[0]));
       }
     });
@@ -2973,7 +2978,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1, 2, 18);
         final tm0 = new TMtag(PTag.kModifiedImageTime, vList0);
-        log.debug('vList0: $vList0, tm0:${tm0.info}');
+        log.debug('vList0: $vList0, tm0:$tm0');
         expect(tm0.hasValidValues, true);
       }
 
@@ -3166,7 +3171,7 @@ void main() {
         final bytes = Bytes.fromAsciiList(s);
         log.debug('bytes:$bytes');
         final tm0 = TMtag.fromBytes(PTag.kModifiedImageTime, bytes);
-        log.debug('tm0: ${tm0.info}');
+        log.debug('tm0: $tm0');
         expect(tm0.hasValidValues, true);
       }
     });
@@ -3177,7 +3182,7 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           final tm1 = TMtag.fromBytes(PTag.kSelectorTMValue, bytes0);
-          log.debug('tm1: ${tm1.info}');
+          log.debug('tm1: $tm1');
           expect(tm1.hasValidValues, true);
         }
       }
@@ -3408,6 +3413,8 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+/*
+
     test('TM checkVRIndex good values', () {
       global.throwOnError = false;
       expect(TM.checkVRIndex(kTMIndex), kTMIndex);
@@ -3469,6 +3476,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('TM isValidVRIndex good values', () {
       global.throwOnError = false;

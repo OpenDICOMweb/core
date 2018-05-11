@@ -603,6 +603,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+/*
 
     test('OB checkVR good values', () {
       global.throwOnError = false;
@@ -634,6 +635,7 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('OB isValidVRIndex good values', () {
       global.throwOnError = false;

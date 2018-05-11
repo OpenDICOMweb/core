@@ -24,7 +24,7 @@ class ValuesIssues<E> {
     return this;
   }
 
-  bool get isValidLength => tag.isValidLength(values.length);
+  bool get isValidLength => tag.isValidLength(values);
 
   List<Issues> get issues => _vIssues ??= <Issues>[];
 

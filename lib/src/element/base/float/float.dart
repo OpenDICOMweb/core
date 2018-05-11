@@ -45,12 +45,17 @@ abstract class FL extends Float with Float32 {
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
   static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-      vList != null &&
-      (doTestElementValidity ? isValidValues(tag, vList) : true);
+      doTestElementValidity && isValidTag(tag) && isValidValues(tag, vList);
 
-  static bool isValidTag(Tag tag) => isValidVR(tag.vrIndex);
+  /// Returns _true_ if both [tag] and [vfBytes] are valid for [FD].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
+      doTestElementValidity &&
+      isValidTag(tag, issues) &&
+      vfBytes != null &&
+      _isValidVFLength(vfBytes.length, kMaxVFLength, kSizeInBytes);
 
-  static bool isNotValidTag(Tag tag) => !isValidVR(tag.vrIndex);
+  static bool isValidTag(Tag tag, [Issues issues]) => isValidVR(tag.vrIndex);
 
   static bool isValidVR(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? true : invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -58,11 +63,15 @@ abstract class FL extends Float with Float32 {
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
       (vrCode == kVRCode) ? true : invalidVRCode(vrCode, issues, kVRIndex);
 
-  static bool isValidVFLength(int length,
-          [int min = 0, int max = kMaxVFLength]) =>
-      _isValidVFLength(length, max, kSizeInBytes);
+  static bool isValidVFLength(int length, [Issues issues, Tag tag]) =>
+      (tag != null)
+          ? tag.isValidVFLength(length, issues)
+          : _isValidVFLength(length, kMaxVFLength, kSizeInBytes);
 
   static bool isValidLength(Tag tag, Iterable<double> vList, [Issues issues]) {
+    assert(tag != null);
+    if (vList == null) return nullValueError();
+    tag.isValidLength(vList, issues);
     if (tag.vrIndex != kVRIndex) {
       invalidVRIndex(tag.vrIndex, issues, kVRIndex, tag);
       return false;
@@ -184,7 +193,8 @@ abstract class FD extends Float with Float64 {
       Tag.isValidTag(tag, issues, kSLIndex, FD) &&
       _isValidVFLength(vfBytes.length, kMaxVFLength, kSizeInBytes);
 
-  static bool isValidTag(Tag tag) => isValidVR(tag.vrIndex);
+  static bool isValidTag(Tag tag, [Issues issues]) =>
+      Element.isValidTag(tag, issues, kVRIndex, FD);
 
   static bool isNotValidTag(Tag tag) => !isValidVR(tag.vrIndex);
 

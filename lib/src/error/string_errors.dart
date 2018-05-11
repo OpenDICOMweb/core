@@ -55,6 +55,10 @@ Null badAgeString(String message, [Issues issues]) {
   return null;
 }
 
+int badAgeParse(String message, [Issues issues]) {
+  badString('InvalidAgeStringError: $message');
+  return -1;
+}
 bool invalidAgeString(String msg, [Issues issues]) {
   badAgeString(msg, issues);
   return false;

@@ -238,18 +238,20 @@ abstract class Tag {
   ///
   /// _Note_: If a VR has a long (32-bit) Value Field, then by definition its
   /// Value Multiplicity is [VM.k1], and its length is always valid.
-  bool isValidValuesLength<V>(Iterable<V> vList, [Issues issues]) {
+  bool isValidValuesLength(Iterable vList, [Issues issues]) {
     assert(vList != null);
-    if (isValidLength(vList.length)) return true;
-    invalidValuesLength<V>(vList, vmMin, vmMax, issues);
+    if (isValidLength(vList)) return true;
+    invalidValuesLength(vList, vmMin, vmMax, issues);
     return false;
   }
 
-  bool isNotValidValuesLength<V>(Iterable<V> vList, [Issues issues]) =>
+  bool isNotValidValuesLength(Iterable vList, [Issues issues]) =>
       !isValidValuesLength(vList, issues);
 
-  bool isValidLength(int length) {
-    assert(length != null);
+  bool isValidLength(Iterable vList, [Issues issues]) {
+    assert(vList != null);
+    final length = vList.length;
+    if (length == null) return invalidValuesLength(vList, vmMin, vmMax);
     if (isLengthAlwaysValid == true || length == 0) return true;
     return (length >= minValues &&
             length <= maxValues &&
@@ -257,7 +259,8 @@ abstract class Tag {
         length <= vr.maxVFLength;
   }
 
-  bool isNotValidLength(int length) => !isValidLength(length);
+  bool isNotValidLength(Iterable vList, [Issues issues]) =>
+      !isValidLength(vList);
 
   /// Returns _true_  if [vfLength] is a valid
   /// Value Field length for _this_ [Tag].
@@ -704,9 +707,9 @@ abstract class Tag {
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
   /// is used.
   static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
-      (doTestElementValidity && tag.vrIndex != targetVR)
-          ? invalidTag(tag, issues, type)
-          : true;
+      (tag != null && doTestElementValidity && tag.vrIndex == targetVR)
+          ? true
+          : invalidTag(tag, issues, type);
 
   /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
@@ -714,7 +717,8 @@ abstract class Tag {
   static bool isValidSpecialTag(
       Tag tag, Issues issues, int targetVR, Type type) {
     final vrIndex = tag.vrIndex;
-    return (doTestElementValidity &&
+    return (tag != null &&
+            doTestElementValidity &&
             (vrIndex == targetVR ||
                 (vrIndex >= kVRSpecialIndexMin &&
                     vrIndex <= kVRSpecialIndexMax)))
