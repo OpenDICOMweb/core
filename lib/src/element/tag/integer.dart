@@ -12,7 +12,7 @@ import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes/bytes.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid/well_known/transfer_syntax.dart';
 
@@ -30,9 +30,8 @@ class SStag extends SS with TagElement<int> {
       new SStag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory SStag._(Tag tag, Iterable<int> vList) {
-    if (SS.isNotValidArgs(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
-    return new SStag._x(tag, v);
+    if (!SS.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    return new SStag._x(tag, Int16.fromList(vList));
   }
 
   SStag._x(this.tag, this.values) : assert(tag.vrIndex == kSSIndex);
@@ -40,9 +39,9 @@ class SStag extends SS with TagElement<int> {
   @override
   SStag update([Iterable<int> vList]) => new SStag._(tag, vList);
 
-  static SStag fromValues(Tag tag, Iterable<int> values,
+  static SStag fromValues(Tag tag, Iterable<int> vList,
           [int _, TransferSyntax __]) =>
-      new SStag(tag, Int32.fromList(values));
+      new SStag._(tag, vList);
 
   static SStag fromBytes(Tag tag, Bytes bytes) =>
       SS.isValidBytesArgs(tag, bytes)
@@ -64,20 +63,18 @@ class SLtag extends SL with TagElement<int> {
       new SLtag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory SLtag._(Tag tag, Iterable<int> vList) {
-    if (SL.isNotValidArgs(tag, vList))
-      return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
-    return new SLtag._x(tag, v);
+    if (!SL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    return new SLtag._x(tag, Int32.fromList(vList));
   }
 
-  SLtag._x(this.tag, this.values);
+  SLtag._x(this.tag, this.values) : assert(tag.vrIndex == kSLIndex);
 
   @override
   SLtag update([Iterable<int> vList]) => new SLtag._(tag, vList);
 
-  static SLtag fromValues(Tag tag, Iterable<int> vf,
+  static SLtag fromValues(Tag tag, Iterable<int> vList,
           [int _, TransferSyntax __]) =>
-      new SLtag(tag, Int32.fromList(vf));
+      new SLtag._(tag, vList);
 
   static SLtag fromBytes(Tag tag, Bytes bytes) =>
       SL.isValidBytesArgs(tag, bytes)
@@ -103,23 +100,24 @@ class OBtag extends OB with TagElement<int> {
           [int vfLengthField, TransferSyntax ts]) =>
       new OBtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
 
-  factory OBtag._(Tag tag, Iterable<int> vList,
-      [int vfLengthField, TransferSyntax ts]) {
-    if (OB.isNotValidArgs(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
+  factory OBtag._(Tag tag, Iterable<int> vList, [int vlf, TransferSyntax ts]) {
+    if (!OB.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint8.fromList(vList);
     return (tag.code == kPixelData)
-        ? new OBtagPixelData(tag, v, vfLengthField, ts)
+        ? new OBtagPixelData(tag, v, vlf, ts)
         : new OBtag._x(tag, v, v.length);
   }
 
-  OBtag._x(this.tag, this.values, this.vfLengthField);
+  OBtag._x(this.tag, this.values, this.vfLengthField)
+      : assert(tag.vrIndex == kOBIndex);
 
   @override
-  OBtag update([Iterable<int> vList = kEmptyIntList]) => new OBtag(tag, vList);
+  OBtag update([Iterable<int> vList = kEmptyIntList]) =>
+      new OBtag._(tag, vList);
 
   static OBtag fromValues(Tag tag, Iterable<int> vList,
           [int vfLengthField, TransferSyntax ts]) =>
-      new OBtag(tag, Uint8.fromList(vList), vfLengthField, ts);
+      new OBtag._(tag, Uint8.fromList(vList), vfLengthField, ts);
 
   static OBtag fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
@@ -146,29 +144,29 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
   @override
   final TransferSyntax ts;
 
-  /// Creates an [OBtagPixelData] Element from a [Iterable<int>]
-  /// of byte values (0 - 255).
+  /// Creates an [OBtagPixelData] Element from a [Iterable<int>].
   factory OBtagPixelData(Tag tag,
           [Iterable<int> vList, int vfLengthField, TransferSyntax ts]) =>
       new OBtagPixelData._(tag, Uint8.fromList(vList), vfLengthField, ts);
 
-  factory OBtagPixelData._(
-      Tag tag, Iterable<int> vList, int vfLengthField, TransferSyntax ts) {
-    if (_isNotOK(tag, kOBIndex)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
-    final vfLength = vList.length * OB.kSizeInBytes;
-    if (!OB.isValidVFLength(vfLength, vfLengthField))
-      return badVFLength(
-          vfLength, OB.kMaxVFLength, OB.kSizeInBytes, vfLengthField);
+  factory OBtagPixelData.bulkdata(Tag tag, Uri url,
+          [int vfLengthField, TransferSyntax ts]) =>
+      new OBtagPixelData._(
+          tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
 
-    return new OBtagPixelData._x(tag, v, vfLengthField, ts);
+  factory OBtagPixelData._(Tag tag, Iterable<int> vList,
+      [int vlf, TransferSyntax ts]) {
+    if (!OB.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint8.fromList(vList);
+    return new OBtagPixelData(tag, v, vlf, ts);
   }
 
-  OBtagPixelData._x(this.tag, this.values, this.vfLengthField, this.ts);
+  OBtagPixelData._x(this.tag, this.values, this.vfLengthField, this.ts)
+      : assert(tag.vrIndex == kOBIndex);
 
   @override
-  OBtagPixelData update([Iterable<int> vList = kEmptyIntList]) =>
-      new OBtagPixelData._(tag, vList, vfLength, ts);
+  OBtagPixelData update([Iterable<int> vList]) =>
+      new OBtagPixelData._(tag, vList);
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
@@ -181,7 +179,7 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
   static OBtagPixelData fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
       OB.isValidBytesArgs(tag, bytes, vfLengthField)
-          ? new OBtagPixelData._(tag, bytes.asUint8List(), vfLengthField, ts)
+          ? new OBtagPixelData._x(tag, bytes, vfLengthField, ts)
           : badTag(tag, null, OB);
 }
 
@@ -204,15 +202,16 @@ class UNtag extends UN with TagElement<int> {
       new UNtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
 
   factory UNtag._(Tag tag, Iterable<int> vList, int vlf, TransferSyntax ts) {
-    if (UN.isNotValidArgs(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
+    if (!UN.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint8.fromList(vList);
     final vflf = _checkVFLength(vList.length, vlf);
     return (tag.code == kPixelData)
         ? new UNtagPixelData(tag, v, vflf, ts)
         : new UNtag._x(tag, v, vflf);
   }
 
-  UNtag._x(this.tag, this.values, this.vfLengthField);
+  UNtag._x(this.tag, this.values, this.vfLengthField)
+      : assert(tag.vrIndex == kUNIndex);
 
   @override
   UNtag update([Iterable<int> vList = kEmptyIntList]) => new UNtag(tag, vList);
@@ -223,7 +222,7 @@ class UNtag extends UN with TagElement<int> {
 
   static UNtag fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
-      OB.isValidBytesArgs(tag, bytes, vfLengthField)
+      UN.isValidBytesArgs(tag, bytes, vfLengthField)
           ? new UNtag._(tag, bytes.asUint8List(), vfLengthField, ts)
           : badTag(tag, null, UN);
 }
@@ -245,25 +244,29 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
   @override
   final TransferSyntax ts;
 
-  /// Creates an [UNtagPixelData] Element from a [Iterable<int>]
-  /// of byte values (0 - 255).
-  factory UNtagPixelData(Tag tag, Iterable<int> vList, int vfLengthField,
-          [TransferSyntax ts]) =>
-      fromValues(tag, Uint8.fromList(vList), vfLengthField, ts);
+  /// Creates an [UNtagPixelData] Element from a [Iterable<int>].
+  factory UNtagPixelData(Tag tag,
+          [Iterable<int> vList, int vfLengthField, TransferSyntax ts]) =>
+      new UNtagPixelData._(tag, vList, vfLengthField, ts);
 
-  factory UNtagPixelData._(
-      Tag tag, Iterable<int> vList, int vfLengthField, TransferSyntax ts) {
-    if (_isNotOK(tag, kUNIndex)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
-    final vlf = _checkVFLength(vList.length, vfLengthField);
-    return new UNtagPixelData._x(tag, v, vlf, ts);
+  factory UNtagPixelData.bulkdata(Tag tag, Uri url,
+          [int vfLengthField, TransferSyntax ts]) =>
+      new UNtagPixelData._(
+          tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
+
+  factory UNtagPixelData._(Tag tag, Iterable<int> vList,
+      [int vlf, TransferSyntax ts]) {
+    if (!OB.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint8.fromList(vList);
+    return new UNtagPixelData(tag, v, vlf, ts);
   }
 
-  UNtagPixelData._x(this.tag, this.values, this.vfLengthField, this.ts);
+  UNtagPixelData._x(this.tag, this.values, this.vfLengthField, this.ts)
+      : assert(tag.vrIndex == kUNIndex);
 
   @override
   UNtagPixelData update([Iterable<int> vList]) =>
-      new UNtagPixelData._(tag, vList, vfLength, ts);
+      new UNtagPixelData._(tag, vList);
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
@@ -276,7 +279,7 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
   static UNtagPixelData fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
       UN.isValidBytesArgs(tag, bytes, vfLengthField)
-          ? new UNtagPixelData._(tag, bytes.asUint8List(), vfLengthField, ts)
+          ? new UNtagPixelData._(tag, bytes, vfLengthField, ts)
           : badTag(tag, null, UN);
 }
 
@@ -294,23 +297,22 @@ class UStag extends US with TagElement<int> {
       new UStag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory UStag._(Tag tag, Iterable<int> vList) {
-    if (US.isNotValidArgs(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint16List : vList;
-    return new UStag._x(tag, v);
+    if (!US.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    return new UStag._x(tag, Uint16.fromList(vList));
   }
 
-  UStag._x(this.tag, this.values);
+  UStag._x(this.tag, this.values) : assert(tag.vrIndex == kUSIndex);
 
   @override
   UStag update([Iterable<int> vList]) => new UStag._(tag, vList);
 
-  static UStag fromValues(Tag tag, Iterable<int> vf,
+  static UStag fromValues(Tag tag, Iterable<int> vList,
           [int _, TransferSyntax __]) =>
-      new UStag(tag, Uint16.fromList(vf));
+      new UStag(tag, vList);
 
   static UStag fromBytes(Tag tag, Bytes bytes) =>
       US.isValidBytesArgs(tag, bytes)
-          ? new UStag._(tag, bytes.asUint16List())
+          ? new UStag._x(tag, bytes.asUint16List())
           : badTag(tag, null, US);
 }
 
@@ -329,32 +331,32 @@ class OWtag extends OW with TagElement<int> {
           [Iterable<int> vList, int vfLengthField, TransferSyntax ts]) =>
       new OWtag._(tag, vList, vfLengthField, ts);
 
-  factory OWtag.bulkdata(Tag tag, Uri url,
+  factory OWtag._bulkdata(Tag tag, Uri url,
           [int vfLengthField, TransferSyntax ts]) =>
       new OWtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
 
   factory OWtag._(Tag tag, Iterable<int> vList, int vlf, TransferSyntax ts) {
-    vlf ??= vList.length * OW.kSizeInBytes;
-    if (OW.isNotValidArgs(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
+    if (!OW.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint16.fromList(vList);
     return (tag.code == kPixelData)
         ? new OWtagPixelData(tag, v, vlf, ts)
         : new OWtag._x(tag, v, vlf);
   }
 
-  OWtag._x(this.tag, this.values, this.vfLengthField);
+  OWtag._x(this.tag, this.values, this.vfLengthField)
+      : assert(tag.vrIndex == kOWIndex);
 
   @override
   OWtag update([Iterable<int> vList = kEmptyIntList]) => new OWtag(tag, vList);
 
   static OWtag fromValues(Tag tag, Iterable<int> vList,
           [int vfLengthField, TransferSyntax ts]) =>
-      new OWtag(tag, Uint8.fromList(vList), vfLengthField, ts);
+      new OWtag(tag, vList, vfLengthField, ts);
 
   static OWtag fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
       OW.isValidBytesArgs(tag, bytes, vfLengthField)
-          ? new OWtag._(tag, bytes.asUint16List(), vfLengthField, ts)
+          ? new OWtag._(tag, bytes, vfLengthField, ts)
           : badTag(tag, null, OW);
 }
 
@@ -381,19 +383,24 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
           [int vfLengthField, TransferSyntax ts]) =>
       new OWtagPixelData._(tag, vList, vfLengthField, ts);
 
+  factory OWtagPixelData._bulkdata(Tag tag, Uri url,
+          [int vfLengthField, TransferSyntax ts]) =>
+      new OWtagPixelData._(
+          tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
+
   factory OWtagPixelData._(
-      Tag tag, Iterable<int> vList, int vfLengthField, TransferSyntax ts) {
-    if (_isNotOK(tag, kOWIndex)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
-    final vlf = _checkVFLength(vList.length, vfLengthField);
+      Tag tag, Iterable<int> vList, [int vlf, TransferSyntax ts]) {
+    if (!OW.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint16.fromList(vList);
     return new OWtagPixelData._x(tag, v, vlf, ts);
   }
 
-  OWtagPixelData._x(this.tag, this.values, this.vfLengthField, this.ts);
+  OWtagPixelData._x(this.tag, this.values, this.vfLengthField, this.ts)
+      : assert(tag.vrIndex == kOWIndex);
 
   @override
-  OWtagPixelData update([Iterable<int> vList = kEmptyIntList]) =>
-      new OWtagPixelData._(tag, vList, vfLength, ts);
+  OWtagPixelData update([Iterable<int> vList]) =>
+      new OWtagPixelData._(tag, vList);
 
   /// Creates an [OWtagPixelData] Element from a [Uint8List].
   static OWtagPixelData fromValues(Tag tag, Uint16List vList,
@@ -404,7 +411,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
   static OWtagPixelData fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
       OW.isValidBytesArgs(tag, bytes, vfLengthField)
-          ? new OWtagPixelData._(tag, bytes.asUint16List(), vfLengthField, ts)
+          ? new OWtagPixelData._(tag, bytes, vfLengthField, ts)
           : badTag(tag, null, OW);
 }
 
@@ -418,27 +425,26 @@ class OLtag extends OL with TagElement<int> {
   /// Creates an [OLtag] Element.
   factory OLtag(Tag tag, [Iterable<int> vList]) => new OLtag._(tag, vList);
 
-  factory OLtag.bulkdata(Tag tag, Uri url) =>
+  factory OLtag._bulkdata(Tag tag, Uri url) =>
       new OLtag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory OLtag._(Tag tag, Iterable<int> vList) {
-    if (OL.isNotValidArgs(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
+    if (!OL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint32.fromList(vList);
     return new OLtag._x(tag, v);
   }
 
-  OLtag._x(this.tag, this.values);
+  OLtag._x(this.tag, this.values) : assert(tag.vrIndex == kOLIndex);
 
   @override
   OLtag update([Iterable<int> vList]) => new OLtag._(tag, vList);
 
-  static OLtag fromValues(Tag tag, Iterable<int> vf,
-          [int _, TransferSyntax __]) =>
-      new OLtag(tag, Int32.fromList(vf));
+  static OLtag fromValues(Tag tag, Iterable<int> vList) =>
+      new OLtag._(tag, vList);
 
   static OLtag fromBytes(Tag tag, Bytes bytes) =>
       OL.isValidBytesArgs(tag, bytes)
-          ? new OLtag._(tag, bytes.asUint32List())
+          ? new OLtag._x(tag, bytes.asUint32List())
           : badTag(tag, null, OL);
 }
 
@@ -456,19 +462,18 @@ class ULtag extends UL with TagElement<int> {
       new ULtag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory ULtag._(Tag tag, Iterable<int> vList) {
-    if (UL.isNotValidArgs(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
+    if (!UL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint32.fromList(vList);
     return new ULtag._x(tag, v);
   }
 
-  ULtag._x(this.tag, this.values);
+  ULtag._x(this.tag, this.values) : assert(tag.vrIndex == kULIndex);
 
   @override
   ULtag update([Iterable<int> vList]) => new ULtag._(tag, vList);
 
-  static ULtag fromValues(Tag tag, Iterable<int> vf,
-          [int _, TransferSyntax __]) =>
-      new ULtag(tag, Int32.fromList(vf));
+  static ULtag fromValues(Tag tag, Iterable<int> vLIst) =>
+      new ULtag._(tag, vLIst);
 
   static ULtag fromBytes(Tag tag, Bytes bytes) =>
       UL.isValidBytesArgs(tag, bytes)
@@ -485,8 +490,8 @@ class GLtag extends ULtag {
       new GLtag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory GLtag._(Tag tag, Iterable<int> vList) {
-    if (UL.isNotValidArgs(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
+    if (!GL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint32.fromList(vList);
     return new GLtag._x(tag, v);
   }
 
@@ -495,13 +500,13 @@ class GLtag extends ULtag {
   @override
   GLtag update([Iterable<int> vList]) => new GLtag._(tag, vList);
 
-  static GLtag fromValues(Tag tag, Iterable<int> vf) =>
-      new GLtag(tag, Uint8.fromList(vf));
+  static GLtag fromValues(Tag tag, Iterable<int> vList) =>
+      new GLtag(tag, vList);
 
-  static GLtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) => GL
-          .isValidBytesArgs(tag, bytes)
-      ? (UL.isNotValidTag(tag)) ? null : new GLtag._(tag, bytes.asUint32List())
-      : badTag(tag, null, UL);
+  static GLtag fromBytes(Tag tag, Bytes bytes) =>
+      GL.isValidBytesArgs(tag, bytes)
+          ? new GLtag._x(tag, bytes.asUint32List())
+          : badTag(tag, null, GL);
 }
 
 /// Immutable Attribute Tags
@@ -521,23 +526,22 @@ class ATtag extends AT with TagElement<int> {
       new ATtag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory ATtag._(Tag tag, Iterable<int> vList) {
-    if (AT.isNotValidArgs(tag, vList)) return null;
-    final v = (vList.isEmpty) ? kEmptyUint8List : vList;
+    if (!AT.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = Uint32.fromList(vList);
     return new ATtag._x(tag, v);
   }
 
-  ATtag._x(this.tag, this.values);
+  ATtag._x(this.tag, this.values) : assert(tag.vrIndex == kATIndex);
 
   @override
   ATtag update([Iterable<int> vList]) => new ATtag._(tag, vList);
 
-  static ATtag fromValues(Tag tag, Iterable<int> vf,
-          [int _, TransferSyntax __]) =>
-      new ATtag(tag, Int32.fromList(vf));
+  static ATtag fromValues(Tag tag, Iterable<int> vList) =>
+      new ATtag._(tag, vList);
 
   static ATtag fromBytes(Tag tag, Bytes bytes) =>
       (AT.isValidBytesArgs(tag, bytes))
-          ? new ATtag._(tag, bytes.asUint32List())
+          ? new ATtag._x(tag, bytes.asUint32List())
           : badTag(tag, null, AT);
 }
 

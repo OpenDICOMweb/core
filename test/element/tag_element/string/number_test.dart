@@ -304,7 +304,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
         final ds0 = new DStag(PTag.kPresentationPixelSpacing, vList0);
-        expect(ds0.isValidLength(ds0.length), true);
+        expect(ds0.hasValidLength, true);
       }
     });
 
@@ -1512,7 +1512,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(2, 2);
         final is0 = new IStag(PTag.kPresentationPixelAspectRatio, vList0);
-        expect(is0.tag.isValidLength(is0.length), true);
+        expect(is0.tag.isValidLength(is0), true);
       }
     });
 

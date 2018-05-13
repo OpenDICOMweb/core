@@ -290,7 +290,6 @@ void main() {
         //final bytes0 = Bytes.toAscii(intList0.toString());
         final bytes0 = new Bytes.typedDataView(intList0);
         log.debug('bytes0: $bytes0');
-        print('blength: ${bytes0.length}');
         final sl0 = SLtag.fromBytes(PTag.kSelectorSLValue, bytes0);
         log.debug('sl0: $sl0');
         expect(sl0.hasValidValues, true);
@@ -524,7 +523,7 @@ void main() {
 
     final invalidVList = rng.int32List(SL.kMaxLength + 1, SL.kMaxLength + 1);
 
-    test('SL isValidVListLength VM.k1 good values', () {
+    test('SL isValidLength VM.k1 good values', () {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rng.int32List(1, 1);
@@ -532,36 +531,36 @@ void main() {
 
         for (var tag in slTags0) {
           log.debug('tag: $tag');
-          expect(SL.isValidVListLength(tag, validMinVList0), true);
+          expect(SL.isValidLength(tag, validMinVList0), true);
 
-          expect(SL.isValidVListLength(tag, validMaxLengthList.take(tag.vmMax)),
+          expect(SL.isValidLength(tag, validMaxLengthList.take(tag.vmMax)),
               true);
-          expect(SL.isValidVListLength(tag, validMaxLengthList.take(tag.vmMin)),
+          expect(SL.isValidLength(tag, validMaxLengthList.take(tag.vmMin)),
               true);
         }
       }
     });
 
-    test('SL isValidVListLength VM.k1 bad values', () {
+    test('SL isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rng.int32List(2, i + 1);
 
         for (var tag in slTags0) {
           global.throwOnError = false;
           log.debug('tag: $tag');
-          expect(SL.isValidVListLength(tag, validMinVList0), false);
-          expect(SL.isValidVListLength(tag, invalidVList), false);
+          expect(SL.isValidLength(tag, validMinVList0), false);
+          expect(SL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => SL.isValidVListLength(tag, invalidVList),
+          expect(() => SL.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => SL.isValidVListLength(tag, validMinVList0),
+          expect(() => SL.isValidLength(tag, validMinVList0),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('SL isValidVListLength VM.k2 good values', () {
+    test('SL isValidLength VM.k2 good values', () {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rng.int32List(2, 2);
@@ -569,75 +568,75 @@ void main() {
 
         for (var tag in slTags1) {
           log.debug('tag: $tag');
-          expect(SL.isValidVListLength(tag, validMinVList0), true);
+          expect(SL.isValidLength(tag, validMinVList0), true);
 
-          expect(SL.isValidVListLength(tag, validMaxLengthList.take(tag.vmMax)),
+          expect(SL.isValidLength(tag, validMaxLengthList.take(tag.vmMax)),
               true);
-          expect(SL.isValidVListLength(tag, validMaxLengthList.take(tag.vmMin)),
+          expect(SL.isValidLength(tag, validMaxLengthList.take(tag.vmMin)),
               true);
         }
       }
     });
 
-    test('SL isValidVListLength VM.k2 bad values', () {
+    test('SL isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final validMinVList0 = rng.int32List(3, i + 1);
 
         for (var tag in slTags1) {
           log.debug('tag: $tag');
           global.throwOnError = false;
-          expect(SL.isValidVListLength(tag, validMinVList0), false);
-          expect(SL.isValidVListLength(tag, invalidVList), false);
+          expect(SL.isValidLength(tag, validMinVList0), false);
+          expect(SL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => SL.isValidVListLength(tag, invalidVList),
+          expect(() => SL.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => SL.isValidVListLength(tag, validMinVList0),
+          expect(() => SL.isValidLength(tag, validMinVList0),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('SL isValidVListLength VM.k1_n good values', () {
+    test('SL isValidLength VM.k1_n good values', () {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rng.int32List(1, i);
         final validMaxLengthList = invalidVList.sublist(0, SL.kMaxLength);
         for (var tag in slTag2) {
           log.debug('tag: $tag');
-          expect(SL.isValidVListLength(tag, validMinVList0), true);
-          expect(SL.isValidVListLength(tag, validMaxLengthList), true);
+          expect(SL.isValidLength(tag, validMinVList0), true);
+          expect(SL.isValidLength(tag, validMaxLengthList), true);
         }
       }
     });
 
-    test('SL isValidVListLength VM.k2_2n good values', () {
+    test('SL isValidLength VM.k2_2n good values', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
-        final validMinVList0 = rng.int32List(10, 10);
-        final validMaxLengthList = invalidVList.sublist(0, SL.kMaxLength);
+        final vListGood = rng.int32List(10, 10);
+        final vListBad = invalidVList.sublist(0, SL.kMaxLength);
         for (var tag in slTags3) {
           log.debug('tag: $tag');
           global.throwOnError = false;
-          expect(SL.isValidVListLength(tag, validMinVList0), true);
-          expect(SL.isValidVListLength(tag, validMaxLengthList), true);
+          expect(SL.isValidLength(tag, vListGood), true);
+          expect(SL.isValidLength(tag, vListBad), false);
         }
       }
     });
 
-    test('SL isValidVListLength VM.k2_2n bad values', () {
+    test('SL isValidLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
         final validMinVList0 = rng.int32List(1, 1);
         for (var tag in slTags3) {
           log.debug('tag: $tag');
           global.throwOnError = false;
-          expect(SL.isValidVListLength(tag, validMinVList0), false);
-          expect(SL.isValidVListLength(tag, invalidVList), false);
+          expect(SL.isValidLength(tag, validMinVList0), false);
+          expect(SL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => SL.isValidVListLength(tag, invalidVList),
+          expect(() => SL.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => SL.isValidVListLength(tag, validMinVList0),
+          expect(() => SL.isValidLength(tag, validMinVList0),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -670,29 +669,29 @@ void main() {
       }
     });
 
-    test('SL isNotValidTag good values', () {
+    test('SL isValidTag good values', () {
       global.throwOnError = false;
-      expect(SL.isNotValidTag(PTag.kSelectorSLValue), false);
+      expect(SL.isValidTag(PTag.kSelectorSLValue), true);
 
       for (var tag in slTags0) {
-        expect(SL.isNotValidTag(tag), false);
+        expect(SL.isValidTag(tag), true);
       }
     });
 
-    test('SL isNotValidTag bad values', () {
+    test('SL isValidTag bad values', () {
       global.throwOnError = false;
-      expect(SL.isNotValidTag(PTag.kSelectorUSValue), true);
+      expect(SL.isValidTag(PTag.kSelectorUSValue), false);
 
       global.throwOnError = true;
-      expect(() => SL.isNotValidTag(PTag.kSelectorUSValue),
+      expect(() => SL.isValidTag(PTag.kSelectorUSValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(SL.isNotValidTag(tag), true);
+        expect(SL.isValidTag(tag), false);
 
         global.throwOnError = true;
-        expect(() => SL.isNotValidTag(tag),
+        expect(() => SL.isValidTag(tag),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });

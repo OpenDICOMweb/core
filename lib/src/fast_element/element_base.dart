@@ -348,7 +348,7 @@ abstract class OF extends Float with Float32Mixin {
   static const int kSizeInBytes = 4;
   static const int kShiftValue = 2;
   static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = kMax32BitLongVF;
+  static const int kMaxVFLength = k32BitMaxLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
   static bool isValidArgs(Tag tag, Iterable<double> vList) =>
@@ -538,7 +538,7 @@ abstract class OD extends Float with Float64Mixin {
   static const int kSizeInBytes = 8;
   static const int kShiftValue = 3;
   static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = kMax64BitLongVF;
+  static const int kMaxVFLength = k64BitMaxLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
   static bool isValidArgs(Tag tag, Iterable<double> vList) =>

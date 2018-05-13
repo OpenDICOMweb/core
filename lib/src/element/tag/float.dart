@@ -30,18 +30,17 @@ class FLtag extends FL with TagElement<double> {
 
   factory FLtag._(Tag tag, Iterable<double> vList) {
     if (!FL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? kEmptyFloat32List : vList;
-    return new FLtag._x(tag, v);
+    return new FLtag._x(tag, Float32.fromList(vList));
   }
 
   FLtag._x(this.tag, this.values) : assert(tag.vrIndex == kFLIndex);
 
   @override
   FLtag update([Iterable<double> vList = kEmptyDoubleList]) =>
-      new FLtag(tag, vList);
+      new FLtag._(tag, vList);
 
   static FLtag fromValues(Tag tag, Iterable<double> vList, [int _]) =>
-      new FLtag(tag, vList ?? kEmptyDoubleList);
+      new FLtag._(tag, vList);
 
   static FLtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
       FL.isValidBytesArgs(tag, bytes)
@@ -68,7 +67,12 @@ class OFtag extends OF with TagElement<double> {
   factory OFtag.bulkdata(Tag tag, Uri url) =>
       new OFtag._(tag, new FloatBulkdataRef(tag.code, url));
 
-  OFtag._(this.tag, this.values);
+  factory OFtag._(Tag tag, Iterable<double> vList) {
+    if (!OF.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = (vList.isEmpty) ? kEmptyFloat32List : vList;
+    return new OFtag._x(tag, v);
+  }
+  OFtag._x(this.tag, this.values);
 
   @override
   OFtag update([Iterable<double> vList = kEmptyDoubleList]) =>
@@ -77,21 +81,10 @@ class OFtag extends OF with TagElement<double> {
   static OFtag fromValues(Tag tag, Iterable<double> vList, [int _]) =>
       new OFtag(tag, vList ?? kEmptyDoubleList);
 
-  static OFtag fromBase64(Tag tag, String s) =>
-      fromBytes(tag, Bytes.fromBase64(s));
-
-  static OFtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.typedDataView(bList));
-
-  static OFtag from(Element e) => fromBytes(e.tag, e.vfBytes);
-
-  static OFtag fromBytes(Tag tag, Bytes bytes,
-          [int _]) =>
-      (tag.vrIndex != kOFIndex)
-          ? Tag.isValidTag(tag, null, kOFIndex, OF)
-          : (OF.isNotValidTag(tag))
-              ? null
-              : new OFtag._(tag, bytes.asFloat32List());
+  static OFtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      OF.isValidBytesArgs(tag, bytes)
+          ? new OFtag._x(tag, bytes.asFloat32List())
+          : badTag(tag, null, FL);
 }
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.
@@ -111,7 +104,13 @@ class FDtag extends FD with TagElement<double> {
   factory FDtag.bulkdata(Tag tag, Uri url) =>
       new FDtag._(tag, new FloatBulkdataRef(tag.code, url));
 
-  FDtag._(this.tag, this.values);
+  factory FDtag._(Tag tag, Iterable<double> vList) {
+    if (!FD.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = (vList.isEmpty) ? kEmptyFloat32List : vList;
+    return new FDtag._x(tag, v);
+  }
+
+  FDtag._x(this.tag, this.values);
 
   @override
   FDtag update([Iterable<double> vList = kEmptyDoubleList]) =>
@@ -120,16 +119,10 @@ class FDtag extends FD with TagElement<double> {
   static FDtag fromValues(Tag tag, Iterable<double> vList, [int _]) =>
       new FDtag(tag, vList ?? kEmptyDoubleList);
 
-  static FDtag fromBase64(Tag tag, String s) =>
-      fromBytes(tag, Bytes.fromBase64(s));
-
-  static FDtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.typedDataView(bList));
-
-  static FDtag from(Element e) => fromBytes(e.tag, e.vfBytes);
-
   static FDtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
-      FD.isValidTag(tag) ? new FDtag._(tag, bytes.asFloat64List()) : null;
+      FD.isValidBytesArgs(tag, bytes)
+          ? new FDtag._x(tag, bytes.asFloat64List())
+          : badTag(tag, null, FL);
 }
 
 /// Float - Array of IEEE single precision (64-bit) floating point numbers.
@@ -150,7 +143,13 @@ class ODtag extends OD with TagElement<double> {
   factory ODtag.bulkdata(Tag tag, Uri url) =>
       new ODtag._(tag, new FloatBulkdataRef(tag.code, url));
 
-  ODtag._(this.tag, this.values);
+  factory ODtag._(Tag tag, Iterable<double> vList) {
+    if (!OD.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = (vList.isEmpty) ? kEmptyFloat32List : vList;
+    return new ODtag._x(tag, v);
+  }
+
+  ODtag._x(this.tag, this.values);
 
   @override
   ODtag update([Iterable<double> vList = kEmptyDoubleList]) =>
@@ -159,19 +158,8 @@ class ODtag extends OD with TagElement<double> {
   static ODtag fromValues(Tag tag, Iterable<double> vList, [int _]) =>
       new ODtag._(tag, vList);
 
-  static ODtag fromBase64(Tag tag, String s) =>
-      fromBytes(tag, Bytes.fromBase64(s));
-
-  static ODtag fromUint8List(Tag tag, Uint8List bList) =>
-      fromBytes(tag, new Bytes.typedDataView(bList));
-
-  static ODtag from(Element e) => fromBytes(e.tag, e.vfBytes);
-
-  static ODtag fromBytes(Tag tag, Bytes bytes,
-          [int _]) =>
-      (tag.vrIndex != kODIndex)
-          ? Tag.isValidTag(tag, null, kFDIndex, FD)
-          : (OD.isNotValidTag(tag))
-              ? null
-              : new ODtag._(tag, bytes.asFloat64List());
+  static ODtag fromBytes(Tag tag, Bytes bytes, [int _]) =>
+      OD.isValidBytesArgs(tag, bytes)
+          ? new ODtag._x(tag, bytes.asFloat32List())
+          : badTag(tag, null, FL);
 }

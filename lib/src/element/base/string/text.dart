@@ -9,7 +9,6 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/string/ascii.dart';
 import 'package:core/src/element/base/string/string.dart';
 import 'package:core/src/element/base/string/string_bulkdata.dart';
 import 'package:core/src/element/base/string/utf8.dart';

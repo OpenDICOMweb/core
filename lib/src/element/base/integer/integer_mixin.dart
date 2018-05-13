@@ -99,10 +99,6 @@ abstract class IntBase extends Element<int> {
     if (!doTestElementValidity || vList.isEmpty) return true;
     var ok = true;
     if (!Element.isValidVListLength(tag, vList, issues, maxLength)) ok = false;
-    // Urgent: change test that pass null to unconditionally catch error
-    // i.e. even if throwOnError is false
-//    assert(vList != null);
-    if (vList == null) return false;
     for (var v in vList) {
       if (ok && !isValidValue(v, issues, minValue, maxValue)) ok = false;
     }
@@ -257,7 +253,6 @@ abstract class Int16 {
   static const int kMinValue = -(1 << (kSizeInBits - 1));
   static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
 
-  /// Returns the [values] length that corresponds to [vfLength].
   static int getLength(int vfLength) =>
       vfLengthToLength(vfLength, kSizeInBytes);
 
@@ -610,7 +605,7 @@ abstract class Uint8 {
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;
   // These are here because OB and UN are both long value fields
-  static const int kMaxVFLength = kMax8BitLongVF;
+  static const int kMaxVFLength = k8BitMaxLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
   //TODO: add equal to other classes
@@ -732,7 +727,7 @@ abstract class OBMixin {
   static const String kVRName = 'Other Byte';
   static const int kSizeInBytes = 1;
   static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = kMax8BitLongVF;
+  static const int kMaxVFLength = k8BitMaxLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;
@@ -800,7 +795,7 @@ abstract class UNMixin {
   static const String kVRName = 'Unknown';
   static const int kSizeInBytes = 1;
   static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = kMax8BitLongVF;
+  static const int kMaxVFLength = k8BitMaxLongVF;
   static const int kMaxLength = kMaxLongVF;
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;
@@ -989,7 +984,7 @@ abstract class OWMixin {
   static const String kVRName = 'Other Word';
   static const int kSizeInBytes = 2;
   static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = kMax16BitLongVF;
+  static const int kMaxVFLength = k16BitMaxLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;

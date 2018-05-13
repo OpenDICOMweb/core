@@ -200,7 +200,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         final ae0 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-        expect(ae0.tag.isValidLength(ae0.length), true);
+        expect(ae0.tag.isValidLength(ae0), true);
       }
     });
 
@@ -1003,7 +1003,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
         final cs0 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
-        expect(cs0.tag.isValidLength(cs0.length), true);
+        expect(cs0.tag.isValidLength(cs0), true);
       }
     });
 
@@ -1949,7 +1949,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
         final ui0 = new UItag(PTag.kSOPInstanceUID, vList0);
-        expect(ui0.tag.isValidLength(ui0.length), true);
+        expect(ui0.tag.isValidLength(ui0), true);
       }
     });
 
@@ -2741,7 +2741,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
         final ur0 = new URtag(PTag.kRetrieveURL, vList0);
-        expect(ur0.tag.isValidLength(ur0.length), true);
+        expect(ur0.tag.isValidLength(ur0), true);
       }
     });
 

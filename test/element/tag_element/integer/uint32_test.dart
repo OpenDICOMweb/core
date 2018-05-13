@@ -28,24 +28,20 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final uint32List0 = rng.uint32List(1, 1);
         final ul0 = new ULtag(PTag.kPixelComponentMask, uint32List0);
-        log.debug('ul0: ${ul0.info}');
+        log.debug('ul0: ul0');
         expect(ul0.hasValidValues, true);
 
-        log
-          ..debug('ul0: $ul0, values: ${ul0.values}')
-          ..debug('ul0: ${ul0.info}');
+        log..debug('ul0: $ul0, values: ${ul0.values}')..debug('ul0: ul0');
         expect(ul0[0], equals(uint32List0[0]));
       }
 
       for (var i = 0; i < 10; i++) {
         final uint32List0 = rng.uint32List(3, 3);
         final ul0 = new ULtag(PTag.kGridDimensions, uint32List0);
-        log.debug('ul0: ${ul0.info}');
+        log.debug('ul0: ul0');
         expect(ul0.hasValidValues, true);
 
-        log
-          ..debug('ul0: $ul0, values: ${ul0.values}')
-          ..debug('ul0: ${ul0.info}');
+        log..debug('ul0: $ul0, values: ${ul0.values}')..debug('ul0: ul0');
         expect(ul0[0], equals(uint32List0[0]));
       }
     });
@@ -74,7 +70,7 @@ void main() {
       global.throwOnError = false;
       final ul4 = new ULtag(PTag.kDataPointColumns, []);
       expect(ul4.hasValidValues, true);
-      log.debug('ul4:${ul4.info}');
+      log.debug('ul4:ul4');
       expect(ul4.values, equals(<int>[]));
     });
 
@@ -248,51 +244,46 @@ void main() {
 
     test('UL fromBytes random', () {
       for (var i = 0; i < 10; i++) {
-        final uint32List0 = rng.uint32List(1, 1);
-//        final uint32List1 = new Uint32List.fromList(uint32List0);
-//        final uint32List1 = uint32List1.buffer.asUint8List();
-        final bytes0 = new Bytes.typedDataView(uint32List0);
+        final vList0 = rng.uint32List(1, 1);
+        final bytes0 = new Bytes.typedDataView(vList0);
         final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes0);
         expect(ul0.hasValidValues, true);
         expect(ul0.vfBytes, equals(bytes0));
-        print(ul0);
         expect(ul0.values is Uint32List, true);
-        expect(ul0.values, equals(uint32List0));
+        expect(ul0.values, equals(vList0));
 
-        // Test Base64
-        //       final base64 = cvt.base64.encode(uint8List11);
+        // Test Base6
+        final s0 = bytes0.getBase64();
+        final bytes1 = Bytes.fromBase64(s0);
+        final ul1 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes1);
+        expect(ul0 == ul1, true);
+        expect(ul0.value, equals(ul1.value));
 
-//        final ul1 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, base64);
-//        expect(ul0 == ul1, true);
-//        expect(ul0.value, equals(ul1.value));
-
-        final uint32List1 = rng.uint32List(2, 2);
-//        final uint32List2 = new Uint32List.fromList(uint32List0);
-//        final uint8List12 = uint32List2.buffer.asUint8List();
-        final bytes1 = new Bytes.typedDataView(uint32List1);
-        final ul2 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes1);
-        expect(ul2.hasValidValues, false);
+        final vList2 = rng.uint32List(2, 2);
+        final bytes2 = new Bytes.typedDataView(vList2);
+        final ul2 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes2);
+        expect(ul2, isNull);
       }
     });
 
     test('UL fromBytes', () {
-      final uint32List0 = new Uint32List.fromList(uint32Max);
-//      final uint8List1 = uint32List1.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(uint32List0);
+      final vList = new Uint32List.fromList(uint32Max);
+      final bytes = new Bytes.typedDataView(vList);
       final ul5 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
       expect(ul5.hasValidValues, true);
       expect(ul5.vfBytes, equals(bytes));
       expect(ul5.values is Uint32List, true);
-      expect(ul5.values, equals(uint32List0));
+      expect(ul5.values, equals(vList));
     });
 
     test('UL fromBytes good values', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
-        global.throwOnError = false;
-        final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.fromAscii(intList0.toString());
+        final vList = rng.uint32List(1, 10);
+        final bytes0 = new Bytes.typedDataView(vList);
         final ul0 = ULtag.fromBytes(PTag.kSelectorULValue, bytes0);
-        log.debug('ul0: ${ul0.info}');
+        log.debug('ul0: ul0');
         expect(ul0.hasValidValues, true);
       }
     });
@@ -300,21 +291,21 @@ void main() {
     test('UL fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.fromAscii(intList0.toString());
+        final vlist = rng.uint32List(1, 10);
+        final bytes0 = Bytes.fromAscii(vlist.toString());
         final ul0 = ULtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(ul0, isNull);
 
         global.throwOnError = true;
         expect(() => ULtag.fromBytes(PTag.kSelectorFDValue, bytes0),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
     test('UL checkLength random', () {
       for (var i = 0; i < 10; i++) {
-        final uint32List0 = rng.uint32List(1, 1);
-        final ul0 = new ULtag(PTag.kNumberOfWaveformSamples, uint32List0);
+        final vList = rng.uint32List(1, 1);
+        final ul0 = new ULtag(PTag.kNumberOfWaveformSamples, vList);
         expect(ul0.checkLength(ul0.values), true);
       }
     });
@@ -352,57 +343,55 @@ void main() {
 
     test('UL replace random', () {
       for (var i = 0; i < 10; i++) {
-        final uint32List0 = rng.uint32List(1, 1);
-        print(uint32List0);
-        final bytes = new Bytes.typedDataView(uint32List0);
-        final ul0 = new ULtag(PTag.kNumberOfWaveformSamples, bytes);
-        final uint32List1 = rng.uint32List(1, 1);
-        expect(ul0.replace(uint32List1), equals(uint32List1));
-        expect(ul0.values, equals(uint32List1));
+        final vList0 = rng.uint32List(1, 1);
+        final bytes = new Bytes.typedDataView(vList0);
+        final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
+        final vList1 = rng.uint32List(1, 1);
+        final ul0a = ul0.replace(vList1);
+        expect(ul0.replace(vList1), equals(vList1));
+        expect(ul0.values, equals(vList1));
       }
 
-      final uint32List1 = rng.uint32List(1, 1);
-      final ul1 = new ULtag(PTag.kNumberOfWaveformSamples, uint32List1);
-      expect(ul1.replace(<int>[]), equals(uint32List1));
+      final vList2 = rng.uint32List(1, 1);
+      final ul1 = new ULtag(PTag.kNumberOfWaveformSamples, vList2);
+      expect(ul1.replace(<int>[]), equals(vList2));
       expect(ul1.values, equals(<int>[]));
 
-      final ul2 = new ULtag(PTag.kNumberOfWaveformSamples, uint32List1);
-      expect(ul2.replace(null), equals(uint32List1));
+      final ul2 = new ULtag(PTag.kNumberOfWaveformSamples, vList2);
+      expect(ul2.replace(null), equals(vList2));
       expect(ul2.values, equals(<int>[]));
     });
 
     test('UL BASE64 random', () {
       for (var i = 0; i < 10; i++) {
-        final uint32List0 = rng.uint32List(1, 1);
-//        final uint32List1 = new Uint32List.fromList(uint32List0);
-//        final uint32List11 = uint32List1.buffer.asUint8List();
-//       final base64 = cvt.base64.encode(uint32List11);
-        final bytes = new Bytes.typedDataView(uint32List0);
-        final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
+        final vList = rng.uint32List(1, 1);
+        final bytes0 = new Bytes.typedDataView(vList);
+        final s = bytes0.getBase64();
+        final bytes1 = Bytes.fromBase64(s);
+        final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes1);
         expect(ul0.hasValidValues, true);
       }
     });
 
     test('UL BASE64', () {
-      final uint32List0 = new Uint32List.fromList(uint32Max);
-//      final uint32List11 = uint32List1.buffer.asUint8List();
-//      final base64 = cvt.base64.encode(uint32List11);
-      final bytes = new Bytes.typedDataView(uint32List0);
+      final vList = new Uint32List.fromList(uint32Max);
+      final bytes = new Bytes.typedDataView(vList);
+      final s = bytes.getBase64();
+      final bytes1 = Bytes.fromBase64(s);
       final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
       expect(ul0.hasValidValues, true);
     });
 
     test('UL make good values', () {
       for (var i = 0; i < 10; i++) {
-        final uint32List0 = rng.uint32List(1, 1);
-        final make0 =
-            ULtag.fromValues(PTag.kNumberOfWaveformSamples, uint32List0);
-        log.debug('make0: ${make0.info}');
-        expect(make0.hasValidValues, true);
+        final vList = rng.uint32List(1, 1);
+        final ul0 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, vList);
+        log.debug('ul0: $ul0');
+        expect(ul0.hasValidValues, true);
 
-        final make1 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, <int>[]);
-        expect(make1.hasValidValues, true);
-        expect(make1.values, equals(<int>[]));
+        final ul1 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, <int>[]);
+        expect(ul1.hasValidValues, true);
+        expect(ul1.values, equals(<int>[]));
       }
     });
 
@@ -427,8 +416,7 @@ void main() {
 //        final uint32List1 = new Uint32List.fromList(uint32List0);
 //        final uint32List11 = uint32List1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(uint32List0);
-        final ul0 =
-            ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
+        final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
         expect(ul0.hasValidValues, true);
         expect(ul0.vfBytes, equals(bytes));
         expect(ul0.values is Uint32List, true);
@@ -464,15 +452,22 @@ void main() {
     });
 
     test('UL view', () {
-      global.throwOnError = false;
-      final uint32List0 = rng.uint32List(10, 10);
-      final bytes = new Bytes.typedDataView(uint32List0);
-      final ul0 = new ULtag(PTag.kSelectorULValue, bytes);
-      for (var i = 0, j = 0; i < uint32List0.length; i++, j += 4) {
-        final ul1 = ul0.view(j, uint32List0.length - i);
-        log.debug('ul0: ${ul0.values}, ul1: ${ul1.values}, '
-            'uint32List0.sublist(i) : ${uint32List0.sublist(i)}');
-        expect(ul1.values, equals(uint32List0.sublist(i)));
+      final vList = rng.uint32List(10, 10);
+      final e0 = new ULtag(PTag.kSelectorULValue, vList);
+      for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
+        final e1 = e0.view(j, vList.length - i);
+        log.debug('ol0: ${e0.values}, ol1: ${e1.values}, '
+            'uint32List0.sublist(i) : ${vList.sublist(i)}');
+        expect(e1.values, equals(vList.sublist(i)));
+      }
+
+      final bytes = new Bytes.typedDataView(vList);
+      final e2 = ULtag.fromBytes(PTag.kSelectorULValue, bytes);
+      for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
+        final e3 = e2.view(j, vList.length - i);
+        log.debug('e: ${e0.values}, at1: ${e3.values}, '
+            'vList.sublist(i) : ${vList.sublist(i)}');
+        expect(e3.values, equals(vList.sublist(i)));
       }
     });
   });
@@ -535,77 +530,73 @@ void main() {
 
     final invalidVList = rng.uint32List(UL.kMaxLength + 1, UL.kMaxLength + 1);
 
-    test('UL isValidVListLength VM.k1 good values', () {
+    test('UL isValidLength VM.k1 good values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final validMinVList = rng.uint32List(1, 1);
         for (var tag in ulTags0) {
-          expect(UL.isValidVListLength(tag, validMinVList), true);
-          expect(
-              UL.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              UL.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(UL.isValidLength(tag, validMinVList), true);
+          expect(UL.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(UL.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('UL isValidVListLength VM.k1 bad values', () {
+    test('UL isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final validMinVList = rng.uint32List(2, i + 1);
         for (var tag in ulTags0) {
           global.throwOnError = false;
-          expect(UL.isValidVListLength(tag, validMinVList), false);
-          expect(UL.isValidVListLength(tag, invalidVList), false);
+          expect(UL.isValidLength(tag, validMinVList), false);
+          expect(UL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => UL.isValidVListLength(tag, validMinVList),
+          expect(() => UL.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => UL.isValidVListLength(tag, invalidVList),
+          expect(() => UL.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('UL isValidVListLength VM.k3 good values', () {
+    test('UL isValidLength VM.k3 good values', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final validMinVList = rng.uint32List(3, 3);
         for (var tag in ulTags1) {
-          expect(UL.isValidVListLength(tag, validMinVList), true);
-          expect(
-              SS.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              SS.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(UL.isValidLength(tag, validMinVList), true);
+          expect(SS.isValidLength(tag, invalidVList.take(tag.vmMax)), false);
+          expect(SS.isValidLength(tag, invalidVList.take(tag.vmMin)), false);
         }
       }
     });
 
-    test('UL isValidVListLength VM.k3 bad values', () {
+    test('UL isValidLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
         final validMinVList = rng.uint32List(4, i + 1);
         for (var tag in ulTags1) {
           global.throwOnError = false;
-          expect(UL.isValidVListLength(tag, validMinVList), false);
-          expect(UL.isValidVListLength(tag, invalidVList), false);
+          expect(UL.isValidLength(tag, validMinVList), false);
+          expect(UL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => UL.isValidVListLength(tag, validMinVList),
+          expect(() => UL.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => UL.isValidVListLength(tag, invalidVList),
+          expect(() => UL.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('UL isValidVListLength VM.k1_n good values', () {
+    test('UL isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.uint32List(1, i);
         for (var tag in ulTags2) {
-          expect(UL.isValidVListLength(tag, validMinVList), true);
+          expect(UL.isValidLength(tag, validMinVList), true);
 
-          expect(
-              UL.isValidVListLength(
-                  tag, invalidVList.sublist(0, UL.kMaxLength)),
+          expect(UL.isValidLength(tag, invalidVList.sublist(0, UL.kMaxLength)),
               true);
         }
       }
@@ -626,7 +617,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => UL.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -634,34 +625,34 @@ void main() {
 
         global.throwOnError = true;
         expect(() => UL.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
-    test('UL isNotValidTag good values', () {
+    test('UL isValidTag good values', () {
       global.throwOnError = false;
-      expect(UL.isNotValidTag(PTag.kSelectorULValue), false);
+      expect(UL.isValidTag(PTag.kSelectorULValue), true);
 
       for (var tag in ulTags0) {
-        expect(UL.isNotValidTag(tag), false);
+        expect(UL.isValidTag(tag), true);
       }
     });
 
-    test('UL isNotValidTag bad values', () {
+    test('UL isValidTag bad values', () {
       global.throwOnError = false;
-      expect(UL.isNotValidTag(PTag.kSelectorUSValue), true);
+      expect(UL.isValidTag(PTag.kSelectorUSValue), false);
 
       global.throwOnError = true;
-      expect(() => UL.isNotValidTag(PTag.kSelectorUSValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+      expect(() => UL.isValidTag(PTag.kSelectorUSValue),
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(UL.isNotValidTag(tag), true);
+        expect(UL.isValidTag(tag), false);
 
         global.throwOnError = true;
-        expect(() => UL.isNotValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+        expect(() => UL.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -776,6 +767,7 @@ void main() {
     });
 
     test('UL isValidVFLength bad values', () {
+      global.throwOnError = false;
       expect(UL.isValidVFLength(UL.kMaxVFLength + 1), false);
       expect(UL.isValidVFLength(-1), false);
     });
@@ -1057,24 +1049,20 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final uint32List0 = rng.uint32List(1, 1);
         final at0 = new ATtag(PTag.kOriginalImageIdentification, uint32List0);
-        log.debug('at0: ${at0.info}');
+        log.debug('at0: at0');
         expect(at0.hasValidValues, true);
 
-        log
-          ..debug('at0: $at0, values: ${at0.values}')
-          ..debug('at0: ${at0.info}');
+        log..debug('at0: $at0, values: ${at0.values}')..debug('at0: at0');
         expect(at0[0], equals(uint32List0[0]));
       }
 
       for (var i = 0; i < 10; i++) {
         final uint32List0 = rng.uint32List(1, 10);
         final at0 = new ATtag(PTag.kSelectorATValue, uint32List0);
-        log.debug('at0: ${at0.info}');
+        log.debug('at0: at0');
         expect(at0.hasValidValues, true);
 
-        log
-          ..debug('at0: $at0, values: ${at0.values}')
-          ..debug('at0: ${at0.info}');
+        log..debug('at0: $at0, values: ${at0.values}')..debug('at0: at0');
         expect(at0[0], equals(uint32List0[0]));
       }
     });
@@ -1103,7 +1091,7 @@ void main() {
       global.throwOnError = false;
       final at4 = new ATtag(PTag.kFunctionalGroupPointer, []);
       expect(at4.hasValidValues, true);
-      log.debug('at4:${at4.info}');
+      log.debug('at4:at4');
       expect(at4.values, equals(<int>[]));
     });
 
@@ -1142,7 +1130,7 @@ void main() {
         final bytes = new Bytes.typedDataView(uint32List0);
         final at1 = new ATtag(PTag.kSelectorATValue, bytes);
         final uint32List1 = rng.uint32List(3, 4);
-        
+
         expect(at1.update(uint32List1).values, equals(uint32List1));
       }
     });
@@ -1226,29 +1214,24 @@ void main() {
       global.throwOnError = false;
       final rng = new RNG(1);
 
-      List<int> uint32List0;
-      List<int> uint32List1;
-      List<int> uint32List2;
-      List<int> uint32List3;
-
       for (var i = 0; i < 10; i++) {
-        uint32List0 = rng.uint32List(1, 1);
-        final at0 = new ATtag(PTag.kFunctionalGroupPointer, uint32List0);
-        uint32List1 = rng.uint32List(1, 1);
-        final at2 = new ATtag(PTag.kDimensionIndexPointer, uint32List1);
-        log.debug('uint32List1:$uint32List1 , at2.hash_code:${at2.hashCode}');
+        final vList0 = rng.uint32List(1, 1);
+        final at0 = new ATtag(PTag.kFunctionalGroupPointer, vList0);
+        final vList1 = rng.uint32List(1, 1);
+        final at2 = new ATtag(PTag.kDimensionIndexPointer, vList1);
+        log.debug('vList1:$vList1 , at2.hash_code:${at2.hashCode}');
         expect(at0.hashCode == at2.hashCode, false);
         expect(at0 == at2, false);
 
-        uint32List2 = rng.uint32List(1, 9);
-        final at3 = new ATtag(PTag.kOriginalImageIdentification, uint32List2);
-        log.debug('uint32List2:$uint32List2 , at3.hash_code:${at3.hashCode}');
+        final vList2 = rng.uint32List(1, 9);
+        final at3 = new ATtag(PTag.kOriginalImageIdentification, vList2);
+        log.debug('vList2:$vList2 , at3.hash_code:${at3.hashCode}');
         expect(at0.hashCode == at3.hashCode, false);
         expect(at0 == at3, false);
 
-        uint32List3 = rng.uint32List(2, 3);
-        final at4 = new ATtag(PTag.kFunctionalGroupPointer, uint32List3);
-        log.debug('uint32List3:$uint32List3 , at4.hash_code:${at4.hashCode}');
+        final vList3 = rng.uint32List(2, 3);
+        final at4 = new ATtag(PTag.kFunctionalGroupPointer, vList3);
+        log.debug('vList3:$vList3 , at4.hash_code:${at4.hashCode}');
         expect(at0.hashCode == at4.hashCode, false);
         expect(at0 == at4, false);
       }
@@ -1276,16 +1259,13 @@ void main() {
 
     test('AT fromBytes random', () {
       for (var i = 0; i < 10; i++) {
-        final uint32List0 = rng.uint32List(1, 1);
-//        final uint32List1 = new Uint32List.fromList(uint32List0);
-//        final uint32List1 = uint32List1.buffer.asUint8List();
-        final bytes = new Bytes.typedDataView(uint32List0);
-        final at0 =
-            ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes);
+        final vList0 = rng.uint32List(1, 1);
+        final bytes = new Bytes.typedDataView(vList0);
+        final at0 = ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes);
         expect(at0.hasValidValues, true);
         expect(at0.vfBytes, equals(bytes));
         expect(at0.values is Uint32List, true);
-        expect(at0.values, equals(uint32List0));
+        expect(at0.values, equals(vList0));
 
         // Test Base64
         //       final base64 = cvt.base64.encode(uint8List11);
@@ -1293,51 +1273,46 @@ void main() {
 //        expect(at0 == at1, true);
 //        expect(at0.value, equals(at1.value));
 
-        final uint32List1 = rng.uint32List(2, 2);
-//        final uint32List2 = new Uint32List.fromList(uint32List1);
-//        final uint8List12 = uint32List2.buffer.asUint8List();
-        final bytes1 = new Bytes.typedDataView(uint32List1);
-        final at2 = ATtag.fromBytes(PTag.kSelectorAttribute, bytes1);
-        expect(at2.hasValidValues, false);
+        final vList2 = rng.uint32List(2, 2);
+        final bytes2 = new Bytes.typedDataView(vList2);
+        final at2 = ATtag.fromBytes(PTag.kSelectorAttribute, bytes2);
+        expect(at2, isNull);
       }
     });
 
     test('AT fromBytes', () {
-      final uint32List0 = new Uint32List.fromList(uint32Max);
-//      final uint8List1 = uint32List1.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(uint32List0);
-      print(bytes);
-      final at0 =
-          ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes);
-      print(at0);
-   //   expect(at0.hasValidValues, true);
+      final vList = new Uint32List.fromList(uint32Max);
+      final bytes = new Bytes.typedDataView(vList);
+      final at0 = ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes);
+      expect(at0.hasValidValues, true);
       expect(at0.vfBytes, equals(bytes));
       expect(at0.values is Uint32List, true);
-      expect(at0.values, equals(uint32List0));
+      expect(at0.values, equals(vList));
     });
 
     test('AT fromBytes good values', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
-        global.throwOnError = false;
-        final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.fromAscii(intList0.toString());
-        final at0 = ATtag.fromBytes(PTag.kSelectorATValue, bytes0);
-        log.debug('at0: ${at0.info}');
-        expect(at0.hasValidValues, true);
+        final vList = rng.uint32List(1, 10);
+        final bytes = new Bytes.typedDataView(vList);
+        final e0 = ATtag.fromBytes(PTag.kSelectorATValue, bytes);
+        log.debug('at0: at0');
+        expect(e0.hasValidValues, true);
       }
     });
 
     test('AT fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.fromAscii(intList0.toString());
-        final at0 = ATtag.fromBytes(PTag.kSelectorFDValue, bytes0);
-        expect(at0, isNull);
+        final vList = rng.uint32List(1, 10);
+        final bytes = new Bytes.typedDataView(vList);
+        final e = ATtag.fromBytes(PTag.kSelectorFDValue, bytes);
+        expect(e, isNull);
 
         global.throwOnError = true;
-        expect(() => ATtag.fromBytes(PTag.kSelectorFDValue, bytes0),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+        expect(() => ATtag.fromBytes(PTag.kSelectorFDValue, bytes),
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -1382,21 +1357,24 @@ void main() {
 
     test('AT replace random', () {
       for (var i = 0; i < 10; i++) {
-        final uint32List0 = rng.uint32List(1, 1);
-        final bytes = new Bytes.typedDataView(uint32List0);
-        final at0 = new ATtag(PTag.kFunctionalGroupPointer, bytes);
-        final uint32List1 = rng.uint32List(1, 1);
-        expect(at0.replace(uint32List1), equals(uint32List0));
-        expect(at0.values, equals(uint32List1));
+        final vList0 = rng.uint32List(1, 1);
+        final bytes = new Bytes.typedDataView(vList0);
+        final e0 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, bytes);
+        final e1 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, bytes);
+        final vList1 = rng.uint32List(1, 1);
+        expect(e0.replace(vList1), equals(vList0));
+        expect(e0.values, equals(vList1));
+        expect(e1.replace(vList1), equals(vList0));
+        expect(e1.values, equals(vList1));
       }
 
-      final uint32List1 = rng.uint32List(1, 1);
-      final at1 = new ATtag(PTag.kFunctionalGroupPointer, uint32List1);
-      expect(at1.replace(<int>[]), equals(uint32List1));
+      final vList2 = rng.uint32List(1, 1);
+      final at1 = new ATtag(PTag.kFunctionalGroupPointer, vList2);
+      expect(at1.replace(<int>[]), equals(vList2));
       expect(at1.values, equals(<int>[]));
 
-      final at2 = new ATtag(PTag.kFunctionalGroupPointer, uint32List1);
-      expect(at2.replace(null), equals(uint32List1));
+      final at2 = new ATtag(PTag.kFunctionalGroupPointer, vList2);
+      expect(at2.replace(null), equals(vList2));
       expect(at2.values, equals(<int>[]));
     });
 
@@ -1427,7 +1405,7 @@ void main() {
     test('XintYYBase random', () {
       for (var i = 0; i < 10; i++) {
         final uint8List0 = rng.uint8List(1, 1);
- //       final uint8List3 = new Uint8List.fromList(uint8List0);
+        //       final uint8List3 = new Uint8List.fromList(uint8List0);
         final bytes = new Bytes.typedDataView(uint8List0);
         final v0 = Uint8.fromBytes(bytes);
         log.debug('v0: $v0');
@@ -1460,14 +1438,22 @@ void main() {
     });
 
     test('AT view', () {
-      final uint32List0 = rng.uint32List(10, 10);
-      final bytes = new Bytes.typedDataView(uint32List0);
-      final at0 = new ATtag(PTag.kSelectorATValue, bytes);
-      for (var i = 0, j = 0; i < uint32List0.length; i++, j += 4) {
-        final at1 = at0.view(j, uint32List0.length - i);
-        log.debug('at0: ${at0.values}, at1: ${at1.values}, '
-            'uint32List0.sublist(i) : ${uint32List0.sublist(i)}');
-        expect(at1.values, equals(uint32List0.sublist(i)));
+      final vList = rng.uint32List(10, 10);
+      final e0 = new ATtag(PTag.kSelectorATValue, vList);
+      for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
+        final e1 = e0.view(j, vList.length - i);
+        log.debug('e: ${e0.values}, at1: ${e1.values}, '
+            'vList.sublist(i) : ${vList.sublist(i)}');
+        expect(e1.values, equals(vList.sublist(i)));
+      }
+
+      final bytes = new Bytes.typedDataView(vList);
+      final e2 = ATtag.fromBytes(PTag.kSelectorATValue, bytes);
+      for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
+        final e3 = e2.view(j, vList.length - i);
+        log.debug('e: ${e0.values}, at1: ${e3.values}, '
+            'vList.sublist(i) : ${vList.sublist(i)}');
+        expect(e3.values, equals(vList.sublist(i)));
       }
     });
   });
@@ -1517,47 +1503,43 @@ void main() {
 
     final invalidVList = rng.uint32List(AT.kMaxLength + 1, AT.kMaxLength + 1);
 
-    test('AT isValidVListLength VM.k1 good values', () {
+    test('AT isValidLength VM.k1 good values', () {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rng.uint32List(1, 1);
         global.throwOnError = false;
         for (var tag in atTags0) {
-          expect(AT.isValidVListLength(tag, validMinVList), true);
-          expect(
-              AT.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              AT.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(AT.isValidLength(tag, validMinVList), true);
+          expect(AT.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(AT.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('AT isValidVListLength VM.k1 bad values', () {
+    test('AT isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.uint32List(2, i + 1);
         for (var tag in atTags0) {
           global.throwOnError = false;
-          expect(AT.isValidVListLength(tag, validMinVList), false);
-          expect(AT.isValidVListLength(tag, invalidVList), false);
+          expect(AT.isValidLength(tag, validMinVList), false);
+          expect(AT.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => AT.isValidVListLength(tag, validMinVList),
+          expect(() => AT.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => AT.isValidVListLength(tag, invalidVList),
+          expect(() => AT.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('AT isValidVListLength VM.k1_n good values', () {
+    test('AT isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.uint32List(1, i);
         global.throwOnError = false;
         for (var tag in atTags1) {
-          expect(AT.isValidVListLength(tag, validMinVList), true);
+          expect(AT.isValidLength(tag, validMinVList), true);
 
-          expect(
-              AT.isValidVListLength(
-                  tag, invalidVList.sublist(0, AT.kMaxLength)),
+          expect(AT.isValidLength(tag, invalidVList.sublist(0, AT.kMaxLength)),
               true);
         }
       }
@@ -1578,7 +1560,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => AT.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -1586,34 +1568,35 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AT.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
-    test('AT isNotValidTag good values', () {
+    test('AT isValidTag good values', () {
       global.throwOnError = false;
-      expect(AT.isNotValidTag(PTag.kSelectorATValue), false);
+      expect(AT.isValidTag(PTag.kSelectorATValue), true);
 
       for (var tag in atTags0) {
-        expect(AT.isNotValidTag(tag), false);
+        expect(AT.isValidTag(tag), true);
       }
     });
 
-    test('AT isNotValidTag bad values', () {
+    test('AT isValidTag bad values', () {
       global.throwOnError = false;
-      expect(AT.isNotValidTag(PTag.kSelectorUSValue), true);
+
+      expect(AT.isValidTag(PTag.kSelectorUSValue), false);
 
       global.throwOnError = true;
-      expect(() => AT.isNotValidTag(PTag.kSelectorUSValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+      expect(() => AT.isValidTag(PTag.kSelectorUSValue),
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(AT.isNotValidTag(tag), true);
+        expect(AT.isValidTag(tag), false);
 
         global.throwOnError = true;
-        expect(() => AT.isNotValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+        expect(() => AT.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -1733,6 +1716,7 @@ void main() {
     });
 
     test('AT isValidVFLength bad values', () {
+      global.throwOnError = false;
       expect(AT.isValidVFLength(AT.kMaxVFLength + 1), false);
       expect(AT.isValidVFLength(0), true);
     });
@@ -1905,24 +1889,20 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final uint32List0 = rng.uint32List(1, 1);
         final ol0 = new OLtag(PTag.kLongPrimitivePointIndexList, uint32List0);
-        log.debug('ol0: ${ol0.info}');
+        log.debug('ol0: ol0');
         expect(ol0.hasValidValues, true);
 
-        log
-          ..debug('ol0: $ol0, values: ${ol0.values}')
-          ..debug('ol0: ${ol0.info}');
+        log..debug('ol0: $ol0, values: ${ol0.values}')..debug('ol0: ol0');
         expect(ol0[0], equals(uint32List0[0]));
       }
 
       for (var i = 0; i < 10; i++) {
         final uint32List0 = rng.uint32List(1, 10);
         final ol0 = new OLtag(PTag.kSelectorOLValue, uint32List0);
-        log.debug('ol0: ${ol0.info}');
+        log.debug('ol0: ol0');
         expect(ol0.hasValidValues, true);
 
-        log
-          ..debug('ol0: $ol0, values: ${ol0.values}')
-          ..debug('ol0: ${ol0.info}');
+        log..debug('ol0: $ol0, values: ${ol0.values}')..debug('ol0: ol0');
         expect(ol0[0], equals(uint32List0[0]));
       }
 
@@ -1949,7 +1929,7 @@ void main() {
       global.throwOnError = false;
       final ol4 = new OLtag(PTag.kLongVertexPointIndexList, []);
       expect(ol4.hasValidValues, true);
-      log.debug('ol4:${ol4.info}');
+      log.debug('ol4:ol4');
       expect(ol4.values, equals(<int>[]));
     });
 
@@ -2117,8 +2097,7 @@ void main() {
 //        final uint32List1 = new Uint32List.fromList(uint32List0);
 //        final uint32List1 = uint32List1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(uint32List0);
-        final ol0 =
-            OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
+        final ol0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
         expect(ol0.hasValidValues, true);
         expect(ol0.vfBytes, equals(bytes));
         expect(ol0.values is Uint32List, true);
@@ -2134,8 +2113,7 @@ void main() {
 //        final uint32List2 = new Uint32List.fromList(uint32List1);
 //        final uint8List12 = uint32List2.buffer.asUint8List();
         final bytes1 = new Bytes.typedDataView(uint32List1);
-        final ol2 =
-            OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes1);
+        final ol2 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes1);
         expect(ol2.hasValidValues, true);
       }
     });
@@ -2152,13 +2130,14 @@ void main() {
     });
 
     test('OL fromBytes good values', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
-        global.throwOnError = false;
-        final intList0 = rng.uint32List(1, 10);
-        final bytes0 = Bytes.fromAscii(intList0.toString());
-        final ol0 = OLtag.fromBytes(PTag.kSelectorOLValue, bytes0);
-        log.debug('ol0: ${ol0.info}');
-        expect(ol0.hasValidValues, true);
+        final vList = rng.uint32List(1, 10);
+        final bytes0 = new Bytes.typedDataView(vList);
+        final e = OLtag.fromBytes(PTag.kSelectorOLValue, bytes0);
+        log.debug('e: $e');
+        expect(e.hasValidValues, true);
       }
     });
 
@@ -2172,7 +2151,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => OLtag.fromBytes(PTag.kSelectorFDValue, bytes0),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -2258,23 +2237,19 @@ void main() {
     });
 */
 
-    test('OL make', () {
+    test('OL fromValues', () {
       for (var i = 0; i < 10; i++) {
-        final uint32List0 = rng.uint32List(1, 1);
-        final ol0 =
-            OLtag.fromValues(PTag.kLongVertexPointIndexList, uint32List0);
-        expect(ol0.hasValidValues, true);
+        final vList = rng.uint32List(1, 1);
+        final e = OLtag.fromValues(PTag.kLongVertexPointIndexList, vList);
+        expect(e.hasValidValues, true);
       }
     });
 
     test('OL fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final uint32List0 = rng.uint32List(1, 1);
-//        final uint32List1 = new Uint32List.fromList(uint32List0);
-//        final uint32List11 = uint32List1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(uint32List0);
-        final ol0 =
-            OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
+        final ol0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
         expect(ol0.hasValidValues, true);
         expect(ol0.vfBytes, equals(bytes));
         expect(ol0.values is Uint32List, true);
@@ -2313,13 +2288,22 @@ void main() {
     });
 
     test('OL view', () {
-      final uint32List0 = rng.uint32List(10, 10);
-      final ol0 = new OLtag(PTag.kSelectorOLValue, uint32List0);
-      for (var i = 0, j = 0; i < uint32List0.length; i++, j += 4) {
-        final ol1 = ol0.view(j, uint32List0.length - i);
-        log.debug('ol0: ${ol0.values}, ol1: ${ol1.values}, '
-            'uint32List0.sublist(i) : ${uint32List0.sublist(i)}');
-        expect(ol1.values, equals(uint32List0.sublist(i)));
+      final vList = rng.uint32List(10, 10);
+      final e0 = new OLtag(PTag.kSelectorOLValue, vList);
+      for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
+        final e1 = e0.view(j, vList.length - i);
+        log.debug('ol0: ${e0.values}, ol1: ${e1.values}, '
+            'uint32List0.sublist(i) : ${vList.sublist(i)}');
+        expect(e1.values, equals(vList.sublist(i)));
+      }
+
+      final bytes = new Bytes.typedDataView(vList);
+      final e2 = OLtag.fromBytes(PTag.kSelectorOLValue, bytes);
+      for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
+        final e3 = e2.view(j, vList.length - i);
+        log.debug('e: ${e0.values}, at1: ${e3.values}, '
+            'vList.sublist(i) : ${vList.sublist(i)}');
+        expect(e3.values, equals(vList.sublist(i)));
       }
     });
   });
@@ -2351,7 +2335,8 @@ void main() {
 
     test('OL isValidVFLength', () {
       global.throwOnError = false;
-      expect(OL.isValidVFLength(OL.kMaxLength), true);
+
+      expect(OL.isValidVFLength(OL.kMaxVFLength), true);
       expect(OL.isValidVFLength(0), true);
     });
 
@@ -2370,7 +2355,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => OL.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -2378,34 +2363,34 @@ void main() {
 
         global.throwOnError = true;
         expect(() => OL.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
-    test('OL isNotValidTag good values', () {
+    test('OL isValidTag good values', () {
       global.throwOnError = false;
-      expect(OL.isNotValidTag(PTag.kSelectorOLValue), false);
+      expect(OL.isValidTag(PTag.kSelectorOLValue), true);
 
       for (var tag in olTags0) {
-        expect(OL.isNotValidTag(tag), false);
+        expect(OL.isValidTag(tag), true);
       }
     });
 
-    test('OL isNotValidTag bad values', () {
+    test('OL isValidTag bad values', () {
       global.throwOnError = false;
-      expect(OL.isNotValidTag(PTag.kSelectorUSValue), true);
+      expect(OL.isValidTag(PTag.kSelectorUSValue), false);
 
       global.throwOnError = true;
-      expect(() => OL.isNotValidTag(PTag.kSelectorUSValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+      expect(() => OL.isValidTag(PTag.kSelectorUSValue),
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(OL.isNotValidTag(tag), true);
+        expect(OL.isValidTag(tag), false);
 
         global.throwOnError = true;
-        expect(() => OL.isNotValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+        expect(() => OL.isValidTag(tag),
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -2445,8 +2430,8 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
-/*
 
+/*
     test('OL checkVR good values', () {
       global.throwOnError = false;
       expect(OL.checkVRIndex(kOLIndex), kOLIndex);
@@ -2531,11 +2516,16 @@ void main() {
     });
 
     test('OL isValidVFLength good values', () {
+      print('${0xFFFFFFFC / 4}');
+      print('kMax(${OL.kMaxLength}) * 4: ${OL.kMaxLength * 4}');
+      print('kVFMax(${OL.kMaxVFLength}) / 4: ${OL.kMaxVFLength / 4}');
+      print('long($kMaxLongVF) / 4 (${kMaxLongVF / 4}');
       expect(OL.isValidVFLength(OL.kMaxVFLength), true);
       expect(OL.isValidVFLength(0), true);
     });
 
     test('OL isValidVFLength bad values', () {
+      global.throwOnError = false;
       expect(OL.isValidVFLength(OL.kMaxVFLength + 1), false);
       expect(OL.isValidVFLength(-1), false);
     });

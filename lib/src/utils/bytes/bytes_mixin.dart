@@ -225,7 +225,7 @@ abstract class BytesMixin {
   /// is a copy of the specified region and returns it.
   Uint16List asUint16List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    length ??= _length16(length);
+    length ??= _length16(offset );
     return (_isAligned16(index))
         ? _bd.buffer.asUint16List(index, length)
         : getUint16List(offset, length);
@@ -235,8 +235,8 @@ abstract class BytesMixin {
   /// view of the specified region; otherwise, creates a [Uint32List] that
   /// is a copy of the specified region and returns it.
   Uint32List asUint32List([int offset = 0, int length]) {
-    final index = _absIndex(offset);
     length ??= _length32(offset);
+    final index = _absIndex(offset);
     return (_isAligned32(index))
         ? _bd.buffer.asUint32List(index, length)
         : getUint32List(offset, length);
@@ -246,8 +246,8 @@ abstract class BytesMixin {
   /// view of the specified region; otherwise, creates a [Uint64List] that
   /// is a copy of the specified region and returns it.
   Uint64List asUint64List([int offset = 0, int length]) {
-    final index = _absIndex(offset);
     length ??= _length64(offset);
+    final index = _absIndex(offset);
     return (_isAligned64(index))
         ? _bd.buffer.asUint64List(index, length)
         : getUint64List(offset, length);
@@ -257,8 +257,8 @@ abstract class BytesMixin {
   /// view of the specified region; otherwise, creates a [Float32List] that
   /// is a copy of the specified region and returns it.
   Float32List asFloat32List([int offset = 0, int length]) {
-    final index = _absIndex(offset);
     length ??= _length32(offset);
+    final index = _absIndex(offset);
     return (_isAligned32(index))
         ? _bd.buffer.asFloat32List(index, length)
         : getFloat32List(offset, length);

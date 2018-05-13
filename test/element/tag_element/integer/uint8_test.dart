@@ -537,32 +537,31 @@ void main() {
 
     test('OB isNotValidTag good values', () {
       global.throwOnError = false;
-      expect(OB.isNotValidTag(PTag.kSelectorOBValue), false);
-      expect(OB.isNotValidTag(PTag.kAudioSampleData), false);
+      expect(OB.isValidTag(PTag.kSelectorOBValue), true);
+      expect(OB.isValidTag(PTag.kAudioSampleData), true);
 
-      for (var tag in obTags0) {
-        expect(OB.isNotValidTag(tag), false);
-      }
+      for (var tag in obTags0) expect(OB.isValidTag(tag), true);
+
       for (var tag in obowTags) {
-        final ob3 = OB.isNotValidTag(tag);
-        expect(ob3, false);
+        final ob3 = OB.isValidTag(tag);
+        expect(ob3, true);
       }
     });
 
-    test('OB isNotValidTag bad values', () {
+    test('OB isValidTag bad values', () {
       global.throwOnError = false;
-      expect(OB.isNotValidTag(PTag.kSelectorUSValue), true);
+      expect(OB.isValidTag(PTag.kSelectorUSValue), false);
 
       global.throwOnError = true;
-      expect(() => OB.isNotValidTag(PTag.kSelectorUSValue),
+      expect(() => OB.isValidTag(PTag.kSelectorUSValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(OB.isNotValidTag(tag), true);
+        expect(OB.isValidTag(tag), false);
 
         global.throwOnError = true;
-        expect(() => OB.isNotValidTag(tag),
+        expect(() => OB.isValidTag(tag),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });

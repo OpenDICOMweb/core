@@ -15,32 +15,26 @@ import 'package:core/src/utils/string/hexadecimal.dart';
 /// The DICOM Prefix 'DICM' as an integer.
 const int kDcmPrefix = 0x4d434944;
 
+const int k16BitMax = 0xFFFF;
+
 /// The maximum length, in bytes, of a "short" (16-bit) Value Field.
 ///
 /// Notes:
 ///     1. Short Value Fields may not have an Undefined Length
 ///     2. All Value Fields must contain an even number of bytes.
-const int kMaxShortVF = 0x10000;
+const int kMaxShortVF = 0xFFFF;
 
-const int kMax32BitVF = 0xFFFFFFFE;
+const int k8BitMaxShortVF = kMaxShortVF;
+const int k8BitMaxShortLength = kMaxShortVF;
 
-/// The maximum length, in bytes, of a "long" (32-bit) Value Field.
-///
-/// Note: the values is `[kUint32Max] - 1` because the maximum value
-/// (0xFFFFFFFF) is used to denote a Value Field with Undefined Length.
-const int kMaxLongVF = 0xFFFFFFFE;
+const int k16BitMaxShortVF = kMaxShortVF - 1;
+const int k16BitMaxShortLength = k16BitMaxShortVF ~/ 2;
 
-/// The maximum length of a long Value Field containing 8-bit values.
-const int kMax8BitLongVF = kMaxLongVF;
+const int k32BitMaxShortVF = kMaxShortVF - 3;
+const int k32BitMaxShortLength = k32BitMaxShortVF ~/ 4;
 
-/// The maximum length of a long Value Field containing 16-bit values.
-const int kMax16BitLongVF = kMaxLongVF;
-
-/// The maximum length of a long Value Field containing 32-bit values.
-const int kMax32BitLongVF = kMaxLongVF - 2;
-
-/// The maximum length of a long Value Field containing 64-bit values.
-const int kMax64BitLongVF = kMaxLongVF - 6;
+const int k64BitMaxShortVF = kMaxShortVF - 7;
+const int k64BitMaxShortLength = k64BitMaxShortVF ~/ 8;
 
 /// This is the value of a DICOM Undefined Length from a 32-bit
 /// Value Field Length.
@@ -48,6 +42,27 @@ const int kUndefinedLength = 0xFFFFFFFF;
 
 bool hasUndefinedLength(int i) => i == kUndefinedLength;
 
+const int k32BitMax = 0xFFFFFFFF;
+/// The maximum length, in bytes, of a "long" (32-bit) Value Field.
+///
+/// Note: the values is `[kUndefinedLength] - 1` because the maximum value
+/// (0xFFFFFFFF) is used to denote a Value Field with Undefined Length.
+const int kMaxLongVF = kUndefinedLength - 1;
+
+/// The maximum length of a long Value Field containing 8-bit values.
+const int k8BitMaxLongVF = kMaxLongVF;
+
+/// The maximum length of a long Value Field containing 16-bit values.
+const int k16BitMaxLongVF = kMaxLongVF;
+const int k16BitMaxLongLength = k16BitMaxLongVF ~/ 2;
+
+/// The maximum length of a long Value Field containing 32-bit values.
+const int k32BitMaxLongVF = kMaxLongVF - 2;
+const int k32BitMaxLongLength = k32BitMaxLongVF ~/ 4;
+
+/// The maximum length of a long Value Field containing 64-bit values.
+const int k64BitMaxLongVF = kMaxLongVF - 6;
+const int k64BitMaxLongLength = k64BitMaxLongVF ~/ 8;
 // Special Tag Related constants
 
 /// This corresponds to the first 16-bits of kSequenceDelimitationItem,

@@ -17,13 +17,13 @@ import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/vr.dart';
 
 part 'package:core/src/utils/buffer/buffer_mixin.dart';
-part 'package:core/src/utils/buffer/bytes/buffer.dart';
-part 'package:core/src/utils/buffer/bytes/dicom_read_buffer.dart';
-part 'package:core/src/utils/buffer/bytes/dicom_write_buffer.dart';
-part 'package:core/src/utils/buffer/bytes/read_buffer.dart';
-part 'package:core/src/utils/buffer/bytes/read_mixin.dart';
-part 'package:core/src/utils/buffer/bytes/write_buffer.dart';
-part 'package:core/src/utils/buffer/bytes/write_mixin.dart';
+part 'package:core/src/utils/buffer/buffer.dart';
+part 'package:core/src/utils/buffer/dicom_read_buffer.dart';
+part 'package:core/src/utils/buffer/dicom_write_buffer.dart';
+part 'package:core/src/utils/buffer/read_buffer.dart';
+part 'package:core/src/utils/buffer/read_mixin.dart';
+part 'package:core/src/utils/buffer/write_buffer.dart';
+part 'package:core/src/utils/buffer/write_mixin.dart';
 
 /// The base class for Buffer
 abstract class BytesBufferBase {

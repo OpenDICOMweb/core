@@ -186,12 +186,14 @@ class VRFloat extends VR<double> {
     return vfLength >= (vmMin * sizeInBytes) && vfLength <= (max * sizeInBytes);
   }
 
-  static const kFL = const VRFloat(kFLIndex, 'FL', kFLCode, 2, kShortVF, 4);
-  static const kFD = const VRFloat(kFDIndex, 'FD', kFDCode, 2, kShortVF, 8);
+  static const kFL =
+      const VRFloat(kFLIndex, 'FL', kFLCode, 2, k32BitMaxShortVF, 4);
+  static const kFD =
+      const VRFloat(kFDIndex, 'FD', kFDCode, 2, k64BitMaxShortVF, 8);
   static const kOF =
-      const VRFloat(kOFIndex, 'OF', kOFCode, 4, kLongVF, 4, true);
+      const VRFloat(kOFIndex, 'OF', kOFCode, 4, k32BitMaxLongVF, 4, true);
   static const kOD =
-      const VRFloat(kODIndex, 'OD', kODCode, 4, kLongVF, 8, true);
+      const VRFloat(kODIndex, 'OD', kODCode, 4, k64BitMaxLongVF, 8, true);
 }
 
 class VRInt extends VR<int> {
@@ -220,29 +222,29 @@ class VRInt extends VR<int> {
   }
 
   static const kUN =
-      const VRInt(kUNIndex, 'UN', kUNCode, 4, kLongVF, 1, 0, 255, true);
+      const VRInt(kUNIndex, 'UN', kUNCode, 4, k8BitMaxLongVF, 1, 0, 255, true);
   static const kOB =
-      const VRInt(kOBIndex, 'OB', kOBCode, 4, kLongVF, 1, 0, 255, true);
+      const VRInt(kOBIndex, 'OB', kOBCode, 4, k8BitMaxLongVF, 1, 0, 255, true);
 
-  static const kSS = const VRInt(kSSIndex, 'SS', kSSCode, 2, kShortVF, 2,
-      Int16.kMinValue, Int16.kMaxValue);
+  static const kSS = const VRInt(kSSIndex, 'SS', kSSCode, 2, k16BitMaxShortVF,
+      2, Int16.kMinValue, Int16.kMaxValue);
 
-  static const kUS = const VRInt(kUSIndex, 'US', kUSCode, 2, kShortVF, 2,
-      Uint16.kMinValue, Uint16.kMaxValue);
+  static const kUS = const VRInt(kUSIndex, 'US', kUSCode, 2, k16BitMaxShortVF,
+      2, Uint16.kMinValue, Uint16.kMaxValue);
 
-  static const kOW = const VRInt(kOWIndex, 'OW', kOWCode, 4, kLongVF, 2,
+  static const kOW = const VRInt(kOWIndex, 'OW', kOWCode, 4, k16BitMaxLongVF, 2,
       Uint16.kMinValue, Uint16.kMaxValue, true);
 
-  static const kSL = const VRInt(kSLIndex, 'SL', kSLCode, 2, kShortVF, 4,
-      Int32.kMinValue, Int32.kMaxValue);
+  static const kSL = const VRInt(kSLIndex, 'SL', kSLCode, 2, k32BitMaxShortVF,
+      4, Int32.kMinValue, Int32.kMaxValue);
 
-  static const kUL = const VRInt(kULIndex, 'UL', kULCode, 2, kShortVF, 4,
-      Uint32.kMinValue, Uint32.kMaxValue);
+  static const kUL = const VRInt(kULIndex, 'UL', kULCode, 2, k32BitMaxShortVF,
+      4, Uint32.kMinValue, Uint32.kMaxValue);
 
-  static const kAT = const VRInt(kATIndex, 'AT', kATCode, 2, kShortVF, 4,
-      Uint32.kMinValue, Uint32.kMaxValue);
+  static const kAT = const VRInt(kATIndex, 'AT', kATCode, 2, k32BitMaxShortVF,
+      4, Uint32.kMinValue, Uint32.kMaxValue);
 
-  static const kOL = const VRInt(kOLIndex, 'OL', kOLCode, 4, kLongVF, 4,
+  static const kOL = const VRInt(kOLIndex, 'OL', kOLCode, 4, k32BitMaxLongVF, 4,
       Uint32.kMinValue, Uint32.kMaxValue, true);
 }
 

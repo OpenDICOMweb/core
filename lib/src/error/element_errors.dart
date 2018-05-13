@@ -74,18 +74,6 @@ Null sha256Unsupported(Element e, [Issues issues]) {
   return throw new UnsupportedError(msg);
 }
 
-/*
-class InvalidElementIndexError extends Error {
-  final int index;
-  final String msg;
-
-  InvalidElementIndexError(this.index, [this.msg]);
-
-  @override
-  String toString() => msg;
-}
-*/
-
 Null badValueField(String message, [Bytes vfBytes, Issues issues]) {
   final msg = _invalidVFMsg(message, vfBytes);
   log.error(msg);
@@ -97,6 +85,7 @@ Null badValueField(String message, [Bytes vfBytes, Issues issues]) {
 String _invalidVFMsg(String msg, [Bytes vfBytes]) {
   final msg1 = (vfBytes != null) ?  '- vfLength(${vfBytes.length})' : '';
     'Invalid Value Field Error: $msg$msg1';
+    return msg1;
 }
 
 bool invalidValueField(String message, [Bytes vfBytes]) {

@@ -42,18 +42,18 @@ void main() {
 
   test('FL hasValidValues random: good values', () {
     for (var i = 0; i < 10; i++) {
-      final float32List0 = rng.float32List(1, 10);
-      expect(float32List0 is Float32List, true);
-      final fl0 = FLbytes.fromValues(kSelectorFDValue, float32List0);
-      expect(fl0[0], equals(float32List0[0]));
+      final vList = rng.float32List(1, 10);
+      expect(vList is Float32List, true);
+      final fl0 = FLbytes.fromValues(kSelectorFDValue, vList);
+      expect(fl0[0], equals(vList[0]));
       expect(fl0.hasValidValues, true);
 
       log
         ..debug('fl0: $fl0, values: ${fl0.values}')
         ..debug('fl0: $fl0')
-        ..debug('float32List: $float32List0')
+        ..debug('float32List: $vList')
         ..debug('        fl0: ${fl0.values}');
-      expect(fl0.values, equals(float32List0));
+      expect(fl0.values, equals(vList));
     }
   });
 

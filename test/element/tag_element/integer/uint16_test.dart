@@ -261,30 +261,25 @@ void main() {
 
     test('US fromBytes random', () {
       for (var i = 0; i < 10; i++) {
-        final uint16List0 = rng.uint16List(1, 1);
-//        final uint16List1 = new Uint16List.fromList(uint16List0);
-//        final uint8List11 = uint16List1.buffer.asUint8List();
-        final bytes0 = new Bytes.typedDataView(uint16List0);
+        final vList0 = rng.uint16List(1, 1);
+        final bytes0 = new Bytes.typedDataView(vList0);
         final us0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
-        print(us0);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(bytes0));
         expect(us0.values is Uint16List, true);
         expect(us0.values, equals(bytes0.asUint16List()));
 
         // Test Base64
-        final base64 = bytes0.getBase64();
-        final usList = Bytes.fromBase64(base64);
-        final us1 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, usList);
+        final s0 = bytes0.getBase64();
+        final vList1 = Bytes.fromBase64(s0);
+        final us1 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, vList1);
         expect(us0 == us1, true);
         expect(us1.value, equals(us0.value));
 
         global.throwOnError = false;
-        final uint16List1 = rng.uint16List(2, 2);
-//        final uint16List2 = new Uint16List.fromList(uint16List1);
-//       final uint8List12 = uint16List2.buffer.asUint8List();
-        final bytes1 = new Bytes.typedDataView(uint16List1);
-        final us2 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes1);
+        final vList2 = rng.uint16List(2, 2);
+        final bytes2 = new Bytes.typedDataView(vList2);
+        final us2 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes2);
         log.debug('us2: $us2');
         expect(us2, isNull);
       }
@@ -431,11 +426,8 @@ void main() {
     test('US fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final uint16List0 = rng.uint16List(1, 1);
-//        final uint16List1 = new Uint16List.fromList(uint16List0);
-//        final uint8List1 = uint16List1.buffer.asUint8List();
         final bytes0 = new Bytes.typedDataView(uint16List0);
         final us0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
-        print(us0);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(bytes0));
         expect(us0.values is Uint16List, true);
@@ -578,146 +570,146 @@ void main() {
 
     final invalidVList = rng.uint16List(US.kMaxLength + 1, US.kMaxLength + 1);
 
-    test('US isValidVListLength VM.k1 good values', () {
+    test('US isValidLength VM.k1 good values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final validMinVList = rng.uint16List(1, 1);
         for (var tag in usTags0) {
-          expect(US.isValidVListLength(tag, validMinVList), true);
+          expect(US.isValidLength(tag, validMinVList), true);
           expect(
-              US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
+              US.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
           expect(
-              US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+              US.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('US isValidVListLength VM.k1 bad values', () {
+    test('US isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.uint16List(2, i + 1);
         for (var tag in usTags0) {
           global.throwOnError = false;
-          expect(US.isValidVListLength(tag, validMinVList), false);
-          expect(US.isValidVListLength(tag, invalidVList), false);
+          expect(US.isValidLength(tag, validMinVList), false);
+          expect(US.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => US.isValidVListLength(tag, validMinVList),
+          expect(() => US.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => US.isValidVListLength(tag, invalidVList),
+          expect(() => US.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('US isValidVListLength VM.k2 good values', () {
+    test('US isValidLength VM.k2 good values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final validMinVList = rng.uint16List(2, 2);
         for (var tag in usTags1) {
-          expect(US.isValidVListLength(tag, validMinVList), true);
+          expect(US.isValidLength(tag, validMinVList), true);
 
           expect(
-              US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
+              US.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
           expect(
-              US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+              US.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('US isValidVListLength VM.k2 bad values', () {
+    test('US isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final validMinVList = rng.uint16List(3, i + 1);
         for (var tag in usTags1) {
           global.throwOnError = false;
-          expect(US.isValidVListLength(tag, validMinVList), false);
-          expect(US.isValidVListLength(tag, invalidVList), false);
+          expect(US.isValidLength(tag, validMinVList), false);
+          expect(US.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => US.isValidVListLength(tag, validMinVList),
+          expect(() => US.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => US.isValidVListLength(tag, invalidVList),
+          expect(() => US.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('US isValidVListLength VM.k3 good values', () {
+    test('US isValidLength VM.k3 good values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final validMinVList = rng.uint16List(3, 3);
         for (var tag in usTags2) {
-          expect(US.isValidVListLength(tag, validMinVList), true);
+          expect(US.isValidLength(tag, validMinVList), true);
 
           expect(
-              US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
+              US.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
           expect(
-              US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+              US.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('US isValidVListLength VM.k3 bad values', () {
+    test('US isValidLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
         final validMinVList = rng.uint16List(4, i + 1);
         for (var tag in usTags2) {
           global.throwOnError = false;
-          expect(US.isValidVListLength(tag, validMinVList), false);
-          expect(US.isValidVListLength(tag, invalidVList), false);
+          expect(US.isValidLength(tag, validMinVList), false);
+          expect(US.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => US.isValidVListLength(tag, validMinVList),
+          expect(() => US.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => US.isValidVListLength(tag, invalidVList),
+          expect(() => US.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('US isValidVListLength VM.k4 good values', () {
+    test('US isValidLength VM.k4 good values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final validMinVList = rng.uint16List(4, 4);
         for (var tag in usTags3) {
-          expect(US.isValidVListLength(tag, validMinVList), true);
+          expect(US.isValidLength(tag, validMinVList), true);
 
           expect(
-              US.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
+              US.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
           expect(
-              US.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+              US.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('US isValidVListLength VM.k4 bad values', () {
+    test('US isValidLength VM.k4 bad values', () {
       for (var i = 4; i < 10; i++) {
         final validMinVList = rng.uint16List(5, i + 1);
         for (var tag in usTags3) {
           global.throwOnError = false;
-          expect(US.isValidVListLength(tag, validMinVList), false);
-          expect(US.isValidVListLength(tag, invalidVList), false);
+          expect(US.isValidLength(tag, validMinVList), false);
+          expect(US.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => US.isValidVListLength(tag, validMinVList),
+          expect(() => US.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
-          expect(() => US.isValidVListLength(tag, invalidVList),
+          expect(() => US.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('US isValidVListLength VM.k1_n good values', () {
+    test('US isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.uint16List(1, i);
         for (var tag in usTag4) {
-          expect(US.isValidVListLength(tag, validMinVList), true);
+          expect(US.isValidLength(tag, validMinVList), true);
 
           expect(
-              US.isValidVListLength(
+              US.isValidLength(
                   tag, invalidVList.sublist(0, US.kMaxLength)),
               true);
 
           expect(
-              US.isValidVListLength(
+              US.isValidLength(
                   tag, invalidVList.sublist(0, US.kMaxLength)),
               true);
         }
@@ -753,31 +745,31 @@ void main() {
       }
     });
 
-    test('US isNotValidTag good values', () {
+    test('US isValidTag good values', () {
       global.throwOnError = false;
-      expect(US.isNotValidTag(PTag.kSelectorUSValue), false);
-      expect(US.isNotValidTag(PTag.kZeroVelocityPixelValue), false);
-      expect(US.isNotValidTag(PTag.kGrayLookupTableData), false);
+      expect(US.isValidTag(PTag.kSelectorUSValue), true);
+      expect(US.isValidTag(PTag.kZeroVelocityPixelValue), true);
+      expect(US.isValidTag(PTag.kGrayLookupTableData), true);
 
       for (var tag in usTags0) {
-        expect(US.isNotValidTag(tag), false);
+        expect(US.isValidTag(tag), true);
       }
     });
 
-    test('US isNotValidTag bad values', () {
+    test('US isValidTag bad values', () {
       global.throwOnError = false;
-      expect(US.isNotValidTag(PTag.kSelectorAEValue), true);
+      expect(US.isValidTag(PTag.kSelectorAEValue), false);
 
       global.throwOnError = true;
-      expect(() => US.isNotValidTag(PTag.kSelectorAEValue),
+      expect(() => US.isValidTag(PTag.kSelectorAEValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(US.isNotValidTag(tag), true);
+        expect(US.isValidTag(tag), false);
 
         global.throwOnError = true;
-        expect(() => US.isNotValidTag(tag),
+        expect(() => US.isValidTag(tag),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
@@ -1677,11 +1669,11 @@ void main() {
       PTag.kTime
     ];
 
-    test('OW isValidVListLength', () {
+    test('OW isValidLength', () {
       global.throwOnError = false;
       // Urgent Sharath: please fix
-      //     expect(OW.isValidVListLength(OW.kMaxLength), true);
-      //     expect(OW.isValidVListLength(0), true);
+      //     expect(OW.isValidLength(OW.kMaxLength), true);
+      //     expect(OW.isValidLength(0), true);
     });
 
     test('OW isValidTag good values', () {
@@ -1717,34 +1709,34 @@ void main() {
       }
     });
 
-    test('OW isNotValidTag good values', () {
+    test('OW isValidTag good values', () {
       global.throwOnError = false;
-      expect(OW.isNotValidTag(PTag.kSelectorOWValue), false);
-      expect(OW.isNotValidTag(PTag.kAudioSampleData), false);
-      expect(OW.isNotValidTag(PTag.kGrayLookupTableData), false);
+      expect(OW.isValidTag(PTag.kSelectorOWValue), true);
+      expect(OW.isValidTag(PTag.kAudioSampleData), true);
+      expect(OW.isValidTag(PTag.kGrayLookupTableData), true);
 
       for (var tag in owTags0) {
-        expect(OW.isNotValidTag(tag), false);
+        expect(OW.isValidTag(tag), true);
       }
       for (var tag in obowTags) {
-        expect(OW.isNotValidTag(tag), false);
+        expect(OW.isValidTag(tag), true);
       }
     });
 
-    test('OW isNotValidTag bad values', () {
+    test('OW isValidTag bad values', () {
       global.throwOnError = false;
-      expect(OW.isNotValidTag(PTag.kSelectorAEValue), true);
+      expect(OW.isValidTag(PTag.kSelectorAEValue), false);
 
       global.throwOnError = true;
-      expect(() => OW.isNotValidTag(PTag.kSelectorAEValue),
+      expect(() => OW.isValidTag(PTag.kSelectorAEValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(OW.isNotValidTag(tag), true);
+        expect(OW.isValidTag(tag), false);
 
         global.throwOnError = true;
-        expect(() => OW.isNotValidTag(tag),
+        expect(() => OW.isValidTag(tag),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });

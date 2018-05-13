@@ -216,7 +216,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
-        expect(lo0.tag.isValidLength(lo0.length), true);
+        expect(lo0.tag.isValidLength(lo0), true);
       }
     });
 
@@ -1041,7 +1041,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
         final lt0 = new LTtag(PTag.kImageComments, vList0);
-        expect(lt0.tag.isValidLength(lt0.length), true);
+        expect(lt0.tag.isValidLength(lt0), true);
       }
     });
 
@@ -1840,7 +1840,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
         final pn0 = new PNtag(PTag.kOrderEnteredBy, vList0);
-        expect(pn0.tag.isValidLength(pn0.length), true);
+        expect(pn0.tag.isValidLength(pn0), true);
       }
     });
 
@@ -2614,7 +2614,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
         final sh0 = new SHtag(PTag.kTextureLabel, vList0);
-        expect(sh0.tag.isValidLength(sh0.length), true);
+        expect(sh0.tag.isValidLength(sh0), true);
       }
     });
 
@@ -3420,7 +3420,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
         final st0 = new STtag(PTag.kSelectorSTValue, vList0);
-        expect(st0.tag.isValidLength(st0.length), true);
+        expect(st0.tag.isValidLength(st0), true);
       }
     });
 
@@ -4195,7 +4195,7 @@ test('ST isValidVRIndex good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
         final uc0 = new UCtag(PTag.kStrainDescription, vList0);
-        expect(uc0.tag.isValidLength(uc0.length), true);
+        expect(uc0.tag.isValidLength(uc0), true);
       }
     });
 
@@ -4949,7 +4949,7 @@ test('ST isValidVRIndex good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         final ut0 = new UTtag(PTag.kUniversalEntityID, vList0);
-        expect(ut0.tag.isValidLength(ut0.length), true);
+        expect(ut0.tag.isValidLength(ut0), true);
       }
     });
 

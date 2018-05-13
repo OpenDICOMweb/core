@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:convert' as cvt;
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -56,88 +56,84 @@ void main() {
     });
 
     test('FL hasValidValues good values random', () {
-
-      global.level = Level.info;
-
       for (var i = 0; i < 10; i++) {
-        final float32List = rng.float32List(1, 1);
-        expect(float32List is Float32List, true);
-        final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List);
+        final vList = rng.float32List(1, 1);
+        expect(vList is Float32List, true);
+        final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
         expect(fl0.hasValidValues, true);
-
         log
           ..debug('fl0: $fl0, values: ${fl0.values}')
           ..debug('fl0: $fl0')
-          ..debug('float32List: $float32List')
+          ..debug('float32List: $vList')
           ..debug('        fl0: ${fl0.values}');
-        expect(fl0.values, equals(float32List));
+        expect(fl0.values, equals(vList));
       }
 
       for (var i = 0; i < 10; i++) {
-        final float32List = rng.float32List(2, 2);
-        final fl0 = new FLtag(PTag.kCornealVertexLocation, float32List);
+        final vList = rng.float32List(2, 2);
+        final fl0 = new FLtag(PTag.kCornealVertexLocation, vList);
         expect(fl0.hasValidValues, true);
-
-        log
-          ..debug('fl0: $fl0, values: ${fl0.values}')
-          ..debug('fl0: $fl0');
-        expect(fl0[0], equals(float32List[0]));
+        log..debug('fl0: $fl0, values: ${fl0.values}')..debug('fl0: $fl0');
+        expect(fl0[0], equals(vList[0]));
       }
     });
 
     test('FL hasValidValues bad values random', () {
-      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
-        final float32List = rng.float32List(3, 4);
-        log.debug('$i: float32List: $float32List');
-        final fl0 = new FLtag(PTag.kCornealVertexLocation, float32List);
+        global.throwOnError = false;
+        final vList0 = rng.float32List(3, 4);
+        log.debug('$i: float32List: $vList0');
+        final fl0 = new FLtag(PTag.kCornealVertexLocation, vList0);
         expect(fl0, isNull);
       }
 
       global.throwOnError = true;
-      final float32List = rng.float32List(3, 4);
-      expect(() => new FLtag(PTag.kCornealVertexLocation, float32List),
+      final vList1 = rng.float32List(3, 4);
+      expect(() => new FLtag(PTag.kCornealVertexLocation, vList1),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('FL update random', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
-        final float32List = rng.float32List(3, 4);
-        final fl1 = new FLtag(PTag.kTableOfParameterValues, float32List);
-        final float32List1 = rng.float32List(3, 4);
-        expect(fl1.update(float32List1).values, equals(float32List1));
+        final vList0 = rng.float32List(3, 4);
+        final fl1 = new FLtag(PTag.kTableOfParameterValues, vList0);
+        final vList1 = rng.float32List(3, 4);
+        expect(fl1.update(vList1).values, equals(vList1));
       }
     });
 
     test('FL update', () {
+      final vList0 = new Float32List.fromList([1.1, 2.2]);
       final fl0 = new FLtag(PTag.kTableOfParameterValues, []);
-      expect(fl0.update([1.0, 2.0]).values, equals([1.0, 2.0]));
+      expect(fl0.update(vList0), equals(vList0));
 
-      final fl1 = new FLtag(PTag.kTableOfParameterValues, listFloat32Common0);
-      expect(fl1.update(listFloat32Common0).values, equals(listFloat32Common0));
+      final vList1 = new Float32List.fromList(listFloat32Common0);
+      final fl1 = new FLtag(PTag.kTableOfParameterValues, vList1);
+      expect(fl1.update(vList1), equals(vList1));
 
       const floatUpdateValues = const <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
 
-      for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
+      final vList2 = new Float32List.fromList(listFloat32Common0);
+      for (var i = 1; i <= vList2.length - 1; i++) {
         final fl2 = new FLtag(PTag.kSelectorFLValue,
-            new Float32List.fromList(floatUpdateValues.take(i).toList()));
+            new Float32List.fromList(vList2.take(i).toList()));
 
         expect(
             fl2.update(
-                new Float32List.fromList(floatUpdateValues.take(i).toList())),
+                new Float32List.fromList(vList2.take(i).toList())),
             equals(
-                new Float32List.fromList(floatUpdateValues.take(i).toList())));
+                new Float32List.fromList(vList2.take(i).toList())));
 
-        expect(fl2.update(floatUpdateValues.take(i).toList()).values,
-            equals(floatUpdateValues.take(i).toList()));
+        expect(fl2.update(vList2.take(i).toList()).values,
+            equals(vList2.take(i).toList()));
       }
       final fl2 = new FLtag(PTag.kSelectorFLValue,
-          new Float32List.fromList(floatUpdateValues.take(1).toList()));
+          new Float32List.fromList(vList2.take(1).toList()));
       expect([fl2.values.elementAt(0)],
-          equals(new Float32List.fromList(floatUpdateValues.take(1).toList())));
+          equals(new Float32List.fromList(vList2.take(1).toList())));
       log.debug(fl2.view());
     });
 
@@ -327,8 +323,8 @@ void main() {
     test('FL fromUint8List good values', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
-   //     final float = new Float32List.fromList(floatList0);
-   //     final bytes = float.buffer.asUint8List();
+        //     final float = new Float32List.fromList(floatList0);
+        //     final bytes = float.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(floatList0);
         final fl0 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
         log.debug('fl0: $fl0');
@@ -339,40 +335,34 @@ void main() {
     test('FL fromUint8List bad values', () {
       for (var i = 0; i < 10; i++) {
         final floatList1 = rng.float32List(3, 3);
-        //    final float0 = new Float32List.fromList(floatList1);
-        //    final bytes0 = float0.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(floatList1);
         final fl1 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
         log.debug('fl1: $fl1');
-        expect(fl1.hasValidValues, false);
+        expect(fl1, isNull);
       }
     });
 
     test('FL fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float32List(1, 10);
-        final float = new Float32List.fromList(floatList0);
-        //final bytes = float.buffer.asUint8List();
-        final bytes0 = Bytes.fromAscii(float.toString());
-        //final bytes0 = new Bytes();
-        final fl0 = FLtag.fromBytes(PTag.kSelectorFLValue, bytes0);
+        final vList = rng.float32List(1, 10);
+        final vfBytes = new Bytes.typedDataView(vList);
+        final fl0 = FLtag.fromBytes(PTag.kSelectorFLValue, vfBytes);
         log.debug('fl0: $fl0');
         expect(fl0.hasValidValues, true);
       }
     });
 
-    test('FL fromBytes bad values', () {
+    test('FL fromBytes bad tag', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final floatList0 = rng.float32List(1, 10);
-        final float = new Float32List.fromList(floatList0);
-        final bytes0 = Bytes.fromAscii(float.toString());
-        final fl0 = FLtag.fromBytes(PTag.kSelectorSSValue, bytes0);
+        final vList = rng.float32List(1, 10);
+        final bytes = new Bytes.typedDataView(vList);
+        final fl0 = FLtag.fromBytes(PTag.kSelectorSSValue, bytes);
         expect(fl0, isNull);
 
         global.throwOnError = true;
-        expect(() => FLtag.fromBytes(PTag.kSelectorSSValue, bytes0),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+        expect(() => FLtag.fromBytes(PTag.kSelectorSSValue, bytes),
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -423,7 +413,8 @@ void main() {
       }
     });
 
- */   test('Create Elements from floating values(FL)', () {
+ */
+    test('Create Elements from floating values(FL)', () {
       const f32Values = const <double>[2047.99, 2437.437, 764.53];
 
       final fl0 = new FLtag(PTag.kRecommendedDisplayFrameRateInFloat,
@@ -549,7 +540,7 @@ void main() {
       expect(FL.isValidTag(PTag.kSelectorFDValue), false);
       global.throwOnError = true;
       expect(() => FL.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -558,7 +549,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => FL.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -724,17 +715,17 @@ void main() {
 
     test('FL isValidLength VM.k6_n bad values', () {
       for (var i = 1; i < 10; i++) {
-        final validMinVList = rng.float32List(1, 5);
+        final vList = rng.float32List(1, 5);
         for (var tag in flTags5) {
           global.throwOnError = false;
-          expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, vList), false);
           expect(FL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => FL.isValidLength(tag, invalidVList),
+          expect(() => FL.isValidLength(tag, vList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
 
-          expect(() => FL.isValidLength(tag, validMinVList),
+          expect(() => FL.isValidLength(tag, invalidVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -742,13 +733,13 @@ void main() {
 
     test('FL isValidVFLength good values', () {
       global.throwOnError = false;
-      expect(FL.isValidVFLength(FL.kMaxLength), true);
+      expect(FL.isValidVFLength(FL.kMaxVFLength), true);
       expect(FL.isValidVFLength(0), true);
     });
 
     test('FL isValidVFLength bad values', () {
       global.throwOnError = false;
-      expect(FL.isValidVFLength(FL.kMaxLength + 1), false);
+      expect(FL.isValidVFLength(FL.kMaxVFLength + 1), false);
       expect(FL.isValidVFLength(-1), false);
     });
 
@@ -1012,8 +1003,8 @@ void main() {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8List0);
-        final fl0 = Float32.fromBase64(base64);
+        final s0 = base64.encode(uInt8List0);
+        final fl0 = Float32.fromBase64(s0);
         log
           ..debug('  floatList0: $floatList0')
           ..debug('float32List0: $float32List0')
@@ -1025,36 +1016,34 @@ void main() {
 
     test('Float32Base toBase64', () {
       for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float32List(0, i);
-        final float32List0 = new Float32List.fromList(floatList0);
-        final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8List0);
-        final s = Float32.toBase64(floatList0);
-        expect(s, equals(base64));
+        final vList0 = rng.float32List(0, i);
+        final bList0 = vList0.buffer.asUint8List();
+        final s0 = base64.encode(bList0);
+        final s1 = Float32.toBase64(vList0);
+        expect(s1, equals(s0));
       }
     });
 
     test('Float32Base encodeDecodeJsonVF', () {
       for (var i = 1; i < 10; i++) {
-        final floatList0 = rng.float32List(1, i);
-        final float32List0 = new Float32List.fromList(floatList0);
-        final uInt8List0 = float32List0.buffer.asUint8List();
+        final vList0 = rng.float32List(1, i);
+        final bList0 = vList0.buffer.asUint8List();
 
         // Encode
-        final base64 = cvt.base64.encode(uInt8List0);
-        log.debug('FL.base64: "$base64"');
-        final s = Float32.toBase64(floatList0);
-        log.debug('  FL.json: "$s"');
-        expect(s, equals(base64));
+        final s0 = base64.encode(bList0);
+        log.debug('FL.base64: "$s0"');
+        final s1 = Float32.toBase64(vList0);
+        log.debug('FL.json: "$s1"');
+        expect(s1, equals(s0));
 
         // Decode
-        final fl0 = Float32.fromBase64(base64);
-        log.debug('FL.base64: $fl0');
-        final fl1 = Float32.fromBase64(s);
-        log.debug('  FL.json: $fl1');
-        expect(fl0, equals(floatList0));
-        expect(fl0, equals(float32List0));
-        expect(fl0, equals(fl1));
+        final vList1 = Float32.fromBase64(s0);
+        log.debug('FL.base64: $vList1');
+        final vList2 = Float32.fromBase64(s1);
+        log.debug('  FL.json: $vList2');
+        expect(vList1, equals(vList0));
+        expect(vList2, equals(vList0));
+        expect(vList2, equals(vList1));
       }
     });
 
@@ -1084,21 +1073,20 @@ void main() {
 
     test('Float32Base fromBytes', () {
       for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float32List(1, 1);
-        final float = new Float32List.fromList(floatList0);
-        final byte0 = Bytes.fromAscii(float.join('\\'));
+        final vList0 = rng.float32List(1, 1);
+        final byte0 = new Bytes.typedDataView(vList0);
         final fb0 = Float32.fromBytes(byte0);
-        final float32List0 = byte0.asFloat32List();
-        log.debug('formBytes: $fb0, Flaot32List: $float32List0');
-        expect(fb0, equals(float32List0));
+        final vList1 = byte0.asFloat32List();
+        log.debug('formBytes: $fb0, Flaot32List: $vList1');
+        expect(fb0, equals(vList1));
       }
     });
 
-    test('Float32Bae fromValueField', () {
+    test('Float32Base fromValueField', () {
       for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float32List(1, 1);
-        final fvF0 = Float32.fromValueField(floatList0);
-        expect(fvF0, equals(floatList0));
+        final vList0 = rng.float32List(1, 1);
+        final fvF0 = Float32.fromValueField(vList0);
+        expect(fvF0, equals(vList0));
 
         final fvF1 = Float32.fromValueField(null);
         expect(fvF1, equals(<double>[]));
@@ -1109,11 +1097,11 @@ void main() {
         final fvF3 = Float32.fromValueField(<double>[123.54]);
         expect(fvF3, equals(<double>[123.54]));
 
-        final byte0 = Bytes.fromAscii(floatList0.join('\\'));
+        final byte0 = new Bytes.typedDataView(vList0);
         final fvF4 = Float32.fromValueField(byte0);
         expect(fvF4, isNotNull);
 
-        final uInt8List0 = floatList0.buffer.asUint8List();
+        final uInt8List0 = vList0.buffer.asUint8List();
         final fvF5 = Float32.fromValueField(uInt8List0);
         final data = Float32.fromUint8List(uInt8List0);
         expect(fvF5, equals(data));
@@ -1349,8 +1337,8 @@ void main() {
     test('OF fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(1, 1);
-    //    final float = new Float32List.fromList(floatList0);
-    //    final bytes = float.buffer.asUint8List();
+        //    final float = new Float32List.fromList(floatList0);
+        //    final bytes = float.buffer.asUint8List();
         final bytes0 = new Bytes.typedDataView(floatList0);
         final of0 = OFtag.fromBytes(PTag.kVectorGridData, bytes0);
         log.debug('of0: $of0');
@@ -1369,29 +1357,25 @@ void main() {
 
     test('OF fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float32List(1, 1);
-        final float = new Float32List.fromList(floatList0);
-        //final bytes = float.buffer.asUint8List();
-        final bytes0 = Bytes.fromAscii(float.toString());
-        //final bytes0 = new Bytes();
-        final of0 = OFtag.fromBytes(PTag.kSelectorOFValue, bytes0);
+        final vList = rng.float32List(1, 1);
+        final bytes = new Bytes.typedDataView(vList);
+        final of0 = OFtag.fromBytes(PTag.kSelectorOFValue, bytes);
         log.debug('of0: $of0');
         expect(of0.hasValidValues, true);
       }
     });
 
-    test('OF fromBytes bad values', () {
+    test('OF fromBytes bad tag', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final floatList0 = rng.float32List(1, 10);
-        final float = new Float32List.fromList(floatList0);
-        final bytes0 = Bytes.fromAscii(float.toString());
-        final of0 = OFtag.fromBytes(PTag.kSelectorSSValue, bytes0);
+        final vList = rng.float32List(1, 10);
+        final bytes = new Bytes.typedDataView(vList);
+        final of0 = OFtag.fromBytes(PTag.kSelectorSSValue, bytes);
         expect(of0, isNull);
 
         global.throwOnError = true;
-        expect(() => OFtag.fromBytes(PTag.kSelectorSSValue, bytes0),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+        expect(() => OFtag.fromBytes(PTag.kSelectorSSValue, bytes),
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -1409,16 +1393,17 @@ void main() {
     });
 
     test('Float32Base to/FromBase64', () {
-      final fString = Float32.toBase64(<double>[78678.11]);
-      final of0 = OFtag.fromBase64(PTag.kVectorGridData, fString);
+      final s0 = Float32.toBase64(<double>[78678.11]);
+      final bytes0 = Bytes.fromBase64(s0);
+      final of0 = OFtag.fromBytes(PTag.kVectorGridData, bytes0);
       expect(of0.hasValidValues, true);
 
       for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float32List(1, 1);
-        final float32List0 = new Float32List.fromList(floatList0);
-        final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8List0);
-        final of1 = OFtag.fromBase64(PTag.kVectorGridData, base64);
+        final vList1 = rng.float32List(1, 1);
+        final bytes1 = vList1.buffer.asUint8List();
+        final s1 = base64.encode(bytes1);
+        final bytes2 = Bytes.fromBase64(s1);
+        final of1 = OFtag.fromBytes(PTag.kVectorGridData, bytes2);
         expect(of1.hasValidValues, true);
       }
     });
@@ -1478,7 +1463,7 @@ void main() {
       expect(OF.isValidTag(PTag.kSelectorFDValue), false);
       global.throwOnError = true;
       expect(() => OF.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -1487,7 +1472,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => OF.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
@@ -1519,11 +1504,13 @@ void main() {
       }
     });
 
+/* Urgent Sharath fix - isValidLength now takes a vList
     test('OF isValidLength', () {
       global.throwOnError = false;
-      expect(OF.isValidLength(OF.kMaxLength), true);
+      expect(OF.isValidLength(PTag.kSelectorOFValue, OF.kMaxLength), true);
       expect(OF.isValidLength(0), true);
     });
+*/
 
     test('OF isValidVR good values', () {
       global.throwOnError = false;
@@ -1680,9 +1667,11 @@ void main() {
       expect(OF.isValidVFLength(-1), false);
     });
 
+/* Urgent Sharath: isValidLength now take vList
     test('OF isValidLength', () {
       expect(OF.isValidLength(OF.kMaxLength), true);
     });
+*/
 
     test('OF isValidValues', () {
       global.throwOnError = false;
@@ -1722,7 +1711,7 @@ void main() {
         final floatList0 = rng.float32List(1, 1);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        //final base64 = cvt.base64.encode(uInt8List0);
+        //final s0 = base64.encode(uInt8List0);
         expect(Float32.toBytes(float32List0), equals(uInt8List0));
       }
     });
@@ -1733,8 +1722,8 @@ void main() {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);
         final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8List0);
-        final of0 = Float32.fromBase64(base64);
+        final s0 = base64.encode(uInt8List0);
+        final of0 = Float32.fromBase64(s0);
         log
           ..debug('  floatList0: $floatList0')
           ..debug('float32List0: $float32List0')
@@ -1746,36 +1735,34 @@ void main() {
 
     test('Float32Base.toBase64', () {
       for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float32List(0, i);
-        final float32List0 = new Float32List.fromList(floatList0);
-        final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8List0);
-        final of0 = Float32.toBase64(floatList0);
-        expect(of0, equals(base64));
+        final vList0 = rng.float32List(0, i);
+        final bList0 = vList0.buffer.asUint8List();
+        final s0 = base64.encode(bList0);
+        final s1 = Float32.toBase64(vList0);
+        expect(s1, equals(s0));
       }
     });
 
     test('OF encodeDecodeJsonVF', () {
       for (var i = 1; i < 10; i++) {
-        final floatList0 = rng.float32List(1, i);
-        final float32List0 = new Float32List.fromList(floatList0);
-        final uInt8List0 = float32List0.buffer.asUint8List();
+        final vList0 = rng.float32List(1, i);
+        final bList0 = vList0.buffer.asUint8List();
 
         // Encode
-        final base64 = cvt.base64.encode(uInt8List0);
+        final s0 = base64.encode(bList0);
         log.debug('OF.base64: "$base64"');
-        final s = Float32.toBase64(floatList0);
-        log.debug('  OF.json: "$s"');
-        expect(s, equals(base64));
+        final s1 = Float32.toBase64(vList0);
+        log.debug('  OF.json: "$s1"');
+        expect(s1, equals(s0));
 
         // Decode
-        final of0 = Float32.fromBase64(base64);
-        log.debug('FL.base64: $of0');
-        final of1 = Float32.fromBase64(s);
-        log.debug('  OF.json: $of1');
-        expect(of0, equals(floatList0));
-        expect(of0, equals(float32List0));
-        expect(of0, equals(of1));
+        final vList1 = Float32.fromBase64(s0);
+        log.debug('FL.base64: $vList1');
+        final vList2 = Float32.fromBase64(s1);
+        log.debug('  OF.json: $vList2');
+        expect(vList1, equals(vList0));
+        expect(vList2, equals(vList0));
+        expect(vList2, equals(vList1));
       }
     });
 
