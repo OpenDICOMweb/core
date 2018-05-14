@@ -123,7 +123,7 @@ bool isLongStringVR(int vrIndex) =>
 /// is, by definition, always a valid length.
 const List<int> kVFLengthAlwaysValidIndices = const <int>[
   kSQIndex, kUNIndex, kOBIndex, kOWIndex, kOLIndex, // No reformat
-  kODIndex, kOFIndex, kUCIndex, kURIndex, kUTIndex
+  kODIndex, kOFIndex, kUCIndex, kURIndex, kUTIndex, kOBOWIndex
 ];
 
 bool isVFLengthAlwaysValid(int vrIndex) =>

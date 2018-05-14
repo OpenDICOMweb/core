@@ -86,8 +86,8 @@ abstract class AE extends StringAscii {
   static const int kVRCode = kAECode;
   static const String kVRKeyword = 'AE';
   static const String kVRName = 'Application Entity';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxVFLength ~/ 2;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 16;
 
@@ -264,8 +264,8 @@ abstract class AS extends StringAscii {
   static const int kVRCode = kASCode;
   static const String kVRKeyword = 'AS';
   static const String kVRName = 'Age String';
-  static const int kMaxLength = kMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMaxVFLength = kMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMinValueLength = 4;
   static const int kMaxValueLength = 4;
 
@@ -414,8 +414,8 @@ abstract class CS extends StringAscii {
   static const int kVRCode = kCSCode;
   static const String kVRKeyword = 'CS';
   static const String kVRName = 'Code String';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxShortVF ~/ 2;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
   // It seems that CS may have an empty String value
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 16;
@@ -595,8 +595,9 @@ abstract class UI extends StringAscii {
   static const int kVRCode = kUICode;
   static const String kVRKeyword = 'UI';
   static const String kVRName = 'Unique Identifier (UID)';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxShortVF ~/ 32;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  //Fix: 32 is pretty random
+  static const int kMaxLength = k8BitMaxShortVF ~/ 32;
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 64;
 
@@ -799,8 +800,8 @@ abstract class DA extends StringBase {
   static const int kVRCode = kDACode;
   static const String kVRKeyword = 'DA';
   static const String kVRName = 'Date';
-  static const int kMaxLength = kMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMaxVFLength = kMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMinValueLength = 8;
   static const int kMaxValueLength = 8;
 
@@ -957,8 +958,8 @@ abstract class DT extends StringBase {
   static const int kVRCode = kDTCode;
   static const String kVRKeyword = 'DT';
   static const String kVRName = 'Date Time';
-  static const int kMaxLength = kMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMaxVFLength = kMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMinValueLength = 4;
   static const int kMaxValueLength = 26;
 
@@ -1118,8 +1119,8 @@ abstract class TM extends StringBase {
   static const int kVRCode = kTMCode;
   static const String kVRKeyword = 'TM';
   static const String kVRName = 'Time';
-  static const int kMaxLength = kMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMaxVFLength = kMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMinValueLength = 2;
   static const int kMaxValueLength = 13;
 
@@ -1289,8 +1290,8 @@ abstract class DS extends StringAscii {
   static const int kVRCode = kDSCode;
   static const String kVRKeyword = 'DS';
   static const String kVRName = 'Decimal String';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxShortVF ~/ 2;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 16;
 
@@ -1366,11 +1367,14 @@ abstract class DS extends StringAscii {
       !isValidVFLength(length, kMaxVFLength, issues);
 
   /// Returns _true_ if [vList].length is valid for [DS].
-  static bool isValidVListLength(Tag tag, Iterable<String> vList,
+  static bool isValidLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, DS))
       return invalidTag(tag, issues, DS);
-    return Element.isValidVListLength(tag, vList, issues, kMaxLength);
+    if (vList == null) return nullValueError();
+    return tag.isValidLength(vList, issues)
+           ? true
+           : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [tag] has a VR of [DS] and [vList] is valid for [tag].
@@ -1482,8 +1486,8 @@ abstract class IS extends StringAscii {
   static const int kVRCode = kISCode;
   static const String kVRKeyword = 'IS';
   static const String kVRName = 'Integer String';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxShortVF ~/ 2;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 12;
   static const int kMinValue = -99999999999;
@@ -1563,7 +1567,7 @@ abstract class IS extends StringAscii {
       !isValidVFLength(length, kMaxVFLength, issues);
 
   /// Returns _true_ if [vList].length is valid for [IS].
-  static bool isValidVListLength(Tag tag, Iterable<String> vList,
+  static bool isValidLength(Tag tag, Iterable<String> vList,
       [Issues issues]) {
     if (!Tag.isValidTag(tag, issues, kVRIndex, IS))
       return invalidTag(tag, issues, IS);

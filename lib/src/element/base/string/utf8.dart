@@ -83,8 +83,8 @@ abstract class LO extends Utf8 {
   static const int kVRCode = kLOCode;
   static const String kVRKeyword = 'LO';
   static const String kVRName = 'Long String';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxShortVF ~/ 2;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 64;
 
@@ -278,8 +278,8 @@ abstract class PN extends Utf8 {
   static const int kVRCode = kPNCode;
   static const String kVRKeyword = 'PN';
   static const String kVRName = 'Person Name';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxShortVF ~/ 2;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 3 * 64;
 
@@ -422,8 +422,8 @@ abstract class SH extends Utf8 {
   static const int kVRCode = kSHCode;
   static const String kVRKeyword = 'SH';
   static const String kVRName = 'Short String';
-  static const int kMaxVFLength = kMaxShortVF;
-  static const int kMaxLength = kMaxShortVF ~/ 2;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = 16;
 

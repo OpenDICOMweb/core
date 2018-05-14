@@ -53,8 +53,6 @@ class SQtag extends SQ with TagElement<TagItem> {
       [this.values, this.vfLengthField, this.bytes]);
 
   @override
-  List<Item> get items => values.toList(growable: false);
-  @override
   Bytes get vfBytes => unimplementedError('vfBytes in SQtag');
 
   @override

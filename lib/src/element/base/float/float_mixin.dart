@@ -16,6 +16,7 @@ import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -60,6 +61,7 @@ abstract class Float extends Element<double> {
   Iterable<double> get values;
   @override
   set values(Iterable<double> vList) => unsupportedError('IntBase.values');
+  int get sizeInBytes;
   // **** End of Interface ****
 
   @deprecated
@@ -114,12 +116,15 @@ abstract class Float extends Element<double> {
 
 /// A mixin class for 32-bit floating point [Element]s.
 abstract class Float32 {
+  int get length;
   Iterable<double> get values;
   Float update([Iterable<double> vList]);
   // **** End of Interface ****
 
   /// The number of bytes in a [Float32] element.
   int get sizeInBytes => kSizeInBytes;
+
+  int get lengthInBytes => length * sizeInBytes;
 
   Float get sha256 => update(Sha256.float32(values));
 
@@ -175,7 +180,7 @@ abstract class Float32 {
   /// returned; otherwise, a copy of vList is returned. No value checking
   /// is done.
   static Float32List fromList(Iterable<double> vList, {bool asView = true}) {
-    assert(vList != null);
+    if (doTestElementValidity && vList == null) return badValues(vList);
     if (vList.isEmpty) return kEmptyFloat32List;
     return (vList is Float32List && asView)
         ? vList
@@ -202,7 +207,7 @@ abstract class Float32 {
       _fromByteData(_asByteData(list), asView: asView);
 
   /// Returns a [Float32List] created from a [ByteData]. If
-  /// [asView] is _true_, then  a [Float64List] view of [list] is returned;
+  /// [asView] is _true_, then  a [Float64List] view of [bd] is returned;
   /// otherwise, a [Float32List] copy of [bd] is returned.
   /// No value checking is done.
   static Float32List fromByteData(ByteData bd, {bool asView = true}) =>
@@ -242,12 +247,15 @@ abstract class Float32 {
 
 /// A mixin class for 64-bit floating point [Element]s.
 abstract class Float64 {
+  int get length;
   Iterable<double> get values;
   Float update([Iterable<double> vList]);
   // **** End of Interface ****
 
   /// The number of bytes in a [Float64] element.
   int get sizeInBytes => kSizeInBytes;
+
+  int get lengthInBytes => length * sizeInBytes;
 
   Float get sha256 => update(Sha256.float64(values));
 
@@ -292,9 +300,7 @@ abstract class Float64 {
   static ByteData toByteData(List<double> vList, {bool asView = true}) =>
       _asByteData(fromList(vList, asView: asView));
 
-  /// Returns a [base64] [String] created from [vList]. If [asView] is _true_
-  /// and [vList] is a [Float64List] a view of [vList] is returned;
-  /// otherwise, a new Float64List] is created from vList and returned.
+  /// Returns a [base64] [String] created from [vList].
   static String toBase64(Iterable<double> vList) =>
       base64.encode(toBytes(vList));
 
@@ -330,7 +336,7 @@ abstract class Float64 {
       _fromByteData(_asByteData(list), asView: asView);
 
   /// Returns a [Float64List] created from a [ByteData]. If
-  /// [asView] is _true_, then  a [Float64List] view of [list] is returned;
+  /// [asView] is _true_, then  a [Float64List] view of [bd] is returned;
   /// otherwise, a [Float64List] copy of [bd] is returned.
   /// No value checking is done.
   static Float64List fromByteData(ByteData bd, {bool asView = true}) =>

@@ -34,7 +34,7 @@ abstract class SQ extends Element<Item> {
   set values(Iterable<Item> vList) => unsupportedError('StringBase.values');
 
   /// The DICOM name for Sequence values, which are Items.
-  List<Item> get items => (values is List) ? values : values.toList();
+  Iterable<Item> get items => (values is List) ? values : values.toList();
 
   //**** End of Interface
   @override
@@ -57,7 +57,7 @@ abstract class SQ extends Element<Item> {
   int get maxLength => kMaxLength;
   @override
   int get vfLength => unimplementedError();
-
+  int get lengthInBytes => unimplementedError();
   @override
   int get vfLengthField;
   @override
@@ -164,8 +164,8 @@ Summary $tag
   }
 
   @override
-  List<Item> get emptyList => kEmptyList;
-  static const List<Item> kEmptyList = const <Item>[];
+  Iterable<Item> get emptyList => kEmptyList;
+  static const Iterable<Item> kEmptyList = const <Item>[];
 
   @override
   SQ get noValues => update(kEmptyList);

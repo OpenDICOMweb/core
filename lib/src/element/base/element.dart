@@ -85,6 +85,13 @@ abstract class Element<V> extends ListBase<V> {
   /// defined by the current DICOM Standard.
   bool get isRetired;
 
+  /// The actual length in bytes of the Value Field. It does
+  /// not include any padding characters.
+  int get vfLength;
+
+  /// The length in bytes of [values].
+  int get lengthInBytes;
+
   /// Returns the [Iterable<V>] [values] of _this_.
   Iterable<V> get values;
 
@@ -93,7 +100,7 @@ abstract class Element<V> extends ListBase<V> {
       unsupportedError('ByteElements are not settable.');
 
   /// Returns the canonical empty list for [V] ([List<V>[]]).
-  List<V> get emptyList;
+  Iterable<V> get emptyList;
 
   // **** End of Interface
 
@@ -106,10 +113,6 @@ abstract class Element<V> extends ListBase<V> {
   /// [PCTagUnknown] or [PDTagUnknown] will be returned. This should be
   /// overridden whenever possible.
   Tag get tag => Tag.lookupByCode(code);
-
-  /// The actual length in bytes of the Value Field. It does
-  /// not include any padding characters.
-  int get vfLength => values.length * sizeInBytes;
 
   /// The start of an element in and encoding.
   int get eStart => -1;
@@ -193,8 +196,8 @@ abstract class Element<V> extends ListBase<V> {
   /// The [vrCode] as a hexadecimal [String].
   String get vrHex => '0x${hex16(vrCode)}';
 
-  /// The number of bytes in one value.
-  int get sizeInBytes => vr.sizeInBytes;
+  // The number of bytes in one value.
+//  int get sizeInBytes => vr.sizeInBytes;
 
   /// The maximum Value Field length in bytes for this Element.
   int get maxVFLength => vr.maxVFLength;
@@ -284,9 +287,6 @@ abstract class Element<V> extends ListBase<V> {
   @override
   set length(int n) => throw new UnsupportedError('Elements are immutable');
 
-  /// The length in bytes of [values].
-  int get lengthInBytes => values.length * sizeInBytes;
-
   /// Returns a single value from a [List] with [length] == 1.
   V get value {
     if (length != 1) {
@@ -320,11 +320,11 @@ abstract class Element<V> extends ListBase<V> {
 
   String get vfBytesAsAscii => vfBytes.getAscii();
 
-  List<String> get vfBytesAsAsciiList => vfBytes.getAsciiList();
+  Iterable<String> get vfBytesAsAsciiList => vfBytes.getAsciiList();
 
   String get vfBytesAsUtf8 => utf8.decode(vfBytes, allowMalformed: true);
 
-  List<String> get vfBytesAsUtf8List =>
+  Iterable<String> get vfBytesAsUtf8List =>
       utf8.decode(vfBytes, allowMalformed: true).split('\\');
 
   /// Returns _true_ if [vList] has a valid [length] for _this_.

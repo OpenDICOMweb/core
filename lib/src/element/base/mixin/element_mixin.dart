@@ -78,6 +78,9 @@ abstract class ElementMixin<V> {
   /// defined by the current DICOM Standard.
   bool get isRetired;
 
+  /// The length in bytes of [values].
+  int get lengthInBytes;
+
   /// Returns the [Iterable<V>] [values] of _this_.
   Iterable<V> get values;
 
@@ -169,9 +172,6 @@ abstract class ElementMixin<V> {
   /// The [vrCode] as a hexadecimal [String].
   String get vrHex => '0x${hex16(vrCode)}';
 
-  /// The number of bytes in one value.
-  int get sizeInBytes => vr.sizeInBytes;
-
   /// The maximum Value Field length in bytes for this Element.
   int get maxVFLength => vr.maxVFLength;
 
@@ -257,9 +257,6 @@ abstract class ElementMixin<V> {
 
 //  @override
   set length(int n) => throw new UnsupportedError('Elements are immutable');
-
-  /// The length in bytes of [values].
-  int get lengthInBytes => values.length * sizeInBytes;
 
   /// Returns a single value from a [List] with [length] == 1.
   V get value {

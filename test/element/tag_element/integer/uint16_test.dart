@@ -28,12 +28,12 @@ void main() {
         final uint16List0 = rng.uint16List(1, 1);
         final us0 = new UStag(PTag.kContrastFrameAveraging, uint16List0);
         expect(us0.hasValidValues, true);
-        log.debug('us0: ${us0.info}');
+        log.debug('us0: $us0');
         expect(us0.hasValidValues, true);
 
         log
           ..debug('us0: $us0, values: ${us0.values}')
-          ..debug('us0: ${us0.info}');
+          ..debug('us0: $us0');
         expect(us0[0], equals(uint16List0[0]));
       }
 
@@ -42,12 +42,12 @@ void main() {
         final us0 =
             new UStag(PTag.kTopLeftHandCornerOfLocalizerArea, uint16List0);
         expect(us0.hasValidValues, true);
-        log.debug('us0: ${us0.info}');
+        log.debug('us0: $us0');
         expect(us0.hasValidValues, true);
 
         log
           ..debug('us0: $us0, values: ${us0.values}')
-          ..debug('us0: ${us0.info}');
+          ..debug('us0: $us0');
         expect(us0[0], equals(uint16List0[0]));
       }
     });
@@ -76,7 +76,7 @@ void main() {
       global.throwOnError = false;
       final us4 = new UStag(PTag.kRepresentativeFrameNumber, []);
       expect(us4.hasValidValues, true);
-      log.debug('us4:${us4.info}');
+      log.debug('us4:$us4');
       expect(us4.values, equals(<int>[]));
     });
 
@@ -302,7 +302,7 @@ void main() {
         final intList0 = rng.uint16List(1, 10);
         final bytes0 = Bytes.fromAscii(intList0.toString());
         final uc0 = UCtag.fromBytes(PTag.kSelectorUCValue, bytes0);
-        log.debug('uc0: ${uc0.info}');
+        log.debug('uc0: $uc0');
         expect(uc0.hasValidValues, true);
       }
     });
@@ -1250,12 +1250,12 @@ void main() {
         final ow0 =
             new OWtag(PTag.kRedPaletteColorLookupTableData, uint16List0);
         expect(ow0.hasValidValues, true);
-        log.debug('ow0: ${ow0.info}');
+        log.debug('ow0: $ow0');
         expect(ow0.hasValidValues, true);
 
         log
           ..debug('ow0: $ow0, values: ${ow0.values}')
-          ..debug('ow0: ${ow0.info}');
+          ..debug('ow0: $ow0');
         expect(ow0[0], equals(uint16List0[0]));
       }
 
@@ -1283,7 +1283,7 @@ void main() {
       global.throwOnError = false;
       final ow4 = new OWtag(PTag.kRedPaletteColorLookupTableData, []);
       expect(ow4.hasValidValues, true);
-      log.debug('ow4:${ow4.info}');
+      log.debug('ow4:$ow4');
       expect(ow4.values, equals(<int>[]));
     });
 
@@ -1517,14 +1517,14 @@ void main() {
     test('OW fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final uint16List0 = rng.uint16List(1, 1);
-//        final uint16List1 = new Uint16List.fromList(uint16List0);
-//        final uint8List1 = uint16List1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(uint16List0);
         log.debug(bytes);
         final ow0 =
             OWtag.fromBytes(PTag.kEdgePointIndexList, bytes, bytes.length);
-        log.debug(ow0);
+        log.debug('$ow0');
+        ow0.values;
         expect(ow0.hasValidValues, true);
+        print(ow0.values);
         expect(ow0.values.length == 1, true);
         expect(ow0.values, equals(uint16List0));
         expect(ow0.vfBytes, equals(bytes));
@@ -1532,8 +1532,6 @@ void main() {
         expect(ow0.values, equals(uint16List0));
 
         final uint16List1 = rng.uint16List(2, 2);
-//       final uint16List2 = new Uint16List.fromList(uint16List1);
-//        final uint8List2 = uint16List2.buffer.asUint8List();
         final bytes1 = new Bytes.typedDataView(uint16List1);
         final ow1 =
             OWtag.fromBytes(PTag.kEdgePointIndexList, bytes1, bytes1.length);

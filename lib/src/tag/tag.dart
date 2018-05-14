@@ -147,11 +147,8 @@ abstract class Tag {
 
   /// Returns the maximum number of values allowed for this [Tag].
   int get maxValues {
-    if (vm.max == -1) {
-      final max = (hasShortVF) ? kMaxShortVF : kMaxLongVF;
-      return max ~/ elementSize;
-    }
-    return vm.max;
+    final max = vm.max;
+    return (max == -1) ? vr.maxLength : vm.max;
   }
 
   int get columns => vm.columns;
@@ -253,10 +250,8 @@ abstract class Tag {
     final length = vList.length;
     if (length == null) return invalidValuesLength(vList, vmMin, vmMax);
     if (isLengthAlwaysValid == true || length == 0) return true;
-    return (length >= minValues &&
-            length <= maxValues &&
-            (length % columns) == 0) &&
-        length <= vr.maxVFLength;
+    return (length >= (minValues * columns)) &&
+        ((maxValues == -1 || length <= maxValues) && (length % columns) == 0);
   }
 
   bool isNotValidLength(Iterable vList, [Issues issues]) =>
@@ -706,22 +701,24 @@ abstract class Tag {
   /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
   /// is used.
-  static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
-      (tag != null && doTestElementValidity && tag.vrIndex == targetVR)
-          ? true
-          : invalidTag(tag, issues, type);
+  static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) {
+    if (!doTestElementValidity) return true;
+    return (tag != null && tag.vrIndex == targetVR)
+        ? true
+        : invalidTag(tag, issues, type);
+  }
 
+  static const kSpecialSSVRs = const [kUSSSIndex, kUSSSOWIndex];
   /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
   /// is used.
   static bool isValidSpecialTag(
       Tag tag, Issues issues, int targetVR, Type type) {
+    if (!doTestElementValidity) return true;
     final vrIndex = tag.vrIndex;
     return (tag != null &&
-            doTestElementValidity &&
             (vrIndex == targetVR ||
-                (vrIndex >= kVRSpecialIndexMin &&
-                    vrIndex <= kVRSpecialIndexMax)))
+                kSpecialSSVRs.contains(vrIndex)))
         ? true
         : invalidTag(tag, issues, type);
   }

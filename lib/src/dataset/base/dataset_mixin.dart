@@ -388,7 +388,7 @@ abstract class DatasetMixin {
   /// Sequences (SQ) contained in _this_ with an empty list.
   /// Returns a List<Element>] of the original [Element.values] that
   /// were updated.
-  List<Element> noValuesAll(int index) {
+  Iterable<Element> noValuesAll(int index) {
     assert(index != null);
     final result = <Element>[]..add(noValues(index));
     for (var e in elements) {

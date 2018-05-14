@@ -144,10 +144,12 @@ abstract class ByteElement<V> {
 
 /// 16-bit signed integer Elements (SS)
 abstract class Int16Mixin {
+  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
   int get valuesLength => Uint16.getLength(vfLength);
+  int get lengthInBytes => valuesLength * sizeInBytes;
 
   Int16List get values => vfBytes.asInt16List();
 
@@ -156,11 +158,12 @@ abstract class Int16Mixin {
 
 /// 32-bit signed integer Elements (SL)
 abstract class Int32Mixin {
+  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
   int get valuesLength => Int32.getLength(vfLength);
-
+  int get lengthInBytes => valuesLength * sizeInBytes;
   Int32List get values => vfBytes.asInt32List();
 
   Int32List get emptyList => kEmptyInt32List;
@@ -168,6 +171,7 @@ abstract class Int32Mixin {
 
 /// 8-bit Integer Elements (OB, UN)
 abstract class Uint8Mixin {
+  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
   int get vfBytesLast;
@@ -177,7 +181,7 @@ abstract class Uint8Mixin {
   int get paddingCharacter => vfBytesLast;
 
   int get valuesLength => Uint8.getLength(vfLength);
-
+  int get lengthInBytes => valuesLength * sizeInBytes;
   Uint8List get values => vfBytes.asUint8List();
 
   Uint8List get emptyList => kEmptyUint8List;
@@ -185,11 +189,12 @@ abstract class Uint8Mixin {
 
 /// 16-bit unsigned integer Elements (US, OW)
 abstract class Uint16Mixin {
+  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
   int get valuesLength => Uint16.getLength(vfLength);
-
+  int get lengthInBytes => valuesLength * sizeInBytes;
   Uint16List get values => vfBytes.asUint16List();
 
   Uint16List get emptyList => kEmptyUint16List;
@@ -197,12 +202,14 @@ abstract class Uint16Mixin {
 
 /// 32-bit unsigned integer Elements (AT, UL, GL, OL)
 abstract class Uint32Mixin {
+  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
   int get length => Float64.getLength(vfLength);
   //Flush when length working
   int get valuesLength => Uint32.getLength(vfLength);
+  int get lengthInBytes => valuesLength * sizeInBytes;
 
   Uint32List get values => vfBytes.asUint32List();
 
@@ -211,12 +218,15 @@ abstract class Uint32Mixin {
 
 /// 32-bit Float Elements (FL, OF)
 abstract class Float32Mixin {
+  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
   int get length => Float32.getLength(vfLength);
   //Flush when length working
   int get valuesLength => Float32.getLength(vfLength);
+
+  int get lengthInBytes => valuesLength * sizeInBytes;
 
   Float32List get values => vfBytes.asFloat32List();
 
@@ -225,13 +235,15 @@ abstract class Float32Mixin {
 
 /// Long Float Elements (FD, OD)
 abstract class Float64Mixin {
+  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
-  int get vfOffset;
 
   int get length => Float64.getLength(vfLength);
   //Flush when length working
   int get valuesLength => Float64.getLength(vfLength);
+
+  int get lengthInBytes => valuesLength * sizeInBytes;
 
   Float64List get values => vfBytes.asFloat64List();
 

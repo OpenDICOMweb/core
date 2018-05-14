@@ -32,7 +32,7 @@ void main() {
 
         log
           ..debug('sl0: $sl0, values: ${sl0.values}')
-          ..debug('sl0: ${sl0.info}');
+          ..debug('sl0: $sl0');
         expect(sl0[0], equals(int32List0[0]));
       }
 
@@ -43,7 +43,7 @@ void main() {
 
         log
           ..debug('sl0: $sl0, values: ${sl0.values}')
-          ..debug('sl0: ${sl0.info}');
+          ..debug('sl0: $sl0');
         expect(sl0[0], equals(int32list1[0]));
       }
     });

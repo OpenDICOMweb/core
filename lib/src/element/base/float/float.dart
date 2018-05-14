@@ -45,24 +45,24 @@ abstract class FL extends Float with Float32 {
   static const int kMaxVFLength = k32BitMaxShortVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
-  /// Returns _true_ if both [tag] and [vList] are valid for [FL].
+  /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<double> vList) {
     if (tag == null) return invalidTag(tag, null, FL);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
-        isValidTag(tag) &&
-        isValidValues(tag, vList);
+           isValidTag(tag) &&
+           isValidValues(tag, vList);
   }
 
-  /// Returns _true_ if both [tag] and [vfBytes] are valid for [FL].
+  /// Returns _true_ if both [tag] and [vfBytes] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, FL);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
-        isValidTag(tag, issues) &&
-        isValidVFLength(vfBytes.length, issues, tag);
+           isValidTag(tag, issues) &&
+           isValidVFLength(vfBytes.length, issues, tag);
   }
 
   /// Returns _true_ if [tag] is valid for [FL].
@@ -73,7 +73,7 @@ abstract class FL extends Float with Float32 {
   /// Returns _true_ if [vrIndex] is valid for [FL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVR(int vrIndex, [Issues issues]) =>
-      VR.isValidIndex(vrIndex, issues, kFLCode);
+      VR.isValidIndex(vrIndex, issues, kFLIndex);
 
   /// Returns _true_ if [vrCode] is valid for [FL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -135,24 +135,24 @@ abstract class OF extends Float with Float32 {
   static const int kMaxVFLength = k32BitMaxLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
-  /// Returns _true_ if both [tag] and [vList] are valid for [OF].
+  /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<double> vList) {
-    if (tag == null) return invalidTag(tag, null, OF);
+    if (tag == null) return invalidTag(tag, null, FL);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
-        isValidTag(tag) &&
-        isValidValues(tag, vList);
+           isValidTag(tag) &&
+           isValidValues(tag, vList);
   }
 
-  /// Returns _true_ if both [tag] and [vfBytes] are valid for [OF].
+  /// Returns _true_ if both [tag] and [vfBytes] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
-    if (tag == null) return invalidTag(tag, null, OF);
+    if (tag == null) return invalidTag(tag, null, FL);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
-        isValidTag(tag, issues) &&
-        isValidVFLength(vfBytes.length, issues, tag);
+           isValidTag(tag, issues) &&
+           isValidVFLength(vfBytes.length, issues, tag);
   }
 
   static bool isValidTag(Tag tag, [Issues issues]) =>
@@ -219,8 +219,8 @@ abstract class FD extends Float with Float64 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<double> vList) {
     if (tag == null) return invalidTag(tag, null, FL);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList);
   }
@@ -229,8 +229,8 @@ abstract class FD extends Float with Float64 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, FL);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -298,17 +298,23 @@ abstract class OD extends Float with Float64 {
 
   /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidArgs(Tag tag, Iterable<double> vList, [Issues issues]) =>
-      vList != null &&
-      (doTestElementValidity ? isValidValues(tag, vList) : true);
+  static bool isValidArgs(Tag tag, Iterable<double> vList) {
+    if (tag == null) return invalidTag(tag, null, FL);
+    if (!doTestElementValidity) return true;
+    return vList != null &&
+           isValidTag(tag) &&
+           isValidValues(tag, vList);
+  }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
-      doTestElementValidity &&
-      isValidTag(tag, issues) &&
-      vfBytes != null &&
-      isValidVFLength(vfBytes.length, issues, tag);
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, FL);
+    if (!doTestElementValidity) return true;
+    return vfBytes != null &&
+           isValidTag(tag, issues) &&
+           isValidVFLength(vfBytes.length, issues, tag);
+  }
 
   static bool isValidTag(Tag tag, [Issues issues]) =>
       Tag.isValidTag(tag, issues, kVRIndex, OD);

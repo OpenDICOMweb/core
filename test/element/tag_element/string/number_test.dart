@@ -16,7 +16,7 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'string/number_test', level: Level.info);
+  Server.initialize(name: 'string/number_test', level: Level.debug);
   global.throwOnError = false;
 
   const goodDecimalStrings = const <String>[
@@ -529,7 +529,7 @@ void main() {
       PTag.kFramePrimaryAngleVector,
     ];
 
-    const otherTags = const <PTag>[
+    const badDSTags = const <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,
@@ -560,7 +560,7 @@ void main() {
       expect(() => DS.isValidTag(PTag.kSelectorFDValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
 
-      for (var tag in otherTags) {
+      for (var tag in badDSTags) {
         global.throwOnError = false;
         final validT0 = DS.isValidTag(tag);
         expect(validT0, false);
@@ -645,7 +645,7 @@ void main() {
       expect(() => DS.isValidVRIndex(kSSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (var tag in badDSTags) {
         global.throwOnError = false;
         expect(DS.isValidVRIndex(tag.vrIndex), false);
 
@@ -672,7 +672,7 @@ void main() {
       expect(() => DS.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
-      for (var tag in otherTags) {
+      for (var tag in badDSTags) {
         global.throwOnError = false;
         expect(DS.isValidVRCode(tag.vrCode), false);
 
@@ -743,12 +743,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(1, 1);
         for (var tag in dsTags0) {
-          expect(DS.isValidVListLength(tag, validMinVList), true);
+          expect(DS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -758,12 +756,12 @@ void main() {
         final validMinVList = rsg.getDSList(2, i + 1);
         for (var tag in dsTags0) {
           global.throwOnError = false;
-          expect(DS.isValidVListLength(tag, validMinVList), false);
+          expect(DS.isValidLength(tag, validMinVList), false);
 
-          expect(DS.isValidVListLength(tag, invalidVList), false);
+          expect(DS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => DS.isValidVListLength(tag, validMinVList),
+          expect(() => DS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -774,12 +772,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(2, 2);
         for (var tag in dsTags1) {
-          expect(DS.isValidVListLength(tag, validMinVList), true);
+          expect(DS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -789,17 +785,17 @@ void main() {
         final validMinVList = rsg.getDSList(3, i + 1);
         for (var tag in dsTags1) {
           global.throwOnError = false;
-          expect(DS.isValidVListLength(tag, validMinVList), false);
+          expect(DS.isValidLength(tag, validMinVList), false);
 
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 1)),
-              false);
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMin - 1)),
-              false);
+          expect(
+              DS.isValidLength(tag, invalidVList.take(tag.vmMax + 1)), false);
+          expect(
+              DS.isValidLength(tag, invalidVList.take(tag.vmMin - 1)), false);
 
-          expect(DS.isValidVListLength(tag, invalidVList), false);
+          expect(DS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => DS.isValidVListLength(tag, validMinVList),
+          expect(() => DS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -809,13 +805,18 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(10, 10);
-        final validMaxLengthList = invalidVList.sublist(0, DS.kMaxLength);
-        for (var tag in dsTags2) {
-          expect(DS.isValidVListLength(tag, validMinVList), true);
+//  Urgent: fix - it must be valid for tag
 
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 3)),
-              true);
-          expect(DS.isValidVListLength(tag, validMaxLengthList), true);
+        for (var tag in dsTags2) {
+          print('tag: $tag');
+          print('max: ${tag.maxValues}');
+          final validMaxLengthList = invalidVList.sublist(0, tag.maxValues);
+
+          print('list: ${validMaxLengthList.length}');
+          expect(DS.isValidLength(tag, validMinVList), true);
+
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax + 3)), true);
+          expect(DS.isValidLength(tag, validMaxLengthList), true);
         }
       }
     });
@@ -825,12 +826,12 @@ void main() {
         final validMinVList = rsg.getDSList(1, 1);
         for (var tag in dsTags2) {
           global.throwOnError = false;
-          expect(DS.isValidVListLength(tag, validMinVList), false);
+          expect(DS.isValidLength(tag, validMinVList), false);
 
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 2)),
-              false);
+          expect(
+              DS.isValidLength(tag, invalidVList.take(tag.vmMax + 2)), false);
           global.throwOnError = true;
-          expect(() => DS.isValidVListLength(tag, validMinVList),
+          expect(() => DS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -841,12 +842,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(3, 3);
         for (var tag in dsTags3) {
-          expect(DS.isValidVListLength(tag, validMinVList), true);
+          expect(DS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -856,16 +855,16 @@ void main() {
         final validMinVList = rsg.getDSList(4, i + 1);
         for (var tag in dsTags3) {
           global.throwOnError = false;
-          expect(DS.isValidVListLength(tag, validMinVList), false);
+          expect(DS.isValidLength(tag, validMinVList), false);
 
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 1)),
-              false);
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMin - 1)),
-              false);
-          expect(DS.isValidVListLength(tag, invalidVList), false);
+          expect(
+              DS.isValidLength(tag, invalidVList.take(tag.vmMax + 1)), false);
+          expect(
+              DS.isValidLength(tag, invalidVList.take(tag.vmMin - 1)), false);
+          expect(DS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => DS.isValidVListLength(tag, validMinVList),
+          expect(() => DS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -876,10 +875,9 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(9, 9);
         for (var tag in dsTags4) {
-          expect(DS.isValidVListLength(tag, validMinVList), true);
+          expect(DS.isValidLength(tag, validMinVList), true);
 
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 4)),
-              true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax + 4)), true);
         }
       }
     });
@@ -889,13 +887,13 @@ void main() {
         final validMinVList = rsg.getDSList(1, 1);
         for (var tag in dsTags4) {
           global.throwOnError = false;
-          expect(DS.isValidVListLength(tag, validMinVList), false);
+          expect(DS.isValidLength(tag, validMinVList), false);
 
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 2)),
-              false);
+          expect(
+              DS.isValidLength(tag, invalidVList.take(tag.vmMax + 2)), false);
 
           global.throwOnError = true;
-          expect(() => DS.isValidVListLength(tag, validMinVList),
+          expect(() => DS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -906,12 +904,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(4, 4);
         for (var tag in dsTags5) {
-          expect(DS.isValidVListLength(tag, validMinVList), true);
+          expect(DS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -921,16 +917,16 @@ void main() {
         final validMinVList = rsg.getDSList(5, i + 1);
         for (var tag in dsTags5) {
           global.throwOnError = false;
-          expect(DS.isValidVListLength(tag, validMinVList), false);
+          expect(DS.isValidLength(tag, validMinVList), false);
 
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 1)),
-              false);
-          expect(DS.isValidVListLength(tag, invalidVList.take(tag.vmMin - 1)),
-              false);
-          expect(DS.isValidVListLength(tag, invalidVList), false);
+          expect(
+              DS.isValidLength(tag, invalidVList.take(tag.vmMax + 1)), false);
+          expect(
+              DS.isValidLength(tag, invalidVList.take(tag.vmMin - 1)), false);
+          expect(DS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => DS.isValidVListLength(tag, validMinVList),
+          expect(() => DS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -941,12 +937,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(6, 6);
         for (var tag in dsTags6) {
-          expect(DS.isValidVListLength(tag, validMinVList), true);
+          expect(DS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              DS.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(DS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -956,12 +950,12 @@ void main() {
         final validMinVList = rsg.getDSList(7, i + 1);
         for (var tag in dsTags6) {
           global.throwOnError = false;
-          expect(DS.isValidVListLength(tag, validMinVList), false);
+          expect(DS.isValidLength(tag, validMinVList), false);
 
-          expect(DS.isValidVListLength(tag, invalidVList), false);
+          expect(DS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => DS.isValidVListLength(tag, validMinVList),
+          expect(() => DS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -974,8 +968,8 @@ void main() {
         final validMaxLengthList = invalidVList.sublist(0, DS.kMaxLength);
         for (var tag in dsTags7) {
           log.debug('tag: $tag');
-          expect(DS.isValidVListLength(tag, validMinVList0), true);
-          expect(DS.isValidVListLength(tag, validMaxLengthList), true);
+          expect(DS.isValidLength(tag, validMinVList0), true);
+          expect(DS.isValidLength(tag, validMaxLengthList), true);
         }
       }
     });
@@ -1694,7 +1688,7 @@ void main() {
     ];
 
     //VM.k2_2n
-    const isTags2 = const <PTag>[
+    const isVM2_2nTags = const <PTag>[
       PTag.kVerticesOfThePolygonalShutter,
       PTag.kVerticesOfThePolygonalCollimator,
       PTag.kVerticesOfTheOutlineOfPupil,
@@ -1898,12 +1892,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getISList(1, 1);
         for (var tag in isTags0) {
-          expect(IS.isValidVListLength(tag, validMinVList), true);
+          expect(IS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              IS.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              IS.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(IS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(IS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -1913,12 +1905,12 @@ void main() {
         final validMinVList = rsg.getISList(2, i + 1);
         for (var tag in isTags0) {
           global.throwOnError = false;
-          expect(IS.isValidVListLength(tag, validMinVList), false);
+          expect(IS.isValidLength(tag, validMinVList), false);
 
-          expect(IS.isValidVListLength(tag, invalidVList), false);
+          expect(IS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => IS.isValidVListLength(tag, validMinVList),
+          expect(() => IS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -1929,12 +1921,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getISList(2, 2);
         for (var tag in isTags1) {
-          expect(IS.isValidVListLength(tag, validMinVList), true);
+          expect(IS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              IS.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              IS.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(IS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(IS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -1944,17 +1934,17 @@ void main() {
         final validMinVList = rsg.getISList(3, i + 1);
         for (var tag in isTags1) {
           global.throwOnError = false;
-          expect(IS.isValidVListLength(tag, validMinVList), false);
+          expect(IS.isValidLength(tag, validMinVList), false);
 
-          expect(IS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 1)),
-              false);
-          expect(IS.isValidVListLength(tag, invalidVList.take(tag.vmMin - 1)),
-              false);
+          expect(
+              IS.isValidLength(tag, invalidVList.take(tag.vmMax + 1)), false);
+          expect(
+              IS.isValidLength(tag, invalidVList.take(tag.vmMin - 1)), false);
 
-          expect(IS.isValidVListLength(tag, invalidVList), false);
+          expect(IS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => IS.isValidVListLength(tag, validMinVList),
+          expect(() => IS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -1964,13 +1954,13 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getISList(10, 10);
-        final validMaxLengthList = invalidVList.sublist(0, IS.kMaxLength);
-        for (var tag in isTags2) {
-          expect(IS.isValidVListLength(tag, validMinVList), true);
+// Urgent: validMaxLengthList must be valid for tag
 
-          expect(IS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 3)),
-              true);
-          expect(IS.isValidVListLength(tag, validMaxLengthList), true);
+        for (var tag in isVM2_2nTags) {
+          final validMaxLengthList = invalidVList.sublist(0, tag.maxValues);
+          expect(IS.isValidLength(tag, validMinVList), true);
+          expect(IS.isValidLength(tag, invalidVList.take(tag.vmMax + 3)), true);
+          expect(IS.isValidLength(tag, validMaxLengthList), true);
         }
       }
     });
@@ -1978,14 +1968,14 @@ void main() {
     test('IS isValidVListLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getISList(1, 1);
-        for (var tag in isTags2) {
+        for (var tag in isVM2_2nTags) {
           global.throwOnError = false;
-          expect(IS.isValidVListLength(tag, validMinVList), false);
+          expect(IS.isValidLength(tag, validMinVList), false);
 
-          expect(IS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 2)),
-              false);
+          expect(
+              IS.isValidLength(tag, invalidVList.take(tag.vmMax + 2)), false);
           global.throwOnError = true;
-          expect(() => IS.isValidVListLength(tag, validMinVList),
+          expect(() => IS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -1996,12 +1986,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getISList(3, 3);
         for (var tag in isTags3) {
-          expect(IS.isValidVListLength(tag, validMinVList), true);
+          expect(IS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              IS.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              IS.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(IS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(IS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -2011,16 +1999,16 @@ void main() {
         final validMinVList = rsg.getISList(4, i + 1);
         for (var tag in isTags3) {
           global.throwOnError = false;
-          expect(IS.isValidVListLength(tag, validMinVList), false);
+          expect(IS.isValidLength(tag, validMinVList), false);
 
-          expect(IS.isValidVListLength(tag, invalidVList.take(tag.vmMax + 1)),
-              false);
-          expect(IS.isValidVListLength(tag, invalidVList.take(tag.vmMin - 1)),
-              false);
-          expect(IS.isValidVListLength(tag, invalidVList), false);
+          expect(
+              IS.isValidLength(tag, invalidVList.take(tag.vmMax + 1)), false);
+          expect(
+              IS.isValidLength(tag, invalidVList.take(tag.vmMin - 1)), false);
+          expect(IS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => IS.isValidVListLength(tag, validMinVList),
+          expect(() => IS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -2033,8 +2021,8 @@ void main() {
         final validMaxLengthList = invalidVList.sublist(0, IS.kMaxLength);
         for (var tag in isTags4) {
           log.debug('tag: $tag');
-          expect(IS.isValidVListLength(tag, validMinVList0), true);
-          expect(IS.isValidVListLength(tag, validMaxLengthList), true);
+          expect(IS.isValidLength(tag, validMinVList0), true);
+          expect(IS.isValidLength(tag, validMaxLengthList), true);
         }
       }
     });

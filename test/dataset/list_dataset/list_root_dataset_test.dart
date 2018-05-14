@@ -88,6 +88,7 @@ void main() {
     });
 
     test('duplicate', () {
+      global.doTestElementValidity = false;
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);

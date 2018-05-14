@@ -102,6 +102,10 @@ abstract class ElementBase<V> {
   /// Returns the Value Representation (VR) integer code [vrCode] for _this_.
   int get vrCode => vrCodeByIndex[vrIndex];
 
+  /// The length in bytes of [values].
+  int get lengthInBytes;
+
+
   /// Returns a copy of _this_ with [values] replaced by [vList].
   ElementBase<V> update([Iterable<V> vList]);
   // **** end Interface
@@ -175,9 +179,6 @@ abstract class ElementBase<V> {
 
   /// The [vrCode] as a hexadecimal [String].
   String get vrHex => '0x${hex16(vrCode)}';
-
-  /// The number of bytes in one value.
-  int get sizeInBytes => vr.sizeInBytes;
 
   /// The maximum Value Field length in bytes for this ElementBase.
   int get maxVFLength => vr.maxVFLength;
@@ -258,9 +259,6 @@ abstract class ElementBase<V> {
   }
 
   set length(int n) => throw new UnsupportedError('Elements are immutable');
-
-  /// The length in bytes of [values].
-  int get lengthInBytes => values.length * sizeInBytes;
 
   /// Returns a single value from a [List] with [length] == 1.
   V get value {

@@ -64,7 +64,7 @@ abstract class MapDataset {
   Element removeAt(int index, {bool required = false}) => eMap.remove(index);
 
   /// Returns the [Element]s in _this_ as a [List<Element>]
-  List<Element> toList({bool growable: true}) =>
+  List<Element> toList({bool growable: false}) =>
       elements.toList(growable: false);
 
   @override

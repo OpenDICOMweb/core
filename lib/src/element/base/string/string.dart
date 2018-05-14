@@ -47,8 +47,6 @@ abstract class StringBase extends Element<String> {
   StringBase get sha256 => update(Sha256.stringList(values));
 
   // **** Getters related to the [sizeInBytes].
-  @override
-  int get sizeInBytes => kSizeInBytes;
 
   @override
   int get vfLength {
@@ -56,6 +54,9 @@ abstract class StringBase extends Element<String> {
     final v = values;
     return (v.isEmpty) ? 0 : joinLength(v);
   }
+
+  @override
+  int get lengthInBytes => vfLength;
 
   /// The _canonical_ empty [values] value for Floating Point Elements.
   @override

@@ -68,12 +68,20 @@ abstract class SS extends IntBase with Int16 {
         isValidVFLength(vfBytes.length, issues, tag);
   }
 
+  static const List<int> kSpecialSSVRs = const [kUSSSIndex, kUSSSOWIndex];
+
   /// Returns _true_ if [tag] is valid for [SS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [SS] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
-  static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidSpecialTag(tag, issues, kSSIndex, SS);
+  static bool isValidTag(Tag tag, [Issues issues]) {
+    if (!doTestElementValidity) return true;
+    final vrIndex = tag.vrIndex;
+    return (tag != null &&
+            (vrIndex == kSSIndex || kSpecialSSVRs.contains(vrIndex)))
+        ? true
+        : invalidTag(tag, issues, SS);
+  }
 
   /// Returns _true_ if [vrIndex] is valid for [SS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -259,7 +267,7 @@ abstract class OB extends IntBase with OBMixin, Uint8 {
   // [kOBOWIndex] and [kUOBSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
       [Issues issues]) {
-    if (tag == null) return invalidTag(tag, null, SS);
+    if (tag == null) return invalidTag(tag, null, OB);
     return vfBytes != null &&
         doTestElementValidity &&
         isValidTag(tag, issues) &&
@@ -270,8 +278,13 @@ abstract class OB extends IntBase with OBMixin, Uint8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OB] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ Tag.isValidSpecialTag] is used.
-  static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidSpecialTag(tag, issues, kOBIndex, OB);
+  static bool isValidTag(Tag tag, [Issues issues]) {
+    if (!doTestElementValidity) return true;
+    final vrIndex = tag.vrIndex;
+    return (tag != null && (vrIndex == kOBIndex || vrIndex == kOBOWIndex))
+        ? true
+        : invalidTag(tag, issues, OB);
+  }
 
   /// Returns _true_ if [vrIndex] is valid for [OB].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -370,7 +383,7 @@ abstract class UN extends IntBase with Uint8 {
   // _Note_: UN includes special VRs.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
       [Issues issues]) {
-    if (tag == null) return invalidTag(tag, null, SS);
+    if (tag == null) return invalidTag(tag, null, UN);
     return vfBytes != null &&
         doTestElementValidity &&
         isValidTag(tag, issues) &&
@@ -467,12 +480,22 @@ abstract class US extends IntBase with Uint16 {
         isValidVFLength(vfBytes.length, issues, tag);
   }
 
+  static const List<int> kSpecialUSVRs = const [
+    kUSSSIndex, kUSSSOWIndex, kUSOWIndex // No reformat
+  ];
+
   /// Returns _true_ if [tag] is valid for [US].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  // _Note_: Some [Tag]s have _Special VR_s that include [US] VRs, such as
+  // _Note_: Some [Tag]s have _Special VR_s that include [SS] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
-  static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidSpecialTag(tag, issues, kUSIndex, US);
+  static bool isValidTag(Tag tag, [Issues issues]) {
+    if (!doTestElementValidity) return true;
+    final vrIndex = tag.vrIndex;
+    return (tag != null &&
+            (vrIndex == kUSIndex || kSpecialUSVRs.contains(vrIndex)))
+        ? true
+        : invalidTag(tag, issues, US);
+  }
 
   /// Returns _true_ if [vrIndex] is valid for [US].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -571,19 +594,29 @@ abstract class OW extends IntBase with Uint16 {
   // [kOBOWIndex] and [kUOBSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
       [Issues issues]) {
-    if (tag == null) return invalidTag(tag, null, SS);
+    if (tag == null) return invalidTag(tag, null, OW);
     return vfBytes != null &&
         doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, vfLengthField, issues, tag);
   }
 
+  static const List<int> kSpecialOWVRs = const [
+    kOBOWIndex, kUSSSOWIndex, kUSOWIndex // No reformat
+  ];
+
   /// Returns _true_ if [tag] is valid for [OW].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OW] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ Tag.isValidSpecialTag] is used.
-  static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidSpecialTag(tag, issues, kOWIndex, OW);
+  static bool isValidTag(Tag tag, [Issues issues]) {
+    if (!doTestElementValidity) return true;
+    final vrIndex = tag.vrIndex;
+    return (tag != null &&
+            (vrIndex == kOWIndex || kSpecialOWVRs.contains(vrIndex)))
+           ? true
+           : invalidTag(tag, issues, US);
+  }
 
   /// Returns _true_ if [vrIndex] is valid for [OW].
   /// If [doTestElementValidity] is _false_ then no checking is done.

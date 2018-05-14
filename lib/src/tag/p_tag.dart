@@ -17349,15 +17349,19 @@ class PTag extends Tag {
       'PixelData', 0x7FE00010, 'Pixel Data', kOBOWIndex, VM.k1, false);
 
 /*
-  static const PTag kPixelDataOB =
-      const PTag._('PixelData', 0x7FE00010, 'Pixel Data', kOBIndex, VM.k1, false);
+  static const PTag kPixelDataOB = const PTag._(
+      'PixelData', 0x7FE00010, 'Pixel Data', kOBIndex, VM.k1, false);
 
-  static const PTag kPixelDataOW =
-      const PTag._('PixelData', 0x7FE00010, 'Pixel Data', kOWIndex, VM.k1, false);
+  static const PTag kPixelDataOW = const PTag._(
+      'PixelData', 0x7FE00010, 'Pixel Data', kOWIndex, VM.k1, false);
 
-  static const PTag kPixelDataUN =
-      const PTag._('PixelData', 0x7FE00010, 'Pixel Data', kOBOWIndex, VM.k1, false);
+  static const PTag kPixelDataUN = const PTag._(
+      'PixelData', 0x7FE00010, 'Pixel Data', kOBOWIndex, VM.k1, false);
 */
+
+  static const PTag kPixelDataOB = PixelDataTag.kPixelDataOB;
+  static const PTag kPixelDataOW = PixelDataTag.kPixelDataOW;
+  static const PTag kPixelDataUN = PixelDataTag.kPixelDataUN;
 
   static const PTag kCoefficientsSDVN
       //(7FE0,0020)
@@ -17726,4 +17730,17 @@ class PTagInvalidVR extends Tag {
 
   @override
   String toString() => '*Invalid VR for $tag';
+}
+
+class PixelDataTag extends PTag {
+  @override
+  final int vrIndex;
+  const PixelDataTag._(this.vrIndex)
+      : super._('PixelData', 0x7FE00010, 'Pixel Data', vrIndex, VM.k1, false);
+
+  static const PTag kPixelDataOB = const PixelDataTag._(kOBIndex);
+
+  static const PTag kPixelDataOW = const PixelDataTag._(kOWIndex);
+
+  static const PTag kPixelDataUN = const PixelDataTag._(kUNIndex);
 }

@@ -79,7 +79,7 @@ abstract class LT extends Text {
   static const int kVRCode = kLTCode;
   static const String kVRKeyword = 'LT';
   static const String kVRName = 'Long Text';
-  static const int kMaxVFLength = kMaxShortVF;
+  static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMaxLength = 1;
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 10240;
@@ -218,7 +218,7 @@ abstract class ST extends Text {
   static const int kVRCode = kSTCode;
   static const String kVRKeyword = 'ST';
   static const String kVRName = 'Short Text';
-  static const int kMaxVFLength = kMaxShortVF;
+  static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMaxLength = 1;
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 1024;
@@ -366,7 +366,7 @@ abstract class UR extends Text {
   static const String kVRKeyword = 'UR';
   static const String kVRName =
       'Universal Resource Identifier or Universal Resource Locator (URI/URL)';
-  static const int kMaxVFLength = kMaxShortVF;
+  static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMaxLength = 1;
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = kMaxLongVF;

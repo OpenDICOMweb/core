@@ -381,16 +381,16 @@ void main() {
 
     test('FL make bad values', () {
       for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float32List(2, 2);
+        final vList = rng.float32List(2, 2);
         global.throwOnError = false;
-        final make0 =
-            FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, floatList0);
-        expect(make0, isNull);
+        final e =
+            FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, vList);
+        expect(e, isNull);
 
         global.throwOnError = true;
         expect(
             () =>
-                FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, floatList0),
+                FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, vList),
             throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });

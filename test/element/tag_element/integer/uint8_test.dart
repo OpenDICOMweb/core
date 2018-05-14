@@ -31,13 +31,13 @@ void main() {
             new OBtag(PTag.kPrivateInformation, uInt8List0, uInt8List0.length);
         final ob1 =
             new OBtag(PTag.kPrivateInformation, uInt8List0, uInt8List0.length);
-        log.debug('ob0: ${ob0.info}');
+        log.debug('ob0: $ob0');
         expect(ob0.hasValidValues, true);
         expect(ob1.hasValidValues, true);
 
         log
           ..debug('ob0: $ob0, values: ${ob0.values}')
-          ..debug('ob0: ${ob0.info}');
+          ..debug('ob0: $ob0');
         expect(ob0[0], equals(uInt8List0[0]));
       }
 
@@ -69,7 +69,7 @@ void main() {
       global.throwOnError = false;
       final ob4 = new OBtag(PTag.kICCProfile, <int>[], 0);
       expect(ob4.hasValidValues, true);
-      log.debug('ob0:${ob0.info}');
+      log.debug('ob0:$ob0');
       expect(ob4.values, equals(<int>[]));
     });
 
@@ -276,7 +276,7 @@ void main() {
         final bytes0 = DicomBytes.fromAscii(intList0.toString());
         final ob0 =
             OBtag.fromBytes(PTag.kSelectorOBValue, bytes0, kUndefinedLength);
-        log.debug('ob0: ${ob0.info}');
+        log.debug('ob0: $ob0');
         expect(ob0.hasValidValues, true);
       }
     });
