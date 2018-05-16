@@ -334,7 +334,7 @@ class OWtag extends OW with TagElement<int> {
     if (!OWPixelData.isValidArgs(tag, vList)) return badValues(vList, null, tag);
     final v = Uint16.fromList(vList);
     return (tag.code == kPixelData)
-        ? new OWtagPixelData(tag, v, vlf, ts)
+        ? new OWtagPixelData._(tag, v, vlf, ts)
         : new OWtag._x(tag, v, vlf);
   }
 

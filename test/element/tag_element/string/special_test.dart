@@ -563,10 +563,11 @@ void main() {
         }
       }
       expect(AE.isValidValueLength('&t&wSB)~PIA!UIDX'), true);
-      expect(AE.isValidValueLength(''), false);
+      expect(AE.isValidValueLength(''), true);
     });
 
     test('AE isValidValueLength bad values', () {
+      global.throwOnError = false;
       for (var s in badAELengthList) {
         expect(AE.isValidValueLength(s), false);
       }
@@ -586,6 +587,7 @@ void main() {
     });
 
     test('AE isNotValidValueLength bad values', () {
+      global.throwOnError = false;
       for (var s in badAELengthList) {
         expect(AE.isValidValueLength(s), false);
       }
@@ -1374,6 +1376,8 @@ void main() {
     });
 
     test('CS.isValidValueLength', () {
+      global.throwOnError = false;
+
       for (var s in goodCSList) {
         for (var a in s) {
           expect(CS.isValidValueLength(a), true);
@@ -1393,6 +1397,8 @@ void main() {
     });
 
     test('CS.isNotValidValueLength', () {
+      global.throwOnError = false;
+
       for (var s in goodCSList) {
         for (var a in s) {
           expect(CS.isValidValueLength(a), true);
@@ -1493,8 +1499,10 @@ void main() {
           global.throwOnError = false;
           expect(CS.isValidLength(tag, validMinVList), false);
 
+          final max = tag.vm.max(tag.vr.maxLength);
+          final list = invalidVList.take(max + 2);
           expect(
-              CS.isValidLength(tag, invalidVList.take(tag.vmMax + 2)), false);
+              CS.isValidLength(tag, list), false);
           global.throwOnError = true;
           expect(() => CS.isValidLength(tag, validMinVList),
               throwsA(const isInstanceOf<InvalidValuesError>()));
@@ -1755,7 +1763,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => new UItag(PTag.kStudyInstanceUID, s),
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
 
       global.throwOnError = false;
@@ -1833,7 +1841,7 @@ void main() {
         final ui2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
         final vList3 = rsg.getAEList(3, 4);
         expect(() => ui2.update(vList3),
-            throwsA(const isInstanceOf<String>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
 
       global.throwOnError = true;
@@ -1841,7 +1849,7 @@ void main() {
       final ui2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
       final vList3 = ['3.2.840.10008.1.2.0'];
       expect(() => ui2.update(vList3),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const isInstanceOf<StringError>()));
     });
 
     test('UI noValues random', () {
@@ -2480,7 +2488,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => UI.isValidValues(PTag.kInstanceCreatorUID, s),
-              throwsA(const isInstanceOf<InvalidValuesError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
@@ -2593,7 +2601,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => new URtag(PTag.kRetrieveURI, s),
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
 
       global.throwOnError = false;

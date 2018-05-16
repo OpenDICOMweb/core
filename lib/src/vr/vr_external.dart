@@ -285,8 +285,10 @@ abstract class VRString extends VR<String> {
       : super._(index, id, code, vlfSize, maxVFLength);
 
   int get sizeInBytes => 1;
+
+  // Plus one is for backslash
   @override
-  int get maxLength => maxVFLength ~/ ((minVLength < 5) ? 5 : minVLength);
+  int get maxLength => maxVFLength ~/ (minVLength + 1);
 
   int minLengthInBytes(int vmMin) => vmMin * sizeInBytes;
   int maxLengthInBytes(int vmMax) => vmMax * sizeInBytes;
@@ -306,9 +308,6 @@ class VRAscii extends VRString {
 
   @override
   bool get isLengthAlwaysValid => false;
-
-  @override
-  int get maxLength => maxVFLength ~/ ((minVLength < 5) ? 5 : minVLength);
 
   @override
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) {

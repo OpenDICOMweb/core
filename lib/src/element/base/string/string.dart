@@ -125,6 +125,7 @@ abstract class StringBase extends Element<String> {
   static bool isValidValueLength(
       String s, Issues issues, int minLength, int maxLength) {
     if (s == null) return nullValueError('"$s"');
+    if (s.isEmpty) return true;
     final length = s.length;
     if (length < minLength || length > maxLength) {
       if (issues != null) {

@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:convert' as cvt;
+import 'dart:convert';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
@@ -405,7 +405,7 @@ void main() {
     const badLongString = 'fr<(Kf_dt&wSB)~P_hYZI`r[12Der)*sldfjelr#er@1!`, '
         '{qw{retyt}dddd123qw{retyt}dddd123';
     const badLOLengthList = const <String>[
-      '',
+  //    '',
       'fr<(Kf_dt&wSB)~P_hYZI`r[12Der)*sldfjelr#er@1!`, {qw{retyt}dddd123',
       badLongString
     ];
@@ -639,6 +639,7 @@ void main() {
     });
 
     test('LO isValidValueLength bad values', () {
+      global.throwOnError = false;
       for (var s in badLOLengthList) {
         expect(LO.isValidValueLength(s), false);
       }
@@ -647,7 +648,7 @@ void main() {
           LO.isValidValueLength('&t&wSB)~PIA!UIDX }d!zD2N3 2fz={@^mHL:/"qzD2N3 '
               '2fzLzgGEH6bTY&N}JzD2N3 2fz'),
           false);
-      expect(LO.isValidValueLength(''), false);
+      expect(LO.isValidValueLength(''), true);
     });
 
     test('LO isNotValidValueLength good values', () {
@@ -659,6 +660,7 @@ void main() {
     });
 
     test('LO isNotValidValueLength bad values', () {
+      global.throwOnError = false;
       for (var s in badLOLengthList) {
         expect(LO.isValidValueLength(s), false);
       }
@@ -766,7 +768,7 @@ void main() {
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
+      final values = ascii.encode(vList1[0]);
       expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
@@ -809,7 +811,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
+        final values = ascii.encode(vList0[0]);
         final tbd0 = Bytes.fromUtf8List(vList0);
         final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -818,7 +820,7 @@ void main() {
       }
       for (var s in goodLOList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
+          final values = ascii.encode(a);
           final tbd2 = Bytes.fromUtf8List(s);
           final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -1543,11 +1545,11 @@ void main() {
     test('LT toUint8List', () {
       final vList1 = rsg.getLTList(1, 1);
       log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
-      /* final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
+      /* final val = ascii.encode('s6V&:;s%?Q1g5v');
         expect(Bytes.fromUtf8List(['s6V&:;s%?Q1g5v']), equals(val));*/
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
+      final values = ascii.encode(vList1[0]);
       expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
@@ -1586,7 +1588,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
         global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
+        final values = ascii.encode(vList0[0]);
         final tbd0 = Bytes.fromUtf8List(vList0);
         final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -1595,7 +1597,7 @@ void main() {
       }
       for (var s in goodLTList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
+          final values = ascii.encode(a);
           final tbd2 = Bytes.fromUtf8List(s);
           final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -1607,16 +1609,18 @@ void main() {
     test('LT fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
+        final s0 = vList0[0];
         global.throwOnError = false;
-        final bd0 = Bytes.fromUtf8List(vList0);
-        final fbd0 = bd0.getUtf8List();
-        log.debug('fbd0: $fbd0, vList0: $vList0');
-        expect(fbd0, equals(vList0));
+        final bytes0 = Bytes.fromUtf8(s0);
+        final s1 = bytes0.getUtf8();
+        log.debug('s1: $s1, s0: $s0');
+        expect(s1, equals(s0));
       }
-      for (var s in goodLTList) {
-        final bd0 = Bytes.fromUtf8List(s);
-        final fbd0 = bd0.getUtf8List();
-        expect(fbd0, equals(s));
+      for (var vList1 in goodLTList) {
+        final s0 = vList1[0];
+        final bytes1 = Bytes.fromUtf8(s0);
+        final s1 = bytes1.getUtf8();
+        expect(s1, equals(s0));
       }
     });
 
@@ -2238,7 +2242,7 @@ void main() {
     });
 
     test('PN isValidValueLength bad values', () {
-      expect(PN.isValidValueLength(''), false);
+      expect(PN.isValidValueLength(''), true);
     });
 
     test('PN isNotValidValueLength', () {
@@ -2248,7 +2252,7 @@ void main() {
         }
       }
 
-      expect(PN.isValidValueLength(''), false);
+      expect(PN.isValidValueLength(''), true);
     });
 
     test('PN isValidValue good values', () {
@@ -2338,7 +2342,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
         global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
+        final values = ascii.encode(vList0[0]);
         final tbd0 = Bytes.fromUtf8List(vList0);
         final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -2347,7 +2351,7 @@ void main() {
       }
       for (var s in goodPNList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
+          final values = ascii.encode(a);
           final tbd2 = Bytes.fromUtf8List(s);
           final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -2386,7 +2390,7 @@ void main() {
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
+      final values = ascii.encode(vList1[0]);
       expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
@@ -3027,7 +3031,7 @@ void main() {
     });
 
     test('SH isValidValueLength good values', () {
-      expect(SH.isValidValueLength(''), false);
+      expect(SH.isValidValueLength(''), true);
     });
 
     test('SH isNotValidValueLength good values', () {
@@ -3039,7 +3043,7 @@ void main() {
     });
 
     test('SH isNotValidValueLength bad values', () {
-      expect(SH.isValidValueLength(''), false);
+      expect(SH.isValidValueLength(''), true);
     });
 
     test('SH isValidLength VM.k1 good values', () {
@@ -3130,7 +3134,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
         global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
+        final values = ascii.encode(vList0[0]);
         final tbd0 = Bytes.fromUtf8List(vList0);
         final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -3139,7 +3143,7 @@ void main() {
       }
       for (var s in goodSHList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
+          final values = ascii.encode(a);
           final tbd2 = Bytes.fromUtf8List(s);
           final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -3177,7 +3181,7 @@ void main() {
       log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
+      final values = ascii.encode(vList1[0]);
       expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
@@ -3600,17 +3604,18 @@ void main() {
       }
     });
 
-    test('ST decodeBinaryTextVF', () {
+    test('ST fromUtf8', () {
       for (var i = 1; i < 10; i++) {
-        final vList1 = rsg.getSTList(1, 1);
-        final bytes = Bytes.fromUtf8List(vList1);
-        final dbTxt0 = bytes.getUtf8List();
-        log.debug('dbTxt0: $dbTxt0');
-        expect(dbTxt0, equals(vList1));
+        final vList = rsg.getSTList(1, 1);
+        final s0 = vList[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        log.debug('s1: $s1');
+        expect(s1, equals(s0));
 
-        final dbTxt1 = bytes.getUtf8List();
-        log.debug('dbTxt1: $dbTxt1');
-        expect(dbTxt1, equals(vList1));
+        final s2 = bytes.getUtf8();
+        log.debug('s2: $s2');
+        expect(s2, equals(s1));
       }
     });
   });
@@ -3922,7 +3927,7 @@ test('ST isValidVRIndex good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
         global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
+        final values = ascii.encode(vList0[0]);
         final tbd0 = Bytes.fromUtf8List(vList0);
         final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -3931,7 +3936,7 @@ test('ST isValidVRIndex good values', () {
       }
       for (var s in goodSTList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
+          final values = ascii.encode(a);
           final tbd2 = Bytes.fromUtf8List(s);
           final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -3940,37 +3945,41 @@ test('ST isValidVRIndex good values', () {
       }
     });
 
-    test('ST fromByteData', () {
+    test('ST fromBytes', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        global.throwOnError = false;
-        final bd0 = Bytes.fromUtf8List(vList0);
-        final fbd0 = bd0.getUtf8List();
-        log.debug('fbd0: $fbd0, vList0: $vList0');
-        expect(fbd0, equals(vList0));
+        final s0 = vList0[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        log.debug('s1: $s1, s0: $s0');
+        expect(s1, equals(s0));
       }
-      for (var s in goodSTList) {
-        final bd0 = Bytes.fromUtf8List(s);
-        final fbd0 = bd0.getUtf8List();
-        expect(fbd0, equals(s));
+      for (var vList1 in goodSTList) {
+        final s0 = vList1[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        expect(s1, equals(s0));
       }
     });
 
     test('ST fromBytes', () {
-      //  system.level = Level.info;;
-      final vList1 = rsg.getSTList(1, 1);
-      final bytes = Bytes.fromUtf8List(vList1);
+      final vList = rsg.getSTList(1, 1);
+      final s0 = vList[0];
+      final bytes = Bytes.fromUtf8(s0);
       log.debug('ST.fromBytes(bytes):  $bytes');
-      expect(bytes.getUtf8List(), equals(vList1));
+      expect(bytes.getUtf8(), equals(s0));
     });
 
-    test('ST toUint8List', () {
-      final vList1 = rsg.getSTList(1, 1);
-      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
-      if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
-      log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
-      expect(Bytes.fromUtf8List(vList1), equals(values));
+    test('ST fromUtf8', () {
+      final vList = rsg.getSTList(1, 1);
+      var s0 = vList[0];
+      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8(s0)}');
+//      if (s0.length.isOdd) s0 = '$s0 ';
+      log.debug('s0:"$s0"');
+      final bytes = utf8.encode(vList[0]);
+      expect(Bytes.fromUtf8(s0), equals(bytes));
     });
 
     test('ST toBytes', () {
@@ -4576,7 +4585,7 @@ test('ST isValidVRIndex good values', () {
     });
 
     test('UC isValidValueLength bad values', () {
-      expect(UC.isValidValueLength(''), false);
+      expect(UC.isValidValueLength(''), true);
     });
 
     test('UC isNotValidValueLength good values', () {
@@ -4588,7 +4597,7 @@ test('ST isValidVRIndex good values', () {
     });
 
     test('UC isNotValidValueLength bad values', () {
-      expect(UC.isValidValueLength(''), false);
+      expect(UC.isValidValueLength(''), true);
     });
 
     test('UC isValidLength VM.k1 good values', () {
@@ -4676,7 +4685,7 @@ test('ST isValidVRIndex good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
         global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
+        final values = ascii.encode(vList0[0]);
         final tbd0 = Bytes.fromUtf8List(vList0);
         final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -4685,7 +4694,7 @@ test('ST isValidVRIndex good values', () {
       }
       for (var s in goodUCList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
+          final values = ascii.encode(a);
           final tbd2 = Bytes.fromUtf8List(s);
           final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -4724,7 +4733,7 @@ test('ST isValidVRIndex good values', () {
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
+      final values = ascii.encode(vList1[0]);
       expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
@@ -5129,17 +5138,18 @@ test('ST isValidVRIndex good values', () {
       }
     });
 
-    test('UT decodeBinaryTextVF', () {
+    test('UT text from bytes', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 1);
-        final bytes = Bytes.fromUtf8List(vList1);
-        final dbTxt0 = bytes.getUtf8List();
-        log.debug('dbTxt0: $dbTxt0');
-        expect(dbTxt0, equals(vList1));
+        final s0 = vList1[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        log.debug('s1: $s1');
+        expect(s1, equals(s0));
 
-        final dbTxt1 = bytes.getUtf8List();
-        log.debug('dbTxt1: $dbTxt1');
-        expect(dbTxt1, equals(vList1));
+        final s2 = bytes.getUtf8();
+        log.debug('s2: $s2');
+        expect(s2, equals(s1));
       }
     });
   });
@@ -5403,7 +5413,7 @@ test('ST isValidVRIndex good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
+        final values = ascii.encode(vList0[0]);
         final tbd0 = Bytes.fromUtf8List(vList0);
         final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -5412,7 +5422,7 @@ test('ST isValidVRIndex good values', () {
       }
       for (var s in goodUTList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
+          final values = ascii.encode(a);
           final tbd2 = Bytes.fromUtf8List(s);
           final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -5425,24 +5435,26 @@ test('ST isValidVRIndex good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         global.throwOnError = false;
-        final bd0 = Bytes.fromUtf8List(vList0);
-        final fbd0 = bd0.getUtf8List();
-        log.debug('fbd0: $fbd0, vList0: $vList0');
-        expect(fbd0, equals(vList0));
+        final s0 = vList0[0];
+        final bd0 = Bytes.fromUtf8(s0);
+        final s1 = bd0.getUtf8();
+        log.debug('fbd0: $s1, vList0: $vList0');
+        expect(s1, equals(s0));
       }
-      for (var s in goodUTList) {
-        final bd0 = Bytes.fromUtf8List(s);
-        final fbd0 = bd0.getUtf8List();
-        expect(fbd0, equals(s));
+      for (var sList in goodUTList) {
+        final s0 = sList[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        expect(s1, equals(s0));
       }
     });
 
     test('UT fromBytes', () {
-      //  system.level = Level.info;;
-      final vList1 = rsg.getUTList(1, 1);
-      final bytes = Bytes.fromUtf8List(vList1);
+      final vList = rsg.getUTList(1, 1);
+      final s = vList[0];
+      final bytes = Bytes.fromUtf8(s);
       log.debug('UT.fromBytes(bytes):  $bytes');
-      expect(bytes.getUtf8List(), equals(vList1));
+      expect(bytes.getUtf8(), equals(s));
     });
 
     test('UT toUint8List', () {
@@ -5450,7 +5462,7 @@ test('ST isValidVRIndex good values', () {
       log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
+      final values = ascii.encode(vList1[0]);
       expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 

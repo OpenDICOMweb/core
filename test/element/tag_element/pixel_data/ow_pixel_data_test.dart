@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:convert' as cvt;
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -20,7 +20,7 @@ final Bytes u16Frame = new Bytes.fromList(testFrame);
 
 // Urgent Sharath: Talk to Jim about base64 tests to decide if they are needed.
 void main() {
-  Server.initialize(name: 'element/ow_pixel_data_test', level: Level.info);
+  Server.initialize(name: 'element/ow_pixel_data_test', level: Level.debug);
   group('OW PixelData Tests', () {
     final pixels0 = new Uint16List(1024);
     for (var i = 0; i < pixels0.length; i++) pixels0[i] = 4095;
@@ -29,8 +29,12 @@ void main() {
 //    final bytes1 = pixels1.buffer.asUint8List();
     final bytes1 = new Bytes.typedDataView(pixels1);
 
-    final pixels2 = new Uint16List.fromList([1024, 1024]);
-    for (var i = 0; i < pixels2.length; i++) pixels1[i] = 4095;
+    //Urgent: why is this being done?
+//    final pixels2 = new Uint16List.fromList([1024, 1024]);
+//    for (var i = 0; i < pixels2.length; i++) pixels1[i] = 4095;
+
+    //Urgent: why not like this?
+    final pixels2 = new Uint16List.fromList([4095, 4095]);
     final bytes2 = new Bytes.typedDataView(pixels2);
 
 /* Urgent Sharath: flush if not used
@@ -233,7 +237,7 @@ void main() {
 
 /*
     test('Create OWtagPixelData.fromBase64', () {
-      final base64 = cvt.base64.encode(u8Frame);
+      final base64 = base64.encode(u8Frame);
       final ow0 =
           OWtagPixelData.fromBase64(PTag.kPixelDataOW, base64, base64.length);
       final ow1 = OWtagPixelData.fromBase64(
@@ -273,7 +277,7 @@ void main() {
 
 /*
     test('Create OWtagPixelData.fromBase64 hashCode and ==', () {
-      final base64 = cvt.base64.encode(u8Frame);
+      final base64 = base64.encode(u8Frame);
       final ow0 =
           OWtagPixelData.fromBase64(PTag.kPixelDataOW, base64, base64.length);
       final ow1 =
@@ -421,7 +425,7 @@ void main() {
 
 /*
     test('creat OWtagPixelData.fromBase64', () {
-      final base64 = cvt.base64.encode(u8Frame);
+      final base64 = base64.encode(u8Frame);
       final ow0 =
           OWtagPixelData.fromBase64(PTag.kPixelDataOW, base64, base64.length);
       final ow1 = OWtagPixelData.fromBase64(
@@ -459,7 +463,7 @@ void main() {
 
 /*
     test('creat OWtagPixelData.fromBase64 hashCode and ==', () {
-      final base64 = cvt.base64.encode(u8Frame);
+      final base64 = base64.encode(u8Frame);
       final ow0 =
           OWtagPixelData.fromBase64(PTag.kPixelDataOW, base64, base64.length);
 
@@ -606,25 +610,25 @@ void main() {
 
     test('Create Uint16Base.listToBase64', () {
       //  system.level = Level.info;;
-      final frame0 = [1, 2, 3];
-      final bdFrame0 = new Uint16List.fromList(frame0);
-      log..debug('frame:$frame0')..debug('bdFrame: $bdFrame0');
-      final bdU8 = bdFrame0.buffer.asUint8List();
-      final b640 = cvt.base64.encode(bdU8);
-      final b64Pixels0 = Uint16.toBase64(bdFrame0);
-      log..debug('  b640: $b640')..debug('frame0: $bdFrame0');
-      expect(b64Pixels0, equals(b640));
-      final owPixels0 = Uint16.fromBase64(b64Pixels0);
-      log.debug('owPixels0: $owPixels0');
-      expect(owPixels0, equals(frame0));
+      final baseFrame = [1, 2, 3];
+      final frame0 = new Uint16List.fromList(baseFrame);
+      log..debug('frame:$baseFrame')..debug('bdFrame: $frame0');
+      final bdU8a = frame0.buffer.asUint8List();
+      final s0 = base64.encode(bdU8a);
+      final s1 = Uint16.toBase64(frame0);
+      log..debug('  s0: $s0')..debug('frame0: $frame0');
+      expect(s1, equals(s0));
+      final frame1 = Uint16.fromBase64(s1);
+      log.debug('owPixels0: $frame1');
+      expect(frame1, equals(baseFrame));
 
-      final u16FrameBytes = u16Frame.buffer.asUint8List();
-      final b64 = cvt.base64.encode(u16FrameBytes);
-      final b64Pixels = Uint16.toBase64(u16Frame);
-      log..debug('  b64: $b64')..debug('frame: $u16Frame');
-      expect(b64Pixels, equals(b64));
-      final owPixels = Uint16.fromBase64(b64Pixels);
-      expect(owPixels, equals(u16Frame));
+      final bdU8b = frame1.buffer.asUint8List();
+      final s2 = base64.encode(bdU8b);
+      final s3 = Uint16.toBase64(frame1);
+      log..debug('  b64: $s2')..debug('frame: $frame1');
+      expect(s3, equals(s2));
+      final frame2 = Uint16.fromBase64(s3);
+      expect(frame2, equals(frame1));
     });
 
     test('Create Uint16Base.listFromBytes', () {
