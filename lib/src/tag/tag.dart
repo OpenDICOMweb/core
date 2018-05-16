@@ -69,7 +69,7 @@ abstract class Tag {
   int get vrIndex;
   String get vrId => vrIdFromIndex(vrIndex);
 
-  String get keyword;// => 'UnknownTag';
+  String get keyword; // => 'UnknownTag';
   String get name; // => 'Unknown Tag';
   VM get vm => VM.k1_n;
   int get vmMin => vm.min;
@@ -98,7 +98,7 @@ abstract class Tag {
   // **** Code Getters
 
   /// Returns a [String] for the [code] in DICOM format, i.e. (gggg,eeee).
-  String get dcm => '${toDcm(code)}';
+  String get dcm => '${System.dcm(code)}';
 
   /// Returns the [group] number for _this_  [Tag].
   int get group => code >> 16;
@@ -377,10 +377,9 @@ abstract class Tag {
 
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag lookupByCode(int code, [int vrIndex = kUNIndex, Object creator]) {
-
     if (!allowInvalidTags &&
         (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)) {
-      print('code $code ${hex32(code)} ${toDcm(code)} vrIndex $vrIndex');
+      print('code $code ${hex32(code)} ${System.dcm(code)} vrIndex $vrIndex');
       return invalidTagCode(code);
     }
     final group = code >> 16;
@@ -492,7 +491,7 @@ abstract class Tag {
   static String toMsg<T>(T tag) {
     String msg;
     if (tag is int) {
-      msg = 'Code ${toDcm(tag)}';
+      msg = 'Code ${System.dcm(tag)}';
     } else if (tag is String) {
       msg = 'Keyword "$tag"';
     } else {
@@ -723,7 +722,8 @@ abstract class Tag {
 */
 
   /// Returns a [List] of DICOM tag codes in '(gggg,eeee)' format
-  static Iterable<String> listToDcm(List<int> tags) => tags.map(toDcm);
+  static Iterable<String> listToDcm(List<int> codes) =>
+      codes.map(System.dcm);
 
   /// Takes a [String] in format '(gggg,eeee)' and returns [int].
   static int toInt(String s) {

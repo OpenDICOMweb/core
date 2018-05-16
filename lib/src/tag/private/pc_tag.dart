@@ -67,11 +67,11 @@ abstract class PCTag extends PrivateTag {
 
   @override
   String get info =>
-      '$runtimeType["$name"]${dcm(code)} $groupHex, subgroup($sgNumberHex), '
+      '$runtimeType["$name"]$dcm $groupHex, subgroup($sgNumberHex), '
       'base($baseHex), limit($limitHex), actualVR($vrIndex)';
 
   @override
-  String toString() => '$runtimeType($name) ${dcm(code)} '
+  String toString() => '$runtimeType($name) $dcm} '
       '${vrIdByIndex[vrIndex]} $vm';
 
   static PCTag lookupByToken(int pcCode, int vrIndex, String creatorName) {
@@ -139,7 +139,7 @@ class PCTagKnown extends PCTag {
   @override
   PDTagDefinition lookupPDCode(int code) {
     final pdDefCode = code & 0xFFFF00FF;
-    print('pdDefCode ${dcm(pdDefCode)}');
+    print('pdDefCode $dcm');
     final pdDef = dataTags[pdDefCode];
     return (pdDef == null) ? PDTagDefinition.kUnknown : pdDef;
   }

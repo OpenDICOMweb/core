@@ -11,8 +11,10 @@ import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes/bytes.dart';
 
+export 'package:core/src/element/primitives/code.dart';
+export 'package:core/src/element/primitives/dicom_codes.dart';
+export 'package:core/src/element/primitives/private_code.dart';
 export 'package:core/src/utils/ascii.dart';
-export 'package:core/src/utils/dicom.dart';
 export 'package:core/src/utils/errors.dart';
 export 'package:core/src/utils/issues.dart';
 export 'package:core/src/utils/string/hexadecimal.dart';

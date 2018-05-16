@@ -27,7 +27,7 @@ import 'package:core/src/vr.dart';
 typedef Element _MakeFromElement(Element e);
 typedef Element _MakeFromBytes(Tag tag, Bytes bytes, [int vfLengthField]);
 
-typedef Element _MakePixelFromDataElement(IntBase e, [TransferSyntax ts]);
+// typedef Element _MakePixelFromDataElement(IntBase e, [TransferSyntax ts]);
 typedef Element _MakePixelDataFromBytes(Tag tag, Bytes bytes,
     [int vfLengthField, VFFragments fragments, TransferSyntax ts]);
 
@@ -139,10 +139,9 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
       new SQtag(parent, tag, items, vfLengthField, bytes);
 
   static Element makeFromElement(Dataset ds, Element e,
-      [int vrIndex, int vfLengthField]) {
-    return makeFromCode(ds, e.code, e.values, vrIndex ?? e.vrIndex,
-        vfLengthField ?? e.vfLengthField);
-  }
+          [int vrIndex, int vfLengthField]) =>
+      makeFromCode(ds, e.code, e.values, vrIndex ?? e.vrIndex,
+          vfLengthField ?? e.vfLengthField);
 
   /// Return a new [TagElement]. This assumes the caller has handled
   /// Private Elements, etc.
@@ -209,7 +208,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
         tag = PCTag.lookupByToken(code, vrIndex, token);
       }
     } else {
-      throw 'Fall through error';
+      throw new ArgumentError('Fall through error');
     }
     return tag;
   }
@@ -336,7 +335,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
           [int vfLengthField, VFFragments fragments, TransferSyntax ts]) =>
       invalidElementIndex(0);
 
-
+/*
   static const List<_MakePixelFromDataElement> _bdePixelMakers =
       const <_MakePixelFromDataElement>[
     _vrIndexPixelDataError,
@@ -344,6 +343,7 @@ abstract class TagElement<V> implements TagMixinBase<int, V> {
     OWtagPixelData.from,
     UNtagPixelData.from
   ];
+*/
 
   static Null _vrIndexPixelDataError(Element e, [TransferSyntax ts]) =>
       invalidElementIndex(0);

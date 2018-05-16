@@ -8,6 +8,7 @@
 //
 
 import 'package:core/src/base.dart';
+import 'package:core/src/system.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr.dart';
 
@@ -35,7 +36,7 @@ class PDTagDefinition {
 
   String get keyword => token;
   String get hex => hex32(code);
-  String get dcm => toDcm(code);
+  String get dcm => System.dcm(code);
 
   @override
   String toString() => '$runtimeType[$index]$dcm ${vrIdByIndex[vrIndex]} '

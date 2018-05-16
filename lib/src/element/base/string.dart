@@ -2638,7 +2638,8 @@ List<String> _stringListFromTypedData(TypedData td, int maxVFLength,
   if (!_isValidVFL(td.lengthInBytes, maxVFLength))
     return invalidVFLength(td.lengthInBytes, maxVFLength);
   final s = _typedDataToString(td, isAscii);
-  return s.split('\\');
+  final vList = s.split('\\');
+  return vList.map<String>((s) => s.trim());
 }
 
 String _typedDataToString(TypedData vf, bool isAscii) {

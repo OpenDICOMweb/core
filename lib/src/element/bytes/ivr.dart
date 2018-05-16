@@ -594,7 +594,7 @@ class PCivr extends LOivr
       final tag = Tag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
-    return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
+    return invalidKey(code, 'Invalid Tag Code ${dcm(code)}');
   }
 
   String get id => vfBytesAsAscii;

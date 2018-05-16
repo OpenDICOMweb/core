@@ -21,3 +21,6 @@ export 'package:core/src/element/base/meta.dart';
 export 'package:core/src/element/base/sequence.dart';
 export 'package:core/src/element/base/string.dart';
 export 'package:core/src/element/base/vf_fragments.dart';
+export 'package:core/src/element/primitives/code.dart';
+export 'package:core/src/element/primitives/dicom_codes.dart';
+export 'package:core/src/element/primitives/private_code.dart';

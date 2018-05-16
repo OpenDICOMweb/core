@@ -17655,7 +17655,7 @@ class PTagGroupLength extends PTag {
       : super._(
             'kPublicGroupLength_${hex(code)}',
             code,
-            'Public Group Length for ${toDcm(code)}',
+            'Public Group Length for ${dcm(code)}',
             kULIndex,
             VM.k1,
             true,
@@ -17686,7 +17686,7 @@ class PTagUnknown extends PTag {
       : super._(
             'kUnknownPublicTag_${hex16(code >> 16)}',
             code,
-            'Unknown DICOM Tag ${toDcm(code)}',
+            'Unknown DICOM Tag ${dcm(code)}',
             vrIndex,
             VM.k1_n,
             false,

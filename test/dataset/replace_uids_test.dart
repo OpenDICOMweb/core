@@ -11,7 +11,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-final rsg = new RSG();
+final RSG rsg = new RSG();
 
 void main() {
   Server.initialize(name: 'replace_uids', level: Level.info);

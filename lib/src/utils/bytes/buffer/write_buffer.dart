@@ -10,9 +10,9 @@
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
+import 'package:core/src/element/base.dart';
 import 'package:core/src/utils/bytes/buffer/buffer_base.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
-import 'package:core/src/utils/dicom.dart';
 
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals

@@ -7,89 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/utils/ascii.dart';
-import 'package:core/src/utils/string/hexadecimal.dart';
-
-//**** DICOM Constants ****
-
-/// The DICOM Prefix 'DICM' as an integer.
-const int kDcmPrefix = 0x4d434944;
-
-/// The maximum length, in bytes, of a "short" (16-bit) Value Field.
-///
-/// Notes:
-///     1. Short Value Fields may not have an Undefined Length
-///     2. All Value Fields must contain an even number of bytes.
-const int kMaxShortVF = 0x10000;
-
-const int kMax32BitVF = 0xFFFFFFFE;
-
-/// The maximum length, in bytes, of a "long" (32-bit) Value Field.
-///
-/// Note: the values is `[kUint32Max] - 1` because the maximum value
-/// (0xFFFFFFFF) is used to denote a Value Field with Undefined Length.
-const int kMaxLongVF = 0xFFFFFFFE;
-
-/// The maximum length of a long Value Field containing 8-bit values.
-const int kMax8BitLongVF = kMaxLongVF;
-
-/// The maximum length of a long Value Field containing 16-bit values.
-const int kMax16BitLongVF = kMaxLongVF;
-
-/// The maximum length of a long Value Field containing 32-bit values.
-const int kMax32BitLongVF = kMaxLongVF - 2;
-
-/// The maximum length of a long Value Field containing 64-bit values.
-const int kMax64BitLongVF = kMaxLongVF - 6;
-
-/// This is the value of a DICOM Undefined Length from a 32-bit
-/// Value Field Length.
-const int kUndefinedLength = 0xFFFFFFFF;
-
-bool hasUndefinedLength(int i) => i == kUndefinedLength;
-
-// Special Tag Related constants
-
-/// This corresponds to the first 16-bits of kSequenceDelimitationItem,
-/// kItem, and kItemDelimitationItem which are the same value.
-const int kDelimiterFirst16Bits = 0xFFFE;
-
-/// This corresponds to the last 16-bits of kSequenceDelimitationItem.
-const int kSequenceDelimiterLast16Bits = 0xE0DD;
-
-/// This corresponds to the last 16-bits of kItemDelimitationItem.
-const int kItemLast16bits = 0xE000;
-
-/// This corresponds to the last 16-bits of kItemDelimitationItem.
-const int kItemDelimiterLast16bits = 0xE00D;
-
-// Next 3 values are 2x16bit little Endian values as one 32bitLE value.
-// This allows fast access and comparison
-
-// kItem as 2x16Bit LE == 0xfffee000
-const int kItem32BitLE = 0xe000fffe;
-
-// [kItemDelimitationItem] as 2x16-bit LE == 0xfffee00d;
-const int kItemDelimitationItem32BitLE = 0xe00dfffe; //feff0de0;
-
-// [kSequenceDelimitationItem] as 2x16bit LE == 0xfffee0dd;
-const int kSequenceDelimitationItem32BitLE = 0xe0ddfffe;
-
-/// The value appended to odd length UID Value Fields to make them even length.
-const int kUidPaddingChar = kNull; // equal to cvt.ascii.kNull;
-
-/// The value appended to odd length [String] Value Fields to make them
-/// even length.
-const int kStringPaddingChar = kSpace; // Equal to cvt.ascii.kSpace;
-
-/// The value appended to odd length Uint8 Value Fields (OB, UN) to make
-/// them even length.
-const int kUint8PaddingValue = 0;
-
-// Uuid constants
-//const int kUuidStringLength = 36;
-//const int kUuidAsUidStringLength = 32;
-
 // Standard DICOM Public Element Tag Code definitions.
 
 const int kAffectedSOPInstanceUID = 0x00001000;
@@ -4018,33 +3935,7 @@ const int kVariableCoefficientsSDHN = 0x7f000030;
 const int kVariableCoefficientsSDDN = 0x7f000040;
 const int kDigitalSignaturesSequence = 0xfffafffa;
 const int kDataSetTrailingPadding = 0xfffcfffc;
+
 const int kItem = 0xfffee000;
 const int kItemDelimitationItem = 0xfffee00d;
 const int kSequenceDelimitationItem = 0xfffee0dd;
-
-const int kMinTag = kAffectedSOPInstanceUID;
-const int kMaxTag = kMaxDatasetTag;
-
-const int kMinFmiTag = kFileMetaInformationGroupLength;
-const int kMaxFmiTag = kPrivateInformation;
-
-/// File-set ID
-const int kMinDcmDirTag = kFileSetID;
-
-/// Number of References
-const int kMaxDcmDirTag = kNumberOfReferences;
-
-/// Group Length
-const int kMinDatasetTag = kLengthToEnd;
-
-/// Data Set Trailing Padding
-const int kMaxDatasetTag = kDataSetTrailingPadding;
-
-/// Returns a [String] in DICOM Tag Code format, e.g. (gggg,eeee),
-/// corresponding to the Tag [code].
-String dcm(int code) {
-  assert(code >= 0 && code <= 0xFFFFFFFF, 'code: $code');
-  return '(${hex16(code >> 16)},${hex16(code & 0xFFFF)})';
-}
-
-String toDcm(int code) => dcm(code);

@@ -86,12 +86,12 @@ class VFFragments {
     while (rIndex < endOfVF) {
       final code = readUint32();
       if (code == kSequenceDelimitationItem32BitLE) break;
-      assert(code == kItem32BitLE, 'Invalid Item code: ${toDcm(code)}');
+      assert(code == kItem32BitLE, 'Invalid Item code: ${dcm(code)}');
       final vfLength = readUint32();
 //      _log.debug('VFF code ${toDcm(code)} length: $vfLength');
       assert(
           vfLength != kUndefinedLength,
-          'Invalid length: ${toDcm(vfLength)
+          'Invalid length: ${dcm(vfLength)
       }');
       final startOfVF = rIndex;
       rIndex += vfLength;

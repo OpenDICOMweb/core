@@ -683,7 +683,7 @@ class PCevr extends PC
       return tag;
     }
     log.debug('PC code ${dcm(code)}');
-    return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
+    return invalidKey(code, 'Invalid Tag Code ${dcm(code)}');
   }
 
   @override
