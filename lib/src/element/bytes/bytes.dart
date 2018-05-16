@@ -227,7 +227,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
   static OWbytes makeFromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
       (bytes.code == kPixelData)
-          ? UNbytesPixelData(bytes, ts, fragments)
+          ? OWbytesPixelData(bytes, ts, fragments)
           : new UNbytes(bytes);
 
   static ByteElement fromValues(int code, List<int> vList,

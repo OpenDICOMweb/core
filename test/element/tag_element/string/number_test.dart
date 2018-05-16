@@ -344,9 +344,9 @@ void main() {
         final vList1 = rsg.getDSList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final ur1 = DStag.fromBytes(PTag.kSelectorDSValue, bytes0);
-          log.debug('ur1: $ur1');
-          expect(ur1.hasValidValues, true);
+          final e = DStag.fromBytes(PTag.kSelectorDSValue, bytes0);
+          log.debug('e: $e');
+          expect(e.hasValidValues, true);
         }
       }
     });
@@ -538,7 +538,7 @@ void main() {
       PTag.kTime
     ];
 
-    final badLengthList = rsg.getDSList(DS.kMaxLengthForVR + 1, DS.kMaxLengthForVR + 1);
+    final badLengthList = rsg.getDSList(DS.kMaxLength + 1, DS.kMaxLength+ 1);
 
     test('DS isValidTag good values', () {
       global.throwOnError = false;

@@ -25,8 +25,8 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final bd0 = DicomBytes.fromAsciiList(vList0);
-        log..debug('vList0: $vList0')..debug('bd: $bd0');
+        final bytes = DicomBytes.fromAsciiList(vList0);
+        log..debug('vList0: $vList0')..debug('bd: $bytes');
 
         final e0 = AEbytes.fromValues(kReceivingAE, vList0);
         log.debug('ae2:$e0');

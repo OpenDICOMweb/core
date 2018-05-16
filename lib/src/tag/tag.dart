@@ -260,7 +260,8 @@ abstract class Tag {
   bool isValidVFLength(int vfLength, [Issues issues]) {
     if (isVFLengthAlwaysValid(vrIndex)) return true;
  //   final max = vr.maxVFLength;
-    return vr.isValidVFLength(vfLength, minValues, maxValues);
+    final v = vr.isValidVFLength(vfLength, minValues, maxValues);
+    return v;
 /*
     return (_isValidVFLength(vfLength, max))
         ? true
@@ -733,7 +734,7 @@ abstract class Tag {
   /// is used.
   static bool isValidSpecialTag(
       Tag tag, Issues issues, int targetVR, Type type) {
-    if (!doTestElementValidity) return true;
+    if (!doTestElementValidity || targetVR == kUNIndex) return true;
     final vrIndex = tag.vrIndex;
     return (tag != null &&
             (vrIndex == targetVR || kSpecialSSVRs.contains(vrIndex)))

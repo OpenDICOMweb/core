@@ -30,6 +30,10 @@ import 'package:core/src/vr.dart';
 //       bool isEmptyStringAllowed = x;
 
 abstract class Text extends Utf8 {
+  static const bool kIsAsciiRequired = false;
+
+  @override
+  bool get isAsciiRequired => false;
   @override
   bool get isSingleValued => true;
 
@@ -58,6 +62,18 @@ abstract class Text extends Utf8 {
 
 /// An Long Text (LT) Element
 abstract class LT extends Text {
+  static const int kVRIndex = kLTIndex;
+  static const int kVRCode = kLTCode;
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = 1;
+  static const int kMinValueLength = 0;
+  static const int kMaxValueLength = 10240;
+
+  static const String kVRKeyword = 'LT';
+  static const String kVRName = 'Long Text';
+
+  static const Type kType = LT;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -68,22 +84,10 @@ abstract class LT extends Text {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kLTIndex;
-  static const int kVRCode = kLTCode;
-  static const String kVRKeyword = 'LT';
-  static const String kVRName = 'Long Text';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = 1;
-  static const int kMinValueLength = 0;
-  static const int kMaxValueLength = 10240;
 
   // **** Generalized static methods
 
@@ -155,6 +159,17 @@ abstract class LT extends Text {
 
 /// An Short Text (ST) Element
 abstract class ST extends Text {
+  static const int kVRIndex = kSTIndex;
+  static const int kVRCode = kSTCode;
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = 1;
+  static const int kMinValueLength = 0;
+  static const int kMaxValueLength = 1024;
+
+  static const String kVRKeyword = 'ST';
+  static const String kVRName = 'Short Text';
+
+  static const Type kType = ST;
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -165,22 +180,10 @@ abstract class ST extends Text {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kSTIndex;
-  static const int kVRCode = kSTCode;
-  static const String kVRKeyword = 'ST';
-  static const String kVRName = 'Short Text';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = 1;
-  static const int kMinValueLength = 0;
-  static const int kMaxValueLength = 1024;
 
   // **** Generalized static methods
 
@@ -254,6 +257,18 @@ abstract class ST extends Text {
 ///
 /// The Value Multiplicity of this [Element] is 1.
 abstract class UR extends Text {
+  static const int kVRIndex = kURIndex;
+  static const int kVRCode = kURCode;
+  static const String kVRKeyword = 'UR';
+  static const String kVRName =
+      'Universal Resource Identifier or Universal Resource Locator (URI/URL)';
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = 1;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = k8BitMaxLongVF;
+
+  static const Type kType = UR;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -275,17 +290,6 @@ abstract class UR extends Text {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kURIndex;
-  static const int kVRCode = kURCode;
-  static const String kVRKeyword = 'UR';
-  static const String kVRName =
-      'Universal Resource Identifier or Universal Resource Locator (URI/URL)';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = 1;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = kMaxLongVF;
 
   // **** Generalized static methods
 
@@ -380,6 +384,18 @@ abstract class UR extends Text {
 
 /// An Unlimited Text (UT) Element
 abstract class UT extends Text {
+  static const int kVRIndex = kUTIndex;
+  static const int kVRCode = kUTCode;
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = 1;
+  static const int kMinValueLength = 0;
+  static const int kMaxValueLength = k8BitMaxLongVF;
+
+  static const String kVRKeyword = 'UT';
+  static const String kVRName = 'Unlimited Text';
+
+  static const Type kType = UT;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -398,16 +414,6 @@ abstract class UT extends Text {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kUTIndex;
-  static const int kVRCode = kUTCode;
-  static const String kVRKeyword = 'UT';
-  static const String kVRName = 'Unlimited Text';
-  static const int kMaxVFLength = kMaxLongVF;
-  static const int kMaxLength = 1;
-  static const int kMinValueLength = 0;
-  static const int kMaxValueLength = kMaxLongVF;
 
   // **** Generalized static methods
 

@@ -1245,26 +1245,27 @@ void main() {
   //                 at least similar.
   group('OWTag', () {
     test('OW hasValidValues random', () {
+
       for (var i = 0; i < 10; i++) {
-        final uint16List0 = rng.uint16List(1, 1);
-        final ow0 =
-            new OWtag(PTag.kRedPaletteColorLookupTableData, uint16List0);
-        expect(ow0.hasValidValues, true);
-        log.debug('ow0: $ow0');
-        expect(ow0.hasValidValues, true);
+        final vList0 = rng.uint16List(1, 1);
+        final e0 =
+            new OWtag(PTag.kRedPaletteColorLookupTableData, vList0);
+        expect(e0.hasValidValues, true);
+        log.debug('ow0: $e0');
+        expect(e0.hasValidValues, true);
 
         log
-          ..debug('ow0: $ow0, values: ${ow0.values}')
-          ..debug('ow0: $ow0');
-        expect(ow0[0], equals(uint16List0[0]));
+          ..debug('ow0: $e0, values: ${e0.values}')
+          ..debug('ow0: $e0');
+        expect(e0[0], equals(vList0[0]));
       }
 
       for (var i = 0; i < 10; i++) {
         final uint16List0 = rng.uint16List(2, 3);
         log.debug('$i: uint16List0: $uint16List0');
-        final ow0 =
+        final e =
             new OWtag(PTag.kRedPaletteColorLookupTableData, uint16List0);
-        expect(ow0.hasValidValues, true);
+        expect(e.hasValidValues, true);
       }
     });
 

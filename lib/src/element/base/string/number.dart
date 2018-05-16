@@ -32,6 +32,18 @@ import 'package:core/src/vr/vr_internal.dart';
 //       bool isEmptyStringAllowed = x;
 
 abstract class DS extends StringAscii {
+  static const int kVRIndex = kDSIndex;
+  static const int kVRCode = kDSCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 16;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRKeyword = 'DS';
+  static const String kVRName = 'Decimal String';
+
+  static const Type kType = DS;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -41,9 +53,7 @@ abstract class DS extends StringAscii {
   @override
   String get vrName => kVRName;
   @override
-  int get maxLength => kMaxLengthForVR;
-  @override
-  int get maxVFLength => kMaxVFLength;
+  int get maxLength => kMaxLength;
 
   Iterable<double> get numbers => _numbers ??= tryParseList(values);
   Iterable<double> _numbers;
@@ -80,17 +90,6 @@ abstract class DS extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  static const bool kIsAsciiRequired = true;
-  static const int kVRIndex = kDSIndex;
-  static const int kVRCode = kDSCode;
-  static const String kVRKeyword = 'DS';
-  static const String kVRName = 'Decimal String';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  // Issue: this is an artificial number
-  static const int kMaxLengthForVR = k16BitMaxShortLength;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 16;
-
   // **** Generalized static methods
 
   /// Returns _true_ if both [tag] and [vList] are valid for [DS].
@@ -101,7 +100,7 @@ abstract class DS extends StringAscii {
         doTestElementValidity &&
         isValidTag(tag) &&
         StringBase.isValidValues(
-            tag, vList, issues, isValidValue, kMaxLengthForVR, DS);
+            tag, vList, issues, isValidValue, kMaxLength, DS);
   }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [DS].
@@ -136,13 +135,15 @@ abstract class DS extends StringAscii {
           : inRange(vfLength, 0, kMaxVFLength);
 
   /// Returns _true_ if [vList].length is valid for [DS].
-  static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      Element.isValidLength(tag, vList, issues, kMaxLengthForVR, DS);
-
+  static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, DS);
+    if (vList == null) return nullValueError();
+    Element.isValidLength(tag, vList, issues, kMaxLength, DS);
+  }
   /// Returns _true_ if [tag] has a VR of [DS] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(
-          tag, vList, issues, isValidValue, kMaxLengthForVR, DS);
+          tag, vList, issues, isValidValue, kMaxLength, DS);
 
   static bool isValidValueLength(String s, [Issues issues]) => StringBase
       .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
@@ -182,6 +183,20 @@ abstract class DS extends StringAscii {
 }
 
 abstract class IS extends StringAscii {
+  static const int kVRIndex = kISIndex;
+  static const int kVRCode = kISCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 12;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMinValue = -99999999999;
+  static const int kMaxValue = 999999999999;
+
+  static const String kVRKeyword = 'IS';
+  static const String kVRName = 'Integer String';
+
+  static const Type kType = TM;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -192,8 +207,6 @@ abstract class IS extends StringAscii {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   List<int> get integers => _integers ??= tryParseList(values);
   List<int> _integers;
@@ -235,18 +248,6 @@ abstract class IS extends StringAscii {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = true;
-  static const int kVRIndex = kISIndex;
-  static const int kVRCode = kISCode;
-  static const String kVRKeyword = 'IS';
-  static const String kVRName = 'Integer String';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 12;
-  static const int kMinValue = -99999999999;
-  static const int kMaxValue = 999999999999;
 
   // **** Generalized static methods
 
@@ -293,8 +294,11 @@ abstract class IS extends StringAscii {
           : inRange(vfLength, 0, kMaxVFLength);
 
   /// Returns _true_ if [vList].length is valid for [IS].
-  static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      Element.isValidLength(tag, vList, issues, kMaxLength, DS);
+  static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, IS);
+    if (vList == null) return nullValueError();
+    Element.isValidLength(tag, vList, issues, kMaxLength, IS);
+  }
 
   /// Returns _true_ if [tag] has a VR of [IS] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>

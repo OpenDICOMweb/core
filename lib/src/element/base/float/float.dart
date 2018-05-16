@@ -18,31 +18,42 @@ import 'package:core/src/vr.dart';
 
 /// FL
 abstract class FL extends Float with Float32 {
+  static const int kVRIndex = kFLIndex;
+  static const int kVRCode = kFLCode;
+  static const int kSizeInBytes = 4;
+  static const int kSizeInBits = kSizeInBytes * 8;
+  static const int kVLFSize = 2;
+  static const int kMaxVFLength = k32BitMaxShortVF;
+  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
+
+  static const bool kIsLengthAlwaysValid = false;
+  static const bool kIsUndefinedLengthAllowed = false;
+
+  static const String kVRName = 'Floating Point Single';
+  static const String kVRKeyword = 'FL';
+
+  static const Type kType = FL;
+
+  @override
+  int get vlfSize => kVLFSize;
   @override
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
   @override
+  int get maxVFLength => kMaxVFLength;
+  @override
+  int get maxLength => kMaxLength;
+  @override
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
   @override
-  int get vlfSize => 4;
+  bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
-  int get maxLength => kMaxLength;
+  bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
   @override
-  int get maxVFLength => kMaxVFLength;
-  @override
-  int get vfLength => length * sizeInBytes;
-
-  static const int kVRIndex = kFLIndex;
-  static const int kVRCode = kFLCode;
-  static const String kVRKeyword = 'FL';
-  static const String kVRName = 'Floating Point Single';
-  static const int kSizeInBytes = 4;
-  static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = k32BitMaxShortVF;
-  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
+  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -106,33 +117,42 @@ abstract class FL extends Float with Float32 {
 }
 
 abstract class OF extends Float with Float32 {
+  static const int kVRIndex = kOFIndex;
+  static const int kVRCode = kOFCode;
+  static const int kSizeInBytes = 4;
+  static const int kSizeInBits = kSizeInBytes * 8;
+  static const int kVLFSize = 4;
+  static const int kMaxVFLength = k32BitMaxLongVF;
+  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
+
+  static const bool kIsLengthAlwaysValid = true;
+  static const bool kIsUndefinedLengthAllowed = false;
+
+  static const String kVRName = 'Other Float';
+  static const String kVRKeyword = 'OF';
+
+  static const Type kType = OF;
+
+  @override
+  int get vlfSize => kVLFSize;
   @override
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
   @override
+  int get maxVFLength => kMaxVFLength;
+  @override
+  int get maxLength => kMaxLength;
+  @override
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
   @override
-  int get vlfSize => 4;
+  bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
-  int get maxLength => kMaxLength;
+  bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
   @override
-  int get maxVFLength => kMaxVFLength;
-  @override
-  int get vfLength => length * sizeInBytes;
-  @override
-  bool get isLengthAlwaysValid => true;
-
-  static const int kVRIndex = kOFIndex;
-  static const int kVRCode = kOFCode;
-  static const String kVRKeyword = 'OF';
-  static const String kVRName = 'Other Float';
-  static const int kSizeInBytes = 4;
-  static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = k32BitMaxLongVF;
-  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
+  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -188,33 +208,45 @@ abstract class OF extends Float with Float32 {
 }
 
 abstract class FD extends Float with Float64 {
-  @override
-  int get vrIndex => kVRIndex;
-  @override
-  int get vrCode => kVRCode;
-  @override
-  String get vrKeyword => kVRKeyword;
-  @override
-  String get vrName => kVRName;
-  @override
-  int get vlfSize => 4;
-  @override
-  int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
-  @override
-  int get vfLength => length * sizeInBytes;
-
-  static const int kVRIndex = kFDIndex;
+ static const int kVRIndex = kFDIndex;
   static const int kVRCode = kFDCode;
-  static const String kVRKeyword = 'FD';
-  static const String kVRName = 'Floating Point Double';
   static const int kSizeInBytes = 8;
   static const int kSizeInBits = kSizeInBytes * 8;
+  static const int kVLFSize = 2;
   static const int kMaxVFLength = k64BitMaxShortVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
-  /// Returns _true_ if both [tag] and [vList] are valid for [FD].
+ static const bool kIsLengthAlwaysValid = false;
+ static const bool kIsUndefinedLengthAllowed = false;
+
+ static const String kVRName = 'Floating Point Double';
+ static const String kVRKeyword = 'FD';
+
+ static const Type kType = FD;
+
+ @override
+ int get vlfSize => kVLFSize;
+ @override
+ int get vrIndex => kVRIndex;
+ @override
+ int get vrCode => kVRCode;
+ @override
+ int get maxVFLength => kMaxVFLength;
+ @override
+ int get maxLength => kMaxLength;
+ @override
+ String get vrKeyword => kVRKeyword;
+ @override
+ String get vrName => kVRName;
+ @override
+ bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
+ @override
+ bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
+ @override
+ bool get hadULength => vfLengthField == kUndefinedLength;
+
+
+ /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<double> vList) {
     if (tag == null) return invalidTag(tag, null, FL);
@@ -268,32 +300,42 @@ abstract class FD extends Float with Float64 {
 }
 
 abstract class OD extends Float with Float64 {
+  static const int kVRIndex = kODIndex;
+  static const int kVRCode = kODCode;
+  static const int kSizeInBytes = 8;
+  static const int kSizeInBits = kSizeInBytes * 8;
+  static const int kVLFSize = 2;
+  static const int kMaxVFLength = k64BitMaxLongVF;
+  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
+
+  static const bool kIsLengthAlwaysValid = true;
+  static const bool kIsUndefinedLengthAllowed = false;
+
+  static const String kVRName = 'Other Double';
+  static const String kVRKeyword = 'OD';
+
+  static const Type kType = OD;
+
+  @override
+  int get vlfSize => kVLFSize;
   @override
   int get vrIndex => kVRIndex;
   @override
   int get vrCode => kVRCode;
   @override
+  int get maxVFLength => kMaxVFLength;
+  @override
+  int get maxLength => kMaxLength;
+  @override
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
   @override
-  int get vlfSize => 4;
+  bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
-  int get maxLength => kMaxLength;
+  bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
   @override
-  int get maxVFLength => kMaxVFLength;
-  @override
-  bool get isLengthAlwaysValid => true;
-
-//  static const VR kVR = VR.kOD;
-  static const int kVRIndex = kODIndex;
-  static const int kVRCode = kODCode;
-  static const String kVRKeyword = 'OD';
-  static const String kVRName = 'Other Double';
-  static const int kSizeInBytes = 8;
-  static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = k64BitMaxLongVF;
-  static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
+  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.

@@ -28,10 +28,35 @@ import 'package:core/src/utils/primitives.dart';
 /// The base [class] for [String] [Element]s with [values]
 /// that are [Iterable<String>].
 abstract class StringBase extends Element<String> {
+  static const int kVLFSize = 2;
+  static const int kSizeInBytes = 1;
+  static const int kSizeInBits = kSizeInBytes * 8;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMinValueLength = 1;
+  static const bool kIsLengthAlwaysValid = false;
+  static const bool kIsUndefinedLengthAllowed = false;
+  static const bool kIsAsciiRequired = true;
+
   @override
   Iterable<String> get values;
   @override
   set values(Iterable<String> vList);
+  // **** End of interface
+
+  @override
+  int get vlfSize => kVLFSize;
+  @override
+  int get maxVFLength => kMaxVFLength;
+  @override
+  int get maxLength => kMaxLength;
+  @override
+  bool get isLengthAlwaysValid => false;
+  @override
+  bool get isUndefinedLengthAllowed => false;
+  @override
+  bool get hadULength => false;
+
 
   // **** Getters that MUST be supported by every Element Type.
 
@@ -46,6 +71,7 @@ abstract class StringBase extends Element<String> {
 
   // **** Getters related to the [sizeInBytes].
 
+  // Note: This must be overridden for [Text]
   @override
   int get vfLength {
     assert(values != null);
@@ -79,10 +105,6 @@ abstract class StringBase extends Element<String> {
   @override
   bool checkValues(Iterable<String> vList, [Issues issues]) =>
       super.checkValues(vList, issues);
-
-  static const bool kIsAsciiRequired = true;
-  static const int kSizeInBytes = 1;
-  static const int kSizeInBits = kSizeInBytes * 8;
 
 /*
   /// _Deprecated_: Used DicomBytes.toAsciiList or DicomBytes.toUtfList instead.

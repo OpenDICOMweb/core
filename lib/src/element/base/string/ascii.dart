@@ -32,7 +32,18 @@ import 'package:core/src/vr/vr_internal.dart';
 //       bool areAllSpacesAllowed = x;
 //       bool isEmptyStringAllowed = x;
 
+// Note: Each [String] in a Value Field must be separated by a backslash ('\)
+//       character. Thus, the minimum length of each string in a Value
+//       Field is 2.
 abstract class StringAscii extends StringBase {
+  static const int kVLFSize = 2;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const bool kIsLengthAlwaysValid = false;
+  static const bool kIsUndefinedLengthAllowed = false;
+  static const bool kIsAsciiRequired = true;
+
+  @override
+  int get vlfSize => kVLFSize;
   @override
   bool get isAsciiRequired => true;
   @override
@@ -42,13 +53,10 @@ abstract class StringAscii extends StringBase {
 
   @override
   TypedData get typedData =>
-      stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
+      stringListToUint8List(values, maxLength: maxVFLength, isAscii: true);
 
   List<String> valuesFromBytes(Bytes bytes) =>
       bytes.getAsciiList(allowInvalid: global.allowInvalidAscii);
-
-  Uint8List uint8ListFromValues(List<String> vList) =>
-      stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
 
   static List<String> fromValueField(List vf, int maxVFLength,
       {bool isAscii: true}) {
@@ -63,6 +71,18 @@ abstract class StringAscii extends StringBase {
 
 /// A Application Entity Title ([AE]) Element
 abstract class AE extends StringAscii {
+  static const int kVRIndex = kAEIndex;
+  static const int kVRCode = kAECode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 16;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRName = 'Application Entity';
+  static const String kVRKeyword = 'AE';
+
+  static const Type kType = AE;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -73,24 +93,10 @@ abstract class AE extends StringAscii {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
-  int get minValueLength => kMinValueLength;
-  int get maxValueLength => kMaxValueLength;
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = true;
-  static const int kVRIndex = kAEIndex;
-  static const int kVRCode = kAECode;
-  static const String kVRKeyword = 'AE';
-  static const String kVRName = 'Application Entity';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 16;
 
   // **** Generalized static methods
 
@@ -133,7 +139,7 @@ abstract class AE extends StringAscii {
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : inRange(vfLength, 0, kMaxVFLength);
+          : inRange(vfLength, 0, k8BitMaxShortVF);
 
   /// Returns _true_ if [vList].length is valid for [AE].
   static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
@@ -163,6 +169,24 @@ abstract class AE extends StringAscii {
 }
 
 abstract class AS extends StringAscii {
+  static const int kVRIndex = kASIndex;
+  static const int kVRCode = kASCode;
+  static const int kMinValueLength = 4;
+  static const int kMaxValueLength = 4;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRName = 'Age String';
+  static const String kVRKeyword = 'AS';
+
+  static const Type kType = AS;
+
+  /// Special variable for overriding uppercase constraint.
+  static bool allowLowerCase = false;
+
+  @override
+  bool operator ==(Object other) => (other is AS && value == other.value);
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -172,14 +196,9 @@ abstract class AS extends StringAscii {
   @override
   String get vrName => kVRName;
   @override
-  bool get isSingleValued => true;
-  @override
-  int get maxVFLength => kMaxVFLength;
-  @override
   int get maxLength => kMaxLength;
-
   @override
-  bool operator ==(Object other) => (other is AS && value == other.value);
+  bool get isSingleValued => true;
 
   @override
   int get hashCode {
@@ -188,10 +207,6 @@ abstract class AS extends StringAscii {
         ? global.hash(age.nDays)
         : badValues(values);
   }
-
-  @override
-  TypedData get typedData =>
-      stringListToUint8List(values, maxLength: kMaxVFLength);
 
   Age get age => _age ??= Age.parse(value);
   Age _age;
@@ -208,17 +223,6 @@ abstract class AS extends StringAscii {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = true;
-  static bool allowLowerCase = false;
-  static const int kVRIndex = kASIndex;
-  static const int kVRCode = kASCode;
-  static const String kVRKeyword = 'AS';
-  static const String kVRName = 'Age String';
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMinValueLength = 4;
-  static const int kMaxValueLength = 4;
 
   // **** Generalized static methods
 
@@ -261,13 +265,13 @@ abstract class AS extends StringAscii {
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : inRange(vfLength, 0, kMaxVFLength);
+          : inRange(vfLength, 0, k8BitMaxShortVF);
 
   /// Returns _true_ if [vList].length is valid for [AS].
   static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, AS);
     if (vList == null) return nullValueError();
-    return Element.isValidLength(tag, vList, issues, kMaxLength, AE);
+    return Element.isValidLength(tag, vList, issues, kMaxLength, AS);
   }
 
   /// Returns _true_ if [tag] has a VR of [AS] and [vList] is valid for [tag].
@@ -296,6 +300,21 @@ abstract class AS extends StringAscii {
 
 /// A Code String ([CS]) Element
 abstract class CS extends StringAscii {
+  static const int kVRIndex = kCSIndex;
+  static const int kVRCode = kCSCode;
+  static const int kMinValueLength = 0;
+  static const int kMaxValueLength = 16;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRKeyword = 'CS';
+  static const String kVRName = 'Code String';
+
+  static const Type kType = CS;
+
+  /// Special variable for overriding uppercase constraint.
+  static bool allowLowerCase = false;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -306,26 +325,13 @@ abstract class CS extends StringAscii {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-//  CS blank([int n = 1]) => update([_blanks(n)]);
+  CS blank([int n = 1]) => update([blanks(n)]);
 
-  static const bool kIsAsciiRequired = true;
-  static bool allowLowerCase = false;
-  static const int kVRIndex = kCSIndex;
-  static const int kVRCode = kCSCode;
-  static const String kVRKeyword = 'CS';
-  static const String kVRName = 'Code String';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
-  // It seems that CS may have an empty String value
-  static const int kMinValueLength = 0;
-  static const int kMaxValueLength = 16;
 
   // **** Generalized static methods
 
@@ -368,7 +374,7 @@ abstract class CS extends StringAscii {
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : inRange(vfLength, 0, kMaxVFLength);
+          : inRange(vfLength, 0, k8BitMaxShortVF);
 
   /// Returns _true_ if [vList].length is valid for [CS].
   static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
@@ -401,9 +407,19 @@ abstract class CS extends StringAscii {
 }
 
 abstract class UI extends StringAscii {
-  Iterable<Uid> _uids;
-  @override
-  int get padChar => kNull;
+  static const int kVRIndex = kUIIndex;
+  static const int kVRCode = kUICode;
+  //Issue: is 16 the right number?
+  static const int kMinValueLength = 14;
+  static const int kMaxValueLength = 64;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRKeyword = 'UI';
+  static const String kVRName = 'Unique Identifier (UID)';
+
+  static const Type kType = UI;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -413,17 +429,13 @@ abstract class UI extends StringAscii {
   @override
   String get vrName => kVRName;
   @override
-  bool get isSingleValued => false;
-  @override
   int get maxLength => kMaxLength;
   @override
-  int get maxVFLength => kMaxVFLength;
-  @override
-  TypedData get typedData =>
-      stringListToUint8List(values, maxLength: kMaxVFLength, isAscii: true);
+  int get padChar => kNull;
 
   Iterable<Uid> get uids;
   set uids(Iterable<Uid> vList) => _uids = vList;
+  Iterable<Uid> _uids;
 
   Uid get uid => (_uids.length == 1) ? _uids.elementAt(0) : null;
 
@@ -456,20 +468,10 @@ abstract class UI extends StringAscii {
     return old;
   }
 
-  static const bool kIsAsciiRequired = true;
-  static const int kVRIndex = kUIIndex;
-  static const int kVRCode = kUICode;
-  static const String kVRKeyword = 'UI';
-  static const String kVRName = 'Unique Identifier (UID)';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  //Issue: is 16 the right number?
-  static const int kMaxLength = k8BitMaxShortVF ~/ 16;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 64;
 
   // **** Generalized static methods
 
-  /// Returns _true_ if both [tag] and [vList] are valid for [AE].
+  /// Returns _true_ if both [tag] and [vList] are valid for [UI].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UI);
@@ -508,20 +510,20 @@ abstract class UI extends StringAscii {
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : inRange(vfLength, 0, kMaxVFLength);
+          : inRange(vfLength, 0, k8BitMaxShortVF);
 
   /// Returns _true_ if [vList].length is valid for [UI].
   static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UI);
     if (vList == null) return nullValueError();
-    return Element.isValidLength(tag, vList, issues, kMaxLength, AE)
+    return Element.isValidLength(tag, vList, issues, kMaxLength, UI)
         ? true
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [tag] has a VR of [UI] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, AE);
+      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UI);
 
   static bool isValidValueLength(String s, [Issues issues]) => StringBase
       .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
@@ -568,6 +570,20 @@ abstract class UI extends StringAscii {
 
 /// An abstract class for date ([DA]) [Element]s.
 abstract class DA extends StringBase {
+  static const int kVRIndex = kDAIndex;
+  static const int kVRCode = kDACode;
+  static const int kMinValueLength = 8;
+  static const int kMaxValueLength = 8;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRKeyword = 'DA';
+  static const String kVRName = 'Date';
+
+  static const Type kType = DA;
+
+  static bool allowLowerCase = false;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -578,8 +594,6 @@ abstract class DA extends StringBase {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   /// A fixed size List of [Date] values. They are created lazily.
   Iterable<Date> get dates => _dates ??= values.map(Date.parse);
@@ -611,17 +625,6 @@ abstract class DA extends StringBase {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   void clearDates() => _dates = null;
-
-  static const bool kIsAsciiRequired = true;
-  static bool allowLowerCase = false;
-  static const int kVRIndex = kDAIndex;
-  static const int kVRCode = kDACode;
-  static const String kVRKeyword = 'DA';
-  static const String kVRName = 'Date';
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMinValueLength = 8;
-  static const int kMaxValueLength = 8;
 
   // **** Generalized static methods
 
@@ -664,7 +667,7 @@ abstract class DA extends StringBase {
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : inRange(vfLength, 0, kMaxVFLength);
+          : inRange(vfLength, 0, k8BitMaxShortVF);
 
   /// Returns _true_ if [vList].length is valid for [DA].
   static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
@@ -693,6 +696,20 @@ abstract class DA extends StringBase {
 
 /// An abstract class for time ([TM]) [Element]s.
 abstract class DT extends StringBase {
+  static const int kVRIndex = kDTIndex;
+  static const int kVRCode = kDTCode;
+  static const int kMinValueLength = 4;
+  static const int kMaxValueLength = 26;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRKeyword = 'DT';
+  static const String kVRName = 'Date Time';
+
+  static const Type kType = DT;
+
+  static bool allowLowerCase = false;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -703,8 +720,6 @@ abstract class DT extends StringBase {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   Iterable<DcmDateTime> get dateTimes =>
       _dateTimes ??= values.map(DcmDateTime.parse);
@@ -729,17 +744,6 @@ abstract class DT extends StringBase {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   void clearDcmDateTimes() => _dateTimes = null;
-
-  static const bool kIsAsciiRequired = true;
-  static bool allowLowerCase = false;
-  static const int kVRIndex = kDTIndex;
-  static const int kVRCode = kDTCode;
-  static const String kVRKeyword = 'DT';
-  static const String kVRName = 'Date Time';
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMinValueLength = 4;
-  static const int kMaxValueLength = 26;
 
   // **** Generalized static methods
 
@@ -782,7 +786,7 @@ abstract class DT extends StringBase {
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : inRange(vfLength, 0, kMaxVFLength);
+          : inRange(vfLength, 0, k8BitMaxShortVF);
 
   /// Returns _true_ if [vList].length is valid for [DT].
   static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
@@ -803,7 +807,7 @@ abstract class DT extends StringBase {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (!DcmDateTime.isValidString(s, issues: issues))
+    return (DcmDateTime.isValidString(s, issues: issues))
         ? true
         : invalidString('Invalid Date Time (DT): "$s"', issues);
   }
@@ -815,6 +819,20 @@ abstract class DT extends StringBase {
 /// [See PS3.18, TM](http://dicom.nema.org/medical/dicom/current/output/
 /// html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
 abstract class TM extends StringBase {
+  static const int kVRIndex = kTMIndex;
+  static const int kVRCode = kTMCode;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMinValueLength = 2;
+  static const int kMaxValueLength = 13;
+
+  static const String kVRName = 'Time';
+  static const String kVRKeyword = 'TM';
+
+  static const Type kType = TM;
+
+  static bool allowLowerCase = false;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -825,8 +843,6 @@ abstract class TM extends StringBase {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   Iterable<Time> get times => _times ??= values.map(Time.parse);
   Iterable<Time> _times;
@@ -850,17 +866,6 @@ abstract class TM extends StringBase {
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   void clearTimes() => _times = null;
-
-  static const bool kIsAsciiRequired = true;
-  static bool allowLowerCase = false;
-  static const int kVRIndex = kTMIndex;
-  static const int kVRCode = kTMCode;
-  static const String kVRKeyword = 'TM';
-  static const String kVRName = 'Time';
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMinValueLength = 2;
-  static const int kMaxValueLength = 13;
 
   // **** Generalized static methods
 

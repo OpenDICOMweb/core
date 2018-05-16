@@ -31,7 +31,7 @@ abstract class SQ extends Element<Item> {
   @override
   Iterable<Item> get values;
   @override
-  set values(Iterable<Item> vList) => unsupportedError('StringBase.values');
+ set values(Iterable<Item> vList);
 
   /// The DICOM name for Sequence values, which are Items.
   Iterable<Item> get items => (values is List) ? values : values.toList();
@@ -61,6 +61,8 @@ abstract class SQ extends Element<Item> {
   int get lengthInBytes => unimplementedError();
   @override
   int get vfLengthField;
+  @override
+  bool get isLengthAlwaysValid => true;
   @override
   bool get isUndefinedLengthAllowed => true;
   @override

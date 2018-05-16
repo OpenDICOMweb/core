@@ -9,9 +9,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
 import 'package:core/src/element/base/crypto.dart';
+import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/integer/special_mixin.dart';
 import 'package:core/src/element/base/integer/utils.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/element/base/vf_fragments.dart';
@@ -1133,6 +1134,25 @@ abstract class Uint64 {
     if (vf is Uint8List) return fromUint8List(vf);
     return badValues(vf);
   }
+}
+
+class IntBulkdataRef extends DelegatingList<int> with BulkdataRef<int> {
+  @override
+  int code;
+  @override
+  Uri uri;
+  List<int> _values;
+
+  IntBulkdataRef(this.code, this.uri, [this._values]) : super(_values);
+
+  IntBulkdataRef.fromString(this.code, String s, [this._values])
+      : uri = Uri.parse(s),
+        super(_values);
+
+  List<int> get delegate => _values;
+
+  @override
+  List<int> get values => _values ??= getBulkdata(code, uri);
 }
 
 int _toLength(int length, int vLength) =>

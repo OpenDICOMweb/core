@@ -29,6 +29,7 @@ import 'package:core/src/vr.dart';
 //       bool isEmptyStringAllowed = x;
 
 abstract class Utf8 extends StringBase {
+  static const bool kIsAsciiRequired = false;
   @override
   bool get isAsciiRequired => false;
   @override
@@ -36,15 +37,8 @@ abstract class Utf8 extends StringBase {
 
   Bytes get asBytes => Bytes.fromUtf8List(values, maxVFLength);
 
-  @override
-  TypedData get typedData =>
-      stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
-
   List<String> valuesFromBytes(Bytes bytes) =>
       bytes.getUtf8List(allowMalformed: global.allowMalformedUtf8);
-
-  Uint8List uint8ListFromValues(List<String> vList) =>
-      stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
 
   static List<String> fromValueField(Iterable vf, int maxVFLength,
       {bool isAscii: true}) {
@@ -59,6 +53,18 @@ abstract class Utf8 extends StringBase {
 
 /// A Long String (LO) Element
 abstract class LO extends Utf8 {
+  static const int kVRIndex = kLOIndex;
+  static const int kVRCode = kLOCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 64;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRKeyword = 'LO';
+  static const String kVRName = 'Long String';
+
+  static const Type kType = LO;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -68,25 +74,12 @@ abstract class LO extends Utf8 {
   @override
   String get vrName => kVRName;
   @override
-  bool get isAsciiRequired => false;
-  @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kLOIndex;
-  static const int kVRCode = kLOCode;
-  static const String kVRKeyword = 'LO';
-  static const String kVRName = 'Long String';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 64;
 
   // **** Generalized static methods
 
@@ -159,6 +152,11 @@ abstract class LO extends Utf8 {
 /// A Private Creator [Element] is a subtype of [LO]. It always has a tag
 /// of the form (gggg,00cc), where 0x10 <= cc <= 0xFF..
 abstract class PC extends LO {
+  static const String kVRKeyword = 'PC';
+  static const String kVRName = 'Private Creator';
+
+  static const Type kType = PC;
+
   String get token;
 
   /// The Value Field which contains a [String] that identifies the
@@ -184,8 +182,6 @@ abstract class PC extends LO {
     return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
   }
 
-  static const String kVRKeyword = 'PC';
-  static const String kVRName = 'Private Creator';
 
 // **** Specialized static methods
 // **** Generalized static methods
@@ -193,6 +189,18 @@ abstract class PC extends LO {
 
 /// A Person Name ([PN]) [Element].
 abstract class PN extends Utf8 {
+  static const int kVRIndex = kPNIndex;
+  static const int kVRCode = kPNCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 3 * 64;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRKeyword = 'PN';
+  static const String kVRName = 'Person Name';
+
+  static const Type kType = PN;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -202,11 +210,7 @@ abstract class PN extends Utf8 {
   @override
   String get vrName => kVRName;
   @override
-  bool get isAsciiRequired => false;
-  @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   Iterable<PersonName> get names => _names ??= values.map(PersonName.parse);
   Iterable<PersonName> _names;
@@ -223,16 +227,6 @@ abstract class PN extends Utf8 {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kPNIndex;
-  static const int kVRCode = kPNCode;
-  static const String kVRKeyword = 'PN';
-  static const String kVRName = 'Person Name';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 3 * 64;
 
   // **** Generalized static methods
 
@@ -304,6 +298,19 @@ abstract class PN extends Utf8 {
 
 /// A Short String (SH) Element
 abstract class SH extends Utf8 {
+  static const bool kIsAsciiRequired = false;
+  static const int kVRIndex = kSHIndex;
+  static const int kVRCode = kSHCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 16;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+
+  static const String kVRKeyword = 'SH';
+  static const String kVRName = 'Short String';
+
+  static const Type kType = SH;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -316,22 +323,10 @@ abstract class SH extends Utf8 {
   bool get isAsciiRequired => false;
   @override
   int get maxLength => kMaxLength;
-  @override
-  int get maxVFLength => kMaxVFLength;
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kSHIndex;
-  static const int kVRCode = kSHCode;
-  static const String kVRKeyword = 'SH';
-  static const String kVRName = 'Short String';
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ 2;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 16;
 
   // **** Generalized static methods
 
@@ -403,6 +398,19 @@ abstract class SH extends Utf8 {
 
 /// An Unlimited Characters (UC) Element
 abstract class UC extends Utf8 {
+  static const bool kIsAsciiRequired = false;
+  static const int kVRIndex = kUCIndex;
+  static const int kVRCode = kUCCode;
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = k8BitMaxLongVF ~/ (kMinValueLength + 1);
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = kMaxLongVF;
+
+  static const String kVRKeyword = 'UC';
+  static const String kVRName = 'Unlimited Characters';
+
+  static const Type kType = UC;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -412,25 +420,15 @@ abstract class UC extends Utf8 {
   @override
   String get vrName => kVRName;
   @override
-  int get vlfSize => 4;
-  @override
   int get maxLength => kMaxLength;
   @override
   int get maxVFLength => kMaxVFLength;
+  @override
+  int get vlfSize => 4;
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kUCIndex;
-  static const int kVRCode = kUCCode;
-  static const String kVRKeyword = 'UC';
-  static const String kVRName = 'Unlimited Characters';
-  static const int kMaxVFLength = kMaxLongVF;
-  static const int kMaxLength = kMaxLongVF ~/ 2;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = kMaxLongVF;
 
   // **** Generalized static methods
 

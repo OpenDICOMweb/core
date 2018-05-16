@@ -20,6 +20,7 @@ export 'package:core/src/vr/vr_base.dart';
 // **** This file contains low-level [String] functions
 
 bool inRange(int v, int min, int max) => v >= min && v <= max;
+
 bool notInRange(int n, int min, int max) => !inRange(n, min, max);
 
 /// Checks that vfLength (vfl) is in range and the right size, based on the

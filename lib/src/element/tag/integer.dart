@@ -109,7 +109,7 @@ class OBtag extends OB with TagElement<int> {
   }
 
   OBtag._x(this.tag, this.values, this.vfLengthField)
-      : assert(tag.vrIndex == kOBIndex);
+      : assert(tag.vrIndex == kOBIndex || tag.vrIndex == kOBOWIndex);
 
   @override
   OBtag update([Iterable<int> vList = kEmptyIntList]) =>
@@ -203,12 +203,11 @@ class UNtag extends UN with TagElement<int> {
     if (!UN.isValidArgs(tag, vList)) return badValues(vList, null, tag);
     final v = Uint8.fromList(vList);
     return (tag.code == kPixelData)
-           ? new UNtagPixelData._x(v, vlf, ts)
-           : new UNtag._x(tag, v, v.length);
+        ? new UNtagPixelData._x(v, vlf, ts)
+        : new UNtag._x(tag, v, v.length);
   }
 
-  UNtag._x(this.tag, this.values, this.vfLengthField)
-      : assert(tag.vrIndex == kUNIndex);
+  UNtag._x(this.tag, this.values, this.vfLengthField);
 
   @override
   UNtag update([Iterable<int> vList = kEmptyIntList]) => new UNtag(tag, vList);
@@ -331,7 +330,7 @@ class OWtag extends OW with TagElement<int> {
       new OWtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
 
   factory OWtag._(Tag tag, Iterable<int> vList, int vlf, TransferSyntax ts) {
-    if (!OWPixelData.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    if (!OW.isValidArgs(tag, vList)) return badValues(vList, null, tag);
     final v = Uint16.fromList(vList);
     return (tag.code == kPixelData)
         ? new OWtagPixelData._(tag, v, vlf, ts)
@@ -339,7 +338,8 @@ class OWtag extends OW with TagElement<int> {
   }
 
   OWtag._x(this.tag, this.values, this.vfLengthField)
-      : assert(tag.vrIndex == kOWIndex);
+      : assert(tag.vrIndex == kOWIndex || tag.vrIndex == kOBOWIndex,
+            'vrIndex: ${tag.vrIndex}');
 
   @override
   OWtag update([Iterable<int> vList = kEmptyIntList]) => new OWtag(tag, vList);
@@ -350,7 +350,7 @@ class OWtag extends OW with TagElement<int> {
 
   static OWtag fromBytes(Tag tag, Bytes bytes,
           [int vfLengthField, TransferSyntax ts]) =>
-      OWPixelData.isValidBytesArgs(tag, bytes, vfLengthField)
+      OW.isValidBytesArgs(tag, bytes, vfLengthField)
           ? new OWtag._(tag, bytes.asUint16List(), vfLengthField, ts)
           : badTag(tag, null, OW);
 }
@@ -537,6 +537,3 @@ class ATtag extends AT with TagElement<int> {
           ? new ATtag._x(tag, bytes.asUint32List())
           : badTag(tag, null, AT);
 }
-
-
-

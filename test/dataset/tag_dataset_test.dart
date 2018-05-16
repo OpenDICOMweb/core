@@ -471,6 +471,7 @@ void main() {
     });
 
     test('removeDuplicates', () {
+      global.throwOnError = false;
       final un0 = new UNtag(PTag.kAirCounts, [1]);
       final un1 = new UNtag(PTag.kAirCounts, [2]);
       final aeOB0 = new OBtag(PTag.kDarkCurrentCounts, [3]);
@@ -485,6 +486,7 @@ void main() {
 
       rds.allowDuplicates = false;
       global.throwOnError = true;
+
       expect(() => rds.add(un1),
           throwsA(const isInstanceOf<DuplicateElementError>()));
       rds.add(aeOB0);

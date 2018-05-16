@@ -35,6 +35,7 @@ void main() {
 
     test('Create Unencapsulated OBtagPixelData', () {
       final ob0 = new OBtagPixelData(PTag.kPixelDataOB, pixels, pixels.length);
+      log.debug('tag: ${PTag.kPixelDataOB}');
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
       expect(ob0.values is List<int>, true);

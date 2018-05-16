@@ -51,6 +51,7 @@ const int kMaxLongVF = kUndefinedLength - 1;
 
 /// The maximum length of a long Value Field containing 8-bit values.
 const int k8BitMaxLongVF = kMaxLongVF;
+const int k8BitMaxLongLength = k8BitMaxLongVF;
 
 /// The maximum length of a long Value Field containing 16-bit values.
 const int k16BitMaxLongVF = kMaxLongVF;

@@ -23,11 +23,11 @@ import 'package:core/src/vr.dart';
 ///
 /// A Sequence contains a [List] of [TagItem]s, where each
 /// [TagItem] is a TagDataset.
-class SQtag extends SQ with TagElement<TagItem> {
+class SQtag extends SQ with TagElement<Item> {
   @override
   final Tag tag;
   @override
-  final Iterable<TagItem> values;
+  Iterable<Item> values;
 
   /// The [Dataset] that contains _this_.
   @override

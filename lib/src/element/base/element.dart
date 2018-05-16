@@ -206,7 +206,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Returns _true_ for OB, OD, OF, OL, OW, SQ, UN, and UR, which
   /// MUST override this Getter; otherwise, false.
-  bool get isLengthAlwaysValid => false;
+  bool get isLengthAlwaysValid;
 
   // ******* Value Multiplicity related Getters and Methods *******
   // **************************************************************

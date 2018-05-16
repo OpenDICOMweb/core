@@ -19,7 +19,7 @@ import 'package:core/src/utils/string/string.dart';
 // **** This file contains low-level [String] functions
 
 /// Returns the number of code points, plus separators, plus padding.
-int stringListLength(Iterable<String> sList,
+int _stringListLength(Iterable<String> sList,
     {String separator = '\\', bool pad = true}) {
   if (sList.isEmpty) return 0;
   var len = sList.fold(0, _combineSLength);
@@ -30,14 +30,14 @@ int stringListLength(Iterable<String> sList,
 
 int _combineSLength(int v, String s) => v + s.length;
 
-/*
+
 // TODO: unit test
-int joinLength(Iterable<String> sList,
+int stringListLength(Iterable<String> sList,
         {String separator = '\\', bool pad = true}) =>
     (sList.isEmpty)
         ? 0
-        : stringListLength(sList, pad: pad) + (sList.length - 1);
-*/
+        : _stringListLength(sList, pad: pad) + (sList.length - 1);
+
 
 String stringListToString(List<String> sList, [String separator = '\\']) {
   if (sList == null) return null;
