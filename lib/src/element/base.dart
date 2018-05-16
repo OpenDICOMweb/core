@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 export 'package:core/src/element/base/a_type.dart';
 export 'package:core/src/element/base/bulkdata.dart';
 export 'package:core/src/element/base/crypto.dart';
@@ -16,11 +15,13 @@ export 'package:core/src/element/base/float/float_mixin.dart';
 export 'package:core/src/element/base/integer/integer.dart';
 export 'package:core/src/element/base/integer/integer_mixin.dart';
 export 'package:core/src/element/base/integer/pixel_data.dart';
+export 'package:core/src/element/base/integer/special_mixin.dart';
 export 'package:core/src/element/base/meta.dart';
 export 'package:core/src/element/base/sequence.dart';
 export 'package:core/src/element/base/string/ascii.dart';
+export 'package:core/src/element/base/string/number.dart';
 export 'package:core/src/element/base/string/string.dart';
-export 'package:core/src/element/base/string/string.dart';
+export 'package:core/src/element/base/string/string_bulkdata.dart';
 export 'package:core/src/element/base/string/text.dart';
 export 'package:core/src/element/base/string/utf8.dart';
 export 'package:core/src/element/base/vf_fragments.dart';

@@ -9,6 +9,7 @@
 import 'package:core/src/error/utils.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/system.dart';
+import 'package:core/src/utils.dart';
 
 /// These are errors that are used throughout the Core package.
 
@@ -76,4 +77,18 @@ Null invalidKey<K>(K key, [String msg]) {
   log.error(msg);
   if (throwOnError) throw new InvalidKeyError(key);
   return null;
+}
+
+Null badTypedDataLength(int length, int maxLength, [Issues issues]) {
+  final s = 'Invalid TypedData length($length): '
+      '$length exceeds maximum($maxLength)';
+  log.error(s);
+  if (issues != null) issues.add(s);
+  if (throwOnError) throw new GeneralError(s);
+  return null;
+}
+
+bool invalidTypedDataLength(int vfLength, int maxVFLength, [Issues issues]) {
+  badTypedDataLength(vfLength, maxVFLength, issues);
+  return false;
 }

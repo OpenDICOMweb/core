@@ -75,7 +75,7 @@ class AEtag extends AE with TagElement<String> {
   static AEtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static AEtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (AE.isNotValidTag(tag)) ? null : new AEtag._(tag, bytes.getAsciiList());
+      (!AE.isValidTag(tag)) ? null : new AEtag._(tag, bytes.getAsciiList());
 }
 
 class CStag extends CS with TagElement<String> {
@@ -105,7 +105,7 @@ class CStag extends CS with TagElement<String> {
   static CStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static CStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (CS.isNotValidTag(tag)) ? null : new CStag._(tag, bytes.getAsciiList());
+      (!CS.isValidTag(tag)) ? null : new CStag._(tag, bytes.getAsciiList());
 }
 
 class DStag extends DS with TagElement<String> {
@@ -115,27 +115,26 @@ class DStag extends DS with TagElement<String> {
   Iterable<String> values;
 
   factory DStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
+      new DStag._(tag, vList);
+
+  factory DStag._(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (DS.isValidArgs(tag, vList))
-          ? new DStag._(tag, vList)
+          ? new DStag._x(tag, vList)
           : badValues(vList, null, tag);
 
-  DStag._(this.tag, this.values);
+  DStag._x(this.tag, this.values);
 
   @override
   DStag update([Iterable<String> vList = kEmptyStringList]) =>
-      new DStag(tag, vList ?? kEmptyStringList);
+      new DStag._(tag, vList ?? kEmptyStringList);
 
-  static DStag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new DStag(tag, vList ?? kEmptyStringList);
+  static DStag fromValues(Tag tag, Iterable<String> vList) =>
+      new DStag._(tag, vList ?? kEmptyStringList);
 
-  static DStag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(tag, new Bytes.typedDataView(bytes));
-
-  static DStag from(Element e) => fromBytes(e.tag, e.vfBytes);
-
-  static DStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (DS.isNotValidTag(tag)) ? null : new DStag._(tag, bytes.getAsciiList());
+  static DStag fromBytes(Tag tag, Bytes bytes) =>
+      (DS.isValidBytesArgs(tag, bytes))
+          ? new DStag._(tag, bytes.getAsciiList())
+          : badTag(tag, null, DS);
 }
 
 class IStag extends IS with TagElement<String> {
@@ -165,7 +164,7 @@ class IStag extends IS with TagElement<String> {
   static IStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static IStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (IS.isNotValidTag(tag)) ? null : new IStag._(tag, bytes.getAsciiList());
+      (!IS.isValidTag(tag)) ? null : new IStag._(tag, bytes.getAsciiList());
 }
 
 /// A Long String (LO) Element
@@ -196,7 +195,7 @@ class LOtag extends LO with TagElement<String> {
   static LOtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static LOtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (LO.isNotValidTag(tag)) ? null : new LOtag._(tag, bytes.getUtf8List());
+      (!LO.isValidTag(tag)) ? null : new LOtag._(tag, bytes.getUtf8List());
 }
 
 class PCtag extends PC with TagElement<String> {
@@ -232,7 +231,7 @@ class PCtag extends PC with TagElement<String> {
   static PCtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static PCtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (LO.isNotValidTag(tag)) ? null : new PCtag._(tag, bytes.getUtf8List());
+      (!LO.isValidTag(tag)) ? null : new PCtag._(tag, bytes.getUtf8List());
 
   static PCtag makePhantom(int group, int subgroup) {
     const name = PDTag.phantomName;
@@ -278,7 +277,7 @@ class LTtag extends LT with TagElement<String> {
   static LTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static LTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (LT.isNotValidTag(tag)) ? null : new LTtag._(tag, [bytes.getUtf8()]);
+      (!LT.isValidTag(tag)) ? null : new LTtag._(tag, [bytes.getUtf8()]);
 }
 
 /// A Person Name ([PN]) Element.
@@ -309,7 +308,7 @@ class PNtag extends PN with TagElement<String> {
   static PNtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static PNtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (PN.isNotValidTag(tag)) ? null : new PNtag._(tag, bytes.getUtf8List());
+      (!PN.isValidTag(tag)) ? null : new PNtag._(tag, bytes.getUtf8List());
 }
 
 /// A Short String (SH) Element
@@ -340,7 +339,7 @@ class SHtag extends SH with TagElement<String> {
   static SHtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static SHtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (SH.isNotValidTag(tag)) ? null : new SHtag._(tag, bytes.getUtf8List());
+      (!SH.isValidTag(tag)) ? null : new SHtag._(tag, bytes.getUtf8List());
 }
 
 /// An Short Text (ST) Element
@@ -371,7 +370,7 @@ class STtag extends ST with TagElement<String> {
   static STtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static STtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (ST.isNotValidTag(tag)) ? null : new STtag._(tag, [bytes.getUtf8()]);
+      (!ST.isValidTag(tag)) ? null : new STtag._(tag, [bytes.getUtf8()]);
 }
 
 /// An Unlimited Characters (UC) Element
@@ -402,7 +401,7 @@ class UCtag extends UC with TagElement<String> {
   static UCtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static UCtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (UC.isNotValidTag(tag)) ? null : new UCtag._(tag, bytes.getUtf8List());
+      (!UC.isValidTag(tag)) ? null : new UCtag._(tag, bytes.getUtf8List());
 }
 
 class UItag extends UI with TagElement<String> {
@@ -454,7 +453,7 @@ class UItag extends UI with TagElement<String> {
   static UItag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static UItag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (UI.isNotValidTag(tag)) ? null : new UItag(tag, bytes.getAsciiList());
+      (!UI.isValidTag(tag)) ? null : new UItag(tag, bytes.getAsciiList());
 }
 
 /// Value Representation of [Uri].
@@ -487,7 +486,7 @@ class URtag extends UR with TagElement<String> {
   static URtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static URtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (UR.isNotValidTag(tag)) ? null : new URtag._(tag, [bytes.getUtf8()]);
+      (!UR.isValidTag(tag)) ? null : new URtag._(tag, [bytes.getUtf8()]);
 }
 
 /// An Unlimited Text (UT) Element
@@ -518,7 +517,7 @@ class UTtag extends UT with TagElement<String> {
   static UTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static UTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (UT.isNotValidTag(tag)) ? null : new UTtag._(tag, [bytes.getUtf8()]);
+      (!UT.isValidTag(tag)) ? null : new UTtag._(tag, [bytes.getUtf8()]);
 }
 
 // **** Date/Time classes
@@ -556,7 +555,7 @@ class AStag extends AS with TagElement<String> {
   static AStag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static AStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (bytes == null || AS.isNotValidTag(tag))
+      (bytes == null || !AS.isValidTag(tag))
           ? null
           : new AStag(tag, bytes.getAsciiList());
 
@@ -598,7 +597,7 @@ class DAtag extends DA with TagElement<String> {
   static DAtag from(Element e) => new DAtag(e.tag, e.values);
 
   static DAtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (DA.isNotValidTag(tag)) ? null : new DAtag._(tag, bytes.getAsciiList());
+      (!DA.isValidTag(tag)) ? null : new DAtag._(tag, bytes.getAsciiList());
 }
 
 /// A DICOM DateTime [DT] [Element].
@@ -632,7 +631,7 @@ class DTtag extends DT with TagElement<String> {
   static DTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static DTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (DT.isNotValidTag(tag)) ? null : new DTtag._(tag, bytes.getAsciiList());
+      (!DT.isValidTag(tag)) ? null : new DTtag._(tag, bytes.getAsciiList());
 }
 
 /// The DICOM [TM] (Time) [Element].
@@ -667,5 +666,5 @@ class TMtag extends TM with TagElement<String> {
   static TMtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static TMtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (TM.isNotValidTag(tag)) ? null : new TMtag._(tag, bytes.getAsciiList());
+      (!TM.isValidTag(tag)) ? null : new TMtag._(tag, bytes.getAsciiList());
 }

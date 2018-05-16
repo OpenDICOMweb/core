@@ -438,7 +438,7 @@ abstract class ElementMixin<V> {
     return true;
   }
 
-  static bool isValidVListLength<V>(
+  static bool isValidLength<V>(
       Tag tag, Iterable<V> vList, Issues issues, int maxLength) {
     assert(tag != null && vList != null);
     if (tag.isLengthAlwaysValid || vList.isEmpty) return true;

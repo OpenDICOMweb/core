@@ -19,6 +19,7 @@ abstract class ElementFormatterBase {
   /// If _true_ the result includes some representation of e.values;
   /// otherwise, only e.values.length will be represented.
   bool _withValues;
+  bool debugMode = false;
 
   ElementFormatterBase._(this.truncatedValuesLength, this._withValues);
 
@@ -77,7 +78,8 @@ abstract class ElementFormatterBase {
     final values = e.values;
     final vLength = values.length;
 
-    final sb = new StringBuffer('$runtimeType: ')
+    final name = (debugMode) ? '$runtimeType' : '';
+    final sb = new StringBuffer(name)
       ..write(tag(e, vLength))
       ..write(_vfLength(vfLength))
       ..write(_values(values, maxValues));

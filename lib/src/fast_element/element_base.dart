@@ -167,9 +167,9 @@ abstract class Float extends FastElementBase<double> {
       true;
 
   /// Returns _true_ if each value in [vList] is valid.
-  static bool isValidValues(
-      Tag tag, Iterable<double> vList, Issues issues, int maxVListLength) {
-    if (!Element.isValidVListLength(tag, vList, issues, maxVListLength))
+  static bool isValidValues(Tag tag, Iterable<double> vList, Issues issues,
+      int maxVListLength, Type type) {
+    if (!Element.isValidLength(tag, vList, issues, maxVListLength, type))
       return false;
     return true;
   }
@@ -294,30 +294,21 @@ abstract class FL extends Float with Float32Mixin {
           [int min = 0, int max = kMaxVFLength]) =>
       _isValidVFLength(length, min, max, kSizeInBytes);
 
-  static bool isValidLength(Tag tag, Iterable<double> vList, [Issues issues]) =>
-      _isValidLength(tag, vList, issues, kVRIndex);
-/*
-      (tag.vrIndex != kVRIndex)
-          ? VR.invalidIndex(tag.vrIndex, issues, kVRIndex)
-          : tag.isValidValuesLength(vList, issues);
-*/
+  /// Returns _true_ if [vList].length is valid for [UC].
+  static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, UC);
+    if (vList == null) return nullValueError();
+    return Element.isValidLength(tag, vList, issues, kMaxLength, UC);
+  }
 
   /// Returns _true_ if each value in [vList] is valid.
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
       isValidVRIndex(tag.vrIndex) &&
-      Float.isValidValues(tag, vList, issues, kMaxLength);
+      Float.isValidValues(tag, vList, issues, kMaxLength, FL);
 
   /// Returns _true_ if [value] is valid for [FL] VR.
   static bool isValidValue(double value, [Issues issues]) => true;
 }
-
-bool _isValidLength(
-        Tag tag, Iterable<double> vList, Issues issues, int correctVRIndex) =>
-    (tag.vrIndex != correctVRIndex)
-        ? VR.invalidIndex(tag.vrIndex, issues, correctVRIndex)
-        : tag.isValidValuesLength(vList, issues);
-
-
 
 abstract class OF extends Float with Float32Mixin {
   OF(int bits, Iterable<double> vList) : super(bits, vList);
@@ -376,7 +367,7 @@ abstract class OF extends Float with Float32Mixin {
 
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
       isValidVRIndex(tag.vrIndex) &&
-      Float.isValidValues(tag, vList, issues, kMaxLength);
+      Float.isValidValues(tag, vList, issues, kMaxLength, OF);
 }
 
 /// An abstract class for 64-bit floating point [Element]s.
@@ -504,11 +495,11 @@ abstract class FD extends Float with Float64Mixin {
       _isValidVFLength(length, min, max, kSizeInBytes);
 
   static bool isValidLength(Tag tag, Iterable<double> vList, [Issues issues]) =>
-      Element.isValidVListLength(tag, vList, issues, kMaxLength);
+      Element.isValidLength(tag, vList, issues, kMaxLength, FD);
 
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
       isValidVRIndex(tag.vrIndex) &&
-      Float.isValidValues(tag, vList, issues, kMaxLength);
+      Float.isValidValues(tag, vList, issues, kMaxLength, FD);
 }
 
 abstract class OD extends Float with Float64Mixin {
@@ -541,9 +532,9 @@ abstract class OD extends Float with Float64Mixin {
   static const int kMaxVFLength = k64BitMaxLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
-  static bool isValidArgs(Tag tag, Iterable<double> vList) =>
-    (!doTestValidity) ? true
-    : (vList != null && isValidTag(tag) && isValidValues(tag, vList));
+  static bool isValidArgs(Tag tag, Iterable<double> vList) => (!doTestValidity)
+      ? true
+      : (vList != null && isValidTag(tag) && isValidValues(tag, vList));
 
   static bool isValidTag(Tag tag) => isValidVRIndex(tag.vrIndex);
 
@@ -561,7 +552,7 @@ abstract class OD extends Float with Float64Mixin {
 
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
       isValidVRIndex(tag.vrIndex) &&
-      Float.isValidValues(tag, vList, issues, kMaxLength);
+      Float.isValidValues(tag, vList, issues, kMaxLength, OD);
 }
 
 int _toLength(int length, int vLength) =>

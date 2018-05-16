@@ -345,11 +345,10 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
-        final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
+        final e0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
         final vList1 = rng.uint32List(1, 1);
-        final ul0a = ul0.replace(vList1);
-        expect(ul0.replace(vList1), equals(vList1));
-        expect(ul0.values, equals(vList1));
+        expect(e0.replace(vList1), equals(vList0));
+        expect(e0.values, equals(vList1));
       }
 
       final vList2 = rng.uint32List(1, 1);
@@ -378,7 +377,7 @@ void main() {
       final bytes = new Bytes.typedDataView(vList);
       final s = bytes.getBase64();
       final bytes1 = Bytes.fromBase64(s);
-      final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
+      final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes1);
       expect(ul0.hasValidValues, true);
     });
 

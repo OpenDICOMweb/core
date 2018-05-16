@@ -41,6 +41,8 @@ typedef bool Condition(Dataset ds, Element e);
 Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
 
+final SimpleElementFormatter eFormat = new SimpleElementFormatter();
+
 // All add, replace, and remove operations should
 // be done by calling add, replace, and remove methods in [Dataset].
 
@@ -452,7 +454,6 @@ abstract class Element<V> extends ListBase<V> {
   // String format(Formatter z) => '${z(info)}\n';
   // String format(Formatter z) => z.fmt(this, elements);
 
-  final SimpleElementFormatter eFormat = new SimpleElementFormatter();
   @override
   String toString() => eFormat.asString(this);
 
@@ -474,24 +475,6 @@ abstract class Element<V> extends ListBase<V> {
     return true;
   }
 
-  static bool isValidVListLength<V>(
-      Tag tag, Iterable<V> vList, Issues issues, int maxLength) {
-    if (tag == null) return invalidTag(tag, null, Element);
-    final min = tag.vmMin;
-    final max = tag.vmMax;
-    if (vList == null) return invalidValuesLength(vList, min, max);
-    if (tag.isLengthAlwaysValid || vList.isEmpty) return true;
-    final length = vList.length;
-    if (length >= min &&
-        (length <= max || (max == -1 && length <= maxLength)) &&
-        (length % tag.vmColumns == 0)) return true;
-    return invalidValues(vList, issues, tag);
-  }
-
-  static bool isNotValidVListLength<V>(
-          Tag tag, Iterable<V> vList, Issues issues, int maxLength) =>
-      !isValidVListLength(tag, vList, issues, maxLength);
-
   /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
   /// is used.
@@ -499,4 +482,26 @@ abstract class Element<V> extends ListBase<V> {
       (doTestElementValidity && tag.vrIndex != targetVR)
           ? invalidTag(tag, issues, type)
           : true;
+
+  static bool isValidLength<V>(
+      Tag tag, Iterable<V> vList, Issues issues, int maxLengthForVR, Type type) {
+    if (tag == null) return invalidTag(tag, issues, type);
+    if (vList == null) return nullValueError();
+    final min = tag.vmMin;
+    final max = tag.vm.max(maxLengthForVR);
+    return (vList != null &&
+            (tag.isLengthAlwaysValid ||
+                vList.isEmpty ||
+                _isValidLength(vList.length, min, max, tag.columns)))
+        ? true
+        : invalidValuesLength(vList, min, max, issues, tag);
+  }
+
+  static bool isNotValidLength<V>(Tag tag, Iterable<V> vList, Issues issues,
+          int maxLength, Type type) =>
+      !isValidLength(tag, vList, issues, maxLength, type);
 }
+
+bool _isValidLength(int length, int min, int max, int columns) => (length == 0)
+    ? true
+    : length >= min && length <= max && (length % columns) == 0;

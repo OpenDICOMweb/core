@@ -46,7 +46,6 @@ Null nullElement([String message = '']) {
 Null badIntElement(Element e, [Issues issues]) {
   final msg = 'Invalid Integer Element: $e';
   return elementError(msg, e, issues);
-
 }
 
 Null badFloatElement(Element e, [Issues issues]) {
@@ -83,9 +82,9 @@ Null badValueField(String message, [Bytes vfBytes, Issues issues]) {
 }
 
 String _invalidVFMsg(String msg, [Bytes vfBytes]) {
-  final msg1 = (vfBytes != null) ?  '- vfLength(${vfBytes.length})' : '';
-    'Invalid Value Field Error: $msg$msg1';
-    return msg1;
+  final msg1 = (vfBytes != null) ? '- vfLength(${vfBytes.length})' : '';
+  'Invalid Value Field Error: $msg$msg1';
+  return msg1;
 }
 
 bool invalidValueField(String message, [Bytes vfBytes]) {
@@ -93,25 +92,6 @@ bool invalidValueField(String message, [Bytes vfBytes]) {
   return false;
 }
 
-Null badVFLength(int vfLength, int maxVFLength,
-    [int eSize, int vfLengthField]) {
-  final sb = new StringBuffer('Invalid Value Field Length($vfLength):\n');
-  if (vfLength > maxVFLength)
-    sb.writeln('\t$vfLength exceeds maximum($maxVFLength)');
-  if (eSize != null && vfLength % eSize == 0)
-    sb.writeln('$vfLength is not a multiple of element size($eSize)');
-  if (vfLengthField != null &&
-      (vfLengthField != vfLength || vfLengthField != kUndefinedLength))
-    sb.writeln('Invalid vfLengthField($vfLengthField) != vfLength($vfLength) '
-        'and not equal to kUndefinedLength($kUndefinedLength');
-  return badValueField('$sb');
-}
-
-bool invalidVFLength(int vfLength, int maxVFLength,
-    [int eSize, int vfLengthField]) {
-  badVFLength(vfLength, maxVFLength, eSize, vfLengthField);
-  return false;
-}
 
 class InvalidValuesError extends Error {
   final String msg;
@@ -146,13 +126,13 @@ Null badValuesLength(Iterable values, int vmMin, int vmMax,
   final length = values.length;
   final s = length == null ? 'null' : '$length';
   final msg = 'InvalidValuesLengthError: '
-      'vmMin($vmMin) <= $s <= vmMax($vmMax) values: $values';
+      'vmMin($vmMin) <= $s <= vmMax($vmMax})';
   return _badValuesError(msg, values, issues, tag);
 }
 
 bool invalidValuesLength(Iterable values, int vmMin, int vmMax,
-    [Issues issues]) {
-  badValuesLength(values, vmMin, vmMax, issues);
+    [Issues issues, Tag tag]) {
+  badValuesLength(values, vmMin, vmMax, issues, tag);
   return false;
 }
 
@@ -161,4 +141,3 @@ Null valueOutOfRangeError(Object value, Issues issues, int min, int max) {
   _badValuesError(msg, [value], issues, null);
   return null;
 }
-

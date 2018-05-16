@@ -12,6 +12,7 @@ import 'dart:convert' as cvt;
 import 'package:core/src/error.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/ie_type.dart';
@@ -75,7 +76,7 @@ abstract class Tag {
   String get name; // => 'Unknown Tag';
   VM get vm => VM.k1_n;
   int get vmMin => vm.min;
-  int get vmMax => vm.max;
+  int get vmMax => vm.max(vr.maxLength);
   int get vmColumns => vm.columns;
 
 /*
@@ -146,10 +147,7 @@ abstract class Tag {
   int get minValues => vm.min;
 
   /// Returns the maximum number of values allowed for this [Tag].
-  int get maxValues {
-    final max = vm.max;
-    return (max == -1) ? vr.maxLength : vm.max;
-  }
+  int get maxValues => vm.max(vr.maxLength);
 
   int get columns => vm.columns;
 
@@ -260,16 +258,36 @@ abstract class Tag {
   /// Returns _true_  if [vfLength] is a valid
   /// Value Field length for _this_ [Tag].
   bool isValidVFLength(int vfLength, [Issues issues]) {
-    assert(vfLength >= 0 && vfLength <= vr.maxVFLength);
     if (isVFLengthAlwaysValid(vrIndex)) return true;
-    if (vr.isValidVFLength(vfLength, minValues, maxValues) &&
-        (vfLength % columns) == 0) return true;
+ //   final max = vr.maxVFLength;
+    return vr.isValidVFLength(vfLength, minValues, maxValues);
+/*
+    return (_isValidVFLength(vfLength, max))
+        ? true
+        : invalidVFLength(vfLength, max);
+*/
 
-    final msg = 'Invalid Value Field length: '
+/*    final msg = 'Invalid Value Field length: '
         'min($minValues) <= $vfLength <= max($maxValues)';
     if (issues != null) issues.add(msg);
     if (throwOnError) return invalidVFLength(vfLength, vr.maxVFLength);
     return false;
+    */
+  }
+
+  bool _isValidLength(int length, int min, int max, int columns) =>
+      (length == 0)
+          ? true
+          : length >= 0 && length <= max && (length % columns) == 0;
+
+  bool _isValidVFLength(int vfLength, int maxVFLength) =>
+      (vfLength >= 0 && vfLength <= maxVFLength)
+          ? true
+          : invalidVFLength(vfLength, maxVFLength);
+
+  bool __isValidVFLength(int vfLength, int maxVFLength) {
+    (vfLength >= 0 && vfLength <= maxVFLength) ? true : invalidVFLength(
+        vfLength, maxVFLength);
   }
 
   bool isNotValidVFLength(int vfLength, [Issues issues]) =>
@@ -708,7 +726,8 @@ abstract class Tag {
         : invalidTag(tag, issues, type);
   }
 
-  static const kSpecialSSVRs = const [kUSSSIndex, kUSSSOWIndex];
+  static const List<int> kSpecialSSVRs = const [kUSSSIndex, kUSSSOWIndex];
+
   /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
   /// is used.
@@ -717,8 +736,7 @@ abstract class Tag {
     if (!doTestElementValidity) return true;
     final vrIndex = tag.vrIndex;
     return (tag != null &&
-            (vrIndex == targetVR ||
-                kSpecialSSVRs.contains(vrIndex)))
+            (vrIndex == targetVR || kSpecialSSVRs.contains(vrIndex)))
         ? true
         : invalidTag(tag, issues, type);
   }

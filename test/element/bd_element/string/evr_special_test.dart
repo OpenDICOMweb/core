@@ -16,7 +16,7 @@ RNG rng = new RNG(1);
 
 // Urgent Jim: add dataset arguments and change tag to evr.
 void main() {
-  Server.initialize(name: 'bd_element/special_test', level: Level.info);
+  Server.initialize(name: 'bd_element/special_test', level: Level.debug);
 
   final rds = new ByteRootDataset.empty();
   group('AEbytes', () {
@@ -78,10 +78,10 @@ void main() {
 
     test('DSbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getDSList(1, 1);
+        final vList = rsg.getDSList(1, 1);
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-
-        final e0 = DSbytes.fromValues(kRequestedImageSize, vList0);
+        print('DS list: $vList');
+        final e0 = DSbytes.fromValues(kRequestedImageSize, vList);
         log.debug('ds0:$e0');
         expect(e0.hasValidValues, true);
 
@@ -159,12 +159,10 @@ void main() {
 
     test('DSbytes from VM.k1_2', () {
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getDSList(1, 2);
+        final vList = rsg.getDSList(1, 2);
         global.throwOnError = false;
-        final e0 = DSbytes.fromValues(kDetectorActiveDimensions, vList0);
+        final e0 = DSbytes.fromValues(kDetectorActiveDimensions, vList);
         log.debug('e0: $e0');
-//        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-
         final e1 = ByteElement.makeFromCode(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);

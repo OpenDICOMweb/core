@@ -643,13 +643,13 @@ void main() {
     });
 
     test('AS isNotValidVFLength good values', () {
-      expect(AS.isNotValidVFLength(AS.kMaxVFLength), false);
-      expect(AS.isNotValidVFLength(-1), true);
+      expect(AS.isValidVFLength(AS.kMaxVFLength), true);
+      expect(AS.isValidVFLength(4), true);
     });
 
     test('AS isNotValidVFLength bad values', () {
-      expect(AS.isNotValidVFLength(AS.kMaxVFLength), false);
-      expect(AS.isNotValidVFLength(0), false);
+      expect(AS.isValidVFLength(AS.kMaxVFLength), false);
+      expect(AS.isValidVFLength(0), false);
     });
 
     test('AS isValidValueLength good values', () {
@@ -673,17 +673,17 @@ void main() {
     test('AS isNotValidValueLength good values', () {
       for (var s in goodASList) {
         for (var a in s) {
-          expect(AS.isNotValidValueLength(a), false);
+          expect(AS.isValidValueLength(a), true);
         }
       }
-      expect(AS.isNotValidValueLength('001M'), false);
+      expect(AS.isValidValueLength('001M'), true);
     });
 
     test('AS isNotValidValueLength bad values', () {
       for (var s in badAgeLengthList) {
-        expect(AS.isNotValidValueLength(s), true);
+        expect(AS.isValidValueLength(s), false);
       }
-      expect(AS.isNotValidValueLength('00M'), true);
+      expect(AS.isValidValueLength('00M'), false);
     });
 
     test('AS isValidValue good values', () {
@@ -1638,13 +1638,13 @@ void main() {
     });
 
     test('DA isNotValidVFLength good values', () {
-      expect(DA.isNotValidVFLength(DA.kMaxVFLength), false);
-      expect(DA.isNotValidVFLength(0), false);
+      expect(DA.isValidVFLength(DA.kMaxVFLength), true);
+      expect(DA.isValidVFLength(0), true);
     });
 
     test('DA isNotValidVFLength bad values', () {
-      expect(DA.isNotValidVFLength(DA.kMaxVFLength + 1), true);
-      expect(DA.isNotValidVFLength(-1), true);
+      expect(DA.isValidVFLength(DA.kMaxVFLength + 1), false);
+      expect(DA.isValidVFLength(-1), false);
     });
 
     test('DA isValidValueLength good values', () {
@@ -1664,11 +1664,11 @@ void main() {
     test('DA isNotValidValueLength', () {
       for (var s in goodDAList) {
         for (var a in s) {
-          expect(DA.isNotValidValueLength(a), false);
+          expect(DA.isValidValueLength(a), true);
         }
       }
 
-      expect(DA.isNotValidValueLength('1994121256'), true);
+      expect(DA.isValidValueLength('1994121256'), false);
     });
 
     test('DA isValidValue good values', () {
@@ -2588,13 +2588,13 @@ void main() {
     });
 
     test('DT isNotValidVFLength good values', () {
-      expect(DT.isNotValidVFLength(DT.kMaxVFLength), false);
-      expect(DT.isNotValidVFLength(0), false);
+      expect(DT.isValidVFLength(DT.kMaxVFLength), true);
+      expect(DT.isValidVFLength(0), true);
     });
 
     test('DT isNotValidVFLength bad values', () {
-      expect(DT.isNotValidVFLength(DT.kMaxVFLength + 1), true);
-      expect(DT.isNotValidVFLength(-1), true);
+      expect(DT.isValidVFLength(DT.kMaxVFLength + 1), false);
+      expect(DT.isValidVFLength(-1), false);
     });
 
     test('DT isValidValueLength good values', () {
@@ -2619,11 +2619,11 @@ void main() {
     test('DT.isNotValidValueLength', () {
       for (var s in goodDTList) {
         for (var a in s) {
-          expect(DT.isNotValidValueLength(a), false);
+          expect(DT.isValidValueLength(a), true);
         }
       }
 
-      expect(DT.isNotValidValueLength('20170223122334.111111+1100000'), true);
+      expect(DT.isValidValueLength('20170223122334.111111+1100000'), false);
     });
 
     test('DT isValidValue good values', () {
@@ -3544,13 +3544,13 @@ void main() {
     });
 
     test('TM.isNotValidVFLength good values', () {
-      expect(TM.isNotValidVFLength(TM.kMaxVFLength), false);
-      expect(TM.isNotValidVFLength(0), false);
+      expect(TM.isValidVFLength(TM.kMaxVFLength), true);
+      expect(TM.isValidVFLength(0), true);
     });
 
     test('TM.isNotValidVFLength bad values', () {
-      expect(TM.isNotValidVFLength(TM.kMaxVFLength + 1), true);
-      expect(TM.isNotValidVFLength(-1), true);
+      expect(TM.isValidVFLength(TM.kMaxVFLength + 1), false);
+      expect(TM.isValidVFLength(-1), false);
     });
 
     test('TM isValidValueLength', () {
@@ -3568,7 +3568,7 @@ void main() {
     test('TM isNotValidValueLength', () {
       for (var s in goodTMList) {
         for (var a in s) {
-          expect(TM.isNotValidValueLength(a), false);
+          expect(TM.isValidValueLength(a), true);
         }
       }
 

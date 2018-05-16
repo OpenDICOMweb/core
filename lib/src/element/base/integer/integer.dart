@@ -9,6 +9,8 @@
 
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
+import 'package:core/src/element/base/integer/special_mixin.dart';
+import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
@@ -101,7 +103,7 @@ abstract class SS extends IntBase with Int16 {
   static bool isValidVFLength(int length, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(length, issues)
-          : _isValidVFLength(length, kMaxVFLength, kSizeInBytes);
+          : _isValidVFLength(length, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [SS].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -118,7 +120,7 @@ abstract class SS extends IntBase with Int16 {
 
   /// Returns _true_ if [tag] has a VR of [SS] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, SS);
 }
 
 /// Signed Long ([SL]) [Element].
@@ -172,23 +174,23 @@ abstract class SL extends IntBase with Int32 {
   /// Returns _true_ if [tag] is valid for [SL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kSLIndex, SL);
+      isValidTag_(tag, issues, kVRIndex, SL);
 
   /// Returns _true_ if [vrIndex] is valid for [SL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      VR.isValidIndex(vrIndex, issues, kSLIndex);
+      VR.isValidIndex(vrIndex, issues, kVRIndex);
 
   /// Returns _true_ if [vrCode] is valid for [SL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kSLCode);
+      VR.isValidCode(vrCode, issues, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for this [SL].
   static bool isValidVFLength(int length, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(length, issues)
-          : _isValidVFLength(length, kMaxVFLength, kSizeInBytes);
+          : _isValidVFLength(length, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [SL].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -205,7 +207,7 @@ abstract class SL extends IntBase with Int32 {
 
   /// Returns _true_ if [tag] has a VR of [SL] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, SL);
 }
 
 /// Other Byte [Element].
@@ -308,7 +310,12 @@ abstract class OB extends IntBase with OBMixin, Uint8 {
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
           : _isValidUVFLength(
-              vfLength, kMaxVFLength, kSizeInBytes, vfLengthField);
+              vfLength,
+              vfLengthField,
+              issues,
+              kMaxVFLength,
+              kSizeInBytes,
+            );
 
   /// Returns _true_ if [vList].length is valid for [OB].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -325,7 +332,7 @@ abstract class OB extends IntBase with OBMixin, Uint8 {
 
   /// Returns _true_ if [tag] has a VR of [OB] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, OB);
 }
 
 /// Unknown (UN) [Element].
@@ -414,7 +421,7 @@ abstract class UN extends IntBase with Uint8 {
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
           : _isValidUVFLength(
-              vfLength, kMaxVFLength, kSizeInBytes, vfLengthField);
+              vfLength, vfLengthField, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [UN].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -431,7 +438,7 @@ abstract class UN extends IntBase with Uint8 {
 
   /// Returns _true_ if [tag] has a VR of [UN] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, UN);
 }
 
 /// Other Byte [Element].
@@ -466,7 +473,7 @@ abstract class US extends IntBase with Uint16 {
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) =>
       Tag.isValidSpecialTag(tag, issues, kUSIndex, US) &&
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, US);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [US].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -517,7 +524,7 @@ abstract class US extends IntBase with Uint16 {
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : _isValidVFLength(vfLength, kMaxVFLength, kSizeInBytes);
+          : _isValidVFLength(vfLength, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [US].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -534,7 +541,7 @@ abstract class US extends IntBase with Uint16 {
 
   /// Returns _true_ if [tag] has a VR of [US] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, US);
 }
 
 /// Unknown (OW) [Element].
@@ -614,8 +621,8 @@ abstract class OW extends IntBase with Uint16 {
     final vrIndex = tag.vrIndex;
     return (tag != null &&
             (vrIndex == kOWIndex || kSpecialOWVRs.contains(vrIndex)))
-           ? true
-           : invalidTag(tag, issues, US);
+        ? true
+        : invalidTag(tag, issues, US);
   }
 
   /// Returns _true_ if [vrIndex] is valid for [OW].
@@ -640,7 +647,7 @@ abstract class OW extends IntBase with Uint16 {
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
           : _isValidUVFLength(
-              vfLength, kMaxVFLength, kSizeInBytes, vfLengthField);
+              vfLength, vfLengthField, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [OW].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -657,7 +664,7 @@ abstract class OW extends IntBase with Uint16 {
 
   /// Returns _true_ if [tag] has a VR of [OW] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, OW);
 }
 
 /// Attribute Tag [Element].
@@ -709,7 +716,7 @@ abstract class AT extends IntBase with Uint32 {
   /// Returns _true_ if [tag] is valid for [AT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kATIndex, AT);
+      isValidTag_(tag, issues, kATIndex, AT);
 
   /// Returns _true_ if [vrIndex] is valid for [AT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -722,10 +729,10 @@ abstract class AT extends IntBase with Uint32 {
       VR.isValidCode(vrCode, issues, kATCode);
 
   /// Returns _true_ if [vfLength] is valid for this [AT].
-  static bool isValidVFLength(int length, [Issues issues, Tag tag]) =>
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
-          ? tag.isValidVFLength(length, issues)
-          : _isValidVFLength(length, kMaxVFLength, kSizeInBytes);
+          ? tag.isValidVFLength(vfLength, issues)
+          : _isValidVFLength(vfLength, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [AT].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -742,7 +749,7 @@ abstract class AT extends IntBase with Uint32 {
 
   /// Returns _true_ if [tag] has a VR of [AT] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, AT);
 }
 
 /// Other Long [Element].
@@ -801,7 +808,7 @@ abstract class OL extends IntBase with Uint32 {
   /// Returns _true_ if [tag] is valid for [OL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kOLIndex, OL);
+      isValidTag_(tag, issues, kOLIndex, OL);
 
   /// Returns _true_ if [vrIndex] is valid for [OL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -817,7 +824,7 @@ abstract class OL extends IntBase with Uint32 {
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : _isValidVFLength(vfLength, kMaxVFLength, kSizeInBytes);
+          : _isValidVFLength(vfLength, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [OL].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -834,7 +841,7 @@ abstract class OL extends IntBase with Uint32 {
 
   /// Returns _true_ if [tag] has a VR of [OL] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, OL);
 }
 
 /// Unsigned Long [Element].
@@ -886,7 +893,7 @@ abstract class UL extends IntBase with Uint32 {
   /// Returns _true_ if [tag] is valid for [UL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kULIndex, UL);
+      isValidTag_(tag, issues, kULIndex, UL);
 
   /// Returns _true_ if [vrIndex] is valid for [UL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -902,7 +909,7 @@ abstract class UL extends IntBase with Uint32 {
   static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : _isValidVFLength(vfLength, kMaxVFLength, kSizeInBytes);
+          : _isValidVFLength(vfLength, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [UL].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -919,7 +926,7 @@ abstract class UL extends IntBase with Uint32 {
 
   /// Returns _true_ if [tag] has a VR of [UL] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<int> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength);
+      _isValidValues(tag, vList, issues, kMinValue, kMaxValue, kMaxLength, UL);
 }
 
 /// Group Length [Element] is a subtype of [UL]. It always has a tag
@@ -948,34 +955,29 @@ abstract class GL extends UL {
       UL.isValidValues(tag, vList);
 }
 
-/*
-/// Checks that vfLength (vfl) is in range and the right size, based on the
-/// element size (eSize).
-bool _isValidVFLength(int vfl, int max, int eSize) =>
-    (__isValidVFLength(vfl, max, eSize)) ? true : invalidVFLength(vfl, max, eSize);
-*/
-
 /// Checks the the vfLengthField equal either the vfLength or
 /// [kUndefinedLength]; and then checks that vfLength (vfl) is
 /// in range and the right size, based on the element size (eSize).
-bool _isValidUVFLength(int vfl, int max, int eSize, int vlf) {
+bool _isValidUVFLength(int vfl, int vlf, Issues issues, int max, int eSize) {
   if (!doTestElementValidity || vlf == null) return true;
   return ((vlf == vfl || vlf == kUndefinedLength) &&
-          _isValidVFLength(vfl, max, eSize))
+          _isValidVFLength(vfl, issues, max, eSize))
       ? true
-      : invalidVFLength(vfl, max, eSize, vlf);
+      : invalidUVFLength(vfl, max, vlf, eSize, issues);
 }
 
 /// Returns true if [vfLength] is in the range 0 <= [vfLength] <= [max],
-/// and [vfLength] is a multiple of of value size in bytes ([sizeInBytes]),
+/// and [vfLength] is a multiple of of value size in bytes ([eSize]),
 /// i.e. `vfLength % eSize == 0`.
-bool _isValidVFLength(int vfLength, int max, int sizeInBytes) =>
-    vfLength <= max && (vfLength % sizeInBytes) == 0;
+bool _isValidVFLength(int vfLength, Issues issues, int max, int eSize) =>
+    (vfLength <= max && (vfLength % eSize) == 0)
+        ? true
+        : invalidFixedVFLength(vfLength, max, eSize, issues);
 
 bool _isValidValue(int v, Issues issues, int min, int max) =>
     IntBase.isValidValue(v, issues, min, max);
 
 bool _isValidValues(Tag tag, Iterable<int> vList, Issues issues, int minVLength,
-        int maxVLength, int maxVFListLength) =>
+        int maxVLength, int maxVFListLength, Type type) =>
     IntBase.isValidValues(
-        tag, vList, issues, minVLength, maxVLength, maxVFListLength);
+        tag, vList, issues, minVLength, maxVLength, maxVFListLength, type);

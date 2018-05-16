@@ -32,6 +32,8 @@ Iterable<V> _toList<V>(Iterable v) =>
 
 bool doTestValidity = true;
 
+final SimpleElementFormatter eFormat = new SimpleElementFormatter();
+
 // All add, replace, and remove operations should
 // be done by calling add, replace, and remove methods in [Dataset].
 
@@ -415,8 +417,6 @@ abstract class ElementBase<V> {
   // String format(Formatter z) => '${z(info)}\n';
   // String format(Formatter z) => z.fmt(this, elements);
 
-  final SimpleElementFormatter eFormat = new SimpleElementFormatter();
-
   // String toString() => eFormat.asString(this);
 
   // ***************** Static Getters and Methods *****************
@@ -439,7 +439,7 @@ abstract class ElementBase<V> {
   }
 */
 
-  static bool isValidVListLength<V>(
+  static bool isValidLength<V>(
       Tag tag, Iterable<V> vList, Issues issues, int maxLength) {
     assert(tag != null && vList != null);
     if (tag.isLengthAlwaysValid || vList.isEmpty) return true;
@@ -452,5 +452,5 @@ abstract class ElementBase<V> {
 
   static bool isNotValidVListLength<V>(
           Tag tag, Iterable<V> vList, Issues issues, int maxLength) =>
-      !isValidVListLength(tag, vList, issues, maxLength);
+      !isValidLength(tag, vList, issues, maxLength);
 }

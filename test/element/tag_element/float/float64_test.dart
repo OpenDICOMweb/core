@@ -920,11 +920,11 @@ void main() {
 
     test('FD isValidVFLength good values', () {
       print('kMax8ShortVF: $kMaxShortVF');
-      print('kMax16ShortVF: ${k16BitMaxShortVF} '
+      print('kMax16ShortVF: $k16BitMaxShortVF '
                 '${k16BitMaxShortVF / 2} $k16BitMaxShortLength');
-      print('kMax32ShortVF: ${k32BitMaxShortVF} '
+      print('kMax32ShortVF: $k32BitMaxShortVF '
                 '${k32BitMaxShortVF / 4} $k32BitMaxShortLength');
-      print('kMax64ShortVF: ${k64BitMaxShortVF} '
+      print('kMax64ShortVF: $k64BitMaxShortVF '
                 '${k64BitMaxShortVF / 8} $k64BitMaxShortLength');
       print('kMaxShortVF: ${FD.kMaxVFLength}');
       print('kMaxShortVF: ${FD.kMaxLength} ${FD.kMaxLength * 8}');
@@ -1498,9 +1498,9 @@ void main() {
                 '${(0xFFFFFFFF - 7) ~/ 8} '
                 '${hex32(OD.kMaxLength)}');
       print('v0: ${hex32(OD.kMaxLength)} ${OD.kMaxLength}');
-      print('v1: ${hex32(k64BitMaxLongLength)} ${k64BitMaxLongLength}');
+      print('v1: ${hex32(k64BitMaxLongLength)} $k64BitMaxLongLength');
       print('v2: ${hex32(OD.kMaxVFLength)} ${OD.kMaxVFLength}');
-      print('v3: ${hex32(k64BitMaxLongVF)} ${k64BitMaxLongVF}');
+      print('v3: ${hex32(k64BitMaxLongVF)} $k64BitMaxLongVF');
       print('x: ${hex32(0xFFFFFFFF - 7)} ${0xFFFFFFFF - 7}');
       print('OD ${OD.kMaxVFLength} ${OD.kMaxLength}');
       print('OD ${OD.kMaxLength} ${OD.kMaxVFLength / 8} '

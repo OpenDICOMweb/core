@@ -6,9 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/float/float_mixin.dart';
+import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error/vr_errors.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
@@ -68,7 +67,7 @@ abstract class FL extends Float with Float32 {
   /// Returns _true_ if [tag] is valid for [FL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, FL);
+      isValidTag_(tag, issues, kVRIndex, FL);
 
   /// Returns _true_ if [vrIndex] is valid for [FL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -102,7 +101,7 @@ abstract class FL extends Float with Float32 {
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, FL);
     return isValidVR(tag.vrIndex) &&
-        Float.isValidValues(tag, vList, issues, kMaxLength);
+        Float.isValidValues(tag, vList, issues, kMaxLength, FL);
   }
 }
 
@@ -156,7 +155,7 @@ abstract class OF extends Float with Float32 {
   }
 
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, OF);
+      isValidTag_(tag, issues, kVRIndex, OF);
 
   static bool isValidVR(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? true : invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -184,7 +183,7 @@ abstract class OF extends Float with Float32 {
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, OF);
     return isValidVR(tag.vrIndex) &&
-        Float.isValidValues(tag, vList, issues, kMaxLength);
+        Float.isValidValues(tag, vList, issues, kMaxLength, OF);
   }
 }
 
@@ -236,7 +235,7 @@ abstract class FD extends Float with Float64 {
   }
 
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, FD);
+      isValidTag_(tag, issues, kVRIndex, FD);
 
   static bool isValidVR(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? true : invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -264,7 +263,7 @@ abstract class FD extends Float with Float64 {
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, FL);
     return isValidVR(tag.vrIndex) &&
-        Float.isValidValues(tag, vList, issues, kMaxLength);
+        Float.isValidValues(tag, vList, issues, kMaxLength, FD);
   }
 }
 
@@ -317,7 +316,7 @@ abstract class OD extends Float with Float64 {
   }
 
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, OD);
+      isValidTag_(tag, issues, kVRIndex, OD);
 
   static bool isValidVR(int vrIndex, [Issues issues]) =>
       (vrIndex == kVRIndex) ? true : invalidVRIndex(vrIndex, issues, kVRIndex);
@@ -337,7 +336,7 @@ abstract class OD extends Float with Float64 {
 
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
       isValidVR(tag.vrIndex) &&
-      Float.isValidValues(tag, vList, issues, kMaxLength);
+      Float.isValidValues(tag, vList, issues, kMaxLength, OD);
 
   static bool isNotValidValues(Tag tag, Iterable<double> vList,
           [Issues issues]) =>
@@ -348,4 +347,4 @@ abstract class OD extends Float with Float64 {
 /// and [vfLength] is a multiple of of value size in bytes ([sizeInBytes]),
 /// i.e. `vfLength % eSize == 0`.
 bool _isValidVFLength(int vfLength, int max, int sizeInBytes) =>
-    vfLength <= max && (vfLength % sizeInBytes) == 0;
+   vfLength >= 0 && vfLength <= max && (vfLength % sizeInBytes) == 0;

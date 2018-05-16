@@ -7,13 +7,13 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/dataset.dart';
+
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/bytes_mixin.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/dicom.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/value.dart';
 import 'package:core/src/vr.dart';
 
 // **** IVR Float Elements (FL, FD, OD, OF)
@@ -23,6 +23,16 @@ DicomBytes _makeShort(int code, List vList, int vrCode, bool isEvr, int eSize) {
   return (isEvr)
       ? EvrShortBytes.makeEmpty(code, vfLength, vrCode)
       : IvrBytes.makeEmpty(code, vfLength, vrCode);
+}
+
+DicomBytes _makeShortString(
+    int code, List<String> vList, int vrCode, bool isEvr) {
+  final vlf = stringListLength(vList, pad: true);
+  print('vList: $vList');
+  print('vlf: $vlf');
+  return (isEvr)
+      ? EvrShortBytes.makeEmpty(code, vlf, vrCode)
+      : IvrBytes.makeEmpty(code, vlf, vrCode);
 }
 
 DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
@@ -418,9 +428,9 @@ class DSbytes extends DS with ByteElement<String>, StringMixin, AsciiMixin {
   static DSbytes makeFromBytes(DicomBytes bytes) => new DSbytes(bytes);
 
   static DSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kDSCode, isEvr, 1)
-      ..writeAsciiVF(vList);
-    assert(vList.length <= DS.kMaxVFLength);
+    final bytes = _makeShortString(code, vList, kDSCode, isEvr)
+      ..writeAsciiVF(vList, kSpace);
+//    assert(bytes.length - vfOffset <= DS.kMaxVFLength);
     return makeFromBytes(bytes);
   }
 }

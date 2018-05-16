@@ -18,19 +18,26 @@ import 'package:core/src/utils/string/string.dart';
 
 // **** This file contains low-level [String] functions
 
-// TODO: unit test
-/// Returns the number of code points
+/// Returns the number of code points, plus separators, plus padding.
 int stringListLength(Iterable<String> sList,
     {String separator = '\\', bool pad = true}) {
-  final len = (sList.isEmpty) ? 0 : sList.fold(0, _combineSLength);
-  return (len.isOdd && pad) ? len + 1 : len;
+  if (sList.isEmpty) return 0;
+  var len = sList.fold(0, _combineSLength);
+  len += sList.length - 1;
+  if (len.isOdd && pad) len++;
+  return len;
 }
 
 int _combineSLength(int v, String s) => v + s.length;
 
+/*
 // TODO: unit test
-int joinLength(Iterable<String> sList, {String separator = '\\'}) =>
-    (sList.isEmpty) ? 0 : stringListLength(sList) + (sList.length - 1);
+int joinLength(Iterable<String> sList,
+        {String separator = '\\', bool pad = true}) =>
+    (sList.isEmpty)
+        ? 0
+        : stringListLength(sList, pad: pad) + (sList.length - 1);
+*/
 
 String stringListToString(List<String> sList, [String separator = '\\']) {
   if (sList == null) return null;
@@ -69,7 +76,7 @@ List<String> stringListFromTypedData(TypedData td, int maxLength,
     {bool isAscii = true}) {
   if (td.lengthInBytes == 0) return kEmptyStringList;
   if (td.lengthInBytes > maxLength)
-    return badVFLength(td.lengthInBytes, maxLength);
+    return badTypedDataLength(td.lengthInBytes, maxLength);
   final s = typedDataToString(td, isAscii: isAscii);
   return s.split('\\');
 }
@@ -91,7 +98,7 @@ List<String> textListFromTypedData(TypedData td,
   if (td == null) return null;
   if (td.lengthInBytes == 0) return kEmptyStringList;
   if ((td.lengthInBytes > maxLength))
-    return badVFLength(td.lengthInBytes, maxLength);
+    return badTypedDataLength(td.lengthInBytes, maxLength);
   return <String>[typedDataToString(td, isAscii: isAscii)];
 }
 
@@ -118,3 +125,4 @@ Bytes textListToBytes(Iterable<String> values) {
   }
   return badValuesLength(values, 1, 1);
 }
+

@@ -146,7 +146,7 @@ abstract class DicomMixin {
   void setLongVLF(int vlf) => _setUint32(8, vlf);
 
   /// Write a short EVR header.
-  void evrSetShortHeader(int code, int vrCode, int vlf) {
+  void evrSetShortHeader(int code, int vlf, int vrCode) {
     _setUint16(0, code >> 16);
     _setUint16(2, code & 0xFFFF);
     _setUint16(4, vrCode);
@@ -154,7 +154,7 @@ abstract class DicomMixin {
   }
 
   /// Write a short EVR header.
-  void evrSetLongHeader(int code, int vrCode, int vlf) {
+  void evrSetLongHeader(int code, int vlf, int vrCode) {
     _setUint16(0, code >> 16);
     _setUint16(2, code & 0xFFFF);
     _setUint16(4, vrCode);
@@ -180,9 +180,10 @@ abstract class DicomMixin {
   void writeUint64VF(List<int> vList) => setUint64List(vfOffset, vList);
 
   void writeFloat32VF(List<double> vList) => setFloat32List(vfOffset, vList);
-  void writeFloat64VF(List<double> vList) => setFloat32List(vfOffset, vList);
+  void writeFloat64VF(List<double> vList) => setFloat64List(vfOffset, vList);
 
-  void writeAsciiVF(List<String> vList) => setAscii(vfOffset, vList.join('\\'));
+  void writeAsciiVF(List<String> vList, [int pad = kSpace]) =>
+      setAsciiList(vfOffset, vList, pad);
   void writeUtf8VF(List<String> vList) => setUtf8(vfOffset, vList.join('\\'));
   void writeTextVF(List<String> vList) => setUtf8(vfOffset, vList[0]);
 
@@ -252,6 +253,22 @@ abstract class DicomMixin {
     length ??= s.length;
     final v = _maybeGetSubstring(s, offset, length);
     return __setUint8List(start, ascii.encode(v), offset, length, padChar);
+  }
+
+  /// Writes the elements of the specified [list] to _this_ starting at
+  /// [start]. If [pad] is _true_ and the final offset is odd, then a 0 is
+  /// written after the other elements have been written.
+  int setAsciiList(int start, List<String> list, [int pad]) {
+    final length = list.length;
+    var k = start;
+
+    for (var i = 0; i < length; i++) {
+      final s = list[i];
+      for (var j = 0; j < s.length; j++) _setUint8(k++, s.codeUnitAt(j));
+      if (i < length - 1) _setUint8(k++, kBackslash);
+    }
+    if (k.isOdd && pad != null) _setUint8(k++, pad);
+    return k - start;
   }
 
   /// UTF-8 encodes the specified range of [s] and then writes the

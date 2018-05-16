@@ -32,6 +32,7 @@ void main() {
   ];
 
   global.throwOnError = false;
+
   group('FLtag', () {
     test('FL hasValidValues good values', () {
       global.throwOnError = false;
@@ -111,10 +112,6 @@ void main() {
       final vList1 = new Float32List.fromList(listFloat32Common0);
       final fl1 = new FLtag(PTag.kTableOfParameterValues, vList1);
       expect(fl1.update(vList1), equals(vList1));
-
-      const floatUpdateValues = const <double>[
-        546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
-      ];
 
       final vList2 = new Float32List.fromList(listFloat32Common0);
       for (var i = 1; i <= vList2.length - 1; i++) {
@@ -331,6 +328,7 @@ void main() {
     });
 
     test('FL fromUint8List bad values', () {
+      global.doTestElementValidity = true;
       for (var i = 0; i < 10; i++) {
         final floatList1 = rng.float32List(3, 3);
         final bytes = new Bytes.typedDataView(floatList1);

@@ -12,6 +12,8 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/string/string.dart';
 import 'package:core/src/element/base/string/string_bulkdata.dart';
 import 'package:core/src/element/base/string/utf8.dart';
+import 'package:core/src/element/base/float/float_mixin.dart';
+import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
@@ -39,15 +41,14 @@ abstract class Text extends Utf8 {
   StringBase blank([int n = 1]) => update([spaces(n)]);
 
   @override
-  List<String> valuesFromBytes(Bytes vfBytes) =>
-      [vfBytes.getUtf8()];
+  List<String> valuesFromBytes(Bytes vfBytes) => [vfBytes.getUtf8()];
 
   static List<String> fromValueField(Iterable vf, int maxVFLength,
-                                     {bool isAscii: true}) {
+      {bool isAscii: true}) {
     if (vf == null) return kEmptyStringList;
-    if ( vf.isEmpty || ((vf is List<String>) && vf.length == 1) || vf is
-    StringBulkdata)
-    return vf;
+    if (vf.isEmpty ||
+        ((vf is List<String>) && vf.length == 1) ||
+        vf is StringBulkdata) return vf;
     if (vf is Bytes) return [vf.getUtf8()];
     if (vf is Uint8List)
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
@@ -84,56 +85,32 @@ abstract class LT extends Text {
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 10240;
 
-  // **** Specialized static methods
-
-  static bool isValidValue(String s,
-      {Issues issues, bool allowInvalid = false}) {
-    if (s == null || isNotValidValueLength(s, issues)) return false;
-    if (isNotDcmText(s, kMaxValueLength)) {
-      if (issues != null) issues.add('Invalid Long Text (LT): "$s"');
-      return false;
-    }
-    return true;
-  }
-
   // **** Generalized static methods
-
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
-
-  static bool isNotValidValueLength(String s, [Issues issues]) =>
-      !isValidValueLength(s, issues);
-
-  static bool isNotValidValue(String s,
-          {Issues issues, bool allowInvalid = false}) =>
-      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [LT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, LT) &&
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
-
-  static bool isNotValidArgs(Tag tag, Iterable<String> vList,
-          [Issues issues]) =>
-      !isValidArgs(tag, vList, issues);
+  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, LT);
+    return vList != null &&
+        doTestElementValidity &&
+        isValidTag(tag) &&
+        isValidValues(tag, vList, issues);
+  }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [LT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, LT) &&
-      inRange(vfBytes.length, 0, kMaxVFLength);
-
-  static bool isNotValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
-      !isValidBytesArgs(tag, vfBytes, issues);
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, LT);
+    return vfBytes != null &&
+        doTestElementValidity &&
+        isValidTag(tag, issues) &&
+        isValidVFLength(vfBytes.length, issues, tag);
+  }
 
   /// Returns _true_ if [tag] is valid for [LT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, LT);
-
-  static bool isNotValidTag(Tag tag, [Issues issues]) =>
-      !isValidTag(tag, issues);
+      isValidTag_(tag, issues, kVRIndex, LT);
 
   /// Returns _true_ if [vrIndex] is valid for [LT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -143,55 +120,37 @@ abstract class LT extends Text {
   /// Returns _true_ if [vrCode] is valid for [LT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kLTCode);
+      VR.isValidCode(vrCode, issues, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [LT].
-  static bool isValidVFLength(int vfLength,
-          [int max = kMaxVFLength, Issues issues]) =>
-      inRange(vfLength, 0, kMaxVFLength);
-
-  static bool isNotValidVFLength(int length, [Issues issues]) =>
-      !isValidVFLength(length, kMaxVFLength, issues);
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
+      (tag != null)
+          ? tag.isValidVFLength(vfLength, issues)
+          : inRange(vfLength, 0, kMaxVFLength);
 
   /// Returns _true_ if [vList].length is valid for [LT].
-  static bool isValidVListLength(Tag tag, Iterable<String> vList,
-      [Issues issues]) {
-    if (!Tag.isValidTag(tag, issues, kVRIndex, LT))
-      return invalidTag(tag, issues, LT);
-    return Element.isValidVListLength(tag, vList, issues, kMaxLength);
+  static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, LT);
+    if (vList == null) return nullValueError();
+    return Element.isValidLength(tag, vList, issues, kMaxLength, LT);
   }
 
   /// Returns _true_ if [tag] has a VR of [LT] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
+      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, LT);
 
-  static bool isNotValidValues(Tag tag, Iterable<String> vList,
-          [Issues issues]) =>
-      !isValidValues(tag, vList, issues);
-/*
-  static Iterable<String> checkList(Tag tag, Iterable<String> vList,
-          [Issues issues]) =>
-      (isValidValues(tag, vList, issues)) ? vList : null;
+  static bool isValidValueLength(String s, [Issues issues]) => StringBase
+      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
 
-  static Uint8List toUint8List(Iterable<String> values) =>
-      _textListToUint8List(values, kMaxVFLength);
+  // **** Specialized static methods
 
-  static Bytes toBytes(List<String> sList, int maxVFLength) {
-    assert(sList.length <= 1);
-    return Bytes.fromStrings(sList, maxLength: maxVFLength);
+  static bool isValidValue(String s,
+      {Issues issues, bool allowInvalid = false}) {
+    if (s == null || !isValidValueLength(s, issues)) return false;
+    return (isDcmText(s, kMaxValueLength))
+        ? true
+        : invalidString('Invalid Long Text (LT): "$s"', issues);
   }
-
-  static Iterable<String> fromUint8List(Uint8List bytes,
-          {int offset = 0, int length}) =>
-      _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static ByteData toByteData(Iterable<String> values) =>
-      _textListToByteData(values, kMaxVFLength);
-
-  static Iterable<String> fromByteData(ByteData bd,
-          {int offset = 0, int length}) =>
-      _textListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
-  */
 }
 
 /// An Short Text (ST) Element
@@ -223,56 +182,32 @@ abstract class ST extends Text {
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = 1024;
 
-  // **** Specialized static methods
-
-  static bool isValidValue(String s,
-      {Issues issues, bool allowInvalid = false}) {
-    if (s == null || isNotValidValueLength(s, issues)) return false;
-    if (isNotDcmText(s, kMaxValueLength)) {
-      if (issues != null) issues.add('Invalid Short Test (ST): "$s"');
-      return false;
-    }
-    return true;
-  }
-
   // **** Generalized static methods
-
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
-
-  static bool isNotValidValueLength(String s, [Issues issues]) =>
-      !isValidValueLength(s, issues);
-
-  static bool isNotValidValue(String s,
-          {Issues issues, bool allowInvalid = false}) =>
-      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [ST].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, ST) &&
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
-
-  static bool isNotValidArgs(Tag tag, Iterable<String> vList,
-          [Issues issues]) =>
-      !isValidArgs(tag, vList, issues);
+  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, ST);
+    return vList != null &&
+        doTestElementValidity &&
+        isValidTag(tag) &&
+        isValidValues(tag, vList, issues);
+  }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [ST].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, ST) &&
-      inRange(vfBytes.length, 0, kMaxVFLength);
-
-  static bool isNotValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
-      !isValidBytesArgs(tag, vfBytes, issues);
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, ST);
+    return vfBytes != null &&
+        doTestElementValidity &&
+        isValidTag(tag, issues) &&
+        isValidVFLength(vfBytes.length, issues, tag);
+  }
 
   /// Returns _true_ if [tag] is valid for [ST].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, ST);
-
-  static bool isNotValidTag(Tag tag, [Issues issues]) =>
-      !isValidTag(tag, issues);
+      isValidTag_(tag, issues, kVRIndex, ST);
 
   /// Returns _true_ if [vrIndex] is valid for [ST].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -282,57 +217,38 @@ abstract class ST extends Text {
   /// Returns _true_ if [vrCode] is valid for [ST].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kSTCode);
+      VR.isValidCode(vrCode, issues, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [ST].
-  static bool isValidVFLength(int vfLength,
-          [int max = kMaxVFLength, Issues issues]) =>
-      inRange(vfLength, 0, kMaxVFLength);
-
-  static bool isNotValidVFLength(int length, [Issues issues]) =>
-      !isValidVFLength(length, kMaxVFLength, issues);
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
+      (tag != null)
+          ? tag.isValidVFLength(vfLength, issues)
+          : inRange(vfLength, 0, kMaxVFLength);
 
   /// Returns _true_ if [vList].length is valid for [ST].
-  static bool isValidVListLength(Tag tag, Iterable<String> vList,
-      [Issues issues]) {
-    if (!Tag.isValidTag(tag, issues, kVRIndex, ST))
-      return invalidTag(tag, issues, ST);
-    return Element.isValidVListLength(tag, vList, issues, kMaxLength);
+  static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, ST);
+    if (vList == null) return nullValueError();
+    return Element.isValidLength(tag, vList, issues, kMaxLength, ST);
   }
 
   /// Returns _true_ if [tag] has a VR of [ST] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
+      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, ST);
 
-  static bool isNotValidValues(Tag tag, Iterable<String> vList,
-          [Issues issues]) =>
-      !isValidValues(tag, vList, issues);
+  static bool isValidValueLength(String s, [Issues issues]) => StringBase
+      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
 
-/*
-  static Uint8List toUint8List(Iterable<String> values) =>
-      _textListToUint8List(values, kMaxVFLength);
+  // **** Specialized static methods
 
-  static Bytes toBytes(List<String> sList, int maxVFLength) {
-    assert(sList.length <= 1);
-    return stringListToBytes(sList, maxVFLength);
+  static bool isValidValue(String s,
+      {Issues issues, bool allowInvalid = false}) {
+    if (s == null || !isValidValueLength(s, issues)) return false;
+    return (isDcmText(s, kMaxValueLength))
+        ? true
+        : invalidString('Invalid Short Test (ST): "$s"', issues);
   }
-
-  static Iterable<String> fromUint8List(Uint8List bytes,
-          {int offset = 0, int length}) =>
-      _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static ByteData toByteData(Iterable<String> values) =>
-      _textListToByteData(values, kMaxVFLength);
-
-  static Iterable<String> fromByteData(ByteData bd,
-          {int offset = 0, int length}) =>
-      _textListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
-*/
-
 }
-
-// TODO: move to system
-bool trimURISpaces = false;
 
 /// Value Representation of [Uri].
 ///
@@ -371,61 +287,32 @@ abstract class UR extends Text {
   static const int kMinValueLength = 1;
   static const int kMaxValueLength = kMaxLongVF;
 
-  // **** Specialized static methods
-
-  static bool isValidValue(String s,
-      {Issues issues, bool allowInvalid = false, bool trimSpaces = false}) {
-    trimSpaces ?? trimURISpaces;
-    if (s == null || isNotValidValueLength(s, issues)) return false;
-    if (trimSpaces) s.trim();
-    try {
-      if (s.startsWith(' ')) throw const FormatException();
-      Uri.parse(s);
-    } on FormatException {
-      if (issues != null) issues.add('Invalid URI String (UR): "$s"');
-      return false;
-    }
-    return true;
-  }
-
   // **** Generalized static methods
-
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
-
-  static bool isNotValidValueLength(String s, [Issues issues]) =>
-      !isValidValueLength(s, issues);
-
-  static bool isNotValidValue(String s,
-          {Issues issues, bool allowInvalid = false}) =>
-      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [UR].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, UR) &&
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
-
-  static bool isNotValidArgs(Tag tag, Iterable<String> vList,
-          [Issues issues]) =>
-      !isValidArgs(tag, vList, issues);
+  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, UR);
+    return vList != null &&
+        doTestElementValidity &&
+        isValidTag(tag) &&
+        isValidValues(tag, vList, issues);
+  }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [UR].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, UR) &&
-      inRange(vfBytes.length, 0, kMaxVFLength);
-
-  static bool isNotValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
-      !isValidBytesArgs(tag, vfBytes, issues);
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, UR);
+    return vfBytes != null &&
+        doTestElementValidity &&
+        isValidTag(tag, issues) &&
+        isValidVFLength(vfBytes.length, issues, tag);
+  }
 
   /// Returns _true_ if [tag] is valid for [UR].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, UR);
-
-  static bool isNotValidTag(Tag tag, [Issues issues]) =>
-      !isValidTag(tag, issues);
+      isValidTag_(tag, issues, kVRIndex, UR);
 
   /// Returns _true_ if [vrIndex] is valid for [UR].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -435,57 +322,43 @@ abstract class UR extends Text {
   /// Returns _true_ if [vrCode] is valid for [UR].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kURCode);
+      VR.isValidCode(vrCode, issues, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [UR].
-  static bool isValidVFLength(int vfLength,
-          [int max = kMaxVFLength, Issues issues]) =>
-      inRange(vfLength, 0, kMaxVFLength);
-
-  static bool isNotValidVFLength(int length, [Issues issues]) =>
-      !isValidVFLength(length, kMaxVFLength, issues);
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
+      (tag != null)
+          ? tag.isValidVFLength(vfLength, issues)
+          : inRange(vfLength, 0, kMaxVFLength);
 
   /// Returns _true_ if [vList].length is valid for [UR].
-  static bool isValidVListLength(Tag tag, Iterable<String> vList,
-      [Issues issues]) {
-    if (!Tag.isValidTag(tag, issues, kVRIndex, UR))
-      return invalidTag(tag, issues, UR);
-    return Element.isValidVListLength(tag, vList, issues, kMaxLength);
+  static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, UR);
+    if (vList == null) return nullValueError();
+    return Element.isValidLength(tag, vList, issues, kMaxLength, UR);
   }
 
   /// Returns _true_ if [tag] has a VR of [UR] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
+      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UR);
 
-  static bool isNotValidValues(Tag tag, Iterable<String> vList,
-          [Issues issues]) =>
-      !isValidValues(tag, vList, issues);
+  static bool isValidValueLength(String s, [Issues issues]) => StringBase
+      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
 
-  /*
-  static Iterable<String> checkList(Tag tag, Iterable<String> vList,
+  // **** Specialized static methods
 
-          [Issues issues]) =>
-      (isValidValues(tag, vList, issues)) ? vList : null;
-
-  static Uint8List toUint8List(Iterable<String> values) =>
-      _textListToUint8List(values, kMaxVFLength);
-
-  static Bytes toBytes(List<String> sList, int maxVFLength) {
-    assert(sList.length <= 1);
-    return stringListToBytes(sList, maxVFLength);
+  static bool isValidValue(String s,
+      {Issues issues, bool allowInvalid = false, bool trimSpaces = false}) {
+    trimSpaces ?? trimURISpaces;
+    if (s == null || !isValidValueLength(s, issues)) return false;
+    if (trimSpaces) s.trim();
+    try {
+      if (s.startsWith(' ')) throw const FormatException();
+      Uri.parse(s);
+    } on FormatException {
+      return invalidString('Invalid URI String (UR): "$s"', issues);
+    }
+    return true;
   }
-
-  static Iterable<String> fromUint8List(Uint8List bytes,
-          {int offset = 0, int length}) =>
-      _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static ByteData toByteData(Iterable<String> values) =>
-      _textListToByteData(values, kMaxVFLength);
-
-  static Iterable<String> fromByteData(ByteData bd,
-          {int offset = 0, int length}) =>
-      _textListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
-*/
 
   /// _Deprecated_: Use [Uri.tryParse] instead.
   @deprecated
@@ -536,56 +409,32 @@ abstract class UT extends Text {
   static const int kMinValueLength = 0;
   static const int kMaxValueLength = kMaxLongVF;
 
-  // **** Specialized static methods
-
-  static bool isValidValue(String s,
-      {Issues issues, bool allowInvalid = false}) {
-    if (s == null || isNotValidValueLength(s, issues)) return false;
-    if (isNotDcmText(s, kMaxLongVF)) {
-      if (issues != null) issues.add('Invalid Unlimited Text (UT): "$s"');
-      return false;
-    }
-    return true;
-  }
-
   // **** Generalized static methods
-
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
-
-  static bool isNotValidValueLength(String s, [Issues issues]) =>
-      !isValidValueLength(s, issues);
-
-  static bool isNotValidValue(String s,
-          {Issues issues, bool allowInvalid = false}) =>
-      !isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
   /// Returns _true_ if both [tag] and [vList] are valid for [UT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, UT) &&
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
-
-  static bool isNotValidArgs(Tag tag, Iterable<String> vList,
-          [Issues issues]) =>
-      !isValidArgs(tag, vList, issues);
+  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, UT);
+    return vList != null &&
+        doTestElementValidity &&
+        isValidTag(tag) &&
+        isValidValues(tag, vList, issues);
+  }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [UT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
-  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, UT) &&
-      inRange(vfBytes.length, 0, kMaxVFLength);
-
-  static bool isNotValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) =>
-      !isValidBytesArgs(tag, vfBytes, issues);
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, UT);
+    return vfBytes != null &&
+        doTestElementValidity &&
+        isValidTag(tag, issues) &&
+        isValidVFLength(vfBytes.length, issues, tag);
+  }
 
   /// Returns _true_ if [tag] is valid for [UT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      Tag.isValidTag(tag, issues, kVRIndex, UT);
-
-  static bool isNotValidTag(Tag tag, [Issues issues]) =>
-      !isValidTag(tag, issues);
+      isValidTag_(tag, issues, kVRIndex, UT);
 
   /// Returns _true_ if [vrIndex] is valid for [UT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -595,52 +444,44 @@ abstract class UT extends Text {
   /// Returns _true_ if [vrCode] is valid for [UT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidCode(vrCode, issues, kUTCode);
+      VR.isValidCode(vrCode, issues, kVRCode);
 
   /// Returns _true_ if [vfLength] is valid for [UT].
-  static bool isValidVFLength(int vfLength,
-          [int max = kMaxVFLength, Issues issues]) =>
-      inRange(vfLength, 0, kMaxVFLength);
-
-  static bool isNotValidVFLength(int length, [Issues issues]) =>
-      !isValidVFLength(length, kMaxVFLength, issues);
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
+      (tag != null)
+          ? tag.isValidVFLength(vfLength, issues)
+          : inRange(vfLength, 0, kMaxVFLength);
 
   /// Returns _true_ if [vList].length is valid for [UT].
-  static bool isValidVListLength(Tag tag, Iterable<String> vList,
-      [Issues issues]) {
-    if (!Tag.isValidTag(tag, issues, kVRIndex, UT))
-      return invalidTag(tag, issues, UT);
-    return Element.isValidVListLength(tag, vList, issues, kMaxLength);
+  static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, UT);
+    if (vList == null) return nullValueError();
+    return Element.isValidLength(tag, vList, issues, kMaxLength, UT);
   }
 
   /// Returns _true_ if [tag] has a VR of [UT] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      StringBase.isValidValues(tag, vList, issues, isValidValue, kMaxLength);
+      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UT);
 
-  static bool isNotValidValues(Tag tag, Iterable<String> vList,
-          [Issues issues]) =>
-      !isValidValues(tag, vList, issues);
+  static bool isValidValueLength(String s, [Issues issues]) => StringBase
+      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
 
-/*
-  static Uint8List toUint8List(Iterable<String> values) =>
-      _textListToUint8List(values, kMaxVFLength);
+  // **** Specialized static methods
 
-  static Bytes toBytes(List<String> sList, int maxVFLength) {
-    assert(sList.length <= 1);
-    return stringListToBytes(sList, maxVFLength);
+  static bool isValidValue(String s,
+      {Issues issues, bool allowInvalid = false}) {
+    if (s == null || !isValidValueLength(s, issues)) return false;
+    return (isDcmText(s, kMaxLongVF))
+        ? true
+        : invalidString('Invalid Unlimited Text (UT): "$s"', issues);
   }
-
-  static Iterable<String> fromUint8List(Uint8List bytes,
-          {int offset = 0, int length}) =>
-      _textListFromTypedData(bytes, kMaxVFLength, isAscii: kIsAsciiRequired);
-
-  static ByteData toByteData(Iterable<String> values) =>
-      _textListToByteData(values, kMaxVFLength);
-
-  static Iterable<String> fromByteData(ByteData bd,
-          {int offset = 0, int length}) =>
-      _textListFromTypedData(bd, kMaxVFLength, isAscii: kIsAsciiRequired);
-*/
-
 }
 
+bool _isValidValues(
+        Tag tag,
+        Iterable<String> vList,
+        Issues issues,
+        bool isValidValue(String s, {Issues issues, bool allowInvalid}),
+        int maxLength,
+        Type type) =>
+    StringBase.isValidValues(tag, vList, issues, isValidValue, maxLength, type);

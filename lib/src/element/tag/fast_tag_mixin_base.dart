@@ -50,14 +50,14 @@ abstract class TagMixinBase<V> {
 
   bool isValidValuesType(List<V> vList, [Issues issues]) => vList is List<V>;
 
-  bool isValidVListLength(Tag tag, List<V> vList, [Issues issues]) {
+  bool isValidLength(Tag tag, List<V> vList, [Issues issues]) {
     final length = vList.length;
     return length >= minLength && length <= maxLength && (length % rank) == 0;
   }
 
   bool isValidValues(Tag tag, List<V> vList, [Issues issues]) =>
       vList is List<V> &&
-      isValidVListLength(tag, vList) &&
+      isValidLength(tag, vList) &&
       _isValidValues(vList);
 
   bool _isValidValues(List<V> vList) {

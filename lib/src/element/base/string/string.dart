@@ -6,8 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/crypto.dart';
@@ -52,7 +50,7 @@ abstract class StringBase extends Element<String> {
   int get vfLength {
     assert(values != null);
     final v = values;
-    return (v.isEmpty) ? 0 : joinLength(v);
+    return (v.isEmpty) ? 0 : stringListLength(v);
   }
 
   @override
@@ -86,6 +84,7 @@ abstract class StringBase extends Element<String> {
   static const int kSizeInBytes = 1;
   static const int kSizeInBits = kSizeInBytes * 8;
 
+/*
   /// _Deprecated_: Used DicomBytes.toAsciiList or DicomBytes.toUtfList instead.
   /// Returns a [Iterable<String>] from [vfBytes].
   // Design Note:
@@ -100,6 +99,9 @@ abstract class StringBase extends Element<String> {
         : utf8.decode(vfBytes, allowMalformed: allow);
     return s.split('\\');
   }
+*/
+
+/*
 
   /// _Deprecated_: Used DicomBytes.toAscii or DicomBytes.toUtf instead.
   /// Returns a [Iterable<String>] of length 0 or 1 from [vfBytes].
@@ -110,37 +112,28 @@ abstract class StringBase extends Element<String> {
       {bool isAscii = true}) {
     if (vfBytes.isEmpty) return kEmptyStringList;
     final length = vfBytes.length;
+    isValidValueFieldS
     if (!inRange(length, 0, maxVFLength))
-      return badVFLength(length, maxVFLength);
+      return badStringVFLength(length, maxVFLength);
     final allow = global.allowInvalidCharacterEncodings;
     return (isAscii || global.useAscii)
         ? <String>[ascii.decode(vfBytes, allowInvalid: allow)]
         : <String>[utf8.decode(vfBytes, allowMalformed: allow)];
   }
-
-/*
-  static Uint8List toUint8List(List<String> sList, int maxVFLength) =>
-      stringListToUint8List(sList, maxLength: maxVFLength);
-
-  static Bytes toBytes(List<String> sList, int maxVFLength) =>
-      Bytes.fromStrings(sList, maxLength: maxVFLength);
 */
 
   static bool isValidValueLength(
-      String value, Issues issues, int minLength, int maxLength) {
-    if (value == null) {
-      if (issues != null) issues.add('Invalid null value');
-      return false;
-    }
-    final length = value.length;
+      String s, Issues issues, int minLength, int maxLength) {
+    if (s == null) return nullValueError('"$s"');
+    final length = s.length;
     if (length < minLength || length > maxLength) {
       if (issues != null) {
         if (length < minLength)
-          issues.add('Invalid Value($value) under minimum($minLength)');
+          issues.add('Invalid Value($s) under minimum($minLength)');
         if (length < minLength)
-          issues.add('Invalid Value($value) over maximum($maxLength)');
+          issues.add('Invalid Value($s) over maximum($maxLength)');
       }
-      return false;
+      return invalidStringLength(s);
     }
     return true;
   }
@@ -150,14 +143,15 @@ abstract class StringBase extends Element<String> {
       Iterable<String> vList,
       Issues issues,
       bool isValidValue(String s, {Issues issues, bool allowInvalid}),
-      int maxLength) {
+      int maxLength,
+      Type type) {
 //    assert(vList != null);
-    if (vList == null) return false;
+    if (vList == null) return nullValueError();
     if (!doTestElementValidity || vList.isEmpty) return true;
 
     // Walk through length and all values to gather Issues.
     var ok = true;
-    if (!Element.isValidVListLength(tag, vList, issues, maxLength))
+    if (!Element.isValidLength(tag, vList, issues, maxLength, type))
       return ok = false;
     for (var v in vList) {
       if (ok && !isValidValue(v, issues: issues)) ok = false;

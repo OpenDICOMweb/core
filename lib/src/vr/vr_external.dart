@@ -181,11 +181,21 @@ class VRFloat extends VR<double> {
   @override
   int get maxLength => maxVFLength ~/ sizeInBytes;
 
+  int minLengthInBytes(int vmMin) => vmMin * sizeInBytes;
+  int maxLengthInBytes(int vmMax) => vmMax * sizeInBytes;
+
+  bool isValidVFLength(int vfLength, int vmMin, int vmMax) =>
+      vfLength == 0 ||
+      (vfLength >= minLengthInBytes(vmMin) &&
+          vfLength <= maxLengthInBytes(vmMax));
+
+/*
   @override
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) {
     final max = vmMax == -1 ? maxLength : vmMax;
     return vfLength >= (vmMin * sizeInBytes) && vfLength <= (max * sizeInBytes);
   }
+*/
 
   static const kFL =
       const VRFloat(kFLIndex, 'FL', kFLCode, 2, k32BitMaxShortVF, 4);
@@ -214,14 +224,26 @@ class VRInt extends VR<int> {
   @override
   int get maxLength => maxVFLength ~/ sizeInBytes;
 
+/*
   @override
   bool isValid(int vrIndex) => isValid(vrIndex);
+*/
 
+  int minLengthInBytes(int vmMin) => vmMin * sizeInBytes;
+  int maxLengthInBytes(int vmMax) => vmMax * sizeInBytes;
+
+  bool isValidVFLength(int vfLength, int vmMin, int vmMax) =>
+      vfLength == 0 ||
+      (vfLength >= minLengthInBytes(vmMin) &&
+       vfLength <= maxLengthInBytes(vmMax));
+
+/*
   @override
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) {
     final max = vmMax == -1 ? maxLength : vmMax;
     return vfLength >= (vmMin * sizeInBytes) && vfLength <= (max * sizeInBytes);
   }
+*/
 
   static const kUN =
       const VRInt(kUNIndex, 'UN', kUNCode, 4, k8BitMaxLongVF, 1, 0, 255, true);
@@ -262,8 +284,18 @@ abstract class VRString extends VR<String> {
       this.minVLength, this.maxVLength, this.isLengthAlwaysValid)
       : super._(index, id, code, vlfSize, maxVFLength);
 
+  int get sizeInBytes => 1;
   @override
   int get maxLength => maxVFLength ~/ ((minVLength < 5) ? 5 : minVLength);
+
+  int minLengthInBytes(int vmMin) => vmMin * sizeInBytes;
+  int maxLengthInBytes(int vmMax) => vmMax * sizeInBytes;
+
+  bool isValidVFLength(int vfLength, int vmMin, int vmMax) =>
+      vfLength == 0 ||
+      (vfLength >= minLengthInBytes(vmMin) &&
+       vfLength <= maxLengthInBytes(vmMax));
+
 }
 
 class VRAscii extends VRString {

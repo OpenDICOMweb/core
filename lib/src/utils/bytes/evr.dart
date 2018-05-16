@@ -50,10 +50,9 @@ class EvrShortBytes extends EvrBytes {
 
   static EvrShortBytes makeEmpty(int code, int vfLength, int vrCode,
       [Endian endian]) {
-    assert(vfLength.isEven);
+//    assert(vfLength.isEven);
     final e = new EvrShortBytes(kHeaderLength + vfLength, endian)
-      ..evrSetShortHeader(code, vrCode, vfLength);
-    print('e: $e');
+      ..evrSetShortHeader(code, vfLength, vrCode);
     return e;
   }
 
@@ -64,7 +63,6 @@ class EvrShortBytes extends EvrBytes {
     final e = new EvrShortBytes(kHeaderLength + vfLength, endian)
       ..evrSetShortHeader(code, vfLength, vrCode)
       ..setByteData(kVFOffset, vfBytes._bd);
-    print('e: $e');
     return e;
   }
 }
@@ -87,6 +85,11 @@ class EvrLongBytes extends EvrBytes {
     return vlf;
   }
 
+  @override
+  String toString() =>
+      '$runtimeType(${_bd.lengthInBytes}) ${dcm(code)} ${hex16(vrCode)} '
+      '$vfLengthField(${hex32(vfLengthField)}) $vfBytes';
+
   static const int kVROffset = 4;
   static const int kVFLengthOffset = 8;
   static const int kVFOffset = 12;
@@ -97,7 +100,7 @@ class EvrLongBytes extends EvrBytes {
     assert(vfLength.isEven);
     final e = new EvrLongBytes(kHeaderLength + vfLength, endian)
       ..evrSetLongHeader(code, vfLength, vrCode);
-    print('e: $e');
+ //   print('e: $e');
     return e;
   }
 

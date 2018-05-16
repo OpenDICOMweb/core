@@ -46,7 +46,7 @@ abstract class SQ extends Element<Item> {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
-  @override
+
   int get sizeInBytes => kSizeInBytes;
   @override
   int get vlfSize => 4;
@@ -57,6 +57,7 @@ abstract class SQ extends Element<Item> {
   int get maxLength => kMaxLength;
   @override
   int get vfLength => unimplementedError();
+  @override
   int get lengthInBytes => unimplementedError();
   @override
   int get vfLengthField;
@@ -307,7 +308,7 @@ Summary $tag
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
-  static bool isValidVListLength(int vfl) => true;
+  static bool isValidLength(int vfl) => true;
 
   static bool isValidValue(Item item,
           {Issues issues, bool allowInvalid = false}) =>

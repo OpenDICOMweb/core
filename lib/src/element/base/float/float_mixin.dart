@@ -105,12 +105,11 @@ abstract class Float extends Element<double> {
 
   /// Returns _true_ if [tag] and each value in [vList] is valid.
   static bool isValidValues(
-      Tag tag, Iterable<double> vList, Issues issues, int maxVListLength) {
+      Tag tag, Iterable<double> vList, Issues issues, int maxVListLength,
+      Type type) {
     assert(tag != null);
     if (vList == null) return invalidValues(vList, issues, tag);
-    return Element.isValidVListLength(tag, vList, issues, maxVListLength)
-        ? true
-        : false;
+    return Element.isValidLength(tag, vList, issues, maxVListLength, type);
   }
 }
 

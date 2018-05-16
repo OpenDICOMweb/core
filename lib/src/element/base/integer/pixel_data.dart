@@ -6,20 +6,16 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/integer/integer.dart';
-// import 'package:core/src/element/base/vf_fragments.dart';
+import 'package:core/src/element/base/integer/special_mixin.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
-
-import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/vr.dart';
 
 /// PixelDataMixin class
 abstract class PixelData {

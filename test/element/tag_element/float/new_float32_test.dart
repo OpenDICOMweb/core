@@ -19,7 +19,7 @@ void main() {
   List<double> float32List;
   global.throwOnError = false;
 
-  const listFloat32Common0 = const <double>[
+  const goodFloatList = const <double>[
     1.1,
     1.11,
     1.111,
@@ -31,11 +31,13 @@ void main() {
     -11.11,
   ];
 
+  final goodFloat32List = new Float32List.fromList(goodFloatList);
+
   global.throwOnError = false;
   group('FLtag', () {
     test('FL hasValidValues good values', () {
       global.throwOnError = false;
-      final fl0 = new FLtag(PTag.kVectorAccuracy, listFloat32Common0);
+      final fl0 = new FLtag(PTag.kVectorAccuracy, goodFloat32List);
       expect(fl0.hasValidValues, true);
 
       // empty list and null as values
@@ -108,7 +110,7 @@ void main() {
       final fl0 = new FLtag(PTag.kTableOfParameterValues, []);
       expect(fl0.update(vList0), equals(vList0));
 
-      final vList1 = new Float32List.fromList(listFloat32Common0);
+      final vList1 = new Float32List.fromList(goodFloat32List);
       final fl1 = new FLtag(PTag.kTableOfParameterValues, vList1);
       expect(fl1.update(vList1), equals(vList1));
 
@@ -116,7 +118,7 @@ void main() {
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
 
-      final vList2 = new Float32List.fromList(listFloat32Common0);
+      final vList2 = new Float32List.fromList(goodFloat32List);
       for (var i = 1; i <= vList2.length - 1; i++) {
         final fl2 = new FLtag(PTag.kSelectorFLValue,
             new Float32List.fromList(vList2.take(i).toList()));
@@ -152,7 +154,7 @@ void main() {
       expect(flNoValues.values.isEmpty, true);
       log.debug('fl0: ${fl0.noValues}');
 
-      final fl1 = new FLtag(PTag.kTableOfParameterValues, listFloat32Common0);
+      final fl1 = new FLtag(PTag.kTableOfParameterValues, goodFloat32List);
       log.debug('fl1: $fl1');
       expect(flNoValues.values.isEmpty, true);
       log.debug('fl0: ${fl0.noValues}');
@@ -174,7 +176,7 @@ void main() {
       expect(fl1 == fl0, true);
       expect(fl1.hashCode == fl0.hashCode, true);
 
-      final fl2 = new FLtag(PTag.kTableOfParameterValues, listFloat32Common0);
+      final fl2 = new FLtag(PTag.kTableOfParameterValues, goodFloat32List);
       final FLtag fl3 = fl2.copy;
       expect(fl3 == fl2, true);
       expect(fl3.hashCode == fl2.hashCode, true);
@@ -249,13 +251,13 @@ void main() {
     test('FL hashCode and == good values ', () {
       global.throwOnError = false;
       final fl0 = new FLtag(
-          PTag.kAbsoluteChannelDisplayScale, listFloat32Common0.take(1));
+          PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
       final fl1 = new FLtag(
-          PTag.kAbsoluteChannelDisplayScale, listFloat32Common0.take(1));
+          PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
       log
-        ..debug('listFloat32Common0:$listFloat32Common0, fl0.hash_code:${fl0
+        ..debug('listFloat32Common0:$goodFloat32List, fl0.hash_code:${fl0
             .hashCode}')
-        ..debug('listFloat32Common0:$listFloat32Common0, fl1.hash_code:${fl1
+        ..debug('listFloat32Common0:$goodFloat32List, fl1.hash_code:${fl1
             .hashCode}');
       expect(fl0.hashCode == fl1.hashCode, true);
       expect(fl0 == fl1, true);
@@ -264,38 +266,38 @@ void main() {
     test('FL hashCode and == bad values ', () {
       global.throwOnError = false;
       final fl0 = new FLtag(
-          PTag.kAbsoluteChannelDisplayScale, listFloat32Common0.take(1));
+          PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
 
       final fl2 = new FLtag(
-          PTag.kRecommendedDisplayFrameRateInFloat, listFloat32Common0.take(1));
-      log.debug('listFloat32Common0:$listFloat32Common0 , fl2.hash_code:${fl2
+          PTag.kRecommendedDisplayFrameRateInFloat, goodFloat32List.take(1));
+      log.debug('listFloat32Common0:$goodFloat32List , fl2.hash_code:${fl2
           .hashCode}');
       expect(fl0.hashCode == fl2.hashCode, false);
       expect(fl0 == fl2, false);
 
       final fl3 =
-          new FLtag(PTag.kCornealVertexLocation, listFloat32Common0.take(2));
-      log.debug('listFloat32Common0:$listFloat32Common0 , fl3.hash_code:${fl3
+          new FLtag(PTag.kCornealVertexLocation, goodFloat32List.take(2));
+      log.debug('listFloat32Common0:$goodFloat32List , fl3.hash_code:${fl3
           .hashCode}');
       expect(fl0.hashCode == fl3.hashCode, false);
       expect(fl0 == fl3, false);
 
       final fl4 =
-          new FLtag(PTag.kCornealPointLocation, listFloat32Common0.take(3));
-      log.debug('listFloat32Common0:$listFloat32Common0 , fl4.hash_code:${fl4
+          new FLtag(PTag.kCornealPointLocation, goodFloat32List.take(3));
+      log.debug('listFloat32Common0:$goodFloat32List , fl4.hash_code:${fl4
           .hashCode}');
       expect(fl0.hashCode == fl4.hashCode, false);
       expect(fl0 == fl4, false);
 
       final fl5 = new FLtag(
-          PTag.kPointsBoundingBoxCoordinates, listFloat32Common0.take(6));
-      log.debug('listFloat32Common0:$listFloat32Common0 , fl5.hash_code:${fl5
+          PTag.kPointsBoundingBoxCoordinates, goodFloat32List.take(6));
+      log.debug('listFloat32Common0:$goodFloat32List , fl5.hash_code:${fl5
           .hashCode}');
       expect(fl0.hashCode == fl5.hashCode, false);
       expect(fl0 == fl5, false);
 
-      final fl6 = new FLtag(PTag.kSelectorFLValue, listFloat32Common0);
-      log.debug('listFloat32Common0:$listFloat32Common0 , fl6.hash_code:${fl6
+      final fl6 = new FLtag(PTag.kSelectorFLValue, goodFloat32List);
+      log.debug('listFloat32Common0:$goodFloat32List , fl6.hash_code:${fl6
           .hashCode}');
       expect(fl0.hashCode == fl6.hashCode, false);
       expect(fl0 == fl6, false);
@@ -431,11 +433,11 @@ void main() {
 
     test('FL checkLength bad values', () {
       global.throwOnError = false;
-      final fl0 = new FLtag(PTag.kBeamAngle, listFloat32Common0);
+      final fl0 = new FLtag(PTag.kBeamAngle, goodFloat32List);
       expect(fl0, isNull);
 
       global.throwOnError = true;
-      expect(() => new FLtag(PTag.kBeamAngle, listFloat32Common0),
+      expect(() => new FLtag(PTag.kBeamAngle, goodFloat32List),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -896,44 +898,44 @@ void main() {
     test('FL isValidValues good values', () {
       //VM.k1
       global.throwOnError = false;
-      for (var i = 0; i <= listFloat32Common0.length - 1; i++) {
+      for (var i = 0; i <= goodFloat32List.length - 1; i++) {
         expect(
             FL.isValidValues(
-                PTag.kExaminedBodyThickness, <double>[listFloat32Common0[i]]),
+                PTag.kExaminedBodyThickness, <double>[goodFloat32List[i]]),
             true);
       }
 
       //VM.k2
       expect(
           FL.isValidValues(
-              PTag.kLocalizingCursorPosition, listFloat32Common0.take(2)),
+              PTag.kLocalizingCursorPosition, goodFloat32List.take(2)),
           true);
 
       //VM.k3
       expect(
           FL.isValidValues(
-              PTag.kCalculatedTargetPosition, listFloat32Common0.take(3)),
+              PTag.kCalculatedTargetPosition, goodFloat32List.take(3)),
           true);
 
       //VM.k6
       expect(
           FL.isValidValues(
-              PTag.kPointsBoundingBoxCoordinates, listFloat32Common0.take(6)),
+              PTag.kPointsBoundingBoxCoordinates, goodFloat32List.take(6)),
           true);
 
       //VM.k1_n
-      expect(FL.isValidValues(PTag.kSelectorFLValue, listFloat32Common0), true);
+      expect(FL.isValidValues(PTag.kSelectorFLValue, goodFloat32List), true);
     });
 
     test('FL isValidValues bad values length', () {
       global.throwOnError = false;
-      expect(FL.isValidValues(PTag.kExaminedBodyThickness, listFloat32Common0),
+      expect(FL.isValidValues(PTag.kExaminedBodyThickness, goodFloat32List),
           false);
 
       global.throwOnError = true;
       expect(
           () =>
-              FL.isValidValues(PTag.kExaminedBodyThickness, listFloat32Common0),
+              FL.isValidValues(PTag.kExaminedBodyThickness, goodFloat32List),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -1119,7 +1121,7 @@ void main() {
 
     test('OF hasValidValues good values', () {
       global.throwOnError = false;
-      final of0 = new OFtag(PTag.kUValueData, listFloat32Common0);
+      final of0 = new OFtag(PTag.kUValueData, goodFloat32List);
       expect(of0.hasValidValues, true);
 
       global.throwOnError = false;
@@ -1173,8 +1175,8 @@ void main() {
       final of0 = new OFtag(PTag.kVectorGridData, []);
       expect(of0.update([1.2, 1.3, 1.4]).values, equals([1.2, 1.3, 1.4]));
 
-      final of1 = new OFtag(PTag.kUValueData, listFloat32Common0);
-      expect(of1.update(listFloat32Common0).values, equals(listFloat32Common0));
+      final of1 = new OFtag(PTag.kUValueData, goodFloat32List);
+      expect(of1.update(goodFloat32List).values, equals(goodFloat32List));
 
       const floatUpdateValues = const <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
@@ -1213,7 +1215,7 @@ void main() {
       expect(ofNoValues0.values.isEmpty, true);
       log.debug('of0:${of0.noValues}');
 
-      final of1 = new OFtag(PTag.kUValueData, listFloat32Common0);
+      final of1 = new OFtag(PTag.kUValueData, goodFloat32List);
       final ofNoValues1 = of1.noValues;
       expect(ofNoValues1.values.isEmpty, true);
     });
@@ -1229,7 +1231,7 @@ void main() {
     });
 
     test('OF copy', () {
-      final of0 = new OFtag(PTag.kVectorGridData, listFloat32Common0);
+      final of0 = new OFtag(PTag.kVectorGridData, goodFloat32List);
       final OFtag of5 = of0.copy;
       expect(of0 == of5, true);
       expect(of0.hashCode == of5.hashCode, true);
@@ -1280,34 +1282,34 @@ void main() {
     });
 
     test('OF hashCode and == good values', () {
-      final of0 = new OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
-      final of1 = new OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
+      final of0 = new OFtag(PTag.kVectorGridData, goodFloat32List.take(1));
+      final of1 = new OFtag(PTag.kVectorGridData, goodFloat32List.take(1));
       log
-        ..debug('listFloat32Common0:$listFloat32Common0 , of1.hash_code:${of1
+        ..debug('listFloat32Common0:$goodFloat32List , of1.hash_code:${of1
             .hashCode}')
-        ..debug('listFloat32Common0:$listFloat32Common0 , of1.hash_code:${of1
+        ..debug('listFloat32Common0:$goodFloat32List , of1.hash_code:${of1
             .hashCode}');
       expect(of0.hashCode == of1.hashCode, true);
       expect(of0 == of1, true);
     });
 
     test('OF hashCode and == bad values', () {
-      final of0 = new OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
+      final of0 = new OFtag(PTag.kVectorGridData, goodFloat32List.take(1));
       final of2 =
-          new OFtag(PTag.kPointCoordinatesData, listFloat32Common0.take(1));
-      log.debug('listFloat32Common0:$listFloat32Common0,'
+          new OFtag(PTag.kPointCoordinatesData, goodFloat32List.take(1));
+      log.debug('listFloat32Common0:$goodFloat32List,'
           ' of2.hash_code:${of2.hashCode}');
       expect(of0.hashCode == of2.hashCode, false);
       expect(of0 == of2, false);
 
-      final of3 = new OFtag(PTag.kUValueData, listFloat32Common0);
-      log.debug('listFloat32Common0:$listFloat32Common0, '
+      final of3 = new OFtag(PTag.kUValueData, goodFloat32List);
+      log.debug('listFloat32Common0:$goodFloat32List, '
           'of3.hash_code:${of3.hashCode}');
       expect(of0.hashCode == of3.hashCode, false);
       expect(of0 == of3, false);
 
-      final of4 = new OFtag(PTag.kSelectorOFValue, listFloat32Common0);
-      log.debug('listFloat32Common0:$listFloat32Common0, '
+      final of4 = new OFtag(PTag.kSelectorOFValue, goodFloat32List);
+      log.debug('listFloat32Common0:$goodFloat32List, '
           'of4.hash_code:${of4.hashCode}');
       expect(of0.hashCode == of4.hashCode, false);
       expect(of0 == of4, false);
@@ -1674,15 +1676,15 @@ void main() {
     test('OF isValidValues', () {
       global.throwOnError = false;
       //VM.k1
-      for (var i = 0; i <= listFloat32Common0.length - 1; i++) {
+      for (var i = 0; i <= goodFloat32List.length - 1; i++) {
         expect(
             OF.isValidValues(
-                PTag.kVectorGridData, <double>[listFloat32Common0[i]]),
+                PTag.kVectorGridData, <double>[goodFloat32List[i]]),
             true);
       }
 
       //VM.k1_n
-      expect(OF.isValidValues(PTag.kSelectorOFValue, listFloat32Common0), true);
+      expect(OF.isValidValues(PTag.kSelectorOFValue, goodFloat32List), true);
     });
 
     test('Float32Base.fromList', () {

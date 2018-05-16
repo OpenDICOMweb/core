@@ -577,7 +577,7 @@ abstract class BytesMixin {
     length ?? _bdLength;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint8Size));
-    for (var i = 0, j = offset; i < length; i++, j++)
+    for (var i = offset, j = start; i < length; i++, j++)
       _setUint8(j, other.getUint8(i));
   }
 
@@ -585,7 +585,7 @@ abstract class BytesMixin {
   int setInt8List(int start, List<int> list, [int offset = 0, int length]) {
     length ??= list.length;
     assert(_checkLength(offset, length, kInt8Size));
-    for (var i = 0, j = offset; i < length; i++, j++) _setInt8(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j++) _setInt8(j, list[i]);
     return length;
   }
 
@@ -593,7 +593,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kInt16Size));
-    for (var i = 0, j = offset; i < length; i++, j += 2) _setInt16(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 2) _setInt16(j, list[i]);
     return length * 2;
   }
 
@@ -601,7 +601,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat64Size));
-    for (var i = 0, j = offset; i < length; i++, j += 4) _setInt32(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 4) _setInt32(j, list[i]);
     return length * 4;
   }
 
@@ -610,7 +610,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat64Size));
-    for (var i = 0, j = offset; i < length; i++, j += 16)
+    for (var i = offset, j = start; i < length; i++, j += 16)
       _setInt32x4(j, list[i]);
     return length * 16;
   }
@@ -619,7 +619,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kInt64Size));
-    for (var i = 0, j = offset; i < length; i++, j += 8) setInt64(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 8) setInt64(j, list[i]);
     return length * 6;
   }
 
@@ -639,7 +639,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint16Size));
-    for (var i = 0, j = offset; i < length; i++, j += 2) _setUint16(i, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 2) _setUint16(j, list[i]);
     return length * 2;
   }
 
@@ -647,7 +647,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint32Size));
-    for (var i = 0, j = offset; i < length; i++, j += 4) _setUint32(i, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 4) _setUint32(j, list[i]);
     return length * 4;
   }
 
@@ -655,7 +655,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint64Size));
-    for (var i = 0, j = offset; i < length; i++, j += 8) _setUint64(i, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 8) _setUint64(j, list[i]);
     return length * 8;
   }
 
@@ -664,8 +664,8 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat32Size));
-    for (var i = 0, j = offset; i < length; i++, j += 4)
-      _setFloat32(i, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 4)
+      _setFloat32(j, list[i]);
     return length * 4;
   }
 
@@ -674,7 +674,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, list.length * 16));
-    for (var i = 0, j = offset; i < length; i++, j += 16)
+    for (var i = offset, j = start; i < length; i++, j += 16)
       _setFloat32x4(j, list[i]);
     return length * 16;
   }
@@ -684,8 +684,8 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat64Size));
-    for (var i = 0, j = offset; i < length; i++, j += 8)
-      _setFloat64(i, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 8)
+      _setFloat64(j, list[i]);
     return length * 8;
   }
 
@@ -694,7 +694,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kFloat64Size));
-    for (var i = 0, j = offset; i < length; i++, j += 16)
+    for (var i = offset, j = start; i < length; i++, j += 16)
       _setFloat64x2(j, list[i]);
     return length * 16;
   }

@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/element/base/element.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
@@ -31,20 +30,6 @@ bool isValidValueLength(
     return false;
   }
   return true;
-}
-
-bool isValidValues(
-    Tag tag,
-    Iterable<String> vList,
-    Issues issues,
-    bool isValidValue(String s, {Issues issues, bool allowInvalid}),
-    int maxLength) {
-  assert(vList != null);
-  if (!doTestElementValidity || vList.isEmpty) return true;
-  var ok = true;
-  if (!Element.isValidVListLength(tag, vList, issues, maxLength)) ok = false;
-  for (var v in vList) ok = isValidValue(v, issues: issues);
-  return (ok) ? true : invalidValues(vList, issues);
 }
 
 /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
@@ -72,5 +57,17 @@ bool isValidVRCode(int vrCode, Issues issues, int target) =>
 
 /// Checks that vfLength (vfl) is in range and the right size, based on the
 /// element size (eSize).
-bool isValidVFL(int vfl, int max) =>
-    (vfl >= 0 && vfl <= max) ? true : invalidVFLength(vfl, max);
+bool isValidVFL(int vfl, int max, [Issues issues]) =>
+    (vfl >= 0 && vfl <= max) ? true : invalidStringVFLength(vfl, max, issues);
+
+Null badStringVFLength(int vfLength, int maxVFLength, [Issues issues]) {
+  final s = 'Invalid String VFL($vfLength): '
+      '$vfLength exceeds maximum($maxVFLength)';
+
+  return badValueField(s, null, issues);
+}
+
+bool invalidStringVFLength(int vfLength, int maxVFLength, [Issues issues]) {
+  badStringVFLength(vfLength, maxVFLength, issues);
+  return false;
+}

@@ -66,6 +66,8 @@ abstract class Global {
   /// _Note_: This field is mutable.
   Hash hasher;
 
+  String dateTimeSeparator = kDefaultTimeSeparator;
+
   /// This setting determines whether [Error]s are thrown or just return _null_.
   /// _Note_: This field is mutable.
   bool throwOnError;
@@ -80,8 +82,9 @@ abstract class Global {
   bool allowInvalidAscii = true;
   bool allowMalformedUtf8 = true;
   bool useAscii = false;
-  String dateTimeSeparator = kDefaultTimeSeparator;
   bool doTestElementValidity = true;
+  bool trimURISpaces = false;
+
 
   Global(
       {this.name = 'Unknown',
@@ -222,6 +225,8 @@ bool get uuidsUseUppercase => global.isUuidUppercase;
 bool get hexUseUppercase => global.isHexUppercase;
 
 bool get doTestElementValidity => global.doTestElementValidity;
+
+bool get trimURISpaces => false;
 
 int truncatedListLength = 5;
 
