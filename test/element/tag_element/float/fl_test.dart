@@ -385,14 +385,14 @@ void main() {
     test('FL fromValues', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final e = FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, vList);
-        log.debug('e: $e');
-        expect(e.hasValidValues, true);
+        final e0 = FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
 
-        final make1 =
+        final e1 =
             FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, <double>[]);
-        expect(make1.hasValidValues, true);
-        expect(make1.values, equals(<double>[]));
+        expect(e1.hasValidValues, true);
+        expect(e1.values, equals(<double>[]));
       }
     });
 

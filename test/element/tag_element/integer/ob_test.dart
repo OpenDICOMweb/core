@@ -7,95 +7,88 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/uInt8_test', level: Level.info);
+  Server.initialize(name: 'element/ob_test', level: Level.info);
   final rng = new RNG(1);
+  global.throwOnError = false;
 
   group('OB', () {
     const uInt8MinMax = const [kUint8Min, kUint8Max];
-    const uint8Min = const [kUint8Min];
+    const uInt8Min = const [kUint8Min];
     const uInt8Max = const [kUint8Max];
     const uInt8MaxPlus = const [kUint8Max + 1];
     const uInt8MinMinus = const [kUint8Min - 1];
 
     test('OB hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final ob0 =
-            new OBtag(PTag.kPrivateInformation, uInt8List0, uInt8List0.length);
-        final ob1 =
-            new OBtag(PTag.kPrivateInformation, uInt8List0, uInt8List0.length);
-        log.debug('ob0: $ob0');
-        expect(ob0.hasValidValues, true);
-        expect(ob1.hasValidValues, true);
+        final vList0 = rng.uint8List(1, 1);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        final e1 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e1.hasValidValues, true);
 
-        log
-          ..debug('ob0: $ob0, values: ${ob0.values}')
-          ..debug('ob0: $ob0');
-        expect(ob0[0], equals(uInt8List0[0]));
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList0[0]));
       }
 
       for (var i = 0; i < 10; i++) {
-        final uInt8List1 = rng.uint8List(2, 3);
-        log.debug('$i: uInt8List1: $uInt8List1');
-        final ob0 = new OBtag(
-            PTag.kCoordinateSystemAxisValues, uInt8List1, uInt8List1.length);
-        expect(ob0.hasValidValues, true);
+        final vList1 = rng.uint8List(2, 3);
+        log.debug('$i: vList1: $vList1');
+        final e0 =
+        new OBtag(PTag.kCoordinateSystemAxisValues, vList1, vList1.length);
+        expect(e0.hasValidValues, true);
       }
     });
 
     test('OB hasValidValues good values', () {
       global.throwOnError = false;
-      final ob0 =
-          new OBtag(PTag.kPrivateInformation, uint8Min, uint8Min.length);
-      final ob1 =
-          new OBtag(PTag.kPrivateInformation, uint8Min, uint8Min.length);
-      expect(ob0.hasValidValues, true);
-      expect(ob1.hasValidValues, true);
+      final e0 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      final e1 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      expect(e0.hasValidValues, true);
+      expect(e1.hasValidValues, true);
 
-      final ob2 =
-          new OBtag(PTag.kPrivateInformation, uInt8Max, uInt8Max.length);
-      final ob3 = new OBtag(
+      final e2 = new OBtag(PTag.kPrivateInformation, uInt8Max, uInt8Max.length);
+      final e3 = new OBtag(
           PTag.kCoordinateSystemAxisValues, uInt8Max, uInt8Max.length);
-      expect(ob2.hasValidValues, true);
-      expect(ob3.hasValidValues, true);
+      expect(e2.hasValidValues, true);
+      expect(e3.hasValidValues, true);
 
       global.throwOnError = false;
-      final ob4 = new OBtag(PTag.kICCProfile, <int>[], 0);
-      expect(ob4.hasValidValues, true);
-      log.debug('ob0:$ob0');
-      expect(ob4.values, equals(<int>[]));
+      final e4 = new OBtag(PTag.kICCProfile, <int>[], 0);
+      expect(e4.hasValidValues, true);
+      log.debug('e0:$e0');
+      expect(e4.values, equals(<int>[]));
     });
 
     test('OB hasValidValues bad values', () {
-      final ob0 = new OBtag(
+      final e0 = new OBtag(
           PTag.kPrivateInformation, uInt8MaxPlus, uInt8MaxPlus.length);
-      expect(ob0, isNull);
+      expect(e0, isNull);
 
-      final ob2 = new OBtag(
+      final e2 = new OBtag(
           PTag.kPrivateInformation, uInt8MinMinus, uInt8MaxPlus.length);
-      expect(ob2, isNull);
+      expect(e2, isNull);
 
       global.throwOnError = false;
-      final ob3 = new OBtag(PTag.kPrivateInformation, uint8Min);
+      final e3 = new OBtag(PTag.kPrivateInformation, uInt8Min);
       final uInt16List0 = rng.uint16List(1, 1);
-      ob3.values = uInt16List0;
-      expect(ob3.hasValidValues, false);
+      e3.values = uInt16List0;
+      expect(e3.hasValidValues, false);
 
       global.throwOnError = true;
-      expect(() => ob3.hasValidValues,
+      expect(() => e3.hasValidValues,
           throwsA(const isInstanceOf<InvalidValuesError>()));
 
       global.throwOnError = false;
-      final ob4 = new OBtag(PTag.kICCProfile, null, 0);
-      log.debug('ob4: $ob4');
-      expect(ob4, isNull);
+      final e4 = new OBtag(PTag.kICCProfile, null, 0);
+      log.debug('e4: $e4');
+      expect(e4, isNull);
 
       global.throwOnError = true;
       expect(() => new OBtag(PTag.kICCProfile, null),
@@ -104,190 +97,179 @@ void main() {
 
     test('OB update random', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List1 = rng.uint8List(3, 4);
-        final ob1 =
-            new OBtag(PTag.kPrivateInformation, uInt8List1, uInt8List1.length);
-        final uInt8List2 = rng.uint8List(3, 4);
-        expect(ob1.update(uInt8List2).values, equals(uInt8List2));
+        final vList1 = rng.uint8List(3, 4);
+        final e1 = new OBtag(PTag.kPrivateInformation, vList1, vList1.length);
+        final vList2 = rng.uint8List(3, 4);
+        expect(e1.update(vList2).values, equals(vList2));
       }
     });
 
     test('OB update', () {
-      final ob0 = new OBtag(PTag.kPrivateInformation, <int>[], 0);
-      expect(ob0.update([165, 254]).values, equals([165, 254]));
+      final e0 = new OBtag(PTag.kPrivateInformation, <int>[], 0);
+      expect(e0.update([165, 254]).values, equals([165, 254]));
 
-      final ob1 = new OBtag(PTag.kICCProfile, uint8Min, uint8Min.length);
-      final ob2 = new OBtag(PTag.kICCProfile, uint8Min, uint8Min.length);
-      final ob3 = ob1.update(uInt8Max);
-      final ob4 = ob2.update(uInt8Max);
-      expect(ob1.values.first == ob4.values.first, false);
-      expect(ob1 == ob4, false);
-      expect(ob2 == ob4, false);
-      expect(ob3 == ob4, true);
+      final e1 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
+      final e2 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
+      final e3 = e1.update(uInt8Max);
+      final e4 = e2.update(uInt8Max);
+      expect(e1.values.first == e4.values.first, false);
+      expect(e1 == e4, false);
+      expect(e2 == e4, false);
+      expect(e3 == e4, true);
     });
 
     test('OB noValues random', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List = rng.uint8List(3, 4);
-        final ob1 =
-            new OBtag(PTag.kPrivateInformation, uInt8List, uInt8List.length);
-        log.debug('ob1: ${ob1.noValues}');
-        expect(ob1.noValues.values.isEmpty, true);
+        final vList = rng.uint8List(3, 4);
+        final e1 = new OBtag(PTag.kPrivateInformation, vList, vList.length);
+        log.debug('e1: ${e1.noValues}');
+        expect(e1.noValues.values.isEmpty, true);
       }
     });
 
     test('OB noValues', () {
-      final ob0 = new OBtag(PTag.kPrivateInformation, <int>[], 0);
-      final OBtag obNoValues = ob0.noValues;
+      final e0 = new OBtag(PTag.kPrivateInformation, <int>[], 0);
+      final OBtag obNoValues = e0.noValues;
       expect(obNoValues.values.isEmpty, true);
-      log.debug('ob0: ${ob0.noValues}');
+      log.debug('e0: ${e0.noValues}');
 
-      final ob1 =
-          new OBtag(PTag.kPrivateInformation, uint8Min, uint8Min.length);
-      final obNoValues0 = ob1.noValues;
+      final e1 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      final obNoValues0 = e1.noValues;
       expect(obNoValues0.values.isEmpty, true);
-      log.debug('ob1:${ob1.noValues}');
+      log.debug('e1:${e1.noValues}');
     });
 
     test('OB copy random', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List = rng.uint8List(3, 4);
-        final ob2 =
-            new OBtag(PTag.kPrivateInformation, uInt8List, uInt8List.length);
-        final OBtag ob3 = ob2.copy;
-        expect(ob3 == ob2, true);
-        expect(ob3.hashCode == ob2.hashCode, true);
+        final vList = rng.uint8List(3, 4);
+        final e2 = new OBtag(PTag.kPrivateInformation, vList, vList.length);
+        final OBtag e3 = e2.copy;
+        expect(e3 == e2, true);
+        expect(e3.hashCode == e2.hashCode, true);
       }
     });
 
     test('OB copy', () {
-      final ob0 = new OBtag(PTag.kPrivateInformation, <int>[], 0);
-      final OBtag ob1 = ob0.copy;
-      expect(ob1 == ob0, true);
-      expect(ob1.hashCode == ob0.hashCode, true);
+      final e0 = new OBtag(PTag.kPrivateInformation, <int>[], 0);
+      final OBtag e1 = e0.copy;
+      expect(e1 == e0, true);
+      expect(e1.hashCode == e0.hashCode, true);
 
-      final ob2 =
-          new OBtag(PTag.kPrivateInformation, uint8Min, uint8Min.length);
-      final ob3 = ob2.copy;
-      expect(ob2 == ob3, true);
-      expect(ob2.hashCode == ob3.hashCode, true);
+      final e2 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      final e3 = e2.copy;
+      expect(e2 == e3, true);
+      expect(e2.hashCode == e3.hashCode, true);
     });
 
     test('OB hashCode and == good values random', () {
       global.throwOnError = false;
       final rng = new RNG(1);
-      List<int> uInt8List0;
+      List<int> vList0;
 
       for (var i = 0; i < 10; i++) {
-        uInt8List0 = rng.uint8List(1, 1);
-        final ob0 = new OBtag(PTag.kICCProfile, uInt8List0, uInt8List0.length);
-        final ob1 = new OBtag(PTag.kICCProfile, uInt8List0, uInt8List0.length);
+        vList0 = rng.uint8List(1, 1);
+        final e0 = new OBtag(PTag.kICCProfile, vList0, vList0.length);
+        final e1 = new OBtag(PTag.kICCProfile, vList0, vList0.length);
         log
-          ..debug('uInt8List0:$uInt8List0, ob0.hash_code:${ob0.hashCode}')
-          ..debug('uInt8List0:$uInt8List0, ob1.hash_code:${ob1.hashCode}');
-        expect(ob0.hashCode == ob1.hashCode, true);
-        expect(ob0 == ob1, true);
+          ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
+          ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
+        expect(e0.hashCode == e1.hashCode, true);
+        expect(e0 == e1, true);
       }
     });
 
     test('OB hashCode and == bad values random', () {
-      List<int> uInt8List0;
-      List<int> uInt8List1;
-      List<int> uInt8List2;
-
       for (var i = 0; i < 10; i++) {
-        uInt8List0 = rng.uint8List(1, 1);
-        uInt8List1 = rng.uint8List(1, 1);
+        final vList0 = rng.uint8List(1, 1);
+        final vList1 = rng.uint8List(1, 1);
 
-        final ob0 = new OBtag(PTag.kICCProfile, uInt8List0, uInt8List0.length);
-        final ob2 =
-            new OBtag(PTag.kPrivateInformation, uInt8List1, uInt8List1.length);
-        log.debug('uInt8List1:$uInt8List1 , ob2.hash_code:${ob2.hashCode}');
-        expect(ob0.hashCode == ob2.hashCode, false);
-        expect(ob0 == ob2, false);
+        final e0 = new OBtag(PTag.kICCProfile, vList0, vList0.length);
+        final e2 = new OBtag(PTag.kPrivateInformation, vList1, vList1.length);
+        log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
+        expect(e0.hashCode == e2.hashCode, false);
+        expect(e0 == e2, false);
 
-        uInt8List2 = rng.uint8List(2, 3);
-        final ob3 =
-            new OBtag(PTag.kPrivateInformation, uInt8List2, uInt8List2.length);
-        log.debug('uInt8List2:$uInt8List2 , ob3.hash_code:${ob3.hashCode}');
-        expect(ob0.hashCode == ob3.hashCode, false);
-        expect(ob0 == ob3, false);
+        final vList2 = rng.uint8List(2, 3);
+        final e3 = new OBtag(PTag.kPrivateInformation, vList2, vList2.length);
+        log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
+        expect(e0.hashCode == e3.hashCode, false);
+        expect(e0 == e3, false);
       }
     });
 
     test('OB hashCode and == good values', () {
-      final ob0 = new OBtag(PTag.kICCProfile, uint8Min, uint8Min.length);
-      final ob1 = new OBtag(PTag.kICCProfile, uint8Min, uint8Min.length);
+      final e0 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
+      final e1 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
       log
-        ..debug('uInt8Min:$uint8Min, ob0.hash_code:${ob0.hashCode}')
-        ..debug('uInt8Min:$uint8Min, ob1.hash_code:${ob1.hashCode}');
-      expect(ob0.hashCode == ob1.hashCode, true);
-      expect(ob0 == ob1, true);
+        ..debug('uInt8Min:$uInt8Min, e0.hash_code:${e0.hashCode}')
+        ..debug('uInt8Min:$uInt8Min, e1.hash_code:${e1.hashCode}');
+      expect(e0.hashCode == e1.hashCode, true);
+      expect(e0 == e1, true);
     });
 
     test('OB hashCode and == bad values', () {
-      final ob0 = new OBtag(PTag.kICCProfile, uint8Min, uint8Min.length);
-      final ob2 = new OBtag(PTag.kICCProfile, uInt8Max, uInt8Max.length);
-      log.debug('uInt8Max:$uInt8Max , ob2.hash_code:${ob2.hashCode}');
-      expect(ob0.hashCode == ob2.hashCode, false);
-      expect(ob0 == ob2, false);
+      final e0 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
+      final e2 = new OBtag(PTag.kICCProfile, uInt8Max, uInt8Max.length);
+      log.debug('uInt8Max:$uInt8Max , e2.hash_code:${e2.hashCode}');
+      expect(e0.hashCode == e2.hashCode, false);
+      expect(e0 == e2, false);
     });
 
     test('OB fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final uInt8List0 = rng.uint8List(1, 1);
-        final bytes0 = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final bytes0 = new Bytes.typedDataView(vList0);
         //       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-        final ob0 = OBtag.fromBytes(PTag.kPrivateInformation, bytes0, 1);
-        expect(ob0.hasValidValues, true);
-        expect(ob0.vfBytes, equals(bytes0));
-        expect(ob0.values is Uint8List, true);
-        expect(ob0.values, equals(uInt8List0));
+        final e0 = OBtag.fromBytes(PTag.kPrivateInformation, bytes0, 1);
+        expect(e0.hasValidValues, true);
+        expect(e0.vfBytes, equals(bytes0));
+        expect(e0.values is Uint8List, true);
+        expect(e0.values, equals(vList0));
 
         // Test Base64
-//       final base64 = cvt.base64.encode(uInt8List0);
-//        final ob1 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
-//        expect(ob0 == ob1, true);
-//        expect(ob1.value, equals(ob0.value));
+//       final base64 = cvt.base64.encode(vList0);
+//        final e1 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
+//        expect(e0 == e1, true);
+//        expect(e1.value, equals(e0.value));
 
-        final uint8List1 = rng.uint8List(2, 2);
-        final bytes1 = new Bytes.typedDataView(uint8List1);
+        final vList1 = rng.uint8List(2, 2);
+        final bytes1 = new Bytes.typedDataView(vList1);
 //        final uInt8ListV12 = uInt8ListV2.buffer.asUint8List();
-        final ob2 = OBtag.fromBytes(
-            PTag.kPrivateInformation, bytes1, uint8List1.length);
-        expect(ob2.hasValidValues, true);
+        final e2 = OBtag.fromBytes(
+            PTag.kPrivateInformation, bytes1, vList1.length);
+        expect(e2.hasValidValues, true);
       }
     });
 
     test('OB fromBytes', () {
-      final bytes = new Bytes.fromList(uint8Min);
+      final bytes = new Bytes.fromList(uInt8Min);
 //      final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-      final ob5 = OBtag.fromBytes(PTag.kPrivateInformation, bytes, 1);
-      expect(ob5.vfBytes, equals(bytes));
-      expect(ob5.values is Uint8List, true);
-      expect(ob5.values, equals(uint8Min));
+      final e5 = OBtag.fromBytes(PTag.kPrivateInformation, bytes, 1);
+      expect(e5.vfBytes, equals(bytes));
+      expect(e5.values is Uint8List, true);
+      expect(e5.values, equals(uInt8Min));
     });
 
     test('OB fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final intList0 = rng.uint8List(1, 10);
-        final bytes0 = DicomBytes.fromAscii(intList0.toString());
-        final ob0 =
-            OBtag.fromBytes(PTag.kSelectorOBValue, bytes0, kUndefinedLength);
-        log.debug('ob0: $ob0');
-        expect(ob0.hasValidValues, true);
+        final vList = rng.uint8List(1, 10);
+        final bytes0 = DicomBytes.fromAscii(vList.toString());
+        final e0 =
+        OBtag.fromBytes(PTag.kSelectorOBValue, bytes0, kUndefinedLength);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
       }
     });
 
     test('OB fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final intList0 = rng.uint8List(1, 10);
-        final bytes0 = DicomBytes.fromAscii(intList0.toString());
-        final ob0 = OBtag.fromBytes(PTag.kSelectorFDValue, bytes0);
-        expect(ob0, isNull);
+        final vList = rng.uint8List(1, 10);
+        final bytes0 = DicomBytes.fromAscii(vList.toString());
+        final e0 = OBtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        expect(e0, isNull);
         global.throwOnError = true;
         expect(() => OBtag.fromBytes(PTag.kSelectorFDValue, bytes0),
             throwsA(const isInstanceOf<InvalidTagError>()));
@@ -296,78 +278,72 @@ void main() {
 
     test('OB checkLength random', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final ob0 =
-            new OBtag(PTag.kPrivateInformation, uInt8List0, uInt8List0.length);
-        expect(ob0.checkLength(ob0.values), true);
+        final vList0 = rng.uint8List(1, 1);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        expect(e0.checkLength(e0.values), true);
       }
     });
 
     test('OB checkLength', () {
-      final ob0 =
-          new OBtag(PTag.kPrivateInformation, uInt8MinMax, uInt8MinMax.length);
-      expect(ob0.checkLength(ob0.values), true);
+      final e0 =
+      new OBtag(PTag.kPrivateInformation, uInt8MinMax, uInt8MinMax.length);
+      expect(e0.checkLength(e0.values), true);
     });
 
     test('OB checkValues random', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final ob0 =
-            new OBtag(PTag.kPrivateInformation, uInt8List0, uInt8List0.length);
-        expect(ob0.checkValues(ob0.values), true);
+        final vList0 = rng.uint8List(1, 1);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        expect(e0.checkValues(e0.values), true);
       }
     });
 
     test('OB checkValues', () {
-      final ob0 =
-          new OBtag(PTag.kPrivateInformation, uint8Min, uint8Min.length);
-      expect(ob0.checkValues(ob0.values), true);
+      final e0 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      expect(e0.checkValues(e0.values), true);
     });
 
     test('OB valuesCopy random', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final ob0 =
-            new OBtag(PTag.kPrivateInformation, uInt8List0, uInt8List0.length);
-        expect(uInt8List0, equals(ob0.valuesCopy));
+        final vList0 = rng.uint8List(1, 1);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        expect(vList0, equals(e0.valuesCopy));
       }
     });
 
     test('OB valuesCopy', () {
-      final ob0 =
-          new OBtag(PTag.kPrivateInformation, uint8Min, uint8Min.length);
-      expect(uint8Min, equals(ob0.valuesCopy));
+      final e0 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      expect(uInt8Min, equals(e0.valuesCopy));
     });
 
     test('OB replace random', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final ob0 =
-            new OBtag(PTag.kPrivateInformation, uInt8List0, uInt8List0.length);
-        final uInt8List1 = rng.uint8List(1, 1);
-        expect(ob0.replace(uInt8List1), equals(uInt8List0));
-        expect(ob0.values, equals(uInt8List1));
+        final vList0 = rng.uint8List(1, 1);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        final vList1 = rng.uint8List(1, 1);
+        expect(e0.replace(vList1), equals(vList0));
+        expect(e0.values, equals(vList1));
       }
 
-      final uInt8List1 = rng.uint8List(1, 1);
-      final ob1 = new OBtag(PTag.kPrivateInformation, uInt8List1);
-      expect(ob1.replace(<int>[]), equals(uInt8List1));
-      expect(ob1.values, equals(<int>[]));
+      final vList1 = rng.uint8List(1, 1);
+      final e1 = new OBtag(PTag.kPrivateInformation, vList1);
+      expect(e1.replace(<int>[]), equals(vList1));
+      expect(e1.values, equals(<int>[]));
 
-      final ob2 = new OBtag(PTag.kPrivateInformation, uInt8List1);
-      expect(ob2.replace(null), equals(uInt8List1));
-      expect(ob2.values, equals(<int>[]));
+      final e2 = new OBtag(PTag.kPrivateInformation, vList1);
+      expect(e2.replace(null), equals(vList1));
+      expect(e2.values, equals(<int>[]));
     });
 
 /*
     test('OB BASE64 random', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final uInt8ListV1 = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final uInt8ListV1 = new Bytes.typedDataView(vList0);
         final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
         final base64 = cvt.base64.encode(uInt8ListV11);
-        final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
-        expect(ob0.hasValidValues, true);
+        final e0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
+        expect(e0.hasValidValues, true);
       }
     });
 
@@ -375,69 +351,69 @@ void main() {
       final uInt8ListV1 = new Uint8List.fromList(uInt8Min);
       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
       final base64 = cvt.base64.encode(uInt8ListV11);
-      final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
-      expect(ob0.hasValidValues, true);
+      final e0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
+      expect(e0.hasValidValues, true);
     });
 */
 
     test('OB make', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final ob0 = OBtag.fromValues(PTag.kPrivateInformation, uInt8List0);
-        expect(ob0.hasValidValues, true);
+        final vList0 = rng.uint8List(1, 1);
+        final e0 = OBtag.fromValues(PTag.kPrivateInformation, vList0);
+        expect(e0.hasValidValues, true);
       }
     });
 
     test('OB fromBytes', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final bytes = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final bytes = new Bytes.typedDataView(vList0);
 //        final uInt8ListV11 = bytes.buffer.asUint8List();
         log.debug('bytes.length: ${bytes.length}');
-        final ob0 =
-            OBtag.fromBytes(PTag.kPrivateInformation, bytes, bytes.length);
-        expect(ob0.hasValidValues, true);
-        expect(ob0.vfBytes, equals(bytes));
-        expect(ob0.values is Uint8List, true);
-        expect(ob0.values, equals(bytes));
+        final e0 =
+        OBtag.fromBytes(PTag.kPrivateInformation, bytes, bytes.length);
+        expect(e0.hasValidValues, true);
+        expect(e0.vfBytes, equals(bytes));
+        expect(e0.values is Uint8List, true);
+        expect(e0.values, equals(bytes));
       }
     });
 
 /*
     test('OB fromB64', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final bytes = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final bytes = new Bytes.typedDataView(vList0);
 //        final uInt8ListV11 = bytes.buffer.asUint8List();
 //        final b64 = cvt.base64.encode(uInt8ListV11);
-        final ob0 = OBtag.fromBase64(PTag.kPrivateInformation, b64);
-        expect(ob0.hasValidValues, true);
+        final e0 = OBtag.fromBase64(PTag.kPrivateInformation, b64);
+        expect(e0.hasValidValues, true);
       }
     });
 */
 
     test('OB checkValue good values', () {
-      final uInt8List0 = rng.uint8List(1, 1);
-      final ob0 = new OBtag(PTag.kPrivateInformation, uInt8List0);
-      expect(ob0.checkValue(uInt8Max[0]), true);
-      expect(ob0.checkValue(uint8Min[0]), true);
+      final vList0 = rng.uint8List(1, 1);
+      final e0 = new OBtag(PTag.kPrivateInformation, vList0);
+      expect(e0.checkValue(uInt8Max[0]), true);
+      expect(e0.checkValue(uInt8Min[0]), true);
     });
 
     test('OB checkValue bad values', () {
-      final uInt8List0 = rng.uint8List(1, 1);
-      final ob0 = new OBtag(PTag.kPrivateInformation, uInt8List0);
-      expect(ob0.checkValue(uInt8MaxPlus[0]), false);
-      expect(ob0.checkValue(uInt8MinMinus[0]), false);
+      final vList0 = rng.uint8List(1, 1);
+      final e0 = new OBtag(PTag.kPrivateInformation, vList0);
+      expect(e0.checkValue(uInt8MaxPlus[0]), false);
+      expect(e0.checkValue(uInt8MinMinus[0]), false);
     });
 
     test('OB view', () {
-      final uInt8List0 = rng.uint8List(10, 10);
-      final ob0 = new OBtag(PTag.kSelectorOBValue, uInt8List0);
-      for (var i = 0, j = 0; i < uInt8List0.length; i++, j++) {
-        final ob1 = ob0.view(j, uInt8List0.length - i);
-        log.debug('ob0: ${ob0.values}, ob1: ${ob1.values}, '
-            'uInt8List0.subList(i) : ${uInt8List0.sublist(i)}');
-        expect(ob1.values, equals(uInt8List0.sublist(i)));
+      final vList0 = rng.uint8List(10, 10);
+      final e0 = new OBtag(PTag.kSelectorOBValue, vList0);
+      for (var i = 0, j = 0; i < vList0.length; i++, j++) {
+        final e1 = e0.view(j, vList0.length - i);
+        log.debug('e0: ${e0.values}, e1: ${e1.values}, '
+            'vList0.subList(i) : ${vList0.sublist(i)}');
+        expect(e1.values, equals(vList0.sublist(i)));
       }
     });
   });
@@ -500,6 +476,25 @@ void main() {
       // Urgent Sharath: please fix
       //     expect(OB.isValidVListLength(PTag.kPixelData, OB.kMaxLength), true);
       //     expect(OB.isValidVListLength(0), true);
+      /*final vlist = rng.uint8List(1, 1);
+      for (var tag in obTags0) {
+        expect(OB.isValidVListLength(tag, vlist), true);
+      }
+
+      for (var tag in obowTags) {
+        expect(OB.isValidVListLength(tag, vlist), true);
+      }
+
+      expect(OB.isValidVListLength(PTag.kSelectorOBValue, vlist), true);
+
+      for (var tag in otherTags) {
+        global.throwOnError = false;
+        expect(OB.isValidVListLength(tag, vlist), false);
+
+        global.throwOnError = true;
+        expect(() => OB.isValidVListLength(tag, vlist),
+            throwsA(const isInstanceOf<InvalidTagError>()));
+      }*/
     });
 
     test('OB isValidTag good values', () {
@@ -512,8 +507,8 @@ void main() {
       }
 
       for (var tag in obowTags) {
-        final ob3 = OB.isValidTag(tag);
-        expect(ob3, true);
+        final e3 = OB.isValidTag(tag);
+        expect(e3, true);
       }
     });
 
@@ -543,8 +538,8 @@ void main() {
       for (var tag in obTags0) expect(OB.isValidTag(tag), true);
 
       for (var tag in obowTags) {
-        final ob3 = OB.isValidTag(tag);
-        expect(ob3, true);
+        final e3 = OB.isValidTag(tag);
+        expect(e3, true);
       }
     });
 
@@ -576,8 +571,8 @@ void main() {
       }
 
       for (var tag in obowTags) {
-        final ob3 = OB.isValidVRIndex(tag.vrIndex);
-        expect(ob3, true);
+        final e3 = OB.isValidVRIndex(tag.vrIndex);
+        expect(e3, true);
       }
 
       for (var tag in obTags1) {
@@ -614,8 +609,8 @@ void main() {
       }
 
       for (var tag in obowTags) {
-        final ob3 = OB.checkVRIndex(tag.vrIndex);
-        expect(ob3, tag.vrIndex);
+        final e3 = OB.checkVRIndex(tag.vrIndex);
+        expect(e3, tag.vrIndex);
       }
     });
     test('OB checkVR bad values', () {
@@ -645,8 +640,8 @@ void main() {
       }
 
       for (var tag in obowTags) {
-        final ob3 = OB.isValidVRIndex(tag.vrIndex);
-        expect(ob3, true);
+        final e3 = OB.isValidVRIndex(tag.vrIndex);
+        expect(e3, true);
       }
     });
 
@@ -746,10 +741,10 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
-    test('OB toUint8List', () {
+    /*test('OB toUint8List', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        expect(Uint8.fromList(uInt8List0), uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        expect(Uint8.fromList(vList0), vList0);
       }
       const uInt8Min = const [kUint8Min];
       const uInt8Max = const [kUint8Max];
@@ -759,8 +754,8 @@ void main() {
 
     test('Uint8Base.fromBytes', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final bytes = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final bytes = new Bytes.typedDataView(vList0);
 //        final bd = bytes.buffer.asUint8List();
         log
           ..debug('uInt8ListV1 : $bytes')
@@ -772,8 +767,8 @@ void main() {
     test('Uint8Base.ListToBytes', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final uInt8ListV1 = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final uInt8ListV1 = new Bytes.typedDataView(vList0);
         final bd = uInt8ListV1.buffer.asUint8List();
         log
           ..debug('uInt8ListV1 : $uInt8ListV1')
@@ -800,15 +795,15 @@ void main() {
       global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final uInt8List0 = rng.uint8List(1, 1);
-        final bd0 = uInt8List0.buffer.asByteData();
-        final lBd0 = Uint8.toByteData(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final bd0 = vList0.buffer.asByteData();
+        final lBd0 = Uint8.toByteData(vList0);
         log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
             .asUint8List()}');
         expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
         expect(lBd0.buffer == bd0.buffer, true);
 
-        final lBd1 = Uint8.toByteData(uInt8List0);
+        final lBd1 = Uint8.toByteData(vList0);
         log.debug('lBd3: ${lBd1.buffer.asUint8List()}, '
             'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -828,9 +823,9 @@ void main() {
     test('Uint8Base toByteData bad values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final uInt8List0 = rng.uint8List(1, 1);
-        final bd0 = uInt8List0.buffer.asByteData();
-        final lBd1 = Uint8.toByteData(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final bd0 = vList0.buffer.asByteData();
+        final lBd1 = Uint8.toByteData(vList0);
         log.debug('lBd1: ${lBd1.buffer.asUint8List()}, '
             'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -849,7 +844,7 @@ void main() {
         expect(lBd3.buffer == bd1.buffer, false);
         expect(lBd3.buffer.asUint8List() != bd1.buffer.asUint8List(), true);
 
-        final lBd4 = Uint8.toByteData(uInt8List0);
+        final lBd4 = Uint8.toByteData(vList0);
         log.debug('lBd4: ${lBd4.buffer.asUint8List()}, '
             'bd0: ${bd0.buffer.asUint8List()}');
         expect(lBd4.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -872,77 +867,77 @@ void main() {
 
     test('Uint8Base.fromBase64', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(0, i);
-        final uInt8ListV1 = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(0, i);
+        final uInt8ListV1 = new Bytes.typedDataView(vList0);
         final bd = uInt8ListV1.buffer.asUint8List();
         final base64 = cvt.base64.encode(bd);
         log.debug('OB.base64: "$base64"');
 
         final obList = Uint8.fromBase64(base64);
         log.debug('  OB.decode: $obList');
-        expect(obList, equals(uInt8List0));
+        expect(obList, equals(vList0));
         expect(obList, equals(uInt8ListV1));
       }
     });
 
     test('Uint8Base.ListToBase64', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(0, i);
-        final uInt8ListV1 = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(0, i);
+        final uInt8ListV1 = new Bytes.typedDataView(vList0);
         final bd = uInt8ListV1.buffer.asUint8List();
         final s = cvt.base64.encode(bd);
-        expect(Uint8.toBase64(uInt8List0), equals(s));
+        expect(Uint8.toBase64(vList0), equals(s));
       }
     });
 
     test('OB encodeDecodeJsonVF', () {
       global.level = Level.info;
       for (var i = 1; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(0, i);
-        final uInt8ListV1 = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(0, i);
+        final uInt8ListV1 = new Bytes.typedDataView(vList0);
         final bd = uInt8ListV1.buffer.asUint8List();
 
         // Encode
         final base64 = cvt.base64.encode(bd);
         log.debug('OB.base64: "$base64"');
-        final s = Uint8.toBase64(uInt8List0);
+        final s = Uint8.toBase64(vList0);
         log.debug('  OB.json: "$s"');
         expect(s, equals(base64));
 
         // Decode
-        final ob0 = Uint8.fromBase64(base64);
-        log.debug('OB.base64: $ob0');
-        final ob1 = Uint8.fromBase64(s);
-        log.debug('  OB.json: $ob1');
-        expect(ob0, equals(uInt8List0));
-        expect(ob0, equals(uInt8ListV1));
-        expect(ob0, equals(ob1));
+        final e0 = Uint8.fromBase64(base64);
+        log.debug('OB.base64: $e0');
+        final e1 = Uint8.fromBase64(s);
+        log.debug('  OB.json: $e1');
+        expect(e0, equals(vList0));
+        expect(e0, equals(uInt8ListV1));
+        expect(e0, equals(e1));
       }
     });
 
     test('Uint8Base.fromBytes', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final bytes = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final bytes = new Bytes.typedDataView(vList0);
 //        final bd = uInt8ListV1.buffer.asUint8List();
         log
           ..debug('uInt8ListV1 : $bytes')
           ..debug('Uint8Base.fromBytes(bd) ; ${Uint8.fromBytes(bytes)}');
-        expect(Uint8.fromBytes(bytes), equals(uInt8List0));
+        expect(Uint8.fromBytes(bytes), equals(vList0));
       }
     });
 
     test('Uint8Base.fromByteData', () {
       for (var i = 0; i < 10; i++) {
-        final uInt8List0 = rng.uint8List(1, 1);
-        final uInt8ListV1 = new Bytes.typedDataView(uInt8List0);
+        final vList0 = rng.uint8List(1, 1);
+        final uInt8ListV1 = new Bytes.typedDataView(vList0);
         final byteData = uInt8ListV1.buffer.asByteData();
         log
-          ..debug('uInt8List0 : $uInt8List0')
+          ..debug('vList0 : $vList0')
           ..debug('Uint8Base.fromByteData(byteData): '
               '${Uint8.fromByteData(byteData)}');
-        expect(Uint8.fromByteData(byteData), equals(uInt8List0));
+        expect(Uint8.fromByteData(byteData), equals(vList0));
       }
-    });
+    });*/
   });
 }

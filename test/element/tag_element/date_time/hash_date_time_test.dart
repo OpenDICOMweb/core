@@ -17,58 +17,57 @@ void main() {
   Server.initialize(name: 'element/hash_time_test', level: Level.info);
   test('String Date', () {
     final stringList = <String>['19930822'];
-    final da0 = new DAtag(PTag.kCreationDate, stringList);
-    final da1 = new DAtag(PTag.kCreationDate, stringList);
-    final da2 = new DAtag(PTag.kStructureSetDate, stringList);
+    final e0 = new DAtag(PTag.kCreationDate, stringList);
+    final e1 = new DAtag(PTag.kCreationDate, stringList);
+    final e2 = new DAtag(PTag.kStructureSetDate, stringList);
 
     global.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
-    expect(() => da0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
+    expect(() => e0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
     log.debug(
-        'da0.hash: ${da0.hash}, da1.hash: ${da1.hash}, da2.hash: ${da2.hash}');
+        'e0.hash: ${e0.hash}, e1.hash: ${e1.hash}, e2.hash: ${e2.hash}');
 
-    expect(da0.hash, equals(da1.hash));
-    expect(da0.hash, equals(da2.hash));
+    expect(e0.hash, equals(e1.hash));
+    expect(e0.hash, equals(e2.hash));
 
     //DA.normalization
-    final nDate = da0.normalize(Date.parse('19930822'));
+    final nDate = e0.normalize(Date.parse('19930822'));
     log.debug(nDate);
   });
 
   test('String DateTime', () {
     final stringList = <String>['19530827111300'];
-    final dt0 = new DTtag(PTag.kFrameAcquisitionDateTime, stringList);
-    final dt1 = new DTtag(PTag.kFrameAcquisitionDateTime, stringList);
-    final dt2 = new DTtag(PTag.kRouteSegmentStartTime, stringList);
+    final e0 = new DTtag(PTag.kFrameAcquisitionDateTime, stringList);
+    final e1 = new DTtag(PTag.kFrameAcquisitionDateTime, stringList);
+    final e2 = new DTtag(PTag.kRouteSegmentStartTime, stringList);
 
     global.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
-//    dt0.sha256;
-    expect(() => dt0.sha256,
-        throwsA(const isInstanceOf<UnsupportedError>()));
+//    e0.sha256;
+    expect(() => e0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
 
     log.debug(
-        'dt0.hash: ${dt0.hash}, dt1.hash: ${dt1.hash}, dt2.hash: ${dt2.hash}');
-    expect(dt0.hash, equals(dt1.hash));
-    expect(dt0.hash, equals(dt2.hash));
+        'e0.hash: ${e0.hash}, e1.hash: ${e1.hash}, e2.hash: ${e2.hash}');
+    expect(e0.hash, equals(e1.hash));
+    expect(e0.hash, equals(e2.hash));
   });
 
   test('String Time', () {
     final stringList = rsg.getTMList(1, 1);
-    final tm0 = new TMtag(PTag.kModifiedImageTime, stringList);
-    final tm1 = new TMtag(PTag.kModifiedImageTime, stringList);
-    final tm2 = new TMtag(PTag.kCreationTime, stringList);
+    final e0 = new TMtag(PTag.kModifiedImageTime, stringList);
+    final e1 = new TMtag(PTag.kModifiedImageTime, stringList);
+    final e2 = new TMtag(PTag.kCreationTime, stringList);
 
     global.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
-    expect(() => tm0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
+    expect(() => e0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
 
     log.debug(
-        'tm0.hash: ${tm0.hash}, tm1.hash: ${tm1.hash}, tm2.hash: ${tm2.hash}');
-    expect(tm0.hash, equals(tm1.hash));
-    expect(tm0.hash, equals(tm2.hash));
+        'e0.hash: ${e0.hash}, e1.hash: ${e1.hash}, e2.hash: ${e2.hash}');
+    expect(e0.hash, equals(e1.hash));
+    expect(e0.hash, equals(e2.hash));
   });
 }
