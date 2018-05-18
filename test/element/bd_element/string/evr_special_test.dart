@@ -24,34 +24,33 @@ void main() {
       global.throwOnError = false;
 
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        final bytes = DicomBytes.fromAsciiList(vList0);
-        log..debug('vList0: $vList0')..debug('bd: $bytes');
+        final vList = rsg.getAEList(1, 1);
+        final bytes = DicomBytes.fromAsciiList(vList);
+        log..debug('vList: $vList')..debug('bd: $bytes');
 
-        final e0 = AEbytes.fromValues(kReceivingAE, vList0);
-        log.debug('ae2:$e0');
+        final e0 = AEbytes.fromValues(kReceivingAE, vList);
+        log..debug('e0: $e0')..debug('vList: $vList')..debug('bd: $bytes');
         expect(e0.hasValidValues, true);
-        expect(e0.vBytes == bd0, true);
+        expect(e0.vfBytes == bytes, true);
 
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
-        log.debug('ae3:$e1');
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        log..debug('e1: $e1')..debug('vList: $vList')..debug('bd: $bytes');
         expect(e1.hasValidValues, true);
-        expect(e1.vBytes == bd0, true);
         expect(e1 == e0, true);
+ //       expect(e1.vBytes == bytes, true);
 
-        //   final ae2 = AEbytes.fromValues(kReceivingAE, vList0);
-        final ae2 = new AEtag(PTag.kReceivingAE, vList0);
-        log.debug('ae0:$ae2');
-        expect(ae2.hasValidValues, true);
-        expect(ae2.vBytes == bd0, true);
-// TODO
-//        expect(ae2 == ae0, true);
 
-        final ae3 = AEtag.fromValues(PTag.kReceivingAE, vList0);
-        log.debug('ae1:$ae3');
-        expect(ae3.hasValidValues, true);
-        expect(ae3.vBytes == bd0, true);
-        expect(ae3 == ae2, true);
+        final e2 = AEbytes.fromValues(kReceivingAE, vList);
+        log.debug('e2: $e2');
+        expect(e2.hasValidValues, true);
+        expect(e2.vBytes == bytes, true);
+        expect(e2 == e1, true);
+
+        final e3 = AEbytes.fromValues(kReceivingAE, vList);
+        log.debug('e3:$e3');
+        expect(e3.hasValidValues, true);
+        expect(e3.vBytes == bytes, true);
+        expect(e3 == e2, true);
       }
     });
 
@@ -65,7 +64,7 @@ void main() {
         final e0 = AEbytes.fromValues(kSelectorOFValue, vList0);
         log.debug('ae1:$e0');
         expect(e0.hasValidValues, true);
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('ae1:$e1');
         expect(e1.hasValidValues, true);
         expect(e0 == e1, true);
@@ -78,15 +77,16 @@ void main() {
 
     test('DSbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
-        final vList = rsg.getDSList(1, 1);
+        var vList = rsg.getDSList(1, 1);
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
+         vList = [vList[0].trim()];
         print('DS list: $vList');
         final e0 = DSbytes.fromValues(kRequestedImageSize, vList);
         log.debug('ds0:$e0');
         expect(e0.hasValidValues, true);
 
         log.debug('e0:$e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e1.hasValidValues, true);
       }
@@ -96,10 +96,11 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
         global.throwOnError = false;
+        for (var n in vList0) print('n: "$n"');
         final e0 = DSbytes.fromValues(kRTImagePosition, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e1.hasValidValues, true);
       }
@@ -112,7 +113,7 @@ void main() {
         final e0 = DSbytes.fromValues(kNormalizationPoint, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e1.hasValidValues, true);
       }
@@ -125,7 +126,7 @@ void main() {
         final e0 = DSbytes.fromValues(kDiaphragmPosition, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -138,7 +139,7 @@ void main() {
         final e0 = DSbytes.fromValues(kImageOrientation, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -151,7 +152,7 @@ void main() {
         final e0 = DSbytes.fromValues(kSelectorDSValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -163,7 +164,7 @@ void main() {
         global.throwOnError = false;
         final e0 = DSbytes.fromValues(kDetectorActiveDimensions, vList);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -176,7 +177,7 @@ void main() {
         final e0 = DSbytes.fromValues(kDVHData, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -189,7 +190,7 @@ void main() {
         final e0 = DSbytes.fromValues(kContourData, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -204,7 +205,7 @@ void main() {
         final e0 = ISbytes.fromValues(kStageNumber, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -217,7 +218,7 @@ void main() {
         final e0 = ISbytes.fromValues(kCenterOfCircularShutter, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -231,7 +232,7 @@ void main() {
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
 
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -245,7 +246,7 @@ void main() {
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
 
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -259,7 +260,7 @@ void main() {
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
 
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -275,7 +276,7 @@ void main() {
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
 
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -289,7 +290,7 @@ void main() {
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
 
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -305,7 +306,7 @@ void main() {
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
 
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -319,7 +320,7 @@ void main() {
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
 
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -332,7 +333,7 @@ void main() {
         final e0 = CSbytes.fromValues(kImageType, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -344,7 +345,7 @@ void main() {
         final e0 = CSbytes.fromValues(kFrameType, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -357,7 +358,7 @@ void main() {
         final e0 = CSbytes.fromValues(kSelectorCSValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -372,7 +373,7 @@ void main() {
         final e0 = DTbytes.fromValues(kDateTime, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -385,7 +386,7 @@ void main() {
         final e0 = DTbytes.fromValues(kSelectorDTValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -400,7 +401,7 @@ void main() {
         final e0 = TMbytes.fromValues(kTime, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -413,7 +414,7 @@ void main() {
         final e0 = TMbytes.fromValues(kSelectorTMValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -428,7 +429,7 @@ void main() {
         final e0 = LObytes.fromValues(kManufacturer, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -441,7 +442,7 @@ void main() {
         final e0 = LObytes.fromValues(kSelectorLOValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -456,7 +457,7 @@ void main() {
         final e0 = PNbytes.fromValues(kEvaluatorName, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -469,7 +470,7 @@ void main() {
         final e0 = PNbytes.fromValues(kSelectorPNValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -484,7 +485,7 @@ void main() {
         final e0 = SHbytes.fromValues(kCodeValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -497,7 +498,7 @@ void main() {
         final e0 = SHbytes.fromValues(kSelectorSHValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -512,7 +513,7 @@ void main() {
         final e0 = LTbytes.fromValues(kPatientComments, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -527,7 +528,7 @@ void main() {
         final e0 = STbytes.fromValues(kSelectorSTValue, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -542,7 +543,7 @@ void main() {
         final e0 =
             FDbytes.fromValues(kOverallTemplateSpatialTolerance, floatList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -562,7 +563,7 @@ void main() {
         final e1= ByteElement.makeFromCode(rds, fd1.code, bd1);
         log.debug('e0:$e0');
 */
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -578,7 +579,7 @@ void main() {
         global.throwOnError = false;
         final e0 = OFbytes.fromValues(kFloatPixelData, floatList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -590,7 +591,7 @@ void main() {
         global.throwOnError = false;
         final e0 = OFbytes.fromValues(kSelectorOFValue, floatList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -604,7 +605,7 @@ void main() {
         global.throwOnError = false;
         final e0 = UTbytes.fromValues(kSelectorUTValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -619,7 +620,7 @@ void main() {
         global.throwOnError = false;
         final e0 = ATbytes.fromValues(kDimensionIndexPointer, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -631,7 +632,7 @@ void main() {
         global.throwOnError = false;
         final e0 = ATbytes.fromValues(kSelectorATValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -646,7 +647,7 @@ void main() {
         global.throwOnError = false;
         final e0 = ULbytes.fromValues(kRegionFlags, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -658,7 +659,7 @@ void main() {
         global.throwOnError = false;
         final e0 = ULbytes.fromValues(kGridDimensions, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -670,7 +671,7 @@ void main() {
         global.throwOnError = false;
         final e0 = ULbytes.fromValues(kSelectorULValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -684,7 +685,7 @@ void main() {
         global.throwOnError = false;
         final e0 = USbytes.fromValues(kContrastFrameAveraging, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -697,7 +698,7 @@ void main() {
         global.throwOnError = false;
         final e0 = USbytes.fromValues(kRelativeTime, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -709,7 +710,7 @@ void main() {
         global.throwOnError = false;
         final e0 = USbytes.fromValues(kEscapeTriplet, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -721,7 +722,7 @@ void main() {
         global.throwOnError = false;
         final e0 = USbytes.fromValues(kSelectorUSValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -736,7 +737,7 @@ void main() {
         global.throwOnError = false;
         final e0 = SSbytes.fromValues(kTIDOffset, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -748,7 +749,7 @@ void main() {
         global.throwOnError = false;
         final e0 = SSbytes.fromValues(kOverlayOrigin, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -761,7 +762,7 @@ void main() {
         final e0 = SSbytes.fromValues(kSelectorSSValue, vList0);
         log.debug('e0: $e0');
 
-        final e1 = ByteElement.makeFromCode(e0.bytes, rds);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }

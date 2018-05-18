@@ -12,7 +12,6 @@ import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/string/string.dart';
 import 'package:core/src/element/base/string/string_bulkdata.dart';
 import 'package:core/src/element/base/string/utf8.dart';
-import 'package:core/src/element/base/float/float_mixin.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';

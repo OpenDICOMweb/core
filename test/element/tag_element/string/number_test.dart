@@ -809,7 +809,7 @@ void main() {
 
         for (var tag in dsTags2) {
           print('tag: $tag');
-          print('DS.kMaxLength: ${DS.kMaxLengthForVR}');
+          print('DS.kMaxLength: ${DS.kMaxLength}');
           print('max length: ${tag.maxValues}');
 
           final max = (tag.vm.max(tag.vr.maxLength) ~/ 2) * 2;
@@ -976,7 +976,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rsg.getDSList(1, i);
-        final validMaxLengthList = badLengthList.sublist(0, DS.kMaxLengthForVR);
+        final validMaxLengthList = badLengthList.sublist(0, DS.kMaxLength);
         for (var tag in dsTags7) {
           log.debug('tag: $tag');
           expect(DS.isValidLength(tag, validMinVList0), true);
@@ -2026,12 +2026,12 @@ void main() {
     test('IS isValidVListLength VM.k1_n good values', () {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
-        final validMinVList0 = rsg.getISList(1, i);
-        final validMaxLengthList = badLengthList.sublist(0, IS.kMaxLength);
+        final vList0 = rsg.getISList(1, i);
+        final goodMaxLength = badLengthList.sublist(0, IS.kMaxLength);
         for (var tag in isTags4) {
           log.debug('tag: $tag');
-          expect(IS.isValidLength(tag, validMinVList0), true);
-          expect(IS.isValidLength(tag, validMaxLengthList), true);
+          expect(IS.isValidLength(tag, vList0), true);
+          expect(IS.isValidLength(tag, goodMaxLength), true);
         }
       }
     });

@@ -38,8 +38,10 @@ abstract class PixelData {
 
 abstract class OBPixelData extends OB
     with PixelData, Uint8PixelDataMixin {
+  @override
   TransferSyntax get ts;
 
+  @override
   bool get isCompressed => ts.isEncapsulated;
   /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
   /// If [doTestElementValidity] is _false_ then no validation is done.
@@ -68,8 +70,10 @@ abstract class OBPixelData extends OB
 
 abstract class UNPixelData extends UN
     with PixelData, Uint8PixelDataMixin {
+  @override
   TransferSyntax get ts;
 
+  @override
   bool get isCompressed => ts.isEncapsulated;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
@@ -98,8 +102,10 @@ abstract class UNPixelData extends UN
 
 abstract class OWPixelData extends OW
     with PixelData, Uint16PixelDataMixin {
+  @override
   TransferSyntax get ts;
 
+  @override
   bool get isCompressed => ts.isEncapsulated;
   /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
   /// If [doTestElementValidity] is _false_ then no validation is done.

@@ -231,7 +231,7 @@ void main() {
 
     test('AS null', () {
       final as2 = new AStag(PTag.kPatientAge, null);
-      expect(as2, isNull);
+      expect(as2, <String>[]);
 
       global.throwOnError = true;
       expect(() => new AStag(PTag.kPatientAge, null),
@@ -333,7 +333,7 @@ void main() {
       expect(as1.values, equals(<String>[]));
 
       final as2 = new AStag(PTag.kPatientAge, null);
-      expect(as2, isNull);
+      expect(as2, <String>[]);
     });
 
     test('AS toUint8List random', () {
@@ -3722,14 +3722,14 @@ void main() {
     test('TM isValidValues bad values', () {
       global.throwOnError = false;
       final vList1 = ['235960'];
-      expect(TM.isValidValues(PTag.kAcquisitionTime, vList1), isNull);
+      expect(TM.isValidValues(PTag.kAcquisitionTime, vList1), false);
 
       global.throwOnError = true;
       expect(() => TM.isValidValues(PTag.kAcquisitionTime, vList1),
           throwsA(const isInstanceOf<InvalidValuesError>()));
       for (var s in badTMList) {
         global.throwOnError = false;
-        expect(TM.isValidValues(PTag.kAcquisitionTime, s), isNull);
+        expect(TM.isValidValues(PTag.kAcquisitionTime, s), false);
 
         global.throwOnError = true;
         expect(() => TM.isValidValues(PTag.kAcquisitionTime, s),

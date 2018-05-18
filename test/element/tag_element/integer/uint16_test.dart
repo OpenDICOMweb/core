@@ -103,7 +103,7 @@ void main() {
       global.throwOnError = false;
       final us4 = new UStag(PTag.kRepresentativeFrameNumber, null);
       log.debug('us4: $us4');
-      expect(us4, isNull);
+      expect(us4,<int>[]);
 
       global.throwOnError = true;
       expect(() => new UStag(PTag.kRepresentativeFrameNumber, null),

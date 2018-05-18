@@ -259,7 +259,7 @@ abstract class Tag {
   /// Value Field length for _this_ [Tag].
   bool isValidVFLength(int vfLength, [Issues issues]) {
     if (isVFLengthAlwaysValid(vrIndex)) return true;
- //   final max = vr.maxVFLength;
+    //   final max = vr.maxVFLength;
     final v = vr.isValidVFLength(vfLength, minValues, maxValues);
     return v;
 /*
@@ -286,10 +286,10 @@ abstract class Tag {
           ? true
           : invalidVFLength(vfLength, maxVFLength);
 
-  bool __isValidVFLength(int vfLength, int maxVFLength) {
-    (vfLength >= 0 && vfLength <= maxVFLength) ? true : invalidVFLength(
-        vfLength, maxVFLength);
-  }
+  bool __isValidVFLength(int vfLength, int maxVFLength) =>
+      (vfLength >= 0 && vfLength <= maxVFLength)
+          ? true
+          : invalidVFLength(vfLength, maxVFLength);
 
   bool isNotValidVFLength(int vfLength, [Issues issues]) =>
       !isValidVFLength(vfLength, issues);

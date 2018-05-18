@@ -138,7 +138,7 @@ abstract class DS extends StringAscii {
   static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, DS);
     if (vList == null) return nullValueError();
-    Element.isValidLength(tag, vList, issues, kMaxLength, DS);
+    return Element.isValidLength(tag, vList, issues, kMaxLength, DS);
   }
   /// Returns _true_ if [tag] has a VR of [DS] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
@@ -155,6 +155,8 @@ abstract class DS extends StringAscii {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
+    print('s= "$s"');
+
     final n = tryParse(s);
     if (n != null) return true;
     invalidString('Invalid Decimal (DS) String: "$s"');
@@ -166,7 +168,13 @@ abstract class DS extends StringAscii {
   /// Parse a [DS] [String]. Leading and trailing spaces allowed,
   /// but all spaces is illegal.
   static double tryParse(String s, [Issues issues]) {
-    final v = double.tryParse(s);
+    print('s: "$s"');
+    print('bytes: ${s.codeUnits}');
+    final s0 = s.trimRight();
+    print('s0: "$s0"');
+    print('bytes: ${s0.codeUnits}');
+    final v = double.tryParse(s0);
+    print('v="$v"');
     if (v == null) {
       if (issues != null) issues.add('Invalid Digital String (DS): "$s"');
       return badString('$s', issues);
@@ -297,7 +305,7 @@ abstract class IS extends StringAscii {
   static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, IS);
     if (vList == null) return nullValueError();
-    Element.isValidLength(tag, vList, issues, kMaxLength, IS);
+    return Element.isValidLength(tag, vList, issues, kMaxLength, IS);
   }
 
   /// Returns _true_ if [tag] has a VR of [IS] and [vList] is valid for [tag].

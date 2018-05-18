@@ -51,6 +51,7 @@ class EvrShortBytes extends EvrBytes {
   static EvrShortBytes makeEmpty(int code, int vfLength, int vrCode,
       [Endian endian]) {
 //    assert(vfLength.isEven);
+  print('eLength: ${kHeaderLength + vfLength}');
     final e = new EvrShortBytes(kHeaderLength + vfLength, endian)
       ..evrSetShortHeader(code, vfLength, vrCode);
     return e;

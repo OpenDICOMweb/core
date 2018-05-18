@@ -236,7 +236,7 @@ void main() {
         ..debug('pixelSize bits: ${owFDc.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${owFDc.pixelSizeInBytes}');
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new FrameList16Bit(pixels0, nFrames0, owFDc),
           throwsA(const isInstanceOf<InvalidFrameListError>()));
 
@@ -317,11 +317,11 @@ void main() {
       final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[], 0);
       final csColorSpace0 = new CStag(PTag.kColorSpace);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final unPixelPaddingRangeLimit =
           new UStag(PTag.kPixelPaddingRangeLimit, [65536]);
       expect(unPixelPaddingRangeLimit, isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new UStag(PTag.kPixelPaddingRangeLimit, [65536]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
 

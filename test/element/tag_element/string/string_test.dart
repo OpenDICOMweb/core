@@ -405,7 +405,7 @@ void main() {
     const badLongString = 'fr<(Kf_dt&wSB)~P_hYZI`r[12Der)*sldfjelr#er@1!`, '
         '{qw{retyt}dddd123qw{retyt}dddd123';
     const badLOLengthList = const <String>[
-  //    '',
+      //    '',
       'fr<(Kf_dt&wSB)~P_hYZI`r[12Der)*sldfjelr#er@1!`, {qw{retyt}dddd123',
       badLongString
     ];
@@ -678,10 +678,8 @@ void main() {
         for (var tag in loTags0) {
           expect(LO.isValidLength(tag, validMinVList), true);
 
-          expect(
-              LO.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              LO.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(LO.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(LO.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -1476,10 +1474,8 @@ void main() {
         for (var tag in ltTags0) {
           expect(LT.isValidLength(tag, validMinVList), true);
 
-          expect(
-              LT.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              LT.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(LT.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(LT.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -2283,10 +2279,8 @@ void main() {
         for (var tag in pnTags0) {
           expect(PN.isValidLength(tag, validMinVList), true);
 
-          expect(
-              PN.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              PN.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(PN.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(PN.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -3053,10 +3047,8 @@ void main() {
         for (var tag in shTags0) {
           expect(SH.isValidLength(tag, validMinVList), true);
 
-          expect(
-              SH.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              SH.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(SH.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(SH.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -3752,7 +3744,7 @@ void main() {
       }
     });
  */
-test('ST isValidVRIndex good values', () {
+    test('ST isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(ST.isValidVRIndex(kSTIndex), true);
 
@@ -3860,10 +3852,8 @@ test('ST isValidVRIndex good values', () {
         for (var tag in stTags0) {
           expect(ST.isValidLength(tag, validMinVList), true);
 
-          expect(
-              ST.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              ST.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(ST.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(ST.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -3974,10 +3964,11 @@ test('ST isValidVRIndex good values', () {
 
     test('ST fromUtf8', () {
       final vList = rsg.getSTList(1, 1);
-      var s0 = vList[0];
-      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8(s0)}');
+      final s0 = vList[0];
+      log
+        ..debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8(s0)}')
 //      if (s0.length.isOdd) s0 = '$s0 ';
-      log.debug('s0:"$s0"');
+        ..debug('s0:"$s0"');
       final bytes = utf8.encode(vList[0]);
       expect(Bytes.fromUtf8(s0), equals(bytes));
     });
@@ -4607,10 +4598,8 @@ test('ST isValidVRIndex good values', () {
         for (var tag in ucTags0) {
           expect(UC.isValidLength(tag, validMinVList), true);
 
-          expect(
-              UC.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              UC.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(UC.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(UC.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -5346,10 +5335,8 @@ test('ST isValidVRIndex good values', () {
         for (var tag in utTags0) {
           expect(UT.isValidLength(tag, validMinVList), true);
 
-          expect(
-              UT.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              UT.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(UT.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(UT.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });

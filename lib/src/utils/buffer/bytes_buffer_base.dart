@@ -16,8 +16,8 @@ import 'package:core/src/utils.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/vr.dart';
 
-part 'package:core/src/utils/buffer/buffer_mixin.dart';
 part 'package:core/src/utils/buffer/buffer.dart';
+part 'package:core/src/utils/buffer/buffer_mixin.dart';
 part 'package:core/src/utils/buffer/dicom_read_buffer.dart';
 part 'package:core/src/utils/buffer/dicom_write_buffer.dart';
 part 'package:core/src/utils/buffer/read_buffer.dart';

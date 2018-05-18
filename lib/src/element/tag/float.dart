@@ -27,7 +27,8 @@ class FLtag extends FL with TagElement<double> {
 
   factory FLtag._(Tag tag, Iterable<double> vList) {
     if (!FL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    return new FLtag._x(tag, Float32.fromList(vList));
+    final v = (vList.isEmpty) ? kEmptyFloat32List : vList;
+    return new FLtag._x(tag, Float32.fromList(v));
   }
 
   FLtag._x(this.tag, this.values) : assert(tag.vrIndex == kFLIndex);
@@ -57,9 +58,7 @@ class OFtag extends OF with TagElement<double> {
 
   /// Creates an [OFtag] from a [Iterable<double>].
   factory OFtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
-      (OF.isValidArgs(tag, vList))
-          ? new OFtag._(tag, vList)
-          : badValues(vList, null, tag);
+      new OFtag._(tag, vList);
 
   factory OFtag.bulkdata(Tag tag, Uri url) =>
       new OFtag._(tag, new FloatBulkdataRef(tag.code, url));
@@ -94,16 +93,14 @@ class FDtag extends FD with TagElement<double> {
 
   /// Creates an [FDtag] from a [Iterable<double>].
   factory FDtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
-      (FD.isValidArgs(tag, vList))
-          ? new FDtag._(tag, vList)
-          : badValues(vList, null, tag);
+      new FDtag._(tag, vList);
 
   factory FDtag.bulkdata(Tag tag, Uri url) =>
       new FDtag._(tag, new FloatBulkdataRef(tag.code, url));
 
   factory FDtag._(Tag tag, Iterable<double> vList) {
     if (!FD.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? kEmptyFloat32List : vList;
+    final v = (vList.isEmpty) ? kEmptyFloat64List : vList;
     return new FDtag._x(tag, v);
   }
 
@@ -133,16 +130,14 @@ class ODtag extends OD with TagElement<double> {
 
   /// Creates an [ODtag] from a [Iterable<double>].
   factory ODtag(Tag tag, [Iterable<double> vList = kEmptyDoubleList]) =>
-      (OD.isValidArgs(tag, vList))
-          ? new ODtag._(tag, vList)
-          : badValues(vList, null, tag);
+       new ODtag._(tag, vList);
 
   factory ODtag.bulkdata(Tag tag, Uri url) =>
       new ODtag._(tag, new FloatBulkdataRef(tag.code, url));
 
   factory ODtag._(Tag tag, Iterable<double> vList) {
     if (!OD.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? kEmptyFloat32List : vList;
+    final v = (vList.isEmpty) ? kEmptyFloat64List : vList;
     return new ODtag._x(tag, v);
   }
 

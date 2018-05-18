@@ -28,7 +28,7 @@ abstract class DicomWriteBufferMixin  {
 //  bool hasRemaining(int n) => _wHasRemaining(n);
 
   /// Write a DICOM Tag Code to _this_.
-  void writeCode(int code, int eLength) {
+  void writeCode(int code, [int eLength = 12]) {
 //    _checkCode(code);
     assert(_wIndex.isEven);
     _maybeGrow(eLength);

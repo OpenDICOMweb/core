@@ -102,7 +102,7 @@ abstract class DicomMixin {
   Bytes get vfBytes => asBytes(vfOffset, vfLength);
 
   /// Returns the Value Field bytes _without_ padding.
-  Bytes get vBytes => asBytes(vfOffset, _vflWOPadding(vfOffset));
+ Bytes get vBytes => asBytes(vfOffset, _vflWOPadding(vfOffset));
 
   /// Returns the last Uint8 element in [vfBytes], if [vfBytes]
   /// is not empty; otherwise, returns _null_.
@@ -116,8 +116,8 @@ abstract class DicomMixin {
       _bd.buffer.asUint8List(_bdOffset + vfOffset, vfLength);
 
   /// Returns the Value Field as a Uint8List _without_ padding.
-  Uint8List get vfUint8ListWOPadding =>
-      _bd.buffer.asUint8List(_bdOffset + vfOffset, _vflWOPadding(vfOffset));
+//  Uint8List get vfUint8ListWOPadding =>
+//      _bd.buffer.asUint8List(_bdOffset + vfOffset, _vflWOPadding(vfOffset));
 
   // ** Primitive Getters
 
@@ -190,7 +190,6 @@ abstract class DicomMixin {
   int writeAsciiVFFast(int offset, List<String> vList, [int padChar]) {
     var index = offset;
     if (vList.isEmpty) return index;
-
     final last = vList.length - 1;
     for (var i = 0; i < vList.length; i++) {
       final s = vList[i];
@@ -204,12 +203,34 @@ abstract class DicomMixin {
     return index;
   }
 
+  /// Writes the elements of the specified [list] to _this_ starting at
+  /// [start]. If [pad] is _true_ and the final offset is odd, then a 0 is
+  /// written after the other elements have been written.
+  int setAsciiList(int start, List<String> list, [int pad = kSpace]) {
+    final length = list.length;
+    final last = length -1;
+    var k = start;
+
+    for (var i = 0; i < length; i++) {
+      final s = list[i];
+      for (var j = 0; j < s.length; j++) {
+        print('c: ${s.codeUnitAt(j)}');
+        _setUint8(k++, s.codeUnitAt(j));
+      }
+      if (i != last) _setUint8(k++, kBackslash);
+    }
+    print('pad: $pad');
+    if (k.isOdd && pad != null) _setUint8(k++, pad);
+    return k - start;
+  }
+
   /// Returns the length in bytes of this Byte Element without padding.
   int _vflWOPadding(int vfOffset) {
     final length = bd.lengthInBytes - vfOffset;
     if (length == 0 || length.isOdd) return length;
     final newLen = length - 1;
     final last = _getUint8(newLen);
+    print('last char: $last');
     return (last == kSpace || last == kNull) ? newLen : length;
   }
 
@@ -253,22 +274,6 @@ abstract class DicomMixin {
     length ??= s.length;
     final v = _maybeGetSubstring(s, offset, length);
     return __setUint8List(start, ascii.encode(v), offset, length, padChar);
-  }
-
-  /// Writes the elements of the specified [list] to _this_ starting at
-  /// [start]. If [pad] is _true_ and the final offset is odd, then a 0 is
-  /// written after the other elements have been written.
-  int setAsciiList(int start, List<String> list, [int pad]) {
-    final length = list.length;
-    var k = start;
-
-    for (var i = 0; i < length; i++) {
-      final s = list[i];
-      for (var j = 0; j < s.length; j++) _setUint8(k++, s.codeUnitAt(j));
-      if (i < length - 1) _setUint8(k++, kBackslash);
-    }
-    if (k.isOdd && pad != null) _setUint8(k++, pad);
-    return k - start;
   }
 
   /// UTF-8 encodes the specified range of [s] and then writes the

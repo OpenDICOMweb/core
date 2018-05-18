@@ -76,7 +76,7 @@ abstract class ReadBufferBase extends BytesBufferBase {
   }
 }
 
-class ReadBuffer extends ReadBufferBase {
+class ReadBuffer extends ReadBufferBase with ReadBufferMixin {
   @override
   final Bytes _buf;
   @override

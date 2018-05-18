@@ -238,9 +238,9 @@ void main() {
       final pd1 = new OWtagPixelData(PTag.kOverlayData, [123, 101]);
       expect(pd1, isNull);
       final ba3 = new UStag(PTag.kBitsAllocated, [16]);
-      final ds2 = new TagRootDataset.empty();
+      final ds2 = new TagRootDataset.empty()
 //        ..add(pd1)
-      ds2.add(ba3);
+      ..add(ba3);
       global.throwOnError = true;
       expect(
           ds2.getPixelData, throwsA(const isInstanceOf<PixelDataNotPresent>()));

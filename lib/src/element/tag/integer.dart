@@ -291,11 +291,12 @@ class UStag extends US with TagElement<int> {
       new UStag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory UStag._(Tag tag, Iterable<int> vList) {
+    vList ??= <int>[];
     if (!US.isValidArgs(tag, vList)) return badValues(vList, null, tag);
     return new UStag._x(tag, Uint16.fromList(vList));
   }
 
-  UStag._x(this.tag, this.values) : assert(tag.vrIndex == kUSIndex);
+  UStag._x(this.tag, this.values);
 
   @override
   UStag update([Iterable<int> vList]) => new UStag._(tag, vList);

@@ -305,6 +305,11 @@ void main() {
       final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
+      rds[fd0.code] = fd0;
+      rds[as0.code] = as0;
+      rds[ob0.code] = ob0;
+      rds[ae0.code] = ae0;
+
       rds..add(fd0)..add(as0)..add(ob0)..add(ae0);
 
 //      system.level = Level.info;

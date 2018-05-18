@@ -267,7 +267,6 @@ abstract class OB extends IntBase with Uint8 {
   int get maxVFLength => kMaxVFLength;
   @override
   int get maxLength => kMaxLength;
-  @override
   int get padChar => kPadChar;
   @override
   String get vrKeyword => kVRKeyword;
@@ -396,7 +395,6 @@ abstract class UN extends IntBase with Uint8 {
   int get maxVFLength => kMaxVFLength;
   @override
   int get maxLength => kMaxLength;
-  @override
   int get padChar => kPadChar;
   @override
   String get vrKeyword => kVRKeyword;

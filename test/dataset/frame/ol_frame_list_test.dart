@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
@@ -239,7 +238,7 @@ void main() {
         ..debug('pixelSize bits: ${ol32FDc.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ol32FDc.pixelSizeInBytes}');
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new FrameList32Bit(pixels0, nFrames0, ol32FDc),
           throwsA(const isInstanceOf<InvalidFrameListError>()));
 
@@ -299,31 +298,33 @@ void main() {
     test('Create FrameList32Bit Uncompressed fromDataset', () {
       //Frame Descriptor.fromDataSet
       const ts = TransferSyntax.kExplicitVRLittleEndian;
-      final bytes = Bytes.toAscii(ts.asString);
-      final uiTransferSyntaxUID0 =
-           new UIevr.makeFromBytes(kTransferSyntaxUID, bytes);
-      final usSamplesPerPixel0 = new USevr(kSamplesPerPixel, [1]);
+      final ui0 = UItag.fromValues(PTag.kTransferSyntaxUID, [ts.asString]);
+      final usSamplesPerPixel0 = UStag.fromValues(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
-          makeCS(kPhotometricInterpretation, ['RGB1']);
-      final usRows0 = new USevr(kRows, [4]);
-      final usColumns0 = new USevr(kColumns, [6]);
-      final usBitsAllocated0 = new USevr(kBitsAllocated, [32]);
-      final usBitsStored0 = new USevr(kBitsStored, [32]);
-      final usHighBit0 = new USevr(kHighBit, [31]);
-      final usPixelRepresentation0 = new USevr(kPixelRepresentation, [0]);
-      final usPlanarConfiguration0 = new USevr(kPlanarConfiguration, [2]);
-      final isPixelAspectRatio0 = new ISevr(kPixelAspectRatio, ['1', '2']);
+          CStag.fromValues(PTag.kPhotometricInterpretation, ['RGB1']);
+      final usRows0 = UStag.fromValues(PTag.kRows, [4]);
+      final usColumns0 = UStag.fromValues(PTag.kColumns, [6]);
+      final usBitsAllocated0 = UStag.fromValues(PTag.kBitsAllocated, [32]);
+      final usBitsStored0 = UStag.fromValues(PTag.kBitsStored, [32]);
+      final usHighBit0 = UStag.fromValues(PTag.kHighBit, [31]);
+      final usPixelRepresentation0 =
+          UStag.fromValues(PTag.kPixelRepresentation, [0]);
+      final usPlanarConfiguration0 =
+          UStag.fromValues(PTag.kPlanarConfiguration, [2]);
+      final isPixelAspectRatio0 =
+          IStag.fromValues(PTag.kPixelAspectRatio, ['1', '2']);
       const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
-          new USevr(kSmallestImagePixelValue, [0]);
+          UStag.fromValues(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
-          new USevr(kLargestImagePixelValue, [(1 << 16) - 1]);
-      final obIccProfile0 = new OBevr(kICCProfile, <int>[], 0);
-      final csColorSpace0 = new CSevr(kColorSpace);
-      final unPixelPaddingRangeLimit0 = new USevr(kPixelPaddingRangeLimit);
+          UStag.fromValues(PTag.kLargestImagePixelValue, [(1 << 16) - 1]);
+      final obIccProfile0 = OBtag.fromValues(PTag.kICCProfile, <int>[], 0);
+      final csColorSpace0 = CStag.fromValues(PTag.kColorSpace, <String>[]);
+      final unPixelPaddingRangeLimit0 =
+          UStag.fromValues(PTag.kPixelPaddingRangeLimit, <int>[]);
 
       final rds0 = new TagRootDataset.empty()
-        ..fmi[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
+        ..fmi[ui0.code] = ui0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
         ..add(usRows0)

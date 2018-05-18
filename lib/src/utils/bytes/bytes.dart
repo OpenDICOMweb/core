@@ -105,7 +105,8 @@ class Bytes extends ListBase<int> with BytesMixin {
   bool _bytesEqual(Bytes a, Bytes b) {
     final aLen = a.length;
     if (aLen != b.length) return false;
-    for (var i = 0; i < aLen; i++) if (a[i] != b[i]) return false;
+    for (var i = 0; i < aLen; i++) if (a[i] != b[i])
+      return false;
     return true;
   }
 

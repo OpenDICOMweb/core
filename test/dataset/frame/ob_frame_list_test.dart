@@ -62,7 +62,7 @@ void main() {
         ..debug('ob1BitFrames0.pixelSizeInBits: ${ob1FLa.pixelSizeInBits}')
         ..debug('pixels0.elementSizeInBytes: ${pixels0.elementSizeInBytes}');
       expect(ob1FLa.pixelSizeInBits == pixels0.elementSizeInBytes, true);
-      system.throwOnError = true;
+      global.throwOnError = true;
 /*
   TODO: jim to fix
       expect(
@@ -249,7 +249,7 @@ void main() {
 
       final pixels3 = new Uint8List(ob1FDc.lengthInBytes);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       log.debug('nFrames: $nFrames0');
       expect(() => new FrameList1Bit(pixels3, nFrames0, ob1FDc),
           throwsA(const isInstanceOf<InvalidFrameListError>()));
@@ -725,7 +725,7 @@ void main() {
         ..debug('pixelSize bits: ${ob8FDc.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ob8FDc.pixelSizeInBytes}');
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new FrameList8Bit(pixels0, nFrames0, ob8FDc),
           throwsA(const isInstanceOf<InvalidFrameListError>()));
 

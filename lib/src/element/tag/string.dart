@@ -431,7 +431,7 @@ class UItag extends UI with TagElement<String> {
   UItag._(this.tag, this._values, this._uids);
 
   @override
-  Iterable<String> get values => _values ??= uids.map((uid) => toString());
+  Iterable<String> get values => _values ??= uids.map((uid) => uid.asString);
   @override
   set values(Iterable<String> vList) => _values = vList;
 
@@ -529,44 +529,33 @@ class AStag extends AS with TagElement<String> {
   Iterable<String> values;
 
   factory AStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (AS.isValidArgs(tag, vList))
-          ? new AStag._(tag, vList)
-          : badValues(vList, null, tag);
+      new AStag._(tag, vList);
 
-  AStag._(this.tag, this.values);
+  factory AStag._(Tag tag, Iterable<String> vList) {
+    vList ??= <String>[];
+    return (AS.isValidArgs(tag, vList))
+        ? new AStag._x(tag, vList)
+        : badValues(vList, null, tag);
+  }
+
+  AStag._x(this.tag, this.values);
 
   @override
   AStag update([Iterable<String> vList = kEmptyStringList]) =>
-      (AS.isValidValues(tag, vList))
-          ? new AStag(tag, vList)
-          : badValues(values);
+      new AStag._(tag, vList);
 
   @override
   AStag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new AStag(tag, f(values));
+      new AStag._(tag, f(values));
 
   static AStag fromValues(Tag tag, Iterable<String> vList,
           [int _, TransferSyntax __]) =>
-      new AStag(tag, vList ?? kEmptyStringList);
+      new AStag._(tag, vList ?? kEmptyStringList);
 
-  static AStag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(tag, new Bytes.typedDataView(bytes));
-
-  static AStag from(Element e) => fromBytes(e.tag, e.vfBytes);
-
-  static AStag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
+  static AStag fromBytes(Tag tag, Bytes bytes) =>
       (bytes == null || !AS.isValidTag(tag))
           ? null
           : new AStag(tag, bytes.getAsciiList());
-
-/* TODO: needed?
-  static AStag parse(String s, {String onError(String s)}) => new AStag(
-      PTag.kPatientAge,
-      Age.isValidString(s)
-          ? <String>[s]
-          : badValues(<String>[s], tag: PTag.kPatientAge));
-*/
-
 }
 
 /// A DICOM Date ([DA]) [Element].

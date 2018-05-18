@@ -24,25 +24,27 @@ class Buffer {
   Buffer.from(Buffer bb, [int offset, int length, Endian endian])
       : _rIndex = offset ?? bb.rIndex,
         _wIndex = length ?? bb.wIndex,
-        _buffer = new Bytes.from(bb.buffer, offset ?? bb.buffer.offsetInBytes,
-            length ?? bb.buffer.lengthInBytes, endian ?? Endian.little);
+        _buffer = new Bytes.from(bb.buffer, offset ?? bb.buffer.offset,
+            length ?? bb.buffer.length, endian ?? Endian.little);
 
-  Buffer.fromByteData(ByteData bd, [int offset, int length, Endian endian])
+  Buffer.fromByteData(ByteData bd, [int offset = 0, int length, Endian endian])
       : _rIndex = offset ?? 0,
         _wIndex = length ?? bd.lengthInBytes,
-        _buffer = new Bytes.fromTypedData(bd, endian ?? Endian.little);
+        _buffer = new Bytes.typedDataView(
+            bd, offset, length ?? bd.lengthInBytes, endian ?? Endian.little);
 
-  Buffer.fromList(List<int> list, [Endian endian])
+  Buffer.fromList(List<int> list, [int offset = 0, int length, Endian endian])
       : _rIndex = 0,
         _wIndex = list.length,
-        _buffer = new Bytes.fromTypedData(
-            new Uint8List.fromList(list), endian ?? Endian.little);
+        _buffer = new Bytes.typedDataView(new Uint8List.fromList(list), offset,
+            length ?? list.length, endian ?? Endian.host);
 
   Buffer.fromTypedData(TypedData td,
-      [int offset, int length, Endian endian])
+      [int offset = 0, int length, Endian endian])
       : _rIndex = offset ?? 0,
         _wIndex = length ?? td.lengthInBytes,
-        _buffer = new Bytes.fromTypedData(td, endian ?? Endian.little);
+        _buffer = new Bytes.typedDataView(
+            td, offset, length ?? td.lengthInBytes, endian ?? Endian.little);
 
   /// The underlying data buffer.
   ///
@@ -60,10 +62,10 @@ class Buffer {
 
   Endian get endian => _buffer.endian;
 
-  int get offsetInBytes => _buffer.offsetInBytes;
-  int get start => _buffer.offsetInBytes;
+  int get offsetInBytes => _buffer.offset;
+  int get start => _buffer.offset;
   int get length => _buffer.length;
-  int get lengthInBytes => _buffer.lengthInBytes;
+  int get lengthInBytes => _buffer.length;
   int get end => start + lengthInBytes;
 
   int get rRemaining => _wIndex - _rIndex;
@@ -76,12 +78,12 @@ class Buffer {
   bool get isWritable => wRemaining > 0;
   bool get isNotWritable => !isWritable;
 
+  bool get isEmpty => buffer.isEmpty;
   bool get isNotEmpty => !isEmpty;
 
   /// Return a new Big Endian[ReadBuffer] containing the unread
   /// portion of _this_.
-  Buffer get asBigEndian =>
-      new Buffer.from(this, rIndex, wIndex, Endian.big);
+  Buffer get asBigEndian => new Buffer.from(this, rIndex, wIndex, Endian.big);
 
   /// Return a new Little Endian[ReadBuffer] containing the unread
   /// portion of _this_.
@@ -94,6 +96,7 @@ class Buffer {
     _isClosed = false;
     _hadTrailingZeros = false;
   }
+
   bool rHasRemaining(int n) => (_rIndex + n) <= _wIndex;
   bool wHasRemaining(int n) => (_wIndex + n) <= end;
 
@@ -106,15 +109,15 @@ class Buffer {
       new Bytes.from(_buffer, start, (end ?? length) - start);
 
   ByteData toByteData(int offset, int lengthInBytes) =>
-      _buffer.buffer.asByteData(buffer.offsetInBytes + offset, lengthInBytes);
+      _buffer.buffer.asByteData(buffer.offset + offset, lengthInBytes);
 
   Uint8List toUint8List(int offset, int lengthInBytes) =>
-      buffer.buffer.asUint8List(buffer.offsetInBytes + offset, lengthInBytes);
+      buffer.buffer.asUint8List(buffer.offset + offset, lengthInBytes);
 
   /// Return a view of _this_ of [length], starting at [start]. If [length]
   /// is _null_ it defaults to [lengthInBytes].
   Bytes asBytes([int start = 0, int length]) =>
-      _buffer.toBytes(start, length ?? lengthInBytes);
+      _buffer.asBytes(start, length ?? lengthInBytes);
 
   ByteData asByteData([int offset, int length]) =>
       _buffer.asByteData(offset ?? _rIndex, length ?? _wIndex);
@@ -302,13 +305,13 @@ class Buffer {
   }
 
   List<String> readAsciiList(int length) {
-    final v = _buffer.asAsciiList(_rIndex, length);
+    final v = _buffer.getAsciiList(offset: _rIndex, length: length);
     _rIndex += length;
     return v;
   }
 
   List<String> readUtf8List(int length) {
-    final v = _buffer.asUtf8List(_rIndex, length);
+    final v = _buffer.getUtf8List(offset: _rIndex, length: length);
     _rIndex += length;
     return v;
   }
@@ -316,29 +319,29 @@ class Buffer {
   List<String> readStringList(int length) => readUtf8List(length);
 
   int _getOffset(int start, int length) {
-    final offset = _buffer.offsetInBytes + start;
+    final offset = _buffer.offset + start;
     assert(offset >= 0 && offset <= lengthInBytes);
     assert(offset + length >= offset && (offset + length) <= lengthInBytes);
     return offset;
   }
 
   Uint8List get contentsRead =>
-      _buffer.buffer.asUint8List(_buffer.offsetInBytes, _rIndex);
+      _buffer.buffer.asUint8List(_buffer.offset, _rIndex);
   Uint8List get contentsUnread => _buffer.buffer.asUint8List(_rIndex, _wIndex);
 
   // *** wIndex
   int get wIndex => _wIndex;
   set wIndex(int n) {
-    if (_wIndex <= _rIndex || _wIndex > _buffer.lengthInBytes)
-      throw new RangeError.range(_wIndex, _rIndex, _buffer.lengthInBytes);
+    if (_wIndex <= _rIndex || _wIndex > _buffer.length)
+      throw new RangeError.range(_wIndex, _rIndex, _buffer.length);
     _wIndex = n;
   }
 
   /// Moves the [wIndex] forward/backward. Returns the new [wIndex].
   int wSkip(int n) {
     final v = _wIndex + n;
-    if (v <= _rIndex || v >= _buffer.lengthInBytes)
-      throw new RangeError.range(v, 0, _buffer.lengthInBytes);
+    if (v <= _rIndex || v >= _buffer.length)
+      throw new RangeError.range(v, 0, _buffer.length);
     return _wIndex = v;
   }
 
@@ -351,5 +354,4 @@ class Buffer {
     final max = lengthInBytes;
     if (v < 0 || v >= max) throw new RangeError.range(v, 0, max);
   }
-
 }

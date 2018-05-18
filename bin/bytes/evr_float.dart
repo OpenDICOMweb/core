@@ -20,7 +20,7 @@ void main() {
   assert(fl.hasValidValues);
   printEvr(fl, kFLCode, fl.vfBytes);
 
-  final fl1 = ByteElement.makeFromCode(fl.bytes, rds);
+  final fl1 = ByteElement.makeFromBytes(fl.bytes, rds);
   assert(fl1.bytes is DicomBytes);
   assert(fl1.vfBytes is Bytes);
   assert(fl1.hasValidValues);
@@ -32,7 +32,7 @@ void main() {
   assert(of.hasValidValues);
   printEvr(of, kOFCode, of.vfBytes);
 
-  final of1 = ByteElement.makeFromCode(of.bytes, rds);
+  final of1 = ByteElement.makeFromBytes(of.bytes, rds);
   assert(of1.bytes is DicomBytes);
   assert(of1.vfBytes is Bytes);
   assert(of1.hasValidValues);
@@ -44,7 +44,7 @@ void main() {
   assert(fd.hasValidValues);
   printEvr(fd, kOFCode, fd.vfBytes);
 
-  final fd1 = ByteElement.makeFromCode(fd.bytes, rds);
+  final fd1 = ByteElement.makeFromBytes(fd.bytes, rds);
   assert(fd1.bytes is DicomBytes);
   assert(fd1.vfBytes is Bytes);
   assert(fd1.hasValidValues);
@@ -56,7 +56,7 @@ void main() {
   assert(od.hasValidValues);
   printEvr(od, kOFCode, od.vfBytes);
 
-  final od1 = ByteElement.makeFromCode(od.bytes, rds);
+  final od1 = ByteElement.makeFromBytes(od.bytes, rds);
   assert(od1.bytes is DicomBytes);
   assert(od1.vfBytes is Bytes);
   assert(od1.hasValidValues);

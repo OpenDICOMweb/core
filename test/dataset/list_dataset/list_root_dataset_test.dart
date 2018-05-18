@@ -98,6 +98,18 @@ void main() {
       final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
+      print('as0: $as0');
+      global.throwOnError = false;
+      rds
+        ..add(fd0)
+        ..add(fd1)
+        ..add(as0)
+        ..add(as1)
+        ..add(as2)
+        ..add(ob0)
+        ..add(ae0);
+
+
       rds[fd0.code] = fd0;
       rds[fd1.code] = fd1;
       rds[as0.code] = as0;
@@ -114,6 +126,7 @@ void main() {
     test('removeDuplicates', () {
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      print('fd0: $fd0');
       final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);

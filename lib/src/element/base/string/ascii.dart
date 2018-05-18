@@ -330,7 +330,8 @@ abstract class CS extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  CS blank([int n = 1]) => update([blanks(n)]);
+  @override
+  CS blank([int n = 1]) => update([spaces(n)]);
 
 
   // **** Generalized static methods

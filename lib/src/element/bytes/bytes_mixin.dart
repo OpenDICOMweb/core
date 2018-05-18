@@ -77,7 +77,7 @@ abstract class ByteElement<V> {
   String get keyword => tag.keyword;
   String get name => tag.name;
 
-  static ByteElement makeFromCode(DicomBytes bytes, [Dataset ds]) {
+  static ByteElement makeFromBytes(DicomBytes bytes, [Dataset ds]) {
     final code = bytes.code;
     final pCode = code & 0x1FFFF;
     if (pCode >= 0x10010 && pCode <= 0x100FF) return new PCbytes(bytes);
@@ -93,22 +93,22 @@ abstract class ByteElement<V> {
   }
 
   static final List<Function> _bytesBDMakers = <Function>[
-    SQbytes.makeFromBytes, // stop reformat
+    SQbytes.fromBytes, // stop reformat
     // Maybe Undefined Lengths
-    OBbytes.makeFromBytes, OWbytes.makeFromBytes, UNbytes.makeFromBytes,
+    OBbytes.fromBytes, OWbytes.fromBytes, UNbytes.fromBytes,
 
     // EVR Long
-    ODbytes.makeFromBytes, OFbytes.makeFromBytes, OLbytes.makeFromBytes,
-    UCbytes.makeFromBytes, URbytes.makeFromBytes, UTbytes.makeFromBytes,
+    ODbytes.fromBytes, OFbytes.fromBytes, OLbytes.fromBytes,
+    UCbytes.fromBytes, URbytes.fromBytes, UTbytes.fromBytes,
 
     // EVR Short
-    AEbytes.makeFromBytes, ASbytes.makeFromBytes, ATbytes.makeFromBytes,
-    CSbytes.makeFromBytes, DAbytes.makeFromBytes, DSbytes.makeFromBytes,
-    DTbytes.makeFromBytes, FDbytes.makeFromBytes, FLbytes.makeFromBytes,
-    ISbytes.makeFromBytes, LObytes.makeFromBytes, LTbytes.makeFromBytes,
-    PNbytes.makeFromBytes, SHbytes.makeFromBytes, SLbytes.makeFromBytes,
-    SSbytes.makeFromBytes, STbytes.makeFromBytes, TMbytes.makeFromBytes,
-    UIbytes.makeFromBytes, ULbytes.makeFromBytes, USbytes.makeFromBytes,
+    AEbytes.fromBytes, ASbytes.fromBytes, ATbytes.fromBytes,
+    CSbytes.fromBytes, DAbytes.fromBytes, DSbytes.fromBytes,
+    DTbytes.fromBytes, FDbytes.fromBytes, FLbytes.fromBytes,
+    ISbytes.fromBytes, LObytes.fromBytes, LTbytes.fromBytes,
+    PNbytes.fromBytes, SHbytes.fromBytes, SLbytes.fromBytes,
+    SSbytes.fromBytes, STbytes.fromBytes, TMbytes.fromBytes,
+    UIbytes.fromBytes, ULbytes.fromBytes, USbytes.fromBytes
   ];
 
   static ByteElement makeFromValues<V>(DicomBytes bytes, [Dataset ds]) {
@@ -148,7 +148,7 @@ abstract class Int16Mixin {
   int get vfLength;
   DicomBytes get vfBytes;
 
-  int get valuesLength => Uint16.getLength(vfLength);
+  int get valuesLength => Int16.getLength(vfLength);
   int get lengthInBytes => valuesLength * sizeInBytes;
 
   Int16List get values => vfBytes.asInt16List();
@@ -206,7 +206,7 @@ abstract class Uint32Mixin {
   int get vfLength;
   DicomBytes get vfBytes;
 
-  int get length => Float64.getLength(vfLength);
+  int get length => Uint32.getLength(vfLength);
   //Flush when length working
   int get valuesLength => Uint32.getLength(vfLength);
   int get lengthInBytes => valuesLength * sizeInBytes;
@@ -281,24 +281,24 @@ abstract class StringMixin {
 
 /// [String] [Element]s that only have ASCII values.
 abstract class AsciiMixin {
-  DicomBytes get vBytes;
+  DicomBytes get vfBytes;
 
   bool allowInvalid = true;
 
-  String get vfString => vBytes.getAscii(allowInvalid: allowInvalid);
+  String get vfString => vfBytes.getAscii(allowInvalid: allowInvalid);
 
   Iterable<String> get values => vfString.split('\\');
 }
 
 /// [String] [Element]s that may have UTF-8 values.
 abstract class Utf8Mixin {
-  DicomBytes get vBytes;
+  DicomBytes get vfBytes;
 
-  int get valuesLength => _stringValuesLength(vBytes);
+  int get valuesLength => _stringValuesLength(vfBytes);
 
   bool allowMalformed = true;
 
-  String get vfString => vBytes.getUtf8(allowMalformed: allowMalformed);
+  String get vfString => vfBytes.getUtf8(allowMalformed: allowMalformed);
 }
 
 /// Text ([String]) [Element]s that may only have 1 UTF-8 value.

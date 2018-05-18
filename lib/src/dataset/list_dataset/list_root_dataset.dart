@@ -46,6 +46,7 @@ class ListRootDataset extends RootDataset with ListDataset {
         elements = new List<Element>.from(rds.elements),
         super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
 
+
   RootDataset copy([RootDataset rds]) => new ListRootDataset.from(rds ?? this);
 }
 

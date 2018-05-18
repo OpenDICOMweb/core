@@ -184,6 +184,7 @@ class VRFloat extends VR<double> {
   int minLengthInBytes(int vmMin) => vmMin * sizeInBytes;
   int maxLengthInBytes(int vmMax) => vmMax * sizeInBytes;
 
+  @override
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) =>
       vfLength == 0 ||
       (vfLength >= minLengthInBytes(vmMin) &&
@@ -232,6 +233,7 @@ class VRInt extends VR<int> {
   int minLengthInBytes(int vmMin) => vmMin * sizeInBytes;
   int maxLengthInBytes(int vmMax) => vmMax * sizeInBytes;
 
+  @override
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) =>
       vfLength == 0 ||
       (vfLength >= minLengthInBytes(vmMin) &&
@@ -293,6 +295,7 @@ abstract class VRString extends VR<String> {
   int minLengthInBytes(int vmMin) => vmMin * sizeInBytes;
   int maxLengthInBytes(int vmMax) => vmMax * sizeInBytes;
 
+  @override
   bool isValidVFLength(int vfLength, int vmMin, int vmMax) =>
       vfLength == 0 ||
       (vfLength >= minLengthInBytes(vmMin) &&
