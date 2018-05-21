@@ -6,8 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:collection/collection.dart';
-import 'package:core/src/element/base/bulkdata.dart';
+part of odw.sdk.element.base.string;
 
 class StringBulkdata extends DelegatingList<String> with BulkdataRef<String> {
   @override

@@ -12,12 +12,11 @@ import 'package:core/src/element.dart';
 import 'package:core/src/entity/active_studies.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
-import 'package:core/src/entity/patient/person_name.dart';
-import 'package:core/src/entity/patient/sex.dart';
 import 'package:core/src/entity/study.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/value/date_time.dart';
 import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/value/date_time.dart';
+import 'package:core/src/value/person.dart';
 import 'package:core/src/value/uid.dart';
 
 // ignore_for_file: only_throw_errors

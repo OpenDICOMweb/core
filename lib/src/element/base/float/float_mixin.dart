@@ -60,7 +60,8 @@ abstract class Float extends Element<double> {
   @override
   Iterable<double> get values;
   @override
-  set values(Iterable<double> vList) => unsupportedError('IntBase.values');
+  set values(Iterable<double> vList);
+
   int get sizeInBytes;
   // **** End of Interface ****
 
@@ -72,7 +73,7 @@ abstract class Float extends Element<double> {
 
   /// Returns a copy of [values]
   @override
-  Iterable<double> get valuesCopy => new List.from(values, growable: false);
+  List<double> get valuesCopy => new List.from(values, growable: false);
 
   /// The _canonical_ empty [values] value for Floating Point Elements.
   @override
@@ -116,7 +117,7 @@ abstract class Float extends Element<double> {
 /// A mixin class for 32-bit floating point [Element]s.
 abstract class Float32 {
   int get length;
-  Iterable<double> get values;
+  Float32List get values;
   Float update([Iterable<double> vList]);
   // **** End of Interface ****
 
@@ -247,7 +248,7 @@ abstract class Float32 {
 /// A mixin class for 64-bit floating point [Element]s.
 abstract class Float64 {
   int get length;
-  Iterable<double> get values;
+  Float64List get values;
   Float update([Iterable<double> vList]);
   // **** End of Interface ****
 

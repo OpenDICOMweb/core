@@ -27,7 +27,7 @@ class SQtag extends SQ with TagElement<Item> {
   @override
   final Tag tag;
   @override
-  Iterable<Item> values;
+  List<Item> _values;
 
   /// The [Dataset] that contains _this_.
   @override
@@ -35,7 +35,7 @@ class SQtag extends SQ with TagElement<Item> {
 
   /// The [Iterable<ItemTag>] that are the [values] of _this_.
 //  @override
- // Iterable<Item> values;
+  // Iterable<Item> values;
 
   /// The length of the Value Field from which this [SQtag] was decoded.
   /// If _null_ _this_ what not created from an encoding.
@@ -45,12 +45,27 @@ class SQtag extends SQ with TagElement<Item> {
   final Bytes bytes;
 
   /// Creates a new [SQtag] instance.
-  SQtag(this.parent, this.tag,
-      [Iterable<Item> vList, this.vfLengthField, this.bytes])
-      : values = (vList == null) ? emptyTagItemList : vList;
+  factory SQtag(Dataset parent, Tag tag,
+          [Iterable<Item> vList, int vfLengthField, Bytes bytes]) =>
+      new SQtag(parent, tag, vList, vfLengthField, bytes);
 
+  /// Creates a new [SQtag] instance.
+  SQtag._(this.parent, this.tag,
+      [Iterable<Item> vList, this.vfLengthField, this.bytes])
+      : _values = (vList == null)
+            ? emptyTagItemList
+            : (vList is List) ? vList : vList.toList(growable: false);
+
+/*
   SQtag.fromDecoder(this.parent, this.tag,
       [this.values, this.vfLengthField, this.bytes]);
+*/
+
+  @override
+  Iterable<Item> get values => _values;
+  @override
+  set values(Iterable<Item> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   Bytes get vfBytes => unimplementedError('vfBytes in SQtag');
@@ -154,7 +169,7 @@ class SQtag extends SQ with TagElement<Item> {
 
   static SQtag convert(Dataset parent, SQ e) {
     final items = e.values.toList();
-   final length = items.length;
+    final length = items.length;
 
     print('    converting SQ: $e');
     final tagItems = new List<TagItem>(e.items.length);

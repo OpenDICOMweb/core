@@ -59,6 +59,7 @@ int badAgeParse(String message, [Issues issues]) {
   badString('InvalidAgeStringError: $message');
   return -1;
 }
+
 bool invalidAgeString(String msg, [Issues issues]) {
   badAgeString(msg, issues);
   return false;
@@ -111,6 +112,7 @@ bool invalidCharacterInString(String s, int index, [Issues issues]) {
   badCharacterInString(s, index, issues);
   return false;
 }
+
 /// An invalid [Uri] [String] [Error], returning _null_.
 Null badUriString(String message, [Issues issues]) =>
     badString('InvalidUriStringError: $message');
@@ -131,8 +133,7 @@ bool invalidUuidString(String uuid, [Issues issues]) {
   return _doStringError(msg, issues);
 }
 
-Null badUuidStringLength(String s, int targetLength,
-                                       [Issues issues]) {
+Null badUuidStringLength(String s, int targetLength, [Issues issues]) {
   final msg = 'Invalid String length(${s.length} should be $targetLength';
   return _doStringError(msg, issues);
 }
@@ -145,16 +146,21 @@ Null badUuidNullString([Issues issues]) {
 Null badUuidCharacter(String s, [String char, Issues issues]) =>
     _doStringError('Invalid character in String: "$char"', issues);
 
-Null badUuidParse(String s, int targetLength,
-                                       [Issues issues]) {
+Null badUuidParse(String s, int targetLength, [Issues issues]) {
   if (s == null) return badUuidNullString();
-  if (s.length != targetLength)
-    return badUuidStringLength(s, targetLength);
+  if (s.length != targetLength) return badUuidStringLength(s, targetLength);
   return _doStringError('"$s"', issues);
 }
 
+/// General [Error] message for [String]s. Returns _null_.
+Null badStringList(String message, [Issues issues]) {
+  final msg = 'StringListError: $message';
+  return _doStringError(msg, issues);
+}
 
-
-
-
-
+/// General [Error] message for [String]s. Returns _null_.
+bool invalidStringList(String message, [Issues issues]) {
+  final msg = 'StringListError: $message';
+  badStringList(msg, issues);
+  return false;
+}

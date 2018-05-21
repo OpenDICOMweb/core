@@ -6,21 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'dart:typed_data';
-
-import 'package:core/src/element/base/crypto.dart';
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/string/ascii.dart';
-import 'package:core/src/element/base/string/string.dart';
-import 'package:core/src/element/base/utils.dart';
-import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/error.dart';
-import 'package:core/src/system.dart';
-import 'package:core/src/tag.dart';
-import 'package:core/src/utils.dart';
-import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/vr/vr_internal.dart';
+part of odw.sdk.element.base.string;
 
 // TODO: For each class add the following static fields:
 //       bool areLeadingSpacesAllowed = x;
@@ -44,6 +30,8 @@ abstract class DS extends StringAscii {
 
   static const Type kType = DS;
 
+  static const Trim kTrim = Trim.both;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -54,6 +42,8 @@ abstract class DS extends StringAscii {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   Iterable<double> get numbers => _numbers ??= tryParseList(values);
   Iterable<double> _numbers;
@@ -140,6 +130,7 @@ abstract class DS extends StringAscii {
     if (vList == null) return nullValueError();
     return Element.isValidLength(tag, vList, issues, kMaxLength, DS);
   }
+
   /// Returns _true_ if [tag] has a VR of [DS] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       StringBase.isValidValues(
@@ -168,18 +159,10 @@ abstract class DS extends StringAscii {
   /// Parse a [DS] [String]. Leading and trailing spaces allowed,
   /// but all spaces is illegal.
   static double tryParse(String s, [Issues issues]) {
-    print('s: "$s"');
-    print('bytes: ${s.codeUnits}');
-    final s0 = s.trimRight();
-    print('s0: "$s0"');
-    print('bytes: ${s0.codeUnits}');
-    final v = double.tryParse(s0);
-    print('v="$v"');
-    if (v == null) {
-      if (issues != null) issues.add('Invalid Digital String (DS): "$s"');
-      return badString('$s', issues);
-    }
-    return v;
+    final v = double.tryParse(s.trim());
+    return (v == null)
+        ? badString('Invalid Digital String (DS): "$s"', issues)
+        : v;
   }
 
   static Iterable<double> tryParseList(Iterable<String> vList,
@@ -205,6 +188,8 @@ abstract class IS extends StringAscii {
 
   static const Type kType = TM;
 
+  static const Trim kTrim = Trim.both;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -215,6 +200,8 @@ abstract class IS extends StringAscii {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   List<int> get integers => _integers ??= tryParseList(values);
   List<int> _integers;
@@ -331,7 +318,7 @@ abstract class IS extends StringAscii {
         !isValidValueLength(s, issues) ||
         notInRange(s.length, kMinValueLength, kMaxValueLength))
       return _badIS(s, issues);
-    final n = int.tryParse(s);
+    final n = int.tryParse(s.trim());
     return (n == null || notInRange(n, kMinValue, kMaxValue))
         ? _badIS(s, issues)
         : n;

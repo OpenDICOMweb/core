@@ -26,6 +26,7 @@ import 'package:core/src/vr.dart';
 abstract class TagElement<V> {
   V get value;
   Iterable<V> get values;
+  set values(Iterable<V> vList);
 
   /// The DICOM Element Definition. In the _ODW_ _SDK_ this is called a "_Tag_".
   Tag get tag {
@@ -88,7 +89,7 @@ abstract class TagElement<V> {
       [int vfLengthField]) {
     final tag = lookupTagByCode(ds, code, vrIndex);
     final tagVRIndex = tag.vrIndex;
- //   return _fromValuesMakers[tagVRIndex](code, values, vfLengthField);
+    //   return _fromValuesMakers[tagVRIndex](code, values, vfLengthField);
     return makeFromTag(tag, values, tagVRIndex, vfLengthField);
   }
 

@@ -6,10 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/error/general_errors.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -31,7 +32,6 @@ int _stringListLength(Iterable<String> sList,
 
 int _combineSLength(int v, String s) => v + s.length;
 
-
 // TODO: unit test
 int stringListLength(Iterable<String> sList,
         {String separator = '\\', bool pad = true}) =>
@@ -39,6 +39,8 @@ int stringListLength(Iterable<String> sList,
         ? 0
         : _stringListLength(sList, pad: pad) + (sList.length - 1);
 
+Iterable<String> uppercase(List<String> vList) =>
+    vList.map((s) => s.toUpperCase());
 
 String stringListToString(List<String> sList, [String separator = '\\']) {
   if (sList == null) return null;
@@ -127,3 +129,106 @@ Bytes textListToBytes(Iterable<String> values) {
   return badValuesLength(values, 1, 1);
 }
 
+class StringList extends ListBase<String> {
+  final List<String> values;
+
+  factory StringList.from([Iterable<String> vList]) =>
+      (vList is StringList) ? vList : new StringList._(vList);
+
+  StringList._([Iterable<String> vList])
+      : values = (vList == null)
+            ? kEmptyList
+            : (vList is List) ? vList : vList.toList(growable: false);
+
+  StringList.decode(Bytes bytes) : values = bytes.getUtf8List();
+
+  @override
+  String operator [](int i) => values[i];
+  @override
+  void operator []=(int i, String s) => values[i] = s;
+
+  @override
+  int get length => values.length;
+  @override
+  set length(int i) => unsupportedError();
+
+  // Performance: This is very inefficient
+  int get lengthInBytes => asBytes.length;
+
+  Bytes get asBytes => Bytes.fromUtf8List(values);
+
+  List<String> get uppercase => values.map((v) => v.toUpperCase());
+
+  List<String> get lowercase => values.map((v) => v.toUpperCase());
+
+  List<String> get trimmed => values.map((v) => v.trim());
+
+  List<String> get leftTrimmed => values.map((v) => v.trim());
+
+  List<String> get rightTrimmed => values.map((v) => v.trim());
+
+  List<String> trim(Trim trim) {
+    switch (trim) {
+      case Trim.trailing:
+        return values.map((v) => v.trimRight());
+      case Trim.both:
+        return values.map((v) => v.trim());
+      case Trim.leading:
+        return values.map((v) => v.trimLeft());
+      default:
+        return values;
+    }
+  }
+
+  Bytes encode([int separator = kBackslash]) =>
+      Bytes.fromUtf8List(values, separator);
+
+  static final StringList kEmptyList = new StringList.from(<String>[]);
+}
+
+class AsciiList extends StringList {
+ factory AsciiList([Iterable<String> vList]) =>
+ isAsciiList(vList)
+     ? new StringList.from(vList)
+     : badStringList('Invalid AsciiList: $vList');
+
+  AsciiList.decode(Bytes bytes) : super._(bytes.getAsciiList());
+
+  @override
+  int get lengthInBytes {
+    final vLength = values.length;
+    if (vLength == 0) return 0;
+    if (vLength == 1) return values.length;
+
+    final len = values.fold<int>(0, (n, s) => n + s.length);
+    return len + vLength - 1;
+  }
+
+  @override
+  Bytes encode([int separator = kBackslash, int pad]) {
+    var length = lengthInBytes;
+    if (pad != null && length.isOdd) length++;
+    final last = length - 1;
+    final bytes = new Bytes(length);
+    int j;
+    for (var s in values) {
+      for (var i = 0; i < s.length; i++) {
+        final c = s.codeUnitAt(i);
+        if (c > kDel) invalidCharacterInString(s, i);
+        bytes[j++] = c;
+        if (i < last) bytes[j++] = separator;
+      }
+    }
+    if (pad != null && length.isOdd) bytes[j++] = pad;
+    return bytes;
+  }
+
+  static bool isAsciiList(List<String> sList) {
+      for(var s in sList) {
+        for (var c in s.codeUnits)
+          if (c <= 0 || c >= 127) return false;
+      }
+        return true;
+      }
+
+}

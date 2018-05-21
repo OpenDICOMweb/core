@@ -6,18 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'dart:typed_data';
-
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/string/string.dart';
-import 'package:core/src/element/base/string/string_bulkdata.dart';
-import 'package:core/src/element/base/utils.dart';
-import 'package:core/src/entity.dart';
-import 'package:core/src/error.dart';
-import 'package:core/src/system.dart';
-import 'package:core/src/tag.dart';
-import 'package:core/src/utils.dart';
-import 'package:core/src/vr.dart';
+part of odw.sdk.element.base.string;
 
 // TODO: For each class add the following static fields:
 //       bool areLeadingSpacesAllowed = x;
@@ -30,6 +19,8 @@ import 'package:core/src/vr.dart';
 
 abstract class Utf8 extends StringBase {
   static const bool kIsAsciiRequired = false;
+  static const Trim kTrim = Trim.both;
+
   @override
   bool get isAsciiRequired => false;
   @override
@@ -65,6 +56,8 @@ abstract class LO extends Utf8 {
 
   static const Type kType = LO;
 
+  static const Trim kTrim = Trim.both;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -79,7 +72,6 @@ abstract class LO extends Utf8 {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
-
 
   // **** Generalized static methods
 
@@ -154,8 +146,8 @@ abstract class LO extends Utf8 {
 abstract class PC extends LO {
   static const String kVRKeyword = 'PC';
   static const String kVRName = 'Private Creator';
-
   static const Type kType = PC;
+  static const Trim kTrim = Trim.both;
 
   String get token;
 
@@ -195,11 +187,10 @@ abstract class PN extends Utf8 {
   static const int kMaxValueLength = 3 * 64;
   static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
   static const String kVRKeyword = 'PN';
   static const String kVRName = 'Person Name';
-
   static const Type kType = PN;
+  static const Trim kTrim = Trim.trailing;
 
   @override
   int get vrIndex => kVRIndex;
@@ -305,11 +296,10 @@ abstract class SH extends Utf8 {
   static const int kMaxValueLength = 16;
   static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
   static const String kVRKeyword = 'SH';
   static const String kVRName = 'Short String';
-
   static const Type kType = SH;
+  static const Trim kTrim = Trim.both;
 
   @override
   int get vrIndex => kVRIndex;
@@ -410,6 +400,8 @@ abstract class UC extends Utf8 {
   static const String kVRName = 'Unlimited Characters';
 
   static const Type kType = UC;
+  static const Trim kTrim = Trim.trailing;
+  static const Trim kComponentTrim = Trim.both;
 
   @override
   int get vrIndex => kVRIndex;
@@ -498,12 +490,3 @@ abstract class UC extends Utf8 {
             'Invalid Unlimited Characters String (UC): "$s"', issues);
   }
 }
-
-bool _isValidValues(
-    Tag tag,
-    Iterable<String> vList,
-    Issues issues,
-    bool isValidValue(String s, {Issues issues, bool allowInvalid}),
-    int maxLength,
-    Type type) =>
-    StringBase.isValidValues(tag, vList, issues, isValidValue, maxLength, type);

@@ -6,18 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'dart:typed_data';
-
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/string/string.dart';
-import 'package:core/src/element/base/string/string_bulkdata.dart';
-import 'package:core/src/element/base/string/utf8.dart';
-import 'package:core/src/element/base/utils.dart';
-import 'package:core/src/error.dart';
-import 'package:core/src/global.dart';
-import 'package:core/src/tag.dart';
-import 'package:core/src/utils.dart';
-import 'package:core/src/vr.dart';
+part of odw.sdk.element.base.string;
 
 // TODO: For each class add the following static fields:
 //       bool areLeadingSpacesAllowed = x;
@@ -30,6 +19,7 @@ import 'package:core/src/vr.dart';
 
 abstract class Text extends Utf8 {
   static const bool kIsAsciiRequired = false;
+  static const Trim kTrim = Trim.trailing;
 
   @override
   bool get isAsciiRequired => false;
@@ -72,6 +62,8 @@ abstract class LT extends Text {
   static const String kVRName = 'Long Text';
 
   static const Type kType = LT;
+
+  static const Trim kTrim = Trim.trailing;
 
   @override
   int get vrIndex => kVRIndex;
@@ -169,6 +161,9 @@ abstract class ST extends Text {
   static const String kVRName = 'Short Text';
 
   static const Type kType = ST;
+
+  static const Trim kTrim = Trim.trailing;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -268,6 +263,8 @@ abstract class UR extends Text {
 
   static const Type kType = UR;
 
+  static const Trim kTrim = Trim.none;
+
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -282,6 +279,8 @@ abstract class UR extends Text {
   int get maxLength => kMaxLength;
   @override
   int get maxVFLength => kMaxVFLength;
+  @override
+  Trim get trim => kTrim;
 
   Uri get uri => _uri ??= (values.length != 1) ? null : Uri.parse(values.first);
   Uri _uri;
@@ -350,10 +349,8 @@ abstract class UR extends Text {
   // **** Specialized static methods
 
   static bool isValidValue(String s,
-      {Issues issues, bool allowInvalid = false, bool trimSpaces = false}) {
-    trimSpaces ?? trimURISpaces;
+      {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    if (trimSpaces) s.trim();
     try {
       if (s.startsWith(' ')) throw const FormatException();
       Uri.parse(s);
@@ -394,6 +391,8 @@ abstract class UT extends Text {
   static const String kVRName = 'Unlimited Text';
 
   static const Type kType = UT;
+
+  static const Trim kTrim = Trim.trailing;
 
   @override
   int get vrIndex => kVRIndex;
@@ -482,11 +481,3 @@ abstract class UT extends Text {
   }
 }
 
-bool _isValidValues(
-        Tag tag,
-        Iterable<String> vList,
-        Issues issues,
-        bool isValidValue(String s, {Issues issues, bool allowInvalid}),
-        int maxLength,
-        Type type) =>
-    StringBase.isValidValues(tag, vList, issues, isValidValue, maxLength, type);

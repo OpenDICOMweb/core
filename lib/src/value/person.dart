@@ -6,11 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+export 'package:core/src/value/person/address.dart';
+export 'package:core/src/value/person/person.dart';
+export 'package:core/src/value/person/person_name.dart';
+export 'package:core/src/value/person/sex.dart';
 
-export 'package:core/src/value/bulkdata.dart';
-export 'package:core/src/value/date_time.dart';
-export 'package:core/src/value/frame.dart';
-export 'package:core/src/value/integer.dart';
-export 'package:core/src/value/person.dart';
-export 'package:core/src/value/uid.dart';
-export 'package:core/src/value/uuid.dart';

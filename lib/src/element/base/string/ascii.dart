@@ -6,22 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'dart:typed_data';
-
-import 'package:core/src/element/base/element.dart';
-import 'package:core/src/element/base/string/string.dart';
-import 'package:core/src/element/base/string/string_bulkdata.dart';
-import 'package:core/src/element/base/utils.dart';
-import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/error.dart';
-import 'package:core/src/system.dart';
-import 'package:core/src/tag.dart';
-import 'package:core/src/utils.dart';
-import 'package:core/src/utils/character/dicom.dart';
-import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value.dart';
-import 'package:core/src/vr/vr_internal.dart';
+part of odw.sdk.element.base.string;
 
 // TODO: For each class add the following static fields:
 //       bool areLeadingSpacesAllowed = x;
@@ -81,6 +66,8 @@ abstract class AE extends StringAscii {
   static const String kVRName = 'Application Entity';
   static const String kVRKeyword = 'AE';
 
+  static const Trim kTrim = Trim.both;
+
   static const Type kType = AE;
 
   @override
@@ -93,6 +80,8 @@ abstract class AE extends StringAscii {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
@@ -180,6 +169,8 @@ abstract class AS extends StringAscii {
   static const String kVRKeyword = 'AS';
 
   static const Type kType = AS;
+
+  static const Trim kTrim = Trim.none;
 
   /// Special variable for overriding uppercase constraint.
   static bool allowLowerCase = false;
@@ -312,8 +303,12 @@ abstract class CS extends StringAscii {
 
   static const Type kType = CS;
 
-  /// Special variable for overriding uppercase constraint.
-  static bool allowLowerCase = false;
+  static const Trim kTrim = Trim.both;
+
+  /// Special variable for overriding uppercase constraint. If _true_
+  /// lowercase characters in [values] are converted to uppercase
+  /// before being returned.
+  static bool convertLowercase = false;
 
   @override
   int get vrIndex => kVRIndex;
@@ -327,11 +322,18 @@ abstract class CS extends StringAscii {
   int get maxLength => kMaxLength;
 
   @override
+  Iterable<String> get values {
+    final v = _values;
+    return (convertLowercase) ? v.uppercase : v;
+  }
+
+  @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  @override
-  CS blank([int n = 1]) => update([spaces(n)]);
+  // TODO: Valid? Needed? What is the difference with empty versus blank.
+  /// Returns a new [CS] [Element] containing only spaces.
+  CS spaces([int n = 1]) => update([''.padRight(n)]);
 
 
   // **** Generalized static methods
@@ -420,6 +422,8 @@ abstract class UI extends StringAscii {
   static const String kVRName = 'Unique Identifier (UID)';
 
   static const Type kType = UI;
+
+  static const Trim kTrim = Trim.none;
 
   @override
   int get vrIndex => kVRIndex;
@@ -583,6 +587,8 @@ abstract class DA extends StringBase {
 
   static const Type kType = DA;
 
+  static const Trim kTrim = Trim.none;
+
   static bool allowLowerCase = false;
 
   @override
@@ -709,6 +715,7 @@ abstract class DT extends StringBase {
 
   static const Type kType = DT;
 
+  static const Trim kTrim = Trim.trailing;
   static bool allowLowerCase = false;
 
   @override
@@ -832,6 +839,7 @@ abstract class TM extends StringBase {
 
   static const Type kType = TM;
 
+  static const Trim kTrim = Trim.trailing;
   static bool allowLowerCase = false;
 
   @override
@@ -844,6 +852,8 @@ abstract class TM extends StringBase {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   Iterable<Time> get times => _times ??= values.map(Time.parse);
   Iterable<Time> _times;

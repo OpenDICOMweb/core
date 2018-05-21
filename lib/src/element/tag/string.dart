@@ -51,15 +51,26 @@ abstract class TagStringMixin {
 class AEtag extends AE with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory AEtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (AE.isValidArgs(tag, vList))
           ? new AEtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  AEtag._(this.tag, this.values);
+  factory AEtag._(Tag tag, Iterable<String> vList) {
+    if (!AE.isValidArgs(tag, vList)) return badValues(vList, null, tag);
+    final v = (vList.isEmpty) ? StringList.kEmptyList : StringList.from(vList);
+    return new AEtag._x(tag, v);
+  }
+
+  AEtag._x(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   AEtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -81,15 +92,20 @@ class AEtag extends AE with TagElement<String> {
 class CStag extends CS with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory CStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (CS.isValidArgs(tag, vList))
           ? new CStag._(tag, vList)
           : badValues(vList, null, tag);
 
-  CStag._(this.tag, this.values);
+  CStag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   CStag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -111,8 +127,7 @@ class CStag extends CS with TagElement<String> {
 class DStag extends DS with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory DStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       new DStag._(tag, vList);
@@ -122,7 +137,13 @@ class DStag extends DS with TagElement<String> {
           ? new DStag._x(tag, vList)
           : badValues(vList, null, tag);
 
-  DStag._x(this.tag, this.values);
+  DStag._x(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   DStag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -140,15 +161,20 @@ class DStag extends DS with TagElement<String> {
 class IStag extends IS with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory IStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (IS.isValidArgs(tag, vList))
           ? new IStag._(tag, vList)
           : badValues(vList, null, tag);
 
-  IStag._(this.tag, this.values);
+  IStag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   IStag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -171,15 +197,20 @@ class IStag extends IS with TagElement<String> {
 class LOtag extends LO with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory LOtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LO.isValidArgs(tag, vList))
           ? new LOtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  LOtag._(this.tag, this.values);
+  LOtag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   LOtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -201,15 +232,20 @@ class LOtag extends LO with TagElement<String> {
 class PCtag extends PC with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory PCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LO.isValidArgs(tag, vList))
           ? new PCtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  PCtag._(this.tag, this.values);
+  PCtag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   String get token => value;
@@ -253,15 +289,20 @@ class PCtag extends PC with TagElement<String> {
 class LTtag extends LT with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory LTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LT.isValidArgs(tag, vList))
           ? new LTtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  LTtag._(this.tag, this.values);
+  LTtag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   LTtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -277,22 +318,29 @@ class LTtag extends LT with TagElement<String> {
   static LTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static LTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (!LT.isValidTag(tag)) ? null : new LTtag._(tag, [bytes.getUtf8()]);
+      (!LT.isValidTag(tag))
+          ? null
+          : new LTtag._(tag, StringList.from([bytes.getUtf8()]));
 }
 
 /// A Person Name ([PN]) Element.
 class PNtag extends PN with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory PNtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (PN.isValidArgs(tag, vList))
           ? new PNtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  PNtag._(this.tag, this.values);
+  PNtag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   PNtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -315,15 +363,20 @@ class PNtag extends PN with TagElement<String> {
 class SHtag extends SH with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory SHtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (SH.isValidArgs(tag, vList))
           ? new SHtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  SHtag._(this.tag, this.values);
+  SHtag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   SHtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -346,15 +399,20 @@ class SHtag extends SH with TagElement<String> {
 class STtag extends ST with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory STtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (ST.isValidArgs(tag, vList))
           ? new STtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  STtag._(this.tag, this.values);
+  STtag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   STtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -370,22 +428,29 @@ class STtag extends ST with TagElement<String> {
   static STtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static STtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (!ST.isValidTag(tag)) ? null : new STtag._(tag, [bytes.getUtf8()]);
+      (!ST.isValidTag(tag))
+          ? null
+          : new STtag._(tag, StringList.from([bytes.getUtf8()]));
 }
 
 /// An Unlimited Characters (UC) Element
 class UCtag extends UC with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory UCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (UC.isValidArgs(tag, vList))
           ? new UCtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  UCtag._(this.tag, this.values);
+  UCtag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   UCtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -431,7 +496,7 @@ class UItag extends UI with TagElement<String> {
   UItag._(this.tag, this._values, this._uids);
 
   @override
-  Iterable<String> get values => _values ??= uids.map((uid) => uid.asString);
+  List<String> get values => _values ??= uids.map((uid) => uid.asString);
   @override
   set values(Iterable<String> vList) => _values = vList;
 
@@ -462,15 +527,20 @@ class UItag extends UI with TagElement<String> {
 class URtag extends UR with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory URtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (UR.isValidArgs(tag, vList))
           ? new URtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  URtag._(this.tag, this.values);
+  URtag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   URtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -486,22 +556,29 @@ class URtag extends UR with TagElement<String> {
   static URtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static URtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (!UR.isValidTag(tag)) ? null : new URtag._(tag, [bytes.getUtf8()]);
+      (!UR.isValidTag(tag))
+          ? null
+          : new URtag._(tag, StringList.from([bytes.getUtf8()]));
 }
 
 /// An Unlimited Text (UT) Element
 class UTtag extends UT with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory UTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (UT.isValidArgs(tag, vList))
           ? new UTtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  UTtag._(this.tag, this.values);
+  UTtag._(this.tag, this._values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) =>
+      _values = (vList is StringList) ? vList : StringList.from(vList);
 
   @override
   UTtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -517,7 +594,9 @@ class UTtag extends UT with TagElement<String> {
   static UTtag from(Element e) => fromBytes(e.tag, e.vfBytes);
 
   static UTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
-      (!UT.isValidTag(tag)) ? null : new UTtag._(tag, [bytes.getUtf8()]);
+      (!UT.isValidTag(tag))
+          ? null
+          : new UTtag._(tag, StringList.from([bytes.getUtf8()]));
 }
 
 // **** Date/Time classes
@@ -525,8 +604,7 @@ class UTtag extends UT with TagElement<String> {
 class AStag extends AS with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory AStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       new AStag._(tag, vList);
@@ -538,7 +616,7 @@ class AStag extends AS with TagElement<String> {
         : badValues(vList, null, tag);
   }
 
-  AStag._x(this.tag, this.values);
+  AStag._x(this.tag, this._values);
 
   @override
   AStag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -562,15 +640,14 @@ class AStag extends AS with TagElement<String> {
 class DAtag extends DA with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory DAtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (DA.isValidArgs(tag, vList))
-          ? new DAtag._(tag, vList)
+          ? new DAtag._(tag, new StringList.from(vList))
           : badValues(vList, null, tag);
 
-  DAtag._(this.tag, this.values);
+  DAtag._(this.tag, this._values);
 
   @override
   DAtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -583,8 +660,6 @@ class DAtag extends DA with TagElement<String> {
   static DAtag fromUint8List(Tag tag, Uint8List bytes) =>
       fromBytes(tag, new Bytes.typedDataView(bytes));
 
-  static DAtag from(Element e) => new DAtag(e.tag, e.values);
-
   static DAtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (!DA.isValidTag(tag)) ? null : new DAtag._(tag, bytes.getAsciiList());
 }
@@ -596,15 +671,14 @@ class DAtag extends DA with TagElement<String> {
 class DTtag extends DT with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory DTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (DT.isValidArgs(tag, vList))
           ? new DTtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  DTtag._(this.tag, this.values);
+  DTtag._(this.tag, this._values);
 
   @override
   DTtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -631,15 +705,14 @@ class DTtag extends DT with TagElement<String> {
 class TMtag extends TM with TagElement<String> {
   @override
   final Tag tag;
-  @override
-  Iterable<String> values;
+  StringList _values;
 
   factory TMtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (TM.isValidArgs(tag, vList))
           ? new TMtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  TMtag._(this.tag, this.values);
+  TMtag._(this.tag, this._values);
 
   @override
   TMtag update([Iterable<String> vList = kEmptyStringList]) =>

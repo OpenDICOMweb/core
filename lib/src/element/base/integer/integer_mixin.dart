@@ -10,8 +10,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
-import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/bulkdata.dart';
+import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/utils.dart';
 import 'package:core/src/element/base/utils.dart';
@@ -23,15 +23,20 @@ import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
 abstract class IntBase extends Element<int> {
-  int get sizeInBytes;
+  List<int> _values;
   @override
-  Iterable<int> get values;
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
+
+  int get sizeInBytes;
+
 
   @override
   IntBase update([Iterable<int> vList]);
 
-  @override
-  set values(Iterable<int> vList) => unsupportedError('IntBase.values');
+  // **** End of interface
 
   bool get isBinary => true;
 
@@ -92,7 +97,7 @@ abstract class IntBase extends Element<int> {
 /// A mixin class for 8-bit signed integer [Element]s.
 abstract class Int8 {
   int get length;
-  Iterable<int> get values;
+  List<int> get values;
   Element update(TypedData vList);
 
   int get sizeInBytes => kSizeInBytes;
@@ -220,7 +225,7 @@ abstract class Int8 {
 /// A mixin class for 16-bit signed integer [Element]s.
 abstract class Int16 {
   int get length;
-  Iterable<int> get values;
+  List<int> get values;
   IntBase update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
@@ -345,7 +350,7 @@ abstract class Int16 {
 /// A mixin class for 32-bit signed integer [Element]s.
 abstract class Int32 {
   int get length;
-  Iterable<int> get values;
+  List<int> get values;
   IntBase update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
@@ -470,7 +475,7 @@ abstract class Int32 {
 /// A mixin class for 64-bit signed integer [Element]s.
 abstract class Int64 {
   int get length;
-  Iterable<int> get values;
+  List<int> get values;
   IntBase update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
@@ -592,7 +597,7 @@ abstract class Int64 {
 /// A mixin class for 8-bit unsigned integer [Element]s.
 abstract class Uint8 {
   int get length;
-  Iterable<int> get values;
+  List<int> get values;
   IntBase update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
@@ -723,7 +728,7 @@ abstract class Uint8 {
 /// A mixin class for 16-bit unsigned integer [Element]s.
 abstract class Uint16 {
   int get length;
-  Iterable<int> get values;
+  List<int> get values;
   IntBase update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
@@ -867,7 +872,7 @@ abstract class Uint16 {
 /// A mixin class for 32-bit unsigned integer [Element]s.
 abstract class Uint32 {
   int get length;
-  Iterable<int> get values;
+  List<int> get values;
   IntBase update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
@@ -1005,7 +1010,7 @@ abstract class Uint32 {
 /// An mixin class for 64-bit unsigned integers.
 abstract class Uint64 {
   int get length;
-  Iterable<int> get values;
+  List<int> get values;
   IntBase update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;

@@ -50,6 +50,18 @@ final SimpleElementFormatter eFormat = new SimpleElementFormatter();
 /// is the [Type] of the [values] of the [Element].
 abstract class Element<V> extends ListBase<V> {
   // **** Interface
+  List<V> get _values;
+  set _values(List<V> vList);
+
+  @override
+  List<V> toList({bool growable = true});
+
+  /// Returns the [Iterable<V>] [values] of _this_.
+  Iterable<V> get values => _values.toList(growable: false);
+
+  /// The default for [values] is unmodifiable.
+  set values(Iterable<V> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   /// Returns the identifier ([index]), used to locate
   /// the Attributes associated with this Element.
@@ -93,13 +105,6 @@ abstract class Element<V> extends ListBase<V> {
 
   /// The length in bytes of [values].
   int get lengthInBytes;
-
-  /// Returns the [Iterable<V>] [values] of _this_.
-  Iterable<V> get values;
-
-  /// The default for [values] is unmodifiable.
-  set values(Iterable<V> vList) =>
-      unsupportedError('ByteElements are not settable.');
 
   /// Returns the canonical empty list for [V] ([List<V>[]]).
   Iterable<V> get emptyList;
@@ -483,8 +488,8 @@ abstract class Element<V> extends ListBase<V> {
           ? invalidTag(tag, issues, type)
           : true;
 
-  static bool isValidLength<V>(
-      Tag tag, Iterable<V> vList, Issues issues, int maxLengthForVR, Type type) {
+  static bool isValidLength<V>(Tag tag, Iterable<V> vList, Issues issues,
+      int maxLengthForVR, Type type) {
     if (tag == null) return invalidTag(tag, issues, type);
     if (vList == null) return nullValueError();
     final min = tag.vmMin;

@@ -6,8 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+library odw.sdk.element.base.string;
+
 import 'dart:typed_data';
 
+import 'package:collection/collection.dart';
+import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/error.dart';
@@ -15,6 +19,17 @@ import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/element/base/utils.dart';
+import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/utils/character/dicom.dart';
+import 'package:core/src/value.dart';
+import 'package:core/src/vr/vr_internal.dart';
+
+part 'package:core/src/element/base/string/ascii.dart';
+part 'package:core/src/element/base/string/number.dart';
+part 'package:core/src/element/base/string/string_bulkdata.dart';
+part 'package:core/src/element/base/string/text.dart';
+part 'package:core/src/element/base/string/utf8.dart';
 
 // TODO: For each class add the following static fields:
 //       bool areLeadingSpacesAllowed = x;
@@ -38,10 +53,20 @@ abstract class StringBase extends Element<String> {
   static const bool kIsUndefinedLengthAllowed = false;
   static const bool kIsAsciiRequired = true;
 
+  /// Default Trim values for Strings
+  static const Trim kTrim = Trim.trailing;
+
+  StringList _values;
   @override
-  Iterable<String> get values;
+  Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList);
+  set values(Iterable<String> vList) =>
+      _values = (vList is List) ? vList : StringList.from();
+
+  Trim get trim => kTrim;
+
+  StringList get trimmed => _values.trim(trim);
+
   // **** End of interface
 
   @override
@@ -56,7 +81,6 @@ abstract class StringBase extends Element<String> {
   bool get isUndefinedLengthAllowed => false;
   @override
   bool get hadULength => false;
-
 
   // **** Getters that MUST be supported by every Element Type.
 

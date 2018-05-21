@@ -16,6 +16,8 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/utils/string/hexadecimal.dart';
 
+enum Trim {leading, trailing, both, none}
+
 // **** This file contains low-level [String] functions
 
 /// Returns a [String] containing [count] _space_ (' ') characters.

@@ -24,14 +24,16 @@ int level = 0;
 
 abstract class SQ extends Element<Item> {
   // **** Interface
+  List<Item> _values;
+  @override
+  Iterable<Item> get values => _values;
+  @override
+  set values(Iterable<Item> v) =>
+      _values = (v is List) ? v : v.toList(growable: false);
 
   /// The [tag] corresponding to _this_.
   @override
   Tag get tag;
-  @override
-  Iterable<Item> get values;
-  @override
- set values(Iterable<Item> vList);
 
   /// The DICOM name for Sequence values, which are Items.
   Iterable<Item> get items => (values is List) ? values : values.toList();
@@ -197,7 +199,7 @@ Summary $tag
     return eList;
   }
 
-  Iterable<Element> updateAllF<V>(int index, Iterable<V> f(Iterable<V> vList),
+  Iterable<Element> updateAllF<V>(int index, Iterable<V> f(List<V> vList),
       {bool required = false}) {
     final eList = <Element>[];
     for (var item in items) {
@@ -245,7 +247,7 @@ Summary $tag
       replaceAllF(index, _replaceF);
 
   Iterable<Iterable<V>> replaceAllF<V>(
-      int index, Iterable<V> f(Iterable<V> vList)) {
+      int index, Iterable<V> f(List<V> vList)) {
     final result = <Iterable<V>>[];
     for (var item in items) {
       final e = item.lookup(index);
