@@ -78,9 +78,7 @@ void main() {
         final fl0 = new FLtag(PTag.kCornealVertexLocation, float32List);
         expect(fl0.hasValidValues, true);
 
-        log
-          ..debug('fl0: $fl0, values: ${fl0.values}')
-          ..debug('fl0: $fl0');
+        log..debug('fl0: $fl0, values: ${fl0.values}')..debug('fl0: $fl0');
         expect(fl0[0], equals(float32List[0]));
       }
     });
@@ -131,16 +129,18 @@ void main() {
         expect(
             fl2.update(
                 new Float32List.fromList(float32UpdateValues.take(i).toList())),
-            equals(
-                new Float32List.fromList(float32UpdateValues.take(i).toList())));
+            equals(new Float32List.fromList(
+                float32UpdateValues.take(i).toList())));
 
         expect(fl2.update(float32UpdateValues.take(i).toList()).values,
             equals(float32UpdateValues.take(i).toList()));
       }
       final fl2 = new FLtag(PTag.kSelectorFLValue,
           new Float32List.fromList(float32UpdateValues.take(1).toList()));
-      expect([fl2.values.elementAt(0)],
-          equals(new Float32List.fromList(float32UpdateValues.take(1).toList())));
+      expect(
+          [fl2.values.elementAt(0)],
+          equals(
+              new Float32List.fromList(float32UpdateValues.take(1).toList())));
       log.debug(fl2.view());
     });
 
@@ -343,7 +343,7 @@ void main() {
         final fl1 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
         log.debug('fl1: $fl1');
 //        expect(fl1.hasValidValues, false);
-      expect(fl1, isNull);
+        expect(fl1, isNull);
       }
     });
 
@@ -1423,14 +1423,20 @@ void main() {
   });
 
   group('OF Element', () {
-    const ofTags = const <PTag>[
+    //VM.k1
+    const ofVM1Tags = const <PTag>[
       PTag.kVectorGridData,
       PTag.kFloatingPointValues,
-      PTag.kUValueData,
-      PTag.kVValueData,
       PTag.kFirstOrderPhaseCorrectionAngle,
       PTag.kSpectroscopyData,
       PTag.kFloatPixelData,
+    ];
+
+    //VM.k1_n
+    const ofVM1_nTags = const <PTag>[
+      PTag.kUValueData,
+      PTag.kVValueData,
+      PTag.kSelectorOFValue
     ];
 
     const otherTags = const <PTag>[
@@ -1444,12 +1450,13 @@ void main() {
       PTag.kDate,
       PTag.kTime
     ];
+    final invalidVList = rng.float32List(OF.kMaxLength + 1, OF.kMaxLength + 1);
 
     test('OF isValidTag good values', () {
       global.throwOnError = false;
       expect(OF.isValidTag(PTag.kSelectorOFValue), true);
 
-      for (var tag in ofTags) {
+      for (var tag in ofVM1Tags) {
         final validT0 = OF.isValidTag(tag);
         expect(validT0, true);
       }
@@ -1477,7 +1484,7 @@ void main() {
       global.throwOnError = false;
       expect(OF.isValidVR(kOFIndex), true);
 
-      for (var s in ofTags) {
+      for (var s in ofVM1Tags) {
         global.throwOnError = false;
         expect(OF.isValidVR(s.vrIndex), true);
       }
@@ -1501,19 +1508,36 @@ void main() {
       }
     });
 
-/* Urgent: needs Tag to work
-    test('OF isValidLength', () {
+    //Urgent: needs Tag to work
+    test('OF isValidLength VM.k1', () {
       global.throwOnError = false;
-      expect(OF.isValidLength(OF.kMaxLength), true);
-      expect(OF.isValidLength(0), true);
+      //expect(OF.isValidLength(OF.kMaxLength), true);
+      //expect(OF.isValidLength(0), true);
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.float32List(1, 1);
+        global.throwOnError = false;
+        for (var tag in ofVM1Tags) {
+          expect(OF.isValidLength(tag, vList), true);
+        }
+      }
     });
-*/
+
+    test('OF isValidLength VM.k1_n', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.float32List(1, 1);
+        global.throwOnError = false;
+        for (var tag in ofVM1_nTags) {
+          expect(OF.isValidLength(tag, vList), true);
+        }
+      }
+    });
 
     test('OF isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(OF.isValidVR(kOFIndex), true);
 
-      for (var tag in ofTags) {
+      for (var tag in ofVM1Tags) {
         global.throwOnError = false;
         expect(OF.isValidVR(tag.vrIndex), true);
       }
@@ -1541,7 +1565,7 @@ void main() {
       global.throwOnError = false;
       expect(OF.isValidVRCode(kOFCode), true);
 
-      for (var tag in ofTags) {
+      for (var tag in ofVM1Tags) {
         global.throwOnError = false;
         expect(OF.isValidVRCode(tag.vrCode), true);
       }
@@ -1664,11 +1688,16 @@ void main() {
       expect(OF.isValidVFLength(-1), false);
     });
 
-/* Urgent: needs tag to work
     test('OF isValidLength', () {
-      expect(OF.isValidLength(OF.kMaxLength), true);
+      //expect(OF.isValidLength(OF.kMaxLength), true);
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.float32List(1, 1);
+        global.throwOnError = false;
+        for (var tag in ofVM1Tags) {
+          expect(OF.isValidLength(tag, vList), true);
+        }
+      }
     });
-*/
 
     test('OF isValidValues', () {
       global.throwOnError = false;

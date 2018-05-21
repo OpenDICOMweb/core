@@ -1500,13 +1500,19 @@ void main() {
       }
     });
 
-/* Urgent Sharath fix - isValidLength now takes a vList
     test('OF isValidLength', () {
       global.throwOnError = false;
-      expect(OF.isValidLength(PTag.kSelectorOFValue, OF.kMaxLength), true);
-      expect(OF.isValidLength(0), true);
+      //expect(OF.isValidLength(PTag.kSelectorOFValue, OF.kMaxLength), true);
+      //expect(OF.isValidLength(0), true);
+      for(var i = 0; i <= 10; i++){
+        final vList = rng.float32List(1 ,1);
+        for(var tag in ofTags) {
+          final e0 = OF.isValidLength(tag, vList);
+          expect(e0, true);
+        }
+      }
     });
-*/
+
 
     test('OF isValidVR good values', () {
       global.throwOnError = false;

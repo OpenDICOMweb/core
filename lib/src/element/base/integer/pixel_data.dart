@@ -81,7 +81,7 @@ abstract class UNPixelData extends UN
   static bool isValidArgs(Tag tag, Iterable<int> vList,
       [int vfLengthField, TransferSyntax ts, Issues issues]) {
     if (!isValidTag(tag, issues)) return false;
-    return OB.isValidArgs(tag, vList, vfLengthField, ts, issues);
+    return UN.isValidArgs(tag, vList, vfLengthField, ts, issues);
   }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [OB].
@@ -89,7 +89,7 @@ abstract class UNPixelData extends UN
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
       [Issues issues]) {
     if (!isValidTag(tag, issues)) return false;
-    return OB.isValidBytesArgs(tag, vfBytes, vfLengthField, issues);
+    return UN.isValidBytesArgs(tag, vfBytes, vfLengthField, issues);
   }
 
   /// Returns _true_ if [tag] is valid for [UN].

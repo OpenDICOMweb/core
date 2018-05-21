@@ -96,25 +96,37 @@ void main() {
             log.debug('$date0 - $time0');
             final dateTime0 = date0.add(time0);
             log.debug('dateTime: $dateTime0');
+            expect(
+                dateTime0.microseconds == date0.microseconds + time0.uSeconds,
+                true);
 
             final dateTime1 = date0.difference(time0);
             log.debug('dateTime: $dateTime1');
+            expect(
+                dateTime1.microseconds == date0.microseconds - time0.uSeconds,
+                true);
           }
         }
       }
 
-      // Urgent Sharath: what is this testing?
       const s = '19500718';
       final date = Date.parse(s);
       log.debug(date);
+      final time = Time.parse('235959');
+      final dateTime0 = date.add(time);
+      log.debug('dateTime: $dateTime0');
+      expect(dateTime0.microseconds == date.microseconds + time.uSeconds, true);
 
       // Enhancement
-      final date1 = date.add(new Time(4,  20, 56));
+      final time1 = new Time(4, 30, 56);
+      final date1 = date.add(time1);
       log.debug(date1);
+      expect(date1.microseconds == date.microseconds + time1.uSeconds, true);
 
-    //  final date2 = date.subtract(new Time(2, 5, 26));
-    //  log.debug(date2);
-
+      final time2 = new Time(05, 12, 34);
+      final date2 = date.difference(time2);
+      log.debug(date2);
+      expect(date2.microseconds == date.microseconds - time2.uSeconds, true);
     });
 
     test('hash Date (throwOnError = false)', () {
