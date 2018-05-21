@@ -417,7 +417,7 @@ class VRNumber extends VRString {
             false);
 
   @override
-  bool isValidVFLength(int vfLength, int _, int __) => vfLength > maxVFLength;
+  bool isValidVFLength(int vfLength, int _, int __) => vfLength <= maxVFLength;
 
   static const kDS =
       const VRNumber(kDSIndex, 'DS', kDSCode, 2, kShortVF, 1, 16);

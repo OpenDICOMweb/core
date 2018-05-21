@@ -11,11 +11,10 @@ import 'dart:typed_data';
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 
-final rng = new RNG(1);
+final RNG rng = new RNG(1);
 
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.debug);
-
 
   const doubleList = const <double>[
     0.1,
@@ -35,6 +34,8 @@ void main() {
     -11.000453,
   ];
 
+
+  final rds = new ByteRootDataset.empty();
   global.throwOnError = false;
 
   group('FD Tests', () {
@@ -75,9 +76,7 @@ void main() {
         print('fd0.values: ${fd0.values}');
         expect(fd0.hasValidValues, true);
         expect(fd0.values, equals(float64List));
-        log
-          ..debug('fd0: $fd0, values: ${fd0.values}')
-          ..debug('fd0: $fd0');
+        log..debug('fd0: $fd0, values: ${fd0.values}')..debug('fd0: $fd0');
         final fd1 = new FDtag(fd0.tag, fd0.values);
         log
           ..debug('fd1: $fd1, values: ${fd1.values}')
@@ -129,7 +128,7 @@ void main() {
         expect(fd0.hashCode == fd1.hashCode, true);
         expect(fd0 == fd1, true);
 
-         floatList1 = rng.float64List(1, 1);
+        floatList1 = rng.float64List(1, 1);
         final fd2 = FDbytes.fromValues(kTablePosition, floatList1);
         log.debug('floatList1:$floatList1 , fd2.hash_code:${fd2.hashCode}');
         expect(fd0.hashCode == fd2.hashCode, false);
@@ -170,6 +169,38 @@ void main() {
             true);
       }
     });
+
+    test('FDbytes from VM.k1', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float64List(1, 1);
+        global.throwOnError = false;
+        final e0 =
+            FDbytes.fromValues(kOverallTemplateSpatialTolerance, floatList0);
+        log.debug('e0: $e0');
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        log.debug('e1: $e1');
+        expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('FDbytes from VM.k1_n', () {
+      for (var i = 1; i < 10; i++) {
+        final floatList0 = rng.float64List(1, i);
+        global.throwOnError = false;
+        final e0 = FDbytes.fromValues(kSelectorFDValue, floatList0);
+/*
+        final s = fd1.toString();
+        log.debug('e0: $e0');
+//        final bd0 = new Bytes.typedDataView(floatList0);
+
+        final e0 = Lobytes.fromValuesngEvr(fd1.code, fd1.vrIndex, bd0);
+        final e1= ByteElement.makeFromCode(rds, fd1.code, bd1);
+        log.debug('e0:$e0');
+*/
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        log.debug('e1: $e1');
+        expect(e0.hasValidValues, true);
+      }
+    });
   });
 }
-

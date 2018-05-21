@@ -209,8 +209,9 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
 
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes)
-      ..writeUint16VF(vList);
+    final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
+    if (bytes == null) return null;
+    bytes.writeUint16VF(vList);
     assert(vList.length * SS.kSizeInBytes <= SS.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -226,8 +227,9 @@ class USbytes extends US with ByteElement<int>, Uint16Mixin {
 
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kUSCode, isEvr, US.kSizeInBytes)
-      ..writeUint16VF(vList);
+    final bytes = _makeShort(code, vList, kUSCode, isEvr, US.kSizeInBytes);
+    if (bytes == null) return null;
+    bytes.writeUint16VF(vList);
     assert(vList.length * US.kSizeInBytes <= US.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -247,8 +249,9 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
 
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
-    final bytes = _makeLong(code, vList, kOWCode, isEvr, OW.kSizeInBytes)
-      ..writeUint16VF(vList);
+    final bytes = _makeLong(code, vList, kOWCode, isEvr, OW.kSizeInBytes);
+    if (bytes == null) return null;
+    bytes.writeUint16VF(vList);
     assert(vList.length * OW.kSizeInBytes <= OW.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -281,8 +284,9 @@ class ATbytes extends AT with ByteElement<int>, Uint32Mixin {
   static ATbytes fromBytes(DicomBytes bytes) => new ATbytes(bytes);
 
   static ATbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kATCode, isEvr, AT.kSizeInBytes)
-      ..writeUint32VF(vList);
+    final bytes = _makeShort(code, vList, kATCode, isEvr, AT.kSizeInBytes);
+    if (bytes == null) return null;
+    bytes.writeUint32VF(vList);
     assert(vList.length * AT.kSizeInBytes <= AT.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -298,8 +302,9 @@ class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
   static OLbytes fromBytes(DicomBytes bytes) => new OLbytes(bytes);
 
   static OLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kOLCode, isEvr, OL.kSizeInBytes)
-      ..writeUint8VF(vList);
+    final bytes = _makeShort(code, vList, kOLCode, isEvr, OL.kSizeInBytes);
+    if (bytes == null) return null;
+    bytes.writeUint8VF(vList);
     assert(vList.length * OL.kSizeInBytes <= OL.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -315,8 +320,9 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
   static SLbytes fromBytes(DicomBytes bytes) => new SLbytes(bytes);
 
   static SLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kSLCode, isEvr, SL.kSizeInBytes)
-      ..writeUint8VF(vList);
+    final bytes = _makeShort(code, vList, kSLCode, isEvr, SL.kSizeInBytes);
+    if (bytes == null) return null;
+    bytes.writeUint8VF(vList);
     assert(vList.length * SL.kSizeInBytes <= SL.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -334,8 +340,9 @@ class ULbytes extends UL with ByteElement<int>, Uint32Mixin {
       (bytes.getUint16(2) == 0) ? new GLbytes(bytes) : new ULbytes(bytes);
 
   static ULbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kULCode, isEvr, UL.kSizeInBytes)
-      ..writeUint8VF(vList);
+    final bytes = _makeShort(code, vList, kULCode, isEvr, UL.kSizeInBytes);
+    if (bytes == null) return null;
+    bytes.writeUint32VF(vList);
     assert(vList.length * UL.kSizeInBytes <= UL.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -351,8 +358,9 @@ class GLbytes extends ULbytes {
   static GLbytes fromBytes(DicomBytes bytes) => new GLbytes(bytes);
 
   static GLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
-    final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes)
-      ..writeUint8VF(vList);
+    final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
+    if (bytes == null) return null;
+    bytes.writeUint8VF(vList);
     assert(vList.length * SS.kSizeInBytes <= SS.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -392,8 +400,9 @@ class ASbytes extends AS with ByteElement<String>, StringMixin, AsciiMixin {
   }
 
   static ASbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kASCode, isEvr)
-      ..writeAsciiVF(vList);
+    final bytes = _makeShortString(code, vList, kASCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeAsciiVF(vList);
     assert(vList.length <= AS.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -408,8 +417,9 @@ class CSbytes extends CS with ByteElement<String>, StringMixin, AsciiMixin {
   static CSbytes fromBytes(DicomBytes bytes) => new CSbytes(bytes);
 
   static CSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kCSCode, isEvr)
-      ..writeAsciiVF(vList);
+    final bytes = _makeShortString(code, vList, kCSCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeAsciiVF(vList);
     assert(vList.length <= CS.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -429,8 +439,9 @@ class DAbytes extends DA with ByteElement<String>, StringMixin, AsciiMixin {
   }
 
   static DAbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kDACode, isEvr)
-      ..writeAsciiVF(vList);
+    final bytes = _makeShortString(code, vList, kDACode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeAsciiVF(vList);
     assert(vList.length <= DA.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -445,8 +456,9 @@ class DSbytes extends DS with ByteElement<String>, StringMixin, AsciiMixin {
   static DSbytes fromBytes(DicomBytes bytes) => new DSbytes(bytes);
 
   static DSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kDSCode, isEvr)
-      ..writeAsciiVF(vList, kSpace);
+    final bytes = _makeShortString(code, vList, kDSCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeAsciiVF(vList, kSpace);
     assert(bytes.length - bytes.vfOffset <= DS.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -461,8 +473,9 @@ class DTbytes extends DT with ByteElement<String>, StringMixin, AsciiMixin {
   static DTbytes fromBytes(DicomBytes bytes) => new DTbytes(bytes);
 
   static DTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kDTCode, isEvr)
-      ..writeAsciiVF(vList);
+    final bytes = _makeShortString(code, vList, kDTCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeAsciiVF(vList);
     assert(vList.length <= DT.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -477,8 +490,9 @@ class ISbytes extends IS with ByteElement<String>, StringMixin, AsciiMixin {
   static ISbytes fromBytes(DicomBytes bytes) => new ISbytes(bytes);
 
   static ISbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kISCode, isEvr)
-      ..writeAsciiVF(vList);
+    final bytes = _makeShortString(code, vList, kISCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeAsciiVF(vList);
     assert(vList.length <= IS.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -496,8 +510,9 @@ class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
   static UIbytes fromBytes(DicomBytes bytes) => new UIbytes(bytes);
 
   static UIbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kUICode, isEvr)
-      ..writeAsciiVF(vList);
+    final bytes = _makeShortString(code, vList, kUICode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeAsciiVF(vList);
     assert(vList.length <= UI.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -512,8 +527,9 @@ class TMbytes extends TM with ByteElement<String>, StringMixin, AsciiMixin {
   static TMbytes fromBytes(DicomBytes bytes) => new TMbytes(bytes);
 
   static TMbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kTMCode, isEvr)
-      ..writeAsciiVF(vList);
+    final bytes = _makeShortString(code, vList, kTMCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeAsciiVF(vList);
     assert(vList.length <= TM.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -536,8 +552,9 @@ class LObytes extends LO with ByteElement<String>, StringMixin, Utf8Mixin {
   }
 
   static LObytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kLOCode, isEvr)
-      ..writeUtf8VF(vList);
+    final bytes = _makeShortString(code, vList, kLOCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeUtf8VF(vList);
     assert(vList.length <= LO.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -555,8 +572,9 @@ class PCbytes extends PC with ByteElement<String>, StringMixin, Utf8Mixin {
   static PCbytes fromBytes(DicomBytes bytes) => new PCbytes(bytes);
 
   static PCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kLOCode, isEvr)
-      ..writeUtf8VF(vList);
+    final bytes = _makeShortString(code, vList, kLOCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeUtf8VF(vList);
     assert(vList.length <= LO.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -571,8 +589,9 @@ class PNbytes extends PN with ByteElement<String>, StringMixin, Utf8Mixin {
   static PNbytes fromBytes(DicomBytes bytes) => new PNbytes(bytes);
 
   static PNbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kPNCode, isEvr)
-      ..writeUtf8VF(vList);
+    final bytes = _makeShortString(code, vList, kPNCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeUtf8VF(vList);
     assert(vList.length <= PN.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -587,8 +606,9 @@ class SHbytes extends SH with ByteElement<String>, StringMixin, Utf8Mixin {
   static SHbytes fromBytes(DicomBytes bytes) => new SHbytes(bytes);
 
   static SHbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kSHCode, isEvr)
-      ..writeUtf8VF(vList);
+    final bytes = _makeShortString(code, vList, kSHCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeUtf8VF(vList);
     assert(vList.length <= SH.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -603,8 +623,9 @@ class UCbytes extends UC with ByteElement<String>, StringMixin, Utf8Mixin {
   static UCbytes fromBytes(DicomBytes bytes) => new UCbytes(bytes);
 
   static UCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeLongString(code, vList, kUCCode, isEvr)
-      ..writeUtf8VF(vList);
+    final bytes = _makeLongString(code, vList, kUCCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeUtf8VF(vList);
     assert(vList.length <= UC.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -621,8 +642,9 @@ class LTbytes extends LT with ByteElement<String>, TextMixin {
   static LTbytes fromBytes(DicomBytes bytes) => new LTbytes(bytes);
 
   static LTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kLTCode, isEvr)
-      ..writeTextVF(vList);
+    final bytes = _makeShortString(code, vList, kLTCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeTextVF(vList);
     assert(vList.length <= LT.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -637,8 +659,9 @@ class STbytes extends ST with ByteElement<String>, TextMixin {
   static STbytes fromBytes(DicomBytes bytes) => new STbytes(bytes);
 
   static STbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kSTCode, isEvr)
-      ..writeTextVF(vList);
+    final bytes = _makeShortString(code, vList, kSTCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeTextVF(vList);
     assert(vList.length <= ST.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -653,8 +676,9 @@ class URbytes extends UR with ByteElement<String>, TextMixin {
   static URbytes fromBytes(DicomBytes bytes) => new URbytes(bytes);
 
   static URbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeLongString(code, vList, kURCode, isEvr)
-      ..writeTextVF(vList);
+    final bytes = _makeLongString(code, vList, kURCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeTextVF(vList);
     assert(vList.length <= UR.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -669,8 +693,9 @@ class UTbytes extends UT with ByteElement<String>, TextMixin {
   static UTbytes fromBytes(DicomBytes bytes) => new UTbytes(bytes);
 
   static UTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeLongString(code, vList, kUTCode, isEvr)
-      ..writeTextVF(vList);
+    final bytes = _makeLongString(code, vList, kUTCode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeTextVF(vList);
     assert(vList.length <= UT.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -729,8 +754,8 @@ abstract class PrivateData<V> extends Element<V> with ByteElement<V> {
   DicomBytes get vfBytes => e.vfBytes;
   @override
   int get vfBytesLast => e.vfBytesLast;
-  @override
-  DicomBytes get vBytes => e.vBytes;
+//  @override
+//  DicomBytes get vBytes => e.vBytes;
   @override
   int get valuesLength => e.length;
   @override

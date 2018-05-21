@@ -1173,31 +1173,35 @@ void main() {
 
     test('OF update', () {
       final of0 = new OFtag(PTag.kVectorGridData, []);
-      expect(of0.update([1.2, 1.3, 1.4]).values, equals([1.2, 1.3, 1.4]));
+      final floats0 = [1.2, 1.3, 1.4];
+      final vList0 = new Float32List.fromList(floats0);
+      expect(of0.update(vList0).values, equals(vList0));
 
       final of1 = new OFtag(PTag.kUValueData, goodFloat32List);
       expect(of1.update(goodFloat32List).values, equals(goodFloat32List));
 
-      const floatUpdateValues = const <double>[
+      const floats1 = const <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
-      for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
+
+      final vList1 = new Float32List.fromList(floats1);
+      for (var i = 1; i <= vList1.length - 1; i++) {
         final of2 = new OFtag(PTag.kSelectorOFValue,
-            new Float32List.fromList(floatUpdateValues.take(i).toList()));
+            new Float32List.fromList(vList1.take(i).toList()));
 
         expect(
             of2.update(
-                new Float32List.fromList(floatUpdateValues.take(i).toList())),
+                new Float32List.fromList(vList1.take(i).toList())),
             equals(
-                new Float32List.fromList(floatUpdateValues.take(i).toList())));
+                new Float32List.fromList(vList1.take(i).toList())));
 
-        expect(of2.update(floatUpdateValues.take(i).toList()).values,
-            equals(floatUpdateValues.take(i).toList()));
+        expect(of2.update(vList1.take(i).toList()).values,
+            equals(vList1.take(i).toList()));
       }
       final of3 = new OFtag(PTag.lookupByCode(kUValueData),
-          new Float32List.fromList(floatUpdateValues));
-      expect(of3.update(new Float32List.fromList(floatUpdateValues)),
-          equals(new Float32List.fromList(floatUpdateValues)));
+          new Float32List.fromList(vList1));
+      expect(of3.update(new Float32List.fromList(vList1)),
+          equals(new Float32List.fromList(vList1)));
     });
 
     test('OF noValues random', () {

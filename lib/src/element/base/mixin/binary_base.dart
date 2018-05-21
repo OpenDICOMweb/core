@@ -54,8 +54,9 @@ abstract class BinaryElement {
    return vfLength;
   }
 
-  /// The Value Field [Bytes] without padding.
+/*  /// The Value Field [Bytes] without padding.
   Bytes get vBytes;
+ */
 }
 
 abstract class IvrElement extends BinaryElement {

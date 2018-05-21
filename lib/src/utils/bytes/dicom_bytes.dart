@@ -20,7 +20,7 @@ abstract class DicomBytes extends Bytes with DicomMixin {
                     [int offset = 0, int length, int padChar]) {
     var _length = super._setUint8List(start, list, offset, length);
     if (padChar != null && length.isOdd) {
-      _bd.setUint8(_length, padChar);
+      _bd.setUint8(start + _length, padChar);
       _length++;
     }
     return length;

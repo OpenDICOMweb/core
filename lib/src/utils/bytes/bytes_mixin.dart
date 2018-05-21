@@ -630,7 +630,7 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint8Size));
-    for (var i = offset, j = offset; i < length; i++, j++)
+    for (var i = offset, j = start; i < length; i++, j++)
       _setUint8(j, list[i]);
     return length;
   }
@@ -728,7 +728,7 @@ abstract class BytesMixin {
   // **** Other
 
   @override
-  String toString() => '$endianness $runtimeType: ${toBDDescriptor(_bd)}}';
+  String toString() => '$endianness $runtimeType: ${toBDDescriptor(_bd)}';
 
   String toBDDescriptor(ByteData bd) {
     final start = bd.offsetInBytes;

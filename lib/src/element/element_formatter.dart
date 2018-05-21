@@ -73,6 +73,7 @@ abstract class ElementFormatterBase {
 
   String asString(Element e, {int maxValues, bool simple, bool withValues}) {
     maxValues ??= truncatedValuesLength;
+    if (e == null) return 'null';
     final vfLength = e.vfLength;
     assert(vfLength != null || vfLength >= 0);
     final values = e.values;

@@ -60,17 +60,16 @@ class AEtag extends AE with TagElement<String> {
 
   factory AEtag._(Tag tag, Iterable<String> vList) {
     if (!AE.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? StringList.kEmptyList : StringList.from(vList);
+    final v = (vList.isEmpty) ? StringList.kEmptyList : _toValues(vList);
     return new AEtag._x(tag, v);
   }
 
-  AEtag._x(this.tag, this._values);
+  AEtag._x(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   AEtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -99,13 +98,12 @@ class CStag extends CS with TagElement<String> {
           ? new CStag._(tag, vList)
           : badValues(vList, null, tag);
 
-  CStag._(this.tag, this._values);
+  CStag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   CStag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -137,13 +135,12 @@ class DStag extends DS with TagElement<String> {
           ? new DStag._x(tag, vList)
           : badValues(vList, null, tag);
 
-  DStag._x(this.tag, this._values);
+  DStag._x(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   DStag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -168,13 +165,12 @@ class IStag extends IS with TagElement<String> {
           ? new IStag._(tag, vList)
           : badValues(vList, null, tag);
 
-  IStag._(this.tag, this._values);
+  IStag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   IStag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -204,13 +200,12 @@ class LOtag extends LO with TagElement<String> {
           ? new LOtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  LOtag._(this.tag, this._values);
+  LOtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   LOtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -239,13 +234,12 @@ class PCtag extends PC with TagElement<String> {
           ? new PCtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  PCtag._(this.tag, this._values);
+  PCtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   String get token => value;
@@ -296,13 +290,12 @@ class LTtag extends LT with TagElement<String> {
           ? new LTtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  LTtag._(this.tag, this._values);
+  LTtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   LTtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -320,7 +313,7 @@ class LTtag extends LT with TagElement<String> {
   static LTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (!LT.isValidTag(tag))
           ? null
-          : new LTtag._(tag, StringList.from([bytes.getUtf8()]));
+          : new LTtag._(tag, _toValues([bytes.getUtf8()]));
 }
 
 /// A Person Name ([PN]) Element.
@@ -334,13 +327,12 @@ class PNtag extends PN with TagElement<String> {
           ? new PNtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  PNtag._(this.tag, this._values);
+  PNtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   PNtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -370,13 +362,12 @@ class SHtag extends SH with TagElement<String> {
           ? new SHtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  SHtag._(this.tag, this._values);
+  SHtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   SHtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -406,13 +397,12 @@ class STtag extends ST with TagElement<String> {
           ? new STtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  STtag._(this.tag, this._values);
+  STtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   STtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -430,7 +420,7 @@ class STtag extends ST with TagElement<String> {
   static STtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (!ST.isValidTag(tag))
           ? null
-          : new STtag._(tag, StringList.from([bytes.getUtf8()]));
+          : new STtag._(tag, _toValues([bytes.getUtf8()]));
 }
 
 /// An Unlimited Characters (UC) Element
@@ -444,13 +434,12 @@ class UCtag extends UC with TagElement<String> {
           ? new UCtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  UCtag._(this.tag, this._values);
+  UCtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   UCtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -534,13 +523,12 @@ class URtag extends UR with TagElement<String> {
           ? new URtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  URtag._(this.tag, this._values);
+  URtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   URtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -558,7 +546,7 @@ class URtag extends UR with TagElement<String> {
   static URtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (!UR.isValidTag(tag))
           ? null
-          : new URtag._(tag, StringList.from([bytes.getUtf8()]));
+          : new URtag._(tag, _toValues([bytes.getUtf8()]));
 }
 
 /// An Unlimited Text (UT) Element
@@ -572,13 +560,12 @@ class UTtag extends UT with TagElement<String> {
           ? new UTtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  UTtag._(this.tag, this._values);
+  UTtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is StringList) ? vList : StringList.from(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   UTtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -596,7 +583,7 @@ class UTtag extends UT with TagElement<String> {
   static UTtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (!UT.isValidTag(tag))
           ? null
-          : new UTtag._(tag, StringList.from([bytes.getUtf8()]));
+          : new UTtag._(tag, _toValues([bytes.getUtf8()]));
 }
 
 // **** Date/Time classes
@@ -616,7 +603,12 @@ class AStag extends AS with TagElement<String> {
         : badValues(vList, null, tag);
   }
 
-  AStag._x(this.tag, this._values);
+  AStag._x(this.tag, Iterable<String> values) : _values = _toValues(values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   AStag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -631,9 +623,9 @@ class AStag extends AS with TagElement<String> {
       new AStag._(tag, vList ?? kEmptyStringList);
 
   static AStag fromBytes(Tag tag, Bytes bytes) =>
-      (bytes == null || !AS.isValidTag(tag))
-          ? null
-          : new AStag(tag, bytes.getAsciiList());
+      (bytes != null || AS.isValidTag(tag))
+          ? new AStag(tag, bytes.getAsciiList())
+          : null;
 }
 
 /// A DICOM Date ([DA]) [Element].
@@ -644,10 +636,15 @@ class DAtag extends DA with TagElement<String> {
 
   factory DAtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (DA.isValidArgs(tag, vList))
-          ? new DAtag._(tag, new StringList.from(vList))
+          ? new DAtag._(tag, _toValues(vList))
           : badValues(vList, null, tag);
 
-  DAtag._(this.tag, this._values);
+  DAtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   DAtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -678,7 +675,12 @@ class DTtag extends DT with TagElement<String> {
           ? new DTtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  DTtag._(this.tag, this._values);
+  DTtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   DTtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -712,7 +714,12 @@ class TMtag extends TM with TagElement<String> {
           ? new TMtag._(tag, vList)
           : badValues(vList, null, tag);
 
-  TMtag._(this.tag, this._values);
+  TMtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+
+  @override
+  Iterable<String> get values => _values;
+  @override
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
   TMtag update([Iterable<String> vList = kEmptyStringList]) =>
@@ -730,3 +737,6 @@ class TMtag extends TM with TagElement<String> {
   static TMtag fromBytes(Tag tag, Bytes bytes, [int _, TransferSyntax __]) =>
       (!TM.isValidTag(tag)) ? null : new TMtag._(tag, bytes.getAsciiList());
 }
+
+StringList _toValues(Iterable<String> vList) =>
+    (vList is StringList) ? vList : new StringList.from(vList);

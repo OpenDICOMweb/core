@@ -888,7 +888,7 @@ void main() {
           expect(DS.isValidLength(tag, validMinVList), true);
 
           expect(
-              DS.isValidLength(tag, badLengthList.take(tag.vmMax + 4)), true);
+              DS.isValidLength(tag, badLengthList.take(tag.vmMax + 4)), false);
         }
       }
     });
@@ -1968,7 +1968,7 @@ void main() {
           expect(IS.isValidLength(tag, validMinVList), true);
 
           expect(
-              IS.isValidLength(tag, badLengthList.take(tag.vmMax + 3)), true);
+              IS.isValidLength(tag, badLengthList.take(tag.vmMax + 3)), false);
           expect(IS.isValidLength(tag, validMaxVList), true);
         }
       }

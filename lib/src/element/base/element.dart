@@ -51,19 +51,18 @@ final SimpleElementFormatter eFormat = new SimpleElementFormatter();
 abstract class Element<V> extends ListBase<V> {
   // **** Interface
   // TODO: explan the differentce between _value and value.
-  List<V> get _values;
-  set _values(List<V> vList);
+ // List<V> get _values;
+ // set _values(List<V> vList);
 
   @override
   List<V> toList({bool growable = true});
 
   /// Returns the [values] of _this_.
-  Iterable<V> get values => _values;
+  Iterable<V> get values;
 
-  /// Sets [_values] to [vList]. If [vList] is [Iterable] it is first
-  /// converted into a [List] and then assigned to [_values].
-  set values(Iterable<V> vList) =>
-      _values = (vList is List) ? vList : vList.toList(growable: false);
+  /// Sets [values] to [vList]. If [vList] is [Iterable] it is first
+  /// converted into a [List] and then assigned to [values].
+  set values(Iterable<V> vList);
 
   /// Returns the number of [values] of _this_.
   @override
@@ -318,10 +317,12 @@ abstract class Element<V> extends ListBase<V> {
   ByteData get vfByteData =>
       (checkValues(values)) ? typedData.buffer.asByteData() : null;
 
+/*
   /// Returns [values] encoded as a [Bytes].
   // Note: Always Bytes not DicomBytes
   Bytes get vBytes =>
       (checkValues(values)) ? new Bytes.typedDataView(typedData) : null;
+*/
 
   /// Returns [values], including any required padding, encoded as a [Bytes].
   // Note: Always Bytes not DicomBytes

@@ -660,7 +660,7 @@ void main() {
     test('Create UN.isValidVRIndex', () {
       global.throwOnError = false;
       expect(UN.isValidVRIndex(kUNIndex), true);
-      expect(UN.isValidVRIndex(kCSIndex), false);
+      expect(UN.isValidVRIndex(kCSIndex), true);
 
       for (var tag in unTags) {
         expect(UN.isValidVRIndex(tag.vrIndex), true);
@@ -675,7 +675,7 @@ void main() {
     test('Create UN.isValidVRCode', () {
       global.throwOnError = false;
       expect(UN.isValidVRCode(kUNCode), true);
-      expect(UN.isValidVRCode(kAECode), false);
+      expect(UN.isValidVRCode(kAECode), true);
 
       for (var tag in unTags) {
         expect(UN.isValidVRCode(tag.vrCode), true);

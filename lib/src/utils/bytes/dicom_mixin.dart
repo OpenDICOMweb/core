@@ -73,7 +73,8 @@ abstract class DicomMixin {
   Bytes asBytes([int offset = 0, int length, Endian endian]);
 
   // Note: special internal interface for writing padChars
-  int _setUint8List(int start, Uint8List list, [int offset = 0, int length]);
+  int _setUint8List(int start, Uint8List list,
+      [int offset = 0, int length, int padChar]);
 
   // **** End of Interface
 
@@ -102,7 +103,7 @@ abstract class DicomMixin {
   Bytes get vfBytes => asBytes(vfOffset, vfLength);
 
   /// Returns the Value Field bytes _without_ padding.
- Bytes get vBytes => asBytes(vfOffset, _vflWOPadding(vfOffset));
+  Bytes get vBytes => asBytes(vfOffset, _vflWOPadding(vfOffset));
 
   /// Returns the last Uint8 element in [vfBytes], if [vfBytes]
   /// is not empty; otherwise, returns _null_.
@@ -208,7 +209,7 @@ abstract class DicomMixin {
   /// written after the other elements have been written.
   int setAsciiList(int start, List<String> list, [int pad = kSpace]) {
     final length = list.length;
-    final last = length -1;
+    final last = length - 1;
     var k = start;
 
     for (var i = 0; i < length; i++) {
@@ -273,7 +274,7 @@ abstract class DicomMixin {
       [int offset = 0, int length, int padChar = kSpace]) {
     length ??= s.length;
     final v = _maybeGetSubstring(s, offset, length);
-    return __setUint8List(start, ascii.encode(v), offset, length, padChar);
+    return _setUint8List(start, ascii.encode(v), offset, length, padChar);
   }
 
   /// UTF-8 encodes the specified range of [s] and then writes the
@@ -284,7 +285,7 @@ abstract class DicomMixin {
       [int offset = 0, int length, int padChar = kSpace]) {
     length ??= s.length;
     final v = _maybeGetSubstring(s, offset, length);
-    return __setUint8List(start, utf8.encode(v), offset, length, padChar);
+    return _setUint8List(start, utf8.encode(v), offset, length, padChar);
   }
 
   /// Writes the elements of the specified region of [list] to
@@ -294,13 +295,13 @@ abstract class DicomMixin {
   int __setUint8List(int start, Uint8List list, int offset,
       [int length, int pad]) {
     length ??= list.length;
-    _setUint8List(start, list, offset, length);
+    final len = _setUint8List(start, list, offset, length);
     if (length.isOdd && pad != null) {
       final index = start + length;
       _setUint8(index, pad);
       return index + 1;
     }
-    return length;
+    return len;
   }
 
   @override
@@ -387,12 +388,6 @@ abstract class DicomReaderMixin {
     final last = _getUint8(newLen);
     return (last == kSpace || last == kNull) ? newLen : length;
   }
-
-/*
-  @override
-  String toString() =>
-      '$runtimeType ${dcm(code)} vlf: $vfLengthField vfl: $vfLength $vfBytes)';
-*/
 
   static const int _kGroupOffset = 0;
   static const int _kEltOffset = 0;

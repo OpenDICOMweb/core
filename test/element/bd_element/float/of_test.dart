@@ -28,10 +28,10 @@ void main() {
     -11.11,
   ];
 
+  final rng = new RNG(1);
+
   group('OF Tests', () {
     global.throwOnError = false;
-
-    final rng = new RNG(1);
 
     test('OF hasValidValues: good values', () {
       global.throwOnError = false;
@@ -152,4 +152,35 @@ void main() {
       }
     });
   });
+
+  final rds = new ByteRootDataset.empty();
+
+  group('OFbytes', () {
+    test('OFbytes from VM.k1', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(1, 1);
+        //final float32List0 = new Float32List.fromList(floatList0);
+        //final bytes = float32List0.buffer.asByteData();
+        global.throwOnError = false;
+        final e0 = OFbytes.fromValues(kFloatPixelData, floatList0);
+        log.debug('e0: $e0');
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        log.debug('e1: $e1');
+        expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('OFbytes from VM.k1_n', () {
+      for (var i = 0; i < 10; i++) {
+        final floatList0 = rng.float32List(1, 1);
+        global.throwOnError = false;
+        final e0 = OFbytes.fromValues(kSelectorOFValue, floatList0);
+        log.debug('e0: $e0');
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        log.debug('e1: $e1');
+        expect(e0.hasValidValues, true);
+      }
+    });
+  });
+
 }

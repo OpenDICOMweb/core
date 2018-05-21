@@ -26,7 +26,6 @@ import 'package:core/src/vr.dart';
 class SQtag extends SQ with TagElement<Item> {
   @override
   final Tag tag;
-  @override
   List<Item> _values;
 
   /// The [Dataset] that contains _this_.

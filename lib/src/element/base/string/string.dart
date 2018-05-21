@@ -201,7 +201,7 @@ abstract class StringBase extends Element<String> {
     if (!Element.isValidLength(tag, vList, issues, maxLength, type))
       return ok = false;
     for (var v in vList) {
-      if (ok && !isValidValue(v, issues: issues)) ok = false;
+      if (!isValidValue(v, issues: issues)) ok = false;
     }
     return (ok) ? true : invalidValues(vList, issues);
   }

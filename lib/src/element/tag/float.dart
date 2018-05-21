@@ -1,8 +1,11 @@
-// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
-// Use of this source code is governed by the open source license
-// that can be found in the LICENSE file.
-// Author: Jim Philbin <jfphilbin@gmail.edu> -
-// See the AUTHORS file for other contributors.
+//  Copyright (c) 2016, 2017, 2018,
+//  Poplar Hill Informatics and the American College of Radiology
+//  All rights reserved.
+//  Use of this source code is governed by the open source license
+//  that can be found in the odw/LICENSE file.
+//  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
+//  See the AUTHORS file for other contributors.
+//
 import 'dart:typed_data';
 
 import 'package:core/src/element/base.dart';
@@ -12,19 +15,6 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
-class Float32Tag {
-  Float32List _values;
-  Iterable<double> get values => _values;
-  set values(Iterable<double> vList) =>
-    _values = (vList is Float32List) ? vList : Float32.fromList(vList);
-}
-
-class Float64Tag {
-  Float64List _values;
-  Iterable<double> get values => _values;
-  set values(Iterable<double> vList) =>
-      _values = (vList is Float64List) ? vList : Float64.fromList(vList);
-}
 /// Float - Array of IEEE single precision (32-bit) floating point numbers.
 /// Max Array length is ((2^16)-4)/ 4).
 class FLtag extends FL with TagElement<double> {
@@ -42,7 +32,7 @@ class FLtag extends FL with TagElement<double> {
 
   factory FLtag._(Tag tag, Iterable<double> vList) {
     if (!FL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? kEmptyFloat64List : Float32.fromList(vList);
+    final v = (vList.isEmpty) ? kEmptyFloat32List : Float32.fromList(vList);
     return new FLtag._x(tag, Float32.fromList(v));
   }
 
@@ -85,10 +75,19 @@ class OFtag extends OF with TagElement<double> {
 
   factory OFtag._(Tag tag, Iterable<double> vList) {
     if (!OF.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? kEmptyFloat64List : Float32.fromList(vList);
+    final v = (vList.isEmpty) ? kEmptyFloat32List : Float32.fromList(vList);
     return new OFtag._x(tag, v);
   }
-  OFtag._x(this.tag, this._values) : assert(tag.vrIndex == kFLIndex);
+  OFtag._x(this.tag, this._values)
+      : assert(
+            tag.vrIndex == kOFIndex,
+            'tag.vrIndex: ${tag.vrIndex} !kFLIndex');
+
+  @override
+  Iterable<double> get values => _values;
+  @override
+  set values(Iterable<double> vList) =>
+      _values = (vList is Float32List) ? vList : Float32.fromList(vList);
 
   @override
   OFtag update([Iterable<double> vList = kEmptyDoubleList]) =>

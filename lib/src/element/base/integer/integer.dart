@@ -442,13 +442,12 @@ abstract class UN extends IntBase with Uint8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: UN includes special VRs.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      VR.isValidSpecialIndex(vrIndex, issues, kUNIndex);
+      vrIndex >= 0 && vrIndex <= kVRSpecialIndexMax;
 
   /// Returns _true_ if [vrCode] is valid for [UN].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: UN includes special VRs.
-  static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidSpecialCode(vrCode, issues, kUNCode);
+  static bool isValidVRCode(int vrCode, [Issues issues]) => true;
 
   /// Returns _true_ if [vfLength] is valid for this [UN].
   static bool isValidVFLength(int vfLength, int vfLengthField,

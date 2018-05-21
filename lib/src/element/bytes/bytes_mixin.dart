@@ -31,6 +31,8 @@ abstract class ByteElement<V> {
 
   // **** End of Interface
 
+  set values(Iterable<V> vList) => unsupportedError();
+
   /// Returns _true_ if _this_ and [other] are the same [ByteElement],
   /// and equal byte for byte.
   @override
@@ -66,7 +68,7 @@ abstract class ByteElement<V> {
 
   Bytes get vfBytes => bytes.vfBytes;
 
-  Bytes get vBytes => bytes.vBytes;
+//  Bytes get vBytes => bytes.vBytes;
 
   int get vfBytesLast => bytes.vfBytesLast;
 
@@ -90,7 +92,7 @@ abstract class ByteElement<V> {
         ? lookupTagByCode(ds, code, vrIndex)
         : Tag.lookupByCode(code);
     final tagVRIndex = tag.vrIndex;
-    assert(tagVRIndex != kSQIndex);
+//    assert(tagVRIndex != kSQIndex);
     return _bytesBDMakers[tagVRIndex](bytes);
     //  return (pCode >= 0x11000 && pCode <= 0x1FFFF) ? new PrivateData(e) : e;
   }
@@ -169,13 +171,6 @@ abstract class Int32Mixin {
 abstract class Uint8Mixin {
   int get vfLength;
   DicomBytes get vfBytes;
-//  int get vfBytesLast;
-
-/*
-  bool get hasPadding => vfBytesLast == 0;
-  bool get hasValidPadding => hasPadding;
-  int get paddingCharacter => vfBytesLast;
-*/
 
   int get length => Uint8.getLength(vfLength);
 
@@ -184,7 +179,6 @@ abstract class Uint8Mixin {
 
 /// 16-bit unsigned integer Elements (US, OW)
 abstract class Uint16Mixin {
-  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
@@ -210,7 +204,7 @@ abstract class Float32Mixin {
 
   int get length => Float32.getLength(vfLength);
 
-  Float32List get values => vfBytes.asFloat32List();
+  Iterable<double> get values => vfBytes.asFloat32List();
 }
 
 /// Long Float Elements (FD, OD)
@@ -220,7 +214,7 @@ abstract class Float64Mixin {
 
   int get length => Float64.getLength(vfLength);
 
-  Float64List get values => vfBytes.asFloat64List();
+  Iterable<double> get values => vfBytes.asFloat64List();
 }
 
 /// [String] [Element]s that only have ASCII values.
@@ -231,7 +225,7 @@ abstract class StringMixin {
   String get vfString;
 
   /// Returns _true if [vfBytes] ends with a padding character.
-  bool get hasPadding => vfLength.isEven && vfBytesLast == 0;
+  bool get hasPadding => vfLength.isEven && vfBytesLast == kSpace;
 
   /// Returns _true if the padding character, if any, is valid for _this_.
   bool get hasValidPadding => hasPadding && (padChar == kSpace);
@@ -250,35 +244,51 @@ abstract class StringMixin {
 
 /// [String] [Element]s that only have ASCII values.
 abstract class AsciiMixin {
+  bool get hasPadding;
+  int get vfLength;
   DicomBytes get vfBytes;
 
   bool allowInvalid = true;
 
-  String get vfString => vfBytes.getAscii(allowInvalid: allowInvalid);
+  String get vfString {
+    print('hasPadding: $hasPadding');
+    final vf = (hasPadding) ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
+    final v = vf.getAscii(allowInvalid: allowInvalid);
+    print('v: "$v"');
+    return v;
+  }
 
   Iterable<String> get values => vfString.split('\\');
 }
 
 /// [String] [Element]s that may have UTF-8 values.
 abstract class Utf8Mixin {
+  bool get hasPadding;
+  int get vfLength;
   DicomBytes get vfBytes;
 
   int get length => _stringValuesLength(vfBytes);
 
   bool allowMalformed = true;
 
-  String get vfString => vfBytes.getUtf8(allowMalformed: allowMalformed);
+  String get vfString {
+    print('hasPadding: $hasPadding');
+    final vf = (hasPadding) ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
+    final v = vf.getUtf8(allowMalformed: allowMalformed);
+    print('v: "$v"');
+    return v;
+  }
 }
 
 /// Text ([String]) [Element]s that may only have 1 UTF-8 value.
 abstract class TextMixin {
-  DicomBytes get vBytes;
+  DicomBytes get vfBytes;
 
   int get length => 1;
 
   bool allowMalformed = true;
 
-  String get vfString => vBytes.getUtf8(allowMalformed: allowMalformed);
+  String get vfString => vfBytes.getUtf8(allowMalformed: allowMalformed);
   String get value => vfString;
   Iterable<String> get values => [vfString];
 }

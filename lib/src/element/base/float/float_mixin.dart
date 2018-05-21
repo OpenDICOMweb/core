@@ -83,13 +83,15 @@ abstract class Float extends Element<double> {
   @override
   ByteData get vfByteData => typedData.buffer.asByteData();
 
+/*
   // Note: Always Bytes not DicomBytes
   @override
   Bytes get vBytes => new Bytes.typedDataView(typedData);
+*/
 
   // Note: Always Bytes not DicomBytes
   @override
-  Bytes get vfBytes => vBytes;
+  Bytes get vfBytes => new Bytes.typedDataView(typedData);
 
   @override
   Float get noValues => update(kEmptyList);
@@ -105,9 +107,8 @@ abstract class Float extends Element<double> {
   String toString() => '$runtimeType ${dcm(code)} ($vr) $values';
 
   /// Returns _true_ if [tag] and each value in [vList] is valid.
-  static bool isValidValues(
-      Tag tag, Iterable<double> vList, Issues issues, int maxVListLength,
-      Type type) {
+  static bool isValidValues(Tag tag, Iterable<double> vList, Issues issues,
+      int maxVListLength, Type type) {
     assert(tag != null);
     if (vList == null) return invalidValues(vList, issues, tag);
     return Element.isValidLength(tag, vList, issues, maxVListLength, type);
@@ -183,11 +184,11 @@ abstract class Float32 {
   /// returned; otherwise, a copy of vList is returned. No value checking
   /// is done.
   static Float32List fromList(Iterable<double> vList, {bool asView = true}) {
-    if (doTestElementValidity && vList == null) return badValues(vList);
+    assert(vList != null);
     if (vList.isEmpty) return kEmptyFloat32List;
-    return (vList is Float32List && asView)
-        ? vList
-        : new Float32List.fromList(vList.toList(growable: false));
+    if (vList is Float32List && asView) return vList;
+    final List<double> v = (vList is! List<double>) ? vList.toList() : vList;
+    return new Float32List.fromList(v);
   }
 
   /// Returns a [Float32List] created from [bytes]. If [asView] is
@@ -317,9 +318,9 @@ abstract class Float64 {
   static Float64List fromList(Iterable<double> vList, {bool asView = true}) {
     assert(vList != null);
     if (vList.isEmpty) return kEmptyFloat64List;
-    return (vList is Float64List && asView)
-        ? vList
-        : new Float64List.fromList(vList);
+    if (vList is Float64List && asView) return vList;
+    final List<double> v = (vList is! List<double>) ? vList.toList() : vList;
+    return new Float64List.fromList(v);
   }
 
   /// Returns a [Float64List] created from [bytes]. If [asView] is

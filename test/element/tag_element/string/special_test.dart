@@ -1486,7 +1486,8 @@ void main() {
         for (var tag in csTags2) {
           expect(CS.isValidLength(tag, validMinVList), true);
 
-          expect(CS.isValidLength(tag, invalidVList.take(tag.vmMax + 3)), true);
+          expect(
+              CS.isValidLength(tag, invalidVList.take(tag.vmMax + 3)), false);
           expect(CS.isValidLength(tag, validMaxLengthList), true);
         }
       }
@@ -1494,17 +1495,17 @@ void main() {
 
     test('CS isValidLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
-        final validMinVList = rsg.getCSList(1, 1);
+        final validMinVList = rsg.getCSList(2, 2);
         for (var tag in csTags2) {
           global.throwOnError = false;
-          expect(CS.isValidLength(tag, validMinVList), false);
+          expect(CS.isValidLength(tag, validMinVList), true);
 
           final max = tag.vm.max(tag.vr.maxLength);
           final list = invalidVList.take(max + 2);
-          expect(
-              CS.isValidLength(tag, list), false);
+          print('max: $max length: ${list.length}');
+          expect(CS.isValidLength(tag, list), false);
           global.throwOnError = true;
-          expect(() => CS.isValidLength(tag, validMinVList),
+          expect(() => CS.isValidLength(tag, list),
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
@@ -1848,8 +1849,8 @@ void main() {
       final vList2 = rsg.getUIList(3, 4);
       final ui2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
       final vList3 = ['3.2.840.10008.1.2.0'];
-      expect(() => ui2.update(vList3),
-          throwsA(const isInstanceOf<StringError>()));
+      expect(
+          () => ui2.update(vList3), throwsA(const isInstanceOf<StringError>()));
     });
 
     test('UI noValues random', () {
@@ -2111,7 +2112,7 @@ void main() {
       final parse3 = Uid.parseList(['1.3.5']);
       expect(parse3, equals([null]));
 
-      const s0 =  '1.2.840.10008.5.1.4.34.5.345.22.5467456'
+      const s0 = '1.2.840.10008.5.1.4.34.5.345.22.5467456'
           '.5.1.4.34.5.345.22.5467456.55.45';
       final parse4 = Uid.parseList([s0]);
 

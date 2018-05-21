@@ -37,7 +37,7 @@ int stringListLength(Iterable<String> sList,
         {String separator = '\\', bool pad = true}) =>
     (sList.isEmpty)
         ? 0
-        : _stringListLength(sList, pad: pad) + (sList.length - 1);
+        : _stringListLength(sList, pad: pad);
 
 Iterable<String> uppercase(List<String> vList) =>
     vList.map((s) => s.toUpperCase());

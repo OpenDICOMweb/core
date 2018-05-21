@@ -283,9 +283,11 @@ abstract class ElementBase<V> {
   ByteData get vfByteData =>
       (checkValues(values)) ? typedData.buffer.asByteData() : null;
 
+/*
   /// Returns [values] encoded as a [Bytes].
   Bytes get vBytes =>
       (checkValues(values)) ? new Bytes.typedDataView(typedData) : null;
+*/
 
   /// Returns [values], including any required padding, encoded as a [Bytes].
   Bytes get vfBytes =>

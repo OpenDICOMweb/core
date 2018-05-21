@@ -1169,31 +1169,35 @@ void main() {
 
     test('OF update', () {
       final of0 = new OFtag(PTag.kVectorGridData, []);
-      expect(of0.update([1.2, 1.3, 1.4]).values, equals([1.2, 1.3, 1.4]));
+      final floats = [1.2, 1.3, 1.4];
+      final vList0 = new Float32List.fromList(floats);
+      expect(of0.update(vList0).values, equals(vList0));
 
-      final of1 = new OFtag(PTag.kUValueData, listFloat32Common0);
-      expect(of1.update(listFloat32Common0).values, equals(listFloat32Common0));
+      final vList1 = new Float32List.fromList(listFloat32Common0);
+      final of1 = new OFtag(PTag.kUValueData, vList1);
+      expect(of1.update(vList1).values, equals(vList1));
 
-      const floatUpdateValues = const <double>[
+      const floats2 = const <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
-      for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
+      final vList2 = new Float32List.fromList(floats2);
+      for (var i = 1; i <= vList2.length - 1; i++) {
         final of2 = new OFtag(PTag.kSelectorOFValue,
-            new Float32List.fromList(floatUpdateValues.take(i).toList()));
+            new Float32List.fromList(vList2.take(i).toList()));
 
         expect(
             of2.update(
-                new Float32List.fromList(floatUpdateValues.take(i).toList())),
+                new Float32List.fromList(vList2.take(i).toList())),
             equals(
-                new Float32List.fromList(floatUpdateValues.take(i).toList())));
+                new Float32List.fromList(vList2.take(i).toList())));
 
-        expect(of2.update(floatUpdateValues.take(i).toList()).values,
-            equals(floatUpdateValues.take(i).toList()));
+        expect(of2.update(vList2.take(i).toList()).values,
+            equals(vList2.take(i).toList()));
       }
       final of3 = new OFtag(PTag.lookupByCode(kUValueData),
-          new Float32List.fromList(floatUpdateValues));
-      expect(of3.update(new Float32List.fromList(floatUpdateValues)),
-          equals(new Float32List.fromList(floatUpdateValues)));
+          new Float32List.fromList(vList2));
+      expect(of3.update(new Float32List.fromList(vList2)),
+          equals(new Float32List.fromList(vList2)));
     });
 
     test('OF noValues random', () {

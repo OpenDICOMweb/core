@@ -106,8 +106,12 @@ void main() {
       expect(us4,<int>[]);
 
       global.throwOnError = true;
+/*
       expect(() => new UStag(PTag.kRepresentativeFrameNumber, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
+
+*/
+      expect(us4,<int>[]);
     });
 
     test('US update random', () {

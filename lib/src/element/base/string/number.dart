@@ -159,10 +159,19 @@ abstract class DS extends StringAscii {
   /// Parse a [DS] [String]. Leading and trailing spaces allowed,
   /// but all spaces is illegal.
   static double tryParse(String s, [Issues issues]) {
-    final v = double.tryParse(s.trim());
-    return (v == null)
-        ? badString('Invalid Digital String (DS): "$s"', issues)
-        : v;
+    // Remove leading and training spaces
+    final s0 = s.trim();
+    if (s0 == null ||
+        !isValidValueLength(s0, issues) ||
+        notInRange(s0.length, kMinValueLength, kMaxValueLength))
+      return _badDS(s0, issues);
+    final v = double.tryParse(s0);
+    return (v == null) ? _badDS(s, issues) : v;
+  }
+
+  static Null _badDS(String s, Issues issues) {
+    final msg = 'Invalid Decimal String (DS): "$s"';
+    return badString(msg, issues);
   }
 
   static Iterable<double> tryParseList(Iterable<String> vList,
@@ -314,11 +323,15 @@ abstract class IS extends StringAscii {
   }
 
   static int tryParse(String s, [Issues issues]) {
+    // Remove leading and training spaces
     if (s == null ||
         !isValidValueLength(s, issues) ||
         notInRange(s.length, kMinValueLength, kMaxValueLength))
       return _badIS(s, issues);
-    final n = int.tryParse(s.trim());
+    // Dart int.tryParse doesn't handle + sign
+    var s0 = s.trim();
+    s0 = (s[0] == '+') ? s.substring(1) : s;
+    final n = int.tryParse(s0);
     return (n == null || notInRange(n, kMinValue, kMaxValue))
         ? _badIS(s, issues)
         : n;

@@ -293,7 +293,7 @@ abstract class AS extends StringAscii {
 abstract class CS extends StringAscii {
   static const int kVRIndex = kCSIndex;
   static const int kVRCode = kCSCode;
-  static const int kMinValueLength = 0;
+  static const int kMinValueLength = 1;
   static const int kMaxValueLength = 16;
   static const int kMaxVFLength = k8BitMaxShortVF;
   static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
@@ -391,7 +391,7 @@ abstract class CS extends StringAscii {
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, CS);
 
   static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+      .isValidValueLength(s.trim(), issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
@@ -814,10 +814,12 @@ abstract class DT extends StringBase {
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
-    if (s == null || !isValidValueLength(s, issues)) return false;
-    return (DcmDateTime.isValidString(s, issues: issues))
+    final s0 = s.trimRight();
+    if (s0 == null || !isValidValueLength(s0, issues)) return false;
+    print('s: "$s0"');
+    return (DcmDateTime.isValidString(s0, issues: issues))
         ? true
-        : invalidString('Invalid Date Time (DT): "$s"', issues);
+        : invalidString('Invalid Date Time (DT): "$s0"', issues);
   }
 }
 
@@ -939,11 +941,12 @@ abstract class TM extends StringBase {
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
+    final s0 = s.trimRight();
     // Note: isNotValidValueLength checks for null
-    if (s == null || !isValidValueLength(s, issues)) return false;
-    return (Time.isValidString(s, issues: issues))
+    if (s0 == null || !isValidValueLength(s0, issues)) return false;
+    return (Time.isValidString(s0, issues: issues))
         ? true
-        : invalidString('Invalid Time String (TM): "$s"', issues);
+        : invalidString('Invalid Time String (TM): "$s0"', issues);
   }
 }
 

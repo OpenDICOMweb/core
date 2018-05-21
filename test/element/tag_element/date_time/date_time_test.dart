@@ -94,9 +94,7 @@ void main() {
         log.debug('as0:$as0');
         expect(as0.hasValidValues, true);
 
-        log
-          ..debug('as0: $as0, values: ${as0.values}')
-          ..debug('as0: $as0');
+        log..debug('as0: $as0, values: ${as0.values}')..debug('as0: $as0');
         expect(as0[0], equals(vList0[0]));
       }
 
@@ -231,11 +229,15 @@ void main() {
 
     test('AS null', () {
       final as2 = new AStag(PTag.kPatientAge, null);
-      expect(as2, <String>[]);
+      expect(as2, kEmptyStringList);
 
+/*
       global.throwOnError = true;
       expect(() => new AStag(PTag.kPatientAge, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
+*/
+
+      expect(as2, kEmptyStringList);
     });
 
     test('AS hashCode and == good values random', () {
@@ -354,9 +356,9 @@ void main() {
     test('AS fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getASList(1, 10);
-        for (var listS in vList1) {
-          final bytes0 = Bytes.fromAscii(listS);
-          final as1 = AStag.fromBytes(PTag.kSelectorASValue, bytes0);
+        for (var s in vList1) {
+          final bytes = Bytes.fromAscii(s);
+          final as1 = AStag.fromBytes(PTag.kSelectorASValue, bytes);
           log.debug('as1: $as1');
           expect(as1.hasValidValues, true);
         }
@@ -578,7 +580,8 @@ void main() {
       }
     });
 
- */   test('AS isValidVRIndex good values', () {
+ */
+    test('AS isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(AS.isValidVRIndex(kASIndex), true);
 
@@ -794,8 +797,10 @@ void main() {
       final vList0 = rsg.getASList(AS.kMaxVFLength + 1, AS.kMaxVFLength + 1);
       final bytes = Bytes.fromAsciiList(vList0);
       expect(bytes, isNotNull);
+      print('bytes: $bytes');
       //TODO: finish
       global.throwOnError = true;
+
       expect(() => Bytes.fromAsciiList(vList0),
           throwsA(const isInstanceOf<InvalidValueFieldError>()));
     });
@@ -811,21 +816,21 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getASList(1, 1);
-        expect(AS.isValidValues(PTag.kPatientAge, vList0), vList0);
+        expect(AS.isValidValues(PTag.kPatientAge, vList0), true);
       }
       final vList1 = ['024Y'];
-      expect(AS.isValidValues(PTag.kPatientAge, vList1), vList1);
+      expect(AS.isValidValues(PTag.kPatientAge, vList1), true);
 
       for (var s in goodASList) {
         global.throwOnError = false;
-        expect(AS.isValidValues(PTag.kPatientAge, s), s);
+        expect(AS.isValidValues(PTag.kPatientAge, s), true);
       }
     });
 
     test('AS isValidValues bad values', () {
       global.throwOnError = false;
       final vList2 = ['012Y7'];
-      expect(AS.isValidValues(PTag.kPatientAge, vList2), isNull);
+      expect(AS.isValidValues(PTag.kPatientAge, vList2), false);
 
       global.throwOnError = true;
       expect(() => AS.isValidValues(PTag.kPatientAge, vList2),
@@ -833,7 +838,7 @@ void main() {
 
       for (var s in badASList) {
         global.throwOnError = false;
-        expect(AS.isValidValues(PTag.kPatientAge, s), isNull);
+        expect(AS.isValidValues(PTag.kPatientAge, s), false);
 
         global.throwOnError = true;
         expect(() => AS.isValidValues(PTag.kPatientAge, s),
@@ -843,7 +848,7 @@ void main() {
 
     test('AS isValidValues bad values length', () {
       global.throwOnError = false;
-      expect(AS.isValidValues(PTag.kPatientAge, badAgeLengthList), isNull);
+      expect(AS.isValidValues(PTag.kPatientAge, badAgeLengthList), false);
 
       global.throwOnError = true;
       expect(() => AS.isValidValues(PTag.kPatientAge, badAgeLengthList),
@@ -1509,7 +1514,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => DA.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 /*
@@ -2022,7 +2027,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => DTtag.fromBytes(PTag.kSelectorAEValue, bytes0),
-              throwsA(const isInstanceOf<InvalidVRError>()));
+              throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
     });
@@ -2049,7 +2054,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => new DTtag(PTag.kFrameAcquisitionDateTime, s),
-            throwsA(const isInstanceOf<FormatException>()));
+            throwsA(const isInstanceOf<StringError>()));
 
         global.throwOnError = false;
         final dt2 = new DTtag(PTag.kDateTime, null);
@@ -2270,7 +2275,7 @@ void main() {
       global.throwOnError = true;
       for (var s in badDTList) {
         expect(() => new DTtag(PTag.kDateTime, s),
-            throwsA(const isInstanceOf<FormatException>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
@@ -2453,7 +2458,7 @@ void main() {
       expect(DT.isValidTag(PTag.kSelectorFDValue), false);
       global.throwOnError = true;
       expect(() => DT.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -2462,7 +2467,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => DT.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 /*
@@ -2650,7 +2655,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => DT.isValidValue(a),
-              throwsA(const isInstanceOf<FormatException>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
@@ -2670,7 +2675,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => DT.isValidValues(PTag.kDateTime, s),
-            throwsA(const isInstanceOf<FormatException>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
@@ -2733,7 +2738,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => DT.isValidValues(PTag.kDateTime, vList1),
-          throwsA(const isInstanceOf<FormatException>()));
+          throwsA(const isInstanceOf<StringError>()));
 
       for (var s in goodDTList) {
         global.throwOnError = false;
@@ -2749,7 +2754,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => DT.isValidValues(PTag.kDateTime, s),
-            throwsA(const isInstanceOf<FormatException>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
@@ -2956,9 +2961,7 @@ void main() {
         log.debug('tm0: $tm0');
         expect(tm0.hasValidValues, true);
 
-        log
-          ..debug('tm0: $tm0, values: ${tm0.values}')
-          ..debug('tm0: $tm0');
+        log..debug('tm0: $tm0, values: ${tm0.values}')..debug('tm0: $tm0');
         expect(tm0[0], equals(vList0[0]));
       }
 
@@ -2967,9 +2970,7 @@ void main() {
         final tm0 = new TMtag(PTag.kCalibrationTime, vList1);
         expect(tm0.hasValidValues, isTrue);
 
-        log
-          ..debug('tm0: $tm0, values: ${tm0.values}')
-          ..debug('ss0: $tm0');
+        log..debug('tm0: $tm0, values: ${tm0.values}')..debug('ss0: $tm0');
         expect(tm0[0], equals(vList1[0]));
       }
     });
@@ -3206,7 +3207,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => TMtag.fromBytes(PTag.kSelectorAEValue, bytes0),
-              throwsA(const isInstanceOf<InvalidVRError>()));
+              throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
     });
@@ -3343,7 +3344,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => TMtag.fromValues(PTag.kDateTime, <String>[null]),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
     });
   });
 
@@ -3408,7 +3409,7 @@ void main() {
       expect(TM.isValidTag(PTag.kSelectorFDValue), false);
       global.throwOnError = true;
       expect(() => TM.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -3417,7 +3418,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => TM.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 /*
