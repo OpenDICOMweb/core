@@ -281,7 +281,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       item.add(fd0);
 
-      final vList1 = [123];
+      final vList1 = [1.23];
       expect(item.replace(fd0.index, vList1), equals(vList0));
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList1));
@@ -301,7 +301,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       item.add(fd0);
 
-      final vList1 = [123];
+      final vList1 = [1.23];
       final replaceA0 = item.replaceAll(fd0.index, vList1);
       log.debug('replaceA0 : $replaceA0');
       expect(replaceA0, equals([vList0, vList1]));

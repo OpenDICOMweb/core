@@ -64,13 +64,10 @@ void main() {
         final vList0 = rsg.getISList(10, 10);
         global.throwOnError = false;
         final e0 = ISbytes.fromValues(kVerticesOfThePolygonalShutter, vList0);
-        log.debug('e0: $e0');
-        log.debug('e0.bytes: ${e0.bytes}');
+        expect(e0.hasValidValues, true);
 
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        log.debug('e1.bytes: ${e1.bytes}');
-        expect(e0.hasValidValues, true);
+        expect(e1.hasValidValues, true);
       }
     });
 

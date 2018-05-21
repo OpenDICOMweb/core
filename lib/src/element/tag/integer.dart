@@ -11,7 +11,6 @@ import 'dart:typed_data';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';

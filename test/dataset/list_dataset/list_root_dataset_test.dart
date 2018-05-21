@@ -88,7 +88,7 @@ void main() {
     });
 
     test('duplicate', () {
-      global.doTestElementValidity = false;
+      global.doTestElementValidity = true;
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
@@ -110,6 +110,7 @@ void main() {
         ..add(ae0);
 
 
+/*
       rds[fd0.code] = fd0;
       rds[fd1.code] = fd1;
       rds[as0.code] = as0;
@@ -117,6 +118,7 @@ void main() {
       rds[as2.code] = as2;
       rds[ob0.code] = ob0;
       rds[ae0.code] = ae0;
+*/
 
       final dup = rds.duplicates;
       log.debug('rds: $rds, dup: $dup');
@@ -322,7 +324,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       rds[fd0.code] = fd0;
 
-      final vList1 = [123];
+      final vList1 = [1.23];
       expect(rds.replace(fd0.index, vList1), equals(vList0));
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList1));
@@ -342,7 +344,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       rds[fd0.code] = fd0;
 
-      final vList1 = [123];
+      final vList1 = [1.23];
       final replaceA0 = rds.replaceAll(fd0.index, vList1);
       log.debug('replaceA0 : $replaceA0');
       expect(replaceA0, equals([vList0, vList1]));

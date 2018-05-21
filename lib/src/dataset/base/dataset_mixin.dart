@@ -270,6 +270,7 @@ abstract class DatasetMixin {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
+    print('e: $e');
     final v = e.values;
     e.replace(vList);
     return v;

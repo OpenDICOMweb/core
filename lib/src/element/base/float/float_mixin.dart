@@ -16,7 +16,6 @@ import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -320,6 +319,7 @@ abstract class Float64 {
     if (vList.isEmpty) return kEmptyFloat64List;
     if (vList is Float64List && asView) return vList;
     final List<double> v = (vList is! List<double>) ? vList.toList() : vList;
+    print('v: $v');
     return new Float64List.fromList(v);
   }
 

@@ -461,7 +461,7 @@ class UCtag extends UC with TagElement<String> {
 class UItag extends UI with TagElement<String> {
   @override
   final Tag tag;
-  Iterable<String> _values;
+  List<String> _values;
 
   factory UItag(Tag tag, Iterable<String> vList, {bool validate = true}) {
     if (vList == null) return badValues(vList, null, tag);
@@ -476,21 +476,25 @@ class UItag extends UI with TagElement<String> {
           ? badValues(sList, null, tag)
           : new UItag._(tag, sList, null);
 
-  factory UItag.fromUids(Tag tag, Iterable<Uid> vList,
-          {bool validate = true}) =>
-      (vList == null || (validate && !UI.isValidUidArgs(tag, vList)))
-          ? badValues(vList, null, tag)
-          : new UItag._(tag, null, vList);
+  factory UItag.fromUids(Tag tag, Iterable<Uid> uidList,
+      {bool validate = true}) {
+    if (uidList == null || (validate && !UI.isValidUidArgs(tag, uidList)))
+      return badValues(uidList, null, tag);
+    final Iterable<String> vList = uidList.map((uid) => uid.asString);
+    return new UItag._(tag, vList, uidList);
+  }
 
-  UItag._(this.tag, this._values, this._uids);
+  UItag._(this.tag, Iterable<String> values, [Iterable<Uid> uids])
+      : _values = _toValues(values),
+        _uids = (uids == null) ? null : uids.toList();
 
   @override
-  List<String> get values => _values ??= uids.map((uid) => uid.asString);
+  Iterable<String> get values => _values;
   @override
-  set values(Iterable<String> vList) => _values = vList;
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   @override
-  Iterable<Uid> get uids => _uids ??= Uid.parseList(values);
+  List<Uid> get uids => _uids ??= Uid.parseList(values);
   Iterable<Uid> _uids;
 
   @override

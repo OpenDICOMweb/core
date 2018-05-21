@@ -1175,7 +1175,7 @@ void main() {
       final of0 = new OFtag(PTag.kVectorGridData, []);
       final floatList = [1.2, 1.3, 1.4];
       final vList = new Float32List.fromList(floatList);
-      expect(of0.update().values, equals(<double>[]));
+      expect(of0.update(vList).values, equals(vList));
 
       final of1 = new OFtag(PTag.kUValueData, goodFloat32List);
       expect(of1.update(goodFloat32List).values, equals(goodFloat32List));
