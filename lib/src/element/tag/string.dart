@@ -51,7 +51,7 @@ abstract class TagStringMixin {
 class AEtag extends AE with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory AEtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (AE.isValidArgs(tag, vList))
@@ -92,7 +92,7 @@ class AEtag extends AE with TagElement<String> {
 class CStag extends CS with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory CStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (CS.isValidArgs(tag, vList))
@@ -127,7 +127,7 @@ class CStag extends CS with TagElement<String> {
 class DStag extends DS with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory DStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       new DStag._(tag, vList);
@@ -161,7 +161,7 @@ class DStag extends DS with TagElement<String> {
 class IStag extends IS with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory IStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (IS.isValidArgs(tag, vList))
@@ -197,7 +197,7 @@ class IStag extends IS with TagElement<String> {
 class LOtag extends LO with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory LOtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LO.isValidArgs(tag, vList))
@@ -232,7 +232,7 @@ class LOtag extends LO with TagElement<String> {
 class PCtag extends PC with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory PCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LO.isValidArgs(tag, vList))
@@ -289,7 +289,7 @@ class PCtag extends PC with TagElement<String> {
 class LTtag extends LT with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory LTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (LT.isValidArgs(tag, vList))
@@ -327,7 +327,7 @@ class LTtag extends LT with TagElement<String> {
 class PNtag extends PN with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory PNtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (PN.isValidArgs(tag, vList))
@@ -363,7 +363,7 @@ class PNtag extends PN with TagElement<String> {
 class SHtag extends SH with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory SHtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (SH.isValidArgs(tag, vList))
@@ -399,7 +399,7 @@ class SHtag extends SH with TagElement<String> {
 class STtag extends ST with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory STtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (ST.isValidArgs(tag, vList))
@@ -437,7 +437,7 @@ class STtag extends ST with TagElement<String> {
 class UCtag extends UC with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory UCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (UC.isValidArgs(tag, vList))
@@ -527,7 +527,7 @@ class UItag extends UI with TagElement<String> {
 class URtag extends UR with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory URtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (UR.isValidArgs(tag, vList))
@@ -565,7 +565,7 @@ class URtag extends UR with TagElement<String> {
 class UTtag extends UT with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory UTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (UT.isValidArgs(tag, vList))
@@ -604,7 +604,7 @@ class UTtag extends UT with TagElement<String> {
 class AStag extends AS with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory AStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       new AStag._(tag, vList);
@@ -640,7 +640,7 @@ class AStag extends AS with TagElement<String> {
 class DAtag extends DA with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory DAtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (DA.isValidArgs(tag, vList))
@@ -671,7 +671,7 @@ class DAtag extends DA with TagElement<String> {
 class DTtag extends DT with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory DTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (DT.isValidArgs(tag, vList))
@@ -705,7 +705,7 @@ class DTtag extends DT with TagElement<String> {
 class TMtag extends TM with TagElement<String> {
   @override
   final Tag tag;
-  StringList _values;
+  List<String> _values;
 
   factory TMtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
       (TM.isValidArgs(tag, vList))

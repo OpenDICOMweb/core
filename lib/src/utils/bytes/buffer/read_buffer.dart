@@ -24,11 +24,15 @@ class ReadBuffer extends Buffer {
       [int offset, int length, Endian endian])
       : super.from(rb, offset, length, endian);
 
-  ReadBuffer.fromByteData(ByteData bd, [int offset, int length, Endian endian])
-      :   super.fromByteData(bd, offset, length, endian);
+  ReadBuffer.fromByteData(ByteData bd, [int offset = 0, int length, Endian
+  endian])
+      :   super.fromByteData(bd, offset,
+                                 length ?? bd.lengthInBytes, endian ??
+                                                              Endian.host);
 
-  ReadBuffer.fromList(List<int> list, [Endian endian])
-      : super.fromList(list, endian);
+  ReadBuffer.fromList(List<int> list,
+                      [int offset, int length, Endian endian])
+      : super.fromList(list, offset, length, endian);
 
   ReadBuffer.fromTypedData(TypedData td, [int offset, int length, Endian endian])
       : super.fromTypedData(td, offset, length, endian);

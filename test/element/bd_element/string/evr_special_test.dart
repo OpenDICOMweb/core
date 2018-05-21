@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
@@ -37,7 +36,9 @@ void main() {
         log..debug('e1: $e1')..debug('vList: $vList')..debug('bd: $bytes');
         expect(e1.hasValidValues, true);
         expect(e1 == e0, true);
-        expect(e1.vBytes == bytes, true);
+        print('e1.vfBytes: ${e1.vfBytes}');
+        print('bytes: $bytes');
+        expect(e1.vfBytes == bytes, true);
 
 
         final e2 = AEbytes.fromValues(kReceivingAE, vList);
@@ -63,11 +64,14 @@ void main() {
 
         final e0 = AEbytes.fromValues(kSelectorOFValue, vList0);
         log.debug('ae1:$e0');
-        expect(e0.hasValidValues, true);
+        expect(e0, isNull);
+/*
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
-        log.debug('ae1:$e1');
+        log.debug('e1:$e1');
         expect(e1.hasValidValues, true);
         expect(e0 == e1, true);
+*/
+
       }
     });
   });

@@ -6,15 +6,16 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 
+final rng = new RNG(1);
+
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.debug);
-  final rng = new RNG(1);
+
 
   const doubleList = const <double>[
     0.1,

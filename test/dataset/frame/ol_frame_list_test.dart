@@ -19,7 +19,7 @@ void main() {
   Server.initialize(name: 'element/ol_frame_list_test', level: Level.info);
 
   /// OLevr Frame List Tests
-  group(' FrameList32Bit ', () {
+  group('FrameList 32Bit', () {
     const ts0 = TransferSyntax.kExplicitVRLittleEndian;
     const samplesPerPixel0 = 1;
     const rows4 = 4;

@@ -25,11 +25,11 @@ abstract class BufferMixin {
 
   Endian get endian => bytes.endian;
 
-  int get offsetInBytes => bytes.offsetInBytes;
-  int get start => bytes.offsetInBytes;
+  int get offsetInBytes => bytes.offset;
+  int get start => bytes.offset;
   int get length => bytes.length;
-  int get lengthInBytes => bytes.lengthInBytes;
-  int get end => start + lengthInBytes;
+//  int get lengthInBytes => bytes.length;
+  int get end => start + length;
 
   int get rRemaining => wIndex_ - rIndex_;
 
@@ -48,15 +48,15 @@ abstract class BufferMixin {
 
   Bytes asBytes([int offset = 0, int length]) =>
     //final offset = _getOffset(offset, length);
-     bytes.toBytes(offset, length ?? lengthInBytes);
+     bytes.toBytes(offset, length ?? length);
 
 
   ByteData asByteData([int offset = 0, int length]) =>
   //  final offset = _getOffset(offset, length);
-     bytes.asByteData(offset, length ?? lengthInBytes);
+     bytes.asByteData(offset, length ?? length);
 
   Uint8List asUint8List([int offset = 0, int length]) =>
-      bytes.asUint8List(offset, length ?? lengthInBytes);
+      bytes.asUint8List(offset, length ?? length);
 
   bool checkAllZeros(int offset, int end) {
     for (var i = offset; i < end; i++) if (bytes.getUint8(i) != 0) return false;
@@ -79,22 +79,22 @@ abstract class BufferMixin {
   }
 
   Uint8List get contentsRead =>
-      bytes.buffer.asUint8List(bytes.offsetInBytes, rIndex_);
+      bytes.buffer.asUint8List(bytes.offset, rIndex_);
   Uint8List get contentsUnread => bytes.buffer.asUint8List(rIndex_, wIndex_);
 
   // *** wIndex
   int get wIndex => wIndex_;
   set wIndex(int n) {
-    if (wIndex_ <= rIndex_ || wIndex_ > bytes.lengthInBytes)
-      throw new RangeError.range(wIndex_, rIndex_, bytes.lengthInBytes);
+    if (wIndex_ <= rIndex_ || wIndex_ > bytes.length)
+      throw new RangeError.range(wIndex_, rIndex_, bytes.length);
     wIndex_ = n;
   }
 
   /// Moves the [wIndex] forward/backward. Returns the new [wIndex].
   int wSkip(int n) {
     final v = wIndex_ + n;
-    if (v <= rIndex_ || v >= bytes.lengthInBytes)
-      throw new RangeError.range(v, 0, bytes.lengthInBytes);
+    if (v <= rIndex_ || v >= bytes.length)
+      throw new RangeError.range(v, 0, bytes.length);
     return wIndex_ = v;
   }
 

@@ -116,7 +116,6 @@ abstract class Float extends Element<double> {
 
 /// A mixin class for 32-bit floating point [Element]s.
 abstract class Float32 {
-  int get length;
   Float32List get values;
   Float update([Iterable<double> vList]);
   // **** End of Interface ****
@@ -124,12 +123,16 @@ abstract class Float32 {
   /// The number of bytes in a [Float32] element.
   int get sizeInBytes => kSizeInBytes;
 
+  int get length => values.length;
+
   int get lengthInBytes => length * sizeInBytes;
 
   Float get sha256 => update(Sha256.float32(values));
 
   Float32List get typedData =>
       (values is Float32List) ? values : new Float32List.fromList(values);
+
+  Float32List get emptyList => kEmptyFloat32List;
 
   /// Returns a [Float32List.view] of [values].
   Float view([int start = 0, int length]) => update(
@@ -247,7 +250,6 @@ abstract class Float32 {
 
 /// A mixin class for 64-bit floating point [Element]s.
 abstract class Float64 {
-  int get length;
   Float64List get values;
   Float update([Iterable<double> vList]);
   // **** End of Interface ****
@@ -255,12 +257,16 @@ abstract class Float64 {
   /// The number of bytes in a [Float64] element.
   int get sizeInBytes => kSizeInBytes;
 
+  int get length => values.length;
+
   int get lengthInBytes => length * sizeInBytes;
 
   Float get sha256 => update(Sha256.float64(values));
 
   Float64List get typedData =>
       (values is Float64List) ? values : new Float64List.fromList(values);
+
+  Float64List get emptyList => kEmptyFloat64List;
 
   /// Returns a [Float64List.view] of [values].
   Float view([int start = 0, int length]) => update(

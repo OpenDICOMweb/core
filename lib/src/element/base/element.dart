@@ -50,18 +50,28 @@ final SimpleElementFormatter eFormat = new SimpleElementFormatter();
 /// is the [Type] of the [values] of the [Element].
 abstract class Element<V> extends ListBase<V> {
   // **** Interface
+  // TODO: explan the differentce between _value and value.
   List<V> get _values;
   set _values(List<V> vList);
 
   @override
   List<V> toList({bool growable = true});
 
-  /// Returns the [Iterable<V>] [values] of _this_.
-  Iterable<V> get values => _values.toList(growable: false);
+  /// Returns the [values] of _this_.
+  Iterable<V> get values => _values;
 
-  /// The default for [values] is unmodifiable.
+  /// Sets [_values] to [vList]. If [vList] is [Iterable] it is first
+  /// converted into a [List] and then assigned to [_values].
   set values(Iterable<V> vList) =>
       _values = (vList is List) ? vList : vList.toList(growable: false);
+
+  /// Returns the number of [values] of _this_.
+  @override
+  int get length {
+    if (values == null) return nullValueError();
+    return values.length;
+  }
+
 
   /// Returns the identifier ([index]), used to locate
   /// the Attributes associated with this Element.
@@ -283,13 +293,6 @@ abstract class Element<V> extends ListBase<V> {
   @override
   void operator []=(int i, V v) =>
       throw new UnsupportedError('Elements are immutable');
-
-  /// Returns the number of [values] of _this_.
-  @override
-  int get length {
-    if (values == null) return nullValueError();
-    return values.length;
-  }
 
   @override
   set length(int n) => throw new UnsupportedError('Elements are immutable');

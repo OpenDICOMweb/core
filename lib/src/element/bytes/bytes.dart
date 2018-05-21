@@ -12,6 +12,7 @@ import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/bytes_mixin.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
+import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/value.dart';
 import 'package:core/src/vr.dart';
@@ -28,6 +29,8 @@ DicomBytes _makeShort<V>(
 
 DicomBytes _makeShortString(
     int code, List<String> sList, int vrCode, bool isEvr) {
+  final tag = Tag.lookupByCode(code);
+  if (tag.vrCode != vrCode) return null;
   final vlf = stringListLength(sList, pad: true);
   print('vList: $sList');
   print('vlf: $vlf');
@@ -207,7 +210,7 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes)
-      ..writeUint8VF(vList);
+      ..writeUint16VF(vList);
     assert(vList.length * SS.kSizeInBytes <= SS.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -366,8 +369,9 @@ class AEbytes extends AE with ByteElement<String>, StringMixin, AsciiMixin {
   static AEbytes fromBytes(DicomBytes bytes) => new AEbytes(bytes);
 
   static AEbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
-    final bytes = _makeShortString(code, vList, kAECode, isEvr)
-      ..writeAsciiVF(vList);
+    final bytes = _makeShortString(code, vList, kAECode, isEvr);
+    if (bytes == null) return null;
+    bytes.writeAsciiVF(vList);
     print('bytes: $bytes');
     assert(vList.length <= AE.kMaxVFLength);
     return fromBytes(bytes);
@@ -381,8 +385,8 @@ class ASbytes extends AS with ByteElement<String>, StringMixin, AsciiMixin {
   ASbytes(this.bytes);
 
   static ASbytes fromBytes(DicomBytes bytes) {
-    final length = bytes.length;
-    if (length != 12 && length != 8)
+    final eLength = bytes.length;
+    if (eLength != 12 && eLength != 8)
       log.warn('Invalid Age (AS) "${bytes.getUtf8()}"');
     return new ASbytes(bytes);
   }
@@ -418,8 +422,8 @@ class DAbytes extends DA with ByteElement<String>, StringMixin, AsciiMixin {
   DAbytes(this.bytes);
 
   static DAbytes fromBytes(DicomBytes bytes) {
-    final length = bytes.length;
-    if (length != 16 && length != 8)
+    final eLength = bytes.length;
+    if (eLength != 16 && eLength != 8)
       log.debug('Invalid Date (DA) "${bytes.getUtf8()}"');
     return new DAbytes(bytes);
   }
@@ -685,7 +689,7 @@ class SQbytes extends SQ with ByteElement<Item> {
   SQbytes(this.parent, this.values, this.bytes);
 
   @override
-  int get valuesLength => values.length;
+  int get length => values.length;
 
   /// Returns a new [SQbytes], where [bytes] is [DicomBytes]
   /// for complete sequence.

@@ -21,7 +21,9 @@ typedef Element BDElementMaker(int code, int vrIndex, DicomBytes bytes);
 
 abstract class ByteElement<V> {
   DicomBytes get bytes;
-  int get valuesLength;
+
+  /// The length of values;
+  int get length;
   Iterable<V> get values;
   List<V> get emptyList;
   bool get hasValidValues;
@@ -41,7 +43,8 @@ abstract class ByteElement<V> {
   /// used to locate other values in the [Element] Definition.
   int get index => code;
 
-  int get length => bytes.length;
+  /// The length in bytes of this [ByteElement]
+  int get eLength => bytes.length;
 
   bool get isEvr => bytes.isEvr;
 
@@ -144,47 +147,39 @@ abstract class ByteElement<V> {
 
 /// 16-bit signed integer Elements (SS)
 abstract class Int16Mixin {
-  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
-  int get valuesLength => Int16.getLength(vfLength);
-  int get lengthInBytes => valuesLength * sizeInBytes;
+  int get length => Int16.getLength(vfLength);
 
   Int16List get values => vfBytes.asInt16List();
-
-  Int16List get emptyList => kEmptyInt16List;
 }
 
 /// 32-bit signed integer Elements (SL)
 abstract class Int32Mixin {
-  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
-  int get valuesLength => Int32.getLength(vfLength);
-  int get lengthInBytes => valuesLength * sizeInBytes;
-  Int32List get values => vfBytes.asInt32List();
+  int get length => Int32.getLength(vfLength);
 
-  Int32List get emptyList => kEmptyInt32List;
+  Int32List get values => vfBytes.asInt32List();
 }
 
 /// 8-bit Integer Elements (OB, UN)
 abstract class Uint8Mixin {
-  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
-  int get vfBytesLast;
+//  int get vfBytesLast;
 
+/*
   bool get hasPadding => vfBytesLast == 0;
   bool get hasValidPadding => hasPadding;
   int get paddingCharacter => vfBytesLast;
+*/
 
-  int get valuesLength => Uint8.getLength(vfLength);
-  int get lengthInBytes => valuesLength * sizeInBytes;
+  int get length => Uint8.getLength(vfLength);
+
   Uint8List get values => vfBytes.asUint8List();
-
-  Uint8List get emptyList => kEmptyUint8List;
 }
 
 /// 16-bit unsigned integer Elements (US, OW)
@@ -193,61 +188,39 @@ abstract class Uint16Mixin {
   int get vfLength;
   DicomBytes get vfBytes;
 
-  int get valuesLength => Uint16.getLength(vfLength);
-  int get lengthInBytes => valuesLength * sizeInBytes;
-  Uint16List get values => vfBytes.asUint16List();
+  int get length => Uint16.getLength(vfLength);
 
-  Uint16List get emptyList => kEmptyUint16List;
+  Uint16List get values => vfBytes.asUint16List();
 }
 
 /// 32-bit unsigned integer Elements (AT, UL, GL, OL)
 abstract class Uint32Mixin {
-  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
   int get length => Uint32.getLength(vfLength);
-  //Flush when length working
-  int get valuesLength => Uint32.getLength(vfLength);
-  int get lengthInBytes => valuesLength * sizeInBytes;
 
   Uint32List get values => vfBytes.asUint32List();
-
-  Uint32List get emptyList => kEmptyUint32List;
 }
 
 /// 32-bit Float Elements (FL, OF)
 abstract class Float32Mixin {
-  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
   int get length => Float32.getLength(vfLength);
-  //Flush when length working
-  int get valuesLength => Float32.getLength(vfLength);
-
-  int get lengthInBytes => valuesLength * sizeInBytes;
 
   Float32List get values => vfBytes.asFloat32List();
-
-  Float32List get emptyList => kEmptyFloat32List;
 }
 
 /// Long Float Elements (FD, OD)
 abstract class Float64Mixin {
-  int get sizeInBytes;
   int get vfLength;
   DicomBytes get vfBytes;
 
   int get length => Float64.getLength(vfLength);
-  //Flush when length working
-  int get valuesLength => Float64.getLength(vfLength);
-
-  int get lengthInBytes => valuesLength * sizeInBytes;
 
   Float64List get values => vfBytes.asFloat64List();
-
-  Float64List get emptyList => kEmptyFloat64List;
 }
 
 /// [String] [Element]s that only have ASCII values.
@@ -270,10 +243,6 @@ abstract class StringMixin {
   /// Returns the number of values in [vfBytes].
   int get length => _stringValuesLength(vfBytes);
 
-  //Flush when length working
-  /// Returns the number of values in [vfBytes].
-  int get valuesLength => _stringValuesLength(vfBytes);
-
   Iterable<String> get values => vfString.split('\\');
 
   List<String> get emptyList => kEmptyStringList;
@@ -294,7 +263,7 @@ abstract class AsciiMixin {
 abstract class Utf8Mixin {
   DicomBytes get vfBytes;
 
-  int get valuesLength => _stringValuesLength(vfBytes);
+  int get length => _stringValuesLength(vfBytes);
 
   bool allowMalformed = true;
 
@@ -305,7 +274,7 @@ abstract class Utf8Mixin {
 abstract class TextMixin {
   DicomBytes get vBytes;
 
-  int get valuesLength => 1;
+  int get length => 1;
 
   bool allowMalformed = true;
 
