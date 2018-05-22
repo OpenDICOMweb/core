@@ -245,7 +245,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
           [TransferSyntax ts, VFFragments fragments]) =>
       (bytes.code == kPixelData)
           ? OWbytesPixelData(bytes, ts, fragments)
-          : new UNbytes(bytes);
+          : new OWbytes(bytes);
 
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
@@ -304,7 +304,7 @@ class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
   static OLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kOLCode, isEvr, OL.kSizeInBytes);
     if (bytes == null) return null;
-    bytes.writeUint8VF(vList);
+    bytes.writeUint32VF(vList);
     assert(vList.length * OL.kSizeInBytes <= OL.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -322,7 +322,7 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
   static SLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kSLCode, isEvr, SL.kSizeInBytes);
     if (bytes == null) return null;
-    bytes.writeUint8VF(vList);
+    bytes.writeInt32VF(vList);
     assert(vList.length * SL.kSizeInBytes <= SL.kMaxVFLength);
     return fromBytes(bytes);
   }
