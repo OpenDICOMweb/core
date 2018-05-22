@@ -657,7 +657,7 @@ void main() {
     });
 
     test('deleteCodes', () {
-      global.level = Level.debug;
+      global.level = Level.info;
       final item = new ListItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);

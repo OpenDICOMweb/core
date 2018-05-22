@@ -48,7 +48,6 @@ void main() {
     });
 
     test('OD hasValidValues random: good values', () {
-      global.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         final float64List0 = rng.float64List(1, 1);
         expect(float64List0 is Float64List, true);

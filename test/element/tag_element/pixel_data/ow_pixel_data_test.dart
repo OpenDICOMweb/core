@@ -20,7 +20,7 @@ final Bytes u16Frame = new Bytes.fromList(testFrame);
 
 // Urgent Sharath: Talk to Jim about base64 tests to decide if they are needed.
 void main() {
-  Server.initialize(name: 'element/ow_pixel_data_test', level: Level.debug);
+  Server.initialize(name: 'element/ow_pixel_data_test', level: Level.info);
   group('OW PixelData Tests', () {
     final pixels0 = new Uint16List(1024);
     for (var i = 0; i < pixels0.length; i++) pixels0[i] = 4095;

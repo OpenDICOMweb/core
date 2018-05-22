@@ -15,7 +15,7 @@ RNG rng = new RNG(1);
 
 // Urgent Jim: add dataset arguments and change tag to evr.
 void main() {
-  Server.initialize(name: 'bd_element/special_test', level: Level.debug);
+  Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
   final rds = new ByteRootDataset.empty();
 

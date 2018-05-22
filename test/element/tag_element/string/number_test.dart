@@ -16,7 +16,7 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'string/number_test', level: Level.debug);
+  Server.initialize(name: 'string/number_test', level: Level.info);
   global.throwOnError = false;
 
   const goodDecimalStrings = const <String>[
@@ -1044,7 +1044,6 @@ void main() {
     });
 
     test('DS toBytes', () {
-      global.level = Level.debug;
       final vList = rsg.getDSList(1, 1);
       final v = vList[0];
       log.debug('vList0:"$v"');

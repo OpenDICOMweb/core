@@ -13,7 +13,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.debug);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
   List<double> float32List;
 
   const doubleList = const <double>[

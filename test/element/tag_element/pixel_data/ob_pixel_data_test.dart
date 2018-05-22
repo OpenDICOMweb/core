@@ -23,7 +23,7 @@ final Bytes frame = new Bytes.fromList(testFrame);
 //final List<Uint8List> fragments = [emptyOffsetsAsBytes, testFrame];
 
 void main() {
-  Server.initialize(name: 'element/ob_pixel_data_test', level: Level.debug);
+  Server.initialize(name: 'element/ob_pixel_data_test', level: Level.info);
 
   const ts = TransferSyntax.kDefaultForDicomWeb;
   group('OBtagPixelData Tests', () {

@@ -14,7 +14,7 @@ import 'package:test_tools/tools.dart';
 final RSG rsg = new RSG();
 
 void main() {
-  Server.initialize(name: 'replace_uids', level: Level.debug);
+  Server.initialize(name: 'replace_uids', level: Level.info);
 
   group('RootDataset', () {
     test('update', () {

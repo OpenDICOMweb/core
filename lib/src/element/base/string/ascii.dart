@@ -814,8 +814,8 @@ abstract class DT extends StringBase {
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
+    if (s == null || !isValidValueLength(s, issues)) return false;
     final s0 = s.trimRight();
-    if (s0 == null || !isValidValueLength(s0, issues)) return false;
     print('s: "$s0"');
     return (DcmDateTime.isValidString(s0, issues: issues))
         ? true
@@ -941,9 +941,9 @@ abstract class TM extends StringBase {
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
-    final s0 = s.trimRight();
     // Note: isNotValidValueLength checks for null
-    if (s0 == null || !isValidValueLength(s0, issues)) return false;
+    if (s == null || !isValidValueLength(s, issues)) return false;
+    final s0 = s.trimRight();
     return (Time.isValidString(s0, issues: issues))
         ? true
         : invalidString('Invalid Time String (TM): "$s0"', issues);

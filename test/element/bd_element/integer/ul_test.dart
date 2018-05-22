@@ -14,12 +14,11 @@ RSG rsg = new RSG(seed: 1);
 RNG rng = new RNG(1);
 
 void main() {
-  Server.initialize(name: 'bd_element/special_test', level: Level.debug);
+  Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
   final rds = new ByteRootDataset.empty();
 
   group('ULbytes', () {
-    global.level = Level.debug;
     test('ULbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);

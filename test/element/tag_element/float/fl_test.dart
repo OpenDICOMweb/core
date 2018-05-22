@@ -18,7 +18,7 @@ import 'package:test/test.dart';
 //    - checkVR is not longer supported
 
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.debug);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);
   global.throwOnError = false;
   global.doTestElementValidity = false;

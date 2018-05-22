@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 final RNG rng = new RNG(1);
 
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.debug);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
 
   const doubleList = const <double>[
     0.1,

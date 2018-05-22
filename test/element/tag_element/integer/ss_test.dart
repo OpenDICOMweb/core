@@ -250,7 +250,6 @@ void main() {
     });
 
     test('SS fromBytes good values random', () {
-      global.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         final intList0 = rng.int16List(1, 1);
         final bytes0 = new Bytes.typedDataView(intList0);

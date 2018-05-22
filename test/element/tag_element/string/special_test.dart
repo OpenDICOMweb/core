@@ -1821,6 +1821,8 @@ void main() {
       global.throwOnError = false;
       final vList0 = rsg.getUIList(3, 4);
       final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+      print(vList0);
+      print(ui0);
       expect(utility.testElementUpdate(ui0, vList0), true);
 
       for (var i = 0; i < 10; i++) {

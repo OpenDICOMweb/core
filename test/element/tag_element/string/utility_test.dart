@@ -22,9 +22,8 @@ bool testElementCopy(Element e0) {
 
 bool testElementUpdate(Element e0, List values) {
   final e2 = e0.update(values);
-  log.debug('e0: ${e0.info}, e2: ${e2.info}');
-  if (e2.values == values) return true;
-  return false;
+  log.debug('e0: ${e0.info}\n     e2: ${e2.info}');
+  return (e2.values == values);
 }
 
 void main() {

@@ -636,7 +636,6 @@ void main() {
     });
 
     test('deleteCodes', () {
-      global.level = Level.debug;
       final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);

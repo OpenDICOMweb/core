@@ -11,7 +11,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'number_parse_test.dart', level: Level.debug);
+  Server.initialize(name: 'number_parse_test.dart', level: Level.info);
 
   final rng = new RNG();
 

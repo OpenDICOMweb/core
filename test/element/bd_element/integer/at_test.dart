@@ -15,12 +15,11 @@ RNG rng = new RNG(1);
 
 //Urgent finish unit tests sl, ob, ol, ow
 void main() {
-  Server.initialize(name: 'bd_element/special_test', level: Level.debug);
+  Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
   final rds = new ByteRootDataset.empty();
 
   group('ATbytes', () {
-    global.level = Level.debug;
     test('ATbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);

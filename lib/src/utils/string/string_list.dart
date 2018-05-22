@@ -147,6 +147,16 @@ class StringList extends ListBase<String> {
   @override
   void operator []=(int i, String s) => values[i] = s;
 
+  bool operator ==(Object other) {
+    if (other is List<String>) {
+      if (length != other.length) return false;
+      for (var i = 0; i < length; i++)
+        if (this[i] != other[i]) return false;
+      return true;
+    }
+    return false;
+  }
+
   @override
   int get length => values.length;
   @override
