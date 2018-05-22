@@ -252,7 +252,7 @@ void main() {
 //        final int32ListV1 = new Int32List.fromList(int32list0);
 //        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(int32List0);
-        final sl0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes);
+        final sl0 = SLtag.fromBytes(bytes, PTag.kReferencePixelX0 );
         expect(sl0.hasValidValues, true);
         expect(sl0.values, equals(int32List0));
         expect(sl0.vfBytes, equals(bytes));
@@ -266,7 +266,7 @@ void main() {
         final int32List0 = rng.int32List(2, 10);
         final bytes = new Bytes.typedDataView(int32List0);
 //        final uInt8ListV2 = int32ListV2.buffer.asUint8List();
-        final sl1 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes);
+        final sl1 = SLtag.fromBytes(bytes, PTag.kReferencePixelX0 );
         expect(sl1, isNull);
       }
     });
@@ -275,7 +275,7 @@ void main() {
       final int32ListV1 = new Int32List.fromList(int32Max);
  //     final uInt8ListV1 = int32ListV1.buffer.asUint8List();
       final bytes = new Bytes.typedDataView(int32ListV1);
-      final sl0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes);
+      final sl0 = SLtag.fromBytes(bytes, PTag.kReferencePixelX0 );
       expect(sl0.hasValidValues, true);
       expect(sl0.vfBytes, equals(bytes));
       expect(sl0.values is Int32List, true);
@@ -290,7 +290,7 @@ void main() {
         //final bytes0 = Bytes.toAscii(intList0.toString());
         final bytes0 = new Bytes.typedDataView(intList0);
         log.debug('bytes0: $bytes0');
-        final sl0 = SLtag.fromBytes(PTag.kSelectorSLValue, bytes0);
+        final sl0 = SLtag.fromBytes(bytes0, PTag.kSelectorSLValue );
         log.debug('sl0: $sl0');
         expect(sl0.hasValidValues, true);
 
@@ -304,7 +304,7 @@ void main() {
 
         // Urgent Sharath: what is this test trying to achieve? let's discuss
         final bytes0 = DicomBytes.toAscii(intList0.toString());
-        final sl0 = SLtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        final sl0 = SLtag.fromBytes(bytes0, PTag.kSelectorFDValue );
         expect(sl0, isNull);
 
         global.throwOnError = true;
@@ -381,7 +381,7 @@ void main() {
 //        final base64 = cvt.base64.encode(uInt8ListV1);
         final base64 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(base64);
-        final sl0 = SLtag.fromBytes(PTag.kRationalNumeratorValue, bytes1);
+        final sl0 = SLtag.fromBytes(bytes1, PTag.kRationalNumeratorValue );
         expect(sl0.hasValidValues, true);
       }
     });
@@ -393,7 +393,7 @@ void main() {
 //      final base64 = cvt.base64.encode(uInt8ListV1);
       final base64 = bytes0.getBase64();
       final bytes1 = Bytes.fromBase64(base64);
-      final sl0 = SLtag.fromBytes(PTag.kRationalNumeratorValue, bytes1);
+      final sl0 = SLtag.fromBytes(bytes1, PTag.kRationalNumeratorValue );
       expect(sl0.hasValidValues, true);
     });
 
@@ -429,7 +429,7 @@ void main() {
         final bytes = new Bytes.typedDataView(int32list0);
         // Urgent Sharath: Please remove after discussion
 //        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-        final sl0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes);
+        final sl0 = SLtag.fromBytes(bytes, PTag.kReferencePixelX0 );
         expect(sl0.hasValidValues, true);
         expect(sl0.vfBytes, equals(bytes));
         expect(sl0.values is Int32List, true);
@@ -447,7 +447,7 @@ void main() {
         final base64 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(base64);
 
-        final sl0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes1);
+        final sl0 = SLtag.fromBytes(bytes1, PTag.kReferencePixelX0 );
         expect(sl0.hasValidValues, true);
       }
     });

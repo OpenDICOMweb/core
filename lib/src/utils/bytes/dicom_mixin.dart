@@ -214,13 +214,9 @@ abstract class DicomMixin {
 
     for (var i = 0; i < length; i++) {
       final s = list[i];
-      for (var j = 0; j < s.length; j++) {
-        print('c: ${s.codeUnitAt(j)}');
-        _setUint8(k++, s.codeUnitAt(j));
-      }
+      for (var j = 0; j < s.length; j++) _setUint8(k++, s.codeUnitAt(j));
       if (i != last) _setUint8(k++, kBackslash);
     }
-    print('pad: $pad');
     if (k.isOdd && pad != null) _setUint8(k++, pad);
     return k - start;
   }
@@ -231,7 +227,6 @@ abstract class DicomMixin {
     if (length == 0 || length.isOdd) return length;
     final newLen = length - 1;
     final last = _getUint8(newLen);
-    print('last char: $last');
     return (last == kSpace || last == kNull) ? newLen : length;
   }
 

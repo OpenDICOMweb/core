@@ -25,7 +25,6 @@ void main() {
       for (var i = 0; i < 10; i++) {
         var vList = rsg.getDSList(1, 1);
         vList = [vList[0].trim()];
-        print('DS list: $vList');
         final e0 = DSbytes.fromValues(kRequestedImageSize, vList);
         log.debug('ds0:$e0');
         expect(e0.hasValidValues, true);
@@ -42,8 +41,6 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
-        for (var n in vList0)
-          print('n: "$n"');
         final e0 = DSbytes.fromValues(kRTImagePosition, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds);

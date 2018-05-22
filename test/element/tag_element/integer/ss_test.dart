@@ -32,9 +32,7 @@ void main() {
         log.debug('ss0: $ss0');
         expect(ss0.hasValidValues, true);
 
-        log
-          ..debug('ss0: $ss0, values: ${ss0.values}')
-          ..debug('ss0: $ss0');
+        log..debug('ss0: $ss0, values: ${ss0.values}')..debug('ss0: $ss0');
         expect(ss0[0], equals(vList[0]));
       }
 
@@ -44,9 +42,7 @@ void main() {
             PTag.kCenterOfCircularExposureControlSensingRegion, int16list1);
         expect(ss0.hasValidValues, true);
 
-        log
-          ..debug('ss0: $ss0, values: ${ss0.values}')
-          ..debug('ss0: $ss0');
+        log..debug('ss0: $ss0, values: ${ss0.values}')..debug('ss0: $ss0');
         expect(ss0[0], equals(int16list1[0]));
       }
     });
@@ -255,7 +251,7 @@ void main() {
         final bytes0 = new Bytes.typedDataView(intList0);
         log.debug('bytes0: $bytes0');
         //       final uInt8List1 = vList.buffer.asUint8List();
-        final ss0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes0);
+        final ss0 = SStag.fromBytes(bytes0, PTag.kTagAngleSecondAxis);
         log.debug('ss0: $ss0');
         expect(ss0.hasValidValues, true);
         expect(ss0.vfBytes, equals(bytes0));
@@ -269,15 +265,15 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.int16List(2, 2);
         final bytes0 = Int16.toBytes(vList);
-        final ss1 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes0);
-       expect(ss1, isNull);
+        final ss1 = SStag.fromBytes(bytes0, PTag.kTagAngleSecondAxis);
+        expect(ss1, isNull);
       }
     });
 
     test('SS fromUint8List good values ', () {
       final int16List1 = new Int16List.fromList(int16Min);
       final bytes1 = new Bytes.typedDataView(int16List1);
-      final ss0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes1);
+      final ss0 = SStag.fromBytes(bytes1, PTag.kTagAngleSecondAxis);
       expect(ss0.hasValidValues, true);
       expect(ss0.vfBytes, equals(bytes1.asUint8List()));
       expect(ss0.values is Int16List, true);
@@ -286,19 +282,19 @@ void main() {
 
     test('SS fromUint8List bad values ', () {
       final int16List2 = new Int16List.fromList([rng.nextInt32]);
-    //  final uInt8List2 = int16List2.buffer.asUint8List();
+      //  final uInt8List2 = int16List2.buffer.asUint8List();
       final bytes2 = new Bytes.typedDataView(int16List2);
       log.debug('int16List2 : $int16List2, bytes2: $bytes2');
-      final ss7 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes2);
+      final ss7 = SStag.fromBytes(bytes2, PTag.kTagAngleSecondAxis);
       expect(ss7.hasValidValues, true);
     });
 
     test('SS fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final intList0 = rng.int16List(1, 10);
-    //    final bytes0 = DicomBytes.toAscii(intList0.toString());
+        //    final bytes0 = DicomBytes.toAscii(intList0.toString());
         final bytes0 = new Bytes.typedDataView(intList0);
-        final ss0 = SStag.fromBytes(PTag.kSelectorSSValue, bytes0);
+        final ss0 = SStag.fromBytes(bytes0, PTag.kSelectorSSValue);
         log.debug('ss0: $ss0');
         expect(ss0.hasValidValues, true);
       }
@@ -313,11 +309,11 @@ void main() {
         // DicomBytes.toAscii does padding
         // final bytes0 = DicomBytes.toAscii(intList0.toString());
         final bytes0 = new Bytes.typedDataView(vList);
-        final ss0 = SStag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        final ss0 = SStag.fromBytes(bytes0, PTag.kSelectorFDValue);
         expect(ss0, isNull);
 
         global.throwOnError = true;
-        expect(() => SStag.fromBytes(PTag.kSelectorFDValue, bytes0),
+        expect(() => SStag.fromBytes(bytes0, PTag.kSelectorFDValue),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
@@ -387,11 +383,11 @@ void main() {
     test('SS BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final int16list0 = rng.int16List(1, 1);
-     //   final int16List1 = new Int16List.fromList(int16list0);
+        //   final int16List1 = new Int16List.fromList(int16list0);
         final bytes0 = new Bytes.typedDataView(int16list0);
         final base64 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(base64);
-        final ss0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes1);
+        final ss0 = SStag.fromBytes(bytes1, PTag.kTagAngleSecondAxis);
         expect(ss0.hasValidValues, true);
       }
     });
@@ -402,9 +398,9 @@ void main() {
       final bytes0 = new Bytes.typedDataView(uInt8List1);
 
       final s = bytes0.getBase64();
-   //  final bytes = cvt.base64.decode(base64);
+      //  final bytes = cvt.base64.decode(base64);
       final bytes1 = Bytes.fromBase64(s);
-      final ss0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes1);
+      final ss0 = SStag.fromBytes(bytes1, PTag.kTagAngleSecondAxis);
       expect(ss0.hasValidValues, true);
 
       final int16List2 = new Int16List.fromList([rng.nextInt32]);
@@ -412,7 +408,7 @@ void main() {
       final bytes = new Bytes.typedDataView(int16List2);
       final base64 = bytes.getBase64();
       final bytes2 = Bytes.fromBase64(base64);
-      final ss1 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes2);
+      final ss1 = SStag.fromBytes(bytes2, PTag.kTagAngleSecondAxis);
       expect(ss1.hasValidValues, true);
     });
 
@@ -445,10 +441,10 @@ void main() {
     test('SS fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.int16List(1, 1);
-    //    final int16List1 = new Int16List.fromList(int16list0);
-    //    final uInt8List1 = int16List1.buffer.asUint8List();
+        //    final int16List1 = new Int16List.fromList(int16list0);
+        //    final uInt8List1 = int16List1.buffer.asUint8List();
         final bytes = Int16.toBytes(vList);
-        final ss0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes);
+        final ss0 = SStag.fromBytes(bytes, PTag.kTagAngleSecondAxis);
         expect(ss0.hasValidValues, true);
         expect(ss0.vfBytes, equals(bytes));
         expect(ss0.values is Int16List, true);
@@ -459,12 +455,12 @@ void main() {
     test('SS fromB64', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.int16List(1, 1);
-      //  final int16List1 = new Int16List.fromList(int16list0);
+        //  final int16List1 = new Int16List.fromList(int16list0);
 //        final uInt8List0 = vList.buffer.asUint8List();
         final bytes0 = new Bytes.typedDataView(vList);
         final base64 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(base64);
-        final ss0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes1);
+        final ss0 = SStag.fromBytes(bytes1, PTag.kTagAngleSecondAxis);
         expect(ss0.hasValidValues, true);
       }
     });
@@ -543,10 +539,8 @@ void main() {
         for (var tag in ssTags0) {
           expect(SS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              SS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              SS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(SS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(SS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -577,10 +571,8 @@ void main() {
         for (var tag in ssTags1) {
           expect(SS.isValidLength(tag, validMinVList), true);
 
-          expect(
-              SS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              SS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(SS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(SS.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
@@ -607,9 +599,7 @@ void main() {
         final validMinVList = rng.int16List(1, i);
         for (var tag in ssTags2) {
           expect(SS.isValidLength(tag, validMinVList), true);
-          expect(
-              SS.isValidLength(
-                  tag, invalidVList.sublist(0, SS.kMaxLength)),
+          expect(SS.isValidLength(tag, invalidVList.sublist(0, SS.kMaxLength)),
               true);
         }
       }
@@ -875,8 +865,8 @@ void main() {
     test('Int16Base.listFromBytes', () {
       for (var i = 0; i < 10; i++) {
         final int16list0 = rng.int16List(1, 1);
-      //  final int16List1 = new Int16List.fromList(int16list0);
-      //  final bd = int16List1.buffer.asUint8List();
+        //  final int16List1 = new Int16List.fromList(int16list0);
+        //  final bd = int16List1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(int16list0);
         final int16List1 = bytes.asInt16List();
         log
@@ -1048,8 +1038,8 @@ void main() {
     test('SS fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final int16list0 = rng.int16List(1, 1);
-    //    final int16List1 = new Int16List.fromList(int16list0);
-    //    final bd = int16List1.buffer.asUint8List();
+        //    final int16List1 = new Int16List.fromList(int16list0);
+        //    final bd = int16List1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(int16list0);
         final int16List1 = bytes.asInt16List();
         log
@@ -1099,7 +1089,7 @@ void main() {
 
       final int16List0 = rng.int16List(1, 1);
       final int16ListV1 = new Int16List.fromList(int16List0);
-      final byte0 = new Bytes.fromList(int16ListV1) ;
+      final byte0 = new Bytes.fromList(int16ListV1);
       final fvf3 = Int16.fromValueField(byte0);
       expect(fvf3, isNotNull);
       expect(fvf3 is Bytes, true);

@@ -270,7 +270,6 @@ abstract class DatasetMixin {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
-    print('e: $e');
     final v = e.values;
     e.replace(vList);
     return v;
@@ -288,18 +287,6 @@ abstract class DatasetMixin {
     e.replace(f(v));
     return v;
   }
-
-  /// Replaces all elements with [index] in _this_ and any [Item]s
-  /// descended from it, with a new element that has [vList<V>] as its
-  /// values. Returns a list containing all [Element]s that were replaced.
-//  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) =>
-//      elements.replaceAll(index, vList);
-
-/*
-  Iterable<Iterable<V>> replaceAllF<V>(
-          int index, Iterable<V> f(Iterable vList)) =>
-      elements.replaceAllF<V>(index, f);
-*/
 
   /// Replaces all Elements with [index] in _this_, or any Sequence ([SQ])
   /// Items contained in _this_, with a new element whose values are
@@ -415,7 +402,6 @@ abstract class DatasetMixin {
   /// Deletes all [Element]s in _this_ that have a Tag Code in [codes].
   /// If there is no [Element] with one of the codes _this_ does nothing.
   List<Element> deleteCodes(List<int> codes) {
-    //  print('codes: $codes');
     assert(codes != null && codes.isNotEmpty);
     final deleted = <Element>[];
     for (var code in codes) {
@@ -424,11 +410,6 @@ abstract class DatasetMixin {
     }
     return deleted;
   }
-
-/*
-  Iterable<Element> deleteAll(int index, {bool recursive = false}) =>
-      elements.deleteAll(index, recursive: recursive);
-*/
 
   List<Element> deleteAll(int index, {bool recursive = false}) {
     assert(index != null, 'Invalid index: $index');
@@ -441,7 +422,6 @@ abstract class DatasetMixin {
         if (e is SQ) {
           for (var item in e.items) {
             final deleted = item.delete(index);
-//            if (deleted != null) print('item $item deleted: $deleted');
             if (deleted != null) results.add(deleted);
           }
         }
@@ -550,53 +530,6 @@ abstract class DatasetMixin {
     }
     return deleted;
   }
-
-  // final sequences = findAllSequences();
-  /*
-    for (var e in elements) {
-      if (e.group.isOdd) print('Odd: $e');
-      if (e.isPrivate) {
-        final v = delete(e.code);
-        if (v != null) deleted.add(e);
-        if (v != null) print('DPrivate: $v');
-      }
-    }
-    if (deleted != null) print('DeletedPrivate: (${deleted.length})$deleted');
-
-    for (var e in elements) {
-      if (e.isPrivate) {
-        deleted.add(delete(e.code));
-      }
-      print('DeletedPrivate: (${deleted.length})$deleted');
-    }
-*/
-/*
-
-    final deletedInSQ = <Element>[];
-    var count = 0;
-    print('sequences: $sequences');
-    for (var e in sequences) {
-      if (e is SQ) {
-        count++;
-        print('sq: $e');
-        for (var item in e.items) {
-          print(' item: $item');
-          for(var v in item.elements) {
-            if (v.isPrivate) {
-              print('  Deleted: $v');
-              deletedInSQ.add(delete(v.code));
-            }
-          }
-        }
-      }
-    }
-    print('SQ.length: ${sequences.length}');
-        print('SQ.count: $count');
-        deleted.addAll(deletedInSQ);
-    print('DeletedPrivate: (${deleted.length})$deleted');
-    return deleted;
-  }
-*/
 
   Iterable<Element> deletePrivateGroup(int group, {bool recursive = false}) =>
       deleteIfTrue((e) => e.isPrivate && e.group.isOdd, recursive: recursive);
@@ -821,7 +754,6 @@ abstract class DatasetMixin {
 
   double get pixelAspectRatio {
     final vList = getStringList(kPixelAspectRatio);
-    //   print('PAR list: $list');
     if (vList == null || vList.isEmpty) return 1.0;
     if (vList.length != 2) {
       badValuesLength(vList, 2, 2, null, PTag.kPixelAspectRatio);
@@ -830,7 +762,6 @@ abstract class DatasetMixin {
     }
     final numerator = int.parse(vList[0]);
     final denominator = int.parse(vList[1]);
-    //   print('num: $numerator, den: $denominator');
     return numerator / denominator;
   }
 

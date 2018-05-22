@@ -140,8 +140,6 @@ void main() {
       final ui6r = rootDS6.update(ui6.tag.index, uidList4r);
       log.debug('ui6r: $ui6r');
       expect(ui6r is UI, isTrue);
-      print('ui6r: ${ui6r.values}');
-      print('ui4r: $uidList4r');
       expect(ui6r.values, equals( uidList4));
       expect(ui6r.value == uidList4[0], true);
 

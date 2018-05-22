@@ -37,8 +37,6 @@ void main() {
         log..debug('e1: $e1')..debug('vList: $vList')..debug('bd: $bytes');
         expect(e1.hasValidValues, true);
         expect(e1 == e0, true);
-        print('e1.vfBytes: ${e1.vfBytes}');
-        print('bytes: $bytes');
         expect(e1.vfBytes == bytes, true);
 
         final e2 = AEbytes.fromValues(kReceivingAE, vList);

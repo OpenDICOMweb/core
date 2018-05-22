@@ -42,10 +42,6 @@ void main() {
     test('FD hasValidValues: good values', () {
       global.throwOnError = false;
       final fd0 = FDbytes.fromValues(kInversionTimes, doubleList);
-      print('code: ${dcm(fd0.code)}');
-      print('vrCode: ${hex16(fd0.vrCode)}');
-      print('vfLength: ${fd0.vfLength}');
-      print('values: ${fd0.values}');
       expect(fd0.hasValidValues, true);
     });
 
@@ -70,10 +66,7 @@ void main() {
     test('FD hasValidValues: good values', () {
       for (var i = 0; i < 10; i++) {
         final float64List = rng.float64List(2, 2);
-        print(float64List);
         final fd0 = FDbytes.fromValues(kReconstructionFieldOfView, float64List);
-        print('vrCode: ${hex16(fd0.bytes.vrCode)}');
-        print('fd0.values: ${fd0.values}');
         expect(fd0.hasValidValues, true);
         expect(fd0.values, equals(float64List));
         log..debug('fd0: $fd0, values: ${fd0.values}')..debug('fd0: $fd0');

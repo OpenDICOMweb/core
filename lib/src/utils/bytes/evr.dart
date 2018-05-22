@@ -12,7 +12,7 @@ abstract class EvrBytes extends DicomBytes {
   EvrBytes._(int eLength, Endian endian) : super._(eLength, endian);
 
   EvrBytes._from(Bytes bytes, int start, int end, Endian endian)
-      : super._from(bytes, start, end, endian ?? Endian.host);
+      : super.from(bytes, start, end, endian ?? Endian.host);
 
   @override
   bool get isEvr => true;
@@ -44,14 +44,20 @@ class EvrShortBytes extends EvrBytes {
     return vlf;
   }
 
+  /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
+  /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
+  /// An error occurs if [start] is outside the range 0 .. [length],
+  /// or if [end] is outside the range [start] .. [length].
+  @override
+  EvrShortBytes sublist([int start = 0, int end]) =>
+      new EvrShortBytes.from(this, start, (end ?? length) - start, endian);
+
   static const int kVFLengthOffset = 6;
   static const int kVFOffset = 8;
   static const int kHeaderLength = kVFOffset;
 
   static EvrShortBytes makeEmpty(int code, int vfLength, int vrCode,
       [Endian endian]) {
-//    assert(vfLength.isEven);
-  print('eLength: ${kHeaderLength + vfLength}');
     final e = new EvrShortBytes(kHeaderLength + vfLength, endian)
       ..evrSetShortHeader(code, vfLength, vrCode);
     return e;
@@ -86,10 +92,13 @@ class EvrLongBytes extends EvrBytes {
     return vlf;
   }
 
+  /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
+  /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
+  /// An error occurs if [start] is outside the range 0 .. [length],
+  /// or if [end] is outside the range [start] .. [length].
   @override
-  String toString() =>
-      '$runtimeType(${_bd.lengthInBytes}) ${dcm(code)} ${hex16(vrCode)} '
-      '$vfLengthField(${hex32(vfLengthField)}) $vfBytes';
+  EvrLongBytes sublist([int start = 0, int end]) =>
+      new EvrLongBytes.from(this, start, (end ?? length) - start, endian);
 
   static const int kVROffset = 4;
   static const int kVFLengthOffset = 8;
@@ -101,7 +110,6 @@ class EvrLongBytes extends EvrBytes {
     //assert(vfLength.isEven);
     final e = new EvrLongBytes(kHeaderLength + vfLength, endian)
       ..evrSetLongHeader(code, vfLength, vrCode);
- //   print('e: $e');
     return e;
   }
 
@@ -112,7 +120,6 @@ class EvrLongBytes extends EvrBytes {
     final e = new EvrLongBytes(kHeaderLength + vfLength, endian)
       ..evrSetLongHeader(code, vfLength, vrCode)
       ..setByteData(kVFOffset, vfBytes._bd);
-    print('e: $e');
     return e;
   }
 }

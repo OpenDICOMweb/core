@@ -38,7 +38,6 @@ void main() {
         global.throwOnError = false;
         final e0 = ISbytes.fromValues(kCenterOfCircularShutter, vList0);
         log.debug('e0: $e0');
-        print('${e0.bytes}');
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);

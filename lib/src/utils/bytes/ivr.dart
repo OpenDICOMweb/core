@@ -12,7 +12,7 @@ class IvrBytes extends DicomBytes {
   IvrBytes(int eLength) : super._(eLength, Endian.little);
 
   IvrBytes.from(Bytes bytes, int start, int end)
-      : super._from(bytes, start, end, Endian.little);
+      : super.from(bytes, start, end, Endian.little);
 
   @override
   bool get isEvr => false;
@@ -35,6 +35,14 @@ class IvrBytes extends DicomBytes {
     return vlf;
   }
 
+  /// Returns a _view_ of _this_ containing the bytes from [start] inclusive
+  /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
+  /// An error occurs if [start] is outside the range 0 .. [length],
+  /// or if [end] is outside the range [start] .. [length].
+  @override
+  IvrBytes sublist([int start = 0, int end]) =>
+      new IvrBytes.from(this, start, (end ?? length) - start);
+
   static const int kVROffset = 4;
   static const int kVFLengthOffset = 4;
   static const int kVFOffset = 8;
@@ -46,10 +54,8 @@ class IvrBytes extends DicomBytes {
     int vrCode,
   ) {
     assert(vfLength.isEven);
-    final e = new IvrBytes(kHeaderLength + vfLength)
+    return new IvrBytes(kHeaderLength + vfLength)
       ..ivrSetHeader(code, vfLength, vrCode);
-    print('e: $e');
-    return e;
   }
 
   static IvrBytes makeFromBytes(
@@ -59,10 +65,8 @@ class IvrBytes extends DicomBytes {
   ) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    final e = new IvrBytes(kHeaderLength + vfLength)
+    return new IvrBytes(kHeaderLength + vfLength)
       ..ivrSetHeader(code, vfLength, vrCode)
       ..setByteData(kVFOffset, vfBytes._bd);
-    print('e: $e');
-    return e;
   }
 }

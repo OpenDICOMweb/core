@@ -14,7 +14,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/uint32_test', level: Level.debug);
+  Server.initialize(name: 'element/uint32_test', level: Level.info);
   final rng = new RNG(1);
 
   const uint32MinMax = const [kUint16Min, kUint16Max];
@@ -246,7 +246,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
-        final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes0);
+        final ul0 = ULtag.fromBytes(bytes0, PTag.kNumberOfWaveformSamples );
         expect(ul0.hasValidValues, true);
         expect(ul0.vfBytes, equals(bytes0));
         expect(ul0.values is Uint32List, true);
@@ -255,13 +255,13 @@ void main() {
         // Test Base6
         final s0 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(s0);
-        final ul1 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes1);
+        final ul1 = ULtag.fromBytes(bytes1, PTag.kNumberOfWaveformSamples );
         expect(ul0 == ul1, true);
         expect(ul0.value, equals(ul1.value));
 
         final vList2 = rng.uint32List(2, 2);
         final bytes2 = new Bytes.typedDataView(vList2);
-        final ul2 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes2);
+        final ul2 = ULtag.fromBytes(bytes2, PTag.kNumberOfWaveformSamples );
         expect(ul2, isNull);
       }
     });
@@ -269,7 +269,7 @@ void main() {
     test('UL fromBytes', () {
       final vList = new Uint32List.fromList(uint32Max);
       final bytes = new Bytes.typedDataView(vList);
-      final ul5 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
+      final ul5 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples );
       expect(ul5.hasValidValues, true);
       expect(ul5.vfBytes, equals(bytes));
       expect(ul5.values is Uint32List, true);
@@ -282,7 +282,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 10);
         final bytes0 = new Bytes.typedDataView(vList);
-        final ul0 = ULtag.fromBytes(PTag.kSelectorULValue, bytes0);
+        final ul0 = ULtag.fromBytes(bytes0, PTag.kSelectorULValue );
         log.debug('ul0: ul0');
         expect(ul0.hasValidValues, true);
       }
@@ -293,11 +293,11 @@ void main() {
         global.throwOnError = false;
         final vlist = rng.uint32List(1, 10);
         final bytes0 = Bytes.fromAscii(vlist.toString());
-        final ul0 = ULtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        final ul0 = ULtag.fromBytes(bytes0, PTag.kSelectorFDValue );
         expect(ul0, isNull);
 
         global.throwOnError = true;
-        expect(() => ULtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+        expect(() => ULtag.fromBytes(bytes0, PTag.kSelectorFDValue),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
@@ -345,7 +345,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
-        final e0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
+        final e0 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples );
         final vList1 = rng.uint32List(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
@@ -367,7 +367,7 @@ void main() {
         final bytes0 = new Bytes.typedDataView(vList);
         final s = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(s);
-        final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes1);
+        final ul0 = ULtag.fromBytes(bytes1, PTag.kNumberOfWaveformSamples );
         expect(ul0.hasValidValues, true);
       }
     });
@@ -377,7 +377,7 @@ void main() {
       final bytes = new Bytes.typedDataView(vList);
       final s = bytes.getBase64();
       final bytes1 = Bytes.fromBase64(s);
-      final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes1);
+      final ul0 = ULtag.fromBytes(bytes1, PTag.kNumberOfWaveformSamples );
       expect(ul0.hasValidValues, true);
     });
 
@@ -415,7 +415,7 @@ void main() {
 //        final uint32List1 = new Uint32List.fromList(uint32List0);
 //        final uint32List11 = uint32List1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(uint32List0);
-        final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
+        final ul0 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples );
         expect(ul0.hasValidValues, true);
         expect(ul0.vfBytes, equals(bytes));
         expect(ul0.values is Uint32List, true);
@@ -430,7 +430,7 @@ void main() {
 //        final uint32List11 = uint32List1.buffer.asUint8List();
         //       final base64 = cvt.base64.encode(uint32List11);
         final bytes = new Bytes.typedDataView(uint32List0);
-        final ul0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
+        final ul0 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples );
         expect(ul0.hasValidValues, true);
       }
     });
@@ -461,7 +461,7 @@ void main() {
       }
 
       final bytes = new Bytes.typedDataView(vList);
-      final e2 = ULtag.fromBytes(PTag.kSelectorULValue, bytes);
+      final e2 = ULtag.fromBytes(bytes, PTag.kSelectorULValue );
       for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
         final e3 = e2.view(j, vList.length - i);
         log.debug('e: ${e0.values}, at1: ${e3.values}, '
@@ -1260,7 +1260,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
-        final at0 = ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes);
+        final at0 = ATtag.fromBytes(bytes, PTag.kOriginalImageIdentification );
         expect(at0.hasValidValues, true);
         expect(at0.vfBytes, equals(bytes));
         expect(at0.values is Uint32List, true);
@@ -1274,7 +1274,7 @@ void main() {
 
         final vList2 = rng.uint32List(2, 2);
         final bytes2 = new Bytes.typedDataView(vList2);
-        final at2 = ATtag.fromBytes(PTag.kSelectorAttribute, bytes2);
+        final at2 = ATtag.fromBytes(bytes2, PTag.kSelectorAttribute );
         expect(at2, isNull);
       }
     });
@@ -1282,7 +1282,7 @@ void main() {
     test('AT fromBytes', () {
       final vList = new Uint32List.fromList(uint32Max);
       final bytes = new Bytes.typedDataView(vList);
-      final at0 = ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes);
+      final at0 = ATtag.fromBytes(bytes, PTag.kOriginalImageIdentification );
       expect(at0.hasValidValues, true);
       expect(at0.vfBytes, equals(bytes));
       expect(at0.values is Uint32List, true);
@@ -1295,7 +1295,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = ATtag.fromBytes(PTag.kSelectorATValue, bytes);
+        final e0 = ATtag.fromBytes(bytes, PTag.kSelectorATValue );
         log.debug('at0: at0');
         expect(e0.hasValidValues, true);
       }
@@ -1306,11 +1306,11 @@ void main() {
         global.throwOnError = false;
         final vList = rng.uint32List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e = ATtag.fromBytes(PTag.kSelectorFDValue, bytes);
+        final e = ATtag.fromBytes(bytes, PTag.kSelectorFDValue );
         expect(e, isNull);
 
         global.throwOnError = true;
-        expect(() => ATtag.fromBytes(PTag.kSelectorFDValue, bytes),
+        expect(() => ATtag.fromBytes(bytes, PTag.kSelectorFDValue),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
@@ -1358,8 +1358,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
-        final e0 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, bytes);
-        final e1 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, bytes);
+        final e0 = ATtag.fromBytes(bytes, PTag.kFunctionalGroupPointer );
+        final e1 = ATtag.fromBytes(bytes, PTag.kFunctionalGroupPointer );
         final vList1 = rng.uint32List(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
@@ -1385,7 +1385,7 @@ void main() {
 //        final uint32List11 = uint32List1.buffer.asUint8List(
 //       final base64 = cvt.base64.encode(uint32List11);
         final bytes = new Bytes.typedDataView(uint32List0);
-//        final at0 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, base64);
+//        final at0 = ATtag.fromBytes(base64, PTag.kFunctionalGroupPointer );
 //        expect(at0.hasValidValues, true);
       }
     });
@@ -1396,7 +1396,7 @@ void main() {
       final uint32List1 = new Uint32List.fromList(uint32Max);
       final uint32List11 = uint32List1.buffer.asUint8List();
       final base64 = cvt.base64.encode(uint32List11);
-//      final at0 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, base64);
+//      final at0 = ATtag.fromBytes(base64, PTag.kFunctionalGroupPointer );
 //      expect(at0.hasValidValues, true);
     });
 */
@@ -1447,7 +1447,7 @@ void main() {
       }
 
       final bytes = new Bytes.typedDataView(vList);
-      final e2 = ATtag.fromBytes(PTag.kSelectorATValue, bytes);
+      final e2 = ATtag.fromBytes(bytes, PTag.kSelectorATValue );
       for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
         final e3 = e2.view(j, vList.length - i);
         log.debug('e: ${e0.values}, at1: ${e3.values}, '
@@ -2096,7 +2096,7 @@ void main() {
 //        final uint32List1 = new Uint32List.fromList(uint32List0);
 //        final uint32List1 = uint32List1.buffer.asUint8List();
         final bytes = new Bytes.typedDataView(uint32List0);
-        final ol0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
+        final ol0 = OLtag.fromBytes(bytes, PTag.kLongVertexPointIndexList );
         expect(ol0.hasValidValues, true);
         expect(ol0.vfBytes, equals(bytes));
         expect(ol0.values is Uint32List, true);
@@ -2104,7 +2104,7 @@ void main() {
 
         // Test Base64
         //       final base64 = cvt.base64.encode(uint8List11);
-//       final ol1 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, base64);
+//       final ol1 = OLtag.fromBytes(base64, PTag.kLongVertexPointIndexList );
 //        expect(ol0 == ol1, true);
 //        expect(ol0.value, equals(ol1.value));
 
@@ -2112,7 +2112,7 @@ void main() {
 //        final uint32List2 = new Uint32List.fromList(uint32List1);
 //        final uint8List12 = uint32List2.buffer.asUint8List();
         final bytes1 = new Bytes.typedDataView(uint32List1);
-        final ol2 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes1);
+        final ol2 = OLtag.fromBytes(bytes1, PTag.kLongVertexPointIndexList );
         expect(ol2.hasValidValues, true);
       }
     });
@@ -2121,7 +2121,7 @@ void main() {
       final uint32List0 = new Uint32List.fromList(uint32Max);
 //      final uint8List1 = uint32List1.buffer.asUint8List();
       final bytes = new Bytes.typedDataView(uint32List0);
-      final ol0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
+      final ol0 = OLtag.fromBytes(bytes, PTag.kLongVertexPointIndexList );
       expect(ol0.hasValidValues, true);
       expect(ol0.vfBytes, equals(bytes));
       expect(ol0.values is Uint32List, true);
@@ -2134,7 +2134,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 10);
         final bytes0 = new Bytes.typedDataView(vList);
-        final e = OLtag.fromBytes(PTag.kSelectorOLValue, bytes0);
+        final e = OLtag.fromBytes(bytes0, PTag.kSelectorOLValue );
         log.debug('e: $e');
         expect(e.hasValidValues, true);
       }
@@ -2145,11 +2145,11 @@ void main() {
         global.throwOnError = false;
         final intList0 = rng.uint32List(1, 10);
         final bytes0 = Bytes.fromAscii(intList0.toString());
-        final ol0 = OLtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        final ol0 = OLtag.fromBytes(bytes0, PTag.kSelectorFDValue );
         expect(ol0, isNull);
 
         global.throwOnError = true;
-        expect(() => OLtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+        expect(() => OLtag.fromBytes(bytes0, PTag.kSelectorFDValue),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
@@ -2220,7 +2220,7 @@ void main() {
 //        final uint32List11 = uint32List1.buffer.asUint8List();
 //       final base64 = cvt.base64.encode(uint32List11);
         final bytes = new Bytes.typedDataView(uint32List0);
-//        final ol0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, base64);
+//        final ol0 = OLtag.fromBytes(base64, PTag.kLongVertexPointIndexList );
 //        expect(ol0.hasValidValues, true);
       }
     });
@@ -2231,7 +2231,7 @@ void main() {
       final uint32List1 = new Uint32List.fromList(uint32Max);
       final uint32List11 = uint32List1.buffer.asUint8List();
       final base64 = cvt.base64.encode(uint32List11);
-      final ol0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, base64);
+      final ol0 = OLtag.fromBytes(base64, PTag.kLongVertexPointIndexList );
       expect(ol0.hasValidValues, true);
     });
 */
@@ -2248,7 +2248,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final uint32List0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(uint32List0);
-        final ol0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
+        final ol0 = OLtag.fromBytes(bytes, PTag.kLongVertexPointIndexList );
         expect(ol0.hasValidValues, true);
         expect(ol0.vfBytes, equals(bytes));
         expect(ol0.values is Uint32List, true);
@@ -2264,7 +2264,7 @@ void main() {
 //        final uint32List11 = uint32List1.buffer.asUint8List();
 //       final base64 = cvt.base64.encode(uint32List11);
         final bytes = new Bytes.typedDataView(uint32List0);
-        final ol0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, base64);
+        final ol0 = OLtag.fromBytes(base64, PTag.kLongVertexPointIndexList );
         expect(ol0.hasValidValues, true);
       }
     });
@@ -2297,7 +2297,7 @@ void main() {
       }
 
       final bytes = new Bytes.typedDataView(vList);
-      final e2 = OLtag.fromBytes(PTag.kSelectorOLValue, bytes);
+      final e2 = OLtag.fromBytes(bytes, PTag.kSelectorOLValue );
       for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
         final e3 = e2.view(j, vList.length - i);
         log.debug('e: ${e0.values}, at1: ${e3.values}, '
@@ -2515,10 +2515,6 @@ void main() {
     });
 
     test('OL isValidVFLength good values', () {
-      print('${0xFFFFFFFC / 4}');
-      print('kMax(${OL.kMaxLength}) * 4: ${OL.kMaxLength * 4}');
-      print('kVFMax(${OL.kMaxVFLength}) / 4: ${OL.kMaxVFLength / 4}');
-      print('long($kMaxLongVF) / 4 (${kMaxLongVF / 4}');
       expect(OL.isValidVFLength(OL.kMaxVFLength), true);
       expect(OL.isValidVFLength(0), true);
     });

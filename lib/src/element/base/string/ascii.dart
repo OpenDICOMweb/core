@@ -816,7 +816,6 @@ abstract class DT extends StringBase {
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
     final s0 = s.trimRight();
-    print('s: "$s0"');
     return (DcmDateTime.isValidString(s0, issues: issues))
         ? true
         : invalidString('Invalid Date Time (DT): "$s0"', issues);

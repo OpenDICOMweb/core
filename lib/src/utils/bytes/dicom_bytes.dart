@@ -11,7 +11,7 @@ part of odw.sdk.utils.bytes;
 abstract class DicomBytes extends Bytes with DicomMixin {
   DicomBytes._(int length, Endian endian) : super._(length, endian);
 
-  DicomBytes._from(Bytes bytes, int start, int end, Endian endian)
+  DicomBytes.from(Bytes bytes, int start, int end, Endian endian)
       : super._from(bytes, start, end, endian);
 
 
@@ -25,6 +25,11 @@ abstract class DicomBytes extends Bytes with DicomMixin {
     }
     return length;
   }
+
+  @override
+  String toString() =>
+      '$runtimeType(${_bd.lengthInBytes}) ${dcm(code)} ${hex16(vrCode)} '
+          '$vfLengthField(${hex32(vfLengthField)}) $vfBytes';
 
   /// Returns a [Bytes] containing the ASCII encoding of [s].
   /// If [s].length is odd, [padChar] is appended to [s] before

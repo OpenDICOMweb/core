@@ -352,7 +352,6 @@ void main() {
         ..add(csColorSpace0)
         ..add(usPixelPaddingRangeLimit0);
 
-      print('ui: ${rootDS0.fmi[kTransferSyntaxUID]}');
       log.debug('rootDS0.transferSyntax: ${rootDS0.transferSyntax}');
 
       final ob1FDf = new FrameDescriptor.fromDataset(rootDS0);

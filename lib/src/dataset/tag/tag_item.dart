@@ -57,10 +57,7 @@ class TagItem extends MapItem with TagDataset {
   bool tryAdd(Element e, [Issues issues]) {
     var eNew = e;
     // [e] MUST be added to the pGroups before it is added to the Dataset.
-    if (e.isPrivate) {
-      print('TagItem add private: $e');
-      eNew = pGroups.add(e, this);
-    }
+    if (e.isPrivate) eNew = pGroups.add(e, this);
     return super.tryAdd(eNew, issues);
   }
 

@@ -35,9 +35,7 @@ void main() {
         expect(ob0.hasValidValues, true);
         expect(ob1.hasValidValues, true);
 
-        log
-          ..debug('ob0: $ob0, values: ${ob0.values}')
-          ..debug('ob0: $ob0');
+        log..debug('ob0: $ob0, values: ${ob0.values}')..debug('ob0: $ob0');
         expect(ob0[0], equals(uInt8List0[0]));
       }
 
@@ -239,7 +237,7 @@ void main() {
         final uInt8List0 = rng.uint8List(1, 1);
         final bytes0 = new Bytes.typedDataView(uInt8List0);
         //       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-        final ob0 = OBtag.fromBytes(PTag.kPrivateInformation, bytes0, 1);
+        final ob0 = OBtag.fromBytes(bytes0, PTag.kPrivateInformation, 1);
         expect(ob0.hasValidValues, true);
         expect(ob0.vfBytes, equals(bytes0));
         expect(ob0.values is Uint8List, true);
@@ -255,7 +253,7 @@ void main() {
         final bytes1 = new Bytes.typedDataView(uint8List1);
 //        final uInt8ListV12 = uInt8ListV2.buffer.asUint8List();
         final ob2 = OBtag.fromBytes(
-            PTag.kPrivateInformation, bytes1, uint8List1.length);
+            bytes1, PTag.kPrivateInformation, uint8List1.length);
         expect(ob2.hasValidValues, true);
       }
     });
@@ -263,7 +261,7 @@ void main() {
     test('OB fromBytes', () {
       final bytes = new Bytes.fromList(uint8Min);
 //      final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-      final ob5 = OBtag.fromBytes(PTag.kPrivateInformation, bytes, 1);
+      final ob5 = OBtag.fromBytes(bytes, PTag.kPrivateInformation, 1);
       expect(ob5.vfBytes, equals(bytes));
       expect(ob5.values is Uint8List, true);
       expect(ob5.values, equals(uint8Min));
@@ -275,7 +273,7 @@ void main() {
         final intList0 = rng.uint8List(1, 10);
         final bytes0 = DicomBytes.fromAscii(intList0.toString());
         final ob0 =
-            OBtag.fromBytes(PTag.kSelectorOBValue, bytes0, kUndefinedLength);
+            OBtag.fromBytes(bytes0, PTag.kSelectorOBValue, kUndefinedLength);
         log.debug('ob0: $ob0');
         expect(ob0.hasValidValues, true);
       }
@@ -286,10 +284,10 @@ void main() {
         global.throwOnError = false;
         final intList0 = rng.uint8List(1, 10);
         final bytes0 = DicomBytes.fromAscii(intList0.toString());
-        final ob0 = OBtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        final ob0 = OBtag.fromBytes(bytes0, PTag.kSelectorFDValue);
         expect(ob0, isNull);
         global.throwOnError = true;
-        expect(() => OBtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+        expect(() => OBtag.fromBytes(bytes0, PTag.kSelectorFDValue),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
@@ -395,7 +393,7 @@ void main() {
 //        final uInt8ListV11 = bytes.buffer.asUint8List();
         log.debug('bytes.length: ${bytes.length}');
         final ob0 =
-            OBtag.fromBytes(PTag.kPrivateInformation, bytes, bytes.length);
+            OBtag.fromBytes(bytes, PTag.kPrivateInformation, bytes.length);
         expect(ob0.hasValidValues, true);
         expect(ob0.vfBytes, equals(bytes));
         expect(ob0.values is Uint8List, true);
@@ -971,7 +969,7 @@ void main() {
 
       final uInt8List0 = rng.uint8List(1, 1);
       final uInt8ListV1 = new Uint8List.fromList(uInt8List0);
-      final byte0 = new Bytes.fromList(uInt8ListV1) ;
+      final byte0 = new Bytes.fromList(uInt8ListV1);
       final fvf3 = Uint8.fromValueField(byte0);
       expect(fvf3, isNotNull);
       expect(fvf3 is Bytes, true);

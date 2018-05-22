@@ -10,6 +10,7 @@ import 'package:core/src/dataset.dart';
 
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/bytes_mixin.dart';
+import 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
@@ -32,8 +33,6 @@ DicomBytes _makeShortString(
   final tag = Tag.lookupByCode(code);
   if (tag.vrCode != vrCode) return null;
   final vlf = stringListLength(sList, pad: true);
-  print('vList: $sList');
-  print('vlf: $vlf');
   return (isEvr)
       ? EvrShortBytes.makeEmpty(code, vlf, vrCode)
       : IvrBytes.makeEmpty(code, vlf, vrCode);
@@ -49,8 +48,6 @@ DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
 DicomBytes _makeLongString(
     int code, List<String> sList, int vrCode, bool isEvr) {
   final vlf = stringListLength(sList, pad: true);
-  print('vList: $sList');
-  print('vlf: $vlf');
   return (isEvr)
       ? EvrLongBytes.makeEmpty(code, vlf, vrCode)
       : IvrBytes.makeEmpty(code, vlf, vrCode);
@@ -97,7 +94,8 @@ class FDbytes extends FD with ByteElement<double>, Float64Mixin {
 
   FDbytes(this.bytes);
 
-  static FDbytes fromBytes(DicomBytes bytes) => new FDbytes(bytes);
+  static FDbytes fromBytes(DicomBytes bytes, [Dataset ds]) =>
+      new FDbytes(bytes);
 
   static FDbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kFDCode, isEvr, FD.kSizeInBytes)
@@ -151,7 +149,6 @@ class OBbytesPixelData extends OBPixelData with ByteElement<int>, Uint8Mixin {
   final DicomBytes bytes;
   @override
   TransferSyntax ts;
-  @override
   VFFragments fragments;
 
   OBbytesPixelData(this.bytes, [this.ts, this.fragments]);
@@ -187,7 +184,7 @@ class UNbytesPixelData extends UNPixelData with ByteElement<int>, Uint8Mixin {
   final DicomBytes bytes;
   @override
   TransferSyntax ts;
-  @override
+  //TODO: remove fragments
   VFFragments fragments;
 
   UNbytesPixelData(this.bytes, [this.ts, this.fragments]);
@@ -262,7 +259,7 @@ class OWbytesPixelData extends OWPixelData with ByteElement<int>, Uint16Mixin {
   final DicomBytes bytes;
   @override
   TransferSyntax ts;
-  @override
+  // Note: OW should _never_ have fragments.
   VFFragments fragments;
 
   OWbytesPixelData(this.bytes, [this.ts, this.fragments]);
@@ -380,7 +377,6 @@ class AEbytes extends AE with ByteElement<String>, StringMixin, AsciiMixin {
     final bytes = _makeShortString(code, vList, kAECode, isEvr);
     if (bytes == null) return null;
     bytes.writeAsciiVF(vList);
-    print('bytes: $bytes');
     assert(vList.length <= AE.kMaxVFLength);
     return fromBytes(bytes);
   }
@@ -719,9 +715,8 @@ class SQbytes extends SQ with ByteElement<Item> {
   /// Returns a new [SQbytes], where [bytes] is [DicomBytes]
   /// for complete sequence.
   static SQbytes fromBytes(Dataset parent,
-          [int code, Iterable<Item> values, DicomBytes bytes]) {
-    new SQbytes(parent, values, bytes);
-  }
+          [Iterable<Item> values, DicomBytes bytes]) =>
+      new SQbytes(parent, values, bytes);
 
   static SQbytes fromValues(int code, List<String> vList,
           {bool isEvr = true}) =>

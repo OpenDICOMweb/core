@@ -8,16 +8,7 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 
 void main(){
-
-/*  final ids = <String>[];
-  for(var s in pcTagNames) {
-    final id = creatorTokenToId(s);
-    print('id: "$id"');
-    ids.add(s);
-  }
-  */
   final out = tokensToLookupMap(pcTagNames);
-  //print('ids(${ids.length}): $ids');
   print(out);
 }
 

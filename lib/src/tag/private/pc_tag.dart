@@ -139,7 +139,6 @@ class PCTagKnown extends PCTag {
   @override
   PDTagDefinition lookupPDCode(int code) {
     final pdDefCode = code & 0xFFFF00FF;
-    print('pdDefCode ${dcm(pdDefCode)}');
     final pdDef = dataTags[pdDefCode];
     return (pdDef == null) ? PDTagDefinition.kUnknown : pdDef;
   }

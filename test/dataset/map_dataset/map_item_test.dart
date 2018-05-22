@@ -220,7 +220,6 @@ void main() {
 
       noValues0 = item0.noValuesAll(as0.code);
       for (var e in noValues0) {
-        print('noValues: $e');
         expect(e.values.isEmpty, true);
         log.debug('noValues0: $noValues0');
       }
@@ -376,10 +375,8 @@ void main() {
 
       // Create element and check values and uids
       final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
-      print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));
-      print('values: ${ui0.uids}');
       expect(ui0.uids, equals(uidList0));
       expect(ui0.uids.elementAt(0), equals(uid0));
 
@@ -409,10 +406,8 @@ void main() {
       // Create element and check values and uids
       final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
       final item = new MapItem.empty(rds, null)..add(ui0);
-      print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidStringList0[0]));
-      print('values: ${ui0.uids}');
       expect(ui0.uids, equals(uidList0));
       expect(ui0.uids.elementAt(0), equals(uidList0[0]));
 
@@ -423,7 +418,6 @@ void main() {
 
       // Test replaceUid
       final uidList0b = item.replaceUids(ui0.code, uidList0a);
-      print('uidList0b: $uidList0b');
       expect(uidList0b, equals(uidList0));
       expect(uidList0b.elementAt(0), equals(uidList0[0]));
     });
@@ -437,14 +431,10 @@ void main() {
         final uidStringList0a = UI.toStringList(uidList0a);
 
         // Create element and check values and uids
-        print('uidList0: $uidList0');
         final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
-        print('ui0: $ui0');
         final item = new MapItem.empty(rds, null)..add(ui0);
-        print('values: ${ui0.values}');
         expect(ui0.values, equals(uidStringList0));
         expect(ui0.value, equals(uidStringList0[0]));
-        print('values: ${ui0.uids}');
         expect(ui0.uids, equals(uidList0));
         expect(ui0.uids.elementAt(0), equals(uidList0[0]));
 
@@ -455,7 +445,6 @@ void main() {
 
         // Test replaceUid
         final uidList0b = item.replaceUids(ui0.code, uidList0a);
-        print('uidList0b: $uidList0b');
         expect(uidList0b, equals(uidList0));
         expect(uidList0b.elementAt(0), equals(uidList0[0]));
       }
@@ -476,10 +465,8 @@ void main() {
         final ui0 =
             new UItag(PTag.kSelectorUIValue, uidStringList0);
         final item = new MapItem.empty(rds, null)..add(ui0);
-        print('values: ${ui0.values}');
         expect(ui0.values, equals(uidStringList0));
         expect(ui0.value, equals(uidStringList0[0]));
-        print('values: ${ui0.uids}');
         expect(ui0.uids, equals(uidList0));
         expect(ui0.uids.elementAt(0), equals(uidList0[0]));
 
@@ -490,7 +477,6 @@ void main() {
 
         // Test replaceUid
         final uidList0b = item.replaceUids(ui0.code, uidList0a);
-        print('uidList0b: $uidList0b');
         expect(uidList0b, equals(uidList0b));
         expect(uidList0b.elementAt(0), equals(uidList0b[0]));
       }

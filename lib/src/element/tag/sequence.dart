@@ -158,10 +158,10 @@ class SQtag extends SQ with TagElement<Item> {
     return new SQtag(parent, sq.tag, nItems, sq.vfLengthField);
   }
 
-  static SQtag fromBytes(Tag tag, Dataset parent, List<TagItem> vList,
-      [int vfLengthField, Bytes bytes]) {
+  static SQtag fromBytes(Dataset parent, Tag tag,  List<TagItem> vList,
+      DicomBytes bytes) {
     if (tag.vrIndex != kSQIndex) return null;
-    return new SQtag(parent, tag, vList, vfLengthField, bytes);
+    return new SQtag(parent, tag, vList, bytes.vfLengthField, bytes);
   }
 
   static const _makeSQ = TagElement.makeSequenceFromCode;
@@ -169,9 +169,8 @@ class SQtag extends SQ with TagElement<Item> {
   static SQtag convert(Dataset parent, SQ e) {
     final items = e.values.toList();
     final length = items.length;
-
-    print('    converting SQ: $e');
     final tagItems = new List<TagItem>(e.items.length);
+
     final sq = _makeSQ(parent, e.code, tagItems, e.vfLengthField, null);
     for (var i = 0; i < length; i++) {
       final tItem = TagItem.convert(parent, items[i], sq);

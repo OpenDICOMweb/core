@@ -72,7 +72,6 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i);
-print('vList0: $vList0');
         final e0 = CSbytes.fromValues(kSelectorCSValue, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds);

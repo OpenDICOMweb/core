@@ -11,7 +11,6 @@ import 'package:core/server.dart';
 void main() {
   Server.initialize(throwOnError: true, level: Level.debug);
 
-  final rds = new ByteRootDataset.empty();
   final vList = <double>[1.0, 1.1, 1.2];
 
   final fl = FLbytes.fromValues(kSelectorFLValue, vList);
@@ -20,7 +19,7 @@ void main() {
   assert(fl.hasValidValues);
   printEvr(fl, kFLCode, fl.vfBytes);
 
-  final fl1 = ByteElement.makeFromBytes(fl.bytes, rds);
+  final fl1 = new FLbytes(fl.bytes);
   assert(fl1.bytes is DicomBytes);
   assert(fl1.vfBytes is Bytes);
   assert(fl1.hasValidValues);
@@ -30,9 +29,9 @@ void main() {
   assert(of.bytes is DicomBytes);
   assert(of.vfBytes is Bytes);
   assert(of.hasValidValues);
-  printEvr(of, kOFCode, of.vfBytes);
+  printEvr(fl1, kOFCode, of.vfBytes);
 
-  final of1 = ByteElement.makeFromBytes(of.bytes, rds);
+  final of1 = new OFbytes(of.bytes);
   assert(of1.bytes is DicomBytes);
   assert(of1.vfBytes is Bytes);
   assert(of1.hasValidValues);
@@ -44,7 +43,7 @@ void main() {
   assert(fd.hasValidValues);
   printEvr(fd, kOFCode, fd.vfBytes);
 
-  final fd1 = ByteElement.makeFromBytes(fd.bytes, rds);
+  final fd1 = new FDbytes(fd.bytes);
   assert(fd1.bytes is DicomBytes);
   assert(fd1.vfBytes is Bytes);
   assert(fd1.hasValidValues);
@@ -56,7 +55,7 @@ void main() {
   assert(od.hasValidValues);
   printEvr(od, kOFCode, od.vfBytes);
 
-  final od1 = ByteElement.makeFromBytes(od.bytes, rds);
+  final od1 = new ODbytes(od.bytes);
   assert(od1.bytes is DicomBytes);
   assert(od1.vfBytes is Bytes);
   assert(od1.hasValidValues);

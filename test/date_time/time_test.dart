@@ -265,7 +265,7 @@ void main() {
     test('now', () {
       final t0 = Time.now;
       final us = t0.inMicroseconds;
-      print('t0: $t0 us: $us');
+      log.info('t0: $t0 us: $us');
     });
 
     test('==', () {

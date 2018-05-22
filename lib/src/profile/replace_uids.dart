@@ -17,18 +17,6 @@ final Map<Uid, Uid> idedToDeIded = <Uid, Uid>{};
 List<Element> replaceUids(TagRootDataset rds) {
   final old = <Element>[];
 
-//  print('**** Normalizing FMI UIDs');
-
-/*
-  // Issue: Does this ever get replaced
-  final UI e = rds.fmi[kMediaStorageSOPInstanceUID];
-  final eNew = replaceUIFast(e);
-  rds.fmi.store(e.code, eNew);
-  old.add(e);
-*/
-
-//  print('**** Normalizing Dataset UIDs');
-
   for (var code in deIdUidCodes) {
     final UI e = rds.lookup(code);
     if (e != null) {
@@ -37,8 +25,6 @@ List<Element> replaceUids(TagRootDataset rds) {
       old.add(e);
     }
   }
-//  final z = new Formatter();
-//  print(z.fmt('old: ${old.length}', old));
   return old;
 }
 
@@ -69,13 +55,10 @@ UI replaceUIGeneral(UI e) {
     final uid = oldUids.elementAt(i);
     var newUid = idedToDeIded[uid];
     if (newUid != null) {
-//      print('Dicom UID: $uid');
       newUids[i] = newUid.asString;
     } else if (uid.isWellKnown) {
-//      print('Well Known UID: $uid');
       newUids[i] = uid.asString;
     } else if (Uid.isDicom(uid)) {
-//      print('Dicom UID: $uid');
       newUids[i] = uid.asString;
     } else {
       newUid = new Uid();

@@ -11,7 +11,7 @@ part of odw.sdk.utils.buffer;
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
 
-class WriteBuffer extends BytesBufferBase with WriteBufferMixin {
+class WriteBuffer extends BytesBuffer with WriteBufferMixin {
   @override
   final GrowableBytes _buf;
   @override

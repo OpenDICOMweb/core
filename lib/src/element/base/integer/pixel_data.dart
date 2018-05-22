@@ -21,6 +21,7 @@ abstract class PixelData {
   Tag get tag;
   int get code;
   int get vfLengthField;
+  int get vfLength;
   Bytes get vfBytes;
 
   /// The [List<int>] of pixels.
@@ -30,10 +31,11 @@ abstract class PixelData {
   /// Returns _true_ if [pixels] are compressed.
   bool get isCompressed;
 
+  // **** End Interface
+
   /// Synonym for pisCompressed].
   bool get isEncapsulated => isCompressed;
 
-  // **** End Interface
 }
 
 abstract class OBPixelData extends OB

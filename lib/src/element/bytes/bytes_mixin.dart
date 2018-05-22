@@ -11,9 +11,11 @@ import 'dart:typed_data';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/bytes.dart';
+import 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/value/uid.dart';
 
 typedef Element DecodeBinaryVF(DicomBytes bytes, int vrIndex);
 
@@ -82,7 +84,7 @@ abstract class ByteElement<V> {
   String get keyword => tag.keyword;
   String get name => tag.name;
 
-  static ByteElement makeFromBytes(DicomBytes bytes, [Dataset ds]) {
+  static Element makeFromBytes(DicomBytes bytes, [Dataset ds]) {
     final code = bytes.code;
     final pCode = code & 0x1FFFF;
     if (pCode >= 0x10010 && pCode <= 0x100FF) return new PCbytes(bytes);
@@ -92,16 +94,11 @@ abstract class ByteElement<V> {
         ? lookupTagByCode(ds, code, vrIndex)
         : Tag.lookupByCode(code);
     final tagVRIndex = tag.vrIndex;
-//    assert(tagVRIndex != kSQIndex);
-    return _bytesBDMakers[tagVRIndex](bytes);
+    return _definedBytesMakers[tagVRIndex](bytes);
     //  return (pCode >= 0x11000 && pCode <= 0x1FFFF) ? new PrivateData(e) : e;
   }
 
-  static SQbytes makeSQFromBytes(Dataset parent,
-          int code, Iterable<Item> items, DicomBytes bytes, [Dataset ds]) =>
-      SQbytes.fromBytes(parent, code, items, bytes);
-
-  static final List<Function> _bytesBDMakers = <Function>[
+  static final List<Function> _definedBytesMakers = <Function>[
     SQbytes.fromBytes, // stop reformat
     // Maybe Undefined Lengths
     OBbytes.fromBytes, OWbytes.fromBytes, UNbytes.fromBytes,
@@ -120,15 +117,43 @@ abstract class ByteElement<V> {
     UIbytes.fromBytes, ULbytes.fromBytes, USbytes.fromBytes
   ];
 
-  static ByteElement makeFromValues<V>(DicomBytes bytes, [Dataset ds]) {
+  static Element makeMaybeUndefinedFromBytes(DicomBytes bytes,
+      [Dataset ds,
+      int vfLengthField,
+      TransferSyntax ts,
+      VFFragments fragments]) {
     final code = bytes.code;
     final pCode = code & 0x1FFFF;
     if (pCode >= 0x10010 && pCode <= 0x100FF) return new PCbytes(bytes);
     final vrIndex = bytes.vrIndex;
+
+    final tag = (ds != null)
+        ? lookupTagByCode(ds, code, vrIndex)
+        : Tag.lookupByCode(code);
+    final tagVRIndex = tag.vrIndex;
+    return _undefinedBytesMakers[tagVRIndex](
+        bytes, ds, vfLengthField, ts, fragments);
+  }
+
+  // Elements that may have undefined lengths.
+  static final List<Function> _undefinedBytesMakers = <Function>[
+    SQbytes.fromBytes, // stop reformat
+    OBbytes.fromBytes, OWbytes.fromBytes, UNbytes.fromBytes
+  ];
+
+  static Element makeSQFromBytes(Dataset parent,
+  [Iterable<Item> items, DicomBytes bytes]) =>
+  SQbytes.fromBytes(parent, items, bytes);
+
+  static Element makeFromValues(int code, Iterable vList, int vrIndex,
+      {bool isEvr = true, Dataset ds}) {
+    final pCode = code & 0x1FFFF;
+    if (pCode >= 0x10010 && pCode <= 0x100FF)
+      return PCbytes.fromValues(code, vList, isEvr: isEvr);
     final tag = lookupTagByCode(ds, code, vrIndex);
     final tagVRIndex = tag.vrIndex;
-    assert(tagVRIndex != kSQIndex);
-    return _bytesValuesMakers[vrIndex](bytes, tagVRIndex);
+//    assert(tagVRIndex != kSQIndex);
+    return _bytesValuesMakers[vrIndex](code, vList, tagVRIndex);
   }
 
   static final List<Function> _bytesValuesMakers = <Function>[
@@ -255,11 +280,8 @@ abstract class AsciiMixin {
   bool allowInvalid = true;
 
   String get vfString {
-    print('hasPadding: $hasPadding');
     final vf = (hasPadding) ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
-    final v = vf.getAscii(allowInvalid: allowInvalid);
-    print('v: "$v"');
-    return v;
+    return vf.getAscii(allowInvalid: allowInvalid);
   }
 
   Iterable<String> get values => vfString.split('\\');
@@ -276,11 +298,8 @@ abstract class Utf8Mixin {
   bool allowMalformed = true;
 
   String get vfString {
-    print('hasPadding: $hasPadding');
     final vf = (hasPadding) ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
-    final v = vf.getUtf8(allowMalformed: allowMalformed);
-    print('v: "$v"');
-    return v;
+    return vf.getUtf8(allowMalformed: allowMalformed);
   }
 }
 
@@ -303,4 +322,27 @@ int _stringValuesLength(Bytes vfBytes) {
   for (var i = 0; i < vfBytes.length; i++)
     if (vfBytes[i] == kBackslash) count++;
   return count;
+}
+
+/// PixelDataMixin class
+abstract class BytePixelData {
+  Tag get tag;
+  int get code;
+  int get vfLengthField;
+  int get vfLength;
+  Bytes get vfBytes;
+  VFFragments get fragments;
+
+  /// The [List<int>] of pixels.
+  List<int> get pixels;
+  TransferSyntax get ts;
+
+  /// Returns _true_ if [pixels] are compressed.
+  bool get isCompressed;
+
+  // **** End Interface
+
+  /// Synonym for pisCompressed].
+  bool get isEncapsulated => isCompressed;
+
 }

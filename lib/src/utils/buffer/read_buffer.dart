@@ -11,7 +11,7 @@ part of odw.sdk.utils.buffer;
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
 
-abstract class ReadBufferBase extends BytesBufferBase {
+abstract class ReadBufferBase extends BytesBuffer {
   @override
   Bytes get _buf;
   @override

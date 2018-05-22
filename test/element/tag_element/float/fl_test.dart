@@ -338,7 +338,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
+        final e0 = FLtag.fromBytes(bytes, PTag.kAbsoluteChannelDisplayScale);
         log.debug('e0 : ${e0 .info}');
         expect(e0.hasValidValues, true);
       }
@@ -349,7 +349,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(3, 3);
         final bytes = new Bytes.typedDataView(vList);
-        final e1 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
+        final e1 = FLtag.fromBytes(bytes, PTag.kAbsoluteChannelDisplayScale);
         log.debug('e1: $e1');
         expect(e1.hasValidValues, false);
       }
@@ -360,7 +360,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = FLtag.fromBytes(PTag.kSelectorFLValue, bytes);
+        final e0 = FLtag.fromBytes(bytes, PTag.kSelectorFLValue);
         log.debug('e0 : ${e0 .info}');
         expect(e0.hasValidValues, true);
       }
@@ -371,11 +371,11 @@ void main() {
         global.throwOnError = false;
         final vList = rng.float32List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = FLtag.fromBytes(PTag.kSelectorSSValue, bytes);
+        final e0 = FLtag.fromBytes(bytes, PTag.kSelectorSSValue);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => FLtag.fromBytes(PTag.kSelectorSSValue, bytes),
+        expect(() => FLtag.fromBytes(bytes, PTag.kSelectorSSValue),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });

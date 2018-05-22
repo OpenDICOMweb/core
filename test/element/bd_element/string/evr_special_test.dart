@@ -17,11 +17,4 @@ RNG rng = new RNG(1);
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
-
-
-
-
-
-
 }

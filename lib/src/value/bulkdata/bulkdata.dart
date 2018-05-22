@@ -33,9 +33,7 @@ class BulkdataUri {
   final int length;
 
   BulkdataUri(this.path, this.offset, this.length)
-  : query = 'bytes=$offset-$length' {
-    print('uri: ${Uri.encodeFull('$uri')}');
-  }
+  : query = 'bytes=$offset-$length';
 
   Uri get uri =>  new Uri(scheme: scheme, path: path, query: query);
 

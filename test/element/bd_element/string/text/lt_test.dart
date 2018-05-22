@@ -25,11 +25,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
         final e0 = LTbytes.fromValues(kPatientComments, vList0);
-        print('vfBytes: ${e0.vfBytes}');
-        print('e0.bytes: ${e0.bytes}');
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
-        print('e1.bytes: ${e1.bytes}');
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }

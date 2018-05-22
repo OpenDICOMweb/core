@@ -91,7 +91,6 @@ abstract class NoValuesMixin {
 
   double get pixelAspectRatio {
     final list = getStringList(kPixelAspectRatio);
-    //   print('PAR list: $list');
     if (list == null || list.isEmpty) return 1.0;
     if (list.length != 2) {
       badValues(list, null, PTag.kPixelAspectRatio);
@@ -100,7 +99,6 @@ abstract class NoValuesMixin {
     }
     final numerator = int.parse(list[0]);
     final denominator = int.parse(list[1]);
-    //   print('num: $numerator, den: $denominator');
     return numerator / denominator;
   }
 

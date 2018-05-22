@@ -15,7 +15,6 @@ import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/utils.dart';
 import 'package:core/src/element/base/utils.dart';
-import 'package:core/src/element/base/vf_fragments.dart';
 import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
@@ -61,8 +60,6 @@ abstract class IntBase extends Element<int> {
 
   @override
   Bytes get vfBytes => new Bytes.typedDataView(typedData);
-
-  VFFragments get fragments => unsupportedError();
 
   /// Returns a [view] of this [Element] with [values] replaced by [TypedData].
   IntBase view([int start = 0, int length]);

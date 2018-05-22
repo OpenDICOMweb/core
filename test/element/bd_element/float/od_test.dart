@@ -40,10 +40,6 @@ void main() {
     test('OD hasValidValues: good values', () {
       global.throwOnError = false;
       final od0 = ODbytes.fromValues(kSelectorODValue, doubleList);
-      print('code: ${dcm(od0.code)}');
-      print('vrCode: ${hex16(od0.vrCode)}');
-      print('vfLength: ${od0.vfLength}');
-      print('values: ${od0.values}');
       expect(od0.hasValidValues, true);
     });
 

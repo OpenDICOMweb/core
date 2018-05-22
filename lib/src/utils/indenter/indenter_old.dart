@@ -81,7 +81,6 @@ class Indenter0 extends StringBuffer {
   static List<String> _makeIndents(int length, int increment) {
     final indents = new List<String>(length);
     for (var i = 0; i < length; i++) indents[i] = _indentString(i, increment);
-    print(indents);
     return indents;
   }
 

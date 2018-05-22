@@ -31,7 +31,6 @@ class PrivateCreatorTags {
   //TODO: move to base.dart
   bool _checkPCTagCode(int code) {
     final v = code & 0x100FF;
-    print('pcCode: ${dcm(code)} v: ${hex32(v)}');
     if (v >= 0x10010 && v <= 0x100FF) return true;
     final msg = 'Invalid PCTag Code ${dcm(code)}';
     log.error(msg);

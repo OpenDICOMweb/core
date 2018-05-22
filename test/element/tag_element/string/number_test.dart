@@ -333,7 +333,7 @@ void main() {
         log.debug('vList: $vList');
         final bytes = Bytes.fromAsciiList(vList);
         log.debug('bytes:$bytes');
-        final e = DStag.fromBytes(PTag.kSamplingFrequency, bytes);
+        final e = DStag.fromBytes(bytes, PTag.kSamplingFrequency);
         log.debug('ds1: $e');
         expect(e.hasValidValues, true);
       }
@@ -344,7 +344,7 @@ void main() {
         final vList1 = rsg.getDSList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final e = DStag.fromBytes(PTag.kSelectorDSValue, bytes0);
+          final e = DStag.fromBytes(bytes0, PTag.kSelectorDSValue);
           log.debug('e: $e');
           expect(e.hasValidValues, true);
         }
@@ -357,11 +357,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final ur1 = DStag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final ur1 = DStag.fromBytes(bytes0, PTag.kSelectorAEValue);
           expect(ur1, isNull);
 
           global.throwOnError = true;
-          expect(() => DStag.fromBytes(PTag.kSelectorAEValue, bytes0),
+          expect(() => DStag.fromBytes(bytes0, PTag.kSelectorAEValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
@@ -808,20 +808,12 @@ void main() {
 //  Urgent: fix - it must be valid for tag
 
         for (var tag in dsTags2) {
-          print('tag: $tag');
-          print('DS.kMaxLength: ${DS.kMaxLength}');
-          print('max length: ${tag.maxValues}');
-
           final max = (tag.vm.max(tag.vr.maxLength) ~/ 2) * 2;
-          print('max: $max');
           final validMaxLengthList = badLengthList.sublist(0, max);
-
-          print('list length: ${validMaxLengthList.length}');
           expect(DS.isValidLength(tag, validMinLengthList), true);
           expect(DS.isValidLength(tag, validMaxLengthList), true);
 
           final list = badLengthList.take(max);
-          print('length: ${list.length}');
           expect(DS.isValidLength(tag, list), true);
         }
       }
@@ -1556,7 +1548,7 @@ void main() {
         final vList1 = rsg.getISList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final is1 = IStag.fromBytes(PTag.kWaveformChannelNumber, bytes);
+        final is1 = IStag.fromBytes(bytes, PTag.kWaveformChannelNumber);
         log.debug('is1: $is1');
         expect(is1.hasValidValues, true);
       }
@@ -1567,7 +1559,7 @@ void main() {
         final vList1 = rsg.getISList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final ur1 = IStag.fromBytes(PTag.kSelectorISValue, bytes0);
+          final ur1 = IStag.fromBytes(bytes0, PTag.kSelectorISValue);
           log.debug('ur1: $ur1');
           expect(ur1.hasValidValues, true);
         }
@@ -1580,11 +1572,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final ur1 = IStag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final ur1 = IStag.fromBytes(bytes0, PTag.kSelectorAEValue);
           expect(ur1, isNull);
 
           global.throwOnError = true;
-          expect(() => IStag.fromBytes(PTag.kSelectorAEValue, bytes0),
+          expect(() => IStag.fromBytes(bytes0, PTag.kSelectorAEValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }

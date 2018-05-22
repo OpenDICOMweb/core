@@ -44,10 +44,7 @@ void main() {
     for (var i = 0; i < 10; i++) {
       final vList = rng.float32List(1, 10);
       expect(vList is Float32List, true);
-      print('vList: $vList');
       final fl0 = FLbytes.fromValues(kSelectorFDValue, vList);
-      print('fl0: ${fl0.vfBytes}');
-      print('fl0: ${fl0.values}');
       expect(fl0[0], equals(vList[0]));
       expect(fl0.hasValidValues, true);
 

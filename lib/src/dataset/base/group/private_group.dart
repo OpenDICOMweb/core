@@ -94,7 +94,6 @@ class PrivateGroup implements GroupBase {
         assert(e.group.isOdd),
         gLength = (e.elt == 0) ? e : null {
     final elt = e.elt;
-    print(' PrivateGroup created with $e');
     (elt > 0 || elt < 0x10) ? illegal.add(e) : add(e, null);
   }
 
@@ -136,16 +135,13 @@ class PrivateGroup implements GroupBase {
     var eNew = e;
     if (Tag.isPDCode(code)) {
       final sgNumber = Tag.pdSubgroup(code);
-      print('  PG add PData Code ${dcm(code)}');
       _checkSubgroup(sgNumber);
       eNew = _currentSubgroup.addData(e, sqParent);
     } else if (Tag.isPCCode(code)) {
       final sgNumber = Tag.pcSubgroup(code);
-      print('  PG add PCreator Code ${dcm(code)}');
       _checkSubgroup(sgNumber);
       eNew = _currentSubgroup.addCreator(e);
     } else if (Tag.isPrivateIllegalCode(code)) {
-      print('  PG add Illegal private ${dcm(code)}');
       illegal.add(e);
     } else {
       throw '**** Internal Error: $e';
@@ -154,7 +150,6 @@ class PrivateGroup implements GroupBase {
   }
 
   void _checkSubgroup(int sgNumber) {
-    print('  current ${hex16(_currentSGNumber)} this ${hex8(sgNumber)}');
     if (sgNumber < _currentSGNumber) {
       invalidSubgroupNumber(_currentSGNumber, sgNumber);
     } else if (sgNumber > _currentSGNumber) {

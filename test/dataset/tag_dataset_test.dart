@@ -421,7 +421,6 @@ void main() {
 
       final ob = new OBtag(PTag.kICCProfile, [123, 255]);
 
-      print('allow: ${rds.allowDuplicates}');
       rds1[lt.code] = lt;
       rds1[lo.code] = lo;
       rds1[ss.code] = ss;
@@ -440,7 +439,6 @@ void main() {
       rds.add(sq);
 
       // Only 1 Element at top level
-      print('rds.length: ${rds.length}');
       expect(rds.length == 4, true);
 
       /// 2 Items with 8 elements + sq itself = 9

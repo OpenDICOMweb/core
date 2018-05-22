@@ -12,7 +12,8 @@ import 'dart:convert' as cvt;
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:core/core.dart';
+import 'package:core/src/utils/buffer.dart';
+import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/value/bulkdata/bulkdata.dart';
 import 'package:path/path.dart' as path;
 
@@ -54,7 +55,7 @@ class BulkdataList {
   }
 
   Future writeFile(File file, {bool doAsync = true}) async {
-    final wb = new WriteBuffer();
+    final wb = new DicomWriteBuffer();
     final index = getIndex();
     wb
       // Write identifer 'Bulkdata'

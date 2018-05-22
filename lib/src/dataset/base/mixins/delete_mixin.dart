@@ -50,7 +50,6 @@ abstract class DeleteMixin {
   /// Deletes all [Element]s in _this_ that have a Tag Code in [codes].
   /// If there is no [Element] with one of the codes _this_ does nothing.
   List<Element> deleteCodes(List<int> codes) {
-    //  print('codes: $codes');
     assert(codes != null && codes.isNotEmpty);
     final deleted = <Element>[];
     for (var code in codes) {
@@ -70,7 +69,6 @@ abstract class DeleteMixin {
       if (e is SQ) {
         for (var item in e.items) {
           final deleted = item.delete(index);
-//            if (deleted != null) print('item $item deleted: $deleted');
           if (deleted != null) results.add(deleted);
         }
       }

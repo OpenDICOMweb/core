@@ -319,7 +319,6 @@ abstract class Float64 {
     if (vList.isEmpty) return kEmptyFloat64List;
     if (vList is Float64List && asView) return vList;
     final List<double> v = (vList is! List<double>) ? vList.toList() : vList;
-    print('v: $v');
     return new Float64List.fromList(v);
   }
 

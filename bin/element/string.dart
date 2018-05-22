@@ -27,7 +27,7 @@ void main() {
     log.info0('vList0[0]: ${vList0[0]}');
     final bytes =  Bytes.fromStrings(vList0, maxLength: kMaxShortVF);
     log.info0('bytes: $bytes');
-    final st0 = STtag.fromBytes(PTag.kMetaboliteMapDescription, bytes);
+    final st0 = STtag.fromBytes(bytes, PTag.kMetaboliteMapDescription);
     log.info0('st0: ${st0.info}');
     assert(st0.hasValidValues);
   }

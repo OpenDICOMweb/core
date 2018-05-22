@@ -18,10 +18,7 @@ List<Issues> validateRootDataset(RootDataset ds) =>
 List<Issues> _validateDataset(Dataset ds, List<Issues> iList) {
   for (var e in ds) {
     final v = e.issues;
-    if (v != null && v.isNotEmpty) {
-      iList.add(v);
-      print('$e\n  Issues: $v');
-    }
+    if (v != null && v.isNotEmpty) iList.add(v);
     if (e is SQ) _validateSequence(e, iList);
   }
   return iList;

@@ -267,7 +267,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
-        final us0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
+        final us0 = UStag.fromBytes(bytes0, PTag.kRepresentativeFrameNumber);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(bytes0));
         expect(us0.values is Uint16List, true);
@@ -276,14 +276,14 @@ void main() {
         // Test Base64
         final s0 = bytes0.getBase64();
         final vList1 = Bytes.fromBase64(s0);
-        final us1 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, vList1);
+        final us1 = UStag.fromBytes(vList1, PTag.kRepresentativeFrameNumber);
         expect(us0 == us1, true);
         expect(us1.value, equals(us0.value));
 
         global.throwOnError = false;
         final vList2 = rng.uint16List(2, 2);
         final bytes2 = new Bytes.typedDataView(vList2);
-        final us2 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes2);
+        final us2 = UStag.fromBytes(bytes2, PTag.kRepresentativeFrameNumber);
         log.debug('us2: $us2');
         expect(us2, isNull);
       }
@@ -293,7 +293,7 @@ void main() {
       final uint16List1 = new Uint16List.fromList(uint16Min);
       //     final uint8List11 = uint16List1.buffer.asUint8List();
       final bytes0 = new Bytes.typedDataView(uint16List1);
-      final us5 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
+      final us5 = UStag.fromBytes(bytes0, PTag.kRepresentativeFrameNumber);
       expect(us5.hasValidValues, true);
       expect(us5.vfBytes, equals(bytes0));
       expect(us5.values is Uint16List, true);
@@ -305,7 +305,7 @@ void main() {
         global.throwOnError = false;
         final intList0 = rng.uint16List(1, 10);
         final bytes0 = Bytes.fromAscii(intList0.toString());
-        final uc0 = UCtag.fromBytes(PTag.kSelectorUCValue, bytes0);
+        final uc0 = UCtag.fromBytes(bytes0, PTag.kSelectorUCValue);
         log.debug('uc0: $uc0');
         expect(uc0.hasValidValues, true);
       }
@@ -318,11 +318,11 @@ void main() {
         global.throwOnError = false;
         final intList0 = rng.uint16List(1, 10);
         final bytes0 = Bytes.toAscii(intList0.toString());
-        final uc0 = UCtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        final uc0 = UCtag.fromBytes(bytes0, PTag.kSelectorFDValue);
         expect(uc0, isNull);
 
         global.throwOnError = true;
-        expect(() => UCtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+        expect(() => UCtag.fromBytes(bytes0, PTag.kSelectorFDValue),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
@@ -382,7 +382,7 @@ void main() {
         final uint16List1 = new Uint16List.fromList(uint16List0);
         final uint16List11 = uint16List1.buffer.asUint8List();
         final base64 = cvt.base64.encode(uint16List11);
-        final us0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, base64);
+        final us0 = UStag.fromBytes(base64, PTag.kRepresentativeFrameNumber);
         expect(us0.hasValidValues, true);
       }
     });
@@ -391,7 +391,7 @@ void main() {
       final uint16List1 = new Uint16List.fromList(uint16Min);
       final uint16List11 = uint16List1.buffer.asUint8List();
       final base64 = cvt.base64.encode(uint16List11);
-      final us0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, base64);
+      final us0 = UStag.fromBytes(base64, PTag.kRepresentativeFrameNumber);
       expect(us0.hasValidValues, true);
     });
 */
@@ -431,7 +431,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final uint16List0 = rng.uint16List(1, 1);
         final bytes0 = new Bytes.typedDataView(uint16List0);
-        final us0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
+        final us0 = UStag.fromBytes(bytes0, PTag.kRepresentativeFrameNumber);
         expect(us0.hasValidValues, true);
         expect(us0.vfBytes, equals(bytes0));
         expect(us0.values is Uint16List, true);
@@ -446,7 +446,7 @@ void main() {
         final uint16List1 = new Uint16List.fromList(uint16List0);
         final uint8List11 = uint16List1.buffer.asUint8List();
         final base64 = cvt.base64.encode(uint8List11);
-        final us0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, base64);
+        final us0 = UStag.fromBytes(base64, PTag.kRepresentativeFrameNumber);
         expect(us0.hasValidValues, true);
       }
     });
@@ -1525,11 +1525,10 @@ void main() {
         final bytes = new Bytes.typedDataView(uint16List0);
         log.debug(bytes);
         final ow0 =
-            OWtag.fromBytes(PTag.kEdgePointIndexList, bytes, bytes.length);
+            OWtag.fromBytes(bytes, PTag.kEdgePointIndexList, bytes.length);
         log.debug('$ow0');
         ow0.values;
         expect(ow0.hasValidValues, true);
-        print(ow0.values);
         expect(ow0.values.length == 1, true);
         expect(ow0.values, equals(uint16List0));
         expect(ow0.vfBytes, equals(bytes));
@@ -1539,7 +1538,7 @@ void main() {
         final uint16List1 = rng.uint16List(2, 2);
         final bytes1 = new Bytes.typedDataView(uint16List1);
         final ow1 =
-            OWtag.fromBytes(PTag.kEdgePointIndexList, bytes1, bytes1.length);
+            OWtag.fromBytes(bytes1, PTag.kEdgePointIndexList, bytes1.length);
         expect(ow1.hasValidValues, true);
       }
     });
@@ -1552,7 +1551,7 @@ void main() {
 //        final bytes0 = Bytes.toAscii(intList0.toString());
         final bytes0 = new Bytes.typedDataView(intList0);
         final ow0 =
-            OWtag.fromBytes(PTag.kSelectorOWValue, bytes0, bytes0.length);
+            OWtag.fromBytes(bytes0, PTag.kSelectorOWValue, bytes0.length);
         log.debug('ow0: $ow0');
         expect(ow0.hasValidValues, true);
       }
@@ -1564,11 +1563,11 @@ void main() {
         final intList0 = rng.uint16List(1, 10);
 //        final bytes0 = Bytes.toAscii(intList0.toString());
         final bytes0 = new Bytes.typedDataView(intList0);
-        final ow0 = OWtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        final ow0 = OWtag.fromBytes(bytes0, PTag.kSelectorFDValue);
         expect(ow0, isNull);
 
         global.throwOnError = true;
-        expect(() => OWtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+        expect(() => OWtag.fromBytes(bytes0, PTag.kSelectorFDValue),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
@@ -1583,7 +1582,7 @@ void main() {
         final base64 = bytes.getBase64();
         final bytes2 = Bytes.fromBase64(base64);
         final ow0 =
-            OWtag.fromBytes(PTag.kEdgePointIndexList, bytes2, kUndefinedLength);
+            OWtag.fromBytes(bytes2, PTag.kEdgePointIndexList, kUndefinedLength);
         expect(ow0.hasValidValues, true);
       }
     });

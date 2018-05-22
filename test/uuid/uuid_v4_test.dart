@@ -20,7 +20,6 @@ void main() {
   group('Version 4 Tests', () {
     test('Check if V4 is consistent using a seed', () {
       final uuid0 = new Uuid.seededPseudo();
-      print('uuid0: $uuid0');
       log..debug('uuid0: $uuid0')..debug('data0: $data0');
 
       expect(uuid0.data.length, equals(16));

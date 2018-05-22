@@ -366,10 +366,9 @@ abstract class Tag {
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag lookupByCode(int code, [int vrIndex = kUNIndex, Object creator]) {
     if (!allowInvalidTags &&
-        (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)) {
-      print('code $code ${hex32(code)} ${toDcm(code)} vrIndex $vrIndex');
+        (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding))
       return badCode(code);
-    }
+
     final group = code >> 16;
     Tag tag;
     if (group.isEven) {
@@ -392,7 +391,6 @@ abstract class Tag {
         return badCode(code, msg);
       }
     }
-    //   print('$creator tag: $tag');
     return tag;
   }
 
@@ -600,7 +598,6 @@ abstract class Tag {
   static bool isPDCode(int pdCode, [int pcCode = 0]) {
     if ((pdCode >> 16).isEven) return false;
     final pde = pdCode & 0xFFFF;
-//    print('pde = $pde');
     if (pde < 0x1000 || pde > 0xFFFF) return false;
     return (pcCode == 0) ? true : _isValidPDCode(pdCode, pcCode);
   }
@@ -618,14 +615,9 @@ abstract class Tag {
     final pdOffset = pd & 0xFFFF;
     final pdsg = pdOffset >> 8;
     final pcsg = (pc & 0xFF);
-//    print('pdsg: ${hex8(pdsg)} pcsg: ${hex8(pcsg)}');
     if (pcsg < 0x10 || pcsg > 0xFF || pdsg != pcsg) return false;
-//    final pce = pc & 0xFFFF;
-//    if (pce < 0x10 || pce > 0xFF) return false;
     final base = pcsg << 8;
     final limit = base + 0xFF;
-//    print('base(${hex16(base)}) <= offset(${hex16(pdOffset)}) '
-//        '<= limit(${hex16(limit)})');
     return base <= pdOffset && pdOffset <= limit;
   }
 

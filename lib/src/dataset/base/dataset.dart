@@ -182,16 +182,6 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     return results;
   }
 
-/*
-  @override
-  Element deleteCode(int code) {
-    print('index: $code');
-    final e = this[code];
-    if (e != null) rCode(code);
-    return e;
-  }
-*/
-
   String get info => '''
 $runtimeType(#$hashCode):
             Total: $total

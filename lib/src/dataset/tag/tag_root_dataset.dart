@@ -41,11 +41,9 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   @override
   bool tryAdd(Element e, [Issues issues]) {
     var eNew = e;
-    if (e.group.isOdd) {
-      print('TagRootDataset add private: $e');
-      eNew = pGroups.add(e, this);
-    }
-    return super.tryAdd(eNew, issues);
+    return (e.group.isOdd)
+        ? eNew = pGroups.add(e, this)
+        : super.tryAdd(eNew, issues);
   }
 
   @override

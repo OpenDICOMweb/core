@@ -237,7 +237,7 @@ void main() {
         final vList1 = rsg.getAEList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final ae1 = AEtag.fromBytes(PTag.kPerformedStationAETitle, bytes);
+        final ae1 = AEtag.fromBytes(bytes, PTag.kPerformedStationAETitle);
         log.debug('ae1: ${ae1.info}');
         expect(ae1.hasValidValues, true);
       }
@@ -249,7 +249,7 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final ae1 = AEtag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final ae1 = AEtag.fromBytes(bytes0, PTag.kSelectorAEValue);
           log.debug('ae1: ${ae1.info}');
           expect(ae1.hasValidValues, true);
         }
@@ -263,11 +263,11 @@ void main() {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final ae1 = AEtag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          final ae1 = AEtag.fromBytes(bytes0, PTag.kSelectorCSValue);
           expect(ae1, isNull);
 
           global.throwOnError = true;
-          expect(() => AEtag.fromBytes(PTag.kSelectorCSValue, bytes0),
+          expect(() => AEtag.fromBytes(bytes0, PTag.kSelectorCSValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
@@ -1040,7 +1040,7 @@ void main() {
         final vList1 = rsg.getCSList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final cs1 = CStag.fromBytes(PTag.kGeometryOfKSpaceTraversal, bytes);
+        final cs1 = CStag.fromBytes(bytes, PTag.kGeometryOfKSpaceTraversal);
         log.debug('cs1: ${cs1.info}');
         expect(cs1.hasValidValues, true);
       }
@@ -1051,7 +1051,7 @@ void main() {
         final vList1 = rsg.getCSList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final cs1 = CStag.fromBytes(PTag.kSelectorCSValue, bytes0);
+          final cs1 = CStag.fromBytes(bytes0, PTag.kSelectorCSValue);
           log.debug('cs1: ${cs1.info}');
           expect(cs1.hasValidValues, true);
         }
@@ -1064,11 +1064,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final cs1 = CStag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final cs1 = CStag.fromBytes(bytes0, PTag.kSelectorAEValue);
           expect(cs1, isNull);
 
           global.throwOnError = true;
-          expect(() => CStag.fromBytes(PTag.kSelectorAEValue, bytes0),
+          expect(() => CStag.fromBytes(bytes0, PTag.kSelectorAEValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
@@ -1502,7 +1502,6 @@ void main() {
 
           final max = tag.vm.max(tag.vr.maxLength);
           final list = invalidVList.take(max + 2);
-          print('max: $max length: ${list.length}');
           expect(CS.isValidLength(tag, list), false);
           global.throwOnError = true;
           expect(() => CS.isValidLength(tag, list),
@@ -1821,8 +1820,6 @@ void main() {
       global.throwOnError = false;
       final vList0 = rsg.getUIList(3, 4);
       final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
-      print(vList0);
-      print(ui0);
       expect(utility.testElementUpdate(ui0, vList0), true);
 
       for (var i = 0; i < 10; i++) {
@@ -1980,7 +1977,7 @@ void main() {
         final vList1 = rsg.getUIList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final ui0 = UItag.fromBytes(PTag.kSOPInstanceUID, bytes);
+        final ui0 = UItag.fromBytes(bytes, PTag.kSOPInstanceUID);
         log.debug('$i: ui0: ${ui0.info}');
         expect(ui0.hasValidValues, true);
       }
@@ -1991,7 +1988,7 @@ void main() {
         final vList1 = rsg.getUIList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final ui1 = UItag.fromBytes(PTag.kSelectorUIValue, bytes0);
+          final ui1 = UItag.fromBytes(bytes0, PTag.kSelectorUIValue);
           log.debug('ui1: ${ui1.info}');
           expect(ui1.hasValidValues, true);
         }
@@ -2004,11 +2001,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final ui1 = UItag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final ui1 = UItag.fromBytes(bytes0, PTag.kSelectorAEValue);
           expect(ui1, isNull);
 
           global.throwOnError = true;
-          expect(() => UItag.fromBytes(PTag.kSelectorAEValue, bytes0),
+          expect(() => UItag.fromBytes(bytes0, PTag.kSelectorAEValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
@@ -2770,7 +2767,7 @@ void main() {
         final vList1 = rsg.getURList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final ur0 = URtag.fromBytes(PTag.kRetrieveURL, bytes);
+        final ur0 = URtag.fromBytes(bytes, PTag.kRetrieveURL);
         log.debug('ur0: ${ur0.info}');
         expect(ur0.hasValidValues, true);
       }
@@ -2781,7 +2778,7 @@ void main() {
         final vList1 = rsg.getURList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final ur1 = URtag.fromBytes(PTag.kSelectorURValue, bytes0);
+          final ur1 = URtag.fromBytes(bytes0, PTag.kSelectorURValue);
           log.debug('ur1: ${ur1.info}');
           expect(ur1.hasValidValues, true);
         }
@@ -2794,11 +2791,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final ur1 = URtag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final ur1 = URtag.fromBytes(bytes0, PTag.kSelectorAEValue);
           expect(ur1, isNull);
 
           global.throwOnError = true;
-          expect(() => URtag.fromBytes(PTag.kSelectorAEValue, bytes0),
+          expect(() => URtag.fromBytes(bytes0, PTag.kSelectorAEValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }

@@ -16,21 +16,30 @@ import 'package:core/src/vr.dart';
 // ignore_for_file: only_throw_errors
 // Urgent: verify that tag.vr is newVRIndex when appropriate
 
+/// Return the appropriate [Tag] for [ds] and [code].
+///
+/// If [code] is Public (i.e. even), returns the Public Tag
+/// corresponding to [code]. If [code] is a Private Data Code,
+/// return the appropriate Private Data Tag, based on the corresponding
+//  Private Creator Tag in [ds].
+///
+/// If [code] is Private Creator code, an Error is thrown.
 Tag lookupTagByCode(Dataset ds, int code, int vrIndex) {
   assert(_isNotPCTagCode(code));
   final group = code >> 16;
   final elt = code & 0xFFFF;
-  print('${dcm(code)}');
+
   Tag tag;
   if (_isPublicCode(code)) {
-    // Public Element
+    // Returns the Public Tag corresponding to [code].
     tag = PTag.lookupByCode(code);
     if (!_isDefinedVRIndex(vrIndex)) {
       final newVRIndex = _getCorrectVR(vrIndex, tag);
       tag = PTag.lookupByCode(code, newVRIndex);
     }
   } else if (_isPDCode(code)) {
-    // Private Data Element
+    // Return the appropriate Private Data Tag, based on the corresponding
+    // Private Creator Tag in [ds].
     final pcCode = (group << 16) + (elt >> 8);
     tag = ds.pcTags[pcCode];
   } else {

@@ -358,14 +358,14 @@ void main() {
         final vList0 = rng.float64List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
         final e0 =
-            FDtag.fromBytes(PTag.kOverallTemplateSpatialTolerance, bytes0);
+            FDtag.fromBytes(bytes0, PTag.kOverallTemplateSpatialTolerance);
         log.debug('fd0: $e0');
         expect(e0.hasValidValues, true);
 
         final vList1 = rng.float64List(2, 2);
         final bytes1 = new Bytes.typedDataView(vList1);
         final e1 =
-            FDtag.fromBytes(PTag.kOverallTemplateSpatialTolerance, bytes1);
+            FDtag.fromBytes(bytes1, PTag.kOverallTemplateSpatialTolerance);
         log.debug('fd1: $e1');
         expect(e1, isNull);
       }
@@ -375,7 +375,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final floatList = rng.float64List(1, 1);
         final bytes0 = new Bytes.typedDataView(floatList);
-        final fd0 = FDtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        final fd0 = FDtag.fromBytes(bytes0, PTag.kSelectorFDValue);
         log.debug('fd0: $fd0');
         expect(fd0.hasValidValues, true);
       }
@@ -386,11 +386,11 @@ void main() {
         global.throwOnError = false;
         final float64List = rng.float64List(1, 10);
         final bytes = new Bytes.typedDataView(float64List);
-        final fd0 = FDtag.fromBytes(PTag.kSelectorSSValue, bytes);
+        final fd0 = FDtag.fromBytes(bytes, PTag.kSelectorSSValue);
         expect(fd0, isNull);
 
         global.throwOnError = true;
-        expect(() => FDtag.fromBytes(PTag.kSelectorSSValue, bytes),
+        expect(() => FDtag.fromBytes(bytes, PTag.kSelectorSSValue),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
@@ -429,7 +429,7 @@ void main() {
     test('FD fromBase64', () {
       final s = Float64.toBase64(<double>[78678.11]);
       final bytes = Bytes.fromBase64(s);
-      final e0 = FDtag.fromBytes(PTag.kOverallTemplateSpatialTolerance, bytes);
+      final e0 = FDtag.fromBytes(bytes, PTag.kOverallTemplateSpatialTolerance);
       expect(e0.hasValidValues, true);
 
       for (var i = 0; i < 10; i++) {
@@ -438,7 +438,7 @@ void main() {
         final base64 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(base64);
         final e1 =
-            FDtag.fromBytes(PTag.kOverallTemplateSpatialTolerance, bytes1);
+            FDtag.fromBytes(bytes1, PTag.kOverallTemplateSpatialTolerance);
         expect(e1.hasValidValues, true);
 
         final vList1 = bytes1.getFloat64List();
@@ -919,15 +919,6 @@ void main() {
 */
 
     test('FD isValidVFLength good values', () {
-      print('kMax8ShortVF: $kMaxShortVF');
-      print('kMax16ShortVF: $k16BitMaxShortVF '
-                '${k16BitMaxShortVF / 2} $k16BitMaxShortLength');
-      print('kMax32ShortVF: $k32BitMaxShortVF '
-                '${k32BitMaxShortVF / 4} $k32BitMaxShortLength');
-      print('kMax64ShortVF: $k64BitMaxShortVF '
-                '${k64BitMaxShortVF / 8} $k64BitMaxShortLength');
-      print('kMaxShortVF: ${FD.kMaxVFLength}');
-      print('kMaxShortVF: ${FD.kMaxLength} ${FD.kMaxLength * 8}');
       expect(FD.isValidVFLength(FD.kMaxVFLength), true);
       expect(FD.isValidVFLength(0), true);
     });
@@ -1319,13 +1310,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
-        final od0 = ODtag.fromBytes(PTag.kSelectorODValue, bytes0);
+        final od0 = ODtag.fromBytes(bytes0, PTag.kSelectorODValue);
         log.debug('od0: $od0');
         expect(od0.hasValidValues, true);
 
         final vList1 = rng.float64List(2, 2);
         final bytes1 = new Bytes.typedDataView(vList1);
-        final od1 = ODtag.fromBytes(PTag.kSelectorODValue, bytes1);
+        final od1 = ODtag.fromBytes(bytes1, PTag.kSelectorODValue);
         log.debug('od1 $od1');
         expect(od1.hasValidValues, true);
       }
@@ -1335,7 +1326,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float64List(1, 1);
         final bytes = new Bytes.typedDataView(vList);
-        final od0 = ODtag.fromBytes(PTag.kSelectorODValue, bytes);
+        final od0 = ODtag.fromBytes(bytes, PTag.kSelectorODValue);
         log.debug('od0: $od0');
         expect(od0.hasValidValues, true);
       }
@@ -1346,11 +1337,11 @@ void main() {
         global.throwOnError = false;
         final vList = rng.float64List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final od0 = ODtag.fromBytes(PTag.kSelectorSSValue, bytes);
+        final od0 = ODtag.fromBytes(bytes, PTag.kSelectorSSValue);
         expect(od0, isNull);
 
         global.throwOnError = true;
-        expect(() => ODtag.fromBytes(PTag.kSelectorSSValue, bytes),
+        expect(() => ODtag.fromBytes(bytes, PTag.kSelectorSSValue),
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
@@ -1373,7 +1364,7 @@ void main() {
       final s0 = Float64.toBase64(<double>[78678.11, 12345.678]);
       log.debug('b64: $s0');
       final bytes0 = Bytes.fromBase64(s0);
-      final od0 = ODtag.fromBytes(PTag.kSelectorODValue, bytes0);
+      final od0 = ODtag.fromBytes(bytes0, PTag.kSelectorODValue);
       log.debug('od0: $od0');
       expect(od0.hasValidValues, true);
 
@@ -1381,7 +1372,7 @@ void main() {
         final vList1 = rng.float64List(1, 1);
         final s1 = Float64.toBase64(vList1);
         final bytes1 = Bytes.fromBase64(s1);
-        final od1 = ODtag.fromBytes(PTag.kSelectorODValue, bytes1);
+        final od1 = ODtag.fromBytes(bytes1, PTag.kSelectorODValue);
         expect(od1.hasValidValues, true);
       }
     });
@@ -1488,23 +1479,6 @@ void main() {
 
     test('OD.isValidVFLength good values', () {
       global.throwOnError = false;
-      print('${(0xFFFFFFFF - 7)}: '
-                '${hex32((0xFFFFFFFF - 7))} '
-                '${(0xFFFFFFFF - 7)} '
-                '${hex32(OD.kMaxLength)}');
-      print('v: ${hex32(OD.kMaxLength)} ${OD.kMaxLength}');
-      print('${(0xFFFFFFFF - 7) / 8}: '
-                '${hex32((0xFFFFFFFF - 7) ~/ 8)} '
-                '${(0xFFFFFFFF - 7) ~/ 8} '
-                '${hex32(OD.kMaxLength)}');
-      print('v0: ${hex32(OD.kMaxLength)} ${OD.kMaxLength}');
-      print('v1: ${hex32(k64BitMaxLongLength)} $k64BitMaxLongLength');
-      print('v2: ${hex32(OD.kMaxVFLength)} ${OD.kMaxVFLength}');
-      print('v3: ${hex32(k64BitMaxLongVF)} $k64BitMaxLongVF');
-      print('x: ${hex32(0xFFFFFFFF - 7)} ${0xFFFFFFFF - 7}');
-      print('OD ${OD.kMaxVFLength} ${OD.kMaxLength}');
-      print('OD ${OD.kMaxLength} ${OD.kMaxVFLength / 8} '
-                '${(0xFFFFFFFF - 7) / 8} ${OD.kMaxLength * 8}');
       expect(OD.isValidVFLength(OD.kMaxVFLength), true);
       expect(OD.isValidVFLength(0), true);
     });

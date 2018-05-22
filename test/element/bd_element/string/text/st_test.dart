@@ -24,12 +24,9 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-
         final e0 = STbytes.fromValues(kSelectorSTValue, vList0);
-        print('e0.bytes: ${e0.bytes}');
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
-        print('e1.bytes: ${e1.bytes}');
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }

@@ -609,7 +609,7 @@ abstract class BytesMixin {
       [int offset = 0, int length]) {
     length ??= list.length;
 //    final index = _absIndex(start);
-    assert(_checkLength(offset, length, kFloat64Size));
+    assert(_checkLength(offset, length, kInt32Size * 4));
     for (var i = offset, j = start; i < length; i++, j += 16)
       _setInt32x4(j, list[i]);
     return length * 16;

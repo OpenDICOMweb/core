@@ -26,7 +26,6 @@ int _stringListLength(Iterable<String> sList,
   var len = sList.fold(0, _combineSLength);
   len += sList.length - 1;
   if (len.isOdd && pad) len++;
-  print('String List length: $len');
   return len;
 }
 

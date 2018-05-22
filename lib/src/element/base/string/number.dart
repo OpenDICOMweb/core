@@ -146,8 +146,6 @@ abstract class DS extends StringAscii {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    print('s= "$s"');
-
     final n = tryParse(s);
     if (n != null) return true;
     invalidString('Invalid Decimal (DS) String: "$s"');
@@ -225,11 +223,8 @@ abstract class IS extends StringAscii {
       var h = global.hash(ints[i]);
       h = (h.isNegative) ? h % kMinValue : h % kMaxValue;
       final s = h.toString();
-      print('s: "$s"');
-      print('isValid: "$s" ${isValidValue(s)}');
       sList[i] = s;
     }
-    print('sList: $sList');
     return update(sList);
   }
 

@@ -38,10 +38,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, i);
         final e0 = ASbytes.fromValues(kSelectorASValue, vList0);
-        print('e.values: ${e0.values}');
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
-        print('e.values: ${e1.values}');
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }

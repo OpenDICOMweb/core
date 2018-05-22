@@ -18,6 +18,5 @@ export 'package:core/src/element/base/integer/pixel_data.dart';
 export 'package:core/src/element/base/meta.dart';
 export 'package:core/src/element/base/sequence.dart';
 export 'package:core/src/element/base/string/string.dart';
-export 'package:core/src/element/base/vf_fragments.dart';
 export 'package:core/src/error/element_errors.dart';
 export 'package:core/src/utils/string.dart';

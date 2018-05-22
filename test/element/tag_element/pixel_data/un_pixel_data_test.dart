@@ -101,7 +101,6 @@ void main() {
       expect(un0.hashCode == un2.hashCode, false);
       expect(un0 == un2, false);
 */
-
     });
 
     test('Create Encapsulated UNtagPixelData', () {
@@ -159,7 +158,7 @@ void main() {
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBytes', () {
-      final un0 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
+      final un0 = UNtagPixelData.fromBytes(frame, PTag.kNoName0, frame.length);
       expect(un0, isNull);
 
       final un1 =
@@ -198,18 +197,17 @@ void main() {
       expect(un0.checkValue(UN.kMaxValue + 1), false);
       expect(un0.checkValue(UN.kMinValue - 1), false);
 */
-
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBytes hashCode and ==', () {
-      final un0 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
+      final un0 = UNtagPixelData.fromBytes(frame, PTag.kNoName0, frame.length);
       expect(un0, isNull);
 
-      final un1 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
+      final un1 = UNtagPixelData.fromBytes(frame, PTag.kNoName0, frame.length);
       expect(un1, isNull);
 
       final un2 = UNtagPixelData.fromBytes(
-          PTag.kVariablePixelData, frame, frame.length);
+          frame, PTag.kVariablePixelData, frame.length);
       expect(un2, isNull);
 
 /*
@@ -383,7 +381,6 @@ void main() {
       expect(un0.checkValue(UN.kMaxValue + 1), false);
       expect(un0.checkValue(UN.kMinValue - 1), false);
 */
-
     });
 
     test('UNtagPixelData.make hashCode and ==', () {
@@ -402,11 +399,10 @@ void main() {
       expect(un0.hashCode == un2.hashCode, false);
       expect(un0 == un2, false);
 */
-
     });
 
     test('new UNtagPixelData.fromBytes', () {
-      final un0 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
+      final un0 = UNtagPixelData.fromBytes(frame, PTag.kNoName0, frame.length);
       expect(un0, isNull);
 
 /* Fix
@@ -444,14 +440,13 @@ void main() {
       expect(un0.checkValue(UN.kMaxValue + 1), false);
       expect(un0.checkValue(UN.kMinValue - 1), false);
 */
-
     });
 
     test('new UNtagPixelData.fromBytes hashCode and ==', () {
-      final un0 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
+      final un0 = UNtagPixelData.fromBytes(frame, PTag.kNoName0, frame.length);
       expect(un0, isNull);
 /*
-      final un1 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
+      final un1 = UNtagPixelData.fromBytes(frame, PTag.kNoName0, frame.length);
 
       final un2 = UNtagPixelData.fromBytes(
           PTag.kVariablePixelData, frame, frame.length);
@@ -560,13 +555,12 @@ void main() {
       expect(unfrom0.checkValue(UN.kMaxValue + 1), false);
       expect(unfrom0.checkValue(UN.kMinValue - 1), false);
 */
-
     });
 
     test('UNPixelData fromBytes', () {
       global.throwOnError = false;
       final bytes0 = new Bytes.fromList(testFrame);
-      final e0 = UNtagPixelData.fromBytes(PTag.kNoName0, bytes0);
+      final e0 = UNtagPixelData.fromBytes(bytes0, PTag.kNoName0);
 
       expect(e0, isNull);
 
@@ -597,7 +591,7 @@ void main() {
 */
 
       global.throwOnError = true;
-      expect(() => UNtagPixelData.fromBytes(PTag.kSelectorAEValue, bytes0),
+      expect(() => UNtagPixelData.fromBytes(bytes0, PTag.kSelectorAEValue),
           throwsA(const isInstanceOf<InvalidTagError>()));
     });
   });

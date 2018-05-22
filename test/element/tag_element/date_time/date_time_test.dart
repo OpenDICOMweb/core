@@ -347,7 +347,7 @@ void main() {
         log.debug('vList1: $vList1');
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final as0 = AStag.fromBytes(PTag.kPatientAge, bytes);
+        final as0 = AStag.fromBytes(bytes, PTag.kPatientAge);
         log.debug('as0: $as0');
         expect(as0.hasValidValues, true);
       }
@@ -358,7 +358,7 @@ void main() {
         final vList1 = rsg.getASList(1, 10);
         for (var s in vList1) {
           final bytes = Bytes.fromAscii(s);
-          final as1 = AStag.fromBytes(PTag.kSelectorASValue, bytes);
+          final as1 = AStag.fromBytes(bytes, PTag.kSelectorASValue);
           log.debug('as1: $as1');
           expect(as1.hasValidValues, true);
         }
@@ -371,11 +371,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final as1 = AStag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final as1 = AStag.fromBytes(bytes0, PTag.kSelectorAEValue);
           expect(as1, isNull);
 
           global.throwOnError = true;
-          expect(() => AStag.fromBytes(PTag.kSelectorAEValue, bytes0),
+          expect(() => AStag.fromBytes(bytes0, PTag.kSelectorAEValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
@@ -1296,7 +1296,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = Bytes.fromAsciiList(s);
         log.debug('bytes:$bytes');
-        final da0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
+        final da0 = DAtag.fromBytes(bytes, PTag.kCreationDate);
         log.debug('da0: $da0');
         expect(da0.hasValidValues, true);
       }
@@ -1308,7 +1308,7 @@ void main() {
         final vList1 = rsg.getDAList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final da0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
+        final da0 = DAtag.fromBytes(bytes, PTag.kCreationDate);
         log.debug('da0: $da0');
         expect(da0.hasValidValues, true);
       }
@@ -1319,7 +1319,7 @@ void main() {
         final vList1 = rsg.getDAList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final da1 = DAtag.fromBytes(PTag.kSelectorDAValue, bytes0);
+          final da1 = DAtag.fromBytes(bytes0, PTag.kSelectorDAValue);
           log.debug('da1: $da1');
           expect(da1.hasValidValues, true);
         }
@@ -1332,11 +1332,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final da1 = DAtag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final da1 = DAtag.fromBytes(bytes0, PTag.kSelectorAEValue);
           expect(da1, isNull);
 
           global.throwOnError = true;
-          expect(() => DAtag.fromBytes(PTag.kSelectorAEValue, bytes0),
+          expect(() => DAtag.fromBytes(bytes0, PTag.kSelectorAEValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
@@ -1996,7 +1996,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = Bytes.fromAsciiList(s);
         log.debug('bytes:$bytes');
-        final dt0 = DTtag.fromBytes(PTag.kDateTime, bytes);
+        final dt0 = DTtag.fromBytes(bytes, PTag.kDateTime);
         log.debug('dt0: $dt0');
         expect(dt0.hasValidValues, true);
       }
@@ -2009,7 +2009,7 @@ void main() {
         final vList1 = rsg.getDTList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final dt0 = DTtag.fromBytes(PTag.kDateTime, bytes);
+        final dt0 = DTtag.fromBytes(bytes, PTag.kDateTime);
         log.debug('dt0: $dt0');
         expect(dt0.hasValidValues, true);
       }
@@ -2020,7 +2020,7 @@ void main() {
         final vList1 = rsg.getDTList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final dt1 = DTtag.fromBytes(PTag.kSelectorDTValue, bytes0);
+          final dt1 = DTtag.fromBytes(bytes0, PTag.kSelectorDTValue);
           log.debug('dt1: $dt1');
           expect(dt1.hasValidValues, true);
         }
@@ -2033,11 +2033,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final dt1 = DTtag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final dt1 = DTtag.fromBytes(bytes0, PTag.kSelectorAEValue);
           expect(dt1, isNull);
 
           global.throwOnError = true;
-          expect(() => DTtag.fromBytes(PTag.kSelectorAEValue, bytes0),
+          expect(() => DTtag.fromBytes(bytes0, PTag.kSelectorAEValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
@@ -2634,7 +2634,6 @@ void main() {
     test('DT isValidValueLength bad values', () {
       for (var s in badDTLengthList) {
         for (var a in s) {
-          print('a: "$a" ${a.length}');
           expect(DT.isValidValueLength(a), false);
         }
       }
@@ -3191,7 +3190,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getTMList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
-        final tm0 = TMtag.fromBytes(PTag.kTime, bytes);
+        final tm0 = TMtag.fromBytes(bytes, PTag.kTime);
         expect(tm0.hasValidValues, true);
       }
     });
@@ -3201,7 +3200,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = Bytes.fromAsciiList(s);
         log.debug('bytes:$bytes');
-        final tm0 = TMtag.fromBytes(PTag.kModifiedImageTime, bytes);
+        final tm0 = TMtag.fromBytes(bytes, PTag.kModifiedImageTime);
         log.debug('tm0: $tm0');
         expect(tm0.hasValidValues, true);
       }
@@ -3212,7 +3211,7 @@ void main() {
         final vList1 = rsg.getTMList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final tm1 = TMtag.fromBytes(PTag.kSelectorTMValue, bytes0);
+          final tm1 = TMtag.fromBytes(bytes0, PTag.kSelectorTMValue);
           log.debug('tm1: $tm1');
           expect(tm1.hasValidValues, true);
         }
@@ -3225,11 +3224,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final tm1 = TMtag.fromBytes(PTag.kSelectorAEValue, bytes0);
+          final tm1 = TMtag.fromBytes(bytes0, PTag.kSelectorAEValue);
           expect(tm1, isNull);
 
           global.throwOnError = true;
-          expect(() => TMtag.fromBytes(PTag.kSelectorAEValue, bytes0),
+          expect(() => TMtag.fromBytes(bytes0, PTag.kSelectorAEValue),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }

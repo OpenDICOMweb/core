@@ -80,6 +80,44 @@ abstract class TagElement<V> {
   bool get isPrivate => tag.isPrivate;
   bool get isRetired => tag.isRetired;
 
+  /// Creates a [TagElement] from [DicomBytes] containing a binary encoded
+  /// [Element].
+  static Element makeFromBytes(DicomBytes bytes, Dataset ds) {
+    final code = bytes.code;
+    final pCode = code & 0x1FFFF;
+    if (pCode >= 0x10010 && pCode <= 0x100FF) {
+      final token = bytes.vfBytes.getUtf8();
+      final tag = PCTag.lookupByToken(code, bytes.vrIndex, token);
+      return PCtag.fromBytes(bytes, tag);
+    }
+    final vrIndex = bytes.vrIndex;
+
+    final tag = (ds != null)
+        ? lookupTagByCode(ds, code, vrIndex)
+        : Tag.lookupByCode(code);
+    final tagVRIndex = tag.vrIndex;
+    return _fromBytesMakers[tagVRIndex](bytes, tag);
+  }
+
+  static final List<Function> _fromBytesMakers = <Function>[
+    SQtag.fromBytes,
+    // Maybe Undefined Lengths
+    OBtag.fromBytes, OWtag.fromBytes, UNtag.fromBytes, // No reformat
+
+    // EVR Long
+    ODtag.fromBytes, OFtag.fromBytes, OLtag.fromBytes,
+    UCtag.fromBytes, URtag.fromBytes, UTtag.fromBytes,
+
+    // EVR Short
+    AEtag.fromBytes, AStag.fromBytes, ATtag.fromBytes,
+    CStag.fromBytes, DAtag.fromBytes, DStag.fromBytes,
+    DTtag.fromBytes, FDtag.fromBytes, FLtag.fromBytes,
+    IStag.fromBytes, LOtag.fromBytes, LTtag.fromBytes,
+    PNtag.fromBytes, SHtag.fromBytes, SLtag.fromBytes,
+    SStag.fromBytes, STtag.fromBytes, TMtag.fromBytes,
+    UItag.fromBytes, ULtag.fromBytes, UStag.fromBytes,
+  ];
+
   /// Returns a new [Element] based on the arguments.
   ///
   /// _Note_: The will create Private Creator ([PC]) [Element]s, but
@@ -93,13 +131,29 @@ abstract class TagElement<V> {
     return makeFromTag(tag, values, tagVRIndex, vfLengthField);
   }
 
-  static Element makeFromBase64(int code, String s, int vrIndex, Dataset ds,
-      [int vfLengthField]) {
-    final bytes = Bytes.fromBase64(s);
-    final tag = lookupTagByCode(ds, code, vrIndex);
+  static Element makeMaybeUndefinedFromBytes(DicomBytes bytes,
+      [Dataset ds, int vfLengthField, TransferSyntax ts]) {
+    final code = bytes.code;
+    final pCode = code & 0x1FFFF;
+    if (pCode >= 0x10010 && pCode <= 0x100FF) {
+      final token = bytes.vfBytes.getUtf8();
+      final tag = PCTag.lookupByToken(code, bytes.vrIndex, token);
+      return PCtag.fromBytes(bytes, tag);
+    }
+    final vrIndex = bytes.vrIndex;
+
+    final tag = (ds != null)
+        ? lookupTagByCode(ds, code, vrIndex)
+        : Tag.lookupByCode(code);
     final tagVRIndex = tag.vrIndex;
-    return _fromValuesMakers[tagVRIndex](code, bytes, vfLengthField);
+    return _undefinedBytesMakers[tagVRIndex](bytes, ds, vfLengthField, ts);
   }
+
+  // Elements that may have undefined lengths.
+  static final List<Function> _undefinedBytesMakers = <Function>[
+    SQtag.fromBytes, // stop reformat
+    OBtag.fromBytes, OWtag.fromBytes, UNtag.fromBytes
+  ];
 
   static Element makeFromElement(Dataset ds, Element e,
           [int vrIndex, int vfLengthField]) =>
@@ -146,35 +200,6 @@ abstract class TagElement<V> {
     PNtag.fromValues, SHtag.fromValues, SLtag.fromValues,
     SStag.fromValues, STtag.fromValues, TMtag.fromValues,
     UItag.fromValues, ULtag.fromValues, UStag.fromValues,
-  ];
-
-  /// Creates a [TagElement] from [DicomBytes] containing a binary encoded
-  /// [Element].
-  static Element makeFromBytes(
-      Dataset ds, int code, DicomBytes bytes, int vrIndex, int vfOffset,
-      [int vfLengthField]) {
-    final vf = bytes.asBytes(bytes.offset + vfOffset, bytes.length - vfOffset);
-    final tag = lookupTagByCode(ds, code, vrIndex);
-    return _fromBytesMakers[vrIndex](tag, vf, vfLengthField);
-  }
-
-  static final List<Function> _fromBytesMakers = <Function>[
-    SQtag.fromBytes,
-    // Maybe Undefined Lengths
-    OBtag.fromBytes, OWtag.fromBytes, UNtag.fromBytes, // No reformat
-
-    // EVR Long
-    ODtag.fromBytes, OFtag.fromBytes, OLtag.fromBytes,
-    UCtag.fromBytes, URtag.fromBytes, UTtag.fromBytes,
-
-    // EVR Short
-    AEtag.fromBytes, AStag.fromBytes, ATtag.fromBytes,
-    CStag.fromBytes, DAtag.fromBytes, DStag.fromBytes,
-    DTtag.fromBytes, FDtag.fromBytes, FLtag.fromBytes,
-    IStag.fromBytes, LOtag.fromBytes, LTtag.fromBytes,
-    PNtag.fromBytes, SHtag.fromBytes, SLtag.fromBytes,
-    SStag.fromBytes, STtag.fromBytes, TMtag.fromBytes,
-    UItag.fromBytes, ULtag.fromBytes, UStag.fromBytes,
   ];
 
   /// Creates an [SQtag] [Element].

@@ -43,7 +43,7 @@ class SStag extends SS with TagElement<int> {
           [int _, TransferSyntax __]) =>
       new SStag._(tag, vList);
 
-  static SStag fromBytes(Tag tag, Bytes bytes) =>
+  static SStag fromBytes(Bytes bytes, Tag tag) =>
       SS.isValidBytesArgs(tag, bytes)
           ? new SStag._x(tag, bytes.asInt16List())
           : badTag(tag, null, SS);
@@ -76,7 +76,7 @@ class SLtag extends SL with TagElement<int> {
           [int _, TransferSyntax __]) =>
       new SLtag._(tag, vList);
 
-  static SLtag fromBytes(Tag tag, Bytes bytes) =>
+  static SLtag fromBytes(Bytes bytes, Tag tag) =>
       SL.isValidBytesArgs(tag, bytes)
           ? new SLtag._(tag, bytes.asInt32List())
           : badTag(tag, null, SL);
@@ -119,7 +119,7 @@ class OBtag extends OB with TagElement<int> {
           [int vfLengthField, TransferSyntax ts]) =>
       new OBtag._(tag, Uint8.fromList(vList), vfLengthField, ts);
 
-  static OBtag fromBytes(Tag tag, Bytes bytes,
+  static OBtag fromBytes(Bytes bytes, Tag tag,
           [int vfLengthField, TransferSyntax ts]) =>
       OB.isValidBytesArgs(tag, bytes, vfLengthField)
           ? new OBtag._x(tag, bytes.asUint8List(), vfLengthField)
@@ -127,13 +127,13 @@ class OBtag extends OB with TagElement<int> {
 }
 
 /// Unsigned 8-bit (Uint8)  Pixel Data.
-///
-/// If encapsulated (compressed) then [fragments] must not be _null_. If
-/// [fragments] == _null_ then the pixels are uncompressed and data is
-/// contained in [values] or [vfBytes].
-///
-/// _Note_: Pixel Data Tag Elements do not have [VFFragments].
-///         [VFFragments] must be converted before they are created.
+//
+// If encapsulated (compressed) then [fragments] must not be _null_. If
+// [fragments] == _null_ then the pixels are uncompressed and data is
+// contained in [values] or [vfBytes].
+//
+// _Note_: Pixel Data Tag Elements do not have [VFFragments].
+//         [VFFragments] must be converted before they are created.
 class OBtagPixelData extends OBPixelData with TagElement<int> {
   @override
   final Tag tag = PTag.kPixelDataOB;
@@ -174,7 +174,7 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static OBtagPixelData fromBytes(Tag tag, Bytes bytes,
+  static OBtagPixelData fromBytes(Bytes bytes, Tag tag,
           [int vfLengthField, TransferSyntax ts]) =>
       OBPixelData.isValidBytesArgs(tag, bytes, vfLengthField)
           ? new OBtagPixelData._x(bytes.asUint8List(), vfLengthField, ts)
@@ -216,7 +216,7 @@ class UNtag extends UN with TagElement<int> {
           [int vfLengthField, TransferSyntax ts]) =>
       new UNtag._(tag, vList, vfLengthField, ts);
 
-  static UNtag fromBytes(Tag tag, Bytes bytes,
+  static UNtag fromBytes(Bytes bytes, Tag tag,
           [int vfLengthField, TransferSyntax ts]) =>
       UN.isValidBytesArgs(tag, bytes, vfLengthField)
           ? new UNtag._(tag, bytes.asUint8List(), vfLengthField, ts)
@@ -224,12 +224,13 @@ class UNtag extends UN with TagElement<int> {
 }
 
 /// 8-bit Pixel Data.
-/// If encapsulated (compressed) then [fragments] must not be _null_. If
-/// [fragments] == _null_ then the pixels are uncompressed and data is
-/// contained in [values] or [vfBytes].
-///
-/// _Note_: Pixel Data Tag Elements do not have [VFFragments].
-///         [VFFragments] must be converted before they are created.
+//
+// If encapsulated (compressed) then [fragments] must not be _null_. If
+// [fragments] == _null_ then the pixels are uncompressed and data is
+// contained in [values] or [vfBytes].
+//
+// _Note_: Pixel Data Tag Elements do not have [VFFragments].
+//         [VFFragments] must be converted before they are created.
 class UNtagPixelData extends UNPixelData with TagElement<int> {
   @override
   final Tag tag = PTag.kPixelDataUN;
@@ -270,7 +271,7 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static UNtagPixelData fromBytes(Tag tag, Bytes bytes,
+  static UNtagPixelData fromBytes(Bytes bytes, Tag tag,
           [int vfLengthField, TransferSyntax ts]) =>
       UNPixelData.isValidBytesArgs(tag, bytes, vfLengthField)
           ? new UNtagPixelData._x(bytes.asUint8List(), vfLengthField, ts)
@@ -305,7 +306,7 @@ class UStag extends US with TagElement<int> {
           [int _, TransferSyntax __]) =>
       new UStag(tag, vList);
 
-  static UStag fromBytes(Tag tag, Bytes bytes) =>
+  static UStag fromBytes(Bytes bytes, Tag tag) =>
       US.isValidBytesArgs(tag, bytes)
           ? new UStag._x(tag, bytes.asUint16List())
           : badTag(tag, null, US);
@@ -349,7 +350,7 @@ class OWtag extends OW with TagElement<int> {
           [int vfLengthField, TransferSyntax ts]) =>
       new OWtag(tag, vList, vfLengthField, ts);
 
-  static OWtag fromBytes(Tag tag, Bytes bytes,
+  static OWtag fromBytes(Bytes bytes, Tag tag,
           [int vfLengthField, TransferSyntax ts]) =>
       OW.isValidBytesArgs(tag, bytes, vfLengthField)
           ? new OWtag._(tag, bytes.asUint16List(), vfLengthField, ts)
@@ -357,12 +358,13 @@ class OWtag extends OW with TagElement<int> {
 }
 
 /// 8-bit Pixel Data.
-/// If encapsulated (compressed) then [fragments] must not be _null_. If
-/// [fragments] == _null_ then the pixels are uncompressed and data is
-/// contained in [values] or [vfBytes].
-///
-/// _Note_: Pixel Data Tag Elements do not have [VFFragments].
-///         [VFFragments] must be converted before they are created.
+//
+// If encapsulated (compressed) then [fragments] must not be _null_. If
+// [fragments] == _null_ then the pixels are uncompressed and data is
+// contained in [values] or [vfBytes].
+//
+// _Note_: Pixel Data Tag Elements do not have [VFFragments].
+//         [VFFragments] must be converted before they are created.
 class OWtagPixelData extends OWPixelData with TagElement<int> {
   @override
   final Tag tag = PTag.kPixelDataOW;
@@ -402,7 +404,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
       new OWtagPixelData._(tag, vList, vfLengthField, ts);
 
   /// Creates an [OWtagPixelData] Element from a [Uint8List].
-  static OWtagPixelData fromBytes(Tag tag, Bytes bytes,
+  static OWtagPixelData fromBytes(Bytes bytes, Tag tag,
           [int vfLengthField, TransferSyntax ts]) =>
       OWPixelData.isValidBytesArgs(tag, bytes, vfLengthField)
           ? new OWtagPixelData._x(bytes.asUint16List(), vfLengthField, ts)
@@ -436,7 +438,7 @@ class OLtag extends OL with TagElement<int> {
   static OLtag fromValues(Tag tag, Iterable<int> vList) =>
       new OLtag._(tag, vList);
 
-  static OLtag fromBytes(Tag tag, Bytes bytes) =>
+  static OLtag fromBytes(Bytes bytes, Tag tag) =>
       OL.isValidBytesArgs(tag, bytes)
           ? new OLtag._x(tag, bytes.asUint32List())
           : badTag(tag, null, OL);
@@ -469,7 +471,7 @@ class ULtag extends UL with TagElement<int> {
   static ULtag fromValues(Tag tag, Iterable<int> vLIst) =>
       new ULtag._(tag, vLIst);
 
-  static ULtag fromBytes(Tag tag, Bytes bytes) =>
+  static ULtag fromBytes(Bytes bytes, Tag tag) =>
       UL.isValidBytesArgs(tag, bytes)
           ? new ULtag._(tag, bytes.asUint32List())
           : badTag(tag, null, UL);
@@ -497,7 +499,7 @@ class GLtag extends ULtag {
   static GLtag fromValues(Tag tag, Iterable<int> vList) =>
       new GLtag(tag, vList);
 
-  static GLtag fromBytes(Tag tag, Bytes bytes) =>
+  static GLtag fromBytes(Bytes bytes, Tag tag) =>
       GL.isValidBytesArgs(tag, bytes)
           ? new GLtag._x(tag, bytes.asUint32List())
           : badTag(tag, null, GL);
@@ -533,7 +535,7 @@ class ATtag extends AT with TagElement<int> {
   static ATtag fromValues(Tag tag, Iterable<int> vList) =>
       new ATtag._(tag, vList);
 
-  static ATtag fromBytes(Tag tag, Bytes bytes) =>
+  static ATtag fromBytes(Bytes bytes, Tag tag) =>
       (AT.isValidBytesArgs(tag, bytes))
           ? new ATtag._x(tag, bytes.asUint32List())
           : badTag(tag, null, AT);

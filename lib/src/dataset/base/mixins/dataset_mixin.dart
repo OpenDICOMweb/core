@@ -205,54 +205,6 @@ abstract class DatasetMixin {
     return privates;
   }
 
-
-  // final sequences = findAllSequences();
-  /*
-    for (var e in elements) {
-      if (e.group.isOdd) print('Odd: $e');
-      if (e.isPrivate) {
-        final v = delete(e.code);
-        if (v != null) deleted.add(e);
-        if (v != null) print('DPrivate: $v');
-      }
-    }
-    if (deleted != null) print('DeletedPrivate: (${deleted.length})$deleted');
-
-    for (var e in elements) {
-      if (e.isPrivate) {
-        deleted.add(delete(e.code));
-      }
-      print('DeletedPrivate: (${deleted.length})$deleted');
-    }
-*/
-/*
-
-    final deletedInSQ = <Element>[];
-    var count = 0;
-    print('sequences: $sequences');
-    for (var e in sequences) {
-      if (e is SQ) {
-        count++;
-        print('sq: $e');
-        for (var item in e.items) {
-          print(' item: $item');
-          for(var v in item.elements) {
-            if (v.isPrivate) {
-              print('  Deleted: $v');
-              deletedInSQ.add(delete(v.code));
-            }
-          }
-        }
-      }
-    }
-    print('SQ.length: ${sequences.length}');
-        print('SQ.count: $count');
-        deleted.addAll(deletedInSQ);
-    print('DeletedPrivate: (${deleted.length})$deleted');
-    return deleted;
-  }
-*/
-
   Iterable<Element> retainSafePrivate() {
     final dList = <Element>[];
     //TODO: finish

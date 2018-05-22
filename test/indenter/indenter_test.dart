@@ -84,6 +84,5 @@ void main() {
       ..writeln('|')
       ..outdent('| ${sb.depth}')
       ..writeln('|');
-    print('$sb');
   });
 }
