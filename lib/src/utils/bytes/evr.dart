@@ -98,7 +98,7 @@ class EvrLongBytes extends EvrBytes {
 
   static EvrLongBytes makeEmpty(int code, int vfLength, int vrCode,
       [Endian endian]) {
-    assert(vfLength.isEven);
+    //assert(vfLength.isEven);
     final e = new EvrLongBytes(kHeaderLength + vfLength, endian)
       ..evrSetLongHeader(code, vfLength, vrCode);
  //   print('e: $e');
