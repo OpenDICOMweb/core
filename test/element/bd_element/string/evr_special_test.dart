@@ -13,7 +13,7 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 RNG rng = new RNG(1);
 
-// Urgent Jim: add dataset arguments and change tag to evr.
+// Urgent: need test for other byte VRs
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
