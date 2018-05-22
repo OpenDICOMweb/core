@@ -13,7 +13,6 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 RNG rng = new RNG(1);
 
-//Urgent finish unit tests sl, ob, ol, ow
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
