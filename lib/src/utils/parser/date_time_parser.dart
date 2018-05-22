@@ -29,7 +29,7 @@ int parseDcmDateTime(String s,
     return date + time + tz;
   } on FormatException catch (e) {
     if (onError != null) return onError(s.substring(start, end));
-    return invalidTimeZoneString(e.message);
+    return badTimeZoneString(e.message);
   }
 }
 

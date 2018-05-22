@@ -55,17 +55,17 @@ void main() {
         expect(date, isNotNull);
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in badDcmDateList) {
         final date = Date.parse(s);
         expect(date, isNull);
       }
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       for (var s in badDcmDateList) {
         log.debug('Bad date: $s');
         expect(() => Date.parse(s),
-            throwsA(const isInstanceOf<InvalidDateStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
@@ -78,7 +78,7 @@ void main() {
       }
 
       for (var s in badDcmDateList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(Date.isValidString(s), false);
         final issues = new Issues('Date: "$s"');
         Date.parse(s, issues: issues);
@@ -87,7 +87,7 @@ void main() {
     });
 
     test('add and subtract', () {
-      for (var y = 1990; y < system.maxYear; y++) {
+      for (var y = 1990; y < global.maxYear; y++) {
         for (var m = 1; m < 12; m++) {
           for (var d = 1; d < lastDayOfMonth(y, m); d++) {
             final date0 = new Date(y, m, d);
@@ -102,24 +102,23 @@ void main() {
           }
         }
       }
-      /*final s = '19500718';
-      final dt = Date.parse(s);
-      log.debug(dt);
-      // Enhancement
-      DcmDateTime ddt1 = dt.add(new Time(hours: 4, minutes: 20, seconds: 56));
-      log.debug(ddt1.hour);
-      log.debug(ddt1.minute);
-      log.debug(ddt1.second);
 
-      DcmDateTime ddt2 =
-          dt.subtract(new Time(hours: 2, minutes: 5, seconds: 26));
-      log.debug(ddt2.hour);
-      log.debug(ddt2.minute);
-      log.debug(ddt2.second);*/
+      // Urgent Sharath: what is this testing?
+      const s = '19500718';
+      final date = Date.parse(s);
+      log.debug(date);
+
+      // Enhancement
+      final date1 = date.add(new Time(4,  20, 56));
+      log.debug(date1);
+
+    //  final date2 = date.subtract(new Time(2, 5, 26));
+    //  log.debug(date2);
+
     });
 
     test('hash Date (throwOnError = false)', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
 
       final date = new Date(1980, 05, 01);
       log.debug('date: $date');
@@ -138,23 +137,23 @@ void main() {
       final date3 = new Date(kMinYear - 1, 05, 01); //bad year
       expect(date3, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
 
       expect(() => new Date(kMaxYear + 1, 05, 01),
-          throwsA(const isInstanceOf<InvalidDateError>())); //bad year
+          throwsA(const isInstanceOf<DateTimeError>())); //bad year
 
       expect(() => new Date(kMinYear - 1, 05, 01),
-          throwsA(const isInstanceOf<InvalidDateError>())); //bad year
+          throwsA(const isInstanceOf<DateTimeError>())); //bad year
 
       expect(() => new Date(2004, 10, 32),
-          throwsA(const isInstanceOf<InvalidDateError>())); //bad day
+          throwsA(const isInstanceOf<DateTimeError>())); //bad day
 
       expect(() => new Date(2004, 13, 13),
-          throwsA(const isInstanceOf<InvalidDateError>())); //bad month
+          throwsA(const isInstanceOf<DateTimeError>())); //bad month
     });
 
     test('hashString Date', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in goodDcmDateList) {
         log.debug('s: "$s"');
         final hs0 = Date.hashString(s);
@@ -170,7 +169,7 @@ void main() {
     });
 
     test('hashStringList', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final hs0 = Date.hashStringList(goodDcmDateList);
       log.debug('hsl0: $hs0');
       expect(hs0, isNotNull);
@@ -192,19 +191,19 @@ void main() {
       final normDate1 = enrollment1.normalize(enrollment1);
       log.debug('normDate0: $normDate1');
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final enrollment2 = new Date(2004, 10, 32); //bad day
       expect(enrollment2, isNull);
 
       final enrollment3 = new Date(2004, 13, 13); //bad month
       expect(enrollment3, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new Date(2004, 10, 32),
-          throwsA(const isInstanceOf<InvalidDateError>())); //bad day
+          throwsA(const isInstanceOf<DateTimeError>())); //bad day
 
       expect(() => new Date(2004, 13, 13),
-          throwsA(const isInstanceOf<InvalidDateError>())); //bad month
+          throwsA(const isInstanceOf<DateTimeError>())); //bad month
 
       /*Date enrollment1 = new Date(1992, 12, 12);
       Date normDate1 = original1.normalize(original1, enrollment1);
@@ -212,7 +211,7 @@ void main() {
     });
 
     test('normalizeString', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       var date = Date.parse('19821010');
       final ns0 = Date.normalizeString('19931010', date);
       expect(ns0, isNotNull);
@@ -248,7 +247,7 @@ void main() {
       log.debug('ns6: $ns6');
       expect(ns6, isNull);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
 
       date = Date.parse('19821910');
       expect(date, isNull);
@@ -316,7 +315,7 @@ void main() {
       log.debug('nss3:$nss3');
       expect(nss3, isNull);
 
-      //system.throwOnError = true;
+      //global.throwOnError = true;
       final dList4 = ['20041033'];
       date = Date.parse('19921010');
       final nss4 = Date.normalizeStrings(dList4, date);
@@ -358,7 +357,7 @@ void main() {
 
   test('Hash Random Dates', () {
     final rng = new RNG();
-    system.level = Level.info;
+    global.level = Level.info;
     for (var i = 0; i < 1000; i++) {
       final eDay = rng.nextInt(kMinYear, kMaxYear);
       final date0 = Date.fromEpochDay(eDay);
@@ -423,7 +422,7 @@ void main() {
   });
 
   test('hash', () {
-    system.throwOnError = true;
+    global.throwOnError = true;
     for (var s in goodDcmDateList) {
       final date0 = Date.parse(s);
       if (date0 != null) {
@@ -450,9 +449,10 @@ void main() {
 
   test('Hash Dates', () {
     final date1 = new Date(1969, 12, 31);
-    system.level = Level.info;
+    global.level = Level.info;
     log.debug(
-        'date: $date1, year:${date1.year}, month: ${date1.month}, day: ${date1.day}, microseconds: ${date1.microseconds}');
+        'date: $date1, year:${date1.year}, month: ${date1.month}, '
+            'day: ${date1.day}, microseconds: ${date1.microseconds}');
     final hash1 = date1.hash;
     log.debug('hash1: $hash1, year: ${hash1.year}, y: ${hash1.y}');
   });
@@ -553,7 +553,7 @@ void main() {
   });
 
   test('parseDate', () {
-//    system.throwOnError = false;
+//    global.throwOnError = false;
 
     const goodDateList = const [
       '19500718',
@@ -574,7 +574,7 @@ void main() {
     }
 
     for (var date in badDcmDateList) {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final pd0 = parseDate(date);
       log.debug('pd0: $pd0');
       expect(pd0, isNull);
@@ -582,7 +582,7 @@ void main() {
   });
 
   test('hashDcmDateString', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
     for (var i = 0; i < goodDcmDateList.length; i++) {
       final ns1 = hashDcmDateString(goodDcmDateList[i]);
       log.debug('ns1:$ns1, ${goodDcmDateList[i]}');
@@ -597,7 +597,7 @@ void main() {
   });
 
   test('isValidYearInMicroseconds', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
     final us = dateToEpochDay(1971, 1, 1);
     final vym0 = isValidYearInMicroseconds(us);
     expect(vym0, true);

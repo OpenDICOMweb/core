@@ -9,8 +9,8 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/primitives.dart';
 
 /// Dataset Bytes ([DSBytes]).
 abstract class DSBytes {
@@ -20,16 +20,16 @@ abstract class DSBytes {
   Bytes get bytes;
 
   /// The index of the first byte of the Dataset in [bytes].
-  int get dsStart => bytes.offsetInBytes;
+  int get dsStart => bytes.offset;
 
   /// The number of bytes from the beginning to the end of the Dataset.
-  int get dsLength => bytes.lengthInBytes;
+  int get dsLength => bytes.length;
 
   /// The index of the last byte of the Dataset in [bytes].
   int get dsEnd => dsStart + dsLength;
 
   /// The length of the entire Dataset including header, trailer, preamble, etc.
-  // int get eLength => bd.lengthInBytes;
+  // int get eLength => bd.length;
 
   /// Returns the length in bytes of the Value Field.
   int get vfLength;
@@ -66,7 +66,7 @@ abstract class DSBytes {
 
   /// Returns the Value Field as a [Uint8List].
   Uint8List get vfAsUint8List =>
-      bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes);
+      bytes.buffer.asUint8List(bytes.offset, bytes.length);
 
   // **** Internal Stuff ****
 
@@ -87,7 +87,7 @@ abstract class DSBytes {
 
   @override
   String toString() =>
-      '$runtimeType: ${bytes.endian} $dsStart-$dsEnd:${bytes.lengthInBytes}';
+      '$runtimeType: ${bytes.endian} $dsStart-$dsEnd:${bytes.length}';
 }
 
 /// Root Dataset Bytes ([RDSBytes]).
@@ -115,18 +115,18 @@ class RDSBytes extends DSBytes {
         fmiEnd = 0,
         hasPrefix = false;
 
-  Bytes get preamble => bytes.toBytes(kPreambleOffset, kPreambleLength);
+  Bytes get preamble => bytes.asBytes(kPreambleOffset, kPreambleLength);
 
-  Bytes get prefix => bytes.toBytes(kPrefixOffset, kPrefixLength);
+  Bytes get prefix => bytes.asBytes(kPrefixOffset, kPrefixLength);
 
   int get startDelimiter => getUint32(kPrefixOffset);
 
-  int get fmiStart => bytes.offsetInBytes;
+  int get fmiStart => bytes.offset;
   int get rdsStart => fmiEnd;
   int get rdsEnd => dsEnd;
 
   Uint8List get fmiBytes => (hasPrefix)
-      ? bytes.buffer.asUint8List(bytes.offsetInBytes, 132)
+      ? bytes.buffer.asUint8List(bytes.offset, 132)
       : kEmptyUint8List;
 
   @override
@@ -136,7 +136,7 @@ class RDSBytes extends DSBytes {
 
   @override
   Uint8List get vfAsUint8List => bytes.buffer
-      .asUint8List(bytes.offsetInBytes + kHeaderSize, bytes.lengthInBytes);
+      .asUint8List(bytes.offset + kHeaderSize, bytes.length);
 
   @override
   String toString() {
@@ -205,7 +205,7 @@ class IDSBytes extends DSBytes {
 
   @override
   Bytes get vfBytes =>
-      bytes.toBytes(bytes.offsetInBytes + kValueFieldOffset, dsEnd);
+      bytes.asBytes(bytes.offset + kValueFieldOffset, dsEnd);
 
   static const int kStartDelimiterOffset = 0;
   static const int kVFLengthFieldOffset = 4;

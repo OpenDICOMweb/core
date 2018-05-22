@@ -9,9 +9,9 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/global.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 
 
@@ -114,7 +114,7 @@ class Fmi {
     final ts = ds.getString(kTransferSyntaxUID);
     if (ts == null) {
  //     log.info0('Using system.defaultTransferSyntax: ${system.defaultTransferSyntax}');
-      return system.defaultTransferSyntax;
+      return global.defaultTransferSyntax;
     }
     return TransferSyntax.lookup(ts);
   }

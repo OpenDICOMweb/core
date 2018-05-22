@@ -9,12 +9,12 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/logger.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
@@ -22,19 +22,21 @@ bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
 int level = 0;
 
-abstract class SQ<K> extends Element<Item> {
+abstract class SQ extends Element<Item> {
   // **** Interface
+  List<Item> _values;
+  @override
+  Iterable<Item> get values => _values;
+  @override
+  set values(Iterable<Item> v) =>
+      _values = (v is List) ? v : v.toList(growable: false);
 
   /// The [tag] corresponding to _this_.
   @override
   Tag get tag;
-  @override
-  Iterable<Item> get values;
-  @override
-  set values(Iterable<Item> vList) => unsupportedError('StringBase.values');
 
   /// The DICOM name for Sequence values, which are Items.
-  List<Item> get items => (values is List) ? values : values.toList();
+  Iterable<Item> get items => (values is List) ? values : values.toList();
 
   //**** End of Interface
   @override
@@ -46,7 +48,7 @@ abstract class SQ<K> extends Element<Item> {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
-  @override
+
   int get sizeInBytes => kSizeInBytes;
   @override
   int get vlfSize => 4;
@@ -57,9 +59,12 @@ abstract class SQ<K> extends Element<Item> {
   int get maxLength => kMaxLength;
   @override
   int get vfLength => unimplementedError();
-
+  @override
+  int get lengthInBytes => unimplementedError();
   @override
   int get vfLengthField;
+  @override
+  bool get isLengthAlwaysValid => true;
   @override
   bool get isUndefinedLengthAllowed => true;
   @override
@@ -164,8 +169,8 @@ Summary $tag
   }
 
   @override
-  List<Item> get emptyList => kEmptyList;
-  static const List<Item> kEmptyList = const <Item>[];
+  Iterable<Item> get emptyList => kEmptyList;
+  static const Iterable<Item> kEmptyList = const <Item>[];
 
   @override
   SQ get noValues => update(kEmptyList);
@@ -181,7 +186,7 @@ Summary $tag
   }
 
   @override
-  SQ update([Iterable<Item> vList = kEmptyList]);
+  SQ update([Iterable<Item> vList = kEmptyList]) => unsupportedError();
 
   Iterable<Element> updateAll<V>(int index, Iterable<V> vList,
       {bool required = false}) {
@@ -194,7 +199,7 @@ Summary $tag
     return eList;
   }
 
-  Iterable<Element> updateAllF<V>(int index, Iterable<V> f(Iterable<V> vList),
+  Iterable<Element> updateAllF<V>(int index, Iterable<V> f(List<V> vList),
       {bool required = false}) {
     final eList = <Element>[];
     for (var item in items) {
@@ -242,7 +247,7 @@ Summary $tag
       replaceAllF(index, _replaceF);
 
   Iterable<Iterable<V>> replaceAllF<V>(
-      int index, Iterable<V> f(Iterable<V> vList)) {
+      int index, Iterable<V> f(List<V> vList)) {
     final result = <Iterable<V>>[];
     for (var item in items) {
       final e = item.lookup(index);
@@ -269,11 +274,13 @@ Summary $tag
   /// Returns a formatted [String]. See [Formatter].
   String format(Formatter z) => z.fmt(this, items);
 
+/* flush
   @override
   String getValuesAsString([int max]) {
     max ??= Element.truncatedValuesLength;
     return '${values.length} Items';
   }
+*/
 
   static const int kVRIndex = kSQIndex;
   static const int kVRCode = kSQCode;
@@ -288,25 +295,24 @@ Summary $tag
 
   static bool isValidVRIndex(int vrIndex, [Issues issues]) {
     if (vrIndex == kVRIndex) return true;
-    invalidVRIndex(vrIndex, issues, kVRIndex);
+    VR.badIndex(vrIndex, issues, kVRIndex);
     return false;
   }
 
   static bool isValidVRCode(int vrCode, [Issues issues]) {
     if (vrCode == kVRCode) return true;
-    invalidVRCode(vrCode, issues, kVRIndex);
-    return false;
+    return VR.invalidCode(vrCode, issues, kVRIndex);
   }
 
   static int checkVRIndex(int index, [Issues issues]) =>
-      (index == kVRIndex) ? index : invalidVRIndex(index, issues, kVRIndex);
+      (index == kVRIndex) ? index : VR.badIndex(index, issues, kVRIndex);
 
   static int checkVRCode(int vrCode, [Issues issues]) =>
-      (vrCode == kVRCode) ? vrCode : invalidVRCode(vrCode, issues, kVRIndex);
+      (vrCode == kVRCode) ? vrCode : VR.badCode(vrCode, issues, kVRIndex);
 
   static bool isValidVFLength(int vfl) => _inRange(vfl, 0, kMaxVFLength);
 
-  static bool isValidVListLength(int vfl) => true;
+  static bool isValidLength(int vfl) => true;
 
   static bool isValidValue(Item item,
           {Issues issues, bool allowInvalid = false}) =>

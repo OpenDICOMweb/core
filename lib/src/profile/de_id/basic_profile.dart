@@ -9,6 +9,7 @@
 
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/profile/de_id/basic_profile_options.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/value/uid.dart';
@@ -42,10 +43,10 @@ class BasicProfile {
   static bool _isEmpty<V>(Iterable<V> values, bool emptyAllowed) =>
       values == const <V>[] || emptyAllowed;
 
- //FLush or Fix
+  //FLush or Fix
   //TODO: deidentifySequence has to be at a higher level
   /// Keep (unchanged for non-sequence attributes, cleaned for sequences)';
- // static void retain(Dataset ds, Tag tag) => ds.retain(tag);
+  // static void retain(Dataset ds, Tag tag) => ds.retain(tag);
 
 /* FLush or Fix
   //TODO: deidentifySequence has to be at a higher level
@@ -128,8 +129,7 @@ class BasicProfile {
   static Element removeUidUnlessZeroOrDummy<V>(
       Dataset ds, Tag tag, List<V> values,
       {bool required = false}) {
-    if (ds.lookup(tag.code) is! SQ)
-      throw new InvalidTagError(tag, SQ);
+    if (ds.lookup(tag.code) is! SQ) badTag(tag, null, SQ);
     if (_isEmpty(values, true)) return ds.noValues(tag.code);
     return ds.update(tag.code, values);
   }
@@ -137,7 +137,7 @@ class BasicProfile {
   static Element addIfMissing<V>(Dataset ds, Tag tag, List<V> values,
       {bool required = false}) {
     final e = ds.lookup(tag.code);
-    if (e is! SQ) throw new InvalidTagError(tag, SQ);
+    if (e is! SQ) badTag(tag, null, SQ);
     if (_isEmpty(values, true))
       return ds.noValues(tag.code, required: required);
     return ds.update(tag.code, values);

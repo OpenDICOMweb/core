@@ -9,7 +9,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/utils.dart';
+import 'package:core/src/error/general_errors.dart';
 
 MapEquality<int, Element> mapEquality = const MapEquality<int, Element>();
 
@@ -64,7 +64,7 @@ abstract class MapDataset {
   Element removeAt(int index, {bool required = false}) => eMap.remove(index);
 
   /// Returns the [Element]s in _this_ as a [List<Element>]
-  List<Element> toList({bool growable: true}) =>
+  List<Element> toList({bool growable: false}) =>
       elements.toList(growable: false);
 
   @override

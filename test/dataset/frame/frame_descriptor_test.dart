@@ -136,7 +136,7 @@ void main() {
     const bitsStored0 = 0;
     const highBit0 = 0;
 
-    system.throwOnError = true;
+    global.throwOnError = true;
     expect(
         () => new FrameDescriptor(
             ts0,

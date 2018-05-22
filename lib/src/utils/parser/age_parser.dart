@@ -32,7 +32,7 @@ int parseAgeString(String s,
 
   final token = (allowLowercase) ? s[3].toUpperCase() : s[3];
   if (!kAgeTokens.contains(token))
-    return _onError(s, onError, 'IInvalid age Token');
+    return _onError(s, onError, 'Invalid age Token');
 
   final n = tryParseAgeString(s);
   if (n < 0) _onError(s.substring(0, 3), onError, 'Invalid age number');
@@ -40,7 +40,7 @@ int parseAgeString(String s,
 }
 
 int _onError(String s, int onError(String s), String errorMsg) =>
-    (onError != null) ? onError(s) : invalidAgeString('$errorMsg: "$s"');
+    (onError != null) ? onError(s) : badAgeParse('$errorMsg: "$s"');
 
 /// Returns the number of days corresponding to [s], which is a
 /// 4 character DICOM age (AS) [String]. [s] must be in the
@@ -73,7 +73,7 @@ bool isValidAgeString(String s) => tryParseAgeString(s) == -1 ? false : true;
 /// Returns a random age between 0 days and 999 years, if [s] is valid;
 /// otherwise, returns _null_.
 String hashAgeString(String s) {
-  system.level = Level.debug;
+  global.level = Level.debug;
   final days = parseAgeString(s);
   if (days == null || days == -1) return null;
   final hash = hashAgeInDays(days);

@@ -7,6 +7,5 @@
 //  See the AUTHORS file for other contributors.
 //
 
-export 'package:core/src/utils/bytes/buffer/read_buffer.dart';
-export 'package:core/src/utils/bytes/buffer/write_buffer.dart';
 export 'package:core/src/utils/bytes/bytes.dart';
+export 'package:core/src/utils/bytes/primitives.dart';

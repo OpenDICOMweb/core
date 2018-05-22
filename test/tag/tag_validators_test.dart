@@ -27,7 +27,7 @@ void main() {
   //   'Number of Zero Fills', VR.kUS, VM.k1_2, false);
 
   group('Tag validators in tag', () {
-    system.throwOnError = false;
+    global.throwOnError = false;
 
     test('test for isValidValues', () {
       //   const emptyListsInt = const <int>[];

@@ -52,7 +52,7 @@ void main() {
   ];
 
   group('Error', () {
-    system.throwOnError = true;
+    global.throwOnError = true;
 
     test('parse InvalidUidStringError', () {
       for (var s in badUids) {

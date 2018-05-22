@@ -9,16 +9,15 @@
 
 import 'dart:typed_data';
 
+import 'package:core/src/error/issues.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/issues.dart';
 
 /// Tag Mixin Class
 ///
 /// This mixin defines the interface to DICOM Tags, where a Tag is
 /// a semantic identifier for an element.
-abstract class TagMixinBase<K, V> {
+abstract class TagMixinBase<V> {
   int get field;
-  Tag get tag;
 
   // **** Tag Identifiers
   /// Returns the DICOM integer tag code.
@@ -26,10 +25,11 @@ abstract class TagMixinBase<K, V> {
   int get code;
   String get keyword;
   String get name;
+  Tag get tag;
 
   /// Returns the identifier ([key]), used as key to locate the
   /// Element in a Dataset<K,V>.
-  K get key;
+  int get key;
 
   // **** VR related Getters
 //  VR get vr;
@@ -50,14 +50,14 @@ abstract class TagMixinBase<K, V> {
 
   bool isValidValuesType(List<V> vList, [Issues issues]) => vList is List<V>;
 
-  bool isValidVListLength(Tag tag, List<V> vList, [Issues issues]) {
+  bool isValidLength(Tag tag, List<V> vList, [Issues issues]) {
     final length = vList.length;
     return length >= minLength && length <= maxLength && (length % rank) == 0;
   }
 
   bool isValidValues(Tag tag, List<V> vList, [Issues issues]) =>
       vList is List<V> &&
-      isValidVListLength(tag, vList) &&
+      isValidLength(tag, vList) &&
       _isValidValues(vList);
 
   bool _isValidValues(List<V> vList) {

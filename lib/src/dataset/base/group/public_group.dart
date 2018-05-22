@@ -7,13 +7,12 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
+import 'package:core/src/dataset/base/group/group_base.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/utils/indenter.dart';
 import 'package:core/src/utils/logger.dart';
-
-import 'package:core/src/dataset/base/group/group_base.dart';
+import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: only_throw_errors
 

@@ -68,10 +68,10 @@ void main() {
     test('Age Test', () {
       expect(kAgeTokens == 'DWMY', true);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       for (var s in badDcmAge) {
         expect(Age.tryParse(s) == null, true);
-        expect(() => Age.parse(s), throwsA(const isInstanceOf<InvalidAgeStringError>()));
+        expect(() => Age.parse(s), throwsA(const isInstanceOf<StringError>()));
       }
     });
 
@@ -154,7 +154,7 @@ void main() {
     });
 
     test('Age.isValidString Good', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in goodDcmAge) {
         final vs0 = Age.isValidString(s);
         expect(vs0, true);
@@ -163,14 +163,14 @@ void main() {
 
     test('Age.isValidString Bad', () {
       for (var s in badDcmAge) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final vs0 = Age.isValidString(s);
         expect(vs0, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         log.debug('s: "$s"');
         expect(() => Age.isValidString(s),
-            throwsA(const isInstanceOf<InvalidAgeStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
@@ -182,7 +182,7 @@ void main() {
     });
 
     test('isValidAgeString: Bad', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in badDcmAge) {
         log.debug('s: "$s"');
         final vas0 = isValidAgeString(s);
@@ -201,19 +201,19 @@ void main() {
     });
 
     test('Hash Bad Age Strings', () {
-      system.throwOnError = false;
-      log.debug('system.throwOnError: ${system.throwOnError}');
+      global.throwOnError = false;
+      log.debug('global.throwOnError: ${global.throwOnError}');
       for (var s in badDcmAge) {
         final h = hashAgeString(s);
         log.debug('Age $s hash: $h');
         expect(h, isNull);
       }
 
-      system.throwOnError = true;
-      log.debug('system.throwOnError: ${system.throwOnError}');
+      global.throwOnError = true;
+      log.debug('global.throwOnError: ${global.throwOnError}');
       for (var s in badDcmAge) {
         expect(() => hashAgeString(s),
-            throwsA(equals(const isInstanceOf<InvalidAgeStringError>())));
+            throwsA(equals(const isInstanceOf<StringError>())));
       }
     });
 
@@ -224,18 +224,18 @@ void main() {
     });
 
     test('bad Age HashStringList', () {
-      system.throwOnError = false;
-      log.debug('system.throwOnError: ${system.throwOnError}');
+      global.throwOnError = false;
+      log.debug('global.throwOnError: ${global.throwOnError}');
       final hs0 = hashAgeStringList(badDcmAge);
       log.debug('hs0: $hs0');
       for (var s in hs0) {
         expect(s, isNull);
       }
 
-      system.throwOnError = true;
-      log.debug('system.throwOnError: ${system.throwOnError}');
+      global.throwOnError = true;
+      log.debug('global.throwOnError: ${global.throwOnError}');
       expect(() => hashAgeStringList(badDcmAge),
-          throwsA(equals(const isInstanceOf<InvalidAgeStringError>())));
+          throwsA(equals(const isInstanceOf<StringError>())));
     });
 
     test('hashString', () {
@@ -246,8 +246,8 @@ void main() {
         expect(hs0, isNotNull);
       }
 
-      system.throwOnError = false;
-      log.debug('system.throwOnError: ${system.throwOnError}');
+      global.throwOnError = false;
+      log.debug('global.throwOnError: ${global.throwOnError}');
       for (var s in badDcmAge) {
         final age = Age.tryParse(s);
         expect(age, isNull);
@@ -263,10 +263,10 @@ void main() {
     });
 
     test('Parse Bad Age String', () {
-      system.throwOnError = true;
+      global.throwOnError = true;
       for (var s in badDcmAge) {
         expect(() => parseAgeString(s),
-            throwsA(equals(const isInstanceOf<InvalidAgeStringError>())));
+            throwsA(equals(const isInstanceOf<StringError>())));
       }
     });
     test('ageToString', () {
@@ -274,7 +274,7 @@ void main() {
       log.debug('as0: $as0');
       expect(as0, '165W');
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final as1 = ageToString(-1);
       log.debug('as1: $as1');
       expect(as1, null);
@@ -297,31 +297,31 @@ void main() {
 
     test('parseDays', () {
       for (var s in goodDcmAge) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final pd0 = Age.parseDays(s);
         expect(pd0, equals(tryParseAgeString(s)));
         expect(pd0, isNotNull);
       }
       for (var s in badDcmAge) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final pd1 = Age.parseDays(s);
         expect(pd1, -1);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(
-            () => Age.parseDays(s), throwsA(const isInstanceOf<InvalidAgeStringError>()));
+            () => Age.parseDays(s), throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('tryParseDays', () {
       for (var s in goodDcmAge) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final pd0 = Age.tryParseDays(s);
         expect(pd0, equals(tryParseAgeString(s)));
         expect(pd0, isNotNull);
       }
       for (var s in badDcmAge) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final pd1 = Age.tryParseDays(s);
         expect(pd1, -1);
       }
@@ -332,10 +332,10 @@ void main() {
         final age0 = Age.tryParse(s);
         final age1 = Age.tryParse(s);
         log
-          ..debug('age0.value: $age0, age0.hash:${age0.hash}, age0.hashCode:${age0
-          .hashCode}')
-          ..debug(
-              'age1.value: $age1, age1.hash:${age1.hash}, age1.hashCode:${age1.hashCode}');
+          ..debug('age0.value: $age0, age0.hash:${age0.hash}, '
+              'age0.hashCode:${age0.hashCode}')
+          ..debug('age1.value: $age1, age1.hash:${age1.hash}, '
+              'age1.hashCode:${age1.hashCode}');
         expect(age0 == age1, true);
         //  currently
         //    expect(age0.hash, equals(age1.hash));
@@ -345,11 +345,10 @@ void main() {
       final age2 = Age.tryParse(goodDcmAge[0]);
       final age3 = Age.tryParse(goodDcmAge[1]);
       log
-        ..debug(
-            'age2.value:${age2.toString()}, age2.hash:${age2.hash}, age2.hashCode:${age2
-            .hashCode}')
-        ..debug(
-            'age3.value:${age3.toString()}, age3.hash:${age3.hash}, age3.hashCode:${age3
+        ..debug('age2.value:${age2.toString()}, age2.hash:${age2.hash}, '
+            'age2.hashCode:${age2.hashCode}')
+        ..debug('age3.value:${age3.toString()}, age3.hash:${age3.hash}, '
+            'age3.hashCode:${age3
             .hashCode}');
       expect(age2.toString() == age3.toString(), false);
       expect(age2.hash, isNot(age3.hash));

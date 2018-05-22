@@ -9,12 +9,13 @@
 library odw.sdk.core.parser;
 
 import 'package:core/src/system.dart';
-import 'package:core/src/utils/ascii.dart';
+import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/utils/date_time.dart';
-import 'package:core/src/utils/issues.dart';
+import 'package:core/src/error/issues.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/parser/parse_errors.dart';
-import 'package:core/src/utils/string/number.dart';
+import 'package:core/src/utils/string/decimal.dart';
+import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/value/date_time.dart';
 
 part 'age_parser.dart';
@@ -30,7 +31,6 @@ part 'time_zone_parser.dart';
 //TODO: for performance make every function that can be internal
 //TODO: redo doc
 
-//TODO: the following is the plan for all parsers int the String package.
 /// DICOM Parsers
 ///
 /// Each parser has the following signature
@@ -41,9 +41,8 @@ part 'time_zone_parser.dart';
 ///
 /// If ```end == null```, it defaults to ```s.length```.
 /// If ```issues == null```, no [Issues] messages are generated.
-/// If ```onError == null```, when an error occurs a [FormatException] will be thrown.
-
-typedef int OnParseError(String s);
+/// If ```onError == null```, when an error occurs a [FormatException]
+/// will be thrown.
 
 /// General Parse methodology
 ///
@@ -102,3 +101,4 @@ typedef int OnParseError(String s);
 /// `issues` and continue parsing if it can.  Error messages are accumulated
 /// in `issues`.
 ///
+typedef int OnParseError(String s);

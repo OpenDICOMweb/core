@@ -21,8 +21,8 @@ void main() {
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
-          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
-      log.debug('ui: $uiTransFerSyntax');
+          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+      log..debug('ts: "${ts.asString}"')..debug('ui: $uiTransFerSyntax');
       rds[uiTransFerSyntax.index] = uiTransFerSyntax;
       log.debug('elements: $rds');
       final v = rds[uiTransFerSyntax.index];
@@ -52,17 +52,17 @@ void main() {
     });
 
     test('update (String)', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       rds[as0.code] = as0;
 
-      final update0 = rds.update(as0.key, <String>[]);
+      final update0 = rds.update(as0.code, <String>[]);
       expect(update0.isEmpty, false);
     });
 
     test('update (int)', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [kInt16Min];
       final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
@@ -70,33 +70,47 @@ void main() {
       rds[ss0.code] = ss0;
 
       final vList1 = [kInt16Max];
-      final update1 = rds.update(ss0.key, vList1).values;
+      final update1 = rds.update(ss0.code, vList1).values;
       expect(update1, equals(vList0));
 
-      final update2 = rds.update(ss0.key, <int>[]);
+      final update2 = rds.update(ss0.code, <int>[]);
       expect(update2.values.isEmpty, false);
     });
 
     test('update (float)', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
 
       rds[fd0.code] = fd0;
-      final update1 = rds.update(fd0.key, <double>[]);
+      final update1 = rds.update(fd0.code, <double>[]);
       expect(update1.isEmpty, false);
     });
 
     test('duplicate', () {
+      global.doTestElementValidity = true;
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
+      print('as0: $as0');
+      global.throwOnError = false;
+      rds
+        ..add(fd0)
+        ..add(fd1)
+        ..add(as0)
+        ..add(as1)
+        ..add(as2)
+        ..add(ob0)
+        ..add(ae0);
+
+
+/*
       rds[fd0.code] = fd0;
       rds[fd1.code] = fd1;
       rds[as0.code] = as0;
@@ -104,6 +118,7 @@ void main() {
       rds[as2.code] = as2;
       rds[ob0.code] = ob0;
       rds[ae0.code] = ae0;
+*/
 
       final dup = rds.duplicates;
       log.debug('rds: $rds, dup: $dup');
@@ -113,11 +128,12 @@ void main() {
     test('removeDuplicates', () {
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      print('fd0: $fd0');
       final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       rds[fd0.code] = fd0;
@@ -141,7 +157,7 @@ void main() {
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       rds[fd0.code] = fd0;
@@ -174,7 +190,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+      final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
       log.debug('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));
@@ -208,7 +224,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+      final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
       final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
       rds[ui0.code] = ui0;
 
@@ -241,7 +257,7 @@ void main() {
 
         // Create element and check values and uids
         log.debug('uidList0: $uidList0');
-        final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+        final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
         log.debug('ui0: $ui0');
         final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
         rds[ui0.code] = ui0;
@@ -278,8 +294,7 @@ void main() {
         final uidList0a = [uid0a];
 
         // Create element and check values and uids
-        final ui0 =
-            new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+        final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
         final rds = new ListRootDataset.empty('', kEmptyBytes, 0);
         rds[ui0.code] = ui0;
 
@@ -309,16 +324,16 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       rds[fd0.code] = fd0;
 
-      final vList1 = [123];
+      final vList1 = [1.23];
       expect(rds.replace(fd0.index, vList1), equals(vList0));
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList1));
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final vList2 = ['024Y'];
       final as0 = new AStag(PTag.kPatientAge, vList2);
       final vList3 = [123];
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => rds.replace(as0.index, vList3, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -329,7 +344,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       rds[fd0.code] = fd0;
 
-      final vList1 = [123];
+      final vList1 = [1.23];
       final replaceA0 = rds.replaceAll(fd0.index, vList1);
       log.debug('replaceA0 : $replaceA0');
       expect(replaceA0, equals([vList0, vList1]));
@@ -372,8 +387,8 @@ void main() {
 
       expect(rds.toList(), equals([as0]));
       expect(rds.toList(), equals([as0]));
-      expect(rds.keys, equals([as0.key]));
-      expect(rds.keys, equals([as0.key]));
+      expect(rds.codes, equals([as0.code]));
+      expect(rds.codes, equals([as0.code]));
       expect(rds.length == as0.length, true);
     });
 
@@ -423,22 +438,22 @@ void main() {
       item[fd0.code] = fd0;
       log.debug('item : $item');
 
-      final remove0 = item.removeAt(as0.key);
+      final remove0 = item.removeAt(as0.index);
       expect(remove0, isNotNull);
-      expect(item.removeAt(as0.key), isNull);
+      expect(item.removeAt(as0.index), isNull);
       log.debug('remove0 : $remove0');
 
-      final remove1 = item.removeAt(ss0.key);
+      final remove1 = item.removeAt(ss0.index);
       expect(remove1, isNotNull);
-      expect(item.removeAt(ss0.key), isNull);
+      expect(item.removeAt(ss0.index), isNull);
       log.debug('remove1 : $remove1');
 
-      final remove2 = item.removeAt(fd0.key);
+      final remove2 = item.removeAt(fd0.index);
       expect(remove2, isNotNull);
-      expect(item.removeAt(fd0.key), isNull);
+      expect(item.removeAt(fd0.index), isNull);
       log.debug('remove2 : $remove2');
 
-      expect(item.removeAt(od0.key), isNull);
+      expect(item.removeAt(od0.index), isNull);
     });
 
     test('delete', () {
@@ -461,21 +476,21 @@ void main() {
       expect(remove1, isNull);
       log.debug('remove0 : $remove0');
 
-      final remove2 = item.delete(ss0.key);
+      final remove2 = item.delete(ss0.index);
       expect(remove2, isNotNull);
-      expect(item.delete(ss0.key), isNull);
+      expect(item.delete(ss0.index), isNull);
       log.debug('remove1 : $remove2');
 
-      final remove3 = item.delete(fd0.key);
+      final remove3 = item.delete(fd0.index);
       expect(remove3, isNotNull);
-      expect(item.delete(fd0.key), isNull);
+      expect(item.delete(fd0.index), isNull);
       log.debug('remove2 : $remove3');
 
-      expect(item.delete(od0.key), isNull);
+      expect(item.delete(od0.index), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
-      expect(() => item.delete(sl0.key, required: true),
+      expect(() => item.delete(sl0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
 
@@ -492,29 +507,29 @@ void main() {
 
       log.debug('item: $item');
 
-      final removeAll0 = item.deleteAll(as0.key);
+      final removeAll0 = item.deleteAll(as0.index);
       expect(removeAll0[0] == as0, true);
-      expect(item.deleteAll(as0.key), <Element>[]);
+      expect(item.deleteAll(as0.index), <Element>[]);
       log.debug('removeAll0: $removeAll0');
 
-      final removeAll1 = item.deleteAll(ss0.key);
+      final removeAll1 = item.deleteAll(ss0.index);
       expect(removeAll1[0] == ss0, true);
-      expect(item.deleteAll(ss0.key), <Element>[]);
+      expect(item.deleteAll(ss0.index), <Element>[]);
       log.debug('removeAll1 : $removeAll1');
 
-      final removeAll2 = item.deleteAll(fd0.key);
+      final removeAll2 = item.deleteAll(fd0.index);
       expect(removeAll2[0] == fd0, true);
-      expect(item.deleteAll(fd0.key), <Element>[]);
+      expect(item.deleteAll(fd0.index), <Element>[]);
       log.debug('removeAll2 : $removeAll2');
 
-      expect(item.deleteAll(od0.key), <Element>[]);
+      expect(item.deleteAll(od0.index), <Element>[]);
     });
 
     test('getElementsInRange', () {
       final item = new ListRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       item[fd0.code] = fd0;
@@ -542,7 +557,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       item[fd0.code] = fd0;
@@ -570,7 +585,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValue<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.value));
@@ -582,7 +597,7 @@ void main() {
       final getValues2 = item.getValue<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -596,7 +611,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValues<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.values));
@@ -608,7 +623,7 @@ void main() {
       final getValues2 = item.getValues<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -647,7 +662,6 @@ void main() {
     });
 
     test('deleteCodes', () {
-      system.level = Level.debug;
       final item = new ListRootDataset.empty('', kEmptyBytes, 0);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
@@ -680,6 +694,5 @@ void main() {
       log.debug('deleteCodes3: $deleteCodes3');
       expect(deleteCodes3, equals(<Element>[]));
     });
-
   });
 }

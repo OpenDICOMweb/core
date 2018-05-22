@@ -6,10 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
@@ -18,6 +16,7 @@ import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
+import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 

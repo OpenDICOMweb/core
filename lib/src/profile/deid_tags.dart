@@ -9,6 +9,7 @@
 
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/value/uid.dart';
 
@@ -112,7 +113,7 @@ class DeIdTags {
   static Element removeUidUnlessZeroOrDummy<V>(
       Dataset ds, Tag tag, List<V> values,
       {bool required = false}) {
-    if (ds.lookup(tag.code) is! SQ) throw new InvalidTagError(tag, SQ);
+    if (ds.lookup(tag.code) is! SQ) badTag(tag, null, SQ);
     if (_isEmpty(values, true)) return ds.noValues(tag.code);
     return ds.update(tag.code, values);
   }
@@ -120,7 +121,7 @@ class DeIdTags {
   static Element addIfMissing<V>(Dataset ds, Tag tag, List<V> values,
       {bool required = false}) {
     final e = ds.lookup(tag.code);
-    if (e is! SQ) throw new InvalidTagError(tag, SQ);
+    if (e is! SQ) badTag(tag, null, SQ);
     if (_isEmpty(values, true))
       return ds.noValues(tag.code, required: required);
     return ds.update(tag.code, values);

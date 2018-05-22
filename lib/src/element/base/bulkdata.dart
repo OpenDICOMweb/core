@@ -7,8 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+import 'package:core/src/error/general_errors.dart';
 import 'package:core/src/system.dart';
-import 'package:core/src/utils/errors.dart';
 
 // Must implement Values and Value with reified.
 abstract class BulkdataRef<V> {
@@ -26,7 +26,7 @@ abstract class BulkdataRef<V> {
       (other is BulkdataRef) && code == other.code && uri == other.uri;
 
   @override
-  int get hashCode => system.hasher.n2(code, uri);
+  int get hashCode => global.hasher.n2(code, uri);
 
   Iterator<V> get iterator => values.iterator;
 

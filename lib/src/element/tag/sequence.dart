@@ -13,9 +13,9 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/tag.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/element/tag/tag_element.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/errors.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/vr.dart';
 
@@ -23,17 +23,18 @@ import 'package:core/src/vr.dart';
 ///
 /// A Sequence contains a [List] of [TagItem]s, where each
 /// [TagItem] is a TagDataset.
-class SQtag extends SQ<TagItem> with TagElement<TagItem> {
+class SQtag extends SQ with TagElement<Item> {
   @override
   final Tag tag;
+  List<Item> _values;
 
   /// The [Dataset] that contains _this_.
   @override
   final Dataset parent;
 
   /// The [Iterable<ItemTag>] that are the [values] of _this_.
-  @override
-  Iterable<Item> values;
+//  @override
+  // Iterable<Item> values;
 
   /// The length of the Value Field from which this [SQtag] was decoded.
   /// If _null_ _this_ what not created from an encoding.
@@ -43,15 +44,28 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   final Bytes bytes;
 
   /// Creates a new [SQtag] instance.
-  SQtag(this.parent, this.tag,
-      [Iterable<Item> vList, this.vfLengthField, this.bytes])
-      : values = (vList == null) ? emptyTagItemList : vList;
+  factory SQtag(Dataset parent, Tag tag,
+          [Iterable<Item> vList, int vfLengthField, Bytes bytes]) =>
+      new SQtag._(parent, tag, vList, vfLengthField, bytes);
 
+  /// Creates a new [SQtag] instance.
+  SQtag._(this.parent, this.tag,
+      [Iterable<Item> vList, this.vfLengthField, this.bytes])
+      : _values = (vList == null)
+            ? emptyTagItemList
+            : (vList is List) ? vList : vList.toList(growable: false);
+
+/*
   SQtag.fromDecoder(this.parent, this.tag,
       [this.values, this.vfLengthField, this.bytes]);
+*/
 
   @override
-  List<Item> get items => values;
+  Iterable<Item> get values => _values;
+  @override
+  set values(Iterable<Item> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
+
   @override
   Bytes get vfBytes => unimplementedError('vfBytes in SQtag');
 
@@ -60,12 +74,6 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
 
   @override
   SQtag get sha256 => throw new UnsupportedError('Can\t hash a sequence');
-
-//  @override
-  SQtag copySQ([Dataset parent]) {
-    parent ??= this.parent;
-    return convert(parent, this);
-  }
 
   @override
   String get info => '$tag: Items:${values.length}, total Elements: $total';
@@ -117,6 +125,18 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
   }
 */
 
+//  @override
+  SQtag copySQ([Dataset parent]) {
+    parent ??= this.parent;
+    return convert(parent, this);
+
+/*    final nItems = new List<TagItem>(length);
+    for (var i = 0; i < items.length; i++)
+      nItems[i] = new TagItem.from(parent, items.elementAt(i), this);
+    return update(nItems);
+    */
+  }
+
   @override
   String format(Formatter z) => z.fmt(this, items);
 
@@ -125,7 +145,7 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
 
   static const Iterable<Item> emptyTagItemList = const <TagItem>[];
 
-  static SQtag make(Tag tag, Iterable<Item> values,
+  static SQtag fromValues(Tag tag, Iterable<Item> values,
           [int vfLength, Dataset parent]) =>
       new SQtag(parent, tag, values, vfLength);
 
@@ -144,16 +164,20 @@ class SQtag extends SQ<TagItem> with TagElement<TagItem> {
     return new SQtag(parent, tag, vList, vfLengthField, bytes);
   }
 
+  static const _makeSQ = TagElement.makeSequenceFromCode;
+
   static SQtag convert(Dataset parent, SQ e) {
-    const makeSQ = TagElement.makeSequenceFromCode;
+    final items = e.values.toList();
+    final length = items.length;
 
     print('    converting SQ: $e');
-    final tagItems = <TagItem>[];
-    final sq = makeSQ(parent, e.code, tagItems, e.vfLengthField);
-    for (var item in e.items) {
-      final tItem = TagItem.convert(parent, item, sq);
-      tagItems.add(tItem);
+    final tagItems = new List<TagItem>(e.items.length);
+    final sq = _makeSQ(parent, e.code, tagItems, e.vfLengthField, null);
+    for (var i = 0; i < length; i++) {
+      final tItem = TagItem.convert(parent, items[i], sq);
+      tagItems[i] = tItem;
     }
-    return sq.update(tagItems);
+    sq.values = tagItems;
+    return sq;
   }
 }

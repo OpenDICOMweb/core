@@ -7,11 +7,11 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/primitives.dart';
 
 /// Sequence Items
 abstract class Item extends Dataset {

@@ -4,15 +4,15 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
-import 'package:core/src/system/system.dart';
-import 'package:core/src/utils/issues.dart';
+import 'package:core/src/error/issues.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/parser.dart';
 
 String hashDecimalString(String s, {Issues issues}) {
   final n = double.tryParse(s);
   if (n == null) return parseError('Invalid Decimal String: $s', issues);
-  final sign = (System.rng.nextBool()) ? -1 : 1;
-  final hash = sign * System.rng.nextDouble();
+  final sign = (Global.rng.nextBool()) ? -1 : 1;
+  final hash = sign * Global.rng.nextDouble();
   return hash.toString();
 }
 

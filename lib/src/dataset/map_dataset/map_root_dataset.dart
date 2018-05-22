@@ -11,6 +11,7 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_dataset.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/utils.dart';
 
 /// A [MapRootDataset].
@@ -37,10 +38,6 @@ class MapRootDataset extends RootDataset with MapDataset {
       : fmi = new FmiMap.from(rds.fmi),
         eMap = new Map.from(rds.eMap),
         super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
-
-  /// Returns the [Element] with [code].
-  @override
-  Element operator [](int code) => eMap[code];
 
   RootDataset copy([RootDataset rds]) => new MapRootDataset.from(rds ?? this);
 }

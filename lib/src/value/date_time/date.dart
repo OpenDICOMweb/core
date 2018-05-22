@@ -7,11 +7,12 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/system.dart';
+import 'package:core/src/error/date_time_errors.dart';
+import 'package:core/src/error/string_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/value/date_time/primitives/date.dart';
 import 'package:core/src/value/date_time/primitives/dcm_date_time.dart';
-import 'package:core/src/value/date_time/primitives/errors.dart';
 import 'package:core/src/value/date_time/time.dart';
 
 typedef Date OnDateError(int y, int m, int d);
@@ -46,7 +47,7 @@ class Date implements Comparable<Date> {
     } on FormatException catch (e) {
       return (onError != null)
           ? onError(y, m, d)
-          : invalidDateError(y, m, d, issues, e);
+          : invalidDate(y, m, d, issues, e);
     }
   }
 
@@ -64,7 +65,7 @@ class Date implements Comparable<Date> {
   @override
   int get hashCode => microseconds.hashCode;
 
-  /// Returns a new [Date] containing the [System].[hash] hash
+  /// Returns a new [Date] containing the [Global].[hash] hash
   /// of [microseconds].
   Date get hash => new Date._(hashDateInMicroseconds(microseconds));
 
@@ -161,7 +162,7 @@ class Date implements Comparable<Date> {
         ? parseDicomDate(s, start: start, end: end)
         : parseInternetDate(s, start: start, end: end);
     if (us == null) {
-      return (onError != null) ? onError(s) : invalidDateString(s, issues);
+      return (onError != null) ? onError(s) : badDateString(s, issues);
     }
     return new Date._(us);
   }
@@ -202,14 +203,14 @@ class Date implements Comparable<Date> {
   }
 
   static int hashDateInMicroseconds(int us) {
-    var hd = system.hash(us);
+    var hd = global.hash(us);
     hd = hd.abs();
     if (hd > kEpochSpan) hd = hd % kEpochSpan;
     return hd + kMinEpochMicrosecond;
   }
 
   static int hashEpochDay(int epochDay) {
-    var hd = system.hash(epochDay);
+    var hd = global.hash(epochDay);
     hd = hd.abs();
     if (hd > kEpochSpan) hd = hd % kEpochSpan;
     return hd + kMinEpochDay;
@@ -246,7 +247,8 @@ class Date implements Comparable<Date> {
 
   /// Returns a [List<String>] of DICOM date (DA) values, where each element in the
   /// [List] is the _normalized_ value of the corresponding element in the argument.
-  static List<String> normalizeStrings(List<String> sList, Date enrollment) {
+  static Iterable<String> normalizeStrings(
+      List<String> sList, Date enrollment) {
     final rList = new List<String>(sList.length);
     for (var i = 0; i < rList.length; i++) {
       final nDate = normalizeString(sList[i], enrollment);
@@ -279,11 +281,11 @@ typedef String OnHashDateStringError(String s);
 
 /// Returns a new date [String] that is the hash of [s], which is a .
 String hashDcmDateString(String s,
-                         {Issues issues, OnHashDateStringError onError}) {
+    {Issues issues, OnHashDateStringError onError}) {
   final us = parseDicomDate(s);
   if (us == null) {
     if (onError != null) return onError(s);
-    return invalidDateString(s, issues);
+    return badDateString(s, issues);
   }
   return microsecondToDateString(hashDateMicroseconds(us));
 }
@@ -293,4 +295,3 @@ String hashDcmDateString(String s,
 /// element in the argument.
 Iterable<String> hashDcmDateDateStringList(List<String> dates) =>
     dates.map(hashDcmDateString);
-

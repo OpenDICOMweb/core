@@ -39,15 +39,15 @@ void main() {
   ds[tag.code] = new TMtag(tag, ['105234.530000']);
   tag = PTag
       .lookupByCode(kMediaStorageSOPClassUID); // Media Storage SOP Class UID
-  ds[tag.code] = new UItag.fromStrings(tag, [kCTImageStorage]);
+  ds[tag.code] = new UItag(tag, [kCTImageStorage]);
   tag = PTag.lookupByCode(
       kMediaStorageSOPInstanceUID); // Media Storage SOP Instance UID
-  ds[tag.code] = new UItag.fromStrings(
+  ds[tag.code] = new UItag(
       tag, ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']);
   tag = PTag.lookupByCode(kTransferSyntaxUID); // Transfer Syntax UID
-  ds[tag.code] = new UItag.fromStrings(tag, [kExplicitVRLittleEndian]);
+  ds[tag.code] = new UItag(tag, [kExplicitVRLittleEndian]);
   tag = PTag.lookupByCode(kStudyInstanceUID); // Study Instance UID
-  ds[tag.code] = new UItag.fromStrings(
+  ds[tag.code] = new UItag(
       tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']);
   print(ds.studyUid);
   print(ds.transferSyntax);

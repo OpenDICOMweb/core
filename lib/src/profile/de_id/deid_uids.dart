@@ -7,8 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils/primitives.dart';
 
 const List<int> deIdFmiUidCodes = const <int>[
   kMediaStorageSOPInstanceUID

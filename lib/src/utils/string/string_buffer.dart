@@ -11,7 +11,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/utils/ascii.dart';
+import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/value/integer.dart';
 
 List<int> _copyBuffer(List<int> oldBuf, List<int> newBuf) {

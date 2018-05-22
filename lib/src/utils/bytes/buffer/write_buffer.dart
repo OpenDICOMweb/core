@@ -17,7 +17,7 @@ import 'package:core/src/utils/dicom.dart';
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
 
-class WriteBuffer extends BufferBase {
+class WriteBuffer extends Buffer {
   @override
   final GrowableBytes buffer;
   @override

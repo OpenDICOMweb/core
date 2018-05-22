@@ -10,9 +10,10 @@
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
-import 'package:core/src/utils/ascii.dart';
+import 'package:core/src/error/string_errors.dart';
+import 'package:core/src/utils/string.dart';
+import 'package:core/src/utils/string/uuid_string.dart';
 import 'package:core/src/value/uuid/errors.dart';
-import 'package:core/src/value/uuid/uuid_string.dart';
 import 'package:core/src/value/uuid/v4generator.dart';
 
 // Note: This implementation is faster than http:pub.dartlang.org/uuid
@@ -229,7 +230,7 @@ class Uuid {
   /// Returns a Uuid created from [s], if [s] is in valid Uuid format;
   /// otherwise, if [onError] is not _null_ calls [onError]([s])
   /// and returns its value. If [onError] is _null_, then a
-  /// [InvalidUuidListError] is thrown.
+  /// [UuidError] is thrown.
   static Uuid parse(String s, {Uint8List data, OnUuidParseError onError}) {
     final bytes = _parseToBytes(s, data, (s) => null, kUuidStringLength);
     if (bytes == null) {
@@ -315,7 +316,7 @@ void _setToVersion4(Uint8List bytes) {
 Uint8List _uint8ListToBytes(List<int> data,
     {OnUuidBytesError onError, bool coerce = true}) {
   if (data.length != 16)
-    return invalidUuidListError(data, 'Invalid Length(${data.length})');
+    return badUuidList('Invalid Length(${data.length})', data);
   final bytes = _getDataBuffer(data);
   if (coerce) _setToVersion4(bytes);
   return bytes;
@@ -328,12 +329,12 @@ Uint8List _parseToBytes(
   //if (s == null ||
   // (s.length != targetLength && s.length != kUuidAsUidStringLength))
   if (s == null || s.length != targetLength)
-    return invalidUuidParseToBytesError(s, targetLength);
+    return badUuidParse(s, targetLength);
   final bytes = _getDataBuffer(data);
   try {
     if (targetLength == 36) {
       if (s[8] != '-' || s[13] != '-' || s[18] != '-' || s[23] != '-')
-        return invalidUuidParseToBytesError(s, targetLength);
+        return badUuidParse(s, targetLength);
       _toBytes(s, bytes, 0, 0, 8);
       _toBytes(s, bytes, 4, 9, 13);
       _toBytes(s, bytes, 6, 14, 18);
@@ -342,22 +343,22 @@ Uint8List _parseToBytes(
     } else if (targetLength == kUuidAsUidStringLength) {
       _toBytes(s, bytes, 0, 0, kUuidAsUidStringLength);
     } else {
-      return invalidUuidStringLengthError(s, targetLength);
+      return badUuidStringLength(s, targetLength);
     }
-  } on InvalidUuidError {
-    return invalidUuidCharacterError(s);
+  } on UuidError {
+    return badUuidCharacter(s);
   }
   return bytes;
 }
 
 /// Returns a valid [Uuid] data buffer. If [uuid] is _null_ a new
 /// data buffer is created. If [uuid] is not _null_ and has length
-/// 16, it is returned; otherwise, [invalidUuidListError] is called.
+/// 16, it is returned; otherwise, [badUuidList] is called.
 Uint8List _getDataBuffer(List<int> uuid) {
   if (uuid == null) return new Uint8List(16);
   if (uuid.length != 16)
-    return invalidUuidListError(
-        uuid, 'Invalid Uuid List length: ${uuid.length}');
+    return badUuidList(
+        'Invalid Uuid List length: ${uuid.length}', uuid);
   if (uuid is Uint8List) return uuid;
   return new Uint8List.fromList(uuid);
 }
@@ -367,7 +368,7 @@ void _toBytes(String s, Uint8List bytes, int byteIndex, int start, int end) {
   var index = byteIndex ?? 0;
   for (var i = start; i < end; i += 2) {
     if (!isHexChar(s.codeUnitAt(i)))
-      invalidUuidCharacterError(s, 'Bad UUID character: ${s[i]}');
+      badUuidCharacter(s, 'Bad UUID character: ${s[i]}');
     bytes[index++] = _hexToByte[s.substring(i, i + 2)];
   }
 }

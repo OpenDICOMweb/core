@@ -7,10 +7,11 @@
 //  See the AUTHORS file for other contributors.
 //
 
+import 'package:core/src/error/date_time_errors.dart';
+import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/value/date_time/primitives/dcm_date_time.dart';
-import 'package:core/src/value/date_time/primitives/errors.dart';
 import 'package:core/src/value/date_time/primitives/time.dart';
 
 typedef Time OnTimeError(int h, int m, int s, int ms, int us, Exception error);
@@ -41,7 +42,7 @@ class Time implements Comparable<Time> {
     } on FormatException catch (e) {
       return (onError != null)
           ? onError(h, m, s, ms, us, e)
-          : invalidTimeError(h, m, s, ms, us, issues, e);
+          : badTime(h, m, s, ms, us, issues, e);
     }
   }
 
@@ -163,7 +164,7 @@ class Time implements Comparable<Time> {
       {int start = 0, int end, Issues issues, OnTimeParseError onError}) {
     final us = parseDcmTime(s, start: start, end: end);
     if (us == null)
-      return (onError != null) ? onError(s) : invalidTimeString(s, issues);
+      return (onError != null) ? onError(s) : badTimeString(s, issues);
     return new Time.fromMicroseconds(us);
   }
 

@@ -10,42 +10,48 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/error/issues.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/issues.dart';
 
-abstract class MetaElementMixin<V>  {
+abstract class MetaElementMixin  {
   Element get e;
 
-  List<V> get emptyList => e.emptyList;
+  List get emptyList => e.emptyList;
 
-  Tag get tag => e.tag;
-
-  //Why are these 3 necessary
+  int get index => e.index;
   int get code => e.code;
-
   String get keyword => e.keyword;
-
+  String get name => e.name;
   int get vrIndex => e.vrIndex;
 
+  int get vmMin => e.vmMin;
+  int get vmMax => e.vmMax;
+  int get vmColumns => e.vmColumns;
   VM get vm => e.vm;
+
+  bool get isPublic => e.isPublic;
+
+  bool get isRetired => e.isRetired;
+
+  Tag get tag => e.tag;
 
   int get maxLength => e.maxLength;
   int get maxVFLength => e.maxVFLength;
   int get vfLengthField => e.vfLengthField;
 
-  Iterable<V> get values => e.values;
+  Iterable get values => e.values;
   set values(Iterable<Object> vList) => e.values = vList;
 
-  V get value => e.value;
+  Object get value => e.value;
 
   TypedData get typedData => e.typedData;
 
-  bool checkValues(Iterable<V> vList, [Issues issues]) =>
+  bool checkValues(Iterable vList, [Issues issues]) =>
       e.checkValues(vList, issues);
 
-  bool checkValue(V v, {Issues issues, bool allowInvalid = false}) =>
+  bool checkValue(Object v, {Issues issues, bool allowInvalid = false}) =>
       e.checkValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  Element<V> update([Iterable<V> vList]) => e.update(vList);
+  Element update([Iterable vList]) => e.update(vList);
 }
 

@@ -11,7 +11,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'number_parse_test.dart', level: Level.debug);
+  Server.initialize(name: 'number_parse_test.dart', level: Level.info);
 
   final rng = new RNG();
 
@@ -32,7 +32,7 @@ void main() {
       expect(pu0, equals(a));
     }
 
-    system.throwOnError = false;
+    global.throwOnError = false;
     final pu1 = parseUint('foo');
     log.debug('pu1: $pu1');
     expect(pu1, isNull);
@@ -79,7 +79,7 @@ void main() {
       expect(validUS1, true);
     }
 
-    system.throwOnError = false;
+    global.throwOnError = false;
     final validUS2 = isValidUintString('foo');
     log.debug('validUS2: $validUS2');
     expect(validUS2, false);

@@ -41,7 +41,7 @@ void main() {
     final lo = new LOtag(PTag.kProductName, ['foo bar']);
     final ss = new SStag(PTag.kTagAngleSecondAxis, [123]);
     final sl = new SLtag(PTag.kReferencePixelX0, [13]);
-    final ob = new OBtag(PTag.kICCProfile, <int>[123, 255], 2);
+    final ob = new OBtag(PTag.kICCProfile, <int>[123, 255]);
 
     rds[lt.code] = lt;
     rds[lo.code] = lo;
@@ -178,7 +178,7 @@ void main() {
       final sq = new SQtag(
           null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final lookup0 = sq.lookup(fl.index);
       log.debug('lookup0: $lookup0');
       expect(lookup0, equals(fl));
@@ -195,7 +195,7 @@ void main() {
       log.debug('lookup3:$lookup3');
       expect(lookup3, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => sq.lookup(od.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -216,7 +216,7 @@ void main() {
       final sq = new SQtag(
           null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final lookup0 = sq.lookupAll(fl.index);
       log.debug('lookup0: $lookup0');
       expect(lookup0, equals([fl]));
@@ -233,7 +233,7 @@ void main() {
       log.debug('lookup3:$lookup3');
       expect(lookup2, <double>[]);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => sq.lookupAll(od.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -270,7 +270,7 @@ void main() {
     ];
 
     test('SQ isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final isValidTag0 = SQ.isValidTag(PTag.kMRImageFrameTypeSequence);
       expect(isValidTag0, true);
 
@@ -281,53 +281,53 @@ void main() {
     });
 
     test('SQ isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final isValidTag0 = SQ.isValidTag(PTag.kSelectorSHValue);
       expect(isValidTag0, false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SQ.isValidTag(PTag.kSelectorFDValue),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final isValidTag0 = SQ.isValidTag(tag);
         expect(isValidTag0, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SQ.isValidTag(tag),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('SQ isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SQ.isValidVRIndex(kSQIndex), true);
       for (var tag in sqTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SQ.isValidVRIndex(tag.vrIndex), true);
       }
     });
     test('SQ isValidVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SQ.isValidVRIndex(kAEIndex), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SQ.isValidVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SQ.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SQ.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('SQ isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SQ.isValidVRCode(kSQCode), true);
 
       for (var tag in sqTags0) {
@@ -336,79 +336,79 @@ void main() {
     });
 
     test('SQ isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SQ.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SQ.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SQ.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SQ.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('SQ checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SQ.checkVRIndex(kSQIndex), kSQIndex);
 
       for (var tag in sqTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SQ.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('SQ checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           SQ.checkVRIndex(
             kAEIndex,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SQ.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SQ.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SQ.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('SQ checkVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SQ.checkVRCode(kSQCode), kSQCode);
 
       for (var tag in sqTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SQ.checkVRCode(tag.vrCode), tag.vrCode);
       }
     });
 
     test('SQ checkVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           SQ.checkVRCode(
             kAECode,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SQ.checkVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SQ.checkVRCode(tag.vrCode), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SQ.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }

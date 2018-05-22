@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-export 'package:core/src/base.dart';
 export 'package:core/src/dataset.dart';
 export 'package:core/src/element.dart';
 export 'package:core/src/entity.dart';
@@ -16,5 +15,6 @@ export 'package:core/src/system.dart';
 export 'package:core/src/tag.dart';
 export 'package:core/src/utils.dart';
 export 'package:core/src/value.dart';
-export 'package:core/src/vr.dart';
+export 'package:core/src/vr/vr_base.dart';
+export 'package:core/src/vr/vr_external.dart';
 

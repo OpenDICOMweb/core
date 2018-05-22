@@ -10,7 +10,6 @@
 export 'package:core/src/tag/color_palette.dart';
 export 'package:core/src/tag/deid_option.dart';
 export 'package:core/src/tag/e_type.dart';
-export 'package:core/src/tag/errors.dart';
 export 'package:core/src/tag/ie_type.dart';
 export 'package:core/src/tag/p_tag.dart';
 export 'package:core/src/tag/p_tag_code_map.dart';

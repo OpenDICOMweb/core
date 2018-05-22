@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
+import 'package:core/src/utils/primitives.dart';
 
 /// A library for handling DICOM File Meta Information Tags.
 

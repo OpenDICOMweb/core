@@ -57,7 +57,7 @@ List base64Test(ByteData bd) {
 Iterable<String> randomListOfDouble(List<double> dList) {
   final length = dList.length;
   final rList = new List<double>(length);
-  for (var i = 0; i < length; i++) rList[i] = System.rng.nextDouble();
+  for (var i = 0; i < length; i++) rList[i] = Global.rng.nextDouble();
   return rList.map(floatToString);
 }
 

@@ -9,17 +9,17 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/ds_bytes.dart';
-import 'package:core/src/dataset/base/errors.dart';
-import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
+import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/error.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
 
@@ -208,7 +208,7 @@ abstract class DatasetMixin {
     assert(index != null && uids != null);
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    if (old is! UI) return invalidUidElement(old);
+    if (old is! UI) return badUidElement(old);
     add(old.update(uids.toList(growable: false)));
     return old;
   }
@@ -222,7 +222,7 @@ abstract class DatasetMixin {
     assert(index != null && sList != null);
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    if (old is! UI) return invalidUidElement(old);
+    if (old is! UI) return badUidElement(old);
 
     // If [e] has noValues, and [uids] == null, just return [e],
     // because there is no discernible difference.
@@ -270,6 +270,7 @@ abstract class DatasetMixin {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
+    print('e: $e');
     final v = e.values;
     e.replace(vList);
     return v;
@@ -300,6 +301,10 @@ abstract class DatasetMixin {
       elements.replaceAllF<V>(index, f);
 */
 
+  /// Replaces all Elements with [index] in _this_, or any Sequence ([SQ])
+  /// Items contained in _this_, with a new element whose values are
+  /// [vList]. Returns a list containing all [Element]s that were
+  /// replaced.
   Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
     final result = <List<V>>[]..add(replace(index, vList));
@@ -328,7 +333,7 @@ abstract class DatasetMixin {
   bool replaceValues<V>(int index, Iterable<V> vList) {
     final e = lookup(index);
     if (e == null) return elementNotPresentError(index);
-    if (!e.tag.isValidValues(vList)) return false;
+    if (!e.checkValues(vList)) return false;
     e.replace(vList);
     return true;
   }
@@ -343,7 +348,7 @@ abstract class DatasetMixin {
       {bool required = false}) {
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    return (old is UI) ? old.replaceUid(uids) : invalidUidElement(old);
+    return (old is UI) ? old.replaceUid(uids) : badUidElement(old);
   }
 
 /*
@@ -384,7 +389,7 @@ abstract class DatasetMixin {
   /// Sequences (SQ) contained in _this_ with an empty list.
   /// Returns a List<Element>] of the original [Element.values] that
   /// were updated.
-  List<Element> noValuesAll(int index) {
+  Iterable<Element> noValuesAll(int index) {
     assert(index != null);
     final result = <Element>[]..add(noValues(index));
     for (var e in elements) {
@@ -615,7 +620,7 @@ abstract class DatasetMixin {
 
   V _checkOneValue<V>(int index, List<V> values) =>
       (values == null || values.length != 1)
-          ? invalidValuesLengthError(Tag.lookupByCode(index), values)
+          ? badValuesLength(values, 0, 1, null, Tag.lookupByCode(index))
           : values.first;
 
   /// Returns the [int] value for the [Element] with [index].
@@ -644,7 +649,8 @@ abstract class DatasetMixin {
   List<int> getIntList(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null || e is! IntBase) return nonIntegerTag(index);
-    if (!allowInvalidValues && !e.hasValidValues) return invalidElementError(e);
+    if (!allowInvalidValues && !e.hasValidValues)
+      return elementError('Invalud Values: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getIntList');
     assert(vList != null);
@@ -667,7 +673,7 @@ abstract class DatasetMixin {
   /// _null_;
   List<double> getFloatList(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null || e is! Float) return invalidFloatElement(e);
+    if (e == null || e is! Float) return badFloatElement(e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getFloatList');
     assert(vList != null);
@@ -691,7 +697,8 @@ abstract class DatasetMixin {
   List<String> getStringList(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null || e is! StringBase) return nonStringTag(index);
-    if (!allowInvalidValues && !e.hasValidValues) return invalidElementError(e);
+    if (!allowInvalidValues && !e.hasValidValues)
+      return elementError('Invalud Values: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getStringList');
     assert(vList != null);
@@ -740,7 +747,7 @@ abstract class DatasetMixin {
       if (s.codeUnitAt(s.length - 1) == 0) s = s.substring(0, s.length - 1);
       return new Uid(s);
     }
-    return invalidElementError(e);
+    return elementError('Invalud Values: $e', e);
   }
 
   /// Returns the [List<double>] values for the [Element] with [index].
@@ -770,7 +777,7 @@ abstract class DatasetMixin {
       replace(index, e);
       return old;
     }
-    return invalidElementError(old, 'Not a DA (date) Element');
+    return elementError('Not a DA (date) Element', old);
   }
 
   /// Returns a formatted [String]. See [Formatter].
@@ -813,16 +820,16 @@ abstract class DatasetMixin {
   int get planarConfiguration => getInt(kPlanarConfiguration);
 
   double get pixelAspectRatio {
-    final list = getStringList(kPixelAspectRatio);
+    final vList = getStringList(kPixelAspectRatio);
     //   print('PAR list: $list');
-    if (list == null || list.isEmpty) return 1.0;
-    if (list.length != 2) {
-      invalidValuesError(list, tag: PTag.kPixelAspectRatio);
+    if (vList == null || vList.isEmpty) return 1.0;
+    if (vList.length != 2) {
+      badValuesLength(vList, 2, 2, null, PTag.kPixelAspectRatio);
       //Issue: is this reasonable?
       return 1.0;
     }
-    final numerator = int.parse(list[0]);
-    final denominator = int.parse(list[1]);
+    final numerator = int.parse(vList[0]);
+    final denominator = int.parse(vList[1]);
     //   print('num: $numerator, den: $denominator');
     return numerator / denominator;
   }
@@ -853,7 +860,7 @@ abstract class DatasetMixin {
         assert(bitsAllocated == 8 || bitsAllocated == 1);
         return pd.pixels;
       } else {
-        return invalidElementError(pd, '$pd is bad Pixel Data');
+        return elementError('$pd is bad Pixel Data', pd);
       }
     }
     if (throwOnError) return null;

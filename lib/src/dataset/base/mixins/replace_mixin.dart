@@ -6,14 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'package:core/src/base.dart';
-import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/error/dataset_errors.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/date_time.dart';
 import 'package:core/src/value/uid.dart';
 
-abstract class ReplaceMixin {
+abstract class ReplaceMixin<V> {
   /// An [Iterable<Element>] of the [Element]s contained in _this_.
   ///
   // Design Note: It is expected that [ElementList] will have
@@ -24,6 +23,8 @@ abstract class ReplaceMixin {
   void store(int index, Element e);
 
   void add(Element e, [Issues issues]);
+
+  bool isValidValues(Iterable<V> vList);
 
   /// Returns the Element with [index], if present; otherwise, returns _null_.
   ///
@@ -37,7 +38,6 @@ abstract class ReplaceMixin {
   Element updateUid(int index, Iterable<Uid> uids, {bool required = false});
 
 // **** End Interface
-
 
 /*
   /// Replaces the _values_ of the [Element] with [index] with [vList].
@@ -55,8 +55,7 @@ abstract class ReplaceMixin {
   /// Replaces the [Element.values] at [index] with [vList].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  Iterable<V> replace<V>(int index, Iterable<V> vList,
-                         {bool required = false}) {
+  Iterable<V> replace(int index, Iterable<V> vList, {bool required = false}) {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
@@ -68,8 +67,8 @@ abstract class ReplaceMixin {
   /// Replaces the [Element.values] at [index] with [f(vList)].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  Iterable<V> replaceF<V>(int index, Iterable<V> f(Iterable<V> vList),
-                          {bool required = false}) {
+  Iterable<V> replaceF(int index, Iterable<V> f(Iterable<V> vList),
+      {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
@@ -81,7 +80,7 @@ abstract class ReplaceMixin {
   /// Replaces all elements with [index] in _this_ and any Items
   /// descended from it, with a new element that has [vList<V>] as its
   /// values. Returns a list containing all [Element]s that were replaced.
-  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
+  Iterable<Iterable<V>> replaceAll(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
     final result = <List<V>>[]..add(replace(index, vList));
     for (var e in elements)
@@ -93,8 +92,8 @@ abstract class ReplaceMixin {
     return result;
   }
 
-  Iterable<Iterable<V>> replaceAllF<V>(int index,
-                                       Iterable<V> f(Iterable<V> vList)) {
+  Iterable<Iterable<V>> replaceAllF(
+      int index, Iterable<V> f(Iterable<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
     for (var e in elements)
@@ -106,10 +105,10 @@ abstract class ReplaceMixin {
     return result;
   }
 
-  bool replaceValues<V>(int index, Iterable<V> vList) {
+  bool replaceValues(int index, Iterable<V> vList) {
     final e = lookup(index);
     if (e == null) return elementNotPresentError(index);
-    if (!e.tag.isValidValues(vList)) return false;
+    if (!isValidValues(vList)) return false;
     e.replace(vList);
     return true;
   }
@@ -120,10 +119,11 @@ abstract class ReplaceMixin {
       elements.replaceUid(index, uids);
 */
 
-  List<Uid> replaceUids(int index, Iterable<Uid> uids, {bool required = false}) {
+  List<Uid> replaceUids(int index, Iterable<Uid> uids,
+      {bool required = false}) {
     final old = lookup(index);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
-    return (old is UI) ? old.replaceUid(uids) : invalidUidElement(old);
+    return (old is UI) ? old.replaceUid(uids) : badUidElement(old);
   }
 
 /*
@@ -148,13 +148,12 @@ abstract class ReplaceMixin {
   /// on the original [Date] and the [enrollment] [Date].
   /// If [Element] is not present, either throws or returns _null_;
   Element normalizeDate(int index, Date enrollment) {
-    final old = lookup(index);
+    final DA old = lookup(index);
     if (old is DA) {
-      final e = old.normalize(enrollment);
-      replace(index, e);
+      final vList = Date.normalizeStrings(old.values, enrollment);
+      old.replace(vList);
       return old;
     }
-    return invalidElementError(old, 'Not a DA (date) Element');
+    return elementError('Not a DA (date) Element', old);
   }
-
 }

@@ -11,6 +11,7 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/tag.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
+import 'package:core/src/utils.dart';
 
 /// An [TagDataset] is a Dataset containing TagElements.
 abstract class TagDataset {
@@ -41,10 +42,11 @@ abstract class TagDataset {
 
   static const _makeSQ = TagElement.makeSequenceFromCode;
 
-  static Dataset convert(Dataset parent, Dataset dsOld, Dataset dsNew) {
+  static Dataset convert(Dataset parent, Dataset dsOld, Dataset dsNew,
+                         [Bytes bytes]) {
     for (var e in dsOld.elements) {
       final eNew = (e is SQ)
-          ? _makeSQ(parent, e.code, <TagItem>[], e.vfLengthField)
+          ? _makeSQ(parent, e.code, <TagItem>[], e.vfLengthField, bytes)
           : TagElement.makeFromElement(parent, e);
       dsNew.add(eNew);
     }

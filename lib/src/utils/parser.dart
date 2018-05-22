@@ -6,8 +6,5 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-
 export 'package:core/src/utils/parser/parse_errors.dart';
-export 'package:core/src/utils/parser/parser.dart';
 export 'package:core/src/utils/parser/parser.dart';

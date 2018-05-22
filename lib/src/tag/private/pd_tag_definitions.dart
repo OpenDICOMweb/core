@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr.dart';
 

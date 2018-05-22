@@ -6,10 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'package:core/src/base.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/tag/e_type.dart';
-import 'package:core/src/tag/errors.dart';
+import 'package:core/src/error/tag_errors.dart';
 import 'package:core/src/tag/p_tag_code_map.dart';
 import 'package:core/src/tag/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
@@ -93,7 +92,7 @@ class PTag extends Tag {
   static PTag lookupByCode(int code,
       [int vrIndex = kUNIndex, bool shouldThrow = false]) {
     if (Tag.isNotPublicCode(code, checkRange: false))
-      return invalidTagCode(code, 'Non-Public Tag Code');
+      return badCode(code, 'Non-Public Tag Code');
     final tag = pTagCodeMap[code];
     if (tag != null) return tag;
 
@@ -148,7 +147,7 @@ class PTag extends Tag {
     // TODO: 0x7Fxx,yyyy Elements
 
     // No match return [null]
-    if (shouldThrow) throw new InvalidTagCodeError(code);
+    if (shouldThrow) badCode(code);
     return new PTag.unknown(code, vrIndex);
   }
 
@@ -228,7 +227,7 @@ class PTag extends Tag {
     //TODO: 0x7Fxx,yyyy Elements
 */
     // No match return [null]
-    return tagKeywordError(keyword);
+    return keywordError(keyword);
   }
 
   //**** Message Data Elements begin here ****
@@ -17350,15 +17349,19 @@ class PTag extends Tag {
       'PixelData', 0x7FE00010, 'Pixel Data', kOBOWIndex, VM.k1, false);
 
 /*
-  static const PTag kPixelDataOB =
-      const PTag._('PixelData', 0x7FE00010, 'Pixel Data', kOBIndex, VM.k1, false);
+  static const PTag kPixelDataOB = const PTag._(
+      'PixelData', 0x7FE00010, 'Pixel Data', kOBIndex, VM.k1, false);
 
-  static const PTag kPixelDataOW =
-      const PTag._('PixelData', 0x7FE00010, 'Pixel Data', kOWIndex, VM.k1, false);
+  static const PTag kPixelDataOW = const PTag._(
+      'PixelData', 0x7FE00010, 'Pixel Data', kOWIndex, VM.k1, false);
 
-  static const PTag kPixelDataUN =
-      const PTag._('PixelData', 0x7FE00010, 'Pixel Data', kOBOWIndex, VM.k1, false);
+  static const PTag kPixelDataUN = const PTag._(
+      'PixelData', 0x7FE00010, 'Pixel Data', kOBOWIndex, VM.k1, false);
 */
+
+  static const PTag kPixelDataOB = PixelDataTag.kPixelDataOB;
+  static const PTag kPixelDataOW = PixelDataTag.kPixelDataOW;
+  static const PTag kPixelDataUN = PixelDataTag.kPixelDataUN;
 
   static const PTag kCoefficientsSDVN
       //(7FE0,0020)
@@ -17727,4 +17730,17 @@ class PTagInvalidVR extends Tag {
 
   @override
   String toString() => '*Invalid VR for $tag';
+}
+
+class PixelDataTag extends PTag {
+  @override
+  final int vrIndex;
+  const PixelDataTag._(this.vrIndex)
+      : super._('PixelData', 0x7FE00010, 'Pixel Data', vrIndex, VM.k1, false);
+
+  static const PTag kPixelDataOB = const PixelDataTag._(kOBIndex);
+
+  static const PTag kPixelDataOW = const PixelDataTag._(kOWIndex);
+
+  static const PTag kPixelDataUN = const PixelDataTag._(kUNIndex);
 }

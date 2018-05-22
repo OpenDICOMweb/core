@@ -89,14 +89,14 @@ void main() {
       expect(Uuid.isValidString('97a90793-4898-4abe-b255-e8dc6967ed40'), true);
 
       for (var uuid in goodUuidList0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uuid0 = Uuid.isValidString(uuid);
         expect(uuid0, true);
       }
     });
 
     test('isValid', () {
-      system.level = Level.info;
+      global.level = Level.info;
       final uuid0 = new Uuid();
       expect(uuid0.isValid, true);
 
@@ -112,14 +112,14 @@ void main() {
       }
 
       for (var uuid in badUuidList0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uuid34 = Uuid.parse(uuid);
         expect(uuid34, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
 
         expect(() => Uuid.parse(uuid),
-            throwsA(const isInstanceOf<InvalidUuidError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
     test('parse', () {
@@ -128,19 +128,19 @@ void main() {
       expect(uuid0.asString, equals(uuidString0));
 
       for (var uuid in goodUuidList0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uuid1 = Uuid.parse(uuid);
         expect(uuid1.asString, equals(uuid));
       }
 
       for (var uuid in badUuidList0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uuid2 = Uuid.parse(uuid);
         expect(uuid2, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => Uuid.parse(uuid),
-            throwsA(const isInstanceOf<InvalidUuidError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
@@ -186,7 +186,7 @@ void main() {
 
       expect(uuid0 == uuid1, true);
       expect(uuid0 == uuid2, false);
-      system.level = Level.info;
+      global.level = Level.info;
       log.debug('uuid0: $uuid0, uuid1: $uuid1');
       //expect(uuid0.data.hashCode, equals(uuid1.data.hashCode));
       expect(uuid0.asHex, equals(uuidV1.replaceAll('-', '')));

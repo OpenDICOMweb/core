@@ -22,7 +22,7 @@ void main() {
       final item = new MapItem.empty(rds, null);
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
-          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
+          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');
       item[uiTransFerSyntax.index] = uiTransFerSyntax;
       log.debug('elements: $item');
@@ -63,22 +63,22 @@ void main() {
       item[fd0.code] = fd0;
       log.debug('item : $item');
 
-      final remove0 = item.removeAt(as0.key);
+      final remove0 = item.removeAt(as0.code);
       expect(remove0, isNotNull);
-      expect(item.removeAt(as0.key), isNull);
+      expect(item.removeAt(as0.code), isNull);
       log.debug('remove0 : $remove0');
 
-      final remove1 = item.removeAt(ss0.key);
+      final remove1 = item.removeAt(ss0.code);
       expect(remove1, isNotNull);
-      expect(item.removeAt(ss0.key), isNull);
+      expect(item.removeAt(ss0.code), isNull);
       log.debug('remove1 : $remove1');
 
-      final remove2 = item.removeAt(fd0.key);
+      final remove2 = item.removeAt(fd0.code);
       expect(remove2, isNotNull);
-      expect(item.removeAt(fd0.key), isNull);
+      expect(item.removeAt(fd0.code), isNull);
       log.debug('remove2 : $remove2');
 
-      expect(item.removeAt(od0.key), isNull);
+      expect(item.removeAt(od0.code), isNull);
     });
 
     test('delete', () {
@@ -101,21 +101,21 @@ void main() {
       expect(remove1, isNull);
       log.debug('remove0 : $remove0');
 
-      final remove2 = item.delete(ss0.key);
+      final remove2 = item.delete(ss0.code);
       expect(remove2, isNotNull);
-      expect(item.delete(ss0.key), isNull);
+      expect(item.delete(ss0.code), isNull);
       log.debug('remove1 : $remove2');
 
-      final remove3 = item.delete(fd0.key);
+      final remove3 = item.delete(fd0.code);
       expect(remove3, isNotNull);
-      expect(item.delete(fd0.key), isNull);
+      expect(item.delete(fd0.code), isNull);
       log.debug('remove2 : $remove3');
 
-      expect(item.delete(od0.key), isNull);
+      expect(item.delete(od0.code), isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
-      expect(() => item.delete(sl0.key, required: true),
+      expect(() => item.delete(sl0.code, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
 
@@ -132,22 +132,22 @@ void main() {
 
       log.debug('item: $item');
 
-      final removeAll0 = item.deleteAll(as0.key);
+      final removeAll0 = item.deleteAll(as0.code);
       expect(removeAll0[0] == as0, true);
-      expect(item.deleteAll(as0.key), <Element>[]);
+      expect(item.deleteAll(as0.code), <Element>[]);
       log.debug('removeAll0: $removeAll0');
 
-      final removeAll1 = item.deleteAll(ss0.key);
+      final removeAll1 = item.deleteAll(ss0.code);
       expect(removeAll1[0] == ss0, true);
-      expect(item.deleteAll(ss0.key), <Element>[]);
+      expect(item.deleteAll(ss0.code), <Element>[]);
       log.debug('removeAll1 : $removeAll1');
 
-      final removeAll2 = item.deleteAll(fd0.key);
+      final removeAll2 = item.deleteAll(fd0.code);
       expect(removeAll2[0] == fd0, true);
-      expect(item.deleteAll(fd0.key), <Element>[]);
+      expect(item.deleteAll(fd0.code), <Element>[]);
       log.debug('removeAll2 : $removeAll2');
 
-      expect(item.deleteAll(od0.key), <Element>[]);
+      expect(item.deleteAll(od0.code), <Element>[]);
     });
 
     test('remove', () {
@@ -185,11 +185,11 @@ void main() {
       item[fd0.code] = fd0;
       item[as0.code] = as0;
 
-      var noValues0 = item.noValues(fd0.key);
+      var noValues0 = item.noValues(fd0.code);
       expect(noValues0 == fd0, true);
       expect(noValues0.values.isEmpty, false);
 
-      noValues0 = item.noValues(fd0.key);
+      noValues0 = item.noValues(fd0.code);
       expect(noValues0.values.isEmpty, true);
       log.debug('noValues0: $noValues0');
     });
@@ -215,10 +215,10 @@ void main() {
 
       item0[as0.code] = as0;
 
-      var noValues0 = item0.noValuesAll(as0.key);
+      var noValues0 = item0.noValuesAll(as0.code);
       expect(noValues0.isEmpty, false);
 
-      noValues0 = item0.noValuesAll(as0.key);
+      noValues0 = item0.noValuesAll(as0.code);
       for (var e in noValues0) {
         print('noValues: $e');
         expect(e.values.isEmpty, true);
@@ -231,12 +231,11 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       item[as0.code] = as0;
 
-      final update0 = item.update(as0.key, <String>[]);
+      final update0 = item.update(as0.code, <String>[]);
       expect(update0.isEmpty, false);
     });
 
     test('updateF(String)', () {
-      system.level = Level.debug;
       final item = new MapItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       item[as0.code] = as0;
@@ -253,10 +252,10 @@ void main() {
       item.add(ss0);
 
       final vList1 = [kInt16Max];
-      final update1 = item.update(ss0.key, vList1).values;
+      final update1 = item.update(ss0.code, vList1).values;
       expect(update1, equals(vList0));
 
-      final update2 = item.update(ss0.key, <int>[]);
+      final update2 = item.update(ss0.code, <int>[]);
       expect(update2.values.isEmpty, false);
     });
 
@@ -266,7 +265,7 @@ void main() {
       final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
       item.add(ss0);
 
-      final update2 = item.updateF<int>(ss0.key, (n) => n);
+      final update2 = item.updateF<int>(ss0.index, (n) => n);
       expect(update2.values.isEmpty, false);
     });
 
@@ -274,7 +273,7 @@ void main() {
       final item = new MapItem.empty(rds, null);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
-      final update1 = item.update(fd0.key, <double>[]);
+      final update1 = item.update(fd0.code, <double>[]);
       expect(update1.isEmpty, false);
     });
 
@@ -283,7 +282,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
 
-      final update1 = item.updateF<double>(fd0.key, (n) => n);
+      final update1 = item.updateF<double>(fd0.index, (n) => n);
       expect(update1.isEmpty, false);
     });
 
@@ -294,10 +293,10 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       item
         ..add(fd0)
         ..add(fd1)
@@ -319,7 +318,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final as1 = new AStag(PTag.kPatientAge, ['024Y']);
       final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       item
@@ -331,7 +330,7 @@ void main() {
         ..add(ob0)
         ..add(ae0);
 
-//      system.level = Level.info;
+//      global.level = Level.info;
       final dup = item.history;
       log.debug('item: $item, dup: $dup');
       expect(dup, isNotNull);
@@ -345,12 +344,12 @@ void main() {
       final item = new MapItem.empty(rds, null);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123], 2);
+      final ob0 = new OBtag(PTag.kICCProfile, [123]);
       final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       item..add(fd0)..add(as0)..add(ob0)..add(ae0);
 
-//      system.level = Level.info;
+//      global.level = Level.info;
       final inRange0 = item.getElementsInRange(0, fd0.code);
       final inRange1 = item.getElementsInRange(0, fd0.code + 1);
       final inRange2 = item.getElementsInRange(0, ae0.code);
@@ -376,7 +375,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+      final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
       print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));
@@ -408,7 +407,7 @@ void main() {
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+      final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
       final item = new MapItem.empty(rds, null)..add(ui0);
       print('values: ${ui0.values}');
       expect(ui0.values, equals(uidStringList0));
@@ -439,7 +438,7 @@ void main() {
 
         // Create element and check values and uids
         print('uidList0: $uidList0');
-        final ui0 = new UItag(PTag.kSelectorUIValue, uidList0);
+        final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
         print('ui0: $ui0');
         final item = new MapItem.empty(rds, null)..add(ui0);
         print('values: ${ui0.values}');
@@ -475,7 +474,7 @@ void main() {
 
         // Create element and check values and uids
         final ui0 =
-            new UItag.fromStrings(PTag.kSelectorUIValue, uidStringList0);
+            new UItag(PTag.kSelectorUIValue, uidStringList0);
         final item = new MapItem.empty(rds, null)..add(ui0);
         print('values: ${ui0.values}');
         expect(ui0.values, equals(uidStringList0));
@@ -503,12 +502,12 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       item.add(fd0);
 
-      final vList1 = [123];
+      final vList1 = [1.23];
       expect(item.replace(fd0.index, vList1), equals(vList0));
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList1));
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final vList2 = ['024Y'];
       final as0 = new AStag(PTag.kPatientAge, vList2);
       final vList3 = [123];
@@ -527,7 +526,7 @@ void main() {
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList0));
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       final vList2 = ['024Y'];
       final as0 = new AStag(PTag.kPatientAge, vList2);
       expect(() => item.replaceF<String>(as0.index, (n) => n, required: true),
@@ -540,7 +539,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       item.add(fd0);
 
-      final vList1 = [123];
+      final vList1 = [1.23];
       final replaceA0 = item.replaceAll(fd0.index, vList1);
       log.debug('replaceA0 : $replaceA0');
       expect(replaceA0, equals([vList0, vList1]));
@@ -583,8 +582,8 @@ void main() {
 
       expect(item.toList(), equals([as0]));
       expect(item.toList(), equals([as0]));
-      expect(item.keys, equals([as0.key]));
-      expect(item.keys, equals([as0.key]));
+      expect(item.codes, equals([as0.code]));
+      expect(item.codes, equals([as0.code]));
       expect(item.length == as0.length, true);
     });
 
@@ -609,29 +608,29 @@ void main() {
       final item = new MapItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final uidList = ['1.2.840.10008.5.1.1.16.376'];
-      final ui0 = new UItag.fromStrings(PTag.kStudyInstanceUID, uidList);
-      final ui1 = new UItag.fromStrings(PTag.kSelectorUIValue, uidList);
+      final ui0 = new UItag(PTag.kStudyInstanceUID, uidList);
+      final ui1 = new UItag(PTag.kSelectorUIValue, uidList);
       final un0 = new UNtag(PTag.kNoName0, [123]);
 
       item[as0.code] = as0;
       item..add(ui0)..add(un0);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final uid0 = item.getUid(ui0.index);
       expect(uid0.toString() == uidList[0], true);
 
       final uid1 = item.getUid(ui1.index);
       expect(uid1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getUid(ui1.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final uid2 = item.getUid(as0.index);
       expect(uid2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getUid(as0.index),
           throwsA(const isInstanceOf<InvalidElementError>()));
     });
@@ -645,7 +644,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValue<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.value));
@@ -657,7 +656,7 @@ void main() {
       final getValues2 = item.getValue<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -671,7 +670,7 @@ void main() {
       item[as0.code] = as0;
       item[ss0.code] = ss0;
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final getValues0 = item.getValues<int>(ss0.index);
       log.debug('getValues0: $getValues0');
       expect(getValues0, equals(ss0.values));
@@ -683,7 +682,7 @@ void main() {
       final getValues2 = item.getValues<double>(fd0.index);
       expect(getValues2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
           throwsA(const isInstanceOf<ElementNotPresentError>()));
     });
@@ -693,7 +692,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       item[as0.code] = as0;
 
-      final update0 = item.updateAll<String>(as0.key, vList: as0.values);
+      final update0 = item.updateAll<String>(as0.index, vList: as0.values);
       expect(update0.isEmpty, false);
     });
 
@@ -702,7 +701,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       item[as0.code] = as0;
 
-      final update0 = item.updateAllF<String>(as0.key, (n) => n);
+      final update0 = item.updateAllF<String>(as0.index, (n) => n);
       expect(update0.isEmpty, false);
     });
 
@@ -712,7 +711,7 @@ void main() {
       final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
       item.add(ss0);
 
-      final update2 = item.updateAll<int>(ss0.key, vList: <int>[]);
+      final update2 = item.updateAll<int>(ss0.index, vList: <int>[]);
       expect(update2.isEmpty, false);
     });
 
@@ -722,7 +721,7 @@ void main() {
       final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
       item.add(ss0);
 
-      final update2 = item.updateAllF<int>(ss0.key, (n) => n);
+      final update2 = item.updateAllF<int>(ss0.index, (n) => n);
       expect(update2.isEmpty, false);
     });
 
@@ -731,7 +730,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
 
-      final update1 = item.updateAll<double>(fd0.key, vList: <double>[]);
+      final update1 = item.updateAll<double>(fd0.index, vList: <double>[]);
       expect(update1.isEmpty, false);
     });
 
@@ -740,7 +739,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
 
-      final update1 = item.updateAllF<double>(fd0.key, (n) => n);
+      final update1 = item.updateAllF<double>(fd0.index, (n) => n);
       expect(update1.isEmpty, false);
     });
 
@@ -778,7 +777,6 @@ void main() {
     });
 
     test('deleteCodes', () {
-      system.level = Level.debug;
       final item = new MapItem.empty(rds, null);
       final as0 = new AStag(PTag.kPatientAge, ['024Y']);
       final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);

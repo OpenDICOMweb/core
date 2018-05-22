@@ -25,11 +25,12 @@ void main() {
         expect(bytes.endian == Endian.little, true);
 
         expect(bytes.elementSizeInBytes == 1, true);
-        expect(bytes.offsetInBytes == 0, true);
+        log.debug('offset: ${bytes.offset}');
+        expect(bytes.offset == 0, true);
         expect(bytes.buffer == bytes.bd.buffer, true);
         expect(bytes.length == count, true);
-        expect(bytes.lengthInBytes == count, true);
-        expect(bytes.length == bytes.lengthInBytes, true);
+        expect(bytes.length == count, true);
+        expect(bytes.length == bytes.length, true);
 
         expect(bytes.hashCode is int, true);
 
@@ -83,11 +84,10 @@ void main() {
         expect(bytes0.endian == Endian.little, true);
 
         expect(bytes0.elementSizeInBytes == 1, true);
-        expect(bytes0.offsetInBytes == 0, true);
-        expect(bytes0.buffer == bytes.bd.buffer, true);
+        expect(bytes0.offset == 0, true);
         expect(bytes0.length == count, true);
-        expect(bytes0.lengthInBytes == count, true);
-        expect(bytes0.length == bytes.lengthInBytes, true);
+        expect(bytes0.length == count, true);
+        expect(bytes0.length == bytes.length, true);
 
         expect(bytes0.hashCode is int, true);
       }
@@ -135,16 +135,16 @@ void main() {
       const loopCount = 100;
 
       for (var i = 0; i < loopCount; i++) {
-        final a = new Bytes(0xFFFF * Bytes.kInt16Size);
-        assert(a.length == 0xFFFF * Bytes.kInt16Size, true);
+        final a = new Bytes(0xFFFF * kInt16Size);
+        assert(a.length == 0xFFFF * kInt16Size, true);
 
         for (var i = 0, j = -10; i <= 10; i++, j += 2) {
           a.setInt16(i * 2, j);
-          print('i: $i, j: $j, v: ${a.getInt16(i)}');
+          log.debug('i: $i, j: $j, v: ${a.getInt16(i)}');
           expect(a.getInt16(i * 2) == j, true);
         }
         for (var i = 0, j = -10; i <= 10; i++, j += 2) {
-          print('i: $i, j: $j, v: ${a.getInt16(i)}');
+          log.debug('i: $i, j: $j, v: ${a.getInt16(i)}');
           expect(a.getInt16(i * 2) == j, true);
         }
       }
@@ -152,17 +152,17 @@ void main() {
 
     test('bytes from', () {
       final list0 = rng.uint8List(1, 1);
-      final bytes = Bytes.asciiEncode(list0.toString());
+      final bytes = new Bytes.typedDataView(list0);
       final byteF0 = new Bytes.from(bytes);
       expect(byteF0, equals(bytes));
 
       expect(byteF0.endian == Endian.little, true);
       expect(byteF0.elementSizeInBytes == 1, true);
-      expect(byteF0.offsetInBytes == 0, true);
+      expect(byteF0.offset == 0, true);
       expect(byteF0.buffer == byteF0.bd.buffer, true);
       expect(byteF0.length == bytes.length, true);
-      expect(byteF0.lengthInBytes == bytes.lengthInBytes, true);
-      expect(byteF0.length == byteF0.lengthInBytes, true);
+      expect(byteF0.length == bytes.length, true);
+      expect(byteF0.length == byteF0.length, true);
       expect(byteF0.hashCode is int, true);
     });
 
@@ -173,31 +173,31 @@ void main() {
 
       expect(byteFL0.endian == Endian.little, true);
       expect(byteFL0.elementSizeInBytes == 1, true);
-      expect(byteFL0.offsetInBytes == 0, true);
+      expect(byteFL0.offset == 0, true);
       expect(byteFL0.buffer == byteFL0.bd.buffer, true);
       expect(byteFL0.length == list0.length, true);
-      expect(byteFL0.lengthInBytes == byteFL0.lengthInBytes, true);
-      expect(byteFL0.length == byteFL0.lengthInBytes, true);
+      expect(byteFL0.length == byteFL0.length, true);
+      expect(byteFL0.length == byteFL0.length, true);
       expect(byteFL0.hashCode is int, true);
     });
 
     test('bytes fromTypedData', () {
       final list0 = rng.uint8List(1, 1);
-      final byteFTD0 = new Bytes.fromTypedData(list0);
+      final byteFTD0 = new Bytes.typedDataView(list0);
       expect(byteFTD0, equals(list0));
 
       expect(byteFTD0.endian == Endian.little, true);
       expect(byteFTD0.elementSizeInBytes == 1, true);
-      expect(byteFTD0.offsetInBytes == 0, true);
+      expect(byteFTD0.offset == 0, true);
       expect(byteFTD0.buffer == byteFTD0.bd.buffer, true);
       expect(byteFTD0.length == list0.length, true);
-      expect(byteFTD0.lengthInBytes == byteFTD0.lengthInBytes, true);
-      expect(byteFTD0.length == byteFTD0.lengthInBytes, true);
+      expect(byteFTD0.length == byteFTD0.length, true);
+      expect(byteFTD0.length == byteFTD0.length, true);
       expect(byteFTD0.hashCode is int, true);
 
       final floats = <double>[0.0, 1.0, 2.0, 3.0];
       final fl32List0 = new Float32List.fromList(floats);
-      final fl32Bytes0 = new Bytes.fromTypedData(fl32List0);
+      final fl32Bytes0 = new Bytes.typedDataView(fl32List0);
       expect(fl32Bytes0.getFloat32(0) == fl32List0[0], true);
       expect(fl32Bytes0.getFloat32(4) == fl32List0[1], true);
       expect(fl32Bytes0.getFloat32(8) == fl32List0[2], true);

@@ -7,8 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/dataset/base/errors.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/error/dataset_errors.dart';
 
 abstract class NoValuesMixin {
   /// An [Iterable<Element>] of the [Element]s contained in _this_.

@@ -21,7 +21,7 @@ void main() {
     final da1 = new DAtag(PTag.kCreationDate, stringList);
     final da2 = new DAtag(PTag.kStructureSetDate, stringList);
 
-    system.throwOnError = true;
+    global.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
     expect(() => da0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
@@ -42,7 +42,7 @@ void main() {
     final dt1 = new DTtag(PTag.kFrameAcquisitionDateTime, stringList);
     final dt2 = new DTtag(PTag.kRouteSegmentStartTime, stringList);
 
-    system.throwOnError = true;
+    global.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
 //    dt0.sha256;
@@ -61,7 +61,7 @@ void main() {
     final tm1 = new TMtag(PTag.kModifiedImageTime, stringList);
     final tm2 = new TMtag(PTag.kCreationTime, stringList);
 
-    system.throwOnError = true;
+    global.throwOnError = true;
     final sha0 = Sha256.stringList(stringList);
     log.debug('stringList: $stringList, sha0: $sha0');
     expect(() => tm0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));

@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/system/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/string.dart';
 
 ///Returns a human-readable string for the date part of [dt].
@@ -39,7 +39,7 @@ String dtToDateTimeString(DateTime dt,
     (asDicom)
     ? '${dtToDateString(dt)}${dtToTimeString(dt)}'
     : '${dtToDateString(dt, asDicom: asDicom)}'
-        '${system.dateTimeSeparator}'
+        '${global.dateTimeSeparator}'
         '${dtToTimeString(dt, asDicom: asDicom, showFraction: showFraction)}';
 
 

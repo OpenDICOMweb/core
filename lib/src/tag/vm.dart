@@ -28,7 +28,7 @@ class VM {
   /// The maximum number of values that are allowed. [max] [%] [columns]
   /// must equal 0. If [max] is -1 than as many values as will fit in the
   /// Value Field are allowed.
-  final int max;
+  final int _max;
 
   /// The [columns] of the array of values. Both [min] and [max] must be
   /// evenly divisible by [columns]. That is [min] % [columns] == [max] %
@@ -39,7 +39,7 @@ class VM {
   final bool isPrivate;
 
   // Constructor
-  const VM(this.keyword, this.min, this.max, this.columns,
+  const VM(this.keyword, this.min, this._max, this.columns,
       {this.isPrivate = false});
 
   String get id {
@@ -47,23 +47,23 @@ class VM {
     return 'k$s';
   }
 
-  bool get isFixed => min == max;
+  bool get isFixed => min == _max;
 
-  bool get isSingleton => min == 1 && max == 1 && columns == 1;
+  bool get isSingleton => min == 1 && _max == 1 && columns == 1;
 
-  int getMax(int maxLength) {
-    if (max != -1) return max;
-    final excess = maxLength % columns;
-    final actual = maxLength - excess;
+  int max(int maxLengthForVR) {
+    if (_max != -1) return _max;
+    final excess = maxLengthForVR % columns;
+    final actual = maxLengthForVR - excess;
     assert(actual % columns == 0);
     return actual;
   }
 
   bool isValidLength(int length, int maxLength) =>
-      length >= min && length <= getMax(maxLength);
+      length >= min && length <= max(maxLength);
 
   bool isValid<T>(List<T> v, int maxLength) =>
-      v.length >= min && v.length <= getMax(maxLength);
+      v.length >= min && v.length <= max(maxLength);
 
   bool isNotValid<T>(List<T> v, int maxLength) => !isValid(v, maxLength);
 

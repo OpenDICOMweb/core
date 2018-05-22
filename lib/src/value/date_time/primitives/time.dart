@@ -8,7 +8,7 @@
 //
 
 
-import 'package:core/src/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/value/date_time.dart';
@@ -23,7 +23,7 @@ int toTimeMicroseconds(int us) => us % kMicrosecondsPerDay;
 /// Returns the microsecond that corresponds to the arguments.
 int timeToMicroseconds(int h, [int m = 0, int s = 0, int ms = 0, int us = 0]) =>
     (!isValidTime(h, m, s, ms, us))
-        ? invalidTimeError(h, m, s, ms, us)
+        ? badTime(h, m, s, ms, us)
         : internalTimeInMicroseconds(h, m, s, ms, us);
 
 // *** No Error Checking
@@ -87,7 +87,7 @@ dynamic microsecondToTime(int time, TimeToObject creator, {bool asDicom = true})
 
 /// Returns a FThash of microsecond ([us]) that is in the
 /// range: ```0 <= hash <= [kMicrosecondsPerDay]```.
-int hashTimeMicroseconds(int us) => system.hash(us) % kMicrosecondsPerDay;
+int hashTimeMicroseconds(int us) => global.hash(us) % kMicrosecondsPerDay;
 
 Iterable<int> hashTimeMicrosecondsList(List<int> daList) =>
     daList.map(hashTimeMicroseconds);

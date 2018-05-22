@@ -20,7 +20,7 @@ void main() {
   final LT lt2 = new LTtag(PTag.kDetectorDescription, ['foo']);
   final FL fl3 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
 
-  PTag.kPerformedLocation.isValidValues(['foo']);
+  sl0.checkValues([-99]);
 
   rootDS..add(sl0)..add(sl2)..add(lt2)..add(fl3);
 

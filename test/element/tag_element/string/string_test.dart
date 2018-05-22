@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:convert' as cvt;
+import 'dart:convert';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
@@ -17,7 +17,7 @@ RSG rsg = new RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/string_test', level: Level.info);
-  system.throwOnError = false;
+  global.throwOnError = false;
 
   const goodLOList = const <List<String>>[
     const <String>['5b9LE'],
@@ -43,12 +43,12 @@ void main() {
   group('LO Tests', () {
     test('LO hasValidValues good values', () {
       for (var s in goodLOList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, s);
         expect(lo0.hasValidValues, true);
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, []);
       expect(lo0.hasValidValues, true);
       expect(lo0.values, equals(<String>[]));
@@ -56,21 +56,21 @@ void main() {
 
     test('LO hasValidValues bad values', () {
       for (var s in badLOList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, s);
         expect(lo0, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new LOtag(PTag.kReceiveCoilManufacturerName, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final lo1 = new LOtag(PTag.kReceiveCoilManufacturerName, null);
       log.debug('lo1: $lo1');
       expect(lo1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new LOtag(PTag.kReceiveCoilManufacturerName, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -103,15 +103,15 @@ void main() {
 
     test('LO hasValidValues bad values random', () {
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final vList0 = rsg.getLOList(3, 4);
         log.debug('$i: vList0: $vList0');
         final lo2 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         expect(lo2, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new LOtag(PTag.kReceiveCoilManufacturerName, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -173,7 +173,7 @@ void main() {
     });
 
     test('LO hashCode and == bad values random', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       List<String> stringList0;
       List<String> stringList1;
       List<String> stringList2;
@@ -216,7 +216,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
-        expect(lo0.tag.isValidLength(lo0.length), true);
+        expect(lo0.tag.isValidLength(lo0), true);
       }
     });
 
@@ -224,7 +224,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
-        expect(lo0.tag.isValidValues(lo0.values), true);
+        expect(lo0.checkValues(lo0.values), true);
         expect(lo0.hasValidValues, true);
       }
     });
@@ -264,13 +264,12 @@ void main() {
       }
     });
 
-    test('LO fromUint8List random', () {
+    test('LO fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 1);
-        final bytes = LO.toUint8List(vList1);
+        final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final lo0 =
-            LOtag.fromUint8List(PTag.kReceiveCoilManufacturerName, bytes);
+        final lo0 = LOtag.fromBytes(PTag.kReceiveCoilManufacturerName, bytes);
         log.debug('lo0: ${lo0.info}');
         expect(lo0.hasValidValues, true);
       }
@@ -280,7 +279,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final lo1 = LOtag.fromBytes(PTag.kSelectorLOValue, bytes0);
           log.debug('lo1: ${lo1.info}');
@@ -293,15 +292,15 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 10);
         for (var listS in vList1) {
-          system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          global.throwOnError = false;
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final lo1 = LOtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(lo1, isNull);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => LOtag.fromBytes(PTag.kSelectorCSValue, bytes0),
-              throwsA(const isInstanceOf<InvalidVRError>()));
+              throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
     });
@@ -309,11 +308,13 @@ void main() {
     test('LO make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        final make0 = LOtag.make(PTag.kReceiveCoilManufacturerName, vList0);
+        final make0 =
+            LOtag.fromValues(PTag.kReceiveCoilManufacturerName, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = LOtag.make(PTag.kReceiveCoilManufacturerName, <String>[]);
+        final make1 =
+            LOtag.fromValues(PTag.kReceiveCoilManufacturerName, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -322,24 +323,27 @@ void main() {
     test('LO make bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(2, 2);
-        system.throwOnError = false;
-        final make0 = LOtag.make(PTag.kReceiveCoilManufacturerName, vList0);
+        global.throwOnError = false;
+        final make0 =
+            LOtag.fromValues(PTag.kReceiveCoilManufacturerName, vList0);
         expect(make0, isNull);
 
-        system.throwOnError = true;
-        expect(() => LOtag.make(PTag.kReceiveCoilManufacturerName, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        global.throwOnError = true;
+        expect(
+            () => LOtag.fromValues(PTag.kReceiveCoilManufacturerName, vList0),
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final make1 =
-          LOtag.make(PTag.kReceiveCoilManufacturerName, <String>[null]);
+          LOtag.fromValues(PTag.kReceiveCoilManufacturerName, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(
-          () => LOtag.make(PTag.kReceiveCoilManufacturerName, <String>[null]),
+          () => LOtag
+              .fromValues(PTag.kReceiveCoilManufacturerName, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -360,14 +364,14 @@ void main() {
     });
 
     test('LO checkLength bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final vList2 = ['&t&wSB)~P', '02werw#%h'];
       final lo3 = new LOtag(PTag.kReceiveCoilManufacturerName, vList2);
       expect(lo3, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new LOtag(PTag.kReceiveCoilManufacturerName, vList2),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('LO checkValue good values', () {
@@ -386,22 +390,24 @@ void main() {
 
       for (var s in badLOList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(lo0.checkValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => lo0.checkValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
   });
 
   group('LO', () {
+    const badLongString = 'fr<(Kf_dt&wSB)~P_hYZI`r[12Der)*sldfjelr#er@1!`, '
+        '{qw{retyt}dddd123qw{retyt}dddd123';
     const badLOLengthList = const <String>[
-      '',
+      //    '',
       'fr<(Kf_dt&wSB)~P_hYZI`r[12Der)*sldfjelr#er@1!`, {qw{retyt}dddd123',
-      'fr<(Kf_dt&wSB)~P_hYZI`r[12Der)*sldfjelr#er@1!`, {qw{retyt}dddd123qw{retyt}dddd123'
+      badLongString
     ];
 
     //VM.k1
@@ -453,7 +459,7 @@ void main() {
     final invalidVList = rsg.getLOList(LO.kMaxLength + 1, LO.kMaxLength + 1);
 
     test('LO isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LO.isValidTag(PTag.kSelectorLOValue), true);
 
       for (var tag in loTags0) {
@@ -463,115 +469,117 @@ void main() {
     });
 
     test('LO isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LO.isValidTag(PTag.kSelectorFDValue), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LO.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final validT0 = LO.isValidTag(tag);
         expect(validT0, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LO.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
+/*
     test('LO checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LO.checkVRIndex(kLOIndex), kLOIndex);
 
       for (var tag in loTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LO.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('LO checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           LO.checkVRIndex(
             kAEIndex,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LO.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LO.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LO.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('LO checkVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LO.checkVRCode(kLOCode), kLOCode);
 
       for (var tag in loTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LO.checkVRCode(tag.vrCode), tag.vrCode);
       }
     });
 
     test('LO checkVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           LO.checkVRCode(
             kAECode,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LO.checkVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LO.checkVRCode(tag.vrCode), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LO.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('LO isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LO.isValidVRIndex(kLOIndex), true);
 
       for (var tag in loTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LO.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('LO isValidVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LO.isValidVRIndex(kCSIndex), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LO.isValidVRIndex(kCSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LO.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LO.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('LO isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LO.isValidVRCode(kLOCode), true);
 
       for (var tag in loTags0) {
@@ -580,18 +588,18 @@ void main() {
     });
 
     test('LO isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LO.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LO.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LO.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LO.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
@@ -608,13 +616,13 @@ void main() {
     });
 
     test('LO isNotValidVFLength good values', () {
-      expect(LO.isNotValidVFLength(LO.kMaxVFLength), false);
-      expect(LO.isNotValidVFLength(0), false);
+      expect(LO.isValidVFLength(LO.kMaxVFLength), true);
+      expect(LO.isValidVFLength(0), true);
     });
 
     test('LO isNotValidVFLength bad values', () {
-      expect(LO.isNotValidVFLength(LO.kMaxVFLength + 1), true);
-      expect(LO.isNotValidVFLength(-1), true);
+      expect(LO.isValidVFLength(LO.kMaxVFLength + 1), false);
+      expect(LO.isValidVFLength(-1), false);
     });
 
     test('LO isValidValueLength good values', () {
@@ -631,76 +639,76 @@ void main() {
     });
 
     test('LO isValidValueLength bad values', () {
+      global.throwOnError = false;
+      for (var s in badLOLengthList) {
+        expect(LO.isValidValueLength(s), false);
+      }
+
+      expect(
+          LO.isValidValueLength('&t&wSB)~PIA!UIDX }d!zD2N3 2fz={@^mHL:/"qzD2N3 '
+              '2fzLzgGEH6bTY&N}JzD2N3 2fz'),
+          false);
+      expect(LO.isValidValueLength(''), true);
+    });
+
+    test('LO isNotValidValueLength good values', () {
+      for (var s in goodLOList) {
+        for (var a in s) {
+          expect(LO.isValidValueLength(a), true);
+        }
+      }
+    });
+
+    test('LO isNotValidValueLength bad values', () {
+      global.throwOnError = false;
       for (var s in badLOLengthList) {
         expect(LO.isValidValueLength(s), false);
       }
 
       expect(
           LO.isValidValueLength(
-              '&t&wSB)~PIA!UIDX }d!zD2N3 2fz={@^mHL:/"qzD2N3 2fzLzgGEH6bTY&N}JzD2N3 2fz'),
-          false);
-      expect(LO.isValidValueLength(''), false);
-    });
-
-    test('LO isNotValidValueLength good values', () {
-      for (var s in goodLOList) {
-        for (var a in s) {
-          expect(LO.isNotValidValueLength(a), false);
-        }
-      }
-    });
-
-    test('LO isNotValidValueLength bad values', () {
-      for (var s in badLOLengthList) {
-        expect(LO.isNotValidValueLength(s), true);
-      }
-
-      expect(
-          LO.isNotValidValueLength(
               '&t&wSB)~PIA!UIDX }d!zD2N3 2fz={@^mHL:/"qmczv9LzgGEH6bTY&N}J'),
-          false);
+          true);
     });
 
-    test('LO isValidVListLength VM.k1 good values', () {
-      system.throwOnError = false;
+    test('LO isValidLength VM.k1 good values', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getLOList(1, 1);
         for (var tag in loTags0) {
-          expect(LO.isValidVListLength(tag, validMinVList), true);
+          expect(LO.isValidLength(tag, validMinVList), true);
 
-          expect(
-              LO.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              LO.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(LO.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(LO.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('LO isValidVListLength VM.k1 bad values', () {
+    test('LO isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rsg.getLOList(2, i + 1);
         for (var tag in loTags0) {
-          system.throwOnError = false;
-          expect(LO.isValidVListLength(tag, validMinVList), false);
+          global.throwOnError = false;
+          expect(LO.isValidLength(tag, validMinVList), false);
 
-          expect(LO.isValidVListLength(tag, invalidVList), false);
+          expect(LO.isValidLength(tag, invalidVList), false);
 
-          system.throwOnError = true;
-          expect(() => LO.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          global.throwOnError = true;
+          expect(() => LO.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('LO isValidVListLength VM.k1_n good values', () {
-      system.throwOnError = false;
+    test('LO isValidLength VM.k1_n good values', () {
+      global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rsg.getLOList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, LO.kMaxLength);
         for (var tag in loTags1) {
           log.debug('tag: $tag');
-          expect(LO.isValidVListLength(tag, validMinVList0), true);
-          expect(LO.isValidVListLength(tag, validMaxLengthList), true);
+          expect(LO.isValidLength(tag, validMinVList0), true);
+          expect(LO.isValidLength(tag, validMaxLengthList), true);
         }
       }
     });
@@ -716,18 +724,18 @@ void main() {
     test('LO isValidValue bad values', () {
       for (var s in badLOList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(LO.isValidValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => LO.isValidValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
 
     test('LO isValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in goodLOList) {
         expect(LO.isValidValues(PTag.kDataSetSubtype, s), true);
       }
@@ -735,85 +743,84 @@ void main() {
 
     test('LO isValidValues bad values', () {
       for (var s in badLOList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LO.isValidValues(PTag.kDataSetSubtype, s), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LO.isValidValues(PTag.kDataSetSubtype, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
-    test('LO fromUint8List', () {
-//      system.level = Level.info;
+    test('LO fromBytes', () {
+//      global.level = Level.info;
       final vList1 = rsg.getLOList(1, 1);
-      final bytes = LO.toUint8List(vList1);
-      log.debug(
-          'LO.fromUint8List(bytes): ${LO.fromUint8List(bytes)}, bytes: $bytes');
-      expect(LO.fromUint8List(bytes), equals(vList1));
+      final bytes = Bytes.fromUtf8List(vList1);
+      log.debug('LO.fromBytes(bytes):  $bytes');
+      expect(bytes.getUtf8List(), equals(vList1));
     });
 
     test('LO toUint8List', () {
       final vList1 = rsg.getLOList(1, 1);
-      log.debug('LO.toUint8List(vList1): ${LO.toUint8List(vList1)}');
+      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
-      expect(LO.toUint8List(vList1), equals(values));
+      final values = ascii.encode(vList1[0]);
+      expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
-    test('LO checkList good values', () {
-      system.throwOnError = false;
+    test('LO isValidValues good values', () {
+      global.throwOnError = false;
       for (var i = 0; i <= 10; i++) {
         final vList = rsg.getLOList(1, 1);
-        expect(LO.checkList(PTag.kDataSetSubtype, vList), vList);
+        expect(LO.isValidValues(PTag.kDataSetSubtype, vList), true);
       }
 
       final vList0 = ['5b9LE'];
-      expect(LO.checkList(PTag.kDataSetSubtype, vList0), vList0);
+      expect(LO.isValidValues(PTag.kDataSetSubtype, vList0), true);
 
       for (var s in goodLOList) {
-        system.throwOnError = false;
-        expect(LO.checkList(PTag.kDataSetSubtype, s), s);
+        global.throwOnError = false;
+        expect(LO.isValidValues(PTag.kDataSetSubtype, s), true);
       }
     });
 
-    test('LO checkList bad values', () {
-      system.throwOnError = false;
+    test('LO isValidValues bad values', () {
+      global.throwOnError = false;
       final vList1 = ['B\\S'];
-      expect(LO.checkList(PTag.kDataSetSubtype, vList1), isNull);
+      expect(LO.isValidValues(PTag.kDataSetSubtype, vList1), false);
 
-      system.throwOnError = true;
-      expect(() => LO.checkList(PTag.kDataSetSubtype, vList1),
-          throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+      global.throwOnError = true;
+      expect(() => LO.isValidValues(PTag.kDataSetSubtype, vList1),
+          throwsA(const isInstanceOf<StringError>()));
 
       for (var s in badLOList) {
-        system.throwOnError = false;
-        expect(LO.checkList(PTag.kDataSetSubtype, s), isNull);
+        global.throwOnError = false;
+        expect(LO.isValidValues(PTag.kDataSetSubtype, s), false);
 
-        system.throwOnError = true;
-        expect(() => LO.checkList(PTag.kDataSetSubtype, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+        global.throwOnError = true;
+        expect(() => LO.isValidValues(PTag.kDataSetSubtype, s),
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('LO toByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        system.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = LO.toByteData(vList0);
-        final tbd1 = LO.toByteData(vList0);
+        global.throwOnError = false;
+        final values = ascii.encode(vList0[0]);
+        final tbd0 = Bytes.fromUtf8List(vList0);
+        final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
       for (var s in goodLOList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
-          final tbd2 = LO.toByteData(s);
-          final tbd3 = LO.toByteData(s);
+          final values = ascii.encode(a);
+          final tbd2 = Bytes.fromUtf8List(s);
+          final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -823,15 +830,15 @@ void main() {
     test('LO fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        system.throwOnError = false;
-        final bd0 = LO.toByteData(vList0);
-        final fbd0 = LO.fromByteData(bd0);
+        global.throwOnError = false;
+        final bd0 = Bytes.fromUtf8List(vList0);
+        final fbd0 = bd0.getUtf8List();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodLOList) {
-        final bd0 = LO.toByteData(s);
-        final fbd0 = LO.fromByteData(bd0);
+        final bd0 = Bytes.fromUtf8List(s);
+        final fbd0 = bd0.getUtf8List();
         expect(fbd0, equals(s));
       }
     });
@@ -839,33 +846,33 @@ void main() {
     test('LO toBytes', () {
       for (var i = 0; i < 10; i++) {
         final sList0 = rsg.getLOList(1, 10);
-        system.throwOnError = false;
-        final toB0 = LO.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        global.throwOnError = false;
+        final toB0 = Bytes.fromUtf8List(sList0, kMaxShortVF);
+        final bytes0 = Bytes.fromAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodLOList) {
-        final toB1 = LO.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
+        final bytes1 = Bytes.fromAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      system.throwOnError = false;
-      final toB2 = LO.toBytes([''], kMaxShortVF);
+      global.throwOnError = false;
+      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = LO.toBytes([], kMaxShortVF);
+      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = LO.toBytes(null, kMaxShortVF);
+      final toB4 = Bytes.fromUtf8List(null, kMaxShortVF);
       expect(toB4, isNull);
 
-      system.throwOnError = true;
-      expect(() => LO.toBytes(null, kMaxShortVF),
-          throwsA(const isInstanceOf<NullValueError>()));
+      global.throwOnError = true;
+      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
   });
 
@@ -884,11 +891,11 @@ void main() {
   group('LTtag', () {
     test('LT hasValidValues good values', () {
       for (var s in goodLTList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final lt0 = new LTtag(PTag.kAcquisitionProtocolDescription, s);
         expect(lt0.hasValidValues, true);
       }
-      system.throwOnError = false;
+      global.throwOnError = false;
       final lt0 = new LTtag(PTag.kImageComments, []);
       expect(lt0.hasValidValues, true);
       expect(lt0.values, equals(<String>[]));
@@ -896,13 +903,13 @@ void main() {
 
     test('LT hasValidValues bad values', () {
       for (var s in badLTList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final lt0 = new LTtag(PTag.kAcquisitionProtocolDescription, s);
         expect(lt0, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new LTtag(PTag.kAcquisitionProtocolDescription, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
@@ -922,23 +929,23 @@ void main() {
 
     test('LT hasValidValues bad values random', () {
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final vList0 = rsg.getLTList(3, 4);
         log.debug('$i: vList0: $vList0');
         final lt1 = new LTtag(PTag.kAcquisitionProtocolDescription, vList0);
         expect(lt1, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new LTtag(PTag.kAcquisitionProtocolDescription, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final lt1 = new LTtag(PTag.kImageComments, null);
       log.debug('lt1: $lt1');
       expect(lt1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new LTtag(PTag.kAcquisitionProtocolDescription, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -1001,7 +1008,7 @@ void main() {
     });
 
     test('LT hashCode and == bad values random', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       List<String> stringList0;
       List<String> stringList1;
       List<String> stringList2;
@@ -1036,7 +1043,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
         final lt0 = new LTtag(PTag.kImageComments, vList0);
-        expect(lt0.tag.isValidLength(lt0.length), true);
+        expect(lt0.tag.isValidLength(lt0), true);
       }
     });
 
@@ -1044,7 +1051,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
         final lt0 = new LTtag(PTag.kImageComments, vList0);
-        expect(lt0.tag.isValidValues(lt0.values), true);
+        expect(lt0.checkValues(lt0.values), true);
         expect(lt0.hasValidValues, true);
       }
     });
@@ -1084,13 +1091,13 @@ void main() {
       }
     });
 
-    test('LT fromUint8List random', () {
+    test('LT fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 1);
         log.debug('vList1:$vList1');
-        final bytes = LT.toUint8List(vList1);
+        final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final lt0 = LTtag.fromUint8List(PTag.kImageComments, bytes);
+        final lt0 = LTtag.fromBytes(PTag.kImageComments, bytes);
         log.debug('lt0: ${lt0.info}');
         expect(lt0.hasValidValues, true);
       }
@@ -1100,7 +1107,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final lt1 = LTtag.fromBytes(PTag.kSelectorLTValue, bytes0);
           log.debug('lt1: ${lt1.info}');
@@ -1113,15 +1120,15 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 10);
         for (var listS in vList1) {
-          system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          global.throwOnError = false;
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final lt1 = LTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(lt1, isNull);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => LTtag.fromBytes(PTag.kSelectorCSValue, bytes0),
-              throwsA(const isInstanceOf<InvalidVRError>()));
+              throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
     });
@@ -1129,11 +1136,11 @@ void main() {
     test('LT make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final make0 = LTtag.make(PTag.kImageComments, vList0);
+        final make0 = LTtag.fromValues(PTag.kImageComments, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = LTtag.make(PTag.kImageComments, <String>[]);
+        final make1 = LTtag.fromValues(PTag.kImageComments, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -1142,22 +1149,22 @@ void main() {
     test('LT make bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(2, 2);
-        system.throwOnError = false;
-        final make0 = LTtag.make(PTag.kImageComments, vList0);
+        global.throwOnError = false;
+        final make0 = LTtag.fromValues(PTag.kImageComments, vList0);
         expect(make0, isNull);
 
-        system.throwOnError = true;
-        expect(() => LTtag.make(PTag.kImageComments, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        global.throwOnError = true;
+        expect(() => LTtag.fromValues(PTag.kImageComments, vList0),
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
-      system.throwOnError = false;
-      final make1 = LTtag.make(PTag.kImageComments, <String>[null]);
+      global.throwOnError = false;
+      final make1 = LTtag.fromValues(PTag.kImageComments, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
-      system.throwOnError = true;
-      expect(() => LTtag.make(PTag.kImageComments, <String>[null]),
+      global.throwOnError = true;
+      expect(() => LTtag.fromValues(PTag.kImageComments, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -1181,7 +1188,7 @@ void main() {
     });
 
     test('LT checkLength bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final vList2 = ['\b', '024Y'];
       final lt3 = new LTtag(PTag.kImageComments, vList2);
       expect(lt3, isNull);
@@ -1202,12 +1209,12 @@ void main() {
       final lt0 = new LTtag(PTag.kImageComments, vList0);
       for (var s in badLTList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(lt0.checkValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => lt0.checkValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
@@ -1215,13 +1222,12 @@ void main() {
     test('LT decodeBinaryTextVF', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 1);
-        final bytes = LT.toUint8List(vList1);
-        final dbTxt0 = StringBase.decodeBinaryTextVF(bytes, kMaxShortVF);
+        final bytes = Bytes.fromUtf8List(vList1);
+        final dbTxt0 = bytes.getUtf8List();
         log.debug('dbTxt0: $dbTxt0');
         expect(dbTxt0, equals(vList1));
 
-        final dbTxt1 =
-            StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
+        final dbTxt1 = bytes.getUtf8List();
         log.debug('dbTxt1: $dbTxt1');
         expect(dbTxt1, equals(vList1));
       }
@@ -1267,7 +1273,7 @@ void main() {
     final invalidVList = rsg.getLTList(LT.kMaxLength + 1, LT.kMaxLength + 1);
 
     test('LT isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LT.isValidTag(PTag.kSelectorLTValue), true);
 
       for (var tag in ltTags0) {
@@ -1277,115 +1283,117 @@ void main() {
     });
 
     test('LT isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LT.isValidTag(PTag.kSelectorFDValue), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LT.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final validT0 = LT.isValidTag(tag);
         expect(validT0, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LT.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
 
+/*
     test('LT checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LT.checkVRIndex(kLTIndex), kLTIndex);
 
       for (var tag in ltTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LT.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('LT checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           LT.checkVRIndex(
             kAEIndex,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LT.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LT.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LT.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('LT checkVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LT.checkVRCode(kLTCode), kLTCode);
 
       for (var tag in ltTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LT.checkVRCode(tag.vrCode), tag.vrCode);
       }
     });
 
     test('LT checkVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           LT.checkVRCode(
             kAECode,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LT.checkVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LT.checkVRCode(tag.vrCode), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LT.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('LT isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LT.isValidVRIndex(kLTIndex), true);
 
       for (var tag in ltTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LT.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('LT isValidVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LT.isValidVRIndex(kCSIndex), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LT.isValidVRIndex(kCSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LT.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LT.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('LT isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LT.isValidVRCode(kLTCode), true);
 
       for (var tag in ltTags0) {
@@ -1394,17 +1402,17 @@ void main() {
     });
 
     test('LT isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(LT.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => LT.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LT.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LT.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
@@ -1421,13 +1429,13 @@ void main() {
     });
 
     test('LT isNotValidVFLength good values', () {
-      expect(LT.isNotValidVFLength(LT.kMaxVFLength), false);
-      expect(LT.isNotValidVFLength(0), false);
+      expect(LT.isValidVFLength(LT.kMaxVFLength), true);
+      expect(LT.isValidVFLength(0), true);
     });
 
     test('LT isNotValidVFLength bad values', () {
-      expect(LT.isNotValidVFLength(LT.kMaxVFLength + 1), true);
-      expect(LT.isNotValidVFLength(-1), true);
+      expect(LT.isValidVFLength(LT.kMaxVFLength + 1), false);
+      expect(LT.isValidVFLength(-1), false);
     });
 
     test('LT isValidValueLength good values', () {
@@ -1447,45 +1455,43 @@ void main() {
     test('LT isNotValidValueLength good values', () {
       for (var s in goodLTList) {
         for (var a in s) {
-          expect(LT.isNotValidValueLength(a), false);
+          expect(LT.isValidValueLength(a), true);
         }
       }
     });
 
     test('LT isNotValidValueLength bad values', () {
       expect(
-          LT.isNotValidValueLength(
+          LT.isValidValueLength(
               '&t&wSB)~PIA!UIDX }d!zD2N3 2fz={@^mHL:/"qmczv9LzgGEH6bTY&N}J'),
-          false);
+          true);
     });
 
-    test('LT isValidVListLength VM.k1 good values', () {
-      system.throwOnError = false;
+    test('LT isValidLength VM.k1 good values', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getLTList(1, 1);
         for (var tag in ltTags0) {
-          expect(LT.isValidVListLength(tag, validMinVList), true);
+          expect(LT.isValidLength(tag, validMinVList), true);
 
-          expect(
-              LT.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              LT.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(LT.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(LT.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('LT isValidVListLength VM.k1 bad values', () {
+    test('LT isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rsg.getLTList(2, i + 1);
         for (var tag in ltTags0) {
-          system.throwOnError = false;
-          expect(LT.isValidVListLength(tag, validMinVList), false);
+          global.throwOnError = false;
+          expect(LT.isValidLength(tag, validMinVList), false);
 
-          expect(LT.isValidVListLength(tag, invalidVList), false);
+          expect(LT.isValidLength(tag, invalidVList), false);
 
-          system.throwOnError = true;
-          expect(() => LT.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          global.throwOnError = true;
+          expect(() => LT.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -1499,98 +1505,97 @@ void main() {
 
       for (var s in badLTList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(LT.isValidValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => LT.isValidValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
 
     test('LT isValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in goodLTList) {
         expect(LT.isValidValues(PTag.kExtendedCodeMeaning, s), true);
       }
       for (var s in badLTList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(LT.isValidValues(PTag.kExtendedCodeMeaning, s), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => LT.isValidValues(PTag.kExtendedCodeMeaning, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
-    test('LT fromUint8List', () {
-      //  system.level = Level.info;;
+    test('LT fromBytes', () {
+      //  global.level = Level.info;;
       final vList1 = rsg.getLTList(1, 1);
-      final bytes = LT.toUint8List(vList1);
-      log.debug(
-          'LT.fromUint8List(bytes): ${LT.fromUint8List(bytes)}, bytes: $bytes');
-      expect(LT.fromUint8List(bytes), equals(vList1));
+      final bytes = Bytes.fromUtf8List(vList1);
+      log.debug('LT.fromBytes(bytes):  $bytes');
+      expect(bytes.getUtf8List(), equals(vList1));
     });
 
     test('LT toUint8List', () {
       final vList1 = rsg.getLTList(1, 1);
-      log.debug('LT.toUint8List(vList1): ${LT.toUint8List(vList1)}');
-      /* final val = cvt.ascii.encode('s6V&:;s%?Q1g5v');
-        expect(LT.toUint8List(['s6V&:;s%?Q1g5v']), equals(val));*/
+      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
+      /* final val = ascii.encode('s6V&:;s%?Q1g5v');
+        expect(Bytes.fromUtf8List(['s6V&:;s%?Q1g5v']), equals(val));*/
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
-      expect(LT.toUint8List(vList1), equals(values));
+      final values = ascii.encode(vList1[0]);
+      expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
-    test('LT checkList good values', () {
-      system.throwOnError = false;
+    test('LT isValidValues good values', () {
+      global.throwOnError = false;
       for (var i = 0; i <= 10; i++) {
         final vList = rsg.getLTList(1, 1);
-        expect(LT.checkList(PTag.kExtendedCodeMeaning, vList), vList);
+        expect(LT.isValidValues(PTag.kExtendedCodeMeaning, vList), true);
       }
 
       final vList0 = ['!mSMXWVy`]/Du'];
-      expect(LT.checkList(PTag.kExtendedCodeMeaning, vList0), vList0);
+      expect(LT.isValidValues(PTag.kExtendedCodeMeaning, vList0), true);
 
       final vList1 = ['\b'];
-      expect(LT.checkList(PTag.kExtendedCodeMeaning, vList1), isNull);
+      expect(LT.isValidValues(PTag.kExtendedCodeMeaning, vList1), false);
 
-      system.throwOnError = true;
-      expect(() => LT.checkList(PTag.kExtendedCodeMeaning, vList1),
-          throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+      global.throwOnError = true;
+      expect(() => LT.isValidValues(PTag.kExtendedCodeMeaning, vList1),
+          throwsA(const isInstanceOf<StringError>()));
 
       for (var s in goodLTList) {
-        system.throwOnError = false;
-        expect(LT.checkList(PTag.kExtendedCodeMeaning, s), s);
+        global.throwOnError = false;
+        expect(LT.isValidValues(PTag.kExtendedCodeMeaning, s), true);
       }
       for (var s in badLTList) {
-        system.throwOnError = false;
-        expect(LT.checkList(PTag.kExtendedCodeMeaning, s), isNull);
+        global.throwOnError = false;
+        expect(LT.isValidValues(PTag.kExtendedCodeMeaning, s), false);
 
-        system.throwOnError = true;
-        expect(() => LT.checkList(PTag.kExtendedCodeMeaning, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+        global.throwOnError = true;
+        expect(() => LT.isValidValues(PTag.kExtendedCodeMeaning, s),
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('LT toByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        system.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = LT.toByteData(vList0);
-        final tbd1 = LT.toByteData(vList0);
+        global.throwOnError = false;
+        final values = ascii.encode(vList0[0]);
+        final tbd0 = Bytes.fromUtf8List(vList0);
+        final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
       for (var s in goodLTList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
-          final tbd2 = LT.toByteData(s);
-          final tbd3 = LT.toByteData(s);
+          final values = ascii.encode(a);
+          final tbd2 = Bytes.fromUtf8List(s);
+          final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -1600,48 +1605,50 @@ void main() {
     test('LT fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        system.throwOnError = false;
-        final bd0 = LT.toByteData(vList0);
-        final fbd0 = LT.fromByteData(bd0);
-        log.debug('fbd0: $fbd0, vList0: $vList0');
-        expect(fbd0, equals(vList0));
+        final s0 = vList0[0];
+        global.throwOnError = false;
+        final bytes0 = Bytes.fromUtf8(s0);
+        final s1 = bytes0.getUtf8();
+        log.debug('s1: $s1, s0: $s0');
+        expect(s1, equals(s0));
       }
-      for (var s in goodLTList) {
-        final bd0 = LT.toByteData(s);
-        final fbd0 = LT.fromByteData(bd0);
-        expect(fbd0, equals(s));
+      for (var vList1 in goodLTList) {
+        final s0 = vList1[0];
+        final bytes1 = Bytes.fromUtf8(s0);
+        final s1 = bytes1.getUtf8();
+        expect(s1, equals(s0));
       }
     });
 
     test('LT toBytes', () {
       for (var i = 0; i < 10; i++) {
         final sList0 = rsg.getLTList(1, 1);
-        system.throwOnError = false;
-        final toB0 = LT.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        global.throwOnError = false;
+        final toB0 = Bytes.fromUtf8List(sList0, kMaxShortVF);
+        final bytes0 = Bytes.fromAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodLTList) {
-        final toB1 = LT.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
+        final bytes1 = Bytes.fromAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      final toB2 = LT.toBytes([''], kMaxShortVF);
+      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = LT.toBytes([], kMaxShortVF);
+      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
-      /*system.throwOnError = false;
-      final toB2 = LT.toBytes(null, kMaxShortVF);
+      /*global.throwOnError = false;
+      final toB2 = Bytes.fromUtf8List(null, kMaxShortVF);
       expect(toB2, isNull);
 
-      system.throwOnError = true;
-      expect(() => LT.toBytes(null, kMaxShortVF),
-          throwsA(const isInstanceOf<NullValueError>()));*/
+      global.throwOnError = true;
+      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+          throwsA(const isInstanceOf<GeneralError>()));*/
     });
   });
 
@@ -1662,11 +1669,11 @@ void main() {
   group('PNtag', () {
     test('PN hasValidValues good values', () {
       for (var s in goodPNList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final pn0 = new PNtag(PTag.kRequestingPhysician, s);
         expect(pn0.hasValidValues, true);
       }
-      system.throwOnError = false;
+      global.throwOnError = false;
       final pn0 = new PNtag(PTag.kOrderEnteredBy, []);
       expect(pn0.hasValidValues, true);
       expect(pn0.values, equals(<String>[]));
@@ -1674,21 +1681,21 @@ void main() {
 
     test('PN hasValidValues bad values', () {
       for (var s in badPNList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final pn0 = new PNtag(PTag.kRequestingPhysician, s);
         expect(pn0, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new PNtag(PTag.kRequestingPhysician, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final pn1 = new PNtag(PTag.kOrderEnteredBy, null);
       log.debug('pn1: $pn1');
       expect(pn1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new PNtag(PTag.kRequestingPhysician, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -1720,7 +1727,7 @@ void main() {
     });
 
     test('PN hasValidValues bad values random', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(3, 4);
         log.debug('$i: vList0: $vList0');
@@ -1728,12 +1735,12 @@ void main() {
         expect(pn2, isNull);
       }
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(3, 4);
         log.debug('$i: vList0: $vList0');
         expect(() => new PNtag(PTag.kRequestingPhysician, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -1747,7 +1754,7 @@ void main() {
         final pn1 = new PNtag(PTag.kOrderEnteredBy, vList0);
         final vList1 = rsg.getPNList(3, 4);
         expect(() => pn1.update(vList1).values,
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -1772,7 +1779,7 @@ void main() {
       expect(pn1 == pn0, true);
       expect(pn1.hashCode == pn0.hashCode, true);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
         final pn2 = new PNtag(PTag.kOrderEnteredBy, vList0);
@@ -1835,7 +1842,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
         final pn0 = new PNtag(PTag.kOrderEnteredBy, vList0);
-        expect(pn0.tag.isValidLength(pn0.length), true);
+        expect(pn0.tag.isValidLength(pn0), true);
       }
     });
 
@@ -1843,7 +1850,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
         final pn0 = new PNtag(PTag.kOrderEnteredBy, vList0);
-        expect(pn0.tag.isValidValues(pn0.values), true);
+        expect(pn0.checkValues(pn0.values), true);
         expect(pn0.hasValidValues, true);
       }
     });
@@ -1883,12 +1890,12 @@ void main() {
       }
     });
 
-    test('PN fromUint8List random', () {
+    test('PN fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getPNList(1, 1);
-        final bytes = PN.toUint8List(vList1);
+        final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final pn0 = PNtag.fromUint8List(PTag.kOrderEnteredBy, bytes);
+        final pn0 = PNtag.fromBytes(PTag.kOrderEnteredBy, bytes);
         log.debug('pn0: ${pn0.info}');
         expect(pn0.hasValidValues, true);
       }
@@ -1898,7 +1905,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getPNList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final pn1 = PNtag.fromBytes(PTag.kSelectorPNValue, bytes0);
           log.debug('pn1: ${pn1.info}');
@@ -1911,15 +1918,15 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getPNList(1, 10);
         for (var listS in vList1) {
-          system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          global.throwOnError = false;
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final pn1 = PNtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(pn1, isNull);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => PNtag.fromBytes(PTag.kSelectorCSValue, bytes0),
-              throwsA(const isInstanceOf<InvalidVRError>()));
+              throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
     });
@@ -1927,11 +1934,11 @@ void main() {
     test('PN make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final make0 = PNtag.make(PTag.kOrderEnteredBy, vList0);
+        final make0 = PNtag.fromValues(PTag.kOrderEnteredBy, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = PNtag.make(PTag.kOrderEnteredBy, <String>[]);
+        final make1 = PNtag.fromValues(PTag.kOrderEnteredBy, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -1940,22 +1947,22 @@ void main() {
     test('PN make bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(2, 2);
-        system.throwOnError = false;
-        final make0 = PNtag.make(PTag.kOrderEnteredBy, vList0);
+        global.throwOnError = false;
+        final make0 = PNtag.fromValues(PTag.kOrderEnteredBy, vList0);
         expect(make0, isNull);
 
-        system.throwOnError = true;
-        expect(() => PNtag.make(PTag.kOrderEnteredBy, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        global.throwOnError = true;
+        expect(() => PNtag.fromValues(PTag.kOrderEnteredBy, vList0),
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
-      system.throwOnError = false;
-      final make1 = PNtag.make(PTag.kOrderEnteredBy, <String>[null]);
+      global.throwOnError = false;
+      final make1 = PNtag.fromValues(PTag.kOrderEnteredBy, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
-      system.throwOnError = true;
-      expect(() => PNtag.make(PTag.kOrderEnteredBy, <String>[null]),
+      global.throwOnError = true;
+      expect(() => PNtag.fromValues(PTag.kOrderEnteredBy, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -1976,7 +1983,7 @@ void main() {
     });
 
     test('PN checkLength bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final vList2 = ['a^1sd', '02@#'];
       final pn3 = new PNtag(PTag.kOrderEnteredBy, vList2);
       expect(pn3, isNull);
@@ -1997,12 +2004,12 @@ void main() {
       final pn0 = new PNtag(PTag.kOrderEnteredBy, vList0);
       for (var s in badPNList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(pn0.checkValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => pn0.checkValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
@@ -2055,7 +2062,7 @@ void main() {
     final invalidVList = rsg.getPNList(PN.kMaxLength + 1, PN.kMaxLength + 1);
 
     test('PN isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(PN.isValidTag(PTag.kSelectorPNValue), true);
 
       for (var tag in pnTags0) {
@@ -2065,115 +2072,117 @@ void main() {
     });
 
     test('PN isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(PN.isValidTag(PTag.kSelectorFDValue), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => PN.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final validT0 = PN.isValidTag(tag);
         expect(validT0, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => PN.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
+/*
 
     test('PN checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(PN.checkVRIndex(kPNIndex), kPNIndex);
 
       for (var tag in pnTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(PN.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('PN checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           PN.checkVRIndex(
             kAEIndex,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => PN.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(PN.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => PN.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('PN checkVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(PN.checkVRCode(kPNCode), kPNCode);
 
       for (var tag in pnTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(PN.checkVRCode(tag.vrCode), tag.vrCode);
       }
     });
 
     test('PN checkVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           PN.checkVRCode(
             kAECode,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => PN.checkVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(PN.checkVRCode(tag.vrCode), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => PN.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('PN isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(PN.isValidVRIndex(kPNIndex), true);
 
       for (var tag in pnTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(PN.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('PN isValidVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(PN.isValidVRIndex(kCSIndex), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => PN.isValidVRIndex(kCSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(PN.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => PN.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('PN isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(PN.isValidVRCode(kPNCode), true);
 
       for (var tag in pnTags0) {
@@ -2182,18 +2191,18 @@ void main() {
     });
 
     test('PN isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(PN.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => PN.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(PN.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => PN.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
@@ -2210,13 +2219,13 @@ void main() {
     });
 
     test('PN isNotValidVFLength good values', () {
-      expect(PN.isNotValidVFLength(PN.kMaxVFLength), false);
-      expect(PN.isNotValidVFLength(0), false);
+      expect(PN.isValidVFLength(PN.kMaxVFLength), true);
+      expect(PN.isValidVFLength(0), true);
     });
 
     test('PN isNotValidVFLength bad values', () {
-      expect(PN.isNotValidVFLength(PN.kMaxVFLength + 1), true);
-      expect(PN.isNotValidVFLength(-1), true);
+      expect(PN.isValidVFLength(PN.kMaxVFLength + 1), false);
+      expect(PN.isValidVFLength(-1), false);
     });
 
     test('PN isValidValueLength good values', () {
@@ -2229,17 +2238,17 @@ void main() {
     });
 
     test('PN isValidValueLength bad values', () {
-      expect(PN.isValidValueLength(''), false);
+      expect(PN.isValidValueLength(''), true);
     });
 
     test('PN isNotValidValueLength', () {
       for (var s in goodPNList) {
         for (var a in s) {
-          expect(PN.isNotValidValueLength(a), false);
+          expect(PN.isValidValueLength(a), true);
         }
       }
 
-      expect(PN.isNotValidValueLength(''), true);
+      expect(PN.isValidValueLength(''), true);
     });
 
     test('PN isValidValue good values', () {
@@ -2253,62 +2262,60 @@ void main() {
     test('PN isValidValue bad values', () {
       for (var s in badPNList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(PN.isValidValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => PN.isValidValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
 
-    test('PN isValidVListLength VM.k1 good values', () {
-      system.throwOnError = false;
+    test('PN isValidLength VM.k1 good values', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getPNList(1, 1);
         for (var tag in pnTags0) {
-          expect(PN.isValidVListLength(tag, validMinVList), true);
+          expect(PN.isValidLength(tag, validMinVList), true);
 
-          expect(
-              PN.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              PN.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(PN.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(PN.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('PN isValidVListLength VM.k1 bad values', () {
+    test('PN isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rsg.getPNList(2, i + 1);
         for (var tag in pnTags0) {
-          system.throwOnError = false;
-          expect(PN.isValidVListLength(tag, validMinVList), false);
+          global.throwOnError = false;
+          expect(PN.isValidLength(tag, validMinVList), false);
 
-          expect(PN.isValidVListLength(tag, invalidVList), false);
+          expect(PN.isValidLength(tag, invalidVList), false);
 
-          system.throwOnError = true;
-          expect(() => PN.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          global.throwOnError = true;
+          expect(() => PN.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('PN isValidVListLength VM.k1_n good values', () {
-      system.throwOnError = false;
+    test('PN isValidLength VM.k1_n good values', () {
+      global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rsg.getPNList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, PN.kMaxLength);
         for (var tag in pnTags1) {
           log.debug('tag: $tag');
-          expect(PN.isValidVListLength(tag, validMinVList0), true);
-          expect(PN.isValidVListLength(tag, validMaxLengthList), true);
+          expect(PN.isValidLength(tag, validMinVList0), true);
+          expect(PN.isValidLength(tag, validMaxLengthList), true);
         }
       }
     });
 
     test('PN isValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in goodPNList) {
         expect(PN.isValidValues(PTag.kPatientName, s), true);
       }
@@ -2316,31 +2323,31 @@ void main() {
 
     test('PN isValidValues bad values', () {
       for (var s in badPNList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(PN.isValidValues(PTag.kPatientName, s), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => PN.isValidValues(PTag.kPatientName, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('PN toByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        system.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = PN.toByteData(vList0);
-        final tbd1 = PN.toByteData(vList0);
+        global.throwOnError = false;
+        final values = ascii.encode(vList0[0]);
+        final tbd0 = Bytes.fromUtf8List(vList0);
+        final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
       for (var s in goodPNList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
-          final tbd2 = PN.toByteData(s);
-          final tbd3 = PN.toByteData(s);
+          final values = ascii.encode(a);
+          final tbd2 = Bytes.fromUtf8List(s);
+          final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -2350,68 +2357,67 @@ void main() {
     test('PN fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        system.throwOnError = false;
-        final bd0 = PN.toByteData(vList0);
-        final fbd0 = PN.fromByteData(bd0);
+        global.throwOnError = false;
+        final bd0 = Bytes.fromUtf8List(vList0);
+        final fbd0 = bd0.getUtf8List();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodPNList) {
-        final bd0 = PN.toByteData(s);
-        final fbd0 = PN.fromByteData(bd0);
+        final bd0 = Bytes.fromUtf8List(s);
+        final fbd0 = bd0.getUtf8List();
         expect(fbd0, equals(s));
       }
     });
 
-    test('PN fromUint8List', () {
-      //  system.level = Level.info;;
+    test('PN fromBytes', () {
+      //  global.level = Level.info;;
       final vList1 = rsg.getPNList(1, 1);
-      final bytes = PN.toUint8List(vList1);
-      log.debug(
-          'PN.fromUint8List(bytes): ${PN.fromUint8List(bytes)}, bytes: $bytes');
-      expect(PN.fromUint8List(bytes), equals(vList1));
+      final bytes = Bytes.fromUtf8List(vList1);
+      log.debug('PN.fromBytes(bytes):  $bytes');
+      expect(bytes.getUtf8List(), equals(vList1));
     });
 
     test('PN toUint8List', () {
       final vList1 = rsg.getPNList(1, 1);
-      log.debug('PN.toUint8List(vList1): ${PN.toUint8List(vList1)}');
+      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
-      expect(PN.toUint8List(vList1), equals(values));
+      final values = ascii.encode(vList1[0]);
+      expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
     test('PN toBytes', () {
       for (var i = 0; i < 10; i++) {
         final sList0 = rsg.getPNList(1, 10);
-        system.throwOnError = false;
-        final toB0 = PN.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        global.throwOnError = false;
+        final toB0 = Bytes.fromUtf8List(sList0, kMaxShortVF);
+        final bytes0 = Bytes.fromAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodPNList) {
-        final toB1 = PN.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
+        final bytes1 = Bytes.fromAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      system.throwOnError = false;
-      final toB2 = PN.toBytes([''], kMaxShortVF);
+      global.throwOnError = false;
+      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = PN.toBytes([], kMaxShortVF);
+      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = PN.toBytes(null, kMaxShortVF);
+      final toB4 = Bytes.fromUtf8List(null, kMaxShortVF);
       expect(toB4, isNull);
 
-      system.throwOnError = true;
-      expect(() => PN.toBytes(null, kMaxShortVF),
-          throwsA(const isInstanceOf<NullValueError>()));
+      global.throwOnError = true;
+      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
   });
 
@@ -2440,11 +2446,11 @@ void main() {
   group('SHtag', () {
     test('SH hasValidValues good values', () {
       for (var s in goodSHList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final sh0 = new SHtag(PTag.kMultiCoilElementName, s);
         expect(sh0.hasValidValues, true);
       }
-      system.throwOnError = false;
+      global.throwOnError = false;
       final sh0 = new SHtag(PTag.kSelectorSHValue, []);
       expect(sh0.hasValidValues, true);
       expect(sh0.values, equals(<String>[]));
@@ -2452,20 +2458,20 @@ void main() {
 
     test('SH hasValidValues bad values', () {
       for (var s in badSHList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final sh0 = new SHtag(PTag.kMultiCoilElementName, s);
         expect(sh0, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new SHtag(PTag.kMultiCoilElementName, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
-      system.throwOnError = false;
+      global.throwOnError = false;
       final sh1 = new SHtag(PTag.kSelectorSHValue, null);
       log.debug('sh1: $sh1');
       expect(sh1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new SHtag(PTag.kMultiCoilElementName, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -2498,15 +2504,15 @@ void main() {
 
     test('SH hasValidValues bad values random', () {
       for (var i = 0; i < 10; i++) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final vList0 = rsg.getSHList(3, 4);
         log.debug('$i: vList0: $vList0');
         final sh2 = new SHtag(PTag.kMultiCoilElementName, vList0);
         expect(sh2, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new SHtag(PTag.kMultiCoilElementName, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -2567,7 +2573,7 @@ void main() {
     });
 
     test('SH hashCode and == bad values random', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       List<String> stringList0;
       List<String> stringList1;
       List<String> stringList2;
@@ -2610,7 +2616,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
         final sh0 = new SHtag(PTag.kTextureLabel, vList0);
-        expect(sh0.tag.isValidLength(sh0.length), true);
+        expect(sh0.tag.isValidLength(sh0), true);
       }
     });
 
@@ -2618,7 +2624,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
         final sh0 = new SHtag(PTag.kTextureLabel, vList0);
-        expect(sh0.tag.isValidValues(sh0.values), true);
+        expect(sh0.checkValues(sh0.values), true);
         expect(sh0.hasValidValues, true);
       }
     });
@@ -2658,12 +2664,12 @@ void main() {
       }
     });
 
-    test('SH fromUint8List random', () {
+    test('SH fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSHList(1, 1);
-        final bytes = SH.toUint8List(vList1);
+        final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final sh0 = SHtag.fromUint8List(PTag.kTextureLabel, bytes);
+        final sh0 = SHtag.fromBytes(PTag.kTextureLabel, bytes);
         log.debug('sh0: ${sh0.info}');
         expect(sh0.hasValidValues, true);
       }
@@ -2672,9 +2678,9 @@ void main() {
     test('SH fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSHList(1, 1000);
-        system.throwOnError = false;
+        global.throwOnError = false;
 //        for (var listS in vList1) {
-        final bytes0 = Bytes.asciiEncode(vList1.join('\\'));
+        final bytes0 = Bytes.fromAscii(vList1.join('\\'));
         //final bytes0 = new Bytes();
         final sh1 = SHtag.fromBytes(PTag.kSelectorSHValue, bytes0);
         log.debug('sh1: ${sh1.info}');
@@ -2687,15 +2693,15 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSHList(1, 10);
         for (var listS in vList1) {
-          system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          global.throwOnError = false;
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final sh1 = SHtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(sh1, isNull);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => SHtag.fromBytes(PTag.kSelectorCSValue, bytes0),
-              throwsA(const isInstanceOf<InvalidVRError>()));
+              throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
     });
@@ -2703,11 +2709,11 @@ void main() {
     test('SH make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        final make0 = SHtag.make(PTag.kTextureLabel, vList0);
+        final make0 = SHtag.fromValues(PTag.kTextureLabel, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = SHtag.make(PTag.kTextureLabel, <String>[]);
+        final make1 = SHtag.fromValues(PTag.kTextureLabel, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -2716,22 +2722,22 @@ void main() {
     test('SH make bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(2, 2);
-        system.throwOnError = false;
-        final make0 = SHtag.make(PTag.kTextureLabel, vList0);
+        global.throwOnError = false;
+        final make0 = SHtag.fromValues(PTag.kTextureLabel, vList0);
         expect(make0, isNull);
 
-        system.throwOnError = true;
-        expect(() => SHtag.make(PTag.kTextureLabel, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        global.throwOnError = true;
+        expect(() => SHtag.fromValues(PTag.kTextureLabel, vList0),
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
-      system.throwOnError = false;
-      final make1 = SHtag.make(PTag.kTextureLabel, <String>[null]);
+      global.throwOnError = false;
+      final make1 = SHtag.fromValues(PTag.kTextureLabel, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
-      system.throwOnError = true;
-      expect(() => SHtag.make(PTag.kTextureLabel, <String>[null]),
+      global.throwOnError = true;
+      expect(() => SHtag.fromValues(PTag.kTextureLabel, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -2752,14 +2758,14 @@ void main() {
     });
 
     test('SH checkLength bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final vList2 = ['a^1sd', '02@#'];
       final sh3 = new SHtag(PTag.kTextureLabel, vList2);
       expect(sh3, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new SHtag(PTag.kTextureLabel, vList2),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('SH checkValue good values', () {
@@ -2777,12 +2783,12 @@ void main() {
       final sh0 = new SHtag(PTag.kTextureLabel, vList0);
       for (var s in badSHList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(sh0.checkValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => sh0.checkValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
@@ -2842,7 +2848,7 @@ void main() {
     final invalidVList = rsg.getSHList(SH.kMaxLength + 1, SH.kMaxLength + 1);
 
     test('SH isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SH.isValidTag(PTag.kSelectorSHValue), true);
 
       for (var tag in shTags0) {
@@ -2852,114 +2858,117 @@ void main() {
     });
 
     test('SH isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SH.isValidTag(PTag.kSelectorFDValue), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SH.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final validT0 = SH.isValidTag(tag);
         expect(validT0, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SH.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
+/*
+
     test('SH checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SH.checkVRIndex(kSHIndex), kSHIndex);
 
       for (var tag in shTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SH.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('SH checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           SH.checkVRIndex(
             kAEIndex,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SH.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SH.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SH.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('SH checkVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SH.checkVRCode(kSHCode), kSHCode);
 
       for (var tag in shTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SH.checkVRCode(tag.vrCode), tag.vrCode);
       }
     });
 
     test('SH checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           SH.checkVRCode(
             kAECode,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SH.checkVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SH.checkVRCode(tag.vrCode), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SH.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('SH isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SH.isValidVRIndex(kSHIndex), true);
 
       for (var tag in shTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SH.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('SH isValidVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SH.isValidVRIndex(kCSIndex), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SH.isValidVRIndex(kCSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SH.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SH.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('SH isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SH.isValidVRCode(kSHCode), true);
 
       for (var tag in shTags0) {
@@ -2968,18 +2977,18 @@ void main() {
     });
 
     test('SH isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(SH.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => SH.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SH.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SH.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
@@ -2996,13 +3005,13 @@ void main() {
     });
 
     test('SH isNotValidVFLength good values', () {
-      expect(SH.isNotValidVFLength(SH.kMaxVFLength), false);
-      expect(SH.isNotValidVFLength(0), false);
+      expect(SH.isValidVFLength(SH.kMaxVFLength), true);
+      expect(SH.isValidVFLength(0), true);
     });
 
     test('SH isNotValidVFLength bad values', () {
-      expect(SH.isNotValidVFLength(SH.kMaxVFLength + 1), true);
-      expect(SH.isNotValidVFLength(-1), true);
+      expect(SH.isValidVFLength(SH.kMaxVFLength + 1), false);
+      expect(SH.isValidVFLength(-1), false);
     });
 
     test('SH isValidValueLength good values', () {
@@ -3016,61 +3025,59 @@ void main() {
     });
 
     test('SH isValidValueLength good values', () {
-      expect(SH.isValidValueLength(''), false);
+      expect(SH.isValidValueLength(''), true);
     });
 
     test('SH isNotValidValueLength good values', () {
       for (var s in goodSHList) {
         for (var a in s) {
-          expect(SH.isNotValidValueLength(a), false);
+          expect(SH.isValidValueLength(a), true);
         }
       }
     });
 
     test('SH isNotValidValueLength bad values', () {
-      expect(SH.isNotValidValueLength(''), true);
+      expect(SH.isValidValueLength(''), true);
     });
 
-    test('SH isValidVListLength VM.k1 good values', () {
-      system.throwOnError = false;
+    test('SH isValidLength VM.k1 good values', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getSHList(1, 1);
         for (var tag in shTags0) {
-          expect(SH.isValidVListLength(tag, validMinVList), true);
+          expect(SH.isValidLength(tag, validMinVList), true);
 
-          expect(
-              SH.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              SH.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(SH.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(SH.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('SH isValidVListLength VM.k1 bad values', () {
+    test('SH isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rsg.getSHList(2, i + 1);
         for (var tag in shTags0) {
-          system.throwOnError = false;
-          expect(SH.isValidVListLength(tag, validMinVList), false);
+          global.throwOnError = false;
+          expect(SH.isValidLength(tag, validMinVList), false);
 
-          expect(SH.isValidVListLength(tag, invalidVList), false);
+          expect(SH.isValidLength(tag, invalidVList), false);
 
-          system.throwOnError = true;
-          expect(() => SH.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          global.throwOnError = true;
+          expect(() => SH.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('SH isValidVListLength VM.k1_n good values', () {
-      system.throwOnError = false;
+    test('SH isValidLength VM.k1_n good values', () {
+      global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rsg.getSHList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, SH.kMaxLength);
         for (var tag in shTags1) {
           log.debug('tag: $tag');
-          expect(SH.isValidVListLength(tag, validMinVList0), true);
-          expect(SH.isValidVListLength(tag, validMaxLengthList), true);
+          expect(SH.isValidLength(tag, validMinVList0), true);
+          expect(SH.isValidLength(tag, validMaxLengthList), true);
         }
       }
     });
@@ -3086,51 +3093,51 @@ void main() {
     test('SH isValidValue bad values', () {
       for (var s in badSHList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(SH.isValidValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => SH.isValidValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
 
     test('SH isValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in goodSHList) {
         expect(SH.isValidValues(PTag.kStationName, s), true);
       }
     });
 
     test('SH isValidValues bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in badSHList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(SH.isValidValues(PTag.kStationName, s), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => SH.isValidValues(PTag.kStationName, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('SH toByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        system.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = SH.toByteData(vList0);
-        final tbd1 = SH.toByteData(vList0);
+        global.throwOnError = false;
+        final values = ascii.encode(vList0[0]);
+        final tbd0 = Bytes.fromUtf8List(vList0);
+        final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
       for (var s in goodSHList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
-          final tbd2 = SH.toByteData(s);
-          final tbd3 = SH.toByteData(s);
+          final values = ascii.encode(a);
+          final tbd2 = Bytes.fromUtf8List(s);
+          final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -3140,102 +3147,101 @@ void main() {
     test('SH fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        system.throwOnError = false;
-        final bd0 = SH.toByteData(vList0);
-        final fbd0 = SH.fromByteData(bd0);
+        global.throwOnError = false;
+        final bd0 = Bytes.fromUtf8List(vList0);
+        final fbd0 = bd0.getUtf8List();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodSHList) {
-        final bd0 = SH.toByteData(s);
-        final fbd0 = SH.fromByteData(bd0);
+        final bd0 = Bytes.fromUtf8List(s);
+        final fbd0 = bd0.getUtf8List();
         expect(fbd0, equals(s));
       }
     });
 
-    test('SH fromUint8List', () {
-      //  system.level = Level.info;;
+    test('SH fromBytes', () {
+      //  global.level = Level.info;;
       final vList1 = rsg.getSHList(1, 1);
-      final bytes = SH.toUint8List(vList1);
-      log.debug(
-          'SH.fromUint8List(bytes): ${SH.fromUint8List(bytes)}, bytes: $bytes');
-      expect(SH.fromUint8List(bytes), equals(vList1));
+      final bytes = Bytes.fromUtf8List(vList1);
+      log.debug('SH.fromBytes(bytes):  $bytes');
+      expect(bytes.getUtf8List(), equals(vList1));
     });
 
     test('SH toUint8List', () {
       final vList1 = rsg.getSHList(1, 1);
-      log.debug('SH.toUint8List(vList1): ${SH.toUint8List(vList1)}');
+      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
-      expect(SH.toUint8List(vList1), equals(values));
+      final values = ascii.encode(vList1[0]);
+      expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
-    test('SH checkList good values', () {
-      system.throwOnError = false;
+    test('SH isValidValues good values', () {
+      global.throwOnError = false;
       for (var i = 0; i <= 10; i++) {
         final vList = rsg.getSHList(1, 1);
-        expect(SH.checkList(PTag.kStationName, vList), vList);
+        expect(SH.isValidValues(PTag.kStationName, vList), true);
       }
 
       final vList0 = ['!mSMXWVy`]/Du'];
-      expect(SH.checkList(PTag.kStationName, vList0), vList0);
+      expect(SH.isValidValues(PTag.kStationName, vList0), true);
 
       for (var s in goodSHList) {
-        system.throwOnError = false;
-        expect(SH.checkList(PTag.kStationName, s), s);
+        global.throwOnError = false;
+        expect(SH.isValidValues(PTag.kStationName, s), true);
       }
     });
 
-    test('SH checkList bad values', () {
-      system.throwOnError = false;
+    test('SH isValidValues bad values', () {
+      global.throwOnError = false;
       final vList1 = ['r^`~\\?'];
-      expect(SH.checkList(PTag.kStationName, vList1), isNull);
+      expect(SH.isValidValues(PTag.kStationName, vList1), false);
 
-      system.throwOnError = true;
-      expect(() => SH.checkList(PTag.kStationName, vList1),
-          throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+      global.throwOnError = true;
+      expect(() => SH.isValidValues(PTag.kStationName, vList1),
+          throwsA(const isInstanceOf<StringError>()));
 
       for (var s in badSHList) {
-        system.throwOnError = false;
-        expect(SH.checkList(PTag.kStationName, s), isNull);
+        global.throwOnError = false;
+        expect(SH.isValidValues(PTag.kStationName, s), false);
 
-        system.throwOnError = true;
-        expect(() => SH.checkList(PTag.kStationName, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+        global.throwOnError = true;
+        expect(() => SH.isValidValues(PTag.kStationName, s),
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('SH toBytes', () {
       for (var i = 0; i < 10; i++) {
         final sList0 = rsg.getSHList(1, 10);
-        system.throwOnError = false;
-        final toB0 = SH.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        global.throwOnError = false;
+        final toB0 = Bytes.fromUtf8List(sList0, kMaxShortVF);
+        final bytes0 = Bytes.fromAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodSHList) {
-        final toB1 = SH.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
+        final bytes1 = Bytes.fromAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      system.throwOnError = false;
-      final toB2 = SH.toBytes([''], kMaxShortVF);
+      global.throwOnError = false;
+      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = SH.toBytes([], kMaxShortVF);
+      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = SH.toBytes(null, kMaxShortVF);
+      final toB4 = Bytes.fromUtf8List(null, kMaxShortVF);
       expect(toB4, isNull);
 
-      system.throwOnError = true;
-      expect(() => SH.toBytes(null, kMaxShortVF),
-          throwsA(const isInstanceOf<NullValueError>()));
+      global.throwOnError = true;
+      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
   });
 
@@ -3254,11 +3260,11 @@ void main() {
   group('ST Tests', () {
     test('ST hasValidValues good values', () {
       for (var s in goodSTList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final st0 = new STtag(PTag.kMetaboliteMapDescription, s);
         expect(st0.hasValidValues, true);
       }
-      system.throwOnError = false;
+      global.throwOnError = false;
       final st0 = new STtag(PTag.kCADFileFormat, []);
       expect(st0.hasValidValues, true);
       expect(st0.values, equals(<String>[]));
@@ -3266,21 +3272,21 @@ void main() {
 
     test('ST hasValidValues bad values', () {
       for (var s in badSTList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final st0 = new STtag(PTag.kMetaboliteMapDescription, s);
         expect(st0, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new STtag(PTag.kMetaboliteMapDescription, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final st1 = new STtag(PTag.kCADFileFormat, null);
       log.debug('st1: $st1');
       expect(st1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new STtag(PTag.kMetaboliteMapDescription, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -3311,7 +3317,7 @@ void main() {
     });
 
     test('ST hasValidValues random bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(3, 4);
         log.debug('$i: vList0: $vList0');
@@ -3417,7 +3423,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
         final st0 = new STtag(PTag.kSelectorSTValue, vList0);
-        expect(st0.tag.isValidLength(st0.length), true);
+        expect(st0.tag.isValidLength(st0), true);
       }
     });
 
@@ -3426,7 +3432,7 @@ void main() {
         final vList0 = rsg.getSTList(1, 1);
         final st0 = new STtag(PTag.kSelectorSTValue, vList0);
 
-        expect(st0.tag.isValidValues(st0.values), true);
+        expect(st0.checkValues(st0.values), true);
         expect(st0.hasValidValues, true);
       }
     });
@@ -3466,12 +3472,12 @@ void main() {
       }
     });
 
-    test('ST fromUint8List random', () {
+    test('ST fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSTList(1, 1);
-        final bytes = ST.toUint8List(vList1);
+        final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final st0 = STtag.fromUint8List(PTag.kSelectorSTValue, bytes);
+        final st0 = STtag.fromBytes(PTag.kSelectorSTValue, bytes);
         log.debug('st0: ${st0.info}');
         expect(st0.hasValidValues, true);
       }
@@ -3481,7 +3487,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSTList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final st1 = STtag.fromBytes(PTag.kSelectorSTValue, bytes0);
           log.debug('st1: ${st1.info}');
@@ -3494,15 +3500,15 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSTList(1, 10);
         for (var listS in vList1) {
-          system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          global.throwOnError = false;
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final st1 = STtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(st1, isNull);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => STtag.fromBytes(PTag.kSelectorCSValue, bytes0),
-              throwsA(const isInstanceOf<InvalidVRError>()));
+              throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
     });
@@ -3510,11 +3516,11 @@ void main() {
     test('ST make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final make0 = STtag.make(PTag.kSelectorSTValue, vList0);
+        final make0 = STtag.fromValues(PTag.kSelectorSTValue, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = STtag.make(PTag.kSelectorSTValue, <String>[]);
+        final make1 = STtag.fromValues(PTag.kSelectorSTValue, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -3523,22 +3529,22 @@ void main() {
     test('ST make bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(2, 2);
-        system.throwOnError = false;
-        final make0 = STtag.make(PTag.kSelectorSTValue, vList0);
+        global.throwOnError = false;
+        final make0 = STtag.fromValues(PTag.kSelectorSTValue, vList0);
         expect(make0, isNull);
 
-        system.throwOnError = true;
-        expect(() => STtag.make(PTag.kSelectorSTValue, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        global.throwOnError = true;
+        expect(() => STtag.fromValues(PTag.kSelectorSTValue, vList0),
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
-      system.throwOnError = false;
-      final make1 = STtag.make(PTag.kSelectorSTValue, <String>[null]);
+      global.throwOnError = false;
+      final make1 = STtag.fromValues(PTag.kSelectorSTValue, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
-      system.throwOnError = true;
-      expect(() => STtag.make(PTag.kSelectorSTValue, <String>[null]),
+      global.throwOnError = true;
+      expect(() => STtag.fromValues(PTag.kSelectorSTValue, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -3559,7 +3565,7 @@ void main() {
     });
 
     test('ST checkLength bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       final vList2 = ['a^1sd', '02@#'];
       final sh3 = new STtag(PTag.kSelectorSTValue, vList2);
       expect(sh3, isNull);
@@ -3580,28 +3586,28 @@ void main() {
       final st0 = new STtag(PTag.kSelectorSTValue, vList0);
       for (var s in badSTList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(st0.checkValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => st0.checkValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
 
-    test('ST decodeBinaryTextVF', () {
+    test('ST fromUtf8', () {
       for (var i = 1; i < 10; i++) {
-        final vList1 = rsg.getSTList(1, 1);
-        final bytes = ST.toUint8List(vList1);
-        final dbTxt0 = StringBase.decodeBinaryTextVF(bytes, kMaxShortVF);
-        log.debug('dbTxt0: $dbTxt0');
-        expect(dbTxt0, equals(vList1));
+        final vList = rsg.getSTList(1, 1);
+        final s0 = vList[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        log.debug('s1: $s1');
+        expect(s1, equals(s0));
 
-        final dbTxt1 =
-            StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
-        log.debug('dbTxt1: $dbTxt1');
-        expect(dbTxt1, equals(vList1));
+        final s2 = bytes.getUtf8();
+        log.debug('s2: $s2');
+        expect(s2, equals(s1));
       }
     });
   });
@@ -3649,7 +3655,7 @@ void main() {
     final invalidVList = rsg.getSTList(ST.kMaxLength + 1, ST.kMaxLength + 1);
 
     test('ST isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(ST.isValidTag(PTag.kSelectorSTValue), true);
 
       for (var tag in stTags0) {
@@ -3659,115 +3665,115 @@ void main() {
     });
 
     test('ST isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(ST.isValidTag(PTag.kSelectorFDValue), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => ST.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final validT0 = ST.isValidTag(tag);
         expect(validT0, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => ST.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
-
+/*
     test('ST checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(ST.checkVRIndex(kSTIndex), kSTIndex);
 
       for (var tag in stTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(ST.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('ST checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           ST.checkVRIndex(
             kAEIndex,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => ST.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(ST.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => ST.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('ST checkVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(ST.checkVRCode(kSTCode), kSTCode);
 
       for (var tag in stTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(ST.checkVRCode(tag.vrCode), tag.vrCode);
       }
     });
 
     test('ST checkVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           ST.checkVRCode(
             kAECode,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => ST.checkVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(ST.checkVRCode(tag.vrCode), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => ST.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
-
+ */
     test('ST isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(ST.isValidVRIndex(kSTIndex), true);
 
       for (var tag in stTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(ST.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('ST isValidVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(ST.isValidVRIndex(kCSIndex), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => ST.isValidVRIndex(kCSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(ST.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => ST.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('ST isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(ST.isValidVRCode(kSTCode), true);
 
       for (var tag in stTags0) {
@@ -3776,18 +3782,18 @@ void main() {
     });
 
     test('ST isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(ST.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => ST.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(ST.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => ST.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
@@ -3804,13 +3810,13 @@ void main() {
     });
 
     test('ST isNotValidVFLength good values', () {
-      expect(ST.isNotValidVFLength(ST.kMaxVFLength), false);
-      expect(ST.isNotValidVFLength(0), false);
+      expect(ST.isValidVFLength(ST.kMaxVFLength), true);
+      expect(ST.isValidVFLength(0), true);
     });
 
     test('ST isNotValidVFLength bad values', () {
-      expect(ST.isNotValidVFLength(ST.kMaxVFLength + 1), true);
-      expect(ST.isNotValidVFLength(-1), true);
+      expect(ST.isValidVFLength(ST.kMaxVFLength + 1), false);
+      expect(ST.isValidVFLength(-1), false);
     });
 
     test('ST isValidValueLength good values', () {
@@ -3830,42 +3836,40 @@ void main() {
     test('ST isNotValidValueLength good values', () {
       for (var s in goodSTList) {
         for (var a in s) {
-          expect(ST.isNotValidValueLength(a), false);
+          expect(ST.isValidValueLength(a), true);
         }
       }
     });
 
     test('ST isNotValidValueLength bad values', () {
-      expect(ST.isNotValidValueLength(''), false);
+      expect(ST.isValidValueLength(''), true);
     });
 
-    test('ST isValidVListLength VM.k1 good values', () {
-      system.throwOnError = false;
+    test('ST isValidLength VM.k1 good values', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getSTList(1, 1);
         for (var tag in stTags0) {
-          expect(ST.isValidVListLength(tag, validMinVList), true);
+          expect(ST.isValidLength(tag, validMinVList), true);
 
-          expect(
-              ST.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              ST.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(ST.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(ST.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('ST isValidVListLength VM.k1 bad values', () {
+    test('ST isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rsg.getSTList(2, i + 1);
         for (var tag in stTags0) {
-          system.throwOnError = false;
-          expect(ST.isValidVListLength(tag, validMinVList), false);
+          global.throwOnError = false;
+          expect(ST.isValidLength(tag, validMinVList), false);
 
-          expect(ST.isValidVListLength(tag, invalidVList), false);
+          expect(ST.isValidLength(tag, invalidVList), false);
 
-          system.throwOnError = true;
-          expect(() => ST.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          global.throwOnError = true;
+          expect(() => ST.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -3881,18 +3885,18 @@ void main() {
     test('ST isValidValue bad values', () {
       for (var s in badSTList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(ST.isValidValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => ST.isValidValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
 
     test('ST isValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in goodSTList) {
         expect(ST.isValidValues(PTag.kInstitutionAddress, s), true);
       }
@@ -3900,101 +3904,105 @@ void main() {
 
     test('ST isValidValues bad values', () {
       for (var s in badSTList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(ST.isValidValues(PTag.kInstitutionAddress, s), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => ST.isValidValues(PTag.kInstitutionAddress, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('ST toByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        system.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = ST.toByteData(vList0);
-        final tbd1 = ST.toByteData(vList0);
+        global.throwOnError = false;
+        final values = ascii.encode(vList0[0]);
+        final tbd0 = Bytes.fromUtf8List(vList0);
+        final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
       for (var s in goodSTList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
-          final tbd2 = ST.toByteData(s);
-          final tbd3 = ST.toByteData(s);
+          final values = ascii.encode(a);
+          final tbd2 = Bytes.fromUtf8List(s);
+          final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
       }
     });
 
-    test('ST fromByteData', () {
+    test('ST fromBytes', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        system.throwOnError = false;
-        final bd0 = ST.toByteData(vList0);
-        final fbd0 = ST.fromByteData(bd0);
-        log.debug('fbd0: $fbd0, vList0: $vList0');
-        expect(fbd0, equals(vList0));
+        final s0 = vList0[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        log.debug('s1: $s1, s0: $s0');
+        expect(s1, equals(s0));
       }
-      for (var s in goodSTList) {
-        final bd0 = ST.toByteData(s);
-        final fbd0 = ST.fromByteData(bd0);
-        expect(fbd0, equals(s));
+      for (var vList1 in goodSTList) {
+        final s0 = vList1[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        expect(s1, equals(s0));
       }
     });
 
-    test('ST fromUint8List', () {
-      //  system.level = Level.info;;
-      final vList1 = rsg.getSTList(1, 1);
-      final bytes = ST.toUint8List(vList1);
-      log.debug(
-          'ST.fromUint8List(bytes): ${ST.fromUint8List(bytes)}, bytes: $bytes');
-      expect(ST.fromUint8List(bytes), equals(vList1));
+    test('ST fromBytes', () {
+      final vList = rsg.getSTList(1, 1);
+      final s0 = vList[0];
+      final bytes = Bytes.fromUtf8(s0);
+      log.debug('ST.fromBytes(bytes):  $bytes');
+      expect(bytes.getUtf8(), equals(s0));
     });
 
-    test('ST toUint8List', () {
-      final vList1 = rsg.getSTList(1, 1);
-      log.debug('ST.toUint8List(vList1): ${ST.toUint8List(vList1)}');
-      if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
-      log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
-      expect(ST.toUint8List(vList1), equals(values));
+    test('ST fromUtf8', () {
+      final vList = rsg.getSTList(1, 1);
+      final s0 = vList[0];
+      log
+        ..debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8(s0)}')
+//      if (s0.length.isOdd) s0 = '$s0 ';
+        ..debug('s0:"$s0"');
+      final bytes = utf8.encode(vList[0]);
+      expect(Bytes.fromUtf8(s0), equals(bytes));
     });
 
     test('ST toBytes', () {
       for (var i = 0; i < 10; i++) {
         final sList0 = rsg.getSTList(1, 1);
-        system.throwOnError = false;
-        final toB0 = ST.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        global.throwOnError = false;
+        final toB0 = Bytes.fromUtf8List(sList0, kMaxShortVF);
+        final bytes0 = Bytes.fromAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodSTList) {
-        final toB1 = ST.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
+        final bytes1 = Bytes.fromAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      final toB2 = ST.toBytes([''], kMaxShortVF);
+      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = ST.toBytes([], kMaxShortVF);
+      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
-      /*system.throwOnError = false;
-      final toB2 = ST.toBytes(null, kMaxShortVF);
+      /*global.throwOnError = false;
+      final toB2 = Bytes.fromUtf8List(null, kMaxShortVF);
       expect(toB2, isNull);
 
-      system.throwOnError = true;
-      expect(() => ST.toBytes(null, kMaxShortVF),
-          throwsA(const isInstanceOf<NullValueError>()));*/
+      global.throwOnError = true;
+      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+          throwsA(const isInstanceOf<GeneralError>()));*/
     });
   });
 
@@ -4021,12 +4029,12 @@ void main() {
   group('UCtag', () {
     test('UC hasValidValues good values', () {
       for (var s in goodUCList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uc0 = new UCtag(PTag.kStrainDescription, s);
         expect(uc0.hasValidValues, true);
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final uc0 = new UCtag(PTag.kGeneticModificationsDescription, []);
       expect(uc0.hasValidValues, true);
       expect(uc0.values, equals(<String>[]));
@@ -4034,20 +4042,20 @@ void main() {
 
     test('UC hasValidValues bad values', () {
       for (var s in badUCList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uc0 = new UCtag(PTag.kStrainDescription, s);
         expect(uc0, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new UCtag(PTag.kStrainDescription, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
-      system.throwOnError = false;
+      global.throwOnError = false;
       final uc1 = new UCtag(PTag.kGeneticModificationsDescription, null);
       log.debug('uc1: $uc1');
       expect(uc1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new UCtag(PTag.kStrainDescription, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -4068,12 +4076,12 @@ void main() {
         final vList0 = rsg.getUCList(3, 4);
         log.debug('$i: vList0: $vList0');
 
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uc1 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
         expect(uc1, isNull);
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -4083,16 +4091,16 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(3, 4);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uc1 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
         expect(uc1, isNull);
         final vList1 = rsg.getUCList(3, 4);
 //        expect(uc1.update(vList1).values, equals(vList1));
         expect(() => uc1.update(vList1).values,
             throwsA(const isInstanceOf<NoSuchMethodError>()));
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -4104,18 +4112,18 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uc1 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
         final UCtag ucNoValues1 = uc1.noValues;
         expect(ucNoValues1.values.isEmpty, true);
 
         final vList1 = rsg.getUCList(2, 4);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uc2 = new UCtag(PTag.kGeneticModificationsDescription, vList1);
         expect(uc2, isNull);
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList1),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -4127,7 +4135,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(3, 4);
-        system.throwOnError = false;
+        global.throwOnError = false;
         final uc2 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
         expect(uc2, isNull);
         expect(() => uc1.update(vList0).values,
@@ -4135,9 +4143,9 @@ void main() {
         expect(
             () => uc2.copy, throwsA(const isInstanceOf<NoSuchMethodError>()));
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
     });
 
@@ -4158,7 +4166,7 @@ void main() {
     });
 
     test('UC hashCode and == bad values random', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       List<String> stringList0;
       List<String> stringList1;
       List<String> stringList2;
@@ -4194,7 +4202,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
         final uc0 = new UCtag(PTag.kStrainDescription, vList0);
-        expect(uc0.tag.isValidLength(uc0.length), true);
+        expect(uc0.tag.isValidLength(uc0), true);
       }
     });
 
@@ -4202,7 +4210,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
         final uc0 = new UCtag(PTag.kStrainDescription, vList0);
-        expect(uc0.tag.isValidValues(uc0.values), true);
+        expect(uc0.checkValues(uc0.values), true);
         expect(uc0.hasValidValues, true);
       }
     });
@@ -4242,12 +4250,12 @@ void main() {
       }
     });
 
-    test('UC fromUint8List random', () {
+    test('UC fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUCList(1, 1);
-        final bytes = UC.toUint8List(vList1);
+        final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final uc0 = UCtag.fromUint8List(PTag.kStrainDescription, bytes);
+        final uc0 = UCtag.fromBytes(PTag.kStrainDescription, bytes);
         log.debug('uc0: ${uc0.info}');
         expect(uc0.hasValidValues, true);
       }
@@ -4257,7 +4265,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUCList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final uc1 = UCtag.fromBytes(PTag.kSelectorUCValue, bytes0);
           log.debug('uc1: ${uc1.info}');
@@ -4270,15 +4278,15 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUCList(1, 10);
         for (var listS in vList1) {
-          system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          global.throwOnError = false;
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final uc1 = UCtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(uc1, isNull);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => UCtag.fromBytes(PTag.kSelectorCSValue, bytes0),
-              throwsA(const isInstanceOf<InvalidVRError>()));
+              throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
     });
@@ -4286,11 +4294,11 @@ void main() {
     test('UC make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final make0 = UCtag.make(PTag.kStrainDescription, vList0);
+        final make0 = UCtag.fromValues(PTag.kStrainDescription, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = UCtag.make(PTag.kStrainDescription, <String>[]);
+        final make1 = UCtag.fromValues(PTag.kStrainDescription, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -4299,22 +4307,22 @@ void main() {
     test('UC make bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(2, 2);
-        system.throwOnError = false;
-        final make0 = UCtag.make(PTag.kStrainDescription, vList0);
+        global.throwOnError = false;
+        final make0 = UCtag.fromValues(PTag.kStrainDescription, vList0);
         expect(make0, isNull);
 
-        system.throwOnError = true;
-        expect(() => UCtag.make(PTag.kStrainDescription, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        global.throwOnError = true;
+        expect(() => UCtag.fromValues(PTag.kStrainDescription, vList0),
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
-      system.throwOnError = false;
-      final make1 = UCtag.make(PTag.kStrainDescription, <String>[null]);
+      global.throwOnError = false;
+      final make1 = UCtag.fromValues(PTag.kStrainDescription, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
-      system.throwOnError = true;
-      expect(() => UCtag.make(PTag.kStrainDescription, <String>[null]),
+      global.throwOnError = true;
+      expect(() => UCtag.fromValues(PTag.kStrainDescription, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -4330,7 +4338,7 @@ void main() {
 
     test('UC checkLength bad values', () {
       final vList1 = ['a^1sd', '02@#'];
-      system.throwOnError = false;
+      global.throwOnError = false;
       final uc2 = new UCtag(PTag.kStrainDescription, vList1);
       expect(uc2, isNull);
       expect(() => uc2.checkLength(vList1),
@@ -4352,12 +4360,12 @@ void main() {
       final uc0 = new UCtag(PTag.kStrainDescription, vList0);
       for (var s in badUCList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(uc0.checkValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => uc0.checkValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
@@ -4391,7 +4399,7 @@ void main() {
     final invalidVList = rsg.getUCList(5000, 5000);
 
     test('UC isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UC.isValidTag(PTag.kSelectorUCValue), true);
 
       for (var tag in ucTags0) {
@@ -4401,115 +4409,117 @@ void main() {
     });
 
     test('UC isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UC.isValidTag(PTag.kSelectorFDValue), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UC.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final validT0 = UC.isValidTag(tag);
         expect(validT0, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UC.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
+/*
 
     test('UC checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UC.checkVRIndex(kUCIndex), kUCIndex);
 
       for (var tag in ucTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UC.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('UC checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           UC.checkVRIndex(
             kAEIndex,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UC.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UC.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UC.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('UC checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UC.checkVRCode(kUCCode), kUCCode);
 
       for (var tag in ucTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UC.checkVRCode(tag.vrCode), tag.vrCode);
       }
     });
 
     test('UC checkVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           UC.checkVRCode(
             kAECode,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UC.checkVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UC.checkVRCode(tag.vrCode), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UC.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('UC isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UC.isValidVRIndex(kUCIndex), true);
 
       for (var tag in ucTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UC.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('UC isValidVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UC.isValidVRIndex(kCSIndex), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UC.isValidVRIndex(kCSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UC.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UC.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('UC isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UC.isValidVRCode(kUCCode), true);
 
       for (var tag in ucTags0) {
@@ -4518,18 +4528,18 @@ void main() {
     });
 
     test('UC isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UC.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UC.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UC.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UC.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
@@ -4546,13 +4556,13 @@ void main() {
     });
 
     test('UC isNotValidVFLength good values', () {
-      expect(UC.isNotValidVFLength(UC.kMaxVFLength), false);
-      expect(UC.isNotValidVFLength(0), false);
+      expect(UC.isValidVFLength(UC.kMaxVFLength), true);
+      expect(UC.isValidVFLength(0), true);
     });
 
     test('UC isNotValidVFLength bad values', () {
-      expect(UC.isNotValidVFLength(UC.kMaxVFLength + 1), true);
-      expect(UC.isNotValidVFLength(-1), true);
+      expect(UC.isValidVFLength(UC.kMaxVFLength + 1), false);
+      expect(UC.isValidVFLength(-1), false);
     });
 
     test('UC isValidValueLength good values', () {
@@ -4566,59 +4576,57 @@ void main() {
     });
 
     test('UC isValidValueLength bad values', () {
-      expect(UC.isValidValueLength(''), false);
+      expect(UC.isValidValueLength(''), true);
     });
 
     test('UC isNotValidValueLength good values', () {
       for (var s in goodUCList) {
         for (var a in s) {
-          expect(UC.isNotValidValueLength(a), false);
+          expect(UC.isValidValueLength(a), true);
         }
       }
     });
 
     test('UC isNotValidValueLength bad values', () {
-      expect(UC.isNotValidValueLength(''), true);
+      expect(UC.isValidValueLength(''), true);
     });
 
-    test('UC isValidVListLength VM.k1 good values', () {
-      system.throwOnError = false;
+    test('UC isValidLength VM.k1 good values', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getUCList(1, 1);
         for (var tag in ucTags0) {
-          expect(UC.isValidVListLength(tag, validMinVList), true);
+          expect(UC.isValidLength(tag, validMinVList), true);
 
-          expect(
-              UC.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              UC.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(UC.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(UC.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('UC isValidVListLength VM.k1 bad values', () {
+    test('UC isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rsg.getUCList(2, i + 1);
         for (var tag in ucTags0) {
-          system.throwOnError = false;
-          expect(UC.isValidVListLength(tag, validMinVList), false);
+          global.throwOnError = false;
+          expect(UC.isValidLength(tag, validMinVList), false);
 
-          expect(UC.isValidVListLength(tag, invalidVList), false);
+          expect(UC.isValidLength(tag, invalidVList), false);
 
-          system.throwOnError = true;
-          expect(() => UC.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          global.throwOnError = true;
+          expect(() => UC.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
 
-    test('UC isValidVListLength VM.k1_n good values', () {
-      system.throwOnError = false;
+    test('UC isValidLength VM.k1_n good values', () {
+      global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rsg.getUCList(1, i);
         for (var tag in ucTags1) {
           log.debug('tag: $tag');
-          expect(UC.isValidVListLength(tag, validMinVList0), true);
+          expect(UC.isValidLength(tag, validMinVList0), true);
         }
       }
     });
@@ -4634,18 +4642,18 @@ void main() {
     test('UC isValidValue bad values', () {
       for (var s in badUCList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(UC.isValidValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => UC.isValidValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
 
     test('UC isValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in goodUCList) {
         expect(UC.isValidValues(PTag.kStrainDescription, s), true);
       }
@@ -4653,31 +4661,31 @@ void main() {
 
     test('UC isValidValues bad values', () {
       for (var s in badUCList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UC.isValidValues(PTag.kStrainDescription, s), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UC.isValidValues(PTag.kStrainDescription, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('UC toByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        system.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = UC.toByteData(vList0);
-        final tbd1 = UC.toByteData(vList0);
+        global.throwOnError = false;
+        final values = ascii.encode(vList0[0]);
+        final tbd0 = Bytes.fromUtf8List(vList0);
+        final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
       for (var s in goodUCList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
-          final tbd2 = UC.toByteData(s);
-          final tbd3 = UC.toByteData(s);
+          final values = ascii.encode(a);
+          final tbd2 = Bytes.fromUtf8List(s);
+          final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -4687,103 +4695,102 @@ void main() {
     test('UC fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        system.throwOnError = false;
-        final bd0 = UC.toByteData(vList0);
-        final fbd0 = UC.fromByteData(bd0);
+        global.throwOnError = false;
+        final bd0 = Bytes.fromUtf8List(vList0);
+        final fbd0 = bd0.getUtf8List();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodUCList) {
-        final bd0 = UC.toByteData(s);
-        final fbd0 = UC.fromByteData(bd0);
+        final bd0 = Bytes.fromUtf8List(s);
+        final fbd0 = bd0.getUtf8List();
         expect(fbd0, equals(s));
       }
     });
 
-    test('UC fromUint8List', () {
-      //     system.level = Level.info;
+    test('UC fromBytes', () {
+      //     global.level = Level.info;
       final vList1 = rsg.getUCList(1, 1);
-      final bytes = UC.toUint8List(vList1);
-      log.debug(
-          'UC.fromUint8List(bytes): ${UC.fromUint8List(bytes)}, bytes: $bytes');
-      expect(UC.fromUint8List(bytes), equals(vList1));
+      final bytes = Bytes.fromUtf8List(vList1);
+      log.debug('UC.fromBytes(bytes):  $bytes');
+      expect(bytes.getUtf8List(), equals(vList1));
     });
 
     test('UC toUint8List', () {
       final vList1 = rsg.getUCList(1, 1);
-      log.debug('UC.toUint8List(vList1): ${UC.toUint8List(vList1)}');
+      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
-      expect(UC.toUint8List(vList1), equals(values));
+      final values = ascii.encode(vList1[0]);
+      expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
-    test('UC checkList good values', () {
-      system.throwOnError = false;
+    test('UC isValidValues good values', () {
+      global.throwOnError = false;
       for (var i = 0; i <= 10; i++) {
         final vList = rsg.getUCList(1, 1);
-        expect(UC.checkList(PTag.kStrainDescription, vList), vList);
+        expect(UC.isValidValues(PTag.kStrainDescription, vList), true);
       }
 
       final vList0 = ['!mSMXWVy`]/Du'];
-      expect(UC.checkList(PTag.kStrainDescription, vList0), vList0);
+      expect(UC.isValidValues(PTag.kStrainDescription, vList0), true);
 
       for (var s in goodUCList) {
-        system.throwOnError = false;
-        expect(UC.checkList(PTag.kStrainDescription, s), s);
+        global.throwOnError = false;
+        expect(UC.isValidValues(PTag.kStrainDescription, s), true);
       }
     });
 
-    test('UC checkList bad values', () {
-      system.throwOnError = false;
+    test('UC isValidValues bad values', () {
+      global.throwOnError = false;
       final vList1 = ['\b'];
-      expect(UC.checkList(PTag.kStrainDescription, vList1), isNull);
+      expect(UC.isValidValues(PTag.kStrainDescription, vList1), false);
 
-      system.throwOnError = true;
-      expect(() => UC.checkList(PTag.kStrainDescription, vList1),
-          throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+      global.throwOnError = true;
+      expect(() => UC.isValidValues(PTag.kStrainDescription, vList1),
+          throwsA(const isInstanceOf<StringError>()));
 
       for (var s in badUCList) {
-        system.throwOnError = false;
-        expect(UC.checkList(PTag.kStrainDescription, s), isNull);
+        global.throwOnError = false;
+        expect(UC.isValidValues(PTag.kStrainDescription, s), false);
 
-        system.throwOnError = true;
-        expect(() => UC.checkList(PTag.kStrainDescription, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+        global.throwOnError = true;
+        expect(() => UC.isValidValues(PTag.kStrainDescription, s),
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('UC toBytes', () {
       for (var i = 0; i < 10; i++) {
         final sList0 = rsg.getUCList(1, 10);
-        system.throwOnError = false;
-        final toB0 = UC.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        global.throwOnError = false;
+        final toB0 = Bytes.fromUtf8List(sList0, kMaxShortVF);
+        final bytes0 = Bytes.fromAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodUCList) {
-        final toB1 = UC.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
+        final bytes1 = Bytes.fromAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      system.throwOnError = false;
-      final toB2 = UC.toBytes([''], kMaxShortVF);
+      global.throwOnError = false;
+      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = UC.toBytes([], kMaxShortVF);
+      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = UC.toBytes(null, kMaxShortVF);
+      final toB4 = Bytes.fromUtf8List(null, kMaxShortVF);
       expect(toB4, isNull);
 
-      system.throwOnError = true;
-      expect(() => UC.toBytes(null, kMaxShortVF),
-          throwsA(const isInstanceOf<NullValueError>()));
+      global.throwOnError = true;
+      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
   });
 
@@ -4803,7 +4810,7 @@ void main() {
   group('UTtag', () {
     test('UT hasValidValues good values', () {
       for (var s in goodUTList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final ut0 = new UTtag(PTag.kUniversalEntityID, s);
         expect(ut0.hasValidValues, true);
       }
@@ -4816,21 +4823,21 @@ void main() {
 
     test('UT hasValidValues bad values', () {
       for (var s in badUTList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final ut0 = new UTtag(PTag.kUniversalEntityID, s);
         expect(ut0, isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => new UTtag(PTag.kUniversalEntityID, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ut1 = new UTtag(PTag.kLocalNamespaceEntityID, null);
       log.debug('ut1: $ut1');
       expect(ut1, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new UTtag(PTag.kLocalNamespaceEntityID, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
@@ -4949,7 +4956,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         final ut0 = new UTtag(PTag.kUniversalEntityID, vList0);
-        expect(ut0.tag.isValidLength(ut0.length), true);
+        expect(ut0.tag.isValidLength(ut0), true);
       }
     });
 
@@ -4958,7 +4965,7 @@ void main() {
         final vList0 = rsg.getUTList(1, 1);
         final ut0 = new UTtag(PTag.kUniversalEntityID, vList0);
 
-        expect(ut0.tag.isValidValues(ut0.values), true);
+        expect(ut0.checkValues(ut0.values), true);
         expect(ut0.hasValidValues, true);
       }
     });
@@ -4998,12 +5005,12 @@ void main() {
       }
     });
 
-    test('UT fromUint8List random', () {
+    test('UT fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 1);
-        final bytes = UT.toUint8List(vList1);
+        final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final ut0 = UTtag.fromUint8List(PTag.kUniversalEntityID, bytes);
+        final ut0 = UTtag.fromBytes(PTag.kUniversalEntityID, bytes);
         log.debug('ut0: ${ut0.info}');
         expect(ut0.hasValidValues, true);
       }
@@ -5013,7 +5020,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.asciiEncode(listS);
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final ut1 = UTtag.fromBytes(PTag.kSelectorUTValue, bytes0);
           log.debug('ut1: ${ut1.info}');
@@ -5026,15 +5033,15 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 10);
         for (var listS in vList1) {
-          system.throwOnError = false;
-          final bytes0 = Bytes.asciiEncode(listS);
+          global.throwOnError = false;
+          final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
           final ut1 = UTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(ut1, isNull);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => UTtag.fromBytes(PTag.kSelectorCSValue, bytes0),
-              throwsA(const isInstanceOf<InvalidVRError>()));
+              throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
     });
@@ -5042,11 +5049,11 @@ void main() {
     test('UT make good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final make0 = UTtag.make(PTag.kUniversalEntityID, vList0);
+        final make0 = UTtag.fromValues(PTag.kUniversalEntityID, vList0);
         log.debug('make0: ${make0.info}');
         expect(make0.hasValidValues, true);
 
-        final make1 = UTtag.make(PTag.kUniversalEntityID, <String>[]);
+        final make1 = UTtag.fromValues(PTag.kUniversalEntityID, <String>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<String>[]));
       }
@@ -5055,22 +5062,22 @@ void main() {
     test('UT make bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(2, 2);
-        system.throwOnError = false;
-        final make0 = UTtag.make(PTag.kUniversalEntityID, vList0);
+        global.throwOnError = false;
+        final make0 = UTtag.fromValues(PTag.kUniversalEntityID, vList0);
         expect(make0, isNull);
 
-        system.throwOnError = true;
-        expect(() => UTtag.make(PTag.kUniversalEntityID, vList0),
-            throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+        global.throwOnError = true;
+        expect(() => UTtag.fromValues(PTag.kUniversalEntityID, vList0),
+            throwsA(const isInstanceOf<InvalidValuesError>()));
       }
 
-      system.throwOnError = false;
-      final make1 = UTtag.make(PTag.kUniversalEntityID, <String>[null]);
+      global.throwOnError = false;
+      final make1 = UTtag.fromValues(PTag.kUniversalEntityID, <String>[null]);
       log.debug('mak1: $make1');
       expect(make1, isNull);
 
-      system.throwOnError = true;
-      expect(() => UTtag.make(PTag.kUniversalEntityID, <String>[null]),
+      global.throwOnError = true;
+      expect(() => UTtag.fromValues(PTag.kUniversalEntityID, <String>[null]),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
@@ -5086,13 +5093,13 @@ void main() {
 
     test('UT checkLength bad values', () {
       final vList1 = ['a^1sd', '02@#'];
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ut2 = new UTtag(PTag.kUniversalEntityID, vList1);
       expect(ut2, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new UTtag(PTag.kUniversalEntityID, vList1),
-          throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('UT checkValue good values', () {
@@ -5110,28 +5117,28 @@ void main() {
       final ut0 = new UTtag(PTag.kUniversalEntityID, vList0);
       for (var s in badUTList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(ut0.checkValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => ut0.checkValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
 
-    test('UT decodeBinaryTextVF', () {
+    test('UT text from bytes', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 1);
-        final bytes = UT.toUint8List(vList1);
-        final dbTxt0 = StringBase.decodeBinaryTextVF(bytes, kMaxShortVF);
-        log.debug('dbTxt0: $dbTxt0');
-        expect(dbTxt0, equals(vList1));
+        final s0 = vList1[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        log.debug('s1: $s1');
+        expect(s1, equals(s0));
 
-        final dbTxt1 =
-            StringBase.decodeBinaryTextVF(bytes, kMaxShortVF, isAscii: false);
-        log.debug('dbTxt1: $dbTxt1');
-        expect(dbTxt1, equals(vList1));
+        final s2 = bytes.getUtf8();
+        log.debug('s2: $s2');
+        expect(s2, equals(s1));
       }
     });
   });
@@ -5165,7 +5172,7 @@ void main() {
     final invalidVList = rsg.getUTList(UT.kMaxLength + 1, UT.kMaxLength + 1);
 
     test('UT isValidTag good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UT.isValidTag(PTag.kSelectorUTValue), true);
 
       for (var tag in utTags0) {
@@ -5175,115 +5182,117 @@ void main() {
     });
 
     test('UT isValidTag bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UT.isValidTag(PTag.kSelectorFDValue), false);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UT.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const isInstanceOf<InvalidTagError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         final validT0 = UT.isValidTag(tag);
         expect(validT0, false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UT.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
+/*
 
     test('UT checkVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UT.checkVRIndex(kUTIndex), kUTIndex);
 
       for (var tag in utTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UT.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
     test('UT checkVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           UT.checkVRIndex(
             kAEIndex,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UT.checkVRIndex(kAEIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UT.checkVRIndex(tag.vrIndex), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UT.checkVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('UT checkVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UT.checkVRCode(kUTCode), kUTCode);
 
       for (var tag in utTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UT.checkVRCode(tag.vrCode), tag.vrCode);
       }
     });
 
     test('UT checkVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(
           UT.checkVRCode(
             kAECode,
           ),
           isNull);
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UT.checkVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UT.checkVRCode(tag.vrCode), isNull);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UT.checkVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
+*/
 
     test('UT isValidVRIndex good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UT.isValidVRIndex(kUTIndex), true);
 
       for (var tag in utTags0) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UT.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
     test('UT isValidVRIndex bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UT.isValidVRIndex(kCSIndex), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UT.isValidVRIndex(kCSIndex),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UT.isValidVRIndex(tag.vrIndex), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UT.isValidVRIndex(tag.vrIndex),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
 
     test('UT isValidVRCode good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UT.isValidVRCode(kUTCode), true);
 
       for (var tag in utTags0) {
@@ -5292,18 +5301,18 @@ void main() {
     });
 
     test('UT isValidVRCode bad values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       expect(UT.isValidVRCode(kAECode), false);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => UT.isValidVRCode(kAECode),
           throwsA(const isInstanceOf<InvalidVRError>()));
 
       for (var tag in otherTags) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UT.isValidVRCode(tag.vrCode), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UT.isValidVRCode(tag.vrCode),
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
@@ -5319,33 +5328,31 @@ void main() {
       expect(UT.isValidVFLength(-1), false);
     });
 
-    test('UT isValidVListLength VM.k1 good values', () {
-      system.throwOnError = false;
+    test('UT isValidLength VM.k1 good values', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getUTList(1, 1);
         for (var tag in utTags0) {
-          expect(UT.isValidVListLength(tag, validMinVList), true);
+          expect(UT.isValidLength(tag, validMinVList), true);
 
-          expect(
-              UT.isValidVListLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              UT.isValidVListLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(UT.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(UT.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });
 
-    test('UT isValidVListLength VM.k1 bad values', () {
+    test('UT isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rsg.getUTList(2, i + 1);
         for (var tag in utTags0) {
-          system.throwOnError = false;
-          expect(UT.isValidVListLength(tag, validMinVList), false);
+          global.throwOnError = false;
+          expect(UT.isValidLength(tag, validMinVList), false);
 
-          expect(UT.isValidVListLength(tag, invalidVList), false);
+          expect(UT.isValidLength(tag, invalidVList), false);
 
-          system.throwOnError = true;
-          expect(() => UT.isValidVListLength(tag, validMinVList),
-              throwsA(const isInstanceOf<InvalidValuesLengthError>()));
+          global.throwOnError = true;
+          expect(() => UT.isValidLength(tag, validMinVList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
     });
@@ -5361,18 +5368,18 @@ void main() {
     test('UT isValidValue bad values', () {
       for (var s in badUTList) {
         for (var a in s) {
-          system.throwOnError = false;
+          global.throwOnError = false;
           expect(UT.isValidValue(a), false);
 
-          system.throwOnError = true;
+          global.throwOnError = true;
           expect(() => UT.isValidValue(a),
-              throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+              throwsA(const isInstanceOf<StringError>()));
         }
       }
     });
 
     test('UT isValidValues good values', () {
-      system.throwOnError = false;
+      global.throwOnError = false;
       for (var s in goodUTList) {
         expect(UT.isValidValues(PTag.kUniversalEntityID, s), true);
       }
@@ -5380,31 +5387,31 @@ void main() {
 
     test('UT isValidValues bad values', () {
       for (var s in badUTList) {
-        system.throwOnError = false;
+        global.throwOnError = false;
         expect(UT.isValidValues(PTag.kUniversalEntityID, s), false);
 
-        system.throwOnError = true;
+        global.throwOnError = true;
         expect(() => UT.isValidValues(PTag.kUniversalEntityID, s),
-            throwsA(const isInstanceOf<InvalidCharacterInStringError>()));
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
 
     test('UT toByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        system.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = UT.toByteData(vList0);
-        final tbd1 = UT.toByteData(vList0);
+        global.throwOnError = false;
+        final values = ascii.encode(vList0[0]);
+        final tbd0 = Bytes.fromUtf8List(vList0);
+        final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
       }
       for (var s in goodUTList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
-          final tbd2 = UT.toByteData(s);
-          final tbd3 = UT.toByteData(s);
+          final values = ascii.encode(a);
+          final tbd2 = Bytes.fromUtf8List(s);
+          final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -5414,66 +5421,67 @@ void main() {
     test('UT fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        system.throwOnError = false;
-        final bd0 = UT.toByteData(vList0);
-        final fbd0 = UT.fromByteData(bd0);
-        log.debug('fbd0: $fbd0, vList0: $vList0');
-        expect(fbd0, equals(vList0));
+        global.throwOnError = false;
+        final s0 = vList0[0];
+        final bd0 = Bytes.fromUtf8(s0);
+        final s1 = bd0.getUtf8();
+        log.debug('fbd0: $s1, vList0: $vList0');
+        expect(s1, equals(s0));
       }
-      for (var s in goodUTList) {
-        final bd0 = UT.toByteData(s);
-        final fbd0 = UT.fromByteData(bd0);
-        expect(fbd0, equals(s));
+      for (var sList in goodUTList) {
+        final s0 = sList[0];
+        final bytes = Bytes.fromUtf8(s0);
+        final s1 = bytes.getUtf8();
+        expect(s1, equals(s0));
       }
     });
 
-    test('UT fromUint8List', () {
-      //  system.level = Level.info;;
-      final vList1 = rsg.getUTList(1, 1);
-      final bytes = UT.toUint8List(vList1);
-      log.debug(
-          'UT.fromUint8List(bytes): ${UT.fromUint8List(bytes)}, bytes: $bytes');
-      expect(UT.fromUint8List(bytes), equals(vList1));
+    test('UT fromBytes', () {
+      final vList = rsg.getUTList(1, 1);
+      final s = vList[0];
+      final bytes = Bytes.fromUtf8(s);
+      log.debug('UT.fromBytes(bytes):  $bytes');
+      expect(bytes.getUtf8(), equals(s));
     });
 
     test('UT toUint8List', () {
       final vList1 = rsg.getUTList(1, 1);
-      log.debug('UT.toUint8List(vList1): ${UT.toUint8List(vList1)}');
+      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
-      expect(UT.toUint8List(vList1), equals(values));
+      final values = ascii.encode(vList1[0]);
+      expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
     test('UT toBytes', () {
       for (var i = 0; i < 10; i++) {
         final sList0 = rsg.getUTList(1, 1);
-        system.throwOnError = false;
-        final toB0 = UT.toBytes(sList0, kMaxShortVF);
-        final bytes0 = Bytes.asciiEncode(sList0.join('\\'));
+        global.throwOnError = false;
+        final toB0 = Bytes.fromUtf8List(sList0, kMaxShortVF);
+        final bytes0 = Bytes.fromAscii(sList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodUTList) {
-        final toB1 = UT.toBytes(s, kMaxShortVF);
-        final bytes1 = Bytes.asciiEncode(s.join('\\'));
+        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
+        final bytes1 = Bytes.fromAscii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      final toB2 = UT.toBytes([''], kMaxShortVF);
+      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = UT.toBytes([], kMaxShortVF);
+      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
-      /*system.throwOnError = false;
-      final toB2 = UT.toBytes([null], kMaxShortVF);
+      /*global.throwOnError = false;
+      final toB2 = Bytes.fromUtf8List([null], kMaxShortVF);
       expect(toB2, isNull);
 
-      system.throwOnError = true;
-      expect(() => UT.toBytes(null, kMaxShortVF),
-          throwsA(const isInstanceOf<NullValueError>()));*/
+      global.throwOnError = true;
+      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+          throwsA(const isInstanceOf<GeneralError>()));*/
     });
   });
 }

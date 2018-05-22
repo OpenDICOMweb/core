@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/tag/tag_item.dart';
@@ -15,6 +14,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/indenter.dart';
 import 'package:core/src/utils/logger.dart';
+import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr.dart';
 
 /// A [PrivateSubgroup] contains a Private [creator] and a set of Private
@@ -125,8 +125,8 @@ class PrivateSubgroup {
     final pdSG = (pdCode & 0xFFFF) >> 8;
     if (pdSG != sgNumber) {
       print('** Invalid Subgroup($pdSG is not $sgNumber): $pd');
-      invalidElementError(
-          pd, 'pdCode ${dcm(pdCode)} invalid Subgroup($pdSG != $sgNumber)');
+      invalidElement(
+          'pdCode ${dcm(pdCode)} invalid Subgroup($pdSG != $sgNumber)', pd);
       return false;
     }
     return true;

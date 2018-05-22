@@ -6,21 +6,20 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-//TODO: load Element library lazily
-
 import 'dart:collection';
-import 'dart:convert' as cvt;
+import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/base.dart';
 import 'package:core/src/dataset.dart';
-import 'package:core/src/element/base/errors.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/element/element_formatter.dart';
+import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/hash.dart';
-import 'package:core/src/vr.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/vr/vr_base.dart';
+import 'package:core/src/vr/vr_external.dart';
 
 /// The base class for DICOM Data Elements
 ///
@@ -42,7 +41,7 @@ typedef bool Condition(Dataset ds, Element e);
 Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
 
-bool doTestValidity = true;
+final SimpleElementFormatter eFormat = new SimpleElementFormatter();
 
 // All add, replace, and remove operations should
 // be done by calling add, replace, and remove methods in [Dataset].
@@ -51,32 +50,85 @@ bool doTestValidity = true;
 /// is the [Type] of the [values] of the [Element].
 abstract class Element<V> extends ListBase<V> {
   // **** Interface
+  // TODO: explan the differentce between _value and value.
+ // List<V> get _values;
+ // set _values(List<V> vList);
 
-  /// Returns the [Iterable<V>] [values] of _this_.
+  @override
+  List<V> toList({bool growable = true});
+
+  /// Returns the [values] of _this_.
   Iterable<V> get values;
+
+  /// Sets [values] to [vList]. If [vList] is [Iterable] it is first
+  /// converted into a [List] and then assigned to [values].
   set values(Iterable<V> vList);
 
-  /// Returns the canonical empty list for [V] ([List<V>[]]).
-  List<V> get emptyList;
+  /// Returns the number of [values] of _this_.
+  @override
+  int get length {
+    if (values == null) return nullValueError();
+    return values.length;
+  }
 
-  /// The [index] of the [Element] Definition for _this_. It is
-  /// used to locate other values in the [Element] Definition.
-  int get index => code;
+
+  /// Returns the identifier ([index]), used to locate
+  /// the Attributes associated with this Element.
+  int get index;
+
+  /// Returns the Tag Code ([code]) associated with this Element
+  int get code;
+
+  /// Returns the _keyword_ associated with this Element.
+  String get keyword;
+
+  /// Returns the _name_ associated with this Element.
+  String get name;
+
+  // **** VR related Getters ****
 
   /// The index ([vrIndex]) of the Value Representation for this Element.
   int get vrIndex;
 
-  // TODO: implement with fast_tag
-  /// The Information Entity index of this Element.
-//  int get ieIndex;
+  /// The _minimum_ length of a non-empty Value Field for this Element.
+  int get vmMin;
 
-  // TODO: implement with fast_tag
-  /// The DeIdentification Method index for this Element.
-//  int get deIdIndex;
+  /// The _maximum_ length of a non-empty Value Field for this Element.
+  int get vmMax;
+
+  /// The _rank_ or _width_, i.e. the number of columns in the
+  /// Value Field for this Element. _Note_: The Element values
+  /// length must be a multiple of this number.
+  int get vmColumns;
+
+  /// Returns true if _this_ is a Data Element defined by the DICOM Standard.
+  bool get isPublic;
+
+  /// _true_ if this Element has been retired, i.e. is no longer
+  /// defined by the current DICOM Standard.
+  bool get isRetired;
 
   /// The actual length in bytes of the Value Field. It does
   /// not include any padding characters.
-  int get vfLength => values.length * sizeInBytes;
+  int get vfLength;
+
+  /// The length in bytes of [values].
+  int get lengthInBytes;
+
+  /// Returns the canonical empty list for [V] ([List<V>[]]).
+  Iterable<V> get emptyList;
+
+  // **** End of Interface
+
+  /// Returns the Value Representation (VR) integer code [vrCode] for _this_.
+  int get vrCode => vrCodeByIndex[vrIndex];
+
+  /// Returns the [Tag] that corresponds to this [code].
+  ///
+  /// _Note_: If the [code] is private (i.e. odd) then an either an
+  /// [PCTagUnknown] or [PDTagUnknown] will be returned. This should be
+  /// overridden whenever possible.
+  Tag get tag => Tag.lookupByCode(code);
 
   /// The start of an element in and encoding.
   int get eStart => -1;
@@ -84,31 +136,13 @@ abstract class Element<V> extends ListBase<V> {
   /// The end of an element in and encoding.
   int get eEnd => -1;
 
-  /// Returns _true_ if [value] is valid for _this_.
-  bool checkValue(V v, {Issues issues, bool allowInvalid = false});
-
   /// Returns a copy of _this_ with [values] replaced by [vList].
-  Element<V> update([Iterable<V> vList]);
-
-
-
+  Element<V> update([Iterable<V> vList]) => unsupportedError();
   // **** end Interface
 
   // ********* Tag Identifier related interface, Getters, and Methods
   // **************************************************************
   // **** Some of these Getters may be accessed directly in the element.
-
-  /// Returns the [Tag] associated with _this_.
-  Tag get tag => Tag.lookupByCode(code, vrIndex);
-
-  /// The Tag [code] for this Element.
-  int get code => tag.code;
-
-  /// Returns the [keyword] identifier for _this_
-  String get keyword => tag.keyword;
-
-  /// Returns the [name] identifier for _this_
-  String get name => tag.name;
 
   // Copied from system package to avoid name conflict
   /// Returns a DICOM Tag code in the format (gggg,eeee), where
@@ -154,14 +188,6 @@ abstract class Element<V> extends ListBase<V> {
 
   bool get isPrivateCreator => isPrivate && (elt >= 0x10 && elt < 0xFF);
 
-  /// Returns _true_ if _this_ is a Data [Element] defined by the DICOM
-  /// Standard.
-  bool get isPublic => !isPrivate;
-
-  /// Returns _true_ if _this_ is a Data [Element] has been retired by
-  /// the DICOM Standard, or if a private [Element] by an implementation
-  bool get isRetired => tag.isRetired;
-
   /// Returns the creator token for _this_.
   /// _Note_: This Getter MUST be overridden for [PrivateTag]s.
   String get creator => 'DICOM';
@@ -172,11 +198,10 @@ abstract class Element<V> extends ListBase<V> {
   /// The size in bytes of the Value Field Length field.
   int get vlfSize => vr.vlfSize;
 
+  // Urgent Jim: make this a Mixin
   VR get vr => vrByIndex[vrIndex];
-  String get vrId => vr.id;
 
-  /// Returns the Value Representation (VR) integer code [vrCode] for _this_.
-  int get vrCode => vr.code;
+  String get vrId => vr.id;
 
   /// The name of the Value Representation (VR) for _this_.
   String get vrKeyword => 'k${vr.id}';
@@ -187,32 +212,21 @@ abstract class Element<V> extends ListBase<V> {
   /// The [vrCode] as a hexadecimal [String].
   String get vrHex => '0x${hex16(vrCode)}';
 
-  /// The number of bytes in one value.
-  int get sizeInBytes => vr.sizeInBytes;
+  // The number of bytes in one value.
+//  int get sizeInBytes => vr.sizeInBytes;
 
   /// The maximum Value Field length in bytes for this Element.
   int get maxVFLength => vr.maxVFLength;
 
   /// Returns _true_ for OB, OD, OF, OL, OW, SQ, UN, and UR, which
   /// MUST override this Getter; otherwise, false.
-  bool get isLengthAlwaysValid => false;
+  bool get isLengthAlwaysValid;
 
   // ******* Value Multiplicity related Getters and Methods *******
   // **************************************************************
 
   /// The Value Multiplicity ([vm]) for this Element.
   VM get vm => tag.vm;
-
-  /// The _minimum_ length of a non-empty Value Field for this Element.
-  int get vmMin => tag.vmMin;
-
-  /// The _maximum_ length of a non-empty Value Field for this Element.
-  int get vmMax => tag.vmMax;
-
-  /// The _rank_ or _width_, i.e. the number of columns in the
-  /// Value Field for this Element. _Note_: The Element values
-  /// length must be a multiple of this number.
-  int get vmColumns => tag.vmColumns;
 
   /// The minimum number of values that MUST be present for _this_,
   /// if any values are present.
@@ -239,35 +253,8 @@ abstract class Element<V> extends ListBase<V> {
   /// The Element Type of this Element.
   EType get eType => tag.eType;
 
-  /// The Element Type index of this Element.
-  int get eTypeIndex => eType.index;
-
   /// The Element Type predicate of this Element.
   Condition get eTypePredicate => unimplementedError();
-
-  // ****** Information Entity Interface, Getters, and Methods ******
-  // **************************************************************
-
-/*
-  // TODO: implement with fast_tag
-  /// The Information Entity Type of this Element.
-  IEType get ieType => IEType.kByIndex[ieIndex];
-
-  /// The Information Entity level of this Element.
-  String get ieLevel => ieType.level;
-
-  /// The Information Entity Name of this Element.
-  String get ieName => ieType.name;
-*/
-
-  // ****** DeIdentification Interface, Getters and Methods ******
-  // **************************************************************
-
-  /// The DeIdentification Method name for this Element.
-/*
-  DeIdMethod getDeIdMethod(DeIdOption option) =>
-		  option.lookupByIndex(deIdIndex).method;
-*/
 
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************
@@ -306,18 +293,8 @@ abstract class Element<V> extends ListBase<V> {
   void operator []=(int i, V v) =>
       throw new UnsupportedError('Elements are immutable');
 
-  /// Returns the number of [values] of _this_.
-  @override
-  int get length {
-    if (values == null) return nullValueError();
-    return values.length;
-  }
-
   @override
   set length(int n) => throw new UnsupportedError('Elements are immutable');
-
-  /// The length in bytes of [values].
-  int get lengthInBytes => values.length * sizeInBytes;
 
   /// Returns a single value from a [List] with [length] == 1.
   V get value {
@@ -340,18 +317,26 @@ abstract class Element<V> extends ListBase<V> {
   ByteData get vfByteData =>
       (checkValues(values)) ? typedData.buffer.asByteData() : null;
 
+/*
   /// Returns [values] encoded as a [Bytes].
+  // Note: Always Bytes not DicomBytes
+  Bytes get vBytes =>
+      (checkValues(values)) ? new Bytes.typedDataView(typedData) : null;
+*/
+
+  /// Returns [values], including any required padding, encoded as a [Bytes].
+  // Note: Always Bytes not DicomBytes
   Bytes get vfBytes =>
-      (checkValues(values)) ? new Bytes.fromTypedData(typedData) : null;
+      (checkValues(values)) ? new Bytes.typedDataView(typedData) : null;
 
   String get vfBytesAsAscii => vfBytes.getAscii();
 
-  List<String> get vfBytesAsAsciiList => vfBytes.asAsciiList();
+  Iterable<String> get vfBytesAsAsciiList => vfBytes.getAsciiList();
 
-  String get vfBytesAsUtf8 => cvt.utf8.decode(vfBytes, allowMalformed: true);
+  String get vfBytesAsUtf8 => utf8.decode(vfBytes, allowMalformed: true);
 
-  List<String> get vfBytesAsUtf8List =>
-      cvt.utf8.decode(vfBytes, allowMalformed: true).split('\\');
+  Iterable<String> get vfBytesAsUtf8List =>
+      utf8.decode(vfBytes, allowMalformed: true).split('\\');
 
   /// Returns _true_ if [vList] has a valid [length] for _this_.
   /// [vList] defaults to [values].
@@ -363,17 +348,19 @@ abstract class Element<V> extends ListBase<V> {
         (length >= minValues && length <= maxValues && (length % columns == 0));
   }
 
-  /// Returns _true_ if [values] are valid for _this_.
+  /// Returns _true_ if [vList] is valid for _this_.
   bool checkValues(Iterable<V> vList, [Issues issues]) {
     final ok = checkLength(vList, issues);
-    if (!ok) return ok;
-    for (var v in vList)
-      if (!checkValue(v, issues: issues)) {
-        invalidValuesError(vList, issues: issues);
-        return false;
-      }
+    if (!ok) return false;
+    for (var i = 0; i < vList.length; i++) {
+      if (!checkValue(vList.elementAt(i), issues: issues))
+        return invalidValues(vList, issues);
+    }
     return true;
   }
+
+  /// Returns _true_ if [value] is valid for _this_.
+  bool checkValue(V v, {Issues issues, bool allowInvalid = false});
 
   bool valuesEqual(Element<V> other) => vListEqual<V>(values, other.values);
 
@@ -439,7 +426,7 @@ abstract class Element<V> extends ListBase<V> {
 
   String get info {
     final v = values;
-    if (v == null) return nullElementError();
+    if (v == null) return nullElement();
     List<V> vList = _toList<V>(values);
     vList = (vList.length > 10) ? vList.sublist(0, 10) : values;
     final s = '(${vList.length})${vList.map((v) => '$v')}';
@@ -476,61 +463,8 @@ abstract class Element<V> extends ListBase<V> {
   // String format(Formatter z) => '${z(info)}\n';
   // String format(Formatter z) => z.fmt(this, elements);
 
-  bool doFancy = false;
-  bool withValues = true;
-
   @override
-  String toString() =>
-      (doFancy) ? _toFancyString(withValues) : _toStringWithValues();
-
-  String _toFancyString(bool withValues) =>
-      '$runtimeType$_tag $_vfLength $_values()';
-
-  String _toStringWithValues() =>
-      '$runtimeType: $_tag vlf: $vfLength ${_values()}';
-
-  String toSimpleString() => '$runtimeType $_tag vlf: $vfLength';
-
-  // **** These are local methods for [toString]
-  String get _keyword {
-    final t = tag;
-    return (t == null) ? '*Unknown Tag*' : t.keyword;
-  }
-  String get _vr => '$vrId($vrIndex)';
-  String get _vmMax => (vmMax == -1) ? 'N' : '$vmMax';
-  String get _vm => (isLengthAlwaysValid)
-      ? 'vm(1<= $_vfLength <=N'
-      : 'vm($vmMin<= $_vfLength <=$_vmMax)';
-  String get _tag => '$dcm $_keyword $_vr $_vm';
-
-  String get _vfLength {
-    final _vfLength = vfLength;
-    final _vflf = vfLengthField;
-    assert(_vfLength != null || _vfLength != -1);
-    final _vfl = 'vfl: $_vfLength';
-    if (_vflf == null) return _vfl;
-    final s = (_vflf == 0xFFFFFFFF) ? 'kUndefineLength' : 'vlf: $_vflf';
-    return '$s, $_vfl';
-  }
-
-  /// The maximum number of values to print when an [Element]'s values
-  /// are printed by [toString].
-  static int truncatedValuesLength = 5;
-
-  String _values([int max]) {
-    if (!withValues) return '';
-    assert(values != null);
-    max ??= truncatedValuesLength;
-    final length = values.length;
-    final vLength = (hasValidLength) ? '' : '-*Invalid Length*';
-    final valid = (hasValidValues) ? '' : '*Bad Values*';
-    final vList = (length > max) ? values.take(max) : values;
-    return '$valid($length$vLength)[${vList.join(', ')}]';
-  }
-
-  String getValuesAsString([int max]) => _values(max);
-
-  // **** End of local methods for [toString]
+  String toString() => eFormat.asString(this);
 
   // ***************** Static Getters and Methods *****************
   // **************************************************************
@@ -550,19 +484,33 @@ abstract class Element<V> extends ListBase<V> {
     return true;
   }
 
-  static bool isValidVListLength<V>(
-      Tag tag, Iterable<V> vList, Issues issues, int maxLength) {
-    assert(tag != null && vList != null);
-    if (tag.isLengthAlwaysValid || vList.isEmpty) return true;
-    final length = vList.length;
-    if (length >= tag.vmMin &&
-        (length <= tag.vmMax || (tag.vmMax == -1 && length <= maxLength)) &&
-        (length % tag.vmColumns == 0)) return true;
-    invalidValuesLengthError(tag, vList, issues);
-    return false;
+  /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
+  /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
+  /// is used.
+  static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
+      (doTestElementValidity && tag.vrIndex != targetVR)
+          ? invalidTag(tag, issues, type)
+          : true;
+
+  static bool isValidLength<V>(Tag tag, Iterable<V> vList, Issues issues,
+      int maxLengthForVR, Type type) {
+    if (tag == null) return invalidTag(tag, issues, type);
+    if (vList == null) return nullValueError();
+    final min = tag.vmMin;
+    final max = tag.vm.max(maxLengthForVR);
+    return (vList != null &&
+            (tag.isLengthAlwaysValid ||
+                vList.isEmpty ||
+                _isValidLength(vList.length, min, max, tag.columns)))
+        ? true
+        : invalidValuesLength(vList, min, max, issues, tag);
   }
 
-  static bool isNotValidVListLength<V>(
-          Tag tag, Iterable<V> vList, Issues issues, int maxLength) =>
-      !isValidVListLength(tag, vList, issues, maxLength);
+  static bool isNotValidLength<V>(Tag tag, Iterable<V> vList, Issues issues,
+          int maxLength, Type type) =>
+      !isValidLength(tag, vList, issues, maxLength, type);
 }
+
+bool _isValidLength(int length, int min, int max, int columns) => (length == 0)
+    ? true
+    : length >= min && length <= max && (length % columns) == 0;

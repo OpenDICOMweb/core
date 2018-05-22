@@ -18,7 +18,7 @@ void main() {
   final rng = new RNG(1);
 
   test('Uint32Base.fromList', () {
-    //  system.level = Level.info;;
+    //  global.level = Level.info;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final s0 = Uint32.fromList(uInt32List0);
@@ -43,22 +43,30 @@ void main() {
   });
 
   test('Uint32Base.toBytes', () {
-    //  system.level = Level.info;;
+    //  global.level = Level.info;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       log.debug('uInt32List0 : $uInt32List0');
-      final s0 = Uint32.toBytes(uInt32List0);
+      final s0 = Uint32.toUint8List(uInt32List0);
       //expect(s0, equals(s0.buffer.asUint8List()));
       expect(s0 is Uint8List, true);
       final result0 = s0.buffer.asUint16List();
       log.debug('s0: $s0, result0: $result0');
       final uInt32List1 = Uint32.fromUint8List(s0);
       expect(uInt32List1, equals(uInt32List0));
+
+      final s1 = Uint32.toBytes(uInt32List0);
+      //expect(s0, equals(s0.buffer.asUint8List()));
+      expect(s0 is Uint8List, true);
+      final result1 = s0.buffer.asUint16List();
+      log.debug('s0: $s0, result0: $result1');
+      final uInt32List2 = Uint32.fromBytes(s1);
+      expect(uInt32List2, equals(uInt32List0));
     }
   });
 
   test('Uint32Base.fromBytes', () {
-    //  system.level = Level.info;;
+    //  global.level = Level.info;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
@@ -71,7 +79,7 @@ void main() {
   });
 
   test('AT.fromByteData', () {
-    //  system.level = Level.info;;
+    //  global.level = Level.info;;
     final uInt32List0 = rng.uint32List(1, 1);
     final byteData = uInt32List0.buffer.asByteData();
     final u32 = Uint32.fromByteData(byteData);
@@ -80,7 +88,7 @@ void main() {
   });
 
   test('AT.toByteData', () {
-    //  system.level = Level.info;;
+    //  global.level = Level.info;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final s0 = Uint32.toByteData(uInt32List0);
@@ -90,7 +98,7 @@ void main() {
   });
 
   test('AT.fromBase64', () {
-    //  system.level = Level.info;;
+    //  global.level = Level.info;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
@@ -102,7 +110,7 @@ void main() {
     }
   });
   test('AT.toBase64', () {
-    //  system.level = Level.info;;
+    //  global.level = Level.info;;
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final uInt32ListV1 = new Uint32List.fromList(uInt32List0);

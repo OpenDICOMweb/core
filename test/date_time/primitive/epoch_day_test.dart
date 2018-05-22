@@ -13,7 +13,8 @@ import 'package:test/test.dart';
 void main() {
   // These next two values are used throughout the test
   // They can be changed to make the tests longer or shorter
-  // Note: startYear and endYear must be initialized before calling Server.initialize
+  // Note: startYear and endYear must be initialized before
+  // calling Server.initialize
   const startYear = -10000 + 1970;
   const endYear = 10000 - 1970;
 
@@ -29,7 +30,7 @@ void main() {
   final endEpochDay = dateToEpochDay(endYear, 1, 1);
 
   group('Test Day Part of String', () {
-    system.level = Level.info0;
+    global.level = Level.info0;
 
     test('Leap Year Basic Test', () {
       for (var y in goodBasicLeapYears) {
@@ -90,7 +91,7 @@ void main() {
     });
 
     test('Leap Year Performance Test', () {
-      system.level = Level.info0;
+      global.level = Level.info0;
       log.debug('Leap Year Perfermance Test: $startYear - $endYear');
       final watch = new Stopwatch()..start();
 
@@ -190,7 +191,7 @@ void main() {
 
     test('Epoch Date Performance Test', () {
       log.debug('Epoch Date Performance Test...');
-      system.level = Level.info0;
+      global.level = Level.info0;
       log.debug1('  startYear: $startYear, endYear: $endYear');
 
       final eStart = dateToEpochDay(startYear, 1, 1);
@@ -358,26 +359,26 @@ void main() {
       dtemInvalid = dateToEpochMicroseconds(1985, 10, 32);
       expect(dtemInvalid, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       // bad year
       expect(() => dateToEpochMicroseconds(kMinYear - 1, 13, 12),
-          throwsA(equals(const isInstanceOf<InvalidDateError>())));
+          throwsA(equals(const isInstanceOf<DateTimeError>())));
 
       // bad year
       expect(() => dateToEpochMicroseconds(kMaxYear + 1, 13, 12),
-          throwsA(equals(const isInstanceOf<InvalidDateError>())));
+          throwsA(equals(const isInstanceOf<DateTimeError>())));
 
       // bad month
       expect(() => dateToEpochMicroseconds(1970, 13, 12),
-          throwsA(equals(const isInstanceOf<InvalidDateError>())));
+          throwsA(equals(const isInstanceOf<DateTimeError>())));
 
       // bad day
       expect(() => dateToEpochMicroseconds(1970, 08, 34),
-          throwsA(equals(const isInstanceOf<InvalidDateError>())));
+          throwsA(equals(const isInstanceOf<DateTimeError>())));
     });
 
     test('checkEpochDay', () {
-      //     system.level = Level.info;
+      //     global.level = Level.info;
 
       final ced0 = checkEpochDay(kMinEpochDay);
       log.debug('ced0:$ced0');
@@ -387,23 +388,23 @@ void main() {
       log.debug('ced1:$ced1');
       expect(ced1, isNotNull);
 
-      system.throwOnError = false;
+      global.throwOnError = false;
       final ced2 = checkEpochDay(kMaxEpochDay + 1);
       expect(ced2, isNull);
 
       final ced3 = checkEpochDay(kMinEpochDay - 1);
       expect(ced3, isNull);
 
-      system.throwOnError = true;
+      global.throwOnError = true;
       expect(() => checkEpochDay(kMaxEpochDay + 1),
-          throwsA(equals(const isInstanceOf<InvalidEpochDayError>())));
+          throwsA(equals(const isInstanceOf<DateTimeError>())));
 
       expect(() => checkEpochDay(kMinEpochDay - 1),
-          throwsA(equals(const isInstanceOf<InvalidEpochDayError>())));
+          throwsA(equals(const isInstanceOf<DateTimeError>())));
     });
 
     test('epochMicrosecondsToDate', () {
-//      system.level = Level.info2;
+//      global.level = Level.info2;
       final List<int> emd0 = epochMicrosecondToDate(kMinEpochMicrosecond);
       log.debug('emd0: "$emd0"');
       expect(emd0, isNotNull);

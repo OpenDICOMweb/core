@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
+export 'package:core/src/utils/string/uuid_string.dart';
 export 'package:core/src/value/uuid/errors.dart';
 export 'package:core/src/value/uuid/uuid.dart';
-export 'package:core/src/value/uuid/uuid_string.dart';
 export 'package:core/src/value/uuid/v4generator.dart';

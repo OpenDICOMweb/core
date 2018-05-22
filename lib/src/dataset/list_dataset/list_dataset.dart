@@ -6,10 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:collection/collection.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/utils/errors.dart';
+import 'package:core/src/error/general_errors.dart';
 
 //  create MapItem and MapRootDataset
 //  create some Elements
@@ -44,19 +43,26 @@ abstract class ListDataset {
 
   void operator []=(int code, Element e) {
     assert(code == e.code);
-    codes.add(code);
-    elements.add(e);
+    final index = (codes.indexOf(code));
+    if (index >= 0) {
+      elements[index] = e;
+    } else {
+      codes.add(code);
+      elements.add(e);
+    }
   }
 
   // *** Primitive only for internal use Stores e in eMap
   void store(int index, Element e) {
     final code = e.code;
     assert(index == code);
-    //codes.add(code);
-    //elements.add(e);
-    final v = codes.indexOf(code);
-    elements[v] = e;
-
+    final i = codes.indexOf(code);
+    if (i >= 0) {
+      elements[i] = e;
+    } else {
+      codes.add(code);
+      elements.add(e);
+    }
   }
 
   @override

@@ -7,16 +7,11 @@
 //  See the AUTHORS file for other contributors.
 //
 
+import 'package:core/src/error.dart';
 import 'package:core/src/utils/date_time.dart';
-import 'package:core/src/utils/errors.dart';
-import 'package:core/src/utils/issues.dart';
 import 'package:core/src/utils/parser.dart';
-import 'package:core/src/utils/string/number.dart';
+import 'package:core/src/utils/string/decimal.dart';
 import 'package:core/src/value/date_time/primitives/age.dart';
-
-
-//TODO: convert age string to duration
-// TODO: before V0.9.0 document
 
 bool _inRange(int v, int min, int max) => v != null && v >= min && v <= max;
 bool _inAgeRange(int v) => _inRange(v, kMinAge, kMaxAge);
@@ -103,8 +98,7 @@ class Age {
       days = parseAgeString(s, allowLowercase: allowLowercase);
     } on FormatException {
       if (onError != null) return onError(s);
-      invalidAgeString(s);
-      return null;
+      return badAgeString(s);
     }
     return new Age(days);
   }
@@ -116,19 +110,17 @@ class Age {
       return true;
     } else {
       if (issues != null) issues.add('Invalid Age String: "$s"');
-      invalidAgeString(s);
-      return false;
+      return invalidAgeString(s);
     }
   }
 
   /// Returns a valid [Age] [String] in highest precision.
   String toHighestPrecision(int count) {
-    //  if (!_inYearRange(count)) throw new InternalError('Invalid number of days: $count');
     if (_inDayRange(count)) return days;
     if (_inWeekRange(count)) return weeks;
     if (_inMonthRange(count)) return months;
     if (_inYearRange(count)) return years;
-    return throw new InternalError('Invalid number of days: $count');
+    return throw new GeneralError('Invalid number of days: $count');
   }
 
   /// Returns a valid [Age] [String] in highest precision.

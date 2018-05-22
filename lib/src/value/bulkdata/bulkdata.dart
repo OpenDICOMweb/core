@@ -21,7 +21,7 @@ class Bulkdata {
 
   Bulkdata(this.code, this.offset, this.vf);
 
-  int get length => vf.lengthInBytes;
+  int get length => vf.length;
 }
 
 // '$baseUrl/$path

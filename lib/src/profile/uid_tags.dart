@@ -6,9 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'package:core/src/base.dart';
 import 'package:core/src/tag/p_tag.dart';
+import 'package:core/src/utils/primitives.dart';
 
 const List<int> deIdUidTagCodes = const <int>[
   kAffectedSOPInstanceUID,

@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/utils/ascii.dart';
+import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/utils/string/hexadecimal.dart';
 
 //**** DICOM Constants ****
@@ -15,32 +15,26 @@ import 'package:core/src/utils/string/hexadecimal.dart';
 /// The DICOM Prefix 'DICM' as an integer.
 const int kDcmPrefix = 0x4d434944;
 
+const int k16BitMax = 0xFFFF;
+
 /// The maximum length, in bytes, of a "short" (16-bit) Value Field.
 ///
 /// Notes:
 ///     1. Short Value Fields may not have an Undefined Length
 ///     2. All Value Fields must contain an even number of bytes.
-const int kMaxShortVF = 0x10000;
+const int kMaxShortVF = 0xFFFF;
 
-const int kMax32BitVF = 0xFFFFFFFE;
+const int k8BitMaxShortVF = kMaxShortVF;
+const int k8BitMaxShortLength = kMaxShortVF;
 
-/// The maximum length, in bytes, of a "long" (32-bit) Value Field.
-///
-/// Note: the values is `[kUint32Max] - 1` because the maximum value
-/// (0xFFFFFFFF) is used to denote a Value Field with Undefined Length.
-const int kMaxLongVF = 0xFFFFFFFE;
+const int k16BitMaxShortVF = kMaxShortVF - 1;
+const int k16BitMaxShortLength = k16BitMaxShortVF ~/ 2;
 
-/// The maximum length of a long Value Field containing 8-bit values.
-const int kMax8BitLongVF = kMaxLongVF;
+const int k32BitMaxShortVF = kMaxShortVF - 3;
+const int k32BitMaxShortLength = k32BitMaxShortVF ~/ 4;
 
-/// The maximum length of a long Value Field containing 16-bit values.
-const int kMax16BitLongVF = kMaxLongVF;
-
-/// The maximum length of a long Value Field containing 32-bit values.
-const int kMax32BitLongVF = kMaxLongVF - 2;
-
-/// The maximum length of a long Value Field containing 64-bit values.
-const int kMax64BitLongVF = kMaxLongVF - 6;
+const int k64BitMaxShortVF = kMaxShortVF - 7;
+const int k64BitMaxShortLength = k64BitMaxShortVF ~/ 8;
 
 /// This is the value of a DICOM Undefined Length from a 32-bit
 /// Value Field Length.
@@ -48,6 +42,28 @@ const int kUndefinedLength = 0xFFFFFFFF;
 
 bool hasUndefinedLength(int i) => i == kUndefinedLength;
 
+const int k32BitMax = 0xFFFFFFFF;
+/// The maximum length, in bytes, of a "long" (32-bit) Value Field.
+///
+/// Note: the values is `[kUndefinedLength] - 1` because the maximum value
+/// (0xFFFFFFFF) is used to denote a Value Field with Undefined Length.
+const int kMaxLongVF = kUndefinedLength - 1;
+
+/// The maximum length of a long Value Field containing 8-bit values.
+const int k8BitMaxLongVF = kMaxLongVF;
+const int k8BitMaxLongLength = k8BitMaxLongVF;
+
+/// The maximum length of a long Value Field containing 16-bit values.
+const int k16BitMaxLongVF = kMaxLongVF;
+const int k16BitMaxLongLength = k16BitMaxLongVF ~/ 2;
+
+/// The maximum length of a long Value Field containing 32-bit values.
+const int k32BitMaxLongVF = kMaxLongVF - 2;
+const int k32BitMaxLongLength = k32BitMaxLongVF ~/ 4;
+
+/// The maximum length of a long Value Field containing 64-bit values.
+const int k64BitMaxLongVF = kMaxLongVF - 6;
+const int k64BitMaxLongLength = k64BitMaxLongVF ~/ 8;
 // Special Tag Related constants
 
 /// This corresponds to the first 16-bits of kSequenceDelimitationItem,
@@ -2876,8 +2892,12 @@ const int kSelectorAttributeVR = 0x00720050;
 const int kSelectorSequencePointer = 0x00720052;
 const int kSelectorSequencePointerPrivateCreator = 0x00720054;
 const int kSelectorAttributePrivateCreator = 0x00720056;
+const int kSelectorAEValue = 0x0072005e;
+const int kSelectorASValue = 0x0072005f;
 const int kSelectorATValue = 0x00720060;
+const int kSelectorDAValue = 0x00720061;
 const int kSelectorCSValue = 0x00720062;
+const int kSelectorDTValue = 0x00720063;
 const int kSelectorISValue = 0x00720064;
 const int kSelectorOBValue = 0x00720065;
 const int kSelectorLOValue = 0x00720066;
@@ -2885,9 +2905,13 @@ const int kSelectorOFValue = 0x00720067;
 const int kSelectorLTValue = 0x00720068;
 const int kSelectorOWValue = 0x00720069;
 const int kSelectorPNValue = 0x0072006a;
+const int kSelectorTMValue = 0x0072006b;
 const int kSelectorSHValue = 0x0072006c;
+const int kSelectorUNValue = 0x0072006d;
 const int kSelectorSTValue = 0x0072006e;
+const int kSelectorUCValue = 0x0072006f;
 const int kSelectorUTValue = 0x00720070;
+const int kSelectorURValue = 0x00720071;
 const int kSelectorDSValue = 0x00720072;
 const int kSelectorODValue = 0x00720073;
 const int kSelectorFDValue = 0x00720074;
@@ -2897,6 +2921,7 @@ const int kSelectorULValue = 0x00720078;
 const int kSelectorUSValue = 0x0072007a;
 const int kSelectorSLValue = 0x0072007c;
 const int kSelectorSSValue = 0x0072007e;
+const int kSelectorUIValue = 0x0072007f;
 const int kSelectorCodeSequenceValue = 0x00720080;
 const int kNumberOfScreens = 0x00720100;
 const int kNominalScreenDefinitionSequence = 0x00720102;
