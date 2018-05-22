@@ -21,7 +21,6 @@ final List<Uint8List> fragments = [emptyOffsetsAsBytes, testFrame];
 void main() {
   Server.initialize(name: 'element/un_pixel_data_test', level: Level.info);
 
-  // Urgent Sharath: lots of these tests are failing because of wrong tags.
   const ts = TransferSyntax.kDefaultForDicomWeb;
   group('UNtagPixelData Tests', () {
     final pixels = new List<int>(1024);
@@ -33,58 +32,54 @@ void main() {
     test('Create Unencapsulated UNtagPixelData', () {
       final un0 = new UNtagPixelData(PTag.kNoName0, pixels, pixels.length);
       expect(un0, isNull);
-/*
-      expect(un0.vrIndex == kUNIndex, true);
-      expect(un0.values is List<int>, true);
-//      expect(un0.fragments == null, true);
-//      expect(un0.offsets == null, true);
-//      expect(un0.isEncapsulated == false, true);
-      log.debug(un0.values);
-      expect(un0.hasValidValues, true);
-      log.debug('bytes: ${un0.vfBytes}');
-      expect(un0.vfBytes is Bytes, true);
-      expect(un0.vfBytes.length == 1024, true);
-      expect(un0.pixels is Uint8List, true);
-      expect(un0.pixels.length == 1024, true);
-      expect(un0.length == 1024, true);
-      expect(un0.valuesCopy, equals(un0.pixels));
-      expect(un0.tag == PTag.kNoName0, true);
-      expect(un0.vrIndex == kUNIndex, true);
-      expect(un0.values is List<int>, true);
-//      expect(un0.fragments == null, true);
-//      expect(un0.offsets == null, true);
-//      expect(un0.isEncapsulated == false, true);
-      log.debug(un0.values);
-      expect(un0.hasValidValues, true);
-      log.debug('bytes: ${un0.vfBytes}');
-      expect(un0.vfBytes is Bytes, true);
-      expect(un0.vfBytes.length == 1024, true);
-      expect(un0.pixels is Uint8List, true);
-      expect(un0.pixels.length == 1024, true);
-      expect(un0.length == 1024, true);
-      expect(un0.valuesCopy, equals(un0.pixels));
-*/
-/*
-      for (var s in frame) {
-        expect(un0.checkValue(s), true);
-      }
-      expect(un0.checkValue(UN.kMaxValue), true);
-      expect(un0.checkValue(UN.kMinValue), true);
-      expect(un0.checkValue(UN.kMaxValue + 1), false);
-      expect(un0.checkValue(UN.kMinValue - 1), false);
-*/
 
-      final un1 =
+      final un1 = new UNtagPixelData(PTag.kPixelDataUN, pixels, pixels.length);
+      expect(un1.vrIndex == kUNIndex, true);
+      expect(un1.values is List<int>, true);
+//      expect(un1.fragments == null, true);
+//      expect(un1.offsets == null, true);
+//      expect(un1.isEncapsulated == false, true);
+      log.debug(un1.values);
+      expect(un1.hasValidValues, true);
+      log.debug('bytes: ${un1.vfBytes}');
+      expect(un1.vfBytes is Bytes, true);
+      expect(un1.vfBytes.length == 1024, true);
+      expect(un1.pixels is Uint8List, true);
+      expect(un1.pixels.length == 1024, true);
+      expect(un1.length == 1024, true);
+      expect(un1.valuesCopy, equals(un1.pixels));
+      expect(un1.tag == PTag.kPixelDataUN, true);
+      expect(un1.vrIndex == kUNIndex, true);
+      expect(un1.values is List<int>, true);
+//      expect(un1.fragments == null, true);
+//      expect(un1.offsets == null, true);
+//      expect(un1.isEncapsulated == false, true);
+      log.debug(un1.values);
+      expect(un1.hasValidValues, true);
+      log.debug('bytes: ${un1.vfBytes}');
+      expect(un1.vfBytes is Bytes, true);
+      expect(un1.vfBytes.length == 1024, true);
+      expect(un1.pixels is Uint8List, true);
+      expect(un1.pixels.length == 1024, true);
+      expect(un1.length == 1024, true);
+      expect(un1.valuesCopy, equals(un1.pixels));
+      for (var s in frame) {
+        expect(un1.checkValue(s), true);
+      }
+      expect(un1.checkValue(UN.kMaxValue), true);
+      expect(un1.checkValue(UN.kMinValue), true);
+      expect(un1.checkValue(UN.kMaxValue + 1), false);
+      expect(un1.checkValue(UN.kMinValue - 1), false);
+
+      final un2 =
           new UNtagPixelData(PTag.kSelectorUNValue, pixels1, pixels1.length);
-      expect(un1, isNull);
-/*
+      expect(un2, isNull);
 //      expect(un1.typedData is Uint8List, true);
 //      expect(un1.vrIndex == kUNIndex, true);
 //      expect(un1.typedData is Uint8List, true);
 
-      final s = Sha256.uint8(pixels);
-      expect(un0.sha256, equals(un0.update(s)));
-*/
+      //final s = Sha256.uint8(pixels);
+      //expect(un1.sha256, equals(un0.update(s)));
     });
 
     test('Create UnEncapsulate UNtagPixelData hashCode and ==', () {
@@ -102,30 +97,41 @@ void main() {
       expect(un0 == un2, false);
 */
 
+      final un3 = new UNtagPixelData(PTag.kPixelDataUN, pixels, pixels.length);
+      final un4 = new UNtagPixelData(PTag.kPixelDataUN, pixels, pixels.length);
+      final un5 =
+          new UNtagPixelData(PTag.kPixelDataUN, pixels1, pixels1.length);
+
+      expect(un3.hashCode == un4.hashCode, true);
+      expect(un3 == un4, true);
+      expect(un4.hashCode == un5.hashCode, false);
+      expect(un4 == un5, false);
     });
 
     test('Create Encapsulated UNtagPixelData', () {
 //      final frags = new VFFragments(fragments);
-      final un0 =
-          new UNtagPixelData(PTag.kNoName0, frame, kUndefinedLength, ts);
-      expect(un0, isNull);
 
-      final un1 = new UNtagPixelData(
-          PTag.kSelectorUNValue, frame, kUndefinedLength, ts);
+      final un0 =
+          new UNtagPixelData(PTag.kPixelDataUN, frame, kUndefinedLength, ts);
+
+      final un1 =
+          new UNtagPixelData(PTag.kNoName0, frame, kUndefinedLength, ts);
       expect(un1, isNull);
 
-/*
-      expect(un0.tag == PTag.kNoName0, true);
+      final un2 = new UNtagPixelData(
+          PTag.kSelectorUNValue, frame, kUndefinedLength, ts);
+      expect(un2, isNull);
+
+      expect(un0.tag == PTag.kPixelDataUN, true);
       expect(un0.vrIndex == kUNIndex, true);
-      expect(un1.vrIndex == kUNIndex, true);
 //      expect(un0.offsets == frags.offsets, true);
 //      expect(un0.isEncapsulated == true, true);
       expect(un0.vfBytes is Bytes, true);
       expect(un0.vfBytes.length == frame.length, true);
       expect(un0.pixels is List<int>, true);
-      expect(un0.pixels == frags.bulkdata, true);
-      expect(un0.pixels.length == frags.bulkdata.length, true);
-      expect(un0.length == frags.bulkdata.length, true);
+      //expect(un0.pixels == frags.bulkdata, true);
+      //expect(un0.pixels.length == frags.bulkdata.length, true);
+      //expect(un0.length == frags.bulkdata.length, true);
       expect(un0.valuesCopy, equals(un0.pixels));
       expect(un0.typedData is Uint8List, true);
 
@@ -140,7 +146,6 @@ void main() {
       expect(un0.checkValue(UN.kMinValue), true);
       expect(un0.checkValue(UN.kMaxValue + 1), false);
       expect(un0.checkValue(UN.kMinValue - 1), false);
-*/
     });
 
     test('Create Encapsulated UNtagPixelData hashCode and ==', () {
@@ -159,17 +164,18 @@ void main() {
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBytes', () {
-      final un0 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
-      expect(un0, isNull);
+      final un0 =
+          UNtagPixelData.fromBytes(PTag.kPixelDataUN, frame, frame.length);
 
-      final un1 =
-          new UNtagPixelData(PTag.kSelectorUNValue, pixels1, pixels1.length);
+      final un1 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
       expect(un1, isNull);
 
-/*
-      expect(un0.tag == PTag.kNoName0, true);
+      final un2 =
+          new UNtagPixelData(PTag.kSelectorUNValue, pixels1, pixels1.length);
+      expect(un2, isNull);
+
+      expect(un0.tag == PTag.kPixelDataUN, true);
       expect(un0.vrIndex == kUNIndex, true);
-      expect(un1.vrIndex == kUNIndex, true);
 //      expect(un0.fragments == null, true);
 //      expect(un0.offsets == null, true);
 //      expect(un0.isEncapsulated == false, true);
@@ -197,8 +203,6 @@ void main() {
       expect(un0.checkValue(UN.kMinValue), true);
       expect(un0.checkValue(UN.kMaxValue + 1), false);
       expect(un0.checkValue(UN.kMinValue - 1), false);
-*/
-
     });
 
     test('Create Unencapsulated UNtagPixelData.fromBytes hashCode and ==', () {
@@ -212,13 +216,17 @@ void main() {
           PTag.kVariablePixelData, frame, frame.length);
       expect(un2, isNull);
 
-/*
-      expect(un0.hashCode == un1.hashCode, true);
-      expect(un0 == un1, true);
+      final un3 =
+          UNtagPixelData.fromBytes(PTag.kPixelDataUN, frame, frame.length);
+      final un4 =
+          UNtagPixelData.fromBytes(PTag.kPixelDataUN, frame, frame.length);
+      final un5 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
 
-      expect(un0.hashCode == un2.hashCode, false);
-      expect(un0 == un2, false);
-*/
+      expect(un3.hashCode == un4.hashCode, true);
+      expect(un3 == un4, true);
+
+      expect(un3.hashCode == un5.hashCode, false);
+      expect(un3 == un5, false);
     });
 
 /*
@@ -335,14 +343,16 @@ void main() {
     });
 */
 
-    test('UNtagPixelData.make', () {
-      final un0 = UNtagPixelData.fromValues(PTag.kNoName0, pixels);
-      expect(un0, isNull);
-      expect(un0,
+    test('UNtagPixelData fromValues', () {
+      final un0 = UNtagPixelData.fromValues(PTag.kPixelDataUN, pixels);
+
+      final un1 = UNtagPixelData.fromValues(PTag.kNoName0, pixels);
+      expect(un1, isNull);
+      expect(un1,
           equals(new UNtagPixelData(PTag.kNoName0, pixels, pixels.length)));
 
-      final un1 = UNtagPixelData.fromValues(PTag.kVariablePixelData, pixels);
-      expect(un1, isNull);
+      final un2 = UNtagPixelData.fromValues(PTag.kVariablePixelData, pixels);
+      expect(un2, isNull);
 
 /*
       expect(
@@ -353,8 +363,7 @@ void main() {
 
       //final un2 = UNtagPixelData.fromValues(PTag.kSelectorSTValue, pixels);
 
-/*
-      expect(un0.tag == PTag.kNoName0, true);
+      expect(un0.tag == PTag.kPixelDataUN, true);
       expect(un0.vrIndex == kUNIndex, true);
       //expect(un2.vrIndex == kUNIndex, false);
       expect(un0.values is List<int>, true);
@@ -382,11 +391,9 @@ void main() {
       expect(un0.checkValue(UN.kMinValue), true);
       expect(un0.checkValue(UN.kMaxValue + 1), false);
       expect(un0.checkValue(UN.kMinValue - 1), false);
-*/
-
     });
 
-    test('UNtagPixelData.make hashCode and ==', () {
+    test('UNtagPixelData fromValues hashCode and ==', () {
       final un0 = UNtagPixelData.fromValues(PTag.kNoName0, pixels);
       expect(un0, isNull);
 
@@ -395,27 +402,27 @@ void main() {
       final un2 = UNtagPixelData.fromValues(PTag.kVariablePixelData, pixels);
       expect(un2, isNull);
 
-/*
-      expect(un0.hashCode == un1.hashCode, true);
-      expect(un0 == un1, true);
+      final un3 = UNtagPixelData.fromValues(PTag.kPixelDataUN, pixels);
+      final un4 = UNtagPixelData.fromValues(PTag.kPixelDataUN, pixels);
 
-      expect(un0.hashCode == un2.hashCode, false);
-      expect(un0 == un2, false);
-*/
+      expect(un3.hashCode == un4.hashCode, true);
+      expect(un3 == un4, true);
 
+      expect(un3.hashCode == un2.hashCode, false);
+      expect(un3 == un2, false);
     });
 
     test('new UNtagPixelData.fromBytes', () {
-      final un0 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
-      expect(un0, isNull);
+      final un0 =
+          UNtagPixelData.fromBytes(PTag.kPixelDataUN, frame, frame.length);
 
-/* Fix
+      final un1 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
       expect(
-          un0,
+          un1,
           equals(UNtagPixelData.fromBytes(
               PTag.kNoName0, frame, frame.length, ts)));
 
-      expect(un0.tag == PTag.kNoName0, true);
+      expect(un0.tag == PTag.kPixelDataUN, true);
       expect(un0.vrIndex == kUNIndex, true);
       //expect(un1.vrIndex == kUNIndex, false);
 //      expect(un0.fragments == null, true);
@@ -443,25 +450,21 @@ void main() {
       expect(un0.checkValue(UN.kMinValue), true);
       expect(un0.checkValue(UN.kMaxValue + 1), false);
       expect(un0.checkValue(UN.kMinValue - 1), false);
-*/
-
     });
 
     test('new UNtagPixelData.fromBytes hashCode and ==', () {
       final un0 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
-      expect(un0, isNull);
-/*
-      final un1 = UNtagPixelData.fromBytes(PTag.kNoName0, frame, frame.length);
 
-      final un2 = UNtagPixelData.fromBytes(
-          PTag.kVariablePixelData, frame, frame.length);
+      final un3 =
+          UNtagPixelData.fromBytes(PTag.kPixelDataUN, frame, frame.length);
+      final un4 =
+          UNtagPixelData.fromBytes(PTag.kPixelDataUN, frame, frame.length);
 
-      expect(un0.hashCode == un1.hashCode, true);
-      expect(un0 == un1, true);
+      expect(un3.hashCode == un4.hashCode, true);
+      expect(un3 == un4, true);
 
-      expect(un0.hashCode == un2.hashCode, false);
-      expect(un0 == un2, false);
-*/
+      expect(un3.hashCode == un0.hashCode, false);
+      expect(un3 == un0, false);
     });
 
 /*
@@ -526,13 +529,12 @@ void main() {
     });
 
  */
-    test('UNPixelData from', () {
-      final un0 = new UNtagPixelData(PTag.kNoName0, pixels, pixels.length);
-      expect(un0, isNull);
-/* Fix
+    test('UNPixelData fromValues', () {
+      final un0 = new UNtagPixelData(PTag.kPixelDataUN, pixels, pixels.length);
+
       final unfrom0 = UNtagPixelData.fromValues(un0.tag, un0.values);
 
-      expect(unfrom0.tag == PTag.kNoName0, true);
+      expect(unfrom0.tag == PTag.kPixelDataUN, true);
       expect(unfrom0.vrIndex == kUNIndex, true);
       expect(unfrom0.values is List<int>, true);
 //      expect(unfrom0.fragments == null, true);
@@ -559,46 +561,44 @@ void main() {
       expect(unfrom0.checkValue(UN.kMinValue), true);
       expect(unfrom0.checkValue(UN.kMaxValue + 1), false);
       expect(unfrom0.checkValue(UN.kMinValue - 1), false);
-*/
-
     });
 
     test('UNPixelData fromBytes', () {
-      global.throwOnError = false;
       final bytes0 = new Bytes.fromList(testFrame);
-      final e0 = UNtagPixelData.fromBytes(PTag.kNoName0, bytes0);
+      final fBytes0 = UNtagPixelData.fromBytes(PTag.kNoName0, bytes0);
+      expect(fBytes0, isNull);
 
-      expect(e0, isNull);
-
-/* Fix:
-      expect(e0, equals(UNtagPixelData.fromBytes(PTag.kNoName0, bytes0)));
-      expect(e0.tag == PTag.kNoName0, true);
-      expect(e0.vrIndex == kOBOWIndex, false);
-      expect(e0.vrIndex == kUNIndex, true);
-      expect(e0.values is List<int>, true);
-//      expect(fBytes0.fragments == null, true);
-//      expect(fBytes0.offsets == null, true);
-//      expect(fBytes0.isEncapsulated == false, true);
-      log.debug(e0.values);
-      expect(e0.hasValidValues, true);
-      log.debug('bytes: ${e0.vfBytes}');
-      expect(e0.vfBytes is Bytes, true);
-      expect(e0.vfBytes.length == 139782, true);
-      expect(e0.pixels is Uint8List, true);
-      expect(e0.pixels.length == 139782, true);
-      expect(e0.length == 139782, true);
-      expect(e0.valuesCopy, equals(e0.pixels));
-      expect(e0.typedData is Uint8List, true);
-
-      expect(e0.checkValue(kUint8Max), true);
-      expect(e0.checkValue(kUint8Min), true);
-      expect(e0.checkValue(kUint8Max + 1), false);
-      expect(e0.checkValue(kUint8Min - 1), false);
-*/
+      expect(fBytes0, equals(UNtagPixelData.fromBytes(PTag.kNoName0, bytes0)));
 
       global.throwOnError = true;
       expect(() => UNtagPixelData.fromBytes(PTag.kSelectorAEValue, bytes0),
           throwsA(const isInstanceOf<InvalidTagError>()));
+
+      final fBytes1 = UNtagPixelData.fromBytes(PTag.kPixelDataUN, bytes0);
+
+      global.throwOnError = false;
+      expect(fBytes1.tag == PTag.kPixelDataUN, true);
+      expect(fBytes1.vrIndex == kOBOWIndex, false);
+      expect(fBytes1.vrIndex == kUNIndex, true);
+      expect(fBytes1.values is List<int>, true);
+//      expect(fBytes0.fragments == null, true);
+//      expect(fBytes0.offsets == null, true);
+//      expect(fBytes0.isEncapsulated == false, true);
+      log.debug(fBytes1.values);
+      expect(fBytes1.hasValidValues, true);
+      log.debug('bytes: ${fBytes1.vfBytes}');
+      expect(fBytes1.vfBytes is Bytes, true);
+      expect(fBytes1.vfBytes.length == 139782, true);
+      expect(fBytes1.pixels is Uint8List, true);
+      expect(fBytes1.pixels.length == 139782, true);
+      expect(fBytes1.length == 139782, true);
+      expect(fBytes1.valuesCopy, equals(fBytes1.pixels));
+      expect(fBytes1.typedData is Uint8List, true);
+
+      expect(fBytes1.checkValue(kUint8Max), true);
+      expect(fBytes1.checkValue(kUint8Min), true);
+      expect(fBytes1.checkValue(kUint8Max + 1), false);
+      expect(fBytes1.checkValue(kUint8Min - 1), false);
     });
   });
 
@@ -668,7 +668,7 @@ void main() {
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(UN.isValidVRIndex(tag.vrIndex), true);
+        expect(UN.isValidVRIndex(tag.vrIndex), false);
       }
     });
 
@@ -683,7 +683,7 @@ void main() {
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(UN.isValidVRCode(tag.vrCode), true);
+        expect(UN.isValidVRCode(tag.vrCode), false);
       }
     });
 
