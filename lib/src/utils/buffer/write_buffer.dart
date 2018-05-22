@@ -81,4 +81,10 @@ class WriteBuffer extends BytesBufferBase with WriteBufferMixin {
 
   bool get isClosed => _isClosed;
   bool _isClosed = false;
+
+  void get reset {
+    _rIndex = 0;
+    _wIndex = 0;
+    _isClosed = false;
+  }
 }

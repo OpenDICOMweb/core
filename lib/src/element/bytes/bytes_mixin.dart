@@ -97,6 +97,10 @@ abstract class ByteElement<V> {
     //  return (pCode >= 0x11000 && pCode <= 0x1FFFF) ? new PrivateData(e) : e;
   }
 
+  static SQbytes makeSQFromBytes(Dataset parent,
+          int code, Iterable<Item> items, DicomBytes bytes, [Dataset ds]) =>
+      SQbytes.fromBytes(parent, code, items, bytes);
+
   static final List<Function> _bytesBDMakers = <Function>[
     SQbytes.fromBytes, // stop reformat
     // Maybe Undefined Lengths

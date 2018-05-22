@@ -719,8 +719,9 @@ class SQbytes extends SQ with ByteElement<Item> {
   /// Returns a new [SQbytes], where [bytes] is [DicomBytes]
   /// for complete sequence.
   static SQbytes fromBytes(Dataset parent,
-          [SQ sequence, Iterable<Item> values, DicomBytes bytes]) =>
-      new SQbytes(parent, values, bytes);
+          [int code, Iterable<Item> values, DicomBytes bytes]) {
+    new SQbytes(parent, values, bytes);
+  }
 
   static SQbytes fromValues(int code, List<String> vList,
           {bool isEvr = true}) =>
