@@ -39,16 +39,17 @@ abstract class TagDataset {
 
   Tag getTag(int key) => Tag.lookupByCode(key);
 
-
   static const _makeSQ = TagElement.makeSequenceFromCode;
 
+  static const _makeElement = TagElement.makeFromValues;
+
   static Dataset convert(Dataset parent, Dataset dsOld, Dataset dsNew,
-                         [Bytes bytes]) {
-    for (var e in dsOld.elements) {
-      final eNew = (e is SQ)
-          ? _makeSQ(parent, e.code, <TagItem>[], e.vfLengthField, bytes)
-          : TagElement.makeFromElement(parent, e);
-      dsNew.add(eNew);
+      [Bytes bytes]) {
+    for (var old in dsOld.elements) {
+      final e = (old is SQ)
+          ? _makeSQ(parent, old.code, <TagItem>[], old.vfLengthField, bytes)
+          : _makeElement(old.code, old.vrIndex, old.values, parent);
+      dsNew.add(e);
     }
     return dsNew;
   }

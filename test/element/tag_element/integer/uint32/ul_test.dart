@@ -336,19 +336,18 @@ void main() {
         final bytes = new Bytes.typedDataView(vList0);
         final e0 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples);
         final vList1 = rng.uint32List(1, 1);
-        final e0a = e0.replace(vList1);
-        expect(e0.replace(vList1), equals(vList1));
+        expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList2 = rng.uint32List(1, 1);
-      final e1 = new ULtag(PTag.kNumberOfWaveformSamples, vList2);
-      expect(e1.replace(<int>[]), equals(vList2));
-      expect(e1.values, equals(<int>[]));
-
       final e2 = new ULtag(PTag.kNumberOfWaveformSamples, vList2);
-      expect(e2.replace(null), equals(vList2));
+      expect(e2.replace(<int>[]), equals(vList2));
       expect(e2.values, equals(<int>[]));
+
+      final e3 = new ULtag(PTag.kNumberOfWaveformSamples, vList2);
+      expect(e3.replace(null), equals(vList2));
+      expect(e3.values, equals(<int>[]));
     });
 
     test('UL BASE64 random', () {
@@ -365,6 +364,7 @@ void main() {
     test('UL BASE64', () {
       final vList = new Uint32List.fromList(uInt32Max);
       final bytes = new Bytes.typedDataView(vList);
+      // Urgent use s and bytes1 or flush
       final s = bytes.getBase64();
       final bytes1 = Bytes.fromBase64(s);
       final e0 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples);

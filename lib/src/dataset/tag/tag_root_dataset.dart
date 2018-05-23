@@ -49,10 +49,12 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   @override
   RootDataset copy([RootDataset rds]) => new TagRootDataset.from(rds ?? this);
 
+  static const _makeElement = TagElement.makeFromValues;
+
   static TagRootDataset convert(RootDataset rds) {
     final tagRds = new TagRootDataset.empty();
     for (var e in rds.fmi.elements)
-      tagRds.fmi.add(TagElement.makeFromElement(rds, e, e.vrIndex));
+      tagRds.fmi.add(_makeElement(e.code, e.vrIndex, e.values, rds));
     return TagDataset.convert(null, rds, tagRds);
   }
 }

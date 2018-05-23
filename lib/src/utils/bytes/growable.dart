@@ -70,6 +70,7 @@ class GrowableBytes extends Bytes with GrowableMixin {
   /// [minLength == null, at least double the length of the current buffer;
   /// and then copies the contents of the current buffer into the new buffer.
   /// Finally, the new buffer becomes the buffer for _this_.
+  @override
   bool grow([int minLength]) {
     final old = _bd;
     _bd = _grow(old, minLength ??= old.lengthInBytes * 2);

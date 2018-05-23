@@ -24,7 +24,7 @@ import 'package:core/src/vr.dart';
 //  Private Creator Tag in [ds].
 ///
 /// If [code] is Private Creator code, an Error is thrown.
-Tag lookupTagByCode(Dataset ds, int code, int vrIndex) {
+Tag lookupTagByCode(int code, int vrIndex, Dataset ds) {
   assert(_isNotPCTagCode(code));
   final group = code >> 16;
   final elt = code & 0xFFFF;
