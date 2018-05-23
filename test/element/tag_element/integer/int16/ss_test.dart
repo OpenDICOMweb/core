@@ -305,9 +305,7 @@ void main() {
         global.throwOnError = false;
 
         final vList = rng.int16List(1, 10);
-        // Urgent Sharath: why was this converting to String first?
-        // DicomBytes.toAscii does padding
-        // final bytes0 = DicomBytes.toAscii(intList0.toString());
+
         final bytes0 = new Bytes.typedDataView(vList);
         final ss0 = SStag.fromBytes(bytes0, PTag.kSelectorFDValue);
         expect(ss0, isNull);
@@ -495,7 +493,7 @@ void main() {
 
   group('SS Element', () {
     //VM.k1
-    const ssTags0 = const <PTag>[
+    const ssVM1Tags = const <PTag>[
       PTag.kTagAngleSecondAxis,
       PTag.kExposureControlSensingRegionLeftVerticalEdge,
       PTag.kExposureControlSensingRegionRightVerticalEdge,
@@ -507,7 +505,7 @@ void main() {
     ];
 
     //VM.k2
-    const ssTags1 = const <PTag>[
+    const ssVM2Tags = const <PTag>[
       PTag.kOverlayOrigin,
       PTag.kAbstractPriorValue,
       PTag.kVisualAcuityModifiers,
@@ -515,7 +513,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const ssTags2 = const <PTag>[PTag.kSelectorSSValue];
+    const ssVM1_nTags = const <PTag>[PTag.kSelectorSSValue];
 
     const otherTags = const <PTag>[
       PTag.kColumnAngulationPatient,
@@ -536,7 +534,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.int16List(1, 1);
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
-        for (var tag in ssTags0) {
+        for (var tag in ssVM1Tags) {
           expect(SS.isValidLength(tag, validMinVList), true);
 
           expect(SS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -549,7 +547,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rng.int16List(2, i + 2);
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
-        for (var tag in ssTags0) {
+        for (var tag in ssVM1Tags) {
           global.throwOnError = false;
           expect(SS.isValidLength(tag, validMinVList), false);
           expect(SS.isValidLength(tag, invalidVList), false);
@@ -568,7 +566,7 @@ void main() {
         final validMinVList = rng.int16List(2, 2);
         global.throwOnError = false;
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
-        for (var tag in ssTags1) {
+        for (var tag in ssVM2Tags) {
           expect(SS.isValidLength(tag, validMinVList), true);
 
           expect(SS.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
@@ -580,7 +578,7 @@ void main() {
     test('SS isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
         final validMinVList = rng.int16List(3, i + 1);
-        for (var tag in ssTags1) {
+        for (var tag in ssVM2Tags) {
           global.throwOnError = false;
           expect(SS.isValidLength(tag, validMinVList), false);
           expect(SS.isValidLength(tag, invalidVList), false);
@@ -597,7 +595,7 @@ void main() {
     test('SS isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.int16List(1, i);
-        for (var tag in ssTags2) {
+        for (var tag in ssVM1_nTags) {
           expect(SS.isValidLength(tag, validMinVList), true);
           expect(SS.isValidLength(tag, invalidVList.sublist(0, SS.kMaxLength)),
               true);
@@ -611,7 +609,7 @@ void main() {
       expect(SS.isValidTag(PTag.kZeroVelocityPixelValue), true);
       expect(SS.isValidTag(PTag.kGrayLookupTableData), true);
 
-      for (var tag in ssTags0) {
+      for (var tag in ssVM1Tags) {
         expect(SS.isValidTag(tag), true);
       }
     });
@@ -640,7 +638,7 @@ void main() {
       expect(SS.isValidTag(PTag.kZeroVelocityPixelValue), true);
       expect(SS.isValidTag(PTag.kGrayLookupTableData), true);
 
-      for (var tag in ssTags0) {
+      for (var tag in ssVM1Tags) {
         expect(SS.isValidTag(tag), true);
       }
     });
@@ -666,7 +664,7 @@ void main() {
     test('SS isValidVR good values', () {
       global.throwOnError = false;
       expect(SS.isValidVRIndex(kSSIndex), true);
-      for (var tag in ssTags0) {
+      for (var tag in ssVM1Tags) {
         global.throwOnError = false;
         expect(SS.isValidVRIndex(tag.vrIndex), true);
       }
@@ -722,7 +720,7 @@ void main() {
       global.throwOnError = false;
       expect(SS.isValidVRIndex(kSSIndex), true);
 
-      for (var tag in ssTags0) {
+      for (var tag in ssVM1Tags) {
         global.throwOnError = false;
         expect(SS.isValidVRIndex(tag.vrIndex), true);
       }
@@ -746,7 +744,7 @@ void main() {
     test('SS isValidVRCode good values', () {
       global.throwOnError = false;
       expect(SS.isValidVRCode(kSSCode), true);
-      for (var tag in ssTags0) {
+      for (var tag in ssVM1Tags) {
         expect(SS.isValidVRCode(tag.vrCode), true);
       }
     });
