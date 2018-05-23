@@ -284,7 +284,6 @@ void main() {
         log.debug('$e0');
         e0.values;
         expect(e0.hasValidValues, true);
-        print(e0.values);
         expect(e0.values.length == 1, true);
         expect(e0.values, equals(vList0));
         expect(e0.vfBytes, equals(bytes));

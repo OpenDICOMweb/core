@@ -122,7 +122,7 @@ abstract class TagElement<V> {
   ///
   /// _Note_: The will create Private Creator ([PC]) [Element]s, but
   ///         not Private Data [Element]s.
-  static Element makeFromCode(
+  static Element makeFromValues(
       int code, Iterable values, int vrIndex, Dataset ds,
       [int vfLengthField]) {
     final tag = lookupTagByCode(ds, code, vrIndex);
@@ -157,7 +157,7 @@ abstract class TagElement<V> {
 
   static Element makeFromElement(Dataset ds, Element e,
           [int vrIndex, int vfLengthField]) =>
-      makeFromCode(e.code, e.values, vrIndex ?? e.vrIndex, ds,
+      makeFromValues(e.code, e.values, vrIndex ?? e.vrIndex, ds,
           vfLengthField ?? e.vfLengthField);
 
   /// Return a new [TagElement]. This assumes the caller has handled

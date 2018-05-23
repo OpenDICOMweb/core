@@ -13,8 +13,6 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-import '../utility_test.dart' as utility;
-
 RSG rsg = new RSG(seed: 1);
 
 void main() {

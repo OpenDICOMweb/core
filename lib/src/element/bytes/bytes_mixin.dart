@@ -12,6 +12,7 @@ import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/bytes/bytes.dart';
 import 'package:core/src/element/bytes/vf_fragments.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -84,18 +85,17 @@ abstract class ByteElement<V> {
   String get keyword => tag.keyword;
   String get name => tag.name;
 
-  static Element makeFromBytes(DicomBytes bytes, [Dataset ds]) {
-    final code = bytes.code;
-    final pCode = code & 0x1FFFF;
-    if (pCode >= 0x10010 && pCode <= 0x100FF) return new PCbytes(bytes);
-    final vrIndex = bytes.vrIndex;
+  static Element makeFromBytes(Bytes bytes, int eStart, int vrIndex,
+      [Dataset ds]) {}
 
-    final tag = (ds != null)
-        ? lookupTagByCode(ds, code, vrIndex)
-        : Tag.lookupByCode(code);
+  static Element makeFromDicomBytes(DicomBytes bytes, [Dataset ds]) {
+    print('dcmBytes: $bytes');
+    final code = bytes.code;
+    if (_isPrivateCreator(code)) return new PCbytes(bytes);
+
+    final tag = _getTag(ds, code, bytes.vrIndex);
     final tagVRIndex = tag.vrIndex;
     return _definedBytesMakers[tagVRIndex](bytes);
-    //  return (pCode >= 0x11000 && pCode <= 0x1FFFF) ? new PrivateData(e) : e;
   }
 
   static final List<Function> _definedBytesMakers = <Function>[
@@ -117,22 +117,46 @@ abstract class ByteElement<V> {
     UIbytes.fromBytes, ULbytes.fromBytes, USbytes.fromBytes
   ];
 
-  static Element makeMaybeUndefinedFromBytes(DicomBytes bytes,
+  static Element makeMaybeUndefinedFromDicomBytes(DicomBytes bytes,
+      [Dataset ds, int vfLengthField]) {
+    final code = bytes.code;
+    if (_isPrivateCreator(code)) return new PCbytes(bytes);
+
+    final tag = _getTag(ds, code, bytes.vrIndex);
+    final tagVRIndex = tag.vrIndex;
+    return _undefinedBytesMakers[tagVRIndex](bytes, ds, vfLengthField);
+  }
+
+  static bool _isPrivateCreator(int code) {
+    final pCode = code & 0x1FFFF;
+    return pCode >= 0x10010 && pCode <= 0x100FF;
+  }
+
+  static Tag _getTag(Dataset ds, int code, int vrIndex) => (ds != null)
+      ? lookupTagByCode(ds, code, vrIndex)
+      : Tag.lookupByCode(code);
+
+  static Element makeSQFromDicomBytes(
+      Dataset ds, List<Item> items, DicomBytes bytes) {
+    final code = bytes.code;
+    if (_isPrivateCreator(code)) return new PCbytes(bytes);
+
+    final tag = _getTag(ds, code, bytes.vrIndex);
+    if (tag.vr != kSQIndex) log.warn('** Non-Sequence Tag $tag for $bytes');
+    return SQbytes.fromBytes(ds, items, bytes);
+  }
+
+  static Element makePixelDataFromDicomBytes(DicomBytes bytes,
       [Dataset ds,
       int vfLengthField,
       TransferSyntax ts,
       VFFragments fragments]) {
     final code = bytes.code;
-    final pCode = code & 0x1FFFF;
-    if (pCode >= 0x10010 && pCode <= 0x100FF) return new PCbytes(bytes);
-    final vrIndex = bytes.vrIndex;
+    if (_isPrivateCreator(code)) return new PCbytes(bytes);
 
-    final tag = (ds != null)
-        ? lookupTagByCode(ds, code, vrIndex)
-        : Tag.lookupByCode(code);
+    final tag = _getTag(ds, code, bytes.vrIndex);
     final tagVRIndex = tag.vrIndex;
-    return _undefinedBytesMakers[tagVRIndex](
-        bytes, ds, vfLengthField, ts, fragments);
+    return _undefinedBytesMakers[tagVRIndex](bytes, ds, ts, fragments);
   }
 
   // Elements that may have undefined lengths.
@@ -142,8 +166,8 @@ abstract class ByteElement<V> {
   ];
 
   static Element makeSQFromBytes(Dataset parent,
-  [Iterable<Item> items, DicomBytes bytes]) =>
-  SQbytes.fromBytes(parent, items, bytes);
+          [Iterable<Item> items, DicomBytes bytes]) =>
+      SQbytes.fromBytes(parent, items, bytes);
 
   static Element makeFromValues(int code, Iterable vList, int vrIndex,
       {bool isEvr = true, Dataset ds}) {
@@ -344,5 +368,4 @@ abstract class BytePixelData {
 
   /// Synonym for pisCompressed].
   bool get isEncapsulated => isCompressed;
-
 }

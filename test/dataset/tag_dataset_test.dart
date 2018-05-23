@@ -78,8 +78,8 @@ void main() {
       tag = PTag.lookupByCode(kTransferSyntaxUID); // Transfer Syntax UID
       rootDS.add(new UItag(tag, [kExplicitVRLittleEndian]));
       tag = PTag.lookupByCode(kStudyInstanceUID); // Study Instance UID
-      rootDS.add(new UItag(
-          tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']));
+      rootDS.add(
+          new UItag(tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']));
     });
   });
 
@@ -92,8 +92,8 @@ void main() {
     final tag4 = PTag.lookupByCode(kSeriesTime);
     final tag5 = PTag.lookupByCode(kAcquisitionDate);
     rootDS0
-      ..add(new UItag(
-          tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+      ..add(
+          new UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
       ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
       ..add(new UItag(tag3,
           ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
@@ -663,7 +663,6 @@ void main() {
       global.throwOnError = false;
       log.debug('global.throwOnError:${global.throwOnError}');
 
-      // TODO: required parameter has no use
       // Code differences with other get methods
       expect(rootDS0.getString(kImagerPixelSpacing), isNull);
     });

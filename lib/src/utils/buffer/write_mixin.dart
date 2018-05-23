@@ -64,7 +64,7 @@ abstract class WriteBufferMixin {
 
   void writeInt8(int n) {
     assert(n >= -128 && n <= 127, 'Value out of range: $n');
-    _maybeGrow(1);
+    _maybeGrow(1024);
     _buf.setInt8(_wIndex, n);
     _wIndex++;
   }

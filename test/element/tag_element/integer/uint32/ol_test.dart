@@ -651,10 +651,6 @@ void main() {
     });
 
     test('OL isValidVFLength good values', () {
-      print('${0xFFFFFFFC / 4}');
-      print('kMax(${OL.kMaxLength}) * 4: ${OL.kMaxLength * 4}');
-      print('kVFMax(${OL.kMaxVFLength}) / 4: ${OL.kMaxVFLength / 4}');
-      print('long($kMaxLongVF) / 4 (${kMaxLongVF / 4}');
       expect(OL.isValidVFLength(OL.kMaxVFLength), true);
       expect(OL.isValidVFLength(0), true);
     });

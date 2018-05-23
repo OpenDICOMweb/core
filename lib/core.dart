@@ -9,6 +9,7 @@
 export 'package:core/src/dataset.dart';
 export 'package:core/src/element.dart';
 export 'package:core/src/entity.dart';
+export 'package:core/src/error.dart';
 export 'package:core/src/profile.dart';
 export 'package:core/src/system.dart';
 export 'package:core/src/tag.dart';

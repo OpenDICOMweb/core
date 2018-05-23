@@ -26,7 +26,7 @@ void main() {
         final vList0 = rsg.getLOList(1, 1);
         final e0 = LObytes.fromValues(kManufacturer, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -39,7 +39,7 @@ void main() {
         final vList0 = rsg.getLOList(1, i);
         final e0 = LObytes.fromValues(kSelectorLOValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }

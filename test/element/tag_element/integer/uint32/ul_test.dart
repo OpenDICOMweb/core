@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/server.dart';

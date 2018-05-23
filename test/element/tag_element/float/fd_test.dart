@@ -890,15 +890,6 @@ void main() {
 */
 
     test('FD isValidVFLength good values', () {
-      print('kMax8ShortVF: $kMaxShortVF');
-      print('kMax16ShortVF: ${k16BitMaxShortVF} '
-          '${k16BitMaxShortVF / 2} $k16BitMaxShortLength');
-      print('kMax32ShortVF: ${k32BitMaxShortVF} '
-          '${k32BitMaxShortVF / 4} $k32BitMaxShortLength');
-      print('kMax64ShortVF: ${k64BitMaxShortVF} '
-          '${k64BitMaxShortVF / 8} $k64BitMaxShortLength');
-      print('kMaxShortVF: ${FD.kMaxVFLength}');
-      print('kMaxShortVF: ${FD.kMaxLength} ${FD.kMaxLength * 8}');
       expect(FD.isValidVFLength(FD.kMaxVFLength), true);
       expect(FD.isValidVFLength(0), true);
     });

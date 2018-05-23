@@ -51,7 +51,7 @@ void main() {
         for (var code in obVM1Tags0) {
           final e0 = OBbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -65,7 +65,7 @@ void main() {
         for (var code in obVM1_nTags1) {
           final e0 = OBbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }

@@ -30,7 +30,7 @@ void main() {
         expect(e0.hasValidValues, true);
 
         log.debug('e0:$e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e1.hasValidValues, true);
       }
@@ -43,7 +43,7 @@ void main() {
         final vList0 = rsg.getDSList(2, 2);
         final e0 = DSbytes.fromValues(kRTImagePosition, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e1.hasValidValues, true);
       }
@@ -56,7 +56,7 @@ void main() {
         final vList0 = rsg.getDSList(3, 3);
         final e0 = DSbytes.fromValues(kNormalizationPoint, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e1.hasValidValues, true);
       }
@@ -69,7 +69,7 @@ void main() {
         final vList0 = rsg.getDSList(4, 4);
         final e0 = DSbytes.fromValues(kDiaphragmPosition, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -82,7 +82,7 @@ void main() {
         final vList0 = rsg.getDSList(6, 6);
         final e0 = DSbytes.fromValues(kImageOrientation, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -95,7 +95,7 @@ void main() {
         final vList0 = rsg.getDSList(1, i);
         final e0 = DSbytes.fromValues(kSelectorDSValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -108,7 +108,7 @@ void main() {
         final vList = rsg.getDSList(1, 2);
         final e0 = DSbytes.fromValues(kDetectorActiveDimensions, vList);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -121,7 +121,7 @@ void main() {
         final vList0 = rsg.getDSList(10, 10);
         final e0 = DSbytes.fromValues(kDVHData, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -134,7 +134,7 @@ void main() {
         final vList0 = rsg.getDSList(9, 9);
         final e0 = DSbytes.fromValues(kContourData, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }

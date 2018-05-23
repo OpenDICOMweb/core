@@ -39,8 +39,8 @@ void main() {
       }
     });
 
-    //TODO: test range of lengths
-    //TODO: test range of values
+    //Urgent: test range of lengths
+    //Urgent: test range of values
     test('IntList Test', () {
       for (var i = 0; i < count; i++) {
         final list = rng.intList(-20, 60, minMin, maxMin);

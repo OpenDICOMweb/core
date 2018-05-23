@@ -9,6 +9,16 @@
 part of odw.sdk.utils.bytes;
 
 abstract class EvrBytes extends DicomBytes {
+  factory EvrBytes.from(Bytes bytes, int start, int vrIndex, int end) {
+    if (vrIndex >= kVREvrShortIndexMin && vrIndex <= kVREvrShortIndexMax) {
+      return new EvrShortBytes.from(bytes, start, end);
+    } else if (vrIndex >= kVRIndexMin && vrIndex <= kVREvrLongIndexMax) {
+      return new EvrLongBytes.from(bytes, start, end);
+    } else {
+      return badVRIndex(vrIndex, null, null, null);
+    }
+  }
+
   EvrBytes._(int eLength, Endian endian) : super._(eLength, endian);
 
   EvrBytes._from(Bytes bytes, int start, int end, Endian endian)

@@ -62,14 +62,9 @@ void main() {
         ..debug('ob1BitFrames0.pixelSizeInBits: ${ob1FLa.pixelSizeInBits}')
         ..debug('pixels0.elementSizeInBytes: ${pixels0.elementSizeInBytes}');
       expect(ob1FLa.pixelSizeInBits == pixels0.elementSizeInBytes, true);
-      global.throwOnError = true;
-/*
-  TODO: jim to fix
-      expect(
-         () => ob1FLa.pixelSizeInBytes, throwsA(const isInstanceOf<UnsupportedError>
-	    ()));
-*/
+      expect(ob1FLa.pixelSizeInBytes == 0, true);
 
+      global.throwOnError = true;
       // bulkdata
       expect(ob1FLa.bulkdata.length == pixels0.lengthInBytes, true);
       expect(ob1FLa.bulkdata.length == ob1FLa.bulkdata.lengthInBytes, true);
@@ -162,11 +157,7 @@ void main() {
         expect(ob1FLb.pixels.length == pixels1.length, true);
         expect(ob1FLb.pixels.lengthInBytes == pixels1.lengthInBytes, true);
         expect(ob1FLb.pixels == pixels1, true);
-/*
- TODO: jim to fix
-        expect(() => ob1FLb.pixelSizeInBytes,
-            throwsA(const isInstanceOf<UnsupportedError>()));
-*/
+        expect(ob1FLb.pixelSizeInBytes, 0);
 
         // bulkdata
         expect(ob1FLb.bulkdata.length == pixels1.lengthInBytes, true);
@@ -365,11 +356,7 @@ void main() {
       expect(ob1c.samplesPerPixel == ob1FDf.samplesPerPixel, true);
       expect(ob1c.pixels.length == pixels0.length, true);
       expect(ob1c.pixels.lengthInBytes == pixels0.lengthInBytes, true);
-/*
- TODO: jim to fix
-      expect(
-          () => ob1c.pixelSizeInBytes, throwsA(const isInstanceOf<UnsupportedError>()));
-*/
+      expect(ob1c.pixelSizeInBytes, 0);
 
       expect(ob1c.pixelSizeInBits == ob1FDf.pixelSizeInBits, true);
       expect(ob1c.pixels is Uint8List, true);

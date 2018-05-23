@@ -421,7 +421,7 @@ class OLtag extends OL with TagElement<int> {
   /// Creates an [OLtag] Element.
   factory OLtag(Tag tag, [Iterable<int> vList]) => new OLtag._(tag, vList);
 
-  factory OLtag._bulkdata(Tag tag, Uri url) =>
+  factory OLtag.bulkdata(Tag tag, Uri url) =>
       new OLtag._(tag, new IntBulkdataRef(tag.code, url));
 
   factory OLtag._(Tag tag, Iterable<int> vList) {

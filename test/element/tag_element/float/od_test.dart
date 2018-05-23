@@ -409,23 +409,6 @@ void main() {
 
     test('OD.isValidVFLength good values', () {
       global.throwOnError = false;
-      print('${(0xFFFFFFFF - 7)}: '
-          '${hex32((0xFFFFFFFF - 7))} '
-          '${(0xFFFFFFFF - 7)} '
-          '${hex32(OD.kMaxLength)}');
-      print('v: ${hex32(OD.kMaxLength)} ${OD.kMaxLength}');
-      print('${(0xFFFFFFFF - 7) / 8}: '
-          '${hex32((0xFFFFFFFF - 7) ~/ 8)} '
-          '${(0xFFFFFFFF - 7) ~/ 8} '
-          '${hex32(OD.kMaxLength)}');
-      print('v0: ${hex32(OD.kMaxLength)} ${OD.kMaxLength}');
-      print('v1: ${hex32(k64BitMaxLongLength)} ${k64BitMaxLongLength}');
-      print('v2: ${hex32(OD.kMaxVFLength)} ${OD.kMaxVFLength}');
-      print('v3: ${hex32(k64BitMaxLongVF)} ${k64BitMaxLongVF}');
-      print('x: ${hex32(0xFFFFFFFF - 7)} ${0xFFFFFFFF - 7}');
-      print('OD ${OD.kMaxVFLength} ${OD.kMaxLength}');
-      print('OD ${OD.kMaxLength} ${OD.kMaxVFLength / 8} '
-          '${(0xFFFFFFFF - 7) / 8} ${OD.kMaxLength * 8}');
       expect(OD.isValidVFLength(OD.kMaxVFLength), true);
       expect(OD.isValidVFLength(0), true);
     });

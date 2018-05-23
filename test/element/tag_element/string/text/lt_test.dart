@@ -706,10 +706,10 @@ void main() {
       }
     });
 
-    /*test('LT decodeBinaryTextVF', () {
+    /* Urgent Sharath: fix or remove
+    test('LT decodeBinaryTextVF', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 1);
-        print('decodeBinaryTextVF   vList1: $vList1');
         final bytes = Bytes.fromUtf8List(vList1);
         final dbTxt0 = bytes.getUtf8List();
         log.debug('dbTxt0: $dbTxt0');

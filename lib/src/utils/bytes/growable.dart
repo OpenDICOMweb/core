@@ -13,6 +13,7 @@ abstract class GrowableMixin {
   /// is _null_ then its length cannot be changed.
   int get limit;
   ByteData get _bd;
+  bool grow(int newLength);
 
   int get length => _bd.lengthInBytes;
 
@@ -24,13 +25,6 @@ abstract class GrowableMixin {
   /// Ensures that [_bd] is at least [length] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureLength(int length) => _ensureLength(_bd, length);
-
-  /// Creates a new buffer of length at least [minLength] in size, or if
-  /// [minLength == null, at least double the length of the current buffer;
-  /// and then copies the contents of the current buffer into the new buffer.
-  /// Finally, the new buffer becomes the buffer for _this_.
-  bool grow([int minLength]) =>
-      (_bd == _grow(_bd, minLength ??= _bd.lengthInBytes * 2)) ? false : true;
 
   static const int kMaximumLength = _k1GB;
 }
@@ -50,13 +44,15 @@ class GrowableBytes extends Bytes with GrowableMixin {
       : super._(length, endian);
 
   factory GrowableBytes.from(Bytes bytes,
-                     [int offset = 0, int length, Endian endian, int limit =
-      kDefaultLimit]) =>
+          [int offset = 0,
+          int length,
+          Endian endian,
+          int limit = kDefaultLimit]) =>
       new GrowableBytes._from(bytes, offset, length, endian, limit);
 
-  GrowableBytes._from(Bytes bytes, int offset, int length, Endian endian,
-                      this.limit)
-      : super._from(bytes,  offset,  length,  endian);
+  GrowableBytes._from(
+      Bytes bytes, int offset, int length, Endian endian, this.limit)
+      : super._from(bytes, offset, length, endian);
 
   factory GrowableBytes.typedDataView(TypedData td,
           [int offset = 0,
@@ -69,6 +65,16 @@ class GrowableBytes extends Bytes with GrowableMixin {
   GrowableBytes._tdView(
       TypedData td, int offset, int lengthInBytes, Endian endian, this.limit)
       : super._tdView(td, offset, lengthInBytes, endian);
+
+  /// Creates a new buffer of length at least [minLength] in size, or if
+  /// [minLength == null, at least double the length of the current buffer;
+  /// and then copies the contents of the current buffer into the new buffer.
+  /// Finally, the new buffer becomes the buffer for _this_.
+  bool grow([int minLength]) {
+    final old = _bd;
+    _bd = _grow(old, minLength ??= old.lengthInBytes * 2);
+    return _bd == old;
+  }
 }
 
 const int _k1GB = 1024 * 1024 * 1024;
@@ -84,8 +90,7 @@ bool _ensureLength(ByteData bd, int minLength) =>
 /// of at least [minLength].
 ByteData _grow(ByteData bd, int minLength) {
   final oldLength = bd.lengthInBytes;
-  if (minLength <= oldLength) return bd;
-  return _reallyGrow(bd, minLength);
+  return (minLength <= oldLength) ? bd : _reallyGrow(bd, minLength);
 }
 
 /// Returns a new [ByteData] with length at least [minLength].
@@ -93,7 +98,7 @@ ByteData _reallyGrow(ByteData bd, int minLength) {
   var newLength = minLength;
   do {
     newLength *= 2;
-    if (newLength >= Bytes.kDefaultLength) return null;
+    if (newLength >= kDefaultLimit) return null;
   } while (newLength < minLength);
   final newBD = new ByteData(newLength);
   for (var i = 0; i < bd.lengthInBytes; i++) newBD.setUint8(i, bd.getUint8(i));

@@ -26,7 +26,7 @@ void main() {
         final e0 = ISbytes.fromValues(kStageNumber, vList0);
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -38,7 +38,7 @@ void main() {
         global.throwOnError = false;
         final e0 = ISbytes.fromValues(kCenterOfCircularShutter, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -52,7 +52,7 @@ void main() {
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
 
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -65,7 +65,7 @@ void main() {
         final e0 = ISbytes.fromValues(kVerticesOfThePolygonalShutter, vList0);
         expect(e0.hasValidValues, true);
 
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         expect(e1.hasValidValues, true);
       }
     });
@@ -78,7 +78,7 @@ void main() {
         log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));
 
-        final e1 = ByteElement.makeFromBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }

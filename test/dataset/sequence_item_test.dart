@@ -50,7 +50,7 @@ void main() {
     rds[ob.code] = ob;
     itemsList.add(new TagItem.fromList(rds, rds));
 
-    //TODO: this should be adding a real parent and verifying it.
+    //Urgent: this should be adding a real parent and verifying it.
     final sq = new SQtag(
         null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
 

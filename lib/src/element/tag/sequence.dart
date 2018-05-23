@@ -158,8 +158,8 @@ class SQtag extends SQ with TagElement<Item> {
     return new SQtag(parent, sq.tag, nItems, sq.vfLengthField);
   }
 
-  static SQtag fromBytes(Dataset parent, Tag tag,  List<TagItem> vList,
-      DicomBytes bytes) {
+  static SQtag fromBytes(Dataset parent, List<TagItem> vList,
+      DicomBytes bytes, Tag tag) {
     if (tag.vrIndex != kSQIndex) return null;
     return new SQtag(parent, tag, vList, bytes.vfLengthField, bytes);
   }

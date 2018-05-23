@@ -10,7 +10,7 @@
 part of odw.sdk.utils.buffer;
 
 abstract class DicomReadMixin {
-  DicomBytes get _buf;
+  Bytes get _buf;
   int get _rIndex;
   int get index;
   int get _wIndex;
@@ -19,11 +19,12 @@ abstract class DicomReadMixin {
   bool _rHasRemaining(int n);
 
   /// Returns the DICOM Tag Code at [offset].
-  int getCode(int offset) => _buf.getCode(offset);
+  int getCode(int offset) =>
+      (_buf.getUint16(offset) << 16) + _buf.getUint16(offset + 2);
 
   /// Reads the DICOM Tag Code at the current [index]. It does not
   /// move the [index].
-  int peekCode() => _buf.getCode(_rIndex);
+  int peekCode() => getCode(_rIndex);
 
   /// Reads the DICOM Tag Code at the current [index], and advances
   /// the [index] by four bytes.
@@ -38,7 +39,7 @@ abstract class DicomReadMixin {
   int readVRCode() => _readVRCode();
   int _readVRCode() {
     assert(_rIndex.isEven && _rHasRemaining(4), '@$_rIndex : $_rRemaining');
-    final vrCode = _buf.getVRCode(_rIndex);
+    final vrCode = _buf.getUint16(_rIndex);
     _rIndex += 2;
     return vrCode;
   }
@@ -48,15 +49,15 @@ abstract class DicomReadMixin {
   /// Read an EVR short Value Field Length.
   int readShortVLF() {
     assert(_rIndex.isEven && _rHasRemaining(2), '@$_rIndex : $_rRemaining');
-    final vlf = _buf.getShortVLF(_rIndex);
+    final vlf = _buf.getUint16(_rIndex);
     _rIndex += 2;
     return vlf;
   }
 
-
   /// Read a 32-bit Value Field Length field.
   int _readLongVLF() {
     assert(_rIndex.isEven && _rHasRemaining(4), '@$_rIndex : $_rRemaining');
+    _rIndex += 2;
     final vlf = _buf.getUint32(_rIndex);
     _rIndex += 4;
     return vlf;

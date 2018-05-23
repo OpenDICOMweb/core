@@ -86,7 +86,6 @@ void main() {
         expect(e1, isNull);
 
         global.throwOnError = true;
-        print('s: $s');
         expect(() => new DAtag(PTag.kCreationDate, s),
             throwsA(const isInstanceOf<StringError>()));
       }
@@ -108,7 +107,6 @@ void main() {
         expect(e1, isNull);
 
         global.throwOnError = true;
-        print('s: $s');
         expect(() => new DAtag(PTag.kCreationDate, s),
             throwsA(const isInstanceOf<StringError>()));
       }
@@ -964,7 +962,6 @@ void main() {
         expect(DA.isValidValues(PTag.kDate, s), false);
 
         global.throwOnError = true;
-        print('s: $s');
         expect(() => DA.isValidValues(PTag.kDate, s),
             throwsA(const isInstanceOf<StringError>()));
       }

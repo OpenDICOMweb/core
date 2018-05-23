@@ -189,18 +189,24 @@ $i: $x | $y')
 ''');
   }
 
-  int get code {
-    final group = _getUint16(0);
-    final elt = _getUint16(2);
-    return (group << 16) + elt;
-  }
-
   @override
   int get hashCode {
     var hashCode = 0;
     for (var i = 0; i < _bdLength; i++) hashCode += _getUint8(i) + i;
     return hashCode;
   }
+
+  // **** Dicom extensions - these should go away when DicomBytes works
+  int get code {
+    final group = _getUint16(0);
+    final elt = _getUint16(2);
+    return (group << 16) + elt;
+  }
+
+  int get vrCode => _getUint16(4);
+
+  int get vrIndex => vrIndexByCode[vrCode];
+  // **** End of DIcom extensions.
 
   static const int kMinLength = 16;
   static const int kDefaultLength = 1024;

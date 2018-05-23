@@ -12,8 +12,6 @@ import 'package:test/test.dart';
 
 import 'data.dart';
 
-//TODO: generalize this package to use: uuid_pseudo, uuid_secure, uuid_w_seed
-
 void main() {
   Server.initialize(name: 'uuid_v4_test', level: Level.info);
 

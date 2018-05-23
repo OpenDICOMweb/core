@@ -6,14 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'dart:convert' as cvt;
+import 'dart:convert';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
-
-import '../utility_test.dart' as utility;
 
 RSG rsg = new RSG(seed: 1);
 
@@ -788,7 +785,7 @@ void main() {
     test('AS toUint8List good values', () {
       final vList1 = rsg.getASList(1, 1);
       log.debug('Bytes.fromAsciiList(vList1): ${Bytes.fromAsciiList(vList1)}');
-      final values = cvt.ascii.encode(vList1[0]);
+      final values = ascii.encode(vList1[0]);
       expect(Bytes.fromAsciiList(vList1), equals(values));
     });
 
@@ -864,7 +861,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
         global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
+        final values = ascii.encode(vList0[0]);
         final tbd0 = Bytes.fromAsciiList(vList0);
         final tbd1 = Bytes.fromAsciiList(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -873,7 +870,7 @@ void main() {
       }
       for (var s in goodASList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
+          final values = ascii.encode(a);
           final tbd2 = Bytes.fromAsciiList(s);
           final tbd3 = Bytes.fromAsciiList(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
