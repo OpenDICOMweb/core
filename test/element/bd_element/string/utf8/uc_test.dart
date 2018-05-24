@@ -13,36 +13,64 @@ import 'package:test_tools/tools.dart';
 RSG rsg = new RSG(seed: 1);
 RNG rng = new RNG(1);
 
-// Urgent complete tests
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
   final rds = new ByteRootDataset.empty();
 
   group('UCbytes', () {
+    //VM.k1
+    const ucVM1Tags = const <int>[
+      kStrainDescription,
+      kGeneticModificationsDescription,
+      kLongCodeValue
+    ];
+
+    //VM.k1_n
+    const ucVM1_nTags = const <int>[
+      kSelectorUCValue,
+      kPotentialReasonsForProcedure,
+      kPotentialDiagnosticTasks
+    ];
+
     test('UCbytes from VM.k1', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final e0 = UCbytes.fromValues(kLongCodeValue, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in ucVM1Tags) {
+          final e0 = UCbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('UCbytes from VM.k1 bad length', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getUCList(2, 2);
+        for (var code in ucVM1Tags) {
+          final e0 = UCbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, false);
+        }
       }
     });
 
     test('UCbytes from VM.k1_n', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, i);
-        final e0 = UCbytes.fromValues(kSelectorUCValue, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in ucVM1_nTags) {
+          final e0 = UCbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
   });

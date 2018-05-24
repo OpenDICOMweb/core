@@ -18,40 +18,24 @@ void main() {
 
   final rds = new ByteRootDataset.empty();
 
-  group('STbytes', () {
+  group('UTbytes', () {
     //VM.k1
-    const stVM1Tags = const <int>[
-      kInstitutionAddress,
-      kReferringPhysicianAddress,
-      kCodingSchemeExternalID,
-      kCodingSchemeName,
-      kCodingSchemeResponsibleOrganization,
-      kDerivationDescription,
-      kAnatomicPerspectiveDescriptionTrial,
-      kCADFileFormat,
-      kComponentReferenceSystem,
-      kComponentManufacturingProcedure,
-      kComponentManufacturer,
-      kIndicationDescription,
-      kCouplingTechnique,
-      kCouplingMedium,
-      kScanProcedure,
-      kContributionDescription,
-      kPartialViewDescription,
-      kMaskOperationExplanation,
-      kCommentsOnRadiationDose,
-      kAddressTrial,
-      kSegmentDescription,
-      kSelectorSTValue,
-      kTopicSubject
+    const utVM1Tags = const <int>[
+      kLabelText,
+      kStrainAdditionalInformation,
+      kLocalNamespaceEntityID,
+      kSpecimenDetailedDescription,
+      kUniversalEntityID,
+      kTextValue,
+      kTrackSetDescription,
+      kSelectorUTValue,
     ];
-
-    test('STbytes from VM.k1', () {
+    test('UTbytes from VM.k1', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getSTList(1, 1);
-        for (var code in stVM1Tags) {
-          final e0 = STbytes.fromValues(code, vList0);
+        final vList0 = rsg.getUTList(1, 1);
+        for (var code in utVM1Tags) {
+          final e0 = UTbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
           log.debug('e1: $e1');
@@ -60,12 +44,12 @@ void main() {
       }
     });
 
-    test('STbytes from VM.k1 bad length', () {
+    test('UTbytes from VM.k1 bad length', () {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
-        final vList0 = rsg.getSTList(2, i + 1);
-        for (var code in stVM1Tags) {
-          final e0 = STbytes.fromValues(code, vList0);
+        final vList0 = rsg.getUTList(2, i + 1);
+        for (var code in utVM1Tags) {
+          final e0 = UTbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
           log.debug('e1: $e1');

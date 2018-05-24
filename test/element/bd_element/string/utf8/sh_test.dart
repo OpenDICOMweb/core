@@ -19,29 +19,82 @@ void main() {
   final rds = new ByteRootDataset.empty();
 
   group('SHbytes', () {
+    //VM.k1
+    const shVM1Tags = const <int>[
+      kImplementationVersionName,
+      kRecognitionCode,
+      kCodeValue,
+      kStationName,
+      kReceiveCoilName,
+      kDetectorID,
+      kPulseSequenceName,
+      kMultiCoilElementName,
+      kRespiratorySignalSourceID,
+      kStudyID,
+      kStackID,
+      kCompressionOriginator,
+      kCompressionDescription,
+      kChannelLabel,
+      kScheduledProcedureStepID,
+      kEnergyWindowName,
+      kOwnerID,
+      kPrintQueueID,
+      kFluenceModeID,
+      kRTPlanLabel,
+      kApplicatorID
+    ];
+
+    //VM.k1_n
+    const shVm1_nTags = const <int>[
+      kReferringPhysicianTelephoneNumbers,
+      kPatientTelephoneNumbers,
+      kConvolutionKernel,
+      kFrameLabelVector,
+      kDisplayWindowLabelVector,
+      kOutputPower,
+      kSelectorSHValue,
+      kAxisUnits,
+      kAxisLabels,
+    ];
     test('SHbytes from VM.k1', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        final e0 = SHbytes.fromValues(kCodeValue, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in shVM1Tags) {
+          final e0 = SHbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('SHbytes from VM.k1 bad length', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getSHList(2, i + 1);
+        for (var code in shVM1Tags) {
+          final e0 = SHbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, false);
+        }
       }
     });
 
     test('SHbytes from VM.k1_n', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, i);
-        final e0 = SHbytes.fromValues(kSelectorSHValue, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in shVm1_nTags) {
+          final e0 = SHbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
   });
