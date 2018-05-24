@@ -276,8 +276,8 @@ const int kUSCode = 0X5355;
 const int kUTCode = 0X5455;
 const int kUTMaxLength = kMaxLongVF;
 
-int vrIndexFromCode(int vrCode) => vrIndexByCode[vrCode];
-String vrIdFromCode(int vrCode) => vrIdByIndex[vrIndexByCode[vrCode]];
+int vrIndexFromCode(int vrCode) => vrIndexByCode8Bit[vrCode];
+String vrIdFromCode(int vrCode) => vrIdByIndex[vrIndexByCode8Bit[vrCode]];
 
 const Map<int, int> vrIndexByCode16BitLE = const <int, int>{
   0x4541: kAEIndex, 0x5341: kASIndex, 0x5441: kATIndex, 0x5343: kCSIndex,
@@ -291,14 +291,14 @@ const Map<int, int> vrIndexByCode16BitLE = const <int, int>{
 };
 
 const Map<int, int> vrIndexByCode8Bit = const <int, int>{
-  0x4154: kAEIndex, 0x5341: kASIndex, 0x5441: kATIndex, 0x5343: kCSIndex,
-  0x4441: kDAIndex, 0x5344: kDSIndex, 0x5444: kDTIndex, 0x4446: kFDIndex,
-  0x464c: kFLIndex, 0x5349: kISIndex, 0x4f4c: kLOIndex, 0x544c: kLTIndex,
-  0x4f42: kOBIndex, 0x444f: kODIndex, 0x464f: kOFIndex, 0x4c4f: kOLIndex,
-  0x4f57: kOWIndex, 0x4e50: kPNIndex, 0x4853: kSHIndex, 0x4c53: kSLIndex,
-  0x5351: kSQIndex, 0x5353: kSSIndex, 0x5453: kSTIndex, 0x4d54: kTMIndex,
-  0x5543: kUCIndex, 0x4955: kUIIndex, 0x4c55: kULIndex, 0x4e55: kUNIndex,
-  0x5552: kURIndex, 0x5355: kUSIndex, 0x5455: kUTIndex // No reformat
+  0x4145: kAEIndex, 0x4153: kASIndex, 0x4154: kATIndex, 0x4353: kCSIndex,
+  0x4441: kDAIndex, 0x4453: kDSIndex, 0x4454: kDTIndex, 0x4644: kFDIndex,
+  0x464c: kFLIndex, 0x4953: kISIndex, 0x4c4f: kLOIndex, 0x4c54: kLTIndex,
+  0x4f42: kOBIndex, 0x4f44: kODIndex, 0x4f46: kOFIndex, 0x4f4c: kOLIndex,
+  0x4f57: kOWIndex, 0x504e: kPNIndex, 0x5348: kSHIndex, 0x534c: kSLIndex,
+  0x5351: kSQIndex, 0x5353: kSSIndex, 0x5354: kSTIndex, 0x544d: kTMIndex,
+  0x5543: kUCIndex, 0x5549: kUIIndex, 0x554c: kULIndex, 0x554e: kUNIndex,
+  0x5552: kURIndex, 0x5553: kUSIndex, 0x5554: kUTIndex // No reformat
 };
 
 
