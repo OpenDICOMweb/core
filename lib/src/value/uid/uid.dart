@@ -46,8 +46,8 @@ class Uid {
     if (s == null) {
       v = _generator();
     } else {
-      v = s.trim();
-      final wk = wellKnownUids[s];
+      v =cleanUidString(s);
+      final wk = wellKnownUids[v];
       if (wk != null) return wk;
       if (!isValidUidString(v)) return invalidUidString(v);
     }
@@ -165,8 +165,7 @@ class Uid {
   /// be used. This is preferable to to throwing and then immediately
   /// catching the FormatException.
   static Uid parse(String s, {OnUidParseError onError}) {
-    final v = s.trim();
-    if (!Uid.isValidString(v)) {
+    if (!Uid.isValidString(s)) {
       if (onError != null) {
         return onError(s);
       } else {
@@ -177,7 +176,6 @@ class Uid {
     return (wk != null) ? wk : new Uid(s);
   }
 
-
   /// Tries to parse [s] as [Uid] and return its value.
   ///
   /// First trims any leading or trailing spaces.
@@ -187,7 +185,7 @@ class Uid {
   ///
   /// If [s] is not a valid [Uid] null is returns
   static Uid tryParse(String s) {
-    final v = s.trim();
+    final v = cleanUidString(s);
     if (Uid.isValidString(v)) {
       final wk = wellKnownUids[s];
       return (wk != null) ? wk : new Uid(v);
@@ -218,8 +216,7 @@ class Uid {
   static List<Uid> tryParseList(List<String> sList) {
     if (sList.isEmpty) return kEmptyList;
     final uids = new List<Uid>(sList.length);
-    for (var i = 0; i < sList.length; i++)
-      uids[i] = tryParse(sList[i]);
+    for (var i = 0; i < sList.length; i++) uids[i] = tryParse(sList[i]);
     return uids;
   }
 

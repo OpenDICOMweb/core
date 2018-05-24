@@ -494,6 +494,7 @@ class ISbytes extends IS with ByteElement<String>, StringMixin, AsciiMixin {
   }
 }
 
+const _kNull = 0;
 class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
   @override
   final DicomBytes bytes;
@@ -501,7 +502,7 @@ class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
   UIbytes(this.bytes);
 
   @override
-  Iterable<Uid> get uids => Uid.parseList(bytes.getAsciiList());
+  List<Uid> get uids => Uid.parseList(bytes.getAsciiList(padChar: _kNull));
 
   static UIbytes fromBytes(DicomBytes bytes) => new UIbytes(bytes);
 

@@ -17,11 +17,8 @@ import 'package:core/src/element.dart';
 import 'package:core/src/entity.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/logger.dart';
-import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/date_time.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/utils.dart';
+import 'package:core/src/value.dart';
 
 /// The Root [Dataset] for a DICOM Entity.
 abstract class RootDataset extends Dataset {

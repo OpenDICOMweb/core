@@ -85,9 +85,14 @@ abstract class DSBytes {
     return (group << 16) + elt;
   }
 
+/*
   @override
   String toString() =>
       '$runtimeType: ${bytes.endian} $dsStart-$dsEnd:${bytes.length}';
+*/
+
+  @override
+  String toString() => '$runtimeType: $bytes';
 }
 
 /// Root Dataset Bytes ([RDSBytes]).
@@ -135,8 +140,8 @@ class RDSBytes extends DSBytes {
   int get vfLengthField => vfLength;
 
   @override
-  Uint8List get vfAsUint8List => bytes.buffer
-      .asUint8List(bytes.offset + kHeaderSize, bytes.length);
+  Uint8List get vfAsUint8List =>
+      bytes.buffer.asUint8List(bytes.offset + kHeaderSize, bytes.length);
 
   @override
   String toString() {
@@ -145,7 +150,6 @@ class RDSBytes extends DSBytes {
     return '$runtimeType: FMI 132-$fmiEnd:$fmiLength '
         'RDS $dsStart-$dsEnd:$dsLength';
   }
-
 
 //  static const int kToken = kDcmPrefix;
   static const int kPreambleOffset = 0;
@@ -204,8 +208,7 @@ class IDSBytes extends DSBytes {
   int get trailerLength => (hasULength) ? kTrailerSize : 0;
 
   @override
-  Bytes get vfBytes =>
-      bytes.asBytes(bytes.offset + kValueFieldOffset, dsEnd);
+  Bytes get vfBytes => bytes.asBytes(bytes.offset + kValueFieldOffset, dsEnd);
 
   static const int kStartDelimiterOffset = 0;
   static const int kVFLengthFieldOffset = 4;

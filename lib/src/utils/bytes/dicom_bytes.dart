@@ -14,10 +14,12 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   DicomBytes.from(Bytes bytes, int start, int end, Endian endian)
       : super._from(bytes, start, end, endian);
 
+  DicomBytes._view(Bytes bytes, [int offset = 0, int length, Endian endian])
+      : super._view(bytes, offset, length, endian);
 
   @override
   int _setUint8List(int start, Uint8List list,
-                    [int offset = 0, int length, int padChar]) {
+      [int offset = 0, int length, int padChar]) {
     var _length = super._setUint8List(start, list, offset, length);
     if (padChar != null && length.isOdd) {
       _bd.setUint8(start + _length, padChar);
@@ -27,9 +29,11 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   }
 
   @override
-  String toString() =>
-      '$runtimeType(${_bd.lengthInBytes}) ${dcm(code)} ${hex16(vrCode)} '
-          '$vfLengthField(${hex32(vfLengthField)}) $vfBytes';
+  String toString() {
+    final vlf = vfLengthField;
+    '$runtimeType(${_bd.lengthInBytes}) ${dcm(code)} ${hex16(vrCode)} '
+        '$vlf(${hex32(vlf)}) $vfBytes';
+  }
 
   /// Returns a [Bytes] containing the ASCII encoding of [s].
   /// If [s].length is odd, [padChar] is appended to [s] before
@@ -57,8 +61,7 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as ASCII. The result is returns as [Bytes].
-  static Bytes fromUtf8List(List<String> vList,
-          [String separator = '\\']) =>
+  static Bytes fromUtf8List(List<String> vList, [String separator = '\\']) =>
       (vList.isEmpty) ? kEmptyBytes : fromUtf8(vList.join('\\'));
 
   /// Returns a [Bytes] containing UTF-8 code units. See [fromUtf8List].

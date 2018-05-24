@@ -24,6 +24,20 @@ abstract class EvrBytes extends DicomBytes {
   EvrBytes._from(Bytes bytes, int start, int end, Endian endian)
       : super.from(bytes, start, end, endian ?? Endian.host);
 
+  factory EvrBytes.view(
+      Bytes bytes, int start, int vrIndex, int end, Endian endian) {
+    if (vrIndex >= kVREvrShortIndexMin && vrIndex <= kVREvrShortIndexMax) {
+      return new EvrShortBytes.view(bytes, start, end);
+    } else if (vrIndex >= kVRIndexMin && vrIndex <= kVREvrLongIndexMax) {
+      return new EvrLongBytes.view(bytes, start, end);
+    } else {
+      return badVRIndex(vrIndex, null, null, null);
+    }
+  }
+
+  EvrBytes._view(Bytes bytes, int offset, int length, Endian endian)
+      : super._view(bytes, offset, length, endian);
+
   @override
   bool get isEvr => true;
   @override
@@ -40,7 +54,35 @@ class EvrShortBytes extends EvrBytes {
   EvrShortBytes(int eLength, [Endian endian]) : super._(eLength, endian);
 
   EvrShortBytes.from(Bytes bytes, [int start = 0, int end, Endian endian])
-      : super._from(bytes, start, end, endian);
+      : super._from(bytes, start, end, endian) {
+    final s = '''
+   offset: ${bytes.offset}
+   length: ${bytes.length}
+    start: $start
+      end: $end
+bd.offset: ${_bd.offsetInBytes}  
+bd.length: ${_bd.lengthInBytes}    
+   endian: ${endian == Endian.little ? 'little' : 'big'} 
+    ''';
+    print(s);
+  }
+
+  EvrShortBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
+      : super._view(bytes, start, end, endian) {
+/*
+    final s = '''
+   offset: ${bytes.offset}
+   length: ${bytes.length}
+    start: $start
+      end: $end
+bd.offset: ${_bd.offsetInBytes}  
+bd.length: ${_bd.lengthInBytes}    
+   endian: ${endian == Endian.little ? 'little' : 'big'} 
+    ''';
+    print(s);
+*/
+
+  }
 
   @override
   int get vfOffset => kVFOffset;
@@ -89,6 +131,23 @@ class EvrLongBytes extends EvrBytes {
 
   EvrLongBytes.from(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._from(bytes, start, end, endian);
+
+  EvrLongBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
+      : super._view(bytes, start, end, endian) {
+/*
+    final s = '''
+   offset: ${bytes.offset}
+   length: ${bytes.length}
+    start: $start
+      end: $end
+bd.offset: ${_bd.offsetInBytes}  
+bd.length: ${_bd.lengthInBytes}    
+   endian: ${endian == Endian.little ? 'little' : 'big'} 
+    ''';
+    print(s);
+*/
+
+  }
 
   @override
   int get vfOffset => kVFOffset;

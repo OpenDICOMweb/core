@@ -22,22 +22,24 @@ final RegExp uidRegex = new RegExp(_uidRegExpString);
 bool _isValidLength(int length) =>
     kUidMinLength <= length && length <= kUidMaxLength;
 
-/// Returns [s] if it is a valid [Uid] [String]; otherwise, _null_.
+/// Returns [s0] if it is a valid [Uid] [String]; otherwise, _null_.
 bool isValidUidString(String s) {
   if (s == null || !_isValidLength(s.length) || !kUidRoots.contains(s[0]))
     return false;
-  for (var i = 0; i < s.length - 1; i++) {
-    final char0 = s.codeUnitAt(i);
+  final s0 = cleanUidString(s);
+  final length = s0.length;
+  for (var i = 0; i < length - 1; i++) {
+    final char0 = s0.codeUnitAt(i);
     if (char0 == kDot) {
-      if (s.codeUnitAt(i + 1) == k0) {
-        if (i + 2 >= s.length) return true;
-        if (s.codeUnitAt(i + 2) != kDot) return false;
+      if (s0.codeUnitAt(i + 1) == k0) {
+        if (i + 2 >= length) return true;
+        if (s0.codeUnitAt(i + 2) != kDot) return false;
       }
     } else {
       if (!isDigitChar(char0)) return false;
     }
   }
-  if (!isDigitChar(s.codeUnitAt(s.length - 1))) return false;
+  if (!isDigitChar(s0.codeUnitAt(length - 1))) return false;
   return true;
 }
 
@@ -79,3 +81,21 @@ const Map<String, String> oidRoots = const <String, String>{
   '1.3.6.1.4.1': 'IANA assigned company OIDs',
   '2.25': 'itu-iso UUID'
 };
+
+const int _kNull = 0;
+const int _kSpace = 32;
+
+/// Removes trailing null and also removes leading and trailing spaces.
+String cleanUidString(String s) {
+  final length = s.length;
+  var start = 0;
+  for (; start < length; start++) if (s.codeUnitAt(start) != _kSpace) break;
+
+  final last = s.length - 1;
+  var end = last;
+  if (s.codeUnitAt(last) == _kNull) end--;
+
+  for (; end > start; end--) if (s.codeUnitAt(end) != _kSpace) break;
+  print('"$s" start: $start end: $end length: $length');
+  return (start == 0 && end == last) ? s : s.substring(start, end + 1);
+}

@@ -33,6 +33,11 @@ String blanks(int n) => spaces(n);
 Iterable<String> splitTrim(String s, String separator, [End trim]) =>
     s.split(separator).map((s) => trimWhitespace(s, trim));
 
+String removeNullPadding(String s) {
+  int lastIndex = s.length - 1;
+  return (s.codeUnitAt(lastIndex) == kNull) ? s.substring(0, lastIndex) : s;
+}
+
 /// Specifies the left-end, right-end, or both-ends.
 enum End { left, right, both }
 

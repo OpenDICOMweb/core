@@ -100,7 +100,6 @@ abstract class ByteElement<V> {
       : Tag.lookupByCode(code, vrIndex);
 
   static Element makeFromDicomBytes(DicomBytes bytes, Dataset ds) {
-    print('dcmBytes: $bytes');
     final code = bytes.code;
     if (_isPrivateCreator(code)) return new PCbytes(bytes);
 

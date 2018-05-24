@@ -123,9 +123,6 @@ abstract class BytesMixin {
 
   // **** Internal methods for creating copies and views of sub-regions.
 
-  /// Returns the absolute index of [offset] in the underlying [ByteBuffer].
-  int _absIndex(int offset) => _bdOffset + offset;
-
   /// Returns the number of 32-bit elements from [offset] to
   /// [_bd].lengthInBytes, where [offset] is the absolute offset in [_bd].
   int _length16(int offset) {
@@ -215,7 +212,7 @@ abstract class BytesMixin {
         : getInt64List(offset, length);
   }
 
-  Uint8List asUint8List([int offset = 0, int length]) {
+  Uint8List asUint8List([int offset = 0, int length, int _]) {
     length ??= _bdLength - offset;
     return _bd.buffer.asUint8List(_absIndex(offset), length);
   }
@@ -225,7 +222,7 @@ abstract class BytesMixin {
   /// is a copy of the specified region and returns it.
   Uint16List asUint16List([int offset = 0, int length]) {
     final index = _absIndex(offset);
-    length ??= _length16(offset );
+    length ??= _length16(offset);
     return (_isAligned16(index))
         ? _bd.buffer.asUint16List(index, length)
         : getUint16List(offset, length);
@@ -401,28 +398,44 @@ abstract class BytesMixin {
   }
 
   /// Returns a [String] containing a _ASCII_ decoding of the specified
-  /// region of _this_.
-  String getAscii({int offset = 0, int length, bool allowInvalid: true}) =>
-      _getAscii(offset, length ?? _bdLength, allowInvalid);
+  /// region of _this_. Also allows the removal of a padding character.
+  String getAscii(
+          {int offset = 0,
+          int length,
+          bool allowInvalid = true,
+          int padChar = kSpace}) =>
+      _getAscii(offset, length, allowInvalid, padChar);
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _ASCII_, and then _split_ing the
-  /// resulting [String] using the [separator].
+  /// resulting [String] using the [separator]. Also allows the
+  /// removal of a padding character.
   List<String> getAsciiList(
       {int offset = 0,
       int length,
       bool allowInvalid: true,
-      String separator = '\\'}) {
-    final s = _getAscii(offset, length, allowInvalid);
+      String separator = '\\',
+      int padChar = kSpace}) {
+    final s = _getAscii(offset, length, allowInvalid, padChar);
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
-  String _getAscii(int offset, int length, [bool allow]) {
-    final bList = asUint8List(offset, length);
+  String _getAscii(int offset, int length, bool allow, int padChar) {
+    final bList = asUint8List(offset, length, padChar);
     return bList.isEmpty ? '' : ascii.decode(bList, allowInvalid: allow);
   }
 
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
+  /// Also, allows the removal of padding characters.
+  String getUtf8(
+          {int offset = 0,
+          int length,
+          bool allowMalformed = true,
+          int padChar = kSpace}) =>
+      utf8.decode(asUint8List(offset, length, padChar),
+          allowMalformed: allowMalformed);
+
+  /*
   String getUtf8({int offset = 0, int length, bool allowMalformed: true}) =>
       _getUtf8(offset, length, allowMalformed);
 
@@ -438,8 +451,28 @@ abstract class BytesMixin {
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
-  String _getUtf8(int offset, int length, [bool allow]) =>
-      utf8.decode(asUint8List(offset, length), allowMalformed: allow);
+  String _getUtf8(int offset, int length, [bool allow]) {
+    final bList = asUint8List(offset, length ?? _bdLength);
+    return bList.isEmpty ? '' : utf8.decode(bList, allowMalformed: allow);
+   }
+  */
+
+  /// Returns a [List<String>]. This is done by first decoding
+  /// the specified region as _UTF-8_, and then _split_ing the
+  /// resulting [String] using the [separator].
+  List<String> getUtf8List(
+      {int offset = 0,
+      int length,
+      bool allowMalformed: true,
+      String separator = '\\',
+      int padChar = kSpace}) {
+    final s = getUtf8(
+        offset: offset,
+        length: length,
+        allowMalformed: allowMalformed,
+        padChar: padChar);
+    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+  }
 
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
   String getString([int offset = 0, int length]) => getUtf8(
@@ -543,24 +576,31 @@ abstract class BytesMixin {
   // **** String Setters
 
   /// Ascii encodes the specified range of [s] and then writes the
-  /// code units to _this_ starting at [start].
-  int setAscii(int start, String s, [int offset = 0, int length]) {
-    final v = _maybeGetSubstring(s, offset, length);
-    return _setUint8List(start, ascii.encode(v), offset, length);
-  }
-
-  /// UTF-8 encodes the specified range of [s] and then writes the
-  /// code units to _this_ starting at [start].
-  int setUtf8(int start, String s, [int offset = 0, int length]) {
+  /// code units to _this_ starting at [start]. If [padChar] is not
+  /// _null_ and [s].length is odd, then [padChar] is written after
+  /// the code units of [s] have been written.
+  int setAscii(int start, String s,
+      [int offset = 0, int length, int padChar = kSpace]) {
     length ??= s.length;
     final v = _maybeGetSubstring(s, offset, length);
-    return _setUint8List(start, utf8.encode(v), offset, length);
+    return __setUint8List(start, ascii.encode(v), offset, length, padChar);
   }
 
-  String _maybeGetSubstring(String s, int offset, int length) =>
-      (offset == 0 && length == s.length)
-          ? s
-          : s.substring(offset, offset + length);
+  /// Writes the elements of the specified region of [list] to
+  /// _this_ starting at [start]. If [pad] is _true_ and [length]
+  /// is odd, then a 0 is written after the other elements have
+  /// been written.
+  int __setUint8List(int start, Uint8List list, int offset,
+      [int length, int pad]) {
+    length ??= list.length;
+    final len = _setUint8List(start, list, offset, length);
+    if (length.isOdd && pad != null) {
+      final index = start + length;
+      _setUint8(index, pad);
+      return index + 1;
+    }
+    return len;
+  }
 
   void setString(int start, String s, [int offset = 0, int length]) =>
       setUtf8(start, s, offset, length);
@@ -593,7 +633,8 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kInt16Size));
-    for (var i = offset, j = start; i < length; i++, j += 2) _setInt16(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 2)
+      _setInt16(j, list[i]);
     return length * 2;
   }
 
@@ -601,7 +642,8 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kInt32Size));
-    for (var i = offset, j = start; i < length; i++, j += 4) _setInt32(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 4)
+      _setInt32(j, list[i]);
     return length * 4;
   }
 
@@ -619,19 +661,20 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kInt64Size));
-    for (var i = offset, j = start; i < length; i++, j += 8) setInt64(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 8)
+      setInt64(j, list[i]);
     return length * 6;
   }
 
   int setUint8List(int start, List<int> list, [int offset = 0, int length]) =>
       _setUint8List(start, list, offset, length);
 
-  int _setUint8List(int start, Uint8List list, [int offset = 0, int length]) {
+  int _setUint8List(int start, Uint8List list,
+      [int offset = 0, int length, int padChar]) {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint8Size));
-    for (var i = offset, j = start; i < length; i++, j++)
-      _setUint8(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j++) _setUint8(j, list[i]);
     return length;
   }
 
@@ -639,7 +682,8 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint16Size));
-    for (var i = offset, j = start; i < length; i++, j += 2) _setUint16(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 2)
+      _setUint16(j, list[i]);
     return length * 2;
   }
 
@@ -647,7 +691,8 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint32Size));
-    for (var i = offset, j = start; i < length; i++, j += 4) _setUint32(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 4)
+      _setUint32(j, list[i]);
     return length * 4;
   }
 
@@ -655,7 +700,8 @@ abstract class BytesMixin {
     length ??= list.length;
 //    final index = _absIndex(start);
     assert(_checkLength(offset, length, kUint64Size));
-    for (var i = offset, j = start; i < length; i++, j += 8) _setUint64(j, list[i]);
+    for (var i = offset, j = start; i < length; i++, j += 8)
+      _setUint64(j, list[i]);
     return length * 8;
   }
 
@@ -701,14 +747,40 @@ abstract class BytesMixin {
 
   // **** String List Setters
 
+  /// Writes the elements of the specified [sList] to _this_ starting at
+  /// [start]. If [pad] is _true_ and the final offset is odd, then a 0 is
+  /// written after the other elements have been written.
   int setAsciiList(int start, List<String> sList,
-      [int offset = 0, int length, String separator = '']) {
+      [int offset = 0, int length, String separator = '', int pad = kSpace]) {
     if (sList.isEmpty) return 0;
-    // Improvement: this could be optimized to allocate no storage
-    final s = _stringListToString(sList, offset, length ??= sList.length);
-    setAscii(start, s, offset, s.length);
-    return s.length;
+    length ??= sList.length;
+    final last = length - 1;
+    var k = start;
+
+    for (var i = 0; i < length; i++) {
+      final s = sList[i];
+      for (var j = 0; j < s.length; j++) _setUint8(k++, s.codeUnitAt(j));
+      if (i != last) _setUint8(k++, kBackslash);
+    }
+    if (k.isOdd && pad != null) _setUint8(k++, pad);
+    return k - start;
   }
+
+  /// UTF-8 encodes the specified range of [s] and then writes the
+  /// code units to _this_ starting at [start]. If [padChar] is not
+  /// _null_ and [s].length is odd, then [padChar] is written after
+  /// the code units of [s] have been written.
+  int setUtf8(int start, String s,
+      [int offset = 0, int length, int padChar = kSpace]) {
+    length ??= s.length;
+    final v = _maybeGetSubstring(s, offset, length);
+    return _setUint8List(start, utf8.encode(v), offset, length, padChar);
+  }
+
+  String _maybeGetSubstring(String s, int offset, int length) =>
+      (offset == 0 && length == s.length)
+          ? s
+          : s.substring(offset, offset + length);
 
   int setUtf8List(int start, List<String> sList,
       [int offset = 0, int length, String separator = '']) {
@@ -720,8 +792,8 @@ abstract class BytesMixin {
 
   String _stringListToString(List<String> sList, int offset, int length) {
     final v = (offset == 0 && length == sList.length)
-              ? sList
-              : sList.sublist(offset, offset + length);
+        ? sList
+        : sList.sublist(offset, offset + length);
     return v.join('\\');
   }
 
@@ -730,9 +802,13 @@ abstract class BytesMixin {
   @override
   String toString() => '$endianness $runtimeType: ${toBDDescriptor(_bd)}';
 
+  /// Returns the absolute index of [offset] in the underlying [ByteBuffer].
+  int _absIndex(int offset) => _bd.offsetInBytes + offset;
+
   String toBDDescriptor(ByteData bd) {
     final start = bd.offsetInBytes;
-    final length = bd.lengthInBytes;
+    var length = bd.lengthInBytes;
+    length = (length > 144) ? 144 : length;
     final end = start + length;
     return '$start-$end:$length ${bd.buffer.asUint8List(start, length)}';
   }

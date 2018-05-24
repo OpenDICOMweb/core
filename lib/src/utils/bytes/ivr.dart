@@ -14,6 +14,20 @@ class IvrBytes extends DicomBytes {
   IvrBytes.from(Bytes bytes, int start, int end)
       : super.from(bytes, start, end, Endian.little);
 
+  IvrBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
+      : super._view(bytes, start, end, endian) {
+    final s = '''
+   offset: ${bytes.offset}
+   length: ${bytes.length}
+    start: $start
+      end: $end
+bd.offset: ${_bd.offsetInBytes}  
+bd.length: ${_bd.lengthInBytes}    
+   endian: ${endian == Endian.little ? 'little' : 'big'} 
+    ''';
+    print(s);
+  }
+
   @override
   bool get isEvr => false;
   @override

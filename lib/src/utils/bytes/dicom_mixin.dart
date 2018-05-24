@@ -64,6 +64,10 @@ abstract class DicomMixin {
   int setFloat64List(int start, List<double> list,
       [int offset = 0, int length]);
 
+  int setUtf8(int start, String s,
+      [int offset = 0, int length, int padChar = kSpace]);
+
+  int setAsciiList(int start, List<String> list, [int pad = kSpace]);
   String toBDDescriptor(ByteData bd);
 
   String _maybeGetSubstring(String s, int offset, int length);
@@ -103,7 +107,7 @@ abstract class DicomMixin {
   Bytes get vfBytes => asBytes(vfOffset, vfLength);
 
   /// Returns the Value Field bytes _without_ padding.
-  Bytes get vBytes => asBytes(vfOffset, _vflWOPadding(vfOffset));
+//  Bytes get vBytes => asBytes(vfOffset, _vflWOPadding(vfOffset));
 
   /// Returns the last Uint8 element in [vfBytes], if [vfBytes]
   /// is not empty; otherwise, returns _null_.
@@ -204,23 +208,6 @@ abstract class DicomMixin {
     return index;
   }
 
-  /// Writes the elements of the specified [list] to _this_ starting at
-  /// [start]. If [pad] is _true_ and the final offset is odd, then a 0 is
-  /// written after the other elements have been written.
-  int setAsciiList(int start, List<String> list, [int pad = kSpace]) {
-    final length = list.length;
-    final last = length - 1;
-    var k = start;
-
-    for (var i = 0; i < length; i++) {
-      final s = list[i];
-      for (var j = 0; j < s.length; j++) _setUint8(k++, s.codeUnitAt(j));
-      if (i != last) _setUint8(k++, kBackslash);
-    }
-    if (k.isOdd && pad != null) _setUint8(k++, pad);
-    return k - start;
-  }
-
   /// Returns the length in bytes of this Byte Element without padding.
   int _vflWOPadding(int vfOffset) {
     final length = bd.lengthInBytes - vfOffset;
@@ -231,73 +218,19 @@ abstract class DicomMixin {
   }
 
   // Allows the removal of padding characters.
-  String _getAscii(int offset, int length,
-          [bool allow = true, int padChar = kSpace]) =>
-      ascii.decode(asUint8List(offset, length, padChar), allowInvalid: allow);
-
-  // Allows the removal of padding characters.
-  String _getUtf8(int offset, int length,
-          [bool allow = true, int padChar = kSpace]) =>
-      utf8.decode(asUint8List(offset, length, padChar), allowMalformed: allow);
-
-  // Allows the removal of padding characters.
   Uint8List asUint8List([int offset = 0, int length, int padChar = 0]) {
     assert(padChar == null || padChar == kSpace || padChar == kNull);
     length ??= vfLength;
     final index = _absIndex(vfOffset + offset);
-//    final _length = _maybeRemovePadChar(index, length, padChar);
-    return _bd.buffer.asUint8List(index, length);
+    final lastIndex = length - 1;
+    final _length = _maybeRemoveNull(lastIndex, length, padChar);
+    return _bd.buffer.asUint8List(index, _length);
   }
 
-  int _maybeRemovePadChar(int index, int vfLength, [int padChar]) {
-    if (padChar != null && vfLength.isEven) {
-      final last = index + vfLength - 1;
-      final c = _getUint8(last);
-      if (c == kSpace || c == kNull) {
-        if (c != padChar) log.warn('Expected $padChar but got $c instead');
-        return vfLength - 1;
-      }
-    }
-    return vfLength;
-  }
-
-  /// Ascii encodes the specified range of [s] and then writes the
-  /// code units to _this_ starting at [start]. If [padChar] is not
-  /// _null_ and [s].length is odd, then [padChar] is written after
-  /// the code units of [s] have been written.
-  int setAscii(int start, String s,
-      [int offset = 0, int length, int padChar = kSpace]) {
-    length ??= s.length;
-    final v = _maybeGetSubstring(s, offset, length);
-    return _setUint8List(start, ascii.encode(v), offset, length, padChar);
-  }
-
-  /// UTF-8 encodes the specified range of [s] and then writes the
-  /// code units to _this_ starting at [start]. If [padChar] is not
-  /// _null_ and [s].length is odd, then [padChar] is written after
-  /// the code units of [s] have been written.
-  int setUtf8(int start, String s,
-      [int offset = 0, int length, int padChar = kSpace]) {
-    length ??= s.length;
-    final v = _maybeGetSubstring(s, offset, length);
-    return _setUint8List(start, utf8.encode(v), offset, length, padChar);
-  }
-
-  /// Writes the elements of the specified region of [list] to
-  /// _this_ starting at [start]. If [pad] is _true_ and [length]
-  /// is odd, then a 0 is written after the other elements have
-  /// been written.
-  int __setUint8List(int start, Uint8List list, int offset,
-      [int length, int pad]) {
-    length ??= list.length;
-    final len = _setUint8List(start, list, offset, length);
-    if (length.isOdd && pad != null) {
-      final index = start + length;
-      _setUint8(index, pad);
-      return index + 1;
-    }
-    return len;
-  }
+  int _maybeRemoveNull(int lastIndex, int vfLength, [int padChar]) =>
+      (padChar != null && vfLength.isEven && _getUint8(lastIndex) == kNull)
+          ? lastIndex
+          : vfLength;
 
   @override
   String toString() {

@@ -52,15 +52,23 @@ class Bytes extends ListBase<int> with BytesMixin {
       : endian = endian ?? Endian.host,
         _bd = new ByteData(length);
 
+  factory Bytes.view(Bytes bytes,
+          [int offset = 0, int length, Endian endian]) =>
+      new Bytes._view(bytes, offset, length, endian);
+
+  Bytes._view(Bytes bytes, int offset, int end, Endian endian)
+      : endian = endian ?? Endian.host,
+        _bd = _bdView(bytes._bd, offset, end);
+
   /// Creates a new [Bytes] from [bytes] containing the specified region
   /// and [endian]ness. [endian] defaults to [Endian.host].
   factory Bytes.from(Bytes bytes,
           [int offset = 0, int length, Endian endian]) =>
       new Bytes._from(bytes, offset, length, endian);
 
-  Bytes._from(Bytes bytes, int offset, int length, Endian endian)
+  Bytes._from(Bytes bytes, int offset, int end, Endian endian)
       : endian = endian ?? Endian.host,
-        _bd = _copyByteData(bytes._bd, offset, length ?? bytes.length);
+        _bd = _copyByteData(bytes._bd, offset, end ?? bytes.length);
 
   /// Creates a new [Bytes] from [bd]. [endian] defaults to [Endian.host].
   Bytes.fromByteData(ByteData bd, [Endian endian])
@@ -105,8 +113,7 @@ class Bytes extends ListBase<int> with BytesMixin {
   bool _bytesEqual(Bytes a, Bytes b) {
     final aLen = a.length;
     if (aLen != b.length) return false;
-    for (var i = 0; i < aLen; i++) if (a[i] != b[i])
-      return false;
+    for (var i = 0; i < aLen; i++) if (a[i] != b[i]) return false;
     return true;
   }
 
@@ -292,4 +299,12 @@ ByteData _copyByteData(ByteData bd, int offset, int length) {
   for (var i = 0, j = offset; i < _length; i++, j++)
     bdNew.setUint8(i, bd.getUint8(j));
   return bdNew;
+}
+
+//TODO: move this to the appropriate place
+/// Returns a [ByteData] that is a copy of the specified region of _this_.
+ByteData _bdView(ByteData bd, int offset, int end) {
+  final _offset = bd.offsetInBytes + offset;
+  final _length = (end ?? bd.lengthInBytes) - _offset;
+  return bd.buffer.asByteData(_offset, _length);
 }
