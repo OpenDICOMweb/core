@@ -364,10 +364,10 @@ void main() {
     test('UL BASE64', () {
       final vList = new Uint32List.fromList(uInt32Max);
       final bytes = new Bytes.typedDataView(vList);
-      // Urgent use s and bytes1 or flush
+
       final s = bytes.getBase64();
       final bytes1 = Bytes.fromBase64(s);
-      final e0 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples);
+      final e0 = ULtag.fromBytes(bytes1, PTag.kNumberOfWaveformSamples);
       expect(e0.hasValidValues, true);
     });
 

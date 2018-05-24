@@ -19,16 +19,62 @@ void main() {
   final rds = new ByteRootDataset.empty();
 
   group('PNbytes', () {
+    //VM.k1
+    const pnVM1Tags = const <int>[
+      kReferringPhysicianName,
+      kPatientBirthName,
+      kPatientMotherBirthName,
+      kResponsiblePerson,
+      kEvaluatorName,
+      kScheduledPerformingPhysicianName,
+      kOrderEnteredBy,
+      kVerifyingObserverName,
+      kPersonName,
+      kCurrentObserverTrial,
+      kVerbalSourceTrial,
+      kROIInterpreter,
+      kReviewerName,
+      kInterpretationRecorder,
+      kInterpretationTranscriber,
+      kDistributionName,
+      kPatientName,
+    ];
+
+    //VM.k1_n
+    const pnVM1_nTags = const <int>[
+      kPerformingPhysicianName,
+      kNameOfPhysiciansReadingStudy,
+      kOperatorsName,
+      kOtherPatientNames,
+      kSelectorPNValue,
+      kNamesOfIntendedRecipientsOfResults,
+    ];
+
     test('PNbytes from VM.k1', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e0 = PNbytes.fromValues(kEvaluatorName, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in pnVM1Tags) {
+          final e0 = PNbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('PNbytes from VM.k1 bad length', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getPNList(2, i + 1);
+        for (var code in pnVM1Tags) {
+          final e0 = PNbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, false);
+        }
       }
     });
 
@@ -37,11 +83,13 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, i);
-        final e0 = PNbytes.fromValues(kSelectorPNValue, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in pnVM1_nTags) {
+          final e0 = PNbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
   });

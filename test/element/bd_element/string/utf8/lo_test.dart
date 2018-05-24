@@ -19,16 +19,64 @@ void main() {
   final rds = new ByteRootDataset.empty();
 
   group('LObytes', () {
+    //VM.k1
+    const loVM1Tags = const <int>[
+      kDataSetSubtype,
+      kManufacturer,
+      kInstitutionName,
+      kExtendedCodeValue,
+      kCodeMeaning,
+      kPrivateCreatorReference,
+      kPatientID,
+      kIssuerOfPatientID,
+      kBranchOfService,
+      kPatientReligiousPreference,
+      kSecondaryCaptureDeviceID,
+      kHardcopyDeviceManufacturer,
+      kApplicationVersion,
+    ];
+
+    //VM.k1_n
+    const loVM1_nTags = const <int>[
+      kAdmittingDiagnosesDescription,
+      kEventTimerNames,
+      kInsurancePlanIdentification,
+      kMedicalAlerts,
+      kDeidentificationMethod,
+      kRadionuclide,
+      kSecondaryCaptureDeviceSoftwareVersions,
+      kSoftwareVersions,
+      kTypeOfFilters,
+      kTransducerData,
+      kSelectorLOValue,
+      kProductName,
+      kOtherPatientIDs,
+    ];
     test('LObytes from VM.k1', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        final e0 = LObytes.fromValues(kManufacturer, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in loVM1Tags) {
+          final e0 = LObytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('LObytes from VM.k1 bad length', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getLOList(2, i + 1);
+        for (var code in loVM1Tags) {
+          final e0 = LObytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, false);
+        }
       }
     });
 

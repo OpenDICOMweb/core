@@ -19,16 +19,54 @@ void main() {
   final rds = new ByteRootDataset.empty();
 
   group('LTbytes', () {
+    //VM.k1
+    const ltVM1Tags = const <int>[
+      kIdentifyingComments,
+      kAdditionalPatientHistory,
+      kPatientComments,
+      kMaterialNotes,
+      kCalibrationNotes,
+      kPulserNotes,
+      kReceiverNotes,
+      kPreAmplifierNotes,
+      kProbeDriveNotes,
+      kAcquisitionComments,
+      kDetectorMode,
+      kGridAbsorbingMaterial,
+      kExposureControlModeDescription,
+      kRequestedProcedureComments,
+      kMediaDisposition,
+      kBarcodeValue,
+      kCompensatorDescription,
+      kArbitrary,
+      kTextComments
+    ];
+
     test('LTbytes from VM.k1', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = LTbytes.fromValues(kPatientComments, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in ltVM1Tags) {
+          final e0 = LTbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('LTbytes from VM.k1 bad length', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getLTList(2, i + 1);
+        for (var code in ltVM1Tags) {
+          final e0 = LTbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, false);
+        }
       }
     });
   });
