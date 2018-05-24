@@ -22,8 +22,8 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   DicomBytes.from(Bytes bytes, int start, int end, Endian endian)
       : super._from(bytes, start, end, endian);
 
-  DicomBytes._view(Bytes bytes, [int offset = 0, int length, Endian endian])
-      : super._view(bytes, offset, length, endian);
+  DicomBytes._view(Bytes bytes, [int offset = 0, int end, Endian endian])
+      : super._view(bytes, offset, end, endian);
 
   @override
   int _setUint8List(int start, Uint8List list,

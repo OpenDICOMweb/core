@@ -21,6 +21,8 @@ class IvrBytes extends DicomBytes {
    length: ${bytes.length}
     start: $start
       end: $end
+     code: ${dcm(code)}
+ vfLength: $vfLength
 bd.offset: ${_bd.offsetInBytes}  
 bd.length: ${_bd.lengthInBytes}    
    endian: ${endian == Endian.little ? 'little' : 'big'} 
@@ -31,12 +33,12 @@ bd.length: ${_bd.lengthInBytes}
   @override
   bool get isEvr => false;
   @override
-  int get vrCode => _bd.getUint16(kVROffset, Endian.little);
+  int get vrCode => kUNCode;
   @override
-  int get vrIndex => vrIndexFromCode(vrCode);
+  int get vrIndex => kUNIndex;
   @override
   String get vrId => vrIdFromIndex(vrIndex);
-
+  VR get vr => VR.kUN;
   @override
   int get vfOffset => kVFOffset;
   @override
@@ -44,7 +46,7 @@ bd.length: ${_bd.lengthInBytes}
 
   @override
   int get vfLengthField {
-    final vlf = _bd.getUint32(kVFLengthOffset);
+    final vlf = getUint32(kVFLengthOffset);
     assert(_checkVFLengthField(vlf, vfLength));
     return vlf;
   }

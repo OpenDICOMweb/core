@@ -22,13 +22,6 @@ import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
 abstract class IntBase extends Element<int> {
-  List<int> _values;
-  @override
-  Iterable<int> get values => _values;
-  @override
-  set values(Iterable<int> vList) =>
-      _values = (vList is List) ? vList : vList.toList(growable: false);
-
   int get sizeInBytes;
 
 

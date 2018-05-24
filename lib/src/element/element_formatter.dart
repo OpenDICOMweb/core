@@ -6,12 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'package:core/src/element/base/element.dart';
+import 'package:core/src/element.dart';
 
 const int kDefaultTruncatedValuesLength = 5;
 
-abstract class ElementFormatterBase {
+abstract class ElementFormatter {
   /// The maximum number of values to print when an [Element]'s values
   /// are printed by [toString].
   int truncatedValuesLength;
@@ -21,7 +20,7 @@ abstract class ElementFormatterBase {
   bool _withValues;
   bool debugMode = false;
 
-  ElementFormatterBase._(this.truncatedValuesLength, this._withValues);
+  ElementFormatter._(this.truncatedValuesLength, this._withValues);
 
   bool get includeValues => _withValues;
   String get vflName => 'vfLength';
@@ -89,7 +88,7 @@ abstract class ElementFormatterBase {
 }
 
 /// A formatter the allows different [String] representations of [Element]s.
-class SimpleElementFormatter extends ElementFormatterBase {
+class SimpleElementFormatter extends ElementFormatter {
   /// If _true_ a simple representation is returned.
   bool simple;
 
@@ -117,7 +116,7 @@ class SimpleElementFormatter extends ElementFormatterBase {
 /// otherwise,
 ///     '
 ///
-class DebugEFormatter extends ElementFormatterBase with ByteElementMixin {
+class DebugEFormatter extends ElementFormatter with ByteElementMixin {
   DebugEFormatter({
     int truncatedValuesLength = kDefaultTruncatedValuesLength,
     bool withValues = true,

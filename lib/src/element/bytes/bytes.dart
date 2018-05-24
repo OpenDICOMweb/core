@@ -133,7 +133,7 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
   static OBbytes fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
       (bytes.code == kPixelData)
-          ? OBbytesPixelData(bytes, ts, fragments)
+          ? new OBbytesPixelData(bytes, ts, fragments)
           : new OBbytes(bytes);
 
   static OBbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
@@ -167,7 +167,7 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
   static UNbytes fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
       (bytes.code == kPixelData)
-          ? UNbytesPixelData(bytes, ts, fragments)
+          ? new UNbytesPixelData(bytes, ts, fragments)
           : new UNbytes(bytes);
 
   static ByteElement fromValues(int code, List<int> vList,
@@ -241,7 +241,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
   static OWbytes fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
       (bytes.code == kPixelData)
-          ? OWbytesPixelData(bytes, ts, fragments)
+          ? new OWbytesPixelData(bytes, ts, fragments)
           : new OWbytes(bytes);
 
   static ByteElement fromValues(int code, List<int> vList,

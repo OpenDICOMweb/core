@@ -335,7 +335,6 @@ abstract class CS extends StringAscii {
   /// Returns a new [CS] [Element] containing only spaces.
   CS spaces([int n = 1]) => update([''.padRight(n)]);
 
-
   // **** Generalized static methods
 
   /// Returns _true_ if both [tag] and [vList] are valid for [CS].
@@ -472,7 +471,6 @@ abstract class UI extends StringAscii {
     values = toStringList(uidList);
     return old;
   }
-
 
   // **** Generalized static methods
 
@@ -695,9 +693,11 @@ abstract class DA extends StringBase {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (Date.isValidString(s, issues: issues))
+    return (s.isEmpty)
         ? true
-        : invalidString('Invalid Date String (DA): "$s"', issues);
+        : (Date.isValidString(s, issues: issues))
+            ? true
+            : invalidString('Invalid Date String (DA): "$s"', issues);
   }
 }
 

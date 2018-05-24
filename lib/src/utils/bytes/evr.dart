@@ -46,6 +46,7 @@ abstract class EvrBytes extends DicomBytes {
   int get vrIndex => vrIndexFromCode(vrCode);
   @override
   String get vrId => vrIdFromIndex(vrIndex);
+  VR get vr => vrByIndex[vrIndex];
 
   static const int kVROffset = 4;
 }
@@ -69,7 +70,7 @@ bd.length: ${_bd.lengthInBytes}
 
   EvrShortBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian) {
-/*
+
     final s = '''
    offset: ${bytes.offset}
    length: ${bytes.length}
@@ -80,7 +81,7 @@ bd.length: ${_bd.lengthInBytes}
    endian: ${endian == Endian.little ? 'little' : 'big'} 
     ''';
     print(s);
-*/
+
 
   }
 
@@ -134,7 +135,7 @@ class EvrLongBytes extends EvrBytes {
 
   EvrLongBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian) {
-/*
+
     final s = '''
    offset: ${bytes.offset}
    length: ${bytes.length}
@@ -145,7 +146,7 @@ bd.length: ${_bd.lengthInBytes}
    endian: ${endian == Endian.little ? 'little' : 'big'} 
     ''';
     print(s);
-*/
+
 
   }
 

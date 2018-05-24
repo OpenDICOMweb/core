@@ -41,7 +41,7 @@ typedef bool Condition(Dataset ds, Element e);
 Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
 
-final SimpleElementFormatter eFormat = new SimpleElementFormatter();
+final ElementFormatter eFormat = new DebugEFormatter();
 
 // All add, replace, and remove operations should
 // be done by calling add, replace, and remove methods in [Dataset].

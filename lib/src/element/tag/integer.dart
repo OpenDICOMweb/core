@@ -20,8 +20,6 @@ import 'package:core/src/value/uid/well_known/transfer_syntax.dart';
 class SStag extends SS with TagElement<int> {
   @override
   final Tag tag;
-  @override
-  Iterable<int> values;
 
   /// Creates an [SStag] Element.
   factory SStag(Tag tag, [Iterable<int> vList]) => new SStag._(tag, vList);
@@ -34,7 +32,14 @@ class SStag extends SS with TagElement<int> {
     return new SStag._x(tag, Int16.fromList(vList));
   }
 
-  SStag._x(this.tag, this.values) : assert(tag.vrIndex == kSSIndex);
+  SStag._x(this.tag, this._values) : assert(tag.vrIndex == kSSIndex);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   SStag update([Iterable<int> vList]) => new SStag._(tag, vList);
@@ -53,8 +58,6 @@ class SStag extends SS with TagElement<int> {
 class SLtag extends SL with TagElement<int> {
   @override
   final Tag tag;
-  @override
-  Iterable<int> values;
 
   /// Creates an [SLtag] Element.
   factory SLtag(Tag tag, [Iterable<int> vList]) => new SLtag._(tag, vList);
@@ -67,7 +70,14 @@ class SLtag extends SL with TagElement<int> {
     return new SLtag._x(tag, Int32.fromList(vList));
   }
 
-  SLtag._x(this.tag, this.values) : assert(tag.vrIndex == kSLIndex);
+  SLtag._x(this.tag, this._values) : assert(tag.vrIndex == kSLIndex);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   SLtag update([Iterable<int> vList]) => new SLtag._(tag, vList);
@@ -86,8 +96,6 @@ class SLtag extends SL with TagElement<int> {
 class OBtag extends OB with TagElement<int> {
   @override
   final Tag tag;
-  @override
-  Iterable<int> values;
   @override
   int vfLengthField;
 
@@ -108,8 +116,15 @@ class OBtag extends OB with TagElement<int> {
         : new OBtag._x(tag, v, v.length);
   }
 
-  OBtag._x(this.tag, this.values, this.vfLengthField)
+  OBtag._x(this.tag, this._values, this.vfLengthField)
       : assert(tag.vrIndex == kOBIndex || tag.vrIndex == kOBOWIndex);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   OBtag update([Iterable<int> vList = kEmptyIntList]) =>
@@ -138,8 +153,6 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
   @override
   final Tag tag = PTag.kPixelDataOB;
   @override
-  Iterable<int> values;
-  @override
   final int vfLengthField;
   @override
   final TransferSyntax ts;
@@ -160,7 +173,14 @@ class OBtagPixelData extends OBPixelData with TagElement<int> {
           ? new OBtagPixelData._x(Uint8.fromList(vList), vlf, ts)
           : badValues(vList, null, tag);
 
-  OBtagPixelData._x(this.values, this.vfLengthField, this.ts);
+  OBtagPixelData._x(this._values, this.vfLengthField, this.ts);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   OBtagPixelData update([Iterable<int> vList]) =>
@@ -186,8 +206,6 @@ class UNtag extends UN with TagElement<int> {
   @override
   final Tag tag;
   @override
-  Iterable<int> values;
-  @override
   final int vfLengthField;
 
   /// Creates an [UNtag] Element.
@@ -207,7 +225,14 @@ class UNtag extends UN with TagElement<int> {
         : new UNtag._x(tag, v, v.length);
   }
 
-  UNtag._x(this.tag, this.values, this.vfLengthField);
+  UNtag._x(this.tag, this._values, this.vfLengthField);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   UNtag update([Iterable<int> vList = kEmptyIntList]) => new UNtag(tag, vList);
@@ -235,8 +260,6 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
   @override
   final Tag tag = PTag.kPixelDataUN;
   @override
-  Iterable<int> values;
-  @override
   final int vfLengthField;
   @override
   final TransferSyntax ts;
@@ -257,7 +280,14 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
           ? new UNtagPixelData._x(Uint8.fromList(vList), vlf, ts)
           : badValues(vList, null, tag);
 
-  UNtagPixelData._x(this.values, this.vfLengthField, this.ts);
+  UNtagPixelData._x(this._values, this.vfLengthField, this.ts);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   UNtagPixelData update([Iterable<int> vList]) =>
@@ -282,8 +312,6 @@ class UNtagPixelData extends UNPixelData with TagElement<int> {
 class UStag extends US with TagElement<int> {
   @override
   final Tag tag;
-  @override
-  Iterable<int> values;
 
   /// Creates an [UStag] Element.
   factory UStag(Tag tag, [Iterable<int> vList]) => new UStag._(tag, vList);
@@ -297,7 +325,14 @@ class UStag extends US with TagElement<int> {
     return new UStag._x(tag, Uint16.fromList(vList));
   }
 
-  UStag._x(this.tag, this.values);
+  UStag._x(this.tag, this._values);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   UStag update([Iterable<int> vList]) => new UStag._(tag, vList);
@@ -318,8 +353,6 @@ class OWtag extends OW with TagElement<int> {
   @override
   final Tag tag;
   @override
-  Iterable<int> values;
-  @override
   final int vfLengthField;
 
   /// Creates an [OWtag] Element.
@@ -339,9 +372,16 @@ class OWtag extends OW with TagElement<int> {
         : new OWtag._x(tag, v, vlf);
   }
 
-  OWtag._x(this.tag, this.values, this.vfLengthField)
+  OWtag._x(this.tag, this._values, this.vfLengthField)
       : assert(tag.vrIndex == kOWIndex || tag.vrIndex == kOBOWIndex,
             'vrIndex: ${tag.vrIndex}');
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   OWtag update([Iterable<int> vList = kEmptyIntList]) => new OWtag(tag, vList);
@@ -369,8 +409,6 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
   @override
   final Tag tag = PTag.kPixelDataOW;
   @override
-  Iterable<int> values;
-  @override
   final int vfLengthField;
   @override
   final TransferSyntax ts;
@@ -392,7 +430,14 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
           ? new OWtagPixelData._x(Uint16.fromList(vList), vlf, ts)
           : badValues(vList, null, tag);
 
-  OWtagPixelData._x(this.values, this.vfLengthField, this.ts);
+  OWtagPixelData._x(this._values, this.vfLengthField, this.ts);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   OWtagPixelData update([Iterable<int> vList]) =>
@@ -415,8 +460,6 @@ class OWtagPixelData extends OWPixelData with TagElement<int> {
 class OLtag extends OL with TagElement<int> {
   @override
   final Tag tag;
-  @override
-  Iterable<int> values;
 
   /// Creates an [OLtag] Element.
   factory OLtag(Tag tag, [Iterable<int> vList]) => new OLtag._(tag, vList);
@@ -430,7 +473,14 @@ class OLtag extends OL with TagElement<int> {
     return new OLtag._x(tag, v);
   }
 
-  OLtag._x(this.tag, this.values) : assert(tag.vrIndex == kOLIndex);
+  OLtag._x(this.tag, this._values) : assert(tag.vrIndex == kOLIndex);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   OLtag update([Iterable<int> vList]) => new OLtag._(tag, vList);
@@ -448,8 +498,6 @@ class OLtag extends OL with TagElement<int> {
 class ULtag extends UL with TagElement<int> {
   @override
   final Tag tag;
-  @override
-  Iterable<int> values;
 
   /// Creates an [ULtag] Element.
   factory ULtag(Tag tag, [Iterable<int> vList]) => new ULtag._(tag, vList);
@@ -463,7 +511,14 @@ class ULtag extends UL with TagElement<int> {
     return new ULtag._x(tag, v);
   }
 
-  ULtag._x(this.tag, this.values) : assert(tag.vrIndex == kULIndex);
+  ULtag._x(this.tag, this._values) : assert(tag.vrIndex == kULIndex);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   ULtag update([Iterable<int> vList]) => new ULtag._(tag, vList);
@@ -512,8 +567,6 @@ class GLtag extends ULtag {
 class ATtag extends AT with TagElement<int> {
   @override
   final Tag tag;
-  @override
-  Iterable<int> values;
 
   /// Creates an [ATtag] Element.
   factory ATtag(Tag tag, [Iterable<int> vList]) => new ATtag._(tag, vList);
@@ -527,7 +580,14 @@ class ATtag extends AT with TagElement<int> {
     return new ATtag._x(tag, v);
   }
 
-  ATtag._x(this.tag, this.values) : assert(tag.vrIndex == kATIndex);
+  ATtag._x(this.tag, this._values) : assert(tag.vrIndex == kATIndex);
+
+  List<int> _values;
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) =>
+      _values = (vList is List) ? vList : vList.toList(growable: false);
 
   @override
   ATtag update([Iterable<int> vList]) => new ATtag._(tag, vList);

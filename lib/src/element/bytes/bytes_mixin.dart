@@ -16,6 +16,7 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
+import 'package:core/src/vr.dart';
 
 typedef Element DecodeBinaryVF(DicomBytes bytes, int vrIndex);
 
@@ -108,7 +109,8 @@ abstract class ByteElement<V> {
     final vrIndex = (isEvr) ? bytes.vrIndex : kUNIndex;
     final tag = _getTag(code, vrIndex, ds);
 
-    final tagVRIndex = tag.vrIndex;
+    final tagVRIndex =
+        (tag.vrIndex > kVRNormalIndexMax) ? vrIndex : tag.vrIndex;
     return _bytesMakers[tagVRIndex](bytes);
   }
 
@@ -140,7 +142,8 @@ abstract class ByteElement<V> {
     final vrIndex = bytes.vrIndex;
     assert(vrIndex >= 0 && vrIndex < 4);
     final tag = _getTag(code, vrIndex, ds);
-    final tagVRIndex = tag.vrIndex;
+    final tagVRIndex =
+        (tag.vrIndex > kVRNormalIndexMax) ? vrIndex : tag.vrIndex;
     return _undefinedBytesMakers[tagVRIndex](bytes, ds, vfLengthField);
   }
 
@@ -162,11 +165,15 @@ abstract class ByteElement<V> {
   }
 
   static Element makePixelDataFromDicomBytes(DicomBytes bytes,
-      [Dataset ds, TransferSyntax ts, VFFragments fragments]) {
+      [TransferSyntax ts, VFFragments fragments, Dataset ds]) {
     final code = bytes.code;
-    final tag = _getTag(code, bytes.vrIndex, ds);
+    final vrIndex = bytes.vrIndex;
+    assert(vrIndex >= 1 && vrIndex < 4);
+    final tag = _getTag(code, vrIndex, ds);
+    final tagVRIndex =
+    (tag.vrIndex > kVRNormalIndexMax) ? vrIndex : tag.vrIndex;
     if (code != kPixelData) return badCode(code, 'Not Pixel Data', tag);
-    return _undefinedBytesMakers[tag.vrIndex](bytes, ds, ts, fragments);
+    return _undefinedBytesMakers[tagVRIndex](bytes, ts, fragments);
   }
 
   /// Returns a new [Element] based on the arguments.
@@ -300,12 +307,11 @@ abstract class AsciiMixin {
   int get vfLength;
   DicomBytes get vfBytes;
 
-  bool allowInvalid = true;
+  bool get allowInvalid => global.allowInvalidAscii;
 
   String get vfString {
     final length = (hasPadding) ? vfLength - 1 : vfLength;
-    return vfBytes.getAscii(
-        length: length, allowInvalid: global.allowInvalidAscii);
+    return vfBytes.getAscii(length: length, allowInvalid: allowInvalid);
   }
 
   Iterable<String> get values => vfString.split('\\');
@@ -319,7 +325,7 @@ abstract class Utf8Mixin {
 
   int get length => _stringValuesLength(vfBytes);
 
-  bool allowMalformed = true;
+  bool get allowMalformed => global.allowMalformedUtf8;
 
   String get vfString {
     final vf = (hasPadding) ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
