@@ -66,9 +66,6 @@ void main() {
         throwsA(const isInstanceOf<InvalidValuesError>()));
   });
 
-  // Urgent Sharath: I think Uint16 should be in a separate file.
-  //       we should create test/values/integer/uint16 and similar for
-  //       this kind of test.
   test('Uint16 toByteData good values', () {
     global.level = Level.info;
     for (var i = 0; i < 10; i++) {

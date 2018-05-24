@@ -19,22 +19,70 @@ void main() {
   final rds = new ByteRootDataset.empty();
 
   group('DTbytes', () {
+    //VM.k1
+    const dtVM1Tags = const <int>[
+      kInstanceCoercionDateTime,
+      kContextGroupLocalVersion,
+      kRadiopharmaceuticalStartDateTime,
+      kFrameAcquisitionDateTime,
+      kDecayCorrectionDateTime,
+      kPerformedProcedureStepEndDateTime,
+      kParticipationDateTime,
+      kDateTime,
+      kTemplateVersion,
+      kProductExpirationDateTime,
+      kDigitalSignatureDateTime,
+      kAlarmDecisionTime,
+    ];
+
     test('DTbytes from VM.k1', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        final e0 = DTbytes.fromValues(kDateTime, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in dtVM1Tags) {
+          final e0 = DTbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('DTbytes from VM.k1 bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getTMList(1, 1);
+        for (var code in dtVM1Tags) {
+          global.throwOnError = false;
+          final e0 = DTbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, false);
+
+          global.throwOnError = true;
+          expect(() => e0.hasValidValues,
+              throwsA(const isInstanceOf<StringError>()));
+        }
+      }
+    });
+
+    test('DTbytes from VM.k1 bad length', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getDTList(2, i + 1);
+        for (var code in dtVM1Tags) {
+          global.throwOnError = false;
+          final e0 = DTbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, false);
+        }
       }
     });
 
     test('DTbytes from VM.k1_n', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, i);
         final e0 = DTbytes.fromValues(kSelectorDTValue, vList0);
@@ -42,6 +90,22 @@ void main() {
         final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('DTbytes from VM.k1_n bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getTMList(1, i);
+        global.throwOnError = false;
+        final e0 = DTbytes.fromValues(kSelectorDTValue, vList0);
+        log.debug('e0: $e0');
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+        log.debug('e1: $e1');
+        expect(e0.hasValidValues, false);
+
+        global.throwOnError = true;
+        expect(() => e0.hasValidValues,
+            throwsA(const isInstanceOf<StringError>()));
       }
     });
   });

@@ -257,9 +257,6 @@ void main() {
         expect(e0.values, equals(bytes0.asUint16List()));
 
         // Test Base64
-        // Urgent use vList1 of flush
-        final s0 = bytes0.getBase64();
-        final vList1 = Bytes.fromBase64(s0);
         final bytes1 = new Bytes.typedDataView(vList0);
         final e1 = UStag.fromBytes(bytes1, PTag.kRepresentativeFrameNumber);
         expect(e0 == e1, true);
