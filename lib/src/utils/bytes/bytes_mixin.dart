@@ -212,17 +212,36 @@ abstract class BytesMixin {
         : getInt64List(offset, length);
   }
 
+/*
   Uint8List asUint8List([int offset = 0, int length, int _]) {
     length ??= _bdLength - offset;
     return _bd.buffer.asUint8List(_absIndex(offset), length);
   }
+*/
+
+  // Allows the removal of padding characters.
+  Uint8List asUint8List([int offset = 0, int length, int padChar = 0]) {
+    assert(padChar == null || padChar == kSpace || padChar == kNull);
+    length ??= _bdLength;
+    if (length == 0) return kEmptyUint8List;
+    final index = _absIndex(offset);
+    final lastIndex = offset + length - 1;
+    final _length = _maybeRemoveNull(lastIndex, length, padChar);
+    return _bd.buffer.asUint8List(index, _length);
+  }
+
+  int _maybeRemoveNull(int lastIndex, int vfLength, [int padChar]) =>
+      (padChar != null && vfLength.isEven && _getUint8(lastIndex) == kNull)
+      ? lastIndex
+      : vfLength;
+
 
   /// If [offset] is aligned on an 8-byte boundary, returns a [Uint16List]
   /// view of the specified region; otherwise, creates a [Uint16List] that
   /// is a copy of the specified region and returns it.
   Uint16List asUint16List([int offset = 0, int length]) {
-    final index = _absIndex(offset);
     length ??= _length16(offset);
+    final index = _absIndex(offset);
     return (_isAligned16(index))
         ? _bd.buffer.asUint16List(index, length)
         : getUint16List(offset, length);
@@ -404,7 +423,7 @@ abstract class BytesMixin {
           int length,
           bool allowInvalid = true,
           int padChar = kSpace}) =>
-      _getAscii(offset, length, allowInvalid, padChar);
+      _getAscii(offset, length ?? _bdLength, allowInvalid, padChar);
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _ASCII_, and then _split_ing the
@@ -416,7 +435,7 @@ abstract class BytesMixin {
       bool allowInvalid: true,
       String separator = '\\',
       int padChar = kSpace}) {
-    final s = _getAscii(offset, length, allowInvalid, padChar);
+    final s = _getAscii(offset, length ?? _bdLength, allowInvalid, padChar);
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 

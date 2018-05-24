@@ -69,9 +69,9 @@ void main() {
       expect(wksI0.value == '1.2.840.10008.5.1.4.34.5', true);
       expect(wksI0.type == UidType.kSOPInstance, true);
       expect(wksI0 is SopInstance, true);
-      expect(wksI0.maxLength == 64, true);
-      expect(wksI0.minLength == 6, true);
-      expect(wksI0.maxRootLength == 24, true);
+      expect(wksI0.maxLength == kUidMaxLength, true);
+      expect(wksI0.minLength == kUidMinLength, true);
+      expect(wksI0.maxRootLength == kUidMaxRootLength, true);
     });
   });
 }

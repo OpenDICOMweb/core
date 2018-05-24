@@ -106,7 +106,7 @@ abstract class DS extends StringAscii {
   /// Returns _true_ if [tag] is valid for [DS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, DS);
+      isValidTagAux(tag, issues, kVRIndex, DS);
 
   /// Returns _true_ if [vrIndex] is valid for [DS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -274,7 +274,7 @@ abstract class IS extends StringAscii {
   /// Returns _true_ if [tag] is valid for [IS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, IS);
+      isValidTagAux(tag, issues, kVRIndex, IS);
 
   /// Returns _true_ if [vrIndex] is valid for [IS].
   /// If [doTestElementValidity] is _false_ then no checking is done.

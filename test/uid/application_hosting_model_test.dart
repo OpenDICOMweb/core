@@ -64,9 +64,9 @@ void main() {
       expect(ahm0.value == '1.2.840.10008.7.1.1', true);
       expect(ahm0.type == UidType.kCodingScheme, true);
       expect(ahm0 is ApplicationHostingModel, true);
-      expect(ahm0.maxLength == 64, true);
-      expect(ahm0.minLength == 6, true);
-      expect(ahm0.maxRootLength == 24, true);
+      expect(ahm0.maxLength == kUidMaxLength, true);
+      expect(ahm0.minLength == kUidMinLength, true);
+      expect(ahm0.maxRootLength == kUidMaxRootLength, true);
     });
   });
 }

@@ -58,9 +58,9 @@ void main() {
       expect(fr0.value == '1.2.840.10008.1.4.1.2', true);
       expect(fr0.type == UidType.kFrameOfReference, true);
       expect(fr0 is FrameOfReference, true);
-      expect(fr0.maxLength == 64, true);
-      expect(fr0.minLength == 6, true);
-      expect(fr0.maxRootLength == 24, true);
+      expect(fr0.maxLength == kUidMaxLength, true);
+      expect(fr0.minLength == kUidMinLength, true);
+      expect(fr0.maxRootLength == kUidMaxRootLength, true);
     });
   });
 }

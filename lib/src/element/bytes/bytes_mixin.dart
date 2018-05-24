@@ -89,21 +89,25 @@ abstract class ByteElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
+/*
   static PC _getPCFromBytes(DicomBytes bytes, int code) {
     final token = bytes.vfBytes.getUtf8();
     final tag = PCTag.lookupByToken(code, bytes.vrIndex, token);
     return new PCbytes(bytes);
   }
+*/
 
   static Tag _getTag(int code, int vrIndex, Dataset ds) => (ds != null)
       ? lookupTagByCode(code, vrIndex, ds)
       : Tag.lookupByCode(code, vrIndex);
 
-  static Element makeFromDicomBytes(DicomBytes bytes, Dataset ds) {
+  static Element makeFromDicomBytes(DicomBytes bytes, Dataset ds,
+      {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return new PCbytes(bytes);
+    final vrIndex = (isEvr) ? bytes.vrIndex : kUNIndex;
+    final tag = _getTag(code, vrIndex, ds);
 
-    final tag = _getTag(code, bytes.vrIndex, ds);
     final tagVRIndex = tag.vrIndex;
     return _bytesMakers[tagVRIndex](bytes);
   }
@@ -299,8 +303,9 @@ abstract class AsciiMixin {
   bool allowInvalid = true;
 
   String get vfString {
-    final vf = (hasPadding) ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
-    return vf.getAscii(allowInvalid: allowInvalid);
+    final length = (hasPadding) ? vfLength - 1 : vfLength;
+    return vfBytes.getAscii(
+        length: length, allowInvalid: global.allowInvalidAscii);
   }
 
   Iterable<String> get values => vfString.split('\\');

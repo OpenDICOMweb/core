@@ -109,9 +109,9 @@ void main() {
       expect(sop0.name == 'Verification SOP Class', true);
       expect(sop0.value == '1.2.840.10008.1.1', true);
       expect(sop0.type == UidType.kSOPClass, true);
-      expect(sop0.maxLength == 64, true);
-      expect(sop0.minLength == 6, true);
-      expect(sop0.maxRootLength == 24, true);
+      expect(sop0.maxLength == kUidMaxLength, true);
+      expect(sop0.minLength == kUidMinLength, true);
+      expect(sop0.maxRootLength == kUidMaxRootLength, true);
     });
   });
 }

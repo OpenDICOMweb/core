@@ -9,6 +9,14 @@
 part of odw.sdk.utils.bytes;
 
 abstract class DicomBytes extends Bytes with DicomMixin {
+  factory DicomBytes.view(Bytes bytes, int vrIndex,
+          {bool isEvr, int offset = 0, int end, Endian endian}) =>
+      (!isEvr)
+          ? new IvrBytes.view(bytes, offset, end, endian)
+          : (vrIndex >= 0 && vrIndex <= kVREvrLongIndexMax)
+              ? EvrLongBytes.view(bytes, offset, end, endian)
+              : EvrShortBytes.view(bytes, offset, end, endian);
+
   DicomBytes._(int length, Endian endian) : super._(length, endian);
 
   DicomBytes.from(Bytes bytes, int start, int end, Endian endian)
@@ -31,7 +39,7 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   @override
   String toString() {
     final vlf = vfLengthField;
-    '$runtimeType(${_bd.lengthInBytes}) ${dcm(code)} ${hex16(vrCode)} '
+    return '$runtimeType(${_bd.lengthInBytes}) ${dcm(code)} ${hex16(vrCode)} '
         '$vlf(${hex32(vlf)}) $vfBytes';
   }
 

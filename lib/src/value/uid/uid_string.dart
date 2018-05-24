@@ -12,7 +12,7 @@ import 'package:core/src/value/uuid.dart';
 
 /// Useful utilities for working with [Uid] [String]s.
 
-const int kUidMinLength = 6;
+const int kUidMinLength = 9;
 const int kUidMaxLength = 64;
 const int kUidMaxRootLength = 24;
 
@@ -22,7 +22,7 @@ final RegExp uidRegex = new RegExp(_uidRegExpString);
 bool _isValidLength(int length) =>
     kUidMinLength <= length && length <= kUidMaxLength;
 
-/// Returns [s0] if it is a valid [Uid] [String]; otherwise, _null_.
+/// Returns [s] if it is a valid [Uid] [String]; otherwise, _null_.
 bool isValidUidString(String s) {
   if (s == null || !_isValidLength(s.length) || !kUidRoots.contains(s[0]))
     return false;

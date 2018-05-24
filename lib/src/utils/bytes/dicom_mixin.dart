@@ -220,16 +220,16 @@ abstract class DicomMixin {
   // Allows the removal of padding characters.
   Uint8List asUint8List([int offset = 0, int length, int padChar = 0]) {
     assert(padChar == null || padChar == kSpace || padChar == kNull);
-    length ??= vfLength;
-    final index = _absIndex(vfOffset + offset);
-    final lastIndex = length - 1;
+    length ??= eLength;
+    final index = _absIndex(offset);
+    final lastIndex = offset + length - 1;
     final _length = _maybeRemoveNull(lastIndex, length, padChar);
     return _bd.buffer.asUint8List(index, _length);
   }
 
   int _maybeRemoveNull(int lastIndex, int vfLength, [int padChar]) =>
       (padChar != null && vfLength.isEven && _getUint8(lastIndex) == kNull)
-          ? lastIndex
+          ? vfLength - 1
           : vfLength;
 
   @override

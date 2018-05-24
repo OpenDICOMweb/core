@@ -237,8 +237,19 @@ $i: $x | $y')
   static final Bytes kEmptyBytes = new Bytes(0);
 
   /// Returns a [Bytes] containing the Base64 decoding of [s].
-  static Bytes fromBase64(String s) =>
-      (s.isEmpty) ? kEmptyBytes : new Bytes.typedDataView(base64.decode(s));
+  static Bytes fromBase64(String s) {
+    if (s.isEmpty) return kEmptyBytes;
+    var bList = base64.decode(s);
+    final bLength = bList.length;
+    if (bLength.isOdd) {
+      // Performance: It would be good to ignore this copy
+      final nList = new Uint8List(bLength + 1);
+      for (var i = 0; i < bLength -1; i++) nList[i] = bList[i];
+      nList[bLength] = 0;
+      bList = nList;
+    }
+    return new Bytes.typedDataView(bList);
+  }
 
   /// Returns a [Bytes] containing the ASCII encoding of [s].
   static Bytes fromAscii(String s) =>

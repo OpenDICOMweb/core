@@ -98,7 +98,7 @@ abstract class LO extends Utf8 {
   /// Returns _true_ if [tag] is valid for [LO].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, LO);
+      isValidTagAux(tag, issues, kVRIndex, LO);
 
   /// Returns _true_ if [vrIndex] is valid for [LO].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -244,7 +244,7 @@ abstract class PN extends Utf8 {
   /// Returns _true_ if [tag] is valid for [PN].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, PN);
+      isValidTagAux(tag, issues, kVRIndex, PN);
 
   /// Returns _true_ if [vrIndex] is valid for [PN].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -343,7 +343,7 @@ abstract class SH extends Utf8 {
   /// Returns _true_ if [tag] is valid for [SH].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, SH);
+      isValidTagAux(tag, issues, kVRIndex, SH);
 
   /// Returns _true_ if [vrIndex] is valid for [SH].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -447,7 +447,7 @@ abstract class UC extends Utf8 {
   /// Returns _true_ if [tag] is valid for [UC].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, UC);
+      isValidTagAux(tag, issues, kVRIndex, UC);
 
   /// Returns _true_ if [vrIndex] is valid for [UC].
   /// If [doTestElementValidity] is _false_ then no checking is done.

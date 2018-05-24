@@ -67,9 +67,10 @@ void main() {
       expect(msc0.type == UidType.kMetaSOPClass, true);
       expect(msc0 is MetaSopClass, true);
       expect(msc0 is MetaSopClass, true);
-      expect(msc0.maxLength == 64, true);
-      expect(msc0.minLength == 6, true);
-      expect(msc0.maxRootLength == 24, true);
+      print('msc0: ${msc0.minLength}');
+      expect(msc0.maxLength == kUidMaxLength, true);
+      expect(msc0.minLength == kUidMinLength, true);
+      expect(msc0.maxRootLength == kUidMaxRootLength, true);
     });
   });
 }

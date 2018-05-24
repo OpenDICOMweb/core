@@ -46,7 +46,7 @@ class Uid {
     if (s == null) {
       v = _generator();
     } else {
-      v =cleanUidString(s);
+      v = cleanUidString(s);
       final wk = wellKnownUids[v];
       if (wk != null) return wk;
       if (!isValidUidString(v)) return invalidUidString(v);
@@ -105,10 +105,10 @@ class Uid {
   // **** Static Getters and Methods
 
   //TODO: What should minimum be?
-  static const int kUidMinLength = 6;
-  static const int kUidMaxLength = 64;
+  static const int kMinLength = kUidMinLength;
+  static const int kMaxLength = kUidMaxLength;
   //TODO: What should this value be?
-  static const int kUidMaxRootLength = 24;
+  static const int kMaxRootLength = kUidMaxRootLength;
 
   /// An empty [List<Uid>].
   static const List<Uid> kEmptyList = const <Uid>[];
@@ -165,15 +165,10 @@ class Uid {
   /// be used. This is preferable to to throwing and then immediately
   /// catching the FormatException.
   static Uid parse(String s, {OnUidParseError onError}) {
-    if (!Uid.isValidString(s)) {
-      if (onError != null) {
-        return onError(s);
-      } else {
-        return invalidUidString(s);
-      }
-    }
-    final wk = wellKnownUids[s];
-    return (wk != null) ? wk : new Uid(s);
+    final uid = tryParse(s);
+    return (uid != null)
+        ? uid
+        : (onError != null) ? onError(s) : invalidUidString(s);
   }
 
   /// Tries to parse [s] as [Uid] and return its value.
@@ -186,8 +181,10 @@ class Uid {
   /// If [s] is not a valid [Uid] null is returns
   static Uid tryParse(String s) {
     final v = cleanUidString(s);
+    print('tryParse "$s" cleanUid: "$v"');
+
     if (Uid.isValidString(v)) {
-      final wk = wellKnownUids[s];
+      final wk = wellKnownUids[v];
       return (wk != null) ? wk : new Uid(v);
     }
     return null;

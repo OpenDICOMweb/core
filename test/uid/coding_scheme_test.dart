@@ -64,9 +64,9 @@ void main() {
       expect(cs0.value == '1.2.840.10008.2.16.5', true);
       expect(cs0.type == UidType.kCodingScheme, true);
       expect(cs0 is CodingSchemeUid, true);
-      expect(cs0.maxLength == 64, true);
-      expect(cs0.minLength == 6, true);
-      expect(cs0.maxRootLength == 24, true);
+      expect(cs0.maxLength == kUidMaxLength, true);
+      expect(cs0.minLength == kUidMinLength, true);
+      expect(cs0.maxRootLength == kUidMaxRootLength, true);
     });
   });
 }

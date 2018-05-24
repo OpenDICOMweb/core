@@ -27,9 +27,9 @@ abstract class EvrBytes extends DicomBytes {
   factory EvrBytes.view(
       Bytes bytes, int start, int vrIndex, int end, Endian endian) {
     if (vrIndex >= kVREvrShortIndexMin && vrIndex <= kVREvrShortIndexMax) {
-      return new EvrShortBytes.view(bytes, start, end);
+      return new EvrShortBytes.view(bytes, start, end, endian);
     } else if (vrIndex >= kVRIndexMin && vrIndex <= kVREvrLongIndexMax) {
-      return new EvrLongBytes.view(bytes, start, end);
+      return new EvrLongBytes.view(bytes, start, end, endian);
     } else {
       return badVRIndex(vrIndex, null, null, null);
     }

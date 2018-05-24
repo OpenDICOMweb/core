@@ -85,7 +85,7 @@ bool invalidUVFLength(
   return false;
 }
 
-bool isValidTag_(Tag tag, Issues issues, int targetVRIndex, Type type) =>
+bool isValidTagAux(Tag tag, Issues issues, int targetVRIndex, Type type) =>
     (tag != null && tag.vrIndex == targetVRIndex)
         ? true
         : invalidTag(tag, issues, type);

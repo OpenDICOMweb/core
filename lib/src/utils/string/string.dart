@@ -34,7 +34,7 @@ Iterable<String> splitTrim(String s, String separator, [End trim]) =>
     s.split(separator).map((s) => trimWhitespace(s, trim));
 
 String removeNullPadding(String s) {
-  int lastIndex = s.length - 1;
+  final lastIndex = s.length - 1;
   return (s.codeUnitAt(lastIndex) == kNull) ? s.substring(0, lastIndex) : s;
 }
 

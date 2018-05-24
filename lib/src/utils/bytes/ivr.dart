@@ -24,7 +24,7 @@ class IvrBytes extends DicomBytes {
 bd.offset: ${_bd.offsetInBytes}  
 bd.length: ${_bd.lengthInBytes}    
    endian: ${endian == Endian.little ? 'little' : 'big'} 
-    ''';
+''';
     print(s);
   }
 

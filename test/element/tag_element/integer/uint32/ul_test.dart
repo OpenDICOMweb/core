@@ -354,9 +354,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList);
+        print('bytes: $bytes0');
         final s = bytes0.getBase64();
+        print('s: "$s"');
         final bytes1 = Bytes.fromBase64(s);
+        print('bytes: $bytes1');
         final e0 = ULtag.fromBytes(bytes1, PTag.kNumberOfWaveformSamples);
+        print(e0);
         expect(e0.hasValidValues, true);
       }
     });

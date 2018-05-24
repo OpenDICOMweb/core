@@ -54,9 +54,9 @@ void main() {
       expect(ldo0.value == '1.2.840.10008.15.0.3.1', true);
       expect(ldo0.type == UidType.kLdapOid, true);
       expect(ldo0 is LdapOid, true);
-      expect(ldo0.maxLength == 64, true);
-      expect(ldo0.minLength == 6, true);
-      expect(ldo0.maxRootLength == 24, true);
+      expect(ldo0.maxLength == kUidMaxLength, true);
+      expect(ldo0.minLength == kUidMinLength, true);
+      expect(ldo0.maxRootLength == kUidMaxRootLength, true);
     });
   });
 }

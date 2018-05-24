@@ -61,9 +61,9 @@ void main() {
       expect(sc0.value == '1.2.840.10008.4.2', true);
       expect(sc0.type == UidType.kServiceClass, true);
       expect(sc0 is ServiceClass, true);
-      expect(sc0.maxLength == 64, true);
-      expect(sc0.minLength == 6, true);
-      expect(sc0.maxRootLength == 24, true);
+      expect(sc0.maxLength == kUidMaxLength, true);
+      expect(sc0.minLength == kUidMinLength, true);
+      expect(sc0.maxRootLength == kUidMaxRootLength, true);
     });
   });
 }

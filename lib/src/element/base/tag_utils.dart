@@ -95,7 +95,9 @@ bool _isPDCode(int code) {
   return (bits >= 0x11000 && bits <= 0x1FF00);
 }
 
+/*
 Tag _getPCtagFromCode(int code, Iterable values, int vrIndex) {
   final String token = values.elementAt(0);
   return PCTag.lookupByToken(code, kLOIndex, token);
 }
+*/

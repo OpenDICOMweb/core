@@ -170,7 +170,7 @@ void main() {
         final e0 =
             FDbytes.fromValues(kOverallTemplateSpatialTolerance, floatList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -190,7 +190,7 @@ void main() {
         final e1= ByteElement.makeFromCode(rds, fd1.code, bd1);
         log.debug('e0:$e0');
 */
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }

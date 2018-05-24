@@ -200,7 +200,7 @@ abstract class SL extends IntBase with Int32 {
   /// Returns _true_ if [tag] is valid for [SL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, SL);
+      isValidTagAux(tag, issues, kVRIndex, SL);
 
   /// Returns _true_ if [vrIndex] is valid for [SL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -784,7 +784,7 @@ abstract class AT extends IntBase with Uint32 {
   /// Returns _true_ if [tag] is valid for [AT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kATIndex, AT);
+      isValidTagAux(tag, issues, kATIndex, AT);
 
   /// Returns _true_ if [vrIndex] is valid for [AT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -886,7 +886,7 @@ abstract class OL extends IntBase with Uint32 {
   /// Returns _true_ if [tag] is valid for [OL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kOLIndex, OL);
+      isValidTagAux(tag, issues, kOLIndex, OL);
 
   /// Returns _true_ if [vrIndex] is valid for [OL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -986,7 +986,7 @@ abstract class UL extends IntBase with Uint32 {
   /// Returns _true_ if [tag] is valid for [UL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kULIndex, UL);
+      isValidTagAux(tag, issues, kULIndex, UL);
 
   /// Returns _true_ if [vrIndex] is valid for [UL].
   /// If [doTestElementValidity] is _false_ then no checking is done.

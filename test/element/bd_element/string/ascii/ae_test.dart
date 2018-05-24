@@ -33,7 +33,7 @@ void main() {
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes == bytes, true);
 
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
         log..debug('e1: $e1')..debug('vList: $vList')..debug('bd: $bytes');
         expect(e1.hasValidValues, true);
         expect(e1 == e0, true);
@@ -65,7 +65,7 @@ void main() {
         log.debug('ae1:$e0');
         expect(e0, isNull);
 /*
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds);
+        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1:$e1');
         expect(e1.hasValidValues, true);
         expect(e0 == e1, true);

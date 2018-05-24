@@ -112,7 +112,7 @@ abstract class AE extends StringAscii {
   /// Returns _true_ if [tag] is valid for [AE].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, AE);
+      isValidTagAux(tag, issues, kVRIndex, AE);
 
   /// Returns _true_ if [vrIndex] is valid for [AE].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -240,7 +240,7 @@ abstract class AS extends StringAscii {
   /// Returns _true_ if [tag] is valid for [AS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, AS);
+      isValidTagAux(tag, issues, kVRIndex, AS);
 
   /// Returns _true_ if [vrIndex] is valid for [AS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -361,7 +361,7 @@ abstract class CS extends StringAscii {
   /// Returns _true_ if [tag] is valid for [CS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, CS);
+      isValidTagAux(tag, issues, kVRIndex, CS);
 
   /// Returns _true_ if [vrIndex] is valid for [CS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -499,7 +499,7 @@ abstract class UI extends StringAscii {
   /// Returns _true_ if [tag] is valid for [UI].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, UI);
+      isValidTagAux(tag, issues, kVRIndex, UI);
 
   /// Returns _true_ if [vrIndex] is valid for [UI].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -546,7 +546,7 @@ abstract class UI extends StringAscii {
   /// Returns _true_ if both [tag] is valid for [UI].
   /// [Uid]s are guaranteed to be valid.
   static bool isValidUidArgs(Tag tag, Iterable<Uid> vList, [Issues issues]) =>
-      isValidTag_(tag, issues, kUIIndex, UI);
+      isValidTagAux(tag, issues, kUIIndex, UI);
 
   static List<String> toStringList(Iterable<Uid> uids) {
     final sList = new List<String>(uids.length);
@@ -658,7 +658,7 @@ abstract class DA extends StringBase {
   /// Returns _true_ if [tag] is valid for [DA].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, DA);
+      isValidTagAux(tag, issues, kVRIndex, DA);
 
   /// Returns _true_ if [vrIndex] is valid for [DA].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -778,7 +778,7 @@ abstract class DT extends StringBase {
   /// Returns _true_ if [tag] is valid for [DT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, DT);
+      isValidTagAux(tag, issues, kVRIndex, DT);
 
   /// Returns _true_ if [vrIndex] is valid for [DT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -904,7 +904,7 @@ abstract class TM extends StringBase {
   /// Returns _true_ if [tag] is valid for [TM].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, TM);
+      isValidTagAux(tag, issues, kVRIndex, TM);
 
   /// Returns _true_ if [vrIndex] is valid for [TM].
   /// If [doTestElementValidity] is _false_ then no checking is done.

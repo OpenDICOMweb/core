@@ -101,7 +101,8 @@ abstract class TagElement<V> {
 
   /// Creates a [TagElement] from [DicomBytes] containing a binary encoded
   /// [Element].
-  static Element makeFromDicomBytes(DicomBytes bytes, Dataset ds) {
+  static Element makeFromDicomBytes(DicomBytes bytes, Dataset ds, {bool
+  isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return _getPCTagFromBytes(bytes, code);
 

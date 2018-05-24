@@ -105,7 +105,7 @@ abstract class LT extends Text {
   /// Returns _true_ if [tag] is valid for [LT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, LT);
+      isValidTagAux(tag, issues, kVRIndex, LT);
 
   /// Returns _true_ if [vrIndex] is valid for [LT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -204,7 +204,7 @@ abstract class ST extends Text {
   /// Returns _true_ if [tag] is valid for [ST].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, ST);
+      isValidTagAux(tag, issues, kVRIndex, ST);
 
   /// Returns _true_ if [vrIndex] is valid for [ST].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -314,7 +314,7 @@ abstract class UR extends Text {
   /// Returns _true_ if [tag] is valid for [UR].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, UR);
+      isValidTagAux(tag, issues, kVRIndex, UR);
 
   /// Returns _true_ if [vrIndex] is valid for [UR].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -438,7 +438,7 @@ abstract class UT extends Text {
   /// Returns _true_ if [tag] is valid for [UT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidTag(Tag tag, [Issues issues]) =>
-      isValidTag_(tag, issues, kVRIndex, UT);
+      isValidTagAux(tag, issues, kVRIndex, UT);
 
   /// Returns _true_ if [vrIndex] is valid for [UT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
