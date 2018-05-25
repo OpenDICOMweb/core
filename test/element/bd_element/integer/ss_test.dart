@@ -19,15 +19,40 @@ void main() {
   final rds = new ByteRootDataset.empty();
 
   group('SSbytes', () {
+    //VM.k1
+    const ssVM1Tags = const <int>[
+      kTagAngleSecondAxis,
+      kExposureControlSensingRegionLeftVerticalEdge,
+      kExposureControlSensingRegionRightVerticalEdge,
+      kExposureControlSensingRegionUpperHorizontalEdge,
+      kExposureControlSensingRegionLowerHorizontalEdge,
+      kPixelIntensityRelationshipSign,
+      kTIDOffset,
+      kOCTZOffsetCorrection,
+    ];
+
+    //VM.k2
+    const ssVM2Tags = const <int>[
+      kOverlayOrigin,
+      kAbstractPriorValue,
+      kVisualAcuityModifiers,
+      kCenterOfCircularExposureControlSensingRegion
+    ];
+
+    //VM.k1_n
+    const ssVM1_nTags = const <int>[kSelectorSSValue];
+
     test('SSbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 1);
         global.throwOnError = false;
-        final e0 = SSbytes.fromValues(kTIDOffset, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in ssVM1Tags) {
+          final e0 = SSbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
 
@@ -35,11 +60,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(2, 2);
         global.throwOnError = false;
-        final e0 = SSbytes.fromValues(kOverlayOrigin, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in ssVM2Tags) {
+          final e0 = SSbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
 
@@ -47,12 +74,14 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.int16List(1, i);
         global.throwOnError = false;
-        final e0 = SSbytes.fromValues(kSelectorSSValue, vList0);
-        log.debug('e0: $e0');
+        for (var code in ssVM1_nTags) {
+          final e0 = SSbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
 
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
   });
