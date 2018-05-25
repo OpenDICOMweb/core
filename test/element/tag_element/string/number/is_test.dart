@@ -371,7 +371,7 @@ void main() {
       global.throwOnError = true;
       expect(
           () => IStag.fromValues(PTag.kWaveformChannelNumber, <String>[null]),
-          throwsA(const isInstanceOf<StringError>()));
+          throwsA(const isInstanceOf<InvalidValuesError>()));
     });
 
     test('IS checkLength good values', () {

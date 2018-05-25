@@ -151,7 +151,7 @@ class DStag extends DS with TagElement<String> {
 
   static DStag fromBytes(Bytes bytes, Tag tag) =>
       (DS.isValidBytesArgs(tag, bytes))
-          ? new DStag._(tag, bytes.getAsciiList())
+          ? new DStag._x(tag, bytes.getAsciiList())
           : badTag(tag, null, DS);
 }
 
@@ -161,11 +161,14 @@ class IStag extends IS with TagElement<String> {
   List<String> _values;
 
   factory IStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (IS.isValidArgs(tag, vList))
-          ? new IStag._(tag, vList)
-          : badValues(vList, null, tag);
+      new IStag._(tag, vList);
 
-  IStag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  factory IStag._(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
+      (IS.isValidArgs(tag, vList))
+      ? new IStag._x(tag, vList)
+      : badValues(vList, null, tag);
+
+  IStag._x(this.tag, Iterable<String> values) : _values = _toValues(values);
 
   @override
   Iterable<String> get values => _values;
@@ -176,17 +179,13 @@ class IStag extends IS with TagElement<String> {
   IStag update([Iterable<String> vList = kEmptyStringList]) =>
       new IStag(tag, vList ?? kEmptyStringList);
 
-  static IStag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new IStag(tag, vList ?? kEmptyStringList);
+  static IStag fromValues(Tag tag, Iterable<String> vList) =>
+      new IStag._(tag, vList ?? kEmptyStringList);
 
-  static IStag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static IStag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static IStag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!IS.isValidTag(tag)) ? null : new IStag._(tag, bytes.getAsciiList());
+  static IStag fromBytes(Bytes bytes, Tag tag) =>
+      (IS.isValidBytesArgs(tag, bytes))
+      ? new IStag._x(tag, bytes.getAsciiList())
+      : badTag(tag, null, IS);
 }
 
 /// A Long String (LO) Element

@@ -536,6 +536,7 @@ abstract class UI extends StringAscii {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
+    if (s.isEmpty) return true;
     return (Uid.isValidString(s))
         ? true
         : invalidString('Invalid Unique Identifier String (UI): "$s"', issues);
@@ -943,6 +944,7 @@ abstract class TM extends StringBase {
     // Note: isNotValidValueLength checks for null
     if (s == null || !isValidValueLength(s, issues)) return false;
     final s0 = s.trimRight();
+    if (s0.isEmpty) return true;
     return (Time.isValidString(s0, issues: issues))
         ? true
         : invalidString('Invalid Time String (TM): "$s0"', issues);

@@ -96,6 +96,5 @@ String cleanUidString(String s) {
   if (s.codeUnitAt(last) == _kNull) end--;
 
   for (; end > start; end--) if (s.codeUnitAt(end) != _kSpace) break;
-  print('"$s" start: $start end: $end length: $length');
   return (start == 0 && end == last) ? s : s.substring(start, end + 1);
 }

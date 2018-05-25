@@ -181,8 +181,6 @@ class Uid {
   /// If [s] is not a valid [Uid] null is returns
   static Uid tryParse(String s) {
     final v = cleanUidString(s);
-    print('tryParse "$s" cleanUid: "$v"');
-
     if (Uid.isValidString(v)) {
       final wk = wellKnownUids[v];
       return (wk != null) ? wk : new Uid(v);

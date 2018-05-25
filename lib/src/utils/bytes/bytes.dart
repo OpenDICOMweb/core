@@ -210,9 +210,9 @@ $i: $x | $y')
     return (group << 16) + elt;
   }
 
-  int get vrCode => _getUint16(4);
+  int get vrCode => (_getUint8(4) << 8) + _getUint8(5);
 
-  int get vrIndex => vrIndexByCode[vrCode];
+  int get vrIndex => vrIndexByCode8Bit[vrCode];
   // **** End of DIcom extensions.
 
   static const int kMinLength = 16;

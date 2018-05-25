@@ -116,8 +116,7 @@ bool isStringVR(int vrIndex) =>
 bool isShortStringVR(int vrIndex) =>
     vrIndex >= kVRDefinedLongIndexMin && vrIndex <= kVRNormalIndexMax;
 
-bool isLongStringVR(int vrIndex) =>
-    vrIndex >= kUCIndex && vrIndex <= kUTIndex;
+bool isLongStringVR(int vrIndex) => vrIndex >= kUCIndex && vrIndex <= kUTIndex;
 
 /// Returns _true_ if the VR with _vrIndex_
 /// is, by definition, always a valid length.
@@ -191,7 +190,6 @@ const List<String> vrNameByIndex = const <String>[
   'Unsigned Short',
 ];
 
-
 const List<int> vrCodeByIndex = const <int>[
   // Begin maybe undefined length
   kSQCode, // Sequence == 0,
@@ -235,7 +233,68 @@ static const Map<int, VR> vrByCode = const <int, VR>{
 };
 */
 
+// Const [VR.code]s as 16-bit littleendian values.
+// This allows the code to be retrieved in one instruction instead of two.
+const int kAECode = 0x4145;
+const int kASCode = 0x4153;
+const int kATCode = 0x4154;
+const int kCSCode = 0x4353;
 
+const int kDACode = 0x4441;
+const int kDSCode = 0x4453;
+const int kDTCode = 0x4454;
+const int kFDCode = 0x4644;
+
+const int kFLCode = 0x464c;
+const int kISCode = 0x4953;
+const int kLOCode = 0x4c4f;
+const int kLOMaxLength = 64;
+const int kLTCode = 0x4c54;
+
+const int kLTMaxLength = 10240;
+const int kOBCode = 0x4f42;
+const int kODCode = 0x4f44;
+const int kOFCode = 0x4f46;
+const int kOLCode = 0x4f4c;
+
+const int kOWCode = 0x4f57;
+const int kPNCode = 0x504e;
+const int kSHCode = 0x5348;
+const int kSHMaxLength = 16;
+const int kSLCode = 0x534c;
+
+const int kSQCode = 0x5351;
+const int kSSCode = 0x5353;
+const int kSTCode = 0x5354;
+const int kSTMaxLength = 1024;
+const int kTMCode = 0x544d;
+
+const int kUCCode = 0x5543;
+const int kUCMaxLength = kMaxLongVF;
+const int kUICode = 0x5549;
+const int kULCode = 0x554c;
+const int kUNCode = 0x554e;
+
+const int kURCode = 0x5552;
+const int kUSCode = 0x5553;
+const int kUTCode = 0x5554;
+const int kUTMaxLength = kMaxLongVF;
+
+const Map<int, int> vrIndexByCode8Bit = const <int, int>{
+  kAECode: kAEIndex, kASCode: kASIndex, kATCode: kATIndex, kCSCode: kCSIndex,
+  kDACode: kDAIndex, kDSCode: kDSIndex, kDTCode: kDTIndex, kFDCode: kFDIndex,
+  kFLCode: kFLIndex, kISCode: kISIndex, kLOCode: kLOIndex, kLTCode: kLTIndex,
+  kOBCode: kOBIndex, kODCode: kODIndex, kOFCode: kOFIndex, kOLCode: kOLIndex,
+  kOWCode: kOWIndex, kPNCode: kPNIndex, kSHCode: kSHIndex, kSLCode: kSLIndex,
+  kSQCode: kSQIndex, kSSCode: kSSIndex, kSTCode: kSTIndex, kTMCode: kTMIndex,
+  kUCCode: kUCIndex, kUICode: kUIIndex, kULCode: kULIndex, kUNCode: kUNIndex,
+  kURCode: kURIndex, kUSCode: kUSIndex, kUTCode: kUTIndex // No reformat
+};
+
+int vrIndexFromCode(int vrCode) => vrIndexByCode8Bit[vrCode];
+String vrIdFromCode(int vrCode) => vrIdByIndex[vrIndexByCode8Bit[vrCode]];
+
+/*
 // Const [VR.code]s as 16-bit littleendian values.
 // This allows the code to be retrieved in one instruction instead of two.
 const int kAECode = 0X4541;
@@ -276,8 +335,6 @@ const int kUSCode = 0X5355;
 const int kUTCode = 0X5455;
 const int kUTMaxLength = kMaxLongVF;
 
-int vrIndexFromCode(int vrCode) => vrIndexByCode8Bit[vrCode];
-String vrIdFromCode(int vrCode) => vrIdByIndex[vrIndexByCode8Bit[vrCode]];
 
 const Map<int, int> vrIndexByCode16BitLE = const <int, int>{
   0x4541: kAEIndex, 0x5341: kASIndex, 0x5441: kATIndex, 0x5343: kCSIndex,
@@ -289,16 +346,4 @@ const Map<int, int> vrIndexByCode16BitLE = const <int, int>{
   0x4355: kUCIndex, 0x4955: kUIIndex, 0x4c55: kULIndex, 0x4e55: kUNIndex,
   0x5255: kURIndex, 0x5355: kUSIndex, 0x5455: kUTIndex // No reformat
 };
-
-const Map<int, int> vrIndexByCode8Bit = const <int, int>{
-  0x4145: kAEIndex, 0x4153: kASIndex, 0x4154: kATIndex, 0x4353: kCSIndex,
-  0x4441: kDAIndex, 0x4453: kDSIndex, 0x4454: kDTIndex, 0x4644: kFDIndex,
-  0x464c: kFLIndex, 0x4953: kISIndex, 0x4c4f: kLOIndex, 0x4c54: kLTIndex,
-  0x4f42: kOBIndex, 0x4f44: kODIndex, 0x4f46: kOFIndex, 0x4f4c: kOLIndex,
-  0x4f57: kOWIndex, 0x504e: kPNIndex, 0x5348: kSHIndex, 0x534c: kSLIndex,
-  0x5351: kSQIndex, 0x5353: kSSIndex, 0x5354: kSTIndex, 0x544d: kTMIndex,
-  0x5543: kUCIndex, 0x5549: kUIIndex, 0x554c: kULIndex, 0x554e: kUNIndex,
-  0x5552: kURIndex, 0x5553: kUSIndex, 0x5554: kUTIndex // No reformat
-};
-
-
+*/

@@ -151,7 +151,9 @@ class DebugEFormatter extends ElementFormatter with ByteElementMixin {
     assert(values != null);
     final length = values.length;
     final vLength = (e.hasValidLength) ? '' : '-*Invalid Length*';
-    final valid = (e.hasValidValues) ? '' : '*Bad Values*';
+    // TODO: fix later
+//    final valid = (e.hasValidValues) ? '' : '*Bad Values*';
+    const valid =  '';
     final vList = (length > max) ? values.take(max) : values;
     sb.write('$valid($length$vLength)[${vList.join(', ')}]');
   }

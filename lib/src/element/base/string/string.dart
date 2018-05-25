@@ -130,44 +130,6 @@ abstract class StringBase extends Element<String> {
   bool checkValues(Iterable<String> vList, [Issues issues]) =>
       super.checkValues(vList, issues);
 
-/*
-  /// _Deprecated_: Used DicomBytes.toAsciiList or DicomBytes.toUtfList instead.
-  /// Returns a [Iterable<String>] from [vfBytes].
-  // Design Note:
-  //   - [vfBytes] MUST have any padding character removed.
-  @deprecated
-  Iterable<String> decodeBinaryStringVF(Uint8List vfBytes, int maxVFLength,
-      {bool isAscii = true}) {
-    if (vfBytes.isEmpty) return kEmptyStringList;
-    final allow = global.allowInvalidCharacterEncodings;
-    final s = (isAscii || global.useAscii)
-        ? ascii.decode(vfBytes, allowInvalid: allow)
-        : utf8.decode(vfBytes, allowMalformed: allow);
-    return s.split('\\');
-  }
-*/
-
-/*
-
-  /// _Deprecated_: Used DicomBytes.toAscii or DicomBytes.toUtf instead.
-  /// Returns a [Iterable<String>] of length 0 or 1 from [vfBytes].
-  // Design Note:
-  //   - [vfBytes] MUST have any padding character removed.
-  @deprecated
-  static Iterable<String> decodeBinaryTextVF(Uint8List vfBytes, int maxVFLength,
-      {bool isAscii = true}) {
-    if (vfBytes.isEmpty) return kEmptyStringList;
-    final length = vfBytes.length;
-    isValidValueFieldS
-    if (!inRange(length, 0, maxVFLength))
-      return badStringVFLength(length, maxVFLength);
-    final allow = global.allowInvalidCharacterEncodings;
-    return (isAscii || global.useAscii)
-        ? <String>[ascii.decode(vfBytes, allowInvalid: allow)]
-        : <String>[utf8.decode(vfBytes, allowMalformed: allow)];
-  }
-*/
-
   static bool isValidValueLength(
       String s, Issues issues, int minLength, int maxLength) {
     if (s == null) return nullValueError('"$s"');

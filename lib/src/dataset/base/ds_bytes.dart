@@ -71,7 +71,7 @@ abstract class DSBytes {
   // **** Internal Stuff ****
 
   /// Return a Uint16 value at [offset].
-  int getUint8(int offset) => bytes.getUint16(offset);
+  int getUint8(int offset) => bytes.getUint8(offset);
 
   /// Return a Uint16 value at [offset].
   int getUint16(int offset) => bytes.getUint16(offset);

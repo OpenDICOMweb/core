@@ -40,13 +40,7 @@ abstract class DicomReadMixin {
   /// Read the VR .
   int _readVRCode() {
     assert(_rIndex.isEven && _rHasRemaining(4), '@$_rIndex : $_rRemaining');
-    final first = _buf.getUint8(_rIndex);
-    final second = _buf.getUint8(_rIndex + 1);
-    final vrCode = (second << 8) + first;
-    print('vrCode: ${hex16(vrCode)} first(${hex8(first)}) '
-        'first(${hex8(second)})');
-    final vrIndex = vrIndexByCode[vrCode];
-    print('vrIndex: $vrIndex');
+    final vrCode = (_buf.getUint8(_rIndex) << 8) + _buf.getUint8(_rIndex + 1);
     _rIndex += 2;
     return vrCode;
   }
@@ -79,57 +73,3 @@ class DicomReadBuffer extends ReadBuffer with DicomReadMixin {
       [int offset = 0, int length, Endian endian])
       : super._fromTypedData(td, offset, length, endian);
 }
-
-/*
-class DicomReadLEBuffer extends DicomReadBuffer {
-  DicomReadLEBuffer(Bytes buf, [int offset = 0, int length])
-      : super._(buf, offset, length);
-
-  DicomReadLEBuffer.fromTypedData(TypedData td,
-      [int offset = 0, int length, Endian endian])
-      : super._fromTypedData(td, offset, length, endian);
-
-*/
-/*
-  /// Read the VR .
-  @override
-  int _readVRCode() {
-    assert(_rIndex.isEven && _rHasRemaining(4), '@$_rIndex : $_rRemaining');
-    final vrCode = _buf.getUint16(_rIndex);
-    _rIndex += 2;
-    return vrCode;
-  }
-*/ /*
-
-
-  /// Read the VR .
-  @override
-  int _readVRCode() {
-    assert(_rIndex.isEven && _rHasRemaining(4), '@$_rIndex : $_rRemaining');
-    final vrCode = _buf.getUint8(_rIndex) << 8 + _buf.getUint8(_rIndex + 1);
-    print('vrCode: ${hex16(vrCode)}');
-    _rIndex += 2;
-    return vrCode;
-  }
-}
-
-class DicomReadBEBuffer extends ReadBuffer with DicomReadMixin {
-
-  DicomReadBEBuffer(Bytes buf, [int offset = 0, int length])
-      : super._(buf, offset, length);
-
-  DicomReadBEBuffer.fromTypedData(TypedData td,
-                                [int offset = 0, int length, Endian endian])
-      : super._fromTypedData(td, offset, length, endian);
-
-  /// Read the VR .
-  @override
-  int _readVRCode() {
-    assert(_rIndex.isEven && _rHasRemaining(4), '@$_rIndex : $_rRemaining');
-    final vrCode = _buf.getUint8(_rIndex) << 8 + _buf.getUint8(_rIndex + 1);
-    print('vrCode: ${hex16(vrCode)}');
-    _rIndex += 2;
-    return vrCode;
-  }
-}
-*/

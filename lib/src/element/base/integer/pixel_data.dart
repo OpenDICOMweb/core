@@ -78,20 +78,20 @@ abstract class UNPixelData extends UN
   @override
   bool get isCompressed => ts.isEncapsulated;
 
-  /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
+  /// Returns _true_ if both [tag] and [vList] are valid for this [UN].
   /// If [doTestElementValidity] is _false_ then no validation is done.
   static bool isValidArgs(Tag tag, Iterable<int> vList,
       [int vfLengthField, TransferSyntax ts, Issues issues]) {
     if (!isValidTag(tag, issues)) return false;
-    return OB.isValidArgs(tag, vList, vfLengthField, ts, issues);
+    return UN.isValidArgs(tag, vList, vfLengthField, ts, issues);
   }
 
-  /// Returns _true_ if both [tag] and [vfBytes] are valid for [OB].
+  /// Returns _true_ if both [tag] and [vfBytes] are valid for [UN].
   /// If [doTestElementValidity] is _false_ then no validation is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
       [Issues issues]) {
     if (!isValidTag(tag, issues)) return false;
-    return OB.isValidBytesArgs(tag, vfBytes, vfLengthField, issues);
+    return UN.isValidBytesArgs(tag, vfBytes, vfLengthField, issues);
   }
 
   /// Returns _true_ if [tag] is valid for [UN].
@@ -109,7 +109,7 @@ abstract class OWPixelData extends OW
 
   @override
   bool get isCompressed => ts.isEncapsulated;
-  /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
+  /// Returns _true_ if both [tag] and [vList] are valid for this [OW].
   /// If [doTestElementValidity] is _false_ then no validation is done.
   static bool isValidArgs(Tag tag, Iterable<int> vList,
       [int vfLengthField, TransferSyntax ts, Issues issues]) {
@@ -117,7 +117,7 @@ abstract class OWPixelData extends OW
     return OW.isValidArgs(tag, vList, vfLengthField, ts, issues);
   }
 
-  /// Returns _true_ if both [tag] and [vfBytes] are valid for [OB].
+  /// Returns _true_ if both [tag] and [vfBytes] are valid for [OW].
   /// If [doTestElementValidity] is _false_ then no validation is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
       [Issues issues]) {

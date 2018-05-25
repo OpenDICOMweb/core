@@ -146,10 +146,11 @@ abstract class DS extends StringAscii {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
+    if (s.isEmpty) return true;
     final n = tryParse(s);
-    if (n != null) return true;
-    invalidString('Invalid Decimal (DS) String: "$s"');
-    return false;
+    return (n != null)
+        ? true
+        : invalidString('Invalid Decimal (DS) String: "$s"');
   }
 
   //TODO: Sharath add tests with leading and trailing spaces,
@@ -157,12 +158,13 @@ abstract class DS extends StringAscii {
   /// Parse a [DS] [String]. Leading and trailing spaces allowed,
   /// but all spaces is illegal.
   static double tryParse(String s, [Issues issues]) {
+    if (s == null ||
+        !isValidValueLength(s, issues) ||
+        notInRange(s.length, kMinValueLength, kMaxValueLength))
+      return _badDS(s, issues);
     // Remove leading and training spaces
     final s0 = s.trim();
-    if (s0 == null ||
-        !isValidValueLength(s0, issues) ||
-        notInRange(s0.length, kMinValueLength, kMaxValueLength))
-      return _badDS(s0, issues);
+    if (s.isEmpty) return null;
     final v = double.tryParse(s0);
     return (v == null) ? _badDS(s, issues) : v;
   }
@@ -175,6 +177,9 @@ abstract class DS extends StringAscii {
   static Iterable<double> tryParseList(Iterable<String> vList,
           [Issues issues]) =>
       StringBase.reallyTryParseList(vList, issues, tryParse);
+
+  static List<double> tryParseBytes(Bytes vfBytes) =>
+      tryParseList(vfBytes.getAsciiList());
 
   static Iterable<String> validateValueField(Bytes vfBytes) =>
       vfBytes.getAsciiList();
@@ -311,20 +316,23 @@ abstract class IS extends StringAscii {
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
+    if (s == null || !isValidValueLength(s, issues)) return false;
+    if (s.isEmpty) return true;
     final n = tryParse(s);
-    return (n == null || notInRange(n, kMinValue, kMaxValue))
-        ? invalidString(s, issues)
-        : true;
+    return (n != null && inRange(n, kMinValue, kMaxValue))
+        ? true
+        : invalidString(s, issues);
   }
 
   static int tryParse(String s, [Issues issues]) {
-    // Remove leading and training spaces
     if (s == null ||
         !isValidValueLength(s, issues) ||
         notInRange(s.length, kMinValueLength, kMaxValueLength))
       return _badIS(s, issues);
-    // Dart int.tryParse doesn't handle + sign
+    // Remove leading and training spaces
     var s0 = s.trim();
+    if (s.isEmpty) return null;
+    // Dart int.tryParse doesn't handle + sign
     s0 = (s[0] == '+') ? s.substring(1) : s;
     final n = int.tryParse(s0);
     return (n == null || notInRange(n, kMinValue, kMaxValue))
@@ -337,15 +345,9 @@ abstract class IS extends StringAscii {
     return badString(msg, issues);
   }
 
-  static List<int> tryParseList(Iterable<String> sList, [Issues issues]) {
-    final result = <int>[];
-    for (var s in sList) {
-      final v = tryParse(s, issues);
-      if (v == null) return _badIS(s, issues);
-      result.add(v);
-    }
-    return result;
-  }
+  static Iterable<int> tryParseList(Iterable<String> vList,
+                                       [Issues issues]) =>
+      StringBase.reallyTryParseList(vList, issues, tryParse);
 
   static List<int> tryParseBytes(Bytes vfBytes) =>
       tryParseList(vfBytes.getAsciiList());

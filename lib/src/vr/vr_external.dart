@@ -136,7 +136,7 @@ abstract class VR<T> {
       (vrCode == target) ? true : invalidCode(vrCode, issues, target);
 
   static Null badCode(int vrCode, Issues issues, int correctVRIndex) {
-    final msg = 'Invalid VR code(${vrIdByIndex[vrIndexByCode[vrCode]]})';
+    final msg = 'Invalid VR code(${vrIdByIndex[vrIndexByCode8Bit[vrCode]]})';
     return _doError(msg, issues, correctVRIndex);
   }
 

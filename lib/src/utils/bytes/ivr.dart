@@ -16,6 +16,7 @@ class IvrBytes extends DicomBytes {
 
   IvrBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian) {
+/*
     final s = '''
    offset: ${bytes.offset}
    length: ${bytes.length}
@@ -28,6 +29,8 @@ bd.length: ${_bd.lengthInBytes}
    endian: ${endian == Endian.little ? 'little' : 'big'} 
 ''';
     print(s);
+*/
+
   }
 
   @override

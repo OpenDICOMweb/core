@@ -132,7 +132,8 @@ abstract class DicomMixin {
     return (group << 16) + elt;
   }
 
-  int getVRCode(int offset) => _getUint16(offset);
+  int getVRCode(int offset) =>
+      (_getUint8(offset) << 8) + _getUint8(offset + 1);
 
   int getShortVLF(int offset) => _getUint16(offset);
 
@@ -154,7 +155,8 @@ abstract class DicomMixin {
   void evrSetShortHeader(int code, int vlf, int vrCode) {
     _setUint16(0, code >> 16);
     _setUint16(2, code & 0xFFFF);
-    _setUint16(4, vrCode);
+    _setUint8(4, vrCode >> 8);
+    _setUint8(5, vrCode & 0xFF);
     _setUint16(6, vlf);
   }
 
@@ -162,7 +164,8 @@ abstract class DicomMixin {
   void evrSetLongHeader(int code, int vlf, int vrCode) {
     _setUint16(0, code >> 16);
     _setUint16(2, code & 0xFFFF);
-    _setUint16(4, vrCode);
+    _setUint8(4, vrCode >> 8);
+    _setUint8(5, vrCode & 0xFF);
     // The Uint16 field at offset 6 is already zero.
     _setUint32(8, vlf);
   }
@@ -221,6 +224,7 @@ abstract class DicomMixin {
   Uint8List asUint8List([int offset = 0, int length, int padChar = 0]) {
     assert(padChar == null || padChar == kSpace || padChar == kNull);
     length ??= eLength;
+    if (length == 0) return kEmptyUint8List;
     final index = _absIndex(offset);
     final lastIndex = offset + length - 1;
     final _length = _maybeRemoveNull(lastIndex, length, padChar);
@@ -245,6 +249,7 @@ abstract class DicomMixin {
   static const int _kEltOffset = 0;
 }
 
+// Urgent Jim remove reader and writer methods from DicomMixin
 abstract class DicomReaderMixin {
   int get _bdOffset;
   int get _bdLength;
@@ -302,7 +307,8 @@ abstract class DicomReaderMixin {
     return (group << 16) + elt;
   }
 
-  int getVRCode(int offset) => _getUint16(offset);
+  int getVRCode(int offset) =>
+      (_getUint16(offset) << 8) + _getUint8(offset + 1);
 
   int getShortVLF(int offset) => _getUint16(offset);
 

@@ -15,7 +15,7 @@ abstract class BinaryElement {
   static const int kSpace = 32;
   static const int kUndefinedLength = 0xFFFFFFFF;
 
-  Bytes bytes;
+  DicomBytes bytes;
   int get vfOffset;
   int get padChar;
   void padCharWarning(int char, int padChar);
@@ -70,7 +70,7 @@ abstract class IvrElement extends BinaryElement {
 abstract class EvrElement extends BinaryElement {
   static const int kVRCodeOffset = 4;
 
-  int get vrCode => bytes.getUint16(kVRCodeOffset);
+  int get vrCode => bytes.getVRCode(kVRCodeOffset);
 }
 
 abstract class EvrShortElement extends EvrElement {

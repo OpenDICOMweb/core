@@ -41,7 +41,7 @@ abstract class EvrBytes extends DicomBytes {
   @override
   bool get isEvr => true;
   @override
-  int get vrCode => _bd.getUint16(kVROffset, endian);
+  int get vrCode => getVRCode(kVROffset);
   @override
   int get vrIndex => vrIndexFromCode(vrCode);
   @override
@@ -56,6 +56,7 @@ class EvrShortBytes extends EvrBytes {
 
   EvrShortBytes.from(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._from(bytes, start, end, endian) {
+/*
     final s = '''
    offset: ${bytes.offset}
    length: ${bytes.length}
@@ -66,11 +67,13 @@ bd.length: ${_bd.lengthInBytes}
    endian: ${endian == Endian.little ? 'little' : 'big'} 
     ''';
     print(s);
+*/
+
   }
 
   EvrShortBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian) {
-
+/*
     final s = '''
    offset: ${bytes.offset}
    length: ${bytes.length}
@@ -81,8 +84,7 @@ bd.length: ${_bd.lengthInBytes}
    endian: ${endian == Endian.little ? 'little' : 'big'} 
     ''';
     print(s);
-
-
+*/
   }
 
   @override
@@ -135,7 +137,7 @@ class EvrLongBytes extends EvrBytes {
 
   EvrLongBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian) {
-
+/*
     final s = '''
    offset: ${bytes.offset}
    length: ${bytes.length}
@@ -146,8 +148,7 @@ bd.length: ${_bd.lengthInBytes}
    endian: ${endian == Endian.little ? 'little' : 'big'} 
     ''';
     print(s);
-
-
+*/
   }
 
   @override

@@ -35,7 +35,9 @@ int parseDcmDateTime(String s,
 
 bool isValidDcmDateTimeString(String s,
                               {int start = 0, int end, Issues issues}) =>
-    (parseDcmDateTime(s, start: start, end: end, issues: issues) == null)
+    (s.isEmpty)
+    ? true
+    : parseDcmDateTime(s, start: start, end: end, issues: issues) == null
     ? false
     : true;
 
