@@ -19,15 +19,60 @@ void main() {
   final rds = new ByteRootDataset.empty();
 
   group('ULbytes', () {
+    //VM.k1
+    const ulVM1Tags = const <int>[
+      kMRDRDirectoryRecordOffset,
+      kNumberOfReferences,
+      kLengthToEnd,
+      kTriggerSamplePosition,
+      kRegionFlags,
+      kPulseRepetitionFrequency,
+      kDopplerSampleVolumeXPositionRetired,
+      kDopplerSampleVolumeYPositionRetired,
+      kTMLinePositionX0Retired,
+      kTMLinePositionY0Retired,
+      kTMLinePositionX1Retired,
+      kTMLinePositionY1Retired,
+      kPixelComponentMask,
+      kNumberOfTableEntries,
+      kSpectroscopyAcquisitionPhaseRows,
+      kASLBolusCutoffDelayTime,
+      kDataPointRows,
+      kDataPointColumns,
+      kNumberOfWaveformSamples,
+      kNumberOfSurfacePoints,
+      kGroup4Length,
+      kGroup8Length,
+      kGroup10Length,
+      kGroup12Length
+    ];
+
+    //VM.k3
+    const ulVM3Tags = const <int>[
+      kGridDimensions,
+    ];
+
+    //VM.k1_n
+    const ulVM1_nTags = const <int>[
+      kSimpleFrameList,
+      kReferencedSamplePositions,
+      kRationalDenominatorValue,
+      kReferencedContentItemIdentifier,
+      kHistogramData,
+      kSelectorULValue,
+    ];
+
     test('ULbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         global.throwOnError = false;
-        final e0 = ULbytes.fromValues(kRegionFlags, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in ulVM1Tags) {
+          final e0 = ULbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
 
@@ -35,11 +80,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(3, 3);
         global.throwOnError = false;
-        final e0 = ULbytes.fromValues(kGridDimensions, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in ulVM3Tags) {
+          final e0 = ULbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
 
@@ -47,11 +94,13 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint32List(1, i);
         global.throwOnError = false;
-        final e0 = ULbytes.fromValues(kSelectorULValue, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for(var code in ulVM1_nTags) {
+          final e0 = ULbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
   });

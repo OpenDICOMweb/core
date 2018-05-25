@@ -17418,7 +17418,7 @@ class PTag extends Tag {
   //(0028,04X1)
   static const PTag kColumnsForNthOrderCoefficients = const PTag._(
       'ColumnsForNthOrderCoefficients',
-      0x00280401,
+      0x002804F1,
       'Columns For Nth Order Coefficients',
       kUSIndex,
       VM.k1,
@@ -17426,12 +17426,12 @@ class PTag extends Tag {
 
   //(0028,0402)
   static const PTag kCoefficientCoding = const PTag._('CoefficientCoding',
-      0x00280402, 'Coefficient Coding', kLOIndex, VM.k1_n, true);
+      0x002804F2, 'Coefficient Coding', kLOIndex, VM.k1_n, true);
 
   //(0028,0403)
   static const PTag kCoefficientCodingPointers = const PTag._(
       'CoefficientCodingPointers',
-      0x00280403,
+      0x002804F3,
       'Coefficient Coding Pointers',
       kATIndex,
       VM.k1_n,

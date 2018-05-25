@@ -19,15 +19,91 @@ void main() {
   final rds = new ByteRootDataset.empty();
 
   group('USbytes', () {
+    //VM.k1
+    const usVM1Tags = const <int>[
+      kFileSetConsistencyFlag,
+      kDataSetType,
+      kPrivateGroupReference,
+      kWarningReason,
+      kFailureReason,
+      kPregnancyStatus,
+      kNumberOfElements,
+      kPreferredPlaybackSequencing,
+      kContrastBolusAgentNumber,
+      kReconstructionIndex,
+      kLightPathFilterPassThroughWavelength,
+      kStimuliRetestingQuantity,
+      kImageDimensions,
+      kPlanarConfiguration,
+      kRows,
+      kColumns,
+      kPlanes,
+      kBitsGrouped,
+    ];
+
+    //VM.k2
+    const usVM2Tags = const <int>[
+      kSynchronizationChannel,
+      kLightPathFilterPassBand,
+      kImagePathFilterPassBand,
+      kTopLeftHandCornerOfLocalizerArea,
+      kBottomRightHandCornerOfLocalizerArea,
+      kDisplayedAreaTopLeftHandCornerTrial,
+      kDisplayedAreaBottomRightHandCornerTrial,
+      kRelativeTime
+    ];
+
+    //VM.k3
+    const usVM3Tags = const <int>[
+      kSubjectRelativePositionInImage,
+      kShutterPresentationColorCIELabValue,
+      kAlphaPaletteColorLookupTableDescriptor,
+      kBlendingLookupTableDescriptor,
+      kWaveformDisplayBackgroundCIELabValue,
+      kChannelRecommendedDisplayCIELabValue,
+      kRecommendedAbsentPixelCIELabValue,
+      kRecommendedDisplayCIELabValue,
+      kGraphicLayerRecommendedDisplayRGBValue,
+      kTextColorCIELabValue,
+      kShadowColorCIELabValue,
+      kPatternOnColorCIELabValue,
+      kPatternOffColorCIELabValue,
+      kGraphicLayerRecommendedDisplayCIELabValue,
+      kEmptyImageBoxCIELabValue,
+      kEscapeTriplet,
+      kRunLengthTriplet
+    ];
+
+    //VM.k1_n
+    const usVM1_nTags = const <int>[
+      kAcquisitionIndex,
+      kPerimeterTable,
+      kPredictorConstants,
+      kFrameNumbersOfInterest,
+      kMaskPointers,
+      kRWavePointer,
+      kMaskFrameNumbers,
+      kReferencedFrameNumbers,
+      kDetectorVector,
+      kPhaseVector,
+      kRotationVector,
+      kRRIntervalVector,
+      kTimeSlotVector,
+      kSliceVector,
+      kAngularViewVector,
+      kSelectorUSValue
+    ];
     test('USbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
         global.throwOnError = false;
-        final e0 = USbytes.fromValues(kContrastFrameAveraging, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in usVM1Tags) {
+          final e0 = USbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
 
@@ -35,11 +111,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(2, 2);
         global.throwOnError = false;
-        final e0 = USbytes.fromValues(kRelativeTime, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in usVM2Tags) {
+          final e0 = USbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
 
@@ -47,7 +125,21 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(3, 3);
         global.throwOnError = false;
-        final e0 = USbytes.fromValues(kEscapeTriplet, vList0);
+        for (var code in usVM3Tags) {
+          final e0 = USbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('USbytes from VM.k4', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint16List(4, 4);
+        global.throwOnError = false;
+        final e0 = USbytes.fromValues(kAcquisitionMatrix, vList0);
         log.debug('e0: $e0');
         final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -59,11 +151,13 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(1, i);
         global.throwOnError = false;
-        final e0 = USbytes.fromValues(kSelectorUSValue, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in usVM1_nTags) {
+          final e0 = USbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
   });
