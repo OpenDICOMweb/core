@@ -132,8 +132,7 @@ abstract class DicomMixin {
     return (group << 16) + elt;
   }
 
-  int getVRCode(int offset) =>
-      (_getUint8(offset) << 8) + _getUint8(offset + 1);
+  int getVRCode(int offset) => (_getUint8(offset) << 8) + _getUint8(offset + 1);
 
   int getShortVLF(int offset) => _getUint16(offset);
 
@@ -235,15 +234,6 @@ abstract class DicomMixin {
       (padChar != null && vfLength.isEven && _getUint8(lastIndex) == kNull)
           ? vfLength - 1
           : vfLength;
-
-  @override
-  String toString() {
-    final vrc = vrCode;
-    final vri = vrIndex;
-    final vr = vrId;
-    return '$runtimeType ${dcm(code)} $vr($vri, ${hex16(vrc)}) '
-        'vlf($vfLengthField) vfl($vfLength) $vfBytes';
-  }
 
   static const int _kGroupOffset = 0;
   static const int _kEltOffset = 0;

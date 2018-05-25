@@ -67,6 +67,7 @@ int _getCorrectVR(int vrIndex, Tag tag) {
   var vrIndexNew = vrIndex;
   final tagVRIndex = tag.vrIndex;
   if (tagVRIndex > kVRNormalIndexMax) {
+    //TODO: This should be returning something better than UN!
     log.info1('Tag has VR ${vrIdFromIndex(tagVRIndex)} using '
         '${vrIdFromIndex(vrIndex)}');
   } else if (vrIndex == kUNIndex && tagVRIndex != kUNIndex) {

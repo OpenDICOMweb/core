@@ -39,8 +39,8 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   @override
   String toString() {
     final vlf = vfLengthField;
-    return '$runtimeType(${_bd.lengthInBytes}) ${dcm(code)} ${hex16(vrCode)} '
-        '$vlf(${hex32(vlf)}) $vfBytes';
+    return '$runtimeType ${dcm(code)} $vrId($vrIndex, ${hex16(vrCode)}) '
+        'vlf($vlf, ${hex32(vlf)}) vfl($vfLength) ${super.toString()}';
   }
 
   /// Returns a [Bytes] containing the ASCII encoding of [s].

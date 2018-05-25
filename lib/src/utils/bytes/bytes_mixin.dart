@@ -220,21 +220,12 @@ abstract class BytesMixin {
 */
 
   // Allows the removal of padding characters.
-  Uint8List asUint8List([int offset = 0, int length, int padChar = 0]) {
-    assert(padChar == null || padChar == kSpace || padChar == kNull);
+  Uint8List asUint8List([int offset = 0, int length]) {
     length ??= _bdLength;
     if (length == 0) return kEmptyUint8List;
     final index = _absIndex(offset);
-    final lastIndex = offset + length - 1;
-    final _length = _maybeRemoveNull(lastIndex, length, padChar);
-    return _bd.buffer.asUint8List(index, _length);
+    return _bd.buffer.asUint8List(index, length);
   }
-
-  int _maybeRemoveNull(int lastIndex, int vfLength, [int padChar]) =>
-      (padChar != null && vfLength.isEven && _getUint8(lastIndex) == kNull)
-      ? lastIndex
-      : vfLength;
-
 
   /// If [offset] is aligned on an 8-byte boundary, returns a [Uint16List]
   /// view of the specified region; otherwise, creates a [Uint16List] that
@@ -416,14 +407,33 @@ abstract class BytesMixin {
     return bList.isEmpty ? '' : base64.encode(bList);
   }
 
+  // Allows the removal of padding characters.
+  Uint8List _asUint8ListFromString(
+      [int offset = 0, int length, int padChar = 0]) {
+    assert(padChar == null || padChar == kSpace || padChar == kNull);
+    length ??= _bdLength;
+    if (length == 0) return kEmptyUint8List;
+    final index = _absIndex(offset);
+    final lastIndex = offset + length - 1;
+    final _length = _maybeRemoveNull(lastIndex, length, padChar);
+    return _bd.buffer.asUint8List(index, _length);
+  }
+
+  int _maybeRemoveNull(int lastIndex, int vfLength, [int padChar]) =>
+      (padChar != null && vfLength.isEven && _getUint8(lastIndex) == kNull)
+      ? lastIndex
+      : vfLength;
+
   /// Returns a [String] containing a _ASCII_ decoding of the specified
   /// region of _this_. Also allows the removal of a padding character.
   String getAscii(
-          {int offset = 0,
-          int length,
-          bool allowInvalid = true,
-          int padChar = kSpace}) =>
-      _getAscii(offset, length ?? _bdLength, allowInvalid, padChar);
+      {int offset = 0,
+      int length,
+      bool allowInvalid = true,
+      int padChar = kSpace}) {
+    final v = _asUint8ListFromString(offset, length ?? _bdLength, padChar);
+    return v.isEmpty ? '' : ascii.decode(v, allowInvalid: allowInvalid);
+  }
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _ASCII_, and then _split_ing the
@@ -435,46 +445,24 @@ abstract class BytesMixin {
       bool allowInvalid: true,
       String separator = '\\',
       int padChar = kSpace}) {
-    final s = _getAscii(offset, length ?? _bdLength, allowInvalid, padChar);
+    final s = getAscii(
+        offset: offset,
+        length: length,
+        allowInvalid: allowInvalid,
+        padChar: padChar);
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
-  }
-
-  String _getAscii(int offset, int length, bool allow, int padChar) {
-    final bList = asUint8List(offset, length, padChar);
-    return bList.isEmpty ? '' : ascii.decode(bList, allowInvalid: allow);
   }
 
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
   /// Also, allows the removal of padding characters.
   String getUtf8(
-          {int offset = 0,
-          int length,
-          bool allowMalformed = true,
-          int padChar = kSpace}) =>
-      utf8.decode(asUint8List(offset, length, padChar),
-          allowMalformed: allowMalformed);
-
-  /*
-  String getUtf8({int offset = 0, int length, bool allowMalformed: true}) =>
-      _getUtf8(offset, length, allowMalformed);
-
-  /// Returns a [List<String>]. This is done by first decoding
-  /// the specified region as _UTF-8_, and then _split_ing the
-  /// resulting [String] using the [separator].
-  List<String> getUtf8List(
       {int offset = 0,
       int length,
-      bool allowMalformed: true,
-      String separator = '\\'}) {
-    final s = _getUtf8(offset, length, allowMalformed);
-    return (s.isEmpty) ? kEmptyStringList : s.split(separator);
+      bool allowMalformed = true,
+      int padChar = kSpace}) {
+    final v = _asUint8ListFromString(offset, length ?? _bdLength, padChar);
+    return v.isEmpty ? '' : utf8.decode(v, allowMalformed: allowMalformed);
   }
-
-  String _getUtf8(int offset, int length, [bool allow]) {
-    final bList = asUint8List(offset, length ?? _bdLength);
-    return bList.isEmpty ? '' : utf8.decode(bList, allowMalformed: allow);
-   }
-  */
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
@@ -827,9 +815,13 @@ abstract class BytesMixin {
   String toBDDescriptor(ByteData bd) {
     final start = bd.offsetInBytes;
     var length = bd.lengthInBytes;
-    length = (length > 144) ? 144 : length;
+    final _length = (length > 32) ? 32 : length;
     final end = start + length;
-    return '$start-$end:$length ${bd.buffer.asUint8List(start, length)}';
+    final sb = new StringBuffer('$start-$end:$length');
+    // TODO: fix for truncated values print [x, y, z, ...]
+    if (showByteValues)
+      sb.writeln('${bd.buffer.asUint8List(start, truncateBytesLength)}');
+    return '$sb';
   }
 
   // **** Internals
@@ -845,3 +837,7 @@ abstract class BytesMixin {
     return true;
   }
 }
+
+// Move to global
+bool showByteValues = false;
+int truncateBytesLength = 16;
