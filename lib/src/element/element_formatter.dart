@@ -41,7 +41,7 @@ abstract class ElementFormatter {
   }
 
   String tag(Element e, int vLength) {
-    final ret = (e.isRetired) ? '*retired*' : '';
+    final ret = (e.isRetired) ? '*retired* ' : '';
     return '${e.dcm} ${keyword(e)} ${vr(e)} ${vm(e, vLength)} $ret';
   }
 

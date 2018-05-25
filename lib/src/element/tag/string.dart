@@ -229,7 +229,7 @@ class PCtag extends PC with TagElement<String> {
   List<String> _values;
 
   factory PCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (LO.isValidArgs(tag, vList))
+      (PC.isValidArgs(tag, vList))
           ? new PCtag._(tag, vList)
           : badValues(vList, null, tag);
 
@@ -250,16 +250,10 @@ class PCtag extends PC with TagElement<String> {
   @override
   String toString() => '$runtimeType $tag $value';
 
-  static PCtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
+  static PCtag fromValues(Tag tag, Iterable<String> vList) =>
       new PCtag(tag, vList ?? kEmptyStringList);
 
-  static PCtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static PCtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static PCtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
+  static PCtag fromBytes(Bytes bytes, Tag tag) =>
       (!LO.isValidTag(tag)) ? null : new PCtag._(tag, bytes.getUtf8List());
 
   static PCtag makePhantom(int group, int subgroup) {

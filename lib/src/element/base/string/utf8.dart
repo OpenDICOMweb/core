@@ -174,8 +174,29 @@ abstract class PC extends LO {
     return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
   }
 
+  // **** Specialized static methods
 
-// **** Specialized static methods
+  /// Returns _true_ if both [tag] and [vList] are valid for [LO].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, LO);
+    return vList != null &&
+           doTestElementValidity &&
+           (tag is PCTag) &&
+           LO.isValidValues(tag, vList, issues);
+  }
+
+  /// Returns _true_ if both [tag] and [vfBytes] are valid for [LO].
+  /// If [doTestElementValidity] is _false_ then no checking is done.
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (tag == null) return invalidTag(tag, null, LO);
+    return vfBytes != null &&
+           doTestElementValidity &&
+           (tag is PCTag)&&
+           (vfBytes.length >= 0 && vfBytes.length <= 64);
+  }
+
+
 // **** Generalized static methods
 }
 

@@ -62,7 +62,6 @@ bd.length: ${_bd.lengthInBytes}
   IvrBytes sublist([int start = 0, int end]) =>
       new IvrBytes.from(this, start, (end ?? length) - start);
 
-  static const int kVROffset = 4;
   static const int kVFLengthOffset = 4;
   static const int kVFOffset = 8;
   static const int kHeaderLength = 8;

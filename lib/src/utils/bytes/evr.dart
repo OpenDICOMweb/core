@@ -171,7 +171,6 @@ bd.length: ${_bd.lengthInBytes}
   EvrLongBytes sublist([int start = 0, int end]) =>
       new EvrLongBytes.from(this, start, (end ?? length) - start, endian);
 
-  static const int kVROffset = 4;
   static const int kVFLengthOffset = 8;
   static const int kVFOffset = 12;
   static const int kHeaderLength = kVFOffset;

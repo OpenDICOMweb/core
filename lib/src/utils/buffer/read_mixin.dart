@@ -102,14 +102,18 @@ abstract class ReadBufferMixin {
     return v;
   }
 
+  String getAscii(int length) => _buf.getAscii(offset: _rIndex, length: length);
+
   String readAscii(int length) {
-    final s = _buf.getAscii(offset: _rIndex, length: length);
+    final s = getAscii(length);
     _rIndex += length;
     return s;
   }
 
+  String getUtf8(int length) => _buf.getUtf8(offset: _rIndex, length: length);
+
   String readUtf8(int length) {
-    final s = _buf.getUtf8(offset: _rIndex, length: length);
+    final s = getUtf8(length);
     _rIndex += length;
     return s;
   }

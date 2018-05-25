@@ -330,7 +330,7 @@ abstract class Tag {
   @override
   String toString() {
     final retired = (isRetired == false) ? '' : ', (Retired)';
-    return '$runtimeType: $dcm $keyword, ${vrIdByIndex[vrIndex]}, $vm$retired';
+    return '$runtimeType: $dcm $keyword, ${vrIdByIndex[vrIndex]}, $vm $retired';
   }
 
   //TODO: make this a real index
@@ -352,7 +352,7 @@ abstract class Tag {
     } else {
       assert(Tag.isPrivateCode(code) == true);
       final elt = code & 0xFF;
-      if (elt == 0) return new GroupLengthPrivateTag(code, vrIndex);
+      if (elt == 0) return new PrivateGroupLengthTag(code, vrIndex);
       if (elt < 0x10) return new IllegalPrivateTag(code, vrIndex);
       if ((elt >= 0x10) && (elt <= 0xFF) && creator is String)
         return PCTag.make(code, vrIndex, creator);
@@ -378,7 +378,7 @@ abstract class Tag {
       assert(Tag.isPrivateCode(code) == true);
       final elt = code & 0xFFFF;
       if (elt == 0) {
-        tag = new GroupLengthPrivateTag(code, vrIndex);
+        tag = new PrivateGroupLengthTag(code, vrIndex);
       } else if (elt < 0x10) {
         tag = new IllegalPrivateTag(code, vrIndex);
       } else if ((elt >= 0x10) && (elt <= 0xFF)) {
@@ -461,7 +461,7 @@ abstract class Tag {
 
   static Tag lookupPrivateCreatorCode(int code, int vrIndex, String token) {
     if (Tag.isPrivateGroupLengthCode(code))
-      return new GroupLengthPrivateTag(code, vrIndex);
+      return new PrivateGroupLengthTag(code, vrIndex);
     if (isPCCode(code)) return PCTag.make(code, vrIndex, token);
     return badCode(code);
   }

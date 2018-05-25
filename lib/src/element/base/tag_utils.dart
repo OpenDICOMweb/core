@@ -42,12 +42,12 @@ Tag lookupTagByCode(int code, int vrIndex, Dataset ds) {
     // Private Creator Tag in [ds].
     final pcCode = (group << 16) + (elt >> 8);
     tag = ds.pcTags[pcCode];
+  } else if (Tag.isGroupLengthCode(code)) {
+    tag = new PrivateGroupLengthTag(code, vrIndex);
+  } else if (_isPCCode(code)) {
+    throw 'Invalid PC Code ${dcm(code)}';
   } else {
-    if (_isPCCode(code)) {
-      throw 'Invalid PC Code ${dcm(code)}';
-    } else {
-      throw 'Fall through error';
-    }
+    throw 'Fall through error: ${dcm(code)}';
   }
   return tag;
 }

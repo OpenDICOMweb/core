@@ -17689,7 +17689,7 @@ class PTagUnknown extends PTag {
       : super._(
             'kUnknownPublicTag_${hex16(code >> 16)}',
             code,
-            'Unknown DICOM Tag ${toDcm(code)}',
+            'Unknown DICOM Tag ${dcm(code)}',
             vrIndex,
             VM.k1_n,
             false,

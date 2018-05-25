@@ -146,7 +146,10 @@ abstract class DicomMixin {
     _setUint16(2, code & 0xFFFF);
   }
 
-  void setVRCode(int vrCode) => _setUint16(4, vrCode);
+  void setVRCode(int vrCode) {
+    _setUint8(4, vrCode >> 8);
+    _setUint8(5, vrCode & 0xFF);
+  }
   void setShortVLF(int vlf) => _setUint16(6, vlf);
   void setLongVLF(int vlf) => _setUint32(8, vlf);
 
@@ -318,6 +321,7 @@ abstract class DicomReaderMixin {
 }
 
 abstract class DicomWriterMixin {
+  int _setUint8(int offset, int value);
   int _setUint16(int offset, int value);
   int _setUint32(int offset, int value);
 // **** End of Interface
@@ -328,7 +332,10 @@ abstract class DicomWriterMixin {
     _setUint16(2, code & 0xFFFF);
   }
 
-  void setVRCode(int vrCode) => _setUint16(4, vrCode);
+  void setVRCode(int vrCode) {
+    _setUint8(4, vrCode >> 8);
+    _setUint8(5, vrCode & 0xFF);
+  }
   void setShortVLF(int vlf) => _setUint16(6, vlf);
   void setLongVLF(int vlf) => _setUint32(8, vlf);
 

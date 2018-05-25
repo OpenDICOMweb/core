@@ -103,20 +103,22 @@ abstract class PCTag extends PrivateTag {
 class PCTagUnknown extends PCTag {
   @override
   final int code;
-  @override
-  final int vrIndex;
+  final int actualVRIndex;
   @override
   final String name;
 
-  const PCTagUnknown(this.code, this.vrIndex, [String name])
-      : name = name ?? '--UnknownPCTag--',
+  const PCTagUnknown(this.code, this.actualVRIndex, [String name])
+      : name = name ?? '--UnknownPCTag-- with VR($actualVRIndex)',
         super._();
 
+  @override
+  int get vrIndex => kLOIndex;
   @override
   PDTagDefinition lookupPDCode(int code) => null;
 
   @override
-  String toString() => '$runtimeType $dcm ${vrIdFromIndex(vrIndex)} "$name"';
+  String toString() =>
+      '$runtimeType${dcm(code)} ${vrIdFromIndex(vrIndex)} "$name"';
 }
 
 class PCTagKnown extends PCTag {

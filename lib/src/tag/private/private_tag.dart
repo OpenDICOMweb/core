@@ -52,6 +52,7 @@ abstract class PrivateTag extends Tag {
   @override
   String toString() => '$runtimeType$dcm subgroup($sgNumber)';
 
+  // TODO: compare to tag_utils/lookupTagByCode
   /// Returns a new [PrivateTag] based on [code] and [vrIndex].
   /// [obj] can be either a [String] or [PCTag].
   static PrivateTag make(int code, int vrIndex, [Object obj]) {
@@ -64,7 +65,7 @@ abstract class PrivateTag extends Tag {
       return PCTag.make(code, vrIndex, creator);
     } else
     if (Tag.isGroupLengthCode(code)) {
-      return new GroupLengthPrivateTag(code, vrIndex);
+      return new PrivateGroupLengthTag(code, vrIndex);
     } else {
       return new IllegalPrivateTag(code, vrIndex);
     }
@@ -73,23 +74,26 @@ abstract class PrivateTag extends Tag {
 
 /// Private Group Length Tags have codes that are (gggg,eeee),
 /// where gggg is odd, and eeee is zero.  For example (0009,0000).
-class GroupLengthPrivateTag extends PrivateTag {
+class PrivateGroupLengthTag extends PrivateTag {
   static const int kUnknownIndex = -1;
   @override
   final int code;
+  final int actualVRIndex;
+
   @override
-  final int vrIndex;
-  @override
-  GroupLengthPrivateTag(this.code, this.vrIndex) {
+  PrivateGroupLengthTag(this.code, this.actualVRIndex) {
     if (vrIndex != kULIndex && vrIndex != kUNIndex) VR.badIndex(
         vrIndex, null, correctVRIndex);
   }
 
   @override
-  String get keyword => 'PrivateGroupLenthTag';
+  int get vrIndex => kULIndex;
 
   @override
-  String get name => 'Private Group Lenth Tag';
+  String get keyword => 'PrivateGroupLengthTag';
+
+  @override
+  String get name => 'Private Group Length Tag';
 
   int get correctVRIndex => kULIndex;
 
