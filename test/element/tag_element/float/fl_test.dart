@@ -195,11 +195,8 @@ void main() {
 
     test('FL hashCode and == good values random', () {
       global.throwOnError = false;
-      final rng = new RNG(1);
-      List<double> vList;
-
       for (var i = 0; i < 10; i++) {
-        vList = rng.float32List(1, 1);
+       final vList = rng.float32List(1, 1);
         final e0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
         final e1 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
         log
@@ -212,17 +209,6 @@ void main() {
 
     test('FL hashCode and == bad values random', () {
       global.throwOnError = false;
-      final rng = new RNG(1);
-
-/* Urgent: don't use global variables!
-      List<double> vList;
-      List<double> vList1;
-      List<double> floatList2;
-      List<double> floatList3;
-      List<double> floatList4;
-      List<double> floatList5;
-*/
-
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
         final e0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
@@ -783,92 +769,6 @@ void main() {
             throwsA(const isInstanceOf<InvalidVRError>()));
       }
     });
-
-/* Urgent: checkVR is not longer supported
-    test('FL checkVR good values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRIndex(kFLIndex), kFLIndex);
-
-      for (var tag in flTags0) {
-        global.throwOnError = false;
-        expect(FL.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('FL checkVR bad values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRIndex(kAEIndex), isNull);
-
-      global.throwOnError = true;
-      expect(() => FL.checkVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(FL.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => FL.checkVRIndex(kAEIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
-      }
-    });
-
-    test('FL checkVRIndex good values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRIndex(kFLIndex), equals(kFLIndex));
-
-      for (var tag in flTags0) {
-        global.throwOnError = false;
-        expect(FL.checkVRIndex(tag.vrIndex), equals(tag.vrIndex));
-      }
-    });
-
-    test('FL checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRIndex(kATIndex), isNull);
-
-      global.throwOnError = true;
-      expect(() => FL.checkVRIndex(kATIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(FL.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => FL.checkVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
-      }
-    });
-
-    test('FL checkVRCode good values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRCode(kFLCode), equals(kFLCode));
-
-      for (var tag in flTags0) {
-        global.throwOnError = false;
-        expect(FL.checkVRCode(tag.vrCode), equals(tag.vrCode));
-      }
-    });
-
-    test('FL checkVRCode bad values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRCode(kATCode), isNull);
-
-      global.throwOnError = true;
-      expect(() => FL.checkVRCode(kATCode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(FL.checkVRCode(tag.vrCode), isNull);
-
-        global.throwOnError = true;
-        expect(() => FL.checkVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
-      }
-    });
-*/
 
     test('FL isValidVFLength good values', () {
       expect(FL.isValidVFLength(FL.kMaxVFLength), true);
