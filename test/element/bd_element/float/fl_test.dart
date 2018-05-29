@@ -36,56 +36,56 @@ void main() {
   test('FL hasValidValues: good values', () {
     global.throwOnError = false;
     log.debug('vList: $float32List');
-    final fl0 = FLbytes.fromValues(kVectorAccuracy, doubleList);
-    expect(fl0.hasValidValues, true);
+    final e0 = FLbytes.fromValues(kVectorAccuracy, doubleList);
+    expect(e0.hasValidValues, true);
   });
 
   test('FL hasValidValues random: good values', () {
     for (var i = 0; i < 10; i++) {
       final vList = rng.float32List(1, 10);
       expect(vList is Float32List, true);
-      final fl0 = FLbytes.fromValues(kSelectorFDValue, vList);
-      expect(fl0[0], equals(vList[0]));
-      expect(fl0.hasValidValues, true);
+      final e0 = FLbytes.fromValues(kSelectorFDValue, vList);
+      expect(e0[0], equals(vList[0]));
+      expect(e0.hasValidValues, true);
 
       log
-        ..debug('fl0: $fl0, values: ${fl0.values}')
-        ..debug('fl0: $fl0')
+        ..debug('e0: $e0, values: ${e0.values}')
+        ..debug('e0: $e0')
         ..debug('float32List: $vList')
-        ..debug('        fl0: ${fl0.values}');
-      expect(fl0.values, equals(vList));
+        ..debug('        e0: ${e0.values}');
+      expect(e0.values, equals(vList));
     }
   });
 
   test('FL hasValidValues: good values', () {
     for (var i = 0; i < 10; i++) {
-      final float32List0 = rng.float32List(2, 2);
-      final fl0 = FLbytes.fromValues(kCornealVertexLocation, float32List0);
-      log..debug('$i: fl0: $fl0, values: ${fl0.values}')..debug('fl0: $fl0');
-      final fl1 = new FLtag(fl0.tag, fl0.values);
+      final vList0 = rng.float32List(2, 2);
+      final e0 = FLbytes.fromValues(kCornealVertexLocation, vList0);
+      log..debug('$i: e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+      final e1 = new FLtag(e0.tag, e0.values);
       log
-        ..debug('$i: fl0: $fl1, values: ${fl1.values}')
-        ..debug('fl0: ${fl1.info}');
-      expect(fl1.hasValidValues, true);
+        ..debug('$i: e0: $e1, values: ${e1.values}')
+        ..debug('e0: ${e1.info}');
+      expect(e1.hasValidValues, true);
 
-      expect(fl1[0], equals(float32List0[0]));
+      expect(e1[0], equals(vList0[0]));
     }
   });
 
   test('FL hasValidValues: bad values', () {
     for (var i = 0; i < 10; i++) {
-      final floatList0 = rng.float32List(3, 4);
-      log.debug('$i: float32List: $floatList0');
-      final flbd = FLbytes.fromValues(kCornealVertexLocation, floatList0);
-      final fl0 = new FLtag(flbd.tag, flbd.values);
-      expect(fl0, isNull);
+      final vList0 = rng.float32List(3, 4);
+      log.debug('$i: float32List: $vList0');
+      final flbd = FLbytes.fromValues(kCornealVertexLocation, vList0);
+      final e0 = new FLtag(flbd.tag, flbd.values);
+      expect(e0, isNull);
     }
   });
 
   test('FL [] as values', () {
-    final fl0 = FLbytes.fromValues(kTableOfParameterValues, []);
-    expect(fl0.hasValidValues, true);
-    expect(fl0.values, equals(<double>[]));
+    final e0 = FLbytes.fromValues(kTableOfParameterValues, []);
+    expect(e0.hasValidValues, true);
+    expect(e0.values, equals(<double>[]));
   });
 
   // Can't create Evr/Ivr with null values
@@ -93,71 +93,62 @@ void main() {
 
   test('FL hashCode and == random', () {
     global.throwOnError = false;
-    final rng = new RNG(1);
-
-    List<double> floatList0;
-    List<double> floatList1;
-    List<double> floatList2;
-    List<double> floatList3;
-    List<double> floatList4;
-    List<double> floatList5;
-
     log.debug('FL hashCode and ==');
     for (var i = 0; i < 10; i++) {
-      floatList0 = rng.float32List(1, 1);
-      final fl0 = FLbytes.fromValues(kAbsoluteChannelDisplayScale, floatList0);
+      final vList0 = rng.float32List(1, 1);
+      final e0 = FLbytes.fromValues(kAbsoluteChannelDisplayScale, vList0);
 
-      //bd = FLbytes.fromValues(kAbsoluteChannelDisplayScale, floatList0);
-      final fl1 = FLbytes.fromValues(kAbsoluteChannelDisplayScale, floatList0);
+      //bd = FLbytes.fromValues(kAbsoluteChannelDisplayScale, vList0);
+      final e1 = FLbytes.fromValues(kAbsoluteChannelDisplayScale, vList0);
       log
-        ..debug('floatList0:$floatList0, fl0.hash_code:${fl0.hashCode}')
-        ..debug('floatList0:$floatList0, fl1.hash_code:${fl1.hashCode}');
-      expect(fl0.hashCode == fl1.hashCode, true);
-      expect(fl0 == fl1, true);
+        ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
+        ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
+      expect(e0.hashCode == e1.hashCode, true);
+      expect(e0 == e1, true);
 
-      floatList1 = rng.float32List(1, 1);
-      final fl2 =
-          FLbytes.fromValues(kRecommendedDisplayFrameRateInFloat, floatList1);
-      log.debug('floatList1:$floatList1 , fl2.hash_code:${fl2.hashCode}');
-      expect(fl0.hashCode == fl2.hashCode, false);
-      expect(fl0 == fl2, false);
+      final vList1 = rng.float32List(1, 1);
+      final e2 =
+          FLbytes.fromValues(kRecommendedDisplayFrameRateInFloat, vList1);
+      log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
+      expect(e0.hashCode == e2.hashCode, false);
+      expect(e0 == e2, false);
 
-      floatList2 = rng.float32List(2, 2);
-      final fl3 = FLbytes.fromValues(kCornealVertexLocation, floatList2);
+      final vList2 = rng.float32List(2, 2);
+      final e3 = FLbytes.fromValues(kCornealVertexLocation, vList2);
 
-      log.debug('floatList2:$floatList2 , fl3.hash_code:${fl3.hashCode}');
-      expect(fl0.hashCode == fl3.hashCode, false);
-      expect(fl0 == fl3, false);
+      log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
+      expect(e0.hashCode == e3.hashCode, false);
+      expect(e0 == e3, false);
 
-      floatList3 = rng.float32List(3, 3);
-      final fl4 = FLbytes.fromValues(kCornealPointLocation, floatList3);
-      log.debug('floatList3:$floatList3 , fl4.hash_code:${fl4.hashCode}');
-      expect(fl0.hashCode == fl4.hashCode, false);
-      expect(fl0 == fl4, false);
+      final vList3 = rng.float32List(3, 3);
+      final e4 = FLbytes.fromValues(kCornealPointLocation, vList3);
+      log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
+      expect(e0.hashCode == e4.hashCode, false);
+      expect(e0 == e4, false);
 
-      floatList4 = rng.float32List(6, 6);
-      final fl5 = FLbytes.fromValues(kPointsBoundingBoxCoordinates, floatList4);
+      final vList4 = rng.float32List(6, 6);
+      final e5 = FLbytes.fromValues(kPointsBoundingBoxCoordinates, vList4);
 
-      log.debug('floatList4:$floatList4 , fl5.hash_code:${fl5.hashCode}');
-      expect(fl0.hashCode == fl5.hashCode, false);
-      expect(fl0 == fl5, false);
+      log.debug('vList4:$vList4 , e5.hash_code:${e5.hashCode}');
+      expect(e0.hashCode == e5.hashCode, false);
+      expect(e0 == e5, false);
 
-      floatList5 = rng.float32List(2, 3);
-      final fl6 =
-          FLbytes.fromValues(kFractionalChannelDisplayScale, floatList5);
-      log.debug('floatList5:$floatList5 , fl6.hash_code:${fl6.hashCode}');
-      expect(fl1.hashCode == fl6.hashCode, false);
-      expect(fl1 == fl6, false);
+      final vList5 = rng.float32List(2, 3);
+      final e6 =
+          FLbytes.fromValues(kFractionalChannelDisplayScale, vList5);
+      log.debug('vList5:$vList5 , e6.hash_code:${e6.hashCode}');
+      expect(e1.hashCode == e6.hashCode, false);
+      expect(e1 == e6, false);
     }
   });
 
   test('Create FL.isValidValues', () {
     global.throwOnError = false;
     for (var i = 0; i <= doubleList.length - 1; i++) {
-      final fl0 =
+      final e0 =
           FLbytes.fromValues(kExaminedBodyThickness, <double>[doubleList[i]]);
-      log.debug('fl0: $fl0');
-      expect(FL.isValidValues(PTag.kExaminedBodyThickness, fl0.values), true);
+      log.debug('e0: $e0');
+      expect(FL.isValidValues(PTag.kExaminedBodyThickness, e0.values), true);
     }
   });
   // });

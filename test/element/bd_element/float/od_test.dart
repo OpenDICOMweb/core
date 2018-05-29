@@ -39,44 +39,44 @@ void main() {
   group('OD Tests', () {
     test('OD hasValidValues: good values', () {
       global.throwOnError = false;
-      final od0 = ODbytes.fromValues(kSelectorODValue, doubleList);
-      expect(od0.hasValidValues, true);
+      final e0 = ODbytes.fromValues(kSelectorODValue, doubleList);
+      expect(e0.hasValidValues, true);
     });
 
     test('OD hasValidValues random: good values', () {
       for (var i = 0; i < 10; i++) {
-        final float64List0 = rng.float64List(1, 1);
-        expect(float64List0 is Float64List, true);
-        expect(float64List0.length, 1);
-        log.debug('$i: float64List0: $float64List0');
-        final od0 = ODbytes.fromValues(kSelectorODValue, float64List0);
-        log.debug('od0: $od0');
-        expect(od0.hasValidValues, true);
+        final vList0 = rng.float64List(1, 1);
+        expect(vList0 is Float64List, true);
+        expect(vList0.length, 1);
+        log.debug('$i: vList0: $vList0');
+        final e0 = ODbytes.fromValues(kSelectorODValue, vList0);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
 
         log
-          ..debug('bytes: $od0')
-          ..debug('od0: $od0, values: ${od0.values}')
-          ..debug('od0: $od0')
-          ..debug('float64List0: $float64List0')
-          ..debug('        od0: ${od0.values}')
-          ..debug('        vfBytes: ${od0.vfBytes}');
-        expect(od0.values, equals(float64List0));
+          ..debug('bytes: $e0')
+          ..debug('e0: $e0, values: ${e0.values}')
+          ..debug('e0: $e0')
+          ..debug('vList0: $vList0')
+          ..debug('        e0: ${e0.values}')
+          ..debug('        vfBytes: ${e0.vfBytes}');
+        expect(e0.values, equals(vList0));
       }
     });
 
     test('OD hasValidValues: bad values', () {
       for (var i = 0; i < 10; i++) {
-        final float64List0 = rng.float64List(3, 4);
-        log.debug('$i: float64List0: $float64List0');
-        final od0 = ODbytes.fromValues(kDoubleFloatPixelData, float64List0);
-        final od1 = new FLtag(od0.tag, od0.values);
-        expect(od1, isNull);
+        final vList0 = rng.float64List(3, 4);
+        log.debug('$i: vList0: $vList0');
+        final e0 = ODbytes.fromValues(kDoubleFloatPixelData, vList0);
+        final e1 = new FLtag(e0.tag, e0.values);
+        expect(e1, isNull);
       }
     });
     test('OD [] as values', () {
-      final od0 = ODbytes.fromValues(kDoubleFloatPixelData, []);
-      expect(od0.hasValidValues, true);
-      expect(od0.values, equals(<double>[]));
+      final e0 = ODbytes.fromValues(kDoubleFloatPixelData, []);
+      expect(e0.hasValidValues, true);
+      expect(e0.values, equals(<double>[]));
     });
 
     // Can't create Evr/Ivr with null values
@@ -85,34 +85,29 @@ void main() {
     test('OD hashCode and == random', () {
       //     global.level = Level.info;
       global.throwOnError = false;
-      final rng = new RNG(1);
-
-      List<double> floatList0;
-      List<double> floatList1;
-
       for (var i = 0; i < 10; i++) {
-        floatList0 = rng.float64List(1, 1);
-        final od0 = ODbytes.fromValues(kDoubleFloatPixelData, floatList0);
-        final od1 = ODbytes.fromValues(kDoubleFloatPixelData, floatList0);
+        final vList0 = rng.float64List(1, 1);
+        final e0 = ODbytes.fromValues(kDoubleFloatPixelData, vList0);
+        final e1 = ODbytes.fromValues(kDoubleFloatPixelData, vList0);
         log
-          ..debug('floatList0:$floatList0, od0.hash_code:${od0.hashCode}')
-          ..debug('floatList0:$floatList0, od1.hash_code:${od1.hashCode}');
-        expect(od0.hashCode == od1.hashCode, true);
-        expect(od0 == od1, true);
+          ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
+          ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
+        expect(e0.hashCode == e1.hashCode, true);
+        expect(e0 == e1, true);
 
-        floatList1 = rng.float64List(1, 1);
-        final od2 = ODbytes.fromValues(kSelectorODValue, floatList1);
-        log.debug('floatList1:$floatList1 , od2.hash_code:${od2.hashCode}');
-        expect(od0.hashCode == od2.hashCode, false);
-        expect(od0 == od2, false);
+        final vList1 = rng.float64List(1, 1);
+        final e2 = ODbytes.fromValues(kSelectorODValue, vList1);
+        log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
+        expect(e0.hashCode == e2.hashCode, false);
+        expect(e0 == e2, false);
       }
     });
 
     test('OD isValidValues', () {
       global.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
-        final od0 = ODbytes.fromValues(kSelectorODValue, <double>[doubleList[i]]);
-        expect(OD.isValidValues(PTag.kDoubleFloatPixelData, od0.values), true);
+        final e0 = ODbytes.fromValues(kSelectorODValue, <double>[doubleList[i]]);
+        expect(OD.isValidValues(PTag.kDoubleFloatPixelData, e0.values), true);
       }
     });
   });
