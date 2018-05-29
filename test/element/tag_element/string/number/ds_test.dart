@@ -990,7 +990,6 @@ void main() {
     });
 
     test('DS toBytes', () {
-      global.level = Level.debug;
       final vList = rsg.getDSList(1, 1);
       final v = vList[0];
       log.debug('vList0:"$v"');
