@@ -18,44 +18,45 @@ void main() {
 
   test('Uint16Base fromList', () {
     for (var i = 0; i < 10; i++) {
-      final uint16List0 = rng.uint16List(1, 1);
-      expect(Uint16.fromList(uint16List0), uint16List0);
+      final vList0 = rng.uint16List(1, 1);
+      expect(Uint16.fromList(vList0), vList0);
     }
-    const uint16Min = const [kUint16Min];
-    const uint16Max = const [kUint16Max];
-    expect(Uint16.fromList(uint16Min), uint16Min);
-    expect(Uint16.fromList(uint16Max), uint16Max);
+    const uInt16Min = const [kUint16Min];
+    const uInt16Max = const [kUint16Max];
+    expect(Uint16.fromList(uInt16Min), uInt16Min);
+    expect(Uint16.fromList(uInt16Max), uInt16Max);
   });
 
   test('Uint16Base fromBytes', () {
     for (var i = 0; i < 10; i++) {
-      final uint16List0 = rng.uint16List(1, 1);
-      //       final uint16List1 = new Uint16List.fromList(uint16List0);
-      //       final bd = uint16List1.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(uint16List0);
+      final vList0 = rng.uint16List(1, 1);
+//        final vList1 = new Uint16List.fromList(vList0);
+//        final bd = vList1.buffer.asUint8List();
+      final bytes = new Bytes.typedDataView(vList0);
       log
-        ..debug('uint16List1 : $uint16List0')
-        ..debug('Uint16Base.listFromBytes(bd) ; ${Uint16.fromBytes(bytes)}');
-      expect(Uint16.fromBytes(bytes), equals(uint16List0));
+        ..debug('vList1 : $vList0')
+        ..debug('Uint16.fromBytes(bd) ; ${Uint16.fromBytes(bytes)}');
+      expect(Uint16.fromBytes(bytes), equals(vList0));
     }
   });
 
   test('Uint16Base toBytes', () {
     global.throwOnError = false;
     for (var i = 0; i < 10; i++) {
-      final uint16List0 = rng.uint16List(1, 1);
-      final uint16List1 = new Uint16List.fromList(uint16List0);
-      final bd = uint16List1.buffer.asUint8List();
+      final vList0 = rng.uint16List(1, 1);
+//        final vList1 = new Uint16List.fromList(vList0);
+//        final bd = vList1.buffer.asUint8List();
+      final bytes = new Bytes.typedDataView(vList0);
       log
-        ..debug('uint16List1 : $uint16List1')
-        ..debug('Uint16Base.listToBytes(uint16List1) ; '
-            '${Uint16.toBytes(uint16List1)}');
-      expect(Uint16.toBytes(uint16List1), equals(bd));
+        ..debug('vList1 : $vList0')
+        ..debug('Uint16.toBytes(vList1): '
+            '${Uint16.toBytes(vList0)}');
+      expect(Uint16.toBytes(vList0), equals(bytes));
     }
 
     const uint16Max = const [kUint16Max];
-    final uint16List1 = new Uint16List.fromList(uint16Max);
-    final uint16List = uint16List1.buffer.asUint8List();
+    final vList1 = new Uint16List.fromList(uint16Max);
+    final uint16List = vList1.buffer.asUint8List();
     expect(Uint16.toBytes(uint16Max), uint16List);
 
     const uint32Max = const [kUint32Max];
@@ -70,15 +71,15 @@ void main() {
     global.level = Level.info;
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
-      final uint16List0 = rng.uint16List(1, 1);
-      final bd0 = uint16List0.buffer.asByteData();
-      final lBd0 = Uint16.toByteData(uint16List0);
+      final vList0 = rng.uint16List(1, 1);
+      final bd0 = vList0.buffer.asByteData();
+      final lBd0 = Uint16.toByteData(vList0);
       log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
           .asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 
-      final lBd1 = Uint16.toByteData(uint16List0, check: false);
+      final lBd1 = Uint16.toByteData(vList0, check: false);
       log.debug('lBd3: ${lBd1.buffer.asUint8List()}, '
           'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -98,9 +99,9 @@ void main() {
   test('Uint16Base toByteData bad values', () {
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
-      final uint16List0 = rng.uint16List(1, 1);
-      final bd0 = uint16List0.buffer.asByteData();
-      final lBd1 = Uint16.toByteData(uint16List0, asView: false);
+      final vList0 = rng.uint16List(1, 1);
+      final bd0 = vList0.buffer.asByteData();
+      final lBd1 = Uint16.toByteData(vList0, asView: false);
       log.debug('lBd1: ${lBd1.buffer.asUint8List()}, '
           'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -117,7 +118,7 @@ void main() {
       final lBd3 = Uint16.toByteData(uint32List0, asView: false);
       expect(lBd3, isNull);
 
-      final lBd4 = Uint16.toByteData(uint16List0, asView: false, check: false);
+      final lBd4 = Uint16.toByteData(vList0, asView: false, check: false);
       log.debug('lBd4: ${lBd4.buffer.asUint8List()}, '
           'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd4.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -135,82 +136,67 @@ void main() {
 
   test('Uint16Base fromBytes', () {
     for (var i = 0; i < 10; i++) {
-      final uint16List0 = rng.uint16List(1, 1);
-//        final uint16List1 = new Uint16List.fromList(uint16List0);
-//        final bd = uint16List1.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(uint16List0);
+      final vList0 = rng.uint16List(1, 1);
+//        final vList1 = new Uint16List.fromList(vList0);
+//        final bd = vList1.buffer.asUint8List();
+      final bytes = new Bytes.typedDataView(vList0);
       final base64 = bytes.getBase64();
       log.debug('Uint16.base64: "$base64"');
 
       final usList = Uint16.fromBytes(bytes);
       log.debug('  Uint16.decode: $usList');
-      expect(usList, equals(uint16List0));
-//        expect(usList, equals(uint16List1));
+      expect(usList, equals(vList0));
+//        expect(usList, equals(vList1));
     }
   });
 
   test('Uint16Base toBase64', () {
     for (var i = 0; i < 10; i++) {
-      final uint16List0 = rng.uint16List(1, 1);
-//        final uint16List1 = new Uint16List.fromList(uint16List0);
-//        final bd = uint16List1.buffer.asUint8List();
+      final vList0 = rng.uint16List(1, 1);
+//        final vList1 = new Uint16List.fromList(vList0);
+//        final bd = vList1.buffer.asUint8List();
 //        final s = cvt.base64.encode(bd);
-      final bytes = new Bytes.typedDataView(uint16List0);
+      final bytes = new Bytes.typedDataView(vList0);
       final base64 = bytes.getBase64();
-      expect(Uint16.toBase64(uint16List0), equals(base64));
+      expect(Uint16.toBase64(vList0), equals(base64));
     }
   });
 
   test('Uint16Base encodeDecodeJsonVF', () {
-    global.level = Level.info;
     for (var i = 1; i < 10; i++) {
-      final uint16List0 = rng.uint16List(0, i);
-//        final uint16List1 = new Uint16List.fromList(uint16List0);
-//        final bd = uint16List1.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(uint16List0);
-
+      final vList0 = rng.uint16List(0, i);
+//        final vList1 = new Uint16List.fromList(vList0);
+//        final bd = vList1.buffer.asUint8List();
       // Encode
-//        final base64 = cvt.base64.encode(bytes);
-      final base64 = bytes.getBase64();
-      log.debug('Uint16.base64: "$base64"');
-      final s = Uint16.toBase64(uint16List0);
-      log.debug('  Uint16.json: "$s"');
+//        final base64 = cvt.base64.encode(bd);
+      final bytes0 = new Bytes.typedDataView(vList0);
+      final base64 = bytes0.getBase64();
+      log.debug('OW.base64: "$base64"');
+      final s = Uint16.toBase64(vList0);
+      log.debug('  OW.json: "$s"');
       expect(s, equals(base64));
 
       // Decode
-      final us0 = Uint16.fromBase64(base64);
-      log.debug('Uint16.base64: $us0');
-      final us1 = Uint16.fromBase64(s);
-      log.debug('  Uint16.json: $us1');
-      expect(us0, equals(uint16List0));
-//        expect(us0, equals(uint16List1));
-      expect(us0, equals(us1));
-    }
-  });
-
-  test('Uint16Base fromBytes', () {
-    for (var i = 0; i < 10; i++) {
-      final uint16List0 = rng.uint16List(1, 1);
-      //       final uint16List1 = new Uint16List.fromList(uint16List0);
-//        final bd = uint16List1.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(uint16List0);
-      log
-        ..debug('uint16List1 : $uint16List0')
-        ..debug('Uint16.fromBytes(bd) ; ${Uint16.fromBytes(bytes)}');
-      expect(Uint16.fromBytes(bytes), equals(uint16List0));
+      final e0 = Uint16.fromBase64(base64);
+      log.debug('OW.base64: $e0');
+      final e1 = Uint16.fromBase64(s);
+      log.debug('  OW.json: $e1');
+      expect(e0, equals(vList0));
+//        expect(e0, equals(vList1));
+      expect(e0, equals(e1));
     }
   });
 
   test('Uint16Base fromByteData', () {
     for (var i = 0; i < 10; i++) {
-      final uint16List0 = rng.uint16List(1, 1);
-      final uint16List1 = new Uint16List.fromList(uint16List0);
-      final byteData = uint16List1.buffer.asByteData();
+      final vList0 = rng.uint16List(1, 1);
+      final vList1 = new Uint16List.fromList(vList0);
+      final byteData = vList1.buffer.asByteData();
       log
-        ..debug('uint16List1 : $uint16List1')
+        ..debug('vList1 : $vList1')
         ..debug('Uint16.listFromByteData(byteData):'
             ' ${Uint16.fromByteData(byteData)}');
-      expect(Uint16.fromByteData(byteData), equals(uint16List1));
+      expect(Uint16.fromByteData(byteData), equals(vList1));
     }
   });
 
@@ -218,15 +204,15 @@ void main() {
     global.level = Level.info;
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
-      final uint16List0 = rng.uint16List(1, 1);
-      final bd0 = uint16List0.buffer.asByteData();
-      final lBd0 = Uint16.toByteData(uint16List0);
+      final vList0 = rng.uint16List(1, 1);
+      final bd0 = vList0.buffer.asByteData();
+      final lBd0 = Uint16.toByteData(vList0);
       log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
           .asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 
-      final lBd1 = Uint16.toByteData(uint16List0, check: false);
+      final lBd1 = Uint16.toByteData(vList0, check: false);
       log.debug('lBd3: ${lBd1.buffer.asUint8List()}, '
           'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -246,9 +232,9 @@ void main() {
   test('Uint16Base listToByteData bad values', () {
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
-      final uint16List0 = rng.uint16List(1, 1);
-      final bd0 = uint16List0.buffer.asByteData();
-      final lBd1 = Uint16.toByteData(uint16List0, asView: false);
+      final vList0 = rng.uint16List(1, 1);
+      final bd0 = vList0.buffer.asByteData();
+      final lBd1 = Uint16.toByteData(vList0, asView: false);
       log.debug('lBd1: ${lBd1.buffer.asUint8List()}, '
           'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd1.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -265,8 +251,7 @@ void main() {
       final lBd3 = Uint16.toByteData(uint32List0, asView: false);
       expect(lBd3, isNull);
 
-      final lBd4 =
-      Uint16.toByteData(uint16List0, asView: false, check: false);
+      final lBd4 = Uint16.toByteData(vList0, asView: false, check: false);
       log.debug('lBd4: ${lBd4.buffer.asUint8List()}, '
           'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd4.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
@@ -280,5 +265,45 @@ void main() {
     global.throwOnError = true;
     expect(() => Uint16.toByteData(uint32Max),
         throwsA(const isInstanceOf<InvalidValuesError>()));
+  });
+
+  test('Uint16Base toUint8List', () {
+    global.throwOnError = false;
+    for (var i = 1; i < 10; i++) {
+      final vList0 = rng.uint16List(1, i);
+      final unit8List0 = vList0.buffer.asUint8List();
+      final toUnit8L0 = Uint16.toUint8List(vList0);
+      log.debug('toUnit8L0: $toUnit8L0');
+      expect(toUnit8L0, equals(unit8List0));
+    }
+
+    final toUnit8L1 = Uint16.toUint8List([]);
+    expect(toUnit8L1, equals(kEmptyInt16List));
+
+    final vList1 = rng.uint16List(1, 1);
+    final unit8List1 = vList1.buffer.asUint8List();
+    final toUnit8L2 = Uint16.toUint8List(vList1, asView: false);
+    log.debug('toUnit8L2: $toUnit8L2');
+    expect(toUnit8L2, equals(unit8List1));
+
+    final vList2 = rng.uint32List(1, 1);
+    final toUnit8L3 = Uint16.toUint8List(vList2);
+    log.debug('toUnit8L3: $toUnit8L3');
+    expect(toUnit8L3, isNull);
+  });
+
+  test('Uint16Base fromUnit8List', () {
+    for (var i = 1; i < 10; i++) {
+      final vList0 = rng.uint16List(1, i);
+      final uint8List0 = vList0.buffer.asUint8List();
+      final fromUnit8L0 = Uint16.fromUint8List(uint8List0);
+      log.debug('fromUnit8L0: $fromUnit8L0');
+      expect(fromUnit8L0, equals(vList0));
+    }
+
+    final vList1 = rng.uint16List(0, 0);
+    final uint8List1 = vList1.buffer.asUint8List();
+    final fromUnit8L1 = Uint16.fromUint8List(uint8List1);
+    expect(fromUnit8L1, kEmptyInt16List);
   });
 }
