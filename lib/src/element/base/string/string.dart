@@ -56,16 +56,8 @@ abstract class StringBase extends Element<String> {
   /// Default Trim values for Strings
   static const Trim kTrim = Trim.trailing;
 
-  StringList _values;
-  @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) =>
-      _values = (vList is List) ? vList : StringList.from();
 
   Trim get trim => kTrim;
-
-  StringList get trimmed => _values.trim(trim);
 
   // **** End of interface
 
@@ -154,7 +146,6 @@ abstract class StringBase extends Element<String> {
       bool isValidValue(String s, {Issues issues, bool allowInvalid}),
       int maxLength,
       Type type) {
-//    assert(vList != null);
     if (vList == null) return nullValueError();
     if (!doTestElementValidity || vList.isEmpty) return true;
 

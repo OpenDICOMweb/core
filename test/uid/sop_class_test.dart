@@ -61,6 +61,8 @@ void main() {
       }
     });
     test('parseList InvalidUidStringError', () {
+      global.throwOnError = true;
+
       expect(() => Uid.parseList(badUids, onError: null),
           throwsA(const isInstanceOf<InvalidUidError>()));
     });

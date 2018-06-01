@@ -61,7 +61,9 @@ void main() {
       }
 
       global.throwOnError = false;
-      expect(new URtag(PTag.kPixelDataProviderURL, null), isNull);
+      final e1 = new URtag(PTag.kPixelDataProviderURL, null);
+      expect(e1.hasValidValues, true);
+      expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
       expect(() => new URtag(PTag.kPixelDataProviderURL, null),
@@ -196,6 +198,8 @@ void main() {
     });
 
     test('UR replace random', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
         final e0 = new URtag(PTag.kRetrieveURL, vList0);

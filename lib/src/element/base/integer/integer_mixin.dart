@@ -24,7 +24,6 @@ import 'package:core/src/utils/primitives.dart';
 abstract class IntBase extends Element<int> {
   int get sizeInBytes;
 
-
   @override
   IntBase update([Iterable<int> vList]);
 
@@ -117,28 +116,28 @@ abstract class Int8 {
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
-                       {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asBytes(bList);
   }
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toUint8List(Iterable<int> vList,
-                               {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
-    return (bList == null) ? null :asUint8List(bList);
+    return (bList == null) ? null : asUint8List(bList);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData toByteData(List<int> vList,
-                             {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asByteData(bList);
   }
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<int> vList,
-                         {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bytes = toBytes(vList, asView: asView, check: check);
     return (bytes == null) ? null : base64.encode(bytes);
   }
@@ -153,8 +152,7 @@ abstract class Int8 {
   /// into it and returned; otherwise, [badValues] is called.
   static Int8List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList.isEmpty) return kEmptyInt8List;
+    if (vList == null || vList.isEmpty) return kEmptyInt8List;
     if (vList is Int8List)
       return (asView) ? vList : new Int8List.fromList(vList);
     if (check) {
@@ -244,28 +242,28 @@ abstract class Int16 {
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
-                       {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asBytes(bList);
   }
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toUint8List(Iterable<int> vList,
-                               {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
-    return (bList == null) ? null :asUint8List(bList);
+    return (bList == null) ? null : asUint8List(bList);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData toByteData(List<int> vList,
-                             {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asByteData(bList);
   }
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<int> vList,
-                         {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bytes = toBytes(vList, asView: asView, check: check);
     return (bytes == null) ? null : base64.encode(bytes);
   }
@@ -280,13 +278,13 @@ abstract class Int16 {
   /// into it and returned; otherwise, [badValues] is called.
   static Int16List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList.isEmpty) return kEmptyInt16List;
+    if (vList == null || vList.isEmpty) return kEmptyInt16List;
     if (vList is Int16List)
       return (asView) ? vList : new Int16List.fromList(vList);
     if (check) {
       final td = new Int16List(vList.length);
-      return copyList(vList, td, kMinValue, kMaxValue);
+      final Int16List v = copyList(vList, td, kMinValue, kMaxValue);
+      return v;
     }
     return new Int16List.fromList(vList);
   }
@@ -371,28 +369,28 @@ abstract class Int32 {
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
-                       {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asBytes(bList);
   }
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toUint8List(Iterable<int> vList,
-                               {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
-    return (bList == null) ? null :asUint8List(bList);
+    return (bList == null) ? null : asUint8List(bList);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData toByteData(List<int> vList,
-                             {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asByteData(bList);
   }
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<int> vList,
-                         {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bytes = toBytes(vList, asView: asView, check: check);
     return (bytes == null) ? null : base64.encode(bytes);
   }
@@ -407,8 +405,7 @@ abstract class Int32 {
   /// into it and returned; otherwise, [badValues] is called.
   static Int32List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList.isEmpty) return kEmptyInt32List;
+    if (vList == null || vList.isEmpty) return kEmptyInt32List;
     if (vList is Int32List)
       return (asView) ? vList : new Int32List.fromList(vList);
     if (check) {
@@ -492,28 +489,28 @@ abstract class Int64 {
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
-                       {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asBytes(bList);
   }
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toUint8List(Iterable<int> vList,
-                               {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
-    return (bList == null) ? null :asUint8List(bList);
+    return (bList == null) ? null : asUint8List(bList);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData toByteData(List<int> vList,
-                             {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asByteData(bList);
   }
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<int> vList,
-                         {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bytes = toBytes(vList, asView: asView, check: check);
     return (bytes == null) ? null : base64.encode(bytes);
   }
@@ -528,8 +525,7 @@ abstract class Int64 {
   /// into it and returned; otherwise, [badValues] is called.
   static Int64List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList.isEmpty) return kEmptyInt64List;
+    if (vList == null || vList.isEmpty) return kEmptyInt64List;
     if (vList is Int64List)
       return (asView) ? vList : new Int64List.fromList(vList);
     if (check) {
@@ -630,28 +626,28 @@ abstract class Uint8 {
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
-                       {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asBytes(bList);
   }
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toUint8List(Iterable<int> vList,
-                               {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
-    return (bList == null) ? null :asUint8List(bList);
+    return (bList == null) ? null : asUint8List(bList);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData toByteData(List<int> vList,
-                             {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asByteData(bList);
   }
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<int> vList,
-                         {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bytes = toBytes(vList, asView: asView, check: check);
     return (bytes == null) ? null : base64.encode(bytes);
   }
@@ -666,8 +662,7 @@ abstract class Uint8 {
   /// into it and returned; otherwise, [badValues] is called.
   static Uint8List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList.isEmpty) return kEmptyUint8List;
+    if (vList == null || vList.isEmpty) return kEmptyUint8List;
     if (vList is Uint8List)
       return (asView == true) ? vList : new Uint8List.fromList(vList);
     if (check) {
@@ -758,28 +753,28 @@ abstract class Uint16 {
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
-                       {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asBytes(bList);
   }
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toUint8List(Iterable<int> vList,
-                               {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
-    return (bList == null) ? null :asUint8List(bList);
+    return (bList == null) ? null : asUint8List(bList);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData toByteData(List<int> vList,
-                             {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asByteData(bList);
   }
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<int> vList,
-                         {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bytes = toBytes(vList, asView: asView, check: check);
     return (bytes == null) ? null : base64.encode(bytes);
   }
@@ -794,8 +789,7 @@ abstract class Uint16 {
   /// into it and returned; otherwise, [badValues] is called.
   static Uint16List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList.isEmpty) return kEmptyUint16List;
+    if (vList == null || vList.isEmpty) return kEmptyUint16List;
     if (vList is Uint16List)
       return (asView) ? vList : new Uint16List.fromList(vList);
     if (check) {
@@ -901,28 +895,28 @@ abstract class Uint32 {
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
-                       {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asBytes(bList);
   }
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toUint8List(Iterable<int> vList,
-                               {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
-    return (bList == null) ? null :asUint8List(bList);
+    return (bList == null) ? null : asUint8List(bList);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData toByteData(List<int> vList,
-                             {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asByteData(bList);
   }
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<int> vList,
-                         {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bytes = toBytes(vList, asView: asView, check: check);
     return (bytes == null) ? null : base64.encode(bytes);
   }
@@ -937,8 +931,7 @@ abstract class Uint32 {
   /// into it and returned; otherwise, [badValues] is called.
   static Uint32List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList.isEmpty) return kEmptyUint32List;
+    if (vList == null || vList.isEmpty) return kEmptyUint32List;
     if (vList is Uint32List)
       return (asView) ? vList : new Uint32List.fromList(vList);
     if (check) {
@@ -1036,31 +1029,32 @@ abstract class Uint64 {
 
   /// Returns a [Bytes] created from [vList];
   static Bytes toBytes(Iterable<int> vList,
-                       {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asBytes(bList);
   }
 
   /// Returns a [Uint8List] created from [vList];
   static Uint8List toUint8List(Iterable<int> vList,
-                               {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
-    return (bList == null) ? null :asUint8List(bList);
+    return (bList == null) ? null : asUint8List(bList);
   }
 
   /// Returns a [ByteData] created from [vList];
   static ByteData toByteData(List<int> vList,
-                             {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bList = fromList(vList, asView: asView, check: check);
     return (bList == null) ? null : asByteData(bList);
   }
 
   /// Returns a [base64] [String] created from [vList];
   static String toBase64(Iterable<int> vList,
-                         {bool asView = true, bool check = true}) {
+      {bool asView = true, bool check = true}) {
     final bytes = toBytes(vList, asView: asView, check: check);
     return (bytes == null) ? null : base64.encode(bytes);
   }
+
   /// Returns a [Uint64List] with the same length as [vList]. If
   /// [vList] is a [Uint64List] and [asView] is _true_, then [vList] is
   /// returned; otherwise, a copy of vList is returned. No value checking
@@ -1071,8 +1065,7 @@ abstract class Uint64 {
   /// into it and returned; otherwise, [badValues] is called.
   static Uint64List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
-    assert(vList != null);
-    if (vList.isEmpty) return kEmptyUint64List;
+    if (vList == null || vList.isEmpty) return kEmptyUint64List;
     if (vList is Uint64List)
       return (asView) ? vList : new Uint64List.fromList(vList);
     if (check) {
@@ -1164,4 +1157,3 @@ bool _isValidList(Iterable<int> vList, int minValue, int maxValue) {
 
 bool _isNotValidList(Iterable<int> vList, int minValue, int maxValue) =>
     !_isValidList(vList, minValue, maxValue);
-

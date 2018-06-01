@@ -150,6 +150,7 @@ abstract class DicomMixin {
     _setUint8(4, vrCode >> 8);
     _setUint8(5, vrCode & 0xFF);
   }
+
   void setShortVLF(int vlf) => _setUint16(6, vlf);
   void setLongVLF(int vlf) => _setUint32(8, vlf);
 
@@ -226,17 +227,10 @@ abstract class DicomMixin {
   Uint8List asUint8List([int offset = 0, int length, int padChar = 0]) {
     assert(padChar == null || padChar == kSpace || padChar == kNull);
     length ??= eLength;
-    if (length == 0) return kEmptyUint8List;
-    final index = _absIndex(offset);
-    final lastIndex = offset + length - 1;
-    final _length = _maybeRemoveNull(lastIndex, length, padChar);
-    return _bd.buffer.asUint8List(index, _length);
+    return (length == 0)
+        ? kEmptyUint8List
+        : _bd.buffer.asUint8List(_absIndex(offset), length - offset);
   }
-
-  int _maybeRemoveNull(int lastIndex, int vfLength, [int padChar]) =>
-      (padChar != null && vfLength.isEven && _getUint8(lastIndex) == kNull)
-          ? vfLength - 1
-          : vfLength;
 
   static const int _kGroupOffset = 0;
   static const int _kEltOffset = 0;
@@ -336,6 +330,7 @@ abstract class DicomWriterMixin {
     _setUint8(4, vrCode >> 8);
     _setUint8(5, vrCode & 0xFF);
   }
+
   void setShortVLF(int vlf) => _setUint16(6, vlf);
   void setLongVLF(int vlf) => _setUint32(8, vlf);
 

@@ -13,7 +13,6 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-
 RSG rsg = new RSG(seed: 1);
 
 void main() {
@@ -71,7 +70,8 @@ void main() {
       global.throwOnError = false;
       final e2 = new AEtag(PTag.kScheduledStudyLocationAETitle, null);
       log.debug('e2: $e2');
-      expect(e2, isNull);
+      expect(e2.hasValidValues, true);
+      expect(e2.values == StringList.kEmptyList, true);
     });
 
     test('AE hasValidValues random good values', () {
@@ -208,6 +208,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+        print('$e1');
         final vList1 = rsg.getAEList(1, 1);
         expect(e1.replace(vList1), equals(vList0));
         expect(e1.values, equals(vList1));
@@ -228,7 +229,7 @@ void main() {
         final vList1 = rsg.getAEList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final e2 = AEtag.fromBytes(bytes, PTag.kPerformedStationAETitle);
+        final e2 = AEtag.fromBytes(PTag.kPerformedStationAETitle, bytes);
         log.debug('e2: ${e2.info}');
         expect(e2.hasValidValues, true);
       }
@@ -240,7 +241,7 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final e2 = AEtag.fromBytes(bytes0, PTag.kSelectorAEValue);
+          final e2 = AEtag.fromBytes(PTag.kSelectorAEValue, bytes0);
           log.debug('e2: ${e2.info}');
           expect(e2.hasValidValues, true);
         }
@@ -254,11 +255,11 @@ void main() {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final e2 = AEtag.fromBytes(bytes0, PTag.kSelectorCSValue);
+          final e2 = AEtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e2, isNull);
 
           global.throwOnError = true;
-          expect(() => AEtag.fromBytes(bytes0, PTag.kSelectorCSValue),
+          expect(() => AEtag.fromBytes(PTag.kSelectorCSValue, bytes0),
               throwsA(const isInstanceOf<InvalidTagError>()));
         }
       }
@@ -566,10 +567,8 @@ void main() {
         for (var tag in aeVM1Tags) {
           expect(AE.isValidLength(tag, vList), true);
 
-          expect(
-              AE.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(
-              AE.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+          expect(AE.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(AE.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
         }
       }
     });

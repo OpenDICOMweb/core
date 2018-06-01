@@ -34,7 +34,7 @@ class PrivateCreatorTags {
     if (v >= 0x10010 && v <= 0x100FF) return true;
     final msg = 'Invalid PCTag Code ${dcm(code)}';
     log.error(msg);
-    return invalidCode(code, msg);
+    return invalidTagCode(code, msg);
   }
 
   @override

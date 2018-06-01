@@ -430,8 +430,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(2, 2);
         global.throwOnError = false;
-        final make0 = AStag.fromValues(PTag.kPatientAge, vList0);
-        expect(make0, isNull);
+        final e0 = AStag.fromValues(PTag.kPatientAge, vList0);
+        expect(e0, isNull);
 
         global.throwOnError = true;
         expect(() => AStag.fromValues(PTag.kPatientAge, vList0),

@@ -157,8 +157,7 @@ void main() {
 
         global.throwOnError = false;
         final e2 = new DTtag(PTag.kDateTime, null);
-        log.debug('e2: $e2');
-        expect(e2, isNull);
+        expect(e1, isNull);
 
         global.throwOnError = true;
         expect(() => new DTtag(PTag.kDateTime, null),
@@ -388,6 +387,8 @@ void main() {
     });
 
     test('DT replace', () {
+      global.throwOnError = false;
+
       final vList0 = ['19991025235959'];
       final e0 = new DTtag(PTag.kDateTime, vList0);
       final vList1 = ['19001025235959'];
@@ -419,7 +420,8 @@ void main() {
       expect(e1.values, equals(<String>[]));
 
       final e2 = new DTtag(PTag.kDateTime, null);
-      expect(e2, isNull);
+      expect(e2.hasValidValues, true);
+      expect(e2.values, StringList.kEmptyList);
     });
 
     test('DT checkLength good values', () {

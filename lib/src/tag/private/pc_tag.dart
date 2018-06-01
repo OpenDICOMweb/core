@@ -59,7 +59,6 @@ abstract class PCTag extends PrivateTag {
   bool isValidDataCode(int code) {
     final ng = (code >> 16);
     if (group != ng) return false;
-    //final elt = (sgNumber << 8) + (code & 0xFF);
     final elt = code & 0xFFFF;
     if (elt < base || elt > limit) return false;
     return true;

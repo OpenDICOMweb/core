@@ -332,6 +332,7 @@ void main() {
     });
 
     test('AT replace random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);

@@ -31,7 +31,7 @@ abstract class VR<T> {
   /// The default maximum number of values for this [VR].
   int get maxLength;
 
-  bool isValidVFLength(int vfLength, int minValues, int maxValues);
+  bool isValidVFLength(int vfLength, int vmMin, int vmMax);
 
   bool isValid(int vrIndex) => vrIndex == index;
   bool isNotValid(int vrIndex) => !isValid(vrIndex);

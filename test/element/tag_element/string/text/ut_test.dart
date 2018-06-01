@@ -59,8 +59,8 @@ void main() {
 
       global.throwOnError = false;
       final e1 = new UTtag(PTag.kLocalNamespaceEntityID, null);
-      log.debug('e1: $e1');
-      expect(e1, isNull);
+      expect(e1.hasValidValues, true);
+      expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
       expect(() => new UTtag(PTag.kLocalNamespaceEntityID, null),
@@ -190,6 +190,8 @@ void main() {
     });
 
     test('UT replace random', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         final e0 = new UTtag(PTag.kUniversalEntityID, vList0);

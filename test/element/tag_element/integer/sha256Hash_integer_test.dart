@@ -17,6 +17,7 @@ void main() {
     const uInt8V1 = const <int>[kUint8Min];
     const uInt16V1 = const <int>[kUint16Min];
     const uInt32V1 = const <int>[kUint32Max];
+
     test('SS', () {
       final listInt = <int>[123];
       final e0 = new SStag(PTag.kTagAngleSecondAxis, listInt);

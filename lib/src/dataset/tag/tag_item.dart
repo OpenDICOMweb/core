@@ -66,6 +66,6 @@ class TagItem extends MapItem with TagDataset {
 
   static Dataset convert(Dataset parent, TagItem item, SQ sequence) {
     final Dataset tagItem = new TagItem.empty(parent, sequence);
-    return TagDataset.convert(parent, item, tagItem);
+    return TagDataset.convert(item, tagItem);
   }
 }

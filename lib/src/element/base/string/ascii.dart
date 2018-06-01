@@ -93,18 +93,16 @@ abstract class AE extends StringAscii {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, AE);
-    return vList != null &&
-        doTestElementValidity &&
-        isValidTag(tag) &&
-        isValidValues(tag, vList);
+    if (!doTestElementValidity) return true;
+    return vList != null && isValidTag(tag) && isValidValues(tag, vList);
   }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AE].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, AE);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -221,18 +219,16 @@ abstract class AS extends StringAscii {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, AS);
-    return vList != null &&
-        doTestElementValidity &&
-        isValidTag(tag) &&
-        isValidValues(tag, vList);
+    if (!doTestElementValidity) return true;
+    return vList != null && isValidTag(tag) && isValidValues(tag, vList);
   }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [AS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, AS);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -305,11 +301,6 @@ abstract class CS extends StringAscii {
 
   static const Trim kTrim = Trim.both;
 
-  /// Special variable for overriding uppercase constraint. If _true_
-  /// lowercase characters in [values] are converted to uppercase
-  /// before being returned.
-  static bool convertLowercase = false;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -320,12 +311,6 @@ abstract class CS extends StringAscii {
   String get vrName => kVRName;
   @override
   int get maxLength => kMaxLength;
-
-  @override
-  Iterable<String> get values {
-    final v = _values;
-    return (convertLowercase) ? v.uppercase : v;
-  }
 
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
@@ -341,8 +326,8 @@ abstract class CS extends StringAscii {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, CS);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -351,8 +336,8 @@ abstract class CS extends StringAscii {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, CS);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -478,8 +463,8 @@ abstract class UI extends StringAscii {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UI);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -488,8 +473,8 @@ abstract class UI extends StringAscii {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UI);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -638,8 +623,8 @@ abstract class DA extends StringBase {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, DA);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -648,8 +633,8 @@ abstract class DA extends StringBase {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, DA);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -760,8 +745,8 @@ abstract class DT extends StringBase {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, DT);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -770,8 +755,8 @@ abstract class DT extends StringBase {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, DT);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -886,8 +871,8 @@ abstract class TM extends StringBase {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, TM);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -896,8 +881,8 @@ abstract class TM extends StringBase {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, TM);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }

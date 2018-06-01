@@ -34,9 +34,7 @@ int _combineSLength(int v, String s) => v + s.length;
 // TODO: unit test
 int stringListLength(Iterable<String> sList,
         {String separator = '\\', bool pad = true}) =>
-    (sList.isEmpty)
-        ? 0
-        : _stringListLength(sList, pad: pad);
+    (sList.isEmpty) ? 0 : _stringListLength(sList, pad: pad);
 
 Iterable<String> uppercase(List<String> vList) =>
     vList.map((s) => s.toUpperCase());
@@ -131,13 +129,13 @@ Bytes textListToBytes(Iterable<String> values) {
 class StringList extends ListBase<String> {
   final List<String> values;
 
-  factory StringList.from([Iterable<String> vList]) =>
-      (vList is StringList) ? vList : new StringList._(vList);
+  factory StringList.from([Iterable<String> vList]) {
+    if (vList == null || vList.isEmpty) return kEmptyList;
+    final v =  (vList is List<String>) ? vList : vList.toList();
+    return new StringList._(v);
+  }
 
-  StringList._([Iterable<String> vList])
-      : values = (vList == null)
-            ? kEmptyList
-            : (vList is List) ? vList : vList.toList(growable: false);
+  StringList._(this.values);
 
   StringList.decode(Bytes bytes) : values = bytes.getUtf8List();
 
@@ -150,8 +148,7 @@ class StringList extends ListBase<String> {
   bool operator ==(Object other) {
     if (other is List<String>) {
       if (length != other.length) return false;
-      for (var i = 0; i < length; i++)
-        if (this[i] != other[i]) return false;
+      for (var i = 0; i < length; i++) if (this[i] != other[i]) return false;
       return true;
     }
     return false;
@@ -196,14 +193,13 @@ class StringList extends ListBase<String> {
   Bytes encode([int separator = kBackslash]) =>
       Bytes.fromUtf8List(values, separator);
 
-  static final StringList kEmptyList = new StringList.from(<String>[]);
+  static final StringList kEmptyList = new StringList._(kEmptyStringList);
 }
 
 class AsciiList extends StringList {
- factory AsciiList([Iterable<String> vList]) =>
- isAsciiList(vList)
-     ? new StringList.from(vList)
-     : badStringList('Invalid AsciiList: $vList');
+  factory AsciiList([Iterable<String> vList]) => isAsciiList(vList)
+      ? new StringList.from(vList)
+      : badStringList('Invalid AsciiList: $vList');
 
   AsciiList.decode(Bytes bytes) : super._(bytes.getAsciiList());
 
@@ -237,11 +233,9 @@ class AsciiList extends StringList {
   }
 
   static bool isAsciiList(List<String> sList) {
-      for(var s in sList) {
-        for (var c in s.codeUnits)
-          if (c <= 0 || c >= 127) return false;
-      }
-        return true;
-      }
-
+    for (var s in sList) {
+      for (var c in s.codeUnits) if (c <= 0 || c >= 127) return false;
+    }
+    return true;
+  }
 }

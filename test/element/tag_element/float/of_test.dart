@@ -226,6 +226,8 @@ void main() {
     });
 
     test('OF replace random', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 1);
         final e0 = new OFtag(PTag.kVectorGridData, vList0);

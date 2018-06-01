@@ -127,7 +127,7 @@ abstract class BytesMixin {
   /// [_bd].lengthInBytes, where [offset] is the absolute offset in [_bd].
   int _length16(int offset) {
     final length = _bdLength - offset;
-    assert((length % 2) == 0);
+    if (length % 2 != 0) return -1;
     return length ~/ 2;
   }
 
@@ -135,7 +135,7 @@ abstract class BytesMixin {
   /// [_bd].lengthInBytes, where [offset] is the absolute offset in [_bd].
   int _length32(int offset) {
     final length = _bdLength - offset;
-    assert((length % 4) == 0, 'length: $length');
+    if (length % 4 != 0) return -1;
     return length ~/ 4;
   }
 
@@ -143,7 +143,7 @@ abstract class BytesMixin {
   /// [_bd].lengthInBytes, where [offset] is the absolute offset in [_bd].
   int _length64(int offset) {
     final length = _bdLength - offset;
-    assert((length % 8) == 0, 'length: $length');
+    if (length % 8 != 0) return -1;
     return length ~/ 8;
   }
 
@@ -243,6 +243,7 @@ abstract class BytesMixin {
   /// is a copy of the specified region and returns it.
   Uint32List asUint32List([int offset = 0, int length]) {
     length ??= _length32(offset);
+    if (length < 0) return null;
     final index = _absIndex(offset);
     return (_isAligned32(index))
         ? _bd.buffer.asUint32List(index, length)
@@ -412,17 +413,22 @@ abstract class BytesMixin {
       [int offset = 0, int length, int padChar = 0]) {
     assert(padChar == null || padChar == kSpace || padChar == kNull);
     length ??= _bdLength;
-    if (length == 0) return kEmptyUint8List;
+    if (length <= offset) return kEmptyUint8List;
     final index = _absIndex(offset);
-    final lastIndex = offset + length - 1;
+    final lastIndex = length - 1;
     final _length = _maybeRemoveNull(lastIndex, length, padChar);
-    return _bd.buffer.asUint8List(index, _length);
+    if (length == 0) return kEmptyUint8List;
+    print('index: $index');
+    print('offset: $offset');
+    print('_length: $_length');
+    return _bd.buffer.asUint8List(index, _length - offset);
   }
 
   int _maybeRemoveNull(int lastIndex, int vfLength, [int padChar]) =>
       (padChar != null && vfLength.isEven && _getUint8(lastIndex) == kNull)
-      ? lastIndex
-      : vfLength;
+          ? lastIndex
+          : vfLength;
+
 
   /// Returns a [String] containing a _ASCII_ decoding of the specified
   /// region of _this_. Also allows the removal of a padding character.
@@ -478,6 +484,7 @@ abstract class BytesMixin {
         length: length,
         allowMalformed: allowMalformed,
         padChar: padChar);
+    print('utf8: (${s.length})"$s"');
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
@@ -814,13 +821,13 @@ abstract class BytesMixin {
 
   String toBDDescriptor(ByteData bd) {
     final start = bd.offsetInBytes;
-    var length = bd.lengthInBytes;
-    final _length = (length > 32) ? 32 : length;
+    final length = bd.lengthInBytes;
+    final _length =
+        (length > truncateBytesLength) ? truncateBytesLength : length;
     final end = start + length;
     final sb = new StringBuffer('$start-$end:$length');
     // TODO: fix for truncated values print [x, y, z, ...]
-    if (showByteValues)
-      sb.writeln('${bd.buffer.asUint8List(start, truncateBytesLength)}');
+    if (showByteValues) sb.writeln('${bd.buffer.asUint8List(start, _length)}');
     return '$sb';
   }
 

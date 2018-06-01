@@ -55,6 +55,6 @@ class TagRootDataset extends MapRootDataset with TagDataset {
     final tagRds = new TagRootDataset.empty();
     for (var e in rds.fmi.elements)
       tagRds.fmi.add(_makeElement(e.code, e.vrIndex, e.values, rds));
-    return TagDataset.convert(null, rds, tagRds);
+    return TagDataset.convert(rds, tagRds);
   }
 }

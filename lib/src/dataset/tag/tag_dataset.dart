@@ -43,12 +43,12 @@ abstract class TagDataset {
 
   static const _makeElement = TagElement.makeFromValues;
 
-  static Dataset convert(Dataset parent, Dataset dsOld, Dataset dsNew,
+  static Dataset convert(Dataset dsOld, Dataset dsNew,
       [Bytes bytes]) {
     for (var old in dsOld.elements) {
       final e = (old is SQ)
-          ? _makeSQ(parent, old.code, <TagItem>[], old.vfLengthField, bytes)
-          : _makeElement(old.code, old.vrIndex, old.values, parent);
+          ? _makeSQ(dsNew, old.code, <TagItem>[], old.vfLengthField, bytes)
+          : _makeElement(old.code, old.vrIndex, old.values, dsNew);
       dsNew.add(e);
     }
     return dsNew;

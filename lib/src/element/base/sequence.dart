@@ -223,7 +223,7 @@ Summary $tag
   }
 
   @override
-  Iterable<Item> replace([Iterable<Item> vList = kEmptyList]) =>
+  List<Item> replace([Iterable<Item> vList = kEmptyList]) =>
       unsupportedError();
 
   @override

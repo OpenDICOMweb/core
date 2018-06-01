@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/value/uid/uid_errors.dart';
 import 'package:core/src/value/uid/uid_string.dart';
 import 'package:core/src/value/uid/well_known_uids.dart';
@@ -185,7 +184,7 @@ class Uid {
       final wk = wellKnownUids[v];
       return (wk != null) ? wk : new Uid(v);
     }
-    return null;
+    return invalidUidString(s);
   }
 
   // Issue: shout this be deprecated
@@ -198,8 +197,7 @@ class Uid {
   static List<Uid> parseList(List<String> sList, {OnUidParseError onError}) {
     if (sList.isEmpty) return kEmptyList;
     final uids = new List<Uid>(sList.length);
-    for (var i = 0; i < sList.length; i++)
-      uids[i] = Uid.parse(sList[i], onError: onError);
+    for (var i = 0; i < sList.length; i++) uids[i] = Uid.tryParse(sList[i]);
     return uids;
   }
 

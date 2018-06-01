@@ -164,7 +164,7 @@ abstract class TagElement<V> {
       [Dataset ds, TransferSyntax ts]) {
     final code = bytes.code;
     final tag = _getTag(code, bytes.vrIndex, ds);
-    if (code != kPixelData) return badCode(code, 'Not Pixel Data', tag);
+    if (code != kPixelData) return badTagCode(code, 'Not Pixel Data', tag);
     return _undefinedBytesMakers[tag.vrIndex](bytes, ds, ts);
   }
 
@@ -173,9 +173,7 @@ abstract class TagElement<V> {
       int code, int vrIndex, List values, Dataset ds) {
     if (_isPrivateCreator(code)) return _getPCTag(code, vrIndex, values);
     final tag = _getTag(code, vrIndex, ds);
-    final tagVRIndex = tag.vrIndex;
-
-    return makeFromTag(tag, values, tagVRIndex);
+    return makeFromTag(tag, values, tag.vrIndex);
   }
 
   /// Return a new [TagElement]. This assumes the caller has handled

@@ -86,8 +86,8 @@ abstract class DS extends StringAscii {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, DS);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         StringBase.isValidValues(
             tag, vList, issues, isValidValue, kMaxLength, DS);
@@ -96,9 +96,9 @@ abstract class DS extends StringAscii {
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [DS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
+    if (!doTestElementValidity) return true;
     if (tag == null) return invalidTag(tag, null, DS);
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -164,7 +164,7 @@ abstract class DS extends StringAscii {
       return _badDS(s, issues);
     // Remove leading and training spaces
     final s0 = s.trim();
-    if (s.isEmpty) return null;
+    if (s.isEmpty) return 0.0;
     final v = double.tryParse(s0);
     return (v == null) ? _badDS(s, issues) : v;
   }
@@ -259,8 +259,8 @@ abstract class IS extends StringAscii {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, IS);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         StringBase.isValidValues(
             tag, vList, issues, isValidValue, kMaxLength, IS);
@@ -270,8 +270,8 @@ abstract class IS extends StringAscii {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, IS);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -324,6 +324,7 @@ abstract class IS extends StringAscii {
         : invalidString(s, issues);
   }
 
+  // Urgent: doc
   static int tryParse(String s, [Issues issues]) {
     if (s == null ||
         !isValidValueLength(s, issues) ||
@@ -331,7 +332,7 @@ abstract class IS extends StringAscii {
       return _badIS(s, issues);
     // Remove leading and training spaces
     var s0 = s.trim();
-    if (s.isEmpty) return null;
+    if (s.isEmpty) return 0;
     // Dart int.tryParse doesn't handle + sign
     s0 = (s[0] == '+') ? s.substring(1) : s;
     final n = int.tryParse(s0);
@@ -340,13 +341,12 @@ abstract class IS extends StringAscii {
         : n;
   }
 
-  static Null _badIS(String s, Issues issues) {
+  static int _badIS(String s, Issues issues) {
     final msg = 'Invalid Integer String (IS): "$s"';
     return badString(msg, issues);
   }
 
-  static Iterable<int> tryParseList(Iterable<String> vList,
-                                       [Issues issues]) =>
+  static Iterable<int> tryParseList(Iterable<String> vList, [Issues issues]) =>
       StringBase.reallyTryParseList(vList, issues, tryParse);
 
   static List<int> tryParseBytes(Bytes vfBytes) =>

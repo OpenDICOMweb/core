@@ -88,11 +88,15 @@ void main() {
       global.throwOnError = false;
       final e4 = new OBtag(PTag.kICCProfile, null, 0);
       log.debug('e4: $e4');
-      expect(e4, isNull);
+      expect(e4.hasValidValues, true);
+      expect(e4.values, kEmptyUint8List);
 
       global.throwOnError = true;
-      expect(() => new OBtag(PTag.kICCProfile, null),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+      final e5 = new OBtag(PTag.kICCProfile, null, 0);
+      log.debug('e5: $e5');
+      expect(e5.hasValidValues, true);
+      expect(e5.values, kEmptyUint8List);
+
     });
 
     test('OB update random', () {
@@ -317,6 +321,8 @@ void main() {
     });
 
     test('OB replace random', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
         final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);

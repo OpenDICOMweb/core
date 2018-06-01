@@ -6,18 +6,17 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'dart:typed_data';
-
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
-import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/error.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
+/*
 abstract class TagStringMixin {
   // **** Interface
   ByteData get bd;
@@ -47,214 +46,202 @@ abstract class TagStringMixin {
     return count;
   }
 }
+*/
 
-class AEtag extends AE with TagElement<String> {
+abstract class TagStringMixin {
+  StringList get _values;
+  set _values(StringList v);
+
+  Iterable<String> get values => _values;
+
+  set values(Iterable<String> vList) => _values =
+      (vList == null || vList.isEmpty) ? kEmptyStringList : _toValues(vList);
+
+  Trim get trim;
+  StringList get trimmed => _values.trim(trim);
+
+  /// Replace the current [values] with [vList], and return the original
+  /// [values]. This method modifies the [Element].
+  StringList replace([Iterable<String> vList]) {
+    final old = _values;
+    _values = _toValues(vList);
+    return old;
+  }
+}
+
+StringList _toValues(Iterable<String> vList) {
+  if (throwOnError && vList == null) return badValues(vList);
+  if (vList == null || vList.isEmpty) return StringList.kEmptyList;
+  return (vList is StringList) ? vList : new StringList.from(vList);
+}
+
+class AEtag extends AE with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory AEtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (AE.isValidArgs(tag, vList))
-          ? new AEtag._(tag, vList)
-          : badValues(vList, null, tag);
-
-  factory AEtag._(Tag tag, Iterable<String> vList) {
-    if (!AE.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? StringList.kEmptyList : _toValues(vList);
-    return new AEtag._x(tag, v);
+  /// Creates an [AEtag] Element.
+  factory AEtag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return AE.isValidArgs(tag, v)
+        ? new AEtag._(tag, v)
+        : badValues(v, null, tag);
   }
 
-  AEtag._x(this.tag, Iterable<String> values) : _values = _toValues(values);
+  AEtag._(this.tag, this._values) : assert(tag.vrIndex == kAEIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  AEtag update([Iterable<String> vList]) => new AEtag(tag, vList);
 
-  @override
-  AEtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new AEtag(tag, vList ?? kEmptyStringList);
+  static AEtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new AEtag(tag, vList);
 
-  static AEtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new AEtag(tag, vList ?? kEmptyStringList);
-
-  static AEtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static AEtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static AEtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!AE.isValidTag(tag)) ? null : new AEtag._(tag, bytes.getAsciiList());
+  static AEtag fromBytes(Tag tag, Bytes bytes) =>
+      new AEtag(tag, bytes.getAsciiList());
 }
 
-class CStag extends CS with TagElement<String> {
+class CStag extends CS with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory CStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (CS.isValidArgs(tag, vList))
-          ? new CStag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory CStag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return CS.isValidArgs(tag, v)
+        ? new CStag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  CStag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  CStag._(this.tag, this._values) : assert(tag.vrIndex == kCSIndex);
+
+  /// Special variable for overriding uppercase constraint. If _true_
+  /// lowercase characters in [values] are converted to uppercase
+  /// before being returned.
+  static bool convertLowercase = false;
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  Iterable<String> get values {
+    final v = _values;
+    return (convertLowercase) ? v.uppercase : v;
+  }
 
   @override
-  CStag update([Iterable<String> vList = kEmptyStringList]) =>
-      new CStag(tag, vList ?? kEmptyStringList);
+  CStag update([Iterable<String> vList]) => new CStag(tag, vList);
 
-  static CStag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new CStag(tag, vList ?? kEmptyStringList);
+  static CStag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new CStag(tag, vList);
 
-  static CStag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static CStag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static CStag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!CS.isValidTag(tag)) ? null : new CStag._(tag, bytes.getAsciiList());
+  static CStag fromBytes(Bytes bytes, Tag tag) =>
+      new CStag(tag, bytes.getAsciiList());
 }
 
-class DStag extends DS with TagElement<String> {
+class DStag extends DS with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory DStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      new DStag._(tag, vList);
+  factory DStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
+    final v = _toValues(vList);
+    return DS.isValidArgs(tag, v)
+        ? new DStag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  factory DStag._(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (DS.isValidArgs(tag, vList))
-          ? new DStag._x(tag, vList)
-          : badValues(vList, null, tag);
-
-  DStag._x(this.tag, Iterable<String> values) : _values = _toValues(values);
+  DStag._(this.tag, this._values) : assert(tag.vrIndex == kDSIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  DStag update([Iterable<String> vList]) => new DStag(tag, vList);
 
-  @override
-  DStag update([Iterable<String> vList = kEmptyStringList]) =>
-      new DStag._(tag, vList ?? kEmptyStringList);
-
-  static DStag fromValues(Tag tag, Iterable<String> vList) =>
-      new DStag._(tag, vList ?? kEmptyStringList);
+  static DStag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new DStag(tag, vList);
 
   static DStag fromBytes(Bytes bytes, Tag tag) =>
-      (DS.isValidBytesArgs(tag, bytes))
-          ? new DStag._x(tag, bytes.getAsciiList())
-          : badTag(tag, null, DS);
+      new DStag(tag, bytes.getAsciiList());
 }
 
-class IStag extends IS with TagElement<String> {
+class IStag extends IS with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory IStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      new IStag._(tag, vList);
+  factory IStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
+    final v = _toValues(vList);
+    return IS.isValidArgs(tag, v)
+        ? new IStag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  factory IStag._(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (IS.isValidArgs(tag, vList))
-      ? new IStag._x(tag, vList)
-      : badValues(vList, null, tag);
-
-  IStag._x(this.tag, Iterable<String> values) : _values = _toValues(values);
+  IStag._(this.tag, this._values) : assert(tag.vrIndex == kISIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  IStag update([Iterable<String> vList]) => new IStag(tag, vList);
 
-  @override
-  IStag update([Iterable<String> vList = kEmptyStringList]) =>
-      new IStag(tag, vList ?? kEmptyStringList);
-
-  static IStag fromValues(Tag tag, Iterable<String> vList) =>
-      new IStag._(tag, vList ?? kEmptyStringList);
+  static IStag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new IStag(tag, vList);
 
   static IStag fromBytes(Bytes bytes, Tag tag) =>
-      (IS.isValidBytesArgs(tag, bytes))
-      ? new IStag._x(tag, bytes.getAsciiList())
-      : badTag(tag, null, IS);
+      new IStag(tag, bytes.getAsciiList());
 }
 
 /// A Long String (LO) Element
-class LOtag extends LO with TagElement<String> {
+class LOtag extends LO with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory LOtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (LO.isValidArgs(tag, vList))
-          ? new LOtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory LOtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
+    final v = _toValues(vList);
+    return LO.isValidArgs(tag, v)
+        ? new LOtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  LOtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  LOtag._(this.tag, this._values) : assert(tag.vrIndex == kLOIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  LOtag update([Iterable<String> vList]) => new LOtag(tag, vList);
 
-  @override
-  LOtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new LOtag(tag, vList ?? kEmptyStringList);
+  static LOtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new LOtag(tag, vList);
 
-  static LOtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new LOtag(tag, vList ?? kEmptyStringList);
-
-  static LOtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static LOtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static LOtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!LO.isValidTag(tag)) ? null : new LOtag._(tag, bytes.getUtf8List());
+  static LOtag fromBytes(Bytes bytes, Tag tag) =>
+      new LOtag(tag, bytes.getUtf8List());
 }
 
-class PCtag extends PC with TagElement<String> {
+class PCtag extends PC with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
-
-  factory PCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (PC.isValidArgs(tag, vList))
-          ? new PCtag._(tag, vList)
-          : badValues(vList, null, tag);
-
-  PCtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
-
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  StringList _values;
+
+  factory PCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
+    final v = _toValues(vList);
+    return PC.isValidArgs(tag, v)
+        ? new PCtag._(tag, v)
+        : badValues(v, null, tag);
+  }
+
+  PCtag._(this.tag, this._values) : assert(tag.vrIndex == kLOIndex);
 
   @override
   String get token => value;
 
   @override
-  PCtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new PCtag(tag, vList ?? kEmptyStringList);
+  PCtag update([Iterable<String> vList]) => new PCtag(tag, vList);
 
   @override
   String toString() => '$runtimeType $tag $value';
 
-  static PCtag fromValues(Tag tag, Iterable<String> vList) =>
-      new PCtag(tag, vList ?? kEmptyStringList);
+  static PCtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new PCtag(tag, vList);
 
   static PCtag fromBytes(Bytes bytes, Tag tag) =>
-      (!LO.isValidTag(tag)) ? null : new PCtag._(tag, bytes.getUtf8List());
+      new PCtag(tag, bytes.getUtf8List());
 
   static PCtag makePhantom(int group, int subgroup) {
     const name = PDTag.phantomName;
@@ -273,427 +260,308 @@ class PCtag extends PC with TagElement<String> {
 }
 
 /// An Long Text (LT) Element
-class LTtag extends LT with TagElement<String> {
+class LTtag extends LT with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory LTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (LT.isValidArgs(tag, vList))
-          ? new LTtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory LTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
+    final v = _toValues(vList);
+    return LT.isValidArgs(tag, v)
+        ? new LTtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  LTtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  LTtag._(this.tag, this._values) : assert(tag.vrIndex == kLTIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  LTtag update([Iterable<String> vList]) => new LTtag(tag, vList);
 
-  @override
-  LTtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new LTtag(tag, vList ?? kEmptyStringList);
+  static LTtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new LTtag(tag, vList);
 
-  static LTtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new LTtag(tag, vList ?? kEmptyStringList);
-
-  static LTtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static LTtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static LTtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!LT.isValidTag(tag))
-          ? null
-          : new LTtag._(tag, _toValues([bytes.getUtf8()]));
+  static LTtag fromBytes(Bytes bytes, Tag tag) =>
+      new LTtag(tag, _toValues([bytes.getUtf8()]));
 }
 
 /// A Person Name ([PN]) Element.
-class PNtag extends PN with TagElement<String> {
+class PNtag extends PN with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory PNtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (PN.isValidArgs(tag, vList))
-          ? new PNtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory PNtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
+    final v = _toValues(vList);
+    return PN.isValidArgs(tag, v)
+        ? new PNtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  PNtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  PNtag._(this.tag, this._values) : assert(tag.vrIndex == kPNIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  PNtag update([Iterable<String> vList]) => new PNtag(tag, vList);
 
-  @override
-  PNtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new PNtag(tag, vList ?? kEmptyStringList);
+  static PNtag fromValues(Tag tag, [Iterable<String> vList]) =>
+      new PNtag(tag, vList);
 
-  static PNtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new PNtag(tag, vList ?? kEmptyStringList);
-
-  static PNtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static PNtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static PNtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!PN.isValidTag(tag)) ? null : new PNtag._(tag, bytes.getUtf8List());
+  static PNtag fromBytes(Bytes bytes, Tag tag) =>
+      new PNtag(tag, bytes.getUtf8List());
 }
 
 /// A Short String (SH) Element
-class SHtag extends SH with TagElement<String> {
+class SHtag extends SH with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory SHtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (SH.isValidArgs(tag, vList))
-          ? new SHtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory SHtag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return SH.isValidArgs(tag, v)
+        ? new SHtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  SHtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  SHtag._(this.tag, this._values) : assert(tag.vrIndex == kSHIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  SHtag update([Iterable<String> vList]) => new SHtag(tag, vList);
 
-  @override
-  SHtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new SHtag(tag, vList ?? kEmptyStringList);
+  static SHtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new SHtag(tag, vList);
 
-  static SHtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new SHtag(tag, vList ?? kEmptyStringList);
-
-  static SHtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static SHtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static SHtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!SH.isValidTag(tag)) ? null : new SHtag._(tag, bytes.getUtf8List());
+  static SHtag fromBytes(Bytes bytes, Tag tag) =>
+      new SHtag(tag, bytes.getUtf8List());
 }
 
 /// An Short Text (ST) Element
-class STtag extends ST with TagElement<String> {
+class STtag extends ST with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory STtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (ST.isValidArgs(tag, vList))
-          ? new STtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory STtag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return ST.isValidArgs(tag, v)
+        ? new STtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  STtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  STtag._(this.tag, this._values) : assert(tag.vrIndex == kSTIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  STtag update([Iterable<String> vList]) => new STtag(tag, vList);
 
-  @override
-  STtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new STtag(tag, vList ?? kEmptyStringList);
+  static STtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new STtag(tag, vList);
 
-  static STtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new STtag(tag, vList ?? kEmptyStringList);
-
-  static STtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static STtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static STtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!ST.isValidTag(tag))
-          ? null
-          : new STtag._(tag, _toValues([bytes.getUtf8()]));
+  static STtag fromBytes(Bytes bytes, Tag tag) =>
+      new STtag(tag, _toValues([bytes.getUtf8()]));
 }
 
 /// An Unlimited Characters (UC) Element
-class UCtag extends UC with TagElement<String> {
+class UCtag extends UC with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory UCtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (UC.isValidArgs(tag, vList))
-          ? new UCtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory UCtag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return UC.isValidArgs(tag, v)
+        ? new UCtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  UCtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  UCtag._(this.tag, this._values) : assert(tag.vrIndex == kUCIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  UCtag update([Iterable<String> vList]) => new UCtag(tag, vList);
 
-  @override
-  UCtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new UCtag(tag, vList ?? kEmptyStringList);
+  static UCtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new UCtag(tag, vList);
 
-  static UCtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new UCtag(tag, vList ?? kEmptyStringList);
-
-  static UCtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static UCtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static UCtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!UC.isValidTag(tag)) ? null : new UCtag._(tag, bytes.getUtf8List());
+  static UCtag fromBytes(Bytes bytes, Tag tag) =>
+      new UCtag(tag, bytes.getUtf8List());
 }
 
-class UItag extends UI with TagElement<String> {
+class UItag extends UI with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory UItag(Tag tag, Iterable<String> vList, {bool validate = true}) {
-    if (vList == null) return badValues(vList, null, tag);
-    return (validate && vList == null || !UI.isValidArgs(tag, vList))
-        ? badValues(vList, null, tag)
-        : new UItag._(tag, vList, null);
+  factory UItag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return UI.isValidArgs(tag, v)
+        ? new UItag._(tag, v, null)
+        : badValues(v, null, tag);
   }
 
-  factory UItag.fromStrings(Tag tag, Iterable<String> sList,
-          {bool validate = true}) =>
-      (sList == null || (validate && !UI.isValidArgs(tag, sList)))
-          ? badValues(sList, null, tag)
-          : new UItag._(tag, sList, null);
-
-  factory UItag.fromUids(Tag tag, Iterable<Uid> uidList,
-      {bool validate = true}) {
-    if (uidList == null || (validate && !UI.isValidUidArgs(tag, uidList)))
-      return badValues(uidList, null, tag);
-    final vList = uidList.map((uid) => uid.asString);
-    return new UItag._(tag, vList, uidList);
+  factory UItag.fromUids(Tag tag, Iterable<Uid> uidList) {
+    if (!UI.isValidUidArgs(tag, uidList)) return badValues(uidList, null, tag);
+    final v = _toValues(uidList.map((uid) => uid.asString));
+    List<Uid> uids;
+    if (uidList != null) uids = uidList.toList(growable: false);
+    return new UItag._(tag, v, uids);
   }
 
-  UItag._(this.tag, Iterable<String> values, [Iterable<Uid> uids])
-      : _values = _toValues(values),
-        _uids = (uids == null) ? null : uids.toList();
-
-  @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  UItag._(this.tag, this._values, [List<Uid> uids])
+      : assert(tag.vrIndex == kUIIndex);
 
   @override
   List<Uid> get uids => _uids ??= Uid.parseList(values);
   Iterable<Uid> _uids;
 
   @override
-  UItag update([Iterable<String> vList = kEmptyStringList]) =>
+  UItag update([Iterable<String> vList]) => new UItag(tag, vList);
+
+  static UItag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
       new UItag(tag, vList);
 
-  static UItag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new UItag(tag, vList ?? kEmptyStringList);
-
-  static UItag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static UItag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static UItag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!UI.isValidTag(tag)) ? null : new UItag(tag, bytes.getAsciiList());
+  static UItag fromBytes(Bytes bytes, Tag tag) =>
+      new UItag(tag, bytes.getAsciiList(padChar: kNull));
 }
 
 /// Value Representation of [Uri].
 ///
 /// The Value Multiplicity of this Element is 1.
-class URtag extends UR with TagElement<String> {
+class URtag extends UR with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory URtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (UR.isValidArgs(tag, vList))
-          ? new URtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory URtag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return UR.isValidArgs(tag, v)
+        ? new URtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  URtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  URtag._(this.tag, this._values) : assert(tag.vrIndex == kURIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  URtag update([Iterable<String> vList]) => new URtag(tag, vList);
 
-  @override
-  URtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new URtag(tag, vList ?? kEmptyStringList);
+  static URtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new URtag(tag, vList);
 
-  static URtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new URtag(tag, vList ?? kEmptyStringList);
-
-  static URtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static URtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static URtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!UR.isValidTag(tag))
-          ? null
-          : new URtag._(tag, _toValues([bytes.getUtf8()]));
+  static URtag fromBytes(Bytes bytes, Tag tag) =>
+      new URtag(tag, _toValues([bytes.getUtf8()]));
 }
 
 /// An Unlimited Text (UT) Element
-class UTtag extends UT with TagElement<String> {
+class UTtag extends UT with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory UTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (UT.isValidArgs(tag, vList))
-          ? new UTtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory UTtag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return UT.isValidArgs(tag, v)
+        ? new UTtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  UTtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  UTtag._(this.tag, this._values) : assert(tag.vrIndex == kUTIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  UTtag update([Iterable<String> vList]) => new UTtag(tag, vList);
 
-  @override
-  UTtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new UTtag(tag, vList ?? kEmptyStringList);
+  static UTtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new UTtag(tag, vList);
 
-  static UTtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new UTtag(tag, vList ?? kEmptyStringList);
-
-  static UTtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static UTtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static UTtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!UT.isValidTag(tag))
-          ? null
-          : new UTtag._(tag, _toValues([bytes.getUtf8()]));
+  static UTtag fromBytes(Bytes bytes, Tag tag) =>
+      new UTtag(tag, _toValues([bytes.getUtf8()]));
 }
 
 // **** Date/Time classes
 /// A Application Entity Title (AS) Element
-class AStag extends AS with TagElement<String> {
+class AStag extends AS with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory AStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      new AStag._(tag, vList);
-
-  factory AStag._(Tag tag, Iterable<String> vList) {
-    vList ??= <String>[];
-    return (AS.isValidArgs(tag, vList))
-        ? new AStag._x(tag, vList)
-        : badValues(vList, null, tag);
+  factory AStag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return AS.isValidArgs(tag, v)
+        ? new AStag._(tag, v)
+        : badValues(v, null, tag);
   }
 
-  AStag._x(this.tag, Iterable<String> values) : _values = _toValues(values);
+  AStag._(this.tag, this._values) : assert(tag.vrIndex == kASIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  AStag update([Iterable<String> vList]) => new AStag(tag, vList);
 
-  @override
-  AStag update([Iterable<String> vList = kEmptyStringList]) =>
-      new AStag._(tag, vList);
-
-  @override
-  AStag updateF(Iterable<String> f(Iterable<String> vList)) =>
-      new AStag._(tag, f(values));
-
-  static AStag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new AStag._(tag, vList ?? kEmptyStringList);
+  static AStag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new AStag(tag, vList);
 
   static AStag fromBytes(Bytes bytes, Tag tag) =>
-      (bytes != null || AS.isValidTag(tag))
-          ? new AStag(tag, bytes.getAsciiList())
-          : null;
+      new AStag(tag, bytes.getAsciiList());
 }
 
 /// A DICOM Date ([DA]) [Element].
-class DAtag extends DA with TagElement<String> {
+class DAtag extends DA with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory DAtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (DA.isValidArgs(tag, vList))
-          ? new DAtag._(tag, _toValues(vList))
-          : badValues(vList, null, tag);
+  factory DAtag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return DA.isValidArgs(tag, v)
+        ? new DAtag._(tag, _toValues(v))
+        : badValues(v, null, tag);
+  }
 
-  DAtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  DAtag._(this.tag, this._values) : assert(tag.vrIndex == kDAIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  DAtag update([Iterable<String> vList]) => new DAtag(tag, vList);
 
-  @override
-  DAtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new DAtag(tag, vList ?? kEmptyStringList);
+  static DAtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
+      new DAtag(tag, vList);
 
-  static DAtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new DAtag(tag, vList ?? kEmptyStringList);
-
-  static DAtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static DAtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!DA.isValidTag(tag)) ? null : new DAtag._(tag, bytes.getAsciiList());
+  static DAtag fromBytes(Bytes bytes, Tag tag) =>
+      new DAtag(tag, bytes.getAsciiList());
 }
 
 /// A DICOM DateTime [DT] [Element].
 ///
 /// A concatenated date-time character string in the
 /// format: YYYYMMDDHHMMSS.FFFFFF&ZZXX
-class DTtag extends DT with TagElement<String> {
+class DTtag extends DT with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory DTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (DT.isValidArgs(tag, vList))
-          ? new DTtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory DTtag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return DT.isValidArgs(tag, v)
+        ? new DTtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  DTtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  DTtag._(this.tag, this._values) : assert(tag.vrIndex == kDTIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  DTtag update([Iterable<String> vList]) => new DTtag(tag, vList);
 
-  @override
-  DTtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new DTtag(tag, vList ?? kEmptyStringList);
+  static DTtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+      new DTtag(tag, vList);
 
-  static DTtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new DTtag(tag, vList ?? kEmptyStringList);
-
-  static DTtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static DTtag from(Element e) => fromBytes(e.vfBytes, e.tag);
-
-  static DTtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!DT.isValidTag(tag)) ? null : new DTtag._(tag, bytes.getAsciiList());
+  static DTtag fromBytes(Bytes bytes, Tag tag) =>
+      new DTtag(tag, bytes.getAsciiList());
 }
 
 /// The DICOM [TM] (Time) [Element].
@@ -701,39 +569,28 @@ class DTtag extends DT with TagElement<String> {
 /// [Time] [String]s have the following format: HHMMSS.ffffff. [See PS3.18, TM]
 /// (http://dicom.nema.org/medical/dicom/current/output/html/part18.html
 /// #para_3f950ae4-871c-48c5-b200-6bccf821653b)
-class TMtag extends TM with TagElement<String> {
+class TMtag extends TM with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
-  List<String> _values;
+  @override
+  StringList _values;
 
-  factory TMtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) =>
-      (TM.isValidArgs(tag, vList))
-          ? new TMtag._(tag, vList)
-          : badValues(vList, null, tag);
+  factory TMtag(Tag tag, [Iterable<String> vList]) {
+    final v = _toValues(vList);
+    return TM.isValidArgs(tag, v)
+        ? new TMtag._(tag, v)
+        : badValues(v, null, tag);
+  }
 
-  TMtag._(this.tag, Iterable<String> values) : _values = _toValues(values);
+  TMtag._(this.tag, this._values) : assert(tag.vrIndex == kTMIndex);
 
   @override
-  Iterable<String> get values => _values;
-  @override
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  TMtag update([Iterable<String> vList]) => new TMtag(tag, vList);
 
-  @override
-  TMtag update([Iterable<String> vList = kEmptyStringList]) =>
-      new TMtag(tag, vList ?? kEmptyStringList);
+  static TMtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
+      new TMtag(tag, vList);
 
-  static TMtag fromValues(Tag tag, Iterable<String> vList,
-          [int _, TransferSyntax __]) =>
-      new TMtag(tag, vList ?? kEmptyStringList);
-
-  static TMtag fromUint8List(Tag tag, Uint8List bytes) =>
-      fromBytes(new Bytes.typedDataView(bytes), tag);
-
-  static TMtag from(Element e) => fromBytes( e.vfBytes, e.tag);
-
-  static TMtag fromBytes(Bytes bytes, Tag tag,  [int _, TransferSyntax __]) =>
-      (!TM.isValidTag(tag)) ? null : new TMtag._(tag, bytes.getAsciiList());
+  static TMtag fromBytes(Bytes bytes, Tag tag) =>
+      new TMtag(tag, bytes.getAsciiList());
 }
-
-StringList _toValues(Iterable<String> vList) =>
-    (vList is StringList) ? vList : new StringList.from(vList);

@@ -92,7 +92,7 @@ class PTag extends Tag {
   static PTag lookupByCode(int code,
       [int vrIndex = kUNIndex, bool shouldThrow = false]) {
     if (Tag.isNotPublicCode(code, checkRange: false))
-      return badCode(code, 'Non-Public Tag Code');
+      return badTagCode(code, 'Non-Public Tag Code');
     final tag = pTagCodeMap[code];
     if (tag != null) return tag;
 
@@ -147,7 +147,7 @@ class PTag extends Tag {
     // TODO: 0x7Fxx,yyyy Elements
 
     // No match return [null]
-    if (shouldThrow) badCode(code);
+    if (shouldThrow) badTagCode(code);
     return new PTag.unknown(code, vrIndex);
   }
 

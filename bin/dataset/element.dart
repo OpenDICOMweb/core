@@ -30,7 +30,7 @@ void main() {
   log.debug('ae0 info: ${ae0.info}');
   final bytes = ae0.vfBytes;
 
-  final ae1 = AEtag.fromBytes(bytes, PTag.kSpecificCharacterSet);
+  final ae1 = AEtag.fromBytes(PTag.kSpecificCharacterSet, bytes);
   ds.add(ae1);
   log.debug('ae1 info: ${ae1.info}');
   final v = ae1.values;

@@ -139,12 +139,14 @@ void main() {
       global.throwOnError = false;
       final e1 = new DStag(PTag.kProcedureStepProgress, null);
       log.debug('e1: $e1');
-      expect(e1, isNull);
+      expect(e1.hasValidValues, true);
+      expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
       expect(() => new DStag(PTag.kProcedureStepProgress, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
     });
+
     test('DS hasValidValues good values random', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {

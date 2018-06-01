@@ -173,7 +173,8 @@ void main() {
       global.throwOnError = false;
       final e1 = new TMtag(PTag.kModifiedImageTime, null);
       log.debug('e1: $e1');
-      expect(e1, isNull);
+      expect(e1.hasValidValues, true);
+      expect(e1.values, StringList.kEmptyList);
       global.throwOnError = true;
       expect(() => new TMtag(PTag.kModifiedImageTime, null),
           throwsA(const isInstanceOf<InvalidValuesError>()));
@@ -398,6 +399,8 @@ void main() {
     });
 
     test('TM replace random', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 10);
         final e0 = new TMtag(PTag.kCalibrationTime, vList0);

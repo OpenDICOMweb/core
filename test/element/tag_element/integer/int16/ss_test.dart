@@ -100,11 +100,14 @@ void main() {
       global.throwOnError = false;
       final e5 = new SStag(PTag.kSelectorSSValue, null);
       log.debug('e5: $e5');
-      expect(e5, isNull);
+      expect(e5.hasValidValues, true);
+      expect(e5.values, kEmptyUint16List);
 
       global.throwOnError = true;
-      expect(() => new SStag(PTag.kSelectorSSValue, null),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+      final e6 = new SStag(PTag.kSelectorSSValue, null);
+      log.debug('e6: $e6');
+      expect(e6.hasValidValues, true);
+      expect(e6.values, kEmptyUint16List);
     });
 
     test('SS update random', () {

@@ -67,8 +67,8 @@ void main() {
       }
       global.throwOnError = false;
       final e1 = new SHtag(PTag.kSelectorSHValue, null);
-      log.debug('e1: $e1');
-      expect(e1, isNull);
+      expect(e1.hasValidValues, true);
+      expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
       expect(() => new SHtag(PTag.kMultiCoilElementName, null),

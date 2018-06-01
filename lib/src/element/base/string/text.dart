@@ -86,8 +86,8 @@ abstract class LT extends Text {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, LT);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -96,8 +96,8 @@ abstract class LT extends Text {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, LT);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -185,8 +185,8 @@ abstract class ST extends Text {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, ST);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -195,8 +195,8 @@ abstract class ST extends Text {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, ST);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -295,8 +295,8 @@ abstract class UR extends Text {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UR);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -305,8 +305,8 @@ abstract class UR extends Text {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UR);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -419,8 +419,8 @@ abstract class UT extends Text {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UT);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -429,8 +429,8 @@ abstract class UT extends Text {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UT);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -480,4 +480,3 @@ abstract class UT extends Text {
         : invalidString('Invalid Unlimited Text (UT): "$s"', issues);
   }
 }
-

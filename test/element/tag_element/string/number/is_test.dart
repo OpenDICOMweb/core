@@ -114,6 +114,7 @@ void main() {
     });
     test('IS hasValidValues good values random', () {
       global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 1);
         final e0 = new IStag(PTag.kSeriesNumber, vList0);
@@ -150,7 +151,8 @@ void main() {
       global.throwOnError = false;
       final e2 = new IStag(PTag.kOtherStudyNumbers, null);
       log.debug('e2: $e2');
-      expect(e2, isNull);
+      expect(e2.hasValidValues, true);
+      expect(e2.values, StringList.kEmptyList);
 
       global.throwOnError = true;
       expect(() => new IStag(PTag.kOtherStudyNumbers, null),

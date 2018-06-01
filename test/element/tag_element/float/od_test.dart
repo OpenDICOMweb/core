@@ -216,6 +216,8 @@ void main() {
     });
 
     test('OD replace random', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
         final e0 = new ODtag(PTag.kSelectorODValue, vList0);

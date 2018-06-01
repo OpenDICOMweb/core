@@ -95,11 +95,14 @@ void main() {
       global.throwOnError = false;
       final e4 = new OLtag(PTag.kLongVertexPointIndexList, null);
       log.debug('e4: $e4');
-      expect(e4, isNull);
+      expect(e4.hasValidValues, true);
+      expect(e4.values, kEmptyUint32List);
 
       global.throwOnError = true;
-      expect(() => new OLtag(PTag.kLongVertexPointIndexList, null),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+      final e5 = new OLtag(PTag.kLongVertexPointIndexList, null);
+      log.debug('e5: $e5');
+      expect(e5.hasValidValues, true);
+      expect(e5.values, kEmptyUint32List);
     });
 
     test('OL update random', () {
@@ -330,6 +333,7 @@ void main() {
     });
 
     test('OL replace random', () {
+      global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final e0 = new OLtag(PTag.kLongVertexPointIndexList, vList0);

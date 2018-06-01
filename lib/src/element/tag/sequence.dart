@@ -32,10 +32,6 @@ class SQtag extends SQ with TagElement<Item> {
   @override
   final Dataset parent;
 
-  /// The [Iterable<ItemTag>] that are the [values] of _this_.
-//  @override
-  // Iterable<Item> values;
-
   /// The length of the Value Field from which this [SQtag] was decoded.
   /// If _null_ _this_ what not created from an encoding.
   @override
@@ -55,11 +51,7 @@ class SQtag extends SQ with TagElement<Item> {
             ? emptyTagItemList
             : (vList is List) ? vList : vList.toList(growable: false);
 
-/*
-  SQtag.fromDecoder(this.parent, this.tag,
-      [this.values, this.vfLengthField, this.bytes]);
-*/
-
+  /// The [Iterable<ItemTag>] that are the [values] of _this_.
   @override
   Iterable<Item> get values => _values;
   @override

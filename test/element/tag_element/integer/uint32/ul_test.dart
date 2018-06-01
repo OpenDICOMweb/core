@@ -95,11 +95,14 @@ void main() {
       global.throwOnError = false;
       final e4 = new ULtag(PTag.kDataPointColumns, null);
       log.debug('e4: $e4');
-      expect(e4, isNull);
+      expect(e4.hasValidValues, true);
+      expect(e4.values, kEmptyUint32List);
 
       global.throwOnError = true;
-      expect(() => new ULtag(PTag.kDataPointColumns, null),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+      final e5 = new ULtag(PTag.kDataPointColumns, null);
+      log.debug('e5: $e5');
+      expect(e5.hasValidValues, true);
+      expect(e5.values, kEmptyUint32List);
     });
 
     test('UL update random', () {
@@ -331,6 +334,8 @@ void main() {
     });
 
     test('UL replace random', () {
+      global.throwOnError = false;
+
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);

@@ -82,8 +82,8 @@ void main() {
 
       global.throwOnError = false;
       final e1 = new LTtag(PTag.kImageComments, null);
-      log.debug('e1: $e1');
-      expect(e1, isNull);
+      expect(e1.hasValidValues, true);
+      expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
       expect(() => new LTtag(PTag.kAcquisitionProtocolDescription, null),
@@ -252,11 +252,10 @@ void main() {
 
     test('LT fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
-        final vList1 = rsg.getLTList(1, 10);
-        for (var listS in vList1) {
+        final vList = rsg.getLTList(1, 10);
+        for (var s in vList) {
           global.throwOnError = false;
-          final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          final bytes0 = Bytes.fromAscii(s);
           final e1 = LTtag.fromBytes(bytes0, PTag.kSelectorCSValue);
           expect(e1, isNull);
 

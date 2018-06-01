@@ -93,7 +93,8 @@ void main() {
       global.throwOnError = false;
       final e1 = new DAtag(PTag.kCreationDate, null);
       log.debug('e1: $e1');
-      expect(e1, isNull);
+      expect(e1.hasValidValues, true);
+      expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
       expect(() => new DAtag(PTag.kCreationDate, null),
@@ -114,7 +115,8 @@ void main() {
       global.throwOnError = false;
       final e1 = new DAtag(PTag.kCreationDate, null);
       log.debug('e1: $e1');
-      expect(e1, isNull);
+      expect(e1.hasValidValues, true);
+      expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
       expect(() => new DAtag(PTag.kCreationDate, null),
@@ -351,6 +353,8 @@ void main() {
     });
 
     test('DA replace', () {
+      global.throwOnError = false;
+
       final vList0 = ['19991025'];
       final e0 = new DAtag(PTag.kCreationDate, vList0);
       final vList1 = ['19001025'];
@@ -363,7 +367,7 @@ void main() {
 
       final e2 = new DAtag(PTag.kCreationDate, vList1);
       expect(e2.replace(null), equals(vList1));
-      expect(e2.values, equals(<String>[]));
+      expect(e2.values, equals(StringList.kEmptyList));
     });
 
     test('DA replace random', () {
@@ -382,7 +386,8 @@ void main() {
       expect(e1.values, equals(<String>[]));
 
       final e2 = new DAtag(PTag.kCreationDate, null);
-      expect(e2, isNull);
+      expect(e2.hasValidValues, true);
+      expect(e2.values, StringList.kEmptyList);
     });
 
     test('DA getAsciiList', () {

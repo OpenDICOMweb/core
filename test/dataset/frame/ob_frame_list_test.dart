@@ -301,10 +301,12 @@ void main() {
     });
 
     test('Create Uncompressed FrameList1Bit (FrameDescriptor.fromDataset)', () {
+      global.throwOnError = false;
+
       //Frame Descriptor.fromDataSet1
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
-          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
+          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
@@ -769,10 +771,11 @@ void main() {
     });
 
     test('Create Uncompressed FrameList8Bit (FrameDescriptor.fromDataset)', () {
+      global.throwOnError = false;
       //Frame Descriptor.fromDataSet1
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
-          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
+          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
@@ -1126,6 +1129,7 @@ void main() {
     });
 
     test('Invalid CompressedFrameList', () {
+      global.throwOnError = true;
       //nFrames = 0
       const nFrames0 = 0;
       const photometricInterpretation0 = 'MONOCHROME1';

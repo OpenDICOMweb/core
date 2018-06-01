@@ -172,7 +172,7 @@ abstract class ByteElement<V> {
     final tag = _getTag(code, vrIndex, ds);
     final tagVRIndex =
     (tag.vrIndex > kVRNormalIndexMax) ? vrIndex : tag.vrIndex;
-    if (code != kPixelData) return badCode(code, 'Not Pixel Data', tag);
+    if (code != kPixelData) return badTagCode(code, 'Not Pixel Data', tag);
     return _undefinedBytesMakers[tagVRIndex](bytes, ts, fragments);
   }
 

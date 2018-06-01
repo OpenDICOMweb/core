@@ -60,7 +60,7 @@ void main() {
     test('Create FrameDescriptor.fromDataset', () {
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
-          new UItag.fromStrings(PTag.kTransferSyntaxUID, [ts.asString]);
+          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel = new UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation =
           new CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);

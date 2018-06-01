@@ -72,7 +72,7 @@ Null badKey<K>(K key, [int vrIndex, String creator]) {
   return null;
 }
 
-Null badCode(int code, [String message, Tag tag]) {
+Null badTagCode(int code, [String message, Tag tag]) {
   final t = (tag == null) ? '' : '$tag';
   final msg = 'InvalidTagCodeError: "${dcm(code)}": $message $t';
   log.error(msg);
@@ -80,8 +80,8 @@ Null badCode(int code, [String message, Tag tag]) {
   return null;
 }
 
-bool invalidCode(int code, [String message, Tag tag]) {
-  badCode(code, message, tag);
+bool invalidTagCode(int code, [String message, Tag tag]) {
+  badTagCode(code, message, tag);
   return false;
 }
 

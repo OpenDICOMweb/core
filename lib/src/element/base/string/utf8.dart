@@ -79,8 +79,8 @@ abstract class LO extends Utf8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, LO);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -89,8 +89,8 @@ abstract class LO extends Utf8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, LO);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -180,22 +180,19 @@ abstract class PC extends LO {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, LO);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-           doTestElementValidity &&
-           (tag is PCTag) &&
-           LO.isValidValues(tag, vList, issues);
+        (tag is PCTag) &&
+        LO.isValidValues(tag, vList, issues);
   }
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [LO].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, LO);
-    return vfBytes != null &&
-           doTestElementValidity &&
-           (tag is PCTag)&&
-           (vfBytes.length >= 0 && vfBytes.length <= 64);
+    if (!doTestElementValidity) return true;
+    return vfBytes != null && (tag is PCTag) && vfBytes.length <= 64;
   }
-
 
 // **** Generalized static methods
 }
@@ -246,8 +243,8 @@ abstract class PN extends Utf8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, PN);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -256,8 +253,8 @@ abstract class PN extends Utf8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, PN);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -345,8 +342,8 @@ abstract class SH extends Utf8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, SH);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -355,8 +352,8 @@ abstract class SH extends Utf8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, SH);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }
@@ -449,8 +446,8 @@ abstract class UC extends Utf8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UC);
+    if (!doTestElementValidity) return true;
     return vList != null &&
-        doTestElementValidity &&
         isValidTag(tag) &&
         isValidValues(tag, vList, issues);
   }
@@ -459,8 +456,8 @@ abstract class UC extends Utf8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UC);
+    if (!doTestElementValidity) return true;
     return vfBytes != null &&
-        doTestElementValidity &&
         isValidTag(tag, issues) &&
         isValidVFLength(vfBytes.length, issues, tag);
   }

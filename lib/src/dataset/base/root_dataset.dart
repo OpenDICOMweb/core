@@ -243,7 +243,8 @@ abstract class Fmi extends ListBase<Element> {
     final e = this[code];
     if (e == null) return null;
     if (e is UI) {
-      return e.uids.elementAt(0);
+      print('e: $e, uids: ${e.uids}');
+      return e.uids[0];
     } else if (e is UN) {
       return new Uid(e.vfBytesAsAscii);
     } else {

@@ -257,24 +257,10 @@ abstract class Tag {
 
   /// Returns _true_  if [vfLength] is a valid
   /// Value Field length for _this_ [Tag].
-  bool isValidVFLength(int vfLength, [Issues issues]) {
-    if (isVFLengthAlwaysValid(vrIndex)) return true;
-    //   final max = vr.maxVFLength;
-    final v = vr.isValidVFLength(vfLength, minValues, maxValues);
-    return v;
-/*
-    return (_isValidVFLength(vfLength, max))
-        ? true
-        : invalidVFLength(vfLength, max);
-*/
-
-/*    final msg = 'Invalid Value Field length: '
-        'min($minValues) <= $vfLength <= max($maxValues)';
-    if (issues != null) issues.add(msg);
-    if (throwOnError) return invalidVFLength(vfLength, vr.maxVFLength);
-    return false;
-    */
-  }
+  bool isValidVFLength(int vfLength, [Issues issues]) =>
+      (isVFLengthAlwaysValid(vrIndex))
+          ? true
+          : vr.isValidVFLength(vfLength, vmMin, vmMax);
 
   bool _isValidLength(int length, int min, int max, int columns) =>
       (length == 0)
@@ -359,23 +345,30 @@ abstract class Tag {
       if ((elt > 0xFF) && (elt <= 0xFFFF) && creator is PCTag)
         return PDTag.make(code, vrIndex, creator);
       // This should never happen
-      return badCode(code);
+      return badTagCode(code);
     }
   }
 
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag lookupByCode(int code, [int vrIndex = kUNIndex, Object creator]) {
-    if (!allowInvalidTags &&
-        (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding))
-      return badCode(code);
+    if (code > 0xFFFFFFFF ||
+        (!allowInvalidTags &&
+            (code < kAffectedSOPInstanceUID || code > kDataSetTrailingPadding)))
+      return badTagCode(code);
 
     final group = code >> 16;
     Tag tag;
+
     if (group.isEven) {
       tag = PTag.lookupByCode(code, vrIndex);
-      tag ??= new PTag.unknown(code, vrIndex);
-    } else {
-      assert(Tag.isPrivateCode(code) == true);
+      if (tag == null) {
+        if ((code & 0xFFFF) == 0) {
+          tag = new PTagGroupLength(code);
+        } else {
+          tag = new PTag.unknown(code, vrIndex);
+        }
+      }
+    } else if (group.isOdd && group >= 0x0009 && group <= 0xFFFF) {
       final elt = code & 0xFFFF;
       if (elt == 0) {
         tag = new PrivateGroupLengthTag(code, vrIndex);
@@ -388,10 +381,71 @@ abstract class Tag {
       } else {
         // This should never happen
         final msg = 'Unknown Private Tag Code: creator: $creator';
-        return badCode(code, msg);
+        return badTagCode(code, msg);
       }
     }
     return tag;
+  }
+
+  static Tag lookupPublicByCode(int code, [int vrIndex = kUNIndex]) {
+    assert(_isPublicCode(code));
+    var tag = PTag.lookupByCode(code, vrIndex);
+    if (tag == null) {
+      if ((code & 0xFFFF) == 0) {
+        tag = new PTagGroupLength(code);
+      } else {
+        tag = new PTag.unknown(code, vrIndex);
+      }
+    }
+    return tag;
+  }
+
+  static bool _isPublicCode(int code) => _isPublicGroup(code >> 16);
+  static  bool _isPublicGroup(int group) => group.isEven && group <= 0xFFFC;
+
+  static Tag lookupPrivateByCode(int code,
+      [int vrIndex = kUNIndex, Object creator]) {
+    assert(_isPrivateCode(code));
+
+    final elt = code & 0xFFFF;
+    Tag tag;
+    if (elt == 0) {
+      // Private Group Length
+      tag = new PrivateGroupLengthTag(code, vrIndex);
+    } else if (elt < 0x10) {
+      // Illegal Private Code
+      tag = new IllegalPrivateTag(code, vrIndex);
+    } else if ((elt >= 0x10) && (elt <= 0xFF)) {
+      // Private Creator
+      tag = PCTag.make(code, vrIndex, creator);
+    } else if ((elt > 0x00FF) && (elt <= 0xFFFF)) {
+      // Private Data
+      tag = PDTag.make(code, vrIndex, creator);
+    } else {
+      // This should never happen
+      final msg = 'Unknown Private Tag Code: $vrIndex creator: $creator';
+      return badTagCode(code, msg);
+    }
+    return tag;
+  }
+
+  static bool _isPrivateCode(int code) => _isPrivateGroup(code >> 16);
+
+  static bool _isPrivateGroup(int group) =>
+      group.isOdd && group >= 0x0009 && group <= 0xFFFF;
+
+  // Trick to check that it is both Private and Creator.
+ static bool _isPCCode(int code) {
+    final bits = code & 0x1FFFF;
+    return (bits >= 0x10010 && bits <= 0x100FF);
+  }
+
+ static bool _isNotPCTagCode(int code) => !_isPCCode(code);
+
+// Trick to check that it is both Private and Data.
+  static bool _isPDCode(int code) {
+    final bits = code & 0x1FFFF;
+    return (bits >= 0x11000 && bits <= 0x1FF00);
   }
 
   static Tag lookupByKeyword(String keyword,
@@ -463,7 +517,7 @@ abstract class Tag {
     if (Tag.isPrivateGroupLengthCode(code))
       return new PrivateGroupLengthTag(code, vrIndex);
     if (isPCCode(code)) return PCTag.make(code, vrIndex, token);
-    return badCode(code);
+    return badTagCode(code);
   }
 
   /// Returns a [String] corresponding to [tag], which might be an

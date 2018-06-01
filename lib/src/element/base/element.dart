@@ -50,9 +50,6 @@ final ElementFormatter eFormat = new SimpleElementFormatter();
 /// is the [Type] of the [values] of the [Element].
 abstract class Element<V> extends ListBase<V> {
   // **** Interface
-  // TODO: explan the differentce between _value and value.
- // List<V> get _values;
- // set _values(List<V> vList);
 
   @override
   List<V> toList({bool growable = true});
@@ -443,7 +440,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
-  Iterable<V> replace([Iterable<V> vList]) {
+  List<V> replace([Iterable<V> vList]) {
     vList ??= <V>[];
     final old = values;
     values = vList;
