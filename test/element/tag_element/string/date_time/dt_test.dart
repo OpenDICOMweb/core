@@ -157,7 +157,8 @@ void main() {
 
         global.throwOnError = false;
         final e2 = new DTtag(PTag.kDateTime, null);
-        expect(e1, isNull);
+        expect(e2.hasValidValues, true);
+        expect(e2.values, StringList.kEmptyList);
 
         global.throwOnError = true;
         expect(() => new DTtag(PTag.kDateTime, null),

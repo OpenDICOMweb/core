@@ -410,7 +410,7 @@ class UItag extends UI with TagElement<String>, TagStringMixin {
     return new UItag._(tag, v, uids);
   }
 
-  UItag._(this.tag, this._values, [List<Uid> uids])
+  UItag._(this.tag, this._values, this._uids)
       : assert(tag.vrIndex == kUIIndex);
 
   @override

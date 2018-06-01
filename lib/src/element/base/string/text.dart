@@ -360,8 +360,6 @@ abstract class UR extends Text {
     return true;
   }
 
-  /// _Deprecated_: Use [Uri.tryParse] instead.
-  @deprecated
   static Uri parse(String s,
       {int start = 0, int end, Issues issues, Uri onError(String s)}) {
     final uri = tryParse(s, start: start, end: end, issues: issues);
@@ -372,8 +370,6 @@ abstract class UR extends Text {
     return uri;
   }
 
-  /// _Deprecated_: Use [Uri.tryParse] instead.
-  @deprecated
   static Uri tryParse(String s, {int start = 0, int end, Issues issues}) =>
       Uri.tryParse(s, start, end);
 }

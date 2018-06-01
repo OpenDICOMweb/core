@@ -39,6 +39,7 @@ void main() {
       kSafePositionExitTime,
     ];
 
+/*
     // Urgent: No used fix or flush
     //VM.k1
     const tmVM1_nTags = const <int>[
@@ -47,6 +48,7 @@ void main() {
       kDateTimeOfLastCalibration,
       kSelectorTMValue,
     ];
+*/
 
     test('TMbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {

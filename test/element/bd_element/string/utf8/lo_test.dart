@@ -36,7 +36,7 @@ void main() {
       kApplicationVersion,
     ];
 
-    // Urgent: No used fix or flush
+/*    // Urgent: No used fix or flush
     //VM.k1_n
     const loVM1_nTags = const <int>[
       kAdmittingDiagnosesDescription,
@@ -53,6 +53,7 @@ void main() {
       kProductName,
       kOtherPatientIDs,
     ];
+ */
     test('LObytes from VM.k1', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {

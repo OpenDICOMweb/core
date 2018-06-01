@@ -114,11 +114,6 @@ void main() {
       final fl1 = new FLtag(PTag.kTableOfParameterValues, vList1);
       expect(fl1.update(vList1), equals(vList1));
 
-      // Urgent: use or remove
-      const floatUpdateValues = const <double>[
-        546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
-      ];
-
       final vList2 = new Float32List.fromList(goodFloat32List);
       for (var i = 1; i <= vList2.length - 1; i++) {
         final fl2 = new FLtag(PTag.kSelectorFLValue,
