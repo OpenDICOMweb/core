@@ -401,7 +401,7 @@ abstract class Tag {
   }
 
   static bool _isPublicCode(int code) => _isPublicGroup(code >> 16);
-  static  bool _isPublicGroup(int group) => group.isEven && group <= 0xFFFC;
+  static  bool _isPublicGroup(int group) => group.isEven && group <= 0xFFFE;
 
   static Tag lookupPrivateByCode(int code,
       [int vrIndex = kUNIndex, Object creator]) {

@@ -144,7 +144,8 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
   }
 }
 
-class OBbytesPixelData extends OBPixelData with ByteElement<int>, Uint8Mixin {
+class OBbytesPixelData extends OBPixelData
+    with ByteElement<int>, Uint8Mixin, BytePixelData {
   @override
   final DicomBytes bytes;
   @override
@@ -179,7 +180,8 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
   }
 }
 
-class UNbytesPixelData extends UNPixelData with ByteElement<int>, Uint8Mixin {
+class UNbytesPixelData extends UNPixelData
+    with ByteElement<int>, Uint8Mixin, BytePixelData {
   @override
   final DicomBytes bytes;
   @override
@@ -254,7 +256,8 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
   }
 }
 
-class OWbytesPixelData extends OWPixelData with ByteElement<int>, Uint16Mixin {
+class OWbytesPixelData extends OWPixelData
+    with ByteElement<int>, Uint16Mixin, BytePixelData {
   @override
   final DicomBytes bytes;
   @override

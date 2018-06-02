@@ -540,7 +540,6 @@ abstract class US extends IntBase with Uint16 {
   // _Note_: Some [Tag]s have _Special VR_s that include [US] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidArgs(Tag tag, Iterable<int> vList, [Issues issues]) {
-    print('tag: $tag');
     if (tag == null || _isValidVR(tag.vrIndex))
       return invalidTag(tag, null, US);
     if (!doTestElementValidity) return true;
@@ -559,7 +558,6 @@ abstract class US extends IntBase with Uint16 {
   // _Note_: Some [Tag]s have _Special VR_s that include [US] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ Tag.isValidSpecialTag] is used.
   static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
-    print('tag: $tag');
     if (tag == null || _isValidVR(tag.vrIndex))
       return invalidTag(tag, null, US);
     if (!doTestElementValidity) return true;

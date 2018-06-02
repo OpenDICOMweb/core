@@ -55,37 +55,10 @@ class EvrShortBytes extends EvrBytes {
   EvrShortBytes(int eLength, [Endian endian]) : super._(eLength, endian);
 
   EvrShortBytes.from(Bytes bytes, [int start = 0, int end, Endian endian])
-      : super._from(bytes, start, end, endian) {
-/*
-    final s = '''
-   offset: ${bytes.offset}
-   length: ${bytes.length}
-    start: $start
-      end: $end
-bd.offset: ${_bd.offsetInBytes}  
-bd.length: ${_bd.lengthInBytes}    
-   endian: ${endian == Endian.little ? 'little' : 'big'} 
-    ''';
-    print(s);
-*/
-
-  }
+      : super._from(bytes, start, end, endian);
 
   EvrShortBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
-      : super._view(bytes, start, end, endian) {
-/*
-    final s = '''
-   offset: ${bytes.offset}
-   length: ${bytes.length}
-    start: $start
-      end: $end
-bd.offset: ${_bd.offsetInBytes}  
-bd.length: ${_bd.lengthInBytes}    
-   endian: ${endian == Endian.little ? 'little' : 'big'} 
-    ''';
-    print(s);
-*/
-  }
+      : super._view(bytes, start, end, endian);
 
   @override
   int get vfOffset => kVFOffset;
@@ -136,21 +109,7 @@ class EvrLongBytes extends EvrBytes {
       : super._from(bytes, start, end, endian);
 
   EvrLongBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
-      : super._view(bytes, start, end, endian) {
-/*
-    final s = '''
-   offset: ${bytes.offset}
-   length: ${bytes.length}
-    start: $start
-      end: $end
-bd.offset: ${_bd.offsetInBytes}  
-bd.length: ${_bd.lengthInBytes}    
-   endian: ${endian == Endian.little ? 'little' : 'big'} 
-    ''';
-    print(s);
-*/
-  }
-
+      : super._view(bytes, start, end, endian);
   @override
   int get vfOffset => kVFOffset;
   @override

@@ -418,10 +418,7 @@ abstract class BytesMixin {
     final lastIndex = length - 1;
     final _length = _maybeRemoveNull(lastIndex, length, padChar);
     if (length == 0) return kEmptyUint8List;
-    print('index: $index');
-    print('offset: $offset');
-    print('_length: $_length');
-    return _bd.buffer.asUint8List(index, _length - offset);
+    return _bd.buffer.asUint8List(index, _length);
   }
 
   int _maybeRemoveNull(int lastIndex, int vfLength, [int padChar]) =>
@@ -484,7 +481,6 @@ abstract class BytesMixin {
         length: length,
         allowMalformed: allowMalformed,
         padChar: padChar);
-    print('utf8: (${s.length})"$s"');
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 

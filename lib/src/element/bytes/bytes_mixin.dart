@@ -360,7 +360,6 @@ abstract class BytePixelData {
   int get code;
   int get vfLengthField;
   int get vfLength;
-  Bytes get vfBytes;
   VFFragments get fragments;
 
   /// The [List<int>] of pixels.

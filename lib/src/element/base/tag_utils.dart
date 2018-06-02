@@ -93,7 +93,7 @@ Tag lookupPCTagByCode(Dataset ds, int code, String token, int vrIndex) {
       : PCTag.lookupByToken(code, vrIndex, token);
 }
 
-bool _isPublicGroup(int group) => group.isEven && group <= 0xFFFC;
+bool _isPublicGroup(int group) => group.isEven && group <= 0xFFFE;
 
 bool _isPrivateGroup(int group) =>
     group.isOdd && group >= 0x0009 && group <= 0xFFFF;

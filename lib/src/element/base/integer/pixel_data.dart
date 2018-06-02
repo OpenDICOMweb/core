@@ -15,6 +15,7 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
+import 'package:core/src/element/bytes/vf_fragments.dart';
 
 /// PixelDataMixin class
 abstract class PixelData {
