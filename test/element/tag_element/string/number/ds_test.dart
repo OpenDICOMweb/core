@@ -1076,6 +1076,75 @@ void main() {
           throwsA(const isInstanceOf<StringError>()));
     });
 
+    test('DS tryParseBytes', () {
+      global.throwOnError = false;
+      final vList0 = rsg.getDSList(1, 1);
+      final parse0 = double.parse(vList0.join('//'));
+      final bytes0 = Bytes.fromAsciiList(vList0);
+      final tpb0 = DS.tryParseBytes(bytes0);
+      log.debug('tpb0: $tpb0');
+      expect(tpb0, equals([parse0]));
+
+      final vList1 = ['123'];
+      final parse1 = double.parse(vList1.join('//'));
+      final bytes1 = Bytes.fromAsciiList(vList1);
+      expect(DS.tryParseBytes(bytes1), <double>[parse1]);
+
+      final vList2 = ['12.34'];
+      final parse2 = double.parse(vList2.join('//'));
+      final bytes2 = Bytes.fromAsciiList(vList2);
+      expect(DS.tryParseBytes(bytes2), <double>[parse2]);
+
+      final vList3 = ['abc'];
+      final bytes3 = Bytes.fromAsciiList(vList3);
+      expect(DS.tryParseBytes(bytes3), isNull);
+
+      final vList4 = [' 1245'];
+      final parse4 = double.parse(vList4.join('//'));
+      final bytes4 = Bytes.fromAsciiList(vList4);
+      expect(DS.tryParseBytes(bytes4), <double>[parse4]);
+
+      final vList5 = ['1245 '];
+      final parse5 = double.parse(vList5.join('//'));
+      final bytes5 = Bytes.fromAsciiList(vList5);
+      expect(DS.tryParseBytes(bytes5), <double>[parse5]);
+
+      final vList6 = [' 1245  '];
+      final parse6 = double.parse(vList6.join('//'));
+      final bytes6 = Bytes.fromAsciiList(vList6);
+      expect(DS.tryParseBytes(bytes6), <double>[parse6]);
+
+      final vList7 = ['12 45'];
+      final bytes7 = Bytes.fromAsciiList(vList7);
+      expect(DS.tryParseBytes(bytes7), isNull);
+
+      global.throwOnError = true;
+      expect(() => DS.tryParseBytes(bytes3),
+          throwsA(const isInstanceOf<StringError>()));
+
+      expect(() => DS.tryParseBytes(bytes7),
+          throwsA(const isInstanceOf<StringError>()));
+    });
+
+    test('DS validateValueField', () {
+      global.throwOnError = false;
+      final vList0 = rsg.getISList(1, 1);
+      final bytes0 = Bytes.fromAsciiList(vList0);
+      expect(DS.validateValueField(bytes0), equals(vList0));
+
+      final vList1 = ['123'];
+      final bytes1 = Bytes.fromAsciiList(vList1);
+      expect(DS.validateValueField(bytes1), equals(vList1));
+
+      final vList2 = ['12.34'];
+      final bytes2 = Bytes.fromAsciiList(vList2);
+      expect(DS.validateValueField(bytes2), equals(vList2));
+
+      final vList3 = ['abc'];
+      final bytes3 = Bytes.fromAsciiList(vList3);
+      expect(DS.validateValueField(bytes3), equals(vList3));
+    });
+
     test('DS isValidValues good values', () {
       global.throwOnError = false;
       for (var i = 0; i <= 10; i++) {

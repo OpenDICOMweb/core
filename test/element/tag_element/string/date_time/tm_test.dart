@@ -519,7 +519,6 @@ void main() {
     const tmVM1_nTags = const <PTag>[
       PTag.kCalibrationTime,
       PTag.kTimeOfLastCalibration,
-      PTag.kDateTimeOfLastCalibration,
       PTag.kSelectorTMValue,
     ];
 
