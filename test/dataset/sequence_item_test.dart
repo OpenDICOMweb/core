@@ -51,8 +51,7 @@ void main() {
     itemsList.add(new TagItem.fromList(rds, rds));
 
     //Urgent: this should be adding a real parent and verifying it.
-    final sq = new SQtag(
-        null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
+    final sq = new SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
 
     test('Test for getAllTItemElements', () {
       expect(sq.getAll(kRecognitionCode), isNotNull);
@@ -175,8 +174,7 @@ void main() {
       rds0[fd.code] = fd;
 
       final itemsList = <TagItem>[]..add(new TagItem.fromList(rds0, rds0));
-      final sq = new SQtag(
-          null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
+      final sq = new SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
 
       global.throwOnError = false;
       final lookup0 = sq.lookup(fl.index);
@@ -214,7 +212,7 @@ void main() {
 
       final itemsList = <TagItem>[]..add(new TagItem.fromList(rds0, rds0));
       final sq = new SQtag(
-          null, PTag.kMRImageFrameTypeSequence, itemsList, SQ.kMaxVFLength);
+          null, PTag.kMRImageFrameTypeSequence, itemsList);
 
       global.throwOnError = false;
       final lookup0 = sq.lookupAll(fl.index);

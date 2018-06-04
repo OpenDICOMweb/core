@@ -323,7 +323,7 @@ void main() {
           new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
           new UStag(PTag.kLargestImagePixelValue, [1]);
-      final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[], 0);
+      final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[]);
       final csColorSpace0 = new CStag(PTag.kColorSpace);
       final usPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
 
@@ -792,7 +792,7 @@ void main() {
           new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
           new UStag(PTag.kLargestImagePixelValue, [255]);
-      final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[], 0);
+      final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[]);
       final csColorSpace0 = new CStag(PTag.kColorSpace);
       final usPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
 

@@ -68,20 +68,15 @@ bool invalidVFLength(int vfLength, int maxVFLength, [Issues issues]) {
   return false;
 }
 
-Null badUVFLength(int vfLength, int maxVFLength, int vfLengthField, int eSize,
+Null badUVFLength(int vfLength, int maxVFLength, int eSize,
     [Issues issues]) {
   final sb = new StringBuffer('Invalid Value Field Length($vfLength):\n');
-  if (vfLengthField != null &&
-      (vfLengthField != vfLength || vfLengthField != kUndefinedLength))
-    sb.writeln('Invalid vfLengthField($vfLengthField) != vfLength($vfLength) '
-        'and not equal to kUndefinedLength($kUndefinedLength');
   return _badVFL(sb, vfLength, maxVFLength, eSize, issues);
 }
 
 bool invalidUVFLength(
-    int vfLength, int maxVFLength, int vfLengthField, int eSize,
-    [Issues issues]) {
-  badUVFLength(vfLength, maxVFLength, vfLengthField, eSize, issues);
+    int vfLength, int maxVFLength, int eSize, [Issues issues]) {
+  badUVFLength(vfLength, maxVFLength, eSize, issues);
   return false;
 }
 

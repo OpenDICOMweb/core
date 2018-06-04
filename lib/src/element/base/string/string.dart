@@ -26,6 +26,7 @@ import 'package:core/src/value.dart';
 import 'package:core/src/vr/vr_internal.dart';
 
 part 'package:core/src/element/base/string/ascii.dart';
+part 'package:core/src/element/base/string/date_time.dart';
 part 'package:core/src/element/base/string/number.dart';
 part 'package:core/src/element/base/string/string_bulkdata.dart';
 part 'package:core/src/element/base/string/text.dart';
@@ -71,8 +72,8 @@ abstract class StringBase extends Element<String> {
   bool get isLengthAlwaysValid => false;
   @override
   bool get isUndefinedLengthAllowed => false;
-  @override
-  bool get hadULength => false;
+//  @override
+//  bool get hadULength => false;
 
   // **** Getters that MUST be supported by every Element Type.
 
@@ -170,3 +171,12 @@ abstract class StringBase extends Element<String> {
     return result;
   }
 }
+
+bool _isValidValues(
+    Tag tag,
+    Iterable<String> vList,
+    Issues issues,
+    bool isValidValue(String s, {Issues issues, bool allowInvalid}),
+    int maxLength,
+    Type type) =>
+    StringBase.isValidValues(tag, vList, issues, isValidValue, maxLength, type);

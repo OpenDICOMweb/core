@@ -6,15 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/src/element.dart';
-//export 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/global.dart';
-import 'package:core/src/value/frame/frame.dart';
-import 'package:core/src/value/frame/frame_descriptor.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/value/image/frame.dart';
+import 'package:core/src/value/image/frame_descriptor.dart';
 import 'package:core/src/value/uid.dart';
 
 // A [FrameList] contains 1 or more image [Frame]s.
@@ -55,13 +54,26 @@ abstract class FrameList extends ListBase<Frame> {
   /// Creates a [FrameList] ([List<Frame>]) of compressed [Frame]s.
   FrameList._compressed(this.nFrames, this.desc);
 
-  /// The number of [Frame]s in _this_.
-  bool get isNotValid =>
-      nFrames < 1 ||
-      bulkdata.lengthInBytes != (desc.lengthInBytes * nFrames) ||
-      bulkdata.lengthInBytes != lengthInBytes;
+  // **** Interface ****
 
-  bool get isValid => !isNotValid;
+  /// [set] [length] is not supported.
+  @override
+  set length(int length) =>
+      throw new UnsupportedError('FrameLists cannot be modified');
+
+  /// A [List<int>] of (uncompressed) pixels containing
+  /// all the [Frame]s concatenated together in one array of [int].
+  /// Note: All [pixels] values are [TypedData].
+  List<int> get pixels;
+
+  // Urgent Jim: this may be incorrect
+  /// A [Uint8List] containing the [offsets] and all the [Frame]s in _this_.
+  /// For uncompressed [FrameList]s, [bulkdata] is the same as [pixels].
+  /// For compressed [FrameList]s, [bulkdata] contains the compressed
+  /// bytes for all the [Frame]s in _this_.
+  Uint8List get bulkdata;
+
+  // **** End interface ****
 
   /// Returns the [i]th [Frame] (zero based) in _this_.
   /// Note: Frame numbers (kFrameNumber]) are 1 based in a DICOM Dataset.
@@ -73,19 +85,20 @@ abstract class FrameList extends ListBase<Frame> {
   void operator []=(int i, Frame f) =>
       throw new UnsupportedError('FrameLists are immutable');
 
+  /// The Basic Offset Table for [pixels]. This defaults to [kEmptyUint32List].
+  Uint32List get offsets => kEmptyUint32List;
+
   /// The number of [Frame]s in _this_. Synonym for [nFrames].
   @override
   int get length => nFrames;
 
-  /// Unsupported Setter.
-  @override
-  set length(int length) =>
-      throw new UnsupportedError('FrameLists cannot be modified');
+  /// The number of [Frame]s in _this_.
+  bool get isNotValid =>
+      nFrames < 1 ||
+      bulkdata.lengthInBytes != (desc.lengthInBytes * nFrames) ||
+      bulkdata.lengthInBytes != lengthInBytes;
 
-  /// A [List<int>] of (uncompressed) pixels containing
-  /// all the [Frame]s concatenated together in one array of [int].
-  /// Note: All [pixels] values are [TypedData].
-  List<int> get pixels;
+  bool get isValid => !isNotValid;
 
   /// The number of bits in each pixel; equivalent to [bitsAllocated].
   int get pixelSizeInBits => desc.pixelSizeInBits;
@@ -95,11 +108,6 @@ abstract class FrameList extends ListBase<Frame> {
   /// the values is zero.
   int get pixelSizeInBytes => desc.pixelSizeInBytes;
 
-  /// A [Uint8List] containing the all the [Frame]s in _this_.
-  /// For uncompressed [FrameList]s, [bulkdata] is the same as [pixels].
-  /// For compressed [FrameList]s, [bulkdata] contains the compressed
-  /// bytes for all the [Frame]s in _this_.
-  Uint8List get bulkdata;
 
   /// The length in bytes of all the [Frame]s in _this_.
   int get lengthInBytes => bulkdata.lengthInBytes;
@@ -300,7 +308,7 @@ class CompressedFrameList extends FrameList {
 
   /// The offset table (aka DICOM Basic Offset Table).
   /// _Note_: [offsets].length must equal [nFrames] + 1.
-  Uint32List offsets;
+  @override Uint32List offsets;
 
   /// A [List<Frame>] of 8-bit Native (i.e. uncompressed) images.
   CompressedFrameList(

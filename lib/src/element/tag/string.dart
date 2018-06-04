@@ -94,7 +94,8 @@ class AEtag extends AE with TagElement<String>, TagStringMixin {
   @override
   AEtag update([Iterable<String> vList]) => new AEtag(tag, vList);
 
-  static AEtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static AEtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new AEtag(tag, vList);
 
   static AEtag fromBytes(Tag tag, Bytes bytes) =>
@@ -111,7 +112,8 @@ class CStag extends CS with TagElement<String>, TagStringMixin {
     final v = _toValues(vList);
     return CS.isValidArgs(tag, v)
         ? new CStag._(tag, v)
-        : badValues(v, null, tag);
+        //: badValues(v, null, tag);
+    : null;
   }
 
   CStag._(this.tag, this._values) : assert(tag.vrIndex == kCSIndex);
@@ -130,7 +132,8 @@ class CStag extends CS with TagElement<String>, TagStringMixin {
   @override
   CStag update([Iterable<String> vList]) => new CStag(tag, vList);
 
-  static CStag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static CStag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new CStag(tag, vList);
 
   static CStag fromBytes(Bytes bytes, Tag tag) =>
@@ -155,7 +158,8 @@ class DStag extends DS with TagElement<String>, TagStringMixin {
   @override
   DStag update([Iterable<String> vList]) => new DStag(tag, vList);
 
-  static DStag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static DStag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new DStag(tag, vList);
 
   static DStag fromBytes(Bytes bytes, Tag tag) =>
@@ -180,7 +184,8 @@ class IStag extends IS with TagElement<String>, TagStringMixin {
   @override
   IStag update([Iterable<String> vList]) => new IStag(tag, vList);
 
-  static IStag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static IStag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new IStag(tag, vList);
 
   static IStag fromBytes(Bytes bytes, Tag tag) =>
@@ -206,7 +211,8 @@ class LOtag extends LO with TagElement<String>, TagStringMixin {
   @override
   LOtag update([Iterable<String> vList]) => new LOtag(tag, vList);
 
-  static LOtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static LOtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new LOtag(tag, vList);
 
   static LOtag fromBytes(Bytes bytes, Tag tag) =>
@@ -237,7 +243,8 @@ class PCtag extends PC with TagElement<String>, TagStringMixin {
   @override
   String toString() => '$runtimeType $tag $value';
 
-  static PCtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static PCtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new PCtag(tag, vList);
 
   static PCtag fromBytes(Bytes bytes, Tag tag) =>
@@ -278,7 +285,8 @@ class LTtag extends LT with TagElement<String>, TagStringMixin {
   @override
   LTtag update([Iterable<String> vList]) => new LTtag(tag, vList);
 
-  static LTtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static LTtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new LTtag(tag, vList);
 
   static LTtag fromBytes(Bytes bytes, Tag tag) =>
@@ -304,7 +312,8 @@ class PNtag extends PN with TagElement<String>, TagStringMixin {
   @override
   PNtag update([Iterable<String> vList]) => new PNtag(tag, vList);
 
-  static PNtag fromValues(Tag tag, [Iterable<String> vList]) =>
+  static PNtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new PNtag(tag, vList);
 
   static PNtag fromBytes(Bytes bytes, Tag tag) =>
@@ -330,7 +339,8 @@ class SHtag extends SH with TagElement<String>, TagStringMixin {
   @override
   SHtag update([Iterable<String> vList]) => new SHtag(tag, vList);
 
-  static SHtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static SHtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new SHtag(tag, vList);
 
   static SHtag fromBytes(Bytes bytes, Tag tag) =>
@@ -356,7 +366,8 @@ class STtag extends ST with TagElement<String>, TagStringMixin {
   @override
   STtag update([Iterable<String> vList]) => new STtag(tag, vList);
 
-  static STtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static STtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new STtag(tag, vList);
 
   static STtag fromBytes(Bytes bytes, Tag tag) =>
@@ -382,7 +393,8 @@ class UCtag extends UC with TagElement<String>, TagStringMixin {
   @override
   UCtag update([Iterable<String> vList]) => new UCtag(tag, vList);
 
-  static UCtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static UCtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new UCtag(tag, vList);
 
   static UCtag fromBytes(Bytes bytes, Tag tag) =>
@@ -410,8 +422,7 @@ class UItag extends UI with TagElement<String>, TagStringMixin {
     return new UItag._(tag, v, uids);
   }
 
-  UItag._(this.tag, this._values, this._uids)
-      : assert(tag.vrIndex == kUIIndex);
+  UItag._(this.tag, this._values, this._uids) : assert(tag.vrIndex == kUIIndex);
 
   @override
   List<Uid> get uids => _uids ??= Uid.parseList(values);
@@ -420,7 +431,8 @@ class UItag extends UI with TagElement<String>, TagStringMixin {
   @override
   UItag update([Iterable<String> vList]) => new UItag(tag, vList);
 
-  static UItag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static UItag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new UItag(tag, vList);
 
   static UItag fromBytes(Bytes bytes, Tag tag) =>
@@ -448,7 +460,8 @@ class URtag extends UR with TagElement<String>, TagStringMixin {
   @override
   URtag update([Iterable<String> vList]) => new URtag(tag, vList);
 
-  static URtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static URtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new URtag(tag, vList);
 
   static URtag fromBytes(Bytes bytes, Tag tag) =>
@@ -474,7 +487,8 @@ class UTtag extends UT with TagElement<String>, TagStringMixin {
   @override
   UTtag update([Iterable<String> vList]) => new UTtag(tag, vList);
 
-  static UTtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static UTtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new UTtag(tag, vList);
 
   static UTtag fromBytes(Bytes bytes, Tag tag) =>
@@ -501,7 +515,8 @@ class AStag extends AS with TagElement<String>, TagStringMixin {
   @override
   AStag update([Iterable<String> vList]) => new AStag(tag, vList);
 
-  static AStag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static AStag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new AStag(tag, vList);
 
   static AStag fromBytes(Bytes bytes, Tag tag) =>
@@ -557,7 +572,8 @@ class DTtag extends DT with TagElement<String>, TagStringMixin {
   @override
   DTtag update([Iterable<String> vList]) => new DTtag(tag, vList);
 
-  static DTtag fromValues(Tag tag, [Iterable<String> vList, TransferSyntax _]) =>
+  static DTtag fromValues(Tag tag,
+          [Iterable<String> vList, TransferSyntax _]) =>
       new DTtag(tag, vList);
 
   static DTtag fromBytes(Bytes bytes, Tag tag) =>

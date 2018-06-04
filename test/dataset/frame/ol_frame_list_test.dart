@@ -318,7 +318,7 @@ void main() {
           UStag.fromValues(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
           UStag.fromValues(PTag.kLargestImagePixelValue, [(1 << 16) - 1]);
-      final obIccProfile0 = OBtag.fromValues(PTag.kICCProfile, <int>[], 0);
+      final obIccProfile0 = OBtag.fromValues(PTag.kICCProfile, <int>[]);
       final csColorSpace0 = CStag.fromValues(PTag.kColorSpace, <String>[]);
       final unPixelPaddingRangeLimit0 =
           UStag.fromValues(PTag.kPixelPaddingRangeLimit, <int>[]);

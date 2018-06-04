@@ -8,59 +8,79 @@
 //
 import 'dart:typed_data';
 
-import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/integer/integer.dart';
+import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/value/image.dart';
 import 'package:core/src/value/uid.dart';
-import 'package:core/src/element/bytes/vf_fragments.dart';
 
 /// PixelDataMixin class
-abstract class PixelData {
-  Tag get tag;
-  int get code;
-  int get vfLengthField;
-  int get vfLength;
-  Bytes get vfBytes;
+abstract class PixelData extends Integer {
+  @override
+  Iterable<int> get values => _values;
+  @override
+  set values(Iterable<int> vList) => _values = vList;
+  List<int> _values;
 
-  /// The [List<int>] of pixels.
-  List<int> get pixels;
+  /// The FrameList for _this_.
+  Iterable<Frame> get frames => _frames;
+  set frames(Iterable<Frame> vList) => _frames = vList;
+  FrameList _frames;
+
+  /// The Basic Offset Table (See PS3.5) for _this_.
+  Uint32List get offsets;
+
+  /// A [Uint8List] created from [frames].
+  Uint8List get bulkdata => _frames.bulkdata;
+
+  /// The [TransferSyntax] of _this_.
   TransferSyntax get ts;
 
-  /// Returns _true_ if [pixels] are compressed.
-  bool get isCompressed;
+  /// Returns _true_ if [frames] are compressed.
+  bool get isCompressed => ts.isEncapsulated;
 
   // **** End Interface
 
-  /// Synonym for pisCompressed].
-  bool get isEncapsulated => isCompressed;
+  @override
+  bool get isLengthAlwaysValid => true;
+  @override
+  bool get isUndefinedLengthAllowed => true;
 
+  /// Synonym for [isCompressed]. Returns _true_ if [frames] are compressed.
+  ///
+  /// Note: If _this_ [isCompressed] and has more than one Frame,
+  ///       It should have a non-empty [offsets].
+  bool get isEncapsulated => isCompressed;
 }
 
-abstract class OBPixelData extends OB
-    with PixelData, Uint8PixelDataMixin {
+abstract class OBPixelData extends PixelData with Uint8 {
   @override
-  TransferSyntax get ts;
+ final Tag tag = PTag.kPixelDataOB;
 
   @override
-  bool get isCompressed => ts.isEncapsulated;
+  int get maxLength => OB.kMaxLength;
+
+  @override
+  List<int> get emptyList => kEmptyUint8List;
+
+  @override
+  bool checkValue(int value, {Issues issues, bool allowInvalid = false}) =>
+      (allowInvalid) ? true : value >= 0 && value <= 255;
+
   /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
   /// If [doTestElementValidity] is _false_ then no validation is done.
-  static bool isValidArgs(Tag tag, Iterable<int> vList,
-      [int vfLengthField, TransferSyntax ts, Issues issues]) {
-    if (!isValidTag(tag, issues)) return false;
-    return OB.isValidArgs(tag, vList, vfLengthField, ts, issues);
-  }
+  static bool isValidArgs(Iterable<int> vList,
+          [TransferSyntax ts, int vfLengthField, Issues issues]) =>
+      OB.isValidArgs(PTag.kPixelDataOB, vList, vfLengthField, ts, issues);
 
   /// Returns _true_ if both [tag] and [vfBytes] are valid for [OB].
   /// If [doTestElementValidity] is _false_ then no validation is done.
-  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
-      [Issues issues]) {
-    if (!isValidTag(tag, issues)) return false;
-    return OB.isValidBytesArgs(tag, vfBytes, vfLengthField, issues);
-  }
+  static bool isValidBytesArgs(Bytes vfBytes, int vfLengthField,
+          [Issues issues]) =>
+      OB.isValidBytesArgs(PTag.kPixelDataOB, vfBytes, issues);
 
   /// Returns _true_ if [tag] is valid for [OBPixelData].
   /// If [doTestElementValidity] is _false_ then no validation is done.
@@ -71,10 +91,14 @@ abstract class OBPixelData extends OB
           : invalidTag(tag, issues, OBPixelData);
 }
 
-abstract class UNPixelData extends UN
-    with PixelData, Uint8PixelDataMixin {
+abstract class UNPixelData extends PixelData with Uint8 {
+  @override
+  Tag get tag => PTag.kPixelDataUN;
   @override
   TransferSyntax get ts;
+
+  @override
+  int get maxLength => UN.kMaxLength;
 
   @override
   bool get isCompressed => ts.isEncapsulated;
@@ -103,13 +127,17 @@ abstract class UNPixelData extends UN
           : invalidTag(tag, issues, UNPixelData);
 }
 
-abstract class OWPixelData extends OW
-    with PixelData, Uint16PixelDataMixin {
+abstract class OWPixelData extends PixelData with Uint16 {
+  @override
+  final Tag tag = PTag.kPixelDataOW;
   @override
   TransferSyntax get ts;
 
   @override
+  int get maxLength => OW.kMaxLength;
+  @override
   bool get isCompressed => ts.isEncapsulated;
+
   /// Returns _true_ if both [tag] and [vList] are valid for this [OW].
   /// If [doTestElementValidity] is _false_ then no validation is done.
   static bool isValidArgs(Tag tag, Iterable<int> vList,
@@ -134,22 +162,24 @@ abstract class OWPixelData extends OW
           : invalidTag(tag, issues, OWPixelData);
 }
 
+/*
 abstract class Uint8PixelDataMixin {
-  Iterable<int> get values;
+  Uint8List get _values;
+  FrameList8Bit get _frames;
 
-  Uint8List get valuesCopy => new Uint8List.fromList(pixels);
+//  Uint8List get valuesCopy => new Uint8List.fromList(pixels);
 
   /// The [Uint8List] of pixels, possibly compressed.
-  Uint8List get pixels => _pixels ??= Uint8.fromList(values);
+  Uint8List get pixels => _pixels ??= _values ?? _values.pixels;
   Uint8List _pixels;
+
+
 }
 
 abstract class Uint16PixelDataMixin {
-  Iterable<int> get values;
+  Uint16List get _values;
+  FrameList16Bit get _frames;
 
-  Uint16List get valuesCopy => new Uint16List.fromList(pixels);
 
-  /// The [Uint16List] of pixels, possibly compressed.
-  Uint16List get pixels => _pixels ??= Uint16.fromList(values);
-  Uint16List _pixels;
 }
+*/

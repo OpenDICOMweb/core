@@ -9,7 +9,7 @@
 
 export 'package:core/src/value/bulkdata.dart';
 export 'package:core/src/value/date_time.dart';
-export 'package:core/src/value/frame.dart';
+export 'package:core/src/value/image.dart';
 export 'package:core/src/value/integer.dart';
 export 'package:core/src/value/person.dart';
 export 'package:core/src/value/uid.dart';

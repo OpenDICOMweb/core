@@ -7,6 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-export 'package:core/src/value/frame/frame.dart';
-export 'package:core/src/value/frame/frame_descriptor.dart';
-export 'package:core/src/value/frame/frame_list.dart';
+export 'package:core/src/value/image/frame.dart';
+export 'package:core/src/value/image/frame_descriptor.dart';
+export 'package:core/src/value/image/frame_list.dart';

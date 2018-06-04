@@ -280,7 +280,7 @@ void main() {
         final bytes = new Bytes.typedDataView(vList0);
         log.debug(bytes);
         final e0 =
-            OWtag.fromBytes(bytes, PTag.kEdgePointIndexList, bytes.length);
+            OWtag.fromBytes(bytes, PTag.kEdgePointIndexList);
         log.debug('$e0');
         e0.values;
         expect(e0.hasValidValues, true);
@@ -293,7 +293,7 @@ void main() {
         final vList1 = rng.uint16List(2, 2);
         final bytes1 = new Bytes.typedDataView(vList1);
         final e1 =
-            OWtag.fromBytes(bytes1, PTag.kEdgePointIndexList, bytes1.length);
+            OWtag.fromBytes(bytes1, PTag.kEdgePointIndexList);
         expect(e1.hasValidValues, true);
       }
     });
@@ -305,7 +305,7 @@ void main() {
 
         final bytes0 = new Bytes.typedDataView(vList);
         final e0 =
-            OWtag.fromBytes(bytes0, PTag.kSelectorOWValue, bytes0.length);
+            OWtag.fromBytes(bytes0, PTag.kSelectorOWValue);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -336,7 +336,7 @@ void main() {
         final base64 = bytes.getBase64();
         final bytes2 = Bytes.fromBase64(base64);
         final e0 =
-            OWtag.fromBytes(bytes2, PTag.kEdgePointIndexList, kUndefinedLength);
+            OWtag.fromBytes(bytes2, PTag.kEdgePointIndexList);
         expect(e0.hasValidValues, true);
       }
     });
@@ -646,14 +646,14 @@ void main() {
     });
 
     test('OW isValidVFLength good values', () {
-      expect(OW.isValidVFLength(OW.kMaxVFLength, kUndefinedLength), true);
-      expect(OW.isValidVFLength(0, 0), true);
+      expect(OW.isValidVFLength(OW.kMaxVFLength), true);
+      expect(OW.isValidVFLength(0), true);
     });
 
     test('OW isValidVFLength bad values', () {
       global.throwOnError = false;
-      expect(OW.isValidVFLength(OW.kMaxVFLength + 1, kUndefinedLength), false);
-      expect(OW.isValidVFLength(-1, 0), false);
+      expect(OW.isValidVFLength(OW.kMaxVFLength + 1), false);
+      expect(OW.isValidVFLength(-1), false);
     });
 
     test('OW isValidValue good values', () {

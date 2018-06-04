@@ -6,11 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+library odw.sdk.element.bytes;
+
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/bytes.dart';
+import 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -18,6 +20,11 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
+part 'float.dart';
+part 'integer.dart';
+part 'pixel_data.dart';
+part 'sequence.dart';
+part 'string.dart';
 typedef Element DecodeBinaryVF(DicomBytes bytes, int vrIndex);
 
 typedef Element BDElementMaker(int code, int vrIndex, DicomBytes bytes);
@@ -90,28 +97,14 @@ abstract class ByteElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-/*
-  static PC _getPCFromBytes(DicomBytes bytes, int code) {
-    final token = bytes.vfBytes.getUtf8();
-    final tag = PCTag.lookupByToken(code, bytes.vrIndex, token);
-    return new PCbytes(bytes);
-  }
-*/
-
-  static Tag _getTag(int code, int vrIndex, Dataset ds) => (ds != null)
-      ? lookupTagByCode(code, vrIndex, ds)
-      : Tag.lookupByCode(code, vrIndex);
-
   static Element makeFromDicomBytes(DicomBytes bytes, Dataset ds,
       {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return new PCbytes(bytes);
     final vrIndex = (isEvr) ? bytes.vrIndex : kUNIndex;
-    final tag = _getTag(code, vrIndex, ds);
-
-    final tagVRIndex =
-        (tag.vrIndex > kVRNormalIndexMax) ? vrIndex : tag.vrIndex;
-    return _bytesMakers[tagVRIndex](bytes);
+    final tag = lookupTagByCode(code, vrIndex, ds);
+    final index = getValidVRIndex(vrIndex, tag.vrIndex);
+    return _bytesMakers[index](bytes);
   }
 
   static final List<Function> _bytesMakers = <Function>[
@@ -141,10 +134,9 @@ abstract class ByteElement<V> {
 
     final vrIndex = bytes.vrIndex;
     assert(vrIndex >= 0 && vrIndex < 4);
-    final tag = _getTag(code, vrIndex, ds);
-    final tagVRIndex =
-        (tag.vrIndex > kVRNormalIndexMax) ? vrIndex : tag.vrIndex;
-    return _undefinedBytesMakers[tagVRIndex](bytes, ds, vfLengthField);
+    final tag = lookupTagByCode(code, vrIndex, ds);
+    final index = getValidVRIndex(vrIndex, tag.vrIndex);
+    return _undefinedBytesMakers[index](bytes, ds, vfLengthField);
   }
 
   // Elements that may have undefined lengths.
@@ -158,7 +150,8 @@ abstract class ByteElement<V> {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
 
-    final tag = _getTag(code, bytes.vrIndex, parent);
+    final tag = lookupTagByCode(code, bytes.vrIndex, parent);
+    assert(tag.vrIndex == kSQIndex, 'vrIndex: ${tag.vrIndex}');
     if (tag.vrIndex != kSQIndex)
       log.warn('** Non-Sequence Tag $tag for $bytes');
     return SQbytes.fromBytes(parent, items, bytes);
@@ -169,11 +162,10 @@ abstract class ByteElement<V> {
     final code = bytes.code;
     final vrIndex = bytes.vrIndex;
     assert(vrIndex >= 1 && vrIndex < 4);
-    final tag = _getTag(code, vrIndex, ds);
-    final tagVRIndex =
-    (tag.vrIndex > kVRNormalIndexMax) ? vrIndex : tag.vrIndex;
+    final tag = lookupTagByCode(code, vrIndex, ds);
+    final index = getValidVRIndex(vrIndex, tag.vrIndex);
     if (code != kPixelData) return badTagCode(code, 'Not Pixel Data', tag);
-    return _undefinedBytesMakers[tagVRIndex](bytes, ts, fragments);
+    return _undefinedBytesMakers[index](bytes, ts, fragments);
   }
 
   /// Returns a new [Element] based on the arguments.
@@ -181,9 +173,9 @@ abstract class ByteElement<V> {
       {bool isEvr = true, Dataset ds}) {
     if (_isPrivateCreator(code))
       return PCbytes.fromValues(code, vList, isEvr: isEvr);
-    final tag = _getTag(code, vrIndex, ds);
-    final tagVRIndex = tag.vrIndex;
-    return _bytesValuesMakers[vrIndex](code, vList, tagVRIndex);
+    final tag = lookupTagByCode(code, vrIndex, ds);
+    final index = getValidVRIndex(vrIndex, tag.vrIndex);
+    return _bytesValuesMakers[vrIndex](code, vList, index);
   }
 
   static final List<Function> _bytesValuesMakers = <Function>[
@@ -206,171 +198,36 @@ abstract class ByteElement<V> {
   ];
 }
 
-/// 16-bit signed integer Elements (SS)
-abstract class Int16Mixin {
-  int get vfLength;
-  DicomBytes get vfBytes;
-
-  int get length => Int16.getLength(vfLength);
-
-  Int16List get values => vfBytes.asInt16List();
+DicomBytes _makeShort<V>(
+    int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize) {
+  final vfLength = vList.length * eSize;
+  return (isEvr)
+         ? EvrShortBytes.makeEmpty(code, vfLength, vrCode)
+         : IvrBytes.makeEmpty(code, vfLength, vrCode);
 }
 
-/// 32-bit signed integer Elements (SL)
-abstract class Int32Mixin {
-  int get vfLength;
-  DicomBytes get vfBytes;
-
-  int get length => Int32.getLength(vfLength);
-
-  Int32List get values => vfBytes.asInt32List();
+DicomBytes _makeShortString(
+    int code, List<String> sList, int vrCode, bool isEvr) {
+  final tag = Tag.lookupByCode(code);
+  if (tag.vrCode != vrCode) return null;
+  final vlf = stringListLength(sList, pad: true);
+  return (isEvr)
+         ? EvrShortBytes.makeEmpty(code, vlf, vrCode)
+         : IvrBytes.makeEmpty(code, vlf, vrCode);
 }
 
-/// 8-bit Integer Elements (OB, UN)
-abstract class Uint8Mixin {
-  int get vfLength;
-  DicomBytes get vfBytes;
-
-  int get length => Uint8.getLength(vfLength);
-
-  Uint8List get values => vfBytes.asUint8List();
+DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
+  final vfLength = vList.length * eSize;
+  return (isEvr)
+         ? EvrLongBytes.makeEmpty(code, vfLength, vrCode)
+         : IvrBytes.makeEmpty(code, vfLength, vrCode);
 }
 
-/// 16-bit unsigned integer Elements (US, OW)
-abstract class Uint16Mixin {
-  int get vfLength;
-  DicomBytes get vfBytes;
-
-  int get length => Uint16.getLength(vfLength);
-
-  Uint16List get values => vfBytes.asUint16List();
+DicomBytes _makeLongString(
+    int code, List<String> sList, int vrCode, bool isEvr) {
+  final vlf = stringListLength(sList, pad: true);
+  return (isEvr)
+         ? EvrLongBytes.makeEmpty(code, vlf, vrCode)
+         : IvrBytes.makeEmpty(code, vlf, vrCode);
 }
 
-/// 32-bit unsigned integer Elements (AT, UL, GL, OL)
-abstract class Uint32Mixin {
-  int get vfLength;
-  DicomBytes get vfBytes;
-
-  int get length => Uint32.getLength(vfLength);
-
-  Uint32List get values => vfBytes.asUint32List();
-}
-
-/// 32-bit Float Elements (FL, OF)
-abstract class Float32Mixin {
-  int get vfLength;
-  DicomBytes get vfBytes;
-
-  int get length => Float32.getLength(vfLength);
-
-  Iterable<double> get values => vfBytes.asFloat32List();
-}
-
-/// Long Float Elements (FD, OD)
-abstract class Float64Mixin {
-  int get vfLength;
-  DicomBytes get vfBytes;
-
-  int get length => Float64.getLength(vfLength);
-
-  Iterable<double> get values => vfBytes.asFloat64List();
-}
-
-/// [String] [Element]s that only have ASCII values.
-abstract class StringMixin {
-  int get vfLength;
-  DicomBytes get vfBytes;
-  int get vfBytesLast;
-  String get vfString;
-
-  /// Returns _true if [vfBytes] ends with a padding character.
-  bool get hasPadding => vfLength.isEven && vfBytesLast == kSpace;
-
-  /// Returns _true if the padding character, if any, is valid for _this_.
-  bool get hasValidPadding => hasPadding && (padChar == kSpace);
-
-  /// If [vfLength] is not empty and [vfLength] is not equal to zero,
-  /// returns the last Uint8 element in [vfBytes]; otherwise, returns null;
-  int get padChar => (vfLength != 0 && vfLength.isEven) ? vfBytesLast : null;
-
-  /// Returns the number of values in [vfBytes].
-  int get length => _stringValuesLength(vfBytes);
-
-  Iterable<String> get values => vfString.split('\\');
-
-  List<String> get emptyList => kEmptyStringList;
-}
-
-/// [String] [Element]s that only have ASCII values.
-abstract class AsciiMixin {
-  bool get hasPadding;
-  int get vfLength;
-  DicomBytes get vfBytes;
-
-  bool get allowInvalid => global.allowInvalidAscii;
-
-  String get vfString {
-    final length = (hasPadding) ? vfLength - 1 : vfLength;
-    return vfBytes.getAscii(length: length, allowInvalid: allowInvalid);
-  }
-
-  Iterable<String> get values => vfString.split('\\');
-}
-
-/// [String] [Element]s that may have UTF-8 values.
-abstract class Utf8Mixin {
-  bool get hasPadding;
-  int get vfLength;
-  DicomBytes get vfBytes;
-
-  int get length => _stringValuesLength(vfBytes);
-
-  bool get allowMalformed => global.allowMalformedUtf8;
-
-  String get vfString {
-    final vf = (hasPadding) ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
-    return vf.getUtf8(allowMalformed: allowMalformed);
-  }
-}
-
-/// Text ([String]) [Element]s that may only have 1 UTF-8 value.
-abstract class TextMixin {
-  DicomBytes get vfBytes;
-
-  int get length => 1;
-
-  bool allowMalformed = true;
-
-  String get vfString => vfBytes.getUtf8(allowMalformed: allowMalformed);
-  String get value => vfString;
-  Iterable<String> get values => [vfString];
-}
-
-int _stringValuesLength(Bytes vfBytes) {
-  if (vfBytes.isEmpty) return 0;
-  var count = 1;
-  for (var i = 0; i < vfBytes.length; i++)
-    if (vfBytes[i] == kBackslash) count++;
-  return count;
-}
-
-/// PixelDataMixin class
-abstract class BytePixelData {
-  Tag get tag;
-  int get code;
-  int get vfLengthField;
-  int get vfLength;
-  VFFragments get fragments;
-
-  /// The [List<int>] of pixels.
-  List<int> get pixels;
-  TransferSyntax get ts;
-
-  /// Returns _true_ if [pixels] are compressed.
-  bool get isCompressed;
-
-  // **** End Interface
-
-  /// Synonym for pisCompressed].
-  bool get isEncapsulated => isCompressed;
-}

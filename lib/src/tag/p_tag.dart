@@ -17733,14 +17733,17 @@ class PTagInvalidVR extends Tag {
 }
 
 class PixelDataTag extends PTag {
-  @override
-  final int vrIndex;
-  const PixelDataTag._(this.vrIndex)
-      : super._('PixelData', 0x7FE00010, 'Pixel Data', vrIndex, VM.k1, false);
+//  @override
+  // final int vrIndex;
+  const PixelDataTag._(String keyword, int vrIndex)
+      : super._(keyword, 0x7FE00010, 'Pixel Data', vrIndex, VM.k1, false);
 
-  static const PTag kPixelDataOB = const PixelDataTag._(kOBIndex);
+  static const PTag kPixelDataOB =
+      const PixelDataTag._('PixelDataOB', kOBIndex);
 
-  static const PTag kPixelDataOW = const PixelDataTag._(kOWIndex);
+  static const PTag kPixelDataOW =
+      const PixelDataTag._('PixelDataUN', kOWIndex);
 
-  static const PTag kPixelDataUN = const PixelDataTag._(kUNIndex);
+  static const PTag kPixelDataUN =
+      const PixelDataTag._('PixelDataOWL', kUNIndex);
 }

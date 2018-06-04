@@ -10,8 +10,8 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:core/src/value/frame/frame_descriptor.dart';
-import 'package:core/src/value/frame/frame_list.dart';
+import 'package:core/src/value/image/frame_descriptor.dart';
+import 'package:core/src/value/image/frame_list.dart';
 import 'package:core/src/value/uid.dart';
 
 /// A single image, that is either an independent image, or a single

@@ -13,75 +13,12 @@ import 'package:collection/collection.dart';
 import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
+import 'package:core/src/element/base/integer/integer.dart';
 import 'package:core/src/element/base/integer/utils.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/global.dart';
-import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
-
-abstract class IntBase extends Element<int> {
-  int get sizeInBytes;
-
-  @override
-  IntBase update([Iterable<int> vList]);
-
-  // **** End of interface
-
-  bool get isBinary => true;
-
-  @override
-  int get vfLength => length * sizeInBytes;
-
-  /// Returns a copy of [values]
-  @override
-  Iterable<int> get valuesCopy => new List.from(values, growable: false);
-
-  /// The _canonical_ empty [values] value for Floating Point Elements.
-  @override
-  List<int> get emptyList => kEmptyList;
-  static const List<int> kEmptyList = const <int>[];
-
-  @override
-  IntBase get noValues => update(kEmptyList);
-
-  @override
-  ByteData get vfByteData => typedData.buffer
-      .asByteData(typedData.offsetInBytes, typedData.lengthInBytes);
-
-  @override
-  Bytes get vfBytes => new Bytes.typedDataView(typedData);
-
-  /// Returns a [view] of this [Element] with [values] replaced by [TypedData].
-  IntBase view([int start = 0, int length]);
-
-  /// Returns true if [v] is in the range [min] <= [v] <= [max].
-  static bool isValidValue(int v, Issues issues, int min, int max) {
-    if (v < min || v > max) {
-      if (issues != null) {
-        if (v < min) issues.add('Invalid Value($v) under minimum($min)');
-        if (v < min) issues.add('Invalid Value($v) over maximum($max)');
-      }
-      return false;
-    }
-    return true;
-  }
-
-  /// Returns true if [vList] has a valid length for [tag], and each value in
-  /// [vList] is valid for [tag]..
-  static bool isValidValues(Tag tag, Iterable<int> vList, Issues issues,
-      int minValue, int maxValue, int maxLength, Type type) {
-    if (vList == null) return false;
-    if (!doTestElementValidity || vList.isEmpty) return true;
-    var ok = true;
-    if (!Element.isValidLength(tag, vList, issues, maxLength, type)) ok = false;
-    for (var v in vList) {
-      if (ok && !isValidValue(v, issues, minValue, maxValue)) ok = false;
-    }
-    return (ok) ? true : invalidValues(vList, issues);
-  }
-}
 
 /// A mixin class for 8-bit signed integer [Element]s.
 abstract class Int8 {
@@ -96,13 +33,13 @@ abstract class Int8 {
 
   Int8List get typedData => fromList(values);
 
-  IntBase get sha256 => update(Sha256.int16(typedData));
+  Integer get sha256 => update(Sha256.int16(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
-      IntBase.isValidValue(v, issues, kMinValue, kMaxValue);
+      Integer.isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].
-  IntBase view([int start = 0, int length]) => update(
+  Integer view([int start = 0, int length]) => update(
       typedData.buffer.asInt8List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 1;
@@ -194,7 +131,7 @@ abstract class Int8 {
   static Int8List _fromTypedData(TypedData td,
       {bool asView = true, bool check = true}) {
     assert(td != null);
-    if (td.lengthInBytes == 0) return IntBase.kEmptyList;
+    if (td.lengthInBytes == 0) return Integer.kEmptyList;
     final length = td.lengthInBytes;
     final asInt8List = td.buffer.asInt8List(td.offsetInBytes, length);
     return (asView) ? asInt8List : new Int8List.fromList(asInt8List);
@@ -214,7 +151,7 @@ abstract class Int8 {
 abstract class Int16 {
   int get length;
   List<int> get values;
-  IntBase update([Iterable<int> vList]);
+  Integer update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -223,13 +160,13 @@ abstract class Int16 {
 
   Int16List get typedData => fromList(values);
 
-  IntBase get sha256 => update(Sha256.int16(typedData));
+  Integer get sha256 => update(Sha256.int16(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
-      IntBase.isValidValue(v, issues, kMinValue, kMaxValue);
+      Integer.isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].
-  IntBase view([int start = 0, int length]) => update(
+  Integer view([int start = 0, int length]) => update(
       typedData.buffer.asInt16List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 2;
@@ -339,7 +276,7 @@ abstract class Int16 {
 abstract class Int32 {
   int get length;
   List<int> get values;
-  IntBase update([Iterable<int> vList]);
+  Integer update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -349,13 +286,13 @@ abstract class Int32 {
   Int32List get typedData =>
       (values is Int32List) ? values : new Int32List.fromList(values);
 
-  IntBase get sha256 => update(Sha256.int32(typedData));
+  Integer get sha256 => update(Sha256.int32(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
-      IntBase.isValidValue(v, issues, kMinValue, kMaxValue);
+      Integer.isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns an Int32List View of [values].
-  IntBase view([int start = 0, int length]) => update(
+  Integer view([int start = 0, int length]) => update(
       typedData.buffer.asInt32List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 4;
@@ -463,7 +400,7 @@ abstract class Int32 {
 abstract class Int64 {
   int get length;
   List<int> get values;
-  IntBase update([Iterable<int> vList]);
+  Integer update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -472,10 +409,10 @@ abstract class Int64 {
 
   Int64List get typedData => fromList(values);
 
-  IntBase get sha256 => update(Sha256.int64(values));
+  Integer get sha256 => update(Sha256.int64(values));
 
   /// Returns a [Int64List.view] of [values].
-  IntBase view([int start = 0, int length]) => update(
+  Integer view([int start = 0, int length]) => update(
       typedData.buffer.asInt64List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 8;
@@ -584,7 +521,7 @@ abstract class Int64 {
 abstract class Uint8 {
   int get length;
   List<int> get values;
-  IntBase update([Iterable<int> vList]);
+  Integer update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -593,13 +530,13 @@ abstract class Uint8 {
 
   Uint8List get typedData => fromList(values);
 
-  IntBase get sha256 => update(Sha256.uint8(typedData));
+  Integer get sha256 => update(Sha256.uint8(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
-      IntBase.isValidValue(v, issues, kMinValue, kMaxValue);
+      Integer.isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].
-  IntBase view([int start = 0, int length]) => update(
+  Integer view([int start = 0, int length]) => update(
       typedData.buffer.asUint8List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 1;
@@ -694,7 +631,7 @@ abstract class Uint8 {
   static Uint8List fromByteData(ByteData bd,
       {bool asView = true, bool check = true}) {
     assert(bd != null);
-    if (bd.lengthInBytes == 0) return IntBase.kEmptyList;
+    if (bd.lengthInBytes == 0) return Integer.kEmptyList;
     final bList = asUint8List(bd);
     return (asView) ? bList : new Uint8List.fromList(bList);
   }
@@ -714,7 +651,7 @@ abstract class Uint8 {
 abstract class Uint16 {
   int get length;
   List<int> get values;
-  IntBase update([Iterable<int> vList]);
+  Integer update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -723,13 +660,13 @@ abstract class Uint16 {
 
   Uint16List get typedData => fromList(values);
 
-  IntBase get sha256 => update(Sha256.uint16(typedData));
+  Integer get sha256 => update(Sha256.uint16(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
-      IntBase.isValidValue(v, issues, kMinValue, kMaxValue);
+      Integer.isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].
-  IntBase view([int start = 0, int length]) => update(
+  Integer view([int start = 0, int length]) => update(
       typedData.buffer.asUint16List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 2;
@@ -857,7 +794,7 @@ abstract class Uint16 {
 abstract class Uint32 {
   int get length;
   List<int> get values;
-  IntBase update([Iterable<int> vList]);
+  Integer update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -866,13 +803,13 @@ abstract class Uint32 {
 
   Uint32List get typedData => fromList(values);
 
-  IntBase get sha256 => update(Sha256.uint32(typedData));
+  Integer get sha256 => update(Sha256.uint32(typedData));
 
   bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
-      IntBase.isValidValue(v, issues, kMinValue, kMaxValue);
+      Integer.isValidValue(v, issues, kMinValue, kMaxValue);
 
   /// Returns a  an Uint8List View of [values].
-  IntBase view([int start = 0, int length]) => update(
+  Integer view([int start = 0, int length]) => update(
       typedData.buffer.asUint32List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 4;
@@ -994,7 +931,7 @@ abstract class Uint32 {
 abstract class Uint64 {
   int get length;
   List<int> get values;
-  IntBase update([Iterable<int> vList]);
+  Integer update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -1003,10 +940,10 @@ abstract class Uint64 {
 
   Uint64List get typedData => fromList(values);
 
-  IntBase get sha256 => update(Sha256.int64(values));
+  Integer get sha256 => update(Sha256.int64(values));
 
   /// Returns a [Uint64List.view] of [values].
-  IntBase view([int start = 0, int length]) => update(
+  Integer view([int start = 0, int length]) => update(
       typedData.buffer.asUint64List(start, _toLength(length, values.length)));
 
   static const int kSizeInBytes = 8;

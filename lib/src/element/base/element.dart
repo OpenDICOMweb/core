@@ -68,7 +68,6 @@ abstract class Element<V> extends ListBase<V> {
     return values.length;
   }
 
-
   /// Returns the identifier ([index]), used to locate
   /// the Attributes associated with this Element.
   int get index;
@@ -256,6 +255,7 @@ abstract class Element<V> extends ListBase<V> {
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************
 
+/*
   /// The Value Length field value, that is, the 32-bit [int]
   /// contained in the Value Field of _this_. If the returned value
   /// is 0xFFFFFFFF ([kUndefinedLength]), it means the length of
@@ -265,15 +265,12 @@ abstract class Element<V> extends ListBase<V> {
   /// and UN Elements (and in Item [Dataset]s). _This method MUST
   /// be overridden for those elements.
   int get vfLengthField => vfLength;
+*/
 
   /// Returns _false_ for all Elements except SQ, OB, OW, and UN.
   /// Items are also allowed to have undefined length.
   bool get isUndefinedLengthAllowed => false;
 
-  /// _true_ if this [Element] had an undefined length token in the
-  /// Value Length field. It may only be true for OB, OW, SQ, and
-  /// UN Elements.
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   // ************* Values related Getters and Methods *************
   // **************************************************************
@@ -311,15 +308,10 @@ abstract class Element<V> extends ListBase<V> {
   TypedData get typedData;
 
   /// Returns [values] encoded as [ByteData].
-  ByteData get vfByteData =>
-      (checkValues(values)) ? typedData.buffer.asByteData() : null;
-
-/*
-  /// Returns [values] encoded as a [Bytes].
-  // Note: Always Bytes not DicomBytes
-  Bytes get vBytes =>
-      (checkValues(values)) ? new Bytes.typedDataView(typedData) : null;
-*/
+  ByteData get vfByteData => (checkValues(values))
+      ? typedData.buffer
+          .asByteData(typedData.offsetInBytes, typedData.lengthInBytes)
+      : null;
 
   /// Returns [values], including any required padding, encoded as a [Bytes].
   // Note: Always Bytes not DicomBytes
@@ -493,6 +485,8 @@ abstract class Element<V> extends ListBase<V> {
       int maxLengthForVR, Type type) {
     if (tag == null) return invalidTag(tag, issues, type);
     if (vList == null) return nullValueError();
+    // TODO: change this when Element type is known
+    if (vList.isEmpty) return true;
     final min = tag.vmMin;
     final max = tag.vm.max(maxLengthForVR);
     return (vList != null &&

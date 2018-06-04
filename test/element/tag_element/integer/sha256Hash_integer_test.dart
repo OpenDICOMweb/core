@@ -52,10 +52,10 @@ void main() {
     });
 
     test('OB', () {
-      final e0 = new OBtag(PTag.kPrivateInformation, uInt8V1, uInt8V1.length);
-      final e1 = new OBtag(PTag.kPrivateInformation, uInt8V1, uInt8V1.length);
+      final e0 = new OBtag(PTag.kPrivateInformation, uInt8V1);
+      final e1 = new OBtag(PTag.kPrivateInformation, uInt8V1);
       final e2 =
-          new OBtag(PTag.kCoordinateSystemAxisValues, uInt8V1, uInt8V1.length);
+          new OBtag(PTag.kCoordinateSystemAxisValues, uInt8V1);
 
       final sha0 = Sha256.uint8(uInt8V1);
       log

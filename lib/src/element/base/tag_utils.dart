@@ -35,12 +35,19 @@ Tag lookupTagByCode(int code, int vrIndex, Dataset ds) {
     final newVRIndex = _getCorrectVR(vrIndex, tag.vrIndex);
     return PTag.lookupByCode(code, newVRIndex);
   } else if (_isPDCode(code)) {
-    return _lookupPrivateDataTag(code, vrIndex, ds, group);
+    return (ds == null)
+        ? Tag.lookupByCode(code, vrIndex)
+        : _lookupPrivateDataTag(code, vrIndex, ds, group);
   } else if (_isPrivateGroup(group)) {
     return Tag.lookupPrivateByCode(code);
   } else {
     return badTagCode(code);
   }
+}
+
+int getValidVRIndex(int vrIndex, int tagVRIndex) {
+  if (vrIndex < 0 || vrIndex > kVRNormalIndexMax) return kUNIndex;
+  return (tagVRIndex > kVRNormalIndexMax) ? vrIndex : tagVRIndex;
 }
 
 Tag _lookupPrivateDataTag(int code, int vrIndex, Dataset ds, int group) {

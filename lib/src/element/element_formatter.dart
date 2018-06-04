@@ -153,7 +153,7 @@ class DebugEFormatter extends ElementFormatter with ByteElementMixin {
     final vLength = (e.hasValidLength) ? '' : '-*Invalid Length*';
     // TODO: fix later
 //    final valid = (e.hasValidValues) ? '' : '*Bad Values*';
-    const valid =  '';
+    const valid = '';
     final vList = (length > max) ? values.take(max) : values;
     sb.write('$valid($length$vLength)[${vList.join(', ')}]');
   }
@@ -163,14 +163,12 @@ class DebugEFormatter extends ElementFormatter with ByteElementMixin {
     maxValues ??= truncatedValuesLength;
     final vfLength = e.vfLength;
     assert(vfLength != null || vfLength >= 0);
-    final vfLengthField = e.vfLengthField;
     final values = e.values;
     final vLength = values.length;
 
     final sb = new StringBuffer('$runtimeType: ')
       ..write(tag(e, vLength))
-      ..write(_vfLength(vfLength))
-      ..write(_vfLengthField(vfLengthField));
+      ..write(_vfLength(vfLength));
     _valuesToSB(sb, e, maxValues);
     return '$sb';
   }
@@ -179,16 +177,11 @@ class DebugEFormatter extends ElementFormatter with ByteElementMixin {
 abstract class ByteElementMixin {
   String get vlfName => 'vfLengthField';
 
-  String vfLengthField(Element e) => _vfLengthField(e.vfLengthField);
-
-  String _vfLengthField(int vfLengthField) => (vfLengthField == null)
+  String vfLengthField(int vfLengthField) => (vfLengthField == null)
       ? ''
       : (vfLengthField == 0xFFFFFFFF)
           ? 'kUndefineLength'
           : '$vlfName: $vfLengthField';
 }
 
-
-class HtmlElementFormatter extends SimpleElementFormatter {
-
-}
+class HtmlElementFormatter extends SimpleElementFormatter {}

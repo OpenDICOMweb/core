@@ -1,4 +1,4 @@
-//  Copyright (c) 2016, 2017, 2018,
+  //  Copyright (c) 2016, 2017, 2018,
 //  Poplar Hill Informatics and the American College of Radiology
 //  All rights reserved.
 //  Use of this source code is governed by the open source license

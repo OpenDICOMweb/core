@@ -37,7 +37,6 @@ abstract class MetaElementMixin  {
 
   int get maxLength => e.maxLength;
   int get maxVFLength => e.maxVFLength;
-  int get vfLengthField => e.vfLengthField;
 
   Iterable get values => e.values;
   set values(Iterable<Object> vList) => e.values = vList;

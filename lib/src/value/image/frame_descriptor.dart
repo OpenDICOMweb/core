@@ -9,8 +9,8 @@
 import 'package:core/src/dataset/base.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/value/frame/frame.dart';
-import 'package:core/src/value/frame/frame_list.dart';
+import 'package:core/src/value/image/frame.dart';
+import 'package:core/src/value/image/frame_list.dart';
 import 'package:core/src/value/uid.dart';
 
 // TODO: add links to the DICOM Standard to each of the fields.

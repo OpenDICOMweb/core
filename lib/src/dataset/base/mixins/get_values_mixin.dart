@@ -102,20 +102,20 @@ abstract class NoValuesMixin {
     return numerator / denominator;
   }
 
-  /// Returns the [int] value for the [IntBase] Element with [index].
+  /// Returns the [int] value for the [Integer] Element with [index].
   /// If the [Element] is not present or if the [Element] has more
   /// than one value, either throws or returns _null_.
   int getInt(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null || e is! IntBase) return nonIntegerTag(index);
+    if (e == null || e is! Integer) return nonIntegerTag(index);
     return _checkOneValue<int>(index, e.values);
   }
 
-  /// Returns the [List<int>] values for the [IntBase] Element with [index].
+  /// Returns the [List<int>] values for the [Integer] Element with [index].
   /// If [Element] is not present, either throws or returns _null_;
   List<int> getIntList(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null || e is! IntBase) return nonIntegerTag(index);
+    if (e == null || e is! Integer) return nonIntegerTag(index);
     if (!allowInvalidValues && !e.hasValidValues)
       return elementError('Invalid Element: $e', e);
     final vList = e.values;
@@ -231,21 +231,21 @@ abstract class NoValuesMixin {
   }
 
   List<int> _getPixelData(int bitsAllocated) {
-    final pd = lookup(kPixelData);
-    if (pd == null || bitsAllocated == null) return pixelDataNotPresent();
-    if (pd.code == kPixelData) {
-      if (pd is OWPixelData) {
+    final e = lookup(kPixelData);
+    if (e == null || bitsAllocated == null) return pixelDataNotPresent();
+    if (e.code == kPixelData) {
+      if (e is OWPixelData) {
         assert(bitsAllocated == 16);
-        return pd.pixels;
-      } else if (pd is OBPixelData) {
+        return e.values;
+      } else if (e is OBPixelData) {
         assert(bitsAllocated == 8 || bitsAllocated == 1);
-        return pd.pixels;
-      } else if (pd is UNPixelData) {
+        return e.values;
+      } else if (e is UNPixelData) {
         // TODO: use transfer syntax to convert UN into OW or OB
         assert(bitsAllocated == 8 || bitsAllocated == 1);
-        return pd.pixels;
+        return e.values;
       } else {
-        return elementError('$pd is bad Pixel Data', pd);
+        return elementError('$e is bad Pixel Data', e);
       }
     }
     if (throwOnError) return null;

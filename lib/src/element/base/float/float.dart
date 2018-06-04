@@ -52,8 +52,6 @@ abstract class FL extends Float with Float32 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -151,8 +149,6 @@ abstract class OF extends Float with Float32 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -242,9 +238,6 @@ abstract class FD extends Float with Float64 {
  bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
  @override
  bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
- @override
- bool get hadULength => vfLengthField == kUndefinedLength;
-
 
  /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -334,8 +327,6 @@ abstract class OD extends Float with Float64 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [FD].
   /// If [doTestElementValidity] is _false_ then no checking is done.

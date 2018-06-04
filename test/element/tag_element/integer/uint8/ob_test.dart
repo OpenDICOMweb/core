@@ -27,8 +27,8 @@ void main() {
     test('OB hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
-        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
-        final e1 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0);
+        final e1 = new OBtag(PTag.kPrivateInformation, vList0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
         expect(e1.hasValidValues, true);
@@ -41,26 +41,26 @@ void main() {
         final vList1 = rng.uint8List(2, 3);
         log.debug('$i: vList1: $vList1');
         final e0 =
-            new OBtag(PTag.kCoordinateSystemAxisValues, vList1, vList1.length);
+            new OBtag(PTag.kCoordinateSystemAxisValues, vList1);
         expect(e0.hasValidValues, true);
       }
     });
 
     test('OB hasValidValues good values', () {
       global.throwOnError = false;
-      final e0 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
-      final e1 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      final e0 = new OBtag(PTag.kPrivateInformation, uInt8Min);
+      final e1 = new OBtag(PTag.kPrivateInformation, uInt8Min);
       expect(e0.hasValidValues, true);
       expect(e1.hasValidValues, true);
 
-      final e2 = new OBtag(PTag.kPrivateInformation, uInt8Max, uInt8Max.length);
+      final e2 = new OBtag(PTag.kPrivateInformation, uInt8Max);
       final e3 = new OBtag(
-          PTag.kCoordinateSystemAxisValues, uInt8Max, uInt8Max.length);
+          PTag.kCoordinateSystemAxisValues, uInt8Max);
       expect(e2.hasValidValues, true);
       expect(e3.hasValidValues, true);
 
       global.throwOnError = false;
-      final e4 = new OBtag(PTag.kICCProfile, <int>[], 0);
+      final e4 = new OBtag(PTag.kICCProfile, <int>[]);
       expect(e4.hasValidValues, true);
       log.debug('e0:$e0');
       expect(e4.values, equals(<int>[]));
@@ -68,11 +68,11 @@ void main() {
 
     test('OB hasValidValues bad values', () {
       final e0 = new OBtag(
-          PTag.kPrivateInformation, uInt8MaxPlus, uInt8MaxPlus.length);
+          PTag.kPrivateInformation, uInt8MaxPlus);
       expect(e0, isNull);
 
       final e2 = new OBtag(
-          PTag.kPrivateInformation, uInt8MinMinus, uInt8MaxPlus.length);
+          PTag.kPrivateInformation, uInt8MinMinus);
       expect(e2, isNull);
 
       global.throwOnError = false;
@@ -86,13 +86,13 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
 
       global.throwOnError = false;
-      final e4 = new OBtag(PTag.kICCProfile, null, 0);
+      final e4 = new OBtag(PTag.kICCProfile, null);
       log.debug('e4: $e4');
       expect(e4.hasValidValues, true);
       expect(e4.values, kEmptyUint8List);
 
       global.throwOnError = true;
-      final e5 = new OBtag(PTag.kICCProfile, null, 0);
+      final e5 = new OBtag(PTag.kICCProfile, null);
       log.debug('e5: $e5');
       expect(e5.hasValidValues, true);
       expect(e5.values, kEmptyUint8List);
@@ -102,18 +102,18 @@ void main() {
     test('OB update random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rng.uint8List(3, 4);
-        final e1 = new OBtag(PTag.kPrivateInformation, vList1, vList1.length);
+        final e1 = new OBtag(PTag.kPrivateInformation, vList1);
         final vList2 = rng.uint8List(3, 4);
         expect(e1.update(vList2).values, equals(vList2));
       }
     });
 
     test('OB update', () {
-      final e0 = new OBtag(PTag.kPrivateInformation, <int>[], 0);
+      final e0 = new OBtag(PTag.kPrivateInformation, <int>[]);
       expect(e0.update([165, 254]).values, equals([165, 254]));
 
-      final e1 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
-      final e2 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
+      final e1 = new OBtag(PTag.kICCProfile, uInt8Min);
+      final e2 = new OBtag(PTag.kICCProfile, uInt8Min);
       final e3 = e1.update(uInt8Max);
       final e4 = e2.update(uInt8Max);
       expect(e1.values.first == e4.values.first, false);
@@ -125,19 +125,19 @@ void main() {
     test('OB noValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint8List(3, 4);
-        final e1 = new OBtag(PTag.kPrivateInformation, vList, vList.length);
+        final e1 = new OBtag(PTag.kPrivateInformation, vList);
         log.debug('e1: ${e1.noValues}');
         expect(e1.noValues.values.isEmpty, true);
       }
     });
 
     test('OB noValues', () {
-      final e0 = new OBtag(PTag.kPrivateInformation, <int>[], 0);
+      final e0 = new OBtag(PTag.kPrivateInformation, <int>[]);
       final OBtag obNoValues = e0.noValues;
       expect(obNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
-      final e1 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      final e1 = new OBtag(PTag.kPrivateInformation, uInt8Min);
       final obNoValues0 = e1.noValues;
       expect(obNoValues0.values.isEmpty, true);
       log.debug('e1:${e1.noValues}');
@@ -146,7 +146,7 @@ void main() {
     test('OB copy random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint8List(3, 4);
-        final e2 = new OBtag(PTag.kPrivateInformation, vList, vList.length);
+        final e2 = new OBtag(PTag.kPrivateInformation, vList);
         final OBtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -154,12 +154,12 @@ void main() {
     });
 
     test('OB copy', () {
-      final e0 = new OBtag(PTag.kPrivateInformation, <int>[], 0);
+      final e0 = new OBtag(PTag.kPrivateInformation, <int>[]);
       final OBtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
-      final e2 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      final e2 = new OBtag(PTag.kPrivateInformation, uInt8Min);
       final e3 = e2.copy;
       expect(e2 == e3, true);
       expect(e2.hashCode == e3.hashCode, true);
@@ -172,8 +172,8 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         vList0 = rng.uint8List(1, 1);
-        final e0 = new OBtag(PTag.kICCProfile, vList0, vList0.length);
-        final e1 = new OBtag(PTag.kICCProfile, vList0, vList0.length);
+        final e0 = new OBtag(PTag.kICCProfile, vList0);
+        final e1 = new OBtag(PTag.kICCProfile, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -187,14 +187,14 @@ void main() {
         final vList0 = rng.uint8List(1, 1);
         final vList1 = rng.uint8List(1, 1);
 
-        final e0 = new OBtag(PTag.kICCProfile, vList0, vList0.length);
-        final e2 = new OBtag(PTag.kPrivateInformation, vList1, vList1.length);
+        final e0 = new OBtag(PTag.kICCProfile, vList0);
+        final e2 = new OBtag(PTag.kPrivateInformation, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rng.uint8List(2, 3);
-        final e3 = new OBtag(PTag.kPrivateInformation, vList2, vList2.length);
+        final e3 = new OBtag(PTag.kPrivateInformation, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
@@ -202,8 +202,8 @@ void main() {
     });
 
     test('OB hashCode and == good values', () {
-      final e0 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
-      final e1 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
+      final e0 = new OBtag(PTag.kICCProfile, uInt8Min);
+      final e1 = new OBtag(PTag.kICCProfile, uInt8Min);
       log
         ..debug('uInt8Min:$uInt8Min, e0.hash_code:${e0.hashCode}')
         ..debug('uInt8Min:$uInt8Min, e1.hash_code:${e1.hashCode}');
@@ -212,8 +212,8 @@ void main() {
     });
 
     test('OB hashCode and == bad values', () {
-      final e0 = new OBtag(PTag.kICCProfile, uInt8Min, uInt8Min.length);
-      final e2 = new OBtag(PTag.kICCProfile, uInt8Max, uInt8Max.length);
+      final e0 = new OBtag(PTag.kICCProfile, uInt8Min);
+      final e2 = new OBtag(PTag.kICCProfile, uInt8Max);
       log.debug('uInt8Max:$uInt8Max , e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
@@ -225,7 +225,7 @@ void main() {
         final vList0 = rng.uint8List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
         //       final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-        final e0 = OBtag.fromBytes(bytes0, PTag.kPrivateInformation, 1);
+        final e0 = OBtag.fromBytes(bytes0, PTag.kPrivateInformation);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes0));
         expect(e0.values is Uint8List, true);
@@ -241,7 +241,7 @@ void main() {
         final bytes1 = new Bytes.typedDataView(vList1);
 //        final uInt8ListV12 = uInt8ListV2.buffer.asUint8List();
         final e2 =
-            OBtag.fromBytes(bytes1, PTag.kPrivateInformation, vList1.length);
+            OBtag.fromBytes(bytes1, PTag.kPrivateInformation);
         expect(e2.hasValidValues, true);
       }
     });
@@ -249,7 +249,7 @@ void main() {
     test('OB fromBytes', () {
       final bytes = new Bytes.fromList(uInt8Min);
 //      final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-      final e5 = OBtag.fromBytes(bytes, PTag.kPrivateInformation, 1);
+      final e5 = OBtag.fromBytes(bytes, PTag.kPrivateInformation);
       expect(e5.vfBytes, equals(bytes));
       expect(e5.values is Uint8List, true);
       expect(e5.values, equals(uInt8Min));
@@ -261,7 +261,7 @@ void main() {
         final vList = rng.uint8List(1, 10);
         final bytes0 = DicomBytes.fromAscii(vList.toString());
         final e0 =
-            OBtag.fromBytes(bytes0, PTag.kSelectorOBValue, kUndefinedLength);
+            OBtag.fromBytes(bytes0, PTag.kSelectorOBValue);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -283,40 +283,40 @@ void main() {
     test('OB checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
-        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0);
         expect(e0.checkLength(e0.values), true);
       }
     });
 
     test('OB checkLength', () {
       final e0 =
-          new OBtag(PTag.kPrivateInformation, uInt8MinMax, uInt8MinMax.length);
+          new OBtag(PTag.kPrivateInformation, uInt8MinMax);
       expect(e0.checkLength(e0.values), true);
     });
 
     test('OB checkValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
-        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0);
         expect(e0.checkValues(e0.values), true);
       }
     });
 
     test('OB checkValues', () {
-      final e0 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      final e0 = new OBtag(PTag.kPrivateInformation, uInt8Min);
       expect(e0.checkValues(e0.values), true);
     });
 
     test('OB valuesCopy random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
-        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
 
     test('OB valuesCopy', () {
-      final e0 = new OBtag(PTag.kPrivateInformation, uInt8Min, uInt8Min.length);
+      final e0 = new OBtag(PTag.kPrivateInformation, uInt8Min);
       expect(uInt8Min, equals(e0.valuesCopy));
     });
 
@@ -325,7 +325,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
-        final e0 = new OBtag(PTag.kPrivateInformation, vList0, vList0.length);
+        final e0 = new OBtag(PTag.kPrivateInformation, vList0);
         final vList1 = rng.uint8List(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
@@ -377,7 +377,7 @@ void main() {
 //        final uInt8ListV11 = bytes.buffer.asUint8List();
         log.debug('bytes.length: ${bytes.length}');
         final e0 =
-            OBtag.fromBytes(bytes, PTag.kPrivateInformation, bytes.length);
+            OBtag.fromBytes(bytes, PTag.kPrivateInformation);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes));
         expect(e0.values is Uint8List, true);
@@ -693,14 +693,14 @@ void main() {
     });
 
     test('OB isValidVFLength good values', () {
-      expect(OB.isValidVFLength(OB.kMaxVFLength, kUndefinedLength), true);
-      expect(OB.isValidVFLength(0, 0), true);
+      expect(OB.isValidVFLength(OB.kMaxVFLength), true);
+      expect(OB.isValidVFLength(0), true);
     });
 
     test('OB isValidVFLength bad values', () {
       global.throwOnError = false;
-      expect(OB.isValidVFLength(OB.kMaxVFLength + 1, kUndefinedLength), false);
-      expect(OB.isValidVFLength(-1, 1), false);
+      expect(OB.isValidVFLength(OB.kMaxVFLength + 1), false);
+      expect(OB.isValidVFLength(-1), false);
     });
 
     test('OB isValidValue good values', () {

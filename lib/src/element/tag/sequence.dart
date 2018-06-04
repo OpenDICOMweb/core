@@ -32,21 +32,14 @@ class SQtag extends SQ with TagElement<Item> {
   @override
   final Dataset parent;
 
-  /// The length of the Value Field from which this [SQtag] was decoded.
-  /// If _null_ _this_ what not created from an encoding.
-  @override
-  final int vfLengthField;
-
   final Bytes bytes;
 
   /// Creates a new [SQtag] instance.
-  factory SQtag(Dataset parent, Tag tag,
-          [Iterable<Item> vList, int vfLengthField, Bytes bytes]) =>
-      new SQtag._(parent, tag, vList, vfLengthField, bytes);
+  factory SQtag(Dataset parent, Tag tag, [Iterable<Item> vList]) =>
+      new SQtag._(parent, tag, vList);
 
   /// Creates a new [SQtag] instance.
-  SQtag._(this.parent, this.tag,
-      [Iterable<Item> vList, this.vfLengthField, this.bytes])
+  SQtag._(this.parent, this.tag, [Iterable<Item> vList, this.bytes])
       : _values = (vList == null)
             ? emptyTagItemList
             : (vList is List) ? vList : vList.toList(growable: false);
@@ -77,7 +70,7 @@ class SQtag extends SQ with TagElement<Item> {
 
   /// Returns a copy of _this_ Sequence, with a new [List] of Tag[Item]s.
   SQtag updateSQtag(Iterable<TagItem> items, Dataset parent) =>
-      new SQtag(parent, tag, items, null);
+      new SQtag(parent, tag, items);
 
   Uint8List getValuesToBytes({bool addHeader, bool isAscii = true}) {
     throw new UnimplementedError('toDcm');
@@ -139,7 +132,7 @@ class SQtag extends SQ with TagElement<Item> {
 
   static SQtag fromValues(Tag tag, Iterable<Item> values,
           [int vfLength, Dataset parent]) =>
-      new SQtag(parent, tag, values, vfLength);
+      new SQtag(parent, tag, values);
 
   static SQtag from(Dataset parent, SQ sq) {
     final nItems = new List<TagItem>(sq.values.length);
@@ -147,13 +140,13 @@ class SQtag extends SQ with TagElement<Item> {
       final item = sq.values.elementAt(i);
       nItems[i] = TagItem.convert(parent, item, sq);
     }
-    return new SQtag(parent, sq.tag, nItems, sq.vfLengthField);
+    return new SQtag(parent, sq.tag, nItems);
   }
 
-  static SQtag fromBytes(Dataset parent, List<TagItem> vList,
-      DicomBytes bytes, Tag tag) {
+  static SQtag fromBytes(
+      Dataset parent, List<TagItem> vList, Tag tag) {
     if (tag.vrIndex != kSQIndex) return null;
-    return new SQtag(parent, tag, vList, bytes.vfLengthField, bytes);
+    return new SQtag(parent, tag, vList);
   }
 
   static const _makeSQ = TagElement.makeSequenceFromCode;
@@ -163,7 +156,7 @@ class SQtag extends SQ with TagElement<Item> {
     final length = items.length;
     final tagItems = new List<TagItem>(e.items.length);
 
-    final sq = _makeSQ(parent, e.code, tagItems, e.vfLengthField, null);
+    final sq = _makeSQ(parent, e.code, tagItems, null);
     for (var i = 0; i < length; i++) {
       final tItem = TagItem.convert(parent, items[i], sq);
       tagItems[i] = tItem;

@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/integer/integer_mixin.dart';
 import 'package:core/src/element/base/utils.dart';
@@ -18,8 +17,73 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
+abstract class Integer extends Element<int> {
+  int get sizeInBytes;
+
+  @override
+  Integer update([Iterable<int> vList]);
+
+  // **** End of interface
+
+  bool get isBinary => true;
+
+  @override
+  int get vfLength => length * sizeInBytes;
+
+  /// Returns a copy of [values]
+  @override
+  Iterable<int> get valuesCopy => new List.from(values, growable: false);
+
+  /// The _canonical_ empty [values] value for Floating Point Elements.
+  @override
+  List<int> get emptyList => kEmptyList;
+  static const List<int> kEmptyList = const <int>[];
+
+  @override
+  Integer get noValues => update(kEmptyList);
+
+/*
+  @override
+  ByteData get vfByteData => typedData.buffer
+      .asByteData(typedData.offsetInBytes, typedData.lengthInBytes);
+*/
+
+  @override
+  Bytes get vfBytes => new Bytes.typedDataView(typedData);
+
+  /// Returns a [view] of this [Element] with [values] replaced by
+  /// appropriate TypedData.
+  Integer view([int start = 0, int length]);
+
+  /// Returns true if [v] is in the range [min] <= [v] <= [max].
+  static bool isValidValue(int v, Issues issues, int min, int max) {
+    if (v < min || v > max) {
+      if (issues != null) {
+        if (v < min) issues.add('Invalid Value($v) under minimum($min)');
+        if (v < min) issues.add('Invalid Value($v) over maximum($max)');
+      }
+      return false;
+    }
+    return true;
+  }
+
+  /// Returns true if [vList] has a valid length for [tag], and each value in
+  /// [vList] is valid for [tag]..
+  static bool isValidValues(Tag tag, Iterable<int> vList, Issues issues,
+      int minValue, int maxValue, int maxLength, Type type) {
+    if (vList == null) return false;
+    if (!doTestElementValidity || vList.isEmpty) return true;
+    var ok = true;
+    if (!Element.isValidLength(tag, vList, issues, maxLength, type)) ok = false;
+    for (var v in vList) {
+      if (ok && !isValidValue(v, issues, minValue, maxValue)) ok = false;
+    }
+    return (ok) ? true : invalidValues(vList, issues);
+  }
+}
+
 /// Signed Short [Element].
-abstract class SS extends IntBase with Int16 {
+abstract class SS extends Integer with Int16 {
   static const int kVRIndex = kSSIndex;
   static const int kVRCode = kSSCode;
   static const int kSizeInBytes = 2;
@@ -62,8 +126,6 @@ abstract class SS extends IntBase with Int16 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [SS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -144,7 +206,7 @@ abstract class SS extends IntBase with Int16 {
 }
 
 /// Signed Long ([SL]) [Element].
-abstract class SL extends IntBase with Int32 {
+abstract class SL extends Integer with Int32 {
   static const int kVRIndex = kSLIndex;
   static const int kVRCode = kSLCode;
   static const int kSizeInBytes = 4;
@@ -181,8 +243,6 @@ abstract class SL extends IntBase with Int32 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [SL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -246,7 +306,7 @@ abstract class SL extends IntBase with Int32 {
 }
 
 /// Other Byte [Element].
-abstract class OB extends IntBase with Uint8 {
+abstract class OB extends Integer with Uint8 {
   static const int kVRIndex = kOBIndex;
   static const int kVRCode = kOBCode;
   static const int kSizeInBytes = 1;
@@ -285,8 +345,6 @@ abstract class OB extends IntBase with Uint8 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -308,14 +366,13 @@ abstract class OB extends IntBase with Uint8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: Some [Tag]s have _Special VR_s that include [OB] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ Tag.isValidSpecialTag] is used.
-  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, int vfLengthField,
-      [Issues issues]) {
+  static bool isValidBytesArgs(Tag tag, Bytes vfBytes, [Issues issues]) {
     if (tag == null || _isNotValidVR(tag.vrIndex))
       return invalidTag(tag, null, OB);
     if (!doTestElementValidity) return true;
     return vfBytes != null &&
         isValidTag(tag, issues) &&
-        isValidVFLength(vfBytes.length, vfLengthField, issues, tag);
+        isValidVFLength(vfBytes.length, issues, tag);
   }
 
   /// Returns _true_ if [tag] is valid for [OB].
@@ -347,13 +404,14 @@ abstract class OB extends IntBase with Uint8 {
   /// Returns _true_ if [vfLength] is valid for this [OB].
   // Note: This only check [vfLength] against the [kMaxVFLength] and
   //       [kSizeInBytes]. It does no Tag specific checks.
-  static bool isValidVFLength(int vfLength, int vfLengthField,
-          [Issues issues, Tag tag]) =>
+  static bool isValidVFLength(int vfLength, // int vfLengthField,
+          [Issues issues,
+          Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
           : _isValidUVFLength(
               vfLength,
-              vfLengthField,
+              //           vfLengthField,
               issues,
               kMaxVFLength,
               kSizeInBytes,
@@ -378,7 +436,7 @@ abstract class OB extends IntBase with Uint8 {
 }
 
 /// Unknown (UN) [Element].
-abstract class UN extends IntBase with Uint8 {
+abstract class UN extends Integer with Uint8 {
   static const int kVRIndex = kUNIndex;
   static const int kVRCode = kUNCode;
   static const int kSizeInBytes = 1;
@@ -417,8 +475,6 @@ abstract class UN extends IntBase with Uint8 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [UN].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -442,10 +498,8 @@ abstract class UN extends IntBase with Uint8 {
     if (tag == null) return invalidTag(tag, null, UN);
     if (!doTestElementValidity) return true;
     return vfBytes != null &&
-
         //  Note: UN can take any tag.
-        // isValidTag(tag, issues) &&
-        isValidVFLength(vfBytes.length, vfLengthField, issues, tag);
+        isValidVFLength(vfBytes.length, issues, tag);
   }
 
   /// Returns _true_ if [tag] is valid for [UN].
@@ -465,12 +519,10 @@ abstract class UN extends IntBase with Uint8 {
   static bool isValidVRCode(int vrCode, [Issues issues]) => true;
 
   /// Returns _true_ if [vfLength] is valid for this [UN].
-  static bool isValidVFLength(int vfLength, int vfLengthField,
-          [Issues issues, Tag tag]) =>
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : _isValidUVFLength(
-              vfLength, vfLengthField, issues, kMaxVFLength, kSizeInBytes);
+          : _isValidUVFLength(vfLength, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [UN].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -491,7 +543,7 @@ abstract class UN extends IntBase with Uint8 {
 }
 
 /// Other Byte [Element].
-abstract class US extends IntBase with Uint16 {
+abstract class US extends Integer with Uint16 {
   static const int kVRIndex = kUSIndex;
   static const int kVRCode = kUSCode;
   static const int kSizeInBytes = 2;
@@ -532,8 +584,6 @@ abstract class US extends IntBase with Uint16 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [US].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -619,7 +669,7 @@ abstract class US extends IntBase with Uint16 {
 }
 
 /// Unknown (OW) [Element].
-abstract class OW extends IntBase with Uint16 {
+abstract class OW extends Integer with Uint16 {
   static const int kVRIndex = kOWIndex;
   static const int kVRCode = kOWCode;
   static const int kSizeInBytes = 2;
@@ -660,8 +710,6 @@ abstract class OW extends IntBase with Uint16 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [OW].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -691,7 +739,7 @@ abstract class OW extends IntBase with Uint16 {
     if (!doTestElementValidity) return true;
     return vfBytes != null &&
         isValidTag(tag, issues) &&
-        isValidVFLength(vfBytes.length, vfLengthField, issues, tag);
+        isValidVFLength(vfBytes.length, issues, tag);
   }
 
   /// Returns _true_ if [tag] is valid for [OW].
@@ -723,12 +771,10 @@ abstract class OW extends IntBase with Uint16 {
   /// Returns _true_ if [vfLength] is valid for this [OW].
   // Note: This only check [vfLength] against the [kMaxVFLength] and
   //       [kSizeInBytes]. It does no Tag specific checks.
-  static bool isValidVFLength(int vfLength, int vfLengthField,
-          [Issues issues, Tag tag]) =>
+  static bool isValidVFLength(int vfLength, [Issues issues, Tag tag]) =>
       (tag != null)
           ? tag.isValidVFLength(vfLength, issues)
-          : _isValidUVFLength(
-              vfLength, vfLengthField, issues, kMaxVFLength, kSizeInBytes);
+          : _isValidUVFLength(vfLength, issues, kMaxVFLength, kSizeInBytes);
 
   /// Returns _true_ if [vList].length is valid for [OW].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
@@ -749,7 +795,7 @@ abstract class OW extends IntBase with Uint16 {
 }
 
 /// Attribute Tag [Element].
-abstract class AT extends IntBase with Uint32 {
+abstract class AT extends Integer with Uint32 {
   static const int kVRIndex = kATIndex;
   static const int kVRCode = kATCode;
   static const int kSizeInBytes = 4;
@@ -786,8 +832,6 @@ abstract class AT extends IntBase with Uint32 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -853,7 +897,7 @@ abstract class AT extends IntBase with Uint32 {
 /// Other Long [Element].
 ///
 /// VFLength and Values length are always valid.
-abstract class OL extends IntBase with Uint32 {
+abstract class OL extends Integer with Uint32 {
   static const int kVRIndex = kOLIndex;
   static const int kVRCode = kOLCode;
   static const int kSizeInBytes = 4;
@@ -890,8 +934,6 @@ abstract class OL extends IntBase with Uint32 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [OL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -955,7 +997,7 @@ abstract class OL extends IntBase with Uint32 {
 }
 
 /// Unsigned Long (UL) [Element].
-abstract class UL extends IntBase with Uint32 {
+abstract class UL extends Integer with Uint32 {
   static const int kVRIndex = kULIndex;
   static const int kVRCode = kULCode;
   static const int kSizeInBytes = 4;
@@ -992,8 +1034,6 @@ abstract class UL extends IntBase with Uint32 {
   bool get isLengthAlwaysValid => kIsLengthAlwaysValid;
   @override
   bool get isUndefinedLengthAllowed => kIsUndefinedLengthAllowed;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [UL].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -1088,26 +1128,25 @@ abstract class GL extends UL {
 /// Checks the the vfLengthField equal either the vfLength or
 /// [kUndefinedLength]; and then checks that vfLength (vfl) is
 /// in range and the right size, based on the element size (eSize).
-bool _isValidUVFLength(int vfl, int vlf, Issues issues, int max, int eSize) {
-  if (!doTestElementValidity || vlf == null) return true;
-  return ((vlf == vfl || vlf == kUndefinedLength) &&
-          _isValidVFLength(vfl, issues, max, eSize))
+bool _isValidUVFLength(int vfLength, Issues issues, int max, int eSize) {
+  if (!doTestElementValidity || vfLength == null) return true;
+  return _isValidVFLength(vfLength, issues, max, eSize)
       ? true
-      : invalidUVFLength(vfl, max, vlf, eSize, issues);
+      : invalidUVFLength(vfLength, max, eSize, issues);
 }
 
 /// Returns true if [vfLength] is in the range 0 <= [vfLength] <= [max],
 /// and [vfLength] is a multiple of of value size in bytes ([eSize]),
 /// i.e. `vfLength % eSize == 0`.
 bool _isValidVFLength(int vfLength, Issues issues, int max, int eSize) =>
-    (vfLength <= max && (vfLength % eSize) == 0)
+    (vfLength >= 0 && vfLength <= max && (vfLength % eSize) == 0)
         ? true
         : invalidFixedVFLength(vfLength, max, eSize, issues);
 
 bool _isValidValue(int v, Issues issues, int min, int max) =>
-    IntBase.isValidValue(v, issues, min, max);
+    Integer.isValidValue(v, issues, min, max);
 
 bool _isValidValues(Tag tag, Iterable<int> vList, Issues issues, int minVLength,
         int maxVLength, int maxVFListLength, Type type) =>
-    IntBase.isValidValues(
+    Integer.isValidValues(
         tag, vList, issues, minVLength, maxVLength, maxVFListLength, type);

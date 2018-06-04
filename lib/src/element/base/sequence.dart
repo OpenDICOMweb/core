@@ -61,14 +61,14 @@ abstract class SQ extends Element<Item> {
   int get vfLength => unimplementedError();
   @override
   int get lengthInBytes => unimplementedError();
-  @override
-  int get vfLengthField;
+//  @override
+//  int get vfLengthField;
   @override
   bool get isLengthAlwaysValid => true;
   @override
   bool get isUndefinedLengthAllowed => true;
-  @override
-  bool get hadULength => vfLengthField == kUndefinedLength;
+//  @override
+//  bool get hadULength => vfLengthField == kUndefinedLength;
 
   @override
   TypedData get typedData =>

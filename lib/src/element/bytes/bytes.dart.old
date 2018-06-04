@@ -6,10 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/dataset.dart';
+import 'dart:typed_data';
 
+import 'package:core/src/dataset.dart';
 import 'package:core/src/element/base.dart';
-import 'package:core/src/element/bytes/bytes_mixin.dart';
+import 'package:core/src/element/bytes/byte_element.dart';
 import 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/system.dart';
@@ -20,38 +21,6 @@ import 'package:core/src/vr.dart';
 
 // **** IVR Float Elements (FL, FD, OD, OF)
 
-DicomBytes _makeShort<V>(
-    int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize) {
-  final vfLength = vList.length * eSize;
-  return (isEvr)
-      ? EvrShortBytes.makeEmpty(code, vfLength, vrCode)
-      : IvrBytes.makeEmpty(code, vfLength, vrCode);
-}
-
-DicomBytes _makeShortString(
-    int code, List<String> sList, int vrCode, bool isEvr) {
-  final tag = Tag.lookupByCode(code);
-  if (tag.vrCode != vrCode) return null;
-  final vlf = stringListLength(sList, pad: true);
-  return (isEvr)
-      ? EvrShortBytes.makeEmpty(code, vlf, vrCode)
-      : IvrBytes.makeEmpty(code, vlf, vrCode);
-}
-
-DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
-  final vfLength = vList.length * eSize;
-  return (isEvr)
-      ? EvrLongBytes.makeEmpty(code, vfLength, vrCode)
-      : IvrBytes.makeEmpty(code, vfLength, vrCode);
-}
-
-DicomBytes _makeLongString(
-    int code, List<String> sList, int vrCode, bool isEvr) {
-  final vlf = stringListLength(sList, pad: true);
-  return (isEvr)
-      ? EvrLongBytes.makeEmpty(code, vlf, vrCode)
-      : IvrBytes.makeEmpty(code, vlf, vrCode);
-}
 
 class FLbytes extends FL with ByteElement<double>, Float32Mixin {
   @override
@@ -150,6 +119,7 @@ class OBbytesPixelData extends OBPixelData
   final DicomBytes bytes;
   @override
   TransferSyntax ts;
+  @override
   VFFragments fragments;
 
   OBbytesPixelData(this.bytes, [this.ts, this.fragments]);
@@ -186,7 +156,7 @@ class UNbytesPixelData extends UNPixelData
   final DicomBytes bytes;
   @override
   TransferSyntax ts;
-  //TODO: remove fragments
+  @override
   VFFragments fragments;
 
   UNbytesPixelData(this.bytes, [this.ts, this.fragments]);
@@ -262,7 +232,8 @@ class OWbytesPixelData extends OWPixelData
   final DicomBytes bytes;
   @override
   TransferSyntax ts;
-  // Note: OW should _never_ have fragments.
+  // Note: OW should _never_ have fragments, but it does happen
+  @override
   VFFragments fragments;
 
   OWbytesPixelData(this.bytes, [this.ts, this.fragments]);

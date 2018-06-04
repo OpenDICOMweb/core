@@ -431,7 +431,7 @@ void main() {
 
       // Create SQtag and add to rootDS0
       const sqTag = PTag.kReferencedStudySequence;
-      final sq = new SQtag(rds, sqTag, valuesList, SQ.kMaxVFLength);
+      final sq = new SQtag(rds, sqTag, valuesList);
       log..debug('sq: ${sq.info}');
       expect(sq.length == 2, true);
 
@@ -749,7 +749,7 @@ void main() {
 
       // Create SQtag and add to rootDS0
       const sqTag = PTag.kReferencedStudySequence;
-      final sq = new SQtag(rootDS0, sqTag, valuesList, SQ.kMaxVFLength);
+      final sq = new SQtag(rootDS0, sqTag, valuesList);
       log.debug('sq: ${sq.info}');
       expect(sq.length == 1, true);
 
@@ -790,7 +790,7 @@ void main() {
 
       // Create SQtag and add to rootDS0
       const sqTag = PTag.kReferencedStudySequence;
-      final sq = new SQtag(rootDS0, sqTag, valuesList, SQ.kMaxVFLength);
+      final sq = new SQtag(rootDS0, sqTag, valuesList);
       log.debug('sq: ${sq.info}');
       expect(sq.length == 1, true);
 

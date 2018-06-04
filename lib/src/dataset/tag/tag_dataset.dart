@@ -45,12 +45,18 @@ abstract class TagDataset {
 
   static Dataset convert(Dataset dsOld, Dataset dsNew,
       [Bytes bytes]) {
+    final badElements = <Element>[];
     for (var old in dsOld.elements) {
       final e = (old is SQ)
-          ? _makeSQ(dsNew, old.code, <TagItem>[], old.vfLengthField, bytes)
+          ? _makeSQ(dsNew, old.code, <TagItem>[], bytes)
           : _makeElement(old.code, old.vrIndex, old.values, dsNew);
-      dsNew.add(e);
+      if (e == null) {
+        badElements.add(e);
+      } else {
+        dsNew.add(e);
+      }
     }
+    print('Bad Elements: $badElements');
     return dsNew;
   }
 }

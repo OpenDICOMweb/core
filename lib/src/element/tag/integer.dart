@@ -25,9 +25,14 @@ List<int> _toValues(Iterable<int> vList) {
 }
 
 abstract class TagIntegerMixin {
-  /// Always [List<int>] and [TypedData].
+  /// Values will always have [Type] [List<int>] and [TypedData].
   List<int> get _values;
-  set _values(List<int> v);
+
+  /// [v] is always [List<int>] and [TypedData].
+  set _values(List<int> v) {
+    assert(v is TypedData);
+    _values = v;
+  }
 
   /// Values will always have [Type] [List<int>] and [TypedData].
   List<int> get values => _values;
@@ -122,30 +127,25 @@ class SLtag extends SL with TagElement<int>, TagIntegerMixin {
 class OBtag extends OB with TagElement<int>, TagIntegerMixin {
   @override
   final Tag tag;
-  // Note: _values should always be a Uint8List.
+  // Note: _values MUST always be a Uint8List.
   @override
   List<int> _values;
-  @override
-  int vfLengthField;
 
   /// Creates an [OBtag] Element.
-  factory OBtag(Tag tag,
-          [Iterable<int> vList, int vfLengthField, TransferSyntax ts]) =>
-      new OBtag._(tag, vList, vfLengthField, ts);
+  factory OBtag(Tag tag, Iterable<int> vList) =>
+      new OBtag._(tag, vList);
 
-  factory OBtag.bulkdata(Tag tag, Uri url,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OBtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
+  factory OBtag.bulkdata(Tag tag, Uri url) =>
+      new OBtag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory OBtag._(Tag tag, Iterable<int> vList, [int vlf, TransferSyntax ts]) {
+  factory OBtag._(Tag tag, Iterable<int> vList) {
+    assert(tag.code != kPixelData);
     final v = Uint8.fromList(vList);
     if (!OB.isValidArgs(tag, v)) return badValues(vList, null, tag);
-    return (tag.code == kPixelData)
-        ? new OBtagPixelData._x(v, vlf, ts)
-        : new OBtag._x(tag, v, v.length);
+    return new OBtag._x(tag, v);
   }
 
-  OBtag._x(this.tag, this._values, this.vfLengthField)
+  OBtag._x(this.tag, this._values)
       : assert(tag.vrIndex == kOBIndex || tag.vrIndex == kOBOWIndex),
         assert(_values is Uint8List);
 
@@ -153,170 +153,45 @@ class OBtag extends OB with TagElement<int>, TagIntegerMixin {
   OBtag update([Iterable<int> vList = kEmptyIntList]) =>
       new OBtag._(tag, vList);
 
-  static OBtag fromValues(Tag tag, [Iterable<int> vList,
-          int vfLengthField, TransferSyntax ts]) =>
-      new OBtag._(tag, Uint8.fromList(vList), vfLengthField, ts);
+  static OBtag fromValues(Tag tag, Iterable<int> vList) =>
+      new OBtag._(tag, Uint8.fromList(vList));
 
-  static OBtag fromBytes(Bytes bytes, Tag tag,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OBtag._(tag, bytes.asUint8List(), vfLengthField);
-}
-
-/// Unsigned 8-bit (Uint8)  Pixel Data.
-//
-// If encapsulated (compressed) then [fragments] must not be _null_. If
-// [fragments] == _null_ then the pixels are uncompressed and data is
-// contained in [values] or [vfBytes].
-//
-// _Note_: Pixel Data Tag Elements do not have [VFFragments].
-//         [VFFragments] must be converted before they are created.
-class OBtagPixelData extends OBPixelData with TagElement<int>, TagIntegerMixin {
-  @override
-  final Tag tag = PTag.kPixelDataOB;
-  // Note: _values should always be a Uint8List.
-  @override
-  List<int> _values;
-  @override
-  final int vfLengthField;
-  @override
-  final TransferSyntax ts;
-
-  /// Creates an [OBtagPixelData] Element from a [Iterable<int>].
-  factory OBtagPixelData(Tag tag,
-          [Iterable<int> vList, int vfLengthField, TransferSyntax ts]) =>
-      new OBtagPixelData._(tag, vList, vfLengthField, ts);
-
-  factory OBtagPixelData.bulkdata(Tag tag, Uri url,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OBtagPixelData._(
-          tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
-
-  factory OBtagPixelData._(Tag tag, Iterable<int> vList,
-      [int vlf, TransferSyntax ts]) {
-    final v = _isEmpty(vList) ? kEmptyIntList : Uint8.fromList(vList);
-    return OBPixelData.isValidArgs(tag, vList, vlf, ts)
-        ? new OBtagPixelData._x(v, vlf, ts)
-        : badValues(vList, null, tag);
-  }
-
-  OBtagPixelData._x(this._values, this.vfLengthField, this.ts)
-      : assert(_values is Uint8List);
-
-  @override
-  OBtagPixelData update([Iterable<int> vList]) =>
-      new OBtagPixelData._(tag, vList);
-
-  /// Creates an [OBtagPixelData] Element from a [Uint8List].
-  /// Returns a [Uint16List].
-  static OBtagPixelData fromValues(Tag tag, Iterable<int> vList,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OBtagPixelData._(tag, vList, vfLengthField, ts);
-
-  /// Creates an [OBtagPixelData] Element from a [Uint8List].
-  /// Returns a [Uint16List].
-  static OBtagPixelData fromBytes(Bytes bytes, Tag tag,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OBtagPixelData._(tag, bytes.asUint8List(), vfLengthField, ts);
+  static OBtag fromBytes(Bytes bytes, Tag tag) =>
+      new OBtag._(tag, bytes.asUint8List());
 }
 
 /// Unsigned 8-bit integer with unknown VR (VR.kUN).
 class UNtag extends UN with TagElement<int>, TagIntegerMixin {
   @override
   final Tag tag;
-  // Note: _values should always be a Int16List.
+  // Note: _values MUSTY always be a Int8List.
   @override
   List<int> _values;
 
-  @override
-  final int vfLengthField;
-
   /// Creates an [UNtag] Element.
-  factory UNtag(Tag tag,
-          [Iterable<int> vList, int vfLengthField, TransferSyntax ts]) =>
-      new UNtag._(tag, vList, vfLengthField, ts);
+  factory UNtag(Tag tag, Iterable<int> vList) =>
+      new UNtag._(tag, vList);
 
-  factory UNtag.bulkdata(Tag tag, Uri url,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new UNtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
+  factory UNtag.bulkdata(Tag tag, Uri url) =>
+      new UNtag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory UNtag._(Tag tag, Iterable<int> vList, [int vlf, TransferSyntax ts]) {
+  factory UNtag._(Tag tag, Iterable<int> vList) {
+    assert(tag.code != kPixelData);
     final v = Uint8.fromList(vList);
     if (!UN.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    return (tag.code == kPixelData)
-        ? new UNtagPixelData._x(v, vlf, ts)
-        : new UNtag._x(tag, v, v.length);
+    return new UNtag._x(tag, v);
   }
 
-  UNtag._x(this.tag, this._values, this.vfLengthField)
-      : assert(_values is Uint8List);
+  UNtag._x(this.tag, this._values) : assert(_values is Uint8List);
 
   @override
   UNtag update([Iterable<int> vList = kEmptyIntList]) => new UNtag(tag, vList);
 
-  static UNtag fromValues(Tag tag, Iterable<int> vList,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new UNtag._(tag, vList, vfLengthField, ts);
+  static UNtag fromValues(Tag tag, Iterable<int> vList) =>
+      new UNtag._(tag, vList);
 
-  static UNtag fromBytes(Bytes bytes, Tag tag,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new UNtag._(tag, bytes.asUint8List(), vfLengthField, ts);
-}
-
-/// 8-bit Pixel Data.
-//
-// If encapsulated (compressed) then [fragments] must not be _null_. If
-// [fragments] == _null_ then the pixels are uncompressed and data is
-// contained in [values] or [vfBytes].
-//
-// _Note_: Pixel Data Tag Elements do not have [VFFragments].
-//         [VFFragments] must be converted before they are created.
-class UNtagPixelData extends UNPixelData with TagElement<int>, TagIntegerMixin {
-  @override
-  final Tag tag = PTag.kPixelDataUN;
-  // Note: _values should always be a Int16List.
-  @override
-  List<int> _values;
-  @override
-  final int vfLengthField;
-  @override
-  final TransferSyntax ts;
-
-  /// Creates an [UNtagPixelData] Element from a [Iterable<int>].
-  factory UNtagPixelData(Tag tag,
-          [Iterable<int> vList, int vfLengthField, TransferSyntax ts]) =>
-      new UNtagPixelData._(tag, vList, vfLengthField, ts);
-
-  factory UNtagPixelData.bulkdata(Tag tag, Uri url,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new UNtagPixelData._(
-          tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
-
-  factory UNtagPixelData._(Tag tag, Iterable<int> vList,
-      [int vlf, TransferSyntax ts]) {
-    final v = _isEmpty(vList) ? kEmptyIntList : Uint8.fromList(vList);
-    return (UNPixelData.isValidArgs(tag, vList))
-        ? new UNtagPixelData._x(v, vlf, ts)
-        : badValues(v, null, tag);
-  }
-
-  UNtagPixelData._x(this._values, this.vfLengthField, this.ts)
-      : assert(_values is Uint8List);
-
-  @override
-  UNtagPixelData update([Iterable<int> vList]) =>
-      new UNtagPixelData._(tag, vList);
-
-  /// Creates an [UNtagPixelData] Element from a [Uint8List].
-  /// Returns a [Uint16List].
-  static UNtagPixelData fromValues(Tag tag, Iterable<int> vList,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new UNtagPixelData._(tag, vList, vfLengthField, ts);
-
-  /// Creates an [UNtagPixelData] Element from a [Uint8List].
-  /// Returns a [Uint16List].
-  static UNtagPixelData fromBytes(Bytes bytes, Tag tag,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new UNtagPixelData._(tag, bytes.asUint8List(), vfLengthField, ts);
+  static UNtag fromBytes(Bytes bytes, Tag tag) =>
+      new UNtag._(tag, bytes.asUint8List());
 }
 
 /// Unsigned Short
@@ -346,7 +221,7 @@ class UStag extends US with TagElement<int>, TagIntegerMixin {
   @override
   UStag update([Iterable<int> vList]) => new UStag._(tag, vList);
 
-  static UStag fromValues(Tag tag, Iterable<int> vList) =>
+  static UStag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new UStag(tag, vList);
 
   static UStag fromBytes(Bytes bytes, Tag tag) =>
@@ -361,94 +236,33 @@ class OWtag extends OW with TagElement<int>, TagIntegerMixin {
   // Note: _values should always be a Int16List.
   @override
   List<int> _values;
-  @override
-  final int vfLengthField;
 
   /// Creates an [OWtag] Element.
-  factory OWtag(Tag tag,
-          [Iterable<int> vList, int vfLengthField, TransferSyntax ts]) =>
-      new OWtag._(tag, vList, vfLengthField, ts);
+  factory OWtag(Tag tag, Iterable<int> vList) =>
+      new OWtag._(tag, vList);
 
-  factory OWtag._bulkdata(Tag tag, Uri url,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OWtag._(tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
+  factory OWtag._bulkdata(Tag tag, Uri url) =>
+      new OWtag._(tag, new IntBulkdataRef(tag.code, url));
 
-  factory OWtag._(Tag tag, Iterable<int> vList, int vlf, TransferSyntax ts) {
+  factory OWtag._(Tag tag, Iterable<int> vList) {
+    assert(tag.code != kPixelData);
     final v = Uint16.fromList(vList);
     if (!OW.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    return (tag.code == kPixelData)
-        ? new OWtagPixelData._(tag, v, vlf, ts)
-        : new OWtag._x(tag, v, vlf);
+    return new OWtag._x(tag, v);
   }
 
-  OWtag._x(this.tag, this._values, this.vfLengthField)
+  OWtag._x(this.tag, this._values)
       : assert(tag.vrIndex == kOWIndex || tag.vrIndex == kOBOWIndex),
         assert(_values is Uint16List);
 
   @override
   OWtag update([Iterable<int> vList = kEmptyIntList]) => new OWtag(tag, vList);
 
-  static OWtag fromValues(Tag tag, Iterable<int> vList,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OWtag(tag, vList, vfLengthField, ts);
+  static OWtag fromValues(Tag tag, Iterable<int> vList) =>
+      new OWtag(tag, vList);
 
-  static OWtag fromBytes(Bytes bytes, Tag tag,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OWtag._(tag, bytes.asUint16List(), vfLengthField, ts);
-}
-
-/// 8-bit Pixel Data.
-//
-// If encapsulated (compressed) then [fragments] must not be _null_. If
-// [fragments] == _null_ then the pixels are uncompressed and data is
-// contained in [values] or [vfBytes].
-//
-// _Note_: Pixel Data Tag Elements do not have [VFFragments].
-//         [VFFragments] must be converted before they are created.
-class OWtagPixelData extends OWPixelData with TagElement<int>, TagIntegerMixin {
-  @override
-  final Tag tag = PTag.kPixelDataOW;
-  // Note: _values should always be a Int16List.
-  @override
-  List<int> _values;
-  @override
-  final int vfLengthField;
-  @override
-  final TransferSyntax ts;
-
-  /// Creates an [OWtagPixelData] Element from a [Iterable<int>]
-  /// of byte values (0 - kMax16BitValue).
-  factory OWtagPixelData(Tag tag, Iterable<int> vList,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OWtagPixelData._(tag, vList, vfLengthField, ts);
-
-  factory OWtagPixelData._bulkdata(Tag tag, Uri url,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OWtagPixelData._(
-          tag, new IntBulkdataRef(tag.code, url), vfLengthField, ts);
-
-  factory OWtagPixelData._(Tag tag, Iterable<int> vList,
-          [int vlf, TransferSyntax ts]) =>
-      (OWPixelData.isValidArgs(tag, vList))
-          ? new OWtagPixelData._x(Uint16.fromList(vList), vlf, ts)
-          : badValues(vList, null, tag);
-
-  OWtagPixelData._x(this._values, this.vfLengthField, this.ts)
-      : assert(_values is Uint16List);
-
-  @override
-  OWtagPixelData update([Iterable<int> vList]) =>
-      new OWtagPixelData._(tag, vList);
-
-  /// Creates an [OWtagPixelData] Element from a [Uint8List].
-  static OWtagPixelData fromValues(Tag tag, Iterable<int> vList,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OWtagPixelData._(tag, vList, vfLengthField, ts);
-
-  /// Creates an [OWtagPixelData] Element from a [Uint8List].
-  static OWtagPixelData fromBytes(Bytes bytes, Tag tag,
-          [int vfLengthField, TransferSyntax ts]) =>
-      new OWtagPixelData._(tag, bytes.asUint16List(), vfLengthField, ts);
+  static OWtag fromBytes(Bytes bytes, Tag tag) =>
+      new OWtag._(tag, bytes.asUint16List());
 }
 
 /// Other Long
@@ -479,7 +293,7 @@ class OLtag extends OL with TagElement<int>, TagIntegerMixin {
   @override
   OLtag update([Iterable<int> vList]) => new OLtag._(tag, vList);
 
-  static OLtag fromValues(Tag tag, Iterable<int> vList) =>
+  static OLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new OLtag._(tag, vList);
 
   static OLtag fromBytes(Bytes bytes, Tag tag) =>
@@ -514,7 +328,7 @@ class ULtag extends UL with TagElement<int>, TagIntegerMixin {
   @override
   ULtag update([Iterable<int> vList]) => new ULtag._(tag, vList);
 
-  static ULtag fromValues(Tag tag, Iterable<int> vLIst) =>
+  static ULtag fromValues(Tag tag, [Iterable<int> vLIst, TransferSyntax _]) =>
       new ULtag._(tag, vLIst);
 
   static ULtag fromBytes(Bytes bytes, Tag tag) =>
@@ -541,7 +355,7 @@ class GLtag extends ULtag {
   @override
   GLtag update([Iterable<int> vList]) => new GLtag._(tag, vList);
 
-  static GLtag fromValues(Tag tag, Iterable<int> vList) =>
+  static GLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new GLtag(tag, vList);
 
   static GLtag fromBytes(Bytes bytes, Tag tag) =>
@@ -579,7 +393,7 @@ class ATtag extends AT with TagElement<int>, TagIntegerMixin {
   @override
   ATtag update([Iterable<int> vList]) => new ATtag._(tag, vList);
 
-  static ATtag fromValues(Tag tag, Iterable<int> vList) =>
+  static ATtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new ATtag._(tag, vList);
 
   static ATtag fromBytes(Bytes bytes, Tag tag) =>
