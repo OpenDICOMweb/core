@@ -22,25 +22,6 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic
 
-class FloatBulkdataRef extends DelegatingList<double> with BulkdataRef<double> {
-  @override
-  final int code;
-  @override
-  final Uri uri;
-  List<double> _values;
-
-  FloatBulkdataRef(this.code, this.uri, [this._values]) : super(_values);
-
-  FloatBulkdataRef.fromString(this.code, String s, [this._values])
-      : uri = Uri.parse(s),
-        super(_values);
-
-  List<double> get delegate => _values;
-
-  @override
-  List<double> get values => _values ??= getBulkdata(code, uri);
-}
-
 // **** Float Elements
 
 // Design notes:
@@ -379,6 +360,26 @@ abstract class Float64 {
     return badValues(vf);
   }
 }
+
+class FloatBulkdataRef extends DelegatingList<double> with BulkdataRef<double> {
+  @override
+  final int code;
+  @override
+  final Uri uri;
+  List<double> _values;
+
+  FloatBulkdataRef(this.code, this.uri, [this._values]) : super(_values);
+
+  FloatBulkdataRef.fromString(this.code, String s, [this._values])
+      : uri = Uri.parse(s),
+        super(_values);
+
+  List<double> get delegate => _values;
+
+  @override
+  List<double> get values => _values ??= getBulkdata(code, uri);
+}
+
 
 int _toLength(int length, int vLength) =>
     (length == null || length > vLength) ? vLength : length;
