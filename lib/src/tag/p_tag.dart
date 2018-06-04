@@ -3015,9 +3015,9 @@ class PTag extends Tag {
       = const PTag._('TimeOfLastCalibration', 0x00181201,
           'Time of Last Calibration', kTMIndex, VM.k1_n, false);
   static const PTag kDateTimeOfLastCalibration
-      //(0018,1201)
+      //(0018,1202)
       = const PTag._('DateTimeOfLastCalibration', 0x00181202,
-          'Time of Last Calibration', kTMIndex, VM.k1_n, false);
+          'Date Time of Last Calibration', kDTIndex, VM.k1, false);
   static const PTag kConvolutionKernel
       //(0018,1210)
       = const PTag._('ConvolutionKernel', 0x00181210, 'Convolution Kernel',

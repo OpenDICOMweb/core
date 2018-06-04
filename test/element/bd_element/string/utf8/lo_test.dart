@@ -36,7 +36,6 @@ void main() {
       kApplicationVersion,
     ];
 
-/*    // Urgent: No used fix or flush
     //VM.k1_n
     const loVM1_nTags = const <int>[
       kAdmittingDiagnosesDescription,
@@ -53,7 +52,6 @@ void main() {
       kProductName,
       kOtherPatientIDs,
     ];
- */
     test('LObytes from VM.k1', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
@@ -84,14 +82,15 @@ void main() {
 
     test('LObytes from VM.k1_n', () {
       global.throwOnError = false;
-
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, i);
-        final e0 = LObytes.fromValues(kSelectorLOValue, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in loVM1_nTags) {
+          final e0 = LObytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
   });

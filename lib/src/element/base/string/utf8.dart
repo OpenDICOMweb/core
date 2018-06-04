@@ -125,7 +125,7 @@ abstract class LO extends Utf8 {
 
   /// Returns _true_ if [tag] has a VR of [LO] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UC);
+      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, LO);
 
   static bool isValidValueLength(String s, [Issues issues]) => StringBase
       .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
@@ -289,7 +289,7 @@ abstract class PN extends Utf8 {
 
   /// Returns _true_ if [tag] has a VR of [PN] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UC);
+      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, PN);
 
   static bool isValidValueLength(String s, [Issues issues]) => StringBase
       .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
@@ -388,7 +388,7 @@ abstract class SH extends Utf8 {
 
   /// Returns _true_ if [tag] has a VR of [SH] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
-      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UC);
+      _isValidValues(tag, vList, issues, isValidValue, kMaxLength, SH);
 
   static bool isValidValueLength(String s, [Issues issues]) => StringBase
       .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
