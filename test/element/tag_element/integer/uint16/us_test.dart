@@ -282,15 +282,14 @@ void main() {
       expect(e0.values, equals(vList1));
     });
 
-// Urgent: why is UC in US file?
-    test('UC fromBytes good values', () {
+    test('US fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint16List(1, 10);
-        final bytes0 = Bytes.fromAscii(vList.toString());
-        final uc0 = UCtag.fromBytes(bytes0, PTag.kSelectorUCValue);
-        log.debug('uc0: $uc0');
-        expect(uc0.hasValidValues, true);
+        final bytes0 = new  Bytes.typedDataView(vList);
+        final e0 = UStag.fromBytes(bytes0, PTag.kSelectorUSValue);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
       }
     });
 
