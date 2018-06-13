@@ -587,6 +587,18 @@ void main() {
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      final vList0 = rsg.getLOList(1, 1);
+      expect(AE.isValidLength(null, vList0), false);
+
+      expect(AE.isValidLength(PTag.kSelectorAEValue, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => AE.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => AE.isValidLength(PTag.kSelectorAEValue, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('AE isValidLength VM.k1_n good values', () {

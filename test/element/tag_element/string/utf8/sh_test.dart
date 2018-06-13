@@ -583,11 +583,17 @@ void main() {
     test('SH isValidVFLength good values', () {
       expect(SH.isValidVFLength(SH.kMaxVFLength), true);
       expect(SH.isValidVFLength(0), true);
+
+      expect(SH.isValidVFLength(SH.kMaxVFLength, null, PTag.kSelectorSHValue),
+          true);
     });
 
     test('SH isValidVFLength bad values', () {
       expect(SH.isValidVFLength(SH.kMaxVFLength + 1), false);
       expect(SH.isValidVFLength(-1), false);
+
+      expect(SH.isValidVFLength(SH.kMaxVFLength, null, PTag.kSelectorSTValue),
+          false);
     });
 
     test('SH isValidValueLength good values', () {
@@ -598,10 +604,12 @@ void main() {
       }
 
       expect(SH.isValidValueLength('a'), true);
+      expect(SH.isValidValueLength(''), true);
     });
 
     test('SH isValidValueLength bad values', () {
-      expect(SH.isValidValueLength(''), true);
+      global.throwOnError = false;
+      expect(SH.isValidValueLength('d9E8tO.Tyu87Yer#423 {8/rt'), false);
     });
 
     test('SH isValidLength VM.k1 good values', () {
@@ -631,6 +639,18 @@ void main() {
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      final vList0 = rsg.getSHList(1, 1);
+      expect(SH.isValidLength(null, vList0), false);
+
+      expect(SH.isValidLength(PTag.kSelectorSHValue, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => SH.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => SH.isValidLength(PTag.kSelectorSHValue, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('SH isValidLength VM.k1_n good values', () {
