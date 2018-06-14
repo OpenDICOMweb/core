@@ -568,27 +568,30 @@ void main() {
     test('PN isValidVFLength good values', () {
       expect(PN.isValidVFLength(PN.kMaxVFLength), true);
       expect(PN.isValidVFLength(0), true);
+
+      expect(PN.isValidVFLength(PN.kMaxVFLength, null, PTag.kSelectorPNValue),
+          true);
     });
 
     test('PN isValidVFLength bad values', () {
       expect(PN.isValidVFLength(PN.kMaxVFLength + 1), false);
       expect(PN.isValidVFLength(-1), false);
+
+      expect(PN.isValidVFLength(PN.kMaxVFLength, null, PTag.kSelectorSTValue),
+          false);
     });
 
-    test('PN isValidValueLength good values', () {
+    test('PN isValidValueLength values', () {
       for (var s in goodPNList) {
         for (var a in s) {
           expect(PN.isValidValueLength(a), true);
         }
       }
       expect(PN.isValidValueLength('a'), true);
-    });
-
-    test('PN isValidValueLength bad values', () {
       expect(PN.isValidValueLength(''), true);
     });
 
-    test('PN isValidValue good values', () {
+    test('PN isValidValue values', () {
       for (var s in goodPNList) {
         for (var a in s) {
           expect(PN.isValidValue(a), true);
@@ -636,6 +639,19 @@ void main() {
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
+
+      global.throwOnError = false;
+      final vList0 = rsg.getPNList(1, 1);
+      expect(PN.isValidLength(null, vList0), false);
+
+      expect(PN.isValidLength(PTag.kSelectorPNValue, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => PN.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => PN.isValidLength(PTag.kSelectorLOValue, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('PN isValidLength VM.k1_n good values', () {

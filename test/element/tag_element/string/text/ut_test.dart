@@ -348,7 +348,7 @@ void main() {
       }
     });
 
-   /* test('UT decodeBinaryTextVF', () {
+    /* test('UT decodeBinaryTextVF', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 1);
         final bytes = Bytes.fromUtf8List(vList1);
@@ -556,11 +556,17 @@ void main() {
     test('UT isValidVFLength good values', () {
       expect(UT.isValidVFLength(UT.kMaxVFLength), true);
       expect(UT.isValidVFLength(0), true);
+
+      expect(UT.isValidVFLength(UT.kMaxVFLength, null, PTag.kSelectorUTValue),
+          true);
     });
 
     test('UT isValidVFLength bad values', () {
       expect(UT.isValidVFLength(UT.kMaxVFLength + 1), false);
       expect(UT.isValidVFLength(-1), false);
+
+      expect(UT.isValidVFLength(UT.kMaxVFLength, null, PTag.kSelectorLOValue),
+          false);
     });
 
     test('UT isValidLength VM.k1 good values', () {
@@ -590,6 +596,19 @@ void main() {
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
+
+      global.throwOnError = false;
+      final vList0 = rsg.getLOList(1, 1);
+      expect(UT.isValidLength(null, vList0), false);
+
+      expect(UT.isValidLength(PTag.kSelectorUTValue, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => UT.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => UT.isValidLength(PTag.kSelectorUTValue, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('UT isValidValue good values', () {
@@ -631,7 +650,7 @@ void main() {
       }
     });
 
-   /* test('UT toByteData', () {
+    /* test('UT toByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         global.throwOnError = false;
@@ -708,13 +727,13 @@ void main() {
 
       final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
-      *//*system.throwOnError = false;
+      */ /*system.throwOnError = false;
       final toB2 = Bytes.fromUtf8List([null], kMaxShortVF);
       expect(toB2, isNull);
 
       system.throwOnError = true;
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
-          throwsA(const isInstanceOf<GeneralError>()));*//*
+          throwsA(const isInstanceOf<GeneralError>()));*/ /*
     });*/
 
     test('UT toByteData', () {

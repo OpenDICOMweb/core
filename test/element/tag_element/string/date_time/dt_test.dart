@@ -694,11 +694,17 @@ void main() {
     test('DT isValidVFLength good values', () {
       expect(DT.isValidVFLength(DT.kMaxVFLength), true);
       expect(DT.isValidVFLength(0), true);
+
+      expect(DT.isValidVFLength(DT.kMaxVFLength, null, PTag.kSelectorDTValue),
+          true);
     });
 
     test('DT isValidVFLength bad values', () {
       expect(DT.isValidVFLength(DT.kMaxVFLength + 1), false);
       expect(DT.isValidVFLength(-1), false);
+
+      expect(DT.isValidVFLength(DT.kMaxVFLength, null, PTag.kSelectorSTValue),
+          false);
     });
 
     test('DT isValidValueLength good values', () {
@@ -744,6 +750,18 @@ void main() {
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      final vList0 = rsg.getLOList(1, 1);
+      expect(DT.isValidLength(null, vList0), false);
+
+      expect(DT.isValidLength(PTag.kSelectorDTValue, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => DT.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => DT.isValidLength(PTag.kSelectorDTValue, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('DT isValidLength VM.k1_n good values', () {
