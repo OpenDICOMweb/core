@@ -196,7 +196,7 @@ void main() {
     test('FL hashCode and == good values random', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
-       final vList = rng.float32List(1, 1);
+        final vList = rng.float32List(1, 1);
         final e0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
         final e1 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
         log
@@ -249,14 +249,14 @@ void main() {
     test('FL hashCode and == good values ', () {
       global.throwOnError = false;
       final e0 =
-          new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
+      new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
       final e1 =
-          new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
+      new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
       log
         ..debug('listFloat32Common0:$goodFloat32List, e0 .hash_code:${e0
-          .hashCode}')
+            .hashCode}')
         ..debug('listFloat32Common0:$goodFloat32List, e1.hash_code:${e1
-              .hashCode}');
+            .hashCode}');
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
     });
@@ -264,7 +264,7 @@ void main() {
     test('FL hashCode and == bad values ', () {
       global.throwOnError = false;
       final e0 =
-          new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
+      new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
 
       final fl2 = new FLtag(
           PTag.kRecommendedDisplayFrameRateInFloat, goodFloat32List.take(1));
@@ -274,14 +274,14 @@ void main() {
       expect(e0 == fl2, false);
 
       final fl3 =
-          new FLtag(PTag.kCornealVertexLocation, goodFloat32List.take(2));
+      new FLtag(PTag.kCornealVertexLocation, goodFloat32List.take(2));
       log.debug('listFloat32Common0:$goodFloat32List , fl3.hash_code:${fl3
           .hashCode}');
       expect(e0.hashCode == fl3.hashCode, false);
       expect(e0 == fl3, false);
 
       final fl4 =
-          new FLtag(PTag.kCornealPointLocation, goodFloat32List.take(3));
+      new FLtag(PTag.kCornealPointLocation, goodFloat32List.take(3));
       log.debug('listFloat32Common0:$goodFloat32List , fl4.hash_code:${fl4
           .hashCode}');
       expect(e0.hashCode == fl4.hashCode, false);
@@ -374,7 +374,7 @@ void main() {
         expect(e.hasValidValues, true);
 
         final make1 =
-            FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, <double>[]);
+        FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, <double>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<double>[]));
       }
@@ -577,6 +577,18 @@ void main() {
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      final vList0 = rng.float32List(1, 1);
+      expect(FL.isValidLength(null, vList0), false);
+
+      expect(FL.isValidLength(PTag.kDisplayedZValue, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => FL.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => FL.isValidLength(PTag.kDisplayedZValue, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('FL isValidLength VM.k2 good values', () {
@@ -705,6 +717,9 @@ void main() {
       global.throwOnError = false;
       expect(FL.isValidVFLength(FL.kMaxVFLength), true);
       expect(FL.isValidVFLength(0), true);
+
+      expect(FL.isValidVFLength(FL.kMaxVFLength, null, PTag.kSelectorFLValue),
+          true);
     });
 
     test('FL isValidVFLength bad values', () {
@@ -818,10 +833,15 @@ void main() {
       expect(FL.isValidValues(PTag.kExaminedBodyThickness, goodFloat32List),
           false);
 
+      expect(FL.isValidValues(null, goodFloat32List), false);
+
       global.throwOnError = true;
       expect(
-          () => FL.isValidValues(PTag.kExaminedBodyThickness, goodFloat32List),
+              () => FL.isValidValues(PTag.kExaminedBodyThickness, goodFloat32List),
           throwsA(const isInstanceOf<InvalidValuesError>()));
+
+      expect(() => FL.isValidValues(null, goodFloat32List),
+          throwsA(const isInstanceOf<InvalidTagError>()));
     });
   });
 }

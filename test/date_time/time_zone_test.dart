@@ -405,5 +405,89 @@ void main() {
         expect(tz, false);
       }
     });
+
+    test('isValidInternetTimeZoneString', () {
+      for (var s in kValidInetTZStrings) {
+        final tz = isValidInternetTimeZoneString(s);
+        expect(tz, true);
+      }
+
+      for (var s in inValidInternetTimeZoneStrings) {
+        final tz = isValidInternetTimeZoneString(s);
+        expect(tz, false);
+      }
+    });
+
+    test('isValidTimeZoneString', () {
+      for (var s in kValidDcmTZStrings) {
+        final tz = isValidTimeZoneString(s);
+        expect(tz, true);
+      }
+
+      for (var s in kValidInetTZStrings) {
+        final tz = isValidTimeZoneString(s, asDicom: false);
+        expect(tz, true);
+      }
+
+      for (var s in inValidInternetTimeZoneStrings) {
+        final tz = isValidTimeZoneString(s);
+        expect(tz, false);
+      }
+
+      for (var s in inValidInternetTimeZoneStrings) {
+        final tz = isValidTimeZoneString(s, asDicom: false);
+        expect(tz, false);
+      }
+    });
+
+    test('isValidDcmTimeZoneString', () {
+      for (var s in kValidDcmTZStrings) {
+        final tz = isValidDcmTimeZoneString(s);
+        expect(tz, true);
+      }
+
+      for (var s in inValidInternetTimeZoneStrings) {
+        final tz = isValidDcmTimeZoneString(s);
+        expect(tz, false);
+      }
+    });
+
+    test('parseInternetTimeZone', () {
+      var i = 0;
+      for (var s in kValidInetTZStrings) {
+        final tz = parseInternetTimeZone(s);
+        expect(tz, equals(kValidTZMicroseconds[i]));
+        i++;
+      }
+
+      for (var s in inValidInternetTimeZoneStrings) {
+        global.throwOnError = false;
+        final tz = parseInternetTimeZone(s);
+        expect(tz, isNull);
+
+        global.throwOnError = true;
+        expect(() => parseInternetTimeZone(s),
+            throwsA(const isInstanceOf<StringError>()));
+      }
+    });
+
+    test('parseDcmTimeZone', () {
+      var i = 0;
+      for (var s in kValidDcmTZStrings) {
+        final tz = parseDcmTimeZone(s);
+        expect(tz, equals(kValidTZMicroseconds[i]));
+        i++;
+      }
+
+      for (var s in inValidInternetTimeZoneStrings) {
+        global.throwOnError = false;
+        final tz = parseDcmTimeZone(s);
+        expect(tz, null);
+
+        global.throwOnError = true;
+        expect(() => parseDcmTimeZone(s),
+            throwsA(const isInstanceOf<StringError>()));
+      }
+    });
   });
 }

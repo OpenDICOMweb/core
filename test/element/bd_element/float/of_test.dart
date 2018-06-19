@@ -26,6 +26,16 @@ void main() {
     -11.11,
   ];
 
+  const ofVM1Tags = const <int>[
+    kVectorGridData,
+    kFloatingPointValues,
+    kUValueData,
+    kVValueData,
+    kFirstOrderPhaseCorrectionAngle,
+    kSpectroscopyData,
+    kFloatPixelData,
+  ];
+
   final rng = new RNG(1);
 
   group('OF Tests', () {
@@ -149,11 +159,13 @@ void main() {
         //final float32List0 = new Float32List.fromList(vList0);
         //final bytes = float32List0.buffer.asByteData();
         global.throwOnError = false;
-        final e0 = OFbytes.fromValues(kFloatPixelData, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in ofVM1Tags) {
+          final e0 = OFbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
 
