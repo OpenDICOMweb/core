@@ -34,6 +34,13 @@ void main() {
     -11.000453,
   ];
 
+  //VM.k1
+  const odVM1Tags = const <int>[
+    kSelectorODValue,
+    kDoubleFloatPixelData,
+  ];
+
+  final rds = new ByteRootDataset.empty();
   global.throwOnError = false;
 
   group('OD Tests', () {
@@ -108,6 +115,20 @@ void main() {
       for (var i = 0; i <= doubleList.length - 1; i++) {
         final e0 = ODbytes.fromValues(kSelectorODValue, <double>[doubleList[i]]);
         expect(OD.isValidValues(PTag.kDoubleFloatPixelData, e0.values), true);
+      }
+    });
+
+    test('ODbytes from VM.k1', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.float64List(1, 1);
+        global.throwOnError = false;
+        for (var code in odVM1Tags) {
+          final e0 = FDbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
   });
