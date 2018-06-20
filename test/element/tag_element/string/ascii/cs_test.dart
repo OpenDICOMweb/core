@@ -627,10 +627,10 @@ void main() {
 
       global.throwOnError = true;
       expect(() => CS.isValidLength(null, vList0),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       expect(() => CS.isValidLength(PTag.kSelectorUCValue, null),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('CS isValidVListLength VM.k2 good values', () {

@@ -237,7 +237,6 @@ void main() {
     });
 
     test('OD fromBytes', () {
-      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);

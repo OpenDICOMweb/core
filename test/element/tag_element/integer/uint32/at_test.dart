@@ -515,10 +515,10 @@ void main() {
 
       global.throwOnError = true;
       expect(() => AT.isValidLength(null, vList0),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       expect(() => AT.isValidLength(PTag.kSelectorAttribute, null),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('AT isValidLength VM.k1_n good values', () {

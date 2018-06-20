@@ -66,7 +66,6 @@ void main() {
   });
 
   test('Int32Base toByteData good values', () {
-    global.level = Level.info;
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
       final vList0 = rng.int32List(1, 1);
@@ -124,7 +123,6 @@ void main() {
   });
 
   test('Int32Base fromBase64', () {
-    global.level = Level.info;
     for (var i = 0; i < 10; i++) {
       final intList0 = rng.int32List(0, i);
       final vList0 = new Int32List.fromList(intList0);

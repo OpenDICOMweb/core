@@ -12,7 +12,7 @@ part of odw.sdk.utils.buffer;
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
 
-abstract class DicomWriteBufferMixin  {
+abstract class DicomWriteBufferMixin {
   DicomGrowableBytes get _buf;
   int get _wIndex;
   set _wIndex(int index);
@@ -71,57 +71,27 @@ abstract class DicomWriteBufferMixin  {
   }
 
 // Urgent Jim: move to system
-bool allowInvalidTagCode = true;
-
-void _checkCode(int code) {
-  if (!allowInvalidTagCode) {
-    assert(code >= 0x00020000 &&
-           code <= kSequenceDelimitationItem, 'Value out of range: $code (${dcm(
-        code)})');
-  }
-}
-
-void _checkVRCode(int vrCode) {
-
-}
-
-void _checkShortVlf(int vlf) {}
-void _checkLongVlf(int vlf) {}
-
-void _checkShortHeader(int code, int vrCode, int vlf) {
-  _checkCode(code);
-  _checkVRCode(vrCode);
-  _checkShortVlf(vlf);
-}
-
-void _checkLongHeader(int code, int vrCode, int vlf) {
-  _checkCode(code);
-  _checkVRCode(vrCode);
-  _checkLongVlf(vlf);
-}
-
+  bool allowInvalidTagCode = true;
 }
 
 class DicomWriteBuffer extends WriteBuffer with DicomWriteBufferMixin {
-
   DicomWriteBuffer(
       [int length = Bytes.kDefaultLength,
-        Endian endian,
-        int limit = kDefaultLimit])
+      Endian endian,
+      int limit = kDefaultLimit])
       : super._(length, endian, limit);
 
-   DicomWriteBuffer.from(WriteBuffer wb,
-                           [int offset = 0,
-                             int length,
-                             Endian endian = Endian.little,
-                             int limit = kDefaultLimit])
+  DicomWriteBuffer.from(WriteBuffer wb,
+      [int offset = 0,
+      int length,
+      Endian endian = Endian.little,
+      int limit = kDefaultLimit])
       : super._from(wb, offset, length, endian, limit);
 
-   DicomWriteBuffer.typedDataView(TypedData td,
-                                    [int offset = 0,
-                                      int lengthInBytes,
-                                      Endian endian = Endian.little,
-                                      int limit = kDefaultLimit])
+  DicomWriteBuffer.typedDataView(TypedData td,
+      [int offset = 0,
+      int lengthInBytes,
+      Endian endian = Endian.little,
+      int limit = kDefaultLimit])
       : super._tdView(td, offset, lengthInBytes, endian, limit);
 }
-

@@ -1025,7 +1025,6 @@ void main() {
     });
 
     test('Float64Mixin.fromBase64', () {
-      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(0, i);
         final uInt8List0 = vList0.buffer.asUint8List();
@@ -1049,7 +1048,6 @@ void main() {
     });
 
     test('Float64Mixin encodeDecodeJsonVF', () {
-      global.level = Level.info;
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.float64List(1, i);
         final uInt8List0 = vList0.buffer.asUint8List();

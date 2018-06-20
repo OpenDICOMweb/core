@@ -546,7 +546,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => SL.isValidLength(PTag.kDopplerSampleVolumeXPosition, null),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('SL isValidLength VM.k2 good values', () {

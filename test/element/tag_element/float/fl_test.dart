@@ -73,7 +73,6 @@ void main() {
     });
 
     test('FL hasValidValues good values random', () {
-      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
         expect(vList is Float32List, true);

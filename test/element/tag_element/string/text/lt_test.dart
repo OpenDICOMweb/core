@@ -672,7 +672,6 @@ void main() {
     });
 
     test('LT fromBytes', () {
-      //  global.level = Level.info;;
       final vList1 = rsg.getLTList(1, 1);
       final bytes = Bytes.fromUtf8List(vList1);
       log.debug('LT.fromBytes(bytes):  $bytes');

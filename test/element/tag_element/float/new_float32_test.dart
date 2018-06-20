@@ -1007,7 +1007,6 @@ void main() {
     });
 
     test('Float32Base decodeJsonVF', () {
-      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);
@@ -1732,7 +1731,6 @@ void main() {
     });
 
     test('Float32Base.fromBase64', () {
-      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final floatList0 = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(floatList0);

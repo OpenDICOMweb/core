@@ -68,7 +68,6 @@ void main() {
   });
 
   test('Uint16 toByteData good values', () {
-    global.level = Level.info;
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
       final vList0 = rng.uint16List(1, 1);
@@ -201,7 +200,6 @@ void main() {
   });
 
   test('Uint16 listToByteData good values', () {
-    global.level = Level.info;
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
       final vList0 = rng.uint16List(1, 1);

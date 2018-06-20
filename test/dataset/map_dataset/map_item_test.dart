@@ -329,7 +329,6 @@ void main() {
         ..add(ob0)
         ..add(ae0);
 
-//      global.level = Level.info;
       final dup = item.history;
       log.debug('item: $item, dup: $dup');
       expect(dup, isNotNull);
@@ -348,7 +347,6 @@ void main() {
 
       item..add(fd0)..add(as0)..add(ob0)..add(ae0);
 
-//      global.level = Level.info;
       final inRange0 = item.getElementsInRange(0, fd0.code);
       final inRange1 = item.getElementsInRange(0, fd0.code + 1);
       final inRange2 = item.getElementsInRange(0, ae0.code);

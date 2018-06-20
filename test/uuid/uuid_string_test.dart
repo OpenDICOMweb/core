@@ -96,7 +96,6 @@ void main() {
     });
 
     test('isValid', () {
-      global.level = Level.info;
       final uuid0 = new Uuid();
       expect(uuid0.isValid, true);
 
@@ -186,7 +185,6 @@ void main() {
 
       expect(uuid0 == uuid1, true);
       expect(uuid0 == uuid2, false);
-      global.level = Level.info;
       log.debug('uuid0: $uuid0, uuid1: $uuid1');
       //expect(uuid0.data.hashCode, equals(uuid1.data.hashCode));
       expect(uuid0.asHex, equals(uuidV1.replaceAll('-', '')));

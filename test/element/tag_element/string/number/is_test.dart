@@ -36,7 +36,6 @@ void main() {
 
   group('Integer String Tests', () {
     test('Is valid integer string -  good values', () {
-      global.level = Level.info;
       for (var s in goodIntegerStrings) {
         global.throwOnError = false;
         log.debug('s: "$s"');

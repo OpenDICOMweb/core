@@ -27,7 +27,6 @@ void main() {
     });
 
     test('nextIntString test', () {
-      global.level = Level.info;
       final count = rng.getLength(10, 100);
       for (var i = 0; i < count; i++) {
         final len = rng.getLength(1, 12);
@@ -42,7 +41,6 @@ void main() {
     var maxWordLength = 16;
 
     test('nextAsciiWord test', () {
-//      global.level = Level.info;
       final count = rng.getLength(10, 100);
       for (var i = 0; i < count; i++) {
         final word = rng.nextAsciiWord(minWordLength, maxWordLength);

@@ -558,7 +558,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => SS.isValidLength(PTag.kTIDOffset, null),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('SS isValidLength VM.k2 good values', () {

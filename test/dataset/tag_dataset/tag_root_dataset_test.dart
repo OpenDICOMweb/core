@@ -256,7 +256,6 @@ void main() {
 
       rds..add(fd0)..add(fd1)..add(as0)..add(as1)..add(as2)..add(ob0)..add(ae0);
 
-//      global.level = Level.info;
       final dup = rds.duplicates;
       log.debug('rds: $rds, dup: $dup');
       expect(dup, isNotNull);
@@ -280,7 +279,6 @@ void main() {
 
       rds..add(fd0)..add(as0)..add(ob0)..add(ae0);
 
-//      global.level = Level.info;
       final inRange0 = rds.getElementsInRange(0, fd0.code);
       final inRange1 = rds.getElementsInRange(0, fd0.code + 1);
       final inRange2 = rds.getElementsInRange(0, ae0.code);

@@ -57,7 +57,6 @@ void main() {
   });
 
   test('Uint8Base ListToByteData good values', () {
-    global.level = Level.info;
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
       final vList0 = rng.uint8List(1, 1);

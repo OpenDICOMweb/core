@@ -230,9 +230,4 @@ abstract class ReadBufferMixin {
 
   @override
   String toString() => '$runtimeType: @R$_rIndex @W$_wIndex $_buf';
-
-  void _checkRange(int v) {
-    final max = _wIndex;
-    if (v < 0 || v >= max) throw new RangeError.range(v, 0, max);
-  }
 }

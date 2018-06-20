@@ -54,15 +54,6 @@ abstract class DicomReadMixin {
     _rIndex += 2;
     return vlf;
   }
-
-  /// Read a 32-bit Value Field Length field.
-  int _readLongVLF() {
-    assert(_rIndex.isEven && _rHasRemaining(4), '@$_rIndex : $_rRemaining');
-    _rIndex += 2;
-    final vlf = _buf.getUint32(_rIndex);
-    _rIndex += 4;
-    return vlf;
-  }
 }
 
 class DicomReadBuffer extends ReadBuffer with DicomReadMixin {

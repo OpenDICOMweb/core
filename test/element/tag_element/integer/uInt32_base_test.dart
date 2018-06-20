@@ -69,7 +69,6 @@ void main() {
   });
 
   test('Uint32Base toByteData good values', () {
-    global.level = Level.info;
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
       final vList0 = rng.uint32List(1, 1);

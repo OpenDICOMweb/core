@@ -69,7 +69,6 @@ void main() {
     });
 
     test('FL hasValidValues good values random', () {
-      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final float32List = rng.float32List(1, 1);
         expect(float32List is Float32List, true);
@@ -1010,7 +1009,6 @@ void main() {
     });
 
     test('Float32Base decodeJsonVF', () {
-      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(vList);
@@ -1732,7 +1730,6 @@ void main() {
     });
 
     test('Float32Base.fromBase64', () {
-      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(vList);

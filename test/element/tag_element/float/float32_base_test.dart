@@ -74,64 +74,6 @@ void main() {
       }
     });
 
-/*
-test('Float32Base decodeJsonVF', () {
-global.level = Level.info;
-for (var i = 0; i < 10; i++) {
-final vList = rng.float32List(0, i);
-final vList0 = new Float32List.fromList(vList);
-final uInt8List0 = vList0.buffer.asUint8List();
-final base64 = cvt.base64.encode(uInt8List0);
-final fl0 = Float32.fromBase64(base64);
-log
-..debug('  vList: $vList')
-..debug('vList0: $vList0')
-..debug('         fl0: $fl0');
-expect(fl0, equals(vList));
-expect(fl0, equals(vList0));
-}
-});
-*/
-/*
-
-test('Float32Base toBase64', () {
-for (var i = 0; i < 10; i++) {
-final vList = rng.float32List(0, i);
-final vList0 = new Float32List.fromList(vList);
-final uInt8List0 = vList0.buffer.asUint8List();
-final base64 = cvt.base64.encode(uInt8List0);
-final s = Float32.toBase64(vList);
-expect(s, equals(base64));
-}
-});
-*/
-
-/*
-test('Float32Base encodeDecodeJsonVF', () {
-for (var i = 1; i < 10; i++) {
-final vList = rng.float32List(1, i);
-final vList0 = new Float32List.fromList(vList);
-final uInt8List0 = vList0.buffer.asUint8List();
-
-// Encode
-final base64 = cvt.base64.encode(uInt8List0);
-log.debug('FL.base64: "$base64"');
-final s = Float32.toBase64(vList);
-log.debug('  FL.json: "$s"');
-expect(s, equals(base64));
-
-// Decode
-final fl0 = Float32.fromBase64(base64);
-log.debug('FL.base64: $fl0');
-final fl1 = Float32.fromBase64(s);
-log.debug('  FL.json: $fl1');
-expect(fl0, equals(vList));
-expect(fl0, equals(vList0));
-expect(fl0, equals(fl1));
-}
-});
-*/
-
     test('Float32Base fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 1);

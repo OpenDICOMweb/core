@@ -369,7 +369,6 @@ void main() {
 
   test('Hash Random Dates', () {
     final rng = new RNG();
-    global.level = Level.info;
     for (var i = 0; i < 1000; i++) {
       final eDay = rng.nextInt(kMinYear, kMaxYear);
       final date0 = Date.fromEpochDay(eDay);
@@ -461,7 +460,6 @@ void main() {
 
   test('Hash Dates', () {
     final date1 = new Date(1969, 12, 31);
-    global.level = Level.info;
     log.debug(
         'date: $date1, year:${date1.year}, month: ${date1.month}, '
             'day: ${date1.day}, microseconds: ${date1.microseconds}');

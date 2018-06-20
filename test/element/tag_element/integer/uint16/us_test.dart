@@ -533,7 +533,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => US.isValidLength(PTag.kFileSetConsistencyFlag, null),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('US isValidLength VM.k2 good values', () {

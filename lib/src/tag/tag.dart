@@ -12,7 +12,6 @@ import 'dart:convert' as cvt;
 import 'package:core/src/error.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/ie_type.dart';
@@ -262,21 +261,6 @@ abstract class Tag {
           ? true
           : vr.isValidVFLength(vfLength, vmMin, vmMax);
 
-  bool _isValidLength(int length, int min, int max, int columns) =>
-      (length == 0)
-          ? true
-          : length >= 0 && length <= max && (length % columns) == 0;
-
-  bool _isValidVFLength(int vfLength, int maxVFLength) =>
-      (vfLength >= 0 && vfLength <= maxVFLength)
-          ? true
-          : invalidVFLength(vfLength, maxVFLength);
-
-  bool __isValidVFLength(int vfLength, int maxVFLength) =>
-      (vfLength >= 0 && vfLength <= maxVFLength)
-          ? true
-          : invalidVFLength(vfLength, maxVFLength);
-
   bool isNotValidVFLength(int vfLength, [Issues issues]) =>
       !isValidVFLength(vfLength, issues);
 
@@ -401,7 +385,7 @@ abstract class Tag {
   }
 
   static bool _isPublicCode(int code) => _isPublicGroup(code >> 16);
-  static  bool _isPublicGroup(int group) => group.isEven && group <= 0xFFFE;
+  static bool _isPublicGroup(int group) => group.isEven && group <= 0xFFFE;
 
   static Tag lookupPrivateByCode(int code,
       [int vrIndex = kUNIndex, Object creator]) {
@@ -433,20 +417,6 @@ abstract class Tag {
 
   static bool _isPrivateGroup(int group) =>
       group.isOdd && group >= 0x0009 && group <= 0xFFFF;
-
-  // Trick to check that it is both Private and Creator.
- static bool _isPCCode(int code) {
-    final bits = code & 0x1FFFF;
-    return (bits >= 0x10010 && bits <= 0x100FF);
-  }
-
- static bool _isNotPCTagCode(int code) => !_isPCCode(code);
-
-// Trick to check that it is both Private and Data.
-  static bool _isPDCode(int code) {
-    final bits = code & 0x1FFFF;
-    return (bits >= 0x11000 && bits <= 0x1FF00);
-  }
 
   static Tag lookupByKeyword(String keyword,
       [int vrIndex = kUNIndex, Object creator]) {
@@ -625,9 +595,9 @@ abstract class Tag {
 
   /// Returns true if [code] is a valid Private Creator Code.
   static bool isPCCode(int code) {
-    if ((code >> 16).isEven) return false;
-    final elt = code & 0xFFFF;
-    return elt >= 0x10 && elt <= 0xFF;
+    // Trick to check that it is both Private and Creator.
+    final bits = code & 0x1FFFF;
+    return (bits >= 0x10010 && bits <= 0x100FF);
   }
 
   static bool isNotPCCode(int code) => !isPCCode(code);
@@ -650,9 +620,9 @@ abstract class Tag {
   ///  and either [pcCode] is zero or [pcCode] is a Private
   ///  Creator Code for [pdCode].
   static bool isPDCode(int pdCode, [int pcCode = 0]) {
-    if ((pdCode >> 16).isEven) return false;
-    final pde = pdCode & 0xFFFF;
-    if (pde < 0x1000 || pde > 0xFFFF) return false;
+    // Trick to check that it is both Private and Data.
+    final bits = pdCode & 0x1FFFF;
+    if (bits < 0x11000 || bits > 0x1FFFF) return false;
     return (pcCode == 0) ? true : _isValidPDCode(pdCode, pcCode);
   }
 

@@ -637,7 +637,6 @@ void main() {
     });
 
     test('Float32Base.fromBase64', () {
-      global.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(0, i);
         final float32List0 = new Float32List.fromList(vList);

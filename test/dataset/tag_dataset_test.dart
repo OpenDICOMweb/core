@@ -730,7 +730,6 @@ void main() {
     });
 
     test('getItem', () {
-//      global.level = Level.info;
       final rootDS0 = new TagRootDataset.empty();
       final valuesList = <TagItem>[];
 

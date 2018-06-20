@@ -30,8 +30,6 @@ void main() {
   final endEpochDay = dateToEpochDay(endYear, 1, 1);
 
   group('Test Day Part of String', () {
-    global.level = Level.info0;
-
     test('Leap Year Basic Test', () {
       for (var y in goodBasicLeapYears) {
         final a = isLeapYear(y);
@@ -91,7 +89,6 @@ void main() {
     });
 
     test('Leap Year Performance Test', () {
-      global.level = Level.info0;
       log.debug('Leap Year Perfermance Test: $startYear - $endYear');
       final watch = new Stopwatch()..start();
 
@@ -190,9 +187,9 @@ void main() {
     });
 
     test('Epoch Date Performance Test', () {
-      log.debug('Epoch Date Performance Test...');
-      global.level = Level.info0;
-      log.debug1('  startYear: $startYear, endYear: $endYear');
+      log
+        ..debug('Epoch Date Performance Test...')
+        ..debug1('  startYear: $startYear, endYear: $endYear');
 
       final eStart = dateToEpochDay(startYear, 1, 1);
       log.debug1('  Epoch Start Day: $eStart');
@@ -378,8 +375,6 @@ void main() {
     });
 
     test('checkEpochDay', () {
-      //     global.level = Level.info;
-
       final ced0 = checkEpochDay(kMinEpochDay);
       log.debug('ced0:$ced0');
       expect(ced0, isNotNull);
@@ -404,7 +399,6 @@ void main() {
     });
 
     test('epochMicrosecondsToDate', () {
-//      global.level = Level.info2;
       final List<int> emd0 = epochMicrosecondToDate(kMinEpochMicrosecond);
       log.debug('emd0: "$emd0"');
       expect(emd0, isNotNull);

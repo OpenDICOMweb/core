@@ -562,10 +562,10 @@ void main() {
 
       global.throwOnError = true;
       expect(() => UL.isValidLength(null, vList0),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       expect(() => UL.isValidLength(PTag.kRegionFlags, null),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('UL isValidLength VM.k3 good values', () {

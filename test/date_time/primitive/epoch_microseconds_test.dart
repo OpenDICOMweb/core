@@ -28,8 +28,6 @@ void main() {
   final endMicrosecond = dateToEpochMicroseconds(endYear, 1, 1);
 
   group('Test Day Part of String', () {
-    global.level = Level.info0;
-
     test('Leap Year Basic Test', () {
       for (var y in goodBasicLeapYears) {
         final a = isLeapYear(y);
@@ -88,7 +86,6 @@ void main() {
     });
 
     test('Leap Year Performance Test', () {
-//      global.level = Level.info2;
       log.debug('Leap Year Perfermance Test: $startYear - $endYear');
       final watch = new Stopwatch()..start();
 
@@ -174,10 +171,10 @@ void main() {
     });
 
     test('Epoch Date Performance Test', () {
-      log.debug('Epoch Date Performance Test...');
-      global.level = Level.info0;
-      log.debug1('  startMicrosecond: $startMicrosecond, endMicrosecond: '
-          '$endMicrosecond');
+      log
+        ..debug('Epoch Date Performance Test...')
+        ..debug1('  startMicrosecond: $startMicrosecond, endMicrosecond: '
+            '$endMicrosecond');
 
       final startMicroseconds = dateToEpochMicroseconds(startYear, 1, 1);
       log.debug1('  Epoch Start Microseconds: $startMicroseconds');

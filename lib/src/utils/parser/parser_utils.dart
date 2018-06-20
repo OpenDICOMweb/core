@@ -105,25 +105,3 @@ void _checkArgs(String s, int start, int end, int min, int max, String fName,
 /// Returns an invalid value [String].
 String _badArg(String arg, String value, String msg, String fName) =>
     '$fName: Invalid argument($arg == $value) $msg';
-
-/*
-//TODO: Decide if this is needed
-/// Returns an invalid value [String].
-String _invalidValueMsg(int v, int index, String name) {
-  assert(v != null && index != null && name != null);
-  return '$name: Invalid Value($v) at pos($index)';
-}
-*/
-
-Null _invalidCharError(String s, int index, Issues issues, String name) {
-  final msg = _invalidCharMsg(s, index, issues, name);
-  return parseError(msg, issues);
-}
-
-/// Returns an invalid character [String].
-String _invalidCharMsg(String s, int index, [Issues issues, String name = '']) {
-  final msg = 'Invalid $name character "${s[index]}"(${s.codeUnitAt(index)}'
-      ' at pos($index) in String:"$s" with length: ${s.length})';
-  if (issues != null) issues.add(msg);
-  return msg;
-}

@@ -90,7 +90,6 @@ void main() {
     // test('OD null as values', () {});
 
     test('OD hashCode and == random', () {
-      //     global.level = Level.info;
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
