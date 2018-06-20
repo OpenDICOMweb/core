@@ -7,775 +7,839 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'dart:convert' as cvt;
+import 'dart:typed_data';
 
 import 'package:core/server.dart';
 import 'package:test/test.dart';
-import 'package:test_tools/tools.dart';
-
-RSG rsg = new RSG(seed: 1);
 
 void main() {
-  Server.initialize(name: 'string/special_test', level: Level.info);
-  global.throwOnError = false;
+  Server.initialize(name: 'element/ul_test', level: Level.info);
+  final rng = new RNG(1);
 
-  const goodAEList = const <List<String>>[
-    const <String>['d9E8tO'],
-    const <String>['mrZeo|^P> -6{t, '],
-    const <String>['mrZeo|^P> -6{t,'],
-    const <String>['1wd7'],
-    const <String>['mrZeo|^P> -6{t,']
-  ];
+  const uInt32MinMax = const [kUint32Min, kUint32Max];
+  const uInt32Max = const [kUint32Max];
+  const uInt32MaxPlus = const [kUint32Max + 1];
+  const uInt32Min = const [kUint32Min];
+  const uInt32MinMinus = const [kUint32Min - 1];
 
-  const badAEList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?']
-  ];
-
-  group('AEtag', () {
-    test('AE hasValidValues good values', () {
-      for (var s in goodAEList) {
-        global.throwOnError = false;
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, s);
-        expect(e1.hasValidValues, true);
-      }
-
-      global.throwOnError = false;
-      final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, []);
-      expect(e1.hasValidValues, true);
-      expect(e1.values, equals(<String>[]));
-    });
-
-    test('AE hasValidValues bad values', () {
-      for (var s in badAEList) {
-        global.throwOnError = false;
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, s);
-        expect(e1, isNull);
-
-        global.throwOnError = true;
-        expect(() => new AEtag(PTag.kScheduledStudyLocationAETitle, s),
-            throwsA(const TypeMatcher<StringError>()));
-      }
-
-      global.throwOnError = false;
-      final e2 = new AEtag(PTag.kScheduledStudyLocationAETitle, null);
-      log.debug('e2: $e2');
-      expect(e2.hasValidValues, true);
-      expect(e2.values == StringList.kEmptyList, true);
-    });
-
-    test('AE hasValidValues random good values', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 10);
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-        log.debug('e1:${e1.info}');
-        expect(e1.hasValidValues, true);
-
-        log..debug('e1: $e1, values: ${e1.values}')..debug('e1: ${e1.info}');
-        expect(e1[0], equals(vList0[0]));
-      }
+  // Urgent Sharath: file is ae_test but UL is all over
+  group('UL', () {
+    test('UL hasValidValues good values random', () {
 
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        final e2 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-        expect(e2.hasValidValues, true);
-
-        log..debug('e2: $e2, values: ${e2.values}')..debug('e2: ${e2.info}');
-        expect(e2[0], equals(vList0[0]));
-      }
-    });
-
-    test('AE hasValidValues random bad values', () {
-      for (var i = 0; i < 10; i++) {
-        global.throwOnError = false;
-        final vList0 = rsg.getAEList(3, 4);
-        log.debug('$i: vList0: $vList0');
-        final ae2 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-        expect(ae2, isNull);
-      }
-    });
-
-    test('AE update random', () {
-      final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, []);
-      expect(e1.update(['325435', '4545']).values, equals(['325435', '4545']));
-
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(3, 4);
-        final e2 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-        final vList1 = rsg.getAEList(3, 4);
-        expect(e2.update(vList1).values, equals(vList1));
-      }
-    });
-
-    test('AE noValues random', () {
-      final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, []);
-      final AEtag aeNoValues = e1.noValues;
-      expect(aeNoValues.values.isEmpty, true);
-      log.debug('e1: ${e1.noValues}');
-
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(3, 4);
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-        log.debug('e1: $e1');
-        expect(aeNoValues.values.isEmpty, true);
-        log.debug('e1: ${e1.noValues}');
-      }
-    });
-
-    test('AE copy random', () {
-      final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, []);
-      final AEtag e2 = e1.copy;
-      expect(e2 == e1, true);
-      expect(e2.hashCode == e1.hashCode, true);
-
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(3, 4);
-        final ae2 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-        final AEtag e3 = ae2.copy;
-        expect(e3 == ae2, true);
-        expect(e3.hashCode == ae2.hashCode, true);
-      }
-    });
-
-    test('AE hashCode and == good values random', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-        final e2 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-        log
-          ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}')
-          ..debug('vList0:$vList0, ds1.hash_code:${e2.hashCode}');
-        expect(e1.hashCode == e2.hashCode, true);
-        expect(e1 == e2, true);
-      }
-    });
-
-    test('AE hashCode and == bad values random', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-
-        final vList1 = rsg.getAEList(1, 1);
-        final ae2 = new AEtag(PTag.kPerformedStationAETitle, vList1);
-        log.debug('vList1:$vList1 , ae2.hash_code:${ae2.hashCode}');
-        expect(e1.hashCode == ae2.hashCode, false);
-        expect(e1 == ae2, false);
-
-        final vList2 = rsg.getAEList(2, 3);
-        final e3 = new AEtag(PTag.kPerformedStationAETitle, vList2);
-        log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
-        expect(e1.hashCode == e3.hashCode, false);
-        expect(e1 == e3, false);
-      }
-    });
-
-    test('AE valuesCopy ranodm', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-        expect(vList0, equals(e1.valuesCopy));
-      }
-    });
-
-    test('AE isValidLength random', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-        expect(e1.tag.isValidLength(e1), true);
-      }
-    });
-
-    test('AE checkValues random', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-        expect(e1.checkValues(e1.values), true);
-        expect(e1.hasValidValues, true);
-      }
-    });
-
-    test('AE replace random', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-  //      print('$e1');
-        final vList1 = rsg.getAEList(1, 1);
-        expect(e1.replace(vList1), equals(vList0));
-        expect(e1.values, equals(vList1));
-      }
-
-      final vList1 = rsg.getAEList(1, 1);
-      final e2 = new AEtag(PTag.kPerformedStationAETitle, vList1);
-      expect(e2.replace([]), equals(vList1));
-      expect(e2.values, equals(<String>[]));
-
-      final ae2 = new AEtag(PTag.kPerformedStationAETitle, vList1);
-      expect(ae2.replace(null), equals(vList1));
-      expect(ae2.values, equals(<String>[]));
-    });
-
-    test('AE fromBytes random', () {
-      for (var i = 0; i < 10; i++) {
-        final vList1 = rsg.getAEList(1, 1);
-        final bytes = Bytes.fromAsciiList(vList1);
-        log.debug('bytes:$bytes');
-        final e2 = AEtag.fromBytes(PTag.kPerformedStationAETitle, bytes);
-        log.debug('e2: ${e2.info}');
-        expect(e2.hasValidValues, true);
-      }
-    });
-
-    test('AE fromBytes good values', () {
-      for (var i = 0; i < 10; i++) {
-        final vList1 = rsg.getAEList(1, 10);
-        for (var listS in vList1) {
-          final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
-          final e2 = AEtag.fromBytes(PTag.kSelectorAEValue, bytes0);
-          log.debug('e2: ${e2.info}');
-          expect(e2.hasValidValues, true);
-        }
-      }
-    });
-
-    test('AE fromBytes bad values', () {
-      for (var i = 0; i < 10; i++) {
-        final vList1 = rsg.getAEList(1, 10);
-        for (var listS in vList1) {
-          global.throwOnError = false;
-          final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
-          final e2 = AEtag.fromBytes(PTag.kSelectorCSValue, bytes0);
-          expect(e2, isNull);
-
-          global.throwOnError = true;
-          expect(() => AEtag.fromBytes(PTag.kSelectorCSValue, bytes0),
-              throwsA(const TypeMatcher<InvalidTagError>()));
-        }
-      }
-    });
-
-    test('AE fromValues good values', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        final e0 = AEtag.fromValues(PTag.kPerformedStationAETitle, vList0);
-        log.debug('e0: ${e0.info}');
+        final vList0 = rng.uint32List(1, 1);
+        final e0 = new ULtag(PTag.kPixelComponentMask, vList0);
+        log.debug('e0: e0');
         expect(e0.hasValidValues, true);
 
-        final e1 =
-            AEtag.fromValues(PTag.kScheduledStudyLocationAETitle, <String>[]);
-        expect(e1.hasValidValues, true);
-        expect(e1.values, equals(<String>[]));
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: e0');
+        expect(e0[0], equals(vList0[0]));
+      }
+
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(3, 3);
+        final e0 = new ULtag(PTag.kGridDimensions, vList0);
+        log.debug('e0: e0');
+        expect(e0.hasValidValues, true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: e0');
+        expect(e0[0], equals(vList0[0]));
       }
     });
 
-    test('AE fromValues bad values', () {
+    test('UL hasValidValues bad values random', () {
       for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(2, 2);
-        global.throwOnError = false;
-        final e0 = AEtag.fromValues(PTag.kPerformedStationAETitle, vList0);
+        final vList0 = rng.uint32List(2, 3);
+        log.debug('$i: vList0: $vList0');
+        final e0 = new ULtag(PTag.kPixelComponentMask, vList0);
         expect(e0, isNull);
+      }
+    });
+
+    test('UL hasValidValues good values', () {
+      global.throwOnError = false;
+      final e0 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
+      final e1 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
+      expect(e0.hasValidValues, true);
+      expect(e1.hasValidValues, true);
+
+      final e2 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
+      final e3 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
+      expect(e2.hasValidValues, true);
+      expect(e3.hasValidValues, true);
+
+      global.throwOnError = false;
+      final e4 = new ULtag(PTag.kDataPointColumns, []);
+      expect(e4.hasValidValues, true);
+      log.debug('e4:e4');
+      expect(e4.values, equals(<int>[]));
+    });
+
+    test('UL hasValidValues bad values', () {
+      final e0 = new ULtag(PTag.kPixelComponentMask, uInt32MaxPlus);
+      expect(e0, isNull);
+
+      final e1 = new ULtag(PTag.kPixelComponentMask, uInt32MinMinus);
+      expect(e1, isNull);
+
+      final e2 = new ULtag(PTag.kPixelComponentMask, uInt32MinMax);
+      expect(e2, isNull);
+
+      final e3 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
+      final uint64List0 = rng.uint64List(1, 1);
+      e3.values = uint64List0;
+      expect(e3.hasValidValues, false);
+
+      global.throwOnError = true;
+      expect(() => e3.hasValidValues,
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      final e4 = new ULtag(PTag.kDataPointColumns, null);
+      log.debug('e4: $e4');
+      expect(e4.hasValidValues, true);
+      expect(e4.values, kEmptyUint32List);
+
+      global.throwOnError = true;
+      final e5 = new ULtag(PTag.kDataPointColumns, null);
+      log.debug('e5: $e5');
+      expect(e5.hasValidValues, true);
+      expect(e5.values, kEmptyUint32List);
+    });
+
+    test('UL update random', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(3, 4);
+        final e1 = new ULtag(PTag.kSimpleFrameList, vList0);
+        final vList1 = rng.uint32List(3, 4);
+        expect(e1.update(vList1).values, equals(vList1));
+      }
+    });
+
+    test('UL update', () {
+      final e0 = new ULtag(PTag.kPixelComponentMask, uInt32Min);
+      final e1 = new ULtag(PTag.kPixelComponentMask, uInt32Min);
+      final e2 = e0.update(uInt32Max);
+      final e3 = e1.update(uInt32Max);
+      expect(e0.values.first == e3.values.first, false);
+      expect(e0 == e3, false);
+      expect(e1 == e3, false);
+      expect(e2 == e3, true);
+
+      final e4 = new ULtag(PTag.kDataPointColumns, []);
+      expect(e4.update([76345748]).values, equals([76345748]));
+    });
+
+    test('UL noValues random', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.uint32List(3, 4);
+        final e1 = new ULtag(PTag.kSimpleFrameList, vList);
+        log.debug('e1: ${e1.noValues}');
+        expect(e1.noValues.values.isEmpty, true);
+      }
+    });
+
+    test('UL noValues', () {
+      final e0 = new ULtag(PTag.kDataPointColumns, []);
+      final ULtag ulNoValues = e0.noValues;
+      expect(ulNoValues.values.isEmpty, true);
+      log.debug('e0: ${e0.noValues}');
+
+      final e1 = new ULtag(PTag.kDataPointColumns, uInt32Max);
+      final ulNoValues0 = e1.noValues;
+      expect(ulNoValues0.values.isEmpty, true);
+      log.debug('e1:${e1.noValues}');
+    });
+
+    test('UL copy random', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.uint32List(3, 4);
+        final e2 = new ULtag(PTag.kSimpleFrameList, vList);
+        final ULtag e3 = e2.copy;
+        expect(e3 == e2, true);
+        expect(e3.hashCode == e2.hashCode, true);
+      }
+    });
+
+    test('UL copy', () {
+      final e0 = new ULtag(PTag.kDataPointColumns, []);
+      final ULtag e1 = e0.copy;
+      expect(e1 == e0, true);
+      expect(e1.hashCode == e0.hashCode, true);
+
+      final e2 = new ULtag(PTag.kDataPointColumns, uInt32Max);
+      final e3 = e2.copy;
+      expect(e2 == e3, true);
+      expect(e2.hashCode == e3.hashCode, true);
+    });
+
+    test('UL hashCode and == good values random', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+        final e0 = new ULtag(PTag.kDataPointColumns, vList0);
+        final e1 = new ULtag(PTag.kDataPointColumns, vList0);
+        log
+          ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
+          ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
+        expect(e0.hashCode == e1.hashCode, true);
+        expect(e0 == e1, true);
+      }
+    });
+    test('UL hashCode and == bad values random', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+        final e0 = new ULtag(PTag.kDataPointColumns, vList0);
+        final vList1 = rng.uint32List(1, 1);
+        final e2 = new ULtag(PTag.kNumberOfWaveformSamples, vList1);
+        log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
+        expect(e0.hashCode == e2.hashCode, false);
+        expect(e0 == e2, false);
+
+        final vList2 = rng.uint32List(3, 3);
+        final e3 = new ULtag(PTag.kGridDimensions, vList2);
+        log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
+        expect(e0.hashCode == e3.hashCode, false);
+        expect(e0 == e3, false);
+
+        final vList3 = rng.uint32List(1, 9);
+        final e4 = new ULtag(PTag.kReferencedSamplePositions, vList3);
+        log.debug('vList3:$vList3 , us4.hash_code:${e4.hashCode}');
+        expect(e0.hashCode == e4.hashCode, false);
+        expect(e0 == e4, false);
+
+        final vList4 = rng.uint32List(2, 3);
+        final e5 = new ULtag(PTag.kDataPointColumns, vList4);
+        log.debug('vList4:$vList4 , e5.hash_code:${e5.hashCode}');
+        expect(e0.hashCode == e5.hashCode, false);
+        expect(e0 == e5, false);
+      }
+    });
+
+    test('UL hashCode and == good values', () {
+      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      final e1 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+
+      log
+        ..debug('uInt32Max:$uInt32Max, e0.hash_code:${e0.hashCode}')
+        ..debug('uInt32Max:$uInt32Max, e1.hash_code:${e1.hashCode}');
+      expect(e0.hashCode == e1.hashCode, true);
+      expect(e0 == e1, true);
+    });
+
+    test('UL hashCode and == bad values', () {
+      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+
+      final e2 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Min);
+      log.debug('uInt32Min:$uInt32Min , e2.hash_code:${e2.hashCode}');
+      expect(e0.hashCode == e2.hashCode, false);
+      expect(e0 == e2, false);
+    });
+
+    test('UL fromBytes random', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+        final bytes0 = new Bytes.typedDataView(vList0);
+        final e0 = ULtag.fromBytes(bytes0, PTag.kNumberOfWaveformSamples);
+        expect(e0.hasValidValues, true);
+        expect(e0.vfBytes, equals(bytes0));
+        expect(e0.values is Uint32List, true);
+        expect(e0.values, equals(vList0));
+
+        // Test Base6
+        final s0 = bytes0.getBase64();
+        final bytes1 = Bytes.fromBase64(s0);
+        final e1 = ULtag.fromBytes(bytes1, PTag.kNumberOfWaveformSamples);
+        expect(e0 == e1, true);
+        expect(e0.value, equals(e1.value));
+
+        final vList2 = rng.uint32List(2, 2);
+        final bytes2 = new Bytes.typedDataView(vList2);
+        final e2 = ULtag.fromBytes(bytes2, PTag.kNumberOfWaveformSamples);
+        expect(e2, isNull);
+      }
+    });
+
+    test('UL fromBytes', () {
+      final vList = new Uint32List.fromList(uInt32Max);
+      final bytes = new Bytes.typedDataView(vList);
+      final e5 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples);
+      expect(e5.hasValidValues, true);
+      expect(e5.vfBytes, equals(bytes));
+      expect(e5.values is Uint32List, true);
+      expect(e5.values, equals(vList));
+    });
+
+    test('UL fromBytes good values', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.uint32List(1, 10);
+        final bytes0 = new Bytes.typedDataView(vList);
+        final e0 = ULtag.fromBytes(bytes0, PTag.kSelectorULValue);
+        log.debug('e0: e0');
+        expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('UL fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        global.throwOnError = false;
+        final vList = rng.uint32List(1, 10);
+        final bytes0 = Bytes.fromAscii(vList.toString());
+        final e0 = ULtag.fromBytes(bytes0, PTag.kSelectorFDValue);
+        expect(e0, isNull);
+
+        global.throwOnError = true;
+        expect(() => ULtag.fromBytes(bytes0, PTag.kSelectorFDValue),
+            throwsA(const isInstanceOf<InvalidTagError>()));
+      }
+    });
+
+    test('UL checkLength random', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.uint32List(1, 1);
+        final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList);
+        expect(e0.checkLength(e0.values), true);
+      }
+    });
+
+    test('UL checkLength', () {
+      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      expect(e0.checkLength(e0.values), true);
+    });
+
+    test('UL checkValues random', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+        final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList0);
+        expect(e0.checkValues(e0.values), true);
+      }
+    });
+
+    test('UL checkValues', () {
+      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      expect(e0.checkValues(e0.values), true);
+    });
+
+    test('UL valuesCopy random', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+        final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList0);
+        expect(vList0, equals(e0.valuesCopy));
+      }
+    });
+
+    test('UL valuesCopy', () {
+      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      expect(uInt32Max, equals(e0.valuesCopy));
+    });
+
+    test('UL replace random', () {
+      global.throwOnError = false;
+
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+        final bytes = new Bytes.typedDataView(vList0);
+        final e0 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples);
+        final vList1 = rng.uint32List(1, 1);
+        expect(e0.replace(vList1), equals(vList0));
+        expect(e0.values, equals(vList1));
+      }
+
+      final vList2 = rng.uint32List(1, 1);
+      final e2 = new ULtag(PTag.kNumberOfWaveformSamples, vList2);
+      expect(e2.replace(<int>[]), equals(vList2));
+      expect(e2.values, equals(<int>[]));
+
+      final e3 = new ULtag(PTag.kNumberOfWaveformSamples, vList2);
+      expect(e3.replace(null), equals(vList2));
+      expect(e3.values, equals(<int>[]));
+    });
+
+    test('UL BASE64 random', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.uint32List(1, 1);
+        final bytes0 = new Bytes.typedDataView(vList);
+        print('bytes: $bytes0');
+        final s = bytes0.getBase64();
+        print('s: "$s"');
+        final bytes1 = Bytes.fromBase64(s);
+        print('bytes: $bytes1');
+        final e0 = ULtag.fromBytes(bytes1, PTag.kNumberOfWaveformSamples);
+        print(e0);
+        expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('UL BASE64', () {
+      final vList = new Uint32List.fromList(uInt32Max);
+      final bytes = new Bytes.typedDataView(vList);
+
+      final s = bytes.getBase64();
+      final bytes1 = Bytes.fromBase64(s);
+      final e0 = ULtag.fromBytes(bytes1, PTag.kNumberOfWaveformSamples);
+      expect(e0.hasValidValues, true);
+    });
+
+    test('UL make good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.uint32List(1, 1);
+        final e0 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+
+        final e1 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, <int>[]);
+        expect(e1.hasValidValues, true);
+        expect(e1.values, equals(<int>[]));
+      }
+    });
+
+    test('UL make bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(2, 2);
+        global.throwOnError = false;
+        final make0 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, vList0);
+        expect(make0, isNull);
 
         global.throwOnError = true;
         expect(() => AEtag.fromValues(PTag.kPerformedStationAETitle, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
-
-      global.throwOnError = false;
-      final e2 =
-          AEtag.fromValues(PTag.kScheduledStudyLocationAETitle, <String>[null]);
-      log.debug('e2: $e2');
-      expect(e2, isNull);
-
-      global.throwOnError = true;
-      expect(
-          () => AEtag
-              .fromValues(PTag.kScheduledStudyLocationAETitle, <String>[null]),
-          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
-    test('AE checkLength good values', () {
-      final vList0 = rsg.getAEList(1, 1);
-      final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-      for (var s in goodAEList) {
-        expect(e1.checkLength(s), true);
-      }
-      final e2 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-      expect(e2.checkLength([]), true);
-    });
-
-    test('AE checkLength bad values', () {
-      final vList0 = rsg.getAEList(1, 1);
-      final vList1 = ['325435', '325434'];
-      final ae2 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-      expect(ae2.checkLength(vList1), false);
-    });
-
-    test('AE checkValue good values', () {
-      final vList0 = rsg.getAEList(1, 1);
-      final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-      for (var s in goodAEList) {
-        for (var a in s) {
-          expect(e1.checkValue(a), true);
-        }
+    test('UL fromBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+//        final vList1 = new Uint32List.fromList(vList0);
+//        final vList11 = vList1.buffer.asUint8List();
+        final bytes = new Bytes.typedDataView(vList0);
+        final e0 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples);
+        expect(e0.hasValidValues, true);
+        expect(e0.vfBytes, equals(bytes));
+        expect(e0.values is Uint32List, true);
+        expect(e0.values, equals(vList0));
       }
     });
 
-    test('AE checkValue bad values', () {
-      final vList0 = rsg.getAEList(1, 1);
-      final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-      for (var s in badAEList) {
-        for (var a in s) {
-          global.throwOnError = false;
-          expect(e1.checkValue(a), false);
+    test('UL fromB64', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+//        final vList1 = new Uint32List.fromList(vList0);
+//        final vList11 = vList1.buffer.asUint8List();
+        //       final base64 = cvt.base64.encode(vList11);
+        final bytes = new Bytes.typedDataView(vList0);
+        final e0 = ULtag.fromBytes(bytes, PTag.kNumberOfWaveformSamples);
+        expect(e0.hasValidValues, true);
+      }
+    });
 
-          global.throwOnError = true;
-          expect(() => e1.checkValue(a),
-              throwsA(const TypeMatcher<StringError>()));
-        }
+    test('UL checkValue good values', () {
+      final vList0 = rng.uint32List(1, 1);
+      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList0);
+
+      expect(e0.checkValue(uInt32Max[0]), true);
+      expect(e0.checkValue(uInt32Min[0]), true);
+    });
+
+    test('UL checkValue good values', () {
+      final vList0 = rng.uint32List(1, 1);
+      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList0);
+      expect(e0.checkValue(uInt32MaxPlus[0]), false);
+      expect(e0.checkValue(uInt32MinMinus[0]), false);
+    });
+
+    test('UL view', () {
+      final vList = rng.uint32List(10, 10);
+      final e0 = new ULtag(PTag.kSelectorULValue, vList);
+      for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
+        final e1 = e0.view(j, vList.length - i);
+        log.debug('ol0: ${e0.values}, ol1: ${e1.values}, '
+            'vList0.sublist(i) : ${vList.sublist(i)}');
+        expect(e1.values, equals(vList.sublist(i)));
+      }
+
+      final bytes = new Bytes.typedDataView(vList);
+      final e2 = ULtag.fromBytes(bytes, PTag.kSelectorULValue);
+      for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
+        final e3 = e2.view(j, vList.length - i);
+        log.debug('e: ${e0.values}, at1: ${e3.values}, '
+            'vList.sublist(i) : ${vList.sublist(i)}');
+        expect(e3.values, equals(vList.sublist(i)));
       }
     });
   });
 
-  group('AE ', () {
-    const badAELengthList = const <String>[
-      'mrZeo|^P> -6{t,mrZeo|^P> -6{t,mrZeo|^P> -6{td9E8tO'
-    ];
+  group('UL Element', () {
     //VM.k1
-    const aeVM1Tags = const <PTag>[
-      PTag.kNetworkID,
-      PTag.kPerformedStationAETitle,
-      PTag.kRequestingAE,
-      PTag.kOriginator,
-      PTag.kDestinationAE,
+    const ulVM1Tags = const <PTag>[
+      PTag.kMRDRDirectoryRecordOffset,
+      PTag.kNumberOfReferences,
+      PTag.kLengthToEnd,
+      PTag.kTriggerSamplePosition,
+      PTag.kRegionFlags,
+      PTag.kPulseRepetitionFrequency,
+      PTag.kDopplerSampleVolumeXPositionRetired,
+      PTag.kDopplerSampleVolumeYPositionRetired,
+      PTag.kTMLinePositionX0Retired,
+      PTag.kTMLinePositionY0Retired,
+      PTag.kTMLinePositionX1Retired,
+      PTag.kTMLinePositionY1Retired,
+      PTag.kPixelComponentMask,
+      PTag.kNumberOfTableEntries,
+      PTag.kSpectroscopyAcquisitionPhaseRows,
+      PTag.kASLBolusCutoffDelayTime,
+      PTag.kDataPointRows,
+      PTag.kDataPointColumns,
+      PTag.kNumberOfWaveformSamples,
+      PTag.kNumberOfSurfacePoints,
+      PTag.kGroup4Length,
+      PTag.kGroup8Length,
+      PTag.kGroup10Length,
+      PTag.kGroup12Length
+    ];
+
+    //VM.k3
+    const ulVM3Tags = const <PTag>[
+      PTag.kGridDimensions,
     ];
 
     //VM.k1_n
-    const aeVM1_nTags = const <PTag>[
-      PTag.kRetrieveAETitle,
-      PTag.kScheduledStudyLocationAETitle,
-      PTag.kScheduledStationAETitle,
-      PTag.kSelectorAEValue,
+    const ulVM1_nTags = const <PTag>[
+      PTag.kSimpleFrameList,
+      PTag.kReferencedSamplePositions,
+      PTag.kRationalDenominatorValue,
+      PTag.kReferencedContentItemIdentifier,
+      PTag.kHistogramData,
+      PTag.kSelectorULValue,
     ];
+
     const otherTags = const <PTag>[
       PTag.kColumnAngulationPatient,
-      PTag.kAcquisitionProtocolDescription,
+      PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
       PTag.kCTPositionSequence,
       PTag.kAcquisitionType,
-      PTag.kICCProfile,
+      PTag.kPerformedStationAETitle,
       PTag.kSelectorSTValue,
       PTag.kDate,
       PTag.kTime
     ];
 
-    final invalidVList = rsg.getAEList(AE.kMaxLength + 1, AE.kMaxLength + 1);
+    final invalidVList = rng.uint32List(UL.kMaxLength + 1, UL.kMaxLength + 1);
 
-    test('AE isValidTag good values', () {
-      global.throwOnError = false;
-      expect(AE.isValidTag(PTag.kSelectorAEValue), true);
-
-      for (var tag in aeVM1Tags) {
-        final validT0 = AE.isValidTag(tag);
-        expect(validT0, true);
+    test('UL isValidLength VM.k1 good values', () {
+      for (var i = 0; i < 10; i++) {
+        global.throwOnError = false;
+        final vList = rng.uint32List(1, 1);
+        for (var tag in ulVM1Tags) {
+          expect(UL.isValidLength(tag, vList), true);
+          expect(UL.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
+          expect(UL.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
+        }
       }
     });
 
-    test('AE isValidTag bad values', () {
+    test('UL isValidLength VM.k1 bad values', () {
+      for (var i = 1; i < 10; i++) {
+        global.throwOnError = false;
+        final vList = rng.uint32List(2, i + 1);
+        for (var tag in ulVM1Tags) {
+          global.throwOnError = false;
+          expect(UL.isValidLength(tag, vList), false);
+          expect(UL.isValidLength(tag, invalidVList), false);
+
+          global.throwOnError = true;
+          expect(() => UL.isValidLength(tag, vList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
+          expect(() => UL.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
+        }
+      }
       global.throwOnError = false;
-      expect(AE.isValidTag(PTag.kSelectorFDValue), false);
+      final vList0 = rng.uint32List(1, 1);
+      expect(UL.isValidLength(null, vList0), false);
+
+      expect(UL.isValidLength(PTag.kRegionFlags, null), isNull);
+
       global.throwOnError = true;
-      expect(() => AE.isValidTag(PTag.kSelectorFDValue),
+      expect(() => UL.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => UL.isValidLength(PTag.kRegionFlags, null),
+          throwsA(const isInstanceOf<GeneralError>()));
+    });
+
+    test('UL isValidLength VM.k3 good values', () {
+      global.throwOnError = false;
+
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.uint32List(3, 3);
+        for (var tag in ulVM3Tags) {
+          expect(UL.isValidLength(tag, vList), true);
+          expect(SS.isValidLength(tag, invalidVList.take(tag.vmMax)), false);
+          expect(SS.isValidLength(tag, invalidVList.take(tag.vmMin)), false);
+        }
+      }
+    });
+
+    test('UL isValidLength VM.k3 bad values', () {
+      for (var i = 3; i < 10; i++) {
+        final vList = rng.uint32List(4, i + 1);
+        for (var tag in ulVM3Tags) {
+          global.throwOnError = false;
+          expect(UL.isValidLength(tag, vList), false);
+          expect(UL.isValidLength(tag, invalidVList), false);
+
+          global.throwOnError = true;
+          expect(() => UL.isValidLength(tag, vList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
+          expect(() => UL.isValidLength(tag, invalidVList),
+              throwsA(const isInstanceOf<InvalidValuesError>()));
+        }
+      }
+    });
+
+    test('UL isValidLength VM.k1_n good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.uint32List(1, i);
+        for (var tag in ulVM1_nTags) {
+          expect(UL.isValidLength(tag, vList), true);
+
+          expect(UL.isValidLength(tag, invalidVList.sublist(0, UL.kMaxLength)),
+              true);
+        }
+      }
+    });
+
+    test('UL isValidTag good values', () {
+      global.throwOnError = false;
+      expect(UL.isValidTag(PTag.kSelectorULValue), true);
+
+      for (var tag in ulVM1Tags) {
+        expect(UL.isValidTag(tag), true);
+      }
+    });
+
+    test('UL isValidTag bad values', () {
+      global.throwOnError = false;
+      expect(UL.isValidTag(PTag.kSelectorUSValue), false);
+
+      global.throwOnError = true;
+      expect(() => UL.isValidTag(PTag.kSelectorUSValue),
           throwsA(const TypeMatcher<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        final validT0 = AE.isValidTag(tag);
-        expect(validT0, false);
+        expect(UL.isValidTag(tag), false);
 
         global.throwOnError = true;
-        expect(() => AE.isValidTag(tag),
+        expect(() => UL.isValidTag(tag),
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
+
+    test('UL isValidTag good values', () {
+      global.throwOnError = false;
+      expect(UL.isValidTag(PTag.kSelectorULValue), true);
+
+      for (var tag in ulVM1Tags) {
+        expect(UL.isValidTag(tag), true);
+      }
+    });
+
+    test('UL isValidTag bad values', () {
+      global.throwOnError = false;
+      expect(UL.isValidTag(PTag.kSelectorUSValue), false);
+
+      global.throwOnError = true;
+      expect(() => UL.isValidTag(PTag.kSelectorUSValue),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      for (var tag in otherTags) {
+        global.throwOnError = false;
+        expect(UL.isValidTag(tag), false);
+
+        global.throwOnError = true;
+        expect(() => UL.isValidTag(tag),
+            throwsA(const TypeMatcher<InvalidTagError>()));
+      }
+    });
+    
 /*
-
-    test('AE checkVRIndex good values', () {
+    test('UL checkVR good values', () {
       global.throwOnError = false;
-      expect(AE.checkVRIndex(kAEIndex), kAEIndex);
+      expect(UL.checkVRIndex(kULIndex), kULIndex);
 
-      for (var tag in aeTags0) {
+      for (var tag in ulTags0) {
         global.throwOnError = false;
-        expect(AE.checkVRIndex(tag.vrIndex), tag.vrIndex);
+        expect(UL.checkVRIndex(tag.vrIndex), tag.vrIndex);
       }
     });
 
-    test('AE checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(
-          AE.checkVRIndex(
-            kSSIndex,
-          ),
-          isNull);
+    test('UL checkVR bad values', () {
+      expect(UL.checkVRIndex(kAEIndex), isNull);
       global.throwOnError = true;
-      expect(() => AE.checkVRIndex(kSSIndex),
+      expect(() => UL.checkVRIndex(kAEIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(AE.checkVRIndex(tag.vrIndex), isNull);
+        expect(UL.checkVRIndex(tag.vrIndex), isNull);
 
         global.throwOnError = true;
-        expect(() => AE.checkVRIndex(tag.vrIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('AE checkVRCode good values', () {
-      global.throwOnError = false;
-      expect(AE.checkVRCode(kAECode), kAECode);
-
-      for (var tag in aeTags0) {
-        global.throwOnError = false;
-        expect(AE.checkVRCode(tag.vrCode), tag.vrCode);
-      }
-    });
-
-    test('AE checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(
-          AE.checkVRCode(
-            kSSCode,
-          ),
-          isNull);
-      global.throwOnError = true;
-      expect(() => AE.checkVRCode(kSSCode),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(AE.checkVRCode(tag.vrCode), isNull);
-
-        global.throwOnError = true;
-        expect(() => AE.checkVRCode(tag.vrCode),
+        expect(() => UL.checkVRIndex(kAEIndex),
             throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 */
 
-    test('AE isValidVRIndex good values', () {
+    test('UL isValidVRIndex good values', () {
       global.throwOnError = false;
-      expect(AE.isValidVRIndex(kAEIndex), true);
+      expect(UL.isValidVRIndex(kULIndex), true);
 
-      for (var tag in aeVM1Tags) {
+      for (var tag in ulVM1Tags) {
         global.throwOnError = false;
-        expect(AE.isValidVRIndex(tag.vrIndex), true);
+        expect(UL.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
-    test('AE isValidVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(AE.isValidVRIndex(kCSIndex), false);
+    test('UL isValidVRIndex bad values', () {
+      expect(UL.isValidVRIndex(kCSIndex), false);
 
       global.throwOnError = true;
-      expect(() => AE.isValidVRIndex(kCSIndex),
+      expect(() => UL.isValidVRIndex(kCSIndex),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(AE.isValidVRIndex(tag.vrIndex), false);
+        expect(UL.isValidVRIndex(tag.vrIndex), false);
 
         global.throwOnError = true;
-        expect(() => AE.isValidVRIndex(tag.vrIndex),
+        expect(() => UL.isValidVRIndex(tag.vrIndex),
             throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
-    test('AE isValidVRCode good values', () {
+    test('UL isValidVRCode good values', () {
       global.throwOnError = false;
-      expect(AE.isValidVRCode(kAECode), true);
+      expect(UL.isValidVRCode(kULCode), true);
 
-      for (var tag in aeVM1Tags) {
-        expect(AE.isValidVRCode(tag.vrCode), true);
+      for (var tag in ulVM1Tags) {
+        expect(UL.isValidVRCode(tag.vrCode), true);
       }
     });
 
-    test('AE isValidVRCode bad values', () {
-      global.throwOnError = false;
-      expect(AE.isValidVRCode(kSSCode), false);
+    test('UL isValidVRCode good values', () {
+      expect(UL.isValidVRCode(kAECode), false);
 
       global.throwOnError = true;
-      expect(() => AE.isValidVRCode(kSSCode),
+      expect(() => UL.isValidVRCode(kAECode),
           throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(AE.isValidVRCode(tag.vrCode), false);
+        expect(UL.isValidVRCode(tag.vrCode), false);
 
         global.throwOnError = true;
-        expect(() => AE.isValidVRCode(tag.vrCode),
+        expect(() => UL.isValidVRCode(tag.vrCode),
             throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
-    test('AE isValidVFLength good values', () {
-      expect(AE.isValidVFLength(AE.kMaxVFLength), true);
-      expect(AE.isValidVFLength(0), true);
+    test('UL isValidVFLength good values', () {
+      expect(UL.isValidVFLength(UL.kMaxVFLength), true);
+      expect(UL.isValidVFLength(0), true);
+
+      expect(UL.isValidVFLength(UL.kMaxVFLength, null, PTag.kSelectorULValue),
+          true);
     });
 
-    test('AE isValidVFLength bad values', () {
-      expect(AE.isValidVFLength(AE.kMaxVFLength + 1), false);
-      expect(AE.isValidVFLength(-1), false);
-    });
-
-    test('AE isValidValueLength good values', () {
-      for (var s in goodAEList) {
-        for (var a in s) {
-          expect(AE.isValidValueLength(a), true);
-        }
-      }
-      expect(AE.isValidValueLength('&t&wSB)~PIA!UIDX'), true);
-      expect(AE.isValidValueLength(''), true);
-    });
-
-    test('AE isValidValueLength bad values', () {
+    test('UL isValidVFLength bad values', () {
       global.throwOnError = false;
-      for (var s in badAELengthList) {
-        expect(AE.isValidValueLength(s), false);
-      }
-
-      expect(
-          AE.isValidValueLength(
-              '&t&wSB)~PIA!UIDX }d!zD2N3 2fz={@^mHL:/"qzD2N3 2fzLzgGEH6bTY&N}JzD2N3 2fz'),
-          false);
+      expect(UL.isValidVFLength(UL.kMaxVFLength + 1), false);
+      expect(UL.isValidVFLength(-1), false);
     });
 
-    test('AE isValidLength VM.k1 good values', () {
-      global.throwOnError = false;
-      for (var i = 0; i < 10; i++) {
-        final vList = rsg.getAEList(1, 1);
-        for (var tag in aeVM1Tags) {
-          expect(AE.isValidLength(tag, vList), true);
-
-          expect(AE.isValidLength(tag, invalidVList.take(tag.vmMax)), true);
-          expect(AE.isValidLength(tag, invalidVList.take(tag.vmMin)), true);
-        }
-      }
+    test('UL isValidValue good values', () {
+      expect(UL.isValidValue(UL.kMinValue), true);
+      expect(UL.isValidValue(UL.kMaxValue), true);
     });
 
-    test('AE isValidLength VM.k1 bad values', () {
-      for (var i = 1; i < 10; i++) {
-        final vList = rsg.getAEList(2, i + 1);
-        for (var tag in aeVM1Tags) {
-          global.throwOnError = false;
-          expect(AE.isValidLength(tag, vList), false);
+    test('UL isValidValue bad values', () {
+      expect(UL.isValidValue(UL.kMinValue - 1), false);
+      expect(UL.isValidValue(UL.kMaxValue + 1), false);
+    });
 
-          expect(AE.isValidLength(tag, invalidVList), false);
-
-          global.throwOnError = true;
-          expect(() => AE.isValidLength(tag, vList),
-              throwsA(const TypeMatcher<InvalidValuesError>()));
-        }
-      }
+    test('UL isValidValues good values', () {
       global.throwOnError = false;
-      final vList0 = rsg.getLOList(1, 1);
-      expect(AE.isValidLength(null, vList0), false);
+      const uInt32MinMax = const [kUint32Min, kUint32Max, kUint16Max];
+      const uInt32Min = const [kUint32Min];
+      const uInt32Max = const [kUint32Max];
 
-      expect(AE.isValidLength(PTag.kSelectorAEValue, null), isNull);
+      //VM.k1
+      expect(UL.isValidValues(PTag.kLengthToEnd, uInt32Min), true);
+      expect(UL.isValidValues(PTag.kLengthToEnd, uInt32Max), true);
+
+      //VM.k3
+      expect(UL.isValidValues(PTag.kGridDimensions, uInt32MinMax), true);
+
+      //VM.k1_n
+      expect(UL.isValidValues(PTag.kSelectorULValue, uInt32MinMax), true);
+      expect(UL.isValidValues(PTag.kSelectorULValue, uInt32Max), true);
+      expect(UL.isValidValues(PTag.kSelectorULValue, uInt32Min), true);
+    });
+
+    test('UL isValidValues bad values', () {
+      global.throwOnError = false;
+      const uInt32MaxPlus = const [kUint32Max + 1];
+      const uInt32MinMinus = const [kUint32Min - 1];
+
+      //VM.k1
+      expect(UL.isValidValues(PTag.kLengthToEnd, uInt32MaxPlus), false);
+      expect(UL.isValidValues(PTag.kLengthToEnd, uInt32MinMinus), false);
+
+      //VM.k3
+      expect(UL.isValidValues(PTag.kGridDimensions, uInt32MaxPlus), false);
 
       global.throwOnError = true;
-      expect(() => AE.isValidLength(null, vList0),
-          throwsA(const TypeMatcher<InvalidTagError>()));
+      expect(() => UL.isValidValues(PTag.kLengthToEnd, uInt32MaxPlus),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
+      expect(() => UL.isValidValues(PTag.kLengthToEnd, uInt32MinMinus),
+          throwsA(const isInstanceOf<InvalidValuesError>()));
 
-      expect(() => AE.isValidLength(PTag.kSelectorAEValue, null),
-          throwsA(const TypeMatcher<GeneralError>()));
-    });
-
-    test('AE isValidLength VM.k1_n good values', () {
       global.throwOnError = false;
-      for (var i = 1; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, i);
-        final validMaxLengthList = invalidVList.sublist(0, AE.kMaxLength);
-        for (var tag in aeVM1_nTags) {
-          log.debug('tag: $tag');
-          expect(AE.isValidLength(tag, vList0), true);
-          expect(AE.isValidLength(tag, validMaxLengthList), true);
-        }
-      }
+      expect(UL.isValidValues(PTag.kLengthToEnd, null), false);
     });
 
-    test('AE isValidValue good values', () {
-      for (var s in goodAEList) {
-        for (var a in s) {
-          expect(AE.isValidValue(a), true);
-        }
-      }
-    });
-
-    test('AE isValidValue bad values', () {
-      for (var s in badAEList) {
-        for (var a in s) {
-          global.throwOnError = false;
-          expect(AE.isValidValue(a), false);
-
-          global.throwOnError = true;
-          expect(() => AE.isValidValue(a),
-              throwsA(const TypeMatcher<StringError>()));
-        }
-      }
-    });
-
-    test('AE isValidValues good values', () {
+    test('UL isValidValues bad values length', () {
       global.throwOnError = false;
-      for (var s in goodAEList) {
-        expect(AE.isValidValues(PTag.kReceivingAE, s), true);
-      }
-    });
+      const uInt32MinMax = const [kUint32Min, kUint32Max, kUint16Max];
+      const uInt32MinMaxPlus = const [
+        kUint32Min,
+        kUint32Max,
+        kUint16Max,
+        kUint16Min
+      ];
 
-    test('AE isValidValues bad values', () {
-      for (var s in badAEList) {
-        global.throwOnError = false;
-        expect(AE.isValidValues(PTag.kReceivingAE, s), false);
+      const uInt32Min = const [kUint32Min];
+      const uInt32Max = const [kUint32Max];
 
-        global.throwOnError = true;
-        expect(() => AE.isValidValues(PTag.kReceivingAE, s),
-            throwsA(const TypeMatcher<StringError>()));
-      }
-    });
+      //VM.k1
+      expect(UL.isValidValues(PTag.kLengthToEnd, uInt32MinMax), false);
 
-    test('AE fromBytes', () {
-      //  system.level = Level.info;;
-      final vList1 = rsg.getAEList(1, 1);
-      final bytes = Bytes.fromAsciiList(vList1);
-      log.debug('bytes.getAsciiList(): ${bytes.getAsciiList()}, bytes: $bytes');
-      expect(bytes.getAsciiList(), equals(vList1));
-    });
-
-    test('AE Bytes.fromAsciiList', () {
-      final vList = rsg.getAEList(1, 1);
-      final bytes = Bytes.fromAsciiList(vList);
-      log.debug('Bytes.fromAsciiList(vList1): $bytes');
-
-      if (vList[0].length.isOdd) vList[0] = '${vList[0]} ';
-      log.debug('vList1:"$vList"');
-      final values = cvt.ascii.encode(vList[0]);
-      expect(Bytes.fromAsciiList(vList), equals(values));
-    });
-
-    test('AE isValidValues good values', () {
-      global.throwOnError = false;
-      for (var i = 0; i <= 10; i++) {
-        final vList = rsg.getAEList(1, 1);
-        expect(AE.isValidValues(PTag.kReceivingAE, vList), true);
-      }
-
-      final vList0 = ['KEZ5HZZZR2'];
-      expect(AE.isValidValues(PTag.kReceivingAE, vList0), true);
-
-      for (var s in goodAEList) {
-        global.throwOnError = false;
-        expect(AE.isValidValues(PTag.kReceivingAE, s), true);
-      }
-    });
-
-    test('AE isValidValues bad values', () {
-      global.throwOnError = false;
-      final vList1 = ['a\\4'];
-      expect(AE.isValidValues(PTag.kReceivingAE, vList1), false);
+      //VM.k3
+      expect(UL.isValidValues(PTag.kGridDimensions, uInt32Min), false);
+      expect(UL.isValidValues(PTag.kGridDimensions, uInt32Max), false);
+      expect(UL.isValidValues(PTag.kGridDimensions, uInt32MinMaxPlus), false);
 
       global.throwOnError = true;
-      expect(() => AE.isValidValues(PTag.kReceivingAE, vList1),
-          throwsA(const TypeMatcher<StringError>()));
-
-      for (var s in badAEList) {
-        global.throwOnError = false;
-        expect(AE.isValidValues(PTag.kReceivingAE, s), false);
-
-        global.throwOnError = true;
-        expect(() => AE.isValidValues(PTag.kReceivingAE, s),
-            throwsA(const TypeMatcher<StringError>()));
-      }
-    });
-
-    test('AE fromAsciiList', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = Bytes.fromAsciiList(vList0);
-        final tbd1 = Bytes.fromAsciiList(vList0);
-        log.debug('tbd0: ${tbd0.buffer.asUint8List()}, '
-            'values: $values ,tbd1: ${tbd1.buffer.asUint8List()}');
-        expect(tbd0.buffer.asUint8List(), equals(values));
-        expect(tbd0.buffer == tbd1.buffer, false);
-      }
-      for (var s in goodAEList) {
-        for (var a in s) {
-          final values = cvt.ascii.encode(a);
-          final tbd2 = Bytes.fromAsciiList(s);
-          final tbd3 = Bytes.fromAsciiList(s);
-          expect(tbd2.buffer.asUint8List(), equals(values));
-          expect(tbd2.buffer == tbd3.buffer, false);
-        }
-      }
-    });
-
-    test('AE getAsciiList', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 1);
-        global.throwOnError = false;
-        final bd0 = Bytes.fromAsciiList(vList0);
-        final fbd0 = bd0.getAsciiList();
-        log.debug('fbd0: $fbd0, vList0: $vList0');
-        expect(fbd0, equals(vList0));
-      }
-      for (var s in goodAEList) {
-        final bd0 = Bytes.fromAsciiList(s);
-        final fbd0 = bd0.getAsciiList();
-        expect(fbd0, equals(s));
-      }
-    });
-
-    test('AE fromAsciiList', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rsg.getAEList(1, 10);
-        global.throwOnError = false;
-        final toB0 = Bytes.fromAsciiList(vList0, kMaxShortVF);
-        final bytes0 = Bytes.fromAscii(vList0.join('\\'));
-        log.debug('toBytes:$toB0, bytes0: $bytes0');
-        expect(toB0, equals(bytes0));
-      }
-
-      for (var s in goodAEList) {
-        final toB1 = Bytes.fromAsciiList(s, kMaxShortVF);
-        final bytes1 = Bytes.fromAscii(s.join('\\'));
-        log.debug('toBytes:$toB1, bytes1: $bytes1');
-        expect(toB1, equals(bytes1));
-      }
-
-      global.throwOnError = false;
-      final toB2 = Bytes.fromAsciiList([''], kMaxShortVF);
-      expect(toB2, equals(<String>[]));
-
-      final toB3 = Bytes.fromAsciiList([], kMaxShortVF);
-      expect(toB3, equals(<String>[]));
-
-      final toB4 = Bytes.fromAsciiList(null, kMaxShortVF);
-      expect(toB4, isNull);
-
-      global.throwOnError = true;
-      expect(() => Bytes.fromAsciiList(null, kMaxShortVF),
-          throwsA(const TypeMatcher<GeneralError>()));
+      expect(() => UL.isValidValues(PTag.kLengthToEnd, uInt32MinMax),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
+      expect(() => UL.isValidValues(PTag.kGridDimensions, uInt32Min),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
+      expect(() => UL.isValidValues(PTag.kGridDimensions, uInt32MinMaxPlus),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
   });
 }

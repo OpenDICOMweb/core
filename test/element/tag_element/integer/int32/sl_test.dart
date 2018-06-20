@@ -540,6 +540,13 @@ void main() {
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      expect(
+          SL.isValidLength(PTag.kDopplerSampleVolumeXPosition, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => SL.isValidLength(PTag.kDopplerSampleVolumeXPosition, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('SL isValidLength VM.k2 good values', () {
@@ -678,31 +685,6 @@ void main() {
       }
     });
 
-    test('SL isValidVR good values', () {
-      global.throwOnError = false;
-      expect(SL.isValidVRIndex(kSLIndex), true);
-
-      for (var tag in slVM1Tags) {
-        global.throwOnError = false;
-        expect(SL.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('SL isValidVR bad values', () {
-      expect(SL.isValidVRIndex(kAEIndex), false);
-      global.throwOnError = true;
-      expect(() => SL.isValidVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(SL.isValidVRIndex(tag.vrIndex), false);
-
-        global.throwOnError = true;
-        expect(() => SL.isValidVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
 /*
 
     test('SL checkVR good values', () {
@@ -783,6 +765,9 @@ void main() {
       log.debug('max % 4: ${kMaxShortVF % 4}');
       expect(SL.isValidVFLength(SL.kMaxVFLength), true);
       expect(SL.isValidVFLength(0), true);
+
+      expect(SL.isValidVFLength(SL.kMaxVFLength, null, PTag.kSelectorSLValue),
+          true);
     });
 
     test('SL isValidVFLength bad values', () {
@@ -840,6 +825,9 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
       expect(() => SL.isValidValues(PTag.kReferencePixelX0, int32MinMinus),
           throwsA(const TypeMatcher<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      expect(SL.isValidValues(PTag.kReferencePixelX0, null), false);
     });
 
     test('SL isValidValues bad values length', () {
@@ -866,7 +854,7 @@ void main() {
       expect(() => SL.isValidValues(PTag.kReferencePixelX0, int32MinMax),
           throwsA(const TypeMatcher<InvalidValuesError>()));
       expect(
-          () =>
+              () =>
               SL.isValidValues(PTag.kDisplayedAreaTopLeftHandCorner, int32Max),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });

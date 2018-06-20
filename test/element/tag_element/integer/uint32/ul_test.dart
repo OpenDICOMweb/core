@@ -554,6 +554,18 @@ void main() {
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      final vList0 = rng.uint32List(1, 1);
+      expect(UL.isValidLength(null, vList0), false);
+
+      expect(UL.isValidLength(PTag.kRegionFlags, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => UL.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => UL.isValidLength(PTag.kRegionFlags, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('UL isValidLength VM.k3 good values', () {
@@ -651,32 +663,7 @@ void main() {
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
-
-    test('UL isValidVR good values', () {
-      global.throwOnError = false;
-      expect(UL.isValidVRIndex(kULIndex), true);
-
-      for (var tag in ulVM1Tags) {
-        global.throwOnError = false;
-        expect(UL.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('UL isValidVR bad values', () {
-      expect(UL.isValidVRIndex(kAEIndex), false);
-      global.throwOnError = true;
-      expect(() => UL.isValidVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(UL.isValidVRIndex(tag.vrIndex), false);
-
-        global.throwOnError = true;
-        expect(() => UL.isValidVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
+    
 /*
 
     test('UL checkVR good values', () {
@@ -760,6 +747,9 @@ void main() {
     test('UL isValidVFLength good values', () {
       expect(UL.isValidVFLength(UL.kMaxVFLength), true);
       expect(UL.isValidVFLength(0), true);
+
+      expect(UL.isValidVFLength(UL.kMaxVFLength, null, PTag.kSelectorULValue),
+          true);
     });
 
     test('UL isValidVFLength bad values', () {
@@ -814,6 +804,9 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
       expect(() => UL.isValidValues(PTag.kLengthToEnd, uInt32MinMinus),
           throwsA(const TypeMatcher<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      expect(UL.isValidValues(PTag.kLengthToEnd, null), false);
     });
 
     test('UL isValidValues bad values length', () {
