@@ -23,6 +23,17 @@ void main() {
   global.throwOnError = false;
   global.doTestElementValidity = false;
 
+  List<double> invalidVList;
+
+  setUp(() {
+    invalidVList = rng.float32List(FL.kMaxLength + 1, FL.kMaxLength + 1);
+  });
+
+  tearDown(() {
+    // remove garbage!
+    invalidVList = [];
+  });
+
   const goodFloatList = const <double>[
     1.1,
     1.11,
@@ -249,9 +260,9 @@ void main() {
     test('FL hashCode and == good values ', () {
       global.throwOnError = false;
       final e0 =
-      new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
+          new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
       final e1 =
-      new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
+          new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
       log
         ..debug('listFloat32Common0:$goodFloat32List, e0 .hash_code:${e0
             .hashCode}')
@@ -264,7 +275,7 @@ void main() {
     test('FL hashCode and == bad values ', () {
       global.throwOnError = false;
       final e0 =
-      new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
+          new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
 
       final fl2 = new FLtag(
           PTag.kRecommendedDisplayFrameRateInFloat, goodFloat32List.take(1));
@@ -274,14 +285,14 @@ void main() {
       expect(e0 == fl2, false);
 
       final fl3 =
-      new FLtag(PTag.kCornealVertexLocation, goodFloat32List.take(2));
+          new FLtag(PTag.kCornealVertexLocation, goodFloat32List.take(2));
       log.debug('listFloat32Common0:$goodFloat32List , fl3.hash_code:${fl3
           .hashCode}');
       expect(e0.hashCode == fl3.hashCode, false);
       expect(e0 == fl3, false);
 
       final fl4 =
-      new FLtag(PTag.kCornealPointLocation, goodFloat32List.take(3));
+          new FLtag(PTag.kCornealPointLocation, goodFloat32List.take(3));
       log.debug('listFloat32Common0:$goodFloat32List , fl4.hash_code:${fl4
           .hashCode}');
       expect(e0.hashCode == fl4.hashCode, false);
@@ -374,7 +385,7 @@ void main() {
         expect(e.hasValidValues, true);
 
         final make1 =
-        FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, <double>[]);
+            FLtag.fromValues(PTag.kAbsoluteChannelDisplayScale, <double>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<double>[]));
       }
@@ -392,23 +403,6 @@ void main() {
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
-
-/*
-    test('FL fromBase64', () {
-      final fString = Float32.toBase64(<double>[78678.11]);
-      final e0  = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, fString);
-      expect(e0 .hasValidValues, true);
-
-      for (var i = 0; i < 10; i++) {
-        final vList = rng.float32List(1, 1);
-        final float32List0 = new Float32List.fromList(vList);
-        final uInt8List0 = float32List0.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8List0);
-        final e1 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, base64);
-        expect(e1.hasValidValues, true);
-      }
-    });
-*/
 
     test('Create Elements from floating values(FL)', () {
       const f32Values = const <double>[2047.99, 2437.437, 764.53];
@@ -493,7 +487,6 @@ void main() {
       PTag.kDate,
       PTag.kTime
     ];
-    final invalidVList = rng.float32List(FL.kMaxLength + 1, FL.kMaxLength + 1);
 
     test('FL isValidTag good values', () {
       global.throwOnError = false;
@@ -837,7 +830,7 @@ void main() {
 
       global.throwOnError = true;
       expect(
-              () => FL.isValidValues(PTag.kExaminedBodyThickness, goodFloat32List),
+          () => FL.isValidValues(PTag.kExaminedBodyThickness, goodFloat32List),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       expect(() => FL.isValidValues(null, goodFloat32List),

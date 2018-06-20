@@ -19,6 +19,17 @@ void main() {
   List<double> float32List;
   global.throwOnError = false;
 
+  List<double> invalidVList;
+
+  setUp(() {
+    invalidVList = rng.float32List(FL.kMaxLength + 1, FL.kMaxLength + 1);
+  });
+
+  tearDown(() {
+    // remove garbage!
+    invalidVList = [];
+  });
+
   const goodFloatList = const <double>[
     1.1,
     1.11,
@@ -519,7 +530,9 @@ void main() {
       PTag.kDate,
       PTag.kTime
     ];
-    final invalidVList = rng.float32List(FL.kMaxLength + 1, FL.kMaxLength + 1);
+
+  // Urgent: moved to setUp
+  // final invalidVList = rng.float32List(FL.kMaxLength + 1, FL.kMaxLength + 1);
 
     test('FL isValidTag good values', () {
       global.throwOnError = false;

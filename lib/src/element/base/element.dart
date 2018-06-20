@@ -255,7 +255,6 @@ abstract class Element<V> extends ListBase<V> {
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************
 
-/*
   /// The Value Length field value, that is, the 32-bit [int]
   /// contained in the Value Field of _this_. If the returned value
   /// is 0xFFFFFFFF ([kUndefinedLength]), it means the length of
@@ -265,7 +264,10 @@ abstract class Element<V> extends ListBase<V> {
   /// and UN Elements (and in Item [Dataset]s). _This method MUST
   /// be overridden for those elements.
   int get vfLengthField => vfLength;
-*/
+
+  /// Returns _true_ if [vfLengthField] == [kUndefinedLength].
+  bool get hadULength => vfLengthField == kUndefinedLength;
+
 
   /// Returns _false_ for all Elements except SQ, OB, OW, and UN.
   /// Items are also allowed to have undefined length.

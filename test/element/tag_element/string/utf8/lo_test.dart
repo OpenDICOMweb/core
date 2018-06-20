@@ -26,6 +26,7 @@ void main() {
     const <String>[' fr<(Kf_d=wS'],
     const <String>['&t&wSB)~P']
   ];
+
   const badLOList = const <List<String>>[
     const <String>['\b'], //	Backspace
     const <String>['\t '], //horizontal tab (HT)

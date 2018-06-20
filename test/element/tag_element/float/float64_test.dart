@@ -17,6 +17,17 @@ void main() {
   Server.initialize(name: 'element/float64_test', level: Level.info);
   final rng = new RNG(1);
 
+  List<double> invalidVList;
+
+  setUp(() {
+    invalidVList = rng.float64List(FL.kMaxLength + 1, FL.kMaxLength + 1);
+  });
+
+  tearDown(() {
+    // remove garbage!
+    invalidVList = [];
+  });
+
   const float64GoodList = const <double>[
     0.1,
     1.2,
@@ -555,7 +566,8 @@ void main() {
       PTag.kTime
     ];
 
-    final invalidVList = rng.float32List(FD.kMaxLength + 1, FD.kMaxLength + 1);
+  // Urgent: moved to setUp above - also shouldn't this be rng.float64List?
+  // final invalidVList = rng.float32List(FD.kMaxLength + 1, FD.kMaxLength + 1);
 
     test('FD isValidTag good values', () {
       global.throwOnError = false;

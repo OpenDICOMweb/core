@@ -11,7 +11,7 @@ import 'package:core/server.dart';
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize();
+  Server.initialize(level: Level.info);
   final s = hex8(0xff);
   log.debug('s: "$s"');
 
@@ -20,7 +20,7 @@ void main() {
     test('To Radix String', () {
       final s = hex8(0xff);
       log.debug('s: "$s"');
-      expect(s == '0xff', true);
+      expect(s == 'ff', true);
     });
 
   });

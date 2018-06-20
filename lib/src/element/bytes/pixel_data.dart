@@ -10,15 +10,6 @@ part of odw.sdk.element.bytes;
 
 /// PixelDataMixin class
 abstract class BytePixelData implements PixelData {
-  /// The Value Length field value, that is, the 32-bit [int]
-  /// contained in the Value Field of _this_. If the returned value
-  /// is 0xFFFFFFFF ([kUndefinedLength]), it means the length of
-  /// the Value Field was undefined.
-  ///
-  /// _Note_: [kUndefinedLength] may only appear in VRs of OB, OW, SQ,
-  /// and UN Elements (and in Item [Dataset]s). _This method MUST
-  /// be overridden for those elements.
-  int get vfLengthField;
   VFFragments get fragments;
 
   // **** End Interface
@@ -27,11 +18,6 @@ abstract class BytePixelData implements PixelData {
   @override
   Uint32List get offsets =>
       (fragments == null) ? kEmptyUint32List : fragments.offsets;
-
-  /// _true_ if this [Element] had an undefined length token in the
-  /// Value Length field. It may only be true for OB, OW, SQ, and
-  /// UN Elements.
-  bool get hadULength => vfLengthField == kUndefinedLength;
 }
 
 
