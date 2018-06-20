@@ -507,6 +507,18 @@ void main() {
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      final vList0 = rng.uint32List(1, 1);
+      expect(AT.isValidLength(null, vList0), false);
+
+      expect(AT.isValidLength(PTag.kRegionFlags, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => AT.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => AT.isValidLength(PTag.kSelectorAttribute, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('AT isValidLength VM.k1_n good values', () {
@@ -577,32 +589,6 @@ void main() {
       }
     });
 
-    test('AT isValidVR good values', () {
-      global.throwOnError = false;
-      expect(AT.isValidVRIndex(kATIndex), true);
-
-      for (var tag in atVM1Tags) {
-        global.throwOnError = false;
-        expect(AT.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('AT isValidVR bad values', () {
-      global.throwOnError = false;
-      expect(AT.isValidVRIndex(kAEIndex), false);
-      global.throwOnError = true;
-      expect(() => AT.isValidVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(AT.isValidVRIndex(tag.vrIndex), false);
-
-        global.throwOnError = true;
-        expect(() => AT.isValidVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
 /*
 
     test('AT checkVR good values', () {
@@ -690,6 +676,9 @@ void main() {
     test('AT isValidVFLength good values', () {
       expect(AT.isValidVFLength(AT.kMaxVFLength), true);
       expect(AT.isValidVFLength(0), true);
+
+      expect(AT.isValidVFLength(AT.kMaxVFLength, null, PTag.kSelectorATValue),
+          true);
     });
 
     test('AT isValidVFLength bad values', () {
@@ -738,6 +727,10 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
       expect(() => AT.isValidValues(PTag.kSelectorAttribute, uInt32MinMinus),
           throwsA(const TypeMatcher<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      expect(AT.isValidValues(PTag.kSelectorAttribute, null), false);
+
     });
 
     test('AT isValidValues bad values length', () {

@@ -286,7 +286,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint16List(1, 10);
-        final bytes0 = new  Bytes.typedDataView(vList);
+        final bytes0 = new Bytes.typedDataView(vList);
         final e0 = UStag.fromBytes(bytes0, PTag.kSelectorUSValue);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
@@ -348,7 +348,7 @@ void main() {
         expect(make0.hasValidValues, true);
 
         final make1 =
-            UStag.fromValues(PTag.kRepresentativeFrameNumber, <int>[]);
+        UStag.fromValues(PTag.kRepresentativeFrameNumber, <int>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<int>[]));
       }
@@ -528,6 +528,12 @@ void main() {
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      expect(US.isValidLength(PTag.kFileSetConsistencyFlag, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => US.isValidLength(PTag.kFileSetConsistencyFlag, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('US isValidLength VM.k2 good values', () {
@@ -693,32 +699,6 @@ void main() {
       }
     });
 
-    test('US isValidVR good values', () {
-      global.throwOnError = false;
-      expect(US.isValidVRIndex(kUSIndex), true);
-
-      for (var tag in usVM1Tags) {
-        global.throwOnError = false;
-        expect(US.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('US isValidVR bad values', () {
-      global.throwOnError = false;
-      expect(US.isValidVRIndex(kAEIndex), false);
-      global.throwOnError = true;
-      expect(() => US.isValidVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(US.isValidVRIndex(tag.vrIndex), false);
-
-        global.throwOnError = true;
-        expect(() => US.isValidVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
 /*
 
     test('US checkVR VM.k1 good values', () {
@@ -827,6 +807,9 @@ void main() {
     test('US isValidVFLength good values', () {
       expect(US.isValidVFLength(US.kMaxVFLength), true);
       expect(US.isValidVFLength(0), true);
+
+      expect(US.isValidVFLength(US.kMaxVFLength, null, PTag.kSelectorUSValue),
+          true);
     });
 
     test('US isValidVFLength bad values', () {
@@ -905,6 +888,9 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
       expect(() => US.isValidValues(PTag.kWarningReason, uInt16MinMinus),
           throwsA(const TypeMatcher<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      expect(US.isValidValues(PTag.kWarningReason, null), false);
     });
 
     test('US isValidValues bad values length', () {

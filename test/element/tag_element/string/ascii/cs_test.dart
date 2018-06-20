@@ -286,7 +286,7 @@ void main() {
         expect(e0.hasValidValues, true);
 
         final e1 =
-            CStag.fromValues(PTag.kGeometryOfKSpaceTraversal, <String>[]);
+        CStag.fromValues(PTag.kGeometryOfKSpaceTraversal, <String>[]);
         expect(e1.hasValidValues, true);
         expect(e1.values, equals(<String>[]));
       }
@@ -306,13 +306,13 @@ void main() {
 
       global.throwOnError = false;
       final e1 =
-          CStag.fromValues(PTag.kGeometryOfKSpaceTraversal, <String>[null]);
+      CStag.fromValues(PTag.kGeometryOfKSpaceTraversal, <String>[null]);
       log.debug('e1: $e1');
       expect(e1, isNull);
 
       global.throwOnError = true;
       expect(
-          () => CStag
+              () => CStag
               .fromValues(PTag.kScheduledStudyLocationAETitle, <String>[null]),
           throwsA(const TypeMatcher<InvalidTagError>()));
     });
@@ -562,6 +562,9 @@ void main() {
     test('CS sValidVFLength good values', () {
       expect(CS.isValidVFLength(CS.kMaxVFLength), true);
       expect(CS.isValidVFLength(0), true);
+
+      expect(CS.isValidVFLength(CS.kMaxVFLength, null, PTag.kSelectorCSValue),
+          true);
     });
 
     test('CS sValidVFLength bad values', () {
@@ -616,6 +619,18 @@ void main() {
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      final vList0 = rsg.getCSList(1, 1);
+      expect(CS.isValidLength(null, vList0), false);
+
+      expect(CS.isValidLength(PTag.kSelectorUCValue, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => CS.isValidLength(null, vList0),
+          throwsA(const isInstanceOf<InvalidTagError>()));
+
+      expect(() => CS.isValidLength(PTag.kSelectorUCValue, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('CS isValidVListLength VM.k2 good values', () {
