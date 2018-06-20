@@ -86,9 +86,9 @@ bool invalidTimeString(String message, [Issues issues]) {
 Null badTimeZoneString(String message, [Issues issues]) =>
     badString('InvalidTimeZoneStringError: $message');
 
-Null invalidTimeZoneString(String message, [Issues issues]) {
+bool invalidTimeZoneString(String message, [Issues issues]) {
   badTimeZoneString(message, issues);
-  return null;
+  return false;
 }
 
 Null badDateTimeString(String message, [Issues issues]) =>
