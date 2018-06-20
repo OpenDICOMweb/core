@@ -116,7 +116,7 @@ void main() {
       global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
       expect(() => item.delete(sl0.code, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('deleteAll', () {
@@ -498,7 +498,7 @@ void main() {
       final vList3 = [123];
       //expect(map.replace(as0.index, vList3), equals(vList2));
       expect(() => item.replace(as0.index, vList3, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('replaceF', () {
@@ -515,7 +515,7 @@ void main() {
       final vList2 = ['024Y'];
       final as0 = new AStag(PTag.kPatientAge, vList2);
       expect(() => item.replaceF<String>(as0.index, (n) => n, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('replaceAll', () {
@@ -592,7 +592,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => item.getUid(ui1.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
 
       global.throwOnError = false;
       final uid2 = item.getUid(as0.index);
@@ -600,7 +600,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => item.getUid(as0.index),
-          throwsA(const isInstanceOf<InvalidElementError>()));
+          throwsA(const TypeMatcher<InvalidElementError>()));
     });
 
     test('getValue', () {
@@ -626,7 +626,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('getValues', () {
@@ -652,7 +652,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('updateAll(string)', () {

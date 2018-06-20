@@ -43,14 +43,14 @@ void main() {
       global.throwOnError = true;
 
       expect(() => new LOtag(pcTag0, [name0, 'FOO']),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       const name1 = 'Bad Offset';
       final pcTag1 = PCTag.make(0x00090100, kLOIndex, name1);
       log.debug('pcTag1: ${pcTag1.info}');
       expect(pcTag1.isValid, false);
       expect(() => new LOtag(pcTag0, [name1, null]),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       const name2 = 'Bad Offset';
       final pcTag2 = PCTag.make(0x00090000, kLOIndex, name2);
@@ -63,7 +63,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => new LOtag(pcTag1, [name2, '']),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       const name3 = 'Bad Tag';
       final pcTag3 = PCTag.make(0x00090000, kLOIndex, name3);
@@ -76,7 +76,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => new LOtag(pcTag3, [name3, '']),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('Valid Known Private Creator ', () {

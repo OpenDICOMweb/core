@@ -36,11 +36,11 @@ void main() {
 
       global.throwOnError = true;
       expect(() => rootDS0.update(ui0.tag.index, <Uid>[], required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
       expect(
           () => rootDS0.update(ui0.tag.index, <String>['1.804.35.0.89'],
               required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('updateUid', () {
@@ -203,7 +203,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => rootDS0.updateUidList(ui0.index, uiList0, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
 
       global.throwOnError = false;
       rootDS0.add(ui0);
@@ -229,7 +229,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => rootDS0.updateUidList(ae0.index, aeList0),
-          throwsA(const isInstanceOf<InvalidElementError>()));
+          throwsA(const TypeMatcher<InvalidElementError>()));
     });
 
     test('replaceValues', () {
@@ -248,7 +248,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => rootDS0.replaceValues(st0.index, stList0),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
   });
 }

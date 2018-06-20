@@ -91,7 +91,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => ageToString(999999942341299999),
-          throwsA(equals(const isInstanceOf<DateTimeError>())));
+          throwsA(equals(const TypeMatcher<DateTimeError>())));
     });
   });
 }

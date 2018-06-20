@@ -291,7 +291,7 @@ void main() {
       final as0 = new AStag(PTag.kPatientAge, vList2);
       final vList3 = [123];
       expect(() => item.replace(as0.index, vList3, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('replaceAll', () {
@@ -400,7 +400,7 @@ void main() {
       global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
       expect(() => item.delete(sl0.code, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('noValues', () {
@@ -485,7 +485,7 @@ void main() {
       global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
       expect(() => item.delete(sl0.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('deleteAll', () {
@@ -593,7 +593,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('getValues', () {
@@ -619,7 +619,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => item.getValues<double>(fd0.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('hasElementsInRange', () {

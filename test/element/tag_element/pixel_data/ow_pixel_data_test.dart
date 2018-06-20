@@ -63,7 +63,7 @@ void main() {
       expect(
           () => new OWtagPixelData(
               PTag.kVariableNextDataGroup, pixels0, pixels0.length),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
 */
       final s = Sha256.uint16(pixels0);
@@ -135,7 +135,7 @@ void main() {
       expect(
           () => OWtagPixelData.fromBytes(
               bytes1, PTag.kVariableNextDataGroup, bytes1.length),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 */
 
       final s = Sha256.uint16(pixels0);
@@ -229,7 +229,7 @@ void main() {
 
       //Uint8List pixels2 = ds.getPixelData();
       expect(
-          ds1.getPixelData, throwsA(const isInstanceOf<InvalidValuesError>()));
+          ds1.getPixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       //Missing Pixel Data
@@ -244,7 +244,7 @@ void main() {
         ..add(ba3);
       global.throwOnError = true;
       expect(
-          ds2.getPixelData, throwsA(const isInstanceOf<PixelDataNotPresent>()));
+          ds2.getPixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
     });
 
 /*
@@ -259,7 +259,7 @@ void main() {
       expect(
           () => OWtagPixelData.fromBase64(
               PTag.kVariableNextDataGroup, base64, base64.length),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       expect(ow0.tag == true);
       expect(ow1.tag == PTag.kCoefficientsSDVN, true);
@@ -336,7 +336,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => OWtagPixelData.fromValues(PTag.kSelectorSTValue, pixels0),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 */
 
       final s = Sha256.uint16(pixels0);
@@ -415,7 +415,7 @@ void main() {
       expect(
           () => OWtagPixelData.fromBytes(
               u8Frame, PTag.kSelectorSTValue, u8Frame.length),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 */
 
     });
@@ -495,7 +495,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => Uint16.toBytes(uInt32Max),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('Create OW.decodeJsonVF', () {

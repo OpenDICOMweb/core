@@ -52,7 +52,7 @@ void main() {
       log.debug('pI0: $pI0');
       expect(pI0, equals(a));
     }
-    expect(() => parseInt(''), throwsA(const isInstanceOf<FormatException>()));
+    expect(() => parseInt(''), throwsA(const TypeMatcher<FormatException>()));
   });
 
   test('parseUnitRadix', () {
@@ -100,6 +100,6 @@ void main() {
       expect(pI0, true);
     }
     expect(() => isValidIntString(''),
-        throwsA(const isInstanceOf<FormatException>()));
+        throwsA(const TypeMatcher<FormatException>()));
   });
 }

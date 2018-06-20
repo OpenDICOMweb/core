@@ -150,6 +150,6 @@ void main() {
             pixelRepresentation0,
             planarConfiguration0,
             pixelAspectRatio: pixelAspectRatio0),
-        throwsA(const isInstanceOf<InvalidFrameDescriptorError>()));
+        throwsA(const TypeMatcher<InvalidFrameDescriptorError>()));
   });
 }

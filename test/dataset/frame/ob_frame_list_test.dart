@@ -243,7 +243,7 @@ void main() {
       global.throwOnError = true;
       log.debug('nFrames: $nFrames0');
       expect(() => new FrameList1Bit(pixels3, nFrames0, ob1FDc),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Pixels [== 0]
       const nFrames1 = 1;
@@ -269,7 +269,7 @@ void main() {
         ..debug('nFrames: $nFrames1');
 
       expect(() => new FrameList1Bit(pixels4, nFrames1, ob1FDd),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor data
       const nFrames2 = 2;
@@ -297,7 +297,7 @@ void main() {
         ..debug('pixelSize bytes: ${ob1FDe.pixelSizeInBytes}');
 
       expect(() => new FrameList1Bit(pixels5, nFrames2, ob1FDe),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
     test('Create Uncompressed FrameList1Bit (FrameDescriptor.fromDataset)', () {
@@ -483,7 +483,7 @@ void main() {
         }
       }
       log.debug('nFrames0: $nFrames0, Frames in FrameList: ${ob1FLb.nFrames}');
-      expect(() => ob1FLb[nFrames0], throwsA(const isInstanceOf<RangeError>()));
+      expect(() => ob1FLb[nFrames0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 
@@ -715,7 +715,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => new FrameList8Bit(pixels0, nFrames0, ob8FDc),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       //Invalid Pixels [== 0]
       const nFrames1 = 1;
@@ -741,7 +741,7 @@ void main() {
         ..debug('pixelSize bits: ${ob8FDd.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ob8FDd.pixelSizeInBytes}');
       expect(() => new FrameList8Bit(pixels1, nFrames1, ob8FDd),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       const nFrames2 = 2;
       const photometricInterpretation3 = 'MONOCHROME3';
@@ -767,7 +767,7 @@ void main() {
         ..debug('pixelSize bits: ${ob8FDe.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ob8FDe.pixelSizeInBytes}');
       expect(() => new FrameList8Bit(pixels2, nFrames2, ob8FDe),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
     test('Create Uncompressed FrameList8Bit (FrameDescriptor.fromDataset)', () {
@@ -945,7 +945,7 @@ void main() {
       }
 
       log.debug('nFrames0: $nFrames0, Frames in FrameList: ${ob8e.nFrames}');
-      expect(() => ob8e[nFrames0], throwsA(const isInstanceOf<RangeError>()));
+      expect(() => ob8e[nFrames0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 
@@ -1153,7 +1153,7 @@ void main() {
       log.debug('nFrames: $nFrames0');
       expect(
           () => new CompressedFrameList(bulkdata0, offsets0, nFrames0, c8FDc),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid offsets and bulkdata
       const nFrames1 = 1;
@@ -1177,7 +1177,7 @@ void main() {
 
       log..debug('offSets: $offSets')..debug('bulkData: $bulkData');
       expect(() => new CompressedFrameList(bulkData, offSets, nFrames1, c8FDd),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor data
       const photometricInterpretation2 = 'MONOCHROME3';
@@ -1201,14 +1201,14 @@ void main() {
 
       expect(
           () => new CompressedFrameList(bulkdata2, offsets2, nFrames2, c8FDe),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Offsets
       final offSets3 = new Uint32List.fromList([0, 2, 4, 3, 8, 9, 10]);
       final bulkdata = new Uint8List(10);
       log.debug('offSets3: $offSets3');
       expect(() => new CompressedFrameList(bulkdata, offSets3, nFrames1, c8FDe),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
     test('CompressedFrameList.fromVFFragments', () {
@@ -1405,7 +1405,7 @@ void main() {
       expect(
           () => new CompressedFrameList.fromVFFragments(
               vfFragments0, nFrames0, cFDb),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid offset
       const nFrames1 = 1;
@@ -1433,7 +1433,7 @@ void main() {
       expect(
           () => new CompressedFrameList.fromVFFragments(
               vfFragments1, nFrames1, cFDc),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
       const nFrames2 = 1;
@@ -1461,7 +1461,7 @@ void main() {
       expect(
           () => new CompressedFrameList.fromVFFragments(
               vfFragments2, nFrames2, cFDd),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
     test('CompressedFrameList operator []', () {
@@ -1517,7 +1517,7 @@ void main() {
       }
 
       log.debug('nFrames0: $nFrames0, Frames in FrameList: ${c8c.nFrames}');
-      expect(() => c8c[nFrames0], throwsA(const isInstanceOf<RangeError>()));
+      expect(() => c8c[nFrames0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 }

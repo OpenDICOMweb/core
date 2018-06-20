@@ -195,7 +195,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => sq.lookup(od.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('Test for lookupAll', () {
@@ -233,7 +233,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => sq.lookupAll(od.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
   });
 
@@ -285,7 +285,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => SQ.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -294,7 +294,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => SQ.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -312,7 +312,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => SQ.isValidVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -320,7 +320,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => SQ.isValidVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -339,14 +339,14 @@ void main() {
 
       global.throwOnError = true;
       expect(() => SQ.isValidVRCode(kAECode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
       for (var tag in otherTags) {
         global.throwOnError = false;
         expect(SQ.isValidVRCode(tag.vrCode), false);
 
         global.throwOnError = true;
         expect(() => SQ.isValidVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -369,7 +369,7 @@ void main() {
           isNull);
       global.throwOnError = true;
       expect(() => SQ.checkVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -377,7 +377,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => SQ.checkVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -400,7 +400,7 @@ void main() {
           isNull);
       global.throwOnError = true;
       expect(() => SQ.checkVRCode(kAECode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -408,7 +408,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => SQ.checkVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 

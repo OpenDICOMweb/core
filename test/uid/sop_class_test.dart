@@ -57,14 +57,14 @@ void main() {
     test('parse InvalidUidStringError', () {
       for (var s in badUids) {
         expect(() => Uid.parse(s, onError: null),
-            throwsA(const isInstanceOf<InvalidUidError>()));
+            throwsA(const TypeMatcher<InvalidUidError>()));
       }
     });
     test('parseList InvalidUidStringError', () {
       global.throwOnError = true;
 
       expect(() => Uid.parseList(badUids, onError: null),
-          throwsA(const isInstanceOf<InvalidUidError>()));
+          throwsA(const TypeMatcher<InvalidUidError>()));
     });
   });
 

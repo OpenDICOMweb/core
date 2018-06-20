@@ -84,7 +84,7 @@ void main() {
       global.throwOnError = true;
       final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
       expect(() => rds.delete(sl0.code, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('deleteAll', () {
@@ -430,7 +430,7 @@ void main() {
       final vList3 = [123];
       //expect(map.replace(as0.index, vList3), equals(vList2));
       expect(() => rds.replace(as0.index, vList3, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('replaceAll', () {
@@ -527,7 +527,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => rds.getValues<double>(fd0.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('getValues', () {
@@ -553,7 +553,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => rds.getValues<double>(fd0.index, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('hasElementsInRange', () {

@@ -266,7 +266,7 @@ void main() {
       rds.add(ae0);
       log.debug('rds: $rds');
       expect(() => rds.add(ae0),
-          throwsA(const isInstanceOf<DuplicateElementError>()));
+          throwsA(const TypeMatcher<DuplicateElementError>()));
 
       try {
         rds.add(ae0);
@@ -280,17 +280,17 @@ void main() {
       global.throwOnError = true;
       // Adding same element twice
       expect(() => rds.add(ae0),
-          throwsA(const isInstanceOf<DuplicateElementError>()));
+          throwsA(const TypeMatcher<DuplicateElementError>()));
       expect(rds[ae0.code] == ae0, true);
 
       // Adding element with same [id]
       expect(() => rds.add(ae2),
-          throwsA(const isInstanceOf<DuplicateElementError>()));
+          throwsA(const TypeMatcher<DuplicateElementError>()));
       expect(rds[ae2.code] == ae0, true);
 
       // Adding Invalid element
       expect(() => rds.add(ae1),
-          throwsA(const isInstanceOf<DuplicateElementError>()));
+          throwsA(const TypeMatcher<DuplicateElementError>()));
       expect(rds[ae1.code] == ae0, true);
 
       global.throwOnError = false;
@@ -358,22 +358,22 @@ void main() {
       expect(
           () =>
               rootDS.update(kQueryRetrieveLevel, stringDSList1, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
 
       expect(
           () =>
               rootDS.update(kQueryRetrieveLevel, stringDSList1, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
 
       expect(
           () => rootDS.update(kCompoundGraphicInstanceID, stringDSList1,
               required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
 
       expect(
           () => rootDS.update(kCompoundGraphicInstanceID, stringDSList1,
               required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('listsEqual', () {
@@ -417,7 +417,7 @@ void main() {
       expect(ob0, isNull);
       global.throwOnError = true;
       expect(() => new OBtag(PTag.kICCProfile, [123, 345]),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       final ob = new OBtag(PTag.kICCProfile, [123, 255]);
 
@@ -486,10 +486,10 @@ void main() {
       global.throwOnError = true;
 
       expect(() => rds.add(un1),
-          throwsA(const isInstanceOf<DuplicateElementError>()));
+          throwsA(const TypeMatcher<DuplicateElementError>()));
       rds.add(aeOB0);
       expect(() => rds.add(aeOW1),
-          throwsA(const isInstanceOf<DuplicateElementError>()));
+          throwsA(const TypeMatcher<DuplicateElementError>()));
 
       rds.allowDuplicates = true;
       expect(rds.tryAdd(un1), false);
@@ -531,16 +531,16 @@ void main() {
 
       //string type VR
       expect(() => rootDS0.getIntList(kPerformedLocation),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
 
       //float type VR
       expect(() => rootDS0.getIntList(kAbsoluteChannelDisplayScale),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
 
       expect(
           () => rootDS0.getIntList(kDisplayedAreaBottomRightHandCorner,
               required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
 
       global.throwOnError = false;
       log.debug('global.throwOnError:${global.throwOnError}');
@@ -581,15 +581,15 @@ void main() {
       expect(
           () => rootDS0.getInt(kDisplayedAreaBottomRightHandCorner,
               required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
 
       //string type VR
       expect(() => rootDS0.getInt(kDetectorDescription),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
 
       //float type VR
       expect(() => rootDS0.getInt(kAbsoluteChannelDisplayScale),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
     });
 
     test('getStringList', () {
@@ -619,14 +619,14 @@ void main() {
       log.debug('global.throwOnError:${global.throwOnError}');
       //integer type VR
       expect(() => rootDS0.getStringList(kTagAngleSecondAxis),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
 
       //float type VR
       expect(() => rootDS0.getStringList(kAbsoluteChannelDisplayScale),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
 
       expect(() => rootDS0.getStringList(kDisplayedAreaTopLeftHandCorner),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
     });
 
     test('getString', () {
@@ -650,15 +650,15 @@ void main() {
       log.debug('global.throwOnError:${global.throwOnError}');
       //string type VR : with VM more than 1
       expect(() => rootDS0.getString(kImagerPixelSpacing, required: true),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       //integer type VR
       expect(() => rootDS0.getString(kTagAngleSecondAxis),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
 
       //float type VR
       expect(() => rootDS0.getString(kAbsoluteChannelDisplayScale),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
 
       global.throwOnError = false;
       log.debug('global.throwOnError:${global.throwOnError}');
@@ -687,11 +687,11 @@ void main() {
       log.debug('global.throwOnError:${global.throwOnError}');
       //integer type VR
       expect(() => rootDS0.getFloatList(kReferencePixelX0),
-          throwsA(const isInstanceOf<InvalidElementError>()));
+          throwsA(const TypeMatcher<InvalidElementError>()));
 
       //string type VR
       expect(() => rootDS0.getFloatList(kStudyDate),
-          throwsA(const isInstanceOf<InvalidElementError>()));
+          throwsA(const TypeMatcher<InvalidElementError>()));
     });
 
     test('getFloat', () {
@@ -718,15 +718,15 @@ void main() {
       global.throwOnError = true;
       //string type VR : with VM more than 1
       expect(() => rootDS0.getFloat(kAnatomicStructureReferencePoint),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       //integer type VR
       expect(() => rootDS0.getFloat(kReferencePixelX0),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
 
       //string type VR
       expect(() => rootDS0.getFloat(kStudyDate),
-          throwsA(const isInstanceOf<InvalidTagTypeError>()));
+          throwsA(const TypeMatcher<InvalidTagTypeError>()));
     });
 
     test('getItem', () {
@@ -768,7 +768,7 @@ void main() {
       expect(
           () =>
               rootDS0.getItem(kAnatomicStructureReferencePoint, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('getItemList', () {
@@ -809,7 +809,7 @@ void main() {
       expect(
           () => rootDS0.getItemList(kAnatomicStructureReferencePoint,
               required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('getUid', () {
@@ -824,7 +824,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => rootDS0.getUid(kFalseNegativesQuantity, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('getUidList', () {
@@ -841,7 +841,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => rootDS0.getUidList(kFalseNegativesQuantity, required: true),
-          throwsA(const isInstanceOf<ElementNotPresentError>()));
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('normalizeDate', () {
@@ -891,7 +891,7 @@ void main() {
       expect(rootDS0[lo0.code] == lo0, true);
       //   rootDS0[lo0.code] = lo0;
       expect(() => rootDS0.add(lo0),
-          throwsA(const isInstanceOf<DuplicateElementError>()));
+          throwsA(const TypeMatcher<DuplicateElementError>()));
 
       rootDS0.allowDuplicates = true;
       expect((rootDS0[lo0.code] = lo0) == lo0, true);
@@ -929,7 +929,7 @@ void main() {
       //adding duplicates
       rootDS0.allowDuplicates = false;
       expect(() => rootDS0.add(ob1),
-          throwsA(const isInstanceOf<DuplicateElementError>()));
+          throwsA(const TypeMatcher<DuplicateElementError>()));
 
       rootDS0.allowDuplicates = true;
       expect(rootDS0.tryAdd(ob1), false);

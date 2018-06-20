@@ -240,7 +240,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => new FrameList32Bit(pixels0, nFrames0, ol32FDc),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Pixels
       const nFrames1 = 1;
@@ -266,7 +266,7 @@ void main() {
         ..debug('pixelSize bits: ${ol32FDd.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ol32FDd.pixelSizeInBytes}');
       expect(() => new FrameList32Bit(pixels1, nFrames1, ol32FDd),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
       const nFrames2 = 5;
@@ -292,7 +292,7 @@ void main() {
         ..debug('pixelSize bits: ${ol32FDe.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ol32FDe.pixelSizeInBytes}');
       expect(() => new FrameList32Bit(pixels2, nFrames2, ol32FDe),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
     test('Create FrameList32Bit Uncompressed fromDataset', () {
@@ -482,7 +482,7 @@ void main() {
       }
       log.debug('nFrames0: $nFrames0, Frames in FrameList: ${ol32FLc.nFrames}');
       expect(
-          () => ol32FLc[nFrames0], throwsA(const isInstanceOf<RangeError>()));
+          () => ol32FLc[nFrames0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 }

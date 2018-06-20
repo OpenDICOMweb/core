@@ -178,7 +178,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => VR.isValidIndex(AE.kVRIndex, null, 12),
-        throwsA(const isInstanceOf<InvalidVRError>()));
+        throwsA(const TypeMatcher<InvalidVRError>()));
   });
 
   test('VR isValidSpecialIndex', () {
@@ -194,7 +194,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => VR.isValidSpecialIndex(kAEIndex, null, 12),
-        throwsA(const isInstanceOf<InvalidVRError>()));
+        throwsA(const TypeMatcher<InvalidVRError>()));
   });
 
   test('VR isValidCode', () {
@@ -230,7 +230,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => VR.isValidCode(AE.kVRCode, null, 12),
-        throwsA(const isInstanceOf<InvalidVRError>()));
+        throwsA(const TypeMatcher<InvalidVRError>()));
   });
 
   test('VR isValidSpecialCode', () {
@@ -246,6 +246,6 @@ void main() {
 
     global.throwOnError = true;
     expect(() => VR.isValidSpecialCode(kAECode, null, 12),
-        throwsA(const isInstanceOf<InvalidVRError>()));
+        throwsA(const TypeMatcher<InvalidVRError>()));
   });
 }

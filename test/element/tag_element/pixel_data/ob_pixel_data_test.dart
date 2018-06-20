@@ -63,7 +63,7 @@ void main() {
       expect(
           () => new OBtagPixelData(
               PTag.kVariableNextDataGroup, pixels1, pixels1.length),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 */
 
       final s = Sha256.uint8(pixels);
@@ -271,7 +271,7 @@ void main() {
       expect(
           () => OBtagPixelData.fromBytes(
               frame, PTag.kVariableNextDataGroup, ts),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 */
     });
 
@@ -326,7 +326,7 @@ void main() {
       ds1.add(ba2);
       //Uint8List pixels2 = ds.getPixelData();
       expect(
-          ds1.getPixelData, throwsA(const isInstanceOf<InvalidValuesError>()));
+          ds1.getPixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
 
       //Missing Pixel Data
 //      final pd1 = new OBtagPixelData(PTag.kOverlayData, [123, 101], 3);
@@ -335,7 +335,7 @@ void main() {
         //..add(pd1)
         ..add(ba3);
       expect(
-          ds2.getPixelData, throwsA(const isInstanceOf<PixelDataNotPresent>()));
+          ds2.getPixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
     });
 
     test('OBtagPixelData.fromValues', () {
@@ -379,7 +379,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => OBtagPixelData.fromValues(PTag.kSelectorSTValue, pixels),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       global.throwOnError = false;
       final ob3 = OBtagPixelData.fromValues(PTag.kPrivateInformation, pixels);
@@ -460,7 +460,7 @@ void main() {
       expect(
           () => OBtagPixelData.fromBytes(
               frame, PTag.kSelectorSTValue),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 */
 
       final s = Sha256.uint8(frame);
@@ -526,7 +526,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => Uint8.toBytes(uInt16Max),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('Create Uint8Base.fromBase64', () {

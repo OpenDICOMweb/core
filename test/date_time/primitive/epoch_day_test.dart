@@ -362,19 +362,19 @@ void main() {
       global.throwOnError = true;
       // bad year
       expect(() => dateToEpochMicroseconds(kMinYear - 1, 13, 12),
-          throwsA(equals(const isInstanceOf<DateTimeError>())));
+          throwsA(equals(const TypeMatcher<DateTimeError>())));
 
       // bad year
       expect(() => dateToEpochMicroseconds(kMaxYear + 1, 13, 12),
-          throwsA(equals(const isInstanceOf<DateTimeError>())));
+          throwsA(equals(const TypeMatcher<DateTimeError>())));
 
       // bad month
       expect(() => dateToEpochMicroseconds(1970, 13, 12),
-          throwsA(equals(const isInstanceOf<DateTimeError>())));
+          throwsA(equals(const TypeMatcher<DateTimeError>())));
 
       // bad day
       expect(() => dateToEpochMicroseconds(1970, 08, 34),
-          throwsA(equals(const isInstanceOf<DateTimeError>())));
+          throwsA(equals(const TypeMatcher<DateTimeError>())));
     });
 
     test('checkEpochDay', () {
@@ -397,10 +397,10 @@ void main() {
 
       global.throwOnError = true;
       expect(() => checkEpochDay(kMaxEpochDay + 1),
-          throwsA(equals(const isInstanceOf<DateTimeError>())));
+          throwsA(equals(const TypeMatcher<DateTimeError>())));
 
       expect(() => checkEpochDay(kMinEpochDay - 1),
-          throwsA(equals(const isInstanceOf<DateTimeError>())));
+          throwsA(equals(const TypeMatcher<DateTimeError>())));
     });
 
     test('epochMicrosecondsToDate', () {

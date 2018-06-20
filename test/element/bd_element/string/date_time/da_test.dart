@@ -71,7 +71,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => e0.hasValidValues,
-              throwsA(const isInstanceOf<StringError>()));
+              throwsA(const TypeMatcher<StringError>()));
         }
       }
 
@@ -87,7 +87,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => e2.hasValidValues,
-              throwsA(const isInstanceOf<StringError>()));
+              throwsA(const TypeMatcher<StringError>()));
         }
       }
     });
@@ -133,7 +133,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => e0.hasValidValues,
-              throwsA(const isInstanceOf<StringError>()));
+              throwsA(const TypeMatcher<StringError>()));
         }
       }
     });
