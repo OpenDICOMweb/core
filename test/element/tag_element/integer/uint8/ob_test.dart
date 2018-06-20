@@ -40,8 +40,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rng.uint8List(2, 3);
         log.debug('$i: vList1: $vList1');
-        final e0 =
-            new OBtag(PTag.kCoordinateSystemAxisValues, vList1);
+        final e0 = new OBtag(PTag.kCoordinateSystemAxisValues, vList1);
         expect(e0.hasValidValues, true);
       }
     });
@@ -54,8 +53,7 @@ void main() {
       expect(e1.hasValidValues, true);
 
       final e2 = new OBtag(PTag.kPrivateInformation, uInt8Max);
-      final e3 = new OBtag(
-          PTag.kCoordinateSystemAxisValues, uInt8Max);
+      final e3 = new OBtag(PTag.kCoordinateSystemAxisValues, uInt8Max);
       expect(e2.hasValidValues, true);
       expect(e3.hasValidValues, true);
 
@@ -67,12 +65,10 @@ void main() {
     });
 
     test('OB hasValidValues bad values', () {
-      final e0 = new OBtag(
-          PTag.kPrivateInformation, uInt8MaxPlus);
+      final e0 = new OBtag(PTag.kPrivateInformation, uInt8MaxPlus);
       expect(e0, isNull);
 
-      final e2 = new OBtag(
-          PTag.kPrivateInformation, uInt8MinMinus);
+      final e2 = new OBtag(PTag.kPrivateInformation, uInt8MinMinus);
       expect(e2, isNull);
 
       global.throwOnError = false;
@@ -96,7 +92,6 @@ void main() {
       log.debug('e5: $e5');
       expect(e5.hasValidValues, true);
       expect(e5.values, kEmptyUint8List);
-
     });
 
     test('OB update random', () {
@@ -240,8 +235,7 @@ void main() {
         final vList1 = rng.uint8List(2, 2);
         final bytes1 = new Bytes.typedDataView(vList1);
 //        final uInt8ListV12 = uInt8ListV2.buffer.asUint8List();
-        final e2 =
-            OBtag.fromBytes(bytes1, PTag.kPrivateInformation);
+        final e2 = OBtag.fromBytes(bytes1, PTag.kPrivateInformation);
         expect(e2.hasValidValues, true);
       }
     });
@@ -260,8 +254,7 @@ void main() {
         global.throwOnError = false;
         final vList = rng.uint8List(1, 10);
         final bytes0 = DicomBytes.fromAscii(vList.toString());
-        final e0 =
-            OBtag.fromBytes(bytes0, PTag.kSelectorOBValue);
+        final e0 = OBtag.fromBytes(bytes0, PTag.kSelectorOBValue);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -289,8 +282,7 @@ void main() {
     });
 
     test('OB checkLength', () {
-      final e0 =
-          new OBtag(PTag.kPrivateInformation, uInt8MinMax);
+      final e0 = new OBtag(PTag.kPrivateInformation, uInt8MinMax);
       expect(e0.checkLength(e0.values), true);
     });
 
@@ -376,8 +368,7 @@ void main() {
         final bytes = new Bytes.typedDataView(vList0);
 //        final uInt8ListV11 = bytes.buffer.asUint8List();
         log.debug('bytes.length: ${bytes.length}');
-        final e0 =
-            OBtag.fromBytes(bytes, PTag.kPrivateInformation);
+        final e0 = OBtag.fromBytes(bytes, PTag.kPrivateInformation);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes));
         expect(e0.values is Uint8List, true);
@@ -563,43 +554,6 @@ void main() {
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
-
-    test('OB isValidVR good values', () {
-      global.throwOnError = false;
-      expect(OB.isValidVRIndex(kOBIndex), true);
-
-      for (var tag in obVM1Tags) {
-        global.throwOnError = false;
-        expect(OB.isValidVRIndex(tag.vrIndex), true);
-      }
-
-      for (var tag in obowTags) {
-        final e3 = OB.isValidVRIndex(tag.vrIndex);
-        expect(e3, true);
-      }
-
-      for (var tag in obVM1_nTags) {
-        global.throwOnError = false;
-        expect(OB.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('OB isValidVR bad values', () {
-      global.throwOnError = false;
-      expect(OB.isValidVRIndex(kAEIndex), false);
-      global.throwOnError = true;
-      expect(() => OB.isValidVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OB.isValidVRIndex(tag.vrIndex), false);
-
-        global.throwOnError = true;
-        expect(() => OB.isValidVRIndex(kAEIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
-      }
-    });
 /*
 
     test('OB checkVR good values', () {
@@ -639,12 +593,18 @@ void main() {
       expect(OB.isValidVRIndex(kOBIndex), true);
 
       for (var tag in obVM1Tags) {
+        global.throwOnError = false;
         expect(OB.isValidVRIndex(tag.vrIndex), true);
       }
 
       for (var tag in obowTags) {
         final e3 = OB.isValidVRIndex(tag.vrIndex);
         expect(e3, true);
+      }
+
+      for (var tag in obVM1_nTags) {
+        global.throwOnError = false;
+        expect(OB.isValidVRIndex(tag.vrIndex), true);
       }
     });
 
@@ -695,6 +655,9 @@ void main() {
     test('OB isValidVFLength good values', () {
       expect(OB.isValidVFLength(OB.kMaxVFLength), true);
       expect(OB.isValidVFLength(0), true);
+
+      expect(OB.isValidVFLength(OB.kMaxVFLength, null, PTag.kSelectorOBValue),
+          true);
     });
 
     test('OB isValidVFLength bad values', () {
@@ -742,6 +705,9 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => OB.isValidValues(PTag.kICCProfile, uInt8MinMinus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      expect(OB.isValidValues(PTag.kICCProfile, null), false);
     });
   });
 }

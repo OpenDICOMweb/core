@@ -532,44 +532,6 @@ void main() {
             throwsA(const isInstanceOf<InvalidTagError>()));
       }
     });
-
-    test('OL isValidVR good values', () {
-      global.throwOnError = false;
-      expect(OL.isValidVRIndex(kOLIndex), true);
-
-      for (var tag in olVM1Tags) {
-        global.throwOnError = false;
-        expect(OL.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('OL isValidVR  good values', () {
-      global.throwOnError = false;
-      expect(OL.isValidVRIndex(kOLIndex), true);
-
-      for (var tag in olVM1_nTags) {
-        global.throwOnError = false;
-        expect(OL.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('OL isValidVR good values', () {
-      global.throwOnError = false;
-      expect(OL.isValidVRIndex(kAEIndex), false);
-      global.throwOnError = true;
-      expect(() => OL.isValidVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OL.isValidVRIndex(tag.vrIndex), false);
-
-        global.throwOnError = true;
-        expect(() => OL.isValidVRIndex(kAEIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
-      }
-    });
-
 /*
     test('OL checkVR good values', () {
       global.throwOnError = false;
@@ -604,6 +566,16 @@ void main() {
       expect(OL.isValidVRIndex(kOLIndex), true);
 
       for (var tag in olVM1Tags) {
+        global.throwOnError = false;
+        expect(OL.isValidVRIndex(tag.vrIndex), true);
+      }
+    });
+
+    test('OL isValidVRIndex good values', () {
+      global.throwOnError = false;
+      expect(OL.isValidVRIndex(kOLIndex), true);
+
+      for (var tag in olVM1_nTags) {
         global.throwOnError = false;
         expect(OL.isValidVRIndex(tag.vrIndex), true);
       }
@@ -657,6 +629,9 @@ void main() {
     test('OL isValidVFLength good values', () {
       expect(OL.isValidVFLength(OL.kMaxVFLength), true);
       expect(OL.isValidVFLength(0), true);
+
+      expect(OL.isValidVFLength(OL.kMaxVFLength, null, PTag.kSelectorOLValue),
+          true);
     });
 
     test('OL isValidVFLength bad values', () {
@@ -706,6 +681,9 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => OL.isValidValues(PTag.kTrackPointIndexList, uInt32MinMinus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      expect(OL.isValidValues(PTag.kTrackPointIndexList, null), false);
     });
   });
 }

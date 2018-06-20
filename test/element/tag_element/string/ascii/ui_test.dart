@@ -146,8 +146,8 @@ void main() {
       final vList2 = rsg.getUIList(3, 4);
       final e2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
       final vList3 = ['3.2.840.10008.1.2.0'];
-      expect(() => e2.update(vList3),
-          throwsA(const isInstanceOf<StringError>()));
+      expect(
+              () => e2.update(vList3), throwsA(const isInstanceOf<StringError>()));
     });
 
     test('UI noValues random', () {
@@ -617,6 +617,9 @@ void main() {
     test('UI isValidVFLength good values', () {
       expect(UI.isValidVFLength(UI.kMaxVFLength), true);
       expect(UI.isValidVFLength(0), true);
+
+      expect(UI.isValidVFLength(UI.kMaxVFLength, null, PTag.kSelectorUIValue),
+          true);
     });
 
     test('UI isValidVFLength bad values', () {
@@ -661,7 +664,7 @@ void main() {
       }
 
       global.throwOnError = false;
-      final vList0 = rsg.getLOList(1, 1);
+      final vList0 = rsg.getUIList(1, 1);
       expect(UI.isValidLength(null, vList0), false);
 
       expect(UI.isValidLength(PTag.kSelectorUIValue, null), isNull);

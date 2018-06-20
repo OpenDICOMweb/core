@@ -68,7 +68,7 @@ void main() {
       expect(e0, isNull);
 
       final e1 =
-          new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMinus);
+      new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMinus);
       expect(e1, isNull);
 
       final e2 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMax);
@@ -279,8 +279,7 @@ void main() {
         final vList0 = rng.uint16List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
         log.debug(bytes);
-        final e0 =
-            OWtag.fromBytes(bytes, PTag.kEdgePointIndexList);
+        final e0 = OWtag.fromBytes(bytes, PTag.kEdgePointIndexList);
         log.debug('$e0');
         e0.values;
         expect(e0.hasValidValues, true);
@@ -292,8 +291,7 @@ void main() {
 
         final vList1 = rng.uint16List(2, 2);
         final bytes1 = new Bytes.typedDataView(vList1);
-        final e1 =
-            OWtag.fromBytes(bytes1, PTag.kEdgePointIndexList);
+        final e1 = OWtag.fromBytes(bytes1, PTag.kEdgePointIndexList);
         expect(e1.hasValidValues, true);
       }
     });
@@ -304,8 +302,7 @@ void main() {
         final vList = rng.uint16List(1, 10);
 
         final bytes0 = new Bytes.typedDataView(vList);
-        final e0 =
-            OWtag.fromBytes(bytes0, PTag.kSelectorOWValue);
+        final e0 = OWtag.fromBytes(bytes0, PTag.kSelectorOWValue);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -335,8 +332,7 @@ void main() {
 //        final base64 = cvt.base64.encode(uint8List11);
         final base64 = bytes.getBase64();
         final bytes2 = Bytes.fromBase64(base64);
-        final e0 =
-            OWtag.fromBytes(bytes2, PTag.kEdgePointIndexList);
+        final e0 = OWtag.fromBytes(bytes2, PTag.kEdgePointIndexList);
         expect(e0.hasValidValues, true);
       }
     });
@@ -513,43 +509,6 @@ void main() {
       }
     });
 
-    test('OW isValidVR good values', () {
-      global.throwOnError = false;
-      expect(OW.isValidVRIndex(kOWIndex), true);
-
-      for (var tag in owVM1Tags) {
-        global.throwOnError = false;
-        expect(OW.isValidVRIndex(tag.vrIndex), true);
-      }
-      for (var tag in obowTags) {
-        global.throwOnError = false;
-        expect(OW.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('OW isValidVR good values', () {
-      for (var tag in owVM1_nTags) {
-        global.throwOnError = false;
-        expect(OW.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('OW isValidVR bad values', () {
-      global.throwOnError = false;
-      expect(OW.isValidVRIndex(kAEIndex), false);
-      global.throwOnError = true;
-      expect(() => OW.isValidVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OW.isValidVRIndex(tag.vrIndex), false);
-
-        global.throwOnError = true;
-        expect(() => OW.isValidVRIndex(kAEIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
-      }
-    });
 /*
 
     test('OW checkVR  good values', () {
@@ -584,7 +543,6 @@ void main() {
       }
     });
 */
-
     test('OW.isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(OW.isValidVRIndex(kOWIndex), true);
@@ -595,6 +553,11 @@ void main() {
       }
 
       for (var tag in obowTags) {
+        global.throwOnError = false;
+        expect(OW.isValidVRIndex(tag.vrIndex), true);
+      }
+
+      for (var tag in owVM1_nTags) {
         global.throwOnError = false;
         expect(OW.isValidVRIndex(tag.vrIndex), true);
       }
@@ -648,6 +611,9 @@ void main() {
     test('OW isValidVFLength good values', () {
       expect(OW.isValidVFLength(OW.kMaxVFLength), true);
       expect(OW.isValidVFLength(0), true);
+
+      expect(OW.isValidVFLength(OW.kMaxVFLength, null, PTag.kSelectorOWValue),
+          true);
     });
 
     test('OW isValidVFLength bad values', () {
@@ -693,11 +659,14 @@ void main() {
 
       global.throwOnError = true;
       expect(
-          () => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MaxPlus),
+              () => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MaxPlus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(
-          () => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MinMinus),
+              () => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MinMinus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      expect(OW.isValidValues(PTag.kBlendingLookupTableData, null), false);
     });
   });
 }

@@ -553,6 +553,12 @@ void main() {
               throwsA(const isInstanceOf<InvalidValuesError>()));
         }
       }
+      global.throwOnError = false;
+      expect(SS.isValidLength(PTag.kTIDOffset, null), isNull);
+
+      global.throwOnError = true;
+      expect(() => SS.isValidLength(PTag.kTIDOffset, null),
+          throwsA(const isInstanceOf<GeneralError>()));
     });
 
     test('SS isValidLength VM.k2 good values', () {
@@ -655,31 +661,6 @@ void main() {
       }
     });
 
-    test('SS isValidVR good values', () {
-      global.throwOnError = false;
-      expect(SS.isValidVRIndex(kSSIndex), true);
-      for (var tag in ssVM1Tags) {
-        global.throwOnError = false;
-        expect(SS.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('SS isValidVR bad values', () {
-      global.throwOnError = false;
-      expect(SS.isValidVRIndex(kAEIndex), false);
-      global.throwOnError = true;
-      expect(() => SS.isValidVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(SS.isValidVRIndex(tag.vrIndex), false);
-
-        global.throwOnError = true;
-        expect(() => SS.isValidVRIndex(kAEIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
-      }
-    });
 /*
 
     test('SS checkVRIndex good values', () {
@@ -763,6 +744,9 @@ void main() {
     test('SS isValidVFLength good values', () {
       expect(SS.isValidVFLength(SS.kMaxVFLength), true);
       expect(SS.isValidVFLength(0), true);
+
+      expect(SS.isValidVFLength(SS.kMaxVFLength, null, PTag.kSelectorSSValue),
+          true);
     });
 
     test('SS isValidVFLength bad values', () {
@@ -818,6 +802,9 @@ void main() {
           throwsA(const isInstanceOf<InvalidValuesError>()));
       expect(() => SS.isValidValues(PTag.kTagAngleSecondAxis, int16MinMinus),
           throwsA(const isInstanceOf<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      expect(SS.isValidValues(PTag.kTagAngleSecondAxis, null), false);
     });
 
     test('SS isValidValues bad values length', () {
