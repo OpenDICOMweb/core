@@ -34,6 +34,65 @@ void main() {
     -11.000453,
   ];
 
+  //VM.k1
+  const fdVM1Tags = const <int>[
+    kEventTimeOffset,
+    kReferencePixelPhysicalValueX,
+    kReferencePixelPhysicalValueY,
+    kPhysicalDeltaX,
+    kPhysicalDeltaY,
+    kTubeAngle,
+  ];
+
+  //VM.k2
+  const fdVM2Tags = const <int>[
+    kTimeRange,
+    kReconstructionFieldOfView,
+    kReconstructionPixelSpacing,
+    kRecommendedRotationPoint,
+    kTwoDMatingPoint,
+    kRangeOfFreedom,
+    kTwoDImplantTemplateGroupMemberMatchingPoint,
+  ];
+
+  //VM.k3
+  const fdVM3Tags = const <int>[
+    kDiffusionGradientOrientation,
+    kVelocityEncodingDirection,
+    kSlabOrientation,
+    kMidSlabPosition,
+    kASLSlabOrientation,
+    kDataCollectionCenterPatient,
+    kGridResolution,
+  ];
+
+  //VM.k4
+  const fdVM4Tags = const <int>[
+    kBoundingRectangle,
+    kTwoDMatingAxes,
+    kTwoDLineCoordinates,
+    kDisplayEnvironmentSpatialPosition,
+    kDoubleExposureFieldDelta,
+    kTwoDImplantTemplateGroupMemberMatchingAxes,
+  ];
+  //VM.k6
+  const fdVM6Tags = const <int>[kImageOrientationVolume];
+
+  //VM.k9
+  const fdVM9Tags = const <int>[
+    kViewOrientationModifier,
+    kThreeDMatingAxes,
+    kThreeDImplantTemplateGroupMemberMatchingAxes,
+  ];
+
+  //VM.k1_n
+  const fdVM1_nTags = const <int>[
+    kRealWorldValueLUTData,
+    kSelectorFDValue,
+    kInversionTimes,
+    kDepthsOfFocus,
+  ];
+
   final rds = new ByteRootDataset.empty();
   global.throwOnError = false;
 
@@ -154,11 +213,83 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
         global.throwOnError = false;
-        final e0 = FDbytes.fromValues(kOverallTemplateSpatialTolerance, vList0);
-        log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in fdVM1Tags) {
+          final e0 = FDbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('FDbytes from VM.k2', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.float64List(2, 2);
+        global.throwOnError = false;
+        for (var code in fdVM2Tags) {
+          final e0 = FDbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('FDbytes from VM.k3', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.float64List(3, 3);
+        global.throwOnError = false;
+        for (var code in fdVM3Tags) {
+          final e0 = FDbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('FDbytes from VM.k4', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.float64List(4, 4);
+        global.throwOnError = false;
+        for (var code in fdVM4Tags) {
+          final e0 = FDbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('FDbytes from VM.k6', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.float64List(6, 6);
+        global.throwOnError = false;
+        for (var code in fdVM6Tags) {
+          final e0 = FDbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
+      }
+    });
+
+    test('FDbytes from VM.k9', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.float64List(9, 9);
+        global.throwOnError = false;
+        for (var code in fdVM9Tags) {
+          final e0 = FDbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
 
@@ -166,19 +297,13 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.float64List(1, i);
         global.throwOnError = false;
-        final e0 = FDbytes.fromValues(kSelectorFDValue, vList0);
-/*
-        final s = e1.toString();
-        log.debug('e0: $e0');
-//        final bd0 = new Bytes.typedDataView(vList0);
-
-        final e0 = Lobytes.fromValuesngEvr(e1.code, e1.vrIndex, bd0);
-        final e1= ByteElement.makeFromCode(rds, e1.code, bd1);
-        log.debug('e0:$e0');
-*/
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
-        log.debug('e1: $e1');
-        expect(e0.hasValidValues, true);
+        for (var code in fdVM1_nTags) {
+          final e0 = FDbytes.fromValues(code, vList0);
+          log.debug('e0: $e0');
+          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          log.debug('e1: $e1');
+          expect(e0.hasValidValues, true);
+        }
       }
     });
   });
