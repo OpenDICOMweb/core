@@ -29,7 +29,7 @@ void main() {
         final hash0 = Sha256.stringList(vList0);
         log.debug('vList0: $vList0, hash0: $hash0');
         expect(() => e0.sha256,
-            throwsA(const isInstanceOf<UnsupportedError>()));
+            throwsA(const TypeMatcher<UnsupportedError>()));
 
         expect(e0.hash, equals(e1.hash));
         expect(e0.hash, equals(e2.hash));

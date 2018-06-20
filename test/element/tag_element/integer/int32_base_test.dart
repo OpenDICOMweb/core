@@ -62,7 +62,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => Int32.toBytes(int64Max),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Int32Base toByteData good values', () {
@@ -120,7 +120,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => Int32.toByteData(int32Max),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Int32Base fromBase64', () {
@@ -239,7 +239,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => Int32.fromValueField(<String>['foo']),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Int32 toUint8List', () {

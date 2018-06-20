@@ -64,7 +64,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => Uint16.toBytes(uint32Max),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Uint16 toByteData good values', () {
@@ -131,7 +131,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => Uint16.toByteData(uint32Max),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Uint16Base fromBytes', () {
@@ -264,7 +264,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => Uint16.toByteData(uint32Max),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Uint16Base toUint8List', () {

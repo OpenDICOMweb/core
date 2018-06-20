@@ -64,7 +64,7 @@ int parseInternetTimeZone(String s,
   final v = (start == 0) ? s : s.substring(start, end);
   final index = kValidInetTZStrings.indexOf(v);
   return (index == -1)
-      ? invalidTimeZoneString(v, issues)
+      ? badTimeZoneString(v, issues)
       : kValidTZMicroseconds[index];
 }
 

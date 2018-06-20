@@ -54,7 +54,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => new PNtag(PTag.kRequestingPhysician, s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
@@ -65,7 +65,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => new PNtag(PTag.kRequestingPhysician, null),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('PN hasValidValues good values random', () {
@@ -104,7 +104,7 @@ void main() {
         final vList0 = rsg.getPNList(3, 4);
         log.debug('$i: vList0: $vList0');
         expect(() => new PNtag(PTag.kRequestingPhysician, vList0),
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
@@ -118,7 +118,7 @@ void main() {
         final e1 = new PNtag(PTag.kOrderEnteredBy, vList0);
         final vList1 = rsg.getPNList(3, 4);
         expect(() => e1.update(vList1).values,
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
@@ -285,7 +285,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => PNtag.fromBytes(bytes0, PTag.kSelectorCSValue),
-              throwsA(const isInstanceOf<InvalidTagError>()));
+              throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }
     });
@@ -312,7 +312,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => PNtag.fromValues(PTag.kOrderEnteredBy, vList0),
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const TypeMatcher<InvalidValuesError>()));
       }
 
       global.throwOnError = false;
@@ -322,7 +322,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => PNtag.fromValues(PTag.kOrderEnteredBy, <String>[null]),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('PN checkLength good values', () {
@@ -368,7 +368,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => e0.checkValue(a),
-              throwsA(const isInstanceOf<StringError>()));
+              throwsA(const TypeMatcher<StringError>()));
         }
       }
     });
@@ -435,7 +435,7 @@ void main() {
       expect(PN.isValidTag(PTag.kSelectorFDValue), false);
       global.throwOnError = true;
       expect(() => PN.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -444,7 +444,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => PN.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidTagError>()));
+            throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
 
@@ -467,7 +467,7 @@ void main() {
           isNull);
       global.throwOnError = true;
       expect(() => PN.checkVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -475,7 +475,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => PN.checkVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -498,7 +498,7 @@ void main() {
           isNull);
       global.throwOnError = true;
       expect(() => PN.checkVRCode(kAECode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -506,7 +506,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => PN.checkVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });*/
 
@@ -526,7 +526,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => PN.isValidVRIndex(kCSIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -534,7 +534,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => PN.isValidVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -553,7 +553,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => PN.isValidVRCode(kAECode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -561,7 +561,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => PN.isValidVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -607,7 +607,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => PN.isValidValue(a),
-              throwsA(const isInstanceOf<StringError>()));
+              throwsA(const TypeMatcher<StringError>()));
         }
       }
     });
@@ -636,7 +636,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => PN.isValidLength(tag, vList),
-              throwsA(const isInstanceOf<InvalidValuesError>()));
+              throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
 
@@ -648,10 +648,10 @@ void main() {
 
       global.throwOnError = true;
       expect(() => PN.isValidLength(null, vList0),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       expect(() => PN.isValidLength(PTag.kSelectorLOValue, null),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('PN isValidLength VM.k1_n good values', () {
@@ -681,7 +681,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => PN.isValidValues(PTag.kPatientName, s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -770,7 +770,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
   });
 }

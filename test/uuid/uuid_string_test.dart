@@ -119,7 +119,7 @@ void main() {
         global.throwOnError = true;
 
         expect(() => Uuid.parse(uuid),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
     test('parse', () {
@@ -140,7 +140,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => Uuid.parse(uuid),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -173,7 +173,7 @@ void main() {
       expect(Uuid.isValidData(uInt8List), true);
 
       expect(() => Uuid.isValidData(uInt8List, 6),
-          throwsA(const isInstanceOf<UuidError>()));
+          throwsA(const TypeMatcher<UuidError>()));
     });
 
     test(' == and hashCode ', () {

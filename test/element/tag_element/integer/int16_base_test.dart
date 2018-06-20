@@ -49,7 +49,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => Int16.toBytes(int32Max),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Int16Base listToByteData good values', () {
@@ -118,7 +118,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => Int16.toByteData(int32Max),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Int16Base decodeJsonVF', () {
@@ -231,7 +231,7 @@ void main() {
 
     global.throwOnError = true;
     expect(() => Int16.fromValueField(<String>['foo']),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('Int16 toUint8List', () {

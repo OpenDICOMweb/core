@@ -137,7 +137,7 @@ void main() {
         global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
         expect(() => new TimeZone(i[0], i[1], i[2]),
-            throwsA(equals(const isInstanceOf<InvalidTimeZoneError>())));
+            throwsA(equals(const TypeMatcher<InvalidTimeZoneError>())));
       }
     });
 
@@ -156,7 +156,7 @@ void main() {
         global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
         expect(() => TimeZone.parse(s),
-            throwsA(equals(const isInstanceOf<StringError>())));
+            throwsA(equals(const TypeMatcher<StringError>())));
       }
     });
 
@@ -197,7 +197,7 @@ void main() {
         global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
         expect(() => TimeZone.issues(s, start: 0),
-            throwsA(equals(const isInstanceOf<StringError>())));
+            throwsA(equals(const TypeMatcher<StringError>())));
       }
     });
 
@@ -231,7 +231,7 @@ void main() {
         global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
         expect(() => timeZoneToMicroseconds(i[0], i[1], i[2]),
-            throwsA(equals(const isInstanceOf<InvalidTimeZoneError>())));
+            throwsA(equals(const TypeMatcher<InvalidTimeZoneError>())));
       }
     });
 
@@ -378,7 +378,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => TimeZone.parseDicom(invalid),
-            throwsA(equals(const isInstanceOf<StringError>())));
+            throwsA(equals(const TypeMatcher<StringError>())));
       }
     });
 
@@ -467,7 +467,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => parseInternetTimeZone(s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -486,7 +486,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => parseDcmTimeZone(s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
   });

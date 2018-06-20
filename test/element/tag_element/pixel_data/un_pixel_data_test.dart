@@ -594,7 +594,7 @@ void main() {
       global.throwOnError = true;
 /*
       expect(() => UNtagPixelData.fromBytes(bytes0, PTag.kSelectorAEValue),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 */
       
     });
@@ -716,9 +716,9 @@ void main() {
 
       global.throwOnError = true;
       expect(() => UN.isValidValues(PTag.kPixelData, uInt8MaxPlus),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
       expect(() => UN.isValidValues(PTag.kPixelData, uInt8MinMinus),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('Create Uint8Base.fromBytes', () {

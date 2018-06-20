@@ -90,7 +90,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => e3.hasValidValues,
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       final e4 = new OLtag(PTag.kLongVertexPointIndexList, null);
@@ -289,7 +289,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => OLtag.fromBytes(bytes0, PTag.kSelectorFDValue),
-            throwsA(const isInstanceOf<InvalidTagError>()));
+            throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
 
@@ -494,7 +494,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => OL.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -502,7 +502,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => OL.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidTagError>()));
+            throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
 
@@ -521,7 +521,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => OL.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -529,9 +529,10 @@ void main() {
 
         global.throwOnError = true;
         expect(() => OL.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidTagError>()));
+            throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
+
 /*
     test('OL checkVR good values', () {
       global.throwOnError = false;
@@ -548,7 +549,7 @@ void main() {
       expect(OL.checkVRIndex(kAEIndex), isNull);
       global.throwOnError = true;
       expect(() => OL.checkVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -556,7 +557,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => OL.checkVRIndex(kAEIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 */
@@ -587,7 +588,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => OL.isValidVRIndex(kCSIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -595,7 +596,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => OL.isValidVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -614,7 +615,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => OL.isValidVRCode(kAECode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -622,7 +623,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => OL.isValidVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -678,9 +679,9 @@ void main() {
 
       global.throwOnError = true;
       expect(() => OL.isValidValues(PTag.kTrackPointIndexList, uInt32MaxPlus),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
       expect(() => OL.isValidValues(PTag.kTrackPointIndexList, uInt32MinMinus),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       expect(OL.isValidValues(PTag.kTrackPointIndexList, null), false);

@@ -197,7 +197,7 @@ expect(fl0, equals(fl1));
 
       global.throwOnError = true;
       expect(() => Float32.fromValueField(<String>['foo']),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
   });
 }

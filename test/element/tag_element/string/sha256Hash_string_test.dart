@@ -127,7 +127,7 @@ void main() {
       expect(e3.sha256, equals(e3.update(sha2)));
       expect(e3.sha256, equals(e4.sha256));
       expect(e3.sha256, equals(e5.sha256));
-      expect(() => e3.hash, throwsA(const isInstanceOf<UnsupportedError>()));
+      expect(() => e3.hash, throwsA(const TypeMatcher<UnsupportedError>()));
 
       final vList2 = rsg.getSHList(1, 1);
       final e6 = new SHtag(PTag.kMultiCoilElementName, vList2);

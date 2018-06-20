@@ -24,7 +24,7 @@ void main() {
     global.throwOnError = true;
     final sha0 = Sha256.stringList(vList);
     log.debug('vList: $vList, sha0: $sha0');
-    expect(() => e0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
+    expect(() => e0.sha256, throwsA(const TypeMatcher<UnsupportedError>()));
     log.debug('e0.hash: ${e0.hash}, e1.hash: ${e1.hash}, e2.hash: ${e2.hash}');
 
     expect(e0.hash, equals(e1.hash));
@@ -45,7 +45,7 @@ void main() {
     final sha0 = Sha256.stringList(vList);
     log.debug('vList: $vList, sha0: $sha0');
 //    dt0.sha256;
-    expect(() => e0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
+    expect(() => e0.sha256, throwsA(const TypeMatcher<UnsupportedError>()));
 
     log.debug(
         'e0.hash: ${e0.hash}, e1.hash: ${e1.hash}, e2.hash: ${e2.hash}');
@@ -62,7 +62,7 @@ void main() {
     global.throwOnError = true;
     final sha0 = Sha256.stringList(vList);
     log.debug('vList: $vList, sha0: $sha0');
-    expect(() => e0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
+    expect(() => e0.sha256, throwsA(const TypeMatcher<UnsupportedError>()));
 
     log.debug(
         'e0.hash: ${e0.hash}, e1.hash: ${e1.hash}, e2.hash: ${e2.hash}');

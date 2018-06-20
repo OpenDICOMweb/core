@@ -22,8 +22,8 @@ void main() {
     final sha2 = Sha256.stringList(vList0);
     log.debug('vList0: $vList0;, sha2: $sha2');
     global.throwOnError = true;
-    expect(() => e0.sha256, throwsA(const isInstanceOf<UnsupportedError>()));
-    expect(() => e0.hash, throwsA(const isInstanceOf<UnsupportedError>()));
+    expect(() => e0.sha256, throwsA(const TypeMatcher<UnsupportedError>()));
+    expect(() => e0.hash, throwsA(const TypeMatcher<UnsupportedError>()));
   });
 
   test('AS', () {

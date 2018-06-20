@@ -65,7 +65,7 @@ void main() {
       for (var s in badDcmDateList) {
         log.debug('Bad date: $s');
         expect(() => Date.parse(s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -152,16 +152,16 @@ void main() {
       global.throwOnError = true;
 
       expect(() => new Date(kMaxYear + 1, 05, 01),
-          throwsA(const isInstanceOf<DateTimeError>())); //bad year
+          throwsA(const TypeMatcher<DateTimeError>())); //bad year
 
       expect(() => new Date(kMinYear - 1, 05, 01),
-          throwsA(const isInstanceOf<DateTimeError>())); //bad year
+          throwsA(const TypeMatcher<DateTimeError>())); //bad year
 
       expect(() => new Date(2004, 10, 32),
-          throwsA(const isInstanceOf<DateTimeError>())); //bad day
+          throwsA(const TypeMatcher<DateTimeError>())); //bad day
 
       expect(() => new Date(2004, 13, 13),
-          throwsA(const isInstanceOf<DateTimeError>())); //bad month
+          throwsA(const TypeMatcher<DateTimeError>())); //bad month
     });
 
     test('hashString Date', () {
@@ -212,10 +212,10 @@ void main() {
 
       global.throwOnError = true;
       expect(() => new Date(2004, 10, 32),
-          throwsA(const isInstanceOf<DateTimeError>())); //bad day
+          throwsA(const TypeMatcher<DateTimeError>())); //bad day
 
       expect(() => new Date(2004, 13, 13),
-          throwsA(const isInstanceOf<DateTimeError>())); //bad month
+          throwsA(const TypeMatcher<DateTimeError>())); //bad month
 
       /*Date enrollment1 = new Date(1992, 12, 12);
       Date normDate1 = original1.normalize(original1, enrollment1);

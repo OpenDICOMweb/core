@@ -36,7 +36,7 @@ void main() {
       global.throwOnError = true;
       final subject5 = new Patient('A001', subjectUid0, rootDataset);
       expect(() => activeStudies.addPatientIfAbsent(subject5),
-          throwsA(const isInstanceOf<DuplicateEntityError>()));
+          throwsA(const TypeMatcher<DuplicateEntityError>()));
 
 // **      var removeSub = activeStudies.removePatient(subject0);
       activeStudies.removePatient(subject0);
@@ -77,7 +77,7 @@ void main() {
       global.throwOnError = true;
       //Adding duplicate Entity
       expect(() => subject0.putIfAbsent(study1),
-          throwsA(const isInstanceOf<DuplicateEntityError>()));
+          throwsA(const TypeMatcher<DuplicateEntityError>()));
 
       subject0.putIfAbsent(study2);
       log.debug(subject0);
@@ -89,12 +89,12 @@ void main() {
       log.debug(activeStudies);
 
       expect(() => activeStudies.addStudyIfAbsent(study1),
-          throwsA(const isInstanceOf<DuplicateEntityError>()));
+          throwsA(const TypeMatcher<DuplicateEntityError>()));
 
       activeStudies.addStudyIfAbsent(study2);
 
       expect(() => activeStudies.addStudyIfAbsent(study3),
-          throwsA(const isInstanceOf<DuplicateEntityError>()));
+          throwsA(const TypeMatcher<DuplicateEntityError>()));
     });
 
     test('Series', () {
@@ -117,7 +117,7 @@ void main() {
 
       //Adding duplicate Entity
       expect(() => study0.putIfAbsent(series1),
-          throwsA(const isInstanceOf<DuplicateEntityError>()));
+          throwsA(const TypeMatcher<DuplicateEntityError>()));
 
       study0.putIfAbsent(series2);
       log.debug(study0);
@@ -148,7 +148,7 @@ void main() {
       global.throwOnError = true;
       //Adding duplicate Entity
       expect(() => series0.putIfAbsent(instance1),
-          throwsA(const isInstanceOf<DuplicateEntityError>()));
+          throwsA(const TypeMatcher<DuplicateEntityError>()));
 
       series0.putIfAbsent(instance2);
       log.debug(series0);

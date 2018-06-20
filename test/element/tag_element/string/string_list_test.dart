@@ -89,10 +89,10 @@ void main() {
 
     global.throwOnError = true;
     expect(() => textListToBytes([null]),
-        throwsA(const isInstanceOf<GeneralError>()));
+        throwsA(const TypeMatcher<GeneralError>()));
 
     expect(() => textListToBytes(['abc', 'foo']),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('textListToUint8List', () {
@@ -119,10 +119,10 @@ void main() {
 
     global.throwOnError = true;
     expect(() => textListToUint8List([null], kMaxShortVF),
-        throwsA(const isInstanceOf<GeneralError>()));
+        throwsA(const TypeMatcher<GeneralError>()));
 
     expect(() => textListToUint8List(['abc', 'foo'], kMaxShortVF),
-        throwsA(const isInstanceOf<InvalidValuesError>()));
+        throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
   test('textListFromTypedData', () {

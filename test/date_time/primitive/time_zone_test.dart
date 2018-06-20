@@ -184,7 +184,7 @@ void main() {
             } else {
               global.throwOnError = true;
               expect(() => timeZoneToString(sign, h, m),
-                  throwsA(equals(const isInstanceOf<InvalidTimeZoneError>())));
+                  throwsA(equals(const TypeMatcher<InvalidTimeZoneError>())));
 
               global.throwOnError = false;
               final tzs2 = timeZoneToString(sign, h, m);
@@ -218,7 +218,7 @@ void main() {
             } else {
               global.throwOnError = true;
               expect(() => timeZoneToMinutes(sign, h, m),
-                  throwsA(equals(const isInstanceOf<InvalidTimeZoneError>())));
+                  throwsA(equals(const TypeMatcher<InvalidTimeZoneError>())));
 
               global.throwOnError = false;
               final tzm1 = timeZoneToMinutes(sign, h, m);

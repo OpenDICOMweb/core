@@ -88,20 +88,20 @@ void main() {
 
     global.throwOnError = true;
     expect(() => dcmDateTimeInMicroseconds(1978, 13, 12, 05, 29, 24, 48, 456),
-        throwsA(equals(const isInstanceOf<DateTimeError>())));
+        throwsA(equals(const TypeMatcher<DateTimeError>())));
 
     expect(
         () => dcmDateTimeInMicroseconds(
             kMinYear - 1, 11, 12, 05, 29, 24, 48, 456),
-        throwsA(equals(const isInstanceOf<DateTimeError>())));
+        throwsA(equals(const TypeMatcher<DateTimeError>())));
 
     expect(
         () => dcmDateTimeInMicroseconds(
             kMaxYear + 1, 10, 12, 05, 29, 24, 48, 456),
-        throwsA(equals(const isInstanceOf<DateTimeError>())));
+        throwsA(equals(const TypeMatcher<DateTimeError>())));
 
     expect(() => dcmDateTimeInMicroseconds(1978, 12, 12, 25, 29, 24, 48, 456),
-        throwsA(equals(const isInstanceOf<DateTimeError>())));
+        throwsA(equals(const TypeMatcher<DateTimeError>())));
   });
 
   test('isValidDateTime', () {
@@ -368,14 +368,14 @@ System: $dt0
     expect(hm1, isNotNull);
 
     expect(() => hashMicroseconds(kMinYearInMicroseconds - 1),
-        throwsA(const isInstanceOf<Error>()));
+        throwsA(const TypeMatcher<Error>()));
 
     final hm3 = hashMicroseconds(kMaxYearInMicroseconds);
     log.debug('hm3: $hm3');
     expect(hm3, isNotNull);
 
     expect(() => hashMicroseconds(kMaxYearInMicroseconds + 1),
-        throwsA(const isInstanceOf<Error>()));
+        throwsA(const TypeMatcher<Error>()));
   });
 
   test('dicomDateTimeString', () {

@@ -216,7 +216,7 @@ void main() {
       global.throwOnError = true;
       log.debug('throwOnError: $throwOnError');
       for (var i in badDcmTimesInt) {
-        expect(() => new Time(i), throwsA(const isInstanceOf<DateTimeError>()));
+        expect(() => new Time(i), throwsA(const TypeMatcher<DateTimeError>()));
       }
 
       global.throwOnError = false;

@@ -238,7 +238,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => new FrameList16Bit(pixels0, nFrames0, owFDc),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Pixels
       const nFrames1 = 1;
@@ -264,7 +264,7 @@ void main() {
         ..debug('pixelSize bits: ${owFDd.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${owFDd.pixelSizeInBytes}');
       expect(() => new FrameList16Bit(pixels1, nFrames1, owFDd),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
       const nFrames2 = 3;
@@ -290,7 +290,7 @@ void main() {
         ..debug('pixelSize bits: ${owFDe.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${owFDe.pixelSizeInBytes}');
       expect(() => new FrameList16Bit(pixels2, nFrames2, owFDe),
-          throwsA(const isInstanceOf<InvalidFrameListError>()));
+          throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
     test('Create FrameList16Bit() Uncompressed fromBytes', () {
@@ -324,7 +324,7 @@ void main() {
       expect(unPixelPaddingRangeLimit, isNull);
       global.throwOnError = true;
       expect(() => new UStag(PTag.kPixelPaddingRangeLimit, [65536]),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       final unPixelPaddingRangeLimit0 =
           new UStag(PTag.kPixelPaddingRangeLimit, [65535]);
@@ -482,7 +482,7 @@ void main() {
         }
       }
       log.debug('nFrames0: $nFrames0, Frames in FrameList: ${ow16c.nFrames}');
-      expect(() => ow16c[nFrames0], throwsA(const isInstanceOf<RangeError>()));
+      expect(() => ow16c[nFrames0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 }

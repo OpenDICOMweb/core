@@ -6,9 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/error/issues.dart';
 import 'package:core/src/global.dart';
+import 'package:core/src/value.dart';
+
+// Functions starting with 'bad...' return null
+// Functions starting with 'invalid...' return false
+// otherwise, they do the same thing
 
 /// A class for handling string errors.
 class StringError extends Error {
@@ -39,61 +43,73 @@ bool invalidString(String message, [Issues issues]) {
   return false;
 }
 
+/// [String.length] [Error] message. Returns _null_.
 Null badStringLength(String s, [Issues issues, int start, int end]) {
   final msg = 'Invalid Length: "$s", start($start), end($end)';
   return badString(msg);
 }
 
-/// An invalid [String.length] [Error], returning _false_.
+/// [String.length] [Error] message. Returns _false_.
 bool invalidStringLength(String s, [Issues issues, int start, int end]) {
   badStringLength(s, issues);
   return false;
 }
 
+/// Age String [Error] message. Returns _null_.
 Null badAgeString(String message, [Issues issues]) {
   badString('InvalidAgeStringError: $message');
   return null;
 }
 
+/// [Age.parse] [Error] message. Returns _null_.
 int badAgeParse(String message, [Issues issues]) {
   badString('InvalidAgeStringError: $message');
   return -1;
 }
 
+/// Age String [Error] message. Returns _false_.
 bool invalidAgeString(String msg, [Issues issues]) {
   badAgeString(msg, issues);
   return false;
 }
 
+/// Date String [Error] message. Returns _null_.
 Null badDateString(String message, [Issues issues]) {
   badString('InvalidDateStringError: $message', issues);
   return null;
 }
 
+/// Date String [Error] message. Returns _false_.
 bool invalidDateString(String message, [Issues issues]) {
   badDateString(message, issues);
   return false;
 }
 
+/// Time String [Error] message. Returns _null_.
 Null badTimeString(String message, [Issues issues]) =>
     badString('InvalidTimeStringError: $message');
 
+/// Time String [Error] message. Returns _false_.
 bool invalidTimeString(String message, [Issues issues]) {
   badTimeString(message, issues);
   return false;
 }
 
+/// TimeZone String [Error] message. Returns _null_.
 Null badTimeZoneString(String message, [Issues issues]) =>
     badString('InvalidTimeZoneStringError: $message');
 
+/// TimeZone String [Error] message. Returns _false_.
 bool invalidTimeZoneString(String message, [Issues issues]) {
   badTimeZoneString(message, issues);
   return false;
 }
 
+/// DateTime String [Error] message. Returns _null_.
 Null badDateTimeString(String message, [Issues issues]) =>
     badString('InvalidDateTimeStringError: $message');
 
+/// DateTime String [Error] message. Returns _false_.
 bool invalidDcmDateTimeString(String message, [Issues issues]) {
   badDateTimeString(message, issues);
   return false;
@@ -124,43 +140,42 @@ bool invalidUriString(String message, [Issues issues]) {
 }
 
 /// An invalid [Uuid] [String] [Error], returning _null_.
-Null badUuidString(String message, [Issues issues]) =>
-    badString('InvalidUuidStringError: $message');
+Null badUuidString(String uuid, [Issues issues]) =>
+    badString('Invalid Uuid String Error: "$uuid"');
 
 /// An invalid [Uuid] [String] [Error], returning _false_.
 bool invalidUuidString(String uuid, [Issues issues]) {
-  final msg = 'Invalid Uuid String Error: "$uuid"';
-  return _doStringError(msg, issues);
+  _doStringError(uuid, issues);
+  return false;
 }
 
+/// [Uuid] String [Error] message. Returns _null_.
 Null badUuidStringLength(String s, int targetLength, [Issues issues]) {
   final msg = 'Invalid String length(${s.length} should be $targetLength';
   return _doStringError(msg, issues);
 }
 
-Null badUuidNullString([Issues issues]) {
-  const msg = 'Invalid null string';
-  return _doStringError(msg, issues);
-}
+/// [Uuid] _null_ String [Error] message. Returns _null_.
+Null badUuidNullString([Issues issues]) =>
+    _doStringError('Invalid null string', issues);
 
+/// Bad character in [Uuid] String [Error] message. Returns _null_.
 Null badUuidCharacter(String s, [String char, Issues issues]) =>
     _doStringError('Invalid character in String: "$char"', issues);
 
+/// [Uuid.parse] String [Error] message. Returns _null_.
 Null badUuidParse(String s, int targetLength, [Issues issues]) {
   if (s == null) return badUuidNullString();
   if (s.length != targetLength) return badUuidStringLength(s, targetLength);
   return _doStringError('"$s"', issues);
 }
 
-/// General [Error] message for [String]s. Returns _null_.
-Null badStringList(String message, [Issues issues]) {
-  final msg = 'StringListError: $message';
-  return _doStringError(msg, issues);
-}
+/// General [Error] message for [String] [List]s. Returns _null_.
+Null badStringList(String message, [Issues issues]) =>
+    _doStringError('StringListError: $message', issues);
 
-/// General [Error] message for [String]s. Returns _null_.
+/// General [Error] message for [String] [List]s. Returns _false_.
 bool invalidStringList(String message, [Issues issues]) {
-  final msg = 'StringListError: $message';
-  badStringList(msg, issues);
+  badStringList(message, issues);
   return false;
 }

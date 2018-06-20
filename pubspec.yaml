@@ -23,5 +23,5 @@ dev_dependencies:
   yaml: ^2.1.12
   pub_semver: ^1.3.2
   test_tools:
-    path: C:\acr\odw\test_tools
+    path: C:\odw\test_tools
     version: ^0.7.0

@@ -71,7 +71,7 @@ void main() {
       global.throwOnError = true;
       for (var s in badDcmAge) {
         expect(Age.tryParse(s) == null, true);
-        expect(() => Age.parse(s), throwsA(const isInstanceOf<StringError>()));
+        expect(() => Age.parse(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -170,7 +170,7 @@ void main() {
         global.throwOnError = true;
         log.debug('s: "$s"');
         expect(() => Age.isValidString(s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -213,7 +213,7 @@ void main() {
       log.debug('global.throwOnError: ${global.throwOnError}');
       for (var s in badDcmAge) {
         expect(() => hashAgeString(s),
-            throwsA(equals(const isInstanceOf<StringError>())));
+            throwsA(equals(const TypeMatcher<StringError>())));
       }
     });
 
@@ -235,7 +235,7 @@ void main() {
       global.throwOnError = true;
       log.debug('global.throwOnError: ${global.throwOnError}');
       expect(() => hashAgeStringList(badDcmAge),
-          throwsA(equals(const isInstanceOf<StringError>())));
+          throwsA(equals(const TypeMatcher<StringError>())));
     });
 
     test('hashString', () {
@@ -266,7 +266,7 @@ void main() {
       global.throwOnError = true;
       for (var s in badDcmAge) {
         expect(() => parseAgeString(s),
-            throwsA(equals(const isInstanceOf<StringError>())));
+            throwsA(equals(const TypeMatcher<StringError>())));
       }
     });
     test('ageToString', () {
@@ -309,7 +309,7 @@ void main() {
 
         global.throwOnError = true;
         expect(
-            () => Age.parseDays(s), throwsA(const isInstanceOf<StringError>()));
+            () => Age.parseDays(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
