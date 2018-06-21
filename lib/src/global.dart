@@ -84,7 +84,7 @@ abstract class Global {
   bool useAscii = false;
   bool doTestElementValidity = true;
   bool trimURISpaces = false;
-
+  bool allowInvalidTagCode = true;
 
   Global(
       {this.name = 'Unknown',

@@ -10,7 +10,6 @@ import 'package:core/core.dart';
 import 'package:core/server.dart';
 import 'package:test/test.dart';
 
-// Urgent: move any other VR tests from Tag to Test.
 void main() {
   Server.initialize(name: 'vr_index_new_test', level: Level.info);
   test('VR Index', () {

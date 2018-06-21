@@ -428,7 +428,7 @@ abstract class DatasetMixin {
     return results;
   }
 
-  // Urgent Jim: Fix - maybe remove recursive call
+  // TODO Jim: maybe remove recursive call
   List<Element> deleteIfTrue(bool test(Element e), {bool recursive = false}) {
     final deleted = <Element>[];
     for (var e in elements) {
@@ -518,7 +518,7 @@ abstract class DatasetMixin {
   }
 
   /// Deletes all Private Elements in Public Sequences.
-  // Urgent: doesn't implement recursion
+  // TODO: doesn't implement recursion
   List<Element> deleteAllPrivateInPublicSQs({bool recursive = false}) {
     final deleted = <Element>[];
     for (var sq in sequences) {

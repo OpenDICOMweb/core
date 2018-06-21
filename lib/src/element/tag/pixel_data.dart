@@ -74,7 +74,6 @@ class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
   @override
   final TransferSyntax ts;
 
-  //Urgent: needed?
   /// Creates an [OBtagPixelData] Element from a [Iterable<int>].
   factory OBtagPixelData(Iterable<int> vList, [TransferSyntax ts]) =>
       new OBtagPixelData._(vList, ts);
@@ -152,7 +151,6 @@ class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
   @override
   final TransferSyntax ts;
 
-  //Urgent: needed?
   /// Creates an [UNtagPixelData] Element from a [Iterable<int>].
   factory UNtagPixelData(Iterable<int> vList, [TransferSyntax ts]) =>
       new UNtagPixelData._(vList, ts);
@@ -229,7 +227,6 @@ class OWtagPixelData extends OWPixelData with TagElement<int>, TagPixelData {
   @override
   final TransferSyntax ts;
 
-  //Urgent: needed?
   /// Creates an [OWtagPixelData] Element from a [Iterable<int>]
   /// of byte values (0 - kMax16BitValue).
   factory OWtagPixelData(Iterable<int> vList, [TransferSyntax ts]) =>

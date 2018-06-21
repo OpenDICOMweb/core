@@ -66,11 +66,7 @@ abstract class FrameList extends ListBase<Frame> {
   /// Note: All [pixels] values are [TypedData].
   List<int> get pixels;
 
-  // Urgent Jim: this may be incorrect
   /// A [Uint8List] containing the [offsets] and all the [Frame]s in _this_.
-  /// For uncompressed [FrameList]s, [bulkdata] is the same as [pixels].
-  /// For compressed [FrameList]s, [bulkdata] contains the compressed
-  /// bytes for all the [Frame]s in _this_.
   Uint8List get bulkdata;
 
   // **** End interface ****

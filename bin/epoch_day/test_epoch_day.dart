@@ -9,7 +9,6 @@
 
 import 'package:core/server.dart';
 
-// Urgent: make this a unit test
 void main() {
   // Year range is -1 million BCE to 1 million CE. Since Epoch 0 is 1970 we shift by that.
   Server.initialize(

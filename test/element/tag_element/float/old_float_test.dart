@@ -535,9 +535,6 @@ void main() {
       PTag.kTime
     ];
 
-  // Urgent: moved to setUp
-  // final invalidVList = rng.float32List(FL.kMaxLength + 1, FL.kMaxLength + 1);
-
     test('FL isValidTag good values', () {
       global.throwOnError = false;
       expect(FL.isValidTag(PTag.kSelectorFLValue), true);
@@ -811,92 +808,6 @@ void main() {
             throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
-
-/* Urgent: checkVR not supported any more.
-    test('FL checkVR good values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRIndex(kFLIndex), kFLIndex);
-
-      for (var tag in flTags0) {
-        global.throwOnError = false;
-        expect(FL.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('FL checkVR bad values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRIndex(kAEIndex), isNull);
-
-      global.throwOnError = true;
-      expect(() => FL.checkVRIndex(kAEIndex),
-                 throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(FL.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => FL.checkVRIndex(kAEIndex),
-                   throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('FL checkVRIndex good values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRIndex(kFLIndex), equals(kFLIndex));
-
-      for (var tag in flTags0) {
-        global.throwOnError = false;
-        expect(FL.checkVRIndex(tag.vrIndex), equals(tag.vrIndex));
-      }
-    });
-
-    test('FL checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRIndex(kATIndex), isNull);
-
-      global.throwOnError = true;
-      expect(() => FL.checkVRIndex(kATIndex),
-                 throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(FL.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => FL.checkVRIndex(tag.vrIndex),
-                   throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('FL checkVRCode good values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRCode(kFLCode), equals(kFLCode));
-
-      for (var tag in flTags0) {
-        global.throwOnError = false;
-        expect(FL.checkVRCode(tag.vrCode), equals(tag.vrCode));
-      }
-    });
-
-    test('FL checkVRCode bad values', () {
-      global.throwOnError = false;
-      expect(FL.checkVRCode(kATCode), isNull);
-
-      global.throwOnError = true;
-      expect(() => FL.checkVRCode(kATCode),
-                 throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(FL.checkVRCode(tag.vrCode), isNull);
-
-        global.throwOnError = true;
-        expect(() => FL.checkVRCode(tag.vrCode),
-                   throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
 
     test('FL isValidVFLength good values', () {
       expect(FL.isValidVFLength(FL.kMaxVFLength), true);
@@ -1518,7 +1429,7 @@ void main() {
       }
     });
 
-/* Urgent: needs Tag to work
+/* Urgent Sharath: fix or delete
     test('OF isValidLength', () {
       global.throwOnError = false;
       expect(OF.isValidLength(OF.kMaxLength), true);
@@ -1681,7 +1592,7 @@ void main() {
       expect(OF.isValidVFLength(-1), false);
     });
 
-/* Urgent: needs tag to work
+/* Urgent Sharath: fix or delete
     test('OF isValidLength', () {
       expect(OF.isValidLength(OF.kMaxLength), true);
     });

@@ -13,7 +13,6 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr.dart';
 
 // ignore_for_file: only_throw_errors
-// Urgent: verify that tag.vr is newVRIndex when appropriate
 
 /// Return the appropriate [Tag] for [ds] and [code].
 ///

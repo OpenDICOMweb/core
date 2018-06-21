@@ -10,6 +10,7 @@
 import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/tag.dart';
 import 'package:core/src/element.dart';
+import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 
@@ -56,7 +57,7 @@ abstract class TagDataset {
         dsNew.add(e);
       }
     }
-    print('Bad Elements: $badElements');
+    log.debug('Bad Elements: $badElements');
     return dsNew;
   }
 }

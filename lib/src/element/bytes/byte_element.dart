@@ -25,6 +25,7 @@ part 'integer.dart';
 part 'pixel_data.dart';
 part 'sequence.dart';
 part 'string.dart';
+
 typedef Element DecodeBinaryVF(DicomBytes bytes, int vrIndex);
 
 typedef Element BDElementMaker(int code, int vrIndex, DicomBytes bytes);
@@ -164,9 +165,19 @@ abstract class ByteElement<V> {
     assert(vrIndex >= 1 && vrIndex < 4);
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVRIndex(vrIndex, tag.vrIndex);
+    if (index < kVRMaybeUndefinedIndexMin || index > kVRMaybeUndefinedIndexMax)
+      return badVRIndex(index, null, -1);
     if (code != kPixelData) return badTagCode(code, 'Not Pixel Data', tag);
-    return _undefinedBytesMakers[index](bytes, ts, fragments);
+    return _pixelDataMakers[index](bytes, ts, fragments);
   }
+
+  // Elements that may have undefined lengths.
+  static final List<Function> _pixelDataMakers = <Function>[
+    null,
+    OBbytesPixelData.fromBytes,
+    OWbytesPixelData.fromBytes,
+    UNbytesPixelData.fromBytes
+  ];
 
   /// Returns a new [Element] based on the arguments.
   static Element makeFromValues(int code, int vrIndex, Iterable vList,
@@ -202,8 +213,8 @@ DicomBytes _makeShort<V>(
     int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize) {
   final vfLength = vList.length * eSize;
   return (isEvr)
-         ? EvrShortBytes.makeEmpty(code, vfLength, vrCode)
-         : IvrBytes.makeEmpty(code, vfLength, vrCode);
+      ? EvrShortBytes.makeEmpty(code, vfLength, vrCode)
+      : IvrBytes.makeEmpty(code, vfLength, vrCode);
 }
 
 DicomBytes _makeShortString(
@@ -212,22 +223,21 @@ DicomBytes _makeShortString(
   if (tag.vrCode != vrCode) return null;
   final vlf = stringListLength(sList, pad: true);
   return (isEvr)
-         ? EvrShortBytes.makeEmpty(code, vlf, vrCode)
-         : IvrBytes.makeEmpty(code, vlf, vrCode);
+      ? EvrShortBytes.makeEmpty(code, vlf, vrCode)
+      : IvrBytes.makeEmpty(code, vlf, vrCode);
 }
 
 DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
   final vfLength = vList.length * eSize;
   return (isEvr)
-         ? EvrLongBytes.makeEmpty(code, vfLength, vrCode)
-         : IvrBytes.makeEmpty(code, vfLength, vrCode);
+      ? EvrLongBytes.makeEmpty(code, vfLength, vrCode)
+      : IvrBytes.makeEmpty(code, vfLength, vrCode);
 }
 
 DicomBytes _makeLongString(
     int code, List<String> sList, int vrCode, bool isEvr) {
   final vlf = stringListLength(sList, pad: true);
   return (isEvr)
-         ? EvrLongBytes.makeEmpty(code, vlf, vrCode)
-         : IvrBytes.makeEmpty(code, vlf, vrCode);
+      ? EvrLongBytes.makeEmpty(code, vlf, vrCode)
+      : IvrBytes.makeEmpty(code, vlf, vrCode);
 }
-

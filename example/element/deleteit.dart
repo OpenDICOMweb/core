@@ -16,7 +16,7 @@ void main() {
   final date = new DAtag(tag, ['19990505']);
   ds[tag.code] = date;
   date..checkValues(['3758'])..checkValues(['25240528']);
-  //Urgent Fix: there needs to be a comparison
+  //TODO Fix: there should be a comparison
 //  final cpy = date.copy..values;
   print('copied value equals original value:');
   print(date.values.first);

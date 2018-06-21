@@ -194,7 +194,7 @@ abstract class Element<V> extends ListBase<V> {
   /// The size in bytes of the Value Field Length field.
   int get vlfSize => vr.vlfSize;
 
-  // Urgent Jim: make this a Mixin
+  // TODO Jim: make this a Mixin
   VR get vr => vrByIndex[vrIndex];
 
   String get vrId => vr.id;

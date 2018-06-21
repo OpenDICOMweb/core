@@ -254,7 +254,6 @@ class VRSpecial extends VR<int> {
       kUSOWIndex, 'USOW', -1, 0, 0, const <VRInt>[VR.kUS, VR.kOW]);
 }
 
-//Urgent: move to VR
 const List<VR> vrByIndex = const <VR>[
   VR.kUN,
   // Begin maybe undefined length

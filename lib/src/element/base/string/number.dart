@@ -324,21 +324,21 @@ abstract class IS extends StringAscii {
         : invalidString(s, issues);
   }
 
-  // Urgent: doc
+  /// Returns an [int] created by parsing [s]. If [s] is invalid
+  /// returns _null_.
+  ///
+  /// Before [s] is parsed leading and trailing whitespace is removed.
+  ///
+  /// _Note_: Dart int.tryParse doesn't handle '+' sign.
   static int tryParse(String s, [Issues issues]) {
-    if (s == null ||
-        !isValidValueLength(s, issues) ||
-        notInRange(s.length, kMinValueLength, kMaxValueLength))
-      return _badIS(s, issues);
-    // Remove leading and training spaces
+    if (s == null || !isValidValueLength(s, issues)) return _badIS(s, issues);
     var s0 = s.trim();
     if (s.isEmpty) return 0;
-    // Dart int.tryParse doesn't handle + sign
     s0 = (s[0] == '+') ? s.substring(1) : s;
     final n = int.tryParse(s0);
-    return (n == null || notInRange(n, kMinValue, kMaxValue))
-        ? _badIS(s, issues)
-        : n;
+    if (n == null || notInRange(n, kMinValue, kMaxValue))
+        return _badIS(s, issues);
+    return n;
   }
 
   static int _badIS(String s, Issues issues) {

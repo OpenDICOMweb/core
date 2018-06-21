@@ -54,7 +54,6 @@ abstract class DicomWriteBufferMixin {
 
   /// Write a DICOM Tag Code to _this_.
   void writeEvrLongHeader(int code, int vrCode, int vlf) {
-//    _checkEvrLongHeader(code, vrCode, vlf);
     assert(_wIndex.isEven);
     _maybeGrow(12);
     _buf.evrSetLongHeader(code, vrCode, vlf);
@@ -63,15 +62,11 @@ abstract class DicomWriteBufferMixin {
 
   /// Write a DICOM Tag Code to _this_.
   void writeIvrHeader(int code, int vrCode, int vlf) {
-//    _checkIvrHeader(code, vrCode, vlf);
     assert(_wIndex.isEven);
     _maybeGrow(8);
     _buf.ivrSetHeader(_wIndex, code, vlf);
     _wIndex += 8;
   }
-
-// Urgent Jim: move to system
-  bool allowInvalidTagCode = true;
 }
 
 class DicomWriteBuffer extends WriteBuffer with DicomWriteBufferMixin {

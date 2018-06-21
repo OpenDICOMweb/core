@@ -29,8 +29,7 @@ void nonHierarchicalLoggerTest() {
   final log = new Logger('foo', Level.debug);
   print('logger "log": $log');
 
-  //Urgent fix next line
-	final logFile = new LogFile(prefix: 'logger');
+	final logFile = new LogFile(prefix: 'log');
   final handler = new FileHandler(logFile, doPrint: true);
   print('handler: $handler');
   Logger.root.onRecord.listen(handler);

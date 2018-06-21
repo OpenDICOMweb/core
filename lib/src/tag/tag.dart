@@ -523,7 +523,7 @@ abstract class Tag {
     return (msgs == null) ? null : msgs;
   }
 
-  //Urgent: make checkRange part of system
+  // Issue: should checkRange be global
   /// Returns_true_ if [code] is a valid Public Code, but
   /// _does not check that [code] is defined by the DICOM Standard.
   static bool isPublicCode(int code, {bool checkRange = true}) {

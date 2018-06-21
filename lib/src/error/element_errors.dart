@@ -125,7 +125,7 @@ Null badValuesLength(Iterable values, int vmMin, int vmMax,
     [Issues issues, Tag tag]) {
   final length = values.length;
   final s = length == null ? 'null' : '$length';
-  final msg = 'InvalidValuesLengthError: $values '
+  final msg = 'InvalidValuesLengthError: '
       'vmMin($vmMin) <= $s <= vmMax($vmMax})';
   return _badValuesError(msg, values, issues, tag);
 }

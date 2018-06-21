@@ -145,8 +145,7 @@ class Date implements Comparable<Date> {
   @override
   String toString() => inet;
 
-  //Urgent Jim
-  //Issue: Internal constructor - should be hidden when exported:
+  /// Returns a new [Date] that is equal to the Epoch Day.
   static Date fromEpochDay(int epochDay) =>
       new Date._(epochDay * kMicrosecondsPerDay);
 

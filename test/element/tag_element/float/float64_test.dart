@@ -20,7 +20,8 @@ void main() {
   List<double> invalidVList;
 
   setUp(() {
-    invalidVList = rng.float64List(FL.kMaxLength + 1, FL.kMaxLength + 1);
+    // Using float32List because only length matters
+    invalidVList = rng.float32List(FL.kMaxLength + 1, FL.kMaxLength + 1);
   });
 
   tearDown(() {
@@ -565,9 +566,6 @@ void main() {
       PTag.kDate,
       PTag.kTime
     ];
-
-  // Urgent: moved to setUp above - also shouldn't this be rng.float64List?
-  // final invalidVList = rng.float32List(FD.kMaxLength + 1, FD.kMaxLength + 1);
 
     test('FD isValidTag good values', () {
       global.throwOnError = false;

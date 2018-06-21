@@ -236,7 +236,7 @@ abstract class DicomMixin {
   static const int _kEltOffset = 0;
 }
 
-// Urgent Jim remove reader and writer methods from DicomMixin
+// TODO Jim remove reader and writer methods from DicomMixin
 abstract class DicomReaderMixin {
   int get _bdOffset;
   int get _bdLength;
@@ -347,8 +347,8 @@ abstract class DicomWriterMixin {
     _setUint16(0, code >> 16);
     _setUint16(2, code & 0xFFFF);
     _setUint16(4, vrCode);
-// This field is zero, but GC takes care of  that
-//    _setUint16( 6, 0)
+    // This field is zero, but GC takes care of  that
+    //  _setUint16( 6, 0)
     _setUint32(8, vlf);
   }
 

@@ -404,23 +404,6 @@ void main() {
       }
     });
 
-    // Urgent Sharath: I don't think we need these any more
-/*    test('FL fromBase64', () {
-    //  final fString = Float32.toBase64(<double>[78678.11]);
-   // final fl0 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, fString);
-   //   expect(fl0.hasValidValues, true);
-
-      for (var i = 0; i < 10; i++) {
-        final floatList0 = rng.float32List(1, 1);
-        final float32List0 = new Float32List.fromList(floatList0);
-        final uInt8List0 = float32List0.buffer.asUint8List();
-    //    final base64 = cvt.base64.encode(uInt8List0);
-   //   final fl1 = FLtag.fromBase64(PTag.kAbsoluteChannelDisplayScale, base64);
-   //     expect(fl1.hasValidValues, true);
-      }
-    });
-
- */
     test('Create Elements from floating values(FL)', () {
       const f32Values = const <double>[2047.99, 2437.437, 764.53];
 
@@ -530,9 +513,6 @@ void main() {
       PTag.kDate,
       PTag.kTime
     ];
-
-  // Urgent: changed to setUp above.
-  // final invalidVList = rng.float32List(FL.kMaxLength + 1, FL.kMaxLength + 1);
 
     test('FL isValidTag good values', () {
       global.throwOnError = false;
