@@ -62,8 +62,8 @@ void main() {
         log
           ..debug('vList0: $vList0')
           ..debug('vList1: $vList1')
-            ..debug('sList0: $sList0')
-            ..debug('sList1: $sList1')
+          ..debug('sList0: $sList0')
+          ..debug('sList1: $sList1')
           ..debug('bytes0: $bytes0')
           ..debug('vList0.length: ${vList0.length}')
           ..debug('vList1.length: ${vList1.length}');
@@ -107,5 +107,35 @@ void main() {
       log.debug('s0: "$s0" == s1: "$s1"');
       expect(s0 == s1, true);
     });
+  });
+
+  test('upperCase and lowercase', () {
+    var c = toUppercaseChar(ka);
+    log.debug('a to $c');
+    expect(kA == c, true);
+    c = toLowercaseChar(kA);
+    log.debug('A to $c');
+    expect(ka == c, true);
+
+    global.level = Level.debug;
+    var alphabate = '';
+    var listupper = <String>[];
+    for (var i = 'A'.codeUnitAt(0); i <= 'Z'.codeUnitAt(0); i++) {
+      alphabate = new String.fromCharCode(i);
+      log.debug('alphabate: $alphabate');
+      listupper.add(alphabate);
+    }
+    log.debug('listupper: $listupper');
+    var lowercaseList = '';
+    var listlower = <String>[];
+    for (var data in listupper) {
+      final dkd = toLowercaseChar(data.codeUnitAt(0));
+      lowercaseList = new String.fromCharCode(dkd);
+      print(lowercaseList);
+      print(lowercaseList.codeUnits);
+      listlower.add(lowercaseList);
+      //list.add(lowercaseList);
+    }
+    log.debug('listlower: $listlower');
   });
 }
