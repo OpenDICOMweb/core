@@ -20,7 +20,6 @@ void main() {
     0x000E0004,
     0x00100005,
     0x00120007,
-    // Urgent Jim check these codes
     0xFFFA0000,
     0xFFFC0FF0,
     0xFFFF01FE,
@@ -32,7 +31,6 @@ void main() {
     0x000D0000,
     0x000F0000,
     0x00110000,
-    // Urgent Jim check these codes
     0xFFF90000,
     0xFFFB0000,
     0xFFFD0000,
@@ -44,7 +42,6 @@ void main() {
     0x000D0012,
     0x000F0013,
     0x00110014,
-    // Urgent Jim check these codes
     0xFFF900FD,
     0xFFFB00FE,
     0xFFFD00FF,
@@ -76,7 +73,6 @@ void main() {
     0x000D0003,
     0x000F0004,
     0x00110005,
-    // Urgent Jim check these codes
     0xFFF9000D,
     0xFFFB000E,
     0xFFFD000F
@@ -88,7 +84,6 @@ void main() {
     0x000D1202,
     0x000F1303,
     0x00111404,
-    // Urgent Jim check these codes
     0xFFF9FF00,
     0xFFFBFFFE,
     0xFFFDFFFF
@@ -174,7 +169,6 @@ void main() {
     const [0x000D1202, 0x000D0012],
     const [0x000F1303, 0x000F0013],
     const [0x00111404, 0x00110014],
-    // Urgent Jim check these codes
     const [0xFFF9FF00, 0xFFF900FF],
     const [0xFFFBFBFE, 0xFFFB00FB],
     const [0xFFFDFDFF, 0xFFFD00FD]
