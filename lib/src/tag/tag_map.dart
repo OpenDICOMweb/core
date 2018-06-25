@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/tag/p_tag.dart';
+import 'package:core/src/tag/public/p_tag.dart';
 
 /// An ordered List of all DICOM Data Elements.  See PS3.6.
 const Map<int, PTag> tagMap = const <int, PTag>{
@@ -29,7 +29,7 @@ const Map<int, PTag> tagMap = const <int, PTag>{
   0x00020100: PTag.kPrivateInformationCreatorUID,
   0x00020102: PTag.kPrivateInformation,
 
-  //**** Beginming of DICOM Directory Tags
+  //**** Beginning of DICOM Directory Tags
   0x00041130: PTag.kFileSetID,
   0x00041141: PTag.kFileSetDescriptorFileID,
   0x00041142: PTag.kSpecificCharacterSetOfFileSetDescriptorFile,

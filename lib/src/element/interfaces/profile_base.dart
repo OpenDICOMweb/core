@@ -124,9 +124,8 @@ abstract class ProfileBase<V> {
   ///
   bool keep(int tag);
 
-  /// Ensures that an [Element] with [tag] and [EType] == 3, contained in
-  /// the
-  /// [original] is _not_ contained in [result]. Returns the removed
+  /// Ensures that an [Element] with [tag] and [EType] != 1, contained in
+  /// the [original] is _not_ contained in [result]. Returns the removed
   /// [Element], if present; otherwise, returns _null_.
   ///
   /// If [tag] is not valid an [InvalidTag] [Error] is thrown.
@@ -143,14 +142,14 @@ abstract class ProfileBase<V> {
   ///
   List<V> empty(int tag);
 
-  /// Returns the [value] of the [Element] in [original] with [tag].
+  /// Returns the [values] of the [Element] in [original] with [tag].
   ///
   /// If [original] contains no [Element] with [tag] an UnknownElement [Error]
   /// is thrown.
   ///
   /// If [tag] is not valid an [InvalidTag] [Error] is thrown.
   ///
-  List<V> value(int tag);
+  List<V> values(int tag);
 
   /// Requires that a _valid_ [Element] with [tag] is contained in the [result].
   ///
@@ -189,9 +188,9 @@ abstract class ProfileBase<V> {
   ///
   List<V> replace(int tag, List<V> vList);
 
-  /// Takes the [value] of the [Element] with [tag] in [original], and
+  /// Takes the [values] of the [Element] with [tag] in [original], and
   /// encrypts it using [key]. A new [Element] containing [tag] and the
-  /// encrypted values is added to [result]. Returns the original [value].
+  /// encrypted values is added to [result]. Returns the original [values].
   ///
   /// If the [Element] with [tag] has an _empty_ value, then the [Element]
   /// is added to [result].

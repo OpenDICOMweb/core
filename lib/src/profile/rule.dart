@@ -9,7 +9,7 @@
 
 import 'dart:convert' as cvt;
 
-import 'package:core/src/tag/p_tag.dart';
+import 'package:core/src/tag/public/p_tag.dart';
 import 'package:core/src/tag/tag.dart';
 
 const List<String> ruleNames = const [

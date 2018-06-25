@@ -9,9 +9,10 @@
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/error/tag_errors.dart';
-import 'package:core/src/tag/p_tag_code_map.dart';
-import 'package:core/src/tag/p_tag_keywords.dart';
+import 'package:core/src/tag/public/p_tag_code_map.dart';
+import 'package:core/src/tag/public/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
+import 'package:core/src/tag/code.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr.dart';
 
@@ -91,7 +92,7 @@ class PTag extends Tag {
 
   static PTag lookupByCode(int code,
       [int vrIndex = kUNIndex, bool shouldThrow = false]) {
-    if (Tag.isNotPublicCode(code, checkRange: false))
+    if (isNotPublicCode(code))
       return badTagCode(code, 'Non-Public Tag Code');
     final tag = pTagCodeMap[code];
     if (tag != null) return tag;

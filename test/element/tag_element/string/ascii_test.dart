@@ -119,7 +119,7 @@ void main() {
 
     global.level = Level.debug;
     var alphabate = '';
-    var listupper = <String>[];
+    final listupper = <String>[];
     for (var i = 'A'.codeUnitAt(0); i <= 'Z'.codeUnitAt(0); i++) {
       alphabate = new String.fromCharCode(i);
       log.debug('alphabate: $alphabate');
@@ -127,7 +127,7 @@ void main() {
     }
     log.debug('listupper: $listupper');
     var lowercaseList = '';
-    var listlower = <String>[];
+    final listlower = <String>[];
     for (var data in listupper) {
       final dkd = toLowercaseChar(data.codeUnitAt(0));
       lowercaseList = new String.fromCharCode(dkd);

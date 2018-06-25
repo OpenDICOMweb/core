@@ -40,9 +40,9 @@ abstract class ByteElement<V> {
   bool get hasValidValues;
   V operator [](int index);
 
-  // **** End of Interface
-
   set values(Iterable<V> vList) => unsupportedError();
+
+  // **** End of Interface
 
   /// Returns _true_ if _this_ and [other] are the same [ByteElement],
   /// and equal byte for byte.
@@ -56,12 +56,15 @@ abstract class ByteElement<V> {
   /// used to locate other values in the [Element] Definition.
   int get index => code;
 
+  /// The Tag Code of _this_.
+  int get code => bytes.code;
+
   /// The length in bytes of this [ByteElement]
   int get eLength => bytes.length;
 
   bool get isEvr => bytes.isEvr;
 
-  int get code => bytes.code;
+
 
   bool get isPublic => code.isEven;
   bool get isPrivate => !isPublic;

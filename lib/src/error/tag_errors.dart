@@ -127,6 +127,27 @@ Object _doTagError(int index, Issues issues,
   return null;
 }
 
+Null badPrivateTagCode(int code) => badTagCode(code, 'Invalid Private Tag');
+Null badPrivateCreatorTagCode(int code) =>
+    badTagCode(code, 'Invalid Private Creator Tag');
+Null badPrivateDataTagCode(int code) =>
+    badTagCode(code, 'Invalid Private Creator Tag');
+
+bool invalidPrivateTagCode(int code) {
+  badPrivateTagCode(code);
+  return false;
+}
+
+bool invalidPrivateCreatorTagCode(int code) {
+  badPrivateCreatorTagCode(code);
+  return false;
+}
+
+bool invalidPrivateDataTagCode(int code) {
+  badPrivateDataTagCode(code);
+  return false;
+}
+
 /// An invalid DICOM Group number [Error].
 class InvalidGroupError extends Error {
   String msg;
@@ -149,4 +170,3 @@ bool invalidGroupError(int group, [Issues issues]) {
   badGroupError(group, issues);
   return false;
 }
-

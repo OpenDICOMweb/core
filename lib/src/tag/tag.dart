@@ -13,10 +13,11 @@ import 'package:core/src/error.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
+import 'package:core/src/tag/code.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/ie_type.dart';
-import 'package:core/src/tag/p_tag.dart';
-import 'package:core/src/tag/p_tag_keywords.dart';
+import 'package:core/src/tag/public/p_tag.dart';
+import 'package:core/src/tag/public/p_tag_keywords.dart';
 import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/private/pd_tag.dart';
 import 'package:core/src/tag/private/private_tag.dart';
@@ -316,7 +317,7 @@ abstract class Tag {
   //TODO: Flush either fromCode of lookupByCode
   /// Returns an appropriate [Tag] based on the arguments.
   static Tag fromCode<T>(int code, int vrIndex, [T creator]) {
-    if (Tag.isPublicCode(code)) {
+    if (isPublicCode(code)) {
       var tag = Tag.lookupPublicCode(code, vrIndex);
       return tag ??= new PTag.unknown(code, vrIndex);
     } else {
@@ -331,6 +332,26 @@ abstract class Tag {
       // This should never happen
       return badTagCode(code);
     }
+  }
+
+  /// Returns _true_ if [code] is valid.  If [code] is public, then it
+  /// must be a known [PTag]; otherwise, it must be a valid private [code],
+  /// i.e. 0xggggeeee, where gggg is odd and eeee == 0 or eeee >= 00
+  static bool isValidCode(int code) {
+    if (code.isOdd) {
+      return isValidPrivateCode(code);
+    } else {
+      final tag = PTag.lookupByCode(code);
+      return (tag == null) ? false : true;
+    }
+  }
+
+  static bool isValidPrivateCode(int code) {
+    if (!code.isOdd) return false;
+    final elt = code & 0xFFFF;
+    return ((elt > 0 && elt < 0x10) || (elt > 0xFF && elt < 0x1000))
+        ? false
+        : true;
   }
 
   /// Returns an appropriate [Tag] based on the arguments.
@@ -523,6 +544,7 @@ abstract class Tag {
     return (msgs == null) ? null : msgs;
   }
 
+/*
   // Issue: should checkRange be global
   /// Returns_true_ if [code] is a valid Public Code, but
   /// _does not check that [code] is defined by the DICOM Standard.
@@ -533,9 +555,10 @@ abstract class Tag {
     }
     return false;
   }
+*/
 
-  static bool isNotPublicCode(int code, {bool checkRange: true}) =>
-      !isPublicCode(code, checkRange: checkRange);
+//  static bool isNotPublicCode(int code, {bool checkRange: true}) =>
+//      !isPublicCode(code, checkRange: checkRange);
 
   // *** Private Tag Code methods
   /// Groups numbers that shall not be used in PrivateTags.
@@ -571,7 +594,7 @@ abstract class Tag {
 
   static bool isPublicGroupLengthCode(int code) =>
       // Public Tags have bit #16 must equal 0.
-      Tag.isPublicCode(code) && (code & 0x1FFFF) == 0;
+      isPublicCode(code) && (code & 0x1FFFF) == 0;
 
   static bool isPrivateGroupLengthCode(int code) =>
       // Private Tags have bit #16 must equal 1.

@@ -23,20 +23,11 @@ import 'package:core/src/vr.dart';
 abstract class TagElement<V> {
   /// The DICOM Element Definition. In the _ODW_ _SDK_ this is called a "_Tag_".
   Tag get tag;
-  V get value;
+//  V get value;
   Iterable<V> get values;
   set values(Iterable<V> vList);
 
-/*
-
-  Tag get tag {
-    final pCode = code & 0x1FFFF;
-    if (pCode >= 0x10010 && pCode <= 0x100FF) {
-      return PCTag.lookupByToken(code, vrIndex, '');
-    }
-    return Tag.lookupByCode(code, vrIndex);
-  }
-*/
+  // **** End of Interface
 
   int get index => tag.index;
 
@@ -95,7 +86,8 @@ abstract class TagElement<V> {
   static PC _getPCTag(int code, int vrIndex, List<String> values) {
     if (values == null || values.length > 2) badValues(values);
     final token = (values.isEmpty) ? '' : values[0];
-    final tag = PCTag.lookupByToken(code, vrIndex, token);
+    Tag tag = PCTag.lookupByToken(code, vrIndex, token);
+    tag ??= new PCTagUnknown(code, vrIndex, token);
     return new PCtag(tag, [token]);
   }
 

@@ -57,7 +57,7 @@ class UNbytesPixelData extends UNPixelData
   @override
   int get lengthInBytes => bytes.vfLength;
 
-  static UNbytesPixelData fromBytes(int code, DicomBytes bytes,
+  static UNbytesPixelData fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
       new UNbytesPixelData(bytes, ts, fragments);
 }
