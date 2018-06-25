@@ -789,7 +789,7 @@ void main() {
         }
       }
       global.throwOnError = false;
-      final vList0 = rsg.getLOList(1, 1);
+      final vList0 = rsg.getDAList(1, 1);
       expect(DA.isValidLength(null, vList0), false);
 
       expect(DA.isValidLength(PTag.kSelectorDAValue, null), isNull);

@@ -572,7 +572,7 @@ void main() {
         }
       }
       global.throwOnError = false;
-      final vList0 = rsg.getLOList(1, 1);
+      final vList0 = rsg.getURList(1, 1);
       expect(UR.isValidLength(null, vList0), false);
 
       expect(UR.isValidLength(PTag.kSelectorURValue, null), isNull);

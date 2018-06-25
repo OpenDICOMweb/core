@@ -625,7 +625,7 @@ void main() {
         }
       }
       global.throwOnError = false;
-      final vList0 = rsg.getLOList(1, 1);
+      final vList0 = rsg.getSTList(1, 1);
       expect(ST.isValidLength(null, vList0), false);
 
       expect(ST.isValidLength(PTag.kSelectorSTValue, null), isNull);

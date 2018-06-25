@@ -36,6 +36,7 @@ void main() {
 
   group('Integer String Tests', () {
     test('Is valid integer string -  good values', () {
+      global.level = Level.info;
       for (var s in goodIntegerStrings) {
         global.throwOnError = false;
         log.debug('s: "$s"');
@@ -371,7 +372,7 @@ void main() {
 
       global.throwOnError = true;
       expect(
-          () => IStag.fromValues(PTag.kWaveformChannelNumber, <String>[null]),
+              () => IStag.fromValues(PTag.kWaveformChannelNumber, <String>[null]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -670,7 +671,7 @@ void main() {
         }
       }
       global.throwOnError = false;
-      final vList0 = rsg.getLOList(1, 1);
+      final vList0 = rsg.getISList(1, 1);
       expect(LO.isValidLength(null, vList0), false);
 
       expect(LO.isValidLength(PTag.kSelectorLOValue, null), isNull);
