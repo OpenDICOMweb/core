@@ -64,7 +64,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => new AEtag(PTag.kScheduledStudyLocationAETitle, s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
@@ -260,7 +260,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => AEtag.fromBytes(PTag.kSelectorCSValue, bytes0),
-              throwsA(const isInstanceOf<InvalidTagError>()));
+              throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }
     });
@@ -288,7 +288,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AEtag.fromValues(PTag.kPerformedStationAETitle, vList0),
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const TypeMatcher<InvalidValuesError>()));
       }
 
       global.throwOnError = false;
@@ -301,7 +301,7 @@ void main() {
       expect(
               () => AEtag
               .fromValues(PTag.kScheduledStudyLocationAETitle, <String>[null]),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('AE checkLength good values', () {
@@ -341,7 +341,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => e1.checkValue(a),
-              throwsA(const isInstanceOf<StringError>()));
+              throwsA(const TypeMatcher<StringError>()));
         }
       }
     });
@@ -396,7 +396,7 @@ void main() {
       expect(AE.isValidTag(PTag.kSelectorFDValue), false);
       global.throwOnError = true;
       expect(() => AE.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -405,7 +405,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AE.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidTagError>()));
+            throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
 /*
@@ -429,7 +429,7 @@ void main() {
           isNull);
       global.throwOnError = true;
       expect(() => AE.checkVRIndex(kSSIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -437,7 +437,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AE.checkVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -460,7 +460,7 @@ void main() {
           isNull);
       global.throwOnError = true;
       expect(() => AE.checkVRCode(kSSCode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -468,7 +468,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AE.checkVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 */
@@ -489,7 +489,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => AE.isValidVRIndex(kCSIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -497,7 +497,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AE.isValidVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -516,7 +516,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => AE.isValidVRCode(kSSCode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -524,7 +524,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AE.isValidVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -587,7 +587,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => AE.isValidLength(tag, vList),
-              throwsA(const isInstanceOf<InvalidValuesError>()));
+              throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
       global.throwOnError = false;
@@ -598,10 +598,10 @@ void main() {
 
       global.throwOnError = true;
       expect(() => AE.isValidLength(null, vList0),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       expect(() => AE.isValidLength(PTag.kSelectorAEValue, null),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('AE isValidLength VM.k1_n good values', () {
@@ -633,7 +633,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => AE.isValidValue(a),
-              throwsA(const isInstanceOf<StringError>()));
+              throwsA(const TypeMatcher<StringError>()));
         }
       }
     });
@@ -652,7 +652,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AE.isValidValues(PTag.kReceivingAE, s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -698,7 +698,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => AE.isValidValues(PTag.kReceivingAE, vList1),
-          throwsA(const isInstanceOf<StringError>()));
+          throwsA(const TypeMatcher<StringError>()));
 
       for (var s in badAEList) {
         global.throwOnError = false;
@@ -706,7 +706,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => AE.isValidValues(PTag.kReceivingAE, s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -778,7 +778,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => Bytes.fromAsciiList(null, kMaxShortVF),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
   });
 }

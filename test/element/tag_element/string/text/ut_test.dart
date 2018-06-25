@@ -54,7 +54,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => new UTtag(PTag.kUniversalEntityID, s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
@@ -64,7 +64,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => new UTtag(PTag.kLocalNamespaceEntityID, null),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UT hasValidValues random', () {
@@ -262,7 +262,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => UTtag.fromBytes(bytes0, PTag.kSelectorCSValue),
-              throwsA(const isInstanceOf<InvalidTagError>()));
+              throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }
     });
@@ -289,7 +289,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => UTtag.fromValues(PTag.kUniversalEntityID, vList0),
-            throwsA(const isInstanceOf<InvalidValuesError>()));
+            throwsA(const TypeMatcher<InvalidValuesError>()));
       }
 
       global.throwOnError = false;
@@ -299,7 +299,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => UTtag.fromValues(PTag.kUniversalEntityID, <String>[null]),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UT checkLength good values', () {
@@ -320,7 +320,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => new UTtag(PTag.kUniversalEntityID, vList1),
-          throwsA(const isInstanceOf<InvalidValuesError>()));
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UT checkValue good values', () {
@@ -343,7 +343,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => e0.checkValue(a),
-              throwsA(const isInstanceOf<StringError>()));
+              throwsA(const TypeMatcher<StringError>()));
         }
       }
     });
@@ -421,7 +421,7 @@ void main() {
       expect(UT.isValidTag(PTag.kSelectorFDValue), false);
       global.throwOnError = true;
       expect(() => UT.isValidTag(PTag.kSelectorFDValue),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -430,7 +430,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => UT.isValidTag(tag),
-            throwsA(const isInstanceOf<InvalidTagError>()));
+            throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
 /*
@@ -454,7 +454,7 @@ void main() {
           isNull);
       global.throwOnError = true;
       expect(() => UT.checkVRIndex(kAEIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -462,7 +462,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => UT.checkVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -485,7 +485,7 @@ void main() {
           isNull);
       global.throwOnError = true;
       expect(() => UT.checkVRCode(kAECode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -493,7 +493,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => UT.checkVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 */
@@ -514,7 +514,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => UT.isValidVRIndex(kCSIndex),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -522,7 +522,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => UT.isValidVRIndex(tag.vrIndex),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -541,7 +541,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => UT.isValidVRCode(kAECode),
-          throwsA(const isInstanceOf<InvalidVRError>()));
+          throwsA(const TypeMatcher<InvalidVRError>()));
 
       for (var tag in otherTags) {
         global.throwOnError = false;
@@ -549,7 +549,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => UT.isValidVRCode(tag.vrCode),
-            throwsA(const isInstanceOf<InvalidVRError>()));
+            throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
 
@@ -593,7 +593,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => UT.isValidLength(tag, vList),
-              throwsA(const isInstanceOf<InvalidValuesError>()));
+              throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
 
@@ -605,10 +605,10 @@ void main() {
 
       global.throwOnError = true;
       expect(() => UT.isValidLength(null, vList0),
-          throwsA(const isInstanceOf<InvalidTagError>()));
+          throwsA(const TypeMatcher<InvalidTagError>()));
 
       expect(() => UT.isValidLength(PTag.kSelectorUTValue, null),
-          throwsA(const isInstanceOf<GeneralError>()));
+          throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('UT isValidValue good values', () {
@@ -627,7 +627,7 @@ void main() {
 
           global.throwOnError = true;
           expect(() => UT.isValidValue(a),
-              throwsA(const isInstanceOf<StringError>()));
+              throwsA(const TypeMatcher<StringError>()));
         }
       }
     });
@@ -646,7 +646,7 @@ void main() {
 
         global.throwOnError = true;
         expect(() => UT.isValidValues(PTag.kUniversalEntityID, s),
-            throwsA(const isInstanceOf<StringError>()));
+            throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -733,7 +733,7 @@ void main() {
 
       system.throwOnError = true;
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
-          throwsA(const isInstanceOf<GeneralError>()));*/ /*
+          throwsA(const TypeMatcher<GeneralError>()));*/ /*
     });*/
 
     test('UT toByteData', () {
@@ -821,7 +821,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
-          throwsA(const isInstanceOf<GeneralError>()));*/
+          throwsA(const TypeMatcher<GeneralError>()));*/
     });
   });
 }
