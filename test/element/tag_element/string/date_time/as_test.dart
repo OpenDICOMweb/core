@@ -801,7 +801,6 @@ void main() {
       expect(Bytes.fromAsciiList(vList1), equals(values));
     });
 
-    // Urgent Sharath Fix - I'm not sure what it's supposed to do.
     test('AS toUint8List bad values length', () {
       global.throwOnError = false;
       final vList0 = rsg.getASList(AS.kMaxVFLength + 1, AS.kMaxVFLength + 1);
@@ -813,7 +812,7 @@ void main() {
       //TODO: finish
       global.throwOnError = true;
 
-/*
+/* Urgent Jim
       expect(() => Bytes.fromAsciiList(vList0),
           throwsA(const TypeMatcher<InvalidValueFieldError>()));
 */

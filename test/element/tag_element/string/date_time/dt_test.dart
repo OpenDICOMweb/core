@@ -717,7 +717,7 @@ void main() {
       expect(DT.isValidValueLength('19500718105630'), true);
     });
 
-    /* Urgent Sharath - bad test 4 >= length <= 26. badDTLengthList is not bad!
+     //Urgent Jim -  bad test 4 >= length <= 26. badDTLengthList is bad!
     test('DT isValidValueLength bad values', () {
       for (var s in badDTLengthList) {
         for (var a in s) {
@@ -726,7 +726,6 @@ void main() {
       }
       expect(DT.isValidValueLength('20170223122334.111111+11000000'), false);
     });
-*/
 
     test('DT isValidLength VM.k1 good values', () {
       global.throwOnError = false;
@@ -942,7 +941,7 @@ void main() {
       expect(bytes, isNotNull);
       expect(bytes.length > DT.kMaxVFLength, true);
 
-/* Urgent Sharath ??
+/* Urgent Jim
       global.throwOnError = true;
       expect(() => Bytes.fromAsciiList(vList0),
           throwsA(const TypeMatcher<InvalidValueFieldError>()));

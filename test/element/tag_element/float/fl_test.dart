@@ -11,12 +11,6 @@ import 'dart:typed_data';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-// Urgent Sharath verify:
-//    - Use vList, vList0,... for value lists
-//    - use bytes, bytes0,... for Bytes
-//    - Use e, e0,... for elements
-//    - checkVR is not longer supported
-
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = new RNG(1);

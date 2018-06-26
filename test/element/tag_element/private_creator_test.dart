@@ -21,7 +21,7 @@ void main() {
       expect(pcTag0.isValid, true);
       final pc0 = new LOtag(pcTag0, [name0]);
       log.debug('pc0: ${pc0.info}');
-// Urgent: Sharath let's discuss
+// Urgent: Jim 
 //      expect(pcTag0.isValidValues(pc0.values), true);
 
       const name1 = 'Foo';
@@ -30,7 +30,7 @@ void main() {
       expect(pcTag1.isValid, true);
       final pc1 = new LOtag(pcTag1, [name1]);
       log.debug('PC: ${pc1.info}');
-// Urgent: Sharath let's discuss
+// Urgent: Jim 
 //      expect(pcTag1.isValidValues(pc1.values), true);
     });
 
@@ -86,7 +86,7 @@ void main() {
       expect(pcTag0.isValid, true);
       final pc0 = new LOtag(pcTag0, [name0]);
       log.debug('pc0: ${pc0.info}');
-// Urgent: Sharath let's discuss
+// Urgent: Jim 
 //      expect(pcTag0.isValidValues(pc0.values), true);
 
       const name1 = 'ACUSON';
@@ -95,7 +95,7 @@ void main() {
       expect(pcTag1.isValid, true);
       final pc1 = new LOtag(pcTag1, [name1]);
       log.debug('PC: ${pc1.info}');
-// Urgent: Sharath let's discuss
+// Urgent: Jim 
 //      expect(pcTag1.isValidValues(pc1.values), true);
     });
 
@@ -116,7 +116,7 @@ void main() {
       expect(pdTag1.isValid, true);
       log.debug('pdTag1: ${pdTag1.info}');
       final pd1 = new LOtag(pdTag1, [value1]);
-// Urgent: Sharath let's discuss
+// Urgent: Jim 
 //      expect(pdTag1.isValidValues(pd1.values), true);
       log.debug('pd1: ${pd1.info}');
     });
@@ -129,7 +129,7 @@ void main() {
       expect(pcTag.isValid, true);
       log.debug('pcTag: $pcTag');
       final pc0 = new LOtag(pcTag, [agfa]);
-// Urgent: Sharath let's discuss
+// Urgent: Jim 
 //      expect(pcTag.isValidValues(pc0.values), true);
       log.debug('pc0: ${pc0.info}');
     });
