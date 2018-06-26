@@ -408,6 +408,12 @@ void main() {
       }
     });
 
+    test('OD isValidLength', () {
+      global.throwOnError = false;
+      expect(OD.isValidLength(OD.kMaxLength), true);
+      expect(OD.isValidLength(0), true);
+    });
+
     test('OD.isValidVFLength good values', () {
       global.throwOnError = false;
       expect(OD.isValidVFLength(OD.kMaxVFLength), true);
@@ -475,95 +481,6 @@ void main() {
             throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
-
-/*
-    test('OD checkVR good values', () {
-      system.throwOnError = false;
-      expect(OD.checkVRIndex(kODIndex), kODIndex);
-
-      for (var tag in odTags) {
-        system.throwOnError = false;
-        expect(OD.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('OD checkVR bad values', () {
-      system.throwOnError = false;
-      expect(
-          OD.checkVRIndex(
-            kAEIndex,
-          ),
-          isNull);
-      system.throwOnError = true;
-      expect(() => OD.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        system.throwOnError = false;
-        expect(OD.checkVRIndex(tag.vrIndex), isNull);
-
-        system.throwOnError = true;
-        expect(() => OD.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('OD checkVRIndex good values', () {
-      system.throwOnError = false;
-      expect(OD.checkVRIndex(kODIndex), equals(kODIndex));
-
-      for (var tag in odTags) {
-        system.throwOnError = false;
-        expect(OD.checkVRIndex(tag.vrIndex), equals(tag.vrIndex));
-      }
-    });
-
-    test('OD checkVRIndex bad values', () {
-      system.throwOnError = false;
-      expect(OD.checkVRIndex(kATIndex), isNull);
-
-      system.throwOnError = true;
-      expect(() => OD.checkVRIndex(kATIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        system.throwOnError = false;
-        expect(OD.checkVRIndex(tag.vrIndex), isNull);
-
-        system.throwOnError = true;
-        expect(() => OD.checkVRIndex(tag.vrIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('OD checkVRCode good values', () {
-      system.throwOnError = false;
-      expect(OD.checkVRCode(kODCode), equals(kODCode));
-
-      for (var tag in odTags) {
-        system.throwOnError = false;
-        expect(OD.checkVRCode(tag.vrCode), equals(tag.vrCode));
-      }
-    });
-
-    test('OD checkVRCode bad values', () {
-      system.throwOnError = false;
-      expect(OD.checkVRCode(kATCode), isNull);
-
-      system.throwOnError = true;
-      expect(() => OD.checkVRCode(kATCode),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        system.throwOnError = false;
-        expect(OD.checkVRCode(tag.vrCode), isNull);
-
-        system.throwOnError = true;
-        expect(() => OD.checkVRCode(tag.vrCode),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
 
     test('OD isValidVFLength good values', () {
       expect(OD.isValidVFLength(OD.kMaxVFLength), true);

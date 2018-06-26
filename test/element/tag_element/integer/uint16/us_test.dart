@@ -348,7 +348,7 @@ void main() {
         expect(make0.hasValidValues, true);
 
         final make1 =
-        UStag.fromValues(PTag.kRepresentativeFrameNumber, <int>[]);
+            UStag.fromValues(PTag.kRepresentativeFrameNumber, <int>[]);
         expect(make1.hasValidValues, true);
         expect(make1.values, equals(<int>[]));
       }
@@ -698,43 +698,6 @@ void main() {
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
-
-/*
-
-    test('US checkVR VM.k1 good values', () {
-      global.throwOnError = false;
-      expect(US.checkVRIndex(kUSIndex), kUSIndex);
-
-      for (var tag in usTags0) {
-        global.throwOnError = false;
-        expect(US.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('US checkVR VM.k1_n good values', () {
-      for (var tag in usTags0) {
-        global.throwOnError = false;
-        expect(US.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('US checkVR bad values', () {
-      global.throwOnError = false;
-      expect(US.checkVRIndex(kAEIndex), isNull);
-      global.throwOnError = true;
-      expect(() => US.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(US.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => US.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
 
     test('US isValidVRIndex VM.k1 good values', () {
       global.throwOnError = false;

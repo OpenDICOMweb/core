@@ -428,68 +428,6 @@ void main() {
       }
     });
 
-    /*test('UC checkVRIndex good values', () {
-      global.throwOnError = false;
-      expect(UC.checkVRIndex(kUCIndex), kUCIndex);
-
-      for (var tag in ucTags0) {
-        global.throwOnError = false;
-        expect(UC.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('UC checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(
-          UC.checkVRIndex(
-            kAEIndex,
-          ),
-          isNull);
-      global.throwOnError = true;
-      expect(() => UC.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(UC.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => UC.checkVRIndex(tag.vrIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('UC checkVRIndex good values', () {
-      global.throwOnError = false;
-      expect(UC.checkVRCode(kUCCode), kUCCode);
-
-      for (var tag in ucTags0) {
-        global.throwOnError = false;
-        expect(UC.checkVRCode(tag.vrCode), tag.vrCode);
-      }
-    });
-
-    test('UC checkVRCode bad values', () {
-      global.throwOnError = false;
-      expect(
-          UC.checkVRCode(
-            kAECode,
-          ),
-          isNull);
-      global.throwOnError = true;
-      expect(() => UC.checkVRCode(kAECode),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(UC.checkVRCode(tag.vrCode), isNull);
-
-        global.throwOnError = true;
-        expect(() => UC.checkVRCode(tag.vrCode),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });*/
-
     test('UC isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(UC.isValidVRIndex(kUCIndex), true);

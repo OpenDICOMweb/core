@@ -559,62 +559,6 @@ void main() {
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
-/*
-
-    test('DS checkVRIndex good values', () {
-      global.throwOnError = false;
-      expect(DS.checkVRIndex(kDSIndex), kDSIndex);
-
-      for (var tag in dsTags0) {
-        global.throwOnError = false;
-        expect(DS.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('DS checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(DS.checkVRIndex(kAEIndex), isNull);
-      global.throwOnError = true;
-      expect(() => DS.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(DS.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => DS.checkVRIndex(tag.vrIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('DS checkVRCode good values', () {
-      global.throwOnError = false;
-      expect(DS.checkVRCode(kDSCode), kDSCode);
-
-      for (var tag in dsTags0) {
-        global.throwOnError = false;
-        expect(DS.checkVRCode(tag.vrCode), tag.vrCode);
-      }
-    });
-
-    test('DS checkVRCode bad values', () {
-      global.throwOnError = false;
-      expect(DS.checkVRCode(kAECode), isNull);
-      global.throwOnError = true;
-      expect(() => DS.checkVRCode(kAECode),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(DS.checkVRCode(tag.vrCode), isNull);
-
-        global.throwOnError = true;
-        expect(() => DS.checkVRCode(tag.vrCode),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
 
     test('DS isValidVRIndex good values', () {
       global.throwOnError = false;

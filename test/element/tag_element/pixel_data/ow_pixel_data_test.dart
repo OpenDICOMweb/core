@@ -18,7 +18,6 @@ import 'test_pixel_data.dart';
 final Bytes u8Frame = new Bytes.fromList(testFrame);
 final Bytes u16Frame = new Bytes.fromList(testFrame);
 
-// Urgent Sharath: Talk to Jim about base64 tests to decide if they are needed.
 void main() {
   Server.initialize(name: 'element/ow_pixel_data_test', level: Level.info);
   group('OW PixelData Tests', () {
@@ -29,19 +28,8 @@ void main() {
 //    final bytes1 = pixels1.buffer.asUint8List();
     final bytes1 = new Bytes.typedDataView(pixels1);
 
-    //Urgent Sharath: why is this being done?
-//    final pixels2 = new Uint16List.fromList([1024, 1024]);
-//    for (var i = 0; i < pixels2.length; i++) pixels1[i] = 4095;
-
-    //Urgent Sharath: why not like this?
     final pixels2 = new Uint16List.fromList([4095, 4095]);
 //    final bytes2 = new Bytes.typedDataView(pixels2);
-
-/* Urgent Sharath: flush if not used
-    final pixels3 = new Uint16List.fromList(pixels2);
-//    final bytes2 = pixels3.buffer.asUint8List();
-    final bytes3 = new Bytes.typedDataView(pixels2);
-*/
 
     test('Create OWtagPixelData', () {
       final ow0 = new OWtagPixelData(pixels0);
@@ -56,15 +44,13 @@ void main() {
       expect(ow0.valuesCopy, equals(ow0.values));
       expect(ow0.typedData is Uint16List, true);
 
+      final ow1 = new OWtagPixelData([kUint32Max]);
+      expect(ow1, isNull);
+
       global.throwOnError = true;
+      expect(() => new OWtagPixelData([kUint32Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
-/*
-      expect(
-          () => new OWtagPixelData(
-              PTag.kVariableNextDataGroup, pixels0, pixels0.length),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-*/
       final s = Sha256.uint16(pixels0);
       expect(ow0.sha256, equals(ow0.update(s)));
 
@@ -88,20 +74,6 @@ void main() {
       final ow2 = new OWtagPixelData(pixels2);
       expect(ow0.hashCode == ow2.hashCode, false);
       expect(ow0 == ow2, false);
-
-/*
-      final ow3 =
-          new OWtagPixelData(PTag.kCoefficientsSDVN, pixels2);
-      expect(ow3, isNull);
-      final ow4 =
-          new OWtagPixelData(PTag.kCoefficientsSDVN, pixels2);
-      expect(ow4, isNull);
-
-      expect(ow3.hashCode == ow4.hashCode, true);
-      expect(ow3 == ow4, true);
-      expect(ow0.hashCode == ow4.hashCode, false);
-      expect(ow0 == ow4, false);
-*/
     });
 
     test('Create  OWtagPixelData.fromBytes', () {
@@ -120,18 +92,6 @@ void main() {
       expect(ow0.values.length == 1024, true);
       expect(ow0.length == ow0.values.length, true);
       expect(ow0.valuesCopy, equals(ow0.values));
-
-/*
-      final ow1 =
-          OWtag.fromBytes(bytes1, PTag.kCoefficientsSDDN, bytes1.length);
-      expect(ow1.tag == PTag.kCoefficientsSDDN, true);
-
-      global.throwOnError = true;
-      expect(
-          () => OWtagPixelData.fromBytes(
-              bytes1, PTag.kVariableNextDataGroup, bytes1.length),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-*/
 
       final s = Sha256.uint16(pixels0);
       expect(ow0.sha256, equals(ow0.update(s)));
@@ -154,7 +114,6 @@ void main() {
       expect(ow0 == ow1, true);
     });
 
-    // Urgent: separate PixelDataOW from OW tests
     test('OWtagPixelData.update Test', () {
       global.throwOnError = false;
 
@@ -181,92 +140,17 @@ void main() {
 
       global.throwOnError = true;
       ds1.add(ba2);
-
-      //Uint8List pixels2 = ds.getPixelData();
       expect(
           ds1.getPixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
-      //Missing Pixel Data
-/*
-      final pd1 = new OWtagPixelData(PTag.kOverlayData, [123, 101]);
-      expect(pd1, isNull);
-*/
 
       final ba3 = new UStag(PTag.kBitsAllocated, [16]);
-      final ds2 = new TagRootDataset.empty()
-//        ..add(pd1)
-        ..add(ba3);
+      final ds2 = new TagRootDataset.empty()..add(ba3);
       global.throwOnError = true;
       expect(
           ds2.getPixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
     });
-
-/*
-    test('Create OWtagPixelData.fromBase64', () {
-      final base64 = base64.encode(u8Frame);
-      final ow0 =
-          OWtagPixelData.fromBase64(base64, base64.length);
-      final ow1 = OWtagPixelData.fromBase64(
-          PTag.kCoefficientsSDVN, base64, base64.length);
-
-      global.throwOnError = true;
-      expect(
-          () => OWtagPixelData.fromBase64(
-              PTag.kVariableNextDataGroup, base64, base64.length),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      expect(ow0.tag == true);
-      expect(ow1.tag == PTag.kCoefficientsSDVN, true);
-      expect(ow0.vrIndex == kOBOWIndex, false);
-      expect(ow0.vrIndex == kOWIndex, true);
-      expect(ow1.vrIndex == kOWIndex, true);
-      expect(ow0.isEncapsulated == false, true);
-      expect(ow0.vfBytes is Bytes, true);
-      expect(ow0.values is Uint16List, true);
-      expect(ow0.length == ow0.values.length, true);
-      expect(ow0.vfBytes.length == 139782, true);
-      expect(ow0.values.length == 69891, true);
-      expect(ow0.length == 69891, true);
-      expect(ow0.valuesCopy, equals(ow0.values));
-      expect(ow0.typedData is Uint16List, true);
-
-      for (var s in u8Frame) {
-        expect(ow0.checkValue(s), true);
-      }
-
-      expect(ow0.checkValue(kUint16Max), true);
-      expect(ow0.checkValue(kUint16Min), true);
-      expect(ow0.checkValue(kUint16Max + 1), false);
-      expect(ow0.checkValue(kUint16Min - 1), false);
-    });
-*/
-
-/*
-    test('Create OWtagPixelData.fromBase64 hashCode and ==', () {
-      final base64 = base64.encode(u8Frame);
-      final ow0 =
-          OWtagPixelData.fromBase64(PTag.kPixelDataOW, base64, base64.length);
-      final ow1 =
-          OWtagPixelData.fromBase64(PTag.kPixelDataOW, base64, base64.length);
-      final ow2 = OWtagPixelData.fromBase64(
-          PTag.kVariablePixelData, base64, base64.length);
-      final ow3 = OWtagPixelData.fromBase64(
-          PTag.kCoefficientsSDVN, base64, base64.length);
-      final ow4 = OWtagPixelData.fromBase64(
-          PTag.kCoefficientsSDVN, base64, base64.length);
-
-      expect(ow0.hashCode == ow1.hashCode, true);
-      expect(ow0 == ow1, true);
-      expect(ow3.hashCode == ow4.hashCode, true);
-      expect(ow3 == ow4, true);
-
-      expect(ow0.hashCode == ow2.hashCode, false);
-      expect(ow0 == ow2, false);
-      expect(ow0.hashCode == ow4.hashCode, false);
-      expect(ow0 == ow4, false);
-    });
-*/
 
     test('Create OWtagPixelData.fromValues', () {
       global.throwOnError = false;
@@ -283,16 +167,12 @@ void main() {
       expect(ow0.valuesCopy, equals(ow0.values));
       expect(ow0.typedData is Uint16List, true);
 
-/*
-      final ow1 = OWtagPixelData.fromValues(PTag.kCoefficientsSDVN, pixels0);
-//      expect(ow1.tag == PTag.kCoefficientsSDVN, true);
-//      expect(ow1.vrIndex == kOWIndex, true);
+      final ow1 = OWtagPixelData.fromValues([kUint32Max]);
       expect(ow1, isNull);
 
       global.throwOnError = true;
-      expect(() => OWtagPixelData.fromValues(PTag.kSelectorSTValue, pixels0),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-*/
+      expect(() => OWtagPixelData.fromValues([kUint32Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       final s = Sha256.uint16(pixels0);
       expect(ow0.sha256, equals(ow0.update(s)));
@@ -311,26 +191,13 @@ void main() {
 
       final ow0 = OWtagPixelData.fromValues(pixels0);
       final ow1 = OWtagPixelData.fromValues(pixels0);
+      final ow2 = OWtagPixelData.fromValues([kUint16Max]);
+
       expect(ow0.hashCode == ow1.hashCode, true);
       expect(ow0 == ow1, true);
 
-/*
-      final ow2 = OWtagPixelData.fromValues(PTag.kVariablePixelData, pixels0);
-      expect(ow2, isNull);
-
-      final ow3 = OWtagPixelData.fromValues(PTag.kCoefficientsSDVN, pixels0);
-      expect(ow3, isNull);
-
-      final ow4 = OWtagPixelData.fromValues(PTag.kCoefficientsSDVN, pixels0);
-      expect(ow4, isNull);
-
       expect(ow0.hashCode == ow2.hashCode, false);
       expect(ow0 == ow2, false);
-      expect(ow3.hashCode == ow4.hashCode, true);
-      expect(ow3 == ow4, true);
-      expect(ow0.hashCode == ow3.hashCode, false);
-      expect(ow0 == ow3, false);
-*/
     });
 
     test('create new OWtagPixelData.fromBytes', () {
@@ -357,47 +224,27 @@ void main() {
       expect(ow0.checkValue(kUint16Min), true);
       expect(ow0.checkValue(kUint16Max + 1), false);
       expect(ow0.checkValue(kUint16Min - 1), false);
-
-/*
-      final ow1 = OWtagPixelData.fromBytes(
-          u8Frame, PTag.kCoefficientsSDVN, u8Frame.length);
-//      expect(ow1.tag == PTag.kCoefficientsSDVN, true);
-//      expect(ow1.vrIndex == kOWIndex, true);
-      expect(ow1, isNull);
-
-      global.throwOnError = true;
-      expect(
-          () => OWtagPixelData.fromBytes(
-              u8Frame, PTag.kSelectorSTValue, u8Frame.length),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-*/
     });
 
     test('create new OWtagPixelData.fromBytes hashCode and ==', () {
       global.throwOnError = false;
+      final frame1 = new Bytes.fromList(pixels1);
       final ow0 = OWtagPixelData.fromBytes(u8Frame);
       final ow1 = OWtagPixelData.fromBytes(u8Frame);
+      final ow2 = OWtagPixelData.fromBytes(u8Frame);
+      final ow3 = OWtagPixelData.fromBytes(frame1);
+
       expect(ow0.hashCode == ow1.hashCode, true);
       expect(ow0 == ow1, true);
 
-/*
-      final ow2 = OWtagPixelData.fromBytes(
-          u8Frame, PTag.kVariablePixelData, u8Frame.length);
-      expect(ow2, isNull);
-      final ow3 = OWtagPixelData.fromBytes(
-          u8Frame, PTag.kCoefficientsSDVN, u8Frame.length);
-      expect(ow3, isNull);
-      final ow4 = OWtagPixelData.fromBytes(
-          u8Frame, PTag.kCoefficientsSDVN, u8Frame.length);
-      expect(ow4, isNull);
+      expect(ow0.hashCode == ow2.hashCode, true);
+      expect(ow0 == ow2, true);
 
-      expect(ow3.hashCode == ow4.hashCode, true);
-      expect(ow3 == ow4, true);
-      expect(ow0.hashCode == ow2.hashCode, false);
-      expect(ow0 == ow2, false);
       expect(ow0.hashCode == ow3.hashCode, false);
       expect(ow0 == ow3, false);
-*/
+
+      expect(ow1.hashCode == ow3.hashCode, false);
+      expect(ow1 == ow3, false);
     });
   });
 

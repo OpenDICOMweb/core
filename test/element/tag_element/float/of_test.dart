@@ -102,17 +102,14 @@ void main() {
         final of2 = new OFtag(PTag.kSelectorOFValue,
             new Float32List.fromList(vList2.take(i).toList()));
 
-        expect(
-            of2.update(
-                new Float32List.fromList(vList2.take(i).toList())),
-            equals(
-                new Float32List.fromList(vList2.take(i).toList())));
+        expect(of2.update(new Float32List.fromList(vList2.take(i).toList())),
+            equals(new Float32List.fromList(vList2.take(i).toList())));
 
         expect(of2.update(vList2.take(i).toList()).values,
             equals(vList2.take(i).toList()));
       }
-      final of3 = new OFtag(PTag.lookupByCode(kUValueData),
-          new Float32List.fromList(vList2));
+      final of3 = new OFtag(
+          PTag.lookupByCode(kUValueData), new Float32List.fromList(vList2));
       expect(of3.update(new Float32List.fromList(vList2)),
           equals(new Float32List.fromList(vList2)));
     });
@@ -493,95 +490,6 @@ void main() {
             throwsA(const TypeMatcher<InvalidVRError>()));
       }
     });
-/*
-
-    test('OF checkVR good values', () {
-      system.throwOnError = false;
-      expect(OF.checkVRIndex(kOFIndex), kOFIndex);
-
-      for (var tag in ofTags) {
-        system.throwOnError = false;
-        expect(OF.checkVRIndex(tag.vrIndex), OF.kVRIndex);
-      }
-    });
-
-    test('OF checkVR bad values', () {
-      system.throwOnError = false;
-      expect(
-          OF.checkVRIndex(
-            kAEIndex,
-          ),
-          null);
-      system.throwOnError = true;
-      expect(() => OF.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        system.throwOnError = false;
-        expect(OF.checkVRIndex(tag.vrIndex), null);
-
-        system.throwOnError = true;
-        expect(() => OF.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('OF checkVRIndex good values', () {
-      system.throwOnError = false;
-      expect(OF.checkVRIndex(kOFIndex), equals(kOFIndex));
-
-      for (var tag in ofTags) {
-        system.throwOnError = false;
-        expect(OF.checkVRIndex(tag.vrIndex), equals(tag.vrIndex));
-      }
-    });
-
-    test('OF checkVRIndex bad values', () {
-      system.throwOnError = false;
-      expect(OF.checkVRIndex(kATIndex), isNull);
-
-      system.throwOnError = true;
-      expect(() => OF.checkVRIndex(kATIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        system.throwOnError = false;
-        expect(OF.checkVRIndex(tag.vrIndex), isNull);
-
-        system.throwOnError = true;
-        expect(() => OF.checkVRIndex(tag.vrIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('OF checkVRCode good values', () {
-      system.throwOnError = false;
-      expect(OF.checkVRCode(kOFCode), equals(kOFCode));
-
-      for (var tag in ofTags) {
-        system.throwOnError = false;
-        expect(OF.checkVRCode(tag.vrCode), equals(tag.vrCode));
-      }
-    });
-
-    test('OF checkVRCode bad values', () {
-      system.throwOnError = false;
-      expect(OF.checkVRCode(kATCode), isNull);
-
-      system.throwOnError = true;
-      expect(() => OF.checkVRCode(kATCode),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        system.throwOnError = false;
-        expect(OF.checkVRCode(tag.vrCode), isNull);
-
-        system.throwOnError = true;
-        expect(() => OF.checkVRCode(tag.vrCode),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
 
     test('OF isValidVFLength good values', () {
       expect(OF.isValidVFLength(OF.kMaxVFLength), true);

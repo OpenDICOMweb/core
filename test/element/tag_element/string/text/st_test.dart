@@ -449,69 +449,7 @@ void main() {
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
-/*
-    test('ST checkVRIndex good values', () {
-      global.throwOnError = false;
-      expect(ST.checkVRIndex(kSTIndex), kSTIndex);
 
-      for (var tag in stTags0) {
-        global.throwOnError = false;
-        expect(ST.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('ST checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(
-          ST.checkVRIndex(
-            kAEIndex,
-          ),
-          isNull);
-      global.throwOnError = true;
-      expect(() => ST.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(ST.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => ST.checkVRIndex(tag.vrIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('ST checkVRCode good values', () {
-      global.throwOnError = false;
-      expect(ST.checkVRCode(kSTCode), kSTCode);
-
-      for (var tag in stTags0) {
-        global.throwOnError = false;
-        expect(ST.checkVRCode(tag.vrCode), tag.vrCode);
-      }
-    });
-
-    test('ST checkVRCode bad values', () {
-      global.throwOnError = false;
-      expect(
-          ST.checkVRCode(
-            kAECode,
-          ),
-          isNull);
-      global.throwOnError = true;
-      expect(() => ST.checkVRCode(kAECode),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(ST.checkVRCode(tag.vrCode), isNull);
-
-        global.throwOnError = true;
-        expect(() => ST.checkVRCode(tag.vrCode),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
- */
     test('ST isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(ST.isValidVRIndex(kSTIndex), true);
