@@ -533,35 +533,6 @@ void main() {
       }
     });
 
-/*
-    test('OL checkVR good values', () {
-      global.throwOnError = false;
-      expect(OL.checkVRIndex(kOLIndex), kOLIndex);
-
-      for (var tag in olTags0) {
-        global.throwOnError = false;
-        expect(OL.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('OL checkVR bad values', () {
-      global.throwOnError = false;
-      expect(OL.checkVRIndex(kAEIndex), isNull);
-      global.throwOnError = true;
-      expect(() => OL.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OL.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => OL.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
-
     test('OL isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(OL.isValidVRIndex(kOLIndex), true);

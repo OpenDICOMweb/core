@@ -372,7 +372,7 @@ void main() {
 
       global.throwOnError = true;
       expect(
-              () => IStag.fromValues(PTag.kWaveformChannelNumber, <String>[null]),
+          () => IStag.fromValues(PTag.kWaveformChannelNumber, <String>[null]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -510,69 +510,6 @@ void main() {
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
-/*
-
-    test('IS checkVRIndex good values', () {
-      global.throwOnError = false;
-      expect(IS.checkVRIndex(kISIndex), kISIndex);
-
-      for (var tag in isTags0) {
-        global.throwOnError = false;
-        expect(IS.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('IS checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(
-          IS.checkVRIndex(
-            kAEIndex,
-          ),
-          isNull);
-      global.throwOnError = true;
-      expect(() => IS.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(IS.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => IS.checkVRIndex(tag.vrIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('IS checkVRCode good values', () {
-      global.throwOnError = false;
-      expect(IS.checkVRCode(kISCode), kISCode);
-
-      for (var tag in isTags0) {
-        global.throwOnError = false;
-        expect(IS.checkVRCode(tag.vrCode), tag.vrCode);
-      }
-    });
-
-    test('IS checkVRCode bad values', () {
-      global.throwOnError = false;
-      expect(
-          IS.checkVRCode(
-            kAECode,
-          ),
-          isNull);
-      global.throwOnError = true;
-      expect(() => IS.checkVRCode(kAECode),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(IS.checkVRCode(tag.vrCode), isNull);
-
-        global.throwOnError = true;
-        expect(() => IS.checkVRCode(kAECode),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
 
     test('IS isValidVRIndex good values', () {
       global.throwOnError = false;
@@ -894,8 +831,8 @@ void main() {
       expect(IS.tryParse(vList3), isNull);
 
       global.throwOnError = true;
-      expect(() => IS.tryParse(vList3),
-          throwsA(const TypeMatcher<StringError>()));
+      expect(
+          () => IS.tryParse(vList3), throwsA(const TypeMatcher<StringError>()));
     });
 
     test('IS tryParseList', () {

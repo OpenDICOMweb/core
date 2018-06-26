@@ -662,36 +662,6 @@ void main() {
       }
     });
 
-/*
-
-    test('SS checkVRIndex good values', () {
-      global.throwOnError = false;
-      expect(SS.checkVRIndex(kSSIndex), kSSIndex);
-
-      for (var tag in ssTags0) {
-        global.throwOnError = false;
-        expect(SS.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('SS checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(SS.checkVRIndex(kAEIndex), isNull);
-      global.throwOnError = true;
-      expect(() => SS.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(SS.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => SS.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
-
     test('SS isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(SS.isValidVRIndex(kSSIndex), true);

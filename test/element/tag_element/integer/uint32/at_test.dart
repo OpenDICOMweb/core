@@ -589,36 +589,6 @@ void main() {
       }
     });
 
-/*
-
-    test('AT checkVR good values', () {
-      global.throwOnError = false;
-      expect(AT.checkVRIndex(kATIndex), kATIndex);
-
-      for (var tag in atTags0) {
-        global.throwOnError = false;
-        expect(AT.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('AT checkVR bad values', () {
-      global.throwOnError = false;
-      expect(AT.checkVRIndex(kAEIndex), isNull);
-      global.throwOnError = true;
-      expect(() => AT.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(AT.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => AT.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
-
     test('AT isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(AT.isValidVRIndex(kATIndex), true);
@@ -730,7 +700,6 @@ void main() {
 
       global.throwOnError = false;
       expect(AT.isValidValues(PTag.kSelectorAttribute, null), false);
-
     });
 
     test('AT isValidValues bad values length', () {

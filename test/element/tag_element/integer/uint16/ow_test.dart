@@ -68,7 +68,7 @@ void main() {
       expect(e0, isNull);
 
       final e1 =
-      new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMinus);
+          new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMinus);
       expect(e1, isNull);
 
       final e2 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMax);
@@ -509,40 +509,6 @@ void main() {
       }
     });
 
-/*
-
-    test('OW checkVR  good values', () {
-      global.throwOnError = false;
-      expect(OW.checkVRIndex(kOWIndex), kOWIndex);
-
-      for (var tag in owTags0) {
-        global.throwOnError = false;
-        expect(OW.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-
-      for (var tag in obowTags) {
-        global.throwOnError = false;
-        expect(OW.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('OW checkVR bad values', () {
-      global.throwOnError = false;
-      expect(OW.checkVRIndex(kAEIndex), isNull);
-      global.throwOnError = true;
-      expect(() => OW.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OW.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => OW.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
     test('OW.isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(OW.isValidVRIndex(kOWIndex), true);
@@ -658,9 +624,11 @@ void main() {
           false);
 
       global.throwOnError = true;
-      expect(() => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MaxPlus),
+      expect(
+          () => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MaxPlus),
           throwsA(const TypeMatcher<InvalidValuesError>()));
-      expect(() => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MinMinus),
+      expect(
+          () => OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MinMinus),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;

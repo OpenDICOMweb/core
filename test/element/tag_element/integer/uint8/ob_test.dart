@@ -555,40 +555,6 @@ void main() {
       }
     });
 
-/*
-
-    test('OB checkVR good values', () {
-      global.throwOnError = false;
-      expect(OB.checkVRIndex(kOBIndex), kOBIndex);
-
-      for (var tag in obTags0) {
-        global.throwOnError = false;
-        expect(OB.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-
-      for (var tag in obowTags) {
-        final e3 = OB.checkVRIndex(tag.vrIndex);
-        expect(e3, tag.vrIndex);
-      }
-    });
-    test('OB checkVR bad values', () {
-      global.throwOnError = false;
-      expect(OB.checkVRIndex(kAEIndex), isNull);
-      global.throwOnError = true;
-      expect(() => OB.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OB.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => OB.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
-
     test('OB isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(OB.isValidVRIndex(kOBIndex), true);

@@ -38,9 +38,6 @@ void main() {
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
       expect(ob0.values is List<int>, true);
-//      expect(ob0.fragments == null, true);
-//      expect(ob0.offsets == null, true);
-//      expect(ob0.isEncapsulated == false, true);
       log.debug(ob0.values);
       expect(ob0.hasValidValues, true);
       log.debug('bytes: ${ob0.vfBytes}');
@@ -53,18 +50,12 @@ void main() {
       expect(ob0.typedData is Uint8List, true);
       expect(ob0.tag == PTag.kPixelDataOB, true);
 
-//      final ob1 =
-//          new OBtagPixelData(PTag.kPrivateInformation, pixels);
-//      expect(ob1.tag == PTag.kPrivateInformation, true);
-//      expect(ob1, isNull);
+      final ob1 = new OBtagPixelData([kUint16Max]);
+      expect(ob1, isNull);
 
-/*
       global.throwOnError = true;
-      expect(
-          () => new OBtagPixelData(
-              PTag.kVariableNextDataGroup, pixels1, pixels1.length),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-*/
+      expect(() => new OBtagPixelData([kUint16Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       final s = Sha256.uint8(pixels);
       log.debug('s: $s');
@@ -87,8 +78,13 @@ void main() {
 
       final ob0 = new OBtagPixelData(pixels);
       final ob1 = new OBtagPixelData(pixels);
+      final ob2 = new OBtagPixelData(pixels1);
+
       expect(ob0.hashCode == ob1.hashCode, true);
       expect(ob0 == ob1, true);
+
+      expect(ob0.hashCode == ob2.hashCode, false);
+      expect(ob0 == ob2, false);
     });
 
     test('Create Encapsulated OBtagPixelData', () {
@@ -97,14 +93,10 @@ void main() {
       expect(ob0.tag == PTag.kPixelDataOB, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
-      //      expect(ob0.offsets == frags.offsets, true);
-//      expect(ob0.isEncapsulated == true, true);
+      //expect(ob0.isEncapsulated == true, true);
       expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == frame.length, true);
       expect(ob0.values is List<int>, true);
-//      expect(ob0.values == frags.bulkdata, true);
-//      expect(ob0.values.length == frags.bulkdata.length, true);
-//      expect(ob0.length == frags.bulkdata.length, true);
       expect(ob0.valuesCopy, equals(ob0.values));
       expect(ob0.typedData is Uint8List, true);
 
@@ -128,34 +120,13 @@ void main() {
 
       final ob0 = new OBtagPixelData(frame, ts);
       final ob1 = new OBtagPixelData(frame, ts);
+      final ob2 = new OBtagPixelData(pixels, ts);
 
       expect(ob0.hashCode == ob1.hashCode, true);
       expect(ob0 == ob1, true);
 
-/*
-      final ob2 = new OBtagPixelData(
-          PTag.kVariablePixelData, frame,  ts);
-      expect(ob2, isNull);
-
-      final ob3 = new OBtagPixelData(
-          PTag.kPrivateInformation, frame,  ts);
-      expect(ob3, isNull);
-
-      final ob4 = new OBtagPixelData(
-          PTag.kPrivateInformation, frame,  ts);
-      expect(ob4, isNull);
-*/
-
-/*
-      expect(ob3.hashCode == ob4.hashCode, true);
-      expect(ob3 == ob4, true);
-
       expect(ob0.hashCode == ob2.hashCode, false);
       expect(ob0 == ob2, false);
-
-      expect(ob0.hashCode == ob3.hashCode, false);
-      expect(ob0 == ob2, false);
-*/
     });
 
     test('Create Unencapsulated OBtagPixelData.fromBytes', () {
@@ -165,7 +136,6 @@ void main() {
       expect(ob0.tag == PTag.kPixelDataOB, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
-//      expect(ob0.fragments == null, true);
 //      expect(ob0.offsets == null, true);
 //      expect(ob0.isEncapsulated == false, true);
       final bytes = ob0.vfBytes;
@@ -186,10 +156,7 @@ void main() {
 
       global.throwOnError = false;
       final ob1 = OBtagPixelData.fromBytes(frame);
-      expect(ob1 == ob1, true);
-//      expect(ob1.tag == PTag.kPrivateInformation, true);
-
-      global.throwOnError = true;
+      expect(ob1.tag == PTag.kPixelDataOB, true);
 
       final s = Sha256.uint8(frame);
       expect(ob0.sha256, equals(ob0.update(s)));
@@ -206,32 +173,16 @@ void main() {
 
     test('Create Unencapsulated OBtagPixelData.fromBytes hashCode and ==', () {
       global.throwOnError = false;
-
+      final frame1 = new Bytes.fromList(pixels);
       final ob0 = OBtagPixelData.fromBytes(frame);
       final ob1 = OBtagPixelData.fromBytes(frame);
-
-/*
-      final ob2 = OBtagPixelData.fromBytes(
-          frame, PTag.kVariablePixelData, frame.length);
-      final ob3 = OBtagPixelData.fromBytes(
-          frame, PTag.kPrivateInformation, frame.length);
-      final ob4 = OBtagPixelData.fromBytes(
-          frame, PTag.kPrivateInformation, frame.length);
-*/
+      final ob2 = OBtagPixelData.fromBytes(frame1);
 
       expect(ob0.hashCode == ob1.hashCode, true);
       expect(ob0 == ob1, true);
 
-/*
-      expect(ob3.hashCode == ob4.hashCode, true);
-      expect(ob3 == ob4, true);
-
       expect(ob0.hashCode == ob2.hashCode, false);
       expect(ob0 == ob2, false);
-
-      expect(ob0.hashCode == ob3.hashCode, false);
-      expect(ob0 == ob2, false);
-*/
     });
 
     test('Create Encapsulated OBtagPixelData.fromBytes', () {
@@ -245,9 +196,7 @@ void main() {
       expect(ob0.vfBytes is Bytes, true);
       expect(ob0.vfBytes.length == frame.length, true);
       expect(ob0.values is Uint8List, true);
-//      expect(ob0.values == frags.bulkdata, true);
-//      expect(ob0.values.length == frags.bulkdata.length, true);
-//      expect(ob0.length == frags.bulkdata.length, true);
+      expect(ob0.values.length == 139782, true);
       expect(ob0.valuesCopy, equals(ob0.values));
       expect(ob0.typedData is Uint8List, true);
 
@@ -259,37 +208,29 @@ void main() {
       expect(ob0.checkValue(kUint8Min), true);
       expect(ob0.checkValue(kUint8Max + 1), false);
       expect(ob0.checkValue(kUint8Min - 1), false);
-
-/*
-      final ob1 = OBtagPixelData.fromBytes(
-          frame, PTag.kPrivateInformation, ts);
-      expect(ob1, isNull);
-//      expect(ob1.tag == PTag.kPrivateInformation, true);
-//      expect(ob1.vrIndex == kOBIndex, true);
-
-      global.throwOnError = true;
-      expect(
-          () => OBtagPixelData.fromBytes(
-              frame, PTag.kVariableNextDataGroup, ts),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-*/
     });
 
     test('Create Encapsulated OBtagPixelData.fromBytes hashCode and ==', () {
       global.throwOnError = false;
       final ob0 = OBtagPixelData.fromBytes(frame, ts);
       final ob1 = OBtagPixelData.fromBytes(frame, ts);
+
       expect(ob0.hashCode == ob1.hashCode, true);
       expect(ob0 == ob1, true);
 
       final ob2 = OBtagPixelData.fromBytes(frame, ts);
       expect(ob2, equals(ob1));
-      expect(ob2.hashCode == ob0.hashCode , true);
+      expect(ob2.hashCode == ob0.hashCode, true);
       expect(ob2 == ob0, true);
 
       final ob3 = OBtagPixelData.fromBytes(frame, ts);
       expect(ob3 == ob2, true);
       expect(ob3.hashCode == ob0.hashCode, true);
+
+      final frame1 = new Bytes.fromList(pixels);
+      final ob4 = OBtagPixelData.fromBytes(frame1, ts);
+      expect(ob0 == ob4, false);
+      expect(ob0.hashCode == ob4.hashCode, false);
     });
 
     test('OBtagPixelData.update Test', () {
@@ -321,19 +262,11 @@ void main() {
       expect(pixels1 == null, true);
 
       global.throwOnError = true;
-      //Urgent Sharath: what is this testing?
-      final ba2 = new UStag(PTag.kBitsAllocated, []);
-      ds1.add(ba2);
-      //Uint8List pixels2 = ds.getPixelData();
       expect(
           ds1.getPixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
 
-      //Missing Pixel Data
-//      final pd1 = new OBtagPixelData(PTag.kOverlayData, [123, 101], 3);
       final ba3 = new UStag(PTag.kBitsAllocated, [8]);
-      final ds2 = new TagRootDataset.empty()
-        //..add(pd1)
-        ..add(ba3);
+      final ds2 = new TagRootDataset.empty()..add(ba3);
       expect(
           ds2.getPixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
     });
@@ -350,7 +283,6 @@ void main() {
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
       expect(ob0.values is List<int>, true);
-//      expect(ob0.fragments == null, true);
 //      expect(ob0.offsets == null, true);
 //      expect(ob0.isEncapsulated == false, true);
       log.debug(ob0.values);
@@ -365,28 +297,12 @@ void main() {
       expect(ob0.typedData is Uint8List, true);
 
       global.throwOnError = false;
-/*
-      final ob2 = OBtagPixelData.fromValues(PTag.kVariablePixelData, pixels);
+      final ob2 = OBtagPixelData.fromValues([kUint16Max]);
       expect(ob2, isNull);
-*/
-/*
-      expect(
-          ob2,
-          equals(new OBtagPixelData(
-              pixels, PTag.kVariablePixelData)));
-*/ /*
-
 
       global.throwOnError = true;
-      expect(() => OBtagPixelData.fromValues(PTag.kSelectorSTValue, pixels),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      global.throwOnError = false;
-      final ob3 = OBtagPixelData.fromValues(PTag.kPrivateInformation, pixels);
-      //  expect(ob3.tag == PTag.kPrivateInformation, true);
-      //  expect(ob3.vrIndex == kOBIndex, true);
-      expect(ob3, isNull);
-*/
+      expect(() => OBtagPixelData.fromValues([kUint16Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
 
       final s = Sha256.uint8(pixels);
       expect(ob0.sha256, equals(ob0.update(s)));
@@ -403,27 +319,13 @@ void main() {
     test('OBtagPixelData.fromValues hashCode and ==', () {
       final ob0 = OBtagPixelData.fromValues(pixels);
       final ob1 = OBtagPixelData.fromValues(pixels);
+      final ob2 = OBtagPixelData.fromValues(pixels1);
+
       expect(ob0.hashCode == ob1.hashCode, true);
       expect(ob0 == ob1, true);
 
-      global.throwOnError = false;
-/*
-      final ob2 = OBtagPixelData.fromValues(PTag.kVariablePixelData, pixels);
-      expect(ob2, isNull);
-      final ob3 = OBtagPixelData.fromValues(PTag.kPrivateInformation, pixels);
-      expect(ob3, isNull);
-      final ob4 = OBtagPixelData.fromValues(PTag.kPrivateInformation, pixels);
-      expect(ob4, isNull);
-
-      expect(ob3.hashCode == ob4.hashCode, true);
-      expect(ob3 == ob4, true);
-
       expect(ob0.hashCode == ob2.hashCode, false);
       expect(ob0 == ob2, false);
-
-      expect(ob0.hashCode == ob3.hashCode, false);
-      expect(ob0 == ob3, false);
-*/
     });
 
     test('OBtagPixelData.fromBytes', () {
@@ -432,7 +334,6 @@ void main() {
       expect(ob0.tag == PTag.kPixelDataOB, true);
       expect(ob0.vrIndex == kOBOWIndex, false);
       expect(ob0.vrIndex == kOBIndex, true);
-//      expect(ob0.fragments == null, true);
 //      expect(ob0.offsets == null, true);
 //      expect(ob0.isEncapsulated == false, true);
       expect(ob0.vfBytes is Bytes, true);
@@ -449,20 +350,6 @@ void main() {
       expect(ob0.lengthInBytes == frame.length, true);
       expect(ob0.valuesCopy, equals(ob0.values));
 
-      global.throwOnError = false;
-//      final ob1 = OBtagPixelData.fromBytes(frame, PTag.kPrivateInformation);
-//      expect(ob1.tag == PTag.kPrivateInformation, true);
-//      expect(ob1.vrIndex == kOBIndex, true);
-//      expect(ob1, isNull);
-
-      global.throwOnError = true;
-/*
-      expect(
-          () => OBtagPixelData.fromBytes(
-              frame, PTag.kSelectorSTValue),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-*/
-
       final s = Sha256.uint8(frame);
       expect(ob0.sha256, equals(ob0.update(s)));
 
@@ -477,36 +364,16 @@ void main() {
 
     test('OBtagPixelData.fromBytes hashCode and ==', () {
       global.throwOnError = false;
+      final frame1 = new Bytes.fromList(pixels1);
       final ob0 = OBtagPixelData.fromBytes(frame);
-
       final ob1 = OBtagPixelData.fromBytes(frame);
+      final ob2 = OBtagPixelData.fromBytes(frame1);
+
       expect(ob0.hashCode == ob1.hashCode, true);
       expect(ob0 == ob1, true);
 
-/*
-      final ob2 = OBtagPixelData.fromBytes(
-          frame, PTag.kVariablePixelData, frame.length);
-      expect(ob2, isNull);
-
-      final ob3 = OBtagPixelData.fromBytes(
-          frame, PTag.kPrivateInformation, frame.length);
-      expect(ob3, isNull);
-
-      final ob4 = OBtagPixelData.fromBytes(
-          frame, PTag.kPrivateInformation, frame.length);
-      expect(ob4, isNull);
-*/
-
-/*
-      expect(ob3.hashCode == ob4.hashCode, true);
-      expect(ob3 == ob4, true);
-
       expect(ob0.hashCode == ob2.hashCode, false);
       expect(ob0 == ob2, false);
-
-      expect(ob0.hashCode == ob4.hashCode, false);
-      expect(ob0 == ob4, false);
-*/
     });
   });
 
