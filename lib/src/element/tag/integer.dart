@@ -328,8 +328,8 @@ class ULtag extends UL with TagElement<int>, TagIntegerMixin {
   @override
   ULtag update([Iterable<int> vList]) => new ULtag._(tag, vList);
 
-  static ULtag fromValues(Tag tag, [Iterable<int> vLIst, TransferSyntax _]) =>
-      new ULtag._(tag, vLIst);
+  static ULtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
+      new ULtag._(tag, vList);
 
   static ULtag fromBytes(Bytes bytes, Tag tag) =>
       new ULtag._(tag, bytes.asUint32List());

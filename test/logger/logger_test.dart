@@ -6,13 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'package:core/core.dart';
+import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 Logger log = new Logger('test', Level.info);
 
 void main() {
+  Server.initialize(name: 'logger/logger_test', level: Level.info);
 
   group('Logger Tests', () {
     test('Simple test', () {

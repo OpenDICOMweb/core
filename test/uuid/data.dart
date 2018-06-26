@@ -9,7 +9,7 @@
 
 /// The following data are generate with tools/generate_data.dart.import '
 
-import 'package:core/server.dart';
+import 'package:core/server.dart' hide group;
 // 0: data
 
 List<int> data0 = <int>[

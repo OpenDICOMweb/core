@@ -10,7 +10,7 @@
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
-import 'package:core/server.dart';
+import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 void main() {

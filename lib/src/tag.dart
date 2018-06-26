@@ -7,6 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
+export 'package:core/src/tag/code.dart';
 export 'package:core/src/tag/color_palette.dart';
 export 'package:core/src/tag/deid_option.dart';
 export 'package:core/src/tag/e_type.dart';

@@ -9,7 +9,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/server.dart';
+import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 final RNG rng = new RNG(0);

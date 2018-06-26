@@ -8,7 +8,7 @@
 //
 
 import 'package:core/date_time_test_data/date_data.dart';
-import 'package:core/server.dart';
+import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 void main() {

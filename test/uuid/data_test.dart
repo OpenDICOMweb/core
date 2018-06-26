@@ -9,7 +9,7 @@
 
 /// The following data are generate with tools/generate_data.dart.import '
 
-import 'package:core/server.dart';
+import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 import 'data.dart';

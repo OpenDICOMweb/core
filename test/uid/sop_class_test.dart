@@ -8,7 +8,7 @@
 //
 
 //import 'package:string/string.dart';
-import 'package:core/server.dart';
+import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 
