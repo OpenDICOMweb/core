@@ -875,12 +875,11 @@ void main() {
       final bytes = Bytes.fromAsciiList(vList0);
       expect(bytes, isNotNull);
       expect(bytes.length > DA.kMaxVFLength, true);
+      expect(DA.isValidBytesArgs(PTag.kSelectorDAValue, bytes), false);
 
       global.throwOnError = true;
-/* Urgent Jim
-      expect(() => Bytes.fromAsciiList(vList0),
-          throwsA(const TypeMatcher<InvalidValueFieldError>()));
-*/
+      expect(() => DA.isValidBytesArgs(PTag.kSelectorDAValue, bytes),
+                 throwsA(const TypeMatcher<InvalidValueFieldError>()));
     });
 
     test('DA getAsciiList', () {

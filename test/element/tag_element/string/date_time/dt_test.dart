@@ -505,7 +505,6 @@ void main() {
     });
   });
 
-  // Urgent
   group('DT Element', () {
     const badDTLengthList = const <List<String>>[
       const <String>['20120230105630', '1970011a105630'],
@@ -654,7 +653,7 @@ void main() {
       expect(DT.isValidValueLength('19500718105630'), true);
     });
 
-     //Urgent Jim -  bad test 4 >= length <= 26. badDTLengthList is bad!
+     //Urgent Sharath -  badDTLengthList has good values!
     test('DT isValidValueLength bad values', () {
       for (var s in badDTLengthList) {
         for (var a in s) {
@@ -877,14 +876,13 @@ void main() {
       final bytes = Bytes.fromAsciiList(vList0);
       expect(bytes, isNotNull);
       expect(bytes.length > DT.kMaxVFLength, true);
+      expect(DT.isValidBytesArgs(PTag.kSelectorDTValue, bytes), false);
 
-/* Urgent Jim
       global.throwOnError = true;
-      expect(() => Bytes.fromAsciiList(vList0),
-          throwsA(const TypeMatcher<InvalidValueFieldError>()));
-*/
-
+      expect(() => DT.isValidBytesArgs(PTag.kSelectorDTValue, bytes),
+                 throwsA(const TypeMatcher<InvalidValueFieldError>()));
     });
+
     test('DT getAsciiList', () {
       final vList1 = ['19500718105630'];
       final bytes = Bytes.fromAsciiList(vList1);
