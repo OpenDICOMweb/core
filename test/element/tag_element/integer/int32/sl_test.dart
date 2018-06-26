@@ -270,8 +270,6 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final intList0 = rng.int32List(1, 10);
-        // Urgent Sharath: what is this test trying to achieve? let's discuss
-        //final bytes0 = Bytes.toAscii(intList0.toString());
         final bytes0 = new Bytes.typedDataView(intList0);
         log.debug('bytes0: $bytes0');
         final e0 = SLtag.fromBytes(bytes0, PTag.kSelectorSLValue);
@@ -279,25 +277,22 @@ void main() {
         expect(e0.hasValidValues, true);
       }
     });
-/*
+
     test('SL fromBytes bad values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final intList0 = rng.int32List(1, 10);
 
-        // Urgent Sharath: what is this test trying to achieve? let's discuss
-        final bytes0 = DicomBytes.toAscii(intList0.toString());
-        final e0 = SLtag.fromBytes(bytes0, PTag.kSelectorFDValue );
+        final bytes0 = new Bytes.typedDataView(intList0);
+        final e0 = SLtag.fromBytes(bytes0, PTag.kSelectorFDValue);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => SLtag.fromBytes(PTag.kSelectorFDValue, bytes0),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-
-
+        expect(() => SLtag.fromBytes(bytes0, PTag.kSelectorFDValue),
+            throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
-*/
+
     test('SL checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.int32List(1, 10);
@@ -854,7 +849,7 @@ void main() {
       expect(() => SL.isValidValues(PTag.kReferencePixelX0, int32MinMax),
           throwsA(const TypeMatcher<InvalidValuesError>()));
       expect(
-              () =>
+          () =>
               SL.isValidValues(PTag.kDisplayedAreaTopLeftHandCorner, int32Max),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
