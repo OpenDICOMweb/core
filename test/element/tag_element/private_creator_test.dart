@@ -22,7 +22,7 @@ void main() {
       final pc0 = new LOtag(pcTag0, [name0]);
       log.debug('pc0: ${pc0.info}');
 // Urgent: Jim 
-//      expect(pcTag0.isValidValues(pc0.values), true);
+      expect(pcTag0.isValidLength(pc0.values), true);
 
       const name1 = 'Foo';
       final pcTag1 = PCTag.make(0x000900FF, kLOIndex, name1);
@@ -31,7 +31,7 @@ void main() {
       final pc1 = new LOtag(pcTag1, [name1]);
       log.debug('PC: ${pc1.info}');
 // Urgent: Jim 
-//      expect(pcTag1.isValidValues(pc1.values), true);
+//      expect(pcTag1.isValidLength(pc1.values), true);
     });
 
     test('Invalid Unknown Private Creator ', () {
@@ -87,7 +87,7 @@ void main() {
       final pc0 = new LOtag(pcTag0, [name0]);
       log.debug('pc0: ${pc0.info}');
 // Urgent: Jim 
-//      expect(pcTag0.isValidValues(pc0.values), true);
+//      expect(pcTag0.isValidLength(pc0.values), true);
 
       const name1 = 'ACUSON';
       final pcTag1 = PCTag.make(0x000900FF, kLOIndex, name1);
@@ -96,7 +96,7 @@ void main() {
       final pc1 = new LOtag(pcTag1, [name1]);
       log.debug('PC: ${pc1.info}');
 // Urgent: Jim 
-//      expect(pcTag1.isValidValues(pc1.values), true);
+//      expect(pcTag1.isValidLength(pc1.values), true);
     });
 
     test('Valid Agfa 0009 Private Data', () {
@@ -117,7 +117,7 @@ void main() {
       log.debug('pdTag1: ${pdTag1.info}');
       final pd1 = new LOtag(pdTag1, [value1]);
 // Urgent: Jim 
-//      expect(pdTag1.isValidValues(pd1.values), true);
+//      expect(pdTag1.isValidLength(pd1.values), true);
       log.debug('pd1: ${pd1.info}');
     });
 
@@ -130,7 +130,7 @@ void main() {
       log.debug('pcTag: $pcTag');
       final pc0 = new LOtag(pcTag, [agfa]);
 // Urgent: Jim 
-//      expect(pcTag.isValidValues(pc0.values), true);
+      expect(pcTag.isValidLength(pc0.values), true);
       log.debug('pc0: ${pc0.info}');
     });
 

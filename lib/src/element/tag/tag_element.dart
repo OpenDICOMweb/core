@@ -101,7 +101,7 @@ abstract class TagElement<V> {
     final vrIndex = bytes.vrIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVRIndex(vrIndex, tag.vrIndex);
-    return _bytesMakers[index](bytes, tag);
+    return _bytesMakers[index](bytes.vfBytes, tag);
   }
 
   static final List<Function> _bytesMakers = <Function>[

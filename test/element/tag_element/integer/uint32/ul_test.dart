@@ -359,13 +359,9 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList);
-        //      print('bytes: $bytes0');
         final s = bytes0.getBase64();
-        //      print('s: "$s"');
         final bytes1 = Bytes.fromBase64(s);
-        //      print('bytes: $bytes1');
         final e0 = ULtag.fromBytes(bytes1, PTag.kNumberOfWaveformSamples);
-        //      print(e0);
         expect(e0.hasValidValues, true);
       }
     });
@@ -396,6 +392,7 @@ void main() {
     test('UL make bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(2, 2);
+
         global.throwOnError = false;
         final make0 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, vList0);
         expect(make0, isNull);
@@ -663,6 +660,34 @@ void main() {
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
+    
+/*
+
+    test('UL checkVR good values', () {
+      global.throwOnError = false;
+      expect(UL.checkVRIndex(kULIndex), kULIndex);
+
+      for (var tag in ulTags0) {
+        global.throwOnError = false;
+        expect(UL.checkVRIndex(tag.vrIndex), tag.vrIndex);
+      }
+    });
+
+    test('UL checkVR bad values', () {
+      expect(UL.checkVRIndex(kAEIndex), isNull);
+      global.throwOnError = true;
+      expect(() => UL.checkVRIndex(kAEIndex),
+          throwsA(const TypeMatcher<InvalidVRError>()));
+      for (var tag in otherTags) {
+        global.throwOnError = false;
+        expect(UL.checkVRIndex(tag.vrIndex), isNull);
+
+        global.throwOnError = true;
+        expect(() => UL.checkVRIndex(kAEIndex),
+            throwsA(const TypeMatcher<InvalidVRError>()));
+      }
+    });
+*/
 
     test('UL isValidVRIndex good values', () {
       global.throwOnError = false;

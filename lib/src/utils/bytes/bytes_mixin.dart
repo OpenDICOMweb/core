@@ -433,9 +433,13 @@ abstract class BytesMixin {
       {int offset = 0,
       int length,
       bool allowInvalid = true,
-      int padChar = kSpace}) {
+      int padChar}) {
     final v = _asUint8ListFromString(offset, length ?? _bdLength, padChar);
-    return v.isEmpty ? '' : ascii.decode(v, allowInvalid: allowInvalid);
+    if (v.isEmpty) return '';
+    final s = ascii.decode(v, allowInvalid: allowInvalid);
+    final last = s.length - 1;
+    final c = s.codeUnitAt(last);
+    return (padChar != null && c == padChar) ? s.substring(0, last) : s;
   }
 
   /// Returns a [List<String>]. This is done by first decoding
@@ -447,7 +451,7 @@ abstract class BytesMixin {
       int length,
       bool allowInvalid: true,
       String separator = '\\',
-      int padChar = kSpace}) {
+      int padChar}) {
     final s = getAscii(
         offset: offset,
         length: length,

@@ -507,7 +507,70 @@ void main() {
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
+/*
+    test('AS checkVRIndex good values', () {
+      global.throwOnError = false;
+      expect(AS.checkVRIndex(kASIndex), kASIndex);
 
+      for (var tag in asTags0) {
+        global.throwOnError = false;
+        expect(AS.isValidVRIndex(tag.vrIndex), true);
+      }
+    });
+
+    test('AS checkVRIndex bad values', () {
+      global.throwOnError = false;
+      expect(
+          AS.checkVRIndex(
+            kAEIndex,
+          ),
+          isNull);
+      global.throwOnError = true;
+      expect(() => AS.checkVRIndex(kAEIndex),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      for (var tag in otherTags) {
+        global.throwOnError = false;
+        expect(AS.isValidVRIndex(tag.vrIndex), false);
+
+        global.throwOnError = true;
+        expect(() => AS.checkVRIndex(kAEIndex),
+            throwsA(const TypeMatcher<InvalidVRError>()));
+      }
+    });
+
+    test('AS checkVRCode good values', () {
+      global.throwOnError = false;
+      expect(AS.checkVRCode(kASCode), kASCode);
+
+      for (var tag in asTags0) {
+        global.throwOnError = false;
+        expect(AS.checkVRCode(tag.vrCode), tag.vrCode);
+      }
+    });
+
+    test('AS checkVRCode bad values', () {
+      global.throwOnError = false;
+      expect(
+          AS.checkVRCode(
+            kAECode,
+          ),
+          isNull);
+      global.throwOnError = true;
+      expect(() => AS.checkVRCode(kAECode),
+          throwsA(const TypeMatcher<InvalidVRError>()));
+
+      for (var tag in otherTags) {
+        global.throwOnError = false;
+        expect(AS.checkVRCode(tag.vrCode), isNull);
+
+        global.throwOnError = true;
+        expect(() => AS.checkVRCode(tag.vrCode),
+            throwsA(const TypeMatcher<InvalidVRError>()));
+      }
+    });
+
+ */
     test('AS isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(AS.isValidVRIndex(kASIndex), true);
@@ -738,6 +801,7 @@ void main() {
       expect(Bytes.fromAsciiList(vList1), equals(values));
     });
 
+    // Urgent Sharath Fix - I'm not sure what it's supposed to do.
     test('AS toUint8List bad values length', () {
       global.throwOnError = false;
       final vList0 = rsg.getASList(AS.kMaxVFLength + 1, AS.kMaxVFLength + 1);
@@ -745,14 +809,11 @@ void main() {
       final bytes = Bytes.fromAsciiList(vList0);
       expect(bytes, isNotNull);
       expect(bytes.length > AS.kMaxVFLength, true);
-
-      //TODO: finish
+      expect(AS.isValidBytesArgs(PTag.kSelectorASValue, bytes), false);
+      
       global.throwOnError = true;
-
-/* Urgent Jim
-      expect(() => Bytes.fromAsciiList(vList0),
+      expect(() => AS.isValidBytesArgs(PTag.kSelectorASValue, bytes),
           throwsA(const TypeMatcher<InvalidValueFieldError>()));
-*/
     });
 
     test('AS getAsciiList values', () {

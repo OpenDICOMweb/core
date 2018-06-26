@@ -208,7 +208,6 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
         final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
-        print('$e1');
         final vList1 = rsg.getAEList(1, 1);
         expect(e1.replace(vList1), equals(vList0));
         expect(e1.values, equals(vList1));

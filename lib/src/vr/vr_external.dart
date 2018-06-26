@@ -318,7 +318,8 @@ class VRAscii extends VRString {
     final potentialMaxVFL = max * maxVLength;
     final maxVFL =
         (potentialMaxVFL > maxVFLength) ? maxVFLength : potentialMaxVFL;
-    return vfLength >= (vmMin * minVLength) && vfLength <= maxVFL;
+    final v = vfLength >= (vmMin * minVLength) && vfLength <= maxVFL;
+    return v ? v : invalidValueField('bad length: $vfLength');
   }
 
 /*
