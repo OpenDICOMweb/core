@@ -17,13 +17,13 @@ void main() {
   final rng = new RNG(1);
   global.throwOnError = false;
 
-  const uInt16MinMax = const [kUint16Min, kUint16Max];
-  const uInt16Min = const [kUint16Min];
-  const uInt16Max = const [kUint16Max];
-  const uInt16MaxPlus = const [kUint16Max + 1];
-  const uInt16MinMinus = const [kUint16Min - 1];
-
   group('OWTag', () {
+    const uInt16MinMax = const [kUint16Min, kUint16Max];
+    const uInt16Min = const [kUint16Min];
+    const uInt16Max = const [kUint16Max];
+    const uInt16MaxPlus = const [kUint16Max + 1];
+    const uInt16MinMinus = const [kUint16Min - 1];
+
     test('OW hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
@@ -207,6 +207,55 @@ void main() {
       expect(e0 == e2, false);
     });
 
+    test('OW fromBytes', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint16List(1, 1);
+        final bytes = new Bytes.typedDataView(vList0);
+        log.debug(bytes);
+        final e0 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes);
+        log.debug('$e0');
+        e0.values;
+        expect(e0.hasValidValues, true);
+        expect(e0.values.length == 1, true);
+        expect(e0.values, equals(vList0));
+        expect(e0.vfBytes, equals(bytes));
+        expect(e0.values is Uint16List, true);
+        expect(e0.values, equals(vList0));
+
+        final vList1 = rng.uint16List(2, 2);
+        final bytes1 = new Bytes.typedDataView(vList1);
+        final e1 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes1);
+        expect(e1.hasValidValues, true);
+      }
+    });
+
+    test('OW fromBytes good values', () {
+      for (var i = 0; i < 10; i++) {
+        global.throwOnError = false;
+        final vList = rng.uint16List(1, 10);
+
+        final bytes0 = new Bytes.typedDataView(vList);
+        final e0 = OWtag.fromBytes(PTag.kSelectorOWValue, bytes0);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('OW fromBytes bad values', () {
+      for (var i = 0; i < 10; i++) {
+        global.throwOnError = false;
+        final vList = rng.uint16List(1, 10);
+//        final bytes0 = Bytes.toAscii(vList.toString());
+        final bytes0 = new Bytes.typedDataView(vList);
+        final e0 = OWtag.fromBytes(PTag.kSelectorFDValue, bytes0);
+        expect(e0, isNull);
+
+        global.throwOnError = true;
+        expect(() => OWtag.fromBytes(PTag.kSelectorFDValue, bytes0),
+            throwsA(const TypeMatcher<InvalidTagError>()));
+      }
+    });
+
     test('OW checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
@@ -265,74 +314,37 @@ void main() {
       expect(e2.values, equals(<int>[]));
     });
 
-    test('OW make', () {
+    test('OW BASE64 random', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint16List(1, 1);
+        //   final vList1 = new Int16List.fromList(vList0);
+        final bytes0 = new Bytes.typedDataView(vList0);
+        final base64 = bytes0.getBase64();
+        final bytes1 = Bytes.fromBase64(base64);
+        final e0 =
+            OWtag.fromBytes(PTag.kGreenPaletteColorLookupTableData, bytes1);
+        expect(e0.hasValidValues, true);
+      }
+    });
+
+    test('OW BASE64 ', () {
+      final vList1 = new Int16List.fromList(uInt16Max);
+      final uInt8List1 = vList1.buffer.asUint8List();
+      final bytes0 = new Bytes.typedDataView(uInt8List1);
+
+      final s = bytes0.getBase64();
+      //  final bytes = cvt.base64.decode(base64);
+      final bytes1 = Bytes.fromBase64(s);
+      final e0 =
+          OWtag.fromBytes(PTag.kGreenPaletteColorLookupTableData, bytes1);
+      expect(e0.hasValidValues, true);
+    });
+
+    test('OW fromValues', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
         log.debug('vList0: $vList0');
         final e0 = OWtag.fromValues(PTag.kEdgePointIndexList, vList0);
-        expect(e0.hasValidValues, true);
-      }
-    });
-
-    test('OW fromBytes', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.uint16List(1, 1);
-        final bytes = new Bytes.typedDataView(vList0);
-        log.debug(bytes);
-        final e0 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes);
-        log.debug('$e0');
-        e0.values;
-        expect(e0.hasValidValues, true);
-        expect(e0.values.length == 1, true);
-        expect(e0.values, equals(vList0));
-        expect(e0.vfBytes, equals(bytes));
-        expect(e0.values is Uint16List, true);
-        expect(e0.values, equals(vList0));
-
-        final vList1 = rng.uint16List(2, 2);
-        final bytes1 = new Bytes.typedDataView(vList1);
-        final e1 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes1);
-        expect(e1.hasValidValues, true);
-      }
-    });
-
-    test('OW fromBytes good values', () {
-      for (var i = 0; i < 10; i++) {
-        global.throwOnError = false;
-        final vList = rng.uint16List(1, 10);
-
-        final bytes0 = new Bytes.typedDataView(vList);
-        final e0 = OWtag.fromBytes(PTag.kSelectorOWValue, bytes0);
-        log.debug('e0: $e0');
-        expect(e0.hasValidValues, true);
-      }
-    });
-
-    test('OW fromBytes bad values', () {
-      for (var i = 0; i < 10; i++) {
-        global.throwOnError = false;
-        final vList = rng.uint16List(1, 10);
-//        final bytes0 = Bytes.toAscii(vList.toString());
-        final bytes0 = new Bytes.typedDataView(vList);
-        final e0 = OWtag.fromBytes(PTag.kSelectorFDValue, bytes0);
-        expect(e0, isNull);
-
-        global.throwOnError = true;
-        expect(() => OWtag.fromBytes(PTag.kSelectorFDValue, bytes0),
-            throwsA(const TypeMatcher<InvalidTagError>()));
-      }
-    });
-
-    test('OW fromB64', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.uint16List(1, 1);
-//        final vList1 = new Uint16List.fromList(vList0);
-//        final uint8List11 = vList1.buffer.asUint8List();
-        final bytes = new Bytes.typedDataView(vList0);
-//        final base64 = cvt.base64.encode(uint8List11);
-        final base64 = bytes.getBase64();
-        final bytes2 = Bytes.fromBase64(base64);
-        final e0 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes2);
         expect(e0.hasValidValues, true);
       }
     });
@@ -456,38 +468,6 @@ void main() {
       for (var tag in obowTags) {
         final e3 = OW.isValidTag(tag);
         expect(e3, true);
-      }
-    });
-
-    test('OW isValidTag bad values', () {
-      global.throwOnError = false;
-      expect(OW.isValidTag(PTag.kSelectorAEValue), false);
-
-      global.throwOnError = true;
-      expect(() => OW.isValidTag(PTag.kSelectorAEValue),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OW.isValidTag(tag), false);
-
-        global.throwOnError = true;
-        expect(() => OW.isValidTag(tag),
-            throwsA(const TypeMatcher<InvalidTagError>()));
-      }
-    });
-
-    test('OW isValidTag good values', () {
-      global.throwOnError = false;
-      expect(OW.isValidTag(PTag.kSelectorOWValue), true);
-      expect(OW.isValidTag(PTag.kAudioSampleData), true);
-      expect(OW.isValidTag(PTag.kGrayLookupTableData), true);
-
-      for (var tag in owVM1Tags) {
-        expect(OW.isValidTag(tag), true);
-      }
-      for (var tag in obowTags) {
-        expect(OW.isValidTag(tag), true);
       }
     });
 

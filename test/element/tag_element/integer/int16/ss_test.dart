@@ -12,8 +12,6 @@ import 'dart:typed_data';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-// Urgent Sharath: if next line has been done delete this and next.
-// Urgent Sharath: all integer test should be changed to match this.
 void main() {
   Server.initialize(name: 'element/int16_test', level: Level.info);
   final rng = new RNG(1);
@@ -102,7 +100,7 @@ void main() {
       final e5 = new SStag(PTag.kSelectorSSValue, null);
       log.debug('e5: $e5');
       expect(e5.hasValidValues, true);
-      expect(e5.values, kEmptyUint16List);
+      expect(e5.values, kEmptyInt16List);
 
       global.throwOnError = true;
       final e6 = new SStag(PTag.kSelectorSSValue, null);
@@ -178,7 +176,6 @@ void main() {
     });
 
     test('SS hashCode and == good values random', () {
-      global.throwOnError = true;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 1);
         final e0 = new SStag(PTag.kTIDOffset, vList0);
@@ -223,7 +220,7 @@ void main() {
       }
     });
 
-    test('SS hashCode and == good values values ', () {
+    test('SS hashCode and == good values ', () {
       final e0 = new SStag(PTag.kTIDOffset, int16Min);
       final e1 = new SStag(PTag.kTIDOffset, int16Min);
       log
@@ -233,7 +230,7 @@ void main() {
       expect(e0 == e1, true);
     });
 
-    test('SS hashCode and == bad values values ', () {
+    test('SS hashCode and == bad values ', () {
       final e0 = new SStag(PTag.kTIDOffset, int16Min);
       final e2 = new SStag(PTag.kOCTZOffsetCorrection, int16Max);
       log.debug('int16Max:$int16Max , e2.hash_code:${e2.hashCode}');
@@ -409,13 +406,13 @@ void main() {
     test('SS fromValues good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 1);
-        final make0 = SStag.fromValues(PTag.kTagAngleSecondAxis, vList0);
-        log.debug('make0: ${make0.info}');
-        expect(make0.hasValidValues, true);
+        final e0 = SStag.fromValues(PTag.kTagAngleSecondAxis, vList0);
+        log.debug('e0: ${e0.info}');
+        expect(e0.hasValidValues, true);
 
-        final make1 = SStag.fromValues(PTag.kTagAngleSecondAxis, <int>[]);
-        expect(make1.hasValidValues, true);
-        expect(make1.values, equals(<int>[]));
+        final e1 = SStag.fromValues(PTag.kTagAngleSecondAxis, <int>[]);
+        expect(e1.hasValidValues, true);
+        expect(e1.values, equals(<int>[]));
       }
     });
 
@@ -423,39 +420,12 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(2, 2);
         global.throwOnError = false;
-        final make0 = SStag.fromValues(PTag.kTagAngleSecondAxis, vList0);
-        expect(make0, isNull);
+        final e0 = SStag.fromValues(PTag.kTagAngleSecondAxis, vList0);
+        expect(e0, isNull);
 
         global.throwOnError = true;
         expect(() => SStag.fromValues(PTag.kTagAngleSecondAxis, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
-      }
-    });
-
-    test('SS fromUint8List', () {
-      for (var i = 0; i < 10; i++) {
-        final vList = rng.int16List(1, 1);
-        //    final vList1 = new Int16List.fromList(vList0);
-        //    final uInt8List1 = vList1.buffer.asUint8List();
-        final bytes = Int16.toBytes(vList);
-        final e0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes);
-        expect(e0.hasValidValues, true);
-        expect(e0.vfBytes, equals(bytes));
-        expect(e0.values is Int16List, true);
-        expect(e0.values, equals(vList));
-      }
-    });
-
-    test('SS fromB64', () {
-      for (var i = 0; i < 10; i++) {
-        final vList = rng.int16List(1, 1);
-        //  final vList1 = new Int16List.fromList(vList0);
-//        final uInt8List0 = vList.buffer.asUint8List();
-        final bytes0 = new Bytes.typedDataView(vList);
-        final base64 = bytes0.getBase64();
-        final bytes1 = Bytes.fromBase64(base64);
-        final e0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes1);
-        expect(e0.hasValidValues, true);
       }
     });
 
@@ -633,35 +603,6 @@ void main() {
       }
     });
 
-    test('SS isNotValidTag good values', () {
-      global.throwOnError = false;
-      expect(SS.isValidTag(PTag.kSelectorSSValue), true);
-      expect(SS.isValidTag(PTag.kZeroVelocityPixelValue), true);
-      expect(SS.isValidTag(PTag.kGrayLookupTableData), true);
-
-      for (var tag in ssVM1Tags) {
-        expect(SS.isValidTag(tag), true);
-      }
-    });
-
-    test('SS isValidTag bad values', () {
-      global.throwOnError = false;
-      expect(SS.isValidTag(PTag.kSelectorUSValue), false);
-
-      global.throwOnError = true;
-      expect(() => !SS.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(SS.isValidTag(tag), false);
-
-        global.throwOnError = true;
-        expect(() => SS.isValidTag(tag),
-            throwsA(const TypeMatcher<InvalidTagError>()));
-      }
-    });
-
     test('SS isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(SS.isValidVRIndex(kSSIndex), true);
@@ -799,41 +740,6 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
       expect(() => SS.isValidValues(PTag.kVisualAcuityModifiers, int16Max),
           throwsA(const TypeMatcher<InvalidValuesError>()));
-    });
-
-    test('Int16Base listFromBytes', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.int16List(1, 1);
-        //  final vList1 = new Int16List.fromList(vList0);
-        //  final bd = vList1.buffer.asUint8List();
-        final bytes = new Bytes.typedDataView(vList0);
-        final vList1 = bytes.asInt16List();
-        log
-          ..debug('vList0 : $vList0')
-          ..debug('SS.fromBytes(bd) ; ${bytes.asInt16List()}');
-        expect(vList1, equals(vList0));
-      }
-      /*const int16Max = const [kInt16Max];
-      final vList1 = new Int16List.fromList(int16Max);
-      final bd = vList1.buffer.asUint8List();
-      expect(SS.fromBytes(bd), equals(int16Max));
-
-      const int32Max = const [kInt32Max];
-      final vList2 = new Int16List.fromList(int32Max);
-      final bd0 = vList2.buffer.asUint8List();
-      expect(SS.fromBytes(bd0), isNull);*/
-    });
-
-    test('SS fromUint8List', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.int16List(1, 1);
-        //    final vList1 = new Int16List.fromList(vList0);
-        //    final bd = vList1.buffer.asUint8List();
-        final bytes = new Bytes.typedDataView(vList0);
-        final vList1 = bytes.asInt16List();
-        log..debug('vList0: $vList0')..debug('     bytes: ; $vList1');
-        expect(vList1, equals(vList0));
-      }
     });
   });
 }

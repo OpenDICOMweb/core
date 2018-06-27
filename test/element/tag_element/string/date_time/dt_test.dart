@@ -157,8 +157,7 @@ void main() {
 
         global.throwOnError = false;
         final e2 = new DTtag(PTag.kDateTime, null);
-        expect(e2.hasValidValues, true);
-        expect(e2.values, StringList.kEmptyList);
+        expect(e2, isNull);
 
         global.throwOnError = true;
         expect(() => new DTtag(PTag.kDateTime, null),
@@ -402,7 +401,7 @@ void main() {
 
       final e2 = new DTtag(PTag.kDateTime, vList1);
       expect(e2.replace(null), equals(vList1));
-      expect(e2.values, equals(<String>[]));
+      expect(e2.values, isNull);
     });
 
     test('DT replace random', () {
@@ -421,8 +420,7 @@ void main() {
       expect(e1.values, equals(<String>[]));
 
       final e2 = new DTtag(PTag.kDateTime, null);
-      expect(e2.hasValidValues, true);
-      expect(e2.values, StringList.kEmptyList);
+      expect(e2, isNull);
     });
 
     test('DT checkLength good values', () {
@@ -507,9 +505,8 @@ void main() {
 
   group('DT Element', () {
     const badDTLengthList = const <List<String>>[
-      const <String>['20120230105630', '1970011a105630'],
-      const <String>['20120230105630', '1970011a105630'],
-      const <String>['20170223122334.111111+01', '19700b01105630']
+      const <String>['20170223122334.111111+11000000', '1970011a105630.111111+110000'],
+      const <String>['201', '1'],
     ];
 
     //VM.k1
@@ -653,10 +650,10 @@ void main() {
       expect(DT.isValidValueLength('19500718105630'), true);
     });
 
-     //Urgent Sharath -  badDTLengthList has good values!
     test('DT isValidValueLength bad values', () {
       for (var s in badDTLengthList) {
         for (var a in s) {
+          global.throwOnError = false;
           expect(DT.isValidValueLength(a), false);
         }
       }
@@ -814,30 +811,6 @@ void main() {
       for (var s in goodDTList) {
         global.throwOnError = false;
         expect(DT.isValidValues(PTag.kDateTime, s), true);
-      }
-    });
-
-    test('DT isValidValues bad values', () {
-      global.throwOnError = false;
-      for (var s in badDTList) {
-        global.throwOnError = false;
-        expect(DT.isValidValues(PTag.kDateTime, s), false);
-
-        global.throwOnError = true;
-        expect(() => DT.isValidValues(PTag.kDateTime, s),
-            throwsA(const TypeMatcher<StringError>()));
-      }
-    });
-
-    test('DT isValidValues bad values length', () {
-      global.throwOnError = false;
-      for (var s in badDTLengthList) {
-        global.throwOnError = false;
-        expect(DT.isValidValues(PTag.kDateTime, s), false);
-
-        global.throwOnError = true;
-        expect(() => DT.isValidValues(PTag.kDateTime, s),
-            throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
