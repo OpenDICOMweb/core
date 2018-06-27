@@ -101,13 +101,13 @@ abstract class ByteElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-  static Element makeFromDicomBytes(DicomBytes bytes, Dataset ds,
+  static Element makeFromBytes(DicomBytes bytes, Dataset ds,
       {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return new PCbytes(bytes);
     final vrIndex = (isEvr) ? bytes.vrIndex : kUNIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
-    final index = getValidVRIndex(vrIndex, tag.vrIndex);
+    final index = getValidVR(vrIndex, tag.vrIndex);
     return _bytesMakers[index](bytes);
   }
 
@@ -130,7 +130,7 @@ abstract class ByteElement<V> {
     UIbytes.fromBytes, ULbytes.fromBytes, USbytes.fromBytes
   ];
 
-  static Element makeMaybeUndefinedFromDicomBytes(DicomBytes bytes,
+  static Element makeMaybeUndefinedFromBytes(DicomBytes bytes,
       [Dataset ds, int vfLengthField]) {
     final code = bytes.code;
     // Note: This shouldn't happen, but it does.
@@ -139,7 +139,7 @@ abstract class ByteElement<V> {
     final vrIndex = bytes.vrIndex;
     assert(vrIndex >= 0 && vrIndex < 4);
     final tag = lookupTagByCode(code, vrIndex, ds);
-    final index = getValidVRIndex(vrIndex, tag.vrIndex);
+    final index = getValidVR(vrIndex, tag.vrIndex);
     return _undefinedBytesMakers[index](bytes, ds, vfLengthField);
   }
 
@@ -149,7 +149,7 @@ abstract class ByteElement<V> {
     OBbytes.fromBytes, OWbytes.fromBytes, UNbytes.fromBytes
   ];
 
-  static Element makeSQFromDicomBytes(
+  static Element makeSQFromBytes(
       Dataset parent, List<Item> items, DicomBytes bytes) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return badVRIndex(kSQIndex, null, kLOIndex);
@@ -161,25 +161,14 @@ abstract class ByteElement<V> {
     return SQbytes.fromBytes(parent, items, bytes);
   }
 
-  static Element makePixelDataFromDicomBytes(DicomBytes bytes,
+  static Element makePixelDataFromBytes(DicomBytes bytes,
       [TransferSyntax ts, VFFragments fragments, Dataset ds]) {
-/* Flush when working
-    final code = bytes.code;
-    final vrIndex = bytes.vrIndex;
-    assert(vrIndex >= 1 && vrIndex < 4);
-    final tag = lookupTagByCode(code, vrIndex, ds);
-    final index = getValidVRIndex(vrIndex, tag.vrIndex);
-    if (index < kVRMaybeUndefinedIndexMin || index > kVRMaybeUndefinedIndexMax)
-      return badVRIndex(index, null, -1);
-    if (code != kPixelData) return badTagCode(code, 'Not Pixel Data', tag);
-*/
-
-    final index = getPixelDataVR(bytes, ds, ts);
-    return _pixelDataMakers[index](bytes, ts, fragments);
+    final index = getPixelDataVR(bytes.code, bytes.vrIndex, ds, ts);
+    return _fromBytesPixelDataMakers[index](bytes, ts, fragments);
   }
 
   // Elements that may have undefined lengths.
-  static final List<Function> _pixelDataMakers = <Function>[
+  static final List<Function> _fromBytesPixelDataMakers = <Function>[
     null,
     OBbytesPixelData.fromBytes,
     OWbytesPixelData.fromBytes,
@@ -192,11 +181,11 @@ abstract class ByteElement<V> {
     if (_isPrivateCreator(code))
       return PCbytes.fromValues(code, vList, isEvr: isEvr);
     final tag = lookupTagByCode(code, vrIndex, ds);
-    final index = getValidVRIndex(vrIndex, tag.vrIndex);
-    return _bytesValuesMakers[vrIndex](code, vList, index);
+    final index = getValidVR(vrIndex, tag.vrIndex);
+    return _fromValueMakers[vrIndex](code, vList, index);
   }
 
-  static final List<Function> _bytesValuesMakers = <Function>[
+  static final List<Function> _fromValueMakers = <Function>[
     SQbytes.fromValues, // stop reformat
     // Maybe Undefined Lengths
     OBbytes.fromValues, OWbytes.fromValues, UNbytes.fromValues,

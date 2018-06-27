@@ -46,23 +46,21 @@ Tag lookupTagByCode(int code, int vrIndex, Dataset ds) {
   }
 }
 
-int getPixelDataVR(DicomBytes bytes, Dataset ds, TransferSyntax ts) {
-  final code = bytes.code;
-  final vrIndex = bytes.vrIndex;
-  assert(vrIndex >= 1 && vrIndex < 4);
-  final tag = lookupTagByCode(code, bytes.vrIndex, ds);
-  if (code != kPixelData) return badTagCode(code, 'Not Pixel Data', tag);
-  var index = getValidVRIndex(vrIndex, tag.vrIndex);
-  if (index < kVRMaybeUndefinedIndexMin || index > kVRMaybeUndefinedIndexMax)
-    return badVRIndex(index, null, -1);
-  if (index == kUNIndex && ts != null) {
+/// Returns a valid Pixel Data [vrIndex].
+int getPixelDataVR(int code, int vrIndex, Dataset ds, TransferSyntax ts) {
+  if (code != kPixelData) return badTagCode(code, 'Not Pixel Data Tag Code');
+  if (vrIndex == kOBIndex || vrIndex == kOWIndex) return vrIndex;
+  if ((vrIndex == kUNIndex || vrIndex == kOBOWIndex) && ts != null) {
     final int pixelSize = ds[kBitsAllocated].value;
-    index = (pixelSize == 16) ? kOWIndex : kOBIndex;
+    return (pixelSize == 16) ? kOWIndex : kOBIndex;
   }
-  return index;
+  return badVRIndex(vrIndex, null, -1);
 }
 
-int getValidVRIndex(int vrIndex, int tagVRIndex) {
+/// Returns a valid [vrIndex] given the current [vrIndex] and
+/// the _tag_.[vrIndex]. If [vrIndex] is not a _normal_ index,
+/// returns [kUNIndex]; otherwise, returns the _tag_.[vrIndex].
+int getValidVR(int vrIndex, int tagVRIndex) {
   if (vrIndex < 0 || vrIndex > kVRNormalIndexMax) return kUNIndex;
   return (tagVRIndex > kVRNormalIndexMax) ? vrIndex : tagVRIndex;
 }

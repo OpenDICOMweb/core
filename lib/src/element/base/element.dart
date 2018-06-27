@@ -358,7 +358,6 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns _true_ if _this_ is valid. If [issues] is non-_null_ messages
   /// are added to it.
   bool check([Issues issues]) {
-    print('checking: $this');
     return checkVR(vrIndex, issues) && checkLength(values, issues) &&
     checkValues(values, issues);
   }

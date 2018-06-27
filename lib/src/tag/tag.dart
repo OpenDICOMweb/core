@@ -301,7 +301,7 @@ abstract class Tag {
   @override
   String toString() {
     final retired = (isRetired == false) ? '' : ', (Retired)';
-    return '$runtimeType: $dcm $keyword, ${vrIdByIndex[vrIndex]}, $vm $retired';
+    return '$runtimeType: $dcm $keyword, ${vrIdByIndex[vrIndex]}, $vm$retired';
   }
 
   //TODO: make this a real index

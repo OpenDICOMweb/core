@@ -26,7 +26,7 @@ void main() {
         final vList0 = rsg.getASList(1, 1);
         final e0 = ASbytes.fromValues(kPatientAge, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -38,7 +38,7 @@ void main() {
         final vList0 = rsg.getDAList(1, 1);
         final e0 = ASbytes.fromValues(kPatientAge, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, false);
 
@@ -54,7 +54,7 @@ void main() {
         final vList0 = rsg.getDAList(2, i + 1);
         final e0 = ASbytes.fromValues(kPatientAge, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, false);
       }
@@ -67,7 +67,7 @@ void main() {
         final vList0 = rsg.getASList(1, i);
         final e0 = ASbytes.fromValues(kSelectorASValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -79,7 +79,7 @@ void main() {
         final vList0 = rsg.getDAList(1, i);
         final e0 = ASbytes.fromValues(kSelectorASValue, vList0);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, false);
 

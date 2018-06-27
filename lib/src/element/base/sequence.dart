@@ -36,7 +36,7 @@ abstract class SQ extends Element<Item> {
   Tag get tag;
 
   /// The DICOM name for Sequence values, which are Items.
-  Iterable<Item> get items => (values is List) ? values : values.toList();
+  List<Item> get items => (values is List) ? values : values.toList();
 
   //**** End of Interface
   @override

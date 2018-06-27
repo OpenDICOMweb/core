@@ -216,7 +216,7 @@ void main() {
         for (var code in fdVM1Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -230,7 +230,7 @@ void main() {
         for (var code in fdVM2Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -244,7 +244,7 @@ void main() {
         for (var code in fdVM3Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -258,7 +258,7 @@ void main() {
         for (var code in fdVM4Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -272,7 +272,7 @@ void main() {
         for (var code in fdVM6Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -286,7 +286,7 @@ void main() {
         for (var code in fdVM9Tags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -300,7 +300,7 @@ void main() {
         for (var code in fdVM1_nTags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }

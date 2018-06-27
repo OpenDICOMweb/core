@@ -148,7 +148,6 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   @override
   bool tryAdd(Element e, [Issues issues]) {
     final code = e.code;
-    print('tryAdd: ${dcm(code)} $e');
     final old = lookup(code);
     if (old == null) {
       if (checkIssuesOnAdd && (issues != null)) {
@@ -199,7 +198,7 @@ $runtimeType(#$hashCode):
     ''';
 
   @override
-  String toString() => '$runtimeType: $length Elements';
+  String toString() => '$runtimeType: $total Elements';
 
   static const List<Dataset> empty = const <Dataset>[];
 

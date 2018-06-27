@@ -8,7 +8,6 @@
 //
 
 import 'package:core/src/dataset/base.dart';
-import 'package:core/src/dataset/tag.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
@@ -40,10 +39,6 @@ abstract class TagDataset {
 
   Tag getTag(int key) => Tag.lookupByCode(key);
 
-  static const _makeSQ = TagElement.makeSequenceFromCode;
-
-  static const _makeElement = TagElement.makeFromValues;
-
   static Dataset convert(Dataset dsOld, Dataset dsNew, [Bytes bytes]) {
     final badElements = <Element>[];
     for (var old in dsOld.elements) _convertElement(dsNew, old, badElements);
@@ -51,21 +46,28 @@ abstract class TagDataset {
     return dsNew;
   }
 
+  static const _makeElement = TagElement.makeFromValues;
+
   static void _convertElement(
       Dataset dsNew, Element old, List<Element> badElements) {
     final e = (old is SQ)
-        ? _convertSQ(dsNew, old, badElements)
+        ? _convertSQ(dsNew, old)
         : _makeElement(old.code, old.vrIndex, old.values, dsNew);
-    print('New e: $e');
     if (e == null) {
+      print('Bad: $old');
       badElements.add(old);
     } else {
-      print('e: $e');
       dsNew.add(e);
     }
   }
 
-  static SQ _convertSQ(Dataset parent, SQ oldSQ, List<Element> badElements) {
+  static SQ _convertSQ(Dataset parent, SQ oldSQ, ) {
+    final sq = SQtag.convert(parent, oldSQ);
+    print('sq: $sq');
+    return sq;
+  }
+/*
+  static SQ _convertSQ(Dataset parent, SQ oldSQ, ) {
     final sq = _makeSQ(parent, oldSQ.code, <TagItem>[]);
     print('> sq: $sq');
     for (var item0 in oldSQ.items) {
@@ -80,4 +82,5 @@ abstract class TagDataset {
     print('< sq: $sq');
     return sq;
   }
+  */
 }

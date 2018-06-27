@@ -112,7 +112,7 @@ void main() {
           expect(e0.hasValidValues, true);
 
           log.debug('e0:$e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, true);
         }
@@ -127,7 +127,7 @@ void main() {
         for (var code in dsVM2Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, true);
         }
@@ -141,7 +141,7 @@ void main() {
         for (var code in dsVM2Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, false);
         }
@@ -156,7 +156,7 @@ void main() {
         for (var code in dsVM3Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, true);
         }
@@ -171,7 +171,7 @@ void main() {
         for (var code in dsVM3Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, false);
         }
@@ -186,7 +186,7 @@ void main() {
         for (var code in dsVM4Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -201,7 +201,7 @@ void main() {
         for (var code in dsVM4Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -215,7 +215,7 @@ void main() {
         for (var code in dsVM6Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -229,7 +229,7 @@ void main() {
         for (var code in dsVM6Tags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, false);
         }
@@ -243,7 +243,7 @@ void main() {
         for (var code in dsVM1_nTags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -257,7 +257,7 @@ void main() {
         final vList = rsg.getDSList(1, 2);
         final e0 = DSbytes.fromValues(kDetectorActiveDimensions, vList);
         log.debug('e0: $e0');
-        final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+        final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
         expect(e0.hasValidValues, true);
       }
@@ -271,7 +271,7 @@ void main() {
         for (var code in dsVM2_2nTags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
@@ -286,7 +286,7 @@ void main() {
         for (var code in dsVM3_3nTags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
-          final e1 = ByteElement.makeFromDicomBytes(e0.bytes, rds, isEvr: true);
+          final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
           log.debug('e1: $e1');
           expect(e0.hasValidValues, true);
         }
