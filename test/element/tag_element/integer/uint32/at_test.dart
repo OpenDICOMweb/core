@@ -15,14 +15,15 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'element/at_test', level: Level.info);
   final rng = new RNG(1);
-
-  const uInt32MinMax = const [kUint32Min, kUint32Max];
-  const uInt32Max = const [kUint32Max];
-  const uInt32MaxPlus = const [kUint32Max + 1];
-  const uInt32Min = const [kUint32Min];
-  const uInt32MinMinus = const [kUint32Min - 1];
+  global.throwOnError = false;
 
   group('AT', () {
+    const uInt32MinMax = const [kUint32Min, kUint32Max];
+    const uInt32Max = const [kUint32Max];
+    const uInt32MaxPlus = const [kUint32Max + 1];
+    const uInt32Min = const [kUint32Min];
+    const uInt32MinMinus = const [kUint32Min - 1];
+
     test('AT hasValidValues good values random', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
@@ -233,7 +234,7 @@ void main() {
       expect(e0 == e2, false);
     });
 
-    test('AT fromBytes random', () {
+    test('AT fromBytes good random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
@@ -243,12 +244,6 @@ void main() {
         expect(e0.values is Uint32List, true);
         expect(e0.values, equals(vList0));
 
-        // Test Base64
-        //       final base64 = cvt.base64.encode(uint8List11);
-//       final e1 = ATtag.fromBytes(PTag.kOriginalImageIdentification,base64);
-//        expect(e0 == e1, true);
-//        expect(e0.value, equals(e1.value));
-
         final vList2 = rng.uint32List(2, 2);
         final bytes2 = new Bytes.typedDataView(vList2);
         final e2 = ATtag.fromBytes(PTag.kSelectorAttribute, bytes2);
@@ -256,7 +251,17 @@ void main() {
       }
     });
 
-    test('AT fromBytes', () {
+    test('AT fromBytes bad values random', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.uint32List(2, 2);
+        final bytes0 = Uint32.toBytes(vList);
+        final e1 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, bytes0);
+        expect(e1, isNull);
+      }
+    });
+
+    test('AT fromBytes good values', () {
       final vList = new Uint32List.fromList(uInt32Max);
       final bytes = new Bytes.typedDataView(vList);
       final e0 = ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes);
@@ -264,6 +269,15 @@ void main() {
       expect(e0.vfBytes, equals(bytes));
       expect(e0.values is Uint32List, true);
       expect(e0.values, equals(vList));
+    });
+
+    test('AT fromBytes bad values ', () {
+      final vList2 = new Uint32List.fromList([rng.nextInt64]);
+      //  final uInt8List2 = vList2.buffer.asUint8List();
+      final bytes2 = new Bytes.typedDataView(vList2);
+      log.debug('vList2 : $vList2, bytes2: $bytes2');
+      final at0 = ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes2);
+      expect(at0.hasValidValues, true);
     });
 
     test('AT fromBytes good values', () {
@@ -355,29 +369,27 @@ void main() {
       expect(e2.values, equals(<int>[]));
     });
 
-/*
     test('AT BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-//        final vList1 = new Uint32List.fromList(vList0);
-//        final vList11 = vList1.buffer.asUint8List(
-//       final base64 = cvt.base64.encode(vList11);
-        final bytes = new Bytes.typedDataView(vList0);
-//        final e0 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, base64);
-//        expect(e0.hasValidValues, true);
+        final bytes0 = new Bytes.typedDataView(vList0);
+        final base64 = bytes0.getBase64();
+        final bytes1 = Bytes.fromBase64(base64);
+        final e0 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, bytes1);
+        expect(e0.hasValidValues, true);
       }
     });
-*/
 
-/*
     test('AT BASE64', () {
       final vList1 = new Uint32List.fromList(uInt32Max);
-      final vList11 = vList1.buffer.asUint8List();
-      final base64 = cvt.base64.encode(vList11);
-//      final e0 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, base64);
-//      expect(e0.hasValidValues, true);
+      final uInt8List1 = vList1.buffer.asUint8List();
+      final bytes0 = new Bytes.typedDataView(uInt8List1);
+
+      final s = bytes0.getBase64();
+      final bytes1 = Bytes.fromBase64(s);
+      final e0 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, bytes1);
+      expect(e0.hasValidValues, true);
     });
-*/
 
     test('XintYYBase random', () {
       for (var i = 0; i < 10; i++) {
@@ -412,6 +424,47 @@ void main() {
         log.debug('v3: $v3');
         expect(v3, isNotNull);
       }
+    });
+
+    test('AT fromValues good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(1, 1);
+        final e0 = ATtag.fromValues(PTag.kFunctionalGroupPointer, vList0);
+        log.debug('e0: ${e0.info}');
+        expect(e0.hasValidValues, true);
+
+        final e1 = ATtag.fromValues(PTag.kFunctionalGroupPointer, <int>[]);
+        expect(e1.hasValidValues, true);
+        expect(e1.values, equals(<int>[]));
+      }
+    });
+
+    test('AT fromValues bad values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint32List(2, 2);
+        global.throwOnError = false;
+        final e0 = ATtag.fromValues(PTag.kFunctionalGroupPointer, vList0);
+        expect(e0, isNull);
+
+        global.throwOnError = true;
+        expect(() => ATtag.fromValues(PTag.kFunctionalGroupPointer, vList0),
+            throwsA(const TypeMatcher<InvalidValuesError>()));
+      }
+    });
+
+    test('AT checkValue good values', () {
+      final vList0 = rng.uint32List(1, 1);
+      final e0 = new ATtag(PTag.kFunctionalGroupPointer, vList0);
+
+      expect(e0.checkValue(uInt32Max[0]), true);
+      expect(e0.checkValue(uInt32Min[0]), true);
+    });
+
+    test('AT checkValue bad values', () {
+      final vList0 = rng.uint32List(1, 1);
+      final e0 = new ATtag(PTag.kFunctionalGroupPointer, vList0);
+      expect(e0.checkValue(uInt32MaxPlus[0]), false);
+      expect(e0.checkValue(uInt32MinMinus[0]), false);
     });
 
     test('AT view', () {
@@ -545,34 +598,6 @@ void main() {
 
     test('AT isValidTag bad values', () {
       global.throwOnError = false;
-      expect(AT.isValidTag(PTag.kSelectorUSValue), false);
-
-      global.throwOnError = true;
-      expect(() => AT.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(AT.isValidTag(tag), false);
-
-        global.throwOnError = true;
-        expect(() => AT.isValidTag(tag),
-            throwsA(const TypeMatcher<InvalidTagError>()));
-      }
-    });
-
-    test('AT isValidTag good values', () {
-      global.throwOnError = false;
-      expect(AT.isValidTag(PTag.kSelectorATValue), true);
-
-      for (var tag in atVM1Tags) {
-        expect(AT.isValidTag(tag), true);
-      }
-    });
-
-    test('AT isValidTag bad values', () {
-      global.throwOnError = false;
-
       expect(AT.isValidTag(PTag.kSelectorUSValue), false);
 
       global.throwOnError = true;

@@ -221,13 +221,12 @@ void main() {
 
       final e1 = new AStag(PTag.kPatientAge);
       log.debug('e1: $e1');
-      expect(e1.hasValidValues, true);
-      expect(e1.values.isEmpty, true);
+      expect(e1, isNull);
     });
 
     test('AS null', () {
       final e2 = new AStag(PTag.kPatientAge, null);
-      expect(e2, kEmptyStringList);
+      expect(e2, isNull);
 
       /*global.throwOnError = true;
       expect(() => new AStag(PTag.kPatientAge, null),
@@ -324,8 +323,7 @@ void main() {
       expect(e1.values, equals(<String>[]));
 
       final e2 = new AStag(PTag.kPatientAge, null);
-      expect(e2, <String>[]);
-      expect(e2, kEmptyStringList);
+      expect(e2, isNull);
     });
 
     test('AS toUint8List random', () {
@@ -801,7 +799,6 @@ void main() {
       expect(Bytes.fromAsciiList(vList1), equals(values));
     });
 
-    // Urgent Sharath Fix - I'm not sure what it's supposed to do.
     test('AS toUint8List bad values length', () {
       global.throwOnError = false;
       final vList0 = rsg.getASList(AS.kMaxVFLength + 1, AS.kMaxVFLength + 1);

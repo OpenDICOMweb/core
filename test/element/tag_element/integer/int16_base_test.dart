@@ -279,4 +279,18 @@ void main() {
     final fromUnit8L1 = Int16.fromUint8List(unit8List1);
     expect(fromUnit8L1, kEmptyInt16List);
   });
+
+  test('Int16Base listFromBytes', () {
+    for (var i = 0; i < 10; i++) {
+      final vList0 = rng.int16List(1, 1);
+      //  final vList1 = new Int16List.fromList(vList0);
+      //  final bd = vList1.buffer.asUint8List();
+      final bytes = new Bytes.typedDataView(vList0);
+      final vList1 = bytes.asInt16List();
+      log
+        ..debug('vList0 : $vList0')
+        ..debug('SS.fromBytes(bd) ; ${bytes.asInt16List()}');
+      expect(vList1, equals(vList0));
+    }
+  });
 }

@@ -14,6 +14,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'element/int32_test', level: Level.info);
   final rng = new RNG(1);
+  global.throwOnError = false;
 
   group('SLTag', () {
     const int32VMinMax = const [kInt32Min, kInt32Max];
@@ -230,7 +231,7 @@ void main() {
       expect(e0 == e2, false);
     });
 
-    test('SL fromUint8List good values random', () {
+    test('SL fromBytes good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int32List(1, 1);
 //        final int32ListV1 = new Int32List.fromList(vList0);
@@ -245,7 +246,7 @@ void main() {
       }
     });
 
-    test('SL fromUint8List bad random values', () {
+    test('SL fromBytes bad random values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int32List(2, 10);
         final bytes = new Bytes.typedDataView(vList0);
@@ -255,7 +256,7 @@ void main() {
       }
     });
 
-    test('SL fromUint8List ', () {
+    test('SL fromBytes good values ', () {
       final int32ListV1 = new Int32List.fromList(int32Max);
       //     final uInt8ListV1 = int32ListV1.buffer.asUint8List();
       final bytes = new Bytes.typedDataView(int32ListV1);
@@ -266,11 +267,20 @@ void main() {
       expect(e0.values, equals(int32ListV1));
     });
 
+    test('SL fromBytes bad values ', () {
+      final vList2 = new Int32List.fromList([rng.nextInt64]);
+      //  final uInt8List2 = vList2.buffer.asUint8List();
+      final bytes2 = new Bytes.typedDataView(vList2);
+      log.debug('vList2 : $vList2, bytes2: $bytes2');
+      final sl7 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes2);
+      expect(sl7.hasValidValues, true);
+    });
+
     test('SL fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
-        final intList0 = rng.int32List(1, 10);
-        final bytes0 = new Bytes.typedDataView(intList0);
+        final vList0 = rng.int32List(1, 10);
+        final bytes0 = new Bytes.typedDataView(vList0);
         log.debug('bytes0: $bytes0');
         final e0 = SLtag.fromBytes(PTag.kSelectorSLValue, bytes0);
         log.debug('e0: $e0');
@@ -315,8 +325,12 @@ void main() {
     });
 
     test('SL checkValues ', () {
+      global.throwOnError = false;
       final e0 = new SLtag(PTag.kRationalNumeratorValue, int32Min);
       expect(e0.checkValues(e0.values), true);
+
+      final e1 = new SLtag(PTag.kRationalNumeratorValue, [rng.nextInt64]);
+      expect(e1, isNull);
     });
 
     test('SL valuesCopy random', () {
@@ -375,20 +389,20 @@ void main() {
       expect(e0.hasValidValues, true);
     });
 
-    test('SL make good values', () {
+    test('SL fromValues good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int32List(1, 1);
-        final make0 = SLtag.fromValues(PTag.kReferencePixelX0, vList0);
-        log.debug('make0: ${make0.info}');
-        expect(make0.hasValidValues, true);
+        final e0 = SLtag.fromValues(PTag.kReferencePixelX0, vList0);
+        log.debug('e0: ${e0.info}');
+        expect(e0.hasValidValues, true);
 
-        final make1 = SLtag.fromValues(PTag.kReferencePixelX0, <int>[]);
-        expect(make1.hasValidValues, true);
-        expect(make1.values, equals(<int>[]));
+        final e1 = SLtag.fromValues(PTag.kReferencePixelX0, <int>[]);
+        expect(e1.hasValidValues, true);
+        expect(e1.values, equals(<int>[]));
       }
     });
 
-    test('SL make bad values', () {
+    test('SL fromValues bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int32List(2, 2);
         global.throwOnError = false;
@@ -398,34 +412,6 @@ void main() {
         global.throwOnError = true;
         expect(() => SLtag.fromValues(PTag.kReferencePixelX0, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
-      }
-    });
-
-    test('SL fromBytes', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.int32List(1, 1);
-        final bytes = new Bytes.typedDataView(vList0);
-
-        final e0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes);
-        expect(e0.hasValidValues, true);
-        expect(e0.vfBytes, equals(bytes));
-        expect(e0.values is Int32List, true);
-        expect(e0.values, equals(vList0));
-      }
-    });
-
-    test('SL fromBase64', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.int32List(1, 1);
-        final bytes0 = new Bytes.typedDataView(vList0);
-//        final int32ListV1 = new Int32List.fromList(vList0);
-//        final uInt8ListV1 = int32ListV1.buffer.asUint8List();
-//        final base64 = cvt.base64.encode(uInt8ListV1);
-        final base64 = bytes0.getBase64();
-        final bytes1 = Bytes.fromBase64(base64);
-
-        final e0 = SLtag.fromBytes(PTag.kReferencePixelX0, bytes1);
-        expect(e0.hasValidValues, true);
       }
     });
 
@@ -623,33 +609,6 @@ void main() {
           expect(() => SL.isValidLength(tag, validMinVList0),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
-      }
-    });
-
-    test('SL isValidTag good values', () {
-      global.throwOnError = false;
-      expect(SL.isValidTag(PTag.kSelectorSLValue), true);
-
-      for (var tag in slVM1Tags) {
-        expect(SL.isValidTag(tag), true);
-      }
-    });
-
-    test('SL isValidTag bad values', () {
-      global.throwOnError = false;
-      expect(SL.isValidTag(PTag.kSelectorUSValue), false);
-
-      global.throwOnError = true;
-      expect(() => SL.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(SL.isValidTag(tag), false);
-
-        global.throwOnError = true;
-        expect(() => SL.isValidTag(tag),
-            throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
 
