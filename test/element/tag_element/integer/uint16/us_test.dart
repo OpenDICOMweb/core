@@ -15,14 +15,15 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'element/us_test', level: Level.info);
   final rng = new RNG(1);
-
-  const uInt16MinMax = const [kUint16Min, kUint16Max];
-  const uInt16Min = const [kUint16Min];
-  const uInt16Max = const [kUint16Max];
-  const uInt16MaxPlus = const [kUint16Max + 1];
-  const uInt16MinMinus = const [kUint16Min - 1];
+  global.throwOnError = false;
 
   group('US', () {
+    const uInt16MinMax = const [kUint16Min, kUint16Max];
+    const uInt16Min = const [kUint16Min];
+    const uInt16Max = const [kUint16Max];
+    const uInt16MaxPlus = const [kUint16Max + 1];
+    const uInt16MinMinus = const [kUint16Min - 1];
+
     test('US hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
@@ -99,10 +100,8 @@ void main() {
       final e4 = new UStag(PTag.kRepresentativeFrameNumber, null);
       log.debug('e4: $e4');
       expect(e4, <int>[]);
-
-      global.throwOnError = true;
-      /* expect(() => new UStag(PTag.kRepresentativeFrameNumber, null),
-          throwsA(const TypeMatcher<InvalidValuesError>()));*/
+      expect(e4.hasValidValues, true);
+      expect(e4.values, kEmptyUint16List);
     });
 
     test('US update random', () {
@@ -173,11 +172,8 @@ void main() {
 
     test('US hashCode and == good values random', () {
       global.throwOnError = false;
-      final rng = new RNG(1);
-      List<int> vList0;
-
       for (var i = 0; i < 10; i++) {
-        vList0 = rng.uint16List(1, 1);
+        final vList0 = rng.uint16List(1, 1);
         final e0 = new UStag(PTag.kLargestMonochromePixelValue, vList0);
         final e1 = new UStag(PTag.kLargestMonochromePixelValue, vList0);
         log
@@ -340,42 +336,51 @@ void main() {
       expect(e0.replace(vList1), equals(vList0));
     });
 
-    test('US make good values', () {
+    test('US BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final make0 = UStag.fromValues(PTag.kRepresentativeFrameNumber, vList0);
-        log.debug('make0: ${make0.info}');
-        expect(make0.hasValidValues, true);
-
-        final make1 =
-            UStag.fromValues(PTag.kRepresentativeFrameNumber, <int>[]);
-        expect(make1.hasValidValues, true);
-        expect(make1.values, equals(<int>[]));
+        final bytes0 = new Bytes.typedDataView(vList0);
+        final base64 = bytes0.getBase64();
+        final bytes1 = Bytes.fromBase64(base64);
+        final e0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes1);
+        expect(e0.hasValidValues, true);
       }
     });
 
-    test('US make bad values', () {
+    test('US BASE64 ', () {
+      final vList1 = new Int16List.fromList(uInt16Min);
+      final uInt8List1 = vList1.buffer.asUint8List();
+      final bytes0 = new Bytes.typedDataView(uInt8List1);
+
+      final s = bytes0.getBase64();
+      final bytes1 = Bytes.fromBase64(s);
+      final e0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes1);
+      expect(e0.hasValidValues, true);
+    });
+
+    test('US fromValues good values', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rng.uint16List(1, 1);
+        final e0 = UStag.fromValues(PTag.kRepresentativeFrameNumber, vList0);
+        log.debug('e0: ${e0.info}');
+        expect(e0.hasValidValues, true);
+
+        final e1 = UStag.fromValues(PTag.kRepresentativeFrameNumber, <int>[]);
+        expect(e1.hasValidValues, true);
+        expect(e1.values, equals(<int>[]));
+      }
+    });
+
+    test('US fromValues bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(2, 2);
         global.throwOnError = false;
-        final make0 = UStag.fromValues(PTag.kRepresentativeFrameNumber, vList0);
-        expect(make0, isNull);
+        final e0 = UStag.fromValues(PTag.kRepresentativeFrameNumber, vList0);
+        expect(e0, isNull);
 
         global.throwOnError = true;
         expect(() => UStag.fromValues(PTag.kRepresentativeFrameNumber, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
-      }
-    });
-
-    test('US fromBytes', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.uint16List(1, 1);
-        final bytes0 = new Bytes.typedDataView(vList0);
-        final e0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
-        expect(e0.hasValidValues, true);
-        expect(e0.vfBytes, equals(bytes0));
-        expect(e0.values is Uint16List, true);
-        expect(e0.values, equals(vList0));
       }
     });
 

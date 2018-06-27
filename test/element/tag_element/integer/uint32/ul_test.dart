@@ -15,14 +15,15 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'element/ul_test', level: Level.info);
   final rng = new RNG(1);
-
-  const uInt32MinMax = const [kUint32Min, kUint32Max];
-  const uInt32Max = const [kUint32Max];
-  const uInt32MaxPlus = const [kUint32Max + 1];
-  const uInt32Min = const [kUint32Min];
-  const uInt32MinMinus = const [kUint32Min - 1];
+  global.throwOnError = false;
 
   group('UL', () {
+    const uInt32MinMax = const [kUint32Min, kUint32Max];
+    const uInt32Max = const [kUint32Max];
+    const uInt32MaxPlus = const [kUint32Max + 1];
+    const uInt32Min = const [kUint32Min];
+    const uInt32MinMinus = const [kUint32Min - 1];
+
     test('UL hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
@@ -376,7 +377,7 @@ void main() {
       expect(e0.hasValidValues, true);
     });
 
-    test('UL make good values', () {
+    test('UL fromValues good values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 1);
         final e0 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, vList);
@@ -389,43 +390,17 @@ void main() {
       }
     });
 
-    test('UL make bad values', () {
+    test('UL fromValues bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(2, 2);
 
         global.throwOnError = false;
-        final make0 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, vList0);
-        expect(make0, isNull);
+        final e0 = ULtag.fromValues(PTag.kNumberOfWaveformSamples, vList0);
+        expect(e0, isNull);
 
         global.throwOnError = true;
         expect(() => ULtag.fromValues(PTag.kNumberOfWaveformSamples, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
-      }
-    });
-
-    test('UL fromBytes', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.uint32List(1, 1);
-//        final vList1 = new Uint32List.fromList(vList0);
-//        final vList11 = vList1.buffer.asUint8List();
-        final bytes = new Bytes.typedDataView(vList0);
-        final e0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
-        expect(e0.hasValidValues, true);
-        expect(e0.vfBytes, equals(bytes));
-        expect(e0.values is Uint32List, true);
-        expect(e0.values, equals(vList0));
-      }
-    });
-
-    test('UL fromB64', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.uint32List(1, 1);
-//        final vList1 = new Uint32List.fromList(vList0);
-//        final vList11 = vList1.buffer.asUint8List();
-        //       final base64 = cvt.base64.encode(vList11);
-        final bytes = new Bytes.typedDataView(vList0);
-        final e0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
-        expect(e0.hasValidValues, true);
       }
     });
 
@@ -633,61 +608,6 @@ void main() {
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
-
-    test('UL isValidTag good values', () {
-      global.throwOnError = false;
-      expect(UL.isValidTag(PTag.kSelectorULValue), true);
-
-      for (var tag in ulVM1Tags) {
-        expect(UL.isValidTag(tag), true);
-      }
-    });
-
-    test('UL isValidTag bad values', () {
-      global.throwOnError = false;
-      expect(UL.isValidTag(PTag.kSelectorUSValue), false);
-
-      global.throwOnError = true;
-      expect(() => UL.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(UL.isValidTag(tag), false);
-
-        global.throwOnError = true;
-        expect(() => UL.isValidTag(tag),
-            throwsA(const TypeMatcher<InvalidTagError>()));
-      }
-    });
-    
-/*
-
-    test('UL checkVR good values', () {
-      global.throwOnError = false;
-      expect(UL.checkVRIndex(kULIndex), kULIndex);
-
-      for (var tag in ulTags0) {
-        global.throwOnError = false;
-        expect(UL.checkVRIndex(tag.vrIndex), tag.vrIndex);
-      }
-    });
-
-    test('UL checkVR bad values', () {
-      expect(UL.checkVRIndex(kAEIndex), isNull);
-      global.throwOnError = true;
-      expect(() => UL.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(UL.checkVRIndex(tag.vrIndex), isNull);
-
-        global.throwOnError = true;
-        expect(() => UL.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-*/
 
     test('UL isValidVRIndex good values', () {
       global.throwOnError = false;

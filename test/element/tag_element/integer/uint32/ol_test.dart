@@ -15,14 +15,15 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'element/ol_test', level: Level.info);
   final rng = new RNG(1);
-
-  const uInt32MinMax = const [kUint32Min, kUint32Max];
-  const uInt32Max = const [kUint32Max];
-  const uInt32MaxPlus = const [kUint32Max + 1];
-  const uInt32Min = const [kUint32Min];
-  const uInt32MinMinus = const [kUint32Min - 1];
+  global.throwOnError = false;
 
   group('OL', () {
+    const uInt32MinMax = const [kUint32Min, kUint32Max];
+    const uInt32Max = const [kUint32Max];
+    const uInt32MaxPlus = const [kUint32Max + 1];
+    const uInt32Min = const [kUint32Min];
+    const uInt32MinMinus = const [kUint32Min - 1];
+
     test('OL hasValidValues random', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
@@ -232,8 +233,6 @@ void main() {
     test('OL fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-//        final vList1 = new Uint32List.fromList(vList0);
-//        final vList1 = vList1.buffer.asUint8List();
         final bytes0 = new Bytes.typedDataView(vList0);
         final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes0);
         expect(e0.hasValidValues, true);
@@ -241,15 +240,7 @@ void main() {
         expect(e0.values is Uint32List, true);
         expect(e0.values, equals(vList0));
 
-        // Test Base64
-        //       final base64 = cvt.base64.encode(uint8List11);
-//       final e1 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, base64);
-//        expect(e0 == e1, true);
-//        expect(e0.value, equals(e1.value));
-
         final vList1 = rng.uint32List(2, 2);
-//        final vList2 = new Uint32List.fromList(vList1);
-//        final uint8List12 = vList2.buffer.asUint8List();
         final bytes1 = new Bytes.typedDataView(vList1);
         final e2 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes1);
         expect(e2.hasValidValues, true);
@@ -352,29 +343,26 @@ void main() {
       expect(e2.values, equals(<int>[]));
     });
 
-/*
     test('OL BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-//        final vList1 = new Uint32List.fromList(vList0);
-//        final vList11 = vList1.buffer.asUint8List();
-//       final base64 = cvt.base64.encode(vList11);
-        final bytes = new Bytes.typedDataView(vList0);
-//        final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, base64);
-//        expect(e0.hasValidValues, true);
+        final bytes0 = new Bytes.typedDataView(vList0);
+        final base64 = bytes0.getBase64();
+        final bytes1 = Bytes.fromBase64(base64);
+        final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes1);
+        expect(e0.hasValidValues, true);
       }
     });
-*/
 
-/*
     test('OL BASE64', () {
       final vList1 = new Uint32List.fromList(uInt32Max);
-      final vList11 = vList1.buffer.asUint8List();
-      final base64 = cvt.base64.encode(vList11);
-      final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, base64);
+      final uInt8List1 = vList1.buffer.asUint8List();
+      final bytes0 = new Bytes.typedDataView(uInt8List1);
+      final s = bytes0.getBase64();
+      final bytes1 = Bytes.fromBase64(s);
+      final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes1);
       expect(e0.hasValidValues, true);
     });
-*/
 
     test('OL fromValues', () {
       for (var i = 0; i < 10; i++) {
@@ -383,32 +371,6 @@ void main() {
         expect(e.hasValidValues, true);
       }
     });
-
-    test('OL fromBytes', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.uint32List(1, 1);
-        final bytes = new Bytes.typedDataView(vList0);
-        final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
-        expect(e0.hasValidValues, true);
-        expect(e0.vfBytes, equals(bytes));
-        expect(e0.values is Uint32List, true);
-        expect(e0.values, equals(vList0));
-      }
-    });
-
-/*
-    test('OL fromB64', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.uint32List(1, 1);
-//        final vList1 = new Uint32List.fromList(vList0);
-//        final vList11 = vList1.buffer.asUint8List();
-//       final base64 = cvt.base64.encode(vList11);
-        final bytes = new Bytes.typedDataView(vList0);
-        final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, base64);
-        expect(e0.hasValidValues, true);
-      }
-    });
-*/
 
     test('OL checkValue good values', () {
       final vList0 = rng.uint32List(1, 1);
@@ -477,33 +439,6 @@ void main() {
 
       expect(OL.isValidVFLength(OL.kMaxVFLength), true);
       expect(OL.isValidVFLength(0), true);
-    });
-
-    test('OL isValidTag good values', () {
-      global.throwOnError = false;
-      expect(OL.isValidTag(PTag.kSelectorOLValue), true);
-
-      for (var tag in olVM1Tags) {
-        expect(OL.isValidTag(tag), true);
-      }
-    });
-
-    test('OL isValidTag bad values', () {
-      global.throwOnError = false;
-      expect(OL.isValidTag(PTag.kSelectorUSValue), false);
-
-      global.throwOnError = true;
-      expect(() => OL.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OL.isValidTag(tag), false);
-
-        global.throwOnError = true;
-        expect(() => OL.isValidTag(tag),
-            throwsA(const TypeMatcher<InvalidTagError>()));
-      }
     });
 
     test('OL isValidTag good values', () {

@@ -226,12 +226,6 @@ void main() {
         expect(e0.values is Uint8List, true);
         expect(e0.values, equals(vList0));
 
-        // Test Base64
-//       final base64 = cvt.base64.encode(vList0);
-//        final e1 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
-//        expect(e0 == e1, true);
-//        expect(e1.value, equals(e0.value));
-
         final vList1 = rng.uint8List(2, 2);
         final bytes1 = new Bytes.typedDataView(vList1);
 //        final uInt8ListV12 = uInt8ListV2.buffer.asUint8List();
@@ -333,61 +327,36 @@ void main() {
       expect(e2.values, equals(<int>[]));
     });
 
-/*
     test('OB BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
-        final uInt8ListV1 = new Bytes.typedDataView(vList0);
-        final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-        final base64 = cvt.base64.encode(uInt8ListV11);
-        final e0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
+        final bytes0 = new Bytes.typedDataView(vList0);
+        final base64 = bytes0.getBase64();
+        final bytes1 = Bytes.fromBase64(base64);
+        final e0 = OBtag.fromBytes(PTag.kPrivateInformation, bytes1);
         expect(e0.hasValidValues, true);
       }
     });
 
     test('OB BASE64', () {
-      final uInt8ListV1 = new Uint8List.fromList(uInt8Min);
-      final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
-      final base64 = cvt.base64.encode(uInt8ListV11);
-      final e0 = OBtag.fromBase64(PTag.kPrivateInformation, base64);
+      final vList1 = new Int16List.fromList(uInt8Min);
+      final uInt8List1 = vList1.buffer.asUint8List();
+      final bytes0 = new Bytes.typedDataView(uInt8List1);
+
+      final s = bytes0.getBase64();
+      //  final bytes = cvt.base64.decode(base64);
+      final bytes1 = Bytes.fromBase64(s);
+      final e0 = OBtag.fromBytes(PTag.kPrivateInformation, bytes1);
       expect(e0.hasValidValues, true);
     });
-*/
 
-    test('OB make', () {
+    test('OB fromValues good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint8List(1, 1);
         final e0 = OBtag.fromValues(PTag.kPrivateInformation, vList0);
         expect(e0.hasValidValues, true);
       }
     });
-
-    test('OB fromBytes', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.uint8List(1, 1);
-        final bytes = new Bytes.typedDataView(vList0);
-//        final uInt8ListV11 = bytes.buffer.asUint8List();
-        log.debug('bytes.length: ${bytes.length}');
-        final e0 = OBtag.fromBytes(PTag.kPrivateInformation, bytes);
-        expect(e0.hasValidValues, true);
-        expect(e0.vfBytes, equals(bytes));
-        expect(e0.values is Uint8List, true);
-        expect(e0.values, equals(bytes));
-      }
-    });
-
-/*
-    test('OB fromB64', () {
-      for (var i = 0; i < 10; i++) {
-        final vList0 = rng.uint8List(1, 1);
-        final bytes = new Bytes.typedDataView(vList0);
-//        final uInt8ListV11 = bytes.buffer.asUint8List();
-//        final b64 = cvt.base64.encode(uInt8ListV11);
-        final e0 = OBtag.fromBase64(PTag.kPrivateInformation, b64);
-        expect(e0.hasValidValues, true);
-      }
-    });
-*/
 
     test('OB checkValue good values', () {
       final vList0 = rng.uint8List(1, 1);
@@ -500,78 +469,31 @@ void main() {
         expect(OB.isValidTag(tag), true);
       }
 
-      for (var tag in obowTags) {
-        final e3 = OB.isValidTag(tag);
-        expect(e3, true);
-      }
-    });
-
-    test('OB isValidTag bad values', () {
-      global.throwOnError = false;
-      expect(OB.isValidTag(PTag.kSelectorUSValue), false);
-
-      global.throwOnError = true;
-      expect(() => OB.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OB.isValidTag(tag), false);
-
-        global.throwOnError = true;
-        expect(() => OB.isValidTag(tag),
-            throwsA(const TypeMatcher<InvalidTagError>()));
-      }
-    });
-
-    test('OB isNotValidTag good values', () {
-      global.throwOnError = false;
-      expect(OB.isValidTag(PTag.kSelectorOBValue), true);
-      expect(OB.isValidTag(PTag.kAudioSampleData), true);
-
-      for (var tag in obVM1Tags) expect(OB.isValidTag(tag), true);
-
-      for (var tag in obowTags) {
-        final e3 = OB.isValidTag(tag);
-        expect(e3, true);
-      }
-    });
-
-    test('OB isValidTag bad values', () {
-      global.throwOnError = false;
-      expect(OB.isValidTag(PTag.kSelectorUSValue), false);
-
-      global.throwOnError = true;
-      expect(() => OB.isValidTag(PTag.kSelectorUSValue),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(OB.isValidTag(tag), false);
-
-        global.throwOnError = true;
-        expect(() => OB.isValidTag(tag),
-            throwsA(const TypeMatcher<InvalidTagError>()));
-      }
-    });
-
-    test('OB isValidVRIndex good values', () {
-      global.throwOnError = false;
-      expect(OB.isValidVRIndex(kOBIndex), true);
-
-      for (var tag in obVM1Tags) {
-        global.throwOnError = false;
-        expect(OB.isValidVRIndex(tag.vrIndex), true);
-      }
-
-      for (var tag in obowTags) {
-        final e3 = OB.isValidVRIndex(tag.vrIndex);
-        expect(e3, true);
-      }
-
       for (var tag in obVM1_nTags) {
+        expect(OB.isValidTag(tag), true);
+      }
+
+      for (var tag in obowTags) {
+        final e3 = OB.isValidTag(tag);
+        expect(e3, true);
+      }
+    });
+
+    test('OB isValidTag bad values', () {
+      global.throwOnError = false;
+      expect(OB.isValidTag(PTag.kSelectorUSValue), false);
+
+      global.throwOnError = true;
+      expect(() => OB.isValidTag(PTag.kSelectorUSValue),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      for (var tag in otherTags) {
         global.throwOnError = false;
-        expect(OB.isValidVRIndex(tag.vrIndex), true);
+        expect(OB.isValidTag(tag), false);
+
+        global.throwOnError = true;
+        expect(() => OB.isValidTag(tag),
+            throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
 

@@ -50,8 +50,7 @@ void main() {
     rds[ob.code] = ob;
     itemsList.add(new TagItem.fromList(rds, rds));
 
-    //Urgent Sharath: this should be adding a real parent and verifying it.
-    final sq = new SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
+    final sq = new SQtag(rds, PTag.kMRImageFrameTypeSequence, itemsList);
 
     test('Test for getAllTItemElements', () {
       expect(sq.getAll(kRecognitionCode), isNotNull);
