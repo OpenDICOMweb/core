@@ -40,8 +40,8 @@ class BasicProfile {
   @override
   String toString() => 'Basic Profile: $tag';
 
-  static bool _isEmpty<V>(Iterable<V> values, bool emptyAllowed) =>
-      values == const <V>[] || emptyAllowed;
+  static bool _isEmpty(Iterable values, bool emptyAllowed) =>
+      values == const <Object>[] || emptyAllowed;
 
   //FLush or Fix
   //TODO: deidentifySequence has to be at a higher level

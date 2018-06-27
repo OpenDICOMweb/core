@@ -9,12 +9,12 @@
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
-
 
 abstract class TagStringMixin {
   StringList get _values;
@@ -37,9 +37,11 @@ abstract class TagStringMixin {
   }
 }
 
+/// Returns a [StringList]; however, if [throwOnError] is _true_ and
+/// [vList] is _null_ a Error will be thrown.
 StringList _toValues(Iterable<String> vList) {
-  if (vList == null) return badValues(vList);
-  if (vList.isEmpty) return StringList.kEmptyList;
+  if (throwOnError && vList == null) return badValues(vList);
+  if (vList == null || vList.isEmpty) return StringList.kEmptyList;
   return (vList is StringList) ? vList : new StringList.from(vList);
 }
 
@@ -80,8 +82,7 @@ class CStag extends CS with TagElement<String>, TagStringMixin {
     final v = _toValues(vList);
     return CS.isValidArgs(tag, v)
         ? new CStag._(tag, v)
-        //: badValues(v, null, tag);
-    : null;
+        : badValues(v, null, tag);
   }
 
   CStag._(this.tag, this._values) : assert(tag.vrIndex == kCSIndex);

@@ -205,7 +205,7 @@ Summary $tag
     for (var item in items) {
       final e = item[index];
       if (e == null) continue;
-      eList.add(e.update(f(e.values) ?? const <V>[]));
+      eList.add(e.update(f(e.values) ?? const <Object>[]));
     }
     return eList;
   }

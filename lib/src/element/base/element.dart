@@ -357,10 +357,10 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Returns _true_ if _this_ is valid. If [issues] is non-_null_ messages
   /// are added to it.
-  bool check([Issues issues]) {
-    return checkVR(vrIndex, issues) && checkLength(values, issues) &&
-    checkValues(values, issues);
-  }
+  bool check([Issues issues]) =>
+      checkVR(vrIndex, issues) &&
+      checkLength(values, issues) &&
+      checkValues(values, issues);
 
   /// Returns _true_ if [value] is valid for _this_.
   bool checkValue(V v, {Issues issues, bool allowInvalid = false});

@@ -221,16 +221,18 @@ void main() {
 
       final e1 = new AStag(PTag.kPatientAge);
       log.debug('e1: $e1');
-      expect(e1, isNull);
+      expect(e1.hasValidValues, true);
+      expect(e1.values.isEmpty, true);
     });
 
     test('AS null', () {
       final e2 = new AStag(PTag.kPatientAge, null);
-      expect(e2, isNull);
+      expect(e2.isEmpty, true);
+      expect(e2.values == kEmptyStringList, true);
 
-      /*global.throwOnError = true;
+      global.throwOnError = true;
       expect(() => new AStag(PTag.kPatientAge, null),
-          throwsA(const TypeMatcher<InvalidValuesError>()));*/
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('AS hashCode and == good values random', () {
@@ -323,7 +325,8 @@ void main() {
       expect(e1.values, equals(<String>[]));
 
       final e2 = new AStag(PTag.kPatientAge, null);
-      expect(e2, isNull);
+      expect(e2, <String>[]);
+      expect(e2, kEmptyStringList);
     });
 
     test('AS toUint8List random', () {
