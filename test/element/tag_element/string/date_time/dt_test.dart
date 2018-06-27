@@ -84,7 +84,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = Bytes.fromAsciiList(s);
         log.debug('bytes:$bytes');
-        final e0 = DTtag.fromBytes(bytes, PTag.kDateTime);
+        final e0 = DTtag.fromBytes(PTag.kDateTime, bytes);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -97,7 +97,7 @@ void main() {
         final vList1 = rsg.getDTList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final e0 = DTtag.fromBytes(bytes, PTag.kDateTime);
+        final e0 = DTtag.fromBytes(PTag.kDateTime, bytes);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -108,7 +108,7 @@ void main() {
         final vList1 = rsg.getDTList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = DTtag.fromBytes(bytes0, PTag.kSelectorDTValue);
+          final e1 = DTtag.fromBytes(PTag.kSelectorDTValue, bytes0);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, true);
         }
@@ -121,11 +121,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = DTtag.fromBytes(bytes0, PTag.kSelectorAEValue);
+          final e1 = DTtag.fromBytes(PTag.kSelectorAEValue, bytes0);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => DTtag.fromBytes(bytes0, PTag.kSelectorAEValue),
+          expect(() => DTtag.fromBytes(PTag.kSelectorAEValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

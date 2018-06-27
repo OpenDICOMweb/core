@@ -9,44 +9,12 @@
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error.dart';
-import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
-/*
-abstract class TagStringMixin {
-  // **** Interface
-  ByteData get bd;
-  int get eLength;
-  int get padChar;
-  int get vfOffset;
-  int get vfLengthField;
-  StringBase update([Iterable<String> vList]);
-
-  // **** End interface
-
-  /// Returns the actual length in bytes after removing any padding chars.
-  // Floats always have a valid (defined length) vfLengthField.
-  int get vfLength {
-    final vf0 = vfOffset;
-    final lib = bd.lengthInBytes;
-    final length = lib - vf0;
-    assert(length >= 0);
-    return length;
-  }
-
-  int get valuesLength {
-    if (vfLength == 0) return 0;
-    var count = 1;
-    for (var i = vfOffset; i < eLength; i++)
-      if (bd.getUint8(i) == kBackslash) count++;
-    return count;
-  }
-}
-*/
 
 abstract class TagStringMixin {
   StringList get _values;
@@ -70,8 +38,8 @@ abstract class TagStringMixin {
 }
 
 StringList _toValues(Iterable<String> vList) {
-  if (throwOnError && vList == null) return badValues(vList);
-  if (vList == null || vList.isEmpty) return StringList.kEmptyList;
+  if (vList == null) return badValues(vList);
+  if (vList.isEmpty) return StringList.kEmptyList;
   return (vList is StringList) ? vList : new StringList.from(vList);
 }
 
@@ -99,7 +67,7 @@ class AEtag extends AE with TagElement<String>, TagStringMixin {
       new AEtag(tag, vList);
 
   static AEtag fromBytes(Tag tag, Bytes bytes) =>
-      new AEtag(tag, bytes.getAsciiList());
+      new AEtag(tag, bytes.getAsciiList(padChar: kSpace));
 }
 
 class CStag extends CS with TagElement<String>, TagStringMixin {
@@ -136,7 +104,7 @@ class CStag extends CS with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new CStag(tag, vList);
 
-  static CStag fromBytes(Bytes bytes, Tag tag) =>
+  static CStag fromBytes(Tag tag, Bytes bytes) =>
       new CStag(tag, bytes.getAsciiList());
 }
 
@@ -162,8 +130,8 @@ class DStag extends DS with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new DStag(tag, vList);
 
-  static DStag fromBytes(Bytes bytes, Tag tag) =>
-      new DStag(tag, bytes.getAsciiList());
+  static DStag fromBytes(Tag tag, Bytes bytes) =>
+      new DStag(tag, bytes.getAsciiList(padChar: kSpace));
 }
 
 class IStag extends IS with TagElement<String>, TagStringMixin {
@@ -188,7 +156,7 @@ class IStag extends IS with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new IStag(tag, vList);
 
-  static IStag fromBytes(Bytes bytes, Tag tag) =>
+  static IStag fromBytes(Tag tag, Bytes bytes) =>
       new IStag(tag, bytes.getAsciiList());
 }
 
@@ -215,7 +183,7 @@ class LOtag extends LO with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new LOtag(tag, vList);
 
-  static LOtag fromBytes(Bytes bytes, Tag tag) =>
+  static LOtag fromBytes(Tag tag, Bytes bytes) =>
       new LOtag(tag, bytes.getUtf8List());
 }
 
@@ -247,8 +215,10 @@ class PCtag extends PC with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new PCtag(tag, vList);
 
-  static PCtag fromBytes(Bytes bytes, Tag tag) =>
-      new PCtag(tag, bytes.getUtf8List());
+  static PCtag fromBytes(Tag tag, Bytes bytes) {
+    final s = bytes.getUtf8().trim();
+    return new PCtag(tag, [s]);
+  }
 
   static PCtag makePhantom(int group, int subgroup) {
     const name = PDTag.phantomName;
@@ -289,7 +259,7 @@ class LTtag extends LT with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new LTtag(tag, vList);
 
-  static LTtag fromBytes(Bytes bytes, Tag tag) =>
+  static LTtag fromBytes(Tag tag, Bytes bytes) =>
       new LTtag(tag, _toValues([bytes.getUtf8()]));
 }
 
@@ -316,7 +286,7 @@ class PNtag extends PN with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new PNtag(tag, vList);
 
-  static PNtag fromBytes(Bytes bytes, Tag tag) =>
+  static PNtag fromBytes(Tag tag, Bytes bytes) =>
       new PNtag(tag, bytes.getUtf8List());
 }
 
@@ -343,7 +313,7 @@ class SHtag extends SH with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new SHtag(tag, vList);
 
-  static SHtag fromBytes(Bytes bytes, Tag tag) =>
+  static SHtag fromBytes(Tag tag, Bytes bytes) =>
       new SHtag(tag, bytes.getUtf8List());
 }
 
@@ -370,7 +340,7 @@ class STtag extends ST with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new STtag(tag, vList);
 
-  static STtag fromBytes(Bytes bytes, Tag tag) =>
+  static STtag fromBytes(Tag tag, Bytes bytes) =>
       new STtag(tag, _toValues([bytes.getUtf8()]));
 }
 
@@ -397,7 +367,7 @@ class UCtag extends UC with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new UCtag(tag, vList);
 
-  static UCtag fromBytes(Bytes bytes, Tag tag) =>
+  static UCtag fromBytes(Tag tag, Bytes bytes) =>
       new UCtag(tag, bytes.getUtf8List());
 }
 
@@ -435,7 +405,7 @@ class UItag extends UI with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new UItag(tag, vList);
 
-  static UItag fromBytes(Bytes bytes, Tag tag) =>
+  static UItag fromBytes(Tag tag, Bytes bytes) =>
       new UItag(tag, bytes.getAsciiList(padChar: kNull));
 }
 
@@ -464,7 +434,7 @@ class URtag extends UR with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new URtag(tag, vList);
 
-  static URtag fromBytes(Bytes bytes, Tag tag) =>
+  static URtag fromBytes(Tag tag, Bytes bytes) =>
       new URtag(tag, _toValues([bytes.getUtf8()]));
 }
 
@@ -491,7 +461,7 @@ class UTtag extends UT with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new UTtag(tag, vList);
 
-  static UTtag fromBytes(Bytes bytes, Tag tag) =>
+  static UTtag fromBytes(Tag tag, Bytes bytes) =>
       new UTtag(tag, _toValues([bytes.getUtf8()]));
 }
 
@@ -519,7 +489,7 @@ class AStag extends AS with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new AStag(tag, vList);
 
-  static AStag fromBytes(Bytes bytes, Tag tag) =>
+  static AStag fromBytes(Tag tag, Bytes bytes) =>
       new AStag(tag, bytes.getAsciiList());
 }
 
@@ -546,7 +516,7 @@ class DAtag extends DA with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new DAtag(tag, vList);
 
-  static DAtag fromBytes(Bytes bytes, Tag tag) =>
+  static DAtag fromBytes(Tag tag, Bytes bytes) =>
       new DAtag(tag, bytes.getAsciiList());
 }
 
@@ -576,7 +546,7 @@ class DTtag extends DT with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new DTtag(tag, vList);
 
-  static DTtag fromBytes(Bytes bytes, Tag tag) =>
+  static DTtag fromBytes(Tag tag, Bytes bytes) =>
       new DTtag(tag, bytes.getAsciiList());
 }
 
@@ -607,6 +577,6 @@ class TMtag extends TM with TagElement<String>, TagStringMixin {
           [Iterable<String> vList, TransferSyntax _]) =>
       new TMtag(tag, vList);
 
-  static TMtag fromBytes(Bytes bytes, Tag tag) =>
+  static TMtag fromBytes(Tag tag, Bytes bytes) =>
       new TMtag(tag, bytes.getAsciiList());
 }

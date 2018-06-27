@@ -8,8 +8,10 @@
 //
 
 import 'package:core/src/dataset/base.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
 // ignore_for_file: only_throw_errors
@@ -42,6 +44,22 @@ Tag lookupTagByCode(int code, int vrIndex, Dataset ds) {
   } else {
     return badTagCode(code);
   }
+}
+
+int getPixelDataVR(DicomBytes bytes, Dataset ds, TransferSyntax ts) {
+  final code = bytes.code;
+  final vrIndex = bytes.vrIndex;
+  assert(vrIndex >= 1 && vrIndex < 4);
+  final tag = lookupTagByCode(code, bytes.vrIndex, ds);
+  if (code != kPixelData) return badTagCode(code, 'Not Pixel Data', tag);
+  var index = getValidVRIndex(vrIndex, tag.vrIndex);
+  if (index < kVRMaybeUndefinedIndexMin || index > kVRMaybeUndefinedIndexMax)
+    return badVRIndex(index, null, -1);
+  if (index == kUNIndex && ts != null) {
+    final int pixelSize = ds[kBitsAllocated].value;
+    index = (pixelSize == 16) ? kOWIndex : kOBIndex;
+  }
+  return index;
 }
 
 int getValidVRIndex(int vrIndex, int tagVRIndex) {

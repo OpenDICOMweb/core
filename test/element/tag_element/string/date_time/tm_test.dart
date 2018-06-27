@@ -309,7 +309,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getTMList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
-        final e0 = TMtag.fromBytes(bytes, PTag.kTime);
+        final e0 = TMtag.fromBytes(PTag.kTime, bytes);
         expect(e0.hasValidValues, true);
       }
     });
@@ -319,7 +319,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = Bytes.fromAsciiList(s);
         log.debug('bytes:$bytes');
-        final e0 = TMtag.fromBytes(bytes, PTag.kModifiedImageTime);
+        final e0 = TMtag.fromBytes(PTag.kModifiedImageTime, bytes);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -330,7 +330,7 @@ void main() {
         final vList1 = rsg.getTMList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = TMtag.fromBytes(bytes0, PTag.kSelectorTMValue);
+          final e1 = TMtag.fromBytes(PTag.kSelectorTMValue, bytes0);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, true);
         }
@@ -343,11 +343,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = TMtag.fromBytes(bytes0, PTag.kSelectorAEValue);
+          final e1 = TMtag.fromBytes(PTag.kSelectorAEValue, bytes0);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => TMtag.fromBytes(bytes0, PTag.kSelectorAEValue),
+          expect(() => TMtag.fromBytes(PTag.kSelectorAEValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

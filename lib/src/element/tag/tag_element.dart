@@ -77,10 +77,10 @@ abstract class TagElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-  static PC _getPCTagFromBytes(DicomBytes bytes, int code) {
-    final token = bytes.vfBytes.getUtf8();
+  static PC _getPCTagFromBytes(int code, DicomBytes bytes) {
+    final token = bytes.vfBytes.getUtf8().trim();
     final tag = PCTag.lookupByToken(code, bytes.vrIndex, token);
-    return PCtag.fromBytes(bytes, tag);
+    return PCtag.fromBytes(tag, bytes.vfBytes);
   }
 
   static PC _getPCTag(int code, int vrIndex, List<String> values) {
@@ -96,12 +96,12 @@ abstract class TagElement<V> {
   static Element makeFromDicomBytes(DicomBytes bytes, Dataset ds,
       {bool isEvr}) {
     final code = bytes.code;
-    if (_isPrivateCreator(code)) return _getPCTagFromBytes(bytes, code);
+    if (_isPrivateCreator(code)) return _getPCTagFromBytes(code, bytes);
 
     final vrIndex = bytes.vrIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVRIndex(vrIndex, tag.vrIndex);
-    return _bytesMakers[index](bytes.vfBytes, tag);
+    return _bytesMakers[index](tag, bytes.vfBytes);
   }
 
   static final List<Function> _bytesMakers = <Function>[
@@ -127,7 +127,7 @@ abstract class TagElement<V> {
       [Dataset ds, TransferSyntax ts]) {
     final code = bytes.code;
     // Note: This shouldn't happen, but it does.
-    if (_isPrivateCreator(code)) return _getPCTagFromBytes(bytes, code);
+    if (_isPrivateCreator(code)) return _getPCTagFromBytes(code, bytes);
 
     final vrIndex = bytes.vrIndex;
     assert(vrIndex >= 0 && vrIndex < 4);
@@ -153,20 +153,39 @@ abstract class TagElement<V> {
     return SQtag.fromBytes(parent, items, tag);
   }
 
+  // TODO: create common method
   static Element makePixelDataFromDicomBytes(DicomBytes bytes,
       [Dataset ds, TransferSyntax ts]) {
+/*
     final code = bytes.code;
+    final vrIndex = bytes.vrIndex;
+    assert(vrIndex >= 1 && vrIndex < 4);
     final tag = lookupTagByCode(code, bytes.vrIndex, ds);
+    final index = getValidVRIndex(vrIndex, tag.vrIndex);
+    if (index < kVRMaybeUndefinedIndexMin || index > kVRMaybeUndefinedIndexMax)
+      return badVRIndex(index, null, -1);
     if (code != kPixelData) return badTagCode(code, 'Not Pixel Data', tag);
-    return _undefinedBytesMakers[tag.vrIndex](bytes, ds, ts);
+*/
+    final index = getPixelDataVR(bytes, ds, ts);
+    return _pixelDataMakers[index](bytes.vfBytes, ts);
   }
+
+  // Elements that may have undefined lengths.
+  static final List<Function> _pixelDataMakers = <Function>[
+    null,
+    OBtagPixelData.fromBytes,
+    OWtagPixelData.fromBytes,
+    UNtagPixelData.fromBytes
+  ];
 
   /// Returns a new [Element] based on the arguments.
   static Element makeFromValues(
       int code, int vrIndex, List values, Dataset ds) {
     if (_isPrivateCreator(code)) return _getPCTag(code, vrIndex, values);
     final tag = lookupTagByCode(code, vrIndex, ds);
+    print('tag: $tag');
     final index = getValidVRIndex(vrIndex, tag.vrIndex);
+    print('vrIndex: $vrIndex');
     return makeFromTag(tag, values, index);
   }
 
@@ -174,25 +193,17 @@ abstract class TagElement<V> {
   /// Private Elements, etc.
   static Element makeFromTag(Tag tag, Iterable values, int vrIndex,
           [TransferSyntax ts]) =>
-      _fromValuesMakers[vrIndex](tag, values);
+      (tag.code == kPixelData)
+          ? _fromPixelDataValuesMakers[vrIndex](values)
+          : _fromValuesMakers[vrIndex](tag, values);
 
-/*
-  static Element makeMaybeUndefinedLength(
-      Tag tag, Iterable values, int vfLengthField, int vrIndex) {
-    switch (vrIndex) {
-      case kOBIndex:
-        return OBtagPixelData.fromValues(tag, values);
-      case kUNIndex:
-        return UNtagPixelData.fromValues(tag, values);
-      case kOWIndex:
-        return OWtagPixelData.fromValues(tag, values);
-      case kSQIndex:
-        return OWtagPixelData.fromValues(tag, values, vfLengthField);
-      default:
-        return VR.badIndex(vrIndex, null, null);
-    }
-  }
-*/
+  // Elements that may have undefined lengths.
+  static final List<Function> _fromPixelDataValuesMakers = <Function>[
+    null,
+    OBtagPixelData.fromValues,
+    OWtagPixelData.fromValues,
+    UNtagPixelData.fromValues
+  ];
 
   static final _fromValuesMakers = <Function>[
     // SQtag.make
@@ -216,7 +227,7 @@ abstract class TagElement<V> {
 
   /// Creates an [SQtag] [Element].
   static SQ makeSequenceFromCode(
-      Dataset parent, int code, List<TagItem> items, Bytes bytes) {
+      Dataset parent, int code, List<TagItem> items) {
     final tag = lookupTagByCode(code, kSQIndex, parent);
     assert(tag.vrIndex == kSQIndex, 'vrIndex: ${tag.vrIndex}');
     final values = (items == null) ? <TagItem>[] : items;
@@ -224,6 +235,6 @@ abstract class TagElement<V> {
   }
 
   static SQ makeSequenceFromTag(Dataset parent, Tag tag, List<TagItem> items,
-          [int vfLengthField, Bytes bytes]) =>
+          [int vfLengthField]) =>
       new SQtag(parent, tag, items);
 }

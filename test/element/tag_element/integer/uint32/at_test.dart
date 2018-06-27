@@ -237,7 +237,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
-        final e0 = ATtag.fromBytes(bytes, PTag.kOriginalImageIdentification);
+        final e0 = ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes));
         expect(e0.values is Uint32List, true);
@@ -251,7 +251,7 @@ void main() {
 
         final vList2 = rng.uint32List(2, 2);
         final bytes2 = new Bytes.typedDataView(vList2);
-        final e2 = ATtag.fromBytes(bytes2, PTag.kSelectorAttribute);
+        final e2 = ATtag.fromBytes(PTag.kSelectorAttribute, bytes2);
         expect(e2, isNull);
       }
     });
@@ -259,7 +259,7 @@ void main() {
     test('AT fromBytes', () {
       final vList = new Uint32List.fromList(uInt32Max);
       final bytes = new Bytes.typedDataView(vList);
-      final e0 = ATtag.fromBytes(bytes, PTag.kOriginalImageIdentification);
+      final e0 = ATtag.fromBytes(PTag.kOriginalImageIdentification, bytes);
       expect(e0.hasValidValues, true);
       expect(e0.vfBytes, equals(bytes));
       expect(e0.values is Uint32List, true);
@@ -272,7 +272,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = ATtag.fromBytes(bytes, PTag.kSelectorATValue);
+        final e0 = ATtag.fromBytes(PTag.kSelectorATValue, bytes);
         log.debug('e0: e0');
         expect(e0.hasValidValues, true);
       }
@@ -283,11 +283,11 @@ void main() {
         global.throwOnError = false;
         final vList = rng.uint32List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e = ATtag.fromBytes(bytes, PTag.kSelectorFDValue);
+        final e = ATtag.fromBytes(PTag.kSelectorFDValue, bytes);
         expect(e, isNull);
 
         global.throwOnError = true;
-        expect(() => ATtag.fromBytes(bytes, PTag.kSelectorFDValue),
+        expect(() => ATtag.fromBytes(PTag.kSelectorFDValue, bytes),
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
@@ -336,8 +336,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
-        final e0 = ATtag.fromBytes(bytes, PTag.kFunctionalGroupPointer);
-        final e1 = ATtag.fromBytes(bytes, PTag.kFunctionalGroupPointer);
+        final e0 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, bytes);
+        final e1 = ATtag.fromBytes(PTag.kFunctionalGroupPointer, bytes);
         final vList1 = rng.uint32List(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
@@ -425,7 +425,7 @@ void main() {
       }
 
       final bytes = new Bytes.typedDataView(vList);
-      final e2 = ATtag.fromBytes(bytes, PTag.kSelectorATValue);
+      final e2 = ATtag.fromBytes(PTag.kSelectorATValue, bytes);
       for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
         final e3 = e2.view(j, vList.length - i);
         log.debug('e: ${e0.values}, e1: ${e3.values}, '

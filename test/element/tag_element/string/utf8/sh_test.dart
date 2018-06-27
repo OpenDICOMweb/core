@@ -258,7 +258,7 @@ void main() {
         final vList1 = rsg.getSHList(1, 1);
         final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final e0 = SHtag.fromBytes(bytes, PTag.kTextureLabel);
+        final e0 = SHtag.fromBytes(PTag.kTextureLabel, bytes);
         log.debug('e0: ${e0.info}');
         expect(e0.hasValidValues, true);
       }
@@ -271,7 +271,7 @@ void main() {
 //        for (var listS in vList1) {
         final bytes0 = Bytes.fromAscii(vList1.join('\\'));
         //final bytes0 = new Bytes();
-        final e1 = SHtag.fromBytes(bytes0, PTag.kSelectorSHValue);
+        final e1 = SHtag.fromBytes(PTag.kSelectorSHValue, bytes0);
         log.debug('e1: ${e1.info}');
         expect(e1.hasValidValues, true);
       }
@@ -285,11 +285,11 @@ void main() {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final e1 = SHtag.fromBytes(bytes0, PTag.kSelectorCSValue);
+          final e1 = SHtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => SHtag.fromBytes(bytes0, PTag.kSelectorCSValue),
+          expect(() => SHtag.fromBytes(PTag.kSelectorCSValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

@@ -268,11 +268,9 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns _true_ if [vfLengthField] == [kUndefinedLength].
   bool get hadULength => vfLengthField == kUndefinedLength;
 
-
   /// Returns _false_ for all Elements except SQ, OB, OW, and UN.
   /// Items are also allowed to have undefined length.
   bool get isUndefinedLengthAllowed => false;
-
 
   // ************* Values related Getters and Methods *************
   // **************************************************************
@@ -329,6 +327,13 @@ abstract class Element<V> extends ListBase<V> {
   Iterable<String> get vfBytesAsUtf8List =>
       utf8.decode(vfBytes, allowMalformed: true).split('\\');
 
+  /// Returns _true_ if [vrIndex] is valid for _this_.
+  bool checkVR(int vrIndex, [Issues issues]) {
+    if (vrIndex == tag.vrIndex) return true;
+    if (issues != null) issues.add('Invalid VR($vrIndex): $this');
+    return false;
+  }
+
   /// Returns _true_ if [vList] has a valid [length] for _this_.
   /// [vList] defaults to [values].
   bool checkLength([Iterable<V> vList, Issues issues]) {
@@ -348,6 +353,14 @@ abstract class Element<V> extends ListBase<V> {
         return invalidValues(vList, issues);
     }
     return true;
+  }
+
+  /// Returns _true_ if _this_ is valid. If [issues] is non-_null_ messages
+  /// are added to it.
+  bool check([Issues issues]) {
+    print('checking: $this');
+    return checkVR(vrIndex, issues) && checkLength(values, issues) &&
+    checkValues(values, issues);
   }
 
   /// Returns _true_ if [value] is valid for _this_.

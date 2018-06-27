@@ -9,8 +9,8 @@
 import 'package:core/src/error.dart';
 import 'package:core/src/tag.dart';
 
-// Urgent: Replace all code related functions throughout core with functions
-// Urgent: from this file.
+// Urgent Jim: Replace all code related functions throughout core with functions
+// Urgent Jim: from this file.
 
 /// Primitive functions related to Tag Codes.
 

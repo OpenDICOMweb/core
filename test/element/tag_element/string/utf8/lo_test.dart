@@ -263,7 +263,7 @@ void main() {
         final vList1 = rsg.getLOList(1, 1);
         final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final e0 = LOtag.fromBytes(bytes, PTag.kReceiveCoilManufacturerName);
+        final e0 = LOtag.fromBytes(PTag.kReceiveCoilManufacturerName, bytes);
         log.debug('e0: ${e0.info}');
         expect(e0.hasValidValues, true);
       }
@@ -275,7 +275,7 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final e1 = LOtag.fromBytes(bytes0, PTag.kSelectorLOValue);
+          final e1 = LOtag.fromBytes(PTag.kSelectorLOValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
         }
@@ -289,11 +289,11 @@ void main() {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final e1 = LOtag.fromBytes(bytes0, PTag.kSelectorCSValue);
+          final e1 = LOtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => LOtag.fromBytes(bytes0, PTag.kSelectorCSValue),
+          expect(() => LOtag.fromBytes(PTag.kSelectorCSValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

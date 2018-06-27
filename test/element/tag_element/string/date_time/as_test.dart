@@ -337,7 +337,7 @@ void main() {
         log.debug('vList1: $vList1');
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final e0 = AStag.fromBytes(bytes, PTag.kPatientAge);
+        final e0 = AStag.fromBytes(PTag.kPatientAge, bytes);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -348,7 +348,7 @@ void main() {
         final vList1 = rsg.getASList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = AStag.fromBytes(bytes0, PTag.kSelectorASValue);
+          final e1 = AStag.fromBytes(PTag.kSelectorASValue, bytes0);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, true);
         }
@@ -361,11 +361,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = AStag.fromBytes(bytes0, PTag.kSelectorAEValue);
+          final e1 = AStag.fromBytes(PTag.kSelectorAEValue, bytes0);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => AStag.fromBytes(bytes0, PTag.kSelectorAEValue),
+          expect(() => AStag.fromBytes(PTag.kSelectorAEValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

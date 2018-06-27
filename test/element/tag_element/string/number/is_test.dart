@@ -310,7 +310,7 @@ void main() {
         final vList1 = rsg.getISList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final e2 = IStag.fromBytes(bytes, PTag.kWaveformChannelNumber);
+        final e2 = IStag.fromBytes(PTag.kWaveformChannelNumber, bytes);
         log.debug('e2: ${e2.info}');
         expect(e2.hasValidValues, true);
       }
@@ -321,7 +321,7 @@ void main() {
         final vList1 = rsg.getISList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final ur1 = IStag.fromBytes(bytes0, PTag.kSelectorISValue);
+          final ur1 = IStag.fromBytes(PTag.kSelectorISValue, bytes0);
           log.debug('ur1: ${ur1.info}');
           expect(ur1.hasValidValues, true);
         }
@@ -334,11 +334,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final ur1 = IStag.fromBytes(bytes0, PTag.kSelectorAEValue);
+          final ur1 = IStag.fromBytes(PTag.kSelectorAEValue, bytes0);
           expect(ur1, isNull);
 
           global.throwOnError = true;
-          expect(() => IStag.fromBytes(bytes0, PTag.kSelectorAEValue),
+          expect(() => IStag.fromBytes(PTag.kSelectorAEValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

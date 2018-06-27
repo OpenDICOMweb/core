@@ -45,6 +45,11 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   /// A history of changes to _this_.
   final History history = new History();
 
+  /// The index in [Bytes] being read of the start of _this_.
+  int start = 0;
+
+  /// The index in [Bytes] being read of the end of _this_.
+  int end = 0;
   // Note: super classes must implement
   @override
   Element operator [](int i);
@@ -70,6 +75,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   @override
   int get hashCode => global.hasher.nList(elements);
 
+  int get lengthInBytes => end - start;
   @override
   bool remove(Object e) => (e is Element) ? elements.remove(e) : false;
 
@@ -142,6 +148,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   @override
   bool tryAdd(Element e, [Issues issues]) {
     final code = e.code;
+    print('tryAdd: ${dcm(code)} $e');
     final old = lookup(code);
     if (old == null) {
       if (checkIssuesOnAdd && (issues != null)) {

@@ -48,7 +48,7 @@ void main() {
   final s0 = new String.fromCharCodes(sh0.vfBytes);
   log.debug('S from vfBytes: $s0');
 
-  final sh1 = SHtag.fromBytes(b0, PTag.kSpecificCharacterSet);
+  final sh1 = SHtag.fromBytes(PTag.kSpecificCharacterSet, b0);
   ds.add(sh1);
   log.debug('sh1 info: ${sh1.info}');
   final v1 = sh1.values;

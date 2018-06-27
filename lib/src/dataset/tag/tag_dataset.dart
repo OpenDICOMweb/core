@@ -44,20 +44,40 @@ abstract class TagDataset {
 
   static const _makeElement = TagElement.makeFromValues;
 
-  static Dataset convert(Dataset dsOld, Dataset dsNew,
-      [Bytes bytes]) {
+  static Dataset convert(Dataset dsOld, Dataset dsNew, [Bytes bytes]) {
     final badElements = <Element>[];
-    for (var old in dsOld.elements) {
-      final e = (old is SQ)
-          ? _makeSQ(dsNew, old.code, <TagItem>[], bytes)
-          : _makeElement(old.code, old.vrIndex, old.values, dsNew);
-      if (e == null) {
-        badElements.add(e);
-      } else {
-        dsNew.add(e);
-      }
-    }
+    for (var old in dsOld.elements) _convertElement(dsNew, old, badElements);
     log.debug('Bad Elements: $badElements');
     return dsNew;
+  }
+
+  static void _convertElement(
+      Dataset dsNew, Element old, List<Element> badElements) {
+    final e = (old is SQ)
+        ? _convertSQ(dsNew, old, badElements)
+        : _makeElement(old.code, old.vrIndex, old.values, dsNew);
+    print('New e: $e');
+    if (e == null) {
+      badElements.add(old);
+    } else {
+      print('e: $e');
+      dsNew.add(e);
+    }
+  }
+
+  static SQ _convertSQ(Dataset parent, SQ oldSQ, List<Element> badElements) {
+    final sq = _makeSQ(parent, oldSQ.code, <TagItem>[]);
+    print('> sq: $sq');
+    for (var item0 in oldSQ.items) {
+      final dsNew = new TagItem.empty(parent, sq);
+      print('dsNew: $dsNew');
+      for (var old in item0) {
+        print('old: $old');
+        _convertElement(dsNew, old, badElements);
+      }
+      sq.items.add(dsNew);
+    }
+    print('< sq: $sq');
+    return sq;
   }
 }

@@ -163,6 +163,7 @@ abstract class ByteElement<V> {
 
   static Element makePixelDataFromDicomBytes(DicomBytes bytes,
       [TransferSyntax ts, VFFragments fragments, Dataset ds]) {
+/* Flush when working
     final code = bytes.code;
     final vrIndex = bytes.vrIndex;
     assert(vrIndex >= 1 && vrIndex < 4);
@@ -171,6 +172,9 @@ abstract class ByteElement<V> {
     if (index < kVRMaybeUndefinedIndexMin || index > kVRMaybeUndefinedIndexMax)
       return badVRIndex(index, null, -1);
     if (code != kPixelData) return badTagCode(code, 'Not Pixel Data', tag);
+*/
+
+    final index = getPixelDataVR(bytes, ds, ts);
     return _pixelDataMakers[index](bytes, ts, fragments);
   }
 

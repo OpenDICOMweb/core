@@ -71,7 +71,7 @@ class FLtag extends FL with TagElement<double>, TagFloatMixin {
   static FLtag fromValues(Tag tag, Iterable<double> vList) =>
       new FLtag._(tag, vList);
 
-  static FLtag fromBytes(Bytes bytes, Tag tag) =>
+  static FLtag fromBytes(Tag tag, Bytes bytes) =>
       FL.isValidBytesArgs(tag, bytes)
           ? new FLtag._x(tag, bytes.asFloat32List())
           : badTag(tag, null, FL);
@@ -111,7 +111,7 @@ class OFtag extends OF with TagElement<double>, TagFloatMixin {
   static OFtag fromValues(Tag tag, Iterable<double> vList) =>
       new OFtag(tag, vList ?? kEmptyDoubleList);
 
-  static OFtag fromBytes(Bytes bytes, Tag tag) =>
+  static OFtag fromBytes(Tag tag, Bytes bytes) =>
       OF.isValidBytesArgs(tag, bytes)
           ? new OFtag._x(tag, bytes.asFloat32List())
           : badTag(tag, null, FL);
@@ -151,7 +151,7 @@ class FDtag extends FD with TagElement<double>, TagFloatMixin {
   static FDtag fromValues(Tag tag, Iterable<double> vList) =>
       new FDtag(tag, vList ?? kEmptyDoubleList);
 
-  static FDtag fromBytes(Bytes bytes, Tag tag) =>
+  static FDtag fromBytes(Tag tag, Bytes bytes) =>
       FD.isValidBytesArgs(tag, bytes)
           ? new FDtag._x(tag, bytes.asFloat64List())
           : badTag(tag, null, FL);
@@ -190,7 +190,7 @@ class ODtag extends OD with TagElement<double>, TagFloatMixin {
   static ODtag fromValues(Tag tag, Iterable<double> vList) =>
       new ODtag._(tag, vList);
 
-  static ODtag fromBytes(Bytes bytes, Tag tag) =>
+  static ODtag fromBytes(Tag tag, Bytes bytes) =>
       OD.isValidBytesArgs(tag, bytes)
           ? new ODtag._x(tag, bytes.asFloat64List())
           : badTag(tag, null, FL);

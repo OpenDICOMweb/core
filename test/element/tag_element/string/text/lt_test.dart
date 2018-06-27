@@ -245,7 +245,7 @@ void main() {
         log.debug('vList1:$vList1');
         final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final e0 = LTtag.fromBytes(bytes, PTag.kImageComments);
+        final e0 = LTtag.fromBytes(PTag.kImageComments, bytes);
         log.debug('e0: ${e0.info}');
         expect(e0.hasValidValues, true);
       }
@@ -257,7 +257,7 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final e1 = LTtag.fromBytes(bytes0, PTag.kSelectorLTValue);
+          final e1 = LTtag.fromBytes(PTag.kSelectorLTValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
         }
@@ -270,11 +270,11 @@ void main() {
         for (var s in vList) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(s);
-          final e1 = LTtag.fromBytes(bytes0, PTag.kSelectorCSValue);
+          final e1 = LTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => LTtag.fromBytes(bytes0, PTag.kSelectorCSValue),
+          expect(() => LTtag.fromBytes(PTag.kSelectorCSValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

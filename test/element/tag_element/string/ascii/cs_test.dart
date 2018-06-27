@@ -244,7 +244,7 @@ void main() {
         final vList1 = rsg.getCSList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final e1 = CStag.fromBytes(bytes, PTag.kGeometryOfKSpaceTraversal);
+        final e1 = CStag.fromBytes(PTag.kGeometryOfKSpaceTraversal, bytes);
         log.debug('e1: ${e1.info}');
         expect(e1.hasValidValues, true);
       }
@@ -255,7 +255,7 @@ void main() {
         final vList1 = rsg.getCSList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = CStag.fromBytes(bytes0, PTag.kSelectorCSValue);
+          final e1 = CStag.fromBytes(PTag.kSelectorCSValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
         }
@@ -268,11 +268,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = CStag.fromBytes(bytes0, PTag.kSelectorAEValue);
+          final e1 = CStag.fromBytes(PTag.kSelectorAEValue, bytes0);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => CStag.fromBytes(bytes0, PTag.kSelectorAEValue),
+          expect(() => CStag.fromBytes(PTag.kSelectorAEValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

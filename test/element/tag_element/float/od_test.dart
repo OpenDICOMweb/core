@@ -240,13 +240,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
-        final e0 = ODtag.fromBytes(bytes0, PTag.kSelectorODValue);
+        final e0 = ODtag.fromBytes(PTag.kSelectorODValue, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
 
         final vList1 = rng.float64List(2, 2);
         final bytes1 = new Bytes.typedDataView(vList1);
-        final e1 = ODtag.fromBytes(bytes1, PTag.kSelectorODValue);
+        final e1 = ODtag.fromBytes(PTag.kSelectorODValue, bytes1);
         log.debug('e1 $e1');
         expect(e1.hasValidValues, true);
       }
@@ -256,7 +256,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float64List(1, 1);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = ODtag.fromBytes(bytes, PTag.kSelectorODValue);
+        final e0 = ODtag.fromBytes(PTag.kSelectorODValue, bytes);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -267,11 +267,11 @@ void main() {
         global.throwOnError = false;
         final vList = rng.float64List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = ODtag.fromBytes(bytes, PTag.kSelectorSSValue);
+        final e0 = ODtag.fromBytes(PTag.kSelectorSSValue, bytes);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => ODtag.fromBytes(bytes, PTag.kSelectorSSValue),
+        expect(() => ODtag.fromBytes(PTag.kSelectorSSValue, bytes),
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
@@ -294,7 +294,7 @@ void main() {
       final s0 = Float64.toBase64(<double>[78678.11, 12345.678]);
       log.debug('b64: $s0');
       final bytes0 = Bytes.fromBase64(s0);
-      final e0 = ODtag.fromBytes(bytes0, PTag.kSelectorODValue);
+      final e0 = ODtag.fromBytes(PTag.kSelectorODValue, bytes0);
       log.debug('e0: $e0');
       expect(e0.hasValidValues, true);
 
@@ -302,7 +302,7 @@ void main() {
         final vList1 = rng.float64List(1, 1);
         final s1 = Float64.toBase64(vList1);
         final bytes1 = Bytes.fromBase64(s1);
-        final e1 = ODtag.fromBytes(bytes1, PTag.kSelectorODValue);
+        final e1 = ODtag.fromBytes(PTag.kSelectorODValue, bytes1);
         expect(e1.hasValidValues, true);
       }
     });

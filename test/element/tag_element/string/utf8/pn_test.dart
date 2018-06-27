@@ -254,7 +254,7 @@ void main() {
         final vList1 = rsg.getPNList(1, 1);
         final bytes = Bytes.fromUtf8List(vList1);
         log.debug('bytes:$bytes');
-        final e0 = PNtag.fromBytes(bytes, PTag.kOrderEnteredBy);
+        final e0 = PNtag.fromBytes(PTag.kOrderEnteredBy, bytes);
         log.debug('e0: ${e0.info}');
         expect(e0.hasValidValues, true);
       }
@@ -266,7 +266,7 @@ void main() {
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final e1 = PNtag.fromBytes(bytes0, PTag.kSelectorPNValue);
+          final e1 = PNtag.fromBytes(PTag.kSelectorPNValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
         }
@@ -280,11 +280,11 @@ void main() {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
           //final bytes0 = new Bytes();
-          final e1 = PNtag.fromBytes(bytes0, PTag.kSelectorCSValue);
+          final e1 = PNtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => PNtag.fromBytes(bytes0, PTag.kSelectorCSValue),
+          expect(() => PNtag.fromBytes(PTag.kSelectorCSValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

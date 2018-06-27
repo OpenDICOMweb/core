@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/global.dart';
 import 'package:core/src/tag/private/pc_tag_map.dart';
 import 'package:core/src/tag/private/pc_tag_definitions.dart';
@@ -80,7 +79,7 @@ abstract class PCTag extends PrivateTag {
     }
     final defs = PCTagDefinition.lookup(creatorName);
     return (defs == null)
-           ? null
+           ? new PCTagUnknown(pcCode, vrIndex, creatorName)
            : new PCTagKnown(pcCode, vrIndex, creatorName, defs);
   }
 

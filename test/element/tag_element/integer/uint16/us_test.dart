@@ -250,7 +250,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
-        final e0 = UStag.fromBytes(bytes0, PTag.kRepresentativeFrameNumber);
+        final e0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes0));
         expect(e0.values is Uint16List, true);
@@ -258,14 +258,14 @@ void main() {
 
         // Test Base64
         final bytes1 = new Bytes.typedDataView(vList0);
-        final e1 = UStag.fromBytes(bytes1, PTag.kRepresentativeFrameNumber);
+        final e1 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes1);
         expect(e0 == e1, true);
         expect(e1.value, equals(e0.value));
 
         global.throwOnError = false;
         final vList2 = rng.uint16List(2, 2);
         final bytes2 = new Bytes.typedDataView(vList2);
-        final e2 = UStag.fromBytes(bytes2, PTag.kRepresentativeFrameNumber);
+        final e2 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes2);
         log.debug('e2: $e2');
         expect(e2, isNull);
       }
@@ -275,7 +275,7 @@ void main() {
       final vList1 = new Uint16List.fromList(uInt16Min);
       //     final uint8List11 = vList1.buffer.asUint8List();
       final bytes0 = new Bytes.typedDataView(vList1);
-      final e0 = UStag.fromBytes(bytes0, PTag.kRepresentativeFrameNumber);
+      final e0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
       expect(e0.hasValidValues, true);
       expect(e0.vfBytes, equals(bytes0));
       expect(e0.values is Uint16List, true);
@@ -287,7 +287,7 @@ void main() {
         global.throwOnError = false;
         final vList = rng.uint16List(1, 10);
         final bytes0 = new Bytes.typedDataView(vList);
-        final e0 = UStag.fromBytes(bytes0, PTag.kSelectorUSValue);
+        final e0 = UStag.fromBytes(PTag.kSelectorUSValue, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -371,7 +371,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
-        final e0 = UStag.fromBytes(bytes0, PTag.kRepresentativeFrameNumber);
+        final e0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes0));
         expect(e0.values is Uint16List, true);

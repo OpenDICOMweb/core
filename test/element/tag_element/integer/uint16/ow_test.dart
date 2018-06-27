@@ -279,7 +279,7 @@ void main() {
         final vList0 = rng.uint16List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
         log.debug(bytes);
-        final e0 = OWtag.fromBytes(bytes, PTag.kEdgePointIndexList);
+        final e0 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes);
         log.debug('$e0');
         e0.values;
         expect(e0.hasValidValues, true);
@@ -291,7 +291,7 @@ void main() {
 
         final vList1 = rng.uint16List(2, 2);
         final bytes1 = new Bytes.typedDataView(vList1);
-        final e1 = OWtag.fromBytes(bytes1, PTag.kEdgePointIndexList);
+        final e1 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes1);
         expect(e1.hasValidValues, true);
       }
     });
@@ -302,7 +302,7 @@ void main() {
         final vList = rng.uint16List(1, 10);
 
         final bytes0 = new Bytes.typedDataView(vList);
-        final e0 = OWtag.fromBytes(bytes0, PTag.kSelectorOWValue);
+        final e0 = OWtag.fromBytes(PTag.kSelectorOWValue, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -314,11 +314,11 @@ void main() {
         final vList = rng.uint16List(1, 10);
 //        final bytes0 = Bytes.toAscii(vList.toString());
         final bytes0 = new Bytes.typedDataView(vList);
-        final e0 = OWtag.fromBytes(bytes0, PTag.kSelectorFDValue);
+        final e0 = OWtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => OWtag.fromBytes(bytes0, PTag.kSelectorFDValue),
+        expect(() => OWtag.fromBytes(PTag.kSelectorFDValue, bytes0),
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
@@ -332,7 +332,7 @@ void main() {
 //        final base64 = cvt.base64.encode(uint8List11);
         final base64 = bytes.getBase64();
         final bytes2 = Bytes.fromBase64(base64);
-        final e0 = OWtag.fromBytes(bytes2, PTag.kEdgePointIndexList);
+        final e0 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes2);
         expect(e0.hasValidValues, true);
       }
     });

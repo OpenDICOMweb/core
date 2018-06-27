@@ -410,21 +410,19 @@ abstract class BytesMixin {
 
   // Allows the removal of padding characters.
   Uint8List _asUint8ListFromString(
-      [int offset = 0, int length, int padChar = 0]) {
+      [int offset = 0, int length, int padChar]) {
     assert(padChar == null || padChar == kSpace || padChar == kNull);
     length ??= _bdLength;
     if (length <= offset) return kEmptyUint8List;
     final index = _absIndex(offset);
     final lastIndex = length - 1;
-    final _length = _maybeRemoveNull(lastIndex, length, padChar);
+    final _length = _maybeRemoveNull(lastIndex, length);
     if (length == 0) return kEmptyUint8List;
     return _bd.buffer.asUint8List(index, _length);
   }
 
-  int _maybeRemoveNull(int lastIndex, int vfLength, [int padChar]) =>
-      (padChar != null && vfLength.isEven && _getUint8(lastIndex) == kNull)
-          ? lastIndex
-          : vfLength;
+  int _maybeRemoveNull(int lastIndex, int vfLength) =>
+     (_getUint8(lastIndex) == kNull) ? lastIndex : vfLength;
 
 
   /// Returns a [String] containing a _ASCII_ decoding of the specified
@@ -466,7 +464,7 @@ abstract class BytesMixin {
       {int offset = 0,
       int length,
       bool allowMalformed = true,
-      int padChar = kSpace}) {
+      int padChar}) {
     final v = _asUint8ListFromString(offset, length ?? _bdLength, padChar);
     return v.isEmpty ? '' : utf8.decode(v, allowMalformed: allowMalformed);
   }
@@ -479,7 +477,7 @@ abstract class BytesMixin {
       int length,
       bool allowMalformed: true,
       String separator = '\\',
-      int padChar = kSpace}) {
+      int padChar}) {
     final s = getUtf8(
         offset: offset,
         length: length,

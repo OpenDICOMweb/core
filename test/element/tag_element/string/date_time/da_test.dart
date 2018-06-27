@@ -395,7 +395,7 @@ void main() {
         //final bytes = encodeStringListValueField(vList1);
         final bytes = Bytes.fromAsciiList(s);
         log.debug('bytes:$bytes');
-        final e0 = DAtag.fromBytes(bytes, PTag.kCreationDate);
+        final e0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -407,7 +407,7 @@ void main() {
         final vList1 = rsg.getDAList(1, 1);
         final bytes = Bytes.fromAsciiList(vList1);
         log.debug('bytes:$bytes');
-        final e0 = DAtag.fromBytes(bytes, PTag.kCreationDate);
+        final e0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -418,7 +418,7 @@ void main() {
         final vList1 = rsg.getDAList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = DAtag.fromBytes(bytes0, PTag.kSelectorDAValue);
+          final e1 = DAtag.fromBytes(PTag.kSelectorDAValue, bytes0);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, true);
         }
@@ -431,11 +431,11 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          final e1 = DAtag.fromBytes(bytes0, PTag.kSelectorAEValue);
+          final e1 = DAtag.fromBytes(PTag.kSelectorAEValue, bytes0);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(() => DAtag.fromBytes(bytes0, PTag.kSelectorAEValue),
+          expect(() => DAtag.fromBytes(PTag.kSelectorAEValue, bytes0),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }

@@ -119,7 +119,7 @@ bool invalidDcmDateTimeString(String message, [Issues issues]) {
 Null badCharacterInString(String s, int index, [Issues issues]) {
   final char = s[index];
   final unit = s.codeUnitAt(index);
-  final msg = 'InvalidCharacter: "$char" ($unit) at index($index) in "$s"';
+  final msg = 'InvalidCharacter: "$char"($unit) at index($index) in "$s"';
   return badString(msg);
 }
 

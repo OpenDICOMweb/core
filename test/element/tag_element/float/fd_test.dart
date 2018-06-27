@@ -341,14 +341,14 @@ void main() {
         final vList0 = rng.float64List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
         final e0 =
-            FDtag.fromBytes(bytes0, PTag.kOverallTemplateSpatialTolerance);
+            FDtag.fromBytes(PTag.kOverallTemplateSpatialTolerance, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
 
         final vList1 = rng.float64List(2, 2);
         final bytes1 = new Bytes.typedDataView(vList1);
         final e1 =
-            FDtag.fromBytes(bytes1, PTag.kOverallTemplateSpatialTolerance);
+            FDtag.fromBytes(PTag.kOverallTemplateSpatialTolerance, bytes1);
         log.debug('e1: $e1');
         expect(e1, isNull);
       }
@@ -358,7 +358,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float64List(1, 1);
         final bytes0 = new Bytes.typedDataView(vList0);
-        final e0 = FDtag.fromBytes(bytes0, PTag.kSelectorFDValue);
+        final e0 = FDtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -369,11 +369,11 @@ void main() {
         global.throwOnError = false;
         final vList = rng.float64List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = FDtag.fromBytes(bytes, PTag.kSelectorSSValue);
+        final e0 = FDtag.fromBytes(PTag.kSelectorSSValue, bytes);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => FDtag.fromBytes(bytes, PTag.kSelectorSSValue),
+        expect(() => FDtag.fromBytes(PTag.kSelectorSSValue, bytes),
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
@@ -412,7 +412,7 @@ void main() {
     test('FD fromBase64', () {
       final s = Float64.toBase64(<double>[78678.11]);
       final bytes = Bytes.fromBase64(s);
-      final e0 = FDtag.fromBytes(bytes, PTag.kOverallTemplateSpatialTolerance);
+      final e0 = FDtag.fromBytes(PTag.kOverallTemplateSpatialTolerance, bytes);
       expect(e0.hasValidValues, true);
 
       for (var i = 0; i < 10; i++) {
@@ -421,7 +421,7 @@ void main() {
         final base64 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(base64);
         final e1 =
-            FDtag.fromBytes(bytes1, PTag.kOverallTemplateSpatialTolerance);
+            FDtag.fromBytes(PTag.kOverallTemplateSpatialTolerance, bytes1);
         expect(e1.hasValidValues, true);
 
         final vList1 = bytes1.getFloat64List();

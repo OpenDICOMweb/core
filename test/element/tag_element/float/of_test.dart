@@ -249,7 +249,7 @@ void main() {
         //    final float = new Float32List.fromList(vList);
         //    final bytes = float.buffer.asUint8List();
         final bytes0 = new Bytes.typedDataView(vList0);
-        final e0 = OFtag.fromBytes(bytes0, PTag.kVectorGridData);
+        final e0 = OFtag.fromBytes(PTag.kVectorGridData, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
 
@@ -258,7 +258,7 @@ void main() {
         //    final bytes0 = float0.buffer.asUint8List();
         final bytes1 = new Bytes.typedDataView(vList1);
         final e1 =
-            OFtag.fromBytes(bytes1, PTag.kFirstOrderPhaseCorrectionAngle);
+            OFtag.fromBytes(PTag.kFirstOrderPhaseCorrectionAngle, bytes1);
         log.debug('e1: $e1');
         expect(e1.hasValidValues, true);
       }
@@ -268,7 +268,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = OFtag.fromBytes(bytes, PTag.kSelectorOFValue);
+        final e0 = OFtag.fromBytes(PTag.kSelectorOFValue, bytes);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
       }
@@ -279,11 +279,11 @@ void main() {
         global.throwOnError = false;
         final vList = rng.float32List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e0 = OFtag.fromBytes(bytes, PTag.kSelectorSSValue);
+        final e0 = OFtag.fromBytes(PTag.kSelectorSSValue, bytes);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => OFtag.fromBytes(bytes, PTag.kSelectorSSValue),
+        expect(() => OFtag.fromBytes(PTag.kSelectorSSValue, bytes),
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
@@ -304,7 +304,7 @@ void main() {
     test('Float32Base to/FromBase64', () {
       final s0 = Float32.toBase64(<double>[78678.11]);
       final bytes0 = Bytes.fromBase64(s0);
-      final e0 = OFtag.fromBytes(bytes0, PTag.kVectorGridData);
+      final e0 = OFtag.fromBytes(PTag.kVectorGridData, bytes0);
       expect(e0.hasValidValues, true);
 
       for (var i = 0; i < 10; i++) {
@@ -312,7 +312,7 @@ void main() {
         final bytes1 = vList1.buffer.asUint8List();
         final s1 = base64.encode(bytes1);
         final bytes2 = Bytes.fromBase64(s1);
-        final e1 = OFtag.fromBytes(bytes2, PTag.kVectorGridData);
+        final e1 = OFtag.fromBytes(PTag.kVectorGridData, bytes2);
         expect(e1.hasValidValues, true);
       }
     });

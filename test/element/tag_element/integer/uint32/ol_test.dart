@@ -235,7 +235,7 @@ void main() {
 //        final vList1 = new Uint32List.fromList(vList0);
 //        final vList1 = vList1.buffer.asUint8List();
         final bytes0 = new Bytes.typedDataView(vList0);
-        final e0 = OLtag.fromBytes(bytes0, PTag.kLongVertexPointIndexList);
+        final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes0);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes0));
         expect(e0.values is Uint32List, true);
@@ -251,7 +251,7 @@ void main() {
 //        final vList2 = new Uint32List.fromList(vList1);
 //        final uint8List12 = vList2.buffer.asUint8List();
         final bytes1 = new Bytes.typedDataView(vList1);
-        final e2 = OLtag.fromBytes(bytes1, PTag.kLongVertexPointIndexList);
+        final e2 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes1);
         expect(e2.hasValidValues, true);
       }
     });
@@ -260,7 +260,7 @@ void main() {
       final vList0 = new Uint32List.fromList(uInt32Max);
 //      final uint8List1 = vList1.buffer.asUint8List();
       final bytes = new Bytes.typedDataView(vList0);
-      final e0 = OLtag.fromBytes(bytes, PTag.kLongVertexPointIndexList);
+      final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
       expect(e0.hasValidValues, true);
       expect(e0.vfBytes, equals(bytes));
       expect(e0.values is Uint32List, true);
@@ -273,7 +273,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 10);
         final bytes = new Bytes.typedDataView(vList);
-        final e = OLtag.fromBytes(bytes, PTag.kSelectorOLValue);
+        final e = OLtag.fromBytes(PTag.kSelectorOLValue, bytes);
         log.debug('e: $e');
         expect(e.hasValidValues, true);
       }
@@ -284,11 +284,11 @@ void main() {
         global.throwOnError = false;
         final vList = rng.uint32List(1, 10);
         final bytes0 = Bytes.fromAscii(vList.toString());
-        final e0 = OLtag.fromBytes(bytes0, PTag.kSelectorFDValue);
+        final e0 = OLtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => OLtag.fromBytes(bytes0, PTag.kSelectorFDValue),
+        expect(() => OLtag.fromBytes(PTag.kSelectorFDValue, bytes0),
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
@@ -388,7 +388,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
         final bytes = new Bytes.typedDataView(vList0);
-        final e0 = OLtag.fromBytes(bytes, PTag.kLongVertexPointIndexList);
+        final e0 = OLtag.fromBytes(PTag.kLongVertexPointIndexList, bytes);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes));
         expect(e0.values is Uint32List, true);
@@ -437,7 +437,7 @@ void main() {
       }
 
       final bytes = new Bytes.typedDataView(vList);
-      final e2 = OLtag.fromBytes(bytes, PTag.kSelectorOLValue);
+      final e2 = OLtag.fromBytes(PTag.kSelectorOLValue, bytes);
       for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
         final e3 = e2.view(j, vList.length - i);
         log.debug('e: ${e0.values}, at1: ${e3.values}, '

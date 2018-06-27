@@ -156,7 +156,7 @@ class SQtag extends SQ with TagElement<Item> {
     final length = items.length;
     final tagItems = new List<TagItem>(e.items.length);
 
-    final sq = _makeSQ(parent, e.code, tagItems, null);
+    final sq = _makeSQ(parent, e.code, tagItems);
     for (var i = 0; i < length; i++) {
       final tItem = TagItem.convert(parent, items[i], sq);
       tagItems[i] = tItem;

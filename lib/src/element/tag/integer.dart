@@ -85,7 +85,7 @@ class SStag extends SS with TagElement<int>, TagIntegerMixin {
   static SStag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new SStag._(tag, vList);
 
-  static SStag fromBytes(Bytes bytes, Tag tag) =>
+  static SStag fromBytes(Tag tag, Bytes bytes) =>
       new SStag._(tag, bytes.asInt16List());
 }
 
@@ -119,7 +119,7 @@ class SLtag extends SL with TagElement<int>, TagIntegerMixin {
   static SLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new SLtag._(tag, vList);
 
-  static SLtag fromBytes(Bytes bytes, Tag tag) =>
+  static SLtag fromBytes(Tag tag, Bytes bytes) =>
       new SLtag._(tag, bytes.asInt32List());
 }
 
@@ -156,7 +156,7 @@ class OBtag extends OB with TagElement<int>, TagIntegerMixin {
   static OBtag fromValues(Tag tag, Iterable<int> vList) =>
       new OBtag._(tag, Uint8.fromList(vList));
 
-  static OBtag fromBytes(Bytes bytes, Tag tag) =>
+  static OBtag fromBytes(Tag tag, Bytes bytes) =>
       new OBtag._(tag, bytes.asUint8List());
 }
 
@@ -190,7 +190,7 @@ class UNtag extends UN with TagElement<int>, TagIntegerMixin {
   static UNtag fromValues(Tag tag, Iterable<int> vList) =>
       new UNtag._(tag, vList);
 
-  static UNtag fromBytes(Bytes bytes, Tag tag) =>
+  static UNtag fromBytes(Tag tag, Bytes bytes) =>
       new UNtag._(tag, bytes.asUint8List());
 }
 
@@ -224,7 +224,7 @@ class UStag extends US with TagElement<int>, TagIntegerMixin {
   static UStag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new UStag(tag, vList);
 
-  static UStag fromBytes(Bytes bytes, Tag tag) =>
+  static UStag fromBytes(Tag tag, Bytes bytes) =>
       new UStag._(tag, bytes.asUint16List());
 }
 
@@ -261,7 +261,7 @@ class OWtag extends OW with TagElement<int>, TagIntegerMixin {
   static OWtag fromValues(Tag tag, Iterable<int> vList) =>
       new OWtag(tag, vList);
 
-  static OWtag fromBytes(Bytes bytes, Tag tag) =>
+  static OWtag fromBytes(Tag tag, Bytes bytes) =>
       new OWtag._(tag, bytes.asUint16List());
 }
 
@@ -296,7 +296,7 @@ class OLtag extends OL with TagElement<int>, TagIntegerMixin {
   static OLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new OLtag._(tag, vList);
 
-  static OLtag fromBytes(Bytes bytes, Tag tag) =>
+  static OLtag fromBytes(Tag tag, Bytes bytes) =>
       new OLtag._(tag, bytes.asUint32List());
 }
 
@@ -331,7 +331,7 @@ class ULtag extends UL with TagElement<int>, TagIntegerMixin {
   static ULtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new ULtag._(tag, vList);
 
-  static ULtag fromBytes(Bytes bytes, Tag tag) =>
+  static ULtag fromBytes(Tag tag, Bytes bytes) =>
       new ULtag._(tag, bytes.asUint32List());
 }
 
@@ -358,7 +358,7 @@ class GLtag extends ULtag {
   static GLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new GLtag(tag, vList);
 
-  static GLtag fromBytes(Bytes bytes, Tag tag) =>
+  static GLtag fromBytes(Tag tag, Bytes bytes) =>
       new GLtag._x(tag, bytes.asUint32List());
 }
 
@@ -396,6 +396,6 @@ class ATtag extends AT with TagElement<int>, TagIntegerMixin {
   static ATtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       new ATtag._(tag, vList);
 
-  static ATtag fromBytes(Bytes bytes, Tag tag) =>
+  static ATtag fromBytes(Tag tag, Bytes bytes) =>
       new ATtag._(tag, bytes.asUint32List());
 }
