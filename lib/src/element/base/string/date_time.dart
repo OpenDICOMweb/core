@@ -60,8 +60,11 @@ abstract class AS extends StringAscii {
         : badValues(values);
   }
 
-  Age get age => _age ??= Age.parse(value);
-  Age _age;
+  /// A fixed size List of [Date] values. They are created lazily.
+  List<Age> get ages => _ages ??= values.map(Age.parse).toList();
+  List<Age> _ages;
+
+  Age get age => (ages.length == 1) ? ages[0] : invalidValues(values);
 
   @override
   AS get sha256 =>
@@ -333,9 +336,9 @@ abstract class DT extends StringBase {
   @override
   int get maxLength => kMaxLength;
 
-  Iterable<DcmDateTime> get dateTimes =>
-      _dateTimes ??= values.map(DcmDateTime.parse);
-  Iterable<DcmDateTime> _dateTimes;
+  List<DcmDateTime> get dateTimes =>
+      _dateTimes ??= values.map(DcmDateTime.parse).toList();
+  List<DcmDateTime> _dateTimes;
 
   DcmDateTime get dateTime =>
       (dateTimes.length == 1) ? dateTimes.first : badValues(values, null, tag);
@@ -460,8 +463,8 @@ abstract class TM extends StringBase {
   @override
   Trim get trim => kTrim;
 
-  Iterable<Time> get times => _times ??= values.map(Time.parse);
-  Iterable<Time> _times;
+  List<Time> get times => _times ??= values.map(Time.parse).toList();
+  List<Time> _times;
 
   Time get time =>
       (times.length == 1) ? times.first : badValues(values, null, tag);
