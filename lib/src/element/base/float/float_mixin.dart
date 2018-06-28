@@ -14,85 +14,12 @@ import 'package:core/src/element/base/bulkdata.dart';
 import 'package:core/src/element/base/crypto.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/utils.dart';
+import 'package:core/src/element/base/float/float.dart';
 import 'package:core/src/error/element_errors.dart';
-import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic
-
-// **** Float Elements
-
-// Design notes:
-//  1. List<double> does not need to have values checked
-//  2. _tdList returns a TypedData List of the appropriate Type.
-
-/// All public constructors should take either List<double> or
-/// FloatXXList from [TypedData].
-///
-/// Note: When
-///     ```[new] Foo.fromBytes(key, bytes)```
-/// is invoked [values] is always a [Uint8List]; however, when
-///     ```[new] Foo(key, [List<double>])```
-/// is invoked [values] may be either [TypedData] or [List<double>].
-abstract class Float extends Element<double> {
-  @override
-  Iterable<double> get values;
-  @override
-  set values(Iterable<double> vList);
-
-  int get sizeInBytes;
-  // **** End of Interface ****
-
-  @deprecated
-  bool get isBinary => true;
-
-  @override
-  int get vfLength => length * sizeInBytes;
-
-  /// Returns a copy of [values]
-  @override
-  List<double> get valuesCopy => new List.from(values, growable: false);
-
-  /// The _canonical_ empty [values] value for Floating Point Elements.
-  @override
-  List<double> get emptyList => kEmptyList;
-  static const List<double> kEmptyList = const <double>[];
-
-  @override
-  ByteData get vfByteData => typedData.buffer.asByteData();
-
-/*
-  // Note: Always Bytes not DicomBytes
-  @override
-  Bytes get vBytes => new Bytes.typedDataView(typedData);
-*/
-
-  // Note: Always Bytes not DicomBytes
-  @override
-  Bytes get vfBytes => new Bytes.typedDataView(typedData);
-
-  @override
-  Float get noValues => update(kEmptyList);
-
-  @override
-  bool checkValue(double value, {Issues issues, bool allowInvalid = false}) =>
-      true;
-
-  /// Returns a [view] of this [Element] with [values] replaced by [TypedData].
-  Float view([int start = 0, int length]);
-
-  @override
-  String toString() => '$runtimeType ${dcm(code)} ($vr) $values';
-
-  /// Returns _true_ if [tag] and each value in [vList] is valid.
-  static bool isValidValues(Tag tag, Iterable<double> vList, Issues issues,
-      int maxVListLength, Type type) {
-    assert(tag != null);
-    if (vList == null) return invalidValues(vList, issues, tag);
-    return Element.isValidLength(tag, vList, issues, maxVListLength, type);
-  }
-}
 
 /// A mixin class for 32-bit floating point [Element]s.
 abstract class Float32 {

@@ -24,12 +24,8 @@ int level = 0;
 
 abstract class SQ extends Element<Item> {
   // **** Interface
-  List<Item> _values;
   @override
-  Iterable<Item> get values => _values;
-  @override
-  set values(Iterable<Item> v) =>
-      _values = (v is List) ? v : v.toList(growable: false);
+  Iterable<Item> get values;
 
   /// The [tag] corresponding to _this_.
   @override
@@ -223,8 +219,7 @@ Summary $tag
   }
 
   @override
-  List<Item> replace([Iterable<Item> vList = kEmptyList]) =>
-      unsupportedError();
+  List<Item> replace([Iterable<Item> vList = kEmptyList]) => unsupportedError();
 
   @override
   Iterable<Item> replaceF(Iterable<Item> f(Iterable<Item> vList)) =>

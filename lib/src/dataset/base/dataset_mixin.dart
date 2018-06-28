@@ -265,7 +265,7 @@ abstract class DatasetMixin {
   /// Replaces the [Element.values] at [index] with [vList].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  Iterable<V> replace<V>(int index, Iterable<V> vList,
+  List<V> replace<V>(int index, Iterable<V> vList,
       {bool required = false}) {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
@@ -278,7 +278,7 @@ abstract class DatasetMixin {
   /// Replaces the [Element.values] at [index] with [f(vList)].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  Iterable<V> replaceF<V>(int index, Iterable<V> f(Iterable<V> vList),
+  List<V> replaceF<V>(int index, Iterable<V> f(Iterable<V> vList),
       {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
@@ -292,7 +292,7 @@ abstract class DatasetMixin {
   /// Items contained in _this_, with a new element whose values are
   /// [vList]. Returns a list containing all [Element]s that were
   /// replaced.
-  Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
+  List<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {
     assert(index != null && vList != null);
     final result = <List<V>>[]..add(replace(index, vList));
     for (var e in elements)
@@ -304,7 +304,7 @@ abstract class DatasetMixin {
     return result;
   }
 
-  Iterable<Iterable<V>> replaceAllF<V>(
+  List<Iterable<V>> replaceAllF<V>(
       int index, Iterable<V> f(Iterable<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
@@ -658,7 +658,7 @@ abstract class DatasetMixin {
     if (e == null)
       return (required == false) ? null : elementNotPresentError(index);
     if (e is SQ) {
-      final List<Item> vList = e.values;
+      final vList = e.values;
       if (vList == null) return nullValueError('getItemList');
       return vList;
     }

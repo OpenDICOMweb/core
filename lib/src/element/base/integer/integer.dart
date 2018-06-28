@@ -18,6 +18,9 @@ import 'package:core/src/value/uid.dart';
 import 'package:core/src/vr.dart';
 
 abstract class Integer extends Element<int> {
+  @override
+  List<int> get values;
+
   int get sizeInBytes;
 
   @override

@@ -12,7 +12,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element/element_formatter.dart';
-import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -55,11 +55,14 @@ abstract class Element<V> extends ListBase<V> {
   List<V> toList({bool growable = true});
 
   /// Returns the [values] of _this_.
-  Iterable<V> get values;
+  Iterable<V> get values => (_values == null) ? nullValueError() : _values;
+
+  List<V> _values;
 
   /// Sets [values] to [vList]. If [vList] is [Iterable] it is first
   /// converted into a [List] and then assigned to [values].
-  set values(Iterable<V> vList);
+  set values(Iterable<V> vList) =>
+      _values = (vList is List<int>) ? vList : vList.toList();
 
   /// Returns the number of [values] of _this_.
   @override

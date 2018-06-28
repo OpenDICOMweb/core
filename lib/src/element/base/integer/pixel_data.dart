@@ -19,11 +19,13 @@ import 'package:core/src/value/uid.dart';
 
 /// PixelDataMixin class
 abstract class PixelData extends Integer {
+/*
   @override
   Iterable<int> get values => _values;
   @override
   set values(Iterable<int> vList) => _values = vList;
   List<int> _values;
+*/
 
   /// The FrameList for _this_.
   Iterable<Frame> get frames => _frames;

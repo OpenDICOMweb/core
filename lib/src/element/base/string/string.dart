@@ -176,7 +176,6 @@ abstract class StringBase extends Element<String> {
   /// the regular expression.
   bool match(String regexp) {
     final regex = new RegExp(regexp);
-    final result = new List<String>(length);
     for(var i = 0; i < values.length; i++) {
       final v = values[i];
       if (!regex.hasMatch(v)) return false;
