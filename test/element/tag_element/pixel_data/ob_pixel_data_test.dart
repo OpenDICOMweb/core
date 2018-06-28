@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-// Urgent Sharath: all integer test should be changed to match this.
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -100,8 +99,6 @@ void main() {
       expect(ob0.valuesCopy, equals(ob0.values));
       expect(ob0.typedData is Uint8List, true);
 
-      global.throwOnError = true;
-
       final s = Sha256.uint8(frame);
       expect(ob0.sha256, equals(ob0.update(s)));
 
@@ -113,6 +110,13 @@ void main() {
       expect(ob0.checkValue(kUint8Min), true);
       expect(ob0.checkValue(kUint8Max + 1), false);
       expect(ob0.checkValue(kUint8Min - 1), false);
+
+      final ob1 = new OBtagPixelData([kUint16Max]);
+      expect(ob1, isNull);
+
+      global.throwOnError = true;
+      expect(() => new OBtagPixelData([kUint16Max]),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('Create Encapsulated OBtagPixelData hashCode and ==', () {
@@ -130,7 +134,7 @@ void main() {
     });
 
     test('Create Unencapsulated OBtagPixelData.fromBytes', () {
-      global.throwOnError = true;
+      global.throwOnError = false;
       final ob0 = OBtagPixelData.fromBytes(frame);
 
       expect(ob0.tag == PTag.kPixelDataOB, true);
