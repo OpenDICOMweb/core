@@ -50,6 +50,8 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
 
   /// The index in [Bytes] being read of the end of _this_.
   int end = 0;
+
+  // **** Section Start: Dataset as List
   // Note: super classes must implement
   @override
   Element operator [](int i);
@@ -62,6 +64,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   }
 
   // TODO: should this be checking that parents are equal? It doesn't
+  /// Returns true if [other] has the same [Element]s as _this_.
   @override
   bool operator ==(Object other) {
     if (other is Dataset && length == other.length) {
@@ -75,7 +78,11 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   @override
   int get hashCode => global.hasher.nList(elements);
 
+  /// Returns the length in bytes of _this_ if encoded in binary.
   int get lengthInBytes => end - start;
+
+  /// Removes the [Element] [e] from _this_ and returns it. If [e] is not
+  /// present returns _null_.
   @override
   bool remove(Object e) => (e is Element) ? elements.remove(e) : false;
 
@@ -84,6 +91,29 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   /// A field that control whether new [Element]s are checked for
   /// [Issues] when they are accessed from the [Dataset].
   bool get checkIssuesOnAccess => false;
+
+  /// If _true_ [Element]s with invalid values are stored in the
+  /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
+  @override
+  bool get allowInvalidValues => true;
+
+  /// If _true_ duplicate [Element]s are stored in the duplicate Map
+  /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
+  bool get allowDuplicates => true;
+
+  /// A field that control whether new [Element]s are checked for
+  /// [Issues] when they are [add]ed to the [Dataset].
+  bool get checkIssuesOnAdd => false;
+
+  /// Returns _true_ if _this_ has duplicate [Element]s.
+  bool get hasDuplicates => history.duplicates.isNotEmpty;
+
+  /// Returns the _values_ of the [Element] with [code] if present;
+  /// otherwise, null.
+  List<V> values<V>(int code) {
+    final e = elements[code];
+    return (e == null) ? null : e.values;
+  }
 
   /// Returns the Element with [index], if present; otherwise, returns _null_.
   ///
@@ -98,6 +128,11 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     return e;
   }
 
+  /// Return the [Element] with [code] if present; otherwise, _null_.
+  /// _Note_: This method should only be used by the dataset package.
+  @override
+  Element internalLookup(int code) => this[code];
+
   /// All lookups should be done using this method.
   List<Element> lookupAll(int index) {
     final results = <Element>[];
@@ -111,28 +146,9 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     return results;
   }
 
-  @override
-  Element internalLookup(int index) => this[index];
-
   /// Adds an [Element] to a [Dataset].
   @override
   void add(Element e, [Issues issues]) => tryAdd(e, issues);
-
-  @override
-  void addAll(Iterable<Element> eList) => eList.forEach(add);
-
-  /// If _true_ [Element]s with invalid values are stored in the
-  /// [Dataset]; otherwise, an [InvalidValuesError] is thrown.
-  @override
-  bool get allowInvalidValues => true;
-
-  /// If _true_ duplicate [Element]s are stored in the duplicate Map
-  /// of the [Dataset]; otherwise, a [DuplicateElementError] is thrown.
-  bool get allowDuplicates => true;
-
-  /// A field that control whether new [Element]s are checked for
-  /// [Issues] when they are [add]ed to the [Dataset].
-  bool get checkIssuesOnAdd => false;
 
   /// Tries to add an [Element] to a [Dataset]. Return _true_ if successful.
   ///
@@ -172,7 +188,8 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     }
   }
 
-  bool get hasDuplicates => history.duplicates.isNotEmpty;
+  @override
+  void addAll(Iterable<Element> eList) => eList.forEach(add);
 
   /// Remove all duplicates from the [Dataset].
   List<Element> deleteDuplicates() {

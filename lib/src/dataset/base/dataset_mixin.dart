@@ -60,6 +60,7 @@ abstract class DatasetMixin {
 
   Element deleteCode(int index);
 
+
   /// Store [Element] [e] at [index] in _this_.
   void store(int index, Element e);
 

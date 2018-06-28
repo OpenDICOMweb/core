@@ -57,6 +57,8 @@ abstract class StringBase extends Element<String> {
   /// Default Trim values for Strings
   static const Trim kTrim = Trim.trailing;
 
+  @override
+  List<String> get values;
 
   Trim get trim => kTrim;
 
@@ -107,8 +109,6 @@ abstract class StringBase extends Element<String> {
   @override
   StringBase get noValues => update(kEmptyList);
 
-  // **** Getters that get Value Field as Uint or ByteData
-
   // **** String specific Getters
   bool get isAsciiRequired => true;
   bool get isSingleValued => false;
@@ -122,6 +122,86 @@ abstract class StringBase extends Element<String> {
   @override
   bool checkValues(Iterable<String> vList, [Issues issues]) =>
       super.checkValues(vList, issues);
+
+  // Urgent Sharath unit test
+  /// Returns a new [Element] where its values are the result of appending
+  /// each of the original values with [s]. If the resulting [String] has
+  /// length greater than [maxLength] for the [Element], the resulting
+  /// value is truncated to [maxLength].
+  Element append(String s) {
+    final result = new List<String>(s.length);
+    for(var i = 0; i < values.length; i++) {
+      final v = values[i];
+      final s0 = v + s;
+      if (s0.length > maxLength) s0.substring(0, maxLength);
+      result[i] = s0;
+    }
+    return update(result);
+  }
+
+  // Urgent Sharath unit test
+  /// Returns a new [Element] where its values are the result of prepending
+  /// each of the original values with [s]. If the resulting [String] has
+  /// length greater than [maxLength] for the [Element], the resulting
+  /// value is truncated to [maxLength].
+  Element prepend(String s) {
+    final result = new List<String>(s.length);
+    for(var i = 0; i < values.length; i++) {
+      final v = values[i];
+      final s0 = s + v;
+      if (s0.length > maxLength) s0.substring(0, maxLength);
+      result[i] = s0;
+    }
+    return update(result);
+  }
+
+  // Urgent Sharath unit test
+  /// Returns a new [Element] where its values are the result of truncating
+  /// each of the original values with a length greater than [newLength] to
+  /// [newLength]. If [newLength] is greater than [maxLength] _null_ is
+  /// returned.
+  Element truncate(int newLength) {
+    if (newLength > maxLength) return null;
+    final result = new List<String>(newLength);
+    for(var i = 0; i < values.length; i++) {
+      final v = values[i];
+      if (v.length > newLength) v.substring(0, newLength);
+      result[i] = v;
+    }
+    return update(result);
+  }
+
+  // Urgent Sharath unit test
+  /// Returns _true_ if each element in [values] matches
+  /// the regular expression.
+  bool match(String regexp) {
+    final regex = new RegExp(regexp);
+    final result = new List<String>(length);
+    for(var i = 0; i < values.length; i++) {
+      final v = values[i];
+      if (!regex.hasMatch(v)) return false;
+    }
+    return true;
+  }
+
+  // Urgent Sharath unit test
+  Element replaceString(String regexp, RegExp replace) {
+    final regex = new RegExp(regexp);
+    final result = new List<String>(length);
+    for(var i = 0; i < values.length; i++) {
+      final v = values[i];
+      if (v.length > length) v.substring(0, length);
+      result[i] = v;
+    }
+    return update(result);
+  }
+
+  String _replace(RegExp regexp, String source, String result) {
+
+    final match = regexp.firstMatch(source);
+
+  }
+
 
   static bool isValidValueLength(
       String s, Issues issues, int minLength, int maxLength) {

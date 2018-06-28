@@ -180,11 +180,12 @@ abstract class DA extends StringBase {
   int get maxLength => kMaxLength;
 
   /// A fixed size List of [Date] values. They are created lazily.
-  Iterable<Date> get dates => _dates ??= values.map(Date.parse);
-  Iterable<Date> _dates;
+  List<Date> get dates => _dates ??= values.map(Date.parse).toList();
+  List<Date> _dates;
 
   Date get date =>
       (dates.length == 1) ? dates.first : badValues(values, null, tag);
+
 
   @override
   DA get hash {
@@ -198,6 +199,30 @@ abstract class DA extends StringBase {
 
   @override
   DA get sha256 => unsupportedError();
+
+  // Urgent Sharath unit test
+  /// Returns a new [DA] [Element] that is created by adding the
+  /// integer [days] to each element of [values].
+  Element increment([int days = 1]) {
+    final result = new List<Date>(dates.length);
+    for(var i = 0; i < dates.length; i++) {
+      final day = dates[i].epochDay + days;
+      result[i] = Date.fromEpochDay(day);
+    }
+    return update(result.map((v) => '$v'));
+  }
+
+  // Urgent Sharath unit test
+  /// Returns a new [DA] [Element] that is created by subtracting [date]
+  /// from each element of [dates].
+  Element difference(Date date) {
+    final result = new List<Date>(length);
+    for(var i = 0; i < dates.length; i++) {
+      final day = dates[i].epochDay - date.epochDay;
+      result[i] = Date.fromEpochDay(day);
+    }
+    return update(result.map((v) => '$v'));
+  }
 
   DA normalize(Date enrollment) {
     final vList = Date.normalizeStrings(values, enrollment);

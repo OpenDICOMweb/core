@@ -50,7 +50,7 @@ Tag lookupTagByCode(int code, int vrIndex, Dataset ds) {
 int getPixelDataVR(int code, int vrIndex, Dataset ds, TransferSyntax ts) {
   if (code != kPixelData) return badTagCode(code, 'Not Pixel Data Tag Code');
   if (vrIndex == kOBIndex || vrIndex == kOWIndex) return vrIndex;
-  if ((vrIndex == kUNIndex || vrIndex == kOBOWIndex) && ts != null) {
+  if (vrIndex == kUNIndex || vrIndex == kOBOWIndex) {
     final int pixelSize = ds[kBitsAllocated].value;
     return (pixelSize == 16) ? kOWIndex : kOBIndex;
   }

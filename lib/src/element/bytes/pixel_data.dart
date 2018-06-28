@@ -36,6 +36,9 @@ class OBbytesPixelData extends OBPixelData
   OBbytesPixelData(this.bytes, [this.ts, this.fragments]);
 
   @override
+  int get vrIndex => kOBIndex;
+
+  @override
   int get lengthInBytes => bytes.vfLength;
 
   static OBbytesPixelData fromBytes(int code, DicomBytes bytes,
@@ -53,6 +56,9 @@ class UNbytesPixelData extends UNPixelData
   VFFragments fragments;
 
   UNbytesPixelData(this.bytes, [this.ts, this.fragments]);
+
+  @override
+  int get vrIndex => kUNIndex;
 
   @override
   int get lengthInBytes => bytes.vfLength;
@@ -75,6 +81,9 @@ class OWbytesPixelData extends OWPixelData
   VFFragments fragments;
 
   OWbytesPixelData(this.bytes, [this.ts, this.fragments]);
+
+  @override
+  int get vrIndex => kOWIndex;
 
   @override
   int get lengthInBytes => bytes.vfLength;
