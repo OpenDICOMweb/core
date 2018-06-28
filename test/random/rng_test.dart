@@ -39,8 +39,6 @@ void main() {
       }
     });
 
-    //Urgent Sharath: test range of lengths
-    //Urgent Sharath: test range of values
     test('IntList Test', () {
       for (var i = 0; i < count; i++) {
         final list = rng.intList(-20, 60, minMin, maxMin);
@@ -48,6 +46,27 @@ void main() {
         expect(list is List<int>, true);
         expect(list.length, inInclusiveRange(minMin, maxMin));
         for (var i in list) expect(i, inInclusiveRange(-20, 60));
+      }
+    });
+
+    test('IntList Test values', () {
+      for (var i = 1; i < count; i++) {
+        final list = rng.intList(i, i + 1, minMin, maxMin);
+        log.debug('IntList: (${list.length})$list');
+        expect(list is List<int>, true);
+        expect(list.length, inInclusiveRange(minMin, maxMin));
+        for (var i in list) expect(i, inInclusiveRange(i, i + 1));
+      }
+    });
+
+    test('IntList Test length', () {
+      for (var i = 1; i < count; i++) {
+        final minMin = i, minMax = i + 1;
+        final list = rng.intList(i, i + 1, minMin, minMax);
+        log.debug('IntList: (${list.length})$list');
+        expect(list is List<int>, true);
+        expect(list.length, inInclusiveRange(minMin, minMax));
+        for (var i in list) expect(i, inInclusiveRange(i, i + 1));
       }
     });
   });
