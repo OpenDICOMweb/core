@@ -420,6 +420,70 @@ void main() {
       final e0 = new IStag(PTag.kEchoNumbers);
       expect(e0.hashStringList(vList0), isNotNull);
     });
+
+    test('IS compare', () {
+      for (var i = 1; i <= 10; i++) {
+        final vList0 = rsg.getISList(1, 1);
+        final e0 = new IStag(PTag.kEchoNumbers, vList0);
+        final compare0 = e0.compare(int.parse(e0.value));
+        log.debug('compare0: $compare0');
+        expect(compare0 == 0, true);
+      }
+      for (var vList1 in goodISList) {
+        final e1 = new IStag(PTag.kEchoNumbers, vList1);
+        final compare1 = e1.compare(int.parse(e1.value));
+        log.debug('compare1: $compare1');
+        expect(compare1 == 0, true);
+      }
+
+      final vList2 = rsg.getISList(1, 1);
+      final e2 = new IStag(PTag.kEchoNumbers, vList2);
+      for (var n in goodIntegerStrings) {
+        final compare2 = e2.compare(int.parse(n));
+        log.debug('compare2: $compare2');
+        if (!compare2.isNegative) {
+          expect(compare2 == 1, true);
+        } else {
+          expect(compare2 == -1, true);
+        }
+      }
+
+      for (var i = 1; i <= 10; i++) {
+        final vList3 = rsg.getISList(1, i);
+        final e3 = new IStag(PTag.kSelectorISValue, vList3);
+        final compare3 = e3.compare(int.parse(e3.value));
+        log.debug('compare0: $compare3');
+        if (vList3.length > 1) {
+          expect(compare3, isNull);
+        } else {
+          expect(compare3 == 0, true);
+        }
+      }
+
+      final e4 = new IStag(PTag.kSelectorISValue, []);
+      final compare4 = e4.compare(15);
+      expect(compare4, isNull);
+    });
+
+    test('IS increment', () {
+      for (var i = 0; i <= 10; i++) {
+        final vList0 = rsg.getISList(1, 1);
+        final e0 = new IStag(PTag.kStageNumber, vList0);
+        final increment0 = e0.increment();
+        log.debug('increment0: $increment0');
+        expect(increment0.hasValidValues, true);
+      }
+    });
+
+    test('IS decrement', () {
+      for (var i = 0; i <= 10; i++) {
+        final vList0 = rsg.getISList(1, 1);
+        final e0 = new IStag(PTag.kStageNumber, vList0);
+        final decrement0 = e0.decrement();
+        log.debug('decrement0: $decrement0');
+        expect(decrement0.hasValidValues, true);
+      }
+    });
   });
 
   group('IS Element', () {

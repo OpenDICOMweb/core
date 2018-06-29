@@ -547,6 +547,28 @@ void main() {
       expect(() => DAtag.fromValues(PTag.kDate, <String>[null]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
+
+    test('increment', () {
+      for (var i = 0; i <= 10; i++) {
+        final vList = rsg.getDAList(1, 1);
+        final e0 = new DAtag(PTag.kDate, vList);
+        final increment0 = e0.increment();
+        log.debug('increment0: $increment0');
+        expect(increment0.hasValidValues, true);
+      }
+    });
+
+    test('difference', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getDAList(1, 1);
+        final e0 = new DAtag(PTag.kDate, vList);
+        final date = new Date(2018, 06, 29);
+        final difference0 = e0.difference(date);
+        log.debug('difference0: $difference0');
+        expect(difference0.hasValidValues, true);
+      }
+    });
   });
 
   group('DA Element', () {
@@ -879,7 +901,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => DA.isValidBytesArgs(PTag.kSelectorDAValue, bytes),
-                 throwsA(const TypeMatcher<InvalidValueFieldError>()));
+          throwsA(const TypeMatcher<InvalidValueFieldError>()));
     });
 
     test('DA getAsciiList', () {

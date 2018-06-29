@@ -431,6 +431,85 @@ void main() {
         }
       }
     });
+
+    test('DS compare', () {
+      for (var i = 1; i <= 10; i++) {
+        final vList0 = rsg.getDSList(1, 1);
+        final e0 = new DStag(PTag.kPatientSize, vList0);
+        final compare0 = e0.compare(double.parse(e0.value));
+        log.debug('compare0: $compare0');
+        expect(compare0 == 0, true);
+      }
+      for (var vList1 in goodDSList) {
+        final e1 = new DStag(PTag.kPatientSize, vList1);
+        final compare1 = e1.compare(double.parse(e1.value));
+        log.debug('compare1: $compare1');
+        expect(compare1 == 0, true);
+      }
+
+      final vList2 = rsg.getDSList(1, 1);
+      final e2 = new DStag(PTag.kPatientSize, vList2);
+      for (var n in goodDecimalStrings) {
+        final compare2 = e2.compare(double.parse(n));
+        log.debug('compare2: $compare2');
+        if (!compare2.isNegative) {
+          expect(compare2 == 1, true);
+        } else {
+          expect(compare2 == -1, true);
+        }
+      }
+
+      for (var i = 1; i <= 10; i++) {
+        final vList3 = rsg.getDSList(1, i);
+        final e3 = new DStag(PTag.kSelectorDSValue, vList3);
+        final compare3 = e3.compare(double.parse(e3.value));
+        log.debug('compare0: $compare3');
+        if (vList3.length > 1) {
+          expect(compare3, isNull);
+        } else {
+          expect(compare3 == 0, true);
+        }
+      }
+
+      final e4 = new DStag(PTag.kSelectorDSValue, []);
+      final compare4 = e4.compare(12.6);
+      expect(compare4, isNull);
+    });
+
+    test('DS increment', () {
+      global.throwOnError = false;
+      final vList0 = rsg.getDSList(1, 1);
+      final e0 = new DStag(PTag.kPatientSize, vList0);
+      final increment0 = e0.increment();
+      log.debug('increment0: $increment0');
+      expect(increment0.hasValidValues, true);
+    });
+
+    test('DS decrement', () {
+      global.throwOnError = false;
+      final vList0 = rsg.getDSList(1, 1);
+      final e0 = new DStag(PTag.kPatientSize, vList0);
+      final decrement0 = e0.decrement();
+      log.debug('decrement0: $decrement0');
+      expect(decrement0.hasValidValues, true);
+    });
+
+    test('DS append', () {
+      //final vList = rsg.getDSList(1, 1);
+      final vList = ["111.0"];
+      final e0 = new DStag(PTag.kPatientSize, vList);
+      final append0 = e0.append(vList[0]); //urgent Jim
+      print(append0);
+    });
+
+    test('DS truncate', () {
+      final vList = rsg.getDSList(1, 1);
+      final e0 = new DStag(PTag.kPatientSize, vList);
+
+      //final vList1 = rsg.getDSList(1, 1);
+      final append0 = e0.truncate(vList.length); //urgent Jim
+      print(append0);
+    });
   });
 
   group('DS Element', () {
@@ -991,11 +1070,11 @@ void main() {
       expect(DS.tryParse(vList7), isNull);
 
       global.throwOnError = true;
-      expect(() => DS.tryParse(vList3),
-          throwsA(const TypeMatcher<StringError>()));
+      expect(
+          () => DS.tryParse(vList3), throwsA(const TypeMatcher<StringError>()));
 
-      expect(() => DS.tryParse(vList7),
-          throwsA(const TypeMatcher<StringError>()));
+      expect(
+          () => DS.tryParse(vList7), throwsA(const TypeMatcher<StringError>()));
     });
 
     test('DS tryParseList', () {
