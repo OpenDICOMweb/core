@@ -64,7 +64,6 @@ String dec8(int n) {
   return dec(n, maxLength: 3);
 }
 
-
 /// Returns a decimal [String] corresponding to [n] as a 16-bit
 /// integer. If the length of the result is less than 5, it is
 /// left padded with zeros.
@@ -95,6 +94,9 @@ String floatToString(double v) {
   assert(s.length <= 16, '"$s" exceeds max DS length of 16');
   return s;
 }
+
+/// Returns a [String] that approximately corresponds to [v],
+String numToString(num v) => (num is double) ? floatToString(v) : dec32(v);
 
 /// _Deprecated_: Use [floatToString] instead.
 @deprecated

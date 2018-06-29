@@ -45,13 +45,13 @@ abstract class DS extends StringAscii {
   @override
   Trim get trim => kTrim;
 
-  List<double> get numbers => _numbers ??= tryParseList(values);
-  List<double> _numbers;
+  List<num> get numbers => _numbers ??= tryParseList(values);
+  List<num> _numbers;
 
   // Urgent Sharath unit test
   /// Returns -1, 0, or 1 if [n] is less than, equal to, or greater than
   /// [value]. If [values].length is not equal to 1 returns _null_.
-  int compare(double n) {
+  int compare(num n) {
     final len = numbers.length;
     if (len == 0 || len > 1) return null;
     final v = numbers[0];
@@ -62,18 +62,18 @@ abstract class DS extends StringAscii {
   // Urgent Sharath unit test
   /// Returns a [Element] that is created by adding n to each
   /// element of [numbers].
-  Element increment([double n = 1.0]) {
-    final result = new List<double>(length);
-    for(var i = 0; i < numbers.length; i++) result[i] = numbers[i] + n;
+  Element increment([num n = 1.0]) {
+    final result = new List<num>(length);
+    for (var i = 0; i < numbers.length; i++) result[i] = numbers[i] + n;
     return update(result.map((v) => '$v'));
   }
 
   // Urgent Sharath unit test
   /// Returns a [Element] that is created by subtracting n from each
   /// element of [numbers].
-  Element decrement([double n = 1.0]) {
-    final result = new List<double>(length);
-    for(var i = 0; i < numbers.length; i++) result[i] = numbers[i] - n;
+  Element decrement([num n = 1.0]) {
+    final result = new List<num>(length);
+    for (var i = 0; i < numbers.length; i++) result[i] = numbers[i] - n;
     return update(result.map((v) => '$v'));
   }
 
@@ -81,9 +81,9 @@ abstract class DS extends StringAscii {
   /// the same [length] as _this_.
   DS get random {
     if (length == 0) return this;
-    final dList = new List<double>(length);
+    final dList = new List<num>(length);
     for (var i = 0; i < length; i++) dList[i] = Global.rng.nextDouble();
-    final vList = dList.map(floatToString);
+    final vList = dList.map(numToString);
     return update(vList);
   }
 
@@ -101,7 +101,7 @@ abstract class DS extends StringAscii {
   @override
   DS get sha256 {
     final hList =
-        Sha256.float32(numbers).map(floatToString).toList(growable: false);
+        Sha256.numbers(numbers).map(numToString).toList(growable: false);
     return update((vmMax == -1 || vmMax > 8) ? hList : hList.sublist(0, vmMax));
   }
 
@@ -186,7 +186,7 @@ abstract class DS extends StringAscii {
   // and all spaces (blank).
   /// Parse a [DS] [String]. Leading and trailing spaces allowed,
   /// but all spaces is illegal.
-  static double tryParse(String s, [Issues issues]) {
+  static num tryParse(String s, [Issues issues]) {
     if (s == null ||
         !isValidValueLength(s, issues) ||
         notInRange(s.length, kMinValueLength, kMaxValueLength))
@@ -194,7 +194,7 @@ abstract class DS extends StringAscii {
     // Remove leading and training spaces
     final s0 = s.trim();
     if (s.isEmpty) return 0.0;
-    final v = double.tryParse(s0);
+    final v = num.tryParse(s0);
     return (v == null) ? _badDS(s, issues) : v;
   }
 
@@ -203,11 +203,11 @@ abstract class DS extends StringAscii {
     return badString(msg, issues);
   }
 
-  static Iterable<double> tryParseList(Iterable<String> vList,
+  static Iterable<num> tryParseList(Iterable<String> vList,
           [Issues issues]) =>
       StringBase.reallyTryParseList(vList, issues, tryParse);
 
-  static List<double> tryParseBytes(Bytes vfBytes) =>
+  static List<num> tryParseBytes(Bytes vfBytes) =>
       tryParseList(vfBytes.getAsciiList());
 
   static Iterable<String> validateValueField(Bytes vfBytes) =>
@@ -263,7 +263,7 @@ abstract class IS extends StringAscii {
   /// [integers].
   Element increment([int n = 1]) {
     final result = new List<int>(length);
-    for(var i = 0; i < integers.length; i++) result[i] = integers[i] + n;
+    for (var i = 0; i < integers.length; i++) result[i] = integers[i] + n;
     return update(result.map((v) => '$v'));
   }
 
@@ -272,7 +272,7 @@ abstract class IS extends StringAscii {
   /// [integers].
   Element decrement([int n = 1]) {
     final result = new List<int>(length);
-    for(var i = 0; i < integers.length; i++) result[i] = integers[i] - n;
+    for (var i = 0; i < integers.length; i++) result[i] = integers[i] - n;
     return update(result.map((v) => '$v'));
   }
 
@@ -395,7 +395,7 @@ abstract class IS extends StringAscii {
     s0 = (s[0] == '+') ? s.substring(1) : s;
     final n = int.tryParse(s0);
     if (n == null || notInRange(n, kMinValue, kMaxValue))
-        return _badIS(s, issues);
+      return _badIS(s, issues);
     return n;
   }
 
