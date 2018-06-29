@@ -96,7 +96,11 @@ String floatToString(double v) {
 }
 
 /// Returns a [String] that approximately corresponds to [v],
-String numToString(num v) => (num is double) ? floatToString(v) : dec32(v);
+String numToString(num v) {
+  if (v is double) return floatToString(v);
+  if (v is int) return dec32(v);
+  return null;
+}
 
 /// _Deprecated_: Use [floatToString] instead.
 @deprecated
