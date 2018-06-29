@@ -203,7 +203,6 @@ abstract class DA extends StringBase {
   @override
   DA get sha256 => unsupportedError();
 
-  // Urgent Sharath unit test
   /// Returns a new [DA] [Element] that is created by adding the
   /// integer [days] to each element of [values].
   Element increment([int days = 1]) {
@@ -212,10 +211,9 @@ abstract class DA extends StringBase {
       final day = dates[i].epochDay + days;
       result[i] = Date.fromEpochDay(day);
     }
-    return update(result.map((v) => '$v.dcm'));
+    return update(result.map((v) => '${v.dcm}'));
   }
 
-  // Urgent Sharath unit test
   /// Returns a new [DA] [Element] that is created by subtracting [date]
   /// from each element of [dates].
   Element difference(Date date) {
@@ -224,7 +222,7 @@ abstract class DA extends StringBase {
       final day = dates[i].epochDay - date.epochDay;
       result[i] = Date.fromEpochDay(day);
     }
-    return update(result.map((v) => '$v.dcm'));
+    return update(result.map((v) => '${v.dcm}'));
   }
 
   DA normalize(Date enrollment) {
