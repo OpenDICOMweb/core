@@ -212,7 +212,7 @@ abstract class DA extends StringBase {
       final day = dates[i].epochDay + days;
       result[i] = Date.fromEpochDay(day);
     }
-    return update(result.map((v) => '$v'));
+    return update(result.map((v) => '$v.dcm'));
   }
 
   // Urgent Sharath unit test
@@ -224,7 +224,7 @@ abstract class DA extends StringBase {
       final day = dates[i].epochDay - date.epochDay;
       result[i] = Date.fromEpochDay(day);
     }
-    return update(result.map((v) => '$v'));
+    return update(result.map((v) => '$v.dcm'));
   }
 
   DA normalize(Date enrollment) {
