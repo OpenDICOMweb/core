@@ -190,6 +190,24 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   String get inet =>
       (fraction == 0) ? '$y-$m-${d}T$h:$mm:$s' : '$y-$m-${d}T$h:$m:$s.$f';
 
+  ///
+  Date toDate() => new Date(year, month, day);
+
+  /// See Dart Doc for [DateTime].[add].
+  DcmDateTime add({int years, int months, int days, int hours,
+      int minutes, int seconds, int milliseconds, int microseconds,
+      Duration  duration}) {
+    // TODO: implement when needed
+  }
+
+/* TODO: add if needed when with is no longer a keyword.
+  DcmDateTime with({int years, int months, int days,
+  int hours, int minutes, int seconds, int milliseconds, int microseconds,
+  bool  isUtc}) {
+
+  }
+*/
+
   /// Returns the [DcmDateTime] in ISO date [String] format.
   @override
   String toString() => (fraction == 0) ? '$h:$m:$s' : '$h:$m:$s.$f';

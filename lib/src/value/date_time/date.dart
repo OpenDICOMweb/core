@@ -104,7 +104,16 @@ class Date implements Comparable<Date> {
   /// Returns the current [Date].
   Date get today {
     final dt = new DateTime.now();
-    return new Date(dt.year, dt.month, dt.day);
+    return new Date._(dt.microsecondsSinceEpoch);
+  }
+
+  /// Returns the day of the [year] of _this_.
+  int get dayInYear => epochDay - _epochDayOfCurrentYear;
+
+  /// Returns the [epochDay] of the first day of the [year].
+  int get _epochDayOfCurrentYear {
+    final firstOfYear = new DateTime(year, 1, 1);
+    return firstOfYear.microsecondsSinceEpoch ~/ kMicrosecondsPerDay;
   }
 
   /// Returns the integer value of the current weekday, where Sunday is day 0.
