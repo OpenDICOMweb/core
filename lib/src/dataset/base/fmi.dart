@@ -12,7 +12,7 @@ import 'dart:typed_data';
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 
 /// File Meta Information

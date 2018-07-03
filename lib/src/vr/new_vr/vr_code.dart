@@ -70,7 +70,7 @@ const Map<int, int> vrIndexByCode = const <int, int>{
   0x5453: kSTIndex, 0x5455: kUTIndex, 0x574f: kOWIndex // No reformat
 };
 
-/// A List of 16-Bit VR Codes sorted in value order.
+/// A List of 16-Bit VR Codes sorted in values order.
 const List<int> vrCodeInSortOrder = const <int>[
   kDACode, // 0X4144;
   kOBCode, // 0X424f;

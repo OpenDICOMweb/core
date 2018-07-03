@@ -10,7 +10,7 @@
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/profile/de_id/deid_uids.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 final Map<Uid, Uid> idedToDeIded = <Uid, Uid>{};
 

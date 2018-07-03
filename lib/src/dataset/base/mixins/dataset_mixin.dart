@@ -25,7 +25,7 @@ import 'package:core/src/utils/primitives.dart';
 //    add:
 //    update
 //    replace(int index, Iterable<V>: Replaces
-//    noValue: Replaces an Element in the Dataset with one with an empty value.
+//    noValue: Replaces an Element in the Dataset with one with an empty values.
 //    delete: Removes an Element from the Dataset
 
 // Design Note:

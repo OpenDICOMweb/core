@@ -12,7 +12,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/profile/de_id/basic_profile_options.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 /// Basic De-Identification Profile.
 class BasicProfile {
@@ -60,7 +60,7 @@ class BasicProfile {
   /// are consistent with VR.
   static Element replaceWithDummy<V>(Dataset ds, Tag tag, List<V> values,
           {bool required = false}) =>
-      ds.update(tag.code, values, required: required);
+      ds.update<V>(tag.code, values, required: required);
 
   /// D: Replace with Dummy values, i.e. values that contain no PHI, but
   /// are consistent with VR.
@@ -96,7 +96,7 @@ class BasicProfile {
       {bool required = false}) {
     if (_isEmpty(values, true))
       return ds.noValues(tag.code, required: required);
-    return ds.update(tag.code, values);
+    return ds.update<V>(tag.code, values);
   }
 
   /// XZ: X unless Z is required to maintain IOD conformance
@@ -104,7 +104,7 @@ class BasicProfile {
   static Element removeUnlessZero<V>(Dataset ds, Tag tag, List<V> values,
       {bool required = false}) {
     if (_isEmpty(values, true)) return ds.noValues(tag.code);
-    return ds.update(tag.code, values);
+    return ds.update<V>(tag.code, values);
   }
 
   /// XD: X unless D is required to maintain IOD conformance
@@ -112,7 +112,7 @@ class BasicProfile {
   static Element removeUnlessDummy<V>(Dataset ds, Tag tag, Iterable<V> values,
       {bool required = false}) {
     if (_isEmpty(values, true)) return ds.delete(tag.code, required: required);
-    return ds.update(tag.code, values);
+    return ds.update<V>(tag.code, values);
   }
 
   /// X unless Z or D is required to maintain IOD conformance
@@ -131,7 +131,7 @@ class BasicProfile {
       {bool required = false}) {
     if (ds.lookup(tag.code) is! SQ) badTag(tag, null, SQ);
     if (_isEmpty(values, true)) return ds.noValues(tag.code);
-    return ds.update(tag.code, values);
+    return ds.update<V>(tag.code, values);
   }
 
   static Element addIfMissing<V>(Dataset ds, Tag tag, List<V> values,
@@ -140,7 +140,7 @@ class BasicProfile {
     if (e is! SQ) badTag(tag, null, SQ);
     if (_isEmpty(values, true))
       return ds.noValues(tag.code, required: required);
-    return ds.update(tag.code, values);
+    return ds.update<V>(tag.code, values);
   }
 
   static Element invalid<V>(Dataset ds, Tag tag, List<V> values,

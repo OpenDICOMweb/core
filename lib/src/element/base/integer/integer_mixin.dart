@@ -81,7 +81,7 @@ abstract class Int8 {
 
   /// Returns a [Int8List] with the same length as [vList]. If
   /// [vList] is a [Int8List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   ///
   /// If [vList] is not a [Int8List], then if [vList] has valid values,
@@ -207,7 +207,7 @@ abstract class Int16 {
 
   /// Returns a [Int16List] with the same length as [vList]. If
   /// [vList] is a [Int16List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   ///
   /// If [vList] is not a [Int16List], then if [vList] has valid values,
@@ -334,7 +334,7 @@ abstract class Int32 {
 
   /// Returns a [Int32List] with the same length as [vList]. If
   /// [vList] is a [Int32List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   ///
   /// If [vList] is not a [Int32List], then if [vList] has valid values,
@@ -454,7 +454,7 @@ abstract class Int64 {
 
   /// Returns a [Int64List] with the same length as [vList]. If
   /// [vList] is a [Int64List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   ///
   /// If [vList] is not a [Int64List], then if [vList] has valid values,
@@ -543,7 +543,7 @@ abstract class Uint8 {
   static const int kSizeInBits = kSizeInBytes * 8;
   static const int kMinValue = 0;
   static const int kMaxValue = (1 << kSizeInBits) - 1;
-  // These are here because OB and UN are both long value fields
+  // These are here because OB and UN are both long values fields
   static const int kMaxVFLength = k8BitMaxLongVF;
   static const int kMaxLength = kMaxVFLength ~/ kSizeInBytes;
 
@@ -591,7 +591,7 @@ abstract class Uint8 {
 
   /// Returns a [Uint8List] with the same length as [vList]. If
   /// [vList] is a [Uint8List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   ///
   /// If [vList] is not a [Uint8List], then if [vList] has valid values,
@@ -718,7 +718,7 @@ abstract class Uint16 {
 
   /// Returns a [Uint16List] with the same length as [vList]. If
   /// [vList] is a [Uint16List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   ///
   /// If [vList] is not a [Uint16List], then if [vList] has valid values,
@@ -860,7 +860,7 @@ abstract class Uint32 {
 
   /// Returns a [Uint32List] with the same length as [vList]. If
   /// [vList] is a [Uint32List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   ///
   /// If [vList] is not a [Uint32List], then if [vList] has valid values,
@@ -994,7 +994,7 @@ abstract class Uint64 {
 
   /// Returns a [Uint64List] with the same length as [vList]. If
   /// [vList] is a [Uint64List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   ///
   /// If [vList] is not a [Uint64List], then if [vList] has valid values,

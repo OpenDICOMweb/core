@@ -6,14 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base/item.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/error/dataset_errors.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 abstract class NoValuesMixin {
   /// An [Iterable<Element>] of the [Element]s contained in _this_.
@@ -37,8 +36,8 @@ abstract class NoValuesMixin {
 
   // **** Getters for [values]s.
 
-  /// Returns the value for the [Element] with [index]. If the [Element]
-  /// is not present or if the [Element] has more than one value,
+  /// Returns the values for the [Element] with [index]. If the [Element]
+  /// is not present or if the [Element] has more than one values,
   /// either throws or returns _null_;
   V getValue<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
@@ -50,7 +49,7 @@ abstract class NoValuesMixin {
           ? badValuesLength(values, 0, 1, null, Tag.lookupByCode(index), )
           : values.first;
 
-  /// Returns the [int] value for the [Element] with [index].
+  /// Returns the [int] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   List<V> getValues<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
@@ -102,9 +101,9 @@ abstract class NoValuesMixin {
     return numerator / denominator;
   }
 
-  /// Returns the [int] value for the [Integer] Element with [index].
+  /// Returns the [int] values for the [Integer] Element with [index].
   /// If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   int getInt(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null || e is! Integer) return nonIntegerTag(index);
@@ -126,9 +125,9 @@ abstract class NoValuesMixin {
 
   // **** Floating Point
 
-  /// Returns a [double] value for the [Float] Element with
+  /// Returns a [double] values for the [Float] Element with
   /// [index]. If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   double getFloat(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null || e is! Float) return nonFloatTag(index);
@@ -149,9 +148,9 @@ abstract class NoValuesMixin {
 
   // **** String
 
-  /// Returns a [double] value for the [StringBase] Element with [index].
+  /// Returns a [double] values for the [StringBase] Element with [index].
   /// If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   String getString(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null || e is! StringBase) return nonStringTag(index);
@@ -174,9 +173,9 @@ abstract class NoValuesMixin {
 
   // **** Item
 
-  /// Returns an [Item] value for the [SQ] [Element] with [index].
+  /// Returns an [Item] values for the [SQ] [Element] with [index].
   /// If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   Item getItem(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null)
@@ -192,7 +191,7 @@ abstract class NoValuesMixin {
     if (e == null)
       return (required == false) ? null : elementNotPresentError(index);
     if (e is SQ) {
-      final List<Item> vList = e.values;
+      final vList = e.values;
       if (vList == null) return nullValueError('getItemList');
       return vList;
     }
@@ -201,9 +200,9 @@ abstract class NoValuesMixin {
 
   // **** Uid
 
-  /// Returns a [Uid] value for the [UI] [Element] with [index].
+  /// Returns a [Uid] values for the [UI] [Element] with [index].
   /// If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   Uid getUid(int index, {bool required = false}) {
     final UI e = lookup(index, required: required);
     return (e == null) ? null : _checkOneValue<Uid>(index, e.uids);
@@ -219,7 +218,7 @@ abstract class NoValuesMixin {
     return vList;
   }
 
-  // **************** Element value accessors
+  // **************** Element values accessors
   //TODO: when fast_tag is working replace code with index.
   // Note: currently the variable 'index' in this file means code.
 

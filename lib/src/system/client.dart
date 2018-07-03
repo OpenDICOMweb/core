@@ -12,7 +12,7 @@
 import 'dart:html';
 
 import 'package:core/src/global.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 import 'package:version/version.dart';
 
 

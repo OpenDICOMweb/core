@@ -14,7 +14,7 @@ import 'dart:io';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/hash.dart';
 import 'package:core/src/utils/logger.dart';
-import 'package:core/src/value/date_time.dart';
+import 'package:core/src/values/date_time.dart';
 import 'package:version/version.dart';
 
 /// A singleton class used to handle system-wide values and methods.

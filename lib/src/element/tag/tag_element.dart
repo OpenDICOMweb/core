@@ -13,7 +13,7 @@ import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values.dart';
 import 'package:core/src/vr.dart';
 
 /// Tag Mixin Class
@@ -23,8 +23,7 @@ import 'package:core/src/vr.dart';
 abstract class TagElement<V> {
   /// The DICOM Element Definition. In the _ODW_ _SDK_ this is called a "_Tag_".
   Tag get tag;
-//  V get value;
-  Iterable<V> get values;
+  List<V> get values;
   set values(Iterable<V> vList);
 
   // **** End of Interface
@@ -88,7 +87,7 @@ abstract class TagElement<V> {
     final token = (values.isEmpty) ? '' : values[0];
     Tag tag = PCTag.lookupByToken(code, vrIndex, token);
     tag ??= new PCTagUnknown(code, vrIndex, token);
-    return new PCtag(tag, [token]);
+    return new PCtag(tag, StringList.from([token]));
   }
 
   /// Creates a [TagElement] from [DicomBytes] containing a binary encoded

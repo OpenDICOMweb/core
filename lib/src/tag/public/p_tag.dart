@@ -4096,7 +4096,7 @@ class PTag extends Tag {
           kCSIndex, VM.k1, false);
   static const PTag kDiffusionBValue
       //(0018,9087)
-      = const PTag._('DiffusionBValue', 0x00189087, 'Diffusion b-value',
+      = const PTag._('DiffusionBValue', 0x00189087, 'Diffusion b-values',
           kFDIndex, VM.k1, false);
   static const PTag kDiffusionGradientOrientation
       //(0018,9089)
@@ -5029,27 +5029,27 @@ class PTag extends Tag {
           'Diffusion b-matrix Sequence', kSQIndex, VM.k1, false);
   static const PTag kDiffusionBValueXX
       //(0018,9602)
-      = const PTag._('DiffusionBValueXX', 0x00189602, 'Diffusion b-value XX',
+      = const PTag._('DiffusionBValueXX', 0x00189602, 'Diffusion b-values XX',
           kFDIndex, VM.k1, false);
   static const PTag kDiffusionBValueXY
       //(0018,9603)
-      = const PTag._('DiffusionBValueXY', 0x00189603, 'Diffusion b-value XY',
+      = const PTag._('DiffusionBValueXY', 0x00189603, 'Diffusion b-values XY',
           kFDIndex, VM.k1, false);
   static const PTag kDiffusionBValueXZ
       //(0018,9604)
-      = const PTag._('DiffusionBValueXZ', 0x00189604, 'Diffusion b-value XZ',
+      = const PTag._('DiffusionBValueXZ', 0x00189604, 'Diffusion b-values XZ',
           kFDIndex, VM.k1, false);
   static const PTag kDiffusionBValueYY
       //(0018,9605)
-      = const PTag._('DiffusionBValueYY', 0x00189605, 'Diffusion b-value YY',
+      = const PTag._('DiffusionBValueYY', 0x00189605, 'Diffusion b-values YY',
           kFDIndex, VM.k1, false);
   static const PTag kDiffusionBValueYZ
       //(0018,9606)
-      = const PTag._('DiffusionBValueYZ', 0x00189606, 'Diffusion b-value YZ',
+      = const PTag._('DiffusionBValueYZ', 0x00189606, 'Diffusion b-values YZ',
           kFDIndex, VM.k1, false);
   static const PTag kDiffusionBValueZZ
       //(0018,9607)
-      = const PTag._('DiffusionBValueZZ', 0x00189607, 'Diffusion b-value ZZ',
+      = const PTag._('DiffusionBValueZZ', 0x00189607, 'Diffusion b-values ZZ',
           kFDIndex, VM.k1, false);
   static const PTag kDecayCorrectionDateTime
       //(0018,9701)

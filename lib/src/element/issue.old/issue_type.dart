@@ -60,7 +60,7 @@ class IssueType {
   static const IssueType kPrivateCreatorWithNoValue = const IssueType._(
       'PrivateCreatorWithNoValue',
       IssueAction.kQuarantine,
-      'Private Creator Element without a value');
+      'Private Creator Element without a values');
 
 
   static const IssueType kPrivateCreatorWithMoreThanOneValue = const
@@ -68,7 +68,7 @@ class IssueType {
       'PrivateCreatorWithMoreThanOneValue',
       //TODO: could truncate to one value
       IssueAction.kFix,
-      'Private Creator Element without a value');
+      'Private Creator Element without a values');
 
   static const IssueType kUnknownPrivateCreatorTag = const IssueType._(
       'UnknownPublicTag',
@@ -135,14 +135,14 @@ class IssueType {
   static const IssueType kIntegerNotInRange = const IssueType._(
       'IntegerNotInRange',
       IssueAction.kQuarantine,
-      'Integer value out of range');
+      'Integer values out of range');
 
   // **** String Values
 
   static const IssueType kInvalidValueLength = const IssueType._(
       'StringInvalidValueLength',
       IssueAction.kQuarantine,
-      'Invalid value length');
+      'Invalid values length');
 
   static const IssueType kStringInvalidCharacter = const IssueType._(
       'StringInvalidCharacter',

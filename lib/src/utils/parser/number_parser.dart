@@ -15,7 +15,7 @@ part of odw.sdk.core.parser;
 //     2, All the parsers might throw so callers should use try/catch.
 
 /// Parses an unsigned [int], in radix [radix] from [start] to [end], and
-/// returns its corresponding value. If an error is encountered a
+/// returns its corresponding values. If an error is encountered a
 /// [ParseError] is thrown.
 int parseRadix(String s,
         {int start = 0,
@@ -29,7 +29,7 @@ int parseRadix(String s,
         'parseRadix', onError);
 
 /// Tries to parses an unsigned [int], in radix [radix] from [start] to [end],
-/// and returns its corresponding value. If an error is encountered _null_
+/// and returns its corresponding values. If an error is encountered _null_
 /// is returned.
 int tryParseRadix(String s,
         {int start = 0,
@@ -43,7 +43,7 @@ int tryParseRadix(String s,
         radix, 'tryParseRadix');
 
 /// Parses [s] from [start] to [end] as an unsigned radix 2 integer,
-/// and returns the value. If an error is  encountered [onError] is called.
+/// and returns the values. If an error is  encountered [onError] is called.
 int parseBinary(String s,
         {int start = 0,
         int end,
@@ -55,7 +55,7 @@ int parseBinary(String s,
         'parseBinary', onError);
 
 /// Tries to parse [s] from [start] to [end] as a signed base 10 integer, and
-/// returns the parsed value. Returns _null_ if an error is encountered.
+/// returns the parsed values. Returns _null_ if an error is encountered.
 int tryParseBinary(String s,
         {int start = 0,
         int end,
@@ -67,7 +67,7 @@ int tryParseBinary(String s,
         'parseBinary');
 
 /// Parses an unsigned [int] from [start] to [end], and returns
-/// its corresponding value. The If an error is encountered throws an
+/// its corresponding values. The If an error is encountered throws an
 /// [ParseError].
 ///
 /// Note: we're using this because Dart doesn't provide a Uint parser.
@@ -79,7 +79,7 @@ int parseUint(String s,
     _parseBase10(s, start, issues, end ??= s.length, 'parseUint', onError);
 
 /// Tries to parse [s] from [start] to [end] as a signed base 10 integer, and
-/// returns the parsed value. Returns _null_ if an error is encountered.
+/// returns the parsed values. Returns _null_ if an error is encountered.
 int tryParseUint(String s,
         {int start = 0,
         int end,
@@ -91,7 +91,7 @@ int tryParseUint(String s,
         'parseUint');
 
 /// Parses [s] from [start] to [end] as a hexadecimal number, and returns
-/// its corresponding value. The If an error is encountered returns _null_.
+/// its corresponding values. The If an error is encountered returns _null_.
 int parseHex(String s,
         {int start = 0,
         int end,
@@ -103,7 +103,7 @@ int parseHex(String s,
         'parseHex');
 
 /// Tries to parse [s] from [start] to [end] as an unsigned base 16 integer,
-/// and returns the parsed value. If an error is encountered returns null.
+/// and returns the parsed values. If an error is encountered returns null.
 int tryParseHex(String s,
         {int start = 0,
         int end,
@@ -115,7 +115,7 @@ int tryParseHex(String s,
         'parseHex');
 
 /// Tries to parse [s] from [start] to [end] as a base 10 integer, and
-/// returns the resulting value if [s].length is between [minLength] and
+/// returns the resulting values if [s].length is between [minLength] and
 /// [maxLength] inclusive; otherwise, if issues is not _null_ adds a message
 /// to issues, and throws a [ParseError].
 int parseInt(String s,
@@ -141,7 +141,7 @@ int parseInt(String s,
 }
 
 /// Tries to parse [s] from [start] to [end] as a signed base 10 integer, and
-/// returns the parsed value. Returns _null_ if an error is encountered.
+/// returns the parsed values. Returns _null_ if an error is encountered.
 int tryParseInt(String s,
         [int start = 0,
         int end,
@@ -153,7 +153,7 @@ int tryParseInt(String s,
 
 // TODO: unit test
 /// Tries to parse [s] from [start] to [end] as a floating point number, and
-/// returns the resulting value if it is between [minLength] and [maxLength]
+/// returns the resulting values if it is between [minLength] and [maxLength]
 /// inclusive; otherwise, if issues is not _null_ adds a message to issues,
 /// and throws a [ParseError].
 ///
@@ -216,7 +216,7 @@ bool _parseDecimalPoint(String s, int start, Issues issues, String name) {
 
 //TODO: unit test
 /// Parses an unsigned radix [radix] integer in [s] from [start] to [end],
-/// and, if valid, returns its corresponding value. If an error is encountered
+/// and, if valid, returns its corresponding values. If an error is encountered
 /// throws an [ParseError].
 ///
 /// Note:
@@ -224,7 +224,7 @@ bool _parseDecimalPoint(String s, int start, Issues issues, String name) {
 ///     2. All alphabetic characters are converted to uppercase before
 ///        being parsed.
 /// Parses an unsigned [int] from [start] to [end], and returns
-/// its corresponding value. The If an error is encountered throws an
+/// its corresponding values. The If an error is encountered throws an
 /// [ParseError].
 ///
 /// Note: we're using this because Dart doesn't provide a Uint parser.
@@ -255,7 +255,7 @@ int _parseBase10(String s, int start, Issues issues, int end, String name,
     __parseSmallRadix(s, start, issues, end, name, 10, onError);
 
 //TODO: replace with _parseRadix if performance doesn't suffer
-/// Parses an Uint from [start] to [end], and returns corresponding value.
+/// Parses an Uint from [start] to [end], and returns corresponding values.
 /// If an error is encountered throws an [ParseError].
 ///
 /// Note: we're using this because Dart doesn't provide a Uint parser.
@@ -364,7 +364,7 @@ int _checkDigitRange(int v,Issues issues, int minValue, int maxValue, ) =>
         : v;
 
 int _rangeError(int v, int minValue, int maxValue,  [Issues issues]) {
-  final msg = 'Range Error: minValue($minValue) <= value($v) <= maxValue($maxValue)';
+  final msg = 'Range Error: minValue($minValue) <= values($v) <= maxValue($maxValue)';
   return parseError(msg, issues);
 }
 

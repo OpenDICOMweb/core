@@ -49,7 +49,7 @@ abstract class DS extends StringAscii {
   List<num> _numbers;
 
   /// Returns -1, 0, or 1 if [n] is less than, equal to, or greater than
-  /// [value]. If [values].length is not equal to 1 returns _null_.
+  /// [values]. If [values].length is not equal to 1 returns _null_.
   int compare(num n) {
     final len = numbers.length;
     if (len == 0 || len > 1) return null;
@@ -74,11 +74,11 @@ abstract class DS extends StringAscii {
     return update(result.map((v) => '$v'));
   }
 
-  DS append(String s) => appendAux(s, kMaxValueLength);
+  DS append(String s) => update(values.append(s, kMaxValueLength));
 
-  DS prepend(String s) => prependAux(s, kMaxValueLength);
+  DS prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  DS truncate(int length) => truncateAux(length, kMaxValueLength);
+  DS truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   /// Returns a new [DS] [Element] with a random list of [values] with
   /// the same [length] as _this_.
@@ -103,9 +103,12 @@ abstract class DS extends StringAscii {
   /// [vmMin] of for the Element.
   @override
   DS get sha256 {
-    final hList =
-        Sha256.numbers(numbers).map(numToString).toList(growable: false);
-    return update((vmMax == -1 || vmMax > 8) ? hList : hList.sublist(0, vmMax));
+    final hList = Sha256.numbers(numbers);
+    print('numbers: $numbers');
+    print('hList: $hList');
+    if (hList == null) return null;
+    final vList = hList.map(numToString).toList(growable: false);
+    return update((vmMax == -1 || vmMax > 8) ? vList : vList.sublist(0, vmMax));
   }
 
   @override
@@ -251,7 +254,7 @@ abstract class IS extends StringAscii {
   List<int> _integers;
 
   /// Returns -1, 0, or 1 if [n] is less than, equal to, or greater than
-  /// [value]. If [values].length is not equal to 1 returns _null_.
+  /// [values]. If [values].length is not equal to 1 returns _null_.
   int compare(int n) {
     final len = integers.length;
     if (len == 0 || len > 1) return null;

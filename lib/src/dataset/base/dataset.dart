@@ -27,7 +27,7 @@ import 'package:core/src/vr.dart';
 //    add:
 //    update
 //    replace(int index, Iterable<V>: Replaces
-//    noValue: Replaces an Element in the Dataset with one with an empty value.
+//    noValue: Replaces an Element in the Dataset with one with an empty values.
 //    delete: Removes an Element from the Dataset
 
 // Design Note:
@@ -38,7 +38,8 @@ import 'package:core/src/vr.dart';
 
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
-abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
+abstract class Dataset extends Object with ListMixin<Element>,
+    DatasetMixin {
   /// [PCTag]s for [PC] [Element]s in _this_.
   final PrivateCreatorTags pcTags = new PrivateCreatorTags();
 
@@ -170,7 +171,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
         if (!allowInvalidValues && !e.isValid)
           invalidElement('Invalid Values: $e', e);
       }
-      if (Tag.isPCCode(code)) pcTags.tryAdd(e.tag);
+      if (isPCCode(code)) pcTags.tryAdd(e.tag);
       store(e.code, e);
       //     if (e is SQ) sequences.add(e);
       return true;

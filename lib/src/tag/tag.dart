@@ -321,7 +321,7 @@ abstract class Tag {
       var tag = Tag.lookupPublicCode(code, vrIndex);
       return tag ??= new PTag.unknown(code, vrIndex);
     } else {
-      assert(Tag.isPrivateCode(code) == true);
+      assert(isPrivateCode(code) == true);
       final elt = code & 0xFF;
       if (elt == 0) return new PrivateGroupLengthTag(code, vrIndex);
       if (elt < 0x10) return new IllegalPrivateTag(code, vrIndex);
@@ -492,7 +492,7 @@ abstract class Tag {
   static Tag lookupPublicCode(int code, int vrIndex) {
     final tag = PTag.lookupByCode(code, vrIndex);
     if (tag != null) return tag;
-    if (Tag.isPublicGroupLengthCode(code)) return new PTagGroupLength(code);
+    if (isPublicGroupLengthCode(code)) return new PTagGroupLength(code);
     return new PTagUnknown(code, vrIndex);
   }
 
@@ -505,7 +505,7 @@ abstract class Tag {
   }
 
   static Tag lookupPrivateCreatorCode(int code, int vrIndex, String token) {
-    if (Tag.isPrivateGroupLengthCode(code))
+    if (isPrivateGroupLengthCode(code))
       return new PrivateGroupLengthTag(code, vrIndex);
     if (isPCCode(code)) return PCTag.make(code, vrIndex, token);
     return badTagCode(code);
@@ -598,10 +598,10 @@ abstract class Tag {
 
   static bool isPrivateGroupLengthCode(int code) =>
       // Private Tags have bit #16 must equal 1.
-      Tag.isPrivateCode(code) && (code & 0x1FFFF) == 0x10000;
+      isPrivateCode(code) && (code & 0x1FFFF) == 0x10000;
 
   static bool isPrivateIllegalCode(int code) =>
-      Tag.isPrivateCode(code) && (code & 0xFFFF) > 0 && code & 0xFFFF < 0x10;
+      isPrivateCode(code) && (code & 0xFFFF) > 0 && code & 0xFFFF < 0x10;
 
   static bool isNotPrivateIllegalCode(int code) => !isPrivateIllegalCode(code);
 

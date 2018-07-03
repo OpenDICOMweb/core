@@ -10,7 +10,7 @@
 /// Logger Levels ([Level]s).
 ///
 /// Logging can be enabled to include all [Level]s above a specific
-/// [Level]. [Level]s are ordered using an integer value [Level.value].
+/// [Level]. [Level]s are ordered using an integer values [Level].values.
 ///
 /// This should be imported as '_LogLevel_'.
 ///
@@ -34,14 +34,14 @@
 /// [Level.all].
 ///
 /// We recommend using one of the predefined [Level]s. If you define your
-/// own [Level], make sure to use a value between those used in
+/// own [Level], make sure to use a values between those used in
 /// [Level.all], and [Level.off].
 class Level implements Comparable<Level> {
   /// The [abbr] should have exactly 4 letters.
   final String abbr;
   final String name;
 
-  /// Unique value for a [Level]. Used for typing exceptions.
+  /// Unique values for a [Level]. Used for typing exceptions.
   /// Allows searching for a particular type of log.
   final int value;
 

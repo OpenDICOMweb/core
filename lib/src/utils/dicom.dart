@@ -36,7 +36,7 @@ const int k32BitMaxShortLength = k32BitMaxShortVF ~/ 4;
 const int k64BitMaxShortVF = kMaxShortVF - 7;
 const int k64BitMaxShortLength = k64BitMaxShortVF ~/ 8;
 
-/// This is the value of a DICOM Undefined Length from a 32-bit
+/// This is the values of a DICOM Undefined Length from a 32-bit
 /// Value Field Length.
 const int kUndefinedLength = 0xFFFFFFFF;
 
@@ -45,7 +45,7 @@ bool hasUndefinedLength(int i) => i == kUndefinedLength;
 const int k32BitMax = 0xFFFFFFFF;
 /// The maximum length, in bytes, of a "long" (32-bit) Value Field.
 ///
-/// Note: the values is `[kUndefinedLength] - 1` because the maximum value
+/// Note: the values is `[kUndefinedLength] - 1` because the maximum values
 /// (0xFFFFFFFF) is used to denote a Value Field with Undefined Length.
 const int kMaxLongVF = kUndefinedLength - 1;
 
@@ -67,7 +67,7 @@ const int k64BitMaxLongLength = k64BitMaxLongVF ~/ 8;
 // Special Tag Related constants
 
 /// This corresponds to the first 16-bits of kSequenceDelimitationItem,
-/// kItem, and kItemDelimitationItem which are the same value.
+/// kItem, and kItemDelimitationItem which are the same values.
 const int kDelimiterFirst16Bits = 0xFFFE;
 
 /// This corresponds to the last 16-bits of kSequenceDelimitationItem.
@@ -79,7 +79,7 @@ const int kItemLast16bits = 0xE000;
 /// This corresponds to the last 16-bits of kItemDelimitationItem.
 const int kItemDelimiterLast16bits = 0xE00D;
 
-// Next 3 values are 2x16bit little Endian values as one 32bitLE value.
+// Next 3 values are 2x16bit little Endian values as one 32bitLE values.
 // This allows fast access and comparison
 
 // kItem as 2x16Bit LE == 0xfffee000
@@ -91,14 +91,14 @@ const int kItemDelimitationItem32BitLE = 0xe00dfffe; //feff0de0;
 // [kSequenceDelimitationItem] as 2x16bit LE == 0xfffee0dd;
 const int kSequenceDelimitationItem32BitLE = 0xe0ddfffe;
 
-/// The value appended to odd length UID Value Fields to make them even length.
+/// The values appended to odd length UID Value Fields to make them even length.
 const int kUidPaddingChar = kNull; // equal to cvt.ascii.kNull;
 
-/// The value appended to odd length [String] Value Fields to make them
+/// The values appended to odd length [String] Value Fields to make them
 /// even length.
 const int kStringPaddingChar = kSpace; // Equal to cvt.ascii.kSpace;
 
-/// The value appended to odd length Uint8 Value Fields (OB, UN) to make
+/// The values appended to odd length Uint8 Value Fields (OB, UN) to make
 /// them even length.
 const int kUint8PaddingValue = 0;
 

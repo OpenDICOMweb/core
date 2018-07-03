@@ -19,7 +19,7 @@ void main() {
     ..checkValues(['3758'])
     ..checkValue('25240528');
 //  final cpy = date.copy..values;
-  print('copied value equals original value:');
+  print('copied values equals original values:');
   print(date.values.first);
   tag = PTag.lookupByCode(kSeriesDate); // Series Date
   ds[tag.code] = new DAtag(tag, ['19990505']);

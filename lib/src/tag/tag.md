@@ -4,11 +4,11 @@
 Tags define:
 
 - **code**:* a 32-bit integer
-- **value representation(VR)**: The data type of the Tag.
-- **value multiplicity(VM)**: The number and shape of the value(s) of the Tag.
+- **values representation(VR)**: The data type of the Tag.
+- **values multiplicity(VM)**: The number and shape of the values(s) of the Tag.
 - **keyword**: an unique string that satisfies the regular expression ^\[A-Za-z\]{1}\w*$
 - **name**: a short description of the meaning of the Tag.
-- **isRetired**: A boolean value indicating whether the Tag has been retired.
+- **isRetired**: A boolean values indicating whether the Tag has been retired.
 - **type**: The default presence requirement for the Tag.
 
 ## Types of Tags

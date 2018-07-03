@@ -240,7 +240,7 @@ void main() {
       expect(update2.values.isEmpty, false);
     });
 
-    test('update (float)', () {
+    test('update (double)', () {
       final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       rds.add(fd0);
@@ -248,7 +248,7 @@ void main() {
       expect(update1.isEmpty, false);
     });
 
-    test('updateF (float)', () {
+    test('updateF (double)', () {
       final rds = new MapRootDataset.empty('', kEmptyBytes, 0);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       rds.add(fd0);

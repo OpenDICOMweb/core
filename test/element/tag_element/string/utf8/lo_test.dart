@@ -6,9 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'dart:convert' as cvt;
-import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
@@ -733,7 +731,7 @@ void main() {
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
-      final values = cvt.ascii.encode(vList1[0]);
+      final values = ascii.encode(vList1[0]);
       expect(Bytes.fromUtf8List(vList1), equals(values));
     });
 
@@ -776,7 +774,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         global.throwOnError = false;
-        final values = cvt.ascii.encode(vList0[0]);
+        final values = ascii.encode(vList0[0]);
         final tbd0 = Bytes.fromUtf8List(vList0);
         final tbd1 = Bytes.fromUtf8List(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
@@ -785,7 +783,7 @@ void main() {
       }
       for (var s in goodLOList) {
         for (var a in s) {
-          final values = cvt.ascii.encode(a);
+          final values = ascii.encode(a);
           final tbd2 = Bytes.fromUtf8List(s);
           final tbd3 = Bytes.fromUtf8List(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
@@ -880,7 +878,7 @@ void main() {
 
       final vList3 = rng.uint8List(1, 1);
       final fvf5 = Utf8.fromValueField(vList3, k8BitMaxLongLength);
-      expect(fvf5, equals([cvt.ascii.decode(vList3)]));
+      expect(fvf5, equals([ascii.decode(vList3)]));
     });
   });
 }

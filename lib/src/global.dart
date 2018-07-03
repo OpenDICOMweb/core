@@ -13,8 +13,8 @@ import 'package:core/src/error/general_errors.dart';
 import 'package:core/src/system/sdk.dart';
 import 'package:core/src/system/sys_info.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/value/date_time.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/date_time.dart';
+import 'package:core/src/values/uid.dart';
 import 'package:version/version.dart';
 
 // **** Note: this file cannot have any dependencies on dart:io or dart:html.

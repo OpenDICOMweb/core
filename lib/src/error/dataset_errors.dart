@@ -13,7 +13,7 @@ import 'package:core/src/error/utils.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 Null badElementIndex(int index,
                      {Element e, bool required = false, Issues issues}) {

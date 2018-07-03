@@ -63,7 +63,7 @@ class PrivateSubgroup {
   /// Returns a Private Data [Element].
   Element lookup(int code) => members[code];
 
-  bool inSubgroup(int pdCode) => Tag.isValidPDCode(pdCode, creator.code);
+  bool inSubgroup(int pdCode) => isPDCode(pdCode, creator.code);
 
   PC addCreator(Element pc) {
     var pcNew = pc;
@@ -93,7 +93,7 @@ class PrivateSubgroup {
   Element addData(Element pd, Dataset sqParent) {
     var pdNew = pd;
     final pdCode = pd.code;
-    assert(Tag.isPDCode(pdCode));
+    assert(isPDCode(pdCode));
     _isNotValidPDCode(pdCode, pd);
 
     final tag = pd.tag;

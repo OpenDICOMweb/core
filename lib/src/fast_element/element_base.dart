@@ -84,7 +84,7 @@ abstract class FastElementBase<V> {
   /// Returns a copy of [values]
   Iterable<V> get valuesCopy => new List.from(values, growable: false);
 
-  /// The _canonical_ empty [values] value for Floating Point Elements.
+  /// The _canonical_ empty [values] values for Floating Point Elements.
   List<V> get emptyList;
 
   TypedData get typedData;
@@ -100,7 +100,7 @@ abstract class FastElementBase<V> {
 
   /// Returns a [Float32List] with the same length as [vList]. If
   /// [vList] is a [Float32List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   static Float32List fromList(Iterable<double> vList, {bool asView = true}) {
     assert(vList != null);
@@ -152,7 +152,7 @@ abstract class Float extends FastElementBase<double> {
   @override
   Iterable<double> get valuesCopy => new List.from(values, growable: false);
 
-/*  /// The _canonical_ empty [values] value for Floating Point Elements.
+/*  /// The _canonical_ empty [values] values for Floating Point Elements.
   List<double> get emptyList => kEmptyList;
   static const List<double> kEmptyList = const <double>[];
  */
@@ -166,7 +166,7 @@ abstract class Float extends FastElementBase<double> {
   bool checkValue(double value, {Issues issues, bool allowInvalid = false}) =>
       true;
 
-  /// Returns _true_ if each value in [vList] is valid.
+  /// Returns _true_ if each values in [vList] is valid.
   static bool isValidValues(Tag tag, Iterable<double> vList, Issues issues,
       int maxVListLength, Type type) {
     if (!Element.isValidLength(tag, vList, issues, maxVListLength, type))
@@ -194,7 +194,7 @@ abstract class Float32Mixin {
 
   /// Returns a [Float32List] with the same length as [vList]. If
   /// [vList] is a [Float32List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   static Float32List fromList(Iterable<double> vList, {bool asView = true}) {
     assert(vList != null);
@@ -301,12 +301,12 @@ abstract class FL extends Float with Float32Mixin {
     return Element.isValidLength(tag, vList, issues, kMaxLength, UC);
   }
 
-  /// Returns _true_ if each value in [vList] is valid.
+  /// Returns _true_ if each values in [vList] is valid.
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
       isValidVRIndex(tag.vrIndex) &&
       Float.isValidValues(tag, vList, issues, kMaxLength, FL);
 
-  /// Returns _true_ if [value] is valid for [FL] VR.
+  /// Returns _true_ if [values] is valid for [FL] VR.
   static bool isValidValue(double value, [Issues issues]) => true;
 }
 
@@ -402,7 +402,7 @@ abstract class Float64Mixin {
 
   /// Returns a [Float64List] with the same length as [vList]. If
   /// [vList] is a [Float64List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   static Float64List fromList(Iterable<double> vList, {bool asView = true}) {
     assert(vList != null);

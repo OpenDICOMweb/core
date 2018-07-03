@@ -8,7 +8,7 @@
 //
 
 /// A class that contains a [List<String>] describing errors encountered
-/// when parsing a value.
+/// when parsing a values.
 class Issues {
   final String type;
   final String value;
@@ -40,7 +40,7 @@ class Issues {
     return issues;
   }
 
-  /// Check the length of a value.
+  /// Check the length of a values.
   void checkLength(int length, int min, int max, [String subtype]) {
     final name = (subtype == null) ? '' : '$subtype: ';
     if (length < min)

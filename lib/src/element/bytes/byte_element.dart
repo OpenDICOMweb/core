@@ -17,7 +17,7 @@ import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 import 'package:core/src/vr.dart';
 
 part 'float.dart';
@@ -35,12 +35,15 @@ abstract class ByteElement<V> {
 
   /// The length of values;
   int get length;
-  Iterable<V> get values;
-  List<V> get emptyList;
-  bool get hasValidValues;
-  V operator [](int index);
 
+  List<V> get values;
   set values(Iterable<V> vList) => unsupportedError();
+
+  List<V> get emptyList;
+
+  bool get hasValidValues;
+
+  V operator [](int index);
 
   // **** End of Interface
 
@@ -64,10 +67,10 @@ abstract class ByteElement<V> {
 
   bool get isEvr => bytes.isEvr;
 
-
-
   bool get isPublic => code.isEven;
+
   bool get isPrivate => !isPublic;
+
   int get vrCode => bytes.vrCode;
 
   int get vrIndex => bytes.vrIndex;

@@ -14,7 +14,7 @@ import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/instance.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/series.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 /// A DICOM [Study] in SOP Instance format.
 class Study extends Entity {

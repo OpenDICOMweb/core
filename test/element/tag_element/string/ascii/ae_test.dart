@@ -210,6 +210,7 @@ void main() {
         final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
         final vList1 = rsg.getAEList(1, 1);
         expect(e1.replace(vList1), equals(vList0));
+        print('e1: ${e1.values}');
         expect(e1.values, equals(vList1));
       }
 

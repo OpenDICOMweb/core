@@ -14,18 +14,13 @@ import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/image.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/image.dart';
+import 'package:core/src/values/uid.dart';
 
 /// PixelDataMixin class
 abstract class PixelData extends Integer {
-/*
   @override
-  Iterable<int> get values => _values;
-  @override
-  set values(Iterable<int> vList) => _values = vList;
-  List<int> _values;
-*/
+  List<int> get values;
 
   /// The FrameList for _this_.
   Iterable<Frame> get frames => _frames;
@@ -59,8 +54,11 @@ abstract class PixelData extends Integer {
 }
 
 abstract class OBPixelData extends PixelData with Uint8 {
+  // Note: _values should always be a Uint8List.
   @override
- final Tag tag = PTag.kPixelDataOB;
+  List<int> get values;
+  @override
+  final Tag tag = PTag.kPixelDataOB;
 
   @override
   int get maxLength => OB.kMaxLength;
@@ -96,6 +94,7 @@ abstract class OBPixelData extends PixelData with Uint8 {
 abstract class UNPixelData extends PixelData with Uint8 {
   @override
   Tag get tag => PTag.kPixelDataUN;
+
   @override
   TransferSyntax get ts;
 
@@ -163,25 +162,3 @@ abstract class OWPixelData extends PixelData with Uint16 {
           ? true
           : invalidTag(tag, issues, OWPixelData);
 }
-
-/*
-abstract class Uint8PixelDataMixin {
-  Uint8List get _values;
-  FrameList8Bit get _frames;
-
-//  Uint8List get valuesCopy => new Uint8List.fromList(pixels);
-
-  /// The [Uint8List] of pixels, possibly compressed.
-  Uint8List get pixels => _pixels ??= _values ?? _values.pixels;
-  Uint8List _pixels;
-
-
-}
-
-abstract class Uint16PixelDataMixin {
-  Uint16List get _values;
-  FrameList16Bit get _frames;
-
-
-}
-*/

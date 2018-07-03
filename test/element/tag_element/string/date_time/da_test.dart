@@ -101,7 +101,7 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
-    test('DA hasValidValues for bad value length', () {
+    test('DA hasValidValues for bad values length', () {
       for (Iterable<String> s in badDALengthList) {
         global.throwOnError = false;
         final e1 = new DAtag(PTag.kCreationDate, s);
@@ -809,7 +809,7 @@ void main() {
       }
     });
 
-    test('DA isValidValues bad date value length', () {
+    test('DA isValidValues bad date values length', () {
       global.throwOnError = false;
       for (var s in badDALengthList) {
         global.throwOnError = false;

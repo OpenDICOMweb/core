@@ -400,16 +400,16 @@ void main() {
         ..debug('date0: $date0, us: ${date0.toString()}')
         ..debug('date1: $date1, us: ${date1.toString()}')
         ..debug('date0.sha256: ${date0.sha256}')
-        ..debug('date1.value:${date1.toString()}, date0.sha256:${date0.sha256}')
+        ..debug('date1.values:${date1.toString()}, date0.sha256:${date0.sha256}')
         ..debug(
-            'date1.value:${date1.toString()}, date1.sha256:${date1.sha256}');
+            'date1.values:${date1.toString()}, date1.sha256:${date1.sha256}');
       expect(date0.sha256, equals(date1.sha256));
     }
     final date2 = Date.parse(goodDcmDateList[0]);
     final date3 = Date.parse(goodDcmDateList[1]);
     log
-      ..debug('date2.value:${date2.toString()}, date2.sha256:${date2.sha256}')
-      ..debug('date3.value:${date3.toString()}, t3.sha256:${date3.sha256}');
+      ..debug('date2.values:${date2.toString()}, date2.sha256:${date2.sha256}')
+      ..debug('date3.values:${date3.toString()}, t3.sha256:${date3.sha256}');
 
     expect(date2.sha256, isNot(date3.sha256));
   });
@@ -419,16 +419,16 @@ void main() {
       final date0 = Date.parse(s);
       final date1 = Date.parse(s);
       log
-        ..debug('date0.value:${date0.toString()}')
-        ..debug('date1.value:${date1.toString()}');
+        ..debug('date0.values:${date0.toString()}')
+        ..debug('date1.values:${date1.toString()}');
       expect(date0 == date1, true);
     }
 
     final date2 = Date.parse(goodDcmDateList[0]);
     final date3 = Date.parse(goodDcmDateList[1]);
     log
-      ..debug('date2.value:${date2.toString()}')
-      ..debug('date3.value:${date3.toString()}');
+      ..debug('date2.values:${date2.toString()}')
+      ..debug('date3.values:${date3.toString()}');
     expect(date2 == date3, false);
   });
 
@@ -439,11 +439,11 @@ void main() {
       if (date0 != null) {
         log
           ..debug('date0:$date0')
-          ..debug('date0.value:${date0.toString()}, date0.hash:${date0.hash}');
+          ..debug('date0.values:${date0.toString()}, date0.hash:${date0.hash}');
         final date1 = Date.parse(s);
         log
           ..debug('date1:$date1')
-          ..debug('date1.value:${date1.toString()}, date1.hash:${date1.hash}');
+          ..debug('date1.values:${date1.toString()}, date1.hash:${date1.hash}');
         expect(date0.hash, equals(date1.hash));
       } else {
         return invalidDateString('Invalid Date String: "$s"');
@@ -453,8 +453,8 @@ void main() {
     final date2 = Date.parse(goodDcmDateList[0]);
     final date3 = Date.parse(goodDcmDateList[1]);
     log
-      ..debug('date2.value:${date2.toString()}, date2.hash:${date2.hash}')
-      ..debug('date3.value:${date3.toString()}, date3.hash:${date3.hash}');
+      ..debug('date2.values:${date2.toString()}, date2.hash:${date2.hash}')
+      ..debug('date3.values:${date3.toString()}, date3.hash:${date3.hash}');
     expect(date2.hash, isNot(date3.hash));
   });
 
@@ -479,17 +479,17 @@ void main() {
       final date0 = Date.parse(s);
       final date1 = Date.parse(s);
       log
-        ..debug('date0.value:${date0.toString(
+        ..debug('date0.values:${date0.toString(
 				  )}, date0.hashCode:${date0.hashCode}')
-        ..debug('date1.value:${date1.toString(
+        ..debug('date1.values:${date1.toString(
 				  )}, date1.hashCode:${date1.hashCode}');
       expect(date0.hashCode, equals(date1.hashCode));
     }
     final date2 = Date.parse(goodDcmDateList[0]);
     final date3 = Date.parse(goodDcmDateList[1]);
     log
-      ..debug('date2.value:${date2.toString()}, date2.hash:${date2.hashCode}')
-      ..debug('date3.value:${date3.toString()}, date3.hash:${date3.hashCode}');
+      ..debug('date2.values:${date2.toString()}, date2.hash:${date2.hashCode}')
+      ..debug('date3.values:${date3.toString()}, date3.hash:${date3.hashCode}');
     expect(date2.hashCode, isNot(date3.hashCode));
   });
 

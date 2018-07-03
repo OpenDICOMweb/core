@@ -330,7 +330,7 @@ const List<int> vrBySortedCode = const <int>[
 
 int vrIndexFromCode(int vrCode) => vrIndexFromCodeMap[vrCode];
 
-//TODO: would it be better to order this table by value rather than alphabetically?
+//TODO: would it be better to order this table by values rather than alphabetically?
 const Map<int, int> vrIndexFromCodeMap = const <int, int>{
   0x4541: kAEIndex, 0x5341: kASIndex, 0x5441: kATIndex, 0x5343: kCSIndex,
   0x4144: kDAIndex, 0x5344: kDSIndex, 0x5444: kDTIndex, 0x4446: kFDIndex,

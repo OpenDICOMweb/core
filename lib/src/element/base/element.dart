@@ -55,7 +55,7 @@ abstract class Element<V> extends ListBase<V> {
   List<V> toList({bool growable = true});
 
   /// Returns the [values] of _this_.
-  Iterable<V> get values => (_values == null) ? nullValueError() : _values;
+  List<V> get values => (_values == null) ? nullValueError() : _values;
 
   List<V> _values;
 
@@ -137,6 +137,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Returns a copy of _this_ with [values] replaced by [vList].
   Element<V> update([Iterable<V> vList]) => unsupportedError();
+
   // **** end Interface
 
   // ********* Tag Identifier related interface, Getters, and Methods
@@ -211,7 +212,7 @@ abstract class Element<V> extends ListBase<V> {
   /// The [vrCode] as a hexadecimal [String].
   String get vrHex => '0x${hex16(vrCode)}';
 
-  // The number of bytes in one value.
+  // The number of bytes in one values.
 //  int get sizeInBytes => vr.sizeInBytes;
 
   /// The maximum Value Field length in bytes for this Element.
@@ -258,8 +259,8 @@ abstract class Element<V> extends ListBase<V> {
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************
 
-  /// The Value Length field value, that is, the 32-bit [int]
-  /// contained in the Value Field of _this_. If the returned value
+  /// The Value Length field values, that is, the 32-bit [int]
+  /// contained in the Value Field of _this_. If the returned values
   /// is 0xFFFFFFFF ([kUndefinedLength]), it means the length of
   /// the Value Field was undefined.
   ///
@@ -284,7 +285,7 @@ abstract class Element<V> extends ListBase<V> {
   int get maxLength;
 
   @override
-  V operator [](int i) => values.elementAt(i);
+  V operator [](int i) => values[i];
 
   @override
   void operator []=(int i, V v) =>
@@ -293,13 +294,13 @@ abstract class Element<V> extends ListBase<V> {
   @override
   set length(int n) => throw new UnsupportedError('Elements are immutable');
 
-  /// Returns a single value from a [List] with [length] == 1.
+  /// Returns a single values from a [List] with [length] == 1.
   V get value {
     if (length != 1) {
-      log.warn('Invalid value access: $this has ${values.length} values');
-      if (length == 0) return null;
+      log.warn('Invalid values access: $this has ${values.length} values');
+      if (length == 0) return nullValueError();
     }
-    return values.first;
+    return values[0];
   }
 
   /// Returns a copy of [values].
@@ -365,7 +366,7 @@ abstract class Element<V> extends ListBase<V> {
       checkLength(values, issues) &&
       checkValues(values, issues);
 
-  /// Returns _true_ if [value] is valid for _this_.
+  /// Returns _true_ if [values] is valid for _this_.
   bool checkValue(V v, {Issues issues, bool allowInvalid = false});
 
   bool valuesEqual(Element<V> other) => vListEqual<V>(values, other.values);
@@ -393,24 +394,24 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns a copy of _this_ with an empty [values] [List].
   Element<V> get noValues => update(emptyList);
 
-  /// Returns a copy of _this_, but with each [value] replaced by
-  /// a hash of that value but with the same type, i.e. if value had
-  /// [Type] [int] the hashed [value] will have [Type] [int].
+  /// Returns a copy of _this_, but with each [values] replaced by
+  /// a hash of that values but with the same type, i.e. if values had
+  /// [Type] [int] the hashed [values] will have [Type] [int].
   Element get hash => sha256;
 
   /// Returns a copy of _this_, but with [values] replaced by
-  /// a [List] where each [value] has been replaced with a
+  /// a [List] where each [values] has been replaced with a
   /// Digest containing its SHA-256 hash.
   Element get sha256 => throw new UnimplementedError();
 
   /// Returns a copy of _this_, but with [values] replaced by
-  /// a [List] where each [value] has been replaced with an
-  /// AES-DCM encryption of the initial [value].
+  /// a [List] where each [values] has been replaced with an
+  /// AES-DCM encryption of the initial [values].
   Element get encrypted => throw new UnimplementedError();
 
   /// Returns a copy of _this_, but with [values] replaced by
-  /// a [List] where each [value] has been replaced with a
-  /// AES-DCM decryption of the initial encrypted [value].
+  /// a [List] where each [values] has been replaced with a
+  /// AES-DCM decryption of the initial encrypted [values].
   Element get decrypted => throw new UnimplementedError();
 
   /// Returns the total number of [Element]s in _this_.
@@ -445,7 +446,7 @@ abstract class Element<V> extends ListBase<V> {
   bool get isValid => hasValidVR && hasValidLength && hasValidValues;
 
   /// Returns a copy of _this_ with [values] [f]([values]).
-  Element updateF(Iterable<V> f(Iterable<V> vList)) => update(f(values));
+  Element updateF(List<V> f(List<V> vList)) => update(f(values));
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -458,7 +459,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Replace the current [values] with the result of [f([values]])],
   /// and return the original [values]. This method modifies the [Element].
-  Iterable<V> replaceF(Iterable<V> f(Iterable<V> vList)) => replace(f(values));
+  List<V> replaceF(List<V> f(List<V> vList)) => replace(f(values));
 
   /// Returns a copy of _this_.
   Element<V> get copy => update(valuesCopy);

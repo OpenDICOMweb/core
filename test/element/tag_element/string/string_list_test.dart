@@ -164,7 +164,10 @@ void main() {
   });
 
   group('StringList', () {
+
     test('StringList.from', () {
+      global.throwOnError = false;
+
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLTList(1, i);
         final sfrom0 = new StringList.from(vList0);
@@ -180,6 +183,8 @@ void main() {
     });
 
     test('hashCode and ==', () {
+      global.throwOnError = false;
+
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLTList(1, i);
         final sfrom0 = new StringList.from(vList0);

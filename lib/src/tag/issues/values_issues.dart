@@ -41,7 +41,7 @@ class ValuesIssues<E> {
     return this;
   }
 
-  /// Check the length of a value.
+  /// Check the length of a values.
   String get lengthMsg {
     final length = values.length;
     final min = tag.minValues;

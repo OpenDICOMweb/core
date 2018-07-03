@@ -9,7 +9,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/value/integer.dart';
+import 'package:core/src/values/integer.dart';
 import 'package:crypto/crypto.dart';
 
 /// SHA-256 Cryptographic Hash Functions

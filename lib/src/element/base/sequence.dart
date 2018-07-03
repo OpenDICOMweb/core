@@ -15,7 +15,7 @@ import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 import 'package:core/src/vr.dart';
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
@@ -24,8 +24,6 @@ int level = 0;
 
 abstract class SQ extends Element<Item> {
   // **** Interface
-  @override
-  Iterable<Item> get values;
 
   /// The [tag] corresponding to _this_.
   @override
@@ -145,7 +143,7 @@ Summary $tag
   /// Returns the [Element] with [tagIndex] in the [itemIndex]th Item.
   Element getElement(int tagIndex, [int itemIndex = 0]) {
     if (itemIndex < 0 || itemIndex >= items.length) return null;
-    final item = values.elementAt(itemIndex);
+    final item = values[itemIndex];
     return item[tagIndex];
   }
 
@@ -161,7 +159,7 @@ Summary $tag
 
   void addElementAt(int itemIndex, Element e) {
     RangeError.checkValueInInterval(itemIndex, 0, items.length);
-    items.elementAt(itemIndex)..add(e);
+    items[itemIndex]..add(e);
   }
 
   @override
@@ -222,8 +220,7 @@ Summary $tag
   List<Item> replace([Iterable<Item> vList = kEmptyList]) => unsupportedError();
 
   @override
-  Iterable<Item> replaceF(Iterable<Item> f(Iterable<Item> vList)) =>
-      unsupportedError();
+  List<Item> replaceF(List<Item> f(List<Item> vList)) => unsupportedError();
 
 /*
   Iterable<Iterable<V>> replaceAll<V>(int index, Iterable<V> vList) {

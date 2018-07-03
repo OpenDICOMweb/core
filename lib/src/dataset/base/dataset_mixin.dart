@@ -19,8 +19,8 @@ import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/date_time.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/date_time.dart';
+import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: unnecessary_getters_setters
 
@@ -29,7 +29,7 @@ import 'package:core/src/value/uid.dart';
 //    add:
 //    update
 //    replace(int index, Iterable<V>: Replaces
-//    noValue: Replaces an Element in the Dataset with one with an empty value.
+//    noValue: Replaces an Element in the Dataset with one with an empty values.
 //    delete: Removes an Element from the Dataset
 
 // Design Note:
@@ -147,7 +147,7 @@ abstract class DatasetMixin {
 
   /// Replaces the element with [index] with a new element with the same [Tag],
   /// but with [vList] as its _values_. Returns the original element.
-  Element update(int index, Iterable vList, {bool required = false}) {
+  Element<V> update<V>(int index, Iterable<V> vList, {bool required = false}) {
     final old = lookup(index, required: required);
     if (old != null) store(index, old.update(vList));
     return old;
@@ -158,7 +158,7 @@ abstract class DatasetMixin {
   ///
   /// If updating the [Element] fails, the current element is left in
   /// place and _null_ is returned.
-  Element updateF<V>(int index, Iterable f(Iterable<V> vList),
+  Element updateF<V>(int index, List<V> f(List vList),
       {bool required = false}) {
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
@@ -188,7 +188,7 @@ abstract class DatasetMixin {
   /// Items contained in it, with a new element whose values are
   /// [f(this.values)]. Returns a list containing all [Element]s that were
   /// replaced.
-  List<Element> updateAllF<V>(int index, Iterable<V> f(Iterable<V> vList),
+  List<Element> updateAllF<V>(int index, List<V> f(List vList),
       {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);
@@ -209,7 +209,8 @@ abstract class DatasetMixin {
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
     if (old is! UI) return badUidElement(old);
-    add(old.update(uids.toList(growable: false)));
+    final vList = uids.map<String>((v) => v.toString());
+    add(old.update(vList));
     return old;
   }
 
@@ -278,7 +279,7 @@ abstract class DatasetMixin {
   /// Replaces the [Element.values] at [index] with [f(vList)].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  List<V> replaceF<V>(int index, Iterable<V> f(Iterable<V> vList),
+  List<V> replaceF<V>(int index, Iterable<V> f(List<V> vList),
       {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
@@ -305,7 +306,7 @@ abstract class DatasetMixin {
   }
 
   List<Iterable<V>> replaceAllF<V>(
-      int index, Iterable<V> f(Iterable<V> vList)) {
+      int index, Iterable<V> f(List<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
     for (var e in elements)
@@ -542,8 +543,8 @@ abstract class DatasetMixin {
 
   // **** Getters for [values]s.
 
-  /// Returns the value for the [Element] with [index]. If the [Element]
-  /// is not present or if the [Element] has more than one value,
+  /// Returns the values for the [Element] with [index]. If the [Element]
+  /// is not present or if the [Element] has more than one values,
   /// either throws or returns _null_;
   V getValue<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
@@ -556,7 +557,7 @@ abstract class DatasetMixin {
           ? badValuesLength(values, 0, 1, null, Tag.lookupByCode(index))
           : values.first;
 
-  /// Returns the [int] value for the [Element] with [index].
+  /// Returns the [int] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
   List<V> getValues<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
@@ -568,9 +569,9 @@ abstract class DatasetMixin {
 
   // **** Integers
 
-  /// Returns the [int] value for the [Integer] Element with [index].
+  /// Returns the [int] values for the [Integer] Element with [index].
   /// If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   int getInt(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null || e is! Integer) return nonIntegerTag(index);
@@ -592,9 +593,9 @@ abstract class DatasetMixin {
 
   // **** Floating Point
 
-  /// Returns a [double] value for the [Float] Element with
+  /// Returns a [double] values for the [Float] Element with
   /// [index]. If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   double getFloat(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null || e is! Float) return nonFloatTag(index);
@@ -615,9 +616,9 @@ abstract class DatasetMixin {
 
   // **** String
 
-  /// Returns a [double] value for the [StringBase] Element with [index].
+  /// Returns a [double] values for the [StringBase] Element with [index].
   /// If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   String getString(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null || e is! StringBase) return nonStringTag(index);
@@ -640,9 +641,9 @@ abstract class DatasetMixin {
 
   // **** Item
 
-  /// Returns an [Item] value for the [SQ] [Element] with [index].
+  /// Returns an [Item] values for the [SQ] [Element] with [index].
   /// If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   Item getItem(int index, {bool required = false}) {
     final e = lookup(index, required: required);
     if (e == null)
@@ -667,9 +668,9 @@ abstract class DatasetMixin {
 
   // **** Uid
 
-  /// Returns a [Uid] value for the [UI] [Element] with [index].
+  /// Returns a [Uid] values for the [UI] [Element] with [index].
   /// If the [Element] is not present or if the [Element] has more
-  /// than one value, either throws or returns _null_.
+  /// than one values, either throws or returns _null_.
   Uid getUid(int index, {bool required = false}) {
     // Note: this might be UI or UN
     final e = lookup(index, required: required);
@@ -725,7 +726,7 @@ abstract class DatasetMixin {
   /// _Note_: A [RootDataset] is its own [root].
   DatasetMixin get root => (isRoot) ? this : parent.root;
 
-  // **************** Element value accessors
+  // **************** Element values accessors
   //TODO: when fast_tag is working replace code with index.
   // Note: currently the variable 'index' in this file means code.
 

@@ -32,7 +32,7 @@ void main() {
 
       const level3 = const Level('N3', 'NOT_REAL3', 253);
       expect(level1, isNot(same(level3))); // different instances
-      expect(level1, equals(level3)); // same value.
+      expect(level1, equals(level3)); // same values.
     });
 
     test('default levels are in order', () {

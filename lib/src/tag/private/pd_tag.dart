@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
+import 'package:core/src/tag/code.dart';
 import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/private/pd_tag_definitions.dart';
 import 'package:core/src/tag/private/private_tag.dart';
@@ -31,6 +31,9 @@ abstract class PDTag extends PrivateTag {
   int get sgNumber => elt >> 8;
   int get sgOffset => elt & 0x00FF;
   String get sgOffsetHex => hex8(sgOffset);
+
+  @override
+  bool get isValid => isPDCode(code, creator.code);
 
   static const String phantomName = '--<PhantomCreator>--';
 
@@ -106,7 +109,7 @@ class PDTagKnown extends PDTag {
   int get index => definition.index;
 
   @override
-  bool get isValid => creator.isValidDataCode(code);
+  bool get isValid => isPDCode(code, creator.code);
 
   @override
   String get info =>

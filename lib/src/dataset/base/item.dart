@@ -30,7 +30,7 @@ abstract class Item extends Dataset {
   /// JSON [String]...) that _this_was created from, or
   /// _null_ if _this_was not created by parsing an encoded object.
   ///
-  /// _Note_: The [vfLengthField] might have a value of [kUndefinedLength],
+  /// _Note_: The [vfLengthField] might have a values of [kUndefinedLength],
   /// which means the length of the Value Field must be determined by
   /// parsing.
   int get vfLengthField => dsBytes.vfLengthField;

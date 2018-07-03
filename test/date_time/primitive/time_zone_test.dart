@@ -19,7 +19,7 @@ void main() {
     test('checkTimeZone', () {
       var m = 1 * (13 * 60) + 45;
       var us = 1 * (13 * 60) + 45 * kMicrosecondsPerMinute;
-      log.debug('test 1, 13, 45: value: $m');
+      log.debug('test 1, 13, 45: values: $m');
 
       m = -1 * (12 * 60) + 00;
       us = m * kMicrosecondsPerMinute;

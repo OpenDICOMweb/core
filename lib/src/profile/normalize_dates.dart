@@ -12,7 +12,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/profile/de_id/deid_dates.dart';
 import 'package:core/src/utils/logger.dart';
-import 'package:core/src/value/date_time.dart';
+import 'package:core/src/values/date_time.dart';
 
 /// Normalize all [Date]s in [RootDataset]. The _normalized_ [Date]
 /// is base on the [enrollment] [Date].

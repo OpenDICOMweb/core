@@ -51,8 +51,8 @@ abstract class ProfileBase<V> {
   /// Returns an _empty_ [List].
   List<V> get emptyList => kEmptyList;
 
-  /// Returns the value associated with [identifier] in [namespace].
-  /// The returned value must be of [Type]: [int], [double], or [String].
+  /// Returns the values associated with [identifier] in [namespace].
+  /// The returned values must be of [Type]: [int], [double], or [String].
   ///
   /// If [identifier] is not valid, an [InvalidIdentifier] [Error] is
   /// thrown.
@@ -64,7 +64,7 @@ abstract class ProfileBase<V> {
   // Alternative to [lookup];
   V operator [](String identifier);
 
-  /// Sets the value of [identifier] in [namespace].
+  /// Sets the values of [identifier] in [namespace].
   ///
   /// If [namespace] has no key that matches [identifier], then an an
   /// [UnknownIdentifier] [Error] is thrown.
@@ -76,7 +76,7 @@ abstract class ProfileBase<V> {
   // Alternative to [update];
   void operator []=(String identifier, V value);
 
-  /// Returns the value associated with [rowKey] and [columnKey] in
+  /// Returns the values associated with [rowKey] and [columnKey] in
   /// [Database] [db].
   ///
   /// If [db] is unknown or unavailable throws an appropriate(?) [Error].
@@ -90,7 +90,7 @@ abstract class ProfileBase<V> {
   V dbLookup(Database db, String rowKey, String columnKey);
 
   /// Updates the entry in [db] associated with [rowKey] and [columnKey]
-  /// with [value].
+  /// with [values].
   ///
   /// If [db] is unknown or unavailable throws an appropriate [Error].
   ///
@@ -134,8 +134,8 @@ abstract class ProfileBase<V> {
   ///
   Element remove(int tag);
 
-  /// Modifies the value of the [Element] with [tag] to the [emptyList].
-  /// Return the [Element]'s original value. If [original] contains no
+  /// Modifies the values of the [Element] with [tag] to the [emptyList].
+  /// Return the [Element]'s original values. If [original] contains no
   /// [Element] with [tag] _null_ is returned.
   ///
   /// If [tag] is not valid an [InvalidTag] [Error] is thrown.
@@ -153,20 +153,20 @@ abstract class ProfileBase<V> {
 
   /// Requires that a _valid_ [Element] with [tag] is contained in the [result].
   ///
-  /// If an [Element] with [tag] is present in [original], but has no value,
-  /// it is given a value of [emptyList].
+  /// If an [Element] with [tag] is present in [original], but has no values,
+  /// it is given a values of [emptyList].
   ///
   /// If an [Element] with [tag] is present in [original], but is not _valid_,
   /// an [InvalidElement] [Error] is thrown.
   ///
   /// If a _valid_ [Element] with [tag] is present in [original], and [vList]
   /// is provided, an new [Element] with [tag] is created with [vList] as its
-  /// value, and is added to [result].
+  /// values, and is added to [result].
   ///
   /// If no [Element] with [tag] is contained in [original], then:
   ///     - if [EType] == 1 or if [EType] == 1c and the condition is satisfied,
   ///       then a [MissingElement](?) [Error] is thrown.
-  ///     - otherwise; an [Element] with [tag] is created with a [value] of
+  ///     - otherwise; an [Element] with [tag] is created with a [values] of
   ///       [emptyList], and is added to [result].
   ///
   /// If [tag] is not valid an [InvalidTag] [Error] is thrown.
@@ -192,7 +192,7 @@ abstract class ProfileBase<V> {
   /// encrypts it using [key]. A new [Element] containing [tag] and the
   /// encrypted values is added to [result]. Returns the original [values].
   ///
-  /// If the [Element] with [tag] has an _empty_ value, then the [Element]
+  /// If the [Element] with [tag] has an _empty_ values, then the [Element]
   /// is added to [result].
   ///
   /// Returns _null_ if [original] contains no [Element] with [tag].

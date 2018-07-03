@@ -16,7 +16,7 @@ import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/parser/parse_errors.dart';
 import 'package:core/src/utils/string/decimal.dart';
 import 'package:core/src/error/string_errors.dart';
-import 'package:core/src/value/date_time.dart';
+import 'package:core/src/values/date_time.dart';
 
 part 'age_parser.dart';
 part 'date_parser.dart';
@@ -72,8 +72,8 @@ part 'time_zone_parser.dart';
 /// then the parser will `throw` a `ParseError`. If `issues` is not `null`,
 /// an error message will be appended to it.
 ///
-/// - `isValidOnly`: is a boolean value indicating whether the function should
-/// return true or value on success, and false or null on failure.
+/// - `isValidOnly`: is a boolean values indicating whether the function should
+/// return true or values on success, and false or null on failure.
 ///
 /// `start` and `end` must exactly delimit the characters to be parsed.
 ///
@@ -94,7 +94,7 @@ part 'time_zone_parser.dart';
 ///     } on FormatException {
 ///       return (isValidOnly) ? false : null;
 ///     }
-///     return (isValidOnly) ? true : value;
+///     return (isValidOnly) ? true : values;
 ///
 /// When an internal parser encounters an error, it will either `throw` a
 /// `ParseError` if `issues` is non-`null` or append an error message to

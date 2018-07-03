@@ -18,9 +18,9 @@ import 'package:core/src/entity/study.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/date_time.dart';
-import 'package:core/src/value/person.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/date_time.dart';
+import 'package:core/src/values/person.dart';
+import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: only_throw_errors
 

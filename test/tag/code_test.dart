@@ -50,7 +50,7 @@ void main() {
   test('Private Group Length Code', () {
     for (var code in kValidPrivateGroupLengthCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), true);
+      expect(isPrivateCode(code), true);
       expect(group(code) >= kMinGroupCode, true);
       expect(group(code) <= kMaxGroupCode, true);
       expect(isInvalidPrivateCode(code), false);
@@ -60,7 +60,7 @@ void main() {
 
     for (var code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), false);
+      expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
       expect(isValidPrivateCode(code), false);
       expect(isPrivateGroupLengthCode(code), false);
@@ -92,7 +92,7 @@ void main() {
   test('Invalid Private Code', () {
     for (var code in kPrivateInvalidCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), true);
+      expect(isPrivateCode(code), true);
       expect(group(code) >= kMinGroupCode, true);
       expect(group(code) <= kMaxGroupCode, true);
       expect(isInvalidPrivateCode(code), true);
@@ -101,7 +101,7 @@ void main() {
 
     for (var code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), false);
+      expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
       expect(isValidPrivateCode(code), false);
     }
@@ -110,56 +110,56 @@ void main() {
   test('Private Creator Codes', () {
     for (var code in kValidPrivateCreatorCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), true);
+      expect(isPrivateCode(code), true);
       expect(group(code) >= kMinGroupCode, true);
       expect(group(code) <= kMaxGroupCode, true);
       expect(isInvalidPrivateCode(code), false);
       expect(isValidPrivateCode(code), true);
-      expect(isPrivateCreatorCode(code), true);
+      expect(isPCCode(code), true);
     }
 
     for (var code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), false);
+      expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
       expect(isValidPrivateCode(code), false);
-      expect(isPrivateCreatorCode(code), false);
+      expect(isPCCode(code), false);
     }
 
     for (var code in kValidPrivateDataCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), true);
+      expect(isPrivateCode(code), true);
       expect(isInvalidPrivateCode(code), false);
       expect(isValidPrivateCode(code), true);
-      expect(isPrivateCreatorCode(code), false);
+      expect(isPCCode(code), false);
     }
   });
 
   test('Valid Private Data Codes', () {
     for (var code in kValidPrivateDataCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), true);
+      expect(isPrivateCode(code), true);
       expect(group(code) >= kMinGroupCode, true);
       expect(group(code) <= kMaxGroupCode, true);
       expect(isInvalidPrivateCode(code), false);
       expect(isValidPrivateCode(code), true);
-      expect(isPrivateDataCode(code), true);
+      expect(isPDCode(code), true);
     }
 
     for (var code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), false);
+      expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
       expect(isValidPrivateCode(code), false);
-      expect(isPrivateDataCode(code), false);
+      expect(isPDCode(code), false);
     }
 
     for (var code in kValidPrivateCreatorCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), true);
+      expect(isPrivateCode(code), true);
       expect(isInvalidPrivateCode(code), false);
       expect(isValidPrivateCode(code), true);
-      expect(isPrivateDataCode(code), false);
+      expect(isPDCode(code), false);
     }
   });
 
@@ -179,28 +179,28 @@ void main() {
       final code = list[0];
       final creator = list[1];
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), true);
+      expect(isPrivateCode(code), true);
       expect(group(code) >= kMinGroupCode, true);
       expect(group(code) <= kMaxGroupCode, true);
       expect(isInvalidPrivateCode(code), false);
       expect(isValidPrivateCode(code), true);
-      expect(isPrivateDataCode(code, creator), true);
+      expect(isPDCode(code, creator), true);
     }
 
     for (var code in kInvalidPrivateCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), false);
+      expect(isPrivateCode(code), false);
       expect(isInvalidPrivateCode(code), true);
       expect(isValidPrivateCode(code), false);
-      expect(isPrivateDataCode(code, code - 1), false);
+      expect(isPDCode(code, code - 1), false);
     }
 
     for (var code in kValidPrivateCreatorCodes) {
       log.debug('${code.toRadixString(16)}');
-      expect(isPrivateGroup(code), true);
+      expect(isPrivateCode(code), true);
       expect(isInvalidPrivateCode(code), false);
       expect(isValidPrivateCode(code), true);
-      expect(isPrivateDataCode(code), false);
+      expect(isPDCode(code), false);
     }
   });
 }

@@ -136,11 +136,11 @@ void main() {
         if (dt0 != null) {
           log
             ..debug('dt0:$dt0')
-            ..debug('dt0.value:${dt0.toString()}, dt0.hash:${dt0.hash}');
+            ..debug('dt0.values:${dt0.toString()}, dt0.hash:${dt0.hash}');
           final dt1 = DcmDateTime.parse(s);
           log
             ..debug('dt1:$dt1')
-            ..debug('date1.value:${dt1.toString()}, dt1.hash:${dt1.hash}');
+            ..debug('date1.values:${dt1.toString()}, dt1.hash:${dt1.hash}');
           expect(dt0.hash, equals(dt1.hash));
         } else {
           return invalidDateString('Invalid Date String: "$s"');
@@ -150,8 +150,8 @@ void main() {
       final dt2 = DcmDateTime.parse(goodDcmDateTimeList[0]);
       final dt3 = DcmDateTime.parse(goodDcmDateTimeList[1]);
       log
-        ..debug('dt2.value:${dt2.toString()}, dt2.hash:${dt2.hash}')
-        ..debug('dt3.value:${dt3.toString()}, dt3.hash:${dt3.hash}');
+        ..debug('dt2.values:${dt2.toString()}, dt2.hash:${dt2.hash}')
+        ..debug('dt3.values:${dt3.toString()}, dt3.hash:${dt3.hash}');
       expect(dt2.hash, isNot(dt3.hash));
     });
 
@@ -167,18 +167,18 @@ void main() {
         final dt0 = DcmDateTime.parse(s);
         final dt1 = DcmDateTime.parse(s);
         log
-          ..debug('dt0.value:${dt0.toString()}')
-          ..debug('dt1.value:${dt1.toString()}')
+          ..debug('dt0.values:${dt0.toString()}')
+          ..debug('dt1.values:${dt1.toString()}')
           ..debug('dt0.sha256: ${dt0.sha256}')
-          ..debug('dt0.value:${dt0.toString()}, dt0.sha256:${dt0.sha256}')
-          ..debug('dt1.value:${dt1.toString()}, dt1.sha256:${dt1.sha256}');
+          ..debug('dt0.values:${dt0.toString()}, dt0.sha256:${dt0.sha256}')
+          ..debug('dt1.values:${dt1.toString()}, dt1.sha256:${dt1.sha256}');
         expect(dt0.sha256, equals(dt0.sha256));
       }
       final dt2 = DcmDateTime.parse(goodDcmDateTimeList[0]);
       final dt3 = DcmDateTime.parse(goodDcmDateTimeList[1]);
       log
-        ..debug('dt2.value:${dt2.toString()}, dt2.sha256:${dt2.sha256}')
-        ..debug('dt3.value:${dt3.toString()}, dt3.sha256:${dt3.sha256}');
+        ..debug('dt2.values:${dt2.toString()}, dt2.sha256:${dt2.sha256}')
+        ..debug('dt3.values:${dt3.toString()}, dt3.sha256:${dt3.sha256}');
 
       expect(dt2.sha256, isNot(dt3.sha256));
     });
@@ -217,16 +217,16 @@ void main() {
         final dt0 = DcmDateTime.parse(s);
         final dt1 = DcmDateTime.parse(s);
         log
-          ..debug('dt0.value:${dt0.toString()}')
-          ..debug('dt1.value:${dt1.toString()}');
+          ..debug('dt0.values:${dt0.toString()}')
+          ..debug('dt1.values:${dt1.toString()}');
         expect(dt0 == dt1, true);
       }
 
       final dt2 = DcmDateTime.parse(goodDcmDateTimeList[0]);
       final dt3 = DcmDateTime.parse(goodDcmDateTimeList[1]);
       log
-        ..debug('dt2 =.value:${dt2.toString()}')
-        ..debug('dt3.value:${dt3.toString()}');
+        ..debug('dt2 =.values:${dt2.toString()}')
+        ..debug('dt3.values:${dt3.toString()}');
       expect(dt2 == dt3, false);
     });
 

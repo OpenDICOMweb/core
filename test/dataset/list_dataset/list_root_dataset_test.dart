@@ -190,7 +190,7 @@ void main() {
       // Create element and check values and uids
       final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
       log.debug('values: ${ui0.values}');
-      expect(ui0.values, equals(uidStringList0));
+      expect(ui0.values.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));
       log.debug('values: ${ui0.uids}');
       expect(ui0.uids, equals(uidList0));

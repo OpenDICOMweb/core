@@ -106,7 +106,7 @@ class Profile {
   String getVariable(String v) => (isVariable(v)) ? parameters[v] : null;
 
   void addVariable(String v, String value) {
-    //TODO: can a var have a var in its value??
+    //TODO: can a var have a var in its values??
     if (isVariable(v) && (value is String)) parameters[v] = value;
   }
 

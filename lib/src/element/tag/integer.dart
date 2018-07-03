@@ -15,7 +15,7 @@ import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid/well_known/transfer_syntax.dart';
+import 'package:core/src/values/uid/well_known/transfer_syntax.dart';
 
 bool _isEmpty(Iterable<int> vList) => vList == null || vList.isEmpty;
 

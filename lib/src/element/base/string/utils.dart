@@ -16,7 +16,7 @@ import 'package:core/src/vr.dart';
 bool isValidValueLength(
     String value, Issues issues, int minLength, int maxLength) {
   if (value == null) {
-    if (issues != null) issues.add('Invalid null value');
+    if (issues != null) issues.add('Invalid null values');
     return false;
   }
   final length = value.length;

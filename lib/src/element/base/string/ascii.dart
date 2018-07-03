@@ -308,7 +308,7 @@ abstract class UI extends StringAscii {
   set uids(Iterable<Uid> uList) => _uids = uList;
   List<Uid> _uids;
 
-  Uid get uid => (_uids.length == 1) ? _uids.elementAt(0) : null;
+  Uid get uid => (_uids.length == 1) ? _uids[0] : null;
 
   // UI does not support [hash].
   @override

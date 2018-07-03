@@ -14,7 +14,7 @@ import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 import 'package:core/src/vr.dart';
 
 abstract class Integer extends Element<int> {
@@ -37,7 +37,7 @@ abstract class Integer extends Element<int> {
   @override
   Iterable<int> get valuesCopy => new List.from(values, growable: false);
 
-  /// The _canonical_ empty [values] value for Floating Point Elements.
+  /// The _canonical_ empty [values] values for Floating Point Elements.
   @override
   List<int> get emptyList => kEmptyList;
   static const List<int> kEmptyList = const <int>[];
@@ -70,7 +70,7 @@ abstract class Integer extends Element<int> {
     return true;
   }
 
-  /// Returns true if [vList] has a valid length for [tag], and each value in
+  /// Returns true if [vList] has a valid length for [tag], and each values in
   /// [vList] is valid for [tag]..
   static bool isValidValues(Tag tag, Iterable<int> vList, Issues issues,
       int minValue, int maxValue, int maxLength, Type type) {
@@ -198,7 +198,7 @@ abstract class SS extends Integer with Int16 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [SS].
+  /// Returns _true_ if [values] is valid for [SS].
   static bool isValidValue(int value, [Issues issues]) =>
       _isValidValue(value, issues, kMinValue, kMaxValue);
 
@@ -299,7 +299,7 @@ abstract class SL extends Integer with Int32 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [SL].
+  /// Returns _true_ if [values] is valid for [SL].
   static bool isValidValue(int value, [Issues issues]) =>
       _isValidValue(value, issues, kMinValue, kMaxValue);
 
@@ -429,7 +429,7 @@ abstract class OB extends Integer with Uint8 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [OB].
+  /// Returns _true_ if [values] is valid for [OB].
   static bool isValidValue(int value, [Issues issues]) =>
       _isValidValue(value, issues, kMinValue, kMaxValue);
 
@@ -536,7 +536,7 @@ abstract class UN extends Integer with Uint8 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [UN].
+  /// Returns _true_ if [values] is valid for [UN].
   static bool isValidValue(int value, [Issues issues]) =>
       _isValidValue(value, issues, kMinValue, kMaxValue);
 
@@ -662,7 +662,7 @@ abstract class US extends Integer with Uint16 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [US].
+  /// Returns _true_ if [values] is valid for [US].
   static bool isValidValue(int value, [Issues issues]) =>
       _isValidValue(value, issues, kMinValue, kMaxValue);
 
@@ -788,7 +788,7 @@ abstract class OW extends Integer with Uint16 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [OW].
+  /// Returns _true_ if [values] is valid for [OW].
   static bool isValidValue(int value, [Issues issues]) =>
       _isValidValue(value, issues, kMinValue, kMaxValue);
 
@@ -888,7 +888,7 @@ abstract class AT extends Integer with Uint32 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [AT].
+  /// Returns _true_ if [values] is valid for [AT].
   static bool isValidValue(int value, [Issues issues]) =>
       _isValidValue(value, issues, kMinValue, kMaxValue);
 
@@ -990,7 +990,7 @@ abstract class OL extends Integer with Uint32 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [OL].
+  /// Returns _true_ if [values] is valid for [OL].
   static bool isValidValue(int value, [Issues issues]) =>
       _isValidValue(value, issues, kMinValue, kMaxValue);
 
@@ -1091,7 +1091,7 @@ abstract class UL extends Integer with Uint32 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [UL].
+  /// Returns _true_ if [values] is valid for [UL].
   static bool isValidValue(int value, [Issues issues]) =>
       _isValidValue(value, issues, kMinValue, kMaxValue);
 
@@ -1139,7 +1139,7 @@ bool _isValidUVFLength(int vfLength, Issues issues, int max, int eSize) {
 }
 
 /// Returns true if [vfLength] is in the range 0 <= [vfLength] <= [max],
-/// and [vfLength] is a multiple of of value size in bytes ([eSize]),
+/// and [vfLength] is a multiple of of values size in bytes ([eSize]),
 /// i.e. `vfLength % eSize == 0`.
 bool _isValidVFLength(int vfLength, Issues issues, int max, int eSize) =>
     (vfLength >= 0 && vfLength <= max && (vfLength % eSize) == 0)

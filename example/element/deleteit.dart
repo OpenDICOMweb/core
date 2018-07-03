@@ -18,7 +18,7 @@ void main() {
   date..checkValues(['3758'])..checkValues(['25240528']);
   //TODO Fix: there should be a comparison
 //  final cpy = date.copy..values;
-  print('copied value equals original value:');
+  print('copied values equals original values:');
   print(date.values.first);
   tag = PTag.lookupByCode(kSeriesDate); // Series Date
   ds[tag.code] = new DAtag(tag, ['19990505']);

@@ -12,7 +12,7 @@ import 'package:core/src/dataset/base/group/group_base.dart';
 import 'package:core/src/dataset/base/group/private_subgroup.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/global.dart';
-import 'package:core/src/tag.dart';
+import 'package:core/src/tag/code.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/primitives.dart';
 
@@ -68,13 +68,13 @@ class PrivateGroups {
 /// _first_ element encountered in a Group:
 ///     - A Group Length ([GL]) [Element] with a [code] ending in 0x10000
 ///     - An _illegal_ Private [Element] with the low order 8-bits having
-///       a value between 0x01 and 0x0F inclusive.
+///       a values between 0x01 and 0x0F inclusive.
 ///     - A Private Creator [Element] with the low order 16-bits having a
-///       value between 0x0010 and 0x00FF inclusive.
+///       values between 0x0010 and 0x00FF inclusive.
 ///     - A Private Data [Element] _without_ a corresponding Private Creator
 ///       [Element].
 class PrivateGroup implements GroupBase {
-  /// The Group number of this group. The value must be an odd integer
+  /// The Group number of this group. The values must be an odd integer
   /// between 0x0009 and 0xFFFD inclusive.
   // TODO: is 0xFFFD correct
   @override
@@ -131,18 +131,18 @@ class PrivateGroup implements GroupBase {
     if (group != gNumber)
       return elementError('${hex16(group)} != ${hex16(gNumber)}', e);
 
-    assert(!Tag.isPrivateGroupLengthCode(code));
+    assert(!isPrivateGroupLengthCode(code));
 
     var eNew = e;
-    if (Tag.isPDCode(code)) {
-      final sgNumber = Tag.pdSubgroup(code);
+    if (isPDCode(code)) {
+      final sgNumber = pdSubgroup(code);
       _checkSubgroup(sgNumber);
       eNew = _currentSubgroup.addData(e, sqParent);
-    } else if (Tag.isPCCode(code)) {
-      final sgNumber = Tag.pcSubgroup(code);
+    } else if (isPCCode(code)) {
+      final sgNumber = pcSubgroup(code);
       _checkSubgroup(sgNumber);
       eNew = _currentSubgroup.addCreator(e);
-    } else if (Tag.isPrivateIllegalCode(code)) {
+    } else if (isInvalidPrivateCode(code)) {
       illegal.add(e);
     } else {
       throw '**** Internal Error: $e';

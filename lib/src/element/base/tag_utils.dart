@@ -11,7 +11,7 @@ import 'package:core/src/dataset/base.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 import 'package:core/src/vr.dart';
 
 // ignore_for_file: only_throw_errors
@@ -134,9 +134,3 @@ bool _isPDCode(int code) {
   return (bits >= 0x11000 && bits <= 0x1FF00);
 }
 
-/*
-Tag _getPCtagFromCode(int code, Iterable values, int vrIndex) {
-  final String token = values.elementAt(0);
-  return PCTag.lookupByToken(code, kLOIndex, token);
-}
-*/

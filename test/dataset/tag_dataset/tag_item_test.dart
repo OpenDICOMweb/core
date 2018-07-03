@@ -268,7 +268,7 @@ void main() {
       expect(update2.values.isEmpty, false);
     });
 
-    test('update (float)', () {
+    test('update (double)', () {
       final item = new TagItem.empty(rds, null);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);
@@ -276,7 +276,7 @@ void main() {
       expect(update1.isEmpty, false);
     });
 
-    test('updateF (float)', () {
+    test('updateF (double)', () {
       final item = new TagItem.empty(rds, null);
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
       item.add(fd0);

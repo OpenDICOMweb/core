@@ -37,7 +37,7 @@ abstract class TagMixinBase<V> {
   int get vrCode;
   bool isNotValidValue(V value);
 
-  /// The number of bytes in one value.
+  /// The number of bytes in one values.
   int get unitSize;
   int get maxVFLength;
   TypedData valuesToBytes;

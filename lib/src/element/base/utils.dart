@@ -36,7 +36,7 @@ bool isValidFixedVFLength(int vfl, int max, int eSize, Issues issues) =>
         : invalidFixedVFLength(vfl, max, eSize, issues);
 
 /// Returns true if [vfLength] is in the range 0 <= [vfLength] <= [max],
-/// and [vfLength] is a multiple of of value size in bytes ([eSize]),
+/// and [vfLength] is a multiple of of values size in bytes ([eSize]),
 /// i.e. `vfLength % eSize == 0`.
 bool __isValidVFL(int vfLength, int max, int eSize) =>
     (_inRange(vfLength, 0, max) && (vfLength % eSize == 0)) ? true : false;

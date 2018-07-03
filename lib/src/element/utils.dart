@@ -147,7 +147,7 @@ class UnalignedUint32List extends ListBase<int> {
 }
 
 /// Reads a Uint8List containing Tag codes as (group, element) pairs,
-/// each of which must be read as a Uint16 value.
+/// each of which must be read as a Uint16 values.
 Uint32List bytesToAttributeTags(Uint8List bytes) {
   if ((bytes.lengthInBytes % 4) != 0) return null;
   final shorts = bytes.buffer.asUint16List();

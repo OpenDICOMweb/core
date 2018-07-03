@@ -8,7 +8,7 @@
 //
 
 import 'package:core/src/utils/character/ascii.dart';
-import 'package:core/src/value/uuid.dart';
+import 'package:core/src/values/uuid.dart';
 
 /// Useful utilities for working with [Uid] [String]s.
 

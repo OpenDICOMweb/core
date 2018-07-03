@@ -9,7 +9,7 @@
 
 //TODO: unify Issues and Issues?
 /// A class that contains a [List<String>] describing errors encountered
-/// when parsing a value.
+/// when parsing a values.
 class Issues {
   static bool noisy = false;
   List<String> _issues;
@@ -50,7 +50,7 @@ class Issues {
 }
 
 /// A class that contains a [List<String>] describing errors encountered
-/// when parsing a value.
+/// when parsing a values.
 class ParseIssues extends Issues {
   final String type;
   final String value;
@@ -62,7 +62,7 @@ class ParseIssues extends Issues {
 //  ParseIssues.from(Issues issues)
 
 
-  /// Check the length of a value.
+  /// Check the length of a values.
   void checkLength(int length, int min, int max, [String subtype]) {
     final name = (subtype == null) ? '' : '$subtype: ';
     if (length < min)

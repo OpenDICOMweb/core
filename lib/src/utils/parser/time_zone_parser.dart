@@ -12,7 +12,7 @@ part of odw.sdk.core.parser;
 
 /// DICOM Time Zone parsing, etc.
 
-/// Returns a valid Time Zone Offset in microseconds. A negative value is before UTC.
+/// Returns a valid Time Zone Offset in microseconds. A negative values is before UTC.
 int parseTimeZone(String s,
         {int start = 0,
         int end,
@@ -29,8 +29,8 @@ int parseTimeZone(String s,
 /// which must be in DICOM format.
 ///
 /// The [String] must have the format [-+]hhmm, where 'hh' is a
-/// valid time zone hour and 'mm' is a valid time zone minute value,
-/// i.e. 0, 30, or 45. A negative value is before UTC.
+/// valid time zone hour and 'mm' is a valid time zone minute values,
+/// i.e. 0, 30, or 45. A negative values is before UTC.
 int parseDcmTimeZone(String s,
     {int start = 0, int end, Issues issues, int onError(String s)}) {
   end ??= s.length;
@@ -56,8 +56,8 @@ int _parseDcmTimeZone(String s, int start, int end, Issues issues) {
 /// which must be in Internet format.
 ///
 /// The [String] must have the format [-+]hhmm, where 'hh' is a
-/// valid time zone hour and 'mm' is a valid time zone minute value,
-/// i.e. 0, 30, or 45. A negative value is before UTC.
+/// valid time zone hour and 'mm' is a valid time zone minute values,
+/// i.e. 0, 30, or 45. A negative values is before UTC.
 int parseInternetTimeZone(String s,
     {int start = 0, int end, Issues issues, OnParseError onError}) {
   end ??= s.length;

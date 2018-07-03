@@ -13,8 +13,10 @@ part of odw.sdk.element.bytes;
 class SQbytes extends SQ with ByteElement<Item> {
   @override
   final Dataset parent;
+
   @override
-  Iterable<Item> values;
+  final List<Item> values;
+
   @override
   final DicomBytes bytes;
 

@@ -51,19 +51,13 @@ abstract class Float extends Element<double> {
   @override
   List<double> get valuesCopy => new List.from(values, growable: false);
 
-  /// The _canonical_ empty [values] value for Floating Point Elements.
+  /// The _canonical_ empty [values] values for Floating Point Elements.
   @override
   List<double> get emptyList => kEmptyList;
   static const List<double> kEmptyList = const <double>[];
 
   @override
   ByteData get vfByteData => typedData.buffer.asByteData();
-
-/*
-  // Note: Always Bytes not DicomBytes
-  @override
-  Bytes get vBytes => new Bytes.typedDataView(typedData);
-*/
 
   // Note: Always Bytes not DicomBytes
   @override
@@ -82,7 +76,7 @@ abstract class Float extends Element<double> {
   @override
   String toString() => '$runtimeType ${dcm(code)} ($vr) $values';
 
-  /// Returns _true_ if [tag] and each value in [vList] is valid.
+  /// Returns _true_ if [tag] and each values in [vList] is valid.
   static bool isValidValues(Tag tag, Iterable<double> vList, Issues issues,
                             int maxVListLength, Type type) {
     assert(tag != null);
@@ -178,10 +172,10 @@ abstract class FL extends Float with Float32 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [FL] VR.
+  /// Returns _true_ if [values] is valid for [FL] VR.
   static bool isValidValue(double value, [Issues issues]) => true;
 
-  /// Returns _true_ if each value in [vList] is valid.
+  /// Returns _true_ if each values in [vList] is valid.
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, FL);
     return isValidVR(tag.vrIndex) &&
@@ -267,10 +261,10 @@ abstract class OF extends Float with Float32 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [FL] VR.
+  /// Returns _true_ if [values] is valid for [FL] VR.
   static bool isValidValue(double value, [Issues issues]) => true;
 
-  /// Returns _true_ if each value in [vList] is valid.
+  /// Returns _true_ if each values in [vList] is valid.
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, OF);
     return isValidVR(tag.vrIndex) &&
@@ -356,10 +350,10 @@ abstract class FD extends Float with Float64 {
         : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
-  /// Returns _true_ if [value] is valid for [FL] VR.
+  /// Returns _true_ if [values] is valid for [FL] VR.
   static bool isValidValue(double value, [Issues issues]) => true;
 
-  /// Returns _true_ if each value in [vList] is valid.
+  /// Returns _true_ if each values in [vList] is valid.
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, FL);
     return isValidVR(tag.vrIndex) &&
@@ -439,7 +433,7 @@ abstract class OD extends Float with Float64 {
 
   static bool isValidLength(int vfl) => true;
 
-  /// Returns _true_ if [value] is valid for [FL] VR.
+  /// Returns _true_ if [values] is valid for [FL] VR.
   static bool isValidValue(double value, [Issues issues]) => true;
 
   static bool isValidValues(Tag tag, Iterable<double> vList, [Issues issues]) =>
@@ -452,7 +446,7 @@ abstract class OD extends Float with Float64 {
 }
 
 /// Returns true if [vfLength] is in the range 0 <= [vfLength] <= [max],
-/// and [vfLength] is a multiple of of value size in bytes ([sizeInBytes]),
+/// and [vfLength] is a multiple of of values size in bytes ([sizeInBytes]),
 /// i.e. `vfLength % eSize == 0`.
 bool _isValidVFLength(int vfLength, int max, int sizeInBytes) =>
    vfLength >= 0 && vfLength <= max && (vfLength % sizeInBytes) == 0;

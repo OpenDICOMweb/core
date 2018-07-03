@@ -18,12 +18,12 @@ void main() {
 void testStaticMethods() {
   group('Test Tag Static Methods', () {
     test('Group.isPrivateCode', () {
-      expect(Tag.isPrivateCode(0x00090010), true);
-      expect(Tag.isPrivateCode(0x00110010), true);
-      expect(Tag.isPrivateCode(0x00070010), false);
-      expect(Tag.isPrivateCode(0x00100021), false);
-      expect(Tag.isPrivateCode(0x00100010), false);
-      expect(Tag.isPrivateCode(0xffff0010), false);
+      expect(isPrivateCode(0x00090010), true);
+      expect(isPrivateCode(0x00110010), true);
+      expect(isPrivateCode(0x00070010), false);
+      expect(isPrivateCode(0x00100021), false);
+      expect(isPrivateCode(0x00100010), false);
+      expect(isPrivateCode(0xffff0010), false);
 
       expect(Tag.privateGroup(0x00090010), 0x09);
       expect(Tag.privateGroup(0x00110010), 0x11);
@@ -43,15 +43,15 @@ void testStaticMethods() {
     });
 
     test('Tag.isPrivateGroupLength', () {
-      expect(Tag.isPrivateGroupLengthCode(0x00090000), true);
-      expect(Tag.isPrivateGroupLengthCode(0x00090001), false);
+      expect(isPrivateGroupLengthCode(0x00090000), true);
+      expect(isPrivateGroupLengthCode(0x00090001), false);
     });
 
     test('Tag.isPrivateIllegal', () {
-      expect(Tag.isPrivateIllegalCode(0x00090001), true);
-      expect(Tag.isPrivateIllegalCode(0x0009000F), true);
-      expect(Tag.isPrivateIllegalCode(0x00090000), false);
-      expect(Tag.isPrivateIllegalCode(0x00090010), false);
+      expect(isInvalidPrivateCode(0x00090001), true);
+      expect(isInvalidPrivateCode(0x0009000F), true);
+      expect(isInvalidPrivateCode(0x00090000), false);
+      expect(isInvalidPrivateCode(0x00090010), false);
     });
 
     test('Tag.isPrivateCreatorCode', () {
@@ -65,13 +65,13 @@ void testStaticMethods() {
       expect(Tag.isPDCode(0x00090021), false);
       expect(Tag.isPDCode(0x00091021, 0x00090010), true);
       expect(Tag.isPDCode(0x00090021, 0x00090010), false);
-      expect(Tag.isValidPDCode(0x00091021, 0x00090010), true);
-      expect(Tag.isValidPDCode(0x00090021, 0x00090010), false);
+      expect(isPDCode(0x00091021, 0x00090010), true);
+      expect(isPDCode(0x00090021, 0x00090010), false);
     });
 
     test('isValidPrivateDataTag', () {
-      expect(Tag.isValidPDCode(0x00091021, 0x00090010), true);
-      expect(Tag.isValidPDCode(0x00100021, 0x00100010), false);
+      expect(isPDCode(0x00091021, 0x00090010), true);
+      expect(isPDCode(0x00100021, 0x00100010), false);
     });
 
     test('isValidPrivateDataCode', () {

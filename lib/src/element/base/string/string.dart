@@ -22,7 +22,7 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/utils/character/dicom.dart';
-import 'package:core/src/value.dart';
+import 'package:core/src/values.dart';
 import 'package:core/src/vr/vr_internal.dart';
 
 part 'package:core/src/element/base/string/ascii.dart';
@@ -58,7 +58,7 @@ abstract class StringBase extends Element<String> {
   static const Trim kTrim = Trim.trailing;
 
   @override
-  List<String> get values;
+  StringList get values;
 
   Trim get trim => kTrim;
 
@@ -101,7 +101,7 @@ abstract class StringBase extends Element<String> {
   @override
   int get lengthInBytes => vfLength;
 
-  /// The _canonical_ empty [values] value for Floating Point Elements.
+  /// The _canonical_ empty [values] values for Floating Point Elements.
   @override
   List<String> get emptyList => kEmptyList;
   static const List<String> kEmptyList = const <String>[];
@@ -126,7 +126,7 @@ abstract class StringBase extends Element<String> {
   /// Returns a new [Element] where its values are the result of appending
   /// each of the original values with [s]. If the resulting [String] has
   /// length greater than [maxLength] for the [Element], the resulting
-  /// value is truncated to [maxLength].
+  /// values is truncated to [maxLength].
   Element appendAux(String s, int maxLength) {
     final result = new List<String>(values.length);
     for(var i = 0; i < values.length; i++) {
@@ -141,7 +141,7 @@ abstract class StringBase extends Element<String> {
   /// Returns a new [Element] where its values are the result of prepending
   /// each of the original values with [s]. If the resulting [String] has
   /// length greater than [maxLength] for the [Element], the resulting
-  /// value is truncated to [maxLength].
+  /// values is truncated to [maxLength].
   Element prependAux(String s, int maxLength) {
     final result = new List<String>(values.length);
     for(var i = 0; i < values.length; i++) {

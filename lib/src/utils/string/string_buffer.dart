@@ -12,7 +12,7 @@
 import 'dart:typed_data';
 
 import 'package:core/src/utils/character/ascii.dart';
-import 'package:core/src/value/integer.dart';
+import 'package:core/src/values/integer.dart';
 
 List<int> _copyBuffer(List<int> oldBuf, List<int> newBuf) {
   for (var i = 0; i < oldBuf.length; i++) newBuf[i] = oldBuf[i];

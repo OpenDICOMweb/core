@@ -173,7 +173,7 @@ abstract class PC extends LO {
   /// Returns a [PCTag].
   @override
   Tag get tag {
-    if (Tag.isPCCode(code)) {
+    if (isPCCode(code)) {
       final tag = Tag.lookupByCode(code, kLOIndex, token);
       return tag;
     }
@@ -227,8 +227,8 @@ abstract class PN extends Utf8 {
   @override
   int get maxLength => kMaxLength;
 
-  Iterable<PersonName> get names => _names ??= values.map(PersonName.parse);
-  Iterable<PersonName> _names;
+  List<PersonName> get names => _names ??= values.map(PersonName.parse);
+  List<PersonName> _names;
 
   @override
   PN get hash => throw new UnimplementedError();
@@ -236,7 +236,7 @@ abstract class PN extends Utf8 {
   String get initials {
     if (values.isNotEmpty)
       throw new UnimplementedError('Unimplemented for multiple PersonNames');
-    return _names.elementAt(0).initials;
+    return _names[0].initials;
   }
 
   @override

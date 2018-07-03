@@ -259,16 +259,16 @@ void main() {
         final t0 = TimeZone.parse(s);
         final t1 = TimeZone.parse(s);
         log
-          ..debug('t0.value:${t0.toString()}')
-          ..debug('t1.value:${t1.toString()}');
+          ..debug('t0.values:${t0.toString()}')
+          ..debug('t1.values:${t1.toString()}');
         expect(t0 == t1, true);
       }
 
       final t2 = TimeZone.parse(kValidDcmTZStrings[0]);
       final t3 = TimeZone.parse(kValidDcmTZStrings[1]);
       log
-        ..debug('t2.value:${t2.toString()}')
-        ..debug('t3.value:${t3.toString()}');
+        ..debug('t2.values:${t2.toString()}')
+        ..debug('t3.values:${t3.toString()}');
       expect(t2 == t3, false);
     });
 
@@ -278,15 +278,15 @@ void main() {
         final t0 = TimeZone.parse(s);
         final t1 = TimeZone.parse(s);
         log
-          ..debug('t0.value:${t0.toString()}, t0.hash:${t0.hash}')
-          ..debug('t1.value:${t1.toString()}, t1.hash:${t1.hash}');
+          ..debug('t0.values:${t0.toString()}, t0.hash:${t0.hash}')
+          ..debug('t1.values:${t1.toString()}, t1.hash:${t1.hash}');
         expect(t0.hash, equals(t1.hash));
       }
       final t2 = TimeZone.parse(kValidDcmTZStrings[0]);
       final t3 = TimeZone.parse(kValidDcmTZStrings[1]);
       log
-        ..debug('t2.value:${t2.toString()}, t2.hash:${t2.hash}')
-        ..debug('t3.value:${t3.toString()}, t3.hash:${t3.hash}');
+        ..debug('t2.values:${t2.toString()}, t2.hash:${t2.hash}')
+        ..debug('t3.values:${t3.toString()}, t3.hash:${t3.hash}');
 
       expect(t2.hash, isNot(t3.hash));
     }); //, skip:'InvalidTimeZoneStringError');
@@ -296,8 +296,8 @@ void main() {
         final t0 = TimeZone.parse(s);
         final t1 = TimeZone.parse(s);
         log
-          ..debug('t0.value:${t0.toString()}, t0.hash:${t0.hashCode}')
-          ..debug('t1.value:${t1.toString()}, t1.hash:${t1.hashCode}');
+          ..debug('t0.values:${t0.toString()}, t0.hash:${t0.hashCode}')
+          ..debug('t1.values:${t1.toString()}, t1.hash:${t1.hashCode}');
 
         expect(t0.hashCode, equals(t1.hashCode));
       }
@@ -305,8 +305,8 @@ void main() {
       final t2 = TimeZone.parse(kValidDcmTZStrings[0]);
       final t3 = TimeZone.parse(kValidDcmTZStrings[1]);
       log
-        ..debug('t2.value:${t2.toString()}, t2.hash:${t2.hashCode}')
-        ..debug('t3.value:${t3.toString()}, t3.hash:${t3.hashCode}');
+        ..debug('t2.values:${t2.toString()}, t2.hash:${t2.hashCode}')
+        ..debug('t3.values:${t3.toString()}, t3.hash:${t3.hashCode}');
       expect(t2.hashCode, isNot(t3.hashCode));
     });
 

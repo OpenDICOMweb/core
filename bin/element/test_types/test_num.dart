@@ -20,7 +20,7 @@ void main() {
   final x = numToString(n);
   print('x: $x');
   final y = numToString(m);
-  print('y: $x');
+  print('y: $y');
 
   test(1000, 500000);
 }

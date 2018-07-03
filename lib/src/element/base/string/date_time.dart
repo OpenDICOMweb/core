@@ -55,7 +55,7 @@ abstract class AS extends StringAscii {
   @override
   int get hashCode {
     if (values.isEmpty) return 0;
-    return (values.length == 1 && Age.isValidString(values.elementAt(0)))
+    return (values.length == 1 && Age.isValidString(values[0]))
         ? global.hash(age.nDays)
         : badValues(values);
   }

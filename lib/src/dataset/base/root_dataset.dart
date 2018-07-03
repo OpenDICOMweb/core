@@ -18,7 +18,7 @@ import 'package:core/src/entity.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
-import 'package:core/src/value.dart';
+import 'package:core/src/values.dart';
 
 /// The Root [Dataset] for a DICOM Entity.
 abstract class RootDataset extends Dataset {
@@ -95,7 +95,7 @@ abstract class RootDataset extends Dataset {
   // TODO: tighten the bounds
   bool get hasCmdElements => hasElementsInRange(0x00000000, 0x0000FFFF);
 
-  /// If this value is _true_ after decoding  a [Dataset], then the
+  /// If this values is _true_ after decoding  a [Dataset], then the
   /// [Dataset] contains invalid elements and should not be used further
   /// until they are corrected.
   bool get shouldAbort => _mustAbort;
@@ -130,9 +130,9 @@ abstract class RootDataset extends Dataset {
   List<int> get notPresent => history.requiredNotPresent;
 
   int get nSequences => counter((e) => (e is SQ));
-  int get nPrivate => counter((e) => Tag.isPrivateCode(e.code));
+  int get nPrivate => counter((e) => isPrivateCode(e.code));
   int get nPrivateSequences =>
-      counter((e) => Tag.isPrivateCode(e.code) && e is SQ);
+      counter((e) => isPrivateCode(e.code) && e is SQ);
 
   /// Returns a formatted summary of _this_.
   String get summary {
@@ -228,7 +228,7 @@ abstract class RootDataset extends Dataset {
       return false;
     } else {
       report ??= new StatusReport('PatientIdentityRemoved')
-        ..error(e, 'Invalid value in PatientIdentityRemoved Element: $v');
+        ..error(e, 'Invalid values in PatientIdentityRemoved Element: $v');
       return false;
     }
   }

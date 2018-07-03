@@ -28,7 +28,7 @@ bool _isDcrChar(int c) => ((c >= kSpace) && (c < kDelete));
 ///
 /// Returns _true_ if [c] is in DICOM's Default Character Repertoire (DCR)
 /// without backspace (/);  otherwise _false_. Used for VRs of LO, PN, SH,
-/// and UC. Backslash(\) not allowed, as it is used as a value separator for
+/// and UC. Backslash(\) not allowed, as it is used as a values separator for
 /// these [String] types.
 bool isDcmStringChar(int c) =>
     (c >= kSpace && c < kBackslash) || (c > kBackslash && c < kDelete);

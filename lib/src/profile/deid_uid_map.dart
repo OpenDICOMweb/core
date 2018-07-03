@@ -8,7 +8,7 @@
 //
 
 
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 /*
 class StudyUids {

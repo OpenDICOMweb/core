@@ -7,9 +7,11 @@
 //  See the AUTHORS file for other contributors.
 //
 
+import 'package:core/src/error/tag_errors.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/private/pc_tag.dart';
 import 'package:core/src/tag/private/pd_tag.dart';
+import 'package:core/src/tag/code.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils/string.dart';
@@ -56,15 +58,16 @@ abstract class PrivateTag extends Tag {
   /// Returns a new [PrivateTag] based on [code] and [vrIndex].
   /// [obj] can be either a [String] or [PCTag].
   static PrivateTag make(int code, int vrIndex, [Object obj]) {
-    if (Tag.isPDCode(code)) {
+    if (isPublicCode(code)) return null;
+    if (isPDCode(code)) {
       final PCTag creator = obj;
       return PDTag.make(code, vrIndex, creator);
     } else
-    if (Tag.isPCCode(code)) {
+    if (isPCCode(code)) {
       final String creator = obj;
       return PCTag.make(code, vrIndex, creator);
     } else
-    if (Tag.isGroupLengthCode(code)) {
+    if (isPrivateGroupLengthCode(code)) {
       return new PrivateGroupLengthTag(code, vrIndex);
     } else {
       return new IllegalPrivateTag(code, vrIndex);
@@ -82,6 +85,7 @@ class PrivateGroupLengthTag extends PrivateTag {
 
   @override
   PrivateGroupLengthTag(this.code, this.actualVRIndex) {
+    if (!isPrivateGroupLengthCode(code)) badTagCode(code);
     if (vrIndex != kULIndex && vrIndex != kUNIndex) VR.badIndex(
         vrIndex, null, correctVRIndex);
   }

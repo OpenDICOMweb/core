@@ -55,7 +55,7 @@ abstract class ElementFormatter {
   /// Returns [values] in [List] format.
   String _valuesList(Iterable values) => '[${values.join(', ')}]';
 
-  /// Returns a truncated value list
+  /// Returns a truncated values list
   String _truncatedList(Iterable values, int max) {
     assert(values.length > max);
     final vList = values.take(max);

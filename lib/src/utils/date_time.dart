@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/value/integer.dart';
+import 'package:core/src/values/integer.dart';
 
 /// The naming convention is that the plural form is a total, and the singular
 /// form is a component. For example the minimum microsecond corresponds to
@@ -23,7 +23,7 @@ const int kDefaultMaxYear = 2050;
 const int kInvalidEpochMicroseconds = kDartMinSMInt;
 
 // These are the upper and lower bounds for Epoch microseconds for the system.
-// kDartMinSMInt is the error value for Dates and Times.
+// kDartMinSMInt is the error values for Dates and Times.
 const int kEpochMicrosecondsErrorValue = kDartMinSMInt;
 const int kAbsoluteMinEpochMicroseconds = kDartMinSMInt + 1;
 const int kAbsoluteMaxEpochMicroseconds = kDartMaxSMInt;
@@ -104,23 +104,23 @@ const int kMinutesPerDay = kHoursPerDay * kMinutesPerHour;
 
 // **** Time Zone Constants
 
-/// The minimum time zone hour value.
+/// The minimum time zone hour values.
 const int kMinTimeZoneHour = -12;
 
-/// The maximum time zone hour value.
+/// The maximum time zone hour values.
 const int kMaxTimeZoneHour = 14;
 
-/// The minimum value for a time zone in minutes.
+/// The minimum values for a time zone in minutes.
 const int kMinTimeZoneMinutes = kMinTimeZoneHour * 60;
 
-/// The maximum value for a time zone in microseconds.
+/// The maximum values for a time zone in microseconds.
 const int kMaxTimeZoneMinutes = kMaxTimeZoneHour * 60;
 
-/// The minimum value for a time zone in microseconds.
+/// The minimum values for a time zone in microseconds.
 const int kMinTimeZoneMicroseconds =
     kMinTimeZoneMinutes * kMicrosecondsPerMinute;
 
-/// The maximum value for a time zone in microseconds.
+/// The maximum values for a time zone in microseconds.
 const int kMaxTimeZoneMicroseconds =
     kMaxTimeZoneMinutes * kMicrosecondsPerMinute;
 

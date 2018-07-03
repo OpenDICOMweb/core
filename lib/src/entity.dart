@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 export 'package:core/src/entity/active_studies.dart';
 export 'package:core/src/entity/entity.dart';
 export 'package:core/src/entity/ie_level.dart';
@@ -15,4 +14,4 @@ export 'package:core/src/entity/patient/patient.dart';
 export 'package:core/src/entity/patient/patient_tags.dart';
 export 'package:core/src/entity/series.dart';
 export 'package:core/src/entity/study.dart';
-export 'package:core/src/value/person.dart';
+export 'package:core/src/values/person.dart';

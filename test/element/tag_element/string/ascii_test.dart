@@ -25,7 +25,7 @@ void main() {
       expect(s0 == s1, true);
     });
 
-    test('Ascii Single String(Text) value field Test', () {
+    test('Ascii Single String(Text) values field Test', () {
       final rsg = new RSG(seed: 1);
 
       for (var i = 0; i < 10; i++) {
@@ -50,7 +50,7 @@ void main() {
       }
     });
 
-    test('Ascii Multi-String(LO, SH, UC) - value field Test', () {
+    test('Ascii Multi-String(LO, SH, UC) - values field Test', () {
       final rsg = new RSG(seed: 1);
 
       for (var i = 0; i < 10; i++) {
@@ -77,7 +77,7 @@ void main() {
       }
     });
 
-    test('Ascii Multi-String value field Test', () {
+    test('Ascii Multi-String values field Test', () {
       final rsg = new RSG();
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 10);

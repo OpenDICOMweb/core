@@ -38591,7 +38591,7 @@ class PDTagDefinition {
       0x004300a6,
       kDSIndex,
       VM.k1,
-      'Offset frequency value for FastB1map');
+      'Offset frequency values for FastB1map');
   static const PDTagDefinition k10622 = const PDTagDefinition._(10622,
       'GEMS_PARM_01', 0x004300a7, kDSIndex, VM.k1, 'Motion Encoding Factor');
   static const PDTagDefinition k10623 = const PDTagDefinition._(
@@ -38697,7 +38697,7 @@ class PDTagDefinition {
       VM.k1_n,
       'View Dependent Y Shift MHR For Detector 1');
   static const PDTagDefinition k10649 = const PDTagDefinition._(10649,
-      'GEMS_HELIOS_01', 0x0045000a, kFLIndex, VM.k1, 'Minimum DAS value');
+      'GEMS_HELIOS_01', 0x0045000a, kFLIndex, VM.k1, 'Minimum DAS values');
   static const PDTagDefinition k10650 = const PDTagDefinition._(10650,
       'GEMS_HELIOS_01', 0x00450018, kSSIndex, VM.k1, 'Number of Views 1B');
   static const PDTagDefinition k10651 = const PDTagDefinition._(10651,
@@ -40315,7 +40315,7 @@ class PDTagDefinition {
       0x700d0082,
       kSQIndex,
       VM.k1_n,
-      'Gain value group for MRS');
+      'Gain values group for MRS');
   static const PDTagDefinition k11144 = const PDTagDefinition._(
       11144,
       'TOSHIBA_MEC_MR3',

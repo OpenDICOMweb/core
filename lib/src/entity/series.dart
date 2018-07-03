@@ -15,7 +15,7 @@ import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/study.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 /// A DICOM [Series] Instance in SOP Instance format.
 class Series extends Entity {

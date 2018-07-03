@@ -33,9 +33,9 @@ Null parseError(String msg, [Issues issues]) {
   throw new FormatException(msg);
 }
 
-/// A _null_ value was passed to a parser.
+/// A _null_ values was passed to a parser.
 Null parseNullError([Issues issues]) =>
-    parseError('Invalid attempt to parse a null value', issues);
+    parseError('Invalid attempt to parse a null values', issues);
 
 
 

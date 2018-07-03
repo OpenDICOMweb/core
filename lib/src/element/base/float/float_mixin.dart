@@ -87,7 +87,7 @@ abstract class Float32 {
 
   /// Returns a [Float32List] with the same length as [vList]. If
   /// [vList] is a [Float32List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   static Float32List fromList(Iterable<double> vList, {bool asView = true}) {
     assert(vList != null);
@@ -100,26 +100,26 @@ abstract class Float32 {
   /// Returns a [Float32List] created from [bytes]. If [asView] is
   /// _true_, then a view of the [bytes] is returned; otherwise,
   /// a [Float32List] copy of [bytes] is returned.
-  /// No value checking is done.
+  /// No values checking is done.
   static Float32List fromBytes(Bytes bytes, {bool asView = true}) =>
       bytes.asFloat32List();
 
   /// Returns a [Float32List] from a [base64] [String].
-  /// No value checking is done.
+  /// No values checking is done.
   static Float32List fromBase64(String s) =>
       (s.isEmpty) ? kEmptyFloat32List : fromUint8List(base64.decode(s));
 
   /// Returns a [Float32List] from a [Uint8List]. If [asView]
   /// is _true_, then  a [Float32List] view of [list] is returned;
   /// otherwise, a copy of [list] is returned.
-  /// No value checking is done.
+  /// No values checking is done.
   static Float32List fromUint8List(Uint8List list, {bool asView = true}) =>
       _fromByteData(_asByteData(list), asView: asView);
 
   /// Returns a [Float32List] created from a [ByteData]. If
   /// [asView] is _true_, then  a [Float64List] view of [bd] is returned;
   /// otherwise, a [Float32List] copy of [bd] is returned.
-  /// No value checking is done.
+  /// No values checking is done.
   static Float32List fromByteData(ByteData bd, {bool asView = true}) =>
       _fromByteData(bd, asView: asView);
 
@@ -219,7 +219,7 @@ abstract class Float64 {
 
   /// Returns a [Float64List] with the same length as [vList]. If
   /// [vList] is a [Float64List] and [asView] is _true_, then [vList] is
-  /// returned; otherwise, a copy of vList is returned. No value checking
+  /// returned; otherwise, a copy of vList is returned. No values checking
   /// is done.
   static Float64List fromList(Iterable<double> vList, {bool asView = true}) {
     assert(vList != null);
@@ -232,26 +232,26 @@ abstract class Float64 {
   /// Returns a [Float64List] created from [bytes]. If [asView] is
   /// _true_, then a view of the [bytes] is returned; otherwise,
   /// a [Float64List] copy of [bytes] is returned.
-  /// No value checking is done.
+  /// No values checking is done.
   static Float64List fromBytes(Bytes bytes, {bool asView = true}) =>
       bytes.asFloat64List();
 
   /// Returns a [Float64List] created from a [base64] [String].
-  /// No value checking is done.
+  /// No values checking is done.
   static Float64List fromBase64(String s) =>
       (s.isEmpty) ? kEmptyFloat64List : fromUint8List(base64.decode(s));
 
   /// Returns a [Float64List] from a [Uint8List]. If [asView]
   /// is _true_, then  a [Float64List] view of [list] is returned;
   /// otherwise, a copy of [list] is returned.
-  /// No value checking is done.
+  /// No values checking is done.
   static Float64List fromUint8List(Uint8List list, {bool asView = true}) =>
       _fromByteData(_asByteData(list), asView: asView);
 
   /// Returns a [Float64List] created from a [ByteData]. If
   /// [asView] is _true_, then  a [Float64List] view of [bd] is returned;
   /// otherwise, a [Float64List] copy of [bd] is returned.
-  /// No value checking is done.
+  /// No values checking is done.
   static Float64List fromByteData(ByteData bd, {bool asView = true}) =>
       _fromByteData(bd, asView: asView);
 

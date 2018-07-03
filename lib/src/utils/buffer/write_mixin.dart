@@ -71,7 +71,7 @@ abstract class WriteBufferMixin {
 
   void setInt16(int n) => _buf.setInt16(_wIndex, n);
 
-  /// Writes a 16-bit unsigned integer (Uint16) value to _this_.
+  /// Writes a 16-bit unsigned integer (Uint16) values to _this_.
   void writeInt16(int value) {
     assert(
         value >= -0x7FFF && value <= 0x7FFF - 1, 'Value out of range: $value');
@@ -82,7 +82,7 @@ abstract class WriteBufferMixin {
 
   void setInt32(int n) => _buf.setInt32(_wIndex, n);
 
-  /// Writes a 32-bit unsigned integer (Uint32) value to _this_.
+  /// Writes a 32-bit unsigned integer (Uint32) values to _this_.
   void writeInt32(int value) {
     assert(value >= -0x7FFFFFFF && value <= 0x7FFFFFFF - 1,
         'Value out if range: $value');
@@ -93,7 +93,7 @@ abstract class WriteBufferMixin {
 
   void setInt64(int n) => _buf.setInt64(_wIndex, n);
 
-  /// Writes a 64-bit unsigned integer (Uint32) value to _this_.
+  /// Writes a 64-bit unsigned integer (Uint32) values to _this_.
   void writeInt64(int value) {
     assert(value >= -0x7FFFFFFFFFFFFFFF && value <= 0x7FFFFFFFFFFFFFFF - 1,
         'Value out of range: $value');
@@ -104,7 +104,7 @@ abstract class WriteBufferMixin {
 
   void setUint8(int n) => _buf.setUint8(_wIndex, n);
 
-  /// Writes a byte (Uint8) value to _this_.
+  /// Writes a byte (Uint8) values to _this_.
   void writeUint8(int value) {
     assert(value >= 0 && value <= 255, 'Value out of range: $value');
     _maybeGrow(1);
@@ -114,7 +114,7 @@ abstract class WriteBufferMixin {
 
   void setUint16(int n) => _buf.setUint16(_wIndex, n);
 
-  /// Writes a 16-bit unsigned integer (Uint16) value to _this_.
+  /// Writes a 16-bit unsigned integer (Uint16) values to _this_.
   void writeUint16(int value) {
     assert(value >= 0 && value <= 0xFFFF, 'Value out of range: $value');
     _maybeGrow(2);
@@ -124,7 +124,7 @@ abstract class WriteBufferMixin {
 
   void setUint32(int n) => _buf.setUint32(_wIndex, n);
 
-  /// Writes a 32-bit unsigned integer (Uint32) value to _this_.
+  /// Writes a 32-bit unsigned integer (Uint32) values to _this_.
   void writeUint32(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFF, 'Value out if range: $value');
     _maybeGrow(4);
@@ -134,7 +134,7 @@ abstract class WriteBufferMixin {
 
   void setUint64(int n) => _buf.setUint64(_wIndex, n);
 
-  /// Writes a 64-bit unsigned integer (Uint32) value to _this_.
+  /// Writes a 64-bit unsigned integer (Uint32) values to _this_.
   void writeUint64(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFFFFFFFFFF,
         'Value out of range: $value');

@@ -6,11 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/element.dart';
 import 'package:core/src/error/dataset_errors.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 abstract class UpdateMixin {
   /// An [Iterable<Element>] of the [Element]s contained in _this_.
@@ -37,7 +36,7 @@ abstract class UpdateMixin {
 
   /// Replaces the element with [index] with a new element with the same Tag,
   /// but with [vList] as its _values_. Returns the original element.
-  Element update(int index, Iterable vList, {bool required = false}) {
+  Element<V> update<V>(int index, Iterable<V> vList, {bool required = false}) {
     final old = lookup(index, required: required);
     if (old != null) store(index, old.update(vList));
     return old;
@@ -48,7 +47,7 @@ abstract class UpdateMixin {
   ///
   /// If updating the [Element] fails, the current element is left in
   /// place and _null_ is returned.
-  Element updateF<V>(int index, Iterable f(Iterable<V> vList),
+  Element<V> updateF<V>(int index, List<V> f(List vList),
                      {bool required = false}) {
     final old = lookup(index, required: required);
     if (old == null) return (required) ? elementNotPresentError(index) : null;
@@ -78,7 +77,7 @@ abstract class UpdateMixin {
   /// Items contained in it, with a new element whose values are
   /// [f(this.values)]. Returns a list containing all [Element]s that were
   /// replaced.
-  List<Element> updateAllF<V>(int index, Iterable<V> f(Iterable<V> vList),
+  List<Element> updateAllF<V>(int index, List<V> f(List vList),
                               {bool required = false}) {
     final v = updateF(index, f, required: required);
     final result = <Element>[]..add(v);

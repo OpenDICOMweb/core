@@ -17,7 +17,7 @@ abstract class Float32Mixin {
 
   int get length => Float32.getLength(vfLength);
 
-  Iterable<double> get values => vfBytes.asFloat32List();
+  List<double> get values => vfBytes.asFloat32List();
 }
 
 
@@ -63,7 +63,7 @@ abstract class Float64Mixin {
 
   int get length => Float64.getLength(vfLength);
 
-  Iterable<double> get values => vfBytes.asFloat64List();
+  List<double> get values => vfBytes.asFloat64List();
 }
 
 class FDbytes extends FD with ByteElement<double>, Float64Mixin {

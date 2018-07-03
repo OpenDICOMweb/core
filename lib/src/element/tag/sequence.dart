@@ -46,7 +46,7 @@ class SQtag extends SQ with TagElement<Item> {
 
   /// The [Iterable<ItemTag>] that are the [values] of _this_.
   @override
-  Iterable<Item> get values => _values;
+  List<Item> get values => _values;
   @override
   set values(Iterable<Item> vList) =>
       _values = (vList is List) ? vList : vList.toList(growable: false);
@@ -80,47 +80,7 @@ class SQtag extends SQ with TagElement<Item> {
     throw new UnimplementedError('toDcm');
   }
 
-/* Flush at V0.9.0
-  /// Returns the [Element] with [key] in the [index]th Item.
-  Element getElement(int key, [int index = 0]) {
-    if (index < 0 || index >= items.length) return null;
-    ItemTag item = items[index];
-    return item[key];
-  }
-
-  /// Returns a [Iterable<Element>] containing the [Element] corresponding
-  /// to the [key] in each [ItemTag] of [items].  If the [ItemTag] does not
-  /// contain the [key], _null_ is inserted in the returned [Iterable<Element].
-  Iterable<Element> getAllElements(int key) {
-    Iterable<Element> eList = <Element>[];
-    for (ItemTag item in items) eList.add(item[key]);
-    return eList;
-  }
-
-  /// Returns a [Iterable<Element] containing a matching [Element] or _null_ from
-  /// each [ItemTag] in order.  If an [Element] with [key] is not contained in a
-  /// [ItemTag] its value is _null_ in the returned [List].
-  Iterable<Element> getAllItemElements(int key) {
-    Iterable<Element> list = new Iterable<Element>(items.length);
-    for (int i = 0; i < items.length; i++) {
-      ItemTag item = items[i];
-      list[i] = item[key];
-    }
-    return list;
-  }
-*/
-
-//  @override
-  SQtag copySQ([Dataset parent]) {
-    parent ??= this.parent;
-    return convert(parent, this);
-
-/*    final nItems = new List<TagItem>(length);
-    for (var i = 0; i < items.length; i++)
-      nItems[i] = new TagItem.from(parent, items.elementAt(i), this);
-    return update(nItems);
-    */
-  }
+  SQtag copySQ([Dataset parent]) => convert(parent ?? this.parent, this);
 
   @override
   String format(Formatter z) => z.fmt(this, items);
@@ -137,7 +97,7 @@ class SQtag extends SQ with TagElement<Item> {
   static SQtag from(Dataset parent, SQ sq) {
     final nItems = new List<TagItem>(sq.values.length);
     for (var i = 0; i < sq.values.length; i++) {
-      final item = sq.values.elementAt(i);
+      final item = sq.values[i];
       nItems[i] = TagItem.convert(parent, item, sq);
     }
     return new SQtag(parent, sq.tag, nItems);

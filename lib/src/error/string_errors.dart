@@ -8,7 +8,7 @@
 //
 import 'package:core/src/error/issues.dart';
 import 'package:core/src/global.dart';
-import 'package:core/src/value.dart';
+import 'package:core/src/values.dart';
 
 // Functions starting with 'bad...' return null
 // Functions starting with 'invalid...' return false

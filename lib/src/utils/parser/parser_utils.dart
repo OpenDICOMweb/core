@@ -26,7 +26,7 @@ bool _parseSeparator(String s, int index, Issues issues, int separator) {
 int _checkRange(int value, int min, int max, [Issues issues]) {
   assert(value != null);
   if (value < min || value > max) {
-    final msg = 'Range Error: min($min) <= value($value) <= max($max)';
+    final msg = 'Range Error: min($min) <= values($value) <= max($max)';
     parseError(msg, issues);
   }
   return value;
@@ -36,7 +36,7 @@ int _checkRange(int value, int min, int max, [Issues issues]) {
 bool _inRange(int v, int min, int max, [Issues issues]) {
   if (v == null) return parseNullError();
   if (v < min || v > max) {
-	  final msg = 'Range Error: min($min) <= value($v) <= max($max)';
+	  final msg = 'Range Error: min($min) <= values($v) <= max($max)';
     parseError(msg, issues);
   }
   return true;
@@ -102,6 +102,6 @@ void _checkArgs(String s, int start, int end, int min, int max, String fName,
   }
 }
 
-/// Returns an invalid value [String].
+/// Returns an invalid values [String].
 String _badArg(String arg, String value, String msg, String fName) =>
     '$fName: Invalid argument($arg == $value) $msg';

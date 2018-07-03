@@ -11,7 +11,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/private_creator_test', level: Level.info);
+  Server.initialize(name: 'element/private_creator_test', level: Level.debug);
 
   group('Private Creator tests', () {
     test('Valid Unknown Private Creator ', () {
@@ -109,6 +109,7 @@ void main() {
       const value1 = 'Some Random Data String';
       final pdTag1 = PDTag.make(0x00091010, kLOIndex, pcTag0);
       log.debug('pdTag1.isValid: ${pdTag1.info}');
+      pdTag1.isValid;
       expect(pdTag1.isValid, true);
       log.debug('pdTag1: ${pdTag1.info}');
       final pd1 = new LOtag(pdTag1, [value1]);

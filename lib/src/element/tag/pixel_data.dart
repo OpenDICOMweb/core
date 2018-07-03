@@ -15,8 +15,8 @@ import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/image.dart';
-import 'package:core/src/value/uid/well_known/transfer_syntax.dart';
+import 'package:core/src/values/image.dart';
+import 'package:core/src/values/uid/well_known/transfer_syntax.dart';
 
 bool _isEmpty(Iterable<int> vList) => vList == null || vList.isEmpty;
 
@@ -86,7 +86,7 @@ class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
   OBtagPixelData.fromFrames(this._frames, [this.ts])
       : assert(_frames is FrameList8Bit);
 
-  factory OBtagPixelData.bulkdata(Uri url, [TransferSyntax ts]) =>
+  factory OBtagPixelData.fromBulkdata(Uri url, [TransferSyntax ts]) =>
       new OBtagPixelData._(new IntBulkdataRef(kPixelData, url), ts);
 
   factory OBtagPixelData._(Iterable<int> vList, [TransferSyntax ts]) {
@@ -163,7 +163,7 @@ class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
   UNtagPixelData.fromFrames(this._frames, [this.ts])
       : assert(_frames is FrameList8Bit);
 
-  factory UNtagPixelData.bulkdata(Uri url, [TransferSyntax ts]) =>
+  factory UNtagPixelData.fromBulkdata(Uri url, [TransferSyntax ts]) =>
       new UNtagPixelData._(new IntBulkdataRef(kPixelData, url), ts);
 
   factory UNtagPixelData._(Iterable<int> vList, [TransferSyntax ts]) {
@@ -240,7 +240,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int>, TagPixelData {
   OWtagPixelData.fromFrames(this._frames, [this.ts])
       : assert(_frames is FrameList16Bit);
 
-  factory OWtagPixelData._bulkdata(Uri url, [TransferSyntax ts]) =>
+  factory OWtagPixelData.fromBulkdata(Uri url, [TransferSyntax ts]) =>
       new OWtagPixelData._(new IntBulkdataRef(kPixelData, url), ts);
 
   factory OWtagPixelData._(Iterable<int> vList, TransferSyntax ts) {

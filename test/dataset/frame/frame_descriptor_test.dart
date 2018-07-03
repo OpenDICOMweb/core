@@ -112,7 +112,7 @@ void main() {
           equals(usPlanarConfiguration.value));
       expect(descFromDataSet0.pixelAspectRatio, equals(pixelAspectRatioValue));
       expect(descFromDataSet0.smallestImagePixelValue == 0, true);
-      //here us4.value is bitsStored which is 8
+      //here us4.values is bitsStored which is 8
       expect(descFromDataSet0.largestImagePixelValue <= 255, true);
       expect(
           (descFromDataSet0.largestImagePixelValue >> usBitsStored.value) == 0,

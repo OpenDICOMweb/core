@@ -70,13 +70,13 @@ abstract class DSBytes {
 
   // **** Internal Stuff ****
 
-  /// Return a Uint16 value at [offset].
+  /// Return a Uint16 values at [offset].
   int getUint8(int offset) => bytes.getUint8(offset);
 
-  /// Return a Uint16 value at [offset].
+  /// Return a Uint16 values at [offset].
   int getUint16(int offset) => bytes.getUint16(offset);
 
-  /// Return a Uint32 value at [offset].
+  /// Return a Uint32 values at [offset].
   int getUint32(int offset) => bytes.getUint32(offset);
 
   int getToken() {
@@ -184,7 +184,7 @@ class IDSBytes extends DSBytes {
   @override
   int get vfLength => dsLength - 8;
 
-  /// Returns the value in the Value Field Length field.
+  /// Returns the values in the Value Field Length field.
   @override
   int get vfLengthField => bytes.getUint32(kVFLengthFieldOffset);
 

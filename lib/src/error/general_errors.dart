@@ -15,9 +15,15 @@ import 'package:core/src/utils.dart';
 
 /// General Errors
 
-Null unsupportedError([String msg = '']) => throw new UnsupportedError(msg);
+Null unsupportedError([String msg = '']) {
+  if (throwOnError) throw new UnsupportedError(msg);
+  return null;
+}
 
-Null unimplementedError([String msg = '']) => throw new UnsupportedError(msg);
+Null unimplementedError([String msg = '']) {
+  if (throwOnError) throw new UnsupportedError(msg);
+  return null;
+}
 
 /// An Internal system error.
 class InternalError extends Error {
@@ -44,7 +50,7 @@ void internalError(String msg, [Object o, int errorCode = -1]) {
   throw new InternalError(msg, o, errorCode);
 }
 
-/// A [GeneralError] is thrown when a value should not be _null_.
+/// A [GeneralError] is thrown when a values should not be _null_.
 class GeneralError extends Error {
   String msg;
 

@@ -9,8 +9,8 @@
 import 'package:core/src/element.dart';
 import 'package:core/src/error/dataset_errors.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/date_time.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/date_time.dart';
+import 'package:core/src/values/uid.dart';
 
 abstract class ReplaceMixin<V> {
   /// An [Iterable<Element>] of the [Element]s contained in _this_.
@@ -55,7 +55,7 @@ abstract class ReplaceMixin<V> {
   /// Replaces the [Element.values] at [index] with [vList].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  Iterable<V> replace(int index, Iterable<V> vList, {bool required = false}) {
+  List<V> replace(int index, Iterable<V> vList, {bool required = false}) {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
     if (e == null) return (required) ? elementNotPresentError(index) : null;
@@ -67,7 +67,7 @@ abstract class ReplaceMixin<V> {
   /// Replaces the [Element.values] at [index] with [f(vList)].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  Iterable<V> replaceF(int index, Iterable<V> f(Iterable<V> vList),
+  List<V> replaceF(int index, Iterable<V> f(List<V> vList),
       {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
@@ -93,7 +93,7 @@ abstract class ReplaceMixin<V> {
   }
 
   Iterable<Iterable<V>> replaceAllF(
-      int index, Iterable<V> f(Iterable<V> vList)) {
+      int index, Iterable<V> f(List<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
     for (var e in elements)

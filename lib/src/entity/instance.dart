@@ -17,7 +17,7 @@ import 'package:core/src/entity/series.dart';
 import 'package:core/src/entity/study.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/value/uid.dart';
+import 'package:core/src/values/uid.dart';
 
 class Instance extends Entity {
   /// Pixel Data

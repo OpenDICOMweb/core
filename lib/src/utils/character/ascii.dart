@@ -450,5 +450,5 @@ int toUppercaseChar(int c) => (isLowercaseChar(c)) ? c - 32 : c;
 /// Lowercase character; otherwise, returns [c] unmodified.
 int toLowercaseChar(int c) => (isUppercaseChar(c)) ? c + 32 : c;
 
-/// Returns the integer value of a DIGIT or _null_.
+/// Returns the integer values of a DIGIT or _null_.
 int digitToInt(int c) => (isDigitChar(c)) ? c - k0 : null;

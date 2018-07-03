@@ -12,5 +12,5 @@ export 'package:core/src/utils/string/decimal.dart';
 export 'package:core/src/error/string_errors.dart';
 export 'package:core/src/utils/string/hexadecimal.dart';
 export 'package:core/src/utils/string/string.dart';
-export 'package:core/src/utils/string/string_list.dart';
+export 'package:core/src/utils/string/string_lists.dart';
 export 'package:core/src/utils/string/uuid_string.dart';

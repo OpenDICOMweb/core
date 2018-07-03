@@ -80,8 +80,8 @@ void main() {
         final a0 = Age.tryParse(s);
         final a1 = Age.tryParse(s);
         log
-          ..debug('a0.value:$a0, a0.hash:${a0.hash}')
-          ..debug('a1.value:$a1, a1.hash:${a1.hash}');
+          ..debug('a0.values:$a0, a0.hash:${a0.hash}')
+          ..debug('a1.values:$a1, a1.hash:${a1.hash}');
         expect(a0 == a1, true);
         // Hash is now random
         // expect(a0.hash == a1.hash, true);
@@ -332,9 +332,9 @@ void main() {
         final age0 = Age.tryParse(s);
         final age1 = Age.tryParse(s);
         log
-          ..debug('age0.value: $age0, age0.hash:${age0.hash}, '
+          ..debug('age0.values: $age0, age0.hash:${age0.hash}, '
               'age0.hashCode:${age0.hashCode}')
-          ..debug('age1.value: $age1, age1.hash:${age1.hash}, '
+          ..debug('age1.values: $age1, age1.hash:${age1.hash}, '
               'age1.hashCode:${age1.hashCode}');
         expect(age0 == age1, true);
         //  currently
@@ -345,9 +345,9 @@ void main() {
       final age2 = Age.tryParse(goodDcmAge[0]);
       final age3 = Age.tryParse(goodDcmAge[1]);
       log
-        ..debug('age2.value:${age2.toString()}, age2.hash:${age2.hash}, '
+        ..debug('age2.values:${age2.toString()}, age2.hash:${age2.hash}, '
             'age2.hashCode:${age2.hashCode}')
-        ..debug('age3.value:${age3.toString()}, age3.hash:${age3.hash}, '
+        ..debug('age3.values:${age3.toString()}, age3.hash:${age3.hash}, '
             'age3.hashCode:${age3
             .hashCode}');
       expect(age2.toString() == age3.toString(), false);

@@ -20,7 +20,7 @@ abstract class TagFloatMixin {
   List<double> get _values;
   set _values(List<double> v);
 
-  Iterable<double> get values => _values;
+  List<double> get values => _values;
 
   set values(Iterable<double> vList) => _values =
       (vList == null || vList.isEmpty) ? kEmptyStringList : vList.toList();

@@ -28,7 +28,7 @@ abstract class StringMixin {
   /// Returns the number of values in [vfBytes].
   int get length => _stringValuesLength(vfBytes);
 
-  Iterable<String> get values => vfString.split('\\');
+  List<String> get values => vfString.split('\\');
 
   List<String> get emptyList => kEmptyStringList;
 }
@@ -45,8 +45,6 @@ abstract class AsciiMixin {
     final length = (hasPadding) ? vfLength - 1 : vfLength;
     return vfBytes.getAscii(length: length, allowInvalid: allowInvalid);
   }
-
-  Iterable<String> get values => vfString.split('\\');
 }
 
 // **** Ascii Classes
@@ -334,7 +332,7 @@ class UCbytes extends UC with ByteElement<String>, StringMixin, Utf8Mixin {
 
 // **** Text Classes
 
-/// Text ([String]) [Element]s that may only have 1 UTF-8 value.
+/// Text ([String]) [Element]s that may only have 1 UTF-8 values.
 abstract class TextMixin {
   DicomBytes get vfBytes;
 
@@ -344,7 +342,7 @@ abstract class TextMixin {
 
   String get vfString => vfBytes.getUtf8(allowMalformed: allowMalformed);
   String get value => vfString;
-  Iterable<String> get values => [vfString];
+  List<String> get values => [vfString];
 }
 
 int _stringValuesLength(Bytes vfBytes) {
