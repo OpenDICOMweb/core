@@ -73,6 +73,12 @@ abstract class LO extends Utf8 {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
+  LO append(String s) => appendAux(s, kMaxValueLength);
+
+  LO prepend(String s) => prependAux(s, kMaxValueLength);
+
+  LO truncate(int length) => truncateAux(length, kMaxValueLength);
+
   // **** Generalized static methods
 
   /// Returns _true_ if both [tag] and [vList] are valid for [LO].
@@ -237,6 +243,12 @@ abstract class PN extends Utf8 {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
+  PN append(String s) => appendAux(s, kMaxValueLength);
+
+  PN prepend(String s) => prependAux(s, kMaxValueLength);
+
+  PN truncate(int length) => truncateAux(length, kMaxValueLength);
+
   // **** Generalized static methods
 
   /// Returns _true_ if both [tag] and [vList] are valid for [PN].
@@ -335,6 +347,12 @@ abstract class SH extends Utf8 {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  SH append(String s) => appendAux(s, kMaxValueLength);
+
+  SH prepend(String s) => prependAux(s, kMaxValueLength);
+
+  SH truncate(int length) => truncateAux(length, kMaxValueLength);
 
   // **** Generalized static methods
 
@@ -439,6 +457,12 @@ abstract class UC extends Utf8 {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  UC append(String s) => appendAux(s, kMaxValueLength);
+
+  UC prepend(String s) => prependAux(s, kMaxValueLength);
+
+  UC truncate(int length) => truncateAux(length, kMaxValueLength);
 
   // **** Generalized static methods
 

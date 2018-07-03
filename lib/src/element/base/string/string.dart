@@ -123,50 +123,45 @@ abstract class StringBase extends Element<String> {
   bool checkValues(Iterable<String> vList, [Issues issues]) =>
       super.checkValues(vList, issues);
 
-  // Urgent Sharath unit test
   /// Returns a new [Element] where its values are the result of appending
   /// each of the original values with [s]. If the resulting [String] has
   /// length greater than [maxLength] for the [Element], the resulting
   /// value is truncated to [maxLength].
-  Element append(String s) {
-    final result = new List<String>(s.length);
+  Element appendAux(String s, int maxLength) {
+    final result = new List<String>(values.length);
     for(var i = 0; i < values.length; i++) {
       final v = values[i];
       final s0 = v + s;
-      if (s0.length > maxLength) s0.substring(0, maxLength);
-      result[i] = s0;
+      result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
+      //print(result[i]);
     }
     return update(result);
   }
 
-  // Urgent Sharath unit test
   /// Returns a new [Element] where its values are the result of prepending
   /// each of the original values with [s]. If the resulting [String] has
   /// length greater than [maxLength] for the [Element], the resulting
   /// value is truncated to [maxLength].
-  Element prepend(String s) {
-    final result = new List<String>(s.length);
+  Element prependAux(String s, int maxLength) {
+    final result = new List<String>(values.length);
     for(var i = 0; i < values.length; i++) {
       final v = values[i];
       final s0 = s + v;
-      if (s0.length > maxLength) s0.substring(0, maxLength);
-      result[i] = s0;
+      result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
     }
     return update(result);
   }
 
-  // Urgent Sharath unit test
   /// Returns a new [Element] where its values are the result of truncating
   /// each of the original values with a length greater than [newLength] to
   /// [newLength]. If [newLength] is greater than [maxLength] _null_ is
   /// returned.
-  Element truncate(int newLength) {
+  Element truncateAux(int newLength, int maxLength) {
     if (newLength > maxLength) return null;
-    final result = new List<String>(newLength);
+    final result = new List<String>(values.length);
     for(var i = 0; i < values.length; i++) {
       final v = values[i];
-      if (v.length > newLength) v.substring(0, newLength);
-      result[i] = v;
+      result[i] = (v.length > maxLength) ? v.substring(0, maxLength) : v;
     }
     return update(result);
   }
@@ -183,6 +178,7 @@ abstract class StringBase extends Element<String> {
     return true;
   }
 
+  // Urgent Jim: Fix
   // Urgent Sharath unit test
   Element replaceString(String regexp, RegExp replace) {
     final regex = new RegExp(regexp);

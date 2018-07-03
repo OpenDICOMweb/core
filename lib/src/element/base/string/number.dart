@@ -48,7 +48,6 @@ abstract class DS extends StringAscii {
   List<num> get numbers => _numbers ??= tryParseList(values);
   List<num> _numbers;
 
-  // Urgent Sharath unit test
   /// Returns -1, 0, or 1 if [n] is less than, equal to, or greater than
   /// [value]. If [values].length is not equal to 1 returns _null_.
   int compare(num n) {
@@ -59,7 +58,6 @@ abstract class DS extends StringAscii {
     return (n < v) ? -1 : 1;
   }
 
-  // Urgent Sharath unit test
   /// Returns a [Element] that is created by adding n to each
   /// element of [numbers].
   Element increment([num n = 1.0]) {
@@ -68,7 +66,6 @@ abstract class DS extends StringAscii {
     return update(result.map((v) => '$v'));
   }
 
-  // Urgent Sharath unit test
   /// Returns a [Element] that is created by subtracting n from each
   /// element of [numbers].
   Element decrement([num n = 1.0]) {
@@ -76,6 +73,12 @@ abstract class DS extends StringAscii {
     for (var i = 0; i < numbers.length; i++) result[i] = numbers[i] - n;
     return update(result.map((v) => '$v'));
   }
+
+  DS append(String s) => appendAux(s, kMaxValueLength);
+
+  DS prepend(String s) => prependAux(s, kMaxValueLength);
+
+  DS truncate(int length) => truncateAux(length, kMaxValueLength);
 
   /// Returns a new [DS] [Element] with a random list of [values] with
   /// the same [length] as _this_.
@@ -247,7 +250,6 @@ abstract class IS extends StringAscii {
   List<int> get integers => _integers ??= tryParseList(values);
   List<int> _integers;
 
-  // Urgent Sharath unit test
   /// Returns -1, 0, or 1 if [n] is less than, equal to, or greater than
   /// [value]. If [values].length is not equal to 1 returns _null_.
   int compare(int n) {
@@ -258,7 +260,6 @@ abstract class IS extends StringAscii {
     return (n < v) ? -1 : 1;
   }
 
-  // Urgent Sharath unit test
   /// Returns a List<int> that is created by adding n to each element of
   /// [integers].
   Element increment([int n = 1]) {
@@ -267,7 +268,6 @@ abstract class IS extends StringAscii {
     return update(result.map((v) => '$v'));
   }
 
-  // Urgent Sharath unit test
   /// Returns a List<int> that is created by subtracting n from each element of
   /// [integers].
   Element decrement([int n = 1]) {
@@ -275,6 +275,12 @@ abstract class IS extends StringAscii {
     for (var i = 0; i < integers.length; i++) result[i] = integers[i] - n;
     return update(result.map((v) => '$v'));
   }
+
+  IS append(String s) => appendAux(s, kMaxValueLength);
+
+  IS prepend(String s) => prependAux(s, kMaxValueLength);
+
+  IS truncate(int length) => truncateAux(length, kMaxValueLength);
 
   @override
   IS get hash {
