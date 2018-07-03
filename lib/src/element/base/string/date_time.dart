@@ -79,6 +79,12 @@ abstract class AS extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
+  AS append(String s) => appendAux(s, kMaxValueLength);
+
+  AS prepend(String s) => prependAux(s, kMaxValueLength);
+
+  AS truncate(int length) => truncateAux(length, kMaxValueLength);
+
   // **** Generalized static methods
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AS].
@@ -234,6 +240,12 @@ abstract class DA extends StringBase {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
+  DA append(String s) => appendAux(s, kMaxValueLength);
+
+  DA prepend(String s) => prependAux(s, kMaxValueLength);
+
+  DA truncate(int length) => truncateAux(length, kMaxValueLength);
+
   void clearDates() => _dates = null;
 
   // **** Generalized static methods
@@ -355,6 +367,12 @@ abstract class DT extends StringBase {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  DT append(String s) => appendAux(s, kMaxValueLength);
+
+  DT prepend(String s) => prependAux(s, kMaxValueLength);
+
+  DT truncate(int length) => truncateAux(length, kMaxValueLength);
 
   void clearDcmDateTimes() => _dateTimes = null;
 
@@ -481,6 +499,12 @@ abstract class TM extends StringBase {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  TM append(String s) => appendAux(s, kMaxValueLength);
+
+  TM prepend(String s) => prependAux(s, kMaxValueLength);
+
+  TM truncate(int length) => truncateAux(length, kMaxValueLength);
 
   void clearTimes() => _times = null;
 

@@ -286,7 +286,7 @@ void main() {
         expect(e0.hasValidValues, true);
 
         final e1 =
-        CStag.fromValues(PTag.kGeometryOfKSpaceTraversal, <String>[]);
+            CStag.fromValues(PTag.kGeometryOfKSpaceTraversal, <String>[]);
         expect(e1.hasValidValues, true);
         expect(e1.values, equals(<String>[]));
       }
@@ -306,13 +306,13 @@ void main() {
 
       global.throwOnError = false;
       final e1 =
-      CStag.fromValues(PTag.kGeometryOfKSpaceTraversal, <String>[null]);
+          CStag.fromValues(PTag.kGeometryOfKSpaceTraversal, <String>[null]);
       log.debug('e1: $e1');
       expect(e1, isNull);
 
       global.throwOnError = true;
       expect(
-              () => CStag
+          () => CStag
               .fromValues(PTag.kScheduledStudyLocationAETitle, <String>[null]),
           throwsA(const TypeMatcher<InvalidTagError>()));
     });
@@ -356,6 +356,52 @@ void main() {
           expect(() => e0.checkValue(a),
               throwsA(const TypeMatcher<StringError>()));
         }
+      }
+    });
+
+    test('CS append', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getCSList(1, 4);
+        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        const vList1 = 'FOO';
+        final append0 = e0.append(vList1);
+        log.debug('append0: $append0');
+        expect(append0, isNotNull);
+      }
+    });
+
+    test('CS prepend', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getCSList(1, 4);
+        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        const vList1 = 'FOO';
+        final prepend0 = e0.prepend(vList1);
+        log.debug('prepend0: $prepend0');
+        expect(prepend0, isNotNull);
+      }
+    });
+
+    test('CS truncate', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getCSList(1, 4, 16);
+        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        final truncate0 = e0.truncate(10);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
+
+    test('CS valueFromBytes', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getCSList(1, i);
+        final bytes = Bytes.fromUtf8List(vList0);
+        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        final vfb0 = e0.valuesFromBytes(bytes);
+        expect(vfb0, equals(vList0));
       }
     });
   });

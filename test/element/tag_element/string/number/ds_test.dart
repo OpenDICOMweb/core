@@ -14,6 +14,7 @@ import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 RSG rsg = new RSG(seed: 1);
+RNG rng = new RNG(1);
 
 void main() {
   Server.initialize(name: 'string/ds_test', level: Level.info);
@@ -495,20 +496,28 @@ void main() {
     });
 
     test('DS append', () {
-      //final vList = rsg.getDSList(1, 1);
-      final vList = ["111.0"];
+      final vList = ['111.0'];
       final e0 = new DStag(PTag.kPatientSize, vList);
-      final append0 = e0.append(vList[0]); //urgent Jim
-      print(append0);
+      final append0 = e0.append('123');
+      expect(append0, isNotNull);
+    });
+
+    test('DS prepend', () {
+      final vList = ['111.0'];
+      final e0 = new DStag(PTag.kPatientSize, vList);
+      final prepend0 = e0.prepend('123');
+      expect(prepend0, isNotNull);
     });
 
     test('DS truncate', () {
-      final vList = rsg.getDSList(1, 1);
-      final e0 = new DStag(PTag.kPatientSize, vList);
-
-      //final vList1 = rsg.getDSList(1, 1);
-      final append0 = e0.truncate(vList.length); //urgent Jim
-      print(append0);
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getDSList(1, 4, 16);
+        final e0 = new DStag(PTag.kSelectorDSValue, vList0);
+        final truncate0 = e0.truncate(10);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
     });
   });
 

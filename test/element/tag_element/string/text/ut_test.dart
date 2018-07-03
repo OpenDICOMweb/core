@@ -376,6 +376,53 @@ void main() {
         expect(s2, equals(s1));
       }
     });
+
+    test('UT append', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUTList(1, 1);
+        print(vList0);
+        final e0 = new UTtag(PTag.kSelectorUTValue, vList0);
+        const vList1 = 'foo';
+        final append0 = e0.append(vList1);
+        log.debug('append0: $append0');
+        expect(append0, isNotNull);
+      }
+    });
+
+    test('UT prepend', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUTList(1, 1);
+        final e0 = new UTtag(PTag.kSelectorUTValue, vList0);
+        const vList1 = 'foo';
+        final prepend0 = e0.prepend(vList1);
+        log.debug('prepend0: $prepend0');
+        expect(prepend0, isNotNull);
+      }
+    });
+
+    test('UT truncate', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUTList(1, 1, 16);
+        final e0 = new UTtag(PTag.kSelectorUTValue, vList0);
+        final truncate0 = e0.truncate(10);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
+
+    test('UT valueFromBytes', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUTList(1, 1);
+        final bytes = Bytes.fromUtf8List(vList0);
+        final e0 = new UTtag(PTag.kSelectorUTValue, vList0);
+        final vfb0 = e0.valuesFromBytes(bytes);
+        expect(vfb0, equals(vList0));
+      }
+    });
   });
 
   group('UT', () {

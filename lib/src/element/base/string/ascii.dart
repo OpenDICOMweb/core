@@ -87,6 +87,12 @@ abstract class AE extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
+  AE append(String s) => appendAux(s, kMaxValueLength);
+
+  AE prepend(String s) => prependAux(s, kMaxValueLength);
+
+  AE truncate(int length) => truncateAux(length, kMaxValueLength);
+
   // **** Generalized static methods
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
@@ -185,6 +191,12 @@ abstract class CS extends StringAscii {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  CS append(String s) => appendAux(s, kMaxValueLength);
+
+  CS prepend(String s) => prependAux(s, kMaxValueLength);
+
+  CS truncate(int length) => truncateAux(length, kMaxValueLength);
 
   // TODO: Valid? Needed? What is the difference with empty versus blank.
   /// Returns a new [CS] [Element] containing only spaces.
@@ -309,6 +321,12 @@ abstract class UI extends StringAscii {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  UI append(String s) => appendAux(s, kMaxValueLength);
+
+  UI prepend(String s) => prependAux(s, kMaxValueLength);
+
+  UI truncate(int length) => truncateAux(length, kMaxValueLength);
 
   UI updateUid(Iterable<Uid> uidList) => update(toStringList(uidList));
 

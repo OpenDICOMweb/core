@@ -80,6 +80,12 @@ abstract class LT extends Text {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
+  LT append(String s) => appendAux(s, kMaxValueLength);
+
+  LT prepend(String s) => prependAux(s, kMaxValueLength);
+
+  LT truncate(int length) => truncateAux(length, kMaxValueLength);
+
   // **** Generalized static methods
 
   /// Returns _true_ if both [tag] and [vList] are valid for [LT].
@@ -178,6 +184,12 @@ abstract class ST extends Text {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  ST append(String s) => appendAux(s, kMaxValueLength);
+
+  ST prepend(String s) => prependAux(s, kMaxValueLength);
+
+  ST truncate(int length) => truncateAux(length, kMaxValueLength);
 
   // **** Generalized static methods
 
@@ -288,6 +300,12 @@ abstract class UR extends Text {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  UR append(String s) => appendAux(s, kMaxValueLength);
+
+  UR prepend(String s) => prependAux(s, kMaxValueLength);
+
+  UR truncate(int length) => truncateAux(length, kMaxValueLength);
 
   // **** Generalized static methods
 
@@ -408,6 +426,12 @@ abstract class UT extends Text {
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+
+  UT append(String s) => appendAux(s, kMaxValueLength);
+
+  UT prepend(String s) => prependAux(s, kMaxValueLength);
+
+  UT truncate(int length) => truncateAux(length, kMaxValueLength);
 
   // **** Generalized static methods
 

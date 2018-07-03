@@ -484,6 +484,36 @@ void main() {
         expect(decrement0.hasValidValues, true);
       }
     });
+
+    test('IS append', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getISList(1, 4);
+        final e0 = new IStag(PTag.kSelectorISValue, vList0);
+        const vList1 = '100';
+        final append0 = e0.append(vList1);
+        log.debug('append0: $append0');
+        expect(append0, isNotNull);
+      }
+    });
+
+    test('IS prepend', () {
+      final vList = ['111'];
+      final e0 = new IStag(PTag.kSelectorISValue, vList);
+      final prepend0 = e0.append('123');
+      expect(prepend0, isNotNull);
+    });
+
+    test('IS truncate', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getISList(1, 4, 12);
+        final e0 = new IStag(PTag.kSelectorISValue, vList0);
+        final truncate0 = e0.truncate(10);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
   });
 
   group('IS Element', () {

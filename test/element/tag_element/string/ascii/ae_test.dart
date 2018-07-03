@@ -13,6 +13,7 @@ import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 RSG rsg = new RSG(seed: 1);
+RNG rng = new RNG(1);
 
 void main() {
   Server.initialize(name: 'string/special_test', level: Level.info);
@@ -271,7 +272,7 @@ void main() {
         expect(e0.hasValidValues, true);
 
         final e1 =
-        AEtag.fromValues(PTag.kScheduledStudyLocationAETitle, <String>[]);
+            AEtag.fromValues(PTag.kScheduledStudyLocationAETitle, <String>[]);
         expect(e1.hasValidValues, true);
         expect(e1.values, equals(<String>[]));
       }
@@ -291,13 +292,13 @@ void main() {
 
       global.throwOnError = false;
       final e2 =
-      AEtag.fromValues(PTag.kScheduledStudyLocationAETitle, <String>[null]);
+          AEtag.fromValues(PTag.kScheduledStudyLocationAETitle, <String>[null]);
       log.debug('e2: $e2');
       expect(e2, isNull);
 
       global.throwOnError = true;
       expect(
-              () => AEtag
+          () => AEtag
               .fromValues(PTag.kScheduledStudyLocationAETitle, <String>[null]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
@@ -341,6 +342,56 @@ void main() {
           expect(() => e1.checkValue(a),
               throwsA(const TypeMatcher<StringError>()));
         }
+      }
+    });
+
+    test('AE append', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, 4);
+        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        const vList1 = 'foo';
+        final append0 = e0.append(vList1);
+        log.debug('append0: $append0');
+        /*var result = new List<String>(vList0.length);
+        for (var i = 0; i < vList0.length; i++) {
+          result[i] = vList0[i] + vList1;
+        }*/
+        expect(append0, isNotNull);
+      }
+    });
+
+    test('AE prepend', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, 4);
+        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        const vList1 = 'foo';
+        final prepend0 = e0.prepend(vList1);
+        log.debug('prepend0: $prepend0');
+        expect(prepend0, isNotNull);
+      }
+    });
+
+    test('AE truncate', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, 4, 16);
+        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final truncate0 = e0.truncate(10);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
+
+    test('AE valueFromBytes', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, i);
+        final bytes = Bytes.fromUtf8List(vList0);
+        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final vfb0 = e0.valuesFromBytes(bytes);
+        expect(vfb0, equals(vList0));
       }
     });
   });
@@ -713,6 +764,48 @@ void main() {
       global.throwOnError = true;
       expect(() => Bytes.fromAsciiList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
+    });
+
+    test('AE fromValueField', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, 1);
+        final fvf0 = StringAscii.fromValueField(vList0, k8BitMaxLongVF);
+        expect(fvf0, equals(vList0));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        global.throwOnError = false;
+        final vList1 = rsg.getAEList(1, i);
+        final fvf1 = StringAscii.fromValueField(vList1, k8BitMaxLongVF);
+        expect(fvf1, equals(vList1));
+      }
+      global.throwOnError = false;
+      final fvf1 = StringAscii.fromValueField(null, k8BitMaxLongLength);
+      expect(fvf1, <String>[]);
+      expect(fvf1 == kEmptyStringList, true);
+
+      final fvf2 = StringAscii.fromValueField(<String>[], k8BitMaxLongLength);
+      expect(fvf2, <String>[]);
+      expect(fvf2 == kEmptyStringList, false);
+      expect(fvf2.isEmpty, true);
+
+      final fvf3 = StringAscii.fromValueField(<int>[1234], k8BitMaxLongLength);
+      expect(fvf3, isNull);
+
+      global.throwOnError = true;
+      expect(() => StringAscii.fromValueField(<int>[1234], k8BitMaxLongLength),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      final vList2 = rsg.getAEList(1, 1);
+      final bytes = Bytes.fromUtf8List(vList2);
+      final fvf4 = StringAscii.fromValueField(bytes, k8BitMaxLongLength);
+      expect(fvf4, equals(vList2));
+
+      final vList3 = rng.uint8List(1, 1);
+      final fvf5 = StringAscii.fromValueField(vList3, k8BitMaxLongLength);
+      expect(fvf5, equals([cvt.ascii.decode(vList3)]));
     });
   });
 }

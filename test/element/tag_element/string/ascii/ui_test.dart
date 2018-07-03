@@ -138,16 +138,16 @@ void main() {
         final vList2 = rsg.getUIList(3, 4);
         final e2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
         final vList3 = rsg.getAEList(3, 4);
-        expect(() => e2.update(vList3),
-            throwsA(const TypeMatcher<StringError>()));
+        expect(
+            () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = true;
       final vList2 = rsg.getUIList(3, 4);
       final e2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
       final vList3 = ['3.2.840.10008.1.2.0'];
-      expect(() => e2.update(vList3),
-          throwsA(const TypeMatcher<StringError>()));
+      expect(
+          () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
     });
 
     test('UI noValues random', () {
@@ -424,6 +424,52 @@ void main() {
         final e1 = new UItag(PTag.kSOPInstanceUID, vList0);
         final vList1 = rsg.getUIList(1, 1);
         expect(e1.update(vList1).values, equals(vList1));
+      }
+    });
+
+    test('UI append', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, 4);
+        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        const vList1 = '1.2.840.10008.5.1.4.1.2.4.3';
+        final append0 = e0.append(vList1);
+        log.debug('append0: $append0');
+        expect(append0, isNotNull);
+      }
+    });
+
+    test('UI prepend', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, 4);
+        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        const vList1 = '1.2.840.10008.5.1.4.1.2.4.3';
+        final prepend0 = e0.prepend(vList1);
+        log.debug('prepend0: $prepend0');
+        expect(prepend0, isNotNull);
+      }
+    });
+
+    test('UI truncate', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, 4, 64);
+        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final truncate0 = e0.truncate(10);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
+
+    test('UI valueFromBytes', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, i);
+        final bytes = Bytes.fromUtf8List(vList0);
+        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final vfb0 = e0.valuesFromBytes(bytes);
+        expect(vfb0, equals(vList0));
       }
     });
   });

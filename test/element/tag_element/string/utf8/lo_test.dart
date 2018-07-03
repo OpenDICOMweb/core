@@ -8,12 +8,14 @@
 //
 
 import 'dart:convert' as cvt;
+import 'dart:typed_data';
 
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
 RSG rsg = new RSG(seed: 1);
+RNG rng = new RNG(1);
 
 void main() {
   Server.initialize(name: 'string/lo_test', level: Level.info);
@@ -389,6 +391,53 @@ void main() {
           expect(() => e0.checkValue(a),
               throwsA(const TypeMatcher<StringError>()));
         }
+      }
+    });
+
+    test('LO append', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getLOList(1, 4);
+        print(vList0);
+        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        const vList1 = 'foo';
+        final append0 = e0.append(vList1);
+        log.debug('append0: $append0');
+        expect(append0, isNotNull);
+      }
+    });
+
+    test('LO prepend', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getLOList(1, 4);
+        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        const vList1 = 'foo';
+        final prepend0 = e0.prepend(vList1);
+        log.debug('prepend0: $prepend0');
+        expect(prepend0, isNotNull);
+      }
+    });
+
+    test('LO truncate', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getLOList(1, 4, 16);
+        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        final truncate0 = e0.truncate(10);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
+
+    test('LO valueFromBytes', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getLOList(1, i);
+        final bytes = Bytes.fromUtf8List(vList0);
+        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        final vfb0 = e0.valuesFromBytes(bytes);
+        expect(vfb0, equals(vList0));
       }
     });
   });
@@ -791,6 +840,47 @@ void main() {
       global.throwOnError = true;
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
+    });
+
+    test('LO fromValueField', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getLOList(1, 1);
+        final fvf0 = Utf8.fromValueField(vList0, k8BitMaxLongVF);
+        expect(fvf0, equals(vList0));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        global.throwOnError = false;
+        final vList1 = rsg.getLOList(1, i);
+        final fvf1 = Utf8.fromValueField(vList1, k8BitMaxLongVF);
+        expect(fvf1, equals(vList1));
+      }
+      final fvf1 = Utf8.fromValueField(null, k8BitMaxLongLength);
+      expect(fvf1, <String>[]);
+      expect(fvf1 == kEmptyStringList, true);
+
+      final fvf2 = Utf8.fromValueField(<String>[], k8BitMaxLongLength);
+      expect(fvf2, <String>[]);
+      expect(fvf2 == kEmptyStringList, false);
+      expect(fvf2.isEmpty, true);
+
+      final fvf3 = Utf8.fromValueField(<int>[1234], k8BitMaxLongLength);
+      expect(fvf3, isNull);
+
+      global.throwOnError = true;
+      expect(() => Utf8.fromValueField(<int>[1234], k8BitMaxLongLength),
+          throwsA(const TypeMatcher<InvalidValuesError>()));
+
+      global.throwOnError = false;
+      final vList2 = rsg.getLOList(1, 1);
+      final bytes = Bytes.fromUtf8List(vList2);
+      final fvf4 = Utf8.fromValueField(bytes, k8BitMaxLongLength);
+      expect(fvf4, equals(vList2));
+
+      final vList3 = rng.uint8List(1, 1);
+      final fvf5 = Utf8.fromValueField(vList3, k8BitMaxLongLength);
+      expect(fvf5, equals([cvt.ascii.decode(vList3)]));
     });
   });
 }
