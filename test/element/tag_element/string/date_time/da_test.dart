@@ -569,6 +569,38 @@ void main() {
         expect(difference0.hasValidValues, true);
       }
     });
+
+    test('DA append ', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getDAList(1, i);
+        final e0 = new DAtag(PTag.kSelectorDAValue, vList0);
+        const vList1 = '20181212';
+        final append0 = e0.append(vList1);
+        log.debug('append0: $append0');
+        expect(append0, isNotNull);
+      }
+    });
+
+    test('DA prepend ', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getDAList(1, i);
+        final e0 = new DAtag(PTag.kSelectorDAValue, vList0);
+        const vList1 = '20181212';
+        final prepend0 = e0.prepend(vList1);
+        log.debug('prepend0: $prepend0');
+        expect(prepend0, isNotNull);
+      }
+    });
+
+    test('DA truncate ', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getDAList(1, i);
+        final e0 = new DAtag(PTag.kSelectorDAValue, vList0);
+        final truncate0 = e0.truncate(4);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
   });
 
   group('DA Element', () {

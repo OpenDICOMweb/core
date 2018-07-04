@@ -209,8 +209,7 @@ abstract class DS extends StringAscii {
     return badString(msg, issues);
   }
 
-  static Iterable<num> tryParseList(Iterable<String> vList,
-          [Issues issues]) =>
+  static Iterable<num> tryParseList(Iterable<String> vList, [Issues issues]) =>
       StringBase.reallyTryParseList(vList, issues, tryParse);
 
   static List<num> tryParseBytes(Bytes vfBytes) =>
@@ -279,11 +278,11 @@ abstract class IS extends StringAscii {
     return update(result.map((v) => '$v'));
   }
 
-  IS append(String s) => appendAux(s, kMaxValueLength);
+  IS append(String s) => update(values.append(s, kMaxValueLength));
 
-  IS prepend(String s) => prependAux(s, kMaxValueLength);
+  IS prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  IS truncate(int length) => truncateAux(length, kMaxValueLength);
+  IS truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   @override
   IS get hash {

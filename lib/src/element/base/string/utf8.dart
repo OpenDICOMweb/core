@@ -73,11 +73,11 @@ abstract class LO extends Utf8 {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  LO append(String s) => appendAux(s, kMaxValueLength);
+  LO append(String s) => update(values.append(s, kMaxValueLength));
 
-  LO prepend(String s) => prependAux(s, kMaxValueLength);
+  LO prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  LO truncate(int length) => truncateAux(length, kMaxValueLength);
+  LO truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   // **** Generalized static methods
 
@@ -243,11 +243,11 @@ abstract class PN extends Utf8 {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  PN append(String s) => appendAux(s, kMaxValueLength);
+  PN append(String s) => update(values.append(s, kMaxValueLength));
 
-  PN prepend(String s) => prependAux(s, kMaxValueLength);
+  PN prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  PN truncate(int length) => truncateAux(length, kMaxValueLength);
+  PN truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   // **** Generalized static methods
 
@@ -348,11 +348,11 @@ abstract class SH extends Utf8 {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  SH append(String s) => appendAux(s, kMaxValueLength);
+  SH append(String s) => update(values.append(s, kMaxValueLength));
 
-  SH prepend(String s) => prependAux(s, kMaxValueLength);
+  SH prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  SH truncate(int length) => truncateAux(length, kMaxValueLength);
+  SH truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   // **** Generalized static methods
 
@@ -458,11 +458,11 @@ abstract class UC extends Utf8 {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  UC append(String s) => appendAux(s, kMaxValueLength);
+  UC append(String s) => update(values.append(s, kMaxValueLength));
 
-  UC prepend(String s) => prependAux(s, kMaxValueLength);
+  UC prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  UC truncate(int length) => truncateAux(length, kMaxValueLength);
+  UC truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   // **** Generalized static methods
 

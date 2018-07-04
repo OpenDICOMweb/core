@@ -503,11 +503,45 @@ void main() {
       expect(() => DTtag.fromValues(PTag.kDateTime, <String>[null]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
+
+    test('DT append ', () {
+      global.throwOnError = false;
+      final vList0 = ['18561103072611.651386+0000'];
+      final e0 = new DTtag(PTag.kSelectorDTValue, vList0);
+      const vList1 = '20181212101545';
+      final append0 = e0.append(vList1);
+      log.debug('append0: $append0');
+      expect(append0, isNotNull);
+    });
+
+    test('DT prepend ', () {
+      global.throwOnError = false;
+      final vList0 = ['20181212101545'];
+      final e0 = new DTtag(PTag.kSelectorDTValue, vList0);
+      const vList1 = '18561103072611.651386+0000';
+      final prepend0 = e0.prepend(vList1);
+      log.debug('prepend0: $prepend0');
+      expect(prepend0, isNotNull);
+    });
+
+    test('DT truncate ', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getDTList(1, i);
+        final e0 = new DTtag(PTag.kSelectorDTValue, vList0);
+        final truncate0 = e0.truncate(4);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
   });
 
   group('DT Element', () {
     const badDTLengthList = const <List<String>>[
-      const <String>['20170223122334.111111+11000000', '1970011a105630.111111+110000'],
+      const <String>[
+        '20170223122334.111111+11000000',
+        '1970011a105630.111111+110000'
+      ],
       const <String>['201', '1'],
     ];
 
@@ -855,7 +889,7 @@ void main() {
 
       global.throwOnError = true;
       expect(() => DT.isValidBytesArgs(PTag.kSelectorDTValue, bytes),
-                 throwsA(const TypeMatcher<InvalidValueFieldError>()));
+          throwsA(const TypeMatcher<InvalidValueFieldError>()));
     });
 
     test('DT getAsciiList', () {

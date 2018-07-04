@@ -85,7 +85,6 @@ class StringList extends ListBase<String> {
     }
   }
 
-  // Urgent Sharath unit test
   /// Returns a new [StringList ] where its values are the result of
   /// appending each of the original values with [s]. If the resulting
   /// [String] has length greater than [maxLength], the resulting
@@ -100,7 +99,6 @@ class StringList extends ListBase<String> {
     return new StringList._(result);
   }
 
-  // Urgent Sharath unit test
   /// Returns a new [StringList] where its values are the result of
   /// prepending each of the original values with [s]. If the resulting
   /// [String] has length greater than [maxLength], the resulting
@@ -115,8 +113,7 @@ class StringList extends ListBase<String> {
     return new StringList._(result);
   }
 
-  // Urgent Sharath unit test
-  /// Returns a new [StringList] where the values are the result of
+  /// Returns a new [StringList] where its values are the result of
   /// truncating each of the original values with a length greater than
   /// [newLength] to [newLength]. If [newLength] is greater than
   /// [maxLength] _null_ is returned.
@@ -131,7 +128,6 @@ class StringList extends ListBase<String> {
     return new StringList._(result);
   }
 
-  // Urgent Sharath unit test
   /// Returns _true_ if each element in [values] matches
   /// the regular expression.
   // TODO: Determine if this is the required functionality for ACR

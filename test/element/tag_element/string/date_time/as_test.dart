@@ -448,6 +448,41 @@ void main() {
       expect(() => AStag.fromValues(PTag.kPatientAge, <String>[null]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
+
+    test('AS append', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getASList(1, 4);
+        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        const vList1 = '12';
+        final append0 = e0.append(vList1);
+        log.debug('append0: $append0');
+        expect(append0, isNotNull);
+      }
+    });
+
+    test('AS prepend', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getASList(1, 4, 16);
+        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        const vList1 = '263D';
+        final prepend0 = e0.prepend(vList1);
+        log.debug('prepend0: $prepend0');
+        expect(prepend0, isNotNull);
+      }
+    });
+
+    test('AS truncate', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getASList(1, 4, 16);
+        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        final truncate0 = e0.truncate(4);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
   });
 
   group('AS Element', () {
@@ -508,70 +543,7 @@ void main() {
             throwsA(const TypeMatcher<InvalidTagError>()));
       }
     });
-/*
-    test('AS checkVRIndex good values', () {
-      global.throwOnError = false;
-      expect(AS.checkVRIndex(kASIndex), kASIndex);
 
-      for (var tag in asTags0) {
-        global.throwOnError = false;
-        expect(AS.isValidVRIndex(tag.vrIndex), true);
-      }
-    });
-
-    test('AS checkVRIndex bad values', () {
-      global.throwOnError = false;
-      expect(
-          AS.checkVRIndex(
-            kAEIndex,
-          ),
-          isNull);
-      global.throwOnError = true;
-      expect(() => AS.checkVRIndex(kAEIndex),
-          throwsA(const TypeMatcher<InvalidTagError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(AS.isValidVRIndex(tag.vrIndex), false);
-
-        global.throwOnError = true;
-        expect(() => AS.checkVRIndex(kAEIndex),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
-    test('AS checkVRCode good values', () {
-      global.throwOnError = false;
-      expect(AS.checkVRCode(kASCode), kASCode);
-
-      for (var tag in asTags0) {
-        global.throwOnError = false;
-        expect(AS.checkVRCode(tag.vrCode), tag.vrCode);
-      }
-    });
-
-    test('AS checkVRCode bad values', () {
-      global.throwOnError = false;
-      expect(
-          AS.checkVRCode(
-            kAECode,
-          ),
-          isNull);
-      global.throwOnError = true;
-      expect(() => AS.checkVRCode(kAECode),
-          throwsA(const TypeMatcher<InvalidVRError>()));
-
-      for (var tag in otherTags) {
-        global.throwOnError = false;
-        expect(AS.checkVRCode(tag.vrCode), isNull);
-
-        global.throwOnError = true;
-        expect(() => AS.checkVRCode(tag.vrCode),
-            throwsA(const TypeMatcher<InvalidVRError>()));
-      }
-    });
-
- */
     test('AS isValidVRIndex good values', () {
       global.throwOnError = false;
       expect(AS.isValidVRIndex(kASIndex), true);
@@ -810,7 +782,7 @@ void main() {
       expect(bytes, isNotNull);
       expect(bytes.length > AS.kMaxVFLength, true);
       expect(AS.isValidBytesArgs(PTag.kSelectorASValue, bytes), false);
-      
+
       global.throwOnError = true;
       expect(() => AS.isValidBytesArgs(PTag.kSelectorASValue, bytes),
           throwsA(const TypeMatcher<InvalidValueFieldError>()));
