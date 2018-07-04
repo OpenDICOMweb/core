@@ -79,11 +79,11 @@ abstract class AS extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  AS append(String s) => appendAux(s, kMaxValueLength);
+  AS append(String s) => update(values.append(s, kMaxValueLength));
 
-  AS prepend(String s) => prependAux(s, kMaxValueLength);
+  AS prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  AS truncate(int length) => truncateAux(length, kMaxValueLength);
+  AS truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   // **** Generalized static methods
 
@@ -195,7 +195,6 @@ abstract class DA extends StringBase {
   Date get date =>
       (dates.length == 1) ? dates.first : badValues(values, null, tag);
 
-
   @override
   DA get hash {
     final dList = <String>[];
@@ -213,7 +212,7 @@ abstract class DA extends StringBase {
   /// integer [days] to each element of [values].
   Element increment([int days = 1]) {
     final result = new List<Date>(dates.length);
-    for(var i = 0; i < dates.length; i++) {
+    for (var i = 0; i < dates.length; i++) {
       final day = dates[i].epochDay + days;
       result[i] = Date.fromEpochDay(day);
     }
@@ -224,7 +223,7 @@ abstract class DA extends StringBase {
   /// from each element of [dates].
   Element difference(Date date) {
     final result = new List<Date>(length);
-    for(var i = 0; i < dates.length; i++) {
+    for (var i = 0; i < dates.length; i++) {
       final day = dates[i].epochDay - date.epochDay;
       result[i] = Date.fromEpochDay(day);
     }
@@ -240,11 +239,11 @@ abstract class DA extends StringBase {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  DA append(String s) => appendAux(s, kMaxValueLength);
+  DA append(String s) => update(values.append(s, kMaxValueLength));
 
-  DA prepend(String s) => prependAux(s, kMaxValueLength);
+  DA prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  DA truncate(int length) => truncateAux(length, kMaxValueLength);
+  DA truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   void clearDates() => _dates = null;
 
@@ -368,11 +367,11 @@ abstract class DT extends StringBase {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  DT append(String s) => appendAux(s, kMaxValueLength);
+  DT append(String s) => update(values.append(s, kMaxValueLength));
 
-  DT prepend(String s) => prependAux(s, kMaxValueLength);
+  DT prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  DT truncate(int length) => truncateAux(length, kMaxValueLength);
+  DT truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   void clearDcmDateTimes() => _dateTimes = null;
 
@@ -500,11 +499,11 @@ abstract class TM extends StringBase {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  TM append(String s) => appendAux(s, kMaxValueLength);
+  TM append(String s) => update(values.append(s, kMaxValueLength));
 
-  TM prepend(String s) => prependAux(s, kMaxValueLength);
+  TM prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  TM truncate(int length) => truncateAux(length, kMaxValueLength);
+  TM truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   void clearTimes() => _times = null;
 

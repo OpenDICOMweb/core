@@ -87,11 +87,11 @@ abstract class AE extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  AE append(String s) => appendAux(s, kMaxValueLength);
+  AE append(String s) => update(values.append(s, kMaxValueLength));
 
-  AE prepend(String s) => prependAux(s, kMaxValueLength);
+  AE prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  AE truncate(int length) => truncateAux(length, kMaxValueLength);
+  AE truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   // **** Generalized static methods
 
@@ -192,11 +192,11 @@ abstract class CS extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  CS append(String s) => appendAux(s, kMaxValueLength);
+  CS append(String s) => update(values.append(s, kMaxValueLength));
 
-  CS prepend(String s) => prependAux(s, kMaxValueLength);
+  CS prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  CS truncate(int length) => truncateAux(length, kMaxValueLength);
+  CS truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   // TODO: Valid? Needed? What is the difference with empty versus blank.
   /// Returns a new [CS] [Element] containing only spaces.
@@ -322,11 +322,11 @@ abstract class UI extends StringAscii {
   bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(s, issues: issues, allowInvalid: allowInvalid);
 
-  UI append(String s) => appendAux(s, kMaxValueLength);
+  UI append(String s) => update(values.append(s, kMaxValueLength));
 
-  UI prepend(String s) => prependAux(s, kMaxValueLength);
+  UI prepend(String s) => update(values.prepend(s, kMaxValueLength));
 
-  UI truncate(int length) => truncateAux(length, kMaxValueLength);
+  UI truncate(int length) => update(values.truncate(length, kMaxValueLength));
 
   UI updateUid(Iterable<Uid> uidList) => update(toStringList(uidList));
 

@@ -489,6 +489,36 @@ void main() {
       expect(() => TMtag.fromValues(PTag.kDateTime, <String>[null]),
           throwsA(const TypeMatcher<InvalidTagError>()));
     });
+
+    test('TM append ', () {
+      final vList0 = ['094123.88'];
+      final e0 = new TMtag(PTag.kSelectorTMValue, vList0);
+      const vList1 = '103050.55';
+      final append0 = e0.append(vList1);
+      log.debug('append0: $append0');
+      expect(append0, isNotNull);
+    });
+
+    test('TM prepend ', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getTMList(1, i);
+        final e0 = new TMtag(PTag.kSelectorTMValue, vList0);
+        const vList1 = '094123.02158';
+        final prepend0 = e0.prepend(vList1);
+        log.debug('prepend0: $prepend0');
+        expect(prepend0, isNotNull);
+      }
+    });
+
+    test('TM truncate ', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getTMList(1, i);
+        final e0 = new TMtag(PTag.kSelectorTMValue, vList0);
+        final truncate0 = e0.truncate(4);
+        log.debug('truncate0: $truncate0');
+        expect(truncate0, isNotNull);
+      }
+    });
   });
 
   group('TM Element', () {
