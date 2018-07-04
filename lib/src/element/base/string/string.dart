@@ -168,9 +168,9 @@ abstract class StringBase extends Element<String> {
     return update(result);
   }
 
-  // Urgent Sharath unit test
   /// Returns _true_ if each element in [values] matches
   /// the regular expression.
+  @deprecated
   bool match(String regexp) {
     final regex = new RegExp(regexp);
     for(var i = 0; i < values.length; i++) {
@@ -180,8 +180,7 @@ abstract class StringBase extends Element<String> {
     return true;
   }
 
-  // Urgent Jim: Fix
-  // Urgent Sharath unit test
+  @deprecated
   Element replaceString(String regexp, RegExp replace) {
     final regex = new RegExp(regexp);
     final length = values.length;

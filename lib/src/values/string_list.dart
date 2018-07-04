@@ -154,9 +154,10 @@ class StringList extends ListBase<String> {
       final v = values[i];
       result[i] = (v.length > length) ? v.substring(0, length) : v;
     }
-    return update(result);
+    return new StringList._(result);
   }
 
+  // Urgent Jim: Fix
   String _replace(RegExp regexp, String source, String result) {
 
     final match = regexp.firstMatch(source);
