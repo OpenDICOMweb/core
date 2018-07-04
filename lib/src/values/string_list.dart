@@ -22,8 +22,7 @@ class StringList extends ListBase<String> {
   factory StringList.from([Iterable<String> vList]) {
     if (throwOnError && vList == null) return badValues(vList);
     if (vList == null || vList.isEmpty) return kEmptyList;
-    final v =
-        (vList is List<String>) ? vList : vList.toList(growable: false) ;
+    final v = (vList is List<String>) ? vList : vList.toList(growable: false);
     return new StringList._(v);
   }
 
@@ -117,7 +116,7 @@ class StringList extends ListBase<String> {
   }
 
   // Urgent Sharath unit test
-  /// Returns a new [StringList] where its values are the result of
+  /// Returns a new [StringList] where the values are the result of
   /// truncating each of the original values with a length greater than
   /// [newLength] to [newLength]. If [newLength] is greater than
   /// [maxLength] _null_ is returned.
@@ -135,36 +134,49 @@ class StringList extends ListBase<String> {
   // Urgent Sharath unit test
   /// Returns _true_ if each element in [values] matches
   /// the regular expression.
+  // TODO: Determine if this is the required functionality for ACR
   bool match(String regexp) {
     final regex = new RegExp(regexp);
-    for(var i = 0; i < values.length; i++) {
+    for (var i = 0; i < values.length; i++) {
       final v = values[i];
       if (!regex.hasMatch(v)) return false;
     }
     return true;
   }
 
-  // Urgent Jim: Fix
   // Urgent Sharath unit test
-  StringList replaceString(String regexp, RegExp replace) {
-    final regex = new RegExp(regexp);
+  /// Returns a new [StringList] where each value is the result of
+  /// replacing the first occurrence of [from], in the original value,
+  /// with [to]. If there is no occurrence of [from] in a value, it is
+  /// placed in the result without change.
+  // TODO: Determine if this is the required functionality for ACR
+  StringList replaceFirst(RegExp from, String to, int maxLength,
+      [int startIndex = 0]) {
     final length = values.length;
     final result = new List<String>(length);
-    for(var i = 0; i < length; i++) {
-      final v = values[i];
+    for (var i = 0; i < length; i++) {
+      final v = values[i].replaceFirst(from, to, startIndex);
       result[i] = (v.length > length) ? v.substring(0, length) : v;
     }
     return new StringList._(result);
   }
 
-  // Urgent Jim: Fix
-  String _replace(RegExp regexp, String source, String result) {
-
-    final match = regexp.firstMatch(source);
-
+  // Urgent Sharath unit test
+  /// Returns a new [StringList] where each _value_ is the result of
+  /// replacing all occurrence of [from], in the original _value_,
+  /// with [to]. If there is no occurrence of [from] in a _value_, it is
+  /// placed in the result without change.
+  // TODO: Determine if this is the required functionality for ACR
+  StringList replaceAll(RegExp from, String to, int maxLength,
+      [int startIndex = 0]) {
+    final length = values.length;
+    final result = new List<String>(length);
+    for (var i = 0; i < length; i++) {
+      final v = values[i].replaceFirst(from, to, startIndex);
+      result[i] = (v.length > length) ? v.substring(0, length) : v;
+    }
+    return new StringList._(result);
   }
-
-
 
   Bytes encode([int separator = kBackslash]) =>
       Bytes.fromUtf8List(values, separator);
