@@ -31,12 +31,12 @@ class Study extends Entity {
             new Map.from(study.children));
 
   /// Returns a new [Study] created from the [RootDataset].
-  factory Study.fromRootDataset(RootDataset rds, [Patient patient]) {
+  factory Study.fromRootDataset(RootDataset rds, [Patient parent]) {
     final e = rds.lookup(kStudyInstanceUID, required: true);
     final studyUid = new Uid(e.value);
-    patient ??= new Patient.fromRDS(rds);
-    final study = new Study(patient, studyUid, rds);
-    patient.putIfAbsent(study);
+    parent ??= new Patient.fromRDS(rds);
+    final study = new Study(parent, studyUid, rds);
+    parent.putIfAbsent(study);
     return study;
   }
 

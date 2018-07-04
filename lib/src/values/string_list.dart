@@ -132,6 +132,39 @@ class StringList extends ListBase<String> {
     return new StringList._(result);
   }
 
+  // Urgent Sharath unit test
+  /// Returns _true_ if each element in [values] matches
+  /// the regular expression.
+  bool match(String regexp) {
+    final regex = new RegExp(regexp);
+    for(var i = 0; i < values.length; i++) {
+      final v = values[i];
+      if (!regex.hasMatch(v)) return false;
+    }
+    return true;
+  }
+
+  // Urgent Jim: Fix
+  // Urgent Sharath unit test
+  StringList replaceString(String regexp, RegExp replace) {
+    final regex = new RegExp(regexp);
+    final length = values.length;
+    final result = new List<String>(length);
+    for(var i = 0; i < length; i++) {
+      final v = values[i];
+      result[i] = (v.length > length) ? v.substring(0, length) : v;
+    }
+    return update(result);
+  }
+
+  String _replace(RegExp regexp, String source, String result) {
+
+    final match = regexp.firstMatch(source);
+
+  }
+
+
+
   Bytes encode([int separator = kBackslash]) =>
       Bytes.fromUtf8List(values, separator);
 

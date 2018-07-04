@@ -45,9 +45,7 @@ abstract class Entity {
   //TODO: explain the difference between Mint encoding and standard DICOM.
   /// A DICOM Information Entity
   Entity(this.parent, this.uid, this.rds, Map<Uid, Entity> children)
-      : children = (children == null) ? <Uid, Entity>{} : children {
-    //system.checkUidNotPresent(uid);
-  }
+      : children = (children == null) ? <Uid, Entity>{} : children;
 
   /// Returns a copy of [Entity], but with a new [Uid]. If [parent] is _null_
   /// the new [Entity] has the same parent as _this_.
@@ -57,26 +55,11 @@ abstract class Entity {
         uid = new Uid(),
         children = new Map.from(entity.children);
 
-  // TODO: how to prototype a factory constructor?
-  // Entity.fromRootDataset(RootDataset rds);
-
   /// Returns the child that has [uid].
   Entity operator [](Uid uid) => children[uid];
 
   /// [putIfAbsent]s a child [Entity] with [uid].
-  void operator []=(Uid uid, Entity e) {
-    putIfAbsent(e);
-  }
-
-  /*@override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is Entity) {
-      if (uid != other.uid && parent != other.parent) return false;
-      return true;
-    }
-    return false;
-  }*/
+  void operator []=(Uid uid, Entity e) => putIfAbsent(e);
 
   // **** Minimal Interface ****
 
@@ -100,10 +83,6 @@ abstract class Entity {
 
   // **** End of Minimal Interface ****
 
-  /// Returns a [hashCode] for _this_.
-  /*@override
-  int get hashCode => Hash.k2(parent, uid);*/
-
   /// Returns a [String] containing information about _this_.
   String get info => toString();
 
@@ -124,16 +103,4 @@ abstract class Entity {
 
   @override
   String toString() => '$runtimeType($uid): (${children.length}) ';
-
-/*  static Entity fromRootDataset(RootDataset ds) {
-    Uid study = ds.getUid(kStudyInstanceUID);
-    if (study == null) missingUid(kStudyInstanceUID);
-    Uid series = ds.getUid(kSeriesInstanceUID);
-    if (study == null) missingUid(kSeriesInstanceUID);
-    Uid instance = ds.getUid(kSOPInstanceUID);
-    if (study == null) missingUid(kSOPInstanceUID);
-    activeStudies.ad
-  }*/
 }
-
-

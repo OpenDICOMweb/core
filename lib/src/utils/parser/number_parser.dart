@@ -76,7 +76,7 @@ int parseUint(String s,
         int onError(String source) = _defaultParseIntError}) =>
 //    _parseRadix(s, start, issues, end ??= s.length, minLength, maxLength, 10,
 //        'parseUint', onError);
-    _parseBase10(s, start, issues, end ??= s.length, 'parseUint', onError);
+    parseBase10(s, start, issues, end ??= s.length, 'parseUint', onError);
 
 /// Tries to parse [s] from [start] to [end] as a signed base 10 integer, and
 /// returns the parsed values. Returns _null_ if an error is encountered.
@@ -132,7 +132,7 @@ int parseInt(String s,
   try {
     sign = _parseSign(s, start, issues, _intName);
     if (sign != 0) index++;
-    value = _parseBase10(s, index, issues, end, _intName, onError);
+    value = parseBase10(s, index, issues, end, _intName, onError);
   } on FormatException {
     // ignore: avoid_returning_null
     return null;
@@ -205,7 +205,7 @@ const _fName = 'parseFraction';
 int _parseFraction(String s, int start, Issues issues, int end,
     [String name, int onError(String s)]) {
   _parseDecimalPoint(s, start, issues, _fName);
-  return _parseBase10(s, start + 1, issues, end, _fName, onError);
+  return parseBase10(s, start + 1, issues, end, _fName, onError);
 }
 
 bool _parseDecimalPoint(String s, int start, Issues issues, String name) {
@@ -242,15 +242,15 @@ int __parseRadix(String s, int start, Issues issues, int end, String name,
         ? __parseSmallRadix(s, start, issues, end, name, radix, onError)
         : __parseBigRadix(s, start, issues, end, name, radix, onError);
 
-int _parseBase2(String s, int start, Issues issues, int end, String name,
+int parseBase2(String s, int start, Issues issues, int end, String name,
         int onError(String s)) =>
     __parseSmallRadix(s, start, issues, end, name, 2, onError);
 
-int _parseBase8(String s, int start, Issues issues, int end, String name,
+int parseBase8(String s, int start, Issues issues, int end, String name,
         int onError(String s)) =>
     __parseSmallRadix(s, start, issues, end, name, 8, onError);
 
-int _parseBase10(String s, int start, Issues issues, int end, String name,
+int parseBase10(String s, int start, Issues issues, int end, String name,
         int onError(String s)) =>
     __parseSmallRadix(s, start, issues, end, name, 10, onError);
 
@@ -273,7 +273,7 @@ int __parseSmallRadix(String s, int start, Issues issues, int end, String name,
   return value;
 }
 
-int _parseBase16(String s, int start, Issues issues, int end, String name,
+int parseBase16(String s, int start, Issues issues, int end, String name,
         int onError(String s)) =>
     __parseBigRadix(s, start, issues, end, name, 16, onError);
 

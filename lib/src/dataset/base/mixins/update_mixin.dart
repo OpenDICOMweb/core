@@ -61,7 +61,7 @@ abstract class UpdateMixin {
   /// replaced.
   List<Element> updateAll<V>(int index,
                              {Iterable<V> vList, bool required = false}) {
-    vList ??= const <V>[];
+    vList ??= const [];
     final v = update(index, vList, required: required);
     final result = <Element>[]..add(v);
     for (var e in elements)
