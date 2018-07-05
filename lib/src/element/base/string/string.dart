@@ -116,6 +116,8 @@ abstract class StringBase extends Element<String> {
 
   StringBase blank([int n = 1]) => update([spaces(n)]);
 
+  bool match(String regexp) => values.match(regexp);
+
   @override
   bool checkValue(String s, {Issues issues, bool allowInvalid = false});
 
@@ -171,7 +173,7 @@ abstract class StringBase extends Element<String> {
   /// Returns _true_ if each element in [values] matches
   /// the regular expression.
   @deprecated
-  bool match(String regexp) {
+  bool matchAux(String regexp) {
     final regex = new RegExp(regexp);
     for(var i = 0; i < values.length; i++) {
       final v = values[i];

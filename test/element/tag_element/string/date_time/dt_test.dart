@@ -534,6 +534,18 @@ void main() {
         expect(truncate0, isNotNull);
       }
     });
+
+    test('DT match', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getDTList(1, i);
+        log.debug('vList0:$vList0');
+        final e0 = new DTtag(PTag.kSelectorDTValue, vList0);
+        const regX = r'\w*[0-9\.\+]';
+        final match0 = e0.match(regX);
+        expect(match0, true);
+      }
+    });
   });
 
   group('DT Element', () {

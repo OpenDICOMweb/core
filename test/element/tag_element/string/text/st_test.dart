@@ -383,7 +383,6 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        print(vList0);
         final e0 = new STtag(PTag.kSelectorSTValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
@@ -412,6 +411,16 @@ void main() {
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
+      }
+    });
+
+    test('ST match', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getSTList(1, 1);
+        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final match0 = e0.match(r'.*');
+        expect(match0, true);
       }
     });
 

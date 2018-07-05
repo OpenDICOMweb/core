@@ -394,6 +394,18 @@ void main() {
       }
     });
 
+    test('CS match', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getCSList(1, i, 16);
+        log.debug('vList0: $vList0');
+        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        const regX = r'\w*[A-Z_0-9\s]';
+        final match0 = e0.match(regX);
+        expect(match0, true);
+      }
+    });
+
     test('CS valueFromBytes', () {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {

@@ -519,6 +519,17 @@ void main() {
         expect(truncate0, isNotNull);
       }
     });
+
+    test('DS match', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getDSList(1, 4, 16);
+        final e0 = new DStag(PTag.kSelectorDSValue, vList0);
+        const regX = r'^[0-9\.\+\-]';
+        final match0 = e0.match(regX);
+        expect(match0, true);
+      }
+    });
   });
 
   group('DS Element', () {

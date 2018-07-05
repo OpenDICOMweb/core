@@ -462,6 +462,17 @@ void main() {
       }
     });
 
+    test('UI match', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, i, 64);
+        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        const regX = r'^[0-9\.]';
+        final match0 = e0.match(regX);
+        expect(match0, true);
+      }
+    });
+
     test('UI valueFromBytes', () {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {

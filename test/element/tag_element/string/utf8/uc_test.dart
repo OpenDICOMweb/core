@@ -407,6 +407,16 @@ void main() {
       }
     });
 
+    test('UC match', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUCList(1, 10);
+        final e0 = new UCtag(PTag.kSelectorUCValue, vList0);
+        final match0 = e0.match(r'.*');
+        expect(match0, true);
+      }
+    });
+
     test('UC valueFromBytes', () {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {

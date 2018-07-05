@@ -519,6 +519,18 @@ void main() {
         expect(truncate0, isNotNull);
       }
     });
+
+    test('TM match', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getTMList(1, i);
+        log.debug('vList0:$vList0');
+        final e0 = new TMtag(PTag.kSelectorTMValue, vList0);
+        const regX = r'\w*[0-9\.]';
+        final match0 = e0.match(regX);
+        expect(match0, true);
+      }
+    });
   });
 
   group('TM Element', () {
