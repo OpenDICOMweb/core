@@ -601,6 +601,18 @@ void main() {
         expect(truncate0, isNotNull);
       }
     });
+
+    test('DA match', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getDAList(1, i);
+        log.debug('vList0:$vList0');
+        final e0 = new DAtag(PTag.kSelectorDAValue, vList0);
+        const regX = r'\w*[0-9]';
+        final match0 = e0.match(regX);
+        expect(match0, true);
+      }
+    });
   });
 
   group('DA Element', () {

@@ -36,7 +36,6 @@ void main() {
 
   group('Integer String Tests', () {
     test('Is valid integer string -  good values', () {
-      global.level = Level.info;
       for (var s in goodIntegerStrings) {
         global.throwOnError = false;
         log.debug('s: "$s"');
@@ -512,6 +511,17 @@ void main() {
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
+      }
+    });
+
+    test('IS match', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getISList(1, 4);
+        final e0 = new IStag(PTag.kSelectorISValue, vList0);
+        const regX = r'^[0-9\+\-]';
+        final match0 = e0.match(regX);
+        expect(match0, true);
       }
     });
   });

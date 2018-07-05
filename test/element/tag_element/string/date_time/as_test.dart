@@ -483,6 +483,18 @@ void main() {
         expect(truncate0, isNotNull);
       }
     });
+
+    test('AS match', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getASList(1, i);
+        log.debug('vList0:$vList0');
+        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        const regX = r'[0-9A-Za-z]';
+        final match0 = e0.match(regX);
+        expect(match0, true);
+      }
+    });
   });
 
   group('AS Element', () {

@@ -140,7 +140,6 @@ class StringList extends ListBase<String> {
     return true;
   }
 
-  // Urgent Sharath unit test
   /// Returns a new [StringList] where each value is the result of
   /// replacing the first occurrence of [from], in the original value,
   /// with [to]. If there is no occurrence of [from] in a value, it is
@@ -152,12 +151,11 @@ class StringList extends ListBase<String> {
     final result = new List<String>(length);
     for (var i = 0; i < length; i++) {
       final v = values[i].replaceFirst(from, to, startIndex);
-      result[i] = (v.length > length) ? v.substring(0, length) : v;
+      result[i] = (v.length > maxLength) ? v.substring(0, length) : v;
     }
     return new StringList._(result);
   }
 
-  // Urgent Sharath unit test
   /// Returns a new [StringList] where each _value_ is the result of
   /// replacing all occurrence of [from], in the original _value_,
   /// with [to]. If there is no occurrence of [from] in a _value_, it is
@@ -168,8 +166,8 @@ class StringList extends ListBase<String> {
     final length = values.length;
     final result = new List<String>(length);
     for (var i = 0; i < length; i++) {
-      final v = values[i].replaceFirst(from, to, startIndex);
-      result[i] = (v.length > length) ? v.substring(0, length) : v;
+      final v = values[i].replaceAll(from, to);
+      result[i] = (v.length > maxLength) ? v.substring(0, length) : v;
     }
     return new StringList._(result);
   }

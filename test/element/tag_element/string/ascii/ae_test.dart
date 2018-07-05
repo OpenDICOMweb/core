@@ -210,7 +210,7 @@ void main() {
         final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
         final vList1 = rsg.getAEList(1, 1);
         expect(e1.replace(vList1), equals(vList0));
-        print('e1: ${e1.values}');
+        log.debug('e1: ${e1.values}');
         expect(e1.values, equals(vList1));
       }
 
@@ -354,10 +354,6 @@ void main() {
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
-        /*var result = new List<String>(vList0.length);
-        for (var i = 0; i < vList0.length; i++) {
-          result[i] = vList0[i] + vList1;
-        }*/
         expect(append0, isNotNull);
       }
     });
@@ -382,6 +378,17 @@ void main() {
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
+      }
+    });
+
+    test('AE match', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, i);
+        log.debug('vList0:$vList0');
+        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final match0 = e0.match('.*');
+        expect(match0, true);
       }
     });
 

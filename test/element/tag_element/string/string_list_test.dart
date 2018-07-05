@@ -164,6 +164,25 @@ void main() {
   });
 
   group('StringList', () {
+    const replaceFirst = const <List<String>>[
+      const <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6L3pw'],
+      const <String>['15v1a', r'[a-zA-Z]+', '***', '15***1a'],
+      const <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
+      const <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
+      const <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
+      const <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3OYm5'],
+      const <String>['12345', r'[a-zA-Z]+', '***', '12345']
+    ];
+
+    const replaceAll = const <List<String>>[
+      const <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6***3***'],
+      const <String>['15v1a', r'[a-zA-Z]+', '***', '15***1***'],
+      const <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
+      const <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
+      const <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
+      const <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3***5'],
+      const <String>['12345', r'[a-zA-Z]+', '***', '12345']
+    ];
 
     test('StringList.from', () {
       global.throwOnError = false;
@@ -209,6 +228,24 @@ void main() {
 
         expect(sfrom0.length, equals(vList0.length));
         expect(sfrom0.lengthInBytes, equals(bytes0.length));
+      }
+    });
+
+    test('replaceFirst', () {
+      for (var s in replaceFirst) {
+        final s0 = new StringList.from([s[0]]);
+        final regexFrom = new RegExp(s[1]);
+        final rf0 = s0.replaceFirst(regexFrom, s[2], 10);
+        expect(rf0, equals([s[3]]));
+      }
+    });
+
+    test('replaceAll', () {
+      for (var s in replaceAll) {
+        final s0 = new StringList.from([s[0]]);
+        final regexFrom = new RegExp(s[1]);
+        final rf0 = s0.replaceAll(regexFrom, s[2], 15);
+        expect(rf0, equals([s[3]]));
       }
     });
   });

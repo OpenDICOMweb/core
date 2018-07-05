@@ -348,7 +348,6 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        print(vList0);
         final e0 = new URtag(PTag.kSelectorURValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
@@ -377,6 +376,16 @@ void main() {
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
+      }
+    });
+
+    test('UR match', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getURList(1, i);
+        final e0 = new URtag(PTag.kSelectorURValue, vList0);
+        final match0 = e0.match(r'(\w+)');
+        expect(match0, true);
       }
     });
 

@@ -377,7 +377,6 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 4);
-        print(vList0);
         final e0 = new PNtag(PTag.kSelectorPNValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
@@ -407,6 +406,26 @@ void main() {
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
       }
+    });
+
+    test('PN match', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getPNList(1, 10);
+        final e0 = new PNtag(PTag.kSelectorPNValue, vList0);
+        final match0 = e0.match(r'.*');
+        expect(match0, true);
+      }
+
+      final vList0 = ['4gBerroDcI'];
+      final e0 = new PNtag(PTag.kSelectorPNValue, vList0);
+      final match0 = e0.match(r'\w*[a-z][A-Z]');
+      expect(match0, true);
+
+      final vList1 = ['RI1tpHSEP^G9GyVhSpU1z^KzJGP^VwsO8L^p6eZh_'];
+      final e1 = new PNtag(PTag.kSelectorPNValue, vList1);
+      final match1 = e1.match(r'\w*[a-z_A-Z][0-9]');
+      expect(match1, true);
     });
 
     test('PN valueFromBytes', () {

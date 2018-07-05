@@ -396,7 +396,6 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 4);
-        print(vList0);
         final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
@@ -425,6 +424,16 @@ void main() {
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
+      }
+    });
+
+    test('LO match', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getLOList(1, 10);
+        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        final match0 = e0.match(r'.*');
+        expect(match0, true);
       }
     });
 

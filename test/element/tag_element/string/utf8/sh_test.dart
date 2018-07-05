@@ -406,6 +406,21 @@ void main() {
       }
     });
 
+    test('SH match', () {
+      global.throwOnError = false;
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getSHList(1, 10);
+        final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final match0 = e0.match(r'.*');
+        expect(match0, true);
+      }
+
+      final vList0 = ['1_">L+uc};j&)g'];
+      final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
+      final match0 = e0.match(r'\w*[_]');
+      expect(match0, true);
+    });
+
     test('SH truncate', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
