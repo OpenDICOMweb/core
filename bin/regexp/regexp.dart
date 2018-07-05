@@ -49,7 +49,11 @@ void main() {
   print('a: $a');
 }
 
-final values = ['aaabbbcccddd', 'aaabbbcccbbbddd', 'aaabbbcbcbbbddd'];
+final List<String> values = [
+  'aaabbbcccddd',
+  'aaabbbcccbbbddd',
+  'aaabbbcbcbbbddd'
+];
 
 StringList replaceFirst(RegExp from, String to, int maxLength,
     [int startIndex = 0]) {

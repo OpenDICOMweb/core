@@ -182,25 +182,6 @@ abstract class StringBase extends Element<String> {
     return true;
   }
 
-  @deprecated
-  Element replaceString(String regexp, RegExp replace) {
-    final regex = new RegExp(regexp);
-    final length = values.length;
-    final result = new List<String>(length);
-    for(var i = 0; i < length; i++) {
-      final v = values[i];
-      result[i] = (v.length > length) ? v.substring(0, length) : v;
-    }
-    return update(result);
-  }
-
-  String _replace(RegExp regexp, String source, String result) {
-
-    final match = regexp.firstMatch(source);
-
-  }
-
-
   static bool isValidValueLength(
       String s, Issues issues, int minLength, int maxLength) {
     if (s == null) return nullValueError('"$s"');
