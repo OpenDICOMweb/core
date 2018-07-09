@@ -158,6 +158,11 @@ class Date implements Comparable<Date> {
   static Date fromEpochDay(int epochDay) =>
       new Date._(epochDay * kMicrosecondsPerDay);
 
+  static bool isAllBlanks(String s, int start, int end) {
+    for(var i = start; i < s.length; i++)
+      if (s.codeUnitAt(i) != kSpace) return false;
+    return true;
+  }
   /// Returns a [Date] corresponding to [s], if [s] is valid;
   /// otherwise, returns _null_.
   static Date parse(String s,
@@ -166,6 +171,9 @@ class Date implements Comparable<Date> {
       Issues issues,
       bool isDicom = true,
       OnDateParseError onError}) {
+    // Urgent Jim: fix
+    if (isAllBlanks(s, start, end))
+      return (onError != null) ? onError(s) : badDateString(s, issues);
     final us = (isDicom)
         ? parseDicomDate(s, start: start, end: end)
         : parseInternetDate(s, start: start, end: end);

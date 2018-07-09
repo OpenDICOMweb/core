@@ -41,7 +41,7 @@ class OBbytesPixelData extends OBPixelData
   @override
   int get lengthInBytes => bytes.vfLength;
 
-  static OBbytesPixelData fromBytes(int code, DicomBytes bytes,
+  static OBbytesPixelData fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
       new OBbytesPixelData(bytes, ts, fragments);
 }
