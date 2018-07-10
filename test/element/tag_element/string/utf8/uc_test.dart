@@ -776,5 +776,43 @@ void main() {
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
     });
+
+    test('UC isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getUCList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in ucVM1Tags) {
+            final e0 = UC.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in ucVM1_nTags) {
+            final e0 = UC.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getUCList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = UC.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = UC.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = UC.isValidBytesArgs(PTag.kSelectorUCValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => UC.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => UC.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }

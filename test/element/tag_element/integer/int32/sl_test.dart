@@ -464,7 +464,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const slVM1_nTag = const <PTag>[
+    const slVM1_nTags = const <PTag>[
       PTag.kRationalNumeratorValue,
       PTag.kSelectorSLValue,
     ];
@@ -572,7 +572,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rng.int32List(1, i);
         final validMaxLengthList = invalidVList.sublist(0, SL.kMaxLength);
-        for (var tag in slVM1_nTag) {
+        for (var tag in slVM1_nTags) {
           log.debug('tag: $tag');
           expect(SL.isValidLength(tag, validMinVList0), true);
           expect(SL.isValidLength(tag, validMaxLengthList), true);
@@ -782,6 +782,49 @@ void main() {
           () =>
               SL.isValidValues(PTag.kDisplayedAreaTopLeftHandCorner, int32Max),
           throwsA(const TypeMatcher<InvalidValuesError>()));
+    });
+
+    test('SL isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.int32List(1, i);
+        final vfBytes = new Bytes.typedDataView(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in slVM1Tags) {
+            final e0 = SL.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 2) {
+          for (var tag in slVM2Tags) {
+            final e0 = SL.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in slVM1_nTags) {
+            final e0 = SL.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rng.int32List(1, 1);
+      final vfBytes = new Bytes.typedDataView(vList0);
+
+      final e1 = SL.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = SL.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = SL.isValidBytesArgs(PTag.kSelectorSLValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => SL.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => SL.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
     });
   });
 }

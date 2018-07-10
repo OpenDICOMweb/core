@@ -580,9 +580,6 @@ void main() {
     test('PN isValidVFLength bad values', () {
       expect(PN.isValidVFLength(PN.kMaxVFLength + 1), false);
       expect(PN.isValidVFLength(-1), false);
-
-      expect(PN.isValidVFLength(PN.kMaxVFLength, null, PTag.kSelectorSTValue),
-          false);
     });
 
     test('PN isValidValueLength values', () {
@@ -775,6 +772,44 @@ void main() {
       global.throwOnError = true;
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
+    });
+
+    test('PN isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getPNList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in pnVM1Tags) {
+            final e0 = PN.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in pnVM1_nTags) {
+            final e0 = PN.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getPNList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = PN.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = PN.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = PN.isValidBytesArgs(PTag.kSelectorPNValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => PN.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => PN.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
     });
   });
 }

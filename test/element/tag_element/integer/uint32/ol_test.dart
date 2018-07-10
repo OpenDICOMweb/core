@@ -592,5 +592,43 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidValues(PTag.kTrackPointIndexList, null), false);
     });
+
+    test('OL isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint32List(1, i);
+        final vfBytes = new Bytes.typedDataView(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in olVM1Tags) {
+            final e0 = OL.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in olVM1_nTags) {
+            final e0 = OL.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rng.uint32List(1, 1);
+      final vfBytes = new Bytes.typedDataView(vList0);
+
+      final e1 = OL.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = OL.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = OL.isValidBytesArgs(PTag.kSelectorOLValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => OL.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => OL.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }

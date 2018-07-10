@@ -596,5 +596,43 @@ void main() {
       global.throwOnError = false;
       expect(OB.isValidValues(PTag.kICCProfile, null), false);
     });
+
+    test('OB isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint8List(1, i);
+        final vfBytes = new Bytes.typedDataView(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in obVM1Tags) {
+            final e0 = OB.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in obVM1_nTags) {
+            final e0 = OB.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rng.uint8List(1, 1);
+      final vfBytes = new Bytes.typedDataView(vList0);
+
+      final e1 = OB.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = OB.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = OB.isValidBytesArgs(PTag.kSelectorOBValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => OB.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => OB.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }

@@ -614,5 +614,44 @@ void main() {
       global.throwOnError = false;
       expect(OW.isValidValues(PTag.kBlendingLookupTableData, null), false);
     });
+
+    test('OW isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint16List(1, i);
+        final vfBytes = new Bytes.typedDataView(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in owVM1Tags) {
+            final e0 = OW.isValidBytesArgs(tag, vfBytes, OW.kMaxVFLength);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in owVM1_nTags) {
+            final e0 = OW.isValidBytesArgs(tag, vfBytes, OW.kMaxVFLength);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rng.uint16List(1, 1);
+      final vfBytes = new Bytes.typedDataView(vList0);
+
+      final e1 = OW.isValidBytesArgs(null, vfBytes, OW.kMaxVFLength);
+      expect(e1, false);
+
+      final e2 = OW.isValidBytesArgs(PTag.kDate, vfBytes, OW.kMaxVFLength);
+      expect(e2, false);
+
+      final e3 =
+          OW.isValidBytesArgs(PTag.kSelectorOWValue, null, OW.kMaxVFLength);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => OW.isValidBytesArgs(null, vfBytes, OW.kMaxVFLength),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => OW.isValidBytesArgs(PTag.kDate, vfBytes, OW.kMaxVFLength),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }

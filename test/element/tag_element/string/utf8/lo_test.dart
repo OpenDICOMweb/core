@@ -600,9 +600,6 @@ void main() {
     test('LO isValidVFLength bad values', () {
       expect(LO.isValidVFLength(LO.kMaxVFLength + 1), false);
       expect(LO.isValidVFLength(-1), false);
-
-      expect(LO.isValidVFLength(LO.kMaxVFLength, null, PTag.kSelectorSTValue),
-          false);
     });
 
     test('LO isValidValueLength good values', () {
@@ -888,6 +885,43 @@ void main() {
       final vList3 = rng.uint8List(1, 1);
       final fvf5 = Utf8.fromValueField(vList3, k8BitMaxLongLength);
       expect(fvf5, equals([ascii.decode(vList3)]));
+    });
+
+    test('LO isValidBytesArgs', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getLOList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in loVM1Tags) {
+            final e0 = LO.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in loVM1_nTags) {
+            final e0 = LO.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getLOList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = LO.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = LO.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = LO.isValidBytesArgs(PTag.kSelectorLOValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => LO.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => LO.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
     });
   });
 }

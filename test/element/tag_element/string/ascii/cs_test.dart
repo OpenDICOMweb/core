@@ -723,7 +723,7 @@ void main() {
         }
       }
       global.throwOnError = false;
-      final vList0 = rsg.getLOList(1, 1);
+      final vList0 = rsg.getCSList(1, 1);
       expect(CS.isValidLength(null, vList0), false);
 
       expect(CS.isValidLength(PTag.kSelectorCSValue, null), isNull);
@@ -910,6 +910,54 @@ void main() {
       global.throwOnError = true;
       expect(() => Bytes.fromAsciiList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
+    });
+
+    test('CS isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getCSList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in csVM1Tags) {
+            final e0 = CS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 2) {
+          for (var tag in csVM2Tags) {
+            final e0 = CS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 4) {
+          for (var tag in csVM4Tags) {
+            final e0 = CS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in csVM1_nTags) {
+            final e0 = CS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getCSList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = CS.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = CS.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = CS.isValidBytesArgs(PTag.kSelectorCSValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => CS.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => CS.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
     });
   });
 }

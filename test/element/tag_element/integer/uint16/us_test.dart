@@ -907,5 +907,58 @@ void main() {
       expect(() => US.isValidValues(PTag.kAcquisitionMatrix, uInt16Max),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
+
+    test('US isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint16List(1, i);
+        final vfBytes = new Bytes.typedDataView(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in usVM1Tags) {
+            final e0 = US.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 2) {
+          for (var tag in usVM2Tags) {
+            final e0 = US.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 3) {
+          for (var tag in usVM3Tags) {
+            final e0 = US.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 4) {
+          for (var tag in usVM4Tags) {
+            final e0 = US.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in usVM1_nTags) {
+            final e0 = US.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rng.uint16List(1, 1);
+      final vfBytes = new Bytes.typedDataView(vList0);
+
+      final e1 = US.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = US.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = US.isValidBytesArgs(PTag.kSelectorUSValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => US.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => US.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }

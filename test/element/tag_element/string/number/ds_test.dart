@@ -725,9 +725,6 @@ void main() {
     test('DS isValidVFLength bad values', () {
       expect(DS.isValidVFLength(DS.kMaxVFLength + 1), false);
       expect(DS.isValidVFLength(-1), false);
-
-      expect(DS.isValidVFLength(DS.kMaxVFLength, null, PTag.kSelectorSTValue),
-          false);
     });
 
     test('DS isValidValueLength good values', () {
@@ -1335,6 +1332,64 @@ void main() {
       global.throwOnError = true;
       expect(() => Bytes.fromAsciiList(null),
           throwsA(const TypeMatcher<GeneralError>()));
+    });
+
+    test('DS isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 15; i++) {
+        final vList0 = rsg.getDSList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in dsVM1Tags) {
+            final e0 = DS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 2) {
+          for (var tag in dsVM2Tags) {
+            final e0 = DS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 3) {
+          for (var tag in dsVM3Tags) {
+            final e0 = DS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 4) {
+          for (var tag in dsVM4Tags) {
+            final e0 = DS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 6) {
+          for (var tag in dsVM6Tags) {
+            final e0 = DS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in dsVM1_nTags) {
+            final e0 = DS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getDSList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = DS.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = DS.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = DS.isValidBytesArgs(PTag.kSelectorDSValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => DS.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => DS.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
     });
   });
 }
