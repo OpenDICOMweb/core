@@ -741,5 +741,48 @@ void main() {
       expect(() => SS.isValidValues(PTag.kVisualAcuityModifiers, int16Max),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
+
+    test('SS isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.int16List(1, i);
+        final vfBytes = new Bytes.typedDataView(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in ssVM1Tags) {
+            final e0 = SS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 2) {
+          for (var tag in ssVM2Tags) {
+            final e0 = SS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in ssVM1_nTags) {
+            final e0 = SS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rng.int16List(1, 1);
+      final vfBytes = new Bytes.typedDataView(vList0);
+
+      final e1 = SS.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = SS.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = SS.isValidBytesArgs(PTag.kSelectorSSValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => SS.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => SS.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }

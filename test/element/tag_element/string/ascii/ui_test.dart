@@ -844,5 +844,43 @@ void main() {
       expect(() => Bytes.fromAsciiList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
     });
+
+    test('UI isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in uiVM1Tags) {
+            final e0 = UI.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in uiVM1_nTags) {
+            final e0 = UI.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getUIList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = UI.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = UI.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = UI.isValidBytesArgs(PTag.kSelectorUIValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => UI.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => UI.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }

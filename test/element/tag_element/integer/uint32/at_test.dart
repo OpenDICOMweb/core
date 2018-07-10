@@ -741,5 +741,43 @@ void main() {
       expect(() => AT.isValidValues(PTag.kSelectorAttribute, uInt32MinMax),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
+
+    test('AT isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.uint32List(1, i);
+        final vfBytes = new Bytes.typedDataView(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in atVM1Tags) {
+            final e0 = AT.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in atVM1_nTags) {
+            final e0 = AT.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rng.uint32List(1, 1);
+      final vfBytes = new Bytes.typedDataView(vList0);
+
+      final e1 = AT.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = AT.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = AT.isValidBytesArgs(PTag.kSelectorATValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => AT.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => AT.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }

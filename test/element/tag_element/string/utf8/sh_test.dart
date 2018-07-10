@@ -471,7 +471,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const shVm1_nTags = const <PTag>[
+    const shVM1_nTags = const <PTag>[
       PTag.kReferringPhysicianTelephoneNumbers,
       PTag.kPatientTelephoneNumbers,
       PTag.kConvolutionKernel,
@@ -591,9 +591,6 @@ void main() {
     test('SH isValidVFLength bad values', () {
       expect(SH.isValidVFLength(SH.kMaxVFLength + 1), false);
       expect(SH.isValidVFLength(-1), false);
-
-      expect(SH.isValidVFLength(SH.kMaxVFLength, null, PTag.kSelectorSTValue),
-          false);
     });
 
     test('SH isValidValueLength good values', () {
@@ -658,7 +655,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getSHList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, SH.kMaxLength);
-        for (var tag in shVm1_nTags) {
+        for (var tag in shVM1_nTags) {
           log.debug('tag: $tag');
           expect(SH.isValidLength(tag, vList), true);
           expect(SH.isValidLength(tag, validMaxLengthList), true);
@@ -826,6 +823,44 @@ void main() {
       global.throwOnError = true;
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
+    });
+
+    test('SH isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getSHList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in shVM1Tags) {
+            final e0 = SH.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in shVM1_nTags) {
+            final e0 = SH.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getSHList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = SH.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = SH.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = SH.isValidBytesArgs(PTag.kSelectorSHValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => SH.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => SH.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
     });
   });
 }

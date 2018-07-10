@@ -42,7 +42,7 @@ void main() {
         final n = IS.tryParse(s);
         log.debug('n: $n');
         expect(n, isNotNull);
-        expect(DS.isValidValue(s), true);
+        expect(IS.isValidValue(s), true);
       }
     });
   });
@@ -179,10 +179,10 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(3, 4);
-        final ds0 = new IStag(PTag.kOtherStudyNumbers, vList0);
-        log.debug('ds0: $ds0');
+        final is0 = new IStag(PTag.kOtherStudyNumbers, vList0);
+        log.debug('is0: $is0');
         expect(isNoValues.values.isEmpty, true);
-        log.debug('ds0: ${ds0.noValues}');
+        log.debug('is0: ${is0.noValues}');
       }
     });
 
@@ -559,7 +559,7 @@ void main() {
     ];
 
     //VM.k3
-    const isVM3Tags3 = const <PTag>[
+    const isVM3Tags = const <PTag>[
       PTag.kROIDisplayColor,
     ];
 
@@ -679,9 +679,6 @@ void main() {
     test('IS isValidVFLength bad values', () {
       expect(IS.isValidVFLength(IS.kMaxVFLength + 1), false);
       expect(IS.isValidVFLength(-1), false);
-
-      expect(IS.isValidVFLength(IS.kMaxVFLength, null, PTag.kSelectorSTValue),
-          false);
     });
 
     test('IS isValidVListLength VM.k1 good values', () {
@@ -794,7 +791,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getISList(3, 3);
-        for (var tag in isVM3Tags3) {
+        for (var tag in isVM3Tags) {
           expect(IS.isValidLength(tag, vList), true);
 
           expect(IS.isValidLength(tag, badLengthList.take(tag.vmMax)), true);
@@ -806,7 +803,7 @@ void main() {
     test('IS isValidVListLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
         final vList = rsg.getISList(4, i + 1);
-        for (var tag in isVM3Tags3) {
+        for (var tag in isVM3Tags) {
           global.throwOnError = false;
           expect(IS.isValidLength(tag, vList), false);
 
@@ -1121,6 +1118,54 @@ void main() {
       global.throwOnError = true;
       expect(() => Bytes.fromAsciiList(null),
           throwsA(const TypeMatcher<GeneralError>()));
+    });
+
+    test('IS isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 15; i++) {
+        final vList0 = rsg.getISList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in isVM1Tags) {
+            final e0 = IS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 2) {
+          for (var tag in isVM2Tags) {
+            final e0 = IS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else if (vList0.length == 3) {
+          for (var tag in isVM3Tags) {
+            final e0 = IS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in isVM1_nTags) {
+            final e0 = IS.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getISList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = IS.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = IS.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = IS.isValidBytesArgs(PTag.kSelectorISValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => IS.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => IS.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
     });
   });
 }

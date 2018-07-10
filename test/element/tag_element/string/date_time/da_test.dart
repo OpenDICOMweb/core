@@ -1062,5 +1062,43 @@ void main() {
       expect(() => Bytes.fromAsciiList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
     });
+
+    test('DA isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getDAList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in daVM1Tags) {
+            final e0 = DA.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in daVM1_nTags) {
+            final e0 = DA.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getDAList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = DA.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = DA.isValidBytesArgs(PTag.kTime, vfBytes);
+      expect(e2, false);
+
+      final e3 = DA.isValidBytesArgs(PTag.kSelectorDAValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => DA.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => DA.isValidBytesArgs(PTag.kTime, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }

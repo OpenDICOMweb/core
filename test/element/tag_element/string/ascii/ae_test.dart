@@ -815,5 +815,43 @@ void main() {
       final fvf5 = StringAscii.fromValueField(vList3, k8BitMaxLongLength);
       expect(fvf5, equals([cvt.ascii.decode(vList3)]));
     });
+
+    test('AE isValidBytesArgs', () {
+      global.throwOnError = false;
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in aeVM1Tags) {
+            final e0 = AE.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in aeVM1_nTags) {
+            final e0 = AE.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getAEList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = AE.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = AE.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = AE.isValidBytesArgs(PTag.kSelectorAEValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => AE.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => AE.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }
