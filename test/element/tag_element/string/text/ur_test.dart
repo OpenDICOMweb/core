@@ -772,5 +772,42 @@ void main() {
       final toB3 = Bytes.fromAsciiList([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
     });
+
+    test('UR isValidBytesArgs', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getURList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        if (vList0.length == 1) {
+          for (var tag in urVM1Tags) {
+            final e0 = UR.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        } else {
+          for (var tag in urVM1Tags) {
+            final e0 = UR.isValidBytesArgs(tag, vfBytes);
+            expect(e0, true);
+          }
+        }
+      }
+      final vList0 = rsg.getURList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = UR.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = UR.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = UR.isValidBytesArgs(PTag.kSelectorURValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => UR.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => UR.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }
