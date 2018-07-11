@@ -815,5 +815,35 @@ void main() {
       expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));*/
     });
+
+    test('UT isValidBytesArgs', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getUTList(1, i);
+        final vfBytes = Bytes.fromUtf8List(vList0);
+
+        for (var tag in utVM1Tags) {
+          final e0 = UT.isValidBytesArgs(tag, vfBytes);
+          expect(e0, true);
+        }
+      }
+      final vList0 = rsg.getUTList(1, 1);
+      final vfBytes = Bytes.fromUtf8List(vList0);
+
+      final e1 = UT.isValidBytesArgs(null, vfBytes);
+      expect(e1, false);
+
+      final e2 = UT.isValidBytesArgs(PTag.kDate, vfBytes);
+      expect(e2, false);
+
+      final e3 = UT.isValidBytesArgs(PTag.kSelectorUTValue, null);
+      expect(e3, false);
+
+      global.throwOnError = true;
+      expect(() => UT.isValidBytesArgs(null, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+
+      expect(() => UT.isValidBytesArgs(PTag.kDate, vfBytes),
+          throwsA(const TypeMatcher<InvalidTagError>()));
+    });
   });
 }
