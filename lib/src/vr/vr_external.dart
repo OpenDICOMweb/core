@@ -401,7 +401,7 @@ class VRText extends VRString {
   int get maxLength => 1;
 
   @override
-  bool isValidVFLength(int vfLength, int _, int __) => vfLength > maxVFLength;
+  bool isValidVFLength(int vfLength, int _, int __) => vfLength <= maxVFLength;
 
   static const kST =
       const VRText._(kSTIndex, 'ST', kSTCode, 2, kShortVF, false);
@@ -437,7 +437,7 @@ class VRSequence extends VR<Item> {
   bool get isLengthAlwaysValid => true;
 
   @override
-  bool isValidVFLength(int vfLength, int _, int __) => vfLength > maxVFLength;
+  bool isValidVFLength(int vfLength, int _, int __) => vfLength <= maxVFLength;
 
   static const kSQ = const VRSequence(kSQIndex, 'SQ', kSQCode, 4, kLongVF);
 }
