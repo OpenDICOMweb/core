@@ -306,5 +306,26 @@ void main() {
         }
       }
     });
+
+    test('FDbytes', () {
+      final vList = <double>[1.0, 1.1, 1.2];
+      final e0 = FDbytes.fromValues(kSelectorFDValue, vList);
+      expect(e0.bytes is DicomBytes, true);
+      expect(e0.vfBytes is Bytes, true);
+      expect(e0.hasValidValues, true);
+      expect(e0.vfByteData is ByteData, true);
+      expect(e0.lengthInBytes == e0.values.length * 8, true);
+      expect(e0.isValid, true);
+      expect(e0.isEmpty, false);
+
+      final e1 = new FDbytes(e0.bytes);
+      expect(e1.bytes is DicomBytes, true);
+      expect(e1.vfBytes is Bytes, true);
+      expect(e1.hasValidValues, true);
+      expect(e1.vfByteData is ByteData, true);
+      expect(e1.lengthInBytes == e1.values.length * 8, true);
+      expect(e1.isValid, true);
+      expect(e1.isEmpty, false);
+    });
   });
 }

@@ -379,6 +379,23 @@ void main() {
       expect(ob0.hashCode == ob2.hashCode, false);
       expect(ob0 == ob2, false);
     });
+
+    test('OBtagPixelData isValidArgs', () {
+      final e0 = OBtagPixelData.isValidArgs(pixels, ts);
+      expect(e0, true);
+
+      final e1 = OBtagPixelData.isValidArgs(null, ts);
+      expect(e1, false);
+    });
+
+    test('OBtagPixelData isValidBytesArgs', () {
+      final vfBytes = new Bytes.fromList(pixels);
+      final e0 = OBtagPixelData.isValidBytesArgs(vfBytes);
+      expect(e0, true);
+
+      final e1 = OBtagPixelData.isValidBytesArgs(null);
+      expect(e1, false);
+    });
   });
 
   group('OBPixelData', () {
