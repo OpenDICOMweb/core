@@ -24,7 +24,7 @@ class Compare {
     var index1 = 0;
     while ((index0 < length0) && (index1 < length1)) {
       final e0 = elements0[index0];
-      final e1 = elements0[index1];
+      final e1 = elements1[index1];
       final tag0 = e0.tag;
       final tag1 = e1.tag;
       if (tag0 == tag1) {
