@@ -112,7 +112,8 @@ void main() {
     test('OD isValidValues', () {
       global.throwOnError = false;
       for (var i = 0; i <= doubleList.length - 1; i++) {
-        final e0 = ODbytes.fromValues(kSelectorODValue, <double>[doubleList[i]]);
+        final e0 =
+            ODbytes.fromValues(kSelectorODValue, <double>[doubleList[i]]);
         expect(OD.isValidValues(PTag.kDoubleFloatPixelData, e0.values), true);
       }
     });
@@ -129,6 +130,27 @@ void main() {
           expect(e0.hasValidValues, true);
         }
       }
+    });
+
+    test('ODbytes', () {
+      final vList = <double>[1.0, 1.1, 1.2];
+      final e0 = ODbytes.fromValues(kSelectorODValue, vList);
+      expect(e0.bytes is DicomBytes, true);
+      expect(e0.vfBytes is Bytes, true);
+      expect(e0.hasValidValues, true);
+      expect(e0.vfByteData is ByteData, true);
+      expect(e0.lengthInBytes == e0.values.length * 8, true);
+      expect(e0.isValid, true);
+      expect(e0.isEmpty, false);
+
+      final e1 = new ODbytes(e0.bytes);
+      expect(e1.bytes is DicomBytes, true);
+      expect(e1.vfBytes is Bytes, true);
+      expect(e1.hasValidValues, true);
+      expect(e1.vfByteData is ByteData, true);
+      expect(e1.lengthInBytes == e1.values.length * 8, true);
+      expect(e1.isValid, true);
+      expect(e1.isEmpty, false);
     });
   });
 }

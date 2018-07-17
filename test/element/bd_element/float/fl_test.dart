@@ -168,7 +168,7 @@ void main() {
 
       final vList1 = rng.float32List(1, 1);
       final e2 =
-      FLbytes.fromValues(kRecommendedDisplayFrameRateInFloat, vList1);
+          FLbytes.fromValues(kRecommendedDisplayFrameRateInFloat, vList1);
       log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
@@ -205,7 +205,7 @@ void main() {
     global.throwOnError = false;
     for (var i = 0; i <= doubleList.length - 1; i++) {
       final e0 =
-      FLbytes.fromValues(kExaminedBodyThickness, <double>[doubleList[i]]);
+          FLbytes.fromValues(kExaminedBodyThickness, <double>[doubleList[i]]);
       log.debug('e0: $e0');
       expect(FL.isValidValues(PTag.kExaminedBodyThickness, e0.values), true);
     }
@@ -305,5 +305,25 @@ void main() {
       }
     }
   });
-  // });
+
+  test('FLbytes', () {
+    final vList = <double>[1.0, 1.1, 1.2];
+    final e0 = FLbytes.fromValues(kSelectorFLValue, vList);
+    expect(e0.bytes is DicomBytes, true);
+    expect(e0.vfBytes is Bytes, true);
+    expect(e0.hasValidValues, true);
+    expect(e0.vfByteData is ByteData, true);
+    expect(e0.lengthInBytes == e0.values.length * 4, true);
+    expect(e0.isValid, true);
+    expect(e0.isEmpty, false);
+
+    final e1 = new FLbytes(e0.bytes);
+    expect(e1.bytes is DicomBytes, true);
+    expect(e1.vfBytes is Bytes, true);
+    expect(e1.hasValidValues, true);
+    expect(e1.vfByteData is ByteData, true);
+    expect(e1.lengthInBytes == e1.values.length * 4, true);
+    expect(e1.isValid, true);
+    expect(e1.isEmpty, false);
+  });
 }

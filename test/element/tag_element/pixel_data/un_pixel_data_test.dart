@@ -393,6 +393,23 @@ void main() {
       expect(e1.checkValue(UN.kMaxValue + 1), false);
       expect(e1.checkValue(UN.kMinValue - 1), false);
     });
+
+    test('UNtagPixelData isValidArgs', () {
+      final e0 = UNtagPixelData.isValidArgs(pixels, ts);
+      expect(e0, true);
+
+      final e1 = UNtagPixelData.isValidArgs(null, ts);
+      expect(e1, false);
+    });
+
+    test('UNtagPixelData isValidBytesArgs', () {
+      final vfBytes = new Bytes.fromList(pixels);
+      final e0 = UNtagPixelData.isValidBytesArgs(vfBytes);
+      expect(e0, true);
+
+      final e1 = UNtagPixelData.isValidBytesArgs(null);
+      expect(e1, false);
+    });
   });
 
   group('UNPixelData', () {

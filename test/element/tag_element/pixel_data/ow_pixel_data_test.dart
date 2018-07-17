@@ -20,6 +20,8 @@ final Bytes u16Frame = new Bytes.fromList(testFrame);
 
 void main() {
   Server.initialize(name: 'element/ow_pixel_data_test', level: Level.info);
+
+  const ts = TransferSyntax.kDefaultForDicomWeb;
   group('OW PixelData Tests', () {
     final pixels0 = new Uint16List(1024);
     for (var i = 0; i < pixels0.length; i++) pixels0[i] = 4095;
@@ -245,6 +247,23 @@ void main() {
 
       expect(ow1.hashCode == ow3.hashCode, false);
       expect(ow1 == ow3, false);
+    });
+
+    test('OWtagPixelData isValidArgs', () {
+      final e0 = OWtagPixelData.isValidArgs(pixels1, ts);
+      expect(e0, true);
+
+      final e1 = OWtagPixelData.isValidArgs(null, ts);
+      expect(e1, false);
+    });
+
+    test('OWtagPixelData isValidBytesArgs', () {
+      final vfBytes = new Bytes.fromList(pixels1);
+      final e0 = OWtagPixelData.isValidBytesArgs(vfBytes);
+      expect(e0, true);
+
+      final e1 = OWtagPixelData.isValidBytesArgs(null);
+      expect(e1, false);
     });
   });
 
