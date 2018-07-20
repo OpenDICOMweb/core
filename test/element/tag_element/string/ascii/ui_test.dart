@@ -139,7 +139,7 @@ void main() {
         final e2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
         final vList3 = rsg.getAEList(3, 4);
         expect(
-            () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
+                () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = true;
@@ -147,7 +147,7 @@ void main() {
       final e2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
       final vList3 = ['3.2.840.10008.1.2.0'];
       expect(
-          () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
+              () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
     });
 
     test('UI noValues random', () {
@@ -481,6 +481,53 @@ void main() {
         final e0 = new UItag(PTag.kSelectorUIValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
+      }
+    });
+
+    test('UI updateUid', () {
+      for (var i = 1; i < 2; i++) {
+        final vList0 = rsg.getUIList(1, i);
+        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        const listUid0 = '1.2.840.10008.5.1.4.34.5';
+        final uid0 = new Uid(listUid0);
+        var uidList0 = [uid0];
+        final updateUid0 = e0.updateUid(uidList0);
+        expect(updateUid0.value, equals(listUid0));
+
+        final uid1 = new Uid();
+        uidList0 = [uid1];
+        final updateUid1 = e0.updateUid(uidList0);
+        expect(updateUid1.value, equals(uid1.value));
+      }
+    });
+
+    test('UI updateUidF', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, i);
+        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final uid1 = new Uid();
+        final update1 = e0.updateUidF((vList0) => [uid1]);
+        expect(update1.value, equals(uid1.value));
+      }
+    });
+
+    test('UI replaceUid', () {
+      final vList0 = rsg.getUIList(1, 1);
+      final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+      const listUid0 = '1.2.840.10008.5.1.4.34.5';
+      final uid0 = new Uid(listUid0);
+      final uidList0 = [uid0];
+      final updateUid0 = e0.replaceUid(uidList0);
+      expect(updateUid0.elementAt(0).value, equals(vList0.elementAt(0)));
+    });
+
+    test('UI replaceUidF', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, i);
+        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final uid1 = new Uid();
+        final replaceUid0 = e0.replaceUidF((vList0) => [uid1]);
+        expect(replaceUid0.elementAt(0).value, equals(vList0.elementAt(0)));
       }
     });
   });
@@ -881,6 +928,24 @@ void main() {
 
       expect(() => UI.isValidBytesArgs(PTag.kDate, vfBytes),
           throwsA(const TypeMatcher<InvalidTagError>()));
+    });
+
+    test('UI parseList', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getUIList(1, i);
+        final parseList0 = UI.parseList(vList);
+        log.debug('parseList0: $parseList0');
+        expect(parseList0.elementAt(0).value, equals(vList[0]));
+      }
+    });
+
+    test('UI tryParseList', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getUIList(1, i);
+        final tryParseList0 = UI.tryParseList(vList);
+        log.debug('tryParseList0: $tryParseList0');
+        expect(tryParseList0.elementAt(0).value, equals(vList[0]));
+      }
     });
   });
 }
