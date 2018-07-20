@@ -425,7 +425,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 4, 16);
-        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);

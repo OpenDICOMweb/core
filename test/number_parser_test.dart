@@ -102,4 +102,123 @@ void main() {
     expect(() => isValidIntString(''),
         throwsA(const TypeMatcher<FormatException>()));
   });
+
+  test('tryParseRadix', () {
+    for (var i = 1; i < 10; i++) {
+      final vList0 = rng.uint8List(1, i);
+      for (var s in vList0) {
+        final radix = tryParseRadix(s.toString());
+        log.debug('tryParseRadix:$radix');
+        expect(radix, isNotNull);
+      }
+    }
+    const vList1 = '125';
+    final radix0 = tryParseRadix(vList1);
+    expect(radix0 == 293, true);
+  });
+
+  test('parseBinary', () {
+    final vList0 = ['01', '10', '100', '001', '1000', '0101'];
+    for (var s in vList0) {
+      final binary0 = parseBinary(s);
+      log.debug('parseBinary: $binary0');
+      expect(binary0, isNotNull);
+    }
+
+    final vList1 = ['23', '12', '1234'];
+    for (var s in vList1) {
+      global.throwOnError = false;
+      final binary1 = parseBinary(s);
+      log.debug('parseBinary: $binary1');
+      expect(binary1, isNull);
+
+      global.throwOnError = true;
+      expect(
+          () => parseBinary(s), throwsA(const TypeMatcher<FormatException>()));
+    }
+  });
+
+  test('tryParseBinary', () {
+    final vList0 = ['01', '10', '100', '001', '1000', '0101'];
+    for (var s in vList0) {
+      final binary0 = tryParseBinary(s);
+      log.debug('parseBinary: $binary0');
+      expect(binary0, isNotNull);
+    }
+    final vList1 = ['23', '12', '1234'];
+    for (var s in vList1) {
+      global.throwOnError = false;
+      final binary1 = tryParseBinary(s);
+      log.debug('parseBinary: $binary1');
+      expect(binary1, isNull);
+
+      global.throwOnError = true;
+      expect(() => tryParseBinary(s),
+          throwsA(const TypeMatcher<FormatException>()));
+    }
+  });
+
+  test('parseHex', () {
+    final vList0 = [
+      '01A',
+      '10B',
+      '100AB',
+      '001C',
+      '1000AB',
+      'AB',
+      '0123456789ABCDEF'
+    ];
+    for (var s in vList0) {
+      final hexaDecimal = parseHex(s);
+      log.debug('parseHex: $hexaDecimal');
+      expect(hexaDecimal, isNotNull);
+    }
+  });
+
+  test('tryParseHex', () {
+    final vList0 = [
+      '01A',
+      '10B',
+      '100AB',
+      '001C',
+      '1000AB',
+      'AB',
+      '0123456789ABCDEF'
+    ];
+    for (var s in vList0) {
+      final hexaDecimal = tryParseHex(s);
+      log.debug('tryParseHex: $hexaDecimal');
+      expect(hexaDecimal, isNotNull);
+    }
+  });
+
+  test('parseFloat', () {
+    final vList0 = ['12', '34.33', '.34', '98.098'];
+    for (var s in vList0) {
+      final float = parseFloat(s);
+      log.debug('parseFloat: $float');
+      expect(float, equals(double.parse(s)));
+    }
+
+    final vList1 = ['12a', '3a4.33', 'foo', '98.0@!8'];
+    for (var s in vList1) {
+      final float = parseFloat(s);
+      log.debug('parseFloat: $float');
+      expect(float, isNull);
+    }
+
+    expect(() => parseFloat(''), throwsA(const TypeMatcher<FormatException>()));
+
+    expect(() => parseFloat(vList0[0], 5),
+        throwsA(const TypeMatcher<FormatException>()));
+  });
+
+  test('parseFraction', () {
+    final vList0 = ['.9', '.303', '.34', '.980', '.980005'];
+    for (var s in vList0) {
+      final fraction = parseFraction(s);
+      log.debug('parseFraction: $fraction');
+      expect(fraction.toString(), equals(s.substring(1)));
+    }
+  });
 }
