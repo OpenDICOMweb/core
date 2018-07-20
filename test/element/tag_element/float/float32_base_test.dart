@@ -141,5 +141,29 @@ void main() {
       expect(() => Float32.fromValueField(<String>['foo']),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
+
+    test('Float32Base toUint8List', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.float32List(1, i);
+        final float32 = new Float32List.fromList(vList0);
+        final u8List0 = float32.buffer.asUint8List();
+        final uInt8list0 = Float32.toUint8List(vList0);
+        log.debug('uInt8List0: $uInt8list0, u8List: $u8List0');
+        expect(uInt8list0, equals(u8List0));
+
+        final uInt8list1 = Float32.toUint8List(vList0, asView: false);
+        log.debug('uInt8List1: $uInt8list1, u8List: $u8List0');
+        expect(uInt8list1, equals(u8List0));
+      }
+
+      final uInt8List2 = Float32.toUint8List(<double>[]);
+      expect(uInt8List2 == kEmptyUint8List, true);
+
+      final vList1 = rng.float64List(1, 1);
+      final float64 = new Float64List.fromList(vList1);
+      final u8List1 = float64.buffer.asUint8List();
+      final uInt8List3 = Float32.toUint8List(vList1);
+      expect(uInt8List3, isNot(u8List1));
+    });
   });
 }
