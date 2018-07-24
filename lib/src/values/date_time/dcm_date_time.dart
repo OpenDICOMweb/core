@@ -188,10 +188,12 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
   /// Returns _this_ as a [String] in Internet \[RFC3339\] _date-time_ format.
   String get inet =>
-      (fraction == 0) ? '$y-$m-${d}T$h:$mm:$s' : '$y-$m-${d}T$h:$m:$s.$f';
+      (fraction == 0) ? '$y-$m-${d}T$h:$mm:$s' : '$y-$m-${d}T$h:$mm:$s.$f';
 
   ///
   Date toDate() => new Date(year, month, day);
+
+  static final Duration zeroDuration = new Duration();
 
   /// TODO Sharath: unit test
   /// See Dart Doc for [DateTime].[add].
@@ -207,7 +209,8 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     final ms = (milliseconds == null) ? millisecond : millisecond + milliseconds;
     final us = (microseconds == null) ? microsecond : microsecond + microseconds;
     final dt = dcmDateTimeInMicroseconds(y, m, d, h, mm, s, ms, us);
-    return new DcmDateTime._(dt + duration.inMicroseconds);
+    final dur = (duration == null) ? duration : duration + duration;
+    return new DcmDateTime._(dt + dur.inMicroseconds);
   }
 
 /* TODO: add if needed when with is no longer a keyword.
@@ -220,7 +223,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
   /// Returns the [DcmDateTime] in ISO date [String] format.
   @override
-  String toString() => (fraction == 0) ? '$h:$m:$s' : '$h:$m:$s.$f';
+  String toString() => inet;
 
   /// Returns the current [DcmDateTime].
   static DcmDateTime get now => new DcmDateTime.fromDart(new DateTime.now());
