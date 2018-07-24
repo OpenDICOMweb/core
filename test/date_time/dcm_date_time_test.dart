@@ -275,5 +275,18 @@ void main() {
         }
       }
     });
+
+     test('DcmDateTime add', (){
+      final dcmDT0 = new DcmDateTime(1998, 05, 12, 10, 09, 20, 100, 100);
+      print(dcmDT0);
+      print('microseconds: ${dcmDT0.microseconds}');
+      print('year: ${dcmDT0.year}');
+      print('month: ${dcmDT0.month}');
+      print('day: ${dcmDT0.day}');
+      print('hour: ${dcmDT0.hour}');
+      print('minute: ${dcmDT0.minute}');
+      //final add0 = dcmDT0.add();
+      //print(add0);
+    });
   });
 }
