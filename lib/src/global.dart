@@ -192,6 +192,7 @@ abstract class Global {
   static final int timeZoneIndex =
       kValidTZMicroseconds.indexOf(timeZoneOffsetInMicroseconds);
   static final String timeZoneName = startTime.timeZoneName;
+  static final Duration zeroDuration = new Duration();
 
   /// The random number generator for the [global].
   static final Random rng = new Random.secure();

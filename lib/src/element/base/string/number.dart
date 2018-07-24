@@ -48,15 +48,34 @@ abstract class DS extends StringAscii {
   List<num> get numbers => _numbers ??= tryParseList(values);
   List<num> _numbers;
 
-  /// Returns -1, 0, or 1 if [n] is less than, equal to, or greater than
-  /// [values]. If [values].length is not equal to 1 returns _null_.
-  int compare(num n) {
-    final len = numbers.length;
-    if (len == 0 || len > 1) return null;
-    final v = numbers[0];
-    if (v == n) return 0;
-    return (n < v) ? -1 : 1;
+  // Urgent: unit test
+  /// Returns -1, 0, or 1 if [nList] is less than, equal to, or greater than
+  /// [numbers].
+  int compareValuesTo(List<num> nList) {
+    final len = length;
+    final nLen = nList.length;
+    if (len == 0 && nLen == 0) return 0;
+    if (len == 0 && nLen != 0) return -1;
+    if (len != 0 && nLen == 0) return 1;
+
+    final min = (len < nLen) ? len : nLen;
+    for (var i = 0; i < min; i++) {
+      final v0 = numbers[i];
+      final v1 = nList[i];
+      if (v0 != v1) return (v0 < v1) ? -1 : 1;
+    }
+    if (len == nLen) return 0;
+    return (len < nLen) ? -1 : 1;
   }
+
+  // Urgent: unit test
+  /// Returns -1, 0, or 1 if [numbers] is less than, equal to, or greater than
+  /// [e].numbers.
+  int compareTo(DS e) {
+    assert(values.length == numbers.length);
+    return compareValuesTo(e.numbers);
+  }
+
 
   /// Returns a [Element] that is created by adding n to each
   /// element of [numbers].
@@ -252,14 +271,33 @@ abstract class IS extends StringAscii {
   List<int> get integers => _integers ??= tryParseList(values);
   List<int> _integers;
 
-  /// Returns -1, 0, or 1 if [n] is less than, equal to, or greater than
-  /// [values]. If [values].length is not equal to 1 returns _null_.
-  int compare(int n) {
-    final len = integers.length;
-    if (len == 0 || len > 1) return null;
-    final v = integers[0];
-    if (v == n) return 0;
-    return (n < v) ? -1 : 1;
+  // Urgent: unit test
+  /// Returns -1, 0, or 1 if [nList] is less than, equal to, or greater than
+  /// [integers].
+  /// TODO: merge the body of DS. compareTo
+  int compareValuesTo(List<int> nList) {
+    final len = length;
+    final nLen = nList.length;
+    if (len == 0 && nLen == 0) return 0;
+    if (len == 0 && nLen != 0) return -1;
+    if (len != 0 && nLen == 0) return 1;
+
+    final min = (len < nLen) ? len : nLen;
+    for (var i = 0; i < min; i++) {
+      final v0 = integers[i];
+      final v1 = nList[i];
+      if (v0 != v1) return (v0 < v1) ? -1 : 1;
+    }
+    if (len == nLen) return 0;
+    return (len < nLen) ? -1 : 1;
+  }
+
+  // Urgent: unit test
+  /// Returns -1, 0, or 1 if [integers] is less than, equal to, or greater than
+  /// [e].numbers.
+  int compareTo(IS e) {
+    assert(values.length == integers.length);
+    return compareValuesTo(e.integers);
   }
 
   /// Returns a List<int> that is created by adding n to each element of

@@ -433,48 +433,62 @@ void main() {
       }
     });
 
-    test('DS compare', () {
+    // Urgent: changed compare method in DS to compareTo and compareValuesTo
+    // Urgent: please fix
+    test('DS compareTo & compareValueTo', () {
       for (var i = 1; i <= 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
         final e0 = new DStag(PTag.kPatientSize, vList0);
-        final compare0 = e0.compare(double.parse(e0.value));
-        log.debug('compare0: $compare0');
+        final nList = [double.parse(e0.value)];
+        final compare0 = e0.compareValuesTo(nList);
         expect(compare0 == 0, true);
+        // Urgent: add next 3 lines to tests below
+        final e0a = new DStag(PTag.kPatientSize, vList0);
+        final compare1 = e0.compareTo(e0a);
+        expect(compare1 == 0, true);
       }
       for (var vList1 in goodDSList) {
         final e1 = new DStag(PTag.kPatientSize, vList1);
-        final compare1 = e1.compare(double.parse(e1.value));
+        final nList = [double.parse(e1.value)];
+        final compare1 = e1.compareValuesTo(nList);
         log.debug('compare1: $compare1');
         expect(compare1 == 0, true);
+        // Urgent: add lines
       }
 
       final vList2 = rsg.getDSList(1, 1);
       final e2 = new DStag(PTag.kPatientSize, vList2);
+
       for (var n in goodDecimalStrings) {
-        final compare2 = e2.compare(double.parse(n));
+        final nList = [double.parse(n)];
+        final compare2 = e2.compareValuesTo(nList);
         log.debug('compare2: $compare2');
         if (!compare2.isNegative) {
           expect(compare2 == 1, true);
         } else {
           expect(compare2 == -1, true);
         }
+        // Urgent: add lines
       }
 
       for (var i = 1; i <= 10; i++) {
         final vList3 = rsg.getDSList(1, i);
         final e3 = new DStag(PTag.kSelectorDSValue, vList3);
-        final compare3 = e3.compare(double.parse(e3.value));
+        final nList = [num.parse(e3.value)];
+        final compare3 = e3.compareValuesTo(nList);
         log.debug('compare0: $compare3');
         if (vList3.length > 1) {
-          expect(compare3, isNull);
+          print('compare3: $compare3');
+          expect(compare3 == 0, true);
         } else {
           expect(compare3 == 0, true);
         }
+        // Urgent: add lines
       }
 
       final e4 = new DStag(PTag.kSelectorDSValue, []);
-      final compare4 = e4.compare(12.6);
-      expect(compare4, isNull);
+      final compare4 = e4.compareValuesTo([12.6]);
+      expect(compare4, -1);
     });
 
     test('DS increment', () {

@@ -424,44 +424,53 @@ void main() {
       for (var i = 1; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
         final e0 = new IStag(PTag.kEchoNumbers, vList0);
-        final compare0 = e0.compare(int.parse(e0.value));
+        final nList = [int.parse(e0.value)];
+        final compare0 = e0.compareValuesTo(nList);
         log.debug('compare0: $compare0');
         expect(compare0 == 0, true);
       }
       for (var vList1 in goodISList) {
         final e1 = new IStag(PTag.kEchoNumbers, vList1);
-        final compare1 = e1.compare(int.parse(e1.value));
+        final nList = [int.parse(e1.value)];
+        final compare1 = e1.compareValuesTo(nList);
         log.debug('compare1: $compare1');
         expect(compare1 == 0, true);
+        // Urgent:
       }
 
       final vList2 = rsg.getISList(1, 1);
       final e2 = new IStag(PTag.kEchoNumbers, vList2);
       for (var n in goodIntegerStrings) {
-        final compare2 = e2.compare(int.parse(n));
+        final nList = [int.parse(n)];
+        final compare2 = e2.compareValuesTo(nList);
         log.debug('compare2: $compare2');
         if (!compare2.isNegative) {
           expect(compare2 == 1, true);
         } else {
           expect(compare2 == -1, true);
         }
+        // Urgent:
       }
 
       for (var i = 1; i <= 10; i++) {
         final vList3 = rsg.getISList(1, i);
         final e3 = new IStag(PTag.kSelectorISValue, vList3);
-        final compare3 = e3.compare(int.parse(e3.value));
+        final nList = [int.parse(e3.value)];
+        final compare3 = e3.compareValuesTo(nList);
         log.debug('compare0: $compare3');
         if (vList3.length > 1) {
-          expect(compare3, isNull);
+          expect(compare3 == 1, true);
         } else {
           expect(compare3 == 0, true);
         }
+        // Urgent:
       }
 
       final e4 = new IStag(PTag.kSelectorISValue, []);
-      final compare4 = e4.compare(15);
+      final nList = [int.parse(e4.value)];
+      final compare4 = e4.compareValuesTo(nList);
       expect(compare4, isNull);
+      // Urgent:
     });
 
     test('IS increment', () {
