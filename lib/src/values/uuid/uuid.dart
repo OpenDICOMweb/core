@@ -364,11 +364,12 @@ Uint8List _getDataBuffer(List<int> uuid) {
 }
 
 /// Converts characters from a String into the corresponding byte values.
-void _toBytes(String s, Uint8List bytes, int byteIndex, int start, int end) {
+Null _toBytes(String s, Uint8List bytes, int byteIndex, int start, int end) {
   var index = byteIndex ?? 0;
   for (var i = start; i < end; i += 2) {
-    if (!isHexChar(s.codeUnitAt(i)))
-      badUuidCharacter(s, 'Bad UUID character: ${s[i]}');
+    if (!isHexChar(s.codeUnitAt(i))  || !isHexChar(s.codeUnitAt(i + 1))) {
+      throw new UuidError('Bad UUID character: "${s[i]}${s[i + 1]}" in "$s"');
+    }
     bytes[index++] = _hexToByte[s.substring(i, i + 2)];
   }
 }

@@ -36,10 +36,23 @@ void main() {
     ];
 
     final badUuidList0 = <String>[
-      '09bb1d8c-4965-4788-94f7-31b1eaba4e',
       '23d57c30-afe7-11e4-ab7-d12e3f512a338',
-      '6ba7b810-9dad-41d1-80b4-00c04fd430',
       '6ba7b810-9dad-11d4-80-b400c04fd430c8',
+      '8f534d57-0s95-4a3c-8796-8be3b34440bc',
+      '7eeau2ad-c74e-43fe-9720-db0e09797518',
+      '-9a466e3-691d-4e05-bd11-1f3b224106d0',
+      '28abd21#-b80c-4799-8c28-c57b7e9f2d3b',
+      'c1d06122-ed09-44bg-a060-8d309d7e7f26',
+      'db0411da-efcd-4340-9772-669m1d2611ed',
+      '847e3de3-4a5b-49e6-8)f8-a8f0f02ac601',
+      'bc795f32-ea62-4@eb-bf30-171e7e1c65e1',
+      '50_42c83-aefd-4003-be7b-2a9f3426b903',
+      '4826a68c-f0f6-4fa4-a302-9a38bd0df93l',
+      'd820ee98-eo66-45d4-824d-41abbe47a206'
+    ];
+    final badUuidListLength0 = <String>[
+      '09bb1d8c-4965-4788-94f7-31b1eaba4e',
+      '6ba7b810-9dad-41d1-80b4-00c04fd430',
       '23d57c30afe741e4ab7d1-3f512a338',
       '6ba7b810-9dad41d48-0b400c04fd430c8'
     ];
@@ -112,13 +125,22 @@ void main() {
 
       for (var uuid in badUuidList0) {
         global.throwOnError = false;
-        final uuid34 = Uuid.parse(uuid);
-        expect(uuid34, isNull);
+        final uuid4 = Uuid.parse(uuid);
+        expect(uuid4, isNull);
 
         global.throwOnError = true;
+        expect(
+            () => Uuid.parse(uuid), throwsA(const TypeMatcher<StringError>()));
+      }
 
-        expect(() => Uuid.parse(uuid),
-            throwsA(const TypeMatcher<StringError>()));
+      for (var uuid in badUuidListLength0) {
+        global.throwOnError = false;
+        final uuid5 = Uuid.parse(uuid);
+        expect(uuid5, isNull);
+
+        global.throwOnError = true;
+        expect(
+            () => Uuid.parse(uuid), throwsA(const TypeMatcher<StringError>()));
       }
     });
     test('parse', () {
@@ -138,8 +160,8 @@ void main() {
         expect(uuid2, isNull);
 
         global.throwOnError = true;
-        expect(() => Uuid.parse(uuid),
-            throwsA(const TypeMatcher<StringError>()));
+        expect(
+            () => Uuid.parse(uuid), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -200,13 +222,13 @@ void main() {
 
     test('setGenerator', () {
       final generator0 = Uuid.setGenerator(GeneratorType.pseudo);
-      expect(generator0,  true);
+      expect(generator0, true);
 
       final generator1 = Uuid.setGenerator(GeneratorType.secure);
-      expect(generator1,  true);
+      expect(generator1, true);
 
       final generator2 = Uuid.setGenerator(GeneratorType.seededPseudo);
-      expect(generator2,  true);
+      expect(generator2, true);
     });
   });
 }
