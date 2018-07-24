@@ -505,7 +505,7 @@ void main() {
       final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
       item.add(fd0);
 
-      expect(item.replaceF<int>(fd0.index, (n) => n), equals(vList0));
+      expect(item.replaceF<double>(fd0.index, (n) => n), equals(vList0));
       log.debug('fd0.values: ${fd0.values}');
       expect(fd0.values, equals(vList0));
 

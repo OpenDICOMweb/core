@@ -14,8 +14,7 @@ import 'package:core/src/utils.dart';
 /// The DICOM PersonName Types
 enum PersonNameType { alphabetic, ideographic, phonetic }
 
-/// An equality function for lists.
-const ListEquality eq = const ListEquality<String>();
+
 
 //TODO: rewrite for correctness
 /// A DICOM Person Name (VR = PN)
@@ -41,6 +40,8 @@ const ListEquality eq = const ListEquality<String>();
 /// current/output/html/part05.html).
 ///
 class PersonName {
+  /// An equality function for List<Name>.
+  static const ListEquality eq = const ListEquality<Name>();
   final List<Name> groups;
 
   /// Create a new DICOM [PersonName].
@@ -48,9 +49,11 @@ class PersonName {
 
   /// Create a PersonName from an ordered [List] of name components.
   factory PersonName.fromString(String s) {
+    print('s: "$s"');
     final list = splitTrim(s, '=');
     final groups = list.map((e) => new Name.fromString(e));
-    return new PersonName(groups.toList());
+    print('groups: $groups');
+    return new PersonName(groups.toList(growable: false));
   }
 
   /// Checks the Equality (deep) of two [PersonName]s.
@@ -129,12 +132,23 @@ class Name {
   static const int maxComponents = 5;
   static const int maxSeparators = 4;
   static const int maxGroupLength = 64;
-  final Iterable<String> components;
+  /// An equality function for List<String>.
+  static const ListEquality eq = const ListEquality<String>();
+  final List<String> components;
 
-  Name(this.components);
+  Name(Iterable<String> names)
+      : components = (names is List) ? names : names.toList(growable: false);
 
-  factory Name.fromString(String s) =>
-		  new Name._(splitTrim(s, '^')..forEach(_isPNComponentGroup));
+  factory Name.fromString(String s) {
+    final names = splitTrim(s, '^');
+    for (var name in names) {
+      print('name: "$name"');
+      print('is name: ${_isPNComponentGroup(name)}');
+      if (!_isPNComponentGroup(name)) return null;
+    }
+    return Name(names.toList(growable: false));
+
+  }
 
   const Name._(this.components);
 
@@ -142,7 +156,7 @@ class Name {
 
   @override
   bool operator ==(Object name) =>
-      (name is Name) && eq.equals(components.toList(), name.components.toList());
+      (name is Name) && eq.equals(components, name.components);
 
   @override
   int get hashCode => global.hash(components);
@@ -226,13 +240,14 @@ class Name {
 
 /// The filter for DICOM String characters.
 /// Visible ASCII characters, except Backslash.
-bool _isPNChar(int c) => c >= kSpace && c < kDelete && c != kBackslash && c != kEqual;
+bool _isPNChar(int c) =>
+    c >= kSpace && c < kDelete && c != kBackslash && c != kEqual;
 
 bool _isPNComponentGroup(String s) => _filteredTest(s, _isPNNameChar);
 
 /// Returns _true_ if all characters pass the filter.
 bool _filteredTest(String s, bool filter(int c)) {
-  if (s.isNotEmpty && s.length <= 64) return false;
+  if (s.isEmpty || s.length > 64) return false;
   for (var i = 0; i < s.length; i++) {
     if (!filter(s.codeUnitAt(i))) return false;
   }

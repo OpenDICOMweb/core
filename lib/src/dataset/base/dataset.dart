@@ -134,15 +134,16 @@ abstract class Dataset extends Object with ListMixin<Element>,
   @override
   Element internalLookup(int code) => this[code];
 
+  // Urgent Sharath unit test
   /// All lookups should be done using this method.
   List<Element> lookupAll(int index) {
     final results = <Element>[];
     final e = lookup(index);
-    e ?? results.add(e);
+    if (e != null) results.add(e);
     for (var sq in sequences)
       for (var item in sq.items) {
         final e = item[index];
-        e ?? results.add(e);
+        if (e != null) results.add(e);
       }
     return results;
   }

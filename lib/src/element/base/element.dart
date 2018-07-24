@@ -369,7 +369,7 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns _true_ if [values] is valid for _this_.
   bool checkValue(V v, {Issues issues, bool allowInvalid = false});
 
-  bool valuesEqual(Element<V> other) => vListEqual<V>(values, other.values);
+  bool valuesEqual(Element<V> other) => vListEqual(values, other.values);
 
   // ************ Element related Getters and Methods *************
   // **************************************************************
@@ -475,13 +475,13 @@ abstract class Element<V> extends ListBase<V> {
 
   // ***************** Static Getters and Methods *****************
   // **************************************************************
-  static bool equal<V>(Element<V> a, Element<V> b) =>
-      identical(a, b) || (a.tag == b.tag && vListEqual<V>(a.values, b.values));
+  static bool equal(Element a, Element b) =>
+      identical(a, b) || (a.tag == b.tag && vListEqual(a.values, b.values));
 
-  static bool vListEqual<V>(Iterable<V> a, Iterable<V> b) =>
+  static bool vListEqual(Iterable a, Iterable b) =>
       identical(a, b) || (a.length == b.length && _vListEqual(a, b));
 
-  static bool _vListEqual<V>(Iterable<V> aList, Iterable<V> bList) {
+  static bool _vListEqual(Iterable aList, Iterable bList) {
     final a = aList.iterator;
     final b = bList.iterator;
     while (a.moveNext()) {

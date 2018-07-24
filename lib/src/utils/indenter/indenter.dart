@@ -46,7 +46,10 @@ class Indenter extends Object with IndenterMixin implements StringBuffer {
       sb.writeAll(objects, separator);
 
   void writeList(Iterable objects, [String separator = '']) =>
-      '[${sb.writeAll(objects, separator)}]';
+    sb
+      ..write('[')
+      ..writeAll(objects, separator)
+      ..write(']');
 
   // ignore: avoid_annotating_with_dynamic
   void _writeKeyValuePair(String key, dynamic value) =>

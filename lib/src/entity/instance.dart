@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base/root_dataset.dart';
@@ -27,22 +26,12 @@ class Instance extends Entity {
   Instance(Series series, Uid uid,RootDataset dataset)
       : super(series, uid, dataset, Entity.empty);
 
-/* Flush if not needed
-  /// Returns a copy of [this] [Instance], but with a new [Uid]. If [series]
-  /// is [null] the new [Instance] is in the same [Series] as [this].
-  Instance.from(Instance instance, Series parent)
-      : _pixelData = instance.pixelData,
-        super((parent == null) ? instance.parent : parent, new Uid(),
-            new RootDataset.from(instance.dataset));
-*/
-
   /// Returns a new [Instance] created from the [RootDataset].
   factory Instance.fromRDS(RootDataset rds, Series series) {
     assert(series != null);
     final e = rds[kSOPInstanceUID];
     if (e == null) return elementNotPresentError(e);
     final instanceUid = new Uid(e.value);
-//    if (series == null) series = new Series.fromRootDataset(rds, study, subject);
     final instance = new Instance(series, instanceUid, rds);
     series.putIfAbsent(instance);
     return instance;

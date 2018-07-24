@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/entity/entity.dart';
@@ -80,5 +79,13 @@ class Study extends Entity {
       }
     }
     return sb.toString();
+  }
+
+  /// Adds a new [Series] to the [Study].  Throws a [DuplicateEntityError]
+  /// if _this_ has an existing [Series] with the same [Uid].
+  Series putIfAbsent(Series series) {
+    final v = children.putIfAbsent(series.uid, () => series);
+    if (v != series) return duplicateEntityError(v, series);
+    return series;
   }
 }

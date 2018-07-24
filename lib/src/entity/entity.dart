@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity/ie_level.dart';
@@ -58,9 +57,6 @@ abstract class Entity {
   /// Returns the child that has [uid].
   Entity operator [](Uid uid) => children[uid];
 
-  /// [putIfAbsent]s a child [Entity] with [uid].
-  void operator []=(Uid uid, Entity e) => putIfAbsent(e);
-
   // **** Minimal Interface ****
 
   // The [name] of _this_.
@@ -74,6 +70,7 @@ abstract class Entity {
   /// The [Type] of the [children].
   Type get childType;
 
+  // Issue: this could be '/$id' for all classes where id == uid for non-patient
   /// Returns a [String] containing the canonical pathname for _this_.
   String get path;
 
@@ -90,17 +87,15 @@ abstract class Entity {
   /// Returns the [Element] with [Tag] equal to [tag] in _this_.
   Element lookup(Tag tag) => rds[tag.code];
 
-  /// Adds a new child to the Entity.  Throws a [DuplicateEntityError] if
-  /// a an existing child has the same [Uid].
-  Entity putIfAbsent(Entity entity) {
-    final v = children.putIfAbsent(entity.uid, () => entity);
-    if (v != entity) return duplicateEntityError(v, entity);
-    return entity;
-  }
-
   /// Returns a [String] containing formatted output.
   String format(Formatter z) => z.fmt(this, children.values);
 
   @override
   String toString() => '$runtimeType($uid): (${children.length}) ';
+
+  static Entity putWhenAbsent(Entity entity, Uid uid, Map<Uid, Entity> children)   {
+    final v = children.putIfAbsent(uid, () => entity);
+    if (v != entity) return duplicateEntityError(v, entity);
+    return entity;
+  }
 }

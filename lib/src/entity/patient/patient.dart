@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity/active_studies.dart';
@@ -77,6 +76,15 @@ class Patient extends Entity {
 
   /// Returns the [Sex] of _this_.
   int get age => throw new UnimplementedError('');
+
+  /// Adds a new [Study] for the [Patient].  Throws a [DuplicateEntityError]
+  /// if [Patient] has an existing [Study] with the same [Uid].
+  Study putIfAbsent(Study study) {
+    assert(study is Study);
+    final v = children.putIfAbsent(study.uid, () => study);
+    if (v != study) return duplicateEntityError(v, study);
+    return study;
+  }
 
   Study createStudyFromRootDataset(RootDataset rds) =>
       new Study.fromRootDataset(rds, this);

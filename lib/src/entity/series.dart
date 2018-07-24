@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
@@ -67,6 +66,15 @@ class Series extends Entity {
   Patient get subject => study.subject;
 
   Iterable<Instance> get instances => children.values;
+
+
+  /// Adds a new [Instance] to the [Series].  Throws a [DuplicateEntityError]
+  /// if _this_ has an existing [Instance] with the same [Uid].
+  Instance putIfAbsent(Instance instance) {
+    final v = children.putIfAbsent(instance.uid, () => instance);
+    if (v != instance) return duplicateEntityError(v, instance);
+    return instance;
+  }
 
   Instance createInstanceFromRootDataset(RootDataset rds) =>
       new Instance.fromRDS(rds, this);

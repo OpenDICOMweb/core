@@ -51,11 +51,13 @@ class Sha256<E> {
     return _trim(v, uint8(v64.buffer.asUint8List()).buffer.asFloat64List());
   }
 
-  // TODO: clean up when type system handles TypedData as List
+  /// Returns a Message [Digest] from a [Iterable<num>].
   static List<num> numbers(Iterable<num> v) {
     if (v is Iterable<double>) return float32(v);
     if (v is Iterable<int>) return int32(v);
-    return null;
+    final nList = <double>[];
+    for (var n in v) nList.add(n.toDouble());
+    return float32(nList);
   }
 
 

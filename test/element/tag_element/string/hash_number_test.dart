@@ -68,7 +68,11 @@ void main() {
 
         global.throwOnError = false;
         final hash1 = Sha256.stringList(vList0);
-        log.debug('vList0: $vList0, hash1: $hash1');
+        log
+          ..debug('vList0: $vList0, hash1: $hash1')
+          ..debug('e0: ${e0.numbers} isList<String>: ${e0.numbers is List<String>}')
+          ..debug('isList<double>: ${e0.numbers is List<double>}')
+          ..debug('e0: $e0 e0.sha256: ${e0.sha256}');
         expect(e0.sha256, isNotNull);
 
         log.debug('ds0.hash: ${e0.hash}, ds1.hash: ${e1.hash},'
