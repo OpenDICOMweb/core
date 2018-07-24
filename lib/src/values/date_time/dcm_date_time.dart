@@ -139,19 +139,19 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   int get day => epochDayToDate(epochDay)[2];
 
   /// Returns the integer values of the _hour_ component of _this_.
-  int get hour => microseconds ~/ kMicrosecondsPerHour;
+  int get hour => (microseconds ~/ kMicrosecondsPerHour) % 24;
 
   /// Returns the integer values of the _minute_ component of _this_.
-  int get minute => microseconds ~/ kMicrosecondsPerMinute;
+  int get minute => (microseconds ~/ kMicrosecondsPerMinute) % 60;
 
   /// Returns the integer values of the _second_ component of _this_.
-  int get second => microseconds ~/ kMicrosecondsPerSecond;
+  int get second => (microseconds ~/ kMicrosecondsPerSecond) % 60;
 
   /// Returns the integer values of the _millisecond_ component of _this_.
-  int get millisecond => microseconds ~/ kMicrosecondsPerMillisecond;
+  int get millisecond => (microseconds ~/ kMicrosecondsPerMillisecond) % 1000;
 
   /// Returns the integer values of the _microsecond_ component of _this_.
-  int get microsecond => microseconds % kMillisecondsPerDay;
+  int get microsecond => (microseconds % kMillisecondsPerDay) % 1000;
 
   /// Returns the integer values of the _fraction_ of second component of _this_.
   int get fraction => microseconds % kMicrosecondsPerSecond;

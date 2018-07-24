@@ -279,6 +279,7 @@ void main() {
      test('DcmDateTime add', (){
       final dcmDT0 = new DcmDateTime(1998, 05, 12, 10, 09, 20, 100, 100);
       print(dcmDT0);
+      print(dcmDT0.inet);
       print('microseconds: ${dcmDT0.microseconds}');
       print('year: ${dcmDT0.year}');
       print('month: ${dcmDT0.month}');
