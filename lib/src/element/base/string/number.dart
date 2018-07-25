@@ -48,7 +48,6 @@ abstract class DS extends StringAscii {
   List<num> get numbers => _numbers ??= tryParseList(values);
   List<num> _numbers;
 
-  // Urgent: unit test
   /// Returns -1, 0, or 1 if [nList] is less than, equal to, or greater than
   /// [numbers].
   int compareValuesTo(List<num> nList) {
@@ -68,7 +67,6 @@ abstract class DS extends StringAscii {
     return (len < nLen) ? -1 : 1;
   }
 
-  // Urgent: unit test
   /// Returns -1, 0, or 1 if [numbers] is less than, equal to, or greater than
   /// [e].numbers.
   int compareTo(DS e) {
@@ -271,7 +269,6 @@ abstract class IS extends StringAscii {
   List<int> get integers => _integers ??= tryParseList(values);
   List<int> _integers;
 
-  // Urgent: unit test
   /// Returns -1, 0, or 1 if [nList] is less than, equal to, or greater than
   /// [integers].
   /// TODO: merge the body of DS. compareTo
@@ -292,7 +289,6 @@ abstract class IS extends StringAscii {
     return (len < nLen) ? -1 : 1;
   }
 
-  // Urgent: unit test
   /// Returns -1, 0, or 1 if [integers] is less than, equal to, or greater than
   /// [e].numbers.
   int compareTo(IS e) {
