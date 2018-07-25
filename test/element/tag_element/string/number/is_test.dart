@@ -420,7 +420,7 @@ void main() {
       expect(e0.hashStringList(vList0), isNotNull);
     });
 
-    test('IS compare', () {
+    test('IS compareTo & compareValueTo', () {
       for (var i = 1; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
         final e0 = new IStag(PTag.kEchoNumbers, vList0);
@@ -428,6 +428,10 @@ void main() {
         final compare0 = e0.compareValuesTo(nList);
         log.debug('compare0: $compare0');
         expect(compare0 == 0, true);
+
+        final e0a = new IStag(PTag.kEchoNumbers, vList0);
+        final compare1 = e0.compareTo(e0a);
+        expect(compare1 == 0, true);
       }
       for (var vList1 in goodISList) {
         final e1 = new IStag(PTag.kEchoNumbers, vList1);
@@ -435,7 +439,9 @@ void main() {
         final compare1 = e1.compareValuesTo(nList);
         log.debug('compare1: $compare1');
         expect(compare1 == 0, true);
-        // Urgent:
+        final e1a = new IStag(PTag.kEchoNumbers, vList1);
+        final compare2 = e1.compareTo(e1a);
+        expect(compare2 == 0, true);
       }
 
       final vList2 = rsg.getISList(1, 1);
@@ -449,7 +455,13 @@ void main() {
         } else {
           expect(compare2 == -1, true);
         }
-        // Urgent:
+        final e2a = new IStag(PTag.kEchoNumbers, [n]);
+        final compare3 = e2.compareTo(e2a);
+        if (!compare3.isNegative) {
+          expect(compare3 == 1, true);
+        } else {
+          expect(compare3 == -1, true);
+        }
       }
 
       for (var i = 1; i <= 10; i++) {
@@ -463,14 +475,17 @@ void main() {
         } else {
           expect(compare3 == 0, true);
         }
-        // Urgent:
+        final e3a = new IStag(PTag.kSelectorISValue, vList3);
+        final compare4 = e3.compareTo(e3a);
+        expect(compare4 == 0, true);
       }
 
       final e4 = new IStag(PTag.kSelectorISValue, []);
-      final nList = [int.parse(e4.value)];
-      final compare4 = e4.compareValuesTo(nList);
-      expect(compare4, isNull);
-      // Urgent:
+      final compare5 = e4.compareValuesTo([66]);
+      expect(compare5, -1);
+      final e3a = new IStag(PTag.kSelectorISValue, []);
+      final compare6 = e4.compareTo(e3a);
+      expect(compare6 == 0, true);
     });
 
     test('IS increment', () {
