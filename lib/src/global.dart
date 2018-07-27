@@ -6,10 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:math';
 
 import 'package:core/src/error/general_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/system/sdk.dart';
 import 'package:core/src/system/sys_info.dart';
 import 'package:core/src/utils.dart';
@@ -185,14 +185,16 @@ abstract class Global {
   String toString() => '$banner';
 
   // Date/Time stuff
-  static final DateTime startTime = new DateTime.now();
-  static final Duration timeZoneOffset = startTime.timeZoneOffset;
-  static final int timeZoneOffsetInMicroseconds =
-      startTime.timeZoneOffset.inMicroseconds;
+  static final DateTime kStartTime = new DateTime.now();
+  static final Duration timeZoneOffset = kStartTime.timeZoneOffset;
+  /// The local time zone offset in microseconds.
+  //static final int localTZMicrosecond = kStartTime.timeZoneOffset.inMicroseconds;
+  static final int kLocalTZInMicroseconds =
+      kStartTime.timeZoneOffset.inMicroseconds;
   static final int timeZoneIndex =
-      kValidTZMicroseconds.indexOf(timeZoneOffsetInMicroseconds);
-  static final String timeZoneName = startTime.timeZoneName;
-  static final Duration zeroDuration = new Duration();
+      kValidTZMicroseconds.indexOf(kLocalTZInMicroseconds);
+  static final String timeZoneName = kStartTime.timeZoneName;
+  static final Duration kZeroDuration = new Duration();
 
   /// The random number generator for the [global].
   static final Random rng = new Random.secure();
@@ -229,6 +231,13 @@ bool get hexUseUppercase => global.isHexUppercase;
 bool get doTestElementValidity => global.doTestElementValidity;
 
 bool get trimURISpaces => false;
+
+/// The local time the SDK started.
+DateTime get kLocalStartTime => Global.kStartTime;
+
+/// The local Time Zone Offset in microseconds.
+int get kLocalTZInMicroseconds => Global.kLocalTZInMicroseconds;
+
 
 int truncatedListLength = 5;
 

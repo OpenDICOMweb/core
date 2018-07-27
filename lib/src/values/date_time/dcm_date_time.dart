@@ -57,7 +57,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
             ? onError(y, m, d, h, mm, s, ms, us)
             : invalidDcmDateTimeError(
                 y, m, d, h, mm, s, ms, us, tzh, tzm, issues);
-      return new DcmDateTime._(date + time + localTZMicrosecond);
+      return new DcmDateTime._(date + time + kLocalTZInMicroseconds);
     } on FormatException catch (e) {
       return invalidDcmDateTimeError(
           y, m, d, h, mm, s, ms, us, tzh, tzm, issues, e);
@@ -97,6 +97,8 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     return new DcmDateTime._(eDay + us + tzMicroseconds);
   }
 
+
+  factory DcmDateTime.fromMicroseconds(int us) => new DcmDateTime._(us);
   /// Internal constructor
   ///
   /// _Note_: All arguments MUST be valid.
@@ -139,19 +141,19 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   int get day => epochDayToDate(epochDay)[2];
 
   /// Returns the integer values of the _hour_ component of _this_.
-  int get hour => (microseconds ~/ kMicrosecondsPerHour) % 24;
+  int get hour => (microseconds % kMicrosecondsPerHour) ~/ 24;
 
   /// Returns the integer values of the _minute_ component of _this_.
-  int get minute => (microseconds ~/ kMicrosecondsPerMinute) % 60;
+  int get minute => (microseconds % kMicrosecondsPerMinute) ~/ 60;
 
   /// Returns the integer values of the _second_ component of _this_.
-  int get second => (microseconds ~/ kMicrosecondsPerSecond) % 60;
+  int get second => (microseconds % kMicrosecondsPerSecond) ~/ 60;
 
   /// Returns the integer values of the _millisecond_ component of _this_.
-  int get millisecond => (microseconds ~/ kMicrosecondsPerMillisecond) % 1000;
+  int get millisecond => (microseconds ~/ kMillisecondsPerDay) ~/  1000;
 
   /// Returns the integer values of the _microsecond_ component of _this_.
-  int get microsecond => (microseconds % kMillisecondsPerDay) % 1000;
+  int get microsecond => (microseconds % kMillisecondsPerDay) ~/ 1000;
 
   /// Returns the integer values of the _fraction_ of second component of _this_.
   int get fraction => microseconds % kMicrosecondsPerSecond;
@@ -195,8 +197,9 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
   static final Duration zeroDuration = new Duration();
 
-  /// TODO Sharath: unit test
+  /// TODO Jim Doc
   /// See Dart Doc for [DateTime].[add].
+  //
   DcmDateTime add({int years, int months, int days, int hours,
       int minutes, int seconds, int milliseconds, int microseconds,
       Duration  duration}) {
@@ -235,24 +238,22 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   static const int kMaxLength = 26;
 
   /// The [DateTime] that this package was started.
-  static final DateTime start = new DateTime.now();
+//  static final DateTime start = new DateTime.now();
 
   /// The local [TimeZone].
   static final TimeZone localTimeZone =
-      new TimeZone.fromMicroseconds(localTZMicrosecond);
+      new TimeZone.fromMicroseconds(kLocalTZInMicroseconds);
 
   /// The Time Zone where this package is running.
-  static final String localTimeZoneName = start.timeZoneName;
+  static final String localTimeZoneName = kLocalStartTime.timeZoneName;
 
   /// The local time zone offset in minutes.
-  static final int localTZHour = start.timeZoneOffset.inHours;
+  static final int localTZHour = kLocalStartTime.timeZoneOffset.inHours;
 
   /// The local time zone offset in minutes.
   static final int localTZMinute =
-      start.timeZoneOffset.inMinutes - (localTZHour * 60);
+      kLocalStartTime.timeZoneOffset.inMinutes - (localTZHour * 60);
 
-  /// The local time zone offset in microseconds.
-  static final int localTZMicrosecond = start.timeZoneOffset.inMicroseconds;
 
   /// Returns _true_ if [s] is a valid DICOM [DcmDateTime] [String] (DT).
   static bool isValidString(String s,

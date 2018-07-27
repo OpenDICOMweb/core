@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
@@ -276,16 +275,28 @@ void main() {
       }
     });
 
-     test('DcmDateTime add', (){
-      final dcmDT0 = new DcmDateTime(1998, 05, 12, 10, 09, 20, 100, 100);
-      print(dcmDT0);
-      print(dcmDT0.inet);
-      print('microseconds: ${dcmDT0.microseconds}');
-      print('year: ${dcmDT0.year}');
-      print('month: ${dcmDT0.month}');
-      print('day: ${dcmDT0.day}');
-      print('hour: ${dcmDT0.hour}');
-      print('minute: ${dcmDT0.minute}');
+    test('DcmDateTime add', () {
+      final d0 = dateToEpochMicroseconds(1970, 1, 1);
+      print(d0);
+      expect(d0 == 0, true);
+
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      print(dt0);
+      print(dt0.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      final dt1 = new DcmDateTime.fromMicroseconds(0);
+      print(dt1);
+      print(dt1.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      print(dt0.inet);
+      print('microseconds: ${dt0.microseconds}');
+      print('year: ${dt0.year}');
+      print('month: ${dt0.month}');
+      print('day: ${dt0.day}');
+      print('hour: ${dt0.hour}');
+      print('minute: ${dt0.minute}');
       //final add0 = dcmDT0.add();
       //print(add0);
     });
