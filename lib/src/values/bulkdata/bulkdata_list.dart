@@ -6,35 +6,31 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'dart:async';
-import 'dart:convert' as cvt;
-import 'dart:io';
+import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/utils/buffer.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/values/bulkdata/bulkdata.dart';
-import 'package:path/path.dart' as path;
+
 
 class BulkdataList {
-  final Uint8List token = cvt.ascii.encode('Bulkdata');
-  final String filePath;
+  final Uint8List token = ascii.encode('Bulkdata');
   List<Bulkdata> entries = <Bulkdata>[];
   int offset = 0;
   int lengthInBytes = 0;
 
-  BulkdataList(String filePath) : filePath = path.absolute(filePath);
+  BulkdataList();
 
   Bulkdata operator [](int i) => entries[i];
 
   int get length => entries.length;
 
   /// Return a URL for the [Bulkdata] Value FIeld that is add to _this_.
-  BulkdataUri add(int code, Bytes valueField) {
+  Bulkdata add(int code, Bytes valueField) {
     final bd = new Bulkdata(code, entries.length, valueField);
     lengthInBytes += valueField.length;
     entries.add(bd);
-    return new BulkdataUri(filePath, offset, valueField.length);
+    return bd;
   }
 
   // Returns a [Uint32List] where each entry is 12 bytes long.
@@ -53,6 +49,7 @@ class BulkdataList {
     return bd.buffer.asUint32List();
   }
 
+/*
   Future writeFile(File file, {bool doAsync = true}) async {
     final wb = new DicomWriteBuffer();
     final index = getIndex();
@@ -84,4 +81,6 @@ class BulkdataList {
     final base = path.basenameWithoutExtension(s);
     return '$dir$base$bulkdataFileExtension';
   }
+*/
+
 }

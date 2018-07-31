@@ -32,6 +32,7 @@ typedef DcmDateTime OnDcmDateTimeParseError(String s);
 /// The [Type] of [DcmDateTime] hashing error handlers.
 typedef String OnDcmDateTimeHashStringError(String s);
 
+// TODO: decide if
 class DcmDateTime implements Comparable<DcmDateTime> {
   /// The [DcmDateTime] in microseconds.
   final int microseconds;
@@ -57,7 +58,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
             ? onError(y, m, d, h, mm, s, ms, us)
             : invalidDcmDateTimeError(
                 y, m, d, h, mm, s, ms, us, tzh, tzm, issues);
-      return new DcmDateTime._(date + time + kLocalTZInMicroseconds);
+      return new DcmDateTime._(date + time + TimeZone.localInMicroseconds);
     } on FormatException catch (e) {
       return invalidDcmDateTimeError(
           y, m, d, h, mm, s, ms, us, tzh, tzm, issues, e);
@@ -199,7 +200,6 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
   /// TODO Jim Doc
   /// See Dart Doc for [DateTime].[add].
-  //
   DcmDateTime add({int years, int months, int days, int hours,
       int minutes, int seconds, int milliseconds, int microseconds,
       Duration  duration}) {
@@ -212,8 +212,25 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     final ms = (milliseconds == null) ? millisecond : millisecond + milliseconds;
     final us = (microseconds == null) ? microsecond : microsecond + microseconds;
     final dt = dcmDateTimeInMicroseconds(y, m, d, h, mm, s, ms, us);
-    final dur = (duration == null) ? duration : duration + duration;
+    final dur = (duration == null) ? zeroDuration : duration;
     return new DcmDateTime._(dt + dur.inMicroseconds);
+  }
+
+  /// TODO Jim Doc
+  DcmDateTime subtract({int years, int months, int days, int hours,
+    int minutes, int seconds, int milliseconds, int microseconds,
+    Duration  duration}) {
+    final y = (years == null) ? year : year - years;
+    final m = (months == null) ? month : month - months;
+    final d = (days == null) ? day : day - days;
+    final h = (hours == null) ? hour : hour - hours;
+    final mm = (minutes == null) ? minute : minute - minutes;
+    final s = (seconds == null) ? second : second - seconds;
+    final ms = (milliseconds == null) ? millisecond : millisecond - milliseconds;
+    final us = (microseconds == null) ? microsecond : microsecond - microseconds;
+    final dt = dcmDateTimeInMicroseconds(y, m, d, h, mm, s, ms, us);
+    final dur = (duration == null) ? zeroDuration : duration;
+    return new DcmDateTime._(dt - dur.inMicroseconds);
   }
 
 /* TODO: add if needed when with is no longer a keyword.
@@ -242,17 +259,16 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
   /// The local [TimeZone].
   static final TimeZone localTimeZone =
-      new TimeZone.fromMicroseconds(kLocalTZInMicroseconds);
+      new TimeZone.fromMicroseconds(TimeZone.localInMicroseconds);
 
   /// The Time Zone where this package is running.
-  static final String localTimeZoneName = kLocalStartTime.timeZoneName;
+  static final String localTimeZoneName = TimeZone.localName;
 
   /// The local time zone offset in minutes.
-  static final int localTZHour = kLocalStartTime.timeZoneOffset.inHours;
+  static final int localTZHour = TimeZone.local.hour;
 
   /// The local time zone offset in minutes.
-  static final int localTZMinute =
-      kLocalStartTime.timeZoneOffset.inMinutes - (localTZHour * 60);
+  static final int localTZMinute = TimeZone.local.minute;
 
 
   /// Returns _true_ if [s] is a valid DICOM [DcmDateTime] [String] (DT).

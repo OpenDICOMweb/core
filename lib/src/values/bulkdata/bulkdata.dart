@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/bytes.dart';
 
 const String bulkdataFileExtension = '.bd';
@@ -24,21 +23,5 @@ class Bulkdata {
   int get length => vf.length;
 }
 
-// '$baseUrl/$path
-class BulkdataUri {
-  final String scheme = 'https';
-  final String path;
-  final String query;
-  final int offset;
-  final int length;
-
-  BulkdataUri(this.path, this.offset, this.length)
-  : query = 'bytes=$offset-$length';
-
-  Uri get uri =>  new Uri(scheme: scheme, path: path, query: query);
-
-  @override
-  String toString() => Uri.encodeFull('$uri');
-}
 
 
