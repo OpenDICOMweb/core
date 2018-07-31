@@ -212,7 +212,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     final ms = (milliseconds == null) ? millisecond : millisecond + milliseconds;
     final us = (microseconds == null) ? microsecond : microsecond + microseconds;
     final dt = dcmDateTimeInMicroseconds(y, m, d, h, mm, s, ms, us);
-    final dur = (duration == null) ? duration : duration + duration;
+    final dur = (duration == null) ? zeroDuration : duration + duration;
     return new DcmDateTime._(dt + dur.inMicroseconds);
   }
 
