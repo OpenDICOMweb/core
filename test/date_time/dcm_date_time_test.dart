@@ -277,13 +277,20 @@ void main() {
 
     test('DcmDateTime add', () {
       final d0 = dateToEpochMicroseconds(1970, 1, 1);
-      print(d0);
+      log.debug('d0 : $d0');
       expect(d0 == 0, true);
 
       final dt0 = new DcmDateTime.utc(1970, 1, 1);
-      print(dt0);
-      print(dt0.microseconds);
+      log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
+      /*final add0 = dt0.add(
+          years: 20, months: 08, days: 12, hours: 01, minutes: 10, seconds: 20);*/
+      const years = 100;
+      for (var i = 1; i < years; i++) {
+        final add0 = dt0.add(years: i);
+        log.debug('add0.year: $add0');
+        expect(add0.year == dt0.year + i, true);
+      }
 
       final dt1 = new DcmDateTime.fromMicroseconds(0);
       print(dt1);
@@ -299,6 +306,71 @@ void main() {
       print('minute: ${dt0.minute}');
       //final add0 = dcmDT0.add();
       //print(add0);
+    });
+
+    test('DcmDateTime add month', () {
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      log..debug('dt0 :$dt0')..debug(dt0.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      const months = 11;
+      for (var i = 1; i < months; i++) {
+        final add0 = dt0.add(months: i);
+        log.debug('add0.month: $add0');
+        expect(add0.month == dt0.month + i, true);
+      }
+    });
+
+    test('DcmDateTime add day', () {
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      log..debug('dt0 :$dt0')..debug(dt0.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      const days = 29;
+      for (var i = 1; i < days; i++) {
+        final add0 = dt0.add(days: i);
+        log.debug('add0.day: $add0');
+        expect(add0.day == dt0.day + i, true);
+      }
+    });
+
+    test('DcmDateTime add hour', () {
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      log..debug('dt0 :$dt0')..debug(dt0.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      const hours = 23;
+      for (var i = 1; i < hours; i++) {
+        final add0 = dt0.add(hours: i);
+        log.debug('add0.hours: $add0');
+        expect(add0.hour == dt0.hour, true);
+      }
+    });
+
+    test('DcmDateTime add minute', () {
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      log..debug('dt0 :$dt0')..debug(dt0.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      const minutes = 59;
+      for (var i = 1; i < minutes; i++) {
+        final add0 = dt0.add(minutes: i);
+        log.debug('add0.minutes: $add0');
+        expect(add0.minute == dt0.minute, true);
+      }
+    });
+
+    test('DcmDateTime add second', () {
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      log..debug('dt0 :$dt0')..debug(dt0.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      const seconds = 59;
+      for (var i = 1; i < seconds; i++) {
+        final add0 = dt0.add(seconds: i);
+        log.debug('add0.seconds: $add0');
+        expect(add0.second == dt0.second, true);
+      }
     });
   });
 }
