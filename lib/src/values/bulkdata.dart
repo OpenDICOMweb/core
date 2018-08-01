@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 export 'package:core/src/values/bulkdata/bulkdata.dart';
 export 'package:core/src/values/bulkdata/bulkdata_list.dart';
-export 'package:core/src/values/bulkdata/bulkdate_file.dart';
+export 'package:core/src/values/bulkdata/bulkdata_file.dart';
+export 'package:core/src/values/bulkdata/bulkdata_uri.dart';

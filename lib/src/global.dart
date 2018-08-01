@@ -9,21 +9,15 @@
 import 'dart:math';
 
 import 'package:core/src/error/general_errors.dart';
-import 'package:core/src/global.dart';
 import 'package:core/src/system/sdk.dart';
 import 'package:core/src/system/sys_info.dart';
-import 'package:core/src/utils.dart';
+import 'package:core/src/utils/hash.dart';
+import 'package:core/src/utils/logger.dart';
 import 'package:core/src/values/date_time.dart';
 import 'package:core/src/values/uid.dart';
 import 'package:version/version.dart';
 
 // **** Note: this file cannot have any dependencies on dart:io or dart:html.
-
-// System imports
-//  1. uses uid for transfer syntax
-//  2. uses uuid for random uid generation
-//  3. Uses version for system version info
-//  4. Uses logging to be the root of Logger
 
 const String kSystemBuildNumber = '00000';
 
@@ -41,13 +35,17 @@ abstract class Global {
   final String name;
   final Version version;
   final int buildNumber;
+
   /// If _true_ the [banner] is displayed.
   bool showBanner;
 
   /// If _true_ the SDK [banner] is displayed.
   bool showSdkBanner;
 
+  /// The minimum valid year.
   final int minYear;
+
+  /// The maximum valid year.
   final int maxYear;
 
   /// FMI Values
@@ -63,9 +61,9 @@ abstract class Global {
   final Logger log;
 
   /// The default hasher is for this [Global];
-  /// _Note_: This field is mutable.
   Hash hasher;
 
+  /// The character that separates _dates_ from _times_ in [DcmDateTime].
   String dateTimeSeparator = kDefaultTimeSeparator;
 
   /// This setting determines whether [Error]s are thrown or just return _null_.
@@ -76,8 +74,8 @@ abstract class Global {
   bool isUuidUppercase;
 
   /// This setting determines whether hexadecimal numbers print
-  /// in upper or lowercase.
-  bool isHexUppercase;
+  /// in upper or lowercase. The _default_ is lowercase.
+  bool isHexUppercase = false;
   bool allowInvalidCharacterEncodings = true;
   bool allowInvalidAscii = true;
   bool allowMalformedUtf8 = true;
@@ -184,17 +182,11 @@ abstract class Global {
   @override
   String toString() => '$banner';
 
+  static final Duration kZeroDuration = new Duration();
+
   // Date/Time stuff
   static final DateTime kStartTime = new DateTime.now();
-  static final Duration timeZoneOffset = kStartTime.timeZoneOffset;
-  /// The local time zone offset in microseconds.
-  //static final int localTZMicrosecond = kStartTime.timeZoneOffset.inMicroseconds;
-  static final int kLocalTZInMicroseconds =
-      kStartTime.timeZoneOffset.inMicroseconds;
-  static final int timeZoneIndex =
-      kValidTZMicroseconds.indexOf(kLocalTZInMicroseconds);
-  static final String timeZoneName = kStartTime.timeZoneName;
-  static final Duration kZeroDuration = new Duration();
+
 
   /// The random number generator for the [global].
   static final Random rng = new Random.secure();
@@ -208,6 +200,7 @@ abstract class Global {
   // ignore: unnecessary_getters_setters
   static set global(Global global) => _globals ??= global;
 
+  // Utility functions to avoid name collisions when necessary.
   static String dcm(int code) => dcm(code);
   static String hex8(int v) => hex8(v);
   static String hex16(int v) => hex16(v);
@@ -223,27 +216,19 @@ Logger get log => global.log;
 /// Should functions throw or return null.
 bool get throwOnError => global.throwOnError;
 
-/// Should [Uuid] [String]s use upper or lowercase hexadecimal.
-bool get uuidsUseUppercase => global.isUuidUppercase;
-
-bool get hexUseUppercase => global.isHexUppercase;
-
 bool get doTestElementValidity => global.doTestElementValidity;
 
+/// If _true_ leading and trailing spaces are removed from [String]s
+/// before converting them to [Uid]s.
 bool get trimURISpaces => false;
-
-/// The local time the SDK started.
-DateTime get kLocalStartTime => Global.kStartTime;
-
-/// The local Time Zone Offset in microseconds.
-int get kLocalTZInMicroseconds => Global.kLocalTZInMicroseconds;
-
 
 int truncatedListLength = 5;
 
-String truncate(List v) {
+// TODO: remove similar functionality from other sdk files
+String truncate(List v, [int length]) {
+  length ??= truncatedListLength;
   if (v.length > truncatedListLength) {
-    final x = v.sublist(0, truncatedListLength).join(', ');
+    final x = v.sublist(0, length).join(', ');
     return '[$x, ...]';
   }
   return v.toString();

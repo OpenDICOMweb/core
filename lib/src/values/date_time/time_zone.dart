@@ -6,8 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/error/date_time_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/values/date_time/primitives/time_zone.dart';
@@ -16,6 +16,8 @@ typedef TimeZone OnTimeZoneError(int sign, int h, int m);
 typedef TimeZone OnTimeZoneParseError(String s);
 typedef String OnTimeZoneHashStringError(String s);
 
+//Urgent jfp: make hour minute, name, microseconds, etc Getters
+// Urgent jfp: consider makeing tz part of DcmDateTime
 /// A Time Zone object. See ISO 8601.
 class TimeZone implements Comparable<TimeZone> {
   final int index;
@@ -105,6 +107,21 @@ class TimeZone implements Comparable<TimeZone> {
   static const int kMinMicroseconds = kMinTimeZoneMicroseconds;
   static const int kMaxMicroseconds = kMaxTimeZoneMicroseconds;
 
+  static final Duration localOffset = Global.kStartTime.timeZoneOffset;
+
+  /// The local Time Zone Offset in microseconds.
+  static final int localInMicroseconds =
+      Global.kStartTime.timeZoneOffset.inMicroseconds;
+
+  /// The local [TimeZone].
+  static final TimeZone local =
+      new TimeZone.fromMicroseconds(localInMicroseconds);
+
+  static final int localIndex =
+      kValidTZMicroseconds.indexOf(localInMicroseconds);
+
+  static final String localName = Global.kStartTime.timeZoneName;
+
   static TimeZone microsecondsToTimeZone(int us) {
     final index = kValidTZMicroseconds.indexOf(us);
     return (index == -1) ? badTimeMicroseconds(us) : kMembers[index];
@@ -166,8 +183,7 @@ class TimeZone implements Comparable<TimeZone> {
 
   /// Returns a [Issues] object if there are errors
   /// or warnings related to [s]; otherwise, returns _null_.
-  static Issues issues(String s,
-      {int start = 0, int end, Issues issues}) {
+  static Issues issues(String s, {int start = 0, int end, Issues issues}) {
     issues ??= new Issues('TimeZone: $s');
     end ??= s.length;
     parseDcmTimeZone(s, start: start, end: end, issues: issues);
