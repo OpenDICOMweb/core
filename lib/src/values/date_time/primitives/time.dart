@@ -6,8 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/utils/string.dart';

@@ -14,8 +14,10 @@ import 'dart:typed_data';
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/values/bulkdata/bulkdata.dart';
 
+const String bulkdataFileExtension = '.bd';
 final Uint8List kBulkdataFileToken = cvt.ascii.encode('Bulkdata');
 
+// Urgent Jim: document
 class BulkdataFile {
   String path;
   Bytes bytes;

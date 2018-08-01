@@ -46,6 +46,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
       int s = 0,
       int ms = 0,
       int us = 0,
+// Urgent Jim Fix time zone not handled correctly
       int tzh = 0,
       int tzm = 0,
       Issues issues,
@@ -142,19 +143,19 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   int get day => epochDayToDate(epochDay)[2];
 
   /// Returns the integer values of the _hour_ component of _this_.
-  int get hour => (microseconds % kMicrosecondsPerHour) ~/ 24;
+  int get hour => (microseconds ~/ kMicrosecondsPerHour) % 24;
 
   /// Returns the integer values of the _minute_ component of _this_.
-  int get minute => (microseconds % kMicrosecondsPerMinute) ~/ 60;
+  int get minute => (microseconds ~/ kMicrosecondsPerMinute) % 60;
 
   /// Returns the integer values of the _second_ component of _this_.
-  int get second => (microseconds % kMicrosecondsPerSecond) ~/ 60;
+  int get second => (microseconds ~/ kMicrosecondsPerSecond) % 60;
 
   /// Returns the integer values of the _millisecond_ component of _this_.
-  int get millisecond => (microseconds ~/ kMillisecondsPerDay) ~/  1000;
+  int get millisecond => (microseconds ~/ kMillisecondsPerDay) %  1000;
 
   /// Returns the integer values of the _microsecond_ component of _this_.
-  int get microsecond => (microseconds % kMillisecondsPerDay) ~/ 1000;
+  int get microsecond => (microseconds ~/ kMicrosecondsPerDay) % 1000;
 
   /// Returns the integer values of the _fraction_ of second component of _this_.
   int get fraction => microseconds % kMicrosecondsPerSecond;
@@ -191,7 +192,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
   /// Returns _this_ as a [String] in Internet \[RFC3339\] _date-time_ format.
   String get inet =>
-      (fraction == 0) ? '$y-$m-${d}T$h:$mm:$s' : '$y-$m-${d}T$h:$mm:$s.$f';
+      (fraction == 0) ? '$y-$m-$d\T$h:$mm:$s' : '$y-$m-${d}T$h:$mm:$s.$f';
 
   ///
   Date toDate() => new Date(year, month, day);

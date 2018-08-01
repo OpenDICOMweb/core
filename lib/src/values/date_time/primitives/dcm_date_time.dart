@@ -36,7 +36,7 @@ int dcmDateTimeInMicroseconds(
       : badDate(y, m, d);
   final time = (isValidTime(h, mm, s, ms, us))
       ? internalTimeInMicroseconds(h, mm, s, ms, us)
-      : badTime(y, m, d);
+      : badTime(h, m, d, ms, us);
   // ignore: avoid_returning_null
   if (day == null || time == null) return null;
   return day + time;

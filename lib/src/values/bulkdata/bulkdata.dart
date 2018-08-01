@@ -8,8 +8,11 @@
 //
 import 'package:core/src/utils/bytes.dart';
 
-const String bulkdataFileExtension = '.bd';
+import 'package:core/src/values/bulkdata/bulkdata_file.dart';
 
+/// A DICOM _Bulkdata_
+///
+/// A [Bulkdata] is an entry in a [BulkdataFile].
 class Bulkdata {
   /// Dicom Tag Code
   int code;

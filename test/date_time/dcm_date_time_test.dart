@@ -336,7 +336,8 @@ void main() {
 
     // Urgent Jim Fix
     test('DcmDateTime add hour', () {
-      final dt0 = new DcmDateTime.utc(1970, 1, 1, 10, 30, 45);
+      global.level = Level.debug;
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       //expect(dt0.microseconds == 0, true);
 
@@ -346,7 +347,8 @@ void main() {
         final add0 = dt0.add(hours: i);
         //log.debug('add0.hours: $add0');
         print('add0.hour: ${add0.hour}');
-        expect(add0.hour == dt0.hour, true);
+        print('add0.hour: ${((dt0.hour + i) % 24)}');
+        expect(add0.hour == ((dt0.hour + i) % 24), true);
       }
     });
 
@@ -359,7 +361,7 @@ void main() {
       for (var i = 1; i < minutes; i++) {
         final add0 = dt0.add(minutes: i);
         log.debug('add0.minutes: $add0');
-        expect(add0.minute == dt0.minute, true);
+        expect(add0.minute == dt0.minute + i, true);
       }
     });
 
@@ -372,7 +374,7 @@ void main() {
       for (var i = 1; i < seconds; i++) {
         final add0 = dt0.add(seconds: i);
         log.debug('add0.seconds: $add0');
-        expect(add0.second == dt0.second, true);
+        expect(add0.second == dt0.second + i, true);
       }
     });
   });

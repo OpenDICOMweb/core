@@ -11,29 +11,34 @@ import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/values/bulkdata/bulkdata.dart';
+import 'package:core/src/values/bulkdata/bulkdata_uri.dart';
+import 'package:path/path.dart';
 
-
+/// A list of [Bulkdata] that keeps track of the
 class BulkdataList {
   final Uint8List token = ascii.encode('Bulkdata');
+  final String path;
   List<Bulkdata> entries = <Bulkdata>[];
+  /// The current offset in bytes of the end of _this_.
   int offset = 0;
   int lengthInBytes = 0;
 
-  BulkdataList();
+  BulkdataList(String filePath) : path = absolute(filePath);
 
   Bulkdata operator [](int i) => entries[i];
 
   int get length => entries.length;
 
-  /// Return a URL for the [Bulkdata] Value FIeld that is add to _this_.
-  Bulkdata add(int code, Bytes valueField) {
+  /// Return a URL for the [Bulkdata] Value Field that is added to _this_.
+  BulkdataUri add(int code, Bytes valueField) {
     final bd = new Bulkdata(code, entries.length, valueField);
     lengthInBytes += valueField.length;
     entries.add(bd);
-    return bd;
+    return new BulkdataUri(path, offset, valueField.length);
   }
 
-  // Returns a [Uint32List] where each entry is 12 bytes long.
+  /// Returns a [Uint32List] where each entry is 12 bytes long.
+  /// The returned [Uint32List] is equivalent to a DICOM Basic Offset Table.
   Uint32List getIndex() {
     final length = entries.length * 12;
     final bd = new ByteData(length);
@@ -48,39 +53,4 @@ class BulkdataList {
     }
     return bd.buffer.asUint32List();
   }
-
-/*
-  Future writeFile(File file, {bool doAsync = true}) async {
-    final wb = new DicomWriteBuffer();
-    final index = getIndex();
-    wb
-      // Write identifer 'Bulkdata'
-      ..writeUint8List(token)
-      // Write length of Index
-      ..writeUint32(index.length);
-
-    // Write Index
-    for (var i = 0; i < index.length; i++) wb.writeUint32(index[i]);
-
-    // Write Bulkdata
-    for (var i = 0; i < entries.length; i++) wb.write(entries[i].vf);
-
-    wb.asUint8List(0, wb.length);
-
-    if (doAsync) {
-      await file.writeAsBytes(wb.asUint8List());
-    } else {
-      file.writeAsBytesSync(wb.asUint8List());
-    }
-  }
-
-  void writePath(String s) => writeFile(new File(bulkdataPath(s)));
-
-  String bulkdataPath(String s) {
-    final dir = path.dirname(s);
-    final base = path.basenameWithoutExtension(s);
-    return '$dir$base$bulkdataFileExtension';
-  }
-*/
-
 }
