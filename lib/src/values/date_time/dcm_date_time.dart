@@ -32,6 +32,7 @@ typedef DcmDateTime OnDcmDateTimeParseError(String s);
 /// The [Type] of [DcmDateTime] hashing error handlers.
 typedef String OnDcmDateTimeHashStringError(String s);
 
+/// DICOM Date/Time.
 class DcmDateTime implements Comparable<DcmDateTime> {
   /// The [DcmDateTime] in microseconds.
   final int microseconds;

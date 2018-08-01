@@ -9,7 +9,6 @@ environment:
   sdk: '>=1.24.0 <2.0.1'
 
 dependencies:
-  bignum: ^0.1.0
   crypto: any
   quiver: any
 # TODO before V0.9.0: decide on using pub_semver or version - remove one
