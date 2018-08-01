@@ -198,7 +198,8 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
   static final Duration zeroDuration = new Duration();
 
-  /// TODO Jim Doc
+  // TODO Jim Fix: if m >= 12 returns null
+  // TODO Jim Doc
   /// See Dart Doc for [DateTime].[add].
   DcmDateTime add({int years, int months, int days, int hours,
       int minutes, int seconds, int milliseconds, int microseconds,
@@ -216,7 +217,8 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     return new DcmDateTime._(dt + dur.inMicroseconds);
   }
 
-  /// TODO Jim Doc
+  // TODO Jim Fix: if m >= 12 returns null
+  // TODO Jim Doc
   DcmDateTime subtract({int years, int months, int days, int hours,
     int minutes, int seconds, int milliseconds, int microseconds,
     Duration  duration}) {

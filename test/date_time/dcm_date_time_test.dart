@@ -334,15 +334,18 @@ void main() {
       }
     });
 
+    // Urgent Jim Fix
     test('DcmDateTime add hour', () {
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = new DcmDateTime.utc(1970, 1, 1, 10, 30, 45);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
-      expect(dt0.microseconds == 0, true);
+      //expect(dt0.microseconds == 0, true);
 
+      print('dt0.hour: ${dt0.hour}');
       const hours = 23;
       for (var i = 1; i < hours; i++) {
         final add0 = dt0.add(hours: i);
-        log.debug('add0.hours: $add0');
+        //log.debug('add0.hours: $add0');
+        print('add0.hour: ${add0.hour}');
         expect(add0.hour == dt0.hour, true);
       }
     });
