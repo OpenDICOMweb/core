@@ -360,7 +360,7 @@ void main() {
       const minutes = 59;
       for (var i = 1; i < minutes; i++) {
         final add0 = dt0.add(minutes: i);
-        log.debug('add0.minutes: $add0');
+        log.debug('add0.minutes: ${add0.minute}');
         expect(add0.minute == dt0.minute + i, true);
       }
     });
@@ -373,9 +373,45 @@ void main() {
       const seconds = 59;
       for (var i = 1; i < seconds; i++) {
         final add0 = dt0.add(seconds: i);
-        log.debug('add0.seconds: $add0');
+        log.debug('add0.seconds: ${add0.second}');
         expect(add0.second == dt0.second + i, true);
       }
+    });
+
+    test('DcmDateTime subtract year', () {
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      log..debug('dt0 :$dt0')..debug(dt0.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      log.debug('dt0.hour: ${dt0.year}');
+      const years = 20;
+      for (var i = 1; i < years; i++) {
+        final sub0 = dt0.subtract(years: i);
+        log.debug('sub0.hours: ${sub0.year}');
+        expect(sub0.year == dt0.year - i, true);
+      }
+    });
+
+    test('DcmDateTime substract month', () {
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      log..debug('dt0 :$dt0')..debug(dt0.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      const months = -1;
+      final sub0 = dt0.subtract(months: months);
+      log.debug('sub0.month: ${sub0.month}');
+      expect(sub0.month == dt0.month - months, true);
+    });
+
+    test('DcmDateTime substract day', () {
+      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      log..debug('dt0 :$dt0')..debug(dt0.microseconds);
+      expect(dt0.microseconds == 0, true);
+
+      const days = -1;
+      final sub0 = dt0.subtract(days: days);
+      log.debug('sub0.day: $sub0');
+      expect(sub0.day == dt0.day - days, true);
     });
   });
 }

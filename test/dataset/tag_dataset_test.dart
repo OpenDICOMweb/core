@@ -896,7 +896,7 @@ void main() {
       expect((rootDS0[lo0.code] = lo0) == lo0, true);
 
       global.throwOnError = false;
-      log.debug('global.throwOnError:${global.throwOnError }');
+      log.debug('global.throwOnError:${global.throwOnError}');
       expect(rootDS0[lo0.code] = lo0, lo0);
       //rootDS0[lo0.tag]=ut0;
     });
@@ -912,7 +912,7 @@ void main() {
       final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
       rootDS0.add(fl0);
 
-      log.debug('global.throwOnError:${global.throwOnError }');
+      log.debug('global.throwOnError:${global.throwOnError}');
 
       //no duplicates
       expect(rootDS0.hasDuplicates, false);
@@ -997,6 +997,48 @@ void main() {
             '${rootDS0.keys}');
 
       expect(rootDS0.keys, equals(rootDS0.keys));
+    });
+
+    test('lookupAll', () {
+      final vList0 = rsg.getAEList(1, 10);
+      final ae0 = new AEtag(PTag.kRetrieveAETitle, vList0);
+      log.debug('vList0: $vList0, ae0.values: ${ae0.values}');
+      expect(ae0.values, equals(vList0));
+
+      final stringSTList0 = rsg.getSTList(1, 1);
+      final st0 = new STtag(PTag.kMetaboliteMapDescription, stringSTList0);
+
+      final stringDSList0 = rsg.getDSList(2, 2);
+      final ds0 = new DStag(PTag.kPresentationPixelSpacing, stringDSList0);
+
+      final rootDS = new TagRootDataset.empty()..add(ae0)..add(st0)..add(ds0);
+      log.debug('rootDS: $rootDS');
+
+      final vList1 = rsg.getAEList(1, 10);
+      var old = rootDS.update(ae0.tag.code, vList1);
+      expect(old, isNotNull);
+      expect(ae0 == old, true);
+      final ae1 = rootDS.lookupAll(old.index);
+      log
+        ..debug('ae1: $ae1')
+        ..debug('vList1: $vList1, ae1.values: ${ae1.elementAt(0).values}');
+      expect(ae1.elementAt(0).values, equals(vList1));
+
+      final vList2 = rsg.getSTList(1, 1);
+      old = rootDS.update(st0.tag.code, vList2);
+      expect(old, isNotNull);
+      expect(st0 == old, true);
+      final st1 = rootDS.lookupAll(old.index);
+      log.debug('vList2: $vList2, st1.values: ${st1.elementAt(0).values}');
+      expect(st1.elementAt(0).values, equals(vList2));
+
+      final vList3 = rsg.getDSList(2, 2);
+      old = rootDS.update(ds0.tag.code, vList3);
+      expect(old, isNotNull);
+      expect(ds0 == old, true);
+      final ds1 = rootDS.lookupAll(old.index);
+      log.debug('vList3: $vList3, ds1.values: ${ds1.elementAt(0).values}');
+      expect(ds1.elementAt(0).values, equals(vList3));
     });
   });
 }
