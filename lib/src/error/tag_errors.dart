@@ -6,13 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-import 'package:core/src/error/issues.dart';
+import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr/vr_base.dart';
 
+/// For use with [Tag] related [Error]s.
 class InvalidTagError extends Error {
   String message;
   Tag tag;

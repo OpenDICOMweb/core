@@ -6,10 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/tag/tag.dart';
 
-import 'parse_issues.dart';
+import 'package:core/src/error/issues/issues.dart';
 
 class ValuesIssues<E> {
   final String name;

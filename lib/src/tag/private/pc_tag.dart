@@ -81,7 +81,8 @@ abstract class PCTag extends PrivateTag {
     final defs = PCTagDefinition.lookup(creatorName);
     return (defs == null)
            ? new PCTagUnknown(pcCode, vrIndex, creatorName)
-           : new PCTagKnown(pcCode, vrIndex, creatorName, defs);
+    // Issue: should this be forcing kLOIndex
+           : new PCTagKnown(pcCode, kLOIndex, creatorName, defs);
   }
 
   static PCTag make(int code, int vrIndex, [String creatorName = '']) {

@@ -245,7 +245,8 @@ class PCtag extends PC with TagElement<String> {
   final Tag tag;
   StringList _values;
 
-  factory PCtag(Tag tag, [StringList vList = kEmptyStringList]) {
+  factory PCtag(Tag tag, [StringList vList]) {
+    vList ??= StringList.kEmptyList;
     final v = new StringList.from(vList);
     return PC.isValidArgs(tag, v)
         ? new PCtag._(tag, v)
@@ -276,9 +277,6 @@ class PCtag extends PC with TagElement<String> {
 
   @override
   PCtag update([Iterable<String> vList]) => new PCtag(tag, vList);
-
-  @override
-  String toString() => '$runtimeType $tag $value';
 
   static PCtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
@@ -707,7 +705,7 @@ class AStag extends AS with TagElement<String> {
 }
 
 /// A DICOM Date ([DA]) [Element].
-class DAtag extends DA with TagElement<String>  {
+class DAtag extends DA with TagElement<String> {
   @override
   final Tag tag;
   StringList _values;

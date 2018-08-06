@@ -10,7 +10,7 @@
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/element.dart';
-import 'package:core/src/error/issues.dart';
+import 'package:core/src/error/issues/issues.dart';
 
 List<Issues> validateRootDataset(RootDataset ds) =>
     _validateDataset(ds, <Issues>[]);

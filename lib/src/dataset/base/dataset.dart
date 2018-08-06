@@ -169,23 +169,25 @@ abstract class Dataset extends Object with ListMixin<Element>,
     if (old == null) {
       if (checkIssuesOnAdd && (issues != null)) {
         if (!allowInvalidValues && !e.isValid)
-          invalidElement('Invalid Values: $e', e);
+          return invalidElement('Invalid Values: $e', e);
       }
       if (isPCCode(code)) pcTags.tryAdd(e.tag);
       store(e.code, e);
-      //     if (e is SQ) sequences.add(e);
+      if (e is SQ) sequences.add(e);
       return true;
     } else if (allowDuplicates) {
       global.warn('** Duplicate Element:\n\tnew: $e\n\told: $old');
       if (old.vrIndex != kUNIndex) {
         history.duplicates.add(e);
       } else {
+        // Replace e with kUNIndex with e with vrIndex.
         store(e.index, e);
         history.duplicates.add(old);
       }
       return false;
     } else {
-      return duplicateElementError(old, e);
+      duplicateElementError(old, e);
+      return false;
     }
   }
 

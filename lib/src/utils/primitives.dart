@@ -13,7 +13,7 @@ import 'package:core/src/utils/bytes/bytes.dart';
 export 'package:core/src/utils/character/ascii.dart';
 export 'package:core/src/utils/dicom.dart';
 export 'package:core/src/error.dart';
-export 'package:core/src/error/issues.dart';
+export 'package:core/src/error/issues/issues.dart';
 export 'package:core/src/utils/string/hexadecimal.dart';
 export 'package:core/src/vr/vr_base.dart';
 

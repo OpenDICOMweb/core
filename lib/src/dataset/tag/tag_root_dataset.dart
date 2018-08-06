@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
@@ -41,9 +40,9 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   @override
   bool tryAdd(Element e, [Issues issues]) {
     var eNew = e;
-    return (e.group.isOdd)
-        ? eNew = pGroups.add(e, this)
-        : super.tryAdd(eNew, issues);
+    final old = lookup(e.code);
+    if (e.group.isOdd && old == null) eNew = pGroups.add(e, this);
+    return super.tryAdd(eNew, issues);
   }
 
   @override
@@ -54,7 +53,9 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   static TagRootDataset convert(RootDataset rds) {
     final tagRds = new TagRootDataset.empty();
     for (var e in rds.fmi.elements) {
-      tagRds.fmi.add(_makeElement(e.code, e.vrIndex, e.values, rds));
+      final te = _makeElement(e.code, e.vrIndex, e.values, rds);
+      print('Convert FMI: $te');
+      tagRds.fmi.add(te);
     }
     return TagDataset.convert(rds, tagRds);
   }

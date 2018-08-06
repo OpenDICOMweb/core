@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:convert' as cvt;
 
 import 'package:core/src/error.dart';
@@ -57,6 +56,13 @@ abstract class Tag {
   //TODO: Tag and Tag.public are inconsistent when new Tag, PrivateTag... files
   //      are generated make them consistent.
   const Tag();
+
+  @override
+  bool operator ==(Object other) =>
+      (other is Tag) && code == other.code && vrIndex == other.vrIndex;
+
+  @override
+  int get hashCode => code * vrIndex;
 
   //TODO: When regenerating Tag rework constructors as follows:
   // Tag(int code, [vr = VR.kUN, vm = VM.k1_n);

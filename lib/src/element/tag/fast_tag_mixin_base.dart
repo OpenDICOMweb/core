@@ -9,7 +9,7 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/error/issues.dart';
+import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/tag.dart';
 
 /// Tag Mixin Class

@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/element.dart';
-import 'package:core/src/error/issues.dart';
+import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -23,7 +23,7 @@ class InvalidElementError extends Error {
   String toString() => msg;
 }
 
-Null elementError(String message, [Element e, Issues issues]) {
+Null badElement(String message, [Element e, Issues issues]) {
   log.error(message);
   if (issues != null) issues.add(message);
   if (throwOnError) throw new InvalidElementError(message);
@@ -31,7 +31,7 @@ Null elementError(String message, [Element e, Issues issues]) {
 }
 
 bool invalidElement(String message, [Element e]) {
-  elementError(message, e);
+  badElement(message, e);
   return false;
 }
 
@@ -40,32 +40,32 @@ bool invalidElement(String message, [Element e]) {
 /// values should have a values field containing and empty [List].
 Null nullElement([String message = '']) {
   final msg = 'NullElementError: $message';
-  return elementError(msg);
+  return badElement(msg);
 }
 
 Null badIntElement(Element e, [Issues issues]) {
   final msg = 'Invalid Integer Element: $e';
-  return elementError(msg, e, issues);
+  return badElement(msg, e, issues);
 }
 
 Null badFloatElement(Element e, [Issues issues]) {
   final msg = 'Invalid Floating Point Element: $e';
-  return elementError(msg, e, issues);
+  return badElement(msg, e, issues);
 }
 
 Null badStringElement(Element e, [Issues issues]) {
   final msg = 'Invalid String Element: $e';
-  return elementError(msg, e, issues);
+  return badElement(msg, e, issues);
 }
 
 Null badSequenceElement(Element e, [Issues issues]) {
   final msg = 'Invalid Floating Point Element: $e';
-  return elementError(msg, e, issues);
+  return badElement(msg, e, issues);
 }
 
 Null badUidElement(Element e, [Issues issues]) {
   final msg = 'Invalid UI (uid) Element: $e';
-  return elementError(msg, e, issues);
+  return badElement(msg, e, issues);
 }
 
 Null sha256Unsupported(Element e, [Issues issues]) {

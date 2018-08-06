@@ -8,7 +8,7 @@
 //
 
 import 'package:core/src/global.dart';
-import 'package:core/src/error/issues.dart';
+import 'package:core/src/error/issues/issues.dart';
 
 /// A Parsing Error.  This class should not be used directly,
 /// call [parseError] or [parseNullError] instead.

@@ -20,7 +20,7 @@ String dtToDateString(DateTime dt, {bool asDicom = true}) {
 
 ///Returns a human-readable string for the time part of [dt].
 String dtToTimeString(DateTime dt,
-                      {bool asDicom = true, bool showFraction = false}) {
+    {bool asDicom = true, bool showFraction = false}) {
   final h = digits2(dt.hour);
   final m = digits2(dt.minute);
   final s = digits2(dt.second);
@@ -35,11 +35,9 @@ String dtToTimeString(DateTime dt,
 
 ///Returns a human-readable string for [dt] in Internet format.
 String dtToDateTimeString(DateTime dt,
-                          {bool asDicom = true, bool showFraction = false}) =>
+        {bool asDicom = true, bool showFraction = false}) =>
     (asDicom)
-    ? '${dtToDateString(dt)}${dtToTimeString(dt)}'
-    : '${dtToDateString(dt, asDicom: asDicom)}'
+        ? '${dtToDateString(dt)}${dtToTimeString(dt)}'
+        : '${dtToDateString(dt, asDicom: asDicom)}'
         '${global.dateTimeSeparator}'
         '${dtToTimeString(dt, asDicom: asDicom, showFraction: showFraction)}';
-
-

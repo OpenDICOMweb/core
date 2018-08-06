@@ -37,7 +37,7 @@ class PrivateGroups {
     if (gNumber == _currentGNumber) {
       return _currentGroup.add(e, sqParent);
     } else if (gNumber < _currentGNumber) {
-      return elementError('$gNumber > $_currentGNumber', e);
+      return badElement('$gNumber > $_currentGNumber', e);
     } else {
       _currentGNumber = gNumber;
       _currentGroup = new PrivateGroup(e);
@@ -83,6 +83,7 @@ class PrivateGroup implements GroupBase {
   /// The Group Length Element for this [PrivateGroup].  This
   /// [Element] is retired and is normally not present.
   final Element gLength;
+  bool creators = true;
 
   /// Illegal elements between gggg,0001 - gggg,000F
   List<Element> illegal = [];
@@ -122,24 +123,32 @@ class PrivateGroup implements GroupBase {
   /// Private Tag is created, stored in the [PrivateGroup] (Group Length
   /// or Illegal Private Element) or in the [PrivateSubgroup] (Private
   /// Creator or Private Data).
+  // TODO: cleanup this code!
   @override
   Element add(Element e, Dataset sqParent) {
     assert(e.isPrivate);
     final code = e.code;
     final group = code >> 16;
-    if (group.isEven) return elementError('Non Private Element: $e', e);
+    if (group.isEven) return badElement('Non Private Element: $e', e);
     if (group != gNumber)
-      return elementError('${hex16(group)} != ${hex16(gNumber)}', e);
+      return badElement('${hex16(group)} != ${hex16(gNumber)}', e);
 
     assert(!isPrivateGroupLengthCode(code));
 
     var eNew = e;
     if (isPDCode(code)) {
+      if (creators == true) {
+        creators == false;
+        _currentSGNumber = 0;
+      }
       final sgNumber = pdSubgroup(code);
+      print('PD ${hex(sgNumber)}');
       _checkSubgroup(sgNumber);
       eNew = _currentSubgroup.addData(e, sqParent);
     } else if (isPCCode(code)) {
       final sgNumber = pcSubgroup(code);
+      if (creators != true) throw 'bad creator';
+      print('PC ${hex(sgNumber)}');
       _checkSubgroup(sgNumber);
       eNew = _currentSubgroup.addCreator(e);
     } else if (isInvalidPrivateCode(code)) {
@@ -151,6 +160,7 @@ class PrivateGroup implements GroupBase {
   }
 
   void _checkSubgroup(int sgNumber) {
+    print('subgroup: ${hex(sgNumber)} current: ${hex(_currentSGNumber)}');
     if (sgNumber < _currentSGNumber) {
       invalidSubgroupNumber(_currentSGNumber, sgNumber);
     } else if (sgNumber > _currentSGNumber) {

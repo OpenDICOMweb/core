@@ -22,7 +22,7 @@ Null badElementIndex(int index,
               ? 'InvalidRequiredElementIndex: $code'
               : 'InvalidElementIndex: $code';
   if (issues != null) issues.add(msg);
-  return elementError(msg, e, issues);
+  return badElement(msg, e, issues);
 }
 
 bool invalidElementIndex(int index,

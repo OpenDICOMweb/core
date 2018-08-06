@@ -64,7 +64,7 @@ class TagItem extends MapItem with TagDataset {
   @override
   bool get isImmutable => false;
 
-  static Dataset convert(Dataset parent, TagItem item, SQ sequence) {
+  static Dataset convert(Dataset parent, Item item, SQ sequence) {
     final Dataset tagItem = new TagItem.empty(parent, sequence);
     return TagDataset.convert(item, tagItem);
   }

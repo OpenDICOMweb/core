@@ -295,9 +295,9 @@ void main() {
 
       global.throwOnError = false;
       log.debug('global.throwOnError: $global.throwOnError');
-      expect(rds.tryAdd(ae0), isNull);
-      expect(rds.tryAdd(ae1), isNull);
-      expect(rds.tryAdd(ae2), isNull);
+      expect(rds.tryAdd(ae0), false);
+      expect(rds.tryAdd(ae1), false);
+      expect(rds.tryAdd(ae2), false);
     });
 
     test('update', () {

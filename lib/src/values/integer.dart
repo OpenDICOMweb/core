@@ -9,7 +9,7 @@
 
 import 'dart:math';
 
-import 'package:core/src/error/issues.dart';
+import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/parser.dart';
 

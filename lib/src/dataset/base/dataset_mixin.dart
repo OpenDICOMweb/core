@@ -584,7 +584,7 @@ abstract class DatasetMixin {
     final e = lookup(index, required: required);
     if (e == null || e is! Integer) return nonIntegerTag(index);
     if (!allowInvalidValues && !e.hasValidValues)
-      return elementError('Invalud Values: $e', e);
+      return badElement('Invalud Values: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getIntList');
     assert(vList != null);
@@ -632,7 +632,7 @@ abstract class DatasetMixin {
     final e = lookup(index, required: required);
     if (e == null || e is! StringBase) return nonStringTag(index);
     if (!allowInvalidValues && !e.hasValidValues)
-      return elementError('Invalud Values: $e', e);
+      return badElement('Invalud Values: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getStringList');
     assert(vList != null);
@@ -681,7 +681,7 @@ abstract class DatasetMixin {
       if (s.codeUnitAt(s.length - 1) == 0) s = s.substring(0, s.length - 1);
       return new Uid(s);
     }
-    return elementError('Invalud Values: $e', e);
+    return badElement('Invalud Values: $e', e);
   }
 
   /// Returns the [List<double>] values for the [Element] with [index].
@@ -711,7 +711,7 @@ abstract class DatasetMixin {
       replace(index, e);
       return old;
     }
-    return elementError('Not a DA (date) Element', old);
+    return badElement('Not a DA (date) Element', old);
   }
 
   /// Returns a formatted [String]. See [Formatter].
@@ -794,7 +794,7 @@ abstract class DatasetMixin {
         assert(bitsAllocated == 8 || bitsAllocated == 1);
         return e.values;
       } else {
-        return elementError('$e is bad Pixel Data', e);
+        return badElement('$e is bad Pixel Data', e);
       }
     }
     if (throwOnError) return null;

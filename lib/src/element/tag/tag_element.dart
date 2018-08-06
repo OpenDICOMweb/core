@@ -85,8 +85,10 @@ abstract class TagElement<V> {
   static PC _getPCTag(int code, int vrIndex, List<String> values) {
     if (values == null || values.length > 2) badValues(values);
     final token = (values.isEmpty) ? '' : values[0];
-    Tag tag = PCTag.lookupByToken(code, vrIndex, token);
-    tag ??= new PCTagUnknown(code, vrIndex, token);
+    // Issue: should this be forcing kLOIndex
+    Tag tag = PCTag.lookupByToken(code, kLOIndex, token);
+    // Issue: should this be forcing kLOIndex
+    tag ??= new PCTagUnknown(code, kLOIndex, token);
     return new PCtag(tag, StringList.from([token]));
   }
 
@@ -171,9 +173,9 @@ abstract class TagElement<V> {
       int code, int vrIndex, List values, Dataset ds) {
     if (_isPrivateCreator(code)) return _getPCTag(code, vrIndex, values);
     final tag = lookupTagByCode(code, vrIndex, ds);
-    print('tag: $tag');
+//    print('tag: $tag');
     final index = getValidVR(vrIndex, tag.vrIndex);
-    print('vrIndex: $index');
+//    print('vrIndex: $index');
     return makeFromTag(tag, values, index);
   }
 

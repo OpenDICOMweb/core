@@ -116,7 +116,7 @@ abstract class NoValuesMixin {
     final e = lookup(index, required: required);
     if (e == null || e is! Integer) return nonIntegerTag(index);
     if (!allowInvalidValues && !e.hasValidValues)
-      return elementError('Invalid Element: $e', e);
+      return badElement('Invalid Element: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getIntList');
     assert(vList != null);
@@ -164,7 +164,7 @@ abstract class NoValuesMixin {
     final e = lookup(index, required: required);
     if (e == null || e is! StringBase) return nonStringTag(index);
     if (!allowInvalidValues && !e.hasValidValues)
-      return elementError('Invalid Element: $e', e);
+      return badElement('Invalid Element: $e', e);
     final vList = e.values;
     //if (vList == null) return nullValueError('getStringList');
     assert(vList != null);
@@ -244,7 +244,7 @@ abstract class NoValuesMixin {
         assert(bitsAllocated == 8 || bitsAllocated == 1);
         return e.values;
       } else {
-        return elementError('$e is bad Pixel Data', e);
+        return badElement('$e is bad Pixel Data', e);
       }
     }
     if (throwOnError) return null;

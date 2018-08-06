@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-import 'package:core/src/error/issues.dart';
+import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 
 typedef int OnAgeError(String s);

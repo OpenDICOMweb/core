@@ -154,6 +154,6 @@ abstract class ReplaceMixin<V> {
       old.replace(vList);
       return old;
     }
-    return elementError('Not a DA (date) Element', old);
+    return badElement('Not a DA (date) Element', old);
   }
 }

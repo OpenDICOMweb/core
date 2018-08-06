@@ -168,7 +168,7 @@ abstract class ByteElement<V> {
       [TransferSyntax ts, VFFragments fragments, Dataset ds]) {
     final code = bytes.code;
     final index = getPixelDataVR(code, bytes.vrIndex, ds, ts);
-    return _fromBytesPixelDataMakers[index](code, bytes, ts, fragments);
+    return _fromBytesPixelDataMakers[index](bytes, ts, fragments);
   }
 
   // Elements that may have undefined lengths.

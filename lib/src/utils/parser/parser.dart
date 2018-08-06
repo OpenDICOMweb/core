@@ -11,20 +11,20 @@ library odw.sdk.core.parser;
 import 'package:core/src/system.dart';
 import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/utils/date_time.dart';
-import 'package:core/src/error/issues.dart';
+import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/parser/parse_errors.dart';
 import 'package:core/src/utils/string/decimal.dart';
 import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/values/date_time.dart';
 
-part 'age_parser.dart';
-part 'date_parser.dart';
-part 'date_time_parser.dart';
-part 'number_parser.dart';
-part 'parser_utils.dart';
-part 'time_parser.dart';
-part 'time_zone_parser.dart';
+part 'package:core/src/utils/parser/number_parser.dart';
+part 'package:core/src/utils/parser/parser_utils.dart';
+part 'package:core/src/utils/parser/date_time_age/age_parser.dart';
+part 'package:core/src/utils/parser/date_time_age/date_parser.dart';
+part 'package:core/src/utils/parser/date_time_age/date_time_parser.dart';
+part 'package:core/src/utils/parser/date_time_age/time_parser.dart';
+part 'package:core/src/utils/parser/date_time_age/time_zone_parser.dart';
 
 //TODO: Make sure FallThroughError functions handle Issues correctly
 //TODO: Add an [onError] argument to all visible functions;

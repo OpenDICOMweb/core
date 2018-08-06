@@ -248,7 +248,7 @@ abstract class Fmi extends ListBase<Element> {
     } else if (e is UN) {
       return new Uid(e.vfBytesAsAscii);
     } else {
-      return elementError('Wrong Type ${e.runtimeType}: $e', e);
+      return badElement('Wrong Type ${e.runtimeType}: $e', e);
     }
   }
 }
