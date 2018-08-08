@@ -57,6 +57,7 @@ class Sex {
   String toString() => '$name';
 
   static Sex parse(String s) {
+    if (s == null || s.isEmpty) return null;
     switch (s) {
       case 'M':
         return Sex.male;

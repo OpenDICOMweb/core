@@ -172,6 +172,7 @@ class Date implements Comparable<Date> {
       bool isDicom = true,
       OnDateParseError onError}) {
     // Urgent Jim: fix
+    if (s == null || s.isEmpty) return null;
     if (isAllBlanks(s, start, end))
       return (onError != null) ? onError(s) : badDateString(s, issues);
     final us = (isDicom)

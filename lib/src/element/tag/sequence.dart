@@ -104,7 +104,7 @@ class SQtag extends SQ with TagElement<Item> {
   }
 
   static SQtag fromBytes(
-      Dataset parent, List<TagItem> vList, Tag tag) {
+      Dataset parent, List<Item> vList, Tag tag) {
     if (tag.vrIndex != kSQIndex) return null;
     return new SQtag(parent, tag, vList);
   }

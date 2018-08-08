@@ -1,4 +1,4 @@
-//  Copyright (c) 2016, 2017, 2018,
+//  Copyright (c) 2016, 2017, 2018
 //  Poplar Hill Informatics and the American College of Radiology
 //  All rights reserved.
 //  Use of this source code is governed by the open source license
@@ -35,7 +35,7 @@ bool ignorePadding = true;
 
 /// [Bytes] is a class that provides a read-only byte array that supports both
 /// [Uint8List] and [ByteData] interfaces.
-class Bytes extends ListBase<int> with BytesMixin {
+class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   @override
   ByteData _bd;
   @override
@@ -95,6 +95,27 @@ class Bytes extends ListBase<int> with BytesMixin {
         _bd = (list is Uint8List)
             ? list.buffer.asByteData()
             : (new Uint8List.fromList(list)).buffer.asByteData();
+
+  // *** Comparable interface
+
+  /// Compares _this_ with [other] byte by byte.
+  /// Returns a negative integer if _this_ is ordered before other, a
+  /// positive integer if _this_ is ordered after other, and zero if
+  /// _this_ and other are equal.
+  ///
+  /// Returns -2 _this_ is a proper prefix of [other], and +2 if [other]
+  /// is a proper prefix of _this_.
+  @override
+  int compareTo(Bytes other) {
+    final minLength = (length < other.length) ? length : other.length;
+    for (var i = 0; i < minLength; i++) {
+      final a = this[i];
+      final b = other[i];
+      if (a == b) continue;
+      return (a < b) ? -1 : 1;
+    }
+    return (length < other.length) ? -2 : 2;
+  }
 
   // *** List interface
 

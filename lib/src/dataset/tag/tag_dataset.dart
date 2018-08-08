@@ -50,13 +50,13 @@ abstract class TagDataset {
 
   static void _convertElement(
       Dataset dsNew, Element old, List<Element> badElements) {
-    print('old: $old');
+//    print('old: $old');
     final e = (old is SQ)
         ? _convertSQ(dsNew, old)
         : _makeElement(old.code, old.vrIndex, old.values, dsNew);
-    print('new: $e');
+//    print('new: $e');
     if (e == null) {
-      print('Bad: $old');
+//      print('Bad: $old');
       badElements.add(old);
     } else {
       dsNew.add(e);
@@ -65,7 +65,7 @@ abstract class TagDataset {
 
   static SQ _convertSQ(Dataset parent, SQ oldSQ, ) {
     final sq = SQtag.convert(parent, oldSQ);
-    print('sq: $sq');
+//    print('sq: $sq');
     return sq;
   }
 /*

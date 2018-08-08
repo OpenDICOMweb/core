@@ -15,6 +15,9 @@ import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string/string.dart';
 
+// Urgent: move to globals
+bool doRemoveBlankStrings = false;
+
 /// A class that is the _values_ of String Elements.
 class StringList extends ListBase<String> {
   final List<String> _values;
@@ -22,8 +25,17 @@ class StringList extends ListBase<String> {
   factory StringList.from([Iterable<String> vList]) {
     if (throwOnError && vList == null) return badValues(vList);
     if (vList == null || vList.isEmpty) return kEmptyList;
-    final v = (vList is List<String>) ? vList : vList.toList(growable: false);
-    return new StringList._(v);
+    var vList1 = (vList is List<String>) ? vList : vList.toList();
+    if (doRemoveBlankStrings) {
+        final vList2 = <String>[];
+        for (var i = 0; i < vList1.length; i++) {
+          final a = vList1[i];
+          if (a.trim().isNotEmpty) vList2.add(a);
+        }
+        if (vList2.isEmpty) return kEmptyList;
+        vList1 = vList2;
+      }
+      return new StringList._(vList1);
   }
 
   StringList._(this._values);

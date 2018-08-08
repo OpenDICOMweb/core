@@ -49,10 +49,8 @@ class PersonName {
 
   /// Create a PersonName from an ordered [List] of name components.
   factory PersonName.fromString(String s) {
-    print('s: "$s"');
     final list = splitTrim(s, '=');
     final groups = list.map((e) => new Name.fromString(e));
-    print('groups: $groups');
     return new PersonName(groups.toList(growable: false));
   }
 
@@ -142,8 +140,6 @@ class Name {
   factory Name.fromString(String s) {
     final names = splitTrim(s, '^');
     for (var name in names) {
-      print('name: "$name"');
-      print('is name: ${_isPNComponentGroup(name)}');
       if (!_isPNComponentGroup(name)) return null;
     }
     return Name(names.toList(growable: false));

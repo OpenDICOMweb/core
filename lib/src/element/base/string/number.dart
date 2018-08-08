@@ -121,8 +121,6 @@ abstract class DS extends StringAscii {
   @override
   DS get sha256 {
     final hList = Sha256.numbers(numbers);
-    print('numbers: $numbers');
-    print('hList: $hList');
     if (hList == null) return null;
     final vList = hList.map(numToString).toList(growable: false);
     return update((vmMax == -1 || vmMax > 8) ? vList : vList.sublist(0, vmMax));
