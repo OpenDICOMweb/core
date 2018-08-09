@@ -327,5 +327,63 @@ void main() {
       expect(e1.isValid, true);
       expect(e1.isEmpty, false);
     });
+
+    test('getFloat32', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.float32List(1, i);
+        log.debug('vList: $vList');
+        //final bytes = new Bytes.typedDataView(vList);
+        //final readBuffer0 = new ReadBuffer(bytes);
+        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+
+        final getFloat32_0 = readBuffer0.getFloat32();
+        log.debug('getFloat32_0: $getFloat32_0');
+        expect(readBuffer0.buffer is Bytes, true);
+        expect(getFloat32_0 is double, true);
+        expect(getFloat32_0 == vList[0], true);
+      }
+    });
+
+    test('readFloat32', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.float32List(1, i);
+        final bytes = new Bytes.typedDataView(vList);
+        final readBuffer0 = new ReadBuffer(bytes);
+
+        final readFloat32_0 = readBuffer0.readFloat32();
+        log.debug('readFloat32_0: $readFloat32_0');
+        expect(readBuffer0.buffer is Bytes, true);
+        expect(readFloat32_0 is double, true);
+        expect(readFloat32_0 == vList[0], true);
+      }
+    });
+
+    test('getFloat64', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.float64List(1, i);
+        final bytes = new Bytes.typedDataView(vList);
+        final readBuffer0 = new ReadBuffer(bytes);
+        //final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+
+        final getFloat64_0 = readBuffer0.getFloat64();
+        log.debug('getFloat64_0: $getFloat64_0');
+        expect(readBuffer0.buffer is Bytes, true);
+        expect(getFloat64_0 is double, true);
+        expect(getFloat64_0 == vList[0], true);
+      }
+    });
+
+    test('readFloat64', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.float64List(1, i);
+        final bytes = new Bytes.typedDataView(vList);
+        final readBuffer0 = new ReadBuffer(bytes);
+
+        final readFloat64_0 = readBuffer0.readFloat64();
+        log.debug('readFloat64_0: $readFloat64_0');
+        expect(readBuffer0.buffer is Bytes, true);
+        expect(readFloat64_0 is double, true);
+      }
+    });
   });
 }
