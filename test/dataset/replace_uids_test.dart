@@ -18,8 +18,8 @@ void main() {
 
   group('RootDataset', () {
     test('update', () {
-      final ui0 = new UItag(
-          PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
+      final ui0 =
+          new UItag(PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
       log.debug('ui0: $ui0');
 
       final rootDS0 = new TagRootDataset.empty();
@@ -46,8 +46,8 @@ void main() {
     test('updateUid', () {
       //Begin: Test for updateUid on Elements with VM.k1
       global.throwOnError = false;
-      final ui0 = new UItag(
-          PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
+      final ui0 =
+          new UItag(PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
       log.debug('ui0: $ui0');
 
       final rootDS0 = new TagRootDataset.empty();
@@ -128,8 +128,8 @@ void main() {
 
       //Test for valid list values
       final uidList4 = ['1.2.840.10008.1.2.1', '1.2.840.10008.5.1.1.9'];
-      final ui6 = new UItag(
-          PTag.kReferencedRelatedGeneralSOPClassUIDInFile, uidList4);
+      final ui6 =
+          new UItag(PTag.kReferencedRelatedGeneralSOPClassUIDInFile, uidList4);
       final rootDS6 = new TagRootDataset.empty()..add(ui6);
       log.debug('ui6: $ui6');
       final uidList4r = [
@@ -140,7 +140,7 @@ void main() {
       final ui6r = rootDS6.update(ui6.tag.index, uidList4r);
       log.debug('ui6r: $ui6r');
       expect(ui6r is UI, isTrue);
-      expect(ui6r.values, equals( uidList4));
+      expect(ui6r.values, equals(uidList4));
       expect(ui6r.value == uidList4[0], true);
 
       //Testing noValue on RootDatasetTag
@@ -149,8 +149,7 @@ void main() {
         '1.2.840.10008.5.1.4.1.1.1',
         '1.2.840.10008.5.1.4.1.1.5'
       ];
-      final uiNV1 =
-          new UItag(PTag.kRelatedGeneralSOPClassUID, uidListNV1);
+      final uiNV1 = new UItag(PTag.kRelatedGeneralSOPClassUID, uidListNV1);
       rootDSNV1.add(uiNV1);
       old = rootDSNV1.noValues(uiNV1.code);
       expect(old, equals(uiNV1));
@@ -169,8 +168,7 @@ void main() {
         '1.2.840.10008.5.1.1.40.1',
         '1.2.840.10008.5.1.4.1.1.1'
       ];
-      final ui11 =
-          new UItag(PTag.kRelatedGeneralSOPClassUID, uidList9);
+      final ui11 = new UItag(PTag.kRelatedGeneralSOPClassUID, uidList9);
       log.debug('ui11: $ui11');
       final ui11NV = ui11.noValues;
       log.debug('ui11NV: $ui11NV');
@@ -181,11 +179,50 @@ void main() {
       expect(ui11NVR.values.isEmpty, true);
     });
 
+    test('updateAllUids', () {
+      global.throwOnError = false;
+      final rootDS0 = new TagRootDataset.empty();
+      final uiList0 = rsg.getUIList(1, 1);
+      final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, uiList0);
+
+      final uid0 = new Uid(uiList0[0]);
+      final uList0 = [uid0];
+      final updateAllUids0 = rootDS0.updateAllUids(ui0.index, uList0);
+      log.debug('updateAllUids0: $updateAllUids0');
+      expect(updateAllUids0, [isNull]);
+      expect(updateAllUids0 == [ui0], false);
+      expect(updateAllUids0 is UI, false);
+
+      global.throwOnError = false;
+      rootDS0.add(ui0);
+      final updateUidList1 = rootDS0.updateAllUids(ui0.index, uList0);
+      log.debug('updateUidList1: $updateUidList1');
+      expect(updateUidList1 is UI, false);
+      expect(updateUidList1.isEmpty, false);
+      expect(updateUidList1, isNotNull);
+
+      final aeList0 = rsg.getAEList(1, 1);
+      final ae0 = new AEtag(PTag.kSelectorAEValue, aeList0);
+      final updateUidList3 = rootDS0.updateUidList(ae0.index, aeList0);
+      log.debug('updateUidList3: $updateUidList3');
+      expect(updateUidList3, isNull);
+      expect(updateUidList3 == ae0, false);
+      expect(updateUidList3 is AE, false);
+
+      rootDS0.add(ae0);
+      final updateUidList4 = rootDS0.updateUidList(ae0.index, aeList0);
+      log.debug('updateUidList4: $updateUidList4');
+      expect(updateUidList4, isNull);
+
+      global.throwOnError = true;
+      expect(() => rootDS0.updateUidList(ae0.index, aeList0),
+          throwsA(const TypeMatcher<InvalidElementError>()));
+    });
+
     test('updateUidList', () {
       final rootDS0 = new TagRootDataset.empty();
       final uiList0 = rsg.getUIList(1, 1);
-      final ui0 =
-          new UItag(PTag.kRelatedGeneralSOPClassUID, uiList0);
+      final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, uiList0);
 
       final updateUidList0 = rootDS0.updateUidList(ui0.index, uiList0);
       log.debug('updateUidList0: $updateUidList0');

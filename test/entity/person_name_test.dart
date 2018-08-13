@@ -112,4 +112,40 @@ void main() {
       expect(n5, false);
     });
   });
+  group('sex', () {
+    test('sexType', () {
+      const genderList = ['M', 'F', 'O', 'T'];
+
+      final sex0 = Sex.parse(genderList[0]);
+      log.debug('sex0: $sex0');
+      expect(sex0.name == 'Male', true);
+      expect(sex0.isMale, true);
+      expect(Sex.male == sex0, true);
+      expect(Sex.maleType == 1, true);
+      expect(sex0.abbreviation == genderList[0], true);
+
+      final sex1 = Sex.parse(genderList[1]);
+      log.debug('sex1: $sex1');
+      expect(sex1.name == 'Female', true);
+      expect(sex1.isFemale, true);
+      expect(Sex.femaleType == 0, true);
+      expect(Sex.female == sex1, true);
+      expect(sex1.abbreviation == genderList[1], true);
+
+      final sex2 = Sex.parse(genderList[2]);
+      log.debug('sex2: $sex2');
+      expect(sex2.name == 'Other', true);
+      expect(sex2.isMale, false);
+      expect(!sex2.isFemale, false);
+      expect(Sex.otherType == 2, true);
+      expect(Sex.other == sex2, true);
+      expect(sex2.abbreviation == genderList[2], true);
+
+      final sex3 = Sex.parse('');
+      expect(sex3, isNull);
+
+      expect(() => Sex.parse(genderList[3]),
+          throwsA('Invalid Sex(${genderList[3]})'));
+    });
+  });
 }
