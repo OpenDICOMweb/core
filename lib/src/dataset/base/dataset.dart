@@ -164,6 +164,7 @@ abstract class Dataset extends Object with ListMixin<Element>,
   /// and to the [Dataset].
   @override
   bool tryAdd(Element e, [Issues issues]) {
+    assert(e != null);
     final code = e.code;
     final old = lookup(code);
     if (old == null) {

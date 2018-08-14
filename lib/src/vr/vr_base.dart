@@ -295,7 +295,7 @@ int vrIndexFromCode(int vrCode) => vrIndexByCode8Bit[vrCode];
 String vrIdFromCode(int vrCode) => vrIdByIndex[vrIndexByCode8Bit[vrCode]];
 
 /*
-// Const [VR.code]s as 16-bit littleendian values.
+// Const [VR.code]s as 16-bit little endian values.
 // This allows the code to be retrieved in one instruction instead of two.
 const int kAECode = 0X4541;
 const int kASCode = 0X5341;

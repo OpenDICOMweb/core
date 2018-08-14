@@ -11,7 +11,6 @@ import 'package:core/src/error/vr_errors.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
 
-
 const int kShortVF = kMaxShortVF;
 const int kLongVF = kMaxLongVF;
 
