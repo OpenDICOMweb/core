@@ -328,19 +328,64 @@ void main() {
       expect(e1.isEmpty, false);
     });
 
+    // Urgent Sharath: I modified this test the other similar test need updating
+    // Urgent Sharath: the Bytes test should be separate from the buffer tests.
     test('getFloat32', () {
-      for (var i = 1; i < 10; i++) {
-        final vList = rng.float32List(1, i);
-        log.debug('vList: $vList');
-        //final bytes = new Bytes.typedDataView(vList);
-        //final readBuffer0 = new ReadBuffer(bytes);
-        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+      global.level = Level.debug;
+      final count = 10;
+      log.debug('count: $count');
 
-        final getFloat32_0 = readBuffer0.getFloat32();
+      for (var i = 1; i < count; i++) {
+        final vList = rng.float32List(i, i);
+        log.debug('i: $i vList: $vList');
+        final bytes = new Bytes.typedDataView(vList);
+        log.debug('bytes: $bytes');
+
+        // Test bytes.getFloat32
+        for(var j = 0; j < i; j++) {
+          log.debug('j: $j');
+          final v = bytes.getFloat32(j * 4);
+          log.debug('i: $i v0: ${vList[j]} v1: $v');
+          expect(vList[j] == v, true);
+        }
+
+        // Test ReadBuffer.fromTypedData and readBuffer.readFloat32()
+        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+        for(var j = 0; j < i; j++) {
+          final v = readBuffer0.readFloat32();
+          log.debug('j: $j vList[$j]: ${vList[j]} v: $v');
+          expect(vList[j] == v, true);
+        }
+
+        // Test readFloat32List
+        final readBuffer1 = new ReadBuffer.fromTypedData(vList);
+        final v = readBuffer1.readFloat32List(vList.length);
+        log.debug('FloatList: vList: $vList v: $v');
+        expect(vList, equals(v));
+
+        // Test buffer.getFloat32
+        final readBuffer2 = new ReadBuffer.fromTypedData(vList);
+        for(var j = 0; j < i; j++) {
+          final v = readBuffer2.getFloat32();
+          log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
+          expect(vList[j] == v, true);
+          readBuffer2.rSkip(4);
+        }
+
+        // Test buffer.readFloat32
+        final readBuffer3 = new ReadBuffer.fromTypedData(vList);
+        for(var j = 0; j < i; j++) {
+          final v = readBuffer3.readFloat32();
+          log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
+          expect(vList[j] == v, true);
+        }
+
+/*   //     final getFloat32_0 = readBuffer0.getFloat32();
         log.debug('getFloat32_0: $getFloat32_0');
         expect(readBuffer0.buffer is Bytes, true);
         expect(getFloat32_0 is double, true);
         expect(getFloat32_0 == vList[0], true);
+ */
       }
     });
 

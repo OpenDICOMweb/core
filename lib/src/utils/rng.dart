@@ -317,6 +317,7 @@ class RNG {
       _getLength(minLength, maxLength);
 
   int _getLength([int minLength, int maxLength]) {
+    if (maxLength == 0) return 0;
     final min = (minLength == null) ? defaultMinListLength : minLength;
     final max = (maxLength == null) ? defaultMaxListLength : maxLength;
     RangeError.checkValidRange(0, min, kInt32Max, 'minLength');

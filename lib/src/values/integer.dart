@@ -115,7 +115,7 @@ bool isValidIntString(String s,
     tryParseInt(s, start, end, issues, minLength, maxLength) != null;
 
 /// The smallest integer contained in an IS Element
-const int kMinIntegerStringValue = -99999999999;
+const int kMinIntegerStringValue = -0x7FFFFFFF;
 
 /// The largest integer contained in an IS Element
 const int kMaxIntegerStringValue = 999999999999;
