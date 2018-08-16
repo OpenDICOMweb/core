@@ -330,9 +330,8 @@ void main() {
 
     // Urgent Sharath: I modified this test the other similar test need updating
     // Urgent Sharath: the Bytes test should be separate from the buffer tests.
-    test('getFloat32', () {
-      global.level = Level.debug;
-      final count = 10;
+    test('getFloat32 Bytes', () {
+      const count = 10;
       log.debug('count: $count');
 
       for (var i = 1; i < count; i++) {
@@ -342,16 +341,39 @@ void main() {
         log.debug('bytes: $bytes');
 
         // Test bytes.getFloat32
-        for(var j = 0; j < i; j++) {
+        for (var j = 0; j < i; j++) {
           log.debug('j: $j');
           final v = bytes.getFloat32(j * 4);
           log.debug('i: $i v0: ${vList[j]} v1: $v');
           expect(vList[j] == v, true);
         }
+      }
+    });
 
-        // Test ReadBuffer.fromTypedData and readBuffer.readFloat32()
+    test('getFloat32 buffer', () {
+      // Test buffer.getFloat32
+      const count = 10;
+      for (var i = 1; i < count; i++) {
+        final vList = rng.float32List(i, i);
         final readBuffer0 = new ReadBuffer.fromTypedData(vList);
-        for(var j = 0; j < i; j++) {
+        for (var j = 0; j < i; j++) {
+          final v = readBuffer0.getFloat32();
+          log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
+          expect(vList[j] == v, true);
+          readBuffer0.rSkip(4);
+        }
+      }
+    });
+
+    test('readFloat32', () {
+      // Test ReadBuffer.fromTypedData and readBuffer.readFloat32()
+      const count = 10;
+      log.debug('count: $count');
+
+      for (var i = 1; i < count; i++) {
+        final vList = rng.float32List(i, i);
+        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+        for (var j = 0; j < i; j++) {
           final v = readBuffer0.readFloat32();
           log.debug('j: $j vList[$j]: ${vList[j]} v: $v');
           expect(vList[j] == v, true);
@@ -363,71 +385,77 @@ void main() {
         log.debug('FloatList: vList: $vList v: $v');
         expect(vList, equals(v));
 
-        // Test buffer.getFloat32
-        final readBuffer2 = new ReadBuffer.fromTypedData(vList);
-        for(var j = 0; j < i; j++) {
-          final v = readBuffer2.getFloat32();
-          log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
-          expect(vList[j] == v, true);
-          readBuffer2.rSkip(4);
-        }
-
         // Test buffer.readFloat32
-        final readBuffer3 = new ReadBuffer.fromTypedData(vList);
-        for(var j = 0; j < i; j++) {
-          final v = readBuffer3.readFloat32();
+        final readBuffer2 = new ReadBuffer.fromTypedData(vList);
+        for (var j = 0; j < i; j++) {
+          final v = readBuffer2.readFloat32();
           log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
           expect(vList[j] == v, true);
         }
-
-/*   //     final getFloat32_0 = readBuffer0.getFloat32();
-        log.debug('getFloat32_0: $getFloat32_0');
-        expect(readBuffer0.buffer is Bytes, true);
-        expect(getFloat32_0 is double, true);
-        expect(getFloat32_0 == vList[0], true);
- */
       }
     });
 
-    test('readFloat32', () {
-      for (var i = 1; i < 10; i++) {
-        final vList = rng.float32List(1, i);
-        final bytes = new Bytes.typedDataView(vList);
-        final readBuffer0 = new ReadBuffer(bytes);
+    test('getFloat64 bytes', () {
+      const count = 10;
+      log.debug('count: $count');
 
-        final readFloat32_0 = readBuffer0.readFloat32();
-        log.debug('readFloat32_0: $readFloat32_0');
-        expect(readBuffer0.buffer is Bytes, true);
-        expect(readFloat32_0 is double, true);
-        expect(readFloat32_0 == vList[0], true);
+      for (var i = 1; i < count; i++) {
+        final vList = rng.float64List(i, i);
+        log.debug('i: $i vList: $vList');
+        final bytes = new Bytes.typedDataView(vList);
+        log.debug('bytes: $bytes');
+
+        // Test bytes.getFloat64
+        for (var j = 0; j < i; j++) {
+          log.debug('j: $j');
+          final v = bytes.getFloat64(j * 8);
+          log.debug('i: $i v0: ${vList[j]} v1: $v');
+          expect(vList[j] == v, true);
+        }
       }
     });
-
-    test('getFloat64', () {
-      for (var i = 1; i < 10; i++) {
-        final vList = rng.float64List(1, i);
-        final bytes = new Bytes.typedDataView(vList);
-        final readBuffer0 = new ReadBuffer(bytes);
-        //final readBuffer0 = new ReadBuffer.fromTypedData(vList);
-
-        final getFloat64_0 = readBuffer0.getFloat64();
-        log.debug('getFloat64_0: $getFloat64_0');
-        expect(readBuffer0.buffer is Bytes, true);
-        expect(getFloat64_0 is double, true);
-        expect(getFloat64_0 == vList[0], true);
+    test('getFloat64 buffer', () {
+      // Test buffer.getFloat64
+      const count = 10;
+      for (var i = 1; i < count; i++) {
+        final vList = rng.float64List(i, i);
+        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+        for (var j = 0; j < i; j++) {
+          final v = readBuffer0.getFloat64();
+          log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
+          expect(vList[j] == v, true);
+          readBuffer0.rSkip(8);
+        }
       }
     });
 
     test('readFloat64', () {
-      for (var i = 1; i < 10; i++) {
-        final vList = rng.float64List(1, i);
-        final bytes = new Bytes.typedDataView(vList);
-        final readBuffer0 = new ReadBuffer(bytes);
+      // Test ReadBuffer.fromTypedData and readBuffer.readFloat64()
+      const count = 10;
+      log.debug('count: $count');
 
-        final readFloat64_0 = readBuffer0.readFloat64();
-        log.debug('readFloat64_0: $readFloat64_0');
-        expect(readBuffer0.buffer is Bytes, true);
-        expect(readFloat64_0 is double, true);
+      for (var i = 1; i < count; i++) {
+        final vList = rng.float64List(i, i);
+        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+        for (var j = 0; j < i; j++) {
+          final v = readBuffer0.readFloat64();
+          log.debug('j: $j vList[$j]: ${vList[j]} v: $v');
+          expect(vList[j] == v, true);
+        }
+
+        // Test readFloat64List
+        final readBuffer1 = new ReadBuffer.fromTypedData(vList);
+        final v = readBuffer1.readFloat64List(vList.length);
+        log.debug('FloatList: vList: $vList v: $v');
+        expect(vList, equals(v));
+
+        // Test buffer.readFloat64
+        final readBuffer2 = new ReadBuffer.fromTypedData(vList);
+        for (var j = 0; j < i; j++) {
+          final v = readBuffer2.readFloat64();
+          log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
+          expect(vList[j] == v, true);
+        }
       }
     });
   });
