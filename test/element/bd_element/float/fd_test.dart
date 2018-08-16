@@ -328,8 +328,6 @@ void main() {
       expect(e1.isEmpty, false);
     });
 
-    // Urgent Sharath: I modified this test the other similar test need updating
-    // Urgent Sharath: the Bytes test should be separate from the buffer tests.
     test('getFloat32 Bytes', () {
       const count = 10;
       log.debug('count: $count');
