@@ -17,6 +17,46 @@ void main() {
   Server.initialize(name: 'replace_uids', level: Level.info);
 
   group('RootDataset', () {
+
+    test('updateAllUids', () {
+      global.throwOnError = false;
+      final rootDS0 = new TagRootDataset.empty();
+      final uiList0 = rsg.getUIList(1, 1);
+      final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, uiList0);
+
+      final uid0 = new Uid(uiList0[0]);
+      final uList0 = [uid0];
+      final updateAllUids0 = rootDS0.updateAllUids(ui0.index, uList0);
+      log.debug('updateAllUids0: $updateAllUids0');
+      expect(updateAllUids0, [isNull]);
+      expect(updateAllUids0 == [ui0], false);
+      expect(updateAllUids0 is UI, false);
+
+      global.throwOnError = false;
+      rootDS0.add(ui0);
+      final updateUidList1 = rootDS0.updateAllUids(ui0.index, uList0);
+      log.debug('updateUidList1: $updateUidList1');
+      expect(updateUidList1 is UI, false);
+      expect(updateUidList1.isEmpty, false);
+      expect(updateUidList1, isNotNull);
+
+      final aeList0 = rsg.getAEList(1, 1);
+      final ae0 = new AEtag(PTag.kSelectorAEValue, aeList0);
+      final updateUidList3 = rootDS0.updateUidList(ae0.index, aeList0);
+      log.debug('updateUidList3: $updateUidList3');
+      expect(updateUidList3, isNull);
+      expect(updateUidList3 == ae0, false);
+      expect(updateUidList3 is AE, false);
+
+      rootDS0.add(ae0);
+      final updateUidList4 = rootDS0.updateUidList(ae0.index, aeList0);
+      log.debug('updateUidList4: $updateUidList4');
+      expect(updateUidList4, isNull);
+
+      global.throwOnError = true;
+      expect(() => rootDS0.updateUidList(ae0.index, aeList0),
+          throwsA(const TypeMatcher<InvalidElementError>()));
+    });
     test('update', () {
       final ui0 =
           new UItag(PTag.kStudyInstanceUID, ['1.2.840.10008.5.1.4.34.5']);
@@ -177,46 +217,6 @@ void main() {
       final ui11NVR = rootDS10.update(ui11NV.tag.index, uidList9);
       expect(ui11NVR is UI, true);
       expect(ui11NVR.values.isEmpty, true);
-    });
-
-    test('updateAllUids', () {
-      global.throwOnError = false;
-      final rootDS0 = new TagRootDataset.empty();
-      final uiList0 = rsg.getUIList(1, 1);
-      final ui0 = new UItag(PTag.kRelatedGeneralSOPClassUID, uiList0);
-
-      final uid0 = new Uid(uiList0[0]);
-      final uList0 = [uid0];
-      final updateAllUids0 = rootDS0.updateAllUids(ui0.index, uList0);
-      log.debug('updateAllUids0: $updateAllUids0');
-      expect(updateAllUids0, [isNull]);
-      expect(updateAllUids0 == [ui0], false);
-      expect(updateAllUids0 is UI, false);
-
-      global.throwOnError = false;
-      rootDS0.add(ui0);
-      final updateUidList1 = rootDS0.updateAllUids(ui0.index, uList0);
-      log.debug('updateUidList1: $updateUidList1');
-      expect(updateUidList1 is UI, false);
-      expect(updateUidList1.isEmpty, false);
-      expect(updateUidList1, isNotNull);
-
-      final aeList0 = rsg.getAEList(1, 1);
-      final ae0 = new AEtag(PTag.kSelectorAEValue, aeList0);
-      final updateUidList3 = rootDS0.updateUidList(ae0.index, aeList0);
-      log.debug('updateUidList3: $updateUidList3');
-      expect(updateUidList3, isNull);
-      expect(updateUidList3 == ae0, false);
-      expect(updateUidList3 is AE, false);
-
-      rootDS0.add(ae0);
-      final updateUidList4 = rootDS0.updateUidList(ae0.index, aeList0);
-      log.debug('updateUidList4: $updateUidList4');
-      expect(updateUidList4, isNull);
-
-      global.throwOnError = true;
-      expect(() => rootDS0.updateUidList(ae0.index, aeList0),
-          throwsA(const TypeMatcher<InvalidElementError>()));
     });
 
     test('updateUidList', () {
