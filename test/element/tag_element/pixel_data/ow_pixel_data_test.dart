@@ -265,6 +265,54 @@ void main() {
       final e1 = OWtagPixelData.isValidBytesArgs(null);
       expect(e1, false);
     });
+
+    test('Create OWtagPixelData.fromPixels', () {
+      final e0 = new OWtagPixelData.fromPixels(pixels0);
+      log.debug('tag: ${PTag.kPixelDataOW}');
+      expect(e0.vrIndex == kOBOWIndex, false);
+      expect(e0.vrIndex == kOWIndex, true);
+      expect(e0.values is List<int>, true);
+      log.debug(e0.values);
+      expect(e0.hasValidValues, true);
+      log.debug('bytes: ${e0.vfBytes}');
+      expect(e0.vfBytes is Bytes, true);
+      expect(e0.vfBytes.length == 2048, true);
+      expect(e0.values is Uint16List, true);
+      expect(e0.values.length == 1024, true);
+      expect(e0.length == 1024, true);
+      expect(e0.valuesCopy, equals(e0.values));
+      expect(e0.typedData is Uint16List, true);
+      expect(e0.tag == PTag.kPixelDataOW, true);
+
+      final s = Sha256.uint16(pixels0);
+      log.debug('s: $s');
+      final e2 = e0.sha256;
+      final e3 = e0.update(s);
+      expect(e2, equals(e3));
+
+      for (var s in u8Frame) {
+        expect(e0.checkValue(s), true);
+      }
+
+      expect(e0.checkValue(kUint16Max), true);
+      expect(e0.checkValue(kUint16Min), true);
+      expect(e0.checkValue(kUint16Max + 1), false);
+      expect(e0.checkValue(kUint16Min - 1), false);
+    });
+
+    test('Create OWtagPixelData.fromPixels hashCode and ==', () {
+      global.throwOnError = false;
+
+      final e0 = new OWtagPixelData.fromPixels(pixels0);
+      final e1 = new OWtagPixelData.fromPixels(pixels0);
+      final e2 = new OWtagPixelData.fromPixels(pixels2);
+
+      expect(e0.hashCode == e1.hashCode, true);
+      expect(e0 == e1, true);
+
+      expect(e0.hashCode == e2.hashCode, false);
+      expect(e0 == e2, false);
+    });
   });
 
   group('OWPixelData', () {
