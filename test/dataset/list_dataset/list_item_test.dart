@@ -252,8 +252,7 @@ void main() {
         final uidList0a = [uid0a];
 
         // Create element and check values and uids
-        final ui0 =
-            new UItag(PTag.kSelectorUIValue, uidStringList0);
+        final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
         final item = new ListItem.empty(rds, null)..add(ui0);
         log.debug('values: ${ui0.values}');
         expect(ui0.values, equals(uidStringList0));
@@ -689,5 +688,28 @@ void main() {
       expect(deleteCodes3, equals(<Element>[]));
     });
 
+    test('getTag', () {
+      final item = new ListItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      log..debug('item : $item')..debug('item.Codes: ${item.codes}');
+
+      final getTag0 = item.getTag(as0.index, as0.vrIndex);
+      log..debug('as0 :${as0.info}')..debug('getTag0: $getTag0');
+      expect(getTag0, equals(as0.tag));
+      expect(getTag0.code, equals(as0.tag.code));
+
+      final getTag1 = item.getTag(ss0.index, ss0.vrIndex);
+      log..debug('ss0 :${ss0.info}')..debug('getTag1 $getTag1');
+      expect(getTag1, equals(ss0.tag));
+
+      final getTag3 = item.getTag(fd0.index);
+      log..debug('fd0 :${fd0.info}')..debug('getTag1 $getTag1');
+      expect(getTag3, equals(fd0.tag));
+    });
   });
 }
