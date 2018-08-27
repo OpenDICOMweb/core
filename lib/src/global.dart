@@ -84,6 +84,7 @@ abstract class Global {
   bool trimURISpaces = false;
   bool allowInvalidTagCode = true;
   bool allowInvalidValues = true;
+  bool allowBlankDateTimes = true;
 
   Global(
       {this.name = 'Unknown',

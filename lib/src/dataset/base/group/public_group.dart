@@ -28,8 +28,8 @@ class PublicGroup implements GroupBase {
   Map<int, Element> members = <int, Element>{};
 
   PublicGroup(Element e, Dataset sqParent)
-      : gNumber = e.group,
-        assert(gNumber.isEven) {
+      : assert(e.group.isEven),
+        gNumber = e.group {
     add(e, sqParent);
   }
 

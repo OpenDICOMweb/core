@@ -258,7 +258,7 @@ class OWtag extends OW with TagElement<int>, TagIntegerMixin {
   @override
   OWtag update([Iterable<int> vList = kEmptyIntList]) => new OWtag(tag, vList);
 
-  static OWtag fromValues(Tag tag, Iterable<int> vList) =>
+  static OWtag fromValues(Tag tag, List<int> vList) =>
       new OWtag(tag, vList);
 
   static OWtag fromBytes(Tag tag, Bytes bytes) =>
