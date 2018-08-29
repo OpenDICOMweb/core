@@ -74,8 +74,8 @@ void main() {
       final vList0 = rng.uint32List(1, 1);
       final bd0 = vList0.buffer.asByteData();
       final lBd0 = Uint32.toByteData(vList0);
-      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
-          .asUint8List()}');
+      log.debug(
+          'lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 
@@ -273,5 +273,14 @@ void main() {
     final uint8List1 = vList1.buffer.asUint8List();
     final fromUnit8L1 = Uint32.fromUint8List(uint8List1);
     expect(fromUnit8L1, kEmptyInt16List);
+  });
+
+  test('Uint32Base getLength', () {
+    for (var i = 4; i < 100; i += 4) {
+      final vList = rng.uint32List(i, i);
+      final getLen0 = Uint32.getLength(vList.length);
+      final length = vList.length ~/ Uint32.kSizeInBytes;
+      expect(getLen0 == length, true);
+    }
   });
 }
