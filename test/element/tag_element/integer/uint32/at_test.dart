@@ -486,6 +486,24 @@ void main() {
         expect(e3.values, equals(vList.sublist(i)));
       }
     });
+
+    test('AT equal', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.uint32List(1, i);
+        final bytesA = new Bytes.typedDataView(vList);
+        final bytesB = new Bytes.typedDataView(vList);
+
+        final vList0 = rng.uint32List(2, 2);
+        final bytesC = new Bytes.typedDataView(vList0);
+
+        final e0 = ATtag.fromBytes(PTag.kOriginalImageIdentification, bytesA);
+        final equal0 = e0.equal(bytesA, bytesB);
+        expect(equal0, true);
+
+        final equal1 = e0.equal(bytesA, bytesC);
+        expect(equal1, false);
+      }
+    });
   });
 
   group('AT Element', () {

@@ -210,8 +210,7 @@ void main() {
 
         final vList4 = rng.uint16List(4, 4);
         final e5 = new UStag(PTag.kAcquisitionMatrix, vList4);
-        log.debug('uint1vList46List2:$vList4 , e5.hash_code:${e5
-            .hashCode}');
+        log.debug('uint1vList46List2:$vList4 , e5.hash_code:${e5.hashCode}');
         expect(e0.hashCode == e5.hashCode, false);
         expect(e0 == e5, false);
 
@@ -408,6 +407,24 @@ void main() {
         log.debug('e0: ${e0.values}, e1: ${e1.values}, '
             'vList0.sublist(i) : ${vList0.sublist(i)}');
         expect(e1.values, equals(vList0.sublist(i)));
+      }
+    });
+
+    test('US equal', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.uint16List(1, i);
+        final bytesA = new Bytes.typedDataView(vList);
+        final bytesB = new Bytes.typedDataView(vList);
+
+        final vList0 = rng.uint16List(2, 2);
+        final bytesC = new Bytes.typedDataView(vList0);
+
+        final e0 = UStag.fromBytes(PTag.kSelectorUSValue, bytesA);
+        final equal0 = e0.equal(bytesA, bytesB);
+        expect(equal0, true);
+
+        final equal1 = e0.equal(bytesA, bytesC);
+        expect(equal1, false);
       }
     });
   });
