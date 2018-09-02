@@ -304,4 +304,13 @@ void main() {
     final fromUnit8L1 = Uint16.fromUint8List(uint8List1);
     expect(fromUnit8L1, kEmptyInt16List);
   });
+
+  test('Uint16Base getLength', () {
+    for (var i = 2; i < 50; i += 2) {
+      final vList = rng.uint16List(i, i);
+      final getLen0 = Uint16.getLength(vList.length);
+      final length = vList.length ~/ Uint16.kSizeInBytes;
+      expect(getLen0 == length, true);
+    }
+  });
 }
