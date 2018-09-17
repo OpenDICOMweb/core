@@ -10,6 +10,8 @@
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
+import 'package:quiver/collection.dart';
+
 void main() {
   Server.initialize(name: 'entity_test', level: Level.info);
 
@@ -152,6 +154,33 @@ void main() {
 
       series0.putIfAbsent(instance2);
       log.debug(series0);
+    });
+
+    test('Iru_map', () {
+      final cache = new LruMap<int, String>(maximumSize: 20);
+      cache[0] = 'zero';
+      log.debug('0: ${cache[0]}');
+      expect(cache[0] == 'zero', true);
+
+      cache[1] = '1';
+      log.debug('1: ${cache[1]}');
+      expect(cache[1] == '1', true);
+
+      cache.putIfAbsent(3, () => 'three');
+      log.debug('3: ${cache[3]}');
+      expect(cache[3] == 'three', true);
+
+      cache.putIfAbsent(3, () => '-3');
+      log.debug('3: ${cache[3]}');
+      expect(cache[3] == 'three', true);
+
+      cache[1] = null;
+      log..debug('1: ${cache[1]}')
+      ..debug('length: ${cache.length}');
+      expect(cache.length == 3, true);
+      expect(cache[1] == null, true);
+      log.debug('cache: ${cache.keys}\n ${cache.values}');
+
     });
   });
 }
