@@ -817,5 +817,19 @@ void main() {
       log..debug('fd0 :${fd0.info}')..debug('getTag1 $getTag1');
       expect(getTag3, equals(fd0.tag));
     });
+
+    test('copyWhere', () {
+      final item = new MapItem.empty(rds, null);
+      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      item[as0.code] = as0;
+      item[ss0.code] = ss0;
+      item[fd0.code] = fd0;
+      final copy0 = item.copyWhere((as0) => as0.isValid);
+      expect(copy0.elementAt(0) == as0, true);
+      expect(copy0.elementAt(1) == ss0, true);
+      expect(copy0.elementAt(2) == fd0, true);
+    });
   });
 }

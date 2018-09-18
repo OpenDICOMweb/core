@@ -224,5 +224,40 @@ void main() {
       for (var i = 0; i < fl32List0.length; i++)
         expect(fl32List0[i] == fl32List3[i], true);
     });
+
+    test('DSBytes', () {
+      //final vList = rng.uint16List(1, 1);
+      final vList = ['1q221'];
+      final vList0 = ['1q221', 'sadaq223'];
+      //final bytes = new Bytes.fromList(vList);
+      final bytes = Bytes.fromAsciiList(vList);
+      final bytes0 = Bytes.fromAsciiList(vList0);
+      final dsBytes0 = new RDSBytes(bytes, 0);
+      final dsBytes1 = new RDSBytes(bytes, 0);
+      final dsBytes2 = new RDSBytes(bytes0, 0);
+      log.debug('dsBytes0: $dsBytes0');
+
+      expect(dsBytes0.hashCode == dsBytes1.hashCode, true);
+      expect(dsBytes0.hashCode == dsBytes2.hashCode, false);
+
+      expect(dsBytes0 == dsBytes1, true);
+      expect(dsBytes0 == dsBytes2, false);
+
+      expect(dsBytes0.vfBytes, equals(bytes));
+      expect(dsBytes0.bytes, equals(bytes));
+
+      expect(dsBytes0.vfLength, equals(bytes.length - 132));
+      expect(dsBytes0.dsLength, equals(bytes.length));
+
+      expect(dsBytes0.fmiEnd == 0, true);
+      expect(dsBytes0.fmiStart == 0, true);
+
+      expect(dsBytes0.dsStart, equals(bytes.offset));
+      expect(dsBytes0.dsEnd, equals(bytes.offset + bytes.length));
+
+      expect(dsBytes0.hasPrefix, true);
+      expect(dsBytes0.vfOffset == 132, true);
+      expect(dsBytes0.vfLengthField, equals(bytes.length - 132));
+    });
   });
 }
