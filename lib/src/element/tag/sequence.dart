@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/src/dataset/base.dart';
@@ -18,6 +17,8 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/vr.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A Sequence ([SQ]) Element.
 ///

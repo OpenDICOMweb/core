@@ -24,6 +24,8 @@ part 'package:core/src/utils/buffer/read_mixin.dart';
 part 'package:core/src/utils/buffer/write_buffer.dart';
 part 'package:core/src/utils/buffer/write_mixin.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// The base class for Buffer
 abstract class BytesBuffer {
   // **** Interface

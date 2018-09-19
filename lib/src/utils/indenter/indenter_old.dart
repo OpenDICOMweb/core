@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 class Indenter0 extends StringBuffer {
   /// The number of additional spaces at each depth
   final int increment;

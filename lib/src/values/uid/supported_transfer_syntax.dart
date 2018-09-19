@@ -6,8 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/values/uid/well_known/transfer_syntax.dart';
+
+// ignore_for_file: public_member_api_docs
 
 //TODO: finish this class
 class SupportedTransferSyntax {

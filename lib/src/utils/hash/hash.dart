@@ -6,8 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
+
+// ignore_for_file: public_member_api_docs
 
 /// A class implementing a 32-bit Jenkins hash
 abstract class Hash {

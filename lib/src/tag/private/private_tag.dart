@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/error/tag_errors.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/tag/private/pc_tag.dart';
@@ -16,6 +15,8 @@ import 'package:core/src/tag/tag.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
+
+// ignore_for_file: public_member_api_docs
 
 typedef Tag TagMaker(int code, int vrIndex);
 

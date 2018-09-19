@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 const int frameCount = 32;
 const int rowsSize = 16;
 const int columnSize = 16;

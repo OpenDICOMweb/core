@@ -26,6 +26,8 @@ part 'pixel_data.dart';
 part 'sequence.dart';
 part 'string.dart';
 
+// ignore_for_file: public_member_api_docs
+
 typedef Element DecodeBinaryVF(DicomBytes bytes, int vrIndex);
 
 typedef Element BDElementMaker(int code, int vrIndex, DicomBytes bytes);

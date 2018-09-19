@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:collection';
 import 'dart:typed_data';
 
@@ -20,19 +19,27 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/values.dart';
 
+// TODO: finish documentation
+
+// ignore_for_file: public_member_api_docs
+
 /// The Root [Dataset] for a DICOM Entity.
 abstract class RootDataset extends Dataset {
+  /// The path to _this_.
   String path;
   @override
   RDSBytes dsBytes;
 
+  /// Constructor
   RootDataset(this.path, Bytes bytes, int fmiEnd)
       : dsBytes = (bytes == null || bytes.isEmpty)
             ? new RDSBytes.empty()
             : new RDSBytes(bytes, fmiEnd);
 
+  /// Constructor for an empty [RootDataset].
   RootDataset.empty() : dsBytes = new RDSBytes.empty();
 
+  /// Returns the [Bytes] corresponding to _this_.
   Bytes get bd => dsBytes.bytes;
 
   /// The [RootDataset] has no [parent]
@@ -49,6 +56,7 @@ abstract class RootDataset extends Dataset {
   /// _this_. [fmiBytes] has _one-time_ setter that is initialized lazily.
   Uint8List get fmiBytes => dsBytes.fmiBytes;
 
+  /// Returns _true_ is _this_ has File Meta Information.
   bool get hasFmi => fmi.isNotEmpty;
 
   /// Only supported by some [RootDataset]s. A [lengthInBytes] of -1
@@ -56,12 +64,16 @@ abstract class RootDataset extends Dataset {
   @override
   int get lengthInBytes => (dsBytes != null) ? dsBytes.vfLength : -1;
 
+  /// Returns the DICOM Preamble for _this_.
   Bytes get preamble => (dsBytes != null) ? dsBytes.preamble : kEmptyBytes;
 
+  /// Returns the DICOM Prefix for _this_.
   Bytes get prefix => (dsBytes != null) ? dsBytes.prefix : kEmptyBytes;
 
+  /// Returns _true_ if _this_ had an Undefined Length.
   bool get hadULength => false;
 
+  /// Returns the [Patient] whose data is contained in _this_, if any.
   Patient get patient => new Patient.fromRDS(this);
 
   /// The SopClass Uid for _this_ as a [String].
@@ -77,12 +89,14 @@ abstract class RootDataset extends Dataset {
   /// The [TransferSyntax].
   SopClass get sopClass => SopClass.lookup(sopClassId);
 
+  /// Returns _true_ if _this_ is a DICOM Directory.
   bool get isDicomDir => hasElementsInRange(0x00041130, 0x00031600);
 
   /// The [TransferSyntax].
   TransferSyntax get transferSyntax =>
       fmi.uidLookup(kTransferSyntaxUID) ?? global.defaultTransferSyntax;
 
+  /// Returns _true_ if the [TransferSyntax] of _this_ is supported.
   bool get hasSupportedTransferSyntax =>
       global.isSupportedTransferSyntax(transferSyntax.asString);
 

@@ -6,13 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/profile/de_id/basic_profile_options.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/values/uid.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// Basic De-Identification Profile.
 class BasicProfile {

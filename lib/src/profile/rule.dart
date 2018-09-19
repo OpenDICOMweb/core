@@ -6,11 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:convert' as cvt;
 
 import 'package:core/src/tag/public/p_tag.dart';
 import 'package:core/src/tag/tag.dart';
+
+// ignore_for_file: public_member_api_docs
 
 const List<String> ruleNames = const [
   '@add',

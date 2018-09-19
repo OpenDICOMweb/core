@@ -6,11 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/error/issues/issues.dart';
+
+// ignore_for_file: public_member_api_docs
 
 List<Issues> validateRootDataset(RootDataset ds) =>
     _validateDataset(ds, <Issues>[]);

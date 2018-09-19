@@ -15,6 +15,8 @@ import 'package:core/src/error.dart';
 import 'package:core/src/utils/dicom.dart';
 import 'package:core/src/values.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // TODO: decide where these primitive io functions should go
 
 String cleanPath(String path) => path.replaceAll('\\', '/');

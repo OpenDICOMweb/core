@@ -10,6 +10,8 @@ import 'package:collection/collection.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/error/general_errors.dart';
 
+// ignore_for_file: public_member_api_docs
+
 //  create MapItem and MapRootDataset
 //  create some Elements
 //  insert and remove and compare for identity (identical(a, b)

@@ -13,7 +13,7 @@ import 'package:core/src/utils/indenter.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/primitives.dart';
 
-// ignore_for_file: only_throw_errors
+// ignore_for_file: only_throw_errors, public_member_api_docs
 
 /// A [PublicGroup] can only contain Sequences ([SQ]) that
 /// contain Public pElement]s.

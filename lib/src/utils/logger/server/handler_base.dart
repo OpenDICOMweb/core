@@ -29,8 +29,10 @@ import 'package:core/src/utils/logger/log_record.dart';
 /// Base Handler that can be passed to the [logger.onRecord.listen] handler.
 /// This Handler simply prints the log record before passing it up the chain.
 abstract class HandlerBase {
+	/// If _true_ prints the value.
 	bool doPrint;
 
+	/// Constructor
 	HandlerBase({this.doPrint = true});
 
 	/// This Base implementation simply prints the log record.
@@ -39,8 +41,6 @@ abstract class HandlerBase {
 		if (doPrint) stdout.writeln(s);
 		return s;
 	}
-
-
 
 	@override
 	String toString() => '$runtimeType';

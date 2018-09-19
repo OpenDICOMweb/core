@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 //TODO: decide if this is useful - flush or complete.
 // TODO: move this info to /dictionary/uid/transfer_syntax
 class TransferSyntaxOption {

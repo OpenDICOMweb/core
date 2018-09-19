@@ -9,6 +9,8 @@
 import 'package:core/src/tag/public/p_tag.dart';
 import 'package:core/src/utils/primitives.dart';
 
+// ignore_for_file: public_member_api_docs
+
 const List<int> deIdUidTagCodes = const <int>[
   kAffectedSOPInstanceUID,
   kRequestedSOPInstanceUID,

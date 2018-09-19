@@ -6,9 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/tag.dart';
 import 'package:core/src/tag/private/new_tag/pc_tag_definitions.dart';
+
+// ignore_for_file: public_member_api_docs
 
 PDTagDefinition lookupPCTag(String creatorToken, int pdCode) {
   final pdTags = creatorIdMap[creatorToken];

@@ -6,12 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/private_group.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/element/base/sequence.dart';
 import 'package:core/src/error/general_errors.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A history of all changes to a [Dataset].
 class History {

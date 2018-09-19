@@ -11,11 +11,13 @@ import 'package:core/src/utils/character/ascii.dart';
 
 /// UUID [String]s. See https://tools.ietf.org/html/rfc4122.
 
-// Uuid constants
+/// The length of a standard UUID [String].
 const int kUuidStringLength = 36;
+
+/// The length of a DICOM UUID UID [String].
 const int kUuidAsUidStringLength = 32;
 
-// Regular expression used for basic parsing of the uuid.
+/// Regular expression used for basic parsing of the uuid.
 const String pattern =
     r'^[0-9a-f]{8}-[0-9a-f]{4}-[1-4][0-9a-f]{3}-[0-9a-f]{4}-[0-9a-f]{12}$';
 
@@ -38,7 +40,7 @@ const List<int> kEnds = const <int>[8, 13, 18, 23, kUuidStringLength];
 const List<int> _kISOVariantAsLetter = const <int>[k8, k9, ka, kb];
 
 // Urgent Jim make sure [s] is a decimal number - NOT a HEXAdecimal number.
-/// Returns _true_ if [uuidString] is a valid [Uuid]. If [type] is _null_
+/// Returns _true_ if [uuidString] is a valid UUID. If [type] is _null_
 /// it just validates the format; otherwise, [type] must have a values
 /// between 1 and 5.
 bool isValidUuidString(String uuidString, [int type]) {

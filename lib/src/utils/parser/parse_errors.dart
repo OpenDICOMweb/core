@@ -6,9 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/global.dart';
 import 'package:core/src/error/issues/issues.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A Parsing Error.  This class should not be used directly,
 /// call [parseError] or [parseNullError] instead.

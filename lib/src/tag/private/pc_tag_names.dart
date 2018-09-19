@@ -7,6 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
+/// A List of Private Creator Tag names.
 const List<String> pcTagNames = const [
   '1.2.840.113681',
   '1.2.840.113708.794.1.1.2.0',

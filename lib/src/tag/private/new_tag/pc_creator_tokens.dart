@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 const Map<String, String> pseudonyms = <String, String>{
   '1.2.840.113681': 'Uid1_2_840_113681',
   '1.2.840.113708.794.1.1.2.0': 'Uid1_2_840_113708_794_1_1_2_0',

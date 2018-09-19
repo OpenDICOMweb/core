@@ -11,6 +11,7 @@ part of odw.sdk.utils.buffer;
 
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
+// ignore_for_file: public_member_api_docs
 
 abstract class DicomWriteBufferMixin {
   DicomGrowableBytes get _buf;

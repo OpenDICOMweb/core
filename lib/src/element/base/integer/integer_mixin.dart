@@ -20,6 +20,8 @@ import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// A mixin class for 8-bit signed integer [Element]s.
 abstract class Int8 {
   int get length;
@@ -94,7 +96,7 @@ abstract class Int8 {
       return (asView) ? vList : new Int8List.fromList(vList);
     if (check) {
       final td = new Int8List(vList.length);
-      return copyList(vList, td, kMinValue, kMaxValue);
+      return _copyList(vList, td, kMinValue, kMaxValue);
     }
     return new Int8List.fromList(vList);
   }
@@ -220,7 +222,7 @@ abstract class Int16 {
       return (asView) ? vList : new Int16List.fromList(vList);
     if (check) {
       final td = new Int16List(vList.length);
-      final Int16List v = copyList(vList, td, kMinValue, kMaxValue);
+      final Int16List v = _copyList(vList, td, kMinValue, kMaxValue);
       return v;
     }
     return new Int16List.fromList(vList);
@@ -347,7 +349,7 @@ abstract class Int32 {
       return (asView) ? vList : new Int32List.fromList(vList);
     if (check) {
       final td = new Int32List(vList.length);
-      return copyList(vList, td, kMinValue, kMaxValue);
+      return _copyList(vList, td, kMinValue, kMaxValue);
     }
     return new Int32List.fromList(vList);
   }
@@ -467,7 +469,7 @@ abstract class Int64 {
       return (asView) ? vList : new Int64List.fromList(vList);
     if (check) {
       final td = new Int64List(vList.length);
-      return copyList(vList, td, kMinValue, kMaxValue);
+      return _copyList(vList, td, kMinValue, kMaxValue);
     }
     return new Int64List.fromList(vList);
   }
@@ -604,7 +606,7 @@ abstract class Uint8 {
       return (asView == true) ? vList : new Uint8List.fromList(vList);
     if (check) {
       final td = new Uint8List(vList.length);
-      return copyList(vList, td, kMinValue, kMaxValue);
+      return _copyList(vList, td, kMinValue, kMaxValue);
     }
     return new Uint8List.fromList(vList);
   }
@@ -731,7 +733,7 @@ abstract class Uint16 {
       return (asView) ? vList : new Uint16List.fromList(vList);
     if (check) {
       final td = new Uint16List(vList.length);
-      return copyList(vList, td, kMinValue, kMaxValue);
+      return _copyList(vList, td, kMinValue, kMaxValue);
     }
     return new Uint16List.fromList(vList);
   }
@@ -873,7 +875,7 @@ abstract class Uint32 {
       return (asView) ? vList : new Uint32List.fromList(vList);
     if (check) {
       final td = new Uint32List(vList.length);
-      return copyList(vList, td, kMinValue, kMaxValue);
+      return _copyList(vList, td, kMinValue, kMaxValue);
     }
     return new Uint32List.fromList(vList);
   }
@@ -1007,7 +1009,7 @@ abstract class Uint64 {
       return (asView) ? vList : new Uint64List.fromList(vList);
     if (check) {
       final td = new Uint64List(vList.length);
-      return copyList(vList, td, kMinValue, kMaxValue);
+      return _copyList(vList, td, kMinValue, kMaxValue);
     }
     return new Uint64List.fromList(vList);
   }
@@ -1094,3 +1096,15 @@ bool _isValidList(Iterable<int> vList, int minValue, int maxValue) {
 
 bool _isNotValidList(Iterable<int> vList, int minValue, int maxValue) =>
     !_isValidList(vList, minValue, maxValue);
+
+/// Returns a new [List<int>] that contains the elements from [min] to [max].
+List<int> _copyList(List<int> vList, List<int> td, int min, int max) {
+  assert(td is TypedData);
+  assert(vList.length == td.length);
+  for (var i = 0; i < vList.length; i++) {
+    final v = vList[i];
+    if (v < min || v > max) return badValues(vList);
+    td[i] = v;
+  }
+  return td;
+}

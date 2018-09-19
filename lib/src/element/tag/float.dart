@@ -16,6 +16,8 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
+// ignore_for_file: public_member_api_docs
+
 abstract class TagFloatMixin {
   List<double> get _values;
   set _values(List<double> v);

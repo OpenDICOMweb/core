@@ -7,7 +7,10 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 //TODO: this class might disappear when all the types are implemented as classes.
+
 /// Uid Types
 class UidType {
   final int index;

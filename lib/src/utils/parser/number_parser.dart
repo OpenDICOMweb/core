@@ -8,6 +8,8 @@
 //
 part of odw.sdk.core.parser;
 
+// ignore_for_file: public_member_api_docs
+
 // TODO: add tryParse methods for all top-level entries
 // TODO: make sure this is true and then move to parse.
 // _Note_:

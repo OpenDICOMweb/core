@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:async';
 import 'dart:collection';
 
@@ -15,6 +14,7 @@ import 'package:core/src/utils/logger/log_level.dart';
 import 'package:core/src/utils/logger/log_record.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic, only_throw_errors
+// ignore_for_file: public_member_api_docs
 
 /// A Function called by the Fatal method.
 typedef void LogExitHandler(LogRecord record);

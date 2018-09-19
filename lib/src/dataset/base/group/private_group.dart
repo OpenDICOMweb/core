@@ -16,7 +16,7 @@ import 'package:core/src/tag/code.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/primitives.dart';
 
-// ignore_for_file: only_throw_errors
+// ignore_for_file: only_throw_errors, public_member_api_docs
 
 class PrivateGroups {
   Dataset ds;

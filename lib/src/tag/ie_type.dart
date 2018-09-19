@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 //TODO: document
 /// A Information Entity Type.  See PS3.x....
 class IEType {

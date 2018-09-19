@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/values/date_time.dart';
 import 'package:core/src/values/person/address.dart';
 import 'package:core/src/values/person/person_name.dart';
@@ -36,5 +35,6 @@ class Person {
   @override
   String toString() => 'Person: $name, DOB: $dateOfBirth';
 
+  /// Throws an argument error.
   Error error(String msg) => throw new ArgumentError('Parse Error: $msg');
 }

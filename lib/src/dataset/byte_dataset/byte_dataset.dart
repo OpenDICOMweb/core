@@ -6,9 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base.dart';
 import 'package:core/src/tag.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A [ByteDataset] is a DICOM [Dataset].
 abstract class ByteDataset {

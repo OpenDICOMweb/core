@@ -8,6 +8,8 @@
 //
 part of odw.sdk.element.bytes;
 
+// ignore_for_file: public_member_api_docs
+
 /// PixelDataMixin class
 abstract class BytePixelData implements PixelData {
   VFFragments get fragments;

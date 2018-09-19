@@ -6,13 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/src/values/image/frame_descriptor.dart';
 import 'package:core/src/values/image/frame_list.dart';
 import 'package:core/src/values/uid.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A single image, that is either an independent image, or a single
 /// [Frame] of a multi-part image or video.
@@ -111,6 +112,7 @@ class Frame1Bit extends Frame {
   @override
   final Uint8List pixels;
 
+  /// Constructor
   Frame1Bit(FrameList parent, this.pixels, int index) : super(parent, index) {
     assert(
         lengthInBytes == parent.desc.lengthInBytes,

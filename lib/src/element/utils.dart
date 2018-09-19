@@ -6,12 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:collection';
 import 'dart:convert' as cvt;
 import 'dart:typed_data';
 
 import 'package:core/src/utils/primitives.dart';
+
+// ignore_for_file: public_member_api_docs
 
 //TODO: maybe move base64Encode/decode & toDcmString
 /// Returns a Base64 [String] encoded from the [Uint8List] of [bytes].

@@ -14,6 +14,8 @@ import 'package:core/src/tag/vm.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
 
+// ignore_for_file: public_member_api_docs
+
 abstract class PDTag extends PrivateTag {
   const PDTag._();
 

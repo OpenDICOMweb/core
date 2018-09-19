@@ -16,6 +16,8 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// The base class for DICOM Data Elements
 ///
 /// An implementation of this class must provide the following:

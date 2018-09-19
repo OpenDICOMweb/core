@@ -3,9 +3,11 @@
 // that can be found in the LICENSE file.
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
-
+//
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
+
+// ignore_for_file: public_member_api_docs
 
 void main(){
   final out = tokensToLookupMap(pcTagNames);

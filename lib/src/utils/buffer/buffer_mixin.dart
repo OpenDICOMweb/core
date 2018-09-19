@@ -9,6 +9,7 @@
 part of odw.sdk.utils.buffer;
 
 // ignore_for_file: non_constant_identifier_names
+// ignore_for_file: public_member_api_docs
 
 abstract class BufferMixin {
   Bytes get bytes;

@@ -6,10 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr.dart';
+
+// ignore_for_file: public_member_api_docs
 
 class PDTagDefinition {
   // Internal index of _this_.

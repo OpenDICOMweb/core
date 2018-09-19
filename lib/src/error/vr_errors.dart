@@ -11,6 +11,8 @@ import 'package:core/src/system.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 
+// ignore_for_file: public_member_api_docs
+
 class InvalidVRError extends Error {
   String message;
   int vrIndex;

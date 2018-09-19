@@ -17,6 +17,8 @@ import 'package:core/src/values/date_time.dart';
 import 'package:core/src/values/uid.dart';
 import 'package:version/version.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // **** Note: this file cannot have any dependencies on dart:io or dart:html.
 
 const String kSystemBuildNumber = '00000';

@@ -7,18 +7,23 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/utils.dart';
-import 'package:core/src/values/uuid.dart';
 
 // Urgent Sharath: unit test for this file
 
 /// Useful utilities for working with [Uid] [String]s.
 
+///  The minimum length of a UID [String].
 const int kUidMinLength = 9;
+
+///  The maximum length of a UID [String].
 const int kUidMaxLength = 64;
+
+///  The maximum length of a UID Root [String].
 const int kUidMaxRootLength = 24;
 
-const _uidRegExpString = r'[012]((\.0)|(\.[1-9]+\d*))+';
-final RegExp uidRegex = new RegExp(_uidRegExpString);
+// **** Do not remove ****
+//const _uidRegExpString = r'[012]((\.0)|(\.[1-9]+\d*))+';
+//final RegExp _uidRegex = new RegExp(_uidRegExpString);
 
 bool _isValidLength(int length) =>
     kUidMinLength <= length && length <= kUidMaxLength;
@@ -81,6 +86,7 @@ bool isValidUidStringList(List<String> sList) {
 /// ASCII constants for '0', '1', and '2'. No other roots are valid.
 const List<String> kUidRoots = const <String>['0', '1', '2'];
 
+/// The first five characters of a
 const String randomUuidUidRoot = '2.25.';
 
 /// A [Map] containing the names associated with the three UID\(OID\)

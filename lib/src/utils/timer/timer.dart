@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 /// A Simple Timer based on Dart's [Stopwatch].
 class Timer {
   final Stopwatch watch = new Stopwatch();

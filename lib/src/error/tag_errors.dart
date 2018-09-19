@@ -12,6 +12,8 @@ import 'package:core/src/tag/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr/vr_base.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// For use with [Tag] related [Error]s.
 class InvalidTagError extends Error {
   String message;

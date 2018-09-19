@@ -14,6 +14,8 @@ import 'dart:typed_data';
 import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/values/bulkdata/bulkdata.dart';
 
+// ignore_for_file: public_member_api_docs
+
 const String bulkdataFileExtension = '.bd';
 final Uint8List kBulkdataFileToken = cvt.ascii.encode('Bulkdata');
 

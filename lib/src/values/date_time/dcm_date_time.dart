@@ -19,6 +19,8 @@ import 'date.dart';
 import 'time.dart';
 import 'time_zone.dart';
 
+// ignore_for_file: public_member_api_docs
+
 //TODO: should implement Comparable, add, subtract
 
 /// The [Type] of [DcmDateTime] error handlers.

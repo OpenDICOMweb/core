@@ -18,6 +18,8 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/image.dart';
 import 'package:core/src/values/uid/well_known/transfer_syntax.dart';
 
+// ignore_for_file: public_member_api_docs
+
 bool _isEmpty(Iterable<int> vList) => vList == null || vList.isEmpty;
 
 /// PixelDataMixin class

@@ -6,9 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A [List] of Tag Code that should be deleted from according to
 /// the DICOM Basic De-Identification Profile (see PS3.15 Annex E).

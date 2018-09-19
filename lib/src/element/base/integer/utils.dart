@@ -8,16 +8,17 @@
 //
 import 'dart:typed_data';
 
-import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
+/// Returns [td] as a [Bytes].
 Bytes asBytes(TypedData td) {
   if (td == null) return null;
   if (td.lengthInBytes == 0) return kEmptyBytes;
   return new Bytes.typedDataView(td);
 }
 
+/// Returns [td] as a [Uint8List].
 Uint8List asUint8List(TypedData td) {
   if (td == null) return null;
   if (td.lengthInBytes == 0) return kEmptyUint8List;
@@ -29,15 +30,4 @@ ByteData asByteData(TypedData td) {
   if (td == null) return null;
   if (td.lengthInBytes == 0) return kEmptyByteData;
   return td.buffer.asByteData(td.offsetInBytes, td.lengthInBytes);
-}
-
-List<int> copyList(List<int> vList, List<int> td, int min, int max) {
-  assert(td is TypedData);
-  assert(vList.length == td.length);
-  for (var i = 0; i < vList.length; i++) {
-    final v = vList[i];
-    if (v < min || v > max) return badValues(vList);
-    td[i] = v;
-  }
-  return td;
 }

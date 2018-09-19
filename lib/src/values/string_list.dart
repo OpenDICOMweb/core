@@ -15,6 +15,8 @@ import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string/string.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // Urgent: move to globals
 bool doRemoveBlankStrings = false;
 

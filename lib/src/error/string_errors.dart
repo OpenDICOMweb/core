@@ -10,6 +10,8 @@ import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/values.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // Functions starting with 'bad...' return null
 // Functions starting with 'invalid...' return false
 // otherwise, they do the same thing

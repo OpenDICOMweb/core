@@ -6,9 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-// **** Note: this file cannot have any dependencies on dart:html
-
 import 'dart:io';
 
 import 'package:core/src/global.dart';
@@ -16,6 +13,8 @@ import 'package:core/src/utils/hash.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/values/date_time.dart';
 import 'package:version/version.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A singleton class used to handle system-wide values and methods.
 ///

@@ -14,6 +14,8 @@ import 'package:core/src/values/date_time/primitives/date.dart';
 import 'package:core/src/values/date_time/primitives/dcm_date_time.dart';
 import 'package:core/src/values/date_time/time.dart';
 
+// ignore_for_file: public_member_api_docs
+
 typedef Date OnDateError(int y, int m, int d);
 typedef Date OnDateParseError(String s);
 typedef String OnDateHashStringError(String s);
@@ -158,6 +160,7 @@ class Date implements Comparable<Date> {
       new Date._(epochDay * kMicrosecondsPerDay);
 
   // Urgent remove
+  /// Returns _true_ of [s] contains only spaces.
   static bool isAllBlanks(String s, int start, [int end]) {
     end ??= s.length;
     for (var i = start; i < end; i++)

@@ -6,10 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:collection/collection.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/error/general_errors.dart';
+
+// ignore_for_file: public_member_api_docs
 
 MapEquality<int, Element> mapEquality = const MapEquality<int, Element>();
 

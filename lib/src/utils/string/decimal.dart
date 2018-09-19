@@ -8,12 +8,15 @@
 //
 
 //Note: the following do NO error checking.
+
+/// Returns a 2 digit [String], left padded with '0' if necessary.
 String digits2(int n) {
   if (n > 99) return null;
   if (n >= 10) return '$n';
   return '0$n';
 }
 
+/// Returns a 3 digit [String], left padded with '0' if necessary.
 String digits3(int n) {
   if (n > 999) return null;
   if (n >= 100) return '$n';
@@ -21,6 +24,7 @@ String digits3(int n) {
   return '00$n';
 }
 
+/// Returns a 4 digit [String], left padded with '0' if necessary.
 String digits4(int n) {
   if (n > 9999) return null;
   if (n >= 1000) return '$n';
@@ -29,6 +33,7 @@ String digits4(int n) {
   return '000$n';
 }
 
+/// Returns a 6 digit [String], left padded with '0' if necessary.
 String digits6(int n) {
   if (n > 999999) return null;
   if (n >= 100000) return '$n';

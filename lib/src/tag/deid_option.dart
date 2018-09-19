@@ -6,9 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
+
+// ignore_for_file: public_member_api_docs
 
 typedef Element DeIdAdd<V>(Dataset ds, int index, Element<V> e);
 typedef List<Element> DeIdAddAll<V>(Dataset ds, int index, List<Element<V>> e);

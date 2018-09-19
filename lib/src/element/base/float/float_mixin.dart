@@ -20,6 +20,7 @@ import 'package:core/src/utils/bytes/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic
+// ignore_for_file: public_member_api_docs
 
 /// A mixin class for 32-bit floating point [Element]s.
 abstract class Float32 {

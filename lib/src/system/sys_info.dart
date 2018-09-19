@@ -9,6 +9,8 @@
 
 // **** generated file ****
 
+// ignore_for_file: public_member_api_docs
+
 class SysInfo {
   static const String name = 'core';
   static const String version = '0.5.6';

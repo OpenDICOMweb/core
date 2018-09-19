@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 /// The Ascii (ISO IR-6) character codes and predicates.
 /// A set of defined constants for Ascii code points, along with
 /// a set of related predicates.

@@ -9,6 +9,8 @@
 import 'package:core/src/error.dart';
 import 'package:core/src/tag.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // Urgent Jim: Replace all Tag code related functions throughout core
 // Urgent Jim:  with functions from this file.
 

@@ -6,9 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/values/uid/well_known/uid_type.dart';
 import 'package:core/src/values/uid/well_known/wk_uid.dart';
+
+// ignore_for_file: public_member_api_docs
 
 class MetaSopClass extends WKUid {
   const MetaSopClass(String uid, String keyword, UidType _type, String name,

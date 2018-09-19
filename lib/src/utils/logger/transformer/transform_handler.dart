@@ -6,10 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/logger/log_record.dart';
 import 'package:core/src/utils/logger/server/handler_base.dart';
 import 'package:core/src/utils/logger/transformer/transformer.dart';
+
+// ignore_for_file: public_member_api_docs
 
 //TODO: move these comments elsewhere.
 /// Creates a default handler that outputs using the build-in [print] function.

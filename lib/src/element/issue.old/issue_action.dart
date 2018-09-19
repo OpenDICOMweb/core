@@ -3,13 +3,9 @@
 // that can be found in the LICENSE file.
 // Author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
-
 import 'package:core/src/utils/primitives.dart';
 
-//typedef String _Msg(object);
-
-//Flush if not used
-//String unknownIssueTypeMsg(dynamic obj) => 'Unknown Issue Type with $obj';
+// ignore_for_file: public_member_api_docs
 
 String invalidPadCharMsg(String char) =>
     'Invalid padding character $char in String';

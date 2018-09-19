@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
@@ -17,6 +16,8 @@ import 'package:core/src/utils/logger.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/uid.dart';
 import 'package:core/src/vr.dart';
+
+// ignore_for_file: public_member_api_docs
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 

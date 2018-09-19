@@ -6,12 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:math';
 
 import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/parser.dart';
+
+// ignore_for_file: public_member_api_docs
 
 const int k1KB = 1024;
 const int k1MB = k1KB * 1024;

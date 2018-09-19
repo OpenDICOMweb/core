@@ -8,6 +8,8 @@
 //
 part of odw.sdk.element.bytes;
 
+// ignore_for_file: public_member_api_docs
+
 /// 16-bit signed integer Elements (SS)
 abstract class Int16Mixin {
   int get vfLength;

@@ -6,10 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/values/uid/uid.dart';
 import 'package:core/src/values/uid/uid_errors.dart';
 
+// ignore_for_file: public_member_api_docs
 
 /// A singleton class used to ensure that all [Uid]s are unique.
 abstract class SupportedUid {

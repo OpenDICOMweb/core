@@ -6,11 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/values/uid/uid.dart';
 import 'package:core/src/values/uid/uid_errors.dart';
 import 'package:core/src/values/uid/well_known/uid_type.dart';
 import 'package:core/src/values/uid/well_known/wk_uids_map.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// Compile time constant definitions for the 'Well Known' UIDs from PS 3.6
 class WKUid extends Uid {

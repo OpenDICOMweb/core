@@ -21,6 +21,8 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr/vr_base.dart';
 import 'package:core/src/vr/vr_external.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// The base class for DICOM Data Elements
 ///
 /// An implementation of this class must provide the following:
@@ -30,17 +32,16 @@ import 'package:core/src/vr/vr_external.dart';
 ///   2. An implementation of a TypeData Getter typedData.
 ///
 
-// TODO: the following typedefs should be replaced with the new
-//       inline Type declarations
-/// The Type of a Method or Function that takes an Element and returns
-/// a [bool].
+/// The Type of a Method or Function that takes an Element and returns a [bool].
 typedef bool ElementTest(Element e);
 
+/// The Type signature of a condition handler.
 typedef bool Condition(Dataset ds, Element e);
 
 Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
 
+/// Returns a formatter for _this_.
 final ElementFormatter eFormat = new SimpleElementFormatter();
 
 // All add, replace, and remove operations should

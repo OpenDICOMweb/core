@@ -27,6 +27,8 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr/vr_base.dart';
 import 'package:core/src/vr/vr_external.dart';
 
+// ignore_for_file: public_member_api_docs
+
 const int kGroupMask = 0xFFFF0000;
 const int kElementMask = 0x0000FFFF;
 

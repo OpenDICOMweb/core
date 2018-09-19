@@ -32,6 +32,8 @@ part 'package:core/src/element/base/string/string_bulkdata.dart';
 part 'package:core/src/element/base/string/text.dart';
 part 'package:core/src/element/base/string/utf8.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // TODO: For each class add the following static fields:
 //       bool areLeadingSpacesAllowed = x;
 //       bool areLeadingSpacesSignificant = x;

@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 /// A utility for prefixing printed lines with line numbers, a [prefix],
 /// spaces and a [String]. The format of the prefix generated is:
 ///     ```$lineNo$prefix$spaces```.

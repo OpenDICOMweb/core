@@ -12,6 +12,8 @@ import 'package:core/src/utils/parser.dart';
 import 'package:core/src/utils/string/decimal.dart';
 import 'package:core/src/values/date_time/primitives/age.dart';
 
+// ignore_for_file: public_member_api_docs
+
 bool _inRange(int v, int min, int max) => v != null && v >= min && v <= max;
 bool _inAgeRange(int v) => _inRange(v, kMinAge, kMaxAge);
 bool _inDayRange(int v) => _inRange(v, kMinAge, kMaxAge);

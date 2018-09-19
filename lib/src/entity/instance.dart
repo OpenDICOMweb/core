@@ -18,6 +18,8 @@ import 'package:core/src/error.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/uid.dart';
 
+// ignore_for_file: public_member_api_docs
+
 class Instance extends Entity {
   /// Pixel Data
   Uint8List _pixelData;

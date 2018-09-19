@@ -6,13 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base.dart';
 import 'package:core/src/dataset/base/root_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/utils.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A [MapRootDataset].
 class MapRootDataset extends RootDataset with MapDataset {
@@ -39,6 +40,7 @@ class MapRootDataset extends RootDataset with MapDataset {
         eMap = new Map.from(rds.eMap),
         super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
 
+  /// Returns a copy of _this_.
   RootDataset copy([RootDataset rds]) => new MapRootDataset.from(rds ?? this);
 }
 

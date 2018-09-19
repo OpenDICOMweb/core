@@ -16,6 +16,8 @@ import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string/string.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // **** This file contains low-level [String] [List] functions
 
 /// Returns the number of code points, plus separators, plus padding.

@@ -23,6 +23,7 @@ int hash32(int i) {
   return v;
 }
 
+/// Returns a 64-bit hash code for [i].
 int hash64(int i) {
   var v = i;
   v = (~i) + (i << 21);

@@ -6,13 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-//TODO: finish this package  or remove
-
 import 'dart:typed_data';
 
 import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/values/integer.dart';
+
+// ignore_for_file: public_member_api_docs
+
+//TODO: finish this package  or remove
 
 List<int> _copyBuffer(List<int> oldBuf, List<int> newBuf) {
   for (var i = 0; i < oldBuf.length; i++) newBuf[i] = oldBuf[i];

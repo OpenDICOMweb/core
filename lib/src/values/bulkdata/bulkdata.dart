@@ -10,6 +10,8 @@ import 'package:core/src/utils/bytes.dart';
 
 import 'package:core/src/values/bulkdata/bulkdata_file.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// A DICOM _Bulkdata_
 ///
 /// A [Bulkdata] is an entry in a [BulkdataFile].

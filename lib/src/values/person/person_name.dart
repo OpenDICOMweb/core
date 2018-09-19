@@ -6,15 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:collection/collection.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// The DICOM PersonName Types
 enum PersonNameType { alphabetic, ideographic, phonetic }
-
-
 
 //TODO: rewrite for correctness
 /// A DICOM Person Name (VR = PN)

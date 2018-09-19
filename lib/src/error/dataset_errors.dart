@@ -15,6 +15,8 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/values/uid.dart';
 
+// ignore_for_file: public_member_api_docs
+
 Null badElementIndex(int index,
                      {Element e, bool required = false, Issues issues}) {
   final code = dcm(index);

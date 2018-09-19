@@ -6,7 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-//
+
+// ignore_for_file: public_member_api_docs
 
 /// A [Bulkdata] [Uri] with the format '$path?bytes=$offset-$length'.
 class BulkdataUri {

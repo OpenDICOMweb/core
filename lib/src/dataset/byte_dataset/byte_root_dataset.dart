@@ -6,11 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/byte_dataset/byte_dataset.dart';
 import 'package:core/src/dataset/map_dataset/map_root_dataset.dart';
 import 'package:core/src/element/base.dart';
 import 'package:core/src/utils/bytes.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A [ByteRootDataset].
 class ByteRootDataset extends MapRootDataset with ByteDataset {

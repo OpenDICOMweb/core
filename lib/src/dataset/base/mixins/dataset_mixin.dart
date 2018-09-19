@@ -18,7 +18,7 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
 
-// ignore_for_file: unnecessary_getters_setters
+// ignore_for_file: unnecessary_getters_setters, public_member_api_docs
 
 // Meaning of method names:
 //    lookup:
@@ -178,7 +178,7 @@ abstract class DatasetMixin {
         for (var item in e.items) {
           final eList = item.findAllWhere(test);
           if (eList.isNotEmpty) {
-            map[e];
+            map[e] = eList;
           }
         }
       }

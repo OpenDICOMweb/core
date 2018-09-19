@@ -6,12 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/error/date_time_errors.dart';
 import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/values/date_time/primitives/time.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// Returns the total number of minutes from UTC.
 int timeZoneToMicroseconds(int sign, int h, int m) {

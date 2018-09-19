@@ -6,9 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'pd_tag_definitions.dart';
 
+/// A List of known private data tags.
 const List<PDTagDefinition> privateDataTagList = const [
   PDTagDefinition.k1,
   PDTagDefinition.k2,

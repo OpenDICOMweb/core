@@ -16,6 +16,8 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/utils/string/hexadecimal.dart';
 
+// ignore_for_file: public_member_api_docs
+
 bool isAllBlanks(String s, int start, int end) {
   for (var i = start; i < s.length; i++)
     if (s.codeUnitAt(i) != kSpace) return false;
@@ -42,6 +44,7 @@ String removeNullPadding(String s) {
   return (s.codeUnitAt(lastIndex) == kNull) ? s.substring(0, lastIndex) : s;
 }
 
+/// The type of whitespace trimming.
 enum Trim { leading, trailing, both, none }
 
 /// Specifies whether padding is allowed on the left-end, right-end,

@@ -8,6 +8,8 @@
 //
 import 'package:core/src/element/base/element.dart';
 
+// ignore_for_file: public_member_api_docs
+
 abstract class DatasetPrimitives<V> {
 
   List<V> empty(int tag);

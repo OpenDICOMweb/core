@@ -65,6 +65,7 @@ class Series extends Entity {
   /// Returns the [Study] that is the [parent] of _this_ Series.
   Patient get subject => study.subject;
 
+  /// Returns the [Instance]s contained in _this_.
   Iterable<Instance> get instances => children.values;
 
 
@@ -76,6 +77,7 @@ class Series extends Entity {
     return instance;
   }
 
+  /// Returns a new [Instance] created from [rds].
   Instance createInstanceFromRootDataset(RootDataset rds) =>
       new Instance.fromRDS(rds, this);
 }

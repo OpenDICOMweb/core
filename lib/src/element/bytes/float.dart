@@ -8,7 +8,7 @@
 //
 part of odw.sdk.element.bytes;
 
-// **** 32-bit Float Elements (FL, FD, OD, OF)
+// ignore_for_file: public_member_api_docs
 
 /// 32-bit Float Elements (FL, OF)
 abstract class Float32Mixin {

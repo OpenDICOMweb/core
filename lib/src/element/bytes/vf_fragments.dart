@@ -6,13 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-// Core package is only included to resolve doc comments.
-
 import 'dart:typed_data';
 
 import 'package:core/src/element/utils.dart';
 import 'package:core/src/utils/primitives.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// [VFFragments[ contains the Value Field of an _encapsulated_
 /// (i.e. compressed) OBPixelData Element. This class is used

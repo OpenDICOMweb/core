@@ -10,6 +10,8 @@ import 'package:core/src/tag/tag.dart';
 
 import 'package:core/src/error/issues/issues.dart';
 
+// ignore_for_file: public_member_api_docs
+
 class ValuesIssues<E> {
   final String name;
   final Tag tag;

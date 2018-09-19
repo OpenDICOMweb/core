@@ -13,6 +13,8 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
+// ignore_for_file: public_member_api_docs
+
 class InvalidElementError extends Error {
   final String msg;
   final Element e;
@@ -83,8 +85,7 @@ Null badValueField(String message, [Bytes vfBytes, Issues issues]) {
 
 String _invalidVFMsg(String msg, [Bytes vfBytes]) {
   final msg1 = (vfBytes != null) ? '- vfLength(${vfBytes.length})' : '';
-  'Invalid Value Field Error: $msg$msg1';
-  return msg1;
+  return 'Invalid Value Field Error: $msg$msg1';
 }
 
 bool invalidValueField(String message, [Bytes vfBytes]) {

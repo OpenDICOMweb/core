@@ -6,13 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:convert' as cvt;
 
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/profile/global_rule.dart';
 import 'package:core/src/profile/rule.dart';
 import 'package:core/src/profile/trial.dart';
+
+// ignore_for_file: public_member_api_docs
 
 typedef Element Updater(Element element);
 

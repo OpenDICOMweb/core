@@ -7,6 +7,9 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+// ignore_for_file: constant_identifier_names
+
 // TODO: separate internal and public
 // TODO: how to lookup vm from fast_tag
 // TODO: sort order min then max then width

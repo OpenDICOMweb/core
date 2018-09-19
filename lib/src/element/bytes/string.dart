@@ -8,6 +8,8 @@
 //
 part of odw.sdk.element.bytes;
 
+// ignore_for_file: public_member_api_docs
+
 /// [String] [Element]s that only have ASCII values.
 abstract class StringMixin {
   int get vfLength;

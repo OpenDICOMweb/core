@@ -15,6 +15,8 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values.dart';
 import 'package:core/src/vr.dart';
 
+// ignore_for_file: public_member_api_docs
+
 StringList setValues(Iterable<String> vList) {
   if (vList == null) return StringList.kEmptyList;
   return (vList is StringList) ? vList : new StringList.from(vList);

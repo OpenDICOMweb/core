@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 /// A StringBuffer the supports indentation
 class IndenterOld implements StringBuffer {
   final String increment;

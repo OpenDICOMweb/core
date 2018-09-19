@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/dicom.dart';
 
 /// A library of compile time constants for handling DICOM Directory data
@@ -34,6 +33,7 @@ const Map<int, String> dcmDirTagToKeyword = const {
   0x00041600: 'NumberOfReferences',
 };
 
+/// A [Map<String, int>] of keyword:tag pairs.
 const Map<String, int> dcmDirKeywordToTag = const {
   'FileSetID': 0x00041130,
   'FileSetDescriptorFileID': 0x00041141,
@@ -56,6 +56,7 @@ const Map<String, int> dcmDirKeywordToTag = const {
   'NumberOfReferences': 0x00041600,
 };
 
+/// A [Map<String, String>] of keyword:tag code pairs.
 const Map<String, String> dcmDirKeywordToString = const {
   'FileSetID': '0x00041130',
   'FileSetDescriptorFileID': '0x00041141',
@@ -78,6 +79,7 @@ const Map<String, String> dcmDirKeywordToString = const {
   'NumberOfReferences': '0x00041600',
 };
 
+/// A list of DICOM DIR Tag codes.
 const List<int> dcmDirTags = const [
   kFileSetID, // (0004,1130)
   kFileSetDescriptorFileID, // (0004,1141)

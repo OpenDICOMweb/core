@@ -6,11 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
+
+// ignore_for_file: public_member_api_docs
 
 class ContextGroup {
   final String dcmType = 'ContextGroup';
@@ -22,7 +23,7 @@ class ContextGroup {
   const ContextGroup();
 }
 
-const Type CID7050 = DeIdMethod;
+const Type cid7050 = DeIdMethod;
 
 class DeIdMethod extends ContextGroup {
   // final CodingScheme designator = CodingScheme.DCM;
@@ -41,7 +42,7 @@ class DeIdMethod extends ContextGroup {
   /// Returns a list of valid [int] codes.
   List<int> get codes => map.keys;
 
-  /// Returns _true_ if [code] is a valid [CID7050] code.
+  /// Returns _true_ if [code] is a valid [cid7050] code.
   bool isValid(int code) => map.keys.contains(code);
 
   bool isValidList(List<int> codes) {

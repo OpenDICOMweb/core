@@ -13,7 +13,7 @@ import 'package:core/src/dataset/base/group/public_group.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/utils.dart';
 
-// ignore_for_file: only_throw_errors
+// ignore_for_file: only_throw_errors, public_member_api_docs
 
 abstract class GroupBase {
   int get gNumber;

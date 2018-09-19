@@ -65,9 +65,11 @@ class Study extends Entity {
     return list;
   }
 
+  /// Returns a new [Series] created from _rds_.
   Series createSeriesFromRootDataset(RootDataset rds) =>
       new Series.fromRootDataset(rds, this);
 
+  /// Returns a [String] containing summary information about _this_.
   String get summary {
     final sb = new StringBuffer('Study Summary: $uid\n  Patient: $subject '
         '${series.length} Series\n');

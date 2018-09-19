@@ -14,6 +14,8 @@ import 'package:core/src/values/bulkdata/bulkdata.dart';
 import 'package:core/src/values/bulkdata/bulkdata_uri.dart';
 import 'package:path/path.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// A list of [Bulkdata] that keeps track of the
 class BulkdataList {
   final Uint8List token = ascii.encode('Bulkdata');

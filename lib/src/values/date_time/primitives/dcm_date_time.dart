@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/error/date_time_errors.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/date_time.dart';
@@ -14,6 +13,8 @@ import 'package:core/src/utils/hash/sha256.dart' as sha256;
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/values/date_time.dart';
 import 'package:core/src/values/date_time/primitives/time.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// The minimum Unix Epoch day for this [Global].
 final int kMinDcmDateTimeMicroseconds = kMinYear * kMicrosecondsPerDay;

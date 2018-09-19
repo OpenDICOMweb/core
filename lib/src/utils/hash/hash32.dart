@@ -47,8 +47,10 @@ class Hash32 extends Hash {
   /// A constant hash function.
   static const Hash32 hash = const Hash32(Hash.kHashSeed);
 
+  /// Returns the 32-bit [hash] of a [double].
   static double floatHash(double n) => hash.doubleHash(n);
 
+  /// Returns a 32-bit hash code for [o].
   static int k1(Object o) => hash.n1(o);
 
   /// Generates a hash code for two objects.

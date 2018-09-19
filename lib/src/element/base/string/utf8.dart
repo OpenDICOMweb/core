@@ -8,6 +8,8 @@
 //
 part of odw.sdk.element.base.string;
 
+// ignore_for_file: public_member_api_docs
+
 // TODO: For each class add the following static fields:
 //       bool areLeadingSpacesAllowed = x;
 //       bool areLeadingSpacesSignificant = x;

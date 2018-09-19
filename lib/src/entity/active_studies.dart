@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:collection';
 
 import 'package:core/src/dataset.dart';
@@ -23,6 +22,7 @@ import 'package:core/src/values/person.dart';
 import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: only_throw_errors
+// ignore_for_file: public_member_api_docs
 
 // TODO: create errors for this class
 // TODO: make subject a clinical trial subject that is DeIdentified

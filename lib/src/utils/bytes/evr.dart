@@ -8,6 +8,8 @@
 //
 part of odw.sdk.utils.bytes;
 
+// ignore_for_file: public_member_api_docs
+
 abstract class EvrBytes extends DicomBytes {
   factory EvrBytes.from(Bytes bytes, int start, int vrIndex, int end) {
     if (vrIndex >= kVREvrShortIndexMin && vrIndex <= kVREvrShortIndexMax) {

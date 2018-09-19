@@ -11,8 +11,9 @@ import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/values/date_time.dart';
 
-
 // ignore_for_file: only_throw_errors
+// ignore_for_file: public_member_api_docs
+
 bool isValidTimeMicroseconds(int us) => us >= 0 && us <= kMicrosecondsPerDay;
 bool isNotValidTimeMicroseconds(int us) => !isValidTimeMicroseconds(us);
 

@@ -6,13 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/error/date_time_errors.dart';
 import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/values/date_time/primitives/dcm_date_time.dart';
 import 'package:core/src/values/date_time/primitives/time.dart';
+
+// ignore_for_file: public_member_api_docs
 
 typedef Time OnTimeError(int h, int m, int s, int ms, int us, Exception error);
 typedef Time OnTimeParseError(String s);

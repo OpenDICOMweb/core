@@ -6,15 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
-// **** Note: this file cannot have any dependencies on dart:io
-
 import 'dart:html';
 
 import 'package:core/src/global.dart';
 import 'package:core/src/values/uid.dart';
 import 'package:version/version.dart';
 
+// ignore_for_file: public_member_api_docs
 
 //TODO: and initialize arguments for client and browers that
 // are same as server.dart

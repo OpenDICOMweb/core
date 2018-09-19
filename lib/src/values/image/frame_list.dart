@@ -16,6 +16,8 @@ import 'package:core/src/values/image/frame.dart';
 import 'package:core/src/values/image/frame_descriptor.dart';
 import 'package:core/src/values/uid.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // A [FrameList] contains 1 or more image [Frame]s.
 //
 // Cases:

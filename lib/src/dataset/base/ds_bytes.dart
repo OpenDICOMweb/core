@@ -6,11 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// Dataset Bytes ([DSBytes]).
 abstract class DSBytes {
@@ -79,25 +80,13 @@ abstract class DSBytes {
   /// Return a Uint32 values at [offset].
   int getUint32(int offset) => bytes.getUint32(offset);
 
-  int getToken() {
-    final group = getUint16(0);
-    final elt = getUint16(2);
-    return (group << 16) + elt;
-  }
-
-/*
-  @override
-  String toString() =>
-      '$runtimeType: ${bytes.endian} $dsStart-$dsEnd:${bytes.length}';
-*/
-
   @override
   String toString() => '$runtimeType: $bytes';
 }
 
 /// Root Dataset Bytes ([RDSBytes]).
 class RDSBytes extends DSBytes {
-  final int vfLengthFieldOffset = -1;
+//  final int vfLengthFieldOffset = -1;
   @override
   final int vfOffset = kValueFieldOffset;
 
@@ -107,25 +96,32 @@ class RDSBytes extends DSBytes {
   @override
   final Bytes bytes;
 
+  /// True if _this_ has a DICOM prefix (DICM).
   final bool hasPrefix;
 
   /// The [Bytes] from index 0 to end of last FMI element in [bytes].
   /// If FMI was not successfully read this will be null.
   final int fmiEnd;
 
+  /// Constructor
   RDSBytes(this.bytes, this.fmiEnd, {this.hasPrefix = true});
 
+  /// Constructor for an empty [RDSBytes].
   RDSBytes.empty()
       : bytes = kEmptyBytes,
         fmiEnd = 0,
         hasPrefix = false;
 
+  /// Returns the DICOM preamble (the first 128 bytes) of _this_.
   Bytes get preamble => bytes.asBytes(kPreambleOffset, kPreambleLength);
 
+  /// Returns the DICOM prefix (the four bytes at offset 128) of _this_.
   Bytes get prefix => bytes.asBytes(kPrefixOffset, kPrefixLength);
 
+  /// The DICOM prefix as an unsigned 32 bit integer.
   int get startDelimiter => getUint32(kPrefixOffset);
 
+  /// The offset of the first byte of the File Meta Information.
   int get fmiStart => bytes.offset;
   int get rdsStart => fmiEnd;
   int get rdsEnd => dsEnd;

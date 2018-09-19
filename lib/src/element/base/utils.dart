@@ -10,6 +10,8 @@ import 'package:core/src/error.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 
+// ignore_for_file: public_member_api_docs
+
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
 //TODO move to Float64, Float32, etc.

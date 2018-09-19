@@ -13,7 +13,7 @@ import 'package:core/src/values/image/frame.dart';
 import 'package:core/src/values/image/frame_list.dart';
 import 'package:core/src/values/uid.dart';
 
-// TODO: add links to the DICOM Standard to each of the fields.
+// ignore_for_file: public_member_api_docs
 
 /// A class corresponding to a DICOM Image Pixel Module, but without Pixel Data.
 /// See [PS3.3 Section C.7.6.3](http://dicom.nema.org/medical/dicom/current/output/html/part03.html#sect_C.7.6.3)

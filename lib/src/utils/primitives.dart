@@ -17,6 +17,8 @@ export 'package:core/src/error/issues/issues.dart';
 export 'package:core/src/utils/string/hexadecimal.dart';
 export 'package:core/src/vr/vr_base.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // **** This file contains low-level [String] functions
 
 bool inRange(int v, int min, int max) => v >= min && v <= max;

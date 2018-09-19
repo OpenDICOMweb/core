@@ -8,6 +8,8 @@
 //
 import 'package:core/src/global.dart';
 
+// ignore_for_file: public_member_api_docs
+
 class RadixEncoder {
   final int radix;
   final String _digits;

@@ -8,6 +8,8 @@
 //
 part of odw.sdk.element.base.string;
 
+// ignore_for_file: public_member_api_docs
+
 class StringBulkdata extends DelegatingList<String> with BulkdataRef<String> {
   @override
   final int code;

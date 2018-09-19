@@ -68,6 +68,7 @@ int tryParseAgeString(String s, {bool allowLowercase = false}) {
   }
 }
 
+/// Returns _true_ if [s] is a valid [Age] [String].
 bool isValidAgeString(String s) => tryParseAgeString(s) == -1 ? false : true;
 
 /// Returns a random age between 0 days and 999 years, if [s] is valid;
@@ -80,5 +81,6 @@ String hashAgeString(String s) {
   return ageToString(hash);
 }
 
+/// Returns a list of hash codes corresponding to [vList].
 Iterable<String> hashAgeStringList(List<String> vList) =>
     vList.map(hashAgeString);

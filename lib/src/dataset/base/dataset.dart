@@ -6,11 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:collection';
-import 'dart:typed_data';
 
-import 'package:core/src/dataset/base/dataset_mixin.dart';
+import 'package:core/src/dataset/base/dataset_mixin.dart.old';
 import 'package:core/src/dataset/base/group/creators.dart';
 import 'package:core/src/dataset/base/history.dart';
 import 'package:core/src/element.dart';
@@ -20,7 +18,7 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
-// ignore_for_file: unnecessary_getters_setters
+/* // ignore_for_file: unnecessary_getters_setters */
 
 // Meaning of method names:
 //    lookup:
@@ -209,6 +207,7 @@ abstract class Dataset extends Object with ListMixin<Element>,
     return results;
   }
 
+  /// Returns a [String] containing information about the [Dataset].
   String get info => '''
 $runtimeType(#$hashCode):
             Total: $total
@@ -221,7 +220,6 @@ $runtimeType(#$hashCode):
   @override
   String toString() => '$runtimeType: $total Elements';
 
+  /// The canonical empty [Dataset], i.e. containing no [Element]s.
   static const List<Dataset> empty = const <Dataset>[];
-
-  static final ByteData emptyByteData = new ByteData(0);
 }

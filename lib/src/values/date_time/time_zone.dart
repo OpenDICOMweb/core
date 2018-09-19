@@ -12,6 +12,8 @@ import 'package:core/src/utils.dart';
 import 'package:core/src/utils/date_time.dart';
 import 'package:core/src/values/date_time/primitives/time_zone.dart';
 
+// ignore_for_file: public_member_api_docs
+
 typedef TimeZone OnTimeZoneError(int sign, int h, int m);
 typedef TimeZone OnTimeZoneParseError(String s);
 typedef String OnTimeZoneHashStringError(String s);

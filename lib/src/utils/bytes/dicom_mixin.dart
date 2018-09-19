@@ -8,6 +8,8 @@
 //
 part of odw.sdk.utils.bytes;
 
+// ignore_for_file: public_member_api_docs
+
 abstract class DicomMixin {
   bool get isEvr;
   ByteData get _bd;

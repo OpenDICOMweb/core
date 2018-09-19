@@ -19,6 +19,7 @@ import 'package:core/src/values/person.dart';
 import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: only_throw_errors
+// ignore_for_file: public_member_api_docs
 
 /// The [Patient] of a DICOM [Study].
 class Patient extends Entity {

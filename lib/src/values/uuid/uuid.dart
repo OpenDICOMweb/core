@@ -15,6 +15,8 @@ import 'package:core/src/utils/string/uuid_string.dart';
 import 'package:core/src/values/uuid/errors.dart';
 import 'package:core/src/values/uuid/v4generator.dart';
 
+// ignore_for_file: public_member_api_docs
+
 // Note: This implementation is faster than http:pub.dartlang.org/uuid
 //   this one: Template(RunTime): 2101.890756302521 us.
 //   pub uuid: Template(RunTime): 7402.2140221402215 us.
@@ -286,7 +288,6 @@ class Uuid {
 
 // **** Internal Procedures ****
 
-const int _versionNumber = 4;
 const int _dataLengthInBytes = 16;
 
 // **** Utility functions for binary UUID values

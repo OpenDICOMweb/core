@@ -8,6 +8,7 @@
 //
 
 // ignore_for_file: only_throw_errors
+// ignore_for_file: public_member_api_docs
 
 /// The [Sex}, one of [male], [female], or [other].
 class Sex {
@@ -19,19 +20,6 @@ class Sex {
 
   /// A Constant constructor.
   const Sex._(this.type, this.name);
-
-  static const int femaleType = 0;
-  static const int maleType = 1;
-  static const int otherType = 2;
-
-  /// A female
-  static const Sex female = const Sex._(femaleType, 'Female');
-
-  /// A male
-  static const Sex male = const Sex._(maleType, 'Male');
-
-  /// Other than male or female
-  static const Sex other = const Sex._(otherType, 'Other');
 
   /// Returns _true_ is _this_ is a male, false otherwise..
   bool get isMale => (type == maleType);
@@ -55,6 +43,19 @@ class Sex {
   /// A [String] corresponding to the [Sex].
   @override
   String toString() => '$name';
+
+  static const int femaleType = 0;
+  static const int maleType = 1;
+  static const int otherType = 2;
+
+  /// A female
+  static const Sex female = const Sex._(femaleType, 'Female');
+
+  /// A male
+  static const Sex male = const Sex._(maleType, 'Male');
+
+  /// Other than male or female
+  static const Sex other = const Sex._(otherType, 'Other');
 
   static Sex parse(String s) {
     if (s == null || s.isEmpty) return null;

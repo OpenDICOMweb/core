@@ -9,6 +9,8 @@
 
 // **** generated file ****
 
+// ignore_for_file: public_member_api_docs
+
 class OdwSysInfo {
   static const String name = 'dcm_convert';
   static const String description =

@@ -9,6 +9,7 @@
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 
+/// Returns a [String] containing the Type of [key].
 String keyTypeString<K>(K key) {
   if (key is int) {
     return 'Code ${dcm(key)}';

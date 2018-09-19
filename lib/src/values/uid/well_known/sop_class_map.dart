@@ -6,8 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/values/uid/well_known/sop_class.dart';
+
+// ignore_for_file: public_member_api_docs
 
 //TODO: doc
 //TODO: before V0.9.1 change entries to proper type

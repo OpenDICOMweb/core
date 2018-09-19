@@ -13,6 +13,8 @@ import 'package:core/src/dataset/tag/tag_dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/utils.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// A [TagRootDataset].
 class TagRootDataset extends MapRootDataset with TagDataset {
   @override

@@ -6,12 +6,13 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:async';
 
 import 'package:core/src/utils/logger/date_time_utils.dart' as dtu;
 import 'package:core/src/utils/logger/log_level.dart';
 import 'package:core/src/utils/logger/logger.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// A log entry representation used to propagate information from [Logger] to
 /// individual Handlers.

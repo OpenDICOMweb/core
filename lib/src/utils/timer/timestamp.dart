@@ -6,10 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/hash.dart';
 
-/// A simple [Timestamp] package.
+// ignore_for_file: public_member_api_docs
 
 /// A [Timestamp] with an optional [msg].
 class Timestamp {

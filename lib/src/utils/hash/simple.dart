@@ -40,6 +40,7 @@ int hash4(Object o0, Object o1, Object o2, Object o3) => _finish32(_combine32(
     _combine32(_combine32(_combine32(0, o0.hashCode), o1.hashCode), o2.hashCode),
     o3.hashCode));
 
+/// Returns a hash code for [vList].
 int hashList<T>(List<T> vList) {
   const hash = 0;
   for (var i = 0; i < vList.length; i++) {

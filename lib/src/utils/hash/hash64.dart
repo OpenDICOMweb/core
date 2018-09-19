@@ -52,6 +52,7 @@ class Hash64 extends Hash {
   /// Returns the [hash] of a [double].
   static double floatHash(double n) => hash.doubleHash(n);
 
+  /// Returns the 64-bit hash of [o].
   static int k1(Object o) => hash.n1(o);
 
   /// Generates a hash code for two objects.

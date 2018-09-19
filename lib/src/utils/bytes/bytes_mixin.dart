@@ -8,6 +8,8 @@
 //
 part of odw.sdk.utils.bytes;
 
+// ignore_for_file: public_member_api_docs
+
 class AlignmentError extends Error {
   final ByteData bd;
   final int offsetInBytes;

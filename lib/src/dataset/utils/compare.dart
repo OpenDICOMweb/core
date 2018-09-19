@@ -6,10 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/element.dart';
 
+// ignore_for_file: public_member_api_docs
 
 class Compare {
   final List same = <List>[];

@@ -6,8 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/logger/log_record.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// Base class for [LogRecord] transformers.
 /// Implements the identify transform [LogRecord] -> [LogRecord].

@@ -7,6 +7,8 @@
 //  See the AUTHORS file for other contributors.
 //
 
+// ignore_for_file: public_member_api_docs
+
 /// Logger Levels ([Level]s).
 ///
 /// Logging can be enabled to include all [Level]s above a specific

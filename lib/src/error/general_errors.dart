@@ -11,6 +11,8 @@ import 'package:core/src/global.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/utils.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// These are errors that are used throughout the Core package.
 
 /// General Errors

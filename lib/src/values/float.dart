@@ -3,10 +3,12 @@
 // that can be found in the LICENSE file.
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
-
+//
 import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/parser.dart';
+
+// ignore_for_file: public_member_api_docs
 
 String hashDecimalString(String s, {Issues issues}) {
   final n = double.tryParse(s);

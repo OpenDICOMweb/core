@@ -8,6 +8,8 @@
 //
 part of odw.sdk.core.parser;
 
+// ignore_for_file: public_member_api_docs
+
 //TODO: redo doc
 
 bool isValidDcmDateTimeString(String s,

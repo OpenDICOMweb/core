@@ -13,6 +13,8 @@ import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr.dart';
 
+// ignore_for_file: public_member_api_docs
+
 bool isValidValueLength(
     String value, Issues issues, int minLength, int maxLength) {
   if (value == null) {

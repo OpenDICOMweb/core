@@ -13,6 +13,8 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/values/uid.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// DICOM Information Entities
 ///
 /// 1. Every [Entity] is unique and is identified by its [Uid].

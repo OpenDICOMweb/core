@@ -6,8 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/values/integer.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// The naming convention is that the plural form is a total, and the singular
 /// form is a component. For example the minimum microsecond corresponds to

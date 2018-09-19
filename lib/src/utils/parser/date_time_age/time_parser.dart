@@ -8,6 +8,8 @@
 //
 part of odw.sdk.core.parser;
 
+// ignore_for_file: public_member_api_docs
+
 /// Returns the number of microseconds represented by [s].
 int parseDcmTime(String s,
     {int start = 0, int end, Issues issues, OnParseError onError}) {

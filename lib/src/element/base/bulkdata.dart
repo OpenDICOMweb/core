@@ -10,13 +10,17 @@
 import 'package:core/src/error/general_errors.dart';
 import 'package:core/src/system.dart';
 
-// Must implement Values and Value with reified.
+/// The base class for Bulkdata.
 abstract class BulkdataRef<V> {
+  /// The Tag code of the Element containing _this_.
   int get code;
   //TODO: add Element?
   //  Element get e;
+
+  /// The URI reference for _this_.
   Uri get uri;
 
+  /// The values in the Value Field of _this_.
   Iterable<V> get values => _values ??= unimplementedError();
   Iterable<V> _values;
   set values(Iterable<V> vList) => _values ??= vList;
@@ -28,8 +32,10 @@ abstract class BulkdataRef<V> {
   @override
   int get hashCode => global.hasher.n2(code, uri);
 
+  /// An [Iterator] for _This_.
   Iterator<V> get iterator => values.iterator;
 
+  /// Returns a List of Bulkdata Values associated with this.
   List<V> getBulkdata(int code, Uri uri) => unimplementedError();
 }
 

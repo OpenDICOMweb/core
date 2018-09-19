@@ -8,6 +8,8 @@
 //
 import 'package:core/src/element.dart';
 
+// ignore_for_file: public_member_api_docs
+
 const int kDefaultTruncatedValuesLength = 5;
 
 abstract class ElementFormatter {

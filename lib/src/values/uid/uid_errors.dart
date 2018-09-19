@@ -6,10 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/values/uid/uid.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// Logs an Error entry, and then if [throwOnError] is _true_ throws an
 /// [InvalidUidError]; otherwise, returns _null_.

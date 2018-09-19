@@ -8,6 +8,8 @@
 //
 part of odw.sdk.utils.bytes;
 
+// ignore_for_file: public_member_api_docs
+
 class IvrBytes extends DicomBytes {
   IvrBytes(int eLength) : super._(eLength, Endian.little);
 

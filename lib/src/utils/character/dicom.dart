@@ -6,8 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils/character/ascii.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// DICOM Character Set Predicates
 

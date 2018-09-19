@@ -16,6 +16,8 @@ import 'package:core/src/tag/code.dart';
 import 'package:core/src/tag/vm.dart';
 import 'package:core/src/vr.dart';
 
+// ignore_for_file: public_member_api_docs
+
 //TODO: is hashCode needed?
 class PTag extends Tag {
   @override

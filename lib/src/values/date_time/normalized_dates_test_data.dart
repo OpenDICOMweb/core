@@ -6,9 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/server.dart';
 import 'package:test/test.dart';
+
+// ignore_for_file: public_member_api_docs
 
 void main() {
   Server.initialize(name: 'test normalized dates', level: Level.info);

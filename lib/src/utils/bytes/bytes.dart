@@ -26,6 +26,8 @@ part 'package:core/src/utils/bytes/evr.dart';
 part 'package:core/src/utils/bytes/growable.dart';
 part 'package:core/src/utils/bytes/ivr.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// Bytes Package Overview
 ///
 /// - All get_XXX_List methods return fixed length (unmodifiable) Lists.

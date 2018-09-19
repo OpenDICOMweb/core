@@ -12,6 +12,8 @@ import 'package:core/src/entity/instance.dart';
 import 'package:core/src/profile/profile.dart';
 import 'package:core/src/tag.dart';
 
+// ignore_for_file: public_member_api_docs
+
 /// Profile Terminology
 ///
 /// Tag

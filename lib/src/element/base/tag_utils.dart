@@ -107,6 +107,7 @@ Tag _getCorrectTag(int code, int vrIndex) {
 }
 */
 
+/// Returns a [PCTag] corresponding to [code].
 Tag lookupPCTagByCode(Dataset ds, int code, String token, int vrIndex) {
   // Private Creator Element
   var tag = ds.pcTags[code];

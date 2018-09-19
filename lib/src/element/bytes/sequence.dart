@@ -8,6 +8,8 @@
 //
 part of odw.sdk.element.bytes;
 
+// ignore_for_file: public_member_api_docs
+
 // **** Sequence Class
 
 class SQbytes extends SQ with ByteElement<Item> {

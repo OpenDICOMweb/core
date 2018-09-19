@@ -6,11 +6,12 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/tag.dart';
+
+// ignore_for_file: public_member_api_docs
 
 /// Tag Mixin Class
 ///

@@ -3,25 +3,36 @@
 // that can be found in the LICENSE file.
 // Original author: Jim Philbin <jfphilbin@gmail.edu> -
 // See the AUTHORS file for other contributors.
-
+//
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 
+/// A class containing a [Map] from Tag code to Private Creator Tags ([PCTag]).
 class PrivateCreatorTags {
+  /// A [Map] from Tag code to Private Creator Tags ([PCTag]).
   Map<int, PCTag> tags;
 
+  /// Constructor
   PrivateCreatorTags() : tags = <int, PCTag>{};
 
-  PCTag operator [](int code) {
-    _checkPCTagCode(code);
-    return tags[code];
+  /// Returns the [PCTag] with [code] if present; otherwise, _null_.
+  PCTag operator [](Object code) {
+    if (code is int) {
+      _checkPCTagCode(code);
+      return tags[code];
+    }
+    return null;
   }
 
+  /// Returns the [PCTag] with [code] if present; otherwise, _null_.
   void operator []=(int code, PCTag tag) => tryAdd(tag);
 
+  /// Adds a new[PCTag] to _this_.
   void add(PCTag tag) => tryAdd(tag);
 
+  /// If [tag] is not present, it is added to _this_ and _true_ is returned;
+  /// otherwise, _false_ is returned.
   bool tryAdd(PCTag tag) {
     _checkPCTagCode(tag.code);
     final result = tags.putIfAbsent(tag.code, () => tag);

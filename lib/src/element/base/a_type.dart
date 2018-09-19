@@ -6,10 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/element/base/element.dart';
 import 'package:core/src/tag.dart';
+
+// ignore_for_file: public_member_api_docs
 
 typedef bool ElementPredicate(Dataset ds, Element e, [DatasetPredicate dsp]);
 

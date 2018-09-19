@@ -14,6 +14,8 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/uid.dart';
 
+// ignore_for_file: public_member_api_docs
+
 abstract class NoValuesMixin {
   /// An [Iterable<Element>] of the [Element]s contained in _this_.
   ///
