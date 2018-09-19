@@ -64,8 +64,7 @@ void main() {
       global.throwOnError = true;
       for (var s in badDcmDateList) {
         log.debug('Bad date: $s');
-        expect(() => Date.parse(s),
-            throwsA(const TypeMatcher<StringError>()));
+        expect(() => Date.parse(s), throwsA(const TypeMatcher<StringError>()));
       }
     });
 
@@ -126,7 +125,6 @@ void main() {
       final date2 = date.difference(time2);
       log.debug(date2);
       expect(date2.microseconds == date.microseconds - time2.uSeconds, true);
-
     });
 
     test('hash Date (throwOnError = false)', () {
@@ -400,7 +398,8 @@ void main() {
         ..debug('date0: $date0, us: ${date0.toString()}')
         ..debug('date1: $date1, us: ${date1.toString()}')
         ..debug('date0.sha256: ${date0.sha256}')
-        ..debug('date1.values:${date1.toString()}, date0.sha256:${date0.sha256}')
+        ..debug(
+            'date1.values:${date1.toString()}, date0.sha256:${date0.sha256}')
         ..debug(
             'date1.values:${date1.toString()}, date1.sha256:${date1.sha256}');
       expect(date0.sha256, equals(date1.sha256));
@@ -461,9 +460,8 @@ void main() {
 
   test('Hash Dates', () {
     final date1 = new Date(1969, 12, 31);
-    log.debug(
-        'date: $date1, year:${date1.year}, month: ${date1.month}, '
-            'day: ${date1.day}, microseconds: ${date1.microseconds}');
+    log.debug('date: $date1, year:${date1.year}, month: ${date1.month}, '
+        'day: ${date1.day}, microseconds: ${date1.microseconds}');
     final hash1 = date1.hash;
     log.debug('hash1: $hash1, year: ${hash1.year}, y: ${hash1.y}');
   });
@@ -480,10 +478,10 @@ void main() {
       final date0 = Date.parse(s);
       final date1 = Date.parse(s);
       log
-        ..debug('date0.values:${date0.toString(
-				  )}, date0.hashCode:${date0.hashCode}')
-        ..debug('date1.values:${date1.toString(
-				  )}, date1.hashCode:${date1.hashCode}');
+        ..debug(
+            'date0.values:${date0.toString()}, date0.hashCode:${date0.hashCode}')
+        ..debug(
+            'date1.values:${date1.toString()}, date1.hashCode:${date1.hashCode}');
       expect(date0.hashCode, equals(date1.hashCode));
     }
     final date2 = Date.parse(goodDcmDateList[0]);
@@ -624,5 +622,38 @@ void main() {
 
     final vym4 = isValidYearInMicroseconds(kMinYearInMicroseconds - 1);
     expect(vym4, false);
+  });
+
+  test('toValidYearInMicroseconds', () {
+    global.throwOnError = false;
+    var us = dateToEpochDay(1971, 1, 1);
+    final vym0 = toValidYearInMicroseconds(us);
+    expect(vym0 == us, true);
+
+    us = dateToEpochDay(1969, 1, 1);
+    final vym1 = toValidYearInMicroseconds(us);
+    expect(vym1 == us, false);
+  });
+
+  test('hash', () {
+    final epochDay = dateToEpochDay(1971, 1, 1);
+    final hash0 = hash(epochDay);
+    expect(hash0, isNotNull);
+
+    final hash1 = hash(kMinEpochDay);
+    expect(hash1, isNotNull);
+
+    final hash2 = hash(kMaxEpochDay);
+    expect(hash2, isNotNull);
+  });
+
+  test('microsecondToDateString', () {
+    final us = dateToEpochDay(1970, 1, 1);
+    final mtDate0 = microsecondToDateString(us);
+    final epoch = epochDayToString(us).replaceAll('-', '');
+    expect(mtDate0, equals(epoch));
+
+    final mtDate1 = microsecondToDateString(kMicrosecondsPerDay + 1);
+    expect(mtDate1 == '19700102', true);
   });
 }

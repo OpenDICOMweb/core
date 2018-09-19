@@ -179,9 +179,8 @@ void main() {
   test('dateTimeMicrosecondsToString', () {
     log
       ..debug('minYear: $kMinYear maxYear: $kMaxYear')
-      ..debug(
-          'isValidMicrosecond: '
-              '${isValidDateTimeMicroseconds(19790512011556789)}');
+      ..debug('isValidMicrosecond: '
+          '${isValidDateTimeMicroseconds(19790512011556789)}');
     final dtm0 = microsecondToDateTimeString(19790512011556789, asDicom: false);
     log.debug('dtm0: $dtm0');
 
@@ -378,6 +377,26 @@ System: $dt0
         throwsA(const TypeMatcher<Error>()));
   });
 
+  test('sha256Microseconds', () {
+    final shm0 = sha256Microseconds(kMicrosecondsPerDay);
+    log.debug('shm0: $shm0');
+    expect(shm0, isNotNull);
+
+    final shm1 = sha256Microseconds(kMinYearInMicroseconds);
+    log.debug('shm1: $shm1');
+    expect(shm1, isNotNull);
+
+    expect(() => sha256Microseconds(kMinYearInMicroseconds - 1),
+        throwsA(const TypeMatcher<Error>()));
+
+    final shm2 = sha256Microseconds(kMaxYearInMicroseconds);
+    log.debug('shm2: $shm2');
+    expect(shm2, isNotNull);
+
+    expect(() => sha256Microseconds(kMaxYearInMicroseconds + 1),
+        throwsA(const TypeMatcher<Error>()));
+  });
+
   test('dicomDateTimeString', () {
     global.throwOnError = false;
 
@@ -395,8 +414,8 @@ System: $dt0
               final hx = digits2(h);
               final mmx = digits2(mm);
               final fx =
-              (us == 0 && ms == 0) ? '' : '.${digits3(ms)}${digits3(us)}';
-              final inet ='$y$mx$dx$hx$mmx$s$fx';
+                  (us == 0 && ms == 0) ? '' : '.${digits3(ms)}${digits3(us)}';
+              final inet = '$y$mx$dx$hx$mmx$s$fx';
               log.debug('dicomDT0: $dicomDT0, $inet');
               expect(dicomDT0 == inet, true);
             }
