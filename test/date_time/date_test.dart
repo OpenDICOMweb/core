@@ -648,12 +648,13 @@ void main() {
   });
 
   test('microsecondToDateString', () {
-    final us = dateToEpochDay(1970, 1, 1);
-    final mtDate0 = microsecondToDateString(us);
-    final epoch = epochDayToString(us).replaceAll('-', '');
+    final eDay = dateToEpochDay(1970, 1, 1);
+    final mtDate0 = microsecondToDateString(eDay);
+    final epoch = epochDayToDateString(eDay, asDicom: true);
     expect(mtDate0, equals(epoch));
 
     final mtDate1 = microsecondToDateString(kMicrosecondsPerDay + 1);
     expect(mtDate1 == '19700102', true);
   });
 }
+
