@@ -19,8 +19,11 @@ import 'package:core/src/utils/rng.dart';
 //   this one: Template(RunTime): 142,266.66666666666 us.
 //   pub uuid: Template(RunTime): 170,166.66666666666 us.
 class V4Generator {
+  /// The random number generator
   final RNG rng;
+  /// True if the [rng] is secure.
   final bool isSecure;
+  /// The value used to seed the [rng], or _null_ if not seeded.
   final int seed;
 
   /// Creates a generator of Version 4 UUIDs.  [isSecure] (the default)

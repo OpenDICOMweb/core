@@ -10,6 +10,15 @@ part of odw.sdk.core.parser;
 
 //TODO: redo doc
 
+bool isValidDcmDateTimeString(String s,
+    {int start = 0, int end, Issues issues}) =>
+    (s.isEmpty)
+        ? true
+        : parseDcmDateTime(s, start: start, end: end, issues: issues) == null
+        ? false
+        : true;
+
+/// Returns the date/time in microseconds or _null_ if [s] is not valid.
 int parseDcmDateTime(String s,
     {int start = 0, int end, Issues issues, int onError(String s)}) {
   try {
@@ -32,14 +41,6 @@ int parseDcmDateTime(String s,
     return badTimeZoneString(e.message);
   }
 }
-
-bool isValidDcmDateTimeString(String s,
-                              {int start = 0, int end, Issues issues}) =>
-    (s.isEmpty)
-    ? true
-    : parseDcmDateTime(s, start: start, end: end, issues: issues) == null
-    ? false
-    : true;
 
 // **** Internal Functions
 

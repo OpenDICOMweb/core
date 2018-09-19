@@ -6,9 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/utils.dart';
 import 'package:core/src/values/uuid.dart';
+
+// Urgent Sharath: unit test for this file
 
 /// Useful utilities for working with [Uid] [String]s.
 
@@ -43,11 +44,31 @@ bool isValidUidString(String s) {
   return true;
 }
 
-/// Verifies that the variant field is 0b10 and version field is 0b0100 = 4
+// Urgent Sharath: unit test to make sure no string such as 2.25.0...'
+// return false
+/// Returns _true_ if [s] is a valid UuidUid String.
+///
+/// Valid UuidUid Strings have the format 2.25._xy...y_ where _x_ is any
+/// non-zero decimal digit and _y...y_ is a String of decimal digits with
+/// length less than 39.
+///
+/// See http://dicom.nema.org/medical/dicom/current/output/html/part05.html#sect_B.2
 bool isValidUuidUid(String s) {
-  if (s.indexOf(randomUidRoot) != 0) return false;
+  if (s.indexOf(randomUuidUidRoot) != 0) return false;
   final uidPart = s.substring(5);
-  return Uuid.isValidString(uidPart);
+  final len = uidPart.length;
+  if (len < 2 || len > 39) return false;
+
+  // Check the first character is not '0'
+  var char = uidPart.codeUnitAt(0);
+  if (char == kDigit0 || char < kDigit1 || char > kDigit9) return false;
+
+  // Check that subsequent characters are digits.
+  for (var i = 1; i < len; i++) {
+    char = uidPart.codeUnitAt(i);
+    if (char < kDigit0 || char > kDigit9) return false;
+  }
+  return true;
 }
 
 /// Returns true if each [String] in the [List] is a valid DICOM UID.
@@ -60,7 +81,7 @@ bool isValidUidStringList(List<String> sList) {
 /// ASCII constants for '0', '1', and '2'. No other roots are valid.
 const List<String> kUidRoots = const <String>['0', '1', '2'];
 
-const String randomUidRoot = '2.25.';
+const String randomUuidUidRoot = '2.25.';
 
 /// A [Map] containing the names associated with the three UID\(OID\)
 /// initial integers.

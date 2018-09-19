@@ -11,10 +11,10 @@ import 'package:core/src/error/vr_errors.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
 
-const int kShortVF = kMaxShortVF;
-const int kLongVF = kMaxLongVF;
-
 // ignore_for_file: Type_annotate_public_apis
+
+/// A representation of DICOM Value Representations (VRs).
+/// _Note_: This class is internal to Core and should not be exported.
 class VR {
   /// Returns _true_ if [vrIndex] is equal to [target], which MUST be a valid
   /// _VR Index_. Typically, one of the constants (k_XX_Index) is used.

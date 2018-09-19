@@ -13,10 +13,10 @@ import 'package:core/src/utils.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr.dart';
 
-// ignore_for_file: Type_annotate_public_apis
+// ignore_for_file: type_annotate_public_apis, public_member_api_docs
 
-const int kShortVF = kMaxShortVF;
-const int kLongVF = kMaxLongVF;
+const int _shortVF = kMaxShortVF;
+const int _longVF = kMaxLongVF;
 
 abstract class VR<T> {
   final int index; // done   // done
@@ -32,11 +32,16 @@ abstract class VR<T> {
   /// The default maximum number of values for this [VR].
   int get maxLength;
 
+  /// Returns true if [vfLength] is valid.
   bool isValidVFLength(int vfLength, int vmMin, int vmMax);
 
+  /// Returns true if [vrIndex] is valid.
   bool isValid(int vrIndex) => vrIndex == index;
+
+  /// Returns true if [vrIndex] is NOT valid.
   bool isNotValid(int vrIndex) => !isValid(vrIndex);
 
+  /// Returns the [VR] with [index].
   VR byIndex(int index) => vrByIndex[index];
 
   @override
@@ -347,15 +352,15 @@ class VRAscii extends VRString {
   }
 */
 
-  static const kAS = VRAscii._(kASIndex, 'AS', kASCode, 2, kShortVF, 4, 4);
-  static const kDA = VRAscii._(kDAIndex, 'DA', kDACode, 2, kShortVF, 8, 8);
-  static const kDT = VRAscii._(kDTIndex, 'DT', kDTCode, 2, kShortVF, 4, 26);
-  static const kTM = VRAscii._(kTMIndex, 'TM', kTMCode, 2, kShortVF, 2, 13);
+  static const kAS = VRAscii._(kASIndex, 'AS', kASCode, 2, _shortVF, 4, 4);
+  static const kDA = VRAscii._(kDAIndex, 'DA', kDACode, 2, _shortVF, 8, 8);
+  static const kDT = VRAscii._(kDTIndex, 'DT', kDTCode, 2, _shortVF, 4, 26);
+  static const kTM = VRAscii._(kTMIndex, 'TM', kTMCode, 2, _shortVF, 2, 13);
 
-  static const kAE = VRAscii._(kAEIndex, 'AE', kAECode, 2, kShortVF, 1, 16);
-  static const kCS = VRAscii._(kCSIndex, 'CS', kCSCode, 2, kShortVF, 1, 16);
-  static const kPN = VRAscii._(kPNIndex, 'PN', kPNCode, 2, kShortVF, 1, 3 * 64);
-  static const kUI = VRAscii._(kUIIndex, 'UI', kUICode, 2, kShortVF, 10, 64);
+  static const kAE = VRAscii._(kAEIndex, 'AE', kAECode, 2, _shortVF, 1, 16);
+  static const kCS = VRAscii._(kCSIndex, 'CS', kCSCode, 2, _shortVF, 1, 16);
+  static const kPN = VRAscii._(kPNIndex, 'PN', kPNCode, 2, _shortVF, 1, 3 * 64);
+  static const kUI = VRAscii._(kUIIndex, 'UI', kUICode, 2, _shortVF, 10, 64);
 }
 
 class VRUtf8 extends VRString {
@@ -374,11 +379,11 @@ class VRUtf8 extends VRString {
   }
 
   static const kSH =
-      VRUtf8._(kSHIndex, 'SH', kSHCode, 2, kShortVF, 1, 16, false);
+      VRUtf8._(kSHIndex, 'SH', kSHCode, 2, _shortVF, 1, 16, false);
   static const kLO =
-      VRUtf8._(kLOIndex, 'LO', kLOCode, 2, kShortVF, 1, 64, false);
+      VRUtf8._(kLOIndex, 'LO', kLOCode, 2, _shortVF, 1, 64, false);
   static const kUC =
-      VRUtf8._(kUCIndex, 'UC', kUCCode, 4, kLongVF, 1, kLongVF, true);
+      VRUtf8._(kUCIndex, 'UC', kUCCode, 4, _longVF, 1, _longVF, true);
 }
 
 class VRText extends VRString {
@@ -393,13 +398,22 @@ class VRText extends VRString {
   @override
   bool isValidVFLength(int vfLength, int _, int __) => vfLength <= maxVFLength;
 
-  static const kST = VRText._(kSTIndex, 'ST', kSTCode, 2, kShortVF, false);
-  static const kLT = VRText._(kLTIndex, 'LT', kLTCode, 2, kShortVF, false);
-  static const kUR = VRText._(kURIndex, 'UR', kURCode, 4, kLongVF, true);
-  static const kUT = const VRText._(kUTIndex, 'UT', kUTCode, 4, kLongVF, true);
+  /// Short Text (ST)
+  static const kST = VRText._(kSTIndex, 'ST', kSTCode, 2, _shortVF, false);
+
+  /// Long Text (LT)
+  static const kLT = VRText._(kLTIndex, 'LT', kLTCode, 2, _shortVF, false);
+
+  /// Universal Resource Identifier (UT)
+  static const kUR = VRText._(kURIndex, 'UR', kURCode, 4, _longVF, true);
+
+  /// Unlimited Text (UT)
+  static const kUT = const VRText._(kUTIndex, 'UT', kUTCode, 4, _longVF, true);
 }
 
+/// A class representing Integer String (IS) and Decimal String(DS) VRs.
 class VRNumber extends VRString {
+  /// Constructor
   const VRNumber(int index, String id, int code, int vlfSize, int maxVFLength,
       int minVLength, int maxVLength)
       : super._(index, id, code, vlfSize, maxVFLength, minVLength, maxVLength,
@@ -408,11 +422,16 @@ class VRNumber extends VRString {
   @override
   bool isValidVFLength(int vfLength, int _, int __) => vfLength <= maxVFLength;
 
-  static const kDS = VRNumber(kDSIndex, 'DS', kDSCode, 2, kShortVF, 1, 16);
-  static const kIS = VRNumber(kISIndex, 'IS', kISCode, 2, kShortVF, 1, 12);
+  /// Decimal String (DS)
+  static const kDS = VRNumber(kDSIndex, 'DS', kDSCode, 2, _shortVF, 1, 16);
+
+  /// Integer String (IS)
+  static const kIS = VRNumber(kISIndex, 'IS', kISCode, 2, _shortVF, 1, 12);
 }
 
+/// A class representing the Sequence VR.
 class VRSequence extends VR<Item> {
+  /// Constructor
   const VRSequence(int index, String id, int code, int vlfSize, int maxVFLength)
       : super._(index, id, code, vlfSize, maxVFLength);
 
@@ -425,7 +444,7 @@ class VRSequence extends VR<Item> {
   @override
   bool isValidVFLength(int vfLength, int _, int __) => vfLength <= maxVFLength;
 
-  static const kSQ = VRSequence(kSQIndex, 'SQ', kSQCode, 4, kLongVF);
+  static const kSQ = VRSequence(kSQIndex, 'SQ', kSQCode, 4, _longVF);
 }
 
 class VRSpecial extends VRInt {

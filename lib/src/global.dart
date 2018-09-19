@@ -86,6 +86,12 @@ abstract class Global {
   bool allowInvalidValues = true;
   bool allowBlankDateTimes = true;
 
+  /// If _true_ Date, Time, DcmDateTime, Age, Integer, Decimal, and Uri
+  /// Strings may have all space (_kSpace_) characters; otherwise,
+  /// if [throwOnError] is _true_ an [Error] is thrown, if [throwOnError]
+  /// is false _null_ is returned.
+  bool allowAllSpaces = true;
+
   Global(
       {this.name = 'Unknown',
       this.minYear = kDefaultMinYear,

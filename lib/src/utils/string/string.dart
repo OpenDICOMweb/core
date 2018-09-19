@@ -16,7 +16,11 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/utils/string/hexadecimal.dart';
 
-enum Trim {leading, trailing, both, none}
+bool isAllBlanks(String s, int start, int end) {
+  for (var i = start; i < s.length; i++)
+    if (s.codeUnitAt(i) != kSpace) return false;
+  return true;
+}
 
 // **** This file contains low-level [String] functions
 
@@ -38,7 +42,10 @@ String removeNullPadding(String s) {
   return (s.codeUnitAt(lastIndex) == kNull) ? s.substring(0, lastIndex) : s;
 }
 
-/// Specifies the left-end, right-end, or both-ends.
+enum Trim { leading, trailing, both, none }
+
+/// Specifies whether padding is allowed on the left-end, right-end,
+/// or both-ends.
 enum End { left, right, both }
 
 /// Returns a [String] with the specified whitespace (see [String.trim])

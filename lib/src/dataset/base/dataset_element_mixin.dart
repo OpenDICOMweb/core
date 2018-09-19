@@ -447,6 +447,7 @@ abstract class DatasetElementMixin<V> {
         for (var item in e.items) {
           final eList = item.findAllWhere(test);
           if (eList.isNotEmpty) {
+            // TODO finish
             map[e];
           }
         }

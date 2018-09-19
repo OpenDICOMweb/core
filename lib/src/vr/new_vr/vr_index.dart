@@ -6,9 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/primitives.dart';
+
+// ignore_for_file: type_annotate_public_apis, public_member_api_docs
 
 /// VR Constants and Primitives
 /// **** New design - not yet implemented ****

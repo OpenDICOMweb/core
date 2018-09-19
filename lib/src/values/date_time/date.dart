@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/error/date_time_errors.dart';
 import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/global.dart';
@@ -158,6 +157,7 @@ class Date implements Comparable<Date> {
   static Date fromEpochDay(int epochDay) =>
       new Date._(epochDay * kMicrosecondsPerDay);
 
+  // Urgent remove
   static bool isAllBlanks(String s, int start, [int end]) {
     end ??= s.length;
     for (var i = start; i < end; i++)
@@ -175,6 +175,7 @@ class Date implements Comparable<Date> {
       OnDateParseError onError}) {
     // Urgent Jim: fix
     if (s == null || s.isEmpty) return null;
+    // Urgent Jim: do this in parse of dateTime, time, Integer, Decimal, Uri...
     if (isAllBlanks(s, start, end))
       return global.allowBlankDateTimes
           ? null

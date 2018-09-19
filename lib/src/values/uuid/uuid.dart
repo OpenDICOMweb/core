@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:collection/collection.dart';
@@ -24,8 +23,10 @@ typedef Uint8List OnUuidBytesError(List<int> iList);
 typedef Uuid OnUuidParseError(String s);
 typedef Uint8List OnUuidParseToBytesError(String s);
 
+/// Uuid Variants
 enum UuidVariant { ncs, rfc4122, microsoft, reserved }
 
+/// The type of random number generator.
 enum GeneratorType { secure, pseudo, seededPseudo }
 
 /// A Version 4 (random) Uuid.
@@ -68,7 +69,7 @@ class Uuid {
   bool operator ==(Object other) {
     if (other is Uuid) {
       if (data.length != other.data.length) return false;
-      for (var i = 0; i < kDataLengthInBytes; i++)
+      for (var i = 0; i < _dataLengthInBytes; i++)
         if (data[i] != other.data[i]) return false;
       return true;
     }
@@ -155,7 +156,7 @@ class Uuid {
   /// random number generator.
   static int get seed => generator.seed;
 
-  // Returns _true_ if [s] is a valid [Uuid] [String]. If [version] is _null_
+  /// Returns _true_ if [s] is a valid [Uuid] [String]. If [version] is _null_
   /// it just validates the format; otherwise, [version] must have a values
   /// between 1 and 5.
   static bool isValidString(String s, [int version]) =>
@@ -224,6 +225,7 @@ class Uuid {
   static bool isValidData(List<int> data, [int version]) =>
       _isValidUuid(data, version);
 
+  /// Returns _true_ if [data] is NOT valid.
   static bool isNotValidData(List<int> data, [int version]) =>
       !isValidData(data, version);
 
@@ -257,27 +259,35 @@ class Uuid {
 
   /// Returns [bytes] as a UID [String] prefixed by [prefix].
   ///
-  /// _Note_: The default [prefix] is '2.25.1'. The trailing '.1'
-  /// is used to avoid the problem of leading zeroes in the [Uuid]
-  /// part of the UID.
+  /// _Note_: The default [prefix] is '2.25.'.
   static String toUid(Uint8List bytes, [String prefix = '2.25.1']) =>
       _toDecimalString(bytes, prefix);
 
-  /// Returns [bytes] as a decimal [String] prefixed by [prefix].
+  // Urgent Sharath: unit test to make sure no string such as 2.25.0...'
+  // is returned.
+  /// Returns [bytes] as a decimal [String], with leading zeros removed,
+  /// prefixed by [prefix].
   static String _toDecimalString(Uint8List bytes, String prefix) {
     assert(bytes.length == 16);
     final sb = new StringBuffer(prefix);
     final v = bytes.buffer.asUint32List();
     for (var i = 0; i < v.length; i++) sb.write(v[i].toString());
     final s = sb.toString();
-    return s;
+    int start;
+    for (var i = 0; i < s.length; i++) {
+      if (s[i] != '0') {
+        start = i;
+        break;
+      }
+    }
+    return (start == 0) ? s : s.substring(start);
   }
 }
 
 // **** Internal Procedures ****
 
-const int kVersion = 4;
-const int kDataLengthInBytes = 16;
+const int _versionNumber = 4;
+const int _dataLengthInBytes = 16;
 
 // **** Utility functions for binary UUID values
 
@@ -357,8 +367,7 @@ Uint8List _parseToBytes(
 Uint8List _getDataBuffer(List<int> uuid) {
   if (uuid == null) return new Uint8List(16);
   if (uuid.length != 16)
-    return badUuidList(
-        'Invalid Uuid List length: ${uuid.length}', uuid);
+    return badUuidList('Invalid Uuid List length: ${uuid.length}', uuid);
   if (uuid is Uint8List) return uuid;
   return new Uint8List.fromList(uuid);
 }
@@ -367,7 +376,7 @@ Uint8List _getDataBuffer(List<int> uuid) {
 Null _toBytes(String s, Uint8List bytes, int byteIndex, int start, int end) {
   var index = byteIndex ?? 0;
   for (var i = start; i < end; i += 2) {
-    if (!isHexChar(s.codeUnitAt(i))  || !isHexChar(s.codeUnitAt(i + 1))) {
+    if (!isHexChar(s.codeUnitAt(i)) || !isHexChar(s.codeUnitAt(i + 1))) {
       throw new UuidError('Bad UUID character: "${s[i]}${s[i + 1]}" in "$s"');
     }
     bytes[index++] = _hexToByte[s.substring(i, i + 2)];

@@ -138,7 +138,7 @@ class PrivateGroup implements GroupBase {
     var eNew = e;
     if (isPDCode(code)) {
       if (creators == true) {
-        creators == false;
+        creators = false;
         _currentSGNumber = 0;
       }
       final sgNumber = pdSubgroup(code);

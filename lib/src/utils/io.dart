@@ -102,11 +102,9 @@ return fNames;
 List<File> getFilesFromDirectory(String source, [String ext = '.dcm']) {
   final dir = new Directory(source);
   final entities = dir.listSync(recursive: true, followLinks: false);
-//  print('FS Entities: ${entities.length}');
   final files = <File>[];
-  for (var e in entities) {
-    if (e is File) files.add(e);
-  }
+  for (var e in entities)
+    if (e is File && path.extension(e.path) == ext) files.add(e);
   return files;
 }
 

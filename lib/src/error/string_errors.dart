@@ -44,7 +44,8 @@ bool invalidString(String message, [Issues issues]) {
 }
 
 /// [String.length] [Error] message. Returns _null_.
-Null badStringLength(String s, [Issues issues, int start, int end]) {
+Null badStringLength(String s, [Issues issues, int start = 0, int end]) {
+  end ??= s.length;
   final msg = 'Invalid Length: "$s", start($start), end($end)';
   return badString(msg);
 }
@@ -75,7 +76,7 @@ bool invalidAgeString(String msg, [Issues issues]) {
 
 /// Date String [Error] message. Returns _null_.
 Null badDateString(String message, [Issues issues]) {
-  badString('InvalidDateStringError: $message', issues);
+  badString('InvalidDateStringError: "$message"', issues);
   return null;
 }
 

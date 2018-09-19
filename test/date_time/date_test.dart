@@ -456,6 +456,7 @@ void main() {
       ..debug('date2.values:${date2.toString()}, date2.hash:${date2.hash}')
       ..debug('date3.values:${date3.toString()}, date3.hash:${date3.hash}');
     expect(date2.hash, isNot(date3.hash));
+    return true;
   });
 
   test('Hash Dates', () {

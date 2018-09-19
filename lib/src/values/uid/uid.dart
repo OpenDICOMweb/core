@@ -20,7 +20,10 @@ export 'package:core/src/values/uid/uid_string.dart';
 export 'package:core/src/values/uid/well_known/uid_type.dart';
 
 // ignore_for_package: prefer_constructor_over_static;
+
 typedef String _Generator();
+
+/// Error handler for Uid parse errors.
 typedef Uid OnUidParseError(String s);
 
 /// A class that implements *DICOM Unique Identifiers* (UID) <*add link*>,
@@ -38,8 +41,13 @@ class Uid {
   // A generator function for random [Uid]s. This should be
   // set to either [
   static const _Generator _generator = generateSecureUidString;
+
+  /// The [String] associated with _this_.
   final String value;
 
+  /// If [s] is supplied and [s] is a valid UID, returns a UID created
+  /// from [s], otherwise calls [invalidUidString]. If [s] is not supplied,
+  /// i.e. is _null_, then a random [Uuid] based UID is returned.
   factory Uid([String s]) {
     String v;
     if (s == null) {
@@ -56,6 +64,7 @@ class Uid {
   /// Used by internal random generators
   Uid._(this.value);
 
+  /// Constant constructor for Well Known UIDs.
   const Uid.wellKnown(this.value);
 
   /// Returns a [String] containing a random UID as per the
@@ -83,6 +92,7 @@ class Uid {
   /// The maximum length of a [Uid][String].
   int get maxLength => kUidMaxLength;
 
+  /// The maximum length of the root of a Uid.
   int get maxRootLength => kUidMaxRootLength;
 
   /// Returns _true_ if _this_ is an encapsulated [TransferSyntax].
@@ -103,10 +113,13 @@ class Uid {
 
   // **** Static Getters and Methods
 
-  //TODO: What should minimum be?
+  /// The minimum length of a [Uid] value.
   static const int kMinLength = kUidMinLength;
+
+  /// The maximum length of a [Uid] value.
   static const int kMaxLength = kUidMaxLength;
-  //TODO: What should this values be?
+
+  /// The minimum length of the root part of a [Uid] value.
   static const int kMaxRootLength = kUidMaxRootLength;
 
   /// An empty [List<Uid>].
@@ -149,7 +162,6 @@ class Uid {
   static bool isValidStringList(List<String> sList) =>
       isValidUidStringList(sList);
 
-  // Issue: shout this be deprecated
   /// Parse [s] as [Uid] and return its values.
   ///
   /// If [s] is valid and a WellKnownUid([WKUid]), the canonical
@@ -187,7 +199,6 @@ class Uid {
     return invalidUidString(s);
   }
 
-  // Issue: shout this be deprecated
   /// Parses a [List] of [String]s as [Uid]s and returns a new
   /// [List] containing the corresponding [Uid]s.
   ///

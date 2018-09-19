@@ -7,12 +7,10 @@
 //  See the AUTHORS file for other contributors.
 //
 
-
 import 'package:core/core.dart';
 import 'package:test/test.dart';
 
 void main(List<String> args) {
-
   const count = 12;
 
   for (var i = 0; i < count; i++) {
@@ -22,15 +20,10 @@ void main(List<String> args) {
     for (var i = 0; i < count; i++) {
       a[i] = count;
       assert(a[i] == count, true);
-  assert(a.getUint8(i) == count, true);
+      assert(a.getUint8(i) == count, true);
     }
     for (var i = 0; i < count; i++) assert(a[i] == count, true);
-    for (var i = 0; i < count; i++) {
-      a[i] = count + 1;
-      a[i] == count + 1;
-    }
-    for (var i = 0; i < count; i++) {
-      assert(a.getUint8(i) == a[i], true);
-    }
+    for (var i = 0; i < count; i++) a[i] = count + 1;
+    for (var i = 0; i < count; i++) assert(a.getUint8(i) == a[i], true);
   }
 }

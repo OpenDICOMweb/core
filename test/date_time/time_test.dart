@@ -96,12 +96,13 @@ void main() {
         if (time == null)
           return invalidTimeString(
               'Bad Value{"$s"} in Good Time in Microseconds');
-        expect(time, isNotNull);
         log
           ..debug('    Time.parse: "$s": $time')
           ..debug1('    Milliseconds: ${time.inMilliseconds}')
           ..debug1('    Microseconds: ${time.inMicroseconds}');
+        expect(time, isNotNull);
       }
+      return true;
     });
 
     test('Good Time to Time', () {

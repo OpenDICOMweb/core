@@ -18,7 +18,7 @@ void main() {
   //TODO: make sure this is testing hierarchical logger
   test('Non-Hierarchical Logger Test', () {
     final log0 = new Logger('server_test')
-      ..info
+      ..info('info level')
       ..error('shout level')
       ..severe('severe level')
       ..error('error level')

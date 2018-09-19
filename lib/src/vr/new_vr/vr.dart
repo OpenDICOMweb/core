@@ -10,6 +10,8 @@ import 'package:core/src/utils/dicom.dart';
 import 'package:core/src/vr/new_vr/vr_code.dart';
 import 'package:core/src/vr/new_vr/vr_index.dart';
 
+// ignore_for_file: type_annotate_public_apis, public_member_api_docs
+
 class VR<T> {
   final int index; // done   // done
   final String id; // done called vrKeyword

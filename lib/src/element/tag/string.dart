@@ -836,6 +836,8 @@ class TMtag extends TM with TagElement<String> {
           [Iterable<String> vList, TransferSyntax _]) =>
       new TMtag(tag, vList);
 
-  static TMtag fromBytes(Tag tag, Bytes bytes) =>
-      new TMtag(tag, bytes.getAsciiList());
+  static TMtag fromBytes(Tag tag, Bytes bytes) {
+    final s = bytes.getAsciiList(padChar: kSpace);
+    return new TMtag(tag, s);
+  }
 }

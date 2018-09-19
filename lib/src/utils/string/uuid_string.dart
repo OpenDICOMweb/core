@@ -9,8 +9,7 @@
 import 'package:core/src/error/string_errors.dart';
 import 'package:core/src/utils/character/ascii.dart';
 
-
-// **** UUID [String]s.
+/// UUID [String]s. See https://tools.ietf.org/html/rfc4122.
 
 // Uuid constants
 const int kUuidStringLength = 36;
@@ -38,7 +37,8 @@ const List<int> kEnds = const <int>[8, 13, 18, 23, kUuidStringLength];
 //const int kDash = 0x2D;
 const List<int> _kISOVariantAsLetter = const <int>[k8, k9, ka, kb];
 
-// Returns _true_ if [uuidString] is a valid [Uuid]. If [type] is _null_
+// Urgent Jim make sure [s] is a decimal number - NOT a HEXAdecimal number.
+/// Returns _true_ if [uuidString] is a valid [Uuid]. If [type] is _null_
 /// it just validates the format; otherwise, [type] must have a values
 /// between 1 and 5.
 bool isValidUuidString(String uuidString, [int type]) {
@@ -68,7 +68,7 @@ bool _isValidStringVersion(String s, int version) {
   throw new UnimplementedError('Version 3 & 5 are not yet implemented');
 }
 
-int _getVersionNumberFromString(String s) => s.codeUnitAt(14) - k0;
+int _getVersionNumberFromString(String s) => s.codeUnitAt(14) - kDigit0;
 
 bool _isISOVariantFromString(String s) {
   final subType = s.codeUnitAt(19);

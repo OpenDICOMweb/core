@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/dataset/base/dataset.dart';
 import 'package:core/src/dataset/base/group/group_base.dart';
 import 'package:core/src/element.dart';
@@ -27,6 +26,7 @@ class PublicGroup implements GroupBase {
   @override
   Map<int, Element> members = <int, Element>{};
 
+  /// Constructor
   PublicGroup(Element e, Dataset sqParent)
       : assert(e.group.isEven),
         gNumber = e.group {

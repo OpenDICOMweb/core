@@ -152,6 +152,7 @@ void main() {
         ..debug('dt2.values:${dt2.toString()}, dt2.hash:${dt2.hash}')
         ..debug('dt3.values:${dt3.toString()}, dt3.hash:${dt3.hash}');
       expect(dt2.hash, isNot(dt3.hash));
+      return true;
     });
 
     test('sha256 date_time', () {
