@@ -144,6 +144,22 @@ class Time implements Comparable<Time> {
   @override
   int compareTo(Time other) => compare(this, other);
 
+  /// Returns a [String] containing the time. If [asDicom] is _true_ the
+  /// result has the format "hhmmss.ffffff"; otherwise the format is
+  /// "hh:mm:ss.ffffff".
+  String timeToString({bool asDicom = true}) {
+    final sb = new StringBuffer()..write(digits2(hour));
+    if (!asDicom) sb.write(':');
+    sb.write(digits2(minute));
+    if (!asDicom) sb.write(':');
+    sb
+      ..write(digits2(second))
+      ..write('.')
+      ..write(digits3(millisecond))
+      ..write(digits3(microsecond));
+    return sb.toString();
+  }
+
   @override
   String toString() => inet;
 

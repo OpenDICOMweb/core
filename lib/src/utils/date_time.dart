@@ -6,6 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:core/src/values/date_time/primitives/date.dart';
 import 'package:core/src/values/integer.dart';
 
 // ignore_for_file: public_member_api_docs
@@ -39,7 +40,7 @@ const int kAbsoluteMinEpochDay = -53375995;
 const int kAbsoluteMaxEpochDay = 52656527;
 const int kEpochDayZero = 0;
 const int kEpochDayZeroInMicroseconds = 0;
-const List<int> kEpochDateZero = const <int>[1970, 1, 1];
+const EpochDate kEpochDateZero = const EpochDate(1970, 1, 1);
 const int kEpochDayZeroWeekday = kThursday;
 
 // The number of days between 0000-03-01 (March 1, 0000) and

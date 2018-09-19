@@ -390,58 +390,96 @@ void main() {
     });
 
     test('finalernalTimeInMicroseconds', () {
-      final itm0 = internalTimeInMicroseconds(10, 13, 48, 12, 15);
+      final itm0 = timeInMicroseconds(10, 13, 48, 12, 15);
       log.debug('itm0: $itm0');
       expect(itm0, isNotNull);
 
-      final itm1 = internalTimeInMicroseconds(24, 13, 48, 12, 15);
+      final itm1 = timeInMicroseconds(24, 13, 48, 12, 15);
       log.debug('itm1: $itm1');
       expect(itm1, isNotNull);
 
-      final itm2 = internalTimeInMicroseconds(21, -13, 48, 12, 15);
+      final itm2 = timeInMicroseconds(21, -13, 48, 12, 15);
       log.debug('itm2: $itm2');
       expect(itm2, isNotNull);
 
-      final itm3 = internalTimeInMicroseconds(21, -13, -48, 12, 15);
+      final itm3 = timeInMicroseconds(21, -13, -48, 12, 15);
       log.debug('itm3: $itm3');
       expect(itm3, isNotNull);
     });
-    test('timeToString', () {
-      final t0 = timeToString(10, 13, 48, 12, 15);
+
+    test('Good timeToString', () {
+      global.throwOnError = true;
+      final t0 = Time(10, 13, 48, 12, 15).timeToString();
       log.debug('t0;$t0');
       expect(t0, '101348.012015');
 
-      final t1 = timeToString(-10, 13, 48, 12, 15);
+      final t1 = Time(10, 13, 48, 12, 15).timeToString();
       log.debug('t1;$t1');
-      expect(t1, '0-101348.012015');
+      expect(t1, '101348.012015');
 
-      final t2 = timeToString(11, -13, 48, 12, 15);
+      final t2 = Time(11, 13, 48, 12, 15).timeToString();
       log.debug('t2;$t2');
-      expect(t2, '110-1348.012015');
+      expect(t2, '111348.012015');
 
-      final t3 = timeToString(11, 13, 48, 0, 0);
+      final t3 = Time(11, 13, 48, 0, 0).timeToString();
       log.debug('t3;$t3');
       expect(t3, '111348.000000');
 
-      final t4 = timeToString(11, 13, 48, 12, 456, asDicom: false);
+      final t4 = Time(11, 13, 48, 12, 456).timeToString(asDicom: false);
       log.debug('t4;$t4');
       expect(t4, '11:13:48.012456');
 
-      final t5 = timeToString(12, 13, 48, 0, 0, asDicom: false);
+      final t5 = Time(12, 13, 48, 0, 0).timeToString(asDicom: false);
       log.debug('t5;$t5');
       expect(t5, '12:13:48.000000');
 
-      final t6 = timeToString(-11, 13, 48, 670, 34, asDicom: false);
+      final t6 = Time(11, 13, 48, 670, 34).timeToString(asDicom: false);
       log.debug('t6;$t6');
-      expect(t6, '0-11:13:48.670034');
+      expect(t6, '11:13:48.670034');
 
-      final t7 = timeToString(11, 13, -48, 670, 34, asDicom: false);
+      final t7 = Time(11, 13, 48, 670, 34).timeToString(asDicom: false);
       log.debug('t7;$t7');
-      expect(t7, '11:13:0-48.670034');
+      expect(t7, '11:13:48.670034');
 
-      final t8 = timeToString(25, 13, 48, 670, 34, asDicom: false);
+      final t8 = Time(00, 13, 48, 670, 34).timeToString(asDicom: false);
       log.debug('t8;$t8');
-      expect(t8, '25:13:48.670034');
+      expect(t8, '00:13:48.670034');
+    });
+
+    test('Bad timeToString', () {
+      global.throwOnError = false;
+
+      final t0 = Time(-10, 13, 48, 12, 15);
+      log.debug('t1;$t0');
+      expect(t0, null);
+
+      final t1 = Time(10, -13, 48, 12, 15);
+      log.debug('t1;$t1');
+      expect(t1, null);
+
+      final t2 = Time(11, 13, -48, 12, 15);
+      log.debug('t2;$t2');
+      expect(t2, null);
+
+      final t3 = Time(11, 13, 48, -01, 0);
+      log.debug('t3;$t3');
+      expect(t3, null);
+
+      final t4 = Time(11, 13, 48, -12, 456);
+      log.debug('t4;$t4');
+      expect(t4, null);
+
+      final t5 = Time(11, 13, 48, 0, -01);
+      log.debug('t5;$t5');
+      expect(t5, null);
+
+      final t6 = Time(11, 13, 48, 670, -34);
+      log.debug('t6;$t6');
+      expect(t6, null);
+
+      final t8 = Time(25, 13, 48, 670, 34);
+      log.debug('t8;$t8');
+      expect(t8, null);
     });
 
     test('timeMicrosecondsToString', () {

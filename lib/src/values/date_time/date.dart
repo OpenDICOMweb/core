@@ -284,9 +284,9 @@ class Date implements Comparable<Date> {
   }
 
   // **** internal
-  int _yearFromEpochDay(int day) => epochDayToEpochDate(day).year;
-  int _monthFromEpochDay(int day) => epochDayToEpochDate(day).month;
-  int _dayFromEpochDay(int day) => epochDayToEpochDate(day).day;
+  int _yearFromEpochDay(int day) => EpochDate.fromDay(day).year;
+  int _monthFromEpochDay(int day) => EpochDate.fromDay(day).month;
+  int _dayFromEpochDay(int day) => EpochDate.fromDay(day).day;
 }
 
 List<int> dateStringListToMicroseconds(List<String> daList) =>

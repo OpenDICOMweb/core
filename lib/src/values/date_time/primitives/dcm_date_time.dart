@@ -36,7 +36,7 @@ int dcmDateTimeInMicroseconds(
       ? dateToEpochMicroseconds(y, m, d)
       : badDate(y, m, d);
   final time = (isValidTime(h, mm, s, ms, us))
-      ? internalTimeInMicroseconds(h, mm, s, ms, us)
+      ? timeInMicroseconds(h, mm, s, ms, us)
       : badTime(h, m, d, ms, us);
   // ignore: avoid_returning_null
   if (day == null || time == null) return null;
@@ -87,31 +87,13 @@ int _hashMicroseconds(int us, int hash(int v), [int onError(int n)]) {
 
 String microsecondToDateTimeString(int epochMicrosecond,
     {bool asDicom = true}) {
-  int y, m, d, h, mm, s, ms, us;
-
-  Object getDate(int yy, int mm, int dd, {bool asDicom = true}) {
-    y = yy;
-    m = mm;
-    d = dd;
-    return true;
-  }
-
-  Object getTime(int hh, int mmmm, int ss, int msms, int usus,
-      {bool asDicom = true}) {
-    h = hh;
-    mm = mmmm;
-    s = ss;
-    ms = msms;
-    us = usus;
-    return true;
-  }
-
   final epochDay = epochMicrosecond ~/ kMicrosecondsPerDay;
-  final date = epochDayToEpochDate(epochDay);
-  final time = epochMicrosecond % kMicrosecondsPerDay;
-  microsecondToTime(time, getTime, asDicom: asDicom);
+  final eDate = EpochDate.fromDay(epochDay);
+  final time = microsecondToTime(epochMicrosecond % kMicrosecondsPerDay);
   // TODO: add real time zone
-  final dt = dateTimeString(y, m, d, h, mm, s, ms, us, asDicom: asDicom);
+  final dt = dateTimeString(eDate.year, eDate.month, eDate.day, time.hour,
+      time.minute, time.second, time.millisecond, time.microsecond,
+      asDicom: asDicom);
   return '$dt+0000';
 }
 

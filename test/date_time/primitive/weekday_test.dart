@@ -76,7 +76,7 @@ void main() {
             expect(previousEpochDay == z - 1, true);
             expect(nextEpochDay == z + 1, true);
 
-            final date = epochDayToEpochDate(z);
+            final date = EpochDate.fromDay(z);
             expect(y == date.year, true);
             expect(m == date.month, true);
             expect(d == date.day, true);

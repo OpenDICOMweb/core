@@ -364,18 +364,18 @@ System: $dt0
     log.debug('hm0: $hm0');
     expect(hm0, isNotNull);
 
-    final hm1 = hashMicroseconds(global.minYearInMicroseconds);
+    final hm1 = hashMicroseconds(kMinYearInMicroseconds);
     log.debug('hm1: $hm1');
     expect(hm1, isNotNull);
 
-    expect(() => hashMicroseconds(global.minYearInMicroseconds - 1),
+    expect(() => hashMicroseconds(kMinYearInMicroseconds - 1),
         throwsA(const TypeMatcher<Error>()));
 
-    final hm3 = hashMicroseconds(global.maxYearInMicroseconds);
+    final hm3 = hashMicroseconds(kMaxYearInMicroseconds);
     log.debug('hm3: $hm3');
     expect(hm3, isNotNull);
 
-    expect(() => hashMicroseconds(global.maxYearInMicroseconds + 1),
+    expect(() => hashMicroseconds(kMaxYearInMicroseconds + 1),
         throwsA(const TypeMatcher<Error>()));
   });
 

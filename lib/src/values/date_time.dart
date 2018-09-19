@@ -16,7 +16,7 @@ export 'package:core/src/values/date_time/primitives/age.dart';
 export 'package:core/src/values/date_time/primitives/date.dart';
 export 'package:core/src/values/date_time/primitives/dcm_date_time.dart';
 export 'package:core/src/values/date_time/primitives/time.dart'
-    hide internalTimeInMicroseconds;
+    hide timeInMicroseconds;
 export 'package:core/src/values/date_time/primitives/time_zone.dart';
 export 'package:core/src/values/date_time/time.dart';
 export 'package:core/src/values/date_time/time_zone.dart';

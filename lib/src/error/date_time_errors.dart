@@ -66,8 +66,8 @@ bool invalidWeekday(int weekday) {
 }
 
 /// An invalid epoch day error. Returns null;
-Null badEpochDay(int microseconds) {
-  final msg = 'InvalidEpochDayError: $microseconds';
+Null badEpochDay(int day) {
+  final msg = 'InvalidEpochDayError: $day';
   return _doError(msg);
 }
 

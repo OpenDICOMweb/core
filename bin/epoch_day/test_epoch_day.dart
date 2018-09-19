@@ -32,7 +32,8 @@ void main() {
   log.debug('zeroDayAsList: $zeroDate');
 
   assert(zeroDay == 0, '1970-01-01 is day 0');
-  assert(epochDayToEpochDate(0) == zeroDate, '1970-01-01 is day 0');
+  assert(zeroDate == EpochDate.kZero);
+  assert(EpochDate.fromDay(0) == EpochDate.kZero, '1970-01-01 is day 0');
   assert(weekdayFromEpochDay(dateToEpochDay(1970, 1, 1)) == 4,
       '1970-01-01 is a Thursday');
 
@@ -55,7 +56,7 @@ void leapYearTest(int startYear, int endYear) {
   log.info0('leapYearTest');
   final watch = new Stopwatch()..start();
   for (var i = startYear; i < endYear; i++) {
-    final date = epochDayToEpochDate(i);
+    final date = EpochDate.fromDay(i);
     final y = date.year;
     log.debug(
         'year: $y, isCommonYear: ${isCommonYear(y)}, isLeapYear: ${isLeapYear(y)}'
@@ -79,7 +80,7 @@ void dateBasicTest(int startYear, int endYear) {
   log.info0('conversionTest...');
   final watch = new Stopwatch()..start();
   for (var i = startYear; i < endYear; i++) {
-    final date = epochDayToEpochDate(i);
+    final date = EpochDate.fromDay(i);
     log.debug('date: $date');
     final y = date.year;
     final m = date.month;
@@ -129,7 +130,7 @@ void dateUnitTest(int startYear, int endYear) {
         assert(previousEpochDay < z);
         assert(z == previousEpochDay + 1);
 
-        final date = epochDayToEpochDate(z);
+        final date = EpochDate.fromDay(z);
         assert(y == date.year);
         assert(m == date.month);
         assert(d == date.day);

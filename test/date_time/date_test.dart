@@ -354,7 +354,7 @@ void main() {
   });
 
   test('weekDayName', () {
-    final date = epochDayToEpochDate(0);
+    final date = EpochDate.fromDay(0);
     log.debug(date);
     //for(var s in goodDcmDateList){
     final date0 = Date.parse(goodDcmDateList[0]);
@@ -609,20 +609,20 @@ void main() {
 
   test('isValidYearInMicroseconds', () {
     global.throwOnError = false;
-    final us = dateToEpochDay(1971, 1, 1);
-    final vym0 = isValidYearInMicroseconds(us);
+    final day = dateToEpochDay(1971, 1, 1);
+    final vym0 = isValidYearInMicroseconds(day * kMicrosecondsPerDay);
     expect(vym0, true);
 
-    final vym1 = isValidYearInMicroseconds(global.minYearInMicroseconds);
+    final vym1 = isValidYearInMicroseconds(kMinYearInMicroseconds);
     expect(vym1, true);
 
-    final vym2 = isValidYearInMicroseconds(global.maxYearInMicroseconds);
+    final vym2 = isValidYearInMicroseconds(kMaxYearInMicroseconds);
     expect(vym2, true);
 
-    final vym3 = isValidYearInMicroseconds(global.maxYearInMicroseconds + 1);
+    final vym3 = isValidYearInMicroseconds(kMaxYearInMicroseconds + 1);
     expect(vym3, false);
 
-    final vym4 = isValidYearInMicroseconds(global.minYearInMicroseconds - 1);
+    final vym4 = isValidYearInMicroseconds(kMinYearInMicroseconds - 1);
     expect(vym4, false);
   });
 }

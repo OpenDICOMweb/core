@@ -17,7 +17,7 @@ import 'package:core/src/error/date_time_errors.dart';
 /// [Unix Epoch](https://en.wikipedia.org/wiki/Unix_time) days,
 /// where day 0 of the Unix Epoch is 1970-01-01 (y=1970, m = 1, d = 1).
 ///
-/// The algorithms for [dateToEpochDay] and [epochDayToEpochDate] come from
+/// The algorithms for [dateToEpochDay] and [EpochDate.fromDay] come from
 /// http://howardhinnant.github.io/date_algorithms.html
 
 final int kMinYearInMicroseconds =
@@ -119,7 +119,7 @@ int _dateToEpochMicroseconds(int y, int m, int d) {
 }
 
 bool isValidYearInMicroseconds(int us) =>
-    us >= global.minYearInMicroseconds && us <= global.maxYearInMicroseconds;
+    us >= kMinYearInMicroseconds && us <= kMaxYearInMicroseconds;
 
 int toValidYearInMicroseconds(int us) => (us.isNegative)
     ? us % global.minYearInMicroseconds
@@ -157,30 +157,40 @@ class EpochDate {
   final int month;
   final int day;
 
+  /// Constructor
   const EpochDate(this.year, this.month, this.day);
 
-  static const EpochDate zeroDate = EpochDate(1970, 1, 1);
+  /// Returns
+  /// [Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar)
+  /// year/month/day as a [list<int>] of length 3.
+  ///
+  /// Preconditions:
+  ///     [day] is number of days since 1970-01-01 and is in the range:
+  ///         [epochFromDays(Int64.min), epochFromDays(Int64.max - 719468)]
+  factory EpochDate.fromDay(int day) =>
+      _isValidEpochDay(day) ? _epochDayToEpochDate(day) : null;
+
+  /// Returns a [String] corresponding to [epochDay]. If [asDicom] is _true_
+  /// the format is 'yyyyddmm'; otherwise the format is 'yyyy-mm-dd'.
+  String asString({bool asDicom = true}) {
+    final yy = digits4(year);
+    final mm = digits2(month);
+    final dd = digits2(day);
+    return (asDicom) ? '$yy$mm$dd' : '$yy-$mm-$dd';
+  }
+
+  @override
+  String toString() => asString(asDicom: false);
+
+  static const EpochDate kZero = EpochDate(1970, 1, 1);
 }
-
-String epochDateToString(EpochDate date, {bool asDicom = true}) => asDicom
-    ? '${date.year}${date.month}${date.day}'
-    : '${date.year}-${date.month}-${date.day}';
-
-/// Returns
-/// [Gregorian Calendar](https://en.wikipedia.org/wiki/Gregorian_calendar)
-/// year/month/day as a [list<int>] of length 3.
-///
-/// Preconditions:
-///     z is number of days since 1970-01-01 and is in the range:
-///         [epochFromDays(Int64.min), epochFromDays(Int64.max - 719468)]
-EpochDate epochDayToEpochDate(int epochDay) =>
-    (_isValidEpochDay(epochDay)) ? _epochDayToEpochDate(epochDay) : null;
 
 const int zeroCEDay = -719468;
 const int daysInEra = 146097;
 
 Object _epochDayToEpochDate(int epochDay) {
   if (isNotValidEpochDay(epochDay)) return invalidEpochDay(epochDay);
+  if (epochDay == 0) return kEpochDateZero;
   final z = epochDay + 719468;
   final era = ((z >= 0) ? z : z - 146096) ~/ 146097;
   final doe = z - (era * 146097);
@@ -274,8 +284,9 @@ Iterable<int> hashDateMicrosecondsList(Iterable<int> daList) =>
 /// Returns a [String] in the format yyyymmdd.
 String microsecondToDateString(int us, {bool asDicom = true}) {
   if (isNotValidEpochMicroseconds(us)) return null;
-  final epochDay = us ~/ kMicrosecondsPerDay;
-  return '${epochDayToEpochDate(epochDay)}';
+  final eDay = us ~/ kMicrosecondsPerDay;
+  final eDate = EpochDate.fromDay(eDay);
+  return eDate.asString(asDicom: asDicom);
 }
 
 /// Returns a [String] containing the date. If [asDicom] is _true_ the
@@ -288,7 +299,10 @@ String dateToString(int y, int m, int d, {bool asDicom = true}) =>
 /// Returns a [String] corresponding to [epochDay]. If [asDicom] is _true_
 /// the format is 'yyyyddmm'; otherwise the format is 'yyyy-mm-dd'.
 String epochDayToDateString(int epochDay, {bool asDicom = true}) {
-  final date = epochDayToEpochDate(epochDay);
+  final date = EpochDate.fromDay(epochDay);
+  if (date == null) {
+    return throwOnError ? badEpochDay(epochDay) : null;
+  }
   final yy = digits4(date.year);
   final mm = digits2(date.month);
   final dd = digits2(date.day);
