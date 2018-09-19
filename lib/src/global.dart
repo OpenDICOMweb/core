@@ -119,8 +119,8 @@ abstract class Global {
         log = new Logger(name, level) {
     hasher = hasher ??= const Hash64();
     log
-      ..config('minYear: $minYear, minYearLimit: $kMinYearLimit')
-      ..config('maxYear:  $maxYear, maxYearLimit:  $kMaxYearLimit')
+      ..config('minYear: $minYear, minYearLimit: $global.minYearLimit')
+      ..config('maxYear:  $maxYear, maxYearLimit:  $global.maxYearLimit')
       ..config('log level:  ${log.level}');
   }
 
@@ -196,7 +196,6 @@ abstract class Global {
   // Date/Time stuff
   static final DateTime kStartTime = new DateTime.now();
 
-
   /// The random number generator for the [global].
   static final Random rng = new Random.secure();
 
@@ -248,7 +247,7 @@ bool _isValidYearRange(int minYear, int maxYear) {
       minYear >= maxYear ||
       maxYear > kMaxYearLimit) {
     final msg = 'Invalid System Year Range: '
-        'min($kMinYearLimit) <= $minYear < $maxYear <= max($kMaxYearLimit)';
+        'min($global.minYearLimit) <= $minYear < $maxYear <= max($global.maxYearLimit)';
     internalError(msg);
   }
   return true;

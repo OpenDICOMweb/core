@@ -33,11 +33,11 @@ class Compare {
         index1++;
         continue;
       } else if (tag0.code < tag1.code) {
-        diff.add(<dynamic>[-1, e0, null]);
+        diff.add(<Object>[-1, e0, null]);
         index0++;
         continue;
       } else {
-        diff.add(<dynamic>[1, null, e0]);
+        diff.add(<Object>[1, null, e0]);
         index1++;
         continue;
       }
@@ -62,11 +62,11 @@ class Compare {
         index1++;
         continue;
       } else if (tag0.code < tag1.code) {
-        diff.add(<dynamic>[-1, e0, null]);
+        diff.add(<Object>[-1, e0, null]);
         index0++;
         continue;
       } else {
-        diff.add(<dynamic>[1, null, e0]);
+        diff.add(<Object>[1, null, e0]);
         index1++;
         continue;
       }

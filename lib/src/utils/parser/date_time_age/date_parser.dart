@@ -85,7 +85,7 @@ int __parseDate(String s, int start, Issues issues,
 
 /// Returns a valid year or _null_.  The year must be 4 characters.
 int _parseYear(String s, int start, Issues issues) =>
-    _parse4Digits(s, start, issues, kMinYear, kMaxYear);
+    _parse4Digits(s, start, issues, global.minYear, global.maxYear);
 
 /// Returns a valid month or _null_.  The month must be 2 characters.
 int _parseMonth(String s, int start, Issues issues) =>

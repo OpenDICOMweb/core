@@ -6,9 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/src/error/general_errors.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/global.dart';
 
 /// The base class for Bulkdata.
 abstract class BulkdataRef<V> {

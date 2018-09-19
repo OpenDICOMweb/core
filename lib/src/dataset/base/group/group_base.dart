@@ -17,7 +17,7 @@ import 'package:core/src/utils.dart';
 
 abstract class GroupBase {
   int get gNumber;
-  Map<int, dynamic> get members;
+  Map<int, Object> get members;
   String get info;
 
   int get length;

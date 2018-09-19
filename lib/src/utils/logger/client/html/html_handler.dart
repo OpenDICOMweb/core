@@ -24,9 +24,9 @@ abstract class HtmlHandler {
       : _store = window.localStorage,
         _transform = transform;
 
-  dynamic call(LogRecord record) {
+  Object call(LogRecord record) {
     final _entries = _store[_storeName];
-    final Object entry = (_transform != null) ? _transform(record) : '$record';
+    final entry = (_transform != null) ? _transform(record) : '$record';
     _store[_storeName] = '$_entries$entry';
     if (doPrint) print(entry);
     return entry;

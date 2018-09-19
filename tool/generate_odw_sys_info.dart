@@ -35,7 +35,7 @@ class OdwSysInfo {
   static const String descriptions = '${spec['description']}';
   static const List<String> authors = ${generateList(spec['authors'])};
   static const String dartSdkVersion = '${spec['environment']['sdk']}';
-  static const Map<String, dynamic> packages = ${generateMap
+  static const Map<String, Object> packages = ${generateMap
     (spec['dependencies'])};
 }
   ''';
@@ -79,14 +79,14 @@ String generateMap(Map<String, Object> map) {
       entries.add('    "$key": "$value"');
     }
   });
-  return 'const <String, dynamic>{\n${entries.join(',\n')}\n    }';
+  return 'const <String, Object>{\n${entries.join(',\n')}\n    }';
 }
 
 class OdwInfo {
   static const String name = 'core';
   static const String version = '0.5.4';
   static const String dartSdkVersion = '^1.23.0';
-  static const Map packages = const <String, dynamic>{
+  static const Map packages = const <String, Object>{
     'crypto': '^2.0.1',
     'yaml': '^2.1.12',
     'quiver': 'any',

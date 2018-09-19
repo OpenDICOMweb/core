@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
@@ -93,10 +92,10 @@ void main() {
       final watch = new Stopwatch()..start();
 
       for (var i = startEpochDay; i < endEpochDay; i++) {
-        final List<int> date = epochDayToDate(i);
-        final y = date[0];
-        final m = date[1];
-        final d = date[2];
+        final date = epochDayToEpochDate(i);
+        final y = date.year;
+        final m = date.month;
+        final d = date.day;
         log.debug1('   day: $i,  y: $y, m: $m, d: $d');
 
         final n = dateToEpochDay(y, m, d);
@@ -124,7 +123,7 @@ void main() {
 
       // Base tests
       expect(kEpochDayZero == 0, true);
-      expect(epochDayToDate(0), equals(kEpochDateZero));
+      expect(epochDayToEpochDate(0), equals(kEpochDateZero));
     });
 
     test('dateToEpochDay', () {
@@ -147,7 +146,10 @@ void main() {
     test('dateListsEqual', () {
       const zeroDate = const <int>[1970, 1, 1];
       log.debug('zeroDayAsList: $zeroDate');
-      expect(dateListsEqual(epochDayToDate(0), zeroDate), true);
+      final date = epochDayToEpochDate(0);
+      expect(date.year == 1970, true);
+      expect(date.month == 1, true);
+      expect(date.day == 1, true);
     });
 
     test('weekdayFromEpochDay', () {
@@ -168,11 +170,11 @@ void main() {
     test('Epoch Date Basic Test', () {
       log.debug('Epoch Date Basic Test...');
       final watch = new Stopwatch()..start();
-      for (var i = kMinYear; i < kMaxYear; i++) {
-        final List<int> date = epochDayToDate(i);
-        final y = date[0];
-        final m = date[1];
-        final d = date[2];
+      for (var i = global.minYear; i < global.maxYear; i++) {
+        final date = epochDayToEpochDate(i);
+        final y = date.year;
+        final m = date.month;
+        final d = date.day;
         final n = dateToEpochDay(y, m, d);
         // log.debug('$i, $n, ${i == n}');
         expect(i == n, true);
@@ -223,10 +225,10 @@ void main() {
             previousEpochDay++;
             nextEpochDay++;
 
-            final List<int> date = epochDayToDate(z);
-            expect(y == date[0], true);
-            expect(m == date[1], true);
-            expect(d == date[2], true);
+            final date = epochDayToEpochDate(z);
+            expect(y == date.year, true);
+            expect(m == date.month, true);
+            expect(d == date.day, true);
           }
         }
       }
@@ -277,10 +279,10 @@ void main() {
             assert(previousEpochDay < z);
             expect(z == previousEpochDay + 1, true);
 
-            final List<int> date = epochDayToDate(z);
-            expect(y == date[0], true);
-            expect(m == date[1], true);
-            expect(d == date[2], true);
+            final date = epochDayToEpochDate(z);
+            expect(y == date.year, true);
+            expect(m == date.month, true);
+            expect(d == date.day, true);
             final wd = weekdayFromEpochDay(z);
             assert(0 <= wd && wd <= 6);
             final nwd = nextWeekday(previousWeekDay);
@@ -332,7 +334,7 @@ void main() {
     });
 
     test('dateToEpochMicroseconds', () {
-      for (var y = kMinYear; y <= kMaxYear; y++) {
+      for (var y = global.minYear; y <= global.maxYear; y++) {
         for (var m = 1; m <= 12; m++) {
           final dtem0 = dateToEpochMicroseconds(y, m, 01);
           log.debug('dtem0: $dtem0');
@@ -341,11 +343,11 @@ void main() {
       }
 
       // bad year
-      var dtemInvalid = dateToEpochMicroseconds(kMinYear - 1, 1, 12);
+      var dtemInvalid = dateToEpochMicroseconds(global.minYear - 1, 1, 12);
       expect(dtemInvalid, isNull);
 
       // bad year
-      dtemInvalid = dateToEpochMicroseconds(kMaxYear + 1, 12, 12);
+      dtemInvalid = dateToEpochMicroseconds(global.maxYear + 1, 12, 12);
       expect(dtemInvalid, isNull);
 
       // bad month
@@ -358,11 +360,11 @@ void main() {
 
       global.throwOnError = true;
       // bad year
-      expect(() => dateToEpochMicroseconds(kMinYear - 1, 13, 12),
+      expect(() => dateToEpochMicroseconds(global.minYear - 1, 13, 12),
           throwsA(equals(const TypeMatcher<DateTimeError>())));
 
       // bad year
-      expect(() => dateToEpochMicroseconds(kMaxYear + 1, 13, 12),
+      expect(() => dateToEpochMicroseconds(global.maxYear + 1, 13, 12),
           throwsA(equals(const TypeMatcher<DateTimeError>())));
 
       // bad month
@@ -462,7 +464,8 @@ void main() {
     });
 
     test('dateAsString', () {
-      final dt0 = dateToString(1998, 11, 15);
+      final dt0 =
+          epochDateToString(const EpochDate(1998, 11, 15), asDicom: true);
       log.debug('dt0: $dt0');
       expect(dt0, '19981115');
 

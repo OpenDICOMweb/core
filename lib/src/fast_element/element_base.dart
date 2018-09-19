@@ -125,8 +125,6 @@ abstract class FastElementBase<V> {
       _asByteData(fromList(vList, asView: asView));
 }
 
-// ignore_for_file: avoid_annotating_with_dynamic
-
 // **** Float Elements
 
 // Design notes:

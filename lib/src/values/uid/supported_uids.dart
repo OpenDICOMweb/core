@@ -14,7 +14,7 @@ import 'package:core/src/values/uid/uid_errors.dart';
 /// A singleton class used to ensure that all [Uid]s are unique.
 abstract class SupportedUid {
   /// [Uid]s that are known to the src.
-  dynamic get knownUids;
+  Object get knownUids;
 
   /// Returns _true_ if [uid] is in knownUids.
   bool contains(Uid uid);

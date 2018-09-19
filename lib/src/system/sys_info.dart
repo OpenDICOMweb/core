@@ -21,13 +21,13 @@ class SysInfo {
     'Jim Philbin <jfphilbin@gmail.com>'
   ];
   static const String dartSdkVersion = '^1.24.2';
-  static const Map<String, dynamic> packages = const <String, dynamic>{
+  static const Map<String, Object> packages = const <String, Object>{
     'crypto': '^2.0.1',
-    'dictionary': const <String, dynamic>{
+    'dictionary': const <String, Object>{
       'version': '^0.5.6',
       'path': 'C:/odw/sdk/dictionary'
     },
-    'common': const <String, dynamic>{
+    'common': const <String, Object>{
       'version': '^0.5.6',
       'path': 'C:/odw/sdk/common'
     }

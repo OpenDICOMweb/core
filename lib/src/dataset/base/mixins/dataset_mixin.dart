@@ -113,9 +113,9 @@ abstract class DatasetMixin {
     return count;
   }
 
-  List map<T>(dynamic f(Element e)) => _map(f, <dynamic>[]);
+  List map<T>(Object f(Element e)) => _map(f, <Object>[]);
 
-  List _map(dynamic f(Element e), List list) {
+  List _map(Object f(Element e), List list) {
     for (var e in elements) {
       if (e is SQ) {
         list.add(e.sqMap(f));
@@ -164,8 +164,8 @@ abstract class DatasetMixin {
     return result;
   }
 
-  Iterable<dynamic> findAllWhere(bool test(Element e)) {
-    final result = <dynamic>[];
+  Iterable<Object> findAllWhere(bool test(Element e)) {
+    final result = <Object>[];
     for (var e in elements)
       if (test(e)) result.add(e);
     return result;

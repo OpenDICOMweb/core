@@ -70,9 +70,9 @@ int microsecondFromMicrosecond(int us) =>
 int fractionFromMicrosecond(int us) =>
     _inRange(us, 0, kMicrosecondsPerDay) ? _fractionFromTimeInUS(us) : null;
 
-typedef dynamic TimeToObject(int h, int m, int s, int ms, int us, {bool asDicom});
+typedef Object TimeToObject(int h, int m, int s, int ms, int us, {bool asDicom});
 
-dynamic microsecondToTime(int time, TimeToObject creator, {bool asDicom = true}) {
+Object microsecondToTime(int time, {bool asDicom = true}) {
   if (isNotValidTimeMicroseconds(time)) return null;
   final h = _hourFromTimeInUS(time);
   final m = _minuteFromTimeInUS(time % kMicrosecondsPerHour);

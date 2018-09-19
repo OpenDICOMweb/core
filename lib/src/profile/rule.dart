@@ -89,7 +89,7 @@ class Rule {
     return true;
   }
 
-  Map<String, dynamic> get map => <String, Object>{
+  Map<String, Object> get map => <String, Object>{
     'index': index,
     'target': targetTag,
     'keyword': keyword,

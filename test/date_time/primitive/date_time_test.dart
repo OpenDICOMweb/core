@@ -20,12 +20,12 @@ void main() {
 
   test('kMinEpochMicrosecond', () {
     log
-      ..debug('minYear: $kMinYear')
-      ..debug('maxYear: $kMaxYear')
+      ..debug('minYear: $global.minYear')
+      ..debug('maxYear: $global.maxYear')
       ..debug('kMinEpochMicrosecond: $kMinEpochMicrosecond')
       ..debug('kMaxEpochMicrosecond: $kMaxEpochMicrosecond');
-    expect(isValidYear(kMinYear), true);
-    expect(isValidYear(kMaxYear), true);
+    expect(isValidYear(global.minYear), true);
+    expect(isValidYear(global.maxYear), true);
     expect(isValidDateMicroseconds(kMinEpochMicrosecond), true);
     expect(isValidDateMicroseconds(kMaxEpochMicrosecond), true);
   });
@@ -39,21 +39,21 @@ void main() {
     log.debug('dcmDTM1: $dcmDTM1');
 
     final dcmDTM2 =
-        dcmDateTimeInMicroseconds(kMinYear, 11, 12, 05, 29, 24, 48, 456);
+        dcmDateTimeInMicroseconds(global.minYear, 11, 12, 05, 29, 24, 48, 456);
     log.debug('dcmDTM2: $dcmDTM2');
 
     final dcmDTM3 =
-        dcmDateTimeInMicroseconds(kMaxYear, 11, 12, 05, 29, 24, 48, 456);
+        dcmDateTimeInMicroseconds(global.maxYear, 11, 12, 05, 29, 24, 48, 456);
     log.debug('dcmDTM3: $dcmDTM3');
 
     // bad year
-    var dcmDTMInvalid =
-        dcmDateTimeInMicroseconds(kMinYear - 1, 11, 12, 22, 29, 24, 48, 456);
+    var dcmDTMInvalid = dcmDateTimeInMicroseconds(
+        global.minYear - 1, 11, 12, 22, 29, 24, 48, 456);
     expect(dcmDTMInvalid, isNull);
 
     // bad year
-    dcmDTMInvalid =
-        dcmDateTimeInMicroseconds(kMaxYear + 1, 1, 12, 22, 29, 24, 48, 456);
+    dcmDTMInvalid = dcmDateTimeInMicroseconds(
+        global.maxYear + 1, 1, 12, 22, 29, 24, 48, 456);
     expect(dcmDTMInvalid, isNull);
 
     // bad month
@@ -92,12 +92,12 @@ void main() {
 
     expect(
         () => dcmDateTimeInMicroseconds(
-            kMinYear - 1, 11, 12, 05, 29, 24, 48, 456),
+            global.minYear - 1, 11, 12, 05, 29, 24, 48, 456),
         throwsA(equals(const TypeMatcher<DateTimeError>())));
 
     expect(
         () => dcmDateTimeInMicroseconds(
-            kMaxYear + 1, 10, 12, 05, 29, 24, 48, 456),
+            global.maxYear + 1, 10, 12, 05, 29, 24, 48, 456),
         throwsA(equals(const TypeMatcher<DateTimeError>())));
 
     expect(() => dcmDateTimeInMicroseconds(1978, 12, 12, 25, 29, 24, 48, 456),
@@ -108,10 +108,12 @@ void main() {
     var validDateTime0 = isValidDateTime(1998, 11, 15, 23, 10, 45, 05, 10);
     expect(validDateTime0, true);
 
-    validDateTime0 = isValidDateTime(kMinYear, 11, 15, 23, 10, 45, 05, 10);
+    validDateTime0 =
+        isValidDateTime(global.minYear, 11, 15, 23, 10, 45, 05, 10);
     expect(validDateTime0, true);
 
-    validDateTime0 = isValidDateTime(kMaxYear, 11, 15, 23, 10, 45, 05, 10);
+    validDateTime0 =
+        isValidDateTime(global.maxYear, 11, 15, 23, 10, 45, 05, 10);
     expect(validDateTime0, true);
 
     final validDateTime1 =
@@ -178,10 +180,9 @@ void main() {
 
   test('dateTimeMicrosecondsToString', () {
     log
-      ..debug('minYear: $kMinYear maxYear: $kMaxYear')
-      ..debug(
-          'isValidMicrosecond: '
-              '${isValidDateTimeMicroseconds(19790512011556789)}');
+      ..debug('minYear: $global.minYear maxYear: $global.maxYear')
+      ..debug('isValidMicrosecond: '
+          '${isValidDateTimeMicroseconds(19790512011556789)}');
     final dtm0 = microsecondToDateTimeString(19790512011556789, asDicom: false);
     log.debug('dtm0: $dtm0');
 
@@ -363,18 +364,18 @@ System: $dt0
     log.debug('hm0: $hm0');
     expect(hm0, isNotNull);
 
-    final hm1 = hashMicroseconds(kMinYearInMicroseconds);
+    final hm1 = hashMicroseconds(global.minYearInMicroseconds);
     log.debug('hm1: $hm1');
     expect(hm1, isNotNull);
 
-    expect(() => hashMicroseconds(kMinYearInMicroseconds - 1),
+    expect(() => hashMicroseconds(global.minYearInMicroseconds - 1),
         throwsA(const TypeMatcher<Error>()));
 
-    final hm3 = hashMicroseconds(kMaxYearInMicroseconds);
+    final hm3 = hashMicroseconds(global.maxYearInMicroseconds);
     log.debug('hm3: $hm3');
     expect(hm3, isNotNull);
 
-    expect(() => hashMicroseconds(kMaxYearInMicroseconds + 1),
+    expect(() => hashMicroseconds(global.maxYearInMicroseconds + 1),
         throwsA(const TypeMatcher<Error>()));
   });
 
@@ -395,8 +396,8 @@ System: $dt0
               final hx = digits2(h);
               final mmx = digits2(mm);
               final fx =
-              (us == 0 && ms == 0) ? '' : '.${digits3(ms)}${digits3(us)}';
-              final inet ='$y$mx$dx$hx$mmx$s$fx';
+                  (us == 0 && ms == 0) ? '' : '.${digits3(ms)}${digits3(us)}';
+              final inet = '$y$mx$dx$hx$mmx$s$fx';
               log.debug('dicomDT0: $dicomDT0, $inet');
               expect(dicomDT0 == inet, true);
             }

@@ -18,7 +18,7 @@ const int kMaxCount = 999;
 const int kMaxDayAge = kMaxCount;
 const int kMaxWeekAge = kMaxCount * kDaysInWeek;
 const int kMaxMonthAge = kMaxCount * kDaysInMonth;
-const int kMaxYearAge = kMaxCount * kDaysInYear;
+const int global.maxYearAge = kMaxCount * kDaysInYear;
 
 */
 

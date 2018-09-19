@@ -8,6 +8,7 @@
 //
 library odw.sdk.core.parser;
 
+import 'package:core/src/global.dart';
 import 'package:core/src/system.dart';
 import 'package:core/src/utils/character/ascii.dart';
 import 'package:core/src/utils/date_time.dart';

@@ -33,7 +33,7 @@ class Profile {
   final String quarantineUrl;
 //  final List<String> lines;
   final GlobalRule globals;
-  final Map<String, dynamic> trialMap;
+  final Map<String, Object> trialMap;
   final Map<String, String> parameters;
   final List<int> groupsToRetail;
   final List<int> groupsToRemove;
@@ -82,7 +82,7 @@ class Profile {
 
   //String get extension => '.dvp';
 
-  Map<String, dynamic> get map => <String, Object>{
+  Map<String, Object> get map => <String, Object>{
         'name': name,
         'path': url,
         'parameters': parameters,

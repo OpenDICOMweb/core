@@ -52,7 +52,7 @@ void main() {
   const List validTimeZones = const <List>[
     // [ index, hour, minute, microsecond, token ]
     const <Object>[-1, -12, 0, -43200000000, 'Y'],
-    const <dynamic>[-1, -11, 0, -39600000000, 'X'],
+    const <Object>[-1, -11, 0, -39600000000, 'X'],
     const <Object>[-1, -10, 0, -36000000000, 'W'],
     const <Object>[-1, -9, 30, -34200000000, 'V'],
     const <Object>[-1, -9, 0, -32400000000, 'V'],

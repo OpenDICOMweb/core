@@ -30,7 +30,7 @@ class HtmlFileHandler {
         _transform = transform;
 
   String call(LogRecord record) {
-    final Object entry =
+    final entry =
         (_transform != null) ? _transform(record) : '${record.info}\n';
     final _entries = _store[_storeName];
     _store[_storeName] = '$_entries$entry';
@@ -60,7 +60,7 @@ class HtmlRemoteFileHandler {
         _transform = transform;
 
   String call(LogRecord record) {
-    final Object entry =
+    final entry =
         (_transform != null) ? _transform(record) : '${record.info}\n';
     final _entries = _store[_storeName];
     _store[_storeName] = '$_entries$entry';

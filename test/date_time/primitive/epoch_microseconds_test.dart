@@ -152,7 +152,7 @@ void main() {
     test('Epoch Date Basic Test', () {
       log.debug('Epoch Date Basic Test...');
       final watch = new Stopwatch()..start();
-      for (var i = kMinYear; i < kMaxYear; i++) {
+      for (var i = global.minYear; i < global.maxYear; i++) {
         final List<int> date = epochMicrosecondToDate(i * kMicrosecondsPerDay);
         final y = date[0];
         final m = date[1];

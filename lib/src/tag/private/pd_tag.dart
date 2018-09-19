@@ -39,8 +39,7 @@ abstract class PDTag extends PrivateTag {
 
   static const String phantomName = '--<PhantomCreator>--';
 
-  // ignore: avoid_annotating_with_dynamic
-  static PDTag make(int code, int vrIndex, dynamic creator) {
+  static PDTag make(int code, int vrIndex, Object creator) {
     //if (creator == null && creator == '') {
     if (creator is PCTag) {
       final definition = creator.lookupPDCode(code);
