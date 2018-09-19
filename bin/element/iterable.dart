@@ -89,7 +89,7 @@ void main() {
 int sum(Iterable<int> list) => list.fold(0, (total, v) => total + v);
 
 Iterable increment<V>(Iterable<V> list) =>
-    list.map<dynamic>((v) => (v is int) ? v + 1 : v);
+    list.map<Object>((v) => (v is int) ? v + 1 : v);
 
 Float32List toFloat32(Iterable<double> vList, {bool asView = true}) {
   if (vList is Float32List) return vList;

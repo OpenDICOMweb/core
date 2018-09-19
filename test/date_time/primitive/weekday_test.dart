@@ -23,7 +23,10 @@ const List<List<int>> kWeekdayDiffTable = const <List<int>>[
 
 void main() {
   Server.initialize(
-      name: 'epoch_day_test', minYear: kMinYearLimit, maxYear: kMaxYearLimit, level: Level.info);
+      name: 'epoch_day_test',
+      minYear: kMinYearLimit,
+      maxYear: kMaxYearLimit,
+      level: Level.info);
 
   // These next two values are used throughout the test
   // They can be changed to make the tests longer or shorter
@@ -48,7 +51,9 @@ void main() {
         ..debug('  Next Epoch Day: $nextEpochDay');
       var previousDay = weekdayFromEpochDay(previousEpochDay);
       var nextDay = weekdayFromEpochDay(nextEpochDay);
-      log..debug('  Previous Week Day: $previousDay')..debug('  Next Week Day: $nextDay');
+      log
+        ..debug('  Previous Week Day: $previousDay')
+        ..debug('  Next Week Day: $nextDay');
       expect(0 <= previousDay && previousDay <= 6, true);
       expect(0 <= nextDay && nextDay <= 6, true);
 
@@ -58,7 +63,8 @@ void main() {
         log.debug0('    Year: $startYear');
         for (var m = 1; m <= 12; m++) {
           final lastDay = lastDayOfMonth(y, m);
-          log.debug2('Year: $y, Month: $m, lastDay: $lastDay, Leap: ${isLeapYear(y)}');
+          log.debug2(
+              'Year: $y, Month: $m, lastDay: $lastDay, Leap: ${isLeapYear(y)}');
           for (var d = 1; d <= lastDay; d++) {
             log.debug3('$y-$m-$d');
             // Epoch Day
@@ -70,10 +76,10 @@ void main() {
             expect(previousEpochDay == z - 1, true);
             expect(nextEpochDay == z + 1, true);
 
-            final List<int> date = epochDayToDate(z);
-            expect(y == date[0], true);
-            expect(m == date[1], true);
-            expect(d == date[2], true);
+            final date = EpochDate.fromDay(z);
+            expect(y == date.year, true);
+            expect(m == date.month, true);
+            expect(d == date.day, true);
 
             // Weekday
             final weekday = weekdayFromEpochDay(z);

@@ -90,10 +90,10 @@ void main() {
       final watch = new Stopwatch()..start();
 
       for (var i = startYear; i < endYear; i++) {
-        final List<int> date = epochMicrosecondToDate(i * kMicrosecondsPerDay);
-        final y = date[0];
-        final m = date[1];
-        final d = date[2];
+        final EpochDate date = epochMicrosecondToDate(i * kMicrosecondsPerDay);
+        final y = date.year;
+        final m = date.month;
+        final d = date.day;
         log.debug1('   day: $i,  y: $y, m: $m, d: $d');
         final n = dateToEpochMicroseconds(y, m, d);
         log.debug('  date: $date, i=$i, n=$n, ${i == n}');
@@ -152,11 +152,11 @@ void main() {
     test('Epoch Date Basic Test', () {
       log.debug('Epoch Date Basic Test...');
       final watch = new Stopwatch()..start();
-      for (var i = kMinYear; i < kMaxYear; i++) {
-        final List<int> date = epochMicrosecondToDate(i * kMicrosecondsPerDay);
-        final y = date[0];
-        final m = date[1];
-        final d = date[2];
+      for (var i = global.minYear; i < global.maxYear; i++) {
+        final EpochDate date = epochMicrosecondToDate(i * kMicrosecondsPerDay);
+        final y = date.year;
+        final m = date.month;
+        final d = date.day;
         final n = dateToEpochMicroseconds(y, m, d);
         // log.debug0('$i, $n, ${i == n}');
         expect(i * kMicrosecondsPerDay == n, true);
@@ -213,10 +213,10 @@ void main() {
             previousEpochMicroseconds += kMicrosecondsPerDay;
             nextEpochMicroseconds += kMicrosecondsPerDay;
 
-            final List<int> date = epochMicrosecondToDate(z);
-            expect(y == date[0], true);
-            expect(m == date[1], true);
-            expect(d == date[2], true);
+            final EpochDate date = epochMicrosecondToDate(z);
+            expect(y == date.year, true);
+            expect(m == date.month, true);
+            expect(d == date.day, true);
           }
         }
       }
@@ -268,10 +268,10 @@ void main() {
             assert(previousEpochMicroseconds < z);
             expect(z == previousEpochMicroseconds + kMicrosecondsPerDay, true);
 
-            final List<int> date = epochMicrosecondToDate(z);
-            expect(y == date[0], true);
-            expect(m == date[1], true);
-            expect(d == date[2], true);
+            final EpochDate date = epochMicrosecondToDate(z);
+            expect(y == date.year, true);
+            expect(m == date.month, true);
+            expect(d == date.day, true);
             final wd = weekdayFromEpochDay(z ~/ kMicrosecondsPerDay);
             assert(0 <= wd && wd <= 6);
             final nwd = nextWeekday(previousWeekDay);

@@ -434,8 +434,8 @@ abstract class DatasetElementMixin<V> {
     return result;
   }
 
-  Iterable<dynamic> findAllWhere(bool test(Element e)) {
-    final result = <dynamic>[];
+  Iterable<Object> findAllWhere(bool test(Element e)) {
+    final result = <Object>[];
     for (var e in elements) if (test(e)) result.add(e);
     return result;
   }

@@ -135,13 +135,13 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   int compareTo(DcmDateTime other) => compare(this, other);
 
   /// Returns the integer values of the _year_ component of _this_.
-  int get year => epochDayToDate(epochDay)[0];
+  int get year => EpochDate.fromDay(epochDay).year;
 
   /// Returns the integer values of the _month_ component of _this_.
-  int get month => epochDayToDate(epochDay)[1];
+  int get month => EpochDate.fromDay(epochDay).month;
 
   /// Returns the integer values of the _day_ component of _this_.
-  int get day => epochDayToDate(epochDay)[2];
+  int get day => EpochDate.fromDay(epochDay).day;
 
   /// Returns the integer values of the _hour_ component of _this_.
   int get hour => (microseconds ~/ kMicrosecondsPerHour) % 24;

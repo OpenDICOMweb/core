@@ -73,10 +73,10 @@ abstract class SQ extends Element<Item> {
   @override
   int get total => counter((e) => true);
 
-  List sqMap(dynamic f(Element e)) {
-    final iList = new List<dynamic>(items.length);
+  List sqMap(Object f(Element e)) {
+    final iList = new List<Object>(items.length);
     for (var item in items) {
-      final eList = new List<dynamic>(item.length);
+      final eList = new List<Object>(item.length);
       iList.add(eList);
       for (var e in item)
         if (e is SQ) {

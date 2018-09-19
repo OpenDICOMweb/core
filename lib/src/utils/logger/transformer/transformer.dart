@@ -16,7 +16,7 @@ class Transformer {
 
   Transformer();
 
-  dynamic call(LogRecord record) => record;
+  Object call(LogRecord record) => record;
 
   @override
   String toString() => 'Log Transformer($runtimeType)';

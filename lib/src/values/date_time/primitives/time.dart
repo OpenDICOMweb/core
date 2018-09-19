@@ -23,10 +23,10 @@ int toTimeMicroseconds(int us) => us % kMicrosecondsPerDay;
 int timeToMicroseconds(int h, [int m = 0, int s = 0, int ms = 0, int us = 0]) =>
     (!isValidTime(h, m, s, ms, us))
         ? badTime(h, m, s, ms, us)
-        : internalTimeInMicroseconds(h, m, s, ms, us);
+        : timeInMicroseconds(h, m, s, ms, us);
 
 // *** No Error Checking
-int internalTimeInMicroseconds(int h, int m, int s, int ms, int us) =>
+int timeInMicroseconds(int h, int m, int s, int ms, int us) =>
     kMicrosecondsPerHour * h +
     kMicrosecondsPerMinute * m +
     kMicrosecondsPerSecond * s +
@@ -70,20 +70,17 @@ int microsecondFromMicrosecond(int us) =>
 int fractionFromMicrosecond(int us) =>
     _inRange(us, 0, kMicrosecondsPerDay) ? _fractionFromTimeInUS(us) : null;
 
-typedef dynamic TimeToObject(int h, int m, int s, int ms, int us, {bool asDicom});
+typedef Object TimeToObject(int h, int m, int s, int ms, int us, {bool asDicom});
 
-dynamic microsecondToTime(int time, TimeToObject creator, {bool asDicom = true}) {
-  if (isNotValidTimeMicroseconds(time)) return null;
-  final h = _hourFromTimeInUS(time);
-  final m = _minuteFromTimeInUS(time % kMicrosecondsPerHour);
-  final s = _secondFromTimeInUS(time % kMicrosecondsPerMinute);
-  final ms = _millisecondFromTimeInUS(time % kMicrosecondsPerSecond);
-  final us = _microsecondFromTimeInUS(time % kMicrosecondsPerMillisecond);
-  return (creator != null)
-      ? creator(h, m, s, ms, us, asDicom: asDicom)
-      : _timeInUSToList(h, m, s, ms, us);
+Time microsecondToTime(int timeInUS) {
+  if (isNotValidTimeMicroseconds(timeInUS)) return null;
+  final h = _hourFromTimeInUS(timeInUS);
+  final m = _minuteFromTimeInUS(timeInUS % kMicrosecondsPerHour);
+  final s = _secondFromTimeInUS(timeInUS % kMicrosecondsPerMinute);
+  final ms = _millisecondFromTimeInUS(timeInUS % kMicrosecondsPerSecond);
+  final us = _microsecondFromTimeInUS(timeInUS % kMicrosecondsPerMillisecond);
+  return Time(h, m, s, ms, us);
 }
-
 /// Returns a FThash of microsecond ([us]) that is in the
 /// range: ```0 <= hash <= [kMicrosecondsPerDay]```.
 int hashTimeMicroseconds(int us) => global.hash(us) % kMicrosecondsPerDay;
@@ -96,31 +93,9 @@ Iterable<int> hashTimeMicrosecondsList(List<int> daList) =>
 /// format is 'hhmmss.ffffff'; otherwise the format is ''hh:mm:ss.ffffff'.
 /// If [us] [isNotValidTimeMicroseconds] returns _null_.
 String microsecondToTimeString(int us, {bool asDicom = true}) =>
-    microsecondToTime(toTimeMicroseconds(us), timeToString, asDicom: asDicom);
-
-/// Returns a [String] containing the time. If [asDicom] is _true_ the
-/// result has the format "hhmmss.ffffff"; otherwise the format is
-/// "hh:mm:ss.ffffff".
-String timeToString(int h, int m, int s, int ms, int us, {bool asDicom = true}) {
-  final sb = new StringBuffer()..write(digits2(h));
-  if (!asDicom) sb.write(':');
-  sb.write(digits2(m));
-  if (!asDicom) sb.write(':');
-  sb..write(digits2(s))..write('.')..write(digits3(ms))..write(digits3(us));
-  return sb.toString();
-}
+    microsecondToTime(us % kMicrosecondsPerDay).timeToString(asDicom: asDicom);
 
 // **** Internal Functions ****
-
-List<int> _timeInUSToList(int h, int m, int s, int ms, int us) {
-  final time = new List<int>(5);
-  time[0] = h;
-  time[1] = m;
-  time[2] = s;
-  time[3] = ms;
-  time[4] = us;
-  return time;
-}
 
 bool _inRange(int v, int min, int max) => v != null && v >= min && v <= max;
 

@@ -463,8 +463,11 @@ abstract class DatasetMixin {
     return result;
   }
 
-  Iterable<dynamic> findAllWhere(bool test(Element e)) {
-    final result = <dynamic>[];
+  /// Returns an [Iterable] where each element is either
+  /// an [Element] or recursively an [Iterable].
+  //TODO improve doc
+  Iterable<Object> findAllWhere(bool test(Element e)) {
+    final result = <Object>[];
     for (var e in elements) if (test(e)) result.add(e);
     return result;
   }

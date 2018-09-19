@@ -45,7 +45,7 @@
 /// [_vfBytes] is either a [Uint8List] that must be parsed, or a [List<E>] of
 /// already parsed [values].
 ///
-/// Note: The type of this [List] is dynamic because it can either be a [Uint8List]
+/// Note: The type of this [List] is Object because it can either be a [Uint8List]
 /// that has not been decoded, or a [List<E>] that has been decoded.
 //  Uint8List _vfBytes;
 

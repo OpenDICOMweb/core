@@ -37,12 +37,12 @@ import 'package:core/src/tag.dart';
 /// [ProfileBase] defines the minimum interface that any ODW class
 /// implementing a [Profile] must support.
 abstract class ProfileBase<V> {
-  static const List kEmptyList = <dynamic>[];
+  static const List kEmptyList = <Object>[];
 
   /// **** Element Methods ****
 
   /// The namespace of the Profile. It maps _identifiers_ to _values_.
-  Map<String, dynamic> get namespace;
+  Map<String, Object> get namespace;
 
   /// The [Dataset] that is being [Profile]d.
   Dataset get original;
@@ -217,7 +217,7 @@ abstract class ProfileBase<V> {
 
 abstract class Database {
   // Alternative to [lookup];
-  dynamic operator [](String identifier);
+  Object operator [](String identifier);
 
   // Alternative to [update];
   void operator []=(String identifier, Object value);

@@ -52,11 +52,10 @@ class Indenter extends Object with IndenterMixin implements StringBuffer {
       ..writeAll(objects, separator)
       ..write(']');
 
-  // ignore: avoid_annotating_with_dynamic
-  void _writeKeyValuePair(String key, dynamic value) =>
+  void _writeKeyValuePair(String key, Object value) =>
       sb.writeln('$key : $value');
 
-  void writeMap(Map<String, dynamic> map) {
+  void writeMap(Map<String, Object> map) {
     indent('{');
     map.forEach(_writeKeyValuePair);
     outdent('}');

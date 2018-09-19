@@ -17,10 +17,10 @@ import 'package:core/src/values/date_time/primitives/time.dart';
 // ignore_for_file: public_member_api_docs
 
 /// The minimum Unix Epoch day for this [Global].
-final int kMinDcmDateTimeMicroseconds = kMinYear * kMicrosecondsPerDay;
+final int kMinDcmDateTimeMicroseconds = global.minYear * kMicrosecondsPerDay;
 
 /// The maximum Unix Epoch day for this [Global].
-final int kMaxDcmDateTimeMicroseconds = kMaxYear * kMicrosecondsPerDay;
+final int kMaxDcmDateTimeMicroseconds = global.maxYear * kMicrosecondsPerDay;
 
 /// The total number of Epoch days valid for this [Global].
 final int kDcmDateTimeSpan =
@@ -36,7 +36,7 @@ int dcmDateTimeInMicroseconds(
       ? dateToEpochMicroseconds(y, m, d)
       : badDate(y, m, d);
   final time = (isValidTime(h, mm, s, ms, us))
-      ? internalTimeInMicroseconds(h, mm, s, ms, us)
+      ? timeInMicroseconds(h, mm, s, ms, us)
       : badTime(h, m, d, ms, us);
   // ignore: avoid_returning_null
   if (day == null || time == null) return null;
@@ -49,7 +49,7 @@ bool isValidDateTime(int y,
 
 /// The [Type] of a function that takes a year, month, and date
 /// and converts it to some object, e.g. a Date.
-typedef dynamic DcmDateTimeToObject(
+typedef Object DcmDateTimeToObject(
     int y, int m, int d, int h, int mm, int s, int ms, int us);
 
 /// Returns a hash of microsecond ([us]) that is in the
@@ -87,31 +87,13 @@ int _hashMicroseconds(int us, int hash(int v), [int onError(int n)]) {
 
 String microsecondToDateTimeString(int epochMicrosecond,
     {bool asDicom = true}) {
-  int y, m, d, h, mm, s, ms, us;
-
-  dynamic getDate(int yy, int mm, int dd, {bool asDicom = true}) {
-    y = yy;
-    m = mm;
-    d = dd;
-    return true;
-  }
-
-  dynamic getTime(int hh, int mmmm, int ss, int msms, int usus,
-      {bool asDicom = true}) {
-    h = hh;
-    mm = mmmm;
-    s = ss;
-    ms = msms;
-    us = usus;
-    return true;
-  }
-
   final epochDay = epochMicrosecond ~/ kMicrosecondsPerDay;
-  epochDayToDate(epochDay, creator: getDate, asDicom: asDicom);
-  final time = epochMicrosecond % kMicrosecondsPerDay;
-  microsecondToTime(time, getTime, asDicom: asDicom);
+  final eDate = EpochDate.fromDay(epochDay);
+  final time = microsecondToTime(epochMicrosecond % kMicrosecondsPerDay);
   // TODO: add real time zone
-  final dt = dateTimeString(y, m, d, h, mm, s, ms, us, asDicom: asDicom);
+  final dt = dateTimeString(eDate.year, eDate.month, eDate.day, time.hour,
+      time.minute, time.second, time.millisecond, time.microsecond,
+      asDicom: asDicom);
   return '$dt+0000';
 }
 

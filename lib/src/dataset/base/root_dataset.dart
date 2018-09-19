@@ -14,7 +14,7 @@ import 'package:core/src/dataset/base/ds_bytes.dart';
 import 'package:core/src/dataset/utils/status_report.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity.dart';
-import 'package:core/src/system.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/values.dart';
@@ -169,8 +169,8 @@ abstract class RootDataset extends Dataset {
   }
 
   @override
-  Iterable<dynamic> findAllWhere(bool test(Element e)) {
-    final result = <dynamic>[];
+  Iterable<Object> findAllWhere(bool test(Element e)) {
+    final result = <Object>[];
     for (var e in fmi.elements) if (test(e)) result.add(e);
     for (var e in elements) if (test(e)) result.add(e);
     return result;

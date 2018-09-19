@@ -141,18 +141,18 @@ void main() {
       final date1 = new Date(1980, 43, 12); //bad month
       expect(date1, isNull);
 
-      final date2 = new Date(kMaxYear + 1, 05, 01); //bad year
+      final date2 = new Date(global.maxYear + 1, 05, 01); //bad year
       expect(date2, isNull);
 
-      final date3 = new Date(kMinYear - 1, 05, 01); //bad year
+      final date3 = new Date(global.minYear - 1, 05, 01); //bad year
       expect(date3, isNull);
 
       global.throwOnError = true;
 
-      expect(() => new Date(kMaxYear + 1, 05, 01),
+      expect(() => new Date(global.maxYear + 1, 05, 01),
           throwsA(const TypeMatcher<DateTimeError>())); //bad year
 
-      expect(() => new Date(kMinYear - 1, 05, 01),
+      expect(() => new Date(global.minYear - 1, 05, 01),
           throwsA(const TypeMatcher<DateTimeError>())); //bad year
 
       expect(() => new Date(2004, 10, 32),
@@ -352,7 +352,7 @@ void main() {
   });
 
   test('weekDayName', () {
-    final List date = epochDayToDate(0);
+    final date = EpochDate.fromDay(0);
     log.debug(date);
     //for(var s in goodDcmDateList){
     final date0 = Date.parse(goodDcmDateList[0]);
@@ -368,7 +368,7 @@ void main() {
   test('Hash Random Dates', () {
     final rng = new RNG();
     for (var i = 0; i < 1000; i++) {
-      final eDay = rng.nextInt(kMinYear, kMaxYear);
+      final eDay = rng.nextInt(global.minYear, global.maxYear);
       final date0 = Date.fromEpochDay(eDay);
       log.debug('date0: $date0');
       final hash0 = date0.hash;
@@ -493,7 +493,7 @@ void main() {
   });
 
   test('>', () {
-    for (var y = kMinYear; y < kMaxYear; y++) {
+    for (var y = global.minYear; y < global.maxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           final dt0 = new Date(y, m, d);
@@ -506,7 +506,7 @@ void main() {
   });
 
   test('<', () {
-    for (var y = kMinYear; y < kMaxYear; y++) {
+    for (var y = global.minYear; y < global.maxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           final dt0 = new Date(y, m, d);
@@ -519,7 +519,7 @@ void main() {
   });
 
   test('isAfter', () {
-    for (var y = kMinYear; y < kMaxYear; y++) {
+    for (var y = global.minYear; y < global.maxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           final dt0 = new Date(y, m, d);
@@ -532,7 +532,7 @@ void main() {
   });
 
   test('isBefore', () {
-    for (var y = kMinYear; y < kMaxYear; y++) {
+    for (var y = global.minYear; y < global.maxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           final dt0 = new Date(y, m, d);
@@ -545,7 +545,7 @@ void main() {
   });
 
   test('compareTo', () {
-    for (var y = kMinYear; y < kMaxYear; y++) {
+    for (var y = global.minYear; y < global.maxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           if (d + 1 < lastDayOfMonth(y, m)) {
@@ -607,8 +607,8 @@ void main() {
 
   test('isValidYearInMicroseconds', () {
     global.throwOnError = false;
-    final us = dateToEpochDay(1971, 1, 1);
-    final vym0 = isValidYearInMicroseconds(us);
+    final day = dateToEpochDay(1971, 1, 1);
+    final vym0 = isValidYearInMicroseconds(day * kMicrosecondsPerDay);
     expect(vym0, true);
 
     final vym1 = isValidYearInMicroseconds(kMinYearInMicroseconds);

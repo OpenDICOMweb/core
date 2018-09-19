@@ -19,20 +19,20 @@ class OdwSysInfo {
   static const String author = 'Jim Philbin <jfphilbin@gmail.com>';
 
   static const String homepage = 'https://github.com/OpenDICOMweb/convert.git';
-  static const Map<String, dynamic> environment = const <String, dynamic>{
+  static const Map<String, Object> environment = const <String, Object>{
     'sdk': '^1.24.2'
   };
 
-  static const Map<String, dynamic> packages = const <String, dynamic>{
-    'core': const <String, dynamic>{
+  static const Map<String, Object> packages = const <String, Object>{
+    'core': const <String, Object>{
       'version': '^0.5.6',
       'path': 'C:/odw/sdk/core'
     },
-    'dictionary': const <String, dynamic>{
+    'dictionary': const <String, Object>{
       'version': '^0.5.6',
       'path': 'C:/odw/sdk/dictionary'
     },
-    'common': const <String, dynamic>{
+    'common': const <String, Object>{
       'version': '^0.5.6',
       'path': 'C:/odw/sdk/common'
     }
