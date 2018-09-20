@@ -517,11 +517,11 @@ void main() {
     global.throwOnError = false;
 
     test('getIntList', () {
-      const int16Min = const [kInt16Min];
-      final ss0 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
-      final sh0 = new SHtag(PTag.kPerformedLocation, ['fgh']);
-      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
-      final rootDS0 = new TagRootDataset.empty()..add(ss0)..add(sh0)..add(fl0);
+      const int16Min = [kInt16Min];
+      final ss0 = SStag(PTag.kTagAngleSecondAxis, int16Min);
+      final sh0 = SHtag(PTag.kPerformedLocation, ['fgh']);
+      final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
+      final rootDS0 = TagRootDataset.empty()..add(ss0)..add(sh0)..add(fl0);
 
       //integer type VR
       expect(rootDS0.getIntList(kTagAngleSecondAxis), equals(int16Min));

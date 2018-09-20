@@ -45,7 +45,7 @@ class VFFragments {
   /// Note: The [bulkdata] is contained in fragments 1 to n. Fragment 0
   /// contains the Basic Offset Table.
   Uint8List get bulkdata => _bulkdata ??= () {
-        final v = new Uint8List(lengthInBytes);
+        final v = Uint8List(lengthInBytes);
         var i = 0;
         for (var j = 1; j < fragments.length; j++) {
           if (fragments[j].isNotEmpty) {
@@ -56,7 +56,6 @@ class VFFragments {
         return v;
       }();
   Uint8List _bulkdata;
-
 
   String get info =>
       '$this\n  offsets(${offsets.length}) Bulkdata $lengthInBytes bytes';
@@ -89,14 +88,12 @@ class VFFragments {
       final vfLength = readUint32();
 //      _log.debug('VFF code ${toDcm(code)} length: $vfLength');
       assert(
-          vfLength != kUndefinedLength,
-          'Invalid length: ${toDcm(vfLength)
-      }');
+          vfLength != kUndefinedLength, 'Invalid length: ${toDcm(vfLength)}');
       final startOfVF = rIndex;
       rIndex += vfLength;
       fragments.add(bd.buffer.asUint8List(startOfVF, rIndex - startOfVF));
     }
-    final vfFragments = new VFFragments(fragments);
+    final vfFragments = VFFragments(fragments);
 //    _log.debug('VFFragments: $fragments');
     return vfFragments;
   }

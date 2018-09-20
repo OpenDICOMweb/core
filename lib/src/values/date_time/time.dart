@@ -22,7 +22,7 @@ typedef String OnTimeHashStringError(String s);
 //Enhancement: should implement Comparable, add, subtract
 /// A span of time. Similar to [Duration], but handles DICOM time (TM) values.
 class Time implements Comparable<Time> {
-  static const Time kMidnight = const Time.fromMicroseconds(0);
+  static const Time kMidnight = Time.fromMicroseconds(0);
   static const Time zero = kMidnight;
   static const Time midnight = kMidnight;
 

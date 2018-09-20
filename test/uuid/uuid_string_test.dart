@@ -17,12 +17,12 @@ import 'data.dart';
 const String uuidV1 = '23d57c30-afe7-11e4-ab7d-12e3f512a338';
 const String uuidV4 = '09bb1d8c-4965-4788-94f7-31b151eaba4e';
 
-const List<int> uuidList = const <int>[
+const List<int> uuidList = <int>[
   149, 236, 195, 128, 175, 233, 17, 228, // No reformat
   155, 108, 117, 27, 102, 221, 84, 30
 ];
 
-final Uint8List uuidBytes = new Uint8List.fromList(uuidList);
+final Uint8List uuidBytes = Uint8List.fromList(uuidList);
 
 void main() {
   Server.initialize(name: 'uuid_string_test', level: Level.info);
@@ -58,11 +58,11 @@ void main() {
     ];
     // The data in this test is in data.dart
     test('Uuid Test with seed', () {
-      final uuid0 = new Uuid.seededPseudo();
+      final uuid0 = Uuid.seededPseudo();
       log..debug('seed: ${Uuid.seed}')..debug('Uuid: $uuid0');
       expect(uuid0.asString, equals(s0));
 
-      final uuid1 = new Uuid.seededPseudo();
+      final uuid1 = Uuid.seededPseudo();
       log.debug('Uuid: $uuid1');
       expect(uuid1.asString, equals(s1));
     });
@@ -86,12 +86,12 @@ void main() {
       expect(uuidList != uuidBytes, true);
 
       //accepts valid List
-      var uuid = new Uuid.fromList(uuidList);
+      var uuid = Uuid.fromList(uuidList);
       log.debug('uuidList uuid: $uuid');
       expect(Uuid.isValidString(uuid.asString), true);
 
       //accepts valid Uint8List
-      uuid = new Uuid.fromList(uuidBytes);
+      uuid = Uuid.fromList(uuidBytes);
       expect(Uuid.isValidString(uuid.asString), true);
       expect(uuid.data == uuidBytes, true);
 
@@ -109,13 +109,13 @@ void main() {
     });
 
     test('isValid', () {
-      final uuid0 = new Uuid();
+      final uuid0 = Uuid();
       expect(uuid0.isValid, true);
 
-      final uuid1 = new Uuid.pseudo();
+      final uuid1 = Uuid.pseudo();
       expect(uuid1.isValid, true);
 
-      final uuid2 = new Uuid.seededPseudo();
+      final uuid2 = Uuid.seededPseudo();
       expect(uuid2.isValid, true);
 
       for (var uuid in goodUuidList0) {
@@ -179,11 +179,11 @@ void main() {
     });
 
     test('isValidData', () {
-      const uuidList = const <int>[
+      const uuidList = <int>[
         149, 236, 195, 128, 175, 233, 17, 228, // No reformat
         155, 108, 117, 27, 102, 221, 84, 30
       ];
-      final uInt8List = new Uint8List.fromList(uuidList);
+      final uInt8List = Uint8List.fromList(uuidList);
       //final bytes = uInt8List.buffer.asUint8List();
       log.debug('uInt8List: $uInt8List');
       expect(Uuid.isValidData(uInt8List, 1), true);
@@ -214,7 +214,7 @@ void main() {
     });
 
     test('toUid', () {
-      final bytes = new Uint8List.fromList(uuidList);
+      final bytes = Uint8List.fromList(uuidList);
       final toUid0 = Uuid.toUid(bytes);
       log.debug('toUid0: $toUid0');
       expect(toUid0 == '2.25.121603237333826379183460680347508878182', true);

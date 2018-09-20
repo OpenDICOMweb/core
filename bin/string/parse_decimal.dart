@@ -12,7 +12,7 @@ import 'package:core/server.dart';
 void main() {
   Server.initialize(name: 'string testing', level: Level.debug);
 
-  const goodDecimalStrings = const <String>[
+  const goodDecimalStrings = <String>[
     '567',
     ' 567',
     '567 ',

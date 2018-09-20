@@ -15,19 +15,16 @@ import 'package:core/src/tag/private/pd_tag_definitions.dart';
 
 // '([\w\.\_\d]+)': const (\<[\w\,\s]+\>)(\{[\w\s\d:\.\,]+\})\,
 
-const Map<int, PDTagDefinition> kEmptyPDTagDefinition =
-    const <int, PDTagDefinition>{};
+const Map<int, PDTagDefinition> kEmptyPDTagDefinition = {};
 
-const Map<int, PDTagDefinition> Uid_1_2_840_113681 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Uid_1_2_840_113681 = {
   0x00191000: PDTagDefinition.k1,
   0x00191100: PDTagDefinition.k2,
   0x00191200: PDTagDefinition.k3,
   0x00191300: PDTagDefinition.k4
 };
 
-const Map<int, PDTagDefinition> Uid_1_2_840_113708_794_1_1_2_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Uid_1_2_840_113708_794_1_1_2_0 = {
   0x00871000: PDTagDefinition.k5,
   0x00872000: PDTagDefinition.k6,
   0x00875000: PDTagDefinition.k7,
@@ -35,7 +32,7 @@ const Map<int, PDTagDefinition> Uid_1_2_840_113708_794_1_1_2_0 =
   0x00874000: PDTagDefinition.k4452
 };
 
-const Map<int, PDTagDefinition> ACUSON = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ACUSON = {
   0x00090000: PDTagDefinition.k8,
   0x00090100: PDTagDefinition.k9,
   0x00090200: PDTagDefinition.k10,
@@ -60,7 +57,7 @@ const Map<int, PDTagDefinition> ACUSON = const <int, PDTagDefinition>{
   0x00091500: PDTagDefinition.k29
 };
 
-const Map<int, PDTagDefinition> AEGIS_DICOM_2_00 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AEGIS_DICOM_2_00 = {
   0x00030000: PDTagDefinition.k30,
   0x00050000: PDTagDefinition.k31,
   0x00090000: PDTagDefinition.k32,
@@ -69,7 +66,7 @@ const Map<int, PDTagDefinition> AEGIS_DICOM_2_00 = const <int, PDTagDefinition>{
   0x13690000: PDTagDefinition.k35
 };
 
-const Map<int, PDTagDefinition> AGFA = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AGFA = {
   0x00091000: PDTagDefinition.k36,
   0x00091100: PDTagDefinition.k37,
   0x00091300: PDTagDefinition.k38,
@@ -94,14 +91,14 @@ const Map<int, PDTagDefinition> AGFA = const <int, PDTagDefinition>{
   0x00198200: PDTagDefinition.k2770,
   0x00199300: PDTagDefinition.k2771
 };
-const Map<int, PDTagDefinition> CAMTRONICS_IP = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> CAMTRONICS_IP = {
   0x00291000: PDTagDefinition.k41,
   0x00292000: PDTagDefinition.k42,
   0x00293000: PDTagDefinition.k43,
   0x00294000: PDTagDefinition.k44
 };
 
-const Map<int, PDTagDefinition> CAMTRONICS = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> CAMTRONICS = {
   0x00291000: PDTagDefinition.k45,
   0x00292000: PDTagDefinition.k46,
   0x00295000: PDTagDefinition.k47,
@@ -111,7 +108,7 @@ const Map<int, PDTagDefinition> CAMTRONICS = const <int, PDTagDefinition>{
   0x00299000: PDTagDefinition.k51
 };
 
-const Map<int, PDTagDefinition> CARDIO_D_R__1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> CARDIO_D_R__1_0 = {
   0x00090000: PDTagDefinition.k52,
   0x00090100: PDTagDefinition.k53,
   0x00094000: PDTagDefinition.k54,
@@ -132,7 +129,7 @@ const Map<int, PDTagDefinition> CARDIO_D_R__1_0 = const <int, PDTagDefinition>{
   0x0029ad00: PDTagDefinition.k10042
 };
 
-const Map<int, PDTagDefinition> MRSC = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MRSC = {
   0x0119150200: PDTagDefinition.k64,
   0x0119112600: PDTagDefinition.k274,
   0x0119113000: PDTagDefinition.k311,
@@ -400,13 +397,13 @@ const Map<int, PDTagDefinition> MRSC = const <int, PDTagDefinition>{
   0x0119ff00: PDTagDefinition.k10974
 };
 
-const Map<int, PDTagDefinition> CMR42_CIRCLECVI = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> CMR42_CIRCLECVI = {
   0x0025101000: PDTagDefinition.k69,
   0x0025102000: PDTagDefinition.k70,
   0x0025103000: PDTagDefinition.k71
 };
 
-const Map<int, PDTagDefinition> DCMTK_ANONYMIZER = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> DCMTK_ANONYMIZER = {
   0x00090000: PDTagDefinition.k72,
   0x00091000: PDTagDefinition.k73,
   0x00092000: PDTagDefinition.k74,
@@ -415,7 +412,7 @@ const Map<int, PDTagDefinition> DCMTK_ANONYMIZER = const <int, PDTagDefinition>{
   0x00095000: PDTagDefinition.k77
 };
 
-const Map<int, PDTagDefinition> DIDI_TO_PCR_1_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> DIDI_TO_PCR_1_1 = {
   0x00192200: PDTagDefinition.k78,
   0x00192300: PDTagDefinition.k79,
   0x00192400: PDTagDefinition.k80,
@@ -460,24 +457,24 @@ const Map<int, PDTagDefinition> DIDI_TO_PCR_1_1 = const <int, PDTagDefinition>{
   0x00198f00: PDTagDefinition.k6567
 };
 
-const Map<int, PDTagDefinition> DIGISCAN_IMAGE = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> DIGISCAN_IMAGE = {
   0x00293100: PDTagDefinition.k113,
   0x00293200: PDTagDefinition.k114,
   0x00293300: PDTagDefinition.k115,
   0x00293400: PDTagDefinition.k116
 };
 
-const Map<int, PDTagDefinition> DLX_EXAMS_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> DLX_EXAMS_01 = {
   0x00150100: PDTagDefinition.k117,
   0x00150200: PDTagDefinition.k118,
   0x00150300: PDTagDefinition.k119
 };
 
-const Map<int, PDTagDefinition> DLX_PATNT_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> DLX_PATNT_01 = {
   0x00110100: PDTagDefinition.k120
 };
 
-const Map<int, PDTagDefinition> DLX_SERIE_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> DLX_SERIE_01 = {
   0x00190100: PDTagDefinition.k121,
   0x00190200: PDTagDefinition.k122,
   0x00190300: PDTagDefinition.k123,
@@ -513,7 +510,7 @@ const Map<int, PDTagDefinition> DLX_SERIE_01 = const <int, PDTagDefinition>{
   0x00192800: PDTagDefinition.k3724
 };
 
-const Map<int, PDTagDefinition> ELSCINT1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ELSCINT1 = {
   0x00e10100: PDTagDefinition.k2945,
   0x00e11400: PDTagDefinition.k2949,
   0x00e12200: PDTagDefinition.k2952,
@@ -727,7 +724,7 @@ const Map<int, PDTagDefinition> ELSCINT1 = const <int, PDTagDefinition>{
   0x01e1c200: PDTagDefinition.k10975
 };
 
-const Map<int, PDTagDefinition> FDMS_1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> FDMS_1_0 = {
   0x00090c00: PDTagDefinition.k10308,
   0x0009f000: PDTagDefinition.k10309,
   0x00199000: PDTagDefinition.k163,
@@ -842,7 +839,7 @@ const Map<int, PDTagDefinition> FDMS_1_0 = const <int, PDTagDefinition>{
   0x00214000: PDTagDefinition.k10514
 };
 
-const Map<int, PDTagDefinition> GEMS_PARM_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_PARM_01 = {
   0x0043a800: PDTagDefinition.k183,
   0x00430100: PDTagDefinition.k714,
   0x00430200: PDTagDefinition.k715,
@@ -987,12 +984,9 @@ const Map<int, PDTagDefinition> GEMS_PARM_01 = const <int, PDTagDefinition>{
   0x0043a700: PDTagDefinition.k10622
 };
 
-const Map<int, PDTagDefinition> FFP_DATA = const <int, PDTagDefinition>{
-  0x00090100: PDTagDefinition.k258
-};
+const Map<int, PDTagDefinition> FFP_DATA = {0x00090100: PDTagDefinition.k258};
 
-const Map<int, PDTagDefinition> GE_____From_Adantage_Review_CS =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GE_____From_Adantage_Review_CS = {
   0x00193000: PDTagDefinition.k259,
   0x00194000: PDTagDefinition.k260,
   0x00195000: PDTagDefinition.k261,
@@ -1001,7 +995,7 @@ const Map<int, PDTagDefinition> GE_____From_Adantage_Review_CS =
   0x00199000: PDTagDefinition.k264
 };
 
-const Map<int, PDTagDefinition> GEMS_ACQU_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_ACQU_01 = {
   0x00092400: PDTagDefinition.k265,
   0x00092500: PDTagDefinition.k266,
   0x00093e00: PDTagDefinition.k267,
@@ -1189,8 +1183,7 @@ const Map<int, PDTagDefinition> GEMS_ACQU_01 = const <int, PDTagDefinition>{
   0x0019dd00: PDTagDefinition.k10489
 };
 
-const Map<int, PDTagDefinition> GEMS_ACRQA_1_0_BLOCK1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_ACRQA_1_0_BLOCK1 = {
   0x00230000: PDTagDefinition.k437,
   0x00231000: PDTagDefinition.k438,
   0x00232000: PDTagDefinition.k439,
@@ -1203,8 +1196,7 @@ const Map<int, PDTagDefinition> GEMS_ACRQA_1_0_BLOCK1 =
   0x00239000: PDTagDefinition.k446
 };
 
-const Map<int, PDTagDefinition> GEMS_ACRQA_1_0_BLOCK2 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_ACRQA_1_0_BLOCK2 = {
   0x00230000: PDTagDefinition.k447,
   0x00231000: PDTagDefinition.k448,
   0x00232000: PDTagDefinition.k449,
@@ -1217,8 +1209,7 @@ const Map<int, PDTagDefinition> GEMS_ACRQA_1_0_BLOCK2 =
   0x00239000: PDTagDefinition.k456
 };
 
-const Map<int, PDTagDefinition> GEMS_ACRQA_1_0_BLOCK3 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_ACRQA_1_0_BLOCK3 = {
   0x00230000: PDTagDefinition.k457,
   0x00231000: PDTagDefinition.k458,
   0x00232000: PDTagDefinition.k459,
@@ -1231,8 +1222,7 @@ const Map<int, PDTagDefinition> GEMS_ACRQA_1_0_BLOCK3 =
   0x00239000: PDTagDefinition.k466
 };
 
-const Map<int, PDTagDefinition> GEMS_ACRQA_2_0_BLOCK1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_ACRQA_2_0_BLOCK1 = {
   0x00230000: PDTagDefinition.k467,
   0x00231000: PDTagDefinition.k468,
   0x00232000: PDTagDefinition.k469,
@@ -1245,8 +1235,7 @@ const Map<int, PDTagDefinition> GEMS_ACRQA_2_0_BLOCK1 =
   0x00239000: PDTagDefinition.k482
 };
 
-const Map<int, PDTagDefinition> GEMS_ACRQA_2_0_BLOCK2 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_ACRQA_2_0_BLOCK2 = {
   0x00230000: PDTagDefinition.k483,
   0x00231000: PDTagDefinition.k484,
   0x00232000: PDTagDefinition.k485,
@@ -1259,8 +1248,7 @@ const Map<int, PDTagDefinition> GEMS_ACRQA_2_0_BLOCK2 =
   0x00239000: PDTagDefinition.k492
 };
 
-const Map<int, PDTagDefinition> GEMS_ACRQA_2_0_BLOCK3 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_ACRQA_2_0_BLOCK3 = {
   0x00230000: PDTagDefinition.k493,
   0x00231000: PDTagDefinition.k494,
   0x00232000: PDTagDefinition.k495,
@@ -1275,7 +1263,7 @@ const Map<int, PDTagDefinition> GEMS_ACRQA_2_0_BLOCK3 =
   0x0023ff00: PDTagDefinition.k504
 };
 
-const Map<int, PDTagDefinition> GEMS_ADWSoft_3D1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_ADWSoft_3D1 = {
   0x00470100: PDTagDefinition.k505,
   0x00475000: PDTagDefinition.k506,
   0x00475100: PDTagDefinition.k507,
@@ -1329,17 +1317,17 @@ const Map<int, PDTagDefinition> GEMS_ADWSoft_3D1 = const <int, PDTagDefinition>{
   0x0047d400: PDTagDefinition.k3987,
   0x0047d500: PDTagDefinition.k3988
 };
-const Map<int, PDTagDefinition> GEMS_ADWSoft_DPO = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_ADWSoft_DPO = {
   0x00398000: PDTagDefinition.k557,
   0x00398500: PDTagDefinition.k558,
   0x00399000: PDTagDefinition.k559,
   0x00399500: PDTagDefinition.k560,
   0x0039aa00: PDTagDefinition.k3857
 };
-const Map<int, PDTagDefinition> GEMS_CTHD_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_CTHD_01 = {
   0x00330200: PDTagDefinition.k562
 };
-const Map<int, PDTagDefinition> GEMS_DRS_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_DRS_1 = {
   0x00371000: PDTagDefinition.k563,
   0x00372000: PDTagDefinition.k564,
   0x00374000: PDTagDefinition.k565,
@@ -1347,7 +1335,7 @@ const Map<int, PDTagDefinition> GEMS_DRS_1 = const <int, PDTagDefinition>{
   0x00375000: PDTagDefinition.k567,
   0x00376000: PDTagDefinition.k568
 };
-const Map<int, PDTagDefinition> GEMS_GENIE_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_GENIE_1 = {
   0x00091000: PDTagDefinition.k569,
   0x00091100: PDTagDefinition.k570,
   0x00091200: PDTagDefinition.k571,
@@ -1635,11 +1623,11 @@ const Map<int, PDTagDefinition> GEMS_GENIE_1 = const <int, PDTagDefinition>{
   0x50015f00: PDTagDefinition.k4243,
   0x50016000: PDTagDefinition.k4244
 };
-const Map<int, PDTagDefinition> GEMS_GNHD_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_GNHD_01 = {
   0x00330100: PDTagDefinition.k648,
   0x00330200: PDTagDefinition.k649
 };
-const Map<int, PDTagDefinition> GEMS_IDEN_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_IDEN_01 = {
   0x0009e800: PDTagDefinition.k651,
   0x00090200: PDTagDefinition.k652,
   0x00090400: PDTagDefinition.k653,
@@ -1657,7 +1645,7 @@ const Map<int, PDTagDefinition> GEMS_IDEN_01 = const <int, PDTagDefinition>{
   0x0009e900: PDTagDefinition.k665,
   0x00090100: PDTagDefinition.k10310
 };
-const Map<int, PDTagDefinition> GEMS_IMAG_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_IMAG_01 = {
   0x00270600: PDTagDefinition.k666,
   0x00271000: PDTagDefinition.k667,
   0x00271d00: PDTagDefinition.k668,
@@ -1695,7 +1683,7 @@ const Map<int, PDTagDefinition> GEMS_IMAG_01 = const <int, PDTagDefinition>{
   0x00271c00: PDTagDefinition.k10525,
   0x00274400: PDTagDefinition.k10526
 };
-const Map<int, PDTagDefinition> GEMS_IMPS_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_IMPS_01 = {
   0x00290400: PDTagDefinition.k700,
   0x00290500: PDTagDefinition.k701,
   0x00290700: PDTagDefinition.k702,
@@ -1712,7 +1700,7 @@ const Map<int, PDTagDefinition> GEMS_IMPS_01 = const <int, PDTagDefinition>{
   0x00290600: PDTagDefinition.k10533,
   0x00290a00: PDTagDefinition.k10534
 };
-const Map<int, PDTagDefinition> GEMS_RELA_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_RELA_01 = {
   0x00211500: PDTagDefinition.k762,
   0x00211600: PDTagDefinition.k763,
   0x00214e00: PDTagDefinition.k764,
@@ -1755,7 +1743,7 @@ const Map<int, PDTagDefinition> GEMS_RELA_01 = const <int, PDTagDefinition>{
   0x00219200: PDTagDefinition.k10518
 };
 
-const Map<int, PDTagDefinition> SIEMENS_RA_GEN = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_RA_GEN = {
   0x00195200: PDTagDefinition.k767,
   0x00112000: PDTagDefinition.k1762,
   0x00112500: PDTagDefinition.k1763,
@@ -1845,7 +1833,7 @@ const Map<int, PDTagDefinition> SIEMENS_RA_GEN = const <int, PDTagDefinition>{
   0x00214000: PDTagDefinition.k1847
 };
 
-const Map<int, PDTagDefinition> GEMS_SENO_02 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_SENO_02 = {
   0x00450400: PDTagDefinition.k819,
   0x00450600: PDTagDefinition.k820,
   0x00450900: PDTagDefinition.k821,
@@ -1911,13 +1899,12 @@ const Map<int, PDTagDefinition> GEMS_SENO_02 = const <int, PDTagDefinition>{
   0x0045a800: PDTagDefinition.k3941
 };
 
-const Map<int, PDTagDefinition> GEMS_YMHD_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_YMHD_01 = {
   0x00330500: PDTagDefinition.k854,
   0x00330600: PDTagDefinition.k855
 };
 
-const Map<int, PDTagDefinition> GE_GENESIS_REV3_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GE_GENESIS_REV3_0 = {
   0x00193900: PDTagDefinition.k856,
   0x00198f00: PDTagDefinition.k876,
   0x00199c00: PDTagDefinition.k877,
@@ -1935,7 +1922,7 @@ const Map<int, PDTagDefinition> GE_GENESIS_REV3_0 =
   0x00432700: PDTagDefinition.k889
 };
 
-const Map<int, PDTagDefinition> SVISION = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SVISION = {
   0x00197800: PDTagDefinition.k857,
   0x00197900: PDTagDefinition.k927,
   0x00198000: PDTagDefinition.k1318,
@@ -2025,7 +2012,7 @@ const Map<int, PDTagDefinition> SVISION = const <int, PDTagDefinition>{
   0x00290400: PDTagDefinition.k5535,
   0x00290500: PDTagDefinition.k5536
 };
-const Map<int, PDTagDefinition> GEMS_STDY_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_STDY_01 = {
   0x00230100: PDTagDefinition.k860,
   0x00230200: PDTagDefinition.k861,
   0x00231000: PDTagDefinition.k862,
@@ -2035,7 +2022,7 @@ const Map<int, PDTagDefinition> GEMS_STDY_01 = const <int, PDTagDefinition>{
   0x00237d00: PDTagDefinition.k866,
   0x00238000: PDTagDefinition.k10523
 };
-const Map<int, PDTagDefinition> GEMS_SERS_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_SERS_01 = {
   0x00250600: PDTagDefinition.k867,
   0x00250700: PDTagDefinition.k868,
   0x00251000: PDTagDefinition.k869,
@@ -2048,8 +2035,7 @@ const Map<int, PDTagDefinition> GEMS_SERS_01 = const <int, PDTagDefinition>{
   0x00251b00: PDTagDefinition.k3797
 };
 
-const Map<int, PDTagDefinition> INTELERAD_MEDICAL_SYSTEMS =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> INTELERAD_MEDICAL_SYSTEMS = {
   0x00290100: PDTagDefinition.k890,
   0x00290200: PDTagDefinition.k891,
   0x00290300: PDTagDefinition.k892,
@@ -2081,7 +2067,7 @@ const Map<int, PDTagDefinition> INTELERAD_MEDICAL_SYSTEMS =
   0x3f030400: PDTagDefinition.k5580
 };
 
-const Map<int, PDTagDefinition> INTEGRIS_1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> INTEGRIS_1_0 = {
   0x00412000: PDTagDefinition.k910,
   0x00413000: PDTagDefinition.k911,
   0x00414000: PDTagDefinition.k912,
@@ -2095,28 +2081,26 @@ const Map<int, PDTagDefinition> INTEGRIS_1_0 = const <int, PDTagDefinition>{
   0x00290800: PDTagDefinition.k920
 };
 
-const Map<int, PDTagDefinition> ISG_shadow = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ISG_shadow = {
   0x00297000: PDTagDefinition.k921,
   0x00298000: PDTagDefinition.k922,
   0x00299000: PDTagDefinition.k923
 };
 
-const Map<int, PDTagDefinition> ISI = const <int, PDTagDefinition>{
-  0x00090100: PDTagDefinition.k924
+const Map<int, PDTagDefinition> ISI = {0x00090100: PDTagDefinition.k924};
+
+const Map<int, PDTagDefinition> MERGE_TECHNOLOGIES__INC_ = {
+  0x00090000: PDTagDefinition.k925
 };
 
-const Map<int, PDTagDefinition> MERGE_TECHNOLOGIES__INC_ =
-    const <int, PDTagDefinition>{0x00090000: PDTagDefinition.k925};
-
-const Map<int, PDTagDefinition> OCULUS_Optikgeraete_GmbH =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> OCULUS_Optikgeraete_GmbH = {
   0x0029101000: PDTagDefinition.k926,
   0x0029101200: PDTagDefinition.k928,
   0x0029102000: PDTagDefinition.k929,
   0x0029102200: PDTagDefinition.k930
 };
 
-const Map<int, PDTagDefinition> PAPYRUS_3_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PAPYRUS_3_0 = {
   0x00410000: PDTagDefinition.k931,
   0x00411000: PDTagDefinition.k932,
   0x00411100: PDTagDefinition.k933,
@@ -2133,7 +2117,7 @@ const Map<int, PDTagDefinition> PAPYRUS_3_0 = const <int, PDTagDefinition>{
   0x00415000: PDTagDefinition.k944
 };
 
-const Map<int, PDTagDefinition> PAPYRUS = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PAPYRUS = {
   0x00090000: PDTagDefinition.k945,
   0x00091000: PDTagDefinition.k946,
   0x00091800: PDTagDefinition.k947,
@@ -2159,8 +2143,7 @@ const Map<int, PDTagDefinition> PAPYRUS = const <int, PDTagDefinition>{
   0x0041b300: PDTagDefinition.k967
 };
 
-const Map<int, PDTagDefinition> Philips_Imaging_DD_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_Imaging_DD_001 = {
   0x20011700: PDTagDefinition.k968,
   0x20011800: PDTagDefinition.k969,
   0x20013f00: PDTagDefinition.k970,
@@ -2284,8 +2267,7 @@ const Map<int, PDTagDefinition> Philips_Imaging_DD_001 =
   0x2001f200: PDTagDefinition.k11051
 };
 
-const Map<int, PDTagDefinition> PHILIPS_IMAGING_DD_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PHILIPS_IMAGING_DD_001 = {
   0x20010100: PDTagDefinition.k972,
   0x20010200: PDTagDefinition.k973,
   0x20010300: PDTagDefinition.k974,
@@ -2409,8 +2391,7 @@ const Map<int, PDTagDefinition> PHILIPS_IMAGING_DD_001 =
   0x2001f200: PDTagDefinition.k6931
 };
 
-const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_001 = {
   0x20050500: PDTagDefinition.k1013,
   0x20051e00: PDTagDefinition.k1014,
   0x20051f00: PDTagDefinition.k1015,
@@ -2578,8 +2559,7 @@ const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_001 =
   0x2005b100: PDTagDefinition.k11055,
   0x2005b200: PDTagDefinition.k11056
 };
-const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_005 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_005 = {
   0x20050200: PDTagDefinition.k1023,
   0x20050000: PDTagDefinition.k6967,
   0x20050100: PDTagDefinition.k6972,
@@ -2675,8 +2655,7 @@ const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_005 =
   0x20059100: PDTagDefinition.k7416
 };
 
-const Map<int, PDTagDefinition> PHILIPS_MR_IMAGING_DD_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PHILIPS_MR_IMAGING_DD_001 = {
   0x20050500: PDTagDefinition.k1024,
   0x20051e00: PDTagDefinition.k1025,
   0x20051f00: PDTagDefinition.k1026,
@@ -2812,14 +2791,15 @@ const Map<int, PDTagDefinition> PHILIPS_MR_IMAGING_DD_001 =
   0x2005c000: PDTagDefinition.k7463
 };
 
-const Map<int, PDTagDefinition> PHILIPS_MR_R5_5_PART =
-    const <int, PDTagDefinition>{0x0019100000: PDTagDefinition.k1036};
+const Map<int, PDTagDefinition> PHILIPS_MR_R5_5_PART = {
+  0x0019100000: PDTagDefinition.k1036
+};
 
-const Map<int, PDTagDefinition> PHILIPS_MR_R5_6_PART =
-    const <int, PDTagDefinition>{0x0019100000: PDTagDefinition.k1037};
+const Map<int, PDTagDefinition> PHILIPS_MR_R5_6_PART = {
+  0x0019100000: PDTagDefinition.k1037
+};
 
-const Map<int, PDTagDefinition> PHILIPS_MR_SPECTRO_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PHILIPS_MR_SPECTRO_1 = {
   0x00190100: PDTagDefinition.k1038,
   0x00190200: PDTagDefinition.k1039,
   0x00190300: PDTagDefinition.k1040,
@@ -2872,11 +2852,11 @@ const Map<int, PDTagDefinition> PHILIPS_MR_SPECTRO_1 =
   0x00198000: PDTagDefinition.k1087
 };
 
-const Map<int, PDTagDefinition> PHILIPS_MR = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PHILIPS_MR = {
   0x00091000: PDTagDefinition.k1088,
   0x00091200: PDTagDefinition.k1089
 };
-const Map<int, PDTagDefinition> PHILIPS_MR_LAST = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PHILIPS_MR_LAST = {
   0x00190900: PDTagDefinition.k1090,
   0x00190e00: PDTagDefinition.k1091,
   0x0019b100: PDTagDefinition.k1092,
@@ -2933,7 +2913,7 @@ const Map<int, PDTagDefinition> PHILIPS_MR_LAST = const <int, PDTagDefinition>{
   0x00410900: PDTagDefinition.k6720
 };
 
-const Map<int, PDTagDefinition> PHILIPS_MR_PART = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PHILIPS_MR_PART = {
   0x0019100000: PDTagDefinition.k1138,
   0x0019100500: PDTagDefinition.k1139,
   0x0019100600: PDTagDefinition.k1140,
@@ -3101,15 +3081,14 @@ const Map<int, PDTagDefinition> PHILIPS_MR_PART = const <int, PDTagDefinition>{
   0x0029105300: PDTagDefinition.k6677
 };
 
-const Map<int, PDTagDefinition> PHILIPS_MR_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PHILIPS_MR_1 = {
   0x00191100: PDTagDefinition.k1236,
   0x00191200: PDTagDefinition.k1237,
   0x00210100: PDTagDefinition.k1238,
   0x00210200: PDTagDefinition.k1239
 };
 
-const Map<int, PDTagDefinition> Picker_NM_Private_Group =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Picker_NM_Private_Group = {
   0x70010100: PDTagDefinition.k1240,
   0x70010200: PDTagDefinition.k1241,
   0x70010300: PDTagDefinition.k7879,
@@ -3128,8 +3107,7 @@ const Map<int, PDTagDefinition> Picker_NM_Private_Group =
   0x70011700: PDTagDefinition.k7892
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CM_VA0__ACQU =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CM_VA0__ACQU = {
   0x00191000: PDTagDefinition.k1242,
   0x00191100: PDTagDefinition.k1243,
   0x00191200: PDTagDefinition.k1244,
@@ -3137,8 +3115,7 @@ const Map<int, PDTagDefinition> SIEMENS_CM_VA0__ACQU =
   0x00191400: PDTagDefinition.k1246
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CM_VA0__CMS =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CM_VA0__CMS = {
   0x00090000: PDTagDefinition.k1247,
   0x00091000: PDTagDefinition.k1248,
   0x00091200: PDTagDefinition.k1249,
@@ -3211,8 +3188,7 @@ const Map<int, PDTagDefinition> SIEMENS_CM_VA0__CMS =
   0x7fe10000: PDTagDefinition.k1314,
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CM_VA0__LAB =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CM_VA0__LAB = {
   0x00091000: PDTagDefinition.k1315,
   0x00091100: PDTagDefinition.k1316,
   0x00091200: PDTagDefinition.k1317,
@@ -3222,15 +3198,13 @@ const Map<int, PDTagDefinition> SIEMENS_CM_VA0__LAB =
   0x00091600: PDTagDefinition.k1322,
   0x00092000: PDTagDefinition.k1323
 };
-const Map<int, PDTagDefinition> SIEMENS_CSA_NON_IMAGE =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CSA_NON_IMAGE = {
   0x00291000: PDTagDefinition.k1324,
   0x7fe11000: PDTagDefinition.k11163,
   0x00290800: PDTagDefinition.k1368,
   0x00290900: PDTagDefinition.k1369
 };
-const Map<int, PDTagDefinition> SIEMENS_CT_VA0__COAD =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CT_VA0__COAD = {
   0x00191000: PDTagDefinition.k1326,
   0x00191100: PDTagDefinition.k1327,
   0x00192000: PDTagDefinition.k1328,
@@ -3282,8 +3256,7 @@ const Map<int, PDTagDefinition> SIEMENS_CT_VA0__COAD =
   0x00199000: PDTagDefinition.k10504
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CSA_HEADER =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CSA_HEADER = {
   0x00290800: PDTagDefinition.k1362,
   0x00290900: PDTagDefinition.k1363,
   0x00291000: PDTagDefinition.k1364,
@@ -3292,8 +3265,7 @@ const Map<int, PDTagDefinition> SIEMENS_CSA_HEADER =
   0x00292000: PDTagDefinition.k1367
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CT_VA0__GEN =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CT_VA0__GEN = {
   0x00191000: PDTagDefinition.k1378,
   0x00191100: PDTagDefinition.k1379,
   0x00192000: PDTagDefinition.k1380,
@@ -3345,8 +3317,7 @@ const Map<int, PDTagDefinition> SIEMENS_CT_VA0__GEN =
   0x0021a700: PDTagDefinition.k1426
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CT_VA0__IDE =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CT_VA0__IDE = {
   0x00091000: PDTagDefinition.k1427,
   0x00093000: PDTagDefinition.k1428,
   0x00093100: PDTagDefinition.k1429,
@@ -3357,18 +3328,15 @@ const Map<int, PDTagDefinition> SIEMENS_CT_VA0__IDE =
   0x00095000: PDTagDefinition.k1434,
   0x00095100: PDTagDefinition.k1435
 };
-const Map<int, PDTagDefinition> SIEMENS_CT_VA0__ORI =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CT_VA0__ORI = {
   0x00092000: PDTagDefinition.k1436,
   0x00093000: PDTagDefinition.k1437
 };
-const Map<int, PDTagDefinition> SIEMENS_CT_VA0__OST =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CT_VA0__OST = {
   0x60210000: PDTagDefinition.k1438,
   0x60211000: PDTagDefinition.k1439
 };
-const Map<int, PDTagDefinition> SIEMENS_CT_VA0__RAW =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CT_VA0__RAW = {
   0x00211000: PDTagDefinition.k1440,
   0x00212000: PDTagDefinition.k1441,
   0x00213000: PDTagDefinition.k1442,
@@ -3379,11 +3347,11 @@ const Map<int, PDTagDefinition> SIEMENS_CT_VA0__RAW =
   0x00214400: PDTagDefinition.k1447,
   0x00215000: PDTagDefinition.k1448
 };
-const Map<int, PDTagDefinition> SIEMENS_DICOM = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_DICOM = {
   0x00091000: PDTagDefinition.k1449,
   0x00091200: PDTagDefinition.k1450
 };
-const Map<int, PDTagDefinition> SIEMENS_DLR_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_DLR_01 = {
   0x00191000: PDTagDefinition.k1451,
   0x00191100: PDTagDefinition.k1452,
   0x00191500: PDTagDefinition.k1453,
@@ -3430,7 +3398,7 @@ const Map<int, PDTagDefinition> SIEMENS_DLR_01 = const <int, PDTagDefinition>{
   0x00413100: PDTagDefinition.k1494
 };
 
-const Map<int, PDTagDefinition> SIEMENS_ISI = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_ISI = {
   0x00030800: PDTagDefinition.k1495,
   0x00031100: PDTagDefinition.k1496,
   0x00031200: PDTagDefinition.k1497,
@@ -3472,8 +3440,7 @@ const Map<int, PDTagDefinition> SIEMENS_ISI = const <int, PDTagDefinition>{
   0x4009e100: PDTagDefinition.k1533,
   0x4009e300: PDTagDefinition.k1534
 };
-const Map<int, PDTagDefinition> SIEMENS_MED_DISPLAY =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_DISPLAY = {
   0x00290400: PDTagDefinition.k1535,
   0x00291000: PDTagDefinition.k1536,
   0x00291100: PDTagDefinition.k1537,
@@ -3489,7 +3456,7 @@ const Map<int, PDTagDefinition> SIEMENS_MED_DISPLAY =
   0x0029c100: PDTagDefinition.k1547,
   0x00298000: PDTagDefinition.k8497
 };
-const Map<int, PDTagDefinition> SIEMENS_MED_HG = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_HG = {
   0x00291000: PDTagDefinition.k1548,
   0x00291500: PDTagDefinition.k1549,
   0x00292000: PDTagDefinition.k1550,
@@ -3499,7 +3466,7 @@ const Map<int, PDTagDefinition> SIEMENS_MED_HG = const <int, PDTagDefinition>{
   0x00296000: PDTagDefinition.k1554,
   0x00297000: PDTagDefinition.k1555
 };
-const Map<int, PDTagDefinition> SIEMENS_MED_MG = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_MG = {
   0x00291000: PDTagDefinition.k1556,
   0x00291500: PDTagDefinition.k1557,
   0x00292000: PDTagDefinition.k1558,
@@ -3509,7 +3476,7 @@ const Map<int, PDTagDefinition> SIEMENS_MED_MG = const <int, PDTagDefinition>{
   0x00296000: PDTagDefinition.k1562,
   0x00297000: PDTagDefinition.k1563
 };
-const Map<int, PDTagDefinition> SIEMENS_MED = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED = {
   0x00091000: PDTagDefinition.k1564,
   0x00093000: PDTagDefinition.k1565,
   0x00093100: PDTagDefinition.k1566,
@@ -3527,8 +3494,7 @@ const Map<int, PDTagDefinition> SIEMENS_MED = const <int, PDTagDefinition>{
   0x70051000: PDTagDefinition.k1578,
   0x00211100: PDTagDefinition.k10519
 };
-const Map<int, PDTagDefinition> SIEMENS_MEDCOM_HEADER =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MEDCOM_HEADER = {
   0x00290900: PDTagDefinition.k1580,
   0x00291000: PDTagDefinition.k1581,
   0x00292000: PDTagDefinition.k1582,
@@ -3558,8 +3524,7 @@ const Map<int, PDTagDefinition> SIEMENS_MEDCOM_HEADER =
   0x00297000: PDTagDefinition.k10567,
   0x00297500: PDTagDefinition.k10568
 };
-const Map<int, PDTagDefinition> SIEMENS_MR_VA0__COAD =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_VA0__COAD = {
   0x00191200: PDTagDefinition.k1591,
   0x00191400: PDTagDefinition.k1592,
   0x00191600: PDTagDefinition.k1593,
@@ -3606,16 +3571,15 @@ const Map<int, PDTagDefinition> SIEMENS_MR_VA0__COAD =
   0x0019d900: PDTagDefinition.k1645,
   0x0019da00: PDTagDefinition.k1646
 };
-const Map<int, PDTagDefinition> SIEMENS_MEDCOM_HEADER2 =
-    const <int, PDTagDefinition>{0x00296000: PDTagDefinition.k1635};
-const Map<int, PDTagDefinition> SIEMENS_MEDCOM_OOG =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MEDCOM_HEADER2 = {
+  0x00296000: PDTagDefinition.k1635
+};
+const Map<int, PDTagDefinition> SIEMENS_MEDCOM_OOG = {
   0x00290800: PDTagDefinition.k1636,
   0x00290900: PDTagDefinition.k1637,
   0x00291000: PDTagDefinition.k1638
 };
-const Map<int, PDTagDefinition> SIEMENS_MR_VA0__GEN =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_VA0__GEN = {
   0x00191000: PDTagDefinition.k1647,
   0x00191100: PDTagDefinition.k1648,
   0x00191200: PDTagDefinition.k1649,
@@ -3698,8 +3662,7 @@ const Map<int, PDTagDefinition> SIEMENS_MR_VA0__GEN =
   0x00219500: PDTagDefinition.k1726,
   0x00219600: PDTagDefinition.k1727
 };
-const Map<int, PDTagDefinition> SIEMENS_MR_VA0__RAW =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_VA0__RAW = {
   0x00210000: PDTagDefinition.k1728,
   0x00210100: PDTagDefinition.k1729,
   0x00210200: PDTagDefinition.k1730,
@@ -3731,14 +3694,12 @@ const Map<int, PDTagDefinition> SIEMENS_MR_VA0__RAW =
   0x00215400: PDTagDefinition.k1757,
   0x00215500: PDTagDefinition.k1758
 };
-const Map<int, PDTagDefinition> SIEMENS_NUMARIS_II =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_NUMARIS_II = {
   0x7fe30000: PDTagDefinition.k1759,
   0x7fe31000: PDTagDefinition.k1760,
   0x7fe32000: PDTagDefinition.k1761
 };
-const Map<int, PDTagDefinition> SIEMENS_RA_PLANE_A =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_RA_PLANE_A = {
   0x00112800: PDTagDefinition.k1848,
   0x00112900: PDTagDefinition.k1849,
   0x00112a00: PDTagDefinition.k1850,
@@ -3873,8 +3834,7 @@ const Map<int, PDTagDefinition> SIEMENS_RA_PLANE_A =
   0x0019df00: PDTagDefinition.k1980,
   0x0019e000: PDTagDefinition.k1981
 };
-const Map<int, PDTagDefinition> SIEMENS_RA_PLANE_B =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_RA_PLANE_B = {
   0x00112800: PDTagDefinition.k1982,
   0x00112900: PDTagDefinition.k1983,
   0x00112a00: PDTagDefinition.k1984,
@@ -4009,7 +3969,7 @@ const Map<int, PDTagDefinition> SIEMENS_RA_PLANE_B =
   0x0019df00: PDTagDefinition.k8145,
   0x0019e000: PDTagDefinition.k8146
 };
-const Map<int, PDTagDefinition> SIEMENS_RIS = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_RIS = {
   0x00111000: PDTagDefinition.k2066,
   0x00111100: PDTagDefinition.k2067,
   0x00112000: PDTagDefinition.k2068,
@@ -4025,8 +3985,7 @@ const Map<int, PDTagDefinition> SIEMENS_RIS = const <int, PDTagDefinition>{
   0x00331000: PDTagDefinition.k2078
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SMS_AX__ACQ_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SMS_AX__ACQ_1_0 = {
   0x00210000: PDTagDefinition.k2079,
   0x00210100: PDTagDefinition.k2080,
   0x00210200: PDTagDefinition.k2081,
@@ -4121,8 +4080,7 @@ const Map<int, PDTagDefinition> SIEMENS_SMS_AX__ACQ_1_0 =
   0x0021a600: PDTagDefinition.k8389
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SMS_AX__ORIGINAL_IMAGE_INFO_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SMS_AX__ORIGINAL_IMAGE_INFO_1_0 = {
   0x00250000: PDTagDefinition.k2117,
   0x00250100: PDTagDefinition.k2118,
   0x00250200: PDTagDefinition.k2119,
@@ -4147,8 +4105,7 @@ const Map<int, PDTagDefinition> SIEMENS_SMS_AX__ORIGINAL_IMAGE_INFO_1_0 =
   0x00251500: PDTagDefinition.k2138,
   0x00251600: PDTagDefinition.k8451
 };
-const Map<int, PDTagDefinition> SIEMENS_SMS_AX__QUANT_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SMS_AX__QUANT_1_0 = {
   0x00230000: PDTagDefinition.k2139,
   0x00230100: PDTagDefinition.k2140,
   0x00230200: PDTagDefinition.k2141,
@@ -4159,8 +4116,7 @@ const Map<int, PDTagDefinition> SIEMENS_SMS_AX__QUANT_1_0 =
   0x00230700: PDTagDefinition.k2146,
   0x00230800: PDTagDefinition.k2147
 };
-const Map<int, PDTagDefinition> SIEMENS_SMS_AX__VIEW_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SMS_AX__VIEW_1_0 = {
   0x00190000: PDTagDefinition.k2148,
   0x00190100: PDTagDefinition.k2149,
   0x00190200: PDTagDefinition.k2150,
@@ -4195,7 +4151,7 @@ const Map<int, PDTagDefinition> SIEMENS_SMS_AX__VIEW_1_0 =
   0x00194200: PDTagDefinition.k8197
 };
 
-const Map<int, PDTagDefinition> SIENET = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIENET = {
   0x00090100: PDTagDefinition.k2175,
   0x00091400: PDTagDefinition.k2176,
   0x00091600: PDTagDefinition.k2177,
@@ -4222,7 +4178,7 @@ const Map<int, PDTagDefinition> SIENET = const <int, PDTagDefinition>{
 };
 
 // TODO: merge? next two are same except for case
-const Map<int, PDTagDefinition> SPI_RELEASE_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_RELEASE_1 = {
   0x00091000: PDTagDefinition.k2184,
   0x00091500: PDTagDefinition.k2185,
   0x00094000: PDTagDefinition.k2186,
@@ -4233,7 +4189,7 @@ const Map<int, PDTagDefinition> SPI_RELEASE_1 = const <int, PDTagDefinition>{
   0x00296000: PDTagDefinition.k2191
 };
 
-const Map<int, PDTagDefinition> SPI_Release_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_Release_1 = {
   0x00091000: PDTagDefinition.k2192,
   0x00091500: PDTagDefinition.k2193,
   0x00094000: PDTagDefinition.k2194,
@@ -4245,7 +4201,7 @@ const Map<int, PDTagDefinition> SPI_Release_1 = const <int, PDTagDefinition>{
   0x00090800: PDTagDefinition.k6481
 };
 
-const Map<int, PDTagDefinition> SPI = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI = {
   0x00091000: PDTagDefinition.k2200,
   0x00091500: PDTagDefinition.k2201,
   0x00094000: PDTagDefinition.k2202,
@@ -4256,7 +4212,7 @@ const Map<int, PDTagDefinition> SPI = const <int, PDTagDefinition>{
   0x00296000: PDTagDefinition.k2207
 };
 
-const Map<int, PDTagDefinition> SPI_P_Release_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Release_1 = {
   0x00090000: PDTagDefinition.k2208,
   0x00090400: PDTagDefinition.k2209,
   0x00090800: PDTagDefinition.k2210,
@@ -4350,8 +4306,7 @@ const Map<int, PDTagDefinition> SPI_P_Release_1 = const <int, PDTagDefinition>{
   0x0029bf00: PDTagDefinition.k6697
 };
 
-const Map<int, PDTagDefinition> SPI_P_Release_1_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Release_1_1 = {
   0x0009c000: PDTagDefinition.k2286,
   0x0009c100: PDTagDefinition.k2287,
   0x00190000: PDTagDefinition.k2288,
@@ -4390,8 +4345,7 @@ const Map<int, PDTagDefinition> SPI_P_Release_1_1 =
   0x00294f00: PDTagDefinition.k2321
 };
 
-const Map<int, PDTagDefinition> SPI_P_Release_1_2 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Release_1_2 = {
   0x00290000: PDTagDefinition.k2322,
   0x00290400: PDTagDefinition.k2323,
   0x00290c00: PDTagDefinition.k2324,
@@ -4399,8 +4353,7 @@ const Map<int, PDTagDefinition> SPI_P_Release_1_2 =
   0x00291f00: PDTagDefinition.k2326
 };
 
-const Map<int, PDTagDefinition> SPI_P_Release_1_3 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Release_1_3 = {
   0x00290000: PDTagDefinition.k2327,
   0x00290100: PDTagDefinition.k2328,
   0x00290200: PDTagDefinition.k2329,
@@ -4413,15 +4366,13 @@ const Map<int, PDTagDefinition> SPI_P_Release_1_3 =
   0x00291f00: PDTagDefinition.k2336
 };
 
-const Map<int, PDTagDefinition> SPI_P_Release_2_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Release_2_1 = {
   0x00111800: PDTagDefinition.k2337,
   0x00230d00: PDTagDefinition.k2338,
   0x00230e00: PDTagDefinition.k2339
 };
 
-const Map<int, PDTagDefinition> SPI_P_GV_CT_Release_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_GV_CT_Release_1 = {
   0x00090000: PDTagDefinition.k2340,
   0x00091000: PDTagDefinition.k2341,
   0x00092000: PDTagDefinition.k2342,
@@ -4479,8 +4430,7 @@ const Map<int, PDTagDefinition> SPI_P_GV_CT_Release_1 =
   0x0029d000: PDTagDefinition.k2395,
   0x0029d100: PDTagDefinition.k2396
 };
-const Map<int, PDTagDefinition> SPI_P_PCR_Release_2 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_PCR_Release_2 = {
   0x00193000: PDTagDefinition.k2397,
   0x00191000: PDTagDefinition.k6502,
   0x00192000: PDTagDefinition.k6518,
@@ -4516,15 +4466,13 @@ const Map<int, PDTagDefinition> SPI_P_PCR_Release_2 =
   0x0019ba00: PDTagDefinition.k6633
 };
 
-const Map<int, PDTagDefinition> SPI_P_Private_CWS_Release_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_CWS_Release_1 = {
   0x00210000: PDTagDefinition.k2398,
   0x00210100: PDTagDefinition.k2399,
   0x00210200: PDTagDefinition.k2400
 };
 
-const Map<int, PDTagDefinition> SPI_P_Private_DCI_Release_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_DCI_Release_1 = {
   0x00191000: PDTagDefinition.k2401,
   0x00191100: PDTagDefinition.k2402,
   0x00191200: PDTagDefinition.k2403,
@@ -4534,14 +4482,12 @@ const Map<int, PDTagDefinition> SPI_P_Private_DCI_Release_1 =
   0x00191600: PDTagDefinition.k2407,
   0x00191700: PDTagDefinition.k2408
 };
-const Map<int, PDTagDefinition> SPI_P_Private_CDS_Release_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_CDS_Release_1 = {
   0x00214000: PDTagDefinition.k2409,
   0x00290000: PDTagDefinition.k2410,
   0x00291000: PDTagDefinition.k6650
 };
-const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1 = {
   0x00193000: PDTagDefinition.k2411,
   0x00193100: PDTagDefinition.k2412,
   0x00290800: PDTagDefinition.k2413,
@@ -4572,8 +4518,7 @@ const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1 =
   0x00299100: PDTagDefinition.k6684
 };
 
-const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_1 = {
   0x00290000: PDTagDefinition.k2426,
   0x00290500: PDTagDefinition.k2427,
   0x00290600: PDTagDefinition.k2428,
@@ -4593,8 +4538,7 @@ const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_1 =
   0x0029d600: PDTagDefinition.k6709
 };
 
-const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_2 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_2 = {
   0x00290000: PDTagDefinition.k2432,
   0x00290100: PDTagDefinition.k2433,
   0x00290200: PDTagDefinition.k2434,
@@ -4611,8 +4555,7 @@ const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_2 =
   0x0029d900: PDTagDefinition.k6713
 };
 
-const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_3 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_3 = {
   0x0029c000: PDTagDefinition.k2438,
   0x0029c100: PDTagDefinition.k2439,
   0x0029c200: PDTagDefinition.k2440,
@@ -4622,8 +4565,7 @@ const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_3 =
   0x00290000: PDTagDefinition.k6642,
   0x00290100: PDTagDefinition.k6644
 };
-const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_4 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_4 = {
   0x00290200: PDTagDefinition.k2444,
   0x00299a00: PDTagDefinition.k2445,
   0x0029e000: PDTagDefinition.k6718,
@@ -4636,14 +4578,12 @@ const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_4 =
   0x0029dd00: PDTagDefinition.k6717
 };
 
-const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_5 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_ICS_Release_1_5 = {
   0x00295000: PDTagDefinition.k2447,
   0x00295500: PDTagDefinition.k2448
 };
 
-const Map<int, PDTagDefinition> SPI_P_XSB_DCI_Release_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_XSB_DCI_Release_1 = {
   0x00191000: PDTagDefinition.k2449,
   0x00191100: PDTagDefinition.k2450,
   0x00191200: PDTagDefinition.k2451,
@@ -4651,8 +4591,7 @@ const Map<int, PDTagDefinition> SPI_P_XSB_DCI_Release_1 =
   0x00192000: PDTagDefinition.k2453
 };
 
-const Map<int, PDTagDefinition> Silhouette_Annot_V1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Silhouette_Annot_V1_0 = {
   0x00291100: PDTagDefinition.k2454,
   0x00291200: PDTagDefinition.k2455,
   0x00291300: PDTagDefinition.k2456,
@@ -4690,11 +4629,11 @@ const Map<int, PDTagDefinition> Silhouette_Annot_V1_0 =
   0x00294500: PDTagDefinition.k2489
 };
 
-const Map<int, PDTagDefinition> Silhouette_Graphics_Export_V1_0 =
-    const <int, PDTagDefinition>{0x00290000: PDTagDefinition.k2490};
+const Map<int, PDTagDefinition> Silhouette_Graphics_Export_V1_0 = {
+  0x00290000: PDTagDefinition.k2490
+};
 
-const Map<int, PDTagDefinition> Silhouette_Line_V1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Silhouette_Line_V1_0 = {
   0x00291100: PDTagDefinition.k2491,
   0x00291200: PDTagDefinition.k2492,
   0x00291300: PDTagDefinition.k2493,
@@ -4716,8 +4655,7 @@ const Map<int, PDTagDefinition> Silhouette_Line_V1_0 =
   0x00292900: PDTagDefinition.k2509
 };
 
-const Map<int, PDTagDefinition> Silhouette_ROI_V1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Silhouette_ROI_V1_0 = {
   0x00291100: PDTagDefinition.k2510,
   0x00291200: PDTagDefinition.k2511,
   0x00291300: PDTagDefinition.k2512,
@@ -4744,14 +4682,13 @@ const Map<int, PDTagDefinition> Silhouette_ROI_V1_0 =
   0x00293400: PDTagDefinition.k2533
 };
 
-const Map<int, PDTagDefinition> Silhouette_Sequence_Ids_V1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Silhouette_Sequence_Ids_V1_0 = {
   0x00294100: PDTagDefinition.k2534,
   0x00294200: PDTagDefinition.k2535,
   0x00294300: PDTagDefinition.k2536
 };
 
-const Map<int, PDTagDefinition> Silhouette_V1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Silhouette_V1_0 = {
   0x00291300: PDTagDefinition.k2537,
   0x00291400: PDTagDefinition.k2538,
   0x00291700: PDTagDefinition.k2539,
@@ -4790,13 +4727,13 @@ const Map<int, PDTagDefinition> Silhouette_V1_0 = const <int, PDTagDefinition>{
   0x00299100: PDTagDefinition.k4785
 };
 
-const Map<int, PDTagDefinition> SONOWAND_AS = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SONOWAND_AS = {
   0x01351000: PDTagDefinition.k2562,
   0x01351100: PDTagDefinition.k2563,
   0x01351200: PDTagDefinition.k2564
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_MEC_1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_MEC_1_0 = {
   0x00090100: PDTagDefinition.k2624,
   0x00090200: PDTagDefinition.k2625,
   0x00090300: PDTagDefinition.k2626,
@@ -4814,8 +4751,7 @@ const Map<int, PDTagDefinition> TOSHIBA_MEC_1_0 = const <int, PDTagDefinition>{
   0x7ff11000: PDTagDefinition.k2638
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_MEC_CT_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_MEC_CT_1_0 = {
   0x00190100: PDTagDefinition.k2639,
   0x00190200: PDTagDefinition.k2640,
   0x00190300: PDTagDefinition.k2641,
@@ -4844,8 +4780,7 @@ const Map<int, PDTagDefinition> TOSHIBA_MEC_CT_1_0 =
   0x7ff10d00: PDTagDefinition.k2664
 };
 
-const Map<int, PDTagDefinition> ACUSON_1_2_840_113680_1_0_0910 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ACUSON_1_2_840_113680_1_0_0910 = {
   0x00090000: PDTagDefinition.k2665,
   0x00090100: PDTagDefinition.k2666,
   0x00090200: PDTagDefinition.k2667,
@@ -4854,8 +4789,7 @@ const Map<int, PDTagDefinition> ACUSON_1_2_840_113680_1_0_0910 =
   0x00090f00: PDTagDefinition.k2670
 };
 
-const Map<int, PDTagDefinition> ACUSON_1_2_840_113680_1_0_7f10 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ACUSON_1_2_840_113680_1_0_7f10 = {
   0x7fdf0200: PDTagDefinition.k2671,
   0x7fdf0b00: PDTagDefinition.k2672,
   0x7fdf0c00: PDTagDefinition.k2673,
@@ -4929,7 +4863,7 @@ const Map<int, PDTagDefinition> ACUSON_1_2_840_113680_1_0_7f10 =
   0x7fdff500: PDTagDefinition.k2743
 };
 
-const Map<int, PDTagDefinition> AGFA_AG_HPState = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AGFA_AG_HPState = {
   0x00870200: PDTagDefinition.k2697,
   0x00870300: PDTagDefinition.k2741,
   0x00111100: PDTagDefinition.k2748,
@@ -4964,10 +4898,11 @@ const Map<int, PDTagDefinition> AGFA_AG_HPState = const <int, PDTagDefinition>{
   0x00870800: PDTagDefinition.k2916
 };
 
-const Map<int, PDTagDefinition> ACUSON_1_2_840_113680_1_0_7ffe =
-    const <int, PDTagDefinition>{0x7fdf0000: PDTagDefinition.k2744};
+const Map<int, PDTagDefinition> ACUSON_1_2_840_113680_1_0_7ffe = {
+  0x7fdf0000: PDTagDefinition.k2744
+};
 
-const Map<int, PDTagDefinition> AgilityRuntime = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AgilityRuntime = {
   0x00112000: PDTagDefinition.k2745,
   0x00112100: PDTagDefinition.k2746,
   0x00112200: PDTagDefinition.k2747,
@@ -4978,7 +4913,7 @@ const Map<int, PDTagDefinition> AgilityRuntime = const <int, PDTagDefinition>{
   0x00291f00: PDTagDefinition.k2834
 };
 
-const Map<int, PDTagDefinition> AGFA_ADC_Compact = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AGFA_ADC_Compact = {
   0x00193000: PDTagDefinition.k2772,
   0x00194000: PDTagDefinition.k2773,
   0x00195000: PDTagDefinition.k2774,
@@ -4993,7 +4928,7 @@ const Map<int, PDTagDefinition> AGFA_ADC_Compact = const <int, PDTagDefinition>{
   0x00199500: PDTagDefinition.k2783
 };
 
-const Map<int, PDTagDefinition> Agfa_ADC_NX = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Agfa_ADC_NX = {
   0x00190700: PDTagDefinition.k2784,
   0x00190900: PDTagDefinition.k2785,
   0x00192100: PDTagDefinition.k2786,
@@ -5013,14 +4948,12 @@ const Map<int, PDTagDefinition> Agfa_ADC_NX = const <int, PDTagDefinition>{
   0x0019fe00: PDTagDefinition.k2800
 };
 
-const Map<int, PDTagDefinition> AGFA_PACS_Archive_Mirroring_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AGFA_PACS_Archive_Mirroring_1_0 = {
   0x00310000: PDTagDefinition.k2801,
   0x00310100: PDTagDefinition.k2802
 };
 
-const Map<int, PDTagDefinition> MITRA_PRESENTATION_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MITRA_PRESENTATION_1_0 = {
   0x00290000: PDTagDefinition.k2803,
   0x00290100: PDTagDefinition.k2804,
   0x00290200: PDTagDefinition.k2805,
@@ -5033,13 +4966,12 @@ const Map<int, PDTagDefinition> MITRA_PRESENTATION_1_0 =
   0x00291300: PDTagDefinition.k2812
 };
 
-const Map<int, PDTagDefinition> MITRA_OBJECT_DOCUMENT_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MITRA_OBJECT_DOCUMENT_1_0 = {
   0x00290000: PDTagDefinition.k2813,
   0x00290100: PDTagDefinition.k2814
 };
 
-const Map<int, PDTagDefinition> MITRA_MARKUP_1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MITRA_MARKUP_1_0 = {
   0x00290000: PDTagDefinition.k2815,
   0x00290100: PDTagDefinition.k2816,
   0x00290200: PDTagDefinition.k2817,
@@ -5057,11 +4989,11 @@ const Map<int, PDTagDefinition> MITRA_MARKUP_1_0 = const <int, PDTagDefinition>{
   0x00291400: PDTagDefinition.k2829
 };
 
-const Map<int, PDTagDefinition> MITRA_LINKED_ATTRIBUTES_1_0 =
-    const <int, PDTagDefinition>{0x00312000: PDTagDefinition.k2835};
+const Map<int, PDTagDefinition> MITRA_LINKED_ATTRIBUTES_1_0 = {
+  0x00312000: PDTagDefinition.k2835
+};
 
-const Map<int, PDTagDefinition> MITRA_OBJECT_UTF8_ATTRIBUTES_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MITRA_OBJECT_UTF8_ATTRIBUTES_1_0 = {
   0x00330200: PDTagDefinition.k2836,
   0x00330400: PDTagDefinition.k2837,
   0x00330600: PDTagDefinition.k2838,
@@ -5076,8 +5008,7 @@ const Map<int, PDTagDefinition> MITRA_OBJECT_UTF8_ATTRIBUTES_1_0 =
   0x00331900: PDTagDefinition.k2847
 };
 
-const Map<int, PDTagDefinition> MITRA_OBJECT_ATTRIBUTES_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MITRA_OBJECT_ATTRIBUTES_1_0 = {
   0x00330200: PDTagDefinition.k2848,
   0x00330400: PDTagDefinition.k2849,
   0x00330600: PDTagDefinition.k2850,
@@ -5085,7 +5016,7 @@ const Map<int, PDTagDefinition> MITRA_OBJECT_ATTRIBUTES_1_0 =
   0x00330a00: PDTagDefinition.k2853
 };
 
-const Map<int, PDTagDefinition> AgilityOverlay = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AgilityOverlay = {
   0x00710100: PDTagDefinition.k2867,
   0x00710200: PDTagDefinition.k2868,
   0x00710300: PDTagDefinition.k2869,
@@ -5128,23 +5059,21 @@ const Map<int, PDTagDefinition> AgilityOverlay = const <int, PDTagDefinition>{
   0x00716000: PDTagDefinition.k2906
 };
 
-const Map<int, PDTagDefinition> AGFA_KOSD_1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AGFA_KOSD_1_0 = {
   0x00350000: PDTagDefinition.k2917,
   0x00350300: PDTagDefinition.k2918
 };
 
-const Map<int, PDTagDefinition> agfa_displayableImages =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> agfa_displayableImages = {
   0x2e131000: PDTagDefinition.k2919,
   0x2e131100: PDTagDefinition.k2920
 };
 
-const Map<int, PDTagDefinition> agfa_xeroverse = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> agfa_xeroverse = {
   0x7fdb9900: PDTagDefinition.k2921
 };
 
-const Map<int, PDTagDefinition> Camtronics_image_level_data =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Camtronics_image_level_data = {
   0x00090400: PDTagDefinition.k2922,
   0x00090600: PDTagDefinition.k2923,
   0x00090900: PDTagDefinition.k2924,
@@ -5153,7 +5082,7 @@ const Map<int, PDTagDefinition> Camtronics_image_level_data =
   0x00091800: PDTagDefinition.k2927
 };
 
-const Map<int, PDTagDefinition> QCA_Results = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> QCA_Results = {
   0x00090000: PDTagDefinition.k2928,
   0x00090400: PDTagDefinition.k2929,
   0x00091200: PDTagDefinition.k2930,
@@ -5172,7 +5101,7 @@ const Map<int, PDTagDefinition> QCA_Results = const <int, PDTagDefinition>{
   0x00092800: PDTagDefinition.k2943
 };
 
-const Map<int, PDTagDefinition> GEMS_PETD_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_PETD_01 = {
   0x00090200: PDTagDefinition.k3144,
   0x00090300: PDTagDefinition.k3145,
   0x00090400: PDTagDefinition.k3146,
@@ -5585,14 +5514,14 @@ const Map<int, PDTagDefinition> GEMS_PETD_01 = const <int, PDTagDefinition>{
   0x00230200: PDTagDefinition.k10522
 };
 
-const Map<int, PDTagDefinition> GEMS_DL_PATNT_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_DL_PATNT_01 = {
   0x00118000: PDTagDefinition.k3537,
   0x00118100: PDTagDefinition.k3538,
   0x00118200: PDTagDefinition.k3539,
   0x00118300: PDTagDefinition.k3540
 };
 
-const Map<int, PDTagDefinition> GEMS_DL_STUDY_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_DL_STUDY_01 = {
   0x00158000: PDTagDefinition.k3559,
   0x00158100: PDTagDefinition.k3560,
   0x00158200: PDTagDefinition.k3561,
@@ -5620,8 +5549,7 @@ const Map<int, PDTagDefinition> GEMS_DL_STUDY_01 = const <int, PDTagDefinition>{
   0x00159d00: PDTagDefinition.k3583
 };
 
-const Map<int, PDTagDefinition> GEMS_DL_SERIES_01 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_DL_SERIES_01 = {
   0x00158500: PDTagDefinition.k3584,
   0x00158700: PDTagDefinition.k3585,
   0x00158c00: PDTagDefinition.k3586,
@@ -5630,7 +5558,7 @@ const Map<int, PDTagDefinition> GEMS_DL_SERIES_01 =
   0x00194d00: PDTagDefinition.k3726
 };
 
-const Map<int, PDTagDefinition> GEMS_DL_IMG_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_DL_IMG_01 = {
   0x00190b00: PDTagDefinition.k3589,
   0x00192b00: PDTagDefinition.k3590,
   0x00193000: PDTagDefinition.k3591,
@@ -5760,12 +5688,11 @@ const Map<int, PDTagDefinition> GEMS_DL_IMG_01 = const <int, PDTagDefinition>{
   0x0019ef00: PDTagDefinition.k3715
 };
 
-const Map<int, PDTagDefinition> GEMS_XR3DCAL_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_XR3DCAL_01 = {
   0x00212000: PDTagDefinition.k3727
 };
 
-const Map<int, PDTagDefinition> Mayo_IBM_Archive_Project =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Mayo_IBM_Archive_Project = {
   0x00210100: PDTagDefinition.k3728,
   0x00211000: PDTagDefinition.k3729,
   0x00211100: PDTagDefinition.k3730,
@@ -5791,7 +5718,7 @@ const Map<int, PDTagDefinition> Mayo_IBM_Archive_Project =
   0x00216500: PDTagDefinition.k3750
 };
 
-const Map<int, PDTagDefinition> GEMS_3D_INTVL_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_3D_INTVL_01 = {
   0x00230100: PDTagDefinition.k3751,
   0x00230200: PDTagDefinition.k3752,
   0x00230300: PDTagDefinition.k3753,
@@ -5831,7 +5758,7 @@ const Map<int, PDTagDefinition> GEMS_3D_INTVL_01 = const <int, PDTagDefinition>{
   0x00234400: PDTagDefinition.k3787
 };
 
-const Map<int, PDTagDefinition> GEMS_DL_FRAME_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_DL_FRAME_01 = {
   0x00250200: PDTagDefinition.k3788,
   0x00250300: PDTagDefinition.k3789,
   0x00250400: PDTagDefinition.k3790,
@@ -5877,17 +5804,18 @@ const Map<int, PDTagDefinition> GEMS_DL_FRAME_01 = const <int, PDTagDefinition>{
   0x00253c00: PDTagDefinition.k3831
 };
 
-const Map<int, PDTagDefinition> GEMS_ADWSoft_DPO1 =
-    const <int, PDTagDefinition>{0x00399500: PDTagDefinition.k3858};
+const Map<int, PDTagDefinition> GEMS_ADWSoft_DPO1 = {
+  0x00399500: PDTagDefinition.k3858
+};
 
-const Map<int, PDTagDefinition> GEMS_AWSoft_SB1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_AWSoft_SB1 = {
   0x00395000: PDTagDefinition.k3859,
   0x00395100: PDTagDefinition.k3860,
   0x00395200: PDTagDefinition.k3861,
   0x00399500: PDTagDefinition.k3862
 };
 
-const Map<int, PDTagDefinition> GEMS_AWSOFT_CD1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_AWSOFT_CD1 = {
   0x00396500: PDTagDefinition.k3863,
   0x00397000: PDTagDefinition.k3864,
   0x00397500: PDTagDefinition.k3865,
@@ -5899,7 +5827,7 @@ const Map<int, PDTagDefinition> GEMS_AWSOFT_CD1 = const <int, PDTagDefinition>{
   0x0039ff00: PDTagDefinition.k3871
 };
 
-const Map<int, PDTagDefinition> GEMS_HELIOS_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_HELIOS_01 = {
   0x00450100: PDTagDefinition.k3956,
   0x00450200: PDTagDefinition.k3957,
   0x00450300: PDTagDefinition.k3958,
@@ -5949,7 +5877,7 @@ const Map<int, PDTagDefinition> GEMS_HELIOS_01 = const <int, PDTagDefinition>{
   0x00454500: PDTagDefinition.k10661
 };
 
-const Map<int, PDTagDefinition> GEMS_3DSTATE_001 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_3DSTATE_001 = {
   0x0047e900: PDTagDefinition.k3989,
   0x0047ea00: PDTagDefinition.k3990,
   0x0047eb00: PDTagDefinition.k3991,
@@ -5957,16 +5885,17 @@ const Map<int, PDTagDefinition> GEMS_3DSTATE_001 = const <int, PDTagDefinition>{
   0x0047ed00: PDTagDefinition.k3993
 };
 
-const Map<int, PDTagDefinition> GEMS_IQTB_IDEN_47 =
-    const <int, PDTagDefinition>{0x00470200: PDTagDefinition.k4018};
+const Map<int, PDTagDefinition> GEMS_IQTB_IDEN_47 = {
+  0x00470200: PDTagDefinition.k4018
+};
 
-const Map<int, PDTagDefinition> GEMS_CT_HINO_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_CT_HINO_01 = {
   0x004b0100: PDTagDefinition.k4020,
   0x004b0200: PDTagDefinition.k4021,
   0x004b0300: PDTagDefinition.k4022
 };
 
-const Map<int, PDTagDefinition> GEIIS = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEIIS = {
   0x004b1300: PDTagDefinition.k4023,
   0x004b1500: PDTagDefinition.k4024,
   0x00091000: PDTagDefinition.k4245,
@@ -5986,18 +5915,19 @@ const Map<int, PDTagDefinition> GEIIS = const <int, PDTagDefinition>{
   0x7fd16000: PDTagDefinition.k4268
 };
 
-const Map<int, PDTagDefinition> GEMS_CT_VES_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_CT_VES_01 = {
   0x00510100: PDTagDefinition.k4025
 };
 
-const Map<int, PDTagDefinition> AMI_Annotations_01 =
-    const <int, PDTagDefinition>{0x31011000: PDTagDefinition.k4034};
+const Map<int, PDTagDefinition> AMI_Annotations_01 = {
+  0x31011000: PDTagDefinition.k4034
+};
 
-const Map<int, PDTagDefinition> AMI_Annotations_02 =
-    const <int, PDTagDefinition>{0x31012000: PDTagDefinition.k4035};
+const Map<int, PDTagDefinition> AMI_Annotations_02 = {
+  0x31012000: PDTagDefinition.k4035
+};
 
-const Map<int, PDTagDefinition> AMI_Sequence_Annotations_01 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AMI_Sequence_Annotations_01 = {
   0x31031000: PDTagDefinition.k4036,
   0x31032000: PDTagDefinition.k4037,
   0x31033000: PDTagDefinition.k4038,
@@ -6013,8 +5943,7 @@ const Map<int, PDTagDefinition> AMI_Sequence_Annotations_01 =
   0x3103e000: PDTagDefinition.k4048
 };
 
-const Map<int, PDTagDefinition> AMI_Sequence_Annotations_02 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AMI_Sequence_Annotations_02 = {
   0x31031000: PDTagDefinition.k4049,
   0x31032000: PDTagDefinition.k4050,
   0x31033000: PDTagDefinition.k4051,
@@ -6030,8 +5959,7 @@ const Map<int, PDTagDefinition> AMI_Sequence_Annotations_02 =
   0x3103e000: PDTagDefinition.k4071
 };
 
-const Map<int, PDTagDefinition> GEMS_CT_CARDIAC_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_CT_CARDIAC_001 = {
   0x00490200: PDTagDefinition.k4056,
   0x00490300: PDTagDefinition.k4057,
   0x00490400: PDTagDefinition.k4058,
@@ -6053,14 +5981,12 @@ const Map<int, PDTagDefinition> GEMS_CT_CARDIAC_001 =
   0x00492600: PDTagDefinition.k10670
 };
 
-const Map<int, PDTagDefinition> AMI_Sequence_AnnotElements_01 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AMI_Sequence_AnnotElements_01 = {
   0x31051000: PDTagDefinition.k4072,
   0x31052000: PDTagDefinition.k4073
 };
 
-const Map<int, PDTagDefinition> AMI_ImageTransform_01 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AMI_ImageTransform_01 = {
   0x31071000: PDTagDefinition.k4074,
   0x31072000: PDTagDefinition.k4075,
   0x31073000: PDTagDefinition.k4076,
@@ -6069,14 +5995,12 @@ const Map<int, PDTagDefinition> AMI_ImageTransform_01 =
   0x31076000: PDTagDefinition.k4079
 };
 
-const Map<int, PDTagDefinition> AMI_ImageContextExt_01 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AMI_ImageContextExt_01 = {
   0x3107a000: PDTagDefinition.k4080,
   0x3107b000: PDTagDefinition.k4081
 };
 
-const Map<int, PDTagDefinition> Applicare_RadWorks_Version_5_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Applicare_RadWorks_Version_5_0 = {
   0x31090100: PDTagDefinition.k4082,
   0x31090200: PDTagDefinition.k4083,
   0x31090300: PDTagDefinition.k4084,
@@ -6127,8 +6051,7 @@ const Map<int, PDTagDefinition> Applicare_RadWorks_Version_5_0 =
   0x3109ef00: PDTagDefinition.k4129
 };
 
-const Map<int, PDTagDefinition> Applicare_RadWorks_Version_6_0_Summary =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Applicare_RadWorks_Version_6_0_Summary = {
   0x31090100: PDTagDefinition.k4130,
   0x31091100: PDTagDefinition.k4131,
   0x31091200: PDTagDefinition.k4132,
@@ -6137,15 +6060,13 @@ const Map<int, PDTagDefinition> Applicare_RadWorks_Version_6_0_Summary =
 };
 
 const Map<int, PDTagDefinition>
-    http___www_gemedicalsystems_com_it_solutions_rad_pacs_ =
-    const <int, PDTagDefinition>{
+    http___www_gemedicalsystems_com_it_solutions_rad_pacs_ = {
   0x31150100: PDTagDefinition.k4135,
   0x31150200: PDTagDefinition.k4532,
   0x31150300: PDTagDefinition.k4533
 };
 
-const Map<int, PDTagDefinition> Applicare_Print_Version_5_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Applicare_Print_Version_5_1 = {
   0x41010100: PDTagDefinition.k4136,
   0x41010200: PDTagDefinition.k4137,
   0x41010300: PDTagDefinition.k4138,
@@ -6157,8 +6078,7 @@ const Map<int, PDTagDefinition> Applicare_Print_Version_5_1 =
   0x41010900: PDTagDefinition.k4144
 };
 
-const Map<int, PDTagDefinition> Applicare_RadWorks_Version_6_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Applicare_RadWorks_Version_6_0 = {
   0x41030100: PDTagDefinition.k4145,
   0x41030200: PDTagDefinition.k4146,
   0x41050100: PDTagDefinition.k4147,
@@ -6179,7 +6099,7 @@ const Map<int, PDTagDefinition> Applicare_RadWorks_Version_6_0 =
   0x41070100: PDTagDefinition.k4163
 };
 
-const Map<int, PDTagDefinition> GEIIS_PACS = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEIIS_PACS = {
   0x09031000: PDTagDefinition.k4250,
   0x09031100: PDTagDefinition.k4251,
   0x09031200: PDTagDefinition.k4252,
@@ -6191,8 +6111,7 @@ const Map<int, PDTagDefinition> GEIIS_PACS = const <int, PDTagDefinition>{
   0x09073100: PDTagDefinition.k4262
 };
 
-const Map<int, PDTagDefinition> GEMS_GDXE_FALCON_04 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_GDXE_FALCON_04 = {
   0x00110300: PDTagDefinition.k4269,
   0x00110400: PDTagDefinition.k4270,
   0x00110500: PDTagDefinition.k4271,
@@ -6234,7 +6153,7 @@ const Map<int, PDTagDefinition> GEMS_GDXE_FALCON_04 =
   0x00116d00: PDTagDefinition.k4307
 };
 
-const Map<int, PDTagDefinition> GEMS_FALCON_03 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_FALCON_03 = {
   0x00455500: PDTagDefinition.k4308,
   0x00456200: PDTagDefinition.k4309,
   0x00456300: PDTagDefinition.k4310,
@@ -6245,7 +6164,7 @@ const Map<int, PDTagDefinition> GEMS_FALCON_03 = const <int, PDTagDefinition>{
   0x00457300: PDTagDefinition.k4315
 };
 
-const Map<int, PDTagDefinition> GEMS_SEND_02 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_SEND_02 = {
   0x00455500: PDTagDefinition.k4316,
   0x00456200: PDTagDefinition.k4317,
   0x00456300: PDTagDefinition.k4318,
@@ -6256,30 +6175,26 @@ const Map<int, PDTagDefinition> GEMS_SEND_02 = const <int, PDTagDefinition>{
   0x00457300: PDTagDefinition.k4323
 };
 
-const Map<int, PDTagDefinition> GEMS_GDXE_ATHENAV2_INTERNAL_USE =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_GDXE_ATHENAV2_INTERNAL_USE = {
   0x7fdf1000: PDTagDefinition.k4324,
   0x7fdf1100: PDTagDefinition.k4325,
   0x7fdf2000: PDTagDefinition.k4326,
   0x7fdf2500: PDTagDefinition.k4327
 };
 
-const Map<int, PDTagDefinition> GEMS_Ultrasound_ImageGroup_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_Ultrasound_ImageGroup_001 = {
   0x60031000: PDTagDefinition.k4328,
   0x60031100: PDTagDefinition.k4329,
   0x60031200: PDTagDefinition.k4330,
   0x60031500: PDTagDefinition.k4331
 };
 
-const Map<int, PDTagDefinition> GEMS_Ultrasound_ExamGroup_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_Ultrasound_ExamGroup_001 = {
   0x60051000: PDTagDefinition.k4332,
   0x60052000: PDTagDefinition.k4333
 };
 
-const Map<int, PDTagDefinition> GEMS_Ultrasound_MovieGroup_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_Ultrasound_MovieGroup_001 = {
   0x7fe10100: PDTagDefinition.k4334,
   0x7fe10200: PDTagDefinition.k4335,
   0x7fe10300: PDTagDefinition.k4336,
@@ -6325,12 +6240,9 @@ const Map<int, PDTagDefinition> GEMS_Ultrasound_MovieGroup_001 =
   0x7fe18800: PDTagDefinition.k4376
 };
 
-const Map<int, PDTagDefinition> KRETZ_US = const <int, PDTagDefinition>{
-  0x7fe10100: PDTagDefinition.k4377
-};
+const Map<int, PDTagDefinition> KRETZ_US = {0x7fe10100: PDTagDefinition.k4377};
 
-const Map<int, PDTagDefinition> QUASAR_INTERNAL_USE =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> QUASAR_INTERNAL_USE = {
   0x00090100: PDTagDefinition.k4378,
   0x00090200: PDTagDefinition.k4379,
   0x00090300: PDTagDefinition.k4380,
@@ -6375,11 +6287,11 @@ const Map<int, PDTagDefinition> QUASAR_INTERNAL_USE =
   0x00410100: PDTagDefinition.k4419
 };
 
-const Map<int, PDTagDefinition> APEX_PRIVATE = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> APEX_PRIVATE = {
   0x00271100: PDTagDefinition.k4420
 };
 
-const Map<int, PDTagDefinition> GEMS_XELPRV_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_XELPRV_01 = {
   0x00330800: PDTagDefinition.k4421,
   0x00331000: PDTagDefinition.k4422,
   0x00331100: PDTagDefinition.k4423,
@@ -6403,37 +6315,34 @@ const Map<int, PDTagDefinition> GEMS_XELPRV_01 = const <int, PDTagDefinition>{
   0x00337200: PDTagDefinition.k4441
 };
 
-const Map<int, PDTagDefinition> REPORT_FROM_APP = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> REPORT_FROM_APP = {
   0x00399500: PDTagDefinition.k4442
 };
 
-const Map<int, PDTagDefinition> GEMS_VXTL_USERDATA_01 =
-    const <int, PDTagDefinition>{0x00471100: PDTagDefinition.k4443};
+const Map<int, PDTagDefinition> GEMS_VXTL_USERDATA_01 = {
+  0x00471100: PDTagDefinition.k4443
+};
 
-const Map<int, PDTagDefinition> DL_INTERNAL_USE = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> DL_INTERNAL_USE = {
   0x00158f00: PDTagDefinition.k4444
 };
 
-const Map<int, PDTagDefinition> GEMS_LUNAR_RAW = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_LUNAR_RAW = {
   0x70030100: PDTagDefinition.k4445,
   0x70030200: PDTagDefinition.k4446,
   0x70030300: PDTagDefinition.k4447,
   0x70030400: PDTagDefinition.k4448
 };
 
-const Map<int, PDTagDefinition> GE_GROUP = const <int, PDTagDefinition>{
-  0x60051000: PDTagDefinition.k4450
-};
+const Map<int, PDTagDefinition> GE_GROUP = {0x60051000: PDTagDefinition.k4450};
 
-const Map<int, PDTagDefinition> GEMS_IT_US_REPORT =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_IT_US_REPORT = {
   0x00451100: PDTagDefinition.k4453,
   0x00451200: PDTagDefinition.k4454,
   0x00451300: PDTagDefinition.k4455
 };
 
-const Map<int, PDTagDefinition> Applicare_Workflow_Version_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Applicare_Workflow_Version_1_0 = {
   0x31130100: PDTagDefinition.k4456,
   0x31131000: PDTagDefinition.k4457,
   0x31131100: PDTagDefinition.k4458,
@@ -6454,8 +6363,7 @@ const Map<int, PDTagDefinition> Applicare_Workflow_Version_1_0 =
   0x3113e200: PDTagDefinition.k4481
 };
 
-const Map<int, PDTagDefinition> GEHC_CT_ADVAPP_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEHC_CT_ADVAPP_001 = {
   0x00532000: PDTagDefinition.k4462,
   0x00534000: PDTagDefinition.k4463,
   0x00534100: PDTagDefinition.k4464,
@@ -6518,35 +6426,34 @@ const Map<int, PDTagDefinition> GEHC_CT_ADVAPP_001 =
   0x00539f00: PDTagDefinition.k10730
 };
 
-const Map<int, PDTagDefinition> GE_LUT_Asymmetry_Parameter =
-    const <int, PDTagDefinition>{0x00456700: PDTagDefinition.k4482};
+const Map<int, PDTagDefinition> GE_LUT_Asymmetry_Parameter = {
+  0x00456700: PDTagDefinition.k4482
+};
 
 const Map<int, PDTagDefinition> Applicare_Centricity_Radiology_Web_Version_1_0 =
-    const <int, PDTagDefinition>{
+    {
   0x41090100: PDTagDefinition.k4483,
   0x41090200: PDTagDefinition.k4484,
   0x41090300: PDTagDefinition.k4485
 };
 
 const Map<int, PDTagDefinition> Applicare_Centricity_Radiology_Web_Version_2_0 =
-    const <int, PDTagDefinition>{
-  0x41110100: PDTagDefinition.k4486,
-  0x41110200: PDTagDefinition.k4487
+    {0x41110100: PDTagDefinition.k4486, 0x41110200: PDTagDefinition.k4487};
+
+const Map<int, PDTagDefinition> GEMS_IT_Centricity_RA600_7_0 = {
+  0x41131000: PDTagDefinition.k4488
 };
 
-const Map<int, PDTagDefinition> GEMS_IT_Centricity_RA600_7_0 =
-    const <int, PDTagDefinition>{0x41131000: PDTagDefinition.k4488};
+const Map<int, PDTagDefinition> AMI_StudyExtensions_01 = {
+  0x31110100: PDTagDefinition.k4489
+};
 
-const Map<int, PDTagDefinition> AMI_StudyExtensions_01 =
-    const <int, PDTagDefinition>{0x31110100: PDTagDefinition.k4489};
-
-const Map<int, PDTagDefinition> RadWorksTBR = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> RadWorksTBR = {
   0x31110200: PDTagDefinition.k4490,
   0x3111ff00: PDTagDefinition.k4491
 };
 
-const Map<int, PDTagDefinition> Applicare_RadStore_Version_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Applicare_RadStore_Version_1_0 = {
   0x31130100: PDTagDefinition.k4492,
   0x31130200: PDTagDefinition.k4493,
   0x31130300: PDTagDefinition.k4494,
@@ -6590,8 +6497,7 @@ const Map<int, PDTagDefinition> Applicare_RadStore_Version_1_0 =
 };
 
 const Map<int, PDTagDefinition>
-    http___www_gemedicalsystems_com_it_solutions_orthoview_2_1 =
-    const <int, PDTagDefinition>{
+    http___www_gemedicalsystems_com_it_solutions_orthoview_2_1 = {
   0x31171000: PDTagDefinition.k4534,
   0x31172000: PDTagDefinition.k4535,
   0x31173000: PDTagDefinition.k4536,
@@ -6601,8 +6507,7 @@ const Map<int, PDTagDefinition>
 };
 
 const Map<int, PDTagDefinition>
-    http___www_gemedicalsystems_com_it_solutions_bamwallthickness_1_0 =
-    const <int, PDTagDefinition>{
+    http___www_gemedicalsystems_com_it_solutions_bamwallthickness_1_0 = {
   0x31181000: PDTagDefinition.k4540,
   0x31182000: PDTagDefinition.k4541,
   0x31183000: PDTagDefinition.k4542,
@@ -6611,8 +6516,7 @@ const Map<int, PDTagDefinition>
   0x31186000: PDTagDefinition.k4545
 };
 
-const Map<int, PDTagDefinition> AMI_ImageContext_01 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> AMI_ImageContext_01 = {
   0x31091000: PDTagDefinition.k4546,
   0x31092000: PDTagDefinition.k4547,
   0x31093000: PDTagDefinition.k4548,
@@ -6624,7 +6528,7 @@ const Map<int, PDTagDefinition> AMI_ImageContext_01 =
   0x31099000: PDTagDefinition.k4554
 };
 
-const Map<int, PDTagDefinition> GEMS_FUNCTOOL_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_FUNCTOOL_01 = {
   0x00510d00: PDTagDefinition.k4556,
   0x00510200: PDTagDefinition.k4596,
   0x00510300: PDTagDefinition.k4597,
@@ -6640,7 +6544,7 @@ const Map<int, PDTagDefinition> GEMS_FUNCTOOL_01 = const <int, PDTagDefinition>{
   0x00510800: PDTagDefinition.k10679
 };
 
-const Map<int, PDTagDefinition> Harmony_R1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Harmony_R1_0 = {
   0x00190000: PDTagDefinition.k4557,
   0x00190100: PDTagDefinition.k4558,
   0x00190200: PDTagDefinition.k4559,
@@ -6758,7 +6662,7 @@ const Map<int, PDTagDefinition> Harmony_R1_0 = const <int, PDTagDefinition>{
   0x00198300: PDTagDefinition.k4681
 };
 
-const Map<int, PDTagDefinition> Harmony_R1_0_C2 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Harmony_R1_0_C2 = {
   0x00190000: PDTagDefinition.k4682,
   0x00190100: PDTagDefinition.k4683,
   0x00190200: PDTagDefinition.k4684,
@@ -6787,7 +6691,7 @@ const Map<int, PDTagDefinition> Harmony_R1_0_C2 = const <int, PDTagDefinition>{
   0x00199100: PDTagDefinition.k4707
 };
 
-const Map<int, PDTagDefinition> Harmony_R1_0_C3 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Harmony_R1_0_C3 = {
   0x00190000: PDTagDefinition.k4708,
   0x00190300: PDTagDefinition.k4709,
   0x00190700: PDTagDefinition.k4710,
@@ -6832,7 +6736,7 @@ const Map<int, PDTagDefinition> Harmony_R1_0_C3 = const <int, PDTagDefinition>{
   0x0019f200: PDTagDefinition.k4749
 };
 
-const Map<int, PDTagDefinition> Harmony_R2_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Harmony_R2_0 = {
   0x00197900: PDTagDefinition.k4750,
   0x00197c00: PDTagDefinition.k4751,
   0x00197d00: PDTagDefinition.k4752,
@@ -6860,7 +6764,7 @@ const Map<int, PDTagDefinition> Harmony_R2_0 = const <int, PDTagDefinition>{
   0x00199900: PDTagDefinition.k4774
 };
 
-const Map<int, PDTagDefinition> Hologic = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Hologic = {
   0x00110000: PDTagDefinition.k4786,
   0x00130000: PDTagDefinition.k4788,
   0x00190000: PDTagDefinition.k4790,
@@ -6875,7 +6779,7 @@ const Map<int, PDTagDefinition> Hologic = const <int, PDTagDefinition>{
   0x00290100: PDTagDefinition.k4825
 };
 
-const Map<int, PDTagDefinition> HOLOGIC = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> HOLOGIC = {
   0x00110000: PDTagDefinition.k4787,
   0x00130000: PDTagDefinition.k4789,
   0x00190000: PDTagDefinition.k4791,
@@ -6890,7 +6794,7 @@ const Map<int, PDTagDefinition> HOLOGIC = const <int, PDTagDefinition>{
   0x00290100: PDTagDefinition.k4826
 };
 
-const Map<int, PDTagDefinition> LODOX_STATSCAN = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> LODOX_STATSCAN = {
   0x00190100: PDTagDefinition.k4792,
   0x00190200: PDTagDefinition.k4793,
   0x00190300: PDTagDefinition.k4794,
@@ -6901,20 +6805,17 @@ const Map<int, PDTagDefinition> LODOX_STATSCAN = const <int, PDTagDefinition>{
   0x00190800: PDTagDefinition.k4799
 };
 
-const Map<int, PDTagDefinition> SCHICK_TECHNOLOGIES___Change_List_Creator_ID =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SCHICK_TECHNOLOGIES___Change_List_Creator_ID = {
   0x00210100: PDTagDefinition.k4800,
   0x00210200: PDTagDefinition.k4801
 };
 
-const Map<int, PDTagDefinition> SCHICK_TECHNOLOGIES___Note_List_Creator_ID =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SCHICK_TECHNOLOGIES___Note_List_Creator_ID = {
   0x00210100: PDTagDefinition.k4802,
   0x00210200: PDTagDefinition.k4803
 };
 
-const Map<int, PDTagDefinition> SCHICK_TECHNOLOGIES___Change_Item_Creator_ID =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SCHICK_TECHNOLOGIES___Change_Item_Creator_ID = {
   0x00210100: PDTagDefinition.k4804,
   0x00210200: PDTagDefinition.k4805,
   0x00210300: PDTagDefinition.k4806,
@@ -6923,12 +6824,12 @@ const Map<int, PDTagDefinition> SCHICK_TECHNOLOGIES___Change_Item_Creator_ID =
 };
 
 const Map<int, PDTagDefinition>
-    SCHICK_TECHNOLOGIES___Image_Security_Creator_ID =
-    const <int, PDTagDefinition>{0x00290100: PDTagDefinition.k4827};
+    SCHICK_TECHNOLOGIES___Image_Security_Creator_ID = {
+  0x00290100: PDTagDefinition.k4827
+};
 
 //TODO: determine the prefix for uid tokens
-const Map<int, PDTagDefinition> Uid_2_16_840_1_114059_1_1_6_1_50_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Uid_2_16_840_1_114059_1_1_6_1_50_1 = {
   0x00292000: PDTagDefinition.k4828,
   0x00292100: PDTagDefinition.k4829,
   0x00292200: PDTagDefinition.k4830,
@@ -6939,7 +6840,7 @@ const Map<int, PDTagDefinition> Uid_2_16_840_1_114059_1_1_6_1_50_1 =
   0x00292700: PDTagDefinition.k4835
 };
 
-const Map<int, PDTagDefinition> STENTOR = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> STENTOR = {
   0x00730100: PDTagDefinition.k4836,
   0x00730200: PDTagDefinition.k4837,
   0x00730300: PDTagDefinition.k4838,
@@ -6947,7 +6848,7 @@ const Map<int, PDTagDefinition> STENTOR = const <int, PDTagDefinition>{
   0x00730600: PDTagDefinition.k4840
 };
 
-const Map<int, PDTagDefinition> MMCPrivate = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MMCPrivate = {
   0x00190300: PDTagDefinition.k4846,
   0x00095000: PDTagDefinition.k5037,
   0x00095100: PDTagDefinition.k5038,
@@ -7328,7 +7229,7 @@ const Map<int, PDTagDefinition> MMCPrivate = const <int, PDTagDefinition>{
   0x00710700: PDTagDefinition.k10743
 };
 
-const Map<int, PDTagDefinition> Canon_Inc_ = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Canon_Inc_ = {
   0x00191000: PDTagDefinition.k4856,
   0x00191300: PDTagDefinition.k4857,
   0x00191500: PDTagDefinition.k4858,
@@ -7344,7 +7245,7 @@ const Map<int, PDTagDefinition> Canon_Inc_ = const <int, PDTagDefinition>{
   0x00192100: PDTagDefinition.k4868
 };
 
-const Map<int, PDTagDefinition> SECTRA_Ident_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SECTRA_Ident_01 = {
   0x00090100: PDTagDefinition.k4870,
   0x00090200: PDTagDefinition.k4871,
   0x00090400: PDTagDefinition.k4872,
@@ -7353,18 +7254,18 @@ const Map<int, PDTagDefinition> SECTRA_Ident_01 = const <int, PDTagDefinition>{
   0x00090700: PDTagDefinition.k4875
 };
 
-const Map<int, PDTagDefinition> SECTRA_ImageInfo_01 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SECTRA_ImageInfo_01 = {
   0x00290100: PDTagDefinition.k4876,
   0x00290200: PDTagDefinition.k4877,
   0x00290300: PDTagDefinition.k4878,
   0x00290400: PDTagDefinition.k4879
 };
 
-const Map<int, PDTagDefinition> SECTRA_OverlayInfo_01 =
-    const <int, PDTagDefinition>{0x60010100: PDTagDefinition.k4880};
+const Map<int, PDTagDefinition> SECTRA_OverlayInfo_01 = {
+  0x60010100: PDTagDefinition.k4880
+};
 
-const Map<int, PDTagDefinition> BioPri = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> BioPri = {
   0x00090000: PDTagDefinition.k4881,
   0x00090100: PDTagDefinition.k4882,
   0x00090200: PDTagDefinition.k4883,
@@ -7377,8 +7278,7 @@ const Map<int, PDTagDefinition> BioPri = const <int, PDTagDefinition>{
   0x00091000: PDTagDefinition.k4890
 };
 
-const Map<int, PDTagDefinition> Silhouette_VRS_3_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Silhouette_VRS_3_0 = {
   0x00291300: PDTagDefinition.k4891,
   0x00291400: PDTagDefinition.k4892,
   0x00291700: PDTagDefinition.k4893,
@@ -7398,15 +7298,14 @@ const Map<int, PDTagDefinition> Silhouette_VRS_3_0 =
   0x00293600: PDTagDefinition.k4910
 };
 
-const Map<int, PDTagDefinition> ADAC_IMG = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ADAC_IMG = {
   0x00192100: PDTagDefinition.k4900,
   0x00194100: PDTagDefinition.k4901,
   0x00196100: PDTagDefinition.k4902,
   0x00190200: PDTagDefinition.k10479
 };
 
-const Map<int, PDTagDefinition> Hipaa_Private_Creator =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Hipaa_Private_Creator = {
   0x00110100: PDTagDefinition.k4911,
   0x00110200: PDTagDefinition.k4912,
   0x00110300: PDTagDefinition.k4913,
@@ -7451,7 +7350,7 @@ const Map<int, PDTagDefinition> Hipaa_Private_Creator =
   0x00114200: PDTagDefinition.k4953
 };
 
-const Map<int, PDTagDefinition> LORAD_Selenia = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> LORAD_Selenia = {
   0x00190600: PDTagDefinition.k4954,
   0x00190700: PDTagDefinition.k4955,
   0x00190800: PDTagDefinition.k4956,
@@ -7480,7 +7379,7 @@ const Map<int, PDTagDefinition> LORAD_Selenia = const <int, PDTagDefinition>{
   0x00199000: PDTagDefinition.k4979
 };
 
-const Map<int, PDTagDefinition> HOLOGIC__Inc_ = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> HOLOGIC__Inc_ = {
   0x00190100: PDTagDefinition.k4980,
   0x00190200: PDTagDefinition.k4981,
   0x00190300: PDTagDefinition.k4982,
@@ -7538,22 +7437,21 @@ const Map<int, PDTagDefinition> HOLOGIC__Inc_ = const <int, PDTagDefinition>{
   0x7f011200: PDTagDefinition.k5034
 };
 
-const Map<int, PDTagDefinition> Uid_1_2_840_113663_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Uid_1_2_840_113663_1 = {
   0x00290000: PDTagDefinition.k5035,
   0x00290100: PDTagDefinition.k5036
 };
 
-const Map<int, PDTagDefinition> MeVis_BreastCare = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MeVis_BreastCare = {
   0x00190100: PDTagDefinition.k5256,
   0x00710100: PDTagDefinition.k5257
 };
 
-const Map<int, PDTagDefinition> Viewing_Protocol = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Viewing_Protocol = {
   0x00659300: PDTagDefinition.k5258
 };
 
-const Map<int, PDTagDefinition> Mortara_Inc = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Mortara_Inc = {
   0x14550000: PDTagDefinition.k5259,
   0x14550100: PDTagDefinition.k5260,
   0x14550200: PDTagDefinition.k5261,
@@ -7566,29 +7464,30 @@ const Map<int, PDTagDefinition> Mortara_Inc = const <int, PDTagDefinition>{
   0x14551000: PDTagDefinition.k5268
 };
 
-const Map<int, PDTagDefinition> SEGAMI_HEADER = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SEGAMI_HEADER = {
   0x00293100: PDTagDefinition.k5269,
   0x00293200: PDTagDefinition.k5270
 };
 
-const Map<int, PDTagDefinition> SEGAMI_MIML = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SEGAMI_MIML = {
   0x00319800: PDTagDefinition.k5271
 };
 
-const Map<int, PDTagDefinition> SEGAMI__PAGE = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SEGAMI__PAGE = {
   0x00339700: PDTagDefinition.k5272,
   0x00339800: PDTagDefinition.k5273
 };
 
-const Map<int, PDTagDefinition> SEGAMI__MEMO = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SEGAMI__MEMO = {
   0x00359700: PDTagDefinition.k5274,
   0x00359800: PDTagDefinition.k5275
 };
 
-const Map<int, PDTagDefinition> MedIns_HP_Extensions =
-    const <int, PDTagDefinition>{0x54730300: PDTagDefinition.k5276};
+const Map<int, PDTagDefinition> MedIns_HP_Extensions = {
+  0x54730300: PDTagDefinition.k5276
+};
 
-const Map<int, PDTagDefinition> MEDIFACE = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MEDIFACE = {
   0x00290100: PDTagDefinition.k5277,
   0x00291000: PDTagDefinition.k5278,
   0x00291100: PDTagDefinition.k5279,
@@ -7598,8 +7497,7 @@ const Map<int, PDTagDefinition> MEDIFACE = const <int, PDTagDefinition>{
   0x00293000: PDTagDefinition.k5302
 };
 
-const Map<int, PDTagDefinition> Image__ID__Version__Size__Dump__GUID_ =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Image__ID__Version__Size__Dump__GUID_ = {
   0x80030000: PDTagDefinition.k5303,
   0x80031000: PDTagDefinition.k5304,
   0x80032000: PDTagDefinition.k5305,
@@ -7608,31 +7506,27 @@ const Map<int, PDTagDefinition> Image__ID__Version__Size__Dump__GUID_ =
 };
 
 const Map<int, PDTagDefinition>
-    ObjectModel__ID__Version__Place__PlaceDescription_ =
-    const <int, PDTagDefinition>{
+    ObjectModel__ID__Version__Place__PlaceDescription_ = {
   0x81010000: PDTagDefinition.k5308,
   0x81011000: PDTagDefinition.k5309
 };
 
-const Map<int, PDTagDefinition> INFINITT_FMX = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> INFINITT_FMX = {
   0x00151000: PDTagDefinition.k5310,
   0x00151100: PDTagDefinition.k5311
 };
 
-const Map<int, PDTagDefinition> BrainLAB_Conversion =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> BrainLAB_Conversion = {
   0x00090100: PDTagDefinition.k5312,
   0x00090200: PDTagDefinition.k5313
 };
 
-const Map<int, PDTagDefinition> BrainLAB_PatientSetup =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> BrainLAB_PatientSetup = {
   0x32730000: PDTagDefinition.k5314,
   0x32730100: PDTagDefinition.k5315
 };
 
-const Map<int, PDTagDefinition> BrainLAB_BeamProfile =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> BrainLAB_BeamProfile = {
   0x34110100: PDTagDefinition.k5316,
   0x34110200: PDTagDefinition.k5317,
   0x34110300: PDTagDefinition.k5318,
@@ -7641,15 +7535,14 @@ const Map<int, PDTagDefinition> BrainLAB_BeamProfile =
   0x34110600: PDTagDefinition.k5321
 };
 
-const Map<int, PDTagDefinition> V1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> V1 = {
   0x00110100: PDTagDefinition.k5322,
   0x00110200: PDTagDefinition.k5323,
   0x00110300: PDTagDefinition.k5324,
   0x00110400: PDTagDefinition.k5325
 };
 
-const Map<int, PDTagDefinition> Voxar_2_16_124_113543_6003_1999_12_20_12_5_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Voxar_2_16_124_113543_6003_1999_12_20_12_5_0 = {
   0x11350000: PDTagDefinition.k5326,
   0x11350100: PDTagDefinition.k5327,
   0x11350200: PDTagDefinition.k5328,
@@ -7666,8 +7559,7 @@ const Map<int, PDTagDefinition> Voxar_2_16_124_113543_6003_1999_12_20_12_5_0 =
   0x11352100: PDTagDefinition.k5339
 };
 
-const Map<int, PDTagDefinition> Kodak_Image_Information =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Kodak_Image_Information = {
   0x00291500: PDTagDefinition.k5340,
   0x00291600: PDTagDefinition.k5341,
   0x00291700: PDTagDefinition.k5342,
@@ -7676,7 +7568,7 @@ const Map<int, PDTagDefinition> Kodak_Image_Information =
   0x00291a00: PDTagDefinition.k5346
 };
 
-const Map<int, PDTagDefinition> NQLeft = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> NQLeft = {
   0x01991200: PDTagDefinition.k5344,
   0x01991300: PDTagDefinition.k5497,
   0x01990100: PDTagDefinition.k5641,
@@ -7737,15 +7629,14 @@ const Map<int, PDTagDefinition> NQLeft = const <int, PDTagDefinition>{
   0x01993a00: PDTagDefinition.k5696
 };
 
-const Map<int, PDTagDefinition> MAROTECH_Inc_ = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MAROTECH_Inc_ = {
   0x00370100: PDTagDefinition.k5347,
   0x00372100: PDTagDefinition.k5348,
   0x00372200: PDTagDefinition.k5349,
   0x00372300: PDTagDefinition.k5350
 };
 
-const Map<int, PDTagDefinition> BRIT_Systems__Inc_ =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> BRIT_Systems__Inc_ = {
   0x00210000: PDTagDefinition.k5351,
   0x00210100: PDTagDefinition.k5352,
   0x00210200: PDTagDefinition.k5353,
@@ -7799,8 +7690,7 @@ const Map<int, PDTagDefinition> BRIT_Systems__Inc_ =
   0x0021a800: PDTagDefinition.k5401
 };
 
-const Map<int, PDTagDefinition> MDS_NORDION_OTP_ANATOMY_MODELLING =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MDS_NORDION_OTP_ANATOMY_MODELLING = {
   0x30050000: PDTagDefinition.k5402,
   0x30050200: PDTagDefinition.k5403,
   0x30050400: PDTagDefinition.k5404,
@@ -7813,15 +7703,13 @@ const Map<int, PDTagDefinition> MDS_NORDION_OTP_ANATOMY_MODELLING =
   0x30051200: PDTagDefinition.k5411
 };
 
-const Map<int, PDTagDefinition> Imaging_Dynamics_Company_Ltd_ =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Imaging_Dynamics_Company_Ltd_ = {
   0x43214100: PDTagDefinition.k5412,
   0x43214200: PDTagDefinition.k5413,
   0x43216400: PDTagDefinition.k5414
 };
 
-const Map<int, PDTagDefinition> Sound_Technologies =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Sound_Technologies = {
   0xf0010000: PDTagDefinition.k5415,
   0xf0010100: PDTagDefinition.k5416,
   0xf0010200: PDTagDefinition.k5417,
@@ -7855,8 +7743,7 @@ const Map<int, PDTagDefinition> Sound_Technologies =
   0xf0011e00: PDTagDefinition.k5445
 };
 
-const Map<int, PDTagDefinition> A_L_I__Technologies__Inc_ =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> A_L_I__Technologies__Inc_ = {
   0x37110100: PDTagDefinition.k5446,
   0x37110200: PDTagDefinition.k5447,
   0x37110300: PDTagDefinition.k5448,
@@ -7870,19 +7757,18 @@ const Map<int, PDTagDefinition> A_L_I__Technologies__Inc_ =
   0x37119700: PDTagDefinition.k5456
 };
 
-const Map<int, PDTagDefinition> NUD_PRIVATE = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> NUD_PRIVATE = {
   0x77770200: PDTagDefinition.k5457,
   0x77770500: PDTagDefinition.k5458
 };
 
-const Map<int, PDTagDefinition> IDEXX = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> IDEXX = {
   0x00110000: PDTagDefinition.k5459,
   0x00110100: PDTagDefinition.k5460,
   0x00110200: PDTagDefinition.k5461
 };
 
-const Map<int, PDTagDefinition> WG12_Supplement_43 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> WG12_Supplement_43 = {
   0x00090100: PDTagDefinition.k5462,
   0x00090200: PDTagDefinition.k5463,
   0x00090300: PDTagDefinition.k5464,
@@ -7928,18 +7814,17 @@ const Map<int, PDTagDefinition> WG12_Supplement_43 =
   0x00410100: PDTagDefinition.k5505
 };
 
-const Map<int, PDTagDefinition> HMC___CT___ID = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> HMC___CT___ID = {
   0x00090000: PDTagDefinition.k5506,
   0x00090100: PDTagDefinition.k5507
 };
 
-const Map<int, PDTagDefinition> SET_WINDOW = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SET_WINDOW = {
   0x00190000: PDTagDefinition.k5508,
   0x00190100: PDTagDefinition.k5509
 };
 
-const Map<int, PDTagDefinition> Vital_Images_SW_3_4 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Vital_Images_SW_3_4 = {
   0x56531000: PDTagDefinition.k5537,
   0x56531100: PDTagDefinition.k5538,
   0x56531200: PDTagDefinition.k5539,
@@ -7958,15 +7843,14 @@ const Map<int, PDTagDefinition> Vital_Images_SW_3_4 =
   0x56532500: PDTagDefinition.k5552
 };
 
-const Map<int, PDTagDefinition> PI_Private_Block__0781_3000___0781_30FF_ =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PI_Private_Block__0781_3000___0781_30FF_ = {
   0x07810100: PDTagDefinition.k5553,
   0x07810200: PDTagDefinition.k5554,
   0x07810500: PDTagDefinition.k5555,
   0x07810900: PDTagDefinition.k5556
 };
 
-const Map<int, PDTagDefinition> Riverain_Medical = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Riverain_Medical = {
   0x02030000: PDTagDefinition.k5557,
   0x02030100: PDTagDefinition.k5558,
   0x02030200: PDTagDefinition.k5559,
@@ -7976,8 +7860,7 @@ const Map<int, PDTagDefinition> Riverain_Medical = const <int, PDTagDefinition>{
   0x0203f100: PDTagDefinition.k5563
 };
 
-const Map<int, PDTagDefinition> INTELERAD_MEDICAL_SYSTEMS_INTELEVIEWER =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> INTELERAD_MEDICAL_SYSTEMS_INTELEVIEWER = {
   0x00710100: PDTagDefinition.k5566,
   0x00710200: PDTagDefinition.k5567,
   0x00710300: PDTagDefinition.k5568,
@@ -7988,7 +7871,7 @@ const Map<int, PDTagDefinition> INTELERAD_MEDICAL_SYSTEMS_INTELEVIEWER =
   0x00710a00: PDTagDefinition.k5573
 };
 
-const Map<int, PDTagDefinition> DR_Systems__Inc_ = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> DR_Systems__Inc_ = {
   0x44530000: PDTagDefinition.k5581,
   0x44530100: PDTagDefinition.k5582,
   0x44530200: PDTagDefinition.k5583,
@@ -7998,12 +7881,11 @@ const Map<int, PDTagDefinition> DR_Systems__Inc_ = const <int, PDTagDefinition>{
   0x44530c00: PDTagDefinition.k5587
 };
 
-const Map<int, PDTagDefinition> ETIAM_DICOMDIR = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ETIAM_DICOMDIR = {
   0x08594000: PDTagDefinition.k5588
 };
 
-const Map<int, PDTagDefinition> TERARECON_AQUARIUS =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TERARECON_AQUARIUS = {
   0x00771000: PDTagDefinition.k5589,
   0x00771200: PDTagDefinition.k5590,
   0x00771400: PDTagDefinition.k5591,
@@ -8026,29 +7908,26 @@ const Map<int, PDTagDefinition> TERARECON_AQUARIUS =
   0x00779000: PDTagDefinition.k5608
 };
 
-const Map<int, PDTagDefinition> EMAGEON_STUDY_HOME =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> EMAGEON_STUDY_HOME = {
   0x00090000: PDTagDefinition.k5609,
   0x00090100: PDTagDefinition.k5610
 };
 
-const Map<int, PDTagDefinition> EMAGEON_JPEG2K_INFO =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> EMAGEON_JPEG2K_INFO = {
   0x00090000: PDTagDefinition.k5611,
   0x00090100: PDTagDefinition.k5612
 };
 
-const Map<int, PDTagDefinition> RadWorksMarconi = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> RadWorksMarconi = {
   0x00292400: PDTagDefinition.k5613
 };
 
-const Map<int, PDTagDefinition> MeVis_eatDicom = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MeVis_eatDicom = {
   0x00091000: PDTagDefinition.k5614,
   0x00091100: PDTagDefinition.k5615
 };
 
-const Map<int, PDTagDefinition> MeVis_eD__Timepoint_Information =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MeVis_eD__Timepoint_Information = {
   0x00211000: PDTagDefinition.k5616,
   0x00211100: PDTagDefinition.k5617,
   0x00211200: PDTagDefinition.k5618,
@@ -8056,8 +7935,7 @@ const Map<int, PDTagDefinition> MeVis_eD__Timepoint_Information =
   0x00217100: PDTagDefinition.k5620
 };
 
-const Map<int, PDTagDefinition> MeVis_eD__Absolute_Temporal_Positions =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MeVis_eD__Absolute_Temporal_Positions = {
   0x00211000: PDTagDefinition.k5621,
   0x00211100: PDTagDefinition.k5622,
   0x00211200: PDTagDefinition.k5623,
@@ -8065,14 +7943,15 @@ const Map<int, PDTagDefinition> MeVis_eD__Absolute_Temporal_Positions =
   0x00217100: PDTagDefinition.k5625
 };
 
-const Map<int, PDTagDefinition> MeVis_eD__Geometry_Information =
-    const <int, PDTagDefinition>{0x00211000: PDTagDefinition.k5626};
+const Map<int, PDTagDefinition> MeVis_eD__Geometry_Information = {
+  0x00211000: PDTagDefinition.k5626
+};
 
-const Map<int, PDTagDefinition> MeVis_eD__Slice_Information =
-    const <int, PDTagDefinition>{0x00211000: PDTagDefinition.k5627};
+const Map<int, PDTagDefinition> MeVis_eD__Slice_Information = {
+  0x00211000: PDTagDefinition.k5627
+};
 
-const Map<int, PDTagDefinition> ShowcaseAppearance =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ShowcaseAppearance = {
   0x00291000: PDTagDefinition.k5628,
   0x00291100: PDTagDefinition.k5629,
   0x00291200: PDTagDefinition.k5630,
@@ -8080,7 +7959,7 @@ const Map<int, PDTagDefinition> ShowcaseAppearance =
   0x00291400: PDTagDefinition.k5632
 };
 
-const Map<int, PDTagDefinition> NQHeader = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> NQHeader = {
   0x00990100: PDTagDefinition.k5633,
   0x00990200: PDTagDefinition.k5634,
   0x00990300: PDTagDefinition.k5635,
@@ -8091,7 +7970,7 @@ const Map<int, PDTagDefinition> NQHeader = const <int, PDTagDefinition>{
   0x00992100: PDTagDefinition.k5640
 };
 
-const Map<int, PDTagDefinition> NQRight = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> NQRight = {
   0x02990100: PDTagDefinition.k5697,
   0x02990200: PDTagDefinition.k5698,
   0x02990300: PDTagDefinition.k5699,
@@ -8152,15 +8031,13 @@ const Map<int, PDTagDefinition> NQRight = const <int, PDTagDefinition>{
   0x02993a00: PDTagDefinition.k5754
 };
 
-const Map<int, PDTagDefinition> VEPRO_VIF_3_0_DATA =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> VEPRO_VIF_3_0_DATA = {
   0x00552000: PDTagDefinition.k5755,
   0x00553000: PDTagDefinition.k5756,
   0x00556500: PDTagDefinition.k5757
 };
 
-const Map<int, PDTagDefinition> VEPRO_VIM_5_0_DATA =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> VEPRO_VIM_5_0_DATA = {
   0x00551000: PDTagDefinition.k5758,
   0x00552000: PDTagDefinition.k5759,
   0x00553000: PDTagDefinition.k5760,
@@ -8168,12 +8045,11 @@ const Map<int, PDTagDefinition> VEPRO_VIM_5_0_DATA =
   0x00556500: PDTagDefinition.k5762
 };
 
-const Map<int, PDTagDefinition> VEPRO_BROKER_1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> VEPRO_BROKER_1_0 = {
   0x00571000: PDTagDefinition.k5763
 };
 
-const Map<int, PDTagDefinition> VEPRO_BROKER_1_0_DATA_REPLACE =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> VEPRO_BROKER_1_0_DATA_REPLACE = {
   0x00572000: PDTagDefinition.k5764,
   0x00573000: PDTagDefinition.k5765,
   0x00574000: PDTagDefinition.k5766,
@@ -8183,11 +8059,11 @@ const Map<int, PDTagDefinition> VEPRO_BROKER_1_0_DATA_REPLACE =
   0x00574400: PDTagDefinition.k5770
 };
 
-const Map<int, PDTagDefinition> VEPRO_DICOM_TRANSFER_1_0 =
-    const <int, PDTagDefinition>{0x00591000: PDTagDefinition.k5771};
+const Map<int, PDTagDefinition> VEPRO_DICOM_TRANSFER_1_0 = {
+  0x00591000: PDTagDefinition.k5771
+};
 
-const Map<int, PDTagDefinition> VEPRO_DICOM_RECEIVE_DATA_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> VEPRO_DICOM_RECEIVE_DATA_1_0 = {
   0x00594000: PDTagDefinition.k5772,
   0x00594100: PDTagDefinition.k5773,
   0x00594200: PDTagDefinition.k5778,
@@ -8199,7 +8075,7 @@ const Map<int, PDTagDefinition> VEPRO_DICOM_RECEIVE_DATA_1_0 =
   0x00597000: PDTagDefinition.k5784
 };
 
-const Map<int, PDTagDefinition> KONICA1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> KONICA1_0 = {
   0x00314900: PDTagDefinition.k5774,
   0x00314a00: PDTagDefinition.k5820,
   0x00314b00: PDTagDefinition.k5859,
@@ -8394,7 +8270,7 @@ const Map<int, PDTagDefinition> KONICA1_0 = const <int, PDTagDefinition>{
   0x0031ff00: PDTagDefinition.k6050
 };
 
-const Map<int, PDTagDefinition> CTP = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> CTP = {
   0x00131100: PDTagDefinition.k5775,
   0x00131200: PDTagDefinition.k5776,
   0x00131300: PDTagDefinition.k5777,
@@ -8402,7 +8278,7 @@ const Map<int, PDTagDefinition> CTP = const <int, PDTagDefinition>{
   0x00131400: PDTagDefinition.k10427
 };
 
-const Map<int, PDTagDefinition> dcm4che_archive = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> dcm4che_archive = {
   0x00431000: PDTagDefinition.k5785,
   0x00431100: PDTagDefinition.k5786,
   0x00431200: PDTagDefinition.k5787,
@@ -8414,8 +8290,7 @@ const Map<int, PDTagDefinition> dcm4che_archive = const <int, PDTagDefinition>{
   0x00433000: PDTagDefinition.k5793
 };
 
-const Map<int, PDTagDefinition> IMS_s_r_l__Biopsy_Private_Code =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> IMS_s_r_l__Biopsy_Private_Code = {
   0x12690100: PDTagDefinition.k5794,
   0x12691000: PDTagDefinition.k5795,
   0x12691100: PDTagDefinition.k5796,
@@ -8427,8 +8302,7 @@ const Map<int, PDTagDefinition> IMS_s_r_l__Biopsy_Private_Code =
   0x12692400: PDTagDefinition.k5802
 };
 
-const Map<int, PDTagDefinition> IMS_s_r_l__Mammography_Private_Code =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> IMS_s_r_l__Mammography_Private_Code = {
   0x12710100: PDTagDefinition.k5803,
   0x12710200: PDTagDefinition.k5804,
   0x12711000: PDTagDefinition.k5805,
@@ -8488,7 +8362,7 @@ const Map<int, PDTagDefinition> IMS_s_r_l__Mammography_Private_Code =
   0x12718500: PDTagDefinition.k5861
 };
 
-const Map<int, PDTagDefinition> DZDICOM_4_3_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> DZDICOM_4_3_0 = {
   0x00090100: PDTagDefinition.k6051,
   0x00090200: PDTagDefinition.k6052,
   0x00090300: PDTagDefinition.k6053,
@@ -8516,14 +8390,14 @@ const Map<int, PDTagDefinition> DZDICOM_4_3_0 = const <int, PDTagDefinition>{
   0x0009f900: PDTagDefinition.k6075
 };
 
-const Map<int, PDTagDefinition> FOEM_1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> FOEM_1_0 = {
   0x00195000: PDTagDefinition.k6076,
   0x00251000: PDTagDefinition.k6077,
   0x00251200: PDTagDefinition.k6078,
   0x00292000: PDTagDefinition.k6079
 };
 
-const Map<int, PDTagDefinition> Visus_Change = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Visus_Change = {
   0x55333300: PDTagDefinition.k6080,
   0x55333500: PDTagDefinition.k6081,
   0x55333700: PDTagDefinition.k6082,
@@ -8531,7 +8405,7 @@ const Map<int, PDTagDefinition> Visus_Change = const <int, PDTagDefinition>{
   0x55333b00: PDTagDefinition.k6084
 };
 
-const Map<int, PDTagDefinition> SYNARC_1_0 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SYNARC_1_0 = {
   0x00990100: PDTagDefinition.k6085,
   0x00990200: PDTagDefinition.k6086,
   0x00990300: PDTagDefinition.k6087,
@@ -8539,8 +8413,7 @@ const Map<int, PDTagDefinition> SYNARC_1_0 = const <int, PDTagDefinition>{
   0x00990500: PDTagDefinition.k6089
 };
 
-const Map<int, PDTagDefinition> PixelMed_Publishing =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PixelMed_Publishing = {
   0x00110200: PDTagDefinition.k6090,
   0x00110300: PDTagDefinition.k6091,
   0x00110400: PDTagDefinition.k6092,
@@ -8565,20 +8438,18 @@ const Map<int, PDTagDefinition> PixelMed_Publishing =
   0x7fe10200: PDTagDefinition.k6111
 };
 
-const Map<int, PDTagDefinition> METAEMOTION_GINKGO =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> METAEMOTION_GINKGO = {
   0x00110100: PDTagDefinition.k6112,
   0x00110b00: PDTagDefinition.k6113
 };
 
-const Map<int, PDTagDefinition> METAEMOTION_GINKGO_RETINAL =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> METAEMOTION_GINKGO_RETINAL = {
   0x00110100: PDTagDefinition.k6114,
   0x00110b00: PDTagDefinition.k6115,
   0x00110c00: PDTagDefinition.k6116
 };
 
-const Map<int, PDTagDefinition> PMOD_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PMOD_1 = {
   0x00550100: PDTagDefinition.k6117,
   0x00550200: PDTagDefinition.k6118,
   0x00550300: PDTagDefinition.k6119,
@@ -8586,14 +8457,13 @@ const Map<int, PDTagDefinition> PMOD_1 = const <int, PDTagDefinition>{
   0x00550500: PDTagDefinition.k6121
 };
 
-const Map<int, PDTagDefinition> PMOD_GENPET = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PMOD_GENPET = {
   0x7fe10100: PDTagDefinition.k6122,
   0x7fe10200: PDTagDefinition.k6123,
   0x7fe10300: PDTagDefinition.k6124
 };
 
-const Map<int, PDTagDefinition> ULTRAVISUAL_TAG_SET1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> ULTRAVISUAL_TAG_SET1 = {
   0x00110100: PDTagDefinition.k6125,
   0x00110200: PDTagDefinition.k6126,
   0x00110300: PDTagDefinition.k6127,
@@ -8609,19 +8479,18 @@ const Map<int, PDTagDefinition> ULTRAVISUAL_TAG_SET1 =
   0x00111d00: PDTagDefinition.k6137
 };
 
-const Map<int, PDTagDefinition> MATAKINA_10 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MATAKINA_10 = {
   0x00152800: PDTagDefinition.k6138,
   0x00152900: PDTagDefinition.k6139,
   0x00153000: PDTagDefinition.k6140
 };
 
-const Map<int, PDTagDefinition> PM = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PM = {
   0x01010500: PDTagDefinition.k6141,
   0x01010600: PDTagDefinition.k6142
 };
 
-const Map<int, PDTagDefinition> Biospace_Med___EOS_Tag =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Biospace_Med___EOS_Tag = {
   0x08631000: PDTagDefinition.k6143,
   0x08632300: PDTagDefinition.k6144,
   0x08632600: PDTagDefinition.k6145,
@@ -8645,8 +8514,7 @@ const Map<int, PDTagDefinition> Biospace_Med___EOS_Tag =
   0x08635700: PDTagDefinition.k6163
 };
 
-const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_0019 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_0019 = {
   0x00190000: PDTagDefinition.k6164,
   0x00190100: PDTagDefinition.k6165,
   0x00190200: PDTagDefinition.k6166,
@@ -8654,8 +8522,7 @@ const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_0019 =
   0x00190400: PDTagDefinition.k6168
 };
 
-const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_0021 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_0021 = {
   0x00217000: PDTagDefinition.k6169,
   0x00217100: PDTagDefinition.k6170,
   0x00217200: PDTagDefinition.k6171,
@@ -8665,8 +8532,7 @@ const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_0021 =
   0x00217600: PDTagDefinition.k6175
 };
 
-const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_1001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_1001 = {
   0x1001a000: PDTagDefinition.k6176,
   0x1001a100: PDTagDefinition.k6177,
   0x1001a200: PDTagDefinition.k6178,
@@ -8736,15 +8602,14 @@ const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_1001 =
   0x1001f300: PDTagDefinition.k6243
 };
 
-const Map<int, PDTagDefinition> CAD_Sciences = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> CAD_Sciences = {
   0x33350700: PDTagDefinition.k6217,
   0x33350000: PDTagDefinition.k6322,
   0x33350600: PDTagDefinition.k6323,
   0x33350800: PDTagDefinition.k6324
 };
 
-const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_1003 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_1003 = {
   0x10030100: PDTagDefinition.k6244,
   0x10031000: PDTagDefinition.k6245,
   0x10031100: PDTagDefinition.k6246,
@@ -8773,8 +8638,7 @@ const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_1003 =
   0x10034300: PDTagDefinition.k6269
 };
 
-const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_3007 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_3007 = {
   0x30070000: PDTagDefinition.k6270,
   0x30070100: PDTagDefinition.k6271,
   0x30070200: PDTagDefinition.k6272,
@@ -8782,8 +8646,7 @@ const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_3007 =
   0x30070400: PDTagDefinition.k6274
 };
 
-const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_300B =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_300B = {
   0x300b0000: PDTagDefinition.k6275,
   0x300b0100: PDTagDefinition.k6276,
   0x300b0200: PDTagDefinition.k6277,
@@ -8801,13 +8664,15 @@ const Map<int, PDTagDefinition> PRIVATE_CODE_STRING_300B =
   0x300b0f00: PDTagDefinition.k6289
 };
 
-const Map<int, PDTagDefinition> INSTRU_PRIVATE_IDENT_CODE =
-    const <int, PDTagDefinition>{0x000d0000: PDTagDefinition.k6290};
+const Map<int, PDTagDefinition> INSTRU_PRIVATE_IDENT_CODE = {
+  0x000d0000: PDTagDefinition.k6290
+};
 
-const Map<int, PDTagDefinition> SCANORA_PRIVATE_IDENT_CODE =
-    const <int, PDTagDefinition>{0x000d0000: PDTagDefinition.k6291};
+const Map<int, PDTagDefinition> SCANORA_PRIVATE_IDENT_CODE = {
+  0x000d0000: PDTagDefinition.k6291
+};
 
-const Map<int, PDTagDefinition> NNT = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> NNT = {
   0x00190200: PDTagDefinition.k6292,
   0x00190300: PDTagDefinition.k6293,
   0x00190400: PDTagDefinition.k6294,
@@ -8840,7 +8705,7 @@ const Map<int, PDTagDefinition> NNT = const <int, PDTagDefinition>{
   0x00193300: PDTagDefinition.k6321
 };
 
-const Map<int, PDTagDefinition> iCAD_PK = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> iCAD_PK = {
   0x33351000: PDTagDefinition.k6325,
   0x33351500: PDTagDefinition.k6326,
   0x33351600: PDTagDefinition.k6327,
@@ -8908,7 +8773,7 @@ const Map<int, PDTagDefinition> iCAD_PK = const <int, PDTagDefinition>{
   0x3335c000: PDTagDefinition.k6389
 };
 
-const Map<int, PDTagDefinition> iCAD_PK_Study = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> iCAD_PK_Study = {
   0x33350000: PDTagDefinition.k6390,
   0x33350100: PDTagDefinition.k6391,
   0x33350200: PDTagDefinition.k6392,
@@ -8939,13 +8804,12 @@ const Map<int, PDTagDefinition> iCAD_PK_Study = const <int, PDTagDefinition>{
   0x33351b00: PDTagDefinition.k6417
 };
 
-const Map<int, PDTagDefinition> TomTec = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TomTec = {
   0x7fdf5000: PDTagDefinition.k6418,
   0x7fdf5100: PDTagDefinition.k6419
 };
 
-const Map<int, PDTagDefinition> CARESTREAM_IMAGE_INFORMATION =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> CARESTREAM_IMAGE_INFORMATION = {
   0x00291500: PDTagDefinition.k6420,
   0x00291600: PDTagDefinition.k6421,
   0x00291700: PDTagDefinition.k6422,
@@ -8955,22 +8819,24 @@ const Map<int, PDTagDefinition> CARESTREAM_IMAGE_INFORMATION =
   0x00291b00: PDTagDefinition.k6426
 };
 
-const Map<int, PDTagDefinition> Carestream_Health_TIFF =
-    const <int, PDTagDefinition>{0xffffff00: PDTagDefinition.k6427};
+const Map<int, PDTagDefinition> Carestream_Health_TIFF = {
+  0xffffff00: PDTagDefinition.k6427
+};
 
-const Map<int, PDTagDefinition> RamSoft_File_Kind_Identifier =
-    const <int, PDTagDefinition>{0x31111000: PDTagDefinition.k6428};
+const Map<int, PDTagDefinition> RamSoft_File_Kind_Identifier = {
+  0x31111000: PDTagDefinition.k6428
+};
 
-const Map<int, PDTagDefinition> RamSoft_Custom_Report_Identifier =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> RamSoft_Custom_Report_Identifier = {
   0x31131000: PDTagDefinition.k6429,
   0x31132000: PDTagDefinition.k6430
 };
 
-const Map<int, PDTagDefinition> RamSoft_Race_Identifier =
-    const <int, PDTagDefinition>{0x31291000: PDTagDefinition.k6431};
+const Map<int, PDTagDefinition> RamSoft_Race_Identifier = {
+  0x31291000: PDTagDefinition.k6431
+};
 
-const Map<int, PDTagDefinition> MDDX = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MDDX = {
   0x00110100: PDTagDefinition.k6432,
   0x00110200: PDTagDefinition.k6433,
   0x00110300: PDTagDefinition.k6434,
@@ -8979,14 +8845,15 @@ const Map<int, PDTagDefinition> MDDX = const <int, PDTagDefinition>{
   0x7fe10300: PDTagDefinition.k6437
 };
 
-const Map<int, PDTagDefinition> QTUltrasound = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> QTUltrasound = {
   0x00990000: PDTagDefinition.k6438
 };
 
-const Map<int, PDTagDefinition> BioscanMedisoScivisNanoSPECT =
-    const <int, PDTagDefinition>{0x00093500: PDTagDefinition.k6439};
+const Map<int, PDTagDefinition> BioscanMedisoScivisNanoSPECT = {
+  0x00093500: PDTagDefinition.k6439
+};
 
-const Map<int, PDTagDefinition> MEDISO_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> MEDISO_1 = {
   0x00093000: PDTagDefinition.k6440,
   0x00093600: PDTagDefinition.k6441,
   0x0009c000: PDTagDefinition.k6442,
@@ -9012,7 +8879,7 @@ const Map<int, PDTagDefinition> MEDISO_1 = const <int, PDTagDefinition>{
   0x00110600: PDTagDefinition.k6462
 };
 
-const Map<int, PDTagDefinition> SCIVIS_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SCIVIS_1 = {
   0x6001a000: PDTagDefinition.k6463,
   0x6001a100: PDTagDefinition.k6464,
   0x6001a200: PDTagDefinition.k6465,
@@ -9027,29 +8894,30 @@ const Map<int, PDTagDefinition> SCIVIS_1 = const <int, PDTagDefinition>{
   0x6001ab00: PDTagDefinition.k6474
 };
 
-const Map<int, PDTagDefinition> Brainlab_S9_History =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Brainlab_S9_History = {
   0x00093100: PDTagDefinition.k6475,
   0x00093200: PDTagDefinition.k6476,
   0x00093300: PDTagDefinition.k6477
 };
 
-const Map<int, PDTagDefinition> Brainlab_S32_SO = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Brainlab_S32_SO = {
   0x00630100: PDTagDefinition.k6478,
   0x00631000: PDTagDefinition.k6479
 };
 
-const Map<int, PDTagDefinition> Brainlab_S23_ProjectiveFusion =
-    const <int, PDTagDefinition>{0x00731000: PDTagDefinition.k6480};
+const Map<int, PDTagDefinition> Brainlab_S23_ProjectiveFusion = {
+  0x00731000: PDTagDefinition.k6480
+};
 
-const Map<int, PDTagDefinition> PHILIPS_MR_PART_12 =
-    const <int, PDTagDefinition>{0x0009211000: PDTagDefinition.k6482};
+const Map<int, PDTagDefinition> PHILIPS_MR_PART_12 = {
+  0x0009211000: PDTagDefinition.k6482
+};
 
-const Map<int, PDTagDefinition> PHILIPS_MR_PART_7 =
-    const <int, PDTagDefinition>{0x00190000: PDTagDefinition.k6487};
+const Map<int, PDTagDefinition> PHILIPS_MR_PART_7 = {
+  0x00190000: PDTagDefinition.k6487
+};
 
-const Map<int, PDTagDefinition> SPI_P_CTBE_Release_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_CTBE_Release_1 = {
   0x00190000: PDTagDefinition.k6488,
   0x00190200: PDTagDefinition.k6494,
   0x00190300: PDTagDefinition.k6496,
@@ -9066,15 +8934,13 @@ const Map<int, PDTagDefinition> SPI_P_CTBE_Release_1 =
   0x00191d00: PDTagDefinition.k6516
 };
 
-const Map<int, PDTagDefinition> SPI_P_Private_DiDi_Release_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_Private_DiDi_Release_1 = {
   0x00190000: PDTagDefinition.k6489,
   0x00190100: PDTagDefinition.k6492,
   0x00191000: PDTagDefinition.k6503
 };
 
-const Map<int, PDTagDefinition> SPI_P_XSB_VISUB_Release_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SPI_P_XSB_VISUB_Release_1 = {
   0x00190000: PDTagDefinition.k6490,
   0x00191000: PDTagDefinition.k6504,
   0x00191100: PDTagDefinition.k6505,
@@ -9100,18 +8966,19 @@ const Map<int, PDTagDefinition> SPI_P_XSB_VISUB_Release_1 =
   0x00293f00: PDTagDefinition.k6667
 };
 
-const Map<int, PDTagDefinition> PHILIPS_MR_PART_6 =
-    const <int, PDTagDefinition>{0x00191000: PDTagDefinition.k6501};
+const Map<int, PDTagDefinition> PHILIPS_MR_PART_6 = {
+  0x00191000: PDTagDefinition.k6501
+};
 
-const Map<int, PDTagDefinition> SPI_P_CTBE_Private_Release_1 =
-    const <int, PDTagDefinition>{0x00210000: PDTagDefinition.k6634};
+const Map<int, PDTagDefinition> SPI_P_CTBE_Private_Release_1 = {
+  0x00210000: PDTagDefinition.k6634
+};
 
-const Map<int, PDTagDefinition> PMS_THORA_5_1 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PMS_THORA_5_1 = {
   0x00892000: PDTagDefinition.k6721
 };
 
-const Map<int, PDTagDefinition> Philips_PET_Private_Group =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_PET_Private_Group = {
   0x05110000: PDTagDefinition.k6722,
   0x05110100: PDTagDefinition.k6723,
   0x05110200: PDTagDefinition.k6724,
@@ -9141,17 +9008,16 @@ const Map<int, PDTagDefinition> Philips_PET_Private_Group =
   0x7053c200: PDTagDefinition.k11162
 };
 
-const Map<int, PDTagDefinition> Philips_Imaging_DD_124 =
-    const <int, PDTagDefinition>{0x10010300: PDTagDefinition.k6728};
+const Map<int, PDTagDefinition> Philips_Imaging_DD_124 = {
+  0x10010300: PDTagDefinition.k6728
+};
 
-const Map<int, PDTagDefinition> Philips_Imaging_DD_129 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_Imaging_DD_129 = {
   0x20010000: PDTagDefinition.k6729,
   0x20010100: PDTagDefinition.k6731
 };
 
-const Map<int, PDTagDefinition> Philips_Imaging_DD_002 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_Imaging_DD_002 = {
   0x20010100: PDTagDefinition.k6730,
   0x20010200: PDTagDefinition.k6732,
   0x20011300: PDTagDefinition.k6740,
@@ -9203,8 +9069,7 @@ const Map<int, PDTagDefinition> Philips_Imaging_DD_002 =
   0x20017300: PDTagDefinition.k6865
 };
 
-const Map<int, PDTagDefinition> Philips_X_ray_Imaging_DD_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_X_ray_Imaging_DD_001 = {
   0x20030000: PDTagDefinition.k6932,
   0x20030100: PDTagDefinition.k6933,
   0x20030200: PDTagDefinition.k6934,
@@ -9238,8 +9103,7 @@ const Map<int, PDTagDefinition> Philips_X_ray_Imaging_DD_001 =
   0x20033200: PDTagDefinition.k6962
 };
 
-const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_003 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_003 = {
   0x20050000: PDTagDefinition.k6965,
   0x20050100: PDTagDefinition.k6970,
   0x20051300: PDTagDefinition.k7025,
@@ -9263,8 +9127,7 @@ const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_003 =
   0x20058200: PDTagDefinition.k7387
 };
 
-const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_004 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_004 = {
   0x20050000: PDTagDefinition.k6966,
   0x20050100: PDTagDefinition.k6971,
   0x20050200: PDTagDefinition.k6975,
@@ -9360,8 +9223,7 @@ const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_004 =
   0x20059900: PDTagDefinition.k7433
 };
 
-const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_002 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_002 = {
   0x20051500: PDTagDefinition.k7034,
   0x20051600: PDTagDefinition.k7039,
   0x20051700: PDTagDefinition.k7044,
@@ -9387,11 +9249,11 @@ const Map<int, PDTagDefinition> Philips_MR_Imaging_DD_002 =
   0x20059900: PDTagDefinition.k7432
 };
 
-const Map<int, PDTagDefinition> Philips_EV_Imaging_DD_022 =
-    const <int, PDTagDefinition>{0x20070000: PDTagDefinition.k7465};
+const Map<int, PDTagDefinition> Philips_EV_Imaging_DD_022 = {
+  0x20070000: PDTagDefinition.k7465
+};
 
-const Map<int, PDTagDefinition> Philips_RAD_Imaging_DD_001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_RAD_Imaging_DD_001 = {
   0x200b0000: PDTagDefinition.k7466,
   0x200b0100: PDTagDefinition.k7468,
   0x200b0200: PDTagDefinition.k7470,
@@ -9417,8 +9279,7 @@ const Map<int, PDTagDefinition> Philips_RAD_Imaging_DD_001 =
   0x200b5200: PDTagDefinition.k7493
 };
 
-const Map<int, PDTagDefinition> Philips_RAD_Imaging_DD_097 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_RAD_Imaging_DD_097 = {
   0x200b0000: PDTagDefinition.k7467,
   0x200b0100: PDTagDefinition.k7469,
   0x200b0200: PDTagDefinition.k7471,
@@ -9457,8 +9318,7 @@ const Map<int, PDTagDefinition> Philips_RAD_Imaging_DD_097 =
   0x200ba000: PDTagDefinition.k7524
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_033 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_033 = {
   0x200d0000: PDTagDefinition.k7525,
   0x200d0100: PDTagDefinition.k7528,
   0x200d0200: PDTagDefinition.k7540,
@@ -9477,8 +9337,7 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_033 =
   0x200d2100: PDTagDefinition.k7726
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_066 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_066 = {
   0x200d0000: PDTagDefinition.k7526,
   0x200d0100: PDTagDefinition.k7537,
   0x200d0200: PDTagDefinition.k7547,
@@ -9486,8 +9345,7 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_066 =
   0x200d0400: PDTagDefinition.k7569
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_109 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_109 = {
   0x200d0000: PDTagDefinition.k7527,
   0x200d0100: PDTagDefinition.k7538,
   0x200d0200: PDTagDefinition.k7548,
@@ -9511,8 +9369,7 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_109 =
   0x200d1400: PDTagDefinition.k7678
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_034 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_034 = {
   0x200d0100: PDTagDefinition.k7529,
   0x200d0200: PDTagDefinition.k7541,
   0x200d0300: PDTagDefinition.k7551,
@@ -9549,8 +9406,7 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_034 =
   0x200d2800: PDTagDefinition.k7751
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_035 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_035 = {
   0x200d0100: PDTagDefinition.k7530,
   0x200d0300: PDTagDefinition.k7552,
   0x200d0400: PDTagDefinition.k7563,
@@ -9562,16 +9418,14 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_035 =
   0x200d0d00: PDTagDefinition.k7633
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_038 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_038 = {
   0x200d0100: PDTagDefinition.k7531,
   0x200d0200: PDTagDefinition.k7543,
   0x200d0300: PDTagDefinition.k7554,
   0x200d0400: PDTagDefinition.k7565
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_039 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_039 = {
   0x200d0100: PDTagDefinition.k7532,
   0x200d0200: PDTagDefinition.k7544,
   0x200d0300: PDTagDefinition.k7555,
@@ -9605,8 +9459,7 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_039 =
   0x200d6100: PDTagDefinition.k7812
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_040 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_040 = {
   0x200d0100: PDTagDefinition.k7533,
   0x200d0200: PDTagDefinition.k7545,
   0x200d0300: PDTagDefinition.k7556,
@@ -9617,8 +9470,7 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_040 =
   0x200d2000: PDTagDefinition.k7723
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_041 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_041 = {
   0x200d0100: PDTagDefinition.k7534,
   0x200d0200: PDTagDefinition.k7546,
   0x200d0300: PDTagDefinition.k7557,
@@ -9650,11 +9502,11 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_041 =
   0x200d3000: PDTagDefinition.k7763
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_048 =
-    const <int, PDTagDefinition>{0x200d0100: PDTagDefinition.k7535};
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_048 = {
+  0x200d0100: PDTagDefinition.k7535
+};
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_113 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_113 = {
   0x200d0100: PDTagDefinition.k7539,
   0x200d0200: PDTagDefinition.k7549,
   0x200d0300: PDTagDefinition.k7560,
@@ -9696,8 +9548,7 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_113 =
   0x200d3100: PDTagDefinition.k7768
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_037 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_037 = {
   0x200d0200: PDTagDefinition.k7542,
   0x200d0300: PDTagDefinition.k7553,
   0x200d0400: PDTagDefinition.k7564,
@@ -9711,11 +9562,11 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_037 =
   0x200d0f00: PDTagDefinition.k7646
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_017 =
-    const <int, PDTagDefinition>{0x200d0500: PDTagDefinition.k7572};
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_017 = {
+  0x200d0500: PDTagDefinition.k7572
+};
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_043 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_043 = {
   0x200d0500: PDTagDefinition.k7577,
   0x200d0900: PDTagDefinition.k7608,
   0x200d0a00: PDTagDefinition.k7615,
@@ -9760,14 +9611,15 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_043 =
   0x200d4200: PDTagDefinition.k7782
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_021 =
-    const <int, PDTagDefinition>{0x200d0700: PDTagDefinition.k7587};
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_021 = {
+  0x200d0700: PDTagDefinition.k7587
+};
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_065 =
-    const <int, PDTagDefinition>{0x200d0700: PDTagDefinition.k7593};
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_065 = {
+  0x200d0700: PDTagDefinition.k7593
+};
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_036 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_036 = {
   0x200d1500: PDTagDefinition.k7681,
   0x200d1600: PDTagDefinition.k7686,
   0x200d1700: PDTagDefinition.k7690,
@@ -9776,8 +9628,7 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_036 =
   0x200d2000: PDTagDefinition.k7722
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_042 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_042 = {
   0x200d1500: PDTagDefinition.k7684,
   0x200d1600: PDTagDefinition.k7688,
   0x200d2000: PDTagDefinition.k7724,
@@ -9813,21 +9664,18 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_042 =
   0x200d8c00: PDTagDefinition.k7822
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_046 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_046 = {
   0x200d1700: PDTagDefinition.k7693,
   0x200d1900: PDTagDefinition.k7701
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_023 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_023 = {
   0x200d3700: PDTagDefinition.k7774,
   0x200d3800: PDTagDefinition.k7776,
   0x200d4500: PDTagDefinition.k7783
 };
 
-const Map<int, PDTagDefinition> Philips_US_Imaging_DD_045 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_US_Imaging_DD_045 = {
   0x200df100: PDTagDefinition.k7823,
   0x200df300: PDTagDefinition.k7824,
   0x200df400: PDTagDefinition.k7825,
@@ -9838,16 +9686,14 @@ const Map<int, PDTagDefinition> Philips_US_Imaging_DD_045 =
   0x200dfb00: PDTagDefinition.k7831
 };
 
-const Map<int, PDTagDefinition> Philips_Imaging_DD_067 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_Imaging_DD_067 = {
   0x40010000: PDTagDefinition.k7832,
   0x40010100: PDTagDefinition.k7833,
   0x40010800: PDTagDefinition.k7834,
   0x40010900: PDTagDefinition.k7835
 };
 
-const Map<int, PDTagDefinition> Philips_Imaging_DD_070 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_Imaging_DD_070 = {
   0x40011000: PDTagDefinition.k7836,
   0x40011100: PDTagDefinition.k7837,
   0x40011200: PDTagDefinition.k7838,
@@ -9859,11 +9705,11 @@ const Map<int, PDTagDefinition> Philips_Imaging_DD_070 =
   0x40011d00: PDTagDefinition.k7844
 };
 
-const Map<int, PDTagDefinition> Philips_Imaging_DD_065 =
-    const <int, PDTagDefinition>{0x40070000: PDTagDefinition.k7845};
+const Map<int, PDTagDefinition> Philips_Imaging_DD_065 = {
+  0x40070000: PDTagDefinition.k7845
+};
 
-const Map<int, PDTagDefinition> Philips_Imaging_DD_073 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Philips_Imaging_DD_073 = {
   0x40074800: PDTagDefinition.k7846,
   0x40074b00: PDTagDefinition.k7847,
   0x40074c00: PDTagDefinition.k7848,
@@ -9872,11 +9718,11 @@ const Map<int, PDTagDefinition> Philips_Imaging_DD_073 =
   0x40074f00: PDTagDefinition.k7851
 };
 
-const Map<int, PDTagDefinition> Philips_NM_Private_Group =
-    const <int, PDTagDefinition>{0x70430000: PDTagDefinition.k7852};
+const Map<int, PDTagDefinition> Philips_NM_Private_Group = {
+  0x70430000: PDTagDefinition.k7852
+};
 
-const Map<int, PDTagDefinition> PHILIPS_NM__Private =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PHILIPS_NM__Private = {
   0x70510000: PDTagDefinition.k7853,
   0x70510100: PDTagDefinition.k7854,
   0x70510200: PDTagDefinition.k7856,
@@ -9896,14 +9742,12 @@ const Map<int, PDTagDefinition> PHILIPS_NM__Private =
   0x70512900: PDTagDefinition.k7871
 };
 
-const Map<int, PDTagDefinition> PHILIPS_XCT__Private =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PHILIPS_XCT__Private = {
   0x70510100: PDTagDefinition.k7855,
   0x70510200: PDTagDefinition.k7857
 };
 
-const Map<int, PDTagDefinition> Picker_MR_Private_Group =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Picker_MR_Private_Group = {
   0x71010000: PDTagDefinition.k7893,
   0x71010100: PDTagDefinition.k7894,
   0x71010200: PDTagDefinition.k7895,
@@ -9914,13 +9758,12 @@ const Map<int, PDTagDefinition> Picker_MR_Private_Group =
   0x71011000: PDTagDefinition.k7900
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_INSTANCE_MANIFEST =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_INSTANCE_MANIFEST = {
   0x00090000: PDTagDefinition.k7901,
   0x00091000: PDTagDefinition.k7902
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_NM = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_NM = {
   0x00098000: PDTagDefinition.k7909,
   0x00111000: PDTagDefinition.k7927,
   0x00170000: PDTagDefinition.k7944,
@@ -10115,8 +9958,7 @@ const Map<int, PDTagDefinition> SIEMENS_MED_NM = const <int, PDTagDefinition>{
   0x7fe32900: PDTagDefinition.k11166
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_INDEX_SERVICE =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_INDEX_SERVICE = {
   0x00092000: PDTagDefinition.k7910,
   0x0009a000: PDTagDefinition.k7911,
   0x00094000: PDTagDefinition.k7912,
@@ -10134,14 +9976,12 @@ const Map<int, PDTagDefinition> SIEMENS_SYNGO_INDEX_SERVICE =
   0x00095000: PDTagDefinition.k7924
 };
 
-const Map<int, PDTagDefinition> SIEMENS_AX_INSPACE_EP =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_AX_INSPACE_EP = {
   0x00095000: PDTagDefinition.k7925,
   0x00095100: PDTagDefinition.k7926
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_DATAMAPPING_ATTRIBUTES =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_DATAMAPPING_ATTRIBUTES = {
   0x00110100: PDTagDefinition.k7928,
   0x00110200: PDTagDefinition.k7929,
   0x00110300: PDTagDefinition.k7930,
@@ -10159,17 +9999,16 @@ const Map<int, PDTagDefinition> SIEMENS_MR_DATAMAPPING_ATTRIBUTES =
   0x00110f00: PDTagDefinition.k7942
 };
 
-const Map<int, PDTagDefinition> ESOFT_DICOM_ECAT_OWNERCODE =
-    const <int, PDTagDefinition>{0x00150000: PDTagDefinition.k7943};
+const Map<int, PDTagDefinition> ESOFT_DICOM_ECAT_OWNERCODE = {
+  0x00150000: PDTagDefinition.k7943
+};
 
-const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Version =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Version = {
   0x00170000: PDTagDefinition.k7945,
   0x00170100: PDTagDefinition.k7946
 };
 
-const Map<int, PDTagDefinition> SIEMENS_FLCOMPACT_VA01A_PROC =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_FLCOMPACT_VA01A_PROC = {
   0x00170a00: PDTagDefinition.k7950,
   0x00170b00: PDTagDefinition.k7951,
   0x00170c00: PDTagDefinition.k7952,
@@ -10237,8 +10076,7 @@ const Map<int, PDTagDefinition> SIEMENS_FLCOMPACT_VA01A_PROC =
   0x0017c000: PDTagDefinition.k8015
 };
 
-const Map<int, PDTagDefinition> SIEMENS_DFR_01_ORIGINAL =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_DFR_01_ORIGINAL = {
   0x00171100: PDTagDefinition.k8016,
   0x00171200: PDTagDefinition.k8017,
   0x00171400: PDTagDefinition.k8018,
@@ -10284,8 +10122,7 @@ const Map<int, PDTagDefinition> SIEMENS_DFR_01_ORIGINAL =
   0x0017c200: PDTagDefinition.k8058
 };
 
-const Map<int, PDTagDefinition> SIEMENS_DFR_01_MANIPULATED =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_DFR_01_MANIPULATED = {
   0x00171100: PDTagDefinition.k8059,
   0x00171200: PDTagDefinition.k8060,
   0x00171400: PDTagDefinition.k8061,
@@ -10316,8 +10153,7 @@ const Map<int, PDTagDefinition> SIEMENS_DFR_01_MANIPULATED =
   0x0017a300: PDTagDefinition.k8086
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_SP_DXMG_WH_AWS_1 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_SP_DXMG_WH_AWS_1 = {
   0x00190100: PDTagDefinition.k8087,
   0x00190200: PDTagDefinition.k8088,
   0x00191000: PDTagDefinition.k8089,
@@ -10334,7 +10170,7 @@ const Map<int, PDTagDefinition> SIEMENS_MED_SP_DXMG_WH_AWS_1 =
   0x00550100: PDTagDefinition.k8884
 };
 
-const Map<int, PDTagDefinition> SIEMENS_Selma = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_Selma = {
   0x00190600: PDTagDefinition.k8172,
   0x00190700: PDTagDefinition.k8173,
   0x00190800: PDTagDefinition.k8174,
@@ -10348,12 +10184,11 @@ const Map<int, PDTagDefinition> SIEMENS_Selma = const <int, PDTagDefinition>{
   0x00193500: PDTagDefinition.k8182
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SIENET = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SIENET = {
   0x00190100: PDTagDefinition.k8198
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_ANTARES =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_ANTARES = {
   0x00190000: PDTagDefinition.k8199,
   0x00190300: PDTagDefinition.k8200,
   0x00190c00: PDTagDefinition.k8201,
@@ -10407,8 +10242,7 @@ const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_ANTARES =
   0x0019a000: PDTagDefinition.k8256
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_VOLUME =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_VOLUME = {
   0x00294400: PDTagDefinition.k8207,
   0x00294600: PDTagDefinition.k8260,
   0x00294700: PDTagDefinition.k8305,
@@ -10422,11 +10256,11 @@ const Map<int, PDTagDefinition> SIEMENS_SYNGO_VOLUME =
   0x00294200: PDTagDefinition.k8516
 };
 
-const Map<int, PDTagDefinition> Siemens_Ultrasound_Miscellaneous =
-    const <int, PDTagDefinition>{0x00192000: PDTagDefinition.k8257};
+const Map<int, PDTagDefinition> Siemens_Ultrasound_Miscellaneous = {
+  0x00192000: PDTagDefinition.k8257
+};
 
-const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Lab_Settings =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Lab_Settings = {
   0x00190000: PDTagDefinition.k8258,
   0x00190100: PDTagDefinition.k8259,
   0x00190200: PDTagDefinition.k8261,
@@ -10448,8 +10282,7 @@ const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Lab_Settings =
   0x00213100: PDTagDefinition.k8427
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_S2000 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_S2000 = {
   0x00190000: PDTagDefinition.k8268,
   0x00190300: PDTagDefinition.k8269,
   0x00190c00: PDTagDefinition.k8270,
@@ -10503,14 +10336,12 @@ const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_S2000 =
   0x00199500: PDTagDefinition.k8319
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_ECAT_FILE_INFO =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_ECAT_FILE_INFO = {
   0x00210000: PDTagDefinition.k8322,
   0x00210100: PDTagDefinition.k8323
 };
 
-const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Post_Processing =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Post_Processing = {
   0x00210000: PDTagDefinition.k8390,
   0x00210100: PDTagDefinition.k8391,
   0x00210200: PDTagDefinition.k8392,
@@ -10540,11 +10371,11 @@ const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Post_Processing =
   0x00213100: PDTagDefinition.k8416
 };
 
-const Map<int, PDTagDefinition> KINETDX_GRAPHICS = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> KINETDX_GRAPHICS = {
   0x0021a400: PDTagDefinition.k8428
 };
 
-const Map<int, PDTagDefinition> KINETDX = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> KINETDX = {
   0x0021a600: PDTagDefinition.k8429,
   0x0021a500: PDTagDefinition.k8430,
   0x0021a800: PDTagDefinition.k8431,
@@ -10554,14 +10385,13 @@ const Map<int, PDTagDefinition> KINETDX = const <int, PDTagDefinition>{
   0x0021b400: PDTagDefinition.k8435
 };
 
-const Map<int, PDTagDefinition> syngoDynamics = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> syngoDynamics = {
   0x0021ae00: PDTagDefinition.k8436,
   0x0021b000: PDTagDefinition.k8437,
   0x0021b100: PDTagDefinition.k8438
 };
 
-const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Image_Stamp =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Image_Stamp = {
   0x00230000: PDTagDefinition.k8440,
   0x00230100: PDTagDefinition.k8441,
   0x00230200: PDTagDefinition.k8442,
@@ -10569,8 +10399,7 @@ const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Image_Stamp =
   0x00230400: PDTagDefinition.k8444
 };
 
-const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Raw_Image_Settings =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Raw_Image_Settings = {
   0x00250000: PDTagDefinition.k8452,
   0x00250100: PDTagDefinition.k8453,
   0x00250200: PDTagDefinition.k8454,
@@ -10611,50 +10440,46 @@ const Map<int, PDTagDefinition> Siemens__Thorax_Multix_FD_Raw_Image_Settings =
   0x00253700: PDTagDefinition.k8490
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_ENHANCED_IDATASET_API =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_ENHANCED_IDATASET_API = {
   0x00270100: PDTagDefinition.k8491,
   0x00270200: PDTagDefinition.k8492,
   0x00270300: PDTagDefinition.k8493
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_FUNCTION_ASSIGNMENT =
-    const <int, PDTagDefinition>{0x00290100: PDTagDefinition.k8494};
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_FUNCTION_ASSIGNMENT = {
+  0x00290100: PDTagDefinition.k8494
+};
 
-const Map<int, PDTagDefinition> SHS_MagicView_300 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SHS_MagicView_300 = {
   0x00290200: PDTagDefinition.k8495,
   0x00290300: PDTagDefinition.k8496
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_MAMMO =
-    const <int, PDTagDefinition>{0x00295a00: PDTagDefinition.k8498};
+const Map<int, PDTagDefinition> SIEMENS_MED_MAMMO = {
+  0x00295a00: PDTagDefinition.k8498
+};
 
-const Map<int, PDTagDefinition> SIEMENS_MED_DISPLAY_0000 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_DISPLAY_0000 = {
   0x00299900: PDTagDefinition.k8499,
   0x0029c100: PDTagDefinition.k8500,
   0x0029b000: PDTagDefinition.k8501,
   0x0029b200: PDTagDefinition.k8502
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_DISPLAY_0001 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_DISPLAY_0001 = {
   0x00299900: PDTagDefinition.k8503,
   0x0029a000: PDTagDefinition.k8504,
   0x0029a100: PDTagDefinition.k8505,
   0x0029a200: PDTagDefinition.k8506
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_TIME_POINT_SERVICE =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_TIME_POINT_SERVICE = {
   0x00290100: PDTagDefinition.k8522,
   0x00290200: PDTagDefinition.k8523,
   0x00295000: PDTagDefinition.k8524
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_ADVANCED_PRESENTATION =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_ADVANCED_PRESENTATION = {
   0x00290000: PDTagDefinition.k8525,
   0x00290100: PDTagDefinition.k8526,
   0x00290200: PDTagDefinition.k8527,
@@ -10844,8 +10669,7 @@ const Map<int, PDTagDefinition> SIEMENS_SYNGO_ADVANCED_PRESENTATION =
   0x0029fd00: PDTagDefinition.k8713
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_FRAME_SET =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_FRAME_SET = {
   0x00291000: PDTagDefinition.k8714,
   0x00291200: PDTagDefinition.k8715,
   0x00291400: PDTagDefinition.k8716,
@@ -10854,17 +10678,19 @@ const Map<int, PDTagDefinition> SIEMENS_SYNGO_FRAME_SET =
   0x00292000: PDTagDefinition.k8719
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_PRINT_SERVICE =
-    const <int, PDTagDefinition>{0x00291000: PDTagDefinition.k8720};
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_PRINT_SERVICE = {
+  0x00291000: PDTagDefinition.k8720
+};
 
-const Map<int, PDTagDefinition> SIEMENS_IKM_CKS_LUNGCAD_BMK =
-    const <int, PDTagDefinition>{0x00290100: PDTagDefinition.k8721};
+const Map<int, PDTagDefinition> SIEMENS_IKM_CKS_LUNGCAD_BMK = {
+  0x00290100: PDTagDefinition.k8721
+};
 
-const Map<int, PDTagDefinition> SIEMENS_IKM_CKS_CXRCAD_FINDINGS =
-    const <int, PDTagDefinition>{0x00290100: PDTagDefinition.k8722};
+const Map<int, PDTagDefinition> SIEMENS_IKM_CKS_CXRCAD_FINDINGS = {
+  0x00290100: PDTagDefinition.k8722
+};
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_SOP_CLASS_PACKING =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_SOP_CLASS_PACKING = {
   0x00311000: PDTagDefinition.k8738,
   0x00312000: PDTagDefinition.k8739,
   0x00312100: PDTagDefinition.k8740,
@@ -10886,22 +10712,19 @@ const Map<int, PDTagDefinition> SIEMENS_SYNGO_SOP_CLASS_PACKING =
   0x00318000: PDTagDefinition.k8762
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CSA_ENVELOPE =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CSA_ENVELOPE = {
   0x00291100: PDTagDefinition.k8752,
   0x00291000: PDTagDefinition.k10564
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CSA_REPORT =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CSA_REPORT = {
   0x00290800: PDTagDefinition.k8753,
   0x00290900: PDTagDefinition.k8754,
   0x00291500: PDTagDefinition.k8755,
   0x00291700: PDTagDefinition.k8756
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_WORKFLOW =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_WORKFLOW = {
   0x00311000: PDTagDefinition.k8763,
   0x00311100: PDTagDefinition.k8764,
   0x00311200: PDTagDefinition.k8765,
@@ -10940,30 +10763,28 @@ const Map<int, PDTagDefinition> SIEMENS_SYNGO_WORKFLOW =
   0x00318300: PDTagDefinition.k8798
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MI_RWVM_SUV =
-    const <int, PDTagDefinition>{0x00410100: PDTagDefinition.k8812};
+const Map<int, PDTagDefinition> SIEMENS_MI_RWVM_SUV = {
+  0x00410100: PDTagDefinition.k8812
+};
 
-const Map<int, PDTagDefinition> SIEMENS_WH_SR_1_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_WH_SR_1_0 = {
   0x00710100: PDTagDefinition.k8910,
   0x00710200: PDTagDefinition.k8911
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_PT = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_PT = {
   0x00712300: PDTagDefinition.k8912,
   0x00712400: PDTagDefinition.k8913,
   0x00712100: PDTagDefinition.k8958,
   0x00712200: PDTagDefinition.k8959
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_REGISTRATION =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_REGISTRATION = {
   0x00712000: PDTagDefinition.k8914,
   0x00712100: PDTagDefinition.k8915
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_OBJECT_GRAPHICS =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_OBJECT_GRAPHICS = {
   0x00710000: PDTagDefinition.k8916,
   0x00710100: PDTagDefinition.k8960,
   0x00710200: PDTagDefinition.k8961,
@@ -11088,8 +10909,7 @@ const Map<int, PDTagDefinition> SIEMENS_SYNGO_OBJECT_GRAPHICS =
   0x0071b700: PDTagDefinition.k9080
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_PT_WAVEFORM =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_PT_WAVEFORM = {
   0x00714600: PDTagDefinition.k8953,
   0x00714700: PDTagDefinition.k8954,
   0x00714800: PDTagDefinition.k8955,
@@ -11097,8 +10917,7 @@ const Map<int, PDTagDefinition> SIEMENS_MED_PT_WAVEFORM =
   0x00715000: PDTagDefinition.k8957
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_LAYOUT_PROTOCOL =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_LAYOUT_PROTOCOL = {
   0x00730200: PDTagDefinition.k9081,
   0x00730400: PDTagDefinition.k9082,
   0x00730600: PDTagDefinition.k9083,
@@ -11207,8 +11026,7 @@ const Map<int, PDTagDefinition> SIEMENS_SYNGO_LAYOUT_PROTOCOL =
   0x0073ff00: PDTagDefinition.k9186
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_EVIDENCE_DOCUMENT_DATA =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_EVIDENCE_DOCUMENT_DATA = {
   0x00771000: PDTagDefinition.k9202,
   0x00771100: PDTagDefinition.k9203,
   0x00772000: PDTagDefinition.k9204,
@@ -11223,10 +11041,11 @@ const Map<int, PDTagDefinition> SIEMENS_SYNGO_EVIDENCE_DOCUMENT_DATA =
   0x00778000: PDTagDefinition.k9213
 };
 
-const Map<int, PDTagDefinition> syngoDynamics_Reporting =
-    const <int, PDTagDefinition>{0x0021ad00: PDTagDefinition.k9214};
+const Map<int, PDTagDefinition> syngoDynamics_Reporting = {
+  0x0021ad00: PDTagDefinition.k9214
+};
 
-const Map<int, PDTagDefinition> SIEMENS_MR_N3D = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_N3D = {
   0x00214a00: PDTagDefinition.k9215,
   0x00213000: PDTagDefinition.k9387,
   0x00213100: PDTagDefinition.k9388,
@@ -11339,22 +11158,19 @@ const Map<int, PDTagDefinition> SIEMENS_MR_N3D = const <int, PDTagDefinition>{
   0x0021c200: PDTagDefinition.k9495
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_ENCAPSULATED_DOCUMENT_DATA =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_ENCAPSULATED_DOCUMENT_DATA = {
   0x00872000: PDTagDefinition.k9216,
   0x00873000: PDTagDefinition.k9217,
   0x00874000: PDTagDefinition.k9218
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_3D_FUSION_MATRIX =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_3D_FUSION_MATRIX = {
   0x00290800: PDTagDefinition.k9219,
   0x00290900: PDTagDefinition.k9220,
   0x00291000: PDTagDefinition.k9221
 };
 
-const Map<int, PDTagDefinition> SIEMENS_Ultrasound_SC2000 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_Ultrasound_SC2000 = {
   0x00192d00: PDTagDefinition.k9222,
   0x00197200: PDTagDefinition.k9223,
   0x00198800: PDTagDefinition.k9224,
@@ -11399,11 +11215,11 @@ const Map<int, PDTagDefinition> SIEMENS_Ultrasound_SC2000 =
   0x7fd11100: PDTagDefinition.k9263
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SYNGO_DATA_PADDING =
-    const <int, PDTagDefinition>{0x7fdffc00: PDTagDefinition.k9264};
+const Map<int, PDTagDefinition> SIEMENS_SYNGO_DATA_PADDING = {
+  0x7fdffc00: PDTagDefinition.k9264
+};
 
-const Map<int, PDTagDefinition> SIEMENS_MR_HEADER =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_HEADER = {
   0x00190800: PDTagDefinition.k9265,
   0x00190900: PDTagDefinition.k9266,
   0x00190a00: PDTagDefinition.k9267,
@@ -11444,8 +11260,7 @@ const Map<int, PDTagDefinition> SIEMENS_MR_HEADER =
   0x00511900: PDTagDefinition.k9607
 };
 
-const Map<int, PDTagDefinition> SIEMENS_SERIES_SHADOW_ATTRIBUTES =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_SERIES_SHADOW_ATTRIBUTES = {
   0x00210100: PDTagDefinition.k9287,
   0x00210200: PDTagDefinition.k9288,
   0x00210300: PDTagDefinition.k9289,
@@ -11495,8 +11310,7 @@ const Map<int, PDTagDefinition> SIEMENS_SERIES_SHADOW_ATTRIBUTES =
   0x00213b00: PDTagDefinition.k9333
 };
 
-const Map<int, PDTagDefinition> SIEMENS_IMAGE_SHADOW_ATTRIBUTES =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_IMAGE_SHADOW_ATTRIBUTES = {
   0x00210100: PDTagDefinition.k9334,
   0x00210200: PDTagDefinition.k9335,
   0x00210300: PDTagDefinition.k9336,
@@ -11551,20 +11365,18 @@ const Map<int, PDTagDefinition> SIEMENS_IMAGE_SHADOW_ATTRIBUTES =
   0x00215e00: PDTagDefinition.k9385
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_IMA = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_IMA = {
   0x00210100: PDTagDefinition.k9386
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_PHOENIX_ATTRIBUTES =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_PHOENIX_ATTRIBUTES = {
   0x00210100: PDTagDefinition.k9496,
   0x00210200: PDTagDefinition.k9497,
   0x00210300: PDTagDefinition.k9498,
   0x0021f100: PDTagDefinition.k9499
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_SDS_01 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_SDS_01 = {
   0x0021fe00: PDTagDefinition.k9500,
   0x00210100: PDTagDefinition.k9501,
   0x00210200: PDTagDefinition.k9502,
@@ -11640,8 +11452,7 @@ const Map<int, PDTagDefinition> SIEMENS_MR_SDS_01 =
   0x00215300: PDTagDefinition.k9572
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_MRS_05 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_MRS_05 = {
   0x00210100: PDTagDefinition.k9573,
   0x00210200: PDTagDefinition.k9574,
   0x00210300: PDTagDefinition.k9575,
@@ -11660,15 +11471,13 @@ const Map<int, PDTagDefinition> SIEMENS_MR_MRS_05 =
   0x00214b00: PDTagDefinition.k9588
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_EXTRACTED_CSA_HEADER =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_EXTRACTED_CSA_HEADER = {
   0x00250100: PDTagDefinition.k9589,
   0x00250200: PDTagDefinition.k9590,
   0x00250300: PDTagDefinition.k9591
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_SDI_02 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_SDI_02 = {
   0x00210100: PDTagDefinition.k9608,
   0x00210200: PDTagDefinition.k9609,
   0x00210300: PDTagDefinition.k9610,
@@ -11762,20 +11571,20 @@ const Map<int, PDTagDefinition> SIEMENS_MR_SDI_02 =
   0x0021fe00: PDTagDefinition.k9698
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_CM_03 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_CM_03 = {
   0x00210100: PDTagDefinition.k9699,
   0x00210200: PDTagDefinition.k9700
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_PS_04 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MR_PS_04 = {
   0x00210100: PDTagDefinition.k9701
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MR_FOR_06 =
-    const <int, PDTagDefinition>{0x00210100: PDTagDefinition.k9702};
+const Map<int, PDTagDefinition> SIEMENS_MR_FOR_06 = {
+  0x00210100: PDTagDefinition.k9702
+};
 
-const Map<int, PDTagDefinition> SIEMENS_CT_APPL_DATASET =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CT_APPL_DATASET = {
   0x00290000: PDTagDefinition.k9703,
   0x00290100: PDTagDefinition.k9704,
   0x00290200: PDTagDefinition.k9705,
@@ -11830,18 +11639,17 @@ const Map<int, PDTagDefinition> SIEMENS_CT_APPL_DATASET =
   0x00294500: PDTagDefinition.k9754
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CT_APPL_EVIDENCEDOCUMENT =
-    const <int, PDTagDefinition>{0x00290000: PDTagDefinition.k9755};
+const Map<int, PDTagDefinition> SIEMENS_CT_APPL_EVIDENCEDOCUMENT = {
+  0x00290000: PDTagDefinition.k9755
+};
 
-const Map<int, PDTagDefinition> SIEMENS_CT_APPL_MEASUREMENT =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CT_APPL_MEASUREMENT = {
   0x00290000: PDTagDefinition.k9756,
   0x00290100: PDTagDefinition.k9757,
   0x00291000: PDTagDefinition.k9758
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CT_APPL_PRESENTATION =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_CT_APPL_PRESENTATION = {
   0x00290000: PDTagDefinition.k9759,
   0x00290100: PDTagDefinition.k9760,
   0x00290200: PDTagDefinition.k9761,
@@ -11855,11 +11663,11 @@ const Map<int, PDTagDefinition> SIEMENS_CT_APPL_PRESENTATION =
   0x00291000: PDTagDefinition.k9769
 };
 
-const Map<int, PDTagDefinition> SIEMENS_CT_APPL_TMP_DATAMODEL =
-    const <int, PDTagDefinition>{0x00290000: PDTagDefinition.k9770};
+const Map<int, PDTagDefinition> SIEMENS_CT_APPL_TMP_DATAMODEL = {
+  0x00290000: PDTagDefinition.k9770
+};
 
-const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_ANTARES_3D_VOLUME =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_ANTARES_3D_VOLUME = {
   0x00390000: PDTagDefinition.k9771,
   0x00390300: PDTagDefinition.k9772,
   0x00390400: PDTagDefinition.k9773,
@@ -11998,8 +11806,7 @@ const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_ANTARES_3D_VOLUME =
   0x0039f600: PDTagDefinition.k9906
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_S2000_3D_VOLUME =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_S2000_3D_VOLUME = {
   0x00395000: PDTagDefinition.k9907,
   0x00395100: PDTagDefinition.k9908,
   0x00395200: PDTagDefinition.k9909,
@@ -12101,16 +11908,19 @@ const Map<int, PDTagDefinition> SIEMENS_MED_SMS_USG_S2000_3D_VOLUME =
   0x0039f600: PDTagDefinition.k10006
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_OCS_BEAM_DISPLAY_INFO =
-    const <int, PDTagDefinition>{0x00397600: PDTagDefinition.k10007};
+const Map<int, PDTagDefinition> SIEMENS_MED_OCS_BEAM_DISPLAY_INFO = {
+  0x00397600: PDTagDefinition.k10007
+};
 
-const Map<int, PDTagDefinition> SIEMENS_MED_OCS_PUBLIC_RT_PLAN_ATTRIBUTES =
-    const <int, PDTagDefinition>{0x00390100: PDTagDefinition.k10008};
+const Map<int, PDTagDefinition> SIEMENS_MED_OCS_PUBLIC_RT_PLAN_ATTRIBUTES = {
+  0x00390100: PDTagDefinition.k10008
+};
 
-const Map<int, PDTagDefinition> SIEMENS_MED_OCS_SS_VERSION_INFO =
-    const <int, PDTagDefinition>{0x00397600: PDTagDefinition.k10009};
+const Map<int, PDTagDefinition> SIEMENS_MED_OCS_SS_VERSION_INFO = {
+  0x00397600: PDTagDefinition.k10009
+};
 
-const Map<int, PDTagDefinition> BioPri3D = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> BioPri3D = {
   0x00112000: PDTagDefinition.k10010,
   0x00112400: PDTagDefinition.k10011,
   0x00113000: PDTagDefinition.k10012,
@@ -12131,8 +11941,7 @@ const Map<int, PDTagDefinition> BioPri3D = const <int, PDTagDefinition>{
   0x00632100: PDTagDefinition.k10027
 };
 
-const Map<int, PDTagDefinition> PMI_Private_Calibration_Module_Version_2_0 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PMI_Private_Calibration_Module_Version_2_0 = {
   0x21210100: PDTagDefinition.k10028,
   0x21210200: PDTagDefinition.k10029,
   0x21210300: PDTagDefinition.k10030,
@@ -12148,15 +11957,14 @@ const Map<int, PDTagDefinition> PMI_Private_Calibration_Module_Version_2_0 =
   0x21210e00: PDTagDefinition.k10040
 };
 
-const Map<int, PDTagDefinition> POLYTRON_SMS_2_5 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> POLYTRON_SMS_2_5 = {
   0x00090200: PDTagDefinition.k10043,
   0x00090400: PDTagDefinition.k10044,
   0x00090600: PDTagDefinition.k10045,
   0x00891000: PDTagDefinition.k10046
 };
 
-const Map<int, PDTagDefinition> SIEMENS_MED_SYNGO_RT =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_MED_SYNGO_RT = {
   0x300b1000: PDTagDefinition.k10047,
   0x300b1100: PDTagDefinition.k10048,
   0x300b1200: PDTagDefinition.k10049,
@@ -12257,20 +12065,19 @@ const Map<int, PDTagDefinition> SIEMENS_MED_SYNGO_RT =
 };
 
 const Map<int, PDTagDefinition> SIEMENS_SYNGO_ULTRA_SOUND_TOYON_DATA_STREAMING =
-    const <int, PDTagDefinition>{
+    {
   0x7fd10100: PDTagDefinition.k10144,
   0x7fd10900: PDTagDefinition.k10145,
   0x7fd11000: PDTagDefinition.k10146,
   0x7fd11100: PDTagDefinition.k10147
 };
 
-const Map<int, PDTagDefinition> SIEMENS_Ultrasound_S2000 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SIEMENS_Ultrasound_S2000 = {
   0x00210000: PDTagDefinition.k10148,
   0x00210100: PDTagDefinition.k10149
 };
 
-const Map<int, PDTagDefinition> SMIL_PB79 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SMIL_PB79 = {
   0x00790000: PDTagDefinition.k10150,
   0x00790100: PDTagDefinition.k10151,
   0x00790200: PDTagDefinition.k10152,
@@ -12295,29 +12102,27 @@ const Map<int, PDTagDefinition> SMIL_PB79 = const <int, PDTagDefinition>{
   0x00791700: PDTagDefinition.k10171
 };
 
-const Map<int, PDTagDefinition> SMIO_PB7B = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SMIO_PB7B = {
   0x007b0000: PDTagDefinition.k10172
 };
 
-const Map<int, PDTagDefinition> SMIO_PB7D = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> SMIO_PB7D = {
   0x007d0100: PDTagDefinition.k10173,
   0x007d0200: PDTagDefinition.k10174,
   0x007d0300: PDTagDefinition.k10175
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_MEC_OT3 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_MEC_OT3 = {
   0x00090000: PDTagDefinition.k10176
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_MDW_NON_IMAGE =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_MDW_NON_IMAGE = {
   0x00290800: PDTagDefinition.k10177,
   0x00290900: PDTagDefinition.k10178,
   0x00292000: PDTagDefinition.k10179
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_MDW_HEADER =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_MDW_HEADER = {
   0x00290800: PDTagDefinition.k10180,
   0x00290900: PDTagDefinition.k10181,
   0x00291000: PDTagDefinition.k10182,
@@ -12326,8 +12131,7 @@ const Map<int, PDTagDefinition> TOSHIBA_MDW_HEADER =
   0x00292000: PDTagDefinition.k10185
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_COMAPL_HEADER =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_COMAPL_HEADER = {
   0x00290800: PDTagDefinition.k10186,
   0x00290900: PDTagDefinition.k10187,
   0x00291000: PDTagDefinition.k10188,
@@ -12336,15 +12140,13 @@ const Map<int, PDTagDefinition> TOSHIBA_COMAPL_HEADER =
   0x00293400: PDTagDefinition.k10191
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_COMAPL_OOG =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_COMAPL_OOG = {
   0x00290800: PDTagDefinition.k10192,
   0x00290900: PDTagDefinition.k10193,
   0x00291000: PDTagDefinition.k10195
 };
 
-const Map<int, PDTagDefinition> PMTF_INFORMATION_DATA =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> PMTF_INFORMATION_DATA = {
   0x00290100: PDTagDefinition.k10196,
   0x00293100: PDTagDefinition.k10197,
   0x00293200: PDTagDefinition.k10198,
@@ -12355,7 +12157,7 @@ const Map<int, PDTagDefinition> PMTF_INFORMATION_DATA =
   0x70157300: PDTagDefinition.k10216
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_MEC_CT3 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_MEC_CT3 = {
   0x70056100: PDTagDefinition.k10203,
   0x70056200: PDTagDefinition.k10204,
   0x70056300: PDTagDefinition.k10205,
@@ -12426,15 +12228,16 @@ const Map<int, PDTagDefinition> TOSHIBA_MEC_CT3 = const <int, PDTagDefinition>{
   0x7005f300: PDTagDefinition.k11130
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_ENCRYPTED_SR_DATA =
-    const <int, PDTagDefinition>{0x70150000: PDTagDefinition.k10213};
+const Map<int, PDTagDefinition> TOSHIBA_ENCRYPTED_SR_DATA = {
+  0x70150000: PDTagDefinition.k10213
+};
 
-const Map<int, PDTagDefinition> TOSHIBA_SR = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_SR = {
   0x70151000: PDTagDefinition.k10214,
   0x70156000: PDTagDefinition.k10215
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_MEC_XA3 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_MEC_XA3 = {
   0x70792100: PDTagDefinition.k10217,
   0x70792200: PDTagDefinition.k10218,
   0x70792300: PDTagDefinition.k10219,
@@ -12526,7 +12329,7 @@ const Map<int, PDTagDefinition> TOSHIBA_MEC_XA3 = const <int, PDTagDefinition>{
   0x70798000: PDTagDefinition.k10305
 };
 
-const Map<int, PDTagDefinition> GE_YMS_NJ001 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GE_YMS_NJ001 = {
   0x00093100: PDTagDefinition.k10330,
   0x00190200: PDTagDefinition.k10492,
   0x00192300: PDTagDefinition.k10493,
@@ -12568,11 +12371,11 @@ const Map<int, PDTagDefinition> GE_YMS_NJ001 = const <int, PDTagDefinition>{
   0x004b0300: PDTagDefinition.k10676
 };
 
-const Map<int, PDTagDefinition> GEMS_PATI_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_PATI_01 = {
   0x00111000: PDTagDefinition.k10404
 };
 
-const Map<int, PDTagDefinition> Siemens_MED_NM = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> Siemens_MED_NM = {
   0x00190f00: PDTagDefinition.k10507,
   0x0019a500: PDTagDefinition.k10508,
   0x0019a600: PDTagDefinition.k10509,
@@ -12585,23 +12388,22 @@ const Map<int, PDTagDefinition> Siemens_MED_NM = const <int, PDTagDefinition>{
   0x00230100: PDTagDefinition.k10524
 };
 
-const Map<int, PDTagDefinition> GEMS_CT_FLRO_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_CT_FLRO_01 = {
   0x00290100: PDTagDefinition.k10531,
   0x00290200: PDTagDefinition.k10532
 };
 
-const Map<int, PDTagDefinition> GEMS_0039 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_0039 = {
   0x00399500: PDTagDefinition.k10573
 };
 
-const Map<int, PDTagDefinition> GEMS_HINO_CT_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_HINO_CT_01 = {
   0x004b0100: PDTagDefinition.k10671,
   0x004b0200: PDTagDefinition.k10672,
   0x004b0300: PDTagDefinition.k10673
 };
 
-const Map<int, PDTagDefinition> BrainWave__1_2_840_113819_3 =
-    const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> BrainWave__1_2_840_113819_3 = {
   0x10011100: PDTagDefinition.k10976,
   0x20011000: PDTagDefinition.k10977,
   0x20011200: PDTagDefinition.k10978,
@@ -12635,7 +12437,7 @@ const Map<int, PDTagDefinition> BrainWave__1_2_840_113819_3 =
   0x2001c000: PDTagDefinition.k11006
 };
 
-const Map<int, PDTagDefinition> GEMS_MR_RAW_01 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> GEMS_MR_RAW_01 = {
   0x70010100: PDTagDefinition.k11062,
   0x70010200: PDTagDefinition.k11063,
   0x70010300: PDTagDefinition.k11064,
@@ -12649,7 +12451,7 @@ const Map<int, PDTagDefinition> GEMS_MR_RAW_01 = const <int, PDTagDefinition>{
   0x70010b00: PDTagDefinition.k11072
 };
 
-const Map<int, PDTagDefinition> TOSHIBA_MEC_MR3 = const <int, PDTagDefinition>{
+const Map<int, PDTagDefinition> TOSHIBA_MEC_MR3 = {
   0x700d0000: PDTagDefinition.k11131,
   0x700d0100: PDTagDefinition.k11132,
   0x700d0200: PDTagDefinition.k11133,

@@ -13,8 +13,8 @@ void main() {
   Server.initialize(name: 'bin/element', level: Level.debug3);
   Iterable<String> dQuoteList(List<String> vList) => vList.map((s) => '$s');
 
-  const titles = const <String>['foo', 'bar', 'a', 'b', 'c', 'd'];
-  const badTitles = const <String>[
+  const titles = <String>['foo', 'bar', 'a', 'b', 'c', 'd'];
+  const badTitles = <String>[
     'foo',
     'bar',
     '012345678901234567',
@@ -23,9 +23,9 @@ void main() {
     'd'
   ];
 
-  final ds = new TagRootDataset.empty();
+  final ds = TagRootDataset.empty();
 
-  final ae0 = new AEtag(PTag.kSpecificCharacterSet, titles);
+  final ae0 = AEtag(PTag.kSpecificCharacterSet, titles);
   ds[ae0.code] = ae0;
   log.debug('ae0 info: ${ae0.info}');
   final bytes = ae0.vfBytes;
@@ -36,16 +36,16 @@ void main() {
   final v = ae1.values;
   log.debug('ae1 values: ${dQuoteList(v)}');
 
-  final Element ae2 = new AEtag(PTag.kSpecificCharacterSet, badTitles);
+  final Element ae2 = AEtag(PTag.kSpecificCharacterSet, badTitles);
   ds.add(ae2);
   log..debug('ae2 info: ${ae2.info}')..debug('${ds.info}');
 
-  final Element sh0 = new SHtag(PTag.kSpecificCharacterSet, titles);
+  final Element sh0 = SHtag(PTag.kSpecificCharacterSet, titles);
   ds[sh0.code] = sh0;
   log.debug('sh0 info: ${sh0.info}');
   final b0 = sh0.vfBytes;
   log.debug('vfBytes: (${b0.length})$b0');
-  final s0 = new String.fromCharCodes(sh0.vfBytes);
+  final s0 = String.fromCharCodes(sh0.vfBytes);
   log.debug('S from vfBytes: (${s0.length})"$s0"');
 
   final sh1 = SHtag.fromBytes(PTag.kSpecificCharacterSet, b0);
@@ -54,7 +54,7 @@ void main() {
   final v1 = sh1.values;
   log.debug('sh1 values: ${dQuoteList(v1)}');
 
-  final sh2 = new SHtag(PTag.kSpecificCharacterSet, badTitles);
+  final sh2 = SHtag(PTag.kSpecificCharacterSet, badTitles);
   ds.add(sh2);
 
   log..debug('sh2 info: ${sh2.info}')..debug('${ds.info}')..debug('done');

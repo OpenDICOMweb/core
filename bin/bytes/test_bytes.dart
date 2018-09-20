@@ -14,7 +14,7 @@ void main(List<String> args) {
   const count = 12;
 
   for (var i = 0; i < count; i++) {
-    final a = new Bytes(count);
+    final a = Bytes(count);
 
     assert(a.length == count, isTrue);
     for (var i = 0; i < count; i++) {

@@ -19,17 +19,17 @@ void typeTest() {
   var foo = [1.1, '"a"'];
   print('  foo@1 type: ${foo.runtimeType}');
   final List<double> bar = foo;
-  var b = (foo is List<double>);
+  var b = foo is List<double>;
   print('  foo@2 type: ${foo.runtimeType}');
   print('  foo is double: $b');
-  b = (bar is List<double>);
+  b = bar is List<double>;
   print('  bar is double: $b');
   print('  bar: $bar');
   try {
     for (var v in foo) {
       if (v is! double) {
         print('    Not double: $v');
-        throw new TypeError();
+        throw TypeError();
       }
     }
     // ignore: avoid_catching_errors
@@ -42,7 +42,7 @@ void typeTest() {
   print('  x is List<double>: $x');
 }
 
-bool isListIntType(List v) => (v is List<int>) ? true : false;
+bool isListIntType(List v) => v is List<int>;
 
 bool isListInt(List vList) {
   for (var v in vList) if (v is! int) return false;

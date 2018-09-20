@@ -29,7 +29,7 @@ class FileHandler {
         _doPrint = doPrint;
 
   /// Write the [LogRecord] to the File.
-  String call(LogRecord record, {bool flush: false})  {
+  String call(LogRecord record, {bool flush = false})  {
     final entry = '$record\n';
     final shouldFlush = doFlush || flush;
     if (isAsync) {
@@ -55,9 +55,9 @@ class FileHandler {
   }
 
   static RandomAccessFile _openLogFile(LogFile name) {
-    final dt = new DateTime.now();
+    final dt = DateTime.now();
     stdout.writeln('Logging to file: ${name.path}');
-    final file = new File(name.path);
+    final file = File(name.path);
     if ((name.mode == LogMode.delete) && (file.existsSync())) file.deleteSync();
     // Written with double quotes in case it's a json file;
     final msg = '"Open DICOMweb log file (opened at $dt)"\n';

@@ -8,7 +8,7 @@
 //
 
 void main() {
-  const list = const <int>[1, -1, 2, -2, 3, -3];
+  const list = <int>[1, -1, 2, -2, 3, -3];
 
   final i = list.fold<int>(0, (i, n) {
       print('i = $i');

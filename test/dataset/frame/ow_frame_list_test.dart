@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
 
-final Uint8List frame = new Uint8List.fromList(testFrame);
+final Uint8List frame = Uint8List.fromList(testFrame);
 
 void main() {
   Server.initialize(name: 'element/ow_frame_list_test', level: Level.info);
@@ -38,7 +38,7 @@ void main() {
       const photometricInterpretation0 = 'RGB';
 
       // Descriptor
-      final owFDa = new FrameDescriptor(
+      final owFDa = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -51,8 +51,8 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels0 = new Uint16List(owFDa.length * nFrames0);
-      final ow16a = new FrameList16Bit(pixels0, nFrames0, owFDa);
+      final pixels0 = Uint16List(owFDa.length * nFrames0);
+      final ow16a = FrameList16Bit(pixels0, nFrames0, owFDa);
 
       // pixels
       expect(ow16a.pixels is Uint16List, true);
@@ -124,7 +124,7 @@ void main() {
       const photometricInterpretation1 = 'RGB1';
 
       // Descriptor
-      final owFDb = new FrameDescriptor(
+      final owFDb = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -140,9 +140,9 @@ void main() {
       // Multi Frame with even number of frame
       for (var i = 1; i <= 10; i++) {
         nFrames1 = i * 2;
-        final pixels1 = new Uint16List(owFDb.length * nFrames1);
+        final pixels1 = Uint16List(owFDb.length * nFrames1);
 
-        final ow16b = new FrameList16Bit(pixels1, nFrames1, owFDb);
+        final ow16b = FrameList16Bit(pixels1, nFrames1, owFDb);
 
         // pixels
         expect(ow16b.pixels is Uint16List, true);
@@ -215,7 +215,7 @@ void main() {
       const nFrames0 = 0;
       const photometricInterpretation1 = 'MONOCHROME3';
 
-      final owFDc = new FrameDescriptor(
+      final owFDc = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -228,7 +228,7 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels0 = new Uint16List(owFDc.lengthInBytes);
+      final pixels0 = Uint16List(owFDc.lengthInBytes);
 
       log
         ..debug('pixels0.length: ${pixels0.lengthInBytes}')
@@ -237,14 +237,14 @@ void main() {
         ..debug('pixelSize bytes: ${owFDc.pixelSizeInBytes}');
 
       global.throwOnError = true;
-      expect(() => new FrameList16Bit(pixels0, nFrames0, owFDc),
+      expect(() => FrameList16Bit(pixels0, nFrames0, owFDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Pixels
       const nFrames1 = 1;
       const photometricInterpretation2 = 'MONOCHROME3';
 
-      final owFDd = new FrameDescriptor(
+      final owFDd = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation2,
@@ -257,20 +257,20 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels1 = new Uint16List(0);
+      final pixels1 = Uint16List(0);
       log
         ..debug('pixels0.length: ${pixels1.lengthInBytes}')
         ..debug('nFrames: $nFrames1')
         ..debug('pixelSize bits: ${owFDd.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${owFDd.pixelSizeInBytes}');
-      expect(() => new FrameList16Bit(pixels1, nFrames1, owFDd),
+      expect(() => FrameList16Bit(pixels1, nFrames1, owFDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
       const nFrames2 = 3;
       const photometricInterpretation3 = 'MONOCHROME3';
 
-      final owFDe = new FrameDescriptor(
+      final owFDe = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation3,
@@ -283,13 +283,13 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels2 = new Uint16List(owFDe.lengthInBytes);
+      final pixels2 = Uint16List(owFDe.lengthInBytes);
       log
         ..debug('pixels0.length: ${pixels2.lengthInBytes}')
         ..debug('nFrames: $nFrames2')
         ..debug('pixelSize bits: ${owFDe.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${owFDe.pixelSizeInBytes}');
-      expect(() => new FrameList16Bit(pixels2, nFrames2, owFDe),
+      expect(() => FrameList16Bit(pixels2, nFrames2, owFDe),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
@@ -298,38 +298,38 @@ void main() {
       //Frame Descriptor.fromDataSet1
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
-          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
-      final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
+          UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+      final usSamplesPerPixel0 = UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
-          new CStag(PTag.kPhotometricInterpretation, ['RGB1']);
-      final usRows0 = new UStag(PTag.kRows, [4]);
-      final usColumns0 = new UStag(PTag.kColumns, [6]);
-      final usBitsAllocated0 = new UStag(PTag.kBitsAllocated, [16]);
-      final usBitsStored0 = new UStag(PTag.kBitsStored, [16]);
-      final usHighBit0 = new UStag(PTag.kHighBit, [15]);
-      final usPixelRepresentation0 = new UStag(PTag.kPixelRepresentation, [0]);
-      final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [2]);
-      final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
+          CStag(PTag.kPhotometricInterpretation, ['RGB1']);
+      final usRows0 = UStag(PTag.kRows, [4]);
+      final usColumns0 = UStag(PTag.kColumns, [6]);
+      final usBitsAllocated0 = UStag(PTag.kBitsAllocated, [16]);
+      final usBitsStored0 = UStag(PTag.kBitsStored, [16]);
+      final usHighBit0 = UStag(PTag.kHighBit, [15]);
+      final usPixelRepresentation0 = UStag(PTag.kPixelRepresentation, [0]);
+      final usPlanarConfiguration0 = UStag(PTag.kPlanarConfiguration, [2]);
+      final isPixelAspectRatio0 = IStag(PTag.kPixelAspectRatio, ['1', '2']);
       const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
-          new UStag(PTag.kSmallestImagePixelValue, [0]);
+          UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
-          new UStag(PTag.kLargestImagePixelValue, [(1 << 16) - 1]);
-      final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[]);
-      final csColorSpace0 = new CStag(PTag.kColorSpace);
+          UStag(PTag.kLargestImagePixelValue, [(1 << 16) - 1]);
+      final obIccProfile0 = OBtag(PTag.kICCProfile, <int>[]);
+      final csColorSpace0 = CStag(PTag.kColorSpace);
 
       global.throwOnError = false;
       final unPixelPaddingRangeLimit =
-          new UStag(PTag.kPixelPaddingRangeLimit, [65536]);
+          UStag(PTag.kPixelPaddingRangeLimit, [65536]);
       expect(unPixelPaddingRangeLimit, isNull);
       global.throwOnError = true;
-      expect(() => new UStag(PTag.kPixelPaddingRangeLimit, [65536]),
+      expect(() => UStag(PTag.kPixelPaddingRangeLimit, [65536]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       final unPixelPaddingRangeLimit0 =
-          new UStag(PTag.kPixelPaddingRangeLimit, [65535]);
+          UStag(PTag.kPixelPaddingRangeLimit, [65535]);
 
-      final rds0 = new TagRootDataset.empty()
+      final rds0 = TagRootDataset.empty()
         ..fmi[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
@@ -347,10 +347,10 @@ void main() {
         ..add(csColorSpace0)
         ..add(unPixelPaddingRangeLimit0);
 
-      final fd16c = new FrameDescriptor.fromDataset(rds0);
+      final fd16c = FrameDescriptor.fromDataset(rds0);
       const nFrames0 = 1;
-      final pixels0 = new Uint16List(fd16c.length * nFrames0);
-      final ow16c = new FrameList16Bit(pixels0, nFrames0, fd16c);
+      final pixels0 = Uint16List(fd16c.length * nFrames0);
+      final ow16c = FrameList16Bit(pixels0, nFrames0, fd16c);
 
       log.debug('pixelAspectRatio: ${fd16c.pixelAspectRatio}');
 
@@ -434,7 +434,7 @@ void main() {
       int nFrames0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
-      final owFDf = new FrameDescriptor(
+      final owFDf = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -452,8 +452,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         nFrames0 = i + 1;
         log.debug('nFrames0: $nFrames0');
-        final pixels0 = new Uint16List(owFDf.length * nFrames0);
-        ow16c = new FrameList16Bit(pixels0, nFrames0, owFDf);
+        final pixels0 = Uint16List(owFDf.length * nFrames0);
+        ow16c = FrameList16Bit(pixels0, nFrames0, owFDf);
         for (var j = 0; j < nFrames0; j++) {
           final frame0 = ow16c[j];
           expect(frame0.index == j, true);

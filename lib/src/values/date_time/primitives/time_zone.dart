@@ -46,7 +46,7 @@ int timeZoneHour(int us) => us ~/ kMicrosecondsPerMinute;
 int timeZoneMinute(int us) =>
     (us % kMicrosecondsPerMinute) ~/ kMicrosecondsPerSecond;
 
-const List<int> kValidTZMicroseconds = const <int>[
+const List<int> kValidTZMicroseconds = <int>[
   -43200000000, -39600000000, -36000000000, -34200000000, -32400000000,
   -28800000000, -25200000000, -21600000000, -18000000000, -14400000000,
   -12600000000, -10800000000, -7200000000, -3600000000,
@@ -61,7 +61,7 @@ const List<int> kValidTZMicroseconds = const <int>[
 int tzMicrosecondsToIndex(int us) => kValidTZMicroseconds.indexOf(us);
 int tzIndexToMicroseconds(int index) => kValidTZMicroseconds[index];
 
-const List<int> kValidDcmTZHours = const <int>[
+const List<int> kValidDcmTZHours = <int>[
   -12, -11, -10, -09, -09, -08, -07,
   -06, -05, -04, -03, -03, -02, -01,
   00,
@@ -73,7 +73,7 @@ const List<int> kValidDcmTZHours = const <int>[
 
 int tzIndexToHours(int index) => kValidDcmTZHours[index];
 
-const List<int> kValidDcmTZMinutes = const <int>[
+const List<int> kValidDcmTZMinutes = <int>[
   00, 00, 00, 30, 00, 00, 00,
   00, 00, 00, 30, 00, 00, 00,
   00,
@@ -85,11 +85,11 @@ const List<int> kValidDcmTZMinutes = const <int>[
 
 int tzIndexToMinutes(int index) => kValidDcmTZMinutes[index];
 
-const List<int> kValidDcmTZInMinutes = const <int>[
+const List<int> kValidDcmTZInMinutes = <int>[
   -720, -660, -600, -510, -540, -480, -420,
-  -360, -300, -240, -150, -180, -120,  -60,
+  -360, -300, -240, -150, -180, -120, -60,
   0,
-   60, 120, 180, 210, 240, 270, 300,
+  60, 120, 180, 210, 240, 270, 300,
   330, 345, 360, 390, 420, 480, 510,
   525, 540, 570, 600, 630, 660, 720,
   765, 780, 840 // No reformat
@@ -97,7 +97,6 @@ const List<int> kValidDcmTZInMinutes = const <int>[
 
 int tzIndexToTZMinutes(int index) => kValidDcmTZInMinutes[index];
 int tzMinutesToIndex(int tzm) => kValidDcmTZInMinutes.indexOf(tzm);
-
 
 /// Returns _true_ if [us] is a valid time zone.
 bool isValidTimeZoneMicroseconds(int us) => kValidTZMicroseconds.contains(us);
@@ -111,7 +110,7 @@ bool isValidTimeZone(int sign, int h, int m) {
   return isValidTimeZoneMicroseconds(us);
 }
 
-bool isValidTimeZoneHour(int h) => (h < -12 || h > 14);
+bool isValidTimeZoneHour(int h) => h < -12 || h > 14;
 bool isNotValidTimeZoneHour(int h) => !isValidTimeZoneHour(h);
 
 /// Returns _true_ if [m] is a valid time zone microsecond.
@@ -124,7 +123,7 @@ bool isValidTimeZoneMinutes(int m) =>
 String timeZoneMicrosecondsToString(int us, {bool asDicom = true}) {
   final index = kValidTZMicroseconds.indexOf(us);
   if (index == -1) return invalidTimeZoneMicrosecondsError(us);
-  return (asDicom) ? kValidDcmTZStrings[index] : kValidInetTZStrings[index];
+  return asDicom ? kValidDcmTZStrings[index] : kValidInetTZStrings[index];
 }
 
 /// Returns a [String] corresponding to the [sign], [hour], and [minute]..
@@ -155,7 +154,7 @@ int tzIndexHash(int index) {
   return hIndex;
 }
 
-const List<String> kValidDcmTZStrings = const <String>[
+const List<String> kValidDcmTZStrings = <String>[
   '-1200', '-1100', '-1000', '-0930', '-0900', '-0800', '-0700',
   '-0600', '-0500', '-0400', '-0330', '-0300', '-0200', '-0100',
   '+0000',
@@ -176,7 +175,7 @@ String dcmTZStringHash(String tz) {
   return kValidDcmTZStrings[hIndex];
 }
 
-const List<String> kValidInetTZStrings = const <String>[
+const List<String> kValidInetTZStrings = <String>[
   '-12:00', '-11:00', '-10:00', '-09:30', '-09:00', '-08:00', '-07:00',
   '-06:00', '-05:00', '-04:00', '-03:30', '-03:00', '-02:00', '-01:00',
   'Z',
@@ -216,7 +215,7 @@ Null invalidTimeZoneError(int sign, int h, int m,
   final msg = InvalidTimeZoneError._msg(sign, h, m, error);
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidTimeZoneError(sign, h, m, error);
+  if (throwOnError) throw InvalidTimeZoneError(sign, h, m, error);
   return null;
 }
 
@@ -236,14 +235,14 @@ class InvalidTimeZoneMinutesError extends Error {
 @deprecated
 Null invalidTimeZoneMinutesError(int us) {
   log.error(InvalidTimeZoneMinutesError._msg(us));
-  if (throwOnError) throw new InvalidTimeZoneMinutesError(us);
+  if (throwOnError) throw InvalidTimeZoneMinutesError(us);
   return null;
 }
 
 /// Return a new hashed (but valid) time zone string in the specified format.
 /// The default format is DICOM.
 String hashTZString(String s, {int start = 0, int end, bool asDicom = true}) =>
-    (asDicom) ? dcmTZStringHash(s) : inetTZStringHash(s);
+    asDicom ? dcmTZStringHash(s) : inetTZStringHash(s);
 
 int getRandomTimeZoneIndex() =>
     Global.rng.nextInt(kValidTZMicroseconds.length - 1);

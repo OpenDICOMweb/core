@@ -22,7 +22,6 @@ abstract class BytePixelData implements PixelData {
       (fragments == null) ? kEmptyUint32List : fragments.offsets;
 }
 
-
 // **** Integer Elements
 // **** 8-bit Integer Elements (OB, UN)
 
@@ -45,7 +44,7 @@ class OBbytesPixelData extends OBPixelData
 
   static OBbytesPixelData fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
-      new OBbytesPixelData(bytes, ts, fragments);
+      OBbytesPixelData(bytes, ts, fragments);
 }
 
 class UNbytesPixelData extends UNPixelData
@@ -67,7 +66,7 @@ class UNbytesPixelData extends UNPixelData
 
   static UNbytesPixelData fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
-      new UNbytesPixelData(bytes, ts, fragments);
+      UNbytesPixelData(bytes, ts, fragments);
 }
 
 // **** 16-bit Integer Elements (SS, US, OW)
@@ -92,5 +91,5 @@ class OWbytesPixelData extends OWPixelData
 
   static OWbytesPixelData fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
-      new OWbytesPixelData(bytes, ts, fragments);
+      OWbytesPixelData(bytes, ts, fragments);
 }

@@ -35,7 +35,7 @@ class HttpHandler {
   bool get printOff => _doPrint = false;
 
   /// Write the [LogRecord] to the File.
-  Future<String> call(LogRecord record, {bool flush: false}) async {
+  Future<String> call(LogRecord record, {bool flush = false}) async {
     _request ??= await _open(url, context);
     final entry = '${record.info}\n';
     _request.write(entry);
@@ -51,10 +51,10 @@ class HttpHandler {
 
   static Future _open(Uri url, SecurityContext context) async {
     if (url.scheme != 'https') stderr.writeln('This not a secure connection');
-    final _client = new HttpClient(context: context);
+    final _client = HttpClient(context: context);
     final request = await _client.open('POST', url.host, url.port, url.path);
 
-    final dt = new DateTime.now();
+    final dt = DateTime.now();
     // Written with double quotes in case it's a json file;
     final msg = '"Open DICOMweb log file (opened at $dt)"\n';
     await _write(msg, request);

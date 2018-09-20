@@ -14,7 +14,7 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   factory DicomBytes.view(Bytes bytes, int vrIndex,
           {bool isEvr, int offset = 0, int end, Endian endian}) =>
       (!isEvr)
-          ? new IvrBytes.view(bytes, offset, end, endian)
+          ? IvrBytes.view(bytes, offset, end, endian)
           : (vrIndex >= 0 && vrIndex <= kVREvrLongIndexMax)
               ? EvrLongBytes.view(bytes, offset, end, endian)
               : EvrShortBytes.view(bytes, offset, end, endian);
@@ -82,7 +82,7 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   static ByteData copyBDRegion(ByteData bd, int offset, int length) {
     final _length = length ?? bd.lengthInBytes;
     final _nLength = _length.isOdd ? _length + 1 : length;
-    final bdNew = new ByteData(_nLength);
+    final bdNew = ByteData(_nLength);
     for (var i = 0, j = offset; i < _length; i++, j++)
       bdNew.setUint8(i, bd.getUint8(j));
     return bdNew;
@@ -103,7 +103,7 @@ class DicomGrowableBytes extends GrowableBytes with DicomWriterMixin {
           int length,
           Endian endian,
           int limit = kDefaultLimit]) =>
-      new DicomGrowableBytes._from(bytes, offset, length, endian, limit);
+      DicomGrowableBytes._from(bytes, offset, length, endian, limit);
 
   DicomGrowableBytes._from(Bytes bytes, int offset, int length, Endian endian,
       [int limit = kDefaultLimit])
@@ -114,7 +114,7 @@ class DicomGrowableBytes extends GrowableBytes with DicomWriterMixin {
           int lengthInBytes,
           Endian endian,
           int limit = _k1GB]) =>
-      new DicomGrowableBytes._tdView(
+      DicomGrowableBytes._tdView(
           td, offset, lengthInBytes ?? td.lengthInBytes, endian, limit);
 
   DicomGrowableBytes._tdView(

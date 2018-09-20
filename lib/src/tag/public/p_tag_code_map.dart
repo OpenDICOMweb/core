@@ -13,7 +13,7 @@ import 'package:core/src/tag/public/p_tag.dart';
 // ----------------------------------------------------------
 
 /// An ordered List of all DICOM attributes
-const Map<int, PTag> pTagCodeMap = const <int, PTag>{
+const Map<int, PTag> pTagCodeMap = <int, PTag>{
   0x00001000: PTag.kAffectedSOPInstanceUID,
   0x00001001: PTag.kRequestedSOPInstanceUID,
   0x00020000: PTag.kFileMetaInformationGroupLength,

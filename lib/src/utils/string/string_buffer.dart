@@ -90,20 +90,20 @@ abstract class StringBufferBase {
     if (_sBuffer.length < _maxLength) {
       return growBuffer();
     } else {
-      throw new StringBufferOverflowError(this);
+      throw StringBufferOverflowError(this);
     }
   }
 
   /// Returns the contents of the [StringBuffer] as a [String].
   @override
-  String toString() => new String.fromCharCodes(_getData());
+  String toString() => String.fromCharCodes(_getData());
 }
 
 class AsciiBuffer extends StringBufferBase implements TypedData {
   @override
   Uint8List _sBuffer;
 
-  AsciiBuffer([String s]) : _sBuffer = new Uint8List(_getNewBufferLength(s)) {
+  AsciiBuffer([String s]) : _sBuffer = Uint8List(_getNewBufferLength(s)) {
     if (s != null && s != '') write(s);
   }
 
@@ -121,7 +121,7 @@ class AsciiBuffer extends StringBufferBase implements TypedData {
 
   @override
   int growBuffer() {
-    _sBuffer = _copyBuffer(_sBuffer, new Uint8List(length * 2));
+    _sBuffer = _copyBuffer(_sBuffer, Uint8List(length * 2));
     return remaining;
   }
 
@@ -133,7 +133,7 @@ class Utf8Buffer extends StringBufferBase implements TypedData {
   @override
   Uint16List _sBuffer;
 
-  Utf8Buffer([int length = 16]) : _sBuffer = new Uint16List(length);
+  Utf8Buffer([int length = 16]) : _sBuffer = Uint16List(length);
 
   @override
   ByteBuffer get buffer => _sBuffer.buffer;
@@ -153,7 +153,7 @@ class Utf8Buffer extends StringBufferBase implements TypedData {
 
   @override
   int growBuffer() {
-    _sBuffer = _copyBuffer(_sBuffer, new Uint16List(length * 2));
+    _sBuffer = _copyBuffer(_sBuffer, Uint16List(length * 2));
     return remaining;
   }
 
@@ -162,7 +162,7 @@ class Utf8Buffer extends StringBufferBase implements TypedData {
 }
 
 Null indexOverflow(int index, int length) =>
-    throw new RangeError('Index overflow: index($index) >= length($length)');
+    throw RangeError('Index overflow: index($index) >= length($length)');
 
 class StringBufferOverflowError extends Error {
   StringBufferBase buffer;
@@ -184,5 +184,5 @@ class InvalidValueError extends Error {
 }
 
 int invalidCharacterError(int char) {
-  throw new InvalidValueError('character', char);
+  throw InvalidValueError('character', char);
 }

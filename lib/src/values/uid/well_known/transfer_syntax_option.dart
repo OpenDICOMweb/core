@@ -19,9 +19,9 @@ class TransferSyntaxOption {
   const TransferSyntaxOption(
       {this.owAllowed, this.hasEmptyOffsetTable, this.hasOneFragment});
 
-  static const TransferSyntaxOption native = const TransferSyntaxOption(
+  static const TransferSyntaxOption native = TransferSyntaxOption(
       owAllowed: true, hasEmptyOffsetTable: false, hasOneFragment: false);
 
-  static const TransferSyntaxOption mpeg2 = const TransferSyntaxOption(
+  static const TransferSyntaxOption mpeg2 = TransferSyntaxOption(
       owAllowed: false, hasEmptyOffsetTable: true, hasOneFragment: true);
 }

@@ -37,12 +37,12 @@ abstract class Integer extends Element<int> {
 
   /// Returns a copy of [values]
   @override
-  Iterable<int> get valuesCopy => new List.from(values, growable: false);
+  Iterable<int> get valuesCopy => List.from(values, growable: false);
 
   /// The _canonical_ empty [values] values for Floating Point Elements.
   @override
   List<int> get emptyList => kEmptyList;
-  static const List<int> kEmptyList = const <int>[];
+  static const List<int> kEmptyList = <int>[];
 
   @override
   Integer get noValues => update(kEmptyList);
@@ -54,7 +54,7 @@ abstract class Integer extends Element<int> {
 */
 
   @override
-  Bytes get vfBytes => new Bytes.typedDataView(typedData);
+  Bytes get vfBytes => Bytes.typedDataView(typedData);
 
   /// Returns a [view] of this [Element] with [values] replaced by
   /// appropriate TypedData.
@@ -83,7 +83,7 @@ abstract class Integer extends Element<int> {
     for (var v in vList) {
       if (ok && !isValidValue(v, issues, minValue, maxValue)) ok = false;
     }
-    return (ok) ? true : invalidValues(vList, issues);
+    return ok ? true : invalidValues(vList, issues);
   }
 }
 
@@ -107,7 +107,7 @@ abstract class SS extends Integer with Int16 {
 
   static const Type kType = SS;
 
-  static const List<int> kSpecialSSVRs = const [
+  static const List<int> kSpecialSSVRs = [
     kSSIndex,
     kUSSSIndex,
     kUSSSOWIndex
@@ -567,7 +567,7 @@ abstract class US extends Integer with Uint16 {
 
   static const Type kType = US;
 
-  static const List<int> kSpecialUSVRs = const [
+  static const List<int> kSpecialUSVRs = [
     kUSIndex, kUSSSIndex, kUSSSOWIndex, kUSOWIndex // No reformat
   ];
 
@@ -693,7 +693,7 @@ abstract class OW extends Integer with Uint16 {
 
   static const Type kType = OW;
 
-  static const List<int> kSpecialOWVRs = const [
+  static const List<int> kSpecialOWVRs = [
     kOWIndex, kOBOWIndex, kUSSSOWIndex, kUSOWIndex // No reformat
   ];
 

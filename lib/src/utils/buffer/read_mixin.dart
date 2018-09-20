@@ -29,13 +29,13 @@ abstract class ReadBufferMixin {
   int get rIndex => _rIndex;
   set rIndex(int n) {
     if (_rIndex < 0 || _rIndex > _wIndex)
-      throw new RangeError.range(rIndex, 0, _length);
+      throw RangeError.range(rIndex, 0, _length);
     _rIndex = n;
   }
 
   int rSkip(int n) {
     final v = _rIndex + n;
-    if (v < 0 || v > _wIndex) throw new RangeError.range(v, 0, _wIndex);
+    if (v < 0 || v > _wIndex) throw RangeError.range(v, 0, _wIndex);
     return _rIndex = v;
   }
 

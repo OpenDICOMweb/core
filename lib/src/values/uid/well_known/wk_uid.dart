@@ -56,14 +56,14 @@ class WKUid extends Uid {
 
   //*****   Constant Values   *****
 
-  static const WKUid kDicomApplicationContextName = const WKUid(
+  static const WKUid kDicomApplicationContextName = WKUid(
     '1.2.840.10008.3.1.1.1',
     'DICOMApplicationContextName',
     UidType.kApplicationContextName,
     'DICOM Application Context Name',
   );
 
-  static const WKUid kUniversalCoordinatedTime = const WKUid(
+  static const WKUid kUniversalCoordinatedTime = WKUid(
       '1.2.840.10008.15.1.1',
       'UniversalCoordinatedTime',
       UidType.kSynchronizationFrameOfReference,

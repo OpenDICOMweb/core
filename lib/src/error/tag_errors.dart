@@ -30,7 +30,7 @@ class InvalidTagError extends Error {
 /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
 /// is used.
 bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
-    (doTestElementValidity && tag.vrIndex != targetVR)
+    doTestElementValidity && tag.vrIndex != targetVR
         ? invalidTag(tag, issues, type)
         : true;
 
@@ -50,7 +50,7 @@ Null badTag(Tag tag, Issues issues, Type type) {
   final msg = 'InvalidTag for $type: $tag';
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidTagError(msg, tag, type);
+  if (throwOnError) throw InvalidTagError(msg, tag, type);
   return null;
 }
 
@@ -70,7 +70,7 @@ Null badKey<K>(K key, [int vrIndex, String creator]) {
   final msg = 'InvalidTagKeyError: "${_value(key)}" $vrIndex '
       'creator:"$creator"';
   log.error(msg);
-  if (throwOnError) throw new InvalidTagError(msg);
+  if (throwOnError) throw InvalidTagError(msg);
   return null;
 }
 
@@ -78,7 +78,7 @@ Null badTagCode(int code, [String message, Tag tag]) {
   final t = (tag == null) ? '' : '$tag';
   final msg = 'InvalidTagCodeError: "${dcm(code)}": $message $t';
   log.error(msg);
-  if (throwOnError) throw new InvalidTagError(msg);
+  if (throwOnError) throw InvalidTagError(msg);
   return null;
 }
 
@@ -90,7 +90,7 @@ bool invalidTagCode(int code, [String message, Tag tag]) {
 Null keywordError(String keyword) {
   final msg = 'InvalidTagKeywordError: "$keyword"';
   log.error(msg);
-  if (throwOnError) throw new InvalidTagError(msg);
+  if (throwOnError) throw InvalidTagError(msg);
   return null;
 }
 
@@ -125,7 +125,7 @@ Object _doTagError(int index, Issues issues,
   final s = '$msg: $tag';
   if (issues != null) issues.add(s);
   log.error(s);
-  if (throwOnError) throw new InvalidTagTypeError(tag, s);
+  if (throwOnError) throw InvalidTagTypeError(tag, s);
   return null;
 }
 
@@ -164,7 +164,7 @@ Null badGroupError(int group, [Issues issues]) {
   final msg = 'Invalid DICOM Group Error: ${hex16(group)}';
   if (log != null) log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidGroupError(msg);
+  if (throwOnError) throw InvalidGroupError(msg);
   return null;
 }
 

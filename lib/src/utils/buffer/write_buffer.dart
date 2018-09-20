@@ -24,38 +24,38 @@ class WriteBuffer extends BytesBuffer with WriteBufferMixin {
           [int length = Bytes.kDefaultLength,
           Endian endian,
           int limit = kDefaultLimit]) =>
-      new WriteBuffer._(length, endian, limit);
+      WriteBuffer._(length, endian, limit);
 
   factory WriteBuffer.from(WriteBuffer wb,
           [int offset = 0,
           int length,
           Endian endian = Endian.little,
           int limit = kDefaultLimit]) =>
-      new WriteBuffer._from(wb, offset, length, endian, limit);
+      WriteBuffer._from(wb, offset, length, endian, limit);
 
   factory WriteBuffer.typedDataView(TypedData td,
           [int offset = 0,
           int lengthInBytes,
           Endian endian = Endian.little,
           int limit = kDefaultLimit]) =>
-      new WriteBuffer._tdView(td, offset, lengthInBytes, endian, limit);
+      WriteBuffer._tdView(td, offset, lengthInBytes, endian, limit);
 
   WriteBuffer._(int length, Endian endian, int limit)
       : _rIndex = 0,
         _wIndex = 0,
-        _buf = new GrowableBytes(length, endian, limit);
+        _buf = GrowableBytes(length, endian, limit);
 
   WriteBuffer._from(
       WriteBuffer wb, int offset, int length, Endian endian, int limit)
       : _rIndex = offset,
         _wIndex = offset,
-        _buf = new GrowableBytes.from(wb._buf, offset, length, endian, limit);
+        _buf = GrowableBytes.from(wb._buf, offset, length, endian, limit);
 
   WriteBuffer._tdView(
       TypedData td, int offset, int lengthInBytes, Endian endian, int limit)
       : _rIndex = offset ?? 0,
         _wIndex = lengthInBytes ?? td.lengthInBytes,
-        _buf = new GrowableBytes.typedDataView(td, offset ?? 0,
+        _buf = GrowableBytes.typedDataView(td, offset ?? 0,
             lengthInBytes ?? td.lengthInBytes, endian ?? Endian.host, limit);
 
   @override
@@ -72,7 +72,7 @@ class WriteBuffer extends BytesBuffer with WriteBufferMixin {
 
   bool hasRemaining(int n) => _wHasRemaining(n);
 
-  ByteData get bd => (isClosed) ? null : _buf.asByteData();
+  ByteData get bd => isClosed ? null : _buf.asByteData();
 
   ByteData close() {
     final bd = _buf.asByteData(0, _wIndex);

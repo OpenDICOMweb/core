@@ -13,7 +13,7 @@ import 'package:core/src/tag/public/p_tag.dart';
 // ----------------------------------------------------------
 
 /// An ordered List of all DICOM attributes
-const Map<String, PTag> pTagKeywords = const <String, PTag>{
+const Map<String, PTag> pTagKeywords = <String, PTag>{
   'AffectedSOPInstanceUID': PTag.kAffectedSOPInstanceUID,
   'RequestedSOPInstanceUID': PTag.kRequestedSOPInstanceUID,
   'FileMetaInformationGroupLength': PTag.kFileMetaInformationGroupLength,

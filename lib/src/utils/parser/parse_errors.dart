@@ -31,7 +31,7 @@ class ParseError extends Error {
 Null parseError(String msg, [Issues issues]) {
   log.error(ParseError.getMsg(msg));
   if (issues != null) issues.add(msg);
-  throw new FormatException(msg);
+  throw FormatException(msg);
 }
 
 /// A _null_ values was passed to a parser.
@@ -54,7 +54,7 @@ class InvalidParseStringToStringError extends ParseError {
 Null invalidParseStringToString(String msg, [Issues issues]) {
   log.error(InvalidParseStringToStringError._msg(msg));
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidParseStringToStringError('$msg');
+  if (throwOnError) throw InvalidParseStringToStringError('$msg');
   return null;
 }
 

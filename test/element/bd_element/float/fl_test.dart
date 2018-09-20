@@ -29,7 +29,7 @@ void main() {
   ];
 
   //VM.k1
-  const flVM1Tags = const <int>[
+  const flVM1Tags = <int>[
     kRecommendedDisplayFrameRateInFloat,
     kExaminedBodyThickness,
     kDisplayedZValue,
@@ -42,7 +42,7 @@ void main() {
   ];
 
   //VM.k2
-  const flVM2Tags = const <int>[
+  const flVM2Tags = <int>[
     kLocalizingCursorPosition,
     kPixelDataAreaOriginRelativeToFOV,
     kObjectPixelSpacingInCenterOfBeam,
@@ -56,7 +56,7 @@ void main() {
   ];
 
   //VM.k3
-  const flVM3Tags = const <int>[
+  const flVM3Tags = <int>[
     kCalculatedTargetPosition,
     kCalciumScoringMassFactorDevice,
     kPointPositionAccuracy,
@@ -69,12 +69,12 @@ void main() {
   ];
 
   //VM.k6
-  const flVM6Tags = const <int>[
+  const flVM6Tags = <int>[
     kPointsBoundingBoxCoordinates,
   ];
 
   //VM.6_n
-  const flVM1_6Tags = const <int>[kBoundingPolygon];
+  const flVM1_6Tags = <int>[kBoundingPolygon];
 
   //VM.k1_n
   const flVM1_nTags = const <int>[
@@ -91,7 +91,7 @@ void main() {
 
   final float32List = new Float32List.fromList(doubleList);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
   global.throwOnError = false;
 
   // group('FL Tests', () {
@@ -124,7 +124,7 @@ void main() {
       final vList0 = rng.float32List(2, 2);
       final e0 = FLbytes.fromValues(kCornealVertexLocation, vList0);
       log..debug('$i: e0: $e0, values: ${e0.values}')..debug('e0: $e0');
-      final e1 = new FLtag(e0.tag, e0.values);
+      final e1 = FLtag(e0.tag, e0.values);
       log..debug('$i: e0: $e1, values: ${e1.values}')..debug('e0: ${e1.info}');
       expect(e1.hasValidValues, true);
 
@@ -137,7 +137,7 @@ void main() {
       final vList0 = rng.float32List(3, 4);
       log.debug('$i: float32List: $vList0');
       final flbd = FLbytes.fromValues(kCornealVertexLocation, vList0);
-      final e0 = new FLtag(flbd.tag, flbd.values);
+      final e0 = FLtag(flbd.tag, flbd.values);
       expect(e0, isNull);
     }
   });
@@ -317,7 +317,7 @@ void main() {
     expect(e0.isValid, true);
     expect(e0.isEmpty, false);
 
-    final e1 = new FLbytes(e0.bytes);
+    final e1 = FLbytes(e0.bytes);
     expect(e1.bytes is DicomBytes, true);
     expect(e1.vfBytes is Bytes, true);
     expect(e1.hasValidValues, true);

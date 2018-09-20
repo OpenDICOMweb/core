@@ -11,7 +11,7 @@ import 'package:core/core.dart';
 
 void main() {
 
-  final t1 = new Timer();
+  final t1 = Timer();
   for (var y = 1950; y < 2050; y++)
     for (var m = 1; m < 13; m++)
       for (var d = 1; d < 32; d++)
@@ -19,7 +19,7 @@ void main() {
   t1.start();
   print('t1 elapsed: ${t1.elapsed}');
 
-  final t2 = new Timer();
+  final t2 = Timer();
   for (var y = 1950; y < 2050; y++)
     for (var m = 1; m < 13; m++)
       for (var d = 1; d < 32; d++)
@@ -32,16 +32,16 @@ String _dateToString1(int y, int m, int d, {bool asDicom = false}) {
   final yy = digits4(y);
   final mm = digits2(m);
   final dd = digits2(d);
-  return (asDicom) ? '$yy$mm$dd' : '$yy-$mm-$dd';
+  return asDicom ? '$yy$mm$dd' : '$yy-$mm-$dd';
 }
 
 String _dateToString2(int y, int m, int d, {bool asDicom = true}) {
-  final sb = new StringBuffer(digits4(y));
+  final sb = StringBuffer(digits4(y));
   if (!asDicom)
     sb.write('-');
   sb.write(digits2(m));
   if (!asDicom)
-    sb..write('-');
+    sb.write('-');
   sb.write(digits2(d));
   return sb.toString();
 }

@@ -12,15 +12,15 @@ import 'package:core/server.dart';
 void main() {
   Server.initialize();
 
-  final dt0 = new DateTime(1999, 03, 14, 01, 59, 00);
+  final dt0 = DateTime(1999, 03, 14, 01, 59, 00);
   print('dt0: $dt0');
-  final dt1 = new DateTime(1999, 03, 14, 02, 00, 00);
+  final dt1 = DateTime(1999, 03, 14, 02, 00, 00);
   print('dt1: $dt1');
-  final dt2 = new DateTime(1999, 03, 14, 02, 01, 00);
+  final dt2 = DateTime(1999, 03, 14, 02, 01, 00);
   print('dt2: $dt2');
   for (var h = 1; h < 24; h++) {
     for (var m = 0; m < 60; m++) {
-      final dt3 = new DateTime(1999, 03, 14, h, m, 00);
+      final dt3 = DateTime(1999, 03, 14, h, m, 00);
       print('$dt3');
     }
   }
@@ -30,7 +30,7 @@ void main() {
 }
 
 void checkSystemTime0() {
-  final dt = new DateTime.now();
+  final dt = DateTime.now();
   print('dt: $dt');
   final sysUSecs = dt.microsecondsSinceEpoch;
   print('sysUSecs:       $sysUSecs');
@@ -69,7 +69,7 @@ void checkSystemTime1() {
             for (var s = 0; s < 60; s++) {
               for (var ms = 0; ms <= 999; ms++) {
                 for (var us = 0; us <= 999; us++) {
-                  final dt = new DateTime(y, m, d, h, mm, s, ms, us);
+                  final dt = DateTime(y, m, d, h, mm, s, ms, us);
                   final dt0 = dt.toString();
                   final dt1 = time(y, m, d, h, mm, s, ms, us);
                   //        log.debug('dt0: $dt0\ndt1: $dt1');
@@ -95,7 +95,7 @@ void checkSystemTime2() {
         for (var h = 0; h < 24; h++) {
           for (var mm = 0; mm < 60; mm++) {
             for (var s = 0; s < 60; s++) {
-              final dt = new DateTime(y, m, d, h, mm, s, 0, 0);
+              final dt = DateTime(y, m, d, h, mm, s, 0, 0);
               final dt0 = dt.toString();
               final dt1 = time(y, m, d, h, mm, s, 0, 0);
               //        log.debug('dt0: $dt0\ndt1: $dt1');

@@ -25,7 +25,7 @@ class Date implements Comparable<Date> {
   static const int minLength = 8;
   static const int maxLength = 8;
 
-  static const List<String> weekdayNames = const <String>[
+  static const List<String> weekdayNames = <String>[
     'Sunday', 'Monday', 'Tuesday', 'Wednesday',
     'Thursday', 'Friday', 'Saturday' // no reformat
   ];
@@ -44,7 +44,7 @@ class Date implements Comparable<Date> {
       [int m = 0, int d = 0, Issues issues, OnDateError onError]) {
     try {
       final microseconds = dateToEpochMicroseconds(y, m, d);
-      return (microseconds == null) ? null : new Date._(microseconds);
+      return (microseconds == null) ? null : Date._(microseconds);
     } on FormatException catch (e) {
       return (onError != null)
           ? onError(y, m, d)
@@ -68,10 +68,10 @@ class Date implements Comparable<Date> {
 
   /// Returns a new [Date] containing the [Global].[hash] hash
   /// of [microseconds].
-  Date get hash => new Date._(hashDateInMicroseconds(microseconds));
+  Date get hash => Date._(hashDateInMicroseconds(microseconds));
 
   /// Returns a new [Date] containing the SHA-256 hash of [microseconds].
-  Date get sha256 => new Date._(sha256Microseconds(microseconds));
+  Date get sha256 => Date._(sha256Microseconds(microseconds));
 
   /// The [epochDay] corresponding to this [Date].
   int get epochDay => microseconds ~/ kMicrosecondsPerDay;
@@ -104,8 +104,8 @@ class Date implements Comparable<Date> {
 
   /// Returns the current [Date].
   Date get today {
-    final dt = new DateTime.now();
-    return new Date._(dt.microsecondsSinceEpoch);
+    final dt = DateTime.now();
+    return Date._(dt.microsecondsSinceEpoch);
   }
 
   /// Returns the day of the [year] of _this_.
@@ -113,7 +113,7 @@ class Date implements Comparable<Date> {
 
   /// Returns the [epochDay] of the first day of the [year].
   int get _epochDayOfCurrentYear {
-    final firstOfYear = new DateTime(year, 1, 1);
+    final firstOfYear = DateTime(year, 1, 1);
     return firstOfYear.microsecondsSinceEpoch ~/ kMicrosecondsPerDay;
   }
 
@@ -131,24 +131,24 @@ class Date implements Comparable<Date> {
 
   //TODO: unit test to verify
   /// Returns a new [Date] whose values is _this_ + other.microseconds;
-  Date add(Time other) => new Date._(microseconds + other.uSeconds);
+  Date add(Time other) => Date._(microseconds + other.uSeconds);
 
   /// Returns a new [Date] whose values is _this_ + other.microseconds;
-  Date difference(Time other) => new Date._(microseconds - other.uSeconds);
+  Date difference(Time other) => Date._(microseconds - other.uSeconds);
 
   @override
   int compareTo(Date other) => compare(this, other);
 
-  /// Returns a new _normalized_ date based on the subject's [enrollment] [Date].
+  /// Returns a new _normalized_ date based on the subject's [enrollment][Date].
   ///
   /// The [original] [Date] is returned as a _Normalized_ [Date],  which is
   /// computed as follows:
-  ///     ```normalizedDate = originalDate - (enrollmentDate - acrBaselineDate)```
+  ///   ```normalizedDate = originalDate - (enrollmentDate - acrBaselineDate)```
   /// where
   ///     ```original``` is the original date, i.e. [_epochDay],
   ///     ```enrollment``` is the subjects date of enrollment in a clinical
   ///     study, and ```acrBaseline``` is January 1, 1960.
-  Date normalize(Date enrollment) => new Date._(
+  Date normalize(Date enrollment) => Date._(
       microseconds - (enrollment.microseconds - kACRBaselineMicroseconds));
 
   /// Returns a [Date] [String] in Internet format.
@@ -157,7 +157,7 @@ class Date implements Comparable<Date> {
 
   /// Returns a new [Date] that is equal to the Epoch Day.
   static Date fromEpochDay(int epochDay) =>
-      new Date._(epochDay * kMicrosecondsPerDay);
+      Date._(epochDay * kMicrosecondsPerDay);
 
   // Urgent remove
   /// Returns _true_ of [s] contains only spaces.
@@ -183,13 +183,13 @@ class Date implements Comparable<Date> {
       return global.allowBlankDateTimes
           ? null
           : (onError != null) ? onError(s) : badDateString(s, issues);
-    final us = (isDicom)
+    final us = isDicom
         ? parseDicomDate(s, start: start, end: end)
         : parseInternetDate(s, start: start, end: end);
     if (us == null) {
       return (onError != null) ? onError(s) : badDateString(s, issues);
     }
-    return new Date._(us);
+    return Date._(us);
   }
 
   /// Returns _true_ if [s] is a valid DICOM [Date] [String].
@@ -201,7 +201,7 @@ class Date implements Comparable<Date> {
   /// otherwise, returns _null_.
   static Issues issues(String s,
       {int start = 0, int end, int min = 0, int max}) {
-    final issues = new Issues('Date: "$s"');
+    final issues = Issues('Date: "$s"');
     parseDicomDate(s, issues: issues);
     return issues;
   }
@@ -250,7 +250,7 @@ class Date implements Comparable<Date> {
   /// Returns a new [List<String>] of DICOM date (DA) values, where each element
   /// in the [List] is the hash of the corresponding element in the argument.
   static List<String> hashStringList(List<String> dates) {
-    final dList = new List<String>(dates.length);
+    final dList = List<String>(dates.length);
     //for (String s in dates) dList.add(hashString(s));
     for (var i = 0; i < dates.length; i++) {
       final nDate = hashString(dates[i]);
@@ -270,11 +270,12 @@ class Date implements Comparable<Date> {
     return microsecondToDateString(normalInUSecs);
   }
 
-  /// Returns a [List<String>] of DICOM date (DA) values, where each element in the
-  /// [List] is the _normalized_ values of the corresponding element in the argument.
+  /// Returns a [List<String>] of DICOM date (DA) values, where each
+  /// element in the [List] is the _normalized_ values of the
+  /// corresponding element in the argument.
   static Iterable<String> normalizeStrings(
       List<String> sList, Date enrollment) {
-    final rList = new List<String>(sList.length);
+    final rList = List<String>(sList.length);
     for (var i = 0; i < rList.length; i++) {
       final nDate = normalizeString(sList[i], enrollment);
       if (nDate == null) return null;

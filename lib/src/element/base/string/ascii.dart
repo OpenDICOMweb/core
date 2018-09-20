@@ -46,7 +46,7 @@ abstract class StringAscii extends StringBase {
       bytes.getAsciiList(allowInvalid: global.allowInvalidAscii);
 
   static List<String> fromValueField(List vf, int maxVFLength,
-      {bool isAscii: true}) {
+      {bool isAscii = true}) {
     if (vf == null) return kEmptyStringList;
     if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
     if (vf is Bytes) return vf.getAsciiList();
@@ -423,7 +423,7 @@ abstract class UI extends StringAscii {
       isValidTagAux(tag, issues, kUIIndex, UI);
 
   static List<String> toStringList(Iterable<Uid> uids) {
-    final sList = new List<String>(uids.length);
+    final sList = List<String>(uids.length);
     for (var i = 0; i < sList.length; i++)
       sList[i] = uids.elementAt(i).toString();
     return sList;
@@ -432,7 +432,7 @@ abstract class UI extends StringAscii {
   static Uid tryParse(String s, [Issues issues]) => Uid.parse(s);
 
   static List<Uid> parseList(List<String> vList) {
-    final uids = new List<Uid>(vList.length);
+    final uids = List<Uid>(vList.length);
     for (var i = 0; i < vList.length; i++) {
       final uid = Uid.parse(vList[i]);
       uids[i] = uid;

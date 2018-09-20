@@ -55,7 +55,7 @@ bool allowInvalidTags = true;
 ///       PDTag
 ///       PDTagUnknown
 abstract class Tag {
-  //TODO: Tag and Tag.public are inconsistent when new Tag, PrivateTag... files
+  //TODO: Tag and Tag.public are inconsistent when Tag, PrivateTag... files
   //      are generated make them consistent.
   const Tag();
 
@@ -142,7 +142,7 @@ abstract class Tag {
 
   /// Returns the length of a DICOM Element header field.
   /// Used for encoding DICOM media types
-  int get dcmHeaderLength => (hasShortVF) ? 8 : 12;
+  int get dcmHeaderLength => hasShortVF ? 8 : 12;
 
   bool get hasNormalVR => isNormalVRIndex(vrIndex);
   bool get hasSpecialVR => isSpecialVRIndex(vrIndex);
@@ -163,7 +163,7 @@ abstract class Tag {
   //TODO: add EType to tag
   EType get eType => EType.k3;
   int get eTypeIndex => eType.index;
-  _ETypePredicate get eTypePredicate => throw new UnimplementedError();
+  _ETypePredicate get eTypePredicate => throw UnimplementedError();
 
   // Information Entity Level
   IEType get ieType => IEType.kInstance;
@@ -171,9 +171,9 @@ abstract class Tag {
   String get ieLevel => ieType.level;
 
   // DeIdentification Method
-  int get deIdIndex => throw new UnimplementedError();
-  String get deIdName => throw new UnimplementedError();
-  // DeIdMethod get deIdMethod => throw new UnimplementedError();
+  int get deIdIndex => throw UnimplementedError();
+  String get deIdName => throw UnimplementedError();
+  // DeIdMethod get deIdMethod => throw UnimplementedError();
 
   int get hashcode => code;
 
@@ -219,7 +219,7 @@ abstract class Tag {
   bool get inDcmDirRange => kMinDcmDirTag <= code && code <= kMaxDcmDirTag;
 
   String get info {
-    final retired = (isRetired) ? '- Retired' : '';
+    final retired = isRetired ? '- Retired' : '';
     return '$runtimeType$dcm ${vrIdByIndex[vrIndex]} $vm $keyword $retired';
   }
 
@@ -327,12 +327,12 @@ abstract class Tag {
   static Tag fromCode<T>(int code, int vrIndex, [T creator]) {
     if (isPublicCode(code)) {
       var tag = Tag.lookupPublicCode(code, vrIndex);
-      return tag ??= new PTag.unknown(code, vrIndex);
+      return tag ??= PTag.unknown(code, vrIndex);
     } else {
       assert(isPrivateCode(code) == true);
       final elt = code & 0xFF;
-      if (elt == 0) return new PrivateGroupLengthTag(code, vrIndex);
-      if (elt < 0x10) return new IllegalPrivateTag(code, vrIndex);
+      if (elt == 0) return PrivateGroupLengthTag(code, vrIndex);
+      if (elt < 0x10) return IllegalPrivateTag(code, vrIndex);
       if ((elt >= 0x10) && (elt <= 0xFF) && creator is String)
         return PCTag.make(code, vrIndex, creator);
       if ((elt > 0xFF) && (elt <= 0xFFFF) && creator is PCTag)
@@ -376,17 +376,17 @@ abstract class Tag {
       tag = PTag.lookupByCode(code, vrIndex);
       if (tag == null) {
         if ((code & 0xFFFF) == 0) {
-          tag = new PTagGroupLength(code);
+          tag = PTagGroupLength(code);
         } else {
-          tag = new PTag.unknown(code, vrIndex);
+          tag = PTag.unknown(code, vrIndex);
         }
       }
     } else if (group.isOdd && group >= 0x0009 && group <= 0xFFFF) {
       final elt = code & 0xFFFF;
       if (elt == 0) {
-        tag = new PrivateGroupLengthTag(code, vrIndex);
+        tag = PrivateGroupLengthTag(code, vrIndex);
       } else if (elt < 0x10) {
-        tag = new IllegalPrivateTag(code, vrIndex);
+        tag = IllegalPrivateTag(code, vrIndex);
       } else if ((elt >= 0x10) && (elt <= 0xFF)) {
         tag = PCTag.make(code, vrIndex, creator);
       } else if ((elt > 0x00FF) && (elt <= 0xFFFF)) {
@@ -407,9 +407,9 @@ abstract class Tag {
     var tag = PTag.lookupByCode(code, vrIndex);
     if (tag == null) {
       if ((code & 0xFFFF) == 0) {
-        tag = new PTagGroupLength(code);
+        tag = PTagGroupLength(code);
       } else {
-        tag = new PTag.unknown(code, vrIndex);
+        tag = PTag.unknown(code, vrIndex);
       }
     }
     return tag;
@@ -426,10 +426,10 @@ abstract class Tag {
     Tag tag;
     if (elt == 0) {
       // Private Group Length
-      tag = new PrivateGroupLengthTag(code, vrIndex);
+      tag = PrivateGroupLengthTag(code, vrIndex);
     } else if (elt < 0x10) {
       // Illegal Private Code
-      tag = new IllegalPrivateTag(code, vrIndex);
+      tag = IllegalPrivateTag(code, vrIndex);
     } else if ((elt >= 0x10) && (elt <= 0xFF)) {
       // Private Creator
       tag = PCTag.make(code, vrIndex, creator);
@@ -455,18 +455,18 @@ abstract class Tag {
     if (tag != null) return tag;
     tag = Tag.lookupPrivateCreatorKeyword(keyword, vr) {
       if (Tag.isPrivateGroupLengthKeyword(keyword))
-        return new PrivateGroupLengthTagFromKeyword(keyword, vr);
+        return PrivateGroupLengthTagFromKeyword(keyword, vr);
       if (Tag.isPrivateCreatorKeyword(keyword))
-        return new PCTag.keyword(keyword, vr, creator);
+        return PCTag.keyword(keyword, vr, creator);
       if (Tag.isPrivateDataKeyword(keyword))
-        return new PDTag.keyword(keyword, vr, creator);
+        return PDTag.keyword(keyword, vr, creator);
       throw 'Error: Unknown Private Tag Code$keyword';
     } else {
       // This should never happen
       //throw 'Error: Unknown Tag Code${Tag.toDcm(code)}';
       return null;
     }*/
-    throw new UnimplementedError();
+    throw UnimplementedError();
   }
 
   static bool allowInvalidVR = false;
@@ -502,21 +502,21 @@ abstract class Tag {
   static Tag lookupPublicCode(int code, int vrIndex) {
     final tag = PTag.lookupByCode(code, vrIndex);
     if (tag != null) return tag;
-    if (isPublicGroupLengthCode(code)) return new PTagGroupLength(code);
-    return new PTagUnknown(code, vrIndex);
+    if (isPublicGroupLengthCode(code)) return PTagGroupLength(code);
+    return PTagUnknown(code, vrIndex);
   }
 
   static Tag lookupPublicKeyword(String keyword, int vrIndex) {
     final tag = PTag.lookupByKeyword(keyword, vrIndex);
     if (tag != null) return tag;
     if (Tag.isPublicGroupLengthKeyword(keyword))
-      return new PTagGroupLength.keyword(keyword);
-    return new PTagUnknown.keyword(keyword, vrIndex);
+      return PTagGroupLength.keyword(keyword);
+    return PTagUnknown.keyword(keyword, vrIndex);
   }
 
   static Tag lookupPrivateCreatorCode(int code, int vrIndex, String token) {
     if (isPrivateGroupLengthCode(code))
-      return new PrivateGroupLengthTag(code, vrIndex);
+      return PrivateGroupLengthTag(code, vrIndex);
     if (isPCCode(code)) return PCTag.make(code, vrIndex, token);
     return badTagCode(code);
   }
@@ -572,7 +572,7 @@ abstract class Tag {
 
   // *** Private Tag Code methods
   /// Groups numbers that shall not be used in PrivateTags.
-  static const List<int> invalidPrivateGroups = const <int>[
+  static const List<int> invalidPrivateGroups = <int>[
     0x0001, 0x0003, 0x0005, 0x0007, 0xFFFF // Don't reformat
   ];
 
@@ -630,7 +630,7 @@ abstract class Tag {
   static bool isPCCode(int code) {
     // Trick to check that it is both Private and Creator.
     final bits = code & 0x1FFFF;
-    return (bits >= 0x10010 && bits <= 0x100FF);
+    return bits >= 0x10010 && bits <= 0x100FF;
   }
 
   static bool isNotPCCode(int code) => !isPCCode(code);
@@ -646,7 +646,7 @@ abstract class Tag {
 
   static bool isPDCodeInSubgroup(int code, int group, int subgroup) {
     final sg = (group << 16) + (subgroup << 8);
-    return (code >= sg && (code <= (sg + 0xFF)));
+    return code >= sg && (code <= (sg + 0xFF));
   }
 
   ///  Returns true if [pdCode] is a valid Private Data Code,
@@ -671,7 +671,7 @@ abstract class Tag {
   static bool _isValidPDCode(int pd, int pc) {
     final pdOffset = pd & 0xFFFF;
     final pdsg = pdOffset >> 8;
-    final pcsg = (pc & 0xFF);
+    final pcsg = pc & 0xFF;
     if (pcsg < 0x10 || pcsg > 0xFF || pdsg != pcsg) return false;
     final base = pcsg << 8;
     final limit = base + 0xFF;
@@ -763,7 +763,7 @@ abstract class Tag {
 
   static bool rangeError(int tag, int min, int max) {
     final msg = 'Invalid tag: $tag not in $min <= x <= $max';
-    throw new RangeError(msg);
+    throw RangeError(msg);
   }
 
   /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
@@ -776,7 +776,7 @@ abstract class Tag {
         : invalidTag(tag, issues, type);
   }
 
-  static const List<int> kSpecialSSVRs = const [kUSSSIndex, kUSSSOWIndex];
+  static const List<int> kSpecialSSVRs = [kUSSSIndex, kUSSSOWIndex];
 
   /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)

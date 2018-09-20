@@ -79,7 +79,7 @@ class Uuid {
   }
 
   // Returns an [UnmodifiableListView] of [bytes].
-  UnmodifiableListView<int> get value => new UnmodifiableListView(data);
+  UnmodifiableListView<int> get value => UnmodifiableListView(data);
 
   @override
   int get hashCode => data.hashCode;
@@ -96,7 +96,7 @@ class Uuid {
   /// Returns a hexadecimal [String] corresponding to _this_, but without
   /// the dashes ('-') that are present in the UUID format.
   String get asHex {
-    final sb = new StringBuffer();
+    final sb = StringBuffer();
     for (var i = 0; i < data.length; i++)
       sb.write(data[i].toRadixString(16).padLeft(2, '0').toLowerCase());
     return sb.toString();
@@ -141,7 +141,7 @@ class Uuid {
         generator = V4Generator.seededPseudo;
         break;
       default:
-        throw new UuidError('Invalid Uuid Generator Type: $type');
+        throw UuidError('Invalid Uuid Generator Type: $type');
     }
     return true;
   }
@@ -206,7 +206,7 @@ class Uuid {
     if (!_isISOVariantFromString(s) || _version != version) return false;
     // For certain versions, the checks we did up to this point are fine.
     if (_version != 3 || _version != 5) return true;
-    throw new UnimplementedError('Version 3 & 5 are not yet implemented');
+    throw UnimplementedError('Version 3 & 5 are not yet implemented');
   }
 
   static int _getVersionNumberFromString(String s) => s.codeUnitAt(14) - k0;
@@ -240,7 +240,7 @@ class Uuid {
     if (bytes == null) {
       return (onError == null) ? null : onError(s);
     }
-    return new Uuid.fromList(bytes);
+    return Uuid.fromList(bytes);
   }
 
   /// Unparses (converts [Uuid] to a [String]) [bytes] of bytes and
@@ -248,7 +248,7 @@ class Uuid {
   static String _toUuidFormat(Uint8List bytes) {
     var i = 0;
     final byteToHex =
-        (useUppercase) ? _byteToUppercaseHex : _byteToLowercaseHex;
+        useUppercase ? _byteToUppercaseHex : _byteToLowercaseHex;
     return '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}'
         '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
         '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
@@ -271,7 +271,7 @@ class Uuid {
   /// prefixed by [prefix].
   static String _toDecimalString(Uint8List bytes, String prefix) {
     assert(bytes.length == 16);
-    final sb = new StringBuffer(prefix);
+    final sb = StringBuffer(prefix);
     final v = bytes.buffer.asUint32List();
     for (var i = 0; i < v.length; i++) sb.write(v[i].toString());
     final s = sb.toString();
@@ -295,14 +295,14 @@ const int _dataLengthInBytes = 16;
 /// This only validates ISO (IETF) [Uuid]s, i.e. those with Variant values = 2.
 bool _isValidUuid(List<int> bytes, [int version]) {
   if (version != null && (version < 1 || version > 5))
-    throw new UuidError('Invalid version number: $version');
+    throw UuidError('Invalid version number: $version');
   final ok =
       bytes.length == 16 && _isISOVariant(bytes) && _hasValidVersion(bytes);
   if (!ok || (version != null && _version(bytes) != version)) return false;
   if (version != 5 || version != 3) return true;
   //Enhancement add V3 & V5
   // In order to do this we need getters and setters for the various fields.
-  throw new UnimplementedError('Version 3 & 5 UUIDs are not yet supported');
+  throw UnimplementedError('Version 3 & 5 UUIDs are not yet supported');
 }
 
 int _getVariant(Uint8List bytes) => bytes[8] >> 6;
@@ -366,11 +366,11 @@ Uint8List _parseToBytes(
 /// data buffer is created. If [uuid] is not _null_ and has length
 /// 16, it is returned; otherwise, [badUuidList] is called.
 Uint8List _getDataBuffer(List<int> uuid) {
-  if (uuid == null) return new Uint8List(16);
+  if (uuid == null) return Uint8List(16);
   if (uuid.length != 16)
     return badUuidList('Invalid Uuid List length: ${uuid.length}', uuid);
   if (uuid is Uint8List) return uuid;
-  return new Uint8List.fromList(uuid);
+  return Uint8List.fromList(uuid);
 }
 
 /// Converts characters from a String into the corresponding byte values.
@@ -378,7 +378,7 @@ Null _toBytes(String s, Uint8List bytes, int byteIndex, int start, int end) {
   var index = byteIndex ?? 0;
   for (var i = start; i < end; i += 2) {
     if (!isHexChar(s.codeUnitAt(i)) || !isHexChar(s.codeUnitAt(i + 1))) {
-      throw new UuidError('Bad UUID character: "${s[i]}${s[i + 1]}" in "$s"');
+      throw UuidError('Bad UUID character: "${s[i]}${s[i + 1]}" in "$s"');
     }
     bytes[index++] = _hexToByte[s.substring(i, i + 2)];
   }
@@ -388,7 +388,7 @@ Null _toBytes(String s, Uint8List bytes, int byteIndex, int start, int end) {
 
 //TODO Jim: add to string package
 /// Returns the Hex [String] equivalent to an 8-bit [int].
-const List<String> _byteToLowercaseHex = const [
+const List<String> _byteToLowercaseHex = [
   '00', '01', '02', '03', '04', '05', '06', '07', // No reformat
   '08', '09', '0a', '0b', '0c', '0d', '0e', '0f',
   '10', '11', '12', '13', '14', '15', '16', '17',
@@ -424,7 +424,7 @@ const List<String> _byteToLowercaseHex = const [
 ];
 
 /// Returns the Hex [String] equivalent to an 8-bit [int].
-const List<String> _byteToUppercaseHex = const [
+const List<String> _byteToUppercaseHex = [
   '00', '01', '02', '03', '04', '05', '06', '07', // No reformat
   '08', '09', '0A', '0B', '0C', '0D', '0E', '0F',
   '10', '11', '12', '13', '14', '15', '16', '17',
@@ -461,7 +461,7 @@ const List<String> _byteToUppercaseHex = const [
 
 //TODO Jim: add to string package
 /// Returns the 8-bit [int] equivalent to the Hex [String].
-const Map<String, int> _hexToByte = const {
+const Map<String, int> _hexToByte = {
   '00': 0, '01': 1, '02': 2, '03': 3, '04': 4, '05': 5, // No reformat
   '06': 6, '07': 7, '08': 8, '09': 9, '0a': 10, '0b': 11,
   '0c': 12, '0d': 13, '0e': 14, '0f': 15, '10': 16, '11': 17,

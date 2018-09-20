@@ -84,8 +84,8 @@ final int kMax63BitInt = pow(2, 62) - 1;
 /// otherwise, throws a [RangeError].
 int checkRange(int value, int min, int max, {bool throwOnError = false}) {
   if (value < min || value > max) {
-    return (throwOnError)
-        ? throw new RangeError('$value is not in range $min to $max')
+    return throwOnError
+        ? throw RangeError('$value is not in range $min to $max')
         : null;
   }
   return value;

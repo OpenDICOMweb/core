@@ -28,7 +28,7 @@ class ReadError extends Error {
 void readError(String msg) {
   log.error(ReadError.message(msg));
   if (throwOnError)
-    throw new ReadError(msg);
+    throw ReadError(msg);
   return null;
 }
 

@@ -8,7 +8,7 @@
 //
 import 'dart:collection';
 
-import 'package:core/src/dataset/base/dataset_mixin.dart.old';
+import 'package:core/src/dataset/base/dataset_mixin.dart';
 import 'package:core/src/dataset/base/group/creators.dart';
 import 'package:core/src/dataset/base/history.dart';
 import 'package:core/src/element.dart';
@@ -36,13 +36,12 @@ import 'package:core/src/vr.dart';
 
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
-abstract class Dataset extends Object with ListMixin<Element>,
-    DatasetMixin {
+abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   /// [PCTag]s for [PC] [Element]s in _this_.
-  final PrivateCreatorTags pcTags = new PrivateCreatorTags();
+  final PrivateCreatorTags pcTags = PrivateCreatorTags();
 
   /// A history of changes to _this_.
-  final History history = new History();
+  final History history = History();
 
   /// The index in [Bytes] being read of the start of _this_.
   int start = 0;
@@ -191,7 +190,7 @@ abstract class Dataset extends Object with ListMixin<Element>,
   }
 
   @override
-  void addAll(Iterable<Element> eList) => eList.forEach(add);
+  void addAll(Iterable<Element> iterable) => iterable.forEach(add);
 
   /// Remove all duplicates from the [Dataset].
   List<Element> deleteDuplicates() {
@@ -221,5 +220,5 @@ $runtimeType(#$hashCode):
   String toString() => '$runtimeType: $total Elements';
 
   /// The canonical empty [Dataset], i.e. containing no [Element]s.
-  static const List<Dataset> empty = const <Dataset>[];
+  static const List<Dataset> empty = <Dataset>[];
 }

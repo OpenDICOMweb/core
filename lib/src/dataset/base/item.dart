@@ -25,7 +25,7 @@ abstract class Item extends Dataset {
   @override
   IDSBytes dsBytes;
 
-  Item(this.parent, this.sequence, Bytes bd) : dsBytes = new IDSBytes(bd);
+  Item(this.parent, this.sequence, Bytes bd) : dsBytes = IDSBytes(bd);
 
   /// The the Value Field Length of the encoded object (e.g. Bytes,
   /// JSON [String]...) that _this_was created from, or

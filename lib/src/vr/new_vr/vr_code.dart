@@ -45,7 +45,7 @@ const int kUSCode = 0X5355;
 const int kUTCode = 0X5455;
 
 /// List of 16-bit VRCodes in VRIndex order.
-const List<int> vrCodeByIndex = const <int>[
+const List<int> vrCodeByIndex = <int>[
   kUNCode, kSQCode,
   kOBCode, kOWCode, kOLCode, kOFCode, kODCode,
   kUCCode, kUTCode, kURCode,
@@ -60,7 +60,7 @@ const List<int> vrCodeByIndex = const <int>[
 
 
 /// Map of 16-bit Little Endian VR Codes order by key
-const Map<int, int> vrIndexByCode = const <int, int>{
+const Map<int, int> vrIndexByCode = <int, int>{
   0x4144: kDAIndex, 0x424f: kOBIndex, 0x4355: kUCIndex, 0x4446: kFDIndex,
   0x444f: kODIndex, 0x4541: kAEIndex, 0x464f: kOFIndex, 0x4853: kSHIndex,
   0x4955: kUIIndex, 0x4c46: kFLIndex, 0x4c4f: kOLIndex, 0x4c53: kSLIndex,
@@ -72,7 +72,7 @@ const Map<int, int> vrIndexByCode = const <int, int>{
 };
 
 /// A List of 16-Bit VR Codes sorted in values order.
-const List<int> vrCodeInSortOrder = const <int>[
+const List<int> vrCodeInSortOrder = <int>[
   kDACode, // 0X4144;
   kOBCode, // 0X424f;
   kUCCode, // 0X4355;

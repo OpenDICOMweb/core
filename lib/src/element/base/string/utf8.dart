@@ -34,7 +34,7 @@ abstract class Utf8 extends StringBase {
       bytes.getUtf8List(allowMalformed: global.allowMalformedUtf8);
 
   static List<String> fromValueField(Iterable vf, int maxVFLength,
-      {bool isAscii: true}) {
+      {bool isAscii = true}) {
     if (vf == null) return kEmptyStringList;
     if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
     if (vf is Bytes) return vf.getUtf8List();
@@ -135,15 +135,16 @@ abstract class LO extends Utf8 {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, LO);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (isDcmString(s, 64))
+    return isDcmString(s, 64)
         ? true
         : invalidString('Invalid Long String (LO): "$s"', issues);
   }
@@ -233,11 +234,11 @@ abstract class PN extends Utf8 {
   List<PersonName> _names;
 
   @override
-  PN get hash => throw new UnimplementedError();
+  PN get hash => throw UnimplementedError();
 
   String get initials {
     if (values.isNotEmpty)
-      throw new UnimplementedError('Unimplemented for multiple PersonNames');
+      throw UnimplementedError('Unimplemented for multiple PersonNames');
     return _names[0].initials;
   }
 
@@ -305,15 +306,16 @@ abstract class PN extends Utf8 {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, PN);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (isDcmString(s, 5 * 64))
+    return isDcmString(s, 5 * 64)
         ? true
         : invalidString('Invalid Person Name String (PN): "$s"', issues);
   }
@@ -410,15 +412,16 @@ abstract class SH extends Utf8 {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, SH);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (isDcmString(s, kMaxValueLength))
+    return isDcmString(s, kMaxValueLength)
         ? true
         : invalidString('Invalid Short String (SH): "$s"', issues);
   }
@@ -520,15 +523,16 @@ abstract class UC extends Utf8 {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UC);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (isDcmString(s, kMaxLongVF))
+    return isDcmString(s, kMaxLongVF)
         ? true
         : invalidString(
             'Invalid Unlimited Characters String (UC): "$s"', issues);

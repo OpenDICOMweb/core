@@ -10,7 +10,7 @@
 import 'package:core/src/tag/public/p_tag.dart';
 
 /// An ordered List of all DICOM Data Elements.  See PS3.6.
-const Map<int, PTag> tagMap = const <int, PTag>{
+const Map<int, PTag> tagMap = <int, PTag>{
   //**** Beginning of the Command Tags
   0x00001000: PTag.kAffectedSOPInstanceUID,
   0x00001001: PTag.kRequestedSOPInstanceUID,

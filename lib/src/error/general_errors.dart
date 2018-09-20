@@ -18,12 +18,12 @@ import 'package:core/src/utils.dart';
 /// General Errors
 
 Null unsupportedError([String msg = '']) {
-  if (throwOnError) throw new UnsupportedError(msg);
+  if (throwOnError) throw UnsupportedError(msg);
   return null;
 }
 
 Null unimplementedError([String msg = '']) {
-  if (throwOnError) throw new UnsupportedError(msg);
+  if (throwOnError) throw UnsupportedError(msg);
   return null;
 }
 
@@ -49,7 +49,7 @@ class InternalError extends Error {
 /// This type of Error might be handled differently on Client and Server.
 void internalError(String msg, [Object o, int errorCode = -1]) {
   log.error(InternalError.message(msg, o, errorCode));
-  throw new InternalError(msg, o, errorCode);
+  throw InternalError(msg, o, errorCode);
 }
 
 /// A [GeneralError] is thrown when a values should not be _null_.
@@ -65,7 +65,7 @@ class GeneralError extends Error {
 Null nullValueError([String msg = '']) {
   final s = 'NullValueError: $msg';
   log.error(s);
-  if (throwOnError) throw new GeneralError(s);
+  if (throwOnError) throw GeneralError(s);
   return null;
 }
 
@@ -83,7 +83,7 @@ class InvalidKeyError<K> extends Error {
 Null invalidKey<K>(K key, [String msg]) {
   final msg = 'InvalidKeyError: ${keyTypeString(key)}';
   log.error(msg);
-  if (throwOnError) throw new InvalidKeyError(key);
+  if (throwOnError) throw InvalidKeyError(key);
   return null;
 }
 
@@ -92,7 +92,7 @@ Null badTypedDataLength(int length, int maxLength, [Issues issues]) {
       '$length exceeds maximum($maxLength)';
   log.error(s);
   if (issues != null) issues.add(s);
-  if (throwOnError) throw new GeneralError(s);
+  if (throwOnError) throw GeneralError(s);
   return null;
 }
 

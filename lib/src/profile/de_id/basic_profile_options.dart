@@ -17,64 +17,65 @@ class BasicProfileOptions {
 
   const BasicProfileOptions(this.keyword, this.index, this.type, this.name);
 
-  static const BasicProfileOptions kNone = const BasicProfileOptions(
-      'none', -1, 'NoOptions', 'No Options Specified');
+  static const BasicProfileOptions kNone =
+      BasicProfileOptions('none', -1, 'NoOptions', 'No Options Specified');
 
-  static const BasicProfileOptions kRetainSafePrivate =
-      const BasicProfileOptions(
-          'RetainSafePrivate', 0, 'Retain', 'Retail Safe Private Option');
+  static const BasicProfileOptions kRetainSafePrivate = BasicProfileOptions(
+      'RetainSafePrivate', 0, 'Retain', 'Retail Safe Private Option');
 
-  static const BasicProfileOptions kRetainUids = const BasicProfileOptions(
-      'RetainUids', 1, 'Retain', 'Retail UIDs Option');
+  static const BasicProfileOptions kRetainUids =
+      BasicProfileOptions('RetainUids', 1, 'Retain', 'Retail UIDs Option');
 
-  static const BasicProfileOptions kRetainDeviceIdentity =
-      const BasicProfileOptions(
-          'RetainDeviceIdentity', 2, 'Retain', 'Retail Device Identity Option');
+  static const BasicProfileOptions kRetainDeviceIdentity = BasicProfileOptions(
+      'RetainDeviceIdentity', 2, 'Retain', 'Retail Device Identity Option');
 
   static const BasicProfileOptions kRetainPatientCharacteristics =
-      const BasicProfileOptions('patientCharacteristics', 3, 'Retain',
+      BasicProfileOptions('patientCharacteristics', 3, 'Retain',
           'Retail Patient Characteristics Option');
 
-  static const BasicProfileOptions kRetainFullDates = const BasicProfileOptions(
+  static const BasicProfileOptions kRetainFullDates = BasicProfileOptions(
       'RetainFullDates',
       4,
       'Retain',
       'Retail Longitudinal Temporal Information with Full Dates '
       'Option');
 
-  static const BasicProfileOptions kRetainModifiedDates =
-      const BasicProfileOptions('RetainModifiedDates', 5, 'Retain',
-          'Retain Longitudinal Temporal Information with Modified Dates Option');
+  static const BasicProfileOptions kRetainModifiedDates = BasicProfileOptions(
+      'RetainModifiedDates',
+      5,
+      'Retain',
+      'Retain Longitudinal Temporal Information with Modified Dates Option');
 
-  static const BasicProfileOptions kCleanDescriptors =
-      const BasicProfileOptions(
-          'CleanDescriptors',
-          6,
-          'Clean',
-          'Clean Descriptors '
-          'Option');
+  static const BasicProfileOptions kCleanDescriptors = BasicProfileOptions(
+      'CleanDescriptors',
+      6,
+      'Clean',
+      'Clean Descriptors '
+      'Option');
 
   static const BasicProfileOptions kCleanStructuredContent =
-      const BasicProfileOptions('CleanStructuredContent', 7, 'Clean',
+      BasicProfileOptions('CleanStructuredContent', 7, 'Clean',
           'Clean Structured Content Option');
 
-  static const BasicProfileOptions kCleanGraphics = const BasicProfileOptions(
-      'CleanGraphics', 8, 'Clean', 'Clean Graphics Option');
+  static const BasicProfileOptions kCleanGraphics =
+      BasicProfileOptions('CleanGraphics', 8, 'Clean', 'Clean Graphics Option');
 
-  static const BasicProfileOptions kCleanPixelData = const BasicProfileOptions(
+  static const BasicProfileOptions kCleanPixelData = BasicProfileOptions(
       'CleanPixelData',
       6,
       'Clean',
       'Clean Pixel Data '
       'Option');
 
-  static const BasicProfileOptions kCleanVisualFeatures =
-      const BasicProfileOptions('CleanVisualFeatures', 7, 'Clean',
-          'Clean Recognizable Visual Features Option');
+  static const BasicProfileOptions kCleanVisualFeatures = BasicProfileOptions(
+      'CleanVisualFeatures',
+      7,
+      'Clean',
+      'Clean Recognizable Visual Features Option');
 
 //TODO:
 // 1. Reidentifier - see PS3.15, E.1.2
-  static const Map<String, BasicProfileOptions> map = const {
+  static const Map<String, BasicProfileOptions> map = {
     'None': kNone,
     'RetainSafePrivate': kRetainSafePrivate,
     'RetainUids': kRetainUids,

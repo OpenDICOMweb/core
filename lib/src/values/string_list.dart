@@ -37,7 +37,7 @@ class StringList extends ListBase<String> {
         if (vList2.isEmpty) return kEmptyList;
         vList1 = vList2;
       }
-      return new StringList._(vList1);
+      return StringList._(vList1);
   }
 
   StringList._(this._values);
@@ -105,12 +105,12 @@ class StringList extends ListBase<String> {
   /// values is truncated to [maxLength].
   StringList append(String s, int maxLength) {
     final length = values.length;
-    final result = new List<String>(length);
+    final result = List<String>(length);
     for (var i = 0; i < length; i++) {
       final s0 = values[i] + s;
       result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
     }
-    return new StringList._(result);
+    return StringList._(result);
   }
 
   /// Returns a new [StringList] where its values are the result of
@@ -119,12 +119,12 @@ class StringList extends ListBase<String> {
   /// values is truncated to [maxLength].
   StringList prepend(String s, int maxLength) {
     final length = values.length;
-    final result = new List<String>(length);
+    final result = List<String>(length);
     for (var i = 0; i < length; i++) {
       final s0 = s + values[i];
       result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
     }
-    return new StringList._(result);
+    return StringList._(result);
   }
 
   /// Returns a new [StringList] where its values are the result of
@@ -134,19 +134,19 @@ class StringList extends ListBase<String> {
   StringList truncate(int newLength, int maxLength) {
     final length = values.length;
     if (newLength > maxLength) return null;
-    final result = new List<String>(length);
+    final result = List<String>(length);
     for (var i = 0; i < length; i++) {
       final s = values[i];
       result[i] = (s.length > maxLength) ? s.substring(0, maxLength) : s;
     }
-    return new StringList._(result);
+    return StringList._(result);
   }
 
   /// Returns _true_ if each element in [values] matches
   /// the regular expression.
   // TODO: Determine if this is the required functionality for ACR
   bool match(String regexp) {
-    final regex = new RegExp(regexp);
+    final regex = RegExp(regexp);
     for (var i = 0; i < values.length; i++) {
       final v = values[i];
       if (!regex.hasMatch(v)) return false;
@@ -162,12 +162,12 @@ class StringList extends ListBase<String> {
   StringList replaceFirst(RegExp from, String to, int maxLength,
       [int startIndex = 0]) {
     final length = values.length;
-    final result = new List<String>(length);
+    final result = List<String>(length);
     for (var i = 0; i < length; i++) {
       final v = values[i].replaceFirst(from, to, startIndex);
       result[i] = (v.length > maxLength) ? v.substring(0, length) : v;
     }
-    return new StringList._(result);
+    return StringList._(result);
   }
 
   /// Returns a new [StringList] where each _value_ is the result of
@@ -178,23 +178,23 @@ class StringList extends ListBase<String> {
   StringList replaceAll(RegExp from, String to, int maxLength,
       [int startIndex = 0]) {
     final length = values.length;
-    final result = new List<String>(length);
+    final result = List<String>(length);
     for (var i = 0; i < length; i++) {
       final v = values[i].replaceAll(from, to);
       result[i] = (v.length > maxLength) ? v.substring(0, length) : v;
     }
-    return new StringList._(result);
+    return StringList._(result);
   }
 
   Bytes encode([int separator = kBackslash]) =>
       Bytes.fromUtf8List(values, separator);
 
-  static final StringList kEmptyList = new StringList._(kEmptyStringList);
+  static final StringList kEmptyList = StringList._(kEmptyStringList);
 }
 
 class AsciiList extends StringList {
   factory AsciiList([Iterable<String> vList]) => isAsciiList(vList)
-      ? new StringList.from(vList)
+      ? StringList.from(vList)
       : badStringList('Invalid AsciiList: $vList');
 
   AsciiList.decode(Bytes bytes) : super._(bytes.getAsciiList());
@@ -214,7 +214,7 @@ class AsciiList extends StringList {
     var length = lengthInBytes;
     if (pad != null && length.isOdd) length++;
     final last = length - 1;
-    final bytes = new Bytes(length);
+    final bytes = Bytes(length);
     int j;
     for (var s in values) {
       for (var i = 0; i < s.length; i++) {

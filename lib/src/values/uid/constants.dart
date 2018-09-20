@@ -31,20 +31,26 @@ const String kExplicitVRBigEndian = '1.2.840.10008.1.2.2';
 // **** JPEG
 
 const String kJpegBaseline1 = '1.2.840.10008.1.2.4.50';
-const String kDefaultTransferSyntaxForLossyJpeg8BitImageCompression = kJpegBaseline1;
+const String kDefaultTransferSyntaxForLossyJpeg8BitImageCompression =
+    kJpegBaseline1;
 
 const String kJpegExtended2_4 = '1.2.840.10008.1.2.4.51';
-const String kDefaultTransferSyntaxForLossyJpeg12BitImageCompression4 = kJpegExtended2_4;
+const String kDefaultTransferSyntaxForLossyJpeg12BitImageCompression4 =
+    kJpegExtended2_4;
 
 const String kJpegExtended3_5 = '1.2.840.10008.1.2.4.52';
 
-const String kJpegSpectralSelectionNonHierarchical6_8 = '1.2.840.10008.1.2.4.53';
+const String kJpegSpectralSelectionNonHierarchical6_8 =
+    '1.2.840.10008.1.2.4.53';
 
-const String kJpegSpectralSelectionNonHierarchical7_9 = '1.2.840.10008.1.2.4.54';
+const String kJpegSpectralSelectionNonHierarchical7_9 =
+    '1.2.840.10008.1.2.4.54';
 
-const String kJpegFullProgressionNonHierarchical10_12 = '1.2.840.10008.1.2.4.55';
+const String kJpegFullProgressionNonHierarchical10_12 =
+    '1.2.840.10008.1.2.4.55';
 
-const String kJpegFullProgressionNonHierarchical11_13 = '1.2.840.10008.1.2.4.56';
+const String kJpegFullProgressionNonHierarchical11_13 =
+    '1.2.840.10008.1.2.4.56';
 
 const String kJpegLosslessNonHierarchical14 = '1.2.840.10008.1.2.4.57';
 
@@ -84,7 +90,8 @@ const String kJpeg2000ImageCompression = '1.2.840.10008.1.2.4.91';
 const String kJpeg2000Part2MultiComponentImageCompressionLosslessOnly =
     '1.2.840.10008.1.2.4.92';
 
-const String kJpeg2000Part2MultiComponentImageCompression = '1.2.840.10008.1.2.4.93';
+const String kJpeg2000Part2MultiComponentImageCompression =
+    '1.2.840.10008.1.2.4.93';
 
 const String kJpipReferenced = '1.2.840.10008.1.2.4.94';
 
@@ -98,7 +105,8 @@ const String kMpeg2MainProfileHighLevel = '1.2.840.10008.1.2.4.101';
 
 const String kMpeg4AVCH264HighProfileLevel41 = '1.2.840.10008.1.2.4.102';
 
-const String kMpeg4AVCH264BDCompatibleHighProfileLevel41 = '1.2.840.10008.1.2.4.103';
+const String kMpeg4AVCH264BDCompatibleHighProfileLevel41 =
+    '1.2.840.10008.1.2.4.103';
 
 // *** RLE
 
@@ -174,7 +182,8 @@ const String kProceduralEventLoggingSOPInstance = '1.2.840.10008.1.40.1';
 
 const String kSubstanceAdministrationLoggingSOPClass = '1.2.840.10008.1.42';
 
-const String kSubstanceAdministrationLoggingSOPInstance = '1.2.840.10008.1.42.1';
+const String kSubstanceAdministrationLoggingSOPInstance =
+    '1.2.840.10008.1.42.1';
 
 const String kDICOMUIDRegistry = '1.2.840.10008.2.6.1';
 
@@ -192,9 +201,11 @@ const String kDetachedStudyManagementSOPClass = '1.2.840.10008.3.1.2.3.1';
 
 const String kStudyComponentManagementSOPClass = '1.2.840.10008.3.1.2.3.2';
 
-const String kModalityPerformedProcedureStepSOPClass = '1.2.840.10008.3.1.2.3.3';
+const String kModalityPerformedProcedureStepSOPClass =
+    '1.2.840.10008.3.1.2.3.3';
 
-const String kModalityPerformedProcedureStepRetrieveSOPClass = '1.2.840.10008.3.1.2.3.4';
+const String kModalityPerformedProcedureStepRetrieveSOPClass =
+    '1.2.840.10008.3.1.2.3.4';
 
 const String kModalityPerformedProcedureStepNotificationSOPClass =
     '1.2.840.10008.3.1.2.3.5';
@@ -205,7 +216,8 @@ const String kDetachedResultsManagementMetaSOPClass = '1.2.840.10008.3.1.2.5.4';
 
 const String kDetachedStudyManagementMetaSOPClass = '1.2.840.10008.3.1.2.5.5';
 
-const String kDetachedInterpretationManagementSOPClass = '1.2.840.10008.3.1.2.6.1';
+const String kDetachedInterpretationManagementSOPClass =
+    '1.2.840.10008.3.1.2.6.1';
 
 const String kStorageServiceClass = '1.2.840.10008.4.2';
 
@@ -219,9 +231,11 @@ const String kBasicColorImageBoxSOPClass = '1.2.840.10008.5.1.1.4.1';
 
 const String kReferencedImageBoxSOPClass = '1.2.840.10008.5.1.1.4.2';
 
-const String kBasicGrayscalePrintManagementMetaSOPClass = '1.2.840.10008.5.1.1.9';
+const String kBasicGrayscalePrintManagementMetaSOPClass =
+    '1.2.840.10008.5.1.1.9';
 
-const String kReferencedGrayscalePrintManagementMetaSOPClass = '1.2.840.10008.5.1.1.9.1';
+const String kReferencedGrayscalePrintManagementMetaSOPClass =
+    '1.2.840.10008.5.1.1.9.1';
 
 const String kPrintJobSOPClass = '1.2.840.10008.5.1.1.14';
 
@@ -229,15 +243,18 @@ const String kBasicAnnotationBoxSOPClass = '1.2.840.10008.5.1.1.15';
 
 const String kPrinterSOPClass = '1.2.840.10008.5.1.1.16';
 
-const String kPrinterConfigurationRetrievalSOPClass = '1.2.840.10008.5.1.1.16.376';
+const String kPrinterConfigurationRetrievalSOPClass =
+    '1.2.840.10008.5.1.1.16.376';
 
 const String kPrinterSOPInstance = '1.2.840.10008.5.1.1.17';
 
-const String kPrinterConfigurationRetrievalSOPInstance = '1.2.840.10008.5.1.1.17.376';
+const String kPrinterConfigurationRetrievalSOPInstance =
+    '1.2.840.10008.5.1.1.17.376';
 
 const String kBasicColorPrintManagementMetaSOPClass = '1.2.840.10008.5.1.1.18';
 
-const String kReferencedColorPrintManagementMetaSOPClass = '1.2.840.10008.5.1.1.18.1';
+const String kReferencedColorPrintManagementMetaSOPClass =
+    '1.2.840.10008.5.1.1.18.1';
 
 const String kVOILUTBoxSOPClass = '1.2.840.10008.5.1.1.22';
 
@@ -265,9 +282,11 @@ const String kMediaCreationManagementSOPClassUID = '1.2.840.10008.5.1.1.33';
 
 const String kComputedRadiographyImageStorage = '1.2.840.10008.5.1.4.1.1.1';
 
-const String kDigitalXRayImageStorageForPresentation = '1.2.840.10008.5.1.4.1.1.1.1';
+const String kDigitalXRayImageStorageForPresentation =
+    '1.2.840.10008.5.1.4.1.1.1.1';
 
-const String kDigitalXRayImageStorageForProcessing = '1.2.840.10008.5.1.4.1.1.1.1.1';
+const String kDigitalXRayImageStorageForProcessing =
+    '1.2.840.10008.5.1.4.1.1.1.1.1';
 
 const String kDigitalMammographyXRayImageStorageForPresentation =
     '1.2.840.10008.5.1.4.1.1.1.2';
@@ -285,9 +304,11 @@ const String kCTImageStorage = '1.2.840.10008.5.1.4.1.1.2';
 
 const String kEnhancedCTImageStorage = '1.2.840.10008.5.1.4.1.1.2.1';
 
-const String kLegacyConvertedEnhancedCTImageStorage = '1.2.840.10008.5.1.4.1.1.2.2';
+const String kLegacyConvertedEnhancedCTImageStorage =
+    '1.2.840.10008.5.1.4.1.1.2.2';
 
-const String kUltrasoundMultiFrameImageStorageRetired = '1.2.840.10008.5.1.4.1.1.3';
+const String kUltrasoundMultiFrameImageStorageRetired =
+    '1.2.840.10008.5.1.4.1.1.3';
 
 const String kUltrasoundMultiFrameImageStorage = '1.2.840.10008.5.1.4.1.1.3.1';
 
@@ -299,7 +320,8 @@ const String kMRSpectroscopyStorage = '1.2.840.10008.5.1.4.1.1.4.2';
 
 const String kEnhancedMRColorImageStorage = '1.2.840.10008.5.1.4.1.1.4.3';
 
-const String kLegacyConvertedEnhancedMRImageStorage = '1.2.840.10008.5.1.4.1.1.4.4';
+const String kLegacyConvertedEnhancedMRImageStorage =
+    '1.2.840.10008.5.1.4.1.1.4.4';
 
 const String kNuclearMedicineImageStorageRetired = '1.2.840.10008.5.1.4.1.1.5';
 
@@ -337,7 +359,8 @@ const String kAmbulatoryECGWaveformStorage = '1.2.840.10008.5.1.4.1.1.9.1.3';
 
 const String kHemodynamicWaveformStorage = '1.2.840.10008.5.1.4.1.1.9.2.1';
 
-const String kCardiacElectrophysiologyWaveformStorage = '1.2.840.10008.5.1.4.1.1.9.3.1';
+const String kCardiacElectrophysiologyWaveformStorage =
+    '1.2.840.10008.5.1.4.1.1.9.3.1';
 
 const String kBasicVoiceAudioWaveformStorage = '1.2.840.10008.5.1.4.1.1.9.4.1';
 
@@ -370,19 +393,23 @@ const String kXRayAngiographicImageStorage = '1.2.840.10008.5.1.4.1.1.12.1';
 
 const String kEnhancedXAImageStorage = '1.2.840.10008.5.1.4.1.1.12.1.1';
 
-const String kXRayRadiofluoroscopicImageStorage = '1.2.840.10008.5.1.4.1.1.12.2';
+const String kXRayRadiofluoroscopicImageStorage =
+    '1.2.840.10008.5.1.4.1.1.12.2';
 
 const String kEnhancedXRFImageStorage = '1.2.840.10008.5.1.4.1.1.12.2.1';
 
-const String kXRayAngiographicBiPlaneImageStorage = '1.2.840.10008.5.1.4.1.1.12.3';
+const String kXRayAngiographicBiPlaneImageStorage =
+    '1.2.840.10008.5.1.4.1.1.12.3';
 
 const String kXRay3DAngiographicImageStorage = '1.2.840.10008.5.1.4.1.1.13.1.1';
 
 const String kXRay3DCraniofacialImageStorage = '1.2.840.10008.5.1.4.1.1.13.1.2';
 
-const String kBreastTomosynthesisImageStorage = '1.2.840.10008.5.1.4.1.1.13.1.3';
+const String kBreastTomosynthesisImageStorage =
+    '1.2.840.10008.5.1.4.1.1.13.1.3';
 
-const String kIntravascularOpticalCoherenceTomographyImageStorageForPresentation =
+const String
+    kIntravascularOpticalCoherenceTomographyImageStorageForPresentation =
     '1.2.840.10008.5.1.4.1.1.14.1';
 
 const String kIntravascularOpticalCoherenceTomographyImageStorageForProcessing =
@@ -396,7 +423,8 @@ const String kSpatialRegistrationStorage = '1.2.840.10008.5.1.4.1.1.66.1';
 
 const String kSpatialFiducialsStorage = '1.2.840.10008.5.1.4.1.1.66.2';
 
-const String kDeformableSpatialRegistrationStorage = '1.2.840.10008.5.1.4.1.1.66.3';
+const String kDeformableSpatialRegistrationStorage =
+    '1.2.840.10008.5.1.4.1.1.66.3';
 
 const String kSegmentationStorage = '1.2.840.10008.5.1.4.1.1.66.4';
 
@@ -425,35 +453,47 @@ const String kVLSlideCoordinatesMicroscopicImageStorage =
 
 const String kVLPhotographicImageStorage = '1.2.840.10008.5.1.4.1.1.77.1.4';
 
-const String kVideoPhotographicImageStorage = '1.2.840.10008.5.1.4.1.1.77.1.4.1';
+const String kVideoPhotographicImageStorage =
+    '1.2.840.10008.5.1.4.1.1.77.1.4.1';
 
-const String kOphthalmicPhotography8BitImageStorage = '1.2.840.10008.5.1.4.1.1.77.1.5.1';
+const String kOphthalmicPhotography8BitImageStorage =
+    '1.2.840.10008.5.1.4.1.1.77.1.5.1';
 
-const String kOphthalmicPhotography16BitImageStorage = '1.2.840.10008.5.1.4.1.1.77.1.5.2';
+const String kOphthalmicPhotography16BitImageStorage =
+    '1.2.840.10008.5.1.4.1.1.77.1.5.2';
 
-const String kStereometricRelationshipStorage = '1.2.840.10008.5.1.4.1.1.77.1.5.3';
+const String kStereometricRelationshipStorage =
+    '1.2.840.10008.5.1.4.1.1.77.1.5.3';
 
-const String kOphthalmicTomographyImageStorage = '1.2.840.10008.5.1.4.1.1.77.1.5.4';
+const String kOphthalmicTomographyImageStorage =
+    '1.2.840.10008.5.1.4.1.1.77.1.5.4';
 
-const String kVLWholeSlideMicroscopyImageStorage = '1.2.840.10008.5.1.4.1.1.77.1.6';
+const String kVLWholeSlideMicroscopyImageStorage =
+    '1.2.840.10008.5.1.4.1.1.77.1.6';
 
 const String kLensometryMeasurementsStorage = '1.2.840.10008.5.1.4.1.1.78.1';
 
-const String kAutorefractionMeasurementsStorage = '1.2.840.10008.5.1.4.1.1.78.2';
+const String kAutorefractionMeasurementsStorage =
+    '1.2.840.10008.5.1.4.1.1.78.2';
 
 const String kKeratometryMeasurementsStorage = '1.2.840.10008.5.1.4.1.1.78.3';
 
-const String kSubjectiveRefractionMeasurementsStorage = '1.2.840.10008.5.1.4.1.1.78.4';
+const String kSubjectiveRefractionMeasurementsStorage =
+    '1.2.840.10008.5.1.4.1.1.78.4';
 
 const String kVisualAcuityMeasurementsStorage = '1.2.840.10008.5.1.4.1.1.78.5';
 
-const String kSpectaclePrescriptionReportStorage = '1.2.840.10008.5.1.4.1.1.78.6';
+const String kSpectaclePrescriptionReportStorage =
+    '1.2.840.10008.5.1.4.1.1.78.6';
 
-const String kOphthalmicAxialMeasurementsStorage = '1.2.840.10008.5.1.4.1.1.78.7';
+const String kOphthalmicAxialMeasurementsStorage =
+    '1.2.840.10008.5.1.4.1.1.78.7';
 
-const String kIntraocularLensCalculationsStorage = '1.2.840.10008.5.1.4.1.1.78.8';
+const String kIntraocularLensCalculationsStorage =
+    '1.2.840.10008.5.1.4.1.1.78.8';
 
-const String kMacularGridThicknessandVolumeReportStorage = '1.2.840.10008.5.1.4.1.1.79.1';
+const String kMacularGridThicknessandVolumeReportStorage =
+    '1.2.840.10008.5.1.4.1.1.79.1';
 
 const String kOphthalmicVisualFieldStaticPerimetryMeasurementsStorage =
     '1.2.840.10008.5.1.4.1.1.80.1';
@@ -482,7 +522,8 @@ const String kProcedureLogStorage = '1.2.840.10008.5.1.4.1.1.88.40';
 
 const String kMammographyCADSRStorage = '1.2.840.10008.5.1.4.1.1.88.50';
 
-const String kKeyObjectSelectionDocumentStorage = '1.2.840.10008.5.1.4.1.1.88.59';
+const String kKeyObjectSelectionDocumentStorage =
+    '1.2.840.10008.5.1.4.1.1.88.59';
 
 const String kChestCADSRStorage = '1.2.840.10008.5.1.4.1.1.88.65';
 
@@ -496,9 +537,11 @@ const String kEncapsulatedPDFStorage = '1.2.840.10008.5.1.4.1.1.104.1';
 
 const String kEncapsulatedCDAStorage = '1.2.840.10008.5.1.4.1.1.104.2';
 
-const String kPositronEmissionTomographyImageStorage = '1.2.840.10008.5.1.4.1.1.128';
+const String kPositronEmissionTomographyImageStorage =
+    '1.2.840.10008.5.1.4.1.1.128';
 
-const String kLegacyConvertedEnhancedPETImageStorage = '1.2.840.10008.5.1.4.1.1.128.1';
+const String kLegacyConvertedEnhancedPETImageStorage =
+    '1.2.840.10008.5.1.4.1.1.128.1';
 
 const String kStandalonePETCurveStorage = '1.2.840.10008.5.1.4.1.1.129';
 
@@ -522,7 +565,8 @@ const String kRTTreatmentSummaryRecordStorage = '1.2.840.10008.5.1.4.1.1.481.7';
 
 const String kRTIonPlanStorage = '1.2.840.10008.5.1.4.1.1.481.8';
 
-const String kRTIonBeamsTreatmentRecordStorage = '1.2.840.10008.5.1.4.1.1.481.9';
+const String kRTIonBeamsTreatmentRecordStorage =
+    '1.2.840.10008.5.1.4.1.1.481.9';
 
 const String kDICOSCTImageStorage = '1.2.840.10008.5.1.4.1.1.501.1';
 
@@ -532,7 +576,8 @@ const String kDICOSDigitalXRayImageStorageForPresentation =
 const String kDICOSDigitalXRayImageStorageForProcessing =
     '1.2.840.10008.5.1.4.1.1.501.2.2';
 
-const String kDICOSThreatDetectionReportStorage = '1.2.840.10008.5.1.4.1.1.501.3';
+const String kDICOSThreatDetectionReportStorage =
+    '1.2.840.10008.5.1.4.1.1.501.3';
 
 const String kDICOS2DAITStorage = '1.2.840.10008.5.1.4.1.1.501.4';
 
@@ -542,7 +587,8 @@ const String kDICOSQuadrupoleResonanceStorage = '1.2.840.10008.5.1.4.1.1.501.6';
 
 const String kEddyCurrentImageStorage = '1.2.840.10008.5.1.4.1.1.601.1';
 
-const String kEddyCurrentMultiFrameImageStorage = '1.2.840.10008.5.1.4.1.1.601.2';
+const String kEddyCurrentMultiFrameImageStorage =
+    '1.2.840.10008.5.1.4.1.1.601.2';
 
 const String kPatientRootQueryRetrieveInformationModelFIND =
     '1.2.840.10008.5.1.4.1.2.1.1';
@@ -550,13 +596,17 @@ const String kPatientRootQueryRetrieveInformationModelFIND =
 const String kPatientRootQueryRetrieveInformationModelMOVE =
     '1.2.840.10008.5.1.4.1.2.1.2';
 
-const String kPatientRootQueryRetrieveInformationModelGET = '1.2.840.10008.5.1.4.1.2.1.3';
+const String kPatientRootQueryRetrieveInformationModelGET =
+    '1.2.840.10008.5.1.4.1.2.1.3';
 
-const String kStudyRootQueryRetrieveInformationModelFIND = '1.2.840.10008.5.1.4.1.2.2.1';
+const String kStudyRootQueryRetrieveInformationModelFIND =
+    '1.2.840.10008.5.1.4.1.2.2.1';
 
-const String kStudyRootQueryRetrieveInformationModelMOVE = '1.2.840.10008.5.1.4.1.2.2.2';
+const String kStudyRootQueryRetrieveInformationModelMOVE =
+    '1.2.840.10008.5.1.4.1.2.2.2';
 
-const String kStudyRootQueryRetrieveInformationModelGET = '1.2.840.10008.5.1.4.1.2.2.3';
+const String kStudyRootQueryRetrieveInformationModelGET =
+    '1.2.840.10008.5.1.4.1.2.2.3';
 
 const String kPatientStudyOnlyQueryRetrieveInformationModelFIND =
     '1.2.840.10008.5.1.4.1.2.3.1';
@@ -571,40 +621,54 @@ const String kCompositeInstanceRootRetrieveMOVE = '1.2.840.10008.5.1.4.1.2.4.2';
 
 const String kCompositeInstanceRootRetrieveGET = '1.2.840.10008.5.1.4.1.2.4.3';
 
-const String kCompositeInstanceRetrieveWithoutBulkDataGET = '1.2.840.10008.5.1.4.1.2.5.3';
+const String kCompositeInstanceRetrieveWithoutBulkDataGET =
+    '1.2.840.10008.5.1.4.1.2.5.3';
 
 const String kModalityWorklistInformationModelFIND = '1.2.840.10008.5.1.4.31';
 
-const String kGeneralPurposeWorklistInformationModelFIND = '1.2.840.10008.5.1.4.32.1';
+const String kGeneralPurposeWorklistInformationModelFIND =
+    '1.2.840.10008.5.1.4.32.1';
 
-const String kGeneralPurposeScheduledProcedureStepSOPClass = '1.2.840.10008.5.1.4.32.2';
+const String kGeneralPurposeScheduledProcedureStepSOPClass =
+    '1.2.840.10008.5.1.4.32.2';
 
-const String kGeneralPurposePerformedProcedureStepSOPClass = '1.2.840.10008.5.1.4.32.3';
+const String kGeneralPurposePerformedProcedureStepSOPClass =
+    '1.2.840.10008.5.1.4.32.3';
 
-const String kGeneralPurposeWorklistManagementMetaSOPClass = '1.2.840.10008.5.1.4.32';
+const String kGeneralPurposeWorklistManagementMetaSOPClass =
+    '1.2.840.10008.5.1.4.32';
 
-const String kInstanceAvailabilityNotificationSOPClass = '1.2.840.10008.5.1.4.33';
+const String kInstanceAvailabilityNotificationSOPClass =
+    '1.2.840.10008.5.1.4.33';
 
-const String kRTBeamsDeliveryInstructionStorageTrial = '1.2.840.10008.5.1.4.34.1';
+const String kRTBeamsDeliveryInstructionStorageTrial =
+    '1.2.840.10008.5.1.4.34.1';
 
-const String kRTConventionalMachineVerificationTrial = '1.2.840.10008.5.1.4.34.2';
+const String kRTConventionalMachineVerificationTrial =
+    '1.2.840.10008.5.1.4.34.2';
 
 const String kRTIonMachineVerificationTrial = '1.2.840.10008.5.1.4.34.3';
 
 const String kUnifiedWorklistAndProcedureStepServiceClassTrial =
     '1.2.840.10008.5.1.4.34.4';
 
-const String kUnifiedProcedureStepPushSOPClassTrial = '1.2.840.10008.5.1.4.34.4.1';
+const String kUnifiedProcedureStepPushSOPClassTrial =
+    '1.2.840.10008.5.1.4.34.4.1';
 
-const String kUnifiedProcedureStepWatchSOPClassTrial = '1.2.840.10008.5.1.4.34.4.2';
+const String kUnifiedProcedureStepWatchSOPClassTrial =
+    '1.2.840.10008.5.1.4.34.4.2';
 
-const String kUnifiedProcedureStepPullSOPClassTrial = '1.2.840.10008.5.1.4.34.4.3';
+const String kUnifiedProcedureStepPullSOPClassTrial =
+    '1.2.840.10008.5.1.4.34.4.3';
 
-const String kUnifiedProcedureStepEventSOPClassTrial = '1.2.840.10008.5.1.4.34.4.4';
+const String kUnifiedProcedureStepEventSOPClassTrial =
+    '1.2.840.10008.5.1.4.34.4.4';
 
-const String kUnifiedWorklistAndProcedureStepSOPInstance = '1.2.840.10008.5.1.4.34.5';
+const String kUnifiedWorklistAndProcedureStepSOPInstance =
+    '1.2.840.10008.5.1.4.34.5';
 
-const String kUnifiedWorklistAndProcedureStepServiceClass = '1.2.840.10008.5.1.4.34.6';
+const String kUnifiedWorklistAndProcedureStepServiceClass =
+    '1.2.840.10008.5.1.4.34.6';
 
 const String kUnifiedProcedureStepPushSOPClass = '1.2.840.10008.5.1.4.34.6.1';
 
@@ -620,11 +684,14 @@ const String kRTConventionalMachineVerification = '1.2.840.10008.5.1.4.34.8';
 
 const String kRTIonMachineVerification = '1.2.840.10008.5.1.4.34.9';
 
-const String kGeneralRelevantPatientInformationQuery = '1.2.840.10008.5.1.4.37.1';
+const String kGeneralRelevantPatientInformationQuery =
+    '1.2.840.10008.5.1.4.37.1';
 
-const String kBreastImagingRelevantPatientInformationQuery = '1.2.840.10008.5.1.4.37.2';
+const String kBreastImagingRelevantPatientInformationQuery =
+    '1.2.840.10008.5.1.4.37.2';
 
-const String kCardiacRelevantPatientInformationQuery = '1.2.840.10008.5.1.4.37.3';
+const String kCardiacRelevantPatientInformationQuery =
+    '1.2.840.10008.5.1.4.37.3';
 
 const String kHangingProtocolStorage = '1.2.840.10008.5.1.4.38.1';
 
@@ -648,27 +715,36 @@ const String kSubstanceApprovalQuerySOPClass = '1.2.840.10008.5.1.4.42';
 
 const String kGenericImplantTemplateStorage = '1.2.840.10008.5.1.4.43.1';
 
-const String kGenericImplantTemplateInformationModelFIND = '1.2.840.10008.5.1.4.43.2';
+const String kGenericImplantTemplateInformationModelFIND =
+    '1.2.840.10008.5.1.4.43.2';
 
-const String kGenericImplantTemplateInformationModelMOVE = '1.2.840.10008.5.1.4.43.3';
+const String kGenericImplantTemplateInformationModelMOVE =
+    '1.2.840.10008.5.1.4.43.3';
 
-const String kGenericImplantTemplateInformationModelGET = '1.2.840.10008.5.1.4.43.4';
+const String kGenericImplantTemplateInformationModelGET =
+    '1.2.840.10008.5.1.4.43.4';
 
 const String kImplantAssemblyTemplateStorage = '1.2.840.10008.5.1.4.44.1';
 
-const String kImplantAssemblyTemplateInformationModelFIND = '1.2.840.10008.5.1.4.44.2';
+const String kImplantAssemblyTemplateInformationModelFIND =
+    '1.2.840.10008.5.1.4.44.2';
 
-const String kImplantAssemblyTemplateInformationModelMOVE = '1.2.840.10008.5.1.4.44.3';
+const String kImplantAssemblyTemplateInformationModelMOVE =
+    '1.2.840.10008.5.1.4.44.3';
 
-const String kImplantAssemblyTemplateInformationModelGET = '1.2.840.10008.5.1.4.44.4';
+const String kImplantAssemblyTemplateInformationModelGET =
+    '1.2.840.10008.5.1.4.44.4';
 
 const String kImplantTemplateGroupStorage = '1.2.840.10008.5.1.4.45.1';
 
-const String kImplantTemplateGroupInformationModelFIND = '1.2.840.10008.5.1.4.45.2';
+const String kImplantTemplateGroupInformationModelFIND =
+    '1.2.840.10008.5.1.4.45.2';
 
-const String kImplantTemplateGroupInformationModelMOVE = '1.2.840.10008.5.1.4.45.3';
+const String kImplantTemplateGroupInformationModelMOVE =
+    '1.2.840.10008.5.1.4.45.3';
 
-const String kImplantTemplateGroupInformationModelGET = '1.2.840.10008.5.1.4.45.4';
+const String kImplantTemplateGroupInformationModelGET =
+    '1.2.840.10008.5.1.4.45.4';
 
 const String kNativeDICOMModel = '1.2.840.10008.7.1.1';
 
@@ -714,7 +790,8 @@ const String kDicomPreferredCalledAETitle = '1.2.840.10008.15.0.3.19';
 
 const String kDicomTLSCyphersuite = '1.2.840.10008.15.0.3.20';
 
-const String kDicomAuthorizedNodeCertificateReference = '1.2.840.10008.15.0.3.21';
+const String kDicomAuthorizedNodeCertificateReference =
+    '1.2.840.10008.15.0.3.21';
 
 const String kDicomThisNodeCertificateReference = '1.2.840.10008.15.0.3.22';
 

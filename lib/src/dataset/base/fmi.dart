@@ -55,7 +55,8 @@ class Fmi {
 
   int get version => _version ??= getVersion(ds);
 
-  Uid get mediaStorageSopClass => _mediaStorageSopClass ??= getMediaStorageSopClass(ds);
+  Uid get mediaStorageSopClass =>
+      _mediaStorageSopClass ??= getMediaStorageSopClass(ds);
 
   Uid get mediaStorageSopInstanceUid =>
       _mediaStorageSopInstanceUid ??= getMediaStorageSopInstance(ds);
@@ -80,15 +81,16 @@ class Fmi {
   Uid get privateInformationCreatorUID =>
       _privateInformationCreatorUID ??= getPrivateInfoCreatorUid(ds);
 
-  Uint8List get privateInformation => _privateInformation ??= getPrivateInfo(ds);
+  Uint8List get privateInformation =>
+      _privateInformation ??= getPrivateInfo(ds);
 
   WKUid get transferSyntaxUid => WKUid.lookup(_mediaStorageSopClass);
 
   WKUid get sopClassUid => WKUid.lookup(_mediaStorageSopClass);
 
   @override
-  String toString() =>
-      '$runtimeType(${WKUid.lookup(sopClassUid).name}) ${transferSyntaxUid.name} ';
+  String toString() => '$runtimeType(${WKUid.lookup(sopClassUid).name}) '
+      '${transferSyntaxUid.name} ';
 
   static int getGroupLength(Dataset ds) =>
       ds.getInt(kFileMetaInformationGroupLength);
@@ -98,7 +100,8 @@ class Fmi {
     //TODO: what should this return? We could create a version object.
     if (v == null) return -1;
     final version = v.toList(growable: false);
-    if (version.length != 2 || version[1] != 1) log.warn0('Invalid FMI Version');
+    if (version.length != 2 || version[1] != 1)
+      log.warn0('Invalid FMI Version');
     return version[1];
   }
 
@@ -112,11 +115,9 @@ class Fmi {
 
   static Uid getTransferSyntax(Dataset ds) {
     final ts = ds.getString(kTransferSyntaxUID);
-    if (ts == null) {
- //     log.info0('Using system.defaultTransferSyntax: ${system.defaultTransferSyntax}');
-      return global.defaultTransferSyntax;
-    }
-    return TransferSyntax.lookup(ts);
+    return (ts == null)
+        ? global.defaultTransferSyntax
+        : TransferSyntax.lookup(ts);
   }
 
   static Uid getImplementationClass(Dataset ds) =>

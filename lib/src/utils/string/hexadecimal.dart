@@ -24,7 +24,7 @@ import 'dart:typed_data';
 /// with '0x' if positive or '-0x' if negative; otherwise, the
 /// returned [String] will not have a prefix.
 String hex(int n, {int width = -1, bool prefix = false}) {
-  final _prefix = (prefix) ? (n < 0) ? '-0x' : '0x' : '';
+  final _prefix = prefix ? (n < 0) ? '-0x' : '0x' : '';
   return '$_prefix${n.toRadixString(16).padLeft(width, '0')}';
 }
 
@@ -61,7 +61,7 @@ String hex64(int n, {bool prefix = false}) => hex(n, width: 16, prefix: prefix);
 /// Returns a hexadecimal [String] corresponding to [bytes].
 String bytesToHex(Uint8List bytes, [int start = 0, int end]) {
   end ??= bytes.lengthInBytes - start;
-  final sb = new StringBuffer();
+  final sb = StringBuffer();
   for (var i = start; i < end; i++)
     sb.write(i.toRadixString(16).padLeft(2, '0'));
   return sb.toString();

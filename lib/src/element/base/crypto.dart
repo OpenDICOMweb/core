@@ -25,29 +25,34 @@ class Sha256<E> {
   static Uint8List uint8(Iterable<int> v) => sha256.convert(v).bytes;
 
   /// Returns a Message [Digest] from a [Iterable<int>].
-  static Uint16List uint16(Iterable<int> v) => _trim(v, uint8(v).buffer.asUint16List());
+  static Uint16List uint16(Iterable<int> v) =>
+      _trim(v, uint8(v).buffer.asUint16List());
 
   /// Returns a Message [Digest] from a [Iterable<int>].
-  static Uint32List uint32(Iterable<int> v) => _trim(v, uint8(v).buffer.asUint32List());
+  static Uint32List uint32(Iterable<int> v) =>
+      _trim(v, uint8(v).buffer.asUint32List());
 
   /// Returns a Message [Digest] from a [Iterable<int>].
-  static Int16List int16(Iterable<int> v) => _trim(v, uint8(v).buffer.asInt16List());
+  static Int16List int16(Iterable<int> v) =>
+      _trim(v, uint8(v).buffer.asInt16List());
 
   /// Returns a Message [Digest] from a [Iterable<int>].
-  static Int32List int32(Iterable<int> v) => _trim(v, uint8(v).buffer.asInt32List());
+  static Int32List int32(Iterable<int> v) =>
+      _trim(v, uint8(v).buffer.asInt32List());
 
   /// Returns a Message [Digest] from a [Iterable<int>].
-  static Int64List int64(Iterable<int> v) => _trim(v, uint8(v).buffer.asInt64List());
+  static Int64List int64(Iterable<int> v) =>
+      _trim(v, uint8(v).buffer.asInt64List());
 
   /// Returns a Message [Digest] from a [Iterable<double>].
   static Float32List float32(Iterable<double> v) {
-    final v32 = (v is Float32List) ? v : new Float32List.fromList(v);
+    final v32 = (v is Float32List) ? v : Float32List.fromList(v);
     return _trim(v, uint8(v32.buffer.asUint8List()).buffer.asFloat32List());
   }
 
   /// Returns a Message [Digest] from a [Iterable<double>].
   static Float64List float64(Iterable<double> v) {
-    final v64 = (v is Float64List) ? v : new Float64List.fromList(v);
+    final v64 = (v is Float64List) ? v : Float64List.fromList(v);
     return _trim(v, uint8(v64.buffer.asUint8List()).buffer.asFloat64List());
   }
 
@@ -59,7 +64,6 @@ class Sha256<E> {
     for (var n in v) nList.add(n.toDouble());
     return float32(nList);
   }
-
 
   /// Returns a [String] that is a hash of [String].
   static String string(String s) => fromString(s);
@@ -73,6 +77,6 @@ class Sha256<E> {
   static String fromString(String s) {
     final len = s.length;
     final v = sha256.convert(s.codeUnits).toString();
-    return v.substring(0, (v.length > len ? len : v.length));
+    return v.substring(0, v.length > len ? len : v.length);
   }
 }

@@ -15,7 +15,7 @@ class Timestamp {
   final DateTime dt;
   final String msg;
 
-  Timestamp([this.msg = '']) : dt = new DateTime.now();
+  Timestamp([this.msg = '']) : dt = DateTime.now();
 
   /// Creates a new local Timestamp from a [DateTime],
   /// along with an optional message
@@ -86,5 +86,5 @@ class Timestamp {
   @override
   String toString() => '$second: $msg';
 
-  static Timestamp get now => new Timestamp();
+  static Timestamp get now => Timestamp();
 }

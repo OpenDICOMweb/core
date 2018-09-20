@@ -206,5 +206,5 @@ class CompressedFrame extends Frame {
 
   @override
   Uint8List get pixels =>
-      throw new UnsupportedError('Compressed Frames don\'t have pixels');
+      throw UnsupportedError('Compressed Frames don\'t have pixels');
 }

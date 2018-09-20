@@ -18,7 +18,7 @@ const int kUidMaxLength = 64;
 const int kUidMaxRootLength = 24;
 
 const _uidRegExpString = r'[012]((\.0)|(\.[1-9]+\d*))+';
-final RegExp uidRegex = new RegExp(_uidRegExpString);
+final RegExp uidRegex = RegExp(_uidRegExpString);
 
 bool _isValidLength(int length) =>
     kUidMinLength <= length && length <= kUidMaxLength;
@@ -57,13 +57,13 @@ bool isValidUidStringList(List<String> sList) {
 }
 
 /// ASCII constants for '0', '1', and '2'. No other roots are valid.
-const List<String> kUidRoots = const <String>['0', '1', '2'];
+const List<String> kUidRoots = <String>['0', '1', '2'];
 
 const String randomUidRoot = '2.25.';
 
 /// A [Map] containing the names associated with the three UID\(OID\)
 /// initial integers.
-const Map<int, String> kUidRootType = const <int, String>{
+const Map<int, String> kUidRootType = <int, String>{
   0: 'ITU-T',
   1: 'ISO',
   2: 'joint-iso-itu-t'
@@ -71,7 +71,7 @@ const Map<int, String> kUidRootType = const <int, String>{
 
 //TODO: Decide if this is useful
 /// A [Map] of some common UID\(OID\) root [String]s.
-const Map<String, String> oidRoots = const <String, String>{
+const Map<String, String> oidRoots = <String, String>{
   '1.2.840': 'United States of America',
   '1.16.840': 'United States of America',
   '1.2.840.': 'United States of America',

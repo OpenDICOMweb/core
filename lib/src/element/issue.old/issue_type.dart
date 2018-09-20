@@ -31,14 +31,14 @@ class IssueType {
 
   // **** Tag Issues
 
-  static const IssueType kUnknownPublicTag = const IssueType._(
+  static const IssueType kUnknownPublicTag = IssueType._(
       'UnknownPublicTag',
       IssueAction.kAbort,
       'An Unknown DICOM Tag has been encountered (see PS3.6). '
       'This is typically caused '
       'by a programming error, or an out of date DICOM Dictionary');
 
-  static const IssueType kPublicGroupLengthPresent = const IssueType._(
+  static const IssueType kPublicGroupLengthPresent = IssueType._(
       'PublicGroupLengthPresent',
       IssueAction.kRemoveElement,
       'Group Lenth Elements should no longer be included in DICOM Datasets.');
@@ -47,65 +47,61 @@ class IssueType {
 
   // **** Tag Issues
 
-  static const IssueType kPrivateGroupLengthPresent = const IssueType._(
+  static const IssueType kPrivateGroupLengthPresent = IssueType._(
       'PrivateGroupLengthPresent',
       IssueAction.kRemoveElement,
       'Private Group Lenth Elements should no longer be included '
       'in DICOM Datasets.');
 
-  static const IssueType kIllegalPrivateTagCode = const IssueType._(
+  static const IssueType kIllegalPrivateTagCode = IssueType._(
       'IllegalPrivateTagCode',
       IssueAction.kAbort,
       'The element has an illegal private tag code in the range '
       '(gggg,0001) - (gggg,000F)');
 
-  static const IssueType kPrivateCreatorWithNoValue = const IssueType._(
+  static const IssueType kPrivateCreatorWithNoValue = IssueType._(
       'PrivateCreatorWithNoValue',
       IssueAction.kQuarantine,
       'Private Creator Element without a values');
 
-
-  static const IssueType kPrivateCreatorWithMoreThanOneValue = const
-  IssueType._(
+  static const IssueType kPrivateCreatorWithMoreThanOneValue = IssueType._(
       'PrivateCreatorWithMoreThanOneValue',
       //TODO: could truncate to one value
       IssueAction.kFix,
       'Private Creator Element without a values');
 
-  static const IssueType kUnknownPrivateCreatorTag = const IssueType._(
+  static const IssueType kUnknownPrivateCreatorTag = IssueType._(
       'UnknownPublicTag',
       IssueAction.kInfo,
       'An Unknown Tag has been encountered. This is typically caused '
       'by a programming error, or an out of date DICOM Dictionary');
 
-  static const IssueType kPrivateCreatorTagNotKeyword = const IssueType._(
+  static const IssueType kPrivateCreatorTagNotKeyword = IssueType._(
       'PrivateCreatorTagNotKeyword',
       IssueAction.kInfo,
       'Private Creator Tag with Token that is not a keyword. This is NOT an'
       'error, but it is a best practice to have creator tokens be keywords.');
 
-  static const IssueType kPrivateDataWithNoCreator = const IssueType._(
+  static const IssueType kPrivateDataWithNoCreator = IssueType._(
       'PrivateDataWithNoCreator',
       IssueAction.kQuarantine,
       'Private Data Element without a corresponding Private Creator.  '
       'All Private Data Elements MUST have corresponding Private '
       'Creators (see PS3.5).');
 
-  static const IssueType kUnknownPrivateDataTag = const IssueType._(
+  static const IssueType kUnknownPrivateDataTag = IssueType._(
       'UnknownPrivateDataTag',
       IssueAction.kInfo,
       'An Unknown Tag has been encountered. This is typically caused '
       'by a programming error, or an out of date DICOM Dictionary');
 
-
-
   // ***** Value Representation
 
   // Value Representation Code
-  static const IssueType kInvalidVR = const IssueType._(
+  static const IssueType kInvalidVR = IssueType._(
       'InvalidVR', IssueAction.kFix, 'Invalid Value Representation (VR)');
 
-  static const IssueType kValueRepresentationIsKnown = const IssueType._(
+  static const IssueType kValueRepresentationIsKnown = IssueType._(
       'kValueRepresentationIsKnown',
       IssueAction.kAutoFix,
       'Element has VR of UN, when VR is known');
@@ -114,7 +110,7 @@ class IssueType {
 
   // **** Value Issues
 
-  static const IssueType kInvalidValueFieldLength = const IssueType._(
+  static const IssueType kInvalidValueFieldLength = IssueType._(
       'kInvalidValueFieldLength',
       IssueAction.kAbort,
       'Element\'s Value Field Length is not an even number');
@@ -122,72 +118,70 @@ class IssueType {
   // **** Value Multiplicity
 
   //TODO: do we need to distinguish between too few and too many values?
-  static const IssueType kInvalidNumberOfValues = const IssueType._(
+  static const IssueType kInvalidNumberOfValues = IssueType._(
       'InvalidNumberOfValues',
       IssueAction.kFix,
       'The number of values does not correspond to the Value Multiplicity');
 
-  static const IssueType kInvalidNoValues = const IssueType._(
+  static const IssueType kInvalidNoValues = IssueType._(
       'InvalidNoValues',
       IssueAction.kQuarantine,
       'Element with no values, when the EType required values to be present');
 
   // **** Integer Values
 
-  static const IssueType kIntegerNotInRange = const IssueType._(
-      'IntegerNotInRange',
-      IssueAction.kQuarantine,
-      'Integer values out of range');
+  static const IssueType kIntegerNotInRange = IssueType._('IntegerNotInRange',
+      IssueAction.kQuarantine, 'Integer values out of range');
 
   // **** String Values
 
-  static const IssueType kInvalidValueLength = const IssueType._(
+  static const IssueType kInvalidValueLength = IssueType._(
       'StringInvalidValueLength',
       IssueAction.kQuarantine,
       'Invalid values length');
 
-  static const IssueType kStringInvalidCharacter = const IssueType._(
+  static const IssueType kStringInvalidCharacter = IssueType._(
       'StringInvalidCharacter',
       IssueAction.kQuarantine,
       'Invalid Character in Value');
 
-  static const IssueType kStringInvalidPadChar = const IssueType._(
+  static const IssueType kStringInvalidPadChar = IssueType._(
       'StringInvalidPadChar',
       IssueAction.kAutoFix,
       'Element\'s Value Field ended with an invalid padding byte that should '
       'have been the ASCII space character(0x20)');
 
   // VR.kCS
-  static const IssueType kCodeStringInvalidLowerCase = const IssueType._(
+  static const IssueType kCodeStringInvalidLowerCase = IssueType._(
       'CodeStringInvalidLowerCase',
       IssueAction.kAutoFix,
       'Code String (CS) contains illegal lowercase letters');
 
   // VR.kUI errors
 
-  static const IssueType kUidInvalidRoot = const IssueType._(
+  static const IssueType kUidInvalidRoot = IssueType._(
       'kInvalidUidRoot',
       IssueAction.kAutoFix,
       'Element\'s Value Field ended with an invalid padding byte of space(0x20)'
       'that should have been the ASCII null character(0x00)');
 
-  static const IssueType kUidInvalidZeroComponent = const IssueType._(
+  static const IssueType kUidInvalidZeroComponent = IssueType._(
       'kInvalidUidZeroComponent',
       IssueAction.kQuarantine,
       'A Uid component that begins with zero has a length greater than one.');
 
-  static const IssueType kInvalidUidNonZeroComponent = const IssueType._(
+  static const IssueType kInvalidUidNonZeroComponent = IssueType._(
       'kUidInvalidNonZeroComponent',
       IssueAction.kQuarantine,
       'A Uid component that begins with a non-zero digit, but has a length '
       'of one.');
 
-  static const IssueType kInvalidUidPadChar = const IssueType._(
+  static const IssueType kInvalidUidPadChar = IssueType._(
       'invalidPaddingChar',
       IssueAction.kAutoFix,
       'Element\'s Value Field ended with an invalid padding byte of space(0x20)'
       'that should have been the ASCII null character(0x00)');
 
   static const IssueType kUidUnknown =
-      const IssueType._('kUidUnknown', IssueAction.kInfo, 'Unknown UID');
+      IssueType._('kUidUnknown', IssueAction.kInfo, 'Unknown UID');
 }

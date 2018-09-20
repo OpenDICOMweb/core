@@ -52,7 +52,7 @@ class Logger {
   /// actual instance whenever it is called with the same string name.
   factory Logger(String name, [Level level = defaultLevel]) {
     if (name.startsWith('.'))
-      throw new ArgumentError('Name shouldn\'t start with a "."');
+      throw ArgumentError('Name shouldn\'t start with a "."');
     if (name == 'root') return root;
 
     // Split hierarchical names (separated with '.').
@@ -63,7 +63,7 @@ class Logger {
       final name = nameList[i];
       logger = parent._children[name];
       logger ??= parent._children
-          .putIfAbsent(name, () => new Logger._(name, parent, level));
+          .putIfAbsent(name, () => Logger._(name, parent, level));
       parent = logger;
     }
     return logger;
@@ -79,7 +79,7 @@ class Logger {
   /// which you'd like to be garbage-collected later.
   factory Logger.detached(String name,
           [Level value = defaultLevel, Prefixer indenter]) =>
-      new Logger._(name, null, value, indenter: indenter);
+      Logger._(name, null, value, indenter: indenter);
 
   Logger._(this.name, this.parent, this._level, {Prefixer indenter})
       : _children = <String, Logger>{},
@@ -103,7 +103,7 @@ class Logger {
       _level = value;
     } else {
       if (parent != null) {
-        throw new UnsupportedError(
+        throw UnsupportedError(
             'Please set "hierarchicalLoggingEnabled" to true if you want to '
             'change the level on a non-root logger.');
       }
@@ -118,7 +118,7 @@ class Logger {
 
   Map<String, Logger> __children;
   Map<String, Logger> get children =>
-      __children ?? new UnmodifiableMapView(_children);
+      __children ?? UnmodifiableMapView(_children);
 
   /// Turn console printing on.
   bool get printOn => doPrint = true;
@@ -142,7 +142,7 @@ class Logger {
 
   Stream<LogRecord> _getStream() {
     if (isHierarchicalEnabled || parent == null) {
-      _controller ??= new StreamController<LogRecord>.broadcast(sync: true);
+      _controller ??= StreamController<LogRecord>.broadcast(sync: true);
       return _controller.stream;
     }
     return root._getStream();
@@ -164,7 +164,7 @@ class Logger {
       _log(logLevel, message, indent, error, stack, zone);
 
   /// Whether a message for [value]'s level is loggable in this logger.
-  bool isLoggable(Level value) => (value >= _level);
+  bool isLoggable(Level value) => value >= _level;
 
   /// Create aa [LogRecord].
   LogRecord _log(Level logLevel, dynamic message,
@@ -193,10 +193,9 @@ class Logger {
     if (indent > 0) prefixer.inc(indent);
     msg = '${prefixer.z}$msg';
     final record =
-        new LogRecord(logLevel, msg, fullName, error, trace, zone, object);
+        LogRecord(logLevel, msg, fullName, error, trace, zone, object);
     records.add(record);
     if (doPrint) print(record);
-
 
     if (isHierarchicalEnabled) {
       var target = this;
@@ -348,7 +347,7 @@ class Logger {
   void fatal(dynamic message,
       [int indent = 0, Object error, StackTrace stack, Zone zone]) {
     final record = _log(Level.fatal, message, indent, error, stack, zone);
-    throw new FatalError('$record');
+    throw FatalError('$record');
   }
 
   List<LogRecord> search(Level severity) {
@@ -362,7 +361,7 @@ class Logger {
 
   String get json => '''
   {"@type": "StatusLog",
-   "@date": ${new DateTime.now()},
+   "@date": ${DateTime.now()},
    "Messages": [ ${records.join(",")} ] }
    ''';
 
@@ -384,7 +383,7 @@ class Logger {
 
   /// Top-level (root) [Logger].
   // static final Logger root = init();
-  static final Logger root = new Logger._('root', null, defaultLevel);
+  static final Logger root = Logger._('root', null, defaultLevel);
 
   /// All [Logger]s in the system.
   static final Map<String, Logger> _loggers = <String, Logger>{};

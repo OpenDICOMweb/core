@@ -109,8 +109,8 @@ abstract class ByteElement<V> {
   static Element makeFromBytes(DicomBytes bytes, Dataset ds,
       {bool isEvr}) {
     final code = bytes.code;
-    if (_isPrivateCreator(code)) return new PCbytes(bytes);
-    final vrIndex = (isEvr) ? bytes.vrIndex : kUNIndex;
+    if (_isPrivateCreator(code)) return PCbytes(bytes);
+    final vrIndex = isEvr ? bytes.vrIndex : kUNIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
     return _bytesMakers[index](bytes);
@@ -139,7 +139,7 @@ abstract class ByteElement<V> {
       [Dataset ds, int vfLengthField]) {
     final code = bytes.code;
     // Note: This shouldn't happen, but it does.
-    if (_isPrivateCreator(code)) return new PCbytes(bytes);
+    if (_isPrivateCreator(code)) return PCbytes(bytes);
 
     final vrIndex = bytes.vrIndex;
     assert(vrIndex >= 0 && vrIndex < 4);
@@ -214,7 +214,7 @@ abstract class ByteElement<V> {
 DicomBytes _makeShort<V>(
     int code, Iterable<V> vList, int vrCode, bool isEvr, int eSize) {
   final vfLength = vList.length * eSize;
-  return (isEvr)
+  return isEvr
       ? EvrShortBytes.makeEmpty(code, vfLength, vrCode)
       : IvrBytes.makeEmpty(code, vfLength, vrCode);
 }
@@ -224,14 +224,14 @@ DicomBytes _makeShortString(
   final tag = Tag.lookupByCode(code);
   if (tag.vrCode != vrCode) return null;
   final vlf = stringListLength(sList, pad: true);
-  return (isEvr)
+  return isEvr
       ? EvrShortBytes.makeEmpty(code, vlf, vrCode)
       : IvrBytes.makeEmpty(code, vlf, vrCode);
 }
 
 DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
   final vfLength = vList.length * eSize;
-  return (isEvr)
+  return isEvr
       ? EvrLongBytes.makeEmpty(code, vfLength, vrCode)
       : IvrBytes.makeEmpty(code, vfLength, vrCode);
 }
@@ -239,7 +239,7 @@ DicomBytes _makeLong(int code, List vList, int vrCode, bool isEvr, int eSize) {
 DicomBytes _makeLongString(
     int code, List<String> sList, int vrCode, bool isEvr) {
   final vlf = stringListLength(sList, pad: true);
-  return (isEvr)
+  return isEvr
       ? EvrLongBytes.makeEmpty(code, vlf, vrCode)
       : IvrBytes.makeEmpty(code, vlf, vrCode);
 }

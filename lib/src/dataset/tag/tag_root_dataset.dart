@@ -23,14 +23,14 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   /// Creates an empty, i.e. without TagElements, [TagRootDataset].
   TagRootDataset(Fmi fmi, Map<int, Element> eMap,
       [String path = '', Bytes bd, int fmiEnd])
-      : pGroups = new PrivateGroups(),
+      : pGroups = PrivateGroups(),
         super(fmi, eMap, path, bd, fmiEnd) {
     pGroups.ds = this;
   }
 
   /// Creates an empty [TagRootDataset], i.e. without [Element]s.
   TagRootDataset.empty([String path = '', Bytes bd, int fmiEnd = 0])
-      : pGroups = new PrivateGroups(),
+      : pGroups = PrivateGroups(),
         super.empty(path, bd ?? Bytes.kEmptyBytes, fmiEnd) {
     pGroups.ds = this;
   }
@@ -48,12 +48,12 @@ class TagRootDataset extends MapRootDataset with TagDataset {
   }
 
   @override
-  RootDataset copy([RootDataset rds]) => new TagRootDataset.from(rds ?? this);
+  RootDataset copy([RootDataset rds]) => TagRootDataset.from(rds ?? this);
 
   static const _makeElement = TagElement.makeFromValues;
 
   static TagRootDataset convert(RootDataset rds) {
-    final tagRds = new TagRootDataset.empty();
+    final tagRds = TagRootDataset.empty();
     for (var e in rds.fmi.elements) {
       final te = _makeElement(e.code, e.vrIndex, e.values, rds);
 //      print('Convert FMI: $te');

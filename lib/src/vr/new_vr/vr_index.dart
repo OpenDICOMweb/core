@@ -61,7 +61,6 @@ const int kLTIndex = 20;
 const int kISIndex = 21;
 const int kDSIndex = 22;
 
-
 const int kDTIndex = 25;
 const int kDAIndex = 24;
 
@@ -76,7 +75,6 @@ const int kUIIndex = 30;
 const int kNormalVRIndexMax = 30; // US
 const int kDefinedLengthVRIndexMax = 30;
 
-
 const int kOBOWIndex = 31;
 const int kSpecialVRIndexMin = kOBOWIndex;
 
@@ -86,7 +84,7 @@ const int kUSSSOWIndex = 34;
 const int kSpecialVRIndexMax = kUSOWIndex;
 
 /// Map of 16-bit Little Endian VR Codes in 16-bit key order
-const Map<int, int> vrIndexByCode = const <int, int>{
+const Map<int, int> vrIndexByCode = <int, int>{
   0x4144: kDAIndex, 0x424f: kOBIndex, 0x4355: kUCIndex, 0x4446: kFDIndex,
   0x444f: kODIndex, 0x4541: kAEIndex, 0x464f: kOFIndex, 0x4853: kSHIndex,
   0x4955: kUIIndex, 0x4c46: kFLIndex, 0x4c4f: kOLIndex, 0x4c53: kSLIndex,
@@ -97,8 +95,7 @@ const Map<int, int> vrIndexByCode = const <int, int>{
   0x5453: kSTIndex, 0x5455: kUTIndex, 0x574f: kOWIndex // No reformat
 };
 
-
-const List<String> vrIdByIndex = const <String>[
+const List<String> vrIdByIndex = <String>[
   'UN', 'SQ',
   'OB', 'OW', 'OL', 'OF', 'OD',
   'UC', 'UT', 'UR',
@@ -159,21 +156,20 @@ bool isFloatVR(int vrIndex) =>
 bool isStringVR(int vrIndex) =>
     isShortStringVR(vrIndex) || isLongStringVR(vrIndex);
 
-const List<int> kUndefinedLengthVRIndices = const <int>[
+const List<int> kUndefinedLengthVRIndices = <int>[
   kSQIndex,
   kOBIndex,
   kOWIndex,
   kUNIndex
 ];
 
-
-const List<int> kNullPaddingVRIndices = const <int>[
+const List<int> kNullPaddingVRIndices = <int>[
   kOBIndex,
   // kUNIndex, // UN should never have padding removed or added
   kUIIndex
 ];
 
-const List<int> kUndefinedLengthVRCodes = const <int>[
+const List<int> kUndefinedLengthVRCodes = <int>[
   kSQCode,
   kOBCode,
   kOWCode,
@@ -219,6 +215,6 @@ Null _doError(String message, Issues issues, int correctVRIndex) {
   final msg = '$message - correct VR is ${vrIdByIndex[correctVRIndex]}';
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidVRError(msg);
+  if (throwOnError) throw InvalidVRError(msg);
   return null;
 }

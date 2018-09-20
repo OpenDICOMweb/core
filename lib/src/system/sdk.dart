@@ -38,8 +38,8 @@ class _SDK {
 
 /// The singleton SDK object.  It contains information about the
 /// ODW SDK with which this System is built.
-final _SDK sdk = new _SDK._(
-    new Version(0, 6, 1, preRelease: ['alpha', '1'], build: buildNumber),
+final _SDK sdk = _SDK._(
+    Version(0, 6, 1, preRelease: ['alpha', '1'], build: buildNumber),
     _news);
 
 //TODO: increment this number as part of the build cycle.

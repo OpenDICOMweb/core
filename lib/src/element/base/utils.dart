@@ -45,7 +45,7 @@ bool __isValidVFL(int vfLength, int max, int eSize) =>
 
 Null _badVFL(StringBuffer sb, int vfLength, int maxVFLength, int eSize,
     [Issues issues]) {
-  final sb = new StringBuffer('Invalid VFL($vfLength):\n');
+  final sb = StringBuffer('Invalid VFL($vfLength):\n');
   if (vfLength > maxVFLength)
     sb.writeln('\t$vfLength exceeds maximum($maxVFLength)');
   if (eSize != null && vfLength % eSize == 0)
@@ -55,7 +55,7 @@ Null _badVFL(StringBuffer sb, int vfLength, int maxVFLength, int eSize,
 
 Null badFixedVFLength(int vfLength, int maxVFLength, int eSize,
     [Issues issues]) {
-  final sb = new StringBuffer('Invalid Value Field Length($vfLength):\n');
+  final sb = StringBuffer('Invalid Value Field Length($vfLength):\n');
   return _badVFL(sb, vfLength, maxVFLength, eSize, issues);
 }
 
@@ -70,14 +70,13 @@ bool invalidVFLength(int vfLength, int maxVFLength, [Issues issues]) {
   return false;
 }
 
-Null badUVFLength(int vfLength, int maxVFLength, int eSize,
-    [Issues issues]) {
-  final sb = new StringBuffer('Invalid Value Field Length($vfLength):\n');
+Null badUVFLength(int vfLength, int maxVFLength, int eSize, [Issues issues]) {
+  final sb = StringBuffer('Invalid Value Field Length($vfLength):\n');
   return _badVFL(sb, vfLength, maxVFLength, eSize, issues);
 }
 
-bool invalidUVFLength(
-    int vfLength, int maxVFLength, int eSize, [Issues issues]) {
+bool invalidUVFLength(int vfLength, int maxVFLength, int eSize,
+    [Issues issues]) {
   badUVFLength(vfLength, maxVFLength, eSize, issues);
   return false;
 }

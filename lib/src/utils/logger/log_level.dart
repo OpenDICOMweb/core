@@ -70,69 +70,67 @@ class Level implements Comparable<Level> {
   String toString() => '${name.trimLeft()}';
 
   /// Special key to turn on logging for all [Level]s.
-  static const Level all = const Level(' All', 'All', 0);
+  static const Level all = Level(' All', 'All', 0);
 
   /// Key for tracing information ([value] = 300).
-  static const Level debug3 = const Level('D3', 'Debug3', 300);
+  static const Level debug3 = Level('D3', 'Debug3', 300);
 
   /// Key for tracing information ([value] = 400).
-  static const Level debug2 = const Level('D2', 'Debug2', 400);
+  static const Level debug2 = Level('D2', 'Debug2', 400);
 
   /// Key for tracing information ([value] = 500).
-  static const Level debug1 = const Level('D1', 'Debug1', 500);
+  static const Level debug1 = Level('D1', 'Debug1', 500);
 
   /// Key for tracing information ([value] = 600).
-  static const Level debug0 = const Level('D0', 'Debug', 600);
+  static const Level debug0 = Level('D0', 'Debug', 600);
 
   /// Key for tracing information ([value] = 600).
-  static const Level debug = const Level('D0', 'Debug', 600);
+  static const Level debug = Level('D0', 'Debug', 600);
 
   /// Key for informational messages ([value] = 700).
-  static const Level info1 = const Level('I1', ' Info1', 700);
+  static const Level info1 = Level('I1', ' Info1', 700);
 
   /// Key for informational messages ([value] = 750).
-  static const Level info0 = const Level('I0', ' Info0', 750);
+  static const Level info0 = Level('I0', ' Info0', 750);
   static const Level info = info0;
 
   /// Key for potential problems ([value] = 800).
-  static const Level warn1 = const Level('W1', ' Warn1', 800);
+  static const Level warn1 = Level('W1', ' Warn1', 800);
 
   /// Key for potential problems ([value] = 900).
-  static const Level warn0 = const Level('W0', ' Warn0', 900);
+  static const Level warn0 = Level('W0', ' Warn0', 900);
   static const Level warn = warn0;
 
   /// Key for static configuration messages ([value] = 1000).
-  static const Level config = const Level('C0', 'Config', 1000);
+  static const Level config = Level('C0', 'Config', 1000);
 
   /// Key for errors ([value] = 1000).
-  static const Level error = const Level('Error', 'Error', 1100);
+  static const Level error = Level('Error', 'Error', 1100);
 
   /// Key for errors ([value] = 1150).
-  static const Level severe = const Level('Severe Error', 'Severe', 1150);
+  static const Level severe = Level('Severe Error', 'Severe', 1150);
 
   /// Key for serious errors that cause the decoder to quarantine the Study.
-  static const Level quarantine =
-      const Level('Quarantine', 'Quarantine', 1200);
+  static const Level quarantine = Level('Quarantine', 'Quarantine', 1200);
 
   /// Key for serious errors that cause the decoder to abort immediately.
-  static const Level abort =
-      const Level('Abort', 'Abort', 1300);
+  static const Level abort = Level('Abort', 'Abort', 1300);
 
   /// Key for fatal errors that cause the script to exit
   /// ([value] = 1300).
-  static const Level fatal = const Level('Fatal', 'Fatal', 1400);
+  static const Level fatal = Level('Fatal', 'Fatal', 1400);
 
   /// Special key to turn off all logging ([value] = 2000).
-  static const Level off = const Level(' Off', 'OFF', 2000);
+  static const Level off = Level(' Off', 'OFF', 2000);
 
-  static const List<Level> levels = const [
+  static const List<Level> levels = [
     all, debug3, debug2, debug1, debug0, info1, info0, warn1, warn0,
-    config, error, quarantine, abort, fatal, off   // No reformat
+    config, error, quarantine, abort, fatal, off // No reformat
   ];
 
   static Level lookup(String level) => map[level.toLowerCase()];
 
-  static const Map<String, Level> map = const <String, Level>{
+  static const Map<String, Level> map = <String, Level>{
     'off': Level.off,
     'fatal': Level.fatal,
     'abort': Level.abort,

@@ -12,14 +12,15 @@ part of odw.sdk.core.parser;
 
 /// DICOM Time Zone parsing, etc.
 
-/// Returns a valid Time Zone Offset in microseconds. A negative values is before UTC.
+/// Returns a valid Time Zone Offset in microseconds.
+/// A negative values is before UTC.
 int parseTimeZone(String s,
         {int start = 0,
         int end,
         Issues issues,
         OnParseError onError,
         bool asDicom = true}) =>
-    (asDicom)
+    asDicom
         ? parseDcmTimeZone(s,
             start: start, end: end, issues: issues, onError: onError)
         : parseInternetTimeZone(s,
@@ -71,7 +72,7 @@ int parseInternetTimeZone(String s,
 /// Returns _true_ if [s] is a valid time zone [String].
 bool isValidTimeZoneString(String s,
         {int start = 0, int end, bool asDicom = true}) =>
-    (asDicom)
+    asDicom
         ? isValidDcmTimeZoneString(s, start: start, end: end)
         : isValidInternetTimeZoneString(s, start: start, end: end);
 

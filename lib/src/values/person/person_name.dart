@@ -40,7 +40,7 @@ enum PersonNameType { alphabetic, ideographic, phonetic }
 ///
 class PersonName {
   /// An equality function for List<Name>.
-  static const ListEquality eq = const ListEquality<Name>();
+  static const ListEquality eq = ListEquality<Name>();
   final List<Name> groups;
 
   /// Create a new DICOM [PersonName].
@@ -49,13 +49,14 @@ class PersonName {
   /// Create a PersonName from an ordered [List] of name components.
   factory PersonName.fromString(String s) {
     final list = splitTrim(s, '=');
-    final groups = list.map((e) => new Name.fromString(e));
-    return new PersonName(groups.toList(growable: false));
+    final groups = list.map((e) => Name.fromString(e));
+    return PersonName(groups.toList(growable: false));
   }
 
   /// Checks the Equality (deep) of two [PersonName]s.
   @override
-  bool operator ==(Object pn) => pn is PersonName && eq.equals(groups, pn.groups);
+  bool operator ==(Object pn) =>
+      pn is PersonName && eq.equals(groups, pn.groups);
 
   @override
   int get hashCode => global.hasher.nList(groups);
@@ -108,7 +109,7 @@ class PersonName {
       if (name == null) return null;
       names.add(name);
     }
-    final pn = new PersonName(names);
+    final pn = PersonName(names);
     return (pn == null) ? null : pn;
   }
 }
@@ -129,8 +130,9 @@ class Name {
   static const int maxComponents = 5;
   static const int maxSeparators = 4;
   static const int maxGroupLength = 64;
+
   /// An equality function for List<String>.
-  static const ListEquality eq = const ListEquality<String>();
+  static const ListEquality eq = ListEquality<String>();
   final List<String> components;
 
   Name(Iterable<String> names)
@@ -142,12 +144,11 @@ class Name {
       if (!_isPNComponentGroup(name)) return null;
     }
     return Name(names.toList(growable: false));
-
   }
 
   const Name._(this.components);
 
-  static const Name empty = const Name._(const <String>[]);
+  static const Name empty = Name._(<String>[]);
 
   @override
   bool operator ==(Object name) =>
@@ -188,7 +189,8 @@ class Name {
   /// Returns true if the [PersonName] component is valid.
   static bool isValidList(List<String> list) {
     if (list == null || list.isEmpty || list.length > 5) return false;
-    for (var s in list) if (!_filteredTest(s, _isPNComponentGroupChar)) return false;
+    for (var s in list)
+      if (!_filteredTest(s, _isPNComponentGroupChar)) return false;
     return true;
   }
 
@@ -201,7 +203,8 @@ class Name {
     if (s == null || s == '' || s.length > maxGroupLength) return false;
     final groups = s.split('=');
     for (var group in groups) {
-      if (group.length > 64 || !_filteredTest(group, _isPNNameChar)) return false;
+      if (group.length > 64 || !_filteredTest(group, _isPNNameChar))
+        return false;
     }
     return true;
   }
@@ -209,28 +212,30 @@ class Name {
   //TODO: these are taken from VRString
   /// Returns _true_ if all characters pass the filter.
   static bool _filteredTest(String s, bool filter(int c)) {
-    for (var i = 0; i < s.length; i++) if (!filter(s.codeUnitAt(i))) return false;
+    for (var i = 0; i < s.length; i++)
+      if (!filter(s.codeUnitAt(i))) return false;
     return true;
   }
 
   /// Returns true if the [PersonName] component is valid.
   static bool isValidString(String s) {
     assert(s != null && s != '');
-    return (s.length <= maxGroupLength && _hasValidNameChars(s));
+    return s.length <= maxGroupLength && _hasValidNameChars(s);
   }
 
   /// Parses a Component Group into a [Name]
-  static Name parse(String s, {int start = 0, int end, Issues issues, PersonName onError(String s)}) {
+  static Name parse(String s,
+      {int start = 0, int end, Issues issues, PersonName onError(String s)}) {
     if (s == null || s == '' || s.length > 64 || !_filteredTest(s, _isPNChar))
-    	//TODO: return invalidPersonNameString(s)
+      //TODO: return invalidPersonNameString(s)
       return null;
-  //  final groups = splitTrim(s, '^')..forEach(_isPNComponentGroup);
-    return new Name.fromString(s.trim());
+    //  final groups = splitTrim(s, '^')..forEach(_isPNComponentGroup);
+    return Name.fromString(s.trim());
   }
 
   /// Return the ith component or _null_ if [i] is not a valid [List] index.
   String _getComponent(int i) =>
-		  (i >= 1 && i < components.length) ? components.elementAt(i) : null;
+      (i >= 1 && i < components.length) ? components.elementAt(i) : null;
 }
 
 /// The filter for DICOM String characters.

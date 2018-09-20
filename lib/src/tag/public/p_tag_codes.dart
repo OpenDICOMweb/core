@@ -11,7 +11,7 @@
 // ----------------------------------------------------------
 
 /// An ordered List of all DICOM attributes
-const List<int> pTagCodes = const <int>[
+const List<int> pTagCodes = <int>[
   0x00001000,
   0x00001001,
   0x00020000,

@@ -28,24 +28,24 @@ class AType {
 
   //TODO: fix a_type
   bool call(Dataset ds, Tag tag, Element e) {
-    throw new UnimplementedError();
+    throw UnimplementedError();
 /*    Element e = ds.lookup(tag.code);
     bool v = tag.predicate(ds, e);
     return (e.is == null) ? v : dsPredicate(ds, e);*/
   }
 
   /// Use this when the EType is not known.
-  static const AType kUnknown = const AType(0, '0', null, isConditional: false);
+  static const AType kUnknown = AType(0, '0', null, isConditional: false);
 
-  static const AType k1 = const AType(1, '1', _type1, isConditional: false);
-  static const AType k1c = const AType(2, '1C', _type1c, isConditional: true);
-  static const AType k2 = const AType(3, '2', _type2, isConditional: false);
-  static const AType k2c = const AType(4, '2C', _type2c, isConditional: true);
-  static const AType k3 = const AType(5, '3', _type3, isConditional: false);
+  static const AType k1 = AType(1, '1', _type1, isConditional: false);
+  static const AType k1c = AType(2, '1C', _type1c, isConditional: true);
+  static const AType k2 = AType(3, '2', _type2, isConditional: false);
+  static const AType k2c = AType(4, '2C', _type2c, isConditional: true);
+  static const AType k3 = AType(5, '3', _type3, isConditional: false);
 
-  static const List<AType> list = const [kUnknown, k1, k1c, k2, k2c, k3];
+  static const List<AType> list = [kUnknown, k1, k1c, k2, k2c, k3];
 
-  static const Map<String, AType> map = const {
+  static const Map<String, AType> map = {
     '0': AType.k1,
     '1': AType.k1,
     '1c': AType.k1,
@@ -64,16 +64,17 @@ class AType {
 
   static bool _type3(Dataset ds, Element e, [DatasetPredicate dsp]) => true;
 
-  static bool _type2(Dataset ds, Element e, [DatasetPredicate dsp]) => (e != null);
+  static bool _type2(Dataset ds, Element e, [DatasetPredicate dsp]) =>
+      e != null;
 
   static bool _type2c(Dataset ds, Element e, [DatasetPredicate dsp]) =>
-      (e != null && dsp(ds, e));
+      e != null && dsp(ds, e);
 
   static bool _type1(Dataset ds, Element e, [DatasetPredicate dsp]) =>
-      (e != null && e.values.isNotEmpty);
+      e != null && e.values.isNotEmpty;
 
   static bool _type1c(Dataset ds, Element e, [DatasetPredicate dsp]) =>
-      ((e != null && e.values.isNotEmpty) && (dsp != null && dsp(ds, e)));
+      (e != null && e.values.isNotEmpty) && (dsp != null && dsp(ds, e));
 }
 /*
 class AType {

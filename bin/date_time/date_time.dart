@@ -29,7 +29,7 @@ void main() {
 }
 
 void parseFractionTest() {
-  const goodFractions = const <String>[
+  const goodFractions = <String>[
     '.0', '.1', '.90', '.101', '.9091', '.10987', '.123456',
     '.987654', '.000000', '.000001', '.100000', '.999999',
     '.012345', '.199990' // Don't reformat.
@@ -43,7 +43,7 @@ void parseFractionTest() {
 }
 
 void goodDcmDates() {
-  const goodDcmDateList = const <String>['19500718', '00000101', '19700101'];
+  const goodDcmDateList = <String>['19500718', '00000101', '19700101'];
 
   log.debug('Good Dates');
   for (var s in goodDcmDateList) {
@@ -53,7 +53,7 @@ void goodDcmDates() {
 }
 
 void badDcmDates() {
-  const badDcmDateList = const <String>[
+  const badDcmDateList = <String>[
     '19501318', // bad month
     '19501032', // bad day
     '00000032', // bad month and day
@@ -76,7 +76,7 @@ void badDcmDates() {
 }
 
 void goodDcmTimes() {
-  const goodDcmTimeList = const <String>[
+  const goodDcmTimeList = <String>[
     '230718',
     '000000',
     '190101',
@@ -129,7 +129,7 @@ void goodDcmTimes() {
   for (var s in goodDcmTimeList) {
     log.debug('Time: $s');
     final t = Time.parse(s);
-    log..debug('''  Time $s: $t
+    log.debug('''  Time $s: $t
   Milliseconds: ${t.millisecond}
   Microseconds: ${t.microsecond}
   Fraction: ${t.fraction}
@@ -139,7 +139,7 @@ void goodDcmTimes() {
 }
 
 void badDcmTimes() {
-  const badDcmTimeList = const <String>[
+  const badDcmTimeList = <String>[
     '241318', // bad hour
     '006132', // bad minute
     '006161', // bad minute and second

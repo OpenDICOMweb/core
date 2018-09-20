@@ -25,9 +25,8 @@ import 'package:core/src/constants.dart';
 import 'package:core/src/tag.dart';
 ''';
 
-
 String makeDeIdList() {
-  final sb = new StringBuffer()
+  final sb = StringBuffer()
     ..writeln('static const List<DeIdProfile> deIdTags = const <DeIdProfile>[');
   for (var v in DeIdTags.map.values) sb.writeln('  k${v.tag.keyword},');
   sb.writeln('];\n');
@@ -37,16 +36,15 @@ String makeDeIdList() {
 }
 
 String makeDeIdUidList() {
-
-  final sb0 = new StringBuffer('$copyright\n$imports\n')
+  final sb0 = StringBuffer('$copyright\n$imports\n')
     ..writeln('const List<int> deIdUidCodes = const <int>[');
 
-  final sb1 = new StringBuffer()
+  final sb1 = StringBuffer()
     ..writeln('const List<PTag> deIdUidTags = const <PTag>[');
 
-  final sb2 = new StringBuffer()
+  final sb2 = StringBuffer()
     ..writeln('const Map<int, String> deIdUidCodeToKeywordMap = '
-                  'const <int, String>{');
+        'const <int, String>{');
 
   for (var v in DeIdTags.map.values) {
     if (v.tag.name.contains('UID')) {
@@ -60,21 +58,21 @@ String makeDeIdUidList() {
   sb1.writeln('];\n\n');
   sb2.writeln('};\n\n');
   final out = '$sb0$sb1$sb2';
-  new File('$outputDir/deid_uids.dart')..writeAsStringSync(out);
+  File('$outputDir/deid_uids.dart').writeAsStringSync(out);
   print(out);
   return out;
 }
 
 String makeDeIdNonUidList() {
-  final sb0 = new StringBuffer('$copyright\n$imports\n')
+  final sb0 = StringBuffer('$copyright\n$imports\n')
     ..writeln('const List<int> deIdNonUidCodes = const <int>[');
 
-  final sb1 = new StringBuffer()
+  final sb1 = StringBuffer()
     ..writeln('const List<PTag> deIdNotUidTags = const <PTag>[');
 
-  final sb2 = new StringBuffer()
+  final sb2 = StringBuffer()
     ..writeln('const Map<int, String> deIdNonUidCodeToKeywordMap = '
-                  'const <int, String>{');
+        'const <int, String>{');
 
   for (var v in DeIdTags.map.values) {
     if (!v.tag.name.contains('UID')) {
@@ -90,7 +88,7 @@ String makeDeIdNonUidList() {
   final out = '$sb0$sb1$sb2';
   const outDir = '$outputDir/deid_uids.dart';
   print('outDir: $outDir');
-  new File('$outputDir/deid_non_uids.dart')..writeAsStringSync(out);
+  File('$outputDir/deid_non_uids.dart').writeAsStringSync(out);
 
   print(out);
   return out;

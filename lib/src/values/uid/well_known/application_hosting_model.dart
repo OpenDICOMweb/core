@@ -28,26 +28,25 @@ class ApplicationHostingModel extends WKUid {
 
   static List<String> get strings => _map.keys;
 
-  static const ApplicationHostingModel kNativeDicomModel = const ApplicationHostingModel(
-      '1.2.840.10008.7.1.1',
-      'NativeDICOMModel',
-      UidType.kApplicationHostingModel,
-      'Native DICOM Model');
+  static const ApplicationHostingModel kNativeDicomModel =
+      ApplicationHostingModel('1.2.840.10008.7.1.1', 'NativeDICOMModel',
+          UidType.kApplicationHostingModel, 'Native DICOM Model');
 
-  static const ApplicationHostingModel kAbstractMultiDimensionalImageModel = const ApplicationHostingModel(
-      '1.2.840.10008.7.1.2',
-      'AbstractMulti_DimensionalImageModel',
-      UidType.kApplicationHostingModel,
-      'Abstract Multi-Dimensional Image Model');
+  static const ApplicationHostingModel kAbstractMultiDimensionalImageModel =
+      ApplicationHostingModel(
+          '1.2.840.10008.7.1.2',
+          'AbstractMulti_DimensionalImageModel',
+          UidType.kApplicationHostingModel,
+          'Abstract Multi-Dimensional Image Model');
 
   static const List<ApplicationHostingModel> members =
-      const <ApplicationHostingModel>[
+      <ApplicationHostingModel>[
     kNativeDicomModel,
     kAbstractMultiDimensionalImageModel
   ];
 
   static const Map<String, ApplicationHostingModel> _map =
-      const <String, ApplicationHostingModel>{
+      <String, ApplicationHostingModel>{
     '1.2.840.10008.7.1.1': kNativeDicomModel,
     '1.2.840.10008.7.1.2': kAbstractMultiDimensionalImageModel
   };

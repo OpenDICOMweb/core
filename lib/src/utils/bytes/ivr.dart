@@ -45,7 +45,7 @@ class IvrBytes extends DicomBytes {
   /// or if [end] is outside the range [start] .. [length].
   @override
   IvrBytes sublist([int start = 0, int end]) =>
-      new IvrBytes.from(this, start, (end ?? length) - start);
+      IvrBytes.from(this, start, (end ?? length) - start);
 
   static const int kVFLengthOffset = 4;
   static const int kVFOffset = 8;
@@ -57,7 +57,7 @@ class IvrBytes extends DicomBytes {
     int vrCode,
   ) {
     assert(vfLength.isEven);
-    return new IvrBytes(kHeaderLength + vfLength)
+    return IvrBytes(kHeaderLength + vfLength)
       ..ivrSetHeader(code, vfLength, vrCode);
   }
 
@@ -68,7 +68,7 @@ class IvrBytes extends DicomBytes {
   ) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    return new IvrBytes(kHeaderLength + vfLength)
+    return IvrBytes(kHeaderLength + vfLength)
       ..ivrSetHeader(code, vfLength, vrCode)
       ..setByteData(kVFOffset, vfBytes._bd);
   }

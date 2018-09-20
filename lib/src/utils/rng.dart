@@ -30,11 +30,11 @@ class RNG {
   final Random generator;
 
   /// Creates a Random Number Generator ([RNG]) using Dart's [Random].
-  factory RNG([int seed]) => new RNG.withDefaults(isSecure: false, seed: seed);
+  factory RNG([int seed]) => RNG.withDefaults(isSecure: false, seed: seed);
 
   /// Creates a **_secure_** Random Number Generator ([RNG]) using Dart's
   /// [Random.secure].
-  factory RNG.secure() => new RNG.withDefaults(isSecure: true);
+  factory RNG.secure() => RNG.withDefaults(isSecure: true);
 
   RNG.withDefaults({
     this.isSecure = false,
@@ -43,7 +43,7 @@ class RNG {
     this.defaultMaxStringLength = 1024,
     this.defaultMinListLength = 1,
     this.defaultMaxListLength = 256,
-  }) : generator = (isSecure) ? new Random.secure() : new Random(seed);
+  }) : generator = isSecure ? Random.secure() : Random(seed);
 
   /// Returns a random boolean ([bool]).
   bool get nextBool => generator.nextBool();
@@ -83,7 +83,7 @@ class RNG {
   /// signed integers.
   double get nextFloat => nextDouble * nextInt32;
 
-  static final Float32List _float32 = new Float32List(1);
+  static final Float32List _float32 = Float32List(1);
 
   /// Returns a double in the range of an IEEE 32-bit floating point number.
   double get nextFloat32 {
@@ -119,7 +119,7 @@ class RNG {
   /// Returns a Utf8 code point, i.e. between 32 and 255.
   int get nextUtf8 => _nextUint32(32, 255);
 
-  String get nextDigit => new String.fromCharCode(nextAsciiDigit);
+  String get nextDigit => String.fromCharCode(nextAsciiDigit);
 
   // TODO: Unit test
   int get nextMicrosecond => _nextMicrosecond();
@@ -136,7 +136,7 @@ class RNG {
     RangeError.checkValidRange(minLength, maxLength, 12);
     final len = _getLength(minLength, maxLength);
     if (len == 1) return nextDigit;
-    final sb = new StringBuffer();
+    final sb = StringBuffer();
 
     final sign = nextBool;
     if (sign == true) {
@@ -154,7 +154,7 @@ class RNG {
 
   String nextAsciiWord([int minLength = 1, int maxLength = 16]) {
     final len = _getLength(minLength, maxLength);
-    final sb = new StringBuffer();
+    final sb = StringBuffer();
     for (var i = 0; i < len; i++) {
       final c = nextAsciiWordChar;
       // ignore: only_throw_errors
@@ -182,7 +182,7 @@ class RNG {
   }
 
   static const int kMinRandomInt = 1;
-  static const int kMaxRandomIntExclusive = (1 << 32);
+  static const int kMaxRandomIntExclusive = 1 << 32;
   static const int kMaxRandomIntInclusive = kMaxRandomIntExclusive - 1;
   static const int kMinRandom31BitIntExclusive = -0x40000000;
   static const int kMinRandom31BitIntInclusive =
@@ -292,7 +292,7 @@ class RNG {
   Uint8List asciiString([int length]) {
     length ??= nextUint(defaultMinStringLength, 1024);
     RangeError.checkValueInInterval(length, 0, 4096, 'length');
-    final v = new Uint8List(length);
+    final v = Uint8List(length);
     for (var i = 0; i < length; i++) v[i] = nextAsciiVChar;
     return v;
   }
@@ -305,7 +305,7 @@ class RNG {
   Uint8List utf8String([int length]) {
     length ??= nextUint(defaultMinStringLength, 1024);
     RangeError.checkValueInInterval(length, 0, 4096, 'length');
-    final v = new Uint8List(length);
+    final v = Uint8List(length);
     for (var i = 0; i < length; i++) v[i] = nextUint8;
     return v;
   }
@@ -336,7 +336,7 @@ class RNG {
     RangeError.checkValueInInterval(minValue, kInt32Min, kInt32Max, 'minValue');
     RangeError.checkValueInInterval(maxValue, minValue, kInt32Max, 'maxValue');
     final len = _getLength(minLength, maxLength);
-    final vList = new List<int>(len);
+    final vList = List<int>(len);
     for (var i = 0; i < len; i++) vList[i] = nextInt(minValue, maxValue);
     return vList;
   }
@@ -346,7 +346,7 @@ class RNG {
     RangeError.checkValueInInterval(minValue, kUint8Min, kUint8Max, 'minValue');
     RangeError.checkValueInInterval(maxValue, minValue, kUint32Max, 'maxValue');
     final len = _getLength(minLength, maxLength);
-    final vList = new ByteData(len);
+    final vList = ByteData(len);
     for (var i = 0; i < len; i++)
       vList.setUint8(i, nextInt(minValue, maxValue));
     return vList;
@@ -356,7 +356,7 @@ class RNG {
   /// [maxLength] inclusive. The [List] will contain 8-bit signed integers.
   Int8List int8List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Int8List(length);
+    final v = Int8List(length);
     for (var i = 0; i < length; i++) v[i] = nextInt8;
     return v;
   }
@@ -365,7 +365,7 @@ class RNG {
   /// [maxLength] inclusive. The [List] will contain 16-bit signed integers.
   Int16List int16List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Int16List(length);
+    final v = Int16List(length);
     for (var i = 0; i < length; i++) v[i] = nextInt16;
     return v;
   }
@@ -374,7 +374,7 @@ class RNG {
   /// [maxLength] inclusive. The [List] will contain 32-bit signed integers.
   Int32List int32List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Int32List(length);
+    final v = Int32List(length);
     for (var i = 0; i < length; i++) v[i] = nextInt32;
     return v;
   }
@@ -383,7 +383,7 @@ class RNG {
   /// [maxLength] inclusive. The [List] will contain 64-bit signed integers.
   Int64List int64List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Int64List(length);
+    final v = Int64List(length);
     for (var i = 0; i < length; i++) v[i] = nextInt64;
     return v;
   }
@@ -392,7 +392,7 @@ class RNG {
   /// [maxLength] inclusive. The [List] will contain 8-bit unsigned integers.
   Uint8List uint8List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Uint8List(length);
+    final v = Uint8List(length);
     for (var i = 0; i < length; i++) v[i] = nextUint8;
     return v;
   }
@@ -401,7 +401,7 @@ class RNG {
   /// [maxLength] inclusive. The [List] will contain 16-bit unsigned integers.
   Uint16List uint16List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Uint16List(length);
+    final v = Uint16List(length);
     for (var i = 0; i < length; i++) v[i] = nextUint16;
     return v;
   }
@@ -410,7 +410,7 @@ class RNG {
   /// [maxLength] inclusive. The [List] will contain 32-bit unsigned integers.
   Uint32List uint32List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Uint32List(length);
+    final v = Uint32List(length);
     for (var i = 0; i < length; i++) v[i] = nextUint32;
     return v;
   }
@@ -419,7 +419,7 @@ class RNG {
   /// [maxLength] inclusive. The [List] will contain 64-bit unsigned integers.
   Uint64List uint64List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Uint64List(length);
+    final v = Uint64List(length);
     for (var i = 0; i < length; i++) v[i] = nextUint64;
     return v;
   }
@@ -428,7 +428,7 @@ class RNG {
   /// [maxLength] inclusive.
   List<double> listOfDouble([int minLength = 1, int maxLength = 1000]) {
     final len = _getLength(minLength, maxLength);
-    final vList = new List<double>(len);
+    final vList = List<double>(len);
     for (var i = 0; i < len; i++) vList[i] = nextDouble;
     return vList;
   }
@@ -437,7 +437,7 @@ class RNG {
   /// [maxLength] inclusive.
   List<double> listOfFloat32([int minLength, int maxLength]) {
     final len = _getLength(minLength, maxLength);
-    final vList = new List<double>(len);
+    final vList = List<double>(len);
     for (var i = 0; i < len; i++) vList[i] = nextFloat32;
     return vList;
   }
@@ -447,7 +447,7 @@ class RNG {
   /// numbers.
   Float32List float32List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Float32List(length);
+    final v = Float32List(length);
     for (var i = 0; i < length; i++) v[i] = nextFloat32;
     return v;
   }
@@ -457,7 +457,7 @@ class RNG {
   /// numbers.
   Float64List float64List([int minLength, int maxLength]) {
     final length = _getLength(minLength, maxLength);
-    final v = new Float64List(length);
+    final v = Float64List(length);
     for (var i = 0; i < length; i++) v[i] = nextFloat64;
     return v;
   }

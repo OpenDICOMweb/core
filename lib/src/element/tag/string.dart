@@ -19,7 +19,7 @@ import 'package:core/src/vr.dart';
 
 StringList setValues(Iterable<String> vList) {
   if (vList == null) return StringList.kEmptyList;
-  return (vList is StringList) ? vList : new StringList.from(vList);
+  return (vList is StringList) ? vList : StringList.from(vList);
 }
 
 class AEtag extends AE with TagElement<String> {
@@ -29,10 +29,8 @@ class AEtag extends AE with TagElement<String> {
 
   /// Creates an [AEtag] Element.
   factory AEtag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return AE.isValidArgs(tag, v)
-        ? new AEtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return AE.isValidArgs(tag, v) ? AEtag._(tag, v) : badValues(v, null, tag);
   }
 
   AEtag._(this.tag, this._values) : assert(tag.vrIndex == kAEIndex);
@@ -55,14 +53,14 @@ class AEtag extends AE with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  AEtag update([Iterable<String> vList]) => new AEtag(tag, vList);
+  AEtag update([Iterable<String> vList]) => AEtag(tag, vList);
 
   static AEtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new AEtag(tag, vList);
+      AEtag(tag, vList);
 
   static AEtag fromBytes(Tag tag, Bytes bytes) =>
-      new AEtag(tag, bytes.getAsciiList(padChar: kSpace));
+      AEtag(tag, bytes.getAsciiList(padChar: kSpace));
 }
 
 class CStag extends CS with TagElement<String> {
@@ -71,10 +69,8 @@ class CStag extends CS with TagElement<String> {
   StringList _values;
 
   factory CStag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return CS.isValidArgs(tag, v)
-        ? new CStag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return CS.isValidArgs(tag, v) ? CStag._(tag, v) : badValues(v, null, tag);
   }
 
   CStag._(this.tag, this._values) : assert(tag.vrIndex == kCSIndex);
@@ -82,7 +78,7 @@ class CStag extends CS with TagElement<String> {
   @override
   StringList get values {
     final v = _values;
-    return (convertLowercase) ? v.uppercase : v;
+    return convertLowercase ? v.uppercase : v;
   }
 
   @override
@@ -105,14 +101,14 @@ class CStag extends CS with TagElement<String> {
   static bool convertLowercase = false;
 
   @override
-  CStag update([Iterable<String> vList]) => new CStag(tag, vList);
+  CStag update([Iterable<String> vList]) => CStag(tag, vList);
 
   static CStag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new CStag(tag, vList);
+      CStag(tag, vList);
 
   static CStag fromBytes(Tag tag, Bytes bytes) =>
-      new CStag(tag, bytes.getAsciiList());
+      CStag(tag, bytes.getAsciiList());
 }
 
 class DStag extends DS with TagElement<String> {
@@ -121,10 +117,8 @@ class DStag extends DS with TagElement<String> {
   StringList _values;
 
   factory DStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = new StringList.from(vList);
-    return DS.isValidArgs(tag, v)
-        ? new DStag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return DS.isValidArgs(tag, v) ? DStag._(tag, v) : badValues(v, null, tag);
   }
 
   DStag._(this.tag, this._values) : assert(tag.vrIndex == kDSIndex);
@@ -147,14 +141,14 @@ class DStag extends DS with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  DStag update([Iterable<String> vList]) => new DStag(tag, vList);
+  DStag update([Iterable<String> vList]) => DStag(tag, vList);
 
   static DStag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new DStag(tag, vList);
+      DStag(tag, vList);
 
   static DStag fromBytes(Tag tag, Bytes bytes) =>
-      new DStag(tag, bytes.getAsciiList(padChar: kSpace));
+      DStag(tag, bytes.getAsciiList(padChar: kSpace));
 }
 
 class IStag extends IS with TagElement<String> {
@@ -163,10 +157,8 @@ class IStag extends IS with TagElement<String> {
   StringList _values;
 
   factory IStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = new StringList.from(vList);
-    return IS.isValidArgs(tag, v)
-        ? new IStag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return IS.isValidArgs(tag, v) ? IStag._(tag, v) : badValues(v, null, tag);
   }
 
   IStag._(this.tag, this._values) : assert(tag.vrIndex == kISIndex);
@@ -189,14 +181,14 @@ class IStag extends IS with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  IStag update([Iterable<String> vList]) => new IStag(tag, vList);
+  IStag update([Iterable<String> vList]) => IStag(tag, vList);
 
   static IStag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new IStag(tag, vList);
+      IStag(tag, vList);
 
   static IStag fromBytes(Tag tag, Bytes bytes) =>
-      new IStag(tag, bytes.getAsciiList());
+      IStag(tag, bytes.getAsciiList());
 }
 
 /// A Long String (LO) Element
@@ -206,10 +198,8 @@ class LOtag extends LO with TagElement<String> {
   StringList _values;
 
   factory LOtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = new StringList.from(vList);
-    return LO.isValidArgs(tag, v)
-        ? new LOtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return LO.isValidArgs(tag, v) ? LOtag._(tag, v) : badValues(v, null, tag);
   }
 
   LOtag._(this.tag, this._values) : assert(tag.vrIndex == kLOIndex);
@@ -232,14 +222,14 @@ class LOtag extends LO with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  LOtag update([Iterable<String> vList]) => new LOtag(tag, vList);
+  LOtag update([Iterable<String> vList]) => LOtag(tag, vList);
 
   static LOtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new LOtag(tag, vList);
+      LOtag(tag, vList);
 
   static LOtag fromBytes(Tag tag, Bytes bytes) =>
-      new LOtag(tag, bytes.getUtf8List());
+      LOtag(tag, bytes.getUtf8List());
 }
 
 class PCtag extends PC with TagElement<String> {
@@ -249,10 +239,8 @@ class PCtag extends PC with TagElement<String> {
 
   factory PCtag(Tag tag, [StringList vList]) {
     vList ??= StringList.kEmptyList;
-    final v = new StringList.from(vList);
-    return PC.isValidArgs(tag, v)
-        ? new PCtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return PC.isValidArgs(tag, v) ? PCtag._(tag, v) : badValues(v, null, tag);
   }
 
   PCtag._(this.tag, this._values) : assert(tag.vrIndex == kLOIndex);
@@ -278,30 +266,30 @@ class PCtag extends PC with TagElement<String> {
   String get token => value;
 
   @override
-  PCtag update([Iterable<String> vList]) => new PCtag(tag, vList);
+  PCtag update([Iterable<String> vList]) => PCtag(tag, vList);
 
   static PCtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new PCtag(tag, vList);
+      PCtag(tag, vList);
 
   static PCtag fromBytes(Tag tag, Bytes bytes) {
     final s = bytes.getUtf8().trim();
-    return new PCtag(tag, StringList.from([s]));
+    return PCtag(tag, StringList.from([s]));
   }
 
   static PCtag makePhantom(int group, int subgroup) {
     const name = PDTag.phantomName;
     final code = (group << 16) + subgroup;
-    final tag = new PCTagUnknown(code, kLOIndex, name);
-    return new PCtag(tag, StringList.from(const <String>[name]));
+    final tag = PCTagUnknown(code, kLOIndex, name);
+    return PCtag(tag, StringList.from(const <String>[name]));
   }
 
   static PCtag makeEmptyPrivateCreator(int pdCode, int vrIndex) {
     final group = Tag.privateGroup(pdCode);
     final sgNumber = (pdCode & 0xFFFF) >> 8;
     final code = (group << 16) + sgNumber;
-    final tag = new PCTagUnknown(code, kLOIndex, '');
-    return new PCtag(tag, StringList.from(const <String>['']));
+    final tag = PCTagUnknown(code, kLOIndex, '');
+    return PCtag(tag, StringList.from(const <String>['']));
   }
 }
 
@@ -312,10 +300,8 @@ class LTtag extends LT with TagElement<String> {
   StringList _values;
 
   factory LTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = new StringList.from(vList);
-    return LT.isValidArgs(tag, v)
-        ? new LTtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return LT.isValidArgs(tag, v) ? LTtag._(tag, v) : badValues(v, null, tag);
   }
 
   LTtag._(this.tag, this._values) : assert(tag.vrIndex == kLTIndex);
@@ -338,14 +324,14 @@ class LTtag extends LT with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  LTtag update([Iterable<String> vList]) => new LTtag(tag, vList);
+  LTtag update([Iterable<String> vList]) => LTtag(tag, vList);
 
   static LTtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new LTtag(tag, vList);
+      LTtag(tag, vList);
 
   static LTtag fromBytes(Tag tag, Bytes bytes) =>
-      new LTtag(tag, new StringList.from([bytes.getUtf8()]));
+      LTtag(tag, StringList.from([bytes.getUtf8()]));
 }
 
 /// A Person Name ([PN]) Element.
@@ -355,10 +341,8 @@ class PNtag extends PN with TagElement<String> {
   StringList _values;
 
   factory PNtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = new StringList.from(vList);
-    return PN.isValidArgs(tag, v)
-        ? new PNtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return PN.isValidArgs(tag, v) ? PNtag._(tag, v) : badValues(v, null, tag);
   }
 
   PNtag._(this.tag, this._values) : assert(tag.vrIndex == kPNIndex);
@@ -381,14 +365,14 @@ class PNtag extends PN with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  PNtag update([Iterable<String> vList]) => new PNtag(tag, vList);
+  PNtag update([Iterable<String> vList]) => PNtag(tag, vList);
 
   static PNtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new PNtag(tag, vList);
+      PNtag(tag, vList);
 
   static PNtag fromBytes(Tag tag, Bytes bytes) =>
-      new PNtag(tag, bytes.getUtf8List());
+      PNtag(tag, bytes.getUtf8List());
 }
 
 /// A Short String (SH) Element
@@ -398,10 +382,8 @@ class SHtag extends SH with TagElement<String> {
   StringList _values;
 
   factory SHtag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return SH.isValidArgs(tag, v)
-        ? new SHtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return SH.isValidArgs(tag, v) ? SHtag._(tag, v) : badValues(v, null, tag);
   }
 
   SHtag._(this.tag, this._values) : assert(tag.vrIndex == kSHIndex);
@@ -424,14 +406,14 @@ class SHtag extends SH with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  SHtag update([Iterable<String> vList]) => new SHtag(tag, vList);
+  SHtag update([Iterable<String> vList]) => SHtag(tag, vList);
 
   static SHtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new SHtag(tag, vList);
+      SHtag(tag, vList);
 
   static SHtag fromBytes(Tag tag, Bytes bytes) =>
-      new SHtag(tag, bytes.getUtf8List());
+      SHtag(tag, bytes.getUtf8List());
 }
 
 /// An Short Text (ST) Element
@@ -441,10 +423,8 @@ class STtag extends ST with TagElement<String> {
   StringList _values;
 
   factory STtag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return ST.isValidArgs(tag, v)
-        ? new STtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return ST.isValidArgs(tag, v) ? STtag._(tag, v) : badValues(v, null, tag);
   }
 
   STtag._(this.tag, this._values) : assert(tag.vrIndex == kSTIndex);
@@ -467,14 +447,14 @@ class STtag extends ST with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  STtag update([Iterable<String> vList]) => new STtag(tag, vList);
+  STtag update([Iterable<String> vList]) => STtag(tag, vList);
 
   static STtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new STtag(tag, vList);
+      STtag(tag, vList);
 
   static STtag fromBytes(Tag tag, Bytes bytes) =>
-      new STtag(tag, new StringList.from([bytes.getUtf8()]));
+      STtag(tag, StringList.from([bytes.getUtf8()]));
 }
 
 /// An Unlimited Characters (UC) Element
@@ -484,10 +464,8 @@ class UCtag extends UC with TagElement<String> {
   StringList _values;
 
   factory UCtag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return UC.isValidArgs(tag, v)
-        ? new UCtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return UC.isValidArgs(tag, v) ? UCtag._(tag, v) : badValues(v, null, tag);
   }
 
   UCtag._(this.tag, this._values) : assert(tag.vrIndex == kUCIndex);
@@ -510,14 +488,14 @@ class UCtag extends UC with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  UCtag update([Iterable<String> vList]) => new UCtag(tag, vList);
+  UCtag update([Iterable<String> vList]) => UCtag(tag, vList);
 
   static UCtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new UCtag(tag, vList);
+      UCtag(tag, vList);
 
   static UCtag fromBytes(Tag tag, Bytes bytes) =>
-      new UCtag(tag, bytes.getUtf8List());
+      UCtag(tag, bytes.getUtf8List());
 }
 
 class UItag extends UI with TagElement<String> {
@@ -526,18 +504,18 @@ class UItag extends UI with TagElement<String> {
   StringList _values;
 
   factory UItag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
+    final v = StringList.from(vList);
     return UI.isValidArgs(tag, v)
-        ? new UItag._(tag, v, null)
+        ? UItag._(tag, v, null)
         : badValues(v, null, tag);
   }
 
   factory UItag.fromUids(Tag tag, Iterable<Uid> uidList) {
     if (!UI.isValidUidArgs(tag, uidList)) return badValues(uidList, null, tag);
-    final v = new StringList.from(uidList.map((uid) => uid.asString));
+    final v = StringList.from(uidList.map((uid) => uid.asString));
     List<Uid> uids;
     if (uidList != null) uids = uidList.toList(growable: false);
-    return new UItag._(tag, v, uids);
+    return UItag._(tag, v, uids);
   }
 
   UItag._(this.tag, this._values, this._uids) : assert(tag.vrIndex == kUIIndex);
@@ -564,14 +542,14 @@ class UItag extends UI with TagElement<String> {
   Iterable<Uid> _uids;
 
   @override
-  UItag update([Iterable<String> vList]) => new UItag(tag, vList);
+  UItag update([Iterable<String> vList]) => UItag(tag, vList);
 
   static UItag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new UItag(tag, vList);
+      UItag(tag, vList);
 
   static UItag fromBytes(Tag tag, Bytes bytes) =>
-      new UItag(tag, bytes.getAsciiList(padChar: kNull));
+      UItag(tag, bytes.getAsciiList(padChar: kNull));
 }
 
 /// Value Representation of [Uri].
@@ -583,10 +561,8 @@ class URtag extends UR with TagElement<String> {
   StringList _values;
 
   factory URtag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return UR.isValidArgs(tag, v)
-        ? new URtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return UR.isValidArgs(tag, v) ? URtag._(tag, v) : badValues(v, null, tag);
   }
 
   URtag._(this.tag, this._values) : assert(tag.vrIndex == kURIndex);
@@ -609,14 +585,14 @@ class URtag extends UR with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  URtag update([Iterable<String> vList]) => new URtag(tag, vList);
+  URtag update([Iterable<String> vList]) => URtag(tag, vList);
 
   static URtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new URtag(tag, vList);
+      URtag(tag, vList);
 
   static URtag fromBytes(Tag tag, Bytes bytes) =>
-      new URtag(tag, new StringList.from([bytes.getUtf8()]));
+      URtag(tag, StringList.from([bytes.getUtf8()]));
 }
 
 /// An Unlimited Text (UT) Element
@@ -626,10 +602,8 @@ class UTtag extends UT with TagElement<String> {
   StringList _values;
 
   factory UTtag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return UT.isValidArgs(tag, v)
-        ? new UTtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return UT.isValidArgs(tag, v) ? UTtag._(tag, v) : badValues(v, null, tag);
   }
 
   UTtag._(this.tag, this._values) : assert(tag.vrIndex == kUTIndex);
@@ -652,14 +626,14 @@ class UTtag extends UT with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  UTtag update([Iterable<String> vList]) => new UTtag(tag, vList);
+  UTtag update([Iterable<String> vList]) => UTtag(tag, vList);
 
   static UTtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new UTtag(tag, vList);
+      UTtag(tag, vList);
 
   static UTtag fromBytes(Tag tag, Bytes bytes) =>
-      new UTtag(tag, new StringList.from([bytes.getUtf8()]));
+      UTtag(tag, StringList.from([bytes.getUtf8()]));
 }
 
 // **** Date/Time classes
@@ -670,10 +644,8 @@ class AStag extends AS with TagElement<String> {
   StringList _values;
 
   factory AStag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return AS.isValidArgs(tag, v)
-        ? new AStag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return AS.isValidArgs(tag, v) ? AStag._(tag, v) : badValues(v, null, tag);
   }
 
   AStag._(this.tag, this._values) : assert(tag.vrIndex == kASIndex);
@@ -696,14 +668,14 @@ class AStag extends AS with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  AStag update([Iterable<String> vList]) => new AStag(tag, vList);
+  AStag update([Iterable<String> vList]) => AStag(tag, vList);
 
   static AStag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new AStag(tag, vList);
+      AStag(tag, vList);
 
   static AStag fromBytes(Tag tag, Bytes bytes) =>
-      new AStag(tag, bytes.getAsciiList());
+      AStag(tag, bytes.getAsciiList());
 }
 
 /// A DICOM Date ([DA]) [Element].
@@ -713,9 +685,9 @@ class DAtag extends DA with TagElement<String> {
   StringList _values;
 
   factory DAtag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
+    final v = StringList.from(vList);
     return DA.isValidArgs(tag, v)
-        ? new DAtag._(tag, new StringList.from(v))
+        ? DAtag._(tag, StringList.from(v))
         : badValues(v, null, tag);
   }
 
@@ -739,14 +711,14 @@ class DAtag extends DA with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  DAtag update([Iterable<String> vList]) => new DAtag(tag, vList);
+  DAtag update([Iterable<String> vList]) => DAtag(tag, vList);
 
   static DAtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new DAtag(tag, vList);
+      DAtag(tag, vList);
 
   static DAtag fromBytes(Tag tag, Bytes bytes) =>
-      new DAtag(tag, bytes.getAsciiList());
+      DAtag(tag, bytes.getAsciiList());
 }
 
 /// A DICOM DateTime [DT] [Element].
@@ -759,10 +731,8 @@ class DTtag extends DT with TagElement<String> {
   StringList _values;
 
   factory DTtag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return DT.isValidArgs(tag, v)
-        ? new DTtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return DT.isValidArgs(tag, v) ? DTtag._(tag, v) : badValues(v, null, tag);
   }
 
   DTtag._(this.tag, this._values) : assert(tag.vrIndex == kDTIndex);
@@ -785,14 +755,14 @@ class DTtag extends DT with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  DTtag update([Iterable<String> vList]) => new DTtag(tag, vList);
+  DTtag update([Iterable<String> vList]) => DTtag(tag, vList);
 
   static DTtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new DTtag(tag, vList);
+      DTtag(tag, vList);
 
   static DTtag fromBytes(Tag tag, Bytes bytes) =>
-      new DTtag(tag, bytes.getAsciiList());
+      DTtag(tag, bytes.getAsciiList());
 }
 
 /// The DICOM [TM] (Time) [Element].
@@ -806,10 +776,8 @@ class TMtag extends TM with TagElement<String> {
   StringList _values;
 
   factory TMtag(Tag tag, [Iterable<String> vList]) {
-    final v = new StringList.from(vList);
-    return TM.isValidArgs(tag, v)
-        ? new TMtag._(tag, v)
-        : badValues(v, null, tag);
+    final v = StringList.from(vList);
+    return TM.isValidArgs(tag, v) ? TMtag._(tag, v) : badValues(v, null, tag);
   }
 
   TMtag._(this.tag, this._values) : assert(tag.vrIndex == kTMIndex);
@@ -832,14 +800,14 @@ class TMtag extends TM with TagElement<String> {
   StringList get trimmed => values.trim(trim);
 
   @override
-  TMtag update([Iterable<String> vList]) => new TMtag(tag, vList);
+  TMtag update([Iterable<String> vList]) => TMtag(tag, vList);
 
   static TMtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
-      new TMtag(tag, vList);
+      TMtag(tag, vList);
 
   static TMtag fromBytes(Tag tag, Bytes bytes) {
     final s = bytes.getAsciiList(padChar: kSpace);
-    return new TMtag(tag, s);
+    return TMtag(tag, s);
   }
 }

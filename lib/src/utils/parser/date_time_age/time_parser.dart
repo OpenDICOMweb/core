@@ -56,7 +56,7 @@ bool isValidDcmTimeString(String s, {int start = 0, int end, Issues issues}) =>
         ? false
         : true;
 
-const List<int> kValidTimeStringLengths = const <int>[2, 4, 6, 8];
+const List<int> kValidTimeStringLengths = <int>[2, 4, 6, 8];
 
 /// Returns the hour part of microseconds ([us]).
 int microsecondsToHour(int us) => us ~/ kMicrosecondsPerHour;

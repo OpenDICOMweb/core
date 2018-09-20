@@ -12,9 +12,9 @@ import 'package:core/core.dart';
 void main() {
 
 
-    final map0 = new TagRootDataset.empty();
-    //final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-    final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+    final map0 = TagRootDataset.empty();
+    //final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+    final as0 = AStag(PTag.kPatientAge, ['024Y']);
 
     //map0[fd0.code] = fd0;
     map0[as0.code] = as0;

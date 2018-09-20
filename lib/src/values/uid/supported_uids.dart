@@ -26,10 +26,8 @@ abstract class SupportedUid {
 
   /// Returns a [SupportedUidList] or [SupportedUidMap].
   static SupportedUid initialize([String type, int initialLength]) {
-    if (type == 'list')
-    	return new SupportedUidList(initialLength);
-    if (type == 'map')
-    	return new SupportedUidMap();
+    if (type == 'list') return SupportedUidList(initialLength);
+    if (type == 'map') return SupportedUidMap();
     return null;
   }
 }
@@ -40,8 +38,7 @@ class SupportedUidList extends SupportedUid {
   @override
   final List<Uid> knownUids;
 
-  SupportedUidList([int initialLength = 500])
-      : knownUids = new List(initialLength);
+  SupportedUidList([int initialLength = 500]) : knownUids = List(initialLength);
 
   @override
   bool contains(Uid uid) => knownUids.contains(uid);

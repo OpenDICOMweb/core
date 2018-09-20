@@ -27,32 +27,35 @@ class ServiceClass extends WKUid {
 
   static List<String> get strings => _map.keys;
 
-
-  static const ServiceClass kStorageServiceClass = const ServiceClass('1.2.840.10008.4.2',
-      'StorageServiceClass', UidType.kServiceClass, 'Storage Service Class');
+  static const ServiceClass kStorageServiceClass = ServiceClass(
+      '1.2.840.10008.4.2',
+      'StorageServiceClass',
+      UidType.kServiceClass,
+      'Storage Service Class');
 
   static const ServiceClass kUnifiedWorklistAndProcedureStepServiceClassTrial =
-      const ServiceClass(
+      ServiceClass(
           '1.2.840.10008.5.1.4.34.4',
           'UnifiedWorklistAndProcedureStepServiceClass_Trial_Retired',
           UidType.kServiceClass,
           'Unified Worklist and Procedure Step Service Class - Trial (Retired)',
           isRetired: true);
 
-  static const ServiceClass kUnifiedWorklistAndProcedureStepServiceClass = const ServiceClass(
+  static const ServiceClass kUnifiedWorklistAndProcedureStepServiceClass =
+      ServiceClass(
     '1.2.840.10008.5.1.4.34.6',
     'UnifiedWorklistAndProcedureStepServiceClass',
     UidType.kServiceClass,
     'Unified Worklist and Procedure Step Service Class',
   );
 
-  static const List<ServiceClass> members = const <ServiceClass>[
+  static const List<ServiceClass> members = <ServiceClass>[
     kStorageServiceClass,
     kUnifiedWorklistAndProcedureStepServiceClassTrial,
     kUnifiedWorklistAndProcedureStepServiceClass,
   ];
 
-  static const Map<String, ServiceClass> _map = const <String, ServiceClass>{
+  static const Map<String, ServiceClass> _map = <String, ServiceClass>{
     '1.2.840.10008.4.2': kStorageServiceClass,
     '1.2.840.10008.5.1.4.34.4':
         kUnifiedWorklistAndProcedureStepServiceClassTrial,

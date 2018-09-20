@@ -56,22 +56,20 @@ abstract class PrivateTag extends Tag {
   String toString() => '$runtimeType$dcm subgroup($sgNumber)';
 
   // TODO: compare to tag_utils/lookupTagByCode
-  /// Returns a new [PrivateTag] based on [code] and [vrIndex].
+  /// Returns a [PrivateTag] based on [code] and [vrIndex].
   /// [obj] can be either a [String] or [PCTag].
   static PrivateTag make(int code, int vrIndex, [Object obj]) {
     if (isPublicCode(code)) return null;
     if (isPDCode(code)) {
       final PCTag creator = obj;
       return PDTag.make(code, vrIndex, creator);
-    } else
-    if (isPCCode(code)) {
+    } else if (isPCCode(code)) {
       final String creator = obj;
       return PCTag.make(code, vrIndex, creator);
-    } else
-    if (isPrivateGroupLengthCode(code)) {
-      return new PrivateGroupLengthTag(code, vrIndex);
+    } else if (isPrivateGroupLengthCode(code)) {
+      return PrivateGroupLengthTag(code, vrIndex);
     } else {
-      return new IllegalPrivateTag(code, vrIndex);
+      return IllegalPrivateTag(code, vrIndex);
     }
   }
 }
@@ -87,8 +85,8 @@ class PrivateGroupLengthTag extends PrivateTag {
   @override
   PrivateGroupLengthTag(this.code, this.actualVRIndex) {
     if (!isPrivateGroupLengthCode(code)) badTagCode(code);
-    if (vrIndex != kULIndex && vrIndex != kUNIndex) VR.badIndex(
-        vrIndex, null, correctVRIndex);
+    if (vrIndex != kULIndex && vrIndex != kUNIndex)
+      VR.badIndex(vrIndex, null, correctVRIndex);
   }
 
   @override

@@ -49,10 +49,10 @@ class DatasetGroups {
       currentGNumber = gNumber;
       GroupBase gp;
       if (gNumber.isEven) {
-        currentGroup = new PublicGroup(e, sqParent);
+        currentGroup = PublicGroup(e, sqParent);
         gp = publicGroups.putIfAbsent(gNumber, () => currentGroup);
       } else {
-        currentGroup = new PrivateGroup(e);
+        currentGroup = PrivateGroup(e);
         gp = privateGroups.putIfAbsent(gNumber, () => currentGroup);
       }
       if (gp != currentGroup) badGroupError(currentGNumber);
@@ -62,7 +62,7 @@ class DatasetGroups {
 
   @override
   String toString() {
-    final sb = new StringBuffer();
+    final sb = StringBuffer();
     publicGroups
         .forEach((gNum, pGroup) => sb.writeln('${hex16(gNum)}: $pGroup'));
     privateGroups

@@ -14,8 +14,8 @@ import 'package:core/src/utils/bytes/bytes.dart';
 void main(List<String> args) {
 
   final floats = <double>[0.0, 1.0, 2.0, 3.0];
-  final fl32List0 = new Float32List.fromList(floats);
-  final fl32Bytes0= new Bytes.typedDataView(fl32List0);
+  final fl32List0 =  Float32List.fromList(floats);
+  final fl32Bytes0=  Bytes.typedDataView(fl32List0);
   assert(fl32Bytes0.getFloat32(0) == fl32List0[0]);
   assert(fl32Bytes0.getFloat32(4) == fl32List0[1]);
   assert(fl32Bytes0.getFloat32(8) == fl32List0[2]);
@@ -28,7 +28,7 @@ void main(List<String> args) {
     assert(fl32List0[i] == fl32List1[i]);
 
   // Unaligned
-  final fl32b = new Bytes(20)
+  final fl32b =  Bytes(20)
   ..setFloat32(2, floats[0])
   ..setFloat32(6, floats[1])
   ..setFloat32(10, floats[2])
@@ -45,9 +45,9 @@ void main(List<String> args) {
 
 
 /*
-  final float64 = new Float64List.fromList(floats);
-  final fl64List0 = new Bytes.fromTypedData(float32);
-  final fl64a = new Bytes(fl64List0.lengthInBytes);
+  final float64 =  Float64List.fromList(floats);
+  final fl64List0 =  Bytes.fromTypedData(float32);
+  final fl64a =  Bytes(fl64List0.lengthInBytes);
   final fl64List1 = fl64a.asFloat64List();
 
 */

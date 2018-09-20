@@ -70,7 +70,7 @@ String ageToString(int nDays) {
   } else if (nDays <= kMaxAgeYearsInDays) {
     s = '${digits3(nDays ~/ kAgeDaysInYear)}Y';
   } else {
-    throw new FallThroughError();
+    throw FallThroughError();
   }
   return s;
 }

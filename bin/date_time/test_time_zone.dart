@@ -21,7 +21,7 @@ void main() {
       ..debug('  tzm: $tz, ${goodTimeZonesValues[i]}');
     final valid = TimeZone.isValidString(s);
     log.debug('  isValid: $valid');
-    final issues = new Issues('parseTimeZone: "$s"');
+    final issues = Issues('parseTimeZone: "$s"');
     TimeZone.parse(s, issues: issues);
     log.debug('  Issues: "$issues"');
   }
@@ -33,22 +33,22 @@ void main() {
     ..debug('  tzm: $tz');
     final valid = TimeZone.isValidString(s);
     log.debug('  isValid: $valid, valid==$valid');
-    final issues = new Issues('parseTimeZone: "$s"');
+    final issues = Issues('parseTimeZone: "$s"');
     TimeZone.parse(s, issues: issues);
     log.debug('  Issues: "$issues"');
   }
   // timeZoneTest();
 }
 
-const List<String> goodTimeZones = const <String>[
+const List<String> goodTimeZones = <String>[
   '+0000', '+0100', '-0100', '+0130', '-0145', '-1200', '+1400' // no fmt
 ];
 
-const List<int> goodTimeZonesValues = const <int>[
+const List<int> goodTimeZonesValues = <int>[
   0, 60, -60, 90, -105, -12 * 60, 14 * 60 // no fmt
 ];
 
-const List<String> badTimeZones = const <String>[
+const List<String> badTimeZones = <String>[
   '-0000', // not valid UTC
   '-1300', // hour out of range
   '+1500', // hour out of range
@@ -69,7 +69,7 @@ void timeZoneTest() {
         log.debug('Good parseTimeZone: "$s", tzm: $tz');
         expect(tz, isNotNull);
         expect(TimeZone.isValidString(s), true);
-        final issues = new Issues('parseTimeZone: "$s"');
+        final issues = Issues('parseTimeZone: "$s"');
         TimeZone.parse(s, issues: issues);
         log.debug('Issues: $issues');
         expect(issues, equals(''));

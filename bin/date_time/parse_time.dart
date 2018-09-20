@@ -18,14 +18,14 @@ List<List<int>> goodTimeValuesWOFractions = <List<int>>[
   [21, 56, 56, 0], [22, 57, 57, 0], [23, 58, 58, 0], [23, 59, 59, 0]
 ];
 
-const List<String> goodTimeStringsWOFractions = const <String>[
+const List<String> goodTimeStringsWOFractions = <String>[
   '123456', //no reformat
   '000000', '010101', '090909', '101010',
   '111111', '111111', '194949', '205555',
   '215656', '225757', '235858', '235959'
 ];
 
-const List<String> badTimeStringsWOFractions = const <String>[
+const List<String> badTimeStringsWOFractions = <String>[
   'abcdef',
   '-00000', '0**101', '09**09', '101**1', '1111**', '11111*',
   'a00000', '0b0101', '09c909', '101d10', '1111e1', '11111f',
@@ -51,8 +51,7 @@ void main() {
     final v = goodTimeValuesWOFractions[i];
     final usv = listToUSeconds(v);
     log.debug('                   $usv');
-    if (us != usv)
-      throw '    Unequal Values: us: $us, usv: $usv';
+    if (us != usv) throw '    Unequal Values: us: $us, usv: $usv';
   }
 
   log.debug('Parse Bad badTimeStringsWOFractions:');
@@ -61,8 +60,7 @@ void main() {
     log.debug('  Parse Bad Fraction: "$s"');
     final f = parseDcmTime(s);
     log.debug('                       $f');
-    if (f != null)
-      throw '    Non-Null Value: f: $f';
+    if (f != null) throw '    Non-Null Value: f: $f';
   }
 
   log..debug('Parse Good Time Fractions:')..debug('Good Time Fractions:');
@@ -75,15 +73,14 @@ void main() {
     final v = goodTimeValuesWOFractions[i];
     final usv = listToUSeconds(v);
     log.debug('                          usv: $usv');
-    if (us != usv)
-      throw '    Unequal Values: us: $us, usv: $usv';
+    if (us != usv) throw '    Unequal Values: us: $us, usv: $usv';
   }
 
   log.debug('Parse Bad Time Fractions:');
   for (var i = 0; i < badTimeStringsWOFractions.length; i++) {
     final s = badTimeStringsWOFractions[i];
     log.debug('  Parse Bad Time Fraction: "$s"');
-    final issues = new Issues('Bad Time Fraction: "$s"');
+    final issues = Issues('Bad Time Fraction: "$s"');
     parseDcmTime(s, issues: issues);
     log.debug('  $issues');
     if (issues.isEmpty)

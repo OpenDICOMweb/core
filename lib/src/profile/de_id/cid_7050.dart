@@ -52,47 +52,47 @@ class DeIdMethod extends ContextGroup {
 
   TagItem item(Dataset parent, SQ sq) {
     final map = {
-      kCodeValue: new SHtag(PTag.kCodeValue, [code]),
+      kCodeValue: SHtag(PTag.kCodeValue, [code]),
       kCodingSchemeDesignator:
-          new SHtag(PTag.kCodingSchemeDesignator, [designator]),
-      kCodeMeaning: new LOtag(PTag.kCodeMeaning, [meaning])
+          SHtag(PTag.kCodingSchemeDesignator, [designator]),
+      kCodeMeaning: LOtag(PTag.kCodeMeaning, [meaning])
     };
-    return new TagItem(parent, sq, map);
+    return TagItem(parent, sq, map);
   }
 
   @override
   String toString() => 'CID$number($designator) $name';
 
   static const DeIdMethod kBasicApplicationConfidentialityProfile =
-      const DeIdMethod('113100', 'Basic Application Confidentiality Profile');
+      DeIdMethod('113100', 'Basic Application Confidentiality Profile');
   static const DeIdMethod kCleanPixelDataOption =
-      const DeIdMethod('113101', 'Clean Pixel Data Option');
+      DeIdMethod('113101', 'Clean Pixel Data Option');
   static const DeIdMethod kCleanRecognizableVisualFeaturesOption =
-      const DeIdMethod('113102', 'Clean Recognizable Visual Features Option');
+      DeIdMethod('113102', 'Clean Recognizable Visual Features Option');
   static const DeIdMethod kCleanGraphicsOption =
-      const DeIdMethod('113103', 'Clean Graphics Option');
+      DeIdMethod('113103', 'Clean Graphics Option');
   static const DeIdMethod kCleanStructuredContentOption =
-      const DeIdMethod('113104', 'Clean Structured Content Option');
+      DeIdMethod('113104', 'Clean Structured Content Option');
   static const DeIdMethod kCleanDescriptorsOption =
-      const DeIdMethod('113105', 'Clean Descriptors Option');
+      DeIdMethod('113105', 'Clean Descriptors Option');
   static const DeIdMethod
-      kRetainLongitudinalTemporalInformationFullDatesOption = const DeIdMethod(
+      kRetainLongitudinalTemporalInformationFullDatesOption = DeIdMethod(
           '113106',
           'Retain Longitudinal Temporal Information Full Dates Option');
   static const DeIdMethod
-      kRetainLongitudinalTemporalInformationModifiedDatesOption =
-      const DeIdMethod('113107',
+      kRetainLongitudinalTemporalInformationModifiedDatesOption = DeIdMethod(
+          '113107',
           'Retain Longitudinal Temporal Information Modified Dates Option');
   static const DeIdMethod kRetainPatientCharacteristicsOption =
-      const DeIdMethod('113108', 'Retain Patient Characteristics Option');
+      DeIdMethod('113108', 'Retain Patient Characteristics Option');
   static const DeIdMethod kRetainDeviceIdentityOption =
-      const DeIdMethod('113109', 'Retain Device Identity Option');
+      DeIdMethod('113109', 'Retain Device Identity Option');
   static const DeIdMethod kRetainUIDsOption =
-      const DeIdMethod('113110', 'Retain UIDs Option');
+      DeIdMethod('113110', 'Retain UIDs Option');
   static const DeIdMethod kRetainSafePrivateOption =
-      const DeIdMethod('113111', 'Retain Safe Private Option');
+      DeIdMethod('113111', 'Retain Safe Private Option');
 
-  static const Map<int, String> map = const {
+  static const Map<int, String> map = {
     113100: 'Basic Application Confidentiality Profile',
     113101: 'Clean Pixel Data Option',
     113102: 'Clean Recognizable Visual Features Option',

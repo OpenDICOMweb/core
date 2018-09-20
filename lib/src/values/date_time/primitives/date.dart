@@ -115,15 +115,14 @@ int _dateToEpochMicroseconds(int y, int m, int d) {
   final day = _dateToEpochDay(y, m, d);
   return (isValidEpochDay(day))
       ? day * kMicrosecondsPerDay
-      : invalidDate(y, m, d);
+      : badDate(y, m, d);
 }
 
 bool isValidYearInMicroseconds(int us) =>
     us >= kMinYearInMicroseconds && us <= kMaxYearInMicroseconds;
 
-int toValidYearInMicroseconds(int us) => (us.isNegative)
-    ? us % global.minYearInMicroseconds
-    : us % global.maxYearInMicroseconds;
+int toValidYearInMicroseconds(int us) =>
+    (us.isNegative) ? us % kMinYearInMicroseconds : us % kMaxYearInMicroseconds;
 
 /// Returns _true_ if [y], [m], and [d] correspond to a valid Gregorian date.
 bool isValidDate(int y, int m, int d) => _isValidDate(y, m, d);
@@ -170,13 +169,13 @@ class EpochDate {
   factory EpochDate.fromDay(int day) =>
       _isValidEpochDay(day) ? _epochDayToEpochDate(day) : null;
 
-  /// Returns a [String] corresponding to [epochDay]. If [asDicom] is _true_
-  /// the format is 'yyyyddmm'; otherwise the format is 'yyyy-mm-dd'.
+  /// Returns a [String] corresponding to _this_. If [asDicom] is _true_
+  /// the format is 'yyyymmdd'; otherwise the format is 'yyyy-mm-dd'.
   String asString({bool asDicom = true}) {
     final yy = digits4(year);
     final mm = digits2(month);
     final dd = digits2(day);
-    return (asDicom) ? '$yy$mm$dd' : '$yy-$mm-$dd';
+    return asDicom ? '$yy$mm$dd' : '$yy-$mm-$dd';
   }
 
   @override
@@ -236,7 +235,7 @@ typedef int OnWeekdayError(int x, [int y]);
 /// Both [x] and [y] must be integers in the range 0 - 6.
 int weekdayDifference(int x, int y, [OnWeekdayError onError]) {
   if (x < 0 || x > 6 && y < 0 || y > 6)
-    return (onError == null) ? throw new Error() : onError(x, y);
+    return (onError == null) ? throw Error() : onError(x, y);
   final n = (x >= y) ? x - y : (x + 7) - y;
   return n;
 }
@@ -245,7 +244,7 @@ int weekdayDifference(int x, int y, [OnWeekdayError onError]) {
 /// Note: Always returns a number between 0 and 6.
 int nextWeekday(int weekday, [OnWeekdayError onError]) {
   if (weekday < 0 || weekday > 6)
-    return (onError == null) ? throw new Error() : onError(weekday);
+    return (onError == null) ? throw Error() : onError(weekday);
   return (weekday < 6) ? weekday + 1 : 0;
 }
 
@@ -253,7 +252,7 @@ int nextWeekday(int weekday, [OnWeekdayError onError]) {
 /// Note: Always returns a number between 0 and 6.
 int previousWeekday(int weekday, [OnWeekdayError onError]) {
   if (weekday < 0 || weekday > 6)
-    return (onError == null) ? throw new Error() : onError(weekday);
+    return (onError == null) ? throw Error() : onError(weekday);
   return weekday > 0 ? weekday - 1 : 6;
 }
 
@@ -262,14 +261,14 @@ int hashDateMicroseconds(int us, [int onError(int n)]) {
   // Note: Dart [int]s can be larger than 63 bits. This check makes
   // sure it is a Dart SMI (small integer).
   if (us < kMinEpochMicrosecond || us > kMaxEpochMicrosecond)
-    return (onError == null) ? throw new Error() : onError(us);
+    return (onError == null) ? throw Error() : onError(us);
   var v = us;
   do {
     v = global.hash(v);
-  } while ((v <= kMicrosecondsPerDay));
+  } while (v <= kMicrosecondsPerDay);
   return (v.isNegative)
-      ? v % global.minYearInMicroseconds
-      : v % global.maxYearInMicroseconds;
+      ? v % kMinYearInMicroseconds
+      : v % kMaxYearInMicroseconds;
 }
 
 /// Returns a new Epoch microsecond that is a hash of [epochDay].
@@ -306,7 +305,7 @@ String epochDayToDateString(int epochDay, {bool asDicom = true}) {
   final yy = digits4(date.year);
   final mm = digits2(date.month);
   final dd = digits2(date.day);
-  return (asDicom) ? '$yy$mm$dd' : '$yy-$mm-$dd';
+  return asDicom ? '$yy$mm$dd' : '$yy-$mm-$dd';
 }
 
 // **** Internal Functions ****

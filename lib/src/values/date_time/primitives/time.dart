@@ -8,7 +8,6 @@
 //
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/date_time.dart';
-import 'package:core/src/utils/string.dart';
 import 'package:core/src/values/date_time.dart';
 
 // ignore_for_file: only_throw_errors
@@ -70,7 +69,8 @@ int microsecondFromMicrosecond(int us) =>
 int fractionFromMicrosecond(int us) =>
     _inRange(us, 0, kMicrosecondsPerDay) ? _fractionFromTimeInUS(us) : null;
 
-typedef Object TimeToObject(int h, int m, int s, int ms, int us, {bool asDicom});
+typedef Object TimeToObject(int h, int m, int s, int ms, int us,
+    {bool asDicom});
 
 Time microsecondToTime(int timeInUS) {
   if (isNotValidTimeMicroseconds(timeInUS)) return null;
@@ -81,6 +81,7 @@ Time microsecondToTime(int timeInUS) {
   final us = _microsecondFromTimeInUS(timeInUS % kMicrosecondsPerMillisecond);
   return Time(h, m, s, ms, us);
 }
+
 /// Returns a FThash of microsecond ([us]) that is in the
 /// range: ```0 <= hash <= [kMicrosecondsPerDay]```.
 int hashTimeMicroseconds(int us) => global.hash(us) % kMicrosecondsPerDay;

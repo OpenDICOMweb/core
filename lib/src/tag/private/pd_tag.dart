@@ -44,11 +44,11 @@ abstract class PDTag extends PrivateTag {
     if (creator is PCTag) {
       final definition = creator.lookupPDCode(code);
       return (definition != null)
-          ? new PDTagKnown(code, vrIndex, creator, definition)
-          : new PDTagUnknown(code, vrIndex, creator);
+          ? PDTagKnown(code, vrIndex, creator, definition)
+          : PDTagUnknown(code, vrIndex, creator);
     }
-    final pcTag = new PCTagUnknown(code, kLOIndex, phantomName);
-    return new PDTagUnknown(code, vrIndex, pcTag);
+    final pcTag = PCTagUnknown(code, kLOIndex, phantomName);
+    return PDTagUnknown(code, vrIndex, pcTag);
   }
 }
 
@@ -70,7 +70,7 @@ class PDTagUnknown extends PDTag {
   String get name => 'Unknown Private Data Tag';
 
   static PDTagUnknown make(int code, int vrIndex, [PCTag creator]) =>
-      new PDTagUnknown(code, vrIndex, creator);
+      PDTagUnknown(code, vrIndex, creator);
 }
 
 class PDTagKnown extends PDTag {
@@ -125,5 +125,5 @@ class PDTagKnown extends PDTag {
 
   static PDTagKnown make(
           int code, int vrIndex, PCTag creator, PDTagDefinition definition) =>
-      new PDTagKnown(code, vrIndex, creator, definition);
+      PDTagKnown(code, vrIndex, creator, definition);
 }

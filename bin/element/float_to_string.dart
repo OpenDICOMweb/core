@@ -11,35 +11,34 @@ import 'dart:typed_data';
 
 import 'package:core/core.dart';
 
-void main(){
-  final rng = new RNG(0);
+void main() {
+  final rng = RNG(0);
 
-  final bd = new ByteData(10);
-  final foo  = base64Test(bd);
+  final bd = ByteData(10);
+  final foo = base64Test(bd);
   print('foo: $foo');
   ByteData bar;
-  final foo1  = base64Test(bar);
+  final foo1 = base64Test(bar);
   print('foo1: $foo1');
 
   const loop0Count = 10;
-  for(var i = 0; i <= loop0Count; i++) {
+  for (var i = 0; i <= loop0Count; i++) {
     final d = rng.nextDouble;
     final x = rng.nextInt();
     final s = floatToString(x * d);
-    if (s.length > 16)
-      print('*** (${s.length})"$s"');
+    if (s.length > 16) print('*** (${s.length})"$s"');
   }
 
   const loop1Count = 10;
-  for(var i = 0; i< loop1Count; i++) {
+  for (var i = 0; i < loop1Count; i++) {
     final dList = rng.listOfDouble();
     print('$i: dList: $dList');
     final sList = floatListToDSList(dList);
-      print('$i: sList: $sList');
+    print('$i: sList: $sList');
   }
 
   const loop2Count = 1000;
-  for(var i = 0; i< loop2Count; i++) {
+  for (var i = 0; i < loop2Count; i++) {
     final dList = rng.listOfDouble();
     print('$i: dList: $dList');
     final sList = randomListOfDouble(dList);
@@ -52,11 +51,10 @@ List base64Test(ByteData bd) {
   return bd?.buffer?.asUint8List();
 }
 
-
 /// the same length as _this_.
 Iterable<String> randomListOfDouble(List<double> dList) {
   final length = dList.length;
-  final rList = new List<double>(length);
+  final rList = List<double>(length);
   for (var i = 0; i < length; i++) rList[i] = Global.rng.nextDouble();
   return rList.map(floatToString);
 }
@@ -77,7 +75,6 @@ String floatToString(double v) {
   return s;
 }
 
-
 Iterable<String> floatListToDSList(Iterable<double> vList) {
   print('length0: ${vList.length}');
   final hashList = Sha256.float64(vList).map(floatToString);
@@ -85,7 +82,6 @@ Iterable<String> floatListToDSList(Iterable<double> vList) {
   assert(vList.length == hashList.length);
   return hashList;
 }
-
 
 void printOptions(double v, int i) {
   final s0 = v.toString();

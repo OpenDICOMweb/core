@@ -9,15 +9,15 @@
 
 
 void main() {
-  const data = const <List<int>>[
+  const data = <List<int>>[
 // -    Sun Mon Tue Wed Thu Fri Sat
-/*Sun*/ const [0, 6, 5, 4, 3, 2, 1],
-/*Mon*/ const [1, 0, 6, 5, 4, 3, 2],
-/*Tue*/ const [2, 1, 0, 6, 5, 4, 3],
-/*Wed*/ const [3, 2, 1, 0, 6, 5, 4],
-/*Thu*/ const [4, 3, 2, 1, 0, 6, 5],
-/*Fri*/ const [5, 4, 3, 2, 1, 0, 6],
-/*Sat*/ const [6, 5, 4, 3, 2, 1, 0]
+/*Sun*/ [0, 6, 5, 4, 3, 2, 1],
+/*Mon*/ [1, 0, 6, 5, 4, 3, 2],
+/*Tue*/ [2, 1, 0, 6, 5, 4, 3],
+/*Wed*/ [3, 2, 1, 0, 6, 5, 4],
+/*Thu*/ [4, 3, 2, 1, 0, 6, 5],
+/*Fri*/ [5, 4, 3, 2, 1, 0, 6],
+/*Sat*/ [6, 5, 4, 3, 2, 1, 0]
   ];
 
   for (var x = 0; x < 7; x++) {
@@ -35,7 +35,7 @@ void main() {
 int weekdayDifference(int x, int y) {
 	assert(x >= 0 && x <= 6, 'x: $x');
 	assert(y >= 0 && y <= 6, 'y: $y');
-	final n = (x - y);
+	final n = x - y;
 	final v = (n >= 0 && n <= 6) ? n : n + 7;
 	print('  x: $x, y: $y, n: $n');
 	print('  v: $v');

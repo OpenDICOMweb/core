@@ -72,7 +72,7 @@ Uint8List getPixelsFromFragments(List<Uint8List> fragments) {
   for (int j = 1; j < fragments.length; j++) {
     pixelsLength += fragments[j].lengthInBytes;
   }
-  var pixels = new Uint8List(pixelsLength);
+  var pixels =  Uint8List(pixelsLength);
   var i = 0;
   for (int j = 1; j < fragments.length; j++) {
     if (fragments[j].length > 0) {
@@ -87,17 +87,17 @@ Uint8List getPixelsFromFragments(List<Uint8List> fragments) {
 bool isAligned(int offsetInBytes, int sizeInBytes) =>
     offsetInBytes % sizeInBytes == 0;
 
-final Uint32List emptyOffsets = new Uint32List(0);
+final Uint32List emptyOffsets = Uint32List(0);
 List<int> getUint32List(Uint8List vf, [int offsetInBytes, int length]) {
   offsetInBytes ??= vf.offsetInBytes;
- length ??= vf.lengthInBytes ~/ 4;
+  length ??= vf.lengthInBytes ~/ 4;
   if (vf.isEmpty) return emptyOffsets;
   final oib = vf.offsetInBytes + offsetInBytes;
   // _log.debug('oib($oib), length($length), isAligned(${_isAligned(oib, 4)})');
   if (isAligned(oib, 4)) {
     return vf.buffer.asUint32List(oib, length);
   } else {
-    return new UnalignedUint32List(vf, offsetInBytes, length);
+    return UnalignedUint32List(vf, offsetInBytes, length);
   }
 }
 
@@ -106,11 +106,11 @@ class UnalignedUint32List extends ListBase<int> {
   ByteData bd;
 
   factory UnalignedUint32List(Uint8List vf, int offsetInBytes, int length) {
-  	final startIB = vf.offsetInBytes + offsetInBytes;
+    final startIB = vf.offsetInBytes + offsetInBytes;
     assert(vf != null, 'bytes == null');
     assert(isAligned(vf.offsetInBytes, 2), 'Not aligned on 16-bit boundary');
     final bd0 = vf.buffer.asByteData(startIB, length * 4);
-    return new UnalignedUint32List._(bd0);
+    return UnalignedUint32List._(bd0);
   }
 
   UnalignedUint32List._(this.bd);
@@ -128,7 +128,7 @@ class UnalignedUint32List extends ListBase<int> {
   set length(int v) => _unsupported();
 
   void _unsupported() =>
-      throw new UnsupportedError('Unmodifiable UnassignedUint32List');
+      throw UnsupportedError('Unmodifiable UnassignedUint32List');
 
   int _getUint16(int offset) => bd.getUint16(offset, Endian.little);
 
@@ -141,7 +141,7 @@ class UnalignedUint32List extends ListBase<int> {
 
   /// Returns an aligned copy of this unaligned list
   Uint32List get copy {
-	  final v = new Uint32List(length);
+    final v = Uint32List(length);
     for (var i = 0; i < length; i++) v[i] = _getUint32(i);
     return v;
   }
@@ -152,7 +152,7 @@ class UnalignedUint32List extends ListBase<int> {
 Uint32List bytesToAttributeTags(Uint8List bytes) {
   if ((bytes.lengthInBytes % 4) != 0) return null;
   final shorts = bytes.buffer.asUint16List();
-  final list = new Uint32List(shorts.length ~/ 2);
+  final list = Uint32List(shorts.length ~/ 2);
   for (var i = 0; i < list.length; i += 2) {
     list[i] = (shorts[i] << 16) + shorts[i + 1];
   }

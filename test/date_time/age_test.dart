@@ -183,6 +183,7 @@ void main() {
 
     test('isValidAgeString: Bad', () {
       global.throwOnError = false;
+
       for (var s in badDcmAge) {
         log.debug('s: "$s"');
         final vas0 = isValidAgeString(s);

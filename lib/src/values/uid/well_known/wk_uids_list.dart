@@ -21,7 +21,7 @@ import 'package:core/src/values/uid/well_known/wk_uid.dart';
 
 /// This library contains compile time constant definitions of
 /// "Well Known" [SopClass]s and there corresponding [String] values.
-const List<WKUid> wkUids = const [
+const List<WKUid> wkUids = [
   SopClass.kVerification,
   TransferSyntax.kImplicitVRLittleEndian,
   TransferSyntax.kDefaultForDIMSE,

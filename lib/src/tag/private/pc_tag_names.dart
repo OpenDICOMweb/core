@@ -8,7 +8,7 @@
 //
 
 /// A List of Private Creator Tag names.
-const List<String> pcTagNames = const [
+const List<String> pcTagNames = [
   '1.2.840.113681',
   '1.2.840.113708.794.1.1.2.0',
   'ACUSON',

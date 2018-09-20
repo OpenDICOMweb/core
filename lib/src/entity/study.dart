@@ -17,24 +17,24 @@ import 'package:core/src/values/uid.dart';
 
 /// A DICOM [Study] in SOP Instance format.
 class Study extends Entity {
-  /// Creates a new Study.
+  /// Creates a  Study.
   Study(Patient subject, Uid uid, RootDataset dataset,
       [Map<Uid, Series> series])
       : super(
             subject, uid, dataset, (series == null) ? <Uid, Series>{} : series);
 
-  /// Returns a copy of _this_ [Series], but with a new [Uid]. If [parent]
-  /// is _null_ the new [Instance] is in the same [Series] as _this_.
+  /// Returns a copy of _this_ [Series], but with a  [Uid]. If [parent]
+  /// is _null_ the  [Instance] is in the same [Series] as _this_.
   Study.from(Study study, RootDataset rds, [Patient parent])
-      : super((parent == null) ? study.parent : parent, new Uid(), rds,
-            new Map.from(study.children));
+      : super((parent == null) ? study.parent : parent, Uid(), rds,
+            Map.from(study.children));
 
-  /// Returns a new [Study] created from the [RootDataset].
+  /// Returns a  [Study] created from the [RootDataset].
   factory Study.fromRootDataset(RootDataset rds, [Patient parent]) {
     final e = rds.lookup(kStudyInstanceUID, required: true);
-    final studyUid = new Uid(e.value);
-    parent ??= new Patient.fromRDS(rds);
-    final study = new Study(parent, studyUid, rds);
+    final studyUid = Uid(e.value);
+    parent ??= Patient.fromRDS(rds);
+    final study = Study(parent, studyUid, rds);
     parent.putIfAbsent(study);
     return study;
   }
@@ -65,13 +65,13 @@ class Study extends Entity {
     return list;
   }
 
-  /// Returns a new [Series] created from _rds_.
+  /// Returns a  [Series] created from _rds_.
   Series createSeriesFromRootDataset(RootDataset rds) =>
-      new Series.fromRootDataset(rds, this);
+      Series.fromRootDataset(rds, this);
 
   /// Returns a [String] containing summary information about _this_.
   String get summary {
-    final sb = new StringBuffer('Study Summary: $uid\n  Patient: $subject '
+    final sb = StringBuffer('Study Summary: $uid\n  Patient: $subject '
         '${series.length} Series\n');
     for (var s in series) {
       sb.write('  Series: ${s.uid}\n    ${s.instances.length} Instances\n');
@@ -83,7 +83,7 @@ class Study extends Entity {
     return sb.toString();
   }
 
-  /// Adds a new [Series] to the [Study].  Throws a [DuplicateEntityError]
+  /// Adds a  [Series] to the [Study].  Throws a [DuplicateEntityError]
   /// if _this_ has an existing [Series] with the same [Uid].
   Series putIfAbsent(Series series) {
     final v = children.putIfAbsent(series.uid, () => series);

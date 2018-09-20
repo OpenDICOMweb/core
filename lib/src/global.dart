@@ -115,8 +115,8 @@ abstract class Global {
       this.showBanner = true,
       this.showSdkBanner = true})
       : assert(_isValidYearRange(minYear, maxYear)),
-        version = (version == null) ? new Version(0, 0, 1) : version,
-        log = new Logger(name, level) {
+        version = (version == null) ? Version(0, 0, 1) : version,
+        log = Logger(name, level) {
     hasher = hasher ??= const Hash64();
     log
       ..config('minYear: $minYear, minYearLimit: $global.minYearLimit')
@@ -155,12 +155,12 @@ abstract class Global {
   /// _Note_: This Getter can be overridden in Server, Client, or Browser.
   Uid get defaultTransferSyntax => TransferSyntax.kExplicitVRLittleEndian;
 
-  String get banner => (showSdkBanner)
+  String get banner => showSdkBanner
       ? '$name($runtimeType V$version): $script\n  Running on ${sdk.info}'
       : '$name($runtimeType V$version): $script';
 
   /// Returns a [String] containing information about this [Global].
-  SysInfo get sysInfo => new SysInfo();
+  SysInfo get sysInfo => SysInfo();
 
   String get versionName => '$name\_$version';
 
@@ -191,13 +191,13 @@ abstract class Global {
   @override
   String toString() => '$banner';
 
-  static final Duration kZeroDuration = new Duration();
+  static final Duration kZeroDuration = Duration();
 
   // Date/Time stuff
-  static final DateTime kStartTime = new DateTime.now();
+  static final DateTime kStartTime = DateTime.now();
 
   /// The random number generator for the [global].
-  static final Random rng = new Random.secure();
+  static final Random rng = Random.secure();
 
   /// Returns the [Global] singleton, which is and instance
   /// of Browser, Client, or Server. It has a lazy one-time
@@ -246,8 +246,8 @@ bool _isValidYearRange(int minYear, int maxYear) {
   if (minYear < kMinYearLimit ||
       minYear >= maxYear ||
       maxYear > kMaxYearLimit) {
-    final msg = 'Invalid System Year Range: '
-        'min($global.minYearLimit) <= $minYear < $maxYear <= max($global.maxYearLimit)';
+    final msg = 'Invalid System Year Range: min($global.minYearLimit) '
+        '<= $minYear < $maxYear <= max($global.maxYearLimit)';
     internalError(msg);
   }
   return true;

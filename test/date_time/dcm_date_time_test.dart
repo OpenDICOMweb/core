@@ -13,7 +13,7 @@ void main() {
   Server.initialize(
       name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.info);
 
-  const goodDcmDateTimeList = const <String>[
+  const goodDcmDateTimeList = <String>[
     '19500718105630',
     '00000101010101',
     '19700101000000',
@@ -30,7 +30,7 @@ void main() {
     '20240229105630', // leap year
   ];
 
-  const badDcmDateTimeList = const <String>[
+  const badDcmDateTimeList = <String>[
     '19501318',
     '19501318105630', //bad months
     '19501032105630', // bad day
@@ -64,8 +64,9 @@ void main() {
       log.debug('Good DcmDateTime');
       for (var dt in goodDcmDateTimeList) {
         log.debug('date and time:$dt');
-        final datetime = DcmDateTime.parse(dt);
-        expect(datetime, isNotNull);
+        final dateTime = DcmDateTime.parse(dt);
+        log.debug('dateTime:$dateTime');
+        expect(dateTime, isNotNull);
       }
     });
 
@@ -81,13 +82,22 @@ void main() {
   });
 
   group('isValid', () {
-    test('isValid Good and Bad DcmDateTime', () {
-      for (var dt in goodDcmDateTimeList) {
-        final dateTime = DcmDateTime.parse(dt);
+    test('isValid Good DcmDateTime', () {
+      global.level = Level.debug;
+
+      for (var s in goodDcmDateTimeList) {
+        log.debug('s: $s');
+        expect(DcmDateTime.isValidString(s), true);
+        final dateTime = DcmDateTime.parse(s);
+        log.debug('us: ${dateTime.microseconds}');
+        log.debug('day: ${dateTime.day}');
         log.debug('dateTime: $dateTime');
         expect(dateTime is DcmDateTime, true);
-        expect(DcmDateTime.isValidString(dt), true);
       }
+    });
+
+    test('isValid Bad DcmDateTime', () {
+      global.level = Level.debug;
 
       for (var dt in badDcmDateTimeList) {
         log.debug('dt: $dt');

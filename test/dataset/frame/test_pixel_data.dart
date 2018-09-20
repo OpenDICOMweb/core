@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-const List<int> testFrame = const <int>[
+const List<int> testFrame = <int>[
   255,
     79,
     255,

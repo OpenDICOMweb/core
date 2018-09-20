@@ -21,8 +21,10 @@ import 'package:core/src/utils/rng.dart';
 class V4Generator {
   /// The random number generator
   final RNG rng;
+
   /// True if the [rng] is secure.
   final bool isSecure;
+
   /// The value used to seed the [rng], or _null_ if not seeded.
   final int seed;
 
@@ -31,15 +33,15 @@ class V4Generator {
   ///
   /// [seed] affects only the [RNG] RNG and can be used to
   /// generate pseudo-RNG numbers.
-  V4Generator({this.isSecure: false, this.seed})
-      : rng = (isSecure) ? new RNG.secure() : new RNG(seed);
+  V4Generator({this.isSecure = false, this.seed})
+      : rng = isSecure ? RNG.secure() : RNG(seed);
 
-  V4Generator._(this.rng, {this.isSecure: false, this.seed});
+  V4Generator._(this.rng, {this.isSecure = false, this.seed});
 
-  /// Returns a new RNG (V4) UUID values.
+  /// Returns a RNG (V4) UUID values.
   /// _Note_: The values is a [Uint8List], not a Uuid.
   Uint8List get next {
-    final rList = new Uint32List(4);
+    final rList = Uint32List(4);
     for (var i = 0; i < 4; i++) rList[i] = rng.nextUint32;
     final bytes = rList.buffer.asUint8List();
     // Set the version and variant bits to the correct values.
@@ -48,20 +50,19 @@ class V4Generator {
     return bytes;
   }
 
-  static final RNG _rngSecure = new RNG.secure();
-  static final RNG _rngBasic = new RNG();
-  static final RNG _rngTest = new RNG(0);
+  static final RNG _rngSecure = RNG.secure();
+  static final RNG _rngBasic = RNG();
+  static final RNG _rngTest = RNG(0);
 
   /// Generates a series of RNG (secure) Uuids.
-  static final V4Generator secure =
-      new V4Generator._(_rngSecure, isSecure: true);
+  static final V4Generator secure = V4Generator._(_rngSecure, isSecure: true);
 
   /// Generates a series of pseudo-random Uuids.
   /// _Note_: No [seed] is used. This is faster than
   /// [secure] and can be used for testing.
-  static final V4Generator pseudo = new V4Generator._(_rngBasic);
+  static final V4Generator pseudo = V4Generator._(_rngBasic);
 
   /// Generates a reproducible series of pseudo-random Uuids.
   /// The [seed] used is 1.
-  static final V4Generator seededPseudo = new V4Generator._(_rngTest, seed: 0);
+  static final V4Generator seededPseudo = V4Generator._(_rngTest, seed: 0);
 }

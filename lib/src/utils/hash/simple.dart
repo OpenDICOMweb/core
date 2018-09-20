@@ -32,12 +32,13 @@ int hash2(Object o0, Object o1) =>
     _finish32(_combine32(_combine32(0, o0.hashCode), o1.hashCode));
 
 /// Generates a hash code for three objects.
-int hash3(Object o0, Object o1, Object o2) => _finish32(
-    _combine32(_combine32(_combine32(0, o0.hashCode), o1.hashCode), o2.hashCode));
+int hash3(Object o0, Object o1, Object o2) => _finish32(_combine32(
+    _combine32(_combine32(0, o0.hashCode), o1.hashCode), o2.hashCode));
 
 /// Generates a hash code for four objects.
 int hash4(Object o0, Object o1, Object o2, Object o3) => _finish32(_combine32(
-    _combine32(_combine32(_combine32(0, o0.hashCode), o1.hashCode), o2.hashCode),
+    _combine32(
+        _combine32(_combine32(0, o0.hashCode), o1.hashCode), o2.hashCode),
     o3.hashCode));
 
 /// Returns a hash code for [vList].

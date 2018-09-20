@@ -48,7 +48,7 @@ class ActiveStudies extends Object with MapMixin<Uid, Study> {
   ActiveStudies._();
 
   static ActiveStudies get activeStudies =>
-      _activeStudies ??= new ActiveStudies._();
+      _activeStudies ??= ActiveStudies._();
 
   /// Returns the [Study] that has [uid].
   @override
@@ -82,7 +82,7 @@ ActiveStudies:
 
   String get studiesSummary {
     var out = '';
-    for (var s in _studies.values) out = s.format(new Formatter());
+    for (var s in _studies.values) out = s.format(Formatter());
     return out;
   }
 
@@ -182,7 +182,7 @@ ActiveStudies:
     String pid = ds.subject.pid;
     Patient subject = _subjectsByPid[pid];
     if (subject == null) {
-      subject = new Patient.fromRootDataset(ds);
+      subject =  Patient.fromRootDataset(ds);
       _subjects[subject.uid] = subject;
       _subjectsByPid[pid] = subject;
     }
@@ -197,7 +197,7 @@ ActiveStudies:
     if (studyUid == null) throw 'RootDataset w/o studyUid';
     Patient subject = createPatientIfAbsent(studyUid, ds);
     Study study = _studies[studyUid];
-    if (study == null) study = new Study(subject, studyUid, ds);
+    if (study == null) study =  Study(subject, studyUid, ds);
     subject.children[studyUid] = study;
     _studies[studyUid] = study;
     _studysPatient[studyUid] = subject;
@@ -238,23 +238,23 @@ ActiveStudies:
     Entity entity;
 
     // Get the Patient
-    final patient = new Patient.fromRDS(rds);
+    final patient = Patient.fromRDS(rds);
     entity ??= patient;
 
     // Get the Study
     var study = lookupStudy(rds.getUid(kSeriesInstanceUID));
-    study ??= new Study.fromRootDataset(rds, patient);
+    study ??= Study.fromRootDataset(rds, patient);
     entity ??= study;
 
     // Get the Series
     var series = study[rds.getUid(kStudyInstanceUID)];
-    series ??= new Series.fromRootDataset(rds, study);
+    series ??= Series.fromRootDataset(rds, study);
     entity ??= series;
 
     // Get the Instance
     var instance = series[rds.getUid(kSOPInstanceUID)];
     if (instance != null) throw 'Entity($entity) already present';
-    instance = new Instance.fromRDS(rds, series);
+    instance = Instance.fromRDS(rds, series);
     // Return the highest level [Entity] created.
     return entity ??= instance;
   }
@@ -266,7 +266,7 @@ ActiveStudies:
     if (e == null) return elementNotPresentError(PTag.kPatientID);
     final String pid = e.value;
     var subject = _subjectsByPid[pid];
-    subject ??= new Patient.fromRDS(rds);
+    subject ??= Patient.fromRDS(rds);
     final study = subject.createStudyFromRootDataset(rds);
     final series = study.createSeriesFromRootDataset(rds);
     final instance = series.createInstanceFromRootDataset(rds);
@@ -275,4 +275,4 @@ ActiveStudies:
   }
 }
 
-final ActiveStudies activeStudies = new ActiveStudies._();
+final ActiveStudies activeStudies = ActiveStudies._();

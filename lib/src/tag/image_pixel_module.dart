@@ -21,47 +21,43 @@ class ImagePixel {
   const ImagePixel._(this.keyword, this.type);
 
   static const ImagePixel kSamplesPerPixel =
-      const ImagePixel._('SamplesPerPixel', EType.k1);
+      ImagePixel._('SamplesPerPixel', EType.k1);
   static const ImagePixel kPhotometricInterpretation =
-      const ImagePixel._('PhotometricInterpretation', EType.k1);
-  static const ImagePixel kRows = const ImagePixel._('Rows', EType.k1);
-  static const ImagePixel kColumns = const ImagePixel._('Columns', EType.k1);
+      ImagePixel._('PhotometricInterpretation', EType.k1);
+  static const ImagePixel kRows = ImagePixel._('Rows', EType.k1);
+  static const ImagePixel kColumns = ImagePixel._('Columns', EType.k1);
   static const ImagePixel kBitsAllocated =
-      const ImagePixel._('BitsAllocated', EType.k1);
-  static const ImagePixel kBitsStored =
-      const ImagePixel._('BitsStored', EType.k1);
-  static const ImagePixel kHighBit = const ImagePixel._('HighBit', EType.k1);
+      ImagePixel._('BitsAllocated', EType.k1);
+  static const ImagePixel kBitsStored = ImagePixel._('BitsStored', EType.k1);
+  static const ImagePixel kHighBit = ImagePixel._('HighBit', EType.k1);
   //Enumerated Values: 0000H	unsigned integer. 0001H	2's complement
   static const ImagePixel kPixelRepresentation =
-      const ImagePixel._('PixelRepresentation', EType.k1);
+      ImagePixel._('PixelRepresentation', EType.k1);
   static const ImagePixel kPlanarConfiguration =
-      const ImagePixel._('PlanarConfiguration', EType.k1c);
+      ImagePixel._('PlanarConfiguration', EType.k1c);
   static const ImagePixel kPixelAspectRatio =
-      const ImagePixel._('PixelAspectRatio', EType.k1c);
+      ImagePixel._('PixelAspectRatio', EType.k1c);
   static const ImagePixel kSmallestImagePixelValue =
-      const ImagePixel._('SmallestImagePixelValue', EType.k3);
+      ImagePixel._('SmallestImagePixelValue', EType.k3);
   static const ImagePixel kLargestImagePixelValue =
-      const ImagePixel._('LargestImagePixelValue', EType.k3);
+      ImagePixel._('LargestImagePixelValue', EType.k3);
   static const ImagePixel kRedPaletteColorLookupTableDescriptor =
-      const ImagePixel._('RedPaletteColorLookupTableDescriptor', EType.k1c);
+      ImagePixel._('RedPaletteColorLookupTableDescriptor', EType.k1c);
   static const ImagePixel kGreenPaletteColorLookupTableDescriptor =
-      const ImagePixel._('GreenPaletteColorLookupTableDescriptor', EType.k1c);
+      ImagePixel._('GreenPaletteColorLookupTableDescriptor', EType.k1c);
   static const ImagePixel kBluePaletteColorLookupTableDescriptor =
-      const ImagePixel._('BluePaletteColorLookupTableDescriptor', EType.k1c);
+      ImagePixel._('BluePaletteColorLookupTableDescriptor', EType.k1c);
   static const ImagePixel kRedPaletteColorLookupTableData =
-      const ImagePixel._('RedPaletteColorLookupTableData', EType.k1c);
+      ImagePixel._('RedPaletteColorLookupTableData', EType.k1c);
   static const ImagePixel kGreenPaletteColorLookupTableData =
-      const ImagePixel._('GreenPaletteColorLookupTableData', EType.k1c);
+      ImagePixel._('GreenPaletteColorLookupTableData', EType.k1c);
   static const ImagePixel kBluePaletteColorLookupTableData =
-      const ImagePixel._('BluePaletteColorLookupTableData', EType.k1c);
-  static const ImagePixel kICCProfile =
-      const ImagePixel._('ICCProfile', EType.k3);
-  static const ImagePixel kColorSpace =
-      const ImagePixel._('ColorSpace', EType.k3);
-  static const ImagePixel kPixeLData =
-      const ImagePixel._('PixelData', EType.k1c);
+      ImagePixel._('BluePaletteColorLookupTableData', EType.k1c);
+  static const ImagePixel kICCProfile = ImagePixel._('ICCProfile', EType.k3);
+  static const ImagePixel kColorSpace = ImagePixel._('ColorSpace', EType.k3);
+  static const ImagePixel kPixeLData = ImagePixel._('PixelData', EType.k1c);
   static const ImagePixel kPixelDataProviderURL =
-      const ImagePixel._('PixelDataProviderURL', EType.k1c);
+      ImagePixel._('PixelDataProviderURL', EType.k1c);
   static const ImagePixel kPixelPaddingRangeLimit =
-      const ImagePixel._('PixelPaddingRangeLimit', EType.k1c);
+      ImagePixel._('PixelPaddingRangeLimit', EType.k1c);
 }

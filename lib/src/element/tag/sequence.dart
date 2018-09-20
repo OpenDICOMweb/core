@@ -35,11 +35,11 @@ class SQtag extends SQ with TagElement<Item> {
 
   final Bytes bytes;
 
-  /// Creates a new [SQtag] instance.
+  /// Creates a  [SQtag] instance.
   factory SQtag(Dataset parent, Tag tag, [Iterable<Item> vList]) =>
-      new SQtag._(parent, tag, vList);
+      SQtag._(parent, tag, vList);
 
-  /// Creates a new [SQtag] instance.
+  /// Creates a  [SQtag] instance.
   SQtag._(this.parent, this.tag, [Iterable<Item> vList, this.bytes])
       : _values = (vList == null)
             ? emptyTagItemList
@@ -59,26 +59,26 @@ class SQtag extends SQ with TagElement<Item> {
   SQtag get noValues => update(emptyTagItemList);
 
   @override
-  SQtag get sha256 => throw new UnsupportedError('Can\t hash a sequence');
+  SQtag get sha256 => throw UnsupportedError('Can\t hash a sequence');
 
   @override
   String get info => '$tag: Items:${values.length}, total Elements: $total';
 
-  /// Returns a copy of _this_ Sequence, with a new [List] of [Item]s.
+  /// Returns a copy of _this_ Sequence, with a  [List] of [Item]s.
   @override
   SQtag update([Iterable<Item> vList = emptyTagItemList]) =>
-      new SQtag(parent, tag, vList);
+      SQtag(parent, tag, vList);
 
-  /// Returns a copy of _this_ Sequence, with a new [List] of Tag[Item]s.
+  /// Returns a copy of _this_ Sequence, with a  [List] of Tag[Item]s.
   SQtag updateSQtag(Iterable<TagItem> items, Dataset parent) =>
-      new SQtag(parent, tag, items);
+      SQtag(parent, tag, items);
 
   Uint8List getValuesToBytes({bool addHeader, bool isAscii = true}) {
-    throw new UnimplementedError('toDcm');
+    throw UnimplementedError('toDcm');
   }
 
   Uint8List getBytesToValues({bool addHeader, bool isAscii = true}) {
-    throw new UnimplementedError('toDcm');
+    throw UnimplementedError('toDcm');
   }
 
   SQtag copySQ([Dataset parent]) => convert(parent ?? this.parent, this);
@@ -89,25 +89,24 @@ class SQtag extends SQ with TagElement<Item> {
   @override
   String toString() => '$runtimeType $dcm ${tag.keyword} ${items.length} items';
 
-  static const Iterable<Item> emptyTagItemList = const <TagItem>[];
+  static const Iterable<Item> emptyTagItemList = <TagItem>[];
 
   static SQtag fromValues(Tag tag, Iterable<Item> values,
           [int vfLength, Dataset parent]) =>
-      new SQtag(parent, tag, values);
+      SQtag(parent, tag, values);
 
   static SQtag from(Dataset parent, SQ sq) {
-    final nItems = new List<TagItem>(sq.values.length);
+    final nItems = List<TagItem>(sq.values.length);
     for (var i = 0; i < sq.values.length; i++) {
       final item = sq.values[i];
       nItems[i] = TagItem.convert(parent, item, sq);
     }
-    return new SQtag(parent, sq.tag, nItems);
+    return SQtag(parent, sq.tag, nItems);
   }
 
-  static SQtag fromBytes(
-      Dataset parent, List<Item> vList, Tag tag) {
+  static SQtag fromBytes(Dataset parent, List<Item> vList, Tag tag) {
     if (tag.vrIndex != kSQIndex) return null;
-    return new SQtag(parent, tag, vList);
+    return SQtag(parent, tag, vList);
   }
 
   static const _makeSQ = TagElement.makeSequenceFromCode;
@@ -115,7 +114,7 @@ class SQtag extends SQ with TagElement<Item> {
   static SQtag convert(Dataset parent, SQ e) {
     final items = e.values.toList();
     final length = items.length;
-    final tagItems = new List<TagItem>(e.items.length);
+    final tagItems = List<TagItem>(e.items.length);
 
     final sq = _makeSQ(parent, e.code, tagItems);
     for (var i = 0; i < length; i++) {

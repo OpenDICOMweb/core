@@ -63,7 +63,7 @@ class InvalidUidError extends Error {
 Null _doUidError(String msg, Issues issues) {
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidUidError(msg);
+  if (throwOnError) throw InvalidUidError(msg);
   return null;
 }
 

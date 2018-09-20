@@ -36,7 +36,7 @@ abstract class MapDataset {
 
   @override
   bool operator ==(Object other) =>
-      (other is MapDataset && mapsEqual(eMap, other.eMap));
+      other is MapDataset && mapsEqual(eMap, other.eMap);
 
   @override
   int get hashCode => mapHash(eMap);
@@ -65,7 +65,7 @@ abstract class MapDataset {
   Element removeAt(int index, {bool required = false}) => eMap.remove(index);
 
   /// Returns the [Element]s in _this_ as a [List<Element>]
-  List<Element> toList({bool growable: false}) =>
+  List<Element> toList({bool growable = false}) =>
       elements.toList(growable: false);
 
   @override

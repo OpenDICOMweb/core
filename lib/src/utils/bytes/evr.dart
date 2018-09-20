@@ -13,9 +13,9 @@ part of odw.sdk.utils.bytes;
 abstract class EvrBytes extends DicomBytes {
   factory EvrBytes.from(Bytes bytes, int start, int vrIndex, int end) {
     if (vrIndex >= kVREvrShortIndexMin && vrIndex <= kVREvrShortIndexMax) {
-      return new EvrShortBytes.from(bytes, start, end);
+      return EvrShortBytes.from(bytes, start, end);
     } else if (vrIndex >= kVRIndexMin && vrIndex <= kVREvrLongIndexMax) {
-      return new EvrLongBytes.from(bytes, start, end);
+      return EvrLongBytes.from(bytes, start, end);
     } else {
       return badVRIndex(vrIndex, null, null, null);
     }
@@ -29,9 +29,9 @@ abstract class EvrBytes extends DicomBytes {
   factory EvrBytes.view(
       Bytes bytes, int start, int vrIndex, int end, Endian endian) {
     if (vrIndex >= kVREvrShortIndexMin && vrIndex <= kVREvrShortIndexMax) {
-      return new EvrShortBytes.view(bytes, start, end, endian);
+      return EvrShortBytes.view(bytes, start, end, endian);
     } else if (vrIndex >= kVRIndexMin && vrIndex <= kVREvrLongIndexMax) {
-      return new EvrLongBytes.view(bytes, start, end, endian);
+      return EvrLongBytes.view(bytes, start, end, endian);
     } else {
       return badVRIndex(vrIndex, null, null, null);
     }
@@ -80,7 +80,7 @@ class EvrShortBytes extends EvrBytes {
   /// or if [end] is outside the range [start] .. [length].
   @override
   EvrShortBytes sublist([int start = 0, int end]) =>
-      new EvrShortBytes.from(this, start, (end ?? length) - start, endian);
+      EvrShortBytes.from(this, start, (end ?? length) - start, endian);
 
   static const int kVFLengthOffset = 6;
   static const int kVFOffset = 8;
@@ -88,7 +88,7 @@ class EvrShortBytes extends EvrBytes {
 
   static EvrShortBytes makeEmpty(int code, int vfLength, int vrCode,
       [Endian endian]) {
-    final e = new EvrShortBytes(kHeaderLength + vfLength, endian)
+    final e = EvrShortBytes(kHeaderLength + vfLength, endian)
       ..evrSetShortHeader(code, vfLength, vrCode);
     return e;
   }
@@ -97,7 +97,7 @@ class EvrShortBytes extends EvrBytes {
       [Endian endian = Endian.little]) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    final e = new EvrShortBytes(kHeaderLength + vfLength, endian)
+    final e = EvrShortBytes(kHeaderLength + vfLength, endian)
       ..evrSetShortHeader(code, vfLength, vrCode)
       ..setByteData(kVFOffset, vfBytes._bd);
     return e;
@@ -130,7 +130,7 @@ class EvrLongBytes extends EvrBytes {
   /// or if [end] is outside the range [start] .. [length].
   @override
   EvrLongBytes sublist([int start = 0, int end]) =>
-      new EvrLongBytes.from(this, start, (end ?? length) - start, endian);
+      EvrLongBytes.from(this, start, (end ?? length) - start, endian);
 
   static const int kVFLengthOffset = 8;
   static const int kVFOffset = 12;
@@ -139,7 +139,7 @@ class EvrLongBytes extends EvrBytes {
   static EvrLongBytes makeEmpty(int code, int vfLength, int vrCode,
       [Endian endian]) {
     //assert(vfLength.isEven);
-    final e = new EvrLongBytes(kHeaderLength + vfLength, endian)
+    final e = EvrLongBytes(kHeaderLength + vfLength, endian)
       ..evrSetLongHeader(code, vfLength, vrCode);
     return e;
   }
@@ -148,7 +148,7 @@ class EvrLongBytes extends EvrBytes {
       [Endian endian]) {
     final vfLength = vfBytes.length;
     assert(vfLength.isEven);
-    final e = new EvrLongBytes(kHeaderLength + vfLength, endian)
+    final e = EvrLongBytes(kHeaderLength + vfLength, endian)
       ..evrSetLongHeader(code, vfLength, vrCode)
       ..setByteData(kVFOffset, vfBytes._bd);
     return e;

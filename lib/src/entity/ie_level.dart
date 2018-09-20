@@ -26,24 +26,24 @@ class IELevel {
   String toString() => '$runtimeType($level) $name';
 
   /// The Patient level.
-  static const IELevel subject = const IELevel(0, 'Patient');
+  static const IELevel subject = IELevel(0, 'Patient');
 
   /// The Study level.
-  static const IELevel study = const IELevel(1, 'Study');
+  static const IELevel study = IELevel(1, 'Study');
 
   /// The Series level.
-  static const IELevel series = const IELevel(2, 'Series');
+  static const IELevel series = IELevel(2, 'Series');
 
   /// The Instance level.
-  static const IELevel instance = const IELevel(3, 'Instance');
+  static const IELevel instance = IELevel(3, 'Instance');
 
   /// The RootDataset Level.  Note: this is currently not used
-  static const IELevel dataset = const IELevel(4, 'RootDataset');
+  static const IELevel dataset = IELevel(4, 'RootDataset');
 
   /// The Item level.
-  static const IELevel item = const IELevel(5, 'Item');
+  static const IELevel item = IELevel(5, 'Item');
 
-  static const List<IELevel> levels = const <IELevel>[
+  static const List<IELevel> levels = <IELevel>[
     subject, study, series, instance, dataset, item // No reindent
   ];
 }

@@ -13,12 +13,12 @@ import 'package:test_tools/tools.dart';
 
 void main() {
   Server.initialize(name: 'string testing', level: Level.debug);
-  final rsg = new RSG(seed: 1);
+  final rsg = RSG(seed: 1);
 
   for (var i = 0; i < 10; i++) {
     final  vList0 = rsg.getSTList(1, 1);
 
-    final st = new STtag(PTag.kMetaboliteMapDescription, vList0);
+    final st = STtag(PTag.kMetaboliteMapDescription, vList0);
     assert(st.hasValidValues == true);
     assert(st.tag.isValidValuesLength(st.values), true);
     log.debug('st.values: ${st.values}');

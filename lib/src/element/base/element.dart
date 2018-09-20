@@ -42,7 +42,7 @@ Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
 
 /// Returns a formatter for _this_.
-final ElementFormatter eFormat = new SimpleElementFormatter();
+final ElementFormatter eFormat = SimpleElementFormatter();
 
 // All add, replace, and remove operations should
 // be done by calling add, replace, and remove methods in [Dataset].
@@ -290,10 +290,10 @@ abstract class Element<V> extends ListBase<V> {
 
   @override
   void operator []=(int i, V v) =>
-      throw new UnsupportedError('Elements are immutable');
+      throw UnsupportedError('Elements are immutable');
 
   @override
-  set length(int n) => throw new UnsupportedError('Elements are immutable');
+  set length(int n) => throw UnsupportedError('Elements are immutable');
 
   /// Returns a single values from a [List] with [length] == 1.
   V get value {
@@ -306,7 +306,7 @@ abstract class Element<V> extends ListBase<V> {
 
   /// Returns a copy of [values].
   // *Note*: This Getter could be using [growable]: [false].
-  Iterable<V> get valuesCopy => new List.from(values);
+  Iterable<V> get valuesCopy => List.from(values);
 
   /// Returns [values] encoded as an [TypedData]. The subtype of [TypedData]
   /// depends on the VR.
@@ -321,7 +321,7 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns [values], including any required padding, encoded as a [Bytes].
   // Note: Always Bytes not DicomBytes
   Bytes get vfBytes =>
-      (checkValues(values)) ? new Bytes.typedDataView(typedData) : null;
+      (checkValues(values)) ? Bytes.typedDataView(typedData) : null;
 
   String get vfBytesAsAscii => vfBytes.getAscii();
 
@@ -403,17 +403,17 @@ abstract class Element<V> extends ListBase<V> {
   /// Returns a copy of _this_, but with [values] replaced by
   /// a [List] where each [values] has been replaced with a
   /// Digest containing its SHA-256 hash.
-  Element get sha256 => throw new UnimplementedError();
+  Element get sha256 => throw UnimplementedError();
 
   /// Returns a copy of _this_, but with [values] replaced by
   /// a [List] where each [values] has been replaced with an
   /// AES-DCM encryption of the initial [values].
-  Element get encrypted => throw new UnimplementedError();
+  Element get encrypted => throw UnimplementedError();
 
   /// Returns a copy of _this_, but with [values] replaced by
   /// a [List] where each [values] has been replaced with a
   /// AES-DCM decryption of the initial encrypted [values].
-  Element get decrypted => throw new UnimplementedError();
+  Element get decrypted => throw UnimplementedError();
 
   /// Returns the total number of [Element]s in _this_.
   /// _Note_: Sequence (SQ) overrides this Getter.
@@ -428,7 +428,7 @@ abstract class Element<V> extends ListBase<V> {
     return result;
   }
 
-  Issues _getIssues() => new Issues('$this\n  $values');
+  Issues _getIssues() => Issues('$this\n  $values');
 
   String get asString => toString();
 
@@ -496,7 +496,7 @@ abstract class Element<V> extends ListBase<V> {
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
   /// is used.
   static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
-      (doTestElementValidity && tag.vrIndex != targetVR)
+      doTestElementValidity && tag.vrIndex != targetVR
           ? invalidTag(tag, issues, type)
           : true;
 
@@ -521,6 +521,6 @@ abstract class Element<V> extends ListBase<V> {
       !isValidLength(tag, vList, issues, maxLength, type);
 }
 
-bool _isValidLength(int length, int min, int max, int columns) => (length == 0)
+bool _isValidLength(int length, int min, int max, int columns) => length == 0
     ? true
     : length >= min && length <= max && (length % columns) == 0;

@@ -36,5 +36,5 @@ class Person {
   String toString() => 'Person: $name, DOB: $dateOfBirth';
 
   /// Throws an argument error.
-  Error error(String msg) => throw new ArgumentError('Parse Error: $msg');
+  Error error(String msg) => throw ArgumentError('Parse Error: $msg');
 }

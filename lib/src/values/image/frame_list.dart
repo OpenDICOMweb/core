@@ -61,7 +61,7 @@ abstract class FrameList extends ListBase<Frame> {
   /// [set] [length] is not supported.
   @override
   set length(int length) =>
-      throw new UnsupportedError('FrameLists cannot be modified');
+      throw UnsupportedError('FrameLists cannot be modified');
 
   /// A [List<int>] of (uncompressed) pixels containing
   /// all the [Frame]s concatenated together in one array of [int].
@@ -81,7 +81,7 @@ abstract class FrameList extends ListBase<Frame> {
   /// Unsupported operator.
   @override
   void operator []=(int i, Frame f) =>
-      throw new UnsupportedError('FrameLists are immutable');
+      throw UnsupportedError('FrameLists are immutable');
 
   /// The Basic Offset Table for [pixels]. This defaults to [kEmptyUint32List].
   Uint32List get offsets => kEmptyUint32List;
@@ -105,7 +105,6 @@ abstract class FrameList extends ListBase<Frame> {
   /// _Note_: For pixels that are sub-byte size (i.e. less than 8-bits)
   /// the values is zero.
   int get pixelSizeInBytes => desc.pixelSizeInBytes;
-
 
   /// The length in bytes of all the [Frame]s in _this_.
   int get lengthInBytes => bulkdata.lengthInBytes;
@@ -199,7 +198,7 @@ class FrameList1Bit extends FrameList {
     final offset = _getFrameOffset(i);
     // Uses [frameLengthInBytes] because it is a [Uint8List].
     final data = pixels.buffer.asUint8List(offset, frameLengthInBytes);
-    return new Frame1Bit(this, data, i);
+    return Frame1Bit(this, data, i);
   }
 
   @override
@@ -225,7 +224,7 @@ class FrameList8Bit extends FrameList {
   Frame operator [](int i) {
     final offset = _getFrameOffset(i);
     final data = pixels.buffer.asUint8List(offset, frameLength);
-    return new Frame8Bit(this, data, i);
+    return Frame8Bit(this, data, i);
   }
 
   @override
@@ -255,7 +254,7 @@ class FrameList16Bit extends FrameList {
   Frame operator [](int i) {
     final offset = _getFrameOffset(i);
     final data = pixels.buffer.asUint16List(offset, frameLength);
-    return new Frame16Bit(this, data, i);
+    return Frame16Bit(this, data, i);
   }
 
   @override
@@ -285,7 +284,7 @@ class FrameList32Bit extends FrameList {
   Frame operator [](int i) {
     final offset = _getFrameOffset(i);
     final data = pixels.buffer.asUint32List(offset, frameLength);
-    return new Frame32Bit(this, data, i);
+    return Frame32Bit(this, data, i);
   }
 
   @override
@@ -306,7 +305,8 @@ class CompressedFrameList extends FrameList {
 
   /// The offset table (aka DICOM Basic Offset Table).
   /// _Note_: [offsets].length must equal [nFrames] + 1.
-  @override Uint32List offsets;
+  @override
+  Uint32List offsets;
 
   /// A [List<Frame>] of 8-bit Native (i.e. uncompressed) images.
   CompressedFrameList(
@@ -330,7 +330,7 @@ class CompressedFrameList extends FrameList {
     final offset = offsets[i];
     final length = offsets[i + 1] - offset;
     final data = bulkdata.buffer.asUint8List(offset, length);
-    return new CompressedFrame(this, data, i);
+    return CompressedFrame(this, data, i);
   }
 
   @override
@@ -355,7 +355,7 @@ class CompressedFrameList extends FrameList {
 
   @override
   Uint8List get pixels =>
-      throw new UnsupportedError('Compressed Frames must be uncompressed'
+      throw UnsupportedError('Compressed Frames must be uncompressed'
           ' to access the pixels');
 
   @override
@@ -363,7 +363,7 @@ class CompressedFrameList extends FrameList {
 
   //TODO: implement
   /// Returns a [FrameList] created by decompressing the [bulkdata] in _this_.
-  FrameList get decompress => throw new UnimplementedError();
+  FrameList get decompress => throw UnimplementedError();
 }
 
 class InvalidFrameListError extends Error {
@@ -380,6 +380,6 @@ class InvalidFrameListError extends Error {
 
 Null invalidFrameListError(FrameList frameList) {
   log.error(InvalidFrameListError._msg(frameList));
-  if (throwOnError) throw new InvalidFrameListError(frameList);
+  if (throwOnError) throw InvalidFrameListError(frameList);
   return null;
 }

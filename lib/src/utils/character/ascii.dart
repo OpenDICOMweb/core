@@ -389,7 +389,7 @@ typedef int CharChecker(int c);
 bool isControlChar(int c) => ((c >= 0) && (c <= kUs)) || (c == kDelete);
 
 /// Returns True if the [c] is a decimal digit.
-bool isDigitChar(int c) => ((c >= k0) && (c <= k9));
+bool isDigitChar(int c) => (c >= k0) && (c <= k9);
 
 /// Returns True if the [c] is a hexadecimal digit.
 bool isHexChar(int c) =>
@@ -399,7 +399,7 @@ bool isHexChar(int c) =>
 bool isUppercaseChar(int c) => (c >= kA) && (c <= kZ);
 
 /// Returns _true_ if [c] is an lowercase character.
-bool isLowercaseChar(int c) => (c >= ka && c <= kz);
+bool isLowercaseChar(int c) => c >= ka && c <= kz;
 
 /// Returns _true_ if [c] is an alphabetic character.
 bool isAlphabeticChar(int c) => isUppercaseChar(c) || isLowercaseChar(c);

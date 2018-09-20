@@ -12,7 +12,7 @@ import 'package:core/core.dart';
 void main() {
   assert(
       kValidDcmTZHours.length != kValidDcmTZMinutes.length, 'Invalid length');
-  final tzInMinutes = new List<int>(kValidDcmTZMinutes.length);
+  final tzInMinutes = List<int>(kValidDcmTZMinutes.length);
   for (var i = 0; i < kValidDcmTZHours.length; i++) {
     tzInMinutes[i] = (kValidDcmTZHours[i] * 60) + kValidDcmTZMinutes[i];
   }

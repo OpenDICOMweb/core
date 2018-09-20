@@ -15,7 +15,7 @@ void main(){
 }
 
 String creatorTokenToId(String s) {
-  final sb = new StringBuffer();
+  final sb = StringBuffer();
 
   if (isDigitChar(s.codeUnitAt(0))) sb.write('Uid_');
   for(var i = 0; i < s.length; i++) {

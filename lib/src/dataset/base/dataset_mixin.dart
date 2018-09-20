@@ -23,6 +23,7 @@ import 'package:core/src/values/date_time.dart';
 import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: unnecessary_getters_setters
+// ignore_for_file: public_member_api_docs
 
 // Meaning of method names:
 //    lookup:
@@ -59,7 +60,6 @@ abstract class DatasetMixin {
   bool tryAdd(Element e, [Issues issues]);
 
   Element deleteCode(int index);
-
 
   /// Store [Element] [e] at [index] in _this_.
   void store(int index, Element e);
@@ -161,7 +161,7 @@ abstract class DatasetMixin {
   Element updateF<V>(int index, List<V> f(List vList),
       {bool required = false}) {
     final old = lookup(index, required: required);
-    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old == null) return required ? elementNotPresentError(index) : null;
     if (old != null) store(index, old.updateF(f));
     return old;
   }
@@ -207,7 +207,7 @@ abstract class DatasetMixin {
   Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) {
     assert(index != null && uids != null);
     final old = lookup(index, required: required);
-    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old == null) return required ? elementNotPresentError(index) : null;
     if (old is! UI) return badUidElement(old);
     final vList = uids.map<String>((v) => v.toString());
     add(old.update(vList));
@@ -222,7 +222,7 @@ abstract class DatasetMixin {
       {bool recursive = true, bool required = false}) {
     assert(index != null && sList != null);
     final old = lookup(index, required: required);
-    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old == null) return required ? elementNotPresentError(index) : null;
     if (old is! UI) return badUidElement(old);
 
     // If [e] has noValues, and [uids] == null, just return [e],
@@ -270,7 +270,7 @@ abstract class DatasetMixin {
       {bool required = false}) {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
-    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    if (e == null) return required ? elementNotPresentError(index) : null;
     final v = e.values;
     e.replace(vList);
     return v;
@@ -283,7 +283,7 @@ abstract class DatasetMixin {
       {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
-    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    if (e == null) return required ? elementNotPresentError(index) : null;
     final v = e.values;
     e.replace(f(v));
     return v;
@@ -335,7 +335,7 @@ abstract class DatasetMixin {
   List<Uid> replaceUids(int index, Iterable<Uid> uids,
       {bool required = false}) {
     final old = lookup(index);
-    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old == null) return required ? elementNotPresentError(index) : null;
     return (old is UI) ? old.replaceUid(uids) : badUidElement(old);
   }
 
@@ -360,7 +360,7 @@ abstract class DatasetMixin {
   /// the same except it has no values.  Returns the original element.
   Element noValues(int index, {bool required = false}) {
     final oldE = lookup(index, required: required);
-    if (oldE == null) return (required) ? elementNotPresentError(index) : null;
+    if (oldE == null) return required ? elementNotPresentError(index) : null;
     final newE = oldE.update(oldE.emptyList);
     store(index, newE);
     return oldE;
@@ -396,7 +396,7 @@ abstract class DatasetMixin {
   Element delete(int code, {bool required = false}) {
     assert(code != null && !code.isNegative, 'Invalid index: $code');
     final e = lookup(code, required: required);
-    if (e == null) return (required) ? elementNotPresentError<int>(code) : null;
+    if (e == null) return required ? elementNotPresentError<int>(code) : null;
     return (remove(e)) ? e : null;
   }
 
@@ -499,7 +499,7 @@ abstract class DatasetMixin {
   bool _isPrivate(Element e) => e.isPrivate;
   Iterable<Element> findAllPrivate0() => findAllWhere(_isPrivate);
 
-  List<int> findAllPrivateCodes({bool recursive: false}) {
+  List<int> findAllPrivateCodes({bool recursive = false}) {
     final privates = <int>[];
     for (var e in elements) if (e.isPrivate) privates.add(e.code);
     return privates;
@@ -551,7 +551,7 @@ abstract class DatasetMixin {
   /// either throws or returns _null_;
   V getValue<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    if (e == null) return required ? elementNotPresentError(index) : null;
     return _checkOneValue(index, e.values);
   }
 
@@ -564,7 +564,7 @@ abstract class DatasetMixin {
   /// If [Element] is not present, either throws or returns _null_;
   List<V> getValues<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    if (e == null) return required ? elementNotPresentError(index) : null;
     final List<V> values = e.values;
     assert(values != null);
     return (allowInvalidValues) ? e.values : e.isValid;
@@ -821,7 +821,7 @@ abstract class DatasetMixin {
 
   // **** Statics
 
-  static const List<Dataset> empty = const <Dataset>[];
+  static const List<Dataset> empty = <Dataset>[];
 
-  static final ByteData emptyByteData = new ByteData(0);
+  static final ByteData emptyByteData = ByteData(0);
 }

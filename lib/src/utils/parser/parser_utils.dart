@@ -71,7 +71,7 @@ void _checkArgs(String s, int start, int end, int min, int max, String fName,
       _end != null &&
       min != null &&
       fName != null);
-  final sb = new StringBuffer();
+  final sb = StringBuffer();
   if (s == null) {
     sb.writeln(_badArg('s', 'null', '', fName));
     parseError(sb.toString(), issues);

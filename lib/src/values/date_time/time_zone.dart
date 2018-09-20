@@ -86,12 +86,12 @@ class TimeZone implements Comparable<TimeZone> {
   /// Returns a new [TimeZone] containing the [hash] of _this_.
   TimeZone get hash {
     final hIndex = tzIndexHash(index);
-    if (hIndex == -1) throw new Error();
+    if (hIndex == -1) throw Error();
     return kMembers[hIndex];
   }
 
   /// Returns the [TimeZone] as an [Duration].
-  Duration get asDuration => new Duration(microseconds: microseconds);
+  Duration get asDuration => Duration(microseconds: microseconds);
 
   @override
   int get hashCode => microseconds;
@@ -116,8 +116,7 @@ class TimeZone implements Comparable<TimeZone> {
       Global.kStartTime.timeZoneOffset.inMicroseconds;
 
   /// The local [TimeZone].
-  static final TimeZone local =
-      new TimeZone.fromMicroseconds(localInMicroseconds);
+  static final TimeZone local = TimeZone.fromMicroseconds(localInMicroseconds);
 
   static final int localIndex =
       kValidTZMicroseconds.indexOf(localInMicroseconds);
@@ -186,7 +185,7 @@ class TimeZone implements Comparable<TimeZone> {
   /// Returns a [Issues] object if there are errors
   /// or warnings related to [s]; otherwise, returns _null_.
   static Issues issues(String s, {int start = 0, int end, Issues issues}) {
-    issues ??= new Issues('TimeZone: $s');
+    issues ??= Issues('TimeZone: $s');
     end ??= s.length;
     parseDcmTimeZone(s, start: start, end: end, issues: issues);
     return issues;
@@ -203,45 +202,45 @@ class TimeZone implements Comparable<TimeZone> {
   static String hashString(String s, {bool asDicom = true}) =>
       hashTZString(s, asDicom: asDicom);
 
-  static const TimeZone kTZ0 = const TimeZone._(0, -12, 0, -43200000000, 'Y');
-  static const TimeZone kTZ1 = const TimeZone._(1, -11, 0, -39600000000, 'X');
-  static const TimeZone kTZ2 = const TimeZone._(2, -10, 0, -36000000000, 'W');
-  static const TimeZone kTZ3 = const TimeZone._(3, -9, 30, -34200000000, 'V');
-  static const TimeZone kTZ4 = const TimeZone._(4, -9, 0, -32400000000, 'V');
-  static const TimeZone kTZ5 = const TimeZone._(5, -8, 0, -28800000000, 'U');
-  static const TimeZone kTZ6 = const TimeZone._(6, -7, 0, -25200000000, 'T');
-  static const TimeZone kTZ7 = const TimeZone._(7, -6, 0, -21600000000, 'S');
-  static const TimeZone kTZ8 = const TimeZone._(8, -5, 0, -18000000000, 'R');
-  static const TimeZone kTZ9 = const TimeZone._(9, -4, 0, -14400000000, 'Q');
-  static const TimeZone kTZ10 = const TimeZone._(10, -3, 30, -12600000000, 'P');
-  static const TimeZone kTZ11 = const TimeZone._(11, -3, 0, -10800000000, 'P');
-  static const TimeZone kTZ12 = const TimeZone._(12, -2, 0, -7200000000, 'O');
-  static const TimeZone kTZ13 = const TimeZone._(13, -1, 0, -3600000000, 'N');
-  static const TimeZone kTZ14 = const TimeZone._(14, 0, 0, 0, 'Z');
-  static const TimeZone kTZ15 = const TimeZone._(15, 1, 0, 3600000000, 'A');
-  static const TimeZone kTZ16 = const TimeZone._(16, 2, 0, 7200000000, 'B');
-  static const TimeZone kTZ17 = const TimeZone._(17, 3, 0, 10800000000, 'C');
-  static const TimeZone kTZ18 = const TimeZone._(18, 3, 30, 12600000000, 'C');
-  static const TimeZone kTZ19 = const TimeZone._(19, 4, 0, 14400000000, 'D');
-  static const TimeZone kTZ20 = const TimeZone._(20, 4, 30, 16200000000, 'D');
-  static const TimeZone kTZ21 = const TimeZone._(21, 5, 0, 18000000000, 'E');
-  static const TimeZone kTZ22 = const TimeZone._(22, 5, 30, 19800000000, 'E');
-  static const TimeZone kTZ23 = const TimeZone._(23, 5, 45, 20700000000, 'E');
-  static const TimeZone kTZ24 = const TimeZone._(24, 6, 0, 21600000000, 'F');
-  static const TimeZone kTZ25 = const TimeZone._(25, 6, 30, 23400000000, 'F');
-  static const TimeZone kTZ26 = const TimeZone._(26, 7, 0, 25200000000, 'G');
-  static const TimeZone kTZ27 = const TimeZone._(27, 8, 0, 28800000000, 'H');
-  static const TimeZone kTZ28 = const TimeZone._(28, 8, 30, 30600000000, 'H');
-  static const TimeZone kTZ29 = const TimeZone._(29, 8, 45, 31500000000, 'H');
-  static const TimeZone kTZ30 = const TimeZone._(30, 9, 0, 32400000000, 'I');
-  static const TimeZone kTZ31 = const TimeZone._(31, 9, 30, 34200000000, 'I');
-  static const TimeZone kTZ32 = const TimeZone._(32, 10, 0, 36000000000, 'K');
-  static const TimeZone kTZ33 = const TimeZone._(33, 10, 30, 37800000000, 'K');
-  static const TimeZone kTZ34 = const TimeZone._(34, 11, 0, 39600000000, 'L');
-  static const TimeZone kTZ35 = const TimeZone._(35, 12, 0, 43200000000, 'M');
-  static const TimeZone kTZ36 = const TimeZone._(36, 12, 45, 45900000000, 'M');
-  static const TimeZone kTZ37 = const TimeZone._(37, 13, 0, 46800000000, 'M');
-  static const TimeZone kTZ38 = const TimeZone._(38, 14, 0, 50400000000, 'M');
+  static const TimeZone kTZ0 = TimeZone._(0, -12, 0, -43200000000, 'Y');
+  static const TimeZone kTZ1 = TimeZone._(1, -11, 0, -39600000000, 'X');
+  static const TimeZone kTZ2 = TimeZone._(2, -10, 0, -36000000000, 'W');
+  static const TimeZone kTZ3 = TimeZone._(3, -9, 30, -34200000000, 'V');
+  static const TimeZone kTZ4 = TimeZone._(4, -9, 0, -32400000000, 'V');
+  static const TimeZone kTZ5 = TimeZone._(5, -8, 0, -28800000000, 'U');
+  static const TimeZone kTZ6 = TimeZone._(6, -7, 0, -25200000000, 'T');
+  static const TimeZone kTZ7 = TimeZone._(7, -6, 0, -21600000000, 'S');
+  static const TimeZone kTZ8 = TimeZone._(8, -5, 0, -18000000000, 'R');
+  static const TimeZone kTZ9 = TimeZone._(9, -4, 0, -14400000000, 'Q');
+  static const TimeZone kTZ10 = TimeZone._(10, -3, 30, -12600000000, 'P');
+  static const TimeZone kTZ11 = TimeZone._(11, -3, 0, -10800000000, 'P');
+  static const TimeZone kTZ12 = TimeZone._(12, -2, 0, -7200000000, 'O');
+  static const TimeZone kTZ13 = TimeZone._(13, -1, 0, -3600000000, 'N');
+  static const TimeZone kTZ14 = TimeZone._(14, 0, 0, 0, 'Z');
+  static const TimeZone kTZ15 = TimeZone._(15, 1, 0, 3600000000, 'A');
+  static const TimeZone kTZ16 = TimeZone._(16, 2, 0, 7200000000, 'B');
+  static const TimeZone kTZ17 = TimeZone._(17, 3, 0, 10800000000, 'C');
+  static const TimeZone kTZ18 = TimeZone._(18, 3, 30, 12600000000, 'C');
+  static const TimeZone kTZ19 = TimeZone._(19, 4, 0, 14400000000, 'D');
+  static const TimeZone kTZ20 = TimeZone._(20, 4, 30, 16200000000, 'D');
+  static const TimeZone kTZ21 = TimeZone._(21, 5, 0, 18000000000, 'E');
+  static const TimeZone kTZ22 = TimeZone._(22, 5, 30, 19800000000, 'E');
+  static const TimeZone kTZ23 = TimeZone._(23, 5, 45, 20700000000, 'E');
+  static const TimeZone kTZ24 = TimeZone._(24, 6, 0, 21600000000, 'F');
+  static const TimeZone kTZ25 = TimeZone._(25, 6, 30, 23400000000, 'F');
+  static const TimeZone kTZ26 = TimeZone._(26, 7, 0, 25200000000, 'G');
+  static const TimeZone kTZ27 = TimeZone._(27, 8, 0, 28800000000, 'H');
+  static const TimeZone kTZ28 = TimeZone._(28, 8, 30, 30600000000, 'H');
+  static const TimeZone kTZ29 = TimeZone._(29, 8, 45, 31500000000, 'H');
+  static const TimeZone kTZ30 = TimeZone._(30, 9, 0, 32400000000, 'I');
+  static const TimeZone kTZ31 = TimeZone._(31, 9, 30, 34200000000, 'I');
+  static const TimeZone kTZ32 = TimeZone._(32, 10, 0, 36000000000, 'K');
+  static const TimeZone kTZ33 = TimeZone._(33, 10, 30, 37800000000, 'K');
+  static const TimeZone kTZ34 = TimeZone._(34, 11, 0, 39600000000, 'L');
+  static const TimeZone kTZ35 = TimeZone._(35, 12, 0, 43200000000, 'M');
+  static const TimeZone kTZ36 = TimeZone._(36, 12, 45, 45900000000, 'M');
+  static const TimeZone kTZ37 = TimeZone._(37, 13, 0, 46800000000, 'M');
+  static const TimeZone kTZ38 = TimeZone._(38, 14, 0, 50400000000, 'M');
 
   static const TimeZone utc = kTZ14;
   static const TimeZone usEast = kTZ8;
@@ -249,7 +248,7 @@ class TimeZone implements Comparable<TimeZone> {
   static const TimeZone usMountain = kTZ6;
   static const TimeZone usPacific = kTZ5;
 
-  static const List<TimeZone> kMembers = const [
+  static const List<TimeZone> kMembers = [
     kTZ0, kTZ1, kTZ2, kTZ3, kTZ4, kTZ5, kTZ6, kTZ7, // No reformat
     kTZ8, kTZ9, kTZ10, kTZ11, kTZ12, kTZ13, kTZ14, kTZ15,
     kTZ16, kTZ17, kTZ18, kTZ19, kTZ20, kTZ21, kTZ22, kTZ23,

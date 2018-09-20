@@ -14,14 +14,14 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'bytes_test.dart', level: Level.info);
-  final rng = new RNG();
+  final rng = RNG();
   group('Bytes Tests', () {
     test('Test getters and initial zeros', () {
       const count = 12;
 
       // Check initialized with zeros
       for (var i = 0; i < count; i++) {
-        final bytes = new Bytes(count);
+        final bytes = Bytes(count);
         expect(bytes.endian == Endian.little, true);
 
         expect(bytes.elementSizeInBytes == 1, true);
@@ -80,7 +80,7 @@ void main() {
           expect(bytes.getFloat64(i) == 0, true);
         }
 
-        final bytes0 = new Bytes.from(bytes);
+        final bytes0 = Bytes.from(bytes);
         expect(bytes0.endian == Endian.little, true);
 
         expect(bytes0.elementSizeInBytes == 1, true);
@@ -95,8 +95,8 @@ void main() {
 
     test('Test List interface: initial zeroed, equality, hashCode', () {
       const count = 255;
-      final a = new Bytes(count);
-      final b = new Bytes(count);
+      final a = Bytes(count);
+      final b = Bytes(count);
 
       // Check initialized with zeros
       for (var i = 0; i < count; i++) {
@@ -135,7 +135,7 @@ void main() {
       const loopCount = 100;
 
       for (var i = 0; i < loopCount; i++) {
-        final a = new Bytes(0xFFFF * kInt16Size);
+        final a = Bytes(0xFFFF * kInt16Size);
         assert(a.length == 0xFFFF * kInt16Size, true);
 
         for (var i = 0, j = -10; i <= 10; i++, j += 2) {
@@ -152,8 +152,8 @@ void main() {
 
     test('bytes from', () {
       final list0 = rng.uint8List(1, 1);
-      final bytes = new Bytes.typedDataView(list0);
-      final byteF0 = new Bytes.from(bytes);
+      final bytes = Bytes.typedDataView(list0);
+      final byteF0 = Bytes.from(bytes);
       expect(byteF0, equals(bytes));
 
       expect(byteF0.endian == Endian.little, true);
@@ -168,7 +168,7 @@ void main() {
 
     test('bytes fromList', () {
       final list0 = rng.uint8List(1, 1);
-      final byteFL0 = new Bytes.fromList(list0);
+      final byteFL0 = Bytes.fromList(list0);
       expect(byteFL0, equals(list0));
 
       expect(byteFL0.endian == Endian.little, true);
@@ -183,7 +183,7 @@ void main() {
 
     test('bytes fromTypedData', () {
       final list0 = rng.uint8List(1, 1);
-      final byteFTD0 = new Bytes.typedDataView(list0);
+      final byteFTD0 = Bytes.typedDataView(list0);
       expect(byteFTD0, equals(list0));
 
       expect(byteFTD0.endian == Endian.little, true);
@@ -196,8 +196,8 @@ void main() {
       expect(byteFTD0.hashCode is int, true);
 
       final floats = <double>[0.0, 1.0, 2.0, 3.0];
-      final fl32List0 = new Float32List.fromList(floats);
-      final fl32Bytes0 = new Bytes.typedDataView(fl32List0);
+      final fl32List0 = Float32List.fromList(floats);
+      final fl32Bytes0 = Bytes.typedDataView(fl32List0);
       expect(fl32Bytes0.getFloat32(0) == fl32List0[0], true);
       expect(fl32Bytes0.getFloat32(4) == fl32List0[1], true);
       expect(fl32Bytes0.getFloat32(8) == fl32List0[2], true);
@@ -209,7 +209,7 @@ void main() {
         expect(fl32List0[i] == fl32List1[i], true);
 
       // Unaligned
-      final fl32b = new Bytes(20)
+      final fl32b = Bytes(20)
         ..setFloat32(2, floats[0])
         ..setFloat32(6, floats[1])
         ..setFloat32(10, floats[2])
@@ -229,12 +229,12 @@ void main() {
       //final vList = rng.uint16List(1, 1);
       final vList = ['1q221'];
       final vList0 = ['1q221', 'sadaq223'];
-      //final bytes = new Bytes.fromList(vList);
+      //final bytes = Bytes.fromList(vList);
       final bytes = Bytes.fromAsciiList(vList);
       final bytes0 = Bytes.fromAsciiList(vList0);
-      final dsBytes0 = new RDSBytes(bytes, 0);
-      final dsBytes1 = new RDSBytes(bytes, 0);
-      final dsBytes2 = new RDSBytes(bytes0, 0);
+      final dsBytes0 = RDSBytes(bytes, 0);
+      final dsBytes1 = RDSBytes(bytes, 0);
+      final dsBytes2 = RDSBytes(bytes0, 0);
       log.debug('dsBytes0: $dsBytes0');
 
       expect(dsBytes0.hashCode == dsBytes1.hashCode, true);

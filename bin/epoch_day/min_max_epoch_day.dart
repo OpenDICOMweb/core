@@ -16,8 +16,10 @@ void main() {
   // const int defaultMaxYear = 1000000;
   const kDefaultMinYear = 0;
   const kDefaultMaxYear = 2050;
-  final kDefaultMinEpochMicroseconds = dateToEpochMicroseconds(kDefaultMinYear, 1, 1);
-  final kDefaultMaxEpochMicroseconds = dateToEpochMicroseconds(kDefaultMaxYear, 1, 1);
+  final kDefaultMinEpochMicroseconds =
+      dateToEpochMicroseconds(kDefaultMinYear, 1, 1);
+  final kDefaultMaxEpochMicroseconds =
+      dateToEpochMicroseconds(kDefaultMaxYear, 1, 1);
 
   final out = '''
   

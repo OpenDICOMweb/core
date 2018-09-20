@@ -28,7 +28,7 @@ class Issues {
   bool get isNotEmpty => !isEmpty;
 
   String get _msg {
-    if (issues.isNotEmpty) return (noisy) ? 'has no issues' : '';
+    if (issues.isNotEmpty) return noisy ? 'has no issues' : '';
     if (issues.length == 1) return 'has the following issue:\n';
     return 'has the following issues:\n';
   }
@@ -39,8 +39,8 @@ class Issues {
   }
 
   String get info {
-    if (issues.isEmpty) return (noisy) ? 'No Issues' : '';
-    final sb = new StringBuffer('Issues: $_msg');
+    if (issues.isEmpty) return noisy ? 'No Issues' : '';
+    final sb = StringBuffer('Issues: $_msg');
     for (var i = 0; i < issues.length; i++)
       sb.write('  ${i + 1}: ${issues[i]}\n');
     return sb.toString();
@@ -63,7 +63,6 @@ class ParseIssues extends Issues {
 
 //  ParseIssues.from(Issues issues)
 
-
   /// Check the length of a values.
   void checkLength(int length, int min, int max, [String subtype]) {
     final name = (subtype == null) ? '' : '$subtype: ';
@@ -76,7 +75,7 @@ class ParseIssues extends Issues {
   @override
   String get info {
     if (issues.isEmpty) return (Issues.noisy) ? 'No Issues' : '';
-    final sb = new StringBuffer('Issue: $type "$value" $_msg');
+    final sb = StringBuffer('Issue: $type "$value" $_msg');
     for (var i = 0; i < issues.length; i++)
       sb.write('    ${i + 1}: ${issues[i]}\n');
     return sb.toString();

@@ -70,7 +70,7 @@ Uint8List stringToUint8List(String s, {bool isAscii = false}) {
 ByteData stringToByteData(String s, {bool isAscii = false}) {
   if (s == null) return null;
   final bList = stringToUint8List(s, isAscii: isAscii);
-  return (bList.buffer.asByteData());
+  return bList.buffer.asByteData();
 }
 
 bool isDcmString(String s, int max,
@@ -130,12 +130,12 @@ bool isNotFilteredString(String s, int min, int max, bool filter(int c),
 String toAscii(ByteData bd, [int start = 0, int end, int position]) {
   end ??= bd.lengthInBytes;
   String vChar(int c) =>
-      (c > kSpace) && (c < kDelete) ? '_${new String.fromCharCode(c)}' : '__';
+      (c > kSpace) && (c < kDelete) ? '_${String.fromCharCode(c)}' : '__';
   final bytes = bd.buffer.asUint8List(start, end);
   if (start >= end) return '';
   var pos = position ?? start;
   if (pos >= end) pos = end;
-  final sb = new StringBuffer();
+  final sb = StringBuffer();
   for (var i = start; i < pos; i++) sb.write(' ${vChar(bytes[i])}');
   sb.write('|${vChar(bytes[pos])}|');
   for (var i = pos + 1; i < end; i++) sb.write(' ${vChar(bytes[i])}');
@@ -151,7 +151,7 @@ String bdToHex(ByteData bd, [int start = 0, int end, int position]) {
   var pos = position ?? start;
   if (start >= end) return '';
   if (pos >= end) pos = end;
-  final sb = new StringBuffer();
+  final sb = StringBuffer();
   for (var i = start; i < pos; i++) sb.write(' ${hex8(bytes[i])}');
   sb.write('|${hex8(bytes[pos])}|');
   for (var i = pos + 1; i < end; i++) sb.write(' ${hex8(bytes[i])}');

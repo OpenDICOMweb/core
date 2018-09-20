@@ -27,7 +27,7 @@ import 'package:core/src/vr.dart';
 ///   2. An implementation of a TypeData Getter typedData.
 ///
 
-// TODO: the following typedefs should be replaced with the new
+// TODO: the following typedefs should be replaced with the
 //       inline Type declarations
 /// The Type of a Method or Function that takes an Element and returns
 /// a [bool].
@@ -56,7 +56,7 @@ abstract class FastElementBase<V> {
   V operator [](int i) => values.elementAt(i);
 
   void operator []=(int i, V v) =>
-      throw new UnsupportedError('Elements are immutable');
+      throw UnsupportedError('Elements are immutable');
 
   /// Returns the number of [values] of _this_.
   int get length {
@@ -64,7 +64,7 @@ abstract class FastElementBase<V> {
     return values.length;
   }
 
-  set length(int n) => throw new UnsupportedError('Elements are immutable');
+  set length(int n) => throw UnsupportedError('Elements are immutable');
   // *** End of List Implementation
 
   int get vrIndex;
@@ -84,7 +84,7 @@ abstract class FastElementBase<V> {
   bool get isLengthAlwaysValid => false;
 
   /// Returns a copy of [values]
-  Iterable<V> get valuesCopy => new List.from(values, growable: false);
+  Iterable<V> get valuesCopy => List.from(values, growable: false);
 
   /// The _canonical_ empty [values] values for Floating Point Elements.
   List<V> get emptyList;
@@ -108,8 +108,8 @@ abstract class FastElementBase<V> {
     assert(vList != null);
     if (vList.isEmpty) return kEmptyFloat32List;
     if (vList is Float32List)
-      return (asView) ? vList : new Float32List.fromList(vList);
-    return new Float32List.fromList(vList);
+      return asView ? vList : Float32List.fromList(vList);
+    return Float32List.fromList(vList);
   }
 
   /// Returns a [BASE64] [String] created from [vList];
@@ -135,9 +135,9 @@ abstract class FastElementBase<V> {
 /// FloatXXList from [TypedData].
 ///
 /// Note: When
-///     ```[new] Foo.fromBytes(key, bytes)```
+///     ```[] Foo.fromBytes(key, bytes)```
 /// is invoked [values] is always a [Uint8List]; however, when
-///     ```[new] Foo(key, [List<double>])```
+///     ```[] Foo(key, [List<double>])```
 /// is invoked [values] may be either [TypedData] or [List<double>].
 abstract class Float extends FastElementBase<double> {
   @override
@@ -150,7 +150,7 @@ abstract class Float extends FastElementBase<double> {
 
   /// Returns a copy of [values]
   @override
-  Iterable<double> get valuesCopy => new List.from(values, growable: false);
+  Iterable<double> get valuesCopy => List.from(values, growable: false);
 
 /*  /// The _canonical_ empty [values] values for Floating Point Elements.
   List<double> get emptyList => kEmptyList;
@@ -200,8 +200,8 @@ abstract class Float32Mixin {
     assert(vList != null);
     if (vList.isEmpty) return kEmptyFloat32List;
     if (vList is Float32List)
-      return (asView) ? vList : new Float32List.fromList(vList);
-    return new Float32List.fromList(vList);
+      return asView ? vList : Float32List.fromList(vList);
+    return Float32List.fromList(vList);
   }
 
   /// Returns a [Float32List] from a [BASE64] [String].
@@ -224,13 +224,13 @@ abstract class Float32Mixin {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final nList = new Float32List(length);
+      final nList = Float32List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         nList[i] = bd.getFloat32(oib, Endian.little);
       return nList;
     }
     final f32List = bd.buffer.asFloat32List(bd.offsetInBytes, length);
-    return (asView) ? f32List : new Float32List.fromList(f32List);
+    return asView ? f32List : Float32List.fromList(f32List);
   }
 
   static bool _isNotAligned(TypedData vList) =>
@@ -380,7 +380,7 @@ abstract class Float64Mixin {
   Float get sha256 => update(Sha256.float64(values));
 
   Float64List get typedData =>
-      (values is Float64List) ? values : new Float64List.fromList(values);
+      (values is Float64List) ? values : Float64List.fromList(values);
 
   /// Returns a [Float64List.view] of [values].
   Float view([int start = 0, int length]) => update(
@@ -408,8 +408,8 @@ abstract class Float64Mixin {
     assert(vList != null);
     if (vList.isEmpty) return kEmptyFloat64List;
     if (vList is Float64List)
-      return (asView) ? vList : new Float64List.fromList(vList);
-    return new Float64List.fromList(vList);
+      return asView ? vList : Float64List.fromList(vList);
+    return Float64List.fromList(vList);
   }
 
   /// Returns a [Float64List] from a [BASE64] [String].
@@ -432,13 +432,13 @@ abstract class Float64Mixin {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final nList = new Float64List(length);
+      final nList = Float64List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         nList[i] = bd.getFloat64(oib, Endian.little);
       return nList;
     }
     final f64List = bd.buffer.asFloat64List(bd.offsetInBytes, length);
-    return (asView) ? f64List : new Float64List.fromList(f64List);
+    return asView ? f64List : Float64List.fromList(f64List);
   }
 
   static bool _isNotAligned(TypedData vList) =>

@@ -15,7 +15,7 @@ import 'package:core/src/utils/primitives.dart';
 Bytes asBytes(TypedData td) {
   if (td == null) return null;
   if (td.lengthInBytes == 0) return kEmptyBytes;
-  return new Bytes.typedDataView(td);
+  return Bytes.typedDataView(td);
 }
 
 /// Returns [td] as a [Uint8List].

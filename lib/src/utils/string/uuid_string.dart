@@ -27,17 +27,17 @@ const String pattern =
 // where V is version, and N is node.
 
 /// The offsets of the 4 dashes in a UUID [String}.
-const List<int> kDashes = const <int>[8, 13, 18, 23];
+const List<int> kDashes = <int>[8, 13, 18, 23];
 
 /// The offsets of the start of the hex values in a UUID [String].
-const List<int> kStarts = const <int>[0, 9, 14, 19, 24];
+const List<int> kStarts = <int>[0, 9, 14, 19, 24];
 
 /// The offsets of the end of the hex values in a UUID [String].
-const List<int> kEnds = const <int>[8, 13, 18, 23, kUuidStringLength];
+const List<int> kEnds = <int>[8, 13, 18, 23, kUuidStringLength];
 
 /// The ASCII values for the dash (-) character.
 //const int kDash = 0x2D;
-const List<int> _kISOVariantAsLetter = const <int>[k8, k9, ka, kb];
+const List<int> _kISOVariantAsLetter = <int>[k8, k9, ka, kb];
 
 // Urgent Jim make sure [s] is a decimal number - NOT a HEXAdecimal number.
 /// Returns _true_ if [uuidString] is a valid UUID. If [type] is _null_
@@ -67,7 +67,7 @@ bool _isValidStringVersion(String s, int version) {
   if (!_isISOVariantFromString(s) || _version != version) return false;
   // For certain versions, the checks we did up to this point are fine.
   if (_version != 3 || _version != 5) return true;
-  throw new UnimplementedError('Version 3 & 5 are not yet implemented');
+  throw UnimplementedError('Version 3 & 5 are not yet implemented');
 }
 
 int _getVersionNumberFromString(String s) => s.codeUnitAt(14) - kDigit0;

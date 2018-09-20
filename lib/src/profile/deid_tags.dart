@@ -130,520 +130,493 @@ class DeIdTags {
 
   static Element invalid<V>(Dataset ds, Tag tag, List<V> values,
           {bool required = false}) =>
-      throw new UnsupportedError('Invalid Action');
+      throw UnsupportedError('Invalid Action');
 
   static DeIdTags lookup(int tag) => map[tag];
 
   static const DeIdTags kAffectedSOPInstanceUID =
-      const DeIdTags(PTag.kAffectedSOPInstanceUID, 'X', remove);
+      DeIdTags(PTag.kAffectedSOPInstanceUID, 'X', remove);
   static const DeIdTags kRequestedSOPInstanceUID =
-      const DeIdTags(PTag.kRequestedSOPInstanceUID, 'U', replaceUids);
+      DeIdTags(PTag.kRequestedSOPInstanceUID, 'U', replaceUids);
   static const DeIdTags kMediaStorageSOPInstanceUID =
-      const DeIdTags(PTag.kMediaStorageSOPInstanceUID, 'U', replaceUids);
+      DeIdTags(PTag.kMediaStorageSOPInstanceUID, 'U', replaceUids);
   static const DeIdTags kReferencedSOPInstanceUIDInFile =
-      const DeIdTags(PTag.kReferencedSOPInstanceUIDInFile, 'U', replaceUids);
+      DeIdTags(PTag.kReferencedSOPInstanceUIDInFile, 'U', replaceUids);
   static const DeIdTags kInstanceCreatorUID =
-      const DeIdTags(PTag.kInstanceCreatorUID, 'U', replaceUids);
+      DeIdTags(PTag.kInstanceCreatorUID, 'U', replaceUids);
   static const DeIdTags kSOPInstanceUID =
-      const DeIdTags(PTag.kSOPInstanceUID, 'U', replaceUids);
+      DeIdTags(PTag.kSOPInstanceUID, 'U', replaceUids);
   static const DeIdTags kStudyDate =
-      const DeIdTags(PTag.kStudyDate, 'Z', replaceWithZero);
+      DeIdTags(PTag.kStudyDate, 'Z', replaceWithZero);
   static const DeIdTags kSeriesDate =
-      const DeIdTags(PTag.kSeriesDate, 'XD', removeUnlessDummy);
+      DeIdTags(PTag.kSeriesDate, 'XD', removeUnlessDummy);
   static const DeIdTags kAcquisitionDate =
-      const DeIdTags(PTag.kAcquisitionDate, 'XD', removeUnlessZero);
+      DeIdTags(PTag.kAcquisitionDate, 'XD', removeUnlessZero);
   static const DeIdTags kContentDate =
-      const DeIdTags(PTag.kContentDate, 'XD', removeUnlessDummy);
-  static const DeIdTags kOverlayDate =
-      const DeIdTags(PTag.kOverlayDate, 'X', remove);
-  static const DeIdTags kCurveDate =
-      const DeIdTags(PTag.kCurveDate, 'X', remove);
+      DeIdTags(PTag.kContentDate, 'XD', removeUnlessDummy);
+  static const DeIdTags kOverlayDate = DeIdTags(PTag.kOverlayDate, 'X', remove);
+  static const DeIdTags kCurveDate = DeIdTags(PTag.kCurveDate, 'X', remove);
   static const DeIdTags kAcquisitionDateTime =
-      const DeIdTags(PTag.kAcquisitionDateTime, 'XD', removeUnlessDummy);
+      DeIdTags(PTag.kAcquisitionDateTime, 'XD', removeUnlessDummy);
   static const DeIdTags kStudyTime =
-      const DeIdTags(PTag.kStudyTime, 'Z', replaceWithZero);
+      DeIdTags(PTag.kStudyTime, 'Z', replaceWithZero);
   static const DeIdTags kSeriesTime =
-      const DeIdTags(PTag.kSeriesTime, 'XD', removeUnlessDummy);
+      DeIdTags(PTag.kSeriesTime, 'XD', removeUnlessDummy);
   static const DeIdTags kAcquisitionTime =
-      const DeIdTags(PTag.kAcquisitionTime, 'XD', removeUnlessZero);
+      DeIdTags(PTag.kAcquisitionTime, 'XD', removeUnlessZero);
   static const DeIdTags kContentTime =
-      const DeIdTags(PTag.kContentTime, 'XD', removeUnlessDummy);
-  static const DeIdTags kOverlayTime =
-      const DeIdTags(PTag.kOverlayTime, 'X', remove);
-  static const DeIdTags kCurveTime =
-      const DeIdTags(PTag.kCurveTime, 'X', remove);
+      DeIdTags(PTag.kContentTime, 'XD', removeUnlessDummy);
+  static const DeIdTags kOverlayTime = DeIdTags(PTag.kOverlayTime, 'X', remove);
+  static const DeIdTags kCurveTime = DeIdTags(PTag.kCurveTime, 'X', remove);
   static const DeIdTags kAccessionNumber =
-      const DeIdTags(PTag.kAccessionNumber, 'Z', replaceWithZero);
+      DeIdTags(PTag.kAccessionNumber, 'Z', replaceWithZero);
   static const DeIdTags kFailedSOPInstanceUIDList =
-      const DeIdTags(PTag.kFailedSOPInstanceUIDList, 'U', replaceUids);
+      DeIdTags(PTag.kFailedSOPInstanceUIDList, 'U', replaceUids);
   static const DeIdTags kInstitutionName =
-      const DeIdTags(PTag.kInstitutionName, 'XZD', removeUnlessZeroOrDummy);
+      DeIdTags(PTag.kInstitutionName, 'XZD', removeUnlessZeroOrDummy);
   static const DeIdTags kInstitutionAddress =
-      const DeIdTags(PTag.kInstitutionAddress, 'X', remove);
-  static const DeIdTags kInstitutionCodeSequence = const DeIdTags(
-      PTag.kInstitutionCodeSequence, 'XZD', removeUnlessZeroOrDummy);
+      DeIdTags(PTag.kInstitutionAddress, 'X', remove);
+  static const DeIdTags kInstitutionCodeSequence =
+      DeIdTags(PTag.kInstitutionCodeSequence, 'XZD', removeUnlessZeroOrDummy);
   static const DeIdTags kReferringPhysicianName =
-      const DeIdTags(PTag.kReferringPhysicianName, 'Z', replaceWithZero);
+      DeIdTags(PTag.kReferringPhysicianName, 'Z', replaceWithZero);
   static const DeIdTags kReferringPhysicianAddress =
-      const DeIdTags(PTag.kReferringPhysicianAddress, 'X', remove);
+      DeIdTags(PTag.kReferringPhysicianAddress, 'X', remove);
   static const DeIdTags kReferringPhysicianTelephoneNumbers =
-      const DeIdTags(PTag.kReferringPhysicianTelephoneNumbers, 'X', remove);
+      DeIdTags(PTag.kReferringPhysicianTelephoneNumbers, 'X', remove);
   static const DeIdTags kReferringPhysicianIdentificationSequence =
-      const DeIdTags(
-          PTag.kReferringPhysicianIdentificationSequence, 'X', remove);
+      DeIdTags(PTag.kReferringPhysicianIdentificationSequence, 'X', remove);
   static const DeIdTags kContextGroupExtensionCreatorUID =
-      const DeIdTags(PTag.kContextGroupExtensionCreatorUID, 'U', replaceUids);
+      DeIdTags(PTag.kContextGroupExtensionCreatorUID, 'U', replaceUids);
   static const DeIdTags kTimezoneOffsetFromUTC =
-      const DeIdTags(PTag.kTimezoneOffsetFromUTC, 'X', remove);
+      DeIdTags(PTag.kTimezoneOffsetFromUTC, 'X', remove);
   static const DeIdTags kStationName =
-      const DeIdTags(PTag.kStationName, 'XZD', removeUnlessZeroOrDummy);
+      DeIdTags(PTag.kStationName, 'XZD', removeUnlessZeroOrDummy);
   static const DeIdTags kStudyDescription =
-      const DeIdTags(PTag.kStudyDescription, 'X', remove);
+      DeIdTags(PTag.kStudyDescription, 'X', remove);
   static const DeIdTags kSeriesDescription =
-      const DeIdTags(PTag.kSeriesDescription, 'X', remove);
+      DeIdTags(PTag.kSeriesDescription, 'X', remove);
   static const DeIdTags kInstitutionalDepartmentName =
-      const DeIdTags(PTag.kInstitutionalDepartmentName, 'X', remove);
+      DeIdTags(PTag.kInstitutionalDepartmentName, 'X', remove);
   static const DeIdTags kPhysicianOfRecord =
-      const DeIdTags(PTag.kPhysiciansOfRecord, 'X', remove);
+      DeIdTags(PTag.kPhysiciansOfRecord, 'X', remove);
   static const DeIdTags kPhysiciansOfRecordIdentificationSequence =
-      const DeIdTags(
-          PTag.kPhysiciansOfRecordIdentificationSequence, 'X', remove);
+      DeIdTags(PTag.kPhysiciansOfRecordIdentificationSequence, 'X', remove);
   static const DeIdTags kPerformingPhysicianName =
-      const DeIdTags(PTag.kPerformingPhysicianName, 'X', remove);
+      DeIdTags(PTag.kPerformingPhysicianName, 'X', remove);
   static const DeIdTags kPerformingPhysicianIdentificationSequence =
-      const DeIdTags(
-          PTag.kPerformingPhysicianIdentificationSequence, 'X', remove);
+      DeIdTags(PTag.kPerformingPhysicianIdentificationSequence, 'X', remove);
   static const DeIdTags kNameOfPhysiciansReadingStudy =
-      const DeIdTags(PTag.kNameOfPhysiciansReadingStudy, 'X', remove);
+      DeIdTags(PTag.kNameOfPhysiciansReadingStudy, 'X', remove);
   static const DeIdTags kPhysiciansReadingStudyIdentificationSequence =
-      const DeIdTags(
-          PTag.kPhysiciansReadingStudyIdentificationSequence, 'X', remove);
+      DeIdTags(PTag.kPhysiciansReadingStudyIdentificationSequence, 'X', remove);
   static const DeIdTags kOperatorsName =
-      const DeIdTags(PTag.kOperatorsName, 'XZD', removeUnlessZeroOrDummy);
-  static const DeIdTags kOperatorsIdentificationSequence = const DeIdTags(
-      PTag.kOperatorIdentificationSequence, 'XD', removeUnlessDummy);
+      DeIdTags(PTag.kOperatorsName, 'XZD', removeUnlessZeroOrDummy);
+  static const DeIdTags kOperatorsIdentificationSequence =
+      DeIdTags(PTag.kOperatorIdentificationSequence, 'XD', removeUnlessDummy);
   static const DeIdTags kAdmittingDiagnosesDescription =
-      const DeIdTags(PTag.kAdmittingDiagnosesDescription, 'X', remove);
+      DeIdTags(PTag.kAdmittingDiagnosesDescription, 'X', remove);
   static const DeIdTags kAdmittingDiagnosesCodeSequence =
-      const DeIdTags(PTag.kAdmittingDiagnosesCodeSequence, 'X', remove);
+      DeIdTags(PTag.kAdmittingDiagnosesCodeSequence, 'X', remove);
   static const DeIdTags kReferencedStudySequence =
-      const DeIdTags(PTag.kReferencedStudySequence, 'XD', removeUnlessZero);
-  static const DeIdTags kReferencedPerformedProcedureStepSequence =
-      const DeIdTags(PTag.kReferencedPerformedProcedureStepSequence, 'XZD',
-          removeUnlessZeroOrDummy);
+      DeIdTags(PTag.kReferencedStudySequence, 'XD', removeUnlessZero);
+  static const DeIdTags kReferencedPerformedProcedureStepSequence = DeIdTags(
+      PTag.kReferencedPerformedProcedureStepSequence,
+      'XZD',
+      removeUnlessZeroOrDummy);
   static const DeIdTags kReferencedPatientSequence =
-      const DeIdTags(PTag.kReferencedPatientSequence, 'X', remove);
-  static const DeIdTags kReferencedImageSequence = const DeIdTags(
+      DeIdTags(PTag.kReferencedPatientSequence, 'X', remove);
+  static const DeIdTags kReferencedImageSequence = DeIdTags(
       PTag.kReferencedImageSequence, 'XZU', removeUidUnlessZeroOrDummy);
   static const DeIdTags kReferencedSOPInstanceUID =
-      const DeIdTags(PTag.kReferencedSOPInstanceUID, 'U', replaceUids);
+      DeIdTags(PTag.kReferencedSOPInstanceUID, 'U', replaceUids);
   static const DeIdTags kTransactionUID =
-      const DeIdTags(PTag.kTransactionUID, 'U', replaceUids);
+      DeIdTags(PTag.kTransactionUID, 'U', replaceUids);
   static const DeIdTags kDerivationDescription =
-      const DeIdTags(PTag.kDerivationDescription, 'X', remove);
-  static const DeIdTags kSourceImageSequence = const DeIdTags(
-      PTag.kSourceImageSequence, 'XZU', removeUidUnlessZeroOrDummy);
+      DeIdTags(PTag.kDerivationDescription, 'X', remove);
+  static const DeIdTags kSourceImageSequence =
+      DeIdTags(PTag.kSourceImageSequence, 'XZU', removeUidUnlessZeroOrDummy);
   static const DeIdTags kIrradiationEventUID =
-      const DeIdTags(PTag.kIrradiationEventUID, 'U', replaceUids);
+      DeIdTags(PTag.kIrradiationEventUID, 'U', replaceUids);
   static const DeIdTags kIdentifyingComments =
-      const DeIdTags(PTag.kIdentifyingComments, 'X', remove);
+      DeIdTags(PTag.kIdentifyingComments, 'X', remove);
   static const DeIdTags kCreatorVersionUID =
-      const DeIdTags(PTag.kCreatorVersionUID, 'U', replaceUids);
+      DeIdTags(PTag.kCreatorVersionUID, 'U', replaceUids);
   static const DeIdTags kPatientName =
-      const DeIdTags(PTag.kPatientName, 'Z', replaceWithZero);
+      DeIdTags(PTag.kPatientName, 'Z', replaceWithZero);
   static const DeIdTags kPatientID =
-      const DeIdTags(PTag.kPatientID, 'Z', replaceWithZero);
+      DeIdTags(PTag.kPatientID, 'Z', replaceWithZero);
   static const DeIdTags kIssuerOfPatientID =
-      const DeIdTags(PTag.kIssuerOfPatientID, 'X', remove);
+      DeIdTags(PTag.kIssuerOfPatientID, 'X', remove);
   static const DeIdTags kPatientBirthDate =
-      const DeIdTags(PTag.kPatientBirthDate, 'Z', replaceWithZero);
+      DeIdTags(PTag.kPatientBirthDate, 'Z', replaceWithZero);
   static const DeIdTags kPatientBirthTime =
-      const DeIdTags(PTag.kPatientBirthTime, 'X', remove);
+      DeIdTags(PTag.kPatientBirthTime, 'X', remove);
   static const DeIdTags kPatientSex =
-      const DeIdTags(PTag.kPatientSex, 'Z', replaceWithZero);
+      DeIdTags(PTag.kPatientSex, 'Z', replaceWithZero);
   static const DeIdTags kPatientInsurancePlanCodeSequence =
-      const DeIdTags(PTag.kPatientInsurancePlanCodeSequence, 'X', remove);
+      DeIdTags(PTag.kPatientInsurancePlanCodeSequence, 'X', remove);
   static const DeIdTags kPatientPrimaryLanguageCodeSequence =
-      const DeIdTags(PTag.kPatientPrimaryLanguageCodeSequence, 'X', remove);
+      DeIdTags(PTag.kPatientPrimaryLanguageCodeSequence, 'X', remove);
   static const DeIdTags kPatientPrimaryLanguageModifierCodeSequence =
-      const DeIdTags(
-          PTag.kPatientPrimaryLanguageModifierCodeSequence, 'X', remove);
+      DeIdTags(PTag.kPatientPrimaryLanguageModifierCodeSequence, 'X', remove);
   static const DeIdTags kOtherPatientIDs =
-      const DeIdTags(PTag.kOtherPatientIDs, 'X', remove);
+      DeIdTags(PTag.kOtherPatientIDs, 'X', remove);
   static const DeIdTags kOtherPatientNames =
-      const DeIdTags(PTag.kOtherPatientNames, 'X', remove);
+      DeIdTags(PTag.kOtherPatientNames, 'X', remove);
   static const DeIdTags kOtherPatientIDsSequence =
-      const DeIdTags(PTag.kOtherPatientIDsSequence, 'X', remove);
+      DeIdTags(PTag.kOtherPatientIDsSequence, 'X', remove);
   static const DeIdTags kPatientBirthName =
-      const DeIdTags(PTag.kPatientBirthName, 'X', remove);
-  static const DeIdTags kPatientAge =
-      const DeIdTags(PTag.kPatientAge, 'X', remove);
-  static const DeIdTags kPatientSize =
-      const DeIdTags(PTag.kPatientSize, 'X', remove);
+      DeIdTags(PTag.kPatientBirthName, 'X', remove);
+  static const DeIdTags kPatientAge = DeIdTags(PTag.kPatientAge, 'X', remove);
+  static const DeIdTags kPatientSize = DeIdTags(PTag.kPatientSize, 'X', remove);
   static const DeIdTags kPatientWeight =
-      const DeIdTags(PTag.kPatientWeight, 'X', remove);
+      DeIdTags(PTag.kPatientWeight, 'X', remove);
   static const DeIdTags kPatientAddress =
-      const DeIdTags(PTag.kPatientAddress, 'X', remove);
+      DeIdTags(PTag.kPatientAddress, 'X', remove);
   static const DeIdTags kInsurancePlanIdentification =
-      const DeIdTags(PTag.kInsurancePlanIdentification, 'X', remove);
+      DeIdTags(PTag.kInsurancePlanIdentification, 'X', remove);
   static const DeIdTags kPatientMotherBirthName =
-      const DeIdTags(PTag.kPatientMotherBirthName, 'X', remove);
+      DeIdTags(PTag.kPatientMotherBirthName, 'X', remove);
   static const DeIdTags kMilitaryRank =
-      const DeIdTags(PTag.kMilitaryRank, 'X', remove);
+      DeIdTags(PTag.kMilitaryRank, 'X', remove);
   static const DeIdTags kBranchOfService =
-      const DeIdTags(PTag.kBranchOfService, 'X', remove);
+      DeIdTags(PTag.kBranchOfService, 'X', remove);
   static const DeIdTags kMedicalRecordLocator =
-      const DeIdTags(PTag.kMedicalRecordLocator, 'X', remove);
+      DeIdTags(PTag.kMedicalRecordLocator, 'X', remove);
   static const DeIdTags kMedicalAlerts =
-      const DeIdTags(PTag.kMedicalAlerts, 'X', remove);
-  static const DeIdTags kAllergies =
-      const DeIdTags(PTag.kAllergies, 'X', remove);
+      DeIdTags(PTag.kMedicalAlerts, 'X', remove);
+  static const DeIdTags kAllergies = DeIdTags(PTag.kAllergies, 'X', remove);
   static const DeIdTags kCountryOfResidence =
-      const DeIdTags(PTag.kCountryOfResidence, 'X', remove);
+      DeIdTags(PTag.kCountryOfResidence, 'X', remove);
   static const DeIdTags kRegionOfResidence =
-      const DeIdTags(PTag.kRegionOfResidence, 'X', remove);
+      DeIdTags(PTag.kRegionOfResidence, 'X', remove);
   static const DeIdTags kPatientTelephoneNumbers =
-      const DeIdTags(PTag.kPatientTelephoneNumbers, 'X', remove);
-  static const DeIdTags kEthnicGroup =
-      const DeIdTags(PTag.kEthnicGroup, 'X', remove);
-  static const DeIdTags kOccupation =
-      const DeIdTags(PTag.kOccupation, 'X', remove);
+      DeIdTags(PTag.kPatientTelephoneNumbers, 'X', remove);
+  static const DeIdTags kEthnicGroup = DeIdTags(PTag.kEthnicGroup, 'X', remove);
+  static const DeIdTags kOccupation = DeIdTags(PTag.kOccupation, 'X', remove);
   static const DeIdTags kSmokingStatus =
-      const DeIdTags(PTag.kSmokingStatus, 'X', remove);
+      DeIdTags(PTag.kSmokingStatus, 'X', remove);
   static const DeIdTags kAdditionalPatientHistory =
-      const DeIdTags(PTag.kAdditionalPatientHistory, 'X', remove);
+      DeIdTags(PTag.kAdditionalPatientHistory, 'X', remove);
   static const DeIdTags kPregnancyStatus =
-      const DeIdTags(PTag.kPregnancyStatus, 'X', remove);
+      DeIdTags(PTag.kPregnancyStatus, 'X', remove);
   static const DeIdTags kLastMenstrualDate =
-      const DeIdTags(PTag.kLastMenstrualDate, 'X', remove);
+      DeIdTags(PTag.kLastMenstrualDate, 'X', remove);
   static const DeIdTags kPatientReligiousPreference =
-      const DeIdTags(PTag.kPatientReligiousPreference, 'X', remove);
+      DeIdTags(PTag.kPatientReligiousPreference, 'X', remove);
   static const DeIdTags kPatientSexNeutered =
-      const DeIdTags(PTag.kPatientSexNeutered, 'XD', removeUnlessZero);
+      DeIdTags(PTag.kPatientSexNeutered, 'XD', removeUnlessZero);
   static const DeIdTags kResponsiblePerson =
-      const DeIdTags(PTag.kResponsiblePerson, 'X', remove);
+      DeIdTags(PTag.kResponsiblePerson, 'X', remove);
   static const DeIdTags kResponsibleOrganization =
-      const DeIdTags(PTag.kResponsibleOrganization, 'X', remove);
+      DeIdTags(PTag.kResponsibleOrganization, 'X', remove);
   static const DeIdTags kPatientComments =
-      const DeIdTags(PTag.kPatientComments, 'X', remove);
+      DeIdTags(PTag.kPatientComments, 'X', remove);
   static const DeIdTags kContrastBolusAgent =
-      const DeIdTags(PTag.kContrastBolusAgent, 'XD', removeUnlessDummy);
+      DeIdTags(PTag.kContrastBolusAgent, 'XD', removeUnlessDummy);
   static const DeIdTags kDeviceSerialNumber =
-      const DeIdTags(PTag.kDeviceSerialNumber, 'XZD', removeUnlessZeroOrDummy);
+      DeIdTags(PTag.kDeviceSerialNumber, 'XZD', removeUnlessZeroOrDummy);
   static const DeIdTags kDeviceUID =
-      const DeIdTags(PTag.kDeviceUID, 'U', replaceUids);
-  static const DeIdTags kPlateID = const DeIdTags(PTag.kPlateID, 'X', remove);
-  static const DeIdTags kGeneratorID =
-      const DeIdTags(PTag.kGeneratorID, 'X', remove);
-  static const DeIdTags kCassetteID =
-      const DeIdTags(PTag.kCassetteID, 'X', remove);
-  static const DeIdTags kGantryID = const DeIdTags(PTag.kGantryID, 'X', remove);
+      DeIdTags(PTag.kDeviceUID, 'U', replaceUids);
+  static const DeIdTags kPlateID = DeIdTags(PTag.kPlateID, 'X', remove);
+  static const DeIdTags kGeneratorID = DeIdTags(PTag.kGeneratorID, 'X', remove);
+  static const DeIdTags kCassetteID = DeIdTags(PTag.kCassetteID, 'X', remove);
+  static const DeIdTags kGantryID = DeIdTags(PTag.kGantryID, 'X', remove);
   static const DeIdTags kProtocolName =
-      const DeIdTags(PTag.kProtocolName, 'XD', removeUnlessDummy);
-  static const DeIdTags kAcquisitionDeviceProcessingDescription =
-      const DeIdTags(PTag.kAcquisitionDeviceProcessingDescription, 'XD',
-          removeUnlessDummy);
+      DeIdTags(PTag.kProtocolName, 'XD', removeUnlessDummy);
+  static const DeIdTags kAcquisitionDeviceProcessingDescription = DeIdTags(
+      PTag.kAcquisitionDeviceProcessingDescription, 'XD', removeUnlessDummy);
   static const DeIdTags kAcquisitionComments =
-      const DeIdTags(PTag.kAcquisitionComments, 'X', remove);
+      DeIdTags(PTag.kAcquisitionComments, 'X', remove);
   static const DeIdTags kDetectorID =
-      const DeIdTags(PTag.kDetectorID, 'XD', removeUnlessDummy);
+      DeIdTags(PTag.kDetectorID, 'XD', removeUnlessDummy);
   static const DeIdTags kAcquisitionProtocolDescription =
-      const DeIdTags(PTag.kAcquisitionProtocolDescription, 'X', remove);
+      DeIdTags(PTag.kAcquisitionProtocolDescription, 'X', remove);
   static const DeIdTags kContributionDescription =
-      const DeIdTags(PTag.kContributionDescription, 'X', remove);
+      DeIdTags(PTag.kContributionDescription, 'X', remove);
   static const DeIdTags kStudyInstanceUID =
-      const DeIdTags(PTag.kStudyInstanceUID, 'U', replaceUids);
+      DeIdTags(PTag.kStudyInstanceUID, 'U', replaceUids);
   static const DeIdTags kSeriesInstanceUID =
-      const DeIdTags(PTag.kSeriesInstanceUID, 'U', replaceUids);
+      DeIdTags(PTag.kSeriesInstanceUID, 'U', replaceUids);
   static const DeIdTags kStudyID =
-      const DeIdTags(PTag.kStudyID, 'Z', replaceWithZero);
+      DeIdTags(PTag.kStudyID, 'Z', replaceWithZero);
   static const DeIdTags kFrameOfReferenceUID =
-      const DeIdTags(PTag.kFrameOfReferenceUID, 'U', replaceUids);
-  static const DeIdTags kSynchronizationFrameOfReferenceUID = const DeIdTags(
-      PTag.kSynchronizationFrameOfReferenceUID, 'U', replaceUids);
+      DeIdTags(PTag.kFrameOfReferenceUID, 'U', replaceUids);
+  static const DeIdTags kSynchronizationFrameOfReferenceUID =
+      DeIdTags(PTag.kSynchronizationFrameOfReferenceUID, 'U', replaceUids);
   static const DeIdTags kModifyingDeviceID =
-      const DeIdTags(PTag.kModifyingDeviceID, 'X', remove);
+      DeIdTags(PTag.kModifyingDeviceID, 'X', remove);
   static const DeIdTags kModifyingDeviceManufacturer =
-      const DeIdTags(PTag.kModifyingDeviceManufacturer, 'X', remove);
+      DeIdTags(PTag.kModifyingDeviceManufacturer, 'X', remove);
   static const DeIdTags kModifiedImageDescription =
-      const DeIdTags(PTag.kModifiedImageDescription, 'X', remove);
+      DeIdTags(PTag.kModifiedImageDescription, 'X', remove);
   static const DeIdTags kImageComments =
-      const DeIdTags(PTag.kImageComments, 'X', remove);
+      DeIdTags(PTag.kImageComments, 'X', remove);
   static const DeIdTags kFrameComments =
-      const DeIdTags(PTag.kFrameComments, 'X', remove);
+      DeIdTags(PTag.kFrameComments, 'X', remove);
   static const DeIdTags kConcatenationUID =
-      const DeIdTags(PTag.kConcatenationUID, 'U', replaceUids);
+      DeIdTags(PTag.kConcatenationUID, 'U', replaceUids);
   static const DeIdTags kDimensionOrganizationUID =
-      const DeIdTags(PTag.kDimensionOrganizationUID, 'U', replaceUids);
+      DeIdTags(PTag.kDimensionOrganizationUID, 'U', replaceUids);
   static const DeIdTags kPaletteColorLookupTableUID =
-      const DeIdTags(PTag.kPaletteColorLookupTableUID, 'U', replaceUids);
+      DeIdTags(PTag.kPaletteColorLookupTableUID, 'U', replaceUids);
   static const DeIdTags kLargePaletteColorLookupTableUID =
-      const DeIdTags(PTag.kLargePaletteColorLookupTableUID, 'U', replaceUids);
+      DeIdTags(PTag.kLargePaletteColorLookupTableUID, 'U', replaceUids);
   static const DeIdTags kImagePresentationComments =
-      const DeIdTags(PTag.kImagePresentationComments, 'X', remove);
+      DeIdTags(PTag.kImagePresentationComments, 'X', remove);
   static const DeIdTags kStudyIDIssuer =
-      const DeIdTags(PTag.kStudyIDIssuer, 'X', remove);
+      DeIdTags(PTag.kStudyIDIssuer, 'X', remove);
   static const DeIdTags kScheduledStudyLocation =
-      const DeIdTags(PTag.kScheduledStudyLocation, 'X', remove);
+      DeIdTags(PTag.kScheduledStudyLocation, 'X', remove);
   static const DeIdTags kScheduledStudyLocationAETitle =
-      const DeIdTags(PTag.kScheduledStudyLocationAETitle, 'X', remove);
+      DeIdTags(PTag.kScheduledStudyLocationAETitle, 'X', remove);
   static const DeIdTags kReasonForStudy =
-      const DeIdTags(PTag.kReasonForStudy, 'X', remove);
+      DeIdTags(PTag.kReasonForStudy, 'X', remove);
   static const DeIdTags kRequestingPhysician =
-      const DeIdTags(PTag.kRequestingPhysician, 'X', remove);
+      DeIdTags(PTag.kRequestingPhysician, 'X', remove);
   static const DeIdTags kRequestingService =
-      const DeIdTags(PTag.kRequestingService, 'X', remove);
-  static const DeIdTags kRequestedProcedureDescription = const DeIdTags(
-      PTag.kRequestedProcedureDescription, 'XD', removeUnlessZero);
+      DeIdTags(PTag.kRequestingService, 'X', remove);
+  static const DeIdTags kRequestedProcedureDescription =
+      DeIdTags(PTag.kRequestedProcedureDescription, 'XD', removeUnlessZero);
   static const DeIdTags kRequestedContrastAgent =
-      const DeIdTags(PTag.kRequestedContrastAgent, 'X', remove);
+      DeIdTags(PTag.kRequestedContrastAgent, 'X', remove);
   static const DeIdTags kStudyComments =
-      const DeIdTags(PTag.kStudyComments, 'X', remove);
+      DeIdTags(PTag.kStudyComments, 'X', remove);
   static const DeIdTags kReferencedPatientAliasSequence =
-      const DeIdTags(PTag.kReferencedPatientAliasSequence, 'X', remove);
-  static const DeIdTags kAdmissionID =
-      const DeIdTags(PTag.kAdmissionID, 'X', remove);
+      DeIdTags(PTag.kReferencedPatientAliasSequence, 'X', remove);
+  static const DeIdTags kAdmissionID = DeIdTags(PTag.kAdmissionID, 'X', remove);
   static const DeIdTags kIssuerOfAdmissionID =
-      const DeIdTags(PTag.kIssuerOfAdmissionID, 'X', remove);
+      DeIdTags(PTag.kIssuerOfAdmissionID, 'X', remove);
   static const DeIdTags kScheduledPatientInstitutionResidence =
-      const DeIdTags(PTag.kScheduledPatientInstitutionResidence, 'X', remove);
+      DeIdTags(PTag.kScheduledPatientInstitutionResidence, 'X', remove);
   static const DeIdTags kAdmittingDate =
-      const DeIdTags(PTag.kAdmittingDate, 'X', remove);
+      DeIdTags(PTag.kAdmittingDate, 'X', remove);
   static const DeIdTags kAdmittingTime =
-      const DeIdTags(PTag.kAdmittingTime, 'X', remove);
+      DeIdTags(PTag.kAdmittingTime, 'X', remove);
   static const DeIdTags kDischargeDiagnosisDescription =
-      const DeIdTags(PTag.kDischargeDiagnosisDescription, 'X', remove);
+      DeIdTags(PTag.kDischargeDiagnosisDescription, 'X', remove);
   static const DeIdTags kSpecialNeeds =
-      const DeIdTags(PTag.kSpecialNeeds, 'X', remove);
+      DeIdTags(PTag.kSpecialNeeds, 'X', remove);
   static const DeIdTags kServiceEpisodeID =
-      const DeIdTags(PTag.kServiceEpisodeID, 'X', remove);
+      DeIdTags(PTag.kServiceEpisodeID, 'X', remove);
   static const DeIdTags kIssuerOfServiceEpisodeID =
-      const DeIdTags(PTag.kIssuerOfServiceEpisodeID, 'X', remove);
+      DeIdTags(PTag.kIssuerOfServiceEpisodeID, 'X', remove);
   static const DeIdTags kServiceEpisodeDescription =
-      const DeIdTags(PTag.kServiceEpisodeDescription, 'X', remove);
+      DeIdTags(PTag.kServiceEpisodeDescription, 'X', remove);
   static const DeIdTags kCurrentPatientLocation =
-      const DeIdTags(PTag.kCurrentPatientLocation, 'X', remove);
+      DeIdTags(PTag.kCurrentPatientLocation, 'X', remove);
   static const DeIdTags kPatientInstitutionResidence =
-      const DeIdTags(PTag.kPatientInstitutionResidence, 'X', remove);
+      DeIdTags(PTag.kPatientInstitutionResidence, 'X', remove);
   static const DeIdTags kPatientState =
-      const DeIdTags(PTag.kPatientState, 'X', remove);
+      DeIdTags(PTag.kPatientState, 'X', remove);
   static const DeIdTags kVisitComments =
-      const DeIdTags(PTag.kVisitComments, 'X', remove);
+      DeIdTags(PTag.kVisitComments, 'X', remove);
   static const DeIdTags kScheduledStationAETitle =
-      const DeIdTags(PTag.kScheduledStationAETitle, 'X', remove);
+      DeIdTags(PTag.kScheduledStationAETitle, 'X', remove);
   static const DeIdTags kScheduledProcedureStepStartDate =
-      const DeIdTags(PTag.kScheduledProcedureStepStartDate, 'X', remove);
+      DeIdTags(PTag.kScheduledProcedureStepStartDate, 'X', remove);
   static const DeIdTags kScheduledProcedureStepStartTime =
-      const DeIdTags(PTag.kScheduledProcedureStepStartTime, 'X', remove);
+      DeIdTags(PTag.kScheduledProcedureStepStartTime, 'X', remove);
   static const DeIdTags kScheduledProcedureStepEndDate =
-      const DeIdTags(PTag.kScheduledProcedureStepEndDate, 'X', remove);
+      DeIdTags(PTag.kScheduledProcedureStepEndDate, 'X', remove);
   static const DeIdTags kScheduledProcedureStepEndTime =
-      const DeIdTags(PTag.kScheduledProcedureStepEndTime, 'X', remove);
+      DeIdTags(PTag.kScheduledProcedureStepEndTime, 'X', remove);
   static const DeIdTags kScheduledPerformingPhysicianName =
-      const DeIdTags(PTag.kScheduledPerformingPhysicianName, 'X', remove);
+      DeIdTags(PTag.kScheduledPerformingPhysicianName, 'X', remove);
   static const DeIdTags kScheduledProcedureStepDescription =
-      const DeIdTags(PTag.kScheduledProcedureStepDescription, 'X', remove);
+      DeIdTags(PTag.kScheduledProcedureStepDescription, 'X', remove);
   static const DeIdTags kScheduledPerformingPhysicianIdentificationSequence =
-      const DeIdTags(PTag.kScheduledPerformingPhysicianIdentificationSequence,
-          'X', remove);
+      DeIdTags(PTag.kScheduledPerformingPhysicianIdentificationSequence, 'X',
+          remove);
   static const DeIdTags kScheduledStationName =
-      const DeIdTags(PTag.kScheduledStationName, 'X', remove);
+      DeIdTags(PTag.kScheduledStationName, 'X', remove);
   static const DeIdTags kScheduledProcedureStepLocation =
-      const DeIdTags(PTag.kScheduledProcedureStepLocation, 'X', remove);
+      DeIdTags(PTag.kScheduledProcedureStepLocation, 'X', remove);
   static const DeIdTags kPreMedication =
-      const DeIdTags(PTag.kPreMedication, 'X', remove);
+      DeIdTags(PTag.kPreMedication, 'X', remove);
   static const DeIdTags kPerformedStationAETitle =
-      const DeIdTags(PTag.kPerformedStationAETitle, 'X', remove);
+      DeIdTags(PTag.kPerformedStationAETitle, 'X', remove);
   static const DeIdTags kPerformedStationName =
-      const DeIdTags(PTag.kPerformedStationName, 'X', remove);
+      DeIdTags(PTag.kPerformedStationName, 'X', remove);
   static const DeIdTags kPerformedLocation =
-      const DeIdTags(PTag.kPerformedLocation, 'X', remove);
+      DeIdTags(PTag.kPerformedLocation, 'X', remove);
   static const DeIdTags kPerformedProcedureStepStartDate =
-      const DeIdTags(PTag.kPerformedProcedureStepStartDate, 'X', remove);
+      DeIdTags(PTag.kPerformedProcedureStepStartDate, 'X', remove);
   static const DeIdTags kPerformedProcedureStepStartTime =
-      const DeIdTags(PTag.kPerformedProcedureStepStartTime, 'X', remove);
+      DeIdTags(PTag.kPerformedProcedureStepStartTime, 'X', remove);
   static const DeIdTags kPerformedProcedureStepEndDate =
-      const DeIdTags(PTag.kPerformedProcedureStepEndDate, 'X', remove);
+      DeIdTags(PTag.kPerformedProcedureStepEndDate, 'X', remove);
   static const DeIdTags kPerformedProcedureStepEndTime =
-      const DeIdTags(PTag.kPerformedProcedureStepEndTime, 'X', remove);
+      DeIdTags(PTag.kPerformedProcedureStepEndTime, 'X', remove);
   static const DeIdTags kPerformedProcedureStepID =
-      const DeIdTags(PTag.kPerformedProcedureStepID, 'X', remove);
+      DeIdTags(PTag.kPerformedProcedureStepID, 'X', remove);
   static const DeIdTags kPerformedProcedureStepDescription =
-      const DeIdTags(PTag.kPerformedProcedureStepDescription, 'X', remove);
+      DeIdTags(PTag.kPerformedProcedureStepDescription, 'X', remove);
   static const DeIdTags kRequestAttributesSequence =
-      const DeIdTags(PTag.kRequestAttributesSequence, 'X', remove);
+      DeIdTags(PTag.kRequestAttributesSequence, 'X', remove);
   static const DeIdTags kCommentsOnThePerformedProcedureStep =
-      const DeIdTags(PTag.kCommentsOnThePerformedProcedureStep, 'X', remove);
+      DeIdTags(PTag.kCommentsOnThePerformedProcedureStep, 'X', remove);
   static const DeIdTags kAcquisitionContextSequence =
-      const DeIdTags(PTag.kAcquisitionContextSequence, 'X', remove);
+      DeIdTags(PTag.kAcquisitionContextSequence, 'X', remove);
   static const DeIdTags kRequestedProcedureID =
-      const DeIdTags(PTag.kRequestedProcedureID, 'X', remove);
+      DeIdTags(PTag.kRequestedProcedureID, 'X', remove);
   static const DeIdTags kPatientTransportArrangements =
-      const DeIdTags(PTag.kPatientTransportArrangements, 'X', remove);
+      DeIdTags(PTag.kPatientTransportArrangements, 'X', remove);
   static const DeIdTags kRequestedProcedureLocation =
-      const DeIdTags(PTag.kRequestedProcedureLocation, 'X', remove);
+      DeIdTags(PTag.kRequestedProcedureLocation, 'X', remove);
   static const DeIdTags kNamesOfIntendedRecipientsOfResults =
-      const DeIdTags(PTag.kNamesOfIntendedRecipientsOfResults, 'X', remove);
+      DeIdTags(PTag.kNamesOfIntendedRecipientsOfResults, 'X', remove);
   static const DeIdTags kIntendedRecipientsOfResultsIdentificationSequence =
-      const DeIdTags(
+      DeIdTags(
           PTag.kIntendedRecipientsOfResultsIdentificationSequence, 'X', remove);
-  static const DeIdTags kPersonIdentificationCodeSequence = const DeIdTags(
-      PTag.kPersonIdentificationCodeSequence, 'D', replaceWithDummy);
+  static const DeIdTags kPersonIdentificationCodeSequence =
+      DeIdTags(PTag.kPersonIdentificationCodeSequence, 'D', replaceWithDummy);
   static const DeIdTags kPersonAddress =
-      const DeIdTags(PTag.kPersonAddress, 'X', remove);
+      DeIdTags(PTag.kPersonAddress, 'X', remove);
   static const DeIdTags kPersonTelephoneNumbers =
-      const DeIdTags(PTag.kPersonTelephoneNumbers, 'X', remove);
+      DeIdTags(PTag.kPersonTelephoneNumbers, 'X', remove);
   static const DeIdTags kRequestedProcedureComments =
-      const DeIdTags(PTag.kRequestedProcedureComments, 'X', remove);
+      DeIdTags(PTag.kRequestedProcedureComments, 'X', remove);
   static const DeIdTags kReasonForTheImagingServiceRequest =
-      const DeIdTags(PTag.kReasonForTheImagingServiceRequest, 'X', remove);
+      DeIdTags(PTag.kReasonForTheImagingServiceRequest, 'X', remove);
   static const DeIdTags kOrderEnteredBy =
-      const DeIdTags(PTag.kOrderEnteredBy, 'X', remove);
+      DeIdTags(PTag.kOrderEnteredBy, 'X', remove);
   static const DeIdTags kOrderEntererLocation =
-      const DeIdTags(PTag.kOrderEntererLocation, 'X', remove);
+      DeIdTags(PTag.kOrderEntererLocation, 'X', remove);
   static const DeIdTags kOrderCallbackPhoneNumber =
-      const DeIdTags(PTag.kOrderCallbackPhoneNumber, 'X', remove);
-  static const DeIdTags kPlacerOrderNumberImagingServiceRequest =
-      const DeIdTags(
-          PTag.kPlacerOrderNumberImagingServiceRequest, 'Z', replaceWithZero);
-  static const DeIdTags kFillerOrderNumberImagingServiceRequest =
-      const DeIdTags(
-          PTag.kFillerOrderNumberImagingServiceRequest, 'Z', replaceWithZero);
+      DeIdTags(PTag.kOrderCallbackPhoneNumber, 'X', remove);
+  static const DeIdTags kPlacerOrderNumberImagingServiceRequest = DeIdTags(
+      PTag.kPlacerOrderNumberImagingServiceRequest, 'Z', replaceWithZero);
+  static const DeIdTags kFillerOrderNumberImagingServiceRequest = DeIdTags(
+      PTag.kFillerOrderNumberImagingServiceRequest, 'Z', replaceWithZero);
   static const DeIdTags kImagingServiceRequestComments =
-      const DeIdTags(PTag.kImagingServiceRequestComments, 'X', remove);
+      DeIdTags(PTag.kImagingServiceRequestComments, 'X', remove);
   static const DeIdTags kConfidentialityConstraintOnPatientDataDescription =
-      const DeIdTags(
+      DeIdTags(
           PTag.kConfidentialityConstraintOnPatientDataDescription, 'X', remove);
   static const DeIdTags
-      kReferencedGeneralPurposeScheduledProcedureStepTransactionUID =
-      const DeIdTags(
+      kReferencedGeneralPurposeScheduledProcedureStepTransactionUID = DeIdTags(
           PTag.kReferencedGeneralPurposeScheduledProcedureStepTransactionUID,
           'U',
           replaceUids);
   static const DeIdTags kScheduledStationNameCodeSequence =
-      const DeIdTags(PTag.kScheduledStationNameCodeSequence, 'X', remove);
+      DeIdTags(PTag.kScheduledStationNameCodeSequence, 'X', remove);
   static const DeIdTags kScheduledStationGeographicLocationCodeSequence =
-      const DeIdTags(
+      DeIdTags(
           PTag.kScheduledStationGeographicLocationCodeSequence, 'X', remove);
   static const DeIdTags kPerformedStationNameCodeSequence =
-      const DeIdTags(PTag.kPerformedStationNameCodeSequence, 'X', remove);
+      DeIdTags(PTag.kPerformedStationNameCodeSequence, 'X', remove);
   static const DeIdTags kPerformedStationGeographicLocationCodeSequence =
-      const DeIdTags(
+      DeIdTags(
           PTag.kPerformedStationGeographicLocationCodeSequence, 'X', remove);
   static const DeIdTags kScheduledHumanPerformersSequence =
-      const DeIdTags(PTag.kScheduledHumanPerformersSequence, 'X', remove);
+      DeIdTags(PTag.kScheduledHumanPerformersSequence, 'X', remove);
   static const DeIdTags kActualHumanPerformersSequence =
-      const DeIdTags(PTag.kActualHumanPerformersSequence, 'X', remove);
+      DeIdTags(PTag.kActualHumanPerformersSequence, 'X', remove);
   static const DeIdTags kHumanPerformerOrganization =
-      const DeIdTags(PTag.kHumanPerformerOrganization, 'X', remove);
+      DeIdTags(PTag.kHumanPerformerOrganization, 'X', remove);
   static const DeIdTags kHumanPerformerName =
-      const DeIdTags(PTag.kHumanPerformerName, 'X', remove);
+      DeIdTags(PTag.kHumanPerformerName, 'X', remove);
   static const DeIdTags kVerifyingOrganization =
-      const DeIdTags(PTag.kVerifyingOrganization, 'X', remove);
+      DeIdTags(PTag.kVerifyingOrganization, 'X', remove);
   static const DeIdTags kVerifyingObserverSequence =
-      const DeIdTags(PTag.kVerifyingObserverSequence, 'D', replaceWithDummy);
+      DeIdTags(PTag.kVerifyingObserverSequence, 'D', replaceWithDummy);
   static const DeIdTags kVerifyingObserverName =
-      const DeIdTags(PTag.kVerifyingObserverName, 'D', replaceWithDummy);
+      DeIdTags(PTag.kVerifyingObserverName, 'D', replaceWithDummy);
   static const DeIdTags kAuthorObserverSequence =
-      const DeIdTags(PTag.kAuthorObserverSequence, 'X', remove);
+      DeIdTags(PTag.kAuthorObserverSequence, 'X', remove);
   static const DeIdTags kParticipantSequence =
-      const DeIdTags(PTag.kParticipantSequence, 'X', remove);
+      DeIdTags(PTag.kParticipantSequence, 'X', remove);
   static const DeIdTags kCustodialOrganizationSequence =
-      const DeIdTags(PTag.kCustodialOrganizationSequence, 'X', remove);
-  static const DeIdTags kVerifyingObserverIdentificationCodeSequence =
-      const DeIdTags(PTag.kVerifyingObserverIdentificationCodeSequence, 'Z',
-          replaceWithZero);
+      DeIdTags(PTag.kCustodialOrganizationSequence, 'X', remove);
+  static const DeIdTags kVerifyingObserverIdentificationCodeSequence = DeIdTags(
+      PTag.kVerifyingObserverIdentificationCodeSequence, 'Z', replaceWithZero);
   static const DeIdTags kPersonName =
-      const DeIdTags(PTag.kPersonName, 'D', replaceWithDummy);
-  static const DeIdTags kUID = const DeIdTags(PTag.kUID, 'U', replaceUids);
+      DeIdTags(PTag.kPersonName, 'D', replaceWithDummy);
+  static const DeIdTags kUID = DeIdTags(PTag.kUID, 'U', replaceUids);
   static const DeIdTags kContentSequence =
-      const DeIdTags(PTag.kContentSequence, 'X', remove);
+      DeIdTags(PTag.kContentSequence, 'X', remove);
   static const DeIdTags kTemplateExtensionOrganizationUID =
-      const DeIdTags(PTag.kTemplateExtensionOrganizationUID, 'U', replaceUids);
+      DeIdTags(PTag.kTemplateExtensionOrganizationUID, 'U', replaceUids);
   static const DeIdTags kTemplateExtensionCreatorUID =
-      const DeIdTags(PTag.kTemplateExtensionCreatorUID, 'U', replaceUids);
+      DeIdTags(PTag.kTemplateExtensionCreatorUID, 'U', replaceUids);
   static const DeIdTags kGraphicAnnotationSequence =
-      const DeIdTags(PTag.kGraphicAnnotationSequence, 'D', replaceWithDummy);
+      DeIdTags(PTag.kGraphicAnnotationSequence, 'D', replaceWithDummy);
   static const DeIdTags kContentCreatorName =
-      const DeIdTags(PTag.kContentCreatorName, 'Z', replaceWithZero);
+      DeIdTags(PTag.kContentCreatorName, 'Z', replaceWithZero);
   static const DeIdTags kContentCreatorIdentificationCodeSequence =
-      const DeIdTags(
-          PTag.kContentCreatorIdentificationCodeSequence, 'X', remove);
+      DeIdTags(PTag.kContentCreatorIdentificationCodeSequence, 'X', remove);
   static const DeIdTags kFiducialUID =
-      const DeIdTags(PTag.kFiducialUID, 'U', replaceUids);
+      DeIdTags(PTag.kFiducialUID, 'U', replaceUids);
   static const DeIdTags kStorageMediaFileSetUID =
-      const DeIdTags(PTag.kStorageMediaFileSetUID, 'U', replaceUids);
+      DeIdTags(PTag.kStorageMediaFileSetUID, 'U', replaceUids);
   static const DeIdTags kIconImageSequence =
-      const DeIdTags(PTag.kIconImageSequence, 'X', remove);
-  static const DeIdTags kTopicTitle =
-      const DeIdTags(PTag.kTopicTitle, 'X', remove);
+      DeIdTags(PTag.kIconImageSequence, 'X', remove);
+  static const DeIdTags kTopicTitle = DeIdTags(PTag.kTopicTitle, 'X', remove);
   static const DeIdTags kTopicSubject =
-      const DeIdTags(PTag.kTopicSubject, 'X', remove);
-  static const DeIdTags kTopicAuthor =
-      const DeIdTags(PTag.kTopicAuthor, 'X', remove);
+      DeIdTags(PTag.kTopicSubject, 'X', remove);
+  static const DeIdTags kTopicAuthor = DeIdTags(PTag.kTopicAuthor, 'X', remove);
   static const DeIdTags kTopicKeywords =
-      const DeIdTags(PTag.kTopicKeywords, 'X', remove);
+      DeIdTags(PTag.kTopicKeywords, 'X', remove);
   static const DeIdTags kDigitalSignatureUID =
-      const DeIdTags(PTag.kDigitalSignatureUID, 'X', remove);
+      DeIdTags(PTag.kDigitalSignatureUID, 'X', remove);
   static const DeIdTags kReferencedDigitalSignatureSequence =
-      const DeIdTags(PTag.kReferencedDigitalSignatureSequence, 'X', remove);
+      DeIdTags(PTag.kReferencedDigitalSignatureSequence, 'X', remove);
   static const DeIdTags kReferencedSOPInstanceMACSequence =
-      const DeIdTags(PTag.kReferencedSOPInstanceMACSequence, 'X', remove);
-  static const DeIdTags kMAC = const DeIdTags(PTag.kMAC, 'X', remove);
+      DeIdTags(PTag.kReferencedSOPInstanceMACSequence, 'X', remove);
+  static const DeIdTags kMAC = DeIdTags(PTag.kMAC, 'X', remove);
   static const DeIdTags kModifiedAttributesSequence =
-      const DeIdTags(PTag.kModifiedAttributesSequence, 'X', remove);
+      DeIdTags(PTag.kModifiedAttributesSequence, 'X', remove);
   static const DeIdTags kOriginalAttributesSequence =
-      const DeIdTags(PTag.kOriginalAttributesSequence, 'X', remove);
-  static const DeIdTags kTextString =
-      const DeIdTags(PTag.kTextString, 'X', remove);
+      DeIdTags(PTag.kOriginalAttributesSequence, 'X', remove);
+  static const DeIdTags kTextString = DeIdTags(PTag.kTextString, 'X', remove);
   static const DeIdTags kReferencedFrameOfReferenceUID =
-      const DeIdTags(PTag.kReferencedFrameOfReferenceUID, 'U', replaceUids);
+      DeIdTags(PTag.kReferencedFrameOfReferenceUID, 'U', replaceUids);
   static const DeIdTags kRelatedFrameOfReferenceUID =
-      const DeIdTags(PTag.kRelatedFrameOfReferenceUID, 'U', replaceUids);
+      DeIdTags(PTag.kRelatedFrameOfReferenceUID, 'U', replaceUids);
   static const DeIdTags kDoseReferenceUID =
-      const DeIdTags(PTag.kDoseReferenceUID, 'U', replaceUids);
+      DeIdTags(PTag.kDoseReferenceUID, 'U', replaceUids);
   static const DeIdTags kReviewerName =
-      const DeIdTags(PTag.kReviewerName, 'XD', removeUnlessZero);
-  static const DeIdTags kArbitrary =
-      const DeIdTags(PTag.kArbitrary, 'X', remove);
+      DeIdTags(PTag.kReviewerName, 'XD', removeUnlessZero);
+  static const DeIdTags kArbitrary = DeIdTags(PTag.kArbitrary, 'X', remove);
   static const DeIdTags kTextComments =
-      const DeIdTags(PTag.kTextComments, 'X', remove);
+      DeIdTags(PTag.kTextComments, 'X', remove);
   static const DeIdTags kResultsIDIssuer =
-      const DeIdTags(PTag.kResultsIDIssuer, 'X', remove);
+      DeIdTags(PTag.kResultsIDIssuer, 'X', remove);
   static const DeIdTags kInterpretationRecorder =
-      const DeIdTags(PTag.kInterpretationRecorder, 'X', remove);
+      DeIdTags(PTag.kInterpretationRecorder, 'X', remove);
   static const DeIdTags kInterpretationTranscriber =
-      const DeIdTags(PTag.kInterpretationTranscriber, 'X', remove);
+      DeIdTags(PTag.kInterpretationTranscriber, 'X', remove);
   static const DeIdTags kInterpretationText =
-      const DeIdTags(PTag.kInterpretationText, 'X', remove);
+      DeIdTags(PTag.kInterpretationText, 'X', remove);
   static const DeIdTags kInterpretationAuthor =
-      const DeIdTags(PTag.kInterpretationAuthor, 'X', remove);
+      DeIdTags(PTag.kInterpretationAuthor, 'X', remove);
   static const DeIdTags kInterpretationApproverSequence =
-      const DeIdTags(PTag.kInterpretationApproverSequence, 'X', remove);
+      DeIdTags(PTag.kInterpretationApproverSequence, 'X', remove);
   static const DeIdTags kPhysicianApprovingInterpretation =
-      const DeIdTags(PTag.kPhysicianApprovingInterpretation, 'X', remove);
+      DeIdTags(PTag.kPhysicianApprovingInterpretation, 'X', remove);
   static const DeIdTags kInterpretationDiagnosisDescription =
-      const DeIdTags(PTag.kInterpretationDiagnosisDescription, 'X', remove);
+      DeIdTags(PTag.kInterpretationDiagnosisDescription, 'X', remove);
   static const DeIdTags kResultsDistributionListSequence =
-      const DeIdTags(PTag.kResultsDistributionListSequence, 'X', remove);
+      DeIdTags(PTag.kResultsDistributionListSequence, 'X', remove);
   static const DeIdTags kDistributionName =
-      const DeIdTags(PTag.kDistributionName, 'X', remove);
+      DeIdTags(PTag.kDistributionName, 'X', remove);
   static const DeIdTags kDistributionAddress =
-      const DeIdTags(PTag.kDistributionAddress, 'X', remove);
+      DeIdTags(PTag.kDistributionAddress, 'X', remove);
   static const DeIdTags kInterpretationIDIssuer =
-      const DeIdTags(PTag.kInterpretationIDIssuer, 'X', remove);
-  static const DeIdTags kImpressions =
-      const DeIdTags(PTag.kImpressions, 'X', remove);
+      DeIdTags(PTag.kInterpretationIDIssuer, 'X', remove);
+  static const DeIdTags kImpressions = DeIdTags(PTag.kImpressions, 'X', remove);
   static const DeIdTags kResultsComments =
-      const DeIdTags(PTag.kResultsComments, 'X', remove);
+      DeIdTags(PTag.kResultsComments, 'X', remove);
   static const DeIdTags kDigitalSignaturesSequence =
-      const DeIdTags(PTag.kDigitalSignaturesSequence, 'X', remove);
+      DeIdTags(PTag.kDigitalSignaturesSequence, 'X', remove);
   static const DeIdTags kDataSetTrailingPadding =
-      const DeIdTags(PTag.kDataSetTrailingPadding, 'X', remove);
+      DeIdTags(PTag.kDataSetTrailingPadding, 'X', remove);
 
-  static const List<int> retainList = const <int>[];
+  static const List<int> retainList = <int>[];
 
-  static const List<int> removeCodes = const [
+  static const List<int> removeCodes = <int>[
     0x00001000, 0x00080024, 0x00080025, 0x00080034, 0x00080035, 0x00080081,
     0x00080092, 0x00080094, 0x00080096, 0x00080201, 0x00081030, 0x0008103e,
     0x00081040, 0x00081048, 0x00081049, 0x00081050, 0x00081052, 0x00081060,
@@ -676,7 +649,7 @@ class DeIdTags {
     0xfffafffa, 0xfffcfffc // don't reformat
   ];
 
-  static const Map<int, DeIdTags> map = const <int, DeIdTags>{
+  static const Map<int, DeIdTags> map = <int, DeIdTags>{
     0x00001000: kAffectedSOPInstanceUID,
     0x00001001: kRequestedSOPInstanceUID,
     0x00020003: kMediaStorageSOPInstanceUID,
@@ -924,7 +897,7 @@ class DeIdTags {
     0xfffcfffc: kDataSetTrailingPadding
   };
 
-  static const List<DeIdTags> deIdTags = const <DeIdTags>[
+  static const List<DeIdTags> deIdTags = <DeIdTags>[
     kAffectedSOPInstanceUID,
     kRequestedSOPInstanceUID,
     kMediaStorageSOPInstanceUID,
@@ -1172,7 +1145,7 @@ class DeIdTags {
     kDataSetTrailingPadding,
   ];
 
-  static const List<int> codes = const [
+  static const List<int> codes = <int>[
     // No reformat
     0x00001000, 0x00001001, 0x00020003, 0x00041511, 0x00080014, 0x00080018,
     0x00080020, 0x00080021, 0x00080022, 0x00080023, 0x00080024, 0x00080025,

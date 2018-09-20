@@ -18,34 +18,33 @@ class IEType {
   const IEType(this.index, this.level);
 
   String get name => level;
-  
-  static const IEType kPatient = const IEType(0, 'Patient');
-  static const IEType kStudy = const IEType(1, 'Study');
-  static const IEType kSeries = const IEType(2, 'Series');
-  static const IEType kInstance = const IEType(3, 'Instance');
 
-  static const List<IEType> list = const [kPatient, kStudy, kSeries, kInstance];
+  static const IEType kPatient = IEType(0, 'Patient');
+  static const IEType kStudy = IEType(1, 'Study');
+  static const IEType kSeries = IEType(2, 'Series');
+  static const IEType kInstance = IEType(3, 'Instance');
 
-  static const List<IEType> kByIndex = const [
-   kPatient, kStudy, kSeries, kInstance // No Reformat
+  static const List<IEType> list = [kPatient, kStudy, kSeries, kInstance];
+
+  static const List<IEType> kByIndex = [
+    kPatient, kStudy, kSeries, kInstance // No Reformat
   ];
 
   IEType lookupByIndex(int index) {
-  	RangeError.checkValueInInterval(index, kPatient.index, kInstance.index);
-  	return kByIndex[index];
+    RangeError.checkValueInInterval(index, kPatient.index, kInstance.index);
+    return kByIndex[index];
   }
 
-  static const Map<String, IEType> kNameToIEType = const {
-	  'Patient': IEType.kPatient,
-	  'Study': IEType.kStudy,
-	  'Series': IEType.kSeries,
-	  'Instance': IEType.kInstance,
+  static const Map<String, IEType> kNameToIEType = {
+    'Patient': IEType.kPatient,
+    'Study': IEType.kStudy,
+    'Series': IEType.kSeries,
+    'Instance': IEType.kInstance,
   };
 
   IEType lookupByName(String s) {
-	  for (var ie in kByIndex)
-	  	if (ie.level == s) return ie;
-	  return null;
+    for (var ie in kByIndex) if (ie.level == s) return ie;
+    return null;
   }
 
   @override

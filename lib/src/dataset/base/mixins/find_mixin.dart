@@ -36,7 +36,7 @@ abstract class NoValuesMixin {
   /// the same except it has no values.  Returns the original element.
   Element noValues(int index, {bool required = false}) {
     final oldE = lookup(index, required: required);
-    if (oldE == null) return (required) ? elementNotPresentError(index) : null;
+    if (oldE == null) return required ? elementNotPresentError(index) : null;
     final newE = oldE.update(oldE.emptyList);
     store(index, newE);
     return oldE;
@@ -52,15 +52,11 @@ abstract class NoValuesMixin {
     for (var e in elements) {
       if (e is SQ) {
         result.addAll(e.noValuesAll(index));
-      } else
-      if (e.index == index) {
+      } else if (e.index == index) {
         result.add(e);
         store(index, e.noValues);
       }
     }
     return result;
   }
-
-
-
 }

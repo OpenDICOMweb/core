@@ -60,7 +60,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
             ? onError(y, m, d, h, mm, s, ms, us)
             : invalidDcmDateTimeError(
                 y, m, d, h, mm, s, ms, us, tzh, tzm, issues);
-      return new DcmDateTime._(date + time + TimeZone.localInMicroseconds);
+      return DcmDateTime._(date + time + TimeZone.localInMicroseconds);
     } on FormatException catch (e) {
       return invalidDcmDateTimeError(
           y, m, d, h, mm, s, ms, us, tzh, tzm, issues, e);
@@ -80,7 +80,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
     if (day == null) return null;
     final time = timeToMicroseconds(h, mm, s, ms, us);
     if (time == null) return null;
-    return new DcmDateTime._(day + time);
+    return DcmDateTime._(day + time);
   }
 
   /// Returns a [DcmDateTime] corresponding to [Date], [Time], and [TimeZone].
@@ -97,11 +97,11 @@ class DcmDateTime implements Comparable<DcmDateTime> {
         dt.hour, dt.minute, dt.second, dt.millisecond, dt.microsecond);
     if (us == null) return null;
     final tzMicroseconds = dt.timeZoneOffset.inMicroseconds;
-    return new DcmDateTime._(eDay + us + tzMicroseconds);
+    return DcmDateTime._(eDay + us + tzMicroseconds);
   }
 
+  factory DcmDateTime.fromMicroseconds(int us) => DcmDateTime._(us);
 
-  factory DcmDateTime.fromMicroseconds(int us) => new DcmDateTime._(us);
   /// Internal constructor
   ///
   /// _Note_: All arguments MUST be valid.
@@ -119,17 +119,17 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   int get hashCode => microseconds.hashCode;
 
   /// Returns a new [DateTime] containing the [Global.hash] of _this_.
-  DcmDateTime get hash => new DcmDateTime._(hashTimeMicroseconds(microseconds));
+  DcmDateTime get hash => DcmDateTime._(hashTimeMicroseconds(microseconds));
 
   /// Returns a new [DateTime] containing the SHA-256 hash of [microseconds].
-  DcmDateTime get sha256 => new DcmDateTime._(sha256Microseconds(microseconds));
+  DcmDateTime get sha256 => DcmDateTime._(sha256Microseconds(microseconds));
 
   int get epochDay => microseconds ~/ kMicrosecondsPerDay;
 
   int get timeInMicroseconds => microseconds % kMicrosecondsPerDay;
 
   /// Returns the [DcmDateTime] of _this_.
-  TimeZone get timeZone => new TimeZone.fromMicroseconds(microseconds);
+  TimeZone get timeZone => TimeZone.fromMicroseconds(microseconds);
 
   @override
   int compareTo(DcmDateTime other) => compare(this, other);
@@ -153,12 +153,13 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   int get second => (microseconds ~/ kMicrosecondsPerSecond) % 60;
 
   /// Returns the integer values of the _millisecond_ component of _this_.
-  int get millisecond => (microseconds ~/ kMillisecondsPerDay) %  1000;
+  int get millisecond => (microseconds ~/ kMillisecondsPerDay) % 1000;
 
   /// Returns the integer values of the _microsecond_ component of _this_.
   int get microsecond => (microseconds ~/ kMicrosecondsPerDay) % 1000;
 
-  /// Returns the integer values of the _fraction_ of second component of _this_.
+  /// Returns the integer values of the _fraction_ of second
+  /// component of _this_.
   int get fraction => microseconds % kMicrosecondsPerSecond;
 
   /// Returns the [year] as a 4 digit [String].
@@ -196,45 +197,63 @@ class DcmDateTime implements Comparable<DcmDateTime> {
       (fraction == 0) ? '$y-$m-$d\T$h:$mm:$s' : '$y-$m-${d}T$h:$mm:$s.$f';
 
   ///
-  Date toDate() => new Date(year, month, day);
+  Date toDate() => Date(year, month, day);
 
-  static final Duration zeroDuration = new Duration();
+  static final Duration zeroDuration = Duration();
 
   // TODO Jim Fix: if m >= 12 returns null
   // TODO Jim Doc
   /// See Dart Doc for [DateTime].[add].
-  DcmDateTime add({int years, int months, int days, int hours,
-      int minutes, int seconds, int milliseconds, int microseconds,
-      Duration  duration}) {
+  DcmDateTime add(
+      {int years,
+      int months,
+      int days,
+      int hours,
+      int minutes,
+      int seconds,
+      int milliseconds,
+      int microseconds,
+      Duration duration}) {
     final y = (years == null) ? year : year + years;
     final m = (months == null) ? month : month + months;
     final d = (days == null) ? day : day + days;
     final h = (hours == null) ? hour : hour + hours;
     final mm = (minutes == null) ? minute : minute + minutes;
     final s = (seconds == null) ? second : second + seconds;
-    final ms = (milliseconds == null) ? millisecond : millisecond + milliseconds;
-    final us = (microseconds == null) ? microsecond : microsecond + microseconds;
+    final ms =
+        (milliseconds == null) ? millisecond : millisecond + milliseconds;
+    final us =
+        (microseconds == null) ? microsecond : microsecond + microseconds;
     final dt = dcmDateTimeInMicroseconds(y, m, d, h, mm, s, ms, us);
     final dur = (duration == null) ? zeroDuration : duration;
-    return new DcmDateTime._(dt + dur.inMicroseconds);
+    return DcmDateTime._(dt + dur.inMicroseconds);
   }
 
   // TODO Jim Fix: if m >= 12 returns null
   // TODO Jim Doc
-  DcmDateTime subtract({int years, int months, int days, int hours,
-    int minutes, int seconds, int milliseconds, int microseconds,
-    Duration  duration}) {
+  DcmDateTime subtract(
+      {int years,
+      int months,
+      int days,
+      int hours,
+      int minutes,
+      int seconds,
+      int milliseconds,
+      int microseconds,
+      Duration duration}) {
     final y = (years == null) ? year : year - years;
     final m = (months == null) ? month : month - months;
     final d = (days == null) ? day : day - days;
     final h = (hours == null) ? hour : hour - hours;
     final mm = (minutes == null) ? minute : minute - minutes;
     final s = (seconds == null) ? second : second - seconds;
-    final ms = (milliseconds == null) ? millisecond : millisecond - milliseconds;
-    final us = (microseconds == null) ? microsecond : microsecond - microseconds;
+    final ms =
+        (milliseconds == null) ? millisecond : millisecond - milliseconds;
+    final us =
+        (microseconds == null) ? microsecond : microsecond - microseconds;
     final dt = dcmDateTimeInMicroseconds(y, m, d, h, mm, s, ms, us);
     final dur = (duration == null) ? zeroDuration : duration;
-    return new DcmDateTime._(dt - dur.inMicroseconds);
+    return DcmDateTime._(dt - dur.inMicroseconds);
   }
 
 /* TODO: add if needed when with is no longer a keyword.
@@ -250,7 +269,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   String toString() => inet;
 
   /// Returns the current [DcmDateTime].
-  static DcmDateTime get now => new DcmDateTime.fromDart(new DateTime.now());
+  static DcmDateTime get now => DcmDateTime.fromDart(DateTime.now());
 
   /// The minimum length of a [DcmDateTime] [String].
   static const int kMinLength = 4;
@@ -263,7 +282,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
   /// The local [TimeZone].
   static final TimeZone localTimeZone =
-      new TimeZone.fromMicroseconds(TimeZone.localInMicroseconds);
+      TimeZone.fromMicroseconds(TimeZone.localInMicroseconds);
 
   /// The Time Zone where this package is running.
   static final String localTimeZoneName = TimeZone.localName;
@@ -273,7 +292,6 @@ class DcmDateTime implements Comparable<DcmDateTime> {
 
   /// The local time zone offset in minutes.
   static final int localTZMinute = TimeZone.local.minute;
-
 
   /// Returns _true_ if [s] is a valid DICOM [DcmDateTime] [String] (DT).
   static bool isValidString(String s,
@@ -288,16 +306,14 @@ class DcmDateTime implements Comparable<DcmDateTime> {
       OnDcmDateTimeParseError onError}) {
     final dt = parseDcmDateTime(s, start: start, end: end);
     if (dt == null)
-      return (onError != null)
-          ? onError(s)
-          : badDateTimeString(s, issues);
-    return new DcmDateTime._(dt);
+      return onError != null ? onError(s) : badDateTimeString(s, issues);
+    return DcmDateTime._(dt);
   }
 
   /// Returns a [Issues] object if there are errors
   /// or warnings related to [s]; otherwise, returns _null_.
   static Issues issues(String s, {int start = 0, int end}) {
-    final issues = new Issues('DcmDateTime: "$s"');
+    final issues = Issues('DcmDateTime: "$s"');
     parseDcmDateTime(s, start: start, end: end, issues: issues);
     return issues;
   }
@@ -321,7 +337,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   /// where each element in the [List] is the hash of the corresponding
   /// element in the argument.
   static List<String> hashStringList(List<String> dateTimes) {
-    final dtList = new List<String>(dateTimes.length);
+    final dtList = List<String>(dateTimes.length);
     // for (String s in dateTimes) dtList.add(hashString(s));
     for (var i = 0; i < dateTimes.length; i++) {
       final nDate = hashString(dateTimes[i]);
@@ -362,12 +378,13 @@ class InvalidDcmDateTimeError extends Error {
           int us = 0,
           int tzh = 0,
           int tzm = 0,
-          Exception error]) => '''
+          Exception error]) =>
+      '''
 InvalidDcmDateTimeError: $error
     y: $y, m: $m, d: $d, 
     h: $h, m: $m, s: $s, ms: $ms, us: $us
     tzh: $tzh, tzm: $tzm                        
-'''  ;
+''';
 }
 
 /// The error handler for invalid [DcmDateTime]s.
@@ -387,6 +404,6 @@ Null invalidDcmDateTimeError(int y,
   log.error(msg);
   if (issues != null) issues.add(msg);
   if (throwOnError)
-    throw new InvalidDcmDateTimeError(y, d, m, h, mm, s, ms, us, tzh, tzm);
+    throw InvalidDcmDateTimeError(y, d, m, h, mm, s, ms, us, tzh, tzm);
   return null;
 }

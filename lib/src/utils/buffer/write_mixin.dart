@@ -39,7 +39,7 @@ abstract class WriteBufferMixin {
   int get wIndex => _wIndex;
   set wIndex(int n) {
     if (_wIndex <= _rIndex || _wIndex > _buf.length)
-      throw new RangeError.range(_wIndex, _rIndex, _buf.length);
+      throw RangeError.range(_wIndex, _rIndex, _buf.length);
     _wIndex = n;
   }
 
@@ -47,7 +47,7 @@ abstract class WriteBufferMixin {
   int wSkip(int n) {
     final v = _wIndex + n;
     if (v <= _rIndex || v >= _buf.length)
-      throw new RangeError.range(v, 0, _buf.length);
+      throw RangeError.range(v, 0, _buf.length);
     return _wIndex = v;
   }
 
@@ -178,17 +178,17 @@ abstract class WriteBufferMixin {
 
   void writeInt16List(Int16List list, [int offset = 0, int length]) {
     _buf.setInt16List(_wIndex, list, offset, length);
-    _wIndex += (list.length * 2);
+    _wIndex += list.length * 2;
   }
 
   void writeInt32List(Int32List list, [int offset = 0, int length]) {
     _buf.setInt32List(_wIndex, list, offset, length);
-    _wIndex += (list.length * 4);
+    _wIndex += list.length * 4;
   }
 
   void writeInt64List(Int64List list, [int offset = 0, int length]) {
     _buf.setInt64List(_wIndex, list, offset, length);
-    _wIndex += (list.length * 8);
+    _wIndex += list.length * 8;
   }
 
   void writeUint8List(Uint8List bList, [int offset = 0, int length]) {
@@ -206,27 +206,27 @@ abstract class WriteBufferMixin {
 
   void writeUint16List(Uint16List list, [int offset = 0, int length]) {
     _buf.setUint16List(_wIndex, list, offset, length);
-    _wIndex += (list.length * 2);
+    _wIndex += list.length * 2;
   }
 
   void writeUint32List(Uint32List list, [int offset = 0, int length]) {
     _buf.setUint32List(_wIndex, list, offset, length);
-    _wIndex += (list.length * 4);
+    _wIndex += list.length * 4;
   }
 
   void writeUint64List(Uint64List list, [int offset = 0, int length]) {
     _buf.setUint64List(_wIndex, list, offset, length);
-    _wIndex += (list.length * 8);
+    _wIndex += list.length * 8;
   }
 
   void writeFloat32List(Float32List list, [int offset = 0, int length]) {
     _buf.setFloat32List(_wIndex, list, offset, length);
-    _wIndex += (list.length * 4);
+    _wIndex += list.length * 4;
   }
 
   void writeFloat64List(Float64List list, [int offset = 0, int length]) {
     _buf.setFloat64List(_wIndex, list, offset, length);
-    _wIndex += (list.length * 8);
+    _wIndex += list.length * 8;
   }
 
   void writeAsciiList(List<String> list, [int offset = 0, int length]) =>
@@ -260,7 +260,7 @@ abstract class WriteBufferMixin {
 
   void warn(Object msg) => print('** Warning(@$_wIndex): $msg');
 
-  void error(Object msg) => throw new Exception('**** Error(@$_wIndex): $msg');
+  void error(Object msg) => throw Exception('**** Error(@$_wIndex): $msg');
   // Internal methods
 
   static const int kDefaultLength = 4096;
@@ -286,5 +286,5 @@ abstract class LoggingWriteBufferMixin {
 
   void warn(Object msg) => print('** Warning: $msg $_www');
 
-  void error(Object msg) => throw new Exception('**** Error: $msg $_www');
+  void error(Object msg) => throw Exception('**** Error: $msg $_www');
 }

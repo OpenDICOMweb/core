@@ -52,7 +52,7 @@ abstract class UpdateMixin {
   Element<V> updateF<V>(int index, List<V> f(List vList),
                      {bool required = false}) {
     final old = lookup(index, required: required);
-    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old == null) return required ? elementNotPresentError(index) : null;
     if (old != null) store(index, old.updateF(f));
     return old;
   }
@@ -98,7 +98,7 @@ abstract class UpdateMixin {
   Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) {
     assert(index != null && uids != null);
     final old = lookup(index, required: required);
-    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old == null) return required ? elementNotPresentError(index) : null;
     if (old is! UI) return badUidElement(old);
     add(old.update(uids.toList(growable: false)));
     return old;
@@ -112,7 +112,7 @@ abstract class UpdateMixin {
                         {bool recursive = true, bool required = false}) {
     assert(index != null && sList != null);
     final old = lookup(index, required: required);
-    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old == null) return required ? elementNotPresentError(index) : null;
     if (old is! UI) return badUidElement(old);
 
     // If [e] has noValues, and [uids] == null, just return [e],

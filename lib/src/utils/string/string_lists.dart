@@ -43,7 +43,7 @@ Iterable<String> uppercase(List<String> vList) =>
 String stringListToString(List<String> sList, [String separator = '\\']) {
   if (sList == null) return null;
   if (sList.isEmpty) return '';
-  return (sList.length == 1 ? sList[0] : sList.join('\\'));
+  return sList.length == 1 ? sList[0] : sList.join('\\');
 }
 
 /// Returns a [Uint8List] encoding of [sList].
@@ -98,7 +98,7 @@ List<String> textListFromTypedData(TypedData td,
     {int maxLength, bool isAscii = true}) {
   if (td == null) return null;
   if (td.lengthInBytes == 0) return kEmptyStringList;
-  if ((td.lengthInBytes > maxLength))
+  if (td.lengthInBytes > maxLength)
     return badTypedDataLength(td.lengthInBytes, maxLength);
   return <String>[typedDataToString(td, isAscii: isAscii)];
 }

@@ -23,14 +23,14 @@ class TagItem extends MapItem with TagDataset {
 
   /// Creates a new [TagItem] from [Bytes].
   TagItem(Dataset parent, [SQ sequence, Map<int, Element> eMap, Bytes bd])
-      : pGroups = new PrivateGroups(),
+      : pGroups = PrivateGroups(),
         super(parent, sequence, eMap, bd) {
     pGroups.ds = this;
   }
 
   /// Creates a new empty [Item] from [Bytes].
   TagItem.empty(Dataset parent, [SQ sequence])
-      : pGroups = new PrivateGroups(),
+      : pGroups = PrivateGroups(),
         super.empty(parent, sequence) {
     pGroups.ds = this;
   }
@@ -39,7 +39,7 @@ class TagItem extends MapItem with TagDataset {
   /// If [parent] is _null_the new [TagItem] has the same
   /// parent as [item].
   TagItem.from(Dataset parent, Item item, SQtag sequence)
-      : pGroups = new PrivateGroups(),
+      : pGroups = PrivateGroups(),
         super(parent, sequence, <int, Element>{}, null) {
     pGroups.ds = this;
     convert(parent, item, sequence);
@@ -51,7 +51,7 @@ class TagItem extends MapItem with TagDataset {
     final eMap = <int, Element>{};
     for (var e in elements) eMap[e.index] = e;
     //TODO: handle PrivateGroups
-    return new TagItem(parent, sequence, eMap);
+    return TagItem(parent, sequence, eMap);
   }
 
   @override
@@ -66,7 +66,7 @@ class TagItem extends MapItem with TagDataset {
   bool get isImmutable => false;
 
   static Dataset convert(Dataset parent, Item item, SQ sequence) {
-    final Dataset tagItem = new TagItem.empty(parent, sequence);
+    final Dataset tagItem = TagItem.empty(parent, sequence);
     return TagDataset.convert(item, tagItem);
   }
 }

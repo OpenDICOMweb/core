@@ -74,7 +74,11 @@ int tryParseBinary(String s,
 ///
 /// Note: we're using this because Dart doesn't provide a Uint parser.
 int parseUint(String s,
-    {int start = 0, int end, Issues issues, int minLength = 1, int maxLength ,
+        {int start = 0,
+        int end,
+        Issues issues,
+        int minLength = 1,
+        int maxLength,
         int onError(String source) = _defaultParseIntError}) =>
 //    _parseRadix(s, start, issues, end ??= s.length, minLength, maxLength, 10,
 //        'parseUint', onError);
@@ -139,7 +143,7 @@ int parseInt(String s,
     // ignore: avoid_returning_null
     return null;
   }
-  return (value == null) ? null : (sign == -1) ? - value : value;
+  return (value == null) ? null : (sign == -1) ? -value : value;
 }
 
 /// Tries to parse [s] from [start] to [end] as a signed base 10 integer, and
@@ -187,8 +191,8 @@ double parseFloat(String s,
 int parseFraction(String s,
     {int start = 0,
     int end,
-    int minLength: 2,
-    int max: 7,
+    int minLength = 2,
+    int max = 7,
     Issues issues,
     int onError(String source) = _defaultParseIntError}) {
   try {
@@ -233,7 +237,7 @@ bool _parseDecimalPoint(String s, int start, Issues issues, String name) {
 int _parseRadix(String s, int start, Issues issues, int end, int minLength,
     int maxLength, int radix, String name, int onError(String s)) {
   if (radix < 2 || radix > 36)
-    throw new ArgumentError('Radix ($radix) not in range: 2 <= radix <= 36');
+    throw ArgumentError('Radix ($radix) not in range: 2 <= radix <= 36');
   _checkArgs(s, start, end, minLength, maxLength, 'parseUintRadix', issues);
   return __parseRadix(s, start, issues, end, 'parseRadix', radix, onError);
 }
@@ -344,29 +348,35 @@ int __parseBase10(String s, int start, Issues issues, int end) {
   return value;
 }
 
-int _parse2Digits(String s, int start, Issues issues, int minValue,
-    int maxValue) {
+int _parse2Digits(
+    String s, int start, Issues issues, int minValue, int maxValue) {
   final end = start + 2;
   assert(s != null && start != null && end <= s.length);
   final v = __parseBase10(s, start, issues, end);
   return _checkDigitRange(v, issues, minValue, maxValue);
 }
 
-int _parse4Digits(String s, int start, Issues issues, int minValue,
-    int maxValue) {
+int _parse4Digits(
+    String s, int start, Issues issues, int minValue, int maxValue) {
   final end = start + 4;
   assert(s != null && start != null && end <= s.length);
   final v = __parseBase10(s, start, issues, end);
   return _checkDigitRange(v, issues, minValue, maxValue);
 }
 
-int _checkDigitRange(int v,Issues issues, int minValue, int maxValue, ) =>
+int _checkDigitRange(
+  int v,
+  Issues issues,
+  int minValue,
+  int maxValue,
+) =>
     (v == null || v < minValue || v > maxValue)
         ? _rangeError(v, minValue, maxValue, issues)
         : v;
 
-int _rangeError(int v, int minValue, int maxValue,  [Issues issues]) {
-  final msg = 'Range Error: minValue($minValue) <= values($v) <= maxValue($maxValue)';
+int _rangeError(int v, int minValue, int maxValue, [Issues issues]) {
+  final msg =
+      'Range Error: minValue($minValue) <= values($v) <= maxValue($maxValue)';
   return parseError(msg, issues);
 }
 

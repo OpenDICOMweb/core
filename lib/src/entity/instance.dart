@@ -24,17 +24,17 @@ class Instance extends Entity {
   /// Pixel Data
   Uint8List _pixelData;
 
-  /// Creates a new [Instance].
-  Instance(Series series, Uid uid,RootDataset dataset)
+  /// Creates a  [Instance].
+  Instance(Series series, Uid uid, RootDataset dataset)
       : super(series, uid, dataset, Entity.empty);
 
-  /// Returns a new [Instance] created from the [RootDataset].
+  /// Returns a  [Instance] created from the [RootDataset].
   factory Instance.fromRDS(RootDataset rds, Series series) {
     assert(series != null);
     final e = rds[kSOPInstanceUID];
     if (e == null) return elementNotPresentError(e);
-    final instanceUid = new Uid(e.value);
-    final instance = new Instance(series, instanceUid, rds);
+    final instanceUid = Uid(e.value);
+    final instance = Instance(series, instanceUid, rds);
     series.putIfAbsent(instance);
     return instance;
   }
@@ -85,5 +85,4 @@ class Instance extends Entity {
 
   @override
   String toString() => '$runtimeType(${uid.asString}), $length elements';
-
 }

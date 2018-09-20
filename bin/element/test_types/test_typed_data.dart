@@ -11,7 +11,7 @@ import 'dart:typed_data';
 
 void main() {
 
-	final float = new Float64List(10);
+	final float = Float64List(10);
 	final isIterable = float is Iterable;
 	print('float isIterable: $isIterable');
 

@@ -47,17 +47,17 @@ Int64List int64(List<int> vList) =>
 
 /// Returns a Message [Digest] from a [List<double>].
 Float32List float32(List<double> vList) {
-  final v32 = (vList is Float32List) ? vList : new Float32List.fromList(vList);
+  final v32 = (vList is Float32List) ? vList : Float32List.fromList(vList);
   return _trim(vList, uint8(v32.buffer.asUint8List()).buffer.asFloat32List());
 }
 
 /// Returns a Message [Digest] from a [List<double>].
 Float64List float64(List<double> vList) {
-  final v64 = (vList is Float64List) ? vList : new Float64List.fromList(vList);
+  final v64 = (vList is Float64List) ? vList : Float64List.fromList(vList);
   return _trim(vList, uint8(v64.buffer.asUint8List()).buffer.asFloat64List());
 }
 
-final _sha256Buffer = new Uint64List(8);
+final _sha256Buffer = Uint64List(8);
 
 /// Returns a 63-bit (SMI) integer, extracted from a SHA256 digest.
 int int63(int value) {
@@ -68,7 +68,7 @@ int int63(int value) {
   final hash = uint8(bytes);
   final bd = hash.buffer.asByteData();
   final v = bd.getUint64(0);
-  return (v & kDartMaxSMUint);
+  return v & kDartMaxSMUint;
 }
 
 /// Returns a [String] that is a hash of [String].
@@ -83,5 +83,5 @@ List<String> stringList(List<String> sList) =>
 String fromString(String s) {
   final len = s.length;
   final v = sha256.convert(s.codeUnits).toString();
-  return v.substring(0, (v.length > len ? len : v.length));
+  return v.substring(0, v.length > len ? len : v.length);
 }

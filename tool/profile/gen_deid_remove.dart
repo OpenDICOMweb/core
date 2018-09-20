@@ -26,13 +26,13 @@ const String outDir = 'C:/acr/odw/sdk/core/tool/profile/output';
 const String outFile = '$outDir//deid_remove.dart';
 
 String makeDeIdDateClasses() {
-  final sb0 = new StringBuffer('$copyright\n$imports\n')
+  final sb0 = StringBuffer('$copyright\n$imports\n')
     ..writeln('const List<int> deIdRemoveCodes = const <int>[');
 
-  final sb1 = new StringBuffer()
+  final sb1 = StringBuffer()
     ..writeln('const List<PTag> deIdRemoveTags = const <PTag>[');
 
-  final sb2 = new StringBuffer()
+  final sb2 = StringBuffer()
     ..writeln('const Map<int, String> deIdRemoveCodeToKeywordMap = '
         'const <int, String>{');
 
@@ -50,7 +50,7 @@ String makeDeIdDateClasses() {
   sb1.writeln('];\n\n');
   sb2.writeln('};\n\n');
   final out = '$sb0$sb1$sb2';
-  new File(outFile)..writeAsStringSync(out);
+  File(outFile).writeAsStringSync(out);
   print(out);
   return out;
 }

@@ -43,7 +43,7 @@ class LogRecord {
 
   LogRecord(this.level, this.message, this.name,
       [this.error, this.trace, this.zone, this.object])
-      : dt = new DateTime.now(),
+      : dt = DateTime.now(),
         index = _count++;
 
   String get date => dtu.date(dt);

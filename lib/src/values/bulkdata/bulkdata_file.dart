@@ -29,12 +29,11 @@ class BulkdataFile {
   factory BulkdataFile(String path, Bytes bytes) {
     final token = bytes.getUint8List(0, 8);
     if (token != kBulkdataFileToken)
-      throw new ArgumentError('$bytes is not a Bytedata file');
+      throw ArgumentError('$bytes is not a Bytedata file');
     final length = bytes.getUint32(8);
-    final index = new BulkdataIndex(bytes.getUint32List(12, length));
+    final index = BulkdataIndex(bytes.getUint32List(12, length));
     final vfStart = 12 + (length * 32);
-
-    return new BulkdataFile._(path, bytes, index, vfStart);
+    return  BulkdataFile._(path, bytes, index, vfStart);
   }
 
   BulkdataFile._(this.path, this.bytes, this.index, this.vfStart);
@@ -45,7 +44,7 @@ class BulkdataFile {
     final offset = entry[1];
     final length = entry[2];
     final vf = bytes.asBytes(vfStart + offset, length);
-    return new Bulkdata(code, i, vf);
+    return Bulkdata(code, i, vf);
   }
 
   Bulkdata lookupByCode(int code) {
@@ -55,20 +54,20 @@ class BulkdataFile {
         final offset = vfStart + index[i][1];
         final length = index[i][2];
         final vf = bytes.asBytes(offset, length);
-        return new Bulkdata(code, i, vf);
+        return Bulkdata(code, i, vf);
       }
     }
     return null;
   }
 
   static Future<BulkdataFile> readFile(File file, {bool doAsync = true}) async {
-    final bytes = (doAsync) ? await file.readAsBytes() : file.readAsBytesSync();
-    return new BulkdataFile(file.path, bytes);
+    final bytes = doAsync ? await file.readAsBytes() : file.readAsBytesSync();
+    return BulkdataFile(file.path, bytes);
   }
 
   static Future<BulkdataFile> readPath(String fPath,
           {bool doAsync = true}) async =>
-      await readFile(new File(fPath), doAsync: doAsync);
+      await readFile(File(fPath), doAsync: doAsync);
 }
 
 ///
@@ -77,8 +76,8 @@ class BulkdataIndex {
 
   factory BulkdataIndex(Uint32List entries) {
     if ((entries.length % 12) != 0)
-      throw new ArgumentError('Invalid Bulkdata Index');
-    return new BulkdataIndex._(entries);
+      throw ArgumentError('Invalid Bulkdata Index');
+    return BulkdataIndex._(entries);
   }
 
   BulkdataIndex._(this.entries);

@@ -14,11 +14,9 @@ part of odw.sdk.core.parser;
 
 bool isValidDcmDateTimeString(String s,
     {int start = 0, int end, Issues issues}) =>
-    (s.isEmpty)
+    s.isEmpty
         ? true
-        : parseDcmDateTime(s, start: start, end: end, issues: issues) == null
-        ? false
-        : true;
+        : parseDcmDateTime(s, start: start, end: end, issues: issues) != null;
 
 /// Returns the date/time in microseconds or _null_ if [s] is not valid.
 int parseDcmDateTime(String s,

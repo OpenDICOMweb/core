@@ -21,19 +21,19 @@ class IssueFlag {
     this.value,
   });
 
-  static const IssueFlag shouldTruncateInvalidVM = const IssueFlag(
+  static const IssueFlag shouldTruncateInvalidVM = IssueFlag(
       'shouldTruncateInvalidVM',
-      const [IssueType.kInvalidVR],
+      [IssueType.kInvalidVR],
       'Should Fix Invalid Value Multiplicity (VM)',
       value: true);
 
-  static const IssueFlag shouldFixInvalidPadChars = const IssueFlag(
+  static const IssueFlag shouldFixInvalidPadChars = IssueFlag(
       'shouldFixInvalidPadChars',
-      const [IssueType.kInvalidUidPadChar, IssueType.kStringInvalidPadChar],
+      [IssueType.kInvalidUidPadChar, IssueType.kStringInvalidPadChar],
       'Should Fix Invalid Padding Characters',
       value: true);
 
-  static const IssueFlag shouldFixCSStrings = const IssueFlag('shouldFixCSStrings',
-      const [IssueType.kCodeStringInvalidLowerCase], 'Should Fix CS Strings',
+  static const IssueFlag shouldFixCSStrings = IssueFlag('shouldFixCSStrings',
+      [IssueType.kCodeStringInvalidLowerCase], 'Should Fix CS Strings',
       value: true);
 }

@@ -1,6 +1,6 @@
 name: core
 description: The core of the ODW SDK.
-version: 0.7.5
+version: 0.7.6
 author: Jim Philbin <jfphilbin@gmail.com>
 
 homepage: https://github.com/OpenDICOMweb/core

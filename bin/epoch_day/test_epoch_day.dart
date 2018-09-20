@@ -10,7 +10,8 @@
 import 'package:core/server.dart';
 
 void main() {
-  // Year range is -1 million BCE to 1 million CE. Since Epoch 0 is 1970 we shift by that.
+  // Year range is -1 million BCE to 1 million CE.
+  // Since Epoch 0 is 1970 we shift by that.
   Server.initialize(
       name: 'test_epoch_day',
       // These next two values allow this program to run all valid
@@ -28,7 +29,7 @@ void main() {
 
   final zeroDay = dateToEpochDay(1970, 1, 1);
   log.debug('zeroDay: $zeroDay');
-  const zeroDate = const EpochDate(1970, 1, 1);
+  const zeroDate = EpochDate(1970, 1, 1);
   log.debug('zeroDayAsList: $zeroDate');
 
   assert(zeroDay == 0, '1970-01-01 is day 0');
@@ -54,13 +55,13 @@ void main() {
 
 void leapYearTest(int startYear, int endYear) {
   log.info0('leapYearTest');
-  final watch = new Stopwatch()..start();
+  final watch = Stopwatch()..start();
   for (var i = startYear; i < endYear; i++) {
     final date = EpochDate.fromDay(i);
     final y = date.year;
-    log.debug(
-        'year: $y, isCommonYear: ${isCommonYear(y)}, isLeapYear: ${isLeapYear(y)}'
-        'i % 4: ${i % 4}, isLeapYear: ${isLeapYear(i)}');
+    log.debug('year: $y, isCommonYear: ${isCommonYear(y)}, '
+        'isLeapYear: ${isLeapYear(y)}i % 4: ${i % 4}, '
+        'isLeapYear: ${isLeapYear(i)}');
     final m = date.month;
     final d = date.day;
     final n = dateToEpochDay(y, m, d);
@@ -78,7 +79,7 @@ void leapYearTest(int startYear, int endYear) {
 
 void dateBasicTest(int startYear, int endYear) {
   log.info0('conversionTest...');
-  final watch = new Stopwatch()..start();
+  final watch = Stopwatch()..start();
   for (var i = startYear; i < endYear; i++) {
     final date = EpochDate.fromDay(i);
     log.debug('date: $date');
@@ -109,7 +110,7 @@ void dateUnitTest(int startYear, int endYear) {
   final wd = weekdayFromEpochDay(zeroDay);
   assert(wd == 4);
 
-  final watch = new Stopwatch()..start();
+  final watch = Stopwatch()..start();
   var previousEpochDay = eStart - 1;
   assert(previousEpochDay < 0);
 //  log.debug('  Previous Epoch Day: $previousEpochDay');
@@ -157,7 +158,7 @@ void dateUnitTest(int startYear, int endYear) {
 }
 
 void weekDayFromEpochDay(int epochStartDay, int epochEndDay) {
-  final watch = new Stopwatch();
+  final watch = Stopwatch();
   log.info0('weekdayFromEpochDay0\n'
       ' weekDayFromDay: days >= 0');
   const zeroWeekDay = 4;

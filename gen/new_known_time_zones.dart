@@ -12,70 +12,72 @@ import 'package:core/server.dart';
 
 // TODO: Move to generator package
 void main() {
-	Server.initialize();
+  Server.initialize();
 
-	var tableOut = 'const List kKnownTimeZones = const [\n  ${TimeZone.unknown}\n';
-	var usOut = 'const List kTimeZonesInMicroseconds = const [\n  -1, ';
-	var tzDicomStringListOut = 'const List kDicomStringList = const [\n  '',\n  ';
-	var tzInetStringListOut = 'const List kInetStringList = const [\n  '',\n  ';
-	var tzDicomStringMapOut = 'const List kDicomStrings = const {\n  '',\n  ';
-	var tzInetStringMapOut = 'const List kInetStrings = const {\n  '',\n  ';
+  var tableOut =
+      'const List kKnownTimeZones = const [\n  ${TimeZone.unknown}\n';
+  var usOut = 'const List kTimeZonesInMicroseconds = const [\n  -1, ';
+  var tzDicomStringListOut =
+      'const List kDicomStringList = const [\n  ' ',\n  ';
+  var tzInetStringListOut = 'const List kInetStringList = const [\n  ' ',\n  ';
+  var tzDicomStringMapOut = 'const List kDicomStrings = const {\n  ' ',\n  ';
+  var tzInetStringMapOut = 'const List kInetStrings = const {\n  ' ',\n  ';
 
-	final definitions = <String>[];
-	final members = <String>[];
-	final tzs =  <String>[];
-	final usList = <String>[];
-	final dicomList = <String>[];
-	final inetList = <String>[];
-	final dicomStringToUSMap = <String>[];
-	final inetStringToUSMap = <String>[];
-	final dicomStringToTZMap = <String>[];
-	final inetStringToTZMap = <String>[];
+  final definitions = <String>[];
+  final members = <String>[];
+  final tzs = <String>[];
+  final usList = <String>[];
+  final dicomList = <String>[];
+  final inetList = <String>[];
+  final dicomStringToUSMap = <String>[];
+  final inetStringToUSMap = <String>[];
+  final dicomStringToTZMap = <String>[];
+  final inetStringToTZMap = <String>[];
 
-	for (TimeZone tz in baseTimeZones) {
-				final int index = tz[0] - 1;
-		int hour = tz[1];
-		final int minute = tz[2];
-		final int token = tz[3];
-		final sign = (hour.isNegative) ? -1 : 1;
-		final signChar = (hour.isNegative) ? '-' : '+';
-		hour = hour.abs();
-		final us = timeZoneToMicroseconds(sign, hour, minute);
-		final dicom = '"$signChar${digits2(hour)}${digits2(minute)}"';
-		final inet = '"$signChar${digits2(hour)}${digits2(minute)}"';
-		tzs.add('const [$index, $hour, $minute, $us, "$token", "$dicom", "$inet"]');
-		usList.add('$us');
+  for (TimeZone tz in baseTimeZones) {
+    final int index = tz[0] - 1;
+    int hour = tz[1];
+    final int minute = tz[2];
+    final int token = tz[3];
+    final sign = (hour.isNegative) ? -1 : 1;
+    final signChar = (hour.isNegative) ? '-' : '+';
+    hour = hour.abs();
+    final us = timeZoneToMicroseconds(sign, hour, minute);
+    final dicom = '"$signChar${digits2(hour)}${digits2(minute)}"';
+    final inet = '"$signChar${digits2(hour)}${digits2(minute)}"';
+    tzs.add('const [$index, $hour, $minute, $us, "$token", "$dicom", "$inet"]');
+    usList.add('$us');
 
-		definitions.add('static const TimeZone kTZ$index = const TimeZone._($index, $hour, '
-				                '$minute, '
-				                '$us, "$token", $dicom);');
-		members.add('kTZ$index');
-		dicomList.add(dicom);
-		inetList.add(inet);
-		dicomStringToUSMap.add('"$dicom": $us');
-		inetStringToUSMap.add('"$inet": $us');
-		dicomStringToTZMap.add('"$dicom": TimeZone.k$index');
-		inetStringToTZMap.add('"$inet": TimeZone.k$index');
-	}
-	tableOut += '${tzs.join(',\n  ')}\n];\n';
-	usOut += usList.join(', ');
-	tzDicomStringListOut += '${dicomList.join(', ')}\n];\n';
-	tzInetStringListOut += '${inetList.join(', ')}\n];\n';
-	tzDicomStringMapOut += '${dicomStringToUSMap.join(',\n  ')}\n};\n';
-	tzInetStringMapOut += '${inetStringToUSMap.join(',\n  ')}\n};\n';
-	tzDicomStringMapOut += '${dicomStringToTZMap.join(',\n  ')}\n};\n';
-	tzInetStringMapOut += '${inetStringToTZMap.join(',\n  ')}\n};\n';
+    definitions.add(
+        'static const TimeZone kTZ$index = const TimeZone._($index, $hour, '
+        '$minute, '
+        '$us, "$token", $dicom);');
+    members.add('kTZ$index');
+    dicomList.add(dicom);
+    inetList.add(inet);
+    dicomStringToUSMap.add('"$dicom": $us');
+    inetStringToUSMap.add('"$inet": $us');
+    dicomStringToTZMap.add('"$dicom": TimeZone.k$index');
+    inetStringToTZMap.add('"$inet": TimeZone.k$index');
+  }
+  tableOut += '${tzs.join(',\n  ')}\n];\n';
+  usOut += usList.join(', ');
+  tzDicomStringListOut += '${dicomList.join(', ')}\n];\n';
+  tzInetStringListOut += '${inetList.join(', ')}\n];\n';
+  tzDicomStringMapOut += '${dicomStringToUSMap.join(',\n  ')}\n};\n';
+  tzInetStringMapOut += '${inetStringToUSMap.join(',\n  ')}\n};\n';
+  tzDicomStringMapOut += '${dicomStringToTZMap.join(',\n  ')}\n};\n';
+  tzInetStringMapOut += '${inetStringToTZMap.join(',\n  ')}\n};\n';
 
-	print(definitions.join('\n'));
-	print(members.join(', '));
+  print(definitions.join('\n'));
+  print(members.join(', '));
 
-	print(tableOut);
-	print(usOut);
-	print(tzDicomStringListOut);
-	print(tzInetStringListOut);
-	print(tzDicomStringMapOut);
-	print(tzInetStringMapOut);
-
+  print(tableOut);
+  print(usOut);
+  print(tzDicomStringListOut);
+  print(tzInetStringListOut);
+  print(tzDicomStringMapOut);
+  print(tzInetStringMapOut);
 }
 
 String genTimeZone() => '''
@@ -126,12 +128,9 @@ class TimeZone {
   const TimeZone(this.index, this.hour, this.minute, this.token);
 
   int get microseconds =>
-      (hour * kMicrosecondsPerHour) +
-          (minute * kMicrosecondsPerHour);
+      (hour * kMicrosecondsPerHour) + (minute * kMicrosecondsPerHour);
 
   static const Y = TimeZone(1, -12, 00, 'Y');
-
-
 
   static const unknown = TimeZone(0, -999, 999, 'Invalid');
   static const Y = TimeZone(1, -12, 00, 'Y');
@@ -174,7 +173,7 @@ class TimeZone {
   static const A = TimeZone(38, 13, 00, 'M');
   static const A = TimeZone(39, 14, 00, 'M');
 
-  static const TimeZone kTZ0 = const TimeZone(0, -999, 999, 'Unknown');
+  static const TimeZone kTZ0 = TimeZone(0, -999, 999, 'Unknown');
 }
 
 /*
@@ -223,8 +222,8 @@ const List kKnownTimeZones = const <List<Object>>[
 ];
 */
 
-const List kTimeZonesInMicroseconds = const <int>[
-  -1,  //No reformat
+const List kTimeZonesInMicroseconds = <int>[
+  -1, //No reformat
   -43200000000, -39600000000, -36000000000, -34200000000, -32400000000,
   -28800000000, -25200000000, -21600000000, -18000000000, -14400000000,
   -12600000000, -10800000000, -7200000000, -3600000000, 0, 3600000000,
@@ -234,6 +233,3 @@ const List kTimeZonesInMicroseconds = const <int>[
   34200000000, 36000000000, 37800000000, 39600000000, 43200000000,
   45900000000, 46800000000, 50400000000
 ];
-
-
-

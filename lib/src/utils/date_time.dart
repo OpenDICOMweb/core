@@ -40,7 +40,7 @@ const int kAbsoluteMinEpochDay = -53375995;
 const int kAbsoluteMaxEpochDay = 52656527;
 const int kEpochDayZero = 0;
 const int kEpochDayZeroInMicroseconds = 0;
-const EpochDate kEpochDateZero = const EpochDate(1970, 1, 1);
+const EpochDate kEpochDateZero = EpochDate(1970, 1, 1);
 const int kEpochDayZeroWeekday = kThursday;
 
 // The number of days between 0000-03-01 (March 1, 0000) and
@@ -59,7 +59,7 @@ const int k1960InEpochMicroseconds = -3653 * kMicrosecondsPerDay;
 const int kACRBaselineDay = k1960InEpochDays;
 const int kACRBaselineMicroseconds = k1960InEpochMicroseconds;
 
-const List<String> weekdayNames = const <String>[
+const List<String> weekdayNames = <String>[
   'Sunday', 'Monday', 'Tuesday', 'Wednesday',
   'Thursday', 'Friday', 'Saturday' // no reformat
 ];
@@ -72,11 +72,11 @@ const int kThursday = 4;
 const int kFriday = 5;
 const int kSaturday = 6;
 
-const List<int> daysInCommonYearMonth = const <int>[
+const List<int> daysInCommonYearMonth = <int>[
   0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 //keep
 ];
 
-const List<int> daysInLeapYearMonth = const <int>[
+const List<int> daysInLeapYearMonth = <int>[
   0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 //keep
 ];
 

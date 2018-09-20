@@ -45,10 +45,10 @@ void analyze() {
 Future unittest() async {
   if (runAsync) {
     log('Unit Tests (running asynchronously)...');
-    await new TestRunner().testAsync();
+    await TestRunner().testAsync();
   } else {
     log('Unit Tests (running synchronously)...');
-    new PubApp.local('test').run([]);
+    PubApp.local('test').run([]);
     // new TestRunner();
   }
 }
@@ -71,7 +71,7 @@ void format() {
 String dartDocPath = 'C:/acr/acrodw/core/doc/core';
 
 /// The default directory for core docs output
-Directory dartDocDir = new Directory('C:/acr/acrodw/doc/core');
+Directory dartDocDir = Directory('C:/acr/acrodw/doc/core');
 
 /// Generate Documentation for core package.
 @Task('DartDoc')
@@ -119,8 +119,8 @@ void buildRelease() {
 void compile() {
   log('Dart Dev Compiler: Compiling...');
   const dartDevCOutPath = 'dart_dev_output';
-  final dartDevCOutputDir = new Directory(dartDevCOutPath);
-  new DevCompiler().compile('lib', dartDevCOutputDir);
+  final dartDevCOutputDir = Directory(dartDevCOutPath);
+  DevCompiler().compile('lib', dartDevCOutputDir);
 }
 
 /// Test the JavaScript files
@@ -128,9 +128,7 @@ void compile() {
 //TODO: test
 //TODO: make sure this runs the .js files
 @Depends(build)
-void testJavaScript() {
-  new PubApp.local('test').run([]);
-}
+void testJavaScript() => PubApp.local('test').run([]);
 
 /// Clean the core package. Used before release.
 @Task('Cleaning...')

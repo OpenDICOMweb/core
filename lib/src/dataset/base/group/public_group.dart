@@ -38,7 +38,7 @@ class PublicGroup implements GroupBase {
 
   @override
   void add(Element e0, Dataset sqParent) {
-    // members[e.code] = new SQtag.from(sq);
+    // members[e.code] = SQtag.from(sq);
     members[e0.code] = e0;
     if (e0 is SQ) {
       sequences.add(e0);
@@ -50,7 +50,7 @@ class PublicGroup implements GroupBase {
   @override
   String get info {
     final s = '$runtimeType(${hex16(gNumber)}): ${members.values.length}';
-    final sb = new Indenter(s)..down;
+    final sb = Indenter(s)..down;
     members.values.forEach(sb.writeln);
     sb.up;
     return '$sb';

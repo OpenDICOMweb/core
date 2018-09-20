@@ -58,7 +58,7 @@ class Uid {
       if (wk != null) return wk;
       if (!isValidUidString(v)) return invalidUidString(v);
     }
-    return new Uid._(v);
+    return Uid._(v);
   }
 
   /// Used by internal random generators
@@ -69,15 +69,15 @@ class Uid {
 
   /// Returns a [String] containing a random UID as per the
   /// See Dart sdk/math/Random.
-  factory Uid.seededPseudo() => new Uid._(generateSeededPseudoUidString());
+  factory Uid.seededPseudo() => Uid._(generateSeededPseudoUidString());
 
   /// Returns a [String] containing a random UID as per the
   /// See Dart sdk/math/Random.
-  factory Uid.pseudo() => new Uid._(generatePseudoUidString());
+  factory Uid.pseudo() => Uid._(generatePseudoUidString());
 
   /// Returns a [String] containing a _secure_ random UID.
   /// See Dart sdk/math/Random.
-  factory Uid.secure() => new Uid._(generateSecureUidString());
+  factory Uid.secure() => Uid._(generateSecureUidString());
 
   @override
   bool operator ==(Object other) =>
@@ -123,7 +123,7 @@ class Uid {
   static const int kMaxRootLength = kUidMaxRootLength;
 
   /// An empty [List<Uid>].
-  static const List<Uid> kEmptyList = const <Uid>[];
+  static const List<Uid> kEmptyList = <Uid>[];
 
   /// ASCII constants for '0', '1', and '2'. No other roots are valid.
   static const List<String> uidRoots = kUidRoots;
@@ -194,7 +194,7 @@ class Uid {
     final v = cleanUidString(s);
     if (Uid.isValidString(v)) {
       final wk = wellKnownUids[v];
-      return (wk != null) ? wk : new Uid(v);
+      return (wk != null) ? wk : Uid(v);
     }
     return invalidUidString(s);
   }
@@ -207,7 +207,7 @@ class Uid {
   /// an [InvalidUidError] is thrown.
   static List<Uid> parseList(List<String> sList, {OnUidParseError onError}) {
     if (sList.isEmpty) return kEmptyList;
-    final uids = new List<Uid>(sList.length);
+    final uids = List<Uid>(sList.length);
     for (var i = 0; i < sList.length; i++) uids[i] = Uid.tryParse(sList[i]);
     return uids;
   }
@@ -219,7 +219,7 @@ class Uid {
   /// at the corresponding position in the resulting list.
   static List<Uid> tryParseList(List<String> sList) {
     if (sList.isEmpty) return kEmptyList;
-    final uids = new List<Uid>(sList.length);
+    final uids = List<Uid>(sList.length);
     for (var i = 0; i < sList.length; i++) uids[i] = tryParse(sList[i]);
     return uids;
   }
@@ -230,8 +230,8 @@ class Uid {
 
   /// Returns a [list<Uid>] of [Uid] generated from random [Uuid]s.
   static List<Uid> randomList(int length) {
-    final uList = new List<Uid>(length);
-    for (var i = 0; i < length; i++) uList[i] = new Uid();
+    final uList = List<Uid>(length);
+    for (var i = 0; i < length; i++) uList[i] = Uid();
     return uList;
   }
 

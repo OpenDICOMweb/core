@@ -57,9 +57,7 @@ abstract class TagMixinBase<V> {
   }
 
   bool isValidValues(Tag tag, List<V> vList, [Issues issues]) =>
-      vList is List<V> &&
-      isValidLength(tag, vList) &&
-      _isValidValues(vList);
+      vList is List<V> && isValidLength(tag, vList) && _isValidValues(vList);
 
   bool _isValidValues(List<V> vList) {
     for (var v in vList) if (isNotValidValue(v)) return false;
@@ -94,7 +92,7 @@ abstract class TagMixinBase<V> {
 
   /// Returns _true_ if [values].length is valid for _this_.
   bool get hasValidLength =>
-      (values.length >= minLength && values.length <= maxLength);
+      values.length >= minLength && values.length <= maxLength;
 
   /// Returns _true_ if all [values] are valid for _this_.
   bool get hasValidValues => isValidValues(tag, values);

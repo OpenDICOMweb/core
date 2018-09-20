@@ -28,7 +28,7 @@ class InvalidElementError extends Error {
 Null badElement(String message, [Element e, Issues issues]) {
   log.error(message);
   if (issues != null) issues.add(message);
-  if (throwOnError) throw new InvalidElementError(message);
+  if (throwOnError) throw InvalidElementError(message);
   return null;
 }
 
@@ -72,14 +72,14 @@ Null badUidElement(Element e, [Issues issues]) {
 
 Null sha256Unsupported(Element e, [Issues issues]) {
   final msg = 'SHA256 not supported for this Element: $e';
-  return throw new UnsupportedError(msg);
+  return throw UnsupportedError(msg);
 }
 
 Null badValueField(String message, [Bytes vfBytes, Issues issues]) {
   final msg = _invalidVFMsg(message, vfBytes);
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidValueFieldError(msg, vfBytes);
+  if (throwOnError) throw InvalidValueFieldError(msg, vfBytes);
   return null;
 }
 
@@ -108,7 +108,7 @@ Null _badValuesError(String msg, Object vList, Issues issues, Tag tag) {
   final s = '$msg${(tag == null) ? "" : " for $tag"}';
   log.error(s);
   if (issues != null) issues.add(s);
-  if (throwOnError) throw new InvalidValuesError(s, vList);
+  if (throwOnError) throw InvalidValuesError(s, vList);
   return null;
 }
 

@@ -35,20 +35,20 @@ class ListRootDataset extends RootDataset with ListDataset {
 
   /// Creates an empty, i.e. without [Element]s, [ListRootDataset].
   ListRootDataset.empty(String path, Bytes bd, int fmiEnd)
-      : fmi = new FmiList.empty(),
+      : fmi = FmiList.empty(),
         codes = <int>[],
         elements = <Element>[],
         super(path, bd, fmiEnd);
 
   /// Creates a [ListRootDataset] from another [ListRootDataset].
   ListRootDataset.from(ListRootDataset rds)
-      : fmi = new FmiList.from(rds.fmi),
-        codes = new List<int>.from(rds.codes),
-        elements = new List<Element>.from(rds.elements),
+      : fmi = FmiList.from(rds.fmi),
+        codes = List<int>.from(rds.codes),
+        elements = List<Element>.from(rds.elements),
         super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
 
 
-  RootDataset copy([RootDataset rds]) => new ListRootDataset.from(rds ?? this);
+  RootDataset copy([RootDataset rds]) => ListRootDataset.from(rds ?? this);
 }
 
 class FmiList extends Fmi with ListDataset {
@@ -67,8 +67,8 @@ class FmiList extends Fmi with ListDataset {
         elements = <Element>[];
 
   FmiList.from(FmiList fmi)
-      : codes = new List<int>.from(fmi.codes),
-        elements = new List<Element>.from(fmi.elements);
+      : codes = List<int>.from(fmi.codes),
+        elements = List<Element>.from(fmi.elements);
 
   @override
   Element operator [](int code) {

@@ -16,8 +16,7 @@ PDTagDefinition lookupPCTag(String creatorToken, int pdCode) {
   return pdTags[pdCode];
 }
 
-const Map<String, Map<int, PDTagDefinition>> creatorIdMap =
-    const <String, Map<int, PDTagDefinition>>{
+const Map<String, Map<int, PDTagDefinition>> creatorIdMap = {
   '1.2.840.113681': Uid_1_2_840_113681,
   '1.2.840.113708.794.1.1.2.0': Uid_1_2_840_113708_794_1_1_2_0,
   'ACUSON': ACUSON,

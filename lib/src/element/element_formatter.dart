@@ -80,8 +80,8 @@ abstract class ElementFormatter {
     final values = e.values;
     final vLength = values.length;
 
-    final name = (debugMode) ? '$runtimeType' : '';
-    final sb = new StringBuffer(name)
+    final name = debugMode ? '$runtimeType' : '';
+    final sb = StringBuffer(name)
       ..write(tag(e, vLength))
       ..write(_vfLength(vfLength))
       ..write(_values(values, maxValues));
@@ -168,7 +168,7 @@ class DebugEFormatter extends ElementFormatter with ByteElementMixin {
     final values = e.values;
     final vLength = values.length;
 
-    final sb = new StringBuffer('$runtimeType: ')
+    final sb = StringBuffer('$runtimeType: ')
       ..write(tag(e, vLength))
       ..write(_vfLength(vfLength));
     _valuesToSB(sb, e, maxValues);

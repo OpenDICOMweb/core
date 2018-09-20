@@ -92,13 +92,12 @@ abstract class Int8 {
   static Int8List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     if (vList == null || vList.isEmpty) return kEmptyInt8List;
-    if (vList is Int8List)
-      return (asView) ? vList : new Int8List.fromList(vList);
+    if (vList is Int8List) return asView ? vList : Int8List.fromList(vList);
     if (check) {
-      final td = new Int8List(vList.length);
+      final td = Int8List(vList.length);
       return _copyList(vList, td, kMinValue, kMaxValue);
     }
-    return new Int8List.fromList(vList);
+    return Int8List.fromList(vList);
   }
 
   static Int8List toInt8List(Iterable<int> vList,
@@ -109,9 +108,9 @@ abstract class Int8 {
       {bool asView = true, bool check = true}) {
     assert(vList != null);
     if (vList is Int8List) return vList;
-    if ((check && _isNotValidList(vList, kMinValue, kMaxValue)))
+    if (check && _isNotValidList(vList, kMinValue, kMaxValue))
       return badValues(vList);
-    return new Int8List.fromList(vList);
+    return Int8List.fromList(vList);
   }
 
   /// Returns a [Int8List] from a [base64] [String].
@@ -136,7 +135,7 @@ abstract class Int8 {
     if (td.lengthInBytes == 0) return Integer.kEmptyList;
     final length = td.lengthInBytes;
     final asInt8List = td.buffer.asInt8List(td.offsetInBytes, length);
-    return (asView) ? asInt8List : new Int8List.fromList(asInt8List);
+    return asView ? asInt8List : Int8List.fromList(asInt8List);
   }
 
   static List<int> fromValueField(Iterable vf) {
@@ -218,14 +217,13 @@ abstract class Int16 {
   static Int16List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     if (vList == null || vList.isEmpty) return kEmptyInt16List;
-    if (vList is Int16List)
-      return (asView) ? vList : new Int16List.fromList(vList);
+    if (vList is Int16List) return asView ? vList : Int16List.fromList(vList);
     if (check) {
-      final td = new Int16List(vList.length);
+      final td = Int16List(vList.length);
       final Int16List v = _copyList(vList, td, kMinValue, kMaxValue);
       return v;
     }
-    return new Int16List.fromList(vList);
+    return Int16List.fromList(vList);
   }
 
   /// Returns a [Int16List] from a [base64] [String].
@@ -249,14 +247,14 @@ abstract class Int16 {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final vList = new Int16List(length);
+      final vList = Int16List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         vList[i] = bd.getInt16(oib, Endian.little);
       // Returning a new list
       return vList;
     }
     final i16List = bd.buffer.asInt16List(bd.offsetInBytes, length);
-    return (asView) ? i16List : new Int16List.fromList(i16List);
+    return asView ? i16List : Int16List.fromList(i16List);
   }
 
   static bool _isNotAligned(TypedData vList) =>
@@ -286,7 +284,7 @@ abstract class Int32 {
   int get maxValue => kMaxValue;
 
   Int32List get typedData =>
-      (values is Int32List) ? values : new Int32List.fromList(values);
+      (values is Int32List) ? values : Int32List.fromList(values);
 
   Integer get sha256 => update(Sha256.int32(typedData));
 
@@ -345,13 +343,12 @@ abstract class Int32 {
   static Int32List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     if (vList == null || vList.isEmpty) return kEmptyInt32List;
-    if (vList is Int32List)
-      return (asView) ? vList : new Int32List.fromList(vList);
+    if (vList is Int32List) return asView ? vList : Int32List.fromList(vList);
     if (check) {
-      final td = new Int32List(vList.length);
+      final td = Int32List(vList.length);
       return _copyList(vList, td, kMinValue, kMaxValue);
     }
-    return new Int32List.fromList(vList);
+    return Int32List.fromList(vList);
   }
 
   /// Returns a [Int32List] from a [base64] [String].
@@ -374,13 +371,13 @@ abstract class Int32 {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final nList = new Int32List(length);
+      final nList = Int32List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         nList[i] = bd.getInt32(oib, Endian.little);
       return nList;
     }
     final i32List = bd.buffer.asInt32List(bd.offsetInBytes, length);
-    return (asView) ? i32List : new Int32List.fromList(i32List);
+    return asView ? i32List : Int32List.fromList(i32List);
   }
 
   static bool _isNotAligned(TypedData vList) =>
@@ -465,13 +462,12 @@ abstract class Int64 {
   static Int64List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     if (vList == null || vList.isEmpty) return kEmptyInt64List;
-    if (vList is Int64List)
-      return (asView) ? vList : new Int64List.fromList(vList);
+    if (vList is Int64List) return asView ? vList : Int64List.fromList(vList);
     if (check) {
-      final td = new Int64List(vList.length);
+      final td = Int64List(vList.length);
       return _copyList(vList, td, kMinValue, kMaxValue);
     }
-    return new Int64List.fromList(vList);
+    return Int64List.fromList(vList);
   }
 
   /// Returns a [Int64List] from a [base64] [String].
@@ -495,13 +491,13 @@ abstract class Int64 {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final nList = new Int64List(length);
+      final nList = Int64List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         nList[i] = bd.getInt64(oib, Endian.little);
       return nList;
     }
     final f64List = bd.buffer.asInt64List(bd.offsetInBytes, length);
-    return (asView) ? f64List : new Int64List.fromList(f64List);
+    return asView ? f64List : Int64List.fromList(f64List);
   }
 
   static bool _isNotAligned(TypedData vList) =>
@@ -603,12 +599,12 @@ abstract class Uint8 {
       {bool asView = true, bool check = true}) {
     if (vList == null || vList.isEmpty) return kEmptyUint8List;
     if (vList is Uint8List)
-      return (asView == true) ? vList : new Uint8List.fromList(vList);
+      return asView == true ? vList : Uint8List.fromList(vList);
     if (check) {
-      final td = new Uint8List(vList.length);
+      final td = Uint8List(vList.length);
       return _copyList(vList, td, kMinValue, kMaxValue);
     }
-    return new Uint8List.fromList(vList);
+    return Uint8List.fromList(vList);
   }
 
   /// Returns a [Uint8List] from a [Bytes].
@@ -635,7 +631,7 @@ abstract class Uint8 {
     assert(bd != null);
     if (bd.lengthInBytes == 0) return Integer.kEmptyList;
     final bList = asUint8List(bd);
-    return (asView) ? bList : new Uint8List.fromList(bList);
+    return asView ? bList : Uint8List.fromList(bList);
   }
 
   static List<int> fromValueField(Iterable vf) {
@@ -729,13 +725,12 @@ abstract class Uint16 {
   static Uint16List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     if (vList == null || vList.isEmpty) return kEmptyUint16List;
-    if (vList is Uint16List)
-      return (asView) ? vList : new Uint16List.fromList(vList);
+    if (vList is Uint16List) return asView ? vList : Uint16List.fromList(vList);
     if (check) {
-      final td = new Uint16List(vList.length);
+      final td = Uint16List(vList.length);
       return _copyList(vList, td, kMinValue, kMaxValue);
     }
-    return new Uint16List.fromList(vList);
+    return Uint16List.fromList(vList);
   }
 
   /// Returns a [Uint16List] from a [Bytes].
@@ -767,14 +762,14 @@ abstract class Uint16 {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final vList = new Uint16List(length);
+      final vList = Uint16List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         vList[i] = bd.getUint16(oib, Endian.little);
       // Returning a new list
       return vList;
     }
     final u16List = bd.buffer.asUint16List(bd.offsetInBytes, length);
-    return (asView) ? u16List : new Uint16List.fromList(u16List);
+    return asView ? u16List : Uint16List.fromList(u16List);
   }
 
   static bool _isNotAligned(TypedData vList) =>
@@ -871,13 +866,12 @@ abstract class Uint32 {
   static Uint32List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     if (vList == null || vList.isEmpty) return kEmptyUint32List;
-    if (vList is Uint32List)
-      return (asView) ? vList : new Uint32List.fromList(vList);
+    if (vList is Uint32List) return asView ? vList : Uint32List.fromList(vList);
     if (check) {
-      final td = new Uint32List(vList.length);
+      final td = Uint32List(vList.length);
       return _copyList(vList, td, kMinValue, kMaxValue);
     }
-    return new Uint32List.fromList(vList);
+    return Uint32List.fromList(vList);
   }
 
   /// Returns a [Uint16List] from a [Bytes].
@@ -905,13 +899,13 @@ abstract class Uint32 {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final nList = new Uint32List(length);
+      final nList = Uint32List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         nList[i] = bd.getInt32(oib, Endian.little);
       return nList;
     }
     final u32List = bd.buffer.asUint32List(bd.offsetInBytes, length);
-    return (asView) ? u32List : new Uint32List.fromList(u32List);
+    return asView ? u32List : Uint32List.fromList(u32List);
   }
 
   static bool _isNotAligned(TypedData vList) =>
@@ -1005,13 +999,12 @@ abstract class Uint64 {
   static Uint64List fromList(Iterable<int> vList,
       {bool asView = true, bool check = true}) {
     if (vList == null || vList.isEmpty) return kEmptyUint64List;
-    if (vList is Uint64List)
-      return (asView) ? vList : new Uint64List.fromList(vList);
+    if (vList is Uint64List) return asView ? vList : Uint64List.fromList(vList);
     if (check) {
-      final td = new Uint64List(vList.length);
+      final td = Uint64List(vList.length);
       return _copyList(vList, td, kMinValue, kMaxValue);
     }
-    return new Uint64List.fromList(vList);
+    return Uint64List.fromList(vList);
   }
 
   /// Returns a [Uint64List] from a [Bytes].
@@ -1039,13 +1032,13 @@ abstract class Uint64 {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final nList = new Uint64List(length);
+      final nList = Uint64List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         nList[i] = bd.getUint64(oib, Endian.little);
       return nList;
     }
     final f64List = bd.buffer.asUint64List(bd.offsetInBytes, length);
-    return (asView) ? f64List : new Uint64List.fromList(f64List);
+    return asView ? f64List : Uint64List.fromList(f64List);
   }
 
   static bool _isNotAligned(TypedData vList) =>

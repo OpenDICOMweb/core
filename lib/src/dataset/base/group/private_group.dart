@@ -40,7 +40,7 @@ class PrivateGroups {
       return badElement('$gNumber > $_currentGNumber', e);
     } else {
       _currentGNumber = gNumber;
-      _currentGroup = new PrivateGroup(e);
+      _currentGroup = PrivateGroup(e);
       final gp = _groups.putIfAbsent(gNumber, () => _currentGroup);
       if (gp != _currentGroup) {
         if (throwOnError) throw 'Group $gNumber already exits';
@@ -53,7 +53,7 @@ class PrivateGroups {
 
   @override
   String toString() {
-    final sb = new StringBuffer('Dataset: $ds');
+    final sb = StringBuffer('Dataset: $ds');
     _groups.forEach((gNum, pGroup) => sb.writeln('$gNum: $pGroup'));
     return '$sb';
   }
@@ -165,7 +165,7 @@ class PrivateGroup implements GroupBase {
       invalidSubgroupNumber(_currentSGNumber, sgNumber);
     } else if (sgNumber > _currentSGNumber) {
       _currentSGNumber = sgNumber;
-      _currentSubgroup = new PrivateSubgroup(this, sgNumber);
+      _currentSubgroup = PrivateSubgroup(this, sgNumber);
       subgroups[sgNumber] = _currentSubgroup;
     }
   }

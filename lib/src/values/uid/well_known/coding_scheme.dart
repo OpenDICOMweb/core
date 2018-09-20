@@ -27,24 +27,27 @@ class CodingSchemeUid extends WKUid {
 
   static List<String> get strings => _map.keys;
 
-  static const CodingSchemeUid kDicomUIDRegistry = const CodingSchemeUid('1.2.840.10008.2.6.1',
-      'DICOMUIDRegistry', UidType.kCodingScheme, 'DICOM UID Registry');
+  static const CodingSchemeUid kDicomUIDRegistry = CodingSchemeUid(
+      '1.2.840.10008.2.6.1',
+      'DICOMUIDRegistry',
+      UidType.kCodingScheme,
+      'DICOM UID Registry');
 
-  static const CodingSchemeUid kDicomControlledTerminology = const CodingSchemeUid(
+  static const CodingSchemeUid kDicomControlledTerminology = CodingSchemeUid(
     '1.2.840.10008.2.16.4',
     'DICOMControlledTerminology',
     UidType.kCodingScheme,
     'DICOM Controlled Terminology',
   );
 
-  static const CodingSchemeUid kAdultMouseAnatomyTerminology = const CodingSchemeUid(
+  static const CodingSchemeUid kAdultMouseAnatomyTerminology = CodingSchemeUid(
     '1.2.840.10008.2.16.5',
     'AdultMouseAnatomyTerminology',
     UidType.kCodingScheme,
     'Adult Mouse Anatomy Terminology',
   );
 
-  static const CodingSchemeUid kUberonTerminology = const CodingSchemeUid(
+  static const CodingSchemeUid kUberonTerminology = CodingSchemeUid(
     '1.2.840.10008.2.16.6',
     'UberonTerminology',
     UidType.kCodingScheme,
@@ -53,7 +56,7 @@ class CodingSchemeUid extends WKUid {
 
   static const CodingSchemeUid
       kIntegratedTaxonomicInformationSystemAndTaxonomicSerialNumber =
-      const CodingSchemeUid(
+      CodingSchemeUid(
     '1.2.840.10008.2.16.7',
     'IntegratedTaxonomicInformationSystemAndTaxonomicSerialNumber',
     UidType.kCodingScheme,
@@ -61,26 +64,26 @@ class CodingSchemeUid extends WKUid {
         'Taxonomic Serial Number (TSN)',
   );
 
-  static const CodingSchemeUid kMouseGenomeInitiative = const CodingSchemeUid(
+  static const CodingSchemeUid kMouseGenomeInitiative = CodingSchemeUid(
     '1.2.840.10008.2.16.8',
     'MouseGenomeInitiative',
     UidType.kCodingScheme,
     'Mouse Genome Initiative (MGI)',
   );
 
-  static const CodingSchemeUid kPubChemCmpoundCID = const CodingSchemeUid(
+  static const CodingSchemeUid kPubChemCmpoundCID = CodingSchemeUid(
     '1.2.840.10008.2.16.9',
     'PubChemCmpoundCID',
     UidType.kCodingScheme,
     'PubChem Cmpound CID',
   );
 
-  static const List<CodingSchemeUid> members = const <CodingSchemeUid>[
+  static const List<CodingSchemeUid> members = <CodingSchemeUid>[
     kDicomUIDRegistry,
     kDicomControlledTerminology
   ];
 
-  static const Map<String, CodingSchemeUid> _map = const <String, CodingSchemeUid>{
+  static const Map<String, CodingSchemeUid> _map = <String, CodingSchemeUid>{
     '1.2.840.10008.2.6.1': kDicomUIDRegistry,
     '1.2.840.10008.2.16.4': kDicomControlledTerminology
   };

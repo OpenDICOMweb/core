@@ -30,7 +30,6 @@ bool listsEqual(List<Element> map0, List<Element> map1) =>
 int mapHash(List<Element> list) => listEquality.hash(list);
 
 abstract class ListDataset {
-
   /// A sorted [List] of Tag Codes increasing order.
   List<int> get codes;
 
@@ -45,7 +44,7 @@ abstract class ListDataset {
 
   void operator []=(int code, Element e) {
     assert(code == e.code);
-    final index = (codes.indexOf(code));
+    final index = codes.indexOf(code);
     if (index >= 0) {
       elements[index] = e;
     } else {
@@ -69,7 +68,7 @@ abstract class ListDataset {
 
   @override
   bool operator ==(Object other) =>
-      (other is ListDataset && listsEqual(elements, other.elements));
+      other is ListDataset && listsEqual(elements, other.elements);
 
   @override
   int get hashCode => mapHash(elements);
@@ -94,7 +93,7 @@ abstract class ListDataset {
   /// Removes the [Element] with [code] from _this_.
   Element removeAt(int code, {bool required = false}) {
     final index = codes.indexOf(code);
-    if(index < 0) return null;
+    if (index < 0) return null;
     codes.removeAt(index);
     return elements.removeAt(index);
   }
@@ -103,7 +102,7 @@ abstract class ListDataset {
   Element deleteCode(int code) => removeAt(code);
 
   /// Returns the [Element]s in _this_ as a [List<Element>]
-  List<Element> toList({bool growable: true}) =>
+  List<Element> toList({bool growable = true}) =>
       elements.toList(growable: false);
 
   @override

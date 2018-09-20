@@ -32,19 +32,16 @@ abstract class DeleteMixin {
 
   Element deleteCode(int index);
 
-
-  List<int> findAllPrivateCodes({bool recursive: false});
+  List<int> findAllPrivateCodes({bool recursive = false});
 
 // **** End Interface
-
-
 
   /// Removes the [Element] with [code] from _this_. If no [Element]
   /// with [code] is contained in _this_ returns _null_.
   Element delete(int code, {bool required = false}) {
     assert(code != null && !code.isNegative, 'Invalid index: $code');
     final e = lookup(code, required: required);
-    if (e == null) return (required) ? elementNotPresentError<int>(code) : null;
+    if (e == null) return required ? elementNotPresentError<int>(code) : null;
     return (remove(e)) ? e : null;
   }
 
@@ -66,14 +63,15 @@ abstract class DeleteMixin {
     final e = delete(index);
     if (e != null) results.add(e);
     assert(lookup(index) == null);
-    if (recursive) for (var e in elements) {
-      if (e is SQ) {
-        for (var item in e.items) {
-          final deleted = item.delete(index);
-          if (deleted != null) results.add(deleted);
+    if (recursive)
+      for (var e in elements) {
+        if (e is SQ) {
+          for (var item in e.items) {
+            final deleted = item.delete(index);
+            if (deleted != null) results.add(deleted);
+          }
         }
       }
-    }
     return results;
   }
 
@@ -84,8 +82,7 @@ abstract class DeleteMixin {
       if (test(e)) {
         delete(e.index);
         deleted.add(e);
-      } else
-      if (e is SQ) {
+      } else if (e is SQ) {
         for (var item in e.items) {
           final dList = item.deleteIfTrue(test, recursive: recursive);
           deleted.addAll(dList);
@@ -102,8 +99,8 @@ abstract class DeleteMixin {
       // Fix: you cant tell what sequence the element was in.
       for (var sq in sequences) {
         for (var i = 0; i < sq.items.length; i++) {
-          final Iterable<int> codes = sq.items.elementAt(i)
-              .findAllPrivateCodes();
+          final Iterable<int> codes =
+              sq.items.elementAt(i).findAllPrivateCodes();
           final elements = deleteCodes(codes);
           deleted.addAll(elements);
         }
@@ -127,6 +124,4 @@ abstract class DeleteMixin {
 
   Iterable<Element> deletePrivateGroup(int group, {bool recursive = false}) =>
       deleteIfTrue((e) => e.isPrivate && e.group.isOdd, recursive: recursive);
-
-
 }

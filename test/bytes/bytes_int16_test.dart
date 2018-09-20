@@ -13,17 +13,17 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'bytes_test.dart', level: Level.info);
-  final rng = new RNG();
+  final rng = RNG();
 //  group('Bytes Float Tests', () {
 
   final intList = [Int16.kMinValue, Int16.kMaxValue];
 
-  test('Basic Int16 tests', (){
-    final vList0 = new Int16List.fromList(intList);
+  test('Basic Int16 tests', () {
+    final vList0 = Int16List.fromList(intList);
     log.debug('vList0: $vList0');
 
     // Typed Data View
-    final bytes0 = new Bytes.typedDataView(vList0);
+    final bytes0 = Bytes.typedDataView(vList0);
     log.debug('bytes0: $bytes0');
     final vList1 = bytes0.asInt16List();
     log.debug('vList1: $vList1');
@@ -52,13 +52,12 @@ void main() {
     expect(vList4, equals(vList3));
     expect(vList4[0], equals(vList0[0]));
     expect(vList4[1], equals(vList0[1]));
-
   });
 
-  test('Basic Int16 offset tests', (){
-    final vList0 = new Int16List.fromList(intList);
+  test('Basic Int16 offset tests', () {
+    final vList0 = Int16List.fromList(intList);
     log.debug('vList0: $vList0');
-    final bytes0 = new Bytes.typedDataView(vList0);
+    final bytes0 = Bytes.typedDataView(vList0);
     log.debug('bytes0: $bytes0');
 
     // Test offset
@@ -72,19 +71,18 @@ void main() {
     // Test length
     final vList2 = vList0.sublist(0, 1);
     log.debug('vList1: $vList1');
-    final bList2= bytes0.asInt16List(0, 1);
+    final bList2 = bytes0.asInt16List(0, 1);
     log.debug('bList1: $bList1');
     expect(bList2, equals(vList2));
     expect(vList2[0], equals(vList0[0]));
 
     final vList3 = vList0.sublist(0, 2);
     log.debug('vList1: $vList1');
-    final bList3= bytes0.asInt16List(0, 2);
+    final bList3 = bytes0.asInt16List(0, 2);
     log.debug('bList1: $bList1');
     expect(bList3, equals(vList3));
     expect(vList3[0], equals(vList0[0]));
     expect(vList3[1], equals(vList0[1]));
-
   });
 
   test('Int16 tests', () {
@@ -92,7 +90,7 @@ void main() {
     log.debug('vList0: $vList0');
     expect(vList0 is Int16List, true);
 
-    final bytes0 = new Bytes.typedDataView(vList0);
+    final bytes0 = Bytes.typedDataView(vList0);
     log.debug('bytes0: $bytes0');
     expect(bytes0.length, equals(vList0.length * vList0.elementSizeInBytes));
 
@@ -100,7 +98,7 @@ void main() {
     log.debug('vList1: $vList1');
     expect(vList1, equals(vList0));
 
-    final bytes1 = new Bytes.typedDataView(vList1);
+    final bytes1 = Bytes.typedDataView(vList1);
     expect(bytes1.length, equals(vList1.length * vList1.elementSizeInBytes));
 
     final vList2 = bytes1.asInt16List();
@@ -108,7 +106,7 @@ void main() {
     expect(vList2, equals(vList0));
     expect(vList2, equals(vList1));
 
-    final bytes2 = new Bytes.typedDataView(vList2);
+    final bytes2 = Bytes.typedDataView(vList2);
     log.debug('bytes2: $bytes2');
     expect(bytes2.length, equals(vList2.length * vList2.elementSizeInBytes));
 
@@ -140,7 +138,7 @@ void main() {
       log.debug('$k: vList0:(${vList0.length}) $vList0');
       expect(vList0 is Int16List, true);
 
-      final bytes0 = new Bytes.typedDataView(vList0);
+      final bytes0 = Bytes.typedDataView(vList0);
       log.debug('$k: bytes0: $bytes0');
       expect(bytes0.buffer == vList0.buffer, true);
       expect(bytes0.length, equals(vList0.length * vList0.elementSizeInBytes));
@@ -168,11 +166,9 @@ void main() {
         expect(vList4, equals(vList2));
         expect(vList3.buffer == vList0.buffer, true);
         expect(vList4.buffer == bytes0.buffer, true);
-
       }
     }
   });
-
 
   test('Int16 sublist tests', () {
     const count = 10;
@@ -181,7 +177,7 @@ void main() {
       log.debug('$k: vList0:(${vList0.length}) $vList0');
       expect(vList0 is Int16List, true);
 
-      final bytes0 = new Bytes.typedDataView(vList0);
+      final bytes0 = Bytes.typedDataView(vList0);
       log.debug('$k: bytes0: $bytes0');
       expect(bytes0.buffer == vList0.buffer, true);
       expect(bytes0.length, equals(vList0.length * vList0.elementSizeInBytes));
@@ -235,7 +231,7 @@ void main() {
       log.debug('$k: vList0:(${vList0.length}) $vList0');
       expect(vList0 is Int16List, true);
 
-      final bytes0 = new Bytes.typedDataView(vList0);
+      final bytes0 = Bytes.typedDataView(vList0);
       log.debug('bytes0: $bytes0');
       expect(bytes0.buffer == vList0.buffer, true);
       expect(bytes0.length, equals(vList0.length * vList0.elementSizeInBytes));
@@ -243,10 +239,10 @@ void main() {
       for (var i = 0; i < vList0.length + 1; i++) {
         final j = i * 2;
         log.debug('i: $i offset $j length ${vList0.length - i}');
-        final vList1 = new Int16List.view(vList0.buffer, j, vList0.length - i);
+        final vList1 = Int16List.view(vList0.buffer, j, vList0.length - i);
         expect(vList1.buffer == vList0.buffer, true);
         log.debug('vList1: $vList1');
-        final vList2 = new Int16List.view(vList0.buffer, 0, vList0.length - i);
+        final vList2 = Int16List.view(vList0.buffer, 0, vList0.length - i);
         log.debug('vList2: $vList2');
         expect(vList2.buffer == vList0.buffer, true);
 

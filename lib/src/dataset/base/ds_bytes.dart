@@ -126,9 +126,8 @@ class RDSBytes extends DSBytes {
   int get rdsStart => fmiEnd;
   int get rdsEnd => dsEnd;
 
-  Uint8List get fmiBytes => (hasPrefix)
-      ? bytes.buffer.asUint8List(bytes.offset, 132)
-      : kEmptyUint8List;
+  Uint8List get fmiBytes =>
+      hasPrefix ? bytes.buffer.asUint8List(bytes.offset, 132) : kEmptyUint8List;
 
   @override
   int get vfLength => dsLength - 132;
@@ -155,9 +154,9 @@ class RDSBytes extends DSBytes {
   static const int kValueFieldOffset = 132;
   static const int kHeaderSize = 132;
 
-  static final RDSBytes kEmpty = new RDSBytes.empty();
+  static final RDSBytes kEmpty = RDSBytes.empty();
 
-  static RDSBytes make(Bytes bd, [int fmiEnd]) => new RDSBytes(bd, fmiEnd);
+  static RDSBytes make(Bytes bd, [int fmiEnd]) => RDSBytes(bd, fmiEnd);
 }
 
 /// Item Dataset Bytes ([IDSBytes]).
@@ -185,14 +184,14 @@ class IDSBytes extends DSBytes {
   int get vfLengthField => bytes.getUint32(kVFLengthFieldOffset);
 
   int get endDelimiter =>
-      (hasULength) ? getUint32(dsLength - kTrailerSize) : null;
+      hasULength ? getUint32(dsLength - kTrailerSize) : null;
   int get trailerLengthField =>
-      (hasULength) ? getUint32(dsLength - kTrailerSize) : 0;
+      hasULength ? getUint32(dsLength - kTrailerSize) : 0;
 
   bool get isValidItem =>
       startDelimiter == kStartDelimiter && hasValidEndDelimiter;
 
-  bool get hasValidEndDelimiter => (hasULength)
+  bool get hasValidEndDelimiter => hasULength
       ? endDelimiter == kEndDelimiter && trailerLengthField == 0
       : true;
 
@@ -201,7 +200,7 @@ class IDSBytes extends DSBytes {
   @override
   bool get hasULength => vfLengthField == kUndefinedLength;
 
-  int get trailerLength => (hasULength) ? kTrailerSize : 0;
+  int get trailerLength => hasULength ? kTrailerSize : 0;
 
   @override
   Bytes get vfBytes => bytes.asBytes(bytes.offset + kValueFieldOffset, dsEnd);
@@ -214,7 +213,7 @@ class IDSBytes extends DSBytes {
   static const int kStartDelimiter = kItem32BitLE;
   static const int kEndDelimiter = kItemDelimitationItem32BitLE;
 
-  static final IDSBytes kEmpty = new IDSBytes.empty();
+  static final IDSBytes kEmpty = IDSBytes.empty();
 
-  static IDSBytes make(Bytes bd) => new IDSBytes(bd);
+  static IDSBytes make(Bytes bd) => IDSBytes(bd);
 }

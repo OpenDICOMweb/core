@@ -11,10 +11,8 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
-const List<int> deIdFmiUidCodes = const <int>[
-  kMediaStorageSOPInstanceUID
-  ];
-const List<int> deIdUidCodes = const <int>[
+const List<int> deIdFmiUidCodes = <int>[kMediaStorageSOPInstanceUID];
+const List<int> deIdUidCodes = <int>[
   kRequestedSOPInstanceUID,
   kReferencedSOPInstanceUIDInFile,
   kSOPInstanceUID,
@@ -37,12 +35,11 @@ const List<int> deIdUidCodes = const <int>[
   kRelatedFrameOfReferenceUID,
 ];
 
-const List<int> updateUidCodes = const <int>[
+const List<int> updateUidCodes = <int>[
   kConcatenationUID,
   kDeviceUID,
   kDimensionOrganizationUID,
   kDoseReferenceUID,
-
   kRequestedSOPInstanceUID,
   kReferencedSOPInstanceUIDInFile,
   kSOPInstanceUID,
@@ -56,7 +53,6 @@ const List<int> updateUidCodes = const <int>[
   kStudyInstanceUID,
   kSeriesInstanceUID,
   kSynchronizationFrameOfReferenceUID,
-
   kUID,
   kTemplateExtensionOrganizationUID,
   kTemplateExtensionCreatorUID,
@@ -65,11 +61,9 @@ const List<int> updateUidCodes = const <int>[
   kRelatedFrameOfReferenceUID,
 ];
 
-const List<int> deleteUidCodes = const <int>[
+const List<int> deleteUidCodes = <int>[
   kAffectedSOPInstanceUID,
   kDigitalSignatureUID,
-
-
   kRequestedSOPInstanceUID,
   kReferencedSOPInstanceUIDInFile,
   kSOPInstanceUID,
@@ -83,7 +77,6 @@ const List<int> deleteUidCodes = const <int>[
   kStudyInstanceUID,
   kSeriesInstanceUID,
   kSynchronizationFrameOfReferenceUID,
-
   kUID,
   kTemplateExtensionOrganizationUID,
   kTemplateExtensionCreatorUID,
@@ -104,9 +97,7 @@ List<int> keptUids = <int>[
   kInstanceCreatorUID,
   kIrradiationEventUID,
   kMediaStorageSOPInstanceUID,
-
   kLargePaletteColorLookupTableUID,
-
   kObservationSubjectUIDTrial,
   kObservationUID,
   kPaletteColorLookupTableUID,
@@ -132,10 +123,9 @@ List<int> keptUids = <int>[
   kTemplateExtensionOrganizationUID,
   kTrackingUID,
   kTransactionUID
-
 ];
 
-const List<PTag> deIdUidTags = const <PTag>[
+const List<PTag> deIdUidTags = <PTag>[
   PTag.kAffectedSOPInstanceUID,
   PTag.kRequestedSOPInstanceUID,
   PTag.kMediaStorageSOPInstanceUID,
@@ -169,8 +159,7 @@ const List<PTag> deIdUidTags = const <PTag>[
   PTag.kDoseReferenceUID,
 ];
 
-
-const Map<int, String> deIdUidCodeToKeywordMap = const <int, String>{
+const Map<int, String> deIdUidCodeToKeywordMap = <int, String>{
   0x00001000: 'AffectedSOPInstanceUID',
   0x00001001: 'RequestedSOPInstanceUID',
   0x00020003: 'MediaStorageSOPInstanceUID',
@@ -203,5 +192,3 @@ const Map<int, String> deIdUidCodeToKeywordMap = const <int, String>{
   0x300600c2: 'RelatedFrameOfReferenceUID',
   0x300a0013: 'DoseReferenceUID',
 };
-
-

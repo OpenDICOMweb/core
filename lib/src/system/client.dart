@@ -29,7 +29,7 @@ class Client extends Global {
   @override
   final Uid defaultTransferSyntax = TransferSyntax.kDefaultForDicomWeb;
 
-  Client() : super(version: new Version(0, 6, 1));
+  Client() : super(version: Version(0, 6, 1));
 
   String get type => 'Non-Browser Client';
   @override
@@ -43,7 +43,7 @@ class Client extends Global {
   //TODO: add call to new System
   // Create the singleton [Server].
   static void initialize() {
-    Global.global = new Client();
+    Global.global = Client();
   }
 }
 
@@ -59,7 +59,7 @@ class Browser extends Global {
   final Uid defaultTransferSyntax = TransferSyntax.kDefaultForDicomWeb;
 
   //TODO:
-  Browser() : super(version: new Version(0, 6, 1));
+  Browser() : super(version: Version(0, 6, 1));
 
   String get type => 'Browser Client';
   @override
@@ -74,6 +74,6 @@ class Browser extends Global {
   //TODO: add call to new System
   // Create the singleton [Server].
   static void initialize() {
-    Global.global = new Client();
+    Global.global = Client();
   }
 }

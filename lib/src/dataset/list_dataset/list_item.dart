@@ -27,8 +27,7 @@ class ListItem extends Item with ListDataset {
 
   // TODO: decide if we need these constructors
   /// Creates a [ListItem].
-  ListItem(
-      Dataset parent, this.codes, this.elements, SQ sequence, Bytes bd)
+  ListItem(Dataset parent, this.codes, this.elements, SQ sequence, Bytes bd)
       : super(parent, sequence, bd);
 
   /// Creates an empty, i.e. without [Element]s, [ListItem].
@@ -39,15 +38,15 @@ class ListItem extends Item with ListDataset {
 
   /// Creates a [ListItem] from another [ListItem].
   ListItem.from(ListItem item, Dataset parent, SQ sequence)
-      : codes = new List<int>.from(item.codes),
-        elements = new List<Element>.from(item.elements),
-        super(
-            parent ?? item.parent, sequence ?? item.sequence, item.dsBytes.bytes);
+      : codes = List<int>.from(item.codes),
+        elements = List<Element>.from(item.elements),
+        super(parent ?? item.parent, sequence ?? item.sequence,
+            item.dsBytes.bytes);
 
   ListItem copy([ListItem item, Dataset parent, SQ sequence]) {
     item ??= this;
     parent ??= item.parent;
     sequence ??= item.sequence;
-    return new ListItem.from(item, parent, sequence);
+    return ListItem.from(item, parent, sequence);
   }
 }

@@ -23,14 +23,14 @@ class UuidError extends Error {
 Null badUuid(String message, [Issues issues]) {
   log.error(message);
   if (issues != null) issues.add(message);
-  if (throwOnError) throw new UuidError(message);
+  if (throwOnError) throw UuidError(message);
   return null;
 }
 
 Null badUuidList( String message, List<int> iList) {
  final msg = 'InvalidUuidListError: $message: $iList';
   log.error(msg);
-  if (throwOnError) throw new UuidError(msg);
+  if (throwOnError) throw UuidError(msg);
   return null;
 }
 
@@ -43,6 +43,6 @@ Null invalidUuid(Object uuid, [Issues issues]) {
 Null _doUuidError(String msg, Issues issues) {
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new UuidError(msg);
+  if (throwOnError) throw UuidError(msg);
   return null;
 }

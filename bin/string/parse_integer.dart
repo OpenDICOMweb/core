@@ -12,7 +12,7 @@ import 'package:core/server.dart';
 void main() {
   Server.initialize(name: 'string testing', level: Level.debug);
 
-  const goodIntegerStrings = const <String>[
+  const goodIntegerStrings = <String>[
     '+8',
     ' +8',
     '+8 ',

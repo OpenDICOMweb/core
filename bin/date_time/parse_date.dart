@@ -30,7 +30,7 @@ void main(List<String> args) {
 }
 
 void testPrintIssues() {
-  final issues = new Issues('testPrintIssues')
+  final issues = Issues('testPrintIssues')
     ..add('first issue')
     ..add('second issue')
     ..add('third issue')
@@ -115,26 +115,26 @@ void testBadMonthLengthAndCharIssues() {
   for (var i = 0; i < numbers.length; i++) {
     final year = numbers[i];
     log.debug('  year: $year');
-    final issues = new Issues('Date Year: $year');
+    final issues = Issues('Date Year: $year');
     if (issues.isNotEmpty)
       log.debug('  ${issues.info}');
   }
 }
 
 void testGoodDateIssues() {
-  const dates = const <String>['10500718', '19000101', '20001212'];
+  const dates = <String>['10500718', '19000101', '20001212'];
   log.debug('testGoodDateIssues:');
   for (var i = 0; i < dates.length; i++) {
     final date = dates[i];
     log.debug('  date: $date');
-    final issues = new Issues('Date: $date');
+    final issues = Issues('Date: $date');
     if (issues.isNotEmpty)
       log.debug('  ${issues.info}');
   }
 }
 
 void testBadDateIssues() {
-  const dates = const <String>[
+  const dates = <String>[
     '1950071', '190001010', //bad length
     '2a0b1212', '1900Z1010', // good length bad char
     '2a0b121', '1900Z10100' // bad length and bad char
@@ -144,7 +144,7 @@ void testBadDateIssues() {
   for (var i = 0; i < dates.length; i++) {
     final date = dates[i];
     log.debug('  date: $date');
-    final issues = new Issues('Date: $date');
+    final issues = Issues('Date: $date');
     if (issues.isNotEmpty)
       log.debug('  ${issues.info}');
   }

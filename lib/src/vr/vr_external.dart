@@ -162,13 +162,13 @@ abstract class VR<T> {
 
   static Null _doError(String message, Issues issues,
       [int badIndex, int goodIndex]) {
-    final sb = new StringBuffer(message);
+    final sb = StringBuffer(message);
     if (goodIndex != null)
       sb.write(' - correct VR is ${vrIdByIndex[goodIndex]}');
     final msg = '$sb';
     log.error(msg);
     if (issues != null) issues.add(msg);
-    if (throwOnError) throw new InvalidVRError(msg, badIndex, goodIndex);
+    if (throwOnError) throw InvalidVRError(msg, badIndex, goodIndex);
     return null;
   }
 }
@@ -408,7 +408,7 @@ class VRText extends VRString {
   static const kUR = VRText._(kURIndex, 'UR', kURCode, 4, _longVF, true);
 
   /// Unlimited Text (UT)
-  static const kUT = const VRText._(kUTIndex, 'UT', kUTCode, 4, _longVF, true);
+  static const kUT = VRText._(kUTIndex, 'UT', kUTCode, 4, _longVF, true);
 }
 
 /// A class representing Integer String (IS) and Decimal String(DS) VRs.
@@ -468,19 +468,19 @@ class VRSpecial extends VRInt {
   }
 
   static const kOBOW = VRSpecial(kOBOWIndex, 'OBOW', -1, 1, k32BitMaxLongVF, 2,
-      const <VRInt>[VR.kOB, VR.kOW, VR.kUN]);
+      <VRInt>[VR.kOB, VR.kOW, VR.kUN]);
 
   static const kUSSS = VRSpecial(kUSSSIndex, 'USSS', -1, 2, k16BitMaxShortVF, 2,
-      const <VRInt>[VR.kUS, VR.kSS, VR.kUN]);
+      <VRInt>[VR.kUS, VR.kSS, VR.kUN]);
 
   static const kUSSSOW = VRSpecial(kUSSSOWIndex, 'kUSSSOW', -1, 2,
-      k32BitMaxLongVF, 2, const <VRInt>[VR.kUS, VR.kSS, VR.kOW, VR.kUN]);
+      k32BitMaxLongVF, 2, <VRInt>[VR.kUS, VR.kSS, VR.kOW, VR.kUN]);
 
   static const kUSOW = VRSpecial(kUSOWIndex, 'USOW', -1, 2, k32BitMaxLongVF, 2,
-      const <VRInt>[VR.kUS, VR.kOW, VR.kUN]);
+      <VRInt>[VR.kUS, VR.kOW, VR.kUN]);
 }
 
-const List<VR> vrByIndex = const <VR>[
+const List<VR> vrByIndex = <VR>[
   // Begin maybe undefined length
   VR.kSQ, // Sequence == 0,
   // Begin EVR Long

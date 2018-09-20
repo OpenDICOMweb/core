@@ -12,7 +12,8 @@ import 'package:core/src/utils/logger/transformer/transformer.dart';
 
 // ignore_for_file: public_member_api_docs
 
-//TODO: should this be a handler or a separate class that is an argument to a handler?
+//TODO: should this be a handler or a separate class that is an
+//TODO: argument to a handler?
 /// Format a log record according to a string pattern
 /// Designed be used as follows:
 ///     LogFormatter format = new LogFormatter(...);
@@ -65,20 +66,21 @@ class Formatter extends Transformer {
   final String timestampFormat;
 
   Formatter(
-      {this.messageFormat: defaultMessageFormat,
-      this.exceptionFormat: defaultExceptionFormat,
-      this.timestampFormat: defaultDateTimeFormat}) {
-    print('msg:$messageFormat, excp: $exceptionFormat, tstamp: $timestampFormat');
+      {this.messageFormat = defaultMessageFormat,
+      this.exceptionFormat = defaultExceptionFormat,
+      this.timestampFormat = defaultDateTimeFormat}) {
+    print(
+        'msg:$messageFormat, excp: $exceptionFormat, tstamp: $timestampFormat');
   }
 
   /// The regexp pattern
   static const String regexpString =
       '($level|$message|$name|$time|$index|$exception|$exceptionMessage)';
-  static final _regexp = new RegExp(regexpString);
+  static final _regexp = RegExp(regexpString);
 
-  //TODO: rather than build the string while logging the message.  Precompile it.
-  /// Transform the [LogRecord] into a formatted string according to the [messageFormat],
-  /// [exceptionFormat], and [timestampFormat] pattern.
+  //TODO: rather than build the string while logging the message. Precompile it.
+  /// Transform the [LogRecord] into a formatted string according to
+  /// the [messageFormat], [exceptionFormat], and [timestampFormat] pattern.
   @override
   String call(LogRecord record) {
     final formatString = '$messageFormat$exceptionFormat';
@@ -105,5 +107,5 @@ class Formatter extends Transformer {
     });
   }
 
-  static final Formatter format = new Formatter();
+  static final Formatter format = Formatter();
 }

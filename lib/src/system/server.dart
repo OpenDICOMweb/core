@@ -48,7 +48,7 @@ class Server extends Global {
       minYear: minYear,
       maxYear: maxYear,
       hasher: hasher,
-            version: (version == null) ? new Version(0, 6, 1) : version,
+            version: (version == null) ? Version(0, 6, 1) : version,
             buildNumber: buildNumber,
 
             mediaStorageSopClassUid: mediaStorageSopClassUid,
@@ -100,9 +100,9 @@ class Server extends Global {
       bool uuidsUseUppercase = false,
       bool showBanner = true,
       bool showSdkBanner = false}) {
-    Global.global = new Server(
+    Global.global = Server(
         name: name,
-        version: (version == null) ? new Version(0, 6, 1) : version,
+        version: (version == null) ? Version(0, 6, 1) : version,
         buildNumber: buildNumber,
         mediaStorageSopClassUid: mediaStorageSopClassUid,
         mediaStorageSopInstanceUid: mediaStorageSopInstanceUid,

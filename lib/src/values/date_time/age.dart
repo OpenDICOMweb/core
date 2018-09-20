@@ -28,7 +28,7 @@ class Age {
   /// The range is [kMinAge] <= [nDays] <= [kMaxAge].
   final int nDays;
 
-  factory Age(int nDays) => _inAgeRange(nDays) ? new Age._(nDays) : null;
+  factory Age(int nDays) => _inAgeRange(nDays) ? Age._(nDays) : null;
 
   Age._(this.nDays);
 
@@ -53,9 +53,9 @@ class Age {
 
   Age get acr => Age.parse('089Y');
 
-  Age get sha256 => new Age(sha256AgeInDays(nDays));
+  Age get sha256 => Age(sha256AgeInDays(nDays));
 
-  Age get hash => new Age(hashAgeInDays(nDays));
+  Age get hash => Age(hashAgeInDays(nDays));
 
   String get hashString => ageToString(hashAgeInDays(nDays));
 
@@ -82,7 +82,7 @@ class Age {
 
   static Age tryParse(String s, {bool allowLowercase = true}) {
     final days = tryParseString(s);
-    return (days == -1) ? null : new Age(days);
+    return (days == -1) ? null : Age(days);
   }
 
   /// Returns the number of days corresponding to [s], which is a
@@ -101,7 +101,7 @@ class Age {
       if (onError != null) return onError(s);
       return badAgeString(s);
     }
-    return new Age(days);
+    return Age(days);
   }
 
   static bool isValid(int nDays) => isValidAge(nDays);
@@ -121,7 +121,7 @@ class Age {
     if (_inWeekRange(count)) return weeks;
     if (_inMonthRange(count)) return months;
     if (_inYearRange(count)) return years;
-    return throw new GeneralError('Invalid number of days: $count');
+    return throw GeneralError('Invalid number of days: $count');
   }
 
   /// Returns a valid [Age] [String] in highest precision.

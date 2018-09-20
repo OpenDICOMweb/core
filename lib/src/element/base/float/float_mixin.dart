@@ -38,7 +38,7 @@ abstract class Float32 {
   Float get sha256 => update(Sha256.float32(values));
 
   Float32List get typedData =>
-      (values is Float32List) ? values : new Float32List.fromList(values);
+      (values is Float32List) ? values : Float32List.fromList(values);
 
   Float32List get emptyList => kEmptyFloat32List;
 
@@ -66,7 +66,7 @@ abstract class Float32 {
   /// and [vList] is a [Float32List] a view of [vList] is returned;
   /// otherwise, a new Float64List] is created from vList and returned.
   static Bytes toBytes(Iterable<double> vList, {bool asView = true}) =>
-      new Bytes.typedDataView(fromList(vList, asView: asView));
+      Bytes.typedDataView(fromList(vList, asView: asView));
 
   /// Returns a [Uint8List] created from [vList].  If [asView] is _true_
   /// and [vList] is a [Float32List] a view of [vList] is returned;
@@ -95,7 +95,7 @@ abstract class Float32 {
     if (vList.isEmpty) return kEmptyFloat32List;
     if (vList is Float32List && asView) return vList;
     final List<double> v = (vList is! List<double>) ? vList.toList() : vList;
-    return new Float32List.fromList(v);
+    return Float32List.fromList(v);
   }
 
   /// Returns a [Float32List] created from [bytes]. If [asView] is
@@ -132,13 +132,13 @@ abstract class Float32 {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final nList = new Float32List(length);
+      final nList = Float32List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         nList[i] = bd.getFloat32(oib, Endian.little);
       return nList;
     }
     final f32List = bd.buffer.asFloat32List(bd.offsetInBytes, length);
-    return (asView) ? f32List : new Float32List.fromList(f32List);
+    return asView ? f32List : Float32List.fromList(f32List);
   }
 
   static bool _isNotAligned(TypedData vList) =>
@@ -172,7 +172,7 @@ abstract class Float64 {
   Float get sha256 => update(Sha256.float64(values));
 
   Float64List get typedData =>
-      (values is Float64List) ? values : new Float64List.fromList(values);
+      (values is Float64List) ? values : Float64List.fromList(values);
 
   Float64List get emptyList => kEmptyFloat64List;
 
@@ -200,7 +200,7 @@ abstract class Float64 {
   /// and [vList] is a [Float64List] a view of [vList] is returned;
   /// otherwise, a new Float64List] is created from vList and returned.
   static Bytes toBytes(Iterable<double> vList, {bool asView = true}) =>
-      new Bytes.typedDataView(fromList(vList, asView: asView));
+      Bytes.typedDataView(fromList(vList, asView: asView));
 
   /// Returns a [Uint8List] created from [vList]. If [asView] is _true_
   /// and [vList] is a [Float64List] a view of [vList] is returned;
@@ -227,7 +227,7 @@ abstract class Float64 {
     if (vList.isEmpty) return kEmptyFloat64List;
     if (vList is Float64List && asView) return vList;
     final List<double> v = (vList is! List<double>) ? vList.toList() : vList;
-    return new Float64List.fromList(v);
+    return Float64List.fromList(v);
   }
 
   /// Returns a [Float64List] created from [bytes]. If [asView] is
@@ -264,13 +264,13 @@ abstract class Float64 {
     final length = bd.lengthInBytes ~/ kSizeInBytes;
 
     if (_isNotAligned(bd)) {
-      final nList = new Float64List(length);
+      final nList = Float64List(length);
       for (var i = 0, oib = 0; i < length; i++, oib += kSizeInBytes)
         nList[i] = bd.getFloat64(oib, Endian.little);
       return nList;
     }
     final f64List = bd.buffer.asFloat64List(bd.offsetInBytes, length);
-    return (asView) ? f64List : new Float64List.fromList(f64List);
+    return asView ? f64List : Float64List.fromList(f64List);
   }
 
   static bool _isNotAligned(TypedData vList) =>

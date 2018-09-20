@@ -11,7 +11,7 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
-const List<int> deIdDateCodes = const <int>[
+const List<int> deIdDateCodes = <int>[
   // Added by JFPhilbin
   kInstanceCreationDate,
   // Defined in PS3.15
@@ -31,7 +31,7 @@ const List<int> deIdDateCodes = const <int>[
 ];
 
 
-const List<PTag> deIdDateTags = const <PTag>[
+const List<PTag> deIdDateTags = <PTag>[
   // Added by JFPhilbin
   PTag.kInstanceCreationDate,
   // Defined in PS3.15
@@ -51,7 +51,7 @@ const List<PTag> deIdDateTags = const <PTag>[
 ];
 
 
-const Map<int, String> deIdDateCodeToKeywordMap = const <int, String>{
+const Map<int, String> deIdDateCodeToKeywordMap = <int, String>{
   0x00080020: 'StudyDate',
   0x00080021: 'SeriesDate',
   0x00080022: 'AcquisitionDate',

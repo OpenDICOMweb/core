@@ -28,19 +28,19 @@ class Patient extends Entity {
   Date _dob;
   Sex _sex;
 
-  /// Creates a new [Patient].
+  /// Creates a  [Patient].
   Patient(this.pid, Uid uid, RootDataset rds,
       [Map<Uid, Study> studies, this._name, this._dob, this._sex])
       : super(null, uid, rds, (studies == null) ? <Uid, Study>{} : studies);
 
-  /// Returns a copy of _this_ [Patient], but with a new [Uid].
+  /// Returns a copy of _this_ [Patient], but with a  [Uid].
   Patient.from(Patient subject, RootDataset rds, this.pid)
       : _name = subject.name,
         _dob = subject._dob,
         _sex = subject._sex,
-        super(null, new Uid(), rds, new Map<Uid, Study>.from(subject.children));
+        super(null, Uid(), rds, Map<Uid, Study>.from(subject.children));
 
-  /// Returns a new [Patient] created from the [RootDataset].
+  /// Returns a  [Patient] created from the [RootDataset].
   factory Patient.fromRDS(RootDataset rds) {
     final pid = rds.patientId;
     final name = rds.patientName;
@@ -49,7 +49,7 @@ class Patient extends Entity {
     final patient = search(pid, name, dob);
     return (patient != null)
         ? patient
-        : new Patient(pid, new Uid(), rds, <Uid, Study>{}, name, dob, sex);
+        : Patient(pid, Uid(), rds, <Uid, Study>{}, name, dob, sex);
   }
 
   @override
@@ -76,9 +76,9 @@ class Patient extends Entity {
   Sex get sex => _sex ??= rds.patientSex;
 
   /// Returns the [Sex] of _this_.
-  int get age => throw new UnimplementedError('');
+  int get age => throw UnimplementedError('');
 
-  /// Adds a new [Study] for the [Patient].  Throws a [DuplicateEntityError]
+  /// Adds a  [Study] for the [Patient].  Throws a [DuplicateEntityError]
   /// if [Patient] has an existing [Study] with the same [Uid].
   Study putIfAbsent(Study study) {
     assert(study is Study);
@@ -88,7 +88,7 @@ class Patient extends Entity {
   }
 
   Study createStudyFromRootDataset(RootDataset rds) =>
-      new Study.fromRootDataset(rds, this);
+      Study.fromRootDataset(rds, this);
 
   static Patient search(String pid, [PersonName name, Date dob]) =>
       activeStudies.search(pid, name: name, dob: dob);
@@ -97,20 +97,20 @@ class Patient extends Entity {
 //TODO: make this a Clinical Trial Subject
 /// THE [DICOM] [Subject] Information Entity.
 class Subject extends Patient {
-  /// Creates a new [Subject].
+  /// Creates a  [Subject].
   Subject(String pid, Uid uid, RootDataset rds,
       {Map<Uid, Study> studies, PersonName name, Date dob, Sex sex})
       : super(pid, uid, rds, (studies == null) ? <Uid, Study>{} : studies, name,
             dob, sex);
 
-  /// Returns a new [Subject] created from the [RootDataset].
+  /// Returns a  [Subject] created from the [RootDataset].
   factory Subject.fromRDS(RootDataset rds) {
     final e = rds[kPatientID];
     if (e == null) return elementNotPresentError(e);
     if (!e.hasValidValues) return badValues(e.value);
-    final uid = new Uid();
+    final uid = Uid();
     final String pid = e.value;
-    return new Subject(pid, uid, rds);
+    return Subject(pid, uid, rds);
   }
 
   @override
@@ -171,25 +171,25 @@ class UniversalEntityIDType {
   const UniversalEntityIDType(this.id, this.name, this.term);
 
   static const UniversalEntityIDType kDNS =
-      const UniversalEntityIDType('DNS', 'Domain Name System', Term.kDNS);
+      UniversalEntityIDType('DNS', 'Domain Name System', Term.kDNS);
 
-  static const UniversalEntityIDType kEUI64 = const UniversalEntityIDType(
+  static const UniversalEntityIDType kEUI64 = UniversalEntityIDType(
       'EUI64', 'IEEE Extended Unique Idnetifier', Term.kEUI64);
 
-  static const UniversalEntityIDType kISO = const UniversalEntityIDType('ISO',
+  static const UniversalEntityIDType kISO = UniversalEntityIDType('ISO',
       'An International Standards Organization Object Identifier', Term.kISO);
 
-  static const UniversalEntityIDType kURI = const UniversalEntityIDType(
-      'URI', 'Universal Resource Identifier', Term.kURI);
+  static const UniversalEntityIDType kURI =
+      UniversalEntityIDType('URI', 'Universal Resource Identifier', Term.kURI);
 
-  static const UniversalEntityIDType kUUID = const UniversalEntityIDType(
-      'UUID', 'Universal Unique Identifier', Term.kUUID);
+  static const UniversalEntityIDType kUUID =
+      UniversalEntityIDType('UUID', 'Universal Unique Identifier', Term.kUUID);
 
   static const UniversalEntityIDType kX400 =
-      const UniversalEntityIDType('X400', 'X400 MHS Identifier', Term.kX400);
+      UniversalEntityIDType('X400', 'X400 MHS Identifier', Term.kX400);
 
   static const UniversalEntityIDType kX500 =
-      const UniversalEntityIDType('X500', 'X500 Directory Name', Term.kX500);
+      UniversalEntityIDType('X500', 'X500 Directory Name', Term.kX500);
 
   UniversalEntityIDType lookup(String key) => map[key];
 

@@ -50,7 +50,7 @@ class GrowableBytes extends Bytes with GrowableMixin {
           int length,
           Endian endian,
           int limit = kDefaultLimit]) =>
-      new GrowableBytes._from(bytes, offset, length, endian, limit);
+      GrowableBytes._from(bytes, offset, length, endian, limit);
 
   GrowableBytes._from(
       Bytes bytes, int offset, int length, Endian endian, this.limit)
@@ -61,7 +61,7 @@ class GrowableBytes extends Bytes with GrowableMixin {
           int lengthInBytes,
           Endian endian,
           int limit = _k1GB]) =>
-      new GrowableBytes._tdView(
+      GrowableBytes._tdView(
           td, offset, lengthInBytes ?? td.lengthInBytes, endian, limit);
 
   GrowableBytes._tdView(
@@ -103,7 +103,7 @@ ByteData _reallyGrow(ByteData bd, int minLength) {
     newLength *= 2;
     if (newLength >= kDefaultLimit) return null;
   } while (newLength < minLength);
-  final newBD = new ByteData(newLength);
+  final newBD = ByteData(newLength);
   for (var i = 0; i < bd.lengthInBytes; i++) newBD.setUint8(i, bd.getUint8(i));
   return newBD;
 }

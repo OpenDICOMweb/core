@@ -46,7 +46,7 @@ class Profile {
 
   Profile(
       this.name, this.url, this.trialServer, this.quarantineUrl, this.trialMap)
-      : globals = new GlobalRule(),
+      : globals = GlobalRule(),
         parameters = {},
         groupsToRetail = [],
         groupsToRemove = [],
@@ -58,7 +58,7 @@ class Profile {
         errors = {} {
     for (var code in keysToRemove)
       if (keysToRetain.contains(code))
-        throw new ArgumentError('removeTags cannot contain and tags in'
+        throw ArgumentError('removeTags cannot contain and tags in'
             ' the keepTags list.');
   }
 
@@ -160,7 +160,7 @@ class Profile {
 
   static Profile parse(String s) {
     final Map map = cvt.json.decode(s);
-    return new Profile._(
+    return Profile._(
         map['name'],
         map['url'],
         map['trialServer'],

@@ -12,7 +12,7 @@ import 'package:core/src/utils/primitives.dart';
 
 /// A library for handling DICOM File Meta Information Tags.
 
-const List<int> fmiTags = const [
+const List<int> fmiTags = [
   kFileMetaInformationGroupLength,
   kFileMetaInformationVersion,
   kMediaStorageSOPClassUID,
@@ -30,7 +30,7 @@ const List<int> fmiTags = const [
 int fmiTagIndex(int tag) => fmiTags.indexOf(tag);
 bool isValidFmiTag(int tag) => fmiTags.contains(tag);
 
-const List<String> fmiKeywords = const [
+const List<String> fmiKeywords = [
   'FileMetaInformationGroupLength',
   'FileMetaInformationVersion',
   'MediaStorageSOPClassUID',
@@ -48,7 +48,7 @@ const List<String> fmiKeywords = const [
 int fmiKeywordIndex(String keyword) => fmiKeywords.indexOf(keyword);
 bool isValidFmiKeyword(String keyword) => fmiKeywords.contains(keyword);
 
-const Map<String, int> fmiKeywordToTagMap = const {
+const Map<String, int> fmiKeywordToTagMap = {
   'FileMetaInformationGroupLength': kFileMetaInformationGroupLength,
   'FileMetaInformationVersion': kFileMetaInformationVersion,
   'MediaStorageSOPClassUID': kMediaStorageSOPClassUID,
@@ -65,7 +65,7 @@ const Map<String, int> fmiKeywordToTagMap = const {
 
 int fmiKeywordToTag(String keyword) => fmiKeywordToTagMap[keyword];
 
-const Map<int, String> fmiTagToKeywordMap = const {
+const Map<int, String> fmiTagToKeywordMap = {
   kFileMetaInformationGroupLength: 'FileMetaInformationGroupLength',
   kFileMetaInformationVersion: 'FileMetaInformationVersion',
   kMediaStorageSOPClassUID: 'MediaStorageSOPClassUID',

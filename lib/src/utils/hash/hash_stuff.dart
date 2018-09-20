@@ -69,15 +69,16 @@ class Hash {
   const Hash._(this.mask);
 
   /// A hasher returning 30-bit integer [hashCode]s.
-  static const Hash hash32 = const Hash._(k32BitHashMask);
+  static const Hash hash32 = Hash._(k32BitHashMask);
 
   /// A hasher returning 62-bit integer [hashCode]s.
-  static const Hash hash64 = const Hash._(k64BitHashMask);
+  static const Hash hash64 = Hash._(k64BitHashMask);
 
   /// The default hasher.
   static const Hash hash = hash64;
 
-  int _hash(int o, int result) => (kHashMultiplier * result + o.hashCode) & mask;
+  int _hash(int o, int result) =>
+      (kHashMultiplier * result + o.hashCode) & mask;
 
   /// Returns a [hashCode] for 1 object.
   int call(Object o) => _hash(o.hashCode, kHashSeed);
@@ -86,27 +87,29 @@ class Hash {
   int n1(Object o) => _hash(o.hashCode, kHashSeed);
 
   /// Returns a [hashCode] for 2 objects.
-  int n2(Object o1, Object o2) => _hash(o1.hashCode, _hash(o2.hashCode, kHashSeed));
+  int n2(Object o1, Object o2) =>
+      _hash(o1.hashCode, _hash(o2.hashCode, kHashSeed));
 
   /// Returns a [hashCode] for 3 objects.
   int n3(Object o1, Object o2, Object o3) =>
       _hash(o1.hashCode, _hash(o2.hashCode, _hash(o3.hashCode, kHashSeed)));
 
   /// Returns a [hashCode] for 4 objects.
-  int n4(Object o1, Object o2, Object o3, Object o4) => _hash(
-      o1.hashCode, _hash(o2.hashCode, _hash(o3.hashCode, _hash(o4.hashCode, kHashSeed))));
+  int n4(Object o1, Object o2, Object o3, Object o4) => _hash(o1.hashCode,
+      _hash(o2.hashCode, _hash(o3.hashCode, _hash(o4.hashCode, kHashSeed))));
 
   /// Returns a [hashCode] for 5 objects.
   int n5(Object o1, Object o2, Object o3, Object o4, Object o5) => _hash(
       o1.hashCode,
-      _hash(o2.hashCode,
-          _hash(o3.hashCode, _hash(o4.hashCode, _hash(o5.hashCode, kHashSeed)))));
+      _hash(
+          o2.hashCode,
+          _hash(
+              o3.hashCode, _hash(o4.hashCode, _hash(o5.hashCode, kHashSeed)))));
 
   /// Returns a [hashCode] for a [List] of [Object]s.
   int list(List<Object> list) {
     var v = kHashSeed;
-    for (var i = 0; i < list.length; i++)
-    	v = _hash(list[i], v);
+    for (var i = 0; i < list.length; i++) v = _hash(list[i], v);
     return v;
   }
 }

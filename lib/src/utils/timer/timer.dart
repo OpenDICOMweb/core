@@ -11,7 +11,8 @@
 
 /// A Simple Timer based on Dart's [Stopwatch].
 class Timer {
-  final Stopwatch watch = new Stopwatch();
+  final Stopwatch watch = Stopwatch();
+
   /// The last time _this_ was started.
   DateTime _start;
 
@@ -62,27 +63,26 @@ class Timer {
   int get splitMicroseconds => splitTicks * 1000000 ~/ watch.frequency;
 
   /// Returns the [Duration] between the current time and the last split.
-  Duration get split => new Duration(microseconds: splitMicroseconds);
+  Duration get split => Duration(microseconds: splitMicroseconds);
 
   /// Returns the average [Duration] for each thing timed, where [total]
   /// is the total number of things timed.
   Duration average(int total) =>
-      new Duration(microseconds: elapsedMicroseconds ~/ total);
+      Duration(microseconds: elapsedMicroseconds ~/ total);
 
   /// (Re)Start the [Timer].
   void start() {
-    _start = new DateTime.now();
+    _start = DateTime.now();
     watch.start();
   }
 
   /// Stop the [Timer], but it may be restarted later.
   void stop() {
     watch.stop();
-    _stop = new DateTime.now();
+    _stop = DateTime.now();
   }
 
   /// Resets the [elapsed] count to zero.
   /// _Note_: _This method does not stop or start the [Timer]_.
   void reset() => watch.reset();
 }
-

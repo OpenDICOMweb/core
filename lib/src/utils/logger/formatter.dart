@@ -23,8 +23,9 @@ abstract class Formattable<T> implements Iterable<T> {
 class Formatter {
   //static final Logger log = new Logger('Formatter');
 
-  /// The number of Objects to format at one Level before returning to the previous
-  /// level.  If this number isNegative all Objects will be formatted.
+  /// The number of Objects to format at one Level before returning to
+  /// the previous level.  If this number isNegative all Objects
+  /// will be formatted.
   final int maxDepth;
 
   /// The [Prefixer] used by this formatter.
@@ -37,7 +38,7 @@ class Formatter {
       String lineNoPadChar = '0',
       String prefix = ' ',
       int indent = 2})
-      : indenter = new Prefixer(
+      : indenter = Prefixer(
             lineNumberWidth: lineNoWidth,
             lineNoRadix: lineNoRadix,
             lineNoPadChar: lineNoPadChar,
@@ -69,7 +70,7 @@ class Formatter {
   //TODO: Test values argument.
   String callNew([Object o, Object values]) {
     var depth = 0;
-    final sb = new StringBuffer('$z$o');
+    final sb = StringBuffer('$z$o');
     if (values == null) return '$sb';
     down;
     try {
@@ -101,7 +102,7 @@ class Formatter {
 
   //TODO: Test values argument.
   String call([Object o, Iterable values]) {
-    final sb = new StringBuffer('$z$o');
+    final sb = StringBuffer('$z$o');
     if (values == null) return '$sb';
     block:
     {
@@ -131,7 +132,7 @@ class Formatter {
 
   String fmt(Object o, [Object values]) {
     var depth = 0;
-    final sb = new StringBuffer('$z$o\n');
+    final sb = StringBuffer('$z$o\n');
     if (values == null) return '$sb';
     try {
       block:
@@ -165,7 +166,7 @@ class Formatter {
 
   String fmtNew(Object o, [Object values]) {
     var depth = 0;
-    final sb = new StringBuffer('$z$o\n');
+    final sb = StringBuffer('$z$o\n');
     if (values == null) return '$sb';
     down;
     try {

@@ -13,7 +13,7 @@ import 'package:core/src/tag/private/pc_tag.dart';
 // ----------------------------------------------------------
 
 /// Ordered List of all Known Private Creator Tokens with PrivateDataTagMap.
-const Map<String, PCTagDefinition> privateCreatorMap = const {
+const Map<String, PCTagDefinition> privateCreatorMap = {
   '1.2.840.113681': PCTagDefinition.k0,
   '1.2.840.113708.794.1.1.2.0': PCTagDefinition.k1,
   'ACUSON': PCTagDefinition.k2,

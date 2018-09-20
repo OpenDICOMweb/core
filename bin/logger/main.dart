@@ -10,32 +10,32 @@
 import 'package:core/core.dart';
 
 void main() {
-	final foo = '.'.split('.');
-	print('foo(${foo.length}): $foo');
+  final foo = '.'.split('.');
+  print('foo(${foo.length}): $foo');
   nonHierarchicalLoggerTest();
 
- // loggerTest('NonHierarchical', isHierarchical: false, doError: false);
- // loggerTest('Hierarchical', isHierarchical: true, doError: true);
+  // loggerTest('NonHierarchical', isHierarchical: false, doError: false);
+  // loggerTest('Hierarchical', isHierarchical: true, doError: true);
 }
 
 const String defaultDateTimeFormat = 'yyyy.mm.dd HH:mm:ss.SSS';
 
 void nonHierarchicalLoggerTest() {
-	Logger.isHierarchicalEnabled = false;
+  Logger.isHierarchicalEnabled = false;
   print('\nNon Hierarchical Test');
-	print('  Root = ${Logger.root}');
+  print('  Root = ${Logger.root}');
   print('  ${Logger.show()}');
 
-  final log = new Logger('foo', Level.debug);
+  final log = Logger('foo', Level.debug);
   print('logger "log": $log');
 
-	final logFile = new LogFile(prefix: 'log');
-  final handler = new FileHandler(logFile, doPrint: true);
+  final logFile = LogFile(prefix: 'log');
+  final handler = FileHandler(logFile, doPrint: true);
   print('handler: $handler');
   Logger.root.onRecord.listen(handler);
 
-	print('"log0":');
-  final log0 = new Logger('log0', Level.warn)
+  print('"log0":');
+  final log0 = Logger('log0', Level.warn)
     ..debug('Shouldn\'t print')
     ..info0('Shouldn\'t print')
     ..warn('Should print')
@@ -48,25 +48,25 @@ void nonHierarchicalLoggerTest() {
   print('Levels: ${log0.level}, level: ${log0.level}');
 
   print('log0.log1: $log0');
-	Logger.show();
-  final log1 = new Logger('log0.log1', Level.debug)
+  Logger.show();
+  final log1 = Logger('log0.log1', Level.debug)
     ..debug3('Shouldn\'t print')
     ..debug2('Shouldn\'t print')
     ..debug('Should print')
     ..warn('Should print')
     ..error('Should print');
-	print('log0.log1: $log1');
+  print('log0.log1: $log1');
 }
 
 void loggerTest(String name, {bool isHierarchical, bool doError}) {
   print('\n\nLogger Test: $name');
   print('  Test Record:');
-  final record = new LogRecord(Level.debug, 'Bad Foo', 'Module');
+  final record = LogRecord(Level.debug, 'Bad Foo', 'Module');
   print('    record:$record');
 
   //TODO: fix this stuff
   //print('setup BaseLogger:');
-  //var handler = new ListHandler(name: 'test.log', doPrint: true);
+  //var handler = ListHandler(name: 'test.log', doPrint: true);
   //print('handler: $handler');
   //Logger.root.onRecord.listen(handler);
   //BaseLogger.init();
@@ -76,21 +76,21 @@ void loggerTest(String name, {bool isHierarchical, bool doError}) {
   print('Log Root Level = ${Logger.root.level}');
 
   print('foo0:');
-  new Logger('foo0', Level.config)
+  Logger('foo0', Level.config)
     ..debug('shouldn\'t print')
     ..info0('shouldn\'t print')
     ..config('should print')
     ..warn('should print');
 
   print('foo1:');
-  new Logger('foo0.foo1', Level.info0)
+  Logger('foo0.foo1', Level.info0)
     ..debug('shouldn\'t print')
     ..info0('should print')
     ..config('should print')
     ..warn('should print');
 
   print('foo2:');
-  final foo2 = new Logger('foo0.foo1.foo2', Level.debug)
+  final foo2 = Logger('foo0.foo1.foo2', Level.debug)
     ..debug('should print')
     ..info0('should print')
     ..config('should print')

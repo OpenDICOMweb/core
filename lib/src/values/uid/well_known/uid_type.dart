@@ -9,7 +9,8 @@
 
 // ignore_for_file: public_member_api_docs
 
-//TODO: this class might disappear when all the types are implemented as classes.
+//TODO: this class might disappear when all the types are implemented as
+// classes.
 
 /// Uid Types
 class UidType {
@@ -24,41 +25,39 @@ class UidType {
   String toString() => name;
 
   /// The [kUnknown] type.
-  static const UidType kUnknown = const UidType._(-1, 'Unknown');
+  static const UidType kUnknown = UidType._(-1, 'Unknown');
 
   // Random 2.25. + V4 Uuid
-  static const UidType kUidRandom = const UidType._(0, 'RandomUuid');
+  static const UidType kUidRandom = UidType._(0, 'RandomUuid');
 
   // Constructed from Root + leaf
-  static const UidType kConstructed = const UidType._(1, 'Constructed');
+  static const UidType kConstructed = UidType._(1, 'Constructed');
 
   // Well Known DICOM UID Types
-  static const UidType kSOPClass = const UidType._(2, 'SOP Class');
+  static const UidType kSOPClass = UidType._(2, 'SOP Class');
 
-  static const UidType kTransferSyntax = const UidType._(3, 'Transfer Syntax');
+  static const UidType kTransferSyntax = UidType._(3, 'Transfer Syntax');
 
-  static const UidType kFrameOfReference =
-      const UidType._(4, 'Frame Of Reference');
+  static const UidType kFrameOfReference = UidType._(4, 'Frame Of Reference');
 
-  static const UidType kSOPInstance = const UidType._(5, 'SOP Instance');
+  static const UidType kSOPInstance = UidType._(5, 'SOP Instance');
 
-  static const UidType kCodingScheme = const UidType._(6, 'Coding Scheme');
+  static const UidType kCodingScheme = UidType._(6, 'Coding Scheme');
 
-  static const UidType kMetaSOPClass = const UidType._(7, 'Meta SOP Class');
+  static const UidType kMetaSOPClass = UidType._(7, 'Meta SOP Class');
 
-  static const UidType kServiceClass = const UidType._(8, 'Service Class');
+  static const UidType kServiceClass = UidType._(8, 'Service Class');
 
   static const UidType kApplicationContextName =
-      const UidType._(9, 'Application Context Name');
+      UidType._(9, 'Application Context Name');
 
   static const UidType kApplicationHostingModel =
-      const UidType._(10, 'Application Hosting Model');
+      UidType._(10, 'Application Hosting Model');
 
-  static const UidType kLdapOid = const UidType._(15, 'LDAP OID');
+  static const UidType kLdapOid = UidType._(15, 'LDAP OID');
 
-  static const UidType kMappingResource =
-      const UidType._(11, 'Mapping Resource');
+  static const UidType kMappingResource = UidType._(11, 'Mapping Resource');
 
   static const UidType kSynchronizationFrameOfReference =
-      const UidType._(12, 'Synchronization Frame Of Reference');
+      UidType._(12, 'Synchronization Frame Of Reference');
 }

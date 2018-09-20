@@ -19,7 +19,7 @@ void main() {
   const creatorCode = 0x00290010;
   final pcTag = PCTag.make(creatorCode, kLOIndex, 'CAMTRONICS IP');
   print('Creator Tag: ${pcTag.info}');
-  final lo = new LOtag(pcTag, ['CAMTRONICS IP']);
+  final lo = LOtag(pcTag, ['CAMTRONICS IP']);
   print('LO: ${lo.info}');
 //  print('Creator: ${creator.info}');
  // print('cElement: ${dcm(creator.code)}, '

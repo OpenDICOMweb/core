@@ -34,17 +34,17 @@ void addDeIdMethodCodeSequence(RootDataset rds, DeIdMethod deIdMethod) {
     ..replace<String>(kDeidentificationMethod, const <String>['Yes']);
   final map = <int, Element>{
     // TODO: create the ability to have const Element
-    kCodeValue: new SHtag(PTag.kCodeValue, [acrDeIdCodeValue]),
+    kCodeValue: SHtag(PTag.kCodeValue, [acrDeIdCodeValue]),
     kCodingSchemeDesignator:
-        new SHtag(PTag.kCodingSchemeDesignator, [deIdMethod.code]),
-    kCodeMeaning: new LOtag(PTag.kCodeMeaning, [deIdMethod.meaning]),
-    kURNCodeValue: new URtag(PTag.kURNCodeValue, [acrDeIdUrn])
+        SHtag(PTag.kCodingSchemeDesignator, [deIdMethod.code]),
+    kCodeMeaning: LOtag(PTag.kCodeMeaning, [deIdMethod.meaning]),
+    kURNCodeValue: URtag(PTag.kURNCodeValue, [acrDeIdUrn])
   };
 
-  final sq = new SQtag(rds, PTag.kDeidentificationMethodCodeSequence, <Item>[]);
-  final item = new TagItem(rds, sq, map);
+  final sq = SQtag(rds, PTag.kDeidentificationMethodCodeSequence, <Item>[]);
+  final item = TagItem(rds, sq, map);
   rds.replace(kDeidentificationMethodCodeSequence, [item]);
 }
 
-//  final codingVersion = new LOtag(PTag.kCodingSchemeVersion, [ DeIdMethod
+//  final codingVersion =  LOtag(PTag.kCodingSchemeVersion, [ DeIdMethod
 //      .kBasicApplicationConfidentialityProfile.meaning]);

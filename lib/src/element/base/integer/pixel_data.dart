@@ -70,7 +70,7 @@ abstract class OBPixelData extends PixelData with Uint8 {
 
   @override
   bool checkValue(int value, {Issues issues, bool allowInvalid = false}) =>
-      (allowInvalid) ? true : value >= 0 && value <= 255;
+      allowInvalid ? true : value >= 0 && value <= 255;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
   /// If [doTestElementValidity] is _false_ then no validation is done.

@@ -11,7 +11,7 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
-const List<int> deIdUidTagCodes = const <int>[
+const List<int> deIdUidTagCodes = <int>[
   kAffectedSOPInstanceUID,
   kRequestedSOPInstanceUID,
   kMediaStorageSOPInstanceUID,
@@ -45,7 +45,7 @@ const List<int> deIdUidTagCodes = const <int>[
   kDoseReferenceUID,
 ];
 
-const List<PTag> deIdUidTags = const <PTag>[
+const List<PTag> deIdUidTags = <PTag>[
   PTag.kAffectedSOPInstanceUID,
   PTag.kRequestedSOPInstanceUID,
   PTag.kMediaStorageSOPInstanceUID,

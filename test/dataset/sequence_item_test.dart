@@ -210,8 +210,7 @@ void main() {
       rds0[fd.code] = fd;
 
       final itemsList = <TagItem>[]..add(new TagItem.fromList(rds0, rds0));
-      final sq = new SQtag(
-          null, PTag.kMRImageFrameTypeSequence, itemsList);
+      final sq = new SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
 
       global.throwOnError = false;
       final lookup0 = sq.lookupAll(fl.index);
@@ -238,7 +237,7 @@ void main() {
 
   group('SQ', () {
     //VM.k1
-    const sqTags0 = const <PTag>[
+    const sqTags0 = <PTag>[
       PTag.kLanguageCodeSequence,
       PTag.kIssuerOfAccessionNumberSequence,
       PTag.kInstitutionCodeSequence,
@@ -255,7 +254,7 @@ void main() {
       PTag.kMRImagingModifierSequence,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

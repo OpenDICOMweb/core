@@ -86,7 +86,7 @@ class PrivateSubgroup {
         final tagNew = PCTag.lookupByToken(pcCode, vrIndex, token);
         if (tagNew is PCTagKnown) tag = tagNew;
       }
-      pcNew = new PCtag(tag, pc.values);
+      pcNew = PCtag(tag, pc.values);
     }
     return _creator = pcNew;
   }
@@ -104,7 +104,7 @@ class PrivateSubgroup {
       if (cTag is PCTagKnown) {
         final pdDef = cTag.lookupPDCode(pd.code);
         if (pdDef != null) {
-          final pdTag = new PDTagKnown(pdCode, pd.vrIndex, cTag, pdDef);
+          final pdTag = PDTagKnown(pdCode, pd.vrIndex, cTag, pdDef);
           pdNew = (pd.vrIndex == kSQIndex)
           ? TagElement.makeSequenceFromTag(sqParent, tag, <TagItem>[])
           : TagElement.makeFromTag(pdTag, pd.values, pd.vrIndex);
@@ -125,7 +125,7 @@ class PrivateSubgroup {
   }
 
   String get info {
-    final sb = new Indenter('$runtimeType(${hex16(sgNumber)}): '
+    final sb = Indenter('$runtimeType(${hex16(sgNumber)}): '
         '${members.values.length}')
       ..down;
     members.values.forEach(sb.writeln);
@@ -144,7 +144,7 @@ class FormattedPrivateSubgroup {
   FormattedPrivateSubgroup.from(this.subgroup);
 
   String format(Formatter z) {
-    final sb = new StringBuffer('${z(subgroup)}\n');
+    final sb = StringBuffer('${z(subgroup)}\n');
     z.down;
     sb.write(z.fmt(subgroup.creator, subgroup.members));
     z.up;

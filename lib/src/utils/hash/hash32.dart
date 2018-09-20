@@ -45,7 +45,7 @@ class Hash32 extends Hash {
   double doubleHash(double n) => _float32Hash(n);
 
   /// A constant hash function.
-  static const Hash32 hash = const Hash32(Hash.kHashSeed);
+  static const Hash32 hash = Hash32(Hash.kHashSeed);
 
   /// Returns the 32-bit [hash] of a [double].
   static double floatHash(double n) => hash.doubleHash(n);
@@ -72,7 +72,7 @@ class Hash32 extends Hash {
 }
 
 //final _byteBuf = new ByteData(4);
-final _float32Buf = new Float32List(1);
+final _float32Buf = Float32List(1);
 final Uint32List _uint32Buf = _float32Buf.buffer.asUint32List();
 
 

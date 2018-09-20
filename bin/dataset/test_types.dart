@@ -11,7 +11,7 @@
 void main() {
 
   //  bool test(List v) => (v is List<int>) ? true : false;
-    bool test(List v) => (v is List<int>) ? true : false;
+    bool test(List v) => v is List<int>;
     final intList = [1, 2, 3];
     final floatList = <double>[1.1, 2.2, 3.3];
 

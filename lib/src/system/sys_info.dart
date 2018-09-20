@@ -17,19 +17,14 @@ class SysInfo {
   static const String descriptions =
       'The core packages of the Open DICOMweb (ODW) '
       'Software Development Kit (SDK).';
-  static const List<String> authors = const [
-    'Jim Philbin <jfphilbin@gmail.com>'
-  ];
+  static const List<String> authors = ['Jim Philbin <jfphilbin@gmail.com>'];
   static const String dartSdkVersion = '^1.24.2';
-  static const Map<String, Object> packages = const <String, Object>{
+  static const Map<String, Object> packages = <String, Object>{
     'crypto': '^2.0.1',
-    'dictionary': const <String, Object>{
+    'dictionary': <String, Object>{
       'version': '^0.5.6',
       'path': 'C:/odw/sdk/dictionary'
     },
-    'common': const <String, Object>{
-      'version': '^0.5.6',
-      'path': 'C:/odw/sdk/common'
-    }
+    'common': <String, Object>{'version': '^0.5.6', 'path': 'C:/odw/sdk/common'}
   };
 }

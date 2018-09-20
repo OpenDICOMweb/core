@@ -12,7 +12,7 @@
 import 'package:quiver/collection.dart';
 
 void main() {
-  final cache = new LruMap<int, String>(maximumSize: 5);
+  final cache = LruMap<int, String>(maximumSize: 5);
   print('keys: (${cache.keys})');
   print('values: (${cache.values})');
   print('cache: $cache');

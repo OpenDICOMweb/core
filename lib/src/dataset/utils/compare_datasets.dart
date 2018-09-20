@@ -22,7 +22,7 @@ class ElementDiff {
   ElementDiff(this.e0, this.e1, this.msg);
 
   String get compare {
-    final sb = new StringBuffer();
+    final sb = StringBuffer();
     if (e0.tag == e1.tag) {
       sb.write('tags ${e0.tag.dcm} Equal\n');
     } else {
@@ -69,7 +69,7 @@ class DatasetComparitor<K> {
   }
 
   String get info {
-    final sb = new StringBuffer('Dataset inequalities: \n');
+    final sb = StringBuffer('Dataset inequalities: \n');
     for (var i = 0; i < bad.length; i++) {
       final list = bad[i];
       final Element a = list[0];

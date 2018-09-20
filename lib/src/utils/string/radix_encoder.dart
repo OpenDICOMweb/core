@@ -21,7 +21,7 @@ class RadixEncoder {
       _toRadixString(n, base, length, padChar);
 
   String _toRadixString(int n, int base, int length, String padChar) {
-    final sb = new StringBuffer();
+    final sb = StringBuffer();
     _toString(sb, _digits, n, base);
     return _padString(sb.toString(), length, padChar);
   }

@@ -9,7 +9,7 @@
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-import '../date_time_test_data/date_data.dart';
+import 'date_time_test_data/date_data.dart';
 
 void main() {
   Server.initialize(

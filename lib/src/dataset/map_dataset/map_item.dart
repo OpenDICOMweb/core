@@ -32,7 +32,7 @@ class MapItem extends Item with MapDataset {
 
   /// Creates a [MapItem] from another [MapItem].
   MapItem.from(MapItem item, Dataset parent, SQ sequence)
-      : eMap = new Map.from(item.eMap),
+      : eMap = Map.from(item.eMap),
         super(parent ?? item.parent, sequence ?? item.sequence,
             item.dsBytes.bytes);
 
@@ -41,6 +41,6 @@ class MapItem extends Item with MapDataset {
     item ??= this;
     parent ??= item.parent;
     sequence ??= item.sequence;
-    return new MapItem.from(item, parent, sequence);
+    return MapItem.from(item, parent, sequence);
   }
 }

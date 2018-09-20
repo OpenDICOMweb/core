@@ -50,7 +50,7 @@ String _vrErrorMsg(String type, String bad, String good, [Tag tag]) {
 Null _doError(int bad, Issues issues, int good, Tag tag, String msg) {
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new InvalidVRError(msg, bad, good, tag);
+  if (throwOnError) throw InvalidVRError(msg, bad, good, tag);
   return null;
 }
 

@@ -20,14 +20,13 @@ abstract class Float32Mixin {
   List<double> get values => vfBytes.asFloat32List();
 }
 
-
 class FLbytes extends FL with ByteElement<double>, Float32Mixin {
   @override
   final DicomBytes bytes;
 
   FLbytes(this.bytes) : assert(bytes != null);
 
-  static FLbytes fromBytes(DicomBytes bytes) => new FLbytes(bytes);
+  static FLbytes fromBytes(DicomBytes bytes) => FLbytes(bytes);
 
   static FLbytes fromValues(int code, Iterable<double> vList,
       {bool isEvr = true}) {
@@ -44,7 +43,7 @@ class OFbytes extends OF with ByteElement<double>, Float32Mixin {
 
   OFbytes(this.bytes);
 
-  static OFbytes fromBytes(DicomBytes bytes) => new OFbytes(bytes);
+  static OFbytes fromBytes(DicomBytes bytes) => OFbytes(bytes);
 
   static OFbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kOFCode, isEvr, OF.kSizeInBytes)
@@ -72,8 +71,7 @@ class FDbytes extends FD with ByteElement<double>, Float64Mixin {
 
   FDbytes(this.bytes);
 
-  static FDbytes fromBytes(DicomBytes bytes, [Dataset ds]) =>
-      new FDbytes(bytes);
+  static FDbytes fromBytes(DicomBytes bytes, [Dataset ds]) => FDbytes(bytes);
 
   static FDbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kFDCode, isEvr, FD.kSizeInBytes)
@@ -89,7 +87,7 @@ class ODbytes extends OD with ByteElement<double>, Float64Mixin {
 
   ODbytes(this.bytes);
 
-  static ODbytes fromBytes(DicomBytes bytes) => new ODbytes(bytes);
+  static ODbytes fromBytes(DicomBytes bytes) => ODbytes(bytes);
 
   static ODbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kODCode, isEvr, OD.kSizeInBytes)

@@ -11,7 +11,7 @@ import 'package:core/src/tag.dart';
 
 // ignore_for_file: public_member_api_docs
 
-const List<int> deIdRemoveCodes = const <int>[
+const List<int> deIdRemoveCodes = <int>[
   kOverlayTime,
   kCurveTime,
   kInstitutionAddress,
@@ -179,7 +179,7 @@ const List<int> deIdRemoveCodes = const <int>[
 ];
 
 
-const List<PTag> deIdRemoveTags = const <PTag>[
+const List<PTag> deIdRemoveTags = <PTag>[
   PTag.kOverlayTime,
   PTag.kCurveTime,
   PTag.kInstitutionAddress,
@@ -347,7 +347,7 @@ const List<PTag> deIdRemoveTags = const <PTag>[
 ];
 
 
-const Map<int, String> deIdRemoveCodeToKeywordMap = const <int, String>{
+const Map<int, String> deIdRemoveCodeToKeywordMap = <int, String>{
   0x00080034: 'OverlayTime',
   0x00080035: 'CurveTime',
   0x00080081: 'InstitutionAddress',

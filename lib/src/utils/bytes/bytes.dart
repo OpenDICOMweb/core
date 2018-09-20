@@ -48,15 +48,15 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// to [Endian.host].
   Bytes([int length = kDefaultLength, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = new ByteData(length);
+        _bd = ByteData(length);
 
   Bytes._(int length, Endian endian)
       : endian = endian ?? Endian.host,
-        _bd = new ByteData(length);
+        _bd = ByteData(length);
 
   factory Bytes.view(Bytes bytes,
           [int offset = 0, int length, Endian endian]) =>
-      new Bytes._view(bytes, offset, length, endian);
+      Bytes._view(bytes, offset, length, endian);
 
   Bytes._view(Bytes bytes, int offset, int end, Endian endian)
       : endian = endian ?? Endian.host,
@@ -66,7 +66,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// and [endian]ness. [endian] defaults to [Endian.host].
   factory Bytes.from(Bytes bytes,
           [int offset = 0, int length, Endian endian]) =>
-      new Bytes._from(bytes, offset, length, endian);
+      Bytes._from(bytes, offset, length, endian);
 
   Bytes._from(Bytes bytes, int offset, int end, Endian endian)
       : endian = endian ?? Endian.host,
@@ -81,7 +81,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// region and [endian]ness.  [endian] defaults to [Endian.host].
   factory Bytes.typedDataView(TypedData td,
           [int offsetInBytes = 0, int lengthInBytes, Endian endian]) =>
-      new Bytes._tdView(td, offsetInBytes, lengthInBytes, endian);
+      Bytes._tdView(td, offsetInBytes, lengthInBytes, endian);
 
   Bytes._tdView(
       TypedData td, int offsetInBytes, int lengthInBytes, Endian endian)
@@ -96,7 +96,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
       : endian = endian ?? Endian.host,
         _bd = (list is Uint8List)
             ? list.buffer.asByteData()
-            : (new Uint8List.fromList(list)).buffer.asByteData();
+            : Uint8List.fromList(list).buffer.asByteData();
 
   // *** Comparable interface
 
@@ -128,7 +128,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
 
   @override
   bool operator ==(Object other) => (other is Bytes)
-      ? (ignorePadding)
+      ? ignorePadding
           ? _bytesEqual(this, other)
           : __bytesEqual(this, other, ignorePadding)
       : false;
@@ -189,7 +189,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
     final ok = __bytesMaybeNotEqual(i, a, b, ignorePadding);
     if (!ok) {
       errorCount++;
-      if (throwOnError) if (errorCount > 3) throw new ArgumentError('Unequal');
+      if (throwOnError) if (errorCount > 3) throw ArgumentError('Unequal');
       return false;
     }
     return true;
@@ -198,7 +198,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   bool __bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
     if ((a[i] == 0 && b[i] == 32) || (a[i] == 32 && b[i] == 0)) {
       log.warn('$i ${a[i]} | ${b[i]} Padding char difference');
-      return (ignorePadding) ? true : false;
+      return ignorePadding ? true : false;
     } else {
       _warnBytes(i, a, b);
       return false;
@@ -211,7 +211,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
     log.warn('''
 $i: $x | $y')
 	  ${hex8(x)} | ${hex8(y)}
-	  "${new String.fromCharCode(x)}" | "${new String.fromCharCode(y)}"
+	  "${String.fromCharCode(x)}" | "${String.fromCharCode(y)}"
 	    '    $a')
       '    $b')
       '    ${a.getAscii()}')
@@ -246,18 +246,17 @@ $i: $x | $y')
   static Bytes fromFile(File file,
       {Endian endian = Endian.little, bool doAsync = false}) {
     final Uint8List bList = file.readAsBytesSync();
-    return new Bytes.typedDataView(
-        bList, 0, bList.length, endian ?? Endian.little);
+    return Bytes.typedDataView(bList, 0, bList.length, endian ?? Endian.little);
   }
 
   /// Returns a [Bytes] buffer containing the contents of the
   /// [File] at [path].
   static Bytes fromPath(String path,
           {Endian endian = Endian.little, bool doAsync = false}) =>
-      fromFile(new File(path), endian: endian, doAsync: doAsync);
+      fromFile(File(path), endian: endian, doAsync: doAsync);
 
   /// The canonical empty (zero length) [Bytes] object.
-  static final Bytes kEmptyBytes = new Bytes(0);
+  static final Bytes kEmptyBytes = Bytes(0);
 
   /// Returns a [Bytes] containing the Base64 decoding of [s].
   static Bytes fromBase64(String s) {
@@ -266,29 +265,29 @@ $i: $x | $y')
     final bLength = bList.length;
     if (bLength.isOdd) {
       // Performance: It would be good to ignore this copy
-      final nList = new Uint8List(bLength + 1);
-      for (var i = 0; i < bLength -1; i++) nList[i] = bList[i];
+      final nList = Uint8List(bLength + 1);
+      for (var i = 0; i < bLength - 1; i++) nList[i] = bList[i];
       nList[bLength] = 0;
       bList = nList;
     }
-    return new Bytes.typedDataView(bList);
+    return Bytes.typedDataView(bList);
   }
 
   /// Returns a [Bytes] containing the ASCII encoding of [s].
   static Bytes fromAscii(String s) =>
-      (s.isEmpty) ? kEmptyBytes : new Bytes.typedDataView(ascii.encode(s));
+      (s.isEmpty) ? kEmptyBytes : Bytes.typedDataView(ascii.encode(s));
 
   /// Returns [Bytes] containing the UTF-8 encoding of [s];
   static Bytes fromUtf8(String s) {
     if (s.isEmpty) return kEmptyBytes;
     final Uint8List u8List = utf8.encode(s);
-    return new Bytes.typedDataView(u8List);
+    return Bytes.typedDataView(u8List);
   }
 
   /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  static Bytes fromString(String s, {bool isAscii: false}) {
+  static Bytes fromString(String s, {bool isAscii = false}) {
     if (s.isEmpty) return kEmptyBytes;
-    return (isAscii) ? fromAscii(s) : fromUtf8(s);
+    return isAscii ? fromAscii(s) : fromUtf8(s);
   }
 
   /// Returns a [Bytes] containing ASCII code units.
@@ -320,7 +319,7 @@ $i: $x | $y')
   /// Returns a [Bytes] containing UTF-8 code units. See [fromUtf8List].
   static Bytes fromStrings(List<String> vList,
           {int maxLength, bool isAscii = false, String separator = '\\'}) =>
-      (isAscii)
+      isAscii
           ? fromAsciiList(vList, maxLength, separator)
           : fromUtf8List(vList, maxLength, separator);
 }
@@ -329,7 +328,7 @@ $i: $x | $y')
 /// Returns a [ByteData] that is a copy of the specified region of _this_.
 ByteData _copyByteData(ByteData bd, int offset, int length) {
   final _length = length ?? bd.lengthInBytes;
-  final bdNew = new ByteData(_length);
+  final bdNew = ByteData(_length);
   for (var i = 0, j = offset; i < _length; i++, j++)
     bdNew.setUint8(i, bd.getUint8(j));
   return bdNew;

@@ -9,7 +9,7 @@ import 'package:core/core.dart';
 void main() {
   const test0 = 'aaabbbcccbbbddd';
   const s0 = r'b';
-  final rexp0 = new RegExp(s0);
+  final rexp0 = RegExp(s0);
 
   final m = rexp0.firstMatch(test0);
   final n = test0.replaceFirst(rexp0, 'X');
@@ -44,7 +44,7 @@ void main() {
   print('result: $result');
 
   const s1 = r'z';
-  final rexp1 = new RegExp(s1);
+  final rexp1 = RegExp(s1);
   final a = replaceFirst(rexp1, 'X', 20);
   print('a: $a');
 }
@@ -57,9 +57,9 @@ final List<String> values = [
 
 StringList replaceFirst(RegExp from, String to, int maxLength,
     [int startIndex = 0]) {
-  // final regex = new RegExp(from);
+  // final regex = RegExp(from);
   final length = values.length;
-  final result = new List<String>(length);
+  final result = List<String>(length);
   for (var i = 0; i < length; i++) {
     final v = values[i].replaceFirst(from, to, startIndex);
     print('v: "$v"');

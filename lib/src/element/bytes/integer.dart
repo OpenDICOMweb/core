@@ -26,10 +26,10 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
 
   SSbytes(this.bytes);
 
-  static SSbytes fromBytes(DicomBytes bytes) => new SSbytes(bytes);
+  static SSbytes fromBytes(DicomBytes bytes) => SSbytes(bytes);
 
   static ByteElement fromValues(int code, List<int> vList,
-                                {bool isEvr = true}) {
+      {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
     if (bytes == null) return null;
     bytes.writeUint16VF(vList);
@@ -37,7 +37,6 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
     return fromBytes(bytes);
   }
 }
-
 
 /// 32-bit signed integer Elements (SL)
 abstract class Int32Mixin {
@@ -56,7 +55,7 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
 
   SLbytes(this.bytes);
 
-  static SLbytes fromBytes(DicomBytes bytes) => new SLbytes(bytes);
+  static SLbytes fromBytes(DicomBytes bytes) => SLbytes(bytes);
 
   static SLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kSLCode, isEvr, SL.kSizeInBytes);
@@ -66,7 +65,6 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
     return fromBytes(bytes);
   }
 }
-
 
 /// Unsigned 8-bit Integer Elements (OB, UN)
 abstract class Uint8Mixin {
@@ -89,7 +87,7 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
 
   static OBbytes fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
-      new OBbytes(bytes);
+      OBbytes(bytes);
 
   static OBbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kOBCode, isEvr, OB.kSizeInBytes)
@@ -107,7 +105,7 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
 
   static UNbytes fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
-      new UNbytes(bytes);
+      UNbytes(bytes);
 
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
@@ -134,7 +132,7 @@ class USbytes extends US with ByteElement<int>, Uint16Mixin {
 
   USbytes(this.bytes);
 
-  static USbytes fromBytes(DicomBytes bytes) => new USbytes(bytes);
+  static USbytes fromBytes(DicomBytes bytes) => USbytes(bytes);
 
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
@@ -154,7 +152,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
 
   static OWbytes fromBytes(DicomBytes bytes,
           [TransferSyntax ts, VFFragments fragments]) =>
-      new OWbytes(bytes);
+      OWbytes(bytes);
 
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
@@ -183,7 +181,7 @@ class ATbytes extends AT with ByteElement<int>, Uint32Mixin {
 
   ATbytes(this.bytes);
 
-  static ATbytes fromBytes(DicomBytes bytes) => new ATbytes(bytes);
+  static ATbytes fromBytes(DicomBytes bytes) => ATbytes(bytes);
 
   static ATbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kATCode, isEvr, AT.kSizeInBytes);
@@ -201,7 +199,7 @@ class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
 
   OLbytes(this.bytes);
 
-  static OLbytes fromBytes(DicomBytes bytes) => new OLbytes(bytes);
+  static OLbytes fromBytes(DicomBytes bytes) => OLbytes(bytes);
 
   static OLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kOLCode, isEvr, OL.kSizeInBytes);
@@ -212,7 +210,6 @@ class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
   }
 }
 
-
 /// Unsigned Long (UL)
 class ULbytes extends UL with ByteElement<int>, Uint32Mixin {
   @override
@@ -222,7 +219,7 @@ class ULbytes extends UL with ByteElement<int>, Uint32Mixin {
 
   static ULbytes fromBytes(DicomBytes bytes) =>
       // If the code is (gggg,0000) create a Group Length element
-      (bytes.getUint16(2) == 0) ? new GLbytes(bytes) : new ULbytes(bytes);
+      (bytes.getUint16(2) == 0) ? GLbytes(bytes) : ULbytes(bytes);
 
   static ULbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kULCode, isEvr, UL.kSizeInBytes);
@@ -240,7 +237,7 @@ class GLbytes extends ULbytes {
   static const String kVRKeyword = 'GL';
   static const String kVRName = 'Group Length';
 
-  static GLbytes fromBytes(DicomBytes bytes) => new GLbytes(bytes);
+  static GLbytes fromBytes(DicomBytes bytes) => GLbytes(bytes);
 
   static GLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);

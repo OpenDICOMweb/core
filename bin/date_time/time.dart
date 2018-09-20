@@ -19,7 +19,7 @@ void main() {
   log.debug('    parseDcmTime: $us');
 }
 
-const List<String> goodDcmTimeList = const <String>[
+const List<String> goodDcmTimeList = <String>[
   '230718',
   '000000',
   '190101',
@@ -106,7 +106,7 @@ const List<String> goodDcmTimeList = const <String>[
 
     });
 */
-const List<String> goodFractions = const <String>[
+const List<String> goodFractions = <String>[
   '.0',
   '.1',
   '.90',

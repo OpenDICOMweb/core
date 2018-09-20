@@ -51,13 +51,13 @@ class History {
         privateGroups = <PrivateGroup>[];
 
   History.from(History h)
-      : added = new List.from(h.added),
-        updated = new List.from(h.updated),
-        removed = new List.from(h.removed),
-        duplicates = new List.from(h.duplicates),
-        requiredNotPresent = new List.from(h.requiredNotPresent),
-        notPresent = new List.from(h.notPresent),
-        privateGroups = new List.from(h.privateGroups);
+      : added = List.from(h.added),
+        updated = List.from(h.updated),
+        removed = List.from(h.removed),
+        duplicates = List.from(h.duplicates),
+        requiredNotPresent = List.from(h.requiredNotPresent),
+        notPresent = List.from(h.notPresent),
+        privateGroups = List.from(h.privateGroups);
 
   //TODO:
   SQ get modifiedElementsSequence => unimplementedError();

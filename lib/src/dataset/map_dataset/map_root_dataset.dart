@@ -30,18 +30,18 @@ class MapRootDataset extends RootDataset with MapDataset {
 
   /// Creates an empty, i.e. without [Element]s, [MapRootDataset].
   MapRootDataset.empty(String path, Bytes bd, int fmiEnd)
-      : fmi = new FmiMap.empty(),
+      : fmi = FmiMap.empty(),
         eMap = <int, Element>{},
         super(path, bd, fmiEnd);
 
   /// Creates a [MapRootDataset] from another [MapRootDataset].
   MapRootDataset.from(MapRootDataset rds)
-      : fmi = new FmiMap.from(rds.fmi),
-        eMap = new Map.from(rds.eMap),
+      : fmi = FmiMap.from(rds.fmi),
+        eMap = Map.from(rds.eMap),
         super(rds.path, rds.dsBytes.bytes, rds.dsBytes.fmiEnd);
 
   /// Returns a copy of _this_.
-  RootDataset copy([RootDataset rds]) => new MapRootDataset.from(rds ?? this);
+  RootDataset copy([RootDataset rds]) => MapRootDataset.from(rds ?? this);
 }
 
 class FmiMap extends Fmi {
@@ -52,7 +52,7 @@ class FmiMap extends Fmi {
 
   FmiMap.empty() : eMap = <int, Element>{};
 
-  FmiMap.from(FmiMap fmi) : eMap = new Map.from(fmi.eMap);
+  FmiMap.from(FmiMap fmi) : eMap = Map.from(fmi.eMap);
 
   @override
   Element operator [](int code) => eMap[code];

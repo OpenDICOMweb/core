@@ -13,7 +13,7 @@ import 'package:core/src/values/uid/well_known/sop_class.dart';
 //TODO: doc
 //TODO: before V0.9.1 change entries to proper type
 
-const List<SopClass> sopClassList = const [
+const List<SopClass> sopClassList = [
   SopClass.kVerification,
   SopClass.kMediaStorageDirectoryStorage,
   SopClass.kBasicStudyContentNotification,

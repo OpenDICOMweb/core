@@ -56,7 +56,7 @@ abstract class TagElement<V> {
   EType get eType => tag.type;
   int get eTypeIndex => tag.type.index;
 
-//  ETypePredicate get eTypePredicate => throw new UnimplementedError();
+//  ETypePredicate get eTypePredicate => throw  UnimplementedError();
 
   IEType get ieType => IEType.kInstance;
 
@@ -90,14 +90,13 @@ abstract class TagElement<V> {
     // Issue: should this be forcing kLOIndex
     Tag tag = PCTag.lookupByToken(code, kLOIndex, token);
     // Issue: should this be forcing kLOIndex
-    tag ??= new PCTagUnknown(code, kLOIndex, token);
-    return new PCtag(tag, StringList.from([token]));
+    tag ??= PCTagUnknown(code, kLOIndex, token);
+    return PCtag(tag, StringList.from([token]));
   }
 
   /// Creates a [TagElement] from [DicomBytes] containing a binary encoded
   /// [Element].
-  static Element makeFromBytes(DicomBytes bytes, Dataset ds,
-      {bool isEvr}) {
+  static Element makeFromBytes(DicomBytes bytes, Dataset ds, {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return _getPCTagFromBytes(code, bytes);
 
@@ -170,7 +169,7 @@ abstract class TagElement<V> {
     UNtagPixelData.fromBytes
   ];
 
-  /// Returns a new [Element] based on the arguments.
+  /// Returns a  [Element] based on the arguments.
   static Element makeFromValues(
       int code, int vrIndex, List values, Dataset ds) {
     if (_isPrivateCreator(code)) return _getPCTag(code, vrIndex, values);
@@ -181,7 +180,7 @@ abstract class TagElement<V> {
     return makeFromTag(tag, values, index);
   }
 
-  /// Return a new [TagElement]. This assumes the caller has handled
+  /// Return a  [TagElement]. This assumes the caller has handled
   /// Private Elements, etc.
   static Element makeFromTag(Tag tag, Iterable values, int vrIndex,
           [Dataset ds, TransferSyntax ts]) =>
@@ -229,10 +228,10 @@ abstract class TagElement<V> {
     final tag = lookupTagByCode(code, kSQIndex, parent);
     assert(tag.vrIndex == kSQIndex, 'vrIndex: ${tag.vrIndex}');
     final values = (items == null) ? <TagItem>[] : items;
-    return new SQtag(parent, tag, values);
+    return SQtag(parent, tag, values);
   }
 
   static SQ makeSequenceFromTag(Dataset parent, Tag tag, List<TagItem> items,
           [int vfLengthField]) =>
-      new SQtag(parent, tag, items);
+      SQtag(parent, tag, items);
 }

@@ -22,7 +22,7 @@ class Sex {
   const Sex._(this.type, this.name);
 
   /// Returns _true_ is _this_ is a male, false otherwise..
-  bool get isMale => (type == maleType);
+  bool get isMale => type == maleType;
 
   /// Returns _true_ is _this_ is a female, false otherwise.
   bool get isFemale => !isMale;
@@ -49,13 +49,13 @@ class Sex {
   static const int otherType = 2;
 
   /// A female
-  static const Sex female = const Sex._(femaleType, 'Female');
+  static const Sex female = Sex._(femaleType, 'Female');
 
   /// A male
-  static const Sex male = const Sex._(maleType, 'Male');
+  static const Sex male = Sex._(maleType, 'Male');
 
   /// Other than male or female
-  static const Sex other = const Sex._(otherType, 'Other');
+  static const Sex other = Sex._(otherType, 'Other');
 
   static Sex parse(String s) {
     if (s == null || s.isEmpty) return null;

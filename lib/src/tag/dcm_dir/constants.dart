@@ -11,7 +11,7 @@ import 'package:core/src/utils/dicom.dart';
 /// A library of compile time constants for handling DICOM Directory data
 
 /// A [Map<int, String>] of [tag]:keyword pairs.
-const Map<int, String> dcmDirTagToKeyword = const {
+const Map<int, String> dcmDirTagToKeyword = {
   0x00041130: 'FileSetID',
   0x00041141: 'FileSetDescriptorFileID',
   0x00041142: 'SpecificCharacterSetOfFileSetDescriptorFile',
@@ -34,7 +34,7 @@ const Map<int, String> dcmDirTagToKeyword = const {
 };
 
 /// A [Map<String, int>] of keyword:tag pairs.
-const Map<String, int> dcmDirKeywordToTag = const {
+const Map<String, int> dcmDirKeywordToTag = {
   'FileSetID': 0x00041130,
   'FileSetDescriptorFileID': 0x00041141,
   'SpecificCharacterSetOfFileSetDescriptorFile': 0x00041142,
@@ -57,7 +57,7 @@ const Map<String, int> dcmDirKeywordToTag = const {
 };
 
 /// A [Map<String, String>] of keyword:tag code pairs.
-const Map<String, String> dcmDirKeywordToString = const {
+const Map<String, String> dcmDirKeywordToString = {
   'FileSetID': '0x00041130',
   'FileSetDescriptorFileID': '0x00041141',
   'SpecificCharacterSetOfFileSetDescriptorFile': '0x00041142',
@@ -80,7 +80,7 @@ const Map<String, String> dcmDirKeywordToString = const {
 };
 
 /// A list of DICOM DIR Tag codes.
-const List<int> dcmDirTags = const [
+const List<int> dcmDirTags = [
   kFileSetID, // (0004,1130)
   kFileSetDescriptorFileID, // (0004,1141)
   kSpecificCharacterSetOfFileSetDescriptorFile, // (0004,1142)
@@ -106,7 +106,7 @@ const List<int> dcmDirTags = const [
 bool isValidDcmDirTag(int tag) => dcmDirTags.contains(tag);
 
 /// A tag code ordered list of DICOM Directory Keywords.
-const List<String> dcmDirKeywords = const [
+const List<String> dcmDirKeywords = [
   'FileSetID',
   'FileSetDescriptorFileID',
   'SpecificCharacterSetOfFileSetDescriptorFile',

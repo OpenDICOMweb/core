@@ -16,15 +16,17 @@ import 'package:core/src/values/uid.dart';
 // ignore_for_file: public_member_api_docs
 
 /// A class corresponding to a DICOM Image Pixel Module, but without Pixel Data.
-/// See [PS3.3 Section C.7.6.3](http://dicom.nema.org/medical/dicom/current/output/html/part03.html#sect_C.7.6.3)
+/// See [PS3.3 Section C.7.6.3](http://dicom.nema.org/medical/dicom/
+/// current/output/html/part03.html#sect_C.7.6.3)
 class FrameDescriptor {
-  static const List<int> validPixelAllocatedSizes = const [1, 8, 16, 32];
+  static const List<int> validPixelAllocatedSizes = [1, 8, 16, 32];
 
   //TODO: decide if TS belongs here.
   /// The [TransferSyntax] for _this_.
   final TransferSyntax ts;
 
-  /// Type 1 - The number of samples (planes) in these frames. (kSamplesPerPixel)
+  /// Type 1 - The number of samples (planes) in these frames.
+  /// (kSamplesPerPixel)
   final int samplesPerPixel;
 
   /// (kPhotometricInterpretation) Type 1
@@ -287,5 +289,3 @@ Null invalidFrameDescriptorError(FrameDescriptor desc) {
   if (throwOnError) throw new InvalidFrameDescriptorError(desc);
   return null;
 }
-
-

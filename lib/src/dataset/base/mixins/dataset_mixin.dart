@@ -198,7 +198,7 @@ abstract class DatasetMixin {
   bool _isPrivate(Element e) => e.isPrivate;
   Iterable<Element> findAllPrivate0() => findAllWhere(_isPrivate);
 
-  List<int> findAllPrivateCodes({bool recursive: false}) {
+  List<int> findAllPrivateCodes({bool recursive = false}) {
     final privates = <int>[];
     for (var e in elements)
       if (e.isPrivate) privates.add(e.code);
@@ -224,7 +224,7 @@ abstract class DatasetMixin {
 
   /// The [RootDataset] of _this_.
   /// _Note_: A [RootDataset] is its own [root].
-  DatasetMixin get root => (isRoot) ? this : parent.root;
+  DatasetMixin get root => isRoot ? this : parent.root;
 
 
   /// PrivateGroup]s contained in this [Dataset].
@@ -244,7 +244,7 @@ abstract class DatasetMixin {
 
   // **** Statics
 
-  static const List<Dataset> empty = const <Dataset>[];
+  static const List<Dataset> empty = <Dataset>[];
 
-  static final ByteData emptyByteData = new ByteData(0);
+  static final ByteData emptyByteData = ByteData(0);
 }

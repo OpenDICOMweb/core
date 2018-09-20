@@ -46,7 +46,7 @@ class Hash64 extends Hash {
   double doubleHash(double n) => _float64Hash(n);
 
   /// A constant hash function.
-  static const Hash64 hash = const Hash64(Hash.kHashSeed);
+  static const Hash64 hash = Hash64(Hash.kHashSeed);
 
 
   /// Returns the [hash] of a [double].
@@ -76,7 +76,7 @@ class Hash64 extends Hash {
   static int bd(ByteData bd) => hash.byteData(bd);
 }
 
-final _byteBuf = new ByteData(8);
+final _byteBuf = ByteData(8);
 final Float64List _float64Buf = _byteBuf.buffer.asFloat64List();
 final Uint64List _uint64Buf = _byteBuf.buffer.asUint64List();
 

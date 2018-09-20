@@ -14,8 +14,8 @@ void main() {
   // They can be changed to make the tests longer or shorter
   // Note: startYear and endYear must be initialized before
   // calling Server.initialize
-  const startYear = -10000 + 1970;
-  const endYear = 10000 - 1970;
+  const startYear =  1970 -10000;
+  const endYear = 1970 + 10000;
 
   Server.initialize(
       name: 'epoch_day_test',
@@ -26,7 +26,7 @@ void main() {
       level: Level.info);
 
   final startEpochDay = dateToEpochDay(startYear, 1, 1);
-  final endEpochDay = dateToEpochDay(endYear, 1, 1);
+  final endEpochDay = dateToEpochDay(endYear, 12, 31);
 
   group('Test Day Part of String', () {
     test('Leap Year Basic Test', () {
@@ -89,7 +89,7 @@ void main() {
 
     test('Leap Year Performance Test', () {
       log.debug('Leap Year Perfermance Test: $startYear - $endYear');
-      final watch = new Stopwatch()..start();
+      final watch = Stopwatch()..start();
 
       for (var i = startEpochDay; i < endEpochDay; i++) {
         final date = EpochDate.fromDay(i);
@@ -144,7 +144,7 @@ void main() {
     });
 
     test('dateListsEqual', () {
-      const zeroDate = const <int>[1970, 1, 1];
+      const zeroDate = <int>[1970, 1, 1];
       log.debug('zeroDayAsList: $zeroDate');
       final date = EpochDate.fromDay(0);
       expect(date.year == 1970, true);
@@ -168,16 +168,35 @@ void main() {
     });
 
     test('Epoch Date Basic Test', () {
+      global.level = Level.debug;
+
       log.debug('Epoch Date Basic Test...');
-      final watch = new Stopwatch()..start();
-      for (var i = global.minYear; i < global.maxYear; i++) {
-        final date = EpochDate.fromDay(i);
-        final y = date.year;
-        final m = date.month;
-        final d = date.day;
+      final watch = Stopwatch()..start();
+      final minDay = dateToEpochDay(1970 - 10 , 1, 1);
+      final maxDay = dateToEpochDay(1970 + 10, 12, 31);
+      log.debug('minDay: $minDay');
+      log.debug('maxDay: $maxDay');
+
+      for (var i = minDay; i < maxDay; i++) {
+        final eDate = EpochDate.fromDay(i);
+        log.debug('\neDate: $eDate');
+        final y = eDate.year;
+        final m = eDate.month;
+        final d = eDate.day;
+        log.debug('  $y-$m-$d');
+        log.debug('i: $i');
         final n = dateToEpochDay(y, m, d);
         // log.debug('$i, $n, ${i == n}');
+        log.debug('n: $n');
         expect(i == n, true);
+        final s = eDate.asString();
+        log.debug('s: $s');
+
+        final date = Date.parse(s);
+        final eDay = date.epochDay;
+        log.debug('e: $eDay');
+        expect(i == eDay, true);
+        expect(n == eDay, true);
         if (isLeapYear(y) && m == 2 && d == 29) {
           final last = lastDayOfMonth(y, m);
           expect(last == 29, true);
@@ -198,7 +217,7 @@ void main() {
       final eEnd = dateToEpochDay(endYear, 1, 1);
       log.debug1('  Epoch End Day: $eEnd');
 
-      final watch = new Stopwatch()..start();
+      final watch = Stopwatch()..start();
       var previousEpochDay = eStart - 1;
       var nextEpochDay = eStart + 1;
       log.debug1('  Previous Epoch Day: $previousEpochDay');
@@ -258,7 +277,7 @@ void main() {
       final wd = weekdayFromEpochDay(zeroDay);
       expect(wd == kThursday, true);
 
-      final watch = new Stopwatch()..start();
+      final watch = Stopwatch()..start();
       var previousEpochDay = eStart - 1;
       //assert(previousEpochDay < 0);
       log.debug('  Previous Epoch Day: $previousEpochDay');
@@ -310,7 +329,7 @@ void main() {
     });
     test('weekDayFromEpochDay', () {
       log.debug('weekDayFromEpochDay');
-      final watch = new Stopwatch();
+      final watch = Stopwatch();
       const zeroWeekDay = kThursday;
       watch.start();
       for (var i = 0; i < 10000; i++) {
@@ -497,69 +516,69 @@ void main() {
   });
 }
 
-const List<int> goodBasicLeapYears = const [
+const List<int> goodBasicLeapYears = [
   1904, -1908, -1912, -1916, -1920, // No reformat
   1904, 1908, 1912, 1916, 1920,
   1924, 1928, 1932, 1936, 1980,
   1984, 1988, 1992, 1996,
 ];
 
-const List<int> goodSpecialLeapYears = const [
+const List<int> goodSpecialLeapYears = [
   -400, -800, -1200, -1600, -2400, 2800, // No reformat
   400, 800, 1200, 1600, 2400, 2800
 ];
 
-const List<int> goodBasicCommonYears = const [
+const List<int> goodBasicCommonYears = [
   -1905, -1909, -1913, -1917, -1921, // No reformat
   1905, 1909, 1913, 1917, 1921, // No reformat
   1925, 1929, 1933, 1937, 1981,
   1985, 1989, 1993, 1997, 2001
 ];
 
-const List<int> goodSpecialCommonYears = const [
+const List<int> goodSpecialCommonYears = [
   -100, -200, -300, -700, -900, // No reformat
   100, 200, 300, 700, 900,
   1000, 1100, 1300, 1800, 1900,
   2100, 2200, 2300, 2700, 2900
 ];
 
-const List<List<int>> validDateLists = const <List<int>>[
-  const <int>[1970, 1, 1], // No reformat
-  const <int>[1970, 12, 31],
-  const <int>[1969, 1, 1],
-  const <int>[1969, 12, 31],
-  const <int>[1971, 1, 1],
-  const <int>[1971, 12, 31],
+const List<List<int>> validDateLists = <List<int>>[
+  <int>[1970, 1, 1], // No reformat
+  <int>[1970, 12, 31],
+  <int>[1969, 1, 1],
+  <int>[1969, 12, 31],
+  <int>[1971, 1, 1],
+  <int>[1971, 12, 31],
 
-  const <int>[1968, 2, 29],
-  const <int>[1964, 2, 29],
+  <int>[1968, 2, 29],
+  <int>[1964, 2, 29],
 
-  const <int>[0, 1, 1],
-  const <int>[0, 2, 29],
-  const <int>[1, 2, 28],
-  const <int>[-1, 2, 28]
+  <int>[0, 1, 1],
+  <int>[0, 2, 29],
+  <int>[1, 2, 28],
+  <int>[-1, 2, 28]
 ];
 
-const List<List<int>> invalidDateLists = const <List<int>>[
-  const <int>[1970, 0, 1], // No reformat
-  const <int>[1970, -1, 1],
-  const <int>[1970, -2, 1],
-  const <int>[1970, 13, 1],
-  const <int>[1970, 14, 1],
+const List<List<int>> invalidDateLists = <List<int>>[
+  <int>[1970, 0, 1], // No reformat
+  <int>[1970, -1, 1],
+  <int>[1970, -2, 1],
+  <int>[1970, 13, 1],
+  <int>[1970, 14, 1],
 
-  const <int>[1970, 1, 0],
-  const <int>[1970, 12, -1],
-  const <int>[1970, 12, -2],
-  const <int>[1970, 1, -3],
-  const <int>[1970, 12, 32],
-  const <int>[1970, 12, 33],
-  const <int>[1970, 12, 34],
+  <int>[1970, 1, 0],
+  <int>[1970, 12, -1],
+  <int>[1970, 12, -2],
+  <int>[1970, 1, -3],
+  <int>[1970, 12, 32],
+  <int>[1970, 12, 33],
+  <int>[1970, 12, 34],
 
-  const <int>[1970, 11, 31],
-  const <int>[1971, 10, 32],
-  const <int>[1971, 9, 31],
+  <int>[1970, 11, 31],
+  <int>[1971, 10, 32],
+  <int>[1971, 9, 31],
 
-  const <int>[0, 2, 30],
-  const <int>[1, 2, 29],
-  const <int>[-1, 2, 29]
+  <int>[0, 2, 30],
+  <int>[1, 2, 29],
+  <int>[-1, 2, 29]
 ];

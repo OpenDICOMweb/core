@@ -50,7 +50,7 @@ class PrivateCreatorTags {
 
   @override
   String toString() {
-    final sb = new StringBuffer('$runtimeType: ${tags.length} creators');
+    final sb = StringBuffer('$runtimeType: ${tags.length} creators');
     for (var v in tags.values) sb.writeln('  $v');
     return '$sb';
   }

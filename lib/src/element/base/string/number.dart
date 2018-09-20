@@ -76,11 +76,10 @@ abstract class DS extends StringAscii {
     return compareValuesTo(e.numbers);
   }
 
-
   /// Returns a [Element] that is created by adding n to each
   /// element of [numbers].
   Element increment([num n = 1.0]) {
-    final result = new List<num>(length);
+    final result = List<num>(length);
     for (var i = 0; i < numbers.length; i++) result[i] = numbers[i] + n;
     return update(result.map((v) => '$v'));
   }
@@ -88,7 +87,7 @@ abstract class DS extends StringAscii {
   /// Returns a [Element] that is created by subtracting n from each
   /// element of [numbers].
   Element decrement([num n = 1.0]) {
-    final result = new List<num>(length);
+    final result = List<num>(length);
     for (var i = 0; i < numbers.length; i++) result[i] = numbers[i] - n;
     return update(result.map((v) => '$v'));
   }
@@ -103,7 +102,7 @@ abstract class DS extends StringAscii {
   /// the same [length] as _this_.
   DS get random {
     if (length == 0) return this;
-    final dList = new List<num>(length);
+    final dList = List<num>(length);
     for (var i = 0; i < length; i++) dList[i] = Global.rng.nextDouble();
     final vList = dList.map(numToString);
     return update(vList);
@@ -188,8 +187,9 @@ abstract class DS extends StringAscii {
       StringBase.isValidValues(
           tag, vList, issues, isValidValue, kMaxLength, DS);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
@@ -299,7 +299,7 @@ abstract class IS extends StringAscii {
   /// Returns a List<int> that is created by adding n to each element of
   /// [integers].
   Element increment([int n = 1]) {
-    final result = new List<int>(length);
+    final result = List<int>(length);
     for (var i = 0; i < integers.length; i++) result[i] = integers[i] + n;
     return update(result.map((v) => '$v'));
   }
@@ -307,7 +307,7 @@ abstract class IS extends StringAscii {
   /// Returns a List<int> that is created by subtracting n from each element of
   /// [integers].
   Element decrement([int n = 1]) {
-    final result = new List<int>(length);
+    final result = List<int>(length);
     for (var i = 0; i < integers.length; i++) result[i] = integers[i] - n;
     return update(result.map((v) => '$v'));
   }
@@ -323,7 +323,7 @@ abstract class IS extends StringAscii {
     var ints = integers;
     ints = (ints is Iterable) ? ints.toList(growable: false) : ints;
     final length = ints.length;
-    final sList = new List<String>(length);
+    final sList = List<String>(length);
     for (var i = 0; i < length; i++) {
       var h = global.hash(ints[i]);
       h = (h.isNegative) ? h % kMinValue : h % kMaxValue;
@@ -337,14 +337,14 @@ abstract class IS extends StringAscii {
   IS get sha256 => sha256Unsupported(this);
 
   List<String> hashStringList(List<String> vList) {
-    final iList = new List<String>(vList.length);
+    final iList = List<String>(vList.length);
     for (var i = 0; i < vList.length; i++)
       iList[i] = vList[i].hashCode.toString();
     return iList;
   }
 
   List<int> hashIntList(List<int> vList) {
-    final iList = new Int32List(vList.length);
+    final iList = Int32List(vList.length);
     for (var i = 0; i < vList.length; i++) iList[i] = vList[i].hashCode;
     return iList;
   }
@@ -409,8 +409,9 @@ abstract class IS extends StringAscii {
       StringBase.isValidValues(
           tag, vList, issues, isValidValue, kMaxLength, IS);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 

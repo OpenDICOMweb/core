@@ -25,10 +25,10 @@ class Indenter extends Object with IndenterMixin implements StringBuffer {
   int depth;
 
   Indenter([Object o = '', this.tabSize = 2, this.depth = 0])
-      : sb = new StringBuffer(o);
+      : sb = StringBuffer(o);
 
   Indenter.from(Indenter indenter)
-      : sb = new StringBuffer(),
+      : sb = StringBuffer(),
         tabSize = indenter.tabSize,
         depth = indenter.depth;
 

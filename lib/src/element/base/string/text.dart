@@ -39,7 +39,7 @@ abstract class Text extends Utf8 {
   List<String> valuesFromBytes(Bytes vfBytes) => [vfBytes.getUtf8()];
 
   static List<String> fromValueField(Iterable vf, int maxVFLength,
-      {bool isAscii: true}) {
+      {bool isAscii = true}) {
     if (vf == null) return kEmptyStringList;
     if (vf.isEmpty ||
         ((vf is List<String>) && vf.length == 1) ||
@@ -385,7 +385,7 @@ abstract class UR extends Text {
     final uri = tryParse(s, start: start, end: end, issues: issues);
     if (uri == null) {
       if (onError != null) return onError(s);
-      throw new FormatException('Invalid Uri: "$s"');
+      throw FormatException('Invalid Uri: "$s"');
     }
     return uri;
   }

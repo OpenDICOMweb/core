@@ -26,7 +26,7 @@ import 'package:core/src/values/uid.dart';
 /// The Base [class] that is used to implement DICOM Information Entities
 /// (see  PS3.1 and PS3.6).
 abstract class Entity {
-  static const Map<Uid, Entity> empty = const <Uid, Entity>{};
+  static const Map<Uid, Entity> empty = <Uid, Entity>{};
 
   /// This [parent] of _this_.
   final Entity parent;
@@ -48,13 +48,13 @@ abstract class Entity {
   Entity(this.parent, this.uid, this.rds, Map<Uid, Entity> children)
       : children = (children == null) ? <Uid, Entity>{} : children;
 
-  /// Returns a copy of [Entity], but with a new [Uid]. If [parent] is _null_
-  /// the new [Entity] has the same parent as _this_.
+  /// Returns a copy of [Entity], but with a  [Uid]. If [parent] is _null_
+  /// the  [Entity] has the same parent as _this_.
   //TODO: how to create an interface without changing finals
   Entity.from(Entity entity, this.rds, Entity parent)
       : parent = (parent == null) ? entity.parent : parent,
-        uid = new Uid(),
-        children = new Map.from(entity.children);
+        uid = Uid(),
+        children = Map.from(entity.children);
 
   /// Returns the child that has [uid].
   Entity operator [](Uid uid) => children[uid];
@@ -63,6 +63,7 @@ abstract class Entity {
 
   // The [name] of _this_.
   Type get type => runtimeType;
+
   /// The Information Entity Level of _this_.
   IELevel get level;
 
@@ -95,7 +96,8 @@ abstract class Entity {
   @override
   String toString() => '$runtimeType($uid): (${children.length}) ';
 
-  static Entity putWhenAbsent(Entity entity, Uid uid, Map<Uid, Entity> children)   {
+  static Entity putWhenAbsent(
+      Entity entity, Uid uid, Map<Uid, Entity> children) {
     final v = children.putIfAbsent(uid, () => entity);
     if (v != entity) return duplicateEntityError(v, entity);
     return entity;

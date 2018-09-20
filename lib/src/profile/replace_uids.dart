@@ -19,11 +19,11 @@ List<Element> replaceUids(TagRootDataset rds) {
   final old = <Element>[];
 
   for (var code in deIdUidCodes) {
-    final UI e = rds.lookup(code);
-    if (e != null) {
-      final eNew = replaceUIFast(e);
-      rds.replace(e.index, eNew);
-      old.add(e);
+    final UI e0 = rds.lookup(code);
+    if (e0 != null) {
+      final e1 = replaceUIFast(e0);
+      rds.replace(e0.index, e1);
+      old.add(e0);
     }
   }
   return old;
@@ -32,47 +32,47 @@ List<Element> replaceUids(TagRootDataset rds) {
 UI replaceUIFast(UI e) {
   final oldUids = e.uids;
   final length = oldUids.length;
-  final newUids = new List<String>(length);
+  final uids =  List<String>(length);
   for (var i = 0; i < length; i++) {
-    final uid = oldUids.elementAt(i);
-    var newUid = idedToDeIded[uid];
+    final oldUid = oldUids.elementAt(i);
+    var newUid = idedToDeIded[oldUid];
     if (newUid != null) {
-      newUids[i] = newUid.asString;
+      uids[i] = newUid.asString;
     } else {
-      newUid = new Uid();
-      idedToDeIded[uid] = newUid;
-      newUids[i] = newUid.asString;
+      newUid =  Uid();
+      idedToDeIded[oldUid] = newUid;
+      uids[i] = newUid.asString;
     }
   }
-  printUidValues(e, newUids);
-  return e.update(newUids);
+  printUidValues(e, uids);
+  return e.update(uids);
 }
 
 UI replaceUIGeneral(UI e) {
   final oldUids = e.uids;
   final length = oldUids.length;
-  final newUids = new List<String>(length);
+  final uids =  List<String>(length);
   for (var i = 0; i < length; i++) {
-    final uid = oldUids.elementAt(i);
-    var newUid = idedToDeIded[uid];
+    final old = oldUids.elementAt(i);
+    var newUid = idedToDeIded[old];
     if (newUid != null) {
-      newUids[i] = newUid.asString;
-    } else if (uid.isWellKnown) {
-      newUids[i] = uid.asString;
-    } else if (Uid.isDicom(uid)) {
-      newUids[i] = uid.asString;
+      uids[i] = newUid.asString;
+    } else if (old.isWellKnown) {
+      uids[i] = old.asString;
+    } else if (Uid.isDicom(old)) {
+      uids[i] = old.asString;
     } else {
-      newUid = new Uid();
-      idedToDeIded[uid] = newUid;
-      newUids[i] = newUid.asString;
+      newUid =  Uid();
+      idedToDeIded[old] = newUid;
+      uids[i] = newUid.asString;
     }
   }
-  printUidValues(e, newUids);
-  return e.update(newUids);
+  printUidValues(e, uids);
+  return e.update(uids);
 }
 
 void printUidValues(UI e, List<String> nList) => print('''   
         e: $e
   oldUids: ${e.values}
-  newUids: $nList
+  Uids: $nList
 ''');

@@ -9,7 +9,7 @@
 import 'pd_tag_definitions.dart';
 
 /// A List of known private data tags.
-const List<PDTagDefinition> privateDataTagList = const [
+const List<PDTagDefinition> privateDataTagList = [
   PDTagDefinition.k1,
   PDTagDefinition.k2,
   PDTagDefinition.k3,

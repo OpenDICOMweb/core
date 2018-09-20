@@ -59,14 +59,14 @@ abstract class Hash {
 
   /// Generates a hash code for multiple [objects].
   int nList(Iterable<Object> objects) {
-    if (objects == null) throw new ArgumentError('Invalid null argument');
+    if (objects == null) throw ArgumentError('Invalid null argument');
     return finish(
         objects.fold(kHashSeed, (h, o) => combine(h, o.hashCode)));
   }
 
   /// Generates a hash code for multiple [vList].
   int intList(Iterable<int> vList) {
-    if (vList == null) throw new ArgumentError('Invalid null argument');
+    if (vList == null) throw ArgumentError('Invalid null argument');
     var seed = kHashSeed;
     for(var i in vList) seed = combine(seed, i);
     return finish(seed);
@@ -74,7 +74,7 @@ abstract class Hash {
 
   /// Generates a hash code for [ByteData].
   int byteData(ByteData bd) {
-    if (bd == null) throw new ArgumentError('Invalid null argument');
+    if (bd == null) throw ArgumentError('Invalid null argument');
 
     var seed = kHashSeed;
     for(var i = bd.offsetInBytes; i < bd.lengthInBytes; i++)

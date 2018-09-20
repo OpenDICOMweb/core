@@ -36,10 +36,10 @@ class TemplateBenchmark extends BenchmarkBase {
   @override
   void setup() {
     // Uuid.initialize(isSecure: false, seed: 0);
-    uuids = new List<Uuid>(length);
-    strings = new List<String>(length);
-    for (var   i = 0; i < length; i++) {
-      uuids[i] = new Uuid();
+    uuids = List<Uuid>(length);
+    strings = List<String>(length);
+    for (var i = 0; i < length; i++) {
+      uuids[i] = Uuid();
       strings[i] = uuids[i].toString();
     }
   }

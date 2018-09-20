@@ -91,7 +91,7 @@ abstract class FastSpaces {
       : spaces;
 
   List<String> getSpacesList(int tabSize, [int maxDepth = 12]) {
-    final indents = new List<String>(maxDepth);
+    final indents = List<String>(maxDepth);
     for (var i = 0; i < maxDepth; i++) indents[i] = ''.padRight(i * tabSize);
     return indents;
   }

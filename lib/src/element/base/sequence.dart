@@ -67,16 +67,16 @@ abstract class SQ extends Element<Item> {
 
   @override
   TypedData get typedData =>
-      throw new UnsupportedError('Sequence VR does not support this Getter.');
+      throw UnsupportedError('Sequence VR does not support this Getter.');
 
   /// Returns the total number of Elements in _this_.
   @override
   int get total => counter((e) => true);
 
   List sqMap(Object f(Element e)) {
-    final iList = new List<Object>(items.length);
+    final iList = List<Object>(items.length);
     for (var item in items) {
-      final eList = new List<Object>(item.length);
+      final eList = List<Object>(item.length);
       iList.add(eList);
       for (var e in item)
         if (e is SQ) {
@@ -160,12 +160,12 @@ Summary $tag
 
   void addElementAt(int itemIndex, Element e) {
     RangeError.checkValueInInterval(itemIndex, 0, items.length);
-    items[itemIndex]..add(e);
+    items[itemIndex].add(e);
   }
 
   @override
   Iterable<Item> get emptyList => kEmptyList;
-  static const Iterable<Item> kEmptyList = const <Item>[];
+  static const Iterable<Item> kEmptyList = <Item>[];
 
   @override
   SQ get noValues => update(kEmptyList);

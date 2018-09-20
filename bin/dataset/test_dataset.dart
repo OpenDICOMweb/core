@@ -12,13 +12,13 @@ import 'package:core/server.dart';
 void main() {
   Server.initialize();
 
-  final rootDS = new TagRootDataset.empty()..checkIssuesOnAdd = true;
+  final rootDS = TagRootDataset.empty()..checkIssuesOnAdd = true;
   print('doCheckIssuesOnAdd: ${rootDS.checkIssuesOnAdd}');
 
-  final SL sl0 = new SLtag(PTag.kReferencePixelX0, [kInt32Min]);
-  final SL sl2 = new SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
-  final LT lt2 = new LTtag(PTag.kDetectorDescription, ['foo']);
-  final FL fl3 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
+  final SL sl0 = SLtag(PTag.kReferencePixelX0, [kInt32Min]);
+  final SL sl2 = SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
+  final LT lt2 = LTtag(PTag.kDetectorDescription, ['foo']);
+  final FL fl3 = FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
 
   sl0.checkValues([-99]);
 

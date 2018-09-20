@@ -73,9 +73,9 @@ class SeriesUids {
 class UidMap {
   final Uid parentUid;
   final Uid parentDeIdUid;
-  final  _uidMap = <Uid, Uid>{};
+  final _uidMap = <Uid, Uid>{};
 
-  UidMap(this.parentUid) : parentDeIdUid = new Uid();
+  UidMap(this.parentUid) : parentDeIdUid = Uid();
 
   Uid operator [](Uid instance) => lookup(instance);
 
@@ -83,7 +83,7 @@ class UidMap {
     assert(parentUid == null || parent == parentUid);
     final deIdUid = _uidMap[idUid];
     if (deIdUid != null) return deIdUid;
-    final newDeIdUid = new Uid();
+    final newDeIdUid = Uid();
     final result = _uidMap.putIfAbsent(idUid, () => newDeIdUid);
     assert(newDeIdUid == result);
     return newDeIdUid;

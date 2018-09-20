@@ -24,21 +24,21 @@ String cleanPath(String path) => path.replaceAll('\\', '/');
 
 /// Checks that [file] is not empty.
 void checkFile(File file, {bool overWrite = false}) {
-  if (file == null) throw new ArgumentError('null File');
+  if (file == null) throw ArgumentError('null File');
   if (file.existsSync() && (file.lengthSync() == 0))
-    throw new ArgumentError('$file has zero length');
+    throw ArgumentError('$file has zero length');
 }
 
 /// Checks that [path] is not empty.
 String checkPath(String path) {
-  if (path == null || path == '') throw new ArgumentError('Empty path: $path');
+  if (path == null || path == '') throw ArgumentError('Empty path: $path');
   return path;
 }
 
 /// Checks that [dataset] is not empty.
 void checkRootDataset(Dataset dataset) {
   if (dataset == null || dataset.isEmpty)
-    throw new ArgumentError('Empty ' 'Empty Dataset: $dataset');
+    throw ArgumentError('Empty ' 'Empty Dataset: $dataset');
 }
 
 String getOutputPath(String inPath, {String dir, String base, String ext}) {
@@ -58,7 +58,7 @@ String getVNAPath(RootDataset rds, String rootDir, String ext) {
   final series = _getUid(rds, kSeriesInstanceUID, '/');
   final instance = _getUid(rds, kSOPInstanceUID, '');
   final dirPath = '$rootDir$study$series';
-  final dir = new Directory(dirPath);
+  final dir = Directory(dirPath);
   if (!dir.existsSync()) dir.createSync(recursive: true);
   return (instance == '')
       ? '${dirPath.substring(0, dirPath.length - 1)}.$ext'
@@ -100,9 +100,10 @@ return fNames;
 */
 
 //TODO move to utilities
-/// Returns a [List] of [File]s with extension [ext] from the specified [Directory].
+/// Returns a [List] of [File]s with extension [ext] from the
+/// specified [Directory].
 List<File> getFilesFromDirectory(String source, [String ext = '.dcm']) {
-  final dir = new Directory(source);
+  final dir = Directory(source);
   final entities = dir.listSync(recursive: true, followLinks: false);
   final files = <File>[];
   for (var e in entities)

@@ -31,24 +31,24 @@ abstract class ReadBufferBase extends BytesBuffer {
   /// Return a new Big Endian[ReadBuffer] containing the unread
   /// portion of _this_.
   ReadBuffer get asBigEndian =>
-      new ReadBuffer.from(this, _rIndex, _wIndex, Endian.big);
+      ReadBuffer.from(this, _rIndex, _wIndex, Endian.big);
 
   /// Return a new Little Endian[ReadBuffer] containing the unread
   /// portion of _this_.
   ReadBuffer get asLittleEndian =>
-      new ReadBuffer.from(this, _rIndex, _wIndex, Endian.little);
+      ReadBuffer.from(this, _rIndex, _wIndex, Endian.little);
 
   /// The underlying [ByteData]
-  ByteData get bd => (isClosed) ? null : _buf.asByteData();
+  ByteData get bd => isClosed ? null : _buf.asByteData();
 
-  /// Returns _true_ if this reader [isClosed] and it [isNotEmpty].
-  bool get hadTrailingBytes => (_isClosed) ? _rIsEmpty : false;
+  /// Returns _true_ if this reader isClosed and it [isNotEmpty].
+  bool get hadTrailingBytes => _isClosed ? _rIsEmpty : false;
   bool _hadTrailingZeros = false;
 
   bool _isClosed = false;
 
   /// Returns _true_ if _this_ is no longer writable.
-  bool get isClosed => (_isClosed == null) ? false : true;
+  bool get isClosed => _isClosed == null ? false : true;
 
   ByteData close() {
     if (hadTrailingBytes)
@@ -94,32 +94,32 @@ class ReadBuffer extends ReadBufferBase with ReadBufferMixin {
         _wIndex = length ?? _buf.length;
 
   ReadBuffer._from(ReadBuffer rb, int offset, int length, Endian endian)
-      : _buf = new Bytes.from(rb._buf, offset, length, endian),
+      : _buf = Bytes.from(rb._buf, offset, length, endian),
         _rIndex = offset ?? rb._buf.offset,
         _wIndex = length ?? rb._buf.length;
 
   factory ReadBuffer.from(ReadBuffer rb,
           [int offset = 0, int length, Endian endian]) =>
-      new ReadBuffer._from(rb, offset, length, endian);
+      ReadBuffer._from(rb, offset, length, endian);
 
   ReadBuffer.fromByteData(ByteData bd, [int offset, int length, Endian endian])
-      : _buf = new Bytes.typedDataView(bd, offset, length, endian),
+      : _buf = Bytes.typedDataView(bd, offset, length, endian),
         _rIndex = offset ?? bd.offsetInBytes,
         _wIndex = length ?? bd.lengthInBytes;
 
   ReadBuffer.fromList(List<int> list, [Endian endian])
-      : _buf = new Bytes.fromList(list, endian ?? Endian.little),
+      : _buf = Bytes.fromList(list, endian ?? Endian.little),
         _rIndex = 0,
         _wIndex = list.length;
 
   ReadBuffer._fromTypedData(TypedData td, int offset, int length, Endian endian)
-      : _buf = new Bytes.typedDataView(td, offset, length, endian),
+      : _buf = Bytes.typedDataView(td, offset, length, endian),
         _rIndex = offset ?? td.offsetInBytes,
         _wIndex = length ?? td.lengthInBytes;
 
   factory ReadBuffer.fromTypedData(TypedData td,
           [int offset = 0, int length, Endian endian]) =>
-      new ReadBuffer._fromTypedData(td, offset, length, endian);
+      ReadBuffer._fromTypedData(td, offset, length, endian);
 }
 
 abstract class LoggingReadBufferMixin {
@@ -144,13 +144,13 @@ abstract class LoggingReadBufferMixin {
 class LoggingReadBuffer extends ReadBuffer with LoggingReadBufferMixin {
   factory LoggingReadBuffer(ByteData bd,
           [int offset = 0, int length, Endian endian = Endian.little]) =>
-      new LoggingReadBuffer._(
+      LoggingReadBuffer._(
           bd.buffer.asByteData(offset, length), 0, length, endian);
 
   factory LoggingReadBuffer.fromUint8List(Uint8List bytes,
       [int offset = 0, int length, Endian endian]) {
     final bd = bytes.buffer.asByteData(offset, length);
-    return new LoggingReadBuffer._(bd, offset, length, endian);
+    return LoggingReadBuffer._(bd, offset, length, endian);
   }
 
   LoggingReadBuffer._(TypedData td, [int offset = 0, int length, Endian endian])

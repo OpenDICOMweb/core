@@ -20,11 +20,11 @@ class TagGroup {
   int get min => group << 16;
   int get max => (group << 16) + 0xFFFF;
 
-  static const TagGroup group18 = const TagGroup('Group 18', 0x0018);
-  static const TagGroup group20 = const TagGroup('Group 20', 0x0020);
-  static const TagGroup group28 = const TagGroup('Group 28', 0x0028);
-  static const TagGroup group50 = const TagGroup('Group 50', 0x0050);
-  static const TagGroup group60 = const TagGroup('Group 60', 0x0060);
+  static const TagGroup group18 = TagGroup('Group 18', 0x0018);
+  static const TagGroup group20 = TagGroup('Group 20', 0x0020);
+  static const TagGroup group28 = TagGroup('Group 28', 0x0028);
+  static const TagGroup group50 = TagGroup('Group 50', 0x0050);
+  static const TagGroup group60 = TagGroup('Group 60', 0x0060);
   static const TagGroup curves = group50;
   static const TagGroup overLays = group60;
 
@@ -34,7 +34,7 @@ class TagGroup {
 }
 
 class GlobalRule {
-  static const List<int> allowedGroupNumbers = const [
+  static const List<int> allowedGroupNumbers = <int>[
     0x0018,
     0x0020,
     0x0028,
@@ -70,11 +70,11 @@ class GlobalRule {
   }
 }
 
-const List<String> dataTypes = const [
+const List<String> dataTypes = <String>[
   'char', 'condition', 'date', 'default', 'int', 'param', 'regexp', 'siteId',
   'tag', 'uidroot', 'uint', 'year', 'month', 'day' //no reformat
 ];
-const List<String> vrTypes = const [
+const List<String> vrTypes = [
   'string', 'AS', 'DA', 'LO', 'private', 'SQ', 'TM', 'UI', '??' //no reformat
 ];
 
@@ -98,63 +98,62 @@ class GlobalRuleType {
   bool validArgs(List args) => argPredicate(args);
 
   // Whitespace is allowed but ignored.  'RESET' might be present
-  static const GlobalRuleType deIdentificationMethodCodeSeq =
-      const GlobalRuleType(
-          '@DeIdentificationMethodCodeSeq', 'SQ', 1, 1, 0, const ['string']);
+  static const GlobalRuleType deIdentificationMethodCodeSeq = GlobalRuleType(
+      '@DeIdentificationMethodCodeSeq', 'SQ', 1, 1, 0, ['string']);
 
   static const GlobalRuleType keepGroup =
-      const GlobalRuleType('@keepGroup', 'uint', 1, 1, 1);
+      GlobalRuleType('@keepGroup', 'uint', 1, 1, 1);
   static const GlobalRuleType keepGroup18 =
-      const GlobalRuleType('@keepGroup18', '*', 0, 0, 0);
+      GlobalRuleType('@keepGroup18', '*', 0, 0, 0);
   static const GlobalRuleType keepGroup20 =
-      const GlobalRuleType('@keepGroup20', '*', 0, 0, 0);
+      GlobalRuleType('@keepGroup20', '*', 0, 0, 0);
   static const GlobalRuleType keepGroup28 =
-      const GlobalRuleType('@keepGroup28', '*', 0, 0, 0);
+      GlobalRuleType('@keepGroup28', '*', 0, 0, 0);
   static const GlobalRuleType keepGroup50 =
-      const GlobalRuleType('@keepGroup50', '*', 0, 0, 0);
+      GlobalRuleType('@keepGroup50', '*', 0, 0, 0);
   static const GlobalRuleType keepGroup60 =
-      const GlobalRuleType('@keepGroup60', '*', 0, 0, 0);
+      GlobalRuleType('@keepGroup60', '*', 0, 0, 0);
   static const GlobalRuleType keepCurves = keepGroup50;
   static const GlobalRuleType keepOverLays = keepGroup60;
   static const GlobalRuleType keepSafePrivate = null;
 
   static const GlobalRuleType keepPrivateGroup =
-      const GlobalRuleType('@pkeepPrivateGroup', 'private', 1, 1, 0);
+      GlobalRuleType('@pkeepPrivateGroup', 'private', 1, 1, 0);
 
   static const GlobalRuleType removeUncheckedElements =
-      const GlobalRuleType('@removeUncheckedElements', '*', 0, 0, 0);
+      GlobalRuleType('@removeUncheckedElements', '*', 0, 0, 0);
 
   static const GlobalRuleType removeGroup =
-      const GlobalRuleType('@removeGroup', 'uint', 1, 1, 1);
+      GlobalRuleType('@removeGroup', 'uint', 1, 1, 1);
   static const GlobalRuleType removeGroup18 =
-      const GlobalRuleType('@removeGroup18', '*', 0, 0, 0);
+      GlobalRuleType('@removeGroup18', '*', 0, 0, 0);
   static const GlobalRuleType removeGroup20 =
-      const GlobalRuleType('@removeGroup20', '*', 0, 0, 0);
+      GlobalRuleType('@removeGroup20', '*', 0, 0, 0);
   static const GlobalRuleType removeGroup28 =
-      const GlobalRuleType('@removeGroup28', '*', 0, 0, 0);
+      GlobalRuleType('@removeGroup28', '*', 0, 0, 0);
   static const GlobalRuleType removeGroup50 =
-      const GlobalRuleType('@removeGroup50', '*', 0, 0, 0);
+      GlobalRuleType('@removeGroup50', '*', 0, 0, 0);
   static const GlobalRuleType removeGroup60 =
-      const GlobalRuleType('@removeGroup60', '*', 0, 0, 0);
+      GlobalRuleType('@removeGroup60', '*', 0, 0, 0);
   static const GlobalRuleType removeCurves = removeGroup50;
   static const GlobalRuleType removeOverlays = removeGroup60;
 
   static const GlobalRuleType removeAllPrivateGroups =
-      const GlobalRuleType('@removePrivateGroups', '', 0, 0, 0);
+      GlobalRuleType('@removePrivateGroups', '', 0, 0, 0);
   static const GlobalRuleType removePrivateGroup =
-      const GlobalRuleType('@removePrivateGroup', 'string', 1, 1, 0);
+      GlobalRuleType('@removePrivateGroup', 'string', 1, 1, 0);
 
   //TODO: these might work with whole groups
   static const GlobalRuleType ifExists =
-      const GlobalRuleType('@ifExists', '*', 1, 1, 2, const ['tag']);
+      GlobalRuleType('@ifExists', '*', 1, 1, 2, ['tag']);
   static const GlobalRuleType ifBlank =
-      const GlobalRuleType('@ifBlank', 'string', 1, 1, 2, const ['tag']);
+      GlobalRuleType('@ifBlank', 'string', 1, 1, 2, ['tag']);
   static const GlobalRuleType ifEquals =
-      const GlobalRuleType('@ifEquals', '*', 2, 2, 2, const ['tag', 'string']);
-  static const GlobalRuleType ifContains = const GlobalRuleType(
-      '@ifContains', 'string', 2, 2, 2, const ['tag', 'string']);
+      GlobalRuleType('@ifEquals', '*', 2, 2, 2, ['tag', 'string']);
+  static const GlobalRuleType ifContains =
+      GlobalRuleType('@ifContains', 'string', 2, 2, 2, ['tag', 'string']);
   static const GlobalRuleType ifMatches =
-      const GlobalRuleType('@ifMatches', '*', 2, 2, 2, const ['tag', 'string']);
+      GlobalRuleType('@ifMatches', '*', 2, 2, 2, ['tag', 'string']);
 
   bool blankArgPredicate(List args) {
     if (args.isEmpty) return true;
@@ -166,7 +165,7 @@ class GlobalRuleType {
   }
 
   static const Map<String, GlobalRuleType> globalRuleTypeMap =
-      const <String, GlobalRuleType>{
+      <String, GlobalRuleType>{
     '@deIdentificationMethodCodeSeq': deIdentificationMethodCodeSeq,
     //TODO: Should be keep or remove other groupNumbers
     '@keepGroup': keepGroup,

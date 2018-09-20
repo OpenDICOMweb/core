@@ -12,17 +12,19 @@ import 'dart:typed_data';
 // Some tests to understand Iterable<V>.
 
 void main() {
-  const intList = const [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  const intList = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   final intIterable = intList.map<int>((i) => i);
-  final int32List = new Int32List.fromList(intList);
+  final int32List = Int32List.fromList(intList);
 
   print('intList isIterable: ${intList is Iterable}');
   print('intIterable isIterable: ${intIterable is Iterable}');
   print('int32List isIterable: ${int32List is Iterable}');
 
-  const floatList = const <double>[0.9, 1.9, 2.9, 3.9, 4.9, 5.9, 6.9, 7.9, 8.9, 9.9];
+  const floatList = <double>[
+    0.9, 1.9, 2.9, 3.9, 4.9, 5.9, 6.9, 7.9, 8.9, 9.9 // No Reformat
+  ];
   final floatIterable = floatList.map<double>((n) => n);
-  final float32List = new Float32List.fromList(floatList);
+  final float32List = Float32List.fromList(floatList);
 
   print('Before: ${float32List.runtimeType}: $float32List');
   var test = toFloat32(float32List);
@@ -41,7 +43,7 @@ void main() {
   for (var i in int32List) print('i: $i');
 
 // throws
-//  final int16List = new Int16List.fromList(intIterable);
+//  final int16List = Int16List.fromList(intIterable);
 
   // Simple test of
   final a = sum(intList);
@@ -94,9 +96,9 @@ Iterable increment<V>(Iterable<V> list) =>
 Float32List toFloat32(Iterable<double> vList, {bool asView = true}) {
   if (vList is Float32List) return vList;
   print('Not Float32List');
-  if (vList is List<double>) return new Float32List.fromList(vList);
+  if (vList is List<double>) return Float32List.fromList(vList);
   print('Not List<double>');
-  final list = new Float32List(vList.length);
+  final list = Float32List(vList.length);
   var i = 0;
   for (var v in vList) {
     list[i++] = v;

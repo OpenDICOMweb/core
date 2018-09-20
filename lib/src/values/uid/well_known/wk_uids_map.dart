@@ -19,7 +19,7 @@ import 'package:core/src/values/uid/well_known/transfer_syntax.dart';
 import 'package:core/src/values/uid/well_known/wk_uid.dart';
 
 /// A [Map<String, WKUid>] of well known UIDs.
-const Map<String, WKUid> wellKnownUids = const {
+const Map<String, WKUid> wellKnownUids = {
   '1.2.840.10008.1.1': SopClass.kVerification,
   '1.2.840.10008.1.2': TransferSyntax.kImplicitVRLittleEndian,
   '1.2.840.10008.1.2.1': TransferSyntax.kExplicitVRLittleEndian,

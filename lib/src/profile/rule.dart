@@ -13,7 +13,7 @@ import 'package:core/src/tag/tag.dart';
 
 // ignore_for_file: public_member_api_docs
 
-const List<String> ruleNames = const [
+const List<String> ruleNames = [
   '@add',
   '@always',
   '@append',
@@ -43,12 +43,12 @@ const List<String> ruleNames = const [
 ];
 
 String action = r'remove|keep|empty|skip|default|ignore';
-final RegExp actionRE = new RegExp(action);
+final RegExp actionRE = RegExp(action);
 
 const String condition = r'exists|isblank|equals|contains|matches';
-final RegExp conditionRE = new RegExp(condition);
+final RegExp conditionRE = RegExp(condition);
 
-const Map<String, int> conditionMap = const {
+const Map<String, int> conditionMap = {
   'exists': 2,
   'isBlank': 2,
   'equals': 3,
@@ -70,7 +70,7 @@ class Rule {
       : targetTag = PTag.lookupByCode(code) {
     if ((targetTag == null) ||
         ((keyword != null) && (keyword != targetTag.keyword)))
-      throw new ArgumentError('Invalid targetTag($code) or keyword($keyword)');
+      throw ArgumentError('Invalid targetTag($code) or keyword($keyword)');
   }
 
   int get argLength => args.length;

@@ -59,7 +59,7 @@ int _parseDate(String s, int start, int end, int min, int max, Issues issues,
   } on FormatException {
     return (onError != null)
         ? onError(s)
-        : (throwOnError)
+        : throwOnError
             ? invalidDateString(s.substring(start, end), issues)
             : null;
   }

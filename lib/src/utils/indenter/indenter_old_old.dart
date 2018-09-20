@@ -18,10 +18,10 @@ class IndenterOld implements StringBuffer {
   StringBuffer _sb;
 
   IndenterOld([Object content = '', this.increment = '  ']) {
-    if (increment == null) throw new ArgumentError('indent: $increment');
+    if (increment == null) throw ArgumentError('indent: $increment');
     //_indentLength = indent.length;
     _depth = 0;
-    _sb = new StringBuffer('$content');
+    _sb = StringBuffer('$content');
   }
 
   @override

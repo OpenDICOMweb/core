@@ -24,7 +24,7 @@ import 'package:core/src/utils/character/ascii.dart';
 /// LT, ST, UR, and UT.
 ///
 /// Returns _true_ is [c] is a visible (printable) ASCII character code.
-bool _isDcrChar(int c) => ((c >= kSpace) && (c < kDelete));
+bool _isDcrChar(int c) => (c >= kSpace) && (c < kDelete);
 
 ///
 /// Returns _true_ if [c] is in DICOM's Default Character Repertoire (DCR)

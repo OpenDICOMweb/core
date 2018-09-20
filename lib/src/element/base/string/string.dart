@@ -107,7 +107,7 @@ abstract class StringBase extends Element<String> {
   /// The _canonical_ empty [values] values for Floating Point Elements.
   @override
   List<String> get emptyList => kEmptyList;
-  static const List<String> kEmptyList = const <String>[];
+  static const List<String> kEmptyList = <String>[];
 
   @override
   StringBase get noValues => update(kEmptyList);
@@ -134,8 +134,8 @@ abstract class StringBase extends Element<String> {
   /// values is truncated to [maxLength].
   @deprecated
   Element appendAux(String s, int maxLength) {
-    final result = new List<String>(values.length);
-    for(var i = 0; i < values.length; i++) {
+    final result = List<String>(values.length);
+    for (var i = 0; i < values.length; i++) {
       final v = values[i];
       final s0 = v + s;
       result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
@@ -149,8 +149,8 @@ abstract class StringBase extends Element<String> {
   /// values is truncated to [maxLength].
   @deprecated
   Element prependAux(String s, int maxLength) {
-    final result = new List<String>(values.length);
-    for(var i = 0; i < values.length; i++) {
+    final result = List<String>(values.length);
+    for (var i = 0; i < values.length; i++) {
       final v = values[i];
       final s0 = s + v;
       result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
@@ -165,8 +165,8 @@ abstract class StringBase extends Element<String> {
   @deprecated
   Element truncateAux(int newLength, int maxLength) {
     if (newLength > maxLength) return null;
-    final result = new List<String>(values.length);
-    for(var i = 0; i < values.length; i++) {
+    final result = List<String>(values.length);
+    for (var i = 0; i < values.length; i++) {
       final v = values[i];
       result[i] = (v.length > maxLength) ? v.substring(0, maxLength) : v;
     }
@@ -177,8 +177,8 @@ abstract class StringBase extends Element<String> {
   /// the regular expression.
   @deprecated
   bool matchAux(String regexp) {
-    final regex = new RegExp(regexp);
-    for(var i = 0; i < values.length; i++) {
+    final regex = RegExp(regexp);
+    for (var i = 0; i < values.length; i++) {
       final v = values[i];
       if (!regex.hasMatch(v)) return false;
     }
@@ -219,7 +219,7 @@ abstract class StringBase extends Element<String> {
     for (var v in vList) {
       if (!isValidValue(v, issues: issues)) ok = false;
     }
-    return (ok) ? true : invalidValues(vList, issues);
+    return ok ? true : invalidValues(vList, issues);
   }
 
   static List<V> reallyTryParseList<V>(Iterable<String> vList, Issues issues,
@@ -235,10 +235,10 @@ abstract class StringBase extends Element<String> {
 }
 
 bool _isValidValues(
-    Tag tag,
-    Iterable<String> vList,
-    Issues issues,
-    bool isValidValue(String s, {Issues issues, bool allowInvalid}),
-    int maxLength,
-    Type type) =>
+        Tag tag,
+        Iterable<String> vList,
+        Issues issues,
+        bool isValidValue(String s, {Issues issues, bool allowInvalid}),
+        int maxLength,
+        Type type) =>
     StringBase.isValidValues(tag, vList, issues, isValidValue, maxLength, type);

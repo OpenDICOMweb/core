@@ -60,7 +60,7 @@ class TransferSyntax extends WKUid {
   bool get isRetiredTransferSyntax => isRetired;
 
   bool get isValidForRS =>
-      (isNotRetired) ||
+      isNotRetired ||
       (asString != kImplicitVRLittleEndian.asString &&
           asString != kExplicitVRBigEndian.asString);
 
@@ -83,7 +83,7 @@ class TransferSyntax extends WKUid {
 
   static const String kName = 'Transfer Syntax';
 
-  static const TransferSyntax kImplicitVRLittleEndian = const TransferSyntax(
+  static const TransferSyntax kImplicitVRLittleEndian = TransferSyntax(
     '1.2.840.10008.1.2',
     'ImplicitVRLittleEndian',
     'Implicit VR Little Endian: Default Transfer Syntax for DICOM',
@@ -94,7 +94,7 @@ class TransferSyntax extends WKUid {
 
   static const TransferSyntax kDefaultForDIMSE = kImplicitVRLittleEndian;
 
-  static const TransferSyntax kExplicitVRLittleEndian = const TransferSyntax(
+  static const TransferSyntax kExplicitVRLittleEndian = TransferSyntax(
     '1.2.840.10008.1.2.1',
     'ExplicitVRLittleEndian',
     'Explicit VR Little Endian',
@@ -105,16 +105,15 @@ class TransferSyntax extends WKUid {
 
   static const TransferSyntax kDefaultForDicomWeb = kExplicitVRLittleEndian;
 
-  static const TransferSyntax kDeflatedExplicitVRLittleEndian =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.1.99',
-          'DeflatedExplicitVRLittleEndian',
-          'Deflated Explicit VR Little Endian',
-          'image/deflate??',
-          isEncapsulated: false,
-          mayHaveFragments: false);
+  static const TransferSyntax kDeflatedExplicitVRLittleEndian = TransferSyntax(
+      '1.2.840.10008.1.2.1.99',
+      'DeflatedExplicitVRLittleEndian',
+      'Deflated Explicit VR Little Endian',
+      'image/deflate??',
+      isEncapsulated: false,
+      mayHaveFragments: false);
 
-  static const TransferSyntax kExplicitVRBigEndian = const TransferSyntax(
+  static const TransferSyntax kExplicitVRBigEndian = TransferSyntax(
       '1.2.840.10008.1.2.2',
       'ExplicitVRBigEndian',
       'Explicit VR Big Endian (Retired)',
@@ -124,7 +123,7 @@ class TransferSyntax extends WKUid {
       mayHaveFragments: false,
       endian: Endian.big);
 
-  static const TransferSyntax kJpegBaseline1 = const TransferSyntax(
+  static const TransferSyntax kJpegBaseline1 = TransferSyntax(
       '1.2.840.10008.1.2.4.50',
       'JPEGBaseline_1',
       'JPEG Baseline (Process 1) : Default Transfer Syntax for Lossy '
@@ -133,7 +132,7 @@ class TransferSyntax extends WKUid {
 
   static const TransferSyntax kJpegLossy8BitDefault = kJpegBaseline1;
 
-  static const TransferSyntax kJpegExtended2_4 = const TransferSyntax(
+  static const TransferSyntax kJpegExtended2_4 = TransferSyntax(
       '1.2.840.10008.1.2.4.51',
       'JPEGExtended_2_4',
       'JPEG Extended (Process 2 & 4) : Default Transfer Syntax for '
@@ -142,7 +141,7 @@ class TransferSyntax extends WKUid {
 
   static const TransferSyntax kJpegLossy12BitDefault = kJpegExtended2_4;
 
-  static const TransferSyntax kJpegExtended3_5 = const TransferSyntax(
+  static const TransferSyntax kJpegExtended3_5 = TransferSyntax(
       '1.2.840.10008.1.2.4.52',
       'JPEGExtended_3_5_Retired',
       'JPEG Extended (Process 3 & 5) (Retired)',
@@ -150,7 +149,7 @@ class TransferSyntax extends WKUid {
       isRetired: true);
 
   static const TransferSyntax kJpegSpectralSelectionNonHierarchical6_8 =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.53',
           'JPEGSpectralSelectionNonHierarchical_6_8_Retired',
           'JPEG Spectral Selection, Non-Hierarchical (Process 6 & 8) (Retired)',
@@ -158,7 +157,7 @@ class TransferSyntax extends WKUid {
           isRetired: true);
 
   static const TransferSyntax kJpegSpectralSelectionNonHierarchical7_9 =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.54',
           'JPEGSpectralSelectionNonHierarchical_7_9_Retired',
           'JPEG Spectral Selection, Non-Hierarchical (Process 7 & 9) (Retired)',
@@ -166,7 +165,7 @@ class TransferSyntax extends WKUid {
           isRetired: true);
 
   static const TransferSyntax kJpegFullProgressionNonHierarchical10_12 =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.55',
           'JPEGFullProgressionNonHierarchical_10_12_Retired',
           'JPEG Full Progression, Non-Hierarchical (Process 10 & 12) (Retired)',
@@ -174,46 +173,42 @@ class TransferSyntax extends WKUid {
           isRetired: true);
 
   static const TransferSyntax kJpegFullProgressionNonHierarchical11_13 =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.56',
           'JPEGFullProgressionNonHierarchical_11_13_Retired',
           'JPEG Full Progression, Non-Hierarchical (Process 11 & 13) (Retired)',
           'image/jpeg',
           isRetired: true);
 
-  static const TransferSyntax kJpegLosslessNonHierarchical14 =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.4.57',
-          'JPEGLosslessNonHierarchical_14',
-          'JPEG Lossless, Non-Hierarchical (Process 14)',
-          'image/jpeg???');
+  static const TransferSyntax kJpegLosslessNonHierarchical14 = TransferSyntax(
+      '1.2.840.10008.1.2.4.57',
+      'JPEGLosslessNonHierarchical_14',
+      'JPEG Lossless, Non-Hierarchical (Process 14)',
+      'image/jpeg???');
 
-  static const TransferSyntax kJpegLosslessNonHierarchical15 =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.4.58',
-          'JPEGLosslessNonHierarchical_15_Retired',
-          'JPEG Lossless, Non-Hierarchical (Process 15) (Retired)',
-          'image/jpeg',
-          isRetired: true);
+  static const TransferSyntax kJpegLosslessNonHierarchical15 = TransferSyntax(
+      '1.2.840.10008.1.2.4.58',
+      'JPEGLosslessNonHierarchical_15_Retired',
+      'JPEG Lossless, Non-Hierarchical (Process 15) (Retired)',
+      'image/jpeg',
+      isRetired: true);
 
-  static const TransferSyntax kJpegExtendedHierarchical16_18 =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.4.59',
-          'JPEGExtendedHierarchical_16_18_Retired',
-          'JPEG Extended, Hierarchical (Process 16 & 18) (Retired)',
-          'image/jpeg',
-          isRetired: true);
+  static const TransferSyntax kJpegExtendedHierarchical16_18 = TransferSyntax(
+      '1.2.840.10008.1.2.4.59',
+      'JPEGExtendedHierarchical_16_18_Retired',
+      'JPEG Extended, Hierarchical (Process 16 & 18) (Retired)',
+      'image/jpeg',
+      isRetired: true);
 
-  static const TransferSyntax kJpegExtendedHierarchical17_19 =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.4.60',
-          'JPEGExtendedHierarchical_17_19_Retired',
-          'JPEG Extended, Hierarchical (Process 17 & 19) (Retired)',
-          'image/jpeg',
-          isRetired: true);
+  static const TransferSyntax kJpegExtendedHierarchical17_19 = TransferSyntax(
+      '1.2.840.10008.1.2.4.60',
+      'JPEGExtendedHierarchical_17_19_Retired',
+      'JPEG Extended, Hierarchical (Process 17 & 19) (Retired)',
+      'image/jpeg',
+      isRetired: true);
 
   static const TransferSyntax kJpegSpectralSelectionHierarchical20_22 =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.61',
           'JPEGSpectralSelectionHierarchical_20_22_Retired',
           'JPEG Spectral Selection, Hierarchical (Process 20 & 22) (Retired)',
@@ -221,7 +216,7 @@ class TransferSyntax extends WKUid {
           isRetired: true);
 
   static const TransferSyntax kJpegSpectralSelectionHierarchical21_23 =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.62',
           'JPEGSpectralSelectionHierarchical_21_23_Retired',
           'JPEG Spectral Selection, Hierarchical (Process 21 & 23) (Retired)',
@@ -229,7 +224,7 @@ class TransferSyntax extends WKUid {
           isRetired: true);
 
   static const TransferSyntax kJpegFullProgressionHierarchical24_26 =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.63',
           'JPEGFullProgressionHierarchical_24_26_Retired',
           'JPEG Full Progression, Hierarchical (Process 24 & 26) (Retired)',
@@ -237,32 +232,29 @@ class TransferSyntax extends WKUid {
           isRetired: true);
 
   static const TransferSyntax kJpegFullProgressionHierarchical25_27 =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.64',
           'JPEGFullProgressionHierarchical_25_27_Retired',
           'JPEG Full Progression, Hierarchical (Process 25 & 27) (Retired)',
           'image/jpeg',
           isRetired: true);
 
-  static const TransferSyntax kJpegLosslessHierarchical28 =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.4.65',
-          'JPEGLosslessHierarchical_28_Retired',
-          'JPEG Lossless, Hierarchical (Process 28) (Retired)',
-          'image/jpeg',
-          isRetired: true);
+  static const TransferSyntax kJpegLosslessHierarchical28 = TransferSyntax(
+      '1.2.840.10008.1.2.4.65',
+      'JPEGLosslessHierarchical_28_Retired',
+      'JPEG Lossless, Hierarchical (Process 28) (Retired)',
+      'image/jpeg',
+      isRetired: true);
 
-  static const TransferSyntax kJpegLosslessHierarchical29 =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.4.66',
-          'JPEGLosslessHierarchical_29_Retired',
-          'JPEG Lossless, Hierarchical (Process 29) (Retired)',
-          'image/jpeg',
-          isRetired: true);
+  static const TransferSyntax kJpegLosslessHierarchical29 = TransferSyntax(
+      '1.2.840.10008.1.2.4.66',
+      'JPEGLosslessHierarchical_29_Retired',
+      'JPEG Lossless, Hierarchical (Process 29) (Retired)',
+      'image/jpeg',
+      isRetired: true);
 
   static const TransferSyntax
-      kJpegLosslessNonHierarchicalFirstOrderPrediction14_1 =
-      const TransferSyntax(
+      kJpegLosslessNonHierarchicalFirstOrderPrediction14_1 = TransferSyntax(
           '1.2.840.10008.1.2.4.70',
           'JPEGLosslessNonHierarchicalFirst_OrderPrediction_14_1',
           'JPEG Lossless, Non-Hierarchical, First-Order Prediction '
@@ -273,103 +265,99 @@ class TransferSyntax extends WKUid {
   static const TransferSyntax kJpegLosslessDefault =
       kJpegLosslessNonHierarchicalFirstOrderPrediction14_1;
 
-  static const TransferSyntax kJpegLSLosslessImageCompression =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.4.80',
-          'JPEG_LSLosslessImageCompression',
-          'JPEG-LS Lossless Image Compression',
-          'image/jpeg-ls');
-  static const TransferSyntax kJpegLSLossyImageCompression =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.4.81',
-          'JPEG_LSLossyImageCompression',
-          'JPEG-LS Lossy (Near-Lossless) Image Compression',
-          'image/jpeg-ls');
+  static const TransferSyntax kJpegLSLosslessImageCompression = TransferSyntax(
+      '1.2.840.10008.1.2.4.80',
+      'JPEG_LSLosslessImageCompression',
+      'JPEG-LS Lossless Image Compression',
+      'image/jpeg-ls');
+  static const TransferSyntax kJpegLSLossyImageCompression = TransferSyntax(
+      '1.2.840.10008.1.2.4.81',
+      'JPEG_LSLossyImageCompression',
+      'JPEG-LS Lossy (Near-Lossless) Image Compression',
+      'image/jpeg-ls');
 
   static const TransferSyntax kJpeg2000ImageCompressionLosslessOnly =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.90',
           'JPEG2000ImageCompressionLosslessOnly',
           'JPEG 2000 Image Compression Lossless Only',
           'image/jp2');
 
-  static const TransferSyntax kJpeg2000ImageCompression = const TransferSyntax(
+  static const TransferSyntax kJpeg2000ImageCompression = TransferSyntax(
       '1.2.840.10008.1.2.4.91',
       'JPEG2000ImageCompression',
       'JPEG 2000 Image Compression',
       'image/jp2');
 
   static const TransferSyntax
-      kJpeg2000Part2MultiComponentImageCompressionLosslessOnly =
-      const TransferSyntax(
+      kJpeg2000Part2MultiComponentImageCompressionLosslessOnly = TransferSyntax(
           '1.2.840.10008.1.2.4.92',
           'JPEG2000Part2Multi_componentImageCompressionLosslessOnly',
           'JPEG 2000 Part 2 Multi-component Image Compression Lossless Only',
           'image/jp2');
 
   static const TransferSyntax kJpeg2000Part2MultiComponentImageCompression =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.93',
           'JPEG2000Part2Multi_componentImageCompression',
           'JPEG 2000 Part 2 Multi-component Image Compression',
           'image/jp2');
 
-  static const TransferSyntax kJPIPReferenced = const TransferSyntax(
+  static const TransferSyntax kJPIPReferenced = TransferSyntax(
       '1.2.840.10008.1.2.4.94',
       'JPIPReferenced',
       'JPIP Referenced',
       'image/jpip???');
 
-  static const TransferSyntax kJPIPReferencedDeflate = const TransferSyntax(
+  static const TransferSyntax kJPIPReferencedDeflate = TransferSyntax(
       '1.2.840.10008.1.2.4.95',
       'JPIPReferencedDeflate',
       'JPIP Referenced Deflate',
       'image/jpip???');
 
-  static const TransferSyntax kMpeg2MainProfileMainLevel = const TransferSyntax(
+  static const TransferSyntax kMpeg2MainProfileMainLevel = TransferSyntax(
       '1.2.840.10008.1.2.4.100',
       'MPEG2MainProfile_MainLevel',
       'MPEG2 Main Profile @ Main Level',
       'image/mpeg');
 
-  static const TransferSyntax kMpeg2MainProfileHighLevel = const TransferSyntax(
+  static const TransferSyntax kMpeg2MainProfileHighLevel = TransferSyntax(
       '1.2.840.10008.1.2.4.101',
       'MPEG2MainProfile_HighLevel',
       'MPEG2 Main Profile @ High Level',
       'image/mpeg???');
 
-  static const TransferSyntax kMpeg4AVCH264HighProfileLevel41 =
-      const TransferSyntax(
-          '1.2.840.10008.1.2.4.102',
-          'MPEG_4AVC_H264HighProfile_Level41',
-          'MPEG-4 AVC/H.264 High Profile / Level 4.1',
-          'image/mpeg4',
-          isRetired: false);
+  static const TransferSyntax kMpeg4AVCH264HighProfileLevel41 = TransferSyntax(
+      '1.2.840.10008.1.2.4.102',
+      'MPEG_4AVC_H264HighProfile_Level41',
+      'MPEG-4 AVC/H.264 High Profile / Level 4.1',
+      'image/mpeg4',
+      isRetired: false);
 
   static const TransferSyntax kMpeg4AVCH264BDCompatibleHighProfileLevel41 =
-      const TransferSyntax(
+      TransferSyntax(
           '1.2.840.10008.1.2.4.103',
           'MPEG_4AVC_H264BD_compatibleHighProfile_Level41',
           'MPEG-4 AVC/H.264 BD-compatible High Profile / Level 4.1',
           'image/mpeg4???',
           isRetired: false);
 
-  static const TransferSyntax kRLELossless = const TransferSyntax(
+  static const TransferSyntax kRLELossless = TransferSyntax(
       '1.2.840.10008.1.2.5', 'RLELossless', 'RLE Lossless', 'image/rle???',
       isRetired: false);
 
-  static const TransferSyntax kRFC2557MIMEncapsulation = const TransferSyntax(
+  static const TransferSyntax kRFC2557MIMEncapsulation = TransferSyntax(
       '1.2.840.10008.1.2.6.1',
       'RFC2557MIMEncapsulation',
       'RFC 2557 MIME encapsulation',
       'image/????',
       isRetired: false);
 
-  static const TransferSyntax kXMLEncoding = const TransferSyntax(
+  static const TransferSyntax kXMLEncoding = TransferSyntax(
       '1.2.840.10008.1.2.6.2', 'XMLEncoding', 'XML Encoding', 'text/xml???',
       isRetired: false);
 
-  static const Map<String, Uid> _map = const {
+  static const Map<String, Uid> _map = {
     '1.2.840.10008.1.2': kImplicitVRLittleEndian,
     '1.2.840.10008.1.2.1': kExplicitVRLittleEndian,
     '1.2.840.10008.1.2.1.99': kDeflatedExplicitVRLittleEndian,

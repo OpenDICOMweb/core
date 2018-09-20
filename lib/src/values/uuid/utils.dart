@@ -14,9 +14,11 @@ import 'dart:typed_data';
 /// Unparses (converts) a [Uuid]'s [Uint8List] values to a 32-character
 
 /// [String] without dashes.
-String _toUuidString(Uint8List bytes, {int offset = 0, bool useUppercase = false}) {
+String _toUuidString(Uint8List bytes, {int offset = 0,
+bool useUppercase = false}) {
 	StringBuffer sb = new StringBuffer();
-	List<String> byteToHex = (useUppercase) ? _byteToUppercaseHex : _byteToLowercaseHex;
+	List<String> byteToHex = (useUppercase)
+	? _byteToUppercaseHex : _byteToLowercaseHex;
 	for (int i = offset; i < offset + 16; i++) sb.write(byteToHex[bytes[i]]);
 	return sb.toString();
 }

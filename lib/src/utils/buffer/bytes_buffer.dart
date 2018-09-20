@@ -120,7 +120,7 @@ abstract class BytesBuffer {
   /// or if [end] is outside the range [start] .. [length].
   /// [length].
   Bytes sublist([int start = 0, int end]) =>
-      new Bytes.from(_buf, start, (end ?? length) - start);
+      Bytes.from(_buf, start, (end ?? length) - start);
 
   /// Return a view of _this_ of [length], starting at [start]. If [length]
   /// is _null_ it defaults to [length].
@@ -140,9 +140,9 @@ abstract class BytesBuffer {
 
   void rWarn(Object msg) => print('** Warning: $msg @$_rIndex');
 
-  void rError(Object msg) => throw new Exception('**** Error: $msg @$_wIndex');
+  void rError(Object msg) => throw Exception('**** Error: $msg @$_wIndex');
 
   void wWarn(Object msg) => print('** Warning: $msg @$_rIndex');
 
-  void wError(Object msg) => throw new Exception('**** Error: $msg @$_wIndex');
+  void wError(Object msg) => throw Exception('**** Error: $msg @$_wIndex');
 }

@@ -78,7 +78,7 @@ class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
 
   /// Creates an [OBtagPixelData] Element from a [Iterable<int>].
   factory OBtagPixelData(Iterable<int> vList, [TransferSyntax ts]) =>
-      new OBtagPixelData._(vList, ts);
+      OBtagPixelData._(vList, ts);
 
   /// Creates an [OBtagPixelData] Element from a [Iterable<int>].
   OBtagPixelData.fromPixels(Iterable<int> vList, [this.ts])
@@ -89,12 +89,12 @@ class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
       : assert(_frames is FrameList8Bit);
 
   factory OBtagPixelData.fromBulkdata(Uri url, [TransferSyntax ts]) =>
-      new OBtagPixelData._(new IntBulkdataRef(kPixelData, url), ts);
+      OBtagPixelData._(IntBulkdataRef(kPixelData, url), ts);
 
   factory OBtagPixelData._(Iterable<int> vList, [TransferSyntax ts]) {
     final v = _isEmpty(vList) ? kEmptyIntList : Uint8.fromList(vList);
     return OBPixelData.isValidArgs(vList, ts)
-        ? new OBtagPixelData._x(v, ts)
+        ? OBtagPixelData._x(v, ts)
         : badValues(vList, null, PTag.kPixelDataOB);
   }
 
@@ -104,7 +104,7 @@ class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
   int get vrIndex => kOBIndex;
 
   @override
-  OBtagPixelData update([Iterable<int> vList]) => new OBtagPixelData._(vList);
+  OBtagPixelData update([Iterable<int> vList]) => OBtagPixelData._(vList);
 
   /// Returns _true_ if [vList] is valid for [OB].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -126,14 +126,13 @@ class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static OBtagPixelData fromValues(
-          Iterable<int> vList, [TransferSyntax ts]) =>
-      new OBtagPixelData._(vList, ts);
+  static OBtagPixelData fromValues(Iterable<int> vList, [TransferSyntax ts]) =>
+      OBtagPixelData._(vList, ts);
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
   static OBtagPixelData fromBytes(Bytes bytes, [TransferSyntax ts]) =>
-      new OBtagPixelData._(bytes.asUint8List(), ts);
+      OBtagPixelData._(bytes.asUint8List(), ts);
 }
 
 /// 8-bit Pixel Data.
@@ -155,7 +154,7 @@ class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
 
   /// Creates an [UNtagPixelData] Element from a [Iterable<int>].
   factory UNtagPixelData(Iterable<int> vList, [TransferSyntax ts]) =>
-      new UNtagPixelData._(vList, ts);
+      UNtagPixelData._(vList, ts);
 
   /// Creates an [UNtagPixelData] Element from a [Iterable<int>].
   UNtagPixelData.fromPixels(Iterable<int> vList, [this.ts])
@@ -166,12 +165,12 @@ class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
       : assert(_frames is FrameList8Bit);
 
   factory UNtagPixelData.fromBulkdata(Uri url, [TransferSyntax ts]) =>
-      new UNtagPixelData._(new IntBulkdataRef(kPixelData, url), ts);
+      UNtagPixelData._(IntBulkdataRef(kPixelData, url), ts);
 
   factory UNtagPixelData._(Iterable<int> vList, [TransferSyntax ts]) {
     final v = _isEmpty(vList) ? kEmptyIntList : Uint8.fromList(vList);
     return (UNPixelData.isValidArgs(PTag.kPixelDataUN, vList))
-        ? new UNtagPixelData._x(v, ts)
+        ? UNtagPixelData._x(v, ts)
         : badValues(v, null, PTag.kPixelDataUN);
   }
 
@@ -181,12 +180,12 @@ class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
   int get vrIndex => kUNIndex;
 
   @override
-  UNtagPixelData update([Iterable<int> vList]) => new UNtagPixelData._(vList);
+  UNtagPixelData update([Iterable<int> vList]) => UNtagPixelData._(vList);
 
   /// Returns _true_ if [vList] is valid for [UN].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Iterable<int> vList, TransferSyntax ts,
-                          [Issues issues]) {
+      [Issues issues]) {
     if (!doTestElementValidity) return true;
     return vList != null && UN.isValidValues(PTag.kPixelDataUN, vList, issues);
   }
@@ -198,19 +197,18 @@ class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
   static bool isValidBytesArgs(Bytes vfBytes, [Issues issues]) {
     if (!doTestElementValidity) return true;
     return vfBytes != null &&
-           UN.isValidVFLength(vfBytes.length, issues, PTag.kPixelDataUN);
+        UN.isValidVFLength(vfBytes.length, issues, PTag.kPixelDataUN);
   }
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static UNtagPixelData fromValues(
-           Iterable<int> vList, [TransferSyntax ts]) =>
-      new UNtagPixelData._(vList, ts);
+  static UNtagPixelData fromValues(Iterable<int> vList, [TransferSyntax ts]) =>
+      UNtagPixelData._(vList, ts);
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
-  static UNtagPixelData fromBytes(Bytes bytes,  [TransferSyntax ts]) =>
-      new UNtagPixelData._(bytes.asUint8List(), ts);
+  static UNtagPixelData fromBytes(Bytes bytes, [TransferSyntax ts]) =>
+      UNtagPixelData._(bytes.asUint8List(), ts);
 }
 
 /// Unsigned 8-bit (Uint8) OW Pixel Data.
@@ -232,7 +230,7 @@ class OWtagPixelData extends OWPixelData with TagElement<int>, TagPixelData {
   /// Creates an [OWtagPixelData] Element from a [Iterable<int>]
   /// of byte values (0 - kMax16BitValue).
   factory OWtagPixelData(Iterable<int> vList, [TransferSyntax ts]) =>
-      new OWtagPixelData._(vList, ts);
+      OWtagPixelData._(vList, ts);
 
   /// Creates an [OWtagPixelData] Element from a [Iterable<int>].
   OWtagPixelData.fromPixels(Iterable<int> vList, [this.ts])
@@ -243,12 +241,12 @@ class OWtagPixelData extends OWPixelData with TagElement<int>, TagPixelData {
       : assert(_frames is FrameList16Bit);
 
   factory OWtagPixelData.fromBulkdata(Uri url, [TransferSyntax ts]) =>
-      new OWtagPixelData._(new IntBulkdataRef(kPixelData, url), ts);
+      OWtagPixelData._(IntBulkdataRef(kPixelData, url), ts);
 
   factory OWtagPixelData._(Iterable<int> vList, TransferSyntax ts) {
     final v = _isEmpty(vList) ? kEmptyIntList : Uint16.fromList(vList);
     return OWPixelData.isValidArgs(PTag.kPixelDataOW, v)
-        ? new OWtagPixelData._x(Uint16.fromList(v), ts)
+        ? OWtagPixelData._x(Uint16.fromList(v), ts)
         : badValues(v, null, PTag.kPixelDataOW);
   }
 
@@ -259,12 +257,12 @@ class OWtagPixelData extends OWPixelData with TagElement<int>, TagPixelData {
 
   @override
   OWtagPixelData update([Iterable<int> vList, TransferSyntax ts]) =>
-      new OWtagPixelData._(vList, ts);
+      OWtagPixelData._(vList, ts);
 
   /// Returns _true_ if [vList] is valid for [OW].
   /// If [doTestElementValidity] is _false_ then no checking is done.
   static bool isValidArgs(Iterable<int> vList, TransferSyntax ts,
-                          [Issues issues]) {
+      [Issues issues]) {
     if (!doTestElementValidity) return true;
     return vList != null && OW.isValidValues(PTag.kPixelDataOW, vList, issues);
   }
@@ -276,14 +274,14 @@ class OWtagPixelData extends OWPixelData with TagElement<int>, TagPixelData {
   static bool isValidBytesArgs(Bytes vfBytes, [Issues issues]) {
     if (!doTestElementValidity) return true;
     return vfBytes != null &&
-           OW.isValidVFLength(vfBytes.length, issues, PTag.kPixelDataOW);
+        OW.isValidVFLength(vfBytes.length, issues, PTag.kPixelDataOW);
   }
 
   /// Creates an [OWtagPixelData] Element from a [Uint16List].
   static OWtagPixelData fromValues(Iterable<int> vList, [TransferSyntax ts]) =>
-      new OWtagPixelData._(vList, ts);
+      OWtagPixelData._(vList, ts);
 
   /// Creates an [OWtagPixelData] Element from a [Uint8List].
   static OWtagPixelData fromBytes(Bytes bytes, [TransferSyntax ts]) =>
-      new OWtagPixelData._(bytes.asUint16List(), ts);
+      OWtagPixelData._(bytes.asUint16List(), ts);
 }

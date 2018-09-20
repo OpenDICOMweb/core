@@ -25,7 +25,7 @@ class DateTimeError extends Error {
 Null _doError(String msg, [Issues issues]) {
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new DateTimeError(msg);
+  if (throwOnError) throw DateTimeError(msg);
   return null;
 }
 

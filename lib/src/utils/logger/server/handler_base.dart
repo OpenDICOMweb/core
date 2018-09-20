@@ -36,7 +36,7 @@ abstract class HandlerBase {
 	HandlerBase({this.doPrint = true});
 
 	/// This Base implementation simply prints the log record.
-	Object call(LogRecord r, {bool flush: false}) {
+	Object call(LogRecord r, {bool flush = false}) {
 		final s = '$r';
 		if (doPrint) stdout.writeln(s);
 		return s;

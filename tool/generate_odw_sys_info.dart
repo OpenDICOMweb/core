@@ -12,11 +12,11 @@ import 'dart:io';
 import 'package:yaml/yaml.dart';
 
 void main(List<String> args) {
-  final inFile = new File('pubspec.yaml');
+  final inFile = File('pubspec.yaml');
   final text = inFile.readAsStringSync();
   final Map spec = loadYaml(text);
-  new File('lib/src/system/odw_sys_info.dart')
-    ..writeAsStringSync(generateSysInfo(spec));
+  File('lib/src/system/odw_sys_info.dart')
+      .writeAsStringSync(generateSysInfo(spec));
 }
 
 String generateSysInfo(Map spec) {
@@ -35,8 +35,7 @@ class OdwSysInfo {
   static const String descriptions = '${spec['description']}';
   static const List<String> authors = ${generateList(spec['authors'])};
   static const String dartSdkVersion = '${spec['environment']['sdk']}';
-  static const Map<String, Object> packages = ${generateMap
-    (spec['dependencies'])};
+  static const Map<String, Object> packages = ${generateMap(spec['dependencies'])};
 }
   ''';
   return out;
@@ -46,7 +45,7 @@ String generateValue(Object v) {
   if (v is String) return '"$v"';
   if (v is List) return generateList(v);
   if (v is Map) return generateMap(v);
-  throw new UnknownValueTypeError(v);
+  throw UnknownValueTypeError(v);
 }
 
 class UnknownValueTypeError extends Error {
@@ -86,11 +85,11 @@ class OdwInfo {
   static const String name = 'core';
   static const String version = '0.5.4';
   static const String dartSdkVersion = '^1.23.0';
-  static const Map packages = const <String, Object>{
+  static const Map packages = <String, Object>{
     'crypto': '^2.0.1',
     'yaml': '^2.1.12',
     'quiver': 'any',
-    'dictionary': const {'version': '^0.5.4', 'path': 'C:/odw/sdk/dictionary'},
-    'common': const {'version': '^0.5.4', 'path': 'C:/odw/sdk/common'}
+    'dictionary': {'version': '^0.5.4', 'path': 'C:/odw/sdk/dictionary'},
+    'common': {'version': '^0.5.4', 'path': 'C:/odw/sdk/common'}
   };
 }

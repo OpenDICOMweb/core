@@ -19,7 +19,7 @@ void main() {
   assert(fl.hasValidValues);
   printEvr(fl, kFLCode, fl.vfBytes);
 
-  final fl1 = new FLbytes(fl.bytes);
+  final fl1 = FLbytes(fl.bytes);
   assert(fl1.bytes is DicomBytes);
   assert(fl1.vfBytes is Bytes);
   assert(fl1.hasValidValues);
@@ -31,7 +31,7 @@ void main() {
   assert(of.hasValidValues);
   printEvr(fl1, kOFCode, of.vfBytes);
 
-  final of1 = new OFbytes(of.bytes);
+  final of1 = OFbytes(of.bytes);
   assert(of1.bytes is DicomBytes);
   assert(of1.vfBytes is Bytes);
   assert(of1.hasValidValues);
@@ -43,7 +43,7 @@ void main() {
   assert(fd.hasValidValues);
   printEvr(fd, kOFCode, fd.vfBytes);
 
-  final fd1 = new FDbytes(fd.bytes);
+  final fd1 = FDbytes(fd.bytes);
   assert(fd1.bytes is DicomBytes);
   assert(fd1.vfBytes is Bytes);
   assert(fd1.hasValidValues);
@@ -55,7 +55,7 @@ void main() {
   assert(od.hasValidValues);
   printEvr(od, kOFCode, od.vfBytes);
 
-  final od1 = new ODbytes(od.bytes);
+  final od1 = ODbytes(od.bytes);
   assert(od1.bytes is DicomBytes);
   assert(od1.vfBytes is Bytes);
   assert(od1.hasValidValues);
@@ -64,8 +64,8 @@ void main() {
 
 /*
 EvrBytes makeFD(int code, List<double> vList) {
-  final v = (vList is Float64List) ? vList : new Float64List.fromList(vList);
-  return makeFD(code, kFDCode, new Bytes.typedDataView(v));
+  final v = (vList is Float64List) ? vList :  Float64List.fromList(vList);
+  return makeFD(code, kFDCode,  Bytes.typedDataView(v));
 }
 */
 
@@ -74,7 +74,7 @@ void printEvr(ByteElement e, int actualVRCode, Bytes vf) {
 //  print('${e.bytes.asUint8List()}');
   print('$e');
   print('\n        length: ${e.length} bytes: ${bytes.length} '
-      'vfOffset(${e.vfOffset}) + vfLength(${ vf.length}) '
+      'vfOffset(${e.vfOffset}) + vfLength(${vf.length}) '
       '= ${e.vfOffset + e.vfLength} ');
   print('vfLengthOffset: ${e.vfLengthOffset}');
   print(' vfLengthField: ${e.vfLengthField}  actual ${bytes.vfLengthField}');

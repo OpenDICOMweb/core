@@ -39,7 +39,7 @@ abstract class AS extends StringAscii {
   static bool allowLowerCase = false;
 
   @override
-  bool operator ==(Object other) => (other is AS && value == other.value);
+  bool operator ==(Object other) => other is AS && value == other.value;
 
   @override
   int get vrIndex => kVRIndex;
@@ -139,15 +139,16 @@ abstract class AS extends StringAscii {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, AS);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (Age.isValidString(s, issues))
+    return Age.isValidString(s, issues)
         ? true
         : invalidAgeString('Invalid Age String (AS): "$s"', issues);
   }
@@ -213,7 +214,7 @@ abstract class DA extends StringBase {
   /// Returns a new [DA] [Element] that is created by adding the
   /// integer [days] to each element of [values].
   Element increment([int days = 1]) {
-    final result = new List<Date>(dates.length);
+    final result = List<Date>(dates.length);
     for (var i = 0; i < dates.length; i++) {
       final day = dates[i].epochDay + days;
       result[i] = Date.fromEpochDay(day);
@@ -224,7 +225,7 @@ abstract class DA extends StringBase {
   /// Returns a new [DA] [Element] that is created by subtracting [date]
   /// from each element of [dates].
   Element difference(Date date) {
-    final result = new List<Date>(length);
+    final result = List<Date>(length);
     for (var i = 0; i < dates.length; i++) {
       final day = dates[i].epochDay - date.epochDay;
       result[i] = Date.fromEpochDay(day);
@@ -303,17 +304,18 @@ abstract class DA extends StringBase {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, DA);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (s.isEmpty)
+    return s.isEmpty
         ? true
-        : (Date.isValidString(s, issues: issues))
+        : Date.isValidString(s, issues: issues)
             ? true
             : invalidString('Invalid Date String (DA): "$s"', issues);
   }
@@ -356,7 +358,7 @@ abstract class DT extends StringBase {
 
   @override
   DT get hash {
-    final dList = new List<String>(dateTimes.length);
+    final dList = List<String>(dateTimes.length);
     for (var i = 0; i < dateTimes.length; i++)
       dList[i] = dList[i].hashCode.toString();
     return update(dList);
@@ -431,8 +433,9 @@ abstract class DT extends StringBase {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, DT);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
@@ -440,7 +443,7 @@ abstract class DT extends StringBase {
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
     final s0 = s.trimRight();
-    return (DcmDateTime.isValidString(s0, issues: issues))
+    return DcmDateTime.isValidString(s0, issues: issues)
         ? true
         : invalidString('Invalid Date Time (DT): "$s0"', issues);
   }
@@ -488,7 +491,7 @@ abstract class TM extends StringBase {
 
   @override
   TM get hash {
-    final dList = new List<String>(times.length);
+    final dList = List<String>(times.length);
     for (var i = 0; i < times.length; i++)
       dList[i] = dList[i].hashCode.toString();
     return update(dList);
@@ -563,8 +566,9 @@ abstract class TM extends StringBase {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, TM);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
@@ -574,7 +578,7 @@ abstract class TM extends StringBase {
     if (s == null || !isValidValueLength(s, issues)) return false;
     final s0 = s.trimRight();
     if (s0.isEmpty) return true;
-    return (Time.isValidString(s0, issues: issues))
+    return Time.isValidString(s0, issues: issues)
         ? true
         : invalidString('Invalid Time String (TM): "$s0"', issues);
   }

@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
 
-final Uint8List frame = new Uint8List.fromList(testFrame);
+final Uint8List frame = Uint8List.fromList(testFrame);
 
 void main() {
   Server.initialize(name: 'element/ob_frame_list_test', level: Level.info);
@@ -37,7 +37,7 @@ void main() {
       const nFrames0 = 1;
       const photometricInterpretation0 = 'MONOCHROME1';
 
-      final ob1FDa = new FrameDescriptor(
+      final ob1FDa = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -50,9 +50,9 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels0 = new Uint8List(ob1FDa.lengthInBytes);
+      final pixels0 = Uint8List(ob1FDa.lengthInBytes);
 
-      final ob1FLa = new FrameList1Bit(pixels0, nFrames0, ob1FDa);
+      final ob1FLa = FrameList1Bit(pixels0, nFrames0, ob1FDa);
 
       // pixels
       expect(ob1FLa.pixels is Uint8List, true);
@@ -124,7 +124,7 @@ void main() {
       expect(ob1FDa.length == rows4 * columns6, true);
       expect(ob1FDa.lengthInBytes == pixels0.lengthInBytes, true);
 
-      final bytes0 = new Uint8List(ob1FLa.lengthInBytes);
+      final bytes0 = Uint8List(ob1FLa.lengthInBytes);
       expect(bytes0, equals(pixels0));
     });
 
@@ -132,7 +132,7 @@ void main() {
       int nFrames0;
       const photometricInterpretation0 = 'MONOCHROME2';
 
-      final ob1FDb = new FrameDescriptor(
+      final ob1FDb = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -149,8 +149,8 @@ void main() {
         // Multi Frame (Even number of frames)
         nFrames0 = i * 2;
         log.debug('nFrames0: $nFrames0');
-        final pixels1 = new Uint8List(nFrames0 * (ob1FDb.lengthInBytes));
-        final ob1FLb = new FrameList1Bit(pixels1, nFrames0, ob1FDb);
+        final pixels1 = Uint8List(nFrames0 * (ob1FDb.lengthInBytes));
+        final ob1FLb = FrameList1Bit(pixels1, nFrames0, ob1FDb);
 
         // pixels
         expect(ob1FLb.pixels is Uint8List, true);
@@ -215,7 +215,7 @@ void main() {
         expect(ob1FDb.pixelSizeInBits == bitsAllocated1, true);
         expect(ob1FDb.length == rows4 * columns6, true);
 
-        final bytes1 = new Uint8List(ob1FLb.lengthInBytes);
+        final bytes1 = Uint8List(ob1FLb.lengthInBytes);
         expect(bytes1, equals(pixels1));
       }
     });
@@ -225,7 +225,7 @@ void main() {
       const nFrames0 = 0;
       const photometricInterpretation1 = 'MONOCHROME3';
 
-      final ob1FDc = new FrameDescriptor(
+      final ob1FDc = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -238,7 +238,7 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels3 = new Uint8List(ob1FDc.lengthInBytes);
+      final pixels3 = Uint8List(ob1FDc.lengthInBytes);
 
       global.throwOnError = true;
       log.debug('nFrames: $nFrames0');
@@ -249,7 +249,7 @@ void main() {
       const nFrames1 = 1;
       const photometricInterpretation0 = 'MONOCHROME3';
 
-      final ob1FDd = new FrameDescriptor(
+      final ob1FDd = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -262,7 +262,7 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels4 = new Uint8List(0);
+      final pixels4 = Uint8List(0);
 
       log
         ..debug('pixels4.lengthInBytes: ${pixels4.lengthInBytes}')
@@ -275,7 +275,7 @@ void main() {
       const nFrames2 = 2;
       const photometricInterpretation2 = 'MONOCHROME3';
 
-      final ob1FDe = new FrameDescriptor(
+      final ob1FDe = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation2,
@@ -288,7 +288,7 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels5 = new Uint8List(ob1FDe.lengthInBytes);
+      final pixels5 = Uint8List(ob1FDe.lengthInBytes);
 
       log
         ..debug('pixels5.lengthInBytes: ${pixels5.lengthInBytes}')
@@ -296,7 +296,7 @@ void main() {
         ..debug('pixelSize bits: ${ob1FDe.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ob1FDe.pixelSizeInBytes}');
 
-      expect(() => new FrameList1Bit(pixels5, nFrames2, ob1FDe),
+      expect(() => FrameList1Bit(pixels5, nFrames2, ob1FDe),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
@@ -307,27 +307,27 @@ void main() {
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
           new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
-      final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
+      final usSamplesPerPixel0 = UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
-      final usRows0 = new UStag(PTag.kRows, [4]);
-      final usColumns0 = new UStag(PTag.kColumns, [2]);
-      final usBitsAllocated0 = new UStag(PTag.kBitsAllocated, [1]);
-      final usBitsStored0 = new UStag(PTag.kBitsStored, [1]);
-      final usHighBit0 = new UStag(PTag.kHighBit, [0]);
-      final usPixelRepresentation0 = new UStag(PTag.kPixelRepresentation, [2]);
-      final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [7]);
-      final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
+      final usRows0 = UStag(PTag.kRows, [4]);
+      final usColumns0 = UStag(PTag.kColumns, [2]);
+      final usBitsAllocated0 = UStag(PTag.kBitsAllocated, [1]);
+      final usBitsStored0 = UStag(PTag.kBitsStored, [1]);
+      final usHighBit0 = UStag(PTag.kHighBit, [0]);
+      final usPixelRepresentation0 = UStag(PTag.kPixelRepresentation, [2]);
+      final usPlanarConfiguration0 = UStag(PTag.kPlanarConfiguration, [7]);
+      final isPixelAspectRatio0 = IStag(PTag.kPixelAspectRatio, ['1', '2']);
       const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
           new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
           new UStag(PTag.kLargestImagePixelValue, [1]);
-      final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[]);
-      final csColorSpace0 = new CStag(PTag.kColorSpace);
-      final usPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
+      final obIccProfile0 = OBtag(PTag.kICCProfile, <int>[]);
+      final csColorSpace0 = CStag(PTag.kColorSpace);
+      final usPixelPaddingRangeLimit0 = UStag(PTag.kPixelPaddingRangeLimit);
 
-      final rootDS0 = new TagRootDataset.empty()
+      final rootDS0 = TagRootDataset.empty()
         ..fmi[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
@@ -347,12 +347,12 @@ void main() {
 
       log.debug('rootDS0.transferSyntax: ${rootDS0.transferSyntax}');
 
-      final ob1FDf = new FrameDescriptor.fromDataset(rootDS0);
+      final ob1FDf = FrameDescriptor.fromDataset(rootDS0);
 
       const nFrames0 = 1;
-      final pixels0 = new Uint8List(ob1FDf.lengthInBytes);
+      final pixels0 = Uint8List(ob1FDf.lengthInBytes);
 
-      final ob1c = new FrameList1Bit(pixels0, nFrames0, ob1FDf);
+      final ob1c = FrameList1Bit(pixels0, nFrames0, ob1FDf);
 
       // pixels
       expect(ob1c.samplesPerPixel == ob1FDf.samplesPerPixel, true);
@@ -433,7 +433,7 @@ void main() {
       int nFrames0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
-      final ob1FDg = new FrameDescriptor(
+      final ob1FDg = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -451,8 +451,8 @@ void main() {
       //Frames ranging from 1 to 10
       for (var i = 0; i < 10; i++) {
         nFrames0 = i + 1;
-        final pixels0 = new Uint8List(nFrames0 * (ob1FDg.lengthInBytes));
-        ob1FLb = new FrameList1Bit(pixels0, nFrames0, ob1FDg);
+        final pixels0 = Uint8List(nFrames0 * (ob1FDg.lengthInBytes));
+        ob1FLb = FrameList1Bit(pixels0, nFrames0, ob1FDg);
         log.debug('nFrames0: $nFrames0');
 
         for (var j = 0; j < nFrames0; j++) {
@@ -505,7 +505,7 @@ void main() {
       const nFrames0 = 1;
       const photometricInterpretation0 = 'MONOCHROME1';
 
-      final ob8FDa = new FrameDescriptor(
+      final ob8FDa = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -518,9 +518,9 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels0 = new Uint8List(ob8FDa.lengthInBytes);
+      final pixels0 = Uint8List(ob8FDa.lengthInBytes);
 
-      final ob8a = new FrameList8Bit(pixels0, nFrames0, ob8FDa);
+      final ob8a = FrameList8Bit(pixels0, nFrames0, ob8FDa);
 
       // pixels
       expect(ob8a.pixels is Uint8List, true);
@@ -586,7 +586,7 @@ void main() {
       expect(ob8FDa.length == rows4 * columns6, true);
       expect(ob8FDa.lengthInBytes == pixels0.lengthInBytes, true);
 
-      final bytes0 = new Uint8List(ob8a.lengthInBytes);
+      final bytes0 = Uint8List(ob8a.lengthInBytes);
       expect(bytes0, equals(pixels0));
     });
 
@@ -596,7 +596,7 @@ void main() {
       const rows5 = 5;
       const columns7 = 7;
 
-      final ob8FDb = new FrameDescriptor(
+      final ob8FDb = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -614,9 +614,9 @@ void main() {
       for (var i = 1; i <= 10; i++) {
         nFrames1 = i * 2;
         log.debug('nFrames:$nFrames1');
-        final pixels1 = new Uint8List(nFrames1 * (ob8FDb.lengthInBytes));
+        final pixels1 = Uint8List(nFrames1 * (ob8FDb.lengthInBytes));
 
-        final ob8b = new FrameList8Bit(pixels1, nFrames1, ob8FDb);
+        final ob8b = FrameList8Bit(pixels1, nFrames1, ob8FDb);
 
         // pixels
         expect(ob8b.pixels is Uint8List, true);
@@ -682,7 +682,7 @@ void main() {
         expect(ob8FDb.pixelSizeInBits == bitsAllocated8, true);
         expect(ob8FDb.length == rows5 * columns7, true);
 
-        final bytes1 = new Uint8List(ob8b.lengthInBytes);
+        final bytes1 = Uint8List(ob8b.lengthInBytes);
         expect(bytes1, equals(pixels1));
       }
     });
@@ -692,7 +692,7 @@ void main() {
       const nFrames0 = 0;
       const photometricInterpretation1 = 'MONOCHROME3';
 
-      final ob8FDc = new FrameDescriptor(
+      final ob8FDc = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -705,7 +705,7 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels0 = new Uint8List(ob8FDc.lengthInBytes);
+      final pixels0 = Uint8List(ob8FDc.lengthInBytes);
 
       log
         ..debug('pixels0.length: ${pixels0.lengthInBytes}')
@@ -721,7 +721,7 @@ void main() {
       const nFrames1 = 1;
       const photometricInterpretation2 = 'MONOCHROME3';
 
-      final ob8FDd = new FrameDescriptor(
+      final ob8FDd = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation2,
@@ -734,7 +734,7 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels1 = new Uint8List(0);
+      final pixels1 = Uint8List(0);
       log
         ..debug('pixels0.length: ${pixels1.lengthInBytes}')
         ..debug('nFrames: $nFrames1')
@@ -747,7 +747,7 @@ void main() {
       const photometricInterpretation3 = 'MONOCHROME3';
 
       // Invalid FrameDescriptor Data
-      final ob8FDe = new FrameDescriptor(
+      final ob8FDe = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation3,
@@ -760,7 +760,7 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels2 = new Uint8List(ob8FDe.lengthInBytes);
+      final pixels2 = Uint8List(ob8FDe.lengthInBytes);
       log
         ..debug('pixels0.length: ${pixels2.lengthInBytes}')
         ..debug('nFrames: $nFrames2')
@@ -776,27 +776,27 @@ void main() {
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
           new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
-      final usSamplesPerPixel0 = new UStag(PTag.kSamplesPerPixel, [1]);
+      final usSamplesPerPixel0 = UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
           new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
-      final usRows0 = new UStag(PTag.kRows, [3]);
-      final usColumns0 = new UStag(PTag.kColumns, [6]);
-      final usBitsAllocated0 = new UStag(PTag.kBitsAllocated, [8]);
-      final usBitsStored0 = new UStag(PTag.kBitsStored, [8]);
-      final usHighBit0 = new UStag(PTag.kHighBit, [7]);
-      final usPixelRepresentation0 = new UStag(PTag.kPixelRepresentation, [3]);
-      final usPlanarConfiguration0 = new UStag(PTag.kPlanarConfiguration, [5]);
-      final isPixelAspectRatio0 = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
+      final usRows0 = UStag(PTag.kRows, [3]);
+      final usColumns0 = UStag(PTag.kColumns, [6]);
+      final usBitsAllocated0 = UStag(PTag.kBitsAllocated, [8]);
+      final usBitsStored0 = UStag(PTag.kBitsStored, [8]);
+      final usHighBit0 = UStag(PTag.kHighBit, [7]);
+      final usPixelRepresentation0 = UStag(PTag.kPixelRepresentation, [3]);
+      final usPlanarConfiguration0 = UStag(PTag.kPlanarConfiguration, [5]);
+      final isPixelAspectRatio0 = IStag(PTag.kPixelAspectRatio, ['1', '2']);
       const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
           new UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
           new UStag(PTag.kLargestImagePixelValue, [255]);
-      final obIccProfile0 = new OBtag(PTag.kICCProfile, <int>[]);
-      final csColorSpace0 = new CStag(PTag.kColorSpace);
-      final usPixelPaddingRangeLimit0 = new UStag(PTag.kPixelPaddingRangeLimit);
+      final obIccProfile0 = OBtag(PTag.kICCProfile, <int>[]);
+      final csColorSpace0 = CStag(PTag.kColorSpace);
+      final usPixelPaddingRangeLimit0 = UStag(PTag.kPixelPaddingRangeLimit);
 
-      final rds0 = new TagRootDataset.empty()
+      final rds0 = TagRootDataset.empty()
         ..fmi[uiTransferSyntaxUID0.code] = uiTransferSyntaxUID0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
@@ -814,12 +814,12 @@ void main() {
         ..add(csColorSpace0)
         ..add(usPixelPaddingRangeLimit0);
 
-      final ob8FDe = new FrameDescriptor.fromDataset(rds0);
+      final ob8FDe = FrameDescriptor.fromDataset(rds0);
 
       const nFrames0 = 1;
-      final pixels0 = new Uint8List(ob8FDe.lengthInBytes);
+      final pixels0 = Uint8List(ob8FDe.lengthInBytes);
 
-      final ob8d = new FrameList8Bit(pixels0, nFrames0, ob8FDe);
+      final ob8d = FrameList8Bit(pixels0, nFrames0, ob8FDe);
 
       // pixels
       expect(ob8d.samplesPerPixel == ob8FDe.samplesPerPixel, true);
@@ -899,7 +899,7 @@ void main() {
       int nFrames0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
-      final ob8FDf = new FrameDescriptor(
+      final ob8FDf = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -918,8 +918,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         nFrames0 = i + 1;
         log.debug('nFrames0: $nFrames0');
-        final pixels0 = new Uint8List(nFrames0 * (ob8FDf.lengthInBytes));
-        ob8e = new FrameList8Bit(pixels0, nFrames0, ob8FDf);
+        final pixels0 = Uint8List(nFrames0 * (ob8FDf.lengthInBytes));
+        ob8e = FrameList8Bit(pixels0, nFrames0, ob8FDf);
         for (var j = 0; j < nFrames0; j++) {
           final frame0 = ob8e[j];
           expect(frame0.index == j, true);
@@ -966,7 +966,7 @@ void main() {
       const photometricInterpretation0 = 'MONOCHROME1';
       const nFrames0 = 1;
 
-      final c8FDa = new FrameDescriptor(
+      final c8FDa = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -979,12 +979,12 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final offsets = new Uint32List.fromList([0, 4]);
-      final bulkdata = new Uint8List(4);
+      final offsets = Uint32List.fromList([0, 4]);
+      final bulkdata = Uint8List(4);
 
       log.debug('offsets.length: ${offsets.length}');
 
-      final c8a = new CompressedFrameList(bulkdata, offsets, nFrames0, c8FDa);
+      final c8a = CompressedFrameList(bulkdata, offsets, nFrames0, c8FDa);
       log.debug(c8a);
 
       expect(c8a.pixelSizeInBits == c8FDa.pixelSizeInBits, true);
@@ -1034,7 +1034,7 @@ void main() {
       expect(c8FDa.pixelSizeInBits == bitsAllocated8, true);
       expect(c8FDa.length == rows4 * columns6, true);
 
-      final bytes0 = new Uint8List(c8a.lengthInBytes);
+      final bytes0 = Uint8List(c8a.lengthInBytes);
       expect(bytes0, equals(bulkdata));
     });
 
@@ -1042,7 +1042,7 @@ void main() {
       const photometricInterpretation1 = 'MONOCHROME2';
       int nFrames1;
 
-      final c8FDb = new FrameDescriptor(
+      final c8FDb = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -1064,13 +1064,13 @@ void main() {
           offSetList.add(j * 2);
         }
         log.debug('nFrames:$nFrames1');
-        final offSets = new Uint32List.fromList(offSetList);
-        final bulkdata = new Uint8List(i * 4);
+        final offSets = Uint32List.fromList(offSetList);
+        final bulkdata = Uint8List(i * 4);
 
         log.debug(
             'offSetList: $offSetList, nFrames1 + 1: ${nFrames1 + 1}, offSets: ${offSets.length}');
 
-        final c8b = new CompressedFrameList(bulkdata, offSets, nFrames1, c8FDb);
+        final c8b = CompressedFrameList(bulkdata, offSets, nFrames1, c8FDb);
         log.debug(c8b);
 
         expect(c8b.pixelSizeInBits == c8FDb.pixelSizeInBits, true);
@@ -1121,7 +1121,7 @@ void main() {
         expect(c8FDb.pixelSizeInBits == bitsAllocated8, true);
         expect(c8FDb.length == rows4 * columns6, true);
 
-        final bytes0 = new Uint8List(c8b.lengthInBytes);
+        final bytes0 = Uint8List(c8b.lengthInBytes);
         expect(bytes0, equals(bulkdata));
 
         offSetList = <int>[];
@@ -1134,7 +1134,7 @@ void main() {
       const nFrames0 = 0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
-      final c8FDc = new FrameDescriptor(
+      final c8FDc = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -1147,8 +1147,8 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final offsets0 = new Uint32List(0);
-      final bulkdata0 = new Uint8List(0);
+      final offsets0 = Uint32List(0);
+      final bulkdata0 = Uint8List(0);
 
       log.debug('nFrames: $nFrames0');
       expect(
@@ -1159,7 +1159,7 @@ void main() {
       const nFrames1 = 1;
       const photometricInterpretation1 = 'MONOCHROME2';
 
-      final c8FDd = new FrameDescriptor(
+      final c8FDd = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -1172,8 +1172,8 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final offSets = new Uint32List(0);
-      final bulkData = new Uint8List(0);
+      final offSets = Uint32List(0);
+      final bulkData = Uint8List(0);
 
       log..debug('offSets: $offSets')..debug('bulkData: $bulkData');
       expect(() => new CompressedFrameList(bulkData, offSets, nFrames1, c8FDd),
@@ -1183,7 +1183,7 @@ void main() {
       const photometricInterpretation2 = 'MONOCHROME3';
       const nFrames2 = 1;
 
-      final c8FDe = new FrameDescriptor(
+      final c8FDe = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation2,
@@ -1196,16 +1196,16 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final offsets2 = new Uint32List.fromList([0, 4]);
-      final bulkdata2 = new Uint8List(0);
+      final offsets2 = Uint32List.fromList([0, 4]);
+      final bulkdata2 = Uint8List(0);
 
       expect(
           () => new CompressedFrameList(bulkdata2, offsets2, nFrames2, c8FDe),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Offsets
-      final offSets3 = new Uint32List.fromList([0, 2, 4, 3, 8, 9, 10]);
-      final bulkdata = new Uint8List(10);
+      final offSets3 = Uint32List.fromList([0, 2, 4, 3, 8, 9, 10]);
+      final bulkdata = Uint8List(10);
       log.debug('offSets3: $offSets3');
       expect(() => new CompressedFrameList(bulkdata, offSets3, nFrames1, c8FDe),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
@@ -1215,7 +1215,7 @@ void main() {
       const nFrames0 = 1;
       const photometricInterpretation1 = 'MONOCHROME1';
 
-      final cFDb = new FrameDescriptor(
+      final cFDb = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -1228,11 +1228,11 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final offsets = new Uint32List.fromList([0, 4]);
+      final offsets = Uint32List.fromList([0, 4]);
       final emptyOffsetsAsBytes1 = offsets.buffer.asUint8List();
-      final bulkData = new Uint8List(4);
+      final bulkData = Uint8List(4);
       final fragments = [emptyOffsetsAsBytes1, bulkData];
-      final vfFragments = new VFFragments(fragments);
+      final vfFragments = VFFragments(fragments);
 
       final c8c =
           new CompressedFrameList.fromVFFragments(vfFragments, nFrames0, cFDb);
@@ -1285,14 +1285,14 @@ void main() {
       expect(cFDb.pixelSizeInBits == bitsAllocated8, true);
       expect(cFDb.length == rows4 * columns6, true);
 
-      final bytes0 = new Uint8List(c8c.lengthInBytes);
+      final bytes0 = Uint8List(c8c.lengthInBytes);
       log.debug(bytes0);
     });
     test('CompressedFrameList.fromVFFragments multiFrame', () {
       int nFrames1;
       const photometricInterpretation2 = 'MONOCHROME2';
 
-      final cFDc = new FrameDescriptor(
+      final cFDc = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation2,
@@ -1314,16 +1314,16 @@ void main() {
           offSetList.add(j * 2);
         }
 
-        final offsets = new Uint32List.fromList(offSetList);
+        final offsets = Uint32List.fromList(offSetList);
         final emptyOffsetsAsBytes1 = offsets.buffer.asUint8List();
-        final bulkData = new Uint8List(i * 4);
+        final bulkData = Uint8List(i * 4);
         final fragments = [emptyOffsetsAsBytes1, bulkData];
         log.debug(
             'offSetList: $offSetList, nFrames + 1: ${nFrames1 + 1}, offSets: ${offsets.length}');
-        final vfFragments = new VFFragments(fragments);
+        final vfFragments = VFFragments(fragments);
 
-        final c8d = new CompressedFrameList.fromVFFragments(
-            vfFragments, nFrames1, cFDc);
+        final c8d =
+            CompressedFrameList.fromVFFragments(vfFragments, nFrames1, cFDc);
 
         expect(c8d.pixelSizeInBits == cFDc.pixelSizeInBits, true);
 
@@ -1375,7 +1375,7 @@ void main() {
         expect(cFDc.length == rows4 * columns6, true);
 
         offSetList = <int>[];
-        final bytes0 = new Uint8List(c8d.lengthInBytes);
+        final bytes0 = Uint8List(c8d.lengthInBytes);
         log.debug(bytes0);
       }
     });
@@ -1385,7 +1385,7 @@ void main() {
       const nFrames0 = 0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
-      final cFDb = new FrameDescriptor(
+      final cFDb = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -1398,9 +1398,9 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final bulkData0 = new Uint8List(4);
+      final bulkData0 = Uint8List(4);
       final fragments0 = [bulkData0];
-      final vfFragments0 = new VFFragments(fragments0);
+      final vfFragments0 = VFFragments(fragments0);
 
       expect(
           () => new CompressedFrameList.fromVFFragments(
@@ -1411,7 +1411,7 @@ void main() {
       const nFrames1 = 1;
       const photometricInterpretation1 = 'MONOCHROME2';
 
-      final cFDc = new FrameDescriptor(
+      final cFDc = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -1424,11 +1424,11 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final emptyOffsets = new Uint32List(0);
+      final emptyOffsets = Uint32List(0);
       final emptyOffsetsAsBytes = emptyOffsets.buffer.asUint8List();
-      final bulkData1 = new Uint8List(4);
+      final bulkData1 = Uint8List(4);
       final fragments1 = [emptyOffsetsAsBytes, bulkData1];
-      final vfFragments1 = new VFFragments(fragments1);
+      final vfFragments1 = VFFragments(fragments1);
 
       expect(
           () => new CompressedFrameList.fromVFFragments(
@@ -1439,7 +1439,7 @@ void main() {
       const nFrames2 = 1;
       const photometricInterpretation2 = 'MONOCHROME1';
 
-      final cFDd = new FrameDescriptor(
+      final cFDd = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation2,
@@ -1452,11 +1452,11 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final emptyOffsets1 = new Uint32List(2);
+      final emptyOffsets1 = Uint32List(2);
       final emptyOffsetsAsBytes1 = emptyOffsets1.buffer.asUint8List();
-      final bulkData2 = new Uint8List(4);
+      final bulkData2 = Uint8List(4);
       final fragments2 = [emptyOffsetsAsBytes1, bulkData2];
-      final vfFragments2 = new VFFragments(fragments2);
+      final vfFragments2 = VFFragments(fragments2);
 
       expect(
           () => new CompressedFrameList.fromVFFragments(
@@ -1468,7 +1468,7 @@ void main() {
       const photometricInterpretation0 = 'MONOCHROME1';
       int nFrames0;
 
-      final c8FDg = new FrameDescriptor(
+      final c8FDg = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -1483,17 +1483,17 @@ void main() {
 
       nFrames0 = 7;
       log.debug('nFrames0: $nFrames0');
-      final offsets = new Uint32List.fromList([0, 2, 3, 5, 8, 13, 21, 34]);
-      final bulkdata = new Uint8List(34);
+      final offsets = Uint32List.fromList([0, 2, 3, 5, 8, 13, 21, 34]);
+      final bulkdata = Uint8List(34);
 
-      final c8c = new CompressedFrameList(bulkdata, offsets, nFrames0, c8FDg);
+      final c8c = CompressedFrameList(bulkdata, offsets, nFrames0, c8FDg);
 
       for (var j = 0; j < nFrames0; j++) {
         final frame0 = c8c[j];
         expect(frame0.index == j, true);
 
         log.debug(
-            'frame0.lengthInBytes: ${frame0.lengthInBytes}, c8c.offsets[${j+ 1}] - c8c.offsets[$j]: ${c8c.offsets[j+ 1] - c8c.offsets[j]}');
+            'frame0.lengthInBytes: ${frame0.lengthInBytes}, c8c.offsets[${j + 1}] - c8c.offsets[$j]: ${c8c.offsets[j + 1] - c8c.offsets[j]}');
 
         expect(
             frame0.lengthInBytes == c8c.offsets[j + 1] - c8c.offsets[j], true);

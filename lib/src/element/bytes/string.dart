@@ -44,7 +44,7 @@ abstract class AsciiMixin {
   bool get allowInvalid => global.allowInvalidAscii;
 
   String get vfString {
-    final length = (hasPadding) ? vfLength - 1 : vfLength;
+    final length = hasPadding ? vfLength - 1 : vfLength;
     return vfBytes.getAscii(length: length, allowInvalid: allowInvalid);
   }
 }
@@ -57,7 +57,7 @@ class AEbytes extends AE with ByteElement<String>, StringMixin, AsciiMixin {
 
   AEbytes(this.bytes);
 
-  static AEbytes fromBytes(DicomBytes bytes) => new AEbytes(bytes);
+  static AEbytes fromBytes(DicomBytes bytes) => AEbytes(bytes);
 
   static AEbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kAECode, isEvr);
@@ -78,7 +78,7 @@ class ASbytes extends AS with ByteElement<String>, StringMixin, AsciiMixin {
     final eLength = bytes.length;
     if (eLength != 12 && eLength != 8)
       log.warn('Invalid Age (AS) "${bytes.getUtf8()}"');
-    return new ASbytes(bytes);
+    return ASbytes(bytes);
   }
 
   static ASbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -96,7 +96,7 @@ class CSbytes extends CS with ByteElement<String>, StringMixin, AsciiMixin {
 
   CSbytes(this.bytes);
 
-  static CSbytes fromBytes(DicomBytes bytes) => new CSbytes(bytes);
+  static CSbytes fromBytes(DicomBytes bytes) => CSbytes(bytes);
 
   static CSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kCSCode, isEvr);
@@ -117,7 +117,7 @@ class DAbytes extends DA with ByteElement<String>, StringMixin, AsciiMixin {
     final eLength = bytes.length;
     if (eLength != 16 && eLength != 8)
       log.debug('Invalid Date (DA) "${bytes.getUtf8()}"');
-    return new DAbytes(bytes);
+    return DAbytes(bytes);
   }
 
   static DAbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -135,7 +135,7 @@ class DSbytes extends DS with ByteElement<String>, StringMixin, AsciiMixin {
 
   DSbytes(this.bytes);
 
-  static DSbytes fromBytes(DicomBytes bytes) => new DSbytes(bytes);
+  static DSbytes fromBytes(DicomBytes bytes) => DSbytes(bytes);
 
   static DSbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kDSCode, isEvr);
@@ -152,7 +152,7 @@ class DTbytes extends DT with ByteElement<String>, StringMixin, AsciiMixin {
 
   DTbytes(this.bytes);
 
-  static DTbytes fromBytes(DicomBytes bytes) => new DTbytes(bytes);
+  static DTbytes fromBytes(DicomBytes bytes) => DTbytes(bytes);
 
   static DTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kDTCode, isEvr);
@@ -169,7 +169,7 @@ class ISbytes extends IS with ByteElement<String>, StringMixin, AsciiMixin {
 
   ISbytes(this.bytes);
 
-  static ISbytes fromBytes(DicomBytes bytes) => new ISbytes(bytes);
+  static ISbytes fromBytes(DicomBytes bytes) => ISbytes(bytes);
 
   static ISbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kISCode, isEvr);
@@ -192,7 +192,7 @@ class UIbytes extends UI with ByteElement<String>, StringMixin, AsciiMixin {
   List<Uid> get uids => Uid.parseList(
       bytes.getAsciiList(offset: vfOffset, length: vfLength, padChar: _kNull));
 
-  static UIbytes fromBytes(DicomBytes bytes) => new UIbytes(bytes);
+  static UIbytes fromBytes(DicomBytes bytes) => UIbytes(bytes);
 
   static UIbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kUICode, isEvr);
@@ -209,7 +209,7 @@ class TMbytes extends TM with ByteElement<String>, StringMixin, AsciiMixin {
 
   TMbytes(this.bytes);
 
-  static TMbytes fromBytes(DicomBytes bytes) => new TMbytes(bytes);
+  static TMbytes fromBytes(DicomBytes bytes) => TMbytes(bytes);
 
   static TMbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kTMCode, isEvr);
@@ -233,7 +233,7 @@ abstract class Utf8Mixin {
   bool get allowMalformed => global.allowMalformedUtf8;
 
   String get vfString {
-    final vf = (hasPadding) ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
+    final vf = hasPadding ? vfBytes.sublist(0, vfLength - 1) : vfBytes;
     return vf.getUtf8(allowMalformed: allowMalformed);
   }
 }
@@ -248,8 +248,8 @@ class LObytes extends LO with ByteElement<String>, StringMixin, Utf8Mixin {
     final group = bytes.getUint16(0);
     final elt = bytes.getUint16(2);
     return (group.isOdd && elt >= 0x10 && elt <= 0xFF)
-        ? new PCbytes(bytes)
-        : new LObytes(bytes);
+        ? PCbytes(bytes)
+        : LObytes(bytes);
   }
 
   static LObytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
@@ -270,7 +270,7 @@ class PCbytes extends PC with ByteElement<String>, StringMixin, Utf8Mixin {
   @override
   String get token => vfString;
 
-  static PCbytes fromBytes(DicomBytes bytes) => new PCbytes(bytes);
+  static PCbytes fromBytes(DicomBytes bytes) => PCbytes(bytes);
 
   static PCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kLOCode, isEvr);
@@ -287,7 +287,7 @@ class PNbytes extends PN with ByteElement<String>, StringMixin, Utf8Mixin {
 
   PNbytes(this.bytes);
 
-  static PNbytes fromBytes(DicomBytes bytes) => new PNbytes(bytes);
+  static PNbytes fromBytes(DicomBytes bytes) => PNbytes(bytes);
 
   static PNbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kPNCode, isEvr);
@@ -304,7 +304,7 @@ class SHbytes extends SH with ByteElement<String>, StringMixin, Utf8Mixin {
 
   SHbytes(this.bytes);
 
-  static SHbytes fromBytes(DicomBytes bytes) => new SHbytes(bytes);
+  static SHbytes fromBytes(DicomBytes bytes) => SHbytes(bytes);
 
   static SHbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kSHCode, isEvr);
@@ -321,7 +321,7 @@ class UCbytes extends UC with ByteElement<String>, StringMixin, Utf8Mixin {
 
   UCbytes(this.bytes);
 
-  static UCbytes fromBytes(DicomBytes bytes) => new UCbytes(bytes);
+  static UCbytes fromBytes(DicomBytes bytes) => UCbytes(bytes);
 
   static UCbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeLongString(code, vList, kUCCode, isEvr);
@@ -361,7 +361,7 @@ class LTbytes extends LT with ByteElement<String>, TextMixin {
 
   LTbytes(this.bytes);
 
-  static LTbytes fromBytes(DicomBytes bytes) => new LTbytes(bytes);
+  static LTbytes fromBytes(DicomBytes bytes) => LTbytes(bytes);
 
   static LTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kLTCode, isEvr);
@@ -378,7 +378,7 @@ class STbytes extends ST with ByteElement<String>, TextMixin {
 
   STbytes(this.bytes);
 
-  static STbytes fromBytes(DicomBytes bytes) => new STbytes(bytes);
+  static STbytes fromBytes(DicomBytes bytes) => STbytes(bytes);
 
   static STbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeShortString(code, vList, kSTCode, isEvr);
@@ -395,7 +395,7 @@ class URbytes extends UR with ByteElement<String>, TextMixin {
 
   URbytes(this.bytes);
 
-  static URbytes fromBytes(DicomBytes bytes) => new URbytes(bytes);
+  static URbytes fromBytes(DicomBytes bytes) => URbytes(bytes);
 
   static URbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeLongString(code, vList, kURCode, isEvr);
@@ -412,7 +412,7 @@ class UTbytes extends UT with ByteElement<String>, TextMixin {
 
   UTbytes(this.bytes);
 
-  static UTbytes fromBytes(DicomBytes bytes) => new UTbytes(bytes);
+  static UTbytes fromBytes(DicomBytes bytes) => UTbytes(bytes);
 
   static UTbytes fromValues(int code, List<String> vList, {bool isEvr = true}) {
     final bytes = _makeLongString(code, vList, kUTCode, isEvr);

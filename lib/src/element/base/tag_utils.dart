@@ -124,7 +124,7 @@ bool _isPrivateGroup(int group) =>
 // Trick to check that it is both Private and Creator.
 bool _isPCCode(int code) {
   final bits = code & 0x1FFFF;
-  return (bits >= 0x10010 && bits <= 0x100FF);
+  return bits >= 0x10010 && bits <= 0x100FF;
 }
 
 bool _isNotPCTagCode(int code) => !_isPCCode(code);
@@ -132,6 +132,6 @@ bool _isNotPCTagCode(int code) => !_isPCCode(code);
 // Trick to check that it is both Private and Data.
 bool _isPDCode(int code) {
   final bits = code & 0x1FFFF;
-  return (bits >= 0x11000 && bits <= 0x1FF00);
+  return bits >= 0x11000 && bits <= 0x1FF00;
 }
 

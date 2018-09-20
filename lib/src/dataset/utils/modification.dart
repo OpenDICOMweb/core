@@ -24,7 +24,7 @@ class OriginalAttributesSequence {
 
   OriginalAttributesSequence(
       this.source, this.system, this.reason, this.modified)
-      : dt = new DateTime.now();
+      : dt = DateTime.now();
 }
 
 //TODO: should we add timestamp
@@ -40,20 +40,19 @@ class Modification {
   Modification._(this.type, this.original, this.updated, this.newValues);
 
   void create(TagElement e) {
-    changes.add(new Modification._(ChangeType.created, e, null, null));
+    changes.add(Modification._(ChangeType.created, e, null, null));
   }
 
   void replace(TagElement start, TagElement end) {
-    changes.add(new Modification._(ChangeType.replaced, start, end, newValues));
+    changes.add(Modification._(ChangeType.replaced, start, end, newValues));
   }
 
   void modify(TagElement initial, List newValues) {
-    changes
-        .add(new Modification._(ChangeType.modified, initial, null, newValues));
+    changes.add(Modification._(ChangeType.modified, initial, null, newValues));
   }
 
   void remove(TagElement e) {
-    changes.add(new Modification._(ChangeType.deleted, e, null, null));
+    changes.add(Modification._(ChangeType.deleted, e, null, null));
   }
 
   @override

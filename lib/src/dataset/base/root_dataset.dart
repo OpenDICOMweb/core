@@ -33,11 +33,11 @@ abstract class RootDataset extends Dataset {
   /// Constructor
   RootDataset(this.path, Bytes bytes, int fmiEnd)
       : dsBytes = (bytes == null || bytes.isEmpty)
-            ? new RDSBytes.empty()
-            : new RDSBytes(bytes, fmiEnd);
+            ? RDSBytes.empty()
+            : RDSBytes(bytes, fmiEnd);
 
   /// Constructor for an empty [RootDataset].
-  RootDataset.empty() : dsBytes = new RDSBytes.empty();
+  RootDataset.empty() : dsBytes = RDSBytes.empty();
 
   /// Returns the [Bytes] corresponding to _this_.
   Bytes get bd => dsBytes.bytes;
@@ -74,7 +74,7 @@ abstract class RootDataset extends Dataset {
   bool get hadULength => false;
 
   /// Returns the [Patient] whose data is contained in _this_, if any.
-  Patient get patient => new Patient.fromRDS(this);
+  Patient get patient => Patient.fromRDS(this);
 
   /// The SopClass Uid for _this_ as a [String].
   String get sopClassId => getString(kSOPClassUID);
@@ -143,7 +143,7 @@ abstract class RootDataset extends Dataset {
   List<int> get requiredNotPresent => history.requiredNotPresent;
   List<int> get notPresent => history.requiredNotPresent;
 
-  int get nSequences => counter((e) => (e is SQ));
+  int get nSequences => counter((e) => e is SQ);
   int get nPrivate => counter((e) => isPrivateCode(e.code));
   int get nPrivateSequences =>
       counter((e) => isPrivateCode(e.code) && e is SQ);
@@ -151,7 +151,7 @@ abstract class RootDataset extends Dataset {
   /// Returns a formatted summary of _this_.
   String get summary {
     final sqs = sequences;
-    final sb = new StringBuffer('''\n$runtimeType: 
+    final sb = StringBuffer('''\n$runtimeType: 
              SOP Class: $sopClassUid
        Transfer Syntax: $transferSyntax
         Total Elements: $total
@@ -179,7 +179,7 @@ abstract class RootDataset extends Dataset {
   /// Returns a formatted [String]. See [Formatter].
   @override
   String format(Formatter z) {
-    final sb = new StringBuffer(summary);
+    final sb = StringBuffer(summary);
     z.down;
     sb..write(z.fmt('FMI:', fmi.elements))..write(z.fmt('Elements:', elements));
     z.up;
@@ -233,15 +233,15 @@ abstract class RootDataset extends Dataset {
     if (e == null || e.values.isEmpty) return false;
     final String v = e.value;
     if (v == 'YES' || v.toUpperCase() == 'YES') {
-      report ??= new StatusReport('PatientIdentityRemoved')
+      report ??= StatusReport('PatientIdentityRemoved')
         ..error(e, '"$v" should be "YES"');
       return true;
     } else if (v == 'NO' || v.toUpperCase() == 'NO') {
-      report ??= new StatusReport('PatientIdentityRemoved')
+      report ??= StatusReport('PatientIdentityRemoved')
         ..error(e, '"$v" should be "YES"');
       return false;
     } else {
-      report ??= new StatusReport('PatientIdentityRemoved')
+      report ??= StatusReport('PatientIdentityRemoved')
         ..error(e, 'Invalid values in PatientIdentityRemoved Element: $v');
       return false;
     }
@@ -260,7 +260,7 @@ abstract class Fmi extends ListBase<Element> {
     if (e is UI) {
       return e.uids[0];
     } else if (e is UN) {
-      return new Uid(e.vfBytesAsAscii);
+      return Uid(e.vfBytesAsAscii);
     } else {
       return badElement('Wrong Type ${e.runtimeType}: $e', e);
     }

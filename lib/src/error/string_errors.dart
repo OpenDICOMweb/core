@@ -29,7 +29,7 @@ class StringError extends Error {
 Null _doStringError(String msg, Issues issues) {
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw new StringError(msg);
+  if (throwOnError) throw StringError(msg);
   return null;
 }
 

@@ -146,534 +146,520 @@ class BasicProfile {
 
   static Element invalid<V>(Dataset ds, Tag tag, List<V> values,
           {bool required = false}) =>
-      throw new UnsupportedError('Invalid Action');
+      throw UnsupportedError('Invalid Action');
 
   static BasicProfile lookup(int tag) => map[tag];
 
   static const BasicProfile kAffectedSOPInstanceUID =
-      const BasicProfile(PTag.kAffectedSOPInstanceUID, 'X', remove);
+      BasicProfile(PTag.kAffectedSOPInstanceUID, 'X', remove);
   static const BasicProfile kRequestedSOPInstanceUID =
-      const BasicProfile(PTag.kRequestedSOPInstanceUID, 'U', replaceUids);
+      BasicProfile(PTag.kRequestedSOPInstanceUID, 'U', replaceUids);
   static const BasicProfile kMediaStorageSOPInstanceUID =
-      const BasicProfile(PTag.kMediaStorageSOPInstanceUID, 'U', replaceUids);
+      BasicProfile(PTag.kMediaStorageSOPInstanceUID, 'U', replaceUids);
   static const BasicProfile kReferencedSOPInstanceUIDinFile =
-      const BasicProfile(
-          PTag.kReferencedSOPInstanceUIDInFile, 'U', replaceUids);
+      BasicProfile(PTag.kReferencedSOPInstanceUIDInFile, 'U', replaceUids);
   static const BasicProfile kInstanceCreatorUID =
-      const BasicProfile(PTag.kInstanceCreatorUID, 'U', replaceUids);
+      BasicProfile(PTag.kInstanceCreatorUID, 'U', replaceUids);
   static const BasicProfile kSOPInstanceUID =
-      const BasicProfile(PTag.kSOPInstanceUID, 'U', replaceUids);
+      BasicProfile(PTag.kSOPInstanceUID, 'U', replaceUids);
   static const BasicProfile kStudyDate =
-      const BasicProfile(PTag.kStudyDate, 'Z', replaceWithZero);
+      BasicProfile(PTag.kStudyDate, 'Z', replaceWithZero);
   static const BasicProfile kSeriesDate =
-      const BasicProfile(PTag.kSeriesDate, 'XD', removeUnlessDummy);
+      BasicProfile(PTag.kSeriesDate, 'XD', removeUnlessDummy);
   static const BasicProfile kAcquisitionDate =
-      const BasicProfile(PTag.kAcquisitionDate, 'XD', removeUnlessZero);
+      BasicProfile(PTag.kAcquisitionDate, 'XD', removeUnlessZero);
   static const BasicProfile kContentDate =
-      const BasicProfile(PTag.kContentDate, 'XD', removeUnlessDummy);
+      BasicProfile(PTag.kContentDate, 'XD', removeUnlessDummy);
   static const BasicProfile kOverlayDate =
-      const BasicProfile(PTag.kOverlayDate, 'X', remove);
+      BasicProfile(PTag.kOverlayDate, 'X', remove);
   static const BasicProfile kCurveDate =
-      const BasicProfile(PTag.kCurveDate, 'X', remove);
+      BasicProfile(PTag.kCurveDate, 'X', remove);
   static const BasicProfile kAcquisitionDateTime =
-      const BasicProfile(PTag.kAcquisitionDateTime, 'XD', removeUnlessDummy);
+      BasicProfile(PTag.kAcquisitionDateTime, 'XD', removeUnlessDummy);
   static const BasicProfile kStudyTime =
-      const BasicProfile(PTag.kStudyTime, 'Z', replaceWithZero);
+      BasicProfile(PTag.kStudyTime, 'Z', replaceWithZero);
   static const BasicProfile kSeriesTime =
-      const BasicProfile(PTag.kSeriesTime, 'XD', removeUnlessDummy);
+      BasicProfile(PTag.kSeriesTime, 'XD', removeUnlessDummy);
   static const BasicProfile kAcquisitionTime =
-      const BasicProfile(PTag.kAcquisitionTime, 'XD', removeUnlessZero);
+      BasicProfile(PTag.kAcquisitionTime, 'XD', removeUnlessZero);
   static const BasicProfile kContentTime =
-      const BasicProfile(PTag.kContentTime, 'XD', removeUnlessDummy);
+      BasicProfile(PTag.kContentTime, 'XD', removeUnlessDummy);
   static const BasicProfile kOverlayTime =
-      const BasicProfile(PTag.kOverlayTime, 'X', remove);
+      BasicProfile(PTag.kOverlayTime, 'X', remove);
   static const BasicProfile kCurveTime =
-      const BasicProfile(PTag.kCurveTime, 'X', remove);
+      BasicProfile(PTag.kCurveTime, 'X', remove);
   static const BasicProfile kAccessionNumber =
-      const BasicProfile(PTag.kAccessionNumber, 'Z', replaceWithZero);
+      BasicProfile(PTag.kAccessionNumber, 'Z', replaceWithZero);
   static const BasicProfile kFailedSOPInstanceUIDList =
-      const BasicProfile(PTag.kFailedSOPInstanceUIDList, 'U', replaceUids);
+      BasicProfile(PTag.kFailedSOPInstanceUIDList, 'U', replaceUids);
   static const BasicProfile kInstitutionName =
-      const BasicProfile(PTag.kInstitutionName, 'XZD', removeUnlessZeroOrDummy);
+      BasicProfile(PTag.kInstitutionName, 'XZD', removeUnlessZeroOrDummy);
   static const BasicProfile kInstitutionAddress =
-      const BasicProfile(PTag.kInstitutionAddress, 'X', remove);
-  static const BasicProfile kInstitutionCodeSequence = const BasicProfile(
+      BasicProfile(PTag.kInstitutionAddress, 'X', remove);
+  static const BasicProfile kInstitutionCodeSequence = BasicProfile(
       PTag.kInstitutionCodeSequence, 'XZD', removeUnlessZeroOrDummy);
   static const BasicProfile kReferringPhysiciansName =
-      const BasicProfile(PTag.kReferringPhysicianName, 'Z', replaceWithZero);
+      BasicProfile(PTag.kReferringPhysicianName, 'Z', replaceWithZero);
   static const BasicProfile kReferringPhysiciansAddress =
-      const BasicProfile(PTag.kReferringPhysicianAddress, 'X', remove);
+      BasicProfile(PTag.kReferringPhysicianAddress, 'X', remove);
   static const BasicProfile kReferringPhysiciansTelephoneNumbers =
-      const BasicProfile(PTag.kReferringPhysicianTelephoneNumbers, 'X', remove);
+      BasicProfile(PTag.kReferringPhysicianTelephoneNumbers, 'X', remove);
   static const BasicProfile kReferringPhysiciansIdentificationSequence =
-      const BasicProfile(
-          PTag.kReferringPhysicianIdentificationSequence, 'X', remove);
+      BasicProfile(PTag.kReferringPhysicianIdentificationSequence, 'X', remove);
   static const BasicProfile kContextGroupExtensionCreatorUID =
-      const BasicProfile(
-          PTag.kContextGroupExtensionCreatorUID, 'U', replaceUids);
+      BasicProfile(PTag.kContextGroupExtensionCreatorUID, 'U', replaceUids);
   static const BasicProfile kTimezoneOffsetFromUTC =
-      const BasicProfile(PTag.kTimezoneOffsetFromUTC, 'X', remove);
+      BasicProfile(PTag.kTimezoneOffsetFromUTC, 'X', remove);
   static const BasicProfile kStationName =
-      const BasicProfile(PTag.kStationName, 'XZD', removeUnlessZeroOrDummy);
+      BasicProfile(PTag.kStationName, 'XZD', removeUnlessZeroOrDummy);
   static const BasicProfile kStudyDescription =
-      const BasicProfile(PTag.kStudyDescription, 'X', remove);
+      BasicProfile(PTag.kStudyDescription, 'X', remove);
   static const BasicProfile kSeriesDescription =
-      const BasicProfile(PTag.kSeriesDescription, 'X', remove);
+      BasicProfile(PTag.kSeriesDescription, 'X', remove);
   static const BasicProfile kInstitutionalDepartmentName =
-      const BasicProfile(PTag.kInstitutionalDepartmentName, 'X', remove);
+      BasicProfile(PTag.kInstitutionalDepartmentName, 'X', remove);
   static const BasicProfile kPhysicianOfRecord =
-      const BasicProfile(PTag.kPhysiciansOfRecord, 'X', remove);
+      BasicProfile(PTag.kPhysiciansOfRecord, 'X', remove);
   static const BasicProfile kPhysician0xsofRecordIdentificationSequence =
-      const BasicProfile(
-          PTag.kPhysiciansOfRecordIdentificationSequence, 'X', remove);
+      BasicProfile(PTag.kPhysiciansOfRecordIdentificationSequence, 'X', remove);
   static const BasicProfile kPerformingPhysiciansName =
-      const BasicProfile(PTag.kPerformingPhysicianName, 'X', remove);
+      BasicProfile(PTag.kPerformingPhysicianName, 'X', remove);
   static const BasicProfile kPerformingPhysicianIdentificationSequence =
-      const BasicProfile(
+      BasicProfile(
           PTag.kPerformingPhysicianIdentificationSequence, 'X', remove);
   static const BasicProfile kNameofPhysician0xsReadingStudy =
-      const BasicProfile(PTag.kNameOfPhysiciansReadingStudy, 'X', remove);
+      BasicProfile(PTag.kNameOfPhysiciansReadingStudy, 'X', remove);
   static const BasicProfile kPhysician0xsReadingStudyIdentificationSequence =
-      const BasicProfile(
+      BasicProfile(
           PTag.kPhysiciansReadingStudyIdentificationSequence, 'X', remove);
   static const BasicProfile kOperatorsName =
-      const BasicProfile(PTag.kOperatorsName, 'XZD', removeUnlessZeroOrDummy);
-  static const BasicProfile kOperatorsIdentificationSequence =
-      const BasicProfile(
-          PTag.kOperatorIdentificationSequence, 'XD', removeUnlessDummy);
+      BasicProfile(PTag.kOperatorsName, 'XZD', removeUnlessZeroOrDummy);
+  static const BasicProfile kOperatorsIdentificationSequence = BasicProfile(
+      PTag.kOperatorIdentificationSequence, 'XD', removeUnlessDummy);
   static const BasicProfile kAdmittingDiagnosesDescription =
-      const BasicProfile(PTag.kAdmittingDiagnosesDescription, 'X', remove);
+      BasicProfile(PTag.kAdmittingDiagnosesDescription, 'X', remove);
   static const BasicProfile kAdmittingDiagnosesCodeSequence =
-      const BasicProfile(PTag.kAdmittingDiagnosesCodeSequence, 'X', remove);
+      BasicProfile(PTag.kAdmittingDiagnosesCodeSequence, 'X', remove);
   static const BasicProfile kReferencedStudySequence =
-      const BasicProfile(PTag.kReferencedStudySequence, 'XD', removeUnlessZero);
+      BasicProfile(PTag.kReferencedStudySequence, 'XD', removeUnlessZero);
   static const BasicProfile kReferencedPerformedProcedureStepSequence =
-      const BasicProfile(PTag.kReferencedPerformedProcedureStepSequence, 'XZD',
+      BasicProfile(PTag.kReferencedPerformedProcedureStepSequence, 'XZD',
           removeUnlessZeroOrDummy);
   static const BasicProfile kReferencedPatientSequence =
-      const BasicProfile(PTag.kReferencedPatientSequence, 'X', remove);
-  static const BasicProfile kReferencedImageSequence = const BasicProfile(
+      BasicProfile(PTag.kReferencedPatientSequence, 'X', remove);
+  static const BasicProfile kReferencedImageSequence = BasicProfile(
       PTag.kReferencedImageSequence, 'XZU', removeUidUnlessZeroOrDummy);
   static const BasicProfile kReferencedSOPInstanceUID =
-      const BasicProfile(PTag.kReferencedSOPInstanceUID, 'U', replaceUids);
+      BasicProfile(PTag.kReferencedSOPInstanceUID, 'U', replaceUids);
   static const BasicProfile kTransactionUID =
-      const BasicProfile(PTag.kTransactionUID, 'U', replaceUids);
+      BasicProfile(PTag.kTransactionUID, 'U', replaceUids);
   static const BasicProfile kDerivationDescription =
-      const BasicProfile(PTag.kDerivationDescription, 'X', remove);
-  static const BasicProfile kSourceImageSequence = const BasicProfile(
+      BasicProfile(PTag.kDerivationDescription, 'X', remove);
+  static const BasicProfile kSourceImageSequence = BasicProfile(
       PTag.kSourceImageSequence, 'XZU', removeUidUnlessZeroOrDummy);
   static const BasicProfile kIrradiationEventUID =
-      const BasicProfile(PTag.kIrradiationEventUID, 'U', replaceUids);
+      BasicProfile(PTag.kIrradiationEventUID, 'U', replaceUids);
   static const BasicProfile kIdentifyingComments =
-      const BasicProfile(PTag.kIdentifyingComments, 'X', remove);
+      BasicProfile(PTag.kIdentifyingComments, 'X', remove);
   static const BasicProfile kCreatorVersionUID =
-      const BasicProfile(PTag.kCreatorVersionUID, 'U', replaceUids);
+      BasicProfile(PTag.kCreatorVersionUID, 'U', replaceUids);
   static const BasicProfile kPatientsName =
-      const BasicProfile(PTag.kPatientName, 'Z', replaceWithZero);
+      BasicProfile(PTag.kPatientName, 'Z', replaceWithZero);
   static const BasicProfile kPatientID =
-      const BasicProfile(PTag.kPatientID, 'Z', replaceWithZero);
+      BasicProfile(PTag.kPatientID, 'Z', replaceWithZero);
   static const BasicProfile kIssuerofPatientID =
-      const BasicProfile(PTag.kIssuerOfPatientID, 'X', remove);
+      BasicProfile(PTag.kIssuerOfPatientID, 'X', remove);
   static const BasicProfile kPatientsBirthDate =
-      const BasicProfile(PTag.kPatientBirthDate, 'Z', replaceWithZero);
+      BasicProfile(PTag.kPatientBirthDate, 'Z', replaceWithZero);
   static const BasicProfile kPatientsBirthTime =
-      const BasicProfile(PTag.kPatientBirthTime, 'X', remove);
+      BasicProfile(PTag.kPatientBirthTime, 'X', remove);
   static const BasicProfile kPatientsSex =
-      const BasicProfile(PTag.kPatientSex, 'Z', replaceWithZero);
+      BasicProfile(PTag.kPatientSex, 'Z', replaceWithZero);
   static const BasicProfile kPatientsInsurancePlanCodeSequence =
-      const BasicProfile(PTag.kPatientInsurancePlanCodeSequence, 'X', remove);
+      BasicProfile(PTag.kPatientInsurancePlanCodeSequence, 'X', remove);
   static const BasicProfile kPatientsPrimaryLanguageCodeSequence =
-      const BasicProfile(PTag.kPatientPrimaryLanguageCodeSequence, 'X', remove);
+      BasicProfile(PTag.kPatientPrimaryLanguageCodeSequence, 'X', remove);
   static const BasicProfile kPatientsPrimaryLanguageModifierCodeSequence =
-      const BasicProfile(
+      BasicProfile(
           PTag.kPatientPrimaryLanguageModifierCodeSequence, 'X', remove);
   static const BasicProfile kOtherPatientIDs =
-      const BasicProfile(PTag.kOtherPatientIDs, 'X', remove);
+      BasicProfile(PTag.kOtherPatientIDs, 'X', remove);
   static const BasicProfile kOtherPatientNames =
-      const BasicProfile(PTag.kOtherPatientNames, 'X', remove);
+      BasicProfile(PTag.kOtherPatientNames, 'X', remove);
   static const BasicProfile kOtherPatientIDsSequence =
-      const BasicProfile(PTag.kOtherPatientIDsSequence, 'X', remove);
+      BasicProfile(PTag.kOtherPatientIDsSequence, 'X', remove);
   static const BasicProfile kPatientsBirthName =
-      const BasicProfile(PTag.kPatientBirthName, 'X', remove);
+      BasicProfile(PTag.kPatientBirthName, 'X', remove);
   static const BasicProfile kPatientAge =
-      const BasicProfile(PTag.kPatientAge, 'X', remove);
+      BasicProfile(PTag.kPatientAge, 'X', remove);
   static const BasicProfile kPatientSize =
-      const BasicProfile(PTag.kPatientSize, 'X', remove);
+      BasicProfile(PTag.kPatientSize, 'X', remove);
   static const BasicProfile kPatientWeight =
-      const BasicProfile(PTag.kPatientWeight, 'X', remove);
+      BasicProfile(PTag.kPatientWeight, 'X', remove);
   static const BasicProfile kPatientAddress =
-      const BasicProfile(PTag.kPatientAddress, 'X', remove);
+      BasicProfile(PTag.kPatientAddress, 'X', remove);
   static const BasicProfile kInsurancePlanIdentification =
-      const BasicProfile(PTag.kInsurancePlanIdentification, 'X', remove);
+      BasicProfile(PTag.kInsurancePlanIdentification, 'X', remove);
   static const BasicProfile kPatientMotherBirthName =
-      const BasicProfile(PTag.kPatientMotherBirthName, 'X', remove);
+      BasicProfile(PTag.kPatientMotherBirthName, 'X', remove);
   static const BasicProfile kMilitaryRank =
-      const BasicProfile(PTag.kMilitaryRank, 'X', remove);
+      BasicProfile(PTag.kMilitaryRank, 'X', remove);
   static const BasicProfile kBranchOfService =
-      const BasicProfile(PTag.kBranchOfService, 'X', remove);
+      BasicProfile(PTag.kBranchOfService, 'X', remove);
   static const BasicProfile kMedicalRecordLocator =
-      const BasicProfile(PTag.kMedicalRecordLocator, 'X', remove);
+      BasicProfile(PTag.kMedicalRecordLocator, 'X', remove);
   static const BasicProfile kMedicalAlerts =
-      const BasicProfile(PTag.kMedicalAlerts, 'X', remove);
+      BasicProfile(PTag.kMedicalAlerts, 'X', remove);
   static const BasicProfile kAllergies =
-      const BasicProfile(PTag.kAllergies, 'X', remove);
+      BasicProfile(PTag.kAllergies, 'X', remove);
   static const BasicProfile kCountryOfResidence =
-      const BasicProfile(PTag.kCountryOfResidence, 'X', remove);
+      BasicProfile(PTag.kCountryOfResidence, 'X', remove);
   static const BasicProfile kRegionOfResidence =
-      const BasicProfile(PTag.kRegionOfResidence, 'X', remove);
+      BasicProfile(PTag.kRegionOfResidence, 'X', remove);
   static const BasicProfile kPatientTelephoneNumbers =
-      const BasicProfile(PTag.kPatientTelephoneNumbers, 'X', remove);
+      BasicProfile(PTag.kPatientTelephoneNumbers, 'X', remove);
   static const BasicProfile kEthnicGroup =
-      const BasicProfile(PTag.kEthnicGroup, 'X', remove);
+      BasicProfile(PTag.kEthnicGroup, 'X', remove);
   static const BasicProfile kOccupation =
-      const BasicProfile(PTag.kOccupation, 'X', remove);
+      BasicProfile(PTag.kOccupation, 'X', remove);
   static const BasicProfile kSmokingStatus =
-      const BasicProfile(PTag.kSmokingStatus, 'X', remove);
+      BasicProfile(PTag.kSmokingStatus, 'X', remove);
   static const BasicProfile kAdditionalPatientHistory =
-      const BasicProfile(PTag.kAdditionalPatientHistory, 'X', remove);
+      BasicProfile(PTag.kAdditionalPatientHistory, 'X', remove);
   static const BasicProfile kPregnancyStatus =
-      const BasicProfile(PTag.kPregnancyStatus, 'X', remove);
+      BasicProfile(PTag.kPregnancyStatus, 'X', remove);
   static const BasicProfile kLastMenstrualDate =
-      const BasicProfile(PTag.kLastMenstrualDate, 'X', remove);
+      BasicProfile(PTag.kLastMenstrualDate, 'X', remove);
   static const BasicProfile kPatientReligiousPreference =
-      const BasicProfile(PTag.kPatientReligiousPreference, 'X', remove);
+      BasicProfile(PTag.kPatientReligiousPreference, 'X', remove);
   static const BasicProfile kPatientSexNeutered =
-      const BasicProfile(PTag.kPatientSexNeutered, 'XD', removeUnlessZero);
+      BasicProfile(PTag.kPatientSexNeutered, 'XD', removeUnlessZero);
   static const BasicProfile kResponsiblePerson =
-      const BasicProfile(PTag.kResponsiblePerson, 'X', remove);
+      BasicProfile(PTag.kResponsiblePerson, 'X', remove);
   static const BasicProfile kResponsibleOrganization =
-      const BasicProfile(PTag.kResponsibleOrganization, 'X', remove);
+      BasicProfile(PTag.kResponsibleOrganization, 'X', remove);
   static const BasicProfile kPatientComments =
-      const BasicProfile(PTag.kPatientComments, 'X', remove);
+      BasicProfile(PTag.kPatientComments, 'X', remove);
   static const BasicProfile kContrastBolusAgent =
-      const BasicProfile(PTag.kContrastBolusAgent, 'XD', removeUnlessDummy);
-  static const BasicProfile kDeviceSerialNumber = const BasicProfile(
-      PTag.kDeviceSerialNumber, 'XZD', removeUnlessZeroOrDummy);
+      BasicProfile(PTag.kContrastBolusAgent, 'XD', removeUnlessDummy);
+  static const BasicProfile kDeviceSerialNumber =
+      BasicProfile(PTag.kDeviceSerialNumber, 'XZD', removeUnlessZeroOrDummy);
   static const BasicProfile kDeviceUID =
-      const BasicProfile(PTag.kDeviceUID, 'U', replaceUids);
-  static const BasicProfile kPlateID =
-      const BasicProfile(PTag.kPlateID, 'X', remove);
+      BasicProfile(PTag.kDeviceUID, 'U', replaceUids);
+  static const BasicProfile kPlateID = BasicProfile(PTag.kPlateID, 'X', remove);
   static const BasicProfile kGeneratorID =
-      const BasicProfile(PTag.kGeneratorID, 'X', remove);
+      BasicProfile(PTag.kGeneratorID, 'X', remove);
   static const BasicProfile kCassetteID =
-      const BasicProfile(PTag.kCassetteID, 'X', remove);
+      BasicProfile(PTag.kCassetteID, 'X', remove);
   static const BasicProfile kGantryID =
-      const BasicProfile(PTag.kGantryID, 'X', remove);
+      BasicProfile(PTag.kGantryID, 'X', remove);
   static const BasicProfile kProtocolName =
-      const BasicProfile(PTag.kProtocolName, 'XD', removeUnlessDummy);
+      BasicProfile(PTag.kProtocolName, 'XD', removeUnlessDummy);
   static const BasicProfile kAcquisitionDeviceProcessingDescription =
-      const BasicProfile(PTag.kAcquisitionDeviceProcessingDescription, 'XD',
+      BasicProfile(PTag.kAcquisitionDeviceProcessingDescription, 'XD',
           removeUnlessDummy);
   static const BasicProfile kAcquisitionComments =
-      const BasicProfile(PTag.kAcquisitionComments, 'X', remove);
+      BasicProfile(PTag.kAcquisitionComments, 'X', remove);
   static const BasicProfile kDetectorID =
-      const BasicProfile(PTag.kDetectorID, 'XD', removeUnlessDummy);
+      BasicProfile(PTag.kDetectorID, 'XD', removeUnlessDummy);
   static const BasicProfile kAcquisitionProtocolDescription =
-      const BasicProfile(PTag.kAcquisitionProtocolDescription, 'X', remove);
+      BasicProfile(PTag.kAcquisitionProtocolDescription, 'X', remove);
   static const BasicProfile kContributionDescription =
-      const BasicProfile(PTag.kContributionDescription, 'X', remove);
+      BasicProfile(PTag.kContributionDescription, 'X', remove);
   static const BasicProfile kStudyInstanceUID =
-      const BasicProfile(PTag.kStudyInstanceUID, 'U', replaceUids);
+      BasicProfile(PTag.kStudyInstanceUID, 'U', replaceUids);
   static const BasicProfile kSeriesInstanceUID =
-      const BasicProfile(PTag.kSeriesInstanceUID, 'U', replaceUids);
+      BasicProfile(PTag.kSeriesInstanceUID, 'U', replaceUids);
   static const BasicProfile kStudyID =
-      const BasicProfile(PTag.kStudyID, 'Z', replaceWithZero);
+      BasicProfile(PTag.kStudyID, 'Z', replaceWithZero);
   static const BasicProfile kFrameOfReferenceUID =
-      const BasicProfile(PTag.kFrameOfReferenceUID, 'U', replaceUids);
+      BasicProfile(PTag.kFrameOfReferenceUID, 'U', replaceUids);
   static const BasicProfile kSynchronizationFrameOfReferenceUID =
-      const BasicProfile(
-          PTag.kSynchronizationFrameOfReferenceUID, 'U', replaceUids);
+      BasicProfile(PTag.kSynchronizationFrameOfReferenceUID, 'U', replaceUids);
   static const BasicProfile kModifyingDeviceID =
-      const BasicProfile(PTag.kModifyingDeviceID, 'X', remove);
+      BasicProfile(PTag.kModifyingDeviceID, 'X', remove);
   static const BasicProfile kModifyingDeviceManufacturer =
-      const BasicProfile(PTag.kModifyingDeviceManufacturer, 'X', remove);
+      BasicProfile(PTag.kModifyingDeviceManufacturer, 'X', remove);
   static const BasicProfile kModifiedImageDescription =
-      const BasicProfile(PTag.kModifiedImageDescription, 'X', remove);
+      BasicProfile(PTag.kModifiedImageDescription, 'X', remove);
   static const BasicProfile kImageComments =
-      const BasicProfile(PTag.kImageComments, 'X', remove);
+      BasicProfile(PTag.kImageComments, 'X', remove);
   static const BasicProfile kFrameComments =
-      const BasicProfile(PTag.kFrameComments, 'X', remove);
+      BasicProfile(PTag.kFrameComments, 'X', remove);
   static const BasicProfile kConcatenationUID =
-      const BasicProfile(PTag.kConcatenationUID, 'U', replaceUids);
+      BasicProfile(PTag.kConcatenationUID, 'U', replaceUids);
   static const BasicProfile kDimensionOrganizationUID =
-      const BasicProfile(PTag.kDimensionOrganizationUID, 'U', replaceUids);
+      BasicProfile(PTag.kDimensionOrganizationUID, 'U', replaceUids);
   static const BasicProfile kPaletteColorLookupTableUID =
-      const BasicProfile(PTag.kPaletteColorLookupTableUID, 'U', replaceUids);
+      BasicProfile(PTag.kPaletteColorLookupTableUID, 'U', replaceUids);
   static const BasicProfile kLargePaletteColorLookupTableUID =
-      const BasicProfile(
-          PTag.kLargePaletteColorLookupTableUID, 'U', replaceUids);
+      BasicProfile(PTag.kLargePaletteColorLookupTableUID, 'U', replaceUids);
   static const BasicProfile kImagePresentationComments =
-      const BasicProfile(PTag.kImagePresentationComments, 'X', remove);
+      BasicProfile(PTag.kImagePresentationComments, 'X', remove);
   static const BasicProfile kStudyIDIssuer =
-      const BasicProfile(PTag.kStudyIDIssuer, 'X', remove);
+      BasicProfile(PTag.kStudyIDIssuer, 'X', remove);
   static const BasicProfile kScheduledStudyLocation =
-      const BasicProfile(PTag.kScheduledStudyLocation, 'X', remove);
+      BasicProfile(PTag.kScheduledStudyLocation, 'X', remove);
   static const BasicProfile kScheduledStudyLocationAETitle =
-      const BasicProfile(PTag.kScheduledStudyLocationAETitle, 'X', remove);
+      BasicProfile(PTag.kScheduledStudyLocationAETitle, 'X', remove);
   static const BasicProfile kReasonForStudy =
-      const BasicProfile(PTag.kReasonForStudy, 'X', remove);
+      BasicProfile(PTag.kReasonForStudy, 'X', remove);
   static const BasicProfile kRequestingPhysician =
-      const BasicProfile(PTag.kRequestingPhysician, 'X', remove);
+      BasicProfile(PTag.kRequestingPhysician, 'X', remove);
   static const BasicProfile kRequestingService =
-      const BasicProfile(PTag.kRequestingService, 'X', remove);
-  static const BasicProfile kRequestedProcedureDescription = const BasicProfile(
-      PTag.kRequestedProcedureDescription, 'XD', removeUnlessZero);
+      BasicProfile(PTag.kRequestingService, 'X', remove);
+  static const BasicProfile kRequestedProcedureDescription =
+      BasicProfile(PTag.kRequestedProcedureDescription, 'XD', removeUnlessZero);
   static const BasicProfile kRequestedContrastAgent =
-      const BasicProfile(PTag.kRequestedContrastAgent, 'X', remove);
+      BasicProfile(PTag.kRequestedContrastAgent, 'X', remove);
   static const BasicProfile kStudyComments =
-      const BasicProfile(PTag.kStudyComments, 'X', remove);
+      BasicProfile(PTag.kStudyComments, 'X', remove);
   static const BasicProfile kReferencedPatientAliasSequence =
-      const BasicProfile(PTag.kReferencedPatientAliasSequence, 'X', remove);
+      BasicProfile(PTag.kReferencedPatientAliasSequence, 'X', remove);
   static const BasicProfile kAdmissionID =
-      const BasicProfile(PTag.kAdmissionID, 'X', remove);
+      BasicProfile(PTag.kAdmissionID, 'X', remove);
   static const BasicProfile kIssuerOfAdmissionID =
-      const BasicProfile(PTag.kIssuerOfAdmissionID, 'X', remove);
+      BasicProfile(PTag.kIssuerOfAdmissionID, 'X', remove);
   static const BasicProfile kScheduledPatientInstitutionResidence =
-      const BasicProfile(
-          PTag.kScheduledPatientInstitutionResidence, 'X', remove);
+      BasicProfile(PTag.kScheduledPatientInstitutionResidence, 'X', remove);
   static const BasicProfile kAdmittingDate =
-      const BasicProfile(PTag.kAdmittingDate, 'X', remove);
+      BasicProfile(PTag.kAdmittingDate, 'X', remove);
   static const BasicProfile kAdmittingTime =
-      const BasicProfile(PTag.kAdmittingTime, 'X', remove);
+      BasicProfile(PTag.kAdmittingTime, 'X', remove);
   static const BasicProfile kDischargeDiagnosisDescription =
-      const BasicProfile(PTag.kDischargeDiagnosisDescription, 'X', remove);
+      BasicProfile(PTag.kDischargeDiagnosisDescription, 'X', remove);
   static const BasicProfile kSpecialNeeds =
-      const BasicProfile(PTag.kSpecialNeeds, 'X', remove);
+      BasicProfile(PTag.kSpecialNeeds, 'X', remove);
   static const BasicProfile kServiceEpisodeID =
-      const BasicProfile(PTag.kServiceEpisodeID, 'X', remove);
+      BasicProfile(PTag.kServiceEpisodeID, 'X', remove);
   static const BasicProfile kIssuerOfServiceEpisodeID =
-      const BasicProfile(PTag.kIssuerOfServiceEpisodeID, 'X', remove);
+      BasicProfile(PTag.kIssuerOfServiceEpisodeID, 'X', remove);
   static const BasicProfile kServiceEpisodeDescription =
-      const BasicProfile(PTag.kServiceEpisodeDescription, 'X', remove);
+      BasicProfile(PTag.kServiceEpisodeDescription, 'X', remove);
   static const BasicProfile kCurrentPatientLocation =
-      const BasicProfile(PTag.kCurrentPatientLocation, 'X', remove);
+      BasicProfile(PTag.kCurrentPatientLocation, 'X', remove);
   static const BasicProfile kPatientInstitutionResidence =
-      const BasicProfile(PTag.kPatientInstitutionResidence, 'X', remove);
+      BasicProfile(PTag.kPatientInstitutionResidence, 'X', remove);
   static const BasicProfile kPatientState =
-      const BasicProfile(PTag.kPatientState, 'X', remove);
+      BasicProfile(PTag.kPatientState, 'X', remove);
   static const BasicProfile kVisitComments =
-      const BasicProfile(PTag.kVisitComments, 'X', remove);
+      BasicProfile(PTag.kVisitComments, 'X', remove);
   static const BasicProfile kScheduledStationAETitle =
-      const BasicProfile(PTag.kScheduledStationAETitle, 'X', remove);
+      BasicProfile(PTag.kScheduledStationAETitle, 'X', remove);
   static const BasicProfile kScheduledProcedureStepStartDate =
-      const BasicProfile(PTag.kScheduledProcedureStepStartDate, 'X', remove);
+      BasicProfile(PTag.kScheduledProcedureStepStartDate, 'X', remove);
   static const BasicProfile kScheduledProcedureStepStartTime =
-      const BasicProfile(PTag.kScheduledProcedureStepStartTime, 'X', remove);
+      BasicProfile(PTag.kScheduledProcedureStepStartTime, 'X', remove);
   static const BasicProfile kScheduledProcedureStepEndDate =
-      const BasicProfile(PTag.kScheduledProcedureStepEndDate, 'X', remove);
+      BasicProfile(PTag.kScheduledProcedureStepEndDate, 'X', remove);
   static const BasicProfile kScheduledProcedureStepEndTime =
-      const BasicProfile(PTag.kScheduledProcedureStepEndTime, 'X', remove);
+      BasicProfile(PTag.kScheduledProcedureStepEndTime, 'X', remove);
   static const BasicProfile kScheduledPerformingPhysicianName =
-      const BasicProfile(PTag.kScheduledPerformingPhysicianName, 'X', remove);
+      BasicProfile(PTag.kScheduledPerformingPhysicianName, 'X', remove);
   static const BasicProfile kScheduledProcedureStepDescription =
-      const BasicProfile(PTag.kScheduledProcedureStepDescription, 'X', remove);
+      BasicProfile(PTag.kScheduledProcedureStepDescription, 'X', remove);
   static const BasicProfile
-      kScheduledPerformingPhysicianIdentificationSequence = const BasicProfile(
+      kScheduledPerformingPhysicianIdentificationSequence = BasicProfile(
           PTag.kScheduledPerformingPhysicianIdentificationSequence,
           'X',
           remove);
   static const BasicProfile kScheduledStationName =
-      const BasicProfile(PTag.kScheduledStationName, 'X', remove);
+      BasicProfile(PTag.kScheduledStationName, 'X', remove);
   static const BasicProfile kScheduledProcedureStepLocation =
-      const BasicProfile(PTag.kScheduledProcedureStepLocation, 'X', remove);
+      BasicProfile(PTag.kScheduledProcedureStepLocation, 'X', remove);
   static const BasicProfile kPreMedication =
-      const BasicProfile(PTag.kPreMedication, 'X', remove);
+      BasicProfile(PTag.kPreMedication, 'X', remove);
   static const BasicProfile kPerformedStationAETitle =
-      const BasicProfile(PTag.kPerformedStationAETitle, 'X', remove);
+      BasicProfile(PTag.kPerformedStationAETitle, 'X', remove);
   static const BasicProfile kPerformedStationName =
-      const BasicProfile(PTag.kPerformedStationName, 'X', remove);
+      BasicProfile(PTag.kPerformedStationName, 'X', remove);
   static const BasicProfile kPerformedLocation =
-      const BasicProfile(PTag.kPerformedLocation, 'X', remove);
+      BasicProfile(PTag.kPerformedLocation, 'X', remove);
   static const BasicProfile kPerformedProcedureStepStartDate =
-      const BasicProfile(PTag.kPerformedProcedureStepStartDate, 'X', remove);
+      BasicProfile(PTag.kPerformedProcedureStepStartDate, 'X', remove);
   static const BasicProfile kPerformedProcedureStepStartTime =
-      const BasicProfile(PTag.kPerformedProcedureStepStartTime, 'X', remove);
+      BasicProfile(PTag.kPerformedProcedureStepStartTime, 'X', remove);
   static const BasicProfile kPerformedProcedureStepEndDate =
-      const BasicProfile(PTag.kPerformedProcedureStepEndDate, 'X', remove);
+      BasicProfile(PTag.kPerformedProcedureStepEndDate, 'X', remove);
   static const BasicProfile kPerformedProcedureStepEndTime =
-      const BasicProfile(PTag.kPerformedProcedureStepEndTime, 'X', remove);
+      BasicProfile(PTag.kPerformedProcedureStepEndTime, 'X', remove);
   static const BasicProfile kPerformedProcedureStepID =
-      const BasicProfile(PTag.kPerformedProcedureStepID, 'X', remove);
+      BasicProfile(PTag.kPerformedProcedureStepID, 'X', remove);
   static const BasicProfile kPerformedProcedureStepDescription =
-      const BasicProfile(PTag.kPerformedProcedureStepDescription, 'X', remove);
+      BasicProfile(PTag.kPerformedProcedureStepDescription, 'X', remove);
   static const BasicProfile kRequestAttributesSequence =
-      const BasicProfile(PTag.kRequestAttributesSequence, 'X', remove);
+      BasicProfile(PTag.kRequestAttributesSequence, 'X', remove);
   static const BasicProfile kCommentsOnThePerformedProcedureStep =
-      const BasicProfile(
-          PTag.kCommentsOnThePerformedProcedureStep, 'X', remove);
+      BasicProfile(PTag.kCommentsOnThePerformedProcedureStep, 'X', remove);
   static const BasicProfile kAcquisitionContextSequence =
-      const BasicProfile(PTag.kAcquisitionContextSequence, 'X', remove);
+      BasicProfile(PTag.kAcquisitionContextSequence, 'X', remove);
   static const BasicProfile kRequestedProcedureID =
-      const BasicProfile(PTag.kRequestedProcedureID, 'X', remove);
+      BasicProfile(PTag.kRequestedProcedureID, 'X', remove);
   static const BasicProfile kPatientTransportArrangements =
-      const BasicProfile(PTag.kPatientTransportArrangements, 'X', remove);
+      BasicProfile(PTag.kPatientTransportArrangements, 'X', remove);
   static const BasicProfile kRequestedProcedureLocation =
-      const BasicProfile(PTag.kRequestedProcedureLocation, 'X', remove);
+      BasicProfile(PTag.kRequestedProcedureLocation, 'X', remove);
   static const BasicProfile kNamesOfIntendedRecipientsOfResults =
-      const BasicProfile(PTag.kNamesOfIntendedRecipientsOfResults, 'X', remove);
+      BasicProfile(PTag.kNamesOfIntendedRecipientsOfResults, 'X', remove);
   static const BasicProfile kIntendedRecipientsOfResultsIdentificationSequence =
-      const BasicProfile(
+      BasicProfile(
           PTag.kIntendedRecipientsOfResultsIdentificationSequence, 'X', remove);
-  static const BasicProfile kPersonIdentificationCodeSequence =
-      const BasicProfile(
-          PTag.kPersonIdentificationCodeSequence, 'D', replaceWithDummy);
+  static const BasicProfile kPersonIdentificationCodeSequence = BasicProfile(
+      PTag.kPersonIdentificationCodeSequence, 'D', replaceWithDummy);
   static const BasicProfile kPersonAddress =
-      const BasicProfile(PTag.kPersonAddress, 'X', remove);
+      BasicProfile(PTag.kPersonAddress, 'X', remove);
   static const BasicProfile kPersonTelephoneNumbers =
-      const BasicProfile(PTag.kPersonTelephoneNumbers, 'X', remove);
+      BasicProfile(PTag.kPersonTelephoneNumbers, 'X', remove);
   static const BasicProfile kRequestedProcedureComments =
-      const BasicProfile(PTag.kRequestedProcedureComments, 'X', remove);
+      BasicProfile(PTag.kRequestedProcedureComments, 'X', remove);
   static const BasicProfile kReasonForTheImagingServiceRequest =
-      const BasicProfile(PTag.kReasonForTheImagingServiceRequest, 'X', remove);
+      BasicProfile(PTag.kReasonForTheImagingServiceRequest, 'X', remove);
   static const BasicProfile kOrderEnteredBy =
-      const BasicProfile(PTag.kOrderEnteredBy, 'X', remove);
+      BasicProfile(PTag.kOrderEnteredBy, 'X', remove);
   static const BasicProfile kOrderEntererLocation =
-      const BasicProfile(PTag.kOrderEntererLocation, 'X', remove);
+      BasicProfile(PTag.kOrderEntererLocation, 'X', remove);
   static const BasicProfile kOrderCallbackPhoneNumber =
-      const BasicProfile(PTag.kOrderCallbackPhoneNumber, 'X', remove);
+      BasicProfile(PTag.kOrderCallbackPhoneNumber, 'X', remove);
   static const BasicProfile kPlacerOrderNumberImagingServiceRequest =
-      const BasicProfile(
+      BasicProfile(
           PTag.kPlacerOrderNumberImagingServiceRequest, 'Z', replaceWithZero);
   static const BasicProfile kFillerOrderNumberImagingServiceRequest =
-      const BasicProfile(
+      BasicProfile(
           PTag.kFillerOrderNumberImagingServiceRequest, 'Z', replaceWithZero);
   static const BasicProfile kImagingServiceRequestComments =
-      const BasicProfile(PTag.kImagingServiceRequestComments, 'X', remove);
+      BasicProfile(PTag.kImagingServiceRequestComments, 'X', remove);
   static const BasicProfile kConfidentialityConstraintonPatientDataDescription =
-      const BasicProfile(
+      BasicProfile(
           PTag.kConfidentialityConstraintOnPatientDataDescription, 'X', remove);
   static const BasicProfile
       kReferencedGeneralPurposeScheduledProcedureStepTransactionUID =
-      const BasicProfile(
+      BasicProfile(
           PTag.kReferencedGeneralPurposeScheduledProcedureStepTransactionUID,
           'U',
           replaceUids);
   static const BasicProfile kScheduledStationNameCodeSequence =
-      const BasicProfile(PTag.kScheduledStationNameCodeSequence, 'X', remove);
+      BasicProfile(PTag.kScheduledStationNameCodeSequence, 'X', remove);
   static const BasicProfile kScheduledStationGeographicLocationCodeSequence =
-      const BasicProfile(
+      BasicProfile(
           PTag.kScheduledStationGeographicLocationCodeSequence, 'X', remove);
   static const BasicProfile kPerformedStationNameCodeSequence =
-      const BasicProfile(PTag.kPerformedStationNameCodeSequence, 'X', remove);
+      BasicProfile(PTag.kPerformedStationNameCodeSequence, 'X', remove);
   static const BasicProfile kPerformedStationGeographicLocationCodeSequence =
-      const BasicProfile(
+      BasicProfile(
           PTag.kPerformedStationGeographicLocationCodeSequence, 'X', remove);
   static const BasicProfile kScheduledHumanPerformersSequence =
-      const BasicProfile(PTag.kScheduledHumanPerformersSequence, 'X', remove);
+      BasicProfile(PTag.kScheduledHumanPerformersSequence, 'X', remove);
   static const BasicProfile kActualHumanPerformersSequence =
-      const BasicProfile(PTag.kActualHumanPerformersSequence, 'X', remove);
+      BasicProfile(PTag.kActualHumanPerformersSequence, 'X', remove);
   static const BasicProfile kHumanPerformersOrganization =
-      const BasicProfile(PTag.kHumanPerformerOrganization, 'X', remove);
+      BasicProfile(PTag.kHumanPerformerOrganization, 'X', remove);
   static const BasicProfile kHumanPerformerName =
-      const BasicProfile(PTag.kHumanPerformerName, 'X', remove);
+      BasicProfile(PTag.kHumanPerformerName, 'X', remove);
   static const BasicProfile kVerifyingOrganization =
-      const BasicProfile(PTag.kVerifyingOrganization, 'X', remove);
-  static const BasicProfile kVerifyingObserverSequence = const BasicProfile(
-      PTag.kVerifyingObserverSequence, 'D', replaceWithDummy);
+      BasicProfile(PTag.kVerifyingOrganization, 'X', remove);
+  static const BasicProfile kVerifyingObserverSequence =
+      BasicProfile(PTag.kVerifyingObserverSequence, 'D', replaceWithDummy);
   static const BasicProfile kVerifyingObserverName =
-      const BasicProfile(PTag.kVerifyingObserverName, 'D', replaceWithDummy);
+      BasicProfile(PTag.kVerifyingObserverName, 'D', replaceWithDummy);
   static const BasicProfile kAuthorObserverSequence =
-      const BasicProfile(PTag.kAuthorObserverSequence, 'X', remove);
+      BasicProfile(PTag.kAuthorObserverSequence, 'X', remove);
   static const BasicProfile kParticipantSequence =
-      const BasicProfile(PTag.kParticipantSequence, 'X', remove);
+      BasicProfile(PTag.kParticipantSequence, 'X', remove);
   static const BasicProfile kCustodialOrganizationSequence =
-      const BasicProfile(PTag.kCustodialOrganizationSequence, 'X', remove);
+      BasicProfile(PTag.kCustodialOrganizationSequence, 'X', remove);
   static const BasicProfile kVerifyingObserverIdentificationCodeSequence =
-      const BasicProfile(PTag.kVerifyingObserverIdentificationCodeSequence, 'Z',
+      BasicProfile(PTag.kVerifyingObserverIdentificationCodeSequence, 'Z',
           replaceWithZero);
   static const BasicProfile kPersonName =
-      const BasicProfile(PTag.kPersonName, 'D', replaceWithDummy);
-  static const BasicProfile kUID =
-      const BasicProfile(PTag.kUID, 'U', replaceUids);
+      BasicProfile(PTag.kPersonName, 'D', replaceWithDummy);
+  static const BasicProfile kUID = BasicProfile(PTag.kUID, 'U', replaceUids);
   static const BasicProfile kContentSequence =
-      const BasicProfile(PTag.kContentSequence, 'X', remove);
+      BasicProfile(PTag.kContentSequence, 'X', remove);
   static const BasicProfile kTemplateExtensionOrganizationUID =
-      const BasicProfile(
-          PTag.kTemplateExtensionOrganizationUID, 'U', replaceUids);
+      BasicProfile(PTag.kTemplateExtensionOrganizationUID, 'U', replaceUids);
   static const BasicProfile kTemplateExtensionCreatorUID =
-      const BasicProfile(PTag.kTemplateExtensionCreatorUID, 'U', replaceUids);
-  static const BasicProfile kGraphicAnnotationSequence = const BasicProfile(
-      PTag.kGraphicAnnotationSequence, 'D', replaceWithDummy);
+      BasicProfile(PTag.kTemplateExtensionCreatorUID, 'U', replaceUids);
+  static const BasicProfile kGraphicAnnotationSequence =
+      BasicProfile(PTag.kGraphicAnnotationSequence, 'D', replaceWithDummy);
   static const BasicProfile kContentCreatorName =
-      const BasicProfile(PTag.kContentCreatorName, 'Z', replaceWithZero);
+      BasicProfile(PTag.kContentCreatorName, 'Z', replaceWithZero);
   static const BasicProfile kContentCreatorIdentificationCodeSequence =
-      const BasicProfile(
-          PTag.kContentCreatorIdentificationCodeSequence, 'X', remove);
+      BasicProfile(PTag.kContentCreatorIdentificationCodeSequence, 'X', remove);
   static const BasicProfile kFiducialUID =
-      const BasicProfile(PTag.kFiducialUID, 'U', replaceUids);
+      BasicProfile(PTag.kFiducialUID, 'U', replaceUids);
   static const BasicProfile kStorageMediaFileSetUID =
-      const BasicProfile(PTag.kStorageMediaFileSetUID, 'U', replaceUids);
+      BasicProfile(PTag.kStorageMediaFileSetUID, 'U', replaceUids);
   static const BasicProfile kIconImageSequence =
-      const BasicProfile(PTag.kIconImageSequence, 'X', remove);
+      BasicProfile(PTag.kIconImageSequence, 'X', remove);
   static const BasicProfile kTopicTitle =
-      const BasicProfile(PTag.kTopicTitle, 'X', remove);
+      BasicProfile(PTag.kTopicTitle, 'X', remove);
   static const BasicProfile kTopicSubject =
-      const BasicProfile(PTag.kTopicSubject, 'X', remove);
+      BasicProfile(PTag.kTopicSubject, 'X', remove);
   static const BasicProfile kTopicAuthor =
-      const BasicProfile(PTag.kTopicAuthor, 'X', remove);
+      BasicProfile(PTag.kTopicAuthor, 'X', remove);
   static const BasicProfile kTopicKeywords =
-      const BasicProfile(PTag.kTopicKeywords, 'X', remove);
+      BasicProfile(PTag.kTopicKeywords, 'X', remove);
   static const BasicProfile kDigitalSignatureUID =
-      const BasicProfile(PTag.kDigitalSignatureUID, 'X', remove);
+      BasicProfile(PTag.kDigitalSignatureUID, 'X', remove);
   static const BasicProfile kReferencedDigitalSignatureSequence =
-      const BasicProfile(PTag.kReferencedDigitalSignatureSequence, 'X', remove);
+      BasicProfile(PTag.kReferencedDigitalSignatureSequence, 'X', remove);
   static const BasicProfile kReferencedSOPInstanceMACSequence =
-      const BasicProfile(PTag.kReferencedSOPInstanceMACSequence, 'X', remove);
-  static const BasicProfile kMAC = const BasicProfile(PTag.kMAC, 'X', remove);
+      BasicProfile(PTag.kReferencedSOPInstanceMACSequence, 'X', remove);
+  static const BasicProfile kMAC = BasicProfile(PTag.kMAC, 'X', remove);
   static const BasicProfile kModifiedAttributesSequence =
-      const BasicProfile(PTag.kModifiedAttributesSequence, 'X', remove);
+      BasicProfile(PTag.kModifiedAttributesSequence, 'X', remove);
   static const BasicProfile kOriginalAttributesSequence =
-      const BasicProfile(PTag.kOriginalAttributesSequence, 'X', remove);
+      BasicProfile(PTag.kOriginalAttributesSequence, 'X', remove);
   static const BasicProfile kTextString =
-      const BasicProfile(PTag.kTextString, 'X', remove);
+      BasicProfile(PTag.kTextString, 'X', remove);
   static const BasicProfile kReferencedFrameOfReferenceUID =
-      const BasicProfile(PTag.kReferencedFrameOfReferenceUID, 'U', replaceUids);
+      BasicProfile(PTag.kReferencedFrameOfReferenceUID, 'U', replaceUids);
   static const BasicProfile kRelatedFrameOfReferenceUID =
-      const BasicProfile(PTag.kRelatedFrameOfReferenceUID, 'U', replaceUids);
+      BasicProfile(PTag.kRelatedFrameOfReferenceUID, 'U', replaceUids);
   static const BasicProfile kDoseReferenceUID =
-      const BasicProfile(PTag.kDoseReferenceUID, 'U', replaceUids);
+      BasicProfile(PTag.kDoseReferenceUID, 'U', replaceUids);
   static const BasicProfile kReviewerName =
-      const BasicProfile(PTag.kReviewerName, 'XD', removeUnlessZero);
+      BasicProfile(PTag.kReviewerName, 'XD', removeUnlessZero);
   static const BasicProfile kArbitrary =
-      const BasicProfile(PTag.kArbitrary, 'X', remove);
+      BasicProfile(PTag.kArbitrary, 'X', remove);
   static const BasicProfile kTextComments =
-      const BasicProfile(PTag.kTextComments, 'X', remove);
+      BasicProfile(PTag.kTextComments, 'X', remove);
   static const BasicProfile kResultsIDIssuer =
-      const BasicProfile(PTag.kResultsIDIssuer, 'X', remove);
+      BasicProfile(PTag.kResultsIDIssuer, 'X', remove);
   static const BasicProfile kInterpretationRecorder =
-      const BasicProfile(PTag.kInterpretationRecorder, 'X', remove);
+      BasicProfile(PTag.kInterpretationRecorder, 'X', remove);
   static const BasicProfile kInterpretationTranscriber =
-      const BasicProfile(PTag.kInterpretationTranscriber, 'X', remove);
+      BasicProfile(PTag.kInterpretationTranscriber, 'X', remove);
   static const BasicProfile kInterpretationText =
-      const BasicProfile(PTag.kInterpretationText, 'X', remove);
+      BasicProfile(PTag.kInterpretationText, 'X', remove);
   static const BasicProfile kInterpretationAuthor =
-      const BasicProfile(PTag.kInterpretationAuthor, 'X', remove);
+      BasicProfile(PTag.kInterpretationAuthor, 'X', remove);
   static const BasicProfile kInterpretationApproverSequence =
-      const BasicProfile(PTag.kInterpretationApproverSequence, 'X', remove);
+      BasicProfile(PTag.kInterpretationApproverSequence, 'X', remove);
   static const BasicProfile kPhysicianApprovingInterpretation =
-      const BasicProfile(PTag.kPhysicianApprovingInterpretation, 'X', remove);
+      BasicProfile(PTag.kPhysicianApprovingInterpretation, 'X', remove);
   static const BasicProfile kInterpretationDiagnosisDescription =
-      const BasicProfile(PTag.kInterpretationDiagnosisDescription, 'X', remove);
+      BasicProfile(PTag.kInterpretationDiagnosisDescription, 'X', remove);
   static const BasicProfile kResultsDistributionListSequence =
-      const BasicProfile(PTag.kResultsDistributionListSequence, 'X', remove);
+      BasicProfile(PTag.kResultsDistributionListSequence, 'X', remove);
   static const BasicProfile kDistributionName =
-      const BasicProfile(PTag.kDistributionName, 'X', remove);
+      BasicProfile(PTag.kDistributionName, 'X', remove);
   static const BasicProfile kDistributionAddress =
-      const BasicProfile(PTag.kDistributionAddress, 'X', remove);
+      BasicProfile(PTag.kDistributionAddress, 'X', remove);
   static const BasicProfile kInterpretationIDIssuer =
-      const BasicProfile(PTag.kInterpretationIDIssuer, 'X', remove);
+      BasicProfile(PTag.kInterpretationIDIssuer, 'X', remove);
   static const BasicProfile kImpressions =
-      const BasicProfile(PTag.kImpressions, 'X', remove);
+      BasicProfile(PTag.kImpressions, 'X', remove);
   static const BasicProfile kResultsComments =
-      const BasicProfile(PTag.kResultsComments, 'X', remove);
+      BasicProfile(PTag.kResultsComments, 'X', remove);
   static const BasicProfile kDigitalSignaturesSequence =
-      const BasicProfile(PTag.kDigitalSignaturesSequence, 'X', remove);
+      BasicProfile(PTag.kDigitalSignaturesSequence, 'X', remove);
   static const BasicProfile kDataSetTrailingPadding =
-      const BasicProfile(PTag.kDataSetTrailingPadding, 'X', remove);
+      BasicProfile(PTag.kDataSetTrailingPadding, 'X', remove);
 
-  static const List<int> retainList = const <int>[];
+  static const List<int> retainList = <int>[];
 
-  static const List<int> removeCodes = const [
+  static const List<int> removeCodes = [
     0x00001000, 0x00080024, 0x00080025, 0x00080034, 0x00080035, 0x00080081,
     0x00080092, 0x00080094, 0x00080096, 0x00080201, 0x00081030, 0x0008103e,
     0x00081040, 0x00081048, 0x00081049, 0x00081050, 0x00081052, 0x00081060,
@@ -706,7 +692,7 @@ class BasicProfile {
     0xfffafffa, 0xfffcfffc // don't reformat
   ];
 
-  static const Map<int, BasicProfile> map = const <int, BasicProfile>{
+  static const Map<int, BasicProfile> map = <int, BasicProfile>{
     0x00001000: kAffectedSOPInstanceUID,
     0x00001001: kRequestedSOPInstanceUID,
     0x00020003: kMediaStorageSOPInstanceUID,
@@ -954,7 +940,7 @@ class BasicProfile {
     0xfffcfffc: kDataSetTrailingPadding
   };
 
-  static const List<int> codes = const [
+  static const List<int> codes = [
     // No format
     0x00001000, 0x00001001, 0x00020003, 0x00041511, 0x00080014, 0x00080018,
     0x00080020, 0x00080021, 0x00080022, 0x00080023, 0x00080024, 0x00080025,

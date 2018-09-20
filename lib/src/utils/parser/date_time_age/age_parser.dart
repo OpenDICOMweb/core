@@ -23,14 +23,15 @@ const int global.maxYearAge = kMaxCount * kDaysInYear;
 */
 
 /// Returns the number of days corresponding to [s], which is a 4 character
-/// DICOM age (AS) [String]. [s] must be in the format: 'dddt', where 'd' is a decimal
-/// digit and 't' is an age token, one of "D", "W", "M", "Y".
+/// DICOM age (AS) [String]. [s] must be in the format: 'dddt',
+/// where 'd' is a decimal  digit and 't' is an age token,
+/// one of "D", "W", "M", "Y".
 int parseAgeString(String s,
     {int onError(String s), bool allowLowercase = false}) {
   if (s == null || s.length != 4)
     return _onError(s, onError, 'Invalid age String');
 
-  final token = (allowLowercase) ? s[3].toUpperCase() : s[3];
+  final token = allowLowercase ? s[3].toUpperCase() : s[3];
   if (!kAgeTokens.contains(token))
     return _onError(s, onError, 'Invalid age Token');
 
@@ -49,7 +50,7 @@ int _onError(String s, int onError(String s), String errorMsg) =>
 int tryParseAgeString(String s, {bool allowLowercase = false}) {
   if (s == null || s.length != 4) return -1;
 
-  final token = (allowLowercase) ? s[3].toUpperCase() : s[3];
+  final token = allowLowercase ? s[3].toUpperCase() : s[3];
   if (!kAgeTokens.contains(token)) return -1;
 
   final n = int.tryParse(s.substring(0, 3));
@@ -69,7 +70,7 @@ int tryParseAgeString(String s, {bool allowLowercase = false}) {
 }
 
 /// Returns _true_ if [s] is a valid [Age] [String].
-bool isValidAgeString(String s) => tryParseAgeString(s) == -1 ? false : true;
+bool isValidAgeString(String s) => tryParseAgeString(s) != -1;
 
 /// Returns a random age between 0 days and 999 years, if [s] is valid;
 /// otherwise, returns _null_.

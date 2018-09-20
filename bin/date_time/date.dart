@@ -81,7 +81,7 @@ void testFraction() {
 */
 
 void goodDcmDates() {
-  const goodDcmDateList = const <String>['19500718', '00000101', '19700101'];
+  const goodDcmDateList = <String>['19500718', '00000101', '19700101'];
 
   log.debug('Good Dates');
   for (var s in goodDcmDateList) {
@@ -91,7 +91,7 @@ void goodDcmDates() {
 }
 
 void badDcmDates() {
-  const badDcmDateList = const <String>[
+  const badDcmDateList = <String>[
     '19501318', // bad month
     '19501032', // bad day
     '00000032', // bad month and day
@@ -114,7 +114,7 @@ void badDcmDates() {
 }
 
 void goodDcmTimes() {
-  const goodDcmTimeList = const <String>[
+  const goodDcmTimeList = <String>[
     '230718',
     '000000',
     '190101',
@@ -170,7 +170,7 @@ void goodDcmTimes() {
   }
 }
 
-const List<String> badDcmTimeList = const <String>[
+const List<String> badDcmTimeList = <String>[
   '241318', // bad hour
   '006132', // bad minute
   '006161', // bad minute and second

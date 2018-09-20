@@ -33,24 +33,24 @@ bool isValidLength(int length, int max, {bool onError(int length, int max)}) =>
 
 final Bytes kEmptyBytes = Bytes.kEmptyBytes;
 
-const List<String> kEmptyStringList = const <String>[];
+const List<String> kEmptyStringList = <String>[];
 
-const List<int> kEmptyIntList = const <int>[];
+const List<int> kEmptyIntList = <int>[];
 
-final Int8List kEmptyInt8List = new Int8List(0);
-final Int16List kEmptyInt16List = new Int16List(0);
-final Int32List kEmptyInt32List = new Int32List(0);
-final Int64List kEmptyInt64List = new Int64List(0);
+final Int8List kEmptyInt8List = Int8List(0);
+final Int16List kEmptyInt16List = Int16List(0);
+final Int32List kEmptyInt32List = Int32List(0);
+final Int64List kEmptyInt64List = Int64List(0);
 
-final Uint8List kEmptyUint8List = new Uint8List(0);
-final Uint16List kEmptyUint16List = new Uint16List(0);
-final Uint32List kEmptyUint32List = new Uint32List(0);
-final Uint64List kEmptyUint64List = new Uint64List(0);
+final Uint8List kEmptyUint8List = Uint8List(0);
+final Uint16List kEmptyUint16List = Uint16List(0);
+final Uint32List kEmptyUint32List = Uint32List(0);
+final Uint64List kEmptyUint64List = Uint64List(0);
 
-const List<double> kEmptyDoubleList = const <double>[];
-final Float32List kEmptyFloat32List = new Float32List(0);
-final Float64List kEmptyFloat64List = new Float64List(0);
+const List<double> kEmptyDoubleList = <double>[];
+final Float32List kEmptyFloat32List = Float32List(0);
+final Float64List kEmptyFloat64List = Float64List(0);
 
-final ByteData kEmptyByteData = new ByteData(0);
+final ByteData kEmptyByteData = ByteData(0);
 
 

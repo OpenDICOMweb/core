@@ -13,19 +13,19 @@ import 'package:core/src/tag/private/pd_tag_definitions.dart';
 bool isWKCreator(String id) => pcTagDefinitions[id] != null;
 
 const Map<int, PDTagDefinition> kEmptyPDTagDefinition =
-    const <int, PDTagDefinition>{};
+    <int, PDTagDefinition>{};
 
 const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
-    const <String, Map<int, PDTagDefinition>>{
+    <String, Map<int, PDTagDefinition>>{
   // '@type': 'CreatorMap',
-  '1.2.840.113681': const <int, PDTagDefinition>{
+  '1.2.840.113681': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k1,
     0x00191100: PDTagDefinition.k2,
     0x00191200: PDTagDefinition.k3,
     0x00191300: PDTagDefinition.k4
   },
-  '1.2.840.113708.794.1.1.2.0': const <int, PDTagDefinition>{
+  '1.2.840.113708.794.1.1.2.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00871000: PDTagDefinition.k5,
     0x00872000: PDTagDefinition.k6,
@@ -33,7 +33,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00873000: PDTagDefinition.k4451,
     0x00874000: PDTagDefinition.k4452
   },
-  'ACUSON': const <int, PDTagDefinition>{
+  'ACUSON': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k8,
     0x00090100: PDTagDefinition.k9,
@@ -58,7 +58,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00091400: PDTagDefinition.k28,
     0x00091500: PDTagDefinition.k29
   },
-  'AEGIS_DICOM_2.00': const <int, PDTagDefinition>{
+  'AEGIS_DICOM_2.00': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00030000: PDTagDefinition.k30,
     0x00050000: PDTagDefinition.k31,
@@ -67,7 +67,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00290000: PDTagDefinition.k34,
     0x13690000: PDTagDefinition.k35
   },
-  'AGFA': const <int, PDTagDefinition>{
+  'AGFA': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k36,
     0x00091100: PDTagDefinition.k37,
@@ -93,14 +93,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00198200: PDTagDefinition.k2770,
     0x00199300: PDTagDefinition.k2771
   },
-  'CAMTRONICS IP': const <int, PDTagDefinition>{
+  'CAMTRONICS IP': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291000: PDTagDefinition.k41,
     0x00292000: PDTagDefinition.k42,
     0x00293000: PDTagDefinition.k43,
     0x00294000: PDTagDefinition.k44
   },
-  'CAMTRONICS': const <int, PDTagDefinition>{
+  'CAMTRONICS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291000: PDTagDefinition.k45,
     0x00292000: PDTagDefinition.k46,
@@ -110,7 +110,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00298000: PDTagDefinition.k50,
     0x00299000: PDTagDefinition.k51
   },
-  'CARDIO-D.R. 1.0': const <int, PDTagDefinition>{
+  'CARDIO-D.R. 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k52,
     0x00090100: PDTagDefinition.k53,
@@ -131,7 +131,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0029ac00: PDTagDefinition.k10041,
     0x0029ad00: PDTagDefinition.k10042
   },
-  'MRSC': const <int, PDTagDefinition>{
+  'MRSC': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0119150200: PDTagDefinition.k64,
     0x0119112600: PDTagDefinition.k274,
@@ -399,13 +399,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0119f000: PDTagDefinition.k10973,
     0x0119ff00: PDTagDefinition.k10974
   },
-  'CMR42 CIRCLECVI': const <int, PDTagDefinition>{
+  'CMR42 CIRCLECVI': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0025101000: PDTagDefinition.k69,
     0x0025102000: PDTagDefinition.k70,
     0x0025103000: PDTagDefinition.k71
   },
-  'DCMTK_ANONYMIZER': const <int, PDTagDefinition>{
+  'DCMTK_ANONYMIZER': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k72,
     0x00091000: PDTagDefinition.k73,
@@ -414,7 +414,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00094000: PDTagDefinition.k76,
     0x00095000: PDTagDefinition.k77
   },
-  'DIDI TO PCR 1.1': const <int, PDTagDefinition>{
+  'DIDI TO PCR 1.1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00192200: PDTagDefinition.k78,
     0x00192300: PDTagDefinition.k79,
@@ -459,24 +459,24 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00198e00: PDTagDefinition.k6565,
     0x00198f00: PDTagDefinition.k6567
   },
-  'DIGISCAN IMAGE': const <int, PDTagDefinition>{
+  'DIGISCAN IMAGE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00293100: PDTagDefinition.k113,
     0x00293200: PDTagDefinition.k114,
     0x00293300: PDTagDefinition.k115,
     0x00293400: PDTagDefinition.k116
   },
-  'DLX_EXAMS_01': const <int, PDTagDefinition>{
+  'DLX_EXAMS_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00150100: PDTagDefinition.k117,
     0x00150200: PDTagDefinition.k118,
     0x00150300: PDTagDefinition.k119
   },
-  'DLX_PATNT_01': const <int, PDTagDefinition>{
+  'DLX_PATNT_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110100: PDTagDefinition.k120
   },
-  'DLX_SERIE_01': const <int, PDTagDefinition>{
+  'DLX_SERIE_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190100: PDTagDefinition.k121,
     0x00190200: PDTagDefinition.k122,
@@ -512,7 +512,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00192700: PDTagDefinition.k3723,
     0x00192800: PDTagDefinition.k3724
   },
-  'ELSCINT1': const <int, PDTagDefinition>{
+  'ELSCINT1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00e10100: PDTagDefinition.k2945,
     0x00e11400: PDTagDefinition.k2949,
@@ -726,7 +726,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00e1c200: PDTagDefinition.k10745,
     0x01e1c200: PDTagDefinition.k10975
   },
-  'FDMS 1.0': const <int, PDTagDefinition>{
+  'FDMS 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090c00: PDTagDefinition.k10308,
     0x0009f000: PDTagDefinition.k10309,
@@ -841,7 +841,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00090600: PDTagDefinition.k10307,
     0x00214000: PDTagDefinition.k10514
   },
-  'GEMS_PARM_01': const <int, PDTagDefinition>{
+  'GEMS_PARM_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0043a800: PDTagDefinition.k183,
     0x00430100: PDTagDefinition.k714,
@@ -986,11 +986,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0043a600: PDTagDefinition.k10621,
     0x0043a700: PDTagDefinition.k10622
   },
-  'FFP DATA': const <int, PDTagDefinition>{
+  'FFP DATA': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090100: PDTagDefinition.k258
   },
-  'GE ??? From Adantage Review CS': const <int, PDTagDefinition>{
+  'GE ??? From Adantage Review CS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00193000: PDTagDefinition.k259,
     0x00194000: PDTagDefinition.k260,
@@ -999,7 +999,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00198000: PDTagDefinition.k263,
     0x00199000: PDTagDefinition.k264
   },
-  'GEMS_ACQU_01': const <int, PDTagDefinition>{
+  'GEMS_ACQU_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00092400: PDTagDefinition.k265,
     0x00092500: PDTagDefinition.k266,
@@ -1187,7 +1187,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0019cb00: PDTagDefinition.k10488,
     0x0019dd00: PDTagDefinition.k10489
   },
-  'GEMS_ACRQA_1.0 BLOCK1': const <int, PDTagDefinition>{
+  'GEMS_ACRQA_1.0 BLOCK1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230000: PDTagDefinition.k437,
     0x00231000: PDTagDefinition.k438,
@@ -1200,7 +1200,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00238000: PDTagDefinition.k445,
     0x00239000: PDTagDefinition.k446
   },
-  'GEMS_ACRQA_1.0 BLOCK2': const <int, PDTagDefinition>{
+  'GEMS_ACRQA_1.0 BLOCK2': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230000: PDTagDefinition.k447,
     0x00231000: PDTagDefinition.k448,
@@ -1213,7 +1213,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00238000: PDTagDefinition.k455,
     0x00239000: PDTagDefinition.k456
   },
-  'GEMS_ACRQA_1.0 BLOCK3': const <int, PDTagDefinition>{
+  'GEMS_ACRQA_1.0 BLOCK3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230000: PDTagDefinition.k457,
     0x00231000: PDTagDefinition.k458,
@@ -1226,7 +1226,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00238000: PDTagDefinition.k465,
     0x00239000: PDTagDefinition.k466
   },
-  'GEMS_ACRQA_2.0 BLOCK1': const <int, PDTagDefinition>{
+  'GEMS_ACRQA_2.0 BLOCK1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230000: PDTagDefinition.k467,
     0x00231000: PDTagDefinition.k468,
@@ -1239,7 +1239,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00238000: PDTagDefinition.k481,
     0x00239000: PDTagDefinition.k482
   },
-  'GEMS_ACRQA_2.0 BLOCK2': const <int, PDTagDefinition>{
+  'GEMS_ACRQA_2.0 BLOCK2': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230000: PDTagDefinition.k483,
     0x00231000: PDTagDefinition.k484,
@@ -1252,7 +1252,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00238000: PDTagDefinition.k491,
     0x00239000: PDTagDefinition.k492
   },
-  'GEMS_ACRQA_2.0 BLOCK3': const <int, PDTagDefinition>{
+  'GEMS_ACRQA_2.0 BLOCK3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230000: PDTagDefinition.k493,
     0x00231000: PDTagDefinition.k494,
@@ -1267,7 +1267,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0023f000: PDTagDefinition.k503,
     0x0023ff00: PDTagDefinition.k504
   },
-  'GEMS_ADWSoft_3D1': const <int, PDTagDefinition>{
+  'GEMS_ADWSoft_3D1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00470100: PDTagDefinition.k505,
     0x00475000: PDTagDefinition.k506,
@@ -1322,7 +1322,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0047d400: PDTagDefinition.k3987,
     0x0047d500: PDTagDefinition.k3988
   },
-  'GEMS_ADWSoft_DPO': const <int, PDTagDefinition>{
+  'GEMS_ADWSoft_DPO': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00398000: PDTagDefinition.k557,
     0x00398500: PDTagDefinition.k558,
@@ -1330,11 +1330,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00399500: PDTagDefinition.k560,
     0x0039aa00: PDTagDefinition.k3857
   },
-  'GEMS_CTHD_01': const <int, PDTagDefinition>{
+  'GEMS_CTHD_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00330200: PDTagDefinition.k562
   },
-  'GEMS_DRS_1': const <int, PDTagDefinition>{
+  'GEMS_DRS_1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00371000: PDTagDefinition.k563,
     0x00372000: PDTagDefinition.k564,
@@ -1343,7 +1343,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00375000: PDTagDefinition.k567,
     0x00376000: PDTagDefinition.k568
   },
-  'GEMS_GENIE_1': const <int, PDTagDefinition>{
+  'GEMS_GENIE_1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k569,
     0x00091100: PDTagDefinition.k570,
@@ -1632,12 +1632,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x50015f00: PDTagDefinition.k4243,
     0x50016000: PDTagDefinition.k4244
   },
-  'GEMS_GNHD_01': const <int, PDTagDefinition>{
+  'GEMS_GNHD_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00330100: PDTagDefinition.k648,
     0x00330200: PDTagDefinition.k649
   },
-  'GEMS_IDEN_01': const <int, PDTagDefinition>{
+  'GEMS_IDEN_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0009e800: PDTagDefinition.k651,
     0x00090200: PDTagDefinition.k652,
@@ -1656,7 +1656,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0009e900: PDTagDefinition.k665,
     0x00090100: PDTagDefinition.k10310
   },
-  'GEMS_IMAG_01': const <int, PDTagDefinition>{
+  'GEMS_IMAG_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00270600: PDTagDefinition.k666,
     0x00271000: PDTagDefinition.k667,
@@ -1695,7 +1695,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00271c00: PDTagDefinition.k10525,
     0x00274400: PDTagDefinition.k10526
   },
-  'GEMS_IMPS_01': const <int, PDTagDefinition>{
+  'GEMS_IMPS_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290400: PDTagDefinition.k700,
     0x00290500: PDTagDefinition.k701,
@@ -1713,7 +1713,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00290600: PDTagDefinition.k10533,
     0x00290a00: PDTagDefinition.k10534
   },
-  'GEMS_RELA_01': const <int, PDTagDefinition>{
+  'GEMS_RELA_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00211500: PDTagDefinition.k762,
     0x00211600: PDTagDefinition.k763,
@@ -1756,7 +1756,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00219000: PDTagDefinition.k10517,
     0x00219200: PDTagDefinition.k10518
   },
-  'SIEMENS RA GEN': const <int, PDTagDefinition>{
+  'SIEMENS RA GEN': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00195200: PDTagDefinition.k767,
     0x00112000: PDTagDefinition.k1762,
@@ -1846,7 +1846,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00213000: PDTagDefinition.k1846,
     0x00214000: PDTagDefinition.k1847
   },
-  'GEMS_SENO_02': const <int, PDTagDefinition>{
+  'GEMS_SENO_02': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00450400: PDTagDefinition.k819,
     0x00450600: PDTagDefinition.k820,
@@ -1912,12 +1912,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0045a700: PDTagDefinition.k3940,
     0x0045a800: PDTagDefinition.k3941
   },
-  'GEMS_YMHD_01': const <int, PDTagDefinition>{
+  'GEMS_YMHD_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00330500: PDTagDefinition.k854,
     0x00330600: PDTagDefinition.k855
   },
-  'GE_GENESIS_REV3.0': const <int, PDTagDefinition>{
+  'GE_GENESIS_REV3.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00193900: PDTagDefinition.k856,
     0x00198f00: PDTagDefinition.k876,
@@ -1935,7 +1935,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00431e00: PDTagDefinition.k888,
     0x00432700: PDTagDefinition.k889
   },
-  'SVISION': const <int, PDTagDefinition>{
+  'SVISION': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00197800: PDTagDefinition.k857,
     0x00197900: PDTagDefinition.k927,
@@ -2026,7 +2026,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00290400: PDTagDefinition.k5535,
     0x00290500: PDTagDefinition.k5536
   },
-  'GEMS_STDY_01': const <int, PDTagDefinition>{
+  'GEMS_STDY_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230100: PDTagDefinition.k860,
     0x00230200: PDTagDefinition.k861,
@@ -2037,7 +2037,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00237d00: PDTagDefinition.k866,
     0x00238000: PDTagDefinition.k10523
   },
-  'GEMS_SERS_01': const <int, PDTagDefinition>{
+  'GEMS_SERS_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00250600: PDTagDefinition.k867,
     0x00250700: PDTagDefinition.k868,
@@ -2050,7 +2050,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00251a00: PDTagDefinition.k875,
     0x00251b00: PDTagDefinition.k3797
   },
-  'INTELERAD MEDICAL SYSTEMS': const <int, PDTagDefinition>{
+  'INTELERAD MEDICAL SYSTEMS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k890,
     0x00290200: PDTagDefinition.k891,
@@ -2082,7 +2082,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x3f030300: PDTagDefinition.k5579,
     0x3f030400: PDTagDefinition.k5580
   },
-  'INTEGRIS 1.0': const <int, PDTagDefinition>{
+  'INTEGRIS 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00412000: PDTagDefinition.k910,
     0x00413000: PDTagDefinition.k911,
@@ -2096,28 +2096,28 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00211200: PDTagDefinition.k919,
     0x00290800: PDTagDefinition.k920
   },
-  'ISG shadow': const <int, PDTagDefinition>{
+  'ISG shadow': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00297000: PDTagDefinition.k921,
     0x00298000: PDTagDefinition.k922,
     0x00299000: PDTagDefinition.k923
   },
-  'ISI': const <int, PDTagDefinition>{
+  'ISI': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090100: PDTagDefinition.k924
   },
-  'MERGE TECHNOLOGIES, INC.': const <int, PDTagDefinition>{
+  'MERGE TECHNOLOGIES, INC.': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k925
   },
-  'OCULUS Optikgeraete GmbH': const <int, PDTagDefinition>{
+  'OCULUS Optikgeraete GmbH': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0029101000: PDTagDefinition.k926,
     0x0029101200: PDTagDefinition.k928,
     0x0029102000: PDTagDefinition.k929,
     0x0029102200: PDTagDefinition.k930
   },
-  'PAPYRUS 3.0': const <int, PDTagDefinition>{
+  'PAPYRUS 3.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00410000: PDTagDefinition.k931,
     0x00411000: PDTagDefinition.k932,
@@ -2134,7 +2134,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00414200: PDTagDefinition.k943,
     0x00415000: PDTagDefinition.k944
   },
-  'PAPYRUS': const <int, PDTagDefinition>{
+  'PAPYRUS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k945,
     0x00091000: PDTagDefinition.k946,
@@ -2160,7 +2160,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0041b200: PDTagDefinition.k966,
     0x0041b300: PDTagDefinition.k967
   },
-  'Philips Imaging DD 001': const <int, PDTagDefinition>{
+  'Philips Imaging DD 001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20011700: PDTagDefinition.k968,
     0x20011800: PDTagDefinition.k969,
@@ -2284,7 +2284,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x2001f100: PDTagDefinition.k11050,
     0x2001f200: PDTagDefinition.k11051
   },
-  'PHILIPS IMAGING DD 001': const <int, PDTagDefinition>{
+  'PHILIPS IMAGING DD 001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20010100: PDTagDefinition.k972,
     0x20010200: PDTagDefinition.k973,
@@ -2408,7 +2408,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x2001f100: PDTagDefinition.k6930,
     0x2001f200: PDTagDefinition.k6931
   },
-  'Philips MR Imaging DD 001': const <int, PDTagDefinition>{
+  'Philips MR Imaging DD 001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20050500: PDTagDefinition.k1013,
     0x20051e00: PDTagDefinition.k1014,
@@ -2577,7 +2577,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x2005b100: PDTagDefinition.k11055,
     0x2005b200: PDTagDefinition.k11056
   },
-  'Philips MR Imaging DD 005': const <int, PDTagDefinition>{
+  'Philips MR Imaging DD 005': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20050200: PDTagDefinition.k1023,
     0x20050000: PDTagDefinition.k6967,
@@ -2673,7 +2673,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x20059000: PDTagDefinition.k7413,
     0x20059100: PDTagDefinition.k7416
   },
-  'PHILIPS MR IMAGING DD 001': const <int, PDTagDefinition>{
+  'PHILIPS MR IMAGING DD 001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20050500: PDTagDefinition.k1024,
     0x20051e00: PDTagDefinition.k1025,
@@ -2809,15 +2809,15 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x2005b200: PDTagDefinition.k7462,
     0x2005c000: PDTagDefinition.k7463
   },
-  'PHILIPS MR R5.5/PART': const <int, PDTagDefinition>{
+  'PHILIPS MR R5.5/PART': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0019100000: PDTagDefinition.k1036
   },
-  'PHILIPS MR R5.6/PART': const <int, PDTagDefinition>{
+  'PHILIPS MR R5.6/PART': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0019100000: PDTagDefinition.k1037
   },
-  'PHILIPS MR SPECTRO;1': const <int, PDTagDefinition>{
+  'PHILIPS MR SPECTRO;1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190100: PDTagDefinition.k1038,
     0x00190200: PDTagDefinition.k1039,
@@ -2870,12 +2870,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00197900: PDTagDefinition.k1086,
     0x00198000: PDTagDefinition.k1087
   },
-  'PHILIPS MR': const <int, PDTagDefinition>{
+  'PHILIPS MR': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k1088,
     0x00091200: PDTagDefinition.k1089
   },
-  'PHILIPS MR/LAST': const <int, PDTagDefinition>{
+  'PHILIPS MR/LAST': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190900: PDTagDefinition.k1090,
     0x00190e00: PDTagDefinition.k1091,
@@ -2932,7 +2932,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00410700: PDTagDefinition.k6719,
     0x00410900: PDTagDefinition.k6720
   },
-  'PHILIPS MR/PART': const <int, PDTagDefinition>{
+  'PHILIPS MR/PART': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0019100000: PDTagDefinition.k1138,
     0x0019100500: PDTagDefinition.k1139,
@@ -3100,14 +3100,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0029105200: PDTagDefinition.k6676,
     0x0029105300: PDTagDefinition.k6677
   },
-  'PHILIPS-MR-1': const <int, PDTagDefinition>{
+  'PHILIPS-MR-1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191100: PDTagDefinition.k1236,
     0x00191200: PDTagDefinition.k1237,
     0x00210100: PDTagDefinition.k1238,
     0x00210200: PDTagDefinition.k1239
   },
-  'Picker NM Private Group': const <int, PDTagDefinition>{
+  'Picker NM Private Group': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70010100: PDTagDefinition.k1240,
     0x70010200: PDTagDefinition.k1241,
@@ -3126,7 +3126,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x70011600: PDTagDefinition.k7891,
     0x70011700: PDTagDefinition.k7892
   },
-  'SIEMENS CM VA0  ACQU': const <int, PDTagDefinition>{
+  'SIEMENS CM VA0  ACQU': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k1242,
     0x00191100: PDTagDefinition.k1243,
@@ -3134,7 +3134,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00191300: PDTagDefinition.k1245,
     0x00191400: PDTagDefinition.k1246
   },
-  'SIEMENS CM VA0  CMS': const <int, PDTagDefinition>{
+  'SIEMENS CM VA0  CMS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k1247,
     0x00091000: PDTagDefinition.k1248,
@@ -3207,7 +3207,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00197000: PDTagDefinition.k8147,
     0x00198000: PDTagDefinition.k8148
   },
-  'SIEMENS CM VA0  LAB': const <int, PDTagDefinition>{
+  'SIEMENS CM VA0  LAB': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k1315,
     0x00091100: PDTagDefinition.k1316,
@@ -3218,14 +3218,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00091600: PDTagDefinition.k1322,
     0x00092000: PDTagDefinition.k1323
   },
-  'SIEMENS CSA NON-IMAGE': const <int, PDTagDefinition>{
+  'SIEMENS CSA NON-IMAGE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291000: PDTagDefinition.k1324,
     0x7fe11000: PDTagDefinition.k11163,
     0x00290800: PDTagDefinition.k1368,
     0x00290900: PDTagDefinition.k1369
   },
-  'SIEMENS CT VA0  COAD': const <int, PDTagDefinition>{
+  'SIEMENS CT VA0  COAD': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k1326,
     0x00191100: PDTagDefinition.k1327,
@@ -3277,7 +3277,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0019c500: PDTagDefinition.k8171,
     0x00199000: PDTagDefinition.k10504
   },
-  'SIEMENS CSA HEADER': const <int, PDTagDefinition>{
+  'SIEMENS CSA HEADER': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290800: PDTagDefinition.k1362,
     0x00290900: PDTagDefinition.k1363,
@@ -3286,7 +3286,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291900: PDTagDefinition.k1366,
     0x00292000: PDTagDefinition.k1367
   },
-  'SIEMENS CT VA0  GEN': const <int, PDTagDefinition>{
+  'SIEMENS CT VA0  GEN': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k1378,
     0x00191100: PDTagDefinition.k1379,
@@ -3338,7 +3338,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0021a200: PDTagDefinition.k1425,
     0x0021a700: PDTagDefinition.k1426
   },
-  'SIEMENS CT VA0  IDE': const <int, PDTagDefinition>{
+  'SIEMENS CT VA0  IDE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k1427,
     0x00093000: PDTagDefinition.k1428,
@@ -3350,17 +3350,17 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00095000: PDTagDefinition.k1434,
     0x00095100: PDTagDefinition.k1435
   },
-  'SIEMENS CT VA0  ORI': const <int, PDTagDefinition>{
+  'SIEMENS CT VA0  ORI': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00092000: PDTagDefinition.k1436,
     0x00093000: PDTagDefinition.k1437
   },
-  'SIEMENS CT VA0  OST': const <int, PDTagDefinition>{
+  'SIEMENS CT VA0  OST': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x60210000: PDTagDefinition.k1438,
     0x60211000: PDTagDefinition.k1439
   },
-  'SIEMENS CT VA0  RAW': const <int, PDTagDefinition>{
+  'SIEMENS CT VA0  RAW': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00211000: PDTagDefinition.k1440,
     0x00212000: PDTagDefinition.k1441,
@@ -3372,12 +3372,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00214400: PDTagDefinition.k1447,
     0x00215000: PDTagDefinition.k1448
   },
-  'SIEMENS DICOM': const <int, PDTagDefinition>{
+  'SIEMENS DICOM': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k1449,
     0x00091200: PDTagDefinition.k1450
   },
-  'SIEMENS DLR.01': const <int, PDTagDefinition>{
+  'SIEMENS DLR.01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k1451,
     0x00191100: PDTagDefinition.k1452,
@@ -3424,7 +3424,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00413000: PDTagDefinition.k1493,
     0x00413100: PDTagDefinition.k1494
   },
-  'SIEMENS ISI': const <int, PDTagDefinition>{
+  'SIEMENS ISI': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00030800: PDTagDefinition.k1495,
     0x00031100: PDTagDefinition.k1496,
@@ -3467,7 +3467,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x4009e100: PDTagDefinition.k1533,
     0x4009e300: PDTagDefinition.k1534
   },
-  'SIEMENS MED DISPLAY': const <int, PDTagDefinition>{
+  'SIEMENS MED DISPLAY': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290400: PDTagDefinition.k1535,
     0x00291000: PDTagDefinition.k1536,
@@ -3484,7 +3484,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0029c100: PDTagDefinition.k1547,
     0x00298000: PDTagDefinition.k8497
   },
-  'SIEMENS MED HG': const <int, PDTagDefinition>{
+  'SIEMENS MED HG': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291000: PDTagDefinition.k1548,
     0x00291500: PDTagDefinition.k1549,
@@ -3495,7 +3495,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00296000: PDTagDefinition.k1554,
     0x00297000: PDTagDefinition.k1555
   },
-  'SIEMENS MED MG': const <int, PDTagDefinition>{
+  'SIEMENS MED MG': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291000: PDTagDefinition.k1556,
     0x00291500: PDTagDefinition.k1557,
@@ -3506,7 +3506,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00296000: PDTagDefinition.k1562,
     0x00297000: PDTagDefinition.k1563
   },
-  'SIEMENS MED': const <int, PDTagDefinition>{
+  'SIEMENS MED': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k1564,
     0x00093000: PDTagDefinition.k1565,
@@ -3525,7 +3525,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x70051000: PDTagDefinition.k1578,
     0x00211100: PDTagDefinition.k10519
   },
-  'SIEMENS MEDCOM HEADER': const <int, PDTagDefinition>{
+  'SIEMENS MEDCOM HEADER': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290900: PDTagDefinition.k1580,
     0x00291000: PDTagDefinition.k1581,
@@ -3556,7 +3556,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00297000: PDTagDefinition.k10567,
     0x00297500: PDTagDefinition.k10568
   },
-  'SIEMENS MR VA0  COAD': const <int, PDTagDefinition>{
+  'SIEMENS MR VA0  COAD': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191200: PDTagDefinition.k1591,
     0x00191400: PDTagDefinition.k1592,
@@ -3604,17 +3604,17 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0019d900: PDTagDefinition.k1645,
     0x0019da00: PDTagDefinition.k1646
   },
-  'SIEMENS MEDCOM HEADER2': const <int, PDTagDefinition>{
+  'SIEMENS MEDCOM HEADER2': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00296000: PDTagDefinition.k1635
   },
-  'SIEMENS MEDCOM OOG': const <int, PDTagDefinition>{
+  'SIEMENS MEDCOM OOG': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290800: PDTagDefinition.k1636,
     0x00290900: PDTagDefinition.k1637,
     0x00291000: PDTagDefinition.k1638
   },
-  'SIEMENS MR VA0  GEN': const <int, PDTagDefinition>{
+  'SIEMENS MR VA0  GEN': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k1647,
     0x00191100: PDTagDefinition.k1648,
@@ -3698,7 +3698,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00219500: PDTagDefinition.k1726,
     0x00219600: PDTagDefinition.k1727
   },
-  'SIEMENS MR VA0  RAW': const <int, PDTagDefinition>{
+  'SIEMENS MR VA0  RAW': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210000: PDTagDefinition.k1728,
     0x00210100: PDTagDefinition.k1729,
@@ -3731,13 +3731,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00215400: PDTagDefinition.k1757,
     0x00215500: PDTagDefinition.k1758
   },
-  'SIEMENS NUMARIS II': const <int, PDTagDefinition>{
+  'SIEMENS NUMARIS II': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fe30000: PDTagDefinition.k1759,
     0x7fe31000: PDTagDefinition.k1760,
     0x7fe32000: PDTagDefinition.k1761
   },
-  'SIEMENS RA PLANE A': const <int, PDTagDefinition>{
+  'SIEMENS RA PLANE A': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00112800: PDTagDefinition.k1848,
     0x00112900: PDTagDefinition.k1849,
@@ -3873,7 +3873,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0019df00: PDTagDefinition.k1980,
     0x0019e000: PDTagDefinition.k1981
   },
-  'SIEMENS RA PLANE B': const <int, PDTagDefinition>{
+  'SIEMENS RA PLANE B': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00112800: PDTagDefinition.k1982,
     0x00112900: PDTagDefinition.k1983,
@@ -4009,7 +4009,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0019df00: PDTagDefinition.k8145,
     0x0019e000: PDTagDefinition.k8146
   },
-  'SIEMENS RIS': const <int, PDTagDefinition>{
+  'SIEMENS RIS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00111000: PDTagDefinition.k2066,
     0x00111100: PDTagDefinition.k2067,
@@ -4025,7 +4025,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00315000: PDTagDefinition.k2077,
     0x00331000: PDTagDefinition.k2078
   },
-  'SIEMENS SMS-AX  ACQ 1.0': const <int, PDTagDefinition>{
+  'SIEMENS SMS-AX  ACQ 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210000: PDTagDefinition.k2079,
     0x00210100: PDTagDefinition.k2080,
@@ -4120,7 +4120,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0021a500: PDTagDefinition.k8388,
     0x0021a600: PDTagDefinition.k8389
   },
-  'SIEMENS SMS-AX  ORIGINAL IMAGE INFO 1.0': const <int, PDTagDefinition>{
+  'SIEMENS SMS-AX  ORIGINAL IMAGE INFO 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00250000: PDTagDefinition.k2117,
     0x00250100: PDTagDefinition.k2118,
@@ -4146,7 +4146,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00251500: PDTagDefinition.k2138,
     0x00251600: PDTagDefinition.k8451
   },
-  'SIEMENS SMS-AX  QUANT 1.0': const <int, PDTagDefinition>{
+  'SIEMENS SMS-AX  QUANT 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230000: PDTagDefinition.k2139,
     0x00230100: PDTagDefinition.k2140,
@@ -4158,7 +4158,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00230700: PDTagDefinition.k2146,
     0x00230800: PDTagDefinition.k2147
   },
-  'SIEMENS SMS-AX  VIEW 1.0': const <int, PDTagDefinition>{
+  'SIEMENS SMS-AX  VIEW 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k2148,
     0x00190100: PDTagDefinition.k2149,
@@ -4193,7 +4193,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00194100: PDTagDefinition.k8196,
     0x00194200: PDTagDefinition.k8197
   },
-  'SIENET': const <int, PDTagDefinition>{
+  'SIENET': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090100: PDTagDefinition.k2175,
     0x00091400: PDTagDefinition.k2176,
@@ -4219,7 +4219,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00990500: PDTagDefinition.k9193,
     0x00a50500: PDTagDefinition.k9194
   },
-  'SPI RELEASE 1': const <int, PDTagDefinition>{
+  'SPI RELEASE 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k2184,
     0x00091500: PDTagDefinition.k2185,
@@ -4230,7 +4230,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00112000: PDTagDefinition.k2190,
     0x00296000: PDTagDefinition.k2191
   },
-  'SPI Release 1': const <int, PDTagDefinition>{
+  'SPI Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k2192,
     0x00091500: PDTagDefinition.k2193,
@@ -4242,7 +4242,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00296000: PDTagDefinition.k2199,
     0x00090800: PDTagDefinition.k6481
   },
-  'SPI': const <int, PDTagDefinition>{
+  'SPI': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k2200,
     0x00091500: PDTagDefinition.k2201,
@@ -4253,7 +4253,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00112000: PDTagDefinition.k2206,
     0x00296000: PDTagDefinition.k2207
   },
-  'SPI-P Release 1': const <int, PDTagDefinition>{
+  'SPI-P Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k2208,
     0x00090400: PDTagDefinition.k2209,
@@ -4347,7 +4347,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0029b100: PDTagDefinition.k6696,
     0x0029bf00: PDTagDefinition.k6697
   },
-  'SPI-P Release 1;1': const <int, PDTagDefinition>{
+  'SPI-P Release 1;1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0009c000: PDTagDefinition.k2286,
     0x0009c100: PDTagDefinition.k2287,
@@ -4386,7 +4386,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00294e00: PDTagDefinition.k2320,
     0x00294f00: PDTagDefinition.k2321
   },
-  'SPI-P Release 1;2': const <int, PDTagDefinition>{
+  'SPI-P Release 1;2': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k2322,
     0x00290400: PDTagDefinition.k2323,
@@ -4394,7 +4394,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291e00: PDTagDefinition.k2325,
     0x00291f00: PDTagDefinition.k2326
   },
-  'SPI-P Release 1;3': const <int, PDTagDefinition>{
+  'SPI-P Release 1;3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k2327,
     0x00290100: PDTagDefinition.k2328,
@@ -4407,13 +4407,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291e00: PDTagDefinition.k2335,
     0x00291f00: PDTagDefinition.k2336
   },
-  'SPI-P Release 2;1': const <int, PDTagDefinition>{
+  'SPI-P Release 2;1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00111800: PDTagDefinition.k2337,
     0x00230d00: PDTagDefinition.k2338,
     0x00230e00: PDTagDefinition.k2339
   },
-  'SPI-P-GV-CT Release 1': const <int, PDTagDefinition>{
+  'SPI-P-GV-CT Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k2340,
     0x00091000: PDTagDefinition.k2341,
@@ -4472,7 +4472,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0029d000: PDTagDefinition.k2395,
     0x0029d100: PDTagDefinition.k2396
   },
-  'SPI-P-PCR Release 2': const <int, PDTagDefinition>{
+  'SPI-P-PCR Release 2': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00193000: PDTagDefinition.k2397,
     0x00191000: PDTagDefinition.k6502,
@@ -4508,13 +4508,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0019b900: PDTagDefinition.k6632,
     0x0019ba00: PDTagDefinition.k6633
   },
-  'SPI-P-Private-CWS Release 1': const <int, PDTagDefinition>{
+  'SPI-P-Private-CWS Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210000: PDTagDefinition.k2398,
     0x00210100: PDTagDefinition.k2399,
     0x00210200: PDTagDefinition.k2400
   },
-  'SPI-P-Private-DCI Release 1': const <int, PDTagDefinition>{
+  'SPI-P-Private-DCI Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k2401,
     0x00191100: PDTagDefinition.k2402,
@@ -4525,13 +4525,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00191600: PDTagDefinition.k2407,
     0x00191700: PDTagDefinition.k2408
   },
-  'SPI-P-Private_CDS Release 1': const <int, PDTagDefinition>{
+  'SPI-P-Private_CDS Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00214000: PDTagDefinition.k2409,
     0x00290000: PDTagDefinition.k2410,
     0x00291000: PDTagDefinition.k6650
   },
-  'SPI-P-Private_ICS Release 1': const <int, PDTagDefinition>{
+  'SPI-P-Private_ICS Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00193000: PDTagDefinition.k2411,
     0x00193100: PDTagDefinition.k2412,
@@ -4562,7 +4562,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00297200: PDTagDefinition.k6681,
     0x00299100: PDTagDefinition.k6684
   },
-  'SPI-P-Private_ICS Release 1;1': const <int, PDTagDefinition>{
+  'SPI-P-Private_ICS Release 1;1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k2426,
     0x00290500: PDTagDefinition.k2427,
@@ -4582,7 +4582,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0029d500: PDTagDefinition.k6708,
     0x0029d600: PDTagDefinition.k6709
   },
-  'SPI-P-Private_ICS Release 1;2': const <int, PDTagDefinition>{
+  'SPI-P-Private_ICS Release 1;2': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k2432,
     0x00290100: PDTagDefinition.k2433,
@@ -4599,7 +4599,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0029a600: PDTagDefinition.k6693,
     0x0029d900: PDTagDefinition.k6713
   },
-  'SPI-P-Private_ICS Release 1;3': const <int, PDTagDefinition>{
+  'SPI-P-Private_ICS Release 1;3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0029c000: PDTagDefinition.k2438,
     0x0029c100: PDTagDefinition.k2439,
@@ -4610,7 +4610,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00290000: PDTagDefinition.k6642,
     0x00290100: PDTagDefinition.k6644
   },
-  'SPI-P-Private_ICS Release 1;4': const <int, PDTagDefinition>{
+  'SPI-P-Private_ICS Release 1;4': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290200: PDTagDefinition.k2444,
     0x00299a00: PDTagDefinition.k2445,
@@ -4623,12 +4623,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0029dc00: PDTagDefinition.k6716,
     0x0029dd00: PDTagDefinition.k6717
   },
-  'SPI-P-Private_ICS Release 1;5': const <int, PDTagDefinition>{
+  'SPI-P-Private_ICS Release 1;5': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00295000: PDTagDefinition.k2447,
     0x00295500: PDTagDefinition.k2448
   },
-  'SPI-P-XSB-DCI Release 1': const <int, PDTagDefinition>{
+  'SPI-P-XSB-DCI Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k2449,
     0x00191100: PDTagDefinition.k2450,
@@ -4636,7 +4636,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00191300: PDTagDefinition.k2452,
     0x00192000: PDTagDefinition.k2453
   },
-  'Silhouette Annot V1.0': const <int, PDTagDefinition>{
+  'Silhouette Annot V1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291100: PDTagDefinition.k2454,
     0x00291200: PDTagDefinition.k2455,
@@ -4674,11 +4674,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00294400: PDTagDefinition.k2488,
     0x00294500: PDTagDefinition.k2489
   },
-  'Silhouette Graphics Export V1.0': const <int, PDTagDefinition>{
+  'Silhouette Graphics Export V1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k2490
   },
-  'Silhouette Line V1.0': const <int, PDTagDefinition>{
+  'Silhouette Line V1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291100: PDTagDefinition.k2491,
     0x00291200: PDTagDefinition.k2492,
@@ -4700,7 +4700,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00292800: PDTagDefinition.k2508,
     0x00292900: PDTagDefinition.k2509
   },
-  'Silhouette ROI V1.0': const <int, PDTagDefinition>{
+  'Silhouette ROI V1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291100: PDTagDefinition.k2510,
     0x00291200: PDTagDefinition.k2511,
@@ -4727,13 +4727,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00293300: PDTagDefinition.k2532,
     0x00293400: PDTagDefinition.k2533
   },
-  'Silhouette Sequence Ids V1.0': const <int, PDTagDefinition>{
+  'Silhouette Sequence Ids V1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00294100: PDTagDefinition.k2534,
     0x00294200: PDTagDefinition.k2535,
     0x00294300: PDTagDefinition.k2536
   },
-  'Silhouette V1.0': const <int, PDTagDefinition>{
+  'Silhouette V1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291300: PDTagDefinition.k2537,
     0x00291400: PDTagDefinition.k2538,
@@ -4772,13 +4772,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00299000: PDTagDefinition.k4784,
     0x00299100: PDTagDefinition.k4785
   },
-  'SONOWAND AS': const <int, PDTagDefinition>{
+  'SONOWAND AS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x01351000: PDTagDefinition.k2562,
     0x01351100: PDTagDefinition.k2563,
     0x01351200: PDTagDefinition.k2564
   },
-  'TOSHIBA_MEC_1.0': const <int, PDTagDefinition>{
+  'TOSHIBA_MEC_1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090100: PDTagDefinition.k2624,
     0x00090200: PDTagDefinition.k2625,
@@ -4796,7 +4796,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7ff10300: PDTagDefinition.k2637,
     0x7ff11000: PDTagDefinition.k2638
   },
-  'TOSHIBA_MEC_CT_1.0': const <int, PDTagDefinition>{
+  'TOSHIBA_MEC_CT_1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190100: PDTagDefinition.k2639,
     0x00190200: PDTagDefinition.k2640,
@@ -4825,7 +4825,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7ff10c00: PDTagDefinition.k2663,
     0x7ff10d00: PDTagDefinition.k2664
   },
-  'ACUSON:1.2.840.113680.1.0:0910': const <int, PDTagDefinition>{
+  'ACUSON:1.2.840.113680.1.0:0910': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k2665,
     0x00090100: PDTagDefinition.k2666,
@@ -4834,7 +4834,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00090400: PDTagDefinition.k2669,
     0x00090f00: PDTagDefinition.k2670
   },
-  'ACUSON:1.2.840.113680.1.0:7f10': const <int, PDTagDefinition>{
+  'ACUSON:1.2.840.113680.1.0:7f10': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fdf0200: PDTagDefinition.k2671,
     0x7fdf0b00: PDTagDefinition.k2672,
@@ -4908,7 +4908,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7fdff100: PDTagDefinition.k2742,
     0x7fdff500: PDTagDefinition.k2743
   },
-  'AGFA-AG_HPState': const <int, PDTagDefinition>{
+  'AGFA-AG_HPState': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00870200: PDTagDefinition.k2697,
     0x00870300: PDTagDefinition.k2741,
@@ -4943,11 +4943,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00870700: PDTagDefinition.k2915,
     0x00870800: PDTagDefinition.k2916
   },
-  'ACUSON:1.2.840.113680.1.0:7ffe': const <int, PDTagDefinition>{
+  'ACUSON:1.2.840.113680.1.0:7ffe': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fdf0000: PDTagDefinition.k2744
   },
-  'AgilityRuntime': const <int, PDTagDefinition>{
+  'AgilityRuntime': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00112000: PDTagDefinition.k2745,
     0x00112100: PDTagDefinition.k2746,
@@ -4958,7 +4958,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291400: PDTagDefinition.k2833,
     0x00291f00: PDTagDefinition.k2834
   },
-  'AGFA_ADC_Compact': const <int, PDTagDefinition>{
+  'AGFA_ADC_Compact': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00193000: PDTagDefinition.k2772,
     0x00194000: PDTagDefinition.k2773,
@@ -4973,7 +4973,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00197400: PDTagDefinition.k2782,
     0x00199500: PDTagDefinition.k2783
   },
-  'Agfa ADC NX': const <int, PDTagDefinition>{
+  'Agfa ADC NX': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190700: PDTagDefinition.k2784,
     0x00190900: PDTagDefinition.k2785,
@@ -4993,12 +4993,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0019fd00: PDTagDefinition.k2799,
     0x0019fe00: PDTagDefinition.k2800
   },
-  'AGFA PACS Archive Mirroring 1.0': const <int, PDTagDefinition>{
+  'AGFA PACS Archive Mirroring 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00310000: PDTagDefinition.k2801,
     0x00310100: PDTagDefinition.k2802
   },
-  'MITRA PRESENTATION 1.0': const <int, PDTagDefinition>{
+  'MITRA PRESENTATION 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k2803,
     0x00290100: PDTagDefinition.k2804,
@@ -5011,12 +5011,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291200: PDTagDefinition.k2811,
     0x00291300: PDTagDefinition.k2812
   },
-  'MITRA OBJECT DOCUMENT 1.0': const <int, PDTagDefinition>{
+  'MITRA OBJECT DOCUMENT 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k2813,
     0x00290100: PDTagDefinition.k2814
   },
-  'MITRA MARKUP 1.0': const <int, PDTagDefinition>{
+  'MITRA MARKUP 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k2815,
     0x00290100: PDTagDefinition.k2816,
@@ -5034,11 +5034,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291300: PDTagDefinition.k2828,
     0x00291400: PDTagDefinition.k2829
   },
-  'MITRA LINKED ATTRIBUTES 1.0': const <int, PDTagDefinition>{
+  'MITRA LINKED ATTRIBUTES 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00312000: PDTagDefinition.k2835
   },
-  'MITRA OBJECT UTF8 ATTRIBUTES 1.0': const <int, PDTagDefinition>{
+  'MITRA OBJECT UTF8 ATTRIBUTES 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00330200: PDTagDefinition.k2836,
     0x00330400: PDTagDefinition.k2837,
@@ -5053,7 +5053,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00331600: PDTagDefinition.k2846,
     0x00331900: PDTagDefinition.k2847
   },
-  'MITRA OBJECT ATTRIBUTES 1.0': const <int, PDTagDefinition>{
+  'MITRA OBJECT ATTRIBUTES 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00330200: PDTagDefinition.k2848,
     0x00330400: PDTagDefinition.k2849,
@@ -5061,7 +5061,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00330800: PDTagDefinition.k2851,
     0x00330a00: PDTagDefinition.k2853
   },
-  'AgilityOverlay': const <int, PDTagDefinition>{
+  'AgilityOverlay': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00710100: PDTagDefinition.k2867,
     0x00710200: PDTagDefinition.k2868,
@@ -5104,21 +5104,21 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00715d00: PDTagDefinition.k2905,
     0x00716000: PDTagDefinition.k2906
   },
-  'AGFA KOSD 1.0': const <int, PDTagDefinition>{
+  'AGFA KOSD 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00350000: PDTagDefinition.k2917,
     0x00350300: PDTagDefinition.k2918
   },
-  'agfa/displayableImages': const <int, PDTagDefinition>{
+  'agfa/displayableImages': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x2e131000: PDTagDefinition.k2919,
     0x2e131100: PDTagDefinition.k2920
   },
-  'agfa/xeroverse': const <int, PDTagDefinition>{
+  'agfa/xeroverse': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fdb9900: PDTagDefinition.k2921
   },
-  'Camtronics image level data': const <int, PDTagDefinition>{
+  'Camtronics image level data': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090400: PDTagDefinition.k2922,
     0x00090600: PDTagDefinition.k2923,
@@ -5127,7 +5127,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00091700: PDTagDefinition.k2926,
     0x00091800: PDTagDefinition.k2927
   },
-  'QCA Results': const <int, PDTagDefinition>{
+  'QCA Results': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k2928,
     0x00090400: PDTagDefinition.k2929,
@@ -5146,7 +5146,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00092700: PDTagDefinition.k2942,
     0x00092800: PDTagDefinition.k2943
   },
-  'GEMS_PETD_01': const <int, PDTagDefinition>{
+  'GEMS_PETD_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090200: PDTagDefinition.k3144,
     0x00090300: PDTagDefinition.k3145,
@@ -5559,14 +5559,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00191800: PDTagDefinition.k10491,
     0x00230200: PDTagDefinition.k10522
   },
-  'GEMS_DL_PATNT_01': const <int, PDTagDefinition>{
+  'GEMS_DL_PATNT_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00118000: PDTagDefinition.k3537,
     0x00118100: PDTagDefinition.k3538,
     0x00118200: PDTagDefinition.k3539,
     0x00118300: PDTagDefinition.k3540
   },
-  'GEMS_DL_STUDY_01': const <int, PDTagDefinition>{
+  'GEMS_DL_STUDY_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00158000: PDTagDefinition.k3559,
     0x00158100: PDTagDefinition.k3560,
@@ -5594,7 +5594,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00159c00: PDTagDefinition.k3582,
     0x00159d00: PDTagDefinition.k3583
   },
-  'GEMS_DL_SERIES_01': const <int, PDTagDefinition>{
+  'GEMS_DL_SERIES_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00158500: PDTagDefinition.k3584,
     0x00158700: PDTagDefinition.k3585,
@@ -5603,7 +5603,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00194c00: PDTagDefinition.k3725,
     0x00194d00: PDTagDefinition.k3726
   },
-  'GEMS_DL_IMG_01': const <int, PDTagDefinition>{
+  'GEMS_DL_IMG_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190b00: PDTagDefinition.k3589,
     0x00192b00: PDTagDefinition.k3590,
@@ -5733,11 +5733,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0019ee00: PDTagDefinition.k3714,
     0x0019ef00: PDTagDefinition.k3715
   },
-  'GEMS_XR3DCAL_01': const <int, PDTagDefinition>{
+  'GEMS_XR3DCAL_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00212000: PDTagDefinition.k3727
   },
-  'Mayo/IBM Archive Project': const <int, PDTagDefinition>{
+  'Mayo/IBM Archive Project': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k3728,
     0x00211000: PDTagDefinition.k3729,
@@ -5763,7 +5763,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00216000: PDTagDefinition.k3749,
     0x00216500: PDTagDefinition.k3750
   },
-  'GEMS_3D_INTVL_01': const <int, PDTagDefinition>{
+  'GEMS_3D_INTVL_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230100: PDTagDefinition.k3751,
     0x00230200: PDTagDefinition.k3752,
@@ -5803,7 +5803,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00234300: PDTagDefinition.k3786,
     0x00234400: PDTagDefinition.k3787
   },
-  'GEMS_DL_FRAME_01': const <int, PDTagDefinition>{
+  'GEMS_DL_FRAME_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00250200: PDTagDefinition.k3788,
     0x00250300: PDTagDefinition.k3789,
@@ -5849,18 +5849,18 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00253b00: PDTagDefinition.k3830,
     0x00253c00: PDTagDefinition.k3831
   },
-  'GEMS_ADWSoft_DPO1': const <int, PDTagDefinition>{
+  'GEMS_ADWSoft_DPO1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00399500: PDTagDefinition.k3858
   },
-  'GEMS_AWSoft_SB1': const <int, PDTagDefinition>{
+  'GEMS_AWSoft_SB1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00395000: PDTagDefinition.k3859,
     0x00395100: PDTagDefinition.k3860,
     0x00395200: PDTagDefinition.k3861,
     0x00399500: PDTagDefinition.k3862
   },
-  'GEMS_AWSOFT_CD1': const <int, PDTagDefinition>{
+  'GEMS_AWSOFT_CD1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00396500: PDTagDefinition.k3863,
     0x00397000: PDTagDefinition.k3864,
@@ -5872,7 +5872,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0039aa00: PDTagDefinition.k3870,
     0x0039ff00: PDTagDefinition.k3871
   },
-  'GEMS_HELIOS_01': const <int, PDTagDefinition>{
+  'GEMS_HELIOS_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00450100: PDTagDefinition.k3956,
     0x00450200: PDTagDefinition.k3957,
@@ -5922,7 +5922,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00454400: PDTagDefinition.k10660,
     0x00454500: PDTagDefinition.k10661
   },
-  'GEMS_3DSTATE_001': const <int, PDTagDefinition>{
+  'GEMS_3DSTATE_001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0047e900: PDTagDefinition.k3989,
     0x0047ea00: PDTagDefinition.k3990,
@@ -5930,17 +5930,17 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0047ec00: PDTagDefinition.k3992,
     0x0047ed00: PDTagDefinition.k3993
   },
-  'GEMS_IQTB_IDEN_47': const <int, PDTagDefinition>{
+  'GEMS_IQTB_IDEN_47': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00470200: PDTagDefinition.k4018
   },
-  'GEMS_CT_HINO_01': const <int, PDTagDefinition>{
+  'GEMS_CT_HINO_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x004b0100: PDTagDefinition.k4020,
     0x004b0200: PDTagDefinition.k4021,
     0x004b0300: PDTagDefinition.k4022
   },
-  'GEIIS': const <int, PDTagDefinition>{
+  'GEIIS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x004b1300: PDTagDefinition.k4023,
     0x004b1500: PDTagDefinition.k4024,
@@ -5960,19 +5960,19 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7fd15000: PDTagDefinition.k4267,
     0x7fd16000: PDTagDefinition.k4268
   },
-  'GEMS_CT_VES_01': const <int, PDTagDefinition>{
+  'GEMS_CT_VES_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00510100: PDTagDefinition.k4025
   },
-  'AMI Annotations_01': const <int, PDTagDefinition>{
+  'AMI Annotations_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31011000: PDTagDefinition.k4034
   },
-  'AMI Annotations_02': const <int, PDTagDefinition>{
+  'AMI Annotations_02': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31012000: PDTagDefinition.k4035
   },
-  'AMI Sequence Annotations_01': const <int, PDTagDefinition>{
+  'AMI Sequence Annotations_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31031000: PDTagDefinition.k4036,
     0x31032000: PDTagDefinition.k4037,
@@ -5988,7 +5988,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x3103d000: PDTagDefinition.k4047,
     0x3103e000: PDTagDefinition.k4048
   },
-  'AMI Sequence Annotations_02': const <int, PDTagDefinition>{
+  'AMI Sequence Annotations_02': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31031000: PDTagDefinition.k4049,
     0x31032000: PDTagDefinition.k4050,
@@ -6004,7 +6004,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x3103d000: PDTagDefinition.k4070,
     0x3103e000: PDTagDefinition.k4071
   },
-  'GEMS_CT_CARDIAC_001': const <int, PDTagDefinition>{
+  'GEMS_CT_CARDIAC_001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00490200: PDTagDefinition.k4056,
     0x00490300: PDTagDefinition.k4057,
@@ -6026,12 +6026,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00492500: PDTagDefinition.k10669,
     0x00492600: PDTagDefinition.k10670
   },
-  'AMI Sequence AnnotElements_01': const <int, PDTagDefinition>{
+  'AMI Sequence AnnotElements_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31051000: PDTagDefinition.k4072,
     0x31052000: PDTagDefinition.k4073
   },
-  'AMI ImageTransform_01': const <int, PDTagDefinition>{
+  'AMI ImageTransform_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31071000: PDTagDefinition.k4074,
     0x31072000: PDTagDefinition.k4075,
@@ -6040,12 +6040,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x31075000: PDTagDefinition.k4078,
     0x31076000: PDTagDefinition.k4079
   },
-  'AMI ImageContextExt_01': const <int, PDTagDefinition>{
+  'AMI ImageContextExt_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x3107a000: PDTagDefinition.k4080,
     0x3107b000: PDTagDefinition.k4081
   },
-  'Applicare/RadWorks/Version 5.0': const <int, PDTagDefinition>{
+  'Applicare/RadWorks/Version 5.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31090100: PDTagDefinition.k4082,
     0x31090200: PDTagDefinition.k4083,
@@ -6096,7 +6096,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x3109ee00: PDTagDefinition.k4128,
     0x3109ef00: PDTagDefinition.k4129
   },
-  'Applicare/RadWorks/Version 6.0/Summary': const <int, PDTagDefinition>{
+  'Applicare/RadWorks/Version 6.0/Summary': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31090100: PDTagDefinition.k4130,
     0x31091100: PDTagDefinition.k4131,
@@ -6105,13 +6105,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x31091600: PDTagDefinition.k4134
   },
   'http://www.gemedicalsystems.com/it_solutions/rad_pacs/':
-      const <int, PDTagDefinition>{
+      <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31150100: PDTagDefinition.k4135,
     0x31150200: PDTagDefinition.k4532,
     0x31150300: PDTagDefinition.k4533
   },
-  'Applicare/Print/Version 5.1': const <int, PDTagDefinition>{
+  'Applicare/Print/Version 5.1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x41010100: PDTagDefinition.k4136,
     0x41010200: PDTagDefinition.k4137,
@@ -6123,7 +6123,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x41010800: PDTagDefinition.k4143,
     0x41010900: PDTagDefinition.k4144
   },
-  'Applicare/RadWorks/Version 6.0': const <int, PDTagDefinition>{
+  'Applicare/RadWorks/Version 6.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x41030100: PDTagDefinition.k4145,
     0x41030200: PDTagDefinition.k4146,
@@ -6144,7 +6144,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x41051000: PDTagDefinition.k4162,
     0x41070100: PDTagDefinition.k4163
   },
-  'GEIIS PACS': const <int, PDTagDefinition>{
+  'GEIIS PACS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x09031000: PDTagDefinition.k4250,
     0x09031100: PDTagDefinition.k4251,
@@ -6156,7 +6156,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x09072400: PDTagDefinition.k4260,
     0x09073100: PDTagDefinition.k4262
   },
-  'GEMS_GDXE_FALCON_04': const <int, PDTagDefinition>{
+  'GEMS_GDXE_FALCON_04': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110300: PDTagDefinition.k4269,
     0x00110400: PDTagDefinition.k4270,
@@ -6198,7 +6198,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00116000: PDTagDefinition.k4306,
     0x00116d00: PDTagDefinition.k4307
   },
-  'GEMS_FALCON_03': const <int, PDTagDefinition>{
+  'GEMS_FALCON_03': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00455500: PDTagDefinition.k4308,
     0x00456200: PDTagDefinition.k4309,
@@ -6209,7 +6209,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00457200: PDTagDefinition.k4314,
     0x00457300: PDTagDefinition.k4315
   },
-  'GEMS_SEND_02': const <int, PDTagDefinition>{
+  'GEMS_SEND_02': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00455500: PDTagDefinition.k4316,
     0x00456200: PDTagDefinition.k4317,
@@ -6220,26 +6220,26 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00457200: PDTagDefinition.k4322,
     0x00457300: PDTagDefinition.k4323
   },
-  'GEMS_GDXE_ATHENAV2_INTERNAL_USE': const <int, PDTagDefinition>{
+  'GEMS_GDXE_ATHENAV2_INTERNAL_USE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fdf1000: PDTagDefinition.k4324,
     0x7fdf1100: PDTagDefinition.k4325,
     0x7fdf2000: PDTagDefinition.k4326,
     0x7fdf2500: PDTagDefinition.k4327
   },
-  'GEMS_Ultrasound_ImageGroup_001': const <int, PDTagDefinition>{
+  'GEMS_Ultrasound_ImageGroup_001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x60031000: PDTagDefinition.k4328,
     0x60031100: PDTagDefinition.k4329,
     0x60031200: PDTagDefinition.k4330,
     0x60031500: PDTagDefinition.k4331
   },
-  'GEMS_Ultrasound_ExamGroup_001': const <int, PDTagDefinition>{
+  'GEMS_Ultrasound_ExamGroup_001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x60051000: PDTagDefinition.k4332,
     0x60052000: PDTagDefinition.k4333
   },
-  'GEMS_Ultrasound_MovieGroup_001': const <int, PDTagDefinition>{
+  'GEMS_Ultrasound_MovieGroup_001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fe10100: PDTagDefinition.k4334,
     0x7fe10200: PDTagDefinition.k4335,
@@ -6285,11 +6285,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7fe18700: PDTagDefinition.k4375,
     0x7fe18800: PDTagDefinition.k4376
   },
-  'KRETZ_US': const <int, PDTagDefinition>{
+  'KRETZ_US': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fe10100: PDTagDefinition.k4377
   },
-  'QUASAR_INTERNAL_USE': const <int, PDTagDefinition>{
+  'QUASAR_INTERNAL_USE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090100: PDTagDefinition.k4378,
     0x00090200: PDTagDefinition.k4379,
@@ -6334,11 +6334,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00379200: PDTagDefinition.k4418,
     0x00410100: PDTagDefinition.k4419
   },
-  'APEX_PRIVATE': const <int, PDTagDefinition>{
+  'APEX_PRIVATE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00271100: PDTagDefinition.k4420
   },
-  'GEMS_XELPRV_01': const <int, PDTagDefinition>{
+  'GEMS_XELPRV_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00330800: PDTagDefinition.k4421,
     0x00331000: PDTagDefinition.k4422,
@@ -6362,36 +6362,36 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00337100: PDTagDefinition.k4440,
     0x00337200: PDTagDefinition.k4441
   },
-  'REPORT_FROM_APP': const <int, PDTagDefinition>{
+  'REPORT_FROM_APP': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00399500: PDTagDefinition.k4442
   },
-  'GEMS_VXTL_USERDATA_01': const <int, PDTagDefinition>{
+  'GEMS_VXTL_USERDATA_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00471100: PDTagDefinition.k4443
   },
-  'DL_INTERNAL_USE': const <int, PDTagDefinition>{
+  'DL_INTERNAL_USE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00158f00: PDTagDefinition.k4444
   },
-  'GEMS_LUNAR_RAW': const <int, PDTagDefinition>{
+  'GEMS_LUNAR_RAW': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70030100: PDTagDefinition.k4445,
     0x70030200: PDTagDefinition.k4446,
     0x70030300: PDTagDefinition.k4447,
     0x70030400: PDTagDefinition.k4448
   },
-  'GE_GROUP': const <int, PDTagDefinition>{
+  'GE_GROUP': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x60051000: PDTagDefinition.k4450
   },
-  'GEMS_IT_US_REPORT': const <int, PDTagDefinition>{
+  'GEMS_IT_US_REPORT': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00451100: PDTagDefinition.k4453,
     0x00451200: PDTagDefinition.k4454,
     0x00451300: PDTagDefinition.k4455
   },
-  'Applicare/Workflow/Version 1.0': const <int, PDTagDefinition>{
+  'Applicare/Workflow/Version 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31130100: PDTagDefinition.k4456,
     0x31131000: PDTagDefinition.k4457,
@@ -6412,7 +6412,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x3113e100: PDTagDefinition.k4480,
     0x3113e200: PDTagDefinition.k4481
   },
-  'GEHC_CT_ADVAPP_001': const <int, PDTagDefinition>{
+  'GEHC_CT_ADVAPP_001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00532000: PDTagDefinition.k4462,
     0x00534000: PDTagDefinition.k4463,
@@ -6475,37 +6475,35 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00539e00: PDTagDefinition.k10729,
     0x00539f00: PDTagDefinition.k10730
   },
-  'GE LUT Asymmetry Parameter': const <int, PDTagDefinition>{
+  'GE LUT Asymmetry Parameter': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00456700: PDTagDefinition.k4482
   },
-  'Applicare/Centricity Radiology Web/Version 1.0':
-      const <int, PDTagDefinition>{
+  'Applicare/Centricity Radiology Web/Version 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x41090100: PDTagDefinition.k4483,
     0x41090200: PDTagDefinition.k4484,
     0x41090300: PDTagDefinition.k4485
   },
-  'Applicare/Centricity Radiology Web/Version 2.0':
-      const <int, PDTagDefinition>{
+  'Applicare/Centricity Radiology Web/Version 2.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x41110100: PDTagDefinition.k4486,
     0x41110200: PDTagDefinition.k4487
   },
-  'GEMS-IT/Centricity RA600/7.0': const <int, PDTagDefinition>{
+  'GEMS-IT/Centricity RA600/7.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x41131000: PDTagDefinition.k4488
   },
-  'AMI StudyExtensions_01': const <int, PDTagDefinition>{
+  'AMI StudyExtensions_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31110100: PDTagDefinition.k4489
   },
-  'RadWorksTBR': const <int, PDTagDefinition>{
+  'RadWorksTBR': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31110200: PDTagDefinition.k4490,
     0x3111ff00: PDTagDefinition.k4491
   },
-  'Applicare/RadStore/Version 1.0': const <int, PDTagDefinition>{
+  'Applicare/RadStore/Version 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31130100: PDTagDefinition.k4492,
     0x31130200: PDTagDefinition.k4493,
@@ -6549,7 +6547,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x31136900: PDTagDefinition.k4531
   },
   'http://www.gemedicalsystems.com/it_solutions/orthoview/2.1':
-      const <int, PDTagDefinition>{
+      <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31171000: PDTagDefinition.k4534,
     0x31172000: PDTagDefinition.k4535,
@@ -6559,7 +6557,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x31176000: PDTagDefinition.k4539
   },
   'http://www.gemedicalsystems.com/it_solutions/bamwallthickness/1.0':
-      const <int, PDTagDefinition>{
+      <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31181000: PDTagDefinition.k4540,
     0x31182000: PDTagDefinition.k4541,
@@ -6568,7 +6566,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x31185000: PDTagDefinition.k4544,
     0x31186000: PDTagDefinition.k4545
   },
-  'AMI ImageContext_01': const <int, PDTagDefinition>{
+  'AMI ImageContext_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31091000: PDTagDefinition.k4546,
     0x31092000: PDTagDefinition.k4547,
@@ -6580,7 +6578,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x31098000: PDTagDefinition.k4553,
     0x31099000: PDTagDefinition.k4554
   },
-  'GEMS_FUNCTOOL_01': const <int, PDTagDefinition>{
+  'GEMS_FUNCTOOL_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00510d00: PDTagDefinition.k4556,
     0x00510200: PDTagDefinition.k4596,
@@ -6596,7 +6594,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00510100: PDTagDefinition.k10678,
     0x00510800: PDTagDefinition.k10679
   },
-  'Harmony R1.0': const <int, PDTagDefinition>{
+  'Harmony R1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k4557,
     0x00190100: PDTagDefinition.k4558,
@@ -6714,7 +6712,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00198200: PDTagDefinition.k4680,
     0x00198300: PDTagDefinition.k4681
   },
-  'Harmony R1.0 C2': const <int, PDTagDefinition>{
+  'Harmony R1.0 C2': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k4682,
     0x00190100: PDTagDefinition.k4683,
@@ -6743,7 +6741,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00198400: PDTagDefinition.k4706,
     0x00199100: PDTagDefinition.k4707
   },
-  'Harmony R1.0 C3': const <int, PDTagDefinition>{
+  'Harmony R1.0 C3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k4708,
     0x00190300: PDTagDefinition.k4709,
@@ -6788,7 +6786,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0019f100: PDTagDefinition.k4748,
     0x0019f200: PDTagDefinition.k4749
   },
-  'Harmony R2.0': const <int, PDTagDefinition>{
+  'Harmony R2.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00197900: PDTagDefinition.k4750,
     0x00197c00: PDTagDefinition.k4751,
@@ -6816,7 +6814,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00199700: PDTagDefinition.k4773,
     0x00199900: PDTagDefinition.k4774
   },
-  'Hologic': const <int, PDTagDefinition>{
+  'Hologic': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110000: PDTagDefinition.k4786,
     0x00130000: PDTagDefinition.k4788,
@@ -6831,7 +6829,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00290000: PDTagDefinition.k4823,
     0x00290100: PDTagDefinition.k4825
   },
-  'HOLOGIC': const <int, PDTagDefinition>{
+  'HOLOGIC': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110000: PDTagDefinition.k4787,
     0x00130000: PDTagDefinition.k4789,
@@ -6846,7 +6844,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00290000: PDTagDefinition.k4824,
     0x00290100: PDTagDefinition.k4826
   },
-  'LODOX_STATSCAN': const <int, PDTagDefinition>{
+  'LODOX_STATSCAN': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190100: PDTagDefinition.k4792,
     0x00190200: PDTagDefinition.k4793,
@@ -6857,17 +6855,17 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00190700: PDTagDefinition.k4798,
     0x00190800: PDTagDefinition.k4799
   },
-  'SCHICK TECHNOLOGIES - Change List Creator ID': const <int, PDTagDefinition>{
+  'SCHICK TECHNOLOGIES - Change List Creator ID': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k4800,
     0x00210200: PDTagDefinition.k4801
   },
-  'SCHICK TECHNOLOGIES - Note List Creator ID': const <int, PDTagDefinition>{
+  'SCHICK TECHNOLOGIES - Note List Creator ID': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k4802,
     0x00210200: PDTagDefinition.k4803
   },
-  'SCHICK TECHNOLOGIES - Change Item Creator ID': const <int, PDTagDefinition>{
+  'SCHICK TECHNOLOGIES - Change Item Creator ID': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k4804,
     0x00210200: PDTagDefinition.k4805,
@@ -6875,12 +6873,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00210400: PDTagDefinition.k4807,
     0x00210500: PDTagDefinition.k4808
   },
-  'SCHICK TECHNOLOGIES - Image Security Creator ID':
-      const <int, PDTagDefinition>{
+  'SCHICK TECHNOLOGIES - Image Security Creator ID': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k4827
   },
-  '2.16.840.1.114059.1.1.6.1.50.1': const <int, PDTagDefinition>{
+  '2.16.840.1.114059.1.1.6.1.50.1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00292000: PDTagDefinition.k4828,
     0x00292100: PDTagDefinition.k4829,
@@ -6891,7 +6888,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00292600: PDTagDefinition.k4834,
     0x00292700: PDTagDefinition.k4835
   },
-  'STENTOR': const <int, PDTagDefinition>{
+  'STENTOR': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00730100: PDTagDefinition.k4836,
     0x00730200: PDTagDefinition.k4837,
@@ -6899,7 +6896,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00730400: PDTagDefinition.k4839,
     0x00730600: PDTagDefinition.k4840
   },
-  'MMCPrivate': const <int, PDTagDefinition>{
+  'MMCPrivate': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190300: PDTagDefinition.k4846,
     0x00095000: PDTagDefinition.k5037,
@@ -7280,7 +7277,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00710600: PDTagDefinition.k10742,
     0x00710700: PDTagDefinition.k10743
   },
-  'Canon Inc.': const <int, PDTagDefinition>{
+  'Canon Inc.': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k4856,
     0x00191300: PDTagDefinition.k4857,
@@ -7296,7 +7293,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00191f00: PDTagDefinition.k4867,
     0x00192100: PDTagDefinition.k4868
   },
-  'SECTRA_Ident_01': const <int, PDTagDefinition>{
+  'SECTRA_Ident_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090100: PDTagDefinition.k4870,
     0x00090200: PDTagDefinition.k4871,
@@ -7305,18 +7302,18 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00090600: PDTagDefinition.k4874,
     0x00090700: PDTagDefinition.k4875
   },
-  'SECTRA_ImageInfo_01': const <int, PDTagDefinition>{
+  'SECTRA_ImageInfo_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k4876,
     0x00290200: PDTagDefinition.k4877,
     0x00290300: PDTagDefinition.k4878,
     0x00290400: PDTagDefinition.k4879
   },
-  'SECTRA_OverlayInfo_01': const <int, PDTagDefinition>{
+  'SECTRA_OverlayInfo_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x60010100: PDTagDefinition.k4880
   },
-  'BioPri': const <int, PDTagDefinition>{
+  'BioPri': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k4881,
     0x00090100: PDTagDefinition.k4882,
@@ -7329,7 +7326,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00090900: PDTagDefinition.k4889,
     0x00091000: PDTagDefinition.k4890
   },
-  'Silhouette VRS 3.0': const <int, PDTagDefinition>{
+  'Silhouette VRS 3.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291300: PDTagDefinition.k4891,
     0x00291400: PDTagDefinition.k4892,
@@ -7349,14 +7346,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00293500: PDTagDefinition.k4909,
     0x00293600: PDTagDefinition.k4910
   },
-  'ADAC_IMG': const <int, PDTagDefinition>{
+  'ADAC_IMG': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00192100: PDTagDefinition.k4900,
     0x00194100: PDTagDefinition.k4901,
     0x00196100: PDTagDefinition.k4902,
     0x00190200: PDTagDefinition.k10479
   },
-  'Hipaa Private Creator': const <int, PDTagDefinition>{
+  'Hipaa Private Creator': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110100: PDTagDefinition.k4911,
     0x00110200: PDTagDefinition.k4912,
@@ -7401,7 +7398,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00114100: PDTagDefinition.k4952,
     0x00114200: PDTagDefinition.k4953
   },
-  'LORAD Selenia': const <int, PDTagDefinition>{
+  'LORAD Selenia': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190600: PDTagDefinition.k4954,
     0x00190700: PDTagDefinition.k4955,
@@ -7430,7 +7427,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00198000: PDTagDefinition.k4978,
     0x00199000: PDTagDefinition.k4979
   },
-  'HOLOGIC, Inc.': const <int, PDTagDefinition>{
+  'HOLOGIC, Inc.': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190100: PDTagDefinition.k4980,
     0x00190200: PDTagDefinition.k4981,
@@ -7488,21 +7485,21 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7f011100: PDTagDefinition.k5033,
     0x7f011200: PDTagDefinition.k5034
   },
-  '1.2.840.113663.1': const <int, PDTagDefinition>{
+  '1.2.840.113663.1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k5035,
     0x00290100: PDTagDefinition.k5036
   },
-  'MeVis BreastCare': const <int, PDTagDefinition>{
+  'MeVis BreastCare': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190100: PDTagDefinition.k5256,
     0x00710100: PDTagDefinition.k5257
   },
-  'Viewing Protocol': const <int, PDTagDefinition>{
+  'Viewing Protocol': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00659300: PDTagDefinition.k5258
   },
-  'Mortara_Inc': const <int, PDTagDefinition>{
+  'Mortara_Inc': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x14550000: PDTagDefinition.k5259,
     0x14550100: PDTagDefinition.k5260,
@@ -7515,30 +7512,30 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x14550800: PDTagDefinition.k5267,
     0x14551000: PDTagDefinition.k5268
   },
-  'SEGAMI_HEADER': const <int, PDTagDefinition>{
+  'SEGAMI_HEADER': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00293100: PDTagDefinition.k5269,
     0x00293200: PDTagDefinition.k5270
   },
-  'SEGAMI MIML': const <int, PDTagDefinition>{
+  'SEGAMI MIML': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00319800: PDTagDefinition.k5271
   },
-  'SEGAMI__PAGE': const <int, PDTagDefinition>{
+  'SEGAMI__PAGE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00339700: PDTagDefinition.k5272,
     0x00339800: PDTagDefinition.k5273
   },
-  'SEGAMI__MEMO': const <int, PDTagDefinition>{
+  'SEGAMI__MEMO': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00359700: PDTagDefinition.k5274,
     0x00359800: PDTagDefinition.k5275
   },
-  'MedIns HP Extensions': const <int, PDTagDefinition>{
+  'MedIns HP Extensions': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x54730300: PDTagDefinition.k5276
   },
-  'MEDIFACE': const <int, PDTagDefinition>{
+  'MEDIFACE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k5277,
     0x00291000: PDTagDefinition.k5278,
@@ -7548,7 +7545,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00292200: PDTagDefinition.k5301,
     0x00293000: PDTagDefinition.k5302
   },
-  'Image (ID, Version, Size, Dump, GUID)': const <int, PDTagDefinition>{
+  'Image (ID, Version, Size, Dump, GUID)': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x80030000: PDTagDefinition.k5303,
     0x80031000: PDTagDefinition.k5304,
@@ -7556,28 +7553,27 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x80033000: PDTagDefinition.k5306,
     0x80034000: PDTagDefinition.k5307
   },
-  'ObjectModel (ID, Version, Place, PlaceDescription)':
-      const <int, PDTagDefinition>{
+  'ObjectModel (ID, Version, Place, PlaceDescription)': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x81010000: PDTagDefinition.k5308,
     0x81011000: PDTagDefinition.k5309
   },
-  'INFINITT_FMX': const <int, PDTagDefinition>{
+  'INFINITT_FMX': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00151000: PDTagDefinition.k5310,
     0x00151100: PDTagDefinition.k5311
   },
-  'BrainLAB_Conversion': const <int, PDTagDefinition>{
+  'BrainLAB_Conversion': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090100: PDTagDefinition.k5312,
     0x00090200: PDTagDefinition.k5313
   },
-  'BrainLAB_PatientSetup': const <int, PDTagDefinition>{
+  'BrainLAB_PatientSetup': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x32730000: PDTagDefinition.k5314,
     0x32730100: PDTagDefinition.k5315
   },
-  'BrainLAB_BeamProfile': const <int, PDTagDefinition>{
+  'BrainLAB_BeamProfile': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x34110100: PDTagDefinition.k5316,
     0x34110200: PDTagDefinition.k5317,
@@ -7586,14 +7582,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x34110500: PDTagDefinition.k5320,
     0x34110600: PDTagDefinition.k5321
   },
-  'V1': const <int, PDTagDefinition>{
+  'V1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110100: PDTagDefinition.k5322,
     0x00110200: PDTagDefinition.k5323,
     0x00110300: PDTagDefinition.k5324,
     0x00110400: PDTagDefinition.k5325
   },
-  'Voxar 2.16.124.113543.6003.1999.12.20.12.5.0': const <int, PDTagDefinition>{
+  'Voxar 2.16.124.113543.6003.1999.12.20.12.5.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x11350000: PDTagDefinition.k5326,
     0x11350100: PDTagDefinition.k5327,
@@ -7610,7 +7606,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x11351800: PDTagDefinition.k5338,
     0x11352100: PDTagDefinition.k5339
   },
-  'Kodak Image Information': const <int, PDTagDefinition>{
+  'Kodak Image Information': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291500: PDTagDefinition.k5340,
     0x00291600: PDTagDefinition.k5341,
@@ -7619,7 +7615,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291900: PDTagDefinition.k5345,
     0x00291a00: PDTagDefinition.k5346
   },
-  'NQLeft': const <int, PDTagDefinition>{
+  'NQLeft': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x01991200: PDTagDefinition.k5344,
     0x01991300: PDTagDefinition.k5497,
@@ -7680,14 +7676,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x01993900: PDTagDefinition.k5695,
     0x01993a00: PDTagDefinition.k5696
   },
-  'MAROTECH Inc.': const <int, PDTagDefinition>{
+  'MAROTECH Inc.': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00370100: PDTagDefinition.k5347,
     0x00372100: PDTagDefinition.k5348,
     0x00372200: PDTagDefinition.k5349,
     0x00372300: PDTagDefinition.k5350
   },
-  'BRIT Systems, Inc.': const <int, PDTagDefinition>{
+  'BRIT Systems, Inc.': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210000: PDTagDefinition.k5351,
     0x00210100: PDTagDefinition.k5352,
@@ -7741,7 +7737,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0021a700: PDTagDefinition.k5400,
     0x0021a800: PDTagDefinition.k5401
   },
-  'MDS NORDION OTP ANATOMY MODELLING': const <int, PDTagDefinition>{
+  'MDS NORDION OTP ANATOMY MODELLING': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x30050000: PDTagDefinition.k5402,
     0x30050200: PDTagDefinition.k5403,
@@ -7754,13 +7750,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x30051000: PDTagDefinition.k5410,
     0x30051200: PDTagDefinition.k5411
   },
-  'Imaging Dynamics Company Ltd.': const <int, PDTagDefinition>{
+  'Imaging Dynamics Company Ltd.': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x43214100: PDTagDefinition.k5412,
     0x43214200: PDTagDefinition.k5413,
     0x43216400: PDTagDefinition.k5414
   },
-  'Sound Technologies': const <int, PDTagDefinition>{
+  'Sound Technologies': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0xf0010000: PDTagDefinition.k5415,
     0xf0010100: PDTagDefinition.k5416,
@@ -7794,7 +7790,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0xf0011d00: PDTagDefinition.k5444,
     0xf0011e00: PDTagDefinition.k5445
   },
-  'A.L.I. Technologies, Inc.': const <int, PDTagDefinition>{
+  'A.L.I. Technologies, Inc.': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x37110100: PDTagDefinition.k5446,
     0x37110200: PDTagDefinition.k5447,
@@ -7808,18 +7804,18 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x37113000: PDTagDefinition.k5455,
     0x37119700: PDTagDefinition.k5456
   },
-  'NUD_PRIVATE': const <int, PDTagDefinition>{
+  'NUD_PRIVATE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x77770200: PDTagDefinition.k5457,
     0x77770500: PDTagDefinition.k5458
   },
-  'IDEXX': const <int, PDTagDefinition>{
+  'IDEXX': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110000: PDTagDefinition.k5459,
     0x00110100: PDTagDefinition.k5460,
     0x00110200: PDTagDefinition.k5461
   },
-  'WG12 Supplement 43': const <int, PDTagDefinition>{
+  'WG12 Supplement 43': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090100: PDTagDefinition.k5462,
     0x00090200: PDTagDefinition.k5463,
@@ -7865,17 +7861,17 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291000: PDTagDefinition.k5504,
     0x00410100: PDTagDefinition.k5505
   },
-  'HMC - CT - ID': const <int, PDTagDefinition>{
+  'HMC - CT - ID': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k5506,
     0x00090100: PDTagDefinition.k5507
   },
-  'SET WINDOW': const <int, PDTagDefinition>{
+  'SET WINDOW': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k5508,
     0x00190100: PDTagDefinition.k5509
   },
-  'Vital Images SW 3.4': const <int, PDTagDefinition>{
+  'Vital Images SW 3.4': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x56531000: PDTagDefinition.k5537,
     0x56531100: PDTagDefinition.k5538,
@@ -7894,14 +7890,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x56532400: PDTagDefinition.k5551,
     0x56532500: PDTagDefinition.k5552
   },
-  'PI Private Block (0781:3000 - 0781:30FF)': const <int, PDTagDefinition>{
+  'PI Private Block (0781:3000 - 0781:30FF)': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x07810100: PDTagDefinition.k5553,
     0x07810200: PDTagDefinition.k5554,
     0x07810500: PDTagDefinition.k5555,
     0x07810900: PDTagDefinition.k5556
   },
-  'Riverain Medical': const <int, PDTagDefinition>{
+  'Riverain Medical': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x02030000: PDTagDefinition.k5557,
     0x02030100: PDTagDefinition.k5558,
@@ -7911,7 +7907,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0203f000: PDTagDefinition.k5562,
     0x0203f100: PDTagDefinition.k5563
   },
-  'INTELERAD MEDICAL SYSTEMS INTELEVIEWER': const <int, PDTagDefinition>{
+  'INTELERAD MEDICAL SYSTEMS INTELEVIEWER': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00710100: PDTagDefinition.k5566,
     0x00710200: PDTagDefinition.k5567,
@@ -7922,7 +7918,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00710700: PDTagDefinition.k5572,
     0x00710a00: PDTagDefinition.k5573
   },
-  'DR Systems, Inc.': const <int, PDTagDefinition>{
+  'DR Systems, Inc.': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x44530000: PDTagDefinition.k5581,
     0x44530100: PDTagDefinition.k5582,
@@ -7932,11 +7928,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x44530a00: PDTagDefinition.k5586,
     0x44530c00: PDTagDefinition.k5587
   },
-  'ETIAM DICOMDIR': const <int, PDTagDefinition>{
+  'ETIAM DICOMDIR': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x08594000: PDTagDefinition.k5588
   },
-  'TERARECON AQUARIUS': const <int, PDTagDefinition>{
+  'TERARECON AQUARIUS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00771000: PDTagDefinition.k5589,
     0x00771200: PDTagDefinition.k5590,
@@ -7959,26 +7955,26 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00778800: PDTagDefinition.k5607,
     0x00779000: PDTagDefinition.k5608
   },
-  'EMAGEON STUDY HOME': const <int, PDTagDefinition>{
+  'EMAGEON STUDY HOME': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k5609,
     0x00090100: PDTagDefinition.k5610
   },
-  'EMAGEON JPEG2K INFO': const <int, PDTagDefinition>{
+  'EMAGEON JPEG2K INFO': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k5611,
     0x00090100: PDTagDefinition.k5612
   },
-  'RadWorksMarconi': const <int, PDTagDefinition>{
+  'RadWorksMarconi': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00292400: PDTagDefinition.k5613
   },
-  'MeVis eatDicom': const <int, PDTagDefinition>{
+  'MeVis eatDicom': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00091000: PDTagDefinition.k5614,
     0x00091100: PDTagDefinition.k5615
   },
-  'MeVis eD: Timepoint Information': const <int, PDTagDefinition>{
+  'MeVis eD: Timepoint Information': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00211000: PDTagDefinition.k5616,
     0x00211100: PDTagDefinition.k5617,
@@ -7986,7 +7982,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00211300: PDTagDefinition.k5619,
     0x00217100: PDTagDefinition.k5620
   },
-  'MeVis eD: Absolute Temporal Positions': const <int, PDTagDefinition>{
+  'MeVis eD: Absolute Temporal Positions': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00211000: PDTagDefinition.k5621,
     0x00211100: PDTagDefinition.k5622,
@@ -7994,15 +7990,15 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00211300: PDTagDefinition.k5624,
     0x00217100: PDTagDefinition.k5625
   },
-  'MeVis eD: Geometry Information': const <int, PDTagDefinition>{
+  'MeVis eD: Geometry Information': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00211000: PDTagDefinition.k5626
   },
-  'MeVis eD: Slice Information': const <int, PDTagDefinition>{
+  'MeVis eD: Slice Information': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00211000: PDTagDefinition.k5627
   },
-  'ShowcaseAppearance': const <int, PDTagDefinition>{
+  'ShowcaseAppearance': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291000: PDTagDefinition.k5628,
     0x00291100: PDTagDefinition.k5629,
@@ -8010,7 +8006,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291300: PDTagDefinition.k5631,
     0x00291400: PDTagDefinition.k5632
   },
-  'NQHeader': const <int, PDTagDefinition>{
+  'NQHeader': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00990100: PDTagDefinition.k5633,
     0x00990200: PDTagDefinition.k5634,
@@ -8021,7 +8017,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00992000: PDTagDefinition.k5639,
     0x00992100: PDTagDefinition.k5640
   },
-  'NQRight': const <int, PDTagDefinition>{
+  'NQRight': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x02990100: PDTagDefinition.k5697,
     0x02990200: PDTagDefinition.k5698,
@@ -8082,13 +8078,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x02993900: PDTagDefinition.k5753,
     0x02993a00: PDTagDefinition.k5754
   },
-  'VEPRO VIF 3.0 DATA': const <int, PDTagDefinition>{
+  'VEPRO VIF 3.0 DATA': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00552000: PDTagDefinition.k5755,
     0x00553000: PDTagDefinition.k5756,
     0x00556500: PDTagDefinition.k5757
   },
-  'VEPRO VIM 5.0 DATA': const <int, PDTagDefinition>{
+  'VEPRO VIM 5.0 DATA': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00551000: PDTagDefinition.k5758,
     0x00552000: PDTagDefinition.k5759,
@@ -8096,11 +8092,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00555100: PDTagDefinition.k5761,
     0x00556500: PDTagDefinition.k5762
   },
-  'VEPRO BROKER 1.0': const <int, PDTagDefinition>{
+  'VEPRO BROKER 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00571000: PDTagDefinition.k5763
   },
-  'VEPRO BROKER 1.0 DATA REPLACE': const <int, PDTagDefinition>{
+  'VEPRO BROKER 1.0 DATA REPLACE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00572000: PDTagDefinition.k5764,
     0x00573000: PDTagDefinition.k5765,
@@ -8110,11 +8106,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00574300: PDTagDefinition.k5769,
     0x00574400: PDTagDefinition.k5770
   },
-  'VEPRO DICOM TRANSFER 1.0': const <int, PDTagDefinition>{
+  'VEPRO DICOM TRANSFER 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00591000: PDTagDefinition.k5771
   },
-  'VEPRO DICOM RECEIVE DATA 1.0': const <int, PDTagDefinition>{
+  'VEPRO DICOM RECEIVE DATA 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00594000: PDTagDefinition.k5772,
     0x00594100: PDTagDefinition.k5773,
@@ -8126,7 +8122,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00596100: PDTagDefinition.k5783,
     0x00597000: PDTagDefinition.k5784
   },
-  'KONICA1.0': const <int, PDTagDefinition>{
+  'KONICA1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00314900: PDTagDefinition.k5774,
     0x00314a00: PDTagDefinition.k5820,
@@ -8321,7 +8317,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0031f000: PDTagDefinition.k6049,
     0x0031ff00: PDTagDefinition.k6050
   },
-  'CTP': const <int, PDTagDefinition>{
+  'CTP': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00131100: PDTagDefinition.k5775,
     0x00131200: PDTagDefinition.k5776,
@@ -8329,7 +8325,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00131000: PDTagDefinition.k10426,
     0x00131400: PDTagDefinition.k10427
   },
-  'dcm4che/archive': const <int, PDTagDefinition>{
+  'dcm4che/archive': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00431000: PDTagDefinition.k5785,
     0x00431100: PDTagDefinition.k5786,
@@ -8341,7 +8337,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00432000: PDTagDefinition.k5792,
     0x00433000: PDTagDefinition.k5793
   },
-  'IMS s.r.l. Biopsy Private Code': const <int, PDTagDefinition>{
+  'IMS s.r.l. Biopsy Private Code': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x12690100: PDTagDefinition.k5794,
     0x12691000: PDTagDefinition.k5795,
@@ -8353,7 +8349,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x12692300: PDTagDefinition.k5801,
     0x12692400: PDTagDefinition.k5802
   },
-  'IMS s.r.l. Mammography Private Code': const <int, PDTagDefinition>{
+  'IMS s.r.l. Mammography Private Code': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x12710100: PDTagDefinition.k5803,
     0x12710200: PDTagDefinition.k5804,
@@ -8413,7 +8409,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x12718400: PDTagDefinition.k5860,
     0x12718500: PDTagDefinition.k5861
   },
-  'DZDICOM 4.3.0': const <int, PDTagDefinition>{
+  'DZDICOM 4.3.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090100: PDTagDefinition.k6051,
     0x00090200: PDTagDefinition.k6052,
@@ -8441,14 +8437,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0009f700: PDTagDefinition.k6074,
     0x0009f900: PDTagDefinition.k6075
   },
-  'FOEM 1.0': const <int, PDTagDefinition>{
+  'FOEM 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00195000: PDTagDefinition.k6076,
     0x00251000: PDTagDefinition.k6077,
     0x00251200: PDTagDefinition.k6078,
     0x00292000: PDTagDefinition.k6079
   },
-  'Visus Change': const <int, PDTagDefinition>{
+  'Visus Change': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x55333300: PDTagDefinition.k6080,
     0x55333500: PDTagDefinition.k6081,
@@ -8456,7 +8452,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x55333900: PDTagDefinition.k6083,
     0x55333b00: PDTagDefinition.k6084
   },
-  'SYNARC_1.0': const <int, PDTagDefinition>{
+  'SYNARC_1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00990100: PDTagDefinition.k6085,
     0x00990200: PDTagDefinition.k6086,
@@ -8464,7 +8460,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00990400: PDTagDefinition.k6088,
     0x00990500: PDTagDefinition.k6089
   },
-  'PixelMed Publishing': const <int, PDTagDefinition>{
+  'PixelMed Publishing': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110200: PDTagDefinition.k6090,
     0x00110300: PDTagDefinition.k6091,
@@ -8489,18 +8485,18 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7fe10100: PDTagDefinition.k6110,
     0x7fe10200: PDTagDefinition.k6111
   },
-  'METAEMOTION GINKGO': const <int, PDTagDefinition>{
+  'METAEMOTION GINKGO': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110100: PDTagDefinition.k6112,
     0x00110b00: PDTagDefinition.k6113
   },
-  'METAEMOTION GINKGO RETINAL': const <int, PDTagDefinition>{
+  'METAEMOTION GINKGO RETINAL': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110100: PDTagDefinition.k6114,
     0x00110b00: PDTagDefinition.k6115,
     0x00110c00: PDTagDefinition.k6116
   },
-  'PMOD_1': const <int, PDTagDefinition>{
+  'PMOD_1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00550100: PDTagDefinition.k6117,
     0x00550200: PDTagDefinition.k6118,
@@ -8508,13 +8504,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00550400: PDTagDefinition.k6120,
     0x00550500: PDTagDefinition.k6121
   },
-  'PMOD_GENPET': const <int, PDTagDefinition>{
+  'PMOD_GENPET': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fe10100: PDTagDefinition.k6122,
     0x7fe10200: PDTagDefinition.k6123,
     0x7fe10300: PDTagDefinition.k6124
   },
-  'ULTRAVISUAL_TAG_SET1': const <int, PDTagDefinition>{
+  'ULTRAVISUAL_TAG_SET1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110100: PDTagDefinition.k6125,
     0x00110200: PDTagDefinition.k6126,
@@ -8530,18 +8526,18 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00111c00: PDTagDefinition.k6136,
     0x00111d00: PDTagDefinition.k6137
   },
-  'MATAKINA_10': const <int, PDTagDefinition>{
+  'MATAKINA_10': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00152800: PDTagDefinition.k6138,
     0x00152900: PDTagDefinition.k6139,
     0x00153000: PDTagDefinition.k6140
   },
-  'PM': const <int, PDTagDefinition>{
+  'PM': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x01010500: PDTagDefinition.k6141,
     0x01010600: PDTagDefinition.k6142
   },
-  'Biospace Med : EOS Tag': const <int, PDTagDefinition>{
+  'Biospace Med : EOS Tag': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x08631000: PDTagDefinition.k6143,
     0x08632300: PDTagDefinition.k6144,
@@ -8565,7 +8561,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x08634600: PDTagDefinition.k6162,
     0x08635700: PDTagDefinition.k6163
   },
-  'PRIVATE_CODE_STRING_0019': const <int, PDTagDefinition>{
+  'PRIVATE_CODE_STRING_0019': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k6164,
     0x00190100: PDTagDefinition.k6165,
@@ -8573,7 +8569,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00190300: PDTagDefinition.k6167,
     0x00190400: PDTagDefinition.k6168
   },
-  'PRIVATE_CODE_STRING_0021': const <int, PDTagDefinition>{
+  'PRIVATE_CODE_STRING_0021': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00217000: PDTagDefinition.k6169,
     0x00217100: PDTagDefinition.k6170,
@@ -8583,7 +8579,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00217500: PDTagDefinition.k6174,
     0x00217600: PDTagDefinition.k6175
   },
-  'PRIVATE_CODE_STRING_1001': const <int, PDTagDefinition>{
+  'PRIVATE_CODE_STRING_1001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x1001a000: PDTagDefinition.k6176,
     0x1001a100: PDTagDefinition.k6177,
@@ -8653,14 +8649,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x1001f200: PDTagDefinition.k6242,
     0x1001f300: PDTagDefinition.k6243
   },
-  'CAD Sciences': const <int, PDTagDefinition>{
+  'CAD Sciences': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x33350700: PDTagDefinition.k6217,
     0x33350000: PDTagDefinition.k6322,
     0x33350600: PDTagDefinition.k6323,
     0x33350800: PDTagDefinition.k6324
   },
-  'PRIVATE_CODE_STRING_1003': const <int, PDTagDefinition>{
+  'PRIVATE_CODE_STRING_1003': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x10030100: PDTagDefinition.k6244,
     0x10031000: PDTagDefinition.k6245,
@@ -8689,7 +8685,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x10034200: PDTagDefinition.k6268,
     0x10034300: PDTagDefinition.k6269
   },
-  'PRIVATE_CODE_STRING_3007': const <int, PDTagDefinition>{
+  'PRIVATE_CODE_STRING_3007': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x30070000: PDTagDefinition.k6270,
     0x30070100: PDTagDefinition.k6271,
@@ -8697,7 +8693,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x30070300: PDTagDefinition.k6273,
     0x30070400: PDTagDefinition.k6274
   },
-  'PRIVATE_CODE_STRING_300B': const <int, PDTagDefinition>{
+  'PRIVATE_CODE_STRING_300B': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x300b0000: PDTagDefinition.k6275,
     0x300b0100: PDTagDefinition.k6276,
@@ -8715,15 +8711,15 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x300b0e00: PDTagDefinition.k6288,
     0x300b0f00: PDTagDefinition.k6289
   },
-  'INSTRU_PRIVATE_IDENT_CODE': const <int, PDTagDefinition>{
+  'INSTRU_PRIVATE_IDENT_CODE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x000d0000: PDTagDefinition.k6290
   },
-  'SCANORA_PRIVATE_IDENT_CODE': const <int, PDTagDefinition>{
+  'SCANORA_PRIVATE_IDENT_CODE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x000d0000: PDTagDefinition.k6291
   },
-  'NNT': const <int, PDTagDefinition>{
+  'NNT': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190200: PDTagDefinition.k6292,
     0x00190300: PDTagDefinition.k6293,
@@ -8756,7 +8752,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00193200: PDTagDefinition.k6320,
     0x00193300: PDTagDefinition.k6321
   },
-  'iCAD PK': const <int, PDTagDefinition>{
+  'iCAD PK': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x33351000: PDTagDefinition.k6325,
     0x33351500: PDTagDefinition.k6326,
@@ -8824,7 +8820,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x3335b100: PDTagDefinition.k6388,
     0x3335c000: PDTagDefinition.k6389
   },
-  'iCAD PK Study': const <int, PDTagDefinition>{
+  'iCAD PK Study': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x33350000: PDTagDefinition.k6390,
     0x33350100: PDTagDefinition.k6391,
@@ -8855,12 +8851,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x33351a00: PDTagDefinition.k6416,
     0x33351b00: PDTagDefinition.k6417
   },
-  'TomTec': const <int, PDTagDefinition>{
+  'TomTec': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fdf5000: PDTagDefinition.k6418,
     0x7fdf5100: PDTagDefinition.k6419
   },
-  'CARESTREAM IMAGE INFORMATION': const <int, PDTagDefinition>{
+  'CARESTREAM IMAGE INFORMATION': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291500: PDTagDefinition.k6420,
     0x00291600: PDTagDefinition.k6421,
@@ -8870,24 +8866,24 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291a00: PDTagDefinition.k6425,
     0x00291b00: PDTagDefinition.k6426
   },
-  'Carestream Health TIFF': const <int, PDTagDefinition>{
+  'Carestream Health TIFF': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0xffffff00: PDTagDefinition.k6427
   },
-  'RamSoft File Kind Identifier': const <int, PDTagDefinition>{
+  'RamSoft File Kind Identifier': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31111000: PDTagDefinition.k6428
   },
-  'RamSoft Custom Report Identifier': const <int, PDTagDefinition>{
+  'RamSoft Custom Report Identifier': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31131000: PDTagDefinition.k6429,
     0x31132000: PDTagDefinition.k6430
   },
-  'RamSoft Race Identifier': const <int, PDTagDefinition>{
+  'RamSoft Race Identifier': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x31291000: PDTagDefinition.k6431
   },
-  'MDDX': const <int, PDTagDefinition>{
+  'MDDX': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110100: PDTagDefinition.k6432,
     0x00110200: PDTagDefinition.k6433,
@@ -8896,15 +8892,15 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7fe10200: PDTagDefinition.k6436,
     0x7fe10300: PDTagDefinition.k6437
   },
-  'QTUltrasound': const <int, PDTagDefinition>{
+  'QTUltrasound': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00990000: PDTagDefinition.k6438
   },
-  'BioscanMedisoScivisNanoSPECT': const <int, PDTagDefinition>{
+  'BioscanMedisoScivisNanoSPECT': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00093500: PDTagDefinition.k6439
   },
-  'MEDISO-1': const <int, PDTagDefinition>{
+  'MEDISO-1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00093000: PDTagDefinition.k6440,
     0x00093600: PDTagDefinition.k6441,
@@ -8930,7 +8926,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0009fb00: PDTagDefinition.k6461,
     0x00110600: PDTagDefinition.k6462
   },
-  'SCIVIS-1': const <int, PDTagDefinition>{
+  'SCIVIS-1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x6001a000: PDTagDefinition.k6463,
     0x6001a100: PDTagDefinition.k6464,
@@ -8945,30 +8941,30 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x6001aa00: PDTagDefinition.k6473,
     0x6001ab00: PDTagDefinition.k6474
   },
-  'Brainlab-S9-History': const <int, PDTagDefinition>{
+  'Brainlab-S9-History': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00093100: PDTagDefinition.k6475,
     0x00093200: PDTagDefinition.k6476,
     0x00093300: PDTagDefinition.k6477
   },
-  'Brainlab-S32-SO': const <int, PDTagDefinition>{
+  'Brainlab-S32-SO': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00630100: PDTagDefinition.k6478,
     0x00631000: PDTagDefinition.k6479
   },
-  'Brainlab-S23-ProjectiveFusion': const <int, PDTagDefinition>{
+  'Brainlab-S23-ProjectiveFusion': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00731000: PDTagDefinition.k6480
   },
-  'PHILIPS MR/PART 12': const <int, PDTagDefinition>{
+  'PHILIPS MR/PART 12': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0009211000: PDTagDefinition.k6482
   },
-  'PHILIPS MR/PART 7': const <int, PDTagDefinition>{
+  'PHILIPS MR/PART 7': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k6487
   },
-  'SPI-P-CTBE Release 1': const <int, PDTagDefinition>{
+  'SPI-P-CTBE Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k6488,
     0x00190200: PDTagDefinition.k6494,
@@ -8985,13 +8981,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00191c00: PDTagDefinition.k6514,
     0x00191d00: PDTagDefinition.k6516
   },
-  'SPI-P-Private-DiDi Release 1': const <int, PDTagDefinition>{
+  'SPI-P-Private-DiDi Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k6489,
     0x00190100: PDTagDefinition.k6492,
     0x00191000: PDTagDefinition.k6503
   },
-  'SPI-P-XSB-VISUB Release 1': const <int, PDTagDefinition>{
+  'SPI-P-XSB-VISUB Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k6490,
     0x00191000: PDTagDefinition.k6504,
@@ -9017,19 +9013,19 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00293200: PDTagDefinition.k6666,
     0x00293f00: PDTagDefinition.k6667
   },
-  'PHILIPS MR/PART 6': const <int, PDTagDefinition>{
+  'PHILIPS MR/PART 6': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00191000: PDTagDefinition.k6501
   },
-  'SPI-P-CTBE-Private Release 1': const <int, PDTagDefinition>{
+  'SPI-P-CTBE-Private Release 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210000: PDTagDefinition.k6634
   },
-  'PMS-THORA-5.1': const <int, PDTagDefinition>{
+  'PMS-THORA-5.1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00892000: PDTagDefinition.k6721
   },
-  'Philips PET Private Group': const <int, PDTagDefinition>{
+  'Philips PET Private Group': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x05110000: PDTagDefinition.k6722,
     0x05110100: PDTagDefinition.k6723,
@@ -9059,16 +9055,16 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x70531800: PDTagDefinition.k11161,
     0x7053c200: PDTagDefinition.k11162
   },
-  'Philips Imaging DD 124': const <int, PDTagDefinition>{
+  'Philips Imaging DD 124': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x10010300: PDTagDefinition.k6728
   },
-  'Philips Imaging DD 129': const <int, PDTagDefinition>{
+  'Philips Imaging DD 129': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20010000: PDTagDefinition.k6729,
     0x20010100: PDTagDefinition.k6731
   },
-  'Philips Imaging DD 002': const <int, PDTagDefinition>{
+  'Philips Imaging DD 002': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20010100: PDTagDefinition.k6730,
     0x20010200: PDTagDefinition.k6732,
@@ -9120,7 +9116,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x20017200: PDTagDefinition.k6864,
     0x20017300: PDTagDefinition.k6865
   },
-  'Philips X-ray Imaging DD 001': const <int, PDTagDefinition>{
+  'Philips X-ray Imaging DD 001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20030000: PDTagDefinition.k6932,
     0x20030100: PDTagDefinition.k6933,
@@ -9154,7 +9150,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x20033100: PDTagDefinition.k6961,
     0x20033200: PDTagDefinition.k6962
   },
-  'Philips MR Imaging DD 003': const <int, PDTagDefinition>{
+  'Philips MR Imaging DD 003': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20050000: PDTagDefinition.k6965,
     0x20050100: PDTagDefinition.k6970,
@@ -9178,7 +9174,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x20058100: PDTagDefinition.k7385,
     0x20058200: PDTagDefinition.k7387
   },
-  'Philips MR Imaging DD 004': const <int, PDTagDefinition>{
+  'Philips MR Imaging DD 004': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20050000: PDTagDefinition.k6966,
     0x20050100: PDTagDefinition.k6971,
@@ -9274,7 +9270,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x20059800: PDTagDefinition.k7430,
     0x20059900: PDTagDefinition.k7433
   },
-  'Philips MR Imaging DD 002': const <int, PDTagDefinition>{
+  'Philips MR Imaging DD 002': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20051500: PDTagDefinition.k7034,
     0x20051600: PDTagDefinition.k7039,
@@ -9300,11 +9296,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x20054700: PDTagDefinition.k7214,
     0x20059900: PDTagDefinition.k7432
   },
-  'Philips EV Imaging DD 022': const <int, PDTagDefinition>{
+  'Philips EV Imaging DD 022': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x20070000: PDTagDefinition.k7465
   },
-  'Philips RAD Imaging DD 001': const <int, PDTagDefinition>{
+  'Philips RAD Imaging DD 001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200b0000: PDTagDefinition.k7466,
     0x200b0100: PDTagDefinition.k7468,
@@ -9330,7 +9326,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200b4f00: PDTagDefinition.k7490,
     0x200b5200: PDTagDefinition.k7493
   },
-  'Philips RAD Imaging DD 097': const <int, PDTagDefinition>{
+  'Philips RAD Imaging DD 097': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200b0000: PDTagDefinition.k7467,
     0x200b0100: PDTagDefinition.k7469,
@@ -9369,7 +9365,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200b9b00: PDTagDefinition.k7523,
     0x200ba000: PDTagDefinition.k7524
   },
-  'Philips US Imaging DD 033': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 033': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0000: PDTagDefinition.k7525,
     0x200d0100: PDTagDefinition.k7528,
@@ -9388,7 +9384,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d1500: PDTagDefinition.k7680,
     0x200d2100: PDTagDefinition.k7726
   },
-  'Philips US Imaging DD 066': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 066': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0000: PDTagDefinition.k7526,
     0x200d0100: PDTagDefinition.k7537,
@@ -9396,7 +9392,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d0300: PDTagDefinition.k7558,
     0x200d0400: PDTagDefinition.k7569
   },
-  'Philips US Imaging DD 109': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 109': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0000: PDTagDefinition.k7527,
     0x200d0100: PDTagDefinition.k7538,
@@ -9420,7 +9416,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d1300: PDTagDefinition.k7672,
     0x200d1400: PDTagDefinition.k7678
   },
-  'Philips US Imaging DD 034': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 034': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0100: PDTagDefinition.k7529,
     0x200d0200: PDTagDefinition.k7541,
@@ -9457,7 +9453,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d2700: PDTagDefinition.k7747,
     0x200d2800: PDTagDefinition.k7751
   },
-  'Philips US Imaging DD 035': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 035': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0100: PDTagDefinition.k7530,
     0x200d0300: PDTagDefinition.k7552,
@@ -9469,14 +9465,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d0c00: PDTagDefinition.k7625,
     0x200d0d00: PDTagDefinition.k7633
   },
-  'Philips US Imaging DD 038': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 038': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0100: PDTagDefinition.k7531,
     0x200d0200: PDTagDefinition.k7543,
     0x200d0300: PDTagDefinition.k7554,
     0x200d0400: PDTagDefinition.k7565
   },
-  'Philips US Imaging DD 039': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 039': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0100: PDTagDefinition.k7532,
     0x200d0200: PDTagDefinition.k7544,
@@ -9510,7 +9506,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d6000: PDTagDefinition.k7810,
     0x200d6100: PDTagDefinition.k7812
   },
-  'Philips US Imaging DD 040': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 040': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0100: PDTagDefinition.k7533,
     0x200d0200: PDTagDefinition.k7545,
@@ -9521,7 +9517,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d0700: PDTagDefinition.k7591,
     0x200d2000: PDTagDefinition.k7723
   },
-  'Philips US Imaging DD 041': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 041': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0100: PDTagDefinition.k7534,
     0x200d0200: PDTagDefinition.k7546,
@@ -9553,11 +9549,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d2900: PDTagDefinition.k7755,
     0x200d3000: PDTagDefinition.k7763
   },
-  'Philips US Imaging DD 048': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 048': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0100: PDTagDefinition.k7535
   },
-  'Philips US Imaging DD 113': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 113': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0100: PDTagDefinition.k7539,
     0x200d0200: PDTagDefinition.k7549,
@@ -9599,7 +9595,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d2800: PDTagDefinition.k7754,
     0x200d3100: PDTagDefinition.k7768
   },
-  'Philips US Imaging DD 037': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 037': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0200: PDTagDefinition.k7542,
     0x200d0300: PDTagDefinition.k7553,
@@ -9613,11 +9609,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d0e00: PDTagDefinition.k7640,
     0x200d0f00: PDTagDefinition.k7646
   },
-  'Philips US Imaging DD 017': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 017': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0500: PDTagDefinition.k7572
   },
-  'Philips US Imaging DD 043': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 043': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0500: PDTagDefinition.k7577,
     0x200d0900: PDTagDefinition.k7608,
@@ -9662,15 +9658,15 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d4100: PDTagDefinition.k7781,
     0x200d4200: PDTagDefinition.k7782
   },
-  'Philips US Imaging DD 021': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 021': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0700: PDTagDefinition.k7587
   },
-  'Philips US Imaging DD 065': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 065': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d0700: PDTagDefinition.k7593
   },
-  'Philips US Imaging DD 036': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 036': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d1500: PDTagDefinition.k7681,
     0x200d1600: PDTagDefinition.k7686,
@@ -9679,7 +9675,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d1900: PDTagDefinition.k7699,
     0x200d2000: PDTagDefinition.k7722
   },
-  'Philips US Imaging DD 042': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 042': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d1500: PDTagDefinition.k7684,
     0x200d1600: PDTagDefinition.k7688,
@@ -9715,18 +9711,18 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200d7800: PDTagDefinition.k7821,
     0x200d8c00: PDTagDefinition.k7822
   },
-  'Philips US Imaging DD 046': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 046': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d1700: PDTagDefinition.k7693,
     0x200d1900: PDTagDefinition.k7701
   },
-  'Philips US Imaging DD 023': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 023': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200d3700: PDTagDefinition.k7774,
     0x200d3800: PDTagDefinition.k7776,
     0x200d4500: PDTagDefinition.k7783
   },
-  'Philips US Imaging DD 045': const <int, PDTagDefinition>{
+  'Philips US Imaging DD 045': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x200df100: PDTagDefinition.k7823,
     0x200df300: PDTagDefinition.k7824,
@@ -9737,14 +9733,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x200dfa00: PDTagDefinition.k7829,
     0x200dfb00: PDTagDefinition.k7831
   },
-  'Philips Imaging DD 067': const <int, PDTagDefinition>{
+  'Philips Imaging DD 067': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x40010000: PDTagDefinition.k7832,
     0x40010100: PDTagDefinition.k7833,
     0x40010800: PDTagDefinition.k7834,
     0x40010900: PDTagDefinition.k7835
   },
-  'Philips Imaging DD 070': const <int, PDTagDefinition>{
+  'Philips Imaging DD 070': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x40011000: PDTagDefinition.k7836,
     0x40011100: PDTagDefinition.k7837,
@@ -9756,11 +9752,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x40011c00: PDTagDefinition.k7843,
     0x40011d00: PDTagDefinition.k7844
   },
-  'Philips Imaging DD 065': const <int, PDTagDefinition>{
+  'Philips Imaging DD 065': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x40070000: PDTagDefinition.k7845
   },
-  'Philips Imaging DD 073': const <int, PDTagDefinition>{
+  'Philips Imaging DD 073': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x40074800: PDTagDefinition.k7846,
     0x40074b00: PDTagDefinition.k7847,
@@ -9769,11 +9765,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x40074e00: PDTagDefinition.k7850,
     0x40074f00: PDTagDefinition.k7851
   },
-  'Philips NM Private Group': const <int, PDTagDefinition>{
+  'Philips NM Private Group': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70430000: PDTagDefinition.k7852
   },
-  'PHILIPS NM -Private': const <int, PDTagDefinition>{
+  'PHILIPS NM -Private': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70510000: PDTagDefinition.k7853,
     0x70510100: PDTagDefinition.k7854,
@@ -9793,12 +9789,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x70512800: PDTagDefinition.k7870,
     0x70512900: PDTagDefinition.k7871
   },
-  'PHILIPS XCT -Private': const <int, PDTagDefinition>{
+  'PHILIPS XCT -Private': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70510100: PDTagDefinition.k7855,
     0x70510200: PDTagDefinition.k7857
   },
-  'Picker MR Private Group': const <int, PDTagDefinition>{
+  'Picker MR Private Group': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x71010000: PDTagDefinition.k7893,
     0x71010100: PDTagDefinition.k7894,
@@ -9809,12 +9805,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x71010600: PDTagDefinition.k7899,
     0x71011000: PDTagDefinition.k7900
   },
-  'SIEMENS SYNGO INSTANCE MANIFEST': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO INSTANCE MANIFEST': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k7901,
     0x00091000: PDTagDefinition.k7902
   },
-  'SIEMENS MED NM': const <int, PDTagDefinition>{
+  'SIEMENS MED NM': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00098000: PDTagDefinition.k7909,
     0x00111000: PDTagDefinition.k7927,
@@ -10009,7 +10005,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7fe31500: PDTagDefinition.k11165,
     0x7fe32900: PDTagDefinition.k11166
   },
-  'SIEMENS SYNGO INDEX SERVICE': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO INDEX SERVICE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00092000: PDTagDefinition.k7910,
     0x0009a000: PDTagDefinition.k7911,
@@ -10027,12 +10023,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00093000: PDTagDefinition.k7923,
     0x00095000: PDTagDefinition.k7924
   },
-  'SIEMENS AX INSPACE_EP': const <int, PDTagDefinition>{
+  'SIEMENS AX INSPACE_EP': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00095000: PDTagDefinition.k7925,
     0x00095100: PDTagDefinition.k7926
   },
-  'SIEMENS MR DATAMAPPING ATTRIBUTES': const <int, PDTagDefinition>{
+  'SIEMENS MR DATAMAPPING ATTRIBUTES': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00110100: PDTagDefinition.k7928,
     0x00110200: PDTagDefinition.k7929,
@@ -10050,16 +10046,16 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00110e00: PDTagDefinition.k7941,
     0x00110f00: PDTagDefinition.k7942
   },
-  'ESOFT_DICOM_ECAT_OWNERCODE': const <int, PDTagDefinition>{
+  'ESOFT_DICOM_ECAT_OWNERCODE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00150000: PDTagDefinition.k7943
   },
-  'Siemens: Thorax/Multix FD Version': const <int, PDTagDefinition>{
+  'Siemens: Thorax/Multix FD Version': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00170000: PDTagDefinition.k7945,
     0x00170100: PDTagDefinition.k7946
   },
-  'SIEMENS_FLCOMPACT_VA01A_PROC': const <int, PDTagDefinition>{
+  'SIEMENS_FLCOMPACT_VA01A_PROC': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00170a00: PDTagDefinition.k7950,
     0x00170b00: PDTagDefinition.k7951,
@@ -10127,7 +10123,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0017b000: PDTagDefinition.k8014,
     0x0017c000: PDTagDefinition.k8015
   },
-  'SIEMENS DFR.01 ORIGINAL': const <int, PDTagDefinition>{
+  'SIEMENS DFR.01 ORIGINAL': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00171100: PDTagDefinition.k8016,
     0x00171200: PDTagDefinition.k8017,
@@ -10173,7 +10169,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0017c100: PDTagDefinition.k8057,
     0x0017c200: PDTagDefinition.k8058
   },
-  'SIEMENS DFR.01 MANIPULATED': const <int, PDTagDefinition>{
+  'SIEMENS DFR.01 MANIPULATED': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00171100: PDTagDefinition.k8059,
     0x00171200: PDTagDefinition.k8060,
@@ -10204,7 +10200,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0017a200: PDTagDefinition.k8085,
     0x0017a300: PDTagDefinition.k8086
   },
-  'SIEMENS MED SP DXMG WH AWS 1': const <int, PDTagDefinition>{
+  'SIEMENS MED SP DXMG WH AWS 1': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190100: PDTagDefinition.k8087,
     0x00190200: PDTagDefinition.k8088,
@@ -10221,7 +10217,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00516500: PDTagDefinition.k8861,
     0x00550100: PDTagDefinition.k8884
   },
-  'SIEMENS Selma': const <int, PDTagDefinition>{
+  'SIEMENS Selma': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190600: PDTagDefinition.k8172,
     0x00190700: PDTagDefinition.k8173,
@@ -10235,11 +10231,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00193400: PDTagDefinition.k8181,
     0x00193500: PDTagDefinition.k8182
   },
-  'SIEMENS SIENET': const <int, PDTagDefinition>{
+  'SIEMENS SIENET': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190100: PDTagDefinition.k8198
   },
-  'SIEMENS MED SMS USG ANTARES': const <int, PDTagDefinition>{
+  'SIEMENS MED SMS USG ANTARES': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k8199,
     0x00190300: PDTagDefinition.k8200,
@@ -10293,7 +10289,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00198800: PDTagDefinition.k8255,
     0x0019a000: PDTagDefinition.k8256
   },
-  'SIEMENS SYNGO VOLUME': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO VOLUME': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00294400: PDTagDefinition.k8207,
     0x00294600: PDTagDefinition.k8260,
@@ -10307,11 +10303,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00294000: PDTagDefinition.k8515,
     0x00294200: PDTagDefinition.k8516
   },
-  'Siemens Ultrasound Miscellaneous': const <int, PDTagDefinition>{
+  'Siemens Ultrasound Miscellaneous': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00192000: PDTagDefinition.k8257
   },
-  'Siemens: Thorax/Multix FD Lab Settings': const <int, PDTagDefinition>{
+  'Siemens: Thorax/Multix FD Lab Settings': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k8258,
     0x00190100: PDTagDefinition.k8259,
@@ -10333,7 +10329,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00213000: PDTagDefinition.k8426,
     0x00213100: PDTagDefinition.k8427
   },
-  'SIEMENS MED SMS USG S2000': const <int, PDTagDefinition>{
+  'SIEMENS MED SMS USG S2000': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190000: PDTagDefinition.k8268,
     0x00190300: PDTagDefinition.k8269,
@@ -10387,12 +10383,12 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00198800: PDTagDefinition.k8318,
     0x00199500: PDTagDefinition.k8319
   },
-  'SIEMENS MED ECAT FILE INFO': const <int, PDTagDefinition>{
+  'SIEMENS MED ECAT FILE INFO': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210000: PDTagDefinition.k8322,
     0x00210100: PDTagDefinition.k8323
   },
-  'Siemens: Thorax/Multix FD Post Processing': const <int, PDTagDefinition>{
+  'Siemens: Thorax/Multix FD Post Processing': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210000: PDTagDefinition.k8390,
     0x00210100: PDTagDefinition.k8391,
@@ -10422,11 +10418,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00213000: PDTagDefinition.k8415,
     0x00213100: PDTagDefinition.k8416
   },
-  'KINETDX_GRAPHICS': const <int, PDTagDefinition>{
+  'KINETDX_GRAPHICS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0021a400: PDTagDefinition.k8428
   },
-  'KINETDX': const <int, PDTagDefinition>{
+  'KINETDX': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0021a600: PDTagDefinition.k8429,
     0x0021a500: PDTagDefinition.k8430,
@@ -10436,13 +10432,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0021ac00: PDTagDefinition.k8434,
     0x0021b400: PDTagDefinition.k8435
   },
-  'syngoDynamics': const <int, PDTagDefinition>{
+  'syngoDynamics': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0021ae00: PDTagDefinition.k8436,
     0x0021b000: PDTagDefinition.k8437,
     0x0021b100: PDTagDefinition.k8438
   },
-  'Siemens: Thorax/Multix FD Image Stamp': const <int, PDTagDefinition>{
+  'Siemens: Thorax/Multix FD Image Stamp': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00230000: PDTagDefinition.k8440,
     0x00230100: PDTagDefinition.k8441,
@@ -10450,7 +10446,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00230300: PDTagDefinition.k8443,
     0x00230400: PDTagDefinition.k8444
   },
-  'Siemens: Thorax/Multix FD Raw Image Settings': const <int, PDTagDefinition>{
+  'Siemens: Thorax/Multix FD Raw Image Settings': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00250000: PDTagDefinition.k8452,
     0x00250100: PDTagDefinition.k8453,
@@ -10491,46 +10487,46 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00253600: PDTagDefinition.k8489,
     0x00253700: PDTagDefinition.k8490
   },
-  'SIEMENS SYNGO ENHANCED IDATASET API': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO ENHANCED IDATASET API': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00270100: PDTagDefinition.k8491,
     0x00270200: PDTagDefinition.k8492,
     0x00270300: PDTagDefinition.k8493
   },
-  'SIEMENS SYNGO FUNCTION ASSIGNMENT': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO FUNCTION ASSIGNMENT': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k8494
   },
-  'SHS MagicView 300': const <int, PDTagDefinition>{
+  'SHS MagicView 300': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290200: PDTagDefinition.k8495,
     0x00290300: PDTagDefinition.k8496
   },
-  'SIEMENS MED MAMMO': const <int, PDTagDefinition>{
+  'SIEMENS MED MAMMO': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00295a00: PDTagDefinition.k8498
   },
-  'SIEMENS MED DISPLAY 0000': const <int, PDTagDefinition>{
+  'SIEMENS MED DISPLAY 0000': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00299900: PDTagDefinition.k8499,
     0x0029c100: PDTagDefinition.k8500,
     0x0029b000: PDTagDefinition.k8501,
     0x0029b200: PDTagDefinition.k8502
   },
-  'SIEMENS MED DISPLAY 0001': const <int, PDTagDefinition>{
+  'SIEMENS MED DISPLAY 0001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00299900: PDTagDefinition.k8503,
     0x0029a000: PDTagDefinition.k8504,
     0x0029a100: PDTagDefinition.k8505,
     0x0029a200: PDTagDefinition.k8506
   },
-  'SIEMENS SYNGO TIME POINT SERVICE': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO TIME POINT SERVICE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k8522,
     0x00290200: PDTagDefinition.k8523,
     0x00295000: PDTagDefinition.k8524
   },
-  'SIEMENS SYNGO ADVANCED PRESENTATION': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO ADVANCED PRESENTATION': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k8525,
     0x00290100: PDTagDefinition.k8526,
@@ -10720,7 +10716,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0029fc00: PDTagDefinition.k8712,
     0x0029fd00: PDTagDefinition.k8713
   },
-  'SIEMENS SYNGO FRAME SET': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO FRAME SET': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291000: PDTagDefinition.k8714,
     0x00291200: PDTagDefinition.k8715,
@@ -10729,19 +10725,19 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291800: PDTagDefinition.k8718,
     0x00292000: PDTagDefinition.k8719
   },
-  'SIEMENS SYNGO PRINT SERVICE': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO PRINT SERVICE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291000: PDTagDefinition.k8720
   },
-  'SIEMENS IKM CKS LUNGCAD BMK': const <int, PDTagDefinition>{
+  'SIEMENS IKM CKS LUNGCAD BMK': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k8721
   },
-  'SIEMENS IKM CKS CXRCAD FINDINGS': const <int, PDTagDefinition>{
+  'SIEMENS IKM CKS CXRCAD FINDINGS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k8722
   },
-  'SIEMENS SYNGO SOP CLASS PACKING': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO SOP CLASS PACKING': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00311000: PDTagDefinition.k8738,
     0x00312000: PDTagDefinition.k8739,
@@ -10763,19 +10759,19 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00317300: PDTagDefinition.k8761,
     0x00318000: PDTagDefinition.k8762
   },
-  'SIEMENS CSA ENVELOPE': const <int, PDTagDefinition>{
+  'SIEMENS CSA ENVELOPE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00291100: PDTagDefinition.k8752,
     0x00291000: PDTagDefinition.k10564
   },
-  'SIEMENS CSA REPORT': const <int, PDTagDefinition>{
+  'SIEMENS CSA REPORT': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290800: PDTagDefinition.k8753,
     0x00290900: PDTagDefinition.k8754,
     0x00291500: PDTagDefinition.k8755,
     0x00291700: PDTagDefinition.k8756
   },
-  'SIEMENS SYNGO WORKFLOW': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO WORKFLOW': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00311000: PDTagDefinition.k8763,
     0x00311100: PDTagDefinition.k8764,
@@ -10814,28 +10810,28 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00318200: PDTagDefinition.k8797,
     0x00318300: PDTagDefinition.k8798
   },
-  'SIEMENS MI RWVM SUV': const <int, PDTagDefinition>{
+  'SIEMENS MI RWVM SUV': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00410100: PDTagDefinition.k8812
   },
-  'SIEMENS WH SR 1.0': const <int, PDTagDefinition>{
+  'SIEMENS WH SR 1.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00710100: PDTagDefinition.k8910,
     0x00710200: PDTagDefinition.k8911
   },
-  'SIEMENS MED PT': const <int, PDTagDefinition>{
+  'SIEMENS MED PT': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00712300: PDTagDefinition.k8912,
     0x00712400: PDTagDefinition.k8913,
     0x00712100: PDTagDefinition.k8958,
     0x00712200: PDTagDefinition.k8959
   },
-  'SIEMENS SYNGO REGISTRATION': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO REGISTRATION': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00712000: PDTagDefinition.k8914,
     0x00712100: PDTagDefinition.k8915
   },
-  'SIEMENS SYNGO OBJECT GRAPHICS': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO OBJECT GRAPHICS': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00710000: PDTagDefinition.k8916,
     0x00710100: PDTagDefinition.k8960,
@@ -10960,7 +10956,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0071b600: PDTagDefinition.k9079,
     0x0071b700: PDTagDefinition.k9080
   },
-  'SIEMENS MED PT WAVEFORM': const <int, PDTagDefinition>{
+  'SIEMENS MED PT WAVEFORM': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00714600: PDTagDefinition.k8953,
     0x00714700: PDTagDefinition.k8954,
@@ -10968,7 +10964,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00714900: PDTagDefinition.k8956,
     0x00715000: PDTagDefinition.k8957
   },
-  'SIEMENS SYNGO LAYOUT PROTOCOL': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO LAYOUT PROTOCOL': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00730200: PDTagDefinition.k9081,
     0x00730400: PDTagDefinition.k9082,
@@ -11077,7 +11073,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0073fe00: PDTagDefinition.k9185,
     0x0073ff00: PDTagDefinition.k9186
   },
-  'SIEMENS SYNGO EVIDENCE DOCUMENT DATA': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO EVIDENCE DOCUMENT DATA': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00771000: PDTagDefinition.k9202,
     0x00771100: PDTagDefinition.k9203,
@@ -11092,11 +11088,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00777200: PDTagDefinition.k9212,
     0x00778000: PDTagDefinition.k9213
   },
-  'syngoDynamics_Reporting': const <int, PDTagDefinition>{
+  'syngoDynamics_Reporting': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0021ad00: PDTagDefinition.k9214
   },
-  'SIEMENS MR N3D': const <int, PDTagDefinition>{
+  'SIEMENS MR N3D': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00214a00: PDTagDefinition.k9215,
     0x00213000: PDTagDefinition.k9387,
@@ -11209,19 +11205,19 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0021c100: PDTagDefinition.k9494,
     0x0021c200: PDTagDefinition.k9495
   },
-  'SIEMENS SYNGO ENCAPSULATED DOCUMENT DATA': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO ENCAPSULATED DOCUMENT DATA': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00872000: PDTagDefinition.k9216,
     0x00873000: PDTagDefinition.k9217,
     0x00874000: PDTagDefinition.k9218
   },
-  'SIEMENS SYNGO 3D FUSION MATRIX': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO 3D FUSION MATRIX': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290800: PDTagDefinition.k9219,
     0x00290900: PDTagDefinition.k9220,
     0x00291000: PDTagDefinition.k9221
   },
-  'SIEMENS Ultrasound SC2000': const <int, PDTagDefinition>{
+  'SIEMENS Ultrasound SC2000': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00192d00: PDTagDefinition.k9222,
     0x00197200: PDTagDefinition.k9223,
@@ -11266,11 +11262,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7fd11000: PDTagDefinition.k9262,
     0x7fd11100: PDTagDefinition.k9263
   },
-  'SIEMENS SYNGO DATA PADDING': const <int, PDTagDefinition>{
+  'SIEMENS SYNGO DATA PADDING': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fdffc00: PDTagDefinition.k9264
   },
-  'SIEMENS MR HEADER': const <int, PDTagDefinition>{
+  'SIEMENS MR HEADER': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190800: PDTagDefinition.k9265,
     0x00190900: PDTagDefinition.k9266,
@@ -11311,7 +11307,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00511800: PDTagDefinition.k9606,
     0x00511900: PDTagDefinition.k9607
   },
-  'SIEMENS SERIES SHADOW ATTRIBUTES': const <int, PDTagDefinition>{
+  'SIEMENS SERIES SHADOW ATTRIBUTES': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k9287,
     0x00210200: PDTagDefinition.k9288,
@@ -11361,7 +11357,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00213800: PDTagDefinition.k9332,
     0x00213b00: PDTagDefinition.k9333
   },
-  'SIEMENS IMAGE SHADOW ATTRIBUTES': const <int, PDTagDefinition>{
+  'SIEMENS IMAGE SHADOW ATTRIBUTES': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k9334,
     0x00210200: PDTagDefinition.k9335,
@@ -11416,18 +11412,18 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00215b00: PDTagDefinition.k9384,
     0x00215e00: PDTagDefinition.k9385
   },
-  'SIEMENS MR IMA': const <int, PDTagDefinition>{
+  'SIEMENS MR IMA': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k9386
   },
-  'SIEMENS MR PHOENIX ATTRIBUTES': const <int, PDTagDefinition>{
+  'SIEMENS MR PHOENIX ATTRIBUTES': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k9496,
     0x00210200: PDTagDefinition.k9497,
     0x00210300: PDTagDefinition.k9498,
     0x0021f100: PDTagDefinition.k9499
   },
-  'SIEMENS MR SDS 01': const <int, PDTagDefinition>{
+  'SIEMENS MR SDS 01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x0021fe00: PDTagDefinition.k9500,
     0x00210100: PDTagDefinition.k9501,
@@ -11503,7 +11499,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00215200: PDTagDefinition.k9571,
     0x00215300: PDTagDefinition.k9572
   },
-  'SIEMENS MR MRS 05': const <int, PDTagDefinition>{
+  'SIEMENS MR MRS 05': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k9573,
     0x00210200: PDTagDefinition.k9574,
@@ -11522,13 +11518,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00214a00: PDTagDefinition.k9587,
     0x00214b00: PDTagDefinition.k9588
   },
-  'SIEMENS MR EXTRACTED CSA HEADER': const <int, PDTagDefinition>{
+  'SIEMENS MR EXTRACTED CSA HEADER': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00250100: PDTagDefinition.k9589,
     0x00250200: PDTagDefinition.k9590,
     0x00250300: PDTagDefinition.k9591
   },
-  'SIEMENS MR SDI 02': const <int, PDTagDefinition>{
+  'SIEMENS MR SDI 02': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k9608,
     0x00210200: PDTagDefinition.k9609,
@@ -11622,20 +11618,20 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00218000: PDTagDefinition.k9697,
     0x0021fe00: PDTagDefinition.k9698
   },
-  'SIEMENS MR CM 03': const <int, PDTagDefinition>{
+  'SIEMENS MR CM 03': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k9699,
     0x00210200: PDTagDefinition.k9700
   },
-  'SIEMENS MR PS 04': const <int, PDTagDefinition>{
+  'SIEMENS MR PS 04': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k9701
   },
-  'SIEMENS MR FOR 06': const <int, PDTagDefinition>{
+  'SIEMENS MR FOR 06': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210100: PDTagDefinition.k9702
   },
-  'SIEMENS CT APPL DATASET': const <int, PDTagDefinition>{
+  'SIEMENS CT APPL DATASET': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k9703,
     0x00290100: PDTagDefinition.k9704,
@@ -11690,17 +11686,17 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00294400: PDTagDefinition.k9753,
     0x00294500: PDTagDefinition.k9754
   },
-  'SIEMENS CT APPL EVIDENCEDOCUMENT': const <int, PDTagDefinition>{
+  'SIEMENS CT APPL EVIDENCEDOCUMENT': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k9755
   },
-  'SIEMENS CT APPL MEASUREMENT': const <int, PDTagDefinition>{
+  'SIEMENS CT APPL MEASUREMENT': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k9756,
     0x00290100: PDTagDefinition.k9757,
     0x00291000: PDTagDefinition.k9758
   },
-  'SIEMENS CT APPL PRESENTATION': const <int, PDTagDefinition>{
+  'SIEMENS CT APPL PRESENTATION': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k9759,
     0x00290100: PDTagDefinition.k9760,
@@ -11714,11 +11710,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00290900: PDTagDefinition.k9768,
     0x00291000: PDTagDefinition.k9769
   },
-  'SIEMENS CT APPL TMP DATAMODEL': const <int, PDTagDefinition>{
+  'SIEMENS CT APPL TMP DATAMODEL': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290000: PDTagDefinition.k9770
   },
-  'SIEMENS MED SMS USG ANTARES 3D VOLUME': const <int, PDTagDefinition>{
+  'SIEMENS MED SMS USG ANTARES 3D VOLUME': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00390000: PDTagDefinition.k9771,
     0x00390300: PDTagDefinition.k9772,
@@ -11857,7 +11853,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0039f500: PDTagDefinition.k9905,
     0x0039f600: PDTagDefinition.k9906
   },
-  'SIEMENS MED SMS USG S2000 3D VOLUME': const <int, PDTagDefinition>{
+  'SIEMENS MED SMS USG S2000 3D VOLUME': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00395000: PDTagDefinition.k9907,
     0x00395100: PDTagDefinition.k9908,
@@ -11959,19 +11955,19 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x0039f500: PDTagDefinition.k10005,
     0x0039f600: PDTagDefinition.k10006
   },
-  'SIEMENS MED OCS BEAM DISPLAY INFO': const <int, PDTagDefinition>{
+  'SIEMENS MED OCS BEAM DISPLAY INFO': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00397600: PDTagDefinition.k10007
   },
-  'SIEMENS MED OCS PUBLIC RT PLAN ATTRIBUTES': const <int, PDTagDefinition>{
+  'SIEMENS MED OCS PUBLIC RT PLAN ATTRIBUTES': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00390100: PDTagDefinition.k10008
   },
-  'SIEMENS MED OCS SS VERSION INFO': const <int, PDTagDefinition>{
+  'SIEMENS MED OCS SS VERSION INFO': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00397600: PDTagDefinition.k10009
   },
-  'BioPri3D': const <int, PDTagDefinition>{
+  'BioPri3D': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00112000: PDTagDefinition.k10010,
     0x00112400: PDTagDefinition.k10011,
@@ -11992,7 +11988,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00632000: PDTagDefinition.k10026,
     0x00632100: PDTagDefinition.k10027
   },
-  'PMI Private Calibration Module Version 2.0': const <int, PDTagDefinition>{
+  'PMI Private Calibration Module Version 2.0': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x21210100: PDTagDefinition.k10028,
     0x21210200: PDTagDefinition.k10029,
@@ -12008,14 +12004,14 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x21210d00: PDTagDefinition.k10039,
     0x21210e00: PDTagDefinition.k10040
   },
-  'POLYTRON-SMS 2.5': const <int, PDTagDefinition>{
+  'POLYTRON-SMS 2.5': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090200: PDTagDefinition.k10043,
     0x00090400: PDTagDefinition.k10044,
     0x00090600: PDTagDefinition.k10045,
     0x00891000: PDTagDefinition.k10046
   },
-  'SIEMENS MED SYNGO RT': const <int, PDTagDefinition>{
+  'SIEMENS MED SYNGO RT': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x300b1000: PDTagDefinition.k10047,
     0x300b1100: PDTagDefinition.k10048,
@@ -12115,20 +12111,19 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x300bf000: PDTagDefinition.k10142,
     0x300bf100: PDTagDefinition.k10143
   },
-  'SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING':
-      const <int, PDTagDefinition>{
+  'SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x7fd10100: PDTagDefinition.k10144,
     0x7fd10900: PDTagDefinition.k10145,
     0x7fd11000: PDTagDefinition.k10146,
     0x7fd11100: PDTagDefinition.k10147
   },
-  'SIEMENS Ultrasound S2000': const <int, PDTagDefinition>{
+  'SIEMENS Ultrasound S2000': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00210000: PDTagDefinition.k10148,
     0x00210100: PDTagDefinition.k10149
   },
-  'SMIL_PB79': const <int, PDTagDefinition>{
+  'SMIL_PB79': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00790000: PDTagDefinition.k10150,
     0x00790100: PDTagDefinition.k10151,
@@ -12153,27 +12148,27 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00791500: PDTagDefinition.k10170,
     0x00791700: PDTagDefinition.k10171
   },
-  'SMIO_PB7B': const <int, PDTagDefinition>{
+  'SMIO_PB7B': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x007b0000: PDTagDefinition.k10172
   },
-  'SMIO_PB7D': const <int, PDTagDefinition>{
+  'SMIO_PB7D': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x007d0100: PDTagDefinition.k10173,
     0x007d0200: PDTagDefinition.k10174,
     0x007d0300: PDTagDefinition.k10175
   },
-  'TOSHIBA_MEC_OT3': const <int, PDTagDefinition>{
+  'TOSHIBA_MEC_OT3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00090000: PDTagDefinition.k10176
   },
-  'TOSHIBA MDW NON-IMAGE': const <int, PDTagDefinition>{
+  'TOSHIBA MDW NON-IMAGE': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290800: PDTagDefinition.k10177,
     0x00290900: PDTagDefinition.k10178,
     0x00292000: PDTagDefinition.k10179
   },
-  'TOSHIBA MDW HEADER': const <int, PDTagDefinition>{
+  'TOSHIBA MDW HEADER': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290800: PDTagDefinition.k10180,
     0x00290900: PDTagDefinition.k10181,
@@ -12182,7 +12177,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00291900: PDTagDefinition.k10184,
     0x00292000: PDTagDefinition.k10185
   },
-  'TOSHIBA COMAPL HEADER': const <int, PDTagDefinition>{
+  'TOSHIBA COMAPL HEADER': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290800: PDTagDefinition.k10186,
     0x00290900: PDTagDefinition.k10187,
@@ -12191,13 +12186,13 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00293100: PDTagDefinition.k10190,
     0x00293400: PDTagDefinition.k10191
   },
-  'TOSHIBA COMAPL OOG': const <int, PDTagDefinition>{
+  'TOSHIBA COMAPL OOG': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290800: PDTagDefinition.k10192,
     0x00290900: PDTagDefinition.k10193,
     0x00291000: PDTagDefinition.k10195
   },
-  'PMTF INFORMATION DATA': const <int, PDTagDefinition>{
+  'PMTF INFORMATION DATA': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k10196,
     0x00293100: PDTagDefinition.k10197,
@@ -12208,7 +12203,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00299000: PDTagDefinition.k10202,
     0x70157300: PDTagDefinition.k10216
   },
-  'TOSHIBA_MEC_CT3': const <int, PDTagDefinition>{
+  'TOSHIBA_MEC_CT3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70056100: PDTagDefinition.k10203,
     0x70056200: PDTagDefinition.k10204,
@@ -12279,16 +12274,16 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x7005f200: PDTagDefinition.k11129,
     0x7005f300: PDTagDefinition.k11130
   },
-  'TOSHIBA ENCRYPTED SR DATA': const <int, PDTagDefinition>{
+  'TOSHIBA ENCRYPTED SR DATA': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70150000: PDTagDefinition.k10213
   },
-  'TOSHIBA_SR': const <int, PDTagDefinition>{
+  'TOSHIBA_SR': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70151000: PDTagDefinition.k10214,
     0x70156000: PDTagDefinition.k10215
   },
-  'TOSHIBA_MEC_XA3': const <int, PDTagDefinition>{
+  'TOSHIBA_MEC_XA3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70792100: PDTagDefinition.k10217,
     0x70792200: PDTagDefinition.k10218,
@@ -12380,7 +12375,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x70797b00: PDTagDefinition.k10304,
     0x70798000: PDTagDefinition.k10305
   },
-  'GE_YMS_NJ001': const <int, PDTagDefinition>{
+  'GE_YMS_NJ001': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00093100: PDTagDefinition.k10330,
     0x00190200: PDTagDefinition.k10492,
@@ -12422,11 +12417,11 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x004b0200: PDTagDefinition.k10675,
     0x004b0300: PDTagDefinition.k10676
   },
-  'GEMS_PATI_01': const <int, PDTagDefinition>{
+  'GEMS_PATI_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00111000: PDTagDefinition.k10404
   },
-  'Siemens MED NM': const <int, PDTagDefinition>{
+  'Siemens MED NM': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00190f00: PDTagDefinition.k10507,
     0x0019a500: PDTagDefinition.k10508,
@@ -12439,22 +12434,22 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x00210100: PDTagDefinition.k10521,
     0x00230100: PDTagDefinition.k10524
   },
-  'GEMS_CT_FLRO_01': const <int, PDTagDefinition>{
+  'GEMS_CT_FLRO_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00290100: PDTagDefinition.k10531,
     0x00290200: PDTagDefinition.k10532
   },
-  'GEMS_0039': const <int, PDTagDefinition>{
+  'GEMS_0039': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x00399500: PDTagDefinition.k10573
   },
-  'GEMS_HINO_CT_01': const <int, PDTagDefinition>{
+  'GEMS_HINO_CT_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x004b0100: PDTagDefinition.k10671,
     0x004b0200: PDTagDefinition.k10672,
     0x004b0300: PDTagDefinition.k10673
   },
-  'BrainWave: 1.2.840.113819.3': const <int, PDTagDefinition>{
+  'BrainWave: 1.2.840.113819.3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x10011100: PDTagDefinition.k10976,
     0x20011000: PDTagDefinition.k10977,
@@ -12488,7 +12483,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x2001b000: PDTagDefinition.k11005,
     0x2001c000: PDTagDefinition.k11006
   },
-  'GEMS_MR_RAW_01': const <int, PDTagDefinition>{
+  'GEMS_MR_RAW_01': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x70010100: PDTagDefinition.k11062,
     0x70010200: PDTagDefinition.k11063,
@@ -12502,7 +12497,7 @@ const Map<String, Map<int, PDTagDefinition>> pcTagDefinitions =
     0x70010a00: PDTagDefinition.k11071,
     0x70010b00: PDTagDefinition.k11072
   },
-  'TOSHIBA_MEC_MR3': const <int, PDTagDefinition>{
+  'TOSHIBA_MEC_MR3': <int, PDTagDefinition>{
     //'@type': 'PrivateDataTag',
     0x700d0000: PDTagDefinition.k11131,
     0x700d0100: PDTagDefinition.k11132,

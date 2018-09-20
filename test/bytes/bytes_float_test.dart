@@ -14,13 +14,13 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'bytes_test.dart', level: Level.info);
-  final rng = new RNG();
+  final rng = RNG();
   group('Bytes Float Tests', () {
 
     test('Basic Float32 tests', (){
       final vList0 = rng.float32List(5, 10);
       log.debug('vList0: $vList0');
-      final bytes0 = new Bytes.typedDataView(vList0);
+      final bytes0 = Bytes.typedDataView(vList0);
       final vList1 = bytes0.asFloat32List();
       log.debug('vList1: $vList1');
       expect(vList1, equals(vList0));
@@ -42,10 +42,10 @@ void main() {
       const length = 10;
       const loopCount = 100;
       const vInitial = 1.234;
-      final box = new ByteData(kFloat32Size);
+      final box = ByteData(kFloat32Size);
 
       for (var i = 0; i < loopCount; i++) {
-        final a = new Bytes(length * kFloat32Size);
+        final a = Bytes(length * kFloat32Size);
         log.debug('a: $a');
         assert(a.length == length * kFloat32Size, true);
 

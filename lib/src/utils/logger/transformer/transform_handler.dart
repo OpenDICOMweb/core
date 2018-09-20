@@ -35,7 +35,8 @@ import 'package:core/src/utils/logger/transformer/transformer.dart';
 class TransformHandler extends HandlerBase {
   final Transformer transform;
 
-  TransformHandler({this.transform, bool doPrint: false}) : super(doPrint: doPrint);
+  TransformHandler({this.transform, bool doPrint = false})
+      : super(doPrint: doPrint);
 
   /// This Base implementation simply prints the log record.
   @override

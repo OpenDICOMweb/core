@@ -33,10 +33,11 @@ class Entry {
   ''';
 
   @override
-  String toString() => (msg == null) ? '$name: $element' : '$name: $element - $msg';
+  String toString() =>
+      (msg == null) ? '$name: $element' : '$name: $element - $msg';
 
   static Entry invalidNumberOfValues(Element e) =>
-      new Entry(Level.error, e, 'Element with an invalid Number of values');
+      Entry(Level.error, e, 'Element with an invalid Number of values');
 }
 
 /// A warning about a Dataset or an Element in a Dataset.
@@ -45,7 +46,7 @@ class StatusReport {
   final List<Entry> entries = <Entry>[];
   bool doPrint;
 
-  StatusReport(this.name, {this.doPrint: true});
+  StatusReport(this.name, {this.doPrint = true});
 
   /// Turn console printing on.
   bool get printOn => doPrint = true;
@@ -55,7 +56,7 @@ class StatusReport {
 
   // Log(this.ieSeverity);
   Entry log(Level level, Element e, String message) {
-    final r = new Entry(level, e, message);
+    final r = Entry(level, e, message);
     entries.add(r);
     if (doPrint) print(r);
     return r;
@@ -89,7 +90,7 @@ class StatusReport {
   /// Log message at Level [Level.fatal].
   Entry fatal(Element e, [String msg]) {
     final entry = log(Level.fatal, e, msg);
-    throw new FatalError(entry);
+    throw FatalError(entry);
   }
 
   List<Entry> search(Level level) {
@@ -102,7 +103,7 @@ class StatusReport {
 
   String get json => '''
   {"@type": "StatusLog",
-   "@date": ${new DateTime.now()},
+   "@date": ${DateTime.now()},
    "Messages": [ ${entries.join(",")} ] }
    ''';
 
@@ -114,10 +115,10 @@ class StatusReport {
 }
 
 class FatalError extends Error {
-	Entry entry;
+  Entry entry;
 
-	FatalError(this.entry);
+  FatalError(this.entry);
 
-	@override
-	String toString() => '$entry';
+  @override
+  String toString() => '$entry';
 }

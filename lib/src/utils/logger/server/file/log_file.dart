@@ -16,7 +16,7 @@ enum LogType { text, json, map }
 
 enum TimeFmt { none, date, time, dateTime }
 
-const List<LogType> defaultLogFileTypes = const [LogType.text, LogType.json];
+const List<LogType> defaultLogFileTypes = [LogType.text, LogType.json];
 
 /// LogFileName format = name '_' suffix '.' ext
 class LogFile {
@@ -26,22 +26,22 @@ class LogFile {
   LogType type;
 
   LogFile(
-      {String prefix: 'log',
-      this.mode: LogMode.delete,
-      this.timeFmt: TimeFmt.dateTime,
-      this.type: LogType.text})
+      {String prefix = 'log',
+      this.mode = LogMode.delete,
+      this.timeFmt = TimeFmt.dateTime,
+      this.type = LogType.text})
       : path = _getPath(prefix, timeFmt, type);
 
   LogFile.json(
-      {String prefix: 'log',
-      this.mode: LogMode.delete,
-      this.timeFmt: TimeFmt.date})
+      {String prefix = 'log',
+      this.mode = LogMode.delete,
+      this.timeFmt = TimeFmt.date})
       : path = _getPath(prefix, timeFmt, LogType.json);
 
   LogFile.text(
-      {String prefix: 'log',
-      this.mode: LogMode.delete,
-      this.timeFmt: TimeFmt.date})
+      {String prefix = 'log',
+      this.mode = LogMode.delete,
+      this.timeFmt = TimeFmt.date})
       : path = _getPath(prefix, timeFmt, LogType.text);
 
   String get info => '''
@@ -54,7 +54,7 @@ $runtimeType: '$path',
 
   static String _getPath(String prefix, TimeFmt fmt, LogType type) {
     String fName;
-    final dt = new DateTime.now();
+    final dt = DateTime.now();
     switch (fmt) {
       case TimeFmt.none:
         fName = prefix;
@@ -69,7 +69,7 @@ $runtimeType: '$path',
         fName = '$prefix\_${dateTime(dt)}';
         break;
       default:
-        throw new ArgumentError('$fmt');
+        throw ArgumentError('$fmt');
     }
 
     switch (type) {
@@ -80,7 +80,7 @@ $runtimeType: '$path',
         fName = '$fName.json';
         break;
       default:
-        throw new ArgumentError('Invalid type: $type');
+        throw ArgumentError('Invalid type: $type');
     }
     return fName;
   }
@@ -88,5 +88,5 @@ $runtimeType: '$path',
 
 class LogCache {
   int uploadCount = 50;
-  final LogFile name = new LogFile(prefix: 'logFileCache');
+  final LogFile name = LogFile(prefix: 'logFileCache');
 }

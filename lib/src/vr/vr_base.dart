@@ -121,7 +121,7 @@ bool isLongStringVR(int vrIndex) => vrIndex >= kUCIndex && vrIndex <= kUTIndex;
 
 /// Returns _true_ if the VR with _vrIndex_
 /// is, by definition, always a valid length.
-const List<int> kVFLengthAlwaysValidIndices = const <int>[
+const List<int> kVFLengthAlwaysValidIndices = <int>[
   kSQIndex, kUNIndex, kOBIndex, kOWIndex, kOLIndex, // No reformat
   kODIndex, kOFIndex, kUCIndex, kURIndex, kUTIndex, kOBOWIndex
 ];
@@ -129,20 +129,20 @@ const List<int> kVFLengthAlwaysValidIndices = const <int>[
 bool isVFLengthAlwaysValid(int vrIndex) =>
     kVFLengthAlwaysValidIndices.contains(vrIndex);
 
-const List<int> kUndefinedLengthVRIndices = const <int>[
+const List<int> kUndefinedLengthVRIndices = <int>[
   kSQIndex, kOBIndex, kOWIndex, kUNIndex // No reformat
 ];
 
 bool isUndefinedLengthAllowed(int vrIndex) =>
     kUndefinedLengthVRCodes.contains(vrIndex);
 
-const List<int> kNullPaddingVRIndices = const <int>[
+const List<int> kNullPaddingVRIndices = <int>[
   kOBIndex,
   // kUNIndex, // UN should never have padding removed or added
   kUIIndex
 ];
 
-const List<int> kUndefinedLengthVRCodes = const <int>[
+const List<int> kUndefinedLengthVRCodes = <int>[
   kSQCode,
   kOBCode,
   kOWCode,
@@ -152,7 +152,7 @@ const List<int> kUndefinedLengthVRCodes = const <int>[
 String vrIdFromIndex(int vrIndex) => vrIdByIndex[vrIndex];
 int vrIndexFromId(String id) => vrIdByIndex.indexOf(id);
 
-const List<String> vrIdByIndex = const <String>[
+const List<String> vrIdByIndex = <String>[
   // Begin maybe undefined length
   'SQ', // Sequence == 0,
   // Begin EVR Long
@@ -172,7 +172,7 @@ const List<String> vrIdByIndex = const <String>[
 
 String vrNameFromIndex(int vrIndex) => vrNameByIndex[vrIndex];
 
-const List<String> vrNameByIndex = const <String>[
+const List<String> vrNameByIndex = <String>[
   // Begin maybe undefined length
   'Sequence', // Sequence == 0,
   // Begin EVR Long
@@ -191,7 +191,7 @@ const List<String> vrNameByIndex = const <String>[
   'Unsigned Short',
 ];
 
-const List<int> vrCodeByIndex = const <int>[
+const List<int> vrCodeByIndex = <int>[
   // Begin maybe undefined length
   kSQCode, // Sequence == 0,
   // Begin EVR Long
@@ -207,7 +207,7 @@ const List<int> vrCodeByIndex = const <int>[
   kUICode, kULCode, kUSCode
 ];
 
-const List<int> vrElementSizeByIndex = const <int>[
+const List<int> vrElementSizeByIndex = <int>[
   // Begin maybe undefined length
   1, // Sequence == 0,
   // Begin EVR Long
@@ -281,7 +281,7 @@ const int kUSCode = 0x5553;
 const int kUTCode = 0x5554;
 const int kUTMaxLength = kMaxLongVF;
 
-const Map<int, int> vrIndexByCode8Bit = const <int, int>{
+const Map<int, int> vrIndexByCode8Bit = <int, int>{
   kAECode: kAEIndex, kASCode: kASIndex, kATCode: kATIndex, kCSCode: kCSIndex,
   kDACode: kDAIndex, kDSCode: kDSIndex, kDTCode: kDTIndex, kFDCode: kFDIndex,
   kFLCode: kFLIndex, kISCode: kISIndex, kLOCode: kLOIndex, kLTCode: kLTIndex,

@@ -60,7 +60,7 @@ abstract class ReplaceMixin<V> {
   List<V> replace(int index, Iterable<V> vList, {bool required = false}) {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
-    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    if (e == null) return required ? elementNotPresentError(index) : null;
     final v = e.values;
     e.replace(vList);
     return v;
@@ -73,7 +73,7 @@ abstract class ReplaceMixin<V> {
       {bool required = false}) {
     assert(index != null && f != null);
     final e = lookup(index, required: required);
-    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    if (e == null) return required ? elementNotPresentError(index) : null;
     final v = e.values;
     e.replace(f(v));
     return v;
@@ -124,7 +124,7 @@ abstract class ReplaceMixin<V> {
   List<Uid> replaceUids(int index, Iterable<Uid> uids,
       {bool required = false}) {
     final old = lookup(index);
-    if (old == null) return (required) ? elementNotPresentError(index) : null;
+    if (old == null) return required ? elementNotPresentError(index) : null;
     return (old is UI) ? old.replaceUid(uids) : badUidElement(old);
   }
 

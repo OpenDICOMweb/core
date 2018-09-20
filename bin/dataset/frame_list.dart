@@ -25,7 +25,7 @@ void main() {
   const nFrames0 = 1;
   const photometricInterpretation0 = 'MONOCHROME3';
 
-  final c8FDc = new FrameDescriptor(
+  final c8FDc = FrameDescriptor(
       ts0,
       samplesPerPixel0,
       photometricInterpretation0,
@@ -38,8 +38,8 @@ void main() {
       planarConfiguration0,
       pixelAspectRatio: pixelAspectRatio0);
 
-  final offSets = new Uint32List(0);
-  final bulkData = new Uint8List(0);
-  final foo = new CompressedFrameList(bulkData, offSets, nFrames0, c8FDc);
+  final offSets = Uint32List(0);
+  final bulkData = Uint8List(0);
+  final foo = CompressedFrameList(bulkData, offSets, nFrames0, c8FDc);
   print('foo: $foo');
 }

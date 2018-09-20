@@ -18,17 +18,17 @@ import 'package:core/src/values/uid.dart';
 // ignore_for_file: public_member_api_docs
 
 Null badElementIndex(int index,
-                     {Element e, bool required = false, Issues issues}) {
+    {Element e, bool required = false, Issues issues}) {
   final code = dcm(index);
   final msg = (required)
-              ? 'InvalidRequiredElementIndex: $code'
-              : 'InvalidElementIndex: $code';
+      ? 'InvalidRequiredElementIndex: $code'
+      : 'InvalidElementIndex: $code';
   if (issues != null) issues.add(msg);
   return badElement(msg, e, issues);
 }
 
 bool invalidElementIndex(int index,
-                         {Element e, bool required = false, Issues issues}) {
+    {Element e, bool required = false, Issues issues}) {
   badElementIndex(index, e: e, required: required, issues: issues);
   return false;
 }
@@ -42,7 +42,6 @@ class InvalidValueFieldError extends Error {
   @override
   String toString() => msg;
 }
-
 
 /*
 class RetainedElementError<K> extends Error {
@@ -61,7 +60,7 @@ class RetainedElementError<K> extends Error {
 
 Null retainedElementError<K>(K key, [String msg]) {
   log.error(RetainedElementError._msg(key, msg));
-  if (throwOnError) throw new RetainedElementError(key);
+  if (throwOnError) throw  RetainedElementError(key);
   return null;
 }
 */
@@ -81,7 +80,7 @@ class DeletedElementError<K> extends Error {
 
 Null deletedElementError<K>(K key) {
   log.error(DeletedElementError._msg(key));
-  if (throwOnError) throw new DeletedElementError(key);
+  if (throwOnError) throw DeletedElementError(key);
   return null;
 }
 
@@ -99,26 +98,26 @@ class ElementNotPresentError extends Error {
 
 Null elementNotPresentError<K>(K key) {
   log.error(ElementNotPresentError._msg(key));
-  if (throwOnError) throw new ElementNotPresentError(key);
+  if (throwOnError) throw ElementNotPresentError(key);
   return null;
 }
 
 class DuplicateElementError extends Error {
   final Element oldE;
-  final Element newE;
+  final Element E;
 
-  DuplicateElementError(this.oldE, this.newE);
+  DuplicateElementError(this.oldE, this.E);
 
   @override
-  String toString() => _msg(oldE, newE);
+  String toString() => _msg(oldE, E);
 
-  static String _msg(Element oldE, Element newE) =>
-      'DuplicateElementError:\n  old: $oldE\n  new: $newE';
+  static String _msg(Element oldE, Element E) =>
+      'DuplicateElementError:\n  old: $oldE\n  : $E';
 }
 
-Null duplicateElementError(Element oldE, Element newE) {
-  log.error(DuplicateElementError._msg(oldE, newE));
-  if (throwOnError) throw new DuplicateElementError(oldE, newE);
+Null duplicateElementError(Element oldE, Element E) {
+  log.error(DuplicateElementError._msg(oldE, E));
+  if (throwOnError) throw DuplicateElementError(oldE, E);
   return null;
 }
 
@@ -140,7 +139,7 @@ class InvalidElementError extends Error {
 
 Null invalidElementError<V>(Element e) {
   log.error(InvalidElementError._msg(e));
-  if (throwOnError) throw new InvalidElementError(e);
+  if (throwOnError) throw  InvalidElementError(e);
   return null;
 }
 */
@@ -162,7 +161,7 @@ class InvalidTransferSyntax extends Error {
 
 Null invalidTransferSyntax(TransferSyntax ts, [TransferSyntax target]) {
   log.error(InvalidTransferSyntax._msg(ts, target));
-  if (throwOnError) throw new InvalidTransferSyntax(ts, target);
+  if (throwOnError) throw InvalidTransferSyntax(ts, target);
   return null;
 }
 
@@ -179,7 +178,7 @@ class DuplicateUidError extends Error {
 
 Null duplicateUidError(Uid uid) {
   log.error(DuplicateUidError._msg(uid));
-  if (throwOnError) throw new DuplicateUidError(uid);
+  if (throwOnError) throw DuplicateUidError(uid);
   return null;
 }
 
@@ -199,29 +198,29 @@ class DuplicateItemError extends Error {
 
 Null duplicateItemError(Dataset item) {
   log.error(DuplicateItemError._msg(item));
-  if (throwOnError) throw new DuplicateItemError(item);
+  if (throwOnError) throw DuplicateItemError(item);
   return null;
 }
 
 class DuplicateEntityError extends Error {
   final Entity oldE;
-  final Entity newE;
+  final Entity E;
 
-  DuplicateEntityError(this.oldE, this.newE);
+  DuplicateEntityError(this.oldE, this.E);
 
   @override
-  String toString() => _msg(oldE, newE);
+  String toString() => _msg(oldE, E);
 
-  static String _msg(Entity oldE, Entity newE) {
+  static String _msg(Entity oldE, Entity E) {
     final vOld = (oldE == null) ? 'null' : '$oldE';
-    final vNew = (newE == null) ? 'null' : '$newE';
-    return 'DuplicateEntityError:\n  old: $vOld\n  new: $vNew';
+    final v = (E == null) ? 'null' : '$E';
+    return 'DuplicateEntityError:\n  old: $vOld\n  : $v';
   }
 }
 
-Null duplicateEntityError(Entity oldE, Entity newE) {
-  log.error(DuplicateEntityError._msg(oldE, newE));
-  if (throwOnError) throw new DuplicateEntityError(oldE, newE);
+Null duplicateEntityError(Entity oldE, Entity E) {
+  log.error(DuplicateEntityError._msg(oldE, E));
+  if (throwOnError) throw DuplicateEntityError(oldE, E);
   return null;
 }
 
@@ -241,7 +240,7 @@ class MissingUidError<K> extends Error {
 
 Null missingUidError<K>(K key) {
   log.error(MissingUidError._msg(key));
-  if (throwOnError) throw new MissingUidError(key);
+  if (throwOnError) throw MissingUidError(key);
   return null;
 }
 
@@ -256,10 +255,11 @@ class MissingElementError<K> extends Error {
 }
 
 Null missingRequiredElement<K>(K key, {bool wasRequired = false}) {
-  final msg =
-      (wasRequired) ? 'MissingRequiredElementError: $key' : 'MissingElementError: $key';
+  final msg = wasRequired
+      ? 'MissingRequiredElementError: $key'
+      : 'MissingElementError: $key';
   log.error(msg);
-  if (throwOnError) throw new MissingElementError(key, msg);
+  if (throwOnError) throw MissingElementError(key, msg);
   return null;
 }
 
@@ -276,7 +276,7 @@ class MissingRequiredValuesError extends Error {
 
 Null missingRequiredValuesError(Element e) {
   log.error(MissingRequiredValuesError._msg(e));
-  if (throwOnError) throw new MissingRequiredValuesError(e);
+  if (throwOnError) throw MissingRequiredValuesError(e);
   return null;
 }
 
@@ -293,6 +293,6 @@ class PixelDataNotPresent extends Error {
 
 Null pixelDataNotPresent([String msg]) {
   log.error(PixelDataNotPresent._msg(msg));
-  if (throwOnError) throw new PixelDataNotPresent(msg);
+  if (throwOnError) throw PixelDataNotPresent(msg);
   return null;
 }

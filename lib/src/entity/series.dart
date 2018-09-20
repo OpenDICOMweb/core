@@ -18,27 +18,25 @@ import 'package:core/src/values/uid.dart';
 
 /// A DICOM [Series] Instance in SOP Instance format.
 class Series extends Entity {
-
-  /// Creates a new [Series].
-  Series(Study study, Uid uid, RootDataset rds,
-      [Map<Uid, Instance> instances])
+  /// Creates a  [Series].
+  Series(Study study, Uid uid, RootDataset rds, [Map<Uid, Instance> instances])
       : super(study, uid, rds,
             (instances == null) ? <Uid, Instance>{} : instances);
 
-  /// Returns a copy of _this_ [Series], but with a new [Uid]. If [parent]
-  /// is _null_ the new [Instance] is in the same [Series] as _this_.
+  /// Returns a copy of _this_ [Series], but with a  [Uid]. If [parent]
+  /// is _null_ the  [Instance] is in the same [Series] as _this_.
   Series.from(Series series, RootDataset rds, [Study parent])
-      : super((parent == null) ? series.parent : parent, new Uid(), rds,
-            new Map.from(series.children));
+      : super((parent == null) ? series.parent : parent, Uid(), rds,
+            Map.from(series.children));
 
-  /// Returns a new [Series] created from the [RootDataset].
+  /// Returns a  [Series] created from the [RootDataset].
   factory Series.fromRootDataset(RootDataset rds, Study study) {
     assert(study != null);
     final e = rds[kSeriesInstanceUID];
     if (e == null) return elementNotPresentError(e);
-    final seriesUid = new Uid(e.value);
+    final seriesUid = Uid(e.value);
     // log.debug('seriesUid: $seriesUid');
-    final series = new Series(study, seriesUid, rds);
+    final series = Series(study, seriesUid, rds);
     study.putIfAbsent(series);
     return series;
   }
@@ -68,8 +66,7 @@ class Series extends Entity {
   /// Returns the [Instance]s contained in _this_.
   Iterable<Instance> get instances => children.values;
 
-
-  /// Adds a new [Instance] to the [Series].  Throws a [DuplicateEntityError]
+  /// Adds a  [Instance] to the [Series].  Throws a [DuplicateEntityError]
   /// if _this_ has an existing [Instance] with the same [Uid].
   Instance putIfAbsent(Instance instance) {
     final v = children.putIfAbsent(instance.uid, () => instance);
@@ -77,7 +74,7 @@ class Series extends Entity {
     return instance;
   }
 
-  /// Returns a new [Instance] created from [rds].
+  /// Returns a  [Instance] created from [rds].
   Instance createInstanceFromRootDataset(RootDataset rds) =>
-      new Instance.fromRDS(rds, this);
+      Instance.fromRDS(rds, this);
 }

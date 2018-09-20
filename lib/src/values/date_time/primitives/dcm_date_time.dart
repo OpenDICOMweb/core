@@ -75,11 +75,11 @@ int sha256Microseconds(int us, [int onError(int n)]) =>
 // instead of 63 bits.
 int _hashMicroseconds(int us, int hash(int v), [int onError(int n)]) {
   if (us < kMinYearInMicroseconds || us > kMaxYearInMicroseconds)
-    return (onError == null) ? throw new Error() : onError(us);
+    return (onError == null) ? throw Error() : onError(us);
   var v = us;
   do {
     v = hash(v);
-  } while ((v <= kMicrosecondsPerDay));
+  } while (v <= kMicrosecondsPerDay);
   return (v.isNegative)
       ? v % kMinYearInMicroseconds
       : v % kMaxYearInMicroseconds;
@@ -116,12 +116,12 @@ String dateTimeString(int y, int m, int d, int h, int mm, int s, int ms, int us,
 
 String inetDateTimeString(
         int y, int m, int d, int h, int mm, int s, int ms, int us,
-        {bool truncate: false}) =>
+        {bool truncate = false}) =>
     dateTimeString(y, m, d, h, mm, s, ms, us,
         asDicom: false, truncate: truncate);
 
 String dicomDateTimeString(
         int y, int m, int d, int h, int mm, int s, int ms, int us,
-        {bool truncate: false}) =>
+        {bool truncate = false}) =>
     dateTimeString(y, m, d, h, mm, s, ms, us,
         asDicom: true, truncate: truncate);

@@ -21,6 +21,7 @@ class BulkdataList {
   final Uint8List token = ascii.encode('Bulkdata');
   final String path;
   List<Bulkdata> entries = <Bulkdata>[];
+
   /// The current offset in bytes of the end of _this_.
   int offset = 0;
   int lengthInBytes = 0;
@@ -33,17 +34,17 @@ class BulkdataList {
 
   /// Return a URL for the [Bulkdata] Value Field that is added to _this_.
   BulkdataUri add(int code, Bytes valueField) {
-    final bd = new Bulkdata(code, entries.length, valueField);
+    final bd = Bulkdata(code, entries.length, valueField);
     lengthInBytes += valueField.length;
     entries.add(bd);
-    return new BulkdataUri(path, offset, valueField.length);
+    return BulkdataUri(path, offset, valueField.length);
   }
 
   /// Returns a [Uint32List] where each entry is 12 bytes long.
   /// The returned [Uint32List] is equivalent to a DICOM Basic Offset Table.
   Uint32List getIndex() {
     final length = entries.length * 12;
-    final bd = new ByteData(length);
+    final bd = ByteData(length);
 
     var offset = 0;
     for (var i = 0, j = 0; i < entries.length; i++, j += 12) {

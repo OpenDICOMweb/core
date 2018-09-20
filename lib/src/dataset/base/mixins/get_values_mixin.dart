@@ -55,10 +55,10 @@ abstract class NoValuesMixin {
   /// If [Element] is not present, either throws or returns _null_;
   List<V> getValues<V>(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null) return (required) ? elementNotPresentError(index) : null;
+    if (e == null) return required ? elementNotPresentError(index) : null;
     final List<V> values = e.values;
     assert(values != null);
-    return (allowInvalidValues) ? e.values : e.isValid;
+    return allowInvalidValues ? e.values : e.isValid;
   }
 
   // **** Integers
