@@ -8,8 +8,6 @@
 //
 import 'package:core/src/utils.dart';
 
-// Urgent Sharath: unit test for this file
-
 /// Useful utilities for working with [Uid] [String]s.
 
 ///  The minimum length of a UID [String].
@@ -49,7 +47,7 @@ bool isValidUidString(String s) {
   return true;
 }
 
-// Urgent Sharath: unit test to make sure no string such as 2.25.0...'
+// to make sure no string such as 2.25.0...'
 // return false
 /// Returns _true_ if [s] is a valid UuidUid String.
 ///

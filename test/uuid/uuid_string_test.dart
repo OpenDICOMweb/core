@@ -218,6 +218,33 @@ void main() {
       final toUid0 = Uuid.toUid(bytes);
       log.debug('toUid0: $toUid0');
       expect(toUid0 == '2.25.121603237333826379183460680347508878182', true);
+
+      for (var i = 0; i < 10; i++) {
+        final uuidList1 = <int>[];
+        for (var j = 0; j < 16; j++) {
+          final random = new RNG();
+          final e = random.nextUint8;
+          uuidList1.add(e);
+        }
+        log.debug(uuidList1);
+
+        final bytes1 = new Uint8List.fromList(uuidList1);
+        final toUid1 = Uuid.toUid(bytes1);
+        log.debug('toUid1: $toUid1');
+
+        final v = bytes1.buffer.asUint32List();
+        final sb = new StringBuffer('2.25.1');
+        for (var i = 0; i < v.length; i++) sb.write(v[i].toString());
+        final s = sb.toString();
+        log.debug('s: $s');
+
+        expect(toUid1 == s, true);
+        expect(toUid1, isNotNull);
+      }
+
+      final uuid0 = new Uuid();
+      expect(uuid0.asUid, isNotNull);
+      expect(uuid0.asDecimal, isNotNull);
     });
 
     test('setGenerator', () {

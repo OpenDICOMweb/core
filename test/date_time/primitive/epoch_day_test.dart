@@ -14,7 +14,7 @@ void main() {
   // They can be changed to make the tests longer or shorter
   // Note: startYear and endYear must be initialized before
   // calling Server.initialize
-  const startYear =  1970 -10000;
+  const startYear = 1970 - 10000;
   const endYear = 1970 + 10000;
 
   Server.initialize(
@@ -168,14 +168,11 @@ void main() {
     });
 
     test('Epoch Date Basic Test', () {
-      global.level = Level.debug;
-
       log.debug('Epoch Date Basic Test...');
       final watch = Stopwatch()..start();
-      final minDay = dateToEpochDay(1970 - 10 , 1, 1);
+      final minDay = dateToEpochDay(1970 - 10, 1, 1);
       final maxDay = dateToEpochDay(1970 + 10, 12, 31);
-      log.debug('minDay: $minDay');
-      log.debug('maxDay: $maxDay');
+      log..debug('minDay: $minDay')..debug('maxDay: $maxDay');
 
       for (var i = minDay; i < maxDay; i++) {
         final eDate = EpochDate.fromDay(i);

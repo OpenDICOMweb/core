@@ -123,17 +123,97 @@ void main() {
 
     test('check', () {
       //good
-      for (var s in wellKnownUids.keys)
-        expect(Uid.isValidString(s), true);
+      for (var s in wellKnownUids.keys) expect(Uid.isValidString(s), true);
 
       //bad
-      for (var s in badUids)
-        expect(Uid.isValidString(s), false);
-
+      for (var s in badUids) expect(Uid.isValidString(s), false);
 
       expect(Uid.isValidString(''), false);
 
       expect(Uid.isValidString(null), false);
+    });
+
+    test('isValidUuidUid', () {
+      final goodUuidUidList0 = <String>[
+        '2.25.128401000812461',
+        '2.25.349834573495234234145345',
+        '2.25.128401000812461',
+        '2.25.128401000812461',
+      ];
+
+      final badUuidUidList0 = <String>[
+        '2.25.09bb1d8c-4965-4788-94f7-31b151eaba4e',
+        '2.25.19bb1d8c-4965-4788-94f7-31b151eaba4e',
+        '2.25.12391844-4965-4788-94f7-31b151eaba4e',
+        '2.25.1.02.840.10008.1.2',
+        '2.25.1',
+        '1.02.840.10008.1.2',
+        '1.2.3',
+        '2',
+        '1.4.1.2.840.10008.1.2.4.64.1.2.840.1008.1.2.4.64.1.2.840.108.1.2.4.64',
+        '2.25.028401000812461',
+      ];
+
+      for (var s in goodUuidUidList0) {
+        final isValid = isValidUuidUid(s);
+        expect(isValid, true);
+      }
+
+      for (var s in badUuidUidList0) {
+        final isValid = isValidUuidUid(s);
+        expect(isValid, false);
+      }
+
+      for (var i = 0; i < 10; i++) {
+        final uid = new Uid.seededPseudo();
+        log.debug('uid: $uid');
+        final uidString = uid.asString;
+        final isValid = isValidUuidUid(uidString);
+        if (uidString.substring(5).length > 39) {
+          expect(isValid, false);
+        } else
+          expect(isValid, true);
+      }
+    });
+
+    test('isValidUidString', () {
+      for (var i = 0; i < 10; i++) {
+        final uid = new Uid.seededPseudo();
+        final uidS = uid.asString;
+        expect(isValidUidString(uidS), true);
+      }
+
+      for (var s in goodUids) {
+        final validUid0 = isValidUidString(s);
+        expect(validUid0, true);
+      }
+
+      for (var s in badUids) {
+        final validUid1 = isValidUidString(s);
+        expect(validUid1, false);
+      }
+
+      final validUid2 = isValidUidString(null);
+      expect(validUid2, false);
+
+      for (var i in badUids) {
+        final validUid3 = isValidUidString(i);
+        expect(validUid3, false);
+      }
+
+      final validUid4 = isValidUidString('1.2.840.10008.1.2.a.58');
+      expect(validUid4, false);
+    });
+
+    test('isValidUidStringList', () {
+        final isValid0 = isValidUidStringList(goodUids);
+        expect(isValid0, true);
+
+        final isValid1 = isValidUidStringList(badUids);
+        expect(isValid1, false);
+
+        final isValid2 = isValidUidStringList(null);
+        expect(isValid2, false);
     });
 
     test('isDicom', () {

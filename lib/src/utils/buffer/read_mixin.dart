@@ -103,20 +103,16 @@ abstract class ReadBufferMixin {
     return v;
   }
 
-  // Urgent Sharath: Unit test
   double getFloat32() => _buf.getFloat32(_rIndex);
 
-  // Urgent Sharath: Unit test
   double readFloat32() {
     final v = _buf.getFloat32(_rIndex);
     _rIndex += 4;
     return v;
   }
 
-  // Urgent Sharath: Unit test
   double getFloat64() => _buf.getFloat64(_rIndex);
 
-  // Urgent Sharath: Unit test
   double readFloat64() {
     final v = _buf.getFloat64(_rIndex);
     _rIndex += 8;
