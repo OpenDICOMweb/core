@@ -117,7 +117,6 @@ void main() {
     log.debug('A to $c');
     expect(ka == c, true);
 
-    global.level = Level.debug;
     var alphabate = '';
     final listupper = <String>[];
     for (var i = 'A'.codeUnitAt(0); i <= 'Z'.codeUnitAt(0); i++) {

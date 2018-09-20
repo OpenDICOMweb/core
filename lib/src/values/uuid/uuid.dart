@@ -265,7 +265,7 @@ class Uuid {
   static String toUid(Uint8List bytes, [String prefix = '2.25.1']) =>
       _toDecimalString(bytes, prefix);
 
-  // Urgent Sharath: unit test to make sure no string such as 2.25.0...'
+  // to make sure no string such as 2.25.0...'
   // is returned.
   /// Returns [bytes] as a decimal [String], with leading zeros removed,
   /// prefixed by [prefix].

@@ -83,22 +83,18 @@ void main() {
 
   group('isValid', () {
     test('isValid Good DcmDateTime', () {
-      global.level = Level.debug;
-
       for (var s in goodDcmDateTimeList) {
         log.debug('s: $s');
         expect(DcmDateTime.isValidString(s), true);
         final dateTime = DcmDateTime.parse(s);
-        log.debug('us: ${dateTime.microseconds}');
-        log.debug('day: ${dateTime.day}');
-        log.debug('dateTime: $dateTime');
+        log..debug('us: ${dateTime.microseconds}')
+        ..debug('day: ${dateTime.day}')
+        ..debug('dateTime: $dateTime');
         expect(dateTime is DcmDateTime, true);
       }
     });
 
     test('isValid Bad DcmDateTime', () {
-      global.level = Level.debug;
-
       for (var dt in badDcmDateTimeList) {
         log.debug('dt: $dt');
         final dateTime = DcmDateTime.parse(dt);
@@ -304,17 +300,17 @@ void main() {
       }
 
       final dt1 = new DcmDateTime.fromMicroseconds(0);
-      print(dt1);
-      print(dt1.microseconds);
+      log..debug(dt1)
+      ..debug(dt1.microseconds);
       expect(dt0.microseconds == 0, true);
 
-      print(dt0.inet);
-      print('microseconds: ${dt0.microseconds}');
-      print('year: ${dt0.year}');
-      print('month: ${dt0.month}');
-      print('day: ${dt0.day}');
-      print('hour: ${dt0.hour}');
-      print('minute: ${dt0.minute}');
+      log..debug(dt0.inet)
+      ..debug('microseconds: ${dt0.microseconds}')
+      ..debug('year: ${dt0.year}')
+      ..debug('month: ${dt0.month}')
+      ..debug('day: ${dt0.day}')
+      ..debug('hour: ${dt0.hour}')
+      ..debug('minute: ${dt0.minute}');
       //final add0 = dcmDT0.add();
       //print(add0);
     });
@@ -347,7 +343,6 @@ void main() {
 
     // Urgent Jim Fix
     test('DcmDateTime add hour', () {
-      global.level = Level.debug;
       final dt0 = new DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       //expect(dt0.microseconds == 0, true);
