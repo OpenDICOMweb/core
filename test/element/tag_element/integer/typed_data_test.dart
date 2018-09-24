@@ -24,9 +24,9 @@ void main() {
       log.debug('s0 : $s0, uInt32List0 : $uInt32List0');
       expect(s0, equals(uInt32List0));
     }
-    const uInt32Min = const [kUint32Min];
-    const uInt32Max = const [kUint32Max];
-    const uInt64Max = const [kUint64Max];
+    const uInt32Min = [kUint32Min];
+    const uInt32Max = [kUint32Max];
+    const uInt64Max = [kUint64Max];
 
     final s1 = Uint32.fromList(uInt32Min);
     expect(s1, equals(uInt32Min));

@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
-  const doubleList = const <double>[
+  const doubleList = <double>[
     1.1,
     1.11,
     1.111,
@@ -26,7 +26,7 @@ void main() {
     -11.11,
   ];
 
-  const ofVM1Tags = const <int>[
+  const ofVM1Tags = <int>[
     kVectorGridData,
     kFloatingPointValues,
     kUValueData,

@@ -25,66 +25,66 @@ void main() {
       throwOnError: false);
   global.throwOnError = false;
 
-  const goodTMList = const <List<String>>[
-    const <String>['000000'],
-    const <String>['190101'],
-    const <String>['235959'],
-    const <String>['010101.1'],
-    const <String>['010101.11'],
-    const <String>['010101.111'],
-    const <String>['010101.1111'],
-    const <String>['010101.11111'],
-    const <String>['010101.111111'],
-    const <String>['000000.0'],
-    const <String>['000000.00'],
-    const <String>['000000.000'],
-    const <String>['000000.0000'],
-    const <String>['000000.00000'],
-    const <String>['000000.000000'],
-    const <String>['00'],
-    const <String>['0000'],
-    const <String>['000000'],
-    const <String>['000000.1'],
-    const <String>['000000.111111'],
-    const <String>['01'],
-    const <String>['0101'],
-    const <String>['010101'],
-    const <String>['010101.1'],
-    const <String>['010101.111111'],
-    const <String>['10'],
-    const <String>['1010'],
-    const <String>['101010'],
-    const <String>['101010.1'],
-    const <String>['101010.111111'],
-    const <String>['22'],
-    const <String>['2222'],
-    const <String>['222222'],
-    const <String>['222222.1'],
-    const <String>['222222.111111'],
-    const <String>['23'],
-    const <String>['2323'],
-    const <String>['232323'],
-    const <String>['232323.1'],
-    const <String>['232323.111111'],
-    const <String>['23'],
-    const <String>['2359'],
-    const <String>['235959'],
-    const <String>['235959.1'],
-    const <String>['235959.111111'],
+  const goodTMList = <List<String>>[
+    <String>['000000'],
+    <String>['190101'],
+    <String>['235959'],
+    <String>['010101.1'],
+    <String>['010101.11'],
+    <String>['010101.111'],
+    <String>['010101.1111'],
+    <String>['010101.11111'],
+    <String>['010101.111111'],
+    <String>['000000.0'],
+    <String>['000000.00'],
+    <String>['000000.000'],
+    <String>['000000.0000'],
+    <String>['000000.00000'],
+    <String>['000000.000000'],
+    <String>['00'],
+    <String>['0000'],
+    <String>['000000'],
+    <String>['000000.1'],
+    <String>['000000.111111'],
+    <String>['01'],
+    <String>['0101'],
+    <String>['010101'],
+    <String>['010101.1'],
+    <String>['010101.111111'],
+    <String>['10'],
+    <String>['1010'],
+    <String>['101010'],
+    <String>['101010.1'],
+    <String>['101010.111111'],
+    <String>['22'],
+    <String>['2222'],
+    <String>['222222'],
+    <String>['222222.1'],
+    <String>['222222.111111'],
+    <String>['23'],
+    <String>['2323'],
+    <String>['232323'],
+    <String>['232323.1'],
+    <String>['232323.111111'],
+    <String>['23'],
+    <String>['2359'],
+    <String>['235959'],
+    <String>['235959.1'],
+    <String>['235959.111111'],
   ];
-  const badTMList = const <List<String>>[
-    const <String>['241318'], // bad hour
-    const <String>['006132'], // bad minute
-    const <String>['006060'], // bad minute and second
-    const <String>['000060'], // bad month and day
-    const <String>['-00101'], // bad character in hour
-    const <String>['a00101'], // bad character in hour
-    const <String>['0a0101'], // bad character in hour
-    const <String>['ad0101'], // bad characters in hour
-    const <String>['19a101'], // bad character in minute
-    const <String>['190b01'], // bad character in minute
-    const <String>['1901a1'], // bad character in second
-    const <String>['19011a'], // bad character in second
+  const badTMList = <List<String>>[
+    <String>['241318'], // bad hour
+    <String>['006132'], // bad minute
+    <String>['006060'], // bad minute and second
+    <String>['000060'], // bad month and day
+    <String>['-00101'], // bad character in hour
+    <String>['a00101'], // bad character in hour
+    <String>['0a0101'], // bad character in hour
+    <String>['ad0101'], // bad characters in hour
+    <String>['19a101'], // bad character in minute
+    <String>['190b01'], // bad character in minute
+    <String>['1901a1'], // bad character in second
+    <String>['19011a'], // bad character in second
   ];
 
   group('TM Test', () {
@@ -534,13 +534,13 @@ void main() {
   });
 
   group('TM Element', () {
-    const badTMLengthList = const <List<String>>[
-      const <String>['999999.9999', '999999.99999', '999999.999999'],
-      const <String>['999999.9', '999999.99', '999999.999']
+    const badTMLengthList = <List<String>>[
+      <String>['999999.9999', '999999.99999', '999999.999999'],
+      <String>['999999.9', '999999.99', '999999.999']
     ];
 
     //VM.k1
-    const tmVM1Tags = const <PTag>[
+    const tmVM1Tags = <PTag>[
       PTag.kStudyTime,
       PTag.kSeriesTime,
       PTag.kAcquisitionTime,
@@ -558,13 +558,13 @@ void main() {
     ];
 
     //VM.k1
-    const tmVM1_nTags = const <PTag>[
+    const tmVM1_nTags = <PTag>[
       PTag.kCalibrationTime,
       PTag.kTimeOfLastCalibration,
       PTag.kSelectorTMValue,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

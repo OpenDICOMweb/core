@@ -316,7 +316,7 @@ void main() {
   });
 
   group('OWPixelData', () {
-    const testFrame0 = const <int>[
+    const testFrame0 = <int>[
       255,
       79,
       255,
@@ -345,9 +345,9 @@ void main() {
         expect(Uint16.toBytes(uInt16List0), uInt16List0.buffer.asUint8List());
       }
 
-      const uInt8Max = const [kUint8Max];
-      const uInt16Max = const [kUint16Max];
-      const uInt32Max = const [kUint32Max];
+      const uInt8Max = [kUint8Max];
+      const uInt16Max = [kUint16Max];
+      const uInt32Max = [kUint32Max];
 
       final ui0 = Uint16List.fromList(uInt8Max);
       final ui1 = Uint16List.fromList(uInt16Max);

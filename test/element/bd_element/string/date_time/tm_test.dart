@@ -22,7 +22,7 @@ void main() {
     global.throwOnError = false;
 
     //VM.k1
-    const tmVM1Tags = const <int>[
+    const tmVM1Tags = <int>[
       kStudyTime,
       kSeriesTime,
       kAcquisitionTime,
@@ -40,7 +40,7 @@ void main() {
     ];
 
     //VM.k1
-    const tmVM1_nTags = const <int>[
+    const tmVM1_nTags = <int>[
       kCalibrationTime,
       kTimeOfLastCalibration,
       kSelectorTMValue,

@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'age_test', level: Level.info);
 
-  const goodDcmAge = const <String>[
+  const goodDcmAge = <String>[
     '000D',
     '024Y',
     '998Y',
@@ -29,7 +29,7 @@ void main() {
     '999M'
   ];
 
-  const badDcmAge = const <String>[
+  const badDcmAge = <String>[
     '000Y',
     '1',
     'A',

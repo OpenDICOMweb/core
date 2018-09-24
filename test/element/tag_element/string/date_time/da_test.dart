@@ -27,41 +27,41 @@ void main() {
       throwOnError: false);
   global.throwOnError = false;
 
-  const goodDAList = const <List<String>>[
-    const <String>['19930822'],
-    const <String>['19930822'],
-    const <String>['19500718'],
-    const <String>['00000101'],
-    const <String>['19700101'],
-    const <String>['20171231'],
-    const <String>['19931010'],
-    //const <String>['19931010', '20171231'],
+  const goodDAList = <List<String>>[
+    <String>['19930822'],
+    <String>['19930822'],
+    <String>['19500718'],
+    <String>['00000101'],
+    <String>['19700101'],
+    <String>['20171231'],
+    <String>['19931010'],
+    //<String>['19931010', '20171231'],
   ];
 
-  const badDAList = const <List<String>>[
-    const <String>['19501318'], // bad month
-    const <String>['20041313'], // bad month
-    const <String>['19804312'], //bad month
-    const <String>['00000032'], // bad month and day
-    const <String>['00000000'], //bad day
-    const <String>['19800541'], // bad day
-    const <String>['-9700101'], // bad character in year
-    const <String>['1b700101'], // bad character in year
-    const <String>['1970a101'], // bad character in year
-    const <String>['19700b01'], // bad character in year
-    const <String>['1970011a'], // bad character in month
-    //const <String>['19931010', '20171231'],
+  const badDAList = <List<String>>[
+    <String>['19501318'], // bad month
+    <String>['20041313'], // bad month
+    <String>['19804312'], //bad month
+    <String>['00000032'], // bad month and day
+    <String>['00000000'], //bad day
+    <String>['19800541'], // bad day
+    <String>['-9700101'], // bad character in year
+    <String>['1b700101'], // bad character in year
+    <String>['1970a101'], // bad character in year
+    <String>['19700b01'], // bad character in year
+    <String>['1970011a'], // bad character in month
+    //<String>['19931010', '20171231'],
   ];
 
-  const badDALengthList = const <List<String>>[
-    const <String>['1978123'], // invalid length
-    const <String>['197812345'], // invalid length
-    const <String>['201'],
-    const <String>['2018'],
-    const <String>['20156'],
-    const <String>['199815'],
-    const <String>['12'],
-    const <String>['9']
+  const badDALengthList = <List<String>>[
+    <String>['1978123'], // invalid length
+    <String>['197812345'], // invalid length
+    <String>['201'],
+    <String>['2018'],
+    <String>['20156'],
+    <String>['199815'],
+    <String>['12'],
+    <String>['9']
   ];
 
   group('DA Tests', () {
@@ -616,14 +616,14 @@ void main() {
   });
 
   group('DA Element', () {
-    const badDateValuesLengthList = const <List<String>>[
-      const <String>['197812345', '1b700101'],
-      const <String>['19800541', '1970011a'],
-      const <String>['00000032', '19501318'],
+    const badDateValuesLengthList = <List<String>>[
+      <String>['197812345', '1b700101'],
+      <String>['19800541', '1970011a'],
+      <String>['00000032', '19501318'],
     ];
 
     //VM.k1
-    const daVM1Tags = const <PTag>[
+    const daVM1Tags = <PTag>[
       PTag.kStudyDate,
       PTag.kSeriesDate,
       PTag.kAcquisitionDate,
@@ -640,13 +640,13 @@ void main() {
     ];
 
     //VM.k1_n
-    const daVM1_nTags = const <PTag>[
+    const daVM1_nTags = <PTag>[
       PTag.kCalibrationDate,
       PTag.kDateOfLastCalibration,
       PTag.kSelectorDAValue,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

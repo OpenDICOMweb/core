@@ -18,11 +18,11 @@ void main() {
   global.throwOnError = false;
 
   group('US', () {
-    const uInt16MinMax = const [kUint16Min, kUint16Max];
-    const uInt16Min = const [kUint16Min];
-    const uInt16Max = const [kUint16Max];
-    const uInt16MaxPlus = const [kUint16Max + 1];
-    const uInt16MinMinus = const [kUint16Min - 1];
+    const uInt16MinMax = [kUint16Min, kUint16Max];
+    const uInt16Min = [kUint16Min];
+    const uInt16Max = [kUint16Max];
+    const uInt16MaxPlus = [kUint16Max + 1];
+    const uInt16MinMinus = [kUint16Min - 1];
 
     test('US hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
@@ -431,7 +431,7 @@ void main() {
 
   group('US Element', () {
     //VM.k1
-    const usVM1Tags = const <PTag>[
+    const usVM1Tags = <PTag>[
       PTag.kFileSetConsistencyFlag,
       PTag.kRecordInUseFlag,
       PTag.kDataSetType,
@@ -454,7 +454,7 @@ void main() {
     ];
 
     //VM.k2
-    const usVM2Tags = const <PTag>[
+    const usVM2Tags = <PTag>[
       PTag.kSynchronizationChannel,
       PTag.kLightPathFilterPassBand,
       PTag.kImagePathFilterPassBand,
@@ -466,7 +466,7 @@ void main() {
     ];
 
     //VM.k3
-    const usVM3Tags = const <PTag>[
+    const usVM3Tags = <PTag>[
       PTag.kSubjectRelativePositionInImage,
       PTag.kShutterPresentationColorCIELabValue,
       PTag.kAlphaPaletteColorLookupTableDescriptor,
@@ -487,10 +487,10 @@ void main() {
     ];
 
     //VM.k4
-    const usVM4Tags = const <PTag>[PTag.kAcquisitionMatrix];
+    const usVM4Tags = <PTag>[PTag.kAcquisitionMatrix];
 
     //VM.k1_n
-    const usVM1_nTags = const <PTag>[
+    const usVM1_nTags = <PTag>[
       PTag.kAcquisitionIndex,
       PTag.kPerimeterTable,
       PTag.kPredictorConstants,
@@ -509,7 +509,7 @@ void main() {
       PTag.kSelectorUSValue
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
@@ -815,16 +815,16 @@ void main() {
 
     test('US isValidValues good values', () {
       global.throwOnError = false;
-      const uInt16MinMax = const [kUint16Min, kUint16Max];
-      const uInt16MinMaxPle0 = const [kUint16Min, kUint16Max, kUint8Min];
-      const uInt16MinMaxPle1 = const [
+      const uInt16MinMax = [kUint16Min, kUint16Max];
+      const uInt16MinMaxPle0 = [kUint16Min, kUint16Max, kUint8Min];
+      const uInt16MinMaxPle1 = [
         kUint16Min,
         kUint16Max,
         kUint8Min,
         kUint8Max
       ];
-      const uInt16Min = const [kUint16Min];
-      const uInt16Max = const [kUint16Max];
+      const uInt16Min = [kUint16Min];
+      const uInt16Max = [kUint16Max];
 
       //VM.k1
       expect(US.isValidValues(PTag.kWarningReason, uInt16Min), true);
@@ -850,8 +850,8 @@ void main() {
 
     test('US isValidValues bad values', () {
       global.throwOnError = false;
-      const uInt16MaxPlus = const [kUint16Max + 1];
-      const uInt16MinMinus = const [kUint16Min - 1];
+      const uInt16MaxPlus = [kUint16Max + 1];
+      const uInt16MinMinus = [kUint16Min - 1];
 
       //VM.k1
       expect(US.isValidValues(PTag.kWarningReason, uInt16MaxPlus), false);
@@ -881,16 +881,16 @@ void main() {
     test('US isValidValues bad values length', () {
       global.throwOnError = false;
 
-      const uInt16MinMax = const [kUint16Min, kUint16Max];
-      const uInt16MinMaxPle0 = const [kUint16Min, kUint16Max, kUint8Min];
-      const uInt16MinMaxPle1 = const [
+      const uInt16MinMax = [kUint16Min, kUint16Max];
+      const uInt16MinMaxPle0 = [kUint16Min, kUint16Max, kUint8Min];
+      const uInt16MinMaxPle1 = [
         kUint16Min,
         kUint16Max,
         kUint8Min,
         kUint8Max
       ];
-      const uInt16Min = const [kUint16Min];
-      const uInt16Max = const [kUint16Max];
+      const uInt16Min = [kUint16Min];
+      const uInt16Max = [kUint16Max];
 
       //VM.k1
       expect(US.isValidValues(PTag.kWarningReason, uInt16MinMax), false);

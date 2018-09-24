@@ -19,27 +19,27 @@ void main() {
   Server.initialize(name: 'string/lo_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodLOList = const <List<String>>[
-    const <String>['5b9LE'],
-    const <String>['_hYZI`r[,'],
-    const <String>['560'],
-    const <String>[' fr<(Kf_d=wS'],
-    const <String>['&t&wSB)~P']
+  const goodLOList = <List<String>>[
+    <String>['5b9LE'],
+    <String>['_hYZI`r[,'],
+    <String>['560'],
+    <String>[' fr<(Kf_d=wS'],
+    <String>['&t&wSB)~P']
   ];
 
-  const badLOList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
+  const badLOList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
   ];
 
   group('LO Tests', () {
@@ -452,14 +452,14 @@ void main() {
   group('LO', () {
     const badLongString = 'fr<(Kf_dt&wSB)~P_hYZI`r[12Der)*sldfjelr#er@1!`, '
         '{qw{retyt}dddd123qw{retyt}dddd123';
-    const badLOLengthList = const <String>[
+    const badLOLengthList = <String>[
       //    '',
       'fr<(Kf_dt&wSB)~P_hYZI`r[12Der)*sldfjelr#er@1!`, {qw{retyt}dddd123',
       badLongString
     ];
 
     //VM.k1
-    const loVM1Tags = const <PTag>[
+    const loVM1Tags = <PTag>[
       PTag.kDataSetSubtype,
       PTag.kManufacturer,
       PTag.kInstitutionName,
@@ -476,7 +476,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const loVM1_nTags = const <PTag>[
+    const loVM1nTags = <PTag>[
       PTag.kAdmittingDiagnosesDescription,
       PTag.kEventTimerNames,
       PTag.kInsurancePlanIdentification,
@@ -492,7 +492,7 @@ void main() {
       PTag.kOtherPatientIDs,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,
@@ -675,7 +675,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, LO.kMaxLength);
-        for (var tag in loVM1_nTags) {
+        for (var tag in loVM1nTags) {
           log.debug('tag: $tag');
           expect(LO.isValidLength(tag, vList0), true);
           expect(LO.isValidLength(tag, validMaxLengthList), true);
@@ -898,7 +898,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in loVM1_nTags) {
+          for (var tag in loVM1nTags) {
             final e0 = LO.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

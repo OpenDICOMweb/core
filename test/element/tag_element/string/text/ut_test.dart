@@ -19,17 +19,17 @@ void main() {
   Server.initialize(name: 'string/ut_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodUTList = const <List<String>>[
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['<BJ'],
-    const <String>['UOC'],
-    const <String>['D\B']
+  const goodUTList = <List<String>>[
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['<BJ'],
+    <String>['UOC'],
+    <String>['D\B']
   ];
-  const badUTList = const <List<String>>[
-    const <String>['\b'], //	Backspace
+  const badUTList = <List<String>>[
+    <String>['\b'], //	Backspace
   ];
 
   group('UTtag', () {
@@ -436,7 +436,7 @@ void main() {
 
   group('UT', () {
     //VM.k1
-    const utVM1Tags = const <PTag>[
+    const utVM1Tags = <PTag>[
       PTag.kLabelText,
       PTag.kStrainAdditionalInformation,
       PTag.kLocalNamespaceEntityID,
@@ -447,7 +447,7 @@ void main() {
       PTag.kSelectorUTValue,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

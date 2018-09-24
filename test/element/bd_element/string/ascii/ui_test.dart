@@ -20,7 +20,7 @@ void main() {
 
   group('UIbytes', () {
     //VM.k1
-    const uiVM1Tags = const <int>[
+    const uiVM1Tags = <int>[
       kAffectedSOPInstanceUID,
       kRequestedSOPInstanceUID,
       kMediaStorageSOPClassUID,
@@ -38,7 +38,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const uiVM1_nTags = const <int>[
+    const uiVM1_nTags = <int>[
       kRelatedGeneralSOPClassUID,
       kFailedSOPInstanceUIDList,
       kSelectorUIValue

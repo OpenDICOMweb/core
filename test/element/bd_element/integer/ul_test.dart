@@ -20,7 +20,7 @@ void main() {
 
   group('ULbytes', () {
     //VM.k1
-    const ulVM1Tags = const <int>[
+    const ulVM1Tags = <int>[
       kMRDRDirectoryRecordOffset,
       kNumberOfReferences,
       kLengthToEnd,
@@ -48,12 +48,12 @@ void main() {
     ];
 
     //VM.k3
-    const ulVM3Tags = const <int>[
+    const ulVM3Tags = <int>[
       kGridDimensions,
     ];
 
     //VM.k1_n
-    const ulVM1_nTags = const <int>[
+    const ulVM1_nTags = <int>[
       kSimpleFrameList,
       kReferencedSamplePositions,
       kRationalDenominatorValue,

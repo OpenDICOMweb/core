@@ -18,7 +18,7 @@ void main() {
   final rng = RNG(1);
   global.throwOnError = false;
 
-  const float64GoodList = const <double>[
+  const float64GoodList = <double>[
     0.1,
     1.2,
     1.11,
@@ -38,7 +38,7 @@ void main() {
 
   group('ODtags', () {
     test('OD hasValidValues good values', () {
-      const float64LstCommon0 = const <double>[1.0];
+      const float64LstCommon0 = <double>[1.0];
       global.throwOnError = false;
 
       final e0 = ODtag(PTag.kSelectorODValue, float64LstCommon0);
@@ -96,7 +96,7 @@ void main() {
       final e1 = ODtag(PTag.kSelectorODValue, float64GoodList);
       expect(e1.update(float64GoodList).values, equals(float64GoodList));
 
-      const floatUpdateValues = const <double>[
+      const floatUpdateValues = <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
       for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
@@ -304,7 +304,7 @@ void main() {
     });
 
     test('Create Elements from floating values(OD)', () {
-      const f64Values = const <double>[2047.99, 2437.437, 764.53];
+      const f64Values = <double>[2047.99, 2437.437, 764.53];
 
       final e0 = ODtag(PTag.kSelectorODValue, Float64List.fromList(f64Values));
       expect(e0.values.first.toStringAsPrecision(1),
@@ -330,12 +330,12 @@ void main() {
 
   group('OD Element', () {
     //VM.k1
-    const odVMk1Tags = const <PTag>[
+    const odVMk1Tags = <PTag>[
       PTag.kSelectorODValue,
       PTag.kDoubleFloatPixelData,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kNumberOfIterations,
       PTag.kAcquisitionProtocolName,
       PTag.kAcquisitionContextDescription,

@@ -124,7 +124,7 @@ void main() {
     });
 
     test('test for retainAll', () {
-      const List<Tag> tags = const [
+      const List<Tag> tags = [
         PTag.kStudyInstanceUID,
         PTag.kTransferSyntaxUID,
         PTag.kMediaStorageSOPInstanceUID
@@ -550,7 +550,7 @@ void main() {
 
     test('getInt', () {
       global.throwOnError = false;
-      const int32Min = const [kInt16Min];
+      const int32Min = [kInt16Min];
       final sl0 = SLtag(PTag.kReferencePixelX0, int32Min);
       final sl1 = SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
       final sl2 = SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);

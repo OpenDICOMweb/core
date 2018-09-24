@@ -564,7 +564,7 @@ void main() {
   test('parseDate', () {
 //    global.throwOnError = false;
 
-    const goodDateList = const [
+    const goodDateList = [
       '19500718',
       '19000101',
       '19700101',

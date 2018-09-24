@@ -24,42 +24,42 @@ void main() {
       throwOnError: false);
   global.throwOnError = false;
 
-  const goodASList = const <List<String>>[
+  const goodASList = <List<String>>[
     // Note: 000D is valid, but others (000M...) are not.
-    const <String>['000D'],
-    const <String>['024Y'],
-    const <String>['998Y'],
-    const <String>['999Y'],
-    const <String>['021D'],
-    const <String>['120D'],
-    const <String>['999D'],
-    const <String>['005W'],
-    const <String>['010W'],
-    const <String>['999W'],
-    const <String>['001M'],
-    const <String>['011M'],
-    const <String>['999M'],
+    <String>['000D'],
+    <String>['024Y'],
+    <String>['998Y'],
+    <String>['999Y'],
+    <String>['021D'],
+    <String>['120D'],
+    <String>['999D'],
+    <String>['005W'],
+    <String>['010W'],
+    <String>['999W'],
+    <String>['001M'],
+    <String>['011M'],
+    <String>['999M'],
   ];
 
-  const badASList = const <List<String>>[
-    const <String>[''],
-    const <String>['000Y'],
-    const <String>['000W'],
-    const <String>['000M'],
-    const <String>['1'],
-    const <String>['A'],
-    const <String>['1y'],
-    const <String>['24Y'],
-    const <String>['024A'],
-    const <String>['024y'],
-    const <String>['034d'],
-    const <String>['023w'],
-    const <String>['003m'],
-    const <String>['1234'],
-    const <String>['abcd'],
-    const <String>['12ym'],
-    const <String>['012Y7'],
-    const <String>['012YU7'],
+  const badASList = <List<String>>[
+    <String>[''],
+    <String>['000Y'],
+    <String>['000W'],
+    <String>['000M'],
+    <String>['1'],
+    <String>['A'],
+    <String>['1y'],
+    <String>['24Y'],
+    <String>['024A'],
+    <String>['024y'],
+    <String>['034d'],
+    <String>['023w'],
+    <String>['003m'],
+    <String>['1234'],
+    <String>['abcd'],
+    <String>['12ym'],
+    <String>['012Y7'],
+    <String>['012YU7'],
   ];
 
   group('ASTag', () {
@@ -498,7 +498,7 @@ void main() {
   });
 
   group('AS Element', () {
-    const badAgeLengthList = const <String>[
+    const badAgeLengthList = <String>[
       //'',
       '1',
       'A',
@@ -509,12 +509,12 @@ void main() {
     ];
 
     //VM.k1
-    const asVM1Tags = const <PTag>[PTag.kPatientAge];
+    const asVM1Tags = <PTag>[PTag.kPatientAge];
 
     //VM.k1_n
-    const asVM1_nTags = const <PTag>[PTag.kSelectorASValue];
+    const asVM1_nTags = <PTag>[PTag.kSelectorASValue];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,

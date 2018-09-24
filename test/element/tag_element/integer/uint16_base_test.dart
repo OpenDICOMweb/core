@@ -21,8 +21,8 @@ void main() {
       final vList0 = rng.uint16List(1, 1);
       expect(Uint16.fromList(vList0), vList0);
     }
-    const uInt16Min = const [kUint16Min];
-    const uInt16Max = const [kUint16Max];
+    const uInt16Min = [kUint16Min];
+    const uInt16Max = [kUint16Max];
     expect(Uint16.fromList(uInt16Min), uInt16Min);
     expect(Uint16.fromList(uInt16Max), uInt16Max);
   });
@@ -54,12 +54,12 @@ void main() {
       expect(Uint16.toBytes(vList0), equals(bytes));
     }
 
-    const uint16Max = const [kUint16Max];
+    const uint16Max = [kUint16Max];
     final vList1 = Uint16List.fromList(uint16Max);
     final uint16List = vList1.buffer.asUint8List();
     expect(Uint16.toBytes(uint16Max), uint16List);
 
-    const uint32Max = const [kUint32Max];
+    const uint32Max = [kUint32Max];
     expect(Uint16.toBytes(uint32Max), isNull);
 
     global.throwOnError = true;
@@ -85,7 +85,7 @@ void main() {
       expect(lBd1.buffer == bd0.buffer, true);
     }
 
-    const uint16Max = const [kUint16Max];
+    const uint16Max = [kUint16Max];
     final uint16List = Uint16List.fromList(uint16Max);
     final bd1 = uint16List.buffer.asByteData();
     final lBd2 = Uint16.toByteData(uint16List);
@@ -125,7 +125,7 @@ void main() {
     }
 
     global.throwOnError = false;
-    const uint32Max = const <int>[kUint32Max];
+    const uint32Max = <int>[kUint32Max];
     expect(Uint16.toByteData(uint32Max), isNull);
 
     global.throwOnError = true;
@@ -217,7 +217,7 @@ void main() {
       expect(lBd1.buffer == bd0.buffer, true);
     }
 
-    const uint16Max = const [kUint16Max];
+    const uint16Max = [kUint16Max];
     final uint16List = Uint16List.fromList(uint16Max);
     final bd1 = uint16List.buffer.asByteData();
     final lBd2 = Uint16.toByteData(uint16List);
@@ -257,7 +257,7 @@ void main() {
     }
 
     global.throwOnError = false;
-    const uint32Max = const <int>[kUint32Max];
+    const uint32Max = <int>[kUint32Max];
     expect(Uint16.toByteData(uint32Max), isNull);
 
     global.throwOnError = true;

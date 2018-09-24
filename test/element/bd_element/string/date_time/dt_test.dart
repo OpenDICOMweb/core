@@ -20,7 +20,7 @@ void main() {
 
   group('DTbytes', () {
     //VM.k1
-    const dtVM1Tags = const <int>[
+    const dtVM1Tags = <int>[
       kInstanceCoercionDateTime,
       kContextGroupLocalVersion,
       kRadiopharmaceuticalStartDateTime,

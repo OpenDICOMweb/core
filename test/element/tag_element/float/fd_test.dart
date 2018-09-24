@@ -30,7 +30,7 @@ void main() {
     invalidVList = [];
   });
 
-  const float64GoodList = const <double>[
+  const float64GoodList = <double>[
     0.1,
     1.2,
     1.11,
@@ -125,7 +125,7 @@ void main() {
       final e1 = FDtag(PTag.kSelectorFDValue, float64GoodList);
       expect(e1.update(float64GoodList).values, equals(float64GoodList));
 
-      const floatUpdateValues = const <double>[
+      const floatUpdateValues = <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
       for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
@@ -432,7 +432,7 @@ void main() {
     });
 
     test('Create Elements from floating values(FD)', () {
-      const vList = const <double>[2047.99, 2437.437, 764.53];
+      const vList = <double>[2047.99, 2437.437, 764.53];
       final e0 =
           FDtag(PTag.kSelectorFDValue, Float64List.fromList(vList));
       expect(e0.values.first.toStringAsPrecision(1),
@@ -468,7 +468,7 @@ void main() {
 
   group('FD Element', () {
     //VM.k1
-    const fdVM1Tags = const <PTag>[
+    const fdVM1Tags = <PTag>[
       PTag.kEventTimeOffset,
       PTag.kReferencePixelPhysicalValueX,
       PTag.kReferencePixelPhysicalValueY,
@@ -478,7 +478,7 @@ void main() {
     ];
 
     //VM.k2
-    const fdVM2Tags = const <PTag>[
+    const fdVM2Tags = <PTag>[
       PTag.kTimeRange,
       PTag.kReconstructionFieldOfView,
       PTag.kReconstructionPixelSpacing,
@@ -489,7 +489,7 @@ void main() {
     ];
 
     //VM.k3
-    const fdVM3Tags = const <PTag>[
+    const fdVM3Tags = <PTag>[
       PTag.kDiffusionGradientOrientation,
       PTag.kVelocityEncodingDirection,
       PTag.kSlabOrientation,
@@ -500,7 +500,7 @@ void main() {
     ];
 
     //VM.k4
-    const fdVM4Tags = const <PTag>[
+    const fdVM4Tags = <PTag>[
       PTag.kBoundingRectangle,
       PTag.kTwoDMatingAxes,
       PTag.kTwoDLineCoordinates,
@@ -509,24 +509,24 @@ void main() {
       PTag.kTwoDImplantTemplateGroupMemberMatchingAxes,
     ];
     //VM.k6
-    const fdVM6Tags = const <PTag>[PTag.kImageOrientationVolume];
+    const fdVM6Tags = <PTag>[PTag.kImageOrientationVolume];
 
     //VM.k9
-    const fdVM9Tags = const <PTag>[
+    const fdVM9Tags = <PTag>[
       PTag.kViewOrientationModifier,
       PTag.kThreeDMatingAxes,
       PTag.kThreeDImplantTemplateGroupMemberMatchingAxes,
     ];
 
     //VM.k1_n
-    const fdVM1_nTags = const <PTag>[
+    const fdVM1_nTags = <PTag>[
       PTag.kRealWorldValueLUTData,
       PTag.kSelectorFDValue,
       PTag.kInversionTimes,
       PTag.kDepthsOfFocus,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kNumberOfIterations,
       PTag.kAcquisitionProtocolName,
       PTag.kAcquisitionContextDescription,

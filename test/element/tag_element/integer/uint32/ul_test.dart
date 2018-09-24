@@ -18,11 +18,11 @@ void main() {
   global.throwOnError = false;
 
   group('UL', () {
-    const uInt32MinMax = const [kUint32Min, kUint32Max];
-    const uInt32Max = const [kUint32Max];
-    const uInt32MaxPlus = const [kUint32Max + 1];
-    const uInt32Min = const [kUint32Min];
-    const uInt32MinMinus = const [kUint32Min - 1];
+    const uInt32MinMax = [kUint32Min, kUint32Max];
+    const uInt32Max = [kUint32Max];
+    const uInt32MaxPlus = [kUint32Max + 1];
+    const uInt32Min = [kUint32Min];
+    const uInt32MinMinus = [kUint32Min - 1];
 
     test('UL hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
@@ -461,7 +461,7 @@ void main() {
 
   group('UL Element', () {
     //VM.k1
-    const ulVM1Tags = const <PTag>[
+    const ulVM1Tags = <PTag>[
       PTag.kMRDRDirectoryRecordOffset,
       PTag.kNumberOfReferences,
       PTag.kLengthToEnd,
@@ -489,12 +489,12 @@ void main() {
     ];
 
     //VM.k3
-    const ulVM3Tags = const <PTag>[
+    const ulVM3Tags = <PTag>[
       PTag.kGridDimensions,
     ];
 
     //VM.k1_n
-    const ulVM1_nTags = const <PTag>[
+    const ulVM1_nTags = <PTag>[
       PTag.kSimpleFrameList,
       PTag.kReferencedSamplePositions,
       PTag.kRationalDenominatorValue,
@@ -503,7 +503,7 @@ void main() {
       PTag.kSelectorULValue,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
@@ -706,9 +706,9 @@ void main() {
 
     test('UL isValidValues good values', () {
       global.throwOnError = false;
-      const uInt32MinMax = const [kUint32Min, kUint32Max, kUint16Max];
-      const uInt32Min = const [kUint32Min];
-      const uInt32Max = const [kUint32Max];
+      const uInt32MinMax = [kUint32Min, kUint32Max, kUint16Max];
+      const uInt32Min = [kUint32Min];
+      const uInt32Max = [kUint32Max];
 
       //VM.k1
       expect(UL.isValidValues(PTag.kLengthToEnd, uInt32Min), true);
@@ -725,8 +725,8 @@ void main() {
 
     test('UL isValidValues bad values', () {
       global.throwOnError = false;
-      const uInt32MaxPlus = const [kUint32Max + 1];
-      const uInt32MinMinus = const [kUint32Min - 1];
+      const uInt32MaxPlus = [kUint32Max + 1];
+      const uInt32MinMinus = [kUint32Min - 1];
 
       //VM.k1
       expect(UL.isValidValues(PTag.kLengthToEnd, uInt32MaxPlus), false);
@@ -747,16 +747,16 @@ void main() {
 
     test('UL isValidValues bad values length', () {
       global.throwOnError = false;
-      const uInt32MinMax = const [kUint32Min, kUint32Max, kUint16Max];
-      const uInt32MinMaxPlus = const [
+      const uInt32MinMax = [kUint32Min, kUint32Max, kUint16Max];
+      const uInt32MinMaxPlus = [
         kUint32Min,
         kUint32Max,
         kUint16Max,
         kUint16Min
       ];
 
-      const uInt32Min = const [kUint32Min];
-      const uInt32Max = const [kUint32Max];
+      const uInt32Min = [kUint32Min];
+      const uInt32Max = [kUint32Max];
 
       //VM.k1
       expect(UL.isValidValues(PTag.kLengthToEnd, uInt32MinMax), false);

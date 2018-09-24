@@ -28,7 +28,7 @@ void main() {
     invalidVList = [];
   });
 
-  const goodFloatList = const <double>[
+  const goodFloatList = <double>[
     1.1,
     1.11,
     1.111,
@@ -126,7 +126,7 @@ void main() {
       final e1 = FLtag(PTag.kTableOfParameterValues, goodFloat32List);
       expect(e1.update(goodFloat32List).values, equals(goodFloat32List));
 
-      const floatUpdateValues = const <double>[
+      const floatUpdateValues = <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
 
@@ -393,7 +393,7 @@ void main() {
     });
 
     test('Create Elements from floating values(FL)', () {
-      const f32Values = const <double>[2047.99, 2437.437, 764.53];
+      const f32Values = <double>[2047.99, 2437.437, 764.53];
 
       final e0 = FLtag(PTag.kRecommendedDisplayFrameRateInFloat,
           Float32List.fromList(f32Values.take(1).toList()));
@@ -404,7 +404,7 @@ void main() {
 
   group('FL Element', () {
     //VM.k1
-    const flVM1Tags = const <PTag>[
+    const flVM1Tags = <PTag>[
       PTag.kRecommendedDisplayFrameRateInFloat,
       PTag.kExaminedBodyThickness,
       PTag.kDisplayedZValue,
@@ -417,7 +417,7 @@ void main() {
     ];
 
     //VM.k2
-    const flVM2Tags = const <PTag>[
+    const flVM2Tags = <PTag>[
       PTag.kLocalizingCursorPosition,
       PTag.kPixelDataAreaOriginRelativeToFOV,
       PTag.kObjectPixelSpacingInCenterOfBeam,
@@ -431,7 +431,7 @@ void main() {
     ];
 
     //VM.k3
-    const flVM3Tags = const <PTag>[
+    const flVM3Tags = <PTag>[
       PTag.kCalculatedTargetPosition,
       PTag.kCalciumScoringMassFactorDevice,
       PTag.kPointPositionAccuracy,
@@ -444,12 +444,12 @@ void main() {
     ];
 
     //VM.k6
-    const flVM6Tags = const <PTag>[
+    const flVM6Tags = <PTag>[
       PTag.kPointsBoundingBoxCoordinates,
     ];
 
     //VM.k1_n
-    const flVM1_nTags = const <PTag>[
+    const flVM1_nTags = <PTag>[
       PTag.kTableOfParameterValues,
       PTag.kRWaveTimeVector,
       PTag.kFilterBeamPathLengthMinimum,
@@ -462,9 +462,9 @@ void main() {
     ];
 
     //VM.6_n
-    const flVM1_6Tags = const <PTag>[PTag.kBoundingPolygon];
+    const flVM1_6Tags = <PTag>[PTag.kBoundingPolygon];
 
-    const nonFLTags = const <PTag>[
+    const nonFLTags = <PTag>[
       PTag.kNumberOfIterations,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,

@@ -21,27 +21,27 @@ void main() {
   Server.initialize(name: 'string/ui_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodUIList = const <List<String>>[
-    const <String>['1.2.840.10008.5.1.4.34.5'],
-    const <String>['1.2.840.10008.1.2.4.51'],
-    const <String>['1.2.840.10008.5.1.4.1.1.77.1.1'],
-    const <String>['1.2.840.10008.5.1.4.1.1.66.4'],
+  const goodUIList = <List<String>>[
+    <String>['1.2.840.10008.5.1.4.34.5'],
+    <String>['1.2.840.10008.1.2.4.51'],
+    <String>['1.2.840.10008.5.1.4.1.1.77.1.1'],
+    <String>['1.2.840.10008.5.1.4.1.1.66.4'],
   ];
 
-  const badUIList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
-    const <String>['1.a.840.10008.5.1.4.1.1.66.4'],
+  const badUIList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
+    <String>['1.a.840.10008.5.1.4.1.1.66.4'],
   ];
   group('UItag', () {
     test('UI hasValidValues good values', () {
@@ -534,7 +534,7 @@ void main() {
 
   group('UI', () {
     //VM.k1
-    const uiVM1Tags = const <PTag>[
+    const uiVM1Tags = <PTag>[
       PTag.kAffectedSOPInstanceUID,
       PTag.kRequestedSOPInstanceUID,
       PTag.kMediaStorageSOPClassUID,
@@ -552,13 +552,13 @@ void main() {
     ];
 
     //VM.k1_n
-    const uiVM1_nTags = const <PTag>[
+    const uiVM1_nTags = <PTag>[
       PTag.kRelatedGeneralSOPClassUID,
       PTag.kFailedSOPInstanceUIDList,
       PTag.kSelectorUIValue
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

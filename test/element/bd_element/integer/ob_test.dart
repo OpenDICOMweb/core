@@ -19,7 +19,7 @@ void main() {
   final rds = ByteRootDataset.empty();
 
   group('OBbytes', () {
-    const obVM1Tags0 = const <int>[
+    const obVM1Tags0 = <int>[
       kFileMetaInformationVersion,
       kPrivateInformation,
       kCoordinateSystemAxisValues,
@@ -40,7 +40,7 @@ void main() {
       kDataSetTrailingPadding
     ];
 
-    const obVM1_nTags1 = const <int>[
+    const obVM1_nTags1 = <int>[
       kSelectorOBValue,
     ];
 

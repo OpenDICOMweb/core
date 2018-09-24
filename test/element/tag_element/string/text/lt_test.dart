@@ -19,16 +19,16 @@ void main() {
   Server.initialize(name: 'string/lt_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodLTList = const <List<String>>[
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['!mSMXWVy`]/Du'],
-    const <String>['`0Y^~x?+]Q91']
+  const goodLTList = <List<String>>[
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['!mSMXWVy`]/Du'],
+    <String>['`0Y^~x?+]Q91']
   ];
-  const badLTList = const <List<String>>[
-    const <String>['\b'], //	Backspace
+  const badLTList = <List<String>>[
+    <String>['\b'], //	Backspace
   ];
 
   group('LTtag', () {
@@ -426,7 +426,7 @@ void main() {
 
   group('LT', () {
     //VM.k1
-    const ltVM1Tags = const <PTag>[
+    const ltVM1Tags = <PTag>[
       PTag.kIdentifyingComments,
       PTag.kAdditionalPatientHistory,
       PTag.kPatientComments,
@@ -448,7 +448,7 @@ void main() {
       PTag.kTextComments
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kInstructionPerformedDateTime,
       PTag.kCTDIvol,

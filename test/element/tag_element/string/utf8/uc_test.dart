@@ -20,24 +20,24 @@ void main() {
   global.throwOnError = false;
 
   const goodUCList = <List<String>>[
-    const <String>['2qVmo1AAD'],
-    const <String>['erty#4u'],
-    const <String>['2qVmo1AAD'],
-    const <String>['q.&*k']
+    <String>['2qVmo1AAD'],
+    <String>['erty#4u'],
+    <String>['2qVmo1AAD'],
+    <String>['q.&*k']
   ];
   const badUCList = <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
   ];
 
   group('UCtag', () {

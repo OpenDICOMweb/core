@@ -19,21 +19,21 @@ void main() {
   Server.initialize(name: 'string/ur_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodURList = const <List<String>>[
-    const <String>['http:/TVc8mR/swk/jvNtF/Uy6'],
-    const <String>['iaWlVR'],
-    const <String>['http:/l_YB2r8/LQIo9'],
-    const <String>['_m3G9go/OkgpQ'],
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
+  const goodURList = <List<String>>[
+    <String>['http:/TVc8mR/swk/jvNtF/Uy6'],
+    <String>['iaWlVR'],
+    <String>['http:/l_YB2r8/LQIo9'],
+    <String>['_m3G9go/OkgpQ'],
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
   ];
 
-  const badURList = const <List<String>>[
-    const <String>[' asdf sdf  ']
+  const badURList = <List<String>>[
+    <String>[' asdf sdf  ']
   ];
 
   group('URtag', () {
@@ -403,7 +403,7 @@ void main() {
 
   group('UR', () {
     //VM.k1
-    const urVM1Tags = const <PTag>[
+    const urVM1Tags = <PTag>[
       PTag.kRetrieveURL,
       PTag.kPixelDataProviderURL,
       PTag.kRetrieveURI,
@@ -411,9 +411,9 @@ void main() {
     ];
 
     //VM.k1_n
-    const urVM1_nTags = const <PTag>[PTag.kSelectorURValue];
+    const urVM1_nTags = <PTag>[PTag.kSelectorURValue];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

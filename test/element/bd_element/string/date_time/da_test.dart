@@ -20,7 +20,7 @@ void main() {
 
   group('DAbytes', () {
     //VM.k1
-    const daVM1Tags = const <int>[
+    const daVM1Tags = <int>[
       kDate,
       kStudyDate,
       kSeriesDate,
@@ -38,7 +38,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const daVM1_nTags = const <int>[
+    const daVM1_nTags = <int>[
       kCalibrationDate,
       kDateOfLastCalibration,
       kSelectorDAValue,

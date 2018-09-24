@@ -164,24 +164,24 @@ void main() {
   });
 
   group('StringList', () {
-    const replaceFirst = const <List<String>>[
-      const <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6L3pw'],
-      const <String>['15v1a', r'[a-zA-Z]+', '***', '15***1a'],
-      const <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
-      const <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
-      const <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
-      const <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3OYm5'],
-      const <String>['12345', r'[a-zA-Z]+', '***', '12345']
+    const replaceFirst = <List<String>>[
+      <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6L3pw'],
+      <String>['15v1a', r'[a-zA-Z]+', '***', '15***1a'],
+      <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
+      <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
+      <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
+      <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3OYm5'],
+      <String>['12345', r'[a-zA-Z]+', '***', '12345']
     ];
 
-    const replaceAll = const <List<String>>[
-      const <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6***3***'],
-      const <String>['15v1a', r'[a-zA-Z]+', '***', '15***1***'],
-      const <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
-      const <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
-      const <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
-      const <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3***5'],
-      const <String>['12345', r'[a-zA-Z]+', '***', '12345']
+    const replaceAll = <List<String>>[
+      <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6***3***'],
+      <String>['15v1a', r'[a-zA-Z]+', '***', '15***1***'],
+      <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
+      <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
+      <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
+      <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3***5'],
+      <String>['12345', r'[a-zA-Z]+', '***', '12345']
     ];
 
     test('StringList.from', () {

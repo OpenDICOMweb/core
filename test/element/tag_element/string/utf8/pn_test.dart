@@ -19,19 +19,19 @@ void main() {
   Server.initialize(name: 'string/pn_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodPNList = const <List<String>>[
-    const <String>['Adams^John Robert Quincy^^Rev.^B.A. M.Div.'],
-    const <String>['a^1sd^'],
-    const <String>['VXDq^rQJO'],
-    const <String>['xm^29sZw^2LOyl^WIg1MuyG']
+  const goodPNList = <List<String>>[
+    <String>['Adams^John Robert Quincy^^Rev.^B.A. M.Div.'],
+    <String>['a^1sd^'],
+    <String>['VXDq^rQJO'],
+    <String>['xm^29sZw^2LOyl^WIg1MuyG']
   ];
-  const badPNList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
+  const badPNList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
   ];
   group('PNtag', () {
     test('PN hasValidValues good values', () {
@@ -442,7 +442,7 @@ void main() {
 
   group('PN', () {
     //VM.k1
-    const pnVM1Tags = const <PTag>[
+    const pnVM1Tags = <PTag>[
       PTag.kReferringPhysicianName,
       PTag.kPatientBirthName,
       PTag.kPatientMotherBirthName,
@@ -463,7 +463,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const pnVM1_nTags = const <PTag>[
+    const pnVM1nTags = <PTag>[
       PTag.kPerformingPhysicianName,
       PTag.kNameOfPhysiciansReadingStudy,
       PTag.kOperatorsName,
@@ -472,7 +472,7 @@ void main() {
       PTag.kNamesOfIntendedRecipientsOfResults,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,
@@ -660,7 +660,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getPNList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, PN.kMaxLength);
-        for (var tag in pnVM1_nTags) {
+        for (var tag in pnVM1nTags) {
           log.debug('tag: $tag');
           expect(PN.isValidLength(tag, vList0), true);
           expect(PN.isValidLength(tag, validMaxLengthList), true);
@@ -786,7 +786,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in pnVM1_nTags) {
+          for (var tag in pnVM1nTags) {
             final e0 = PN.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

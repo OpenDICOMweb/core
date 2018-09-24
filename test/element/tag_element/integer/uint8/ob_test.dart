@@ -18,11 +18,11 @@ void main() {
   global.throwOnError = false;
 
   group('OB', () {
-    const uInt8MinMax = const [kUint8Min, kUint8Max];
-    const uInt8Min = const [kUint8Min];
-    const uInt8Max = const [kUint8Max];
-    const uInt8MaxPlus = const [kUint8Max + 1];
-    const uInt8MinMinus = const [kUint8Min - 1];
+    const uInt8MinMax = [kUint8Min, kUint8Max];
+    const uInt8Min = [kUint8Min];
+    const uInt8Max = [kUint8Max];
+    const uInt8MaxPlus = [kUint8Max + 1];
+    const uInt8MinMinus = [kUint8Min - 1];
 
     test('OB hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
@@ -386,7 +386,7 @@ void main() {
 
   group('OB Element', () {
     //VM.k1
-    const obVM1Tags = const <PTag>[
+    const obVM1Tags = <PTag>[
       PTag.kFileMetaInformationVersion,
       PTag.kPrivateInformation,
       PTag.kCoordinateSystemAxisValues,
@@ -408,7 +408,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const obVM1_nTags = const <PTag>[
+    const obVM1_nTags = <PTag>[
       PTag.kSelectorOBValue,
     ];
 
@@ -425,7 +425,7 @@ void main() {
       PTag.kOverlayData
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
@@ -567,9 +567,9 @@ void main() {
 
     test('OB isValidValues good values', () {
       global.throwOnError = false;
-      const uInt8MinMax = const [kUint8Min, kUint8Max];
-      const uInt8Min = const [kUint8Min];
-      const uInt8Max = const [kUint8Max];
+      const uInt8MinMax = [kUint8Min, kUint8Max];
+      const uInt8Min = [kUint8Min];
+      const uInt8Max = [kUint8Max];
 
       //VM.k1
       expect(OB.isValidValues(PTag.kICCProfile, uInt8Min), true);
@@ -582,8 +582,8 @@ void main() {
     });
 
     test('OB isValidValues bad values', () {
-      const uInt8MaxPlus = const [kUint8Max + 1];
-      const uInt8MinMinus = const [kUint8Min - 1];
+      const uInt8MaxPlus = [kUint8Max + 1];
+      const uInt8MinMinus = [kUint8Min - 1];
 
       //VM.k1
       expect(OB.isValidValues(PTag.kICCProfile, uInt8MaxPlus), false);

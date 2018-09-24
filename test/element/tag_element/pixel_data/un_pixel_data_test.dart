@@ -543,10 +543,10 @@ void main() {
 
     test('Create UN.isValidValues', () {
       global.throwOnError = false;
-      const uInt8Min = const [UN.kMinValue];
-      const uInt8Max = const [UN.kMaxValue];
-      const uInt8MaxPlus = const [UN.kMaxValue + 1];
-      const uInt8MinMinus = const [UN.kMinValue - 1];
+      const uInt8Min = [UN.kMinValue];
+      const uInt8Max = [UN.kMaxValue];
+      const uInt8MaxPlus = [UN.kMaxValue + 1];
+      const uInt8MinMinus = [UN.kMinValue - 1];
 
       expect(UN.isValidValues(PTag.kPixelData, uInt8Min), true);
       expect(UN.isValidValues(PTag.kPixelData, uInt8Max), true);
@@ -567,8 +567,8 @@ void main() {
 
     test('Create Uint8Base.fromBytes', () {
       global.throwOnError = false;
-      const uInt8Max = const [UN.kMaxValue];
-      const uInt16Max = const [kUint16Max];
+      const uInt8Max = [UN.kMaxValue];
+      const uInt16Max = [kUint16Max];
       final bytes0 = Bytes.fromList(uInt8Max);
       //   final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
       expect(Uint8.fromBytes(bytes0), equals(uInt8Max));

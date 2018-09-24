@@ -18,11 +18,11 @@ void main() {
   global.throwOnError = false;
 
   group('OL', () {
-    const uInt32MinMax = const [kUint32Min, kUint32Max];
-    const uInt32Max = const [kUint32Max];
-    const uInt32MaxPlus = const [kUint32Max + 1];
-    const uInt32Min = const [kUint32Min];
-    const uInt32MinMinus = const [kUint32Min - 1];
+    const uInt32MinMax = [kUint32Min, kUint32Max];
+    const uInt32Max = [kUint32Max];
+    const uInt32MaxPlus = [kUint32Max + 1];
+    const uInt32Min = [kUint32Min];
+    const uInt32MinMinus = [kUint32Min - 1];
 
     test('OL hasValidValues random', () {
       global.throwOnError = false;
@@ -429,7 +429,7 @@ void main() {
 
   group('OL Element', () {
     //VM.k1
-    const olVM1Tags = const <PTag>[
+    const olVM1Tags = <PTag>[
       PTag.kLongPrimitivePointIndexList,
       PTag.kLongTrianglePointIndexList,
       PTag.kLongEdgePointIndexList,
@@ -438,9 +438,9 @@ void main() {
     ];
 
     //VM.k1_n
-    const olVM1_nTags = const <PTag>[PTag.kSelectorOLValue];
+    const olVM1_nTags = <PTag>[PTag.kSelectorOLValue];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
@@ -577,9 +577,9 @@ void main() {
 
     test('OL isValidValues good values', () {
       global.throwOnError = false;
-      const uInt32MinMax = const [kUint32Min, kUint32Max, kUint16Max];
-      const uInt32Min = const [kUint32Min];
-      const uInt32Max = const [kUint32Max];
+      const uInt32MinMax = [kUint32Min, kUint32Max, kUint16Max];
+      const uInt32Min = [kUint32Min];
+      const uInt32Max = [kUint32Max];
 
       //VM.k1
       expect(OL.isValidValues(PTag.kTrackPointIndexList, uInt32Min), true);
@@ -593,8 +593,8 @@ void main() {
 
     test('OL isValidValues bad values', () {
       global.throwOnError = false;
-      const uInt32MaxPlus = const [kUint32Max + 1];
-      const uInt32MinMinus = const [kUint32Min - 1];
+      const uInt32MaxPlus = [kUint32Max + 1];
+      const uInt32MinMinus = [kUint32Min - 1];
 
       //VM.k1
       expect(OL.isValidValues(PTag.kTrackPointIndexList, uInt32MaxPlus), false);

@@ -20,7 +20,7 @@ void main() {
 
   group('UTbytes', () {
     //VM.k1
-    const utVM1Tags = const <int>[
+    const utVM1Tags = <int>[
       kLabelText,
       kStrainAdditionalInformation,
       kLocalNamespaceEntityID,

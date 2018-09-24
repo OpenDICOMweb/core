@@ -8,7 +8,7 @@
 //
 
 
-const List<String> goodTimeZoneList = const [
+const List<String> goodTimeZoneList = [
   '+0000',
   '+0100',
   '+0200',
@@ -32,7 +32,7 @@ const List<String> goodTimeZoneList = const [
   '-1200',
 ];
 
-const List<String> badTimeZoneList = const [
+const List<String> badTimeZoneList = [
   // bad lengths
   '+',
   '+0',

@@ -19,29 +19,29 @@ void main() {
   Server.initialize(name: 'string/cs_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodCSList = const <List<String>>[
-    const <String>['KEZ5HZZZR2'],
-    const <String>['LUA '],
-    const <String>['DAP3Q'],
-    const <String>['GAEGBPO'],
-    const <String>['EGM_']
+  const goodCSList = <List<String>>[
+    <String>['KEZ5HZZZR2'],
+    <String>['LUA '],
+    <String>['DAP3Q'],
+    <String>['GAEGBPO'],
+    <String>['EGM_']
   ];
 
-  const badCSList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
-    const <String>['T 2@+nEZKu/J'],
-    const <String>['123.45']
+  const badCSList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
+    <String>['T 2@+nEZKu/J'],
+    <String>['123.45']
   ];
   group('CStag', () {
     test('CS hasValidValues good values', () {
@@ -420,7 +420,7 @@ void main() {
 
   group('CS', () {
     //VM.k1
-    const csVM1Tags = const <PTag>[
+    const csVM1Tags = <PTag>[
       PTag.kFileSetID,
       PTag.kConversionType,
       PTag.kPresentationIntentType,
@@ -431,7 +431,7 @@ void main() {
     ];
 
     //VM.k2
-    const csVM2Tags = const <PTag>[
+    const csVM2Tags = <PTag>[
       PTag.kPatientOrientation,
       PTag.kReportStatusIDTrial,
       PTag.kSeriesType,
@@ -439,15 +439,15 @@ void main() {
     ];
 
     //VM.k2_n
-    const csVM2_nTags = const <PTag>[PTag.kImageType];
+    const csVM2_nTags = <PTag>[PTag.kImageType];
 
     //VM.k4
-    const csVM4Tags = const <PTag>[
+    const csVM4Tags = <PTag>[
       PTag.kFrameType,
     ];
 
     //VM.k1_n
-    const csVM1_nTags = const <PTag>[
+    const csVM1_nTags = <PTag>[
       PTag.kModalitiesInStudy,
       PTag.kIndicationType,
       PTag.kScanningSequence,
@@ -458,7 +458,7 @@ void main() {
       PTag.kSelectorCSValue,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

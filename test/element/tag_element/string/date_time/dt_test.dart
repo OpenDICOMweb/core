@@ -43,34 +43,34 @@ void main() {
     <String>['20240229105630'] // leap year
   ];
 
-  const badDTList = const <List<String>>[
-    const <String>['19501318'],
-    const <String>['19501318105630'], //bad months
-    const <String>['19501032105630'], // bad day
-    const <String>['00000000000000'], // bad month and day
-    const <String>['19501032105660'], // bad day and second
-    const <String>['00000032240212'], // bad month and day and hour
-    const <String>['20161229006100'], // bad minute
-    const <String>['-9700101226a22'], // bad character in year minute
-    const <String>['1b7001012a1045'], // bad character in year and hour
-    const <String>['19c001012210a2'], // bad character in year and sec
-    const <String>['197d0101105630'], // bad character in year
-    const <String>['1970a101105630'], // bad character in month
-    const <String>['19700b01105630'], // bad character in month
-    const <String>['197001a1105630'], // bad character in day
-    const <String>['1970011a105630'], // bad character in day
-    const <String>['20120230105630'], // bad day in leap year
-    const <String>['20160231105630'], // bad day in leap year
-    const <String>['20130229105630'], // bad day in year
-    const <String>['20230229105630'], // bad day in year
-    const <String>['20210229105630'], // bad day in year
-    const <String>['20170223122334.111111+0'], // bad timezone
-    const <String>['20170223122334.111111+01'], // bad timezone
-    const <String>['20170223122334.111111+013'], // bad timezone
-    const <String>['20170223122334.111111+1545'], // bad timezone
-    const <String>['20170223122334.111111-1015'], // bad timezone
-    const <String>['20170223122334.111111+0960'], // bad timezone
-    const <String>[
+  const badDTList = <List<String>>[
+    <String>['19501318'],
+    <String>['19501318105630'], //bad months
+    <String>['19501032105630'], // bad day
+    <String>['00000000000000'], // bad month and day
+    <String>['19501032105660'], // bad day and second
+    <String>['00000032240212'], // bad month and day and hour
+    <String>['20161229006100'], // bad minute
+    <String>['-9700101226a22'], // bad character in year minute
+    <String>['1b7001012a1045'], // bad character in year and hour
+    <String>['19c001012210a2'], // bad character in year and sec
+    <String>['197d0101105630'], // bad character in year
+    <String>['1970a101105630'], // bad character in month
+    <String>['19700b01105630'], // bad character in month
+    <String>['197001a1105630'], // bad character in day
+    <String>['1970011a105630'], // bad character in day
+    <String>['20120230105630'], // bad day in leap year
+    <String>['20160231105630'], // bad day in leap year
+    <String>['20130229105630'], // bad day in year
+    <String>['20230229105630'], // bad day in year
+    <String>['20210229105630'], // bad day in year
+    <String>['20170223122334.111111+0'], // bad timezone
+    <String>['20170223122334.111111+01'], // bad timezone
+    <String>['20170223122334.111111+013'], // bad timezone
+    <String>['20170223122334.111111+1545'], // bad timezone
+    <String>['20170223122334.111111-1015'], // bad timezone
+    <String>['20170223122334.111111+0960'], // bad timezone
+    <String>[
       '20170223122334.111111*0945'
     ], // bad timezone: special character
   ];
@@ -548,16 +548,16 @@ void main() {
   });
 
   group('DT Element', () {
-    const badDTLengthList = const <List<String>>[
-      const <String>[
+    const badDTLengthList = <List<String>>[
+      <String>[
         '20170223122334.111111+11000000',
         '1970011a105630.111111+110000'
       ],
-      const <String>['201', '1'],
+      <String>['201', '1'],
     ];
 
     //VM.k1
-    const dtVM1Tags = const <PTag>[
+    const dtVM1Tags = <PTag>[
       PTag.kInstanceCoercionDateTime,
       PTag.kContextGroupLocalVersion,
       PTag.kRadiopharmaceuticalStartDateTime,
@@ -573,9 +573,9 @@ void main() {
     ];
 
     //VM.k1_n
-    const dtVM1_nTags = const <PTag>[PTag.kSelectorDTValue];
+    const dtVM1_nTags = <PTag>[PTag.kSelectorDTValue];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

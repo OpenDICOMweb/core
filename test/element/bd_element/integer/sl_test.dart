@@ -19,7 +19,7 @@ void main() {
   final rds = ByteRootDataset.empty();
 
   group('SLbytes', () {
-    const slVM1Tags = const <int>[
+    const slVM1Tags = <int>[
       kReferencePixelX0,
       kReferencePixelY0,
       kDopplerSampleVolumeXPosition,
@@ -32,17 +32,17 @@ void main() {
       kRowPositionInTotalImagePixelMatrix,
     ];
 
-    const slVM2Tags = const <int>[
+    const slVM2Tags = <int>[
       kDisplayedAreaTopLeftHandCorner,
       kDisplayedAreaBottomRightHandCorner,
     ];
 
-    const slVM1_nTag = const <int>[
+    const slVM1_nTag = <int>[
       kRationalNumeratorValue,
       kSelectorSLValue,
     ];
 
-    const slVM2_2nTags = const <int>[kPixelCoordinatesSetTrial];
+    const slVM2_2nTags = <int>[kPixelCoordinatesSetTrial];
 
     test('SLbytes from VM.k1 good values', () {
       for (var i = 0; i < 10; i++) {

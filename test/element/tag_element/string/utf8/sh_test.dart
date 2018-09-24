@@ -19,27 +19,27 @@ void main() {
   Server.initialize(name: 'string/sh_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodSHList = const <List<String>>[
-    const <String>['d9E8tO'],
-    const <String>['mrZeo|^P> -6{t, '],
-    const <String>[')QcFN@1r]&u;~3l'],
-    const <String>['1wd7'],
-    const <String>['T 2@+nEZKu/J']
+  const goodSHList = <List<String>>[
+    <String>['d9E8tO'],
+    <String>['mrZeo|^P> -6{t, '],
+    <String>[')QcFN@1r]&u;~3l'],
+    <String>['1wd7'],
+    <String>['T 2@+nEZKu/J']
   ];
 
-  const badSHList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
+  const badSHList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
   ];
 
   group('SHtag', () {
@@ -446,7 +446,7 @@ void main() {
 
   group('SH', () {
     //VM.k1
-    const shVM1Tags = const <PTag>[
+    const shVM1Tags = <PTag>[
       PTag.kImplementationVersionName,
       PTag.kRecognitionCode,
       PTag.kCodeValue,
@@ -471,7 +471,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const shVM1nTags = const <PTag>[
+    const shVM1nTags = <PTag>[
       PTag.kReferringPhysicianTelephoneNumbers,
       PTag.kPatientTelephoneNumbers,
       PTag.kConvolutionKernel,
@@ -483,7 +483,7 @@ void main() {
       PTag.kAxisLabels,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

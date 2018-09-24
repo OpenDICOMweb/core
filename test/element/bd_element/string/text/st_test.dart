@@ -20,7 +20,7 @@ void main() {
 
   group('STbytes', () {
     //VM.k1
-    const stVM1Tags = const <int>[
+    const stVM1Tags = <int>[
       kInstitutionAddress,
       kReferringPhysicianAddress,
       kCodingSchemeExternalID,

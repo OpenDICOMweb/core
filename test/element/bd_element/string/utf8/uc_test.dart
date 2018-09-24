@@ -20,14 +20,14 @@ void main() {
 
   group('UCbytes', () {
     //VM.k1
-    const ucVM1Tags = const <int>[
+    const ucVM1Tags = <int>[
       kStrainDescription,
       kGeneticModificationsDescription,
       kLongCodeValue
     ];
 
     //VM.k1_n
-    const ucVM1_nTags = const <int>[
+    const ucVM1_nTags = <int>[
       kSelectorUCValue,
       kPotentialReasonsForProcedure,
       kPotentialDiagnosticTasks

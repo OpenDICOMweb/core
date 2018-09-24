@@ -13,10 +13,10 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'element/sha256Hash_integer_test', level: Level.info);
   group('Integer Elements', () {
-    const int32V1 = const <int>[kInt32Max];
-    const uInt8V1 = const <int>[kUint8Min];
-    const uInt16V1 = const <int>[kUint16Min];
-    const uInt32V1 = const <int>[kUint32Max];
+    const int32V1 = <int>[kInt32Max];
+    const uInt8V1 = <int>[kUint8Min];
+    const uInt16V1 = <int>[kUint16Min];
+    const uInt32V1 = <int>[kUint32Max];
 
     test('SS', () {
       final listInt = <int>[123];

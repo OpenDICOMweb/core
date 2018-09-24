@@ -19,7 +19,7 @@ void main() {
   Server.initialize(name: 'string/is_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodIntegerStrings = const <String>[
+  const goodIntegerStrings = <String>[
     '+8',
     ' +8',
     '+8 ',
@@ -47,44 +47,44 @@ void main() {
     });
   });
 
-  const goodISList = const <List<String>>[
-    const <String>['+8'],
-    const <String>['-6'],
-    const <String>['560'],
-    const <String>['0'],
-    const <String>['-67'],
+  const goodISList = <List<String>>[
+    <String>['+8'],
+    <String>['-6'],
+    <String>['560'],
+    <String>['0'],
+    <String>['-67'],
   ];
-  const badISList = const <List<String>>[
-    const <String>['\b'],
+  const badISList = <List<String>>[
+    <String>['\b'],
     //	Backspace
-    const <String>['\t '],
+    <String>['\t '],
     //horizontal tab (HT)
-    const <String>['\n'],
+    <String>['\n'],
     //linefeed (LF)
-    const <String>['\f '],
+    <String>['\f '],
     // form feed (FF)
-    const <String>['\r '],
+    <String>['\r '],
     //carriage return (CR)
-    const <String>['\v'],
+    <String>['\v'],
     //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
-    const <String>['abc'],
-    const <String>['23.34']
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
+    <String>['abc'],
+    <String>['23.34']
   ];
 
-  const badISLengthValues = const <List<String>>[
-    const <String>['+823434534645645654'],
-    const <String>['234345343400098090'],
+  const badISLengthValues = <List<String>>[
+    <String>['+823434534645645654'],
+    <String>['234345343400098090'],
   ];
 
-  const badISLengthList = const <List<String>>[
-    const <String>['+823434534645645654', '823434534645645654'],
-    const <String>['234345343400098090', '35345435']
+  const badISLengthList = <List<String>>[
+    <String>['+823434534645645654', '823434534645645654'],
+    <String>['234345343400098090', '35345435']
   ];
 
   group('IStag', () {
@@ -552,7 +552,7 @@ void main() {
 
   group('IS Element', () {
     //VM.k1
-    const isVM1Tags = const <PTag>[
+    const isVM1Tags = <PTag>[
       PTag.kStageNumber,
       PTag.kNumberOfStages,
       PTag.kViewNumber,
@@ -566,7 +566,7 @@ void main() {
     ];
 
     //VM.k2
-    const isVM2Tags = const <PTag>[
+    const isVM2Tags = <PTag>[
       PTag.kCenterOfCircularShutter,
       PTag.kCenterOfCircularCollimator,
       PTag.kGridAspectRatio,
@@ -576,19 +576,19 @@ void main() {
     ];
 
     //VM.k2_2n
-    const isVM2_2nTags = const <PTag>[
+    const isVM2_2nTags = <PTag>[
       PTag.kVerticesOfThePolygonalShutter,
       PTag.kVerticesOfThePolygonalCollimator,
       PTag.kVerticesOfTheOutlineOfPupil,
     ];
 
     //VM.k3
-    const isVM3Tags = const <PTag>[
+    const isVM3Tags = <PTag>[
       PTag.kROIDisplayColor,
     ];
 
     //VM.k1_n
-    const isVM1_nTags = const <PTag>[
+    const isVM1_nTags = <PTag>[
       PTag.kReferencedFrameNumber,
       PTag.kTransformOrderOfAxes,
       PTag.kEchoNumbers,
@@ -597,7 +597,7 @@ void main() {
       PTag.kSelectorSequencePointerItems,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

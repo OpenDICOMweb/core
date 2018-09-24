@@ -18,11 +18,11 @@ void main() {
   global.throwOnError = false;
 
   group('OWTag', () {
-    const uInt16MinMax = const [kUint16Min, kUint16Max];
-    const uInt16Min = const [kUint16Min];
-    const uInt16Max = const [kUint16Max];
-    const uInt16MaxPlus = const [kUint16Max + 1];
-    const uInt16MinMinus = const [kUint16Min - 1];
+    const uInt16MinMax = [kUint16Min, kUint16Max];
+    const uInt16Min = [kUint16Min];
+    const uInt16Max = [kUint16Max];
+    const uInt16MaxPlus = [kUint16Max + 1];
+    const uInt16MinMinus = [kUint16Min - 1];
 
     test('OW hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
@@ -396,7 +396,7 @@ void main() {
 
   group('OW Element', () {
     //VM.k1
-    const owVM1Tags = const <PTag>[
+    const owVM1Tags = <PTag>[
       PTag.kRedPaletteColorLookupTableData,
       PTag.kGreenPaletteColorLookupTableData,
       PTag.kBluePaletteColorLookupTableData,
@@ -422,7 +422,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const owVM1_nTags = const <PTag>[
+    const owVM1_nTags = <PTag>[
       PTag.kSelectorOWValue,
     ];
 
@@ -439,7 +439,7 @@ void main() {
       PTag.kOverlayData
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
@@ -598,9 +598,9 @@ void main() {
 
     test('OW isValidValues good values', () {
       global.throwOnError = false;
-      const uInt16MinMax = const [kUint16Min, kUint16Max];
-      const uInt16Min = const [kUint16Min];
-      const uInt16Max = const [kUint16Max];
+      const uInt16MinMax = [kUint16Min, kUint16Max];
+      const uInt16Min = [kUint16Min];
+      const uInt16Max = [kUint16Max];
 
       //VM.k1
       expect(OW.isValidValues(PTag.kPixelData, uInt16Min), true);
@@ -614,8 +614,8 @@ void main() {
 
     test('OW isValidValues bad values', () {
       global.throwOnError = false;
-      const uInt16MaxPlus = const [kUint16Max + 1];
-      const uInt16MinMinus = const [kUint16Min - 1];
+      const uInt16MaxPlus = [kUint16Max + 1];
+      const uInt16MinMinus = [kUint16Min - 1];
 
       expect(OW.isValidValues(PTag.kPixelData, uInt16MaxPlus), false);
       expect(OW.isValidValues(PTag.kBlendingLookupTableData, uInt16MinMinus),

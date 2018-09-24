@@ -20,7 +20,7 @@ void main() {
 
   group('ATbytes', () {
     //VM.k1
-    const atVM1Tags = const <int>[
+    const atVM1Tags = <int>[
       kDimensionIndexPointer,
       kFunctionalGroupPointer,
       kSelectorAttribute,
@@ -31,7 +31,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const atVM1_nTags = const <int>[
+    const atVM1_nTags = <int>[
       kOriginalImageIdentification,
       kFrameIncrementPointer,
       kFrameDimensionPointer,

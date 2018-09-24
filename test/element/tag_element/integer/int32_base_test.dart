@@ -23,8 +23,8 @@ void main() {
       final vList0 = rng.int32List(1, 1);
       expect(Int32.fromList(vList0), vList0);
     }
-    const int32Min = const [kInt32Min];
-    const int32Max = const [kInt32Max];
+    const int32Min = [kInt32Min];
+    const int32Max = [kInt32Max];
     expect(Int32.fromList(int32Max), int32Max);
     expect(Int32.fromList(int32Min), int32Min);
   });
@@ -52,12 +52,12 @@ void main() {
         ..debug('SL.toBytes(int32ListV1) ; ${Int32.toBytes(int32ListV1)}');
       expect(Int32.toBytes(int32ListV1), equals(bd));
     }
-    const int32Max = const [kInt32Max];
+    const int32Max = [kInt32Max];
     final vList1 = Int32List.fromList(int32Max);
     final uaInt8List = vList1.buffer.asUint8List();
     expect(Int32.toBytes(int32Max), uaInt8List);
 
-    const int64Max = const [kInt64Max];
+    const int64Max = [kInt64Max];
     expect(Int32.toBytes(int64Max), isNull);
 
     global.throwOnError = true;
@@ -83,7 +83,7 @@ void main() {
       expect(lBd1.buffer == bd0.buffer, true);
     }
 
-    const int32Max = const [kInt32Max];
+    const int32Max = [kInt32Max];
     final vList1 = Int32List.fromList(int32Max);
     final bd1 = vList1.buffer.asByteData();
     final lBd2 = Int32.toByteData(vList1);
@@ -111,10 +111,10 @@ void main() {
       expect(lBd2.buffer == bd0.buffer, false);
     }
 
-    const int32Max = const <int>[kInt32Max + 1];
+    const int32Max = <int>[kInt32Max + 1];
     expect(Int32.toByteData(int32Max), isNull);
 
-    const int32Min = const [kInt32Min - 1];
+    const int32Min = [kInt32Min - 1];
     expect(Int32.toByteData(int32Min), isNull);
 
     global.throwOnError = true;

@@ -10,15 +10,15 @@
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-const List<List<int>> kWeekdayDiffTable = const <List<int>>[
+const List<List<int>> kWeekdayDiffTable = <List<int>>[
   // -    Sun Mon Tue Wed Thu Fri Sat
-  /*Sun*/ const [0, 6, 5, 4, 3, 2, 1],
-  /*Mon*/ const [1, 0, 6, 5, 4, 3, 2],
-  /*Tue*/ const [2, 1, 0, 6, 5, 4, 3],
-  /*Wed*/ const [3, 2, 1, 0, 6, 5, 4],
-  /*Thu*/ const [4, 3, 2, 1, 0, 6, 5],
-  /*Fri*/ const [5, 4, 3, 2, 1, 0, 6],
-  /*Sat*/ const [6, 5, 4, 3, 2, 1, 0]
+  /*Sun*/ [0, 6, 5, 4, 3, 2, 1],
+  /*Mon*/ [1, 0, 6, 5, 4, 3, 2],
+  /*Tue*/ [2, 1, 0, 6, 5, 4, 3],
+  /*Wed*/ [3, 2, 1, 0, 6, 5, 4],
+  /*Thu*/ [4, 3, 2, 1, 0, 6, 5],
+  /*Fri*/ [5, 4, 3, 2, 1, 0, 6],
+  /*Sat*/ [6, 5, 4, 3, 2, 1, 0]
 ];
 
 void main() {

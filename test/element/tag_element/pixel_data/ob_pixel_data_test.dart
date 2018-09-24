@@ -405,8 +405,8 @@ void main() {
 
     test('Create Uint32Base.listToBytes', () {
       global.throwOnError = false;
-      const uInt8Max = const [kUint8Max];
-      const uInt16Max = const [kUint16Max];
+      const uInt8Max = [kUint8Max];
+      const uInt16Max = [kUint16Max];
 
       expect(Uint8.toBytes(testFrame), equals(testFrame));
       expect(Uint8.toBytes(uInt8Max), equals(uInt8Max));

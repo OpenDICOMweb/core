@@ -17,11 +17,11 @@ void main() {
   global.throwOnError = false;
 
   group('SLTag', () {
-    const int32VMinMax = const [kInt32Min, kInt32Max];
-    const int32Max = const [kInt32Max];
-    const int32MaxPlus = const [kInt32Max + 1];
-    const int32Min = const [kInt32Min];
-    const int32MinMinus = const [kInt32Min - 1];
+    const int32VMinMax = [kInt32Min, kInt32Max];
+    const int32Max = [kInt32Max];
+    const int32MaxPlus = [kInt32Max + 1];
+    const int32Min = [kInt32Min];
+    const int32MinMinus = [kInt32Min - 1];
 
     test('SL hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
@@ -444,7 +444,7 @@ void main() {
 
   group('SL Element', () {
     //VM.k1
-    const slVM1Tags = const <PTag>[
+    const slVM1Tags = <PTag>[
       PTag.kReferencePixelX0,
       PTag.kReferencePixelY0,
       PTag.kDopplerSampleVolumeXPosition,
@@ -458,21 +458,21 @@ void main() {
     ];
 
     //VM.k2
-    const slVM2Tags = const <PTag>[
+    const slVM2Tags = <PTag>[
       PTag.kDisplayedAreaTopLeftHandCorner,
       PTag.kDisplayedAreaBottomRightHandCorner,
     ];
 
     //VM.k1_n
-    const slVM1_nTags = const <PTag>[
+    const slVM1_nTags = <PTag>[
       PTag.kRationalNumeratorValue,
       PTag.kSelectorSLValue,
     ];
 
     //VM.k2_2n
-    const slVM2_2nTags = const <PTag>[PTag.kPixelCoordinatesSetTrial];
+    const slVM2_2nTags = <PTag>[PTag.kPixelCoordinatesSetTrial];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
@@ -712,9 +712,9 @@ void main() {
     });
     test('SL isValidValues good values', () {
       global.throwOnError = false;
-      const int32MinMax = const [kInt32Min, kInt32Max];
-      const int32Min = const [kInt32Min];
-      const int32Max = const [kInt32Max];
+      const int32MinMax = [kInt32Min, kInt32Max];
+      const int32Min = [kInt32Min];
+      const int32Max = [kInt32Max];
 
       //VM.k1
       expect(SL.isValidValues(PTag.kReferencePixelX0, int32Min), true);
@@ -733,8 +733,8 @@ void main() {
 
     test('SL isValidValues bad values', () {
       global.throwOnError = false;
-      const int32MaxPlus = const [kInt32Max + 1];
-      const int32MinMinus = const [kInt32Min - 1];
+      const int32MaxPlus = [kInt32Max + 1];
+      const int32MinMinus = [kInt32Min - 1];
 
       //VM.k1
       expect(SL.isValidValues(PTag.kReferencePixelX0, int32MaxPlus), false);
@@ -757,10 +757,10 @@ void main() {
 
     test('SL isValidValues bad values length', () {
       global.throwOnError = false;
-      const int32MinMax = const [kInt32Min, kInt32Max];
-      const int32MinMaxPlus = const [kInt32Min, kInt32Max, kInt8Min, kInt16Min];
-      const int32Min = const [kInt32Min];
-      const int32Max = const [kInt32Max];
+      const int32MinMax = [kInt32Min, kInt32Max];
+      const int32MinMaxPlus = [kInt32Min, kInt32Max, kInt8Min, kInt16Min];
+      const int32Min = [kInt32Min];
+      const int32Max = [kInt32Max];
 
       // VM.k1
       expect(SL.isValidValues(PTag.kReferencePixelX0, int32MinMax), false);

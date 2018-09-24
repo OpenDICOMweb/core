@@ -20,7 +20,7 @@ void main() {
 
   group('LObytes', () {
     //VM.k1
-    const loVM1Tags = const <int>[
+    const loVM1Tags = <int>[
       kDataSetSubtype,
       kManufacturer,
       kInstitutionName,
@@ -37,7 +37,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const loVM1_nTags = const <int>[
+    const loVM1_nTags = <int>[
       kAdmittingDiagnosesDescription,
       kEventTimerNames,
       kInsurancePlanIdentification,

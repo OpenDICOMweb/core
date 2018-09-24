@@ -8,7 +8,7 @@
 //
 
 
-const List<String> goodDcmDateTimeList = const [
+const List<String> goodDcmDateTimeList = [
   '19500718105630',
   '00000101010101',
   '19700101000000',
@@ -22,7 +22,7 @@ const List<String> goodDcmDateTimeList = const [
   '20240229105630', // leap year
 ];
 
-const List<String> badDcmDateTimeList = const [
+const List<String> badDcmDateTimeList = [
   '19501318105630', //bad months
   '19501032105630', // bad day
   '00000000000000', // bad month and day

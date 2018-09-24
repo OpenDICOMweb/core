@@ -16,7 +16,7 @@ void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = RNG(1);
 
-  const doubleList = const <double>[
+  const doubleList = <double>[
     0.1,
     1.2,
     1.11,
@@ -35,7 +35,7 @@ void main() {
   ];
 
   //VM.k1
-  const odVM1Tags = const <int>[
+  const odVM1Tags = <int>[
     kSelectorODValue,
     kDoubleFloatPixelData,
   ];

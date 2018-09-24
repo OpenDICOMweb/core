@@ -20,7 +20,7 @@ void main() {
 
   group('USbytes', () {
     //VM.k1
-    const usVM1Tags = const <int>[
+    const usVM1Tags = <int>[
       kFileSetConsistencyFlag,
       kDataSetType,
       kPrivateGroupReference,
@@ -42,7 +42,7 @@ void main() {
     ];
 
     //VM.k2
-    const usVM2Tags = const <int>[
+    const usVM2Tags = <int>[
       kSynchronizationChannel,
       kLightPathFilterPassBand,
       kImagePathFilterPassBand,
@@ -54,7 +54,7 @@ void main() {
     ];
 
     //VM.k3
-    const usVM3Tags = const <int>[
+    const usVM3Tags = <int>[
       kSubjectRelativePositionInImage,
       kShutterPresentationColorCIELabValue,
       kAlphaPaletteColorLookupTableDescriptor,
@@ -75,7 +75,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const usVM1_nTags = const <int>[
+    const usVM1_nTags = <int>[
       kAcquisitionIndex,
       kPerimeterTable,
       kPredictorConstants,

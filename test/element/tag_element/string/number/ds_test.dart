@@ -20,7 +20,7 @@ void main() {
   Server.initialize(name: 'string/ds_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodDecimalStrings = const <String>[
+  const goodDecimalStrings = <String>[
     '567',
     ' 567',
     '567 ',
@@ -61,47 +61,47 @@ void main() {
     });
   });
 
-  const goodDSList = const <List<String>>[
-    const <String>['0.7591109678'],
-    const <String>['-6.1e-1'],
-    const <String>[' -6.1e-1'],
-    const <String>['-6.1e-1'],
-    const <String>['560'],
-    const <String>[' -6.60'],
-    const <String>['+1.5e-1'],
+  const goodDSList = <List<String>>[
+    <String>['0.7591109678'],
+    <String>['-6.1e-1'],
+    <String>[' -6.1e-1'],
+    <String>['-6.1e-1'],
+    <String>['560'],
+    <String>[' -6.60'],
+    <String>['+1.5e-1'],
   ];
 
-  const badDSList = const <List<String>>[
-    const <String>['\b'],
+  const badDSList = <List<String>>[
+    <String>['\b'],
     //	Backspace
-    const <String>['\t '],
+    <String>['\t '],
     //horizontal tab (HT)
-    const <String>['\n'],
+    <String>['\n'],
     //linefeed (LF)
-    const <String>['\f '],
+    <String>['\f '],
     // form feed (FF)
-    const <String>['\r '],
+    <String>['\r '],
     //carriage return (CR)
-    const <String>['\v'],
+    <String>['\v'],
     //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
-    const <String>['abc']
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
+    <String>['abc']
   ];
 
-  const badDSLengthValues = const <List<String>>[
-    const <String>['0.7591145074654659110'],
-    const <String>['12393.4563234098903'],
+  const badDSLengthValues = <List<String>>[
+    <String>['0.7591145074654659110'],
+    <String>['12393.4563234098903'],
   ];
 
-  const badDSLengthList = const <List<String>>[
-    const <String>['0.7591109678', '0.7591109678'],
-    const <String>['-6.1e-1', '123.75934548'],
-    const <String>['-6.1e-1', '103.75548', '234.4570'],
+  const badDSLengthList = <List<String>>[
+    <String>['0.7591109678', '0.7591109678'],
+    <String>['-6.1e-1', '123.75934548'],
+    <String>['-6.1e-1', '103.75548', '234.4570'],
   ];
 
   group('DS Tests', () {
@@ -559,7 +559,7 @@ void main() {
 
   group('DS Element', () {
     //VM.k1
-    const dsVM1Tags = const <PTag>[
+    const dsVM1Tags = <PTag>[
       PTag.kPatientSize,
       PTag.kPatientWeight,
       PTag.kOuterDiameter,
@@ -575,7 +575,7 @@ void main() {
     ];
 
     //VM.k2
-    const dsVM2Tags = const <PTag>[
+    const dsVM2Tags = <PTag>[
       PTag.kImagerPixelSpacing,
       PTag.kNominalScannedPixelSpacing,
       PTag.kDetectorBinning,
@@ -589,10 +589,10 @@ void main() {
     ];
 
     //VM.k2_2n
-    const dsVM2_2nTags = const <PTag>[PTag.kDVHData];
+    const dsVM2_2nTags = <PTag>[PTag.kDVHData];
 
     //VM.k3
-    const dsVM3Tags = const <PTag>[
+    const dsVM3Tags = <PTag>[
       PTag.kImageTranslationVector,
       PTag.kImagePosition,
       PTag.kImagePositionPatient,
@@ -604,19 +604,19 @@ void main() {
     ];
 
     //VM.k3_3n
-    const dsVM3_3nTags = const <PTag>[
+    const dsVM3_3nTags = <PTag>[
       PTag.kLeafPositionBoundaries,
       PTag.kContourData
     ];
 
     //VM.k4
-    const dsVM4Tags = const <PTag>[
+    const dsVM4Tags = <PTag>[
       PTag.kDoubleExposureFieldDeltaTrial,
       PTag.kDiaphragmPosition
     ];
 
     //VM.k6
-    const dsVM6Tags = const <PTag>[
+    const dsVM6Tags = <PTag>[
       PTag.kPRCSToRCSOrientation,
       PTag.kImageTransformationMatrix,
       PTag.kImageOrientation,
@@ -625,7 +625,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const dsVM1_nTags = const <PTag>[
+    const dsVM1_nTags = <PTag>[
       PTag.kMaterialThickness,
       PTag.kMaterialIsolationDiameter,
       PTag.kCoordinateSystemTransformTranslationMatrix,
@@ -642,7 +642,7 @@ void main() {
       PTag.kFramePrimaryAngleVector,
     ];
 
-    const badDSTags = const <PTag>[
+    const badDSTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

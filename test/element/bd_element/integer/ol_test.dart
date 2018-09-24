@@ -19,7 +19,7 @@ void main() {
   final rds = ByteRootDataset.empty();
 
   group('OLbytes', () {
-    const olVM1Tags = const <int>[
+    const olVM1Tags = <int>[
       kLongPrimitivePointIndexList,
       kLongTrianglePointIndexList,
       kLongEdgePointIndexList,
@@ -27,7 +27,7 @@ void main() {
       kTrackPointIndexList,
     ];
 
-    const olVM1_nTags = const <int>[kSelectorOLValue];
+    const olVM1_nTags = <int>[kSelectorOLValue];
 
     test('OLbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {

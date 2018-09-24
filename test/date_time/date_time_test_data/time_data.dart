@@ -7,7 +7,7 @@
 //  See the AUTHORS file for other contributors.
 //
 
-const List<String> goodDcmTimes = const <String>[
+const List<String> goodDcmTimes = <String>[
   '000000',
   '190101',
   '235959',
@@ -55,7 +55,7 @@ const List<String> goodDcmTimes = const <String>[
   '235959.111111',
 ];
 
-const List<String> badDcmTimes = const <String>[
+const List<String> badDcmTimes = <String>[
   '241318', // bad hour
   '006132', // bad minute
   '006060', // bad minute and second
@@ -73,19 +73,19 @@ const List<String> badDcmTimes = const <String>[
   // TODO: test fractions
 ];
 
-const List<int> goodTimeFractionValues = const <int>[
+const List<int> goodTimeFractionValues = <int>[
   100000, 110000, 111000, 111100, 111110, 111111,
   000000, 000000, 000000, 000000, 000000, 000000,
   900000, 990000, 999000, 999900, 999990, 999999 //no reformat
 ];
 
-const List<int> goodFractionValues = const <int>[
+const List<int> goodFractionValues = <int>[
   1, 11, 111, 1111, 11111, 111111,
   0, 00, 000, 0000, 00000, 000000,
   9, 99, 999, 9999, 99999, 999999 //no reformat
 ];
 
-const List<String> goodFractionStrings = const <String>[
+const List<String> goodFractionStrings = <String>[
   '.1',
   '.11',
   '.111',
@@ -106,7 +106,7 @@ const List<String> goodFractionStrings = const <String>[
   '.999999',
 ];
 
-const List<String> badFractionStrings = const <String>[
+const List<String> badFractionStrings = <String>[
   'a',
   'aa',
   '.',
@@ -125,7 +125,7 @@ const List<String> badFractionStrings = const <String>[
   '.00000000zx',
 ];
 
-const List<String> badTimeFractionStrings = const <String>[
+const List<String> badTimeFractionStrings = <String>[
   'a',
   'aa',
   '.',

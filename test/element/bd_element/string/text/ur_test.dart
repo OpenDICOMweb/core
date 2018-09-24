@@ -20,7 +20,7 @@ void main() {
 
   group('URbytes', () {
     //VM.k1
-    const urVM1Tags = const <int>[
+    const urVM1Tags = <int>[
       kRetrieveURL,
       kPixelDataProviderURL,
       kRetrieveURI,

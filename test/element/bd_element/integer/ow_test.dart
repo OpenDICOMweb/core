@@ -19,7 +19,7 @@ void main() {
   final rds = ByteRootDataset.empty();
 
   group('OWbytes', () {
-    const owVM1Tags = const <int>[
+    const owVM1Tags = <int>[
       kRedPaletteColorLookupTableData,
       kGreenPaletteColorLookupTableData,
       kBluePaletteColorLookupTableData,
@@ -44,7 +44,7 @@ void main() {
       kVariableCoefficientsSDDN
     ];
 
-    const owVM1_nTags = const <int>[kSelectorOWValue];
+    const owVM1_nTags = <int>[kSelectorOWValue];
 
     test('OWbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {

@@ -19,17 +19,17 @@ void main() {
   Server.initialize(name: 'string/st_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodSTList = const <List<String>>[
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['(s!WGR3D:2hhWF|,'],
-    const <String>['6g:Q@ A:SnpPLKm:hi|?]zOwIa";n56W']
+  const goodSTList = <List<String>>[
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['(s!WGR3D:2hhWF|,'],
+    <String>['6g:Q@ A:SnpPLKm:hi|?]zOwIa";n56W']
   ];
 
-  const badSTList = const <List<String>>[
-    const <String>['\b'], //	Backspace
+  const badSTList = <List<String>>[
+    <String>['\b'], //	Backspace
   ];
 
   group('ST Tests', () {
@@ -438,7 +438,7 @@ void main() {
 
   group('ST', () {
     //VM.k1
-    const stVM1Tags = const <PTag>[
+    const stVM1Tags = <PTag>[
       PTag.kInstitutionAddress,
       PTag.kReferringPhysicianAddress,
       PTag.kCodingSchemeExternalID,
@@ -464,7 +464,7 @@ void main() {
       PTag.kTopicSubject
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

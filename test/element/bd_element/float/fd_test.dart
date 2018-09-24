@@ -16,7 +16,7 @@ final RNG rng = RNG(1);
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
 
-  const doubleList = const <double>[
+  const doubleList = <double>[
     0.1,
     1.2,
     1.11,
@@ -35,7 +35,7 @@ void main() {
   ];
 
   //VM.k1
-  const fdVM1Tags = const <int>[
+  const fdVM1Tags = <int>[
     kEventTimeOffset,
     kReferencePixelPhysicalValueX,
     kReferencePixelPhysicalValueY,
@@ -45,7 +45,7 @@ void main() {
   ];
 
   //VM.k2
-  const fdVM2Tags = const <int>[
+  const fdVM2Tags = <int>[
     kTimeRange,
     kReconstructionFieldOfView,
     kReconstructionPixelSpacing,
@@ -56,7 +56,7 @@ void main() {
   ];
 
   //VM.k3
-  const fdVM3Tags = const <int>[
+  const fdVM3Tags = <int>[
     kDiffusionGradientOrientation,
     kVelocityEncodingDirection,
     kSlabOrientation,
@@ -67,7 +67,7 @@ void main() {
   ];
 
   //VM.k4
-  const fdVM4Tags = const <int>[
+  const fdVM4Tags = <int>[
     kBoundingRectangle,
     kTwoDMatingAxes,
     kTwoDLineCoordinates,
@@ -76,17 +76,17 @@ void main() {
     kTwoDImplantTemplateGroupMemberMatchingAxes,
   ];
   //VM.k6
-  const fdVM6Tags = const <int>[kImageOrientationVolume];
+  const fdVM6Tags = <int>[kImageOrientationVolume];
 
   //VM.k9
-  const fdVM9Tags = const <int>[
+  const fdVM9Tags = <int>[
     kViewOrientationModifier,
     kThreeDMatingAxes,
     kThreeDImplantTemplateGroupMemberMatchingAxes,
   ];
 
   //VM.k1_n
-  const fdVM1_nTags = const <int>[
+  const fdVM1_nTags = <int>[
     kRealWorldValueLUTData,
     kSelectorFDValue,
     kInversionTimes,

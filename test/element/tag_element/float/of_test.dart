@@ -18,7 +18,7 @@ void main() {
   final rng = RNG(1);
   global.throwOnError = false;
 
-  const listFloat32Common0 = const <double>[
+  const listFloat32Common0 = <double>[
     1.1,
     1.11,
     1.111,
@@ -94,7 +94,7 @@ void main() {
       final of1 = OFtag(PTag.kUValueData, vList1);
       expect(of1.update(vList1).values, equals(vList1));
 
-      const floats2 = const <double>[
+      const floats2 = <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
       final vList2 = Float32List.fromList(floats2);
@@ -335,7 +335,7 @@ void main() {
   });
 
   group('OF Element', () {
-    const ofVM1Tags = const <PTag>[
+    const ofVM1Tags = <PTag>[
       PTag.kVectorGridData,
       PTag.kFloatingPointValues,
       PTag.kUValueData,
@@ -345,9 +345,9 @@ void main() {
       PTag.kFloatPixelData,
     ];
 
-    const ofVMk1_nTags = const <PTag>[PTag.kSelectorOFValue];
+    const ofVMk1_nTags = <PTag>[PTag.kSelectorOFValue];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kPlanningLandmarkID,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,

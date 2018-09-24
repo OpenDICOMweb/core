@@ -19,27 +19,27 @@ void main() {
   Server.initialize(name: 'string/special_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodAEList = const <List<String>>[
-    const <String>['d9E8tO'],
-    const <String>['mrZeo|^P> -6{t, '],
-    const <String>['mrZeo|^P> -6{t,'],
-    const <String>['1wd7'],
-    const <String>['mrZeo|^P> -6{t,']
+  const goodAEList = <List<String>>[
+    <String>['d9E8tO'],
+    <String>['mrZeo|^P> -6{t, '],
+    <String>['mrZeo|^P> -6{t,'],
+    <String>['1wd7'],
+    <String>['mrZeo|^P> -6{t,']
   ];
 
-  const badAEList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?']
+  const badAEList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?']
   ];
 
   group('AEtag', () {
@@ -405,11 +405,11 @@ void main() {
   });
 
   group('AE ', () {
-    const badAELengthList = const <String>[
+    const badAELengthList = <String>[
       'mrZeo|^P> -6{t,mrZeo|^P> -6{t,mrZeo|^P> -6{td9E8tO'
     ];
     //VM.k1
-    const aeVM1Tags = const <PTag>[
+    const aeVM1Tags = <PTag>[
       PTag.kNetworkID,
       PTag.kPerformedStationAETitle,
       PTag.kRequestingAE,
@@ -418,13 +418,13 @@ void main() {
     ];
 
     //VM.k1_n
-    const aeVM1_nTags = const <PTag>[
+    const aeVM1_nTags = <PTag>[
       PTag.kRetrieveAETitle,
       PTag.kScheduledStudyLocationAETitle,
       PTag.kScheduledStationAETitle,
       PTag.kSelectorAEValue,
     ];
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

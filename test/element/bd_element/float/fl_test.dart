@@ -16,7 +16,7 @@ void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = RNG(1);
 
-  const doubleList = const <double>[
+  const doubleList = <double>[
     1.1,
     1.11,
     1.111,
@@ -77,7 +77,7 @@ void main() {
   const flVM1_6Tags = <int>[kBoundingPolygon];
 
   //VM.k1_n
-  const flVM1_nTags = const <int>[
+  const flVM1_nTags = <int>[
     kTableOfParameterValues,
     kRWaveTimeVector,
     kFilterBeamPathLengthMinimum,

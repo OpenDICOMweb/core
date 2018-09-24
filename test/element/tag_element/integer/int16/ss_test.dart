@@ -18,11 +18,11 @@ void main() {
   global.throwOnError = false;
 
   group('SSTag', () {
-    const int16VMinMax = const [kInt16Min, kInt16Max];
-    const int16Min = const [kInt16Min];
-    const int16MinMinus = const [kInt16Min - 1];
-    const int16Max = const [kInt16Max];
-    const int16MaxPlus = const [kInt16Max + 1];
+    const int16VMinMax = [kInt16Min, kInt16Max];
+    const int16Min = [kInt16Min];
+    const int16MinMinus = [kInt16Min - 1];
+    const int16Max = [kInt16Max];
+    const int16MaxPlus = [kInt16Max + 1];
 
     test('SS hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
@@ -458,7 +458,7 @@ void main() {
 
   group('SS Element', () {
     //VM.k1
-    const ssVM1Tags = const <PTag>[
+    const ssVM1Tags = <PTag>[
       PTag.kTagAngleSecondAxis,
       PTag.kExposureControlSensingRegionLeftVerticalEdge,
       PTag.kExposureControlSensingRegionRightVerticalEdge,
@@ -470,7 +470,7 @@ void main() {
     ];
 
     //VM.k2
-    const ssVM2Tags = const <PTag>[
+    const ssVM2Tags = <PTag>[
       PTag.kOverlayOrigin,
       PTag.kAbstractPriorValue,
       PTag.kVisualAcuityModifiers,
@@ -478,9 +478,9 @@ void main() {
     ];
 
     //VM.k1_n
-    const ssVM1_nTags = const <PTag>[PTag.kSelectorSSValue];
+    const ssVM1_nTags = <PTag>[PTag.kSelectorSSValue];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
@@ -679,9 +679,9 @@ void main() {
 
     test('SS isValidValues good values', () {
       global.throwOnError = false;
-      const int16MinMax = const [kInt16Min, kInt16Max];
-      const int16Min = const [kInt16Min];
-      const int16Max = const [kInt16Max];
+      const int16MinMax = [kInt16Min, kInt16Max];
+      const int16Min = [kInt16Min];
+      const int16Max = [kInt16Max];
 
       // VM.k1
       expect(SS.isValidValues(PTag.kTagAngleSecondAxis, int16Min), true);
@@ -698,8 +698,8 @@ void main() {
 
     test('SS isValidValues bad values', () {
       global.throwOnError = false;
-      const int16MaxPlus = const [kInt16Max + 1];
-      const int16MinMinus = const [kInt16Min - 1];
+      const int16MaxPlus = [kInt16Max + 1];
+      const int16MinMinus = [kInt16Min - 1];
 
       // VM.k1
       expect(SS.isValidValues(PTag.kTagAngleSecondAxis, int16MaxPlus), false);
@@ -721,10 +721,10 @@ void main() {
 
     test('SS isValidValues bad values length', () {
       global.throwOnError = false;
-      const int16MinMax = const [kInt16Min, kInt16Max];
-      const int16MinMaxPlus = const [kInt16Min, kInt16Max, kInt8Min];
-      const int16Min = const [kInt16Min];
-      const int16Max = const [kInt16Max];
+      const int16MinMax = [kInt16Min, kInt16Max];
+      const int16MinMaxPlus = [kInt16Min, kInt16Max, kInt8Min];
+      const int16Min = [kInt16Min];
+      const int16Max = [kInt16Max];
 
       // VM.k1
       expect(SS.isValidValues(PTag.kTagAngleSecondAxis, int16MinMax), false);

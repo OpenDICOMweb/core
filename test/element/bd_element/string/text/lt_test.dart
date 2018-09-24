@@ -20,7 +20,7 @@ void main() {
 
   group('LTbytes', () {
     //VM.k1
-    const ltVM1Tags = const <int>[
+    const ltVM1Tags = <int>[
       kIdentifyingComments,
       kAdditionalPatientHistory,
       kPatientComments,

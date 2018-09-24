@@ -18,8 +18,6 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
-/* // ignore_for_file: unnecessary_getters_setters */
-
 // Meaning of method names:
 //    lookup:
 //    add:

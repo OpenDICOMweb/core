@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'time_zone_test', level: Level.info);
 
-  const List inValidTimeZoneStrings = const <String>[
+  const List inValidTimeZoneStrings = <String>[
     '-1230',
     '-1140',
     '-1030',
@@ -31,7 +31,7 @@ void main() {
     '+1430'
   ];
 
-  const inValidInternetTimeZoneStrings = const <String>[
+  const inValidInternetTimeZoneStrings = <String>[
     '-12:30',
     '-11:40',
     '-10:30',

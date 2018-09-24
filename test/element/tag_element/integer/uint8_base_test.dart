@@ -23,8 +23,8 @@ void main() {
       final vList0 = rng.uint8List(1, 1);
       expect(Uint8.fromList(vList0), vList0);
     }
-    const uInt8Min = const [kUint8Min];
-    const uInt8Max = const [kUint8Max];
+    const uInt8Min = [kUint8Min];
+    const uInt8Max = [kUint8Max];
     expect(Uint8.fromList(uInt8Min), uInt8Min);
     expect(Uint8.fromList(uInt8Max), uInt8Max);
   });
@@ -42,12 +42,12 @@ void main() {
       expect(Uint8.toBytes(uInt8ListV1), equals(bd));
     }
 
-    const uInt8Max = const [kUint8Max];
+    const uInt8Max = [kUint8Max];
     final uInt8ListV1 = Uint8List.fromList(uInt8Max);
     final uint8List = uInt8ListV1.buffer.asUint8List();
     expect(Uint8.toBytes(uInt8Max), uint8List);
 
-    const uInt16Max = const [kUint16Max];
+    const uInt16Max = [kUint16Max];
     final uInt16List2 = Uint16.fromList(uInt16Max);
     expect(Uint8.toUint8List(uInt16List2), isNull);
 
@@ -74,7 +74,7 @@ void main() {
       expect(lBd1.buffer == bd0.buffer, true);
     }
 
-    const uint8Max = const [kUint8Max];
+    const uint8Max = [kUint8Max];
     final uint8List = Uint8List.fromList(uint8Max);
     final bd1 = uint8List.buffer.asByteData();
     final lBd2 = Uint8.toByteData(uint8List);
@@ -116,12 +116,12 @@ void main() {
     }
 
     global.throwOnError = false;
-    const uInt16Max = const <int>[kUint16Max];
+    const uInt16Max = <int>[kUint16Max];
 
     expect(Uint8.toByteData(uInt16Max), isNull);
 
     global.throwOnError = false;
-    const uInt32Max = const <int>[kUint32Max];
+    const uInt32Max = <int>[kUint32Max];
     expect(Uint8.toByteData(uInt32Max), isNull);
 
     global.throwOnError = true;

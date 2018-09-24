@@ -18,11 +18,11 @@ void main() {
   global.throwOnError = false;
 
   group('AT', () {
-    const uInt32MinMax = const [kUint32Min, kUint32Max];
-    const uInt32Max = const [kUint32Max];
-    const uInt32MaxPlus = const [kUint32Max + 1];
-    const uInt32Min = const [kUint32Min];
-    const uInt32MinMinus = const [kUint32Min - 1];
+    const uInt32MinMax = [kUint32Min, kUint32Max];
+    const uInt32Max = [kUint32Max];
+    const uInt32MaxPlus = [kUint32Max + 1];
+    const uInt32Min = [kUint32Min];
+    const uInt32MinMinus = [kUint32Min - 1];
 
     test('AT hasValidValues good values random', () {
       global.throwOnError = false;
@@ -508,7 +508,7 @@ void main() {
 
   group('AT Element', () {
     //VM.k1
-    const atVM1Tags = const <PTag>[
+    const atVM1Tags = <PTag>[
       PTag.kDimensionIndexPointer,
       PTag.kFunctionalGroupPointer,
       PTag.kSelectorAttribute,
@@ -519,7 +519,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const atVM1_nTags = const <PTag>[
+    const atVM1_nTags = <PTag>[
       PTag.kOriginalImageIdentification,
       PTag.kFrameIncrementPointer,
       PTag.kFrameDimensionPointer,
@@ -537,7 +537,7 @@ void main() {
       PTag.kCoefficientCodingPointers,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
@@ -712,9 +712,9 @@ void main() {
 
     test('AT isValidValues good values values', () {
       global.throwOnError = false;
-      const uInt32MinMax = const [kUint32Min, kUint32Max, kUint16Max];
-      const uInt32Min = const [kUint32Min];
-      const uInt32Max = const [kUint32Max];
+      const uInt32MinMax = [kUint32Min, kUint32Max, kUint16Max];
+      const uInt32Min = [kUint32Min];
+      const uInt32Max = [kUint32Max];
 
       //VM.k1
       expect(AT.isValidValues(PTag.kSelectorAttribute, uInt32Min), true);
@@ -728,8 +728,8 @@ void main() {
 
     test('AT isValidValues bad values values', () {
       global.throwOnError = false;
-      const uInt32MaxPlus = const [kUint32Max + 1];
-      const uInt32MinMinus = const [kUint32Min - 1];
+      const uInt32MaxPlus = [kUint32Max + 1];
+      const uInt32MinMinus = [kUint32Min - 1];
 
       //VM.k1
       expect(AT.isValidValues(PTag.kSelectorAttribute, uInt32MaxPlus), false);
@@ -747,7 +747,7 @@ void main() {
 
     test('AT isValidValues bad values length', () {
       global.throwOnError = false;
-      const uInt32MinMax = const [
+      const uInt32MinMax = [
         kUint32Min,
         kUint32Max,
       ];

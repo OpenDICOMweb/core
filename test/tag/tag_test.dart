@@ -10,7 +10,7 @@
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-List<int> tags = const [
+List<int> tags = [
   kSpecificCharacterSet,
   kLanguageCodeSequence,
   kImageType,

@@ -20,7 +20,7 @@ void main() {
 
   group('SHbytes', () {
     //VM.k1
-    const shVM1Tags = const <int>[
+    const shVM1Tags = <int>[
       kImplementationVersionName,
       kRecognitionCode,
       kCodeValue,
@@ -45,7 +45,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const shVm1_nTags = const <int>[
+    const shVm1_nTags = <int>[
       kReferringPhysicianTelephoneNumbers,
       kPatientTelephoneNumbers,
       kConvolutionKernel,

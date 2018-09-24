@@ -20,7 +20,7 @@ void main() {
 
   group('PNbytes', () {
     //VM.k1
-    const pnVM1Tags = const <int>[
+    const pnVM1Tags = <int>[
       kReferringPhysicianName,
       kPatientBirthName,
       kPatientMotherBirthName,
@@ -41,7 +41,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const pnVM1_nTags = const <int>[
+    const pnVM1_nTags = <int>[
       kPerformingPhysicianName,
       kNameOfPhysiciansReadingStudy,
       kOperatorsName,
