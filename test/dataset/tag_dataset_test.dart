@@ -15,15 +15,15 @@ void main() {
   Server.initialize(
       name: 'dataset/tag_dataset_test', level: Level.info, throwOnError: false);
 
-  final rsg = new RSG(seed: 1);
-  final rng = new RNG(1);
+  final rsg = RSG(seed: 1);
+  final rng = RNG(1);
 
   group('Data set adding different types of elements', () {
-    Dataset rootDS = new TagRootDataset.empty();
+    Dataset rootDS = TagRootDataset.empty();
 
     test('Create a data set object from map', () {
       Tag tag = PTag.lookupByCode(kStudyDate, kDAIndex); // Study Date
-      final date = new DAtag(tag, ['19990505']);
+      final date = DAtag(tag, ['19990505']);
       rootDS.add(date);
 
       //  element.modify(1, 10, 4);
@@ -32,34 +32,34 @@ void main() {
       expect(date.checkValue('20240528'), true);
 
       tag = PTag.lookupByCode(kSeriesDate, kDAIndex); // Series Date
-      rootDS.add(new DAtag(tag, ['19990505']));
+      rootDS.add(DAtag(tag, ['19990505']));
 
       tag = PTag.lookupByCode(kAcquisitionDate); // Acquisition Date
-      rootDS.add(new DAtag(tag, ['19990505']));
+      rootDS.add(DAtag(tag, ['19990505']));
 
       tag = PTag.lookupByCode(kContentDate); // Image Date
-      rootDS.add(new DAtag(tag, ['19990505']));
+      rootDS.add(DAtag(tag, ['19990505']));
 
       tag = PTag.lookupByCode(kStudyTime); // Study Time
-      rootDS = new TagRootDataset.empty();
-      var time = new TMtag(tag, ['105234.530000']);
+      rootDS = TagRootDataset.empty();
+      var time = TMtag(tag, ['105234.530000']);
       log.debug('Time: ${time.info}');
       expect(time.hasValidValues, true);
       rootDS.add(time);
       log.debug('time0: ${rootDS[kStudyTime].info}');
 
       tag = PTag.lookupByCode(kSeriesTime); // Series Time
-      rootDS.add(new TMtag(tag, ['105234.530000']));
+      rootDS.add(TMtag(tag, ['105234.530000']));
 
       tag = PTag.lookupByCode(kAcquisitionTime); //   Acquisition Time
-      rootDS.add(new TMtag(tag, ['105234.530000']));
+      rootDS.add(TMtag(tag, ['105234.530000']));
 
       tag = PTag.lookupByCode(kContentTime); // Image Time
-      rootDS.add(new TMtag(tag, ['105234.530000']));
+      rootDS.add(TMtag(tag, ['105234.530000']));
 
       tag = PTag.lookupByCode(kOverlayTime); // Overlay Time
       log.debug('kOverlayTime: $tag');
-      time = new TMtag(tag, ['105234.530000']);
+      time = TMtag(tag, ['105234.530000']);
       log.debug('Time: ${time.info}');
       rootDS
         ..add(time)
@@ -68,23 +68,23 @@ void main() {
       // Uids (UI)
       tag = PTag.lookupByCode(
           kMediaStorageSOPClassUID); // Media Storage SOP Class UID
-      rootDS.add(new UItag(tag, [kCTImageStorage]));
+      rootDS.add(UItag(tag, [kCTImageStorage]));
 
       tag = PTag.lookupByCode(
           kMediaStorageSOPInstanceUID); // Media Storage SOP Instance UID
 
-      rootDS.add(new UItag(tag,
+      rootDS.add(UItag(tag,
           ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']));
       tag = PTag.lookupByCode(kTransferSyntaxUID); // Transfer Syntax UID
-      rootDS.add(new UItag(tag, [kExplicitVRLittleEndian]));
+      rootDS.add(UItag(tag, [kExplicitVRLittleEndian]));
       tag = PTag.lookupByCode(kStudyInstanceUID); // Study Instance UID
       rootDS.add(
-          new UItag(tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']));
+          UItag(tag, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']));
     });
   });
 
   group('DataSet methods - 1', () {
-    final rootDS0 = new TagRootDataset.empty();
+    final rootDS0 = TagRootDataset.empty();
 
     final tag1 = PTag.lookupByCode(kStudyInstanceUID);
     final tag2 = PTag.lookupByCode(kTransferSyntaxUID);
@@ -93,12 +93,12 @@ void main() {
     final tag5 = PTag.lookupByCode(kAcquisitionDate);
     rootDS0
       ..add(
-          new UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-      ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
-      ..add(new UItag(tag3,
+          UItag(tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
+      ..add(UItag(tag2, [kExplicitVRLittleEndian]))
+      ..add(UItag(tag3,
           ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
-      ..add(new TMtag(tag4, ['105234.530000']))
-      ..add(new DAtag(tag5, ['19990505']));
+      ..add(TMtag(tag4, ['105234.530000']))
+      ..add(DAtag(tag5, ['19990505']));
 /* TODO Jim: move to profile.dart
 
     test('test for Retained', () {
@@ -124,7 +124,7 @@ void main() {
     });
 
     test('test for retainAll', () {
-      const List<Tag> tags = const [
+      const List<Tag> tags = [
         PTag.kStudyInstanceUID,
         PTag.kTransferSyntaxUID,
         PTag.kMediaStorageSOPInstanceUID
@@ -183,40 +183,40 @@ void main() {
 
     test('== and hashcode', () {
       // rootDS0
-      final rootDS0 = new TagRootDataset.empty();
+      final rootDS0 = TagRootDataset.empty();
       final tag1 = PTag.lookupByCode(kStudyInstanceUID);
       final tag2 = PTag.lookupByCode(kTransferSyntaxUID);
       final tag3 = PTag.lookupByCode(kMediaStorageSOPInstanceUID);
       final tag4 = PTag.lookupByCode(kSeriesTime);
       final tag5 = PTag.lookupByCode(kAcquisitionDate);
       rootDS0
-        ..add(new UItag(
+        ..add(UItag(
             tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
-        ..add(new UItag(tag3,
+        ..add(UItag(tag2, [kExplicitVRLittleEndian]))
+        ..add(UItag(tag3,
             ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
-        ..add(new TMtag(tag4, ['105234.530000']))
-        ..add(new DAtag(tag5, ['19990505']));
+        ..add(TMtag(tag4, ['105234.530000']))
+        ..add(DAtag(tag5, ['19990505']));
 
       // rootDS1
-      final rootDS1 = new TagRootDataset.empty()
-        ..add(new UItag(
+      final rootDS1 = TagRootDataset.empty()
+        ..add(UItag(
             tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
-        ..add(new UItag(tag3,
+        ..add(UItag(tag2, [kExplicitVRLittleEndian]))
+        ..add(UItag(tag3,
             ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']))
-        ..add(new TMtag(tag4, ['105234.530000']))
-        ..add(new DAtag(tag5, ['19990505']));
+        ..add(TMtag(tag4, ['105234.530000']))
+        ..add(DAtag(tag5, ['19990505']));
 
       expect(rootDS0 == rootDS1, true);
       expect(rootDS0.hashCode == rootDS1.hashCode, true);
 
       // rootDS2
-      final rootDS2 = new TagRootDataset.empty()
-        ..add(new UItag(
+      final rootDS2 = TagRootDataset.empty()
+        ..add(UItag(
             tag1, ['2.16.840.1.113662.2.1.1519.11582.1990505.1105152']))
-        ..add(new UItag(tag2, [kExplicitVRLittleEndian]))
-        ..add(new UItag(tag3,
+        ..add(UItag(tag2, [kExplicitVRLittleEndian]))
+        ..add(UItag(tag3,
             ['2.16.840.1.113662.2.1.4519.41582.4105152.419990505.410523251']));
 
       expect(rootDS0 == rootDS2, false);
@@ -225,7 +225,7 @@ void main() {
       expect(rootDS1.hashCode == rootDS2.hashCode, false);
 
       // rootDS3 (empty dataset)
-      final rootDS3 = new TagRootDataset.empty();
+      final rootDS3 = TagRootDataset.empty();
       expect(rootDS0 == rootDS3, false);
       expect(rootDS0.hashCode == rootDS3.hashCode, false);
     });
@@ -233,8 +233,8 @@ void main() {
     test('test for noValue', () {
       // Setup and confirm
       final tag1 = PTag.lookupByCode(kStudyInstanceUID);
-      final studyUid0 = new UItag(tag1, ['1.2.840.10008.0']);
-      final rds0 = new TagRootDataset.empty()..add(studyUid0);
+      final studyUid0 = UItag(tag1, ['1.2.840.10008.0']);
+      final rds0 = TagRootDataset.empty()..add(studyUid0);
       expect(rds0[kStudyInstanceUID], equals(studyUid0));
 
       // No Value
@@ -252,11 +252,11 @@ void main() {
     global.throwOnError = false;
 
     test('add', () {
-      final rds = new TagRootDataset.empty();
+      final rds = TagRootDataset.empty();
       final stringAEList0 = rsg.getAEList(1, 10);
-      final ae0 = new AEtag(PTag.kRetrieveAETitle, stringAEList0);
-      final ae1 = new AEtag(PTag.kRetrieveAETitle, stringAEList0);
-      final ae2 = new AEtag(PTag.kRetrieveAETitle, stringAEList0);
+      final ae0 = AEtag(PTag.kRetrieveAETitle, stringAEList0);
+      final ae1 = AEtag(PTag.kRetrieveAETitle, stringAEList0);
+      final ae2 = AEtag(PTag.kRetrieveAETitle, stringAEList0);
       global.throwOnError = true;
       rds.allowDuplicates = false;
       log
@@ -302,17 +302,17 @@ void main() {
 
     test('update', () {
       final stringAEList0 = rsg.getAEList(1, 10);
-      final ae0 = new AEtag(PTag.kRetrieveAETitle, stringAEList0);
+      final ae0 = AEtag(PTag.kRetrieveAETitle, stringAEList0);
       log.debug('stringAEList0: $stringAEList0, ae0.values: ${ae0.values}');
       expect(ae0.values, equals(stringAEList0));
 
       final stringSTList0 = rsg.getSTList(1, 1);
-      final st0 = new STtag(PTag.kMetaboliteMapDescription, stringSTList0);
+      final st0 = STtag(PTag.kMetaboliteMapDescription, stringSTList0);
 
       final stringDSList0 = rsg.getDSList(2, 2);
-      final ds0 = new DStag(PTag.kPresentationPixelSpacing, stringDSList0);
+      final ds0 = DStag(PTag.kPresentationPixelSpacing, stringDSList0);
 
-      final rootDS = new TagRootDataset.empty()..add(ae0)..add(st0)..add(ds0);
+      final rootDS = TagRootDataset.empty()..add(ae0)..add(st0)..add(ds0);
       log.debug('rootDS: $rootDS');
 
       final stringAEList1 = rsg.getAEList(1, 10);
@@ -378,61 +378,61 @@ void main() {
 
     test('listsEqual', () {
       final vList0 = rsg.getUCList(1, 1);
-      final uc0 = new UCtag(PTag.kStrainDescription, vList0);
-      final uc1 = new UCtag(PTag.kStrainDescription, vList0);
+      final uc0 = UCtag(PTag.kStrainDescription, vList0);
+      final uc1 = UCtag(PTag.kStrainDescription, vList0);
 
       expect(Element.vListEqual(uc0.vfBytes, uc1.vfBytes), true);
 
       final vList1 = rsg.getUCList(1, 1);
-      final uc2 = new UCtag(PTag.kStrainDescription, vList1);
-      final uc3 = new UCtag(PTag.kStrainDescription, vList1);
+      final uc2 = UCtag(PTag.kStrainDescription, vList1);
+      final uc3 = UCtag(PTag.kStrainDescription, vList1);
 
       expect(Element.vListEqual(uc2.vfBytes, uc3.vfBytes), true);
     });
 
     test('total', () {
-      final rds = new TagRootDataset.empty();
+      final rds = TagRootDataset.empty();
       final valuesList = <TagItem>[];
 
       // Make Item with 3 Elements
-      //    final rds0 = new TagRootDataset.empty();
-      rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      //    final rds0 = TagRootDataset.empty();
+      rds[kRecognitionCode] = SHtag(PTag.kRecognitionCode, ['foo bar']);
       rds[kInstitutionAddress] =
-          new STtag(PTag.kInstitutionAddress, ['foo bar']);
+          STtag(PTag.kInstitutionAddress, ['foo bar']);
       rds[kExtendedCodeMeaning] =
-          new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
-      valuesList.add(new TagItem.fromList(rds, rds));
+          LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
+      valuesList.add(TagItem.fromList(rds, rds));
       expect(rds.length == 3, true);
 
       // Make Item with 5 Elements
-      final rds1 = new TagRootDataset.empty();
-      final lt = new LTtag(PTag.kApprovalStatusFurtherDescription, ['foo bar']);
-      final lo = new LOtag(PTag.kProductName, ['foo bar']);
-      final ss = new SStag(PTag.kTagAngleSecondAxis, <int>[123]);
-      final sl = new SLtag(PTag.kReferencePixelX0, <int>[13]);
+      final rds1 = TagRootDataset.empty();
+      final lt = LTtag(PTag.kApprovalStatusFurtherDescription, ['foo bar']);
+      final lo = LOtag(PTag.kProductName, ['foo bar']);
+      final ss = SStag(PTag.kTagAngleSecondAxis, <int>[123]);
+      final sl = SLtag(PTag.kReferencePixelX0, <int>[13]);
 
       global.throwOnError = false;
       //Next line throws InvalidValuesError because 345 is not valid
-      final ob0 = new OBtag(PTag.kICCProfile, [123, 345]);
+      final ob0 = OBtag(PTag.kICCProfile, [123, 345]);
       expect(ob0, isNull);
       global.throwOnError = true;
-      expect(() => new OBtag(PTag.kICCProfile, [123, 345]),
+      expect(() => OBtag(PTag.kICCProfile, [123, 345]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
-      final ob = new OBtag(PTag.kICCProfile, [123, 255]);
+      final ob = OBtag(PTag.kICCProfile, [123, 255]);
 
       rds1[lt.code] = lt;
       rds1[lo.code] = lo;
       rds1[ss.code] = ss;
       rds1[sl.code] = sl;
       rds1[ob.code] = ob;
-      valuesList.add(new TagItem.fromList(rds, rds1));
+      valuesList.add(TagItem.fromList(rds, rds1));
       expect(rds1.length == 5, true);
 
       // Create SQtag and add to rootDS0
       const sqTag = PTag.kReferencedStudySequence;
-      final sq = new SQtag(rds, sqTag, valuesList);
-      log..debug('sq: ${sq.info}');
+      final sq = SQtag(rds, sqTag, valuesList);
+      log.debug('sq: ${sq.info}');
       expect(sq.length == 2, true);
 
       //Sequence Elements
@@ -449,16 +449,15 @@ void main() {
       expect(rds.total == 12, true);
 
       final sq1 = rds.lookup(sqTag.code);
-      expect((sq == sq1), true);
+      expect(sq == sq1, true);
 
       log.debug('rootDS0.total: ${rds.total}, sq.total: ${sq.total}');
-//      expect(sq1.total == 9, true); // No of Items in SQtag
       final List<double> float32List0 = rng.float32List(1, 1);
-      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
+      final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
       rds.add(fl0);
 
       final stringList0 = rsg.getLOList(1, 1);
-      final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
+      final lo0 = LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
       rds.add(lo0);
       log
         ..debug('length: ${rds.length}, total: ${rds.total} ')
@@ -470,12 +469,12 @@ void main() {
 
     test('removeDuplicates', () {
       global.throwOnError = false;
-      final un0 = new UNtag(PTag.kAirCounts, [1]);
-      final un1 = new UNtag(PTag.kAirCounts, [2]);
-      final aeOB0 = new OBtag(PTag.kDarkCurrentCounts, [3]);
-      final aeOW1 = new OWtag(PTag.kAirCounts, [3]);
+      final un0 = UNtag(PTag.kAirCounts, [1]);
+      final un1 = UNtag(PTag.kAirCounts, [2]);
+      final aeOB0 = OBtag(PTag.kDarkCurrentCounts, [3]);
+      final aeOW1 = OWtag(PTag.kAirCounts, [3]);
 
-      final rds = new TagRootDataset.empty();
+      final rds = TagRootDataset.empty();
       log.debug('global.throwOnError: ${global.throwOnError}');
       rds.add(un0);
       log.debug(
@@ -551,14 +550,14 @@ void main() {
 
     test('getInt', () {
       global.throwOnError = false;
-      const int32Min = const [kInt16Min];
-      final sl0 = new SLtag(PTag.kReferencePixelX0, int32Min);
-      final sl1 = new SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
-      final sl2 = new SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
-      final lt0 = new LTtag(PTag.kDetectorDescription, ['foo']);
-      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
+      const int32Min = [kInt16Min];
+      final sl0 = SLtag(PTag.kReferencePixelX0, int32Min);
+      final sl1 = SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
+      final sl2 = SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
+      final lt0 = LTtag(PTag.kDetectorDescription, ['foo']);
+      final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
 
-      final rootDS0 = new TagRootDataset.empty()
+      final rootDS0 = TagRootDataset.empty()
         ..add(sl0)
         ..add(sl1)
         ..add(sl2)
@@ -594,10 +593,10 @@ void main() {
 
     test('getStringList', () {
       final stringList0 = rsg.getLOList(1, 1);
-      final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
-      final ss0 = new SStag(PTag.kTagAngleSecondAxis, [12]);
-      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
-      final rootDS0 = new TagRootDataset.empty()..add(lo0)..add(ss0)..add(fl0);
+      final lo0 = LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
+      final ss0 = SStag(PTag.kTagAngleSecondAxis, [12]);
+      final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
+      final rootDS0 = TagRootDataset.empty()..add(lo0)..add(ss0)..add(fl0);
 
       //string type VR
       final values = rootDS0.getStringList(kReceiveCoilManufacturerName);
@@ -631,11 +630,11 @@ void main() {
 
     test('getString', () {
       final stringList0 = rsg.getLOList(1, 1);
-      final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
-      final ds0 = new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
-      final ss0 = new SStag(PTag.kTagAngleSecondAxis, [12]);
-      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
-      final rootDS0 = new TagRootDataset.empty()
+      final lo0 = LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
+      final ds0 = DStag(PTag.kImagerPixelSpacing, ['123', '345']);
+      final ss0 = SStag(PTag.kTagAngleSecondAxis, [12]);
+      final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
+      final rootDS0 = TagRootDataset.empty()
         ..add(lo0)
         ..add(ss0)
         ..add(ds0)
@@ -669,10 +668,10 @@ void main() {
 
     test('getFloatList', () {
       final List<double> float32List0 = rng.float32List(1, 1);
-      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
-      final sl2 = new SLtag(PTag.kReferencePixelX0, [458]);
-      final da2 = new DAtag(PTag.kStudyDate, ['20151212']);
-      final rootDS0 = new TagRootDataset.empty()..add(fl0)..add(sl2)..add(da2);
+      final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
+      final sl2 = SLtag(PTag.kReferencePixelX0, [458]);
+      final da2 = DAtag(PTag.kStudyDate, ['20151212']);
+      final rootDS0 = TagRootDataset.empty()..add(fl0)..add(sl2)..add(da2);
 
       //float type VR
       expect(rootDS0.getFloatList(kAbsoluteChannelDisplayScale),
@@ -696,12 +695,12 @@ void main() {
 
     test('getFloat', () {
       final List<double> float32List0 = rng.float32List(1, 1);
-      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
+      final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
       final fl1 =
-          new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
-      final sl0 = new SLtag(PTag.kReferencePixelX0, [458]);
-      final da0 = new DAtag(PTag.kStudyDate, ['20151212']);
-      final rootDS0 = new TagRootDataset.empty()
+          FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
+      final sl0 = SLtag(PTag.kReferencePixelX0, [458]);
+      final da0 = DAtag(PTag.kStudyDate, ['20151212']);
+      final rootDS0 = TagRootDataset.empty()
         ..add(fl0)
         ..add(fl1)
         ..add(sl0)
@@ -730,25 +729,25 @@ void main() {
     });
 
     test('getItem', () {
-      final rootDS0 = new TagRootDataset.empty();
+      final rootDS0 = TagRootDataset.empty();
       final valuesList = <TagItem>[];
 
       // Make Item with 3 Elements
-      final rds = new TagRootDataset.empty();
-      rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      final rds = TagRootDataset.empty();
+      rds[kRecognitionCode] = SHtag(PTag.kRecognitionCode, ['foo bar']);
       rds[kImagerPixelSpacing] =
-          new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
-      rds[kTagAngleSecondAxis] = new SStag(PTag.kTagAngleSecondAxis, [12]);
+          DStag(PTag.kImagerPixelSpacing, ['123', '345']);
+      rds[kTagAngleSecondAxis] = SStag(PTag.kTagAngleSecondAxis, [12]);
 
-      valuesList.add(new TagItem.fromList(rootDS0, rds));
+      valuesList.add(TagItem.fromList(rootDS0, rds));
       expect(rds.length == 3, true);
 
       rds[kAnatomicStructureReferencePoint] =
-          new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
+          FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
 
       // Create SQtag and add to rootDS0
       const sqTag = PTag.kReferencedStudySequence;
-      final sq = new SQtag(rootDS0, sqTag, valuesList);
+      final sq = SQtag(rootDS0, sqTag, valuesList);
       log.debug('sq: ${sq.info}');
       expect(sq.length == 1, true);
 
@@ -771,25 +770,25 @@ void main() {
     });
 
     test('getItemList', () {
-      final rootDS0 = new TagRootDataset.empty();
+      final rootDS0 = TagRootDataset.empty();
       final valuesList = <TagItem>[];
 
       // Make Item with 3 Elements
-      final rds = new TagRootDataset.empty();
-      rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      final rds = TagRootDataset.empty();
+      rds[kRecognitionCode] = SHtag(PTag.kRecognitionCode, ['foo bar']);
       rds[kImagerPixelSpacing] =
-          new DStag(PTag.kImagerPixelSpacing, ['123', '345']);
-      rds[kTagAngleSecondAxis] = new SStag(PTag.kTagAngleSecondAxis, [12]);
+          DStag(PTag.kImagerPixelSpacing, ['123', '345']);
+      rds[kTagAngleSecondAxis] = SStag(PTag.kTagAngleSecondAxis, [12]);
 
-      valuesList.add(new TagItem.fromList(rootDS0, rds));
+      valuesList.add(TagItem.fromList(rootDS0, rds));
       expect(rds.length == 3, true);
 
       rds[kAnatomicStructureReferencePoint] =
-          new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
+          FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
 
       // Create SQtag and add to rootDS0
       const sqTag = PTag.kReferencedStudySequence;
-      final sq = new SQtag(rootDS0, sqTag, valuesList);
+      final sq = SQtag(rootDS0, sqTag, valuesList);
       log.debug('sq: ${sq.info}');
       expect(sq.length == 1, true);
 
@@ -813,8 +812,8 @@ void main() {
 
     test('getUid', () {
       final stringList0 = rsg.getUIList(1, 1);
-      final ui0 = new UItag(PTag.kSpecimenUID, stringList0);
-      final rootDS0 = new TagRootDataset.empty()..add(ui0);
+      final ui0 = UItag(PTag.kSpecimenUID, stringList0);
+      final rootDS0 = TagRootDataset.empty()..add(ui0);
 
       expect(rootDS0.getUid(kSpecimenUID), equals(Uid.parse(stringList0[0])));
 
@@ -828,8 +827,8 @@ void main() {
 
     test('getUidList', () {
       final stringList0 = rsg.getUIList(1, 1);
-      final ui0 = new UItag(PTag.kSpecimenUID, stringList0);
-      final rootDS0 = new TagRootDataset.empty()..add(ui0);
+      final ui0 = UItag(PTag.kSpecimenUID, stringList0);
+      final rootDS0 = TagRootDataset.empty()..add(ui0);
 
       expect(
           rootDS0.getUidList(kSpecimenUID), equals(Uid.parseList(stringList0)));
@@ -847,10 +846,10 @@ void main() {
       global.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
       log.debug('vList0: $vList0');
-      final da0 = new DAtag(PTag.kCreationDate, vList0);
-      final sl0 = new SLtag(PTag.kReferencePixelX0, [458]);
+      final da0 = DAtag(PTag.kCreationDate, vList0);
+      final sl0 = SLtag(PTag.kReferencePixelX0, [458]);
 
-      final rootDS0 = new TagRootDataset.empty()..add(da0)..add(sl0);
+      final rootDS0 = TagRootDataset.empty()..add(da0)..add(sl0);
       expect(rootDS0.normalizeDate(da0.index, Date.parse('19930822')),
           equals(da0));
       //expect(rootDS0.normalizeDate(sl0.index, Date.parse('19930822')));
@@ -858,9 +857,9 @@ void main() {
 
     test('[] and []=', () {
       final stringList0 = rsg.getLOList(1, 1);
-      final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
-      final ut0 = new UTtag(PTag.kUniversalEntityID, ['dfg']);
-      final rootDS0 = new TagRootDataset.empty()..add(lo0)..add(ut0);
+      final lo0 = LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
+      final ut0 = UTtag(PTag.kUniversalEntityID, ['dfg']);
+      final rootDS0 = TagRootDataset.empty()..add(lo0)..add(ut0);
 
       log.debug('global.throwOnError:${global.throwOnError}');
       //[]
@@ -878,9 +877,9 @@ void main() {
 
       //[]=
       final stringList1 = rsg.getLTList(1, 1);
-      final lt0 = new LTtag(PTag.kAcquisitionProtocolDescription, stringList1);
+      final lt0 = LTtag(PTag.kAcquisitionProtocolDescription, stringList1);
 
-      //adding a new element
+      //adding a element
       rootDS0[lt0.code] = lt0;
       expect(rootDS0.total == 3, true);
 
@@ -902,14 +901,14 @@ void main() {
     });
 
     test('hasDuplicates', () {
-      final rootDS0 = new TagRootDataset.empty();
+      final rootDS0 = TagRootDataset.empty();
 
       final stringList0 = rsg.getLOList(1, 1);
-      final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
+      final lo0 = LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
       rootDS0.add(lo0);
 
       final List<double> float32List0 = rng.float32List(1, 1);
-      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
+      final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
       rootDS0.add(fl0);
 
       log.debug('global.throwOnError:${global.throwOnError}');
@@ -917,8 +916,8 @@ void main() {
       //no duplicates
       expect(rootDS0.hasDuplicates, false);
 
-      final ob0 = new OBtag(PTag.kAirCounts, [1]);
-      final ob1 = new OBtag(PTag.kAirCounts, [1, 2, 3]);
+      final ob0 = OBtag(PTag.kAirCounts, [1]);
+      final ob1 = OBtag(PTag.kAirCounts, [1, 2, 3]);
 
       global.throwOnError = true;
       rootDS0.add(ob0);
@@ -943,11 +942,11 @@ void main() {
 
     test('isRoot and root', () {
       //isRoot
-      final rootDS0 = new TagRootDataset.empty();
+      final rootDS0 = TagRootDataset.empty();
       expect(rootDS0.isRoot, true);
 
       final stringList0 = rsg.getLOList(1, 1);
-      final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
+      final lo0 = LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
       rootDS0.add(lo0);
       expect(rootDS0.isRoot, true);
 
@@ -959,10 +958,10 @@ void main() {
 
     test('elements.length', () {
       final stringList0 = rsg.getLOList(1, 1);
-      final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
+      final lo0 = LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
       final fl2 =
-          new FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
-      final rootDS0 = new TagRootDataset.empty()..add(lo0)..add(fl2);
+          FLtag(PTag.kAnatomicStructureReferencePoint, [123.78, 456.99]);
+      final rootDS0 = TagRootDataset.empty()..add(lo0)..add(fl2);
 
       log.debug('rootDS0.length: ${rootDS0.length}');
       expect(rootDS0.length == rootDS0.elements.length, true);
@@ -970,9 +969,9 @@ void main() {
 
     test('elementsList', () {
       final stringList0 = rsg.getLOList(1, 1);
-      final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
-      final st2 = new STtag(PTag.kMetaboliteMapDescription, ['dfg']);
-      final rootDS0 = new TagRootDataset.empty()..add(lo0)..add(st2);
+      final lo0 = LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
+      final st2 = STtag(PTag.kMetaboliteMapDescription, ['dfg']);
+      final rootDS0 = TagRootDataset.empty()..add(lo0)..add(st2);
 
       final Iterable<Element> elms = [lo0, st2];
       log
@@ -984,12 +983,12 @@ void main() {
 
     test('keys and ids', () {
       final stringList0 = rsg.getLOList(1, 1);
-      final lo0 = new LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
-      final lo1 = new LOtag(PTag.kDataSetSubtype, stringList0);
+      final lo0 = LOtag(PTag.kReceiveCoilManufacturerName, stringList0);
+      final lo1 = LOtag(PTag.kDataSetSubtype, stringList0);
 
       final List<double> float32List0 = rng.float32List(1, 1);
-      final fl0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
-      final rootDS0 = new TagRootDataset.empty()..add(lo0)..add(lo1)..add(fl0);
+      final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, float32List0);
+      final rootDS0 = TagRootDataset.empty()..add(lo0)..add(lo1)..add(fl0);
 
       log
         ..debug(kReceiveCoilManufacturerName)
@@ -1001,17 +1000,17 @@ void main() {
 
     test('lookupAll', () {
       final vList0 = rsg.getAEList(1, 10);
-      final ae0 = new AEtag(PTag.kRetrieveAETitle, vList0);
+      final ae0 = AEtag(PTag.kRetrieveAETitle, vList0);
       log.debug('vList0: $vList0, ae0.values: ${ae0.values}');
       expect(ae0.values, equals(vList0));
 
       final stringSTList0 = rsg.getSTList(1, 1);
-      final st0 = new STtag(PTag.kMetaboliteMapDescription, stringSTList0);
+      final st0 = STtag(PTag.kMetaboliteMapDescription, stringSTList0);
 
       final stringDSList0 = rsg.getDSList(2, 2);
-      final ds0 = new DStag(PTag.kPresentationPixelSpacing, stringDSList0);
+      final ds0 = DStag(PTag.kPresentationPixelSpacing, stringDSList0);
 
-      final rootDS = new TagRootDataset.empty()..add(ae0)..add(st0)..add(ds0);
+      final rootDS = TagRootDataset.empty()..add(ae0)..add(st0)..add(ds0);
       log.debug('rootDS: $rootDS');
 
       final vList1 = rsg.getAEList(1, 10);

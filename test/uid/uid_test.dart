@@ -19,7 +19,7 @@ void main() {
   uidTest();
 }
 
-const List<String> goodUids = const <String>[
+const List<String> goodUids = <String>[
   '1.2.840.10008.1.2',
   '1.2.840.10008.1.2.0',
   '1.2.840.10008.0.1.2',
@@ -31,7 +31,7 @@ const List<String> goodUids = const <String>[
   '1.23.9.99.0.345.3242.12.345.35'
 ];
 
-const List<String> badUids = const <String>[
+const List<String> badUids = <String>[
   '1.2.3', // Invalid Length : length less than 6
   '3.2.840.10008.1.2.0', // '3.': not valid root
   '1.02.840.10008.1.2', // '.02': '0' can only be followed by '.'
@@ -47,7 +47,7 @@ const List<String> badUids = const <String>[
 ];
 
 // well known Uids
-const List<String> wkUids = const <String>[
+const List<String> wkUids = <String>[
   '1.2.840.10008.1.2',
   '1.2.840.10008.1.2.1',
   '1.2.840.10008.1.2.1.99',
@@ -122,18 +122,18 @@ void uidTest() {
 
     test('Generate Uid', (){
       for(var s in goodUids){
-        final uid0 = new Uid(s);// checks 's' as valid Uid
+        final uid0 = Uid(s);// checks 's' as valid Uid
         log.debug('uid0:$uid0');
         expect(uid0.value, equals(s));
       }
-      final uid1 =  new Uid();// generates new Uid
+      final uid1 =  Uid();// generates Uid
       log.debug('uid1:$uid1');
       expect(uid1, isNotNull);
     });
 
     test('bad uid string test',(){
       for(var s in badUids){
-        final uid0 = new Uid(s);// checks 's' as valid Uid
+        final uid0 = Uid(s);// checks 's' as valid Uid
         expect(uid0,isNull);
       }
     });

@@ -14,6 +14,7 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr.dart';
 
 // ignore_for_file: type_annotate_public_apis, public_member_api_docs
+// ignore_for_file: avoid_renaming_method_parameters
 
 const int _shortVF = kMaxShortVF;
 const int _longVF = kMaxLongVF;
@@ -115,6 +116,7 @@ abstract class VR<T> {
   static int checkIndex(int vrIndex, Issues issues, int target) =>
       (vrIndex == target) ? vrIndex : badIndex(vrIndex, issues, target);
 
+  // ignore: prefer_void_to_null
   static Null badIndex(int vrIndex, Issues issues, int correctVRIndex) {
     final msg = 'Invalid VR index($vrIndex == ${vrIdByIndex[vrIndex]})';
     return _doError(msg, issues, correctVRIndex);
@@ -141,6 +143,7 @@ abstract class VR<T> {
   static bool isValidCode(int vrCode, Issues issues, int target) =>
       (vrCode == target) ? true : invalidCode(vrCode, issues, target);
 
+  // ignore: prefer_void_to_null
   static Null badCode(int vrCode, Issues issues, int correctVRIndex) {
     final msg = 'Invalid VR code(${vrIdByIndex[vrIndexByCode8Bit[vrCode]]})';
     return _doError(msg, issues, correctVRIndex);
@@ -160,6 +163,7 @@ abstract class VR<T> {
     return invalidCode(vrCode, issues, target);
   }
 
+  // ignore: prefer_void_to_null
   static Null _doError(String message, Issues issues,
       [int badIndex, int goodIndex]) {
     final sb = StringBuffer(message);
@@ -278,7 +282,8 @@ class VRInt extends VR<int> {
       Uint32.kMinValue, Uint32.kMaxValue, true);
 }
 
-typedef bool IsValidString(String s, {Issues issues, bool allowInvalid});
+typedef IsValidString = bool Function(String s,
+    {Issues issues, bool allowInvalid});
 
 abstract class VRString extends VR<String> {
   final int minVLength;

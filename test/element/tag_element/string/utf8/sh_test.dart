@@ -13,44 +13,44 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/sh_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodSHList = const <List<String>>[
-    const <String>['d9E8tO'],
-    const <String>['mrZeo|^P> -6{t, '],
-    const <String>[')QcFN@1r]&u;~3l'],
-    const <String>['1wd7'],
-    const <String>['T 2@+nEZKu/J']
+  const goodSHList = <List<String>>[
+    <String>['d9E8tO'],
+    <String>['mrZeo|^P> -6{t, '],
+    <String>[')QcFN@1r]&u;~3l'],
+    <String>['1wd7'],
+    <String>['T 2@+nEZKu/J']
   ];
 
-  const badSHList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
+  const badSHList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
   ];
 
   group('SHtag', () {
     test('SH hasValidValues good values', () {
       for (var s in goodSHList) {
         global.throwOnError = false;
-        final e0 = new SHtag(PTag.kMultiCoilElementName, s);
+        final e0 = SHtag(PTag.kMultiCoilElementName, s);
         expect(e0.hasValidValues, true);
       }
       global.throwOnError = false;
-      final e0 = new SHtag(PTag.kSelectorSHValue, []);
+      final e0 = SHtag(PTag.kSelectorSHValue, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -58,27 +58,27 @@ void main() {
     test('SH hasValidValues bad values', () {
       for (var s in badSHList) {
         global.throwOnError = false;
-        final e0 = new SHtag(PTag.kMultiCoilElementName, s);
+        final e0 = SHtag(PTag.kMultiCoilElementName, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new SHtag(PTag.kMultiCoilElementName, s),
+        expect(() => SHtag(PTag.kMultiCoilElementName, s),
             throwsA(const TypeMatcher<StringError>()));
       }
       global.throwOnError = false;
-      final e1 = new SHtag(PTag.kSelectorSHValue, null);
+      final e1 = SHtag(PTag.kSelectorSHValue, null);
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new SHtag(PTag.kMultiCoilElementName, null),
+      expect(() => SHtag(PTag.kMultiCoilElementName, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('SH hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        final e0 = new SHtag(PTag.kMultiCoilElementName, vList0);
+        final e0 = SHtag(PTag.kMultiCoilElementName, vList0);
         log.debug('e0:${e0.info}');
         expect(e0.hasValidValues, true);
 
@@ -88,7 +88,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 10);
-        final e1 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final e1 = SHtag(PTag.kSelectorSHValue, vList0);
         log.debug('e1:${e1.info}');
         expect(e1.hasValidValues, true);
 
@@ -102,36 +102,36 @@ void main() {
         global.throwOnError = false;
         final vList0 = rsg.getSHList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e2 = new SHtag(PTag.kMultiCoilElementName, vList0);
+        final e2 = SHtag(PTag.kMultiCoilElementName, vList0);
         expect(e2, isNull);
 
         global.throwOnError = true;
-        expect(() => new SHtag(PTag.kMultiCoilElementName, vList0),
+        expect(() => SHtag(PTag.kMultiCoilElementName, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
     test('SH update random', () {
-      final e0 = new SHtag(PTag.kSelectorSHValue, []);
+      final e0 = SHtag(PTag.kSelectorSHValue, []);
       expect(e0.update(['d^u:96P, azV']).values, equals(['d^u:96P, azV']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(3, 4);
-        final e1 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final e1 = SHtag(PTag.kSelectorSHValue, vList0);
         final vList1 = rsg.getSHList(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('SH noValues random', () {
-      final e0 = new SHtag(PTag.kSelectorSHValue, []);
+      final e0 = SHtag(PTag.kSelectorSHValue, []);
       final SHtag shNoValues = e0.noValues;
       expect(shNoValues.values.isEmpty, true);
       log.debug('as0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(3, 4);
-        final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final e0 = SHtag(PTag.kSelectorSHValue, vList0);
         log.debug('e0: $e0');
         expect(shNoValues.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -139,14 +139,14 @@ void main() {
     });
 
     test('SH copy random', () {
-      final e0 = new SHtag(PTag.kSelectorSHValue, []);
+      final e0 = SHtag(PTag.kSelectorSHValue, []);
       final SHtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(3, 4);
-        final e2 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final e2 = SHtag(PTag.kSelectorSHValue, vList0);
         final SHtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -156,8 +156,8 @@ void main() {
     test('SH hashCode and == good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getSHList(1, 1);
-        final e0 = new SHtag(PTag.kTextureLabel, vList);
-        final e1 = new SHtag(PTag.kTextureLabel, vList);
+        final e0 = SHtag(PTag.kTextureLabel, vList);
+        final e1 = SHtag(PTag.kTextureLabel, vList);
         log
           ..debug('vList:$vList, e0.hash_code:${e0.hashCode}')
           ..debug('vList:$vList, e1.hash_code:${e1.hashCode}');
@@ -171,22 +171,22 @@ void main() {
       log.debug('SH hashCode and == ');
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getSHList(1, 1);
-        final e0 = new SHtag(PTag.kTextureLabel, vList);
+        final e0 = SHtag(PTag.kTextureLabel, vList);
 
         final vList1 = rsg.getSHList(1, 1);
-        final e1 = new SHtag(PTag.kStorageMediaFileSetID, vList1);
+        final e1 = SHtag(PTag.kStorageMediaFileSetID, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e1.hashCode}');
         expect(e0.hashCode == e1.hashCode, false);
         expect(e0 == e1, false);
 
         final vList2 = rsg.getSHList(1, 10);
-        final e2 = new SHtag(PTag.kSelectorSHValue, vList2);
+        final e2 = SHtag(PTag.kSelectorSHValue, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList3 = rsg.getSHList(2, 3);
-        final e3 = new SHtag(PTag.kTextureLabel, vList3);
+        final e3 = SHtag(PTag.kTextureLabel, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
@@ -196,7 +196,7 @@ void main() {
     test('SH valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        final e0 = new SHtag(PTag.kTextureLabel, vList0);
+        final e0 = SHtag(PTag.kTextureLabel, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -204,7 +204,7 @@ void main() {
     test('SH isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        final e0 = new SHtag(PTag.kTextureLabel, vList0);
+        final e0 = SHtag(PTag.kTextureLabel, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -212,7 +212,7 @@ void main() {
     test('SH isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        final e0 = new SHtag(PTag.kTextureLabel, vList0);
+        final e0 = SHtag(PTag.kTextureLabel, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -221,18 +221,18 @@ void main() {
     test('SH replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 1);
-        final e0 = new SHtag(PTag.kTextureLabel, vList0);
+        final e0 = SHtag(PTag.kTextureLabel, vList0);
         final vList1 = rsg.getSHList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getSHList(1, 1);
-      final e1 = new SHtag(PTag.kTextureLabel, vList1);
+      final e1 = SHtag(PTag.kTextureLabel, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new SHtag(PTag.kTextureLabel, vList1);
+      final e2 = SHtag(PTag.kTextureLabel, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -240,10 +240,10 @@ void main() {
     test('SH blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getSHList(1, 1);
-        final e0 = new SHtag(PTag.kTextureLabel, vList1);
+        final e0 = SHtag(PTag.kTextureLabel, vList1);
         for (var i = 1; i < 10; i++) {
           final blank = e0.blank(i);
-          log.debug(('blank$i: ${blank.values}'));
+          log.debug('blank$i: ${blank.values}');
           expect(blank.values.length == 1, true);
           expect(blank.value.length == i, true);
           final strSpaceList = <String>[''.padRight(i, ' ')];
@@ -270,7 +270,7 @@ void main() {
         global.throwOnError = false;
 //        for (var listS in vList1) {
         final bytes0 = Bytes.fromAscii(vList1.join('\\'));
-        //final bytes0 = new Bytes();
+        //final bytes0 = Bytes();
         final e1 = SHtag.fromBytes(PTag.kSelectorSHValue, bytes0);
         log.debug('e1: ${e1.info}');
         expect(e1.hasValidValues, true);
@@ -284,7 +284,7 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = SHtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
@@ -332,15 +332,15 @@ void main() {
 
     test('SH checkLength good values', () {
       final vList0 = rsg.getSHList(1, 1);
-      final e0 = new SHtag(PTag.kTextureLabel, vList0);
+      final e0 = SHtag(PTag.kTextureLabel, vList0);
       for (var s in goodSHList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new SHtag(PTag.kTextureLabel, vList0);
+      final e1 = SHtag(PTag.kTextureLabel, vList0);
       expect(e1.checkLength([]), true);
 
       final vList1 = rsg.getSHList(1, 10);
-      final e2 = new SHtag(PTag.kConvolutionKernel, vList1);
+      final e2 = SHtag(PTag.kConvolutionKernel, vList1);
       for (var s in goodSHList) {
         expect(e2.checkLength(s), true);
       }
@@ -349,17 +349,17 @@ void main() {
     test('SH checkLength bad values', () {
       global.throwOnError = false;
       final vList2 = ['a^1sd', '02@#'];
-      final e3 = new SHtag(PTag.kTextureLabel, vList2);
+      final e3 = SHtag(PTag.kTextureLabel, vList2);
       expect(e3, isNull);
 
       global.throwOnError = true;
-      expect(() => new SHtag(PTag.kTextureLabel, vList2),
+      expect(() => SHtag(PTag.kTextureLabel, vList2),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('SH checkValue good values', () {
       final vList0 = rsg.getSHList(1, 1);
-      final e0 = new SHtag(PTag.kTextureLabel, vList0);
+      final e0 = SHtag(PTag.kTextureLabel, vList0);
       for (var s in goodSHList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -369,7 +369,7 @@ void main() {
 
     test('SH checkValue bad values', () {
       final vList0 = rsg.getSHList(1, 1);
-      final e0 = new SHtag(PTag.kTextureLabel, vList0);
+      final e0 = SHtag(PTag.kTextureLabel, vList0);
       for (var s in badSHList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -386,7 +386,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 4);
-        final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final e0 = SHtag(PTag.kSelectorSHValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -398,7 +398,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 4);
-        final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final e0 = SHtag(PTag.kSelectorSHValue, vList0);
         const vList1 = 'foo';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -410,13 +410,13 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 10);
-        final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final e0 = SHtag(PTag.kSelectorSHValue, vList0);
         final match0 = e0.match(r'.*');
         expect(match0, true);
       }
 
       final vList0 = ['1_">L+uc};j&)g'];
-      final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
+      final e0 = SHtag(PTag.kSelectorSHValue, vList0);
       final match0 = e0.match(r'\w*[_]');
       expect(match0, true);
     });
@@ -425,7 +425,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 4, 16);
-        final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final e0 = SHtag(PTag.kSelectorSHValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -437,7 +437,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getSHList(1, i);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new SHtag(PTag.kSelectorSHValue, vList0);
+        final e0 = SHtag(PTag.kSelectorSHValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }
@@ -446,7 +446,7 @@ void main() {
 
   group('SH', () {
     //VM.k1
-    const shVM1Tags = const <PTag>[
+    const shVM1Tags = <PTag>[
       PTag.kImplementationVersionName,
       PTag.kRecognitionCode,
       PTag.kCodeValue,
@@ -471,7 +471,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const shVM1_nTags = const <PTag>[
+    const shVM1nTags = <PTag>[
       PTag.kReferringPhysicianTelephoneNumbers,
       PTag.kPatientTelephoneNumbers,
       PTag.kConvolutionKernel,
@@ -483,7 +483,7 @@ void main() {
       PTag.kAxisLabels,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,
@@ -655,7 +655,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getSHList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, SH.kMaxLength);
-        for (var tag in shVM1_nTags) {
+        for (var tag in shVM1nTags) {
           log.debug('tag: $tag');
           expect(SH.isValidLength(tag, vList), true);
           expect(SH.isValidLength(tag, validMaxLengthList), true);
@@ -837,7 +837,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in shVM1_nTags) {
+          for (var tag in shVM1nTags) {
             final e0 = SH.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

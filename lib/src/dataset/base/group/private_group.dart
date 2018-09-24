@@ -76,7 +76,7 @@ class PrivateGroups {
 class PrivateGroup implements GroupBase {
   /// The Group number of this group. The values must be an odd integer
   /// between 0x0009 and 0xFFFD inclusive.
-  // TODO: is 0xFFFD correct
+  // TODO(Jim): is 0xFFFD correct
   @override
   final int gNumber;
 
@@ -185,6 +185,6 @@ class PrivateGroup implements GroupBase {
       '${subgroups.length} PCreators $_getPDataCount PData';
 }
 
-Null invalidSubgroupNumber(int currentSGNumber, int sgNumber) {
+void invalidSubgroupNumber(int currentSGNumber, int sgNumber) {
   throw 'Private Subgroup out of order: current($currentSGNumber): $sgNumber';
 }

@@ -25,7 +25,7 @@ List<int> data0 = <int>[
 
 String s0 = '8f534d57-0195-4a3c-8796-8be3b34440bc';
 //String s0 = 'cfcee4f0-f8b7-4103-9890-77db4406fc6b';
-Uuid uuidD0 = new Uuid.fromList(data0);
+Uuid uuidD0 = Uuid.fromList(data0);
 Uuid uuidS0 = Uuid.parse(s0);
 
 // 1: data
@@ -34,7 +34,7 @@ List<int> data1 = <int>[
   151, 32, 219, 14, 9, 121, 117, 24
 ];
 String s1 = '7eeab2ad-c74e-43fe-9720-db0e09797518';
-Uuid uuidD1 = new Uuid.fromList(data1);
+Uuid uuidD1 = Uuid.fromList(data1);
 Uuid uuidS1 = Uuid.parse(s1);
 
 // 2: data
@@ -43,7 +43,7 @@ List<int> data2 = <int>[
   189, 17, 31, 59, 34, 65, 6, 208
 ];
 String s2 = '99a466e3-691d-4e05-bd11-1f3b224106d0';
-Uuid uuidD2 = new Uuid.fromList(data2);
+Uuid uuidD2 = Uuid.fromList(data2);
 Uuid uuidS2 = Uuid.parse(s2);
 
 // 3: data
@@ -52,7 +52,7 @@ List<int> data3 = <int>[
   140, 40, 197, 123, 126, 159, 45, 59
 ];
 String s3 = '28abd21f-b80c-4799-8c28-c57b7e9f2d3b';
-Uuid uuidD3 = new Uuid.fromList(data3);
+Uuid uuidD3 = Uuid.fromList(data3);
 Uuid uuidS3 = Uuid.parse(s3);
 
 // 4: data
@@ -61,7 +61,7 @@ List<int> data4 = <int>[
   160, 96, 141, 48, 157, 126, 127, 38
 ];
 String s4 = 'c1d06122-ed09-44bd-a060-8d309d7e7f26';
-Uuid uuidD4 = new Uuid.fromList(data4);
+Uuid uuidD4 = Uuid.fromList(data4);
 Uuid uuidS4 = Uuid.parse(s4);
 
 // 5: data
@@ -70,7 +70,7 @@ List<int> data5 = <int>[
   151, 114, 102, 155, 29, 38, 17, 237
 ];
 String s5 = 'db0411da-efcd-4340-9772-669b1d2611ed';
-Uuid uuidD5 = new Uuid.fromList(data5);
+Uuid uuidD5 = Uuid.fromList(data5);
 Uuid uuidS5 = Uuid.parse(s5);
 
 // 6: data
@@ -79,7 +79,7 @@ List<int> data6 = <int>[
   138, 248, 168, 240, 240, 42, 198, 1
 ];
 String s6 = '847e3de3-4a5b-49e6-8af8-a8f0f02ac601';
-Uuid uuidD6 = new Uuid.fromList(data6);
+Uuid uuidD6 = Uuid.fromList(data6);
 Uuid uuidS6 = Uuid.parse(s6);
 
 // 7: data
@@ -88,7 +88,7 @@ List<int> data7 = <int>[
   191, 48, 23, 30, 126, 28, 101, 225
 ];
 String s7 = 'bc795f32-ea62-4eeb-bf30-171e7e1c65e1';
-Uuid uuidD7 = new Uuid.fromList(data7);
+Uuid uuidD7 = Uuid.fromList(data7);
 Uuid uuidS7 = Uuid.parse(s7);
 
 // 8: data
@@ -97,7 +97,7 @@ List<int> data8 = <int>[
   190, 123, 42, 159, 52, 38, 185, 3
 ];
 String s8 = '50442c83-aefd-4003-be7b-2a9f3426b903';
-Uuid uuidD8 = new Uuid.fromList(data8);
+Uuid uuidD8 = Uuid.fromList(data8);
 Uuid uuidS8 = Uuid.parse(s8);
 
 // 9: data
@@ -106,7 +106,7 @@ List<int> data9 = <int>[
   163, 2, 154, 56, 189, 13, 249, 58
 ];
 String s9 = '4826a68c-f0f6-4fa4-a302-9a38bd0df93a';
-Uuid uuidD9 = new Uuid.fromList(data9);
+Uuid uuidD9 = Uuid.fromList(data9);
 Uuid uuidS9 = Uuid.parse(s9);
 
 List<String> sList = <String>[

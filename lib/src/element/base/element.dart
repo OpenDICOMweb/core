@@ -33,10 +33,10 @@ import 'package:core/src/vr/vr_external.dart';
 ///
 
 /// The Type of a Method or Function that takes an Element and returns a [bool].
-typedef bool ElementTest(Element e);
+typedef ElementTest = bool Function(Element e);
 
 /// The Type signature of a condition handler.
-typedef bool Condition(Dataset ds, Element e);
+typedef Condition = bool Function(Dataset ds, Element e);
 
 Iterable<V> _toList<V>(Iterable v) =>
     (v is Iterable) ? v.toList(growable: false) : v;
@@ -496,9 +496,10 @@ abstract class Element<V> extends ListBase<V> {
   /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
   /// is used.
   static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
-      doTestElementValidity && tag.vrIndex != targetVR
-          ? invalidTag(tag, issues, type)
-          : true;
+      (doTestElementValidity &&
+          tag.vrIndex != targetVR &&
+          invalidTag(tag, issues, type)) ||
+      true;
 
   static bool isValidLength<V>(Tag tag, Iterable<V> vList, Issues issues,
       int maxLengthForVR, Type type) {
@@ -508,12 +509,11 @@ abstract class Element<V> extends ListBase<V> {
     if (vList.isEmpty) return true;
     final min = tag.vmMin;
     final max = tag.vm.max(maxLengthForVR);
-    return (vList != null &&
-            (tag.isLengthAlwaysValid ||
-                vList.isEmpty ||
-                _isValidLength(vList.length, min, max, tag.columns)))
-        ? true
-        : invalidValuesLength(vList, min, max, issues, tag);
+    if (vList != null &&
+        (tag.isLengthAlwaysValid ||
+            vList.isEmpty ||
+            _isValidLength(vList.length, min, max, tag.columns))) return true;
+    return invalidValuesLength(vList, min, max, issues, tag);
   }
 
   static bool isNotValidLength<V>(Tag tag, Iterable<V> vList, Issues issues,
@@ -521,6 +521,7 @@ abstract class Element<V> extends ListBase<V> {
       !isValidLength(tag, vList, issues, maxLength, type);
 }
 
-bool _isValidLength(int length, int min, int max, int columns) => length == 0
-    ? true
-    : length >= min && length <= max && (length % columns) == 0;
+bool _isValidLength(int length, int min, int max, int columns) {
+  if (length == 0) return true;
+  return length >= min && length <= max && (length % columns) == 0;
+}

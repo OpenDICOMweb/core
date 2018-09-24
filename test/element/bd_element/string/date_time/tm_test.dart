@@ -10,19 +10,19 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('TMbytes', () {
     global.throwOnError = false;
 
     //VM.k1
-    const tmVM1Tags = const <int>[
+    const tmVM1Tags = <int>[
       kStudyTime,
       kSeriesTime,
       kAcquisitionTime,
@@ -40,7 +40,7 @@ void main() {
     ];
 
     //VM.k1
-    const tmVM1_nTags = const <int>[
+    const tmVM1_nTags = <int>[
       kCalibrationTime,
       kTimeOfLastCalibration,
       kSelectorTMValue,

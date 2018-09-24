@@ -13,14 +13,14 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'string/ds_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodDecimalStrings = const <String>[
+  const goodDecimalStrings = <String>[
     '567',
     ' 567',
     '567 ',
@@ -61,47 +61,47 @@ void main() {
     });
   });
 
-  const goodDSList = const <List<String>>[
-    const <String>['0.7591109678'],
-    const <String>['-6.1e-1'],
-    const <String>[' -6.1e-1'],
-    const <String>['-6.1e-1'],
-    const <String>['560'],
-    const <String>[' -6.60'],
-    const <String>['+1.5e-1'],
+  const goodDSList = <List<String>>[
+    <String>['0.7591109678'],
+    <String>['-6.1e-1'],
+    <String>[' -6.1e-1'],
+    <String>['-6.1e-1'],
+    <String>['560'],
+    <String>[' -6.60'],
+    <String>['+1.5e-1'],
   ];
 
-  const badDSList = const <List<String>>[
-    const <String>['\b'],
+  const badDSList = <List<String>>[
+    <String>['\b'],
     //	Backspace
-    const <String>['\t '],
+    <String>['\t '],
     //horizontal tab (HT)
-    const <String>['\n'],
+    <String>['\n'],
     //linefeed (LF)
-    const <String>['\f '],
+    <String>['\f '],
     // form feed (FF)
-    const <String>['\r '],
+    <String>['\r '],
     //carriage return (CR)
-    const <String>['\v'],
+    <String>['\v'],
     //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
-    const <String>['abc']
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
+    <String>['abc']
   ];
 
-  const badDSLengthValues = const <List<String>>[
-    const <String>['0.7591145074654659110'],
-    const <String>['12393.4563234098903'],
+  const badDSLengthValues = <List<String>>[
+    <String>['0.7591145074654659110'],
+    <String>['12393.4563234098903'],
   ];
 
-  const badDSLengthList = const <List<String>>[
-    const <String>['0.7591109678', '0.7591109678'],
-    const <String>['-6.1e-1', '123.75934548'],
-    const <String>['-6.1e-1', '103.75548', '234.4570'],
+  const badDSLengthList = <List<String>>[
+    <String>['0.7591109678', '0.7591109678'],
+    <String>['-6.1e-1', '123.75934548'],
+    <String>['-6.1e-1', '103.75548', '234.4570'],
   ];
 
   group('DS Tests', () {
@@ -117,10 +117,10 @@ void main() {
       for (var s in goodDSList) {
         global.throwOnError = false;
         log.debug('s: "$s"');
-        final e0 = new DStag(PTag.kProcedureStepProgress, s);
+        final e0 = DStag(PTag.kProcedureStepProgress, s);
         expect(e0.hasValidValues, true);
 
-        final e1 = new DStag(PTag.kProcedureStepProgress, []);
+        final e1 = DStag(PTag.kProcedureStepProgress, []);
         expect(e1.hasValidValues, true);
         expect(e1.values, equals(<String>[]));
       }
@@ -129,22 +129,22 @@ void main() {
     test('DS hasValidValues bad values', () {
       for (var s in badDSList) {
         global.throwOnError = false;
-        final e0 = new DStag(PTag.kProcedureStepProgress, s);
+        final e0 = DStag(PTag.kProcedureStepProgress, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new DStag(PTag.kProcedureStepProgress, s),
+        expect(() => DStag(PTag.kProcedureStepProgress, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new DStag(PTag.kProcedureStepProgress, null);
+      final e1 = DStag(PTag.kProcedureStepProgress, null);
       log.debug('e1: $e1');
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new DStag(PTag.kProcedureStepProgress, null),
+      expect(() => DStag(PTag.kProcedureStepProgress, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -152,7 +152,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
-        final e0 = new DStag(PTag.kPresentationPixelSpacing, vList0);
+        final e0 = DStag(PTag.kPresentationPixelSpacing, vList0);
         log.debug('e0:${e0.info}');
         expect(e0.hasValidValues, true);
 
@@ -162,7 +162,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
-        final e0 = new DStag(PTag.kProcedureStepProgress, vList0);
+        final e0 = DStag(PTag.kProcedureStepProgress, vList0);
         expect(e0.hasValidValues, true);
 
         log..debug('e0: $e0, values: ${e0.values}')..debug('e0: ${e0.info}');
@@ -175,37 +175,37 @@ void main() {
         global.throwOnError = false;
         final vList0 = rsg.getDSList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e0 = new DStag(PTag.kProcedureStepProgress, vList0);
+        final e0 = DStag(PTag.kProcedureStepProgress, vList0);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new DStag(PTag.kProcedureStepProgress, vList0),
+        expect(() => DStag(PTag.kProcedureStepProgress, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
     test('DS update random', () {
       global.throwOnError = false;
-      final e0 = new DStag(PTag.kCompensatorTransmissionData, []);
+      final e0 = DStag(PTag.kCompensatorTransmissionData, []);
       expect(e0.update(['325435.7878-', '4545.887+']), isNull);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(3, 4);
-        final e1 = new DStag(PTag.kCompensatorTransmissionData, vList0);
+        final e1 = DStag(PTag.kCompensatorTransmissionData, vList0);
         final vList1 = rsg.getDSList(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('DS noValues random', () {
-      final e0 = new DStag(PTag.kProcedureStepProgress, []);
+      final e0 = DStag(PTag.kProcedureStepProgress, []);
       final DStag dsNoValues = e0.noValues;
       expect(dsNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(3, 4);
-        final e0 = new DStag(PTag.kCompensatorTransmissionData, vList0);
+        final e0 = DStag(PTag.kCompensatorTransmissionData, vList0);
         log.debug('e0: $e0');
         expect(dsNoValues.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -213,14 +213,14 @@ void main() {
     });
 
     test('DS copy random', () {
-      final e0 = new DStag(PTag.kProcedureStepProgress, []);
+      final e0 = DStag(PTag.kProcedureStepProgress, []);
       final DStag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(3, 4);
-        final e2 = new DStag(PTag.kCompensatorTransmissionData, vList0);
+        final e2 = DStag(PTag.kCompensatorTransmissionData, vList0);
         final DStag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -230,8 +230,8 @@ void main() {
     test('DS hashCode and == good values randoom', () {
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getDSList(1, 1);
-        final e0 = new DStag(PTag.kProcedureStepProgress, vList);
-        final e1 = new DStag(PTag.kProcedureStepProgress, vList);
+        final e0 = DStag(PTag.kProcedureStepProgress, vList);
+        final e1 = DStag(PTag.kProcedureStepProgress, vList);
         log
           ..debug('vList:$vList, e0.hash_code:${e0.hashCode}')
           ..debug('vList:$vList, e1.hash_code:${e1.hashCode}');
@@ -243,39 +243,39 @@ void main() {
     test('DS hashCode and == bad values randoom', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
-        final e0 = new DStag(PTag.kProcedureStepProgress, vList0);
+        final e0 = DStag(PTag.kProcedureStepProgress, vList0);
         final vList1 = rsg.getDSList(1, 1);
-        final e1 = new DStag(PTag.kCineRelativeToRealTime, vList1);
+        final e1 = DStag(PTag.kCineRelativeToRealTime, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e1.hashCode}');
         expect(e0.hashCode == e1.hashCode, false);
         expect(e0 == e1, false);
 
         final vList2 = rsg.getDSList(2, 2);
-        final e2 = new DStag(PTag.kImagePlanePixelSpacing, vList2);
+        final e2 = DStag(PTag.kImagePlanePixelSpacing, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList3 = rsg.getDSList(3, 3);
-        final e3 = new DStag(PTag.kNormalizationPoint, vList3);
+        final e3 = DStag(PTag.kNormalizationPoint, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList4 = rsg.getDSList(4, 4);
-        final e4 = new DStag(PTag.kDoubleExposureFieldDeltaTrial, vList4);
+        final e4 = DStag(PTag.kDoubleExposureFieldDeltaTrial, vList4);
         log.debug('vList4:$vList4 , e5.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
 
         final vList5 = rsg.getDSList(6, 6);
-        final e5 = new DStag(PTag.kRTImageOrientation, vList5);
+        final e5 = DStag(PTag.kRTImageOrientation, vList5);
         log.debug('vList5:$vList5 , e6.hash_code:${e5.hashCode}');
         expect(e0.hashCode == e5.hashCode, false);
         expect(e0 == e5, false);
 
         final vList6 = rsg.getDSList(2, 3);
-        final e6 = new DStag(PTag.kProcedureStepProgress, vList6);
+        final e6 = DStag(PTag.kProcedureStepProgress, vList6);
         log.debug('vList6:$vList6 , e7.hash_code:${e6.hashCode}');
         expect(e0.hashCode == e6.hashCode, false);
         expect(e0 == e6, false);
@@ -285,7 +285,7 @@ void main() {
     test('DS valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
-        final e0 = new DStag(PTag.kPresentationPixelSpacing, vList0);
+        final e0 = DStag(PTag.kPresentationPixelSpacing, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -293,7 +293,7 @@ void main() {
     test('DS isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
-        final e0 = new DStag(PTag.kPresentationPixelSpacing, vList0);
+        final e0 = DStag(PTag.kPresentationPixelSpacing, vList0);
         expect(e0.hasValidLength, true);
       }
     });
@@ -301,7 +301,7 @@ void main() {
     test('DS isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(2, 2);
-        final e0 = new DStag(PTag.kPresentationPixelSpacing, vList0);
+        final e0 = DStag(PTag.kPresentationPixelSpacing, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -310,14 +310,14 @@ void main() {
     test('DS replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
-        final e0 = new DStag(PTag.kSamplingFrequency, vList0);
+        final e0 = DStag(PTag.kSamplingFrequency, vList0);
         final vList1 = rsg.getDSList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getDSList(1, 1);
-      final e1 = new DStag(PTag.kWaveformChannelNumber, vList1);
+      final e1 = DStag(PTag.kWaveformChannelNumber, vList1);
       expect(e1, isNull);
     });
 
@@ -398,24 +398,24 @@ void main() {
 
     test('DS checkLength good values', () {
       final vList0 = rsg.getDSList(1, 1);
-      final e0 = new DStag(PTag.kSamplingFrequency, vList0);
+      final e0 = DStag(PTag.kSamplingFrequency, vList0);
       for (var s in goodDSList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new DStag(PTag.kSamplingFrequency, vList0);
+      final e1 = DStag(PTag.kSamplingFrequency, vList0);
       expect(e1.checkLength([]), true);
     });
 
     test('DS checkLength bad values', () {
       final vList0 = rsg.getDSList(1, 1);
       final vList1 = ['+8', '-6.1e-1'];
-      final e2 = new DStag(PTag.kPatientSize, vList0);
+      final e2 = DStag(PTag.kPatientSize, vList0);
       expect(e2.checkLength(vList1), false);
     });
 
     test('DS checkValue good values', () {
       final vList0 = rsg.getDSList(1, 1);
-      final e0 = new DStag(PTag.kPatientSize, vList0);
+      final e0 = DStag(PTag.kPatientSize, vList0);
       for (var s in goodDSList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -424,7 +424,7 @@ void main() {
     });
     test('DS checkValue bad values', () {
       final vList0 = rsg.getDSList(1, 1);
-      final e0 = new DStag(PTag.kPatientSize, vList0);
+      final e0 = DStag(PTag.kPatientSize, vList0);
       for (var s in badDSList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -436,27 +436,27 @@ void main() {
     test('DS compareTo & compareValueTo', () {
       for (var i = 1; i <= 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
-        final e0 = new DStag(PTag.kPatientSize, vList0);
+        final e0 = DStag(PTag.kPatientSize, vList0);
         final nList = [double.parse(e0.value)];
         final compare0 = e0.compareValuesTo(nList);
         expect(compare0 == 0, true);
-        final e0a = new DStag(PTag.kPatientSize, vList0);
+        final e0a = DStag(PTag.kPatientSize, vList0);
         final compare1 = e0.compareTo(e0a);
         expect(compare1 == 0, true);
       }
       for (var vList1 in goodDSList) {
-        final e1 = new DStag(PTag.kPatientSize, vList1);
+        final e1 = DStag(PTag.kPatientSize, vList1);
         final nList = [double.parse(e1.value)];
         final compare1 = e1.compareValuesTo(nList);
         log.debug('compare1: $compare1');
         expect(compare1 == 0, true);
-        final e1a = new DStag(PTag.kPatientSize, vList1);
+        final e1a = DStag(PTag.kPatientSize, vList1);
         final compare2 = e1.compareTo(e1a);
         expect(compare2 == 0, true);
       }
 
       final vList2 = rsg.getDSList(1, 1);
-      final e2 = new DStag(PTag.kPatientSize, vList2);
+      final e2 = DStag(PTag.kPatientSize, vList2);
 
       for (var n in goodDecimalStrings) {
         final nList = [double.parse(n)];
@@ -467,7 +467,7 @@ void main() {
         } else {
           expect(compare2 == -1, true);
         }
-        final e2a = new DStag(PTag.kPatientSize, [n]);
+        final e2a = DStag(PTag.kPatientSize, [n]);
         final compare3 = e2.compareTo(e2a);
         if (!compare3.isNegative) {
           expect(compare3 == 1, true);
@@ -478,7 +478,7 @@ void main() {
 
       for (var i = 1; i <= 10; i++) {
         final vList3 = rsg.getDSList(1, i);
-        final e3 = new DStag(PTag.kSelectorDSValue, vList3);
+        final e3 = DStag(PTag.kSelectorDSValue, vList3);
         final nList = [num.parse(e3.value)];
         final compare3 = e3.compareValuesTo(nList);
         log.debug('compare0: $compare3');
@@ -488,16 +488,16 @@ void main() {
         } else {
           expect(compare3 == 0, true);
         }
-        final e3a = new DStag(PTag.kSelectorDSValue, vList3);
+        final e3a = DStag(PTag.kSelectorDSValue, vList3);
         final compare4 = e3.compareTo(e3a);
         expect(compare4 == 0, true);
       }
 
-      final e4 = new DStag(PTag.kSelectorDSValue, []);
+      final e4 = DStag(PTag.kSelectorDSValue, []);
       final compare5 = e4.compareValuesTo([12.6]);
       expect(compare5, -1);
 
-      final e3a = new DStag(PTag.kSelectorDSValue, []);
+      final e3a = DStag(PTag.kSelectorDSValue, []);
       final compare6 = e4.compareTo(e3a);
       expect(compare6 == 0, true);
     });
@@ -505,7 +505,7 @@ void main() {
     test('DS increment', () {
       global.throwOnError = false;
       final vList0 = rsg.getDSList(1, 1);
-      final e0 = new DStag(PTag.kPatientSize, vList0);
+      final e0 = DStag(PTag.kPatientSize, vList0);
       final increment0 = e0.increment();
       log.debug('increment0: $increment0');
       expect(increment0.hasValidValues, true);
@@ -514,7 +514,7 @@ void main() {
     test('DS decrement', () {
       global.throwOnError = false;
       final vList0 = rsg.getDSList(1, 1);
-      final e0 = new DStag(PTag.kPatientSize, vList0);
+      final e0 = DStag(PTag.kPatientSize, vList0);
       final decrement0 = e0.decrement();
       log.debug('decrement0: $decrement0');
       expect(decrement0.hasValidValues, true);
@@ -522,14 +522,14 @@ void main() {
 
     test('DS append', () {
       final vList = ['111.0'];
-      final e0 = new DStag(PTag.kPatientSize, vList);
+      final e0 = DStag(PTag.kPatientSize, vList);
       final append0 = e0.append('123');
       expect(append0, isNotNull);
     });
 
     test('DS prepend', () {
       final vList = ['111.0'];
-      final e0 = new DStag(PTag.kPatientSize, vList);
+      final e0 = DStag(PTag.kPatientSize, vList);
       final prepend0 = e0.prepend('123');
       expect(prepend0, isNotNull);
     });
@@ -538,7 +538,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 4, 16);
-        final e0 = new DStag(PTag.kSelectorDSValue, vList0);
+        final e0 = DStag(PTag.kSelectorDSValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -549,7 +549,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 4, 16);
-        final e0 = new DStag(PTag.kSelectorDSValue, vList0);
+        final e0 = DStag(PTag.kSelectorDSValue, vList0);
         const regX = r'^[0-9\.\+\-]';
         final match0 = e0.match(regX);
         expect(match0, true);
@@ -559,7 +559,7 @@ void main() {
 
   group('DS Element', () {
     //VM.k1
-    const dsVM1Tags = const <PTag>[
+    const dsVM1Tags = <PTag>[
       PTag.kPatientSize,
       PTag.kPatientWeight,
       PTag.kOuterDiameter,
@@ -575,7 +575,7 @@ void main() {
     ];
 
     //VM.k2
-    const dsVM2Tags = const <PTag>[
+    const dsVM2Tags = <PTag>[
       PTag.kImagerPixelSpacing,
       PTag.kNominalScannedPixelSpacing,
       PTag.kDetectorBinning,
@@ -589,10 +589,10 @@ void main() {
     ];
 
     //VM.k2_2n
-    const dsVM2_2nTags = const <PTag>[PTag.kDVHData];
+    const dsVM2_2nTags = <PTag>[PTag.kDVHData];
 
     //VM.k3
-    const dsVM3Tags = const <PTag>[
+    const dsVM3Tags = <PTag>[
       PTag.kImageTranslationVector,
       PTag.kImagePosition,
       PTag.kImagePositionPatient,
@@ -604,19 +604,19 @@ void main() {
     ];
 
     //VM.k3_3n
-    const dsVM3_3nTags = const <PTag>[
+    const dsVM3_3nTags = <PTag>[
       PTag.kLeafPositionBoundaries,
       PTag.kContourData
     ];
 
     //VM.k4
-    const dsVM4Tags = const <PTag>[
+    const dsVM4Tags = <PTag>[
       PTag.kDoubleExposureFieldDeltaTrial,
       PTag.kDiaphragmPosition
     ];
 
     //VM.k6
-    const dsVM6Tags = const <PTag>[
+    const dsVM6Tags = <PTag>[
       PTag.kPRCSToRCSOrientation,
       PTag.kImageTransformationMatrix,
       PTag.kImageOrientation,
@@ -625,7 +625,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const dsVM1_nTags = const <PTag>[
+    const dsVM1_nTags = <PTag>[
       PTag.kMaterialThickness,
       PTag.kMaterialIsolationDiameter,
       PTag.kCoordinateSystemTransformTranslationMatrix,
@@ -642,7 +642,7 @@ void main() {
       PTag.kFramePrimaryAngleVector,
     ];
 
-    const badDSTags = const <PTag>[
+    const badDSTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,
@@ -918,8 +918,6 @@ void main() {
         final validMinVList = rsg.getDSList(9, 9);
         for (var tag in dsVM3_3nTags) {
           expect(DS.isValidLength(tag, validMinVList), true);
-
-          //expect(DS.isValidLength(tag, invalidVList.take(tag.vmMax + 4)), true);
         }
       }
     });

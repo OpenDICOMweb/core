@@ -15,7 +15,7 @@ String dtToDateString(DateTime dt, {bool asDicom = true}) {
   final y = digits4(dt.year);
   final m = digits2(dt.month);
   final d = digits2(dt.day);
-  return (asDicom) ? '$y$m$d' : '$y-$m-$d';
+  return asDicom ? '$y$m$d' : '$y-$m-$d';
 }
 
 ///Returns a human-readable string for the time part of [dt].
@@ -27,16 +27,16 @@ String dtToTimeString(DateTime dt,
   final ms = digits3(dt.millisecond);
   final us = digits3(dt.microsecond);
   if (showFraction) {
-    return (asDicom) ? '$h$m$s.$ms$us' : '$h:$m:$s.$ms$us';
+    return asDicom ? '$h$m$s.$ms$us' : '$h:$m:$s.$ms$us';
   } else {
-    return (asDicom) ? '$h$m$s' : '$h:$m:$s';
+    return asDicom ? '$h$m$s' : '$h:$m:$s';
   }
 }
 
 ///Returns a human-readable string for [dt] in Internet format.
 String dtToDateTimeString(DateTime dt,
         {bool asDicom = true, bool showFraction = false}) =>
-    (asDicom)
+    asDicom
         ? '${dtToDateString(dt)}${dtToTimeString(dt)}'
         : '${dtToDateString(dt, asDicom: asDicom)}'
         '${global.dateTimeSeparator}'

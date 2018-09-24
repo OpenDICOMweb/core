@@ -157,12 +157,12 @@ abstract class Float32 {
 }
 
 /// A mixin class for 64-bit floating point [Element]s.
-abstract class Float64 {
+abstract class Float64Mixin {
   Float64List get values;
   Float update([Iterable<double> vList]);
   // **** End of Interface ****
 
-  /// The number of bytes in a [Float64] element.
+  /// The number of bytes in a [Float64Mixin] element.
   int get sizeInBytes => kSizeInBytes;
 
   int get length => values.length;
@@ -180,7 +180,7 @@ abstract class Float64 {
   Float view([int start = 0, int length]) => update(
       typedData.buffer.asFloat64List(start, _toLength(length, values.length)));
 
-  /// The number of bytes in a [Float64] element.
+  /// The number of bytes in a [Float64Mixin] element.
   static const int kSizeInBytes = 8;
 
   bool equal(Bytes a, Bytes b) {

@@ -15,7 +15,7 @@ import 'package:test_tools/tools.dart';
 
 import '../utility_test.dart' as utility;
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   // minYear and maxYear can be passed as an argument
@@ -27,41 +27,41 @@ void main() {
       throwOnError: false);
   global.throwOnError = false;
 
-  const goodDAList = const <List<String>>[
-    const <String>['19930822'],
-    const <String>['19930822'],
-    const <String>['19500718'],
-    const <String>['00000101'],
-    const <String>['19700101'],
-    const <String>['20171231'],
-    const <String>['19931010'],
-    //const <String>['19931010', '20171231'],
+  const goodDAList = <List<String>>[
+    <String>['19930822'],
+    <String>['19930822'],
+    <String>['19500718'],
+    <String>['00000101'],
+    <String>['19700101'],
+    <String>['20171231'],
+    <String>['19931010'],
+    //<String>['19931010', '20171231'],
   ];
 
-  const badDAList = const <List<String>>[
-    const <String>['19501318'], // bad month
-    const <String>['20041313'], // bad month
-    const <String>['19804312'], //bad month
-    const <String>['00000032'], // bad month and day
-    const <String>['00000000'], //bad day
-    const <String>['19800541'], // bad day
-    const <String>['-9700101'], // bad character in year
-    const <String>['1b700101'], // bad character in year
-    const <String>['1970a101'], // bad character in year
-    const <String>['19700b01'], // bad character in year
-    const <String>['1970011a'], // bad character in month
-    //const <String>['19931010', '20171231'],
+  const badDAList = <List<String>>[
+    <String>['19501318'], // bad month
+    <String>['20041313'], // bad month
+    <String>['19804312'], //bad month
+    <String>['00000032'], // bad month and day
+    <String>['00000000'], //bad day
+    <String>['19800541'], // bad day
+    <String>['-9700101'], // bad character in year
+    <String>['1b700101'], // bad character in year
+    <String>['1970a101'], // bad character in year
+    <String>['19700b01'], // bad character in year
+    <String>['1970011a'], // bad character in month
+    //<String>['19931010', '20171231'],
   ];
 
-  const badDALengthList = const <List<String>>[
-    const <String>['1978123'], // invalid length
-    const <String>['197812345'], // invalid length
-    const <String>['201'],
-    const <String>['2018'],
-    const <String>['20156'],
-    const <String>['199815'],
-    const <String>['12'],
-    const <String>['9']
+  const badDALengthList = <List<String>>[
+    <String>['1978123'], // invalid length
+    <String>['197812345'], // invalid length
+    <String>['201'],
+    <String>['2018'],
+    <String>['20156'],
+    <String>['199815'],
+    <String>['12'],
+    <String>['9']
   ];
 
   group('DA Tests', () {
@@ -69,12 +69,12 @@ void main() {
       for (var s in goodDAList) {
         global.throwOnError = false;
         log.debug('DA: "$s"');
-        final e0 = new DAtag(PTag.kCreationDate, s);
+        final e0 = DAtag(PTag.kCreationDate, s);
         expect(e0.hasValidValues, true);
       }
 
       global.throwOnError = false;
-      final e1 = new DAtag(PTag.kCreationDate, []);
+      final e1 = DAtag(PTag.kCreationDate, []);
       expect(e1.hasValidValues, true);
       expect(e1.values, equals(<String>[]));
     });
@@ -82,44 +82,44 @@ void main() {
     test('DA hasValidValues for bad year, month, and day values', () {
       for (Iterable<String> s in badDAList) {
         global.throwOnError = false;
-        final e1 = new DAtag(PTag.kCreationDate, s);
+        final e1 = DAtag(PTag.kCreationDate, s);
         expect(e1, isNull);
 
         global.throwOnError = true;
-        expect(() => new DAtag(PTag.kCreationDate, s),
+        expect(() => DAtag(PTag.kCreationDate, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new DAtag(PTag.kCreationDate, null);
+      final e1 = DAtag(PTag.kCreationDate, null);
       log.debug('e1: $e1');
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new DAtag(PTag.kCreationDate, null),
+      expect(() => DAtag(PTag.kCreationDate, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('DA hasValidValues for bad values length', () {
       for (Iterable<String> s in badDALengthList) {
         global.throwOnError = false;
-        final e1 = new DAtag(PTag.kCreationDate, s);
+        final e1 = DAtag(PTag.kCreationDate, s);
         expect(e1, isNull);
 
         global.throwOnError = true;
-        expect(() => new DAtag(PTag.kCreationDate, s),
+        expect(() => DAtag(PTag.kCreationDate, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new DAtag(PTag.kCreationDate, null);
+      final e1 = DAtag(PTag.kCreationDate, null);
       log.debug('e1: $e1');
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new DAtag(PTag.kCreationDate, null),
+      expect(() => DAtag(PTag.kCreationDate, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -127,7 +127,7 @@ void main() {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
         log.debug('vList0: $vList0');
-        final e0 = new DAtag(PTag.kCreationDate, vList0);
+        final e0 = DAtag(PTag.kCreationDate, vList0);
         expect(e0.hasValidValues, true);
       }
     });
@@ -137,22 +137,22 @@ void main() {
         global.throwOnError = false;
         final vList0 = rsg.getDAList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e1 = new DAtag(PTag.kCreationDate, vList0);
+        final e1 = DAtag(PTag.kCreationDate, vList0);
         expect(e1, isNull);
 
         global.throwOnError = true;
-        expect(() => new DAtag(PTag.kCreationDate, vList0),
+        expect(() => DAtag(PTag.kCreationDate, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
     test('DA update', () {
       global.throwOnError = false;
-      final e0 = new DAtag(PTag.kCreationDate, <String>[]);
+      final e0 = DAtag(PTag.kCreationDate, <String>[]);
       expect(e0, <String>[]);
 
-      final e1 = new DAtag(PTag.kCreationDate, ['19930822']);
-      final e2 = new DAtag(PTag.kCreationDate, ['19930822']);
+      final e1 = DAtag(PTag.kCreationDate, ['19930822']);
+      final e2 = DAtag(PTag.kCreationDate, ['19930822']);
       final e3 = e1.update(['20150822']);
       final e4 = e2.update(['20150822']);
       expect(e1.values.first == e4.values.first, false);
@@ -161,7 +161,7 @@ void main() {
       expect(e3 == e4, true);
 
       for (var s in goodDAList) {
-        final e5 = new DAtag(PTag.kCreationDate, s);
+        final e5 = DAtag(PTag.kCreationDate, s);
         final e6 = e5.update(['20150817']);
         final e7 = e5.update(['20150817']);
         expect(e5.values.first == e6.values.first, false);
@@ -174,34 +174,34 @@ void main() {
     test('DA update random', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        final e0 = new DAtag(PTag.kCreationDate, vList0);
+        final e0 = DAtag(PTag.kCreationDate, vList0);
         final vList1 = rsg.getDAList(1, 1);
         expect(e0.update(vList1).values, equals(vList1));
       }
     });
 
     test('DA noValues', () {
-      final e1 = new DAtag(PTag.kCreationDate, ['19930822']);
+      final e1 = DAtag(PTag.kCreationDate, ['19930822']);
       final daNoValues1 = e1.noValues;
       expect(daNoValues1.values.isEmpty, true);
       log.debug('daNoValues1:$daNoValues1');
 
       for (var s in goodDAList) {
-        final e1 = new DAtag(PTag.kCreationDate, s);
+        final e1 = DAtag(PTag.kCreationDate, s);
         final daNoValues1 = e1.noValues;
         expect(daNoValues1.values.isEmpty, true);
       }
     });
 
     test('DA noValues random ', () {
-      final e0 = new DAtag(PTag.kCreationDate, <String>[]);
+      final e0 = DAtag(PTag.kCreationDate, <String>[]);
       final DAtag daNoValues0 = e0.noValues;
       expect(daNoValues0.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        final e0 = new DAtag(PTag.kCreationDate, vList0);
+        final e0 = DAtag(PTag.kCreationDate, vList0);
         log.debug('e0: $e0');
         expect(daNoValues0.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -209,18 +209,18 @@ void main() {
     });
 
     test('DA copy', () {
-      final e0 = new DAtag(PTag.kCreationDate, <String>[]);
+      final e0 = DAtag(PTag.kCreationDate, <String>[]);
       final DAtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
-      final e2 = new DAtag(PTag.kCreationDate, ['19930822']);
+      final e2 = DAtag(PTag.kCreationDate, ['19930822']);
       final e3 = e2.copy;
       expect(e2 == e3, true);
       expect(e2.hashCode == e3.hashCode, true);
 
       for (var s in goodDAList) {
-        final e4 = new DAtag(PTag.kCreationDate, s);
+        final e4 = DAtag(PTag.kCreationDate, s);
         final e5 = e4.copy;
         expect(e4 == e5, true);
         expect(e4.hashCode == e5.hashCode, true);
@@ -231,7 +231,7 @@ void main() {
     test('DA copy random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        final e2 = new DAtag(PTag.kCreationDate, vList0);
+        final e2 = DAtag(PTag.kCreationDate, vList0);
         final DAtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -240,8 +240,8 @@ void main() {
 
     test('DA hashCode and == good values', () {
       final vList0 = ['19930822'];
-      final e0 = new DAtag(PTag.kCreationDate, vList0);
-      final e1 = new DAtag(PTag.kCreationDate, vList0);
+      final e0 = DAtag(PTag.kCreationDate, vList0);
+      final e1 = DAtag(PTag.kCreationDate, vList0);
       log
         ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
         ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -251,13 +251,13 @@ void main() {
 
     test('DA hashCode and == bad values', () {
       final vList0 = ['19930822'];
-      final e0 = new DAtag(PTag.kCreationDate, vList0);
-      final e2 = new DAtag(PTag.kStructureSetDate, vList0);
+      final e0 = DAtag(PTag.kCreationDate, vList0);
+      final e2 = DAtag(PTag.kStructureSetDate, vList0);
       log.debug('vList0:$vList0 , e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
 
-      final e3 = new DAtag(PTag.kCalibrationDate, vList0);
+      final e3 = DAtag(PTag.kCalibrationDate, vList0);
       log.debug('vList0:$vList0 , e3.hash_code:${e3.hashCode}');
       expect(e0.hashCode == e3.hashCode, false);
       expect(e0 == e3, false);
@@ -269,8 +269,8 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         stringList0 = rsg.getDAList(1, 1);
-        final e0 = new DAtag(PTag.kPatientAge, stringList0);
-        final e1 = new DAtag(PTag.kPatientAge, stringList0);
+        final e0 = DAtag(PTag.kPatientAge, stringList0);
+        final e1 = DAtag(PTag.kPatientAge, stringList0);
         log
           ..debug('stringList0:$stringList0, e0.hash_code:${e0.hashCode}')
           ..debug('stringList0:$stringList0, e1.hash_code:${e1.hashCode}');
@@ -286,9 +286,9 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         stringList0 = rsg.getDAList(1, 1);
-        final e0 = new DAtag(PTag.kPatientAge, stringList0);
+        final e0 = DAtag(PTag.kPatientAge, stringList0);
         stringList1 = rsg.getDAList(2, 3);
-        final e3 = new DAtag(PTag.kSelectorDAValue, stringList1);
+        final e3 = DAtag(PTag.kSelectorDAValue, stringList1);
         log.debug('stringList1:$stringList1 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
@@ -297,20 +297,20 @@ void main() {
 
     test('DA valuesCopy ranodm', () {
       for (var s in goodDAList) {
-        final e0 = new DAtag(PTag.kCalibrationDate, s);
+        final e0 = DAtag(PTag.kCalibrationDate, s);
         expect(s, equals(e0.valuesCopy));
       }
 
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        final e1 = new DAtag(PTag.kCreationDate, vList0);
+        final e1 = DAtag(PTag.kCreationDate, vList0);
         expect(vList0, equals(e1.valuesCopy));
       }
     });
 
     test('DA checkLength', () {
       for (var s in goodDAList) {
-        final e0 = new DAtag(PTag.kCreationDate, s);
+        final e0 = DAtag(PTag.kCreationDate, s);
         expect(e0.checkLength(e0.values), true);
       }
     });
@@ -318,7 +318,7 @@ void main() {
     test('DA checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        final e0 = new DAtag(PTag.kCreationDate, vList0);
+        final e0 = DAtag(PTag.kCreationDate, vList0);
         expect(e0.checkLength(e0.values), true);
       }
     });
@@ -326,7 +326,7 @@ void main() {
     test('DA isValidValues good values', () {
       global.throwOnError = false;
       for (var s in goodDAList) {
-        final e0 = new DAtag(PTag.kCreationDate, s);
+        final e0 = DAtag(PTag.kCreationDate, s);
         expect(e0.hasValidValues, true);
       }
     });
@@ -335,11 +335,11 @@ void main() {
       global.throwOnError = false;
       for (var s in badDAList) {
         global.throwOnError = false;
-        final e0 = new DAtag(PTag.kCreationDate, s);
+        final e0 = DAtag(PTag.kCreationDate, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new DAtag(PTag.kCreationDate, null),
+        expect(() => DAtag(PTag.kCreationDate, null),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
@@ -347,7 +347,7 @@ void main() {
     test('DA isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        final e0 = new DAtag(PTag.kCreationDate, vList0);
+        final e0 = DAtag(PTag.kCreationDate, vList0);
         expect(e0.hasValidValues, true);
       }
     });
@@ -356,16 +356,16 @@ void main() {
       global.throwOnError = false;
 
       final vList0 = ['19991025'];
-      final e0 = new DAtag(PTag.kCreationDate, vList0);
+      final e0 = DAtag(PTag.kCreationDate, vList0);
       final vList1 = ['19001025'];
       expect(e0.replace(vList1), equals(vList0));
       expect(e0.values, equals(vList1));
 
-      final e1 = new DAtag(PTag.kCreationDate, vList1);
+      final e1 = DAtag(PTag.kCreationDate, vList1);
       expect(e1.replace(<String>[]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new DAtag(PTag.kCreationDate, vList1);
+      final e2 = DAtag(PTag.kCreationDate, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(StringList.kEmptyList));
     });
@@ -374,18 +374,18 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        final e0 = new DAtag(PTag.kCreationDate, vList0);
+        final e0 = DAtag(PTag.kCreationDate, vList0);
         final vList1 = rsg.getDAList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getDAList(1, 1);
-      final e1 = new DAtag(PTag.kCreationDate, vList1);
+      final e1 = DAtag(PTag.kCreationDate, vList1);
       expect(e1.replace(<String>[]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new DAtag(PTag.kCreationDate, null);
+      final e2 = DAtag(PTag.kCreationDate, null);
       expect(e2.hasValidValues, true);
       expect(e2.values, StringList.kEmptyList);
     });
@@ -443,37 +443,37 @@ void main() {
 
     test('DA checkLength', () {
       global.throwOnError = false;
-      final e0 = new DAtag(PTag.kCreationDate, ['19930822']);
+      final e0 = DAtag(PTag.kCreationDate, ['19930822']);
       for (var s in goodDAList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new DAtag(PTag.kCreationDate, ['19930822']);
+      final e1 = DAtag(PTag.kCreationDate, ['19930822']);
       expect(e1.checkLength(<String>[]), true);
 
       final vList0 = ['20171206', '20181206'];
-      final e2 = new DAtag(PTag.kPatientSize, vList0);
+      final e2 = DAtag(PTag.kPatientSize, vList0);
       expect(e2, isNull);
     });
 
     test('DA checkLength good values random', () {
       final vList0 = rsg.getDAList(1, 1);
-      final e0 = new DAtag(PTag.kCreationDate, vList0);
+      final e0 = DAtag(PTag.kCreationDate, vList0);
       for (var s in goodDAList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new DAtag(PTag.kCreationDate, vList0);
+      final e1 = DAtag(PTag.kCreationDate, vList0);
       expect(e1.checkLength(<String>[]), true);
     });
 
     test('DA checkLength bad values random', () {
       final vList1 = ['19980512', '20170412'];
       final vList0 = rsg.getDAList(1, 1);
-      final e2 = new DAtag(PTag.kCreationDate, vList0);
+      final e2 = DAtag(PTag.kCreationDate, vList0);
       expect(e2.checkLength(vList1), false);
     });
 
     test('DA checkValue good values', () {
-      final e0 = new DAtag(PTag.kCreationDate, ['19930822']);
+      final e0 = DAtag(PTag.kCreationDate, ['19930822']);
       for (var s in goodDAList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -482,7 +482,7 @@ void main() {
     });
 
     test('DA checkValue bad values', () {
-      final e0 = new DAtag(PTag.kCreationDate, ['19930822']);
+      final e0 = DAtag(PTag.kCreationDate, ['19930822']);
       for (var s in badDAList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -494,7 +494,7 @@ void main() {
     test('DA checkValue good values random', () {
       global.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
-      final e0 = new DAtag(PTag.kCreationDate, vList0);
+      final e0 = DAtag(PTag.kCreationDate, vList0);
       for (var s in goodDAList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -504,7 +504,7 @@ void main() {
     test('DA checkValue bad values random', () {
       global.throwOnError = false;
       final vList0 = rsg.getDAList(1, 1);
-      final e0 = new DAtag(PTag.kCreationDate, vList0);
+      final e0 = DAtag(PTag.kCreationDate, vList0);
       for (var s in badDAList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -551,7 +551,7 @@ void main() {
     test('increment', () {
       for (var i = 0; i <= 10; i++) {
         final vList = rsg.getDAList(1, 1);
-        final e0 = new DAtag(PTag.kDate, vList);
+        final e0 = DAtag(PTag.kDate, vList);
         final increment0 = e0.increment();
         log.debug('increment0: $increment0');
         expect(increment0.hasValidValues, true);
@@ -562,8 +562,8 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getDAList(1, 1);
-        final e0 = new DAtag(PTag.kDate, vList);
-        final date = new Date(2018, 06, 29);
+        final e0 = DAtag(PTag.kDate, vList);
+        final date = Date(2018, 06, 29);
         final difference0 = e0.difference(date);
         log.debug('difference0: $difference0');
         expect(difference0.hasValidValues, true);
@@ -573,7 +573,7 @@ void main() {
     test('DA append ', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDAList(1, i);
-        final e0 = new DAtag(PTag.kSelectorDAValue, vList0);
+        final e0 = DAtag(PTag.kSelectorDAValue, vList0);
         const vList1 = '20181212';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -584,7 +584,7 @@ void main() {
     test('DA prepend ', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDAList(1, i);
-        final e0 = new DAtag(PTag.kSelectorDAValue, vList0);
+        final e0 = DAtag(PTag.kSelectorDAValue, vList0);
         const vList1 = '20181212';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -595,7 +595,7 @@ void main() {
     test('DA truncate ', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDAList(1, i);
-        final e0 = new DAtag(PTag.kSelectorDAValue, vList0);
+        final e0 = DAtag(PTag.kSelectorDAValue, vList0);
         final truncate0 = e0.truncate(4);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -607,7 +607,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDAList(1, i);
         log.debug('vList0:$vList0');
-        final e0 = new DAtag(PTag.kSelectorDAValue, vList0);
+        final e0 = DAtag(PTag.kSelectorDAValue, vList0);
         const regX = r'\w*[0-9]';
         final match0 = e0.match(regX);
         expect(match0, true);
@@ -616,14 +616,14 @@ void main() {
   });
 
   group('DA Element', () {
-    const badDateValuesLengthList = const <List<String>>[
-      const <String>['197812345', '1b700101'],
-      const <String>['19800541', '1970011a'],
-      const <String>['00000032', '19501318'],
+    const badDateValuesLengthList = <List<String>>[
+      <String>['197812345', '1b700101'],
+      <String>['19800541', '1970011a'],
+      <String>['00000032', '19501318'],
     ];
 
     //VM.k1
-    const daVM1Tags = const <PTag>[
+    const daVM1Tags = <PTag>[
       PTag.kStudyDate,
       PTag.kSeriesDate,
       PTag.kAcquisitionDate,
@@ -640,13 +640,13 @@ void main() {
     ];
 
     //VM.k1_n
-    const daVM1_nTags = const <PTag>[
+    const daVM1_nTags = <PTag>[
       PTag.kCalibrationDate,
       PTag.kDateOfLastCalibration,
       PTag.kSelectorDAValue,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

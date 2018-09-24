@@ -10,17 +10,17 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/ui_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('UIbytes', () {
     //VM.k1
-    const uiVM1Tags = const <int>[
+    const uiVM1Tags = <int>[
       kAffectedSOPInstanceUID,
       kRequestedSOPInstanceUID,
       kMediaStorageSOPClassUID,
@@ -38,7 +38,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const uiVM1_nTags = const <int>[
+    const uiVM1_nTags = <int>[
       kRelatedGeneralSOPClassUID,
       kFailedSOPInstanceUIDList,
       kSelectorUIValue

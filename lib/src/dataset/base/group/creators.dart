@@ -36,10 +36,10 @@ class PrivateCreatorTags {
   bool tryAdd(PCTag tag) {
     _checkPCTagCode(tag.code);
     final result = tags.putIfAbsent(tag.code, () => tag);
-    return (result != tag) ? Tag.isValidTag(tag, null, kLOIndex, PCTag) : true;
+    return result != tag && Tag.isValidTag(tag, null, kLOIndex, PCTag);
   }
 
-  //TODO: move to base.dart
+  //TODO(Jim): move to base.dart
   bool _checkPCTagCode(int code) {
     final v = code & 0x100FF;
     if (v >= 0x10010 && v <= 0x100FF) return true;

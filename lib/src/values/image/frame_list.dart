@@ -112,7 +112,8 @@ abstract class FrameList extends ListBase<Frame> {
   /// The number of samples (kSamplesPerPixel) or planes in these [Frame]s.
   int get samplesPerPixel => desc.samplesPerPixel;
 
-  /// The (kPhotometricInterpretation) of _this_. See [PS3.3 Section C.7.6.3.1.2]
+  /// The (kPhotometricInterpretation) of _this_.
+  /// See [PS3.3 Section C.7.6.3.1.2]
   /// (http://dicom.nema.org/medical/dicom/current/output/html/part03.html#sect_C.7.6.3.1.2)
   String get photometricInterpretation => desc.photometricInterpretation;
 
@@ -378,6 +379,7 @@ class InvalidFrameListError extends Error {
       '$InvalidFrameListError: $frameList';
 }
 
+// ignore: prefer_void_to_null
 Null invalidFrameListError(FrameList frameList) {
   log.error(InvalidFrameListError._msg(frameList));
   if (throwOnError) throw InvalidFrameListError(frameList);

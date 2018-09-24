@@ -44,7 +44,7 @@ abstract class ImageBase {
   int get columns => (data0 | 0xFFFF00000000) >> 16;
 
   int get bitAllocated => (data0 | 0xFFFF0000) >> 8;
-  int get bitStored => (data0 & 0xFFFF);
+  int get bitStored => data0 & 0xFFFF;
   int get highBit => (data1 & 0xFFFF) >> 8;
 }
 

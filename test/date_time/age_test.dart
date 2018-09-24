@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'age_test', level: Level.info);
 
-  const goodDcmAge = const <String>[
+  const goodDcmAge = <String>[
     '000D',
     '024Y',
     '998Y',
@@ -29,7 +29,7 @@ void main() {
     '999M'
   ];
 
-  const badDcmAge = const <String>[
+  const badDcmAge = <String>[
     '000Y',
     '1',
     'A',
@@ -131,22 +131,22 @@ void main() {
     });
 
     test('isValid', () {
-      final valid0 = Age.isValid(kMinAge);
+      final valid0 = Age.isValid(kMinAgeInDays);
       expect(valid0, true);
 
-      final valid1 = Age.isValid(kMaxAge);
+      final valid1 = Age.isValid(kMaxAgeYearsInDays);
       expect(valid1, true);
 
       final valid2 = Age.isValid(-1);
       expect(valid2, false);
 
-      final valid3 = Age.isValid(-kMaxAge);
+      final valid3 = Age.isValid(-kMaxAgeYearsInDays);
       expect(valid3, false);
 
-      final valid4 = Age.isValid(kMinAge - 1);
+      final valid4 = Age.isValid(kMinAgeInDays - 1);
       expect(valid4, false);
 
-      final valid5 = Age.isValid(kMaxAge + 1);
+      final valid5 = Age.isValid(kMaxAgeYearsInDays + 1);
       expect(valid5, false);
 
       final valid6 = Age.isValid(0);
@@ -356,7 +356,7 @@ void main() {
       expect(age2.hashCode, isNot(age3.hashCode));
 
       /*const s = '089Y';
-    final age4 = new Age(780, s);
+    final age4 = Age(780, s);
     expect(age4.acr, equals(age4));*/
     });
   });

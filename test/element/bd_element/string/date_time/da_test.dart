@@ -10,17 +10,17 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('DAbytes', () {
     //VM.k1
-    const daVM1Tags = const <int>[
+    const daVM1Tags = <int>[
       kDate,
       kStudyDate,
       kSeriesDate,
@@ -38,7 +38,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const daVM1_nTags = const <int>[
+    const daVM1_nTags = <int>[
       kCalibrationDate,
       kDateOfLastCalibration,
       kSelectorDAValue,

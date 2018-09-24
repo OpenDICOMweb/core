@@ -56,7 +56,8 @@ abstract class MapDataset {
   Map<int, Element> asMap() => eMap;
 
   /// Removes the [Element] [e] from _this_.
-  bool remove(Object e) => (e is Element) ? e == eMap.remove(e.code) : false;
+  bool remove(Object e) =>
+      ((e is Element) && e == eMap.remove(e.code)) || false;
 
   /// Removes the [Element] with [code] from _this_.
   Element deleteCode(int code) => eMap.remove(code);

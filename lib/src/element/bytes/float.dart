@@ -11,7 +11,7 @@ part of odw.sdk.element.bytes;
 // ignore_for_file: public_member_api_docs
 
 /// 32-bit Float Elements (FL, OF)
-abstract class Float32Mixin {
+abstract class BytesFloat32Mixin {
   int get vfLength;
   DicomBytes get vfBytes;
 
@@ -20,7 +20,7 @@ abstract class Float32Mixin {
   List<double> get values => vfBytes.asFloat32List();
 }
 
-class FLbytes extends FL with ByteElement<double>, Float32Mixin {
+class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
   @override
   final DicomBytes bytes;
 
@@ -37,7 +37,7 @@ class FLbytes extends FL with ByteElement<double>, Float32Mixin {
   }
 }
 
-class OFbytes extends OF with ByteElement<double>, Float32Mixin {
+class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
   @override
   final DicomBytes bytes;
 
@@ -56,16 +56,16 @@ class OFbytes extends OF with ByteElement<double>, Float32Mixin {
 // **** 64-Bit Float Elements (OD, OF)
 
 /// Long Float Elements (FD, OD)
-abstract class Float64Mixin {
+abstract class BytesFloat64Mixin {
   int get vfLength;
   DicomBytes get vfBytes;
 
-  int get length => Float64.getLength(vfLength);
+  int get length => Float64Mixin.getLength(vfLength);
 
   List<double> get values => vfBytes.asFloat64List();
 }
 
-class FDbytes extends FD with ByteElement<double>, Float64Mixin {
+class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
   @override
   final DicomBytes bytes;
 
@@ -81,7 +81,7 @@ class FDbytes extends FD with ByteElement<double>, Float64Mixin {
   }
 }
 
-class ODbytes extends OD with ByteElement<double>, Float64Mixin {
+class ODbytes extends OD with ByteElement<double>, BytesFloat64Mixin {
   @override
   final DicomBytes bytes;
 

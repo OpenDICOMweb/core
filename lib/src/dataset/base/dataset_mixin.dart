@@ -41,7 +41,7 @@ import 'package:core/src/values/uid.dart';
 
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
-abstract class DatasetMixin {
+abstract class  DatasetMixin {
   // **** Start of Interface ****
 
   /// Returns the Element with [index], if present; otherwise, returns _null_.
@@ -479,7 +479,7 @@ abstract class DatasetMixin {
         for (var item in e.items) {
           final eList = item.findAllWhere(test);
           if (eList.isNotEmpty) {
-            map[e];
+            map[e] = eList;
           }
         }
       }
@@ -567,7 +567,7 @@ abstract class DatasetMixin {
     if (e == null) return required ? elementNotPresentError(index) : null;
     final List<V> values = e.values;
     assert(values != null);
-    return (allowInvalidValues) ? e.values : e.isValid;
+    return allowInvalidValues ? e.values : e.isValid;
   }
 
   // **** Integers
@@ -682,7 +682,7 @@ abstract class DatasetMixin {
     if (e is UN) {
       var s = e.vfBytesAsUtf8;
       if (s.codeUnitAt(s.length - 1) == 0) s = s.substring(0, s.length - 1);
-      return new Uid(s);
+      return Uid(s);
     }
     return badElement('Invalud Values: $e', e);
   }
@@ -727,7 +727,7 @@ abstract class DatasetMixin {
 
   /// The [RootDataset] of _this_.
   /// _Note_: A [RootDataset] is its own [root].
-  DatasetMixin get root => (isRoot) ? this : parent.root;
+  DatasetMixin get root => isRoot ? this : parent.root;
 
   // **************** Element values accessors
   //TODO: when fast_tag is working replace code with index.

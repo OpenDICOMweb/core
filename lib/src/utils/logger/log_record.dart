@@ -83,7 +83,7 @@ $runtimeType
   static int _count = 0;
 }
 
-typedef String RecordFormatter(LogRecord record);
+typedef RecordFormatter = String Function(LogRecord record);
 
 //TODO: create standard set of formatters.
 String shortFormatter(LogRecord r) =>

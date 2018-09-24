@@ -15,43 +15,43 @@ import 'package:test_tools/tools.dart';
 
 import '../utility_test.dart' as utility;
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/ui_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodUIList = const <List<String>>[
-    const <String>['1.2.840.10008.5.1.4.34.5'],
-    const <String>['1.2.840.10008.1.2.4.51'],
-    const <String>['1.2.840.10008.5.1.4.1.1.77.1.1'],
-    const <String>['1.2.840.10008.5.1.4.1.1.66.4'],
+  const goodUIList = <List<String>>[
+    <String>['1.2.840.10008.5.1.4.34.5'],
+    <String>['1.2.840.10008.1.2.4.51'],
+    <String>['1.2.840.10008.5.1.4.1.1.77.1.1'],
+    <String>['1.2.840.10008.5.1.4.1.1.66.4'],
   ];
 
-  const badUIList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
-    const <String>['1.a.840.10008.5.1.4.1.1.66.4'],
+  const badUIList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
+    <String>['1.a.840.10008.5.1.4.1.1.66.4'],
   ];
   group('UItag', () {
     test('UI hasValidValues good values', () {
       for (var s in goodUIList) {
         global.throwOnError = false;
-        final e0 = new UItag(PTag.kStudyInstanceUID, s);
+        final e0 = UItag(PTag.kStudyInstanceUID, s);
         expect(e0.hasValidValues, true);
       }
       global.throwOnError = false;
-      final e0 = new UItag(PTag.kConcatenationUID, []);
+      final e0 = UItag(PTag.kConcatenationUID, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -59,29 +59,29 @@ void main() {
     test('UI hasValidValues bad values', () {
       for (var s in badUIList) {
         global.throwOnError = false;
-        final e0 = new UItag(PTag.kStudyInstanceUID, s);
+        final e0 = UItag(PTag.kStudyInstanceUID, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new UItag(PTag.kStudyInstanceUID, s),
+        expect(() => UItag(PTag.kStudyInstanceUID, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new UItag(PTag.kConcatenationUID, null);
+      final e1 = UItag(PTag.kConcatenationUID, null);
       log.debug('e1: $e1');
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new UItag(PTag.kStudyInstanceUID, null),
+      expect(() => UItag(PTag.kStudyInstanceUID, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UI hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final e0 = new UItag(PTag.kStudyInstanceUID, vList0);
+        final e0 = UItag(PTag.kStudyInstanceUID, vList0);
         log.debug('e0:${e0.info}');
         expect(e0.hasValidValues, true);
 
@@ -91,7 +91,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 10);
-        final e1 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final e1 = UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
         expect(e1.hasValidValues, true);
 
         log..debug('e1: $e1, values: ${e1.values}')..debug('e1: ${e1.info}');
@@ -105,11 +105,11 @@ void main() {
         log.debug('$i: vList0: $vList0');
 
         global.throwOnError = false;
-        final e2 = new UItag(PTag.kStudyInstanceUID, vList0);
+        final e2 = UItag(PTag.kStudyInstanceUID, vList0);
         expect(e2, isNull);
 
         global.throwOnError = true;
-        expect(() => new UItag(PTag.kStudyInstanceUID, vList0),
+        expect(() => UItag(PTag.kStudyInstanceUID, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
@@ -117,12 +117,12 @@ void main() {
     test('UI update random', () {
       global.throwOnError = false;
       final vList0 = rsg.getUIList(3, 4);
-      final e0 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+      final e0 = UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
       expect(utility.testElementUpdate(e0, vList0), true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(3, 4);
-        final e1 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final e1 = UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
         final vList1 = rsg.getUIList(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
@@ -130,35 +130,35 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList0 = rsg.getUIList(3, 4);
-        final e1 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final e1 = UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
         final vList1 = rsg.getAEList(3, 4);
         expect(e1.update(vList1), isNull);
 
         global.throwOnError = true;
         final vList2 = rsg.getUIList(3, 4);
-        final e2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
+        final e2 = UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
         final vList3 = rsg.getAEList(3, 4);
         expect(
-                () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
+            () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = true;
       final vList2 = rsg.getUIList(3, 4);
-      final e2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
+      final e2 = UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
       final vList3 = ['3.2.840.10008.1.2.0'];
       expect(
-              () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
+          () => e2.update(vList3), throwsA(const TypeMatcher<StringError>()));
     });
 
     test('UI noValues random', () {
-      final e0 = new UItag(PTag.kRelatedGeneralSOPClassUID, []);
+      final e0 = UItag(PTag.kRelatedGeneralSOPClassUID, []);
       final UItag uiNoValues = e0.noValues;
       expect(uiNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(3, 4);
-        final e0 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final e0 = UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
         log.debug('e0: $e0');
         expect(uiNoValues.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -166,14 +166,14 @@ void main() {
     });
 
     test('UI copy random', () {
-      final e0 = new UItag(PTag.kRelatedGeneralSOPClassUID, []);
+      final e0 = UItag(PTag.kRelatedGeneralSOPClassUID, []);
       final UItag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(3, 4);
-        final e2 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
+        final e2 = UItag(PTag.kRelatedGeneralSOPClassUID, vList0);
         final UItag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -183,8 +183,8 @@ void main() {
     test('UI hashCode and == good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final e0 = new UItag(PTag.kConcatenationUID, vList0);
-        final e1 = new UItag(PTag.kConcatenationUID, vList0);
+        final e0 = UItag(PTag.kConcatenationUID, vList0);
+        final e1 = UItag(PTag.kConcatenationUID, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -198,22 +198,22 @@ void main() {
       log.debug('UI hashCode and ==');
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final e0 = new UItag(PTag.kConcatenationUID, vList0);
+        final e0 = UItag(PTag.kConcatenationUID, vList0);
 
         final vList1 = rsg.getUIList(1, 1);
-        final e2 = new UItag(PTag.kDimensionOrganizationUID, vList1);
+        final e2 = UItag(PTag.kDimensionOrganizationUID, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rsg.getUIList(1, 10);
-        final e3 = new UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
+        final e3 = UItag(PTag.kRelatedGeneralSOPClassUID, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rsg.getUIList(2, 3);
-        final e4 = new UItag(PTag.kLaterality, vList3);
+        final e4 = UItag(PTag.kLaterality, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
@@ -223,7 +223,7 @@ void main() {
     test('UI valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final e0 = new UItag(PTag.kSOPInstanceUID, vList0);
+        final e0 = UItag(PTag.kSOPInstanceUID, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -231,7 +231,7 @@ void main() {
     test('UI isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final e0 = new UItag(PTag.kSOPInstanceUID, vList0);
+        final e0 = UItag(PTag.kSOPInstanceUID, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -239,7 +239,7 @@ void main() {
     test('UI isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final e0 = new UItag(PTag.kSOPInstanceUID, vList0);
+        final e0 = UItag(PTag.kSOPInstanceUID, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -248,18 +248,18 @@ void main() {
     test('UI replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final e0 = new UItag(PTag.kSOPInstanceUID, vList0);
+        final e0 = UItag(PTag.kSOPInstanceUID, vList0);
         final vList1 = rsg.getUIList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getUIList(1, 1);
-      final e1 = new UItag(PTag.kSOPInstanceUID, vList1);
+      final e1 = UItag(PTag.kSOPInstanceUID, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new UItag(PTag.kSOPInstanceUID, vList1);
+      final e2 = UItag(PTag.kSOPInstanceUID, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -340,24 +340,24 @@ void main() {
 
     test('UI checkLength good values', () {
       final vList0 = rsg.getUIList(1, 1);
-      final e0 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final e0 = UItag(PTag.kSOPInstanceUID, vList0);
       for (var s in goodUIList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final e1 = UItag(PTag.kSOPInstanceUID, vList0);
       expect(e1.checkLength([]), true);
     });
 
     test('UI checkLength bad values', () {
       final vList0 = rsg.getUIList(1, 1);
       final vList1 = ['1.2.840.10008.5.1.4.34.5', '1.2.840.10008.3.1.2.32.7'];
-      final e2 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final e2 = UItag(PTag.kSOPInstanceUID, vList0);
       expect(e2.checkLength(vList1), false);
     });
 
     test('UI checkValue good values', () {
       final vList0 = rsg.getUIList(1, 1);
-      final e0 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final e0 = UItag(PTag.kSOPInstanceUID, vList0);
       for (var s in goodUIList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -367,7 +367,7 @@ void main() {
 
     test('UI checkValue bad values', () {
       final vList0 = rsg.getUIList(1, 1);
-      final e0 = new UItag(PTag.kSOPInstanceUID, vList0);
+      final e0 = UItag(PTag.kSOPInstanceUID, vList0);
       for (var s in badUIList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -385,7 +385,7 @@ void main() {
       }
 
       for (var s in goodUIList) {
-        final parse1 = (s);
+        final parse1 = s;
         expect(parse1.elementAt(0), equals(s[0]));
       }
 
@@ -403,9 +403,9 @@ void main() {
       final parse3 = Uid.parseList(['1.3.5']);
       expect(parse3, equals([null]));
 
-      final parse4 = Uid.parseList([
-        '1.2.840.10008.5.1.4.34.5.345.22.5467456.5.1.4.34.5.345.22.5467456.55.45'
-      ]);
+      const uidString = '1.2.840.10008.5.1.4.34.5.345.22.5467456.5.1.'
+          '4.34.5.345.22.5467456.55.45';
+      final parse4 = Uid.parseList([uidString]);
       expect(parse4, equals([null]));
 
       global.throwOnError = true;
@@ -415,13 +415,13 @@ void main() {
 
     test('UI update random', () {
       global.throwOnError = false;
-      final e0 = new UItag(PTag.kSelectorUIValue, []);
+      final e0 = UItag(PTag.kSelectorUIValue, []);
       expect(e0.update(['1.2.840.10008.5.1.4.34.5']).values,
           equals(['1.2.840.10008.5.1.4.34.5']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
-        final e1 = new UItag(PTag.kSOPInstanceUID, vList0);
+        final e1 = UItag(PTag.kSOPInstanceUID, vList0);
         final vList1 = rsg.getUIList(1, 1);
         expect(e1.update(vList1).values, equals(vList1));
       }
@@ -431,7 +431,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 4);
-        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final e0 = UItag(PTag.kSelectorUIValue, vList0);
         const vList1 = '1.2.840.10008.5.1.4.1.2.4.3';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -443,7 +443,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 4);
-        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final e0 = UItag(PTag.kSelectorUIValue, vList0);
         const vList1 = '1.2.840.10008.5.1.4.1.2.4.3';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -455,7 +455,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 4, 64);
-        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final e0 = UItag(PTag.kSelectorUIValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -466,7 +466,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUIList(1, i, 64);
-        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final e0 = UItag(PTag.kSelectorUIValue, vList0);
         const regX = r'^[0-9\.]';
         final match0 = e0.match(regX);
         expect(match0, true);
@@ -478,7 +478,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUIList(1, i);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final e0 = UItag(PTag.kSelectorUIValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }
@@ -487,14 +487,14 @@ void main() {
     test('UI updateUid', () {
       for (var i = 1; i < 2; i++) {
         final vList0 = rsg.getUIList(1, i);
-        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+        final e0 = UItag(PTag.kSelectorUIValue, vList0);
         const listUid0 = '1.2.840.10008.5.1.4.34.5';
-        final uid0 = new Uid(listUid0);
+        final uid0 = Uid(listUid0);
         var uidList0 = [uid0];
         final updateUid0 = e0.updateUid(uidList0);
         expect(updateUid0.value, equals(listUid0));
 
-        final uid1 = new Uid();
+        final uid1 = Uid();
         uidList0 = [uid1];
         final updateUid1 = e0.updateUid(uidList0);
         expect(updateUid1.value, equals(uid1.value));
@@ -504,8 +504,8 @@ void main() {
     test('UI updateUidF', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUIList(1, i);
-        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
-        final uid1 = new Uid();
+        final e0 = UItag(PTag.kSelectorUIValue, vList0);
+        final uid1 = Uid();
         final update1 = e0.updateUidF((vList0) => [uid1]);
         expect(update1.value, equals(uid1.value));
       }
@@ -513,9 +513,9 @@ void main() {
 
     test('UI replaceUid', () {
       final vList0 = rsg.getUIList(1, 1);
-      final e0 = new UItag(PTag.kSelectorUIValue, vList0);
+      final e0 = UItag(PTag.kSelectorUIValue, vList0);
       const listUid0 = '1.2.840.10008.5.1.4.34.5';
-      final uid0 = new Uid(listUid0);
+      final uid0 = Uid(listUid0);
       final uidList0 = [uid0];
       final updateUid0 = e0.replaceUid(uidList0);
       expect(updateUid0.elementAt(0).value, equals(vList0.elementAt(0)));
@@ -524,8 +524,8 @@ void main() {
     test('UI replaceUidF', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUIList(1, i);
-        final e0 = new UItag(PTag.kSelectorUIValue, vList0);
-        final uid1 = new Uid();
+        final e0 = UItag(PTag.kSelectorUIValue, vList0);
+        final uid1 = Uid();
         final replaceUid0 = e0.replaceUidF((vList0) => [uid1]);
         expect(replaceUid0.elementAt(0).value, equals(vList0.elementAt(0)));
       }
@@ -534,7 +534,7 @@ void main() {
 
   group('UI', () {
     //VM.k1
-    const uiVM1Tags = const <PTag>[
+    const uiVM1Tags = <PTag>[
       PTag.kAffectedSOPInstanceUID,
       PTag.kRequestedSOPInstanceUID,
       PTag.kMediaStorageSOPClassUID,
@@ -552,13 +552,13 @@ void main() {
     ];
 
     //VM.k1_n
-    const uiVM1_nTags = const <PTag>[
+    const uiVM1_nTags = <PTag>[
       PTag.kRelatedGeneralSOPClassUID,
       PTag.kFailedSOPInstanceUIDList,
       PTag.kSelectorUIValue
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

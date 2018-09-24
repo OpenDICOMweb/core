@@ -12,23 +12,23 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'string/lt_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodLTList = const <List<String>>[
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['!mSMXWVy`]/Du'],
-    const <String>['`0Y^~x?+]Q91']
+  const goodLTList = <List<String>>[
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['!mSMXWVy`]/Du'],
+    <String>['`0Y^~x?+]Q91']
   ];
-  const badLTList = const <List<String>>[
-    const <String>['\b'], //	Backspace
+  const badLTList = <List<String>>[
+    <String>['\b'], //	Backspace
   ];
 
   group('LTtag', () {
@@ -49,11 +49,11 @@ void main() {
     test('LT hasValidValues good values', () {
       for (var s in goodLTList) {
         global.throwOnError = false;
-        final e0 = new LTtag(PTag.kAcquisitionProtocolDescription, s);
+        final e0 = LTtag(PTag.kAcquisitionProtocolDescription, s);
         expect(e0.hasValidValues, true);
       }
       global.throwOnError = false;
-      final e0 = new LTtag(PTag.kImageComments, []);
+      final e0 = LTtag(PTag.kImageComments, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -61,11 +61,11 @@ void main() {
     test('LT hasValidValues bad values', () {
       for (var s in badLTList) {
         global.throwOnError = false;
-        final e0 = new LTtag(PTag.kAcquisitionProtocolDescription, s);
+        final e0 = LTtag(PTag.kAcquisitionProtocolDescription, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new LTtag(PTag.kAcquisitionProtocolDescription, s),
+        expect(() => LTtag(PTag.kAcquisitionProtocolDescription, s),
             throwsA(const TypeMatcher<StringError>()));
       }
     });
@@ -73,7 +73,7 @@ void main() {
     test('LT hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kAcquisitionProtocolDescription, vList0);
+        final e0 = LTtag(PTag.kAcquisitionProtocolDescription, vList0);
         log.debug('e0:${e0.info}');
         expect(e0.hasValidValues, true);
 
@@ -87,45 +87,45 @@ void main() {
         global.throwOnError = false;
         final vList0 = rsg.getLTList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e1 = new LTtag(PTag.kAcquisitionProtocolDescription, vList0);
+        final e1 = LTtag(PTag.kAcquisitionProtocolDescription, vList0);
         expect(e1, isNull);
 
         global.throwOnError = true;
-        expect(() => new LTtag(PTag.kAcquisitionProtocolDescription, vList0),
+        expect(() => LTtag(PTag.kAcquisitionProtocolDescription, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new LTtag(PTag.kImageComments, null);
+      final e1 = LTtag(PTag.kImageComments, null);
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new LTtag(PTag.kAcquisitionProtocolDescription, null),
+      expect(() => LTtag(PTag.kAcquisitionProtocolDescription, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('LT update random', () {
-      final lt = new LTtag(PTag.kImageComments, []);
+      final lt = LTtag(PTag.kImageComments, []);
       expect(lt.update(['Nm, Bhb/q0Sm']).values, equals(['Nm, Bhb/q0Sm']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e1 = new LTtag(PTag.kImageComments, vList0);
+        final e1 = LTtag(PTag.kImageComments, vList0);
         final vList1 = rsg.getLTList(1, 1);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('LT noValues random', () {
-      final e0 = new LTtag(PTag.kImageComments, []);
+      final e0 = LTtag(PTag.kImageComments, []);
       final LTtag ltNoValues = e0.noValues;
       expect(ltNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kImageComments, vList0);
+        final e0 = LTtag(PTag.kImageComments, vList0);
         log.debug('e0: $e0');
         expect(ltNoValues.values.isEmpty, true);
         log.debug('as0: ${e0.noValues}');
@@ -133,14 +133,14 @@ void main() {
     });
 
     test('LT copy random', () {
-      final e0 = new LTtag(PTag.kImageComments, []);
+      final e0 = LTtag(PTag.kImageComments, []);
       final LTtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e2 = new LTtag(PTag.kImageComments, vList0);
+        final e2 = LTtag(PTag.kImageComments, vList0);
         final LTtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -151,8 +151,8 @@ void main() {
       log.debug('LT hashCode and == ');
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kImageComments, vList0);
-        final e1 = new LTtag(PTag.kImageComments, vList0);
+        final e0 = LTtag(PTag.kImageComments, vList0);
+        final e1 = LTtag(PTag.kImageComments, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -165,15 +165,15 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kImageComments, vList0);
+        final e0 = LTtag(PTag.kImageComments, vList0);
         final vList1 = rsg.getLTList(1, 1);
-        final e1 = new LTtag(PTag.kFrameComments, vList1);
+        final e1 = LTtag(PTag.kFrameComments, vList1);
         log.debug('vList1:$vList1 , e1.hash_code:${e1.hashCode}');
         expect(e0.hashCode == e1.hashCode, false);
         expect(e0 == e1, false);
 
         final vList2 = rsg.getLOList(2, 3);
-        final e2 = new LTtag(PTag.kImageComments, vList2);
+        final e2 = LTtag(PTag.kImageComments, vList2);
         log.debug('vList2:$vList2 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
@@ -183,7 +183,7 @@ void main() {
     test('LT valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kImageComments, vList0);
+        final e0 = LTtag(PTag.kImageComments, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -191,7 +191,7 @@ void main() {
     test('LT isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kImageComments, vList0);
+        final e0 = LTtag(PTag.kImageComments, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -199,7 +199,7 @@ void main() {
     test('LT isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kImageComments, vList0);
+        final e0 = LTtag(PTag.kImageComments, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -208,18 +208,18 @@ void main() {
     test('LT replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kImageComments, vList0);
+        final e0 = LTtag(PTag.kImageComments, vList0);
         final vList1 = rsg.getLTList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getLTList(1, 1);
-      final e1 = new LTtag(PTag.kImageComments, vList1);
+      final e1 = LTtag(PTag.kImageComments, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new LTtag(PTag.kImageComments, vList1);
+      final e2 = LTtag(PTag.kImageComments, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -227,10 +227,10 @@ void main() {
     test('LT blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kImageComments, vList1);
+        final e0 = LTtag(PTag.kImageComments, vList1);
         for (var i = 1; i < 10; i++) {
           final blank = e0.blank(i);
-          log.debug(('blank$i: ${blank.values}'));
+          log.debug('blank$i: ${blank.values}');
           expect(blank.values.length == 1, true);
           expect(blank.value.length == i, true);
           final strSpaceList = <String>[''.padRight(i, ' ')];
@@ -257,7 +257,7 @@ void main() {
         final vList1 = rsg.getLTList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = LTtag.fromBytes(PTag.kSelectorLTValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
@@ -318,16 +318,16 @@ void main() {
 
     test('LT checkLength good values', () {
       final vList0 = rsg.getLTList(1, 1);
-      final e0 = new LTtag(PTag.kImageComments, vList0);
+      final e0 = LTtag(PTag.kImageComments, vList0);
       for (var s in goodLTList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new LTtag(PTag.kImageComments, vList0);
+      final e1 = LTtag(PTag.kImageComments, vList0);
       expect(e1.checkLength([]), true);
 
       final vList1 = rsg.getLTList(1, 1);
       log.debug('vList1: $vList1');
-      final e2 = new LTtag(PTag.kExtendedCodeMeaning, vList1);
+      final e2 = LTtag(PTag.kExtendedCodeMeaning, vList1);
 
       for (var s in goodLTList) {
         log.debug('s: "$s"');
@@ -338,13 +338,13 @@ void main() {
     test('LT checkLength bad values', () {
       global.throwOnError = false;
       final vList2 = ['\b', '024Y'];
-      final e3 = new LTtag(PTag.kImageComments, vList2);
+      final e3 = LTtag(PTag.kImageComments, vList2);
       expect(e3, isNull);
     });
 
     test('LT checkValue good values', () {
       final vList0 = rsg.getLTList(1, 1);
-      final e0 = new LTtag(PTag.kImageComments, vList0);
+      final e0 = LTtag(PTag.kImageComments, vList0);
       for (var s in goodLTList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -354,7 +354,7 @@ void main() {
 
     test('LT checkValue bad values', () {
       final vList0 = rsg.getLTList(1, 1);
-      final e0 = new LTtag(PTag.kImageComments, vList0);
+      final e0 = LTtag(PTag.kImageComments, vList0);
       for (var s in badLTList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -371,7 +371,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kSelectorLTValue, vList0);
+        final e0 = LTtag(PTag.kSelectorLTValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -383,7 +383,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kSelectorLTValue, vList0);
+        final e0 = LTtag(PTag.kSelectorLTValue, vList0);
         const vList1 = 'foo';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -395,7 +395,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1, 16);
-        final e0 = new LTtag(PTag.kSelectorLTValue, vList0);
+        final e0 = LTtag(PTag.kSelectorLTValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -406,7 +406,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
-        final e0 = new LTtag(PTag.kSelectorLTValue, vList0);
+        final e0 = LTtag(PTag.kSelectorLTValue, vList0);
         final match0 = e0.match(r'.*');
         expect(match0, true);
       }
@@ -417,7 +417,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLTList(1, 1);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new LTtag(PTag.kSelectorLTValue, vList0);
+        final e0 = LTtag(PTag.kSelectorLTValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }
@@ -426,7 +426,7 @@ void main() {
 
   group('LT', () {
     //VM.k1
-    const ltVM1Tags = const <PTag>[
+    const ltVM1Tags = <PTag>[
       PTag.kIdentifyingComments,
       PTag.kAdditionalPatientHistory,
       PTag.kPatientComments,
@@ -448,7 +448,7 @@ void main() {
       PTag.kTextComments
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kInstructionPerformedDateTime,
       PTag.kCTDIvol,

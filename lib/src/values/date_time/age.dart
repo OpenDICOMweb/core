@@ -15,8 +15,8 @@ import 'package:core/src/values/date_time/primitives/age.dart';
 // ignore_for_file: public_member_api_docs
 
 bool _inRange(int v, int min, int max) => v != null && v >= min && v <= max;
-bool _inAgeRange(int v) => _inRange(v, kMinAge, kMaxAge);
-bool _inDayRange(int v) => _inRange(v, kMinAge, kMaxAge);
+bool _inAgeRange(int v) => _inRange(v, kMinAgeInDays, kMaxAgeYearsInDays);
+bool _inDayRange(int v) => _inRange(v, kMinAgeInDays, kMaxAgeYearsInDays);
 bool _inWeekRange(int v) => _inRange(v, 1, kMaxAgeWeeksInDays);
 bool _inMonthRange(int v) => _inRange(v, 1, kMaxAgeMonthsInDays);
 bool _inYearRange(int v) => _inRange(v, 1, kMaxAgeYearsInDays);
@@ -25,7 +25,7 @@ enum AgeToken { D, W, M, Y }
 
 class Age {
   /// The number of days in this [Age].
-  /// The range is [kMinAge] <= [nDays] <= [kMaxAge].
+  /// The range is [kMinAgeInDays] <= [nDays] <= [kMaxAgeDaysInDays].
   final int nDays;
 
   factory Age(int nDays) => _inAgeRange(nDays) ? Age._(nDays) : null;

@@ -15,7 +15,7 @@ import 'package:core/src/profile/trial.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef Element Updater(Element element);
+typedef Updater = Element Function(Element element);
 
 enum ProfileFormat { text, json, xml }
 

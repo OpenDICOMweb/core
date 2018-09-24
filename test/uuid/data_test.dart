@@ -16,7 +16,7 @@ import 'data.dart';
 
 /// Assert that the data above are valid.
 void main() {
-  const typeChars = const <String>['8', '9', 'a', 'b'];
+  const typeChars = <String>['8', '9', 'a', 'b'];
 
   Server.initialize(name: 'data_test', level: Level.info);
   String version;

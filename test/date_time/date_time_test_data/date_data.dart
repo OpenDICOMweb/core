@@ -8,14 +8,14 @@
 //
 
 //Good dates
-const List<String> goodDcmDateList = const [
+const List<String> goodDcmDateList = [
   '19500718', '19000101', '19700101',
   '19931010', '20171231', '20171130',
   '20501231'
 ];
 
 //Bad dates
-const List<String> badDcmDateList = const [
+const List<String> badDcmDateList = [
   '19501318', // bad month
   '20041313', // bad month
   '19804312', //bad month

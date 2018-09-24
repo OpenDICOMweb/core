@@ -27,8 +27,8 @@ class Hash32 extends Hash {
 
   // Jenkins hash functions - from quiver package on Pub.
   @override
-  int combine(int hash, int value) {
-    var h = k32BitHashMask & (hash + value);
+  int combine(int seed, int hashCode) {
+    var h = k32BitHashMask & (seed + hashCode);
     h = k32BitHashMask & (h + ((0x0007ffff & h) << 10));
     return h ^ (h >> 6);
   }

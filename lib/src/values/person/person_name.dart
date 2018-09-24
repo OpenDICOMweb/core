@@ -151,8 +151,8 @@ class Name {
   static const Name empty = Name._(<String>[]);
 
   @override
-  bool operator ==(Object name) =>
-      (name is Name) && eq.equals(components, name.components);
+  bool operator ==(Object other) =>
+      (other is Name) && eq.equals(components, other.components);
 
   @override
   int get hashCode => global.hash(components);

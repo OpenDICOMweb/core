@@ -10,17 +10,17 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('SSbytes', () {
     //VM.k1
-    const ssVM1Tags = const <int>[
+    const ssVM1Tags = <int>[
       kTagAngleSecondAxis,
       kExposureControlSensingRegionLeftVerticalEdge,
       kExposureControlSensingRegionRightVerticalEdge,
@@ -32,7 +32,7 @@ void main() {
     ];
 
     //VM.k2
-    const ssVM2Tags = const <int>[
+    const ssVM2Tags = <int>[
       kOverlayOrigin,
       kAbstractPriorValue,
       kVisualAcuityModifiers,
@@ -40,7 +40,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const ssVM1_nTags = const <int>[kSelectorSSValue];
+    const ssVM1_nTags = <int>[kSelectorSSValue];
 
     test('SSbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {

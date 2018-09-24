@@ -9,7 +9,6 @@
 
 import 'dart:typed_data';
 
-import 'package:core/src/values/integer.dart';
 import 'package:crypto/crypto.dart';
 
 /// SHA-256 Cryptographic Hash Functions
@@ -60,16 +59,16 @@ Float64List float64(List<double> vList) {
 final _sha256Buffer = Uint64List(8);
 
 /// Returns a 63-bit (SMI) integer, extracted from a SHA256 digest.
-int int63(int value) {
+int int64Bit(int value) {
   // TODO: what should [offset] be to make this effective
   const offset = 1;
   _sha256Buffer[offset] = value;
   final bytes = _sha256Buffer.buffer.asUint8List();
   final hash = uint8(bytes);
   final bd = hash.buffer.asByteData();
-  final v = bd.getUint64(0);
-  return v & kDartMaxSMUint;
+  return bd.getUint64(0);
 }
+
 
 /// Returns a [String] that is a hash of [String].
 String string(String s) => fromString(s);

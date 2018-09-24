@@ -19,8 +19,7 @@ void main() {
       expect(uid == CodingSchemeUid.kDicomUIDRegistry, true);
 
       uid = Uid.lookup('1.2.840.10008.2.16.4');
-      expect(uid == CodingSchemeUid.kDicomControlledTerminology,
-          true);
+      expect(uid == CodingSchemeUid.kDicomControlledTerminology, true);
 
       uid = Uid.lookup('1.2.840.10008.7.1.3');
       expect(uid == CodingSchemeUid.kDicomControlledTerminology, false);
@@ -35,19 +34,19 @@ void main() {
     });
 
     test('Create CodingSchemeUid', () {
-      const cs0 = const CodingSchemeUid(
+      const cs0 = CodingSchemeUid(
           '1.2.840.10008.2.16.5',
           'AdultMouseAnatomyTerminology',
           UidType.kCodingScheme,
           'Adult Mouse Anatomy Terminology');
 
-      const cs1 = const CodingSchemeUid(
+      const cs1 = CodingSchemeUid(
           '1.2.840.10008.2.16.5',
           'AdultMouseAnatomyTerminology',
           UidType.kCodingScheme,
           'Adult Mouse Anatomy Terminology');
 
-      const cs2 = const CodingSchemeUid(
+      const cs2 = CodingSchemeUid(
           '1.2.840.10008.2.16.8',
           'MouseGenomeInitiative',
           UidType.kCodingScheme,

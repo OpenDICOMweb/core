@@ -21,10 +21,10 @@ export 'package:core/src/values/uid/well_known/uid_type.dart';
 
 // ignore_for_package: prefer_constructor_over_static;
 
-typedef String _Generator();
+typedef UidGenerator = String Function();
 
 /// Error handler for Uid parse errors.
-typedef Uid OnUidParseError(String s);
+typedef OnUidParseError = Uid Function(String s);
 
 /// A class that implements *DICOM Unique Identifiers* (UID) <*add link*>,
 /// also known as OSI *Object Identifiers* (OID), in accordance with
@@ -40,7 +40,7 @@ typedef Uid OnUidParseError(String s);
 class Uid {
   // A generator function for random [Uid]s. This should be
   // set to either [
-  static const _Generator _generator = generateSecureUidString;
+  static const UidGenerator _generator = generateSecureUidString;
 
   /// The [String] associated with _this_.
   final String value;

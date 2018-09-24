@@ -210,6 +210,7 @@ class InvalidTimeZoneError extends Error {
       'InvalidTimeZoneError: sign: $sign, h: $h, m: $m\n  $error';
 }
 
+// ignore: prefer_void_to_null
 Null invalidTimeZoneError(int sign, int h, int m,
     [Issues issues, Error error]) {
   final msg = InvalidTimeZoneError._msg(sign, h, m, error);
@@ -233,6 +234,7 @@ class InvalidTimeZoneMinutesError extends Error {
 }
 
 @deprecated
+// ignore: prefer_void_to_null
 Null invalidTimeZoneMinutesError(int us) {
   log.error(InvalidTimeZoneMinutesError._msg(us));
   if (throwOnError) throw InvalidTimeZoneMinutesError(us);
@@ -254,7 +256,7 @@ String randomDcmTimeZoneString(String s,
   final index = kValidDcmTZStrings.indexOf(s);
   if (index == -1) return null;
   final rIndex = getRandomTimeZoneIndex();
-  return (asDicom) ? kValidDcmTZStrings[rIndex] : kValidInetTZStrings[rIndex];
+  return asDicom ? kValidDcmTZStrings[rIndex] : kValidInetTZStrings[rIndex];
 }
 
 /// An invalid [DateTime] [Error].
@@ -269,8 +271,9 @@ class InvalidTimeZoneMicrosecondError extends Error {
   static String _msg(int us) => 'InvalidTimeZoneMicrosecondsError: us = $us';
 }
 
+// ignore: prefer_void_to_null
 Null invalidTimeZoneMicrosecondsError(int us) {
   log.error(InvalidTimeZoneMicrosecondError._msg(us));
-  if (throwOnError) throw new InvalidTimeZoneMicrosecondError(us);
+  if (throwOnError) throw InvalidTimeZoneMicrosecondError(us);
   return null;
 }

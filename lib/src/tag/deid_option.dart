@@ -11,26 +11,39 @@ import 'package:core/src/element.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef Element DeIdAdd<V>(Dataset ds, int index, Element<V> e);
-typedef List<Element> DeIdAddAll<V>(Dataset ds, int index, List<Element<V>> e);
+typedef DeIdAdd = Element Function<V>(Dataset ds, int index, Element<V> e);
+typedef DeIdAddAll = List<Element> Function<V>(
+    Dataset ds, int index, List<Element<V>> e);
 
-typedef Element<V> DeIdUpdate<V>(Dataset ds, int index, List<V> vList);
+typedef DeIdUpdate<V> = Element<V> Function<V>(
+    Dataset ds, int index, List<V> vList);
+
+// ignore: prefer_generic_function_type_aliases
 typedef Element<V> DeIdUpdateF<V>(
     Dataset ds, int index, List<V> f(List<V> vList));
-typedef List<Element> DeIdUpdateAll<V>(
+
+typedef DeIdUpdateAll = List<Element> Function<V>(
     Dataset ds, int index, List<Element<V>> e);
+
+// ignore: prefer_generic_function_type_aliases
 typedef List<Element> DeIdUpdateAllF<V>(
     Dataset ds, int index, List<V> f(List<V> vList));
 
-typedef List<V> DeIdReplace<V>(Dataset ds, int index, List<V> vList);
+typedef DeIdReplace = List<V> Function<V>(Dataset ds, int index, List<V> vList);
+
+// ignore: prefer_generic_function_type_aliases
 typedef List<V> DeIdReplaceF<V>(
     Dataset ds, int index, List<V> f(List<V> vList));
-typedef List<Element> DeIdReplaceAll<V>(Dataset ds, int index, List<V> vList);
+
+typedef DeIdReplaceAll = List<Element> Function<V>(
+    Dataset ds, int index, List<V> vList);
+
+// ignore: prefer_generic_function_type_aliases
 typedef List<Element> DeIdReplaceAllF<V>(
     Dataset ds, int index, List<V> f(List<V> vList));
 
-typedef Element DeIdDelete(Dataset ds, int index);
-typedef List<Element> DeIdDeleteAll(Dataset ds, int index);
+typedef DeIdDelete = Element Function(Dataset ds, int index);
+typedef DeIdDeleteAll = List<Element> Function(Dataset ds, int index);
 
 //TODO: document
 /// A DICOM Data Element Type.  See PS3.5, Section 7.4.

@@ -22,13 +22,13 @@ import 'package:core/src/values/integer.dart';
 const int kDefaultMinYear = 1900;
 const int kDefaultMaxYear = 2050;
 
-const int kInvalidEpochMicroseconds = kDartMinSMInt;
+const int kInvalidEpochMicroseconds = kMin64BitInt;
 
 // These are the upper and lower bounds for Epoch microseconds for the system.
-// kDartMinSMInt is the error values for Dates and Times.
-const int kEpochMicrosecondsErrorValue = kDartMinSMInt;
-const int kAbsoluteMinEpochMicroseconds = kDartMinSMInt + 1;
-const int kAbsoluteMaxEpochMicroseconds = kDartMaxSMInt;
+// [kMin64BitInt] is the error values for Dates and Times.
+const int kEpochMicrosecondsErrorValue = kMin64BitInt;
+const int kAbsoluteMinEpochMicroseconds = kMin64BitInt + 1;
+const int kAbsoluteMaxEpochMicroseconds = kMax64BitInt;
 const int kAbsoluteMinEpochMicrosecondsUTC =
     kAbsoluteMinEpochMicroseconds + kMinTimeZoneMicroseconds;
 const int kAbsoluteMaxEpochMicrosecondsUTC =

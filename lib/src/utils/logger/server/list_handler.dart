@@ -31,10 +31,10 @@ class ListHandler extends HandlerBase {
   ListHandler(this.name, {bool doPrint = true}) : super(doPrint: doPrint);
 
   @override
-  LogRecord call(LogRecord record, {bool flush}) {
-    logEntries.add(record);
-    if (doPrint) print(record.info);
-    return record;
+  LogRecord call(LogRecord r, {bool flush}) {
+    logEntries.add(r);
+    if (doPrint) print(r.info);
+    return r;
   }
 
   @override

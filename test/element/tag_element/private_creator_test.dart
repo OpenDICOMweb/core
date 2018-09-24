@@ -19,7 +19,7 @@ void main() {
       final pcTag0 = PCTag.make(0x00090010, kLOIndex, name0);
       log.debug('pcTag0: ${pcTag0.info}');
       expect(pcTag0.isValid, true);
-      final pc0 = new LOtag(pcTag0, [name0]);
+      final pc0 = LOtag(pcTag0, [name0]);
       log.debug('pc0: ${pc0.info}');
       expect(pcTag0.isValidLength(pc0.values), true);
 
@@ -27,7 +27,7 @@ void main() {
       final pcTag1 = PCTag.make(0x000900FF, kLOIndex, name1);
       log.debug('pcTag1: ${pcTag1.info}');
       expect(pcTag1.isValid, true);
-      final pc1 = new LOtag(pcTag1, [name1]);
+      final pc1 = LOtag(pcTag1, [name1]);
       log.debug('PC: ${pc1.info}');
       expect(pcTag1.isValidLength(pc1.values), true);
     });
@@ -40,14 +40,14 @@ void main() {
       // Test for exception thrown
       global.throwOnError = true;
 
-      expect(() => new LOtag(pcTag0, [name0, 'FOO']),
+      expect(() => LOtag(pcTag0, [name0, 'FOO']),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       const name1 = 'Bad Offset';
       final pcTag1 = PCTag.make(0x00090100, kLOIndex, name1);
       log.debug('pcTag1: ${pcTag1.info}');
       expect(pcTag1.isValid, false);
-      expect(() => new LOtag(pcTag0, [name1, null]),
+      expect(() => LOtag(pcTag0, [name1, null]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       const name2 = 'Bad Offset';
@@ -56,11 +56,11 @@ void main() {
       expect(pcTag1.isValid, false);
 
       global.throwOnError = false;
-      final pc2 = new LOtag(pcTag1, [name2, '']);
+      final pc2 = LOtag(pcTag1, [name2, '']);
       expect(pc2, isNull);
 
       global.throwOnError = true;
-      expect(() => new LOtag(pcTag1, [name2, '']),
+      expect(() => LOtag(pcTag1, [name2, '']),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       const name3 = 'Bad Tag';
@@ -69,11 +69,11 @@ void main() {
       expect(pcTag1.isValid, false);
 
       global.throwOnError = false;
-      final pc3 = new LOtag(pcTag3, [name3, '']);
+      final pc3 = LOtag(pcTag3, [name3, '']);
       expect(pc3, isNull);
 
       global.throwOnError = true;
-      expect(() => new LOtag(pcTag3, [name3, '']),
+      expect(() => LOtag(pcTag3, [name3, '']),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -82,7 +82,7 @@ void main() {
       final pcTag0 = PCTag.make(0x00090010, kLOIndex, name0);
       log.debug('pcTag0: ${pcTag0.info}');
       expect(pcTag0.isValid, true);
-      final pc0 = new LOtag(pcTag0, [name0]);
+      final pc0 = LOtag(pcTag0, [name0]);
       log.debug('pc0: ${pc0.info}');
       expect(pcTag0.isValidLength(pc0.values), true);
 
@@ -90,7 +90,7 @@ void main() {
       final pcTag1 = PCTag.make(0x000900FF, kLOIndex, name1);
       log.debug('pcTag1: ${pcTag1.info}');
       expect(pcTag1.isValid, true);
-      final pc1 = new LOtag(pcTag1, [name1]);
+      final pc1 = LOtag(pcTag1, [name1]);
       log.debug('PC: ${pc1.info}');
       expect(pcTag1.isValidLength(pc1.values), true);
     });
@@ -101,7 +101,7 @@ void main() {
       final pcTag0 = PCTag.make(0x00090010, kLOIndex, agfa);
       expect(pcTag0.isValid, true);
       log.debug('pcTag0: $pcTag0');
-      final pc0 = new LOtag(pcTag0, [agfa]);
+      final pc0 = LOtag(pcTag0, [agfa]);
       expect(pcTag0.isValid, true);
       log.debug('pc0: ${pc0.info}');
 
@@ -112,7 +112,7 @@ void main() {
       pdTag1.isValid;
       expect(pdTag1.isValid, true);
       log.debug('pdTag1: ${pdTag1.info}');
-      final pd1 = new LOtag(pdTag1, [value1]);
+      final pd1 = LOtag(pdTag1, [value1]);
       expect(pdTag1.isValidLength(pd1.values), true);
       log.debug('pd1: ${pd1.info}');
     });
@@ -124,7 +124,7 @@ void main() {
       final pcTag = PCTag.make(0x001900FF, kLOIndex, agfa);
       expect(pcTag.isValid, true);
       log.debug('pcTag: $pcTag');
-      final pc0 = new LOtag(pcTag, [agfa]);
+      final pc0 = LOtag(pcTag, [agfa]);
       expect(pcTag.isValidLength(pc0.values), true);
       log.debug('pc0: ${pc0.info}');
     });
@@ -138,7 +138,7 @@ void main() {
       log.debug('pdTag0: ${pdTag0.info}');
       expect(pdTag0.isValid, true);
       log.debug('pdTag0.isValid: ${pdTag0.isValid}');
-      final pd0 = new LOtag(pdTag0, [value0]);
+      final pd0 = LOtag(pdTag0, [value0]);
       expect(pd0, isNull);
     });
   });

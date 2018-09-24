@@ -43,7 +43,8 @@ void main() {
     test('timeZoneHash', () {
       for (var j = 0; j < 1000; j++) {
         for (var hour = kMinTimeZoneHour; hour < kMaxTimeZoneHour; hour++) {
-          if (isNotValidTimeZoneHour(hour)) invalidTimeZoneError(hour.sign, hour, 0);
+          if (isNotValidTimeZoneHour(hour))
+            invalidTimeZoneError(hour.sign, hour, 0);
 
           final sign = (hour.sign.isNegative) ? -1 : 1;
 
@@ -160,11 +161,13 @@ void main() {
       log.debug('tzms2: $tzms2');
       expect(tzms2, isNotNull);
 
-      final tzms3 = timeZoneMicrosecondsToString(kMicrosecondsPerDay, asDicom: false);
+      final tzms3 =
+          timeZoneMicrosecondsToString(kMicrosecondsPerDay, asDicom: false);
       log.debug('tzms3: $tzms3');
       expect(tzms3, isNull);
 
-      final tzms4 = timeZoneMicrosecondsToString(-kMicrosecondsPerDay, asDicom: false);
+      final tzms4 =
+          timeZoneMicrosecondsToString(-kMicrosecondsPerDay, asDicom: false);
       log.debug('tzms4: $tzms4');
       expect(tzms4, isNull);
     });
@@ -289,62 +292,63 @@ void main() {
     });
 
     test('getDcmTimeZoneStringHashIndex', () {
-	    for (var i = 1; i < kTZLength; i++) {
-	    	final tz = kValidDcmTZStrings[i];
-		    final htz = dcmTZStringHash(tz);
-		    log.debug('$i TZ: $tz TZHash: $htz');
-		    final hIndex = kValidDcmTZStrings.indexOf(htz);
-		    expect(hIndex != -1, true);
-		    expect(tz != htz, true);
-	    }
+      for (var i = 1; i < kTZLength; i++) {
+        final tz = kValidDcmTZStrings[i];
+        final htz = dcmTZStringHash(tz);
+        log.debug('$i TZ: $tz TZHash: $htz');
+        final hIndex = kValidDcmTZStrings.indexOf(htz);
+        expect(hIndex != -1, true);
+        expect(tz != htz, true);
+      }
     });
 
     test('getDcmTimeZoneStringHashIndex-Random', () {
-    	const iterations = 1000;
-    	final rng = new Random(0);
+      const iterations = 1000;
+      final rng = Random(0);
 
-	    for (var i = 1; i < iterations; i++) {
-	    	final index = rng.nextInt(kTZLength - 1);
-		    final tz = kValidDcmTZStrings[index];
-		    final htz = dcmTZStringHash(tz);
-		    log.debug('$i index: $index TZHash: $htz');
-		    final hIndex = kValidDcmTZStrings.indexOf(htz);
-		    expect(hIndex != -1, true);
-		    expect(tz != htz, true);
-	    }
+      for (var i = 1; i < iterations; i++) {
+        final index = rng.nextInt(kTZLength - 1);
+        final tz = kValidDcmTZStrings[index];
+        final htz = dcmTZStringHash(tz);
+        log.debug('$i index: $index TZHash: $htz');
+        final hIndex = kValidDcmTZStrings.indexOf(htz);
+        expect(hIndex != -1, true);
+        expect(tz != htz, true);
+      }
     });
 
     test('getInetTimeZoneStringHashIndex', () {
-	    for (var i = 1; i < kTZLength; i++) {
-		    final tz = kValidInetTZStrings[i];
-		    final htz = inetTZStringHash(tz);
-		    log.debug('$i TZ: $tz TZHash: $htz');
-		    final hIndex = kValidInetTZStrings.indexOf(htz);
-		    expect(hIndex != -1, true);
-		    expect(tz != htz, true);
-	    }
+      for (var i = 1; i < kTZLength; i++) {
+        final tz = kValidInetTZStrings[i];
+        final htz = inetTZStringHash(tz);
+        log.debug('$i TZ: $tz TZHash: $htz');
+        final hIndex = kValidInetTZStrings.indexOf(htz);
+        expect(hIndex != -1, true);
+        expect(tz != htz, true);
+      }
     });
 
     test('getInetTimeZoneStringHashIndex-Random', () {
-	    const iterations = 1000;
-	    final rng = new Random(0);
+      const iterations = 1000;
+      final rng = Random(0);
 
-	    for (var i = 1; i < iterations; i++) {
-		    final index = rng.nextInt(kTZLength - 1);
-		    final tz = kValidInetTZStrings[index];
-		    final htz = inetTZStringHash(tz);
-		    log.debug('$i index: $index TZHash: $htz');
-		    final hIndex = kValidInetTZStrings.indexOf(htz);
-		    expect(hIndex != -1, true);
-		    expect(tz != htz, true);
-	    }
+      for (var i = 1; i < iterations; i++) {
+        final index = rng.nextInt(kTZLength - 1);
+        final tz = kValidInetTZStrings[index];
+        final htz = inetTZStringHash(tz);
+        log.debug('$i index: $index TZHash: $htz');
+        final hIndex = kValidInetTZStrings.indexOf(htz);
+        expect(hIndex != -1, true);
+        expect(tz != htz, true);
+      }
     });
 
     test('getRandomTimeZoneIndex', () {
       for (var i = 1; i <= kValidTZMicroseconds.length; i++) {
         final rtzIndex0 = getRandomTimeZoneIndex();
         log.debug('kValidTZMicroseconds :${kValidTZMicroseconds[rtzIndex0]}');
-        expect((0 <= rtzIndex0 && rtzIndex0 <= kValidTZMicroseconds.length), true);
+        expect(
+            0 <= rtzIndex0 && rtzIndex0 <= kValidTZMicroseconds.length, true);
       }
     });
 

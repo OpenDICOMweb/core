@@ -13,38 +13,38 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/ur_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodURList = const <List<String>>[
-    const <String>['http:/TVc8mR/swk/jvNtF/Uy6'],
-    const <String>['iaWlVR'],
-    const <String>['http:/l_YB2r8/LQIo9'],
-    const <String>['_m3G9go/OkgpQ'],
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
+  const goodURList = <List<String>>[
+    <String>['http:/TVc8mR/swk/jvNtF/Uy6'],
+    <String>['iaWlVR'],
+    <String>['http:/l_YB2r8/LQIo9'],
+    <String>['_m3G9go/OkgpQ'],
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
   ];
 
-  const badURList = const <List<String>>[
-    const <String>[' asdf sdf  ']
+  const badURList = <List<String>>[
+    <String>[' asdf sdf  ']
   ];
 
   group('URtag', () {
     test('UR hasValidValues good values', () {
       for (var s in goodURList) {
         global.throwOnError = false;
-        final e0 = new URtag(PTag.kRetrieveURI, s);
+        final e0 = URtag(PTag.kRetrieveURI, s);
         expect(e0.hasValidValues, true);
       }
 
-      final e0 = new URtag(PTag.kPixelDataProviderURL, []);
+      final e0 = URtag(PTag.kPixelDataProviderURL, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -52,28 +52,28 @@ void main() {
     test('UR hasValidValues bad values', () {
       for (var s in badURList) {
         global.throwOnError = false;
-        final e0 = new URtag(PTag.kRetrieveURI, s);
+        final e0 = URtag(PTag.kRetrieveURI, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new URtag(PTag.kRetrieveURI, s),
+        expect(() => URtag(PTag.kRetrieveURI, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new URtag(PTag.kPixelDataProviderURL, null);
+      final e1 = URtag(PTag.kPixelDataProviderURL, null);
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new URtag(PTag.kPixelDataProviderURL, null),
+      expect(() => URtag(PTag.kPixelDataProviderURL, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UR hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e0 = new URtag(PTag.kRetrieveURI, vList0);
+        final e0 = URtag(PTag.kRetrieveURI, vList0);
         log.debug('e0:${e0.info}');
         expect(e0.hasValidValues, true);
 
@@ -84,33 +84,33 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
         log.debug('$i: vList0: $vList0');
-        final ui1 = new URtag(PTag.kRetrieveURI, vList0);
+        final ui1 = URtag(PTag.kRetrieveURI, vList0);
         expect(ui1.hasValidValues, true);
       }
     });
 
     test('UR update random', () {
       global.throwOnError = false;
-      final e0 = new URtag(PTag.kSelectorURValue, []);
+      final e0 = URtag(PTag.kSelectorURValue, []);
       expect(e0.update(['m3ZXGWA_']).values, equals(['m3ZXGWA_']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final ui1 = new URtag(PTag.kPixelDataProviderURL, vList0);
+        final ui1 = URtag(PTag.kPixelDataProviderURL, vList0);
         final vList1 = rsg.getURList(1, 1);
         expect(ui1.update(vList1).values, equals(vList1));
       }
     });
 
     test('UR noValues random', () {
-      final e0 = new URtag(PTag.kPixelDataProviderURL, []);
+      final e0 = URtag(PTag.kPixelDataProviderURL, []);
       final URtag urNoValues = e0.noValues;
       expect(urNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e0 = new URtag(PTag.kPixelDataProviderURL, vList0);
+        final e0 = URtag(PTag.kPixelDataProviderURL, vList0);
         log.debug('e0: $e0');
         expect(urNoValues.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -118,14 +118,14 @@ void main() {
     });
 
     test('UR copy random', () {
-      final e0 = new URtag(PTag.kPixelDataProviderURL, []);
+      final e0 = URtag(PTag.kPixelDataProviderURL, []);
       final URtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e2 = new URtag(PTag.kPixelDataProviderURL, vList0);
+        final e2 = URtag(PTag.kPixelDataProviderURL, vList0);
         final URtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -135,8 +135,8 @@ void main() {
     test('UR hashCode and == good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e0 = new URtag(PTag.kRetrieveURL, vList0);
-        final e1 = new URtag(PTag.kRetrieveURL, vList0);
+        final e0 = URtag(PTag.kRetrieveURL, vList0);
+        final e1 = URtag(PTag.kRetrieveURL, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -152,22 +152,22 @@ void main() {
         final vList2 = rsg.getURList(2, 2 + i);
 
         global.throwOnError = false;
-        final e0 = new URtag(PTag.kRetrieveURL, vList0);
+        final e0 = URtag(PTag.kRetrieveURL, vList0);
         log.debug('vList0:$vList0');
         expect(e0, isNull);
-        final e1 = new URtag(PTag.kPixelDataProviderURL, vList1);
+        final e1 = URtag(PTag.kPixelDataProviderURL, vList1);
         expect(e1, isNull);
         log.debug('vList1:$vList1');
-        final e2 = new URtag(PTag.kRetrieveURL, vList2);
+        final e2 = URtag(PTag.kRetrieveURL, vList2);
         log.debug('vList2:$vList2');
         expect(e2, isNull);
 
         global.throwOnError = true;
-        expect(() => new URtag(PTag.kRetrieveURL, vList0),
+        expect(() => URtag(PTag.kRetrieveURL, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
-        expect(() => new URtag(PTag.kPixelDataProviderURL, vList1),
+        expect(() => URtag(PTag.kPixelDataProviderURL, vList1),
             throwsA(const TypeMatcher<InvalidValuesError>()));
-        expect(() => new URtag(PTag.kRetrieveURL, vList2),
+        expect(() => URtag(PTag.kRetrieveURL, vList2),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
@@ -175,7 +175,7 @@ void main() {
     test('UR valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e0 = new URtag(PTag.kRetrieveURL, vList0);
+        final e0 = URtag(PTag.kRetrieveURL, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -183,7 +183,7 @@ void main() {
     test('UR isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e0 = new URtag(PTag.kRetrieveURL, vList0);
+        final e0 = URtag(PTag.kRetrieveURL, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -191,7 +191,7 @@ void main() {
     test('UR isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e0 = new URtag(PTag.kRetrieveURL, vList0);
+        final e0 = URtag(PTag.kRetrieveURL, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -202,18 +202,18 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e0 = new URtag(PTag.kRetrieveURL, vList0);
+        final e0 = URtag(PTag.kRetrieveURL, vList0);
         final vList1 = rsg.getURList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getURList(1, 1);
-      final e1 = new URtag(PTag.kRetrieveURL, vList1);
+      final e1 = URtag(PTag.kRetrieveURL, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new URtag(PTag.kRetrieveURL, vList1);
+      final e2 = URtag(PTag.kRetrieveURL, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -294,24 +294,24 @@ void main() {
 
     test('UR checkLength good values', () {
       final vList0 = rsg.getURList(1, 1);
-      final e0 = new URtag(PTag.kRetrieveURL, vList0);
+      final e0 = URtag(PTag.kRetrieveURL, vList0);
       for (var s in goodURList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new URtag(PTag.kRetrieveURL, vList0);
+      final e1 = URtag(PTag.kRetrieveURL, vList0);
       expect(e1.checkLength([]), true);
     });
 
     test('UR checkLength bad values', () {
       final vList0 = rsg.getURList(1, 1);
       final vList1 = ['1.2.840.10008.5.1.4.34.5', '1.2.840.10008.3.1.2.32.7'];
-      final e2 = new URtag(PTag.kRetrieveURL, vList0);
+      final e2 = URtag(PTag.kRetrieveURL, vList0);
       expect(e2.checkLength(vList1), false);
     });
 
     test('UR checkValue good values', () {
       final vList0 = rsg.getURList(1, 1);
-      final e0 = new URtag(PTag.kRetrieveURL, vList0);
+      final e0 = URtag(PTag.kRetrieveURL, vList0);
       for (var s in goodURList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -321,7 +321,7 @@ void main() {
 
     test('UR checkValue bad values', () {
       final vList0 = rsg.getURList(1, 1);
-      final e0 = new URtag(PTag.kRetrieveURL, vList0);
+      final e0 = URtag(PTag.kRetrieveURL, vList0);
       for (var s in badURList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -348,7 +348,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e0 = new URtag(PTag.kSelectorURValue, vList0);
+        final e0 = URtag(PTag.kSelectorURValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -360,7 +360,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1);
-        final e0 = new URtag(PTag.kSelectorURValue, vList0);
+        final e0 = URtag(PTag.kSelectorURValue, vList0);
         const vList1 = 'foo';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -372,7 +372,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, 1, 16);
-        final e0 = new URtag(PTag.kSelectorURValue, vList0);
+        final e0 = URtag(PTag.kSelectorURValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -383,7 +383,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getURList(1, i);
-        final e0 = new URtag(PTag.kSelectorURValue, vList0);
+        final e0 = URtag(PTag.kSelectorURValue, vList0);
         final match0 = e0.match(r'(\w+)');
         expect(match0, true);
       }
@@ -394,7 +394,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getURList(1, i);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new URtag(PTag.kSelectorURValue, vList0);
+        final e0 = URtag(PTag.kSelectorURValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }
@@ -403,7 +403,7 @@ void main() {
 
   group('UR', () {
     //VM.k1
-    const urVM1Tags = const <PTag>[
+    const urVM1Tags = <PTag>[
       PTag.kRetrieveURL,
       PTag.kPixelDataProviderURL,
       PTag.kRetrieveURI,
@@ -411,9 +411,9 @@ void main() {
     ];
 
     //VM.k1_n
-    const urVM1_nTags = const <PTag>[PTag.kSelectorURValue];
+    const urVM1_nTags = <PTag>[PTag.kSelectorURValue];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

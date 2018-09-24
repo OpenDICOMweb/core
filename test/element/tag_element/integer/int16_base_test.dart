@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/uInt32_base_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
 
   test('Int16Base fromList', () {
@@ -21,8 +21,8 @@ void main() {
       final vList0 = rng.int16List(1, 1);
       expect(Int16.fromList(vList0), vList0);
     }
-    const int16Min = const [kInt16Min];
-    const int16Max = const [kInt16Max];
+    const int16Min = [kInt16Min];
+    const int16Max = [kInt16Max];
     expect(Int16.fromList(int16Max), int16Max);
     expect(Int16.fromList(int16Min), int16Min);
   });
@@ -31,7 +31,7 @@ void main() {
     global.throwOnError = false;
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.int16List(1, 1);
-      final vList1 = new Int16List.fromList(vList0);
+      final vList1 = Int16List.fromList(vList0);
       final bd = vList1.buffer.asUint8List();
       log
         ..debug('vList0 : $vList0')
@@ -39,12 +39,12 @@ void main() {
       expect(Int16.toBytes(vList0), equals(bd));
     }
 
-    const int16Max = const [kInt16Max];
-    final int16List = new Int16List.fromList(int16Max);
+    const int16Max = [kInt16Max];
+    final int16List = Int16List.fromList(int16Max);
     final uint8List = int16List.buffer.asUint8List();
     expect(Int16.toBytes(int16Max), uint8List);
 
-    const int32Max = const [kInt32Max];
+    const int32Max = [kInt32Max];
     expect(Int16.toBytes(int32Max), isNull);
 
     global.throwOnError = true;
@@ -58,8 +58,8 @@ void main() {
       final vList0 = rng.int16List(1, 1);
       final bd0 = vList0.buffer.asByteData();
       final lBd0 = Int16.toByteData(vList0);
-      log.debug(
-          'lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: '
+          '${bd0.buffer.asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 
@@ -70,8 +70,8 @@ void main() {
       expect(lBd1.buffer == bd0.buffer, true);
     }
 
-    const int16Max = const [kInt16Max];
-    final int16List = new Int16List.fromList(int16Max);
+    const int16Max = [kInt16Max];
+    final int16List = Int16List.fromList(int16Max);
     final bd1 = int16List.buffer.asByteData();
     final lBd2 = Int16.toByteData(int16List);
     log.debug('bd: ${bd1.buffer.asUint8List()}, '
@@ -93,7 +93,7 @@ void main() {
 
       final int32list0 = rng.int32List(1, 1);
       assert(int32list0 is TypedData);
-      //final int32List0 = new Int32List.fromList(int32list0);
+      //final int32List0 = Int32List.fromList(int32list0);
       final bd1 = int32list0.buffer.asByteData();
       final lBd2 = Int16.toByteData(int32list0, check: false);
       log.debug('lBd0: ${lBd2.buffer.asUint8List()}, '
@@ -110,10 +110,10 @@ void main() {
       expect(lBd4.buffer == bd0.buffer, false);
     }
 
-    const int32Max = const <int>[kInt32Max];
+    const int32Max = <int>[kInt32Max];
     expect(Int16.toByteData(int32Max), isNull);
 
-    const int32Min = const [kInt32Min];
+    const int32Min = [kInt32Min];
     expect(Int16.toByteData(int32Min), isNull);
 
     global.throwOnError = true;
@@ -124,10 +124,10 @@ void main() {
   test('Int16Base decodeJsonVF', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.int16List(0, i);
-//        final vList1 = new Int16List.fromList(vList0);
+//        final vList1 = Int16List.fromList(vList0);
 //        final bd = vList1.buffer.asUint8List();
 //        final s = cvt.base64.encode(bd);
-      final bytes = new Bytes.typedDataView(vList0);
+      final bytes = Bytes.typedDataView(vList0);
       final s = bytes.getBase64();
       log.debug('SS.base64: "$s"');
 
@@ -141,9 +141,9 @@ void main() {
   test('Int16Base toBase64', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.int16List(0, i);
-//        final vList1 = new Int16List.fromList(vList0);
+//        final vList1 = Int16List.fromList(vList0);
 //        final bd = vList1.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(vList0);
+      final bytes = Bytes.typedDataView(vList0);
 //        final s = cvt.base64.encode(bd);
       final s = bytes.getBase64();
       expect(Int16.toBase64(vList0), equals(s));
@@ -153,9 +153,9 @@ void main() {
   test('Int16Base to/from Base64', () {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.int16List(0, i);
-//        final vList1 = new Int16List.fromList(vList0);
+//        final vList1 = Int16List.fromList(vList0);
 //        final bd = vList1.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(vList0);
+      final bytes = Bytes.typedDataView(vList0);
       // Encode
 //        final base64 = cvt.base64.encode(bd);
       final base64 = bytes.getBase64();
@@ -178,7 +178,7 @@ void main() {
   test('Int16Base fromByteData', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.int16List(1, 1);
-      final vList1 = new Int16List.fromList(vList0);
+      final vList1 = Int16List.fromList(vList0);
       final byteData = vList1.buffer.asByteData();
       log
         ..debug('vList0 : $vList0')
@@ -191,7 +191,7 @@ void main() {
   test('Int16 fromValueField', () {
     for (var i = 1; i <= 10; i++) {
       final vList0 = rng.int16List(1, i);
-      final int16ListV1 = new Int16List.fromList(vList0);
+      final int16ListV1 = Int16List.fromList(vList0);
       final fvf0 = Int16.fromValueField(int16ListV1);
       log.debug('fromValueField0: $fvf0');
       expect(fvf0, equals(int16ListV1));
@@ -214,8 +214,8 @@ void main() {
     expect(fvf2.isEmpty, true);
 
     final vList0 = rng.int16List(1, 1);
-    final int16ListV1 = new Int16List.fromList(vList0);
-    final byte0 = new Bytes.fromList(int16ListV1);
+    final int16ListV1 = Int16List.fromList(vList0);
+    final byte0 = Bytes.fromList(int16ListV1);
     final fvf3 = Int16.fromValueField(byte0);
     expect(fvf3, isNotNull);
     expect(fvf3 is Bytes, true);
@@ -283,9 +283,9 @@ void main() {
   test('Int16Base listFromBytes', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.int16List(1, 1);
-      //  final vList1 = new Int16List.fromList(vList0);
+      //  final vList1 = Int16List.fromList(vList0);
       //  final bd = vList1.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(vList0);
+      final bytes = Bytes.typedDataView(vList0);
       final vList1 = bytes.asInt16List();
       log
         ..debug('vList0 : $vList0')

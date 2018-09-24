@@ -10,17 +10,17 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('LObytes', () {
     //VM.k1
-    const loVM1Tags = const <int>[
+    const loVM1Tags = <int>[
       kDataSetSubtype,
       kManufacturer,
       kInstitutionName,
@@ -37,7 +37,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const loVM1_nTags = const <int>[
+    const loVM1_nTags = <int>[
       kAdmittingDiagnosesDescription,
       kEventTimerNames,
       kInsurancePlanIdentification,

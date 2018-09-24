@@ -13,45 +13,45 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/cs_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodCSList = const <List<String>>[
-    const <String>['KEZ5HZZZR2'],
-    const <String>['LUA '],
-    const <String>['DAP3Q'],
-    const <String>['GAEGBPO'],
-    const <String>['EGM_']
+  const goodCSList = <List<String>>[
+    <String>['KEZ5HZZZR2'],
+    <String>['LUA '],
+    <String>['DAP3Q'],
+    <String>['GAEGBPO'],
+    <String>['EGM_']
   ];
 
-  const badCSList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
-    const <String>['T 2@+nEZKu/J'],
-    const <String>['123.45']
+  const badCSList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
+    <String>['T 2@+nEZKu/J'],
+    <String>['123.45']
   ];
   group('CStag', () {
     test('CS hasValidValues good values', () {
       for (var s in goodCSList) {
         global.throwOnError = false;
-        final e0 = new CStag(PTag.kLaterality, s);
+        final e0 = CStag(PTag.kLaterality, s);
         expect(e0.hasValidValues, true);
       }
       global.throwOnError = false;
-      final e0 = new CStag(PTag.kMaskingImage, []);
+      final e0 = CStag(PTag.kMaskingImage, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -59,28 +59,28 @@ void main() {
     test('CS hasValidValues bad values', () {
       for (var s in badCSList) {
         global.throwOnError = false;
-        final e0 = new CStag(PTag.kLaterality, s);
+        final e0 = CStag(PTag.kLaterality, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new CStag(PTag.kLaterality, s),
+        expect(() => CStag(PTag.kLaterality, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new CStag(PTag.kMaskingImage, null);
+      final e1 = CStag(PTag.kMaskingImage, null);
       log.debug('e1: $e1');
       expect(e1, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new CStag(PTag.kLaterality, null),
+      expect(() => CStag(PTag.kLaterality, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('CS hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1, 2, 16);
-        final e0 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+        final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
         log.debug('e0:${e0.info}');
         expect(e0.hasValidValues, true);
 
@@ -90,7 +90,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(2, 2);
-        final e1 = new CStag(PTag.kPatientOrientation, vList0);
+        final e1 = CStag(PTag.kPatientOrientation, vList0);
         expect(e1.hasValidValues, true);
 
         log..debug('e1: $e1, values: ${e1.values}')..debug('e1: ${e1.info}');
@@ -103,32 +103,32 @@ void main() {
         global.throwOnError = false;
         final vList0 = rsg.getCSList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e2 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+        final e2 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
         expect(e2, isNull);
       }
     });
 
     test('CS update random', () {
-      final e0 = new CStag(PTag.kMaskingImage, []);
+      final e0 = CStag(PTag.kMaskingImage, []);
       expect(e0.update(['325435', '4545']).values, equals(['325435', '4545']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(3, 4);
-        final e1 = new CStag(PTag.kMaskingImage, vList0);
+        final e1 = CStag(PTag.kMaskingImage, vList0);
         final vList1 = rsg.getCSList(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('CS noValues random', () {
-      final e0 = new CStag(PTag.kMaskingImage, []);
+      final e0 = CStag(PTag.kMaskingImage, []);
       final CStag csNoValues = e0.noValues;
       expect(csNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(3, 4);
-        final e0 = new CStag(PTag.kMaskingImage, vList0);
+        final e0 = CStag(PTag.kMaskingImage, vList0);
         log.debug('e0: $e0');
         expect(csNoValues.values.isEmpty, true);
         log.debug('ae0: ${e0.noValues}');
@@ -136,14 +136,14 @@ void main() {
     });
 
     test('CS copy random', () {
-      final e0 = new CStag(PTag.kMaskingImage, []);
+      final e0 = CStag(PTag.kMaskingImage, []);
       final CStag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(3, 4);
-        final e2 = new CStag(PTag.kMaskingImage, vList0);
+        final e2 = CStag(PTag.kMaskingImage, vList0);
         final CStag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -154,8 +154,8 @@ void main() {
       List<String> vList0;
       for (var i = 0; i < 10; i++) {
         vList0 = rsg.getCSList(1, 1);
-        final e0 = new CStag(PTag.kLaterality, vList0);
-        final e1 = new CStag(PTag.kLaterality, vList0);
+        final e0 = CStag(PTag.kLaterality, vList0);
+        final e1 = CStag(PTag.kLaterality, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, ds1.hash_code:${e1.hashCode}');
@@ -167,28 +167,28 @@ void main() {
     test('CS hashCode and == bad values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
-        final e0 = new CStag(PTag.kLaterality, vList0);
+        final e0 = CStag(PTag.kLaterality, vList0);
 
         final vList1 = rsg.getCSList(1, 1);
-        final ae2 = new CStag(PTag.kImageLaterality, vList1);
+        final ae2 = CStag(PTag.kImageLaterality, vList1);
         log.debug('vList1:$vList1 , ae2.hash_code:${ae2.hashCode}');
         expect(e0.hashCode == ae2.hashCode, false);
         expect(e0 == ae2, false);
 
         final vList2 = rsg.getCSList(2, 2);
-        final e3 = new CStag(PTag.kPatientOrientation, vList2);
+        final e3 = CStag(PTag.kPatientOrientation, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rsg.getCSList(4, 4);
-        final e4 = new CStag(PTag.kFrameType, vList3);
+        final e4 = CStag(PTag.kFrameType, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
 
         final vList4 = rsg.getCSList(2, 3);
-        final e5 = new CStag(PTag.kLaterality, vList4);
+        final e5 = CStag(PTag.kLaterality, vList4);
         log.debug('vList4:$vList4 , e5.hash_code:${e5.hashCode}');
         expect(e0.hashCode == e5.hashCode, false);
         expect(e0 == e5, false);
@@ -198,7 +198,7 @@ void main() {
     test('CS valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
-        final e0 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+        final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -206,7 +206,7 @@ void main() {
     test('CS isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
-        final e0 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+        final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -214,7 +214,7 @@ void main() {
     test('CS isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
-        final e0 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+        final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -223,18 +223,18 @@ void main() {
     test('CS replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 1);
-        final e0 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+        final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
         final vList1 = rsg.getCSList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getCSList(1, 1);
-      final e1 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList1);
+      final e1 = CStag(PTag.kGeometryOfKSpaceTraversal, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList1);
+      final e2 = CStag(PTag.kGeometryOfKSpaceTraversal, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -319,24 +319,24 @@ void main() {
 
     test('CS checkLength good values', () {
       final vList0 = rsg.getCSList(1, 1);
-      final e0 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+      final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
       for (var s in goodCSList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+      final e1 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
       expect(e1.checkLength([]), true);
     });
 
     test('CS checkLength bad values', () {
       final vList0 = rsg.getCSList(1, 1);
       final vList1 = ['KEZ5HZZZR2', 'LSDKFJIE34D'];
-      final e2 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+      final e2 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
       expect(e2.checkLength(vList1), false);
     });
 
     test('CS checkValue good values', () {
       final vList0 = rsg.getCSList(1, 1);
-      final e0 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+      final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
       for (var s in goodCSList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -346,7 +346,7 @@ void main() {
 
     test('CS checkValue bad values', () {
       final vList0 = rsg.getCSList(1, 1);
-      final e0 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
+      final e0 = CStag(PTag.kGeometryOfKSpaceTraversal, vList0);
       for (var s in badCSList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -363,7 +363,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 4);
-        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        final e0 = CStag(PTag.kSelectorCSValue, vList0);
         const vList1 = 'FOO';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -375,7 +375,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 4);
-        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        final e0 = CStag(PTag.kSelectorCSValue, vList0);
         const vList1 = 'FOO';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -387,7 +387,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, 4, 16);
-        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        final e0 = CStag(PTag.kSelectorCSValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -399,7 +399,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i, 16);
         log.debug('vList0: $vList0');
-        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        final e0 = CStag(PTag.kSelectorCSValue, vList0);
         const regX = r'\w*[A-Z_0-9\s]';
         final match0 = e0.match(regX);
         expect(match0, true);
@@ -411,7 +411,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new CStag(PTag.kSelectorCSValue, vList0);
+        final e0 = CStag(PTag.kSelectorCSValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }
@@ -420,7 +420,7 @@ void main() {
 
   group('CS', () {
     //VM.k1
-    const csVM1Tags = const <PTag>[
+    const csVM1Tags = <PTag>[
       PTag.kFileSetID,
       PTag.kConversionType,
       PTag.kPresentationIntentType,
@@ -431,7 +431,7 @@ void main() {
     ];
 
     //VM.k2
-    const csVM2Tags = const <PTag>[
+    const csVM2Tags = <PTag>[
       PTag.kPatientOrientation,
       PTag.kReportStatusIDTrial,
       PTag.kSeriesType,
@@ -439,15 +439,15 @@ void main() {
     ];
 
     //VM.k2_n
-    const csVM2_nTags = const <PTag>[PTag.kImageType];
+    const csVM2_nTags = <PTag>[PTag.kImageType];
 
     //VM.k4
-    const csVM4Tags = const <PTag>[
+    const csVM4Tags = <PTag>[
       PTag.kFrameType,
     ];
 
     //VM.k1_n
-    const csVM1_nTags = const <PTag>[
+    const csVM1_nTags = <PTag>[
       PTag.kModalitiesInStudy,
       PTag.kIndicationType,
       PTag.kScanningSequence,
@@ -458,7 +458,7 @@ void main() {
       PTag.kSelectorCSValue,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

@@ -4,6 +4,8 @@
 // Original author: Jim Philbin <jfphilbin@gmail.edu> - 
 // See the AUTHORS file for other contributors.
 
+// ignore_for_file: prefer_void_to_null
+
 /// # ODW Core Validators and Errors
 ///
 /// ## Validators

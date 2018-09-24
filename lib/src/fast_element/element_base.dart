@@ -31,9 +31,9 @@ import 'package:core/src/vr.dart';
 //       inline Type declarations
 /// The Type of a Method or Function that takes an Element and returns
 /// a [bool].
-typedef bool ElementTest(FastElementBase e);
+typedef ElementTest = bool Function(FastElementBase e);
 
-typedef bool Condition(Dataset ds, FastElementBase e);
+typedef Condition = bool Function(Dataset ds, FastElementBase e);
 
 bool doTestValidity = true;
 

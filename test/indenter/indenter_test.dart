@@ -14,7 +14,7 @@ void main() {
   Server.initialize(name: 'indenter/indenter_test', level: Level.info);
 
   test('Basic indent test with depth', () {
-    final sb = new Indenter();
+    final sb = Indenter();
 
     const expected = '''
 
@@ -41,7 +41,7 @@ void main() {
   });
 
   test('Basic indent test without depth', () {
-    final sb = new Indenter();
+    final sb = Indenter();
     const expected =
     '''  
 
@@ -68,7 +68,7 @@ void main() {
   });
 
   test('Basic indent test', () {
-    final sb = new Indenter('Start...\n');
+    final sb = Indenter('Start...\n');
 
     sb
       ..writeln('|')

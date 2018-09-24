@@ -13,7 +13,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   // minYear and maxYear can be passed as an argument
@@ -25,66 +25,66 @@ void main() {
       throwOnError: false);
   global.throwOnError = false;
 
-  const goodTMList = const <List<String>>[
-    const <String>['000000'],
-    const <String>['190101'],
-    const <String>['235959'],
-    const <String>['010101.1'],
-    const <String>['010101.11'],
-    const <String>['010101.111'],
-    const <String>['010101.1111'],
-    const <String>['010101.11111'],
-    const <String>['010101.111111'],
-    const <String>['000000.0'],
-    const <String>['000000.00'],
-    const <String>['000000.000'],
-    const <String>['000000.0000'],
-    const <String>['000000.00000'],
-    const <String>['000000.000000'],
-    const <String>['00'],
-    const <String>['0000'],
-    const <String>['000000'],
-    const <String>['000000.1'],
-    const <String>['000000.111111'],
-    const <String>['01'],
-    const <String>['0101'],
-    const <String>['010101'],
-    const <String>['010101.1'],
-    const <String>['010101.111111'],
-    const <String>['10'],
-    const <String>['1010'],
-    const <String>['101010'],
-    const <String>['101010.1'],
-    const <String>['101010.111111'],
-    const <String>['22'],
-    const <String>['2222'],
-    const <String>['222222'],
-    const <String>['222222.1'],
-    const <String>['222222.111111'],
-    const <String>['23'],
-    const <String>['2323'],
-    const <String>['232323'],
-    const <String>['232323.1'],
-    const <String>['232323.111111'],
-    const <String>['23'],
-    const <String>['2359'],
-    const <String>['235959'],
-    const <String>['235959.1'],
-    const <String>['235959.111111'],
+  const goodTMList = <List<String>>[
+    <String>['000000'],
+    <String>['190101'],
+    <String>['235959'],
+    <String>['010101.1'],
+    <String>['010101.11'],
+    <String>['010101.111'],
+    <String>['010101.1111'],
+    <String>['010101.11111'],
+    <String>['010101.111111'],
+    <String>['000000.0'],
+    <String>['000000.00'],
+    <String>['000000.000'],
+    <String>['000000.0000'],
+    <String>['000000.00000'],
+    <String>['000000.000000'],
+    <String>['00'],
+    <String>['0000'],
+    <String>['000000'],
+    <String>['000000.1'],
+    <String>['000000.111111'],
+    <String>['01'],
+    <String>['0101'],
+    <String>['010101'],
+    <String>['010101.1'],
+    <String>['010101.111111'],
+    <String>['10'],
+    <String>['1010'],
+    <String>['101010'],
+    <String>['101010.1'],
+    <String>['101010.111111'],
+    <String>['22'],
+    <String>['2222'],
+    <String>['222222'],
+    <String>['222222.1'],
+    <String>['222222.111111'],
+    <String>['23'],
+    <String>['2323'],
+    <String>['232323'],
+    <String>['232323.1'],
+    <String>['232323.111111'],
+    <String>['23'],
+    <String>['2359'],
+    <String>['235959'],
+    <String>['235959.1'],
+    <String>['235959.111111'],
   ];
-  const badTMList = const <List<String>>[
-    const <String>['241318'], // bad hour
-    const <String>['006132'], // bad minute
-    const <String>['006060'], // bad minute and second
-    const <String>['000060'], // bad month and day
-    const <String>['-00101'], // bad character in hour
-    const <String>['a00101'], // bad character in hour
-    const <String>['0a0101'], // bad character in hour
-    const <String>['ad0101'], // bad characters in hour
-    const <String>['19a101'], // bad character in minute
-    const <String>['190b01'], // bad character in minute
-    const <String>['1901a1'], // bad character in second
-    const <String>['19011a'], // bad character in second
+  const badTMList = <List<String>>[
+    <String>['241318'], // bad hour
+    <String>['006132'], // bad minute
+    <String>['006060'], // bad minute and second
+    <String>['000060'], // bad month and day
+    <String>['-00101'], // bad character in hour
+    <String>['a00101'], // bad character in hour
+    <String>['0a0101'], // bad character in hour
+    <String>['ad0101'], // bad characters in hour
+    <String>['19a101'], // bad character in minute
+    <String>['190b01'], // bad character in minute
+    <String>['1901a1'], // bad character in second
+    <String>['19011a'], // bad character in second
   ];
 
   group('TM Test', () {
@@ -97,7 +97,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1);
         log.debug('vList0: $vList0');
-        final e0 = new TMtag(PTag.kModifiedImageTime, vList0);
+        final e0 = TMtag(PTag.kModifiedImageTime, vList0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
 
@@ -107,7 +107,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getTMList(1, 5);
-        final e0 = new TMtag(PTag.kCalibrationTime, vList1);
+        final e0 = TMtag(PTag.kCalibrationTime, vList1);
         expect(e0.hasValidValues, isTrue);
 
         log..debug('e0: $e0, values: ${e0.values}')..debug('ss0: $e0');
@@ -119,13 +119,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList2 = rsg.getTMList(3, 4);
         log.debug('$i: vList2: $vList2');
-        final e0 = new TMtag(PTag.kSelectorTMValue, vList2);
+        final e0 = TMtag(PTag.kSelectorTMValue, vList2);
         expect(e0.hasValidValues, true);
       }
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1, 2, 18);
-        final e0 = new TMtag(PTag.kModifiedImageTime, vList0);
+        final e0 = TMtag(PTag.kModifiedImageTime, vList0);
         log.debug('vList0: $vList0, e0:$e0');
         expect(e0.hasValidValues, true);
       }
@@ -134,13 +134,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getInvalidTMList(3, 4, 2, 18);
         log.debug('invalid TM vList:$vList0');
-        final e0 = new TMtag(PTag.kModifiedImageTime, vList0);
+        final e0 = TMtag(PTag.kModifiedImageTime, vList0);
         log.debug('vList0: $vList0');
          expect(e0, isNull);
       }
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getInvalidTMList(3, 4);
-        final e0 = new TMtag(PTag.kModifiedImageTime, vList0);
+        final e0 = TMtag(PTag.kModifiedImageTime, vList0);
         expect(e0, isNull);
       }
 */
@@ -149,13 +149,13 @@ void main() {
     test('TM hasValidValues good values', () {
       for (var s in goodTMList) {
         global.throwOnError = false;
-        final e0 = new TMtag(PTag.kCalibrationTime, s);
+        final e0 = TMtag(PTag.kCalibrationTime, s);
         expect(e0.hasValidValues, isTrue);
       }
 
       global.throwOnError = false;
       // empty list and null as values
-      final e0 = new TMtag(PTag.kModifiedImageTime, <String>[]);
+      final e0 = TMtag(PTag.kModifiedImageTime, <String>[]);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<int>[]));
     });
@@ -163,32 +163,32 @@ void main() {
     test('TM hasValidValues bad values', () {
       for (var s in badTMList) {
         global.throwOnError = false;
-        final e0 = new TMtag(PTag.kCalibrationTime, s);
+        final e0 = TMtag(PTag.kCalibrationTime, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new TMtag(PTag.kCalibrationTime, s),
+        expect(() => TMtag(PTag.kCalibrationTime, s),
             throwsA(const TypeMatcher<StringError>()));
       }
       global.throwOnError = false;
-      final e1 = new TMtag(PTag.kModifiedImageTime, null);
+      final e1 = TMtag(PTag.kModifiedImageTime, null);
       log.debug('e1: $e1');
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
       global.throwOnError = true;
-      expect(() => new TMtag(PTag.kModifiedImageTime, null),
+      expect(() => TMtag(PTag.kModifiedImageTime, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('TM update random', () {
-      final e0 = new TMtag(PTag.kCalibrationTime, <String>[]);
+      final e0 = TMtag(PTag.kCalibrationTime, <String>[]);
       expect(e0.values, equals(<String>[]));
       final e1 = e0.update(['231318']);
       expect(e1 == e0, false);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(3, 4);
-        final e1 = new TMtag(PTag.kCalibrationTime, vList0);
+        final e1 = TMtag(PTag.kCalibrationTime, vList0);
         final vList1 = rsg.getTMList(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
@@ -196,8 +196,8 @@ void main() {
 
     test('TM update', () {
       for (var s in goodTMList) {
-        final e0 = new TMtag(PTag.kModifiedImageTime, s);
-        final e1 = new TMtag(PTag.kModifiedImageTime, s);
+        final e0 = TMtag(PTag.kModifiedImageTime, s);
+        final e1 = TMtag(PTag.kModifiedImageTime, s);
         final e2 = e0.update(['231318']);
         final e3 = e1.update(['231318']);
         expect(e0.values.first == e2.values.first, false);
@@ -211,19 +211,19 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1);
-        final e1 = new TMtag(PTag.kModifiedImageTime, vList0);
+        final e1 = TMtag(PTag.kModifiedImageTime, vList0);
         expect(e1.noValues.values.isEmpty, true);
       }
     });
 
     test('TM noValues', () {
-      final e0 = new TMtag(PTag.kModifiedImageTime, <String>[]);
+      final e0 = TMtag(PTag.kModifiedImageTime, <String>[]);
       final TMtag tmNoValues = e0.noValues;
       expect(tmNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var s in goodTMList) {
-        final e0 = new TMtag(PTag.kModifiedImageTime, s);
+        final e0 = TMtag(PTag.kModifiedImageTime, s);
         final tmNoValues0 = e0.noValues;
         expect(tmNoValues0.isEmpty, true);
         log.debug('e0:${e0.noValues}');
@@ -233,7 +233,7 @@ void main() {
     test('TM copy random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(3, 4);
-        final e2 = new TMtag(PTag.kSelectorTMValue, vList0);
+        final e2 = TMtag(PTag.kSelectorTMValue, vList0);
         final TMtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -241,12 +241,12 @@ void main() {
     });
 
     test('TM copy Element', () {
-      final e0 = new TMtag(PTag.kModifiedImageTime, <String>[]);
+      final e0 = TMtag(PTag.kModifiedImageTime, <String>[]);
       final TMtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
-      final e3 = new TMtag(PTag.kModifiedImageTime, ['151545']);
+      final e3 = TMtag(PTag.kModifiedImageTime, ['151545']);
       final e4 = e3.copy;
       expect(e3 == e4, true);
       expect(e3.hashCode == e4.hashCode, true);
@@ -256,8 +256,8 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1);
-        final e0 = new TMtag(PTag.kModifiedImageTime, vList0);
-        final e1 = new TMtag(PTag.kModifiedImageTime, vList0);
+        final e0 = TMtag(PTag.kModifiedImageTime, vList0);
+        final e1 = TMtag(PTag.kModifiedImageTime, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -270,15 +270,15 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 1);
-        final e0 = new TMtag(PTag.kModifiedImageTime, vList0);
+        final e0 = TMtag(PTag.kModifiedImageTime, vList0);
         final vList1 = rsg.getTMList(1, 1);
-        final e2 = new TMtag(PTag.kTimeOfLastDetectorCalibration, vList1);
+        final e2 = TMtag(PTag.kTimeOfLastDetectorCalibration, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rsg.getTMList(2, 3);
-        final e3 = new TMtag(PTag.kModifiedImageTime, vList2);
+        final e3 = TMtag(PTag.kModifiedImageTime, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
@@ -287,8 +287,8 @@ void main() {
 
     test('TM hashCode and == good values', () {
       final vList = ['231121'];
-      final ss0 = new TMtag(PTag.kModifiedImageTime, vList);
-      final ss1 = new TMtag(PTag.kModifiedImageTime, vList);
+      final ss0 = TMtag(PTag.kModifiedImageTime, vList);
+      final ss1 = TMtag(PTag.kModifiedImageTime, vList);
       log
         ..debug('vList:$vList, ss0.hash_code:${ss0.hashCode}')
         ..debug('vList:$vList, ss1.hash_code:${ss1.hashCode}');
@@ -298,8 +298,8 @@ void main() {
 
     test('TM hashCode and == bad values', () {
       final vList = ['231121'];
-      final ss0 = new TMtag(PTag.kModifiedImageTime, vList);
-      final ss2 = new TMtag(PTag.kStudyVerifiedTime, vList);
+      final ss0 = TMtag(PTag.kModifiedImageTime, vList);
+      final ss2 = TMtag(PTag.kStudyVerifiedTime, vList);
       log.debug('vList:$vList , ss2.hash_code:${ss2.hashCode}');
       expect(ss0.hashCode == ss2.hashCode, false);
       expect(ss0 == ss2, false);
@@ -356,14 +356,14 @@ void main() {
     test('TM checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getTMList(1, 10);
-        final e0 = new TMtag(PTag.kCalibrationTime, vList1);
+        final e0 = TMtag(PTag.kCalibrationTime, vList1);
         expect(e0.checkLength(e0.values), true);
       }
     });
 
     test('TM checkLength Element', () {
       for (var s in goodTMList) {
-        final e0 = new TMtag(PTag.kModifiedImageTime, s);
+        final e0 = TMtag(PTag.kModifiedImageTime, s);
         expect(e0.checkLength(e0.values), true);
       }
     });
@@ -371,14 +371,14 @@ void main() {
     test('TM checkValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getTMList(1, 10);
-        final e0 = new TMtag(PTag.kCalibrationTime, vList1);
+        final e0 = TMtag(PTag.kCalibrationTime, vList1);
         expect(e0.checkValues(e0.values), true);
       }
     });
 
     test('TM checkValues Element', () {
       for (var s in goodTMList) {
-        final e0 = new TMtag(PTag.kModifiedImageTime, s);
+        final e0 = TMtag(PTag.kModifiedImageTime, s);
         expect(e0.checkValues(e0.values), true);
       }
     });
@@ -386,14 +386,14 @@ void main() {
     test('TM valuesCopy random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getTMList(1, 10);
-        final ss0 = new TMtag(PTag.kCalibrationTime, vList1);
+        final ss0 = TMtag(PTag.kCalibrationTime, vList1);
         expect(vList1, equals(ss0.valuesCopy));
       }
     });
 
     test('TM valuesCopy', () {
       for (var s in goodTMList) {
-        final e0 = new TMtag(PTag.kModifiedImageTime, s);
+        final e0 = TMtag(PTag.kModifiedImageTime, s);
         expect(s, equals(e0.valuesCopy));
       }
     });
@@ -403,18 +403,18 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getTMList(1, 10);
-        final e0 = new TMtag(PTag.kCalibrationTime, vList0);
+        final e0 = TMtag(PTag.kCalibrationTime, vList0);
         final vList1 = rsg.getTMList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getTMList(1, 10);
-      final e1 = new TMtag(PTag.kCalibrationTime, vList1);
+      final e1 = TMtag(PTag.kCalibrationTime, vList1);
       expect(e1.replace(<String>[]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new TMtag(PTag.kCalibrationTime, vList1);
+      final e2 = TMtag(PTag.kCalibrationTime, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -422,21 +422,21 @@ void main() {
     test('TM checkLength', () {
       global.throwOnError = false;
       final vList0 = rsg.getTMList(1, 1);
-      final e0 = new TMtag(PTag.kCalibrationTime, vList0);
+      final e0 = TMtag(PTag.kCalibrationTime, vList0);
       for (var s in goodTMList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new TMtag(PTag.kCalibrationTime, vList0);
+      final e1 = TMtag(PTag.kCalibrationTime, vList0);
       expect(e1.checkLength(<String>[]), true);
 
       final vList1 = ['120450', '053439'];
-      final e2 = new TMtag(PTag.kDateTime, vList1);
+      final e2 = TMtag(PTag.kDateTime, vList1);
       expect(e2, isNull);
     });
 
     test('TM checkValue good values', () {
       final vList0 = rsg.getTMList(1, 1);
-      final e0 = new TMtag(PTag.kCalibrationTime, vList0);
+      final e0 = TMtag(PTag.kCalibrationTime, vList0);
       for (var s in goodTMList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -446,7 +446,7 @@ void main() {
 
     test('TM checkValue bad values', () {
       final vList0 = rsg.getTMList(1, 1);
-      final e0 = new TMtag(PTag.kCalibrationTime, vList0);
+      final e0 = TMtag(PTag.kCalibrationTime, vList0);
       for (var s in badTMList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -492,7 +492,7 @@ void main() {
 
     test('TM append ', () {
       final vList0 = ['094123.88'];
-      final e0 = new TMtag(PTag.kSelectorTMValue, vList0);
+      final e0 = TMtag(PTag.kSelectorTMValue, vList0);
       const vList1 = '103050.55';
       final append0 = e0.append(vList1);
       log.debug('append0: $append0');
@@ -502,7 +502,7 @@ void main() {
     test('TM prepend ', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getTMList(1, i);
-        final e0 = new TMtag(PTag.kSelectorTMValue, vList0);
+        final e0 = TMtag(PTag.kSelectorTMValue, vList0);
         const vList1 = '094123.02158';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -513,7 +513,7 @@ void main() {
     test('TM truncate ', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getTMList(1, i);
-        final e0 = new TMtag(PTag.kSelectorTMValue, vList0);
+        final e0 = TMtag(PTag.kSelectorTMValue, vList0);
         final truncate0 = e0.truncate(4);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -525,7 +525,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getTMList(1, i);
         log.debug('vList0:$vList0');
-        final e0 = new TMtag(PTag.kSelectorTMValue, vList0);
+        final e0 = TMtag(PTag.kSelectorTMValue, vList0);
         const regX = r'\w*[0-9\.]';
         final match0 = e0.match(regX);
         expect(match0, true);
@@ -534,13 +534,13 @@ void main() {
   });
 
   group('TM Element', () {
-    const badTMLengthList = const <List<String>>[
-      const <String>['999999.9999', '999999.99999', '999999.999999'],
-      const <String>['999999.9', '999999.99', '999999.999']
+    const badTMLengthList = <List<String>>[
+      <String>['999999.9999', '999999.99999', '999999.999999'],
+      <String>['999999.9', '999999.99', '999999.999']
     ];
 
     //VM.k1
-    const tmVM1Tags = const <PTag>[
+    const tmVM1Tags = <PTag>[
       PTag.kStudyTime,
       PTag.kSeriesTime,
       PTag.kAcquisitionTime,
@@ -558,13 +558,13 @@ void main() {
     ];
 
     //VM.k1
-    const tmVM1_nTags = const <PTag>[
+    const tmVM1_nTags = <PTag>[
       PTag.kCalibrationTime,
       PTag.kTimeOfLastCalibration,
       PTag.kSelectorTMValue,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

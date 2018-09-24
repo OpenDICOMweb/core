@@ -14,20 +14,20 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/us_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
 
   group('US', () {
-    const uInt16MinMax = const [kUint16Min, kUint16Max];
-    const uInt16Min = const [kUint16Min];
-    const uInt16Max = const [kUint16Max];
-    const uInt16MaxPlus = const [kUint16Max + 1];
-    const uInt16MinMinus = const [kUint16Min - 1];
+    const uInt16MinMax = [kUint16Min, kUint16Max];
+    const uInt16Min = [kUint16Min];
+    const uInt16Max = [kUint16Max];
+    const uInt16MaxPlus = [kUint16Max + 1];
+    const uInt16MinMinus = [kUint16Min - 1];
 
     test('US hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new UStag(PTag.kContrastFrameAveraging, vList0);
+        final e0 = UStag(PTag.kContrastFrameAveraging, vList0);
         expect(e0.hasValidValues, true);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
@@ -38,7 +38,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(2, 2);
-        final e0 = new UStag(PTag.kTopLeftHandCornerOfLocalizerArea, vList0);
+        final e0 = UStag(PTag.kTopLeftHandCornerOfLocalizerArea, vList0);
         expect(e0.hasValidValues, true);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
@@ -52,42 +52,42 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(2, 3);
         log.debug('$i: vList0: $vList0');
-        final e0 = new UStag(PTag.kRepresentativeFrameNumber, vList0);
+        final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
         expect(e0, isNull);
       }
     });
 
     test('US hasValidValues good values', () {
       global.throwOnError = false;
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
-      final e1 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
+      final e1 = UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
       expect(e0.hasValidValues, true);
       expect(e1.hasValidValues, true);
 
-      final e2 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
-      final e3 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
+      final e2 = UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
+      final e3 = UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
       expect(e2.hasValidValues, true);
       expect(e3.hasValidValues, true);
 
       global.throwOnError = false;
-      final e4 = new UStag(PTag.kRepresentativeFrameNumber, []);
+      final e4 = UStag(PTag.kRepresentativeFrameNumber, []);
       expect(e4.hasValidValues, true);
       log.debug('e4:$e4');
       expect(e4.values, equals(<int>[]));
     });
 
     test('US hasValidValues bad values', () {
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, uInt16MaxPlus);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16MaxPlus);
       expect(e0, isNull);
 
-      final e1 = new UStag(PTag.kRepresentativeFrameNumber, uInt16MinMinus);
+      final e1 = UStag(PTag.kRepresentativeFrameNumber, uInt16MinMinus);
       expect(e1, isNull);
 
-      final e2 = new UStag(PTag.kRepresentativeFrameNumber, uInt16MinMax);
+      final e2 = UStag(PTag.kRepresentativeFrameNumber, uInt16MinMax);
       expect(e2, isNull);
 
       global.throwOnError = false;
-      final e3 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
+      final e3 = UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
       final uint32List0 = rng.uint32List(1, 1);
       e3.values = uint32List0;
       expect(e3.hasValidValues, false);
@@ -97,7 +97,7 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
-      final e4 = new UStag(PTag.kRepresentativeFrameNumber, null);
+      final e4 = UStag(PTag.kRepresentativeFrameNumber, null);
       log.debug('e4: $e4');
       expect(e4, <int>[]);
       expect(e4.hasValidValues, true);
@@ -107,18 +107,18 @@ void main() {
     test('US update random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(3, 4);
-        final e1 = new UStag(PTag.kAcquisitionIndex, vList0);
+        final e1 = UStag(PTag.kAcquisitionIndex, vList0);
         final vList1 = rng.uint16List(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('US update', () {
-      final e0 = new UStag(PTag.kSelectorUSValue, []);
+      final e0 = UStag(PTag.kSelectorUSValue, []);
       expect(e0.update([63457, 64357]).values, equals([63457, 64357]));
 
-      final e1 = new UStag(PTag.kFrameNumbersOfInterest, uInt16Min);
-      final e2 = new UStag(PTag.kFrameNumbersOfInterest, uInt16Min);
+      final e1 = UStag(PTag.kFrameNumbersOfInterest, uInt16Min);
+      final e2 = UStag(PTag.kFrameNumbersOfInterest, uInt16Min);
       final e3 = e1.update(uInt16Max);
       final e4 = e2.update(uInt16Max);
       expect(e1.values.first == e4.values.first, false);
@@ -130,19 +130,19 @@ void main() {
     test('US noValues random', () {
       for (var i = 0; i < 10; i++) {
         final uint16List = rng.uint16List(3, 4);
-        final e1 = new UStag(PTag.kFrameNumbersOfInterest, uint16List);
+        final e1 = UStag(PTag.kFrameNumbersOfInterest, uint16List);
         log.debug('e1: ${e1.noValues}');
         expect(e1.noValues.values.isEmpty, true);
       }
     });
 
     test('US noValues', () {
-      final e0 = new UStag(PTag.kFrameNumbersOfInterest, []);
+      final e0 = UStag(PTag.kFrameNumbersOfInterest, []);
       final UStag usNoValues = e0.noValues;
       expect(usNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
-      final e1 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
+      final e1 = UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
       final usNoValues0 = e1.noValues;
       expect(usNoValues0.values.isEmpty, true);
       log.debug('e1:${e1.noValues}');
@@ -151,7 +151,7 @@ void main() {
     test('US copy random', () {
       for (var i = 0; i < 10; i++) {
         final uint16List = rng.uint16List(3, 4);
-        final e2 = new UStag(PTag.kSelectorUSValue, uint16List);
+        final e2 = UStag(PTag.kSelectorUSValue, uint16List);
         final UStag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -159,12 +159,12 @@ void main() {
     });
 
     test('US copy', () {
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, []);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, []);
       final UStag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
-      final e2 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
+      final e2 = UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
       final e3 = e2.copy;
       expect(e2 == e3, true);
       expect(e2.hashCode == e3.hashCode, true);
@@ -174,8 +174,8 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new UStag(PTag.kLargestMonochromePixelValue, vList0);
-        final e1 = new UStag(PTag.kLargestMonochromePixelValue, vList0);
+        final e0 = UStag(PTag.kLargestMonochromePixelValue, vList0);
+        final e1 = UStag(PTag.kLargestMonochromePixelValue, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -189,33 +189,33 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
         final vList1 = rng.uint16List(1, 1);
-        final e0 = new UStag(PTag.kLargestMonochromePixelValue, vList0);
+        final e0 = UStag(PTag.kLargestMonochromePixelValue, vList0);
 
-        final e2 = new UStag(PTag.kRepresentativeFrameNumber, vList1);
+        final e2 = UStag(PTag.kRepresentativeFrameNumber, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rng.uint16List(2, 2);
-        final e3 = new UStag(PTag.kTopLeftHandCornerOfLocalizerArea, vList2);
+        final e3 = UStag(PTag.kTopLeftHandCornerOfLocalizerArea, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rng.uint16List(3, 3);
-        final e4 = new UStag(PTag.kRecommendedDisplayCIELabValue, vList3);
+        final e4 = UStag(PTag.kRecommendedDisplayCIELabValue, vList3);
         log.debug('vList2:$vList2 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
 
         final vList4 = rng.uint16List(4, 4);
-        final e5 = new UStag(PTag.kAcquisitionMatrix, vList4);
+        final e5 = UStag(PTag.kAcquisitionMatrix, vList4);
         log.debug('uint1vList46List2:$vList4 , e5.hash_code:${e5.hashCode}');
         expect(e0.hashCode == e5.hashCode, false);
         expect(e0 == e5, false);
 
         final vList5 = rng.uint16List(2, 3);
-        final e6 = new UStag(PTag.kRepresentativeFrameNumber, vList5);
+        final e6 = UStag(PTag.kRepresentativeFrameNumber, vList5);
         log.debug('vList5:$vList5 , e6.hash_code:${e6.hashCode}');
         expect(e0.hashCode == e6.hashCode, false);
         expect(e0 == e6, false);
@@ -223,8 +223,8 @@ void main() {
     });
 
     test('US hashCode and == good values', () {
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
-      final e1 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
+      final e1 = UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
 
       log
         ..debug('uInt16Min:$uInt16Min, e0.hash_code:${e0.hashCode}')
@@ -234,8 +234,8 @@ void main() {
     });
 
     test('US hashCode and == bad values', () {
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
-      final e2 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
+      final e2 = UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
       log.debug('uInt16Max:$uInt16Max , ob2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
@@ -244,7 +244,7 @@ void main() {
     test('US fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final bytes0 = new Bytes.typedDataView(vList0);
+        final bytes0 = Bytes.typedDataView(vList0);
         final e0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes0));
@@ -252,14 +252,14 @@ void main() {
         expect(e0.values, equals(bytes0.asUint16List()));
 
         // Test Base64
-        final bytes1 = new Bytes.typedDataView(vList0);
+        final bytes1 = Bytes.typedDataView(vList0);
         final e1 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes1);
         expect(e0 == e1, true);
         expect(e1.value, equals(e0.value));
 
         global.throwOnError = false;
         final vList2 = rng.uint16List(2, 2);
-        final bytes2 = new Bytes.typedDataView(vList2);
+        final bytes2 = Bytes.typedDataView(vList2);
         final e2 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes2);
         log.debug('e2: $e2');
         expect(e2, isNull);
@@ -267,9 +267,9 @@ void main() {
     });
 
     test('US fromBytes', () {
-      final vList1 = new Uint16List.fromList(uInt16Min);
+      final vList1 = Uint16List.fromList(uInt16Min);
       //     final uint8List11 = vList1.buffer.asUint8List();
-      final bytes0 = new Bytes.typedDataView(vList1);
+      final bytes0 = Bytes.typedDataView(vList1);
       final e0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes0);
       expect(e0.hasValidValues, true);
       expect(e0.vfBytes, equals(bytes0));
@@ -281,7 +281,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint16List(1, 10);
-        final bytes0 = new Bytes.typedDataView(vList);
+        final bytes0 = Bytes.typedDataView(vList);
         final e0 = UStag.fromBytes(PTag.kSelectorUSValue, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
@@ -291,26 +291,26 @@ void main() {
     test('US checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new UStag(PTag.kRepresentativeFrameNumber, vList0);
+        final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
         expect(e0.checkLength(e0.values), true);
       }
     });
 
     test('US checkLength', () {
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
       expect(e0.checkLength(e0.values), true);
     });
 
     test('US checkValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new UStag(PTag.kRepresentativeFrameNumber, vList0);
+        final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
         expect(e0.checkValues(e0.values), true);
       }
     });
 
     test('US checkValues ', () {
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16Max);
       expect(e0.checkValues(e0.values), true);
     });
 
@@ -318,19 +318,19 @@ void main() {
       //valuesCopy
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new UStag(PTag.kRepresentativeFrameNumber, vList0);
+        final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
 
     test('US valuesCopy', () {
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16Min);
       expect(uInt16Min, equals(e0.valuesCopy));
     });
 
     test('US replace random', () {
       final vList0 = rng.uint16List(1, 1);
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, vList0);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
       final vList1 = rng.uint16List(1, 1);
       expect(e0.replace(vList1), equals(vList0));
     });
@@ -338,7 +338,7 @@ void main() {
     test('US BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final bytes0 = new Bytes.typedDataView(vList0);
+        final bytes0 = Bytes.typedDataView(vList0);
         final base64 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(base64);
         final e0 = UStag.fromBytes(PTag.kRepresentativeFrameNumber, bytes1);
@@ -347,9 +347,9 @@ void main() {
     });
 
     test('US BASE64 ', () {
-      final vList1 = new Int16List.fromList(uInt16Min);
+      final vList1 = Int16List.fromList(uInt16Min);
       final uInt8List1 = vList1.buffer.asUint8List();
-      final bytes0 = new Bytes.typedDataView(uInt8List1);
+      final bytes0 = Bytes.typedDataView(uInt8List1);
 
       final s = bytes0.getBase64();
       final bytes1 = Bytes.fromBase64(s);
@@ -385,7 +385,7 @@ void main() {
 
     test('US checkValue good values', () {
       final vList0 = rng.uint16List(1, 1);
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, vList0);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
 
       expect(e0.checkValue(uInt16Max[0]), true);
       expect(e0.checkValue(uInt16Min[0]), true);
@@ -393,7 +393,7 @@ void main() {
 
     test('US checkValue bad values', () {
       final vList0 = rng.uint16List(1, 1);
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, vList0);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, vList0);
 
       expect(e0.checkValue(uInt16MaxPlus[0]), false);
       expect(e0.checkValue(uInt16MinMinus[0]), false);
@@ -401,7 +401,7 @@ void main() {
 
     test('US view', () {
       final vList0 = rng.uint16List(10, 10);
-      final e0 = new UStag(PTag.kSelectorUSValue, vList0);
+      final e0 = UStag(PTag.kSelectorUSValue, vList0);
       for (var i = 0, j = 0; i < vList0.length; i++, j += 2) {
         final e1 = e0.view(j, vList0.length - i);
         log.debug('e0: ${e0.values}, e1: ${e1.values}, '
@@ -413,11 +413,11 @@ void main() {
     test('US equal', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint16List(1, i);
-        final bytesA = new Bytes.typedDataView(vList);
-        final bytesB = new Bytes.typedDataView(vList);
+        final bytesA = Bytes.typedDataView(vList);
+        final bytesB = Bytes.typedDataView(vList);
 
         final vList0 = rng.uint16List(2, 2);
-        final bytesC = new Bytes.typedDataView(vList0);
+        final bytesC = Bytes.typedDataView(vList0);
 
         final e0 = UStag.fromBytes(PTag.kSelectorUSValue, bytesA);
         final equal0 = e0.equal(bytesA, bytesB);
@@ -431,7 +431,7 @@ void main() {
 
   group('US Element', () {
     //VM.k1
-    const usVM1Tags = const <PTag>[
+    const usVM1Tags = <PTag>[
       PTag.kFileSetConsistencyFlag,
       PTag.kRecordInUseFlag,
       PTag.kDataSetType,
@@ -454,7 +454,7 @@ void main() {
     ];
 
     //VM.k2
-    const usVM2Tags = const <PTag>[
+    const usVM2Tags = <PTag>[
       PTag.kSynchronizationChannel,
       PTag.kLightPathFilterPassBand,
       PTag.kImagePathFilterPassBand,
@@ -466,7 +466,7 @@ void main() {
     ];
 
     //VM.k3
-    const usVM3Tags = const <PTag>[
+    const usVM3Tags = <PTag>[
       PTag.kSubjectRelativePositionInImage,
       PTag.kShutterPresentationColorCIELabValue,
       PTag.kAlphaPaletteColorLookupTableDescriptor,
@@ -487,10 +487,10 @@ void main() {
     ];
 
     //VM.k4
-    const usVM4Tags = const <PTag>[PTag.kAcquisitionMatrix];
+    const usVM4Tags = <PTag>[PTag.kAcquisitionMatrix];
 
     //VM.k1_n
-    const usVM1_nTags = const <PTag>[
+    const usVM1_nTags = <PTag>[
       PTag.kAcquisitionIndex,
       PTag.kPerimeterTable,
       PTag.kPredictorConstants,
@@ -509,7 +509,7 @@ void main() {
       PTag.kSelectorUSValue
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolName,
       PTag.kCTDIvol,
@@ -815,16 +815,16 @@ void main() {
 
     test('US isValidValues good values', () {
       global.throwOnError = false;
-      const uInt16MinMax = const [kUint16Min, kUint16Max];
-      const uInt16MinMaxPle0 = const [kUint16Min, kUint16Max, kUint8Min];
-      const uInt16MinMaxPle1 = const [
+      const uInt16MinMax = [kUint16Min, kUint16Max];
+      const uInt16MinMaxPle0 = [kUint16Min, kUint16Max, kUint8Min];
+      const uInt16MinMaxPle1 = [
         kUint16Min,
         kUint16Max,
         kUint8Min,
         kUint8Max
       ];
-      const uInt16Min = const [kUint16Min];
-      const uInt16Max = const [kUint16Max];
+      const uInt16Min = [kUint16Min];
+      const uInt16Max = [kUint16Max];
 
       //VM.k1
       expect(US.isValidValues(PTag.kWarningReason, uInt16Min), true);
@@ -850,8 +850,8 @@ void main() {
 
     test('US isValidValues bad values', () {
       global.throwOnError = false;
-      const uInt16MaxPlus = const [kUint16Max + 1];
-      const uInt16MinMinus = const [kUint16Min - 1];
+      const uInt16MaxPlus = [kUint16Max + 1];
+      const uInt16MinMinus = [kUint16Min - 1];
 
       //VM.k1
       expect(US.isValidValues(PTag.kWarningReason, uInt16MaxPlus), false);
@@ -881,16 +881,16 @@ void main() {
     test('US isValidValues bad values length', () {
       global.throwOnError = false;
 
-      const uInt16MinMax = const [kUint16Min, kUint16Max];
-      const uInt16MinMaxPle0 = const [kUint16Min, kUint16Max, kUint8Min];
-      const uInt16MinMaxPle1 = const [
+      const uInt16MinMax = [kUint16Min, kUint16Max];
+      const uInt16MinMaxPle0 = [kUint16Min, kUint16Max, kUint8Min];
+      const uInt16MinMaxPle1 = [
         kUint16Min,
         kUint16Max,
         kUint8Min,
         kUint8Max
       ];
-      const uInt16Min = const [kUint16Min];
-      const uInt16Max = const [kUint16Max];
+      const uInt16Min = [kUint16Min];
+      const uInt16Max = [kUint16Max];
 
       //VM.k1
       expect(US.isValidValues(PTag.kWarningReason, uInt16MinMax), false);
@@ -929,7 +929,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(1, i);
-        final vfBytes = new Bytes.typedDataView(vList0);
+        final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
           for (var tag in usVM1Tags) {
@@ -959,7 +959,7 @@ void main() {
         }
       }
       final vList0 = rng.uint16List(1, 1);
-      final vfBytes = new Bytes.typedDataView(vList0);
+      final vfBytes = Bytes.typedDataView(vList0);
 
       final e1 = US.isValidBytesArgs(null, vfBytes);
       expect(e1, false);

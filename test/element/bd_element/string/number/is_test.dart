@@ -10,17 +10,17 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('ISbytes', () {
     //VM.k1
-    const isVM1Tags = const <int>[
+    const isVM1Tags = <int>[
       kStageNumber,
       kNumberOfStages,
       kViewNumber,
@@ -34,7 +34,7 @@ void main() {
     ];
 
     //VM.k2
-    const isVM2Tags = const <int>[
+    const isVM2Tags = <int>[
       kCenterOfCircularShutter,
       kCenterOfCircularCollimator,
       kGridAspectRatio,
@@ -44,19 +44,19 @@ void main() {
     ];
 
     //VM.k2_2n
-    const isVM2_2nTags = const <int>[
+    const isVM2_2nTags = <int>[
       kVerticesOfThePolygonalShutter,
       kVerticesOfThePolygonalCollimator,
       kVerticesOfTheOutlineOfPupil,
     ];
 
     //VM.k3
-    const isVM3Tags = const <int>[
+    const isVM3Tags = <int>[
       kROIDisplayColor,
     ];
 
     //VM.k1_n
-    const isVM1_nTags = const <int>[
+    const isVM1_nTags = <int>[
       kReferencedFrameNumber,
       kTransformOrderOfAxes,
       kEchoNumbers,

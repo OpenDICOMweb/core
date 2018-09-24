@@ -10,19 +10,19 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('DSbytes', () {
     global.throwOnError = false;
 
     //VM.k1
-    const dsVM1Tags = const <int>[
+    const dsVM1Tags = <int>[
       kPatientSize,
       kPatientWeight,
       kOuterDiameter,
@@ -38,7 +38,7 @@ void main() {
     ];
 
     //VM.k2
-    const dsVM2Tags = const <int>[
+    const dsVM2Tags = <int>[
       kImagerPixelSpacing,
       kNominalScannedPixelSpacing,
       kDetectorBinning,
@@ -52,10 +52,10 @@ void main() {
     ];
 
     //VM.k2_2n
-    const dsVM2_2nTags = const <int>[kDVHData];
+    const dsVM2_2nTags = <int>[kDVHData];
 
     //VM.k3
-    const dsVM3Tags = const <int>[
+    const dsVM3Tags = <int>[
       kImageTranslationVector,
       kImagePosition,
       kImagePositionPatient,
@@ -67,16 +67,16 @@ void main() {
     ];
 
     //VM.k3_3n
-    const dsVM3_3nTags = const <int>[kLeafPositionBoundaries, kContourData];
+    const dsVM3_3nTags = <int>[kLeafPositionBoundaries, kContourData];
 
     //VM.k4
-    const dsVM4Tags = const <int>[
+    const dsVM4Tags = <int>[
       kDoubleExposureFieldDeltaTrial,
       kDiaphragmPosition
     ];
 
     //VM.k6
-    const dsVM6Tags = const <int>[
+    const dsVM6Tags = <int>[
       kPRCSToRCSOrientation,
       kImageTransformationMatrix,
       kImageOrientation,
@@ -85,7 +85,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const dsVM1_nTags = const <int>[
+    const dsVM1_nTags = <int>[
       kMaterialThickness,
       kMaterialIsolationDiameter,
       kCoordinateSystemTransformTranslationMatrix,

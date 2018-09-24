@@ -118,7 +118,7 @@ Summary $tag
   }
 
   @override
-  void forEach(void f(Item item)) => items.forEach(f);
+  void forEach(void action(Item element)) => items.forEach(action);
 
   @override
   T fold<T>(T initialValue, T combine(T previous, Item item)) =>

@@ -10,16 +10,16 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/ow_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('OWbytes', () {
-    const owVM1Tags = const <int>[
+    const owVM1Tags = <int>[
       kRedPaletteColorLookupTableData,
       kGreenPaletteColorLookupTableData,
       kBluePaletteColorLookupTableData,
@@ -44,7 +44,7 @@ void main() {
       kVariableCoefficientsSDDN
     ];
 
-    const owVM1_nTags = const <int>[kSelectorOWValue];
+    const owVM1_nTags = <int>[kSelectorOWValue];
 
     test('OWbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {

@@ -19,7 +19,7 @@ class VR {
   /// Returns _true_ if [vrIndex] is equal to [target], which MUST be a valid
   /// _VR Index_. Typically, one of the constants (k_XX_Index) is used.
   static bool isValidIndex(int vrIndex, Issues issues, int target) =>
-      (vrIndex == target) ? true : invalidVRIndex(vrIndex, issues, target);
+      vrIndex == target || invalidVRIndex(vrIndex, issues, target);
 
   /// Returns _true_ if [vrIndex] is equal to [target], which MUST be a
   /// valid _VR Index_. Typically, one of the constants (k_XX_Index) is used,

@@ -15,7 +15,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/typed_data_utils_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
 
   test('Uint32Base.fromList', () {
     for (var i = 1; i <= 10; i++) {
@@ -24,9 +24,9 @@ void main() {
       log.debug('s0 : $s0, uInt32List0 : $uInt32List0');
       expect(s0, equals(uInt32List0));
     }
-    const uInt32Min = const [kUint32Min];
-    const uInt32Max = const [kUint32Max];
-    const uInt64Max = const [kUint64Max];
+    const uInt32Min = [kUint32Min];
+    const uInt32Max = [kUint32Max];
+    const uInt64Max = [kUint64Max];
 
     final s1 = Uint32.fromList(uInt32Min);
     expect(s1, equals(uInt32Min));
@@ -66,7 +66,7 @@ void main() {
   test('Uint32Base.fromBytes', () {
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
-      final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
+      final uInt32ListV1 = Uint32List.fromList(uInt32List0);
       final bytes = uInt32ListV1.buffer.asUint8List();
       final s0 = Uint32.fromUint8List(bytes);
       log.debug('s0 : $s0');
@@ -95,7 +95,7 @@ void main() {
   test('AT.fromBase64', () {
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
-      final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
+      final uInt32ListV1 = Uint32List.fromList(uInt32List0);
       final uInt8List = uInt32ListV1.buffer.asUint8List();
       final s = cvt.base64.encode(uInt8List);
       final s0 = Uint32.fromBase64(s);
@@ -106,7 +106,7 @@ void main() {
   test('AT.toBase64', () {
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
-      final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
+      final uInt32ListV1 = Uint32List.fromList(uInt32List0);
       final bd = uInt32ListV1.buffer.asUint8List();
       final base64 = cvt.base64.encode(bd);
       final s0 = Uint32.toBase64(uInt32List0);

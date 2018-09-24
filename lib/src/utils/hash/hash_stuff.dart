@@ -9,6 +9,8 @@
 
 //TODO: Merge with hash.dart or flush
 
+// ignore_for_file: avoid_js_rounded_ints
+
 /// Hash functions for creating hashCodes.
 
 ///  Thomas Wang

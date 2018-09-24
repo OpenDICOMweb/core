@@ -11,15 +11,15 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'element/hash_time_test', level: Level.info);
   test('String Date', () {
     final vList = <String>['19930822'];
-    final e0 = new DAtag(PTag.kCreationDate, vList);
-    final e1 = new DAtag(PTag.kCreationDate, vList);
-    final e2 = new DAtag(PTag.kStructureSetDate, vList);
+    final e0 = DAtag(PTag.kCreationDate, vList);
+    final e1 = DAtag(PTag.kCreationDate, vList);
+    final e2 = DAtag(PTag.kStructureSetDate, vList);
 
     global.throwOnError = true;
     final sha0 = Sha256.stringList(vList);
@@ -37,9 +37,9 @@ void main() {
 
   test('String DateTime', () {
     final vList = <String>['19530827111300'];
-    final e0 = new DTtag(PTag.kFrameAcquisitionDateTime, vList);
-    final e1 = new DTtag(PTag.kFrameAcquisitionDateTime, vList);
-    final e2 = new DTtag(PTag.kRouteSegmentStartTime, vList);
+    final e0 = DTtag(PTag.kFrameAcquisitionDateTime, vList);
+    final e1 = DTtag(PTag.kFrameAcquisitionDateTime, vList);
+    final e2 = DTtag(PTag.kRouteSegmentStartTime, vList);
 
     global.throwOnError = true;
     final sha0 = Sha256.stringList(vList);
@@ -55,9 +55,9 @@ void main() {
 
   test('String Time', () {
     final vList = rsg.getTMList(1, 1);
-    final e0 = new TMtag(PTag.kModifiedImageTime, vList);
-    final e1 = new TMtag(PTag.kModifiedImageTime, vList);
-    final e2 = new TMtag(PTag.kCreationTime, vList);
+    final e0 = TMtag(PTag.kModifiedImageTime, vList);
+    final e1 = TMtag(PTag.kModifiedImageTime, vList);
+    final e2 = TMtag(PTag.kCreationTime, vList);
 
     global.throwOnError = true;
     final sha0 = Sha256.stringList(vList);

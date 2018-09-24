@@ -18,8 +18,6 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/vr.dart';
 
-/* // ignore_for_file: unnecessary_getters_setters */
-
 // Meaning of method names:
 //    lookup:
 //    add:
@@ -61,7 +59,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
     tryAdd(e);
   }
 
-  // TODO: should this be checking that parents are equal? It doesn't
+  // TODO(Jim): should this be checking that parents are equal? It doesn't
   /// Returns true if [other] has the same [Element]s as _this_.
   @override
   bool operator ==(Object other) {
@@ -82,7 +80,7 @@ abstract class Dataset extends Object with ListMixin<Element>, DatasetMixin {
   /// Removes the [Element] [e] from _this_ and returns it. If [e] is not
   /// present returns _null_.
   @override
-  bool remove(Object e) => (e is Element) ? elements.remove(e) : false;
+  bool remove(Object e) => ((e is Element) && elements.remove(e)) || false;
 
   // **** Section Start: Element related Getters and Methods
 

@@ -20,6 +20,7 @@ class AlignmentError extends Error {
       this.bd, this.offsetInBytes, this.lengthInBytes, this.sizeInBytes);
 }
 
+// ignore: prefer_void_to_null
 Null alignmentError(
     ByteData bd, int offsetInBytes, int lengthInBytes, int sizeInBytes) {
   if (throwOnError)

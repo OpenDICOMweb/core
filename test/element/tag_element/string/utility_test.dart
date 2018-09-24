@@ -23,38 +23,38 @@ bool testElementCopy(Element e0) {
 bool testElementUpdate(Element e0, List values) {
   final e2 = e0.update(values);
   log.debug('e0: ${e0.info}\n     e2: ${e2.info}');
-  return (e2.values == values);
+  return e2.values == values;
 }
 
 void main() {
   Server.initialize(name: 'String/utility.dart', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
 
   test('bytesToAttributeTags random', () {
     for (var i = 0; i < 10; i++) {
       final uInt64List0 = rng.uint64List(1, 1);
-      final uInt64ListV0 = new Uint64List.fromList(uInt64List0);
+      final uInt64ListV0 = Uint64List.fromList(uInt64List0);
       final uInt8ListV0 = uInt64ListV0.buffer.asUint8List();
       final bta0 = bytesToAttributeTags(uInt8ListV0);
       log.debug('bta0: $bta0');
       expect(bta0, isNotNull);
 
       final uInt32List0 = rng.uint32List(1, 1);
-      final uInt32ListV0 = new Uint32List.fromList(uInt32List0);
+      final uInt32ListV0 = Uint32List.fromList(uInt32List0);
       final uInt8ListV1 = uInt32ListV0.buffer.asUint8List();
       final bta1 = bytesToAttributeTags(uInt8ListV1);
       log.debug('bta1: $bta1');
       expect(bta1, isNotNull);
 
       final uInt16List0 = rng.uint16List(1, 1);
-      final uInt16ListV0 = new Uint32List.fromList(uInt16List0);
+      final uInt16ListV0 = Uint32List.fromList(uInt16List0);
       final uInt8ListV2 = uInt16ListV0.buffer.asUint8List();
       final bta2 = bytesToAttributeTags(uInt8ListV2);
       log.debug('bta2: $bta2');
       expect(bta2, isNotNull);
 
       final uInt8List0 = rng.uint8List(1, 1);
-      final uInt8ListV3 = new Uint8List.fromList(uInt8List0);
+      final uInt8ListV3 = Uint8List.fromList(uInt8List0);
       final bta3 = bytesToAttributeTags(uInt8ListV3);
       log.debug('bta3: $bta3');
       expect(bta3, isNull);
@@ -62,28 +62,28 @@ void main() {
   });
 
   test('bytesToAttributeTags', () {
-    const uInt64Max = const [kUint64Max];
-    final uInt64ListV0 = new Uint64List.fromList(uInt64Max);
+    const uInt64Max = [kUint64Max];
+    final uInt64ListV0 = Uint64List.fromList(uInt64Max);
     final uInt8ListV0 = uInt64ListV0.buffer.asUint8List();
     final bta0 = bytesToAttributeTags(uInt8ListV0);
     log.debug('bta0: $bta0');
     expect(bta0, isNotNull);
 
-    const uInt32Max = const [kUint32Max];
-    final uInt32ListV1 = new Uint32List.fromList(uInt32Max);
+    const uInt32Max = [kUint32Max];
+    final uInt32ListV1 = Uint32List.fromList(uInt32Max);
     final uInt8ListV11 = uInt32ListV1.buffer.asUint8List();
     final bta1 = bytesToAttributeTags(uInt8ListV11);
     log.debug('bta1: $bta1');
     expect(bta1, isNotNull);
 
-    const uInt16Max = const [kUint16Max];
-    final uInt16ListV0 = new Uint32List.fromList(uInt16Max);
+    const uInt16Max = [kUint16Max];
+    final uInt16ListV0 = Uint32List.fromList(uInt16Max);
     final uInt8ListV2 = uInt16ListV0.buffer.asUint8List();
     final bta2 = bytesToAttributeTags(uInt8ListV2);
     log.debug('bta2: $bta2');
     expect(bta2, isNotNull);
 
-    final uIint8ListV2 = new Uint8List.fromList([kUint8Max]);
+    final uIint8ListV2 = Uint8List.fromList([kUint8Max]);
     final bta3 = bytesToAttributeTags(uIint8ListV2);
     log.debug('bta3: $bta3');
     expect(bta3, isNull);
@@ -92,10 +92,10 @@ void main() {
   test('Uint8.equal random', () {
     for (var i = 0; i < 10; i++) {
       final uInt64List0 = rng.uint64List(1, 1);
-      final uInt64ListV0 = new Uint64List.fromList(uInt64List0);
+      final uInt64ListV0 = Uint64List.fromList(uInt64List0);
       final uInt8ListV0 = uInt64ListV0.buffer.asUint8List();
 
-      final uInt64ListV1 = new Uint64List.fromList(uInt64List0);
+      final uInt64ListV1 = Uint64List.fromList(uInt64List0);
       final uInt8ListV1 = uInt64ListV1.buffer.asUint8List();
 
       final be0 = Uint8.equal(uInt8ListV0, uInt8ListV1);
@@ -103,10 +103,10 @@ void main() {
       expect(be0, true);
 
       final uInt32List0 = rng.uint32List(1, 1);
-      final uInt32ListV0 = new Uint32List.fromList(uInt32List0);
+      final uInt32ListV0 = Uint32List.fromList(uInt32List0);
       final uInt8ListV2 = uInt32ListV0.buffer.asUint8List();
 
-      final uInt32ListV1 = new Uint32List.fromList(uInt32List0);
+      final uInt32ListV1 = Uint32List.fromList(uInt32List0);
       final uInt8ListV3 = uInt32ListV1.buffer.asUint8List();
 
       final be1 = Uint8.equal(uInt8ListV2, uInt8ListV3);
@@ -122,10 +122,10 @@ void main() {
       expect(be3, false);
 
       final uInt16List0 = rng.uint16List(1, 1);
-      final uInt16ListV0 = new Uint16List.fromList(uInt16List0);
+      final uInt16ListV0 = Uint16List.fromList(uInt16List0);
       final uInt8ListV4 = uInt16ListV0.buffer.asUint8List();
 
-      final uInt16ListV1 = new Uint16List.fromList(uInt32List0);
+      final uInt16ListV1 = Uint16List.fromList(uInt32List0);
       final uInt8ListV5 = uInt16ListV1.buffer.asUint8List();
 
       final be4 = Uint8.equal(uInt8ListV4, uInt8ListV5);
@@ -145,7 +145,7 @@ void main() {
       expect(be7, false);
 
       final uInt8List0 = rng.uint8List(1, 1);
-      final uInt8ListV6 = new Uint8List.fromList(uInt8List0);
+      final uInt8ListV6 = Uint8List.fromList(uInt8List0);
 
       final be8 = Uint8.equal(uInt8ListV0, uInt8ListV6);
       log.debug('be8: $be8');
@@ -154,13 +154,13 @@ void main() {
   });
 
   test('Uint8.equal', () {
-    final uInt8List0 = new Uint8List.fromList([10, 20]);
+    final uInt8List0 = Uint8List.fromList([10, 20]);
     final uInt8ListV0 = uInt8List0.buffer.asUint8List();
 
-    final uInt8List1 = new Uint8List.fromList([10, 20]);
+    final uInt8List1 = Uint8List.fromList([10, 20]);
     final uInt8ListV1 = uInt8List1.buffer.asUint8List();
 
-    final uInt8List2 = new Uint8List.fromList([10, 20, 89]);
+    final uInt8List2 = Uint8List.fromList([10, 20, 89]);
     final uInt8ListV2 = uInt8List2.buffer.asUint8List();
 
     final be0 = Uint8.equal(uInt8ListV0, uInt8ListV1);
@@ -173,7 +173,7 @@ void main() {
   });
 
   test('parse_integer', () {
-    const goodIntegerStrings = const <String>[
+    const goodIntegerStrings = <String>[
       '+8',
       ' +8',
       '+8 ',
@@ -196,7 +196,7 @@ void main() {
   });
 
   test('parse_decimal', () {
-    const goodDecimalStrings = const <String>[
+    const goodDecimalStrings = <String>[
       '567',
       ' 567',
       '567 ',

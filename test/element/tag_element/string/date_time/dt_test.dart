@@ -14,7 +14,7 @@ import 'package:test_tools/tools.dart';
 
 import '../utility_test.dart' as utility;
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   // minYear and maxYear can be passed as an argument
@@ -43,34 +43,34 @@ void main() {
     <String>['20240229105630'] // leap year
   ];
 
-  const badDTList = const <List<String>>[
-    const <String>['19501318'],
-    const <String>['19501318105630'], //bad months
-    const <String>['19501032105630'], // bad day
-    const <String>['00000000000000'], // bad month and day
-    const <String>['19501032105660'], // bad day and second
-    const <String>['00000032240212'], // bad month and day and hour
-    const <String>['20161229006100'], // bad minute
-    const <String>['-9700101226a22'], // bad character in year minute
-    const <String>['1b7001012a1045'], // bad character in year and hour
-    const <String>['19c001012210a2'], // bad character in year and sec
-    const <String>['197d0101105630'], // bad character in year
-    const <String>['1970a101105630'], // bad character in month
-    const <String>['19700b01105630'], // bad character in month
-    const <String>['197001a1105630'], // bad character in day
-    const <String>['1970011a105630'], // bad character in day
-    const <String>['20120230105630'], // bad day in leap year
-    const <String>['20160231105630'], // bad day in leap year
-    const <String>['20130229105630'], // bad day in year
-    const <String>['20230229105630'], // bad day in year
-    const <String>['20210229105630'], // bad day in year
-    const <String>['20170223122334.111111+0'], // bad timezone
-    const <String>['20170223122334.111111+01'], // bad timezone
-    const <String>['20170223122334.111111+013'], // bad timezone
-    const <String>['20170223122334.111111+1545'], // bad timezone
-    const <String>['20170223122334.111111-1015'], // bad timezone
-    const <String>['20170223122334.111111+0960'], // bad timezone
-    const <String>[
+  const badDTList = <List<String>>[
+    <String>['19501318'],
+    <String>['19501318105630'], //bad months
+    <String>['19501032105630'], // bad day
+    <String>['00000000000000'], // bad month and day
+    <String>['19501032105660'], // bad day and second
+    <String>['00000032240212'], // bad month and day and hour
+    <String>['20161229006100'], // bad minute
+    <String>['-9700101226a22'], // bad character in year minute
+    <String>['1b7001012a1045'], // bad character in year and hour
+    <String>['19c001012210a2'], // bad character in year and sec
+    <String>['197d0101105630'], // bad character in year
+    <String>['1970a101105630'], // bad character in month
+    <String>['19700b01105630'], // bad character in month
+    <String>['197001a1105630'], // bad character in day
+    <String>['1970011a105630'], // bad character in day
+    <String>['20120230105630'], // bad day in leap year
+    <String>['20160231105630'], // bad day in leap year
+    <String>['20130229105630'], // bad day in year
+    <String>['20230229105630'], // bad day in year
+    <String>['20210229105630'], // bad day in year
+    <String>['20170223122334.111111+0'], // bad timezone
+    <String>['20170223122334.111111+01'], // bad timezone
+    <String>['20170223122334.111111+013'], // bad timezone
+    <String>['20170223122334.111111+1545'], // bad timezone
+    <String>['20170223122334.111111-1015'], // bad timezone
+    <String>['20170223122334.111111+0960'], // bad timezone
+    <String>[
       '20170223122334.111111*0945'
     ], // bad timezone: special character
   ];
@@ -133,13 +133,13 @@ void main() {
     test('DT hasValidValues good values', () {
       for (var s in goodDTList) {
         global.throwOnError = false;
-        final e0 = new DTtag(PTag.kFrameAcquisitionDateTime, s);
+        final e0 = DTtag(PTag.kFrameAcquisitionDateTime, s);
         expect(e0.hasValidValues, true);
       }
 
       // empty list and null as values
       global.throwOnError = false;
-      final e0 = new DTtag(PTag.kDateTime, <String>[]);
+      final e0 = DTtag(PTag.kDateTime, <String>[]);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -147,20 +147,20 @@ void main() {
     test('DT hasValidValues bad values', () {
       for (var s in badDTList) {
         global.throwOnError = false;
-        final e1 = new DTtag(PTag.kFrameAcquisitionDateTime, s);
+        final e1 = DTtag(PTag.kFrameAcquisitionDateTime, s);
         expect(e1, isNull);
 
         global.throwOnError = true;
-        expect(() => new DTtag(PTag.kFrameAcquisitionDateTime, s),
+        expect(() => DTtag(PTag.kFrameAcquisitionDateTime, s),
             throwsA(const TypeMatcher<StringError>()));
 
         global.throwOnError = false;
-        final e2 = new DTtag(PTag.kDateTime, null);
+        final e2 = DTtag(PTag.kDateTime, null);
         expect(e2.isEmpty, true);
         expect(e2.values.isEmpty, true);
 
         global.throwOnError = true;
-        expect(() => new DTtag(PTag.kDateTime, null),
+        expect(() => DTtag(PTag.kDateTime, null),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
@@ -170,7 +170,7 @@ void main() {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
         log.debug('vList0: $vList0');
-        final e0 = new DTtag(PTag.kDateTime, vList0);
+        final e0 = DTtag(PTag.kDateTime, vList0);
         expect(e0.hasValidValues, true);
       }
     });
@@ -180,11 +180,11 @@ void main() {
         global.throwOnError = false;
         final vList0 = rsg.getDTList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e1 = new DTtag(PTag.kDateTime, vList0);
+        final e1 = DTtag(PTag.kDateTime, vList0);
         expect(e1, isNull);
 
         global.throwOnError = true;
-        expect(() => new DTtag(PTag.kDateTime, vList0),
+        expect(() => DTtag(PTag.kDateTime, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
         expect(e1, isNull);
       }
@@ -192,11 +192,11 @@ void main() {
 
     test('DT update', () {
       global.throwOnError = false;
-      final e0 = new DTtag(PTag.kDateTime, <String>[]);
+      final e0 = DTtag(PTag.kDateTime, <String>[]);
       expect(e0.update(['19991025235959']).values, equals(['19991025235959']));
 
-      final e1 = new DTtag(PTag.kDateTime, ['19991025235959']);
-      final e2 = new DTtag(PTag.kDateTime, ['19991025235959']);
+      final e1 = DTtag(PTag.kDateTime, ['19991025235959']);
+      final e2 = DTtag(PTag.kDateTime, ['19991025235959']);
       final e3 = e1.update(['21231025135959']);
       final e4 = e2.update(['21231025135959']);
       expect(e1 == e4, false);
@@ -204,7 +204,7 @@ void main() {
       expect(e3 == e4, true);
 
       for (var s in goodDTList) {
-        final e5 = new DTtag(PTag.kDateTime, s);
+        final e5 = DTtag(PTag.kDateTime, s);
         final e6 = e5.update(['19901125235959']);
         final e7 = e5.update(['19901125235959']);
         expect(e5.values.first == e6.values.first, false);
@@ -217,34 +217,34 @@ void main() {
     test('DT update random', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        final e0 = new DTtag(PTag.kDateTime, vList0);
+        final e0 = DTtag(PTag.kDateTime, vList0);
         final vList1 = rsg.getDTList(1, 1);
         expect(e0.update(vList1).values, equals(vList1));
       }
     });
 
     test('DT noValues', () {
-      final e1 = new DTtag(PTag.kDateTime, ['19991025235959']);
+      final e1 = DTtag(PTag.kDateTime, ['19991025235959']);
       final dtNoValues1 = e1.noValues;
       expect(dtNoValues1.values.isEmpty, true);
       log.debug('dtNoValues1:$dtNoValues1');
 
       for (var s in goodDTList) {
-        final e1 = new DTtag(PTag.kDateTime, s);
+        final e1 = DTtag(PTag.kDateTime, s);
         final dtNoValues1 = e1.noValues;
         expect(dtNoValues1.values.isEmpty, true);
       }
     });
 
     test('DT noValues random ', () {
-      final e0 = new DTtag(PTag.kDateTime, <String>[]);
+      final e0 = DTtag(PTag.kDateTime, <String>[]);
       final DTtag dtNoValues0 = e0.noValues;
       expect(dtNoValues0.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        final e0 = new DTtag(PTag.kDateTime, vList0);
+        final e0 = DTtag(PTag.kDateTime, vList0);
         log.debug('e0: $e0');
         expect(dtNoValues0.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -252,18 +252,18 @@ void main() {
     });
 
     test('DT copy', () {
-      final e0 = new DTtag(PTag.kDateTime, <String>[]);
+      final e0 = DTtag(PTag.kDateTime, <String>[]);
       final DTtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
-      final e2 = new DTtag(PTag.kDateTime, ['19991025235959']);
+      final e2 = DTtag(PTag.kDateTime, ['19991025235959']);
       final e3 = e2.copy;
       expect(e2 == e3, true);
       expect(e2.hashCode == e3.hashCode, true);
 
       for (var s in goodDTList) {
-        final e4 = new DTtag(PTag.kDateTime, s);
+        final e4 = DTtag(PTag.kDateTime, s);
         final e5 = e4.copy;
         expect(e4 == e5, true);
         expect(e4.hashCode == e5.hashCode, true);
@@ -274,7 +274,7 @@ void main() {
     test('DT copy random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        final e2 = new DTtag(PTag.kDateTime, vList0);
+        final e2 = DTtag(PTag.kDateTime, vList0);
         final DTtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -284,8 +284,8 @@ void main() {
     test('DT hashCode and == good values', () {
       global.throwOnError = false;
       final vList0 = ['19991025235959'];
-      final e0 = new DTtag(PTag.kDateTime, vList0);
-      final e1 = new DTtag(PTag.kDateTime, vList0);
+      final e0 = DTtag(PTag.kDateTime, vList0);
+      final e1 = DTtag(PTag.kDateTime, vList0);
       log
         ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
         ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -296,8 +296,8 @@ void main() {
     test('DT hashCode and == bad values', () {
       global.throwOnError = false;
       final vList0 = ['19991025235959'];
-      final e0 = new DTtag(PTag.kDateTime, vList0);
-      final e2 = new DTtag(PTag.kTemplateVersion, vList0);
+      final e0 = DTtag(PTag.kDateTime, vList0);
+      final e2 = DTtag(PTag.kTemplateVersion, vList0);
       log.debug('vList0:$vList0 , da2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
@@ -309,8 +309,8 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         stringList0 = rsg.getDTList(1, 1);
-        final e0 = new DTtag(PTag.kDateTime, stringList0);
-        final e1 = new DTtag(PTag.kDateTime, stringList0);
+        final e0 = DTtag(PTag.kDateTime, stringList0);
+        final e1 = DTtag(PTag.kDateTime, stringList0);
         log
           ..debug('stringList0:$stringList0, e0.hash_code:${e0.hashCode}')
           ..debug('stringList0:$stringList0, e1.hash_code:${e1.hashCode}');
@@ -326,9 +326,9 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         stringList0 = rsg.getDTList(1, 1);
-        final e0 = new DTtag(PTag.kDateTime, stringList0);
+        final e0 = DTtag(PTag.kDateTime, stringList0);
         stringList1 = rsg.getDTList(2, 3);
-        final e3 = new DTtag(PTag.kSelectorDTValue, stringList1);
+        final e3 = DTtag(PTag.kSelectorDTValue, stringList1);
         log.debug('stringList1:$stringList1 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
@@ -337,20 +337,20 @@ void main() {
 
     test('DT valuesCopy ranodm', () {
       for (var s in goodDTList) {
-        final e0 = new DTtag(PTag.kDateTime, s);
+        final e0 = DTtag(PTag.kDateTime, s);
         expect(s, equals(e0.valuesCopy));
       }
 
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        final e1 = new DTtag(PTag.kDateTime, vList0);
+        final e1 = DTtag(PTag.kDateTime, vList0);
         expect(vList0, equals(e1.valuesCopy));
       }
     });
 
     test('DT isValidLength', () {
       for (var s in goodDTList) {
-        final e0 = new DTtag(PTag.kDateTime, s);
+        final e0 = DTtag(PTag.kDateTime, s);
         expect(e0.checkLength(e0.values), true);
       }
     });
@@ -358,21 +358,21 @@ void main() {
     test('DT isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        final e0 = new DTtag(PTag.kDateTime, vList0);
+        final e0 = DTtag(PTag.kDateTime, vList0);
         expect(e0.checkLength(e0.values), true);
       }
     });
 
     test('DT isValidValues ', () {
       for (var s in goodDTList) {
-        final e0 = new DTtag(PTag.kDateTime, s);
+        final e0 = DTtag(PTag.kDateTime, s);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
 
       global.throwOnError = true;
       for (var s in badDTList) {
-        expect(() => new DTtag(PTag.kDateTime, s),
+        expect(() => DTtag(PTag.kDateTime, s),
             throwsA(const TypeMatcher<StringError>()));
       }
     });
@@ -380,7 +380,7 @@ void main() {
     test('DT isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        final e0 = new DTtag(PTag.kDateTime, vList0);
+        final e0 = DTtag(PTag.kDateTime, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -390,16 +390,16 @@ void main() {
       global.throwOnError = false;
 
       final vList0 = ['19991025235959'];
-      final e0 = new DTtag(PTag.kDateTime, vList0);
+      final e0 = DTtag(PTag.kDateTime, vList0);
       final vList1 = ['19001025235959'];
       expect(e0.replace(vList1), equals(vList0));
       expect(e0.values, equals(vList1));
 
-      final e1 = new DTtag(PTag.kDateTime, vList1);
+      final e1 = DTtag(PTag.kDateTime, vList1);
       expect(e1.replace(<String>[]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new DTtag(PTag.kDateTime, vList1);
+      final e2 = DTtag(PTag.kDateTime, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values == StringList.kEmptyList, true);
     });
@@ -408,49 +408,49 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1);
-        final e0 = new DTtag(PTag.kDateTime, vList0);
+        final e0 = DTtag(PTag.kDateTime, vList0);
         final vList1 = rsg.getDTList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getDTList(1, 1);
-      final e1 = new DTtag(PTag.kDateTime, vList1);
+      final e1 = DTtag(PTag.kDateTime, vList1);
       expect(e1.replace(<String>[]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new DTtag(PTag.kDateTime, null);
+      final e2 = DTtag(PTag.kDateTime, null);
       expect(e2.isEmpty, true);
       expect(e2.values.isEmpty, true);
     });
 
     test('DT checkLength good values', () {
-      final e0 = new DTtag(PTag.kDateTime, ['19500718105630']);
+      final e0 = DTtag(PTag.kDateTime, ['19500718105630']);
       for (var s in goodDTList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new DTtag(PTag.kDateTime, ['19500718105630']);
+      final e1 = DTtag(PTag.kDateTime, ['19500718105630']);
       expect(e1.checkLength(<String>[]), true);
     });
 
     test('DT checkLength bad values', () {
       final vList0 = ['19500718105630', '20181206235959'];
-      final e2 = new DTtag(PTag.kDateTime, ['19500718105630']);
+      final e2 = DTtag(PTag.kDateTime, ['19500718105630']);
       expect(e2.checkLength(vList0), false);
     });
 
     test('DT checkLength random', () {
       final vList0 = rsg.getDTList(1, 1);
-      final e0 = new DTtag(PTag.kDateTime, vList0);
+      final e0 = DTtag(PTag.kDateTime, vList0);
       for (var s in goodDTList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new DTtag(PTag.kDateTime, vList0);
+      final e1 = DTtag(PTag.kDateTime, vList0);
       expect(e1.checkLength(<String>[]), true);
     });
 
     test('DT checkValue good values', () {
-      final e0 = new DTtag(PTag.kDateTime, ['19500718105630']);
+      final e0 = DTtag(PTag.kDateTime, ['19500718105630']);
       for (var s in goodDTList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -459,7 +459,7 @@ void main() {
     });
 
     test('DT checkValue bad values', () {
-      final e0 = new DTtag(PTag.kDateTime, ['19500718105630']);
+      final e0 = DTtag(PTag.kDateTime, ['19500718105630']);
       for (var s in badDTList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -506,7 +506,7 @@ void main() {
     test('DT append ', () {
       global.throwOnError = false;
       final vList0 = ['18561103072611.651386+0000'];
-      final e0 = new DTtag(PTag.kSelectorDTValue, vList0);
+      final e0 = DTtag(PTag.kSelectorDTValue, vList0);
       const vList1 = '20181212101545';
       final append0 = e0.append(vList1);
       log.debug('append0: $append0');
@@ -516,7 +516,7 @@ void main() {
     test('DT prepend ', () {
       global.throwOnError = false;
       final vList0 = ['20181212101545'];
-      final e0 = new DTtag(PTag.kSelectorDTValue, vList0);
+      final e0 = DTtag(PTag.kSelectorDTValue, vList0);
       const vList1 = '18561103072611.651386+0000';
       final prepend0 = e0.prepend(vList1);
       log.debug('prepend0: $prepend0');
@@ -527,7 +527,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDTList(1, i);
-        final e0 = new DTtag(PTag.kSelectorDTValue, vList0);
+        final e0 = DTtag(PTag.kSelectorDTValue, vList0);
         final truncate0 = e0.truncate(4);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -539,7 +539,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDTList(1, i);
         log.debug('vList0:$vList0');
-        final e0 = new DTtag(PTag.kSelectorDTValue, vList0);
+        final e0 = DTtag(PTag.kSelectorDTValue, vList0);
         const regX = r'\w*[0-9\.\+]';
         final match0 = e0.match(regX);
         expect(match0, true);
@@ -548,16 +548,16 @@ void main() {
   });
 
   group('DT Element', () {
-    const badDTLengthList = const <List<String>>[
-      const <String>[
+    const badDTLengthList = <List<String>>[
+      <String>[
         '20170223122334.111111+11000000',
         '1970011a105630.111111+110000'
       ],
-      const <String>['201', '1'],
+      <String>['201', '1'],
     ];
 
     //VM.k1
-    const dtVM1Tags = const <PTag>[
+    const dtVM1Tags = <PTag>[
       PTag.kInstanceCoercionDateTime,
       PTag.kContextGroupLocalVersion,
       PTag.kRadiopharmaceuticalStartDateTime,
@@ -573,9 +573,9 @@ void main() {
     ];
 
     //VM.k1_n
-    const dtVM1_nTags = const <PTag>[PTag.kSelectorDTValue];
+    const dtVM1_nTags = <PTag>[PTag.kSelectorDTValue];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

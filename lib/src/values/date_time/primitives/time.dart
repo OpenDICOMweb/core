@@ -69,7 +69,7 @@ int microsecondFromMicrosecond(int us) =>
 int fractionFromMicrosecond(int us) =>
     _inRange(us, 0, kMicrosecondsPerDay) ? _fractionFromTimeInUS(us) : null;
 
-typedef Object TimeToObject(int h, int m, int s, int ms, int us,
+typedef TimeToObject = Object Function(int h, int m, int s, int ms, int us,
     {bool asDicom});
 
 Time microsecondToTime(int timeInUS) {

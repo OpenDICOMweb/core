@@ -13,6 +13,7 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr/vr_base.dart';
 
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: prefer_void_to_null
 
 /// For use with [Tag] related [Error]s.
 class InvalidTagError extends Error {

@@ -12,46 +12,46 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'string/special_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodAEList = const <List<String>>[
-    const <String>['d9E8tO'],
-    const <String>['mrZeo|^P> -6{t, '],
-    const <String>['mrZeo|^P> -6{t,'],
-    const <String>['1wd7'],
-    const <String>['mrZeo|^P> -6{t,']
+  const goodAEList = <List<String>>[
+    <String>['d9E8tO'],
+    <String>['mrZeo|^P> -6{t, '],
+    <String>['mrZeo|^P> -6{t,'],
+    <String>['1wd7'],
+    <String>['mrZeo|^P> -6{t,']
   ];
 
-  const badAEList = const <List<String>>[
-    const <String>['\b'], //	Backspace
-    const <String>['\t '], //horizontal tab (HT)
-    const <String>['\n'], //linefeed (LF)
-    const <String>['\f '], // form feed (FF)
-    const <String>['\r '], //carriage return (CR)
-    const <String>['\v'], //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?']
+  const badAEList = <List<String>>[
+    <String>['\b'], //	Backspace
+    <String>['\t '], //horizontal tab (HT)
+    <String>['\n'], //linefeed (LF)
+    <String>['\f '], // form feed (FF)
+    <String>['\r '], //carriage return (CR)
+    <String>['\v'], //vertical tab
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?']
   ];
 
   group('AEtag', () {
     test('AE hasValidValues good values', () {
       for (var s in goodAEList) {
         global.throwOnError = false;
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, s);
+        final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, s);
         expect(e1.hasValidValues, true);
       }
 
       global.throwOnError = false;
-      final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, []);
+      final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, []);
       expect(e1.hasValidValues, true);
       expect(e1.values, equals(<String>[]));
     });
@@ -59,16 +59,16 @@ void main() {
     test('AE hasValidValues bad values', () {
       for (var s in badAEList) {
         global.throwOnError = false;
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, s);
+        final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, s);
         expect(e1, isNull);
 
         global.throwOnError = true;
-        expect(() => new AEtag(PTag.kScheduledStudyLocationAETitle, s),
+        expect(() => AEtag(PTag.kScheduledStudyLocationAETitle, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e2 = new AEtag(PTag.kScheduledStudyLocationAETitle, null);
+      final e2 = AEtag(PTag.kScheduledStudyLocationAETitle, null);
       log.debug('e2: $e2');
       expect(e2.hasValidValues, true);
       expect(e2.values == StringList.kEmptyList, true);
@@ -77,7 +77,7 @@ void main() {
     test('AE hasValidValues random good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 10);
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
+        final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
         log.debug('e1:${e1.info}');
         expect(e1.hasValidValues, true);
 
@@ -87,7 +87,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final e2 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+        final e2 = AEtag(PTag.kPerformedStationAETitle, vList0);
         expect(e2.hasValidValues, true);
 
         log..debug('e2: $e2, values: ${e2.values}')..debug('e2: ${e2.info}');
@@ -100,32 +100,32 @@ void main() {
         global.throwOnError = false;
         final vList0 = rsg.getAEList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final ae2 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+        final ae2 = AEtag(PTag.kPerformedStationAETitle, vList0);
         expect(ae2, isNull);
       }
     });
 
     test('AE update random', () {
-      final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, []);
+      final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, []);
       expect(e1.update(['325435', '4545']).values, equals(['325435', '4545']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(3, 4);
-        final e2 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
+        final e2 = AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
         final vList1 = rsg.getAEList(3, 4);
         expect(e2.update(vList1).values, equals(vList1));
       }
     });
 
     test('AE noValues random', () {
-      final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, []);
+      final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, []);
       final AEtag aeNoValues = e1.noValues;
       expect(aeNoValues.values.isEmpty, true);
       log.debug('e1: ${e1.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(3, 4);
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
+        final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
         log.debug('e1: $e1');
         expect(aeNoValues.values.isEmpty, true);
         log.debug('e1: ${e1.noValues}');
@@ -133,14 +133,14 @@ void main() {
     });
 
     test('AE copy random', () {
-      final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, []);
+      final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, []);
       final AEtag e2 = e1.copy;
       expect(e2 == e1, true);
       expect(e2.hashCode == e1.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(3, 4);
-        final ae2 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
+        final ae2 = AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
         final AEtag e3 = ae2.copy;
         expect(e3 == ae2, true);
         expect(e3.hashCode == ae2.hashCode, true);
@@ -150,8 +150,8 @@ void main() {
     test('AE hashCode and == good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-        final e2 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
+        final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
+        final e2 = AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
         log
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}')
           ..debug('vList0:$vList0, ds1.hash_code:${e2.hashCode}');
@@ -163,16 +163,16 @@ void main() {
     test('AE hashCode and == bad values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
+        final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
 
         final vList1 = rsg.getAEList(1, 1);
-        final ae2 = new AEtag(PTag.kPerformedStationAETitle, vList1);
+        final ae2 = AEtag(PTag.kPerformedStationAETitle, vList1);
         log.debug('vList1:$vList1 , ae2.hash_code:${ae2.hashCode}');
         expect(e1.hashCode == ae2.hashCode, false);
         expect(e1 == ae2, false);
 
         final vList2 = rsg.getAEList(2, 3);
-        final e3 = new AEtag(PTag.kPerformedStationAETitle, vList2);
+        final e3 = AEtag(PTag.kPerformedStationAETitle, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e1.hashCode == e3.hashCode, false);
         expect(e1 == e3, false);
@@ -182,7 +182,7 @@ void main() {
     test('AE valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+        final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
         expect(vList0, equals(e1.valuesCopy));
       }
     });
@@ -190,7 +190,7 @@ void main() {
     test('AE isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+        final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
         expect(e1.tag.isValidLength(e1), true);
       }
     });
@@ -198,7 +198,7 @@ void main() {
     test('AE checkValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+        final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
         expect(e1.checkValues(e1.values), true);
         expect(e1.hasValidValues, true);
       }
@@ -207,7 +207,7 @@ void main() {
     test('AE replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+        final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
         final vList1 = rsg.getAEList(1, 1);
         expect(e1.replace(vList1), equals(vList0));
         log.debug('e1: ${e1.values}');
@@ -215,11 +215,11 @@ void main() {
       }
 
       final vList1 = rsg.getAEList(1, 1);
-      final e2 = new AEtag(PTag.kPerformedStationAETitle, vList1);
+      final e2 = AEtag(PTag.kPerformedStationAETitle, vList1);
       expect(e2.replace([]), equals(vList1));
       expect(e2.values, equals(<String>[]));
 
-      final ae2 = new AEtag(PTag.kPerformedStationAETitle, vList1);
+      final ae2 = AEtag(PTag.kPerformedStationAETitle, vList1);
       expect(ae2.replace(null), equals(vList1));
       expect(ae2.values, equals(<String>[]));
     });
@@ -240,7 +240,7 @@ void main() {
         final vList1 = rsg.getAEList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e2 = AEtag.fromBytes(PTag.kSelectorAEValue, bytes0);
           log.debug('e2: ${e2.info}');
           expect(e2.hasValidValues, true);
@@ -254,7 +254,7 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e2 = AEtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e2, isNull);
 
@@ -306,24 +306,24 @@ void main() {
 
     test('AE checkLength good values', () {
       final vList0 = rsg.getAEList(1, 1);
-      final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+      final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
       for (var s in goodAEList) {
         expect(e1.checkLength(s), true);
       }
-      final e2 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+      final e2 = AEtag(PTag.kPerformedStationAETitle, vList0);
       expect(e2.checkLength([]), true);
     });
 
     test('AE checkLength bad values', () {
       final vList0 = rsg.getAEList(1, 1);
       final vList1 = ['325435', '325434'];
-      final ae2 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+      final ae2 = AEtag(PTag.kPerformedStationAETitle, vList0);
       expect(ae2.checkLength(vList1), false);
     });
 
     test('AE checkValue good values', () {
       final vList0 = rsg.getAEList(1, 1);
-      final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+      final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
       for (var s in goodAEList) {
         for (var a in s) {
           expect(e1.checkValue(a), true);
@@ -333,7 +333,7 @@ void main() {
 
     test('AE checkValue bad values', () {
       final vList0 = rsg.getAEList(1, 1);
-      final e1 = new AEtag(PTag.kPerformedStationAETitle, vList0);
+      final e1 = AEtag(PTag.kPerformedStationAETitle, vList0);
       for (var s in badAEList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -350,7 +350,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 4);
-        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final e0 = AEtag(PTag.kSelectorAEValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -362,7 +362,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 4);
-        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final e0 = AEtag(PTag.kSelectorAEValue, vList0);
         const vList1 = 'foo';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -374,7 +374,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 4, 16);
-        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final e0 = AEtag(PTag.kSelectorAEValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -386,7 +386,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getAEList(1, i);
         log.debug('vList0:$vList0');
-        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final e0 = AEtag(PTag.kSelectorAEValue, vList0);
         final match0 = e0.match('.*');
         expect(match0, true);
       }
@@ -397,7 +397,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getAEList(1, i);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new AEtag(PTag.kSelectorAEValue, vList0);
+        final e0 = AEtag(PTag.kSelectorAEValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }
@@ -405,11 +405,11 @@ void main() {
   });
 
   group('AE ', () {
-    const badAELengthList = const <String>[
+    const badAELengthList = <String>[
       'mrZeo|^P> -6{t,mrZeo|^P> -6{t,mrZeo|^P> -6{td9E8tO'
     ];
     //VM.k1
-    const aeVM1Tags = const <PTag>[
+    const aeVM1Tags = <PTag>[
       PTag.kNetworkID,
       PTag.kPerformedStationAETitle,
       PTag.kRequestingAE,
@@ -418,13 +418,13 @@ void main() {
     ];
 
     //VM.k1_n
-    const aeVM1_nTags = const <PTag>[
+    const aeVM1_nTags = <PTag>[
       PTag.kRetrieveAETitle,
       PTag.kScheduledStudyLocationAETitle,
       PTag.kScheduledStationAETitle,
       PTag.kSelectorAEValue,
     ];
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

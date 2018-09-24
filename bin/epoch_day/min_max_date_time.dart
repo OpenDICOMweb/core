@@ -6,25 +6,24 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:math';
 
 import 'package:core/server.dart';
 
-final int min63BitInt = -pow(2, 62);
-final int max63BitInt = pow(2, 62) - 1;
+final int min64BitInt = -pow(2, 62);
+final int max64BitInt = pow(2, 62) - 1;
 
 void main() {
   Server.initialize(name: 'bin/date_time', level: Level.info0);
 
-  assert(min63BitInt == kDartMinSMInt, true);
-  assert(max63BitInt == kDartMaxSMInt, true);
-  print('        min 63-bit Int: $min63BitInt');
-  print('        max 63-bit Int:  $max63BitInt');
-  print('        min dart smInt: $kDartMinSMInt');
-  print('        max dart smint:  $kDartMaxSMInt');
-  print('Min Epoch Microseconds: $kDartMinSMInt');
-  print('Max Epoch Microseconds:  $kDartMaxSMInt');
+  assert(min64BitInt == kMin64BitInt, true);
+  assert(max64BitInt == kMax64BitInt, true);
+  print('        min 63-bit Int: $min64BitInt');
+  print('        max 63-bit Int:  $max64BitInt');
+  print('        min dart smInt: $kMin64BitInt');
+  print('        max dart smint:  $kMax64BitInt');
+  print('Min Epoch Microseconds: $kMin64BitInt');
+  print('Max Epoch Microseconds:  $kMax64BitInt');
 
   print('---------');
   const kMinTimeZoneMinute = -12 * 60;
@@ -44,9 +43,7 @@ void main() {
   print('Max Time Zone Microseconds: $kMaxTimeZoneMicroseconds');
 
   print('---------');
-  /* const minEpochMicrosecondUTC =
-      kDartMinSMInt - kMinTimeZoneMicroseconds;*/
-  const maxEpochMicrosecondUTC = kDartMaxSMInt - kMaxTimeZoneMicroseconds;
+  const maxEpochMicrosecondUTC = kMax64BitInt - kMaxTimeZoneMicroseconds;
   print('    Min Epoch Microseconds: $kAbsoluteMinEpochMicroseconds');
   print('    Max Epoch Microseconds:  $kAbsoluteMaxEpochMicroseconds');
   print('Min Epoch Microseconds UTC: $kAbsoluteMinEpochMicrosecondsUTC');
@@ -103,8 +100,8 @@ void main() {
   print('acrBaselineDate: $acrBaseline');
 
   final out = '''
-                 Min dart SMIint: $kDartMinSMInt
-                 Max dart SMIint:  $kDartMaxSMInt
+                 Min dart SMIint: $kMin64BitInt
+                 Max dart SMIint:  $kMax64BitInt
  Min Epoch microseconds with TZM: $kMinEpochMicrosecond
  Max Epoch microseconds with TZM:  $kMaxEpochMicrosecond
             Min Time Zone Minute: $kMinTimeZoneMinute

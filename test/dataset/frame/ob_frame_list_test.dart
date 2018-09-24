@@ -242,7 +242,7 @@ void main() {
 
       global.throwOnError = true;
       log.debug('nFrames: $nFrames0');
-      expect(() => new FrameList1Bit(pixels3, nFrames0, ob1FDc),
+      expect(() => FrameList1Bit(pixels3, nFrames0, ob1FDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Pixels [== 0]
@@ -268,7 +268,7 @@ void main() {
         ..debug('pixels4.lengthInBytes: ${pixels4.lengthInBytes}')
         ..debug('nFrames: $nFrames1');
 
-      expect(() => new FrameList1Bit(pixels4, nFrames1, ob1FDd),
+      expect(() => FrameList1Bit(pixels4, nFrames1, ob1FDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor data
@@ -306,10 +306,10 @@ void main() {
       //Frame Descriptor.fromDataSet1
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
-          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+          UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
-          new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
+          CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
       final usRows0 = UStag(PTag.kRows, [4]);
       final usColumns0 = UStag(PTag.kColumns, [2]);
       final usBitsAllocated0 = UStag(PTag.kBitsAllocated, [1]);
@@ -320,9 +320,9 @@ void main() {
       final isPixelAspectRatio0 = IStag(PTag.kPixelAspectRatio, ['1', '2']);
       const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
-          new UStag(PTag.kSmallestImagePixelValue, [0]);
+          UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
-          new UStag(PTag.kLargestImagePixelValue, [1]);
+          UStag(PTag.kLargestImagePixelValue, [1]);
       final obIccProfile0 = OBtag(PTag.kICCProfile, <int>[]);
       final csColorSpace0 = CStag(PTag.kColorSpace);
       final usPixelPaddingRangeLimit0 = UStag(PTag.kPixelPaddingRangeLimit);
@@ -714,7 +714,7 @@ void main() {
         ..debug('pixelSize bytes: ${ob8FDc.pixelSizeInBytes}');
 
       global.throwOnError = true;
-      expect(() => new FrameList8Bit(pixels0, nFrames0, ob8FDc),
+      expect(() => FrameList8Bit(pixels0, nFrames0, ob8FDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       //Invalid Pixels [== 0]
@@ -740,7 +740,7 @@ void main() {
         ..debug('nFrames: $nFrames1')
         ..debug('pixelSize bits: ${ob8FDd.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ob8FDd.pixelSizeInBytes}');
-      expect(() => new FrameList8Bit(pixels1, nFrames1, ob8FDd),
+      expect(() => FrameList8Bit(pixels1, nFrames1, ob8FDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       const nFrames2 = 2;
@@ -766,7 +766,7 @@ void main() {
         ..debug('nFrames: $nFrames2')
         ..debug('pixelSize bits: ${ob8FDe.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ob8FDe.pixelSizeInBytes}');
-      expect(() => new FrameList8Bit(pixels2, nFrames2, ob8FDe),
+      expect(() => FrameList8Bit(pixels2, nFrames2, ob8FDe),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
@@ -775,10 +775,10 @@ void main() {
       //Frame Descriptor.fromDataSet1
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransferSyntaxUID0 =
-          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+          UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       final usSamplesPerPixel0 = UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation0 =
-          new CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
+          CStag(PTag.kPhotometricInterpretation, ['PJZ7YG5']);
       final usRows0 = UStag(PTag.kRows, [3]);
       final usColumns0 = UStag(PTag.kColumns, [6]);
       final usBitsAllocated0 = UStag(PTag.kBitsAllocated, [8]);
@@ -789,9 +789,9 @@ void main() {
       final isPixelAspectRatio0 = IStag(PTag.kPixelAspectRatio, ['1', '2']);
       const pixelAspectRatioValue0 = 1 / 2;
       final usSmallestImagePixelValue0 =
-          new UStag(PTag.kSmallestImagePixelValue, [0]);
+          UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue0 =
-          new UStag(PTag.kLargestImagePixelValue, [255]);
+          UStag(PTag.kLargestImagePixelValue, [255]);
       final obIccProfile0 = OBtag(PTag.kICCProfile, <int>[]);
       final csColorSpace0 = CStag(PTag.kColorSpace);
       final usPixelPaddingRangeLimit0 = UStag(PTag.kPixelPaddingRangeLimit);
@@ -1067,8 +1067,8 @@ void main() {
         final offSets = Uint32List.fromList(offSetList);
         final bulkdata = Uint8List(i * 4);
 
-        log.debug(
-            'offSetList: $offSetList, nFrames1 + 1: ${nFrames1 + 1}, offSets: ${offSets.length}');
+        log.debug('offSetList: $offSetList, nFrames1 + 1: '
+            '${nFrames1 + 1}, offSets: ${offSets.length}');
 
         final c8b = CompressedFrameList(bulkdata, offSets, nFrames1, c8FDb);
         log.debug(c8b);
@@ -1151,8 +1151,7 @@ void main() {
       final bulkdata0 = Uint8List(0);
 
       log.debug('nFrames: $nFrames0');
-      expect(
-          () => new CompressedFrameList(bulkdata0, offsets0, nFrames0, c8FDc),
+      expect(() => CompressedFrameList(bulkdata0, offsets0, nFrames0, c8FDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid offsets and bulkdata
@@ -1176,7 +1175,7 @@ void main() {
       final bulkData = Uint8List(0);
 
       log..debug('offSets: $offSets')..debug('bulkData: $bulkData');
-      expect(() => new CompressedFrameList(bulkData, offSets, nFrames1, c8FDd),
+      expect(() => CompressedFrameList(bulkData, offSets, nFrames1, c8FDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor data
@@ -1199,15 +1198,14 @@ void main() {
       final offsets2 = Uint32List.fromList([0, 4]);
       final bulkdata2 = Uint8List(0);
 
-      expect(
-          () => new CompressedFrameList(bulkdata2, offsets2, nFrames2, c8FDe),
+      expect(() => CompressedFrameList(bulkdata2, offsets2, nFrames2, c8FDe),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Offsets
       final offSets3 = Uint32List.fromList([0, 2, 4, 3, 8, 9, 10]);
       final bulkdata = Uint8List(10);
       log.debug('offSets3: $offSets3');
-      expect(() => new CompressedFrameList(bulkdata, offSets3, nFrames1, c8FDe),
+      expect(() => CompressedFrameList(bulkdata, offSets3, nFrames1, c8FDe),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
@@ -1235,7 +1233,7 @@ void main() {
       final vfFragments = VFFragments(fragments);
 
       final c8c =
-          new CompressedFrameList.fromVFFragments(vfFragments, nFrames0, cFDb);
+          CompressedFrameList.fromVFFragments(vfFragments, nFrames0, cFDb);
 
       expect(c8c.pixelSizeInBits == cFDb.pixelSizeInBits, true);
 
@@ -1318,8 +1316,8 @@ void main() {
         final emptyOffsetsAsBytes1 = offsets.buffer.asUint8List();
         final bulkData = Uint8List(i * 4);
         final fragments = [emptyOffsetsAsBytes1, bulkData];
-        log.debug(
-            'offSetList: $offSetList, nFrames + 1: ${nFrames1 + 1}, offSets: ${offsets.length}');
+        log.debug('offSetList: $offSetList, nFrames + 1: ${nFrames1 + 1}, '
+            'offSets: ${offsets.length}');
         final vfFragments = VFFragments(fragments);
 
         final c8d =
@@ -1403,8 +1401,8 @@ void main() {
       final vfFragments0 = VFFragments(fragments0);
 
       expect(
-          () => new CompressedFrameList.fromVFFragments(
-              vfFragments0, nFrames0, cFDb),
+          () =>
+              CompressedFrameList.fromVFFragments(vfFragments0, nFrames0, cFDb),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid offset
@@ -1431,8 +1429,8 @@ void main() {
       final vfFragments1 = VFFragments(fragments1);
 
       expect(
-          () => new CompressedFrameList.fromVFFragments(
-              vfFragments1, nFrames1, cFDc),
+          () =>
+              CompressedFrameList.fromVFFragments(vfFragments1, nFrames1, cFDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
@@ -1459,8 +1457,8 @@ void main() {
       final vfFragments2 = VFFragments(fragments2);
 
       expect(
-          () => new CompressedFrameList.fromVFFragments(
-              vfFragments2, nFrames2, cFDd),
+          () =>
+              CompressedFrameList.fromVFFragments(vfFragments2, nFrames2, cFDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
@@ -1492,8 +1490,9 @@ void main() {
         final frame0 = c8c[j];
         expect(frame0.index == j, true);
 
-        log.debug(
-            'frame0.lengthInBytes: ${frame0.lengthInBytes}, c8c.offsets[${j + 1}] - c8c.offsets[$j]: ${c8c.offsets[j + 1] - c8c.offsets[j]}');
+        log.debug('frame0.lengthInBytes: ${frame0.lengthInBytes}, '
+            'c8c.offsets[${j + 1}] - c8c.offsets[$j]: '
+            '${c8c.offsets[j + 1] - c8c.offsets[j]}');
 
         expect(
             frame0.lengthInBytes == c8c.offsets[j + 1] - c8c.offsets[j], true);

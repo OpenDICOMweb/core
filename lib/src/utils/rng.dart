@@ -15,8 +15,6 @@ import 'package:core/src/values/integer.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef bool _CharPredicate(int char);
-
 /// Random Number Generator with useful utilities.
 //TODO: document
 class RNG {
@@ -169,7 +167,7 @@ class RNG {
 
   /// Returns an ASCII character (code point). [predicate]
   /// defaults to always _true_.
-  int nextAsciiSatisfying([_CharPredicate predicate = _always]) {
+  int nextAsciiSatisfying([bool predicate(int char) = _always]) {
     final c = nextUint7;
     return (predicate(c)) ? c : nextAsciiSatisfying(predicate);
   }
@@ -195,15 +193,15 @@ class RNG {
   /// to [max] inclusive.
   ///
   /// Note: [min] and [max] can be negative, but [min] must be less than [max].
-  int nextInt([int min = kDartMinSMInt, int max = kDartMaxSMInt]) {
-    RangeError.checkValueInInterval(min, kDartMinSMInt, kDartMaxSMInt, 'min');
-    RangeError.checkValueInInterval(max, min, kDartMaxSMInt, 'max');
+  int nextInt([int min = kMin64BitInt, int max = kMax64BitInt]) {
+    RangeError.checkValueInInterval(min, kMin64BitInt, kMax64BitInt, 'min');
+    RangeError.checkValueInInterval(max, min, kMax64BitInt, 'max');
     var limit = _getLimit(min, max);
-    if (limit > kDartMaxSMInt) limit = kDartMaxSMInt;
-    if (limit < 0 || limit > kDartMaxSMInt)
+    if (limit > kMax64BitInt) limit = kMax64BitInt;
+    if (limit < 0 || limit > kMax64BitInt)
       // ignore: only_throw_errors
       throw 'Invalid range error: '
-          '$kDartMinSMInt > $max - $min = $limit < $kDartMaxSMInt';
+          '$kMin64BitInt > $max - $min = $limit < $kMax64BitInt';
     final n = (limit < kUint32Max)
         ? __nextUint32(limit)
         : _nextSMUint().remainder(limit);
@@ -216,7 +214,7 @@ class RNG {
 
   // Always returns a positive integer that is less than Int32Max.
   int _getLimit(int min, int max) {
-    assert(min >= kDartMinSMInt && max <= kDartMaxSMInt && min <= max);
+    assert(min >= kMin64BitInt && max <= kMax64BitInt && min <= max);
     final limit = max - min;
     return (limit < 0) ? -limit : limit;
   }
@@ -240,13 +238,13 @@ class RNG {
   }
 
   // TODO: See _nextSMInt issue is same
-  /// Returns a 63-bit random unsigned integer _n_, in the range
-  /// [kDartMinSMUint; >= n <= [kDartMaxSMUint]
+  /// Returns a 64-bit random unsigned integer _n_, in the range
+  /// 0 >= n <= [kMax64BitInt]
   int _nextSMUint() {
     final upper = generator.nextInt(kMaxRandom30BitInt);
     final lower = generator.nextInt(kMaxRandomIntExclusive);
     final n = (upper << 32) | lower;
-    assert(n >= 0 && n <= kDartMaxSMInt);
+    assert(n >= 0 && n <= kMax64BitInt);
     return n;
   }
 
@@ -262,8 +260,8 @@ class RNG {
     final lower = generator.nextInt(kMaxRandomIntExclusive);
     var n = (upper << 32) | lower;
     n = (generator.nextBool()) ? n : -n;
-    assert(n >= kDartMinSMInt && n <= kDartMaxSMInt,
-        '$kDartMinSMInt <= $n ${n.toRadixString(16)} <= $kDartMaxSMInt');
+    assert(n >= kMin64BitInt && n <= kMax64BitInt,
+        '$kMin64BitInt <= $n ${n.toRadixString(16)} <= $kMax64BitInt');
     return n;
   }
 
@@ -272,12 +270,12 @@ class RNG {
   // TODO: See _nextSMInt issue is same
   /// Returns a 63-bit random number between [min] and [max] inclusive,
   /// Where [min] >= 0, and [max] >= min && [max] <= 0xFFFFFFFF.
-  int nextUint([int min = 0, int max = kDartMaxSMInt]) {
-    RangeError.checkValueInInterval(min, 0, kDartMaxSMUint, 'min');
-    RangeError.checkValueInInterval(max, min, kDartMaxSMUint, 'max');
+  int nextUint([int min = 0, int max = kMax64BitInt]) {
+    RangeError.checkValueInInterval(min, 0, kMax64BitInt, 'min');
+    RangeError.checkValueInInterval(max, min, kMax64BitInt, 'max');
     var limit = max - min;
-    if (limit > kDartMaxSMInt) limit = kDartMaxSMInt;
-    if (limit < 0 || limit > kDartMaxSMUint)
+    if (limit > kMax64BitInt) limit = kMax64BitInt;
+    if (limit < 0 || limit > kMax64BitInt)
       // ignore: only_throw_errors
       throw 'Invalid range error: 0 > $max - $min = $limit < 0xFFFFFFFF';
     return (limit < kUint32Max)

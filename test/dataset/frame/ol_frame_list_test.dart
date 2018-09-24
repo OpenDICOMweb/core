@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
 
-final Uint8List frame = new Uint8List.fromList(testFrame);
+final Uint8List frame = Uint8List.fromList(testFrame);
 
 void main() {
   Server.initialize(name: 'element/ol_frame_list_test', level: Level.info);
@@ -37,7 +37,7 @@ void main() {
       const photometricInterpretation0 = 'RGB';
 
       // Descriptor
-      final ol32FDa = new FrameDescriptor(
+      final ol32FDa = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -50,9 +50,9 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels0 = new Uint32List(ol32FDa.length * nFrames0);
+      final pixels0 = Uint32List(ol32FDa.length * nFrames0);
 
-      final ol32FLa = new FrameList32Bit(pixels0, nFrames0, ol32FDa);
+      final ol32FLa = FrameList32Bit(pixels0, nFrames0, ol32FDa);
 
       // pixels
       expect(ol32FLa.pixels is Uint32List, true);
@@ -125,7 +125,7 @@ void main() {
       const photometricInterpretation1 = 'RGB';
 
       // Descriptor
-      final ol32FDb = new FrameDescriptor(
+      final ol32FDb = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -142,9 +142,9 @@ void main() {
       // Frame values are 2, 4, 6 ...
       for (var i = 1; i <= 10; i++) {
         nFrames1 = i * 2;
-        final pixels0 = new Uint32List(ol32FDb.length * nFrames1);
+        final pixels0 = Uint32List(ol32FDb.length * nFrames1);
 
-        final ol32FLb = new FrameList32Bit(pixels0, nFrames1, ol32FDb);
+        final ol32FLb = FrameList32Bit(pixels0, nFrames1, ol32FDb);
 
         // pixels
         expect(ol32FLb.pixels is Uint32List, true);
@@ -217,7 +217,7 @@ void main() {
       const nFrames0 = 0;
       const photometricInterpretation1 = 'MONOCHROME3';
 
-      final ol32FDc = new FrameDescriptor(
+      final ol32FDc = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation1,
@@ -230,7 +230,7 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels0 = new Uint32List(ol32FDc.lengthInBytes);
+      final pixels0 = Uint32List(ol32FDc.lengthInBytes);
 
       log
         ..debug('pixels0.length: ${pixels0.lengthInBytes}')
@@ -239,14 +239,14 @@ void main() {
         ..debug('pixelSize bytes: ${ol32FDc.pixelSizeInBytes}');
 
       global.throwOnError = true;
-      expect(() => new FrameList32Bit(pixels0, nFrames0, ol32FDc),
+      expect(() => FrameList32Bit(pixels0, nFrames0, ol32FDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Pixels
       const nFrames1 = 1;
       const photometricInterpretation2 = 'MONOCHROME3';
 
-      final ol32FDd = new FrameDescriptor(
+      final ol32FDd = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation2,
@@ -259,20 +259,20 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels1 = new Uint32List(0);
+      final pixels1 = Uint32List(0);
       log
         ..debug('pixels0.length: ${pixels1.lengthInBytes}')
         ..debug('nFrames: $nFrames1')
         ..debug('pixelSize bits: ${ol32FDd.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ol32FDd.pixelSizeInBytes}');
-      expect(() => new FrameList32Bit(pixels1, nFrames1, ol32FDd),
+      expect(() => FrameList32Bit(pixels1, nFrames1, ol32FDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
       const nFrames2 = 5;
       const photometricInterpretation3 = 'MONOCHROME3';
 
-      final ol32FDe = new FrameDescriptor(
+      final ol32FDe = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation3,
@@ -285,13 +285,13 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels2 = new Uint32List(ol32FDe.lengthInBytes);
+      final pixels2 = Uint32List(ol32FDe.lengthInBytes);
       log
         ..debug('pixels0.length: ${pixels2.lengthInBytes}')
         ..debug('nFrames: $nFrames2')
         ..debug('pixelSize bits: ${ol32FDe.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ol32FDe.pixelSizeInBytes}');
-      expect(() => new FrameList32Bit(pixels2, nFrames2, ol32FDe),
+      expect(() => FrameList32Bit(pixels2, nFrames2, ol32FDe),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
@@ -323,7 +323,7 @@ void main() {
       final unPixelPaddingRangeLimit0 =
           UStag.fromValues(PTag.kPixelPaddingRangeLimit, <int>[]);
 
-      final rds0 = new TagRootDataset.empty()
+      final rds0 = TagRootDataset.empty()
         ..fmi[ui0.code] = ui0
         ..add(usSamplesPerPixel0)
         ..add(csPhotometricInterpretation0)
@@ -341,10 +341,10 @@ void main() {
         ..add(csColorSpace0)
         ..add(unPixelPaddingRangeLimit0);
 
-      final ol32FDd = new FrameDescriptor.fromDataset(rds0);
+      final ol32FDd = FrameDescriptor.fromDataset(rds0);
       const nFrames0 = 1;
-      final pixels0 = new Uint32List(ol32FDd.length);
-      final ol32FLd = new FrameList32Bit(pixels0, nFrames0, ol32FDd);
+      final pixels0 = Uint32List(ol32FDd.length);
+      final ol32FLd = FrameList32Bit(pixels0, nFrames0, ol32FDd);
 
       // pixels
       expect(ol32FLd.samplesPerPixel == ol32FDd.samplesPerPixel, true);
@@ -431,7 +431,7 @@ void main() {
       int nFrames0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
-      final ol32FDe = new FrameDescriptor(
+      final ol32FDe = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -449,8 +449,8 @@ void main() {
       for (var i = 0; i < 10; i++) {
         nFrames0 = i + 1;
         log.debug('nFrames0: $nFrames0');
-        final pixels0 = new Uint32List(ol32FDe.length * nFrames0);
-        ol32FLc = new FrameList32Bit(pixels0, nFrames0, ol32FDe);
+        final pixels0 = Uint32List(ol32FDe.length * nFrames0);
+        ol32FLc = FrameList32Bit(pixels0, nFrames0, ol32FDe);
         for (var j = 0; j < nFrames0; j++) {
           final frame0 = ol32FLc[j];
           expect(frame0.index == j, true);

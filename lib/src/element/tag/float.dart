@@ -138,7 +138,7 @@ class FDtag extends FD with TagElement<double>, TagFloatMixin {
     if (!FD.isValidArgs(tag, vList)) return badValues(vList, null, tag);
     final v = (vList == null || vList.isEmpty)
         ? kEmptyFloat64List
-        : Float64.fromList(vList);
+        : Float64Mixin.fromList(vList);
     return FDtag._x(tag, v);
   }
 
@@ -177,7 +177,8 @@ class ODtag extends OD with TagElement<double>, TagFloatMixin {
 
   factory ODtag._(Tag tag, Iterable<double> vList) {
     if (!OD.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? kEmptyFloat64List : Float64.fromList(vList);
+    final v =
+        (vList.isEmpty) ? kEmptyFloat64List : Float64Mixin.fromList(vList);
     return ODtag._x(tag, v);
   }
 

@@ -16,9 +16,9 @@ import 'package:core/src/values/date_time/time.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef Date OnDateError(int y, int m, int d);
-typedef Date OnDateParseError(String s);
-typedef String OnDateHashStringError(String s);
+typedef OnDateError = Date Function(int y, int m, int d);
+typedef OnDateParseError = Date Function(String s);
+typedef OnDateHashStringError = String Function(String s);
 
 /// A DICOM Date.
 class Date implements Comparable<Date> {
@@ -221,7 +221,7 @@ class Date implements Comparable<Date> {
     final us = parseDicomDate(s);
     if (us == null) {
       if (onError != null) return onError(s);
-      return invalidParseStringToString('Invalid Date String: $s', issues);
+      return badParseStringToString('Invalid Date String: $s', issues);
     }
     final hd = hashDateInMicroseconds(us);
     return microsecondToDateString(hd);
@@ -303,7 +303,7 @@ String normalizeDcmDateString(String s, String enrollment) {
   return microsecondToDateString(oDay - (eDay - kACRBaselineDay));
 }
 
-typedef String OnHashDateStringError(String s);
+typedef OnHashDateStringError = String Function(String s);
 
 /// Returns a new date [String] that is the hash of [s], which is a .
 String hashDcmDateString(String s,

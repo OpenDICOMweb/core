@@ -13,13 +13,13 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/is_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodIntegerStrings = const <String>[
+  const goodIntegerStrings = <String>[
     '+8',
     ' +8',
     '+8 ',
@@ -47,55 +47,55 @@ void main() {
     });
   });
 
-  const goodISList = const <List<String>>[
-    const <String>['+8'],
-    const <String>['-6'],
-    const <String>['560'],
-    const <String>['0'],
-    const <String>['-67'],
+  const goodISList = <List<String>>[
+    <String>['+8'],
+    <String>['-6'],
+    <String>['560'],
+    <String>['0'],
+    <String>['-67'],
   ];
-  const badISList = const <List<String>>[
-    const <String>['\b'],
+  const badISList = <List<String>>[
+    <String>['\b'],
     //	Backspace
-    const <String>['\t '],
+    <String>['\t '],
     //horizontal tab (HT)
-    const <String>['\n'],
+    <String>['\n'],
     //linefeed (LF)
-    const <String>['\f '],
+    <String>['\f '],
     // form feed (FF)
-    const <String>['\r '],
+    <String>['\r '],
     //carriage return (CR)
-    const <String>['\v'],
+    <String>['\v'],
     //vertical tab
-    const <String>[r'\'],
-    const <String>['B\\S'],
-    const <String>['1\\9'],
-    const <String>['a\\4'],
-    const <String>[r'^`~\\?'],
-    const <String>[r'^\?'],
-    const <String>['abc'],
-    const <String>['23.34']
+    <String>[r'\'],
+    <String>['B\\S'],
+    <String>['1\\9'],
+    <String>['a\\4'],
+    <String>[r'^`~\\?'],
+    <String>[r'^\?'],
+    <String>['abc'],
+    <String>['23.34']
   ];
 
-  const badISLengthValues = const <List<String>>[
-    const <String>['+823434534645645654'],
-    const <String>['234345343400098090'],
+  const badISLengthValues = <List<String>>[
+    <String>['+823434534645645654'],
+    <String>['234345343400098090'],
   ];
 
-  const badISLengthList = const <List<String>>[
-    const <String>['+823434534645645654', '823434534645645654'],
-    const <String>['234345343400098090', '35345435']
+  const badISLengthList = <List<String>>[
+    <String>['+823434534645645654', '823434534645645654'],
+    <String>['234345343400098090', '35345435']
   ];
 
   group('IStag', () {
     test('IS hasValidValues good values', () {
       for (var s in goodISList) {
         global.throwOnError = false;
-        final e0 = new IStag(PTag.kSeriesNumber, s);
+        final e0 = IStag(PTag.kSeriesNumber, s);
         expect(e0.hasValidValues, true);
       }
 
-      final e2 = new IStag(PTag.kOtherStudyNumbers, []);
+      final e2 = IStag(PTag.kOtherStudyNumbers, []);
       expect(e2.hasValidValues, true);
       expect(e2.values, equals(<String>[]));
     });
@@ -103,11 +103,11 @@ void main() {
     test('IS hasValidValues bad values', () {
       for (var s in badISList) {
         global.throwOnError = false;
-        final e0 = new IStag(PTag.kSeriesNumber, s);
+        final e0 = IStag(PTag.kSeriesNumber, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new IStag(PTag.kSeriesNumber, s),
+        expect(() => IStag(PTag.kSeriesNumber, s),
             throwsA(const TypeMatcher<StringError>()));
       }
     });
@@ -116,7 +116,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 1);
-        final e0 = new IStag(PTag.kSeriesNumber, vList0);
+        final e0 = IStag(PTag.kSeriesNumber, vList0);
         log.debug('e0:${e0.info}');
         expect(e0.hasValidValues, true);
 
@@ -126,7 +126,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 1);
-        final e0 = new IStag(PTag.kAcquisitionNumber, vList0);
+        final e0 = IStag(PTag.kAcquisitionNumber, vList0);
         expect(e0.hasValidValues, true);
 
         log..debug('e0: $e0, values: ${e0.values}')..debug('e0: ${e0.info}');
@@ -139,47 +139,47 @@ void main() {
         global.throwOnError = false;
         final vList0 = rsg.getISList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e0 = new IStag(PTag.kSeriesNumber, vList0);
+        final e0 = IStag(PTag.kSeriesNumber, vList0);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new IStag(PTag.kSeriesNumber, vList0),
+        expect(() => IStag(PTag.kSeriesNumber, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
 
       global.throwOnError = false;
-      final e2 = new IStag(PTag.kOtherStudyNumbers, null);
+      final e2 = IStag(PTag.kOtherStudyNumbers, null);
       log.debug('e2: $e2');
       expect(e2.hasValidValues, true);
       expect(e2.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new IStag(PTag.kOtherStudyNumbers, null),
+      expect(() => IStag(PTag.kOtherStudyNumbers, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('IS update random', () {
       global.throwOnError = false;
-      final e0 = new IStag(PTag.kOtherStudyNumbers, []);
+      final e0 = IStag(PTag.kOtherStudyNumbers, []);
       expect(e0.update(['+3, -3, -1']), isNull);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(3, 4);
-        final e2 = new IStag(PTag.kOtherStudyNumbers, vList0);
+        final e2 = IStag(PTag.kOtherStudyNumbers, vList0);
         final vList1 = rsg.getISList(3, 4);
         expect(e2.update(vList1).values, equals(vList1));
       }
     });
 
     test('IS noValues random', () {
-      final e0 = new IStag(PTag.kOtherStudyNumbers, []);
+      final e0 = IStag(PTag.kOtherStudyNumbers, []);
       final IStag isNoValues = e0.noValues;
       expect(isNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(3, 4);
-        final is0 = new IStag(PTag.kOtherStudyNumbers, vList0);
+        final is0 = IStag(PTag.kOtherStudyNumbers, vList0);
         log.debug('is0: $is0');
         expect(isNoValues.values.isEmpty, true);
         log.debug('is0: ${is0.noValues}');
@@ -187,14 +187,14 @@ void main() {
     });
 
     test('IS copy random', () {
-      final e0 = new IStag(PTag.kOtherStudyNumbers, []);
+      final e0 = IStag(PTag.kOtherStudyNumbers, []);
       final IStag e2 = e0.copy;
       expect(e2 == e0, true);
       expect(e2.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(3, 4);
-        final e2 = new IStag(PTag.kOtherStudyNumbers, vList0);
+        final e2 = IStag(PTag.kOtherStudyNumbers, vList0);
         final IStag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -206,8 +206,8 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         vList0 = rsg.getISList(1, 1);
-        final e0 = new IStag(PTag.kMemoryAllocation, vList0);
-        final e2 = new IStag(PTag.kMemoryAllocation, vList0);
+        final e0 = IStag(PTag.kMemoryAllocation, vList0);
+        final e2 = IStag(PTag.kMemoryAllocation, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e2.hash_code:${e2.hashCode}');
@@ -220,33 +220,33 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 1);
-        final e0 = new IStag(PTag.kMemoryAllocation, vList0);
+        final e0 = IStag(PTag.kMemoryAllocation, vList0);
         final vList1 = rsg.getISList(1, 1);
-        final e2 = new IStag(PTag.kNumberOfFilms, vList1);
+        final e2 = IStag(PTag.kNumberOfFilms, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rsg.getISList(2, 2);
-        final e3 = new IStag(PTag.kCenterOfCircularShutter, vList2);
+        final e3 = IStag(PTag.kCenterOfCircularShutter, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rsg.getISList(3, 3);
-        final e4 = new IStag(PTag.kROIDisplayColor, vList3);
+        final e4 = IStag(PTag.kROIDisplayColor, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
 
         final vList4 = rsg.getISList(2, 8);
-        final e5 = new IStag(PTag.kVerticesOfThePolygonalShutter, vList4);
+        final e5 = IStag(PTag.kVerticesOfThePolygonalShutter, vList4);
         log.debug('vList4:$vList4 , e5.hash_code:${e5.hashCode}');
         expect(e0.hashCode == e5.hashCode, false);
         expect(e0 == e5, false);
 
         final vList5 = rsg.getISList(2, 3);
-        final e6 = new IStag(PTag.kNumberOfFilms, vList5);
+        final e6 = IStag(PTag.kNumberOfFilms, vList5);
         log.debug('vList5:$vList5 , e6.hash_code:${e6.hashCode}');
         expect(e0.hashCode == e6.hashCode, false);
         expect(e0 == e6, false);
@@ -256,7 +256,7 @@ void main() {
     test('IS valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(2, 2);
-        final e0 = new IStag(PTag.kPresentationPixelAspectRatio, vList0);
+        final e0 = IStag(PTag.kPresentationPixelAspectRatio, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -264,7 +264,7 @@ void main() {
     test('IS isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(2, 2);
-        final e0 = new IStag(PTag.kPresentationPixelAspectRatio, vList0);
+        final e0 = IStag(PTag.kPresentationPixelAspectRatio, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -272,7 +272,7 @@ void main() {
     test('IS isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(2, 2);
-        final e0 = new IStag(PTag.kPresentationPixelAspectRatio, vList0);
+        final e0 = IStag(PTag.kPresentationPixelAspectRatio, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -281,18 +281,18 @@ void main() {
     test('IS replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 1);
-        final e0 = new IStag(PTag.kWaveformChannelNumber, vList0);
+        final e0 = IStag(PTag.kWaveformChannelNumber, vList0);
         final vList1 = rsg.getISList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getISList(1, 1);
-      final e2 = new IStag(PTag.kWaveformChannelNumber, vList1);
+      final e2 = IStag(PTag.kWaveformChannelNumber, vList1);
       expect(e2.replace([]), equals(vList1));
       expect(e2.values, equals(<String>[]));
 
-      final e3 = new IStag(PTag.kWaveformChannelNumber, vList1);
+      final e3 = IStag(PTag.kWaveformChannelNumber, vList1);
       expect(e3.replace(null), equals(vList1));
       expect(e3.values, equals(<String>[]));
     });
@@ -300,7 +300,7 @@ void main() {
     test('IS blank random', () {
       global.throwOnError = false;
       final vList1 = rsg.getISList(2, 2);
-      final e0 = new IStag(PTag.kPresentationPixelSpacing, vList1);
+      final e0 = IStag(PTag.kPresentationPixelSpacing, vList1);
       expect(e0, isNull);
     });
 
@@ -377,24 +377,24 @@ void main() {
 
     test('IS checkLength good values', () {
       final vList0 = rsg.getISList(1, 1);
-      final e0 = new IStag(PTag.kWaveformChannelNumber, vList0);
+      final e0 = IStag(PTag.kWaveformChannelNumber, vList0);
       for (var s in goodISList) {
         expect(e0.checkLength(s), true);
       }
-      final e2 = new IStag(PTag.kWaveformChannelNumber, vList0);
+      final e2 = IStag(PTag.kWaveformChannelNumber, vList0);
       expect(e2.checkLength([]), true);
     });
 
     test('IS checkLength bad values', () {
       final vList0 = rsg.getISList(1, 1);
       final vList1 = ['+8', '-6'];
-      final e0 = new IStag(PTag.kStopTrim, vList0);
+      final e0 = IStag(PTag.kStopTrim, vList0);
       expect(e0.checkLength(vList1), false);
     });
 
     test('IS checkValue good values', () {
       final vList0 = rsg.getISList(1, 1);
-      final e0 = new IStag(PTag.kStopTrim, vList0);
+      final e0 = IStag(PTag.kStopTrim, vList0);
       for (var s in goodISList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -404,7 +404,7 @@ void main() {
 
     test('IS checkValue bad values', () {
       final vList0 = rsg.getISList(1, 1);
-      final e0 = new IStag(PTag.kStopTrim, vList0);
+      final e0 = IStag(PTag.kStopTrim, vList0);
       for (var s in badISList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -416,36 +416,36 @@ void main() {
     test('IS hashStringList', () {
       global.throwOnError = false;
       final vList0 = rsg.getISList(1, 1);
-      final e0 = new IStag(PTag.kEchoNumbers);
+      final e0 = IStag(PTag.kEchoNumbers);
       expect(e0.hashStringList(vList0), isNotNull);
     });
 
     test('IS compareTo & compareValueTo', () {
       for (var i = 1; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
-        final e0 = new IStag(PTag.kEchoNumbers, vList0);
+        final e0 = IStag(PTag.kEchoNumbers, vList0);
         final nList = [int.parse(e0.value)];
         final compare0 = e0.compareValuesTo(nList);
         log.debug('compare0: $compare0');
         expect(compare0 == 0, true);
 
-        final e0a = new IStag(PTag.kEchoNumbers, vList0);
+        final e0a = IStag(PTag.kEchoNumbers, vList0);
         final compare1 = e0.compareTo(e0a);
         expect(compare1 == 0, true);
       }
       for (var vList1 in goodISList) {
-        final e1 = new IStag(PTag.kEchoNumbers, vList1);
+        final e1 = IStag(PTag.kEchoNumbers, vList1);
         final nList = [int.parse(e1.value)];
         final compare1 = e1.compareValuesTo(nList);
         log.debug('compare1: $compare1');
         expect(compare1 == 0, true);
-        final e1a = new IStag(PTag.kEchoNumbers, vList1);
+        final e1a = IStag(PTag.kEchoNumbers, vList1);
         final compare2 = e1.compareTo(e1a);
         expect(compare2 == 0, true);
       }
 
       final vList2 = rsg.getISList(1, 1);
-      final e2 = new IStag(PTag.kEchoNumbers, vList2);
+      final e2 = IStag(PTag.kEchoNumbers, vList2);
       for (var n in goodIntegerStrings) {
         final nList = [int.parse(n)];
         final compare2 = e2.compareValuesTo(nList);
@@ -455,7 +455,7 @@ void main() {
         } else {
           expect(compare2 == -1, true);
         }
-        final e2a = new IStag(PTag.kEchoNumbers, [n]);
+        final e2a = IStag(PTag.kEchoNumbers, [n]);
         final compare3 = e2.compareTo(e2a);
         if (!compare3.isNegative) {
           expect(compare3 == 1, true);
@@ -466,7 +466,7 @@ void main() {
 
       for (var i = 1; i <= 10; i++) {
         final vList3 = rsg.getISList(1, i);
-        final e3 = new IStag(PTag.kSelectorISValue, vList3);
+        final e3 = IStag(PTag.kSelectorISValue, vList3);
         final nList = [int.parse(e3.value)];
         final compare3 = e3.compareValuesTo(nList);
         log.debug('compare0: $compare3');
@@ -475,15 +475,15 @@ void main() {
         } else {
           expect(compare3 == 0, true);
         }
-        final e3a = new IStag(PTag.kSelectorISValue, vList3);
+        final e3a = IStag(PTag.kSelectorISValue, vList3);
         final compare4 = e3.compareTo(e3a);
         expect(compare4 == 0, true);
       }
 
-      final e4 = new IStag(PTag.kSelectorISValue, []);
+      final e4 = IStag(PTag.kSelectorISValue, []);
       final compare5 = e4.compareValuesTo([66]);
       expect(compare5, -1);
-      final e3a = new IStag(PTag.kSelectorISValue, []);
+      final e3a = IStag(PTag.kSelectorISValue, []);
       final compare6 = e4.compareTo(e3a);
       expect(compare6 == 0, true);
     });
@@ -491,7 +491,7 @@ void main() {
     test('IS increment', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
-        final e0 = new IStag(PTag.kStageNumber, vList0);
+        final e0 = IStag(PTag.kStageNumber, vList0);
         final increment0 = e0.increment();
         log.debug('increment0: $increment0');
         expect(increment0.hasValidValues, true);
@@ -501,7 +501,7 @@ void main() {
     test('IS decrement', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
-        final e0 = new IStag(PTag.kStageNumber, vList0);
+        final e0 = IStag(PTag.kStageNumber, vList0);
         final decrement0 = e0.decrement();
         log.debug('decrement0: $decrement0');
         expect(decrement0.hasValidValues, true);
@@ -512,7 +512,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 4);
-        final e0 = new IStag(PTag.kSelectorISValue, vList0);
+        final e0 = IStag(PTag.kSelectorISValue, vList0);
         const vList1 = '100';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -522,7 +522,7 @@ void main() {
 
     test('IS prepend', () {
       final vList = ['111'];
-      final e0 = new IStag(PTag.kSelectorISValue, vList);
+      final e0 = IStag(PTag.kSelectorISValue, vList);
       final prepend0 = e0.append('123');
       expect(prepend0, isNotNull);
     });
@@ -531,7 +531,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 4, 12);
-        final e0 = new IStag(PTag.kSelectorISValue, vList0);
+        final e0 = IStag(PTag.kSelectorISValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -542,7 +542,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(1, 4);
-        final e0 = new IStag(PTag.kSelectorISValue, vList0);
+        final e0 = IStag(PTag.kSelectorISValue, vList0);
         const regX = r'^[0-9\+\-]';
         final match0 = e0.match(regX);
         expect(match0, true);
@@ -552,7 +552,7 @@ void main() {
 
   group('IS Element', () {
     //VM.k1
-    const isVM1Tags = const <PTag>[
+    const isVM1Tags = <PTag>[
       PTag.kStageNumber,
       PTag.kNumberOfStages,
       PTag.kViewNumber,
@@ -566,7 +566,7 @@ void main() {
     ];
 
     //VM.k2
-    const isVM2Tags = const <PTag>[
+    const isVM2Tags = <PTag>[
       PTag.kCenterOfCircularShutter,
       PTag.kCenterOfCircularCollimator,
       PTag.kGridAspectRatio,
@@ -576,19 +576,19 @@ void main() {
     ];
 
     //VM.k2_2n
-    const isVM2_2nTags = const <PTag>[
+    const isVM2_2nTags = <PTag>[
       PTag.kVerticesOfThePolygonalShutter,
       PTag.kVerticesOfThePolygonalCollimator,
       PTag.kVerticesOfTheOutlineOfPupil,
     ];
 
     //VM.k3
-    const isVM3Tags = const <PTag>[
+    const isVM3Tags = <PTag>[
       PTag.kROIDisplayColor,
     ];
 
     //VM.k1_n
-    const isVM1_nTags = const <PTag>[
+    const isVM1_nTags = <PTag>[
       PTag.kReferencedFrameNumber,
       PTag.kTransformOrderOfAxes,
       PTag.kEchoNumbers,
@@ -597,7 +597,7 @@ void main() {
       PTag.kSelectorSequencePointerItems,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,

@@ -34,13 +34,13 @@ void main() {
     });
 
     test('Create LdapOid', () {
-      const ldo0 = const LdapOid('1.2.840.10008.15.0.3.1', 'dicomDeviceName',
+      const ldo0 = LdapOid('1.2.840.10008.15.0.3.1', 'dicomDeviceName',
           UidType.kLdapOid, 'dicomDeviceName');
 
-      const ldo1 = const LdapOid('1.2.840.10008.15.0.3.1', 'dicomDeviceName',
+      const ldo1 = LdapOid('1.2.840.10008.15.0.3.1', 'dicomDeviceName',
           UidType.kLdapOid, 'dicomDeviceName');
 
-      const ldo2 = const LdapOid('1.2.840.10008.15.0.3.2', 'dicomDescription',
+      const ldo2 = LdapOid('1.2.840.10008.15.0.3.2', 'dicomDescription',
           UidType.kLdapOid, 'dicomDescription');
 
       expect(ldo0.hashCode == ldo1.hashCode, true);

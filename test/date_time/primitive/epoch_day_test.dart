@@ -180,8 +180,7 @@ void main() {
         final y = eDate.year;
         final m = eDate.month;
         final d = eDate.day;
-        log.debug('  $y-$m-$d');
-        log.debug('i: $i');
+        log..debug('  $y-$m-$d')..debug('i: $i');
         final n = dateToEpochDay(y, m, d);
         // log.debug('$i, $n, ${i == n}');
         log.debug('n: $n');

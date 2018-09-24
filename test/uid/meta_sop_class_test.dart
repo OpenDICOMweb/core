@@ -34,19 +34,19 @@ void main() {
     });
 
     test('Create MetaSopClass', () {
-      const msc0 = const MetaSopClass(
+      const msc0 = MetaSopClass(
           '1.2.840.10008.3.1.2.1.4',
           'DetachedPatientManagementMetaSOPClass_Retired',
           UidType.kMetaSOPClass,
           'Detached Patient Management Meta SOP Class (Retired)');
 
-      const msc1 = const MetaSopClass(
+      const msc1 = MetaSopClass(
           '1.2.840.10008.3.1.2.1.4',
           'DetachedPatientManagementMetaSOPClass_Retired',
           UidType.kMetaSOPClass,
           'Detached Patient Management Meta SOP Class (Retired)');
 
-      const msc2 = const MetaSopClass(
+      const msc2 = MetaSopClass(
           '1.2.840.10008.3.1.2.5.4',
           'DetachedResultsManagementMetaSOPClass_Retired',
           UidType.kMetaSOPClass,
@@ -67,7 +67,7 @@ void main() {
       expect(msc0.type == UidType.kMetaSOPClass, true);
       expect(msc0 is MetaSopClass, true);
       expect(msc0 is MetaSopClass, true);
-  //    print('msc0: ${msc0.minLength}');
+      //    print('msc0: ${msc0.minLength}');
       expect(msc0.maxLength == kUidMaxLength, true);
       expect(msc0.minLength == kUidMinLength, true);
       expect(msc0.maxRootLength == kUidMaxRootLength, true);

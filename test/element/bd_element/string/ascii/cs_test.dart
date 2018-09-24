@@ -10,17 +10,17 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('CSbytes', () {
     //VM.k1
-    const csVM1Tags = const <int>[
+    const csVM1Tags = <int>[
       kFileSetID,
       kConversionType,
       kPresentationIntentType,
@@ -30,7 +30,7 @@ void main() {
     ];
 
     //VM.k2
-    const csVM2Tags = const <int>[
+    const csVM2Tags = <int>[
       kPatientOrientation,
       kReportStatusIDTrial,
       kSeriesType,
@@ -38,15 +38,15 @@ void main() {
     ];
 
     //VM.k2_n
-    const csVM2_nTags = const <int>[kImageType];
+    const csVM2_nTags = <int>[kImageType];
 
     //VM.k4
-    const csVM4Tags = const <int>[
+    const csVM4Tags = <int>[
       kFrameType,
     ];
 
     //VM.k1_n
-    const csVM1_nTags = const <int>[
+    const csVM1_nTags = <int>[
       kModalitiesInStudy,
       kIndicationType,
       kScanningSequence,

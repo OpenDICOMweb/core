@@ -10,16 +10,16 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/ol_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('OLbytes', () {
-    const olVM1Tags = const <int>[
+    const olVM1Tags = <int>[
       kLongPrimitivePointIndexList,
       kLongTrianglePointIndexList,
       kLongEdgePointIndexList,
@@ -27,7 +27,7 @@ void main() {
       kTrackPointIndexList,
     ];
 
-    const olVM1_nTags = const <int>[kSelectorOLValue];
+    const olVM1_nTags = <int>[kSelectorOLValue];
 
     test('OLbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {

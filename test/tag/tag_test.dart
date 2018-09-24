@@ -10,7 +10,7 @@
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-List<int> tags = const [
+List<int> tags = [
   kSpecificCharacterSet,
   kLanguageCodeSequence,
   kImageType,
@@ -32,10 +32,7 @@ void main() {
   test('Simple Tag Test', () {
     for (var i = 0; i < tags.length; i++) {
       final tag = PTag.lookupByCode(tags[i], kUNIndex);
-      log
-        ..debug('${tag.info}');
-//        ..debug('isShort: ${tag.hasShortVF}, sizeInBytes: ${tag.vr.elementSize}')
-//        ..debug('min: ${tag.minValues}, max: ${tag.maxValues}, width: ${tag.width}');
+      log.debug('${tag.info}');
     }
   });
 }

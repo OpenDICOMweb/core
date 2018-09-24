@@ -11,7 +11,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'element/hash_number_test', level: Level.debug);
@@ -19,17 +19,16 @@ void main() {
     test('IS', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getISList(1, 1);
-        final e0 = new IStag(PTag.kEvaluatorNumber, vList0);
-        final e1 = new IStag(PTag.kEvaluatorNumber, vList0);
-        final e2 = new IStag(PTag.kEvaluationAttempt, vList0);
-        final e3 = new IStag(PTag.kEvaluatorNumber, rsg.getISList(1, 1));
-        final e4 = new IStag(PTag.kEvaluationAttempt, rsg.getISList(1, 1));
+        final e0 = IStag(PTag.kEvaluatorNumber, vList0);
+        final e1 = IStag(PTag.kEvaluatorNumber, vList0);
+        final e2 = IStag(PTag.kEvaluationAttempt, vList0);
+        final e3 = IStag(PTag.kEvaluatorNumber, rsg.getISList(1, 1));
+        final e4 = IStag(PTag.kEvaluationAttempt, rsg.getISList(1, 1));
 
         global.throwOnError = true;
         final hash0 = Sha256.stringList(vList0);
         log.debug('vList0: $vList0, hash0: $hash0');
-        expect(() => e0.sha256,
-            throwsA(const TypeMatcher<UnsupportedError>()));
+        expect(() => e0.sha256, throwsA(const TypeMatcher<UnsupportedError>()));
 
         expect(e0.hash, equals(e1.hash));
         expect(e0.hash, equals(e2.hash));
@@ -60,17 +59,18 @@ void main() {
     test('DS', () {
       for (var i = 0; i <= 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
-        final e0 = new DStag(PTag.kDeadTimeFactor, vList0);
-        final e1 = new DStag(PTag.kDeadTimeFactor, vList0);
-        final e2 = new DStag(PTag.kSelectorDSValue, vList0);
-        final e3 = new DStag(PTag.kDeadTimeFactor, rsg.getDSList(1, 1));
-        final e4 = new DStag(PTag.kDeadTimeFactor, rsg.getDSList(1, 1));
+        final e0 = DStag(PTag.kDeadTimeFactor, vList0);
+        final e1 = DStag(PTag.kDeadTimeFactor, vList0);
+        final e2 = DStag(PTag.kSelectorDSValue, vList0);
+        final e3 = DStag(PTag.kDeadTimeFactor, rsg.getDSList(1, 1));
+        final e4 = DStag(PTag.kDeadTimeFactor, rsg.getDSList(1, 1));
 
         global.throwOnError = false;
         final hash1 = Sha256.stringList(vList0);
         log
           ..debug('vList0: $vList0, hash1: $hash1')
-          ..debug('e0: ${e0.numbers} isList<String>: ${e0.numbers is List<String>}')
+          ..debug(
+              'e0: ${e0.numbers} isList<String>: ${e0.numbers is List<String>}')
           ..debug('isList<double>: ${e0.numbers is List<double>}')
           ..debug('e0: $e0 e0.sha256: ${e0.sha256}');
         expect(e0.sha256, isNotNull);

@@ -10,17 +10,17 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('ULbytes', () {
     //VM.k1
-    const ulVM1Tags = const <int>[
+    const ulVM1Tags = <int>[
       kMRDRDirectoryRecordOffset,
       kNumberOfReferences,
       kLengthToEnd,
@@ -48,12 +48,12 @@ void main() {
     ];
 
     //VM.k3
-    const ulVM3Tags = const <int>[
+    const ulVM3Tags = <int>[
       kGridDimensions,
     ];
 
     //VM.k1_n
-    const ulVM1_nTags = const <int>[
+    const ulVM1_nTags = <int>[
       kSimpleFrameList,
       kReferencedSamplePositions,
       kRationalDenominatorValue,

@@ -15,7 +15,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/int32_base_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
 
   test('Int32Base fromList', () {
@@ -23,8 +23,8 @@ void main() {
       final vList0 = rng.int32List(1, 1);
       expect(Int32.fromList(vList0), vList0);
     }
-    const int32Min = const [kInt32Min];
-    const int32Max = const [kInt32Max];
+    const int32Min = [kInt32Min];
+    const int32Max = [kInt32Max];
     expect(Int32.fromList(int32Max), int32Max);
     expect(Int32.fromList(int32Min), int32Min);
   });
@@ -32,7 +32,7 @@ void main() {
   test('Int32Base fromUint8List', () {
     for (var i = 0; i < 10; i++) {
       final int32list0 = rng.int32List(1, 1);
-      final int32ListV1 = new Int32List.fromList(int32list0);
+      final int32ListV1 = Int32List.fromList(int32list0);
       final bd = int32ListV1.buffer.asUint8List();
       log
         ..debug('int32ListV1 : $int32ListV1')
@@ -45,19 +45,19 @@ void main() {
     global.throwOnError = false;
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.int32List(1, 1);
-      final int32ListV1 = new Int32List.fromList(vList0);
+      final int32ListV1 = Int32List.fromList(vList0);
       final bd = int32ListV1.buffer.asUint8List();
       log
         ..debug('int32ListV1 : $int32ListV1')
         ..debug('SL.toBytes(int32ListV1) ; ${Int32.toBytes(int32ListV1)}');
       expect(Int32.toBytes(int32ListV1), equals(bd));
     }
-    const int32Max = const [kInt32Max];
-    final vList1 = new Int32List.fromList(int32Max);
+    const int32Max = [kInt32Max];
+    final vList1 = Int32List.fromList(int32Max);
     final uaInt8List = vList1.buffer.asUint8List();
     expect(Int32.toBytes(int32Max), uaInt8List);
 
-    const int64Max = const [kInt64Max];
+    const int64Max = [kInt64Max];
     expect(Int32.toBytes(int64Max), isNull);
 
     global.throwOnError = true;
@@ -71,8 +71,8 @@ void main() {
       final vList0 = rng.int32List(1, 1);
       final bd0 = vList0.buffer.asByteData();
       final lBd0 = Int32.toByteData(vList0);
-      log.debug(
-          'lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, '
+          'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 
@@ -83,8 +83,8 @@ void main() {
       expect(lBd1.buffer == bd0.buffer, true);
     }
 
-    const int32Max = const [kInt32Max];
-    final vList1 = new Int32List.fromList(int32Max);
+    const int32Max = [kInt32Max];
+    final vList1 = Int32List.fromList(int32Max);
     final bd1 = vList1.buffer.asByteData();
     final lBd2 = Int32.toByteData(vList1);
     log.debug('bd: ${bd1.buffer.asUint8List()}, '
@@ -111,10 +111,10 @@ void main() {
       expect(lBd2.buffer == bd0.buffer, false);
     }
 
-    const int32Max = const <int>[kInt32Max + 1];
+    const int32Max = <int>[kInt32Max + 1];
     expect(Int32.toByteData(int32Max), isNull);
 
-    const int32Min = const [kInt32Min - 1];
+    const int32Min = [kInt32Min - 1];
     expect(Int32.toByteData(int32Min), isNull);
 
     global.throwOnError = true;
@@ -125,7 +125,7 @@ void main() {
   test('Int32Base fromBase64', () {
     for (var i = 0; i < 10; i++) {
       final intList0 = rng.int32List(0, i);
-      final vList0 = new Int32List.fromList(intList0);
+      final vList0 = Int32List.fromList(intList0);
       final uInt8List0 = vList0.buffer.asUint8List();
       final base64 = cvt.base64.encode(uInt8List0);
       log.debug('SL.base64: "$base64"');
@@ -140,7 +140,7 @@ void main() {
   test('Int32Base toBase64', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.int32List(0, i);
-      final int32ListV1 = new Int32List.fromList(vList0);
+      final int32ListV1 = Int32List.fromList(vList0);
       final bd = int32ListV1.buffer.asUint8List();
       final base64 = cvt.base64.encode(bd);
       final s = Int32.toBase64(vList0);
@@ -151,7 +151,7 @@ void main() {
   test('Int32Base toBase64', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.int32List(1, 1);
-      final int32ListV1 = new Int32List.fromList(vList0);
+      final int32ListV1 = Int32List.fromList(vList0);
       final bd = int32ListV1.buffer.asUint8List();
       final s = cvt.base64.encode(bd);
       expect(Int32.toBase64(vList0), equals(s));
@@ -161,7 +161,7 @@ void main() {
   test('Int32Base encodeDecodeJsonVF', () {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.int32List(0, i);
-      final int32ListV1 = new Int32List.fromList(vList0);
+      final int32ListV1 = Int32List.fromList(vList0);
       final bd = int32ListV1.buffer.asUint8List();
 
       // Encode
@@ -185,7 +185,7 @@ void main() {
   test('Int32Base fromByteData', () {
     for (var i = 0; i < 10; i++) {
       final int32list0 = rng.int32List(1, 1);
-      final int32ListV1 = new Int32List.fromList(int32list0);
+      final int32ListV1 = Int32List.fromList(int32list0);
       final byteData = int32ListV1.buffer.asByteData();
       log
         ..debug('int32list0 : $int32list0')
@@ -198,7 +198,7 @@ void main() {
   test('Int32 fromValueField', () {
     for (var i = 1; i <= 10; i++) {
       final vList0 = rng.int32List(1, i);
-      final int32ListV1 = new Int32List.fromList(vList0);
+      final int32ListV1 = Int32List.fromList(vList0);
       final fvf0 = Int32.fromValueField(int32ListV1);
       log.debug('fromValueField0: $fvf0');
       expect(fvf0, equals(int32ListV1));
@@ -220,8 +220,8 @@ void main() {
     expect(fvf2.isEmpty, true);
 
     final vList0 = rng.int32List(1, 1);
-    final int32ListV1 = new Int32List.fromList(vList0);
-    final byte0 = new Bytes.fromList(int32ListV1);
+    final int32ListV1 = Int32List.fromList(vList0);
+    final byte0 = Bytes.fromList(int32ListV1);
     final fvf3 = Int32.fromValueField(byte0);
     expect(fvf3, isNotNull);
     expect(fvf3 is Bytes, true);

@@ -15,7 +15,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'string_list_test.dart', level: Level.info);
-  final rsg = new RSG();
+  final rsg = RSG();
 
   test('stringListToString', () {
     for (var i = 1; i < 10; i++) {
@@ -164,24 +164,24 @@ void main() {
   });
 
   group('StringList', () {
-    const replaceFirst = const <List<String>>[
-      const <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6L3pw'],
-      const <String>['15v1a', r'[a-zA-Z]+', '***', '15***1a'],
-      const <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
-      const <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
-      const <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
-      const <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3OYm5'],
-      const <String>['12345', r'[a-zA-Z]+', '***', '12345']
+    const replaceFirst = <List<String>>[
+      <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6L3pw'],
+      <String>['15v1a', r'[a-zA-Z]+', '***', '15***1a'],
+      <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
+      <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
+      <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
+      <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3OYm5'],
+      <String>['12345', r'[a-zA-Z]+', '***', '12345']
     ];
 
-    const replaceAll = const <List<String>>[
-      const <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6***3***'],
-      const <String>['15v1a', r'[a-zA-Z]+', '***', '15***1***'],
-      const <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
-      const <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
-      const <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
-      const <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3***5'],
-      const <String>['12345', r'[a-zA-Z]+', '***', '12345']
+    const replaceAll = <List<String>>[
+      <String>['urz6L3pw', r'[a-zA-Z]+', '***', '***6***3***'],
+      <String>['15v1a', r'[a-zA-Z]+', '***', '15***1***'],
+      <String>['ZP-1_', r'[a-zA-Z]+', '***', '***-1_'],
+      <String>['L+uc};j&)ghGLU0', r'[a-zA-Z]+', '***', '*'],
+      <String>['}.3x>1Xcor](/v', r'[a-zA-Z]+', '***', '}'],
+      <String>['+vqoC3OYm5', r'[a-zA-Z]+', '***', '+***3***5'],
+      <String>['12345', r'[a-zA-Z]+', '***', '12345']
     ];
 
     test('StringList.from', () {
@@ -189,15 +189,15 @@ void main() {
 
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLTList(1, i);
-        final sfrom0 = new StringList.from(vList0);
+        final sfrom0 = StringList.from(vList0);
         log.debug('sfrom0: $sfrom0');
         expect(sfrom0, equals(vList0));
       }
 
-      final sfrom1 = new StringList.from();
+      final sfrom1 = StringList.from();
       expect(sfrom1, kEmptyStringList);
 
-      final sfrom2 = new StringList.from([]);
+      final sfrom2 = StringList.from([]);
       expect(sfrom2, kEmptyStringList);
     });
 
@@ -206,9 +206,9 @@ void main() {
 
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLTList(1, i);
-        final sfrom0 = new StringList.from(vList0);
-        final sfrom1 = new StringList.from(vList0);
-        final sfrom2 = new StringList.from();
+        final sfrom0 = StringList.from(vList0);
+        final sfrom1 = StringList.from(vList0);
+        final sfrom2 = StringList.from();
         log.debug('sfrom0: $sfrom0');
         expect(sfrom0, equals(vList0));
 
@@ -224,7 +224,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLTList(1, i);
         final bytes0 = Bytes.fromAsciiList(vList0);
-        final sfrom0 = new StringList.from(vList0);
+        final sfrom0 = StringList.from(vList0);
 
         expect(sfrom0.length, equals(vList0.length));
         expect(sfrom0.lengthInBytes, equals(bytes0.length));
@@ -233,8 +233,8 @@ void main() {
 
     test('replaceFirst', () {
       for (var s in replaceFirst) {
-        final s0 = new StringList.from([s[0]]);
-        final regexFrom = new RegExp(s[1]);
+        final s0 = StringList.from([s[0]]);
+        final regexFrom = RegExp(s[1]);
         final rf0 = s0.replaceFirst(regexFrom, s[2], 10);
         expect(rf0, equals([s[3]]));
       }
@@ -242,8 +242,8 @@ void main() {
 
     test('replaceAll', () {
       for (var s in replaceAll) {
-        final s0 = new StringList.from([s[0]]);
-        final regexFrom = new RegExp(s[1]);
+        final s0 = StringList.from([s[0]]);
+        final regexFrom = RegExp(s[1]);
         final rf0 = s0.replaceAll(regexFrom, s[2], 15);
         expect(rf0, equals([s[3]]));
       }

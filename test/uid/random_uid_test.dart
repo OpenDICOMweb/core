@@ -14,7 +14,7 @@ void main() {
   Server.initialize(name: 'random_uid_test', level: Level.info);
   group('Random Uid Tests', () {
     test('Seeded Random Tests', () {
-      final uid = new Uid.seededPseudo();
+      final uid = Uid.seededPseudo();
       final uidString = uid.asString;
       log.debug('uid: (${uidString.length})"$uid" ');
       expect(uidString.indexOf('2.25.') == 0, true);
@@ -22,7 +22,7 @@ void main() {
       expect(uidString.length > 30, true);
       expect(uidString.length <= 60, true);
 
-      final uid0 = new Uid.seededPseudo();
+      final uid0 = Uid.seededPseudo();
       log.debug('uid0: (${uid0.asString.length})"$uid0"');
       expect(uid == uid0, false);
       expect(uid.hashCode, isNot(uid0.hashCode));
@@ -34,7 +34,7 @@ void main() {
     });
 
     test('Pseudo Random Tests', () {
-      final uid = new Uid.pseudo();
+      final uid = Uid.pseudo();
       final uidString = uid.asString;
       expect(uidString.indexOf('2.25.') == 0, true);
       expect(uidString[5] != '0', true);
@@ -49,7 +49,7 @@ void main() {
     });
 
     test('Secure Random Tests', () {
-      final uid = new Uid.secure();
+      final uid = Uid.secure();
       final uidString = uid.asString;
       expect(uidString.indexOf('2.25.') == 0, true);
       expect(uidString[5] != '0', true);
@@ -63,7 +63,7 @@ void main() {
       expect(uid1.length <= 60, true);
     });
 
-    const goodUids = const <String>[
+    const goodUids = <String>[
       '0.20.3000',
       '1.20.3000',
       '2.20.3000',
@@ -72,7 +72,7 @@ void main() {
       '1.2.840.10008.1.2.4.61'
     ];
 
-    const badUids = const <String>[
+    const badUids = <String>[
       '',
       '1.2.3', // Invalid Length : length less than 6
       '3.2.840.10008.1.2.0', // '3.': not valid root
@@ -82,6 +82,7 @@ void main() {
       '1.).840.10008.0.*.2.', // Special characters
       '1.2.840.10008.1.2.-4.64', // '-': uid can't have a negative number
       // Invalid Length : length greater than 64
+      // ignore: lines_longer_than_80_chars
       '1.4.1.2.840.10008.1.2.4.64.1.2.840.10008.1.2.4.64.1.2.840.10008.1.2.4.64',
       '0.0.000.00000.0.0.00',
       '1.2.a840.1b0008.1.2.4.64', // Uid can't have letters
@@ -89,7 +90,7 @@ void main() {
     ];
 
     test('parseList', () {
-      //final abc  = new List<String>();
+      //final abc  = List<String>();
       final abc = <String>[];
 
       wellKnownUids.forEach((index, value) {
@@ -101,7 +102,7 @@ void main() {
     });
 
     test('randomList', () {
-      final uid = new Uid.secure();
+      final uid = Uid.secure();
       final uidRootType0 = Uid.randomList(uid.asString.length);
       log.debug('uidRootType0 : $uidRootType0');
       expect(uidRootType0, isNotNull);
@@ -217,7 +218,7 @@ void main() {
     });
 
     test('isDicom', () {
-      const goodUids = const <String>[
+      const goodUids = <String>[
         '1.2.840.10008.1.1',
         '1.2.840.10008.1.2',
         '1.2.840.10008.1.2.1',
@@ -253,7 +254,7 @@ void main() {
         final dicom = Uid.isDicom(Uid.parse(s));
         expect(dicom, true);
       }
-      final uid = new Uid.secure();
+      final uid = Uid.secure();
       final dicom = Uid.isDicom(uid);
       expect(dicom, false);
     });
