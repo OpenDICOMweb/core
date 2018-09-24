@@ -12,7 +12,7 @@ import 'package:core/src/element.dart';
 import 'package:core/src/tag.dart';
 
 // ignore_for_file: public_member_api_docs
-
+// ignore_for_file: avoid_field_initializers_in_const_classes
 class ContextGroup {
   final String dcmType = 'ContextGroup';
   final Map<String, String> designators = const {
@@ -27,6 +27,7 @@ const Type cid7050 = DeIdMethod;
 
 class DeIdMethod extends ContextGroup {
   // final CodingScheme designator = CodingScheme.DCM;
+
   final String designator = 'DCM7050';
   final String number = '7050';
   final String name = 'De-Identification Method';

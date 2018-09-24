@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'uid2_test', level: Level.info);
 
-  const goodUids = const <String>[
+  const goodUids = <String>[
     '0.20.3000',
     '1.20.3000',
     '2.20.3000',
@@ -32,7 +32,7 @@ void main() {
     });
   });
 
-  const badUids = const <String>[
+  const badUids = <String>[
     // Bad root
     '3.20.3000',
     // Bad root

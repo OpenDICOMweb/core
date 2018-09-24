@@ -471,7 +471,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const shVM1_nTags = const <PTag>[
+    const shVM1nTags = const <PTag>[
       PTag.kReferringPhysicianTelephoneNumbers,
       PTag.kPatientTelephoneNumbers,
       PTag.kConvolutionKernel,
@@ -655,7 +655,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getSHList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, SH.kMaxLength);
-        for (var tag in shVM1_nTags) {
+        for (var tag in shVM1nTags) {
           log.debug('tag: $tag');
           expect(SH.isValidLength(tag, vList), true);
           expect(SH.isValidLength(tag, validMaxLengthList), true);
@@ -837,7 +837,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in shVM1_nTags) {
+          for (var tag in shVM1nTags) {
             final e0 = SH.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

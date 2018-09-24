@@ -19,7 +19,7 @@ void main() {
   uidTest();
 }
 
-const List<String> goodUids = const <String>[
+const List<String> goodUids = <String>[
   '1.2.840.10008.1.2',
   '1.2.840.10008.1.2.0',
   '1.2.840.10008.0.1.2',
@@ -31,7 +31,7 @@ const List<String> goodUids = const <String>[
   '1.23.9.99.0.345.3242.12.345.35'
 ];
 
-const List<String> badUids = const <String>[
+const List<String> badUids = <String>[
   '1.2.3', // Invalid Length : length less than 6
   '3.2.840.10008.1.2.0', // '3.': not valid root
   '1.02.840.10008.1.2', // '.02': '0' can only be followed by '.'
@@ -47,7 +47,7 @@ const List<String> badUids = const <String>[
 ];
 
 // well known Uids
-const List<String> wkUids = const <String>[
+const List<String> wkUids = <String>[
   '1.2.840.10008.1.2',
   '1.2.840.10008.1.2.1',
   '1.2.840.10008.1.2.1.99',

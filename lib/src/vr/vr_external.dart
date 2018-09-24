@@ -14,6 +14,7 @@ import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/vr.dart';
 
 // ignore_for_file: type_annotate_public_apis, public_member_api_docs
+// ignore_for_file: avoid_renaming_method_parameters
 
 const int _shortVF = kMaxShortVF;
 const int _longVF = kMaxLongVF;

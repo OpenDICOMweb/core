@@ -35,19 +35,19 @@ void main() {
     });
 
     test('Create ApplicationHostingModel', () {
-      const ahm0 = const ApplicationHostingModel(
+      const ahm0 = ApplicationHostingModel(
           '1.2.840.10008.7.1.1',
           'NativeDICOMModel',
           UidType.kApplicationHostingModel,
           'Native DICOM Model');
 
-      const ahm1 = const ApplicationHostingModel(
+      const ahm1 = ApplicationHostingModel(
           '1.2.840.10008.7.1.1',
           'NativeDICOMModel',
           UidType.kApplicationHostingModel,
           'Native DICOM Model');
 
-      const ahm2 = const ApplicationHostingModel(
+      const ahm2 = ApplicationHostingModel(
           '1.2.840.10008.7.1.2',
           'AbstractMulti_DimensionalImageModel',
           UidType.kApplicationHostingModel,

@@ -18,23 +18,27 @@ typedef DeIdAddAll = List<Element> Function<V>(
 typedef DeIdUpdate<V> = Element<V> Function<V>(
     Dataset ds, int index, List<V> vList);
 
+// ignore: prefer_generic_function_type_aliases
 typedef Element<V> DeIdUpdateF<V>(
     Dataset ds, int index, List<V> f(List<V> vList));
 
 typedef DeIdUpdateAll = List<Element> Function<V>(
     Dataset ds, int index, List<Element<V>> e);
 
+// ignore: prefer_generic_function_type_aliases
 typedef List<Element> DeIdUpdateAllF<V>(
     Dataset ds, int index, List<V> f(List<V> vList));
 
 typedef DeIdReplace = List<V> Function<V>(Dataset ds, int index, List<V> vList);
 
+// ignore: prefer_generic_function_type_aliases
 typedef List<V> DeIdReplaceF<V>(
     Dataset ds, int index, List<V> f(List<V> vList));
 
 typedef DeIdReplaceAll = List<Element> Function<V>(
     Dataset ds, int index, List<V> vList);
 
+// ignore: prefer_generic_function_type_aliases
 typedef List<Element> DeIdReplaceAllF<V>(
     Dataset ds, int index, List<V> f(List<V> vList));
 

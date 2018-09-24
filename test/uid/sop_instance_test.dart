@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 
-
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
@@ -17,40 +16,37 @@ void main() {
   group('WellKnownSopInstance', () {
     test('String to UID', () {
       Uid uid = Uid.lookup('1.2.840.10008.5.1.4.34.5');
-      expect(
-          uid == SopInstance.kUnifiedWorklistAndProcedureStep, true);
+      expect(uid == SopInstance.kUnifiedWorklistAndProcedureStep, true);
 
       uid = Uid.lookup('1.2.840.10008.1.42.1');
       expect(uid == SopInstance.kSubstanceAdministrationLogging, true);
 
       uid = Uid.lookup('1.2.840.10008.1.42');
-      expect(
-          uid == SopInstance.kSubstanceAdministrationLogging, false);
+      expect(uid == SopInstance.kSubstanceAdministrationLogging, false);
     });
 
     test('String to WellKnownSopInstance', () {
       Uid uid = SopInstance.lookup('1.2.840.10008.5.1.4.34.5');
-      expect(
-          uid == SopInstance.kUnifiedWorklistAndProcedureStep, true);
+      expect(uid == SopInstance.kUnifiedWorklistAndProcedureStep, true);
 
       uid = SopInstance.lookup('1.2.840.10008.1.42.1');
       expect(uid == SopInstance.kSubstanceAdministrationLogging, true);
     });
 
     test('Create WellKnownSopInstance', () {
-      const wksI0 = const SopInstance(
+      const wksI0 = SopInstance(
           '1.2.840.10008.5.1.4.34.5',
           'UnifiedWorklistandProcedureStepSOPInstance',
           UidType.kSOPInstance,
           'Unified Worklist and Procedure Step SOP Instance');
 
-      const wksI1 = const SopInstance(
+      const wksI1 = SopInstance(
           '1.2.840.10008.5.1.4.34.5',
           'UnifiedWorklistandProcedureStepSOPInstance',
           UidType.kSOPInstance,
           'Unified Worklist and Procedure Step SOP Instance');
 
-      const wksI2 = const SopInstance(
+      const wksI2 = SopInstance(
           '1.2.840.10008.1.42.1',
           'SubstanceAdministrationLoggingSOPInstance',
           UidType.kSOPInstance,

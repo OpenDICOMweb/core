@@ -35,6 +35,7 @@ const int kElementMask = 0x0000FFFF;
 /// A Element Type predicate. Returns _true_  if the Element
 /// corresponding to [key] in the [Dataset] satisfies the
 /// requirements for the SopClass of the [Dataset].
+// ignore: prefer_generic_function_type_aliases
 typedef bool ETypePredicate<K>(Dataset ds, K key);
 
 //TODO: move to system

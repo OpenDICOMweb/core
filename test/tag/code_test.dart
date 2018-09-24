@@ -14,7 +14,7 @@ import 'package:core/src/tag/code.dart';
 void main() {
   Server.initialize(name: 'pc_tag_test', level: Level.debug);
 
-  const kInvalidPrivateCodes = const [
+  const kInvalidPrivateCodes = [
     0x00080000,
     0x000C0002,
     0x000E0004,
@@ -25,7 +25,7 @@ void main() {
     0xFFFF01FE,
   ];
 
-  const kValidPrivateGroupLengthCodes = const [
+  const kValidPrivateGroupLengthCodes = [
     0x00090000,
     0x000B0000,
     0x000D0000,
@@ -36,7 +36,7 @@ void main() {
     0xFFFD0000,
   ];
 
-  const kValidPrivateCreatorCodes = const [
+  const kValidPrivateCreatorCodes = [
     0x00090010,
     0x000B0011,
     0x000D0012,
@@ -67,7 +67,7 @@ void main() {
     }
   });
 
-  const kPrivateInvalidCodes = const [
+  const kPrivateInvalidCodes = [
     0x00090001,
     0x000B0002,
     0x000D0003,
@@ -78,7 +78,7 @@ void main() {
     0xFFFD000F
   ];
 
-  const kValidPrivateDataCodes = const [
+  const kValidPrivateDataCodes = [
     0x00091000,
     0x000B1101,
     0x000D1202,
@@ -163,15 +163,15 @@ void main() {
     }
   });
 
-  const kValidPrivateDataCodesWithCreator = const [
-    const [0x00091000, 0x00090010],
-    const [0x000B1101, 0x000B0011],
-    const [0x000D1202, 0x000D0012],
-    const [0x000F1303, 0x000F0013],
-    const [0x00111404, 0x00110014],
-    const [0xFFF9FF00, 0xFFF900FF],
-    const [0xFFFBFBFE, 0xFFFB00FB],
-    const [0xFFFDFDFF, 0xFFFD00FD]
+  const kValidPrivateDataCodesWithCreator = [
+    [0x00091000, 0x00090010],
+    [0x000B1101, 0x000B0011],
+    [0x000D1202, 0x000D0012],
+    [0x000F1303, 0x000F0013],
+    [0x00111404, 0x00110014],
+    [0xFFF9FF00, 0xFFF900FF],
+    [0xFFFBFBFE, 0xFFFB00FB],
+    [0xFFFDFDFF, 0xFFFD00FD]
   ];
 
   test('Valid Private Data Codes with Creator', () {

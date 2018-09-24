@@ -63,7 +63,7 @@ void main() {
       expect(uid1.length <= 60, true);
     });
 
-    const goodUids = const <String>[
+    const goodUids = <String>[
       '0.20.3000',
       '1.20.3000',
       '2.20.3000',
@@ -72,7 +72,7 @@ void main() {
       '1.2.840.10008.1.2.4.61'
     ];
 
-    const badUids = const <String>[
+    const badUids = <String>[
       '',
       '1.2.3', // Invalid Length : length less than 6
       '3.2.840.10008.1.2.0', // '3.': not valid root
@@ -82,6 +82,7 @@ void main() {
       '1.).840.10008.0.*.2.', // Special characters
       '1.2.840.10008.1.2.-4.64', // '-': uid can't have a negative number
       // Invalid Length : length greater than 64
+      // ignore: lines_longer_than_80_chars
       '1.4.1.2.840.10008.1.2.4.64.1.2.840.10008.1.2.4.64.1.2.840.10008.1.2.4.64',
       '0.0.000.00000.0.0.00',
       '1.2.a840.1b0008.1.2.4.64', // Uid can't have letters
@@ -123,13 +124,10 @@ void main() {
 
     test('check', () {
       //good
-      for (var s in wellKnownUids.keys)
-        expect(Uid.isValidString(s), true);
+      for (var s in wellKnownUids.keys) expect(Uid.isValidString(s), true);
 
       //bad
-      for (var s in badUids)
-        expect(Uid.isValidString(s), false);
-
+      for (var s in badUids) expect(Uid.isValidString(s), false);
 
       expect(Uid.isValidString(''), false);
 
@@ -137,7 +135,7 @@ void main() {
     });
 
     test('isDicom', () {
-      const goodUids = const <String>[
+      const goodUids = <String>[
         '1.2.840.10008.1.1',
         '1.2.840.10008.1.2',
         '1.2.840.10008.1.2.1',

@@ -19,13 +19,13 @@ void main() {
   Server.initialize(name: 'string/uc_test', level: Level.info);
   global.throwOnError = false;
 
-  const goodUCList = const <List<String>>[
+  const goodUCList = <List<String>>[
     const <String>['2qVmo1AAD'],
     const <String>['erty#4u'],
     const <String>['2qVmo1AAD'],
     const <String>['q.&*k']
   ];
-  const badUCList = const <List<String>>[
+  const badUCList = <List<String>>[
     const <String>['\b'], //	Backspace
     const <String>['\t '], //horizontal tab (HT)
     const <String>['\n'], //linefeed (LF)
@@ -431,17 +431,17 @@ void main() {
 
   group('UC', () {
     //VM.k1
-    const ucVM1Tags = const <PTag>[
+    const ucVM1Tags = <PTag>[
       PTag.kStrainDescription,
       PTag.kGeneticModificationsDescription,
     ];
 
     //VM.k1_n
-    const ucVM1_nTags = const <PTag>[
+    const ucVM1nTags = <PTag>[
       PTag.kSelectorUCValue,
     ];
 
-    const otherTags = const <PTag>[
+    const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
       PTag.kAcquisitionProtocolDescription,
       PTag.kCTDIvol,
@@ -608,7 +608,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUCList(1, i);
-        for (var tag in ucVM1_nTags) {
+        for (var tag in ucVM1nTags) {
           log.debug('tag: $tag');
           expect(UC.isValidLength(tag, vList0), true);
         }
@@ -789,7 +789,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in ucVM1_nTags) {
+          for (var tag in ucVM1nTags) {
             final e0 = UC.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

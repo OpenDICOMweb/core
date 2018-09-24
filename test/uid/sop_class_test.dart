@@ -11,7 +11,6 @@
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-
 // TODO: add tests for all three errors in core/src/uid/uid_errors.dart.
 
 void main() {
@@ -36,7 +35,7 @@ void main() {
     });
   });
 
-  const badUids = const <String>[
+  const badUids = <String>[
     '1.2.3', // Invalid Length : length less than 6
     '3.2.840.10008.1.2.0', // '3.': not valid root
     '1.02.840.10008.1.2', // '.02': '0' can only be followed by '.'
@@ -89,13 +88,13 @@ void main() {
     });
 
     test('Create SopClass', () {
-      const sop0 = const SopClass('1.2.840.10008.1.1', 'VerificationSOPClass',
+      const sop0 = SopClass('1.2.840.10008.1.1', 'VerificationSOPClass',
           UidType.kSOPClass, 'Verification SOP Class');
 
-      const sop1 = const SopClass('1.2.840.10008.1.1', 'VerificationSOPClass',
+      const sop1 = SopClass('1.2.840.10008.1.1', 'VerificationSOPClass',
           UidType.kSOPClass, 'Verification SOP Class');
 
-      const sop2 = const SopClass(
+      const sop2 = SopClass(
           '1.2.840.10008.1.3.10',
           'MediaStorageDirectoryStorage',
           UidType.kSOPClass,

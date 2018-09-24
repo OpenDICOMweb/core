@@ -228,7 +228,7 @@ class FrameDescriptor {
 
   /// The number of pixels in each [Frame]. If the [length] == -1,
   /// then the [Frame]s are compressed.
-  int get lengthInBits => (length * bitsAllocated);
+  int get lengthInBits => length * bitsAllocated;
 
   /// The number of pixels in each [Frame] or [FrameList] with _this_
   /// as their [FrameDescriptor]. If the [length] == -1, then

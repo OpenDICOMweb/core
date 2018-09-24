@@ -62,21 +62,21 @@ void main() {
   });
 
   test('bytesToAttributeTags', () {
-    const uInt64Max = const [kUint64Max];
+    const uInt64Max = [kUint64Max];
     final uInt64ListV0 = Uint64List.fromList(uInt64Max);
     final uInt8ListV0 = uInt64ListV0.buffer.asUint8List();
     final bta0 = bytesToAttributeTags(uInt8ListV0);
     log.debug('bta0: $bta0');
     expect(bta0, isNotNull);
 
-    const uInt32Max = const [kUint32Max];
+    const uInt32Max = [kUint32Max];
     final uInt32ListV1 = Uint32List.fromList(uInt32Max);
     final uInt8ListV11 = uInt32ListV1.buffer.asUint8List();
     final bta1 = bytesToAttributeTags(uInt8ListV11);
     log.debug('bta1: $bta1');
     expect(bta1, isNotNull);
 
-    const uInt16Max = const [kUint16Max];
+    const uInt16Max = [kUint16Max];
     final uInt16ListV0 = Uint32List.fromList(uInt16Max);
     final uInt8ListV2 = uInt16ListV0.buffer.asUint8List();
     final bta2 = bytesToAttributeTags(uInt8ListV2);
@@ -173,7 +173,7 @@ void main() {
   });
 
   test('parse_integer', () {
-    const goodIntegerStrings = const <String>[
+    const goodIntegerStrings = <String>[
       '+8',
       ' +8',
       '+8 ',
@@ -196,7 +196,7 @@ void main() {
   });
 
   test('parse_decimal', () {
-    const goodDecimalStrings = const <String>[
+    const goodDecimalStrings = <String>[
       '567',
       ' 567',
       '567 ',
