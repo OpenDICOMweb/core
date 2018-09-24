@@ -191,9 +191,18 @@ class IDSBytes extends DSBytes {
   bool get isValidItem =>
       startDelimiter == kStartDelimiter && hasValidEndDelimiter;
 
-  bool get hasValidEndDelimiter => hasULength
+/*
+  //Flush when tested
+  bool get hasValidEndDelimiterX => hasULength
       ? endDelimiter == kEndDelimiter && trailerLengthField == 0
       : true;
+*/
+
+  bool get hasValidEndDelimiter =>
+      (hasULength &&
+          endDelimiter == kEndDelimiter &&
+          trailerLengthField == 0) ||
+      true;
 
   /// Returns _true_ if the Value Field Length field
   /// contained [kUndefinedLength].

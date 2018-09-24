@@ -24,14 +24,14 @@ import 'time_zone.dart';
 //TODO: should implement Comparable, add, subtract
 
 /// The [Type] of [DcmDateTime] error handlers.
-typedef DcmDateTime OnDcmDateTimeError(
+typedef OnDcmDateTimeError = DcmDateTime Function(
     int y, int m, int d, int h, int mm, int s, int ms, int us);
 
 /// The [Type] of [DcmDateTime] parsing error handlers.
-typedef DcmDateTime OnDcmDateTimeParseError(String s);
+typedef OnDcmDateTimeParseError = DcmDateTime Function(String s);
 
 /// The [Type] of [DcmDateTime] hashing error handlers.
-typedef String OnDcmDateTimeHashStringError(String s);
+typedef OnDcmDateTimeHashStringError = String Function(String s);
 
 /// DICOM Date/Time.
 class DcmDateTime implements Comparable<DcmDateTime> {
@@ -305,8 +305,11 @@ class DcmDateTime implements Comparable<DcmDateTime> {
       Issues issues,
       OnDcmDateTimeParseError onError}) {
     final dt = parseDcmDateTime(s, start: start, end: end);
-    if (dt == null)
-      return onError != null ? onError(s) : badDateTimeString(s, issues);
+    if (dt == null) {
+      if (throwOnError)
+        return onError != null ? onError(s) : badDateTimeString(s, issues);
+      return null;
+    }
     return DcmDateTime._(dt);
   }
 
@@ -388,6 +391,7 @@ InvalidDcmDateTimeError: $error
 }
 
 /// The error handler for invalid [DcmDateTime]s.
+// ignore: prefer_void_to_null
 Null invalidDcmDateTimeError(int y,
     [int m,
     int d,

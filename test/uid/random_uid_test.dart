@@ -14,7 +14,7 @@ void main() {
   Server.initialize(name: 'random_uid_test', level: Level.info);
   group('Random Uid Tests', () {
     test('Seeded Random Tests', () {
-      final uid = new Uid.seededPseudo();
+      final uid = Uid.seededPseudo();
       final uidString = uid.asString;
       log.debug('uid: (${uidString.length})"$uid" ');
       expect(uidString.indexOf('2.25.') == 0, true);
@@ -22,7 +22,7 @@ void main() {
       expect(uidString.length > 30, true);
       expect(uidString.length <= 60, true);
 
-      final uid0 = new Uid.seededPseudo();
+      final uid0 = Uid.seededPseudo();
       log.debug('uid0: (${uid0.asString.length})"$uid0"');
       expect(uid == uid0, false);
       expect(uid.hashCode, isNot(uid0.hashCode));
@@ -34,7 +34,7 @@ void main() {
     });
 
     test('Pseudo Random Tests', () {
-      final uid = new Uid.pseudo();
+      final uid = Uid.pseudo();
       final uidString = uid.asString;
       expect(uidString.indexOf('2.25.') == 0, true);
       expect(uidString[5] != '0', true);
@@ -49,7 +49,7 @@ void main() {
     });
 
     test('Secure Random Tests', () {
-      final uid = new Uid.secure();
+      final uid = Uid.secure();
       final uidString = uid.asString;
       expect(uidString.indexOf('2.25.') == 0, true);
       expect(uidString[5] != '0', true);
@@ -89,7 +89,7 @@ void main() {
     ];
 
     test('parseList', () {
-      //final abc  = new List<String>();
+      //final abc  = List<String>();
       final abc = <String>[];
 
       wellKnownUids.forEach((index, value) {
@@ -101,7 +101,7 @@ void main() {
     });
 
     test('randomList', () {
-      final uid = new Uid.secure();
+      final uid = Uid.secure();
       final uidRootType0 = Uid.randomList(uid.asString.length);
       log.debug('uidRootType0 : $uidRootType0');
       expect(uidRootType0, isNotNull);
@@ -173,7 +173,7 @@ void main() {
         final dicom = Uid.isDicom(Uid.parse(s));
         expect(dicom, true);
       }
-      final uid = new Uid.secure();
+      final uid = Uid.secure();
       final dicom = Uid.isDicom(uid);
       expect(dicom, false);
     });

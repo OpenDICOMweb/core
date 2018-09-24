@@ -124,19 +124,19 @@ void main() {
 
     test('TimeZone', () {
       for (var i in validTimeZones) {
-        final tz = new TimeZone(i[0], i[1], i[2]);
+        final tz = TimeZone(i[0], i[1], i[2]);
         expect(tz, isNotNull);
       }
 
       for (var i in invalidTimeZones) {
         global.throwOnError = false;
         log.debug('throwOnError: $throwOnError');
-        final tz = new TimeZone(i[0], i[1], i[2]);
+        final tz = TimeZone(i[0], i[1], i[2]);
         expect(tz, isNull);
 
         global.throwOnError = true;
         log.debug('throwOnError: $throwOnError');
-        expect(() => new TimeZone(i[0], i[1], i[2]),
+        expect(() => TimeZone(i[0], i[1], i[2]),
             throwsA(equals(const TypeMatcher<InvalidTimeZoneError>())));
       }
     });
@@ -162,7 +162,7 @@ void main() {
 
     test('dcm', () {
       for (var i = 1; i < validTimeZones.length; i++) {
-        final tz0 = new TimeZone(
+        final tz0 = TimeZone(
             validTimeZones[i][0], validTimeZones[i][1], validTimeZones[i][2]);
         log.debug('tz0.dcm:${tz0.dcm}, h: ${tz0.h},${tz0.m}');
         expect(tz0.dcm, isNotNull);
@@ -171,7 +171,7 @@ void main() {
 
     test('hash', () {
       for (var i = 1; i < validTimeZones.length; i++) {
-        final tz0 = new TimeZone(
+        final tz0 = TimeZone(
             validTimeZones[i][0], validTimeZones[i][1], validTimeZones[i][2]);
         log.debug('tz0: $tz0');
         final hash0 = tz0.hash;
@@ -208,7 +208,7 @@ void main() {
       }
 
       for (var i = 1; i < validTimeZones.length; i++) {
-        final tz0 = new TimeZone(
+        final tz0 = TimeZone(
             validTimeZones[i][0], validTimeZones[i][1], validTimeZones[i][2]);
         log.debug('tz0.inet:${tz0.inet}, h: ${tz0.h},m: ${tz0.m}');
         expect(tz0.inet, kValidInetTZStrings[i]);

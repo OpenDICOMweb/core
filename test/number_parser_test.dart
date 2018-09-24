@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'number_parse_test.dart', level: Level.info);
 
-  final rng = new RNG();
+  final rng = RNG();
 
   test('parseUint', () {
     final list0 = rng.uint8List(1, 10);

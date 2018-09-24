@@ -12,15 +12,15 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/sha256Hash_float_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
 
   group('Float Elements', () {
     test('FL', () {
       final vList = rng.float32List(1, 1);
       log.debug('float32List: $vList');
-      final e0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
-      final e1 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
-      final e2 = new FLtag(PTag.kMetersetRateSet, vList);
+      final e0 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
+      final e1 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
+      final e2 = FLtag(PTag.kMetersetRateSet, vList);
 
       final sha0 = Sha256.float32(vList);
       log.debug('sha0: $sha0');
@@ -39,9 +39,9 @@ void main() {
     test('OF', () {
       final vList = rng.float32List(1, 1);
       log.debug('float32List: $vList');
-      final e0 = new OFtag(PTag.kVectorGridData, vList);
-      final e1 = new OFtag(PTag.kVectorGridData, vList);
-      final e2 = new OFtag(PTag.kFirstOrderPhaseCorrectionAngle, vList);
+      final e0 = OFtag(PTag.kVectorGridData, vList);
+      final e1 = OFtag(PTag.kVectorGridData, vList);
+      final e2 = OFtag(PTag.kFirstOrderPhaseCorrectionAngle, vList);
 
       final sha0 = Sha256.float32(vList);
       log.debug('sha0: $sha0');
@@ -60,9 +60,9 @@ void main() {
     test('FD', () {
       final vList = rng.float64List(1, 1);
       log.debug('float64List: $vList');
-      final e0 = new FDtag(PTag.kOverallTemplateSpatialTolerance, vList);
-      final e1 = new FDtag(PTag.kOverallTemplateSpatialTolerance, vList);
-      final e2 = new FDtag(PTag.kCineRelativeToRealTime, vList);
+      final e0 = FDtag(PTag.kOverallTemplateSpatialTolerance, vList);
+      final e1 = FDtag(PTag.kOverallTemplateSpatialTolerance, vList);
+      final e2 = FDtag(PTag.kCineRelativeToRealTime, vList);
 
       final sha0 = Sha256.float64(vList);
       log.debug('sha0: $sha0');
@@ -81,9 +81,9 @@ void main() {
     test('OD', () {
       final vList = rng.float64List(1, 1);
       log.debug('float64List: $vList');
-      final e0 = new ODtag(PTag.kSelectorODValue, vList);
-      final e1 = new ODtag(PTag.kSelectorODValue, vList);
-      final e2 = new ODtag(PTag.kDoubleFloatPixelData, vList);
+      final e0 = ODtag(PTag.kSelectorODValue, vList);
+      final e1 = ODtag(PTag.kSelectorODValue, vList);
+      final e2 = ODtag(PTag.kDoubleFloatPixelData, vList);
 
       final sha0 = Sha256.float64(vList);
       log.debug('sha0: $sha0');

@@ -12,9 +12,10 @@ import 'package:core/src/tag.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef bool ElementPredicate(Dataset ds, Element e, [DatasetPredicate dsp]);
+typedef ElementPredicate =
+    bool Function(Dataset ds, Element e, [DatasetPredicate dsp]);
 
-typedef bool DatasetPredicate<K>(Dataset ds, Element e);
+typedef DatasetPredicate = bool Function(Dataset ds, Element e);
 
 /// A DICOM Data Element Type.  See PS3.5, Section 7.4.
 class AType {

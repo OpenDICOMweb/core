@@ -13,7 +13,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/uc_test', level: Level.info);
@@ -44,12 +44,12 @@ void main() {
     test('UC hasValidValues good values', () {
       for (var s in goodUCList) {
         global.throwOnError = false;
-        final e0 = new UCtag(PTag.kStrainDescription, s);
+        final e0 = UCtag(PTag.kStrainDescription, s);
         expect(e0.hasValidValues, true);
       }
 
       global.throwOnError = false;
-      final e0 = new UCtag(PTag.kGeneticModificationsDescription, []);
+      final e0 = UCtag(PTag.kGeneticModificationsDescription, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -57,27 +57,27 @@ void main() {
     test('UC hasValidValues bad values', () {
       for (var s in badUCList) {
         global.throwOnError = false;
-        final e0 = new UCtag(PTag.kStrainDescription, s);
+        final e0 = UCtag(PTag.kStrainDescription, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new UCtag(PTag.kStrainDescription, s),
+        expect(() => UCtag(PTag.kStrainDescription, s),
             throwsA(const TypeMatcher<StringError>()));
       }
       global.throwOnError = false;
-      final e1 = new UCtag(PTag.kGeneticModificationsDescription, null);
+      final e1 = UCtag(PTag.kGeneticModificationsDescription, null);
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new UCtag(PTag.kStrainDescription, null),
+      expect(() => UCtag(PTag.kStrainDescription, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UC hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final e0 = new UCtag(PTag.kStrainDescription, vList0);
+        final e0 = UCtag(PTag.kStrainDescription, vList0);
         expect(e0.hasValidValues, true);
 
         log..debug('e0: $e0, values: ${e0.values}')..debug('e0: ${e0.info}');
@@ -89,35 +89,35 @@ void main() {
         log.debug('$i: vList0: $vList0');
 
         global.throwOnError = false;
-        final e1 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
+        final e1 = UCtag(PTag.kGeneticModificationsDescription, vList0);
         expect(e1, isNull);
         global.throwOnError = true;
-        expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList0),
+        expect(() => UCtag(PTag.kGeneticModificationsDescription, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
     test('UC update random', () {
-      final e0 = new UCtag(PTag.kGeneticModificationsDescription, []);
+      final e0 = UCtag(PTag.kGeneticModificationsDescription, []);
       expect(e0.update(['d^u:96P, azV']).values, equals(['d^u:96P, azV']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(3, 4);
         global.throwOnError = false;
-        final e1 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
+        final e1 = UCtag(PTag.kGeneticModificationsDescription, vList0);
         expect(e1, isNull);
         final vList1 = rsg.getUCList(3, 4);
 //        expect(e1.update(vList1).values, equals(vList1));
         expect(() => e1.update(vList1).values,
             throwsA(const TypeMatcher<NoSuchMethodError>()));
         global.throwOnError = true;
-        expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList0),
+        expect(() => UCtag(PTag.kGeneticModificationsDescription, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
     test('UC noValues random', () {
-      final e0 = new UCtag(PTag.kGeneticModificationsDescription, []);
+      final e0 = UCtag(PTag.kGeneticModificationsDescription, []);
       final UCtag ucNoValues = e0.noValues;
       expect(ucNoValues.values.isEmpty, true);
       log.debug('st0: ${e0.noValues}');
@@ -125,22 +125,22 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
         global.throwOnError = false;
-        final e1 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
+        final e1 = UCtag(PTag.kGeneticModificationsDescription, vList0);
         final UCtag ucNoValues1 = e1.noValues;
         expect(ucNoValues1.values.isEmpty, true);
 
         final vList1 = rsg.getUCList(2, 4);
         global.throwOnError = false;
-        final e2 = new UCtag(PTag.kGeneticModificationsDescription, vList1);
+        final e2 = UCtag(PTag.kGeneticModificationsDescription, vList1);
         expect(e2, isNull);
         global.throwOnError = true;
-        expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList1),
+        expect(() => UCtag(PTag.kGeneticModificationsDescription, vList1),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
     test('UC copy random', () {
-      final e0 = new UCtag(PTag.kGeneticModificationsDescription, []);
+      final e0 = UCtag(PTag.kGeneticModificationsDescription, []);
       final UCtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
@@ -148,14 +148,14 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(3, 4);
         global.throwOnError = false;
-        final e2 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
+        final e2 = UCtag(PTag.kGeneticModificationsDescription, vList0);
         expect(e2, isNull);
         expect(() => e1.update(vList0).values,
             throwsA(const TypeMatcher<NoSuchMethodError>()));
         expect(() => e2.copy, throwsA(const TypeMatcher<NoSuchMethodError>()));
 
         global.throwOnError = true;
-        expect(() => new UCtag(PTag.kGeneticModificationsDescription, vList0),
+        expect(() => UCtag(PTag.kGeneticModificationsDescription, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
@@ -163,8 +163,8 @@ void main() {
     test('UC hashCode and == good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final e0 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
-        final e1 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
+        final e0 = UCtag(PTag.kGeneticModificationsDescription, vList0);
+        final e1 = UCtag(PTag.kGeneticModificationsDescription, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -177,15 +177,15 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final e0 = new UCtag(PTag.kGeneticModificationsDescription, vList0);
+        final e0 = UCtag(PTag.kGeneticModificationsDescription, vList0);
         final vList1 = rsg.getUCList(1, 1);
-        final e1 = new UCtag(PTag.kStrainDescription, vList1);
+        final e1 = UCtag(PTag.kStrainDescription, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e1.hashCode}');
         expect(e0.hashCode == e1.hashCode, false);
         expect(e0 == e1, false);
 
         final vList2 = rsg.getUCList(2, 3);
-        final e2 = new UCtag(PTag.kStrainDescription, vList2);
+        final e2 = UCtag(PTag.kStrainDescription, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
@@ -195,7 +195,7 @@ void main() {
     test('UC valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final e0 = new UCtag(PTag.kStrainDescription, vList0);
+        final e0 = UCtag(PTag.kStrainDescription, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -203,7 +203,7 @@ void main() {
     test('UC isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final e0 = new UCtag(PTag.kStrainDescription, vList0);
+        final e0 = UCtag(PTag.kStrainDescription, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -211,7 +211,7 @@ void main() {
     test('UC isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final e0 = new UCtag(PTag.kStrainDescription, vList0);
+        final e0 = UCtag(PTag.kStrainDescription, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -220,18 +220,18 @@ void main() {
     test('UC replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 1);
-        final e0 = new UCtag(PTag.kStrainDescription, vList0);
+        final e0 = UCtag(PTag.kStrainDescription, vList0);
         final vList1 = rsg.getUCList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getUCList(1, 1);
-      final e1 = new UCtag(PTag.kStrainDescription, vList1);
+      final e1 = UCtag(PTag.kStrainDescription, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new UCtag(PTag.kStrainDescription, vList1);
+      final e2 = UCtag(PTag.kStrainDescription, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -239,10 +239,10 @@ void main() {
     test('UC blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getUCList(1, 1);
-        final e0 = new UCtag(PTag.kStrainDescription, vList1);
+        final e0 = UCtag(PTag.kStrainDescription, vList1);
         for (var i = 1; i < 10; i++) {
           final blank = e0.blank(i);
-          log.debug(('blank$i: ${blank.values}'));
+          log.debug('blank$i: ${blank.values}');
           expect(blank.values.length == 1, true);
           expect(blank.value.length == i, true);
           final strSpaceList = <String>[''.padRight(i, ' ')];
@@ -268,7 +268,7 @@ void main() {
         final vList1 = rsg.getUCList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = UCtag.fromBytes(PTag.kSelectorUCValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
@@ -282,7 +282,7 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = UCtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
@@ -330,18 +330,18 @@ void main() {
 
     test('UC checkLength good values', () {
       final vList0 = rsg.getUCList(1, 1);
-      final e0 = new UCtag(PTag.kStrainDescription, vList0);
+      final e0 = UCtag(PTag.kStrainDescription, vList0);
       for (var s in goodUCList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new UCtag(PTag.kStrainDescription, vList0);
+      final e1 = UCtag(PTag.kStrainDescription, vList0);
       expect(e1.checkLength([]), true);
     });
 
     test('UC checkLength bad values', () {
       final vList1 = ['a^1sd', '02@#'];
       global.throwOnError = false;
-      final e2 = new UCtag(PTag.kStrainDescription, vList1);
+      final e2 = UCtag(PTag.kStrainDescription, vList1);
       expect(e2, isNull);
       expect(() => e2.checkLength(vList1),
           throwsA(const TypeMatcher<NoSuchMethodError>()));
@@ -349,7 +349,7 @@ void main() {
 
     test('UC checkValue good values', () {
       final vList0 = rsg.getUCList(1, 1);
-      final e0 = new UCtag(PTag.kStrainDescription, vList0);
+      final e0 = UCtag(PTag.kStrainDescription, vList0);
       for (var s in goodUCList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -359,7 +359,7 @@ void main() {
 
     test('UC checkValue bad values', () {
       final vList0 = rsg.getUCList(1, 1);
-      final e0 = new UCtag(PTag.kStrainDescription, vList0);
+      final e0 = UCtag(PTag.kStrainDescription, vList0);
       for (var s in badUCList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -376,7 +376,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 4);
-        final e0 = new UCtag(PTag.kSelectorUCValue, vList0);
+        final e0 = UCtag(PTag.kSelectorUCValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -388,7 +388,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 4);
-        final e0 = new UCtag(PTag.kSelectorUCValue, vList0);
+        final e0 = UCtag(PTag.kSelectorUCValue, vList0);
         const vList1 = 'foo';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -400,7 +400,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 4, 16);
-        final e0 = new UCtag(PTag.kSelectorUCValue, vList0);
+        final e0 = UCtag(PTag.kSelectorUCValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -411,7 +411,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, 10);
-        final e0 = new UCtag(PTag.kSelectorUCValue, vList0);
+        final e0 = UCtag(PTag.kSelectorUCValue, vList0);
         final match0 = e0.match(r'.*');
         expect(match0, true);
       }
@@ -422,7 +422,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUCList(1, i);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new UCtag(PTag.kSelectorUCValue, vList0);
+        final e0 = UCtag(PTag.kSelectorUCValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }

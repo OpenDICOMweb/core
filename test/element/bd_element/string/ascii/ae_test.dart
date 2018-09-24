@@ -10,13 +10,13 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'bd_element/special_test', level: Level.info);
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('AEbytes', () {
     test('AEbytes from VM.k1', () {
@@ -40,6 +40,7 @@ void main() {
 
         final e2 = AEbytes.fromValues(kReceivingAE, vList);
         log.debug('e2: $e2');
+ // Urgent Sharath: what is next line doing?
         e2.vfBytes == bytes;
         expect(e2.hasValidValues, true);
         expect(e2.vfBytes == bytes, true);

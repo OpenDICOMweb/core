@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(
-      name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.info);
+      name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.debug);
 
   const goodDcmDateTimeList = <String>[
     '19500718105630',
@@ -89,15 +89,17 @@ void main() {
         log.debug('s: $s');
         expect(DcmDateTime.isValidString(s), true);
         final dateTime = DcmDateTime.parse(s);
-        log.debug('us: ${dateTime.microseconds}');
-        log.debug('day: ${dateTime.day}');
-        log.debug('dateTime: $dateTime');
+        log
+          ..debug('us: ${dateTime.microseconds}')
+          ..debug('day: ${dateTime.day}')
+          ..debug('dateTime: $dateTime');
         expect(dateTime is DcmDateTime, true);
       }
     });
 
     test('isValid Bad DcmDateTime', () {
       global.level = Level.debug;
+      global.throwOnError = false;
 
       for (var dt in badDcmDateTimeList) {
         log.debug('dt: $dt');
@@ -166,7 +168,7 @@ void main() {
     });
 
     test('sha256 date_time', () {
-      final dt1 = new DcmDateTime(1970, 05, 01);
+      final dt1 = DcmDateTime(1970, 05, 01);
 
       log.debug('dt1: $dt1');
       final sha0 = dt1.sha256;
@@ -244,8 +246,8 @@ void main() {
       for (var y = 1900; y < 2000; y++) {
         for (var m = 1; m < 12; m++) {
           for (var d = 1; d < lastDayOfMonth(y, m); d++) {
-            final dt0 = new Date(y, m, d);
-            final dt1 = new Date(y, m, d + 1);
+            final dt0 = Date(y, m, d);
+            final dt1 = Date(y, m, d + 1);
             log.debug('dt0: $dt0, dt1: $dt1');
             expect(dt1 > dt0, true);
           }
@@ -257,8 +259,8 @@ void main() {
       for (var y = 1900; y < 2000; y++) {
         for (var m = 1; m < 12; m++) {
           for (var d = 1; d < lastDayOfMonth(y, m); d++) {
-            final dt0 = new DcmDateTime(y, m, d);
-            final dt1 = new DcmDateTime(y, m, d + 1);
+            final dt0 = DcmDateTime(y, m, d);
+            final dt1 = DcmDateTime(y, m, d + 1);
             log.debug('dt0: $dt0, dt1: $dt1');
             expect(dt0 < dt1, true);
           }
@@ -271,14 +273,14 @@ void main() {
         for (var m = 1; m < 12; m++) {
           for (var d = 1; d < lastDayOfMonth(y, m); d++) {
             if (d + 1 < lastDayOfMonth(y, m)) {
-              final dt0 = new DcmDateTime(y, m, d);
-              final dt1 = new DcmDateTime(y, m, d + 1);
+              final dt0 = DcmDateTime(y, m, d);
+              final dt1 = DcmDateTime(y, m, d + 1);
               expect(dt0.compareTo(dt1), -1);
 
               expect(dt1.compareTo(dt0), 1);
               expect(dt0.compareTo(dt0), 0);
 
-              final dt2 = new DcmDateTime(y, m, d);
+              final dt2 = DcmDateTime(y, m, d);
               expect(dt0.compareTo(dt2), 0);
             }
           }
@@ -291,11 +293,9 @@ void main() {
       log.debug('d0 : $d0');
       expect(d0 == 0, true);
 
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
-      /*final add0 = dt0.add(
-          years: 20, months: 08, days: 12, hours: 01, minutes: 10, seconds: 20);*/
       const years = 100;
       for (var i = 1; i < years; i++) {
         final add0 = dt0.add(years: i);
@@ -303,7 +303,7 @@ void main() {
         expect(add0.year == dt0.year + i, true);
       }
 
-      final dt1 = new DcmDateTime.fromMicroseconds(0);
+      final dt1 = DcmDateTime.fromMicroseconds(0);
       print(dt1);
       print(dt1.microseconds);
       expect(dt0.microseconds == 0, true);
@@ -320,7 +320,7 @@ void main() {
     });
 
     test('DcmDateTime add month', () {
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
 
@@ -333,7 +333,7 @@ void main() {
     });
 
     test('DcmDateTime add day', () {
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
 
@@ -348,7 +348,7 @@ void main() {
     // Urgent Jim Fix
     test('DcmDateTime add hour', () {
       global.level = Level.debug;
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       //expect(dt0.microseconds == 0, true);
 
@@ -358,13 +358,13 @@ void main() {
         final add0 = dt0.add(hours: i);
         //log.debug('add0.hours: $add0');
         print('add0.hour: ${add0.hour}');
-        print('add0.hour: ${((dt0.hour + i) % 24)}');
+        print('add0.hour: ${(dt0.hour + i) % 24}');
         expect(add0.hour == ((dt0.hour + i) % 24), true);
       }
     });
 
     test('DcmDateTime add minute', () {
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
 
@@ -377,7 +377,7 @@ void main() {
     });
 
     test('DcmDateTime add second', () {
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
 
@@ -390,7 +390,7 @@ void main() {
     });
 
     test('DcmDateTime subtract year', () {
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
 
@@ -404,7 +404,7 @@ void main() {
     });
 
     test('DcmDateTime substract month', () {
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
 
@@ -415,7 +415,7 @@ void main() {
     });
 
     test('DcmDateTime substract day', () {
-      final dt0 = new DcmDateTime.utc(1970, 1, 1);
+      final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       expect(dt0.microseconds == 0, true);
 

@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/ow_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
 
   group('OWTag', () {
@@ -27,7 +27,7 @@ void main() {
     test('OW hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, vList0);
+        final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, vList0);
         expect(e0.hasValidValues, true);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
@@ -39,66 +39,66 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(2, 3);
         log.debug('$i: vList0: $vList0');
-        final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, vList0);
+        final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, vList0);
         expect(e0.hasValidValues, true);
       }
     });
 
     test('OW hasValidValues good values', () {
       global.throwOnError = false;
-      final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
-      final e1 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
+      final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
+      final e1 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
       expect(e0.hasValidValues, true);
       expect(e1.hasValidValues, true);
 
-      final e2 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Max);
-      final e3 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Max);
+      final e2 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Max);
+      final e3 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Max);
       expect(e2.hasValidValues, true);
       expect(e3.hasValidValues, true);
 
       global.throwOnError = false;
-      final e4 = new OWtag(PTag.kRedPaletteColorLookupTableData, []);
+      final e4 = OWtag(PTag.kRedPaletteColorLookupTableData, []);
       expect(e4.hasValidValues, true);
       log.debug('e4:$e4');
       expect(e4.values, equals(<int>[]));
     });
 
     test('OW hasValidValues bad values', () {
-      final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MaxPlus);
+      final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MaxPlus);
       expect(e0, isNull);
 
       final e1 =
-          new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMinus);
+          OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMinus);
       expect(e1, isNull);
 
-      final e2 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMax);
+      final e2 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16MinMax);
       expect(e2.hasValidValues, true);
 
       global.throwOnError = false;
-      final e3 = new OWtag(PTag.kRedPaletteColorLookupTableData, null);
+      final e3 = OWtag(PTag.kRedPaletteColorLookupTableData, null);
       log.debug('e3: $e3');
       expect(e3, isNull);
 
       global.throwOnError = true;
-      expect(() => new OWtag(PTag.kRedPaletteColorLookupTableData, null),
+      expect(() => OWtag(PTag.kRedPaletteColorLookupTableData, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('OW update random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(3, 4);
-        final e1 = new OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
+        final e1 = OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
         final vList1 = rng.uint16List(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('OW update', () {
-      final e0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, []);
+      final e0 = OWtag(PTag.kGreenPaletteColorLookupTableData, []);
       expect(e0.update([63457, 64357]).values, equals([63457, 64357]));
 
-      final e1 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
-      final e2 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
+      final e1 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
+      final e2 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
       final e3 = e1.update(uInt16Max);
       final e4 = e2.update(uInt16Max);
       expect(e1.values.first == e4.values.first, false);
@@ -108,14 +108,14 @@ void main() {
     });
 
     test('OW noValues random', () {
-      final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, []);
+      final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, []);
       final OWtag owNoValues = e0.noValues;
       expect(owNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final uint16List = rng.uint16List(3, 4);
-        final e1 = new OWtag(PTag.kRedPaletteColorLookupTableData, uint16List);
+        final e1 = OWtag(PTag.kRedPaletteColorLookupTableData, uint16List);
         log.debug('e1: $e1');
         expect(owNoValues.values.isEmpty, true);
         log.debug('e1: ${e1.noValues}');
@@ -123,7 +123,7 @@ void main() {
     });
 
     test('OW noValues', () {
-      final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
+      final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
       final owNoValues = e0.noValues;
       expect(owNoValues.values.isEmpty, true);
       log.debug('e0:${e0.noValues}');
@@ -132,7 +132,7 @@ void main() {
     test('OW copy random', () {
       for (var i = 0; i < 10; i++) {
         final uint16List = rng.uint16List(3, 4);
-        final e2 = new OWtag(PTag.kRedPaletteColorLookupTableData, uint16List);
+        final e2 = OWtag(PTag.kRedPaletteColorLookupTableData, uint16List);
         final OWtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -140,12 +140,12 @@ void main() {
     });
 
     test('OW copy', () {
-      final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, []);
+      final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, []);
       final OWtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
-      final e2 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Max);
+      final e2 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Max);
       final e3 = e2.copy;
       expect(e2 == e3, true);
       expect(e2.hashCode == e3.hashCode, true);
@@ -153,13 +153,13 @@ void main() {
 
     test('OW hashCode and == random good values', () {
       global.throwOnError = false;
-      final rng = new RNG(1);
+      final rng = RNG(1);
       List<int> vList0;
 
       for (var i = 0; i < 10; i++) {
         vList0 = rng.uint16List(1, 1);
-        final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, vList0);
-        final e1 = new OWtag(PTag.kRedPaletteColorLookupTableData, vList0);
+        final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, vList0);
+        final e1 = OWtag(PTag.kRedPaletteColorLookupTableData, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -172,15 +172,15 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList1 = rng.uint16List(1, 1);
-        final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, vList1);
+        final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, vList1);
 
-        final e2 = new OWtag(PTag.kGreenPaletteColorLookupTableData, vList1);
+        final e2 = OWtag(PTag.kGreenPaletteColorLookupTableData, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rng.uint16List(2, 3);
-        final e3 = new OWtag(PTag.kRedPaletteColorLookupTableData, vList2);
+        final e3 = OWtag(PTag.kRedPaletteColorLookupTableData, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
@@ -188,8 +188,8 @@ void main() {
     });
 
     test('OW hashCode and == good values ', () {
-      final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
-      final e1 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
+      final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
+      final e1 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
 
       log
         ..debug('uInt16Min:$uInt16Min, e0.hash_code:${e0.hashCode}')
@@ -199,9 +199,9 @@ void main() {
     });
 
     test('OW hashCode and == bad values ', () {
-      final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
+      final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16Min);
 
-      final e2 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16Max);
+      final e2 = OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16Max);
       log.debug('uInt16Max:$uInt16Max , e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
@@ -210,7 +210,7 @@ void main() {
     test('OW fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final bytes = new Bytes.typedDataView(vList0);
+        final bytes = Bytes.typedDataView(vList0);
         log.debug(bytes);
         final e0 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes);
         log.debug('$e0');
@@ -223,7 +223,7 @@ void main() {
         expect(e0.values, equals(vList0));
 
         final vList1 = rng.uint16List(2, 2);
-        final bytes1 = new Bytes.typedDataView(vList1);
+        final bytes1 = Bytes.typedDataView(vList1);
         final e1 = OWtag.fromBytes(PTag.kEdgePointIndexList, bytes1);
         expect(e1.hasValidValues, true);
       }
@@ -234,7 +234,7 @@ void main() {
         global.throwOnError = false;
         final vList = rng.uint16List(1, 10);
 
-        final bytes0 = new Bytes.typedDataView(vList);
+        final bytes0 = Bytes.typedDataView(vList);
         final e0 = OWtag.fromBytes(PTag.kSelectorOWValue, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
@@ -246,7 +246,7 @@ void main() {
         global.throwOnError = false;
         final vList = rng.uint16List(1, 10);
 //        final bytes0 = Bytes.toAscii(vList.toString());
-        final bytes0 = new Bytes.typedDataView(vList);
+        final bytes0 = Bytes.typedDataView(vList);
         final e0 = OWtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(e0, isNull);
 
@@ -259,57 +259,57 @@ void main() {
     test('OW checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
+        final e0 = OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
         expect(e0.checkLength(e0.values), true);
       }
     });
 
     test('OW checkLength', () {
-      final e0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16Max);
+      final e0 = OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16Max);
       expect(e0.checkLength(e0.values), true);
     });
 
     test('OW checkValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
+        final e0 = OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
         expect(e0.checkValues(e0.values), true);
       }
     });
 
     test('OW checkValues', () {
-      final e0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16Max);
+      final e0 = OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16Max);
       expect(e0.checkValues(e0.values), true);
     });
 
     test('OW valuesCopy random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
+        final e0 = OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
 
     test('OW valuesCopy', () {
-      final e0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16Min);
+      final e0 = OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16Min);
       expect(uInt16Min, equals(e0.valuesCopy));
     });
 
     test('OW replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        final e0 = new OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
+        final e0 = OWtag(PTag.kGreenPaletteColorLookupTableData, vList0);
         final vList1 = rng.uint16List(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rng.uint16List(1, 1);
-      final e1 = new OWtag(PTag.kGreenPaletteColorLookupTableData, vList1);
+      final e1 = OWtag(PTag.kGreenPaletteColorLookupTableData, vList1);
       expect(e1.replace(<int>[]), equals(vList1));
       expect(e1.values, equals(<int>[]));
 
-      final e2 = new OWtag(PTag.kGreenPaletteColorLookupTableData, vList1);
+      final e2 = OWtag(PTag.kGreenPaletteColorLookupTableData, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<int>[]));
     });
@@ -317,8 +317,8 @@ void main() {
     test('OW BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint16List(1, 1);
-        //   final vList1 = new Int16List.fromList(vList0);
-        final bytes0 = new Bytes.typedDataView(vList0);
+        //   final vList1 = Int16List.fromList(vList0);
+        final bytes0 = Bytes.typedDataView(vList0);
         final base64 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(base64);
         final e0 =
@@ -328,9 +328,9 @@ void main() {
     });
 
     test('OW BASE64 ', () {
-      final vList1 = new Int16List.fromList(uInt16Max);
+      final vList1 = Int16List.fromList(uInt16Max);
       final uInt8List1 = vList1.buffer.asUint8List();
-      final bytes0 = new Bytes.typedDataView(uInt8List1);
+      final bytes0 = Bytes.typedDataView(uInt8List1);
 
       final s = bytes0.getBase64();
       //  final bytes = cvt.base64.decode(base64);
@@ -351,7 +351,7 @@ void main() {
 
     test('OW checkValue good values', () {
       final vList0 = rng.uint16List(1, 1);
-      final e0 = new OWtag(PTag.kEdgePointIndexList, vList0);
+      final e0 = OWtag(PTag.kEdgePointIndexList, vList0);
 
       expect(e0.checkValue(uInt16Max[0]), true);
       expect(e0.checkValue(uInt16Min[0]), true);
@@ -359,14 +359,14 @@ void main() {
 
     test('OW checkValue bad values', () {
       final vList0 = rng.uint16List(1, 1);
-      final e0 = new OWtag(PTag.kEdgePointIndexList, vList0);
+      final e0 = OWtag(PTag.kEdgePointIndexList, vList0);
       expect(e0.checkValue(uInt16MaxPlus[0]), false);
       expect(e0.checkValue(uInt16MinMinus[0]), false);
     });
 
     test('OW view', () {
       final vList0 = rng.uint16List(10, 10);
-      final e0 = new OWtag(PTag.kSelectorOWValue, vList0);
+      final e0 = OWtag(PTag.kSelectorOWValue, vList0);
       for (var i = 0, j = 0; i < vList0.length; i++, j += 2) {
         final e1 = e0.view(j, vList0.length - i);
         log.debug('e0: ${e0.values}, e1: ${e1.values}, '
@@ -378,11 +378,11 @@ void main() {
     test('OW equal', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint16List(1, i);
-        final bytesA = new Bytes.typedDataView(vList);
-        final bytesB = new Bytes.typedDataView(vList);
+        final bytesA = Bytes.typedDataView(vList);
+        final bytesB = Bytes.typedDataView(vList);
 
         final vList0 = rng.uint16List(2, 2);
-        final bytesC = new Bytes.typedDataView(vList0);
+        final bytesC = Bytes.typedDataView(vList0);
 
         final e0 = OWtag.fromBytes(PTag.kSelectorOWValue, bytesA);
         final equal0 = e0.equal(bytesA, bytesB);
@@ -637,7 +637,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(1, i);
-        final vfBytes = new Bytes.typedDataView(vList0);
+        final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
           for (var tag in owVM1Tags) {
@@ -652,7 +652,7 @@ void main() {
         }
       }
       final vList0 = rng.uint16List(1, 1);
-      final vfBytes = new Bytes.typedDataView(vList0);
+      final vfBytes = Bytes.typedDataView(vList0);
 
       final e1 = OW.isValidBytesArgs(null, vfBytes, OW.kMaxVFLength);
       expect(e1, false);

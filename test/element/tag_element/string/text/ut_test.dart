@@ -13,7 +13,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/ut_test', level: Level.info);
@@ -36,12 +36,12 @@ void main() {
     test('UT hasValidValues good values', () {
       for (var s in goodUTList) {
         global.throwOnError = false;
-        final e0 = new UTtag(PTag.kUniversalEntityID, s);
+        final e0 = UTtag(PTag.kUniversalEntityID, s);
         expect(e0.hasValidValues, true);
       }
 
       // empty list
-      final e0 = new UTtag(PTag.kLocalNamespaceEntityID, []);
+      final e0 = UTtag(PTag.kLocalNamespaceEntityID, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -49,28 +49,28 @@ void main() {
     test('UT hasValidValues bad values', () {
       for (var s in badUTList) {
         global.throwOnError = false;
-        final e0 = new UTtag(PTag.kUniversalEntityID, s);
+        final e0 = UTtag(PTag.kUniversalEntityID, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new UTtag(PTag.kUniversalEntityID, s),
+        expect(() => UTtag(PTag.kUniversalEntityID, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new UTtag(PTag.kLocalNamespaceEntityID, null);
+      final e1 = UTtag(PTag.kLocalNamespaceEntityID, null);
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new UTtag(PTag.kLocalNamespaceEntityID, null),
+      expect(() => UTtag(PTag.kLocalNamespaceEntityID, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UT hasValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kUniversalEntityID, vList0);
+        final e0 = UTtag(PTag.kUniversalEntityID, vList0);
         expect(e0.hasValidValues, true);
 
         log..debug('e0: $e0, values: ${e0.values}')..debug('e0: ${e0.info}');
@@ -80,32 +80,32 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         log.debug('$i: vList0: $vList0');
-        final e1 = new UTtag(PTag.kUniversalEntityID, vList0);
+        final e1 = UTtag(PTag.kUniversalEntityID, vList0);
         expect(e1.hasValidValues, true);
       }
     });
 
     test('UT update random', () {
-      final e0 = new UTtag(PTag.kLocalNamespaceEntityID, []);
+      final e0 = UTtag(PTag.kLocalNamespaceEntityID, []);
       expect(e0.update(['d^u:96P, azV']).values, equals(['d^u:96P, azV']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e1 = new UTtag(PTag.kLocalNamespaceEntityID, vList0);
+        final e1 = UTtag(PTag.kLocalNamespaceEntityID, vList0);
         final vList1 = rsg.getUTList(1, 1);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('UT noValues random', () {
-      final e0 = new UTtag(PTag.kLocalNamespaceEntityID, []);
+      final e0 = UTtag(PTag.kLocalNamespaceEntityID, []);
       final UTtag utNoValues = e0.noValues;
       expect(utNoValues.values.isEmpty, true);
       log.debug('st0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kLocalNamespaceEntityID, vList0);
+        final e0 = UTtag(PTag.kLocalNamespaceEntityID, vList0);
         log.debug('e0: $e0');
         expect(utNoValues.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -113,14 +113,14 @@ void main() {
     });
 
     test('UT copy random', () {
-      final e0 = new UTtag(PTag.kLocalNamespaceEntityID, []);
+      final e0 = UTtag(PTag.kLocalNamespaceEntityID, []);
       final UTtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e2 = new UTtag(PTag.kLocalNamespaceEntityID, vList0);
+        final e2 = UTtag(PTag.kLocalNamespaceEntityID, vList0);
         final UTtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -133,8 +133,8 @@ void main() {
       log.debug('UT hashCode and == ');
       for (var i = 0; i < 10; i++) {
         vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kLocalNamespaceEntityID, vList0);
-        final e1 = new UTtag(PTag.kLocalNamespaceEntityID, vList0);
+        final e0 = UTtag(PTag.kLocalNamespaceEntityID, vList0);
+        final e1 = UTtag(PTag.kLocalNamespaceEntityID, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -147,16 +147,16 @@ void main() {
       log.debug('UT hashCode and == ');
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kLocalNamespaceEntityID, vList0);
+        final e0 = UTtag(PTag.kLocalNamespaceEntityID, vList0);
 
         final vList1 = rsg.getUTList(1, 1);
-        final e2 = new UTtag(PTag.kUniversalEntityID, vList1);
+        final e2 = UTtag(PTag.kUniversalEntityID, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rsg.getUTList(1, 1);
-        final e3 = new UTtag(PTag.kLocalNamespaceEntityID, vList2);
+        final e3 = UTtag(PTag.kLocalNamespaceEntityID, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
@@ -166,7 +166,7 @@ void main() {
     test('UT valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kUniversalEntityID, vList0);
+        final e0 = UTtag(PTag.kUniversalEntityID, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -174,7 +174,7 @@ void main() {
     test('UT isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kUniversalEntityID, vList0);
+        final e0 = UTtag(PTag.kUniversalEntityID, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -182,7 +182,7 @@ void main() {
     test('UT isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kUniversalEntityID, vList0);
+        final e0 = UTtag(PTag.kUniversalEntityID, vList0);
 
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
@@ -194,18 +194,18 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kUniversalEntityID, vList0);
+        final e0 = UTtag(PTag.kUniversalEntityID, vList0);
         final vList1 = rsg.getUTList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getUTList(1, 1);
-      final e1 = new UTtag(PTag.kUniversalEntityID, vList1);
+      final e1 = UTtag(PTag.kUniversalEntityID, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new UTtag(PTag.kUniversalEntityID, vList1);
+      final e2 = UTtag(PTag.kUniversalEntityID, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -213,10 +213,10 @@ void main() {
     test('UT blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kUniversalEntityID, vList1);
+        final e0 = UTtag(PTag.kUniversalEntityID, vList1);
         for (var i = 1; i < 10; i++) {
           final blank = e0.blank(i);
-          log.debug(('blank$i: ${blank.values}'));
+          log.debug('blank$i: ${blank.values}');
           expect(blank.values.length == 1, true);
           expect(blank.value.length == i, true);
           final strSpaceList = <String>[''.padRight(i, ' ')];
@@ -242,7 +242,7 @@ void main() {
         final vList1 = rsg.getUTList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = UTtag.fromBytes(PTag.kSelectorUTValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
@@ -256,7 +256,7 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = UTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
@@ -304,28 +304,28 @@ void main() {
 
     test('UT checkLength good values', () {
       final vList0 = rsg.getUTList(1, 1);
-      final e0 = new UTtag(PTag.kUniversalEntityID, vList0);
+      final e0 = UTtag(PTag.kUniversalEntityID, vList0);
       for (var s in goodUTList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new UTtag(PTag.kUniversalEntityID, vList0);
+      final e1 = UTtag(PTag.kUniversalEntityID, vList0);
       expect(e1.checkLength([]), true);
     });
 
     test('UT checkLength bad values', () {
       final vList1 = ['a^1sd', '02@#'];
       global.throwOnError = false;
-      final e2 = new UTtag(PTag.kUniversalEntityID, vList1);
+      final e2 = UTtag(PTag.kUniversalEntityID, vList1);
       expect(e2, isNull);
 
       global.throwOnError = true;
-      expect(() => new UTtag(PTag.kUniversalEntityID, vList1),
+      expect(() => UTtag(PTag.kUniversalEntityID, vList1),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('UT checkValue good values', () {
       final vList0 = rsg.getUTList(1, 1);
-      final e0 = new UTtag(PTag.kUniversalEntityID, vList0);
+      final e0 = UTtag(PTag.kUniversalEntityID, vList0);
       for (var s in goodUTList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -335,7 +335,7 @@ void main() {
 
     test('UT checkValue bad values', () {
       final vList0 = rsg.getUTList(1, 1);
-      final e0 = new UTtag(PTag.kUniversalEntityID, vList0);
+      final e0 = UTtag(PTag.kUniversalEntityID, vList0);
       for (var s in badUTList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -381,7 +381,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kSelectorUTValue, vList0);
+        final e0 = UTtag(PTag.kSelectorUTValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -393,7 +393,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kSelectorUTValue, vList0);
+        final e0 = UTtag(PTag.kSelectorUTValue, vList0);
         const vList1 = 'foo';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -405,7 +405,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1, 16);
-        final e0 = new UTtag(PTag.kSelectorUTValue, vList0);
+        final e0 = UTtag(PTag.kSelectorUTValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -416,7 +416,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final e0 = new UTtag(PTag.kSelectorUTValue, vList0);
+        final e0 = UTtag(PTag.kSelectorUTValue, vList0);
         final match0 = e0.match(r'.*');
         expect(match0, true);
       }
@@ -427,7 +427,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new UTtag(PTag.kSelectorUTValue, vList0);
+        final e0 = UTtag(PTag.kSelectorUTValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }

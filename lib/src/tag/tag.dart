@@ -35,7 +35,7 @@ const int kElementMask = 0x0000FFFF;
 /// A Element Type predicate. Returns _true_  if the Element
 /// corresponding to [key] in the [Dataset] satisfies the
 /// requirements for the SopClass of the [Dataset].
-typedef bool _ETypePredicate<K>(Dataset ds, K key);
+typedef bool ETypePredicate<K>(Dataset ds, K key);
 
 //TODO: move to system
 bool allowInvalidTags = true;
@@ -163,7 +163,7 @@ abstract class Tag {
   //TODO: add EType to tag
   EType get eType => EType.k3;
   int get eTypeIndex => eType.index;
-  _ETypePredicate get eTypePredicate => throw UnimplementedError();
+  ETypePredicate get eTypePredicate => throw UnimplementedError();
 
   // Information Entity Level
   IEType get ieType => IEType.kInstance;

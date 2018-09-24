@@ -21,7 +21,6 @@ int parseDcmTime(String s,
     if (kValidTimeStringLengths.contains(end - start))
       _checkArgs(s, start, end, 2, 13, 'parseDcmTime', issues);
     final us = _parseDcmTime(s, start, end, issues);
-    assert(us != null);
     return us;
   } on FormatException {
     return (onError != null) ? onError(s) : null;

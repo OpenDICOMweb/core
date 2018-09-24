@@ -6,13 +6,14 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/server.dart' hide group;
 import 'package:core/src/values/date_time/primitives/to_string.dart';
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+// ignore_for_file: avoid_js_rounded_ints
+
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(
@@ -235,7 +236,7 @@ void main() {
     for (var y = 1996; y < 2000; y++) {
       for (var m = 01; m < 12; m++) {
         for (var d = 01; d < lastDayOfMonth(y, m); d++) {
-          final dt0 = new DateTime(y, m, d);
+          final dt0 = DateTime(y, m, d);
           final yx = digits4(dt0.year);
           final mx = digits2(dt0.month);
           final dx = digits2(dt0.day);
@@ -246,7 +247,7 @@ void main() {
       }
     }
 
-    final dt0 = new DateTime(1998, 10, 15);
+    final dt0 = DateTime(1998, 10, 15);
     expect(dtToDateString(dt0, asDicom: false), '1998-10-15');
     expect(dtToDateString(dt0, asDicom: true), '19981015');
     expect(dtToDateString(dt0), '19981015');
@@ -259,7 +260,7 @@ void main() {
           for (var s = 1; s < 59; s++) {
             const ms = 600;
             const us = 600;
-            final dt0 = new DateTime(y, h, m, s, ms, us);
+            final dt0 = DateTime(y, h, m, s, ms, us);
             //final yx = digits4(dt0.year);
             final hx = digits2(dt0.hour);
             final mx = digits2(dt0.minute);
@@ -274,18 +275,18 @@ void main() {
       }
     }
 
-    final dt0 = new DateTime(1998, 10, 15, 09, 45, 58);
+    final dt0 = DateTime(1998, 10, 15, 09, 45, 58);
     expect(dtToTimeString(dt0), '094558');
 
-    final dt1 = new DateTime(1998, 10, 15, 09, 45, 58);
+    final dt1 = DateTime(1998, 10, 15, 09, 45, 58);
     expect(dtToTimeString(dt1, showFraction: true, asDicom: true),
         '094558.000000');
 
-    final dt2 = new DateTime(1998, 10, 15, 09, 45, 58);
+    final dt2 = DateTime(1998, 10, 15, 09, 45, 58);
     expect(dtToTimeString(dt2, showFraction: true, asDicom: false),
         '09:45:58.000000');
 
-    final dt3 = new DateTime(1998, 10, 15, 09, 45, 58);
+    final dt3 = DateTime(1998, 10, 15, 09, 45, 58);
     expect(dtToTimeString(dt3, asDicom: false), '09:45:58');
   });
 
@@ -298,7 +299,7 @@ void main() {
               const s = 10;
               const ms = 600;
               const us = 600;
-              final dt0 = new DateTime.utc(y, m, d, h, mm, s, ms, us);
+              final dt0 = DateTime.utc(y, m, d, h, mm, s, ms, us);
               final mx = digits2(m);
               final dx = digits2(d);
               final hx = digits2(h);
@@ -339,7 +340,7 @@ dt0:
               const s = 10;
               const ms = 600;
               const us = 600;
-              final dt0 = new DateTime.utc(y, m, d, h, mm, s, ms, us);
+              final dt0 = DateTime.utc(y, m, d, h, mm, s, ms, us);
               final mx = digits2(m);
               final dx = digits2(d);
               final hx = digits2(h);

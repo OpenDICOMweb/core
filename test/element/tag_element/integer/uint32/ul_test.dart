@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/ul_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
 
   group('UL', () {
@@ -27,7 +27,7 @@ void main() {
     test('UL hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-        final e0 = new ULtag(PTag.kPixelComponentMask, vList0);
+        final e0 = ULtag(PTag.kPixelComponentMask, vList0);
         log.debug('e0: e0');
         expect(e0.hasValidValues, true);
 
@@ -37,7 +37,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(3, 3);
-        final e0 = new ULtag(PTag.kGridDimensions, vList0);
+        final e0 = ULtag(PTag.kGridDimensions, vList0);
         log.debug('e0: e0');
         expect(e0.hasValidValues, true);
 
@@ -50,41 +50,41 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(2, 3);
         log.debug('$i: vList0: $vList0');
-        final e0 = new ULtag(PTag.kPixelComponentMask, vList0);
+        final e0 = ULtag(PTag.kPixelComponentMask, vList0);
         expect(e0, isNull);
       }
     });
 
     test('UL hasValidValues good values', () {
       global.throwOnError = false;
-      final e0 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
-      final e1 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
+      final e0 = ULtag(PTag.kPixelComponentMask, uInt32Max);
+      final e1 = ULtag(PTag.kPixelComponentMask, uInt32Max);
       expect(e0.hasValidValues, true);
       expect(e1.hasValidValues, true);
 
-      final e2 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
-      final e3 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
+      final e2 = ULtag(PTag.kPixelComponentMask, uInt32Max);
+      final e3 = ULtag(PTag.kPixelComponentMask, uInt32Max);
       expect(e2.hasValidValues, true);
       expect(e3.hasValidValues, true);
 
       global.throwOnError = false;
-      final e4 = new ULtag(PTag.kDataPointColumns, []);
+      final e4 = ULtag(PTag.kDataPointColumns, []);
       expect(e4.hasValidValues, true);
       log.debug('e4:e4');
       expect(e4.values, equals(<int>[]));
     });
 
     test('UL hasValidValues bad values', () {
-      final e0 = new ULtag(PTag.kPixelComponentMask, uInt32MaxPlus);
+      final e0 = ULtag(PTag.kPixelComponentMask, uInt32MaxPlus);
       expect(e0, isNull);
 
-      final e1 = new ULtag(PTag.kPixelComponentMask, uInt32MinMinus);
+      final e1 = ULtag(PTag.kPixelComponentMask, uInt32MinMinus);
       expect(e1, isNull);
 
-      final e2 = new ULtag(PTag.kPixelComponentMask, uInt32MinMax);
+      final e2 = ULtag(PTag.kPixelComponentMask, uInt32MinMax);
       expect(e2, isNull);
 
-      final e3 = new ULtag(PTag.kPixelComponentMask, uInt32Max);
+      final e3 = ULtag(PTag.kPixelComponentMask, uInt32Max);
       final uint64List0 = rng.uint64List(1, 1);
       e3.values = uint64List0;
       expect(e3.hasValidValues, false);
@@ -94,13 +94,13 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
-      final e4 = new ULtag(PTag.kDataPointColumns, null);
+      final e4 = ULtag(PTag.kDataPointColumns, null);
       log.debug('e4: $e4');
       expect(e4.hasValidValues, true);
       expect(e4.values, kEmptyUint32List);
 
       global.throwOnError = true;
-      final e5 = new ULtag(PTag.kDataPointColumns, null);
+      final e5 = ULtag(PTag.kDataPointColumns, null);
       log.debug('e5: $e5');
       expect(e5.hasValidValues, true);
       expect(e5.values, kEmptyUint32List);
@@ -109,15 +109,15 @@ void main() {
     test('UL update random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(3, 4);
-        final e1 = new ULtag(PTag.kSimpleFrameList, vList0);
+        final e1 = ULtag(PTag.kSimpleFrameList, vList0);
         final vList1 = rng.uint32List(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('UL update', () {
-      final e0 = new ULtag(PTag.kPixelComponentMask, uInt32Min);
-      final e1 = new ULtag(PTag.kPixelComponentMask, uInt32Min);
+      final e0 = ULtag(PTag.kPixelComponentMask, uInt32Min);
+      final e1 = ULtag(PTag.kPixelComponentMask, uInt32Min);
       final e2 = e0.update(uInt32Max);
       final e3 = e1.update(uInt32Max);
       expect(e0.values.first == e3.values.first, false);
@@ -125,26 +125,26 @@ void main() {
       expect(e1 == e3, false);
       expect(e2 == e3, true);
 
-      final e4 = new ULtag(PTag.kDataPointColumns, []);
+      final e4 = ULtag(PTag.kDataPointColumns, []);
       expect(e4.update([76345748]).values, equals([76345748]));
     });
 
     test('UL noValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(3, 4);
-        final e1 = new ULtag(PTag.kSimpleFrameList, vList);
+        final e1 = ULtag(PTag.kSimpleFrameList, vList);
         log.debug('e1: ${e1.noValues}');
         expect(e1.noValues.values.isEmpty, true);
       }
     });
 
     test('UL noValues', () {
-      final e0 = new ULtag(PTag.kDataPointColumns, []);
+      final e0 = ULtag(PTag.kDataPointColumns, []);
       final ULtag ulNoValues = e0.noValues;
       expect(ulNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
-      final e1 = new ULtag(PTag.kDataPointColumns, uInt32Max);
+      final e1 = ULtag(PTag.kDataPointColumns, uInt32Max);
       final ulNoValues0 = e1.noValues;
       expect(ulNoValues0.values.isEmpty, true);
       log.debug('e1:${e1.noValues}');
@@ -153,7 +153,7 @@ void main() {
     test('UL copy random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(3, 4);
-        final e2 = new ULtag(PTag.kSimpleFrameList, vList);
+        final e2 = ULtag(PTag.kSimpleFrameList, vList);
         final ULtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -161,12 +161,12 @@ void main() {
     });
 
     test('UL copy', () {
-      final e0 = new ULtag(PTag.kDataPointColumns, []);
+      final e0 = ULtag(PTag.kDataPointColumns, []);
       final ULtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
-      final e2 = new ULtag(PTag.kDataPointColumns, uInt32Max);
+      final e2 = ULtag(PTag.kDataPointColumns, uInt32Max);
       final e3 = e2.copy;
       expect(e2 == e3, true);
       expect(e2.hashCode == e3.hashCode, true);
@@ -176,8 +176,8 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-        final e0 = new ULtag(PTag.kDataPointColumns, vList0);
-        final e1 = new ULtag(PTag.kDataPointColumns, vList0);
+        final e0 = ULtag(PTag.kDataPointColumns, vList0);
+        final e1 = ULtag(PTag.kDataPointColumns, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -189,27 +189,27 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-        final e0 = new ULtag(PTag.kDataPointColumns, vList0);
+        final e0 = ULtag(PTag.kDataPointColumns, vList0);
         final vList1 = rng.uint32List(1, 1);
-        final e2 = new ULtag(PTag.kNumberOfWaveformSamples, vList1);
+        final e2 = ULtag(PTag.kNumberOfWaveformSamples, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rng.uint32List(3, 3);
-        final e3 = new ULtag(PTag.kGridDimensions, vList2);
+        final e3 = ULtag(PTag.kGridDimensions, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rng.uint32List(1, 9);
-        final e4 = new ULtag(PTag.kReferencedSamplePositions, vList3);
+        final e4 = ULtag(PTag.kReferencedSamplePositions, vList3);
         log.debug('vList3:$vList3 , us4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
 
         final vList4 = rng.uint32List(2, 3);
-        final e5 = new ULtag(PTag.kDataPointColumns, vList4);
+        final e5 = ULtag(PTag.kDataPointColumns, vList4);
         log.debug('vList4:$vList4 , e5.hash_code:${e5.hashCode}');
         expect(e0.hashCode == e5.hashCode, false);
         expect(e0 == e5, false);
@@ -217,8 +217,8 @@ void main() {
     });
 
     test('UL hashCode and == good values', () {
-      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
-      final e1 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      final e1 = ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
 
       log
         ..debug('uInt32Max:$uInt32Max, e0.hash_code:${e0.hashCode}')
@@ -228,9 +228,9 @@ void main() {
     });
 
     test('UL hashCode and == bad values', () {
-      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
 
-      final e2 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Min);
+      final e2 = ULtag(PTag.kNumberOfWaveformSamples, uInt32Min);
       log.debug('uInt32Min:$uInt32Min , e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
@@ -239,7 +239,7 @@ void main() {
     test('UL fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-        final bytes0 = new Bytes.typedDataView(vList0);
+        final bytes0 = Bytes.typedDataView(vList0);
         final e0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes0);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes, equals(bytes0));
@@ -254,15 +254,15 @@ void main() {
         expect(e0.value, equals(e1.value));
 
         final vList2 = rng.uint32List(2, 2);
-        final bytes2 = new Bytes.typedDataView(vList2);
+        final bytes2 = Bytes.typedDataView(vList2);
         final e2 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes2);
         expect(e2, isNull);
       }
     });
 
     test('UL fromBytes', () {
-      final vList = new Uint32List.fromList(uInt32Max);
-      final bytes = new Bytes.typedDataView(vList);
+      final vList = Uint32List.fromList(uInt32Max);
+      final bytes = Bytes.typedDataView(vList);
       final e5 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
       expect(e5.hasValidValues, true);
       expect(e5.vfBytes, equals(bytes));
@@ -274,7 +274,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 10);
-        final bytes0 = new Bytes.typedDataView(vList);
+        final bytes0 = Bytes.typedDataView(vList);
         final e0 = ULtag.fromBytes(PTag.kSelectorULValue, bytes0);
         log.debug('e0: e0');
         expect(e0.hasValidValues, true);
@@ -298,39 +298,39 @@ void main() {
     test('UL checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 1);
-        final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList);
+        final e0 = ULtag(PTag.kNumberOfWaveformSamples, vList);
         expect(e0.checkLength(e0.values), true);
       }
     });
 
     test('UL checkLength', () {
-      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
       expect(e0.checkLength(e0.values), true);
     });
 
     test('UL checkValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-        final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList0);
+        final e0 = ULtag(PTag.kNumberOfWaveformSamples, vList0);
         expect(e0.checkValues(e0.values), true);
       }
     });
 
     test('UL checkValues', () {
-      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
       expect(e0.checkValues(e0.values), true);
     });
 
     test('UL valuesCopy random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-        final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList0);
+        final e0 = ULtag(PTag.kNumberOfWaveformSamples, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
 
     test('UL valuesCopy', () {
-      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples, uInt32Max);
       expect(uInt32Max, equals(e0.valuesCopy));
     });
 
@@ -339,7 +339,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.uint32List(1, 1);
-        final bytes = new Bytes.typedDataView(vList0);
+        final bytes = Bytes.typedDataView(vList0);
         final e0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes);
         final vList1 = rng.uint32List(1, 1);
         expect(e0.replace(vList1), equals(vList0));
@@ -347,11 +347,11 @@ void main() {
       }
 
       final vList2 = rng.uint32List(1, 1);
-      final e2 = new ULtag(PTag.kNumberOfWaveformSamples, vList2);
+      final e2 = ULtag(PTag.kNumberOfWaveformSamples, vList2);
       expect(e2.replace(<int>[]), equals(vList2));
       expect(e2.values, equals(<int>[]));
 
-      final e3 = new ULtag(PTag.kNumberOfWaveformSamples, vList2);
+      final e3 = ULtag(PTag.kNumberOfWaveformSamples, vList2);
       expect(e3.replace(null), equals(vList2));
       expect(e3.values, equals(<int>[]));
     });
@@ -359,7 +359,7 @@ void main() {
     test('UL BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.uint32List(1, 1);
-        final bytes0 = new Bytes.typedDataView(vList);
+        final bytes0 = Bytes.typedDataView(vList);
         final s = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(s);
         final e0 = ULtag.fromBytes(PTag.kNumberOfWaveformSamples, bytes1);
@@ -368,8 +368,8 @@ void main() {
     });
 
     test('UL BASE64', () {
-      final vList = new Uint32List.fromList(uInt32Max);
-      final bytes = new Bytes.typedDataView(vList);
+      final vList = Uint32List.fromList(uInt32Max);
+      final bytes = Bytes.typedDataView(vList);
 
       final s = bytes.getBase64();
       final bytes1 = Bytes.fromBase64(s);
@@ -406,7 +406,7 @@ void main() {
 
     test('UL checkValue good values', () {
       final vList0 = rng.uint32List(1, 1);
-      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList0);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples, vList0);
 
       expect(e0.checkValue(uInt32Max[0]), true);
       expect(e0.checkValue(uInt32Min[0]), true);
@@ -414,14 +414,14 @@ void main() {
 
     test('UL checkValue good values', () {
       final vList0 = rng.uint32List(1, 1);
-      final e0 = new ULtag(PTag.kNumberOfWaveformSamples, vList0);
+      final e0 = ULtag(PTag.kNumberOfWaveformSamples, vList0);
       expect(e0.checkValue(uInt32MaxPlus[0]), false);
       expect(e0.checkValue(uInt32MinMinus[0]), false);
     });
 
     test('UL view', () {
       final vList = rng.uint32List(10, 10);
-      final e0 = new ULtag(PTag.kSelectorULValue, vList);
+      final e0 = ULtag(PTag.kSelectorULValue, vList);
       for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
         final e1 = e0.view(j, vList.length - i);
         log.debug('ol0: ${e0.values}, ol1: ${e1.values}, '
@@ -429,7 +429,7 @@ void main() {
         expect(e1.values, equals(vList.sublist(i)));
       }
 
-      final bytes = new Bytes.typedDataView(vList);
+      final bytes = Bytes.typedDataView(vList);
       final e2 = ULtag.fromBytes(PTag.kSelectorULValue, bytes);
       for (var i = 0, j = 0; i < vList.length; i++, j += 4) {
         final e3 = e2.view(j, vList.length - i);
@@ -442,11 +442,11 @@ void main() {
     test('UL equal', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint32List(1, i);
-        final bytesA = new Bytes.typedDataView(vList);
-        final bytesB = new Bytes.typedDataView(vList);
+        final bytesA = Bytes.typedDataView(vList);
+        final bytesB = Bytes.typedDataView(vList);
 
         final vList0 = rng.uint32List(2, 2);
-        final bytesC = new Bytes.typedDataView(vList0);
+        final bytesC = Bytes.typedDataView(vList0);
 
         final e0 =
             ULtag.fromBytes(PTag.kSelectorULValue, bytesA);
@@ -779,7 +779,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint32List(1, i);
-        final vfBytes = new Bytes.typedDataView(vList0);
+        final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
           for (var tag in ulVM1Tags) {
@@ -794,7 +794,7 @@ void main() {
         }
       }
       final vList0 = rng.uint32List(1, 1);
-      final vfBytes = new Bytes.typedDataView(vList0);
+      final vfBytes = Bytes.typedDataView(vList0);
 
       final e1 = UL.isValidBytesArgs(null, vfBytes);
       expect(e1, false);

@@ -17,7 +17,7 @@ void main() {
 
   //TODO: make sure this is testing hierarchical logger
   test('Non-Hierarchical Logger Test', () {
-    final log0 = new Logger('server_test')
+    final log0 = Logger('server_test')
       ..info('info level')
       ..error('shout level')
       ..severe('severe level')
@@ -31,18 +31,19 @@ void main() {
       ..debug2('debug2 level')
       ..debug2('debug3 level');
 
-    expect(() => log0.fatal('die *******'), throwsA(const TypeMatcher<FatalError>()));
+    expect(() => log0.fatal('die *******'),
+        throwsA(const TypeMatcher<FatalError>()));
 
     log0.debug(log0);
   });
 
   test('Hierarchical Logger Test', () {
-    final log0 = new Logger('server_test')
+    final log0 = Logger('server_test')
       ..debug('Root.Level: ${Logger.root.level}');
     Logger.root.level = Level.config;
     log0.debug('Root.Level: ${Logger.root.level}');
 
-    final log1 = new Logger('test')
+    final log1 = Logger('test')
       ..error('error level')
       ..warn('warning level')
       ..config('config level')
@@ -53,7 +54,8 @@ void main() {
       ..debug2('debug2 level')
       ..debug3('debug3 level');
 
-    expect(() => log1.fatal('die *******'), throwsA(const TypeMatcher<FatalError>()));
+    expect(() => log1.fatal('die *******'),
+        throwsA(const TypeMatcher<FatalError>()));
 
     log1.debug(log1);
   });

@@ -102,4 +102,4 @@ part 'package:core/src/utils/parser/date_time_age/time_zone_parser.dart';
 /// `issues` and continue parsing if it can.  Error messages are accumulated
 /// in `issues`.
 ///
-typedef int OnParseError(String s);
+typedef OnParseError = int Function(String s);

@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
   global.doTestElementValidity = false;
 
@@ -40,16 +40,16 @@ void main() {
     -11.11,
   ];
 
-  final goodFloat32List = new Float32List.fromList(goodFloatList);
+  final goodFloat32List = Float32List.fromList(goodFloatList);
 
   group('FLtag', () {
     test('FL hasValidValues good values', () {
       global.throwOnError = false;
-      final e0 = new FLtag(PTag.kVectorAccuracy, goodFloat32List);
+      final e0 = FLtag(PTag.kVectorAccuracy, goodFloat32List);
       expect(e0.hasValidValues, true);
 
       // empty list and null as values
-      final e1 = new FLtag(PTag.kTableOfParameterValues, []);
+      final e1 = FLtag(PTag.kTableOfParameterValues, []);
       expect(e1.hasValidValues, true);
       expect(e1.values, equals(<double>[]));
     });
@@ -57,12 +57,12 @@ void main() {
     test('FL hasValidValues bad values', () {
       global.throwOnError = false;
       global.doTestElementValidity = true;
-      final e0 = new FLtag(PTag.kTableOfParameterValues, null);
+      final e0 = FLtag(PTag.kTableOfParameterValues, null);
       log.debug('e0 : $e0 ');
       expect(e0, isNull);
 
       global.throwOnError = true;
-      expect(() => new FLtag(PTag.kTableOfParameterValues, null),
+      expect(() => FLtag(PTag.kTableOfParameterValues, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -70,7 +70,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
         expect(vList is Float32List, true);
-        final e0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
+        final e0 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
         expect(e0.hasValidValues, true);
 
         log
@@ -83,7 +83,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(2, 2);
-        final e0 = new FLtag(PTag.kCornealVertexLocation, vList);
+        final e0 = FLtag(PTag.kCornealVertexLocation, vList);
         expect(e0.hasValidValues, true);
 
         log..debug('e0 : $e0 , values: ${e0.values}')..debug('e0 : $e0');
@@ -99,13 +99,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(3, 4);
         log.debug('$i: float32List: $vList ');
-        final e0 = new FLtag(PTag.kCornealVertexLocation, vList);
+        final e0 = FLtag(PTag.kCornealVertexLocation, vList);
         expect(e0, isNull);
       }
 
       global.throwOnError = true;
       final vList = rng.float32List(3, 4);
-      expect(() => new FLtag(PTag.kCornealVertexLocation, vList),
+      expect(() => FLtag(PTag.kCornealVertexLocation, vList),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -113,72 +113,69 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(3, 4);
-        final e1 = new FLtag(PTag.kTableOfParameterValues, vList);
+        final e1 = FLtag(PTag.kTableOfParameterValues, vList);
         final float32List1 = rng.float32List(3, 4);
         expect(e1.update(float32List1).values, equals(float32List1));
       }
     });
 
     test('FL update', () {
-      final e0 = new FLtag(PTag.kTableOfParameterValues, []);
+      final e0 = FLtag(PTag.kTableOfParameterValues, []);
       expect(e0.update([1.0, 2.0]).values, equals([1.0, 2.0]));
 
-      final e1 = new FLtag(PTag.kTableOfParameterValues, goodFloat32List);
+      final e1 = FLtag(PTag.kTableOfParameterValues, goodFloat32List);
       expect(e1.update(goodFloat32List).values, equals(goodFloat32List));
 
       const floatUpdateValues = const <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
 
-      final float32UpdateValues = new Float32List.fromList(floatUpdateValues);
+      final float32UpdateValues = Float32List.fromList(floatUpdateValues);
 
       for (var i = 1; i <= float32UpdateValues.length - 1; i++) {
-        final fl2 = new FLtag(PTag.kSelectorFLValue,
-            new Float32List.fromList(float32UpdateValues.take(i).toList()));
+        final fl2 = FLtag(PTag.kSelectorFLValue,
+            Float32List.fromList(float32UpdateValues.take(i).toList()));
 
         expect(
             fl2.update(
-                new Float32List.fromList(float32UpdateValues.take(i).toList())),
-            equals(new Float32List.fromList(
-                float32UpdateValues.take(i).toList())));
+                Float32List.fromList(float32UpdateValues.take(i).toList())),
+            equals(Float32List.fromList(float32UpdateValues.take(i).toList())));
 
         expect(fl2.update(float32UpdateValues.take(i).toList()).values,
             equals(float32UpdateValues.take(i).toList()));
       }
-      final fl2 = new FLtag(PTag.kSelectorFLValue,
-          new Float32List.fromList(float32UpdateValues.take(1).toList()));
-      expect(
-          [fl2.values.elementAt(0)],
-          equals(
-              new Float32List.fromList(float32UpdateValues.take(1).toList())));
+      final fl2 = FLtag(PTag.kSelectorFLValue,
+          Float32List.fromList(float32UpdateValues.take(1).toList()));
+      expect([fl2.values.elementAt(0)],
+          equals(Float32List.fromList(float32UpdateValues.take(1).toList())));
       log.debug(fl2.view());
     });
 
     test('FL noValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(3, 4);
-        final e0 = new FLtag(PTag.kTableOfParameterValues, vList);
-        log.debug('e0 : ${e0 .noValues}');
+        final e0 = FLtag(PTag.kTableOfParameterValues, vList);
+        log.debug('e0 : ${e0.noValues}');
         expect(e0.noValues.values.isEmpty, true);
       }
     });
 
     test('FL noValues', () {
-      final e0 = new FLtag(PTag.kTableOfParameterValues, []);
+      final e0 = FLtag(PTag.kTableOfParameterValues, []);
       final FLtag flNoValues = e0.noValues;
       expect(flNoValues.values.isEmpty, true);
-      log.debug('e0 : ${e0 .noValues}');
+      log.debug('e0 : ${e0.noValues}');
 
-      final e1 = new FLtag(PTag.kTableOfParameterValues, goodFloat32List);
+      final e1 = FLtag(PTag.kTableOfParameterValues, goodFloat32List);
       log.debug('e1: $e1');
       expect(flNoValues.values.isEmpty, true);
-      log.debug('e0 : ${e0 .noValues}');
+      log.debug('e0 : ${e0.noValues}');
     });
 
     test('FL copy random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(3, 4);
-        final e0 = new FLtag(PTag.kTableOfParameterValues, vList);
+        final e0 = FLtag(PTag.kTableOfParameterValues, vList);
         final FLtag e1 = e0.copy;
         expect(e1 == e0, true);
         expect(e1.hashCode == e0.hashCode, true);
@@ -186,12 +183,12 @@ void main() {
     });
 
     test('FL copy', () {
-      final e0 = new FLtag(PTag.kTableOfParameterValues, []);
+      final e0 = FLtag(PTag.kTableOfParameterValues, []);
       final FLtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
-      final fl2 = new FLtag(PTag.kTableOfParameterValues, goodFloat32List);
+      final fl2 = FLtag(PTag.kTableOfParameterValues, goodFloat32List);
       final FLtag fl3 = fl2.copy;
       expect(fl3 == fl2, true);
       expect(fl3.hashCode == fl2.hashCode, true);
@@ -201,10 +198,10 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final e0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
-        final e1 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
+        final e0 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
+        final e1 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
         log
-          ..debug('vList:$vList, e0 .hash_code:${e0 .hashCode}')
+          ..debug('vList:$vList, e0 .hash_code:${e0.hashCode}')
           ..debug('vList:$vList, e1.hash_code:${e1.hashCode}');
         expect(e0.hashCode == e1.hashCode, true);
         expect(e0 == e1, true);
@@ -215,35 +212,35 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final e0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
-        final e1 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
+        final e0 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
+        final e1 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
 
         final vList1 = rng.float32List(1, 1);
-        final fl2 = new FLtag(PTag.kRecommendedDisplayFrameRateInFloat, vList1);
+        final fl2 = FLtag(PTag.kRecommendedDisplayFrameRateInFloat, vList1);
         log.debug('vList1:$vList1 , fl2.hash_code:${fl2.hashCode}');
         expect(e0.hashCode == fl2.hashCode, false);
         expect(e0 == fl2, false);
 
         final vLIst2 = rng.float32List(2, 2);
-        final fl3 = new FLtag(PTag.kCornealVertexLocation, vLIst2);
+        final fl3 = FLtag(PTag.kCornealVertexLocation, vLIst2);
         log.debug('floatList2:$vLIst2 , fl3.hash_code:${fl3.hashCode}');
         expect(e0.hashCode == fl3.hashCode, false);
         expect(e0 == fl3, false);
 
         final vList3 = rng.float32List(3, 3);
-        final fl4 = new FLtag(PTag.kCornealPointLocation, vList3);
+        final fl4 = FLtag(PTag.kCornealPointLocation, vList3);
         log.debug('floatList3:$vList3 , fl4.hash_code:${fl4.hashCode}');
         expect(e0.hashCode == fl4.hashCode, false);
         expect(e0 == fl4, false);
 
         final vList4 = rng.float32List(6, 6);
-        final fl5 = new FLtag(PTag.kPointsBoundingBoxCoordinates, vList4);
+        final fl5 = FLtag(PTag.kPointsBoundingBoxCoordinates, vList4);
         log.debug('floatList4:$vList4 , fl5.hash_code:${fl5.hashCode}');
         expect(e0.hashCode == fl5.hashCode, false);
         expect(e0 == fl5, false);
 
         final vList5 = rng.float32List(2, 3);
-        final fl6 = new FLtag(PTag.kFractionalChannelDisplayScale, vList5);
+        final fl6 = FLtag(PTag.kFractionalChannelDisplayScale, vList5);
         log.debug('floatList5:$vList5 , fl6.hash_code:${fl6.hashCode}');
         expect(e1.hashCode == fl6.hashCode, false);
         expect(e1 == fl6, false);
@@ -253,14 +250,14 @@ void main() {
     test('FL hashCode and == good values ', () {
       global.throwOnError = false;
       final e0 =
-          new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
+          FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
       final e1 =
-          new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
+          FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
       log
-        ..debug('listFloat32Common0:$goodFloat32List, e0 .hash_code:${e0
-            .hashCode}')
-        ..debug('listFloat32Common0:$goodFloat32List, e1.hash_code:${e1
-            .hashCode}');
+        ..debug(
+            'listFloat32Common0:$goodFloat32List, e0 .hash_code:${e0.hashCode}')
+        ..debug(
+            'listFloat32Common0:$goodFloat32List, e1.hash_code:${e1.hashCode}');
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
     });
@@ -268,39 +265,37 @@ void main() {
     test('FL hashCode and == bad values ', () {
       global.throwOnError = false;
       final e0 =
-          new FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
+          FLtag(PTag.kAbsoluteChannelDisplayScale, goodFloat32List.take(1));
 
-      final fl2 = new FLtag(
+      final fl2 = FLtag(
           PTag.kRecommendedDisplayFrameRateInFloat, goodFloat32List.take(1));
-      log.debug('listFloat32Common0:$goodFloat32List , fl2.hash_code:${fl2
-          .hashCode}');
+      log.debug('listFloat32Common0:$goodFloat32List , '
+          'fl2.hash_code:${fl2.hashCode}');
       expect(e0.hashCode == fl2.hashCode, false);
       expect(e0 == fl2, false);
 
-      final fl3 =
-          new FLtag(PTag.kCornealVertexLocation, goodFloat32List.take(2));
-      log.debug('listFloat32Common0:$goodFloat32List , fl3.hash_code:${fl3
-          .hashCode}');
+      final fl3 = FLtag(PTag.kCornealVertexLocation, goodFloat32List.take(2));
+      log.debug('listFloat32Common0:$goodFloat32List , '
+          'fl3.hash_code:${fl3.hashCode}');
       expect(e0.hashCode == fl3.hashCode, false);
       expect(e0 == fl3, false);
 
-      final fl4 =
-          new FLtag(PTag.kCornealPointLocation, goodFloat32List.take(3));
-      log.debug('listFloat32Common0:$goodFloat32List , fl4.hash_code:${fl4
-          .hashCode}');
+      final fl4 = FLtag(PTag.kCornealPointLocation, goodFloat32List.take(3));
+      log.debug('listFloat32Common0:$goodFloat32List , '
+          'fl4.hash_code:${fl4.hashCode}');
       expect(e0.hashCode == fl4.hashCode, false);
       expect(e0 == fl4, false);
 
-      final fl5 = new FLtag(
-          PTag.kPointsBoundingBoxCoordinates, goodFloat32List.take(6));
-      log.debug('listFloat32Common0:$goodFloat32List , fl5.hash_code:${fl5
-          .hashCode}');
+      final fl5 =
+          FLtag(PTag.kPointsBoundingBoxCoordinates, goodFloat32List.take(6));
+      log.debug('listFloat32Common0:$goodFloat32List , '
+          'fl5.hash_code:${fl5.hashCode}');
       expect(e0.hashCode == fl5.hashCode, false);
       expect(e0 == fl5, false);
 
-      final fl6 = new FLtag(PTag.kSelectorFLValue, goodFloat32List);
-      log.debug('listFloat32Common0:$goodFloat32List , fl6.hash_code:${fl6
-          .hashCode}');
+      final fl6 = FLtag(PTag.kSelectorFLValue, goodFloat32List);
+      log.debug('listFloat32Common0:$goodFloat32List , '
+          'fl6.hash_code:${fl6.hashCode}');
       expect(e0.hashCode == fl6.hashCode, false);
       expect(e0 == fl6, false);
     });
@@ -308,18 +303,18 @@ void main() {
     test('FL replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final e0 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
+        final e0 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList);
         final vList1 = rng.float32List(1, 1);
         expect(e0.replace(vList1), equals(vList));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rng.float32List(1, 1);
-      final e1 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList1);
+      final e1 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList1);
       expect(e1.replace(<double>[]), equals(vList1));
       expect(e1.values, equals(<double>[]));
 
-      final fl2 = new FLtag(PTag.kAbsoluteChannelDisplayScale, vList1);
+      final fl2 = FLtag(PTag.kAbsoluteChannelDisplayScale, vList1);
       expect(fl2.replace(null), equals(vList1));
       expect(fl2.values, equals(<double>[]));
     });
@@ -327,9 +322,9 @@ void main() {
     test('FL fromUint8List good values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final bytes = new Bytes.typedDataView(vList);
+        final bytes = Bytes.typedDataView(vList);
         final e0 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
-        log.debug('e0 : ${e0 .info}');
+        log.debug('e0 : ${e0.info}');
         expect(e0.hasValidValues, true);
       }
     });
@@ -338,7 +333,7 @@ void main() {
       global.doTestElementValidity = false;
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(3, 3);
-        final bytes = new Bytes.typedDataView(vList);
+        final bytes = Bytes.typedDataView(vList);
         final e1 = FLtag.fromBytes(PTag.kAbsoluteChannelDisplayScale, bytes);
         log.debug('e1: $e1');
         expect(e1.hasValidValues, false);
@@ -349,9 +344,9 @@ void main() {
       global.doTestElementValidity = true;
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 10);
-        final bytes = new Bytes.typedDataView(vList);
+        final bytes = Bytes.typedDataView(vList);
         final e0 = FLtag.fromBytes(PTag.kSelectorFLValue, bytes);
-        log.debug('e0 : ${e0 .info}');
+        log.debug('e0 : ${e0.info}');
         expect(e0.hasValidValues, true);
       }
     });
@@ -360,7 +355,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.float32List(1, 10);
-        final bytes = new Bytes.typedDataView(vList);
+        final bytes = Bytes.typedDataView(vList);
         final e0 = FLtag.fromBytes(PTag.kSelectorSSValue, bytes);
         expect(e0, isNull);
 
@@ -400,10 +395,10 @@ void main() {
     test('Create Elements from floating values(FL)', () {
       const f32Values = const <double>[2047.99, 2437.437, 764.53];
 
-      final e0 = new FLtag(PTag.kRecommendedDisplayFrameRateInFloat,
-          new Float32List.fromList(f32Values.take(1).toList()));
+      final e0 = FLtag(PTag.kRecommendedDisplayFrameRateInFloat,
+          Float32List.fromList(f32Values.take(1).toList()));
       expect(e0.values.first.toStringAsPrecision(1),
-          equals((2047.99).toStringAsPrecision(1)));
+          equals(2047.99.toStringAsPrecision(1)));
     });
   });
 

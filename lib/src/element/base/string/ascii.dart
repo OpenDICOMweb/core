@@ -86,8 +86,8 @@ abstract class AE extends StringAscii {
   Trim get trim => kTrim;
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   AE append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -191,8 +191,8 @@ abstract class CS extends StringAscii {
   int get maxLength => kMaxLength;
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   CS append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -321,8 +321,8 @@ abstract class UI extends StringAscii {
   UI get sha256 => sha256Unsupported(this);
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   UI append(String s) => update(values.append(s, kMaxValueLength));
 

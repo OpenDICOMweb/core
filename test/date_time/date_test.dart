@@ -71,7 +71,7 @@ void main() {
     test('issues', () {
       for (var s in goodDcmDateList) {
         expect(Date.isValidString(s), true);
-        final issues = new Issues('Date: "$s"');
+        final issues = Issues('Date: "$s"');
         Date.parse(s, issues: issues);
         expect(issues.isEmpty, true);
       }
@@ -79,7 +79,7 @@ void main() {
       for (var s in badDcmDateList) {
         global.throwOnError = false;
         expect(Date.isValidString(s), false);
-        final issues = new Issues('Date: "$s"');
+        final issues = Issues('Date: "$s"');
         Date.parse(s, issues: issues);
         expect(issues.isEmpty, false);
       }
@@ -89,7 +89,7 @@ void main() {
       for (var y = 1990; y < global.maxYear; y++) {
         for (var m = 1; m < 12; m++) {
           for (var d = 1; d < lastDayOfMonth(y, m); d++) {
-            final date0 = new Date(y, m, d);
+            final date0 = Date(y, m, d);
 
             final time0 = Time.parse('235959');
             log.debug('$date0 - $time0');
@@ -116,12 +116,12 @@ void main() {
       log.debug('dateTime: $dateTime0');
       expect(dateTime0.microseconds == date.microseconds + time.uSeconds, true);
 
-      final time1 = new Time(4, 30, 56);
+      final time1 = Time(4, 30, 56);
       final date1 = date.add(time1);
       log.debug(date1);
       expect(date1.microseconds == date.microseconds + time1.uSeconds, true);
 
-      final time2 = new Time(05, 12, 34);
+      final time2 = Time(05, 12, 34);
       final date2 = date.difference(time2);
       log.debug(date2);
       expect(date2.microseconds == date.microseconds - time2.uSeconds, true);
@@ -130,35 +130,35 @@ void main() {
     test('hash Date (throwOnError = false)', () {
       global.throwOnError = false;
 
-      final date = new Date(1980, 05, 01);
+      final date = Date(1980, 05, 01);
       log.debug('date: $date');
       final hash0 = date.hash;
       log.debug('hash0: $hash0');
 
-      final date0 = new Date(1980, 05, 41); //bad day
+      final date0 = Date(1980, 05, 41); //bad day
       expect(date0, isNull);
 
-      final date1 = new Date(1980, 43, 12); //bad month
+      final date1 = Date(1980, 43, 12); //bad month
       expect(date1, isNull);
 
-      final date2 = new Date(global.maxYear + 1, 05, 01); //bad year
+      final date2 = Date(global.maxYear + 1, 05, 01); //bad year
       expect(date2, isNull);
 
-      final date3 = new Date(global.minYear - 1, 05, 01); //bad year
+      final date3 = Date(global.minYear - 1, 05, 01); //bad year
       expect(date3, isNull);
 
       global.throwOnError = true;
 
-      expect(() => new Date(global.maxYear + 1, 05, 01),
+      expect(() => Date(global.maxYear + 1, 05, 01),
           throwsA(const TypeMatcher<DateTimeError>())); //bad year
 
-      expect(() => new Date(global.minYear - 1, 05, 01),
+      expect(() => Date(global.minYear - 1, 05, 01),
           throwsA(const TypeMatcher<DateTimeError>())); //bad year
 
-      expect(() => new Date(2004, 10, 32),
+      expect(() => Date(2004, 10, 32),
           throwsA(const TypeMatcher<DateTimeError>())); //bad day
 
-      expect(() => new Date(2004, 13, 13),
+      expect(() => Date(2004, 13, 13),
           throwsA(const TypeMatcher<DateTimeError>())); //bad month
     });
 
@@ -192,30 +192,30 @@ void main() {
     });
 
     test('normalizD', () {
-      //Date original0 = new Date(2004, 10, 10);
-      final enrollment0 = new Date(1992, 12, 12);
+      //Date original0 = Date(2004, 10, 10);
+      final enrollment0 = Date(1992, 12, 12);
       final normDate0 = enrollment0.normalize(enrollment0);
       log.debug('normDate0: $normDate0');
 
-      final enrollment1 = new Date(2012, 1, 12);
+      final enrollment1 = Date(2012, 1, 12);
       final normDate1 = enrollment1.normalize(enrollment1);
       log.debug('normDate0: $normDate1');
 
       global.throwOnError = false;
-      final enrollment2 = new Date(2004, 10, 32); //bad day
+      final enrollment2 = Date(2004, 10, 32); //bad day
       expect(enrollment2, isNull);
 
-      final enrollment3 = new Date(2004, 13, 13); //bad month
+      final enrollment3 = Date(2004, 13, 13); //bad month
       expect(enrollment3, isNull);
 
       global.throwOnError = true;
-      expect(() => new Date(2004, 10, 32),
+      expect(() => Date(2004, 10, 32),
           throwsA(const TypeMatcher<DateTimeError>())); //bad day
 
-      expect(() => new Date(2004, 13, 13),
+      expect(() => Date(2004, 13, 13),
           throwsA(const TypeMatcher<DateTimeError>())); //bad month
 
-      /*Date enrollment1 = new Date(1992, 12, 12);
+      /*Date enrollment1 = Date(1992, 12, 12);
       Date normDate1 = original1.normalize(original1, enrollment1);
       log.debug('normDate0: $normDate1');*/
     });
@@ -366,7 +366,7 @@ void main() {
   });
 
   test('Hash Random Dates', () {
-    final rng = new RNG();
+    final rng = RNG();
     for (var i = 0; i < 1000; i++) {
       final eDay = rng.nextInt(global.minYear, global.maxYear);
       final date0 = Date.fromEpochDay(eDay);
@@ -378,14 +378,14 @@ void main() {
   });
 
   test('Hash Dates', () {
-    final date1 = new Date(1969, 12, 31);
+    final date1 = Date(1969, 12, 31);
     final hash1 = date1.hash;
     log.debug('hash1: $hash1, year: ${hash1.year}, y: ${hash1.y}');
     expect(hash1, isNotNull);
   });
 
   test('sha256 Dates', () {
-    final date1 = new Date(1970, 05, 01);
+    final date1 = Date(1970, 05, 01);
     log.debug('date1: $date1');
     final sha0 = date1.sha256;
     log.debug('sha0: $sha0');
@@ -459,7 +459,7 @@ void main() {
   });
 
   test('Hash Dates', () {
-    final date1 = new Date(1969, 12, 31);
+    final date1 = Date(1969, 12, 31);
     log.debug('date: $date1, year:${date1.year}, month: ${date1.month}, '
         'day: ${date1.day}, microseconds: ${date1.microseconds}');
     final hash1 = date1.hash;
@@ -467,7 +467,7 @@ void main() {
   });
 
   test('date hash', () {
-    final date = new Date(1980, 05, 01);
+    final date = Date(1980, 05, 01);
     log.debug('date: $date');
     final hash0 = date.hash;
     log.debug('hash0: $hash0');
@@ -478,10 +478,10 @@ void main() {
       final date0 = Date.parse(s);
       final date1 = Date.parse(s);
       log
-        ..debug(
-            'date0.values:${date0.toString()}, date0.hashCode:${date0.hashCode}')
-        ..debug(
-            'date1.values:${date1.toString()}, date1.hashCode:${date1.hashCode}');
+        ..debug('date0.values:${date0.toString()}, '
+            'date0.hashCode:${date0.hashCode}')
+        ..debug('date1.values:${date1.toString()},'
+            ' date1.hashCode:${date1.hashCode}');
       expect(date0.hashCode, equals(date1.hashCode));
     }
     final date2 = Date.parse(goodDcmDateList[0]);
@@ -496,8 +496,8 @@ void main() {
     for (var y = global.minYear; y < global.maxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
-          final dt0 = new Date(y, m, d);
-          final dt1 = new Date(y, m, d + 1);
+          final dt0 = Date(y, m, d);
+          final dt1 = Date(y, m, d + 1);
           log.debug('dt0: $dt0, dt1: $dt1');
           expect(dt1 > dt0, true);
         }
@@ -509,8 +509,8 @@ void main() {
     for (var y = global.minYear; y < global.maxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
-          final dt0 = new Date(y, m, d);
-          final dt1 = new Date(y, m, d + 1);
+          final dt0 = Date(y, m, d);
+          final dt1 = Date(y, m, d + 1);
           log.debug('dt0: $dt0, dt1: $dt1');
           expect(dt0 < dt1, true);
         }
@@ -522,8 +522,8 @@ void main() {
     for (var y = global.minYear; y < global.maxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
-          final dt0 = new Date(y, m, d);
-          final dt1 = new Date(y, m, d + 1);
+          final dt0 = Date(y, m, d);
+          final dt1 = Date(y, m, d + 1);
           log.debug('dt0: $dt0, dt1: $dt1');
           expect(dt1.isAfter(dt0), true);
         }
@@ -535,8 +535,8 @@ void main() {
     for (var y = global.minYear; y < global.maxYear; y++) {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
-          final dt0 = new Date(y, m, d);
-          final dt1 = new Date(y, m, d + 1);
+          final dt0 = Date(y, m, d);
+          final dt1 = Date(y, m, d + 1);
           log.debug('dt0: $dt0, dt1: $dt1');
           expect(dt0.isBefore(dt1), true);
         }
@@ -549,8 +549,8 @@ void main() {
       for (var m = 1; m < 12; m++) {
         for (var d = 1; d < lastDayOfMonth(y, m); d++) {
           if (d + 1 < lastDayOfMonth(y, m)) {
-            final dt0 = new Date(y, m, d);
-            final dt1 = new Date(y, m, d + 1);
+            final dt0 = Date(y, m, d);
+            final dt1 = Date(y, m, d + 1);
             expect(dt0.compareTo(dt1), -1);
 
             expect(dt1.compareTo(dt0), 1);
@@ -657,4 +657,3 @@ void main() {
     expect(mtDate1 == '19700102', true);
   });
 }
-

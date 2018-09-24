@@ -273,7 +273,7 @@ int __parseSmallRadix(String s, int start, Issues issues, int end, String name,
   for (var i = start; i < end; i++) {
     value *= radix;
     final c = s.codeUnitAt(i);
-    if (c < k0 || c > maxChar) return _invalidIntCharError(s, i, issues, name);
+    if (c < k0 || c > maxChar) return _badIntChar(s, i, issues, name);
     value += c - k0;
   }
   return value;
@@ -303,7 +303,7 @@ int __parseBigRadix(String s, int start, Issues issues, int end, String name,
     } else {
       return (onError != null)
           ? onError(s.substring(start, end))
-          : _invalidIntCharError(s, i, issues, name);
+          : _badIntChar(s, i, issues, name);
     }
   }
   return value;
@@ -321,14 +321,15 @@ int _tryParseRadix(String s, int start, Issues issues, int end, int minLength,
 // ignore: avoid_returning_null
 int _defaultTryParseIntError(String s) => null;
 
-Null _invalidIntCharError(String s, int index, Issues issues, String name) {
-  final msg = _invalidIntCharMsg(s, index, issues, name);
+// ignore: avoid_returning_null
+int _badIntChar(String s, int index, Issues issues, String name) {
+  final msg = _badIntCharMsg(s, index, issues, name);
   if (throwOnError) parseError(msg, issues);
   return null;
 }
 
 /// Returns an invalid character [String].
-String _invalidIntCharMsg(String s, int index, Issues issues, String name) {
+String _badIntCharMsg(String s, int index, Issues issues, String name) {
   final msg = '(in $name) Invalid integer character "${s[index]}" '
       '(${s.codeUnitAt(index)}) at pos($index) in String:"$s"';
   if (issues != null) issues.add(msg);
@@ -342,7 +343,7 @@ int __parseBase10(String s, int start, Issues issues, int end) {
     value *= 10;
     final c = s.codeUnitAt(i);
     if (c < k0 || c > k9)
-      return _invalidIntCharError(s, i, issues, '*internal*');
+      return _badIntChar(s, i, issues, '*internal*');
     value += c - k0;
   }
   return value;

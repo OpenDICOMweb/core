@@ -13,7 +13,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/pn_test', level: Level.info);
@@ -37,11 +37,11 @@ void main() {
     test('PN hasValidValues good values', () {
       for (var s in goodPNList) {
         global.throwOnError = false;
-        final e0 = new PNtag(PTag.kRequestingPhysician, s);
+        final e0 = PNtag(PTag.kRequestingPhysician, s);
         expect(e0.hasValidValues, true);
       }
       global.throwOnError = false;
-      final e0 = new PNtag(PTag.kOrderEnteredBy, []);
+      final e0 = PNtag(PTag.kOrderEnteredBy, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -49,29 +49,29 @@ void main() {
     test('PN hasValidValues bad values', () {
       for (var s in badPNList) {
         global.throwOnError = false;
-        final e0 = new PNtag(PTag.kRequestingPhysician, s);
+        final e0 = PNtag(PTag.kRequestingPhysician, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new PNtag(PTag.kRequestingPhysician, s),
+        expect(() => PNtag(PTag.kRequestingPhysician, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new PNtag(PTag.kOrderEnteredBy, null);
+      final e1 = PNtag(PTag.kOrderEnteredBy, null);
       log.debug('e1: $e1');
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new PNtag(PTag.kRequestingPhysician, null),
+      expect(() => PNtag(PTag.kRequestingPhysician, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('PN hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e0 = new PNtag(PTag.kRequestingPhysician, vList0);
+        final e0 = PNtag(PTag.kRequestingPhysician, vList0);
         log.debug('e0:${e0.info}');
         expect(e0.hasValidValues, true);
 
@@ -81,7 +81,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 10);
-        final e1 = new PNtag(PTag.kSelectorPNValue, vList0);
+        final e1 = PNtag(PTag.kSelectorPNValue, vList0);
         log.debug('e1:${e1.info}');
         expect(e1.hasValidValues, true);
 
@@ -95,7 +95,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e2 = new PNtag(PTag.kRequestingPhysician, vList0);
+        final e2 = PNtag(PTag.kRequestingPhysician, vList0);
         expect(e2, isNull);
       }
 
@@ -103,19 +103,19 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(3, 4);
         log.debug('$i: vList0: $vList0');
-        expect(() => new PNtag(PTag.kRequestingPhysician, vList0),
+        expect(() => PNtag(PTag.kRequestingPhysician, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
     test('PN update random', () {
-      final e0 = new PNtag(PTag.kOrderEnteredBy, []);
+      final e0 = PNtag(PTag.kOrderEnteredBy, []);
       expect(e0.update(['Pb5HpbS4^, bgPK^re']).values,
           equals(['Pb5HpbS4^, bgPK^re']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e1 = new PNtag(PTag.kOrderEnteredBy, vList0);
+        final e1 = PNtag(PTag.kOrderEnteredBy, vList0);
         final vList1 = rsg.getPNList(3, 4);
         expect(() => e1.update(vList1).values,
             throwsA(const TypeMatcher<InvalidValuesError>()));
@@ -123,14 +123,14 @@ void main() {
     });
 
     test('PN noValues random', () {
-      final e0 = new PNtag(PTag.kOrderEnteredBy, []);
+      final e0 = PNtag(PTag.kOrderEnteredBy, []);
       final PNtag pnNoValues = e0.noValues;
       expect(pnNoValues.values.isEmpty, true);
       log.debug('as0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e0 = new PNtag(PTag.kOrderEnteredBy, vList0);
+        final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
         log.debug('e0: $e0');
         expect(pnNoValues.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -138,7 +138,7 @@ void main() {
     });
 
     test('PN copy random', () {
-      final e0 = new PNtag(PTag.kOrderEnteredBy, []);
+      final e0 = PNtag(PTag.kOrderEnteredBy, []);
       final PNtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
@@ -146,7 +146,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e2 = new PNtag(PTag.kOrderEnteredBy, vList0);
+        final e2 = PNtag(PTag.kOrderEnteredBy, vList0);
         final PNtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -161,8 +161,8 @@ void main() {
       log.debug('PN hashCode and == ');
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e0 = new PNtag(PTag.kOrderEnteredBy, vList0);
-        final e1 = new PNtag(PTag.kOrderEnteredBy, vList0);
+        final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
+        final e1 = PNtag(PTag.kOrderEnteredBy, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -170,19 +170,19 @@ void main() {
         expect(e0 == e1, true);
 
         final vList1 = rsg.getPNList(1, 1);
-        final e2 = new PNtag(PTag.kVerifyingObserverName, vList1);
+        final e2 = PNtag(PTag.kVerifyingObserverName, vList1);
         log.debug('vList1:$vList1 , lo2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rsg.getPNList(1, 10);
-        final e3 = new PNtag(PTag.kSelectorPNValue, vList2);
+        final e3 = PNtag(PTag.kSelectorPNValue, vList2);
         log.debug('vList2:$vList2 , lo3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rsg.getPNList(2, 3);
-        final e4 = new PNtag(PTag.kOrderEnteredBy, vList3);
+        final e4 = PNtag(PTag.kOrderEnteredBy, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
@@ -192,7 +192,7 @@ void main() {
     test('PN valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e0 = new PNtag(PTag.kOrderEnteredBy, vList0);
+        final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -200,7 +200,7 @@ void main() {
     test('PN isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e0 = new PNtag(PTag.kOrderEnteredBy, vList0);
+        final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -208,7 +208,7 @@ void main() {
     test('PN isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e0 = new PNtag(PTag.kOrderEnteredBy, vList0);
+        final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -217,18 +217,18 @@ void main() {
     test('PN replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 1);
-        final e0 = new PNtag(PTag.kOrderEnteredBy, vList0);
+        final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
         final vList1 = rsg.getPNList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getPNList(1, 1);
-      final e1 = new PNtag(PTag.kOrderEnteredBy, vList1);
+      final e1 = PNtag(PTag.kOrderEnteredBy, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new PNtag(PTag.kOrderEnteredBy, vList1);
+      final e2 = PNtag(PTag.kOrderEnteredBy, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -236,10 +236,10 @@ void main() {
     test('PN blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getPNList(1, 1);
-        final e0 = new PNtag(PTag.kOrderEnteredBy, vList1);
+        final e0 = PNtag(PTag.kOrderEnteredBy, vList1);
         for (var i = 1; i < 10; i++) {
           final blank = e0.blank(i);
-          log.debug(('blank$i: ${blank.values}'));
+          log.debug('blank$i: ${blank.values}');
           expect(blank.values.length == 1, true);
           expect(blank.value.length == i, true);
           final strSpaceList = <String>[''.padRight(i, ' ')];
@@ -265,7 +265,7 @@ void main() {
         final vList1 = rsg.getPNList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = PNtag.fromBytes(PTag.kSelectorPNValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
@@ -279,7 +279,7 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = PNtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
@@ -327,16 +327,16 @@ void main() {
 
     test('PN checkLength good values', () {
       final vList0 = rsg.getPNList(1, 1);
-      final e0 = new PNtag(PTag.kOrderEnteredBy, vList0);
+      final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
       for (var s in goodPNList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new PNtag(PTag.kOrderEnteredBy, vList0);
+      final e1 = PNtag(PTag.kOrderEnteredBy, vList0);
       expect(e1.checkLength([]), true);
 
       for (var s in goodPNList) {
         final vList1 = rsg.getPNList(1, 10);
-        final e2 = new PNtag(PTag.kPerformingPhysicianName, vList1);
+        final e2 = PNtag(PTag.kPerformingPhysicianName, vList1);
         expect(e2.checkLength(s), true);
       }
     });
@@ -344,13 +344,13 @@ void main() {
     test('PN checkLength bad values', () {
       global.throwOnError = false;
       final vList2 = ['a^1sd', '02@#'];
-      final e3 = new PNtag(PTag.kOrderEnteredBy, vList2);
+      final e3 = PNtag(PTag.kOrderEnteredBy, vList2);
       expect(e3, isNull);
     });
 
     test('PN checkValue good values', () {
       final vList0 = rsg.getPNList(1, 1);
-      final e0 = new PNtag(PTag.kOrderEnteredBy, vList0);
+      final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
       for (var s in goodPNList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -360,7 +360,7 @@ void main() {
 
     test('PN checkValue bad values', () {
       final vList0 = rsg.getPNList(1, 1);
-      final e0 = new PNtag(PTag.kOrderEnteredBy, vList0);
+      final e0 = PNtag(PTag.kOrderEnteredBy, vList0);
       for (var s in badPNList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -377,7 +377,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 4);
-        final e0 = new PNtag(PTag.kSelectorPNValue, vList0);
+        final e0 = PNtag(PTag.kSelectorPNValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -389,7 +389,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 4);
-        final e0 = new PNtag(PTag.kSelectorPNValue, vList0);
+        final e0 = PNtag(PTag.kSelectorPNValue, vList0);
         const vList1 = 'foo';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -401,7 +401,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 4, 16);
-        final e0 = new PNtag(PTag.kSelectorPNValue, vList0);
+        final e0 = PNtag(PTag.kSelectorPNValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -412,18 +412,18 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, 10);
-        final e0 = new PNtag(PTag.kSelectorPNValue, vList0);
+        final e0 = PNtag(PTag.kSelectorPNValue, vList0);
         final match0 = e0.match(r'.*');
         expect(match0, true);
       }
 
       final vList0 = ['4gBerroDcI'];
-      final e0 = new PNtag(PTag.kSelectorPNValue, vList0);
+      final e0 = PNtag(PTag.kSelectorPNValue, vList0);
       final match0 = e0.match(r'\w*[a-z][A-Z]');
       expect(match0, true);
 
       final vList1 = ['RI1tpHSEP^G9GyVhSpU1z^KzJGP^VwsO8L^p6eZh_'];
-      final e1 = new PNtag(PTag.kSelectorPNValue, vList1);
+      final e1 = PNtag(PTag.kSelectorPNValue, vList1);
       final match1 = e1.match(r'\w*[a-z_A-Z][0-9]');
       expect(match1, true);
     });
@@ -433,7 +433,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getPNList(1, i);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new PNtag(PTag.kSelectorPNValue, vList0);
+        final e0 = PNtag(PTag.kSelectorPNValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }

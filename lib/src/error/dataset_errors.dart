@@ -16,11 +16,12 @@ import 'package:core/src/utils.dart';
 import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: prefer_void_to_null
 
 Null badElementIndex(int index,
     {Element e, bool required = false, Issues issues}) {
   final code = dcm(index);
-  final msg = (required)
+  final msg = required
       ? 'InvalidRequiredElementIndex: $code'
       : 'InvalidElementIndex: $code';
   if (issues != null) issues.add(msg);
@@ -104,12 +105,12 @@ Null elementNotPresentError<K>(K key) {
 
 class DuplicateElementError extends Error {
   final Element oldE;
-  final Element E;
+  final Element newE;
 
-  DuplicateElementError(this.oldE, this.E);
+  DuplicateElementError(this.oldE, this.newE);
 
   @override
-  String toString() => _msg(oldE, E);
+  String toString() => _msg(oldE, newE);
 
   static String _msg(Element oldE, Element E) =>
       'DuplicateElementError:\n  old: $oldE\n  : $E';
@@ -204,12 +205,12 @@ Null duplicateItemError(Dataset item) {
 
 class DuplicateEntityError extends Error {
   final Entity oldE;
-  final Entity E;
+  final Entity newE;
 
-  DuplicateEntityError(this.oldE, this.E);
+  DuplicateEntityError(this.oldE, this.newE);
 
   @override
-  String toString() => _msg(oldE, E);
+  String toString() => _msg(oldE, newE);
 
   static String _msg(Entity oldE, Entity E) {
     final vOld = (oldE == null) ? 'null' : '$oldE';

@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'package:core/src/utils/indenter/indenter._base.dart';
+import 'package:core/src/utils/indenter/indenter_base.dart';
 
 // ignore_for_file: public_member_api_docs
 

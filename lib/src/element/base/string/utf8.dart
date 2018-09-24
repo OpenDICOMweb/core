@@ -72,8 +72,8 @@ abstract class LO extends Utf8 {
   int get maxLength => kMaxLength;
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   LO append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -243,8 +243,8 @@ abstract class PN extends Utf8 {
   }
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   PN append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -349,8 +349,8 @@ abstract class SH extends Utf8 {
   int get maxLength => kMaxLength;
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   SH append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -460,8 +460,8 @@ abstract class UC extends Utf8 {
   int get vlfSize => 4;
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   UC append(String s) => update(values.append(s, kMaxValueLength));
 

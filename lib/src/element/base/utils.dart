@@ -11,15 +11,17 @@ import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: prefer_void_to_null
 
 bool _inRange(int v, int min, int max) => v >= min && v <= max;
 
 //TODO move to Float64, Float32, etc.
 int vfLengthToLength(int vfLengthField, int sizeInBytes) {
-  final vlf = vfLengthField;
-  final length = vlf ~/ sizeInBytes;
-  assert(vlf >= 0 && vlf.isEven, 'vfLengthField: $vlf');
-  assert(vlf % sizeInBytes == 0, 'vflf: $vlf sizeInBytes $sizeInBytes');
+  final length = vfLengthField ~/ sizeInBytes;
+  assert(vfLengthField >= 0 && vfLengthField.isEven,
+      'vfLengthField: $vfLengthField');
+  assert(vfLengthField % sizeInBytes == 0,
+      'vflf: $vfLengthField sizeInBytes $sizeInBytes');
   return length;
 }
 

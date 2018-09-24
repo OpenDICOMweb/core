@@ -9,7 +9,7 @@
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-Logger log = new Logger('test', Level.info);
+Logger log = Logger('test', Level.info);
 
 void main() {
   Server.initialize(name: 'logger/logger_test', level: Level.info);

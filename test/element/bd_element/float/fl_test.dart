@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
 
   const doubleList = const <double>[
     1.1,
@@ -89,7 +89,7 @@ void main() {
     kScanSpotMetersetWeights,
   ];
 
-  final float32List = new Float32List.fromList(doubleList);
+  final float32List = Float32List.fromList(doubleList);
 
   final rds = ByteRootDataset.empty();
   global.throwOnError = false;

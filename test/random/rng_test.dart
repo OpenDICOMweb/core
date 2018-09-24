@@ -16,7 +16,7 @@ void main() {
   Server.initialize(name: 'rng/float_test', level: Level.info);
 
   group('getLength tests of RNG', () {
-    final rng = new RNG(0);
+    final rng = RNG(0);
     const count = 10;
     const minMin = 3;
     const maxMin = 31;
@@ -72,7 +72,7 @@ void main() {
   });
 
   group('Integer tests of Random Number Generator(RNG)', () {
-    final rng = new RNG(0);
+    final rng = RNG(0);
     const minMin = 3;
     const maxMin = 31;
     const minMax = 32;
@@ -149,7 +149,7 @@ void main() {
   });
 
   group('Random floating Point numbers tests of ', () {
-    final rng = new RNG(0);
+    final rng = RNG(0);
     const count = 10;
 
     test('nextDouble Test', () {
@@ -171,7 +171,7 @@ void main() {
     });
 
     test('nextFloat32 Test', () {
-      final floatBox = new Float32List(1);
+      final floatBox = Float32List(1);
 
       for (var i = 0; i < count; i++) {
         final nf32 = rng.nextFloat32;
@@ -188,7 +188,7 @@ void main() {
   });
 
   group('Random Floating point lists test', () {
-    final rng = new RNG(0);
+    final rng = RNG(0);
     const count = 10;
 
     test('listOfDouble Test', () {
@@ -207,7 +207,7 @@ void main() {
         expect(list0 is List<double>, true);
         expect(list0.length, inInclusiveRange(1, 32));
 
-        final list1 = new Float32List.fromList(list0);
+        final list1 = Float32List.fromList(list0);
         expect(list0.length == list1.length, true);
         for (var i = 0; i < list0.length; i++) {
           expect(list0[i] == list1[i], true);

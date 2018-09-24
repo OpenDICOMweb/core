@@ -67,7 +67,7 @@ class FmiMap extends Fmi {
   Iterable<Element> get elements => eMap.values;
 
   @override
-  void add(Element e) => tryAdd(e);
+  void add(Element element) => tryAdd(element);
 
   bool tryAdd(Element e) {
     final old = eMap[e.code];

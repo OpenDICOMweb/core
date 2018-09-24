@@ -13,7 +13,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
 
   group('FLtag', () {
@@ -27,18 +27,18 @@ void main() {
     test('Float32Base fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 1);
-        final bd = new Bytes.typedDataView(vList0);
+        final bd = Bytes.typedDataView(vList0);
         expect(Float32.fromBytes(bd), equals(vList0));
       }
-      final vList1 = new Float32List.fromList(<double>[]);
-      final bd0 = new Bytes.typedDataView(vList1);
+      final vList1 = Float32List.fromList(<double>[]);
+      final bd0 = Bytes.typedDataView(vList1);
       expect(Float32.fromBytes(bd0), equals(<double>[]));
     });
 
     test('Float32Base toBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(0, i);
-        final vList0 = new Float32List.fromList(vList);
+        final vList0 = Float32List.fromList(vList);
         final uInt8List0 = vList0.buffer.asUint8List();
         final bytes = Float32.toBytes(vList0);
         expect(bytes, equals(uInt8List0));
@@ -48,7 +48,7 @@ void main() {
     test('Float32Base.toByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final vList0 = new Float32List.fromList(vList);
+        final vList0 = Float32List.fromList(vList);
         final bd0 = vList0.buffer.asByteData();
         final lBd0 = Float32.toByteData(vList0);
         log.debug('lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer
@@ -63,7 +63,7 @@ void main() {
         expect(lBd1.buffer == bd0.buffer, false);
 
         final vList1 = rng.float64List(1, 1);
-        final float64List0 = new Float64List.fromList(vList1);
+        final float64List0 = Float64List.fromList(vList1);
         final bd1 = float64List0.buffer.asByteData();
         final lBd2 = Float32.toByteData(float64List0);
 
@@ -77,22 +77,22 @@ void main() {
     test('Float32Base fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 1);
-        final bd = new Bytes.typedDataView(vList0);
+        final bd = Bytes.typedDataView(vList0);
         expect(Float32.fromBytes(bd), equals(vList0));
       }
-      final vList1 = new Float32List.fromList(<double>[]);
-      final bd0 = new Bytes.typedDataView(vList1);
+      final vList1 = Float32List.fromList(<double>[]);
+      final bd0 = Bytes.typedDataView(vList1);
       expect(Float32.fromBytes(bd0), equals(<double>[]));
     });
 
     test('Float32Base.fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final float = new Float32List.fromList(vList);
+        final float = Float32List.fromList(vList);
         final byteData0 = float.buffer.asByteData();
         expect(Float32.fromByteData(byteData0), equals(vList));
       }
-      final float0 = new Float32List.fromList(<double>[]);
+      final float0 = Float32List.fromList(<double>[]);
       final bd0 = float0.buffer.asByteData();
       expect(Float32.fromByteData(bd0), equals(<double>[]));
     });
@@ -100,7 +100,7 @@ void main() {
     test('Float32Base fromBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 1);
-        final byte0 = new Bytes.typedDataView(vList0);
+        final byte0 = Bytes.typedDataView(vList0);
         final fb0 = Float32.fromBytes(byte0);
         final vList1 = byte0.asFloat32List();
         log.debug('formBytes: $fb0, Flaot32List: $vList1');
@@ -123,11 +123,11 @@ void main() {
         final fvF3 = Float32.fromValueField(<double>[123.54]);
         expect(fvF3, equals(<double>[123.54]));
 
-        final byte0 = new Bytes.typedDataView(vList);
+        final byte0 = Bytes.typedDataView(vList);
         final fvF4 = Float32.fromValueField(byte0);
         expect(fvF4, isNotNull);
 
-        final bytes1 = new Bytes.typedDataView(vList);
+        final bytes1 = Bytes.typedDataView(vList);
         final fvF5 = Float32.fromValueField(bytes1);
         final data = Float32.fromBytes(bytes1);
         expect(fvF5, equals(data));
@@ -145,7 +145,7 @@ void main() {
     test('Float32Base toUint8List', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.float32List(1, i);
-        final float32 = new Float32List.fromList(vList0);
+        final float32 = Float32List.fromList(vList0);
         final u8List0 = float32.buffer.asUint8List();
         final uInt8list0 = Float32.toUint8List(vList0);
         log.debug('uInt8List0: $uInt8list0, u8List: $u8List0');
@@ -160,7 +160,7 @@ void main() {
       expect(uInt8List2 == kEmptyUint8List, true);
 
       final vList1 = rng.float64List(1, 1);
-      final float64 = new Float64List.fromList(vList1);
+      final float64 = Float64List.fromList(vList1);
       final u8List1 = float64.buffer.asUint8List();
       final uInt8List3 = Float32.toUint8List(vList1);
       expect(uInt8List3, isNot(u8List1));

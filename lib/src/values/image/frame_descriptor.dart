@@ -284,8 +284,9 @@ class InvalidFrameDescriptorError extends Error {
       'InvalidFrameDescriptorError: $desc';
 }
 
+// ignore: prefer_void_to_null
 Null invalidFrameDescriptorError(FrameDescriptor desc) {
   log.error(InvalidFrameDescriptorError._msg(desc));
-  if (throwOnError) throw new InvalidFrameDescriptorError(desc);
+  if (throwOnError) throw InvalidFrameDescriptorError(desc);
   return null;
 }

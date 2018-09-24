@@ -6,10 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'hash.dart';
+
+// ignore_for_file: avoid_js_rounded_ints
 
 /// A class implementing a 64-bit Jenkins hash
 class Hash64 extends Hash {
@@ -28,8 +29,8 @@ class Hash64 extends Hash {
 
   // Jenkins hash functions - from quiver package on Pub.
   @override
-  int combine(int hash, int value) {
-    var h = k64BitHashMask & (hash + value);
+  int combine(int seed, int hashCode) {
+    var h = k64BitHashMask & (seed + hashCode);
     h = k64BitHashMask & (h + ((0x0007ffff & h) << 10));
     return h ^ (h >> 6);
   }

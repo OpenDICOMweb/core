@@ -82,11 +82,11 @@ void main() {
     });
 
     test('logger name cannot start with a "." ', () {
-      expect(() => new Logger('.c'), throwsArgumentError);
+      expect(() => Logger('.c'), throwsArgumentError);
     });
 
     test('logger naming is hierarchical', () {
-      final c = new Logger('a.b.c');
+      final c = Logger('a.b.c');
       expect(c.name, equals('c'));
       log.debug('c.parent.name: ${c.parent.name}');
       expect(c.parent.name, equals('b'));
@@ -96,7 +96,7 @@ void main() {
     });
 
     test('logger full name', () {
-      final c = new Logger('a.b.c');
+      final c = Logger('a.b.c');
       expect(c.fullName, equals('a.b.c'));
       expect(c.parent.fullName, equals('a.b'));
       expect(c.parent.parent.fullName, equals('a'));
@@ -105,9 +105,9 @@ void main() {
     });
 
     test('logger parent-child links are correct', () {
-      final a = new Logger('a');
-      final b = new Logger('a.b');
-      final c = new Logger('a.c');
+      final a = Logger('a');
+      final b = Logger('a.b');
+      final c = Logger('a.c');
       expect(a, same(b.parent));
       expect(a, same(c.parent));
       expect(a.children['b'], same(b));
@@ -115,18 +115,18 @@ void main() {
     });
 
     test('loggers are singletons', () {
-      final a1 = new Logger('a');
-      final a2 = new Logger('a');
-      final b = new Logger('a.b');
+      final a1 = Logger('a');
+      final a2 = Logger('a');
+      final b = Logger('a.b');
       final root = Logger.root;
       expect(a1, same(a2));
       expect(a1, same(b.parent));
       expect(root, same(a1.parent));
-      expect(root, same(new Logger('root')));
+      expect(root, same(Logger('root')));
     });
 
     test('cannot directly manipulate Logger.children', () {
-      final loggerAB = new Logger('a.b');
+      final loggerAB = Logger('a.b');
       final loggerA = loggerAB.parent;
 
       expect(loggerA.children['b'], same(loggerAB),
@@ -145,7 +145,7 @@ void main() {
       final sub = Logger.root.onRecord.listen(records.add);
 
       try {
-        throw new UnsupportedError('test exception');
+        throw UnsupportedError('test exception');
         // ignore: avoid_catches_without_on_clauses
       } catch (error, stack) {
         Logger.root
@@ -224,10 +224,10 @@ void main() {
   });
 
   group('detached loggers', () {
-    test('create new instances of Logger', () {
-      final a1 = new Logger.detached('a');
-      final a2 = new Logger.detached('a');
-      final a = new Logger('a');
+    test('create instances of Logger', () {
+      final a1 = Logger.detached('a');
+      final a2 = Logger.detached('a');
+      final a = Logger('a');
 
       expect(a1, isNot(a2));
       expect(a1, isNot(a));
@@ -235,23 +235,23 @@ void main() {
     });
 
     test('parent is null', () {
-      final a = new Logger.detached('a');
+      final a = Logger.detached('a');
       expect(a.parent, null);
     });
 
     test('children is empty', () {
-      final a = new Logger.detached('a');
+      final a = Logger.detached('a');
       expect(a.children, isMap);
     });
   });
 
   group('mutating levels', () {
     final root = Logger.root;
-    final a = new Logger('a');
-    final b = new Logger('a.b');
-    final c = new Logger('a.b.c');
-    final d = new Logger('a.b.c.d');
-    final e = new Logger('a.b.c.d.e');
+    final a = Logger('a');
+    final b = Logger('a.b');
+    final c = Logger('a.b.c');
+    final d = Logger('a.b.c.d');
+    final e = Logger('a.b.c.d.e');
 
     setUp(() {
       Logger.isHierarchicalEnabled = true;
@@ -576,7 +576,7 @@ void main() {
       root.level = Level.info0;
       final messages = <String>[];
       final objects = <Object>[];
-      final object = new Object();
+      final object = Object();
       root.onRecord.listen((record) {
         messages.add('${record.level}: ${record.message}');
         objects.add(record.object);

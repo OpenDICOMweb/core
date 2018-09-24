@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/int16_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
 
   group('SSTag', () {
@@ -27,7 +27,7 @@ void main() {
     test('SS hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.int16List(1, 1);
-        final e0 = new SStag(PTag.kTagAngleSecondAxis, vList);
+        final e0 = SStag(PTag.kTagAngleSecondAxis, vList);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
 
@@ -37,7 +37,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList1 = rng.int16List(2, 2);
-        final e0 = new SStag(
+        final e0 = SStag(
             PTag.kCenterOfCircularExposureControlSensingRegion, vList1);
         expect(e0.hasValidValues, true);
 
@@ -50,44 +50,44 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList2 = rng.int16List(3, 4);
         log.debug('$i: vList2: $vList2');
-        final e0 = new SStag(PTag.kTagAngleSecondAxis, vList2);
+        final e0 = SStag(PTag.kTagAngleSecondAxis, vList2);
         expect(e0, isNull);
       }
     });
 
     test('SS hasValidValues good values', () {
       global.throwOnError = false;
-      final e0 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
-      final e1 = new SStag(PTag.kTIDOffset, int16Min);
+      final e0 = SStag(PTag.kTagAngleSecondAxis, int16Min);
+      final e1 = SStag(PTag.kTIDOffset, int16Min);
       expect(e0.hasValidValues, true);
       expect(e1.hasValidValues, true);
 
-      final e2 = new SStag(PTag.kTagAngleSecondAxis, int16Max);
-      final e3 = new SStag(PTag.kTIDOffset, int16Max);
+      final e2 = SStag(PTag.kTagAngleSecondAxis, int16Max);
+      final e3 = SStag(PTag.kTIDOffset, int16Max);
       expect(e2.hasValidValues, true);
       expect(e3.hasValidValues, true);
 
       global.throwOnError = false;
-      final e4 = new SStag(PTag.kSelectorSSValue, []);
+      final e4 = SStag(PTag.kSelectorSSValue, []);
       expect(e4.hasValidValues, true);
       expect(e4.values, equals(<int>[]));
     });
 
     test('SS hasvalidValues bad values', () {
-      final e0 = new SStag(PTag.kTagAngleSecondAxis, int16MaxPlus);
+      final e0 = SStag(PTag.kTagAngleSecondAxis, int16MaxPlus);
       expect(e0, isNull);
 
-      final e1 = new SStag(PTag.kTagAngleSecondAxis, int16MinMinus);
+      final e1 = SStag(PTag.kTagAngleSecondAxis, int16MinMinus);
       expect(e1, isNull);
 
-      final e2 = new SStag(PTag.kTagAngleSecondAxis, int16VMinMax);
+      final e2 = SStag(PTag.kTagAngleSecondAxis, int16VMinMax);
       expect(e2, isNull);
 
-      final e3 = new SStag(PTag.kTagAngleSecondAxis, [rng.nextInt32]);
+      final e3 = SStag(PTag.kTagAngleSecondAxis, [rng.nextInt32]);
       expect(e3, isNull);
 
       global.throwOnError = false;
-      final e4 = new SStag(PTag.kOCTZOffsetCorrection, int16Min);
+      final e4 = SStag(PTag.kOCTZOffsetCorrection, int16Min);
       final int32List0 = rng.int32List(1, 1);
       e4.values = int32List0;
       expect(e4.hasValidValues, false);
@@ -97,13 +97,13 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
-      final e5 = new SStag(PTag.kSelectorSSValue, null);
+      final e5 = SStag(PTag.kSelectorSSValue, null);
       log.debug('e5: $e5');
       expect(e5.hasValidValues, true);
       expect(e5.values, kEmptyInt16List);
 
       global.throwOnError = true;
-      final e6 = new SStag(PTag.kSelectorSSValue, null);
+      final e6 = SStag(PTag.kSelectorSSValue, null);
       log.debug('e6: $e6');
       expect(e6.hasValidValues, true);
       expect(e6.values, kEmptyUint16List);
@@ -112,18 +112,18 @@ void main() {
     test('SS update random', () {
       for (var i = 0; i < 10; i++) {
         final int16List = rng.int16List(3, 4);
-        final e1 = new SStag(PTag.kSelectorSSValue, int16List);
+        final e1 = SStag(PTag.kSelectorSSValue, int16List);
         final vList1 = rng.int16List(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('SS update', () {
-      final e0 = new SStag(PTag.kSelectorSSValue, []);
+      final e0 = SStag(PTag.kSelectorSSValue, []);
       expect(e0.update([20154, 25410]).values, equals([20154, 25410]));
 
-      final e1 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
-      final e2 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
+      final e1 = SStag(PTag.kTagAngleSecondAxis, int16Min);
+      final e2 = SStag(PTag.kTagAngleSecondAxis, int16Min);
       final e3 = e1.update(int16Max);
       final e4 = e2.update(int16Max);
       expect(e1.values.first == e3.values.first, false);
@@ -135,19 +135,19 @@ void main() {
     test('SS noValues random', () {
       for (var i = 0; i < 10; i++) {
         final int16List = rng.int16List(3, 4);
-        final e1 = new SStag(PTag.kSelectorSSValue, int16List);
+        final e1 = SStag(PTag.kSelectorSSValue, int16List);
         log.debug('e1: ${e1.noValues}');
         expect(e1.noValues.values.isEmpty, true);
       }
     });
 
     test('SS noValues', () {
-      final e0 = new SStag(PTag.kSelectorSSValue, []);
+      final e0 = SStag(PTag.kSelectorSSValue, []);
       final SStag ssNoValues = e0.noValues;
       expect(ssNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
-      final e1 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
+      final e1 = SStag(PTag.kTagAngleSecondAxis, int16Min);
       final ssNoValues0 = e1.noValues;
       expect(ssNoValues0.values.isEmpty, true);
       log.debug('e1:${e1.noValues}');
@@ -156,7 +156,7 @@ void main() {
     test('SS copy random', () {
       for (var i = 0; i < 10; i++) {
         final int16List = rng.int16List(3, 4);
-        final e2 = new SStag(PTag.kSelectorSSValue, int16List);
+        final e2 = SStag(PTag.kSelectorSSValue, int16List);
         final SStag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -164,12 +164,12 @@ void main() {
     });
 
     test('SS copy', () {
-      final e0 = new SStag(PTag.kSelectorSSValue, []);
+      final e0 = SStag(PTag.kSelectorSSValue, []);
       final SStag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
-      final e3 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
+      final e3 = SStag(PTag.kTagAngleSecondAxis, int16Min);
       final e4 = e3.copy;
       expect(e3 == e4, true);
       expect(e3.hashCode == e4.hashCode, true);
@@ -178,8 +178,8 @@ void main() {
     test('SS hashCode and == good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 1);
-        final e0 = new SStag(PTag.kTIDOffset, vList0);
-        final e1 = new SStag(PTag.kTIDOffset, vList0);
+        final e0 = SStag(PTag.kTIDOffset, vList0);
+        final e1 = SStag(PTag.kTIDOffset, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -194,26 +194,26 @@ void main() {
         final vList0 = rng.int16List(1, 1);
         final vList1 = rng.int16List(1, 1);
 
-        final e0 = new SStag(PTag.kTIDOffset, vList0);
-        final e2 = new SStag(PTag.kSelectorSSValue, vList1);
+        final e0 = SStag(PTag.kTIDOffset, vList0);
+        final e2 = SStag(PTag.kSelectorSSValue, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rng.int16List(2, 2);
-        final e3 = new SStag(PTag.kSelectorSSValue, vList2);
+        final e3 = SStag(PTag.kSelectorSSValue, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rng.int16List(1, 8);
-        final e4 = new SStag(PTag.kSelectorSSValue, vList3);
+        final e4 = SStag(PTag.kSelectorSSValue, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
 
         final vList4 = rng.int16List(2, 3);
-        final e5 = new SStag(PTag.kSelectorSSValue, vList4);
+        final e5 = SStag(PTag.kSelectorSSValue, vList4);
         log.debug('vList4:$vList4 , e5.hash_code:${e5.hashCode}');
         expect(e0.hashCode == e5.hashCode, false);
         expect(e0 == e5, false);
@@ -221,8 +221,8 @@ void main() {
     });
 
     test('SS hashCode and == good values ', () {
-      final e0 = new SStag(PTag.kTIDOffset, int16Min);
-      final e1 = new SStag(PTag.kTIDOffset, int16Min);
+      final e0 = SStag(PTag.kTIDOffset, int16Min);
+      final e1 = SStag(PTag.kTIDOffset, int16Min);
       log
         ..debug('int16Min:$int16Min, e0.hash_code:${e0.hashCode}')
         ..debug('int16Min:$int16Min, e1.hash_code:${e1.hashCode}');
@@ -231,8 +231,8 @@ void main() {
     });
 
     test('SS hashCode and == bad values ', () {
-      final e0 = new SStag(PTag.kTIDOffset, int16Min);
-      final e2 = new SStag(PTag.kOCTZOffsetCorrection, int16Max);
+      final e0 = SStag(PTag.kTIDOffset, int16Min);
+      final e2 = SStag(PTag.kOCTZOffsetCorrection, int16Max);
       log.debug('int16Max:$int16Max , e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
@@ -241,7 +241,7 @@ void main() {
     test('SS fromBytes good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 1);
-        final bytes0 = new Bytes.typedDataView(vList0);
+        final bytes0 = Bytes.typedDataView(vList0);
         log.debug('bytes0: $bytes0');
         //       final uInt8List1 = vList.buffer.asUint8List();
         final e0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes0);
@@ -264,8 +264,8 @@ void main() {
     });
 
     test('SS fromBytes good values ', () {
-      final vList1 = new Int16List.fromList(int16Min);
-      final bytes1 = new Bytes.typedDataView(vList1);
+      final vList1 = Int16List.fromList(int16Min);
+      final bytes1 = Bytes.typedDataView(vList1);
       final e0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes1);
       expect(e0.hasValidValues, true);
       expect(e0.vfBytes, equals(bytes1.asUint8List()));
@@ -274,9 +274,9 @@ void main() {
     });
 
     test('SS fromBytes bad values ', () {
-      final vList2 = new Int16List.fromList([rng.nextInt32]);
+      final vList2 = Int16List.fromList([rng.nextInt32]);
       //  final uInt8List2 = vList2.buffer.asUint8List();
-      final bytes2 = new Bytes.typedDataView(vList2);
+      final bytes2 = Bytes.typedDataView(vList2);
       log.debug('vList2 : $vList2, bytes2: $bytes2');
       final ss7 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes2);
       expect(ss7.hasValidValues, true);
@@ -286,7 +286,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 10);
         //    final bytes0 = DicomBytes.toAscii(vList0.toString());
-        final bytes0 = new Bytes.typedDataView(vList0);
+        final bytes0 = Bytes.typedDataView(vList0);
         final e0 = SStag.fromBytes(PTag.kSelectorSSValue, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
@@ -299,7 +299,7 @@ void main() {
 
         final vList = rng.int16List(1, 10);
 
-        final bytes0 = new Bytes.typedDataView(vList);
+        final bytes0 = Bytes.typedDataView(vList);
         final e0 = SStag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(e0, isNull);
 
@@ -312,61 +312,61 @@ void main() {
     test('SS checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final int16List = rng.int16List(1, 10);
-        final e0 = new SStag(PTag.kSelectorSSValue, int16List);
+        final e0 = SStag(PTag.kSelectorSSValue, int16List);
         expect(e0.checkLength(e0.values), true);
       }
     });
 
     test('SS checkLength ', () {
-      final e0 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
+      final e0 = SStag(PTag.kTagAngleSecondAxis, int16Min);
       expect(e0.checkLength(e0.values), true);
     });
 
     test('SS checkValues random', () {
       for (var i = 0; i < 10; i++) {
         final int16List = rng.int16List(1, 10);
-        final e0 = new SStag(PTag.kSelectorSSValue, int16List);
+        final e0 = SStag(PTag.kSelectorSSValue, int16List);
         expect(e0.checkValues(e0.values), true);
       }
     });
 
     test('SS checkValues', () {
       global.throwOnError = false;
-      final e0 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
+      final e0 = SStag(PTag.kTagAngleSecondAxis, int16Min);
       expect(e0.checkValues(e0.values), true);
 
-      final e1 = new SStag(PTag.kTagAngleSecondAxis, [rng.nextInt32]);
+      final e1 = SStag(PTag.kTagAngleSecondAxis, [rng.nextInt32]);
       expect(e1, isNull);
     });
 
     test('SS valuesCopy random', () {
       for (var i = 0; i < 10; i++) {
         final int16List = rng.int16List(1, 10);
-        final e0 = new SStag(PTag.kSelectorSSValue, int16List);
+        final e0 = SStag(PTag.kSelectorSSValue, int16List);
         expect(int16List, equals(e0.valuesCopy));
       }
     });
 
     test('SS valuesCopy', () {
-      final e0 = new SStag(PTag.kTagAngleSecondAxis, int16Min);
+      final e0 = SStag(PTag.kTagAngleSecondAxis, int16Min);
       expect(int16Min, equals(e0.valuesCopy));
     });
 
     test('SS replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 1);
-        final e0 = new SStag(PTag.kSelectorSSValue, vList0);
+        final e0 = SStag(PTag.kSelectorSSValue, vList0);
         final vList1 = rng.int16List(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rng.int16List(1, 1);
-      final e1 = new SStag(PTag.kSelectorSSValue, vList1);
+      final e1 = SStag(PTag.kSelectorSSValue, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<int>[]));
 
-      final e2 = new SStag(PTag.kSelectorSSValue, vList1);
+      final e2 = SStag(PTag.kSelectorSSValue, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<int>[]));
     });
@@ -374,8 +374,8 @@ void main() {
     test('SS BASE64 random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.int16List(1, 1);
-        //   final vList1 = new Int16List.fromList(vList0);
-        final bytes0 = new Bytes.typedDataView(vList0);
+        //   final vList1 = Int16List.fromList(vList0);
+        final bytes0 = Bytes.typedDataView(vList0);
         final base64 = bytes0.getBase64();
         final bytes1 = Bytes.fromBase64(base64);
         final e0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes1);
@@ -384,9 +384,9 @@ void main() {
     });
 
     test('SS BASE64 ', () {
-      final vList1 = new Int16List.fromList(int16Min);
+      final vList1 = Int16List.fromList(int16Min);
       final uInt8List1 = vList1.buffer.asUint8List();
-      final bytes0 = new Bytes.typedDataView(uInt8List1);
+      final bytes0 = Bytes.typedDataView(uInt8List1);
 
       final s = bytes0.getBase64();
       //  final bytes = cvt.base64.decode(base64);
@@ -394,9 +394,9 @@ void main() {
       final e0 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes1);
       expect(e0.hasValidValues, true);
 
-      final vList2 = new Int16List.fromList([rng.nextInt32]);
+      final vList2 = Int16List.fromList([rng.nextInt32]);
 //      final vList3 = vList2.buffer.asUint8List();
-      final bytes = new Bytes.typedDataView(vList2);
+      final bytes = Bytes.typedDataView(vList2);
       final base64 = bytes.getBase64();
       final bytes2 = Bytes.fromBase64(base64);
       final e1 = SStag.fromBytes(PTag.kTagAngleSecondAxis, bytes2);
@@ -431,7 +431,7 @@ void main() {
 
     test('SS checkValue good values', () {
       final vList0 = rng.int16List(1, 1);
-      final e0 = new SStag(PTag.kTagAngleSecondAxis, vList0);
+      final e0 = SStag(PTag.kTagAngleSecondAxis, vList0);
 
       expect(e0.checkValue(int16Max[0]), true);
       expect(e0.checkValue(int16Min[0]), true);
@@ -439,14 +439,14 @@ void main() {
 
     test('SS checkValue bad values', () {
       final vList0 = rng.int16List(1, 1);
-      final e0 = new SStag(PTag.kTagAngleSecondAxis, vList0);
+      final e0 = SStag(PTag.kTagAngleSecondAxis, vList0);
       expect(e0.checkValue(int16MaxPlus[0]), false);
       expect(e0.checkValue(int16MinMinus[0]), false);
     });
 
     test('SS view', () {
       final vList0 = rng.int16List(10, 10);
-      final e0 = new SStag(PTag.kSelectorSSValue, vList0);
+      final e0 = SStag(PTag.kSelectorSSValue, vList0);
       for (var i = 0, j = 0; i < vList0.length; i++, j += 2) {
         final e1 = e0.view(j, vList0.length - i);
         log.debug('e0: ${e0.values}, e1: ${e1.values}, vList0.sublist(i) : '
@@ -746,7 +746,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.int16List(1, i);
-        final vfBytes = new Bytes.typedDataView(vList0);
+        final vfBytes = Bytes.typedDataView(vList0);
 
         if (vList0.length == 1) {
           for (var tag in ssVM1Tags) {
@@ -766,7 +766,7 @@ void main() {
         }
       }
       final vList0 = rng.int16List(1, 1);
-      final vfBytes = new Bytes.typedDataView(vList0);
+      final vfBytes = Bytes.typedDataView(vList0);
 
       final e1 = SS.isValidBytesArgs(null, vfBytes);
       expect(e1, false);

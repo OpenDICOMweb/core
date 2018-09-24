@@ -161,7 +161,7 @@ class Utf8Buffer extends StringBufferBase implements TypedData {
   Uint8List _getData() => _sBuffer.buffer.asUint8List(0, _index);
 }
 
-Null indexOverflow(int index, int length) =>
+void indexOverflow(int index, int length) =>
     throw RangeError('Index overflow: index($index) >= length($length)');
 
 class StringBufferOverflowError extends Error {

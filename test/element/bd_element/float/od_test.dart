@@ -14,7 +14,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
 
   const doubleList = const <double>[
     0.1,
@@ -40,7 +40,7 @@ void main() {
     kDoubleFloatPixelData,
   ];
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
   global.throwOnError = false;
 
   group('OD Tests', () {
@@ -76,7 +76,7 @@ void main() {
         final vList0 = rng.float64List(3, 4);
         log.debug('$i: vList0: $vList0');
         final e0 = ODbytes.fromValues(kDoubleFloatPixelData, vList0);
-        final e1 = new FLtag(e0.tag, e0.values);
+        final e1 = FLtag(e0.tag, e0.values);
         expect(e1, isNull);
       }
     });
@@ -143,7 +143,7 @@ void main() {
       expect(e0.isValid, true);
       expect(e0.isEmpty, false);
 
-      final e1 = new ODbytes(e0.bytes);
+      final e1 = ODbytes(e0.bytes);
       expect(e1.bytes is DicomBytes, true);
       expect(e1.vfBytes is Bytes, true);
       expect(e1.hasValidValues, true);

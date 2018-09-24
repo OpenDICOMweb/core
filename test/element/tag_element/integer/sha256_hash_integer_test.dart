@@ -20,9 +20,9 @@ void main() {
 
     test('SS', () {
       final listInt = <int>[123];
-      final e0 = new SStag(PTag.kTagAngleSecondAxis, listInt);
-      final e1 = new SStag(PTag.kTagAngleSecondAxis, listInt);
-      final e2 = new SStag(PTag.kPixelIntensityRelationshipSign, listInt);
+      final e0 = SStag(PTag.kTagAngleSecondAxis, listInt);
+      final e1 = SStag(PTag.kTagAngleSecondAxis, listInt);
+      final e2 = SStag(PTag.kPixelIntensityRelationshipSign, listInt);
 
       final sha0 = Sha256.int16(listInt);
       log
@@ -36,9 +36,9 @@ void main() {
     });
 
     test('SL', () {
-      final e0 = new SLtag(PTag.kReferencePixelX0, int32V1);
-      final e1 = new SLtag(PTag.kReferencePixelX0, int32V1);
-      final e2 = new SLtag(PTag.kReferencePixelY0, int32V1);
+      final e0 = SLtag(PTag.kReferencePixelX0, int32V1);
+      final e1 = SLtag(PTag.kReferencePixelX0, int32V1);
+      final e2 = SLtag(PTag.kReferencePixelY0, int32V1);
 
       final sha0 = Sha256.int32(int32V1);
       log
@@ -52,10 +52,10 @@ void main() {
     });
 
     test('OB', () {
-      final e0 = new OBtag(PTag.kPrivateInformation, uInt8V1);
-      final e1 = new OBtag(PTag.kPrivateInformation, uInt8V1);
+      final e0 = OBtag(PTag.kPrivateInformation, uInt8V1);
+      final e1 = OBtag(PTag.kPrivateInformation, uInt8V1);
       final e2 =
-          new OBtag(PTag.kCoordinateSystemAxisValues, uInt8V1);
+          OBtag(PTag.kCoordinateSystemAxisValues, uInt8V1);
 
       final sha0 = Sha256.uint8(uInt8V1);
       log
@@ -69,9 +69,9 @@ void main() {
     });
 
     test('US', () {
-      final e0 = new UStag(PTag.kRepresentativeFrameNumber, uInt16V1);
-      final e1 = new UStag(PTag.kRepresentativeFrameNumber, uInt16V1);
-      final e2 = new UStag(PTag.kFrameNumbersOfInterest, uInt16V1);
+      final e0 = UStag(PTag.kRepresentativeFrameNumber, uInt16V1);
+      final e1 = UStag(PTag.kRepresentativeFrameNumber, uInt16V1);
+      final e2 = UStag(PTag.kFrameNumbersOfInterest, uInt16V1);
 
       final sha0 = Sha256.uint16(uInt16V1);
       log
@@ -85,9 +85,9 @@ void main() {
     });
 
     test('OW Element', () {
-      final e0 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16V1);
-      final e1 = new OWtag(PTag.kRedPaletteColorLookupTableData, uInt16V1);
-      final e2 = new OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16V1);
+      final e0 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16V1);
+      final e1 = OWtag(PTag.kRedPaletteColorLookupTableData, uInt16V1);
+      final e2 = OWtag(PTag.kGreenPaletteColorLookupTableData, uInt16V1);
 
       final sha0 = Sha256.uint16(uInt16V1);
       log
@@ -101,9 +101,9 @@ void main() {
     });
 
     test('UL Elements', () {
-      final e0 = new ULtag(PTag.kPixelComponentMask, uInt32V1);
-      final e1 = new ULtag(PTag.kPixelComponentMask, uInt32V1);
-      final e2 = new ULtag(PTag.kPixelComponentRangeStart, uInt32V1);
+      final e0 = ULtag(PTag.kPixelComponentMask, uInt32V1);
+      final e1 = ULtag(PTag.kPixelComponentMask, uInt32V1);
+      final e2 = ULtag(PTag.kPixelComponentRangeStart, uInt32V1);
 
       final sha0 = Sha256.uint32(uInt32V1);
       log
@@ -117,9 +117,9 @@ void main() {
     });
 
     test('AT Elements', () {
-      final e0 = new ATtag(PTag.kOriginalImageIdentification, uInt32V1);
-      final e1 = new ATtag(PTag.kOriginalImageIdentification, uInt32V1);
-      final e2 = new ATtag(PTag.kDimensionIndexPointer, uInt32V1);
+      final e0 = ATtag(PTag.kOriginalImageIdentification, uInt32V1);
+      final e1 = ATtag(PTag.kOriginalImageIdentification, uInt32V1);
+      final e2 = ATtag(PTag.kDimensionIndexPointer, uInt32V1);
 
       final sha0 = Sha256.uint32(uInt32V1);
       log
@@ -133,9 +133,9 @@ void main() {
     });
 
     test('OL Elements', () {
-      final e0 = new OLtag(PTag.kLongPrimitivePointIndexList, uInt32V1);
-      final e1 = new OLtag(PTag.kLongPrimitivePointIndexList, uInt32V1);
-      final e2 = new OLtag(PTag.kLongTrianglePointIndexList, uInt32V1);
+      final e0 = OLtag(PTag.kLongPrimitivePointIndexList, uInt32V1);
+      final e1 = OLtag(PTag.kLongPrimitivePointIndexList, uInt32V1);
+      final e2 = OLtag(PTag.kLongTrianglePointIndexList, uInt32V1);
 
       final sha0 = Sha256.uint32(uInt32V1);
       log

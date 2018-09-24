@@ -13,9 +13,9 @@ import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
 
-final Uint32List emptyOffsets = new Uint32List(0);
+final Uint32List emptyOffsets = Uint32List(0);
 final Uint8List emptyOffsetsAsBytes = emptyOffsets.buffer.asUint8List();
-final Bytes frame = new Bytes.fromList(testFrame);
+final Bytes frame = Bytes.fromList(testFrame);
 final List<Uint8List> fragments = [emptyOffsetsAsBytes, testFrame];
 
 void main() {
@@ -23,14 +23,14 @@ void main() {
 
   const ts = TransferSyntax.kDefaultForDicomWeb;
   group('UNtagPixelData Tests', () {
-    final pixels = new List<int>(1024);
+    final pixels = List<int>(1024);
     for (var i = 0; i < pixels.length; i++) pixels[i] = 128;
 
     final pixels1 = [1024, 1024];
     for (var i = 0; i < pixels1.length; i++) pixels1[i] = 128;
 
     test('Create Unencapsulated UNtagPixelData', () {
-      final e0 = new UNtagPixelData(pixels);
+      final e0 = UNtagPixelData(pixels);
 
       expect(e0.vrIndex == kUNIndex, true);
       expect(e0.values is List<int>, true);
@@ -56,7 +56,7 @@ void main() {
       expect(e0.checkValue(UN.kMaxValue + 1), false);
       expect(e0.checkValue(UN.kMinValue - 1), false);
 
-      final e1 = new UNtagPixelData(pixels);
+      final e1 = UNtagPixelData(pixels);
       expect(e1, isNotNull);
 
       expect(e0.typedData is Uint8List, true);
@@ -70,9 +70,9 @@ void main() {
     test('Create UnEncapsulate UNtagPixelData hashCode and ==', () {
       global.throwOnError = false;
 
-      final e0 = new UNtagPixelData(pixels);
-      final e1 = new UNtagPixelData(pixels);
-      final e2 = new UNtagPixelData(pixels1);
+      final e0 = UNtagPixelData(pixels);
+      final e1 = UNtagPixelData(pixels);
+      final e2 = UNtagPixelData(pixels1);
 
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
@@ -82,7 +82,7 @@ void main() {
     });
 
     test('Create Encapsulated UNtagPixelData', () {
-      final e0 = new UNtagPixelData(frame, ts);
+      final e0 = UNtagPixelData(frame, ts);
 
       expect(e0.tag == PTag.kPixelDataUN, true);
       expect(e0.vrIndex == kUNIndex, true);
@@ -104,20 +104,20 @@ void main() {
       expect(e0.checkValue(UN.kMaxValue + 1), false);
       expect(e0.checkValue(UN.kMinValue - 1), false);
 
-      final e1 = new UNtagPixelData([kUint16Max]);
+      final e1 = UNtagPixelData([kUint16Max]);
       expect(e1, isNull);
 
       global.throwOnError = true;
-      expect(() => new UNtagPixelData([kUint16Max]),
+      expect(() => UNtagPixelData([kUint16Max]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('Create Encapsulated UNtagPixelData hashCode and ==', () {
       global.throwOnError = false;
 
-      final e0 = new UNtagPixelData(frame, ts);
-      final e1 = new UNtagPixelData(frame, ts);
-      final e2 = new UNtagPixelData(pixels, ts);
+      final e0 = UNtagPixelData(frame, ts);
+      final e1 = UNtagPixelData(frame, ts);
+      final e2 = UNtagPixelData(pixels, ts);
 
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
@@ -168,7 +168,7 @@ void main() {
 
     test('Create Unencapsulated UNtagPixelData.fromBytes hashCode and ==', () {
       global.throwOnError = false;
-      final frame1 = new Bytes.fromList(pixels);
+      final frame1 = Bytes.fromList(pixels);
       final e0 = UNtagPixelData.fromBytes(frame);
       final e1 = UNtagPixelData.fromBytes(frame);
       final e2 = UNtagPixelData.fromBytes(frame1);
@@ -181,7 +181,7 @@ void main() {
     });
 
     test('Create Encapsulated UNtagPixelData.fromBytes', () {
-//      final frags = new VFFragments(fragments);
+//      final frags = VFFragments(fragments);
       final e0 = UNtagPixelData.fromBytes(frame, ts);
       expect(e0.tag == PTag.kPixelDataUN, true);
       expect(e0.vrIndex == kOBOWIndex, false);
@@ -220,7 +220,7 @@ void main() {
       expect(e3 == e2, true);
       expect(e3.hashCode == e0.hashCode, true);
 
-      final frame1 = new Bytes.fromList(pixels);
+      final frame1 = Bytes.fromList(pixels);
       final e4 = UNtagPixelData.fromBytes(frame1, ts);
       expect(e0 == e4, false);
       expect(e0.hashCode == e4.hashCode, false);
@@ -229,28 +229,28 @@ void main() {
     test('UNtagPixelData.update Test', () {
       global.throwOnError = false;
 
-      final e0 = new UNtagPixelData(pixels);
+      final e0 = UNtagPixelData(pixels);
       final e1 = e0.update(pixels);
       expect(e0 == e1, true);
 
-      final e2 = new UNtagPixelData(frame, ts);
+      final e2 = UNtagPixelData(frame, ts);
       final e3 = e2.update(frame);
       expect(e2 == e3, true);
     });
 
     test('getPixelData', () {
-      final pd0 = new UNtagPixelData([123, 101]);
-      final ba0 = new UStag(PTag.kBitsAllocated, [8]);
-      final ds = new TagRootDataset.empty()..add(pd0)..add(ba0);
+      final pd0 = UNtagPixelData([123, 101]);
+      final ba0 = UStag(PTag.kBitsAllocated, [8]);
+      final ds = TagRootDataset.empty()..add(pd0)..add(ba0);
 
-      //  ds = new RootDatasetTag();
+      //  ds = RootDatasetTag();
       final pixels = ds.getPixelData();
       log.debug('pixel.length: ${pixels.length}');
       expect(pixels.length == 2, true);
 
       global.throwOnError = false;
-      final ba1 = new UStag(PTag.kBitsAllocated, []);
-      final ds1 = new TagRootDataset.empty()..add(ba1);
+      final ba1 = UStag(PTag.kBitsAllocated, []);
+      final ds1 = TagRootDataset.empty()..add(ba1);
       final pixels1 = ds1.getPixelData();
       expect(pixels1 == null, true);
 
@@ -258,8 +258,8 @@ void main() {
       expect(
           ds1.getPixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
 
-      final ba3 = new UStag(PTag.kBitsAllocated, [8]);
-      final ds2 = new TagRootDataset.empty()..add(ba3);
+      final ba3 = UStag(PTag.kBitsAllocated, [8]);
+      final ds2 = TagRootDataset.empty()..add(ba3);
       expect(
           ds2.getPixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
     });
@@ -314,7 +314,7 @@ void main() {
       expect(e0 == e2, false);
     });
 
-    test('new UNtagPixelData.fromBytes', () {
+    test('UNtagPixelData.fromBytes', () {
       final e0 = UNtagPixelData.fromBytes(frame);
       expect(e0, equals(UNtagPixelData.fromBytes(frame, ts)));
       expect(e0.tag == PTag.kPixelDataUN, true);
@@ -346,9 +346,9 @@ void main() {
       expect(e0.checkValue(kUint8Min - 1), false);
     });
 
-    test('new UNtagPixelData.fromBytes hashCode and ==', () {
+    test('UNtagPixelData.fromBytes hashCode and ==', () {
       global.throwOnError = false;
-      final frame1 = new Bytes.fromList(pixels1);
+      final frame1 = Bytes.fromList(pixels1);
       final e0 = UNtagPixelData.fromBytes(frame);
       final e1 = UNtagPixelData.fromBytes(frame);
       final e2 = UNtagPixelData.fromBytes(frame1);
@@ -361,7 +361,7 @@ void main() {
     });
 
     test('UNPixelData fromValues', () {
-      final e0 = new UNtagPixelData(pixels);
+      final e0 = UNtagPixelData(pixels);
 
       final e1 = UNtagPixelData.fromValues(e0.values);
 
@@ -403,7 +403,7 @@ void main() {
     });
 
     test('UNtagPixelData isValidBytesArgs', () {
-      final vfBytes = new Bytes.fromList(pixels);
+      final vfBytes = Bytes.fromList(pixels);
       final e0 = UNtagPixelData.isValidBytesArgs(vfBytes);
       expect(e0, true);
 
@@ -412,7 +412,7 @@ void main() {
     });
 
     test('Create Unencapsulated UNtagPixelData.fromPixels', () {
-      final e0 = new UNtagPixelData.fromPixels(pixels);
+      final e0 = UNtagPixelData.fromPixels(pixels);
       log.debug('tag: ${PTag.kPixelDataUN}');
       expect(e0.vrIndex == kOBOWIndex, false);
       expect(e0.vrIndex == kUNIndex, true);
@@ -448,9 +448,9 @@ void main() {
     test('Create Unencapsulated UNtagPixelData.fromPixels hashCode and ==', () {
       global.throwOnError = false;
 
-      final e0 = new UNtagPixelData.fromPixels(pixels);
-      final e1 = new UNtagPixelData.fromPixels(pixels);
-      final e2 = new UNtagPixelData.fromPixels(pixels1);
+      final e0 = UNtagPixelData.fromPixels(pixels);
+      final e1 = UNtagPixelData.fromPixels(pixels);
+      final e2 = UNtagPixelData.fromPixels(pixels1);
 
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
@@ -569,15 +569,15 @@ void main() {
       global.throwOnError = false;
       const uInt8Max = const [UN.kMaxValue];
       const uInt16Max = const [kUint16Max];
-      final bytes0 = new Bytes.fromList(uInt8Max);
+      final bytes0 = Bytes.fromList(uInt8Max);
       //   final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
       expect(Uint8.fromBytes(bytes0), equals(uInt8Max));
 
       expect(Uint8.fromBytes(frame), equals(frame));
 
-      final uInt16List1 = new Uint16List.fromList(uInt16Max);
+      final uInt16List1 = Uint16List.fromList(uInt16Max);
       //  final uInt8ListV12 = uInt16ListV1.buffer.asUint8List();
-      final bytes1 = new Bytes.typedDataView(uInt16List1);
+      final bytes1 = Bytes.typedDataView(uInt16List1);
       expect(Uint16.fromBytes(bytes1), uInt16List1);
     });
 

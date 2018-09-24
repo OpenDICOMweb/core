@@ -378,10 +378,10 @@ const int kRCurly = 125;
 const int kTilde = 126;
 
 /// The type of a character predicate.
-typedef bool CharPredicate(int c);
+typedef CharPredicate = bool Function(int c);
 
 /// The type of a character checker.
-typedef int CharChecker(int c);
+typedef CharChecker = int Function(int c);
 
 //**** Predicates ****
 

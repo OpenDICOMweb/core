@@ -43,7 +43,7 @@ class Indenter0 extends StringBuffer {
   }
 
   @override
-  void writeln([Object o = '']) => super.writeln('$_indent$o');
+  void writeln([Object obj = '']) => super.writeln('$_indent$obj');
 
   void down([Object o = '', int count = 1]) {
     super.writeln('$_indent$o');

@@ -16,41 +16,41 @@ void main() {
   group('Items and Sequences', () {
     var itemsList = <TagItem>[];
 
-    var rds = new TagRootDataset.empty();
-    final date = new DAtag(PTag.kInstanceCreationDate, ['19990505']);
+    var rds = TagRootDataset.empty();
+    final date = DAtag(PTag.kInstanceCreationDate, ['19990505']);
     rds.add(date);
 
-    //  var elements = new TagRootDataset.empty();
-    rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
-    rds[kInstitutionAddress] = new STtag(PTag.kInstitutionAddress, ['foo bar']);
+    //  var elements = TagRootDataset.empty();
+    rds[kRecognitionCode] = SHtag(PTag.kRecognitionCode, ['foo bar']);
+    rds[kInstitutionAddress] = STtag(PTag.kInstitutionAddress, ['foo bar']);
     rds[kExtendedCodeMeaning] =
-        new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
+        LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
-    itemsList.add(new TagItem.fromList(rds, rds));
+    itemsList.add(TagItem.fromList(rds, rds));
 
-    rds = new TagRootDataset.empty();
-    rds[PTag.kRecognitionCode.code] = new SHtag(PTag.kRecognitionCode, ['abc']);
+    rds = TagRootDataset.empty();
+    rds[PTag.kRecognitionCode.code] = SHtag(PTag.kRecognitionCode, ['abc']);
     rds[PTag.kInstitutionAddress.code] =
-        new STtag(PTag.kInstitutionAddress, ['abc']);
+        STtag(PTag.kInstitutionAddress, ['abc']);
     rds[PTag.kExtendedCodeMeaning.code] =
-        new LTtag(PTag.kExtendedCodeMeaning, ['abc']);
-    itemsList.add(new TagItem.fromList(null, rds));
+        LTtag(PTag.kExtendedCodeMeaning, ['abc']);
+    itemsList.add(TagItem.fromList(null, rds));
 
-    rds = new TagRootDataset.empty();
-    final lt = new LTtag(PTag.kApprovalStatusFurtherDescription, ['foo bar']);
-    final lo = new LOtag(PTag.kProductName, ['foo bar']);
-    final ss = new SStag(PTag.kTagAngleSecondAxis, [123]);
-    final sl = new SLtag(PTag.kReferencePixelX0, [13]);
-    final ob = new OBtag(PTag.kICCProfile, <int>[123, 255]);
+    rds = TagRootDataset.empty();
+    final lt = LTtag(PTag.kApprovalStatusFurtherDescription, ['foo bar']);
+    final lo = LOtag(PTag.kProductName, ['foo bar']);
+    final ss = SStag(PTag.kTagAngleSecondAxis, [123]);
+    final sl = SLtag(PTag.kReferencePixelX0, [13]);
+    final ob = OBtag(PTag.kICCProfile, <int>[123, 255]);
 
     rds[lt.code] = lt;
     rds[lo.code] = lo;
     rds[ss.code] = ss;
     rds[sl.code] = sl;
     rds[ob.code] = ob;
-    itemsList.add(new TagItem.fromList(rds, rds));
+    itemsList.add(TagItem.fromList(rds, rds));
 
-    final sq = new SQtag(rds, PTag.kMRImageFrameTypeSequence, itemsList);
+    final sq = SQtag(rds, PTag.kMRImageFrameTypeSequence, itemsList);
 
     test('Test for getAllTItemElements', () {
       expect(sq.getAll(kRecognitionCode), isNotNull);
@@ -109,17 +109,17 @@ void main() {
     });
 
     test('Test for update', () {
-      final rds0 = new TagRootDataset.empty();
-      final fl = new FLtag(PTag.kTableOfParameterValues, [12.33, 34.4, 56.25]);
-      final of = new OFtag(PTag.kVectorGridData, [132.33]);
-      final fd = new FDtag(PTag.kOverallTemplateSpatialTolerance);
-      final od = new ODtag(PTag.kSelectorODValue, <double>[2.33]);
+      final rds0 = TagRootDataset.empty();
+      final fl = FLtag(PTag.kTableOfParameterValues, [12.33, 34.4, 56.25]);
+      final of = OFtag(PTag.kVectorGridData, [132.33]);
+      final fd = FDtag(PTag.kOverallTemplateSpatialTolerance);
+      final od = ODtag(PTag.kSelectorODValue, <double>[2.33]);
 
       rds0[fl.code] = fl;
       rds0[of.code] = of;
       rds0[fd.code] = fd;
       rds0[od.code] = od;
-      itemsList = <TagItem>[]..add(new TagItem.fromList(rds, rds0));
+      itemsList = <TagItem>[]..add(TagItem.fromList(rds, rds0));
 
       final sq2 = sq.update(itemsList);
       log.debug(sq2.info);
@@ -130,18 +130,18 @@ void main() {
     test('Test for items,novalues', () {
       log..debug('sq.items: ${sq.items}')..debug('sq.noValues: ${sq.noValues}');
 
-      final rds0 = new TagRootDataset.empty();
+      final rds0 = TagRootDataset.empty();
       final fl =
-          new FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
-      final of = new OFtag(PTag.kVectorGridData, <double>[34.4]);
-      final fd = new FDtag(PTag.kOverallTemplateSpatialTolerance);
-      final od = new ODtag(PTag.kSelectorODValue, <double>[2.33]);
+          FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
+      final of = OFtag(PTag.kVectorGridData, <double>[34.4]);
+      final fd = FDtag(PTag.kOverallTemplateSpatialTolerance);
+      final od = ODtag(PTag.kSelectorODValue, <double>[2.33]);
 
       rds0[fl.code] = fl;
       rds0[of.code] = of;
       rds0[fd.code] = fd;
       rds0[od.code] = od;
-      itemsList = <TagItem>[]..add(new TagItem.fromList(rds, rds0));
+      itemsList = <TagItem>[]..add(TagItem.fromList(rds, rds0));
       final sq2 = sq.update(itemsList);
       expect(sq2.values.isEmpty, false);
       log.debug('sq2.items: ${sq2.items}');
@@ -161,19 +161,19 @@ void main() {
     });
 
     test('Test for lookup', () {
-      final rds0 = new TagRootDataset.empty();
+      final rds0 = TagRootDataset.empty();
       final fl =
-          new FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
-      final sh = new SHtag(PTag.kRecognitionCode, ['foo bar']);
-      final fd = new FDtag(PTag.kOverallTemplateSpatialTolerance);
-      final od = new ODtag(PTag.kSelectorODValue, <double>[2.33]);
+          FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
+      final sh = SHtag(PTag.kRecognitionCode, ['foo bar']);
+      final fd = FDtag(PTag.kOverallTemplateSpatialTolerance);
+      final od = ODtag(PTag.kSelectorODValue, <double>[2.33]);
 
       rds0[fl.code] = fl;
       rds0[sh.code] = sh;
       rds0[fd.code] = fd;
 
-      final itemsList = <TagItem>[]..add(new TagItem.fromList(rds0, rds0));
-      final sq = new SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
+      final itemsList = <TagItem>[]..add(TagItem.fromList(rds0, rds0));
+      final sq = SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
 
       global.throwOnError = false;
       final lookup0 = sq.lookup(fl.index);
@@ -198,19 +198,19 @@ void main() {
     });
 
     test('Test for lookupAll', () {
-      final rds0 = new TagRootDataset.empty();
+      final rds0 = TagRootDataset.empty();
       final fl =
-          new FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
-      final sh = new SHtag(PTag.kRecognitionCode, ['foo bar']);
-      final fd = new FDtag(PTag.kOverallTemplateSpatialTolerance);
-      final od = new ODtag(PTag.kSelectorODValue, <double>[2.33]);
+          FLtag(PTag.kTableOfParameterValues, <double>[12.33, 34.4, 56.25]);
+      final sh = SHtag(PTag.kRecognitionCode, ['foo bar']);
+      final fd = FDtag(PTag.kOverallTemplateSpatialTolerance);
+      final od = ODtag(PTag.kSelectorODValue, <double>[2.33]);
 
       rds0[fl.code] = fl;
       rds0[sh.code] = sh;
       rds0[fd.code] = fd;
 
-      final itemsList = <TagItem>[]..add(new TagItem.fromList(rds0, rds0));
-      final sq = new SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
+      final itemsList = <TagItem>[]..add(TagItem.fromList(rds0, rds0));
+      final sq = SQtag(null, PTag.kMRImageFrameTypeSequence, itemsList);
 
       global.throwOnError = false;
       final lookup0 = sq.lookupAll(fl.index);

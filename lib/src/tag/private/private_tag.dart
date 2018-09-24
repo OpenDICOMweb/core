@@ -18,7 +18,7 @@ import 'package:core/src/vr.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef Tag TagMaker(int code, int vrIndex);
+typedef TagMaker = Tag Function(int code, int vrIndex);
 
 abstract class PrivateTag extends Tag {
   const PrivateTag() : super();

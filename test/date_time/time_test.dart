@@ -11,9 +11,9 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'time_test', level: Level.info);
+  Server.initialize(name: 'time_test', level: Level.debug, throwOnError: true);
 
-  const goodDcmTimes = const <String>[
+  const goodDcmTimes = <String>[
     '000000',
     '190101',
     '235959',
@@ -112,7 +112,7 @@ void main() {
         final time = Time.parse(s);
         log.debug('    Time: $time');
         if (time == null) {
-          final issues = new Issues('Good Time to Time: "$s"');
+          final issues = Issues('Good Time to Time: "$s"');
           Time.parse(s, issues: issues);
           log.debug('    Issues: $issues');
         }
@@ -130,7 +130,7 @@ void main() {
   });
 
   group('Bad DCM Time tests', () {
-    const badDcmTimes = const <String>[
+    const badDcmTimes = <String>[
       '241318', // bad hour
       '006132', // bad minute
       '006060', // bad minute and second
@@ -147,7 +147,7 @@ void main() {
       '999999.9999', '999999.99999', '999999.999999', //don't format
     ];
 
-    const badDcmTimesInt = const <int>[
+    const badDcmTimesInt = <int>[
       241318, // bad hour
       006132, // bad minute
       131261, // bad second
@@ -159,8 +159,10 @@ void main() {
     ];
 
     test('Time.parse with Bad Times', () {
+      global.throwOnError = false;
+
       for (var s in badDcmTimes) {
-        log.debug('  Time.parse: $s');
+        log.debug('  Time.parse: "$s"');
         final time = Time.parse(s);
         log.debug('    Time.parse: "$s": time: $time');
         expect(time == null, true);
@@ -186,7 +188,9 @@ void main() {
     });
 
     test('Bad Times as Time', () {
+      global.throwOnError = false;
       log.debug('Bad Times as Time');
+
       for (var s in badDcmTimes) {
         log.debug('Time: $s');
         final time = Time.parse(s);
@@ -217,13 +221,13 @@ void main() {
       global.throwOnError = true;
       log.debug('throwOnError: $throwOnError');
       for (var i in badDcmTimesInt) {
-        expect(() => new Time(i), throwsA(const TypeMatcher<DateTimeError>()));
+        expect(() => Time(i), throwsA(const TypeMatcher<DateTimeError>()));
       }
 
       global.throwOnError = false;
       log.debug('throwOnError: $throwOnError');
       for (var i in badDcmTimesInt) {
-        final t = new Time(i);
+        final t = Time(i);
         expect(t, isNull);
       }
     });
@@ -233,11 +237,13 @@ void main() {
       log.debug('throwOnError: $throwOnError');
 
       for (var i in badDcmTimesInt) {
-        expect(new Time(i), isNull);
+        expect(Time(i), isNull);
       }
     });
 
     test('hashString time', () {
+      global.throwOnError = true;
+
       for (var s in goodDcmTimes) {
         final hs0 = Time.hashString(s);
         log.debug('hs0: $hs0');
@@ -252,6 +258,8 @@ void main() {
     });
 
     test('hashStringList', () {
+      global.throwOnError = true;
+
       final hs0 = Time.hashStringList(goodDcmTimes);
       log.debug('hs0:$hs0');
       expect(hs0, isNotNull);
@@ -350,8 +358,8 @@ void main() {
       for (var h = 1; h < 24; h++) {
         for (var m = 1; m < 60; m++) {
           for (var s = 1; s < 59; s++) {
-            final t0 = new Time(h, m, s);
-            final t1 = new Time(h, m, s + 1);
+            final t0 = Time(h, m, s);
+            final t1 = Time(h, m, s + 1);
             log.debug('t0: $t0, t1: $t1');
             expect(t1 > t0, true);
           }
@@ -363,8 +371,8 @@ void main() {
       for (var h = 1; h < 24; h++) {
         for (var m = 1; m < 60; m++) {
           for (var s = 1; s < 59; s++) {
-            final t0 = new Time(h, m, s);
-            final t1 = new Time(h, m, s + 1);
+            final t0 = Time(h, m, s);
+            final t1 = Time(h, m, s + 1);
             log.debug('t0: $t0, t1: $t1');
             expect(t0 < t1, true);
           }
@@ -376,8 +384,8 @@ void main() {
       for (var h = 1; h < 24; h++) {
         for (var m = 1; m < 60; m++) {
           for (var s = 1; s < 59; s++) {
-            final t0 = new Time(h, m, s);
-            final t1 = new Time(h, m, s + 1);
+            final t0 = Time(h, m, s);
+            final t1 = Time(h, m, s + 1);
             final t2 = t0 + t1;
             log.debug('t2.microseconds: ${t2.uSeconds}');
             expect(t2, isNotNull);
@@ -390,8 +398,8 @@ void main() {
       for (var h = 1; h < 24; h++) {
         for (var m = 1; m < 60; m++) {
           for (var s = 1; s < 59; s++) {
-            final t0 = new Time(h, m, s);
-            final t1 = new Time(h, m, s + 1);
+            final t0 = Time(h, m, s);
+            final t1 = Time(h, m, s + 1);
             final t2 = t0 - t1;
             log.debug('t2.microseconds: ${t2.uSeconds}');
             expect(t2, isNotNull);
@@ -405,8 +413,8 @@ void main() {
         for (var m = 1; m < 60; m++) {
           for (var s = 1; s < 60; s++) {
             if (s + 1 < 60) {
-              final t0 = new Time(h, m, s);
-              final t1 = new Time(h, m, s + 1);
+              final t0 = Time(h, m, s);
+              final t1 = Time(h, m, s + 1);
 
               expect(t0.compareTo(t1), -1);
               expect(t1.compareTo(t0), 1);

@@ -62,10 +62,10 @@ bool isValidVRCode(int vrCode, Issues issues, int target) =>
 bool isValidVFL(int vfl, int max, [Issues issues]) =>
     (vfl >= 0 && vfl <= max) ? true : invalidStringVFLength(vfl, max, issues);
 
+// ignore: prefer_void_to_null
 Null badStringVFLength(int vfLength, int maxVFLength, [Issues issues]) {
   final s = 'Invalid String VFL($vfLength): '
       '$vfLength exceeds maximum($maxVFLength)';
-
   return badValueField(s, null, issues);
 }
 

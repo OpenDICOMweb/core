@@ -21,9 +21,9 @@ import 'package:core/src/values/uuid/v4generator.dart';
 //   this one: Template(RunTime): 2101.890756302521 us.
 //   pub uuid: Template(RunTime): 7402.2140221402215 us.
 
-typedef Uint8List OnUuidBytesError(List<int> iList);
-typedef Uuid OnUuidParseError(String s);
-typedef Uint8List OnUuidParseToBytesError(String s);
+typedef OnUuidBytesError = Uint8List Function(List<int> iList);
+typedef OnUuidParseError = Uuid Function(String s);
+typedef OnUuidParseToBytesError = Uint8List Function(String s);
 
 /// Uuid Variants
 enum UuidVariant { ncs, rfc4122, microsoft, reserved }
@@ -374,6 +374,7 @@ Uint8List _getDataBuffer(List<int> uuid) {
 }
 
 /// Converts characters from a String into the corresponding byte values.
+// ignore: prefer_void_to_null
 Null _toBytes(String s, Uint8List bytes, int byteIndex, int start, int end) {
   var index = byteIndex ?? 0;
   for (var i = start; i < end; i += 2) {

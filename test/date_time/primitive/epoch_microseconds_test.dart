@@ -87,7 +87,7 @@ void main() {
 
     test('Leap Year Performance Test', () {
       log.debug('Leap Year Perfermance Test: $startYear - $endYear');
-      final watch = new Stopwatch()..start();
+      final watch = Stopwatch()..start();
 
       for (var i = startYear; i < endYear; i++) {
         final EpochDate date = epochMicrosecondToDate(i * kMicrosecondsPerDay);
@@ -151,7 +151,7 @@ void main() {
 
     test('Epoch Date Basic Test', () {
       log.debug('Epoch Date Basic Test...');
-      final watch = new Stopwatch()..start();
+      final watch = Stopwatch()..start();
       for (var i = global.minYear; i < global.maxYear; i++) {
         final EpochDate date = epochMicrosecondToDate(i * kMicrosecondsPerDay);
         final y = date.year;
@@ -181,7 +181,7 @@ void main() {
       final endMicroseconds = dateToEpochMicroseconds(endYear, 1, 1);
       log.debug1('  Epoch End Microseconds: $endMicroseconds');
 
-      final watch = new Stopwatch()..start();
+      final watch = Stopwatch()..start();
       var previousEpochMicroseconds = startMicroseconds - kMicrosecondsPerDay;
       var nextEpochMicroseconds = startMicroseconds + kMicrosecondsPerDay;
       log.debug1('  Previous Epoch Day: $previousEpochMicroseconds');
@@ -246,7 +246,7 @@ void main() {
       final wd = weekdayFromEpochDay(zeroDay ~/ kMicrosecondsPerDay);
       expect(wd == kThursday, true);
 
-      final watch = new Stopwatch()..start();
+      final watch = Stopwatch()..start();
       var previousEpochMicroseconds = startMicroseconds - kMicrosecondsPerDay;
       log.debug('  Previous Epoch Day: $previousEpochMicroseconds');
       assert(previousEpochMicroseconds < 0);
@@ -299,7 +299,7 @@ void main() {
     });
     test('weekDayFromEpochDay', () {
       log.debug('weekDayFromEpochDay');
-      final watch = new Stopwatch()..start();
+      final watch = Stopwatch()..start();
       const zeroWeekDay = kThursday;
 
       for (var i = 0; i < 10000; i++) {

@@ -113,9 +113,7 @@ int dateToEpochMicroseconds(int y, int m, int d) => (_isValidDate(y, m, d))
 
 int _dateToEpochMicroseconds(int y, int m, int d) {
   final day = _dateToEpochDay(y, m, d);
-  return (isValidEpochDay(day))
-      ? day * kMicrosecondsPerDay
-      : badDate(y, m, d);
+  return (isValidEpochDay(day)) ? day * kMicrosecondsPerDay : badDate(y, m, d);
 }
 
 bool isValidYearInMicroseconds(int us) =>
@@ -138,7 +136,7 @@ bool _isValidYear(int y) => _inRange(y, global.minYear, global.maxYear);
 /// Returns [day] if valid; otherwise, calls [invalidEpochDay].
 int checkEpochDay(int day) => _isValidEpochDay(day) ? day : badEpochDay(day);
 
-typedef Object DateToObject(int y, int m, int d, {bool asDicom});
+typedef DateToObject = Object Function(int y, int m, int d, {bool asDicom});
 
 Object epochMicrosecondToDate(int us,
         {DateToObject creator, bool asDicom = true}) =>
@@ -229,7 +227,7 @@ int lastDayOfMonth(int y, int m) =>
 int weekdayFromEpochDay(int z) =>
     (z >= -4) ? (z + 4).remainder(7) : (z + 5).remainder(7) + 6;
 
-typedef int OnWeekdayError(int x, [int y]);
+typedef OnWeekdayError = int Function(int x, [int y]);
 
 /// Returns the number of days between weekday [x] and weekday [y].
 /// Both [x] and [y] must be integers in the range 0 - 6.

@@ -128,8 +128,8 @@ abstract class DS extends StringAscii {
   }
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   // **** Generalized static methods
 
@@ -221,6 +221,7 @@ abstract class DS extends StringAscii {
     return (v == null) ? _badDS(s, issues) : v;
   }
 
+  // ignore: prefer_void_to_null
   static Null _badDS(String s, Issues issues) {
     final msg = 'Invalid Decimal String (DS): "$s"';
     return badString(msg, issues);
@@ -350,8 +351,8 @@ abstract class IS extends StringAscii {
   }
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   // **** Generalized static methods
 

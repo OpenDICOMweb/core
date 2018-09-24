@@ -11,6 +11,7 @@ import 'package:core/src/global.dart';
 import 'package:core/src/values.dart';
 
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: prefer_void_to_null
 
 // Functions starting with 'bad...' return null
 // Functions starting with 'invalid...' return false

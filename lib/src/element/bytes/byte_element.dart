@@ -28,9 +28,10 @@ part 'string.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef Element DecodeBinaryVF(DicomBytes bytes, int vrIndex);
+typedef DecodeBinaryVF = Element Function(DicomBytes bytes, int vrIndex);
 
-typedef Element BDElementMaker(int code, int vrIndex, DicomBytes bytes);
+typedef BDElementMaker = Element Function(
+    int code, int vrIndex, DicomBytes bytes);
 
 abstract class ByteElement<V> {
   DicomBytes get bytes;
@@ -106,8 +107,7 @@ abstract class ByteElement<V> {
     return pCode >= 0x10010 && pCode <= 0x100FF;
   }
 
-  static Element makeFromBytes(DicomBytes bytes, Dataset ds,
-      {bool isEvr}) {
+  static Element makeFromBytes(DicomBytes bytes, Dataset ds, {bool isEvr}) {
     final code = bytes.code;
     if (_isPrivateCreator(code)) return PCbytes(bytes);
     final vrIndex = isEvr ? bytes.vrIndex : kUNIndex;

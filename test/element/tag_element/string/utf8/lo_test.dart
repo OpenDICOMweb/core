@@ -12,8 +12,8 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
-RNG rng = new RNG(1);
+RSG rsg = RSG(seed: 1);
+RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'string/lo_test', level: Level.info);
@@ -46,12 +46,12 @@ void main() {
     test('LO hasValidValues good values', () {
       for (var s in goodLOList) {
         global.throwOnError = false;
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, s);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, s);
         expect(e0.hasValidValues, true);
       }
 
       global.throwOnError = false;
-      final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, []);
+      final e0 = LOtag(PTag.kReceiveCoilManufacturerName, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -59,29 +59,29 @@ void main() {
     test('LO hasValidValues bad values', () {
       for (var s in badLOList) {
         global.throwOnError = false;
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, s);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new LOtag(PTag.kReceiveCoilManufacturerName, s),
+        expect(() => LOtag(PTag.kReceiveCoilManufacturerName, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new LOtag(PTag.kReceiveCoilManufacturerName, null);
+      final e1 = LOtag(PTag.kReceiveCoilManufacturerName, null);
       log.debug('e1: $e1');
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new LOtag(PTag.kReceiveCoilManufacturerName, null),
+      expect(() => LOtag(PTag.kReceiveCoilManufacturerName, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('LO hasValidValues good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         log.debug('e0:${e0.info}');
         expect(e0.hasValidValues, true);
 
@@ -91,7 +91,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 10);
-        final e1 = new LOtag(PTag.kReference, vList0);
+        final e1 = LOtag(PTag.kReference, vList0);
         log.debug('e1:${e1.info}');
         expect(e1.hasValidValues, true);
 
@@ -105,37 +105,37 @@ void main() {
         global.throwOnError = false;
         final vList0 = rsg.getLOList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final e2 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+        final e2 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         expect(e2, isNull);
 
         global.throwOnError = true;
-        expect(() => new LOtag(PTag.kReceiveCoilManufacturerName, vList0),
+        expect(() => LOtag(PTag.kReceiveCoilManufacturerName, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
 
     test('LO update random', () {
-      final e0 = new LOtag(PTag.kReference, []);
+      final e0 = LOtag(PTag.kReference, []);
       expect(e0.update(['DN{~44F, 1H}B#86, _3YX80jD2;.>4c']).values,
           equals(['DN{~44F, 1H}B#86, _3YX80jD2;.>4c']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(3, 4);
-        final e1 = new LOtag(PTag.kReference, vList0);
+        final e1 = LOtag(PTag.kReference, vList0);
         final vList1 = rsg.getLOList(3, 4);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('LO noValues random', () {
-      final e0 = new LOtag(PTag.kReference, []);
+      final e0 = LOtag(PTag.kReference, []);
       final LOtag loNoValues = e0.noValues;
       expect(loNoValues.values.isEmpty, true);
       log.debug('as0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(3, 4);
-        final e0 = new LOtag(PTag.kReference, vList0);
+        final e0 = LOtag(PTag.kReference, vList0);
         log.debug('e0: $e0');
         expect(loNoValues.values.isEmpty, true);
         log.debug('as0: ${e0.noValues}');
@@ -143,14 +143,14 @@ void main() {
     });
 
     test('LO copy random', () {
-      final e0 = new LOtag(PTag.kReference, []);
+      final e0 = LOtag(PTag.kReference, []);
       final LOtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(3, 4);
-        final e2 = new LOtag(PTag.kReference, vList0);
+        final e2 = LOtag(PTag.kReference, vList0);
         final LOtag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -161,8 +161,8 @@ void main() {
       List<String> vList0;
       for (var i = 0; i < 10; i++) {
         vList0 = rsg.getLOList(1, 1);
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
-        final e1 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+        final e1 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -176,22 +176,22 @@ void main() {
       log.debug('LO hashCode and == ');
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
 
         final vList1 = rsg.getLOList(1, 1);
-        final e2 = new LOtag(PTag.kPositionReferenceIndicator, vList1);
+        final e2 = LOtag(PTag.kPositionReferenceIndicator, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rsg.getLOList(1, 10);
-        final e3 = new LOtag(PTag.kReference, vList2);
+        final e3 = LOtag(PTag.kReference, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rsg.getLOList(2, 3);
-        final e4 = new LOtag(PTag.kReceiveCoilManufacturerName, vList3);
+        final e4 = LOtag(PTag.kReceiveCoilManufacturerName, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
@@ -201,7 +201,7 @@ void main() {
     test('LO valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -209,7 +209,7 @@ void main() {
     test('LO isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -217,7 +217,7 @@ void main() {
     test('LO isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
       }
@@ -226,18 +226,18 @@ void main() {
     test('LO replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
         final vList1 = rsg.getLOList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getLOList(1, 1);
-      final e1 = new LOtag(PTag.kReceiveCoilManufacturerName, vList1);
+      final e1 = LOtag(PTag.kReceiveCoilManufacturerName, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new LOtag(PTag.kReceiveCoilManufacturerName, vList1);
+      final e2 = LOtag(PTag.kReceiveCoilManufacturerName, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e1.values, equals(<String>[]));
     });
@@ -245,10 +245,10 @@ void main() {
     test('LO blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 1);
-        final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList1);
+        final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList1);
         for (var i = 1; i < 10; i++) {
           final blank = e0.blank(i);
-          log.debug(('blank$i: ${blank.values}'));
+          log.debug('blank$i: ${blank.values}');
           expect(blank.values.length == 1, true);
           expect(blank.value.length == i, true);
           final strSpaceList = <String>[''.padRight(i, ' ')];
@@ -274,7 +274,7 @@ void main() {
         final vList1 = rsg.getLOList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = LOtag.fromBytes(PTag.kSelectorLOValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
@@ -288,7 +288,7 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = LOtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
@@ -341,15 +341,15 @@ void main() {
 
     test('LO checkLength good values', () {
       final vList0 = rsg.getLOList(1, 1);
-      final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+      final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
       for (var s in goodLOList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+      final e1 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
       expect(e1.checkLength([]), true);
 
       final vList1 = rsg.getLOList(1, 10);
-      final e2 = new LOtag(PTag.kReference, vList1);
+      final e2 = LOtag(PTag.kReference, vList1);
       for (var s in goodLOList) {
         expect(e2.checkLength(s), true);
       }
@@ -358,17 +358,17 @@ void main() {
     test('LO checkLength bad values', () {
       global.throwOnError = false;
       final vList2 = ['&t&wSB)~P', '02werw#%h'];
-      final e3 = new LOtag(PTag.kReceiveCoilManufacturerName, vList2);
+      final e3 = LOtag(PTag.kReceiveCoilManufacturerName, vList2);
       expect(e3, isNull);
 
       global.throwOnError = true;
-      expect(() => new LOtag(PTag.kReceiveCoilManufacturerName, vList2),
+      expect(() => LOtag(PTag.kReceiveCoilManufacturerName, vList2),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('LO checkValue good values', () {
       final vList0 = rsg.getLOList(1, 1);
-      final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+      final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
       for (var s in goodLOList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -378,7 +378,7 @@ void main() {
 
     test('LO checkValue bad values', () {
       final vList0 = rsg.getLOList(1, 1);
-      final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+      final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
 
       for (var s in badLOList) {
         for (var a in s) {
@@ -396,7 +396,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 4);
-        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        final e0 = LOtag(PTag.kSelectorLOValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -408,7 +408,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 4);
-        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        final e0 = LOtag(PTag.kSelectorLOValue, vList0);
         const vList1 = 'foo';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -420,7 +420,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 4, 16);
-        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        final e0 = LOtag(PTag.kSelectorLOValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -431,7 +431,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 10);
-        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        final e0 = LOtag(PTag.kSelectorLOValue, vList0);
         final match0 = e0.match(r'.*');
         expect(match0, true);
       }
@@ -442,7 +442,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, i);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new LOtag(PTag.kSelectorLOValue, vList0);
+        final e0 = LOtag(PTag.kSelectorLOValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }

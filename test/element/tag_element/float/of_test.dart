@@ -15,7 +15,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/of_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
 
   const listFloat32Common0 = const <double>[
@@ -31,29 +31,29 @@ void main() {
   ];
 
   group('OFTag', () {
-    final rng = new RNG(1);
+    final rng = RNG(1);
 
     test('OF hasValidValues good values', () {
       global.throwOnError = false;
-      final e0 = new OFtag(PTag.kUValueData, listFloat32Common0);
+      final e0 = OFtag(PTag.kUValueData, listFloat32Common0);
       expect(e0.hasValidValues, true);
 
       global.throwOnError = false;
-      final e1 = new OFtag(PTag.kVectorGridData, []);
+      final e1 = OFtag(PTag.kVectorGridData, []);
       expect(e1.hasValidValues, true);
       expect(e1.values, equals(<double>[]));
 
-      final e2 = new OFtag(PTag.kVectorGridData);
+      final e2 = OFtag(PTag.kVectorGridData);
       expect(e2.hasValidValues, true);
       expect(e2.values.isEmpty, true);
     });
 
     test('OF hasValidValues bad values', () {
-      final e2 = new OFtag(PTag.kVectorGridData, null);
+      final e2 = OFtag(PTag.kVectorGridData, null);
       expect(e2, isNull);
 
       global.throwOnError = true;
-      expect(() => new OFtag(PTag.kVectorGridData, null),
+      expect(() => OFtag(PTag.kVectorGridData, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -61,7 +61,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 10);
         log.debug('i: $i, vList: $vList');
-        final e0 = new OFtag(PTag.kUValueData, vList);
+        final e0 = OFtag(PTag.kUValueData, vList);
         log.debug('of:$e0');
         expect(e0[0], equals(vList[0]));
         expect(e0.hasValidValues, true);
@@ -70,7 +70,7 @@ void main() {
       for (var i = 0; i < 100; i++) {
         final vList = rng.float32List(2, 10);
         log.debug('i: $i, vList: $vList');
-        final e0 = new OFtag(PTag.kFirstOrderPhaseCorrectionAngle, vList);
+        final e0 = OFtag(PTag.kFirstOrderPhaseCorrectionAngle, vList);
         expect(e0.hasValidValues, true);
       }
     });
@@ -78,58 +78,58 @@ void main() {
     test('OF update random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 10);
-        final e1 = new OFtag(PTag.kUValueData, vList0);
+        final e1 = OFtag(PTag.kUValueData, vList0);
         final vList1 = rng.float32List(1, 10);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('OF update', () {
-      final of0 = new OFtag(PTag.kVectorGridData, []);
+      final of0 = OFtag(PTag.kVectorGridData, []);
       final floats = [1.2, 1.3, 1.4];
-      final vList0 = new Float32List.fromList(floats);
+      final vList0 = Float32List.fromList(floats);
       expect(of0.update(vList0).values, equals(vList0));
 
-      final vList1 = new Float32List.fromList(listFloat32Common0);
-      final of1 = new OFtag(PTag.kUValueData, vList1);
+      final vList1 = Float32List.fromList(listFloat32Common0);
+      final of1 = OFtag(PTag.kUValueData, vList1);
       expect(of1.update(vList1).values, equals(vList1));
 
       const floats2 = const <double>[
         546543.674, 6754764.45887, 54698.52, 787354.734768 // No reformat
       ];
-      final vList2 = new Float32List.fromList(floats2);
+      final vList2 = Float32List.fromList(floats2);
       for (var i = 1; i <= vList2.length - 1; i++) {
-        final of2 = new OFtag(PTag.kSelectorOFValue,
-            new Float32List.fromList(vList2.take(i).toList()));
+        final of2 = OFtag(PTag.kSelectorOFValue,
+            Float32List.fromList(vList2.take(i).toList()));
 
-        expect(of2.update(new Float32List.fromList(vList2.take(i).toList())),
-            equals(new Float32List.fromList(vList2.take(i).toList())));
+        expect(of2.update(Float32List.fromList(vList2.take(i).toList())),
+            equals(Float32List.fromList(vList2.take(i).toList())));
 
         expect(of2.update(vList2.take(i).toList()).values,
             equals(vList2.take(i).toList()));
       }
-      final of3 = new OFtag(
-          PTag.lookupByCode(kUValueData), new Float32List.fromList(vList2));
-      expect(of3.update(new Float32List.fromList(vList2)),
-          equals(new Float32List.fromList(vList2)));
+      final of3 = OFtag(
+          PTag.lookupByCode(kUValueData), Float32List.fromList(vList2));
+      expect(of3.update(Float32List.fromList(vList2)),
+          equals(Float32List.fromList(vList2)));
     });
 
     test('OF noValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 10);
-        final e1 = new OFtag(PTag.kUValueData, vList);
+        final e1 = OFtag(PTag.kUValueData, vList);
         final ofNoValues = e1.noValues;
         expect(ofNoValues.values.isEmpty, true);
       }
     });
 
     test('OF noValues ', () {
-      final e0 = new OFtag(PTag.kVectorGridData, []);
+      final e0 = OFtag(PTag.kVectorGridData, []);
       final ofNoValues0 = e0.noValues;
       expect(ofNoValues0.values.isEmpty, true);
       log.debug('e0:${e0.noValues}');
 
-      final e1 = new OFtag(PTag.kUValueData, listFloat32Common0);
+      final e1 = OFtag(PTag.kUValueData, listFloat32Common0);
       final ofNoValues1 = e1.noValues;
       expect(ofNoValues1.values.isEmpty, true);
     });
@@ -137,7 +137,7 @@ void main() {
     test('OF copy random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final e0 = new OFtag(PTag.kVectorGridData, vList);
+        final e0 = OFtag(PTag.kVectorGridData, vList);
         final OFtag e5 = e0.copy;
         expect(e0 == e5, true);
         expect(e0.hashCode == e5.hashCode, true);
@@ -145,7 +145,7 @@ void main() {
     });
 
     test('OF copy', () {
-      final e0 = new OFtag(PTag.kVectorGridData, listFloat32Common0);
+      final e0 = OFtag(PTag.kVectorGridData, listFloat32Common0);
       final OFtag e5 = e0.copy;
       expect(e0 == e5, true);
       expect(e0.hashCode == e5.hashCode, true);
@@ -154,8 +154,8 @@ void main() {
     test('OF hashCode and == good values random', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final e0 = new OFtag(PTag.kVectorGridData, vList);
-        final e1 = new OFtag(PTag.kVectorGridData, vList);
+        final e0 = OFtag(PTag.kVectorGridData, vList);
+        final e1 = OFtag(PTag.kVectorGridData, vList);
         log
           ..debug('vList:$vList , e1.hash_code:${e1.hashCode}')
           ..debug('vList:$vList , e1.hash_code:${e1.hashCode}');
@@ -168,20 +168,20 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 1);
         final vList1 = rng.float32List(1, 1);
-        final e0 = new OFtag(PTag.kVectorGridData, vList0);
-        final e2 = new OFtag(PTag.kPointCoordinatesData, vList1);
+        final e0 = OFtag(PTag.kVectorGridData, vList0);
+        final e2 = OFtag(PTag.kPointCoordinatesData, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rng.float32List(1, 2);
-        final e3 = new OFtag(PTag.kUValueData, vList2);
+        final e3 = OFtag(PTag.kUValueData, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rng.float32List(2, 3);
-        final e4 = new OFtag(PTag.kPointCoordinatesData, vList3);
+        final e4 = OFtag(PTag.kPointCoordinatesData, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e2.hashCode == e4.hashCode, false);
         expect(e2 == e4, false);
@@ -189,8 +189,8 @@ void main() {
     });
 
     test('OF hashCode and == good values', () {
-      final e0 = new OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
-      final e1 = new OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
+      final e0 = OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
+      final e1 = OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
       log
         ..debug('listFloat32Common0:$listFloat32Common0 , e1.hash_code:${e1
             .hashCode}')
@@ -201,21 +201,21 @@ void main() {
     });
 
     test('OF hashCode and == bad values', () {
-      final e0 = new OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
+      final e0 = OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
       final e2 =
-          new OFtag(PTag.kPointCoordinatesData, listFloat32Common0.take(1));
+          OFtag(PTag.kPointCoordinatesData, listFloat32Common0.take(1));
       log.debug('listFloat32Common0:$listFloat32Common0,'
           ' e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
       expect(e0 == e2, false);
 
-      final e3 = new OFtag(PTag.kUValueData, listFloat32Common0);
+      final e3 = OFtag(PTag.kUValueData, listFloat32Common0);
       log.debug('listFloat32Common0:$listFloat32Common0, '
           'e3.hash_code:${e3.hashCode}');
       expect(e0.hashCode == e3.hashCode, false);
       expect(e0 == e3, false);
 
-      final e4 = new OFtag(PTag.kSelectorOFValue, listFloat32Common0);
+      final e4 = OFtag(PTag.kSelectorOFValue, listFloat32Common0);
       log.debug('listFloat32Common0:$listFloat32Common0, '
           'e4.hash_code:${e4.hashCode}');
       expect(e0.hashCode == e4.hashCode, false);
@@ -227,18 +227,18 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 1);
-        final e0 = new OFtag(PTag.kVectorGridData, vList0);
+        final e0 = OFtag(PTag.kVectorGridData, vList0);
         final vList1 = rng.float32List(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList2 = rng.float32List(1, 1);
-      final e1 = new OFtag(PTag.kVectorGridData, vList2);
+      final e1 = OFtag(PTag.kVectorGridData, vList2);
       expect(e1.replace(<double>[]), equals(vList2));
       expect(e1.values, equals(<double>[]));
 
-      final e2 = new OFtag(PTag.kVectorGridData, vList2);
+      final e2 = OFtag(PTag.kVectorGridData, vList2);
       expect(e2.replace(null), equals(vList2));
       expect(e2.values, equals(<double>[]));
     });
@@ -246,17 +246,17 @@ void main() {
     test('OF fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 1);
-        //    final float = new Float32List.fromList(vList);
+        //    final float = Float32List.fromList(vList);
         //    final bytes = float.buffer.asUint8List();
-        final bytes0 = new Bytes.typedDataView(vList0);
+        final bytes0 = Bytes.typedDataView(vList0);
         final e0 = OFtag.fromBytes(PTag.kVectorGridData, bytes0);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
 
         final vList1 = rng.float32List(3, 3);
-        //    final float0 = new Float32List.fromList(vList1);
+        //    final float0 = Float32List.fromList(vList1);
         //    final bytes0 = float0.buffer.asUint8List();
-        final bytes1 = new Bytes.typedDataView(vList1);
+        final bytes1 = Bytes.typedDataView(vList1);
         final e1 =
             OFtag.fromBytes(PTag.kFirstOrderPhaseCorrectionAngle, bytes1);
         log.debug('e1: $e1');
@@ -267,7 +267,7 @@ void main() {
     test('OF fromBytes good values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final bytes = new Bytes.typedDataView(vList);
+        final bytes = Bytes.typedDataView(vList);
         final e0 = OFtag.fromBytes(PTag.kSelectorOFValue, bytes);
         log.debug('e0: $e0');
         expect(e0.hasValidValues, true);
@@ -278,7 +278,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.float32List(1, 10);
-        final bytes = new Bytes.typedDataView(vList);
+        final bytes = Bytes.typedDataView(vList);
         final e0 = OFtag.fromBytes(PTag.kSelectorSSValue, bytes);
         expect(e0, isNull);
 
@@ -320,7 +320,7 @@ void main() {
     test('OF checkLength random', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.float32List(1, i);
-        final e0 = new OFtag(PTag.kSelectorOFValue, vList);
+        final e0 = OFtag(PTag.kSelectorOFValue, vList);
         expect(e0.checkLength(e0.values), true);
       }
     });
@@ -328,7 +328,7 @@ void main() {
     test('OF checkValues', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.float32List(1, i);
-        final e0 = new OFtag(PTag.kSelectorOFValue, vList);
+        final e0 = OFtag(PTag.kSelectorOFValue, vList);
         expect(e0.checkValues(e0.values), true);
       }
     });
@@ -525,11 +525,11 @@ void main() {
     test('Float32Base.fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final float = new Float32List.fromList(vList);
+        final float = Float32List.fromList(vList);
         final bd = float.buffer.asUint8List();
         expect(Float32.fromUint8List(bd), equals(vList));
       }
-      final float0 = new Float32List.fromList(<double>[]);
+      final float0 = Float32List.fromList(<double>[]);
       final bd0 = float0.buffer.asUint8List();
       expect(Float32.fromUint8List(bd0), equals(<double>[]));
     });
@@ -537,7 +537,7 @@ void main() {
     test('Float32Base.toBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final float32List0 = new Float32List.fromList(vList);
+        final float32List0 = Float32List.fromList(vList);
         final uInt8List0 = float32List0.buffer.asUint8List();
         //final s0 = base64.encode(uInt8List0);
         expect(Float32.toBytes(float32List0), equals(uInt8List0));
@@ -547,7 +547,7 @@ void main() {
     test('Float32Base.fromBase64', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(0, i);
-        final float32List0 = new Float32List.fromList(vList);
+        final float32List0 = Float32List.fromList(vList);
         final uInt8List0 = float32List0.buffer.asUint8List();
         final s0 = base64.encode(uInt8List0);
         final e0 = Float32.fromBase64(s0);
@@ -596,11 +596,11 @@ void main() {
     test('Float32Base.fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final float = new Float32List.fromList(vList);
+        final float = Float32List.fromList(vList);
         final bd = float.buffer.asUint8List();
         expect(Float32.fromUint8List(bd), equals(vList));
       }
-      final float0 = new Float32List.fromList(<double>[]);
+      final float0 = Float32List.fromList(<double>[]);
       final bd0 = float0.buffer.asUint8List();
       expect(Float32.fromUint8List(bd0), equals(<double>[]));
     });
@@ -608,11 +608,11 @@ void main() {
     test('Float32Base.fromByteData', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        final float = new Float32List.fromList(vList);
+        final float = Float32List.fromList(vList);
         final byteData0 = float.buffer.asByteData();
         expect(Float32.fromByteData(byteData0), equals(vList));
       }
-      final float0 = new Float32List.fromList(<double>[]);
+      final float0 = Float32List.fromList(<double>[]);
       final bd0 = float0.buffer.asByteData();
       expect(Float32.fromByteData(bd0), equals(<double>[]));
     });

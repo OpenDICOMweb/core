@@ -11,17 +11,17 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'tag_root_dataset_test', level: Level.info);
 
   group('TagRootDataset', () {
     test('[] and []=', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
-          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+          UItag(PTag.kTransferSyntaxUID, [ts.asString]);
       log.debug('ui: $uiTransFerSyntax');
       rds[uiTransFerSyntax.index] = uiTransFerSyntax;
       log.debug('elements: $rds');
@@ -30,10 +30,10 @@ void main() {
     });
 
     test('insert and compare', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
 
       rds[as0.code] = as0;
       rds[ss0.code] = ss0;
@@ -50,11 +50,11 @@ void main() {
       expect(fd1 == fd0, true);
     });
     test('delete', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = ODtag(PTag.kSelectorODValue, [15.24]);
 
       rds[as0.code] = as0;
       rds[ss0.code] = ss0;
@@ -82,17 +82,17 @@ void main() {
       expect(rds.delete(od0.code), isNull);
 
       global.throwOnError = true;
-      final sl0 = new SLtag(PTag.kRationalNumeratorValue, [123]);
+      final sl0 = SLtag(PTag.kRationalNumeratorValue, [123]);
       expect(() => rds.delete(sl0.code, required: true),
           throwsA(const TypeMatcher<ElementNotPresentError>()));
     });
 
     test('deleteAll', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = ODtag(PTag.kSelectorODValue, [15.24]);
 
       rds[as0.code] = as0;
       rds[ss0.code] = ss0;
@@ -119,9 +119,9 @@ void main() {
     });
 
     test('noValues', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
 
       rds[fd0.code] = fd0;
       rds[as0.code] = as0;
@@ -136,19 +136,19 @@ void main() {
     });
 
     test('noValuesAll', () {
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0)..add(as0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0)..add(as0);
 
-      final rds1 = new TagRootDataset.empty();
+      final rds1 = TagRootDataset.empty();
       final valuesList = <TagItem>[];
-      rds[kRecognitionCode] = new SHtag(PTag.kRecognitionCode, ['foo bar']);
+      rds[kRecognitionCode] = SHtag(PTag.kRecognitionCode, ['foo bar']);
       rds[kInstitutionAddress] =
-          new STtag(PTag.kInstitutionAddress, ['foo bar']);
+          STtag(PTag.kInstitutionAddress, ['foo bar']);
       rds[kExtendedCodeMeaning] =
-          new LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
+          LTtag(PTag.kExtendedCodeMeaning, ['foo bar']);
 
-      valuesList.add(new TagItem.fromList(rds1, rds));
-      final sq0 = new SQtag(rds1, PTag.kPatientSizeCodeSequence);
+      valuesList.add(TagItem.fromList(rds1, rds));
+      final sq0 = SQtag(rds1, PTag.kPatientSizeCodeSequence);
       rds[sq0.code] = sq0;
 
       final noV = rds.noValuesAll(sq0.index);
@@ -167,8 +167,8 @@ void main() {
     });
 
     test('update (String)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
       rds[as0.code] = as0;
 
       final update0 = rds.update(as0.code, <String>[]);
@@ -176,8 +176,8 @@ void main() {
     });
 
     test('updateF(String)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
       rds[as0.code] = as0;
 
       final update0 = rds.updateF<String>(as0.index, (n) => n);
@@ -186,9 +186,9 @@ void main() {
     });
 
     test('update (int)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [kInt16Min];
-      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      final ss0 = SStag(PTag.kSelectorSSValue, vList0);
       rds.add(ss0);
 
       final vList1 = [kInt16Max];
@@ -200,9 +200,9 @@ void main() {
     });
 
     test('updateF (int)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [kInt16Min];
-      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      final ss0 = SStag(PTag.kSelectorSSValue, vList0);
       rds.add(ss0);
 
       final update2 = rds.updateF<int>(ss0.index, (n) => n);
@@ -210,16 +210,16 @@ void main() {
     });
 
     test('update (double)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
       rds.add(fd0);
       final update1 = rds.update(fd0.code, <double>[]);
       expect(update1.isEmpty, false);
     });
 
     test('updateF (double)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
       rds.add(fd0);
 
       final update1 = rds.updateF<double>(fd0.index, (n) => n);
@@ -227,14 +227,14 @@ void main() {
     });
 
     test('duplicate', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final as1 = new AStag(PTag.kPatientAge, ['024Y']);
-      final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123]);
-      final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final as1 = AStag(PTag.kPatientAge, ['024Y']);
+      final as2 = AStag(PTag.kPatientAge, ['012M']);
+      final ob0 = OBtag(PTag.kICCProfile, [123]);
+      final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       global.throwOnError = false;
       rds..add(fd0)..add(fd1)..add(as0)..add(as1)..add(as2)..add(ob0)..add(ae0);
@@ -245,14 +245,14 @@ void main() {
     });
 
     test('removeDuplicates', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final fd1 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final as1 = new AStag(PTag.kPatientAge, ['024Y']);
-      final as2 = new AStag(PTag.kPatientAge, ['012M']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123]);
-      final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final fd1 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final as1 = AStag(PTag.kPatientAge, ['024Y']);
+      final as2 = AStag(PTag.kPatientAge, ['012M']);
+      final ob0 = OBtag(PTag.kICCProfile, [123]);
+      final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       rds..add(fd0)..add(fd1)..add(as0)..add(as1)..add(as2)..add(ob0)..add(ae0);
 
@@ -266,11 +266,11 @@ void main() {
     });
 
     test('getElementsInRange', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ob0 = new OBtag(PTag.kICCProfile, [123]);
-      final ae0 = new AEtag(PTag.kPerformedStationAETitle, ['3']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final ob0 = OBtag(PTag.kICCProfile, [123]);
+      final ae0 = AEtag(PTag.kPerformedStationAETitle, ['3']);
 
       rds[fd0.code] = fd0;
       rds[as0.code] = as0;
@@ -298,20 +298,20 @@ void main() {
       const uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
       final uidStringList0a = [uidString0a];
-      final uid0 = new Uid(uidString0);
-      final uid0a = new Uid(uidString0a);
+      final uid0 = Uid(uidString0);
+      final uid0a = Uid(uidString0a);
       final uidList0 = [uid0];
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
+      final ui0 = UItag.fromUids(PTag.kSelectorUIValue, uidList0);
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidString0));
       expect(ui0.uids, equals(uidList0));
       expect(ui0.uids.elementAt(0), equals(uid0));
 
       // Test replace
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
       final uidStringList0b = rds.replace(ui0.code, uidStringList0a);
       expect(uidStringList0b, equals(uidStringList0));
       expect(uidStringList0b.elementAt(0), equals(uidStringList0[0]));
@@ -328,14 +328,14 @@ void main() {
       const uidString0a = '1.2.840.10008.5.1.4.34';
       final uidStringList0 = [uidString0];
       final uidStringList0a = [uidString0a];
-      final uid0 = new Uid(uidString0);
-      final uid0a = new Uid(uidString0a);
+      final uid0 = Uid(uidString0);
+      final uid0a = Uid(uidString0a);
       final uidList0 = [uid0];
       final uidList0a = [uid0a];
 
       // Create element and check values and uids
-      final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
+      final ui0 = UItag(PTag.kSelectorUIValue, uidStringList0);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
       expect(ui0.values, equals(uidStringList0));
       expect(ui0.value, equals(uidStringList0[0]));
       expect(ui0.uids, equals(uidList0));
@@ -361,8 +361,8 @@ void main() {
         final uidStringList0a = UI.toStringList(uidList0a);
 
         // Create element and check values and uids
-        final ui0 = new UItag.fromUids(PTag.kSelectorUIValue, uidList0);
-        final rds = new TagRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
+        final ui0 = UItag.fromUids(PTag.kSelectorUIValue, uidList0);
+        final rds = TagRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
         expect(ui0.values, equals(uidStringList0));
         expect(ui0.value, equals(uidStringList0[0]));
         expect(ui0.uids, equals(uidList0));
@@ -381,19 +381,19 @@ void main() {
     });
 
     test('Simple Random UItag.fromString, replace, and replaceUid test', () {
-      final rsg = new RSG(seed: 1);
+      final rsg = RSG(seed: 1);
       const count = 8;
       for (var i = 1; i < count; i++) {
         final uidStringList0 = rsg.getUIList(1, 1);
         final uidStringList0a = rsg.getUIList(1, 1);
-        final uid0 = new Uid(uidStringList0[0]);
-        final uid0a = new Uid(uidStringList0a[0]);
+        final uid0 = Uid(uidStringList0[0]);
+        final uid0a = Uid(uidStringList0a[0]);
         final uidList0 = [uid0];
         final uidList0a = [uid0a];
 
         // Create element and check values and uids
-        final ui0 = new UItag(PTag.kSelectorUIValue, uidStringList0);
-        final rds = new TagRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
+        final ui0 = UItag(PTag.kSelectorUIValue, uidStringList0);
+        final rds = TagRootDataset.empty('', kEmptyBytes, 0)..add(ui0);
         expect(ui0.values, equals(uidStringList0));
         expect(ui0.value, equals(uidStringList0[0]));
         expect(ui0.uids, equals(uidList0));
@@ -412,9 +412,9 @@ void main() {
     });
 
     test('replace', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [15.24];
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, vList0);
       rds.add(fd0);
 
       final vList1 = [1.23];
@@ -424,7 +424,7 @@ void main() {
 
       global.throwOnError = true;
       final vList2 = ['024Y'];
-      final as0 = new AStag(PTag.kPatientAge, vList2);
+      final as0 = AStag(PTag.kPatientAge, vList2);
       final vList3 = [123];
       //expect(map.replace(as0.index, vList3), equals(vList2));
       expect(() => rds.replace(as0.index, vList3, required: true),
@@ -432,9 +432,9 @@ void main() {
     });
 
     test('replaceAll', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [15.24];
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, vList0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, vList0);
       rds.add(fd0);
 
       final vList1 = [1.23];
@@ -446,13 +446,13 @@ void main() {
     });
 
     test('== and hashCode', () {
-      final rds0 = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final rds1 = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final rds2 = new TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds0 = TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds1 = TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds2 = TagRootDataset.empty('', kEmptyBytes, 0);
 
-      final cs0 = new CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);
-      final cs1 = new CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);
-      final cs2 = new CStag(PTag.kImageFormat, ['FOO']);
+      final cs0 = CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);
+      final cs1 = CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);
+      final cs2 = CStag(PTag.kImageFormat, ['FOO']);
 
       rds0[cs0.code] = cs0;
       rds1[cs1.code] = cs1;
@@ -473,8 +473,8 @@ void main() {
     });
 
     test('others', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
 
       rds[as0.code] = as0;
 
@@ -486,10 +486,10 @@ void main() {
     });
 
     test('copy', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
 
       rds[as0.code] = as0;
       rds[ss0.code] = ss0;
@@ -498,15 +498,15 @@ void main() {
 
       final copy0 = rds.copy();
       log.debug('copy0: $copy0');
-      expect(copy0, equals(new TagRootDataset.from(rds)));
+      expect(copy0, equals(TagRootDataset.from(rds)));
       expect(copy0, equals(rds));
     });
 
     test('getValue', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
 
       rds[as0.code] = as0;
       rds[ss0.code] = ss0;
@@ -529,10 +529,10 @@ void main() {
     });
 
     test('getValues', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
 
       rds[as0.code] = as0;
       rds[ss0.code] = ss0;
@@ -555,11 +555,11 @@ void main() {
     });
 
     test('hasElementsInRange', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kSelectorASValue, ['024Y']);
-      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
-      final od0 = new ODtag(PTag.kSelectorODValue, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kSelectorASValue, ['024Y']);
+      final ss0 = SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final od0 = ODtag(PTag.kSelectorODValue, [15.24]);
 
       rds[as0.code] = as0;
       rds[ss0.code] = ss0;
@@ -582,16 +582,16 @@ void main() {
       expect(inRange2, true);
       expect(inRange3, true);
 
-      final rds0 = new TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds0 = TagRootDataset.empty('', kEmptyBytes, 0);
       final inRange4 = rds0.hasElementsInRange(0, od0.code);
       expect(inRange4, false);
     });
 
     test('deleteCodes', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
-      final ss0 = new SStag(PTag.kPixelIntensityRelationshipSign, [123]);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
+      final ss0 = SStag(PTag.kPixelIntensityRelationshipSign, [123]);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
 
       rds[as0.code] = as0;
       rds[ss0.code] = ss0;
@@ -622,8 +622,8 @@ void main() {
     });
 
     test('updateAll(string)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
       rds[as0.code] = as0;
 
       final update0 = rds.updateAll<String>(as0.index, vList: as0.values);
@@ -631,8 +631,8 @@ void main() {
     });
 
     test('updateAllF(string)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final as0 = new AStag(PTag.kPatientAge, ['024Y']);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final as0 = AStag(PTag.kPatientAge, ['024Y']);
       rds[as0.code] = as0;
 
       final update0 = rds.updateAllF<String>(as0.index, (n) => n);
@@ -640,9 +640,9 @@ void main() {
     });
 
     test('updateAll (int)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [kInt16Min];
-      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      final ss0 = SStag(PTag.kSelectorSSValue, vList0);
       rds.add(ss0);
 
       final update2 = rds.updateAll<int>(ss0.index, vList: <int>[]);
@@ -650,9 +650,9 @@ void main() {
     });
 
     test('updateAllF (int)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
       final vList0 = [kInt16Min];
-      final ss0 = new SStag(PTag.kSelectorSSValue, vList0);
+      final ss0 = SStag(PTag.kSelectorSSValue, vList0);
       rds.add(ss0);
 
       final update2 = rds.updateAllF<int>(ss0.index, (n) => n);
@@ -660,8 +660,8 @@ void main() {
     });
 
     test('updateAll (float)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
       rds.add(fd0);
 
       final update1 = rds.updateAll<double>(fd0.index, vList: <double>[]);
@@ -669,8 +669,8 @@ void main() {
     });
 
     test('updateAllF (float)', () {
-      final rds = new TagRootDataset.empty('', kEmptyBytes, 0);
-      final fd0 = new FDtag(PTag.kBlendingWeightConstant, [15.24]);
+      final rds = TagRootDataset.empty('', kEmptyBytes, 0);
+      final fd0 = FDtag(PTag.kBlendingWeightConstant, [15.24]);
       rds.add(fd0);
 
       final update1 = rds.updateAllF<double>(fd0.index, (n) => n);

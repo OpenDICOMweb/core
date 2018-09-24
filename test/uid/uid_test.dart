@@ -122,18 +122,18 @@ void uidTest() {
 
     test('Generate Uid', (){
       for(var s in goodUids){
-        final uid0 = new Uid(s);// checks 's' as valid Uid
+        final uid0 = Uid(s);// checks 's' as valid Uid
         log.debug('uid0:$uid0');
         expect(uid0.value, equals(s));
       }
-      final uid1 =  new Uid();// generates new Uid
+      final uid1 =  Uid();// generates Uid
       log.debug('uid1:$uid1');
       expect(uid1, isNotNull);
     });
 
     test('bad uid string test',(){
       for(var s in badUids){
-        final uid0 = new Uid(s);// checks 's' as valid Uid
+        final uid0 = Uid(s);// checks 's' as valid Uid
         expect(uid0,isNull);
       }
     });

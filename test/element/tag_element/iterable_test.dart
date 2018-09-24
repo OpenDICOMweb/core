@@ -18,7 +18,7 @@ void main() {
   group('Iterable', () {
     const intList = const [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     final intIterable = intList.map<int>((i) => i);
-    final int32List = new Int32List.fromList(intList);
+    final int32List = Int32List.fromList(intList);
 
     test('integer Iterable', () {
       log.debug('intList isIterable: ${intList is Iterable}');
@@ -43,7 +43,7 @@ void main() {
     ];
     test('float Iterable', () {
       final floatIterable = floatList.map<double>((n) => n);
-      final float32List = new Float32List.fromList(floatList);
+      final float32List = Float32List.fromList(floatList);
 
       log.debug('Before: ${float32List.runtimeType}: $float32List');
       expect(float32List is Iterable, true);
@@ -108,9 +108,9 @@ int sum(Iterable<int> list) => list.fold(0, (total, v) => total + v);
 Float32List toFloat32(Iterable<double> vList, {bool asView = true}) {
   if (vList is Float32List) return vList;
   log.debug('Not Float32List');
-  if (vList is List<double>) return new Float32List.fromList(vList);
+  if (vList is List<double>) return Float32List.fromList(vList);
   log.debug('Not List<double>');
-  final list = new Float32List(vList.length);
+  final list = Float32List(vList.length);
   var i = 0;
   for (var v in vList) {
     list[i++] = v;

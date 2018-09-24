@@ -14,9 +14,9 @@ import 'package:core/src/values/date_time/primitives/time_zone.dart';
 
 // ignore_for_file: public_member_api_docs
 
-typedef TimeZone OnTimeZoneError(int sign, int h, int m);
-typedef TimeZone OnTimeZoneParseError(String s);
-typedef String OnTimeZoneHashStringError(String s);
+typedef OnTimeZoneError = TimeZone Function(int sign, int h, int m);
+typedef OnTimeZoneParseError= TimeZone Function(String s);
+typedef OnTimeZoneHashStringError = String Function(String s);
 
 //Urgent jfp: make hour minute, name, microseconds, etc Getters
 // Urgent jfp: consider makeing tz part of DcmDateTime

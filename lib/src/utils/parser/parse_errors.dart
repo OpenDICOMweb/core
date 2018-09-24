@@ -28,6 +28,7 @@ class ParseError extends Error {
 ///
 /// _Note_: This _always_ [throw]s. The [throw] MUST always be
 /// caught by the parser.
+// ignore: prefer_void_to_null
 Null parseError(String msg, [Issues issues]) {
   log.error(ParseError.getMsg(msg));
   if (issues != null) issues.add(msg);
@@ -35,11 +36,9 @@ Null parseError(String msg, [Issues issues]) {
 }
 
 /// A _null_ values was passed to a parser.
+// ignore: prefer_void_to_null
 Null parseNullError([Issues issues]) =>
     parseError('Invalid attempt to parse a null values', issues);
-
-
-
 
 /// An invalid [DateTime] [Error].
 class InvalidParseStringToStringError extends ParseError {
@@ -51,11 +50,17 @@ class InvalidParseStringToStringError extends ParseError {
   static String _msg(String s) => 'InvalidParseStringToStringError: "$s"';
 }
 
-Null invalidParseStringToString(String msg, [Issues issues]) {
+// ignore: prefer_void_to_null
+Null badParseStringToString(String msg, [Issues issues]) {
   log.error(InvalidParseStringToStringError._msg(msg));
   if (issues != null) issues.add(msg);
   if (throwOnError) throw InvalidParseStringToStringError('$msg');
   return null;
+}
+
+bool invalidParseStringToString(String msg, [Issues issues]) {
+  badParseStringToString(msg, issues);
+  return false;
 }
 
 

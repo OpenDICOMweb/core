@@ -36,7 +36,7 @@ abstract class Text extends Utf8 {
   StringBase blank([int n = 1]) => update([spaces(n)]);
 
   @override
-  List<String> valuesFromBytes(Bytes vfBytes) => [vfBytes.getUtf8()];
+  List<String> valuesFromBytes(Bytes bytes) => [bytes.getUtf8()];
 
   static List<String> fromValueField(Iterable vf, int maxVFLength,
       {bool isAscii = true}) {
@@ -79,8 +79,8 @@ abstract class LT extends Text {
   int get maxLength => kMaxLength;
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   LT append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -184,8 +184,8 @@ abstract class ST extends Text {
   int get maxLength => kMaxLength;
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   ST append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -300,8 +300,8 @@ abstract class UR extends Text {
   Uri _uri;
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   UR append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -426,8 +426,8 @@ abstract class UT extends Text {
   int get maxVFLength => kMaxVFLength;
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   UT append(String s) => update(values.append(s, kMaxValueLength));
 

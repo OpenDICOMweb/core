@@ -15,26 +15,26 @@ import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
 
-final Bytes u8Frame = new Bytes.fromList(testFrame);
-final Bytes u16Frame = new Bytes.fromList(testFrame);
+final Bytes u8Frame = Bytes.fromList(testFrame);
+final Bytes u16Frame = Bytes.fromList(testFrame);
 
 void main() {
   Server.initialize(name: 'element/ow_pixel_data_test', level: Level.info);
 
   const ts = TransferSyntax.kDefaultForDicomWeb;
   group('OW PixelData Tests', () {
-    final pixels0 = new Uint16List(1024);
+    final pixels0 = Uint16List(1024);
     for (var i = 0; i < pixels0.length; i++) pixels0[i] = 4095;
 
-    final pixels1 = new Uint16List.fromList(pixels0);
+    final pixels1 = Uint16List.fromList(pixels0);
 //    final bytes1 = pixels1.buffer.asUint8List();
-    final bytes1 = new Bytes.typedDataView(pixels1);
+    final bytes1 = Bytes.typedDataView(pixels1);
 
-    final pixels2 = new Uint16List.fromList([4095, 4095]);
-//    final bytes2 = new Bytes.typedDataView(pixels2);
+    final pixels2 = Uint16List.fromList([4095, 4095]);
+//    final bytes2 = Bytes.typedDataView(pixels2);
 
     test('Create OWtagPixelData', () {
-      final ow0 = new OWtagPixelData(pixels0);
+      final ow0 = OWtagPixelData(pixels0);
       expect(ow0.tag == PTag.kPixelDataOW, true);
       expect(ow0.vrIndex == kOBOWIndex, false);
       expect(ow0.vrIndex == kOWIndex, true);
@@ -46,11 +46,11 @@ void main() {
       expect(ow0.valuesCopy, equals(ow0.values));
       expect(ow0.typedData is Uint16List, true);
 
-      final ow1 = new OWtagPixelData([kUint32Max]);
+      final ow1 = OWtagPixelData([kUint32Max]);
       expect(ow1, isNull);
 
       global.throwOnError = true;
-      expect(() => new OWtagPixelData([kUint32Max]),
+      expect(() => OWtagPixelData([kUint32Max]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       final s = Sha256.uint16(pixels0);
@@ -68,12 +68,12 @@ void main() {
 
     test('Create OWtagPixelData hashCode and ==', () {
       global.throwOnError = false;
-      final ow0 = new OWtagPixelData(pixels0);
-      final ow1 = new OWtagPixelData(pixels1);
+      final ow0 = OWtagPixelData(pixels0);
+      final ow1 = OWtagPixelData(pixels1);
       expect(ow0.hashCode == ow1.hashCode, true);
       expect(ow0 == ow1, true);
 
-      final ow2 = new OWtagPixelData(pixels2);
+      final ow2 = OWtagPixelData(pixels2);
       expect(ow0.hashCode == ow2.hashCode, false);
       expect(ow0 == ow2, false);
     });
@@ -119,7 +119,7 @@ void main() {
     test('OWtagPixelData.update Test', () {
       global.throwOnError = false;
 
-      final ow0 = new OWtagPixelData(pixels0);
+      final ow0 = OWtagPixelData(pixels0);
       final ow1 = ow0.update(pixels0);
       expect(ow1 == ow0, true);
     });
@@ -127,16 +127,16 @@ void main() {
     test('getPixelData', () {
       global.throwOnError = false;
 
-      final pd0 = new OWtagPixelData([123, 101]);
-      final ba0 = new UStag(PTag.kBitsAllocated, [16]);
-      final ds = new TagRootDataset.empty()..add(pd0)..add(ba0);
+      final pd0 = OWtagPixelData([123, 101]);
+      final ba0 = UStag(PTag.kBitsAllocated, [16]);
+      final ds = TagRootDataset.empty()..add(pd0)..add(ba0);
       final pixels = ds.getPixelData();
       log..debug('pixels: $pixels')..debug('pixel.length: ${pixels.length}');
       expect(pixels.length == 2, true);
 
-      final ba1 = new UStag(PTag.kBitsAllocated, []);
-      final ba2 = new UStag(PTag.kBitsAllocated, []);
-      final ds1 = new TagRootDataset.empty()..add(ba1);
+      final ba1 = UStag(PTag.kBitsAllocated, []);
+      final ba2 = UStag(PTag.kBitsAllocated, []);
+      final ds1 = TagRootDataset.empty()..add(ba1);
       final pixels1 = ds1.getPixelData();
       expect(pixels1 == null, true);
 
@@ -147,8 +147,8 @@ void main() {
 
       global.throwOnError = false;
 
-      final ba3 = new UStag(PTag.kBitsAllocated, [16]);
-      final ds2 = new TagRootDataset.empty()..add(ba3);
+      final ba3 = UStag(PTag.kBitsAllocated, [16]);
+      final ds2 = TagRootDataset.empty()..add(ba3);
       global.throwOnError = true;
       expect(
           ds2.getPixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
@@ -202,7 +202,7 @@ void main() {
       expect(ow0 == ow2, false);
     });
 
-    test('create new OWtagPixelData.fromBytes', () {
+    test('create OWtagPixelData.fromBytes', () {
       final ow0 = OWtagPixelData.fromBytes(u8Frame);
 
       expect(ow0.tag == PTag.kPixelDataOW, true);
@@ -228,9 +228,9 @@ void main() {
       expect(ow0.checkValue(kUint16Min - 1), false);
     });
 
-    test('create new OWtagPixelData.fromBytes hashCode and ==', () {
+    test('create OWtagPixelData.fromBytes hashCode and ==', () {
       global.throwOnError = false;
-      final frame1 = new Bytes.fromList(pixels1);
+      final frame1 = Bytes.fromList(pixels1);
       final ow0 = OWtagPixelData.fromBytes(u8Frame);
       final ow1 = OWtagPixelData.fromBytes(u8Frame);
       final ow2 = OWtagPixelData.fromBytes(u8Frame);
@@ -258,7 +258,7 @@ void main() {
     });
 
     test('OWtagPixelData isValidBytesArgs', () {
-      final vfBytes = new Bytes.fromList(pixels1);
+      final vfBytes = Bytes.fromList(pixels1);
       final e0 = OWtagPixelData.isValidBytesArgs(vfBytes);
       expect(e0, true);
 
@@ -267,7 +267,7 @@ void main() {
     });
 
     test('Create OWtagPixelData.fromPixels', () {
-      final e0 = new OWtagPixelData.fromPixels(pixels0);
+      final e0 = OWtagPixelData.fromPixels(pixels0);
       log.debug('tag: ${PTag.kPixelDataOW}');
       expect(e0.vrIndex == kOBOWIndex, false);
       expect(e0.vrIndex == kOWIndex, true);
@@ -303,9 +303,9 @@ void main() {
     test('Create OWtagPixelData.fromPixels hashCode and ==', () {
       global.throwOnError = false;
 
-      final e0 = new OWtagPixelData.fromPixels(pixels0);
-      final e1 = new OWtagPixelData.fromPixels(pixels0);
-      final e2 = new OWtagPixelData.fromPixels(pixels2);
+      final e0 = OWtagPixelData.fromPixels(pixels0);
+      final e1 = OWtagPixelData.fromPixels(pixels0);
+      final e2 = OWtagPixelData.fromPixels(pixels2);
 
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
@@ -331,13 +331,13 @@ void main() {
     test('Create Uint16Base.listFromBytes', () {
       expect(Uint16.fromBytes(u8Frame), u8Frame.buffer.asUint16List());
 
-      final frame0 = new Bytes.fromList(testFrame0);
+      final frame0 = Bytes.fromList(testFrame0);
       expect(Uint16.fromBytes(frame0), frame0.buffer.asUint16List());
     });
 
     test('Create Uint16Base.listToBytes', () {
       global.throwOnError = false;
-      final rng = new RNG(1);
+      final rng = RNG(1);
 
       for (var i = 0; i < 10; i++) {
         final uInt16List0 = rng.uint16List(1, 1);
@@ -349,8 +349,8 @@ void main() {
       const uInt16Max = const [kUint16Max];
       const uInt32Max = const [kUint32Max];
 
-      final ui0 = new Uint16List.fromList(uInt8Max);
-      final ui1 = new Uint16List.fromList(uInt16Max);
+      final ui0 = Uint16List.fromList(uInt8Max);
+      final ui1 = Uint16List.fromList(uInt16Max);
 
       expect(Uint16.toBytes(uInt8Max), ui0.buffer.asUint8List());
       expect(Uint16.toBytes(uInt16Max), ui1.buffer.asUint8List());
@@ -364,7 +364,7 @@ void main() {
     });
 
     test('Create OW.decodeJsonVF', () {
-      //     final testPixels = new Uint16List.fromList([123]);
+      //     final testPixels = Uint16List.fromList([123]);
       final b64Pixels = Uint16.toBase64(u16Frame);
       final v = Uint16.fromBase64(b64Pixels);
       log
@@ -376,7 +376,7 @@ void main() {
 
     test('Create Uint16Base.listToBase64', () {
       final baseFrame = [1, 2, 3];
-      final frame0 = new Uint16List.fromList(baseFrame);
+      final frame0 = Uint16List.fromList(baseFrame);
       log..debug('frame:$baseFrame')..debug('bdFrame: $frame0');
       final bdU8a = frame0.buffer.asUint8List();
       final s0 = base64.encode(bdU8a);
@@ -399,13 +399,13 @@ void main() {
     test('Create Uint16Base.listFromBytes', () {
       expect(Uint16.fromBytes(u8Frame), u8Frame.buffer.asUint16List());
 
-      final frame0 = new Bytes.fromList(testFrame0);
+      final frame0 = Bytes.fromList(testFrame0);
       expect(Uint16.fromBytes(frame0), frame0.buffer.asUint16List());
     });
 
     test('Create Uint16Base.listFromByteData', () {
       expect(Uint16.fromBytes(u8Frame), u8Frame.buffer.asUint16List());
-      final frame0 = new Uint8List.fromList(testFrame0);
+      final frame0 = Uint8List.fromList(testFrame0);
       final bd = frame0.buffer.asByteData();
 
       expect(Uint16.fromByteData(bd), frame0.buffer.asUint16List());

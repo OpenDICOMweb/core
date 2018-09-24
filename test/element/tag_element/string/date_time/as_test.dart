@@ -12,7 +12,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   // minYear and maxYear can be passed as an argument
@@ -66,7 +66,7 @@ void main() {
     test('AS hasValidValues Element good values', () {
       for (var s in goodASList) {
         global.throwOnError = false;
-        final e0 = new AStag(PTag.kPatientAge, s);
+        final e0 = AStag(PTag.kPatientAge, s);
         log.debug('e0 $e0');
         expect(e0.hasValidValues, true);
       }
@@ -75,11 +75,11 @@ void main() {
     test('AS hasValidValues Element bad values', () {
       for (var s in badASList) {
         global.throwOnError = false;
-        final e1 = new AStag(PTag.kPatientAge, s);
+        final e1 = AStag(PTag.kPatientAge, s);
         expect(e1, isNull);
 
         global.throwOnError = true;
-        expect(() => new AStag(PTag.kPatientAge, s),
+        expect(() => AStag(PTag.kPatientAge, s),
             throwsA(const TypeMatcher<StringError>()));
       }
     });
@@ -88,7 +88,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         log.debug('e0:$e0');
         expect(e0.hasValidValues, true);
 
@@ -100,21 +100,21 @@ void main() {
         final vList0 = rsg.getASList();
         if (int.parse(vList0[0].substring(0, 3)) != 0) {
           log.debug('$i: vList0: $vList0');
-          final e1 = new AStag(PTag.kPatientAge, vList0);
+          final e1 = AStag(PTag.kPatientAge, vList0);
           expect(e1.hasValidValues, true);
         }
       }
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1, 1, 50);
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         log.debug('e0:$e0');
         expect(e0.hasValidValues, true);
       }
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(2, 5, 1, 99);
-        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        final e0 = AStag(PTag.kSelectorASValue, vList0);
         expect(e0, isNotNull);
         expect(e0.hasValidValues, true);
       }
@@ -124,25 +124,25 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1, 1, 1000);
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         expect(e0, isNull);
       }
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(2, 5, 1, 99);
         log.debug('vList0: $vList0');
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         log.debug('e0: $e0');
         expect(e0, isNull);
       }
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList0 = rsg.getASList(2, 5, 1, 1000);
-        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        final e0 = AStag(PTag.kSelectorASValue, vList0);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new AStag(PTag.kSelectorASValue, vList0),
+        expect(() => AStag(PTag.kSelectorASValue, vList0),
             throwsA(const TypeMatcher<StringError>()));
       }
     });
@@ -153,13 +153,13 @@ void main() {
         final vList0 = rsg.getASList(2, 5);
         global.throwOnError = false;
         expect(AS.isValidValues(PTag.kPatientAge, vList0), false);
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         log.debug('e0: $e0');
         expect(e0 == null, true);
 
-        expect(new AStag(PTag.kPatientAge, vList0), isNull);
+        expect(AStag(PTag.kPatientAge, vList0), isNull);
         global.throwOnError = true;
-        expect(() => new AStag(PTag.kPatientAge, vList0),
+        expect(() => AStag(PTag.kPatientAge, vList0),
             throwsA(const TypeMatcher<InvalidValuesError>()));
       }
     });
@@ -167,14 +167,14 @@ void main() {
     test('AS update random', () {
       //update
       global.throwOnError = false;
-      final e0 = new AStag(PTag.kPatientAge, []);
+      final e0 = AStag(PTag.kPatientAge, []);
       expect(e0.update(['778D']).values, equals(['778D']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList();
         log.debug('vList0: $vList0');
 
-        final e1 = new AStag(PTag.kPatientAge, vList0);
+        final e1 = AStag(PTag.kPatientAge, vList0);
         final vList1 = rsg.getASList(1, 1);
         log.debug('vList1: $vList1');
         expect(e1.update(vList1).values, equals(vList1));
@@ -183,14 +183,14 @@ void main() {
 
     test('AS noValues random', () {
       //noValues
-      final e0 = new AStag(PTag.kPatientAge, []);
+      final e0 = AStag(PTag.kPatientAge, []);
       final AStag asNoValues = e0.noValues;
       expect(asNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         log.debug('e0: $e0');
         expect(asNoValues.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -199,14 +199,14 @@ void main() {
 
     test('AS copy random', () {
       global.throwOnError = false;
-      final e0 = new AStag(PTag.kPatientAge, []);
+      final e0 = AStag(PTag.kPatientAge, []);
       final AStag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
-        final e2 = new AStag(PTag.kPatientAge, vList0);
+        final e2 = AStag(PTag.kPatientAge, vList0);
         final AStag e3 = e2.copy;
         expect(e3 == e2, true);
         expect(e3.hashCode == e2.hashCode, true);
@@ -215,23 +215,23 @@ void main() {
 
     test('AS []', () {
       global.throwOnError = false;
-      final e0 = new AStag(PTag.kPatientAge, []);
+      final e0 = AStag(PTag.kPatientAge, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
 
-      final e1 = new AStag(PTag.kPatientAge);
+      final e1 = AStag(PTag.kPatientAge);
       log.debug('e1: $e1');
       expect(e1.hasValidValues, true);
       expect(e1.values.isEmpty, true);
     });
 
     test('AS null', () {
-      final e2 = new AStag(PTag.kPatientAge, null);
+      final e2 = AStag(PTag.kPatientAge, null);
       expect(e2.isEmpty, true);
       expect(e2.values == kEmptyStringList, true);
 
       global.throwOnError = true;
-      expect(() => new AStag(PTag.kPatientAge, null),
+      expect(() => AStag(PTag.kPatientAge, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -239,8 +239,8 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getASList(1, 1);
-        final e0 = new AStag(PTag.kPatientAge, vList);
-        final e1 = new AStag(PTag.kPatientAge, vList);
+        final e0 = AStag(PTag.kPatientAge, vList);
+        final e1 = AStag(PTag.kPatientAge, vList);
         log
           ..debug('vList:$vList, e0.hash_code:${e0.hashCode}')
           ..debug('vList:$vList, e1.hash_code:${e1.hashCode}');
@@ -253,10 +253,10 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
 
         final vList1 = rsg.getASList(2, 3);
-        final e3 = new AStag(PTag.kPatientAge, vList1);
+        final e3 = AStag(PTag.kPatientAge, vList1);
         log.debug('vList1:$vList1 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
@@ -268,7 +268,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
         log.debug('vList0: $vList0');
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         log.debug('e0: $e0');
         expect(vList0, equals(e0.valuesCopy));
       }
@@ -277,18 +277,18 @@ void main() {
     test('AS checkLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         expect(e0.checkLength(e0.values), true);
       }
     });
 
     test('AS nDays random', () {
       final vList1 = rsg.getASList(1, 1);
-      final e1 = new AStag(PTag.kPatientAge, vList1);
+      final e1 = AStag(PTag.kPatientAge, vList1);
 
       final vList2 = rsg.getASList(1, 1);
       log.debug('vList1: $vList1 vList2: $vList2');
-      final e3 = new AStag(PTag.kPatientAge, vList2);
+      final e3 = AStag(PTag.kPatientAge, vList2);
       log
         ..debug('e1: $e1 e3: $e3')
         ..debug('e1.hashCode: ${e1.hashCode} e3.hashCode: ${e3.hashCode}')
@@ -302,7 +302,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
         log.debug('vList0: $vList0');
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         expect(e0.hasValidValues, true);
       }
     });
@@ -311,7 +311,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 1);
-        final e0 = new AStag(PTag.kPatientAge, vList0);
+        final e0 = AStag(PTag.kPatientAge, vList0);
         final vList1 = rsg.getASList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
@@ -319,12 +319,12 @@ void main() {
 
       final vList1 = rsg.getASList(1, 1);
       log.debug('vList1: $vList1');
-      final e1 = new AStag(PTag.kPatientAge, vList1);
+      final e1 = AStag(PTag.kPatientAge, vList1);
       log.debug('e1: $e1');
       expect(e1.replace(<String>[]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new AStag(PTag.kPatientAge, null);
+      final e2 = AStag(PTag.kPatientAge, null);
       expect(e2, <String>[]);
       expect(e2, kEmptyStringList);
     });
@@ -374,24 +374,24 @@ void main() {
 
     test('AS checkLength good values', () {
       final vList0 = rsg.getASList(1, 1);
-      final e0 = new AStag(PTag.kPatientAge, vList0);
+      final e0 = AStag(PTag.kPatientAge, vList0);
       for (var s in goodASList) {
         expect(e0.checkLength(s), true);
       }
-      final e1 = new AStag(PTag.kPatientAge, vList0);
+      final e1 = AStag(PTag.kPatientAge, vList0);
       expect(e1.checkLength(<String>[]), true);
     });
 
     test('AS checkLength bad values', () {
       final vList1 = ['000D', '024Y'];
       final vList0 = rsg.getASList(1, 1);
-      final e2 = new AStag(PTag.kPatientAge, vList0);
+      final e2 = AStag(PTag.kPatientAge, vList0);
       expect(e2.checkLength(vList1), false);
     });
 
     test('AS checkValue good values', () {
       final vList0 = rsg.getASList(1, 1);
-      final e0 = new AStag(PTag.kPatientAge, vList0);
+      final e0 = AStag(PTag.kPatientAge, vList0);
       for (var s in goodASList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -401,7 +401,7 @@ void main() {
 
     test('AS checkValue bad values', () {
       final vList0 = rsg.getASList(1, 1);
-      final e0 = new AStag(PTag.kPatientAge, vList0);
+      final e0 = AStag(PTag.kPatientAge, vList0);
       for (var s in badASList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -453,7 +453,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 4);
-        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        final e0 = AStag(PTag.kSelectorASValue, vList0);
         const vList1 = '12';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -465,7 +465,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 4, 16);
-        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        final e0 = AStag(PTag.kSelectorASValue, vList0);
         const vList1 = '263D';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -477,7 +477,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getASList(1, 4, 16);
-        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        final e0 = AStag(PTag.kSelectorASValue, vList0);
         final truncate0 = e0.truncate(4);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -489,7 +489,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getASList(1, i);
         log.debug('vList0:$vList0');
-        final e0 = new AStag(PTag.kSelectorASValue, vList0);
+        final e0 = AStag(PTag.kSelectorASValue, vList0);
         const regX = r'[0-9A-Za-z]';
         final match0 = e0.match(regX);
         expect(match0, true);

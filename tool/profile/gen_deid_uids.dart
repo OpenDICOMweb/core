@@ -94,7 +94,7 @@ String makeDeIdNonUidList() {
   return out;
 }
 
-typedef StringBuffer ListMaker(StringBuffer sb);
+typedef ListMaker = StringBuffer Function(StringBuffer sb);
 
 StringBuffer makeUidTagList(StringBuffer sb) {
   for (var v in DeIdTags.map.values) {

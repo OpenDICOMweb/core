@@ -69,8 +69,8 @@ abstract class OBPixelData extends PixelData with Uint8 {
   List<int> get emptyList => kEmptyUint8List;
 
   @override
-  bool checkValue(int value, {Issues issues, bool allowInvalid = false}) =>
-      allowInvalid ? true : value >= 0 && value <= 255;
+  bool checkValue(int v, {Issues issues, bool allowInvalid = false}) =>
+      allowInvalid || v >= 0 && v <= 255;
 
   /// Returns _true_ if both [tag] and [vList] are valid for this [OB].
   /// If [doTestElementValidity] is _false_ then no validation is done.

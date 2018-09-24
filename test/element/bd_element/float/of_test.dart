@@ -36,7 +36,7 @@ void main() {
     kFloatPixelData,
   ];
 
-  final rng = new RNG(1);
+  final rng = RNG(1);
 
   group('OF Tests', () {
     global.throwOnError = false;
@@ -150,13 +150,13 @@ void main() {
     });
   });
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
 
   group('OFbytes', () {
     test('OFbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rng.float32List(1, 1);
-        //final float32List0 = new Float32List.fromList(vList0);
+        //final float32List0 = Float32List.fromList(vList0);
         //final bytes = float32List0.buffer.asByteData();
         global.throwOnError = false;
         for (var code in ofVM1Tags) {
@@ -192,7 +192,7 @@ void main() {
       expect(e0.isValid, true);
       expect(e0.isEmpty, false);
 
-      final e1 = new OFbytes(e0.bytes);
+      final e1 = OFbytes(e0.bytes);
       expect(e1.bytes is DicomBytes, true);
       expect(e1.vfBytes is Bytes, true);
       expect(e1.hasValidValues, true);

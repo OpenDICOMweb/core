@@ -11,13 +11,13 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'element/hash_special_test', level: Level.info);
   test('UI', () {
     final vList0 = rsg.getUIList(1, 1);
-    final e0 = new UItag(PTag.kStudyInstanceUID, vList0);
+    final e0 = UItag(PTag.kStudyInstanceUID, vList0);
 
     final sha2 = Sha256.stringList(vList0);
     log.debug('vList0: $vList0;, sha2: $sha2');
@@ -29,9 +29,9 @@ void main() {
   test('AS', () {
     final vList0 = rsg.getASList(1, 1);
     final vList1 = rsg.getASList(1, 1);
-    final e0 = new AStag(PTag.kPatientAge, vList0);
-    final e1 = new AStag(PTag.kPatientAge, vList0);
-    final e2 = new AStag(PTag.kPatientAge, vList1);
+    final e0 = AStag(PTag.kPatientAge, vList0);
+    final e1 = AStag(PTag.kPatientAge, vList0);
+    final e2 = AStag(PTag.kPatientAge, vList1);
 
     final sha0 = e0.sha256;
     expect(sha0.hasValidValues, true);
@@ -64,9 +64,9 @@ void main() {
   test('DS', () {
     final vList0 = rsg.getDSList(1, 1);
     final vList1 = rsg.getDSList(1, 1);
-    final e0 = new DStag(PTag.kProcedureStepProgress, vList0);
-    final e1 = new DStag(PTag.kProcedureStepProgress, vList0);
-    final e2 = new DStag(PTag.kProcedureStepProgress, vList1);
+    final e0 = DStag(PTag.kProcedureStepProgress, vList0);
+    final e1 = DStag(PTag.kProcedureStepProgress, vList0);
+    final e2 = DStag(PTag.kProcedureStepProgress, vList1);
     log.debug('e0.hash: ${e0.hash}, e1.hash: ${e1.hash}');
     final hash0 = e0.hash;
     final hash1 = e1.hash;

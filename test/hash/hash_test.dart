@@ -12,11 +12,11 @@ import 'dart:typed_data';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-final RNG rng = new RNG(0);
+final RNG rng = RNG(0);
 
-/// Returns a new [ByteData] that is a copy of [bd].
+/// Returns a [ByteData] that is a copy of [bd].
 ByteData bdCopy(ByteData bd) {
-  final copy = new ByteData(bd.lengthInBytes);
+  final copy = ByteData(bd.lengthInBytes);
   for (var i = 0; i < bd.lengthInBytes; i++) copy.setUint8(i, bd.getUint8(i));
   return copy;
 }

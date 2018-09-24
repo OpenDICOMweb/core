@@ -27,11 +27,11 @@ void main() {
       }
       for (var i = startDay; i <= endDay; i++) {
         final dayZero = dateToEpochDay(1970, 1, 1);
-        if (dayZero != 0) throw new DateError('Day Zero error: $dayZero');
+        if (dayZero != 0) throw DateError('Day Zero error: $dayZero');
         final dayMinusOne = dateToEpochDay(1969, 12, 31);
-        if (dayMinusOne != -1) throw new DateError('Day MinusOne error: $dayZero');
+        if (dayMinusOne != -1) throw DateError('Day MinusOne error: $dayZero');
         final dayPlusOne = dateToEpochDay(1970, 1, 1);
-        if (dayPlusOne != 0) throw new DateError('Day PlusOne error: $dayZero');
+        if (dayPlusOne != 0) throw DateError('Day PlusOne error: $dayZero');
       }
       //    log.debug('Success');
     });
@@ -42,7 +42,7 @@ void main() {
       for (var eDay = -10000; eDay < 10000; eDay++) {
         final wd = weekdayFromEpochDay(eDay);
         //     log.debug('$eDay: weekDay: $wd');
-        if (wd < 0 || wd > 6) throw new DateError('bad weekday: $wd');
+        if (wd < 0 || wd > 6) throw DateError('bad weekday: $wd');
       }
     });
 

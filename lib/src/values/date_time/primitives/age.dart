@@ -22,14 +22,13 @@ const String kAgeTokens = 'DWMY';
 /// The maximum values of the 3 digits in an [Age] [String].
 const int kMaxAgeInteger = 999;
 
+// TODO(Jim): 000D is legal, but 000W, 000M, and 000Y are not!
+// Urgent Unit test for the case able
 /// The minimum number of nDays an Age (AS) may have.
-const int kMinAge = 0;
-
-/// The maximum number of nDays an Age (AS) may have.
-const int kMaxAge = kMaxAgeYearsInDays;
+const int kMinAgeInDays = 0;
 
 /// The maximum Age that can be expressed in days (nnnD).
-const int kMaxAgeInDays = kMaxAgeInteger;
+const int kMaxAgeDaysInDays = kMaxAgeInteger;
 
 /// The maximum Age that can be expressed in weeks (nnnW).
 const int kMaxAgeWeeksInDays = kMaxAgeInteger * kDaysInWeek;
@@ -44,13 +43,14 @@ const int kAgeDaysInYear = 365;
 /// The maximum Age that can be expressed in years (nnnY).
 const int kMaxAgeYearsInDays = kMaxAgeInteger * kAgeDaysInYear;
 
-bool isValidAge(int nDays) => nDays >= kMinAge && nDays <= kMaxAge;
+bool isValidAge(int nDays) =>
+    nDays >= kMinAgeInDays && nDays <= kMaxAgeYearsInDays;
 
-int randomAgeInDays(int nDays) => Global.rng.nextInt(kMaxAgeInDays);
+int randomAgeInDays(int nDays) => Global.rng.nextInt(kMaxAgeDaysInDays);
 
-int hashAgeInDays(int nDays) => global.hash(nDays) % kMaxAgeInDays;
+int hashAgeInDays(int nDays) => global.hash(nDays) % kMaxAgeDaysInDays;
 
-int sha256AgeInDays(int nDays) => sha256.int63(nDays) % kMaxAgeInDays;
+int sha256AgeInDays(int nDays) => sha256.int64Bit(nDays) % kMaxAgeDaysInDays;
 
 String sha256AgeAsString(int nDays) => ageToString(sha256AgeInDays(nDays));
 
@@ -58,10 +58,10 @@ String sha256AgeAsString(int nDays) => ageToString(sha256AgeInDays(nDays));
 /// The [String] is in the format: 'dddt', where 'd' is a decimal
 /// digit and 't' is an age token, one of "D", "W", "M", "Y".
 String ageToString(int nDays) {
-  if (nDays < 0 || nDays > kMaxAge) return badAge(nDays);
+  if (nDays < 0 || nDays > kMaxAgeYearsInDays) return badAge(nDays);
 
   String s;
-  if (nDays >= 0 && nDays <= kMaxAgeInDays) {
+  if (nDays >= 0 && nDays <= kMaxAgeDaysInDays) {
     s = '${digits3(nDays)}D';
   } else if (nDays <= kMaxAgeWeeksInDays) {
     s = '${digits3(nDays ~/ kDaysInWeek)}W';
@@ -81,8 +81,9 @@ String _daysToString(int nDays, int units, String token) {
 }
 
 String canonicalAgeString(int nDays) {
-  if (nDays < 0 || nDays > kMaxAge) return null;
-  if (nDays <= kMaxAgeInDays) return _daysToString(nDays, kMaxAgeInDays, 'D');
+  if (nDays < 0 || nDays > kMaxAgeYearsInDays) return null;
+  if (nDays <= kMaxAgeDaysInDays)
+    return _daysToString(nDays, kMaxAgeDaysInDays, 'D');
   if (nDays <= kMaxAgeWeeksInDays)
     return _daysToString(nDays, kMaxAgeWeeksInDays, 'D');
   if (nDays <= kMaxAgeMonthsInDays)
@@ -98,7 +99,7 @@ String canonicalAgeString(int nDays) {
 /// digit and 't' is an age token, one of "D", "W", "M", "Y".
 String ageInDaysToString(int nDays) {
   String s;
-  if (nDays >= 0 && nDays <= kMaxAgeInDays) {
+  if (nDays >= 0 && nDays <= kMaxAgeDaysInDays) {
     s = '${digits3(nDays)}D';
   } else if (nDays <= kMaxAgeWeeksInDays) {
     s = '${digits3(nDays ~/ 7)}W';

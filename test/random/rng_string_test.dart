@@ -14,7 +14,7 @@ void main() {
   Server.initialize(name: 'rng/in_range_test', level: Level.info);
 
   group('RNG Strings test', () {
-    final rng = new RNG(0);
+    final rng = RNG(0);
 
     test('nextDigit test', () {
       final count = rng.getLength(10, 100);

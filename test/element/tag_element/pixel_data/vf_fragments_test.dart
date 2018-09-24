@@ -14,9 +14,9 @@ import 'package:test/test.dart';
 
 import 'test_pixel_data.dart';
 
-final Uint32List emptyOffsets = new Uint32List(0);
+final Uint32List emptyOffsets = Uint32List(0);
 final Uint8List emptyOffsetsAsBytes = emptyOffsets.buffer.asUint8List();
-final Bytes frame = new Bytes.fromList(testFrame);
+final Bytes frame = Bytes.fromList(testFrame);
 final List<Uint8List> fragments = [emptyOffsetsAsBytes, testFrame];
 
 void main() {
@@ -25,7 +25,7 @@ void main() {
 
   group('VFFragments Tests', () {
 
-    final pixels = new List<int>(1024);
+    final pixels = List<int>(1024);
     for (var i = 0; i < pixels.length; i++) pixels[i] = 128;
 
     final pixels1 = <int>[1024, 1024];
@@ -33,9 +33,9 @@ void main() {
 
 /*
     test('Create VFFragments with empty offsets', () {
-      final emptyOffsets = new Uint32List(0);
+      final emptyOffsets = Uint32List(0);
       final emptyOffsetsAsBytes = emptyOffsets.buffer.asUint8List();
-      final frame1 = new Uint8List(0);
+      final frame1 = Uint8List(0);
 
       log..debug('frags0:$frags0')..debug('frags0.bulkdata:${frags0.bulkdata}');
       expect(frags0.bulkdata, equals(<int>[]));
@@ -43,9 +43,9 @@ void main() {
       log.debug('frags0.lengthInBytes:${frags0.lengthInBytes}');
       expect(frags0.lengthInBytes == 0, true);
 
-      final ob0 = new OBtagPixelData(PTag.kPixelData, frame1,
+      final ob0 = OBtagPixelData(PTag.kPixelData, frame1,
                                          kUndefinedLength,  ts);
-      final ob1 = new OBtagPixelData(PTag.kPixelData, frame1,
+      final ob1 = OBtagPixelData(PTag.kPixelData, frame1,
                                          kUndefinedLength,  ts);
 
       expect(ob0.tag == PTag.kPixelData, true);
@@ -68,10 +68,10 @@ void main() {
 
 /*
     test('Create VFFragments with non-empty offsets', () {
-      final frags = new VFFragments(fragments);
-      final ob0 = new OBtagPixelData(PTag.kPixelData,
+      final frags = VFFragments(fragments);
+      final ob0 = OBtagPixelData(PTag.kPixelData,
                                          frame, kUndefinedLength, ts);
-      final ob1 = new OBtagPixelData(PTag.kPixelData,
+      final ob1 = OBtagPixelData(PTag.kPixelData,
                                          frame, kUndefinedLength, ts);
       expect(ob0.tag == PTag.kPixelData, true);
       expect(ob0.vrIndex == kOBOWIndex, false);

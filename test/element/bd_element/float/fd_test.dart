@@ -11,7 +11,7 @@ import 'dart:typed_data';
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
-final RNG rng = new RNG(1);
+final RNG rng = RNG(1);
 
 void main() {
   Server.initialize(name: 'element/float32_test', level: Level.info);
@@ -93,7 +93,7 @@ void main() {
     kDepthsOfFocus,
   ];
 
-  final rds = new ByteRootDataset.empty();
+  final rds = ByteRootDataset.empty();
   global.throwOnError = false;
 
   group('FD Tests', () {
@@ -128,7 +128,7 @@ void main() {
         expect(e0.hasValidValues, true);
         expect(e0.values, equals(vList));
         log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
-        final e1 = new FDtag(e0.tag, e0.values);
+        final e1 = FDtag(e0.tag, e0.values);
         log..debug('e1: $e1, values: ${e1.values}')..debug('e1: ${e1.info}');
         expect(e1.hasValidValues, true);
         expect(e1.values, equals(vList));
@@ -318,7 +318,7 @@ void main() {
       expect(e0.isValid, true);
       expect(e0.isEmpty, false);
 
-      final e1 = new FDbytes(e0.bytes);
+      final e1 = FDbytes(e0.bytes);
       expect(e1.bytes is DicomBytes, true);
       expect(e1.vfBytes is Bytes, true);
       expect(e1.hasValidValues, true);
@@ -335,7 +335,7 @@ void main() {
       for (var i = 1; i < count; i++) {
         final vList = rng.float32List(i, i);
         log.debug('i: $i vList: $vList');
-        final bytes = new Bytes.typedDataView(vList);
+        final bytes = Bytes.typedDataView(vList);
         log.debug('bytes: $bytes');
 
         // Test bytes.getFloat32
@@ -353,7 +353,7 @@ void main() {
       const count = 10;
       for (var i = 1; i < count; i++) {
         final vList = rng.float32List(i, i);
-        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+        final readBuffer0 = ReadBuffer.fromTypedData(vList);
         for (var j = 0; j < i; j++) {
           final v = readBuffer0.getFloat32();
           log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
@@ -370,7 +370,7 @@ void main() {
 
       for (var i = 1; i < count; i++) {
         final vList = rng.float32List(i, i);
-        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+        final readBuffer0 = ReadBuffer.fromTypedData(vList);
         for (var j = 0; j < i; j++) {
           final v = readBuffer0.readFloat32();
           log.debug('j: $j vList[$j]: ${vList[j]} v: $v');
@@ -378,13 +378,13 @@ void main() {
         }
 
         // Test readFloat32List
-        final readBuffer1 = new ReadBuffer.fromTypedData(vList);
+        final readBuffer1 = ReadBuffer.fromTypedData(vList);
         final v = readBuffer1.readFloat32List(vList.length);
         log.debug('FloatList: vList: $vList v: $v');
         expect(vList, equals(v));
 
         // Test buffer.readFloat32
-        final readBuffer2 = new ReadBuffer.fromTypedData(vList);
+        final readBuffer2 = ReadBuffer.fromTypedData(vList);
         for (var j = 0; j < i; j++) {
           final v = readBuffer2.readFloat32();
           log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
@@ -400,7 +400,7 @@ void main() {
       for (var i = 1; i < count; i++) {
         final vList = rng.float64List(i, i);
         log.debug('i: $i vList: $vList');
-        final bytes = new Bytes.typedDataView(vList);
+        final bytes = Bytes.typedDataView(vList);
         log.debug('bytes: $bytes');
 
         // Test bytes.getFloat64
@@ -417,7 +417,7 @@ void main() {
       const count = 10;
       for (var i = 1; i < count; i++) {
         final vList = rng.float64List(i, i);
-        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+        final readBuffer0 = ReadBuffer.fromTypedData(vList);
         for (var j = 0; j < i; j++) {
           final v = readBuffer0.getFloat64();
           log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');
@@ -434,7 +434,7 @@ void main() {
 
       for (var i = 1; i < count; i++) {
         final vList = rng.float64List(i, i);
-        final readBuffer0 = new ReadBuffer.fromTypedData(vList);
+        final readBuffer0 = ReadBuffer.fromTypedData(vList);
         for (var j = 0; j < i; j++) {
           final v = readBuffer0.readFloat64();
           log.debug('j: $j vList[$j]: ${vList[j]} v: $v');
@@ -442,13 +442,13 @@ void main() {
         }
 
         // Test readFloat64List
-        final readBuffer1 = new ReadBuffer.fromTypedData(vList);
+        final readBuffer1 = ReadBuffer.fromTypedData(vList);
         final v = readBuffer1.readFloat64List(vList.length);
         log.debug('FloatList: vList: $vList v: $v');
         expect(vList, equals(v));
 
         // Test buffer.readFloat64
-        final readBuffer2 = new ReadBuffer.fromTypedData(vList);
+        final readBuffer2 = ReadBuffer.fromTypedData(vList);
         for (var j = 0; j < i; j++) {
           final v = readBuffer2.readFloat64();
           log.debug('j: $j vList[$j]: ${vList[j]} v1: $v');

@@ -6,21 +6,20 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'element/sha256Hash_string_test', level: Level.info);
   group('String Elements', () {
     test('String Text', () {
       final vList0 = rsg.getSTList(1, 1);
-      final e0 = new STtag(PTag.kDerivationDescription, vList0);
-      final e1 = new STtag(PTag.kDerivationDescription, vList0);
-      final e2 = new STtag(PTag.kCADFileFormat, vList0);
+      final e0 = STtag(PTag.kDerivationDescription, vList0);
+      final e1 = STtag(PTag.kDerivationDescription, vList0);
+      final e2 = STtag(PTag.kCADFileFormat, vList0);
 
       final sha0 = Sha256.stringList(vList0);
       log
@@ -34,9 +33,9 @@ void main() {
       expect(e0.hash, equals(e0.sha256));
 
       final vList1 = rsg.getLTList(1, 1);
-      final e3 = new LTtag(PTag.kAcquisitionProtocolDescription, vList1);
-      final e4 = new LTtag(PTag.kAcquisitionProtocolDescription, vList1);
-      final e5 = new LTtag(PTag.kImageComments, vList1);
+      final e3 = LTtag(PTag.kAcquisitionProtocolDescription, vList1);
+      final e4 = LTtag(PTag.kAcquisitionProtocolDescription, vList1);
+      final e5 = LTtag(PTag.kImageComments, vList1);
 
       final sha1 = Sha256.stringList(vList1);
       log
@@ -51,9 +50,9 @@ void main() {
 
     test('Special String', () {
       final vList0 = rsg.getAEList(1, 1);
-      final e0 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-      final e1 = new AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
-      final e2 = new AEtag(PTag.kScheduledStationAETitle, vList0);
+      final e0 = AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
+      final e1 = AEtag(PTag.kScheduledStudyLocationAETitle, vList0);
+      final e2 = AEtag(PTag.kScheduledStationAETitle, vList0);
 
       final sha0 = Sha256.stringList(vList0);
       log
@@ -67,9 +66,9 @@ void main() {
       expect(e0.hash, equals(e0.sha256));
 
       final vList1 = rsg.getCSList(1, 1, 2, 16);
-      final e3 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList1);
-      final e4 = new CStag(PTag.kGeometryOfKSpaceTraversal, vList1);
-      final e5 = new CStag(PTag.kRectilinearPhaseEncodeReordering, vList1);
+      final e3 = CStag(PTag.kGeometryOfKSpaceTraversal, vList1);
+      final e4 = CStag(PTag.kGeometryOfKSpaceTraversal, vList1);
+      final e5 = CStag(PTag.kRectilinearPhaseEncodeReordering, vList1);
 
       final sha1 = Sha256.stringList(vList1);
       log
@@ -82,9 +81,9 @@ void main() {
       expect(e3.hash, equals(e3.sha256));
 
       final vList2 = rsg.getURList(1, 1);
-      final e6 = new URtag(PTag.kRetrieveURI, vList2);
-      final e7 = new URtag(PTag.kRetrieveURI, vList2);
-      final e8 = new URtag(PTag.kContactURI, vList2);
+      final e6 = URtag(PTag.kRetrieveURI, vList2);
+      final e7 = URtag(PTag.kRetrieveURI, vList2);
+      final e8 = URtag(PTag.kContactURI, vList2);
 
       final sha3 = Sha256.stringList(vList2);
       log
@@ -99,9 +98,9 @@ void main() {
 
     test('other Strings', () {
       final vList0 = rsg.getLOList(1, 1);
-      final e0 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
-      final e1 = new LOtag(PTag.kReceiveCoilManufacturerName, vList0);
-      final e2 = new LOtag(PTag.kDimensionIndexPrivateCreator, vList0);
+      final e0 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+      final e1 = LOtag(PTag.kReceiveCoilManufacturerName, vList0);
+      final e2 = LOtag(PTag.kDimensionIndexPrivateCreator, vList0);
 
       final sha1 = Sha256.stringList(vList0);
       log
@@ -115,9 +114,9 @@ void main() {
       expect(e0.hash, equals(e0.sha256));
 
       final vList1 = rsg.getPNList(1, 1);
-      final e3 = new PNtag(PTag.kRequestingPhysician, vList1);
-      final e4 = new PNtag(PTag.kRequestingPhysician, vList1);
-      final e5 = new PNtag(PTag.kOrderEnteredBy, vList1);
+      final e3 = PNtag(PTag.kRequestingPhysician, vList1);
+      final e4 = PNtag(PTag.kRequestingPhysician, vList1);
+      final e5 = PNtag(PTag.kOrderEnteredBy, vList1);
 
       final sha2 = Sha256.stringList(vList1);
       log
@@ -130,9 +129,9 @@ void main() {
       expect(() => e3.hash, throwsA(const TypeMatcher<UnsupportedError>()));
 
       final vList2 = rsg.getSHList(1, 1);
-      final e6 = new SHtag(PTag.kMultiCoilElementName, vList2);
-      final e7 = new SHtag(PTag.kMultiCoilElementName, vList2);
-      final e8 = new SHtag(PTag.kMultiplexGroupLabel, vList2);
+      final e6 = SHtag(PTag.kMultiCoilElementName, vList2);
+      final e7 = SHtag(PTag.kMultiCoilElementName, vList2);
+      final e8 = SHtag(PTag.kMultiplexGroupLabel, vList2);
 
       final sha3 = Sha256.stringList(vList2);
       log
@@ -145,9 +144,9 @@ void main() {
       expect(e6.hash, equals(e6.sha256));
 
       final vList3 = rsg.getUCList(1, 1);
-      final e9 = new UCtag(PTag.kStrainDescription, vList3);
-      final e10 = new UCtag(PTag.kStrainDescription, vList3);
-      final e11 = new UCtag(PTag.kGeneticModificationsDescription, vList3);
+      final e9 = UCtag(PTag.kStrainDescription, vList3);
+      final e10 = UCtag(PTag.kStrainDescription, vList3);
+      final e11 = UCtag(PTag.kGeneticModificationsDescription, vList3);
 
       final sha4 = Sha256.stringList(vList3);
       log
@@ -160,9 +159,9 @@ void main() {
       expect(e9.hash, equals(e9.sha256));
 
       final vList4 = rsg.getUTList(1, 1);
-      final e12 = new UTtag(PTag.kUniversalEntityID, vList4);
-      final e13 = new UTtag(PTag.kUniversalEntityID, vList4);
-      final e14 = new UTtag(PTag.kSpecimenDetailedDescription, vList4);
+      final e12 = UTtag(PTag.kUniversalEntityID, vList4);
+      final e13 = UTtag(PTag.kUniversalEntityID, vList4);
+      final e14 = UTtag(PTag.kSpecimenDetailedDescription, vList4);
 
       final sha5 = Sha256.stringList(vList4);
       log

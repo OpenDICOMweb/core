@@ -13,7 +13,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 import 'package:test_tools/tools.dart';
 
-RSG rsg = new RSG(seed: 1);
+RSG rsg = RSG(seed: 1);
 
 void main() {
   Server.initialize(name: 'string/st_test', level: Level.info);
@@ -36,11 +36,11 @@ void main() {
     test('ST hasValidValues good values', () {
       for (var s in goodSTList) {
         global.throwOnError = false;
-        final e0 = new STtag(PTag.kMetaboliteMapDescription, s);
+        final e0 = STtag(PTag.kMetaboliteMapDescription, s);
         expect(e0.hasValidValues, true);
       }
       global.throwOnError = false;
-      final e0 = new STtag(PTag.kCADFileFormat, []);
+      final e0 = STtag(PTag.kCADFileFormat, []);
       expect(e0.hasValidValues, true);
       expect(e0.values, equals(<String>[]));
     });
@@ -48,29 +48,29 @@ void main() {
     test('ST hasValidValues bad values', () {
       for (var s in badSTList) {
         global.throwOnError = false;
-        final e0 = new STtag(PTag.kMetaboliteMapDescription, s);
+        final e0 = STtag(PTag.kMetaboliteMapDescription, s);
         expect(e0, isNull);
 
         global.throwOnError = true;
-        expect(() => new STtag(PTag.kMetaboliteMapDescription, s),
+        expect(() => STtag(PTag.kMetaboliteMapDescription, s),
             throwsA(const TypeMatcher<StringError>()));
       }
 
       global.throwOnError = false;
-      final e1 = new STtag(PTag.kCADFileFormat, null);
+      final e1 = STtag(PTag.kCADFileFormat, null);
       log.debug('e1: $e1');
       expect(e1.hasValidValues, true);
       expect(e1.values, StringList.kEmptyList);
 
       global.throwOnError = true;
-      expect(() => new STtag(PTag.kMetaboliteMapDescription, null),
+      expect(() => STtag(PTag.kMetaboliteMapDescription, null),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
     test('ST hasValidValues random good values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kMetaboliteMapDescription, vList0);
+        final e0 = STtag(PTag.kMetaboliteMapDescription, vList0);
         expect(e0.hasValidValues, true);
 
         log..debug('e0: $e0, values: ${e0.values}')..debug('e0: ${e0.info}');
@@ -79,7 +79,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e1 = new STtag(PTag.kCADFileFormat, vList0);
+        final e1 = STtag(PTag.kCADFileFormat, vList0);
         log.debug('e1:${e1.info}');
         expect(e1.hasValidValues, true);
 
@@ -93,32 +93,32 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(3, 4);
         log.debug('$i: vList0: $vList0');
-        final sh2 = new STtag(PTag.kMetaboliteMapDescription, vList0);
+        final sh2 = STtag(PTag.kMetaboliteMapDescription, vList0);
         expect(sh2, isNull);
       }
     });
 
     test('ST update random', () {
-      final e0 = new STtag(PTag.kCADFileFormat, []);
+      final e0 = STtag(PTag.kCADFileFormat, []);
       expect(e0.update(['d^u:96P, azV']).values, equals(['d^u:96P, azV']));
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e1 = new STtag(PTag.kCADFileFormat, vList0);
+        final e1 = STtag(PTag.kCADFileFormat, vList0);
         final vList1 = rsg.getSTList(1, 1);
         expect(e1.update(vList1).values, equals(vList1));
       }
     });
 
     test('ST noValues random', () {
-      final e0 = new STtag(PTag.kCADFileFormat, []);
+      final e0 = STtag(PTag.kCADFileFormat, []);
       final STtag stNoValues = e0.noValues;
       expect(stNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kCADFileFormat, vList0);
+        final e0 = STtag(PTag.kCADFileFormat, vList0);
         log.debug('e0: $e0');
         expect(stNoValues.values.isEmpty, true);
         log.debug('e0: ${e0.noValues}');
@@ -126,14 +126,14 @@ void main() {
     });
 
     test('ST copy random', () {
-      final e0 = new STtag(PTag.kCADFileFormat, []);
+      final e0 = STtag(PTag.kCADFileFormat, []);
       final STtag e1 = e0.copy;
       expect(e1 == e0, true);
       expect(e1.hashCode == e0.hashCode, true);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final sh2 = new STtag(PTag.kCADFileFormat, vList0);
+        final sh2 = STtag(PTag.kCADFileFormat, vList0);
         final STtag sh3 = sh2.copy;
         expect(sh3 == sh2, true);
         expect(sh3.hashCode == sh2.hashCode, true);
@@ -144,8 +144,8 @@ void main() {
       List<String> vList0;
       for (var i = 0; i < 10; i++) {
         vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
-        final e1 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
+        final e1 = STtag(PTag.kSelectorSTValue, vList0);
         log
           ..debug('vList0:$vList0, e0.hash_code:${e0.hashCode}')
           ..debug('vList0:$vList0, e1.hash_code:${e1.hashCode}');
@@ -157,22 +157,22 @@ void main() {
     test('ST hashCode and == bad values random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
 
         final vList1 = rsg.getSTList(1, 1);
-        final e2 = new STtag(PTag.kTopicSubject, vList1);
+        final e2 = STtag(PTag.kTopicSubject, vList1);
         log.debug('vList1:$vList1 , e2.hash_code:${e2.hashCode}');
         expect(e0.hashCode == e2.hashCode, false);
         expect(e0 == e2, false);
 
         final vList2 = rsg.getSTList(1, 10);
-        final e3 = new STtag(PTag.kComponentManufacturer, vList2);
+        final e3 = STtag(PTag.kComponentManufacturer, vList2);
         log.debug('vList2:$vList2 , e3.hash_code:${e3.hashCode}');
         expect(e0.hashCode == e3.hashCode, false);
         expect(e0 == e3, false);
 
         final vList3 = rsg.getSTList(2, 3);
-        final e4 = new STtag(PTag.kSelectorSTValue, vList3);
+        final e4 = STtag(PTag.kSelectorSTValue, vList3);
         log.debug('vList3:$vList3 , e4.hash_code:${e4.hashCode}');
         expect(e0.hashCode == e4.hashCode, false);
         expect(e0 == e4, false);
@@ -182,7 +182,7 @@ void main() {
     test('ST valuesCopy ranodm', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
         expect(vList0, equals(e0.valuesCopy));
       }
     });
@@ -190,7 +190,7 @@ void main() {
     test('ST isValidLength random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
         expect(e0.tag.isValidLength(e0), true);
       }
     });
@@ -198,7 +198,7 @@ void main() {
     test('ST isValidValues random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
 
         expect(e0.checkValues(e0.values), true);
         expect(e0.hasValidValues, true);
@@ -208,18 +208,18 @@ void main() {
     test('ST replace random', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
         final vList1 = rsg.getSTList(1, 1);
         expect(e0.replace(vList1), equals(vList0));
         expect(e0.values, equals(vList1));
       }
 
       final vList1 = rsg.getSTList(1, 1);
-      final e1 = new STtag(PTag.kSelectorSTValue, vList1);
+      final e1 = STtag(PTag.kSelectorSTValue, vList1);
       expect(e1.replace([]), equals(vList1));
       expect(e1.values, equals(<String>[]));
 
-      final e2 = new STtag(PTag.kSelectorSTValue, vList1);
+      final e2 = STtag(PTag.kSelectorSTValue, vList1);
       expect(e2.replace(null), equals(vList1));
       expect(e2.values, equals(<String>[]));
     });
@@ -227,10 +227,10 @@ void main() {
     test('ST blank random', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList1);
+        final e0 = STtag(PTag.kSelectorSTValue, vList1);
         for (var i = 1; i < 10; i++) {
           final blank = e0.blank(i);
-          log.debug(('blank$i: ${blank.values}'));
+          log.debug('blank$i: ${blank.values}');
           expect(blank.values.length == 1, true);
           expect(blank.value.length == i, true);
           final strSpaceList = <String>[''.padRight(i, ' ')];
@@ -256,7 +256,7 @@ void main() {
         final vList1 = rsg.getSTList(1, 10);
         for (var listS in vList1) {
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = STtag.fromBytes(PTag.kSelectorSTValue, bytes0);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
@@ -270,7 +270,7 @@ void main() {
         for (var listS in vList1) {
           global.throwOnError = false;
           final bytes0 = Bytes.fromAscii(listS);
-          //final bytes0 = new Bytes();
+          //final bytes0 = Bytes();
           final e1 = STtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
 
@@ -318,15 +318,15 @@ void main() {
 
     test('ST checkLength good values', () {
       final vList0 = rsg.getSTList(1, 1);
-      final sh0 = new STtag(PTag.kSelectorSTValue, vList0);
+      final sh0 = STtag(PTag.kSelectorSTValue, vList0);
       for (var s in goodSTList) {
         expect(sh0.checkLength(s), true);
       }
-      final sh1 = new STtag(PTag.kSelectorSTValue, vList0);
+      final sh1 = STtag(PTag.kSelectorSTValue, vList0);
       expect(sh1.checkLength([]), true);
 
       final vList1 = rsg.getSTList(1, 1);
-      final sh2 = new STtag(PTag.kCADFileFormat, vList1);
+      final sh2 = STtag(PTag.kCADFileFormat, vList1);
       for (var s in goodSTList) {
         expect(sh2.checkLength(s), true);
       }
@@ -335,13 +335,13 @@ void main() {
     test('ST checkLength bad values', () {
       global.throwOnError = false;
       final vList2 = ['a^1sd', '02@#'];
-      final sh3 = new STtag(PTag.kSelectorSTValue, vList2);
+      final sh3 = STtag(PTag.kSelectorSTValue, vList2);
       expect(sh3, isNull);
     });
 
     test('ST checkValue good values', () {
       final vList0 = rsg.getSTList(1, 1);
-      final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+      final e0 = STtag(PTag.kSelectorSTValue, vList0);
       for (var s in goodSTList) {
         for (var a in s) {
           expect(e0.checkValue(a), true);
@@ -351,7 +351,7 @@ void main() {
 
     test('ST checkValue bad values', () {
       final vList0 = rsg.getSTList(1, 1);
-      final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+      final e0 = STtag(PTag.kSelectorSTValue, vList0);
       for (var s in badSTList) {
         for (var a in s) {
           global.throwOnError = false;
@@ -383,7 +383,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
         const vList1 = 'foo';
         final append0 = e0.append(vList1);
         log.debug('append0: $append0');
@@ -395,7 +395,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
         const vList1 = 'foo';
         final prepend0 = e0.prepend(vList1);
         log.debug('prepend0: $prepend0');
@@ -407,7 +407,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1, 16);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
         final truncate0 = e0.truncate(10);
         log.debug('truncate0: $truncate0');
         expect(truncate0, isNotNull);
@@ -418,7 +418,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
         final match0 = e0.match(r'.*');
         expect(match0, true);
       }
@@ -429,7 +429,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
         final bytes = Bytes.fromUtf8List(vList0);
-        final e0 = new STtag(PTag.kSelectorSTValue, vList0);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
       }

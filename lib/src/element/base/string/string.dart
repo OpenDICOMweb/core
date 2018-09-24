@@ -122,7 +122,7 @@ abstract class StringBase extends Element<String> {
   bool match(String regexp) => values.match(regexp);
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false});
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false});
 
   @override
   bool checkValues(Iterable<String> vList, [Issues issues]) =>

@@ -78,8 +78,8 @@ abstract class AS extends StringAscii {
   AS get hash => (values.isEmpty) ? this : update([age.hashString]);
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   AS append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -239,8 +239,8 @@ abstract class DA extends StringBase {
   }
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   DA append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -368,8 +368,8 @@ abstract class DT extends StringBase {
   DT get sha256 => unsupportedError();
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   DT append(String s) => update(values.append(s, kMaxValueLength));
 
@@ -501,8 +501,8 @@ abstract class TM extends StringBase {
   TM get sha256 => unsupportedError();
 
   @override
-  bool checkValue(String s, {Issues issues, bool allowInvalid = false}) =>
-      isValidValue(s, issues: issues, allowInvalid: allowInvalid);
+  bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
+      isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
   TM append(String s) => update(values.append(s, kMaxValueLength));
 

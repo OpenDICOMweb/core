@@ -17,7 +17,7 @@ import 'package:core/src/utils/logger/log_record.dart';
 // ignore_for_file: public_member_api_docs
 
 /// A Function called by the Fatal method.
-typedef void LogExitHandler(LogRecord record);
+typedef LogExitHandler = void Function(LogRecord record);
 
 // TODO: fix logger indentation
 // TODO: argument for increasing/decreasing indent

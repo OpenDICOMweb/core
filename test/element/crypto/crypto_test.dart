@@ -42,7 +42,7 @@ void main() {
     final msgList = [message0, message1, message2];
     for (var msg in msgList) {
       final bytes = ascii.encode(msg);
-      final digest0 = new Digest(bytes);
+      final digest0 = Digest(bytes);
       final dlM0 = digestLengthMsg(digest0);
       log.debug('dlM0: $dlM0');
       expect(
@@ -56,7 +56,7 @@ void main() {
     final nistResult = [nistResult0, nistResult1, nistResult2];
     for (var msg in nistResult) {
       final bytes = ascii.encode(msg);
-      final digest0 = new Digest(bytes);
+      final digest0 = Digest(bytes);
       final dlM0 = digestLengthMsg(digest0);
       log.debug('dlM0: $dlM0');
       expect(
@@ -90,7 +90,7 @@ void main() {
     final msgList = [message0, message1, message2];
     for (var msg in msgList) {
       final bytes = ascii.encode(msg);
-      final uint8List0 = new Uint8List.fromList(bytes);
+      final uint8List0 = Uint8List.fromList(bytes);
       if (uint8List0.length > 12) {
         final baS0 = bytesAsString(uint8List0);
         log.debug('baS0: $baS0, ${baS0.length}');
@@ -109,7 +109,7 @@ void main() {
     final msgList = [message0, message1, message2];
     for (var msg in msgList) {
       final bytes = ascii.encode(msg);
-      final uint8List0 = new Uint8List.fromList(bytes);
+      final uint8List0 = Uint8List.fromList(bytes);
       final bL0 = bytesLength(uint8List0);
       log.debug('bL0: $bL0, ${bL0.length}');
       expect(bL0,
@@ -120,7 +120,7 @@ void main() {
     final nistResult = [nistResult0, nistResult1, nistResult2];
     for (var msg in nistResult) {
       final bytes = ascii.encode(msg);
-      final uint8List0 = new Uint8List.fromList(bytes);
+      final uint8List0 = Uint8List.fromList(bytes);
       final bL0 = bytesLength(uint8List0);
       log.debug('bL0: $bL0, ${bL0.length}');
       expect(bL0,
@@ -160,9 +160,9 @@ String bytesLength(Uint8List b) =>
 
 bool testSha256Digest(String s, String nistResult) {
   if (nistResult.length != 64)
-    throw new BadDigestError('Bad Digest Length: ${nistResult.length}');
+    throw BadDigestError('Bad Digest Length: ${nistResult.length}');
 
-  final rBytes = new Uint8List.fromList(s.codeUnits);
+  final rBytes = Uint8List.fromList(s.codeUnits);
   final sBytes = bytesAsString(rBytes);
 
   final d = sha256.convert(rBytes);
@@ -181,7 +181,7 @@ Message as String: '$outString'
          NIST Hex: '$nistResult': ${hexLengthMsg(nistResult)}
 ''';
   log.debug(out);
-  if (ds != nistResult) throw new BadDigestError('Bad digest: $d');
+  if (ds != nistResult) throw BadDigestError('Bad digest: $d');
   return true;
 }
 

@@ -15,7 +15,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(name: 'element/uInt8_base_test', level: Level.info);
-  final rng = new RNG(1);
+  final rng = RNG(1);
   global.throwOnError = false;
 
   test('Uint8Base toUint8List', () {
@@ -33,7 +33,7 @@ void main() {
     global.throwOnError = false;
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint8List(1, 1);
-      final uInt8ListV1 = new Bytes.typedDataView(vList0);
+      final uInt8ListV1 = Bytes.typedDataView(vList0);
       final bd = uInt8ListV1.buffer.asUint8List();
       log
         ..debug('uInt8ListV1 : $uInt8ListV1')
@@ -43,7 +43,7 @@ void main() {
     }
 
     const uInt8Max = const [kUint8Max];
-    final uInt8ListV1 = new Uint8List.fromList(uInt8Max);
+    final uInt8ListV1 = Uint8List.fromList(uInt8Max);
     final uint8List = uInt8ListV1.buffer.asUint8List();
     expect(Uint8.toBytes(uInt8Max), uint8List);
 
@@ -62,8 +62,8 @@ void main() {
       final vList0 = rng.uint8List(1, 1);
       final bd0 = vList0.buffer.asByteData();
       final lBd0 = Uint8.toByteData(vList0);
-      log.debug(
-          'lBd0: ${lBd0.buffer.asUint8List()}, bd0: ${bd0.buffer.asUint8List()}');
+      log.debug('lBd0: ${lBd0.buffer.asUint8List()}, '
+          'bd0: ${bd0.buffer.asUint8List()}');
       expect(lBd0.buffer.asUint8List(), equals(bd0.buffer.asUint8List()));
       expect(lBd0.buffer == bd0.buffer, true);
 
@@ -75,7 +75,7 @@ void main() {
     }
 
     const uint8Max = const [kUint8Max];
-    final uint8List = new Uint8List.fromList(uint8Max);
+    final uint8List = Uint8List.fromList(uint8Max);
     final bd1 = uint8List.buffer.asByteData();
     final lBd2 = Uint8.toByteData(uint8List);
     log.debug('bd: ${bd1.buffer.asUint8List()}, '
@@ -132,7 +132,7 @@ void main() {
   test('Uint8Base fromBase64', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint8List(0, i);
-      final uInt8ListV1 = new Bytes.typedDataView(vList0);
+      final uInt8ListV1 = Bytes.typedDataView(vList0);
       final bd = uInt8ListV1.buffer.asUint8List();
       final base64 = cvt.base64.encode(bd);
       log.debug('OB.base64: "$base64"');
@@ -147,7 +147,7 @@ void main() {
   test('Uint8Base ListToBase64', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint8List(0, i);
-      final uInt8ListV1 = new Bytes.typedDataView(vList0);
+      final uInt8ListV1 = Bytes.typedDataView(vList0);
       final bd = uInt8ListV1.buffer.asUint8List();
       final s = cvt.base64.encode(bd);
       expect(Uint8.toBase64(vList0), equals(s));
@@ -157,7 +157,7 @@ void main() {
   test('Uint8Base encodeDecodeJsonVF', () {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.uint8List(0, i);
-      final uInt8ListV1 = new Bytes.typedDataView(vList0);
+      final uInt8ListV1 = Bytes.typedDataView(vList0);
       final bd = uInt8ListV1.buffer.asUint8List();
 
       // Encode
@@ -181,7 +181,7 @@ void main() {
   test('Uint8Base fromBytes', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint8List(1, 1);
-      final bytes = new Bytes.typedDataView(vList0);
+      final bytes = Bytes.typedDataView(vList0);
 //        final bd = uInt8ListV1.buffer.asUint8List();
       log
         ..debug('uInt8ListV1 : $bytes')
@@ -193,7 +193,7 @@ void main() {
   test('Uint8Base fromByteData', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint8List(1, 1);
-      final uInt8ListV1 = new Bytes.typedDataView(vList0);
+      final uInt8ListV1 = Bytes.typedDataView(vList0);
       final byteData = uInt8ListV1.buffer.asByteData();
       log
         ..debug('vList0 : $vList0')
@@ -206,7 +206,7 @@ void main() {
   test('Uint8Base fromValueField', () {
     for (var i = 1; i <= 10; i++) {
       final vList0 = rng.uint8List(1, i);
-      final uint8ListV0 = new Uint8List.fromList(vList0);
+      final uint8ListV0 = Uint8List.fromList(vList0);
       final fvf0 = Uint8.fromValueField(uint8ListV0);
       log.debug('fromValueField0: $fvf0');
       expect(fvf0, equals(uint8ListV0));
@@ -229,8 +229,8 @@ void main() {
     expect(fvf2.isEmpty, true);
 
     final vList0 = rng.uint8List(1, 1);
-    final uint8ListV1 = new Uint8List.fromList(vList0);
-    final byte0 = new Bytes.fromList(uint8ListV1);
+    final uint8ListV1 = Uint8List.fromList(vList0);
+    final byte0 = Bytes.fromList(uint8ListV1);
     final fvf3 = Uint8.fromValueField(byte0);
     expect(fvf3, isNotNull);
     expect(fvf3 is Bytes, true);

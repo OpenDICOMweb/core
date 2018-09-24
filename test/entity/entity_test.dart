@@ -16,15 +16,15 @@ void main() {
   Server.initialize(name: 'entity_test', level: Level.info);
 
   group('Entity Tests', () {
-    final rootDataset = new TagRootDataset.empty();
+    final rootDataset = TagRootDataset.empty();
 
     test('Patient', () {
-      final subjectUid0 = new Uid();
-// **      final subjectUid1 = new Uid();
-      final subject0 = new Patient('A001', subjectUid0, rootDataset);
-      final subject1 = new Patient('A002', subjectUid0, rootDataset);
+      final subjectUid0 = Uid();
+// **      final subjectUid1 = Uid();
+      final subject0 = Patient('A001', subjectUid0, rootDataset);
+      final subject1 = Patient('A002', subjectUid0, rootDataset);
       final subject2 = subject0;
-// **      Patient subject3 = new Patient('A003', subjectUid1, rootDataset);
+// **      Patient subject3 = Patient('A003', subjectUid1, rootDataset);
 
       expect(subject0 == subject1, false);
       expect(subject0 == subject2, true);
@@ -36,7 +36,7 @@ void main() {
       expect(subject4 == subject0, true);
 
       global.throwOnError = true;
-      final subject5 = new Patient('A001', subjectUid0, rootDataset);
+      final subject5 = Patient('A001', subjectUid0, rootDataset);
       expect(() => activeStudies.addPatientIfAbsent(subject5),
           throwsA(const TypeMatcher<DuplicateEntityError>()));
 
@@ -46,9 +46,9 @@ void main() {
     });
 
     test('Patient', () {
-      final patientUid = new Uid();
-      final patient = new Patient('A001', patientUid, rootDataset);
-      final patient1 = new Patient('A002', patientUid, rootDataset);
+      final patientUid = Uid();
+      final patient = Patient('A001', patientUid, rootDataset);
+      final patient1 = Patient('A002', patientUid, rootDataset);
 
       expect(patient == patient1, false);
       expect(patient.hashCode == patient1.hashCode, false);
@@ -56,17 +56,17 @@ void main() {
     });
 
     test('Study', () {
-      final studyUid0 = new Uid();
-      final studyUid1 = new Uid();
-      final subjectUid0 = new Uid();
-      final subjectUid1 = new Uid();
-      final subject0 = new Patient('A001', subjectUid0, rootDataset);
-      final subject1 = new Patient('A002', subjectUid1, rootDataset);
-      final subject3 = new Patient('A001', subjectUid0, rootDataset);
-      final study0 = new Study(subject0, studyUid0, rootDataset);
-      final study1 = new Study(subject3, studyUid0, rootDataset);
-      final study2 = new Study(subject1, studyUid1, rootDataset);
-      final study3 = new Study(subject1, studyUid1, rootDataset);
+      final studyUid0 = Uid();
+      final studyUid1 = Uid();
+      final subjectUid0 = Uid();
+      final subjectUid1 = Uid();
+      final subject0 = Patient('A001', subjectUid0, rootDataset);
+      final subject1 = Patient('A002', subjectUid1, rootDataset);
+      final subject3 = Patient('A001', subjectUid0, rootDataset);
+      final study0 = Study(subject0, studyUid0, rootDataset);
+      final study1 = Study(subject3, studyUid0, rootDataset);
+      final study2 = Study(subject1, studyUid1, rootDataset);
+      final study3 = Study(subject1, studyUid1, rootDataset);
 
       expect(study0 == study1, false);
       expect(study0.hashCode == study1.hashCode, false);
@@ -100,15 +100,15 @@ void main() {
     });
 
     test('Series', () {
-      final seriesUid0 = new Uid();
-      final seriesUid1 = new Uid();
-      final studyUid0 = new Uid();
-      final subjectUid0 = new Uid();
-      final subject0 = new Patient('A001', subjectUid0, rootDataset);
-      final study0 = new Study(subject0, studyUid0, rootDataset);
-      final series0 = new Series(study0, seriesUid0, rootDataset);
-      final series1 = new Series(study0, seriesUid0, rootDataset);
-      final series2 = new Series(study0, seriesUid1, rootDataset);
+      final seriesUid0 = Uid();
+      final seriesUid1 = Uid();
+      final studyUid0 = Uid();
+      final subjectUid0 = Uid();
+      final subject0 = Patient('A001', subjectUid0, rootDataset);
+      final study0 = Study(subject0, studyUid0, rootDataset);
+      final series0 = Series(study0, seriesUid0, rootDataset);
+      final series1 = Series(study0, seriesUid0, rootDataset);
+      final series2 = Series(study0, seriesUid1, rootDataset);
 
       expect(series0 == series1, false);
       expect(series0.hashCode == series1.hashCode, false);
@@ -126,17 +126,17 @@ void main() {
     });
 
     test('Instance', () {
-      final instanceUid0 = new Uid();
-      final instanceUid1 = new Uid();
-      final studyUid0 = new Uid();
-      final subjectUid0 = new Uid();
-      final seriesUid0 = new Uid();
-      final subject0 = new Patient('A001', subjectUid0, rootDataset);
-      final study0 = new Study(subject0, studyUid0, rootDataset);
-      final series0 = new Series(study0, seriesUid0, rootDataset);
-      final instance0 = new Instance(series0, instanceUid0, rootDataset);
-      final instance1 = new Instance(series0, instanceUid0, rootDataset);
-      final instance2 = new Instance(series0, instanceUid1, rootDataset);
+      final instanceUid0 = Uid();
+      final instanceUid1 = Uid();
+      final studyUid0 = Uid();
+      final subjectUid0 = Uid();
+      final seriesUid0 = Uid();
+      final subject0 = Patient('A001', subjectUid0, rootDataset);
+      final study0 = Study(subject0, studyUid0, rootDataset);
+      final series0 = Series(study0, seriesUid0, rootDataset);
+      final instance0 = Instance(series0, instanceUid0, rootDataset);
+      final instance1 = Instance(series0, instanceUid0, rootDataset);
+      final instance2 = Instance(series0, instanceUid1, rootDataset);
 
       expect(instance0 == instance1, false);
       expect(instance0.hashCode == instance1.hashCode, false);
@@ -157,7 +157,7 @@ void main() {
     });
 
     test('Iru_map', () {
-      final cache = new LruMap<int, String>(maximumSize: 20);
+      final cache = LruMap<int, String>(maximumSize: 20);
       cache[0] = 'zero';
       log.debug('0: ${cache[0]}');
       expect(cache[0] == 'zero', true);

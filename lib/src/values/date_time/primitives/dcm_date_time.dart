@@ -49,7 +49,7 @@ bool isValidDateTime(int y,
 
 /// The [Type] of a function that takes a year, month, and date
 /// and converts it to some object, e.g. a Date.
-typedef Object DcmDateTimeToObject(
+typedef DcmDateTimeToObject = Object Function(
     int y, int m, int d, int h, int mm, int s, int ms, int us);
 
 /// Returns a hash of microsecond ([us]) that is in the
@@ -65,7 +65,7 @@ int hashMicroseconds(int us, [int onError(int n)]) =>
 
 /// Returns a new Epoch microsecond that is a SHA256 hash of [us].
 int sha256Microseconds(int us, [int onError(int n)]) =>
-    _hashMicroseconds(us, sha256.int63, onError);
+    _hashMicroseconds(us, sha256.int64Bit, onError);
 
 /// Returns a new Epoch microsecond that is a hash of [us].
 ///

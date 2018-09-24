@@ -21,7 +21,7 @@ void main() {
 
   group('person_name', () {
     test('test for isValidString and isValidList', () {
-      final personName = new PersonName.fromString(strValid);
+      final personName = PersonName.fromString(strValid);
       log.debug(personName.toString());
       expect(PersonName.isValidString(strValid), true);
 
@@ -30,8 +30,8 @@ void main() {
     });
 
     test('test for == in PersonName', () {
-      final pn1 = new PersonName.fromString(strValid);
-      final pn2 = new PersonName.fromString(strValid);
+      final pn1 = PersonName.fromString(strValid);
+      final pn2 = PersonName.fromString(strValid);
       log.debug(pn1.hashCode);
       expect(pn1 == pn2, true);
       expect(pn1, equals(pn2));
@@ -67,9 +67,9 @@ void main() {
     });
 
     test('test for == in Name', () {
-      final name = new Name.fromString(namesList1[0]);
-      final name1 = new Name.fromString(namesList1[0]);
-      final name2 = new Name.fromString(namesList1[1]);
+      final name = Name.fromString(namesList1[0]);
+      final name1 = Name.fromString(namesList1[0]);
+      final name2 = Name.fromString(namesList1[1]);
       expect(name == name1, true);
       expect(name == name2, false);
     });

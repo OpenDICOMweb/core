@@ -26,7 +26,7 @@ void main() {
     });
 
     test('Ascii Single String(Text) values field Test', () {
-      final rsg = new RSG(seed: 1);
+      final rsg = RSG(seed: 1);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(0, 1);
@@ -51,7 +51,7 @@ void main() {
     });
 
     test('Ascii Multi-String(LO, SH, UC) - values field Test', () {
-      final rsg = new RSG(seed: 1);
+      final rsg = RSG(seed: 1);
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(0, 10);
@@ -78,7 +78,7 @@ void main() {
     });
 
     test('Ascii Multi-String values field Test', () {
-      final rsg = new RSG();
+      final rsg = RSG();
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSHList(1, 10);
         final bytes0 = Bytes.fromAsciiList(vList0, kMaxShortVF);
@@ -121,7 +121,7 @@ void main() {
     var alphabate = '';
     final listupper = <String>[];
     for (var i = 'A'.codeUnitAt(0); i <= 'Z'.codeUnitAt(0); i++) {
-      alphabate = new String.fromCharCode(i);
+      alphabate = String.fromCharCode(i);
       log.debug('alphabate: $alphabate');
       listupper.add(alphabate);
     }
@@ -130,7 +130,7 @@ void main() {
     final listlower = <String>[];
     for (var data in listupper) {
       final dkd = toLowercaseChar(data.codeUnitAt(0));
-      lowercaseList = new String.fromCharCode(dkd);
+      lowercaseList = String.fromCharCode(dkd);
       listlower.add(lowercaseList);
     }
     log.debug('listlower: $listlower');

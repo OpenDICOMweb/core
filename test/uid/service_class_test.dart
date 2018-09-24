@@ -36,19 +36,18 @@ void main() {
     });
 
     test('Create ServiceClass', () {
-      const sc0 = const ServiceClass(
-          '1.2.840.10008.4.2',
-          'StorageServiceClass', UidType.kServiceClass, 'Storage Service Class');
+      const sc0 = ServiceClass('1.2.840.10008.4.2', 'StorageServiceClass',
+          UidType.kServiceClass, 'Storage Service Class');
 
-      const fr1 = const ServiceClass(
-          '1.2.840.10008.4.2',
-          'StorageServiceClass', UidType.kServiceClass, 'Storage Service Class');
+      const fr1 = ServiceClass('1.2.840.10008.4.2', 'StorageServiceClass',
+          UidType.kServiceClass, 'Storage Service Class');
 
-      const fr2 = const ServiceClass(
+      const fr2 = ServiceClass(
           '1.2.840.10008.5.1.4.34.4',
           'UnifiedWorklistAndProcedureStepServiceClass_Trial_Retired',
           UidType.kServiceClass,
-          'Unified Worklist and Procedure Step Service Class - Trial (Retired)');
+          'Unified Worklist and Procedure Step Service Class -'
+          ' Trial (Retired)');
 
       expect(sc0.hashCode == fr1.hashCode, true);
       expect(sc0.hashCode == fr2.hashCode, false);

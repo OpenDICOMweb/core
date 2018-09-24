@@ -37,7 +37,7 @@ abstract class Frame extends ListBase<int> {
 
   @override
   void operator []=(int i, int v) =>
-      throw new UnsupportedError('Frame pixels may not be changed');
+      throw UnsupportedError('Frame pixels may not be changed');
 
   /// The [pixels] contained in _this_, if any.
   List<int> get pixels;
@@ -58,7 +58,7 @@ abstract class Frame extends ListBase<int> {
 
   @override
   set length(int i) =>
-      throw new UnsupportedError('Frame pixels may not be changed');
+      throw UnsupportedError('Frame pixels may not be changed');
 
   /// Returns the number of bytes in [pixels].
   int get lengthInBytes => bulkdata.lengthInBytes;
@@ -193,7 +193,7 @@ class CompressedFrame extends Frame {
       : super.compressed(parent, index);
 
   @override
-  int operator [](int i) => throw new UnsupportedError(
+  int operator [](int i) => throw UnsupportedError(
       'Compressed Frames don\'t support the [] operator');
 
   /// Returns the number of bytes in [bulkdata].

@@ -28,7 +28,7 @@ void main() {
       const pixelAspectRatio0 = 1.0;
       const frameLength0 = rows0 * columns0;
 
-      final desc0 = new FrameDescriptor(
+      final desc0 = FrameDescriptor(
           ts0,
           samplesPerPixel0,
           photometricInterpretation0,
@@ -60,25 +60,25 @@ void main() {
     test('Create FrameDescriptor.fromDataset', () {
       const ts = TransferSyntax.kExplicitVRLittleEndian;
       final uiTransFerSyntax =
-          new UItag(PTag.kTransferSyntaxUID, [ts.asString]);
-      final usSamplesPerPixel = new UStag(PTag.kSamplesPerPixel, [1]);
+          UItag(PTag.kTransferSyntaxUID, [ts.asString]);
+      final usSamplesPerPixel = UStag(PTag.kSamplesPerPixel, [1]);
       final csPhotometricInterpretation =
-          new CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);
-      final usRows = new UStag(PTag.kRows, [4]);
-      final usColumns = new UStag(PTag.kColumns, [6]);
-      final usBitsAllocated = new UStag(PTag.kBitsAllocated, [8]);
-      final usBitsStored = new UStag(PTag.kBitsStored, [8]);
-      final usHighBit = new UStag(PTag.kHighBit, [7]);
-      final usPixelRepresentation = new UStag(PTag.kPixelRepresentation, [0]);
-      final usPlanarConfiguration = new UStag(PTag.kPlanarConfiguration, [2]);
-      final isPixelAspectRatio = new IStag(PTag.kPixelAspectRatio, ['1', '2']);
+          CStag(PTag.kPhotometricInterpretation, ['GHWNR8WH_4A']);
+      final usRows = UStag(PTag.kRows, [4]);
+      final usColumns = UStag(PTag.kColumns, [6]);
+      final usBitsAllocated = UStag(PTag.kBitsAllocated, [8]);
+      final usBitsStored = UStag(PTag.kBitsStored, [8]);
+      final usHighBit = UStag(PTag.kHighBit, [7]);
+      final usPixelRepresentation = UStag(PTag.kPixelRepresentation, [0]);
+      final usPlanarConfiguration = UStag(PTag.kPlanarConfiguration, [2]);
+      final isPixelAspectRatio = IStag(PTag.kPixelAspectRatio, ['1', '2']);
       const pixelAspectRatioValue = 1 / 2;
       final usSmallestImagePixelValue =
-          new UStag(PTag.kSmallestImagePixelValue, [0]);
+          UStag(PTag.kSmallestImagePixelValue, [0]);
       final usLargestImagePixelValue =
-          new UStag(PTag.kLargestImagePixelValue, [255]);
+          UStag(PTag.kLargestImagePixelValue, [255]);
 
-      final rds0 = new TagRootDataset.empty()
+      final rds0 = TagRootDataset.empty()
         ..add(uiTransFerSyntax)
         ..add(usSamplesPerPixel)
         ..add(csPhotometricInterpretation)
@@ -93,7 +93,7 @@ void main() {
         ..add(usSmallestImagePixelValue)
         ..add(usLargestImagePixelValue);
 
-      final descFromDataSet0 = new FrameDescriptor.fromDataset(rds0);
+      final descFromDataSet0 = FrameDescriptor.fromDataset(rds0);
 
       log.debug('pixelAspectRatio: ${descFromDataSet0.pixelAspectRatio}');
 
@@ -138,7 +138,7 @@ void main() {
 
     global.throwOnError = true;
     expect(
-        () => new FrameDescriptor(
+        () => FrameDescriptor(
             ts0,
             samplesPerPixel0,
             photometricInterpretation0,

@@ -10,6 +10,7 @@ import 'package:core/src/error/issues/issues.dart';
 import 'package:core/src/global.dart';
 
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: prefer_void_to_null
 
 class UuidError extends Error {
   String msg;
