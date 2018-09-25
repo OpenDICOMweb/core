@@ -382,6 +382,26 @@ void main() {
         expect(e1.values, equals(vList0.sublist(i)));
       }
     });
+
+    test('OB equal', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.uint8List(1, i);
+        final bytesA = new Bytes.typedDataView(vList);
+        final uInt8List0 = bytesA.buffer.asUint8List();
+        final bytesB = new Bytes.typedDataView(vList);
+        final uInt8List1 = bytesB.buffer.asUint8List();
+
+        final vList0 = rng.uint8List(2, 2);
+        final bytesC = new Bytes.typedDataView(vList0);
+        final uInt8List2 = bytesC.buffer.asUint8List();
+
+        final equal0 = Uint8.equal(uInt8List0, uInt8List1);
+        expect(equal0, true);
+
+        final equal1 = Uint8.equal(uInt8List1, uInt8List2);
+        expect(equal1, false);
+      }
+    });
   });
 
   group('OB Element', () {
