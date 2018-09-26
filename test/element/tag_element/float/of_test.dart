@@ -108,8 +108,8 @@ void main() {
         expect(of2.update(vList2.take(i).toList()).values,
             equals(vList2.take(i).toList()));
       }
-      final of3 = OFtag(
-          PTag.lookupByCode(kUValueData), Float32List.fromList(vList2));
+      final of3 =
+          OFtag(PTag.lookupByCode(kUValueData), Float32List.fromList(vList2));
       expect(of3.update(Float32List.fromList(vList2)),
           equals(Float32List.fromList(vList2)));
     });
@@ -192,18 +192,17 @@ void main() {
       final e0 = OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
       final e1 = OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
       log
-        ..debug('listFloat32Common0:$listFloat32Common0 , e1.hash_code:${e1
-            .hashCode}')
-        ..debug('listFloat32Common0:$listFloat32Common0 , e1.hash_code:${e1
-            .hashCode}');
+        ..debug(
+            'listFloat32Common0:$listFloat32Common0 , e1.hash_code:${e1.hashCode}')
+        ..debug(
+            'listFloat32Common0:$listFloat32Common0 , e1.hash_code:${e1.hashCode}');
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
     });
 
     test('OF hashCode and == bad values', () {
       final e0 = OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
-      final e2 =
-          OFtag(PTag.kPointCoordinatesData, listFloat32Common0.take(1));
+      final e2 = OFtag(PTag.kPointCoordinatesData, listFloat32Common0.take(1));
       log.debug('listFloat32Common0:$listFloat32Common0,'
           ' e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
@@ -330,6 +329,48 @@ void main() {
         final vList = rng.float32List(1, i);
         final e0 = OFtag(PTag.kSelectorOFValue, vList);
         expect(e0.checkValues(e0.values), true);
+      }
+    });
+
+    test('OF check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.float32List(1, 1);
+        final e0 = OFtag(PTag.kUValueData, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rng.float32List(1, i);
+        final e0 = OFtag(PTag.kSelectorOFValue, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('OF valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.float32List(1, i);
+        final e0 = OFtag(PTag.kSelectorOFValue, vList);
+        final e1 = OFtag(PTag.kSelectorOFValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('OF valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.float32List(1, i);
+        final vList1 = rng.float32List(1, 1);
+        final e0 = OFtag(PTag.kSelectorOFValue, vList0);
+        final e1 = OFtag(PTag.kSelectorOFValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
       }
     });
   });

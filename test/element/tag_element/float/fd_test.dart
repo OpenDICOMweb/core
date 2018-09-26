@@ -130,13 +130,10 @@ void main() {
       ];
       for (var i = 1; i <= floatUpdateValues.length - 1; i++) {
         final fdValues = floatUpdateValues.take(i).toList();
-        final e2 = FDtag(
-            PTag.kSelectorFDValue, Float64List.fromList(fdValues));
+        final e2 = FDtag(PTag.kSelectorFDValue, Float64List.fromList(fdValues));
         expect(
-            e2.update(
-                Float64List.fromList(floatUpdateValues.take(i).toList())),
-            equals(
-                Float64List.fromList(floatUpdateValues.take(i).toList())));
+            e2.update(Float64List.fromList(floatUpdateValues.take(i).toList())),
+            equals(Float64List.fromList(floatUpdateValues.take(i).toList())));
 
         expect(e2.update(floatUpdateValues.take(i).toList()).values,
             equals(floatUpdateValues.take(i).toList()));
@@ -159,8 +156,7 @@ void main() {
       expect(fdNoValues.values.isEmpty, true);
       log.debug('e0: ${e0.noValues}');
 
-      final e1 =
-          FDtag(PTag.kOverallTemplateSpatialTolerance, float64GoodList);
+      final e1 = FDtag(PTag.kOverallTemplateSpatialTolerance, float64GoodList);
       log.debug('e1: $e1');
       expect(fdNoValues.values.isEmpty, true);
       expect(e1, isNull);
@@ -255,25 +251,24 @@ void main() {
 
     test('FD hashCode and == good values', () {
       global.throwOnError = false;
-      final e0 = FDtag(
-          PTag.kOverallTemplateSpatialTolerance, float64GoodList.take(1));
-      final e1 = FDtag(
-          PTag.kOverallTemplateSpatialTolerance, float64GoodList.take(1));
+      final e0 =
+          FDtag(PTag.kOverallTemplateSpatialTolerance, float64GoodList.take(1));
+      final e1 =
+          FDtag(PTag.kOverallTemplateSpatialTolerance, float64GoodList.take(1));
       log
-        ..debug('float64LstCommon0:$float64GoodList, e0.hash_code:${e0
-            .hashCode}')
-        ..debug('float64LstCommon0:$float64GoodList, e1.hash_code:${e1
-            .hashCode}');
+        ..debug(
+            'float64LstCommon0:$float64GoodList, e0.hash_code:${e0.hashCode}')
+        ..debug(
+            'float64LstCommon0:$float64GoodList, e1.hash_code:${e1.hashCode}');
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
     });
 
     test('FD hashCode and == bad values', () {
       global.throwOnError = false;
-      final e0 = FDtag(
-          PTag.kOverallTemplateSpatialTolerance, float64GoodList.take(1));
-      final e2 =
-          FDtag(PTag.kCineRelativeToRealTime, float64GoodList.take(1));
+      final e0 =
+          FDtag(PTag.kOverallTemplateSpatialTolerance, float64GoodList.take(1));
+      final e2 = FDtag(PTag.kCineRelativeToRealTime, float64GoodList.take(1));
       log.debug('float64LstCommon0:$float64GoodList , '
           'e2.hash_code:${e2.hashCode}');
       expect(e0.hashCode == e2.hashCode, false);
@@ -297,8 +292,7 @@ void main() {
       expect(e0.hashCode == e5.hashCode, false);
       expect(e0 == e5, false);
 
-      final e6 =
-          FDtag(PTag.kImageOrientationVolume, float64GoodList.take(6));
+      final e6 = FDtag(PTag.kImageOrientationVolume, float64GoodList.take(6));
       log.debug('float64LstCommon0:$float64GoodList, '
           'e6.hash_code:${e6.hashCode}');
       expect(e0.hashCode == e6.hashCode, false);
@@ -433,8 +427,7 @@ void main() {
 
     test('Create Elements from floating values(FD)', () {
       const vList = <double>[2047.99, 2437.437, 764.53];
-      final e0 =
-          FDtag(PTag.kSelectorFDValue, Float64List.fromList(vList));
+      final e0 = FDtag(PTag.kSelectorFDValue, Float64List.fromList(vList));
       expect(e0.values.first.toStringAsPrecision(1),
           equals(2047.99.toStringAsPrecision(1)));
     });
@@ -462,6 +455,48 @@ void main() {
         final vList = rng.float64List(1, i);
         final e0 = FDtag(PTag.kSelectorFDValue, vList);
         expect(e0.checkValues(e0.values), true);
+      }
+    });
+
+    test('FD check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.float64List(1, 1);
+        final e0 = FDtag(PTag.kTubeAngle, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rng.float64List(2, 2);
+        final e0 = FDtag(PTag.kTwoDMatingPoint, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('FD valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.float64List(1, i);
+        final e0 = FDtag(PTag.kSelectorFDValue, vList);
+        final e1 = FDtag(PTag.kSelectorFDValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('FD valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.float64List(1, i);
+        final vList1 = rng.float64List(1, 1);
+        final e0 = FDtag(PTag.kSelectorFDValue, vList0);
+        final e1 = FDtag(PTag.kSelectorFDValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
       }
     });
   });

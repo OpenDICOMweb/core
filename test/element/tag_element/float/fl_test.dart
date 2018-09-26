@@ -400,6 +400,48 @@ void main() {
       expect(e0.values.first.toStringAsPrecision(1),
           equals(2047.99.toStringAsPrecision(1)));
     });
+
+    test('FL check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rng.float32List(1, 1);
+        final e0 = FLtag(PTag.kDisplayedZValue, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rng.float32List(2, 2);
+        final e0 = FLtag(PTag.kMaskSubPixelShift, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('FL valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rng.float32List(1, i);
+        final e0 = FLtag(PTag.kSelectorFLValue, vList);
+        final e1 = FLtag(PTag.kSelectorFLValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('FL valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rng.float32List(1, i);
+        final vList1 = rng.float32List(1, 1);
+        final e0 = FLtag(PTag.kSelectorFLValue, vList0);
+        final e1 = FLtag(PTag.kSelectorFLValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
+      }
+    });
   });
 
   group('FL Element', () {
