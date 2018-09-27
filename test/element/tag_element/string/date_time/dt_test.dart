@@ -70,9 +70,7 @@ void main() {
     <String>['20170223122334.111111+1545'], // bad timezone
     <String>['20170223122334.111111-1015'], // bad timezone
     <String>['20170223122334.111111+0960'], // bad timezone
-    <String>[
-      '20170223122334.111111*0945'
-    ], // bad timezone: special character
+    <String>['20170223122334.111111*0945'], // bad timezone: special character
   ];
 
   group('DT Tests', () {
@@ -543,6 +541,48 @@ void main() {
         const regX = r'\w*[0-9\.\+]';
         final match0 = e0.match(regX);
         expect(match0, true);
+      }
+    });
+
+    test('DT check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getDTList(1, 1);
+        final e0 = DTtag(PTag.kDateTime, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getDTList(1, i);
+        final e0 = DTtag(PTag.kSelectorDTValue, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('DT valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getDTList(1, 1);
+        final e0 = DTtag(PTag.kSelectorDTValue, vList);
+        final e1 = DTtag(PTag.kSelectorDTValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('DT valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getDTList(1, i);
+        final vList1 = rsg.getDTList(1, 1);
+        final e0 = DTtag(PTag.kSelectorDTValue, vList0);
+        final e1 = DTtag(PTag.kSelectorDTValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
       }
     });
   });

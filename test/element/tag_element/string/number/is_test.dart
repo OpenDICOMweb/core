@@ -548,6 +548,48 @@ void main() {
         expect(match0, true);
       }
     });
+
+    test('IS check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getISList(1, 1);
+        final e0 = IStag(PTag.kStageNumber, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getISList(2, 2);
+        final e0 = IStag(PTag.kAxialMash, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('IS valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getISList(1, 1);
+        final e0 = IStag(PTag.kSelectorISValue, vList);
+        final e1 = IStag(PTag.kSelectorISValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('IS valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getISList(1, i);
+        final vList1 = rsg.getISList(1, 1);
+        final e0 = IStag(PTag.kSelectorISValue, vList0);
+        final e1 = IStag(PTag.kSelectorISValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
+      }
+    });
   });
 
   group('IS Element', () {

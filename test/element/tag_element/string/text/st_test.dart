@@ -434,6 +434,40 @@ void main() {
         expect(vfb0, equals(vList0));
       }
     });
+
+    test('ST check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getSTList(1, 1);
+        final e0 = STtag(PTag.kCADFileFormat, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+    });
+
+    test('ST valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getSTList(1, 1);
+        final e0 = STtag(PTag.kSelectorSTValue, vList);
+        final e1 = STtag(PTag.kSelectorSTValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('ST valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getSTList(1, 1, 4, 4);
+        final vList1 = rsg.getSTList(1, 1);
+        final e0 = STtag(PTag.kSelectorSTValue, vList0);
+        final e1 = STtag(PTag.kSelectorSTValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
+      }
+    });
   });
 
   group('ST', () {

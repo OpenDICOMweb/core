@@ -530,6 +530,48 @@ void main() {
         expect(replaceUid0.elementAt(0).value, equals(vList0.elementAt(0)));
       }
     });
+
+    test('UI check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getUIList(1, 1);
+        final e0 = UItag(PTag.kSOPClassUID, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getUIList(1, i);
+        final e0 = UItag(PTag.kSelectorUIValue, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('UI valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getUIList(1, 1);
+        final e0 = UItag(PTag.kSelectorUIValue, vList);
+        final e1 = UItag(PTag.kSelectorUIValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('UI valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getUIList(1, i);
+        final vList1 = rsg.getUIList(1, 1);
+        final e0 = UItag(PTag.kSelectorUIValue, vList0);
+        final e1 = UItag(PTag.kSelectorUIValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
+      }
+    });
   });
 
   group('UI', () {
