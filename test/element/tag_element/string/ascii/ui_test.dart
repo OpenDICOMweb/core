@@ -376,7 +376,7 @@ void main() {
       }
     });
 
-    test('UI parse', () {
+    test('UI parseList', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
         global.throwOnError = false;
@@ -410,6 +410,43 @@ void main() {
 
       global.throwOnError = true;
       expect(() => Uid.parseList(['1.3.5']),
+          throwsA(const TypeMatcher<InvalidUidError>()));
+    });
+
+    test('tryParseList', () {
+      for (var i = 0; i < 10; i++) {
+        final vList0 = rsg.getUIList(i + 1, i + 1);
+        global.throwOnError = false;
+        final parse0 = Uid.tryParseList(vList0);
+        expect(parse0.elementAt(i).value, equals(vList0[i]));
+      }
+
+      for (var s in goodUIList) {
+        final parse1 = (s);
+        expect(parse1.elementAt(0), equals(s[0]));
+      }
+
+      for (var s in badUIList) {
+        global.throwOnError = false;
+        final parse2 = Uid.tryParseList(s);
+        expect(parse2, equals([null]));
+
+        global.throwOnError = true;
+        expect(() => Uid.tryParseList(s),
+            throwsA(const TypeMatcher<InvalidUidError>()));
+      }
+
+      global.throwOnError = false;
+      final parse3 = Uid.tryParseList(['1.3.5']);
+      expect(parse3, equals([null]));
+
+      final parse4 = Uid.tryParseList([
+        '1.2.840.10008.5.1.4.34.5.345.22.5467456.5.1.4.34.5.22.5467456.55.45'
+      ]);
+      expect(parse4, equals([null]));
+
+      global.throwOnError = true;
+      expect(() => Uid.tryParseList(['1.3.5']),
           throwsA(const TypeMatcher<InvalidUidError>()));
     });
 
