@@ -10,6 +10,7 @@ part of odw.sdk.core.parser;
 
 // ignore_for_file: public_member_api_docs
 
+// Urgent Jim: rewrite
 /// Returns the number of microseconds represented by [s].
 int parseDcmTime(String s,
     {int start = 0, int end, Issues issues, OnParseError onError}) {
@@ -51,9 +52,7 @@ int parseTime(String s,
 
 /// Returns _true_ if [s] represents a valid DICOM time [String].
 bool isValidDcmTimeString(String s, {int start = 0, int end, Issues issues}) =>
-    parseDcmTime(s, start: start, end: end, issues: issues) == null
-        ? false
-        : true;
+    parseDcmTime(s, start: start, end: end, issues: issues) != null;
 
 const List<int> kValidTimeStringLengths = <int>[2, 4, 6, 8];
 
@@ -146,10 +145,9 @@ int _parseTime(String s, int start, int end, Issues issues,
   return timeToMicroseconds(h, m, ss, f ~/ 1000, f % 1000);
 }
 
+// Urgent Jim: this seems backwards
 bool _isNotValidTimeStringLength(int length) =>
-    (kValidTimeStringLengths.contains(length) || (length > 8 && length <= 13))
-        ? false
-        : true;
+    !(kValidTimeStringLengths.contains(length) || (length > 8 && length <= 13));
 
 /// Returns a valid hour or _null_.  The hour must be 2 characters.
 int _parseHour(String s, int start, Issues issues) =>

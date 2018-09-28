@@ -27,7 +27,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const ucVM1_nTags = <int>[
+    const ucVM1nTags = <int>[
       kSelectorUCValue,
       kPotentialReasonsForProcedure,
       kPotentialDiagnosticTasks
@@ -64,7 +64,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUCList(1, i);
-        for (var code in ucVM1_nTags) {
+        for (var code in ucVM1nTags) {
           final e0 = UCbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

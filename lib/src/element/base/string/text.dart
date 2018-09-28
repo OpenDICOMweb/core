@@ -142,17 +142,17 @@ abstract class LT extends Text {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, LT);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (isDcmText(s, kMaxValueLength))
-        ? true
-        : invalidString('Invalid Long Text (LT): "$s"', issues);
+    final ok = isDcmText(s, kMaxValueLength);
+    return ok ? ok : invalidString('Invalid Long Text (LT): "$s"', issues);
   }
 }
 
@@ -247,17 +247,17 @@ abstract class ST extends Text {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, ST);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (isDcmText(s, kMaxValueLength))
-        ? true
-        : invalidString('Invalid Short Test (ST): "$s"', issues);
+    final ok = isDcmText(s, kMaxValueLength);
+    return ok ? ok : invalidString('Invalid Short Test (ST): "$s"', issues);
   }
 }
 
@@ -363,8 +363,9 @@ abstract class UR extends Text {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UR);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
@@ -489,16 +490,16 @@ abstract class UT extends Text {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UT);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (isDcmText(s, kMaxLongVF))
-        ? true
-        : invalidString('Invalid Unlimited Text (UT): "$s"', issues);
+    final ok = isDcmText(s, kMaxLongVF);
+    return ok ? ok : invalidString('Invalid Unlimited Text (UT): "$s"', issues);
   }
 }

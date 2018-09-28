@@ -43,7 +43,7 @@ int parseInternetDate(String s,
 /// Returns true is [s] contains a valid DICOM date.
 // Note: checkArgs is done by [parseDcmDate].
 bool isValidDcmDateString(String s, {int start = 0, int end, Issues issues}) =>
-    parseDate(s, start: start, end: end, issues: issues) == null ? false : true;
+    parseDate(s, start: start, end: end, issues: issues) != null;
 
 // **** Internal below this line
 // **** These functions do not do error checking, it was done above.

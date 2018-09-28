@@ -166,7 +166,7 @@ void main() {
       }
 
       for (var i = 0; i < 10; i++) {
-        final uid = new Uid.seededPseudo();
+        final uid = Uid.seededPseudo();
         log.debug('uid: $uid');
         final uidString = uid.asString;
         final isValid = isValidUuidUid(uidString);
@@ -179,7 +179,7 @@ void main() {
 
     test('isValidUidString', () {
       for (var i = 0; i < 10; i++) {
-        final uid = new Uid.seededPseudo();
+        final uid = Uid.seededPseudo();
         final uidS = uid.asString;
         expect(isValidUidString(uidS), true);
       }
@@ -207,14 +207,14 @@ void main() {
     });
 
     test('isValidUidStringList', () {
-        final isValid0 = isValidUidStringList(goodUids);
-        expect(isValid0, true);
+      final isValid0 = isValidUidStringList(goodUids);
+      expect(isValid0, true);
 
-        final isValid1 = isValidUidStringList(badUids);
-        expect(isValid1, false);
+      final isValid1 = isValidUidStringList(badUids);
+      expect(isValid1, false);
 
-        final isValid2 = isValidUidStringList(null);
-        expect(isValid2, false);
+      final isValid2 = isValidUidStringList(null);
+      expect(isValid2, false);
     });
 
     test('isDicom', () {

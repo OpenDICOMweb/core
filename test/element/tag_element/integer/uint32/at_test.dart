@@ -561,7 +561,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const atVM1_nTags = <PTag>[
+    const atVM1nTags = <PTag>[
       PTag.kOriginalImageIdentification,
       PTag.kFrameIncrementPointer,
       PTag.kFrameDimensionPointer,
@@ -638,7 +638,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint32List(1, i);
         global.throwOnError = false;
-        for (var tag in atVM1_nTags) {
+        for (var tag in atVM1nTags) {
           expect(AT.isValidLength(tag, vList), true);
 
           expect(AT.isValidLength(tag, invalidVList.sublist(0, AT.kMaxLength)),
@@ -814,7 +814,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in atVM1_nTags) {
+          for (var tag in atVM1nTags) {
             final e0 = AT.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

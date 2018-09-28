@@ -219,7 +219,7 @@ abstract class StringBase extends Element<String> {
     for (var v in vList) {
       if (!isValidValue(v, issues: issues)) ok = false;
     }
-    return ok ? true : invalidValues(vList, issues);
+    return ok ? ok : invalidValues(vList, issues);
   }
 
   static List<V> reallyTryParseList<V>(Iterable<String> vList, Issues issues,

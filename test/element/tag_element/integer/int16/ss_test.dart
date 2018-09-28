@@ -521,7 +521,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const ssVM1_nTags = <PTag>[PTag.kSelectorSSValue];
+    const ssVM1nTags = <PTag>[PTag.kSelectorSSValue];
 
     const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
@@ -609,7 +609,7 @@ void main() {
     test('SS isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.int16List(1, i);
-        for (var tag in ssVM1_nTags) {
+        for (var tag in ssVM1nTags) {
           expect(SS.isValidLength(tag, validMinVList), true);
           expect(SS.isValidLength(tag, invalidVList.sublist(0, SS.kMaxLength)),
               true);
@@ -802,7 +802,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in ssVM1_nTags) {
+          for (var tag in ssVM1nTags) {
             final e0 = SS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

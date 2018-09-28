@@ -16,7 +16,6 @@ RNG rng = RNG(1);
 void main() {
   Server.initialize(name: 'bd_element/pixel_data', level: Level.info);
 
-
   group('OWbytes', () {
     test('OWbytes from VM.k1', () {
       for (var i = 1; i < 10; i++) {
@@ -24,11 +23,12 @@ void main() {
         final bytes = Bytes.typedDataView(vList0);
         global.throwOnError = false;
         final e0 = OWbytes.fromValues(kPixelData, vList0);
-        //final e0 = OBbytesPixelData(bytes);
         log.debug('e0: $e0');
         const ts = TransferSyntax.kExplicitVRLittleEndian;
-        final e1 = ByteElement.makePixelDataFromBytes(e0.bytes, ts);
+        final OWbytesPixelData e1 =
+            ByteElement.makePixelDataFromBytes(e0.bytes, ts);
         log.debug('e1: $e1');
+        expect(e0 is Element, true);
         expect(e0.hasValidValues, true);
         expect(e0.vfBytes == bytes, true);
 

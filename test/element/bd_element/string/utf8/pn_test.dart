@@ -41,7 +41,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const pnVM1_nTags = <int>[
+    const pnVM1nTags = <int>[
       kPerformingPhysicianName,
       kNameOfPhysiciansReadingStudy,
       kOperatorsName,
@@ -83,7 +83,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getPNList(1, i);
-        for (var code in pnVM1_nTags) {
+        for (var code in pnVM1nTags) {
           final e0 = PNbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

@@ -54,7 +54,8 @@ abstract class ByteElement<V> {
   /// and equal byte for byte.
   @override
   bool operator ==(Object other) =>
-      (other is ByteElement) ? bytes == other.bytes : false;
+      other is ByteElement && bytes == other.bytes;
+
   @override
   int get hashCode => bytes.hashCode;
 

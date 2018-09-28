@@ -422,7 +422,7 @@ void main() {
       }
 
       for (var s in goodUIList) {
-        final parse1 = (s);
+        final parse1 = s;
         expect(parse1.elementAt(0), equals(s[0]));
       }
 
@@ -631,7 +631,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const uiVM1_nTags = <PTag>[
+    const uiVM1nTags = <PTag>[
       PTag.kRelatedGeneralSOPClassUID,
       PTag.kFailedSOPInstanceUIDList,
       PTag.kSelectorUIValue
@@ -801,7 +801,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUIList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, UI.kMaxLength);
-        for (var tag in uiVM1_nTags) {
+        for (var tag in uiVM1nTags) {
           log.debug('tag: $tag');
           expect(UI.isValidLength(tag, vList0), true);
           expect(UI.isValidLength(tag, validMaxLengthList), true);
@@ -983,7 +983,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in uiVM1_nTags) {
+          for (var tag in uiVM1nTags) {
             final e0 = UI.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

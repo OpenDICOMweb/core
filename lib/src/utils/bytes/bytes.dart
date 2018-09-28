@@ -127,11 +127,9 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   void operator []=(int i, int v) => _setUint8(i, v);
 
   @override
-  bool operator ==(Object other) => (other is Bytes)
-      ? ignorePadding
-          ? _bytesEqual(this, other)
-          : __bytesEqual(this, other, ignorePadding)
-      : false;
+  bool operator ==(Object other) =>
+      (other is Bytes) && (ignorePadding && _bytesEqual(this, other)) ||
+      __bytesEqual(this, other, ignorePadding);
 
   bool _bytesEqual(Bytes a, Bytes b) {
     final aLen = a.length;
@@ -198,7 +196,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   bool __bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
     if ((a[i] == 0 && b[i] == 32) || (a[i] == 32 && b[i] == 0)) {
       log.warn('$i ${a[i]} | ${b[i]} Padding char difference');
-      return ignorePadding ? true : false;
+      return ignorePadding;
     } else {
       _warnBytes(i, a, b);
       return false;
@@ -259,11 +257,11 @@ $i: $x | $y')
   static final Bytes kEmptyBytes = Bytes(0);
 
   /// Returns a [Bytes] containing the Base64 decoding of [s].
-  static Bytes fromBase64(String s) {
+  static Bytes fromBase64(String s, {bool padToEvenLength = false}) {
     if (s.isEmpty) return kEmptyBytes;
     var bList = base64.decode(s);
     final bLength = bList.length;
-    if (bLength.isOdd) {
+    if (padToEvenLength == true && bLength.isOdd) {
       // Performance: It would be good to ignore this copy
       final nList = Uint8List(bLength + 1);
       for (var i = 0; i < bLength - 1; i++) nList[i] = bList[i];

@@ -631,7 +631,7 @@ void main() {
     ];
 
     //VM.k2_2n
-    const dsVM2_2nTags = <PTag>[PTag.kDVHData];
+    const dsVM22nTags = <PTag>[PTag.kDVHData];
 
     //VM.k3
     const dsVM3Tags = <PTag>[
@@ -667,7 +667,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const dsVM1_nTags = <PTag>[
+    const dsVM1nTags = <PTag>[
       PTag.kMaterialThickness,
       PTag.kMaterialIsolationDiameter,
       PTag.kCoordinateSystemTransformTranslationMatrix,
@@ -895,7 +895,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(10, 10);
 
-        for (var tag in dsVM2_2nTags) {
+        for (var tag in dsVM22nTags) {
           log..debug('tag: $tag')..debug('max: ${tag.maxValues}');
           final validMaxLengthList = invalidVList.sublist(0, tag.maxValues);
 
@@ -908,7 +908,7 @@ void main() {
     test('DS isValidVListLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rsg.getDSList(1, 1);
-        for (var tag in dsVM2_2nTags) {
+        for (var tag in dsVM22nTags) {
           global.throwOnError = false;
           expect(DS.isValidLength(tag, validMinVList), false);
 
@@ -1048,7 +1048,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rsg.getDSList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, DS.kMaxLength);
-        for (var tag in dsVM1_nTags) {
+        for (var tag in dsVM1nTags) {
           log.debug('tag: $tag');
           expect(DS.isValidLength(tag, validMinVList0), true);
           expect(DS.isValidLength(tag, validMaxLengthList), true);
@@ -1431,7 +1431,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in dsVM1_nTags) {
+          for (var tag in dsVM1nTags) {
             final e0 = DS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

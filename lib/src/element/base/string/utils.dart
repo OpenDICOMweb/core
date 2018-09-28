@@ -37,15 +37,17 @@ bool isValidValueLength(
 /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
 /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
 /// is used.
-bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
-    (doTestElementValidity && tag.vrIndex != targetVR)
-        ? invalidTag(tag, issues, type)
-        : true;
+bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) {
+  if (doTestElementValidity && tag.vrIndex != targetVR) return true;
+  return invalidTag(tag, issues, type);
+}
 
 /// Returns _true_ if [vrIndex] is equal to [target], which MUST be a valid
 /// _VR Index_. Typically, one of the constants (k_XX_Index) is used.
-bool isValidVRIndex(int vrIndex, Issues issues, int target) =>
-    (vrIndex == target) ? true : VR.invalidIndex(vrIndex, issues, target);
+bool isValidVRIndex(int vrIndex, Issues issues, int target) {
+  if (vrIndex == target) return true;
+  return VR.invalidIndex(vrIndex, issues, target);
+}
 
 /// Returns [vrIndex] if it is equal to [target], which MUST be a valid
 /// _VR Index_. Typically, one of the constants (k_XX_Index) is used.
@@ -54,13 +56,17 @@ int checkVRIndex(int vrIndex, Issues issues, int target) =>
 
 /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
 /// is be used.
-bool isValidVRCode(int vrCode, Issues issues, int target) =>
-    (vrCode == target) ? true : VR.invalidCode(vrCode, issues, target);
+bool isValidVRCode(int vrCode, Issues issues, int target) {
+  final ok = vrCode == target;
+  return ok ? ok : VR.invalidCode(vrCode, issues, target);
+}
 
 /// Checks that vfLength (vfl) is in range and the right size, based on the
 /// element size (eSize).
-bool isValidVFL(int vfl, int max, [Issues issues]) =>
-    (vfl >= 0 && vfl <= max) ? true : invalidStringVFLength(vfl, max, issues);
+bool isValidVFL(int vfl, int max, [Issues issues]) {
+  if (vfl >= 0 && vfl <= max) return true;
+  return invalidStringVFLength(vfl, max, issues);
+}
 
 // ignore: prefer_void_to_null
 Null badStringVFLength(int vfLength, int maxVFLength, [Issues issues]) {

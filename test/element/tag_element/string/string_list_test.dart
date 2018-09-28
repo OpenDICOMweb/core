@@ -106,10 +106,10 @@ void main() {
 
     global.throwOnError = false;
     final bytes1 = textListToUint8List([], kMaxShortVF);
-    expect(bytes1, kEmptyBytes);
+    expect(bytes1, kEmptyUint8List);
 
     final bytes2 = textListToUint8List([''], kMaxShortVF);
-    expect(bytes2, kEmptyBytes);
+    expect(bytes2, kEmptyUint8List);
 
     final bytes3 = textListToUint8List([null], kMaxShortVF);
     expect(bytes3, isNull);

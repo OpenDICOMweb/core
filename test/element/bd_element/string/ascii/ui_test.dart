@@ -38,7 +38,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const uiVM1_nTags = <int>[
+    const uiVM1nTags = <int>[
       kRelatedGeneralSOPClassUID,
       kFailedSOPInstanceUIDList,
       kSelectorUIValue
@@ -76,7 +76,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, i);
-        for (var code in uiVM1_nTags) {
+        for (var code in uiVM1nTags) {
           final e0 = UIbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

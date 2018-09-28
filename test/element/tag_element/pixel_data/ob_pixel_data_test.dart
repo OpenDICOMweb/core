@@ -399,11 +399,11 @@ void main() {
   });
 
   group('OBPixelData', () {
-    test('Create Uint8Base.fromBytes', () {
+    test('Create Uint8.fromBytes', () {
       expect(Uint8.toBytes(frame), equals(frame));
     });
 
-    test('Create Uint32Base.listToBytes', () {
+    test('Create Uint32.listToBytes', () {
       global.throwOnError = false;
       const uInt8Max = [kUint8Max];
       const uInt16Max = [kUint16Max];
@@ -417,20 +417,20 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
-    test('Create Uint8Base.fromBase64', () {
+    test('Create Uint8.fromBase64', () {
       final s = base64.encode(testFrame);
       expect(Uint8.fromBase64(s), equals(testFrame));
     });
 
-    test('Create Uint8Base.listToBase64', () {
+    test('Create Uint8.listToBase64', () {
       final s = base64.encode(testFrame);
       log.debug('s: $s');
       expect(Uint8.toBase64(testFrame), s);
     });
 
-    test('Create Uint8Base.fromByteData', () {
+    test('Create Uint8.fromByteData', () {
       final bd = frame.asByteData();
-      expect(Uint8.fromByteData(bd), equals(frame));
+      expect(Uint8.fromByteData(bd), equals(frame.asUint8List()));
     });
   });
 }

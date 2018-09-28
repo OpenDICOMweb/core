@@ -86,7 +86,7 @@ void main() {
   ];
 
   //VM.k1_n
-  const fdVM1_nTags = <int>[
+  const fdVM1nTags = <int>[
     kRealWorldValueLUTData,
     kSelectorFDValue,
     kInversionTimes,
@@ -297,7 +297,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.float64List(1, i);
         global.throwOnError = false;
-        for (var code in fdVM1_nTags) {
+        for (var code in fdVM1nTags) {
           final e0 = FDbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

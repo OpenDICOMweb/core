@@ -83,7 +83,7 @@ abstract class Integer extends Element<int> {
     for (var v in vList) {
       if (ok && !isValidValue(v, issues, minValue, maxValue)) ok = false;
     }
-    return ok ? true : invalidValues(vList, issues);
+    return ok ? ok : invalidValues(vList, issues);
   }
 }
 
@@ -107,11 +107,7 @@ abstract class SS extends Integer with Int16 {
 
   static const Type kType = SS;
 
-  static const List<int> kSpecialSSVRs = [
-    kSSIndex,
-    kUSSSIndex,
-    kUSSSOWIndex
-  ];
+  static const List<int> kSpecialSSVRs = [kSSIndex, kUSSSIndex, kUSSSOWIndex];
 
   @override
   int get vlfSize => kVLFSize;
@@ -166,9 +162,8 @@ abstract class SS extends Integer with Int16 {
   static bool isValidTag(Tag tag, [Issues issues]) {
     if (!doTestElementValidity) return true;
     final vrIndex = tag.vrIndex;
-    return (tag != null && kSpecialSSVRs.contains(vrIndex))
-        ? true
-        : invalidTag(tag, issues, kType);
+    final ok = tag != null && kSpecialSSVRs.contains(vrIndex);
+    return ok ? ok : invalidTag(tag, issues, kType);
   }
 
   /// Returns _true_ if [vrIndex] is valid for [SS].
@@ -195,9 +190,8 @@ abstract class SS extends Integer with Int16 {
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (!Tag.isValidSpecialTag(tag, issues, kSSIndex, kType)) return false;
     if (vList == null) return nullValueError();
-    return tag.isValidLength(vList, issues)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [values] is valid for [SS].
@@ -296,9 +290,8 @@ abstract class SL extends Integer with Int32 {
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, SL);
     if (vList == null) return nullValueError();
-    return tag.isValidLength(vList, issues)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [values] is valid for [SL].
@@ -387,9 +380,8 @@ abstract class OB extends Integer with Uint8 {
   static bool isValidTag(Tag tag, [Issues issues]) {
     if (!doTestElementValidity) return true;
     final vrIndex = tag.vrIndex;
-    return (tag != null && (vrIndex == kOBIndex || vrIndex == kOBOWIndex))
-        ? true
-        : invalidTag(tag, issues, OB);
+    final ok = tag != null && (vrIndex == kOBIndex || vrIndex == kOBOWIndex);
+    return ok ? ok : invalidTag(tag, issues, OB);
   }
 
   /// Returns _true_ if [vrIndex] is valid for [OB].
@@ -421,14 +413,13 @@ abstract class OB extends Integer with Uint8 {
               kMaxVFLength,
               kSizeInBytes,
             );
-
+// Urgent jim: replace all isValidLength with local function
   /// Returns _true_ if [vList].length is valid for [OB].
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (!Tag.isValidSpecialTag(tag, issues, kOBIndex, OB)) return false;
     if (vList == null) return nullValueError();
-    return tag.isValidLength(vList, issues)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [values] is valid for [OB].
@@ -533,9 +524,8 @@ abstract class UN extends Integer with Uint8 {
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (!Tag.isValidSpecialTag(tag, issues, kUNIndex, UN)) return false;
     if (vList == null) return nullValueError();
-    return tag.isValidLength(vList, issues)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [values] is valid for [UN].
@@ -628,9 +618,8 @@ abstract class US extends Integer with Uint16 {
   static bool isValidTag(Tag tag, [Issues issues]) {
     if (!doTestElementValidity) return true;
     final vrIndex = tag.vrIndex;
-    return (tag != null && kSpecialUSVRs.contains(vrIndex))
-        ? true
-        : invalidTag(tag, issues, US);
+    final ok = tag != null && kSpecialUSVRs.contains(vrIndex);
+    return ok ? ok : invalidTag(tag, issues, US);
   }
 
   /// Returns _true_ if [vrIndex] is valid for [US].
@@ -659,9 +648,8 @@ abstract class US extends Integer with Uint16 {
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (!Tag.isValidSpecialTag(tag, issues, kUSIndex, US)) return false;
     if (vList == null) return nullValueError();
-    return tag.isValidLength(vList, issues)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [values] is valid for [US].
@@ -754,9 +742,8 @@ abstract class OW extends Integer with Uint16 {
   static bool isValidTag(Tag tag, [Issues issues]) {
     if (!doTestElementValidity) return true;
     final vrIndex = tag.vrIndex;
-    return (tag != null && kSpecialOWVRs.contains(vrIndex))
-        ? true
-        : invalidTag(tag, issues, US);
+    final ok = tag != null && kSpecialOWVRs.contains(vrIndex);
+    return ok ? ok : invalidTag(tag, issues, US);
   }
 
   /// Returns _true_ if [vrIndex] is valid for [OW].
@@ -785,9 +772,8 @@ abstract class OW extends Integer with Uint16 {
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (!Tag.isValidSpecialTag(tag, issues, kOWIndex, OW)) return false;
     if (vList == null) return nullValueError();
-    return tag.isValidLength(vList, issues)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [values] is valid for [OW].
@@ -885,9 +871,8 @@ abstract class AT extends Integer with Uint32 {
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, AT);
     if (vList == null) return nullValueError();
-    return tag.isValidLength(vList, issues)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [values] is valid for [AT].
@@ -987,9 +972,8 @@ abstract class OL extends Integer with Uint32 {
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, OL);
     if (vList == null) return nullValueError();
-    return tag.isValidLength(vList, issues)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [values] is valid for [OL].
@@ -1088,9 +1072,8 @@ abstract class UL extends Integer with Uint32 {
   static bool isValidLength(Tag tag, Iterable<int> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UL);
     if (vList == null) return nullValueError();
-    return tag.isValidLength(vList, issues)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = tag.isValidLength(vList, issues);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [values] is valid for [UL].
@@ -1135,18 +1118,17 @@ abstract class GL extends UL {
 /// in range and the right size, based on the element size (eSize).
 bool _isValidUVFLength(int vfLength, Issues issues, int max, int eSize) {
   if (!doTestElementValidity || vfLength == null) return true;
-  return _isValidVFLength(vfLength, issues, max, eSize)
-      ? true
-      : invalidUVFLength(vfLength, max, eSize, issues);
+  final ok = _isValidVFLength(vfLength, issues, max, eSize);
+  return ok ? ok : invalidUVFLength(vfLength, max, eSize, issues);
 }
 
 /// Returns true if [vfLength] is in the range 0 <= [vfLength] <= [max],
 /// and [vfLength] is a multiple of of values size in bytes ([eSize]),
 /// i.e. `vfLength % eSize == 0`.
-bool _isValidVFLength(int vfLength, Issues issues, int max, int eSize) =>
-    (vfLength >= 0 && vfLength <= max && (vfLength % eSize) == 0)
-        ? true
-        : invalidFixedVFLength(vfLength, max, eSize, issues);
+bool _isValidVFLength(int vfLength, Issues issues, int max, int eSize) {
+  final ok = vfLength >= 0 && vfLength <= max && (vfLength % eSize) == 0;
+  return ok ? ok : invalidFixedVFLength(vfLength, max, eSize, issues);
+}
 
 bool _isValidValue(int v, Issues issues, int min, int max) =>
     Integer.isValidValue(v, issues, min, max);

@@ -453,7 +453,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const urVM1_nTags = <PTag>[PTag.kSelectorURValue];
+    const urVM1nTags = <PTag>[PTag.kSelectorURValue];
 
     const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
@@ -624,7 +624,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getURList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, UR.kMaxLength);
-        for (var tag in urVM1_nTags) {
+        for (var tag in urVM1nTags) {
           log.debug('tag: $tag');
           expect(UR.isValidLength(tag, vList0), true);
           expect(UR.isValidLength(tag, validMaxLengthList), true);

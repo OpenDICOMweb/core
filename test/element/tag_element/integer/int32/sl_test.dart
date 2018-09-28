@@ -507,13 +507,13 @@ void main() {
     ];
 
     //VM.k1_n
-    const slVM1_nTags = <PTag>[
+    const slVM1nTags = <PTag>[
       PTag.kRationalNumeratorValue,
       PTag.kSelectorSLValue,
     ];
 
     //VM.k2_2n
-    const slVM2_2nTags = <PTag>[PTag.kPixelCoordinatesSetTrial];
+    const slVM22nTags = <PTag>[PTag.kPixelCoordinatesSetTrial];
 
     const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
@@ -615,7 +615,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final validMinVList0 = rng.int32List(1, i);
         final validMaxLengthList = invalidVList.sublist(0, SL.kMaxLength);
-        for (var tag in slVM1_nTags) {
+        for (var tag in slVM1nTags) {
           log.debug('tag: $tag');
           expect(SL.isValidLength(tag, validMinVList0), true);
           expect(SL.isValidLength(tag, validMaxLengthList), true);
@@ -628,7 +628,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vListGood = rng.int32List(10, 10);
         final vListBad = invalidVList.sublist(0, SL.kMaxLength);
-        for (var tag in slVM2_2nTags) {
+        for (var tag in slVM22nTags) {
           log.debug('tag: $tag');
           global.throwOnError = false;
           expect(SL.isValidLength(tag, vListGood), true);
@@ -640,7 +640,7 @@ void main() {
     test('SL isValidLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
         final validMinVList0 = rng.int32List(1, 1);
-        for (var tag in slVM2_2nTags) {
+        for (var tag in slVM22nTags) {
           log.debug('tag: $tag');
           global.throwOnError = false;
           expect(SL.isValidLength(tag, validMinVList0), false);
@@ -844,7 +844,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in slVM1_nTags) {
+          for (var tag in slVM1nTags) {
             final e0 = SL.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

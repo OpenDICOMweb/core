@@ -44,7 +44,7 @@ void main() {
       kVariableCoefficientsSDDN
     ];
 
-    const owVM1_nTags = <int>[kSelectorOWValue];
+    const owVM1nTags = <int>[kSelectorOWValue];
 
     test('OWbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
@@ -64,7 +64,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint16List(1, i);
         global.throwOnError = false;
-        for(var code in owVM1_nTags) {
+        for(var code in owVM1nTags) {
           final e0 = OWbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

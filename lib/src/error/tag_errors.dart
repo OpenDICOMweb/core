@@ -30,21 +30,22 @@ class InvalidTagError extends Error {
 /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
 /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
 /// is used.
-bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) =>
-    doTestElementValidity && tag.vrIndex != targetVR
-        ? invalidTag(tag, issues, type)
-        : true;
+bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) {
+  if (doTestElementValidity && tag.vrIndex != targetVR)
+    return invalidTag(tag, issues, type);
+  return true;
+}
 
 /// Returns _true_ if [tag].vrIndex is equal to [targetVR], which MUST
 /// be a valid _VR Index_. Typically, one of the constants (k_XX_Index)
 /// is used.
 bool isValidSpecialTag(Tag tag, Issues issues, int targetVR, Type type) {
   final vrIndex = tag.vrIndex;
-  return (doTestElementValidity &&
-          (vrIndex == targetVR ||
-              (vrIndex >= kVRSpecialIndexMin && vrIndex <= kVRSpecialIndexMax)))
-      ? true
-      : invalidTag(tag, issues, type);
+  if (doTestElementValidity &&
+      (vrIndex == targetVR ||
+          (vrIndex >= kVRSpecialIndexMin && vrIndex <= kVRSpecialIndexMax)))
+    return true;
+  return invalidTag(tag, issues, type);
 }
 
 Null badTag(Tag tag, Issues issues, Type type) {

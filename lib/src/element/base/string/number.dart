@@ -200,9 +200,8 @@ abstract class DS extends StringAscii {
     if (s == null || !isValidValueLength(s, issues)) return false;
     if (s.isEmpty) return true;
     final n = tryParse(s);
-    return (n != null)
-        ? true
-        : invalidString('Invalid Decimal (DS) String: "$s"');
+    if (n == null) return invalidString('Invalid Decimal (DS) String: "$s"');
+    return true;
   }
 
   //TODO: Sharath add tests with leading and trailing spaces,
@@ -421,9 +420,8 @@ abstract class IS extends StringAscii {
     if (s == null || !isValidValueLength(s, issues)) return false;
     if (s.isEmpty) return true;
     final n = tryParse(s);
-    return (n != null && inRange(n, kMinValue, kMaxValue))
-        ? true
-        : invalidString(s, issues);
+    final ok = n != null && inRange(n, kMinValue, kMaxValue);
+    return ok ? ok : invalidString(s, issues);
   }
 
   /// Returns an [int] created by parsing [s]. If [s] is invalid

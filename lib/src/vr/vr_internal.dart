@@ -34,8 +34,10 @@ class VR {
 
   /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
   /// is be used.
-  static bool isValidCode(int vrCode, Issues issues, int target) =>
-      (vrCode == target) ? true : invalidVRCode(vrCode, issues, target);
+  static bool isValidCode(int vrCode, Issues issues, int target) {
+    if (vrCode != target) return invalidVRCode(vrCode, issues, target);
+    return true;
+  }
 
   /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
   /// is be used.

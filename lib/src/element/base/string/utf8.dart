@@ -144,9 +144,8 @@ abstract class LO extends Utf8 {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return isDcmString(s, 64)
-        ? true
-        : invalidString('Invalid Long String (LO): "$s"', issues);
+    final ok = isDcmString(s, 64);
+    return ok ? ok : invalidString('Invalid Long String (LO): "$s"', issues);
   }
 }
 
@@ -315,9 +314,8 @@ abstract class PN extends Utf8 {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return isDcmString(s, 5 * 64)
-        ? true
-        : invalidString('Invalid Person Name String (PN): "$s"', issues);
+    if (isDcmString(s, 5 * 64)) return true;
+    return invalidString('Invalid Person Name String (PN): "$s"', issues);
   }
 }
 
@@ -418,12 +416,12 @@ abstract class SH extends Utf8 {
 
   // **** Specialized static methods
 
+  //Urgent jim: create is valid value internal routine
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return isDcmString(s, kMaxValueLength)
-        ? true
-        : invalidString('Invalid Short String (SH): "$s"', issues);
+    if (isDcmString(s, kMaxValueLength)) return true;
+    return invalidString('Invalid Short String (SH): "$s"', issues);
   }
 }
 
@@ -532,9 +530,8 @@ abstract class UC extends Utf8 {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return isDcmString(s, kMaxLongVF)
-        ? true
-        : invalidString(
-            'Invalid Unlimited Characters String (UC): "$s"', issues);
+    if (isDcmString(s, kMaxLongVF)) return true;
+    return invalidString(
+        'Invalid Unlimited Characters String (UC): "$s"', issues);
   }
 }

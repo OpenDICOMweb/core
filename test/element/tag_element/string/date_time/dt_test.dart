@@ -613,7 +613,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const dtVM1_nTags = <PTag>[PTag.kSelectorDTValue];
+    const dtVM1nTags = <PTag>[PTag.kSelectorDTValue];
 
     const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
@@ -784,7 +784,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDTList(1, i);
-        for (var tag in dtVM1_nTags) {
+        for (var tag in dtVM1nTags) {
           log.debug('tag: $tag');
           expect(DT.isValidLength(tag, vList0), true);
         }
@@ -873,7 +873,7 @@ void main() {
     test('DT isValidValues VM.k1_n length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getDTList(1, i);
-        for (var tag in dtVM1_nTags) {
+        for (var tag in dtVM1nTags) {
           global.throwOnError = false;
           expect(DT.isValidValues(tag, validList), true);
         }
@@ -1029,7 +1029,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in dtVM1_nTags) {
+          for (var tag in dtVM1nTags) {
             final e0 = DT.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

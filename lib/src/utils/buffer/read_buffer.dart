@@ -42,13 +42,17 @@ abstract class ReadBufferBase extends BytesBuffer {
   ByteData get bd => isClosed ? null : _buf.asByteData();
 
   /// Returns _true_ if this reader isClosed and it [isNotEmpty].
-  bool get hadTrailingBytes => _isClosed ? _rIsEmpty : false;
+  bool get hadTrailingBytes {
+    if (_isClosed) return _rIsEmpty;
+    return false;
+  }
+
   bool _hadTrailingZeros = false;
 
   bool _isClosed = false;
 
   /// Returns _true_ if _this_ is no longer writable.
-  bool get isClosed => _isClosed == null ? false : true;
+  bool get isClosed => _isClosed != null;
 
   ByteData close() {
     if (hadTrailingBytes)

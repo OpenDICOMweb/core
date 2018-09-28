@@ -27,8 +27,10 @@ bool notInRange(int n, int min, int max) => !inRange(n, min, max);
 
 /// Checks that vfLength (vfl) is in range and the right size, based on the
 /// element size (eSize).
-bool isValidLength(int length, int max, {bool onError(int length, int max)}) =>
-    (length >= 0 && length <= max) ? true : onError(length, max);
+bool isValidLength(int length, int max, {bool onError(int length, int max)}) {
+  if (length >= 0 && length <= max) return true;
+  return onError(length, max);
+}
 
 
 final Bytes kEmptyBytes = Bytes.kEmptyBytes;

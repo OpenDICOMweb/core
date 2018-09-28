@@ -14,7 +14,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/float64_test', level: Level.info);
+  Server.initialize(name: 'element/float64_test', level: Level.debug);
   final rng = RNG(1);
   global.throwOnError = false;
 
@@ -554,7 +554,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const fdVM1_nTags = <PTag>[
+    const fdVM1nTags = <PTag>[
       PTag.kRealWorldValueLUTData,
       PTag.kSelectorFDValue,
       PTag.kInversionTimes,
@@ -642,8 +642,13 @@ void main() {
     test('FD isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.float32List(2, i + 1);
+        log.debug('validMinVList: $validMinVList');
         for (var tag in fdVM1Tags) {
+          log.debug('tag: $tag');
           global.throwOnError = false;
+          //Urgent sharath: shouldn't this be true
+      //    expect(FD.isValidLength(tag, validMinVList), false);
+
           expect(FD.isValidLength(tag, validMinVList), false);
           expect(FD.isValidLength(tag, invalidVList), false);
 
@@ -677,11 +682,12 @@ void main() {
     });
 
     test('FD isValidLength VM.k2 bad values', () {
-      for (var i = 2; i < 10; i++) {
-        final validMinVList = rng.float32List(3, i + 1);
+      for (var i = 3; i < 10; i++) {
+        final invalidMinVList = rng.float32List(3, i + 1);
+        log.debug('validMinList: $invalidMinVList');
         for (var tag in fdVM2Tags) {
           global.throwOnError = false;
-          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidMinVList), false);
           expect(FD.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
@@ -795,7 +801,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.float32List(1, i);
         global.throwOnError = false;
-        for (var tag in fdVM1_nTags) {
+        for (var tag in fdVM1nTags) {
           expect(FD.isValidLength(tag, validMinVList), true);
         }
       }

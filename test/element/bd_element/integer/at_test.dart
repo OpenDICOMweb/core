@@ -31,7 +31,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const atVM1_nTags = <int>[
+    const atVM1nTags = <int>[
       kOriginalImageIdentification,
       kFrameIncrementPointer,
       kFrameDimensionPointer,
@@ -67,7 +67,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint32List(1, i);
         global.throwOnError = false;
-        for (var code in atVM1_nTags) {
+        for (var code in atVM1nTags) {
           final e0 = ATbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

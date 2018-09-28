@@ -27,23 +27,17 @@ int vfLengthToLength(int vfLengthField, int sizeInBytes) {
 
 /// Returns _true_  if [vfLength] is a valid Value Field length.
 bool isValidFixedVFL(int vfLength, int maxVFLength, int eSize,
-        [Issues issues]) =>
-    (vfLength >= 0 && vfLength <= maxVFLength)
-        ? true
-        : invalidFixedVFLength(vfLength, maxVFLength, eSize, issues);
+    [Issues issues]) {
+  final ok = vfLength >= 0 && vfLength <= maxVFLength;
+  return ok ? ok : invalidFixedVFLength(vfLength, maxVFLength, eSize, issues);
+}
 
 /// Checks that vfLength (vfl) is in range and the right size, based on the
 /// element size (eSize).
-bool isValidFixedVFLength(int vfl, int max, int eSize, Issues issues) =>
-    (__isValidVFL(vfl, max, eSize))
-        ? true
-        : invalidFixedVFLength(vfl, max, eSize, issues);
-
-/// Returns true if [vfLength] is in the range 0 <= [vfLength] <= [max],
-/// and [vfLength] is a multiple of of values size in bytes ([eSize]),
-/// i.e. `vfLength % eSize == 0`.
-bool __isValidVFL(int vfLength, int max, int eSize) =>
-    (_inRange(vfLength, 0, max) && (vfLength % eSize == 0)) ? true : false;
+bool isValidFixedVFLength(int vfl, int max, int eSize, Issues issues) {
+  final ok = _inRange(vfl, 0, max) && (vfl % eSize == 0);
+  return ok ? ok : invalidFixedVFLength(vfl, max, eSize, issues);
+}
 
 Null _badVFL(StringBuffer sb, int vfLength, int maxVFLength, int eSize,
     [Issues issues]) {
@@ -83,7 +77,7 @@ bool invalidUVFLength(int vfLength, int maxVFLength, int eSize,
   return false;
 }
 
-bool isValidTagAux(Tag tag, Issues issues, int targetVRIndex, Type type) =>
-    (tag != null && tag.vrIndex == targetVRIndex)
-        ? true
-        : invalidTag(tag, issues, type);
+bool isValidTagAux(Tag tag, Issues issues, int targetVRIndex, Type type) {
+  if (tag != null && tag.vrIndex == targetVRIndex) return true;
+  return invalidTag(tag, issues, type);
+}

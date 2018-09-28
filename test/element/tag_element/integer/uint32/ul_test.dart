@@ -535,7 +535,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const ulVM1_nTags = <PTag>[
+    const ulVM1nTags = <PTag>[
       PTag.kSimpleFrameList,
       PTag.kReferencedSamplePositions,
       PTag.kRationalDenominatorValue,
@@ -633,7 +633,7 @@ void main() {
     test('UL isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint32List(1, i);
-        for (var tag in ulVM1_nTags) {
+        for (var tag in ulVM1nTags) {
           expect(UL.isValidLength(tag, vList), true);
 
           expect(UL.isValidLength(tag, invalidVList.sublist(0, UL.kMaxLength)),
@@ -823,7 +823,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in ulVM1_nTags) {
+          for (var tag in ulVM1nTags) {
             final e0 = UL.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

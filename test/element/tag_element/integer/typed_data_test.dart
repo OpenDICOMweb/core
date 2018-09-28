@@ -17,7 +17,7 @@ void main() {
   Server.initialize(name: 'element/typed_data_utils_test', level: Level.info);
   final rng = RNG(1);
 
-  test('Uint32Base.fromList', () {
+  test('Uint32.fromList', () {
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final s0 = Uint32.fromList(uInt32List0);
@@ -41,7 +41,7 @@ void main() {
     expect(s4 is Uint32List, false);
   });
 
-  test('Uint32Base.toBytes', () {
+  test('Uint32.toBytes', () {
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       log.debug('uInt32List0 : $uInt32List0');
@@ -63,7 +63,7 @@ void main() {
     }
   });
 
-  test('Uint32Base.fromBytes', () {
+  test('Uint32.fromBytes', () {
     for (var i = 1; i <= 10; i++) {
       final uInt32List0 = rng.uint32List(1, i);
       final uInt32ListV1 = Uint32List.fromList(uInt32List0);

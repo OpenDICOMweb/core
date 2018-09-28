@@ -40,7 +40,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const ssVM1_nTags = <int>[kSelectorSSValue];
+    const ssVM1nTags = <int>[kSelectorSSValue];
 
     test('SSbytes from VM.k1', () {
       for (var i = 0; i < 10; i++) {
@@ -74,7 +74,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.int16List(1, i);
         global.throwOnError = false;
-        for (var code in ssVM1_nTags) {
+        for (var code in ssVM1nTags) {
           final e0 = SSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
 

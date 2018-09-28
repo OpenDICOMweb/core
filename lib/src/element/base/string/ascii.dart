@@ -147,8 +147,9 @@ abstract class AE extends StringAscii {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, AE);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
@@ -157,9 +158,8 @@ abstract class AE extends StringAscii {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return (isDcmString(s, 16, allowLeading: true))
-        ? true
-        : invalidString('Invalid AETitle String (AE): "$s"', issues);
+    final ok = isDcmString(s, 16, allowLeading: true);
+    return ok ? ok : invalidString('Invalid AETitle String (AE): "$s"', issues);
   }
 }
 
@@ -258,8 +258,9 @@ abstract class CS extends StringAscii {
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, CS);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s.trim(), issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s.trim(), issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
@@ -270,10 +271,9 @@ abstract class CS extends StringAscii {
       log.warn('Empty Code String');
       return true;
     }
-    return (isNotFilteredString(s, 0, kMaxValueLength, isCSChar,
-            allowLeading: true, allowTrailing: true))
-        ? invalidString('Invalid Code String (CS): "$s"')
-        : true;
+    final ok = isFilteredString(s, 0, kMaxValueLength, isCSChar,
+        allowLeadingSpaces: true, allowTrailingSpaces: true);
+    return ok ? ok : invalidString('Invalid Code String (CS): "$s"');
   }
 }
 
@@ -394,17 +394,17 @@ abstract class UI extends StringAscii {
   static bool isValidLength(Tag tag, Iterable<String> vList, [Issues issues]) {
     if (tag == null) return invalidTag(tag, null, UI);
     if (vList == null) return nullValueError();
-    return Element.isValidLength(tag, vList, issues, kMaxLength, UI)
-        ? true
-        : invalidValuesLength(vList, 0, kMaxLength, issues);
+    final ok = Element.isValidLength(tag, vList, issues, kMaxLength, UI);
+    return ok ? ok : invalidValuesLength(vList, 0, kMaxLength, issues);
   }
 
   /// Returns _true_ if [tag] has a VR of [UI] and [vList] is valid for [tag].
   static bool isValidValues(Tag tag, Iterable<String> vList, [Issues issues]) =>
       _isValidValues(tag, vList, issues, isValidValue, kMaxLength, UI);
 
-  static bool isValidValueLength(String s, [Issues issues]) => StringBase
-      .isValidValueLength(s, issues, kMinValueLength, kMaxValueLength);
+  static bool isValidValueLength(String s, [Issues issues]) =>
+      StringBase.isValidValueLength(
+          s, issues, kMinValueLength, kMaxValueLength);
 
   // **** Specialized static methods
 
@@ -412,8 +412,9 @@ abstract class UI extends StringAscii {
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
     if (s.isEmpty) return true;
-    return (Uid.isValidString(s))
-        ? true
+    final ok = Uid.isValidString(s);
+    return ok
+        ? ok
         : invalidString('Invalid Unique Identifier String (UI): "$s"', issues);
   }
 

@@ -52,7 +52,7 @@ void main() {
     ];
 
     //VM.k2_2n
-    const dsVM2_2nTags = <int>[kDVHData];
+    const dsVM22nTags = <int>[kDVHData];
 
     //VM.k3
     const dsVM3Tags = <int>[
@@ -85,7 +85,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const dsVM1_nTags = <int>[
+    const dsVM1nTags = <int>[
       kMaterialThickness,
       kMaterialIsolationDiameter,
       kCoordinateSystemTransformTranslationMatrix,
@@ -240,7 +240,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDSList(1, i);
-        for (var code in dsVM1_nTags) {
+        for (var code in dsVM1nTags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
@@ -268,7 +268,7 @@ void main() {
 
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(10, 10);
-        for (var code in dsVM2_2nTags) {
+        for (var code in dsVM22nTags) {
           final e0 = DSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

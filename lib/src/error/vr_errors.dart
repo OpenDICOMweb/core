@@ -51,8 +51,7 @@ String _vrErrorMsg(String type, String bad, String good, [Tag tag]) {
 Null _doError(int bad, Issues issues, int good, Tag tag, String msg) {
   log.error(msg);
   if (issues != null) issues.add(msg);
-  if (throwOnError) throw InvalidVRError(msg, bad, good, tag);
-  return null;
+  return throwOnError ? throw InvalidVRError(msg, bad, good, tag) : null;
 }
 
 Null badVRIndex(int badIndex, Issues issues, int goodIndex, [Tag tag]) {
@@ -74,4 +73,3 @@ bool invalidVRCode(int badCode, Issues issues, int goodCode, [Tag tag]) {
   badVRCode(badCode, issues, goodCode, tag);
   return false;
 }
-

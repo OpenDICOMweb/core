@@ -44,7 +44,7 @@ void main() {
     ];
 
     //VM.k2_2n
-    const isVM2_2nTags = <int>[
+    const isVM22nTags = <int>[
       kVerticesOfThePolygonalShutter,
       kVerticesOfThePolygonalCollimator,
       kVerticesOfTheOutlineOfPupil,
@@ -56,7 +56,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const isVM1_nTags = <int>[
+    const isVM1nTags = <int>[
       kReferencedFrameNumber,
       kTransformOrderOfAxes,
       kEchoNumbers,
@@ -114,7 +114,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getISList(10, 10);
         global.throwOnError = false;
-        for (var code in isVM2_2nTags) {
+        for (var code in isVM22nTags) {
           final e0 = ISbytes.fromValues(code, vList0);
           expect(e0.hasValidValues, true);
 
@@ -128,7 +128,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getISList(1, i);
         global.throwOnError = false;
-        for (var code in isVM1_nTags) {
+        for (var code in isVM1nTags) {
           final e0 = ISbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
 //        final bd0 = Bytes.fromAscii(vList0.join('\\'));

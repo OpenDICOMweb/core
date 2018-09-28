@@ -56,7 +56,8 @@ bool isValidUuidString(String uuidString, [int type]) {
       if (!isHexChar(c)) return false;
     }
   }
-  return (type == null) ? true : _isValidStringVersion(s, type);
+  if (type != null) return _isValidStringVersion(s, type);
+  return true;
 }
 
 /// Returns _true_

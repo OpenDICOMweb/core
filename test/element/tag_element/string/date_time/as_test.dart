@@ -554,7 +554,7 @@ void main() {
     const asVM1Tags = <PTag>[PTag.kPatientAge];
 
     //VM.k1_n
-    const asVM1_nTags = <PTag>[PTag.kSelectorASValue];
+    const asVM1nTags = <PTag>[PTag.kSelectorASValue];
 
     const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
@@ -721,7 +721,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getASList(1, i);
-        for (var tag in asVM1_nTags) {
+        for (var tag in asVM1nTags) {
           log.debug('tag: $tag');
           expect(AS.isValidLength(tag, vList0), true);
         }
@@ -807,7 +807,7 @@ void main() {
     test('AS isValidValues VM.k1_n Length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getASList(1, i);
-        for (var tag in asVM1_nTags) {
+        for (var tag in asVM1nTags) {
           global.throwOnError = false;
           expect(AS.isValidValues(tag, validList), true);
         }
@@ -974,7 +974,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in asVM1_nTags) {
+          for (var tag in asVM1nTags) {
             final e0 = AS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

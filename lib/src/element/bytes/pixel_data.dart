@@ -11,13 +11,12 @@ part of odw.sdk.element.bytes;
 // ignore_for_file: public_member_api_docs
 
 /// PixelDataMixin class
-abstract class BytePixelData implements PixelData {
+abstract class BytePixelData {
   VFFragments get fragments;
 
   // **** End Interface
 
-  /// A [Uint32List] of offsets into [bulkdata].
-  @override
+  /// A [Uint32List] of offsets into [fragments].
   Uint32List get offsets =>
       (fragments == null) ? kEmptyUint32List : fragments.offsets;
 }

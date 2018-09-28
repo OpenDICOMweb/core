@@ -324,8 +324,7 @@ int _defaultTryParseIntError(String s) => null;
 // ignore: avoid_returning_null
 int _badIntChar(String s, int index, Issues issues, String name) {
   final msg = _badIntCharMsg(s, index, issues, name);
-  if (throwOnError) parseError(msg, issues);
-  return null;
+  return throwOnError ? parseError(msg, issues) : null;
 }
 
 /// Returns an invalid character [String].
@@ -342,8 +341,7 @@ int __parseBase10(String s, int start, Issues issues, int end) {
   for (var i = start; i < end; i++) {
     value *= 10;
     final c = s.codeUnitAt(i);
-    if (c < k0 || c > k9)
-      return _badIntChar(s, i, issues, '*internal*');
+    if (c < k0 || c > k9) return _badIntChar(s, i, issues, '*internal*');
     value += c - k0;
   }
   return value;

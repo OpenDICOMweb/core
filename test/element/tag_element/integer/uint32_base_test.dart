@@ -16,7 +16,7 @@ void main() {
   final rng = RNG(1);
   global.throwOnError = false;
 
-  test('Uint32Base fromList', () {
+  test('Uint32 fromList', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint32List(1, 1);
       expect(Uint32.fromList(vList0), vList0);
@@ -27,7 +27,7 @@ void main() {
     expect(Uint32.fromList(uInt32Max), uInt32Max);
   });
 
-  test('Uint32Base fromBytes', () {
+  test('Uint32 fromBytes', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint32List(1, 1);
 //        final vList1 = Uint32List.fromList(vList0);
@@ -35,12 +35,12 @@ void main() {
       final bytes = Bytes.typedDataView(vList0);
       log
         ..debug('vList0 : $vList0')
-        ..debug('Uint32Base.fromBytes(bd) ; ${Uint32.fromBytes(bytes)}');
+        ..debug('Uint32.fromBytes(bd) ; ${Uint32.fromBytes(bytes)}');
       expect(Uint32.fromBytes(bytes), equals(vList0));
     }
   });
 
-  test('Uint32Base toBytes', () {
+  test('Uint32 toBytes', () {
     global.throwOnError = false;
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint32List(1, 1);
@@ -68,7 +68,7 @@ void main() {
         throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
-  test('Uint32Base toByteData good values', () {
+  test('Uint32 toByteData good values', () {
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
       final vList0 = rng.uint32List(1, 1);
@@ -96,7 +96,7 @@ void main() {
     expect(lBd2.buffer == bd1.buffer, true);
   });
 
-  test('Uint32Base toByteData bad values', () {
+  test('Uint32 toByteData bad values', () {
     for (var i = 0; i < 10; i++) {
       global.throwOnError = false;
       final vList0 = rng.uint32List(1, 1);
@@ -123,7 +123,7 @@ void main() {
         throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
-  test('Uint32Base fromBase64', () {
+  test('Uint32 fromBase64', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint32List(0, i);
 //        final vList1 = Uint32List.fromList(vList0);
@@ -141,7 +141,7 @@ void main() {
   });
 
 /*
-    test('Uint32Base toBase64', () {
+    test('Uint32 toBase64', () {
       system.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final uint32List0 = rng.uint32List(1, 1);
@@ -154,7 +154,7 @@ void main() {
     });
 */
 
-  test('Uint32Base encodeDecodeJsonVF', () {
+  test('Uint32 encodeDecodeJsonVF', () {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.uint32List(0, i);
       final bytes = Bytes.typedDataView(vList0);
@@ -175,7 +175,7 @@ void main() {
     }
   });
 
-  test('Uint32Base fromByteData', () {
+  test('Uint32 fromByteData', () {
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint32List(1, 1);
 //        final vList1 = Uint32List.fromList(vList0);
@@ -184,13 +184,13 @@ void main() {
       final bd = bytes.asByteData();
       log
         ..debug('vList0 : $vList0')
-        ..debug('Uint32Base.fromByteData(byteData): '
+        ..debug('Uint32.fromByteData(byteData): '
             '${Uint32.fromByteData(bd)}');
       expect(Uint32.fromByteData(bd), equals(vList0));
     }
   });
 
-  test('Uint32Base fromValueField', () {
+  test('Uint32 fromValueField', () {
     for (var i = 1; i <= 10; i++) {
       final vList0 = rng.uint32List(1, i);
       final uint8ListV0 = Uint32List.fromList(vList0);
@@ -235,7 +235,7 @@ void main() {
         throwsA(const TypeMatcher<InvalidValuesError>()));
   });
 
-  test('Uint32Base toUint8List', () {
+  test('Uint32 toUint8List', () {
     global.throwOnError = false;
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.uint32List(1, i);
@@ -260,7 +260,7 @@ void main() {
     expect(toUnit8L3, isNull);
   });
 
-  test('Uint32Base fromUnit8List', () {
+  test('Uint32 fromUnit8List', () {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.uint32List(1, i);
       final uint8List0 = vList0.buffer.asUint8List();
@@ -275,7 +275,7 @@ void main() {
     expect(fromUnit8L1, kEmptyInt16List);
   });
 
-  test('Uint32Base getLength', () {
+  test('Uint32 getLength', () {
     for (var i = 4; i < 100; i += 4) {
       final vList = rng.uint32List(i, i);
       final getLen0 = Uint32.getLength(vList.length);

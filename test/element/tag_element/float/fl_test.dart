@@ -491,7 +491,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const flVM1_nTags = <PTag>[
+    const flVM1nTags = <PTag>[
       PTag.kTableOfParameterValues,
       PTag.kRWaveTimeVector,
       PTag.kFilterBeamPathLengthMinimum,
@@ -504,7 +504,7 @@ void main() {
     ];
 
     //VM.6_n
-    const flVM1_6Tags = <PTag>[PTag.kBoundingPolygon];
+    const flVM16Tags = <PTag>[PTag.kBoundingPolygon];
 
     const nonFLTags = <PTag>[
       PTag.kNumberOfIterations,
@@ -702,7 +702,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.float32List(1, i);
         global.throwOnError = false;
-        for (var tag in flVM1_nTags) {
+        for (var tag in flVM1nTags) {
           expect(FL.isValidLength(tag, validMinVList), true);
         }
       }
@@ -712,7 +712,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.float32List(6, 10);
         global.throwOnError = false;
-        for (var tag in flVM1_6Tags) {
+        for (var tag in flVM16Tags) {
           expect(FL.isValidLength(tag, validMinVList), true);
         }
       }
@@ -721,7 +721,7 @@ void main() {
     test('FL isValidLength VM.k6_n bad values', () {
       for (var i = 1; i < 10; i++) {
         final validMinVList = rng.float32List(1, 5);
-        for (var tag in flVM1_6Tags) {
+        for (var tag in flVM16Tags) {
           global.throwOnError = false;
           expect(FL.isValidLength(tag, validMinVList), false);
           expect(FL.isValidLength(tag, invalidVList), false);

@@ -37,12 +37,12 @@ void main() {
       kDisplayedAreaBottomRightHandCorner,
     ];
 
-    const slVM1_nTag = <int>[
+    const slVM1nTag = <int>[
       kRationalNumeratorValue,
       kSelectorSLValue,
     ];
 
-    const slVM2_2nTags = <int>[kPixelCoordinatesSetTrial];
+    const slVM22nTags = <int>[kPixelCoordinatesSetTrial];
 
     test('SLbytes from VM.k1 good values', () {
       for (var i = 0; i < 10; i++) {
@@ -104,7 +104,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.int32List(1, i);
         global.throwOnError = false;
-        for (var code in slVM1_nTag) {
+        for (var code in slVM1nTag) {
           final e0 = SLbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
@@ -118,7 +118,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.int32List(2, 2);
         global.throwOnError = false;
-        for (var code in slVM2_2nTags) {
+        for (var code in slVM22nTags) {
           final e0 = SLbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
@@ -132,7 +132,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.int32List(1, 1);
         global.throwOnError = false;
-        for (var code in slVM2_2nTags) {
+        for (var code in slVM22nTags) {
           final e0 = SLbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

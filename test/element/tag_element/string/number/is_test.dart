@@ -618,7 +618,7 @@ void main() {
     ];
 
     //VM.k2_2n
-    const isVM2_2nTags = <PTag>[
+    const isVM22nTags = <PTag>[
       PTag.kVerticesOfThePolygonalShutter,
       PTag.kVerticesOfThePolygonalCollimator,
       PTag.kVerticesOfTheOutlineOfPupil,
@@ -630,7 +630,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const isVM1_nTags = <PTag>[
+    const isVM1nTags = <PTag>[
       PTag.kReferencedFrameNumber,
       PTag.kTransformOrderOfAxes,
       PTag.kEchoNumbers,
@@ -825,7 +825,7 @@ void main() {
     test('IS isValidVListLength VM.k2_2n good values', () {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
-        for (var tag in isVM2_2nTags) {
+        for (var tag in isVM22nTags) {
           final validMinVList = rsg.getISList(2, 2);
           final validMaxVList = badLengthList.sublist(0, tag.maxValues);
           expect(IS.isValidLength(tag, validMinVList), true);
@@ -840,7 +840,7 @@ void main() {
     test('IS isValidVListLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getISList(1, 1);
-        for (var tag in isVM2_2nTags) {
+        for (var tag in isVM22nTags) {
           global.throwOnError = false;
           expect(IS.isValidLength(tag, vList), false);
 
@@ -891,7 +891,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getISList(1, i);
         final validMaxLengthList = badLengthList.sublist(0, IS.kMaxLength);
-        for (var tag in isVM1_nTags) {
+        for (var tag in isVM1nTags) {
           log.debug('tag: $tag');
           expect(IS.isValidLength(tag, vList0), true);
           expect(IS.isValidLength(tag, validMaxLengthList), true);
@@ -1208,7 +1208,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in isVM1_nTags) {
+          for (var tag in isVM1nTags) {
             final e0 = IS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

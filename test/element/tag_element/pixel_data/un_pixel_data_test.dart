@@ -561,11 +561,11 @@ void main() {
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
-    test('Create Uint8Base.fromBytes', () {
-      expect(Uint8.fromBytes(frame), equals(frame));
+    test('Create Uint8.fromBytes', () {
+      expect(Uint8.fromBytes(frame), equals(frame.asUint8List()));
     });
 
-    test('Create Uint8Base.fromBytes', () {
+    test('Create Uint8.fromBytes', () {
       global.throwOnError = false;
       const uInt8Max = [UN.kMaxValue];
       const uInt16Max = [kUint16Max];
@@ -573,7 +573,7 @@ void main() {
       //   final uInt8ListV11 = uInt8ListV1.buffer.asUint8List();
       expect(Uint8.fromBytes(bytes0), equals(uInt8Max));
 
-      expect(Uint8.fromBytes(frame), equals(frame));
+      expect(Uint8.fromBytes(frame), equals(frame.asUint8List()));
 
       final uInt16List1 = Uint16List.fromList(uInt16Max);
       //  final uInt8ListV12 = uInt16ListV1.buffer.asUint8List();
@@ -581,20 +581,26 @@ void main() {
       expect(Uint16.fromBytes(bytes1), uInt16List1);
     });
 
-    test('Create Uint32Base.fromBase64', () {
+    test('Create Uint32.fromBase64', () {
       final s = Uint8.toBase64(testFrame);
       expect(Uint8.fromBase64(s), equals(testFrame));
     });
 
-    test('Create Uint32Base.fromBytes', () {
+    //Urgent: why is this call uint32.fromBytes??
+    test('Create Uint32.fromBytes', () {
       final bytes = Uint8.toBytes(testFrame);
       log.debug('s: "$bytes"');
-      expect(Uint8.fromBytes(bytes), bytes);
+      final uint8a = Uint8.fromBytes(bytes);
+      final uint8b = bytes.asUint8List();
+      expect(uint8a, uint8b);
     });
 
-    test('Create Uint32Base.fromByteData', () {
+    test('Create Uint32.fromByteData', () {
       final bd = Uint8.toByteData(testFrame);
-      expect(Uint8.fromByteData(bd), equals(frame));
+
+      final uint8 = Uint8.fromByteData(bd);
+      print('L1: ${uint8.length}');
+      expect(uint8, equals(frame.asUint8List()));
     });
   });
 }

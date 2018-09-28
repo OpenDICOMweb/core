@@ -600,7 +600,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const tmVM1_nTags = <PTag>[
+    const tmVM1nTags = <PTag>[
       PTag.kCalibrationTime,
       PTag.kTimeOfLastCalibration,
       PTag.kSelectorTMValue,
@@ -769,7 +769,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getTMList(1, i);
-        for (var tag in tmVM1_nTags) {
+        for (var tag in tmVM1nTags) {
           log.debug('tag: $tag');
           expect(TM.isValidLength(tag, vList0), true);
         }
@@ -854,7 +854,7 @@ void main() {
     test('TM isValidValues VM.k1_n length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getTMList(1, i);
-        for (var tag in tmVM1_nTags) {
+        for (var tag in tmVM1nTags) {
           global.throwOnError = false;
           expect(TM.isValidValues(tag, validList), true);
         }
@@ -1030,7 +1030,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in tmVM1_nTags) {
+          for (var tag in tmVM1nTags) {
             final e0 = TM.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

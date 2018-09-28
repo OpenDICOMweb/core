@@ -532,7 +532,7 @@ void main() {
     const usVM4Tags = <PTag>[PTag.kAcquisitionMatrix];
 
     //VM.k1_n
-    const usVM1_nTags = <PTag>[
+    const usVM1nTags = <PTag>[
       PTag.kAcquisitionIndex,
       PTag.kPerimeterTable,
       PTag.kPredictorConstants,
@@ -693,7 +693,7 @@ void main() {
     test('US isValidLength VM.k1_n good values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint16List(1, i);
-        for (var tag in usVM1_nTags) {
+        for (var tag in usVM1nTags) {
           expect(US.isValidLength(tag, vList), true);
 
           expect(US.isValidLength(tag, invalidVList.sublist(0, US.kMaxLength)),
@@ -984,7 +984,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in usVM1_nTags) {
+          for (var tag in usVM1nTags) {
             final e0 = US.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

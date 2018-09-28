@@ -87,10 +87,10 @@ abstract class OBPixelData extends PixelData with Uint8 {
   /// Returns _true_ if [tag] is valid for [OBPixelData].
   /// If [doTestElementValidity] is _false_ then no validation is done.
   // _Note_: The only valid [Tag] for this class is [Tag.kPixelDataOB].
-  static bool isValidTag(Tag tag, [Issues issues]) =>
-      (tag != null && doTestElementValidity && tag == PTag.kPixelDataOB)
-          ? true
-          : invalidTag(tag, issues, OBPixelData);
+  static bool isValidTag(Tag tag, [Issues issues]) {
+    final ok = tag != null && doTestElementValidity && tag == PTag.kPixelDataOB;
+    return ok ? ok : invalidTag(tag, issues, OBPixelData);
+  }
 }
 
 abstract class UNPixelData extends PixelData with Uint8 {
@@ -124,10 +124,10 @@ abstract class UNPixelData extends PixelData with Uint8 {
 
   /// Returns _true_ if [tag] is valid for [UN].
   /// If [doTestElementValidity] is _false_ then no validation is done.
-  static bool isValidTag(Tag tag, [Issues issues]) =>
-      (tag != null && doTestElementValidity && tag == PTag.kPixelDataUN)
-          ? true
-          : invalidTag(tag, issues, UNPixelData);
+  static bool isValidTag(Tag tag, [Issues issues]) {
+    final ok = tag != null && doTestElementValidity && tag == PTag.kPixelDataUN;
+    return ok ? ok : invalidTag(tag, issues, UNPixelData);
+  }
 }
 
 abstract class OWPixelData extends PixelData with Uint16 {
@@ -159,8 +159,8 @@ abstract class OWPixelData extends PixelData with Uint16 {
 
   /// Returns _true_ if [tag] is valid for [OW].
   /// If [doTestElementValidity] is _false_ then no validation is done.
-  static bool isValidTag(Tag tag, [Issues issues]) =>
-      (tag != null && doTestElementValidity && tag == PTag.kPixelDataOW)
-          ? true
-          : invalidTag(tag, issues, OWPixelData);
+  static bool isValidTag(Tag tag, [Issues issues]) {
+    final ok = tag != null && doTestElementValidity && tag == PTag.kPixelDataOW;
+    return ok ? ok : invalidTag(tag, issues, OWPixelData);
+  }
 }

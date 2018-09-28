@@ -53,7 +53,7 @@ class Time implements Comparable<Time> {
   /// Returns `true` if this [Time] is the same as [other].
   @override
   bool operator ==(Object other) =>
-      (other is Time) ? uSeconds == other.uSeconds : false;
+      (other is Time) && uSeconds == other.uSeconds;
 
   bool operator >(Time other) => uSeconds > other.uSeconds;
 

@@ -37,7 +37,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const loVM1_nTags = <int>[
+    const loVM1nTags = <int>[
       kAdmittingDiagnosesDescription,
       kEventTimerNames,
       kInsurancePlanIdentification,
@@ -84,7 +84,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, i);
-        for (var code in loVM1_nTags) {
+        for (var code in loVM1nTags) {
           final e0 = LObytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

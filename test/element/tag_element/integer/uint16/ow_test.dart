@@ -463,7 +463,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const owVM1_nTags = <PTag>[
+    const owVM1nTags = <PTag>[
       PTag.kSelectorOWValue,
     ];
 
@@ -562,7 +562,7 @@ void main() {
         expect(OW.isValidVRIndex(tag.vrIndex), true);
       }
 
-      for (var tag in owVM1_nTags) {
+      for (var tag in owVM1nTags) {
         global.throwOnError = false;
         expect(OW.isValidVRIndex(tag.vrIndex), true);
       }
@@ -686,7 +686,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in owVM1_nTags) {
+          for (var tag in owVM1nTags) {
             final e0 = OW.isValidBytesArgs(tag, vfBytes, OW.kMaxVFLength);
             expect(e0, true);
           }

@@ -38,7 +38,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const daVM1_nTags = <int>[
+    const daVM1nTags = <int>[
       kCalibrationDate,
       kDateOfLastCalibration,
       kSelectorDAValue,
@@ -110,7 +110,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
-        for (var code in daVM1_nTags) {
+        for (var code in daVM1nTags) {
           final e0 = DAbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
@@ -123,7 +123,7 @@ void main() {
     test('DAbytes from VM.k1_n bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDTList(1, 1, 3);
-        for (var code in daVM1_nTags) {
+        for (var code in daVM1nTags) {
           global.throwOnError = false;
           final e0 = DAbytes.fromValues(code, vList0);
           log.debug('e0: $e0');

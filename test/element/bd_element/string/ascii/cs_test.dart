@@ -38,7 +38,7 @@ void main() {
     ];
 
     //VM.k2_n
-    const csVM2_nTags = <int>[kImageType];
+    const csVM2nTags = <int>[kImageType];
 
     //VM.k4
     const csVM4Tags = <int>[
@@ -46,7 +46,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const csVM1_nTags = <int>[
+    const csVM1nTags = <int>[
       kModalitiesInStudy,
       kIndicationType,
       kScanningSequence,
@@ -88,7 +88,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(2, 2);
         global.throwOnError = false;
-        for (var code in csVM2_nTags) {
+        for (var code in csVM2nTags) {
           final e0 = CSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
@@ -115,7 +115,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i);
-        for (var code in csVM1_nTags) {
+        for (var code in csVM1nTags) {
           final e0 = CSbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

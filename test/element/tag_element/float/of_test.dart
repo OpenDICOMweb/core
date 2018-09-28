@@ -192,10 +192,10 @@ void main() {
       final e0 = OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
       final e1 = OFtag(PTag.kVectorGridData, listFloat32Common0.take(1));
       log
-        ..debug(
-            'listFloat32Common0:$listFloat32Common0 , e1.hash_code:${e1.hashCode}')
-        ..debug(
-            'listFloat32Common0:$listFloat32Common0 , e1.hash_code:${e1.hashCode}');
+        ..debug('listFloat32Common0:$listFloat32Common0 , '
+            'e1.hash_code:${e1.hashCode}')
+        ..debug('listFloat32Common0:$listFloat32Common0 , '
+            'e1.hash_code:${e1.hashCode}');
       expect(e0.hashCode == e1.hashCode, true);
       expect(e0 == e1, true);
     });
@@ -386,7 +386,7 @@ void main() {
       PTag.kFloatPixelData,
     ];
 
-    const ofVMk1_nTags = <PTag>[PTag.kSelectorOFValue];
+    const ofVMk1nTags = <PTag>[PTag.kSelectorOFValue];
 
     const otherTags = <PTag>[
       PTag.kPlanningLandmarkID,
@@ -470,7 +470,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final validMinVList = rng.float32List(1, 1);
         global.throwOnError = false;
-        for (var tag in ofVMk1_nTags) {
+        for (var tag in ofVMk1nTags) {
           expect(OF.isValidLength(tag, validMinVList), true);
         }
       }

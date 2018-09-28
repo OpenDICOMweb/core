@@ -40,7 +40,7 @@ void main() {
       kDataSetTrailingPadding
     ];
 
-    const obVM1_nTags1 = <int>[
+    const obVM1nTags1 = <int>[
       kSelectorOBValue,
     ];
 
@@ -62,7 +62,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint8List(1, i);
         global.throwOnError = false;
-        for (var code in obVM1_nTags1) {
+        for (var code in obVM1nTags1) {
           final e0 = OBbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

@@ -246,14 +246,19 @@ abstract class WriteBufferMixin {
   /// Ensures that [_buf] is at least [capacity] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureCapacity(int capacity) => _ensureCapacity(capacity);
-  bool _ensureCapacity(int capacity) =>
-      (capacity > _length) ? _grow(capacity) : false;
+
+  bool _ensureCapacity(int capacity) {
+    if (capacity > _length) return _grow(capacity);
+    return false;
+  }
 
   bool _grow([int capacity]) => _buf.grow(capacity);
 
   /// Grow the buf if the __wIndex is at, or beyond, the end of the current buf.
-  bool _maybeGrow([int size = 1]) =>
-      (_wIndex + size < _length) ? false : _grow(_wIndex + size);
+  bool _maybeGrow([int size = 1]) {
+    if (_wIndex + size < _length) return false;
+    return _grow(_wIndex + size);
+  }
 
   @override
   String toString() => '$runtimeType($_length)[$_wIndex] maxLength: $limit';

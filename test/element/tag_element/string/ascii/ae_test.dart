@@ -461,7 +461,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const aeVM1_nTags = <PTag>[
+    const aeVM1nTags = <PTag>[
       PTag.kRetrieveAETitle,
       PTag.kScheduledStudyLocationAETitle,
       PTag.kScheduledStationAETitle,
@@ -645,7 +645,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getAEList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, AE.kMaxLength);
-        for (var tag in aeVM1_nTags) {
+        for (var tag in aeVM1nTags) {
           log.debug('tag: $tag');
           expect(AE.isValidLength(tag, vList0), true);
           expect(AE.isValidLength(tag, validMaxLengthList), true);
@@ -871,7 +871,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in aeVM1_nTags) {
+          for (var tag in aeVM1nTags) {
             final e0 = AE.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

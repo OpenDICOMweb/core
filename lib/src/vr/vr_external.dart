@@ -108,8 +108,10 @@ abstract class VR<T> {
 
   /// Returns _true_ if [vrIndex] is equal to [target], which MUST be a valid
   /// _VR Index_. Typically, one of the constants (k_XX_Index) is used.
-  static bool isValidIndex(int vrIndex, Issues issues, int target) =>
-      (vrIndex == target) ? true : invalidIndex(vrIndex, issues, target);
+  static bool isValidIndex(int vrIndex, Issues issues, int target) {
+    if (vrIndex != target) return invalidIndex(vrIndex, issues, target);
+    return true;
+  }
 
   /// Returns [vrIndex] if it is equal to [target], which MUST be a valid
   /// _VR Index_. Typically, one of the constants (k_XX_Index) is used.
@@ -140,8 +142,10 @@ abstract class VR<T> {
 
   /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
   /// is be used.
-  static bool isValidCode(int vrCode, Issues issues, int target) =>
-      (vrCode == target) ? true : invalidCode(vrCode, issues, target);
+  static bool isValidCode(int vrCode, Issues issues, int target) {
+    if (vrCode != target) return invalidCode(vrCode, issues, target);
+    return true;
+  }
 
   // ignore: prefer_void_to_null
   static Null badCode(int vrCode, Issues issues, int correctVRIndex) {

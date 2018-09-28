@@ -53,7 +53,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const ulVM1_nTags = <int>[
+    const ulVM1nTags = <int>[
       kSimpleFrameList,
       kReferencedSamplePositions,
       kRationalDenominatorValue,
@@ -94,7 +94,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rng.uint32List(1, i);
         global.throwOnError = false;
-        for(var code in ulVM1_nTags) {
+        for(var code in ulVM1nTags) {
           final e0 = ULbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

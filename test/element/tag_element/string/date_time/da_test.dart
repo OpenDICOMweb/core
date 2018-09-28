@@ -682,7 +682,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const daVM1_nTags = <PTag>[
+    const daVM1nTags = <PTag>[
       PTag.kCalibrationDate,
       PTag.kDateOfLastCalibration,
       PTag.kSelectorDAValue,
@@ -850,7 +850,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDAList(1, i);
-        for (var tag in daVM1_nTags) {
+        for (var tag in daVM1nTags) {
           log.debug('tag: $tag');
           expect(DA.isValidLength(tag, vList0), true);
         }
@@ -949,7 +949,7 @@ void main() {
     test('DA isValidValues VM.k1_n length', () {
       for (var i = 1; i < 10; i++) {
         final validList = rsg.getDAList(1, i);
-        for (var tag in daVM1_nTags) {
+        for (var tag in daVM1nTags) {
           global.throwOnError = false;
           expect(DA.isValidValues(tag, validList), true);
         }
@@ -1117,7 +1117,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in daVM1_nTags) {
+          for (var tag in daVM1nTags) {
             final e0 = DA.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

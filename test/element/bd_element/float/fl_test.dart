@@ -74,10 +74,10 @@ void main() {
   ];
 
   //VM.6_n
-  const flVM1_6Tags = <int>[kBoundingPolygon];
+  const flVM16Tags = <int>[kBoundingPolygon];
 
   //VM.k1_n
-  const flVM1_nTags = <int>[
+  const flVM1nTags = <int>[
     kTableOfParameterValues,
     kRWaveTimeVector,
     kFilterBeamPathLengthMinimum,
@@ -271,7 +271,7 @@ void main() {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.float64List(1, i);
       global.throwOnError = false;
-      for (var code in flVM1_nTags) {
+      for (var code in flVM1nTags) {
         final e0 = FLbytes.fromValues(code, vList0);
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -284,7 +284,7 @@ void main() {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.float64List(6, 6);
       global.throwOnError = false;
-      for (var code in flVM1_6Tags) {
+      for (var code in flVM16Tags) {
         final e0 = FLbytes.fromValues(code, vList0);
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');
@@ -297,7 +297,7 @@ void main() {
     for (var i = 1; i < 10; i++) {
       final vList0 = rng.float64List(1, i);
       global.throwOnError = false;
-      for (var code in flVM1_nTags) {
+      for (var code in flVM1nTags) {
         final e0 = FLbytes.fromValues(code, vList0);
         final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);
         log.debug('e1: $e1');

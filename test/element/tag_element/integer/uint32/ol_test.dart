@@ -480,7 +480,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const olVM1_nTags = <PTag>[PTag.kSelectorOLValue];
+    const olVM1nTags = <PTag>[PTag.kSelectorOLValue];
 
     const otherTags = <PTag>[
       PTag.kColumnAngulationPatient,
@@ -542,7 +542,7 @@ void main() {
       global.throwOnError = false;
       expect(OL.isValidVRIndex(kOLIndex), true);
 
-      for (var tag in olVM1_nTags) {
+      for (var tag in olVM1nTags) {
         global.throwOnError = false;
         expect(OL.isValidVRIndex(tag.vrIndex), true);
       }
@@ -665,7 +665,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in olVM1_nTags) {
+          for (var tag in olVM1nTags) {
             final e0 = OL.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

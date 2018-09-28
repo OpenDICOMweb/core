@@ -40,7 +40,7 @@ void main() {
     ];
 
     //VM.k1
-    const tmVM1_nTags = <int>[
+    const tmVM1nTags = <int>[
       kCalibrationTime,
       kTimeOfLastCalibration,
       kSelectorTMValue,
@@ -95,7 +95,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList0 = rsg.getTMList(1, i);
-        for (var code in tmVM1_nTags) {
+        for (var code in tmVM1nTags) {
           final e0 = TMbytes.fromValues(code, vList0);
           log.debug('e0: $e0');
           final e1 = ByteElement.makeFromBytes(e0.bytes, rds, isEvr: true);

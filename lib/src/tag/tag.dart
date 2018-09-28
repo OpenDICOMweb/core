@@ -255,7 +255,7 @@ abstract class Tag {
   bool isValidLength(Iterable vList, [Issues issues]) {
     assert(vList != null);
     final length = vList.length;
-    if (length == null) return invalidValuesLength(vList, vmMin, vmMax);
+//    if (length == null) return invalidValuesLength(vList, vmMin, vmMax);
     if (isLengthAlwaysValid == true || length == 0) return true;
     return (length >= (minValues * columns)) &&
         ((maxValues == -1 || length <= maxValues) && (length % columns) == 0);
@@ -266,10 +266,10 @@ abstract class Tag {
 
   /// Returns _true_  if [vfLength] is a valid
   /// Value Field length for _this_ [Tag].
-  bool isValidVFLength(int vfLength, [Issues issues]) =>
-      (isVFLengthAlwaysValid(vrIndex))
-          ? true
-          : vr.isValidVFLength(vfLength, vmMin, vmMax);
+  bool isValidVFLength(int vfLength, [Issues issues]) {
+    if (isVFLengthAlwaysValid(vrIndex)) return true;
+    return vr.isValidVFLength(vfLength, vmMin, vmMax);
+  }
 
   bool isNotValidVFLength(int vfLength, [Issues issues]) =>
       !isValidVFLength(vfLength, issues);
@@ -351,16 +351,14 @@ abstract class Tag {
       return isValidPrivateCode(code);
     } else {
       final tag = PTag.lookupByCode(code);
-      return (tag == null) ? false : true;
+      return tag != null;
     }
   }
 
   static bool isValidPrivateCode(int code) {
     if (!code.isOdd) return false;
     final elt = code & 0xFFFF;
-    return ((elt > 0 && elt < 0x10) || (elt > 0xFF && elt < 0x1000))
-        ? false
-        : true;
+    return (elt >= 0x10 && elt <= 0xFF) || (elt >= 0x1000 && elt <= 0xFFFF);
   }
 
   /// Returns an appropriate [Tag] based on the arguments.
@@ -624,7 +622,7 @@ abstract class Tag {
   static bool isPublicGroupLengthKeywordCode(String keywordCode) {
     final code = int.tryParse(keywordCode);
     if (code == null) return false;
-    return (code & 0x1FFFF) == 0 ? true : false;
+    return (code & 0x1FFFF) == 0;
   }
 
   /// Returns true if [code] is a valid Private Creator Code.
@@ -657,7 +655,8 @@ abstract class Tag {
     // Trick to check that it is both Private and Data.
     final bits = pdCode & 0x1FFFF;
     if (bits < 0x11000 || bits > 0x1FFFF) return false;
-    return (pcCode == 0) ? true : _isValidPDCode(pdCode, pcCode);
+    if (pcCode == 0) return true;
+    return _isValidPDCode(pdCode, pcCode);
   }
 
   ///  Returns true if [pdCode] is a valid Private Data Code,
@@ -772,9 +771,8 @@ abstract class Tag {
   /// is used.
   static bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) {
     if (!doTestElementValidity) return true;
-    return (tag != null && tag.vrIndex == targetVR)
-        ? true
-        : invalidTag(tag, issues, type);
+    if (tag != null && tag.vrIndex == targetVR) return true;
+    return invalidTag(tag, issues, type);
   }
 
   static const List<int> kSpecialSSVRs = [kUSSSIndex, kUSSSOWIndex];
@@ -786,9 +784,8 @@ abstract class Tag {
       Tag tag, Issues issues, int targetVR, Type type) {
     if (!doTestElementValidity || targetVR == kUNIndex) return true;
     final vrIndex = tag.vrIndex;
-    return (tag != null &&
-            (vrIndex == targetVR || kSpecialSSVRs.contains(vrIndex)))
-        ? true
-        : invalidTag(tag, issues, type);
+    if (tag != null && (vrIndex == targetVR || kSpecialSSVRs.contains(vrIndex)))
+      return true;
+    return invalidTag(tag, issues, type);
   }
 }

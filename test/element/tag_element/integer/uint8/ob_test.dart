@@ -386,13 +386,13 @@ void main() {
     test('OB equal', () {
       for (var i = 1; i < 10; i++) {
         final vList = rng.uint8List(1, i);
-        final bytesA = new Bytes.typedDataView(vList);
+        final bytesA =  Bytes.typedDataView(vList);
         final uInt8List0 = bytesA.buffer.asUint8List();
-        final bytesB = new Bytes.typedDataView(vList);
+        final bytesB =  Bytes.typedDataView(vList);
         final uInt8List1 = bytesB.buffer.asUint8List();
 
         final vList0 = rng.uint8List(2, 2);
-        final bytesC = new Bytes.typedDataView(vList0);
+        final bytesC =  Bytes.typedDataView(vList0);
         final uInt8List2 = bytesC.buffer.asUint8List();
 
         final equal0 = Uint8.equal(uInt8List0, uInt8List1);
@@ -471,7 +471,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const obVM1_nTags = <PTag>[
+    const obVM1nTags = <PTag>[
       PTag.kSelectorOBValue,
     ];
 
@@ -532,7 +532,7 @@ void main() {
         expect(OB.isValidTag(tag), true);
       }
 
-      for (var tag in obVM1_nTags) {
+      for (var tag in obVM1nTags) {
         expect(OB.isValidTag(tag), true);
       }
 
@@ -672,7 +672,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in obVM1_nTags) {
+          for (var tag in obVM1nTags) {
             final e0 = OB.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

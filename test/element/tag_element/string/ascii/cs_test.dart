@@ -481,7 +481,7 @@ void main() {
     ];
 
     //VM.k2_n
-    const csVM2_nTags = <PTag>[PTag.kImageType];
+    const csVM2nTags = <PTag>[PTag.kImageType];
 
     //VM.k4
     const csVM4Tags = <PTag>[
@@ -489,7 +489,7 @@ void main() {
     ];
 
     //VM.k1_n
-    const csVM1_nTags = <PTag>[
+    const csVM1nTags = <PTag>[
       PTag.kModalitiesInStudy,
       PTag.kIndicationType,
       PTag.kScanningSequence,
@@ -710,7 +710,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getCSList(10, 10);
         final validMaxLengthList = invalidVList.sublist(0, CS.kMaxLength);
-        for (var tag in csVM2_nTags) {
+        for (var tag in csVM2nTags) {
           expect(CS.isValidLength(tag, vList), true);
           expect(CS.isValidLength(tag, validMaxLengthList), true);
         }
@@ -720,7 +720,7 @@ void main() {
     test('CS isValidVListLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
         final vList = rsg.getCSList(1, 1);
-        for (var tag in csVM2_nTags) {
+        for (var tag in csVM2nTags) {
           global.throwOnError = false;
           expect(CS.isValidLength(tag, vList), false);
 
@@ -783,7 +783,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getCSList(1, i);
         final validMaxLengthList = invalidVList.sublist(0, CS.kMaxLength);
-        for (var tag in csVM1_nTags) {
+        for (var tag in csVM1nTags) {
           log.debug('tag: $tag');
           expect(CS.isValidLength(tag, vList0), true);
           expect(CS.isValidLength(tag, validMaxLengthList), true);
@@ -976,7 +976,7 @@ void main() {
             expect(e0, true);
           }
         } else {
-          for (var tag in csVM1_nTags) {
+          for (var tag in csVM1nTags) {
             final e0 = CS.isValidBytesArgs(tag, vfBytes);
             expect(e0, true);
           }

@@ -148,9 +148,8 @@ abstract class AS extends StringAscii {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return Age.isValidString(s, issues)
-        ? true
-        : invalidAgeString('Invalid Age String (AS): "$s"', issues);
+    final ok = Age.isValidString(s, issues);
+    return ok ? ok : invalidAgeString('Invalid Age String (AS): "$s"', issues);
   }
 
   static Age tryParse(String s, {bool allowLowerCase = false}) =>
@@ -313,11 +312,10 @@ abstract class DA extends StringBase {
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
-    return s.isEmpty
-        ? true
-        : Date.isValidString(s, issues: issues)
-            ? true
-            : invalidString('Invalid Date String (DA): "$s"', issues);
+    if (s.isEmpty) return true;
+
+    final ok = Date.isValidString(s, issues: issues);
+    return ok ? ok : invalidString('Invalid Date String (DA): "$s"', issues);
   }
 }
 
@@ -443,9 +441,8 @@ abstract class DT extends StringBase {
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
     final s0 = s.trimRight();
-    return DcmDateTime.isValidString(s0, issues: issues)
-        ? true
-        : invalidString('Invalid Date Time (DT): "$s0"', issues);
+    final ok = DcmDateTime.isValidString(s0, issues: issues);
+    return ok ? ok : invalidString('Invalid Date Time (DT): "$s0"', issues);
   }
 }
 
@@ -578,8 +575,7 @@ abstract class TM extends StringBase {
     if (s == null || !isValidValueLength(s, issues)) return false;
     final s0 = s.trimRight();
     if (s0.isEmpty) return true;
-    return Time.isValidString(s0, issues: issues)
-        ? true
-        : invalidString('Invalid Time String (TM): "$s0"', issues);
+    final ok = Time.isValidString(s0, issues: issues);
+    return ok ? ok : invalidString('Invalid Time String (TM): "$s0"', issues);
   }
 }

@@ -371,7 +371,7 @@ void main() {
         ..debug(' u16Frame: $u16Frame')
         ..debug('b64Pixels: $b64Pixels')
         ..debug(v);
-      expect(v, equals(u16Frame));
+      expect(v, equals(u16Frame.asUint8List()));
     });
 
     test('Create Uint16Base.listToBase64', () {
