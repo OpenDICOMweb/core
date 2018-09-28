@@ -438,6 +438,48 @@ void main() {
         expect(vfb0, equals(vList0));
       }
     });
+
+    test('PN check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getPNList(1, 1);
+        final e0 = PNtag(PTag.kEvaluatorName, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getPNList(1, i);
+        final e0 = PNtag(PTag.kSelectorPNValue, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('PN valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getPNList(1, 1);
+        final e0 = PNtag(PTag.kSelectorPNValue, vList);
+        final e1 = PNtag(PTag.kSelectorPNValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('PN valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getPNList(1, i);
+        final vList1 = rsg.getPNList(1, 1);
+        final e0 = PNtag(PTag.kSelectorPNValue, vList0);
+        final e1 = PNtag(PTag.kSelectorPNValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
+      }
+    });
   });
 
   group('PN', () {

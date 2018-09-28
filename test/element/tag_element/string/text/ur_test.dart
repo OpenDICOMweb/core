@@ -399,6 +399,48 @@ void main() {
         expect(vfb0, equals(vList0));
       }
     });
+
+    test('UR check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getURList(1, 1);
+        final e0 = URtag(PTag.kRetrieveURI, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getURList(1, i);
+        final e0 = URtag(PTag.kSelectorURValue, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('UR valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getURList(1, 1);
+        final e0 = URtag(PTag.kSelectorURValue, vList);
+        final e1 = URtag(PTag.kSelectorURValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('UR valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getURList(1, i);
+        final vList1 = rsg.getURList(1, 1);
+        final e0 = URtag(PTag.kSelectorURValue, vList0);
+        final e1 = URtag(PTag.kSelectorURValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
+      }
+    });
   });
 
   group('UR', () {

@@ -292,8 +292,8 @@ void main() {
       log
         ..debug('e1: $e1 e3: $e3')
         ..debug('e1.hashCode: ${e1.hashCode} e3.hashCode: ${e3.hashCode}')
-        ..debug('e1.nDays : ${e1.age.nDays } e3.nDays : ${e3.age.nDays }')
-        ..debug('e1.nDays : ${e1.age.nDays } e3.nDays : ${e3.age.nDays }');
+        ..debug('e1.nDays : ${e1.age.nDays} e3.nDays : ${e3.age.nDays}')
+        ..debug('e1.nDays : ${e1.age.nDays} e3.nDays : ${e3.age.nDays}');
       expect(e1 == e3, false);
       expect(e1.hashCode == e3.hashCode, false);
     });
@@ -493,6 +493,48 @@ void main() {
         const regX = r'[0-9A-Za-z]';
         final match0 = e0.match(regX);
         expect(match0, true);
+      }
+    });
+
+    test('AS check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getASList(1, 1);
+        final e0 = AStag(PTag.kPatientAge, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getASList(1, i);
+        final e0 = AStag(PTag.kSelectorASValue, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('AS valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getASList(1, 1);
+        final e0 = AStag(PTag.kSelectorASValue, vList);
+        final e1 = AStag(PTag.kSelectorASValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('AS valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getASList(1, i);
+        final vList1 = rsg.getASList(1, 1);
+        final e0 = AStag(PTag.kSelectorASValue, vList0);
+        final e1 = AStag(PTag.kSelectorASValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
       }
     });
   });

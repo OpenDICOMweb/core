@@ -531,6 +531,48 @@ void main() {
         expect(match0, true);
       }
     });
+
+    test('TM check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getTMList(1, 1);
+        final e0 = TMtag(PTag.kSeriesTime, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 1; i < 10; i++) {
+        final vList1 = rsg.getTMList(1, i);
+        final e0 = TMtag(PTag.kSelectorTMValue, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('TM valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getTMList(1, 1);
+        final e0 = TMtag(PTag.kSelectorTMValue, vList);
+        final e1 = TMtag(PTag.kSelectorTMValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('TM valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getTMList(1, i);
+        final vList1 = rsg.getTMList(1, 1);
+        final e0 = TMtag(PTag.kSelectorTMValue, vList0);
+        final e1 = TMtag(PTag.kSelectorTMValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
+      }
+    });
   });
 
   group('TM Element', () {
@@ -557,7 +599,7 @@ void main() {
       PTag.kSafePositionExitTime,
     ];
 
-    //VM.k1
+    //VM.k1_n
     const tmVM1_nTags = <PTag>[
       PTag.kCalibrationTime,
       PTag.kTimeOfLastCalibration,
@@ -697,7 +739,7 @@ void main() {
       }
     });
 
-    test('DA isValidLength VM.k1 bad values', () {
+    test('TM isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getTMList(2, i + 1);
         for (var tag in tmVM1Tags) {

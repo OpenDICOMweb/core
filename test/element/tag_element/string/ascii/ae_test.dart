@@ -299,8 +299,8 @@ void main() {
 
       global.throwOnError = true;
       expect(
-          () => AEtag
-              .fromValues(PTag.kScheduledStudyLocationAETitle, <String>[null]),
+          () => AEtag.fromValues(
+              PTag.kScheduledStudyLocationAETitle, <String>[null]),
           throwsA(const TypeMatcher<InvalidValuesError>()));
     });
 
@@ -400,6 +400,49 @@ void main() {
         final e0 = AEtag(PTag.kSelectorAEValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
+      }
+    });
+
+    test('AE check', () {
+      for (var i = 0; i < 10; i++) {
+        final vList = rsg.getAEList(1, 1);
+        final e0 = AEtag(PTag.kNetworkID, vList);
+        log.debug('e0: $e0');
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+
+        log..debug('e0: $e0, values: ${e0.values}')..debug('e0: $e0');
+        expect(e0[0], equals(vList[0]));
+      }
+
+      for (var i = 0; i < 10; i++) {
+        final vList1 = rsg.getAEList(1, 10);
+        final e0 =
+            AEtag(PTag.kSelectorAEValue, vList1);
+        expect(e0.hasValidValues, true);
+        expect(e0.check(), true);
+        expect(e0[0], equals(vList1[0]));
+      }
+    });
+
+    test('AE valuesEqual good values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList = rsg.getAEList(1, 1);
+        final e0 = AEtag(PTag.kSelectorAEValue, vList);
+        final e1 = AEtag(PTag.kSelectorAEValue, vList);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), true);
+      }
+    });
+
+    test('AE valuesEqual bad values', () {
+      for (var i = 1; i < 10; i++) {
+        final vList0 = rsg.getAEList(1, i);
+        final vList1 = rsg.getAEList(1, 1);
+        final e0 = AEtag(PTag.kSelectorAEValue, vList0);
+        final e1 = AEtag(PTag.kSelectorAEValue, vList1);
+        log.debug('e0: $e0 , e1: $e1');
+        expect(e0.valuesEqual(e1), false);
       }
     });
   });
