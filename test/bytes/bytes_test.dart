@@ -258,6 +258,58 @@ void main() {
       expect(dsBytes0.hasPrefix, true);
       expect(dsBytes0.vfOffset == 132, true);
       expect(dsBytes0.vfLengthField, equals(bytes.length - 132));
+
+      expect(dsBytes0.getUint8(vList0.length),
+          equals(bytes.getUint8(vList0.length)));
+
+      expect(dsBytes0.getUint16(vList0.length),
+          equals(bytes.getUint16(vList0.length)));
+
+      expect(dsBytes0.getUint32(vList.length),
+          equals(bytes.getUint32(vList.length)));
+    });
+
+    test('IDSBytes', () {
+      final vList = ['1q221'];
+      final vList0 = ['1q221', 'sadaq223'];
+      final bytes = Bytes.fromAsciiList(vList);
+      final bytes0 = Bytes.fromAsciiList(vList0);
+      final idsBytes0 = IDSBytes(bytes);
+      final idsBytes1 = IDSBytes(bytes);
+      final idsBytes2 = IDSBytes(bytes0);
+      log.debug('idsBytes0: $idsBytes0');
+
+      expect(idsBytes0.hashCode == idsBytes1.hashCode, true);
+      expect(idsBytes0.hashCode == idsBytes2.hashCode, false);
+
+      expect(idsBytes0 == idsBytes1, true);
+      expect(idsBytes0 == idsBytes2, false);
+
+      expect(idsBytes0.bytes, equals(bytes));
+
+      expect(idsBytes0.vfLength, equals(bytes.length - 8));
+      expect(idsBytes0.dsLength, equals(bytes.length));
+
+      expect(idsBytes0.dsStart, equals(bytes.offset));
+      expect(idsBytes0.dsEnd, equals(bytes.offset + bytes.length));
+
+      expect(idsBytes0.vfOffset == 8, true);
+
+      final list = <int>[];
+      for (var i = 0; i < vList[0].length; i++) {
+        final data = vList[0].codeUnitAt(i);
+        list.add(data);
+      }
+      expect(idsBytes0.vfAsUint8List, equals(list));
+
+      expect(idsBytes0.getUint8(vList0.length),
+          equals(bytes.getUint8(vList0.length)));
+
+      expect(idsBytes0.getUint16(vList0.length),
+          equals(bytes.getUint16(vList0.length)));
+
+      expect(idsBytes0.getUint32(vList.length),
+          equals(bytes.getUint32(vList.length)));
     });
   });
 }

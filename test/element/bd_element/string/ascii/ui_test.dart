@@ -46,7 +46,6 @@ void main() {
 
     test('UIbytes from VM.k1', () {
       global.throwOnError = false;
-      global.level = Level.debug;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUIList(1, 1);
         for (var code in uiVM1Tags) {
@@ -61,7 +60,6 @@ void main() {
 
     test('UIbytes from VM.k1 bad length', () {
       global.throwOnError = false;
-      global.level = Level.debug;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUIList(2, i + 1);
         for (var code in uiVM1Tags) {
