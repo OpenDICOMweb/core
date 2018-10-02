@@ -19,6 +19,9 @@ class Entry {
 
   Entry(this.level, this.element, [this.msg]);
 
+  factory Entry.invalidNumberOfValues(Element e) =>
+      Entry(Level.error, e, 'Element with an invalid Number of values');
+
   String get name => level.name;
 
   Tag get tag => (element != null) ? element.tag : null;
@@ -35,9 +38,6 @@ class Entry {
   @override
   String toString() =>
       (msg == null) ? '$name: $element' : '$name: $element - $msg';
-
-  static Entry invalidNumberOfValues(Element e) =>
-      Entry(Level.error, e, 'Element with an invalid Number of values');
 }
 
 /// A warning about a Dataset or an Element in a Dataset.

@@ -86,5 +86,6 @@ class Timestamp {
   @override
   String toString() => '$second: $msg';
 
+  // ignore: prefer_constructors_over_static_methods
   static Timestamp get now => Timestamp();
 }

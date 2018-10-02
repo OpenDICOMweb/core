@@ -158,6 +158,7 @@ class Profile {
   @override
   String toString() => 'Profile: $name';
 
+  // ignore: prefer_constructors_over_static_methods
   static Profile parse(String s) {
     final Map map = cvt.json.decode(s);
     return Profile._(

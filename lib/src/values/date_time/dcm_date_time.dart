@@ -269,6 +269,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
   String toString() => inet;
 
   /// Returns the current [DcmDateTime].
+  // ignore: prefer_constructors_over_static_methods
   static DcmDateTime get now => DcmDateTime.fromDart(DateTime.now());
 
   /// The minimum length of a [DcmDateTime] [String].
@@ -299,6 +300,7 @@ class DcmDateTime implements Comparable<DcmDateTime> {
       isValidDcmDateTimeString(s, start: start, end: end, issues: issues);
 
   /// Returns a DICOM [DcmDateTime], if [s] is a valid DT [String];
+  // ignore: prefer_constructors_over_static_methods
   static DcmDateTime parse(String s,
       {int start = 0,
       int end,

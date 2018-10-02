@@ -14,7 +14,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/uInt8_base_test', level: Level.debug);
+  Server.initialize(name: 'element/uInt8_base_test', level: Level.info);
   final rng = RNG(1);
   global.throwOnError = false;
 
@@ -130,7 +130,7 @@ void main() {
   });
 
   test('Uint8 fromBase64', () {
-    global.level = Level.debug;
+    global.level = Level.info;
     for (var i = 0; i < 10; i++) {
       final vList0 = rng.uint8List(0, i);
       final bytes0 = Bytes.typedDataView(vList0);

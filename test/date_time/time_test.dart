@@ -11,7 +11,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'time_test', level: Level.debug, throwOnError: true);
+  Server.initialize(name: 'time_test', level: Level.info, throwOnError: true);
 
   const goodDcmTimes = <String>[
     '000000',

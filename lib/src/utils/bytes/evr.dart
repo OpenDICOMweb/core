@@ -62,6 +62,24 @@ class EvrShortBytes extends EvrBytes {
   EvrShortBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian);
 
+  // Urgent: rename .empty
+  factory EvrShortBytes.makeEmpty(int code, int vfLength, int vrCode,
+      [Endian endian]) {
+    final e = EvrShortBytes(kHeaderLength + vfLength, endian)
+      ..evrSetShortHeader(code, vfLength, vrCode);
+    return e;
+  }
+
+  factory EvrShortBytes.makeFromBytes(int code, Bytes vfBytes, int vrCode,
+      [Endian endian = Endian.little]) {
+    final vfLength = vfBytes.length;
+    assert(vfLength.isEven);
+    final e = EvrShortBytes(kHeaderLength + vfLength, endian)
+      ..evrSetShortHeader(code, vfLength, vrCode)
+      ..setByteData(kVFOffset, vfBytes._bd);
+    return e;
+  }
+
   @override
   int get vfOffset => kVFOffset;
   @override
@@ -85,23 +103,6 @@ class EvrShortBytes extends EvrBytes {
   static const int kVFLengthOffset = 6;
   static const int kVFOffset = 8;
   static const int kHeaderLength = kVFOffset;
-
-  static EvrShortBytes makeEmpty(int code, int vfLength, int vrCode,
-      [Endian endian]) {
-    final e = EvrShortBytes(kHeaderLength + vfLength, endian)
-      ..evrSetShortHeader(code, vfLength, vrCode);
-    return e;
-  }
-
-  static EvrShortBytes makeFromBytes(int code, Bytes vfBytes, int vrCode,
-      [Endian endian = Endian.little]) {
-    final vfLength = vfBytes.length;
-    assert(vfLength.isEven);
-    final e = EvrShortBytes(kHeaderLength + vfLength, endian)
-      ..evrSetShortHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes._bd);
-    return e;
-  }
 }
 
 class EvrLongBytes extends EvrBytes {
@@ -112,6 +113,27 @@ class EvrLongBytes extends EvrBytes {
 
   EvrLongBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian);
+
+  // Urgent: rename .empty
+  factory EvrLongBytes.makeEmpty(int code, int vfLength, int vrCode,
+      [Endian endian]) {
+    //assert(vfLength.isEven);
+    final e = EvrLongBytes(kHeaderLength + vfLength, endian)
+      ..evrSetLongHeader(code, vfLength, vrCode);
+    return e;
+  }
+
+  // Urgent: rename .fromBytes
+  factory EvrLongBytes.makeFromBytes(int code, Bytes vfBytes, int vrCode,
+      [Endian endian]) {
+    final vfLength = vfBytes.length;
+    assert(vfLength.isEven);
+    final e = EvrLongBytes(kHeaderLength + vfLength, endian)
+      ..evrSetLongHeader(code, vfLength, vrCode)
+      ..setByteData(kVFOffset, vfBytes._bd);
+    return e;
+  }
+
   @override
   int get vfOffset => kVFOffset;
   @override
@@ -135,22 +157,4 @@ class EvrLongBytes extends EvrBytes {
   static const int kVFLengthOffset = 8;
   static const int kVFOffset = 12;
   static const int kHeaderLength = kVFOffset;
-
-  static EvrLongBytes makeEmpty(int code, int vfLength, int vrCode,
-      [Endian endian]) {
-    //assert(vfLength.isEven);
-    final e = EvrLongBytes(kHeaderLength + vfLength, endian)
-      ..evrSetLongHeader(code, vfLength, vrCode);
-    return e;
-  }
-
-  static EvrLongBytes makeFromBytes(int code, Bytes vfBytes, int vrCode,
-      [Endian endian]) {
-    final vfLength = vfBytes.length;
-    assert(vfLength.isEven);
-    final e = EvrLongBytes(kHeaderLength + vfLength, endian)
-      ..evrSetLongHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes._bd);
-    return e;
-  }
 }

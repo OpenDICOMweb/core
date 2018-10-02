@@ -165,6 +165,7 @@ class Time implements Comparable<Time> {
   String toString() => inet;
 
   /// Returns the current [Time].
+  // ignore: prefer_constructors_over_static_methods
   static Time get now {
     final dt = DateTime.now();
     return Time.fromMicroseconds(
@@ -178,6 +179,7 @@ class Time implements Comparable<Time> {
 
   /// Returns a [Time] corresponding to [s], if [s] is valid;
   /// otherwise, returns _null_.
+  // ignore: prefer_constructors_over_static_methods
   static Time parse(String s,
       {int start = 0, int end, Issues issues, OnTimeParseError onError}) {
     final us = parseDcmTime(s, start: start, end: end);

@@ -80,6 +80,7 @@ class Age {
           {Age onError(String s), bool allowLowercase = false}) =>
       parseAgeString(s, allowLowercase: allowLowercase);
 
+  // ignore: prefer_constructors_over_static_methods
   static Age tryParse(String s, {bool allowLowercase = true}) {
     final days = tryParseString(s);
     return (days == -1) ? null : Age(days);
@@ -92,6 +93,7 @@ class Age {
   static int tryParseString(String s, {bool allowLowercase = false}) =>
       tryParseAgeString(s, allowLowercase: allowLowercase);
 
+  // ignore: prefer_constructors_over_static_methods
   static Age parse(String s,
       {Age onError(String s), bool allowLowercase = false}) {
     int days;

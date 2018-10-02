@@ -190,6 +190,7 @@ class Uid {
   /// created and returned.
   ///
   /// If [s] is not a valid [Uid] null is returns
+  // ignore: prefer_constructors_over_static_methods
   static Uid tryParse(String s) {
     final v = cleanUidString(s);
     if (Uid.isValidString(v)) {

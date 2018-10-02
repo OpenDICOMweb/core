@@ -18,6 +18,30 @@ class IvrBytes extends DicomBytes {
 
   IvrBytes.view(Bytes bytes, [int start = 0, int end, Endian endian])
       : super._view(bytes, start, end, endian);
+
+  /// Urgent: change to empty
+  factory IvrBytes.makeEmpty(
+      int code,
+      int vfLength,
+      int vrCode,
+      ) {
+    assert(vfLength.isEven);
+    return IvrBytes(kHeaderLength + vfLength)
+      ..ivrSetHeader(code, vfLength, vrCode);
+  }
+
+  factory IvrBytes.makeFromBytes(
+    int code,
+    Bytes vfBytes,
+    int vrCode,
+  ) {
+    final vfLength = vfBytes.length;
+    assert(vfLength.isEven);
+    return IvrBytes(kHeaderLength + vfLength)
+      ..ivrSetHeader(code, vfLength, vrCode)
+      ..setByteData(kVFOffset, vfBytes._bd);
+  }
+
   @override
   bool get isEvr => false;
   @override
@@ -50,26 +74,4 @@ class IvrBytes extends DicomBytes {
   static const int kVFLengthOffset = 4;
   static const int kVFOffset = 8;
   static const int kHeaderLength = 8;
-
-  static IvrBytes makeEmpty(
-    int code,
-    int vfLength,
-    int vrCode,
-  ) {
-    assert(vfLength.isEven);
-    return IvrBytes(kHeaderLength + vfLength)
-      ..ivrSetHeader(code, vfLength, vrCode);
-  }
-
-  static IvrBytes makeFromBytes(
-    int code,
-    Bytes vfBytes,
-    int vrCode,
-  ) {
-    final vfLength = vfBytes.length;
-    assert(vfLength.isEven);
-    return IvrBytes(kHeaderLength + vfLength)
-      ..ivrSetHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes._bd);
-  }
 }

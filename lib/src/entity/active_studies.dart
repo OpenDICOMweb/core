@@ -47,9 +47,6 @@ class ActiveStudies extends Object with MapMixin<Uid, Study> {
 
   ActiveStudies._();
 
-  static ActiveStudies get activeStudies =>
-      _activeStudies ??= ActiveStudies._();
-
   /// Returns the [Study] that has [uid].
   @override
   Study operator [](Object uid) => _studies[uid];
@@ -164,6 +161,10 @@ ActiveStudies:
       '$runtimeType: ${_subjects.length} Patients, ${_studies.length} Studies';
 
   //**** Static methods ****
+
+  // ignore: prefer_constructors_over_static_methods
+  static ActiveStudies get activeStudies =>
+      _activeStudies ??= ActiveStudies._();
 
   /// Returns the corresponding [Study], or _null_ if not present.
   static Study lookupStudy(Uid studyUid) => _studies[studyUid];

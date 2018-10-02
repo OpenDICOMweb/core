@@ -52,6 +52,10 @@ class Date implements Comparable<Date> {
     }
   }
 
+  /// Returns a new [Date] that is equal to the Epoch Day.
+  factory Date.fromEpochDay(int epochDay) =>
+      Date._(epochDay * kMicrosecondsPerDay);
+
   /// Creates a [Date].
   Date._(this.microseconds);
 
@@ -155,10 +159,6 @@ class Date implements Comparable<Date> {
   @override
   String toString() => inet;
 
-  /// Returns a new [Date] that is equal to the Epoch Day.
-  static Date fromEpochDay(int epochDay) =>
-      Date._(epochDay * kMicrosecondsPerDay);
-
   // Urgent remove
   /// Returns _true_ of [s] contains only spaces.
   static bool isAllBlanks(String s, int start, [int end]) {
@@ -170,6 +170,7 @@ class Date implements Comparable<Date> {
 
   /// Returns a [Date] corresponding to [s], if [s] is valid;
   /// otherwise, returns _null_.
+  // ignore: prefer_constructors_over_static_methods
   static Date parse(String s,
       {int start = 0,
       int end,

@@ -24,10 +24,10 @@ class ByteRootDataset extends MapRootDataset with ByteDataset {
   ByteRootDataset.empty([String path = '', Bytes bd, int fmiEnd])
       : super(FmiMap.empty(), <int, Element>{}, path, bd, fmiEnd);
 
-  /// Creates a [ByteRootDataset] from another [ByteRootDataset].
-  ByteRootDataset.from(ByteRootDataset rds) : super.from(rds);
-
-  static ByteRootDataset fromBytes(FmiMap fmi, Map<int, Element> eMap,
+  factory ByteRootDataset.fromBytes(FmiMap fmi, Map<int, Element> eMap,
           String path, Bytes bd, int fmiEnd) =>
       ByteRootDataset(fmi, eMap, path, bd, fmiEnd);
+
+  /// Creates a [ByteRootDataset] from another [ByteRootDataset].
+  ByteRootDataset.from(ByteRootDataset rds) : super.from(rds);
 }

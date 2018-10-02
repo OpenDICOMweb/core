@@ -12,7 +12,7 @@ import 'package:test/test.dart' hide group;
 import 'package:core/src/tag/code.dart';
 
 void main() {
-  Server.initialize(name: 'pc_tag_test', level: Level.debug);
+  Server.initialize(name: 'pc_tag_test', level: Level.info);
 
   const kInvalidPrivateCodes = [
     0x00080000,

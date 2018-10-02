@@ -11,7 +11,7 @@ import 'package:test/test.dart';
 
 void main() {
   Server.initialize(
-      name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.debug);
+      name: 'dcm_date_time', minYear: -1000, maxYear: 3000, level: Level.info);
 
   const goodDcmDateTimeList = <String>[
     '19500718105630',
@@ -83,7 +83,7 @@ void main() {
 
   group('isValid', () {
     test('isValid Good DcmDateTime', () {
-      global.level = Level.debug;
+      global.level = Level.info;
 
       for (var s in goodDcmDateTimeList) {
         log.debug('s: $s');
@@ -98,7 +98,7 @@ void main() {
     });
 
     test('isValid Bad DcmDateTime', () {
-      global.level = Level.debug;
+      global.level = Level.info;
       global.throwOnError = false;
 
       for (var dt in badDcmDateTimeList) {
@@ -347,7 +347,7 @@ void main() {
 
     // Urgent Jim Fix
     test('DcmDateTime add hour', () {
-      global.level = Level.debug;
+      global.level = Level.info;
       final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
       //expect(dt0.microseconds == 0, true);

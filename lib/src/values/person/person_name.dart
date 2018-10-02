@@ -98,6 +98,7 @@ class PersonName {
 
   /// Parses a PersonName [String] composed of up to three Component Groups,
   /// and if successful, returns it; otherwise, returns _null_.
+  // ignore: prefer_constructors_over_static_methods
   static PersonName parse(String s) {
     if (s == null || s == '') return null;
     // Parse a PersonName
@@ -224,6 +225,7 @@ class Name {
   }
 
   /// Parses a Component Group into a [Name]
+  // ignore: prefer_constructors_over_static_methods
   static Name parse(String s,
       {int start = 0, int end, Issues issues, PersonName onError(String s)}) {
     if (s == null || s == '' || s.length > 64 || !_filteredTest(s, _isPNChar))

@@ -112,6 +112,8 @@ class RDSBytes extends DSBytes {
         fmiEnd = 0,
         hasPrefix = false;
 
+  factory RDSBytes.make(Bytes bd, [int fmiEnd]) => RDSBytes(bd, fmiEnd);
+
   /// Returns the DICOM preamble (the first 128 bytes) of _this_.
   Bytes get preamble => bytes.asBytes(kPreambleOffset, kPreambleLength);
 
@@ -155,8 +157,6 @@ class RDSBytes extends DSBytes {
   static const int kHeaderSize = 132;
 
   static final RDSBytes kEmpty = RDSBytes.empty();
-
-  static RDSBytes make(Bytes bd, [int fmiEnd]) => RDSBytes(bd, fmiEnd);
 }
 
 /// Item Dataset Bytes ([IDSBytes]).
@@ -172,6 +172,8 @@ class IDSBytes extends DSBytes {
   IDSBytes(this.bytes);
 
   IDSBytes.empty() : bytes = kEmptyBytes;
+
+  factory IDSBytes.make(Bytes bd) => IDSBytes(bd);
 
   int get startDelimiter => getUint32(kStartDelimiterOffset);
 
@@ -190,13 +192,6 @@ class IDSBytes extends DSBytes {
 
   bool get isValidItem =>
       startDelimiter == kStartDelimiter && hasValidEndDelimiter;
-
-/*
-  //Flush when tested
-  bool get hasValidEndDelimiterX => hasULength
-      ? endDelimiter == kEndDelimiter && trailerLengthField == 0
-      : true;
-*/
 
   bool get hasValidEndDelimiter =>
       (hasULength &&
@@ -223,6 +218,4 @@ class IDSBytes extends DSBytes {
   static const int kEndDelimiter = kItemDelimitationItem32BitLE;
 
   static final IDSBytes kEmpty = IDSBytes.empty();
-
-  static IDSBytes make(Bytes bd) => IDSBytes(bd);
 }

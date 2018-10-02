@@ -235,6 +235,7 @@ class Uuid {
   /// otherwise, if [onError] is not _null_ calls [onError]([s])
   /// and returns its values. If [onError] is _null_, then a
   /// [UuidError] is thrown.
+  // ignore: prefer_constructors_over_static_methods
   static Uuid parse(String s, {Uint8List data, OnUuidParseError onError}) {
     final bytes = _parseToBytes(s, data, (s) => null, kUuidStringLength);
     if (bytes == null) {

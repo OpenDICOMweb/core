@@ -11,7 +11,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/private_creator_test', level: Level.debug);
+  Server.initialize(name: 'element/private_creator_test', level: Level.info);
 
   group('Private Creator tests', () {
     test('Valid Unknown Private Creator ', () {

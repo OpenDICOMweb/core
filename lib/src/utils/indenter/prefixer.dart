@@ -99,6 +99,9 @@ Prefixer: z: '$z' spaces: $spaces level: $_level, indent: $indent,
   @override
   String toString() => '$runtimeType';
 
+  // ignore: prefer_constructors_over_static_methods
   static Prefixer get basic => Prefixer();
+
+  // ignore: prefer_constructors_over_static_methods
   static Prefixer get lineNumbers => Prefixer(lineNumberWidth: 5);
 }
