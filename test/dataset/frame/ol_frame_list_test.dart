@@ -68,7 +68,6 @@ void main() {
 
       // nFrames
       expect(ol32FLa.length == nFrames0, true); //nFrames0=1
-      expect(ol32FLa.nFrames == nFrames0, true); //nFrames0=1;
 
       // frameLength
       expect(ol32FLa.frameLength == rows4 * columns6, true);
@@ -121,7 +120,7 @@ void main() {
     });
 
     test('Create FrameList32Bit MultiFrame Uncompressed Tests', () {
-      int nFrames1;
+      int length1;
       const photometricInterpretation1 = 'RGB';
 
       // Descriptor
@@ -141,10 +140,10 @@ void main() {
       // Multi Frame
       // Frame values are 2, 4, 6 ...
       for (var i = 1; i <= 10; i++) {
-        nFrames1 = i * 2;
-        final pixels0 = Uint32List(ol32FDb.length * nFrames1);
+        length1 = i * 2;
+        final pixels0 = Uint32List(ol32FDb.length * length1);
 
-        final ol32FLb = FrameList32Bit(pixels0, nFrames1, ol32FDb);
+        final ol32FLb = FrameList32Bit(pixels0, length1, ol32FDb);
 
         // pixels
         expect(ol32FLb.pixels is Uint32List, true);
@@ -159,15 +158,14 @@ void main() {
         expect(ol32FLb.pixels.lengthInBytes == ol32FLb.bulkdata.length, true);
 
         // nFrames
-        expect(ol32FLb.length == nFrames1, true);
-        expect(ol32FLb.nFrames == nFrames1, true);
+        expect(ol32FLb.length == length1, true);
 
         // frameLength
         expect(ol32FLb.frameLength == rows4 * columns6, true);
         expect(ol32FLb.lengthInBytes == pixels0.lengthInBytes, true);
         expect(ol32FLb.lengthInBytes == ol32FLb.pixels.lengthInBytes, true);
         expect(ol32FLb.lengthInBytes == ol32FLb.bulkdata.lengthInBytes, true);
-        expect(ol32FLb.lengthInBytes == ol32FDb.lengthInBytes * nFrames1, true);
+        expect(ol32FLb.lengthInBytes == ol32FDb.lengthInBytes * length1, true);
 
         // validity
         expect(ol32FLb.isValid, true);
@@ -243,7 +241,7 @@ void main() {
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Pixels
-      const nFrames1 = 1;
+      const length1 = 1;
       const photometricInterpretation2 = 'MONOCHROME3';
 
       final ol32FDd = FrameDescriptor(
@@ -262,10 +260,10 @@ void main() {
       final pixels1 = Uint32List(0);
       log
         ..debug('pixels0.length: ${pixels1.lengthInBytes}')
-        ..debug('nFrames: $nFrames1')
+        ..debug('nFrames: $length1')
         ..debug('pixelSize bits: ${ol32FDd.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ol32FDd.pixelSizeInBytes}');
-      expect(() => FrameList32Bit(pixels1, nFrames1, ol32FDd),
+      expect(() => FrameList32Bit(pixels1, length1, ol32FDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
@@ -342,9 +340,9 @@ void main() {
         ..add(unPixelPaddingRangeLimit0);
 
       final ol32FDd = FrameDescriptor.fromDataset(rds0);
-      const nFrames0 = 1;
+      const length0 = 1;
       final pixels0 = Uint32List(ol32FDd.length);
-      final ol32FLd = FrameList32Bit(pixels0, nFrames0, ol32FDd);
+      final ol32FLd = FrameList32Bit(pixels0, length0, ol32FDd);
 
       // pixels
       expect(ol32FLd.samplesPerPixel == ol32FDd.samplesPerPixel, true);
@@ -357,8 +355,7 @@ void main() {
       expect(ol32FLd.pixels is Uint32List, true);
 
       // nFrames
-      expect(ol32FLd.length == nFrames0, true);
-      expect(ol32FLd.nFrames == nFrames0, true);
+      expect(ol32FLd.length == length0, true);
 
       // frameLength
       expect(ol32FLd.frameLength == ol32FDd.length, true);
@@ -390,7 +387,7 @@ void main() {
       expect(ol32FLd.pixelSizeInBits == ol32FDd.pixelSizeInBits, true);
       expect(ol32FLd.frameLength == ol32FDd.length, true);
       expect(
-          ol32FLd.desc.lengthInBytes == ol32FDd.lengthInBytes * nFrames0, true);
+          ol32FLd.desc.lengthInBytes == ol32FDd.lengthInBytes * length0, true);
 
       expect(ol32FDd.smallestImagePixelValue == 0, true);
       expect(ol32FDd.largestImagePixelValue == 65535, true);
@@ -428,7 +425,7 @@ void main() {
     });
 
     test('FrameList32Bit operator []', () {
-      int nFrames0;
+      int length0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
       final ol32FDe = FrameDescriptor(
@@ -447,16 +444,16 @@ void main() {
       FrameList32Bit ol32FLc;
 
       for (var i = 0; i < 10; i++) {
-        nFrames0 = i + 1;
-        log.debug('nFrames0: $nFrames0');
-        final pixels0 = Uint32List(ol32FDe.length * nFrames0);
-        ol32FLc = FrameList32Bit(pixels0, nFrames0, ol32FDe);
-        for (var j = 0; j < nFrames0; j++) {
+        length0 = i + 1;
+        log.debug('length0: $length0');
+        final pixels0 = Uint32List(ol32FDe.length * length0);
+        ol32FLc = FrameList32Bit(pixels0, length0, ol32FDe);
+        for (var j = 0; j < length0; j++) {
           final frame0 = ol32FLc[j];
           expect(frame0.index == j, true);
 
           expect(
-              frame0.lengthInBytes * nFrames0 == ol32FLc.pixels.lengthInBytes,
+              frame0.lengthInBytes * length0 == ol32FLc.pixels.lengthInBytes,
               true);
 
           expect(frame0.length == ol32FLc.desc.length, true);
@@ -480,9 +477,9 @@ void main() {
           expect(frame0.length == ol32FLc.frameLength, true);
         }
       }
-      log.debug('nFrames0: $nFrames0, Frames in FrameList: ${ol32FLc.nFrames}');
+      log.debug('length0: $length0, Frames in FrameList: ${ol32FLc.length}');
       expect(
-          () => ol32FLc[nFrames0], throwsA(const TypeMatcher<RangeError>()));
+          () => ol32FLc[length0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 }

@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
+import 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/element/element_formatter.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
@@ -256,6 +257,8 @@ abstract class Element<V> extends ListBase<V> {
 
   /// The Element Type predicate of this Element.
   Condition get eTypePredicate => unimplementedError();
+
+  VFFragmentList get fragments => unimplementedError();
 
   // ********** Value Field related Getters and Methods ***********
   // **************************************************************

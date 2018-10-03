@@ -9,7 +9,7 @@
 import 'dart:collection';
 import 'dart:typed_data';
 
-import 'package:core/src/element.dart';
+import 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/image/frame.dart';
@@ -40,21 +40,22 @@ import 'package:core/src/values/uid.dart';
 // 3. If a Frame or [FrameList] contains encapsulated (compressed) images,
 //   it has no [pixels] and [bulkdata] contains the compressed data.
 
-/// A [List] of fixed size image [Frame]s.
+/// A [List] of image [Frame]s.
 abstract class FrameList extends ListBase<Frame> {
-  /// The number of [Frame]s in _this_. Equivalent to the [length].
-  final int nFrames;
+  /// The number of [Frame]s in _this_.
+  @override
+  final int length;
 
   /// A [FrameDescriptor] describing the format of the [Frame]s in _this_.
   final FrameDescriptor desc;
 
   /// Creates a [FrameList] ([List<Frame>]) of uncompressed [Frame]s.
-  FrameList._(this.nFrames, this.desc) {
+  FrameList._(this.length, this.desc) {
     if (isNotValid) invalidFrameListError(this);
   }
 
   /// Creates a [FrameList] ([List<Frame>]) of compressed [Frame]s.
-  FrameList._compressed(this.nFrames, this.desc);
+  FrameList._compressed(this.length, this.desc);
 
   // **** Interface ****
 
@@ -86,14 +87,10 @@ abstract class FrameList extends ListBase<Frame> {
   /// The Basic Offset Table for [pixels]. This defaults to [kEmptyUint32List].
   Uint32List get offsets => kEmptyUint32List;
 
-  /// The number of [Frame]s in _this_. Synonym for [nFrames].
-  @override
-  int get length => nFrames;
-
   /// The number of [Frame]s in _this_.
   bool get isNotValid =>
-      nFrames < 1 ||
-      bulkdata.lengthInBytes != (desc.lengthInBytes * nFrames) ||
+      length < 1 ||
+      bulkdata.lengthInBytes != (desc.lengthInBytes * length) ||
       bulkdata.lengthInBytes != lengthInBytes;
 
   bool get isValid => !isNotValid;
@@ -153,7 +150,7 @@ abstract class FrameList extends ListBase<Frame> {
   int get frameLengthInBytes => desc.lengthInBytes;
 
   int _getFrameOffset(int i) {
-    RangeError.checkValidRange(0, i, nFrames);
+    RangeError.checkValidRange(0, i, length);
     return i * frameLengthInBytes;
   }
 
@@ -165,7 +162,7 @@ abstract class FrameList extends ListBase<Frame> {
 
   String get info => '''
 $runtimeType
-        nFrames: $nFrames
+        length: $length
            rows: $rows
         columns: $columns
          length: $length
@@ -176,7 +173,7 @@ ${desc.info}
   ''';
 
   @override
-  String toString() => '$runtimeType($nFrames frames)';
+  String toString() => '$runtimeType($length frames)';
 }
 
 /// An uncompressed [FrameList] with 8-bit [pixels], i.e. VR = OB.
@@ -190,7 +187,7 @@ class FrameList1Bit extends FrameList {
     if (bitsAllocated != 1 &&
         pixels is! Uint8List &&
         isCompressed != false &&
-        pixels.lengthInBytes != desc.lengthInBytes * nFrames)
+        pixels.lengthInBytes != desc.lengthInBytes * length)
       invalidFrameListError(this);
   }
 
@@ -218,7 +215,7 @@ class FrameList8Bit extends FrameList {
     if (bitsAllocated != 8 &&
         pixels is Uint8List &&
         isCompressed != false &&
-        pixels.length == frameLength * nFrames) invalidFrameListError(this);
+        pixels.length == frameLength * length) invalidFrameListError(this);
   }
 
   @override
@@ -242,12 +239,12 @@ class FrameList16Bit extends FrameList {
   final Uint16List pixels;
 
   /// Creates a [FrameList16Bit] of images with 16-bit pixels.
-  FrameList16Bit(this.pixels, int nFrames, FrameDescriptor desc)
-      : super._(nFrames, desc) {
+  FrameList16Bit(this.pixels, int length, FrameDescriptor desc)
+      : super._(length, desc) {
     if (bitsAllocated != 16 &&
         pixels is Uint16List &&
         isCompressed != false &&
-        pixels.length == frameLength * nFrames &&
+        pixels.length == frameLength * length &&
         pixels.length == length) invalidFrameListError(this);
   }
 
@@ -277,7 +274,7 @@ class FrameList32Bit extends FrameList {
     if (bitsAllocated != 32 &&
         pixels is Uint32List &&
         isCompressed != false &&
-        pixels.length == frameLength * nFrames &&
+        pixels.length == frameLength * length &&
         pixels.length == length) invalidFrameListError(this);
   }
 
@@ -305,20 +302,20 @@ class CompressedFrameList extends FrameList {
   Uint8List bulkdata;
 
   /// The offset table (aka DICOM Basic Offset Table).
-  /// _Note_: [offsets].length must equal [nFrames] + 1.
+  /// _Note_: [offsets].length must equal [length] + 1.
   @override
   Uint32List offsets;
 
   /// A [List<Frame>] of 8-bit Native (i.e. uncompressed) images.
   CompressedFrameList(
-      this.bulkdata, this.offsets, int nFrames, FrameDescriptor desc)
-      : super._compressed(nFrames, desc) {
+      this.bulkdata, this.offsets, int length, FrameDescriptor desc)
+      : super._compressed(length, desc) {
     if (isNotValid) invalidFrameListError(this);
   }
 
   /// Creates an 8-bit [FrameList] for encapsulated (i.e. compressed) PixelData.
   CompressedFrameList.fromVFFragments(
-      VFFragments fragments, int length, FrameDescriptor desc)
+      VFFragmentList fragments, int length, FrameDescriptor desc)
       : bulkdata = fragments.bulkdata,
         offsets = fragments.offsets,
         super._compressed(length, desc) {
@@ -336,7 +333,7 @@ class CompressedFrameList extends FrameList {
 
   @override
   bool get isNotValid =>
-      nFrames < 1 ||
+      length < 1 ||
       bulkdata is! Uint8List ||
       isCompressed != true ||
       _hasInvalidOffsets() ||
@@ -344,8 +341,8 @@ class CompressedFrameList extends FrameList {
   //TODO: add all appropriate assertions
 
   bool _hasInvalidOffsets() {
-    if (nFrames + 1 != offsets.length) return true;
-    for (var i = 0; i < nFrames; i++)
+    if (length + 1 != offsets.length) return true;
+    for (var i = 0; i < length; i++)
       if (offsets[i] >= offsets[i + 1]) return true;
     return false;
   }

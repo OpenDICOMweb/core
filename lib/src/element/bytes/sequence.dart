@@ -29,10 +29,12 @@ class SQbytes extends SQ with ByteElement<Item> {
 
   /// Returns a new [SQbytes], where [bytes] is [DicomBytes]
   /// for complete sequence.
+  // ignore: prefer_constructors_over_static_methods
   static SQbytes fromBytes(Dataset parent,
           [Iterable<Item> values, DicomBytes bytes]) =>
       SQbytes(parent, values, bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static SQbytes fromValues(int code, List<String> vList,
           {bool isEvr = true}) =>
       unsupportedError();

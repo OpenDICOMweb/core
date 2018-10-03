@@ -126,11 +126,13 @@ class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
+  // ignore: prefer_constructors_over_static_methods
   static OBtagPixelData fromValues(Iterable<int> vList, [TransferSyntax ts]) =>
       OBtagPixelData._(vList, ts);
 
   /// Creates an [OBtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
+  // ignore: prefer_constructors_over_static_methods
   static OBtagPixelData fromBytes(Bytes bytes, [TransferSyntax ts]) =>
       OBtagPixelData._(bytes.asUint8List(), ts);
 }
@@ -202,11 +204,13 @@ class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
+  // ignore: prefer_constructors_over_static_methods
   static UNtagPixelData fromValues(Iterable<int> vList, [TransferSyntax ts]) =>
       UNtagPixelData._(vList, ts);
 
   /// Creates an [UNtagPixelData] Element from a [Uint8List].
   /// Returns a [Uint16List].
+  // ignore: prefer_constructors_over_static_methods
   static UNtagPixelData fromBytes(Bytes bytes, [TransferSyntax ts]) =>
       UNtagPixelData._(bytes.asUint8List(), ts);
 }
@@ -278,10 +282,12 @@ class OWtagPixelData extends OWPixelData with TagElement<int>, TagPixelData {
   }
 
   /// Creates an [OWtagPixelData] Element from a [Uint16List].
+  // ignore: prefer_constructors_over_static_methods
   static OWtagPixelData fromValues(Iterable<int> vList, [TransferSyntax ts]) =>
       OWtagPixelData._(vList, ts);
 
   /// Creates an [OWtagPixelData] Element from a [Uint8List].
+  // ignore: prefer_constructors_over_static_methods
   static OWtagPixelData fromBytes(Bytes bytes, [TransferSyntax ts]) =>
       OWtagPixelData._(bytes.asUint16List(), ts);
 }

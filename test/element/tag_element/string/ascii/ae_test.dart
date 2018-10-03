@@ -810,7 +810,7 @@ void main() {
       expect(toB3, equals(<String>[]));
 
       final toB4 = Bytes.fromAsciiList(null, kMaxShortVF);
-      expect(toB4, isNull);
+      expect(toB4, null);
 
       global.throwOnError = true;
       expect(() => Bytes.fromAsciiList(null, kMaxShortVF),

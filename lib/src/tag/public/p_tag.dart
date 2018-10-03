@@ -83,15 +83,18 @@ class PTag extends Tag {
 
   bool get isWKFmi => fmiTags.contains(code);
 
+  // ignore: prefer_constructors_over_static_methods
   static PTag make(int code, int vrIndex, [Object name]) {
     final tag = lookupByCode(code, vrIndex);
     if (tag != null) return tag;
     return PTag.unknown(code, vrIndex);
   }
 
+  // ignore: prefer_constructors_over_static_methods
   static PTag unknownMaker(int code, int vrIndex, [Object name]) =>
       PTag.unknown(code, vrIndex);
 
+  // ignore: prefer_constructors_over_static_methods
   static PTag lookupByCode(int code,
       [int vrIndex = kUNIndex, bool shouldThrow = false]) {
     if (isNotPublicCode(code)) return badTagCode(code, 'Non-Public Tag Code');

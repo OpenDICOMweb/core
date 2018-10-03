@@ -22,5 +22,5 @@ dev_dependencies:
   test:  any
   test_tools:
     path: ../../test_tools
-    version: ^0.7.0
+    version: ^0.7.5
   yaml: ^2.1.12

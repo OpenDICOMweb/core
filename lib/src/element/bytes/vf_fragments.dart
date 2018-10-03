@@ -13,15 +13,15 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
-/// [VFFragments[ contains the Value Field of an _encapsulated_
+/// [VFFragmentList[ contains the Value Field of an _encapsulated_
 /// (i.e. compressed) OBPixelData Element. This class is used
 /// to convert the [fragments]s to [bulkdata].
-class VFFragments {
+class VFFragmentList {
   /// The fragments contained in the Value Field without their Item headers.
   final List<Uint8List> fragments;
 
-  /// Creates a [VFFragments].
-  VFFragments(this.fragments);
+  /// Creates a [VFFragmentList].
+  VFFragmentList(this.fragments);
 
   bool get isCompressed => true;
   bool get isEncapsulated => isCompressed;
@@ -63,10 +63,11 @@ class VFFragments {
   @override
   String toString() => '$runtimeType(${fragments.length} fragments)';
 
-  /// Returns the [VFFragments] contained in the Value Field [vf]. Note: the
+  /// Returns the [VFFragmentList] contained in the Value Field [vf]. Note: the
   /// trailing kSequenceDelimiterItem and delimiter length have been removed
   /// from [vf].
-  static VFFragments parse(Uint8List vf) {
+  // ignore: prefer_constructors_over_static_methods
+  static VFFragmentList parse(Uint8List vf) {
     final bd = vf.buffer.asByteData(vf.offsetInBytes, vf.lengthInBytes);
     final endOfVF = vf.lengthInBytes;
     var rIndex = 0;
@@ -93,7 +94,7 @@ class VFFragments {
       rIndex += vfLength;
       fragments.add(bd.buffer.asUint8List(startOfVF, rIndex - startOfVF));
     }
-    final vfFragments = VFFragments(fragments);
+    final vfFragments = VFFragmentList(fragments);
 //    _log.debug('VFFragments: $fragments');
     return vfFragments;
   }

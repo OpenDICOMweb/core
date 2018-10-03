@@ -6,11 +6,11 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
+import 'package:core/src/element/bytes/vf_fragments.dart';
 
 import 'test_pixel_data.dart';
 
@@ -34,7 +34,7 @@ void main() {
 
     test('Create Uncompressed FrameList1Bit SingleFrame', () {
       // Single Frame
-      const nFrames0 = 1;
+      const length0 = 1;
       const photometricInterpretation0 = 'MONOCHROME1';
 
       final ob1FDa = FrameDescriptor(
@@ -52,7 +52,7 @@ void main() {
 
       final pixels0 = Uint8List(ob1FDa.lengthInBytes);
 
-      final ob1FLa = FrameList1Bit(pixels0, nFrames0, ob1FDa);
+      final ob1FLa = FrameList1Bit(pixels0, length0, ob1FDa);
 
       // pixels
       expect(ob1FLa.pixels is Uint8List, true);
@@ -71,8 +71,8 @@ void main() {
       expect(ob1FLa.pixels.lengthInBytes == ob1FLa.bulkdata.length, true);
       expect(ob1FLa.pixels == pixels0, true);
 
-      // nFrames
-      expect(ob1FLa.nFrames == 1, true);
+      // length
+      expect(ob1FLa.length == 1, true);
 
       // frameLength
       expect(ob1FLa.desc.length == rows4 * columns6, true);
@@ -129,7 +129,7 @@ void main() {
     });
 
     test('Create Uncompressed FrameList1Bit MultiFrame', () {
-      int nFrames0;
+      int length0;
       const photometricInterpretation0 = 'MONOCHROME2';
 
       final ob1FDb = FrameDescriptor(
@@ -147,10 +147,10 @@ void main() {
 
       for (var i = 1; i <= 10; i++) {
         // Multi Frame (Even number of frames)
-        nFrames0 = i * 2;
-        log.debug('nFrames0: $nFrames0');
-        final pixels1 = Uint8List(nFrames0 * (ob1FDb.lengthInBytes));
-        final ob1FLb = FrameList1Bit(pixels1, nFrames0, ob1FDb);
+        length0 = i * 2;
+        log.debug('length0: $length0');
+        final pixels1 = Uint8List(length0 * (ob1FDb.lengthInBytes));
+        final ob1FLb = FrameList1Bit(pixels1, length0, ob1FDb);
 
         // pixels
         expect(ob1FLb.pixels is Uint8List, true);
@@ -165,8 +165,7 @@ void main() {
         expect(ob1FLb.pixels.lengthInBytes == ob1FLb.bulkdata.length, true);
 
         // nFrames
-        expect(ob1FLb.length == nFrames0, true);
-        expect(ob1FLb.nFrames == nFrames0, true);
+        expect(ob1FLb.length == length0, true);
 
         // frameLength
         expect(ob1FLb.desc.length == rows4 * columns6, true);
@@ -222,7 +221,7 @@ void main() {
 
     test('Invalid FrameList1Bit data test', () {
       //nFrames = 0 (Invalid number of Frames)
-      const nFrames0 = 0;
+      const length0 = 0;
       const photometricInterpretation1 = 'MONOCHROME3';
 
       final ob1FDc = FrameDescriptor(
@@ -241,8 +240,8 @@ void main() {
       final pixels3 = Uint8List(ob1FDc.lengthInBytes);
 
       global.throwOnError = true;
-      log.debug('nFrames: $nFrames0');
-      expect(() => FrameList1Bit(pixels3, nFrames0, ob1FDc),
+      log.debug('nFrames: $length0');
+      expect(() => FrameList1Bit(pixels3, length0, ob1FDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Pixels [== 0]
@@ -349,10 +348,10 @@ void main() {
 
       final ob1FDf = FrameDescriptor.fromDataset(rootDS0);
 
-      const nFrames0 = 1;
+      const length0 = 1;
       final pixels0 = Uint8List(ob1FDf.lengthInBytes);
 
-      final ob1c = FrameList1Bit(pixels0, nFrames0, ob1FDf);
+      final ob1c = FrameList1Bit(pixels0, length0, ob1FDf);
 
       // pixels
       expect(ob1c.samplesPerPixel == ob1FDf.samplesPerPixel, true);
@@ -363,9 +362,9 @@ void main() {
       expect(ob1c.pixelSizeInBits == ob1FDf.pixelSizeInBits, true);
       expect(ob1c.pixels is Uint8List, true);
 
-      // nFrames
-      expect(ob1c.length == nFrames0, true); //nFrames0=1
-      expect(ob1c.nFrames == nFrames0, true); //nFrames0=1;
+      // length
+      expect(ob1c.length == length0, true); //length0=1
+
 
       // frameLength
       expect(ob1c.frameLength == ob1FDf.length, true);
@@ -394,7 +393,7 @@ void main() {
       expect(ob1c.pixelAspectRatio == pixelAspectRatioValue0, true);
       expect(ob1c.pixelSizeInBits == ob1FDf.pixelSizeInBits, true);
       expect(ob1c.frameLength == ob1FDf.length, true);
-      expect(ob1c.desc.lengthInBytes == ob1FDf.lengthInBytes * nFrames0, true);
+      expect(ob1c.desc.lengthInBytes == ob1FDf.lengthInBytes * length0, true);
 
       expect(ob1FDf.smallestImagePixelValue == 0, true);
       expect(ob1FDf.largestImagePixelValue == 1, true);
@@ -430,7 +429,7 @@ void main() {
     });
 
     test('Frame1Bit operator []', () {
-      int nFrames0;
+      int length0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
       final ob1FDg = FrameDescriptor(
@@ -450,16 +449,16 @@ void main() {
 
       //Frames ranging from 1 to 10
       for (var i = 0; i < 10; i++) {
-        nFrames0 = i + 1;
-        final pixels0 = Uint8List(nFrames0 * (ob1FDg.lengthInBytes));
-        ob1FLb = FrameList1Bit(pixels0, nFrames0, ob1FDg);
-        log.debug('nFrames0: $nFrames0');
+        length0 = i + 1;
+        final pixels0 = Uint8List(length0 * (ob1FDg.lengthInBytes));
+        ob1FLb = FrameList1Bit(pixels0, length0, ob1FDg);
+        log.debug('length0: $length0');
 
-        for (var j = 0; j < nFrames0; j++) {
+        for (var j = 0; j < length0; j++) {
           final frame0 = ob1FLb[j];
           expect(frame0.index == j, true);
 
-          expect(frame0.lengthInBytes * nFrames0 == ob1FLb.pixels.lengthInBytes,
+          expect(frame0.lengthInBytes * length0 == ob1FLb.pixels.lengthInBytes,
               true);
 
           expect(frame0.length == ob1FLb.desc.length, true);
@@ -482,8 +481,8 @@ void main() {
           expect(frame0.length == ob1FLb.frameLength, true);
         }
       }
-      log.debug('nFrames0: $nFrames0, Frames in FrameList: ${ob1FLb.nFrames}');
-      expect(() => ob1FLb[nFrames0], throwsA(const TypeMatcher<RangeError>()));
+      log.debug('length0: $length0, Frames in FrameList: ${ob1FLb.length}');
+      expect(() => ob1FLb[length0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 
@@ -502,7 +501,7 @@ void main() {
 
     test('Create Uncompressed FrameList8Bit SingleFrame', () {
       // Single Frame
-      const nFrames0 = 1;
+      const length0 = 1;
       const photometricInterpretation0 = 'MONOCHROME1';
 
       final ob8FDa = FrameDescriptor(
@@ -520,7 +519,7 @@ void main() {
 
       final pixels0 = Uint8List(ob8FDa.lengthInBytes);
 
-      final ob8a = FrameList8Bit(pixels0, nFrames0, ob8FDa);
+      final ob8a = FrameList8Bit(pixels0, length0, ob8FDa);
 
       // pixels
       expect(ob8a.pixels is Uint8List, true);
@@ -534,14 +533,13 @@ void main() {
       expect(ob8a.bulkdata.length == ob8a.bulkdata.lengthInBytes, true);
       expect(ob8a.pixels.lengthInBytes == ob8a.bulkdata.length, true);
 
-      // nFrames
-      expect(ob8a.length == nFrames0, true);
-      expect(ob8a.nFrames == nFrames0, true);
+      // length
+      expect(ob8a.length == length0, true);
 
       // frameLength
       expect(ob8a.frameLength == rows4 * columns6, true);
       expect(ob8a.lengthInBytes == pixels0.lengthInBytes, true);
-      expect(ob8a.lengthInBytes == ob8FDa.lengthInBytes * nFrames0, true);
+      expect(ob8a.lengthInBytes == ob8FDa.lengthInBytes * length0, true);
       expect(ob8a.lengthInBytes == ob8a.pixels.lengthInBytes, true);
       expect(ob8a.lengthInBytes == ob8a.bulkdata.lengthInBytes, true);
 
@@ -591,7 +589,7 @@ void main() {
     });
 
     test('Create Uncompressed FrameList8Bit MultiFrame', () {
-      int nFrames1;
+      int length1;
       const photometricInterpretation1 = 'MONOCHROME2';
       const rows5 = 5;
       const columns7 = 7;
@@ -612,11 +610,11 @@ void main() {
       // Multi frame
       // Frames of values 2, 4, 6 ...
       for (var i = 1; i <= 10; i++) {
-        nFrames1 = i * 2;
-        log.debug('nFrames:$nFrames1');
-        final pixels1 = Uint8List(nFrames1 * (ob8FDb.lengthInBytes));
+        length1 = i * 2;
+        log.debug('nFrames:$length1');
+        final pixels1 = Uint8List(length1 * (ob8FDb.lengthInBytes));
 
-        final ob8b = FrameList8Bit(pixels1, nFrames1, ob8FDb);
+        final ob8b = FrameList8Bit(pixels1, length1, ob8FDb);
 
         // pixels
         expect(ob8b.pixels is Uint8List, true);
@@ -631,13 +629,12 @@ void main() {
         expect(ob8b.pixels.lengthInBytes == ob8b.bulkdata.length, true);
 
         // nFrames
-        expect(ob8b.length == nFrames1, true);
-        expect(ob8b.nFrames == nFrames1, true);
+        expect(ob8b.length == length1, true);
 
         // frameLength
         expect(ob8b.frameLength == rows5 * columns7, true);
         expect(ob8b.lengthInBytes == pixels1.lengthInBytes, true);
-        expect(ob8b.lengthInBytes == ob8FDb.lengthInBytes * nFrames1, true);
+        expect(ob8b.lengthInBytes == ob8FDb.lengthInBytes * length1, true);
         expect(ob8b.lengthInBytes == ob8b.pixels.lengthInBytes, true);
         expect(ob8b.lengthInBytes == ob8b.bulkdata.lengthInBytes, true);
 
@@ -689,7 +686,7 @@ void main() {
 
     test('Invalid FrameList8Bit data test', () {
       //nFrames = 0 (Invalid Frames)
-      const nFrames0 = 0;
+      const length0 = 0;
       const photometricInterpretation1 = 'MONOCHROME3';
 
       final ob8FDc = FrameDescriptor(
@@ -709,16 +706,16 @@ void main() {
 
       log
         ..debug('pixels0.length: ${pixels0.lengthInBytes}')
-        ..debug('nFrames: $nFrames0')
+        ..debug('nFrames: $length0')
         ..debug('pixelSize bits: ${ob8FDc.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ob8FDc.pixelSizeInBytes}');
 
       global.throwOnError = true;
-      expect(() => FrameList8Bit(pixels0, nFrames0, ob8FDc),
+      expect(() => FrameList8Bit(pixels0, length0, ob8FDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       //Invalid Pixels [== 0]
-      const nFrames1 = 1;
+      const length1 = 1;
       const photometricInterpretation2 = 'MONOCHROME3';
 
       final ob8FDd = FrameDescriptor(
@@ -737,10 +734,10 @@ void main() {
       final pixels1 = Uint8List(0);
       log
         ..debug('pixels0.length: ${pixels1.lengthInBytes}')
-        ..debug('nFrames: $nFrames1')
+        ..debug('nFrames: $length1')
         ..debug('pixelSize bits: ${ob8FDd.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${ob8FDd.pixelSizeInBytes}');
-      expect(() => FrameList8Bit(pixels1, nFrames1, ob8FDd),
+      expect(() => FrameList8Bit(pixels1, length1, ob8FDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       const nFrames2 = 2;
@@ -816,10 +813,10 @@ void main() {
 
       final ob8FDe = FrameDescriptor.fromDataset(rds0);
 
-      const nFrames0 = 1;
+      const length0 = 1;
       final pixels0 = Uint8List(ob8FDe.lengthInBytes);
 
-      final ob8d = FrameList8Bit(pixels0, nFrames0, ob8FDe);
+      final ob8d = FrameList8Bit(pixels0, length0, ob8FDe);
 
       // pixels
       expect(ob8d.samplesPerPixel == ob8FDe.samplesPerPixel, true);
@@ -830,8 +827,7 @@ void main() {
       expect(ob8d.pixels is Uint8List, true);
 
       // nFrames
-      expect(ob8d.length == nFrames0, true);
-      expect(ob8d.nFrames == nFrames0, true);
+      expect(ob8d.length == length0, true);
 
       // frameLength
       expect(ob8d.frameLength == ob8FDe.length, true);
@@ -860,7 +856,7 @@ void main() {
       expect(ob8d.pixelAspectRatio == pixelAspectRatioValue0, true);
       expect(ob8d.pixelSizeInBits == ob8FDe.pixelSizeInBits, true);
       expect(ob8d.frameLength == ob8FDe.length, true);
-      expect(ob8d.desc.lengthInBytes == ob8FDe.lengthInBytes * nFrames0, true);
+      expect(ob8d.desc.lengthInBytes == ob8FDe.lengthInBytes * length0, true);
 
       expect(ob8FDe.smallestImagePixelValue == 0, true);
       expect(ob8FDe.largestImagePixelValue == 255, true);
@@ -896,7 +892,7 @@ void main() {
     });
 
     test('FrameList8Bit operator []', () {
-      int nFrames0;
+      int length0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
       final ob8FDf = FrameDescriptor(
@@ -916,15 +912,15 @@ void main() {
 
       //Frames ranging from 1 to 10
       for (var i = 0; i < 10; i++) {
-        nFrames0 = i + 1;
-        log.debug('nFrames0: $nFrames0');
-        final pixels0 = Uint8List(nFrames0 * (ob8FDf.lengthInBytes));
-        ob8e = FrameList8Bit(pixels0, nFrames0, ob8FDf);
-        for (var j = 0; j < nFrames0; j++) {
+        length0 = i + 1;
+        log.debug('length0: $length0');
+        final pixels0 = Uint8List(length0 * (ob8FDf.lengthInBytes));
+        ob8e = FrameList8Bit(pixels0, length0, ob8FDf);
+        for (var j = 0; j < length0; j++) {
           final frame0 = ob8e[j];
           expect(frame0.index == j, true);
 
-          expect(frame0.lengthInBytes * nFrames0 == ob8e.lengthInBytes, true);
+          expect(frame0.lengthInBytes * length0 == ob8e.lengthInBytes, true);
           expect(frame0.length == ob8e.desc.length, true);
           expect(frame0.lengthInBytes == ob8e.desc.lengthInBytes, true);
           expect(frame0.ts == ob8e.desc.ts, true);
@@ -944,8 +940,8 @@ void main() {
         }
       }
 
-      log.debug('nFrames0: $nFrames0, Frames in FrameList: ${ob8e.nFrames}');
-      expect(() => ob8e[nFrames0], throwsA(const TypeMatcher<RangeError>()));
+      log.debug('length0: $length0, Frames in FrameList: ${ob8e.length}');
+      expect(() => ob8e[length0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 
@@ -964,7 +960,7 @@ void main() {
 
     test('CompressedFrameList singleFrame', () {
       const photometricInterpretation0 = 'MONOCHROME1';
-      const nFrames0 = 1;
+      const length0 = 1;
 
       final c8FDa = FrameDescriptor(
           ts0,
@@ -984,18 +980,17 @@ void main() {
 
       log.debug('offsets.length: ${offsets.length}');
 
-      final c8a = CompressedFrameList(bulkdata, offsets, nFrames0, c8FDa);
+      final c8a = CompressedFrameList(bulkdata, offsets, length0, c8FDa);
       log.debug(c8a);
 
       expect(c8a.pixelSizeInBits == c8FDa.pixelSizeInBits, true);
 
       // nFrames
-      expect(c8a.length == nFrames0, true);
-      expect(c8a.nFrames == nFrames0, true);
+      expect(c8a.length == length0, true);
 
       // frameLength
       expect(c8a.frameLength == rows4 * columns6, true);
-      expect(c8a.lengthInBytes == c8FDa.lengthInBytes * nFrames0, false);
+      expect(c8a.lengthInBytes == c8FDa.lengthInBytes * length0, false);
 
       // validity
       expect(c8a.isCompressed, true);
@@ -1040,7 +1035,7 @@ void main() {
 
     test('CompressedFrameList MulitFrame', () {
       const photometricInterpretation1 = 'MONOCHROME2';
-      int nFrames1;
+      int length1;
 
       final c8FDb = FrameDescriptor(
           ts0,
@@ -1058,30 +1053,29 @@ void main() {
       var offSetList = <int>[];
 
       for (var i = 1; i <= 10; i++) {
-        nFrames1 = i * 2;
+        length1 = i * 2;
         offSetList.add(0);
-        for (var j = 1; j <= nFrames1; j++) {
+        for (var j = 1; j <= length1; j++) {
           offSetList.add(j * 2);
         }
-        log.debug('nFrames:$nFrames1');
+        log.debug('nFrames:$length1');
         final offSets = Uint32List.fromList(offSetList);
         final bulkdata = Uint8List(i * 4);
 
-        log.debug('offSetList: $offSetList, nFrames1 + 1: '
-            '${nFrames1 + 1}, offSets: ${offSets.length}');
+        log.debug('offSetList: $offSetList, length1 + 1: '
+            '${length1 + 1}, offSets: ${offSets.length}');
 
-        final c8b = CompressedFrameList(bulkdata, offSets, nFrames1, c8FDb);
+        final c8b = CompressedFrameList(bulkdata, offSets, length1, c8FDb);
         log.debug(c8b);
 
         expect(c8b.pixelSizeInBits == c8FDb.pixelSizeInBits, true);
 
         // nFrames
-        expect(c8b.length == nFrames1, true);
-        expect(c8b.nFrames == nFrames1, true);
+        expect(c8b.length == length1, true);
 
         // frameLength
         expect(c8b.frameLength == rows4 * columns6, true);
-        expect(c8b.lengthInBytes == c8FDb.lengthInBytes * nFrames1, false);
+        expect(c8b.lengthInBytes == c8FDb.lengthInBytes * length1, false);
 
         // validity
         expect(c8b.isCompressed, true);
@@ -1131,7 +1125,7 @@ void main() {
     test('Invalid CompressedFrameList', () {
       global.throwOnError = true;
       //nFrames = 0
-      const nFrames0 = 0;
+      const length0 = 0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
       final c8FDc = FrameDescriptor(
@@ -1150,12 +1144,12 @@ void main() {
       final offsets0 = Uint32List(0);
       final bulkdata0 = Uint8List(0);
 
-      log.debug('nFrames: $nFrames0');
-      expect(() => CompressedFrameList(bulkdata0, offsets0, nFrames0, c8FDc),
+      log.debug('nFrames: $length0');
+      expect(() => CompressedFrameList(bulkdata0, offsets0, length0, c8FDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid offsets and bulkdata
-      const nFrames1 = 1;
+      const length1 = 1;
       const photometricInterpretation1 = 'MONOCHROME2';
 
       final c8FDd = FrameDescriptor(
@@ -1175,7 +1169,7 @@ void main() {
       final bulkData = Uint8List(0);
 
       log..debug('offSets: $offSets')..debug('bulkData: $bulkData');
-      expect(() => CompressedFrameList(bulkData, offSets, nFrames1, c8FDd),
+      expect(() => CompressedFrameList(bulkData, offSets, length1, c8FDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor data
@@ -1205,12 +1199,12 @@ void main() {
       final offSets3 = Uint32List.fromList([0, 2, 4, 3, 8, 9, 10]);
       final bulkdata = Uint8List(10);
       log.debug('offSets3: $offSets3');
-      expect(() => CompressedFrameList(bulkdata, offSets3, nFrames1, c8FDe),
+      expect(() => CompressedFrameList(bulkdata, offSets3, length1, c8FDe),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
     });
 
     test('CompressedFrameList.fromVFFragments', () {
-      const nFrames0 = 1;
+      const length0 = 1;
       const photometricInterpretation1 = 'MONOCHROME1';
 
       final cFDb = FrameDescriptor(
@@ -1230,16 +1224,15 @@ void main() {
       final emptyOffsetsAsBytes1 = offsets.buffer.asUint8List();
       final bulkData = Uint8List(4);
       final fragments = [emptyOffsetsAsBytes1, bulkData];
-      final vfFragments = VFFragments(fragments);
+      final vfFragments = VFFragmentList(fragments);
 
       final c8c =
-          CompressedFrameList.fromVFFragments(vfFragments, nFrames0, cFDb);
+          CompressedFrameList.fromVFFragments(vfFragments, length0, cFDb);
 
       expect(c8c.pixelSizeInBits == cFDb.pixelSizeInBits, true);
 
       // nFrames
-      expect(c8c.length == nFrames0, true);
-      expect(c8c.nFrames == nFrames0, true);
+      expect(c8c.length == length0, true);
 
       // frameLength
       expect(c8c.frameLength == rows4 * columns6, true);
@@ -1287,7 +1280,7 @@ void main() {
       log.debug(bytes0);
     });
     test('CompressedFrameList.fromVFFragments multiFrame', () {
-      int nFrames1;
+      int length1;
       const photometricInterpretation2 = 'MONOCHROME2';
 
       final cFDc = FrameDescriptor(
@@ -1306,9 +1299,9 @@ void main() {
       var offSetList = <int>[];
 
       for (var i = 1; i <= 10; i++) {
-        nFrames1 = i * 2;
+        length1 = i * 2;
         offSetList.add(0);
-        for (var j = 1; j <= nFrames1; j++) {
+        for (var j = 1; j <= length1; j++) {
           offSetList.add(j * 2);
         }
 
@@ -1316,22 +1309,21 @@ void main() {
         final emptyOffsetsAsBytes1 = offsets.buffer.asUint8List();
         final bulkData = Uint8List(i * 4);
         final fragments = [emptyOffsetsAsBytes1, bulkData];
-        log.debug('offSetList: $offSetList, nFrames + 1: ${nFrames1 + 1}, '
+        log.debug('offSetList: $offSetList, nFrames + 1: ${length1 + 1}, '
             'offSets: ${offsets.length}');
-        final vfFragments = VFFragments(fragments);
+        final vfFragments = VFFragmentList(fragments);
 
         final c8d =
-            CompressedFrameList.fromVFFragments(vfFragments, nFrames1, cFDc);
+            CompressedFrameList.fromVFFragments(vfFragments, length1, cFDc);
 
         expect(c8d.pixelSizeInBits == cFDc.pixelSizeInBits, true);
 
         // nFrames
-        expect(c8d.length == nFrames1, true);
-        expect(c8d.nFrames == nFrames1, true);
+        expect(c8d.length == length1, true);
 
         // frameLength
         expect(c8d.frameLength == rows4 * columns6, true);
-        expect(c8d.lengthInBytes == cFDc.lengthInBytes * nFrames1, false);
+        expect(c8d.lengthInBytes == cFDc.lengthInBytes * length1, false);
         expect(c8d.lengthInBytes == c8d.bulkdata.lengthInBytes, true);
 
         // validity
@@ -1380,7 +1372,7 @@ void main() {
 
     test('Invalid CompressedVFFragments', () {
       //nFrames = 0 (Invalid frames)
-      const nFrames0 = 0;
+      const length0 = 0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
       final cFDb = FrameDescriptor(
@@ -1398,15 +1390,15 @@ void main() {
 
       final bulkData0 = Uint8List(4);
       final fragments0 = [bulkData0];
-      final vfFragments0 = VFFragments(fragments0);
+      final vfFragments0 = VFFragmentList(fragments0);
 
       expect(
           () =>
-              CompressedFrameList.fromVFFragments(vfFragments0, nFrames0, cFDb),
+              CompressedFrameList.fromVFFragments(vfFragments0, length0, cFDb),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid offset
-      const nFrames1 = 1;
+      const length1 = 1;
       const photometricInterpretation1 = 'MONOCHROME2';
 
       final cFDc = FrameDescriptor(
@@ -1426,11 +1418,11 @@ void main() {
       final emptyOffsetsAsBytes = emptyOffsets.buffer.asUint8List();
       final bulkData1 = Uint8List(4);
       final fragments1 = [emptyOffsetsAsBytes, bulkData1];
-      final vfFragments1 = VFFragments(fragments1);
+      final vfFragments1 = VFFragmentList(fragments1);
 
       expect(
           () =>
-              CompressedFrameList.fromVFFragments(vfFragments1, nFrames1, cFDc),
+              CompressedFrameList.fromVFFragments(vfFragments1, length1, cFDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
@@ -1454,7 +1446,7 @@ void main() {
       final emptyOffsetsAsBytes1 = emptyOffsets1.buffer.asUint8List();
       final bulkData2 = Uint8List(4);
       final fragments2 = [emptyOffsetsAsBytes1, bulkData2];
-      final vfFragments2 = VFFragments(fragments2);
+      final vfFragments2 = VFFragmentList(fragments2);
 
       expect(
           () =>
@@ -1464,7 +1456,7 @@ void main() {
 
     test('CompressedFrameList operator []', () {
       const photometricInterpretation0 = 'MONOCHROME1';
-      int nFrames0;
+      int length0;
 
       final c8FDg = FrameDescriptor(
           ts0,
@@ -1479,14 +1471,14 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      nFrames0 = 7;
-      log.debug('nFrames0: $nFrames0');
+      length0 = 7;
+      log.debug('length0: $length0');
       final offsets = Uint32List.fromList([0, 2, 3, 5, 8, 13, 21, 34]);
       final bulkdata = Uint8List(34);
 
-      final c8c = CompressedFrameList(bulkdata, offsets, nFrames0, c8FDg);
+      final c8c = CompressedFrameList(bulkdata, offsets, length0, c8FDg);
 
-      for (var j = 0; j < nFrames0; j++) {
+      for (var j = 0; j < length0; j++) {
         final frame0 = c8c[j];
         expect(frame0.index == j, true);
 
@@ -1515,8 +1507,8 @@ void main() {
         expect(frame0.parent == c8c, true);
       }
 
-      log.debug('nFrames0: $nFrames0, Frames in FrameList: ${c8c.nFrames}');
-      expect(() => c8c[nFrames0], throwsA(const TypeMatcher<RangeError>()));
+      log.debug('length0: $length0, Frames in FrameList: ${c8c.length}');
+      expect(() => c8c[length0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 }

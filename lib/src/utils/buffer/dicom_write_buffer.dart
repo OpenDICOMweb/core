@@ -31,7 +31,7 @@ abstract class DicomWriteBufferMixin {
   /// Write a DICOM Tag Code to _this_.
   void writeCode(int code, [int eLength = 12]) {
 //    _checkCode(code);
-    assert(_wIndex.isEven);
+    assert(_wIndex.isEven && code != null);
     _maybeGrow(eLength);
     _buf..setUint16(_wIndex, code >> 16)..setUint16(_wIndex + 2, code & 0xFFFF);
     _wIndex += 4;

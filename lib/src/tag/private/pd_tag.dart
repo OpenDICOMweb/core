@@ -39,6 +39,7 @@ abstract class PDTag extends PrivateTag {
 
   static const String phantomName = '--<PhantomCreator>--';
 
+  // ignore: prefer_constructors_over_static_methods
   static PDTag make(int code, int vrIndex, Object creator) {
     //if (creator == null && creator == '') {
     if (creator is PCTag) {
@@ -69,6 +70,7 @@ class PDTagUnknown extends PDTag {
   @override
   String get name => 'Unknown Private Data Tag';
 
+  // ignore: prefer_constructors_over_static_methods
   static PDTagUnknown make(int code, int vrIndex, [PCTag creator]) =>
       PDTagUnknown(code, vrIndex, creator);
 }
@@ -123,6 +125,7 @@ class PDTagKnown extends PDTag {
   String toString() => '$runtimeType$dcm $name $sgNumber($sgNumberHex), creator'
       '(${creator.name})';
 
+  // ignore: prefer_constructors_over_static_methods
   static PDTagKnown make(
           int code, int vrIndex, PCTag creator, PDTagDefinition definition) =>
       PDTagKnown(code, vrIndex, creator, definition);

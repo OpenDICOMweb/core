@@ -12,7 +12,8 @@ part of odw.sdk.element.bytes;
 
 /// PixelDataMixin class
 abstract class BytePixelData {
-  VFFragments get fragments;
+  VFFragmentList get fragments;
+  int get vfLengthField;
 
   // **** End Interface
 
@@ -31,7 +32,7 @@ class OBbytesPixelData extends OBPixelData
   @override
   TransferSyntax ts;
   @override
-  VFFragments fragments;
+  VFFragmentList fragments;
 
   OBbytesPixelData(this.bytes, [this.ts, this.fragments]);
 
@@ -41,8 +42,9 @@ class OBbytesPixelData extends OBPixelData
   @override
   int get lengthInBytes => bytes.vfLength;
 
+  // ignore: prefer_constructors_over_static_methods
   static OBbytesPixelData fromBytes(DicomBytes bytes,
-          [TransferSyntax ts, VFFragments fragments]) =>
+          [TransferSyntax ts, VFFragmentList fragments]) =>
       OBbytesPixelData(bytes, ts, fragments);
 }
 
@@ -53,7 +55,7 @@ class UNbytesPixelData extends UNPixelData
   @override
   TransferSyntax ts;
   @override
-  VFFragments fragments;
+  VFFragmentList fragments;
 
   UNbytesPixelData(this.bytes, [this.ts, this.fragments]);
 
@@ -63,8 +65,9 @@ class UNbytesPixelData extends UNPixelData
   @override
   int get lengthInBytes => bytes.vfLength;
 
+  // ignore: prefer_constructors_over_static_methods
   static UNbytesPixelData fromBytes(DicomBytes bytes,
-          [TransferSyntax ts, VFFragments fragments]) =>
+          [TransferSyntax ts, VFFragmentList fragments]) =>
       UNbytesPixelData(bytes, ts, fragments);
 }
 
@@ -78,7 +81,7 @@ class OWbytesPixelData extends OWPixelData
   TransferSyntax ts;
   // Note: OW should _never_ have fragments, but it does happen
   @override
-  VFFragments fragments;
+  VFFragmentList fragments;
 
   OWbytesPixelData(this.bytes, [this.ts, this.fragments]);
 
@@ -88,7 +91,8 @@ class OWbytesPixelData extends OWPixelData
   @override
   int get lengthInBytes => bytes.vfLength;
 
+  // ignore: prefer_constructors_over_static_methods
   static OWbytesPixelData fromBytes(DicomBytes bytes,
-          [TransferSyntax ts, VFFragments fragments]) =>
+          [TransferSyntax ts, VFFragmentList fragments]) =>
       OWbytesPixelData(bytes, ts, fragments);
 }

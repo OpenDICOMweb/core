@@ -98,6 +98,103 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
             ? list.buffer.asByteData()
             : Uint8List.fromList(list).buffer.asByteData();
 
+  // TODO: Either remove fromFile and fromPath or add doAsync
+
+  /// Returns a [Bytes] buffer containing the contents of [File].
+  factory Bytes.fromFile(File file,
+      {Endian endian = Endian.little, bool doAsync = false}) {
+    final Uint8List bList = doAsync ? file.readAsBytes : file.readAsBytesSync();
+    return Bytes.typedDataView(bList, 0, bList.length, endian ?? Endian.little);
+  }
+
+  /// Returns a [Bytes] buffer containing the contents of the
+  /// [File] at [path].
+  factory Bytes.fromPath(String path,
+          {Endian endian = Endian.little, bool doAsync = false}) =>
+      Bytes.fromFile(File(path), endian: endian, doAsync: doAsync);
+
+  /// The canonical empty (zero length) [Bytes] object.
+  static final Bytes kEmptyBytes = Bytes(0);
+
+  /// Returns a [Bytes] containing the Base64 decoding of [s].
+  factory Bytes.fromBase64(String s, {bool padToEvenLength = false}) {
+    if (s.isEmpty) return kEmptyBytes;
+    var bList = base64.decode(s);
+    final bLength = bList.length;
+    if (padToEvenLength == true && bLength.isOdd) {
+      // Performance: It would be good to ignore this copy
+      final nList = Uint8List(bLength + 1);
+      for (var i = 0; i < bLength - 1; i++) nList[i] = bList[i];
+      nList[bLength] = 0;
+      bList = nList;
+    }
+    return Bytes.typedDataView(bList);
+  }
+
+  /// Returns a [Bytes] containing the ASCII encoding of [s].
+  factory Bytes.fromAscii(String s) {
+    if (s == null) return nullValueError(s);
+    return s.isEmpty ? kEmptyBytes : Bytes.typedDataView(ascii.encode(s));
+  }
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  factory Bytes.fromUtf8(String s) {
+    if (s == null) return nullValueError(s);
+    if (s.isEmpty) return kEmptyBytes;
+    final Uint8List u8List = utf8.encode(s);
+    return Bytes.typedDataView(u8List);
+  }
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  factory Bytes.fromString(String s, {bool isAscii = false}) {
+    if (s == null) return nullValueError(s);
+    if (s.isEmpty) return kEmptyBytes;
+    return isAscii ? Bytes.fromAscii(s) : Bytes.fromUtf8(s);
+  }
+
+  /// Returns a [Bytes] containing ASCII code units.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as ASCII. The result is returns as [Bytes].
+  factory Bytes.fromAsciiList(List<String> vList,
+          [int maxLength, String separator = '\\']) =>
+      Bytes.fromAscii(_listToString(vList, maxLength, separator));
+
+  /// Returns a [Bytes] containing UTF-8 code units.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as UTF-8. The result is returns as [Bytes].
+  factory Bytes.fromUtf8List(List<String> vList,
+          [int maxLength, String separator = '\\']) =>
+      Bytes.fromUtf8(_listToString(vList, maxLength, separator));
+
+  /// Returns a [Bytes] containing UTF-8 code units.
+  factory Bytes.fromStrings(List<String> vList,
+          {int maxLength, bool isAscii = false, String separator = '\\'}) =>
+      isAscii
+          ? Bytes.fromAsciiList(vList, maxLength, separator)
+          : Bytes.fromUtf8List(vList, maxLength, separator);
+
+/*
+  static Bytes _fromList(List<String> vList, int maxLength, String separator,
+      Bytes encoder(String s)) {
+    if (vList == null) return nullValueError();
+    final s = stringListToString(vList, separator);
+    if (s == null || s.length > (maxLength ?? s.length)) return null;
+    return (s.isEmpty) ? kEmptyBytes : encoder(vList.join('\\'));
+  }
+*/
+
+  static String _listToString(
+      List<String> vList, int maxLength, String separator) {
+    if (vList == null) return nullValueError();
+    final s = stringListToString(vList, separator);
+    if (s == null || s.length > (maxLength ?? s.length)) return null;
+    return s.isEmpty ? '' : s;
+  }
+
   // *** Comparable interface
 
   /// Compares _this_ with [other] byte by byte.
@@ -128,7 +225,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
 
   @override
   bool operator ==(Object other) =>
-      (other is Bytes) && (ignorePadding && _bytesEqual(this, other)) ||
+      (other is Bytes && ignorePadding && _bytesEqual(this, other)) ||
       __bytesEqual(this, other, ignorePadding);
 
   bool _bytesEqual(Bytes a, Bytes b) {
@@ -238,88 +335,6 @@ $i: $x | $y')
 
   static const int kMinLength = 16;
   static const int kDefaultLength = 1024;
-
-  // TODO: Either remove fromFile and fromPath or add doAsync
-  /// Returns a [Bytes] buffer containing the contents of [File].
-  static Bytes fromFile(File file,
-      {Endian endian = Endian.little, bool doAsync = false}) {
-    final Uint8List bList = file.readAsBytesSync();
-    return Bytes.typedDataView(bList, 0, bList.length, endian ?? Endian.little);
-  }
-
-  /// Returns a [Bytes] buffer containing the contents of the
-  /// [File] at [path].
-  static Bytes fromPath(String path,
-          {Endian endian = Endian.little, bool doAsync = false}) =>
-      fromFile(File(path), endian: endian, doAsync: doAsync);
-
-  /// The canonical empty (zero length) [Bytes] object.
-  static final Bytes kEmptyBytes = Bytes(0);
-
-  /// Returns a [Bytes] containing the Base64 decoding of [s].
-  static Bytes fromBase64(String s, {bool padToEvenLength = false}) {
-    if (s.isEmpty) return kEmptyBytes;
-    var bList = base64.decode(s);
-    final bLength = bList.length;
-    if (padToEvenLength == true && bLength.isOdd) {
-      // Performance: It would be good to ignore this copy
-      final nList = Uint8List(bLength + 1);
-      for (var i = 0; i < bLength - 1; i++) nList[i] = bList[i];
-      nList[bLength] = 0;
-      bList = nList;
-    }
-    return Bytes.typedDataView(bList);
-  }
-
-  /// Returns a [Bytes] containing the ASCII encoding of [s].
-  static Bytes fromAscii(String s) =>
-      (s.isEmpty) ? kEmptyBytes : Bytes.typedDataView(ascii.encode(s));
-
-  /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  static Bytes fromUtf8(String s) {
-    if (s.isEmpty) return kEmptyBytes;
-    final Uint8List u8List = utf8.encode(s);
-    return Bytes.typedDataView(u8List);
-  }
-
-  /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  static Bytes fromString(String s, {bool isAscii = false}) {
-    if (s.isEmpty) return kEmptyBytes;
-    return isAscii ? fromAscii(s) : fromUtf8(s);
-  }
-
-  /// Returns a [Bytes] containing ASCII code units.
-  ///
-  /// The [String]s in [vList] are [join]ed into a single string using
-  /// using [separator] (which defaults to '\') to separate them, and
-  /// then they are encoded as ASCII. The result is returns as [Bytes].
-  static Bytes fromAsciiList(List<String> vList,
-          [int maxLength, String separator = '\\']) =>
-      _fromList(vList, maxLength, separator, fromAscii);
-
-  /// Returns a [Bytes] containing UTF-8 code units.
-  ///
-  /// The [String]s in [vList] are [join]ed into a single string using
-  /// using [separator] (which defaults to '\') to separate them, and
-  /// then they are encoded as UTF-8. The result is returns as [Bytes].
-  static Bytes fromUtf8List(List<String> vList,
-          [int maxLength, String separator = '\\']) =>
-      _fromList(vList, maxLength, separator, fromUtf8);
-
-  static Bytes _fromList(List<String> vList, int maxLength, String separator,
-      Bytes encoder(String s)) {
-    if (vList == null) return nullValueError();
-    final s = stringListToString(vList, separator);
-    if (s == null || s.length > (maxLength ?? s.length)) return null;
-    return (s.isEmpty) ? kEmptyBytes : encoder(vList.join('\\'));
-  }
-
-  /// Returns a [Bytes] containing UTF-8 code units. See [fromUtf8List].
-  static Bytes fromStrings(List<String> vList,
-          {int maxLength, bool isAscii = false, String separator = '\\'}) =>
-      isAscii
-          ? fromAsciiList(vList, maxLength, separator)
-          : fromUtf8List(vList, maxLength, separator);
 }
 
 //TODO: move this to the appropriate place

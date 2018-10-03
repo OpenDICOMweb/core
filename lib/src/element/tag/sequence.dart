@@ -91,10 +91,12 @@ class SQtag extends SQ with TagElement<Item> {
 
   static const Iterable<Item> emptyTagItemList = <TagItem>[];
 
+  // ignore: prefer_constructors_over_static_methods
   static SQtag fromValues(Tag tag, Iterable<Item> values,
           [int vfLength, Dataset parent]) =>
       SQtag(parent, tag, values);
 
+  // ignore: prefer_constructors_over_static_methods
   static SQtag from(Dataset parent, SQ sq) {
     final nItems = List<TagItem>(sq.values.length);
     for (var i = 0; i < sq.values.length; i++) {
@@ -104,6 +106,7 @@ class SQtag extends SQ with TagElement<Item> {
     return SQtag(parent, sq.tag, nItems);
   }
 
+  // ignore: prefer_constructors_over_static_methods
   static SQtag fromBytes(Dataset parent, List<Item> vList, Tag tag) {
     if (tag.vrIndex != kSQIndex) return null;
     return SQtag(parent, tag, vList);
@@ -111,6 +114,7 @@ class SQtag extends SQ with TagElement<Item> {
 
   static const _makeSQ = TagElement.makeSequenceFromCode;
 
+  // ignore: prefer_constructors_over_static_methods
   static SQtag convert(Dataset parent, SQ e) {
     final items = e.values.toList();
     final length = items.length;

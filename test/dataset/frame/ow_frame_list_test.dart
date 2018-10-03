@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-
 import 'dart:typed_data';
 
 import 'package:core/server.dart' hide group;
@@ -34,7 +33,7 @@ void main() {
 
     test('Create FrameList16Bit Single Frame Uncompressed Tests', () {
       // Single Frame
-      const nFrames0 = 1;
+      const length0 = 1;
       const photometricInterpretation0 = 'RGB';
 
       // Descriptor
@@ -51,8 +50,8 @@ void main() {
           planarConfiguration0,
           pixelAspectRatio: pixelAspectRatio0);
 
-      final pixels0 = Uint16List(owFDa.length * nFrames0);
-      final ow16a = FrameList16Bit(pixels0, nFrames0, owFDa);
+      final pixels0 = Uint16List(owFDa.length * length0);
+      final ow16a = FrameList16Bit(pixels0, length0, owFDa);
 
       // pixels
       expect(ow16a.pixels is Uint16List, true);
@@ -67,15 +66,14 @@ void main() {
       expect(ow16a.pixels.lengthInBytes == ow16a.bulkdata.length, true);
 
       // nFrames
-      expect(ow16a.length == nFrames0, true);
-      expect(ow16a.nFrames == nFrames0, true);
+      expect(ow16a.length == length0, true);
 
       // frameLength
       expect(ow16a.frameLength == rows4 * columns6, true);
       expect(ow16a.lengthInBytes == pixels0.lengthInBytes, true);
       expect(ow16a.lengthInBytes == ow16a.pixels.lengthInBytes, true);
       expect(ow16a.lengthInBytes == ow16a.bulkdata.lengthInBytes, true);
-      expect(ow16a.lengthInBytes == owFDa.lengthInBytes * nFrames0, true);
+      expect(ow16a.lengthInBytes == owFDa.lengthInBytes * length0, true);
 
       // validity
       expect(ow16a.isValid, true);
@@ -120,7 +118,7 @@ void main() {
     });
 
     test('Create FrameList16Bit MultiFrame Uncompressed Tests', () {
-      int nFrames1;
+      int length1;
       const photometricInterpretation1 = 'RGB1';
 
       // Descriptor
@@ -139,10 +137,10 @@ void main() {
 
       // Multi Frame with even number of frame
       for (var i = 1; i <= 10; i++) {
-        nFrames1 = i * 2;
-        final pixels1 = Uint16List(owFDb.length * nFrames1);
+        length1 = i * 2;
+        final pixels1 = Uint16List(owFDb.length * length1);
 
-        final ow16b = FrameList16Bit(pixels1, nFrames1, owFDb);
+        final ow16b = FrameList16Bit(pixels1, length1, owFDb);
 
         // pixels
         expect(ow16b.pixels is Uint16List, true);
@@ -157,15 +155,14 @@ void main() {
         expect(ow16b.pixels.lengthInBytes == ow16b.bulkdata.length, true);
 
         // nFrames
-        expect(ow16b.length == nFrames1, true);
-        expect(ow16b.nFrames == nFrames1, true);
+        expect(ow16b.length == length1, true);
 
         // frameLength
         expect(ow16b.frameLength == rows4 * columns6, true);
         expect(ow16b.lengthInBytes == pixels1.lengthInBytes, true);
         expect(ow16b.lengthInBytes == ow16b.pixels.lengthInBytes, true);
         expect(ow16b.lengthInBytes == ow16b.bulkdata.lengthInBytes, true);
-        expect(ow16b.lengthInBytes == owFDb.lengthInBytes * nFrames1, true);
+        expect(ow16b.lengthInBytes == owFDb.lengthInBytes * length1, true);
 
         // validity
         expect(ow16b.isValid, true);
@@ -212,7 +209,7 @@ void main() {
 
     test('Invalid FrameList16Bit data test', () {
       //nFrames = 0 (Invalid Frames)
-      const nFrames0 = 0;
+      const length0 = 0;
       const photometricInterpretation1 = 'MONOCHROME3';
 
       final owFDc = FrameDescriptor(
@@ -232,16 +229,16 @@ void main() {
 
       log
         ..debug('pixels0.length: ${pixels0.lengthInBytes}')
-        ..debug('nFrames: $nFrames0')
+        ..debug('nFrames: $length0')
         ..debug('pixelSize bits: ${owFDc.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${owFDc.pixelSizeInBytes}');
 
       global.throwOnError = true;
-      expect(() => FrameList16Bit(pixels0, nFrames0, owFDc),
+      expect(() => FrameList16Bit(pixels0, length0, owFDc),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid Pixels
-      const nFrames1 = 1;
+      const length1 = 1;
       const photometricInterpretation2 = 'MONOCHROME3';
 
       final owFDd = FrameDescriptor(
@@ -260,10 +257,10 @@ void main() {
       final pixels1 = Uint16List(0);
       log
         ..debug('pixels0.length: ${pixels1.lengthInBytes}')
-        ..debug('nFrames: $nFrames1')
+        ..debug('nFrames: $length1')
         ..debug('pixelSize bits: ${owFDd.pixelSizeInBits}')
         ..debug('pixelSize bytes: ${owFDd.pixelSizeInBytes}');
-      expect(() => FrameList16Bit(pixels1, nFrames1, owFDd),
+      expect(() => FrameList16Bit(pixels1, length1, owFDd),
           throwsA(const TypeMatcher<InvalidFrameListError>()));
 
       // Invalid FrameDescriptor values
@@ -348,9 +345,9 @@ void main() {
         ..add(unPixelPaddingRangeLimit0);
 
       final fd16c = FrameDescriptor.fromDataset(rds0);
-      const nFrames0 = 1;
-      final pixels0 = Uint16List(fd16c.length * nFrames0);
-      final ow16c = FrameList16Bit(pixels0, nFrames0, fd16c);
+      const length0 = 1;
+      final pixels0 = Uint16List(fd16c.length * length0);
+      final ow16c = FrameList16Bit(pixels0, length0, fd16c);
 
       log.debug('pixelAspectRatio: ${fd16c.pixelAspectRatio}');
 
@@ -365,8 +362,7 @@ void main() {
       expect(ow16c.pixels is Uint16List, true);
 
       // nFrames
-      expect(ow16c.length == nFrames0, true);
-      expect(ow16c.nFrames == nFrames0, true);
+      expect(ow16c.length == length0, true);
 
       // frameLength
       expect(ow16c.frameLength == fd16c.length, true);
@@ -395,7 +391,7 @@ void main() {
       expect(ow16c.pixelAspectRatio == pixelAspectRatioValue0, true);
       expect(ow16c.pixelSizeInBits == fd16c.pixelSizeInBits, true);
       expect(ow16c.frameLength == fd16c.length, true);
-      expect(ow16c.desc.lengthInBytes == fd16c.lengthInBytes * nFrames0, true);
+      expect(ow16c.desc.lengthInBytes == fd16c.lengthInBytes * length0, true);
 
       expect(fd16c.smallestImagePixelValue == 0, true);
       expect(fd16c.largestImagePixelValue == 65535, true);
@@ -431,7 +427,7 @@ void main() {
     });
 
     test('operator[] frame', () {
-      int nFrames0;
+      int length0;
       const photometricInterpretation0 = 'MONOCHROME1';
 
       final owFDf = FrameDescriptor(
@@ -450,15 +446,15 @@ void main() {
       FrameList16Bit ow16c;
 
       for (var i = 0; i < 10; i++) {
-        nFrames0 = i + 1;
-        log.debug('nFrames0: $nFrames0');
-        final pixels0 = Uint16List(owFDf.length * nFrames0);
-        ow16c = FrameList16Bit(pixels0, nFrames0, owFDf);
-        for (var j = 0; j < nFrames0; j++) {
+        length0 = i + 1;
+        log.debug('length0: $length0');
+        final pixels0 = Uint16List(owFDf.length * length0);
+        ow16c = FrameList16Bit(pixels0, length0, owFDf);
+        for (var j = 0; j < length0; j++) {
           final frame0 = ow16c[j];
           expect(frame0.index == j, true);
 
-          expect(frame0.lengthInBytes * nFrames0 == ow16c.pixels.lengthInBytes,
+          expect(frame0.lengthInBytes * length0 == ow16c.pixels.lengthInBytes,
               true);
 
           expect(frame0.length == ow16c.desc.length, true);
@@ -481,8 +477,8 @@ void main() {
           expect(frame0.length == ow16c.frameLength, true);
         }
       }
-      log.debug('nFrames0: $nFrames0, Frames in FrameList: ${ow16c.nFrames}');
-      expect(() => ow16c[nFrames0], throwsA(const TypeMatcher<RangeError>()));
+      log.debug('length0: $length0, Frames in FrameList: ${ow16c.length}');
+      expect(() => ow16c[length0], throwsA(const TypeMatcher<RangeError>()));
     });
   });
 }

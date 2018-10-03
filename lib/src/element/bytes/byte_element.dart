@@ -168,7 +168,7 @@ abstract class ByteElement<V> {
   }
 
   static Element makePixelDataFromBytes(DicomBytes bytes,
-      [TransferSyntax ts, VFFragments fragments, Dataset ds]) {
+      [TransferSyntax ts, VFFragmentList fragments, Dataset ds]) {
     final code = bytes.code;
     final index = getPixelDataVR(code, bytes.vrIndex, ds, ts);
     return _fromBytesPixelDataMakers[index](bytes, ts, fragments);

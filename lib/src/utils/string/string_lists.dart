@@ -40,6 +40,8 @@ int stringListLength(Iterable<String> sList,
 Iterable<String> uppercase(List<String> vList) =>
     vList.map((s) => s.toUpperCase());
 
+/// Returns a [String] created from [sList], where [separator] separates
+/// each component in the resulting [String].
 String stringListToString(List<String> sList, [String separator = '\\']) {
   if (sList == null) return null;
   if (sList.isEmpty) return '';

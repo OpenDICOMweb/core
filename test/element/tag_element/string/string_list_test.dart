@@ -47,6 +47,7 @@ void main() {
       expect(sltu0, equals(uint8List0));
     }
 
+    global.throwOnError = false;
     final sltu1 = stringListToUint8List(null);
     expect(sltu1, isNull);
   });

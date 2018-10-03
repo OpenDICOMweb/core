@@ -31,7 +31,6 @@ void main() {
       expect(updateAllUids0 == [ui0], false);
       expect(updateAllUids0 is UI, false);
 
-      global.throwOnError = false;
       rootDS0.add(ui0);
       final updateUidList1 = rootDS0.updateAllUids(ui0.index, uList0);
       log.debug('updateUidList1: $updateUidList1');

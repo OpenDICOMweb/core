@@ -26,8 +26,10 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
 
   SSbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static SSbytes fromBytes(DicomBytes bytes) => SSbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
@@ -55,8 +57,10 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
 
   SLbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static SLbytes fromBytes(DicomBytes bytes) => SLbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static SLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kSLCode, isEvr, SL.kSizeInBytes);
     if (bytes == null) return null;
@@ -85,10 +89,12 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
 
   OBbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static OBbytes fromBytes(DicomBytes bytes,
-          [TransferSyntax ts, VFFragments fragments]) =>
+          [TransferSyntax ts, VFFragmentList fragments]) =>
       OBbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static OBbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kOBCode, isEvr, OB.kSizeInBytes)
       ..writeUint8VF(vList);
@@ -103,10 +109,12 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
 
   UNbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static UNbytes fromBytes(DicomBytes bytes,
-          [TransferSyntax ts, VFFragments fragments]) =>
+          [TransferSyntax ts, VFFragmentList fragments]) =>
       UNbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kUNCode, isEvr, UN.kSizeInBytes)
@@ -132,8 +140,10 @@ class USbytes extends US with ByteElement<int>, Uint16Mixin {
 
   USbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static USbytes fromBytes(DicomBytes bytes) => USbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kUSCode, isEvr, US.kSizeInBytes);
@@ -150,10 +160,12 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
 
   OWbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static OWbytes fromBytes(DicomBytes bytes,
-          [TransferSyntax ts, VFFragments fragments]) =>
+          [TransferSyntax ts, VFFragmentList fragments]) =>
       OWbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ByteElement fromValues(int code, List<int> vList,
       {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kOWCode, isEvr, OW.kSizeInBytes);
@@ -181,8 +193,10 @@ class ATbytes extends AT with ByteElement<int>, Uint32Mixin {
 
   ATbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ATbytes fromBytes(DicomBytes bytes) => ATbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ATbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kATCode, isEvr, AT.kSizeInBytes);
     if (bytes == null) return null;
@@ -199,8 +213,10 @@ class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
 
   OLbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static OLbytes fromBytes(DicomBytes bytes) => OLbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static OLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kOLCode, isEvr, OL.kSizeInBytes);
     if (bytes == null) return null;
@@ -217,10 +233,12 @@ class ULbytes extends UL with ByteElement<int>, Uint32Mixin {
 
   ULbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ULbytes fromBytes(DicomBytes bytes) =>
       // If the code is (gggg,0000) create a Group Length element
       (bytes.getUint16(2) == 0) ? GLbytes(bytes) : ULbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ULbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kULCode, isEvr, UL.kSizeInBytes);
     if (bytes == null) return null;
@@ -234,11 +252,10 @@ class ULbytes extends UL with ByteElement<int>, Uint32Mixin {
 class GLbytes extends ULbytes {
   GLbytes(DicomBytes bytes) : super(bytes);
 
-  static const String kVRKeyword = 'GL';
-  static const String kVRName = 'Group Length';
-
+  // ignore: prefer_constructors_over_static_methods
   static GLbytes fromBytes(DicomBytes bytes) => GLbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static GLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kSSCode, isEvr, SS.kSizeInBytes);
     if (bytes == null) return null;
@@ -246,4 +263,7 @@ class GLbytes extends ULbytes {
     assert(vList.length * SS.kSizeInBytes <= SS.kMaxVFLength);
     return fromBytes(bytes);
   }
+
+  static const String kVRKeyword = 'GL';
+  static const String kVRName = 'Group Length';
 }

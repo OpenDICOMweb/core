@@ -55,10 +55,12 @@ class AEtag extends AE with TagElement<String> {
   @override
   AEtag update([Iterable<String> vList]) => AEtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static AEtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       AEtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static AEtag fromBytes(Tag tag, Bytes bytes) =>
       AEtag(tag, bytes.getAsciiList(padChar: kSpace));
 }
@@ -103,10 +105,12 @@ class CStag extends CS with TagElement<String> {
   @override
   CStag update([Iterable<String> vList]) => CStag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static CStag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       CStag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static CStag fromBytes(Tag tag, Bytes bytes) =>
       CStag(tag, bytes.getAsciiList());
 }
@@ -143,10 +147,12 @@ class DStag extends DS with TagElement<String> {
   @override
   DStag update([Iterable<String> vList]) => DStag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static DStag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       DStag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static DStag fromBytes(Tag tag, Bytes bytes) =>
       DStag(tag, bytes.getAsciiList(padChar: kSpace));
 }
@@ -183,10 +189,12 @@ class IStag extends IS with TagElement<String> {
   @override
   IStag update([Iterable<String> vList]) => IStag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static IStag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       IStag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static IStag fromBytes(Tag tag, Bytes bytes) =>
       IStag(tag, bytes.getAsciiList());
 }
@@ -224,10 +232,12 @@ class LOtag extends LO with TagElement<String> {
   @override
   LOtag update([Iterable<String> vList]) => LOtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static LOtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       LOtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static LOtag fromBytes(Tag tag, Bytes bytes) =>
       LOtag(tag, bytes.getUtf8List());
 }
@@ -268,15 +278,18 @@ class PCtag extends PC with TagElement<String> {
   @override
   PCtag update([Iterable<String> vList]) => PCtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static PCtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       PCtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static PCtag fromBytes(Tag tag, Bytes bytes) {
     final s = bytes.getUtf8().trim();
     return PCtag(tag, StringList.from([s]));
   }
 
+  // ignore: prefer_constructors_over_static_methods
   static PCtag makePhantom(int group, int subgroup) {
     const name = PDTag.phantomName;
     final code = (group << 16) + subgroup;
@@ -284,6 +297,7 @@ class PCtag extends PC with TagElement<String> {
     return PCtag(tag, StringList.from(const <String>[name]));
   }
 
+  // ignore: prefer_constructors_over_static_methods
   static PCtag makeEmptyPrivateCreator(int pdCode, int vrIndex) {
     final group = Tag.privateGroup(pdCode);
     final sgNumber = (pdCode & 0xFFFF) >> 8;
@@ -326,10 +340,12 @@ class LTtag extends LT with TagElement<String> {
   @override
   LTtag update([Iterable<String> vList]) => LTtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static LTtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       LTtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static LTtag fromBytes(Tag tag, Bytes bytes) =>
       LTtag(tag, StringList.from([bytes.getUtf8()]));
 }
@@ -367,10 +383,12 @@ class PNtag extends PN with TagElement<String> {
   @override
   PNtag update([Iterable<String> vList]) => PNtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static PNtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       PNtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static PNtag fromBytes(Tag tag, Bytes bytes) =>
       PNtag(tag, bytes.getUtf8List());
 }
@@ -408,10 +426,12 @@ class SHtag extends SH with TagElement<String> {
   @override
   SHtag update([Iterable<String> vList]) => SHtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static SHtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       SHtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static SHtag fromBytes(Tag tag, Bytes bytes) =>
       SHtag(tag, bytes.getUtf8List());
 }
@@ -449,10 +469,12 @@ class STtag extends ST with TagElement<String> {
   @override
   STtag update([Iterable<String> vList]) => STtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static STtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       STtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static STtag fromBytes(Tag tag, Bytes bytes) =>
       STtag(tag, StringList.from([bytes.getUtf8()]));
 }
@@ -490,10 +512,12 @@ class UCtag extends UC with TagElement<String> {
   @override
   UCtag update([Iterable<String> vList]) => UCtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UCtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       UCtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UCtag fromBytes(Tag tag, Bytes bytes) =>
       UCtag(tag, bytes.getUtf8List());
 }
@@ -544,10 +568,12 @@ class UItag extends UI with TagElement<String> {
   @override
   UItag update([Iterable<String> vList]) => UItag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UItag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       UItag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UItag fromBytes(Tag tag, Bytes bytes) =>
       UItag(tag, bytes.getAsciiList(padChar: kNull));
 }
@@ -587,10 +613,12 @@ class URtag extends UR with TagElement<String> {
   @override
   URtag update([Iterable<String> vList]) => URtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static URtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       URtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static URtag fromBytes(Tag tag, Bytes bytes) =>
       URtag(tag, StringList.from([bytes.getUtf8()]));
 }
@@ -628,10 +656,12 @@ class UTtag extends UT with TagElement<String> {
   @override
   UTtag update([Iterable<String> vList]) => UTtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UTtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       UTtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UTtag fromBytes(Tag tag, Bytes bytes) =>
       UTtag(tag, StringList.from([bytes.getUtf8()]));
 }
@@ -670,10 +700,12 @@ class AStag extends AS with TagElement<String> {
   @override
   AStag update([Iterable<String> vList]) => AStag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static AStag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       AStag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static AStag fromBytes(Tag tag, Bytes bytes) =>
       AStag(tag, bytes.getAsciiList());
 }
@@ -713,10 +745,12 @@ class DAtag extends DA with TagElement<String> {
   @override
   DAtag update([Iterable<String> vList]) => DAtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static DAtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       DAtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static DAtag fromBytes(Tag tag, Bytes bytes) =>
       DAtag(tag, bytes.getAsciiList());
 }
@@ -757,10 +791,12 @@ class DTtag extends DT with TagElement<String> {
   @override
   DTtag update([Iterable<String> vList]) => DTtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static DTtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       DTtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static DTtag fromBytes(Tag tag, Bytes bytes) =>
       DTtag(tag, bytes.getAsciiList());
 }
@@ -802,10 +838,12 @@ class TMtag extends TM with TagElement<String> {
   @override
   TMtag update([Iterable<String> vList]) => TMtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static TMtag fromValues(Tag tag,
           [Iterable<String> vList, TransferSyntax _]) =>
       TMtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static TMtag fromBytes(Tag tag, Bytes bytes) {
     final s = bytes.getAsciiList(padChar: kSpace);
     return TMtag(tag, s);

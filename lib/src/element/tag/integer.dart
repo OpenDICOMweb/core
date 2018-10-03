@@ -82,9 +82,11 @@ class SStag extends SS with TagElement<int>, TagIntegerMixin {
   @override
   List<int> replace([Iterable<int> vList]) => _replace(Int16.fromList(vList));
 
+  // ignore: prefer_constructors_over_static_methods
   static SStag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       SStag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static SStag fromBytes(Tag tag, Bytes bytes) =>
       SStag._(tag, bytes.asInt16List());
 }
@@ -116,9 +118,11 @@ class SLtag extends SL with TagElement<int>, TagIntegerMixin {
   @override
   SLtag update([Iterable<int> vList]) => SLtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static SLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       SLtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static SLtag fromBytes(Tag tag, Bytes bytes) =>
       SLtag._(tag, bytes.asInt32List());
 }
@@ -151,9 +155,11 @@ class OBtag extends OB with TagElement<int>, TagIntegerMixin {
   @override
   OBtag update([Iterable<int> vList = kEmptyIntList]) => OBtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static OBtag fromValues(Tag tag, Iterable<int> vList) =>
       OBtag._(tag, Uint8.fromList(vList));
 
+  // ignore: prefer_constructors_over_static_methods
   static OBtag fromBytes(Tag tag, Bytes bytes) =>
       OBtag._(tag, bytes.asUint8List());
 }
@@ -184,8 +190,10 @@ class UNtag extends UN with TagElement<int>, TagIntegerMixin {
   @override
   UNtag update([Iterable<int> vList = kEmptyIntList]) => UNtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UNtag fromValues(Tag tag, Iterable<int> vList) => UNtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UNtag fromBytes(Tag tag, Bytes bytes) =>
       UNtag._(tag, bytes.asUint8List());
 }
@@ -215,9 +223,11 @@ class UStag extends US with TagElement<int>, TagIntegerMixin {
   @override
   UStag update([Iterable<int> vList]) => UStag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UStag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       UStag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static UStag fromBytes(Tag tag, Bytes bytes) =>
       UStag._(tag, bytes.asUint16List());
 }
@@ -251,8 +261,10 @@ class OWtag extends OW with TagElement<int>, TagIntegerMixin {
   @override
   OWtag update([Iterable<int> vList = kEmptyIntList]) => OWtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static OWtag fromValues(Tag tag, List<int> vList) => OWtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static OWtag fromBytes(Tag tag, Bytes bytes) =>
       OWtag._(tag, bytes.asUint16List());
 }
@@ -283,9 +295,11 @@ class OLtag extends OL with TagElement<int>, TagIntegerMixin {
   @override
   OLtag update([Iterable<int> vList]) => OLtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static OLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       OLtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static OLtag fromBytes(Tag tag, Bytes bytes) =>
       OLtag._(tag, bytes.asUint32List());
 }
@@ -316,9 +330,11 @@ class ULtag extends UL with TagElement<int>, TagIntegerMixin {
   @override
   ULtag update([Iterable<int> vList]) => ULtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static ULtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       ULtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static ULtag fromBytes(Tag tag, Bytes bytes) =>
       ULtag._(tag, bytes.asUint32List());
 }
@@ -343,9 +359,11 @@ class GLtag extends ULtag {
   @override
   GLtag update([Iterable<int> vList]) => GLtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static GLtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       GLtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static GLtag fromBytes(Tag tag, Bytes bytes) =>
       GLtag._x(tag, bytes.asUint32List());
 }
@@ -381,9 +399,11 @@ class ATtag extends AT with TagElement<int>, TagIntegerMixin {
   @override
   ATtag update([Iterable<int> vList]) => ATtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static ATtag fromValues(Tag tag, [Iterable<int> vList, TransferSyntax _]) =>
       ATtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static ATtag fromBytes(Tag tag, Bytes bytes) =>
       ATtag._(tag, bytes.asUint32List());
 }

@@ -56,6 +56,7 @@ class FLtag extends FL with TagElement<double>, TagFloatMixin {
   factory FLtag.bulkdata(Tag tag, Uri url) =>
       FLtag._(tag, FloatBulkdataRef(tag.code, url));
 
+
   factory FLtag._(Tag tag, Iterable<double> vList) {
     if (!FL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
     final v = (vList.isEmpty) ? kEmptyFloat32List : Float32.fromList(vList);
@@ -70,9 +71,11 @@ class FLtag extends FL with TagElement<double>, TagFloatMixin {
   FLtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       FLtag._(tag, vList);
 
+ // ignore: prefer_constructors_over_static_methods
   static FLtag fromValues(Tag tag, Iterable<double> vList) =>
       FLtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static FLtag fromBytes(Tag tag, Bytes bytes) =>
       FL.isValidBytesArgs(tag, bytes)
           ? FLtag._x(tag, bytes.asFloat32List())
@@ -110,9 +113,11 @@ class OFtag extends OF with TagElement<double>, TagFloatMixin {
   OFtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       OFtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static OFtag fromValues(Tag tag, Iterable<double> vList) =>
       OFtag(tag, vList ?? kEmptyDoubleList);
 
+  // ignore: prefer_constructors_over_static_methods
   static OFtag fromBytes(Tag tag, Bytes bytes) =>
       OF.isValidBytesArgs(tag, bytes)
           ? OFtag._x(tag, bytes.asFloat32List())
@@ -150,9 +155,11 @@ class FDtag extends FD with TagElement<double>, TagFloatMixin {
   FDtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       FDtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static FDtag fromValues(Tag tag, Iterable<double> vList) =>
       FDtag(tag, vList ?? kEmptyDoubleList);
 
+  // ignore: prefer_constructors_over_static_methods
   static FDtag fromBytes(Tag tag, Bytes bytes) =>
       FD.isValidBytesArgs(tag, bytes)
           ? FDtag._x(tag, bytes.asFloat64List())
@@ -190,9 +197,11 @@ class ODtag extends OD with TagElement<double>, TagFloatMixin {
   ODtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       ODtag(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static ODtag fromValues(Tag tag, Iterable<double> vList) =>
       ODtag._(tag, vList);
 
+  // ignore: prefer_constructors_over_static_methods
   static ODtag fromBytes(Tag tag, Bytes bytes) =>
       OD.isValidBytesArgs(tag, bytes)
           ? ODtag._x(tag, bytes.asFloat64List())

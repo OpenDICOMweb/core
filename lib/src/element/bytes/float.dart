@@ -26,8 +26,11 @@ class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
 
   FLbytes(this.bytes) : assert(bytes != null);
 
+  //TODO: fix all static constructors when constructors can be used as tear offs
+  // ignore: prefer_constructors_over_static_methods
   static FLbytes fromBytes(DicomBytes bytes) => FLbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static FLbytes fromValues(int code, Iterable<double> vList,
       {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kFLCode, isEvr, FL.kSizeInBytes)
@@ -43,8 +46,10 @@ class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
 
   OFbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static OFbytes fromBytes(DicomBytes bytes) => OFbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static OFbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kOFCode, isEvr, OF.kSizeInBytes)
       ..writeFloat32VF(vList);
@@ -71,8 +76,10 @@ class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
 
   FDbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static FDbytes fromBytes(DicomBytes bytes, [Dataset ds]) => FDbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static FDbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kFDCode, isEvr, FD.kSizeInBytes)
       ..writeFloat64VF(vList);
@@ -87,8 +94,10 @@ class ODbytes extends OD with ByteElement<double>, BytesFloat64Mixin {
 
   ODbytes(this.bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ODbytes fromBytes(DicomBytes bytes) => ODbytes(bytes);
 
+  // ignore: prefer_constructors_over_static_methods
   static ODbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kODCode, isEvr, OD.kSizeInBytes)
       ..writeFloat64VF(vList);
