@@ -40,8 +40,6 @@ void main() {
 
         final e2 = AEbytes.fromValues(kReceivingAE, vList);
         log.debug('e2: $e2');
- // Urgent Sharath: what is next line doing? Flush if not needed
-  //      e2.vfBytes == bytes;
         expect(e2.hasValidValues, true);
         expect(e2.vfBytes == bytes, true);
         expect(e2 == e1, true);

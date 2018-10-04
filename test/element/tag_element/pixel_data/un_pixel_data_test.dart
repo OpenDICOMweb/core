@@ -586,8 +586,7 @@ void main() {
       expect(Uint8.fromBase64(s), equals(testFrame));
     });
 
-    //Urgent: why is this call uint32.fromBytes??
-    test('Create Uint32.fromBytes', () {
+    test('Create Uint8.fromBytes', () {
       final bytes = Uint8.toBytes(testFrame);
       log.debug('s: "$bytes"');
       final uint8a = Uint8.fromBytes(bytes);
@@ -595,7 +594,7 @@ void main() {
       expect(uint8a, uint8b);
     });
 
-    test('Create Uint32.fromByteData', () {
+    test('Create Uint8.fromByteData', () {
       final bd = Uint8.toByteData(testFrame);
 
       final uint8 = Uint8.fromByteData(bd);
