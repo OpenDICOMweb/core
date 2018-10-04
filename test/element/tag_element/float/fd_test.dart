@@ -646,8 +646,7 @@ void main() {
         for (var tag in fdVM1Tags) {
           log.debug('tag: $tag');
           global.throwOnError = false;
-          //Urgent sharath: shouldn't this be true
-      //    expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, validMinVList), false);
 
           expect(FD.isValidLength(tag, validMinVList), false);
           expect(FD.isValidLength(tag, invalidVList), false);
