@@ -41,7 +41,7 @@ import 'package:core/src/values/uid.dart';
 
 /// A DICOM Dataset. The [Type] [<K>] is the Type of 'key'
 /// used to lookup [Element]s in the [Dataset]].
-abstract class  DatasetMixin {
+abstract class DatasetMixin {
   // **** Start of Interface ****
 
   /// Returns the Element with [index], if present; otherwise, returns _null_.
@@ -266,8 +266,7 @@ abstract class  DatasetMixin {
   /// Replaces the [Element.values] at [index] with [vList].
   /// Returns the original [Element.values], or _null_ if no
   /// [Element] with [index] was not present.
-  List<V> replace<V>(int index, Iterable<V> vList,
-      {bool required = false}) {
+  List<V> replace<V>(int index, Iterable<V> vList, {bool required = false}) {
     assert(index != null && vList != null);
     final e = lookup(index, required: required);
     if (e == null) return required ? elementNotPresentError(index) : null;
@@ -305,8 +304,7 @@ abstract class  DatasetMixin {
     return result;
   }
 
-  List<Iterable<V>> replaceAllF<V>(
-      int index, Iterable<V> f(List<V> vList)) {
+  List<Iterable<V>> replaceAllF<V>(int index, Iterable<V> f(List<V> vList)) {
     assert(index != null && f != null);
     final result = <List<V>>[]..add(replaceF(index, f));
     for (var e in elements)
@@ -555,6 +553,7 @@ abstract class  DatasetMixin {
     return _checkOneValue(index, e.values);
   }
 
+  // Values can be empty or have 1 value
   V _checkOneValue<V>(int index, List<V> values) =>
       (values == null || values.length != 1)
           ? badValuesLength(values, 0, 1, null, Tag.lookupByCode(index))
@@ -577,7 +576,15 @@ abstract class  DatasetMixin {
   /// than one values, either throws or returns _null_.
   int getInt(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null || e is! Integer) return nonIntegerTag(index);
+    if (e == null) {
+      if (required == true) return elementNotPresentError(index);
+      return null;
+    }
+    if (e is! Integer) {
+      print('e: $e');
+      // TODO: fix add nonIntegerElement
+      return nonIntegerTag(index);
+    }
     return _checkOneValue<int>(index, e.values);
   }
 
@@ -775,26 +782,31 @@ abstract class  DatasetMixin {
 
   /// Returns a [Uint8List] or [Uint16List] of pixels from the [kPixelData]
   /// [Element];
-  List<int> getPixelData() {
+  List<int> get pixelData {
     final bitsAllocated = getInt(kBitsAllocated);
-    return _getPixelData(bitsAllocated);
+    return _getPixelData(bitsAllocated ?? 8);
   }
 
   List<int> _getPixelData(int bitsAllocated) {
+    if (bitsAllocated == null) log.warn('bitsAllocated == null');
     final e = lookup(kPixelData);
-    if (e == null || bitsAllocated == null) return pixelDataNotPresent();
+    // if (e == null || bitsAllocated == null) return pixelDataNotPresent();
+    if (e == null) return pixelDataNotPresent();
     assert(e.code == kPixelData);
 
     if (e is PixelData) {
       if (e is OWPixelData) {
-        assert(bitsAllocated == 16);
+        if (bitsAllocated != 16)
+          log.warn('OWPixelData with bitsAllocated: $bitsAllocated');
         return e.values;
       } else if (e is OBPixelData) {
-        assert(bitsAllocated == 8 || bitsAllocated == 1);
+        if (bitsAllocated != 8 && bitsAllocated != 1)
+          log.warn('OBPixelData with bitsAllocated: $bitsAllocated');
         return e.values;
       } else if (e is UNPixelData) {
         // TODO: use transfer syntax to convert UN into OW or OB
-        assert(bitsAllocated == 8 || bitsAllocated == 1);
+        if (bitsAllocated != 8 && bitsAllocated != 16 && bitsAllocated != 1)
+          log.warn('UNPixelData with bitsAllocated: $bitsAllocated');
         return e.values;
       } else {
         return badElement('$e is bad Pixel Data', e);

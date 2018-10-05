@@ -244,24 +244,24 @@ void main() {
       final ds = TagRootDataset.empty()..add(pd0)..add(ba0);
 
       //  ds = RootDatasetTag();
-      final pixels = ds.getPixelData();
+      final pixels = ds.pixelData;
       log.debug('pixel.length: ${pixels.length}');
       expect(pixels.length == 2, true);
 
       global.throwOnError = false;
       final ba1 = UStag(PTag.kBitsAllocated, []);
       final ds1 = TagRootDataset.empty()..add(ba1);
-      final pixels1 = ds1.getPixelData();
+      final pixels1 = ds1.pixelData;
       expect(pixels1 == null, true);
 
       global.throwOnError = true;
       expect(
-          ds1.getPixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
+          ds1.pixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
 
       final ba3 = UStag(PTag.kBitsAllocated, [8]);
       final ds2 = TagRootDataset.empty()..add(ba3);
       expect(
-          ds2.getPixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
+          ds2.pixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
     });
 
     test('UNtagPixelData fromValues', () {

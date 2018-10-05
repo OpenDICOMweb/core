@@ -130,20 +130,18 @@ void main() {
       final pd0 = OWtagPixelData([123, 101]);
       final ba0 = UStag(PTag.kBitsAllocated, [16]);
       final ds = TagRootDataset.empty()..add(pd0)..add(ba0);
-      final pixels = ds.getPixelData();
+      final pixels = ds.pixelData;
       log..debug('pixels: $pixels')..debug('pixel.length: ${pixels.length}');
       expect(pixels.length == 2, true);
 
       final ba1 = UStag(PTag.kBitsAllocated, []);
-      final ba2 = UStag(PTag.kBitsAllocated, []);
       final ds1 = TagRootDataset.empty()..add(ba1);
-      final pixels1 = ds1.getPixelData();
+      final pixels1 = ds1.pixelData;
       expect(pixels1 == null, true);
 
       global.throwOnError = true;
-      ds1.add(ba2);
       expect(
-          ds1.getPixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
+          ds1.pixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
 
@@ -151,7 +149,7 @@ void main() {
       final ds2 = TagRootDataset.empty()..add(ba3);
       global.throwOnError = true;
       expect(
-          ds2.getPixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
+          ds2.pixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
     });
 
     test('Create OWtagPixelData.fromValues', () {
