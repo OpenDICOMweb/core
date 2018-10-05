@@ -579,14 +579,14 @@ void main() {
 
     test('US isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
-        final vList = rng.uint16List(2, i + 1);
+        final invalidMinVList = rng.uint16List(2, i + 1);
         for (var tag in usVM1Tags) {
           global.throwOnError = false;
-          expect(US.isValidLength(tag, vList), false);
+          expect(US.isValidLength(tag, invalidMinVList), false);
           expect(US.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => US.isValidLength(tag, vList),
+          expect(() => US.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
           expect(() => US.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
@@ -615,14 +615,14 @@ void main() {
 
     test('US isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
-        final vList = rng.uint16List(3, i + 1);
+        final invalidMinVList = rng.uint16List(3, i + 1);
         for (var tag in usVM2Tags) {
           global.throwOnError = false;
-          expect(US.isValidLength(tag, vList), false);
+          expect(US.isValidLength(tag, invalidMinVList), false);
           expect(US.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => US.isValidLength(tag, vList),
+          expect(() => US.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
           expect(() => US.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
@@ -645,14 +645,14 @@ void main() {
 
     test('US isValidLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
-        final vList = rng.uint16List(4, i + 1);
+        final invalidMinVList = rng.uint16List(4, i + 1);
         for (var tag in usVM3Tags) {
           global.throwOnError = false;
-          expect(US.isValidLength(tag, vList), false);
+          expect(US.isValidLength(tag, invalidMinVList), false);
           expect(US.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => US.isValidLength(tag, vList),
+          expect(() => US.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
           expect(() => US.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
@@ -675,14 +675,14 @@ void main() {
 
     test('US isValidLength VM.k4 bad values', () {
       for (var i = 4; i < 10; i++) {
-        final vList = rng.uint16List(5, i + 1);
+        final invalidMinVList = rng.uint16List(5, i + 1);
         for (var tag in usVM4Tags) {
           global.throwOnError = false;
-          expect(US.isValidLength(tag, vList), false);
+          expect(US.isValidLength(tag, invalidMinVList), false);
           expect(US.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => US.isValidLength(tag, vList),
+          expect(() => US.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
           expect(() => US.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));

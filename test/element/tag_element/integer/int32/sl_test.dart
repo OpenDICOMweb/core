@@ -549,18 +549,18 @@ void main() {
 
     test('SL isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
-        final validMinVList0 = rng.int32List(2, i + 1);
+        final invalidMinVList0 = rng.int32List(2, i + 1);
 
         for (var tag in slVM1Tags) {
           global.throwOnError = false;
           log.debug('tag: $tag');
-          expect(SL.isValidLength(tag, validMinVList0), false);
+          expect(SL.isValidLength(tag, invalidMinVList0), false);
           expect(SL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => SL.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
-          expect(() => SL.isValidLength(tag, validMinVList0),
+          expect(() => SL.isValidLength(tag, invalidMinVList0),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
@@ -593,18 +593,18 @@ void main() {
 
     test('SL isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
-        final validMinVList0 = rng.int32List(3, i + 1);
+        final invalidMinVList0 = rng.int32List(3, i + 1);
 
         for (var tag in slVM2Tags) {
           log.debug('tag: $tag');
           global.throwOnError = false;
-          expect(SL.isValidLength(tag, validMinVList0), false);
+          expect(SL.isValidLength(tag, invalidMinVList0), false);
           expect(SL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => SL.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
-          expect(() => SL.isValidLength(tag, validMinVList0),
+          expect(() => SL.isValidLength(tag, invalidMinVList0),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
@@ -639,17 +639,17 @@ void main() {
 
     test('SL isValidLength VM.k2_2n bad values', () {
       for (var i = 0; i < 10; i++) {
-        final validMinVList0 = rng.int32List(1, 1);
+        final invalidMinVList0 = rng.int32List(1, 1);
         for (var tag in slVM22nTags) {
           log.debug('tag: $tag');
           global.throwOnError = false;
-          expect(SL.isValidLength(tag, validMinVList0), false);
+          expect(SL.isValidLength(tag, invalidMinVList0), false);
           expect(SL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => SL.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
-          expect(() => SL.isValidLength(tag, validMinVList0),
+          expect(() => SL.isValidLength(tag, invalidMinVList0),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }

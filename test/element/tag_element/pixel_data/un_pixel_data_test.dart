@@ -591,7 +591,7 @@ void main() {
       log.debug('s: "$bytes"');
       final uint8a = Uint8.fromBytes(bytes);
       final uint8b = bytes.asUint8List();
-      expect(uint8a, uint8b);
+      expect(uint8a, equals(uint8b));
     });
 
     test('Create Uint8.fromByteData', () {

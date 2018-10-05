@@ -586,17 +586,17 @@ void main() {
 
     test('FL isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
-        final validMinVList = rng.float32List(2, i + 1);
+        final invalidMinVList = rng.float32List(2, i + 1);
         for (var tag in flVM1Tags) {
           global.throwOnError = false;
-          expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidMinVList), false);
           expect(FL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => FL.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
 
-          expect(() => FL.isValidLength(tag, validMinVList),
+          expect(() => FL.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
@@ -626,17 +626,17 @@ void main() {
 
     test('FL isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
-        final validMinVList = rng.float32List(3, i + 1);
+        final invalidMinVList = rng.float32List(3, i + 1);
         for (var tag in flVM2Tags) {
           global.throwOnError = false;
-          expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidMinVList), false);
           expect(FL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => FL.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
 
-          expect(() => FL.isValidLength(tag, validMinVList),
+          expect(() => FL.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
@@ -654,17 +654,17 @@ void main() {
 
     test('FL isValidLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
-        final validMinVList = rng.float32List(4, i + 1);
+        final invalidMinVList = rng.float32List(4, i + 1);
         for (var tag in flVM3Tags) {
           global.throwOnError = false;
-          expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidMinVList), false);
           expect(FL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => FL.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
 
-          expect(() => FL.isValidLength(tag, validMinVList),
+          expect(() => FL.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
@@ -682,17 +682,17 @@ void main() {
 
     test('FL isValidLength VM.k6 bad values', () {
       for (var i = 6; i < 10; i++) {
-        final validMinVList = rng.float32List(7, i + 1);
+        final invalidMinVList = rng.float32List(7, i + 1);
         for (var tag in flVM6Tags) {
           global.throwOnError = false;
-          expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidMinVList), false);
           expect(FL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => FL.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
 
-          expect(() => FL.isValidLength(tag, validMinVList),
+          expect(() => FL.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
@@ -720,17 +720,17 @@ void main() {
 
     test('FL isValidLength VM.k6_n bad values', () {
       for (var i = 1; i < 10; i++) {
-        final validMinVList = rng.float32List(1, 5);
+        final invalidMinVList = rng.float32List(1, 5);
         for (var tag in flVM16Tags) {
           global.throwOnError = false;
-          expect(FL.isValidLength(tag, validMinVList), false);
+          expect(FL.isValidLength(tag, invalidMinVList), false);
           expect(FL.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => FL.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
 
-          expect(() => FL.isValidLength(tag, validMinVList),
+          expect(() => FL.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
