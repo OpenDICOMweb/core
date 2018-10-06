@@ -255,7 +255,7 @@ ActiveStudies:
     // Get the Instance
     var instance = series[rds.getUid(kSOPInstanceUID)];
     if (instance != null) throw 'Entity($entity) already present';
-    instance = Instance.fromRDS(rds, series);
+    instance = Instance.fromRootDataset(rds, series);
     // Return the highest level [Entity] created.
     return entity ??= instance;
   }

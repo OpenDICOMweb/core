@@ -73,15 +73,15 @@ void main() {
       expect(study0.uid, isNotNull);
 
       //Adding Entity
-      subject0.putIfAbsent(study0);
+      subject0.putIfAbsent(study0.uid, () => study0);
       log.debug(subject0);
 
       global.throwOnError = true;
       //Adding duplicate Entity
-      expect(() => subject0.putIfAbsent(study1),
+      expect(() => subject0.putIfAbsent(study1.uid, () => study1),
           throwsA(const TypeMatcher<DuplicateEntityError>()));
 
-      subject0.putIfAbsent(study2);
+      subject0.putIfAbsent(study2.uid, () => study2);
       log.debug(subject0);
 
       final s0 = activeStudies.addStudyIfAbsent(study0);
@@ -114,14 +114,14 @@ void main() {
       expect(series0.hashCode == series1.hashCode, false);
       expect(series0.uid, isNotNull);
 
-      study0.putIfAbsent(series0);
+      study0.putIfAbsent(series0.uid, () => series0);
       log.debug(study0);
 
       //Adding duplicate Entity
-      expect(() => study0.putIfAbsent(series1),
+      expect(() => study0.putIfAbsent(series1.uid, () => series1),
           throwsA(const TypeMatcher<DuplicateEntityError>()));
 
-      study0.putIfAbsent(series2);
+      study0.putIfAbsent(series2.uid, () => series2);
       log.debug(study0);
     });
 
@@ -144,15 +144,15 @@ void main() {
 
       global.throwOnError = false;
       //Adding Entity
-      series0.putIfAbsent(instance0);
+      series0.putIfAbsent(instance0.uid, () => instance0);
       log.debug(series0);
 
       global.throwOnError = true;
       //Adding duplicate Entity
-      expect(() => series0.putIfAbsent(instance1),
+      expect(() => series0.putIfAbsent(instance1.uid, () => instance1),
           throwsA(const TypeMatcher<DuplicateEntityError>()));
 
-      series0.putIfAbsent(instance2);
+      series0.putIfAbsent(instance2.uid, () => instance2);
       log.debug(series0);
     });
 
@@ -175,12 +175,10 @@ void main() {
       expect(cache[3] == 'three', true);
 
       cache[1] = null;
-      log..debug('1: ${cache[1]}')
-      ..debug('length: ${cache.length}');
+      log..debug('1: ${cache[1]}')..debug('length: ${cache.length}');
       expect(cache.length == 3, true);
       expect(cache[1] == null, true);
       log.debug('cache: ${cache.keys}\n ${cache.values}');
-
     });
   });
 }

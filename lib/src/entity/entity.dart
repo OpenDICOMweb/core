@@ -35,7 +35,7 @@ abstract class Entity {
   final Uid uid;
 
   /// The [Entity]s contained in _this_.
-  final Map<Uid, Entity> children;
+//  final Map<Uid, Entity> children;
 
   //TODO: explain
   /// The [RootDataset] associated with this [Entity].
@@ -45,23 +45,27 @@ abstract class Entity {
 
   //TODO: explain the difference between Mint encoding and standard DICOM.
   /// A DICOM Information Entity
-  Entity(this.parent, this.uid, this.rds, Map<Uid, Entity> children)
-      : children = (children == null) ? <Uid, Entity>{} : children;
+  Entity(this.parent, this.uid, this.rds, Map<Uid, Entity> children);
 
   /// Returns a copy of [Entity], but with a  [Uid]. If [parent] is _null_
   /// the  [Entity] has the same parent as _this_.
   //TODO: how to create an interface without changing finals
   Entity.from(Entity entity, this.rds, Entity parent)
       : parent = (parent == null) ? entity.parent : parent,
-        uid = Uid(),
-        children = Map.from(entity.children);
+        uid = Uid();
 
   /// Returns the child that has [uid].
-  Entity operator [](Uid uid) => children[uid];
+//  Entity operator [](Uid uid) => children[uid];
 
   // **** Minimal Interface ****
 
-  // The [name] of _this_.
+  /// The children of _this_.
+  Iterable get values;
+
+  /// The number of sub-[Entity]s of _this_.
+  int get length;
+
+  /// The [name] of _this_.
   Type get type => runtimeType;
 
   /// The Information Entity Level of _this_.
@@ -91,15 +95,17 @@ abstract class Entity {
   Element lookup(Tag tag) => rds[tag.code];
 
   /// Returns a [String] containing formatted output.
-  String format(Formatter z) => z.fmt(this, children.values);
+  String format(Formatter z) => z.fmt(this, values);
 
   @override
-  String toString() => '$runtimeType($uid): (${children.length}) ';
+  String toString() => '$runtimeType($uid): ($length) ';
 
+/*
   static Entity putWhenAbsent(
       Entity entity, Uid uid, Map<Uid, Entity> children) {
     final v = children.putIfAbsent(uid, () => entity);
     if (v != entity) return duplicateEntityError(v, entity);
     return entity;
   }
+*/
 }

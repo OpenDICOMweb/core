@@ -6,6 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'dart:collection';
+
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/entity/entity.dart';
@@ -16,28 +18,50 @@ import 'package:core/src/entity/series.dart';
 import 'package:core/src/values/uid.dart';
 
 /// A DICOM [Study] in SOP Instance format.
-class Study extends Entity {
+class Study extends Entity with MapMixin<Uid, Series> {
+  /// An constant empty [seriesMap].
+  static const Map kEmptySeriesMap = <Uid, Series>{};
+
+  /// A Map from [Uid] to [Series].
+  final HashMap<Uid, Series> seriesMap;
+
   /// Creates a  Study.
   Study(Patient subject, Uid uid, RootDataset dataset,
-      [Map<Uid, Series> series])
-      : super(
-            subject, uid, dataset, (series == null) ? <Uid, Series>{} : series);
+      [Map<Uid, Series> seriesMap])
+      : seriesMap = seriesMap ?? HashMap(),
+        super(subject, uid, dataset, seriesMap);
 
   /// Returns a copy of _this_ [Series], but with a  [Uid]. If [parent]
   /// is _null_ the  [Instance] is in the same [Series] as _this_.
   Study.from(Study study, RootDataset rds, [Patient parent])
-      : super((parent == null) ? study.parent : parent, Uid(), rds,
-            Map.from(study.children));
+      : seriesMap = HashMap(),
+        super((parent == null) ? study.parent : parent, Uid(), rds,
+            HashMap.from(study.seriesMap));
 
   /// Returns a  [Study] created from the [RootDataset].
-  factory Study.fromRootDataset(RootDataset rds, [Patient parent]) {
+  factory Study.fromRootDataset(RootDataset rds, [Patient patient]) {
     final e = rds.lookup(kStudyInstanceUID, required: true);
-    final studyUid = Uid(e.value);
-    parent ??= Patient.fromRDS(rds);
-    final study = Study(parent, studyUid, rds);
-    parent.putIfAbsent(study);
+    final uid = Uid(e.value);
+    patient ??= Patient.fromRDS(rds);
+    final study = Study(patient, uid, rds);
+    patient.putIfAbsent(uid, () => study);
     return study;
   }
+
+  // **** Map Implementation
+
+  @override
+  Series operator [](Object o) => (o is Uid) ? seriesMap[o] : null;
+  @override
+  void operator []=(Uid uid, Series series) => seriesMap[uid] = series;
+  @override
+  Iterable<Uid> get keys => seriesMap.keys;
+  @override
+  void clear() => seriesMap.clear();
+  @override
+  Series remove(Object key) => (key is Uid) ? seriesMap.remove(key) : null;
+
+  // **** End Map Implementation
 
   @override
   IELevel get level => IELevel.study;
@@ -56,7 +80,7 @@ class Study extends Entity {
   Patient get subject => parent;
 
   /// Returns the [Series] of this [Study].
-  Iterable<Series> get series => children.values;
+  Iterable<Series> get series => seriesMap.values;
 
   /// Returns a [List] of all the [Instance]s that belong to _this_.
   List<Instance> get instances {
@@ -81,13 +105,5 @@ class Study extends Entity {
       }
     }
     return sb.toString();
-  }
-
-  /// Adds a  [Series] to the [Study].  Throws a [DuplicateEntityError]
-  /// if _this_ has an existing [Series] with the same [Uid].
-  Series putIfAbsent(Series series) {
-    final v = children.putIfAbsent(series.uid, () => series);
-    if (v != series) return duplicateEntityError(v, series);
-    return series;
   }
 }

@@ -6,6 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'dart:collection';
+
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity/active_studies.dart';
@@ -22,23 +24,32 @@ import 'package:core/src/values/uid.dart';
 // ignore_for_file: public_member_api_docs
 
 /// The [Patient] of a DICOM [Study].
-class Patient extends Entity {
+class Patient extends Entity with MapMixin<Uid, Study> {
+  /// An constant empty [studyMap].
+  static const Map kEmptyStudyMap = <Uid, Study>{};
+
+  /// A Map from [Uid] to [Series].
+  final HashMap<Uid, Study> studyMap;
+
   final String pid;
   PersonName _name;
   Date _dob;
   Sex _sex;
 
+
   /// Creates a  [Patient].
   Patient(this.pid, Uid uid, RootDataset rds,
       [Map<Uid, Study> studies, this._name, this._dob, this._sex])
-      : super(null, uid, rds, (studies == null) ? <Uid, Study>{} : studies);
+      : studyMap = studies ?? HashMap(),
+        super(null, uid, rds, (studies == null) ? <Uid, Study>{} : studies);
 
   /// Returns a copy of _this_ [Patient], but with a  [Uid].
-  Patient.from(Patient subject, RootDataset rds, this.pid)
-      : _name = subject.name,
-        _dob = subject._dob,
-        _sex = subject._sex,
-        super(null, Uid(), rds, Map<Uid, Study>.from(subject.children));
+  Patient.from(Patient patient, RootDataset rds, this.pid)
+      : studyMap = HashMap(),
+        _name = patient.name,
+        _dob = patient._dob,
+        _sex = patient._sex,
+        super(null, Uid(), rds, Map<Uid, Study>.from(patient.studyMap));
 
   /// Returns a  [Patient] created from the [RootDataset].
   factory Patient.fromRDS(RootDataset rds) {
@@ -52,6 +63,21 @@ class Patient extends Entity {
         : Patient(pid, Uid(), rds, <Uid, Study>{}, name, dob, sex);
   }
 
+  // **** Map Implementation
+
+  @override
+  Study operator [](Object o) => (o is Uid) ? studyMap[o] : null;
+  @override
+  void operator []=(Uid uid, Study study) => studyMap[uid] = study;
+  @override
+  Iterable<Uid> get keys => studyMap.keys;
+  @override
+  void clear() => studyMap.clear();
+  @override
+  Study remove(Object key) => (key is Uid) ? studyMap.remove(key) : null;
+
+  // **** End Map Implementation
+
   @override
   IELevel get level => IELevel.subject;
   @override
@@ -64,7 +90,7 @@ class Patient extends Entity {
   String get fullPath => '/$uid';
 
   /// Returns the [Study]s of this [Patient].
-  Iterable<Study> get studies => children.values;
+  Iterable<Study> get studies => studyMap.values;
 
   /// The [PersonName] of the person who is _this_ [Patient];
   PersonName get name => _name ??= rds.patientName;
@@ -77,15 +103,6 @@ class Patient extends Entity {
 
   /// Returns the [Sex] of _this_.
   int get age => throw UnimplementedError('');
-
-  /// Adds a  [Study] for the [Patient].  Throws a [DuplicateEntityError]
-  /// if [Patient] has an existing [Study] with the same [Uid].
-  Study putIfAbsent(Study study) {
-    assert(study is Study);
-    final v = children.putIfAbsent(study.uid, () => study);
-    if (v != study) return duplicateEntityError(v, study);
-    return study;
-  }
 
   Study createStudyFromRootDataset(RootDataset rds) =>
       Study.fromRootDataset(rds, this);
