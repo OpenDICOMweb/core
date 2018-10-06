@@ -578,6 +578,7 @@ abstract class DatasetMixin {
     final e = lookup(index, required: required);
     if (e == null) {
       if (required == true) return elementNotPresentError(index);
+      // ignore: avoid_returning_null
       return null;
     }
     if (e is! Integer) {

@@ -6,8 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'dart:collection';
-
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity/active_studies.dart';
@@ -24,32 +22,23 @@ import 'package:core/src/values/uid.dart';
 // ignore_for_file: public_member_api_docs
 
 /// The [Patient] of a DICOM [Study].
-class Patient extends Entity with MapMixin<Uid, Study> {
-  /// An constant empty [studyMap].
-  static const Map kEmptyStudyMap = <Uid, Study>{};
-
-  /// A Map from [Uid] to [Series].
-  final HashMap<Uid, Study> studyMap;
-
+class Patient extends Entity {
   final String pid;
   PersonName _name;
   Date _dob;
   Sex _sex;
 
-
   /// Creates a  [Patient].
   Patient(this.pid, Uid uid, RootDataset rds,
       [Map<Uid, Study> studies, this._name, this._dob, this._sex])
-      : studyMap = studies ?? HashMap(),
-        super(null, uid, rds, (studies == null) ? <Uid, Study>{} : studies);
+      : super(null, uid, rds, studies ?? <Uid, Study>{});
 
   /// Returns a copy of _this_ [Patient], but with a  [Uid].
   Patient.from(Patient patient, RootDataset rds, this.pid)
-      : studyMap = HashMap(),
-        _name = patient.name,
+      : _name = patient.name,
         _dob = patient._dob,
         _sex = patient._sex,
-        super(null, Uid(), rds, Map<Uid, Study>.from(patient.studyMap));
+        super(null, Uid(), rds, <Uid, Study>{});
 
   /// Returns a  [Patient] created from the [RootDataset].
   factory Patient.fromRDS(RootDataset rds) {
@@ -63,34 +52,13 @@ class Patient extends Entity with MapMixin<Uid, Study> {
         : Patient(pid, Uid(), rds, <Uid, Study>{}, name, dob, sex);
   }
 
-  // **** Map Implementation
-
-  @override
-  Study operator [](Object o) => (o is Uid) ? studyMap[o] : null;
-  @override
-  void operator []=(Uid uid, Study study) => studyMap[uid] = study;
-  @override
-  Iterable<Uid> get keys => studyMap.keys;
-  @override
-  void clear() => studyMap.clear();
-  @override
-  Study remove(Object key) => (key is Uid) ? studyMap.remove(key) : null;
-
-  // **** End Map Implementation
-
   @override
   IELevel get level => IELevel.subject;
   @override
-  Type get parentType => null;
-  @override
   Type get childType => Study;
-  @override
-  String get path => '';
-  @override
-  String get fullPath => '/$uid';
 
   /// Returns the [Study]s of this [Patient].
-  Iterable<Study> get studies => studyMap.values;
+  Iterable<Study> get studies => childMap.values;
 
   /// The [PersonName] of the person who is _this_ [Patient];
   PersonName get name => _name ??= rds.patientName;
@@ -115,9 +83,9 @@ class Patient extends Entity with MapMixin<Uid, Study> {
 /// THE [DICOM] [Subject] Information Entity.
 class Subject extends Patient {
   /// Creates a  [Subject].
-  Subject(String pid, Uid uid, RootDataset rds,
+  Subject(String pid, Uid key, RootDataset rds,
       {Map<Uid, Study> studies, PersonName name, Date dob, Sex sex})
-      : super(pid, uid, rds, (studies == null) ? <Uid, Study>{} : studies, name,
+      : super(pid, key, rds, (studies == null) ? <Uid, Study>{} : studies, name,
             dob, sex);
 
   /// Returns a  [Subject] created from the [RootDataset].
@@ -125,9 +93,9 @@ class Subject extends Patient {
     final e = rds[kPatientID];
     if (e == null) return elementNotPresentError(e);
     if (!e.hasValidValues) return badValues(e.value);
-    final uid = Uid();
+    final key = Uid();
     final String pid = e.value;
-    return Subject(pid, uid, rds);
+    return Subject(pid, key, rds);
   }
 
   @override

@@ -6,7 +6,6 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-import 'dart:collection';
 import 'dart:typed_data';
 
 import 'package:core/src/dataset.dart';
@@ -21,20 +20,14 @@ import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: public_member_api_docs
 
-class Instance extends Entity with MapMixin<Uid, Instance> {
-  /// An constant empty [dataset].
-  static const Map kEmptyDatasetMap = <Uid, Dataset>{};
-
-  /// A Map from [Uid] to [Series].
-  final HashMap<Uid, Instance> dataset;
-
+// ignore: prefer_void_to_null
+class Instance extends Entity {
   /// Pixel Data
   Uint8List _pixelData;
 
   /// Creates a  [Instance].
   Instance(Series series, Uid uid, RootDataset dataset)
-      : dataset = dataset ?? HashMap(),
-        super(series, uid, dataset, Entity.empty);
+      : super(series, uid, dataset, null);
 
   /// Returns a  [Instance] created from the [RootDataset].
   factory Instance.fromRootDataset(RootDataset rds, Series series) {
@@ -43,37 +36,14 @@ class Instance extends Entity with MapMixin<Uid, Instance> {
     if (e == null) return elementNotPresentError(e);
     final uid = Uid(e.value);
     final instance = Instance(series, uid, rds);
-    series.putIfAbsent(uid, () => instance);
+    series.addIfAbsent(instance);
     return instance;
   }
-
-  // **** Map Implementation
-
-  @override
-  Instance operator [](Object o) => (o is Uid) ? dataset[o] : null;
-  @override
-  void operator []=(Uid uid, Instance instance) => dataset[uid] = instance;
-  @override
-  Iterable<Uid> get keys => dataset.keys;
-  @override
-  void clear() => dataset.clear();
-  @override
-  Instance remove(Object key) => (key is Uid) ? dataset.remove(key) : null;
-
-  // **** End Map Implementation
 
   @override
   IELevel get level => IELevel.instance;
   @override
-  Type get parentType => Series;
-  @override
   Type get childType => null;
-
-  @override
-  String get path => '/${series.path}/$uid';
-
-  @override
-  String get fullPath => '/${series.fullPath}/$uid';
 
   /// The [Series] that is the [parent] of this [Instance].
   Entity get series => parent;
@@ -84,6 +54,7 @@ class Instance extends Entity with MapMixin<Uid, Instance> {
   /// The [subject] of this [Instance].
   Patient get subject => study.subject;
 
+  @override
   int get length => rds.length;
 
   Uid get sopClassUid => rds.sopClassUid;
@@ -99,7 +70,7 @@ class Instance extends Entity with MapMixin<Uid, Instance> {
   @override
   String get info {
     final s = (sopClassUid == null) ? 'null' : '$sopClassUid';
-    return '''$runtimeType(${uid.asString}), SOPClass: $s, $length elements
+    return '''$runtimeType(${key.asString}), SOPClass: $s, $length elements
     $series
       $study
         $subject
@@ -107,5 +78,5 @@ class Instance extends Entity with MapMixin<Uid, Instance> {
   }
 
   @override
-  String toString() => '$runtimeType(${uid.asString}), $length elements';
+  String toString() => '$runtimeType(${key.asString}), $length elements';
 }

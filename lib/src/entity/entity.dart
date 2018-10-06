@@ -6,6 +6,8 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'dart:collection';
+
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity/ie_level.dart';
@@ -25,87 +27,85 @@ import 'package:core/src/values/uid.dart';
 
 /// The Base [class] that is used to implement DICOM Information Entities
 /// (see  PS3.1 and PS3.6).
-abstract class Entity {
-  static const Map<Uid, Entity> empty = <Uid, Entity>{};
-
+abstract class Entity with MapMixin<Uid, Entity> {
   /// This [parent] of _this_.
   final Entity parent;
 
+  /// A Map from [Uid] to [Entity].
+  final Map<Uid, Entity> childMap;
+
   /// The SOP Instance UID of _this_.
-  final Uid uid;
+  final Uid key;
 
-  /// The [Entity]s contained in _this_.
-//  final Map<Uid, Entity> children;
-
-  //TODO: explain
   /// The [RootDataset] associated with this [Entity].
   /// Note: For standard DICOM this is the [RootDataset],
   /// for Mint it is the Entity RootDataset.
   final RootDataset rds;
 
-  //TODO: explain the difference between Mint encoding and standard DICOM.
   /// A DICOM Information Entity
-  Entity(this.parent, this.uid, this.rds, Map<Uid, Entity> children);
+  Entity(this.parent, this.key, this.rds, this.childMap);
 
   /// Returns a copy of [Entity], but with a  [Uid]. If [parent] is _null_
   /// the  [Entity] has the same parent as _this_.
-  //TODO: how to create an interface without changing finals
-  Entity.from(Entity entity, this.rds, Entity parent)
-      : parent = (parent == null) ? entity.parent : parent,
-        uid = Uid();
+  Entity.from(Entity entity, this.rds, Entity parent, this.childMap, this.key)
+      : parent = (parent == null) ? entity.parent : parent;
 
-  /// Returns the child that has [uid].
-//  Entity operator [](Uid uid) => children[uid];
+  // **** Map Implementation
 
-  // **** Minimal Interface ****
+  @override
+  Entity operator [](Object key) => (key is Uid) ? childMap[key] : null;
+  @override
+  void operator []=(Uid key, Entity value) => childMap[key] = value;
+  @override
+  Iterable<Uid> get keys => childMap.keys;
+  @override
+  void clear() => childMap.clear();
+  @override
+  Entity remove(Object key) => (key is Uid) ? childMap.remove(key) : null;
 
-  /// The children of _this_.
-  Iterable get values;
+  // **** End Map Implementation
 
-  /// The number of sub-[Entity]s of _this_.
-  int get length;
+  Uid get uid => key;
 
-  /// The [name] of _this_.
+  /// The [Type] of _this_.
   Type get type => runtimeType;
 
   /// The Information Entity Level of _this_.
   IELevel get level;
 
-  /// The [Type] of the [parent].
-  Type get parentType;
-
-  /// The [Type] of the [children].
+  /// The [Type] of the children of _this_.
   Type get childType;
 
-  // Issue: this could be '/$id' for all classes where id == uid for non-patient
-  /// Returns a [String] containing the canonical pathname for _this_.
-  String get path;
-
-  /// Returns a [String] containing the full canonical pathname
-  /// (i.e. including the [Patient] [Uid]) for _this_.
-  String get fullPath;
-
-  // **** End of Minimal Interface ****
+  String get info => '''$this
+  parent: $parent
+    $childType: ${childMap.length}
+  ''';
 
   /// Returns a [String] containing information about _this_.
-  String get info => toString();
+  String get summary {
+    final sb = StringBuffer('$runtimeType: $key\n  '
+        '${parent.runtimeType}: $parent $length $childType\n');
+    for (var s in values) {
+      sb.write('  $childType: ${s.key}\n    ${s.length} values\n');
+    }
+    return '$sb';
+  }
 
   //TODO: this should handle sequence tags
   /// Returns the [Element] with [Tag] equal to [tag] in _this_.
   Element lookup(Tag tag) => rds[tag.code];
 
+  /// Adds an  [Entity] to _this_.  Throws a [DuplicateEntityError]
+  /// if _this_ has an existing [Entity] with the same [Uid].
+  Entity addIfAbsent(Entity entity) {
+    final v = putIfAbsent(entity.key, () => entity);
+    if (v != entity) return duplicateEntityError(v, entity);
+    return entity;
+  }
+
   /// Returns a [String] containing formatted output.
   String format(Formatter z) => z.fmt(this, values);
 
   @override
-  String toString() => '$runtimeType($uid): ($length) ';
-
-/*
-  static Entity putWhenAbsent(
-      Entity entity, Uid uid, Map<Uid, Entity> children) {
-    final v = children.putIfAbsent(uid, () => entity);
-    if (v != entity) return duplicateEntityError(v, entity);
-    return entity;
-  }
-*/
+  String toString() => '$runtimeType($uid): (children: $length) ';
 }

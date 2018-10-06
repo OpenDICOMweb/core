@@ -29,7 +29,7 @@ void main() {
       expect(subject0 == subject1, false);
       expect(subject0 == subject2, true);
       expect(subject0.hashCode == subject1.hashCode, false);
-      expect(subject0.uid, isNotNull);
+      expect(subject0.key, isNotNull);
 
       final subject4 = activeStudies.addPatientIfAbsent(subject0);
       log.debug(activeStudies);
@@ -52,7 +52,7 @@ void main() {
 
       expect(patient == patient1, false);
       expect(patient.hashCode == patient1.hashCode, false);
-      expect(patient.uid, isNotNull);
+      expect(patient.key, isNotNull);
     });
 
     test('Study', () {
@@ -70,18 +70,21 @@ void main() {
 
       expect(study0 == study1, false);
       expect(study0.hashCode == study1.hashCode, false);
-      expect(study0.uid, isNotNull);
+      expect(study0.key, isNotNull);
 
       //Adding Entity
-      subject0.putIfAbsent(study0.uid, () => study0);
+      subject0.addIfAbsent(study0);
       log.debug(subject0);
 
       global.throwOnError = true;
       //Adding duplicate Entity
-      expect(() => subject0.putIfAbsent(study1.uid, () => study1),
+       expect(() => subject0.addIfAbsent(study1),
           throwsA(const TypeMatcher<DuplicateEntityError>()));
 
-      subject0.putIfAbsent(study2.uid, () => study2);
+      //Adding duplicate Entity
+      // expect(subject0.putIfAbsent(study1.key, () => study1) == study0, true);
+
+      subject0.addIfAbsent(study2);
       log.debug(subject0);
 
       final s0 = activeStudies.addStudyIfAbsent(study0);
@@ -112,16 +115,16 @@ void main() {
 
       expect(series0 == series1, false);
       expect(series0.hashCode == series1.hashCode, false);
-      expect(series0.uid, isNotNull);
+      expect(series0.key, isNotNull);
 
-      study0.putIfAbsent(series0.uid, () => series0);
+      study0.addIfAbsent(series0);
       log.debug(study0);
 
       //Adding duplicate Entity
-      expect(() => study0.putIfAbsent(series1.uid, () => series1),
+      expect(() => study0.addIfAbsent(series1),
           throwsA(const TypeMatcher<DuplicateEntityError>()));
 
-      study0.putIfAbsent(series2.uid, () => series2);
+      study0.addIfAbsent(series2);
       log.debug(study0);
     });
 
@@ -140,19 +143,19 @@ void main() {
 
       expect(instance0 == instance1, false);
       expect(instance0.hashCode == instance1.hashCode, false);
-      expect(instance0.uid, isNotNull);
+      expect(instance0.key, isNotNull);
 
       global.throwOnError = false;
       //Adding Entity
-      series0.putIfAbsent(instance0.uid, () => instance0);
+      series0.putIfAbsent(instance0.key, () => instance0);
       log.debug(series0);
 
       global.throwOnError = true;
       //Adding duplicate Entity
-      expect(() => series0.putIfAbsent(instance1.uid, () => instance1),
+      expect(() => series0.addIfAbsent(instance1),
           throwsA(const TypeMatcher<DuplicateEntityError>()));
 
-      series0.putIfAbsent(instance2.uid, () => instance2);
+      series0.putIfAbsent(instance2.key, () => instance2);
       log.debug(series0);
     });
 

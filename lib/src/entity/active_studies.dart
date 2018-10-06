@@ -49,12 +49,12 @@ class ActiveStudies extends Object with MapMixin<Uid, Study> {
 
   /// Returns the [Study] that has [uid].
   @override
-  Study operator [](Object uid) => _studies[uid];
+  Study operator [](Object uid) => uid is Uid ? _studies[uid] : null;
 
   /// Adds [study] to [ActiveStudies], if it is not already present.
   @override
   void operator []=(Uid uid, Study study) {
-    if (uid != study.uid) throw 'Invalid study.uid';
+    if (uid != study.key) throw 'Invalid study.uid';
     addStudyIfAbsent(study);
   }
 
@@ -94,7 +94,7 @@ ActiveStudies:
   /// If the [Patient] is not already present in [ActiveStudies], it is added.
   Patient addPatientIfAbsent(Patient subject) {
     _subjectsByPid.putIfAbsent(subject.pid, () => subject);
-    final v = _subjects.putIfAbsent(subject.uid, () => subject);
+    final v = _subjects.putIfAbsent(subject.key, () => subject);
     if (v != subject) return duplicateEntityError(v, subject);
     return v;
   }
@@ -102,18 +102,18 @@ ActiveStudies:
   /// Removes [subject] and all its [Study]s from [ActiveStudies].
   void removePatient(Patient subject) {
     if (!_subjectsByPid.containsKey(subject.pid) ||
-        !_subjects.containsKey(subject.uid)) throw '$subject not present';
+        !_subjects.containsKey(subject.key)) throw '$subject not present';
     subject.studies.forEach(removeStudy);
     _subjectsByPid.remove(subject.pid);
-    _subjects.remove(subject.uid);
+    _subjects.remove(subject.key);
   }
 
   /// If the [Study] is not already present in [ActiveStudies], it is added.
   Study addStudyIfAbsent(Study study) {
     addPatientIfAbsent(study.subject);
-    final v = _studies.putIfAbsent(study.uid, () => study);
+    final v = _studies.putIfAbsent(study.key, () => study);
     if (v != study) return duplicateEntityError(v, study);
-    _studyPatient.putIfAbsent(study.uid, () => study.subject);
+    _studyPatient.putIfAbsent(study.key, () => study.subject);
     return v;
   }
 
@@ -122,10 +122,10 @@ ActiveStudies:
   /// [ActiveStudies].
   Study removeStudy(Study study) {
     if (study is Study) {
-      if (!_studies.containsKey(study.uid) ||
-          !_studyPatient.containsKey(study.uid)) throw '$study not present';
-      _studies.remove(study.uid);
-      _studyPatient.remove(study.uid);
+      if (!_studies.containsKey(study.key) ||
+          !_studyPatient.containsKey(study.key)) throw '$study not present';
+      _studies.remove(study.key);
+      _studyPatient.remove(study.key);
       if (study.subject.studies.isEmpty) removePatient(study.subject);
       return study;
     } else {
@@ -178,63 +178,6 @@ ActiveStudies:
   /// Returns the corresponding [Patient], or _null_ if not present.
   static Patient subjectFromStudy(Uid studyUid) => _studyPatient[studyUid];
 
-/* flush if not needed
-  static Patient createPatientIfAbsent(Uid studyUid, RootDataset ds) {
-    String pid = ds.subject.pid;
-    Patient subject = _subjectsByPid[pid];
-    if (subject == null) {
-      subject =  Patient.fromRootDataset(ds);
-      _subjects[subject.uid] = subject;
-      _subjectsByPid[pid] = subject;
-    }
-    return subject;
-  }
-*/
-
-/*  flush if not needed
-  static Study createStudyIfAbsent(RootDataset ds) {
-    //TODO: create Study from dataset
-    Uid studyUid = ds.studyUid;
-    if (studyUid == null) throw 'RootDataset w/o studyUid';
-    Patient subject = createPatientIfAbsent(studyUid, ds);
-    Study study = _studies[studyUid];
-    if (study == null) study =  Study(subject, studyUid, ds);
-    subject.children[studyUid] = study;
-    _studies[studyUid] = study;
-    _studysPatient[studyUid] = subject;
-    //TODO: fix or remove if redundant check
-    // _checkIfStudyPresent(study);
-    return study;
-  }
-*/
-
-  /*  flush if not needed
- static bool removeStudyIfPresent(Uid studyUid) {
-    Study study = _studies[studyUid];
-    if (study == null) return false;
-    Patient subject = _studysPatient[studyUid];
-    _studies.remove(studyUid);
-    _studysPatient.remove(studyUid);
-    _subjects.remove(subject.uid);
-    _subjectsByPid.remove(subject.pid);
-    //TODO: remove redundant check
-    return _checkStudyRemoved(study, subject);
-  }
-*/
-/*  flush if not needed
-  static bool _checkStudyRemoved(study, subject) {
-    if (_studies[study.uid] != null)
-      throw "Study with UID ${study.uid} still present in _studies";
-    if (_studysPatient[study.uid] != null)
-      throw "StudysPatient with UID ${study.uid} still present in _studies";
-    if (_subjects.remove(subject.uid) != null)
-      throw "Study with UID ${study.uid}  still present in _studies";
-    if (_subjectsByPid.remove(subject.cType) != null)
-      throw "Study with UID ${study.uid}  still present in _studies";
-    return true;
-  }
-*/
-
   Entity entityFromRootDataset(RootDataset rds) {
     Entity entity;
 
@@ -248,7 +191,9 @@ ActiveStudies:
     entity ??= study;
 
     // Get the Series
-    var series = study[rds.getUid(kStudyInstanceUID)];
+    final s = study[rds.getUid(kStudyInstanceUID)];
+    // ignore: avoid_as
+    var series = s as Series;
     series ??= Series.fromRootDataset(rds, study);
     entity ??= series;
 
