@@ -31,14 +31,14 @@ class Patient extends Entity {
   /// Creates a  [Patient].
   Patient(this.pid, Uid uid, RootDataset rds,
       [Map<Uid, Study> studies, this._name, this._dob, this._sex])
-      : super(null, uid, rds, (studies == null) ? <Uid, Study>{} : studies);
+      : super(null, uid, rds, studies ?? <Uid, Study>{});
 
   /// Returns a copy of _this_ [Patient], but with a  [Uid].
-  Patient.from(Patient subject, RootDataset rds, this.pid)
-      : _name = subject.name,
-        _dob = subject._dob,
-        _sex = subject._sex,
-        super(null, Uid(), rds, Map<Uid, Study>.from(subject.children));
+  Patient.from(Patient patient, RootDataset rds, this.pid)
+      : _name = patient.name,
+        _dob = patient._dob,
+        _sex = patient._sex,
+        super(null, Uid(), rds, <Uid, Study>{});
 
   /// Returns a  [Patient] created from the [RootDataset].
   factory Patient.fromRDS(RootDataset rds) {
@@ -55,16 +55,10 @@ class Patient extends Entity {
   @override
   IELevel get level => IELevel.subject;
   @override
-  Type get parentType => null;
-  @override
   Type get childType => Study;
-  @override
-  String get path => '';
-  @override
-  String get fullPath => '/$uid';
 
   /// Returns the [Study]s of this [Patient].
-  Iterable<Study> get studies => children.values;
+  Iterable<Study> get studies => childMap.values;
 
   /// The [PersonName] of the person who is _this_ [Patient];
   PersonName get name => _name ??= rds.patientName;
@@ -78,15 +72,6 @@ class Patient extends Entity {
   /// Returns the [Sex] of _this_.
   int get age => throw UnimplementedError('');
 
-  /// Adds a  [Study] for the [Patient].  Throws a [DuplicateEntityError]
-  /// if [Patient] has an existing [Study] with the same [Uid].
-  Study putIfAbsent(Study study) {
-    assert(study is Study);
-    final v = children.putIfAbsent(study.uid, () => study);
-    if (v != study) return duplicateEntityError(v, study);
-    return study;
-  }
-
   Study createStudyFromRootDataset(RootDataset rds) =>
       Study.fromRootDataset(rds, this);
 
@@ -98,9 +83,9 @@ class Patient extends Entity {
 /// THE [DICOM] [Subject] Information Entity.
 class Subject extends Patient {
   /// Creates a  [Subject].
-  Subject(String pid, Uid uid, RootDataset rds,
+  Subject(String pid, Uid key, RootDataset rds,
       {Map<Uid, Study> studies, PersonName name, Date dob, Sex sex})
-      : super(pid, uid, rds, (studies == null) ? <Uid, Study>{} : studies, name,
+      : super(pid, key, rds, (studies == null) ? <Uid, Study>{} : studies, name,
             dob, sex);
 
   /// Returns a  [Subject] created from the [RootDataset].
@@ -108,9 +93,9 @@ class Subject extends Patient {
     final e = rds[kPatientID];
     if (e == null) return elementNotPresentError(e);
     if (!e.hasValidValues) return badValues(e.value);
-    final uid = Uid();
+    final key = Uid();
     final String pid = e.value;
-    return Subject(pid, uid, rds);
+    return Subject(pid, key, rds);
   }
 
   @override

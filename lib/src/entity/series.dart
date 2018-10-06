@@ -12,7 +12,6 @@ import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/instance.dart';
 import 'package:core/src/entity/patient/patient.dart';
 import 'package:core/src/entity/study.dart';
-import 'package:core/src/error.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values/uid.dart';
 
@@ -20,42 +19,28 @@ import 'package:core/src/values/uid.dart';
 class Series extends Entity {
   /// Creates a  [Series].
   Series(Study study, Uid uid, RootDataset rds, [Map<Uid, Instance> instances])
-      : super(study, uid, rds,
-            (instances == null) ? <Uid, Instance>{} : instances);
+      : super(study, uid, rds, instances ?? <Uid, Instance>{});
 
   /// Returns a copy of _this_ [Series], but with a  [Uid]. If [parent]
   /// is _null_ the  [Instance] is in the same [Series] as _this_.
   Series.from(Series series, RootDataset rds, [Study parent])
       : super((parent == null) ? series.parent : parent, Uid(), rds,
-            Map.from(series.children));
+            <Uid, Instance>{});
 
   /// Returns a  [Series] created from the [RootDataset].
-  factory Series.fromRootDataset(RootDataset rds, Study study) {
-    assert(study != null);
-    final e = rds[kSeriesInstanceUID];
-    if (e == null) return elementNotPresentError(e);
-    final seriesUid = Uid(e.value);
-    // log.debug('seriesUid: $seriesUid');
-    final series = Series(study, seriesUid, rds);
-    study.putIfAbsent(series);
+  factory Series.fromRootDataset(RootDataset rds, [Study study]) {
+    final e = rds.lookup(kSeriesInstanceUID, required: true);
+    final uid = Uid(e.value);
+    study ??= Study.fromRootDataset(rds);
+    final series = Series(study, uid, rds);
+    study.addIfAbsent(series);
     return series;
   }
 
   @override
   IELevel get level => IELevel.series;
   @override
-  Type get parentType => Study;
-  @override
   Type get childType => Instance;
-  @override
-  String get path => '/${study.path}/$uid';
-  @override
-  String get fullPath => '/${study.fullPath}/$uid';
-  @override
-  String get info => '''$this
-  $study
-    $subject
-  ''';
 
   /// Returns the [Study] that is the [parent] of _this_ Series.
   Study get study => parent;
@@ -64,17 +49,9 @@ class Series extends Entity {
   Patient get subject => study.subject;
 
   /// Returns the [Instance]s contained in _this_.
-  Iterable<Instance> get instances => children.values;
-
-  /// Adds a  [Instance] to the [Series].  Throws a [DuplicateEntityError]
-  /// if _this_ has an existing [Instance] with the same [Uid].
-  Instance putIfAbsent(Instance instance) {
-    final v = children.putIfAbsent(instance.uid, () => instance);
-    if (v != instance) return duplicateEntityError(v, instance);
-    return instance;
-  }
+  Iterable<Instance> get instances => childMap.values;
 
   /// Returns a  [Instance] created from [rds].
   Instance createInstanceFromRootDataset(RootDataset rds) =>
-      Instance.fromRDS(rds, this);
+      Instance.fromRootDataset(rds, this);
 }

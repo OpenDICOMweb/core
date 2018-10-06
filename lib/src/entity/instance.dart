@@ -8,7 +8,7 @@
 //
 import 'dart:typed_data';
 
-import 'package:core/src/dataset/base/root_dataset.dart';
+import 'package:core/src/dataset.dart';
 import 'package:core/src/entity/entity.dart';
 import 'package:core/src/entity/ie_level.dart';
 import 'package:core/src/entity/patient/patient.dart';
@@ -20,37 +20,30 @@ import 'package:core/src/values/uid.dart';
 
 // ignore_for_file: public_member_api_docs
 
+// ignore: prefer_void_to_null
 class Instance extends Entity {
   /// Pixel Data
   Uint8List _pixelData;
 
   /// Creates a  [Instance].
   Instance(Series series, Uid uid, RootDataset dataset)
-      : super(series, uid, dataset, Entity.empty);
+      : super(series, uid, dataset, null);
 
   /// Returns a  [Instance] created from the [RootDataset].
-  factory Instance.fromRDS(RootDataset rds, Series series) {
+  factory Instance.fromRootDataset(RootDataset rds, Series series) {
     assert(series != null);
     final e = rds[kSOPInstanceUID];
     if (e == null) return elementNotPresentError(e);
-    final instanceUid = Uid(e.value);
-    final instance = Instance(series, instanceUid, rds);
-    series.putIfAbsent(instance);
+    final uid = Uid(e.value);
+    final instance = Instance(series, uid, rds);
+    series.addIfAbsent(instance);
     return instance;
   }
 
   @override
   IELevel get level => IELevel.instance;
   @override
-  Type get parentType => Series;
-  @override
   Type get childType => null;
-
-  @override
-  String get path => '/${series.path}/$uid';
-
-  @override
-  String get fullPath => '/${series.fullPath}/$uid';
 
   /// The [Series] that is the [parent] of this [Instance].
   Entity get series => parent;
@@ -61,6 +54,7 @@ class Instance extends Entity {
   /// The [subject] of this [Instance].
   Patient get subject => study.subject;
 
+  @override
   int get length => rds.length;
 
   Uid get sopClassUid => rds.sopClassUid;
@@ -76,7 +70,7 @@ class Instance extends Entity {
   @override
   String get info {
     final s = (sopClassUid == null) ? 'null' : '$sopClassUid';
-    return '''$runtimeType(${uid.asString}), SOPClass: $s, $length elements
+    return '''$runtimeType(${key.asString}), SOPClass: $s, $length elements
     $series
       $study
         $subject
@@ -84,5 +78,5 @@ class Instance extends Entity {
   }
 
   @override
-  String toString() => '$runtimeType(${uid.asString}), $length elements';
+  String toString() => '$runtimeType(${key.asString}), $length elements';
 }
