@@ -83,7 +83,6 @@ bool isPDCode(int code, [int creatorCode]) {
     final subgroup = pcSubgroup(creatorCode);
     if (subgroup < 0x10) return false;
     final sg = pdSubgroup(code);
-//    print('$subgroup | $sg');
     return sg == subgroup;
   }
 }

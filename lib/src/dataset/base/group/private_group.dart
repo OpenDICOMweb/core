@@ -142,13 +142,11 @@ class PrivateGroup implements GroupBase {
         _currentSGNumber = 0;
       }
       final sgNumber = pdSubgroup(code);
-//      print('PD ${hex(sgNumber)}');
       _checkSubgroup(sgNumber);
       eNew = _currentSubgroup.addData(e, sqParent);
     } else if (isPCCode(code)) {
       final sgNumber = pcSubgroup(code);
       if (creators != true) throw 'bad creator';
-//      print('PC ${hex(sgNumber)}');
       _checkSubgroup(sgNumber);
       eNew = _currentSubgroup.addCreator(e);
     } else if (isInvalidPrivateCode(code)) {
@@ -160,7 +158,6 @@ class PrivateGroup implements GroupBase {
   }
 
   void _checkSubgroup(int sgNumber) {
-//    print('subgroup: ${hex(sgNumber)} current: ${hex(_currentSGNumber)}');
     if (sgNumber < _currentSGNumber) {
       invalidSubgroupNumber(_currentSGNumber, sgNumber);
     } else if (sgNumber > _currentSGNumber) {

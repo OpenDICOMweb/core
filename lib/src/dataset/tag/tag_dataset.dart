@@ -51,39 +51,16 @@ abstract class TagDataset {
 
   static void _convertElement(
       Dataset dsNew, Element old, List<Element> badElements) {
-//    print('old: $old');
     final e = (old is SQ)
         ? _convertSQ(dsNew, old)
         : _makeElement(old.code, old.vrIndex, old.values, dsNew);
-//    print('new: $e');
     if (e == null) {
-//      print('Bad: $old');
       badElements.add(old);
     } else {
       dsNew.add(e);
     }
   }
 
-  static SQ _convertSQ(Dataset parent, SQ oldSQ, ) {
-    final sq = SQtag.convert(parent, oldSQ);
-//    print('sq: $sq');
-    return sq;
-  }
-/*
-  static SQ _convertSQ(Dataset parent, SQ oldSQ, ) {
-    final sq = _makeSQ(parent, oldSQ.code, <TagItem>[]);
-    print('> sq: $sq');
-    for (var item0 in oldSQ.items) {
-      final dsNew = new TagItem.empty(parent, sq);
-      print('dsNew: $dsNew');
-      for (var old in item0) {
-        print('old: $old');
-        _convertElement(dsNew, old, badElements);
-      }
-      sq.items.add(dsNew);
-    }
-    print('< sq: $sq');
-    return sq;
-  }
-  */
+  static SQ _convertSQ(Dataset parent, SQ oldSQ, ) =>
+    SQtag.convert(parent, oldSQ);
 }

@@ -6,6 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+import 'package:core/src/global.dart';
 
 // ignore_for_file: only_throw_errors
 // ignore_for_file: public_member_api_docs
@@ -67,7 +68,9 @@ class Sex {
       case 'O':
         return Sex.other;
       default:
-        throw 'Invalid Sex($s)';
+        log.warn('Invalid Sex: "$s"');
+        if (throwOnError) throw 'Invalid Sex($s)';
+        return null;
     }
   }
 }

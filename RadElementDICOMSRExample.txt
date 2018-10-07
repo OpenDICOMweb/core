@@ -1,0 +1,60 @@
+(0040,a040) "CONTAINER"
+(0040,a043) 
+(fffe,e000)                     //Start of metadata definition for set
+(0008,0100) "RDES16"            //RadElement Set CT Stroke
+(0008,0102) "RDE"               //RadElement schema
+(0008,0104) "CT Stroke"         //display name
+(fffe,e00d)                     //End of metadata definition for set
+(fffe,e0dd)
+(0040,a050) "SEPERATE"
+(0040,a730)                     //start of content sequence
+
+(fffe,e000)                     //Start of ASPECTS element
+(0040,a040) "NUM"
+(0040,a043)
+(fffe,e000)                     //Start of metatdata definition
+(0008,0100) "RDE128"
+(0008,0102) "RDE"
+(0008,0104) "Alberta Stroke Program Early CT Score (ASPECTS)"
+(fffe,e00d)                     //End of metadata definition
+(0040,a30a) 7
+(fffe,e00d)                     //End of ASPECTS element
+
+
+(fffe,e000)                     //Start of Hyperacute signs element
+(0040,a040) "NUM"
+(0040,a043)
+(fffe,e000)                     //Start of definition metatdata
+(0008,0100) "RDE130"
+(0008,0102) "RDE"
+(0008,0104) "Hyperacute Signs"
+(fffe,e00d)                     //End of definition metada
+(0040,a30a) 1                   //No boolean value, so 1 means true (0 means false)
+(fffe,e00d)                     //End of hyperacute signs element
+
+
+(fffe,e000)                     //Start of hemorrhagic conversion element
+(0040,a040) "NUM"
+(0040,a043)
+(fffe,e000)                     //Start of definition metatdata
+(0008,0100) "RDE131"
+(0008,0102) "RDE"
+(0008,0104) "Hemorrhagic conversion"
+(fffe,e00d)                     //End of definition metada
+(0040,a30a) 1                   //No boolean value, so 1 means true (0 means false)
+(fffe,e00d)                     //End of hemorrhagic conversion element
+
+
+(fffe,e000)                     //Start of stroke territory element
+(0040,a040) "NUM"
+(0040,a043)
+(fffe,e000)                     //Start of definition metatdata
+(0008,0100) "RDE132"
+(0008,0102) "RDE"
+(0008,0104) "Stroke Terriroty"
+(fffe,e00d)                     //End of definition metada
+(0040,a30a) 4
+(fffe,e00d)                     //End of stroke territory element
+
+
+(fffe,e0dd)                     //End of content sequence

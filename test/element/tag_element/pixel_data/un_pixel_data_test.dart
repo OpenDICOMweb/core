@@ -255,13 +255,13 @@ void main() {
       expect(pixels1 == null, true);
 
       global.throwOnError = true;
-      expect(
-          ds1.pixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
+      expect(() => ds1.pixelData,
+          throwsA(const TypeMatcher<PixelDataNotPresent>()));
 
       final ba3 = UStag(PTag.kBitsAllocated, [8]);
       final ds2 = TagRootDataset.empty()..add(ba3);
-      expect(
-          ds2.pixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
+      expect(() => ds2.pixelData,
+          throwsA(const TypeMatcher<PixelDataNotPresent>()));
     });
 
     test('UNtagPixelData fromValues', () {

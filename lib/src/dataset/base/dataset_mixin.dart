@@ -554,10 +554,11 @@ abstract class DatasetMixin {
   }
 
   // Values can be empty or have 1 value
-  V _checkOneValue<V>(int index, List<V> values) =>
-      (values == null || values.length != 1)
-          ? badValuesLength(values, 0, 1, null, Tag.lookupByCode(index))
-          : values.first;
+  V _checkOneValue<V>(int index, List<V> values) {
+    if (values == null || values.length > 1)
+      return badValuesLength(values, 0, 1, null, Tag.lookupByCode(index));
+    return values.isEmpty ? null : values.first;
+  }
 
   /// Returns the [int] values for the [Element] with [index].
   /// If [Element] is not present, either throws or returns _null_;
@@ -582,7 +583,6 @@ abstract class DatasetMixin {
       return null;
     }
     if (e is! Integer) {
-      print('e: $e');
       // TODO: fix add nonIntegerElement
       return nonIntegerTag(index);
     }
@@ -632,7 +632,11 @@ abstract class DatasetMixin {
   /// than one values, either throws or returns _null_.
   String getString(int index, {bool required = false}) {
     final e = lookup(index, required: required);
-    if (e == null || e is! StringBase) return nonStringTag(index);
+    if (e == null) {
+      return (required == true) ? elementNotPresentError(index) : null;
+    }
+    // TODO: change to nonStringElement(e)
+    if (e is! StringBase) return nonStringTag(index);
     return (e.isEmpty) ? '' : _checkOneValue<String>(index, e.values);
   }
 

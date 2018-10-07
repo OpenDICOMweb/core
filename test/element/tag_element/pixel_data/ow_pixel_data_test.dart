@@ -140,16 +140,16 @@ void main() {
       expect(pixels1 == null, true);
 
       global.throwOnError = true;
-      expect(
-          ds1.pixelData, throwsA(const TypeMatcher<InvalidValuesError>()));
+      expect(() => ds1.pixelData,
+          throwsA(const TypeMatcher<PixelDataNotPresent>()));
 
       global.throwOnError = false;
 
       final ba3 = UStag(PTag.kBitsAllocated, [16]);
       final ds2 = TagRootDataset.empty()..add(ba3);
       global.throwOnError = true;
-      expect(
-          ds2.pixelData, throwsA(const TypeMatcher<PixelDataNotPresent>()));
+      expect(() => ds2.pixelData,
+          throwsA(const TypeMatcher<PixelDataNotPresent>()));
     });
 
     test('Create OWtagPixelData.fromValues', () {

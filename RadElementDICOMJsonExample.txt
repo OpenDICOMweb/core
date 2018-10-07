@@ -1,0 +1,152 @@
+[    // List of Datasets
+ {   // Start of Dataset
+   "0040a040": {    // kValueType
+     "vr": "CS",
+     "Value": ["CONTAINER"]
+   }
+   "0040a043": {    // kConceptNameCodeSequence
+     "vr": "SQ",
+     "Value": [
+       {    // Item: Start of metadata definition for set
+         "00080100": {   // kCodeValue: RadElement Set CT Stroke
+           "vr": "SH",
+           "Value": ["RDES16"]
+         }
+         "00080102": {   // kCodingSchemeDesignator: RadElement schema
+           "vr": "SH",
+           "Value": ["RDE"]
+         }
+         "00080104": {   // kCodeMeaning: display name
+           "vr": "LO",
+           "Value": ["CT Stroke" ]
+         }
+       }    // end of Item
+     ]
+   }   // end of Concept Name Code Sequence
+   "0040a050": {    // kContinuityOfContent
+     "vr": "CS",
+     "Value": ["SEPERATE"]
+   "0040a730": {    // kContentSequence: start of content sequence
+     "vr": "SQ",
+     "Value": [
+       {            // Item: Start of ASPECTS element
+         "0004a040": {    // kValueType
+           "vr": "CS",
+           "Value": ["NUM"]
+         }
+         "0040a043": {    // kConceptNameCodeSequence
+           "vr": "SQ",
+           "Value": [
+             {            // Item: Start of metatdata definition
+               "00080100": {    // kCodeValue:
+                 "vr": "SH",
+                 "Value": ["RDE128"]
+               }
+               "00080102": {    // kCodingSchemeDesignator
+                 "vr": "SH",
+                 "Value": ["RDE"]
+               }
+               "00080104": {    // kCodeMeaning
+                 "vr": "LO",
+                 "Value": ["Alberta Stroke Program Early CT Score ("ASPECTS")]
+               }
+             }            // ItemDelimiter: End of metadata definition
+           ]
+         }         // end of Sequence
+         "0040a30a": {    // kNumericValue
+           "vr": "DS",
+           "Value": [7]
+         }
+       }                   // End of ASPECTS Item
+       {                   // Item: Start of element
+         "0040a040": {        // kValueType
+           "vr": "CS",
+           "Value": ["NUM"]
+         }
+         "0040a043": {    // kConceptNameCodeSequence
+           "vr": "SQ",
+           "Value": [
+             {               // Item: Start of metatdata definition
+               "00080100": {     // kCodeValue:
+                 "vr": "SH",
+                 "Value": ["RDE130"]
+               }
+               "00080102": {     // kCodingSchemeDesignator
+                 "vr": "SH",
+                 "Value": ["RDE"]
+               }
+               "00080104": {     // kCodeMeaning
+                 "vr": "LO",
+                 "Value": ["Hyperacute Signs"]
+               }
+             }               // ItemDelimiter: End of metadata definition
+           ]
+         }
+         "0040a30a": {    // kNumericValue
+           "vr": "DS",
+           "Value": [1]
+         }
+       }
+       {                  // Item: Start of element
+         "0040a040": {    // kValueType
+           "vr": "CS",
+           "Value": ["NUM"]
+         }
+         "0040a043": {      // kConceptNameCodeSequence
+           "vr": "SQ",
+           "Value": [
+             {                 // Item: Start of metatdata definition
+               "00080100": {   // kCodeValue:
+                 "vr": "SH",
+                 "Value": ["RDE131"]
+               }
+               "00080102": {    // kCodingSchemeDesignator
+                 "vr": "SH",
+                 "Value": ["RDE"]
+               }
+               "00080104": {    // kCodeMeaning
+                 "vr": "LO",
+                 "Value": ["Hemorrhagic conversion"]
+               }
+             }                 // ItemDelimiter: End of metadata definition
+           ]
+         }
+         "0040a30a": {    // kNumericValue
+           "vr": "DS",
+           "Value": [1]
+         }
+       }
+       {                  // Item: Start of element
+         "0040a040": {    // kValueType
+           "vr": "CS",
+           "Value": ["NUM"]
+         }
+         "0040a043": {    // kConceptNameCodeSequence
+           "vr": "SQ",
+           "Value": [
+             {                 // Item: Start of metatdata definition
+               "00080100": {   // kCodeValue:
+                 "vr": "SH",
+                 "Value": ["RDE132"]
+               }
+               "00080102": {   // kCodingSchemeDesignator
+                 "vr": "SH",
+                 "Value": ["RDE"]
+               }
+               "00080104": {   // kCodeMeaning
+                 "vr": "LO",
+                 "Value": ["Stroke Terriroty"]
+               }
+             }                 // ItemDelimiter: End of metadata definition
+           ]
+         }
+         "0040a30a": {    // kNumericValue
+           "vr": "DS",
+           "Value": [4]
+         }
+       }
+     ]
+   }
+ }    // End of Dataset
+]     // End of List of Datasets
+

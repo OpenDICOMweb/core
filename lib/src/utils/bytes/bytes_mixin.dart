@@ -431,10 +431,8 @@ abstract class BytesMixin {
   String getAscii(
       {int offset = 0, int length, bool allowInvalid = true, int padChar}) {
     final v = _asUint8ListFromString(offset, length ?? _bdLength, padChar);
-//    print('v: $v');
     if (v.isEmpty) return '';
     final s = ascii.decode(v, allowInvalid: allowInvalid);
-//    print('s: $s');
     final last = s.length - 1;
     final c = s.codeUnitAt(last);
     return (padChar != null && c == padChar) ? s.substring(0, last) : s;

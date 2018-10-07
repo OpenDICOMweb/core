@@ -52,7 +52,7 @@ class Instance extends Entity {
   Study get study => series.parent;
 
   /// The [subject] of this [Instance].
-  Patient get subject => study.subject;
+  Patient get subject => study.patient;
 
   @override
   int get length => rds.length;

@@ -144,6 +144,7 @@ void main() {
       final sex3 = Sex.parse('');
       expect(sex3, isNull);
 
+      global.throwOnError = true;
       expect(() => Sex.parse(genderList[3]),
           throwsA('Invalid Sex(${genderList[3]})'));
     });

@@ -18,9 +18,8 @@ import 'package:core/src/values/uid.dart';
 /// A DICOM [Study] in SOP Instance format.
 class Study extends Entity {
   /// Creates a  Study.
-  Study(Patient subject, Uid uid, RootDataset dataset,
-      [Map<Uid, Series> seriesMap])
-      : super(subject, uid, dataset, seriesMap ?? <Uid, Series>{});
+  Study(Patient patient, Uid uid, RootDataset rds, [Map<Uid, Series> seriesMap])
+      : super(patient, uid, rds, seriesMap ?? <Uid, Series>{});
 
   /// Returns a copy of _this_ [Series], but with a  [Uid]. If [parent]
   /// is _null_ the  [Instance] is in the same [Series] as _this_.
@@ -42,10 +41,10 @@ class Study extends Entity {
   IELevel get level => IELevel.study;
   @override
   Type get childType => Series;
-
-  /// Returns the [Patient] of _this_ Study.
+  /// Returns the [parent] of _this_ Study.
+  Patient get patient => parent;
+  /// Returns the [parent] of _this_ Study.
   Patient get subject => parent;
-
   /// Returns the [Series] of this [Study].
   Iterable<Series> get series => childMap.values;
 

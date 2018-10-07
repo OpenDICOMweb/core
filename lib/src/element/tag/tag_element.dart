@@ -174,9 +174,7 @@ abstract class TagElement<V> {
       int code, int vrIndex, List values, Dataset ds) {
     if (_isPrivateCreator(code)) return _getPCTag(code, vrIndex, values);
     final tag = lookupTagByCode(code, vrIndex, ds);
-//    print('tag: $tag');
     final index = getValidVR(vrIndex, tag.vrIndex);
-//    print('vrIndex: $index');
     return makeFromTag(tag, values, index);
   }
 
