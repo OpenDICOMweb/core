@@ -554,10 +554,15 @@ abstract class DatasetMixin {
   }
 
   // Values can be empty or have 1 value
-  V _checkOneValue<V>(int index, List<V> values) {
-    if (values == null || values.length > 1)
+  V _checkOneValue<V>(int index, List<V> values, {bool required = false}) {
+    if (values == null)
       return badValuesLength(values, 0, 1, null, Tag.lookupByCode(index));
-    return values.isEmpty ? null : values.first;
+    if (values.length == 1) {
+      return values.first;
+    } else if (values.length > 1 || (values.isEmpty && required)) {
+      return badValuesLength(values, 1, 1, null, Tag.lookupByCode(index));
+      return null;
+    }
   }
 
   /// Returns the [int] values for the [Element] with [index].
