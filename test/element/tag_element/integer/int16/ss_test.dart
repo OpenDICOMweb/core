@@ -553,17 +553,17 @@ void main() {
 
     test('SS isValidLength VM.k1 bad values', () {
       for (var i = 0; i < 10; i++) {
-        final validMinVList = rng.int16List(2, i + 2);
+        final invalidMinVList = rng.int16List(2, i + 2);
         log.debug('SS.kMaxLength: ${SS.kMaxLength}');
         for (var tag in ssVM1Tags) {
           global.throwOnError = false;
-          expect(SS.isValidLength(tag, validMinVList), false);
+          expect(SS.isValidLength(tag, invalidMinVList), false);
           expect(SS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => SS.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
-          expect(() => SS.isValidLength(tag, validMinVList),
+          expect(() => SS.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }
@@ -591,16 +591,16 @@ void main() {
 
     test('SS isValidLength VM.k2 bad values', () {
       for (var i = 2; i < 10; i++) {
-        final validMinVList = rng.int16List(3, i + 1);
+        final invalidMinVList = rng.int16List(3, i + 1);
         for (var tag in ssVM2Tags) {
           global.throwOnError = false;
-          expect(SS.isValidLength(tag, validMinVList), false);
+          expect(SS.isValidLength(tag, invalidMinVList), false);
           expect(SS.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
           expect(() => SS.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
-          expect(() => SS.isValidLength(tag, validMinVList),
+          expect(() => SS.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
         }
       }

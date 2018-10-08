@@ -607,14 +607,14 @@ void main() {
 
     test('AT isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
-        final vList = rng.uint32List(2, i + 1);
+        final invalidMinVList = rng.uint32List(2, i + 1);
         for (var tag in atVM1Tags) {
           global.throwOnError = false;
-          expect(AT.isValidLength(tag, vList), false);
+          expect(AT.isValidLength(tag, invalidMinVList), false);
           expect(AT.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
-          expect(() => AT.isValidLength(tag, vList),
+          expect(() => AT.isValidLength(tag, invalidMinVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));
           expect(() => AT.isValidLength(tag, invalidVList),
               throwsA(const TypeMatcher<InvalidValuesError>()));

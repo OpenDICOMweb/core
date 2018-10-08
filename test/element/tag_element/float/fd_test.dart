@@ -641,15 +641,12 @@ void main() {
 
     test('FD isValidLength VM.k1 bad values', () {
       for (var i = 1; i < 10; i++) {
-        final validMinVList = rng.float32List(2, i + 1);
-        log.debug('validMinVList: $validMinVList');
+        final invalidMinVList = rng.float32List(2, i + 1);
+        log.debug('validMinVList: $invalidMinVList');
         for (var tag in fdVM1Tags) {
           log.debug('tag: $tag');
           global.throwOnError = false;
-          //Urgent sharath: shouldn't this be true
-      //    expect(FD.isValidLength(tag, validMinVList), false);
-
-          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidMinVList), false);
           expect(FD.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
@@ -709,10 +706,10 @@ void main() {
 
     test('FD isValidLength VM.k3 bad values', () {
       for (var i = 3; i < 10; i++) {
-        final validMinVList = rng.float32List(4, i + 1);
+        final invalidMinVList = rng.float32List(4, i + 1);
         for (var tag in fdVM3Tags) {
           global.throwOnError = false;
-          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidMinVList), false);
           expect(FD.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
@@ -734,10 +731,10 @@ void main() {
 
     test('FD isValidLength VM.k4 bad values', () {
       for (var i = 4; i < 10; i++) {
-        final validMinVList = rng.float32List(5, i + 1);
+        final invalidMinVList = rng.float32List(5, i + 1);
         for (var tag in fdVM4Tags) {
           global.throwOnError = false;
-          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidMinVList), false);
           expect(FD.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
@@ -759,10 +756,10 @@ void main() {
 
     test('FD isValidLength VM.k6 bad values', () {
       for (var i = 6; i < 10; i++) {
-        final validMinVList = rng.float32List(7, i + 1);
+        final invalidMinVList = rng.float32List(7, i + 1);
         global.throwOnError = false;
         for (var tag in fdVM6Tags) {
-          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidMinVList), false);
           expect(FD.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
@@ -784,10 +781,10 @@ void main() {
 
     test('FD isValidLength VM.k9 bad values', () {
       for (var i = 9; i < 20; i++) {
-        final validMinVList = rng.float32List(10, i + 1);
+        final invalidMinVList = rng.float32List(10, i + 1);
         for (var tag in fdVM9Tags) {
           global.throwOnError = false;
-          expect(FD.isValidLength(tag, validMinVList), false);
+          expect(FD.isValidLength(tag, invalidMinVList), false);
           expect(FD.isValidLength(tag, invalidVList), false);
 
           global.throwOnError = true;
