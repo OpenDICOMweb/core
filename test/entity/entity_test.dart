@@ -97,17 +97,17 @@ void main() {
     });
 
     test('Series', () {
-      final seriesUid0 = Uid();
-      final seriesUid1 = Uid();
-      final studyUid0 = Uid();
       final subjectUid0 = Uid();
+      final studyUid0 = Uid();
+      final seriesUid0 = Uid();
+
       final subject0 = Patient('A001', subjectUid0, rootDataset);
       final study0 = Study(subject0, studyUid0, rootDataset);
       final series0 = Series(study0, seriesUid0, rootDataset);
       final series1 = Series(study0, seriesUid0, rootDataset);
-      final series2 = Series(study0, seriesUid1, rootDataset);
 
       expect(series0 == series1, true);
+      expect(identical(series0, series1), false);
       expect(series0.hashCode == series1.hashCode, true);
       expect(series0.key, isNotNull);
 
@@ -115,6 +115,7 @@ void main() {
       log.debug(study0);
 
       //Adding duplicate Entity
+      expect(study0.addIfAbsent(series1), equals(series0));
       expect(study0.addIfAbsent(series1), equals(series1));
     });
 
