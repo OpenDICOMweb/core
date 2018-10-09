@@ -13,9 +13,6 @@ import 'package:core/src/utils/string/hexadecimal.dart';
 
 //**** DICOM Constants ****
 
-/// The DICOM Prefix 'DICM' as an integer.
-const int kDcmPrefix = 0x4d434944;
-
 const int k16BitMax = 0xFFFF;
 
 /// The maximum length, in bytes, of a "short" (16-bit) Value Field.

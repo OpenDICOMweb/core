@@ -148,7 +148,6 @@ class RDSBytes extends DSBytes {
         'RDS $dsStart-$dsEnd:$dsLength';
   }
 
-//  static const int kToken = kDcmPrefix;
   static const int kPreambleOffset = 0;
   static const int kPreambleLength = 128;
   static const int kPrefixOffset = 128;

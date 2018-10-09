@@ -345,12 +345,11 @@ void main() {
       }
     });
 
-    // Urgent Jim Fix
     test('DcmDateTime add hour', () {
       global.level = Level.info;
       final dt0 = DcmDateTime.utc(1970, 1, 1);
       log..debug('dt0 :$dt0')..debug(dt0.microseconds);
-      //expect(dt0.microseconds == 0, true);
+      expect(dt0.microseconds == 0, true);
 
       print('dt0.hour: ${dt0.hour}');
       const hours = 23;
