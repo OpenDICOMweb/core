@@ -74,7 +74,7 @@ abstract class RootDataset extends Dataset {
   bool get hadULength => false;
 
   /// Returns the [Patient] whose data is contained in _this_, if any.
-  Patient get patient => Patient.fromRDS(this);
+  Patient get patient => Patient.fromRootDataset(this);
 
   /// The SopClass Uid for _this_ as a [String].
   String get sopClassId => getString(kSOPClassUID);

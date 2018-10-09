@@ -11,6 +11,7 @@ import 'dart:collection';
 import 'package:core/src/dataset.dart';
 import 'package:core/src/element.dart';
 import 'package:core/src/entity/ie_level.dart';
+import 'package:core/src/entity/instance.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/logger.dart';
 import 'package:core/src/values/uid.dart';
@@ -53,6 +54,8 @@ abstract class Entity with MapMixin<Uid, Entity> {
   // **** Map Implementation
 
   @override
+  bool operator ==(Object other)  => other is Entity && key == other.key;
+  @override
   Entity operator [](Object key) => (key is Uid) ? childMap[key] : null;
   @override
   void operator []=(Uid key, Entity value) => childMap[key] = value;
@@ -62,6 +65,8 @@ abstract class Entity with MapMixin<Uid, Entity> {
   void clear() => childMap.clear();
   @override
   Entity remove(Object key) => (key is Uid) ? childMap.remove(key) : null;
+  @override
+  int get hashCode => key.hashCode;
 
   // **** End Map Implementation
 
@@ -85,8 +90,10 @@ abstract class Entity with MapMixin<Uid, Entity> {
   String get summary {
     final sb = StringBuffer('$runtimeType: $key\n  '
         '${parent.runtimeType}: $parent $length $childType\n');
-    for (var s in values) {
-      sb.write('  $childType: ${s.key}\n    ${s.length} values\n');
+    if (this is! Instance) {
+      for (var s in values) {
+        sb.write('  $childType: ${s.key}\n    ${s.length} values\n');
+      }
     }
     return '$sb';
   }
@@ -97,11 +104,9 @@ abstract class Entity with MapMixin<Uid, Entity> {
 
   /// Adds an  [Entity] to _this_.  Throws a [DuplicateEntityError]
   /// if _this_ has an existing [Entity] with the same [Uid].
-  Entity addIfAbsent(Entity entity) {
-    final v = putIfAbsent(entity.key, () => entity);
-    if (v != entity) return duplicateEntityError(v, entity);
-    return entity;
-  }
+  Entity addIfAbsent(Entity entity) =>
+    putIfAbsent(entity.key, () => entity);
+
 
   /// Returns a [String] containing formatted output.
   String format(Formatter z) => z.fmt(this, values);

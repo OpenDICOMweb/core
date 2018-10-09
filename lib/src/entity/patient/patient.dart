@@ -41,7 +41,7 @@ class Patient extends Entity {
         super(null, Uid(), rds, <Uid, Study>{});
 
   /// Returns a  [Patient] created from the [RootDataset].
-  factory Patient.fromRDS(RootDataset rds) {
+  factory Patient.fromRootDataset(RootDataset rds) {
     final pid = rds.patientId;
     final name = rds.patientName;
     final dob = rds.patientBirthDate;

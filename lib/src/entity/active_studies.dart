@@ -46,20 +46,26 @@ class ActiveStudies extends Object with MapMixin<Uid, Study> {
   }
 
   @override
-  List<Uid> get keys => _studies.keys;
+  Iterable<Uid> get keys => _studies.keys;
 
-  int get subjectCount => _subjects.length;
-  List<Patient> get subjects => _subjects.values;
+  int get subjectCount => _patients.length;
+  Iterable<Patient> get patients => _patients.values;
 
   int get studiesCount => _studies.length;
-  List<Study> get studies => _studies.values;
+  Iterable<Study> get studies => _studies.values;
 
-  String get stats => 'Patients(${_subjects.length}): ${_subjects.keys}\n'
+  int get seriesCount => series.length;
+  Iterable<Series> get series => _series.values;
+
+  int get instanceCount => instances.length;
+  Iterable<Instance> get instances => _instances.values;
+
+  String get stats => 'Patients(${_patients.length}): ${_patients.keys}\n'
       'Studies(${_studies.length}): ${_studies.keys}';
 
   String get summary => '''
 ActiveStudies:
-  Patients: ${_subjects.length}
+  Patients: ${_patients.length}
   $patientsSummary
   Studies: ${_studies.length}
   $studiesSummary
@@ -70,7 +76,7 @@ ActiveStudies:
     //  for (var s in _subjects.values) out = s.format(Formatter());
     //    return out;
     final sb = StringBuffer();
-    for (var s in _subjects.values) sb.writeln('\t$s');
+    for (var s in _patients.values) sb.writeln('\t$s');
     return '$sb';
   }
 
@@ -94,29 +100,24 @@ ActiveStudies:
   /// If the [Patient] is not already present in [ActiveStudies], it is added.
   Patient addPatientIfAbsent(Patient patient) {
     _subjectsByPid.putIfAbsent(patient.pid, () => patient);
-    final v = _subjects.putIfAbsent(patient.uid, () => patient);
-    if (v != patient) return duplicateEntityError(v, patient);
-    return v;
+    return _patients.putIfAbsent(patient.uid, () => patient);
   }
 
   /// Removes [patient] and all its [Study]s from [ActiveStudies].
   void removePatient(Patient patient) {
     if (!_subjectsByPid.containsKey(patient.pid) ||
-        !_subjects.containsKey(patient.uid)) throw '$patient not present';
+        !_patients.containsKey(patient.uid)) throw '$patient not present';
     patient.studies.forEach(removeStudy);
     _subjectsByPid.remove(patient.pid);
-    _subjects.remove(patient.uid);
+    _patients.remove(patient.uid);
   }
 
   /// If the [Study] is not already present in [ActiveStudies], it is added.
   Study addStudyIfAbsent(Study study) {
-    print('\n** Studies start: ${_studies.length}');
     final patient = study.patient;
     addPatientIfAbsent(patient);
     final v = _studies.putIfAbsent(study.uid, () => study);
-    if (v != study) return duplicateEntityError(v, study);
     _studyPatient.putIfAbsent(study.uid, () => patient);
-    print('** Studies end: ${_studies.length}');
     return v;
   }
 
@@ -143,13 +144,13 @@ ActiveStudies:
   @override
   void clear() {
     _subjectsByPid.clear();
-    _subjects.clear();
+    _patients.clear();
     _studies.clear();
     _studyPatient.clear();
   }
 
   Patient search(String pid, {PersonName name, Date dob}) {
-    for (var p in _subjects.values) {
+    for (var p in _patients.values) {
       if ((pid == p.pid) &&
           (name == null || name == p.name) &&
           (dob == null || dob == p.dob)) return p;
@@ -161,7 +162,7 @@ ActiveStudies:
 
   @override
   String toString() =>
-      '$runtimeType: ${_subjects.length} Patients, ${_studies.length} Studies';
+      '$runtimeType: ${_patients.length} Patients, ${_studies.length} Studies';
 
   //**** Static methods ****
 
@@ -169,7 +170,7 @@ ActiveStudies:
   static final Map<String, Patient> _subjectsByPid = <String, Patient>{};
 
   /// A [Map] from a [Patient] [Uid] (the Patient's MPI) to the [Patient].
-  static final Map<Uid, Patient> _subjects = <Uid, Patient>{};
+  static final Map<Uid, Patient> _patients = <Uid, Patient>{};
 
   /// A [Map] from a [Study] [Uid] to the [Study].
   static final Map<Uid, Study> _studies = <Uid, Study>{};
@@ -177,21 +178,17 @@ ActiveStudies:
   /// A [Map] from a [Study] [Uid] to the associated [Patient].
   static final Map<Uid, Patient> _studyPatient = <Uid, Patient>{};
 
-/* Flush if not needed
-  /// The singleton object in this class
-  static ActiveStudies _activeStudies;
+  /// A [Map] from a [Series] [Uid] to the [Series].
+  static final Map<Uid, Series> _series = <Uid, Series>{};
 
-
-  // ignore: prefer_constructors_over_static_methods
-  static ActiveStudies get activeStudies =>
-      _activeStudies ??= ActiveStudies._();
-*/
+  /// A [Map] from a [Instance] [Uid] to the [Instance].
+  static final Map<Uid, Instance> _instances = <Uid, Instance>{};
 
   /// Returns the corresponding [Study], or _null_ if not present.
   static Study lookupStudy(Uid studyUid) => _studies[studyUid];
 
   /// Returns the corresponding [Patient], or _null_ if not present.
-  static Patient lookupPatientByUid(Uid subjectUid) => _subjects[subjectUid];
+  static Patient lookupPatientByUid(Uid subjectUid) => _patients[subjectUid];
 
   /// Returns the corresponding [Patient], or _null_ if not present.
   static Patient lookupPatientByPid(String pid) => _subjectsByPid[pid];
@@ -203,7 +200,7 @@ ActiveStudies:
     Entity entity;
 
     // Get the Patient
-    final patient = Patient.fromRDS(rds);
+    final patient = Patient.fromRootDataset(rds);
 /* Patient is handled by study
     if (patient != null) addPatientIfAbsent(patient);
     entity ??= patient;
@@ -237,14 +234,69 @@ ActiveStudies:
     final e = rds[kPatientID];
     if (e == null) return elementNotPresentError(PTag.kPatientID);
     final String pid = e.value;
-    var subject = _subjectsByPid[pid];
-    subject ??= Patient.fromRDS(rds);
-    final study = subject.createStudyFromRootDataset(rds);
-    final series = study.createSeriesFromRootDataset(rds);
-    final instance = series.createInstanceFromRootDataset(rds);
+    var patient = _subjectsByPid[pid];
+    patient ??= Patient.fromRootDataset(rds);
+//    print('\n$patient');
+
+    final studyUid = lookupEntityUid(rds, kStudyInstanceUID);
+    var study = _studies[studyUid];
+    study ??= Study.fromRootDataset(rds, patient);
+    patient.addIfAbsent(study);
+//    print('\n$study');
+
+    final seriesUid = lookupEntityUid(rds, kSeriesInstanceUID);
+    var series = _series[seriesUid];
+    series ??= Series.fromRootDataset(rds, study);
+    study.addIfAbsent(series);
+    _series[seriesUid] = series;
+//    print('$series');
+
+    final instanceUid = lookupEntityUid(rds, kSOPInstanceUID);
+    var instance = _instances[instanceUid];
+    if (instance != null) return throw 'duplicate instance error: $instanceUid';
+
+    instance ??= Instance.fromRootDataset(rds, series);
+//    print('$instance');
+    final v = series.addIfAbsent(instance);
+    _instances[instanceUid] = instance;
+//    print('${v == instance}');
+    if (v != instance)
+      return throw 'duplicate instance error: old: $v new:$instance';
     activeStudies.addStudyIfAbsent(study);
+//    print('count: ${study.instances.length}');
     return instance;
+  }
+
+  static Uid lookupEntityUid(RootDataset rds, int code,
+      {bool addIfMissing = true}) {
+    final e = rds[code];
+    if (e == null) return elementNotPresentError(PTag.lookupByCode(code));
+    final String s = e.value;
+//    print('s: $s');
+    return activeEntityUids.addIfAbsent(s);
   }
 }
 
+/// A [Map] from [String] to [Uid] for all [Entity]s known to the system.
+class ActiveEntityUids {
+  final Map<String, Uid> uids = {};
+
+  /// Internal Constructor
+  ActiveEntityUids._();
+
+  /// Returns the [Entity] [Uid] associated with [s].
+  Uid operator [](String s) => uids[s];
+
+  /// Returns the [Uid] associated with [s]. If the Map has no key [s],
+  /// a new [Uid] a new entry is created for [s] and
+  Uid addIfAbsent(String s) {
+    var v = uids[s];
+    if (v != null) return v;
+
+    v ??= Uid(s);
+    return (v == null) ? null : uids[s] = v;
+  }
+}
+
+final ActiveEntityUids activeEntityUids = ActiveEntityUids._();
 final ActiveStudies activeStudies = ActiveStudies._();

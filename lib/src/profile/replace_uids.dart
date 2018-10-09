@@ -44,7 +44,6 @@ UI replaceUIFast(UI e) {
       uids[i] = newUid.asString;
     }
   }
-  printUidValues(e, uids);
   return e.update(uids);
 }
 
@@ -67,7 +66,7 @@ UI replaceUIGeneral(UI e) {
       uids[i] = newUid.asString;
     }
   }
-  printUidValues(e, uids);
+//  printUidValues(e, uids);
   return e.update(uids);
 }
 

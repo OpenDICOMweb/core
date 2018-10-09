@@ -28,13 +28,13 @@ class Study extends Entity {
             <Uid, Series>{});
 
   /// Returns a  [Study] created from the [RootDataset].
-  factory Study.fromRootDataset(RootDataset rds, [Patient patient]) {
+  factory Study.fromRootDataset(RootDataset rds, Patient patient) {
+    assert(patient != null);
     final e = rds.lookup(kStudyInstanceUID, required: true);
+    if (e == null) return elementNotPresentError(e);
     final uid = Uid(e.value);
-    patient ??= Patient.fromRDS(rds);
     final study = Study(patient, uid, rds);
-    patient.addIfAbsent(study);
-    return study;
+    return patient.addIfAbsent(study);
   }
 
   @override
@@ -54,6 +54,22 @@ class Study extends Entity {
     for (var s in series) list.addAll(s.instances);
     return list;
   }
+
+  // Urgent Jim: remove when entity summary works
+  @override
+  String get summary {
+    final sb = StringBuffer('Study Summary: $uid\n  Patient: $subject '
+        '${series.length} Series\n');
+    for (var s in series) {
+      sb.write('  Series: ${s.uid}\n    ${s.instances.length} Instances\n');
+      for (var i in s.instances) {
+        sb.write('      $Instance: ${i.uid}\n'
+            '        ${i.rds.length} Attributes\n');
+      }
+    }
+    return sb.toString();
+  }
+
 
   /// Returns a  [Series] created from _rds_.
   Series createSeriesFromRootDataset(RootDataset rds) =>

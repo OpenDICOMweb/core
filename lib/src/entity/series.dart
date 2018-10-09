@@ -28,26 +28,28 @@ class Series extends Entity {
             <Uid, Instance>{});
 
   /// Returns a  [Series] created from the [RootDataset].
-  factory Series.fromRootDataset(RootDataset rds, [Study study]) {
+  factory Series.fromRootDataset(RootDataset rds, Study study) {
+    assert(study != null);
     final e = rds.lookup(kSeriesInstanceUID, required: true);
+    if (e == null) return elementNotPresentError(e);
     final uid = Uid(e.value);
-    study ??= Study.fromRootDataset(rds);
     final series = Series(study, uid, rds);
-    study.addIfAbsent(series);
-    return series;
+    return study.addIfAbsent(series);
   }
 
   @override
   IELevel get level => IELevel.series;
   @override
   Type get childType => Instance;
+
   /// Returns the [Study] that is the [parent] of _this_ Series.
   Patient get patient => study.patient;
+
   /// Returns the [Study] that is the [parent] of _this_ Series.
   Patient get subject => study.patient;
+
   /// Returns the [Study] that is the [parent] of _this_ Series.
   Study get study => parent;
-
 
   /// Returns the [Instance]s contained in _this_.
   Iterable<Instance> get instances => childMap.values;

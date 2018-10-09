@@ -29,15 +29,20 @@ class Instance extends Entity {
   Instance(Series series, Uid uid, RootDataset dataset)
       : super(series, uid, dataset, null);
 
+  /// Returns a copy of _this_ [Series], but with a  [Uid]. If [parent]
+  /// is _null_ the  [Instance] is in the same [Series] as _this_.
+  Instance.from(Instance instance, RootDataset rds, [Series parent])
+      : super((parent == null) ? instance.parent : parent, Uid(), rds,
+            <Uid, Instance>{});
+
   /// Returns a  [Instance] created from the [RootDataset].
   factory Instance.fromRootDataset(RootDataset rds, Series series) {
     assert(series != null);
-    final e = rds[kSOPInstanceUID];
+    final e = rds.lookup(kSOPInstanceUID, required: true);
     if (e == null) return elementNotPresentError(e);
     final uid = Uid(e.value);
     final instance = Instance(series, uid, rds);
-    series.addIfAbsent(instance);
-    return instance;
+    return series.addIfAbsent(instance);
   }
 
   @override
@@ -57,8 +62,6 @@ class Instance extends Entity {
   @override
   int get length => rds.length;
 
-  Uid get sopClassUid => rds.sopClassUid;
-
   /// The DICOM Transfer Syntax for _this_ [Instance], if any.
   ///
   /// If the [Instance] does not contain an image(s) or video,
@@ -69,7 +72,7 @@ class Instance extends Entity {
 
   @override
   String get info {
-    final s = (sopClassUid == null) ? 'null' : '$sopClassUid';
+    final s = (uid == null) ? 'null' : '$uid';
     return '''$runtimeType(${key.asString}), SOPClass: $s, $length elements
     $series
       $study

@@ -557,12 +557,12 @@ abstract class DatasetMixin {
   V _checkOneValue<V>(int index, List<V> values, {bool required = false}) {
     if (values == null)
       return badValuesLength(values, 0, 1, null, Tag.lookupByCode(index));
-    if (values.length == 1) {
+    if (values.length == 1)
       return values.first;
-    } else if (values.length > 1 || (values.isEmpty && required)) {
+    if (values.length > 1 || (values.isEmpty && required)) {
       return badValuesLength(values, 1, 1, null, Tag.lookupByCode(index));
-      return null;
     }
+    return null;
   }
 
   /// Returns the [int] values for the [Element] with [index].
