@@ -10,7 +10,7 @@ import 'dart:typed_data';
 
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
-import 'package:core/src/error/element_errors.dart';
+import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -40,7 +40,7 @@ abstract class TagIntegerMixin {
   List<int> get values => _values;
 
   set values(Iterable<int> vList) {
-    assert(values is List<int> && values is TypedData);
+    assert(values is TypedData);
     _values = vList;
   }
 
@@ -57,7 +57,6 @@ abstract class TagIntegerMixin {
 class SStag extends SS with TagElement<int>, TagIntegerMixin {
   @override
   final Tag tag;
-  // Note: _values should always be a Int16List.
   @override
   List<int> _values;
 

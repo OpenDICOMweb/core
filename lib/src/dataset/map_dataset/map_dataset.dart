@@ -48,7 +48,7 @@ abstract class MapDataset {
   Iterable<int> get keys => eMap.keys;
   Iterable<int> get codes => keys;
 
-  Iterable<Element> get elements => eMap.values;
+  List<Element> get elements => eMap.values.toList(growable: false);
 
   // TODO(high): determine how expensive this is?
   Element elementAt(int index) => eMap.values.elementAt(index);

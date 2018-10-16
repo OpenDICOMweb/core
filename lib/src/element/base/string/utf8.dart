@@ -20,9 +20,8 @@ part of odw.sdk.element.base.string;
 //       bool isEmptyStringAllowed = x;
 
 abstract class Utf8 extends StringBase {
-  static const bool kIsAsciiRequired = false;
-  static const Trim kTrim = Trim.both;
-
+  @override
+  StringList get values;
   @override
   bool get isAsciiRequired => false;
   @override
@@ -33,6 +32,9 @@ abstract class Utf8 extends StringBase {
   List<String> valuesFromBytes(Bytes bytes) =>
       bytes.getUtf8List(allowMalformed: global.allowMalformedUtf8);
 
+  static const bool kIsAsciiRequired = false;
+  static const Trim kTrim = Trim.both;
+
   static List<String> fromValueField(Iterable vf, int maxVFLength,
       {bool isAscii = true}) {
     if (vf == null) return kEmptyStringList;
@@ -42,24 +44,18 @@ abstract class Utf8 extends StringBase {
       return stringListFromTypedData(vf, maxVFLength, isAscii: true);
     return badValues(vf);
   }
+
+  Utf8 append(String s) => update(values.append(s, maxValueLength));
+
+  Utf8 prepend(String s) => update(values.prepend(s, maxValueLength));
+
+  Utf8 truncate(int length) => update(values.truncate(length, maxValueLength));
+
+  bool match(String regexp) => values.match(regexp);
 }
 
 /// A Long String (LO) Element
 abstract class LO extends Utf8 {
-  static const int kVRIndex = kLOIndex;
-  static const int kVRCode = kLOCode;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 64;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
-  static const String kVRKeyword = 'LO';
-  static const String kVRName = 'Long String';
-
-  static const Type kType = LO;
-
-  static const Trim kTrim = Trim.both;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -69,19 +65,24 @@ abstract class LO extends Utf8 {
   @override
   String get vrName => kVRName;
   @override
+  int get maxValueLength => kMaxValueLength;
+  @override
   int get maxLength => kMaxLength;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  LO append(String s) => update(values.append(s, kMaxValueLength));
-
-  LO prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  LO truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  static const int kVRIndex = kLOIndex;
+  static const int kVRCode = kLOCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 64;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRKeyword = 'LO';
+  static const String kVRName = 'Long String';
+  static const Type kType = LO;
+  static const Trim kTrim = Trim.both;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [LO].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -139,8 +140,6 @@ abstract class LO extends Utf8 {
       StringBase.isValidValueLength(
           s, issues, kMinValueLength, kMaxValueLength);
 
-  // **** Specialized static methods
-
   static bool isValidValue(String s,
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
@@ -152,11 +151,6 @@ abstract class LO extends Utf8 {
 /// A Private Creator [Element] is a subtype of [LO]. It always has a tag
 /// of the form (gggg,00cc), where 0x10 <= cc <= 0xFF..
 abstract class PC extends LO {
-  static const String kVRKeyword = 'PC';
-  static const String kVRName = 'Private Creator';
-  static const Type kType = PC;
-  static const Trim kTrim = Trim.both;
-
   String get token;
 
   /// The Value Field which contains a [String] that identifies the
@@ -166,7 +160,6 @@ abstract class PC extends LO {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRKeyword;
-
   @override
   String get name => 'Private Creator - $id';
 
@@ -182,7 +175,10 @@ abstract class PC extends LO {
     return invalidKey(code, 'Invalid Tag Code ${toDcm(code)}');
   }
 
-  // **** Specialized static methods
+  static const String kVRKeyword = 'PC';
+  static const String kVRName = 'Private Creator';
+  static const Type kType = PC;
+  static const Trim kTrim = Trim.both;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [LO].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -201,23 +197,10 @@ abstract class PC extends LO {
     if (!doTestElementValidity) return true;
     return vfBytes != null && (tag is PCTag) && vfBytes.length <= 64;
   }
-
-// **** Generalized static methods
 }
 
 /// A Person Name ([PN]) [Element].
 abstract class PN extends Utf8 {
-  static const int kVRIndex = kPNIndex;
-  static const int kVRCode = kPNCode;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 3 * 64;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-  static const String kVRKeyword = 'PN';
-  static const String kVRName = 'Person Name';
-  static const Type kType = PN;
-  static const Trim kTrim = Trim.trailing;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -226,6 +209,8 @@ abstract class PN extends Utf8 {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
 
@@ -245,13 +230,16 @@ abstract class PN extends Utf8 {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  PN append(String s) => update(values.append(s, kMaxValueLength));
-
-  PN prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  PN truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  static const int kVRIndex = kPNIndex;
+  static const int kVRCode = kPNCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 3 * 64;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRKeyword = 'PN';
+  static const String kVRName = 'Person Name';
+  static const Type kType = PN;
+  static const Trim kTrim = Trim.trailing;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [PN].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -321,18 +309,6 @@ abstract class PN extends Utf8 {
 
 /// A Short String (SH) Element
 abstract class SH extends Utf8 {
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kSHIndex;
-  static const int kVRCode = kSHCode;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 16;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-  static const String kVRKeyword = 'SH';
-  static const String kVRName = 'Short String';
-  static const Type kType = SH;
-  static const Trim kTrim = Trim.both;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -344,19 +320,25 @@ abstract class SH extends Utf8 {
   @override
   bool get isAsciiRequired => false;
   @override
+  int get maxValueLength => kMaxValueLength;
+  @override
   int get maxLength => kMaxLength;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  SH append(String s) => update(values.append(s, kMaxValueLength));
-
-  SH prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  SH truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  static const bool kIsAsciiRequired = false;
+  static const int kVRIndex = kSHIndex;
+  static const int kVRCode = kSHCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 16;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRKeyword = 'SH';
+  static const String kVRName = 'Short String';
+  static const Type kType = SH;
+  static const Trim kTrim = Trim.both;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [SH].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -427,21 +409,6 @@ abstract class SH extends Utf8 {
 
 /// An Unlimited Characters (UC) Element
 abstract class UC extends Utf8 {
-  static const bool kIsAsciiRequired = false;
-  static const int kVRIndex = kUCIndex;
-  static const int kVRCode = kUCCode;
-  static const int kMaxVFLength = k8BitMaxLongVF;
-  static const int kMaxLength = k8BitMaxLongVF ~/ (kMinValueLength + 1);
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = kMaxLongVF;
-
-  static const String kVRKeyword = 'UC';
-  static const String kVRName = 'Unlimited Characters';
-
-  static const Type kType = UC;
-  static const Trim kTrim = Trim.trailing;
-  static const Trim kComponentTrim = Trim.both;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -450,6 +417,8 @@ abstract class UC extends Utf8 {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -461,13 +430,18 @@ abstract class UC extends Utf8 {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  UC append(String s) => update(values.append(s, kMaxValueLength));
-
-  UC prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  UC truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  static const bool kIsAsciiRequired = false;
+  static const int kVRIndex = kUCIndex;
+  static const int kVRCode = kUCCode;
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = k8BitMaxLongVF ~/ (kMinValueLength + 1);
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = kMaxLongVF;
+  static const String kVRKeyword = 'UC';
+  static const String kVRName = 'Unlimited Characters';
+  static const Type kType = UC;
+  static const Trim kTrim = Trim.trailing;
+  static const Trim kComponentTrim = Trim.both;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [UC].
   /// If [doTestElementValidity] is _false_ then no checking is done.

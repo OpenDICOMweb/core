@@ -35,6 +35,7 @@ void main() {
       final ob0 = OBtagPixelData.fromPixels(pixels);
       log.debug('tag: ${PTag.kPixelDataOB}');
       expect(ob0.vrIndex == kOBOWIndex, false);
+      ob0.values;
       expect(ob0.vrIndex == kOBIndex, true);
       expect(ob0.values is List<int>, true);
       log.debug(ob0.values);

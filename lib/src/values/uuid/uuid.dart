@@ -64,7 +64,7 @@ class Uuid {
 
   /// Constructs [Uuid] from a [List<int>] of 16 unsigned 8-bit [int]s.
   Uuid.fromList(List<int> iList, {OnUuidBytesError onError, bool coerce = true})
-      : this.data = _uint8ListToBytes(iList, onError: onError, coerce: coerce);
+      : data = _uint8ListToBytes(iList, onError: onError, coerce: coerce);
 
   /// Two [Uuid]s are [==] if they contain equivalent [data].
   @override
@@ -248,8 +248,7 @@ class Uuid {
   /// outputs a proper UUID string.
   static String _toUuidFormat(Uint8List bytes) {
     var i = 0;
-    final byteToHex =
-        useUppercase ? _byteToUppercaseHex : _byteToLowercaseHex;
+    final byteToHex = useUppercase ? _byteToUppercaseHex : _byteToLowercaseHex;
     return '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}'
         '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'
         '${byteToHex[bytes[i++]]}${byteToHex[bytes[i++]]}-'

@@ -66,48 +66,8 @@ abstract class Element<V> extends ListBase<V> {
   set values(Iterable<V> vList) =>
       _values = (vList is List<int>) ? vList : vList.toList();
 
-  /// Returns the number of [values] of _this_.
-  @override
-  int get length {
-    if (values == null) return nullValueError();
-    return values.length;
-  }
-
-  /// Returns the identifier ([index]), used to locate
-  /// the Attributes associated with this Element.
-  int get index;
-
   /// Returns the Tag Code ([code]) associated with this Element
   int get code;
-
-  /// Returns the _keyword_ associated with this Element.
-  String get keyword;
-
-  /// Returns the _name_ associated with this Element.
-  String get name;
-
-  // **** VR related Getters ****
-
-  /// The index ([vrIndex]) of the Value Representation for this Element.
-  int get vrIndex;
-
-  /// The _minimum_ length of a non-empty Value Field for this Element.
-  int get vmMin;
-
-  /// The _maximum_ length of a non-empty Value Field for this Element.
-  int get vmMax;
-
-  /// The _rank_ or _width_, i.e. the number of columns in the
-  /// Value Field for this Element. _Note_: The Element values
-  /// length must be a multiple of this number.
-  int get vmColumns;
-
-  /// Returns true if _this_ is a Data Element defined by the DICOM Standard.
-  bool get isPublic;
-
-  /// _true_ if this Element has been retired, i.e. is no longer
-  /// defined by the current DICOM Standard.
-  bool get isRetired;
 
   /// The actual length in bytes of the Value Field. It does
   /// not include any padding characters.
@@ -116,13 +76,50 @@ abstract class Element<V> extends ListBase<V> {
   /// The length in bytes of [values].
   int get lengthInBytes;
 
-  /// Returns the canonical empty list for [V] ([List<V>[]]).
-  Iterable<V> get emptyList;
-
   // **** End of Interface
 
-  /// Returns the Value Representation (VR) integer code [vrCode] for _this_.
-  int get vrCode => vrCodeByIndex[vrIndex];
+  @override
+  V operator [](int i) => values[i];
+
+  @override
+  void operator []=(int i, V v) =>
+      throw UnsupportedError('Elements are immutable');
+
+  @override
+  bool operator ==(Object other) => equal(this, other);
+
+  /// Returns a [hashCode] for _this_.
+  @override
+  int get hashCode => Hash64.k2(tag, Hash64.list(values));
+
+  /// Returns the number of [values] of _this_.
+  @override
+  int get length {
+    if (values == null) return nullValueError();
+    return values.length;
+  }
+
+  @override
+  set length(int n) => throw UnsupportedError('Elements are immutable');
+
+  /// Returns a single values from a [List] with [length] == 1.
+  V get value {
+    if (length != 1) {
+      log.warn('Invalid values access: $this has ${values.length} values');
+      if (length == 0) return nullValueError();
+    }
+    return values[0];
+  }
+
+  /// Returns a copy of [values].
+  // *Note*: This Getter could be using [growable]: [false].
+  Iterable<V> get valuesCopy => List.from(values);
+
+  /// Returns the canonical empty list for [V] ([List<V>[]]).
+  Iterable<V> get emptyList => const [];
+
+  /// The [index] of the [Element] Definition for _this_.
+  int get index => code;
 
   /// Returns the [Tag] that corresponds to this [code].
   ///
@@ -130,6 +127,36 @@ abstract class Element<V> extends ListBase<V> {
   /// [PCTagUnknown] or [PDTagUnknown] will be returned. This should be
   /// overridden whenever possible.
   Tag get tag => Tag.lookupByCode(code);
+
+  /// Returns the _keyword_ associated with this Element.
+  String get keyword => tag.keyword;
+
+  /// Returns the _name_ associated with this Element.
+  String get name => tag.name;
+
+  // **** VR related Getters ****
+
+  /// The index ([vrIndex]) of the Value Representation for this Element.
+  /// Since this depends on the [tag], the [vrIndex] might be
+  /// [kUNIndex] for Private [Element]s.
+  int get vrIndex {
+    final vrIndex = tag.vrIndex;
+    if (isSpecialVRIndex(vrIndex)) {
+      log.debug('Using kUNIndex for $tag');
+      return kUNIndex;
+    }
+    return vrIndex;
+  }
+
+  /// Returns true if _this_ is a Data Element defined by the DICOM Standard.
+  bool get isPublic => code.isEven;
+
+  /// _true_ if this Element has been retired, i.e. is no longer
+  /// defined by the current DICOM Standard.
+  bool get isRetired => tag.isRetired;
+
+  /// Returns the Value Representation (VR) integer code [vrCode] for _this_.
+  int get vrCode => vrCodeByIndex[vrIndex];
 
   /// The start of an element in and encoding.
   int get eStart => -1;
@@ -200,7 +227,7 @@ abstract class Element<V> extends ListBase<V> {
   /// The size in bytes of the Value Field Length field.
   int get vlfSize => vr.vlfSize;
 
-  // TODO Jim: make this a Mixin
+  /// Returns the Value Representation [VR] of _this_.
   VR get vr => vrByIndex[vrIndex];
 
   String get vrId => vr.id;
@@ -226,6 +253,21 @@ abstract class Element<V> extends ListBase<V> {
 
   // ******* Value Multiplicity related Getters and Methods *******
   // **************************************************************
+
+  /// The _minimum_ length of a non-empty Value Field for this Element.
+  int get vmMin => tag.vmMin;
+
+  /// The _maximum_ length of a non-empty Value Field for this Element.
+  int get vmMax => tag.vmMax;
+
+  /// The _rank_ or _width_, i.e. the number of columns in the
+  /// Value Field for this Element. _Note_: The Element values
+  /// length must be a multiple of this number.
+  int get vmColumns => tag.vmColumns;
+
+  // Urgent Jim: define what this means
+  /// The maximum number of values for this element;
+  int get maxLength;
 
   /// The Value Multiplicity ([vm]) for this Element.
   VM get vm => tag.vm;
@@ -254,6 +296,8 @@ abstract class Element<V> extends ListBase<V> {
 
   /// The Element Type of this Element.
   EType get eType => tag.eType;
+
+  int get eTypeIndex => tag.type.index;
 
   /// The Element Type predicate of this Element.
   Condition get eTypePredicate => unimplementedError();
@@ -284,32 +328,6 @@ abstract class Element<V> extends ListBase<V> {
   // **************************************************************
   // ****Note: This should be implemented at the
   // Integer/Float/String/Sequence level.
-
-  /// The maximum number of values for this element;
-  int get maxLength;
-
-  @override
-  V operator [](int i) => values[i];
-
-  @override
-  void operator []=(int i, V v) =>
-      throw UnsupportedError('Elements are immutable');
-
-  @override
-  set length(int n) => throw UnsupportedError('Elements are immutable');
-
-  /// Returns a single values from a [List] with [length] == 1.
-  V get value {
-    if (length != 1) {
-      log.warn('Invalid values access: $this has ${values.length} values');
-      if (length == 0) return nullValueError();
-    }
-    return values[0];
-  }
-
-  /// Returns a copy of [values].
-  // *Note*: This Getter could be using [growable]: [false].
-  Iterable<V> get valuesCopy => List.from(values);
 
   /// Returns [values] encoded as an [TypedData]. The subtype of [TypedData]
   /// depends on the VR.
@@ -387,13 +405,6 @@ abstract class Element<V> extends ListBase<V> {
   // Note: this SHOULD NOT be implemented by any subclasses
   /// Returns _true_ if all [values] are valid for _this_.
   bool get hasValidValues => checkValues(values);
-
-  @override
-  bool operator ==(Object other) => equal(this, other);
-
-  /// Returns a [hashCode] for _this_.
-  @override
-  int get hashCode => Hash64.k2(tag, Hash64.list(values));
 
   /// Returns a copy of _this_ with an empty [values] [List].
   Element<V> get noValues => update(emptyList);

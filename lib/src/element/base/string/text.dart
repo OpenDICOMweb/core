@@ -53,20 +53,6 @@ abstract class Text extends Utf8 {
 
 /// An Long Text (LT) Element
 abstract class LT extends Text {
-  static const int kVRIndex = kLTIndex;
-  static const int kVRCode = kLTCode;
-  static const int kMaxVFLength = k8BitMaxLongVF;
-  static const int kMaxLength = 1;
-  static const int kMinValueLength = 0;
-  static const int kMaxValueLength = 10240;
-
-  static const String kVRKeyword = 'LT';
-  static const String kVRName = 'Long Text';
-
-  static const Type kType = LT;
-
-  static const Trim kTrim = Trim.trailing;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -76,19 +62,24 @@ abstract class LT extends Text {
   @override
   String get vrName => kVRName;
   @override
+  int get maxValueLength => kMaxValueLength;
+  @override
   int get maxLength => kMaxLength;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  LT append(String s) => update(values.append(s, kMaxValueLength));
-
-  LT prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  LT truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  static const int kVRIndex = kLTIndex;
+  static const int kVRCode = kLTCode;
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = 1;
+  static const int kMinValueLength = 0;
+  static const int kMaxValueLength = 10240;
+  static const String kVRKeyword = 'LT';
+  static const String kVRName = 'Long Text';
+  static const Type kType = LT;
+  static const Trim kTrim = Trim.trailing;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [LT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -158,20 +149,6 @@ abstract class LT extends Text {
 
 /// An Short Text (ST) Element
 abstract class ST extends Text {
-  static const int kVRIndex = kSTIndex;
-  static const int kVRCode = kSTCode;
-  static const int kMaxVFLength = k8BitMaxLongVF;
-  static const int kMaxLength = 1;
-  static const int kMinValueLength = 0;
-  static const int kMaxValueLength = 1024;
-
-  static const String kVRKeyword = 'ST';
-  static const String kVRName = 'Short Text';
-
-  static const Type kType = ST;
-
-  static const Trim kTrim = Trim.trailing;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -181,19 +158,24 @@ abstract class ST extends Text {
   @override
   String get vrName => kVRName;
   @override
+  int get maxValueLength => kMaxValueLength;
+  @override
   int get maxLength => kMaxLength;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  ST append(String s) => update(values.append(s, kMaxValueLength));
-
-  ST prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  ST truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  static const int kVRIndex = kSTIndex;
+  static const int kVRCode = kSTCode;
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = 1;
+  static const int kMinValueLength = 0;
+  static const int kMaxValueLength = 1024;
+  static const String kVRKeyword = 'ST';
+  static const String kVRName = 'Short Text';
+  static const Type kType = ST;
+  static const Trim kTrim = Trim.trailing;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [ST].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -265,20 +247,6 @@ abstract class ST extends Text {
 ///
 /// The Value Multiplicity of this [Element] is 1.
 abstract class UR extends Text {
-  static const int kVRIndex = kURIndex;
-  static const int kVRCode = kURCode;
-  static const String kVRKeyword = 'UR';
-  static const String kVRName =
-      'Universal Resource Identifier or Universal Resource Locator (URI/URL)';
-  static const int kMaxVFLength = k8BitMaxLongVF;
-  static const int kMaxLength = 1;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = k8BitMaxLongVF;
-
-  static const Type kType = UR;
-
-  static const Trim kTrim = Trim.none;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -289,6 +257,8 @@ abstract class UR extends Text {
   String get vrName => kVRName;
   @override
   int get vlfSize => 4;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -303,13 +273,17 @@ abstract class UR extends Text {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  UR append(String s) => update(values.append(s, kMaxValueLength));
-
-  UR prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  UR truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  static const int kVRIndex = kURIndex;
+  static const int kVRCode = kURCode;
+  static const String kVRKeyword = 'UR';
+  static const String kVRName =
+      'Universal Resource Identifier or Universal Resource Locator (URI/URL)';
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = 1;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = k8BitMaxLongVF;
+  static const Type kType = UR;
+  static const Trim kTrim = Trim.none;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [UR].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -397,20 +371,6 @@ abstract class UR extends Text {
 
 /// An Unlimited Text (UT) Element
 abstract class UT extends Text {
-  static const int kVRIndex = kUTIndex;
-  static const int kVRCode = kUTCode;
-  static const int kMaxVFLength = k8BitMaxLongVF;
-  static const int kMaxLength = 1;
-  static const int kMinValueLength = 0;
-  static const int kMaxValueLength = k8BitMaxLongVF;
-
-  static const String kVRKeyword = 'UT';
-  static const String kVRName = 'Unlimited Text';
-
-  static const Type kType = UT;
-
-  static const Trim kTrim = Trim.trailing;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -422,6 +382,8 @@ abstract class UT extends Text {
   @override
   int get vlfSize => 4;
   @override
+  int get maxValueLength => kMaxValueLength;
+  @override
   int get maxLength => kMaxLength;
   @override
   int get maxVFLength => kMaxVFLength;
@@ -430,13 +392,16 @@ abstract class UT extends Text {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  UT append(String s) => update(values.append(s, kMaxValueLength));
-
-  UT prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  UT truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  static const int kVRIndex = kUTIndex;
+  static const int kVRCode = kUTCode;
+  static const int kMaxVFLength = k8BitMaxLongVF;
+  static const int kMaxLength = 1;
+  static const int kMinValueLength = 0;
+  static const int kMaxValueLength = k8BitMaxLongVF;
+  static const String kVRKeyword = 'UT';
+  static const String kVRName = 'Unlimited Text';
+  static const Type kType = UT;
+  static const Trim kTrim = Trim.trailing;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [UT].
   /// If [doTestElementValidity] is _false_ then no checking is done.

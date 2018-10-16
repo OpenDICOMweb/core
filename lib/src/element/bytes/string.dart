@@ -13,7 +13,7 @@ part of odw.sdk.element.bytes;
 /// [String] [Element]s that only have ASCII values.
 abstract class StringMixin {
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
   int get vfBytesLast;
   String get vfString;
 
@@ -30,7 +30,7 @@ abstract class StringMixin {
   /// Returns the number of values in [vfBytes].
   int get length => _stringValuesLength(vfBytes);
 
-  List<String> get values => vfString.split('\\');
+  StringList get values => StringList.from(vfString.split('\\'));
 
   List<String> get emptyList => kEmptyStringList;
 }
@@ -39,7 +39,7 @@ abstract class StringMixin {
 abstract class AsciiMixin {
   bool get hasPadding;
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
   bool get allowInvalid => global.allowInvalidAscii;
 
@@ -244,7 +244,7 @@ class TMbytes extends TM with ByteElement<String>, StringMixin, AsciiMixin {
 abstract class Utf8Mixin {
   bool get hasPadding;
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
   int get length => _stringValuesLength(vfBytes);
 
@@ -364,7 +364,7 @@ class UCbytes extends UC with ByteElement<String>, StringMixin, Utf8Mixin {
 
 /// Text ([String]) [Element]s that may only have 1 UTF-8 values.
 abstract class TextMixin {
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
   int get length => 1;
 
@@ -372,7 +372,7 @@ abstract class TextMixin {
 
   String get vfString => vfBytes.getUtf8(allowMalformed: allowMalformed);
   String get value => vfString;
-  List<String> get values => [vfString];
+  StringList get values => StringList.from([vfString]);
 }
 
 int _stringValuesLength(Bytes vfBytes) {

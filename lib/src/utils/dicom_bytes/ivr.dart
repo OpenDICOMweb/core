@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.bytes;
+part of odw.sdk.utils.dicom_bytes;
 
 // ignore_for_file: public_member_api_docs
 
@@ -39,7 +39,7 @@ class IvrBytes extends DicomBytes {
     assert(vfLength.isEven);
     return IvrBytes(kHeaderLength + vfLength)
       ..ivrSetHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes._bd);
+      ..setByteData(kVFOffset, vfBytes.bd);
   }
 
   @override

@@ -6,7 +6,9 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.buffer;
+import 'dart:typed_data';
+
+import 'package:core/src/utils/bytes.dart';
 
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: public_member_api_docs

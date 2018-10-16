@@ -38,7 +38,7 @@ abstract class TagDataset {
 
   int keyToIndex(int code) => code;
 
-  Tag getTag(int key) => Tag.lookupByCode(key);
+  Tag getTag(int key, [int vrIndex, Object creator]) => Tag.lookupByCode(key);
 
   static Dataset convert(Dataset dsOld, Dataset dsNew, [Bytes bytes]) {
     final badElements = <Element>[];
@@ -61,6 +61,9 @@ abstract class TagDataset {
     }
   }
 
-  static SQ _convertSQ(Dataset parent, SQ oldSQ, ) =>
-    SQtag.convert(parent, oldSQ);
+  static SQ _convertSQ(
+    Dataset parent,
+    SQ oldSQ,
+  ) =>
+      SQtag.convert(parent, oldSQ);
 }

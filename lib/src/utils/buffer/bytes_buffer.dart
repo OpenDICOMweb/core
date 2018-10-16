@@ -8,21 +8,15 @@
 //
 library odw.sdk.utils.buffer;
 
-import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:core/src/error/general_errors.dart';
 import 'package:core/src/utils.dart';
+import 'package:core/src/utils/buffer/read_buffer_mixin.dart';
+import 'package:core/src/utils/buffer/write_buffer_mixin.dart';
 import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/vr.dart';
 
-part 'package:core/src/utils/buffer/buffer_mixin.dart';
-part 'package:core/src/utils/buffer/dicom_read_buffer.dart';
-part 'package:core/src/utils/buffer/dicom_write_buffer.dart';
 part 'package:core/src/utils/buffer/read_buffer.dart';
-part 'package:core/src/utils/buffer/read_mixin.dart';
 part 'package:core/src/utils/buffer/write_buffer.dart';
-part 'package:core/src/utils/buffer/write_mixin.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -30,54 +24,36 @@ part 'package:core/src/utils/buffer/write_mixin.dart';
 abstract class BytesBuffer {
   // **** Interface
   /// The underlying [Bytes] for the buffer.
-  Bytes get _buf;
-  int get _rIndex;
-  set _rIndex(int n);
-  int get _wIndex;
-  set _wIndex(int n) => unsupportedError();
+  Bytes get buffer;
+//  int get _rIndex;
+//  set _rIndex(int n);
+//  int get _wIndex;
+//  set _wIndex(int n) => unsupportedError();
 
   // **** Internal Primitives
-  int get _offset => _buf.offset;
-  int get _start => _buf.offset;
-  int get _length => _buf.length;
+  int get _offset => buffer.offset;
+  int get _start => buffer.offset;
+  int get _length => buffer.length;
 
-  int get _end => _start + _buf.length;
+  int get _end => _start + buffer.length;
 
-  int get _rRemaining => _wIndex - _rIndex;
-  bool get _isReadable => _rRemaining > 0;
-  bool get _rIsEmpty => _rRemaining <= 0;
-  bool get _rIsNotEmpty => !_rIsEmpty;
-  bool _rHasRemaining(int n) {
-    assert(n >= 0);
-    return _rRemaining > 0;
-  }
-
-  int get _wRemaining => _buf.length - _wIndex;
-  bool get _isWritable => _wRemaining > 0;
-  bool get _wIsEmpty => _wRemaining <= 0;
-  bool get _wIsNotEmpty => !_wIsEmpty;
-  int get _wRemainingMax => kDefaultLimit - _wIndex;
-  bool _wHasRemaining(int n) {
-    assert(n >= 0);
-    return _rRemaining > 0;
-  }
   // **** End Internal Primitives
 
-  int get readIndex => _rIndex;
-  int get writeIndex => _wIndex;
+  int get readIndex;
+  int get writeIndex;
   bool get isNotReadable => !isReadable;
   bool get isNotWritable => !isWritable;
 
   // ****  External Getters
 
-  /// The underlying [Bytes]
-  Bytes get buffer => _buf;
+
+
 
   /// The maximum [length] of _this_.
-  int get limit => _buf.limit;
+  int get limit => buffer.limit;
 
   /// The endianness of _this_.
-  Endian get endian => _buf.endian;
+  Endian get endian => buffer.endian;
 
   /// The offset of _this_ in the underlying [ByteBuffer].
   int get offset => _offset;
@@ -88,31 +64,30 @@ abstract class BytesBuffer {
   /// The length of the [buffer].
   int get length => _length;
 
-//  int get lengthInBytes => _buffer.length;
   int get end => _start + _length;
 
   /// The number of readable bytes in [buffer].
-  int get readRemaining => _rRemaining;
+  int get readRemaining;
 
   /// Returns _true_ if [readRemaining] >= 0.
-  bool get isReadable => _isReadable;
+  bool get isReadable;
 
   /// The current number of writable bytes in [buffer].
-  int get writeRemaining => _wRemaining;
+  int get writeRemaining;
 
   /// Returns _true_ if [writeRemaining] >= 0.
-  bool get isWritable => _isWritable;
+  bool get isWritable;
 
   /// The maximum number of writable bytes in [buffer].
-  int get writeRemainingMax => _wRemainingMax;
+  int get writeRemainingMax;
 
   /// Returns the number of writeable bytes left in _this_.
-  int get wRemaining => _wRemaining;
+//  int get wRemaining => _wRemaining;
 
   // ****  End of External Getters
 
-  bool rHasRemaining(int n) => (_rIndex + n) <= _wIndex;
-  bool wHasRemaining(int n) => (_wIndex + n) <= _end;
+  bool rHasRemaining(int n) => (readIndex + n) <= writeIndex;
+  bool wHasRemaining(int n) => (writeIndex + n) <= _end;
 
   /// Returns a _view_ of [buffer] containing the bytes from [start] inclusive
   /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
@@ -120,29 +95,24 @@ abstract class BytesBuffer {
   /// or if [end] is outside the range [start] .. [length].
   /// [length].
   Bytes sublist([int start = 0, int end]) =>
-      Bytes.from(_buf, start, (end ?? length) - start);
+      Bytes.from(buffer, start, (end ?? length) - start);
 
   /// Return a view of _this_ of [length], starting at [start]. If [length]
   /// is _null_ it defaults to [length].
   Bytes view([int start = 0, int length]) =>
-      _buf.asBytes(start, length ?? length);
+      buffer.asBytes(start, length ?? length);
 
   ByteData asByteData([int offset, int length]) =>
-      _buf.asByteData(offset ?? _rIndex, length ?? _wIndex);
+      buffer.asByteData(offset ?? readIndex, length ?? writeIndex);
 
   Uint8List asUint8List([int offset, int length]) =>
-      _buf.asUint8List(offset ?? _rIndex, length ?? _wIndex);
+      buffer.asUint8List(offset ?? readIndex, length ?? writeIndex);
 
-  bool _checkAllZeros(int offset, int end) {
-    for (var i = offset; i < end; i++) if (_buf.getUint8(i) != 0) return false;
-    return true;
-  }
+  void rWarn(Object msg) => print('** Warning: $msg @$readIndex');
 
-  void rWarn(Object msg) => print('** Warning: $msg @$_rIndex');
+  void rError(Object msg) => throw Exception('**** Error: $msg @$writeIndex');
 
-  void rError(Object msg) => throw Exception('**** Error: $msg @$_wIndex');
+  void wWarn(Object msg) => print('** Warning: $msg @$readIndex');
 
-  void wWarn(Object msg) => print('** Warning: $msg @$_rIndex');
-
-  void wError(Object msg) => throw Exception('**** Error: $msg @$_wIndex');
+  void wError(Object msg) => throw Exception('**** Error: $msg @$writeIndex');
 }

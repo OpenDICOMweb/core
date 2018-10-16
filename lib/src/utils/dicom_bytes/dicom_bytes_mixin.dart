@@ -6,33 +6,45 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.bytes;
+import 'dart:typed_data';
+
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/character/ascii.dart';
+import 'package:core/src/utils/dicom.dart';
+import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: public_member_api_docs
 
-abstract class DicomMixin {
+abstract class DicomBytesMixin {
   bool get isEvr;
-  ByteData get _bd;
   ByteData get bd;
 //  set bd(ByteData bd);
   int get vrCode;
   int get vrIndex;
   String get vrId;
   Endian get endian;
-  int get _bdOffset;
-  int get _bdLength;
+  int get bdOffset;
+  int get bdLength;
   int get vfOffset;
   int get vfLengthOffset;
   int get vfLengthField;
+  int get length;
 
+
+  int getUint16(int offset);
+  int getUint8(int offset);
+  int getUint32(int offset);
+
+  void setUint8(int offset, int value);
+  void setUint16(int offset, int value);
+  void setUint32(int offset, int value);
+
+  /* Urgent Flush
   int _getInt8(int offset);
   int _getInt16(int offset);
   int _getInt32(int offset);
   int _getInt64(int offset);
 
-  int _getUint8(int offset);
-  int _getUint16(int offset);
-  int _getUint32(int offset);
   int _getUint64(int offset);
 
   double _getFloat32(int offset);
@@ -43,18 +55,16 @@ abstract class DicomMixin {
   int _setInt32(int offset, int value);
   int _setInt64(int offset, int value);
 
-  int _setUint8(int offset, int value);
-  int _setUint16(int offset, int value);
-  int _setUint32(int offset, int value);
   int _setUint64(int offset, int value);
 
-  double _setFloat32(int offset, double value);
-  double _setFloat64(int offset, double value);
+  int _setFloat32(int offset, double value);
+  int _setFloat64(int offset, double value);
+*/
 
   int setInt8List(int start, List<int> list, [int offset = 0, int length]);
   int setInt16List(int start, List<int> list, [int offset = 0, int length]);
-  int setInt32List(int start, Int32List list, [int offset = 0, int length]);
-  int setInt64List(int start, Int64List list, [int offset = 0, int length]);
+  int setInt32List(int start, List<int> list, [int offset = 0, int length]);
+  int setInt64List(int start, List<int> list, [int offset = 0, int length]);
 
   int setUint8List(int start, List<int> list, [int offset = 0, int length]);
   int setUint16List(int start, List<int> list, [int offset = 0, int length]);
@@ -69,41 +79,45 @@ abstract class DicomMixin {
   int setUtf8(int start, String s,
       [int offset = 0, int length, int padChar = kSpace]);
 
-  int setAsciiList(int start, List<String> list, [int pad = kSpace]);
+  int setAsciiList(int start, List<String> list,
+      [int offset = 0, int length, String separator = '', int pad = kSpace]);
+
   String toBDDescriptor(ByteData bd);
 
-  String _maybeGetSubstring(String s, int offset, int length);
+//  String _maybeGetSubstring(String s, int offset, int length);
 
-  int _absIndex(int offset);
+//  int _absIndex(int offset);
 
   Bytes asBytes([int offset = 0, int length, Endian endian]);
 
+/* Urgent flush
   // Note: special internal interface for writing padChars
   int _setUint8List(int start, Uint8List list,
       [int offset = 0, int length, int padChar]);
+*/
 
   // **** End of Interface
 
   int get code {
-    final group = _getUint16(0);
-    final elt = _getUint16(2);
+    final group = getUint16(0);
+    final elt = getUint16(2);
     return (group << 16) + elt;
   }
 
   /// The Element Group Field
-  int get group => _getUint16(_kGroupOffset);
+  int get group => getUint16(_kGroupOffset);
 
   /// The Element _element_ Field.
-  int get elt => _getUint16(_kEltOffset);
+  int get elt => getUint16(_kEltOffset);
 
   /// Returns the length in bytes of _this_ Element.
-  int get eLength => _bdLength;
+  int get eLength => bdLength;
 
   /// Returns _true_ if [vfLengthField] equals [kUndefinedLength].
   bool get hasUndefinedLength => vfLengthField == kUndefinedLength;
 
   /// Returns the actual length of the Value Field.
-  int get vfLength => _bdLength - vfOffset;
+  int get vfLength => bdLength - vfOffset;
 
   /// Returns the Value Field bytes.
   Bytes get vfBytes => asBytes(vfOffset, vfLength);
@@ -115,12 +129,12 @@ abstract class DicomMixin {
   /// is not empty; otherwise, returns _null_.
   int get vfBytesLast {
     final len = eLength;
-    return (len == 0) ? null : _getUint8(len - 1);
+    return (len == 0) ? null : getUint8(len - 1);
   }
 
   /// Returns the Value Field as a Uint8List.
   Uint8List get vfUint8List =>
-      _bd.buffer.asUint8List(_bdOffset + vfOffset, vfLength);
+      bd.buffer.asUint8List(bdOffset + vfOffset, vfLength);
 
   /// Returns the Value Field as a Uint8List _without_ padding.
 //  Uint8List get vfUint8ListWOPadding =>
@@ -129,57 +143,57 @@ abstract class DicomMixin {
   // ** Primitive Getters
 
   int getCode(int offset) {
-    final group = _getUint16(offset);
-    final elt = _getUint16(offset + 2);
+    final group = getUint16(offset);
+    final elt = getUint16(offset + 2);
     return (group << 16) + elt;
   }
 
-  int getVRCode(int offset) => (_getUint8(offset) << 8) + _getUint8(offset + 1);
+  int getVRCode(int offset) => (getUint8(offset) << 8) + getUint8(offset + 1);
 
-  int getShortVLF(int offset) => _getUint16(offset);
+  int getShortVLF(int offset) => getUint16(offset);
 
-  int getLongVLF(int offset) => _getUint32(offset);
+  int getLongVLF(int offset) => getUint32(offset);
 
   // **** Primitive Setters
 
   /// Returns the Tag Code from [Bytes].
   void setCode(int code) {
-    _setUint16(0, code >> 16);
-    _setUint16(2, code & 0xFFFF);
+    setUint16(0, code >> 16);
+    setUint16(2, code & 0xFFFF);
   }
 
   void setVRCode(int vrCode) {
-    _setUint8(4, vrCode >> 8);
-    _setUint8(5, vrCode & 0xFF);
+    setUint8(4, vrCode >> 8);
+    setUint8(5, vrCode & 0xFF);
   }
 
-  void setShortVLF(int vlf) => _setUint16(6, vlf);
-  void setLongVLF(int vlf) => _setUint32(8, vlf);
+  void setShortVLF(int vlf) => setUint16(6, vlf);
+  void setLongVLF(int vlf) => setUint32(8, vlf);
 
   /// Write a short EVR header.
   void evrSetShortHeader(int code, int vlf, int vrCode) {
-    _setUint16(0, code >> 16);
-    _setUint16(2, code & 0xFFFF);
-    _setUint8(4, vrCode >> 8);
-    _setUint8(5, vrCode & 0xFF);
-    _setUint16(6, vlf);
+    setUint16(0, code >> 16);
+    setUint16(2, code & 0xFFFF);
+    setUint8(4, vrCode >> 8);
+    setUint8(5, vrCode & 0xFF);
+    setUint16(6, vlf);
   }
 
   /// Write a short EVR header.
   void evrSetLongHeader(int code, int vlf, int vrCode) {
-    _setUint16(0, code >> 16);
-    _setUint16(2, code & 0xFFFF);
-    _setUint8(4, vrCode >> 8);
-    _setUint8(5, vrCode & 0xFF);
+    setUint16(0, code >> 16);
+    setUint16(2, code & 0xFFFF);
+    setUint8(4, vrCode >> 8);
+    setUint8(5, vrCode & 0xFF);
     // The Uint16 field at offset 6 is already zero.
-    _setUint32(8, vlf);
+    setUint32(8, vlf);
   }
 
   /// Write a short EVR header.
   void ivrSetHeader(int offset, int code, int vlf) {
-    _setUint16(offset, code >> 16);
-    _setUint16(2, code & 0xFFFF);
-    _setUint32(4, vlf);
+    setUint16(offset, code >> 16);
+    setUint16(2, code & 0xFFFF);
+    setUint32(4, vlf);
   }
 
   void writeInt8VF(List<int> vList) => setInt8List(vfOffset, vList);
@@ -206,11 +220,11 @@ abstract class DicomMixin {
     final last = vList.length - 1;
     for (var i = 0; i < vList.length; i++) {
       final s = vList[i];
-      for (var j = 0; j < s.length; j++) _setUint8(index, s.codeUnitAt(i));
+      for (var j = 0; j < s.length; j++) setUint8(index, s.codeUnitAt(i));
       if (i != last) {
-        _setUint8(index++, kBackslash);
+        setUint8(index++, kBackslash);
       } else {
-        if (index.isOdd && padChar != null) _setUint8(index++, padChar);
+        if (index.isOdd && padChar != null) setUint8(index++, padChar);
       }
     }
     return index;
@@ -221,7 +235,7 @@ abstract class DicomMixin {
     final length = bd.lengthInBytes - vfOffset;
     if (length == 0 || length.isOdd) return length;
     final newLen = length - 1;
-    final last = _getUint8(newLen);
+    final last = getUint8(newLen);
     return (last == kSpace || last == kNull) ? newLen : length;
   }
 
@@ -231,7 +245,7 @@ abstract class DicomMixin {
     length ??= eLength;
     return (length == 0)
         ? kEmptyUint8List
-        : _bd.buffer.asUint8List(_absIndex(offset), length - offset);
+        : bd.buffer.asUint8List(bd.offsetInBytes + offset, length - offset);
   }
 
   static const int _kGroupOffset = 0;
@@ -245,9 +259,9 @@ abstract class DicomReaderMixin {
   int get vfOffset;
   int get vfLengthOffset;
   int get vfLengthField;
-  int _getUint8(int offset);
-  int _getUint16(int offset);
-  int _getUint32(int offset);
+  int getUint8(int offset);
+  int getUint16(int offset);
+  int getUint32(int offset);
   int getVLF(int offset);
   Bytes asBytes([int offset = 0, int length, Endian endian]);
   Uint8List asUint8List([int offset = 0, int length]);
@@ -255,16 +269,16 @@ abstract class DicomReaderMixin {
   // **** End of Interface
 
   int get code {
-    final group = _getUint16(0);
-    final elt = _getUint16(2);
+    final group = getUint16(0);
+    final elt = getUint16(2);
     return (group << 16) + elt;
   }
 
   /// The Element Group Field
-  int get group => _getUint16(_kGroupOffset);
+  int get group => getUint16(_kGroupOffset);
 
   /// The Element _element_ Field.
-  int get elt => _getUint16(_kEltOffset);
+  int get elt => getUint16(_kEltOffset);
 
   /// Returns the length in bytes of _this_ Element.
   int get eLength => _bdLength;
@@ -291,24 +305,24 @@ abstract class DicomReaderMixin {
   // ** Primitive Getters
 
   int getCode(int offset) {
-    final group = _getUint16(offset);
-    final elt = _getUint16(offset + 2);
+    final group = getUint16(offset);
+    final elt = getUint16(offset + 2);
     return (group << 16) + elt;
   }
 
   int getVRCode(int offset) =>
-      (_getUint16(offset) << 8) + _getUint8(offset + 1);
+      (getUint16(offset) << 8) + getUint8(offset + 1);
 
-  int getShortVLF(int offset) => _getUint16(offset);
+  int getShortVLF(int offset) => getUint16(offset);
 
-  int getLongVLF(int offset) => _getUint32(offset);
+  int getLongVLF(int offset) => getUint32(offset);
 
   /// Returns the length in bytes of this Byte Element without padding.
   int _vflWOPadding(int vfOffset) {
     final length = _bdLength - vfOffset;
     if (length == 0 || length.isOdd) return length;
     final newLen = length - 1;
-    final last = _getUint8(newLen);
+    final last = getUint8(newLen);
     return (last == kSpace || last == kNull) ? newLen : length;
   }
 
@@ -317,47 +331,47 @@ abstract class DicomReaderMixin {
 }
 
 abstract class DicomWriterMixin {
-  int _setUint8(int offset, int value);
-  int _setUint16(int offset, int value);
-  int _setUint32(int offset, int value);
+  void setUint8(int offset, int value);
+  void setUint16(int offset, int value);
+  void setUint32(int offset, int value);
 // **** End of Interface
 
   /// Returns the Tag Code from [Bytes].
   void setCode(int code) {
-    _setUint16(0, code >> 16);
-    _setUint16(2, code & 0xFFFF);
+    setUint16(0, code >> 16);
+    setUint16(2, code & 0xFFFF);
   }
 
   void setVRCode(int vrCode) {
-    _setUint8(4, vrCode >> 8);
-    _setUint8(5, vrCode & 0xFF);
+    setUint8(4, vrCode >> 8);
+    setUint8(5, vrCode & 0xFF);
   }
 
-  void setShortVLF(int vlf) => _setUint16(6, vlf);
-  void setLongVLF(int vlf) => _setUint32(8, vlf);
+  void setShortVLF(int vlf) => setUint16(6, vlf);
+  void setLongVLF(int vlf) => setUint32(8, vlf);
 
   /// Write a short EVR header.
   void evrSetShortHeader(int code, int vrCode, int vlf) {
-    _setUint16(0, code >> 16);
-    _setUint16(2, code & 0xFFFF);
-    _setUint16(4, vrCode);
-    _setUint16(6, vlf);
+    setUint16(0, code >> 16);
+    setUint16(2, code & 0xFFFF);
+    setUint16(4, vrCode);
+    setUint16(6, vlf);
   }
 
   /// Write a short EVR header.
   void evrSetLongHeader(int code, int vrCode, int vlf) {
-    _setUint16(0, code >> 16);
-    _setUint16(2, code & 0xFFFF);
-    _setUint16(4, vrCode);
+    setUint16(0, code >> 16);
+    setUint16(2, code & 0xFFFF);
+    setUint16(4, vrCode);
     // This field is zero, but GC takes care of  that
-    //  _setUint16( 6, 0)
-    _setUint32(8, vlf);
+    //  setUint16( 6, 0)
+    setUint32(8, vlf);
   }
 
   /// Write a short EVR header.
   void ivrSetHeader(int offset, int code, int vlf) {
-    _setUint16(offset, code >> 16);
-    _setUint16(2, code & 0xFFFF);
-    _setUint32(4, vlf);
+    setUint16(offset, code >> 16);
+    setUint16(2, code & 0xFFFF);
+    setUint32(4, vlf);
   }
 }

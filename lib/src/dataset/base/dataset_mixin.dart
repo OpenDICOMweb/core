@@ -557,8 +557,7 @@ abstract class DatasetMixin {
   V _checkOneValue<V>(int index, List<V> values, {bool required = false}) {
     if (values == null)
       return badValuesLength(values, 0, 1, null, Tag.lookupByCode(index));
-    if (values.length == 1)
-      return values.first;
+    if (values.length == 1) return values.first;
     if (values.length > 1 || (values.isEmpty && required)) {
       return badValuesLength(values, 1, 1, null, Tag.lookupByCode(index));
     }
@@ -792,19 +791,19 @@ abstract class DatasetMixin {
 
   /// Returns a [Uint8List] or [Uint16List] of pixels from the [kPixelData]
   /// [Element];
-  List<int> get pixelData {
-    final bitsAllocated = getInt(kBitsAllocated);
-    return _getPixelData(bitsAllocated ?? 8);
-  }
+  List<int> get pixelData => _getPixelData(true);
 
-  List<int> _getPixelData(int bitsAllocated) {
-    if (bitsAllocated == null) log.warn('bitsAllocated == null');
+  List<int> getPixelData({bool required = false}) => _getPixelData(required);
+
+  List<int> _getPixelData(bool required) {
+    //Urgent Jim: cleanup
+    //List<int> _getPixelData(int bitsAllocated, {bool required = false}) {
+    //  if (bitsAllocated == null) log.warn('bitsAllocated == null');
     final e = lookup(kPixelData);
     // if (e == null || bitsAllocated == null) return pixelDataNotPresent();
-    if (e == null) return pixelDataNotPresent();
-    assert(e.code == kPixelData);
+    if (e == null) return (required == true) ? pixelDataNotPresent() : null;
 
-    if (e is PixelData) {
+    if (e.code == kPixelData) {
       if (e is OWPixelData) {
         if (bitsAllocated != 16)
           log.warn('OWPixelData with bitsAllocated: $bitsAllocated');

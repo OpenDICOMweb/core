@@ -164,7 +164,7 @@ Summary $tag
   }
 
   @override
-  Iterable<Item> get emptyList => kEmptyList;
+  List<Item> get emptyList => kEmptyList;
   static const Iterable<Item> kEmptyList = <Item>[];
 
   @override

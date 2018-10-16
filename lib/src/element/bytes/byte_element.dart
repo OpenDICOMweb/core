@@ -16,7 +16,9 @@ import 'package:core/src/element/bytes/vf_fragments.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
 import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/values/string_list.dart';
 import 'package:core/src/values/uid.dart';
 import 'package:core/src/vr.dart';
 
@@ -34,21 +36,23 @@ typedef BDElementMaker = Element Function(
     int code, int vrIndex, DicomBytes bytes);
 
 abstract class ByteElement<V> {
+  V operator [](int index);
+
   DicomBytes get bytes;
+
+//  List<V> get values;
+//  set values(Iterable<V> vList) => unsupportedError();
 
   /// The length of values;
   int get length;
-
-  List<V> get values;
-  set values(Iterable<V> vList) => unsupportedError();
 
   List<V> get emptyList;
 
   bool get hasValidValues;
 
-  V operator [](int index);
-
   // **** End of Interface
+
+  // **** Getters and Setters special to ByteElement
 
   /// Returns _true_ if _this_ and [other] are the same [ByteElement],
   /// and equal byte for byte.
@@ -59,10 +63,6 @@ abstract class ByteElement<V> {
   @override
   int get hashCode => bytes.hashCode;
 
-  /// The [index] of the [Element] Definition for _this_. It is
-  /// used to locate other values in the [Element] Definition.
-  int get index => code;
-
   /// The Tag Code of _this_.
   int get code => bytes.code;
 
@@ -70,10 +70,6 @@ abstract class ByteElement<V> {
   int get eLength => bytes.length;
 
   bool get isEvr => bytes.isEvr;
-
-  bool get isPublic => code.isEven;
-
-  bool get isPrivate => !isPublic;
 
   int get vrCode => bytes.vrCode;
 
@@ -89,19 +85,9 @@ abstract class ByteElement<V> {
 
   Bytes get vfBytes => bytes.vfBytes;
 
-//  Bytes get vBytes => bytes.vBytes;
-
   int get vfBytesLast => bytes.vfBytesLast;
 
-  Tag get tag => Tag.lookupByCode(code);
-  int get vmMin => tag.vmMin;
-  int get vmMax => tag.vmMax;
-  int get vmColumns => tag.vmColumns;
-
-  bool get isRetired => tag.isRetired;
-
-  String get keyword => tag.keyword;
-  String get name => tag.name;
+  // **** Getters and Setters special to ByteElement
 
   static bool _isPrivateCreator(int code) {
     final pCode = code & 0x1FFFF;
@@ -114,7 +100,9 @@ abstract class ByteElement<V> {
     final vrIndex = isEvr ? bytes.vrIndex : kUNIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
-    return _bytesMakers[index](bytes);
+    return (index == kSQIndex)
+        ? makeSQFromBytes(ds, <ByteItem>[], bytes)
+        : _bytesMakers[index](bytes);
   }
 
   static final List<Function> _bytesMakers = <Function>[

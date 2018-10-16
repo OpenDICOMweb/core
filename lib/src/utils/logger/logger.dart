@@ -397,7 +397,7 @@ class Logger {
   // indent up
   static const int _up = -1;
 
-  static void show() => 'Loggers<${_loggers.length}> $_loggers';
+  static String show() => 'Loggers<${_loggers.length}> $_loggers';
 }
 
 //TODO: create a standard set of Errors and Exceptions in Common.

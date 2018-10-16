@@ -9,6 +9,7 @@
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/tag/e_type.dart';
 import 'package:core/src/error/tag_errors.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag/public/p_tag_code_map.dart';
 import 'package:core/src/tag/public/p_tag_keywords.dart';
 import 'package:core/src/tag/tag.dart';
@@ -61,10 +62,10 @@ class PTag extends Tag {
   static const String _unknownKeyword = 'UnknownPublicTag';
 
   PTag.unknown(this.code, this.vrIndex, [this.name = 'Unknown Public Tag'])
-      : this.keyword = _unknownKeyword,
-        this.vm = VM.k1_n,
-        this.isRetired = false,
-        this.type = EType.k3,
+      : keyword = _unknownKeyword,
+        vm = VM.k1_n,
+        isRetired = false,
+        type = EType.k3,
         super();
 
   @override
@@ -97,7 +98,12 @@ class PTag extends Tag {
   // ignore: prefer_constructors_over_static_methods
   static PTag lookupByCode(int code,
       [int vrIndex = kUNIndex, bool shouldThrow = false]) {
-    if (isNotPublicCode(code)) return badTagCode(code, 'Non-Public Tag Code');
+ // Urgent Jim: how to handle bad tag code
+ //  if (isNotPublicCode(code)) return badTagCode(code, 'Non-Public Tag Code');
+    if (isNotPublicCode(code)) {
+      log.warn('Invalid Public Tag Code: ${dcm(code)}');
+      return null;
+    }
     final tag = pTagCodeMap[code];
     if (tag != null) return tag;
 
@@ -1065,8 +1071,7 @@ class PTag extends Tag {
       = PTag._('StartTrim', 0x00082142, 'Start Trim', kISIndex, VM.k1, false);
   static const PTag kStopTrim
       //(0008,2143)
-      =
-      PTag._('StopTrim', 0x00082143, 'Stop Trim', kISIndex, VM.k1, false);
+      = PTag._('StopTrim', 0x00082143, 'Stop Trim', kISIndex, VM.k1, false);
   static const PTag kRecommendedDisplayFrameRate
       //(0008,2144)
       = PTag._('RecommendedDisplayFrameRate', 0x00082144,
@@ -2490,8 +2495,7 @@ class PTag extends Tag {
       = PTag._('CassetteID', 0x00181007, 'Cassette ID', kLOIndex, VM.k1, false);
   static const PTag kGantryID
       //(0018,1008)
-      =
-      PTag._('GantryID', 0x00181008, 'Gantry ID', kLOIndex, VM.k1, false);
+      = PTag._('GantryID', 0x00181008, 'Gantry ID', kLOIndex, VM.k1, false);
   static const PTag kSecondaryCaptureDeviceID
       //(0018,1010)
       = PTag._('SecondaryCaptureDeviceID', 0x00181010,
@@ -9189,8 +9193,7 @@ class PTag extends Tag {
           'Pixel Value Mapping Code Sequence', kSQIndex, VM.k1, false);
   static const PTag kLUTLabel
       //(0040,9210)
-      =
-      PTag._('LUTLabel', 0x00409210, 'LUT Label', kSHIndex, VM.k1, false);
+      = PTag._('LUTLabel', 0x00409210, 'LUT Label', kSHIndex, VM.k1, false);
   static const PTag kRealWorldValueLastValueMapped
       //(0040,9211)
       = PTag._('RealWorldValueLastValueMapped', 0x00409211,
@@ -9995,8 +9998,7 @@ class PTag extends Tag {
           VM.k1, false);
   static const PTag kAddPower
       //(0046,0104)
-      =
-      PTag._('AddPower', 0x00460104, 'Add Power', kFDIndex, VM.k1, false);
+      = PTag._('AddPower', 0x00460104, 'Add Power', kFDIndex, VM.k1, false);
   static const PTag kViewingDistance
       //(0046,0106)
       = PTag._('ViewingDistance', 0x00460106, 'Viewing Distance', kFDIndex,
@@ -17528,12 +17530,9 @@ class PixelDataTag extends PTag {
   const PixelDataTag._(String keyword, int vrIndex)
       : super._(keyword, 0x7FE00010, 'Pixel Data', vrIndex, VM.k1, false);
 
-  static const PTag kPixelDataOB =
-       PixelDataTag._('PixelDataOB', kOBIndex);
+  static const PTag kPixelDataOB = PixelDataTag._('PixelDataOB', kOBIndex);
 
-  static const PTag kPixelDataOW =
-       PixelDataTag._('PixelDataUN', kOWIndex);
+  static const PTag kPixelDataOW = PixelDataTag._('PixelDataUN', kOWIndex);
 
-  static const PTag kPixelDataUN =
-       PixelDataTag._('PixelDataOWL', kUNIndex);
+  static const PTag kPixelDataUN = PixelDataTag._('PixelDataOWL', kUNIndex);
 }

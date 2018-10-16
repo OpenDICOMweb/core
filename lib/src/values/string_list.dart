@@ -62,7 +62,7 @@ class StringList extends ListBase<String> {
   List<String> get values => _values;
 
   @override
-  int get hashCode => global.hasher.nList(values);
+  int get hashCode => global.hasher.nList(_values);
 
   @override
   int get length => _values.length;
@@ -74,28 +74,28 @@ class StringList extends ListBase<String> {
   // Performance: This is very inefficient
   int get lengthInBytes => asBytes.length;
 
-  Bytes get asBytes => Bytes.fromUtf8List(values);
+  Bytes get asBytes => Bytes.fromUtf8List(_values);
 
-  List<String> get uppercase => values.map((v) => v.toUpperCase());
+  List<String> get uppercase => _values.map((v) => v.toUpperCase());
 
-  List<String> get lowercase => values.map((v) => v.toUpperCase());
+  List<String> get lowercase => _values.map((v) => v.toUpperCase());
 
-  List<String> get trimmed => values.map((v) => v.trim());
+  List<String> get trimmed => _values.map((v) => v.trim());
 
-  List<String> get leftTrimmed => values.map((v) => v.trim());
+  List<String> get leftTrimmed => _values.map((v) => v.trim());
 
-  List<String> get rightTrimmed => values.map((v) => v.trim());
+  List<String> get rightTrimmed => _values.map((v) => v.trim());
 
   List<String> trim(Trim trim) {
     switch (trim) {
       case Trim.trailing:
-        return values.map((v) => v.trimRight());
+        return _values.map((v) => v.trimRight());
       case Trim.both:
-        return values.map((v) => v.trim());
+        return _values.map((v) => v.trim());
       case Trim.leading:
-        return values.map((v) => v.trimLeft());
+        return _values.map((v) => v.trimLeft());
       default:
-        return values;
+        return _values;
     }
   }
 
@@ -104,10 +104,10 @@ class StringList extends ListBase<String> {
   /// [String] has length greater than [maxLength], the resulting
   /// values is truncated to [maxLength].
   StringList append(String s, int maxLength) {
-    final length = values.length;
+    final length = _values.length;
     final result = List<String>(length);
     for (var i = 0; i < length; i++) {
-      final s0 = values[i] + s;
+      final s0 = _values[i] + s;
       result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
     }
     return StringList._(result);
@@ -118,10 +118,10 @@ class StringList extends ListBase<String> {
   /// [String] has length greater than [maxLength], the resulting
   /// values is truncated to [maxLength].
   StringList prepend(String s, int maxLength) {
-    final length = values.length;
+    final length = _values.length;
     final result = List<String>(length);
     for (var i = 0; i < length; i++) {
-      final s0 = s + values[i];
+      final s0 = s + _values[i];
       result[i] = (s0.length > maxLength) ? s0.substring(0, maxLength) : s0;
     }
     return StringList._(result);
@@ -132,11 +132,11 @@ class StringList extends ListBase<String> {
   /// [newLength] to [newLength]. If [newLength] is greater than
   /// [maxLength] _null_ is returned.
   StringList truncate(int newLength, int maxLength) {
-    final length = values.length;
+    final length = _values.length;
     if (newLength > maxLength) return null;
     final result = List<String>(length);
     for (var i = 0; i < length; i++) {
-      final s = values[i];
+      final s = _values[i];
       result[i] = (s.length > maxLength) ? s.substring(0, maxLength) : s;
     }
     return StringList._(result);
@@ -147,8 +147,8 @@ class StringList extends ListBase<String> {
   // TODO: Determine if this is the required functionality for ACR
   bool match(String regexp) {
     final regex = RegExp(regexp);
-    for (var i = 0; i < values.length; i++) {
-      final v = values[i];
+    for (var i = 0; i < _values.length; i++) {
+      final v = _values[i];
       if (!regex.hasMatch(v)) return false;
     }
     return true;
@@ -161,10 +161,10 @@ class StringList extends ListBase<String> {
   // TODO: Determine if this is the required functionality for ACR
   StringList replaceFirst(RegExp from, String to, int maxLength,
       [int startIndex = 0]) {
-    final length = values.length;
+    final length = _values.length;
     final result = List<String>(length);
     for (var i = 0; i < length; i++) {
-      final v = values[i].replaceFirst(from, to, startIndex);
+      final v = _values[i].replaceFirst(from, to, startIndex);
       result[i] = (v.length > maxLength) ? v.substring(0, length) : v;
     }
     return StringList._(result);
@@ -177,17 +177,17 @@ class StringList extends ListBase<String> {
   // TODO: Determine if this is the required functionality for ACR
   StringList replaceAll(RegExp from, String to, int maxLength,
       [int startIndex = 0]) {
-    final length = values.length;
+    final length = _values.length;
     final result = List<String>(length);
     for (var i = 0; i < length; i++) {
-      final v = values[i].replaceAll(from, to);
+      final v = _values[i].replaceAll(from, to);
       result[i] = (v.length > maxLength) ? v.substring(0, length) : v;
     }
     return StringList._(result);
   }
 
   Bytes encode([int separator = kBackslash]) =>
-      Bytes.fromUtf8List(values, separator);
+      Bytes.fromUtf8List(_values, separator);
 
   static final StringList kEmptyList = StringList._(kEmptyStringList);
 }
@@ -201,11 +201,11 @@ class AsciiList extends StringList {
 
   @override
   int get lengthInBytes {
-    final vLength = values.length;
+    final vLength = _values.length;
     if (vLength == 0) return 0;
-    if (vLength == 1) return values.length;
+    if (vLength == 1) return _values.length;
 
-    final len = values.fold<int>(0, (n, s) => n + s.length);
+    final len = _values.fold<int>(0, (n, s) => n + s.length);
     return len + vLength - 1;
   }
 
@@ -216,7 +216,7 @@ class AsciiList extends StringList {
     final last = length - 1;
     final bytes = Bytes(length);
     int j;
-    for (var s in values) {
+    for (var s in _values) {
       for (var i = 0; i < s.length; i++) {
         final c = s.codeUnitAt(i);
         if (c > kDel) invalidCharacterInString(s, i);

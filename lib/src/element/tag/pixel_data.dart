@@ -9,6 +9,8 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base.dart';
+import 'package:core/src/element/base/integer/integer.dart';
+import 'package:core/src/element/base/integer/pixel_data.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/global.dart';
@@ -24,16 +26,22 @@ bool _isEmpty(Iterable<int> vList) => vList == null || vList.isEmpty;
 
 /// PixelDataMixin class
 abstract class TagPixelData {
+  // [_values] MUST always be List<int> and [TypedData].
+  List<int> get _values;
+
+  List<int> get values => _values;
+
+  /// [v] is always [List<int>] and [TypedData].
+  set _values(List<int> v) {
+    assert(v is TypedData);
+    _values = v;
+  }
+
   int get code;
   int get length;
   int get sizeInBytes;
 
   int get vfLength => length * sizeInBytes;
-
-  List<int> get values => _values;
-
-  // [_values] MUST always be List<int> and [TypedData].
-  List<int> get _values;
 
   /// A [Uint8List] created from [frames].
   Uint8List get bulkdata;
@@ -41,9 +49,6 @@ abstract class TagPixelData {
   /// The [List<Frame>] of pixels.
   FrameList get frames => _frames;
   FrameList get _frames;
-
-  /// A [Uint32List] of offsets into [bulkdata].
-  Uint32List get offsets => frames.offsets;
 
   /// The [TransferSyntax] of _this_.
   TransferSyntax get ts;
@@ -68,9 +73,8 @@ abstract class TagPixelData {
 // _Note_: Pixel Data Tag Elements do not have [VFFragments].
 //         [VFFragments] must be converted before they are created.
 class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
-  // Note: _values should always be a Uint8List.
   @override
-  Uint8List _values;
+  List<int> _values;
   @override
   FrameList8Bit _frames;
   @override
@@ -146,9 +150,8 @@ class OBtagPixelData extends OBPixelData with TagElement<int>, TagPixelData {
 // _Note_: Pixel Data Tag Elements do not have [VFFragments].
 //         [VFFragments] must be converted before they are created.
 class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
-  // Note: _values should always be a Uint8List.
   @override
-  Uint8List _values;
+  List<int> _values;
   @override
   FrameList8Bit _frames;
   @override
@@ -223,9 +226,8 @@ class UNtagPixelData extends UNPixelData with TagElement<int>, TagPixelData {
 // _Note_: Pixel Data Tag Elements do not have [VFFragments].
 //         [VFFragments] must be converted before they are created.
 class OWtagPixelData extends OWPixelData with TagElement<int>, TagPixelData {
-  // Note: _values should always be a Uint16List.
   @override
-  Uint16List _values;
+  List<int> _values;
   @override
   FrameList16Bit _frames;
   @override

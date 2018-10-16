@@ -77,7 +77,8 @@ abstract class ListDataset {
 
   set length(int _) => unsupportedError();
 
-  int indexOf(Element e, [int start = 0]) => codes.indexOf(e.code, start);
+  int indexOf(Object e, [int start = 0]) =>
+      e is Element ? codes.indexOf(e.code, start) : null;
 
   Iterable<int> get keys => codes;
 

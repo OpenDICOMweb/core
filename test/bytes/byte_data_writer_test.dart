@@ -24,7 +24,7 @@ iterations: $iterations
   maxLength: ${wb.limit}
 ''');
 
-      expect(wb.index == 0, true);
+      expect(wb.writeIndex == 0, true);
       expect(wb.length == startSize, true);
       for (var i = 0; i <= iterations - 1; i++) {
         final v = i % 127;

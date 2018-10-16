@@ -13,7 +13,7 @@ part of odw.sdk.element.bytes;
 /// 16-bit signed integer Elements (SS)
 abstract class Int16Mixin {
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
   int get length => Int16.getLength(vfLength);
 
@@ -43,7 +43,7 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
 /// 32-bit signed integer Elements (SL)
 abstract class Int32Mixin {
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
   int get length => Int32.getLength(vfLength);
 
@@ -73,7 +73,7 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
 /// Unsigned 8-bit Integer Elements (OB, UN)
 abstract class Uint8Mixin {
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
   int get length => Uint8.getLength(vfLength);
 
@@ -127,7 +127,7 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
 /// 16-bit unsigned integer Elements (US, OW)
 abstract class Uint16Mixin {
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
   int get length => Uint16.getLength(vfLength);
 
@@ -179,7 +179,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
 /// 32-bit unsigned integer Elements (AT, UL, GL, OL)
 abstract class Uint32Mixin {
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
   int get length => Uint32.getLength(vfLength);
 

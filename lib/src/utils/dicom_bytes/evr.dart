@@ -6,7 +6,7 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.bytes;
+part of odw.sdk.utils.dicom_bytes;
 
 // ignore_for_file: public_member_api_docs
 
@@ -76,7 +76,7 @@ class EvrShortBytes extends EvrBytes {
     assert(vfLength.isEven);
     final e = EvrShortBytes(kHeaderLength + vfLength, endian)
       ..evrSetShortHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes._bd);
+      ..setByteData(kVFOffset, vfBytes.bd);
     return e;
   }
 
@@ -130,7 +130,7 @@ class EvrLongBytes extends EvrBytes {
     assert(vfLength.isEven);
     final e = EvrLongBytes(kHeaderLength + vfLength, endian)
       ..evrSetLongHeader(code, vfLength, vrCode)
-      ..setByteData(kVFOffset, vfBytes._bd);
+      ..setByteData(kVFOffset, vfBytes.bd);
     return e;
   }
 

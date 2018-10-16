@@ -74,7 +74,7 @@ String _getUid(RootDataset rds, int index, String suffix) {
   final e = rds.lookup(index);
   if (e == null) return '';
   if (e is UI) {
-    final List<String> vList = e.values;
+    final vList = e.values;
     final length = vList.length;
     return (length == 1) ? '${vList[0]}$suffix' : '';
   }

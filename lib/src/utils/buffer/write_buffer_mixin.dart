@@ -6,7 +6,10 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.buffer;
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:core/src/utils/bytes.dart';
 
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
@@ -15,17 +18,21 @@ part of odw.sdk.utils.buffer;
 abstract class WriteBufferMixin {
   // **** Interface
   /// The underlying [Bytes] for the buffer.
-  GrowableBytes get _buf;
+  GrowableBytes get buffer;
 
-  int get _rIndex;
-  set _rIndex(int n);
-  int get _wIndex;
-  set _wIndex(int n);
+  int get readIndex => rIndex;
+  int get rIndex;
+  set rIndex(int n) => rIndex = n;
 
-  int get _length;
-  int get _wRemaining;
-  bool get _wIsEmpty;
-  bool get _wIsNotEmpty;
+  // *** wIndex
+
+  int get writeIndex => wIndex;
+  int get wIndex;
+  set wIndex(int n) {
+    if (wIndex <= rIndex || wIndex > buffer.length)
+      throw RangeError.range(wIndex, rIndex, buffer.length);
+    wIndex = n;
+  }
 
   int get limit;
 
@@ -35,113 +42,121 @@ abstract class WriteBufferMixin {
 
   // **** WriteBuffer specific Getters and Methods
 
-  // *** wIndex
-  int get wIndex => _wIndex;
-  set wIndex(int n) {
-    if (_wIndex <= _rIndex || _wIndex > _buf.length)
-      throw RangeError.range(_wIndex, _rIndex, _buf.length);
-    _wIndex = n;
+  int get length => buffer.length;
+
+  int get writeRemaining => buffer.length - wIndex;
+  int get remaining => writeRemaining;
+  int get writeRemainingMax => limit - wIndex;
+  bool get isWritable => remaining > 0;
+  bool get isEmpty => remaining <= 0;
+  bool get isNotEmpty => !isEmpty;
+  int get remainingMax => kDefaultLimit - wIndex;
+
+  bool get isReadable => wIndex > 0;
+  int get readRemaining => wIndex - rIndex;
+
+  bool hasRemaining(int n) {
+    assert(n >= 0);
+    return remaining >= 0;
   }
 
   /// Moves the [wIndex] forward/backward. Returns the new [wIndex].
   int wSkip(int n) {
-    final v = _wIndex + n;
-    if (v <= _rIndex || v >= _buf.length)
-      throw RangeError.range(v, 0, _buf.length);
-    return _wIndex = v;
+    final v = wIndex + n;
+    if (v <= rIndex || v >= buffer.length)
+      throw RangeError.range(v, 0, buffer.length);
+    return wIndex = v;
   }
-
-  bool _wHasRemaining(int n);
 
   void write(Bytes bList, [int offset = 0, int length]) {
     length ??= bList.length;
     ensureRemaining(length + 1);
-    for (var i = offset, j = _wIndex; i < length; i++, j++)
-      _buf.setUint8(j, bList[i]);
-    _wIndex += length;
+    for (var i = offset, j = wIndex; i < length; i++, j++)
+      buffer.setUint8(j, bList[i]);
+    wIndex += length;
   }
 
-  void setInt8(int n) => _buf.setInt8(_wIndex, n);
+  void setInt8(int n) => buffer.setInt8(wIndex, n);
 
   void writeInt8(int n) {
     assert(n >= -128 && n <= 127, 'Value out of range: $n');
-    _maybeGrow(1024);
-    _buf.setInt8(_wIndex, n);
-    _wIndex++;
+    maybeGrow(1024);
+    buffer.setInt8(wIndex, n);
+    wIndex++;
   }
 
-  void setInt16(int n) => _buf.setInt16(_wIndex, n);
+  void setInt16(int n) => buffer.setInt16(wIndex, n);
 
   /// Writes a 16-bit unsigned integer (Uint16) values to _this_.
   void writeInt16(int value) {
     assert(
         value >= -0x7FFF && value <= 0x7FFF - 1, 'Value out of range: $value');
-    _maybeGrow(2);
-    _buf.setInt16(_wIndex, value);
-    _wIndex += 2;
+    maybeGrow(2);
+    buffer.setInt16(wIndex, value);
+    wIndex += 2;
   }
 
-  void setInt32(int n) => _buf.setInt32(_wIndex, n);
+  void setInt32(int n) => buffer.setInt32(wIndex, n);
 
   /// Writes a 32-bit unsigned integer (Uint32) values to _this_.
   void writeInt32(int value) {
     assert(value >= -0x7FFFFFFF && value <= 0x7FFFFFFF - 1,
         'Value out if range: $value');
-    _maybeGrow(4);
-    _buf.setInt32(_wIndex, value);
-    _wIndex += 4;
+    maybeGrow(4);
+    buffer.setInt32(wIndex, value);
+    wIndex += 4;
   }
 
-  void setInt64(int n) => _buf.setInt64(_wIndex, n);
+  void setInt64(int n) => buffer.setInt64(wIndex, n);
 
   /// Writes a 64-bit unsigned integer (Uint32) values to _this_.
   void writeInt64(int value) {
     assert(value >= -0x7FFFFFFFFFFFFFFF && value <= 0x7FFFFFFFFFFFFFFF - 1,
         'Value out of range: $value');
-    _maybeGrow(8);
-    _buf.setInt64(_wIndex, value);
-    _wIndex += 8;
+    maybeGrow(8);
+    buffer.setInt64(wIndex, value);
+    wIndex += 8;
   }
 
-  void setUint8(int n) => _buf.setUint8(_wIndex, n);
+  void setUint8(int n) => buffer.setUint8(wIndex, n);
 
   /// Writes a byte (Uint8) values to _this_.
   void writeUint8(int value) {
     assert(value >= 0 && value <= 255, 'Value out of range: $value');
-    _maybeGrow(1);
-    _buf.setUint8(_wIndex, value);
-    _wIndex++;
+    maybeGrow(1);
+    buffer.setUint8(wIndex, value);
+    wIndex++;
   }
 
-  void setUint16(int n) => _buf.setUint16(_wIndex, n);
+  void setUint16(int n) => buffer.setUint16(wIndex, n);
 
   /// Writes a 16-bit unsigned integer (Uint16) values to _this_.
   void writeUint16(int value) {
     assert(value >= 0 && value <= 0xFFFF, 'Value out of range: $value');
-    _maybeGrow(2);
-    _buf.setUint16(_wIndex, value);
-    _wIndex += 2;
+    maybeGrow(2);
+    buffer.setUint16(wIndex, value);
+    wIndex += 2;
   }
 
-  void setUint32(int n) => _buf.setUint32(_wIndex, n);
+  void setUint32(int n) => buffer.setUint32(wIndex, n);
 
   /// Writes a 32-bit unsigned integer (Uint32) values to _this_.
   void writeUint32(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFF, 'Value out if range: $value');
-    _maybeGrow(4);
-    _buf.setUint32(_wIndex, value);
-    _wIndex += 4;
+    maybeGrow(4);
+    buffer.setUint32(wIndex, value);
+    wIndex += 4;
   }
 
-  void setUint64(int n) => _buf.setUint64(_wIndex, n);
+  void setUint64(int n) => buffer.setUint64(wIndex, n);
 
   /// Writes a 64-bit unsigned integer (Uint32) values to _this_.
   void writeUint64(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFFFFFFFFFF,
         'Value out of range: $value');
-    _maybeGrow(8);
-    _buf.setUint64(_wIndex, value);
-    _wIndex += 8;
+    maybeGrow(8);
+    buffer.setUint64(wIndex, value);
+    wIndex += 8;
   }
 
   // **** String writing methods
@@ -163,32 +178,32 @@ abstract class WriteBufferMixin {
 
   /// Writes [length] zeros to _this_.
   bool writeZeros(int length) {
-    _maybeGrow(length);
-    for (var i = 0, j = _wIndex; i < length; i++, j++) _buf[j] = 0;
-    _wIndex += length;
+    maybeGrow(length);
+    for (var i = 0, j = wIndex; i < length; i++, j++) buffer[j] = 0;
+    wIndex += length;
     return true;
   }
 
   // **** List writing methods
 
   void writeInt8List(Int8List list, [int offset = 0, int length]) {
-    _buf.setInt8List(_wIndex, list, offset, length);
-    _wIndex += list.length;
+    buffer.setInt8List(wIndex, list, offset, length);
+    wIndex += list.length;
   }
 
   void writeInt16List(Int16List list, [int offset = 0, int length]) {
-    _buf.setInt16List(_wIndex, list, offset, length);
-    _wIndex += list.length * 2;
+    buffer.setInt16List(wIndex, list, offset, length);
+    wIndex += list.length * 2;
   }
 
   void writeInt32List(Int32List list, [int offset = 0, int length]) {
-    _buf.setInt32List(_wIndex, list, offset, length);
-    _wIndex += list.length * 4;
+    buffer.setInt32List(wIndex, list, offset, length);
+    wIndex += list.length * 4;
   }
 
   void writeInt64List(Int64List list, [int offset = 0, int length]) {
-    _buf.setInt64List(_wIndex, list, offset, length);
-    _wIndex += list.length * 8;
+    buffer.setInt64List(wIndex, list, offset, length);
+    wIndex += list.length * 8;
   }
 
   void writeUint8List(Uint8List bList, [int offset = 0, int length]) {
@@ -200,82 +215,97 @@ abstract class WriteBufferMixin {
     final length = bd.lengthInBytes;
     if (length == 0) return;
     ensureRemaining(length);
-    _buf.setByteData(_wIndex, bd, offset, length);
-    _wIndex += length;
+    buffer.setByteData(wIndex, bd, offset, length);
+    wIndex += length;
   }
 
   void writeUint16List(Uint16List list, [int offset = 0, int length]) {
-    _buf.setUint16List(_wIndex, list, offset, length);
-    _wIndex += list.length * 2;
+    buffer.setUint16List(wIndex, list, offset, length);
+    wIndex += list.length * 2;
   }
 
   void writeUint32List(Uint32List list, [int offset = 0, int length]) {
-    _buf.setUint32List(_wIndex, list, offset, length);
-    _wIndex += list.length * 4;
+    buffer.setUint32List(wIndex, list, offset, length);
+    wIndex += list.length * 4;
   }
 
   void writeUint64List(Uint64List list, [int offset = 0, int length]) {
-    _buf.setUint64List(_wIndex, list, offset, length);
-    _wIndex += list.length * 8;
+    buffer.setUint64List(wIndex, list, offset, length);
+    wIndex += list.length * 8;
   }
 
   void writeFloat32List(Float32List list, [int offset = 0, int length]) {
-    _buf.setFloat32List(_wIndex, list, offset, length);
-    _wIndex += list.length * 4;
+    buffer.setFloat32List(wIndex, list, offset, length);
+    wIndex += list.length * 4;
   }
 
   void writeFloat64List(Float64List list, [int offset = 0, int length]) {
-    _buf.setFloat64List(_wIndex, list, offset, length);
-    _wIndex += list.length * 8;
+    buffer.setFloat64List(wIndex, list, offset, length);
+    wIndex += list.length * 8;
   }
 
   void writeAsciiList(List<String> list, [int offset = 0, int length]) =>
-      _wIndex += _buf.setAsciiList(_wIndex, list, offset, length);
+      wIndex += buffer.setAsciiList(wIndex, list, offset, length);
 
   void writeUtf8List(List<String> list, [int offset = 0, int length]) =>
-      _wIndex += _buf.setUtf8List(_wIndex, list, offset, length);
+      wIndex += buffer.setUtf8List(wIndex, list, offset, length);
 
   void writeStringList(List<String> list) => writeUtf8List(list);
 
-  /// Ensures that [_buf] has at least [remaining] writable bytes.
-  /// The [_buf] is grows if necessary, and copies existing bytes into
-  /// the new [_buf].
+  /// Ensures that [buffer] has at least [remaining] writable bytes.
+  /// The [buffer] is grows if necessary, and copies existing bytes into
+  /// the new [buffer].
   bool ensureRemaining(int remaining) => _ensureRemaining(remaining);
-  bool _ensureRemaining(int remaining) => _ensureCapacity(_wIndex + remaining);
+  bool _ensureRemaining(int remaining) => _ensureCapacity(wIndex + remaining);
 
-  /// Ensures that [_buf] is at least [capacity] long, and grows
+  /// Ensures that [buffer] is at least [capacity] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureCapacity(int capacity) => _ensureCapacity(capacity);
 
   bool _ensureCapacity(int capacity) {
-    if (capacity > _length) return _grow(capacity);
+    if (capacity > length) return _grow(capacity);
     return false;
   }
 
-  bool _grow([int capacity]) => _buf.grow(capacity);
+  bool _grow([int capacity]) => buffer.grow(capacity);
 
-  /// Grow the buf if the __wIndex is at, or beyond, the end of the current buf.
-  bool _maybeGrow([int size = 1]) {
-    if (_wIndex + size < _length) return false;
-    return _grow(_wIndex + size);
+  /// Grow the buf if the _wIndex is at, or beyond, the end of the current buf.
+  bool maybeGrow(int size) {
+    if (wIndex + size < length) return false;
+    return _grow(wIndex + size);
   }
 
   @override
-  String toString() => '$runtimeType($_length)[$_wIndex] maxLength: $limit';
+  String toString() => '$runtimeType($length)[$wIndex] maxLength: $limit';
 
-  void warn(Object msg) => print('** Warning(@$_wIndex): $msg');
+  void warn(Object msg) => print('** Warning(@$wIndex): $msg');
 
-  void error(Object msg) => throw Exception('**** Error(@$_wIndex): $msg');
+  void error(Object msg) => throw Exception('**** Error(@$wIndex): $msg');
   // Internal methods
 
-  static const int kDefaultLength = 4096;
+  ByteData get bd => isClosed ? null : buffer.asByteData();
+
+  ByteData close() {
+    final bd = buffer.asByteData(0, wIndex);
+    _isClosed = true;
+    return bd;
+  }
+
+  bool get isClosed => _isClosed;
+  bool _isClosed = false;
+
+  void get reset {
+    //  rIndex = 0;
+    wIndex = 0;
+    _isClosed = false;
+  }
 }
 
 abstract class LoggingWriteBufferMixin {
-  int get _wIndex;
+  int get wIndex;
 
   /// The current readIndex as a string.
-  String get _www => 'W@${_wIndex.toString().padLeft(5, '0')}';
+  String get _www => 'W@${wIndex.toString().padLeft(5, '0')}';
   String get www => _www;
 
   /// The beginning of reading something.

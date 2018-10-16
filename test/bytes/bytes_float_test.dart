@@ -31,7 +31,7 @@ void main() {
       log.debug('vList3: $vList3');
       expect(vList3, equals(vList2));
 
-      final bytes1 = Float32.toBytes(vList0);
+      final bytes1 = Float32Mixin.toBytes(vList0);
       final vList4 = bytes1.asFloat32List();
       expect(vList4, equals(vList3));
 

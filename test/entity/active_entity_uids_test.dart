@@ -64,7 +64,7 @@ void main() {
       }
 
       for (var i = 0; i < goodUids.length; i++) {
-        var s = goodUids[i].asString;
+        final s = goodUids[i].asString;
         final u = activeEntityUids.addIfAbsent(s);
         expect(u, equals(goodUids[i]));
       }

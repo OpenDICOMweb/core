@@ -21,23 +21,6 @@ part of odw.sdk.element.base.string;
 
 /// DICOM Age (AS) Value Representation
 abstract class AS extends StringAscii {
-  static const int kVRIndex = kASIndex;
-  static const int kVRCode = kASCode;
-  static const int kMinValueLength = 4;
-  static const int kMaxValueLength = 4;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
-  static const String kVRName = 'Age String';
-  static const String kVRKeyword = 'AS';
-
-  static const Type kType = AS;
-
-  static const Trim kTrim = Trim.none;
-
-  /// Special variable for overriding uppercase constraint.
-  static bool allowLowerCase = false;
-
   @override
   bool operator ==(Object other) => other is AS && value == other.value;
 
@@ -49,6 +32,8 @@ abstract class AS extends StringAscii {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -81,13 +66,19 @@ abstract class AS extends StringAscii {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  AS append(String s) => update(values.append(s, kMaxValueLength));
+  static const int kVRIndex = kASIndex;
+  static const int kVRCode = kASCode;
+  static const int kMinValueLength = 4;
+  static const int kMaxValueLength = 4;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRName = 'Age String';
+  static const String kVRKeyword = 'AS';
+  static const Type kType = AS;
+  static const Trim kTrim = Trim.none;
 
-  AS prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  AS truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  /// Special variable for overriding uppercase constraint.
+  static bool allowLowerCase = false;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -162,23 +153,7 @@ abstract class AS extends StringAscii {
 // **** Date/Time Elements
 
 /// An abstract class for date ([DA]) [Element]s.
-abstract class DA extends StringBase {
-  static const int kVRIndex = kDAIndex;
-  static const int kVRCode = kDACode;
-  static const int kMinValueLength = 8;
-  static const int kMaxValueLength = 8;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
-  static const String kVRKeyword = 'DA';
-  static const String kVRName = 'Date';
-
-  static const Type kType = DA;
-
-  static const Trim kTrim = Trim.none;
-
-  static bool allowLowerCase = false;
-
+abstract class DA extends StringAscii {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -187,6 +162,8 @@ abstract class DA extends StringBase {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
 
@@ -241,15 +218,19 @@ abstract class DA extends StringBase {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  DA append(String s) => update(values.append(s, kMaxValueLength));
-
-  DA prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  DA truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
   void clearDates() => _dates = null;
 
-  // **** Generalized static methods
+  static const int kVRIndex = kDAIndex;
+  static const int kVRCode = kDACode;
+  static const int kMinValueLength = 8;
+  static const int kMaxValueLength = 8;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRKeyword = 'DA';
+  static const String kVRName = 'Date';
+  static const Type kType = DA;
+  static const Trim kTrim = Trim.none;
+  static bool allowLowerCase = false;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [DA].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -320,22 +301,7 @@ abstract class DA extends StringBase {
 }
 
 /// An abstract class for time ([TM]) [Element]s.
-abstract class DT extends StringBase {
-  static const int kVRIndex = kDTIndex;
-  static const int kVRCode = kDTCode;
-  static const int kMinValueLength = 4;
-  static const int kMaxValueLength = 26;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
-  static const String kVRKeyword = 'DT';
-  static const String kVRName = 'Date Time';
-
-  static const Type kType = DT;
-
-  static const Trim kTrim = Trim.trailing;
-  static bool allowLowerCase = false;
-
+abstract class DT extends StringAscii {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -344,6 +310,8 @@ abstract class DT extends StringBase {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
 
@@ -369,15 +337,19 @@ abstract class DT extends StringBase {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  DT append(String s) => update(values.append(s, kMaxValueLength));
-
-  DT prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  DT truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
   void clearDcmDateTimes() => _dateTimes = null;
 
-  // **** Generalized static methods
+  static const int kVRIndex = kDTIndex;
+  static const int kVRCode = kDTCode;
+  static const int kMinValueLength = 4;
+  static const int kMaxValueLength = 26;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRKeyword = 'DT';
+  static const String kVRName = 'Date Time';
+  static const Type kType = DT;
+  static const Trim kTrim = Trim.trailing;
+  static bool allowLowerCase = false;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [DT].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -451,22 +423,7 @@ abstract class DT extends StringBase {
 /// [Time] [String]s have the following format: HHMMSS.ffffff.
 /// [See PS3.18, TM](http://dicom.nema.org/medical/dicom/current/output/
 /// html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
-abstract class TM extends StringBase {
-  static const int kVRIndex = kTMIndex;
-  static const int kVRCode = kTMCode;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMinValueLength = 2;
-  static const int kMaxValueLength = 13;
-
-  static const String kVRName = 'Time';
-  static const String kVRKeyword = 'TM';
-
-  static const Type kType = TM;
-
-  static const Trim kTrim = Trim.trailing;
-  static bool allowLowerCase = false;
-
+abstract class TM extends StringAscii {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -475,6 +432,8 @@ abstract class TM extends StringBase {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -501,15 +460,19 @@ abstract class TM extends StringBase {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  TM append(String s) => update(values.append(s, kMaxValueLength));
+ void clearTimes() => _times = null;
 
-  TM prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  TM truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  void clearTimes() => _times = null;
-
-  // **** Generalized static methods
+  static const int kVRIndex = kTMIndex;
+  static const int kVRCode = kTMCode;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMinValueLength = 2;
+  static const int kMaxValueLength = 13;
+  static const String kVRName = 'Time';
+  static const String kVRKeyword = 'TM';
+  static const Type kType = TM;
+  static const Trim kTrim = Trim.trailing;
+  static bool allowLowerCase = false;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [TM].
   /// If [doTestElementValidity] is _false_ then no checking is done.

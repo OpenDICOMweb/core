@@ -1,3 +1,4 @@
+// Copyright (c) 2016, Open DICOMweb Project. All rights reserved.
 //  Copyright (c) 2016, 2017, 2018,
 //  Poplar Hill Informatics and the American College of Radiology
 //  All rights reserved.
@@ -6,46 +7,51 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.buffer;
+import 'dart:typed_data';
+
+import 'package:core/src/utils/buffer.dart';
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
+import 'package:core/src/utils/dicom_buffer/dicom_write_buffer_mixin.dart';
 
 // ignore_for_file: non_constant_identifier_names
 // ignore_for_file: prefer_initializing_formals
 // ignore_for_file: public_member_api_docs
+// ignore_for_file: overridden_fields
 
-class WriteBuffer extends BytesBuffer with WriteBufferMixin {
+class DicomWriteBuffer extends WriteBuffer with DicomWriteBufferMixin {
   @override
-  final GrowableBytes buffer;
+  final DicomGrowableBytes buffer;
   @override
   final int rIndex;
   @override
   int wIndex;
 
-  WriteBuffer(
+  DicomWriteBuffer(
       [int length = kDefaultLength,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
       : rIndex = 0,
         wIndex = 0,
-        buffer = GrowableBytes(length, endian, limit);
+        buffer = DicomGrowableBytes(length, endian, limit);
 
-  WriteBuffer.fromBytes(this.buffer, this.rIndex, this.wIndex);
-
-  WriteBuffer.from(WriteBuffer wb,
+  DicomWriteBuffer.from(WriteBuffer wb,
       [int offset = 0,
       int length,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
       : rIndex = offset,
         wIndex = offset,
-        buffer = GrowableBytes.from(wb.buffer, offset, length, endian, limit);
+        buffer =
+            DicomGrowableBytes.from(wb.buffer, offset, length, endian, limit);
 
-  WriteBuffer.typedDataView(TypedData td,
+  DicomWriteBuffer.typedDataView(TypedData td,
       [int offset = 0,
       int lengthInBytes,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
       : rIndex = offset ?? 0,
         wIndex = lengthInBytes ?? td.lengthInBytes,
-        buffer = GrowableBytes.typedDataView(td, offset ?? 0,
+        buffer = DicomGrowableBytes.typedDataView(td, offset ?? 0,
             lengthInBytes ?? td.lengthInBytes, endian ?? Endian.host, limit);
 }

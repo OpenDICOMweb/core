@@ -21,5 +21,6 @@ abstract class ByteDataset {
 
   int keyToIndex(int key)  => key;
 
-	Tag getTag(int key) => Tag.lookupByCode(key);
+	Tag getTag(int key, [int vrIndex, Object creator]) =>
+  Tag.lookupByCode(key);
 }

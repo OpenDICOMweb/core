@@ -13,11 +13,12 @@ part of odw.sdk.element.bytes;
 /// 32-bit Float Elements (FL, OF)
 abstract class BytesFloat32Mixin {
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
-  int get length => Float32.getLength(vfLength);
+  int get length => Float32Mixin.getLength(vfLength);
 
-  List<double> get values => vfBytes.asFloat32List();
+  List<double> get values => _values;
+  Float32List get _values => vfBytes.asFloat32List();
 }
 
 class FLbytes extends FL with ByteElement<double>, BytesFloat32Mixin {
@@ -63,7 +64,7 @@ class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
 /// Long Float Elements (FD, OD)
 abstract class BytesFloat64Mixin {
   int get vfLength;
-  DicomBytes get vfBytes;
+  Bytes get vfBytes;
 
   int get length => Float64Mixin.getLength(vfLength);
 

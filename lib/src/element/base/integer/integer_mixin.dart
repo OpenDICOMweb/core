@@ -152,7 +152,7 @@ abstract class Int8 {
 abstract class Int16 {
   int get length;
   List<int> get values;
-  Integer update([Iterable<int> vList]);
+  Element<int> update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -276,7 +276,7 @@ abstract class Int16 {
 abstract class Int32 {
   int get length;
   List<int> get values;
-  Integer update([Iterable<int> vList]);
+  Element<int> update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -399,7 +399,7 @@ abstract class Int32 {
 abstract class Int64 {
   int get length;
   List<int> get values;
-  Integer update([Iterable<int> vList]);
+  Element<int>  update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -519,7 +519,7 @@ abstract class Int64 {
 abstract class Uint8 {
   int get length;
   List<int> get values;
-  Integer update([Iterable<int> vList]);
+  Element<int> update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -649,7 +649,7 @@ abstract class Uint8 {
 abstract class Uint16 {
   int get length;
   List<int> get values;
-  Integer update([Iterable<int> vList]);
+  Element<int> update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -791,7 +791,7 @@ abstract class Uint16 {
 abstract class Uint32 {
   int get length;
   List<int> get values;
-  Integer update([Iterable<int> vList]);
+  Element<int> update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -927,7 +927,7 @@ abstract class Uint32 {
 abstract class Uint64 {
   int get length;
   List<int> get values;
-  Integer update([Iterable<int> vList]);
+  Element<int> update([Iterable<int> vList]);
 
   int get sizeInBytes => kSizeInBytes;
   int get lengthInBytes => length * sizeInBytes;
@@ -936,11 +936,11 @@ abstract class Uint64 {
 
   Uint64List get typedData => fromList(values);
 
-  Integer get sha256 => update(Sha256.int64(values));
+  Element<int> get sha256 => update(Sha256.int64(values));
 
   /// Returns a [Uint64List.view] of [values].
-  Integer view([int start = 0, int length]) => update(
-      typedData.buffer.asUint64List(start, _toLength(length, values.length)));
+  Uint64List view([int start = 0, int length]) =>
+      typedData.buffer.asUint64List(start, _toLength(length, values.length));
 
   static const int kSizeInBytes = 8;
   static const int kSizeInBits = kSizeInBytes * 8;

@@ -56,11 +56,11 @@ class FLtag extends FL with TagElement<double>, TagFloatMixin {
   factory FLtag.bulkdata(Tag tag, Uri url) =>
       FLtag._(tag, FloatBulkdataRef(tag.code, url));
 
-
   factory FLtag._(Tag tag, Iterable<double> vList) {
     if (!FL.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? kEmptyFloat32List : Float32.fromList(vList);
-    return FLtag._x(tag, Float32.fromList(v));
+    final v =
+        (vList.isEmpty) ? kEmptyFloat32List : Float32Mixin.fromList(vList);
+    return FLtag._x(tag, Float32Mixin.fromList(v));
   }
 
   FLtag._x(this.tag, this._values)
@@ -71,7 +71,7 @@ class FLtag extends FL with TagElement<double>, TagFloatMixin {
   FLtag update([Iterable<double> vList = kEmptyDoubleList]) =>
       FLtag._(tag, vList);
 
- // ignore: prefer_constructors_over_static_methods
+  // ignore: prefer_constructors_over_static_methods
   static FLtag fromValues(Tag tag, Iterable<double> vList) =>
       FLtag._(tag, vList);
 
@@ -101,7 +101,8 @@ class OFtag extends OF with TagElement<double>, TagFloatMixin {
 
   factory OFtag._(Tag tag, Iterable<double> vList) {
     if (!OF.isValidArgs(tag, vList)) return badValues(vList, null, tag);
-    final v = (vList.isEmpty) ? kEmptyFloat32List : Float32.fromList(vList);
+    final v =
+        (vList.isEmpty) ? kEmptyFloat32List : Float32Mixin.fromList(vList);
     return OFtag._x(tag, v);
   }
 

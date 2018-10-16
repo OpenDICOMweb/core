@@ -301,7 +301,7 @@ void main() {
     });
 
     test('Float32Base to/FromBase64', () {
-      final s0 = Float32.toBase64(<double>[78678.11]);
+      final s0 = Float32Mixin.toBase64(<double>[78678.11]);
       final bytes0 = Bytes.fromBase64(s0);
       final e0 = OFtag.fromBytes(PTag.kVectorGridData, bytes0);
       expect(e0.hasValidValues, true);
@@ -559,7 +559,7 @@ void main() {
     test('Float32Base.fromList', () {
       for (var i = 0; i < 10; i++) {
         final vList = rng.float32List(1, 1);
-        expect(Float32.fromList(vList), vList);
+        expect(Float32Mixin.fromList(vList), vList);
       }
     });
 
@@ -568,11 +568,11 @@ void main() {
         final vList = rng.float32List(1, 1);
         final float = Float32List.fromList(vList);
         final bd = float.buffer.asUint8List();
-        expect(Float32.fromUint8List(bd), equals(vList));
+        expect(Float32Mixin.fromUint8List(bd), equals(vList));
       }
       final float0 = Float32List.fromList(<double>[]);
       final bd0 = float0.buffer.asUint8List();
-      expect(Float32.fromUint8List(bd0), equals(<double>[]));
+      expect(Float32Mixin.fromUint8List(bd0), equals(<double>[]));
     });
 
     test('Float32Base.toBytes', () {
@@ -581,7 +581,7 @@ void main() {
         final float32List0 = Float32List.fromList(vList);
         final uInt8List0 = float32List0.buffer.asUint8List();
         //final s0 = base64.encode(uInt8List0);
-        expect(Float32.toBytes(float32List0), equals(uInt8List0));
+        expect(Float32Mixin.toBytes(float32List0), equals(uInt8List0));
       }
     });
 
@@ -591,7 +591,7 @@ void main() {
         final float32List0 = Float32List.fromList(vList);
         final uInt8List0 = float32List0.buffer.asUint8List();
         final s0 = base64.encode(uInt8List0);
-        final e0 = Float32.fromBase64(s0);
+        final e0 = Float32Mixin.fromBase64(s0);
         log
           ..debug('  vList: $vList')
           ..debug('float32List0: $float32List0')
@@ -606,7 +606,7 @@ void main() {
         final vList0 = rng.float32List(0, i);
         final bList0 = vList0.buffer.asUint8List();
         final s0 = base64.encode(bList0);
-        final s1 = Float32.toBase64(vList0);
+        final s1 = Float32Mixin.toBase64(vList0);
         expect(s1, equals(s0));
       }
     });
@@ -619,14 +619,14 @@ void main() {
         // Encode
         final s0 = base64.encode(bList0);
         log.debug('OF.base64: "$base64"');
-        final s1 = Float32.toBase64(vList0);
+        final s1 = Float32Mixin.toBase64(vList0);
         log.debug('  OF.json: "$s1"');
         expect(s1, equals(s0));
 
         // Decode
-        final vList1 = Float32.fromBase64(s0);
+        final vList1 = Float32Mixin.fromBase64(s0);
         log.debug('FL.base64: $vList1');
-        final vList2 = Float32.fromBase64(s1);
+        final vList2 = Float32Mixin.fromBase64(s1);
         log.debug('  OF.json: $vList2');
         expect(vList1, equals(vList0));
         expect(vList2, equals(vList0));
@@ -639,11 +639,11 @@ void main() {
         final vList = rng.float32List(1, 1);
         final float = Float32List.fromList(vList);
         final bd = float.buffer.asUint8List();
-        expect(Float32.fromUint8List(bd), equals(vList));
+        expect(Float32Mixin.fromUint8List(bd), equals(vList));
       }
       final float0 = Float32List.fromList(<double>[]);
       final bd0 = float0.buffer.asUint8List();
-      expect(Float32.fromUint8List(bd0), equals(<double>[]));
+      expect(Float32Mixin.fromUint8List(bd0), equals(<double>[]));
     });
 
     test('Float32Base.fromByteData', () {
@@ -651,11 +651,11 @@ void main() {
         final vList = rng.float32List(1, 1);
         final float = Float32List.fromList(vList);
         final byteData0 = float.buffer.asByteData();
-        expect(Float32.fromByteData(byteData0), equals(vList));
+        expect(Float32Mixin.fromByteData(byteData0), equals(vList));
       }
       final float0 = Float32List.fromList(<double>[]);
       final bd0 = float0.buffer.asByteData();
-      expect(Float32.fromByteData(bd0), equals(<double>[]));
+      expect(Float32Mixin.fromByteData(bd0), equals(<double>[]));
     });
   });
 }

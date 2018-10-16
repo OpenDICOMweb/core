@@ -9,7 +9,7 @@
 import 'dart:typed_data';
 
 import 'package:core/src/element/base/integer/integer.dart';
-import 'package:core/src/element/base/integer/integer_mixin.dart';
+
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
@@ -20,17 +20,15 @@ import 'package:core/src/values/uid.dart';
 // ignore_for_file: public_member_api_docs
 
 /// PixelDataMixin class
-abstract class PixelData extends Integer {
-  @override
-  List<int> get values;
-
+abstract class PixelDataMixin {
   /// The FrameList for _this_.
   Iterable<Frame> get frames => _frames;
   set frames(Iterable<Frame> vList) => _frames = vList;
   FrameList _frames;
 
   /// The Basic Offset Table (See PS3.5) for _this_.
-  Uint32List get offsets;
+  /// A [Uint32List] of offsets into [bulkdata].
+  Uint32List get offsets => _frames.offsets;
 
   /// A [Uint8List] created from [frames].
   Uint8List get bulkdata => _frames.bulkdata;
@@ -43,9 +41,7 @@ abstract class PixelData extends Integer {
 
   // **** End Interface
 
-  @override
   bool get isLengthAlwaysValid => true;
-  @override
   bool get isUndefinedLengthAllowed => true;
 
   /// Synonym for [isCompressed]. Returns _true_ if [frames] are compressed.
@@ -55,10 +51,7 @@ abstract class PixelData extends Integer {
   bool get isEncapsulated => isCompressed;
 }
 
-abstract class OBPixelData extends PixelData with Uint8 {
-  // Note: _values should always be a Uint8List.
-  @override
-  List<int> get values;
+abstract class OBPixelData extends OB with PixelDataMixin {
   @override
   final Tag tag = PTag.kPixelDataOB;
 
@@ -93,7 +86,7 @@ abstract class OBPixelData extends PixelData with Uint8 {
   }
 }
 
-abstract class UNPixelData extends PixelData with Uint8 {
+abstract class UNPixelData extends UN with PixelDataMixin {
   @override
   Tag get tag => PTag.kPixelDataUN;
 
@@ -130,7 +123,7 @@ abstract class UNPixelData extends PixelData with Uint8 {
   }
 }
 
-abstract class OWPixelData extends PixelData with Uint16 {
+abstract class OWPixelData extends OW with PixelDataMixin {
   @override
   final Tag tag = PTag.kPixelDataOW;
   @override

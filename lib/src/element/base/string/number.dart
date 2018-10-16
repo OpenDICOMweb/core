@@ -20,20 +20,6 @@ part of odw.sdk.element.base.string;
 //       bool isEmptyStringAllowed = x;
 
 abstract class DS extends StringAscii {
-  static const int kVRIndex = kDSIndex;
-  static const int kVRCode = kDSCode;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 16;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
-  static const String kVRKeyword = 'DS';
-  static const String kVRName = 'Decimal String';
-
-  static const Type kType = DS;
-
-  static const Trim kTrim = Trim.both;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -42,6 +28,8 @@ abstract class DS extends StringAscii {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -92,12 +80,6 @@ abstract class DS extends StringAscii {
     return update(result.map((v) => '$v'));
   }
 
-  DS append(String s) => update(values.append(s, kMaxValueLength));
-
-  DS prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  DS truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
   /// Returns a new [DS] [Element] with a random list of [values] with
   /// the same [length] as _this_.
   DS get random {
@@ -131,7 +113,16 @@ abstract class DS extends StringAscii {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  // **** Generalized static methods
+  static const int kVRIndex = kDSIndex;
+  static const int kVRCode = kDSCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 16;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRKeyword = 'DS';
+  static const String kVRName = 'Decimal String';
+  static const Type kType = DS;
+  static const Trim kTrim = Trim.both;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [DS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -237,22 +228,6 @@ abstract class DS extends StringAscii {
 }
 
 abstract class IS extends StringAscii {
-  static const int kVRIndex = kISIndex;
-  static const int kVRCode = kISCode;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 12;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMinValue = -99999999999;
-  static const int kMaxValue = 999999999999;
-
-  static const String kVRKeyword = 'IS';
-  static const String kVRName = 'Integer String';
-
-  static const Type kType = TM;
-
-  static const Trim kTrim = Trim.both;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -261,6 +236,8 @@ abstract class IS extends StringAscii {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -312,12 +289,6 @@ abstract class IS extends StringAscii {
     return update(result.map((v) => '$v'));
   }
 
-  IS append(String s) => update(values.append(s, kMaxValueLength));
-
-  IS prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  IS truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
   @override
   IS get hash {
     var ints = integers;
@@ -353,7 +324,18 @@ abstract class IS extends StringAscii {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  // **** Generalized static methods
+  static const int kVRIndex = kISIndex;
+  static const int kVRCode = kISCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 12;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMinValue = -99999999999;
+  static const int kMaxValue = 999999999999;
+  static const String kVRKeyword = 'IS';
+  static const String kVRName = 'Integer String';
+  static const Type kType = TM;
+  static const Trim kTrim = Trim.both;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [IS].
   /// If [doTestElementValidity] is _false_ then no checking is done.

@@ -84,7 +84,7 @@ abstract class Float extends Element<double> {
 }
 
 /// FL
-abstract class FL extends Float with Float32 {
+abstract class FL extends Float with Float32Mixin {
   static const int kVRIndex = kFLIndex;
   static const int kVRCode = kFLCode;
   static const int kSizeInBytes = 4;
@@ -178,7 +178,7 @@ abstract class FL extends Float with Float32 {
   }
 }
 
-abstract class OF extends Float with Float32 {
+abstract class OF extends Float with Float32Mixin {
   static const int kVRIndex = kOFIndex;
   static const int kVRCode = kOFCode;
   static const int kSizeInBytes = 4;

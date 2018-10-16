@@ -14,17 +14,13 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:core/src/system.dart';
-import 'package:core/src/utils/bytes/primitives.dart';
+import 'package:core/src/utils/bytes/constants.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
 
 part 'package:core/src/utils/bytes/bytes_mixin.dart';
-part 'package:core/src/utils/bytes/dicom_bytes.dart';
-part 'package:core/src/utils/bytes/dicom_mixin.dart';
-part 'package:core/src/utils/bytes/evr.dart';
 part 'package:core/src/utils/bytes/growable.dart';
-part 'package:core/src/utils/bytes/ivr.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -54,23 +50,15 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
       : endian = endian ?? Endian.host,
         _bd = ByteData(length);
 
-  factory Bytes.view(Bytes bytes,
-          [int offset = 0, int length, Endian endian]) =>
-      Bytes._view(bytes, offset, length, endian);
-
-  Bytes._view(Bytes bytes, int offset, int end, Endian endian)
+  Bytes.view(Bytes bytes, [int offset = 0, int length, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = _bdView(bytes._bd, offset, end);
+        _bd = _bdView(bytes._bd, offset, length);
 
   /// Creates a new [Bytes] from [bytes] containing the specified region
   /// and [endian]ness. [endian] defaults to [Endian.host].
-  factory Bytes.from(Bytes bytes,
-          [int offset = 0, int length, Endian endian]) =>
-      Bytes._from(bytes, offset, length, endian);
-
-  Bytes._from(Bytes bytes, int offset, int end, Endian endian)
+  Bytes.from(Bytes bytes, [int offset = 0, int length, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = _copyByteData(bytes._bd, offset, end ?? bytes.length);
+        _bd = _copyByteData(bytes._bd, offset, length ?? bytes.length);
 
   /// Creates a new [Bytes] from [bd]. [endian] defaults to [Endian.host].
   Bytes.fromByteData(ByteData bd, [Endian endian])
@@ -79,12 +67,8 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
 
   /// Creates a new [Bytes] from a [TypedData] containing the specified
   /// region and [endian]ness.  [endian] defaults to [Endian.host].
-  factory Bytes.typedDataView(TypedData td,
-          [int offsetInBytes = 0, int lengthInBytes, Endian endian]) =>
-      Bytes._tdView(td, offsetInBytes, lengthInBytes, endian);
-
-  Bytes._tdView(
-      TypedData td, int offsetInBytes, int lengthInBytes, Endian endian)
+  Bytes.typedDataView(TypedData td,
+      [int offsetInBytes = 0, int lengthInBytes, Endian endian])
       : endian = endian ?? Endian.host,
         _bd = td.buffer.asByteData(td.offsetInBytes + offsetInBytes,
             lengthInBytes ?? td.lengthInBytes);
@@ -317,7 +301,7 @@ $i: $x | $y')
   @override
   int get hashCode {
     var hashCode = 0;
-    for (var i = 0; i < _bdLength; i++) hashCode += _getUint8(i) + i;
+    for (var i = 0; i < bdLength; i++) hashCode += _getUint8(i) + i;
     return hashCode;
   }
 

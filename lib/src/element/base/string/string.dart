@@ -47,21 +47,8 @@ part 'package:core/src/element/base/string/utf8.dart';
 /// The base [class] for [String] [Element]s with [values]
 /// that are [Iterable<String>].
 abstract class StringBase extends Element<String> {
-  static const int kVLFSize = 2;
-  static const int kSizeInBytes = 1;
-  static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-  static const int kMinValueLength = 1;
-  static const bool kIsLengthAlwaysValid = false;
-  static const bool kIsUndefinedLengthAllowed = false;
-  static const bool kIsAsciiRequired = true;
-
-  /// Default Trim values for Strings
-  static const Trim kTrim = Trim.trailing;
-
   @override
-  StringList get values;
+  List<String> get values;
 
   Trim get trim => kTrim;
 
@@ -69,16 +56,16 @@ abstract class StringBase extends Element<String> {
 
   @override
   int get vlfSize => kVLFSize;
-  @override
-  int get maxVFLength => kMaxVFLength;
+
+  int get maxValueLength;
   @override
   int get maxLength => kMaxLength;
+  @override
+  int get maxVFLength => kMaxVFLength;
   @override
   bool get isLengthAlwaysValid => false;
   @override
   bool get isUndefinedLengthAllowed => false;
-//  @override
-//  bool get hadULength => false;
 
   // **** Getters that MUST be supported by every Element Type.
 
@@ -107,7 +94,6 @@ abstract class StringBase extends Element<String> {
   /// The _canonical_ empty [values] values for Floating Point Elements.
   @override
   List<String> get emptyList => kEmptyList;
-  static const List<String> kEmptyList = <String>[];
 
   @override
   StringBase get noValues => update(kEmptyList);
@@ -118,8 +104,6 @@ abstract class StringBase extends Element<String> {
   int get padChar => kSpace;
 
   StringBase blank([int n = 1]) => update([spaces(n)]);
-
-  bool match(String regexp) => values.match(regexp);
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false});
@@ -184,6 +168,20 @@ abstract class StringBase extends Element<String> {
     }
     return true;
   }
+
+  static const int kVLFSize = 2;
+  static const int kSizeInBytes = 1;
+  static const int kSizeInBits = kSizeInBytes * 8;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMinValueLength = 1;
+  static const bool kIsLengthAlwaysValid = false;
+  static const bool kIsUndefinedLengthAllowed = false;
+  static const bool kIsAsciiRequired = true;
+  static const List<String> kEmptyList = <String>[];
+
+  /// Default Trim values for Strings
+  static const Trim kTrim = Trim.trailing;
 
   static bool isValidValueLength(
       String s, Issues issues, int minLength, int maxLength) {

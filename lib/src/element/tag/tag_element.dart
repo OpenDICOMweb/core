@@ -11,7 +11,7 @@ import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/values.dart';
 import 'package:core/src/vr.dart';
@@ -23,38 +23,37 @@ import 'package:core/src/vr.dart';
 /// This mixin defines the interface to DICOM Tags, where a Tag is
 /// a semantic identifier for an element.
 abstract class TagElement<V> {
+  V operator [](int index);
+
   /// The DICOM Element Definition. In the _ODW_ _SDK_ this is called a "_Tag_".
   Tag get tag;
-  List<V> get values;
-  set values(Iterable<V> vList);
+//  List<V> get values;
+
+  /// The length of values;
+  int get length;
+
+  List<V> get emptyList;
+
+  bool get hasValidValues;
 
   // **** End of Interface
 
-  int get index => tag.index;
+/*
+  /// Returns _true_ if _this_ and [other] are the same [ByteElement],
+  /// and equal byte for byte.
+  // Urgent fix:
+  @override
+  bool operator ==(Object other) =>
+      other is TagElement &&
+      tag == other.tag &&
+      length == other.length &&
+      values == other.values;
+
+  @override
+  int get hashCode => tag.hashCode;
+*/
 
   int get code => tag.code;
-
-  String get keyword => tag.keyword;
-  String get name => tag.name;
-
-  /// The index ([vrIndex]) of the Value Representation for this Element.
-  /// Since this depends on the [tag] lookkup, the [vrIndex] might be
-  /// [kUNIndex] for Private [Element]s.
-  int get vrIndex {
-    final vrIndex = tag.vrIndex;
-    if (isSpecialVRIndex(vrIndex)) {
-      log.debug('Using kUNIndex for $tag');
-      return kUNIndex;
-    }
-    return vrIndex;
-  }
-
-  int get vmMin => tag.vmMin;
-  int get vmMax => tag.vmMax;
-  int get vmColumns => tag.vmColumns;
-
-  EType get eType => tag.type;
-  int get eTypeIndex => tag.type.index;
 
 //  ETypePredicate get eTypePredicate => throw  UnimplementedError();
 

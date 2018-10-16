@@ -17,18 +17,19 @@ import 'package:core/src/element/base/utils.dart';
 import 'package:core/src/element/base/float/float.dart';
 import 'package:core/src/error/element_errors.dart';
 import 'package:core/src/utils/bytes/bytes.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
 import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: avoid_annotating_with_dynamic
 // ignore_for_file: public_member_api_docs
 
 /// A mixin class for 32-bit floating point [Element]s.
-abstract class Float32 {
-  Float32List get values;
-  Float update([Iterable<double> vList]);
+abstract class Float32Mixin {
+  List<double> get values;
+  Element<double> update([Iterable<double> vList]);
   // **** End of Interface ****
 
-  /// The number of bytes in a [Float32] element.
+  /// The number of bytes in a [Float32Mixin] element.
   int get sizeInBytes => kSizeInBytes;
 
   int get length => values.length;
@@ -40,13 +41,13 @@ abstract class Float32 {
   Float32List get typedData =>
       (values is Float32List) ? values : Float32List.fromList(values);
 
-  Float32List get emptyList => kEmptyFloat32List;
+  List<double> get emptyList => kEmptyFloat32List;
 
   /// Returns a [Float32List.view] of [values].
   Float view([int start = 0, int length]) => update(
       typedData.buffer.asFloat32List(start, _toLength(length, values.length)));
 
-  /// The number of bytes in a [Float32] element.
+  /// The number of bytes in a [Float32Mixin] element.
   static const int kSizeInBytes = 4;
 
   bool equal(DicomBytes a, DicomBytes b) {
@@ -158,8 +159,9 @@ abstract class Float32 {
 
 /// A mixin class for 64-bit floating point [Element]s.
 abstract class Float64Mixin {
-  Float64List get values;
-  Float update([Iterable<double> vList]);
+  List<double> get values;
+
+  Element<double> update([Iterable<double> vList]);
   // **** End of Interface ****
 
   /// The number of bytes in a [Float64Mixin] element.
@@ -174,7 +176,7 @@ abstract class Float64Mixin {
   Float64List get typedData =>
       (values is Float64List) ? values : Float64List.fromList(values);
 
-  Float64List get emptyList => kEmptyFloat64List;
+  List<double> get emptyList => kEmptyFloat64List;
 
   /// Returns a [Float64List.view] of [values].
   Float view([int start = 0, int length]) => update(

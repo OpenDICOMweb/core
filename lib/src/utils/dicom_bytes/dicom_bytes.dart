@@ -6,11 +6,25 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-part of odw.sdk.utils.bytes;
+library odw.sdk.utils.dicom_bytes;
+
+import 'dart:typed_data';
+
+import 'package:core/src/global.dart';
+import 'package:core/src/system.dart';
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/dicom.dart';
+import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/utils/string.dart';
+import 'package:core/src/vr.dart';
+import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
+
+part 'package:core/src/utils/dicom_bytes/evr.dart';
+part 'package:core/src/utils/dicom_bytes/ivr.dart';
 
 // ignore_for_file: public_member_api_docs
 
-abstract class DicomBytes extends Bytes with DicomMixin {
+abstract class DicomBytes extends Bytes with DicomBytesMixin {
   factory DicomBytes.view(Bytes bytes, int vrIndex,
           {bool isEvr, int offset = 0, int end, Endian endian}) =>
       (!isEvr)
@@ -19,24 +33,31 @@ abstract class DicomBytes extends Bytes with DicomMixin {
               ? EvrLongBytes.view(bytes, offset, end, endian)
               : EvrShortBytes.view(bytes, offset, end, endian);
 
-  DicomBytes._(int length, Endian endian) : super._(length, endian);
+  DicomBytes._(int length, Endian endian) : super(length, endian);
 
   DicomBytes.from(Bytes bytes, int start, int end, Endian endian)
-      : super._from(bytes, start, end, endian);
+      : super.from(bytes, start, end, endian);
 
   DicomBytes._view(Bytes bytes, [int offset = 0, int end, Endian endian])
-      : super._view(bytes, offset, end, endian);
+      : super.view(bytes, offset, end, endian);
 
-  @override
+  /// Creates a new [Bytes] from a [TypedData] containing the specified
+  /// region and [endian]ness.  [endian] defaults to [Endian.host].
+  DicomBytes.typedDataView(TypedData td,
+      [int offsetInBytes = 0, int lengthInBytes, Endian endian])
+      : super.typedDataView(td, offsetInBytes, lengthInBytes, endian);
+
+/* Urgent Jim: flush when working
   int _setUint8List(int start, Uint8List list,
       [int offset = 0, int length, int padChar]) {
-    var _length = super._setUint8List(start, list, offset, length);
+    var _length = super.setUint8List(start, list, offset, length);
     if (padChar != null && length.isOdd) {
-      _bd.setUint8(start + _length, padChar);
+      bd.setUint8(start + _length, padChar);
       _length++;
     }
     return length;
   }
+*/
 
   @override
   String toString() {
@@ -64,7 +85,9 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   /// then they are encoded as ASCII. The result is returns as [Bytes].
   static Bytes fromAsciiList(List<String> vList,
           [String separator = '\\', String padChar = ' ']) =>
-      vList.isEmpty ? kEmptyBytes : fromAscii(vList.join(separator), padChar);
+      vList.isEmpty
+          ? Bytes.kEmptyBytes
+          : fromAscii(vList.join(separator), padChar);
 
   /// Returns a [Bytes] containing UTF-8 code units.
   ///
@@ -72,11 +95,11 @@ abstract class DicomBytes extends Bytes with DicomMixin {
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as ASCII. The result is returns as [Bytes].
   static Bytes fromUtf8List(List<String> vList, [String separator = '\\']) =>
-      (vList.isEmpty) ? kEmptyBytes : fromUtf8(vList.join('\\'));
+      (vList.isEmpty) ? Bytes.kEmptyBytes : fromUtf8(vList.join('\\'));
 
   /// Returns a [Bytes] containing UTF-8 code units. See [fromUtf8List].
   static Bytes fromStringList(List<String> vList, [String separator = '\\']) =>
-      (vList.isEmpty) ? kEmptyBytes : fromUtf8(vList.join('\\'));
+      (vList.isEmpty) ? Bytes.kEmptyBytes : fromUtf8(vList.join('\\'));
 
   /// Returns a [ByteData] that is a copy of the specified region of _this_.
   static ByteData copyBDRegion(ByteData bd, int offset, int length) {
@@ -92,11 +115,11 @@ abstract class DicomBytes extends Bytes with DicomMixin {
 class DicomGrowableBytes extends GrowableBytes with DicomWriterMixin {
   /// Returns a new [Bytes] of [length].
   DicomGrowableBytes([int length, Endian endian, int limit = kDefaultLimit])
-      : super._(length, endian, limit);
+      : super(length, endian, limit);
 
   /// Returns a new [Bytes] of [length].
   DicomGrowableBytes._(int length, Endian endian, int limit)
-      : super._(length, endian, limit);
+      : super(length, endian, limit);
 
   factory DicomGrowableBytes.from(Bytes bytes,
           [int offset = 0,
@@ -107,19 +130,14 @@ class DicomGrowableBytes extends GrowableBytes with DicomWriterMixin {
 
   DicomGrowableBytes._from(Bytes bytes, int offset, int length, Endian endian,
       [int limit = kDefaultLimit])
-      : super._from(bytes, offset, length, endian, limit);
+      : super.from(bytes, offset, length, endian, limit);
 
-  factory DicomGrowableBytes.typedDataView(TypedData td,
+  DicomGrowableBytes.typedDataView(TypedData td,
           [int offset = 0,
           int lengthInBytes,
           Endian endian,
-          int limit = _k1GB]) =>
-      DicomGrowableBytes._tdView(
-          td, offset, lengthInBytes ?? td.lengthInBytes, endian, limit);
-
-  DicomGrowableBytes._tdView(
-      TypedData td, int offset, int lengthInBytes, Endian endian, int limit)
-      : super._tdView(td, offset, lengthInBytes, endian, limit);
+          int limit = k1GB])
+      : super.typedDataView(td, offset, lengthInBytes, endian, limit);
 }
 
 /// Checks the Value Field length.

@@ -9,6 +9,7 @@
 import 'package:core/src/element/base.dart';
 import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error.dart';
+import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -17,30 +18,54 @@ import 'package:core/src/vr.dart';
 
 // ignore_for_file: public_member_api_docs
 
-StringList setValues(Iterable<String> vList) {
-  if (vList == null) return StringList.kEmptyList;
-  return (vList is StringList) ? vList : StringList.from(vList);
+bool _isEmpty(Iterable<String> vList) => vList == null || vList.isEmpty;
+
+StringList _toValues(Iterable<String> vList) {
+  if (throwOnError && vList == null) return badValues(vList);
+  return _isEmpty(vList) ? StringList.kEmptyList : StringList.from(vList);
 }
 
-class AEtag extends AE with TagElement<String> {
+abstract class TagStringMixin {
+  /// Values will always have [Type] [StringList].
+  StringList get _values;
+
+  StringBase update([Iterable<String> vList]);
+
+  // **** End of Interface
+
+  set _values(StringList v) => _values = v;
+
+  /// Values will always have [Type] [StringList].
+  StringList get values => _values;
+
+  set values(Iterable<String> vList) => _values = _toValues(vList);
+
+  /// Replace the current [values] with [vList], and return the original
+  /// [values]. This method modifies the [Element].
+  StringList replace([Iterable<String> vList]) {
+    final old = _values;
+    _values = _toValues(vList);
+    return old;
+  }
+
+  bool match(String regexp) => _values.match(regexp);
+}
+
+class AEtag extends AE with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
+  @override
   StringList _values;
 
   /// Creates an [AEtag] Element.
   factory AEtag(Tag tag, [Iterable<String> vList]) {
-    final v = StringList.from(vList);
+    final v = _toValues(vList);
     return AE.isValidArgs(tag, v) ? AEtag._(tag, v) : badValues(v, null, tag);
   }
 
   AEtag._(this.tag, this._values) : assert(tag.vrIndex == kAEIndex);
 
-  @override
-  StringList get values => _values;
-
-  @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
-
+/*
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
   @override
@@ -49,8 +74,9 @@ class AEtag extends AE with TagElement<String> {
     values = vList;
     return old;
   }
+*/
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => _values.trim(trim);
 
   @override
   AEtag update([Iterable<String> vList]) => AEtag(tag, vList);
@@ -84,7 +110,7 @@ class CStag extends CS with TagElement<String> {
   }
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -131,7 +157,7 @@ class DStag extends DS with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -173,7 +199,7 @@ class IStag extends IS with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -216,7 +242,7 @@ class LOtag extends LO with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -259,7 +285,7 @@ class PCtag extends PC with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -324,7 +350,7 @@ class LTtag extends LT with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -367,7 +393,7 @@ class PNtag extends PN with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -410,7 +436,7 @@ class SHtag extends SH with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -453,7 +479,7 @@ class STtag extends ST with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -496,7 +522,7 @@ class UCtag extends UC with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -548,7 +574,7 @@ class UItag extends UI with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -597,7 +623,7 @@ class URtag extends UR with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -640,7 +666,7 @@ class UTtag extends UT with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -684,7 +710,7 @@ class AStag extends AS with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -729,7 +755,7 @@ class DAtag extends DA with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -775,7 +801,7 @@ class DTtag extends DT with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -822,7 +848,7 @@ class TMtag extends TM with TagElement<String> {
   StringList get values => _values;
 
   @override
-  set values(Iterable<String> vList) => _values = setValues(vList);
+  set values(Iterable<String> vList) => _values = _toValues(vList);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].

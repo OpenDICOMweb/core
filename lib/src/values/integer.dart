@@ -12,11 +12,6 @@ import 'package:core/src/utils/parser.dart';
 
 // ignore_for_file: public_member_api_docs
 
-const int k1KB = 1024;
-const int k1MB = k1KB * 1024;
-const int k1GB = k1MB * 1024;
-const int k1TB = k1GB * 1024;
-
 const int kMin64BitInt = 0x8000000000000000;
 const int kMax64BitInt = 0x7FFFFFFFFFFFFFFF;
 

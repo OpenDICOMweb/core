@@ -27,8 +27,6 @@ abstract class GrowableMixin {
   /// Ensures that [_bd] is at least [length] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureLength(int length) => _ensureLength(_bd, length);
-
-  static const int kMaximumLength = _k1GB;
 }
 
 class GrowableBytes extends Bytes with GrowableMixin {
@@ -45,28 +43,17 @@ class GrowableBytes extends Bytes with GrowableMixin {
   GrowableBytes._(int length, Endian endian, this.limit)
       : super._(length, endian);
 
-  factory GrowableBytes.from(Bytes bytes,
-          [int offset = 0,
-          int length,
-          Endian endian,
-          int limit = kDefaultLimit]) =>
-      GrowableBytes._from(bytes, offset, length, endian, limit);
+  GrowableBytes.from(Bytes bytes,
+      [int offset = 0, int length, Endian endian, this.limit = k1GB])
+      : super.from(bytes, offset, length, endian);
 
-  GrowableBytes._from(
-      Bytes bytes, int offset, int length, Endian endian, this.limit)
-      : super._from(bytes, offset, length, endian);
-
-  factory GrowableBytes.typedDataView(TypedData td,
+  GrowableBytes.typedDataView(TypedData td,
           [int offset = 0,
           int lengthInBytes,
           Endian endian,
-          int limit = _k1GB]) =>
-      GrowableBytes._tdView(
-          td, offset, lengthInBytes ?? td.lengthInBytes, endian, limit);
-
-  GrowableBytes._tdView(
-      TypedData td, int offset, int lengthInBytes, Endian endian, this.limit)
-      : super._tdView(td, offset, lengthInBytes, endian);
+          int limit])
+      : limit = limit ?? k1GB,
+        super.typedDataView(td, offset, lengthInBytes, endian);
 
   /// Creates a new buffer of length at least [minLength] in size, or if
   /// [minLength == null, at least double the length of the current buffer;
@@ -78,10 +65,9 @@ class GrowableBytes extends Bytes with GrowableMixin {
     _bd = _grow(old, minLength ??= old.lengthInBytes * 2);
     return _bd == old;
   }
-}
 
-const int _k1GB = 1024 * 1024 * 1024;
-const int kDefaultLimit = _k1GB;
+  static const int kMaximumLength = k1GB;
+}
 
 /// Ensures that [bd] is at least [minLength] long, and grows
 /// the buf if necessary, preserving existing data.

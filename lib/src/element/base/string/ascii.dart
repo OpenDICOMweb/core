@@ -23,12 +23,10 @@ part of odw.sdk.element.base.string;
 //       character. Thus, the minimum length of each string in a Value
 //       Field is 2.
 abstract class StringAscii extends StringBase {
-  static const int kVLFSize = 2;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const bool kIsLengthAlwaysValid = false;
-  static const bool kIsUndefinedLengthAllowed = false;
-  static const bool kIsAsciiRequired = true;
+  @override
+  StringList get values;
 
+  // **** End of Interface
   @override
   int get vlfSize => kVLFSize;
   @override
@@ -45,6 +43,21 @@ abstract class StringAscii extends StringBase {
   List<String> valuesFromBytes(Bytes bytes) =>
       bytes.getAsciiList(allowInvalid: global.allowInvalidAscii);
 
+  StringAscii append(String s) => update(values.append(s, maxValueLength));
+
+  StringAscii prepend(String s) => update(values.prepend(s, maxValueLength));
+
+  StringAscii truncate(int length) =>
+      update(values.truncate(length, maxValueLength));
+
+  bool match(String regexp) => values.match(regexp);
+
+  static const int kVLFSize = 2;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const bool kIsLengthAlwaysValid = false;
+  static const bool kIsUndefinedLengthAllowed = false;
+  static const bool kIsAsciiRequired = true;
+
   static List<String> fromValueField(List vf, int maxVFLength,
       {bool isAscii = true}) {
     if (vf == null) return kEmptyStringList;
@@ -58,20 +71,6 @@ abstract class StringAscii extends StringBase {
 
 /// A Application Entity Title ([AE]) Element
 abstract class AE extends StringAscii {
-  static const int kVRIndex = kAEIndex;
-  static const int kVRCode = kAECode;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 16;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
-  static const String kVRName = 'Application Entity';
-  static const String kVRKeyword = 'AE';
-
-  static const Trim kTrim = Trim.both;
-
-  static const Type kType = AE;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -81,6 +80,8 @@ abstract class AE extends StringAscii {
   @override
   String get vrName => kVRName;
   @override
+  int get maxValueLength => kMaxValueLength;
+  @override
   int get maxLength => kMaxLength;
   @override
   Trim get trim => kTrim;
@@ -89,13 +90,16 @@ abstract class AE extends StringAscii {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  AE append(String s) => update(values.append(s, kMaxValueLength));
-
-  AE prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  AE truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
-  // **** Generalized static methods
+  static const int kVRIndex = kAEIndex;
+  static const int kVRCode = kAECode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 16;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRName = 'Application Entity';
+  static const String kVRKeyword = 'AE';
+  static const Trim kTrim = Trim.both;
+  static const Type kType = AE;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [AE].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -165,20 +169,6 @@ abstract class AE extends StringAscii {
 
 /// A Code String ([CS]) Element
 abstract class CS extends StringAscii {
-  static const int kVRIndex = kCSIndex;
-  static const int kVRCode = kCSCode;
-  static const int kMinValueLength = 1;
-  static const int kMaxValueLength = 16;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
-  static const String kVRKeyword = 'CS';
-  static const String kVRName = 'Code String';
-
-  static const Type kType = CS;
-
-  static const Trim kTrim = Trim.both;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -188,23 +178,28 @@ abstract class CS extends StringAscii {
   @override
   String get vrName => kVRName;
   @override
+  int get maxValueLength => kMaxValueLength;
+  @override
   int get maxLength => kMaxLength;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  CS append(String s) => update(values.append(s, kMaxValueLength));
-
-  CS prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  CS truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
   // TODO: Valid? Needed? What is the difference with empty versus blank.
   /// Returns a new [CS] [Element] containing only spaces.
   CS spaces([int n = 1]) => update([''.padRight(n)]);
 
-  // **** Generalized static methods
+  static const int kVRIndex = kCSIndex;
+  static const int kVRCode = kCSCode;
+  static const int kMinValueLength = 1;
+  static const int kMaxValueLength = 16;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRKeyword = 'CS';
+  static const String kVRName = 'Code String';
+  static const Type kType = CS;
+  static const Trim kTrim = Trim.both;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [CS].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -278,21 +273,6 @@ abstract class CS extends StringAscii {
 }
 
 abstract class UI extends StringAscii {
-  static const int kVRIndex = kUIIndex;
-  static const int kVRCode = kUICode;
-  //Issue: is 16 the right number?
-  static const int kMinValueLength = 14;
-  static const int kMaxValueLength = 64;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
-
-  static const String kVRKeyword = 'UI';
-  static const String kVRName = 'Unique Identifier (UID)';
-
-  static const Type kType = UI;
-
-  static const Trim kTrim = Trim.none;
-
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -301,6 +281,8 @@ abstract class UI extends StringAscii {
   String get vrKeyword => kVRKeyword;
   @override
   String get vrName => kVRName;
+  @override
+  int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
   @override
@@ -324,12 +306,6 @@ abstract class UI extends StringAscii {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
-  UI append(String s) => update(values.append(s, kMaxValueLength));
-
-  UI prepend(String s) => update(values.prepend(s, kMaxValueLength));
-
-  UI truncate(int length) => update(values.truncate(length, kMaxValueLength));
-
   UI updateUid(Iterable<Uid> uidList) => update(toStringList(uidList));
 
   UI updateUidF(Iterable<Uid> f(Iterable<String> vList)) =>
@@ -347,7 +323,17 @@ abstract class UI extends StringAscii {
     return old;
   }
 
-  // **** Generalized static methods
+  static const int kVRIndex = kUIIndex;
+  static const int kVRCode = kUICode;
+  //Issue: is 16 the right number?
+  static const int kMinValueLength = 14;
+  static const int kMaxValueLength = 64;
+  static const int kMaxVFLength = k8BitMaxShortVF;
+  static const int kMaxLength = k8BitMaxShortVF ~/ (kMinValueLength + 1);
+  static const String kVRKeyword = 'UI';
+  static const String kVRName = 'Unique Identifier (UID)';
+  static const Type kType = UI;
+  static const Trim kTrim = Trim.none;
 
   /// Returns _true_ if both [tag] and [vList] are valid for [UI].
   /// If [doTestElementValidity] is _false_ then no checking is done.

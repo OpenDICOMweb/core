@@ -26,7 +26,7 @@ abstract class Integer extends Element<int> {
   int get sizeInBytes;
 
   @override
-  Integer update([Iterable<int> vList]);
+  Element<int> update([Iterable<int> vList]);
 
   // **** End of interface
 
@@ -46,12 +46,6 @@ abstract class Integer extends Element<int> {
 
   @override
   Integer get noValues => update(kEmptyList);
-
-/*
-  @override
-  ByteData get vfByteData => typedData.buffer
-      .asByteData(typedData.offsetInBytes, typedData.lengthInBytes);
-*/
 
   @override
   Bytes get vfBytes => Bytes.typedDataView(typedData);
