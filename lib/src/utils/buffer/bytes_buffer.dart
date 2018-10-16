@@ -6,79 +6,67 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
-library odw.sdk.utils.buffer;
-
 import 'dart:typed_data';
 
 import 'package:core/src/utils.dart';
-import 'package:core/src/utils/buffer/read_buffer_mixin.dart';
-import 'package:core/src/utils/buffer/write_buffer_mixin.dart';
 import 'package:core/src/utils/bytes.dart';
-
-part 'package:core/src/utils/buffer/read_buffer.dart';
-part 'package:core/src/utils/buffer/write_buffer.dart';
-
-// ignore_for_file: public_member_api_docs
 
 /// The base class for Buffer
 abstract class BytesBuffer {
-  // **** Interface
   /// The underlying [Bytes] for the buffer.
-  Bytes get buffer;
-//  int get _rIndex;
-//  set _rIndex(int n);
-//  int get _wIndex;
-//  set _wIndex(int n) => unsupportedError();
+  Bytes get bytes;
 
   // **** Internal Primitives
-  int get _offset => buffer.offset;
-  int get _start => buffer.offset;
-  int get _length => buffer.length;
+  int get _offset => bytes.offset;
+  int get _start => bytes.offset;
+  int get _length => bytes.length;
 
-  int get _end => _start + buffer.length;
+  int get _end => _start + bytes.length;
 
   // **** End Internal Primitives
 
+  /// The read index into the underlying bytes.
   int get readIndex;
+  /// The write index into the underlying bytes.
   int get writeIndex;
+  /// Returns _true_ if the _this_ is not readable.
   bool get isNotReadable => !isReadable;
+  /// Returns _true_ if the _this_ is not writable.
   bool get isNotWritable => !isWritable;
 
   // ****  External Getters
 
-
-
-
   /// The maximum [length] of _this_.
-  int get limit => buffer.limit;
+  int get limit => bytes.limit;
 
   /// The endianness of _this_.
-  Endian get endian => buffer.endian;
+  Endian get endian => bytes.endian;
 
   /// The offset of _this_ in the underlying [ByteBuffer].
   int get offset => _offset;
 
-  /// The offset of [buffer] in the underlying [ByteBuffer].
+  /// The offset of [bytes] in the underlying [ByteBuffer].
   int get start => _start;
 
-  /// The length of the [buffer].
+  /// The length of the [bytes].
   int get length => _length;
 
+  /// The index of the _end_ of _this_. _Note_: [end] is not a legal index.
   int get end => _start + _length;
 
-  /// The number of readable bytes in [buffer].
+  /// The number of readable bytes in [bytes].
   int get readRemaining;
 
   /// Returns _true_ if [readRemaining] >= 0.
   bool get isReadable;
 
-  /// The current number of writable bytes in [buffer].
+  /// The current number of writable bytes in [bytes].
   int get writeRemaining;
 
   /// Returns _true_ if [writeRemaining] >= 0.
   bool get isWritable;
 
-  /// The maximum number of writable bytes in [buffer].
+  /// The maximum number of writable bytes in [bytes].
   int get writeRemainingMax;
 
   /// Returns the number of writeable bytes left in _this_.
@@ -86,33 +74,44 @@ abstract class BytesBuffer {
 
   // ****  End of External Getters
 
+  /// Returns _true_ if _this_ has [n] readable bytes.
   bool rHasRemaining(int n) => (readIndex + n) <= writeIndex;
+
+  /// Returns _true_ if _this_ has [n] writable bytes.
   bool wHasRemaining(int n) => (writeIndex + n) <= _end;
 
-  /// Returns a _view_ of [buffer] containing the bytes from [start] inclusive
+  /// Returns a _view_ of [bytes] containing the bytes from [start] inclusive
   /// to [end] exclusive. If [end] is omitted, the [length] of _this_ is used.
   /// An error occurs if [start] is outside the range 0 .. [length],
   /// or if [end] is outside the range [start] .. [length].
   /// [length].
   Bytes sublist([int start = 0, int end]) =>
-      Bytes.from(buffer, start, (end ?? length) - start);
+      Bytes.from(bytes, start, (end ?? length) - start);
 
   /// Return a view of _this_ of [length], starting at [start]. If [length]
   /// is _null_ it defaults to [length].
   Bytes view([int start = 0, int length]) =>
-      buffer.asBytes(start, length ?? length);
+      bytes.asBytes(start, length ?? length);
 
-  ByteData asByteData([int offset, int length]) =>
-      buffer.asByteData(offset ?? readIndex, length ?? writeIndex);
+  /// Return a [ByteData] view of _this_ of [length], starting at [start].
+  /// If [length] is _null_ it defaults to [length].
+  ByteData asByteData([int start, int length]) =>
+      bytes.asByteData(start ?? readIndex, length ?? writeIndex);
 
-  Uint8List asUint8List([int offset, int length]) =>
-      buffer.asUint8List(offset ?? readIndex, length ?? writeIndex);
+  /// Return a [Uint8List] view of _this_ of [length], starting at [start].
+  /// If [length] is _null_ it defaults to [length].
+  Uint8List asUint8List([int start, int length]) =>
+      bytes.asUint8List(start ?? readIndex, length ?? writeIndex);
 
+  /// Prints a warning message when reading.
   void rWarn(Object msg) => print('** Warning: $msg @$readIndex');
 
+  /// Prints a Error message when reading.
   void rError(Object msg) => throw Exception('**** Error: $msg @$writeIndex');
 
+  /// Prints a warning message when writing.
   void wWarn(Object msg) => print('** Warning: $msg @$readIndex');
 
+  /// Prints a Error message when writing.
   void wError(Object msg) => throw Exception('**** Error: $msg @$writeIndex');
 }

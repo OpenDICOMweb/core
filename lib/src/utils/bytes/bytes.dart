@@ -97,9 +97,6 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
           {Endian endian = Endian.little, bool doAsync = false}) =>
       Bytes.fromFile(File(path), endian: endian, doAsync: doAsync);
 
-  /// The canonical empty (zero length) [Bytes] object.
-  static final Bytes kEmptyBytes = Bytes(0);
-
   /// Returns a [Bytes] containing the Base64 decoding of [s].
   factory Bytes.fromBase64(String s, {bool padToEvenLength = false}) {
     if (s.isEmpty) return kEmptyBytes;
@@ -161,15 +158,8 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
           ? Bytes.fromAsciiList(vList, maxLength, separator)
           : Bytes.fromUtf8List(vList, maxLength, separator);
 
-/*
-  static Bytes _fromList(List<String> vList, int maxLength, String separator,
-      Bytes encoder(String s)) {
-    if (vList == null) return nullValueError();
-    final s = stringListToString(vList, separator);
-    if (s == null || s.length > (maxLength ?? s.length)) return null;
-    return (s.isEmpty) ? kEmptyBytes : encoder(vList.join('\\'));
-  }
-*/
+  /// The canonical empty (zero length) [Bytes] object.
+  static final Bytes kEmptyBytes = Bytes(0);
 
   static String _listToString(
       List<String> vList, int maxLength, String separator) {

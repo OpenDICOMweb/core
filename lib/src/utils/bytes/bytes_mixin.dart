@@ -10,23 +10,9 @@ part of odw.sdk.utils.bytes;
 
 // ignore_for_file: public_member_api_docs
 
-class AlignmentError extends Error {
-  final ByteData bd;
-  final int offsetInBytes;
-  final int lengthInBytes;
-  final int sizeInBytes;
-
-  AlignmentError(
-      this.bd, this.offsetInBytes, this.lengthInBytes, this.sizeInBytes);
-}
-
-// ignore: prefer_void_to_null
-Null alignmentError(
-    ByteData bd, int offsetInBytes, int lengthInBytes, int sizeInBytes) {
-  if (throwOnError)
-    throw AlignmentError(bd, offsetInBytes, lengthInBytes, sizeInBytes);
-  return null;
-}
+// Move to global
+bool showByteValues = false;
+int truncateBytesLength = 16;
 
 /// [BytesMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
@@ -847,6 +833,20 @@ abstract class BytesMixin {
   }
 }
 
-// Move to global
-bool showByteValues = false;
-int truncateBytesLength = 16;
+class AlignmentError extends Error {
+  final ByteData bd;
+  final int offsetInBytes;
+  final int lengthInBytes;
+  final int sizeInBytes;
+
+  AlignmentError(
+      this.bd, this.offsetInBytes, this.lengthInBytes, this.sizeInBytes);
+}
+
+// ignore: prefer_void_to_null
+Null alignmentError(
+    ByteData bd, int offsetInBytes, int lengthInBytes, int sizeInBytes) {
+  if (throwOnError)
+    throw AlignmentError(bd, offsetInBytes, lengthInBytes, sizeInBytes);
+  return null;
+}

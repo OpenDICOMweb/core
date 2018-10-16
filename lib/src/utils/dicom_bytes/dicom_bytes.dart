@@ -22,11 +22,10 @@ import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
 part 'package:core/src/utils/dicom_bytes/evr_bytes.dart';
 part 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';
 
-// ignore_for_file: public_member_api_docs
-
 /// A abstract subclass of [Bytes] that supports Explicit Value
 /// Representations (EVR) and Implicit Value Representations (IVR).
 abstract class DicomBytes extends Bytes with DicomBytesMixin {
+  /// Creates a [DicomBytes] view of [bytes].
   factory DicomBytes.view(Bytes bytes, int vrIndex,
           {bool isEvr = true, int offset = 0, int end, Endian endian}) =>
       (!isEvr)
@@ -37,6 +36,7 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
 
   DicomBytes._(int length, Endian endian) : super(length, endian);
 
+  /// Creates a [DicomBytes] from a copy of [bytes].
   DicomBytes.from(Bytes bytes, int start, int end, Endian endian)
       : super.from(bytes, start, end, endian);
 
@@ -102,27 +102,30 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
   }
 }
 
-class DicomGrowableBytes extends GrowableBytes with DicomWriterMixin {
-  /// Returns a new [Bytes] of [length].
-  DicomGrowableBytes([int length, Endian endian, int limit = kDefaultLimit])
+/// A growable [DicomBytes].
+class GrowableDicomBytes extends GrowableBytes with DicomWriterMixin {
+  /// Creates a growable [DicomBytes].
+  GrowableDicomBytes([int length, Endian endian, int limit = kDefaultLimit])
       : super(length, endian, limit);
 
   /// Returns a new [Bytes] of [length].
-  DicomGrowableBytes._(int length, Endian endian, int limit)
+  GrowableDicomBytes._(int length, Endian endian, int limit)
       : super(length, endian, limit);
 
-  factory DicomGrowableBytes.from(Bytes bytes,
+  /// Creates a growable [DicomBytes] from [bytes].
+  factory GrowableDicomBytes.from(Bytes bytes,
           [int offset = 0,
           int length,
           Endian endian,
           int limit = kDefaultLimit]) =>
-      DicomGrowableBytes._from(bytes, offset, length, endian, limit);
+      GrowableDicomBytes._from(bytes, offset, length, endian, limit);
 
-  DicomGrowableBytes._from(Bytes bytes, int offset, int length, Endian endian,
+  GrowableDicomBytes._from(Bytes bytes, int offset, int length, Endian endian,
       [int limit = kDefaultLimit])
       : super.from(bytes, offset, length, endian, limit);
 
-  DicomGrowableBytes.typedDataView(TypedData td,
+  /// Creates a growable [DicomBytes] from a view of [td].
+  GrowableDicomBytes.typedDataView(TypedData td,
           [int offset = 0,
           int lengthInBytes,
           Endian endian,

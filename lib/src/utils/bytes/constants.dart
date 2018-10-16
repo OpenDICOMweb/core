@@ -8,6 +8,7 @@ import 'package:core/src/global.dart';
 
 // ignore_for_file: public_member_api_docs
 
+// Urgent: move to constants
 const int kMinLength = 16;
 
 const int kInt8Size = 1;
