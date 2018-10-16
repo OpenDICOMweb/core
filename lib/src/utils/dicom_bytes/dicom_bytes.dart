@@ -19,14 +19,16 @@ import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
 
-part 'package:core/src/utils/dicom_bytes/evr.dart';
-part 'package:core/src/utils/dicom_bytes/ivr.dart';
+part 'package:core/src/utils/dicom_bytes/evr_bytes.dart';
+part 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';
 
 // ignore_for_file: public_member_api_docs
 
+/// A abstract subclass of [Bytes] that supports Explicit Value
+/// Representations (EVR) and Implicit Value Representations (IVR).
 abstract class DicomBytes extends Bytes with DicomBytesMixin {
   factory DicomBytes.view(Bytes bytes, int vrIndex,
-          {bool isEvr, int offset = 0, int end, Endian endian}) =>
+          {bool isEvr = true, int offset = 0, int end, Endian endian}) =>
       (!isEvr)
           ? IvrBytes.view(bytes, offset, end, endian)
           : (vrIndex >= 0 && vrIndex <= kVREvrLongIndexMax)
@@ -46,18 +48,6 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
   DicomBytes.typedDataView(TypedData td,
       [int offsetInBytes = 0, int lengthInBytes, Endian endian])
       : super.typedDataView(td, offsetInBytes, lengthInBytes, endian);
-
-/* Urgent Jim: flush when working
-  int _setUint8List(int start, Uint8List list,
-      [int offset = 0, int length, int padChar]) {
-    var _length = super.setUint8List(start, list, offset, length);
-    if (padChar != null && length.isOdd) {
-      bd.setUint8(start + _length, padChar);
-      _length++;
-    }
-    return length;
-  }
-*/
 
   @override
   String toString() {

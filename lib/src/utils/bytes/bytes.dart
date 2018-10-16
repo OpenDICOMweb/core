@@ -20,7 +20,7 @@ import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
 
 part 'package:core/src/utils/bytes/bytes_mixin.dart';
-part 'package:core/src/utils/bytes/growable.dart';
+part 'package:core/src/utils/bytes/growable_bytes.dart';
 
 // ignore_for_file: public_member_api_docs
 

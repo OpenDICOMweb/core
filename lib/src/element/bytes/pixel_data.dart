@@ -15,6 +15,8 @@ abstract class BytePixelData {
   VFFragmentList get fragments;
   int get vfLengthField;
 
+
+
   // **** End Interface
 
   /// A [Uint32List] of offsets into [fragments].

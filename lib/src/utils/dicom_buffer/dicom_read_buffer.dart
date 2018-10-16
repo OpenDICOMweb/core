@@ -8,63 +8,66 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/utils/buffer.dart';
-import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
+import 'package:core/src/utils/bytes.dart';
+import 'package:core/src/utils/dicom_bytes.dart';
 import 'package:core/src/utils/buffer/read_buffer_mixin.dart';
-import 'package:core/src/utils/dicom_buffer/dicom_read_buffer_mixin.dart';
+import 'package:core/src/vr.dart';
 
 // ignore_for_file: public_member_api_docs
 
+/// A [BytesBuffer] for reading [DicomBytes] from [Bytes].
+/// EVR and IVR are taken care of by the underlying [Bytes].
 class DicomReadBuffer extends ReadBufferBase
-    with ReadBufferMixin, DicomReadBufferMixin {
+    with ReadBufferMixin {
+  /// The [Bytes] being read.
+  ///
+  /// _Note_: This MUST NOT be a [DicomBytes].
   @override
-  final DicomBytes buffer;
+  final Bytes buffer;
   @override
   int rIndex;
   @override
   int wIndex;
 
+  /// Constructor
   DicomReadBuffer(this.buffer, [int offset = 0, int length])
       : rIndex = offset ?? 0,
         wIndex = length ?? buffer.length;
 
-/*  DicomReadBuffer.from(DicomReadBuffer rb,
-      [int offset = 0, int length, Endian endian = Endian.little])
-      : buffer = rb.from(rb.buffer, offset, length, endian),
-        rIndex = offset ?? rb.buffer.offset,
-        wIndex = length ?? rb.buffer.length;
-  */
-/*
-  DicomReadBuffer.from(DicomBytes buffer,
-      [int offset = 0, int length, Endian endian = Endian.little])
-      : buffer = DicomBytes.from(rb.buffer, offset, length, endian),
-        rIndex = offset ?? rb.buffer.offset,
-        wIndex = length ?? rb.buffer.length;
-*/
+  /// Returns the DICOM Tag Code at [offset].
+  int getCode(int offset) =>
+      (buffer.getUint16(offset) << 16) + buffer.getUint16(offset + 2);
 
-/*  DicomReadBuffer.fromByteData(ByteData bd,
-      [int offset, int length, Endian endian = Endian.little])
-      : buffer = DicomBytes.typedDataView(bd, offset, length, endian),
-        rIndex = offset ?? bd.offsetInBytes,
-        wIndex = length ?? bd.lengthInBytes;
+  /// Reads the DICOM Tag Code at the current [rIndex]. It does not
+  /// move the [rIndex].
+  int peekCode() => getCode(rIndex);
 
-  DicomReadBuffer.fromList(List<int> list, [Endian endian])
-      : buffer = DicomBytes.fromList(list, endian ?? Endian.little),
-        rIndex = 0,
-        wIndex = list.length;
+  /// Reads the DICOM Tag Code at the current [rIndex], and advances
+  /// the [rIndex] by four bytes.
+  int readCode() {
+    assert(rIndex.isEven && hasRemaining(8), '@$rIndex : $remaining');
+    final code = peekCode();
+    rIndex += 4;
+    return code;
+  }
 
-  DicomReadBuffer.fromTypedData(TypedData td,
-      [int offset = 0, int length, Endian endian = Endian.little])
-      : buffer = DicomBytes.typedDataView(td, offset, length, endian),
-        rIndex = offset ?? td.offsetInBytes,
-        wIndex = length ?? td.lengthInBytes;
+  int readVRCode() => _readVRCode();
 
-  @override
-  Bytes get buffer => buffer;
-  DicomReadBuffer(DicomBytes buf, [int offset = 0, int length])
-      : super(buf, offset, length);
+  /// Read the VR .
+  int _readVRCode() {
+    assert(rIndex.isEven && hasRemaining(4), '@$rIndex : $remaining');
+    final vrCode = (buffer.getUint8(rIndex) << 8) + buffer.getUint8(rIndex + 1);
+    rIndex += 2;
+    return vrCode;
+  }
 
-  DicomReadBuffer.fromTypedData(TypedData td,
-      [int offset = 0, int length, Endian endian])
-      : super.fromTypedData(td, offset, length, endian);
- */
+  int readVRIndex() => vrIndexFromCode(_readVRCode());
+
+  /// Read a short Value Field Length.
+  int readShortVLF() {
+    assert(rIndex.isEven && hasRemaining(2), '@$rIndex : $remaining');
+    final vlf = buffer.getUint16(rIndex);
+    rIndex += 2;
+    return vlf;
+  }
 }
