@@ -7,47 +7,49 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+/*
 import 'package:core/src/utils/buffer.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/dicom_bytes.dart';
-import 'package:core/src/utils/buffer/read_buffer_mixin.dart';
 import 'package:core/src/vr.dart';
+*/
+
+part of odw.sdk.core.buffer;
 
 // ignore_for_file: public_member_api_docs
 
-/// A [BytesBuffer] for reading [DicomBytes] from [Bytes].
+/// A [BytesBuffer] for reading DicomBytes from [Bytes].
 /// EVR and IVR are taken care of by the underlying [Bytes].
-class DicomReadBuffer extends ReadBufferBase
-    with ReadBufferMixin {
+class DicomReadBuffer extends ReadBufferBase with ReadBufferMixin {
   /// The [Bytes] being read.
   ///
   /// _Note_: This MUST NOT be a [DicomBytes].
   @override
-  final Bytes bytes;
+  final Bytes _bytes;
   @override
-  int rIndex;
+  int _rIndex;
   @override
-  int wIndex;
+  int _wIndex;
 
   /// Constructor
-  DicomReadBuffer(this.bytes, [int offset = 0, int length])
-      : rIndex = offset ?? 0,
-        wIndex = length ?? bytes.length;
+  DicomReadBuffer(this._bytes, [int offset = 0, int length])
+      : _rIndex = offset ?? 0,
+        _wIndex = length ?? _bytes.length;
 
   /// Returns the DICOM Tag Code at [offset].
   int getCode(int offset) =>
-      (bytes.getUint16(offset) << 16) + bytes.getUint16(offset + 2);
+      (_bytes.getUint16(offset) << 16) + _bytes.getUint16(offset + 2);
 
-  /// Reads the DICOM Tag Code at the current [rIndex]. It does not
-  /// move the [rIndex].
-  int peekCode() => getCode(rIndex);
+  /// Reads the DICOM Tag Code at the current [_rIndex]. It does not
+  /// move the [_rIndex].
+  int peekCode() => getCode(_rIndex);
 
-  /// Reads the DICOM Tag Code at the current [rIndex], and advances
-  /// the [rIndex] by four bytes.
+  /// Reads the DICOM Tag Code at the current [_rIndex], and advances
+  /// the [_rIndex] by four _bytes.
   int readCode() {
-    assert(rIndex.isEven && hasRemaining(8), '@$rIndex : $remaining');
+    assert(_rIndex.isEven && hasRemaining(8), '@$_rIndex : $remaining');
     final code = peekCode();
-    rIndex += 4;
+    _rIndex += 4;
     return code;
   }
 
@@ -55,9 +57,10 @@ class DicomReadBuffer extends ReadBufferBase
 
   /// Read the VR .
   int _readVRCode() {
-    assert(rIndex.isEven && hasRemaining(4), '@$rIndex : $remaining');
-    final vrCode = (bytes.getUint8(rIndex) << 8) + bytes.getUint8(rIndex + 1);
-    rIndex += 2;
+    assert(_rIndex.isEven && hasRemaining(4), '@$_rIndex : $remaining');
+    final vrCode =
+        (_bytes.getUint8(_rIndex) << 8) + _bytes.getUint8(_rIndex + 1);
+    _rIndex += 2;
     return vrCode;
   }
 
@@ -65,9 +68,9 @@ class DicomReadBuffer extends ReadBufferBase
 
   /// Read a short Value Field Length.
   int readShortVLF() {
-    assert(rIndex.isEven && hasRemaining(2), '@$rIndex : $remaining');
-    final vlf = bytes.getUint16(rIndex);
-    rIndex += 2;
+    assert(_rIndex.isEven && hasRemaining(2), '@$_rIndex : $remaining');
+    final vlf = _bytes.getUint16(_rIndex);
+    _rIndex += 2;
     return vlf;
   }
 }

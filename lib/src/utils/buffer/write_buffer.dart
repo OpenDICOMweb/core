@@ -6,30 +6,34 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+/*
 import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes.dart';
 
 import 'bytes_buffer.dart';
 import 'write_buffer_mixin.dart';
+*/
+
+part of odw.sdk.core.buffer;
 
 /// A writable [ByteBuffer].
 class WriteBuffer extends BytesBuffer with WriteBufferMixin {
   @override
-  final GrowableBytes bytes;
+  final GrowableBytes _bytes;
   @override
-  final int rIndex;
+  final int _rIndex;
   @override
-  int wIndex;
+  int _wIndex;
 
   /// Creates an empty WriteBuffer.
   WriteBuffer(
       [int length = kDefaultLength,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
-      : rIndex = 0,
-        wIndex = 0,
-        bytes = GrowableBytes(length, endian, limit);
+      : _rIndex = 0,
+        _wIndex = 0,
+        _bytes = GrowableBytes(length, endian, limit);
 
   /// Creates a [WriteBuffer] from another [WriteBuffer].
   WriteBuffer.from(WriteBuffer wb,
@@ -37,12 +41,12 @@ class WriteBuffer extends BytesBuffer with WriteBufferMixin {
       int length,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
-      : rIndex = offset,
-        wIndex = offset,
-        bytes = GrowableBytes.from(wb.bytes, offset, length, endian, limit);
+      : _rIndex = offset,
+        _wIndex = offset,
+        _bytes = GrowableBytes.from(wb._bytes, offset, length, endian, limit);
 
   /// Creates a WriteBuffer from a [GrowableBytes].
-  WriteBuffer.fromBytes(this.bytes, this.rIndex, this.wIndex);
+  WriteBuffer.fromBytes(this._bytes, this._rIndex, this._wIndex);
 
   /// Creates a [WriteBuffer] that uses a [TypedData] view of [td].
   WriteBuffer.typedDataView(TypedData td,
@@ -50,8 +54,8 @@ class WriteBuffer extends BytesBuffer with WriteBufferMixin {
       int lengthInBytes,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
-      : rIndex = offset ?? 0,
-        wIndex = lengthInBytes ?? td.lengthInBytes,
-        bytes = GrowableBytes.typedDataView(td, offset ?? 0,
+      : _rIndex = offset ?? 0,
+        _wIndex = lengthInBytes ?? td.lengthInBytes,
+        _bytes = GrowableBytes.typedDataView(td, offset ?? 0,
             lengthInBytes ?? td.lengthInBytes, endian ?? Endian.host, limit);
 }

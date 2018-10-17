@@ -19,7 +19,7 @@ void main() {
       final wb = WriteBuffer(startSize);
       log.debug('''
 iterations: $iterations
-  index: ${wb.wIndex}
+  index: ${wb.writeIndex}
   length: ${wb.length}
   maxLength: ${wb.limit}
 ''');
@@ -30,8 +30,8 @@ iterations: $iterations
         final v = i % 127;
         wb.writeInt8(v);
       }
-      log.debug('wb: $wb}\n  length: ${wb.wIndex}');
-      expect(wb.wIndex == iterations, true);
+      log.debug('wb: $wb}\n  length: ${wb.writeIndex}');
+      expect(wb.writeIndex == iterations, true);
     });
   });
 }

@@ -126,12 +126,7 @@ abstract class DatasetMixin {
     return count;
   }
 
-  // **** Section Start: Default Operator and Getters
-  // **** These may be overridden in subclasses.
-
   // **** Section Start: Element related Getters and Methods
-
-  // Dataset<K> copy([Dataset<K> parent]);
 
   bool hasElementsInRange(int min, int max) {
     for (var e in elements) if (e.code >= min && e.code <= max) return true;
@@ -201,9 +196,6 @@ abstract class DatasetMixin {
     return result;
   }
 
-//  Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) =>
-//      elements.updateUid(index, uids);
-
   Element updateUid(int index, Iterable<Uid> uids, {bool required = false}) {
     assert(index != null && uids != null);
     final old = lookup(index, required: required);
@@ -231,37 +223,20 @@ abstract class DatasetMixin {
     return old.update(sList);
   }
 
-  Element updateUidStrings(int index, Iterable<String> uids,
-          {bool required = false}) =>
-      updateUidList(index, uids);
-
+  /// Update the [Element] with [index] to have a values that is [uids].
+  /// If the [Element] with index is an [SQ], recursively update all
+  /// [Element]s in the Sequence ([SQ]).
   List<Element> updateAllUids(int index, Iterable<Uid> uids) {
-    final v = updateUid(index, uids);
-    final result = <Element>[]..add(v);
-    for (var e in elements)
-      if (e is SQ) {
-        result.addAll(e.updateAllUids(index, uids));
-      } else {
-        result.add(e.update(e.values));
-      }
+    final result = <Element>[];
+    final e = lookup(index);
+    if (e == null) return result;
+    if (e is SQ) {
+      result.addAll(e.updateAllUids(index, uids));
+    } else {
+      result.add(e.update(e.values));
+    }
     return result;
   }
-
-//  List<Element> updateAllUids(int index, Iterable<Uid> uids) =>
-//      elements.updateAllUids(index, uids);
-
-/*
-  /// Replaces the _values_ of the [Element] with [index] with [vList].
-  /// Returns the original _values_.
-  Iterable<V> replace<V>(int index, Iterable<V> vList,
-      {bool required = false}) {
-    final e = elements.lookup(index, required: required);
-    if (e == null) return const <V>[];
-    final old = e.values;
-    e.values = vList;
-    return old;
-  }
-*/
 
   /// Replaces the [Element.values] at [index] with [vList].
   /// Returns the original [Element.values], or _null_ if no
@@ -324,23 +299,12 @@ abstract class DatasetMixin {
     return true;
   }
 
-/*
-  Iterable<String> replaceUid(int index, Iterable<Uid> uids,
-          {bool required = false}) =>
-      elements.replaceUid(index, uids);
-*/
-
   List<Uid> replaceUids(int index, Iterable<Uid> uids,
       {bool required = false}) {
     final old = lookup(index);
     if (old == null) return required ? elementNotPresentError(index) : null;
     return (old is UI) ? old.replaceUid(uids) : badUidElement(old);
   }
-
-/*
-  Iterable<Element> replaceAllUids(int index, Iterable<Uid> uids) =>
-      elements.replaceAllUids(index, uids);
-*/
 
   List<Element> replaceAllUids(int index, Iterable<Uid> uids) {
     final v = updateUid(index, uids);
@@ -363,13 +327,6 @@ abstract class DatasetMixin {
     store(index, newE);
     return oldE;
   }
-
-  /// Replaces all elements with [index] in _this_ and any [Item]s
-  /// descended from it, with a new element that is the same except
-  /// it has no values. Returns a list containing all [Element]s
-  /// that were replaced.
-//  Iterable<Element> noValuesAll(int index, {bool recursive = false}) =>
-//      elements.noValuesAll(index);
 
   /// Updates all [Element.values] with [index] in _this_ or in any
   /// Sequences (SQ) contained in _this_ with an empty list.

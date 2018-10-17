@@ -6,34 +6,40 @@
 //  Primary Author: Jim Philbin <jfphilbin@gmail.edu>
 //  See the AUTHORS file for other contributors.
 //
+/*
 import 'dart:typed_data';
 
 import 'package:core/src/utils/bytes.dart';
 
 import 'bytes_buffer.dart';
 import 'read_buffer_mixin.dart';
+*/
+
+part of odw.sdk.core.buffer;
 
 /// The base class for readable [BytesBuffer]s.
 abstract class ReadBufferBase extends BytesBuffer {
   /// The [Bytes] that _this_ reads from.
   @override
-  Bytes get bytes;
+  Bytes get _bytes;
   /// The current read index.
-  int get rIndex;
+  @override
+  int get _rIndex;
   /// The current write index.
-  int get wIndex;
+  @override
+  int get _wIndex;
 
   // **** ReadBuffer specific Getters and Methods
 
   /// Return a new Big Endian[ReadBuffer] containing the unread
   /// portion of _this_.
   ReadBuffer get asBigEndian =>
-      ReadBuffer.from(this, rIndex, wIndex, Endian.big);
+      ReadBuffer.from(this, _rIndex, _wIndex, Endian.big);
 
   /// Return a new Little Endian[ReadBuffer] containing the unread
   /// portion of _this_.
   ReadBuffer get asLittleEndian =>
-      ReadBuffer.from(this, rIndex, wIndex, Endian.little);
+      ReadBuffer.from(this, _rIndex, _wIndex, Endian.little);
 }
 
 /// A read only buffer.
@@ -41,51 +47,51 @@ abstract class ReadBufferBase extends BytesBuffer {
 ///
 class ReadBuffer extends ReadBufferBase with ReadBufferMixin {
   @override
-  final Bytes bytes;
+  final Bytes _bytes;
   @override
-  int rIndex;
+  int _rIndex;
   @override
-  int wIndex;
+  int _wIndex;
 
   /// Creates a [ReadBuffer] of [length] starting at [offset] in [bytes].
-  ReadBuffer(this.bytes, [int offset = 0, int length])
-      : rIndex = offset ?? 0,
-        wIndex = length ?? bytes.length;
+  ReadBuffer(this._bytes, [int offset = 0, int length])
+      : _rIndex = offset ?? 0,
+        _wIndex = length ?? _bytes.length;
 
   /// Creates a [ReadBuffer] from another [ReadBuffer].
   ReadBuffer.from(ReadBuffer rb,
       [int offset = 0, int length, Endian endian = Endian.little])
-      : bytes = Bytes.from(rb.bytes, offset, length, endian),
-        rIndex = offset ?? rb.bytes.offset,
-        wIndex = length ?? rb.bytes.length;
+      : _bytes = Bytes.from(rb._bytes, offset, length, endian),
+        _rIndex = offset ?? rb._bytes.offset,
+        _wIndex = length ?? rb._bytes.length;
 
   /// Creates a [ReadBuffer] from a [ByteData].
   ReadBuffer.fromByteData(ByteData bd,
       [int offset, int length, Endian endian = Endian.little])
-      : bytes = Bytes.typedDataView(bd, offset, length, endian),
-        rIndex = offset ?? bd.offsetInBytes,
-        wIndex = length ?? bd.lengthInBytes;
+      : _bytes = Bytes.typedDataView(bd, offset, length, endian),
+        _rIndex = offset ?? bd.offsetInBytes,
+        _wIndex = length ?? bd.lengthInBytes;
 
   /// Creates a [ReadBuffer] from an [List<int>].
   ReadBuffer.fromList(List<int> list, [Endian endian])
-      : bytes = Bytes.fromList(list, endian ?? Endian.little),
-        rIndex = 0,
-        wIndex = list.length;
+      : _bytes = Bytes.fromList(list, endian ?? Endian.little),
+        _rIndex = 0,
+        _wIndex = list.length;
 
   /// Creates a [ReadBuffer] from a view of [td].
   ReadBuffer.typedDataView(TypedData td,
       [int offset = 0, int length, Endian endian = Endian.little])
-      : bytes = Bytes.typedDataView(td, offset, length, endian),
-        rIndex = offset ?? td.offsetInBytes,
-        wIndex = length ?? td.lengthInBytes;
+      : _bytes = Bytes.typedDataView(td, offset, length, endian),
+        _rIndex = offset ?? td.offsetInBytes,
+        _wIndex = length ?? td.lengthInBytes;
 }
 
 /// A mixin used for logging [ReadBuffer] methods.
 abstract class LoggingReadBufferMixin {
   /// The read index into the underlying [Bytes].
-  int get rIndex;
+  int get _rIndex;
 
-  String get _rrr => 'R@${rIndex.toString().padLeft(5, '0')}';
+  String get _rrr => 'R@${_rIndex.toString().padLeft(5, '0')}';
 
   /// The current readIndex as a string.
   String get rrr => _rrr;
@@ -112,9 +118,9 @@ class LoggingReadBuffer extends ReadBuffer with LoggingReadBufferMixin {
           bd.buffer.asByteData(offset, length), 0, length, endian);
 
   /// Creates a [LoggingReadBuffer] from a [Uint8List].
-  factory LoggingReadBuffer.fromUint8List(Uint8List bytes,
+  factory LoggingReadBuffer.fromUint8List(Uint8List _bytes,
       [int offset = 0, int length, Endian endian]) {
-    final bd = bytes.buffer.asByteData(offset, length);
+    final bd = _bytes.buffer.asByteData(offset, length);
     return LoggingReadBuffer._(bd, offset, length, endian);
   }
 

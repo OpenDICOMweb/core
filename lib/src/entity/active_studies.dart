@@ -236,34 +236,28 @@ ActiveStudies:
     final String pid = e.value;
     var patient = _subjectsByPid[pid];
     patient ??= Patient.fromRootDataset(rds);
-//    print('\n$patient');
 
     final studyUid = lookupEntityUid(rds, kStudyInstanceUID);
     var study = _studies[studyUid];
     study ??= Study.fromRootDataset(rds, patient);
     patient.addIfAbsent(study);
-//    print('\n$study');
 
     final seriesUid = lookupEntityUid(rds, kSeriesInstanceUID);
     var series = _series[seriesUid];
     series ??= Series.fromRootDataset(rds, study);
     study.addIfAbsent(series);
     _series[seriesUid] = series;
-//    print('$series');
 
     final instanceUid = lookupEntityUid(rds, kSOPInstanceUID);
     var instance = _instances[instanceUid];
     if (instance != null) return throw 'duplicate instance error: $instanceUid';
 
     instance ??= Instance.fromRootDataset(rds, series);
-//    print('$instance');
     final v = series.addIfAbsent(instance);
     _instances[instanceUid] = instance;
-//    print('${v == instance}');
     if (v != instance)
       return throw 'duplicate instance error: old: $v new:$instance';
     activeStudies.addStudyIfAbsent(study);
-//    print('count: ${study.instances.length}');
     return instance;
   }
 
@@ -272,7 +266,6 @@ ActiveStudies:
     final e = rds[code];
     if (e == null) return elementNotPresentError(PTag.lookupByCode(code));
     final String s = e.value;
-//    print('s: $s');
     return activeEntityUids.addIfAbsent(s);
   }
 }
