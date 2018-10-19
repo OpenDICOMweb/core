@@ -683,5 +683,21 @@ void main() {
       log.debug('deleteCodes3: $deleteCodes3');
       expect(deleteCodes3, equals(<Element>[]));
     });
+
+    test('getUidList', () {
+      final item = ListRootDataset.empty('', kEmptyBytes, 0);
+      final stringList0 = rsg.getUIList(1, 1);
+      final ui0 = UItag(PTag.kSpecimenUID, stringList0);
+      item[ui0.code] = ui0;
+
+      expect(item.getUidList(kSpecimenUID), equals(Uid.parseList(stringList0)));
+
+      global.throwOnError = false;
+      expect(item.getUidList(kFalseNegativesQuantity, required: true), isNull);
+
+      global.throwOnError = true;
+      expect(() => item.getUidList(kFalseNegativesQuantity, required: true),
+          throwsA(const TypeMatcher<ElementNotPresentError>()));
+    });
   });
 }

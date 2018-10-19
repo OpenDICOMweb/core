@@ -553,16 +553,12 @@ void main() {
       const int32Min = [kInt16Min];
       final sl0 = SLtag(PTag.kReferencePixelX0, int32Min);
       final sl1 = SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
-// Urgent Sharath: why is this here - I don't think it is used
-      final sl2 = SLtag(PTag.kDisplayedAreaTopLeftHandCorner, [1, 2]);
       final lt0 = LTtag(PTag.kDetectorDescription, ['foo']);
       final fl0 = FLtag(PTag.kAbsoluteChannelDisplayScale, [123.45]);
 
       final rootDS0 = TagRootDataset.empty()
         ..add(sl0)
         ..add(sl1)
-// Urgent Sharath: why is this here - I don't think it is used
-        ..add(sl2)
         ..add(lt0)
         ..add(fl0);
 
