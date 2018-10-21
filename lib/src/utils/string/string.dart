@@ -47,6 +47,20 @@ String removeNullPadding(String s) {
 /// The type of whitespace trimming.
 enum Trim { leading, trailing, both, none }
 
+String trim(String s, Trim trim) {
+  if (s == null || s.isEmpty || trim == Trim.none) return s;
+  switch (trim) {
+    case Trim.trailing:
+      return s.trimRight();
+    case Trim.both:
+      return s.trim();
+    case Trim.leading:
+      return s.trimLeft();
+    default:
+      throw 'Trim error; $trim';
+  }
+}
+
 /// Specifies whether padding is allowed on the left-end, right-end,
 /// or both-ends.
 enum End { left, right, both }

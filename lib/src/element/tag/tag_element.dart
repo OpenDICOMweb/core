@@ -115,13 +115,15 @@ abstract class TagElement<V> {
     UCtag.fromBytes, URtag.fromBytes, UTtag.fromBytes,
 
     // EVR Short
-    AEtag.fromBytes, AStag.fromBytes, ATtag.fromBytes,
-    CStag.fromBytes, DAtag.fromBytes, DStag.fromBytes,
-    DTtag.fromBytes, FDtag.fromBytes, FLtag.fromBytes,
+    AEtag.fromBytes, AStag.fromBytes, CStag.fromBytes,
+    DAtag.fromBytes, DStag.fromBytes, DTtag.fromBytes,
     IStag.fromBytes, LOtag.fromBytes, LTtag.fromBytes,
-    PNtag.fromBytes, SHtag.fromBytes, SLtag.fromBytes,
-    SStag.fromBytes, STtag.fromBytes, TMtag.fromBytes,
-    UItag.fromBytes, ULtag.fromBytes, UStag.fromBytes,
+    PNtag.fromBytes, SHtag.fromBytes, STtag.fromBytes,
+    TMtag.fromBytes, UItag.fromBytes,
+
+    ATtag.fromBytes, FDtag.fromBytes, FLtag.fromBytes,
+    SLtag.fromBytes, SStag.fromBytes, ULtag.fromBytes,
+    UStag.fromBytes,
   ];
 
   static Element makeMaybeUndefinedFromBytes(DicomBytes bytes,
@@ -207,16 +209,19 @@ abstract class TagElement<V> {
     //  __vrIndexError, __vrIndexError, __vrIndexError,
     // EVR Long
     ODtag.fromValues, OFtag.fromValues, OLtag.fromValues,
+
     UCtag.fromValues, URtag.fromValues, UTtag.fromValues,
 
     // EVR Short
-    AEtag.fromValues, AStag.fromValues, ATtag.fromValues,
-    CStag.fromValues, DAtag.fromValues, DStag.fromValues,
-    DTtag.fromValues, FDtag.fromValues, FLtag.fromValues,
+    AEtag.fromValues, AStag.fromValues, CStag.fromValues,
+    DAtag.fromValues, DStag.fromValues, DTtag.fromValues,
     IStag.fromValues, LOtag.fromValues, LTtag.fromValues,
-    PNtag.fromValues, SHtag.fromValues, SLtag.fromValues,
-    SStag.fromValues, STtag.fromValues, TMtag.fromValues,
-    UItag.fromValues, ULtag.fromValues, UStag.fromValues,
+    PNtag.fromValues, SHtag.fromValues, STtag.fromValues,
+    TMtag.fromValues, UItag.fromValues,
+
+    ATtag.fromValues, FDtag.fromValues, FLtag.fromValues,
+    SLtag.fromValues, SStag.fromValues, ULtag.fromValues,
+    UStag.fromValues,
   ];
 
   /// Creates an [SQtag] [Element].

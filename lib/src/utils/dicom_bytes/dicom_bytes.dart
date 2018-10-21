@@ -30,7 +30,7 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
           {bool isEvr = true, int offset = 0, int end, Endian endian}) =>
       (!isEvr)
           ? IvrBytes.view(bytes, offset, end, endian)
-          : (vrIndex >= 0 && vrIndex <= kVREvrLongIndexMax)
+          : (isEvrLongVRIndex(vrIndex))
               ? EvrLongBytes.view(bytes, offset, end, endian)
               : EvrShortBytes.view(bytes, offset, end, endian);
 

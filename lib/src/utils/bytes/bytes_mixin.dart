@@ -414,7 +414,10 @@ abstract class BytesMixin {
     final s = ascii.decode(v, allowInvalid: allowInvalid);
     final last = s.length - 1;
     final c = s.codeUnitAt(last);
-    return (padChar != null && c == padChar) ? s.substring(0, last) : s;
+    // Urgent: kNull should never get here but it does. Fix
+    return (padChar != null && (c == padChar || c == kNull))
+        ? s.substring(0, last)
+        : s;
   }
 
   /// Returns a [List<String>]. This is done by first decoding
@@ -850,4 +853,3 @@ Null alignmentError(
     throw AlignmentError(bd, offsetInBytes, lengthInBytes, sizeInBytes);
   return null;
 }
-

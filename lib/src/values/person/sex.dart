@@ -60,7 +60,9 @@ class Sex {
 
   static Sex parse(String s) {
     if (s == null || s.isEmpty) return null;
-    switch (s) {
+    // TODO: figure out where this trimRight should happen.
+    final v = s.length != 1 ? s.trimRight() : s;
+    switch (v) {
       case 'M':
         return Sex.male;
       case 'F':
@@ -68,8 +70,9 @@ class Sex {
       case 'O':
         return Sex.other;
       default:
-        log.warn('Invalid Sex: "$s"');
-        if (throwOnError) throw 'Invalid Sex($s)';
+        final msg = 'Invalid Sex($v)';
+        log.warn(msg);
+        if (throwOnError) throw msg;
         return null;
     }
   }

@@ -112,16 +112,19 @@ abstract class ByteElement<V> {
 
     // EVR Long
     ODbytes.fromBytes, OFbytes.fromBytes, OLbytes.fromBytes,
+
     UCbytes.fromBytes, URbytes.fromBytes, UTbytes.fromBytes,
 
     // EVR Short
-    AEbytes.fromBytes, ASbytes.fromBytes, ATbytes.fromBytes,
-    CSbytes.fromBytes, DAbytes.fromBytes, DSbytes.fromBytes,
-    DTbytes.fromBytes, FDbytes.fromBytes, FLbytes.fromBytes,
+    AEbytes.fromBytes, ASbytes.fromBytes, CSbytes.fromBytes,
+    DAbytes.fromBytes, DSbytes.fromBytes, DTbytes.fromBytes,
     ISbytes.fromBytes, LObytes.fromBytes, LTbytes.fromBytes,
-    PNbytes.fromBytes, SHbytes.fromBytes, SLbytes.fromBytes,
-    SSbytes.fromBytes, STbytes.fromBytes, TMbytes.fromBytes,
-    UIbytes.fromBytes, ULbytes.fromBytes, USbytes.fromBytes
+    PNbytes.fromBytes, SHbytes.fromBytes, STbytes.fromBytes,
+    TMbytes.fromBytes, UIbytes.fromBytes,
+
+    ATbytes.fromBytes, FDbytes.fromBytes, FLbytes.fromBytes,
+    SLbytes.fromBytes, SSbytes.fromBytes, ULbytes.fromBytes,
+    USbytes.fromBytes
   ];
 
   static Element makeMaybeUndefinedFromBytes(DicomBytes bytes,
@@ -187,16 +190,19 @@ abstract class ByteElement<V> {
 
     // EVR Long
     OBbytes.fromValues, OFbytes.fromValues, OLbytes.fromValues,
+
     UCbytes.fromValues, URbytes.fromValues, UTbytes.fromValues,
 
     // EVR Short
-    AEbytes.fromValues, ASbytes.fromValues, ATbytes.fromValues,
-    CSbytes.fromValues, DAbytes.fromValues, DSbytes.fromValues,
-    DTbytes.fromValues, FDbytes.fromValues, FLbytes.fromValues,
+    AEbytes.fromValues, ASbytes.fromValues, CSbytes.fromValues,
+    DAbytes.fromValues, DSbytes.fromValues, DTbytes.fromValues,
     ISbytes.fromValues, LObytes.fromValues, LTbytes.fromValues,
-    PNbytes.fromValues, SHbytes.fromValues, SLbytes.fromValues,
-    SSbytes.fromValues, STbytes.fromValues, TMbytes.fromValues,
-    UIbytes.fromValues, ULbytes.fromValues, USbytes.fromValues,
+    PNbytes.fromValues, SHbytes.fromValues, STbytes.fromValues,
+    TMbytes.fromValues, UIbytes.fromValues,
+
+    ATbytes.fromValues, FDbytes.fromValues, FLbytes.fromValues,
+    SLbytes.fromValues, SSbytes.fromValues, ULbytes.fromValues,
+    USbytes.fromValues
   ];
 }
 
