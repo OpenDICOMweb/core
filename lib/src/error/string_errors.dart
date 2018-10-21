@@ -184,3 +184,7 @@ bool invalidStringList(String message, [Issues issues]) {
   badStringList(message, issues);
   return false;
 }
+
+/// General [Error] message for [String] [List]s. Returns _false_.
+Null badStringTrim(String message, [Issues issues]) =>
+    badStringList(message, issues);

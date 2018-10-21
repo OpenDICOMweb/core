@@ -106,9 +106,10 @@ abstract class ByteElement<V> {
   }
 
   static final List<Function> _bytesMakers = <Function>[
+    UNbytes.fromBytes,
     SQbytes.fromBytes, // stop reformat
     // Maybe Undefined Lengths
-    OBbytes.fromBytes, OWbytes.fromBytes, UNbytes.fromBytes,
+    OBbytes.fromBytes, OWbytes.fromBytes,
 
     // EVR Long
     ODbytes.fromBytes, OFbytes.fromBytes, OLbytes.fromBytes,
@@ -167,10 +168,10 @@ abstract class ByteElement<V> {
 
   // Elements that may have undefined lengths.
   static final List<Function> _fromBytesPixelDataMakers = <Function>[
+    UNbytesPixelData.fromBytes,
     null,
     OBbytesPixelData.fromBytes,
-    OWbytesPixelData.fromBytes,
-    UNbytesPixelData.fromBytes
+    OWbytesPixelData.fromBytes
   ];
 
   /// Returns a new [Element] based on the arguments.
@@ -184,9 +185,10 @@ abstract class ByteElement<V> {
   }
 
   static final List<Function> _fromValueMakers = <Function>[
+    UNbytes.fromValues,
     SQbytes.fromValues, // stop reformat
     // Maybe Undefined Lengths
-    OBbytes.fromValues, OWbytes.fromValues, UNbytes.fromValues,
+    OBbytes.fromValues, OWbytes.fromValues,
 
     // EVR Long
     OBbytes.fromValues, OFbytes.fromValues, OLbytes.fromValues,

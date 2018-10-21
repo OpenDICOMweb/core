@@ -501,7 +501,7 @@ abstract class UN extends Integer with Uint8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: UN includes special VRs.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      vrIndex >= kSQIndex && vrIndex <= kUSSSIndex;
+      vrIndex >= kUNIndex && vrIndex <= kUSSSIndex;
 
   /// Returns _true_ if [vrCode] is valid for [UN].
   /// If [doTestElementValidity] is _false_ then no checking is done.

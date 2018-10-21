@@ -139,7 +139,7 @@ abstract class Tag {
 
   bool get hasShortVF => isEvrShortVRIndex(vrIndex);
 
-  bool get hasLongVF => isEvrLongVRIndex(vrIndex);
+  bool get hasLongVF => isEvrLongVR(vrIndex);
 
   /// Returns the length of a DICOM Element header field.
   /// Used for encoding DICOM media types

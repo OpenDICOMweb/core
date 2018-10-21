@@ -57,7 +57,7 @@ String trim(String s, Trim trim) {
     case Trim.leading:
       return s.trimLeft();
     default:
-      throw 'Trim error; $trim';
+      return badStringTrim('Trim error; $trim');
   }
 }
 

@@ -13,51 +13,54 @@ import 'package:test/test.dart';
 void main() {
   Server.initialize(name: 'vr_index_new_test', level: Level.info);
   test('VR Index', () {
+    expect(VR.kUN.index == kUNIndex, true);
+    expect(isMaybeUndefinedLengthVR(kUNIndex), true);
+    expect(isMaybeUndefinedLengthVR(VR.kUN.index), true);
+    expect(kUNIndex == 0, true);
+    expect(VR.kUN.index == 0, true);
+
     expect(VR.kSQ.index == kSQIndex, true);
-    expect( isMaybeUndefinedVRIndex(VR.kSQ.index), true);
-    expect( isMaybeUndefinedVRIndex(kSQIndex), true);
+    expect( isMaybeUndefinedLengthVR(VR.kSQ.index), true);
+    expect( isMaybeUndefinedLengthVR(kSQIndex), true);
 
     expect(VR.kOB.index == kOBIndex, true);
-    expect(isMaybeUndefinedVRIndex(kOBIndex), true);
-    expect(isMaybeUndefinedVRIndex(VR.kOB.index), true);
+    expect(isMaybeUndefinedLengthVR(kOBIndex), true);
+    expect(isMaybeUndefinedLengthVR(VR.kOB.index), true);
 
     expect(VR.kOW.index == kOWIndex, true);
 
-    expect(VR.kUN.index == kUNIndex, true);
-    expect(isMaybeUndefinedVRIndex(kUNIndex), true);
-    expect(isMaybeUndefinedVRIndex(VR.kUN.index), true);
+
 
 
 
     expect(VR.kOD.index == kODIndex, true);
     expect(VR.kOD.index == 4, true);
 
-    expect(VR.kSQ.index == kVRIndexMin, true);
-    expect(VR.kSQ.index == kSQIndex, true);
+
 
     expect(VR.kOD.index == kODIndex, true);
-    expect(isEvrLongVRIndex(kODIndex), true);
-    expect(isEvrLongVRIndex(VR.kOD.index), true);
+    expect(isEvrLongVR(kODIndex), true);
+    expect(isEvrLongVR(VR.kOD.index), true);
 
     expect(VR.kOF.index == kOFIndex, true);
-    expect(isEvrLongVRIndex(kODIndex), true);
-    expect(isEvrLongVRIndex(VR.kOD.index), true);
+    expect(isEvrLongVR(kODIndex), true);
+    expect(isEvrLongVR(VR.kOD.index), true);
 
     expect(VR.kOL.index == kOLIndex, true);
-    expect(isEvrLongVRIndex(kOLIndex), true);
-    expect(isEvrLongVRIndex(VR.kOL.index), true);
+    expect(isEvrLongVR(kOLIndex), true);
+    expect(isEvrLongVR(VR.kOL.index), true);
 
     expect(VR.kUC.index == kUCIndex, true);
-    expect(isEvrLongVRIndex(kUCIndex), true);
-    expect(isEvrLongVRIndex(VR.kUC.index), true);
+    expect(isEvrLongVR(kUCIndex), true);
+    expect(isEvrLongVR(VR.kUC.index), true);
 
     expect(VR.kUR.index == kURIndex, true);
-    expect(isEvrLongVRIndex(kURIndex), true);
-    expect(isEvrLongVRIndex(VR.kUR.index), true);
+    expect(isEvrLongVR(kURIndex), true);
+    expect(isEvrLongVR(VR.kUR.index), true);
 
     expect(VR.kUT.index == kUTIndex, true);
-    expect(isEvrLongVRIndex(kUTIndex), true);
-    expect(isEvrLongVRIndex(VR.kUT.index), true);
+    expect(isEvrLongVR(kUTIndex), true);
+    expect(isEvrLongVR(VR.kUT.index), true);
 
 
     expect(VR.kAE.index == kAEIndex, true);
@@ -128,7 +131,7 @@ void main() {
     expect(isEvrShortVRIndex(VR.kUS.index), true);
 
 
-    expect(VR.kUS.index == kVRNormalIndexMax, true);
+    expect(VR.kUS.index == kMaxNormalVRIndex, true);
 
 
     expect(VR.kOBOW.index == kOBOWIndex, true);

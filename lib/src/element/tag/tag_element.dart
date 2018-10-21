@@ -106,9 +106,10 @@ abstract class TagElement<V> {
   }
 
   static final List<Function> _bytesMakers = <Function>[
+    UNtag.fromBytes, // No reformat
     SQtag.fromBytes,
     // Maybe Undefined Lengths
-    OBtag.fromBytes, OWtag.fromBytes, UNtag.fromBytes, // No reformat
+    OBtag.fromBytes, OWtag.fromBytes,
 
     // EVR Long
     ODtag.fromBytes, OFtag.fromBytes, OLtag.fromBytes,
@@ -164,10 +165,10 @@ abstract class TagElement<V> {
 
   // Elements that may have undefined lengths.
   static final List<Function> _fromBytesPixelDataMakers = <Function>[
+    UNtagPixelData.fromBytes,
     null,
     OBtagPixelData.fromBytes,
-    OWtagPixelData.fromBytes,
-    UNtagPixelData.fromBytes
+    OWtagPixelData.fromBytes
   ];
 
   /// Returns a  [Element] based on the arguments.
@@ -184,10 +185,10 @@ abstract class TagElement<V> {
   static Element makeFromTag(Tag tag, Iterable values, int vrIndex,
           [Dataset ds, TransferSyntax ts]) =>
       (tag.code == kPixelData)
-          ? makePixelDataFromValues(tag, values, vrIndex, ds, ts)
+          ? _makePixelDataFromValues(tag, values, vrIndex, ds, ts)
           : _fromValuesMakers[vrIndex](tag, values);
 
-  static Element makePixelDataFromValues(Tag tag, Iterable values, int vrIndex,
+  static Element _makePixelDataFromValues(Tag tag, Iterable values, int vrIndex,
       [Dataset ds, TransferSyntax ts]) {
     final index = getPixelDataVR(tag.code, vrIndex, ds, ts);
     return _fromValuesPixelDataMakers[index](values, ts);
@@ -195,17 +196,19 @@ abstract class TagElement<V> {
 
   // Elements that may have undefined lengths.
   static final List<Function> _fromValuesPixelDataMakers = <Function>[
+    UNtagPixelData.fromValues,
     null,
     OBtagPixelData.fromValues,
-    OWtagPixelData.fromValues,
-    UNtagPixelData.fromValues
+    OWtagPixelData.fromValues
+
   ];
 
   static final _fromValuesMakers = <Function>[
+    UNtag.fromValues,
     // SQtag.make
     SQtag.fromValues,
     // Maybe Undefined Lengths
-    OBtag.fromValues, OWtag.fromValues, UNtag.fromValues, // No reformat
+    OBtag.fromValues, OWtag.fromValues,  // No reformat
     //  __vrIndexError, __vrIndexError, __vrIndexError,
     // EVR Long
     ODtag.fromValues, OFtag.fromValues, OLtag.fromValues,

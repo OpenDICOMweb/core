@@ -61,7 +61,7 @@ int getPixelDataVR(int code, int vrIndex, Dataset ds, TransferSyntax ts) {
 /// the _tag_.[vrIndex]. If [vrIndex] is not a _normal_ index,
 /// returns [kUNIndex]; otherwise, returns the _tag_.[vrIndex].
 int getValidVR(int vrIndex, int tagVRIndex) {
-  if (vrIndex < 0 || vrIndex > kVRNormalIndexMax) {
+  if (!isNormalVRIndex(vrIndex)) {
     log.warn('Invalid VR Index: $vrIndex');
     return kUNIndex;
   }
@@ -69,7 +69,7 @@ int getValidVR(int vrIndex, int tagVRIndex) {
     log.warn('vrIndex($vrIndex) != tagVRIndex($tagVRIndex)');
     return tagVRIndex;
   }
-  return (vrIndex == kUNIndex && tagVRIndex > kVRNormalIndexMax)
+  return (vrIndex == kUNIndex && tagVRIndex > kMaxNormalVRIndex)
       ? vrIndex
       : tagVRIndex;
 }
@@ -103,7 +103,7 @@ int __getCorrectVR(int vrIndex, Tag tag) {
 */
 
 int _getCorrectVR(int vrIndex, int tagVRIndex) =>
-    (tagVRIndex > kVRNormalIndexMax) ? vrIndex : tagVRIndex;
+    (tagVRIndex > kMaxNormalVRIndex) ? vrIndex : tagVRIndex;
 
 /*
 Tag _getCorrectTag(int code, int vrIndex) {

@@ -492,9 +492,10 @@ class VRSpecial extends VRInt {
 
 const List<VR> vrByIndex = <VR>[
   // Begin maybe undefined length
+  VR.kUN,
   VR.kSQ, // Sequence == 0,
   // Begin EVR Long
-  VR.kOB, VR.kOW, VR.kUN,
+  VR.kOB, VR.kOW,
   // End maybe Undefined Length
   // EVR Long
   VR.kOD, VR.kOF, VR.kOL,

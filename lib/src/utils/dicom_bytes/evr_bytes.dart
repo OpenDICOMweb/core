@@ -14,7 +14,7 @@ abstract class EvrBytes extends DicomBytes {
   factory EvrBytes.from(Bytes bytes, int start, int vrIndex, int end) {
     if (isEvrShortVRIndex(vrIndex)) {
       return EvrShortBytes.from(bytes, start, end);
-    } else if (isEvrLongVRIndex(vrIndex)) {
+    } else if (isEvrLongVR(vrIndex)) {
       return EvrLongBytes.from(bytes, start, end);
     } else {
       return badVRIndex(vrIndex, null, null, null);
@@ -30,7 +30,7 @@ abstract class EvrBytes extends DicomBytes {
       Bytes bytes, int start, int vrIndex, int end, Endian endian) {
     if (isEvrShortVRIndex(vrIndex)) {
       return EvrShortBytes.view(bytes, start, end, endian);
-    } else if (isEvrLongVRIndex(vrIndex)) {
+    } else if (isEvrLongVR(vrIndex)) {
       return EvrLongBytes.view(bytes, start, end, endian);
     } else {
       return badVRIndex(vrIndex, null, null, null);
