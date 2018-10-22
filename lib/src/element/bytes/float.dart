@@ -51,11 +51,12 @@ class OFbytes extends OF with ByteElement<double>, BytesFloat32Mixin {
   static OFbytes fromBytes(DicomBytes bytes) => OFbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OFbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
+  static OFbytes fromValues(int code, List<double> vList,
+      {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kOFCode, isEvr, OF.kSizeInBytes)
       ..writeFloat32VF(vList);
     assert(vList.length * OF.kSizeInBytes <= OF.kMaxVFLength);
-    return fromBytes(bytes);
+    return OFbytes.fromBytes(bytes);
   }
 }
 
@@ -81,11 +82,12 @@ class FDbytes extends FD with ByteElement<double>, BytesFloat64Mixin {
   static FDbytes fromBytes(DicomBytes bytes, [Dataset ds]) => FDbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static FDbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
+  static FDbytes fromValues(int code, List<double> vList,
+      {bool isEvr = true}) {
     final bytes = _makeShort(code, vList, kFDCode, isEvr, FD.kSizeInBytes)
       ..writeFloat64VF(vList);
     assert(vList.length * FD.kSizeInBytes <= FD.kMaxVFLength);
-    return fromBytes(bytes);
+    return FDbytes.fromBytes(bytes);
   }
 }
 
@@ -96,13 +98,14 @@ class ODbytes extends OD with ByteElement<double>, BytesFloat64Mixin {
   ODbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ODbytes fromBytes(DicomBytes bytes) => ODbytes(bytes);
+  static ODbytes fromBytes(DicomBytes bytes, [Dataset ds]) => ODbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ODbytes fromValues(int code, List<double> vList, {bool isEvr = true}) {
+  static ODbytes fromValues(int code, List<double> vList,
+      {bool isEvr = true}) {
     final bytes = _makeLong(code, vList, kODCode, isEvr, OD.kSizeInBytes)
       ..writeFloat64VF(vList);
     assert(vList.length * OD.kSizeInBytes <= OD.kMaxVFLength);
-    return fromBytes(bytes);
+    return ODbytes.fromBytes(bytes);
   }
 }
