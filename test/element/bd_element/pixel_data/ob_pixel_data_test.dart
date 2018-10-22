@@ -14,7 +14,7 @@ RSG rsg = RSG(seed: 1);
 RNG rng = RNG(1);
 
 void main() {
-  Server.initialize(name: 'bd_element/pixel_data', level: Level.debug);
+  Server.initialize(name: 'bd_element/pixel_data', level: Level.info);
 
   group('OBbytes', () {
     test('OBbytes from VM.k1', () {

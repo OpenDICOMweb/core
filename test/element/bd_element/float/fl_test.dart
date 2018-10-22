@@ -13,7 +13,7 @@ import 'package:core/server.dart' hide group;
 import 'package:test/test.dart';
 
 void main() {
-  Server.initialize(name: 'element/float32_test', level: Level.debug);
+  Server.initialize(name: 'element/float32_test', level: Level.info);
   final rng = RNG(1);
 
   const doubleList = <double>[
