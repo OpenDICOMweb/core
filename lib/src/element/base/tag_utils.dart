@@ -7,7 +7,6 @@
 //  See the AUTHORS file for other contributors.
 //
 import 'package:core/src/dataset/base.dart';
-import 'package:core/src/global.dart';
 import 'package:core/src/utils.dart';
 import 'package:core/src/tag.dart';
 import 'package:core/src/utils/primitives.dart';
@@ -61,17 +60,8 @@ int getPixelDataVR(int code, int vrIndex, Dataset ds, TransferSyntax ts) {
 /// the _tag_.[vrIndex]. If [vrIndex] is not a _normal_ index,
 /// returns [kUNIndex]; otherwise, returns the _tag_.[vrIndex].
 int getValidVR(int vrIndex, int tagVRIndex) {
-  if (!isNormalVRIndex(vrIndex)) {
-    log.warn('Invalid VR Index: $vrIndex');
-    return kUNIndex;
-  }
-  if (vrIndex != kUNIndex && vrIndex != tagVRIndex) {
-    log.warn('vrIndex($vrIndex) != tagVRIndex($tagVRIndex)');
-    return tagVRIndex;
-  }
-  return (vrIndex == kUNIndex && tagVRIndex > kMaxNormalVRIndex)
-      ? vrIndex
-      : tagVRIndex;
+  if (vrIndex < 0 || vrIndex > kMaxNormalVRIndex) return kUNIndex;
+  return (tagVRIndex > kMaxNormalVRIndex) ? vrIndex : tagVRIndex;
 }
 
 Tag _lookupPrivateDataTag(int code, int vrIndex, Dataset ds, int group) {

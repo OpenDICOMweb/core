@@ -257,3 +257,14 @@ bool _isValidYearRange(int minYear, int maxYear) {
   }
   return true;
 }
+
+// Provisional globals - remove or move into Global
+
+bool allowBlankDates = false;
+bool allowBlankTimes = false;
+bool allowBlankDateTimes = false;
+bool allowZeroAges = false;
+bool allowOversizedStrings = false;
+bool allowInvalidCharsInStrings = false;
+bool allowInvalidSex = false;
+bool allowInvalidVMs = false;

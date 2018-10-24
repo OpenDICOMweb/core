@@ -21,7 +21,7 @@ part of odw.sdk.core.buffer;
 abstract class ReadBufferBase extends BytesBuffer {
   /// The [Bytes] that _this_ reads from.
   @override
-  Bytes get _bytes;
+  Bytes get bytes;
   /// The current read index.
   @override
   int get _rIndex;
@@ -31,6 +31,8 @@ abstract class ReadBufferBase extends BytesBuffer {
 
   // **** ReadBuffer specific Getters and Methods
 
+  @override
+  set bytes(Bytes bytes) => unsupportedError();
   /// Return a new Big Endian[ReadBuffer] containing the unread
   /// portion of _this_.
   ReadBuffer get asBigEndian =>
@@ -47,41 +49,41 @@ abstract class ReadBufferBase extends BytesBuffer {
 ///
 class ReadBuffer extends ReadBufferBase with ReadBufferMixin {
   @override
-  final Bytes _bytes;
+  final Bytes bytes;
   @override
   int _rIndex;
   @override
   int _wIndex;
 
   /// Creates a [ReadBuffer] of [length] starting at [offset] in [bytes].
-  ReadBuffer(this._bytes, [int offset = 0, int length])
+  ReadBuffer(this.bytes, [int offset = 0, int length])
       : _rIndex = offset ?? 0,
-        _wIndex = length ?? _bytes.length;
+        _wIndex = length ?? bytes.length;
 
   /// Creates a [ReadBuffer] from another [ReadBuffer].
   ReadBuffer.from(ReadBuffer rb,
       [int offset = 0, int length, Endian endian = Endian.little])
-      : _bytes = Bytes.from(rb._bytes, offset, length, endian),
-        _rIndex = offset ?? rb._bytes.offset,
-        _wIndex = length ?? rb._bytes.length;
+      : bytes = Bytes.from(rb.bytes, offset, length, endian),
+        _rIndex = offset ?? rb.bytes.offset,
+        _wIndex = length ?? rb.bytes.length;
 
   /// Creates a [ReadBuffer] from a [ByteData].
   ReadBuffer.fromByteData(ByteData bd,
       [int offset, int length, Endian endian = Endian.little])
-      : _bytes = Bytes.typedDataView(bd, offset, length, endian),
+      : bytes = Bytes.typedDataView(bd, offset, length, endian),
         _rIndex = offset ?? bd.offsetInBytes,
         _wIndex = length ?? bd.lengthInBytes;
 
   /// Creates a [ReadBuffer] from an [List<int>].
   ReadBuffer.fromList(List<int> list, [Endian endian])
-      : _bytes = Bytes.fromList(list, endian ?? Endian.little),
+      : bytes = Bytes.fromList(list, endian ?? Endian.little),
         _rIndex = 0,
         _wIndex = list.length;
 
   /// Creates a [ReadBuffer] from a view of [td].
   ReadBuffer.typedDataView(TypedData td,
       [int offset = 0, int length, Endian endian = Endian.little])
-      : _bytes = Bytes.typedDataView(td, offset, length, endian),
+      : bytes = Bytes.typedDataView(td, offset, length, endian),
         _rIndex = offset ?? td.offsetInBytes,
         _wIndex = length ?? td.lengthInBytes;
 }

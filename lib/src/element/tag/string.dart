@@ -51,6 +51,8 @@ abstract class TagStringMixin {
   bool match(String regexp) => _values.match(regexp);
 }
 
+// Urgent Jim: we need to handle Specific Character Sets -
+// especially Latin-1 (ISO IR 100)
 class AEtag extends AE with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;

@@ -52,10 +52,12 @@ abstract class SQ extends Element<Item> {
   Dataset get parent;
   @override
   int get maxLength => kMaxLength;
+  // TODO: what is right value, maybe this should be in the interface.
   @override
-  int get vfLength => unimplementedError();
+  int get vfLength => -1;
+  // TODO: what is right value
   @override
-  int get lengthInBytes => unimplementedError();
+  int get lengthInBytes => -1;
 //  @override
 //  int get vfLengthField;
   @override

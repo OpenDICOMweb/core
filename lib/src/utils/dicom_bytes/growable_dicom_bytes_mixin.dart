@@ -18,6 +18,7 @@ import 'package:core/src/utils/primitives.dart';
 abstract class DicomBytesMixin {
   bool get isEvr;
   ByteData get bd;
+//  set bd(ByteData bd);
   int get vrCode;
   int get vrIndex;
   String get vrId;
@@ -28,6 +29,7 @@ abstract class DicomBytesMixin {
   int get vfLengthOffset;
   int get vfLengthField;
   int get length;
+
 
   int getUint16(int offset);
   int getUint8(int offset);
@@ -144,7 +146,7 @@ abstract class DicomBytesMixin {
     setUint16(2, code & 0xFFFF);
     setUint8(4, vrCode >> 8);
     setUint8(5, vrCode & 0xFF);
-    // The Uint16 field at offset 6 is already zero.
+    setUint16(6, 0);
     setUint32(8, vlf);
   }
 
@@ -154,7 +156,6 @@ abstract class DicomBytesMixin {
     setUint16(2, code & 0xFFFF);
     setUint32(4, vlf);
   }
-
 
   void writeInt8VF(List<int> vList) => setInt8List(vfOffset, vList);
   void writeInt16VF(List<int> vList) => setInt16List(vfOffset, vList);
@@ -202,3 +203,4 @@ abstract class DicomBytesMixin {
   static const int _kGroupOffset = 0;
   static const int _kEltOffset = 0;
 }
+

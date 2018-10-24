@@ -102,7 +102,9 @@ abstract class TagElement<V> {
     final vrIndex = bytes.vrIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
-    return _bytesMakers[index](tag, bytes.vfBytes);
+    return (index == kSQIndex)
+        ? makeSQFromBytes(ds, <ByteItem>[], bytes)
+        : _bytesMakers[index](tag, bytes.vfBytes);
   }
 
   static final List<Function> _bytesMakers = <Function>[

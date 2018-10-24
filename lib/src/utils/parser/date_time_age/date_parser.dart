@@ -42,8 +42,11 @@ int parseInternetDate(String s,
 
 /// Returns true is [s] contains a valid DICOM date.
 // Note: checkArgs is done by [parseDcmDate].
-bool isValidDcmDateString(String s, {int start = 0, int end, Issues issues}) =>
-    parseDate(s, start: start, end: end, issues: issues) != null;
+bool isValidDcmDateString(String s, {int start = 0, int end, Issues issues}) {
+  //TODO: is this the best place to allow blanks?
+  if (allowBlankDates && s.trim().isEmpty) return true;
+  return parseDate(s, start: start, end: end, issues: issues) != null;
+}
 
 // **** Internal below this line
 // **** These functions do not do error checking, it was done above.
@@ -57,6 +60,8 @@ int _parseDate(String s, int start, int end, int min, int max, Issues issues,
     _checkArgs(s, start, end, min, max, _fName, issues);
     return __parseDate(s, start, issues, onError, separator);
   } on FormatException {
+    // ignore: avoid_returning_null
+    if (allowBlankDates && (s.trim().isEmpty)) return null;
     return (onError != null)
         ? onError(s)
         : throwOnError

@@ -92,13 +92,6 @@ bool isValidSSIndex(int vrIndex) =>
 bool isValidUSIndex(int vrIndex) =>
     vrIndex == kUSIndex || vrIndex == kUSSSIndex || vrIndex == kUSSSOWIndex;
 
-
-
-
-
-
-
-
 bool isFloatVR(int vrIndex) =>
     vrIndex == kFLIndex ||
     vrIndex == kFDIndex ||
@@ -158,7 +151,7 @@ const List<String> vrIdByIndex = <String>[
   'IS', 'LO', 'LT',
   'PN', 'SH', 'ST',
   'TM', 'UI',
-  // End Evr Short String
+  //Evr Short Binary
 
   'AT', 'FD', 'FL',
   'SL', 'SS', 'UL',

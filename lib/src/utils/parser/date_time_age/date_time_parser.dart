@@ -28,11 +28,21 @@ int parseDcmDateTime(String s,
     final dateEnd = (end < 8) ? end : 8;
     date = _parsePartialDcmDate(s, index, dateEnd, issues);
     assert(date != null);
+    int timeEnd;
+    int tzStart;
     if ((index += 8) < end) {
-      final timeEnd = (end < 21) ? end : 21;
+      if (s.contains('-', index)) {
+        timeEnd = s.indexOf('-', index);
+      } else if (s.contains('+', index)) {
+        timeEnd = s.indexOf('+', index);
+      } else {
+        timeEnd = end;
+      }
+      tzStart = timeEnd;
+//      final timeEnd = (end < 21) ? end : 21;
       time = _parseDcmTime(s, index, timeEnd, issues);
       assert(time != null);
-      if (end > 21) tz = _parseDcmTimeZone(s, 21, end, issues);
+      if (tzStart != end) tz = _parseDcmTimeZone(s, tzStart, end, issues);
       assert(tz != null);
     }
     return date + time + tz;

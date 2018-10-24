@@ -20,7 +20,9 @@ part of odw.sdk.core.buffer;
 abstract class WriteBufferMixin {
   // **** Interface
   /// The underlying [Bytes] for the buffer.
-  GrowableBytes get _bytes;
+  GrowableBytes get bytes;
+
+  // **** End of Interface
 
   int get readIndex => _rIndex;
   int get _rIndex;
@@ -31,24 +33,24 @@ abstract class WriteBufferMixin {
   int get writeIndex => _wIndex;
   int get _wIndex;
   set _wIndex(int n) {
-    if (_wIndex <= _rIndex || _wIndex > _bytes.length)
-      throw RangeError.range(_wIndex, _rIndex, _bytes.length);
+    if (_wIndex <= _rIndex || _wIndex > bytes.length)
+      throw RangeError.range(_wIndex, _rIndex, bytes.length);
     _wIndex = n;
   }
 
-  ByteBuffer get buffer => _bytes.buffer;
+  ByteBuffer get buffer => bytes.buffer;
 
-  int get limit;
+  int get limit => bytes.limit;
 
-  ByteData asByteData([int offset, int length]);
+  ByteData asByteData([int offset, int length]) =>
+      bytes.buffer.asByteData(offset, length);
 
-  // **** End of Interface
 
   // **** WriteBuffer specific Getters and Methods
 
-  int get length => _bytes.length;
+  int get length => bytes.length;
 
-  int get writeRemaining => _bytes.length - _wIndex;
+  int get writeRemaining => bytes.length - _wIndex;
   int get remaining => writeRemaining;
   int get writeRemainingMax => limit - _wIndex;
   bool get isWritable => remaining > 0;
@@ -67,8 +69,8 @@ abstract class WriteBufferMixin {
   /// Moves the [_wIndex] forward/backward. Returns the new [_wIndex].
   int wSkip(int n) {
     final v = _wIndex + n;
-    if (v <= _rIndex || v >= _bytes.length)
-      throw RangeError.range(v, 0, _bytes.length);
+    if (v <= _rIndex || v >= bytes.length)
+      throw RangeError.range(v, 0, bytes.length);
     return _wIndex = v;
   }
 
@@ -76,90 +78,90 @@ abstract class WriteBufferMixin {
     length ??= bList.length;
     ensureRemaining(length + 1);
     for (var i = offset, j = _wIndex; i < length; i++, j++)
-      _bytes.setUint8(j, bList[i]);
+      bytes.setUint8(j, bList[i]);
     _wIndex += length;
   }
 
-  void setInt8(int n) => _bytes.setInt8(_wIndex, n);
+  void setInt8(int n) => bytes.setInt8(_wIndex, n);
 
   void writeInt8(int n) {
     assert(n >= -128 && n <= 127, 'Value out of range: $n');
     maybeGrow(1024);
-    _bytes.setInt8(_wIndex, n);
+    bytes.setInt8(_wIndex, n);
     _wIndex++;
   }
 
-  void setInt16(int n) => _bytes.setInt16(_wIndex, n);
+  void setInt16(int n) => bytes.setInt16(_wIndex, n);
 
   /// Writes a 16-bit unsigned integer (Uint16) values to _this_.
   void writeInt16(int value) {
     assert(
         value >= -0x7FFF && value <= 0x7FFF - 1, 'Value out of range: $value');
     maybeGrow(2);
-    _bytes.setInt16(_wIndex, value);
+    bytes.setInt16(_wIndex, value);
     _wIndex += 2;
   }
 
-  void setInt32(int n) => _bytes.setInt32(_wIndex, n);
+  void setInt32(int n) => bytes.setInt32(_wIndex, n);
 
   /// Writes a 32-bit unsigned integer (Uint32) values to _this_.
   void writeInt32(int value) {
     assert(value >= -0x7FFFFFFF && value <= 0x7FFFFFFF - 1,
         'Value out if range: $value');
     maybeGrow(4);
-    _bytes.setInt32(_wIndex, value);
+    bytes.setInt32(_wIndex, value);
     _wIndex += 4;
   }
 
-  void setInt64(int n) => _bytes.setInt64(_wIndex, n);
+  void setInt64(int n) => bytes.setInt64(_wIndex, n);
 
   /// Writes a 64-bit unsigned integer (Uint32) values to _this_.
   void writeInt64(int value) {
     assert(value >= -0x7FFFFFFFFFFFFFFF && value <= 0x7FFFFFFFFFFFFFFF - 1,
         'Value out of range: $value');
     maybeGrow(8);
-    _bytes.setInt64(_wIndex, value);
+    bytes.setInt64(_wIndex, value);
     _wIndex += 8;
   }
 
-  void setUint8(int n) => _bytes.setUint8(_wIndex, n);
+  void setUint8(int n) => bytes.setUint8(_wIndex, n);
 
   /// Writes a byte (Uint8) values to _this_.
   void writeUint8(int value) {
     assert(value >= 0 && value <= 255, 'Value out of range: $value');
     maybeGrow(1);
-    _bytes.setUint8(_wIndex, value);
+    bytes.setUint8(_wIndex, value);
     _wIndex++;
   }
 
-  void setUint16(int n) => _bytes.setUint16(_wIndex, n);
+  void setUint16(int n) => bytes.setUint16(_wIndex, n);
 
   /// Writes a 16-bit unsigned integer (Uint16) values to _this_.
   void writeUint16(int value) {
     assert(value >= 0 && value <= 0xFFFF, 'Value out of range: $value');
     maybeGrow(2);
-    _bytes.setUint16(_wIndex, value);
+    bytes.setUint16(_wIndex, value);
     _wIndex += 2;
   }
 
-  void setUint32(int n) => _bytes.setUint32(_wIndex, n);
+  void setUint32(int n) => bytes.setUint32(_wIndex, n);
 
   /// Writes a 32-bit unsigned integer (Uint32) values to _this_.
   void writeUint32(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFF, 'Value out if range: $value');
     maybeGrow(4);
-    _bytes.setUint32(_wIndex, value);
+    bytes.setUint32(_wIndex, value);
     _wIndex += 4;
   }
 
-  void setUint64(int n) => _bytes.setUint64(_wIndex, n);
+  void setUint64(int n) => bytes.setUint64(_wIndex, n);
 
   /// Writes a 64-bit unsigned integer (Uint32) values to _this_.
   void writeUint64(int value) {
     assert(value >= 0 && value <= 0xFFFFFFFFFFFFFFFF,
         'Value out of range: $value');
     maybeGrow(8);
-    _bytes.setUint64(_wIndex, value);
+    bytes.setUint64(_wIndex, value);
     _wIndex += 8;
   }
 
@@ -183,7 +185,7 @@ abstract class WriteBufferMixin {
   /// Writes [length] zeros to _this_.
   bool writeZeros(int length) {
     maybeGrow(length);
-    for (var i = 0, j = _wIndex; i < length; i++, j++) _bytes[j] = 0;
+    for (var i = 0, j = _wIndex; i < length; i++, j++) bytes[j] = 0;
     _wIndex += length;
     return true;
   }
@@ -191,22 +193,22 @@ abstract class WriteBufferMixin {
   // **** List writing methods
 
   void writeInt8List(Int8List list, [int offset = 0, int length]) {
-    _bytes.setInt8List(_wIndex, list, offset, length);
+    bytes.setInt8List(_wIndex, list, offset, length);
     _wIndex += list.length;
   }
 
   void writeInt16List(Int16List list, [int offset = 0, int length]) {
-    _bytes.setInt16List(_wIndex, list, offset, length);
+    bytes.setInt16List(_wIndex, list, offset, length);
     _wIndex += list.length * 2;
   }
 
   void writeInt32List(Int32List list, [int offset = 0, int length]) {
-    _bytes.setInt32List(_wIndex, list, offset, length);
+    bytes.setInt32List(_wIndex, list, offset, length);
     _wIndex += list.length * 4;
   }
 
   void writeInt64List(Int64List list, [int offset = 0, int length]) {
-    _bytes.setInt64List(_wIndex, list, offset, length);
+    bytes.setInt64List(_wIndex, list, offset, length);
     _wIndex += list.length * 8;
   }
 
@@ -219,64 +221,62 @@ abstract class WriteBufferMixin {
     final length = bd.lengthInBytes;
     if (length == 0) return;
     ensureRemaining(length);
-    _bytes.setByteData(_wIndex, bd, offset, length);
+    bytes.setByteData(_wIndex, bd, offset, length);
     _wIndex += length;
   }
 
   void writeUint16List(Uint16List list, [int offset = 0, int length]) {
-    _bytes.setUint16List(_wIndex, list, offset, length);
+    bytes.setUint16List(_wIndex, list, offset, length);
     _wIndex += list.length * 2;
   }
 
   void writeUint32List(Uint32List list, [int offset = 0, int length]) {
-    _bytes.setUint32List(_wIndex, list, offset, length);
+    bytes.setUint32List(_wIndex, list, offset, length);
     _wIndex += list.length * 4;
   }
 
   void writeUint64List(Uint64List list, [int offset = 0, int length]) {
-    _bytes.setUint64List(_wIndex, list, offset, length);
+    bytes.setUint64List(_wIndex, list, offset, length);
     _wIndex += list.length * 8;
   }
 
   void writeFloat32List(Float32List list, [int offset = 0, int length]) {
-    _bytes.setFloat32List(_wIndex, list, offset, length);
+    bytes.setFloat32List(_wIndex, list, offset, length);
     _wIndex += list.length * 4;
   }
 
   void writeFloat64List(Float64List list, [int offset = 0, int length]) {
-    _bytes.setFloat64List(_wIndex, list, offset, length);
+    bytes.setFloat64List(_wIndex, list, offset, length);
     _wIndex += list.length * 8;
   }
 
   void writeAsciiList(List<String> list, [int offset = 0, int length]) =>
-      _wIndex += _bytes.setAsciiList(_wIndex, list, offset, length);
+      _wIndex += bytes.setAsciiList(_wIndex, list, offset, length);
 
   void writeUtf8List(List<String> list, [int offset = 0, int length]) =>
-      _wIndex += _bytes.setUtf8List(_wIndex, list, offset, length);
+      _wIndex += bytes.setUtf8List(_wIndex, list, offset, length);
 
   void writeStringList(List<String> list) => writeUtf8List(list);
 
-  /// Ensures that [_bytes] has at least [remaining] writable _bytes.
-  /// The [_bytes] is grows if necessary, and copies existing _bytes into
-  /// the new [_bytes].
+  /// Ensures that [bytes] has at least [remaining] writable _bytes.
+  /// The [bytes] is grows if necessary, and copies existing _bytes into
+  /// the new [bytes].
   bool ensureRemaining(int remaining) => _ensureRemaining(remaining);
   bool _ensureRemaining(int remaining) => _ensureCapacity(_wIndex + remaining);
 
-  /// Ensures that [_bytes] is at least [capacity] long, and grows
+  /// Ensures that [bytes] is at least [capacity] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureCapacity(int capacity) => _ensureCapacity(capacity);
 
   bool _ensureCapacity(int capacity) {
-    if (capacity > length) return _grow(capacity);
+    if (capacity > length) return bytes.grow(capacity);
     return false;
   }
-
-  bool _grow([int capacity]) => _bytes.grow(capacity);
 
   /// Grow the buf if the _wIndex is at, or beyond, the end of the current buf.
   bool maybeGrow(int size) {
     if (_wIndex + size < length) return false;
-    return _grow(_wIndex + size);
+    return bytes.grow(_wIndex + size);
   }
 
   @override
@@ -287,10 +287,10 @@ abstract class WriteBufferMixin {
   void error(Object msg) => throw Exception('**** Error(@$_wIndex): $msg');
   // Internal methods
 
-  ByteData get bd => isClosed ? null : _bytes.asByteData();
+  ByteData get bd => isClosed ? null : bytes.asByteData();
 
   ByteData close() {
-    final bd = _bytes.asByteData(0, _wIndex);
+    final bd = bytes.asByteData(0, _wIndex);
     _isClosed = true;
     return bd;
   }

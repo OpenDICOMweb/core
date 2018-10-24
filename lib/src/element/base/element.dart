@@ -520,7 +520,7 @@ abstract class Element<V> extends ListBase<V> {
     if (tag == null) return invalidTag(tag, issues, type);
     if (vList == null) return nullValueError();
     // TODO: change this when Element type is known
-    if (vList.isEmpty) return true;
+    if (vList.isEmpty || allowInvalidVMs) return true;
     final min = tag.vmMin;
     final max = tag.vm.max(maxLengthForVR);
     if (vList != null &&

@@ -16,14 +16,9 @@ int truncateBytesLength = 16;
 
 /// [BytesMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
-abstract class BytesMixin {
+mixin BytesMixin {
   ByteData get _bd;
   Endian get endian;
-
-  static bool ignorePadding = true;
-  static bool allowUnequalLengths = false;
-
-  ByteData get bd => _bd;
 
   // **** TypedData interface.
   int get elementSizeInBytes => 1;
@@ -37,6 +32,8 @@ abstract class BytesMixin {
       throw UnsupportedError('$runtimeType: length is not modifiable');
 
   int get limit => bdLength;
+
+  ByteData get bd => _bd;
 
   ByteBuffer get buffer => _bd.buffer;
 
@@ -150,6 +147,7 @@ abstract class BytesMixin {
     length ??= bdLength - offset;
     return _bd.buffer.asByteData(_absIndex(offset), length);
   }
+
 
   /// Returns a view of the specified region of _this_. [endian] defaults
   /// to the same [endian]ness as _this_.

@@ -72,6 +72,7 @@ class Sex {
       default:
         final msg = 'Invalid Sex($v)';
         log.warn(msg);
+        if (allowInvalidSex) return null;
         if (throwOnError) throw msg;
         return null;
     }

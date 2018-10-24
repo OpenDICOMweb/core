@@ -90,6 +90,7 @@ ByteData stringToByteData(String s, {bool isAscii = false}) {
 bool isDcmString(String s, int max,
     {bool allowLeading = true, bool allowBlank = true}) {
   final len = (s.length < max) ? s.length : max;
+  if (allowInvalidCharsInStrings) return true;
   return isFilteredString(s, 0, len, isDcmStringChar,
       allowLeadingSpaces: allowLeading,
       allowTrailingSpaces: true,

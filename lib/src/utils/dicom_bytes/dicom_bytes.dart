@@ -19,6 +19,7 @@ import 'package:core/src/utils/string.dart';
 import 'package:core/src/vr.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes_mixin.dart';
 
+part 'package:core/src/utils/dicom_bytes/dicom_growable_bytes.dart';
 part 'package:core/src/utils/dicom_bytes/evr_bytes.dart';
 part 'package:core/src/utils/dicom_bytes/ivr_bytes.dart';
 
@@ -100,37 +101,6 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
       bdNew.setUint8(i, bd.getUint8(j));
     return bdNew;
   }
-}
-
-/// A growable [DicomBytes].
-class GrowableDicomBytes extends GrowableBytes with DicomWriterMixin {
-  /// Creates a growable [DicomBytes].
-  GrowableDicomBytes([int length, Endian endian, int limit = kDefaultLimit])
-      : super(length, endian, limit);
-
-  /// Returns a new [Bytes] of [length].
-  GrowableDicomBytes._(int length, Endian endian, int limit)
-      : super(length, endian, limit);
-
-  /// Creates a growable [DicomBytes] from [bytes].
-  factory GrowableDicomBytes.from(Bytes bytes,
-          [int offset = 0,
-          int length,
-          Endian endian,
-          int limit = kDefaultLimit]) =>
-      GrowableDicomBytes._from(bytes, offset, length, endian, limit);
-
-  GrowableDicomBytes._from(Bytes bytes, int offset, int length, Endian endian,
-      [int limit = kDefaultLimit])
-      : super.from(bytes, offset, length, endian, limit);
-
-  /// Creates a growable [DicomBytes] from a view of [td].
-  GrowableDicomBytes.typedDataView(TypedData td,
-          [int offset = 0,
-          int lengthInBytes,
-          Endian endian,
-          int limit = k1GB])
-      : super.typedDataView(td, offset, lengthInBytes, endian, limit);
 }
 
 /// Checks the Value Field length.
