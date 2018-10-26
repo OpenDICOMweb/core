@@ -43,11 +43,11 @@ class GrowableBytes extends Bytes with GrowableMixin {
 
   /// Returns a new [Bytes] of [length].
   GrowableBytes([int length, Endian endian, this.limit = kDefaultLimit])
-      : super._(length, endian);
+      : super(length, endian);
 
   /// Returns a new [Bytes] of [length].
   GrowableBytes._(int length, Endian endian, this.limit)
-      : super._(length, endian);
+      : super(length, endian);
 
   GrowableBytes.from(Bytes bytes,
       [int offset = 0, int length, Endian endian, this.limit = k1GB])

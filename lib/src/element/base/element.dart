@@ -525,7 +525,7 @@ abstract class Element<V> extends ListBase<V> {
     final max = tag.vm.max(maxLengthForVR);
     if (vList != null &&
         (tag.isLengthAlwaysValid ||
-            vList.isEmpty ||
+            vList.isEmpty || allowInvalidValueLengths ||
             _isValidLength(vList.length, min, max, tag.columns))) return true;
     return invalidValuesLength(vList, min, max, issues, tag);
   }

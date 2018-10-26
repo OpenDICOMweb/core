@@ -44,15 +44,11 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// to [Endian.host].
   Bytes([int length = kDefaultLength, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = ByteData(length);
-
-  Bytes._(int length, Endian endian)
-      : endian = endian ?? Endian.host,
-        _bd = ByteData(length);
+        _bd = ByteData(length ?? k1MB);
 
   Bytes.view(Bytes bytes, [int offset = 0, int length, Endian endian])
       : endian = endian ?? Endian.host,
-        _bd = _bdView(bytes._bd, offset, length);
+        _bd = _bdView(bytes._bd, offset, length ?? bytes.length);
 
   /// Creates a new [Bytes] from [bytes] containing the specified region
   /// and [endian]ness. [endian] defaults to [Endian.host].
@@ -158,17 +154,6 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
           ? Bytes.fromAsciiList(vList, maxLength, separator)
           : Bytes.fromUtf8List(vList, maxLength, separator);
 
-  /// The canonical empty (zero length) [Bytes] object.
-  static final Bytes kEmptyBytes = Bytes(0);
-
-  static String _listToString(
-      List<String> vList, int maxLength, String separator) {
-    if (vList == null) return nullValueError();
-    final s = stringListToString(vList, separator);
-    if (s == null || s.length > (maxLength ?? s.length)) return null;
-    return s.isEmpty ? '' : s;
-  }
-
   // *** Comparable interface
 
   /// Compares _this_ with [other] byte by byte.
@@ -209,7 +194,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
     return hashCode;
   }
 
-  // **** Dicom extensions - these should go away when DicomBytes works
+    // **** Dicom extensions - these should go away when DicomBytes works
   int get code {
     final group = _getUint16(0);
     final elt = _getUint16(2);
@@ -223,6 +208,18 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
 
   static const int kMinLength = 16;
   static const int kDefaultLength = 1024;
+
+  /// The canonical empty (zero length) [Bytes] object.
+  static final Bytes kEmptyBytes = Bytes(0);
+
+  static String _listToString(
+      List<String> vList, int maxLength, String separator) {
+    if (vList == null) return nullValueError();
+    final s = stringListToString(vList, separator);
+    if (s == null || s.length > (maxLength ?? s.length)) return null;
+    return s.isEmpty ? '' : s;
+  }
+
 }
 
 bool _bytesEqual(Bytes a, Bytes b) {

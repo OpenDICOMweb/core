@@ -33,15 +33,6 @@ abstract class ReadBufferBase extends BytesBuffer {
 
   @override
   set bytes(Bytes bytes) => unsupportedError();
-  /// Return a new Big Endian[ReadBuffer] containing the unread
-  /// portion of _this_.
-  ReadBuffer get asBigEndian =>
-      ReadBuffer.from(this, _rIndex, _wIndex, Endian.big);
-
-  /// Return a new Little Endian[ReadBuffer] containing the unread
-  /// portion of _this_.
-  ReadBuffer get asLittleEndian =>
-      ReadBuffer.from(this, _rIndex, _wIndex, Endian.little);
 }
 
 /// A read only buffer.

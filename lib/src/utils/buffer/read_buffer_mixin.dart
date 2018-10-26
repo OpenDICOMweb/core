@@ -65,6 +65,16 @@ abstract class ReadBufferMixin {
   }
 */
 
+  /// Return a new Big Endian[ReadBuffer] containing the unread
+  /// portion of _this_.
+  ReadBuffer get asBigEndian =>
+      ReadBuffer.from(this, _rIndex, _wIndex, Endian.big);
+
+  /// Return a new Little Endian[ReadBuffer] containing the unread
+  /// portion of _this_.
+  ReadBuffer get asLittleEndian =>
+      ReadBuffer.from(this, _rIndex, _wIndex, Endian.little);
+
   int rSkip(int n) {
     final v = _rIndex + n;
     if (v < 0 || v > _wIndex) throw RangeError.range(v, 0, _wIndex);
