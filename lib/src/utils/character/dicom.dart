@@ -57,6 +57,7 @@ const CharChecker checkAEChar = checkDcmStringChar;
 /// Returns _true_ if [c] is legal in Code String; otherwise, _false_,
 bool isCSChar(int c) =>
     isUppercaseChar(c) || isDigitChar(c) || (c == kSpace) || (c == kUnderscore);
+
 int checkCSChar(int c) => (isCSChar(c)) ? c : false;
 
 ///Returns _true_ if c is legal in a DICOM Date VR DA.

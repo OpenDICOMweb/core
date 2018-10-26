@@ -54,7 +54,11 @@ int tryParseAgeString(String s, {bool allowLowercase = false}) {
   if (!kAgeTokens.contains(token)) return -1;
 
   final n = int.tryParse(s.substring(0, 3));
-  if (n == null || n < 0 || (n == 0 && token != 'D')) return -1;
+  if (n == null || n < 0 || (n == 0 && token != 'D')) {
+    if (allowZeroAges) return 0;
+    log.warn('Illegal Age: "$s"');
+    return -1;
+  }
   switch (token) {
     case 'D':
       return n;

@@ -10,67 +10,75 @@ import 'package:core/src/utils/primitives.dart';
 
 // ignore_for_file: type_annotate_public_apis, public_member_api_docs
 
-// Sequence is 0
-const int kSQIndex = 0;
+const int kUNIndex = 0; // Maybe Undefined Max
+// Sequence is 1
+const int kSQIndex = 1;
 
 // Long, Maybe Undefined
-const int kOBIndex = 1; // Maybe Undefined Min
-const int kOWIndex = 2;
-const int kUNIndex = 3; // Maybe Undefined Max
+const int kOBIndex = 2; // Maybe Undefined Min
+const int kOWIndex = 3;
 
-// Long EVR
-const int kODIndex = 4; // Long EVR and IVR Min
+bool isMaybeUndefinedLengthVR(int vrIndex) =>
+    vrIndex >= kUNIndex && vrIndex <= kOWIndex;
+
+bool isUndefinedLengthAllowed(int vrIndex) =>
+    isMaybeUndefinedLengthVR(vrIndex);
+
+// Defined Long EVRs
+const int kODIndex = 4; // Defined Long EVR Min, Defined Long Int EVR Min
 const int kOFIndex = 5;
-const int kOLIndex = 6;
-const int kUCIndex = 7;
-const int kURIndex = 8;
-const int kUTIndex = 9; // Long EVR Max
+const int kOLIndex = 6; // Defined Long Int EVR Max
 
-// Short EVR
-const int kAEIndex = 10; // Short IVR Min
+// Long String EVRs,
+const int kUCIndex = 7; // String EVR Min, Long String EVR Min
+const int kURIndex = 8;
+const int kUTIndex = 9; // Long EVR Max, Defined Long EVR Max
+
+bool isEvrLongVR(int vrIndex) => vrIndex >= kSQIndex && vrIndex <= kUTIndex;
+
+// Short EVRs
+const int kAEIndex = 10; // Short String EVR Min
 const int kASIndex = 11;
-const int kATIndex = 12;
-const int kCSIndex = 13;
-const int kDAIndex = 14;
-const int kDSIndex = 15;
-const int kDTIndex = 16;
-const int kFDIndex = 17;
-const int kFLIndex = 18;
-const int kISIndex = 19;
-const int kLOIndex = 20;
-const int kLTIndex = 21;
-const int kPNIndex = 22;
-const int kSHIndex = 23;
-const int kSLIndex = 24;
-const int kSSIndex = 25;
-const int kSTIndex = 26;
-const int kTMIndex = 27;
-const int kUIIndex = 28;
+const int kCSIndex = 12;
+const int kDAIndex = 13;
+const int kDSIndex = 14;
+const int kDTIndex = 15;
+const int kISIndex = 16;
+const int kLOIndex = 17;
+const int kLTIndex = 18;
+const int kPNIndex = 19;
+const int kSHIndex = 20;
+const int kSTIndex = 21;
+const int kTMIndex = 22;
+const int kUIIndex = 23; // String EVR MaX, Short String Evr Max
+
+const int kATIndex = 24;
+const int kFDIndex = 25;
+const int kFLIndex = 26;
+const int kSLIndex = 27;
+const int kSSIndex = 28;
 const int kULIndex = 29;
 const int kUSIndex = 30; // Short EVR Max and IVR Max
+
+const int _kMinNormalVRIndex = 0;
+const int kMaxNormalVRIndex = 30;
+bool isNormalVRIndex(int vrIndex) =>
+    vrIndex >= _kMinNormalVRIndex && vrIndex <= kMaxNormalVRIndex;
+
+bool isIvrDefinedLengthVRIndex(int vrIndex) =>
+    vrIndex >= kODIndex && vrIndex <= kUSIndex;
+
+bool isEvrShortVRIndex(int vrIndex) =>
+    vrIndex >= kAEIndex && vrIndex <= kUSIndex;
+
+// Special VR Indices
 const int kOBOWIndex = 31;
-const int kUSOWIndex = 34;
+const int kUSOWIndex = 32;
 const int kUSSSOWIndex = 33;
-const int kUSSSIndex = 32;
+const int kUSSSIndex = 34;
 
-const int kVRIndexMin = 0;
-const int kVREvrLongIndexMin = 1; // OB
-const int kVRMaybeUndefinedIndexMin = 0; // OB
-const int kVRMaybeUndefinedIndexMax = 3; // UN
-
-const int kVRDefinedLongIndexMin = 4; // OD
-const int kVRIvrLongIndexMax = 30; // US
-
-const int kVREvrDefinedLongIndexMin = 4; // OD
-const int kVREvrLongIndexMax = 9; // UT
-const int kVREvrShortIndexMin = 10; // AE
-const int kVREvrShortIndexMax = 30; // US
-
-const int kVRSpecialIndexMin = 31; // OBOW
-const int kVRSpecialIndexMax = 34; // USOW
-
-const int kVRNormalIndexMin = 0; // SQ
-const int kVRNormalIndexMax = 30; // US
+bool isSpecialVRIndex(int vrIndex) =>
+    vrIndex >= kOBOWIndex && vrIndex <= kUSSSIndex;
 
 bool isValidOBIndex(int vrIndex) =>
     vrIndex == kOBIndex || vrIndex == kOBOWIndex;
@@ -84,57 +92,27 @@ bool isValidSSIndex(int vrIndex) =>
 bool isValidUSIndex(int vrIndex) =>
     vrIndex == kUSIndex || vrIndex == kUSSSIndex || vrIndex == kUSSSOWIndex;
 
-bool isSequenceVRIndex(int vrIndex) => vrIndex == 0;
-
-bool isSpecialVRIndex(int vrIndex) =>
-    vrIndex >= kVRSpecialIndexMin && vrIndex <= kVRSpecialIndexMax;
-
-bool isNormalVRIndex(int vrIndex) =>
-    vrIndex >= kVRNormalIndexMin && vrIndex <= kVRNormalIndexMax;
-
-bool isMaybeUndefinedLengthVRIndex(int vrIndex) =>
-    vrIndex >= kVRMaybeUndefinedIndexMin &&
-    vrIndex <= kVRMaybeUndefinedIndexMax;
-
-bool isEvrLongVRIndex(int vrIndex) =>
-    vrIndex >= kVREvrLongIndexMin && vrIndex <= kVREvrLongIndexMax;
-
-bool isEvrShortVRIndex(int vrIndex) =>
-    vrIndex >= kVREvrShortIndexMin && vrIndex <= kVREvrShortIndexMax;
-
-bool isIvrDefinedLengthVRIndex(int vrIndex) =>
-    vrIndex >= kVRDefinedLongIndexMin && vrIndex <= kVRNormalIndexMax;
-
 bool isFloatVR(int vrIndex) =>
     vrIndex == kFLIndex ||
     vrIndex == kFDIndex ||
     vrIndex == kOFIndex ||
     vrIndex == kODIndex;
 
-bool isStringVR(int vrIndex) =>
-    isShortStringVR(vrIndex) || isLongStringVR(vrIndex);
+bool isStringVR(int vrIndex) => vrIndex >= kUCIndex && vrIndex <= kUIIndex;
 
-bool isShortStringVR(int vrIndex) =>
-    vrIndex >= kVRDefinedLongIndexMin && vrIndex <= kVRNormalIndexMax;
+bool isShortStringVR(int vrIndex) => vrIndex >= kAEIndex && vrIndex <= kUIIndex;
 
 bool isLongStringVR(int vrIndex) => vrIndex >= kUCIndex && vrIndex <= kUTIndex;
 
 /// Returns _true_ if the VR with _vrIndex_
 /// is, by definition, always a valid length.
 const List<int> kVFLengthAlwaysValidIndices = <int>[
-  kSQIndex, kUNIndex, kOBIndex, kOWIndex, kOLIndex, // No reformat
-  kODIndex, kOFIndex, kUCIndex, kURIndex, kUTIndex, kOBOWIndex
+  kSQIndex, kURIndex, kUTIndex, kOBIndex, kOWIndex, kOLIndex, // No reformat
+  kODIndex, kOFIndex, kUCIndex, kUNIndex, kOBOWIndex
 ];
 
 bool isVFLengthAlwaysValid(int vrIndex) =>
     kVFLengthAlwaysValidIndices.contains(vrIndex);
-
-const List<int> kUndefinedLengthVRIndices = <int>[
-  kSQIndex, kOBIndex, kOWIndex, kUNIndex // No reformat
-];
-
-bool isUndefinedLengthAllowed(int vrIndex) =>
-    kUndefinedLengthVRCodes.contains(vrIndex);
 
 const List<int> kNullPaddingVRIndices = <int>[
   kOBIndex,
@@ -142,30 +120,42 @@ const List<int> kNullPaddingVRIndices = <int>[
   kUIIndex
 ];
 
+/*
 const List<int> kUndefinedLengthVRCodes = <int>[
+  kUNCode,
   kSQCode,
   kOBCode,
-  kOWCode,
-  kUNCode
+  kOWCode
 ];
+*/
 
 String vrIdFromIndex(int vrIndex) => vrIdByIndex[vrIndex];
 int vrIndexFromId(String id) => vrIdByIndex.indexOf(id);
 
 const List<String> vrIdByIndex = <String>[
   // Begin maybe undefined length
+  'UN',
   'SQ', // Sequence == 0,
   // Begin EVR Long
-  'OB', 'OW', 'UN',
+  'OB', 'OW',
   // End maybe Undefined Length
   // EVR Long
-  'OD', 'OF', 'OL', 'UC', 'UR', 'UT',
+  'OD', 'OF', 'OL',
+
+  // Evr Long String
+  'UC', 'UR', 'UT',
   // End Evr Long
-  // Begin EVR Short
-  'AE', 'AS', 'AT', 'CS', 'DA', 'DS', 'DT',
-  'FD', 'FL', 'IS', 'LO', 'LT', 'PN', 'SH',
-  'SL', 'SS', 'ST', 'TM', 'UI', 'UL', 'US',
-  // End Evr Short
+  // Begin EVR Short String
+  'AE', 'AS', 'CS',
+  'DA', 'DS', 'DT',
+  'IS', 'LO', 'LT',
+  'PN', 'SH', 'ST',
+  'TM', 'UI',
+  //Evr Short Binary
+
+  'AT', 'FD', 'FL',
+  'SL', 'SS', 'UL',
+  'US',
   // EVR Special
   'OBOW', 'USSS', 'USSSOW', 'USOW'
 ];
@@ -173,53 +163,78 @@ const List<String> vrIdByIndex = <String>[
 String vrNameFromIndex(int vrIndex) => vrNameByIndex[vrIndex];
 
 const List<String> vrNameByIndex = <String>[
+  'Unknown',
   // Begin maybe undefined length
   'Sequence', // Sequence == 0,
   // Begin EVR Long
-  'Other Byte', 'Other Word', 'Unknown',
+  'Other Byte', 'Other Word',
   // End maybe Undefined Length
   // EVR Long
   'Other Double', 'Other Float', 'Other Long',
+
+  // // End Evr Long Strings
   'Unlimited Characters', 'URI', 'Unlimited Text',
-  // End Evr Long
-  // Begin EVR Short
-  'AE Title', 'Age String', 'Attribute Tag', 'Code String',
-  'Date', 'Decimal String', 'DateTime', 'Float Double',
-  'Float Single', 'Integer String', 'Long String', 'Long Text',
-  'Person Name', 'Short String', 'Signed Long', 'Signed Short',
-  'Short Text', 'Time', 'Unique Identifier', 'Unsigned Long',
+
+  // Begin EVR Short Strings
+  'AE Title', 'Age String', 'Code String',
+  'Date', 'Decimal String', 'DateTime',
+  'Integer String', 'Long String', 'Long Text',
+  'Person Name', 'Short String', 'Short Text',
+  'Time', 'Unique Identifier',
+
+  'Attribute Tag', 'Float Double', 'Float Single',
+  'Signed Long', 'Signed Short', 'Unsigned Long',
   'Unsigned Short',
+
+  'OBOW', 'USSS', 'USSSOW', 'USOW'
 ];
 
 const List<int> vrCodeByIndex = <int>[
   // Begin maybe undefined length
+  kUNCode,
   kSQCode, // Sequence == 0,
   // Begin EVR Long
-  kOBCode, kOWCode, kUNCode,
-  // End maybe Undefined Length
-  // EVR Long
-  kODCode, kOFCode, kOLCode, kUCCode, kURCode, kUTCode,
+  kOBCode, kOWCode,
+
+  // EVR Defined Long
+  kODCode, kOFCode, kOLCode,
+
+  // Strings
+  kUCCode, kURCode, kUTCode,
   // End Evr Long
   // Begin EVR Short
-  kAECode, kASCode, kATCode, kCSCode, kDACode, kDSCode,
-  kDTCode, kFDCode, kFLCode, kISCode, kLOCode, kLTCode,
-  kPNCode, kSHCode, kSLCode, kSSCode, kSTCode, kTMCode,
-  kUICode, kULCode, kUSCode
+  kAECode, kASCode, kCSCode,
+  kDACode, kDSCode, kDTCode,
+  kISCode, kLOCode, kLTCode,
+  kPNCode, kSHCode, kSTCode,
+  kTMCode, kUICode,
+
+  // Binary
+  kATCode, kFDCode, kFLCode,
+  kSLCode, kSSCode, kULCode,
+  kUSCode
 ];
 
 const List<int> vrElementSizeByIndex = <int>[
   // Begin maybe undefined length
-  1, // Sequence == 0,
+  1, // kUNIndex
+  1, // kSQIndex,
   // Begin EVR Long
-  1, 2, 1,
+  1, 2,
   // End maybe Undefined Length
   // EVR Long
-  8, 4, 4, 1, 1, 1,
+  8, 4, 4,
+
+  1, 1, 1,
   // End Evr Long
-  // Begin EVR Short
-  1, 1, 4, 1, 1, 1, 1,
-  8, 4, 1, 1, 1, 1, 1,
-  4, 2, 1, 1, 1, 4, 2,
+  // Begin EVR Short String
+  1, 1, 1,
+  1, 1, 1,
+  1, 1, 1,
+  1, 1, 1,
+  1, 1,
+
+  4, 8, 4, 4, 2, 4, 2
 ];
 
 /*
@@ -338,13 +353,13 @@ const int kUTMaxLength = kMaxLongVF;
 
 
 const Map<int, int> vrIndexByCode16BitLE = const <int, int>{
-  0x4541: kAEIndex, 0x5341: kASIndex, 0x5441: kATIndex, 0x5343: kCSIndex,
-  0x4144: kDAIndex, 0x5344: kDSIndex, 0x5444: kDTIndex, 0x4446: kFDIndex,
-  0x4c46: kFLIndex, 0x5349: kISIndex, 0x4f4c: kLOIndex, 0x544c: kLTIndex,
-  0x424f: kOBIndex, 0x444f: kODIndex, 0x464f: kOFIndex, 0x4c4f: kOLIndex,
-  0x574f: kOWIndex, 0x4e50: kPNIndex, 0x4853: kSHIndex, 0x4c53: kSLIndex,
-  0x5153: kSQIndex, 0x5353: kSSIndex, 0x5453: kSTIndex, 0x4d54: kTMIndex,
-  0x4355: kUCIndex, 0x4955: kUIIndex, 0x4c55: kULIndex, 0x4e55: kUNIndex,
-  0x5255: kURIndex, 0x5355: kUSIndex, 0x5455: kUTIndex // No reformat
+  kAECode: kAEIndex, kASCode: kASIndex, kATCode: kATIndex, kCSCode: kCSIndex,
+  kDACode: kDAIndex, kDSCode: kDSIndex, kDTCode: kDTIndex, kFDCode: kFDIndex,
+  kFLCode: kFLIndex, kISCode: kISIndex, kLOCode: kLOIndex, kLTCode: kLTIndex,
+  kOBCode: kOBIndex, kODCode: kODIndex, kOFCode: kOFIndex, kOLCode: kOLIndex,
+  kOWCode: kOWIndex, kPNCode: kPNIndex, kSHCode: kSHIndex, kSLCode: kSLIndex,
+  kSQCode: kSQIndex, kSSCode: kSSIndex, kSTCode: kSTIndex, kTMCode: kTMIndex,
+  kUCCode: kUCIndex, kUICode: kUIIndex, kULCode: kULIndex, kUNCode: kUNIndex,
+  kURCode: kURIndex, kUSCode: kUSIndex, kUTCode: kUTIndex // No reformat
 };
 */

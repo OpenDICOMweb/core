@@ -172,7 +172,7 @@ abstract class SS extends Integer with Int16 {
   // _Note_: Some [Tag]s have _Special VR_s that include [SS] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ VR.isValidSpecialCode] is used.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidSpecialCode(vrCode, issues, kSSCode);
+      VR.isValidCode(vrCode, issues, kSSCode);
 
   /// Returns _true_ if [vfLength] is valid for this [SS].
   static bool isValidVFLength(int length, [Issues issues, Tag tag]) =>
@@ -390,7 +390,7 @@ abstract class OB extends Integer with Uint8 {
   // _Note_: Some [Tag]s have _Special VR_s that include [OB] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ VR.isValidSpecialCode] is used.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidSpecialCode(vrCode, issues, kOBCode);
+      VR.isValidCode(vrCode, issues, kOBCode);
 
   /// Returns _true_ if [vfLength] is valid for this [OB].
   // Note: This only check [vfLength] against the [kMaxVFLength] and
@@ -501,7 +501,7 @@ abstract class UN extends Integer with Uint8 {
   /// If [doTestElementValidity] is _false_ then no checking is done.
   // _Note_: UN includes special VRs.
   static bool isValidVRIndex(int vrIndex, [Issues issues]) =>
-      vrIndex >= 0 && vrIndex <= kVRSpecialIndexMax;
+      vrIndex >= kUNIndex && vrIndex <= kUSSSIndex;
 
   /// Returns _true_ if [vrCode] is valid for [UN].
   /// If [doTestElementValidity] is _false_ then no checking is done.
@@ -628,7 +628,7 @@ abstract class US extends Integer with Uint16 {
   // _Note_: Some [Tag]s have _Special VR_s that include [US] VRs, such as
   // [kUSSSIndex] and [kUSSSOWIndex], so [ VR.isValidSpecialCode] is used.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidSpecialCode(vrCode, issues, kUSCode);
+      VR.isValidCode(vrCode, issues, kUSCode);
 
   /// Returns _true_ if [vfLength] is valid for this [US].
   // Note: This only check [vfLength] against the [kMaxVFLength] and
@@ -752,7 +752,7 @@ abstract class OW extends Integer with Uint16 {
   // _Note_: Some [Tag]s have _Special VR_s that include [OW] VRs, such as
   // [kOBOWIndex] and [kUOBSOWIndex], so [ VR.isValidSpecialCode] is used.
   static bool isValidVRCode(int vrCode, [Issues issues]) =>
-      VR.isValidSpecialCode(vrCode, issues, kOWCode);
+      VR.isValidCode(vrCode, issues, kOWCode);
 
   /// Returns _true_ if [vfLength] is valid for this [OW].
   // Note: This only check [vfLength] against the [kMaxVFLength] and

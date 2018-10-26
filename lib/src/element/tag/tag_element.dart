@@ -102,26 +102,31 @@ abstract class TagElement<V> {
     final vrIndex = bytes.vrIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
-    return _bytesMakers[index](tag, bytes.vfBytes);
+    return (index == kSQIndex)
+        ? makeSQFromBytes(ds, <ByteItem>[], bytes)
+        : _bytesMakers[index](tag, bytes.vfBytes);
   }
 
   static final List<Function> _bytesMakers = <Function>[
+    UNtag.fromBytes, // No reformat
     SQtag.fromBytes,
     // Maybe Undefined Lengths
-    OBtag.fromBytes, OWtag.fromBytes, UNtag.fromBytes, // No reformat
+    OBtag.fromBytes, OWtag.fromBytes,
 
     // EVR Long
     ODtag.fromBytes, OFtag.fromBytes, OLtag.fromBytes,
     UCtag.fromBytes, URtag.fromBytes, UTtag.fromBytes,
 
     // EVR Short
-    AEtag.fromBytes, AStag.fromBytes, ATtag.fromBytes,
-    CStag.fromBytes, DAtag.fromBytes, DStag.fromBytes,
-    DTtag.fromBytes, FDtag.fromBytes, FLtag.fromBytes,
+    AEtag.fromBytes, AStag.fromBytes, CStag.fromBytes,
+    DAtag.fromBytes, DStag.fromBytes, DTtag.fromBytes,
     IStag.fromBytes, LOtag.fromBytes, LTtag.fromBytes,
-    PNtag.fromBytes, SHtag.fromBytes, SLtag.fromBytes,
-    SStag.fromBytes, STtag.fromBytes, TMtag.fromBytes,
-    UItag.fromBytes, ULtag.fromBytes, UStag.fromBytes,
+    PNtag.fromBytes, SHtag.fromBytes, STtag.fromBytes,
+    TMtag.fromBytes, UItag.fromBytes,
+
+    ATtag.fromBytes, FDtag.fromBytes, FLtag.fromBytes,
+    SLtag.fromBytes, SStag.fromBytes, ULtag.fromBytes,
+    UStag.fromBytes,
   ];
 
   static Element makeMaybeUndefinedFromBytes(DicomBytes bytes,
@@ -162,10 +167,10 @@ abstract class TagElement<V> {
 
   // Elements that may have undefined lengths.
   static final List<Function> _fromBytesPixelDataMakers = <Function>[
+    UNtagPixelData.fromBytes,
     null,
     OBtagPixelData.fromBytes,
-    OWtagPixelData.fromBytes,
-    UNtagPixelData.fromBytes
+    OWtagPixelData.fromBytes
   ];
 
   /// Returns a  [Element] based on the arguments.
@@ -182,10 +187,10 @@ abstract class TagElement<V> {
   static Element makeFromTag(Tag tag, Iterable values, int vrIndex,
           [Dataset ds, TransferSyntax ts]) =>
       (tag.code == kPixelData)
-          ? makePixelDataFromValues(tag, values, vrIndex, ds, ts)
+          ? _makePixelDataFromValues(tag, values, vrIndex, ds, ts)
           : _fromValuesMakers[vrIndex](tag, values);
 
-  static Element makePixelDataFromValues(Tag tag, Iterable values, int vrIndex,
+  static Element _makePixelDataFromValues(Tag tag, Iterable values, int vrIndex,
       [Dataset ds, TransferSyntax ts]) {
     final index = getPixelDataVR(tag.code, vrIndex, ds, ts);
     return _fromValuesPixelDataMakers[index](values, ts);
@@ -193,30 +198,35 @@ abstract class TagElement<V> {
 
   // Elements that may have undefined lengths.
   static final List<Function> _fromValuesPixelDataMakers = <Function>[
+    UNtagPixelData.fromValues,
     null,
     OBtagPixelData.fromValues,
-    OWtagPixelData.fromValues,
-    UNtagPixelData.fromValues
+    OWtagPixelData.fromValues
+
   ];
 
   static final _fromValuesMakers = <Function>[
+    UNtag.fromValues,
     // SQtag.make
     SQtag.fromValues,
     // Maybe Undefined Lengths
-    OBtag.fromValues, OWtag.fromValues, UNtag.fromValues, // No reformat
+    OBtag.fromValues, OWtag.fromValues,  // No reformat
     //  __vrIndexError, __vrIndexError, __vrIndexError,
     // EVR Long
     ODtag.fromValues, OFtag.fromValues, OLtag.fromValues,
+
     UCtag.fromValues, URtag.fromValues, UTtag.fromValues,
 
     // EVR Short
-    AEtag.fromValues, AStag.fromValues, ATtag.fromValues,
-    CStag.fromValues, DAtag.fromValues, DStag.fromValues,
-    DTtag.fromValues, FDtag.fromValues, FLtag.fromValues,
+    AEtag.fromValues, AStag.fromValues, CStag.fromValues,
+    DAtag.fromValues, DStag.fromValues, DTtag.fromValues,
     IStag.fromValues, LOtag.fromValues, LTtag.fromValues,
-    PNtag.fromValues, SHtag.fromValues, SLtag.fromValues,
-    SStag.fromValues, STtag.fromValues, TMtag.fromValues,
-    UItag.fromValues, ULtag.fromValues, UStag.fromValues,
+    PNtag.fromValues, SHtag.fromValues, STtag.fromValues,
+    TMtag.fromValues, UItag.fromValues,
+
+    ATtag.fromValues, FDtag.fromValues, FLtag.fromValues,
+    SLtag.fromValues, SStag.fromValues, ULtag.fromValues,
+    UStag.fromValues,
   ];
 
   /// Creates an [SQtag] [Element].

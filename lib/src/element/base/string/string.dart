@@ -186,7 +186,7 @@ abstract class StringBase extends Element<String> {
   static bool isValidValueLength(
       String s, Issues issues, int minLength, int maxLength) {
     if (s == null) return nullValueError('"$s"');
-    if (s.isEmpty) return true;
+    if (s.isEmpty || allowOversizedStrings) return true;
     final length = s.length;
     if (length < minLength || length > maxLength) {
       if (issues != null) {
@@ -195,6 +195,7 @@ abstract class StringBase extends Element<String> {
         if (length < minLength)
           issues.add('Invalid Value($s) over maximum($maxLength)');
       }
+      if (allowOversizedStrings) return true;
       return invalidStringLength(s);
     }
     return true;

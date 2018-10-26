@@ -202,92 +202,6 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
       (other is Bytes && ignorePadding && _bytesEqual(this, other)) ||
       __bytesEqual(this, other, ignorePadding);
 
-  bool _bytesEqual(Bytes a, Bytes b) {
-    final aLen = a.length;
-    if (aLen != b.length) return false;
-    for (var i = 0; i < aLen; i++) if (a[i] != b[i]) return false;
-    return true;
-  }
-
-  // TODO: test performance of _uint16Equal and _uint32Equal
-  bool __bytesEqual(Bytes a, Bytes b, bool ignorePadding) {
-    final len0 = a.length;
-    final len1 = b.length;
-    if (len0 != len1) return false;
-    if ((len0 % 4) == 0) {
-      return _uint32Equal(a, b, ignorePadding);
-    } else if ((len0 % 2) == 0) {
-      return _uint16Equal(a, b, ignorePadding);
-    } else {
-      return _uint8Equal(a, b, ignorePadding);
-    }
-  }
-
-  // Note: optimized to use 4 byte boundary
-  bool _uint8Equal(Bytes a, Bytes b, bool ignorePadding) {
-    for (var i = 0; i < a.length; i += 1) {
-      final x = a._getUint8(i);
-      final y = b._getUint8(i);
-      if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
-    }
-    return true;
-  }
-
-  // Note: optimized to use 2 byte boundary
-  bool _uint16Equal(Bytes a, Bytes b, bool ignorePadding) {
-    for (var i = 0; i < a.length; i += 2) {
-      final x = a._getUint16(i);
-      final y = b._getUint16(i);
-      if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
-    }
-    return true;
-  }
-
-// Note: optimized to use 4 byte boundary
-  bool _uint32Equal(Bytes a, Bytes b, bool ignorePadding) {
-    for (var i = 0; i < a.length; i += 4) {
-      final x = a._getUint32(i);
-      final y = b._getUint32(i);
-      if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
-    }
-    return true;
-  }
-
-  bool _bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
-    var errorCount = 0;
-    final ok = __bytesMaybeNotEqual(i, a, b, ignorePadding);
-    if (!ok) {
-      errorCount++;
-      if (throwOnError) if (errorCount > 3) throw ArgumentError('Unequal');
-      return false;
-    }
-    return true;
-  }
-
-  bool __bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
-    if ((a[i] == 0 && b[i] == 32) || (a[i] == 32 && b[i] == 0)) {
-      log.warn('$i ${a[i]} | ${b[i]} Padding char difference');
-      return ignorePadding;
-    } else {
-      _warnBytes(i, a, b);
-      return false;
-    }
-  }
-
-  void _warnBytes(int i, Bytes a, Bytes b) {
-    final x = a[i];
-    final y = b[i];
-    log.warn('''
-$i: $x | $y')
-	  ${hex8(x)} | ${hex8(y)}
-	  "${String.fromCharCode(x)}" | "${String.fromCharCode(y)}"
-	    '    $a')
-      '    $b')
-      '    ${a.getAscii()}')
-      '    ${b.getAscii()}');
-''');
-  }
-
   @override
   int get hashCode {
     var hashCode = 0;
@@ -309,6 +223,92 @@ $i: $x | $y')
 
   static const int kMinLength = 16;
   static const int kDefaultLength = 1024;
+}
+
+bool _bytesEqual(Bytes a, Bytes b) {
+  final aLen = a.length;
+  if (aLen != b.length) return false;
+  for (var i = 0; i < aLen; i++) if (a[i] != b[i]) return false;
+  return true;
+}
+
+// TODO: test performance of _uint16Equal and _uint32Equal
+bool __bytesEqual(Bytes a, Bytes b, bool ignorePadding) {
+  final len0 = a.length;
+  final len1 = b.length;
+  if (len0 != len1) return false;
+  if ((len0 % 4) == 0) {
+    return _uint32Equal(a, b, ignorePadding);
+  } else if ((len0 % 2) == 0) {
+    return _uint16Equal(a, b, ignorePadding);
+  } else {
+    return _uint8Equal(a, b, ignorePadding);
+  }
+}
+
+// Note: optimized to use 4 byte boundary
+bool _uint8Equal(Bytes a, Bytes b, bool ignorePadding) {
+  for (var i = 0; i < a.length; i += 1) {
+    final x = a._getUint8(i);
+    final y = b._getUint8(i);
+    if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
+  }
+  return true;
+}
+
+// Note: optimized to use 2 byte boundary
+bool _uint16Equal(Bytes a, Bytes b, bool ignorePadding) {
+  for (var i = 0; i < a.length; i += 2) {
+    final x = a._getUint16(i);
+    final y = b._getUint16(i);
+    if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
+  }
+  return true;
+}
+
+// Note: optimized to use 4 byte boundary
+bool _uint32Equal(Bytes a, Bytes b, bool ignorePadding) {
+  for (var i = 0; i < a.length; i += 4) {
+    final x = a._getUint32(i);
+    final y = b._getUint32(i);
+    if (x != y) return _bytesMaybeNotEqual(i, a, b, ignorePadding);
+  }
+  return true;
+}
+
+bool _bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
+  var errorCount = 0;
+  final ok = __bytesMaybeNotEqual(i, a, b, ignorePadding);
+  if (!ok) {
+    errorCount++;
+    if (throwOnError) if (errorCount > 3) throw ArgumentError('Unequal');
+    return false;
+  }
+  return true;
+}
+
+bool __bytesMaybeNotEqual(int i, Bytes a, Bytes b, bool ignorePadding) {
+  if ((a[i] == 0 && b[i] == 32) || (a[i] == 32 && b[i] == 0)) {
+    log.warn('$i ${a[i]} | ${b[i]} Padding char difference');
+    return ignorePadding;
+  } else {
+    _warnBytes(i, a, b);
+    return false;
+  }
+}
+
+void _warnBytes(int i, Bytes a, Bytes b) {
+  final x = a[i];
+  final y = b[i];
+  log.warn('''
+$i: $x | $y')
+	  ${hex8(x)} | ${hex8(y)}
+	  "${String.fromCharCode(x)}" | "${String.fromCharCode(y)}"
+	    '    $a')
+      '    $b')
+      '    ${a.getAscii()}')
+      '    ${b.getAscii()}');
+''');
 }
 
 //TODO: move this to the appropriate place

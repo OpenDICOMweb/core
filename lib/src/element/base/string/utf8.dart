@@ -144,6 +144,7 @@ abstract class LO extends Utf8 {
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
     final ok = isDcmString(s, 64);
+    if (allowOversizedStrings || allowInvalidCharsInStrings) return true;
     return ok ? ok : invalidString('Invalid Long String (LO): "$s"', issues);
   }
 }
@@ -403,6 +404,7 @@ abstract class SH extends Utf8 {
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
     if (isDcmString(s, kMaxValueLength)) return true;
+    if (allowOversizedStrings) return true;
     return invalidString('Invalid Short String (SH): "$s"', issues);
   }
 }

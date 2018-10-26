@@ -51,6 +51,8 @@ abstract class TagStringMixin {
   bool match(String regexp) => _values.match(regexp);
 }
 
+// Urgent Jim: we need to handle Specific Character Sets -
+// especially Latin-1 (ISO IR 100)
 class AEtag extends AE with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
@@ -76,7 +78,7 @@ class AEtag extends AE with TagElement<String>, TagStringMixin {
   }
 */
 
-  StringList get trimmed => _values.trim(trim);
+  StringList get trimmed => _values.trim(AE.kTrim);
 
   @override
   AEtag update([Iterable<String> vList]) => AEtag(tag, vList);
@@ -121,7 +123,7 @@ class CStag extends CS with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(CS.kTrim);
 
   /// Special variable for overriding uppercase constraint. If _true_
   /// lowercase characters in [values] are converted to uppercase
@@ -138,7 +140,7 @@ class CStag extends CS with TagElement<String> {
 
   // ignore: prefer_constructors_over_static_methods
   static CStag fromBytes(Tag tag, Bytes bytes) =>
-      CStag(tag, bytes.getAsciiList());
+      CStag(tag, bytes.getAsciiList(padChar: kSpace));
 }
 
 class DStag extends DS with TagElement<String> {
@@ -168,7 +170,7 @@ class DStag extends DS with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(DS.kTrim);
 
   @override
   DStag update([Iterable<String> vList]) => DStag(tag, vList);
@@ -210,7 +212,7 @@ class IStag extends IS with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(IS.kTrim);
 
   @override
   IStag update([Iterable<String> vList]) => IStag(tag, vList);
@@ -253,7 +255,7 @@ class LOtag extends LO with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(LO.kTrim);
 
   @override
   LOtag update([Iterable<String> vList]) => LOtag(tag, vList);
@@ -295,8 +297,6 @@ class PCtag extends PC with TagElement<String> {
     values = vList;
     return old;
   }
-
-  StringList get trimmed => values.trim(trim);
 
   @override
   String get token => value;
@@ -361,7 +361,7 @@ class LTtag extends LT with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(LT.kTrim);
 
   @override
   LTtag update([Iterable<String> vList]) => LTtag(tag, vList);
@@ -404,7 +404,7 @@ class PNtag extends PN with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(PN.kTrim);
 
   @override
   PNtag update([Iterable<String> vList]) => PNtag(tag, vList);
@@ -447,7 +447,7 @@ class SHtag extends SH with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(SH.kTrim);
 
   @override
   SHtag update([Iterable<String> vList]) => SHtag(tag, vList);
@@ -490,7 +490,7 @@ class STtag extends ST with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(ST.kTrim);
 
   @override
   STtag update([Iterable<String> vList]) => STtag(tag, vList);
@@ -533,7 +533,7 @@ class UCtag extends UC with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(UC.kTrim);
 
   @override
   UCtag update([Iterable<String> vList]) => UCtag(tag, vList);
@@ -585,7 +585,7 @@ class UItag extends UI with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(UI.kTrim);
 
   @override
   List<Uid> get uids => _uids ??= Uid.parseList(values);
@@ -634,7 +634,7 @@ class URtag extends UR with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(UR.kTrim);
 
   @override
   URtag update([Iterable<String> vList]) => URtag(tag, vList);
@@ -677,7 +677,7 @@ class UTtag extends UT with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(UT.kTrim);
 
   @override
   UTtag update([Iterable<String> vList]) => UTtag(tag, vList);
@@ -721,7 +721,7 @@ class AStag extends AS with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(AS.kTrim);
 
   @override
   AStag update([Iterable<String> vList]) => AStag(tag, vList);
@@ -766,7 +766,7 @@ class DAtag extends DA with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(DA.kTrim);
 
   @override
   DAtag update([Iterable<String> vList]) => DAtag(tag, vList);
@@ -812,7 +812,7 @@ class DTtag extends DT with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(DT.kTrim);
 
   @override
   DTtag update([Iterable<String> vList]) => DTtag(tag, vList);
@@ -859,7 +859,7 @@ class TMtag extends TM with TagElement<String> {
     return old;
   }
 
-  StringList get trimmed => values.trim(trim);
+  StringList get trimmed => values.trim(TM.kTrim);
 
   @override
   TMtag update([Iterable<String> vList]) => TMtag(tag, vList);

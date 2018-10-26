@@ -27,6 +27,12 @@ abstract class GrowableMixin {
   /// Ensures that [_bd] is at least [length] long, and grows
   /// the buf if necessary, preserving existing data.
   bool ensureLength(int length) => _ensureLength(_bd, length);
+
+  /// Ensures that [bd] is at least [minLength] long, and grows
+  /// the buf if necessary, preserving existing data.
+  static bool _ensureLength(ByteData bd, int minLength) =>
+      (minLength > bd.lengthInBytes) ? _reallyGrow(bd, minLength) : false;
+
 }
 
 class GrowableBytes extends Bytes with GrowableMixin {
@@ -68,11 +74,6 @@ class GrowableBytes extends Bytes with GrowableMixin {
 
   static const int kMaximumLength = k1GB;
 }
-
-/// Ensures that [bd] is at least [minLength] long, and grows
-/// the buf if necessary, preserving existing data.
-bool _ensureLength(ByteData bd, int minLength) =>
-    (minLength > bd.lengthInBytes) ? _reallyGrow(bd, minLength) : false;
 
 /// If [minLength] is less than or equal to the current length of
 /// [bd] returns [bd]; otherwise, returns a new [ByteData] with a length

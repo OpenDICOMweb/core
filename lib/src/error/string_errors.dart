@@ -123,7 +123,8 @@ bool invalidDcmDateTimeString(String message, [Issues issues]) {
 Null badCharacterInString(String s, int index, [Issues issues]) {
   final char = s[index];
   final unit = s.codeUnitAt(index);
-  final msg = 'InvalidCharacter: "$char"($unit) at index($index) in "$s"';
+  final msg = 'InvalidCharacter: "$char"($unit) at index($index) '
+      'in [${s.length}]"$s"';
   return badString(msg);
 }
 
@@ -183,3 +184,7 @@ bool invalidStringList(String message, [Issues issues]) {
   badStringList(message, issues);
   return false;
 }
+
+/// General [Error] message for [String] [List]s. Returns _false_.
+Null badStringTrim(String message, [Issues issues]) =>
+    badStringList(message, issues);

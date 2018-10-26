@@ -16,26 +16,31 @@ import 'package:core/src/utils/buffer.dart';
 import 'package:core/src/utils/bytes.dart';
 import 'package:core/src/utils/dicom_bytes/dicom_bytes.dart';
 */
-
 part of odw.sdk.core.buffer;
 
 /// A [WriteBuffer] for binary DICOM objects.
-class DicomWriteBuffer extends BytesBuffer with WriteBufferMixin {
+class DicomWriteBuffer extends WriteBuffer {
+/*
   @override
   final GrowableDicomBytes _bytes;
   @override
   final int _rIndex;
   @override
   int _wIndex;
+*/
 
   /// Creates an empty [DicomWriteBuffer].
   DicomWriteBuffer(
       [int length = kDefaultLength,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
+
+/*
       : _rIndex = 0,
         _wIndex = 0,
         _bytes = GrowableDicomBytes(length, endian, limit);
+*/
+      : super(length, endian, limit);
 
   /// Creates a [DicomWriteBuffer] from a [WriteBuffer].
   DicomWriteBuffer.from(WriteBuffer wb,
@@ -43,13 +48,17 @@ class DicomWriteBuffer extends BytesBuffer with WriteBufferMixin {
       int length,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
+/*
       : _rIndex = offset,
         _wIndex = offset,
         _bytes =
             GrowableDicomBytes.from(wb._bytes, offset, length, endian, limit);
+*/
+      : super.from(wb, offset, length, endian, limit);
 
   /// Creates a [DicomWriteBuffer] from a [GrowableBytes].
-  DicomWriteBuffer.fromBytes(this._bytes, this._rIndex, this._wIndex);
+  DicomWriteBuffer.fromBytes(GrowableBytes bytes, int rIndex, int wIndex)
+      : super.fromBytes(bytes, rIndex, wIndex);
 
   /// Creates a [[DicomWriteBuffer]] that uses a [TypedData] view of [td].
   DicomWriteBuffer.typedDataView(TypedData td,
@@ -57,49 +66,69 @@ class DicomWriteBuffer extends BytesBuffer with WriteBufferMixin {
       int lengthInBytes,
       Endian endian = Endian.little,
       int limit = kDefaultLimit])
+/*
       : _rIndex = offset ?? 0,
         _wIndex = lengthInBytes ?? td.lengthInBytes,
         _bytes = GrowableDicomBytes.typedDataView(td, offset ?? 0,
             lengthInBytes ?? td.lengthInBytes, endian ?? Endian.host, limit);
+*/
+      : super.typedDataView(td, offset, lengthInBytes, endian, limit);
 
   /// Write a DICOM Tag Code to _this_.
   void writeCode(int code, [int eLength = 12]) {
     assert(_wIndex.isEven && code != null);
     maybeGrow(eLength);
-    _bytes
+    bytes
       ..setUint16(_wIndex, code >> 16)
       ..setUint16(_wIndex + 2, code & 0xFFFF);
     _wIndex += 4;
   }
 
   /// Peek at next tag - doesn't move the [_wIndex].
-  void writeVRCode(int code) {
+  void writeVRCode(int vrCode) {
     assert(_wIndex.isEven && hasRemaining(4), '@$_wIndex : $remaining');
-    _bytes.setVRCode(code);
+    bytes
+      ..setUint8(4, vrCode >> 8)
+      ..setUint8(5, vrCode & 0xFF);
     _wIndex += 2;
   }
 
   /// Write a DICOM Tag Code to _this_.
   void writeEvrShortHeader(int code, int vrCode, int vlf) {
     assert(_wIndex.isEven);
-    maybeGrow(8);
-    _bytes.evrSetShortHeader(code, vrCode, vlf);
+    maybeGrow(8 + vlf);
+    bytes
+      ..setUint16(0, code >> 16)
+      ..setUint16(2, code & 0xFFFF)
+      ..setUint8(4, vrCode >> 8)
+      ..setUint8(5, vrCode & 0xFF)
+      ..setUint16(6, vlf);
     _wIndex += 8;
   }
 
   /// Write a DICOM Tag Code to _this_.
-  void writeEvrLongHeader(int code, int vrCode, int vlf) {
+  void writeEvrLongHeader(int code, int vrCode, int vlf,
+      {bool isUndefinedLength = false}) {
     assert(_wIndex.isEven);
-    maybeGrow(12);
-    _bytes.evrSetLongHeader(code, vrCode, vlf);
+    maybeGrow(12 + vlf);
+    bytes
+      ..setUint16(0, code >> 16)
+      ..setUint16(2, code & 0xFFFF)
+      ..setUint8(4, vrCode >> 8)
+      ..setUint8(5, vrCode & 0xFF)
+      ..setUint16(6, 0)
+      ..setUint32(8, isUndefinedLength ? kUndefinedLength : vlf);
     _wIndex += 12;
   }
 
   /// Write a DICOM Tag Code to _this_.
   void writeIvrHeader(int code, int vrCode, int vlf) {
     assert(_wIndex.isEven);
-    maybeGrow(8);
-    _bytes.ivrSetHeader(_wIndex, code, vlf);
+    maybeGrow(8 + vlf);
+    bytes
+      ..setUint16(0, code >> 16)
+      ..setUint16(2, code & 0xFFFF)
+      ..setUint32(4, vlf);
     _wIndex += 8;
   }
 }

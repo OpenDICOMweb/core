@@ -42,8 +42,7 @@ bool isValidTag(Tag tag, Issues issues, int targetVR, Type type) {
 bool isValidSpecialTag(Tag tag, Issues issues, int targetVR, Type type) {
   final vrIndex = tag.vrIndex;
   if (doTestElementValidity &&
-      (vrIndex == targetVR ||
-          (vrIndex >= kVRSpecialIndexMin && vrIndex <= kVRSpecialIndexMax)))
+      (vrIndex == targetVR || (vrIndex >= kOBOWIndex && vrIndex <= kUSSSIndex)))
     return true;
   return invalidTag(tag, issues, type);
 }

@@ -134,9 +134,7 @@ abstract class VR<T> {
   /// or a valid _Special VR Index_. This function is only used by [OB],
   /// [OW], [SS], and [US].
   static bool isValidSpecialIndex(int vrIndex, Issues issues, int target) {
-    if (vrIndex == target ||
-        (vrIndex >= kVRSpecialIndexMin && vrIndex <= kVRSpecialIndexMax))
-      return true;
+    if (vrIndex == target || isSpecialVRIndex(vrIndex)) return true;
     return invalidIndex(vrIndex, issues, target);
   }
 
@@ -158,15 +156,18 @@ abstract class VR<T> {
     return false;
   }
 
-  /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
+/*
+  /// [target] is a valid _VR Code_. One of the constants (kXXIndex)
   /// is be used.
   static bool isValidSpecialCode(int vrCode, Issues issues, int target) {
     if (vrCode == target ||
-        (vrCode >= kVRSpecialIndexMin && vrCode <= kVRSpecialIndexMax))
-      return true;
+        (vrCode >= kOB && vrCode <= kVRSpecialIndexMax)
+    if (vrIndex == null) return false;
+    if (vrCode == target || isSpecialVRIndex(vrIndex)) return true;
     return invalidCode(vrCode, issues, target);
   }
 
+*/
   // ignore: prefer_void_to_null
   static Null _doError(String message, Issues issues,
       [int badIndex, int goodIndex]) {
@@ -491,18 +492,28 @@ class VRSpecial extends VRInt {
 
 const List<VR> vrByIndex = <VR>[
   // Begin maybe undefined length
+  VR.kUN,
   VR.kSQ, // Sequence == 0,
   // Begin EVR Long
-  VR.kOB, VR.kOW, VR.kUN,
+  VR.kOB, VR.kOW,
   // End maybe Undefined Length
   // EVR Long
-  VR.kOD, VR.kOF, VR.kOL, VR.kUC, VR.kUR, VR.kUT,
+  VR.kOD, VR.kOF, VR.kOL,
+
+  VR.kUC, VR.kUR, VR.kUT,
   // End Evr Long
   // Begin EVR Short
-  VR.kAE, VR.kAS, VR.kAT, VR.kCS, VR.kDA, VR.kDS, VR.kDT,
-  VR.kFD, VR.kFL, VR.kIS, VR.kLO, VR.kLT, VR.kPN, VR.kSH,
-  VR.kSL, VR.kSS, VR.kST, VR.kTM, VR.kUI, VR.kUL, VR.kUS,
+  VR.kAE, VR.kAS, VR.kCS,
+  VR.kDA, VR.kDS, VR.kDT,
+  VR.kIS, VR.kLO, VR.kLT,
+  VR.kPN, VR.kSH, VR.kST,
+  VR.kTM, VR.kUI,
   // End Evr Short
+
+  VR.kAT, VR.kFD, VR.kFL,
+  VR.kSL, VR.kSS, VR.kUL,
+  VR.kUS,
+
   // Special
   VR.kOBOW, VR.kUSSS, VR.kUSSSOW, VR.kUSOW
 ];

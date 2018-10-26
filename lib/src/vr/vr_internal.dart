@@ -26,9 +26,7 @@ class VR {
   /// or a valid _Special VR Index_. This function is only used by [OB],
   /// [OW], [SS], and [US].
   static bool isValidSpecialIndex(int vrIndex, Issues issues, int target) {
-    if (vrIndex == target ||
-        (vrIndex >= kVRSpecialIndexMin && vrIndex <= kVRSpecialIndexMax))
-      return true;
+    if (vrIndex == target || isSpecialVRIndex(vrIndex)) return true;
     return invalidVRIndex(vrIndex, issues, target);
   }
 
@@ -42,9 +40,8 @@ class VR {
   /// [target] is a valid _VR Code_. One of the constants (k_XX_Index)
   /// is be used.
   static bool isValidSpecialCode(int vrCode, Issues issues, int target) {
-    if (vrCode == target ||
-        (vrCode >= kVRSpecialIndexMin && vrCode <= kVRSpecialIndexMax))
-      return true;
+    final vrIndex = vrIndexFromCode(vrCode);
+    if (vrCode == target || isSpecialVRIndex(vrIndex)) return true;
     return invalidVRCode(vrCode, issues, target);
   }
 }

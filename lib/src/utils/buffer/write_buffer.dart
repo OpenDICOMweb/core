@@ -18,9 +18,9 @@ import 'write_buffer_mixin.dart';
 part of odw.sdk.core.buffer;
 
 /// A writable [ByteBuffer].
-class WriteBuffer extends BytesBuffer with WriteBufferMixin {
+class WriteBuffer extends Object with WriteBufferMixin {
   @override
-  final GrowableBytes _bytes;
+  GrowableBytes bytes;
   @override
   final int _rIndex;
   @override
@@ -33,7 +33,7 @@ class WriteBuffer extends BytesBuffer with WriteBufferMixin {
       int limit = kDefaultLimit])
       : _rIndex = 0,
         _wIndex = 0,
-        _bytes = GrowableBytes(length, endian, limit);
+        bytes = GrowableBytes(length, endian, limit);
 
   /// Creates a [WriteBuffer] from another [WriteBuffer].
   WriteBuffer.from(WriteBuffer wb,
@@ -43,10 +43,10 @@ class WriteBuffer extends BytesBuffer with WriteBufferMixin {
       int limit = kDefaultLimit])
       : _rIndex = offset,
         _wIndex = offset,
-        _bytes = GrowableBytes.from(wb._bytes, offset, length, endian, limit);
+        bytes = GrowableBytes.from(wb.bytes, offset, length, endian, limit);
 
   /// Creates a WriteBuffer from a [GrowableBytes].
-  WriteBuffer.fromBytes(this._bytes, this._rIndex, this._wIndex);
+  WriteBuffer.fromBytes(this.bytes, this._rIndex, this._wIndex);
 
   /// Creates a [WriteBuffer] that uses a [TypedData] view of [td].
   WriteBuffer.typedDataView(TypedData td,
@@ -56,6 +56,15 @@ class WriteBuffer extends BytesBuffer with WriteBufferMixin {
       int limit = kDefaultLimit])
       : _rIndex = offset ?? 0,
         _wIndex = lengthInBytes ?? td.lengthInBytes,
-        _bytes = GrowableBytes.typedDataView(td, offset ?? 0,
+        bytes = GrowableBytes.typedDataView(td, offset ?? 0,
             lengthInBytes ?? td.lengthInBytes, endian ?? Endian.host, limit);
+
+  /// Returns the current read index.
+  int get rIndex => _rIndex;
+
+  /// Returns the current write index.
+  int get wIndex => _wIndex;
+
+  /// Returns the Endianness of _this_.
+  Endian get endian => bytes.endian;
 }

@@ -16,14 +16,9 @@ int truncateBytesLength = 16;
 
 /// [BytesMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
-abstract class BytesMixin {
+mixin BytesMixin {
   ByteData get _bd;
   Endian get endian;
-
-  static bool ignorePadding = true;
-  static bool allowUnequalLengths = false;
-
-  ByteData get bd => _bd;
 
   // **** TypedData interface.
   int get elementSizeInBytes => 1;
@@ -37,6 +32,8 @@ abstract class BytesMixin {
       throw UnsupportedError('$runtimeType: length is not modifiable');
 
   int get limit => bdLength;
+
+  ByteData get bd => _bd;
 
   ByteBuffer get buffer => _bd.buffer;
 
@@ -150,6 +147,7 @@ abstract class BytesMixin {
     length ??= bdLength - offset;
     return _bd.buffer.asByteData(_absIndex(offset), length);
   }
+
 
   /// Returns a view of the specified region of _this_. [endian] defaults
   /// to the same [endian]ness as _this_.
@@ -414,7 +412,10 @@ abstract class BytesMixin {
     final s = ascii.decode(v, allowInvalid: allowInvalid);
     final last = s.length - 1;
     final c = s.codeUnitAt(last);
-    return (padChar != null && c == padChar) ? s.substring(0, last) : s;
+    // Urgent: kNull should never get here but it does. Fix
+    return (padChar != null && (c == padChar || c == kNull))
+        ? s.substring(0, last)
+        : s;
   }
 
   /// Returns a [List<String>]. This is done by first decoding
@@ -850,4 +851,3 @@ Null alignmentError(
     throw AlignmentError(bd, offsetInBytes, lengthInBytes, sizeInBytes);
   return null;
 }
-

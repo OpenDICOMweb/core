@@ -25,20 +25,20 @@ class DicomReadBuffer extends ReadBufferBase with ReadBufferMixin {
   ///
   /// _Note_: This MUST NOT be a [DicomBytes].
   @override
-  final Bytes _bytes;
+  final Bytes bytes;
   @override
   int _rIndex;
   @override
   int _wIndex;
 
   /// Constructor
-  DicomReadBuffer(this._bytes, [int offset = 0, int length])
+  DicomReadBuffer(this.bytes, [int offset = 0, int length])
       : _rIndex = offset ?? 0,
-        _wIndex = length ?? _bytes.length;
+        _wIndex = length ?? bytes.length;
 
   /// Returns the DICOM Tag Code at [offset].
   int getCode(int offset) =>
-      (_bytes.getUint16(offset) << 16) + _bytes.getUint16(offset + 2);
+      (bytes.getUint16(offset) << 16) + bytes.getUint16(offset + 2);
 
   /// Reads the DICOM Tag Code at the current [_rIndex]. It does not
   /// move the [_rIndex].
@@ -58,8 +58,7 @@ class DicomReadBuffer extends ReadBufferBase with ReadBufferMixin {
   /// Read the VR .
   int _readVRCode() {
     assert(_rIndex.isEven && hasRemaining(4), '@$_rIndex : $remaining');
-    final vrCode =
-        (_bytes.getUint8(_rIndex) << 8) + _bytes.getUint8(_rIndex + 1);
+    final vrCode = (bytes.getUint8(_rIndex) << 8) + bytes.getUint8(_rIndex + 1);
     _rIndex += 2;
     return vrCode;
   }
@@ -69,7 +68,7 @@ class DicomReadBuffer extends ReadBufferBase with ReadBufferMixin {
   /// Read a short Value Field Length.
   int readShortVLF() {
     assert(_rIndex.isEven && hasRemaining(2), '@$_rIndex : $remaining');
-    final vlf = _bytes.getUint16(_rIndex);
+    final vlf = bytes.getUint16(_rIndex);
     _rIndex += 2;
     return vlf;
   }

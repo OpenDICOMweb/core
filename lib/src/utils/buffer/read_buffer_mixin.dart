@@ -17,7 +17,7 @@ part of odw.sdk.core.buffer;
 // ignore_for_file: public_member_api_docs
 
 abstract class ReadBufferMixin {
-  Bytes get _bytes;
+  Bytes get bytes;
   int get _rIndex;
   set _rIndex(int n);
 
@@ -29,7 +29,7 @@ abstract class ReadBufferMixin {
 
   // End of Interface
 
-  ByteBuffer get buffer => _bytes.buffer;
+  ByteBuffer get buffer => bytes.buffer;
 
   int get readIndex => _rIndex;
   int get writeIndex => _wIndex;
@@ -40,7 +40,7 @@ abstract class ReadBufferMixin {
 
   // *** Reader specific Getters and Methods
 
-  int get length => _bytes.length;
+  int get length => bytes.length;
 
   int get index => _rIndex;
   set index(int v) => _rIndex = v;
@@ -71,88 +71,88 @@ abstract class ReadBufferMixin {
     return _rIndex = v;
   }
 
-  int getInt8() => _bytes.getInt8(_rIndex);
+  int getInt8() => bytes.getInt8(_rIndex);
 
   int readInt8() {
-    final v = _bytes.getInt8(_rIndex);
+    final v = bytes.getInt8(_rIndex);
     _rIndex++;
     return v;
   }
 
-  int getInt16() => _bytes.getInt16(_rIndex);
+  int getInt16() => bytes.getInt16(_rIndex);
 
   int readInt16() {
-    final v = _bytes.getInt16(_rIndex);
+    final v = bytes.getInt16(_rIndex);
     _rIndex += 2;
     return v;
   }
 
-  int getInt32() => _bytes.getInt32(_rIndex);
+  int getInt32() => bytes.getInt32(_rIndex);
 
   int readInt32() {
-    final v = _bytes.getInt32(_rIndex);
+    final v = bytes.getInt32(_rIndex);
     _rIndex += 4;
     return v;
   }
 
-  int getInt64() => _bytes.getInt64(_rIndex);
+  int getInt64() => bytes.getInt64(_rIndex);
 
   int readInt64() {
-    final v = _bytes.getInt64(_rIndex);
+    final v = bytes.getInt64(_rIndex);
     _rIndex += 8;
     return v;
   }
 
-  int getUint8() => _bytes.getUint8(_rIndex);
+  int getUint8() => bytes.getUint8(_rIndex);
 
   int readUint8() {
-    final v = _bytes.getUint8(_rIndex);
+    final v = bytes.getUint8(_rIndex);
     _rIndex++;
     return v;
   }
 
-  int getUint16() => _bytes.getUint16(_rIndex);
+  int getUint16() => bytes.getUint16(_rIndex);
 
   int readUint16() {
-    final v = _bytes.getUint16(_rIndex);
+    final v = bytes.getUint16(_rIndex);
     _rIndex += 2;
     return v;
   }
 
-  int getUint32() => _bytes.getUint32(_rIndex);
+  int getUint32() => bytes.getUint32(_rIndex);
 
   int readUint32() {
-    final v = _bytes.getUint32(_rIndex);
+    final v = bytes.getUint32(_rIndex);
     _rIndex += 4;
     return v;
   }
 
-  int getUint64() => _bytes.getUint64(_rIndex);
+  int getUint64() => bytes.getUint64(_rIndex);
 
   int readUint64() {
-    final v = _bytes.getUint64(_rIndex);
+    final v = bytes.getUint64(_rIndex);
     _rIndex += 8;
     return v;
   }
 
-  double getFloat32() => _bytes.getFloat32(_rIndex);
+  double getFloat32() => bytes.getFloat32(_rIndex);
 
   double readFloat32() {
-    final v = _bytes.getFloat32(_rIndex);
+    final v = bytes.getFloat32(_rIndex);
     _rIndex += 4;
     return v;
   }
 
-  double getFloat64() => _bytes.getFloat64(_rIndex);
+  double getFloat64() => bytes.getFloat64(_rIndex);
 
   double readFloat64() {
-    final v = _bytes.getFloat64(_rIndex);
+    final v = bytes.getFloat64(_rIndex);
     _rIndex += 8;
     return v;
   }
 
   String getAscii(int length) =>
-      _bytes.getAscii(offset: _rIndex, length: length);
+      bytes.getAscii(offset: _rIndex, length: length);
 
   String readAscii(int length) {
     final s = getAscii(length);
@@ -160,7 +160,7 @@ abstract class ReadBufferMixin {
     return s;
   }
 
-  String getUtf8(int length) => _bytes.getUtf8(offset: _rIndex, length: length);
+  String getUtf8(int length) => bytes.getUtf8(offset: _rIndex, length: length);
 
   String readUtf8(int length) {
     final s = getUtf8(length);
@@ -171,7 +171,7 @@ abstract class ReadBufferMixin {
   String readString(int length) => readUtf8(length);
 
   bool getUint32AndCompare(int target) {
-    final delimiter = _bytes.getUint32(_rIndex);
+    final delimiter = bytes.getUint32(_rIndex);
     final v = target == delimiter;
     return v;
   }
@@ -180,85 +180,85 @@ abstract class ReadBufferMixin {
     end ??= _rIndex;
     final length = end - start;
     //   final offset = _getOffset(start, length);
-    return _bytes.asByteData(start, length);
+    return bytes.asByteData(start, length);
   }
 
   Uint8List uint8View([int start = 0, int length]) {
     final offset = _getOffset(start, length);
-    return _bytes.asUint8List(offset, length ?? length - offset);
+    return bytes.asUint8List(offset, length ?? length - offset);
   }
 
   Uint8List readUint8View(int length) => uint8View(_rIndex, length);
 
   Int8List readInt8List(int length) {
-    final v = _bytes.getInt8List(_rIndex, length);
+    final v = bytes.getInt8List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   Int16List readInt16List(int length) {
-    final v = _bytes.getInt16List(_rIndex, length);
+    final v = bytes.getInt16List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   Int32List readInt32List(int length) {
-    final v = _bytes.getInt32List(_rIndex, length);
+    final v = bytes.getInt32List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   Int64List readInt64List(int length) {
-    final v = _bytes.getInt64List(_rIndex, length);
+    final v = bytes.getInt64List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   Uint8List readUint8List(int length) {
-    final v = _bytes.getUint8List(_rIndex, length);
+    final v = bytes.getUint8List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   Uint16List readUint16List(int length) {
-    final v = _bytes.getUint16List(_rIndex, length);
+    final v = bytes.getUint16List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   Uint32List readUint32List(int length) {
-    final v = _bytes.getUint32List(_rIndex, length);
+    final v = bytes.getUint32List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   Uint64List readUint64List(int length) {
-    final v = _bytes.getUint64List(_rIndex, length);
+    final v = bytes.getUint64List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   Float32List readFloat32List(int length) {
-    final v = _bytes.getFloat32List(_rIndex, length);
+    final v = bytes.getFloat32List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   Float64List readFloat64List(int length) {
-    final v = _bytes.getFloat64List(_rIndex, length);
+    final v = bytes.getFloat64List(_rIndex, length);
     _rIndex += length;
     return v;
   }
 
   List<String> readAsciiList(int length) {
-    final v = _bytes.getAsciiList(
+    final v = bytes.getAsciiList(
         offset: _rIndex, length: length, allowInvalid: true);
     _rIndex += length;
     return v;
   }
 
   List<String> readUtf8List(int length) {
-    final v = _bytes.getUtf8List(
+    final v = bytes.getUtf8List(
         offset: _rIndex, length: length, allowMalformed: true);
     _rIndex += length;
     return v;
@@ -267,20 +267,20 @@ abstract class ReadBufferMixin {
   List<String> readStringList(int length) => readUtf8List(length);
 
   int _getOffset(int start, int length) {
-    final offset = _bytes.offset + start;
+    final offset = bytes.offset + start;
     assert(offset >= 0 && offset <= length);
     assert(offset + length >= offset && (offset + length) <= length);
     return offset;
   }
 
   Uint8List get contentsRead =>
-      _bytes.buffer.asUint8List(_bytes.offset, _rIndex);
-  Uint8List get contentsUnread => _bytes.buffer.asUint8List(_rIndex, _wIndex);
+      bytes.buffer.asUint8List(bytes.offset, _rIndex);
+  Uint8List get contentsUnread => bytes.buffer.asUint8List(_rIndex, _wIndex);
 
-  Uint8List get contentsWritten => _bytes.buffer.asUint8List(_rIndex, _wIndex);
+  Uint8List get contentsWritten => bytes.buffer.asUint8List(_rIndex, _wIndex);
 
   @override
-  String toString() => '$runtimeType: @R$_rIndex @W$_wIndex $_bytes';
+  String toString() => '$runtimeType: @R$_rIndex @W$_wIndex $bytes';
 
   /// The underlying [ByteData]
   ByteData get bd => isClosed ? null : buffer.asByteData();
@@ -300,7 +300,7 @@ abstract class ReadBufferMixin {
 
   ByteData close() {
     if (hadTrailingBytes)
-      _hadTrailingZeros = _checkAllZeros(_wIndex, _bytes.length);
+      _hadTrailingZeros = _checkAllZeros(_wIndex, bytes.length);
     final bd = buffer.asByteData(0, _wIndex);
     _isClosed = true;
     return bd;
@@ -320,7 +320,7 @@ abstract class ReadBufferMixin {
 
   bool _checkAllZeros(int start, int end) {
     for (var i = start; i < end; i++)
-      if (_bytes.getUint8(i) != 0) return false;
+      if (bytes.getUint8(i) != 0) return false;
     return true;
   }
 

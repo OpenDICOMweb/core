@@ -29,15 +29,15 @@ class StringList extends ListBase<String> {
     if (vList == null || vList.isEmpty) return kEmptyList;
     var vList1 = (vList is List<String>) ? vList : vList.toList();
     if (doRemoveBlankStrings) {
-        final vList2 = <String>[];
-        for (var i = 0; i < vList1.length; i++) {
-          final a = vList1[i];
-          if (a.trim().isNotEmpty) vList2.add(a);
-        }
-        if (vList2.isEmpty) return kEmptyList;
-        vList1 = vList2;
+      final vList2 = <String>[];
+      for (var i = 0; i < vList1.length; i++) {
+        final a = vList1[i];
+        if (a.trim().isNotEmpty) vList2.add(a);
       }
-      return StringList._(vList1);
+      if (vList2.isEmpty) return kEmptyList;
+      vList1 = vList2;
+    }
+    return StringList._(vList1);
   }
 
   StringList._(this._values);
@@ -92,6 +92,8 @@ class StringList extends ListBase<String> {
         return _values.map((v) => v.trimRight());
       case Trim.both:
         return _values.map((v) => v.trim());
+      case Trim.none:
+        return _values;
       case Trim.leading:
         return _values.map((v) => v.trimLeft());
       default:

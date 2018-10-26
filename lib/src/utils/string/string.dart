@@ -47,6 +47,20 @@ String removeNullPadding(String s) {
 /// The type of whitespace trimming.
 enum Trim { leading, trailing, both, none }
 
+String trim(String s, Trim trim) {
+  if (s == null || s.isEmpty || trim == Trim.none) return s;
+  switch (trim) {
+    case Trim.trailing:
+      return s.trimRight();
+    case Trim.both:
+      return s.trim();
+    case Trim.leading:
+      return s.trimLeft();
+    default:
+      return badStringTrim('Trim error; $trim');
+  }
+}
+
 /// Specifies whether padding is allowed on the left-end, right-end,
 /// or both-ends.
 enum End { left, right, both }
@@ -76,6 +90,7 @@ ByteData stringToByteData(String s, {bool isAscii = false}) {
 bool isDcmString(String s, int max,
     {bool allowLeading = true, bool allowBlank = true}) {
   final len = (s.length < max) ? s.length : max;
+  if (allowInvalidCharsInStrings) return true;
   return isFilteredString(s, 0, len, isDcmStringChar,
       allowLeadingSpaces: allowLeading,
       allowTrailingSpaces: true,
