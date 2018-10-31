@@ -416,8 +416,10 @@ abstract class Int64 {
 
   static const int kSizeInBytes = 8;
   static const int kSizeInBits = kSizeInBytes * 8;
-  static const int kMinValue = 0;
-  static const int kMaxValue = (1 << kSizeInBits) - 1;
+//  static const int kMinValue = 0;
+  static const int kMinValue = -(1 << (kSizeInBits - 1));
+//  static const int kMaxValue = (1 << kSizeInBits) - 1;
+  static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
 
   /// Returns the [values] length that corresponds to [vfLength].
   static int getLength(int vfLength) =>
@@ -945,7 +947,8 @@ abstract class Uint64 {
   static const int kSizeInBytes = 8;
   static const int kSizeInBits = kSizeInBytes * 8;
   static const int kMinValue = 0;
-  static const int kMaxValue = (1 << kSizeInBits) - 1;
+//  static const int kMaxValue = (1 << kSizeInBits) - 1;
+  static const int kMaxValue = (1 << (kSizeInBits - 1)) - 1;
 
   bool equal(Bytes a, Bytes b) {
     for (var i = 0; i < a.length; i += 8) {
