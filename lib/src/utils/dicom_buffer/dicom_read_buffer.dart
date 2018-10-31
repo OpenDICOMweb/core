@@ -36,6 +36,17 @@ class DicomReadBuffer extends ReadBufferBase with ReadBufferMixin {
       : _rIndex = offset ?? 0,
         _wIndex = length ?? bytes.length;
 
+  // **** Dicom extensions - these should go away when DicomBytes works
+  int get code {
+    final group = getUint16();
+    final elt = getUint16();
+    return (group << 16) + elt;
+  }
+
+  int get vrCode => (getUint8() << 8) + getUint8();
+
+  int get vrIndex => vrIndexByCode8Bit[vrCode];
+
   /// Returns the DICOM Tag Code at [offset].
   int getCode(int offset) =>
       (bytes.getUint16(offset) << 16) + bytes.getUint16(offset + 2);

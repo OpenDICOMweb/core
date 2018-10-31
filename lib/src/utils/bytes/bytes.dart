@@ -17,7 +17,6 @@ import 'package:core/src/system.dart';
 import 'package:core/src/utils/bytes/constants.dart';
 import 'package:core/src/utils/primitives.dart';
 import 'package:core/src/utils/string.dart';
-import 'package:core/src/vr.dart';
 
 part 'package:core/src/utils/bytes/bytes_mixin.dart';
 part 'package:core/src/utils/bytes/growable_bytes.dart';
@@ -194,16 +193,6 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
     return hashCode;
   }
 
-    // **** Dicom extensions - these should go away when DicomBytes works
-  int get code {
-    final group = _getUint16(0);
-    final elt = _getUint16(2);
-    return (group << 16) + elt;
-  }
-
-  int get vrCode => (_getUint8(4) << 8) + _getUint8(5);
-
-  int get vrIndex => vrIndexByCode8Bit[vrCode];
   // **** End of DIcom extensions.
 
   static const int kMinLength = 16;
@@ -219,7 +208,6 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
     if (s == null || s.length > (maxLength ?? s.length)) return null;
     return s.isEmpty ? '' : s;
   }
-
 }
 
 bool _bytesEqual(Bytes a, Bytes b) {
