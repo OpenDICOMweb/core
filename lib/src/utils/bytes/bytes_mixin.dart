@@ -202,7 +202,6 @@ mixin BytesMixin {
   // Allows the removal of padding characters.
   Uint8List asUint8List([int offset = 0, int length]) {
     length ??= bdLength;
-    //if (length == 0) return kEmptyUint8List;
     final index = _absIndex(offset);
     return _bd.buffer.asUint8List(index, length);
   }
