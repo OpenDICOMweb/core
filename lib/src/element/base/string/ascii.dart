@@ -174,6 +174,8 @@ abstract class CS extends Ascii {
   int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
@@ -280,6 +282,8 @@ abstract class UI extends Ascii {
   int get maxLength => kMaxLength;
   @override
   int get padChar => kNull;
+  @override
+  Trim get trim => kTrim;
 
   List<Uid> get uids => _uids ??= Uid.parseList(values);
   set uids(Iterable<Uid> uList) => _uids = uList;

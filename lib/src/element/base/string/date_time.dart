@@ -38,6 +38,8 @@ abstract class AS extends Ascii {
   int get maxLength => kMaxLength;
   @override
   bool get isSingleValued => true;
+  @override
+  Trim get trim => kTrim;
 
   @override
   int get hashCode {
@@ -166,6 +168,8 @@ abstract class DA extends Ascii {
   int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   /// A fixed size List of [Date] values. They are created lazily.
   List<Date> get dates => _dates ??= values.map(Date.parse).toList();
@@ -314,6 +318,8 @@ abstract class DT extends Ascii {
   int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   List<DcmDateTime> get dateTimes =>
       _dateTimes ??= values.map(DcmDateTime.parse).toList();

@@ -78,6 +78,8 @@ abstract class LO extends Utf8 {
   int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
@@ -225,6 +227,8 @@ abstract class PN extends Utf8 {
   int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   List<PersonName> get names => _names ??= values.map(PersonName.parse);
   List<PersonName> _names;
@@ -335,6 +339,8 @@ abstract class SH extends Utf8 {
   int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
@@ -440,6 +446,8 @@ abstract class UC extends Utf8 {
   int get maxVFLength => kMaxVFLength;
   @override
   int get vlfSize => 4;
+  @override
+  Trim get trim => kTrim;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>

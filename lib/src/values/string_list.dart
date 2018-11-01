@@ -17,27 +17,26 @@ import 'package:core/src/utils/string/string.dart';
 
 // ignore_for_file: public_member_api_docs
 
-// Urgent: move to globals
-bool doRemoveBlankStrings = false;
-
 /// A class that is the _values_ of String Elements.
 class StringList extends ListBase<String> {
   final List<String> _values;
 
-  factory StringList.from([Iterable<String> vList]) {
+  factory StringList.from([Iterable<String> vList, Trim trimType = Trim.none]) {
     if (throwOnError && vList == null) return badValues(vList);
     if (vList == null || vList.isEmpty) return kEmptyList;
-    var vList1 = (vList is List<String>) ? vList : vList.toList();
-    if (doRemoveBlankStrings) {
-      final vList2 = <String>[];
-      for (var i = 0; i < vList1.length; i++) {
-        final a = vList1[i];
-        if (a.trim().isNotEmpty) vList2.add(a);
-      }
-      if (vList2.isEmpty) return kEmptyList;
-      vList1 = vList2;
+    final vList1 = (vList is List<String>) ? vList : vList.toList();
+
+    if (!doRemoveBlankStrings && !doTrimWhitespace) return StringList._(vList1);
+
+    final vList2 = <String>[];
+    for (var i = 0; i < vList1.length; i++) {
+      final a = vList1[i];
+      if (doRemoveBlankStrings && a.trim().isEmpty) continue;
+
+      vList2.add(doTrimWhitespace ? trimmer(a, trimType) : a);
     }
-    return StringList._(vList1);
+    if (vList2.isEmpty) return kEmptyList;
+    return StringList._(vList2);
   }
 
   StringList._(this._values);

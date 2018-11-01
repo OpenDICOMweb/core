@@ -50,7 +50,8 @@ abstract class StringBase extends Element<String> {
   @override
   List<String> get values;
 
-  Trim get trim => kTrim;
+  /// The [Trim] that may be applied to [values]. Defaults to [Trim.trailing].
+  Trim get trim;
 
   // **** End of interface
 

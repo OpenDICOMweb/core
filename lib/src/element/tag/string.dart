@@ -20,7 +20,7 @@ import 'package:core/src/vr.dart';
 
 bool _isEmpty(Iterable<String> vList) => vList == null || vList.isEmpty;
 
-StringList _toValues(Iterable<String> vList) {
+StringList _toValues(Iterable<String> vList, [Trim doTrim = Trim.none]) {
   if (throwOnError && vList == null) return badValues(vList);
   return _isEmpty(vList) ? StringList.kEmptyList : StringList.from(vList);
 }
@@ -28,6 +28,7 @@ StringList _toValues(Iterable<String> vList) {
 abstract class TagStringMixin {
   /// Values will always have [Type] [StringList].
   StringList get _values;
+  Trim get trim;
 
   StringBase update([Iterable<String> vList]);
 
@@ -38,7 +39,10 @@ abstract class TagStringMixin {
   /// Values will always have [Type] [StringList].
   StringList get values => _values;
 
-  set values(Iterable<String> vList) => _values = _toValues(vList);
+  set values(Iterable<String> vList) =>
+      _values = _toValues(vList, doTrimWhitespace ? trim : Trim.none);
+
+  StringList get trimmed => _values.trim(trim);
 
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
@@ -53,6 +57,7 @@ abstract class TagStringMixin {
 
 // Urgent Jim: we need to handle Specific Character Sets -
 // especially Latin-1 (ISO IR 100)
+
 class AEtag extends AE with TagElement<String>, TagStringMixin {
   @override
   final Tag tag;
@@ -61,24 +66,11 @@ class AEtag extends AE with TagElement<String>, TagStringMixin {
 
   /// Creates an [AEtag] Element.
   factory AEtag(Tag tag, [Iterable<String> vList]) {
-    final v = _toValues(vList);
+    final v = _toValues(vList, AE.kTrim);
     return AE.isValidArgs(tag, v) ? AEtag._(tag, v) : badValues(v, null, tag);
   }
 
   AEtag._(this.tag, this._values) : assert(tag.vrIndex == kAEIndex);
-
-/*
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
-*/
-
-  StringList get trimmed => _values.trim(AE.kTrim);
 
   @override
   AEtag update([Iterable<String> vList]) => AEtag(tag, vList);
@@ -99,7 +91,7 @@ class CStag extends CS with TagElement<String> {
   StringList _values;
 
   factory CStag(Tag tag, [Iterable<String> vList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, CS.kTrim);
     return CS.isValidArgs(tag, v) ? CStag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -113,15 +105,6 @@ class CStag extends CS with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(CS.kTrim);
 
@@ -149,7 +132,7 @@ class DStag extends DS with TagElement<String> {
   StringList _values;
 
   factory DStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, DS.kTrim);
     return DS.isValidArgs(tag, v) ? DStag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -160,15 +143,6 @@ class DStag extends DS with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(DS.kTrim);
 
@@ -191,7 +165,7 @@ class IStag extends IS with TagElement<String> {
   StringList _values;
 
   factory IStag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, IS.kTrim);
     return IS.isValidArgs(tag, v) ? IStag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -202,15 +176,6 @@ class IStag extends IS with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(IS.kTrim);
 
@@ -234,7 +199,7 @@ class LOtag extends LO with TagElement<String> {
   StringList _values;
 
   factory LOtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, LO.kTrim);
     return LO.isValidArgs(tag, v) ? LOtag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -245,15 +210,6 @@ class LOtag extends LO with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(LO.kTrim);
 
@@ -277,7 +233,7 @@ class PCtag extends PC with TagElement<String> {
 
   factory PCtag(Tag tag, [StringList vList]) {
     vList ??= StringList.kEmptyList;
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, LO.kTrim);
     return PC.isValidArgs(tag, v) ? PCtag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -288,15 +244,6 @@ class PCtag extends PC with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   @override
   String get token => value;
@@ -340,7 +287,7 @@ class LTtag extends LT with TagElement<String> {
   StringList _values;
 
   factory LTtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, LT.kTrim);
     return LT.isValidArgs(tag, v) ? LTtag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -351,15 +298,6 @@ class LTtag extends LT with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(LT.kTrim);
 
@@ -383,7 +321,7 @@ class PNtag extends PN with TagElement<String> {
   StringList _values;
 
   factory PNtag(Tag tag, [Iterable<String> vList = kEmptyStringList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, PN.kTrim);
     return PN.isValidArgs(tag, v) ? PNtag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -394,15 +332,6 @@ class PNtag extends PN with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(PN.kTrim);
 
@@ -426,7 +355,7 @@ class SHtag extends SH with TagElement<String> {
   StringList _values;
 
   factory SHtag(Tag tag, [Iterable<String> vList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, SH.kTrim);
     return SH.isValidArgs(tag, v) ? SHtag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -437,15 +366,6 @@ class SHtag extends SH with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(SH.kTrim);
 
@@ -469,7 +389,7 @@ class STtag extends ST with TagElement<String> {
   StringList _values;
 
   factory STtag(Tag tag, [Iterable<String> vList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, ST.kTrim);
     return ST.isValidArgs(tag, v) ? STtag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -480,15 +400,6 @@ class STtag extends ST with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(ST.kTrim);
 
@@ -512,7 +423,7 @@ class UCtag extends UC with TagElement<String> {
   StringList _values;
 
   factory UCtag(Tag tag, [Iterable<String> vList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, UC.kTrim);
     return UC.isValidArgs(tag, v) ? UCtag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -523,15 +434,6 @@ class UCtag extends UC with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(UC.kTrim);
 
@@ -554,7 +456,7 @@ class UItag extends UI with TagElement<String> {
   StringList _values;
 
   factory UItag(Tag tag, [Iterable<String> vList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, UI.kTrim);
     return UI.isValidArgs(tag, v)
         ? UItag._(tag, v, null)
         : badValues(v, null, tag);
@@ -575,15 +477,6 @@ class UItag extends UI with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(UI.kTrim);
 
@@ -613,7 +506,7 @@ class URtag extends UR with TagElement<String> {
   StringList _values;
 
   factory URtag(Tag tag, [Iterable<String> vList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, UR.kTrim);
     return UR.isValidArgs(tag, v) ? URtag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -624,15 +517,6 @@ class URtag extends UR with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(UR.kTrim);
 
@@ -656,7 +540,7 @@ class UTtag extends UT with TagElement<String> {
   StringList _values;
 
   factory UTtag(Tag tag, [Iterable<String> vList]) {
-    final v = StringList.from(vList);
+    final v = StringList.from(vList, UT.kTrim);
     return UT.isValidArgs(tag, v) ? UTtag._(tag, v) : badValues(v, null, tag);
   }
 
@@ -667,15 +551,6 @@ class UTtag extends UT with TagElement<String> {
 
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
-
-  /// Replace the current [values] with [vList], and return the original
-  /// [values]. This method modifies the [Element].
-  @override
-  StringList replace([Iterable<String> vList]) {
-    final old = values;
-    values = vList;
-    return old;
-  }
 
   StringList get trimmed => values.trim(UT.kTrim);
 
@@ -712,6 +587,7 @@ class AStag extends AS with TagElement<String> {
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
 
+/*
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
   @override
@@ -720,6 +596,7 @@ class AStag extends AS with TagElement<String> {
     values = vList;
     return old;
   }
+*/
 
   StringList get trimmed => values.trim(AS.kTrim);
 
@@ -757,6 +634,7 @@ class DAtag extends DA with TagElement<String> {
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
 
+/*
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
   @override
@@ -765,6 +643,7 @@ class DAtag extends DA with TagElement<String> {
     values = vList;
     return old;
   }
+*/
 
   StringList get trimmed => values.trim(DA.kTrim);
 
@@ -803,6 +682,7 @@ class DTtag extends DT with TagElement<String> {
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
 
+/*
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
   @override
@@ -811,6 +691,7 @@ class DTtag extends DT with TagElement<String> {
     values = vList;
     return old;
   }
+*/
 
   StringList get trimmed => values.trim(DT.kTrim);
 
@@ -850,6 +731,7 @@ class TMtag extends TM with TagElement<String> {
   @override
   set values(Iterable<String> vList) => _values = _toValues(vList);
 
+/*
   /// Replace the current [values] with [vList], and return the original
   /// [values]. This method modifies the [Element].
   @override
@@ -858,6 +740,7 @@ class TMtag extends TM with TagElement<String> {
     values = vList;
     return old;
   }
+*/
 
   StringList get trimmed => values.trim(TM.kTrim);
 

@@ -20,9 +20,6 @@ part of odw.sdk.element.base.string;
 //       bool isEmptyStringAllowed = x;
 
 abstract class Text extends Utf8 {
-  static const bool kIsAsciiRequired = false;
-  static const Trim kTrim = Trim.trailing;
-
   @override
   bool get isAsciiRequired => false;
   @override
@@ -37,6 +34,8 @@ abstract class Text extends Utf8 {
 
   @override
   List<String> valuesFromBytes(Bytes bytes) => [bytes.getUtf8()];
+
+  static const bool kIsAsciiRequired = false;
 
   static List<String> fromValueField(Iterable vf, int maxVFLength,
       {bool isAscii = true}) {
@@ -65,6 +64,8 @@ abstract class LT extends Text {
   int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
@@ -161,6 +162,8 @@ abstract class ST extends Text {
   int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
+  @override
+  Trim get trim => kTrim;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
@@ -387,6 +390,8 @@ abstract class UT extends Text {
   int get maxLength => kMaxLength;
   @override
   int get maxVFLength => kMaxVFLength;
+  @override
+  Trim get trim => kTrim;
 
   @override
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>

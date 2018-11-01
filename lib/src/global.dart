@@ -260,6 +260,9 @@ bool _isValidYearRange(int minYear, int maxYear) {
 
 // Provisional globals - remove or move into Global
 
+bool doTrimWhitespace = false;
+bool doRemoveBlankStrings = false;
+
 bool allowBlankDates = false;
 bool allowBlankTimes = false;
 bool allowBlankDateTimes = false;

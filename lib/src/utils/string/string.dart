@@ -47,7 +47,7 @@ String removeNullPadding(String s) {
 /// The type of whitespace trimming.
 enum Trim { leading, trailing, both, none }
 
-String trim(String s, Trim trim) {
+String trimmer(String s, Trim trim) {
   if (s == null || s.isEmpty || trim == Trim.none) return s;
   switch (trim) {
     case Trim.trailing:
