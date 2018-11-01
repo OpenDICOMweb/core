@@ -19,7 +19,7 @@ part of odw.sdk.element.base.string;
 //       bool areAllSpacesAllowed = x;
 //       bool isEmptyStringAllowed = x;
 
-abstract class DS extends StringAscii {
+abstract class DS extends Ascii {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -227,7 +227,7 @@ abstract class DS extends StringAscii {
       vfBytes.getAsciiList();
 }
 
-abstract class IS extends StringAscii {
+abstract class IS extends Ascii {
   @override
   int get vrIndex => kVRIndex;
   @override

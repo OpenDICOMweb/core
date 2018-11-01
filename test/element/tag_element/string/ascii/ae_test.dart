@@ -821,41 +821,41 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getAEList(1, 1);
-        final fvf0 = StringAscii.fromValueField(vList0, k8BitMaxLongVF);
+        final fvf0 = Ascii.fromValueField(vList0, k8BitMaxLongVF);
         expect(fvf0, equals(vList0));
       }
 
       for (var i = 1; i < 10; i++) {
         global.throwOnError = false;
         final vList1 = rsg.getAEList(1, i);
-        final fvf1 = StringAscii.fromValueField(vList1, k8BitMaxLongVF);
+        final fvf1 = Ascii.fromValueField(vList1, k8BitMaxLongVF);
         expect(fvf1, equals(vList1));
       }
       global.throwOnError = false;
-      final fvf1 = StringAscii.fromValueField(null, k8BitMaxLongLength);
+      final fvf1 = Ascii.fromValueField(null, k8BitMaxLongLength);
       expect(fvf1, <String>[]);
       expect(fvf1 == kEmptyStringList, true);
 
-      final fvf2 = StringAscii.fromValueField(<String>[], k8BitMaxLongLength);
+      final fvf2 = Ascii.fromValueField(<String>[], k8BitMaxLongLength);
       expect(fvf2, <String>[]);
       expect(fvf2 == kEmptyStringList, false);
       expect(fvf2.isEmpty, true);
 
-      final fvf3 = StringAscii.fromValueField(<int>[1234], k8BitMaxLongLength);
+      final fvf3 = Ascii.fromValueField(<int>[1234], k8BitMaxLongLength);
       expect(fvf3, isNull);
 
       global.throwOnError = true;
-      expect(() => StringAscii.fromValueField(<int>[1234], k8BitMaxLongLength),
+      expect(() => Ascii.fromValueField(<int>[1234], k8BitMaxLongLength),
           throwsA(const TypeMatcher<InvalidValuesError>()));
 
       global.throwOnError = false;
       final vList2 = rsg.getAEList(1, 1);
       final bytes = Bytes.fromUtf8List(vList2);
-      final fvf4 = StringAscii.fromValueField(bytes, k8BitMaxLongLength);
+      final fvf4 = Ascii.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
 
       final vList3 = rng.uint8List(1, 1);
-      final fvf5 = StringAscii.fromValueField(vList3, k8BitMaxLongLength);
+      final fvf5 = Ascii.fromValueField(vList3, k8BitMaxLongLength);
       expect(fvf5, equals([cvt.ascii.decode(vList3)]));
     });
 

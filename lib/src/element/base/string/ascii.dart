@@ -21,14 +21,13 @@ part of odw.sdk.element.base.string;
 
 // Note: Each [String] in a Value Field must be separated by a backslash ('\)
 //       character. Thus, the minimum length of each string in a Value
-//       Field is 2.
-abstract class StringAscii extends StringBase {
+//       Field is 2, unless it is empty.
+abstract class Ascii extends StringBase {
   @override
   StringList get values;
 
   // **** End of Interface
-  @override
-  int get vlfSize => kVLFSize;
+
   @override
   bool get isAsciiRequired => true;
   @override
@@ -43,21 +42,15 @@ abstract class StringAscii extends StringBase {
   List<String> valuesFromBytes(Bytes bytes) =>
       bytes.getAsciiList(allowInvalid: global.allowInvalidAscii);
 
-  StringAscii append(String s) => update(values.append(s, maxValueLength));
+  Ascii append(String s) => update(values.append(s, maxValueLength));
 
-  StringAscii prepend(String s) => update(values.prepend(s, maxValueLength));
+  Ascii prepend(String s) => update(values.prepend(s, maxValueLength));
 
-  StringAscii truncate(int length) =>
-      update(values.truncate(length, maxValueLength));
+  Ascii truncate(int length) => update(values.truncate(length, maxValueLength));
 
   bool match(String regexp) => values.match(regexp);
 
-  static const int kVLFSize = 2;
-  static const int kMaxVFLength = k8BitMaxShortVF;
-  static const bool kIsLengthAlwaysValid = false;
-  static const bool kIsUndefinedLengthAllowed = false;
-  static const bool kIsAsciiRequired = true;
-
+  // TODO: this is almost the same as Utf8.fromValueField - merge
   static List<String> fromValueField(List vf, int maxVFLength,
       {bool isAscii = true}) {
     if (vf == null) return kEmptyStringList;
@@ -70,7 +63,7 @@ abstract class StringAscii extends StringBase {
 }
 
 /// A Application Entity Title ([AE]) Element
-abstract class AE extends StringAscii {
+abstract class AE extends Ascii {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -168,7 +161,7 @@ abstract class AE extends StringAscii {
 }
 
 /// A Code String ([CS]) Element
-abstract class CS extends StringAscii {
+abstract class CS extends Ascii {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -272,7 +265,7 @@ abstract class CS extends StringAscii {
   }
 }
 
-abstract class UI extends StringAscii {
+abstract class UI extends Ascii {
   @override
   int get vrIndex => kVRIndex;
   @override

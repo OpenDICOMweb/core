@@ -19,9 +19,15 @@ part of odw.sdk.element.base.string;
 //       bool areAllSpacesAllowed = x;
 //       bool isEmptyStringAllowed = x;
 
+// Note: Each [String] in a Value Field must be separated by a backslash ('\)
+//       character. Thus, the minimum length of each string in a Value
+//       Field is 2, unless it is empty.
 abstract class Utf8 extends StringBase {
   @override
   StringList get values;
+
+  // **** End of Interface
+
   @override
   bool get isAsciiRequired => false;
   @override
@@ -29,21 +35,12 @@ abstract class Utf8 extends StringBase {
 
   Bytes get asBytes => Bytes.fromUtf8List(values, maxVFLength);
 
+  @override
+  TypedData get typedData =>
+      stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
+
   List<String> valuesFromBytes(Bytes bytes) =>
       bytes.getUtf8List(allowMalformed: global.allowMalformedUtf8);
-
-  static const bool kIsAsciiRequired = false;
-  static const Trim kTrim = Trim.both;
-
-  static List<String> fromValueField(Iterable vf, int maxVFLength,
-      {bool isAscii = true}) {
-    if (vf == null) return kEmptyStringList;
-    if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
-    if (vf is Bytes) return vf.getUtf8List();
-    if (vf is Uint8List)
-      return stringListFromTypedData(vf, maxVFLength, isAscii: true);
-    return badValues(vf);
-  }
 
   Utf8 append(String s) => update(values.append(s, maxValueLength));
 
@@ -52,6 +49,17 @@ abstract class Utf8 extends StringBase {
   Utf8 truncate(int length) => update(values.truncate(length, maxValueLength));
 
   bool match(String regexp) => values.match(regexp);
+
+  // TODO: this is almost the same as Ascii.fromValueField - merge
+  static List<String> fromValueField(Iterable vf, int maxVFLength,
+      {bool isAscii = false}) {
+    if (vf == null) return kEmptyStringList;
+    if (vf is List<String> || vf.isEmpty || vf is StringBulkdata) return vf;
+    if (vf is Bytes) return vf.getUtf8List();
+    if (vf is Uint8List)
+      return stringListFromTypedData(vf, maxVFLength, isAscii: true);
+    return badValues(vf);
+  }
 }
 
 /// A Long String (LO) Element
@@ -65,6 +73,8 @@ abstract class LO extends Utf8 {
   @override
   String get vrName => kVRName;
   @override
+  bool get isAsciiRequired => kIsAsciiRequired;
+  @override
   int get maxValueLength => kMaxValueLength;
   @override
   int get maxLength => kMaxLength;
@@ -73,6 +83,7 @@ abstract class LO extends Utf8 {
   bool checkValue(String v, {Issues issues, bool allowInvalid = false}) =>
       isValidValue(v, issues: issues, allowInvalid: allowInvalid);
 
+  static const bool kIsAsciiRequired = false;
   static const int kVRIndex = kLOIndex;
   static const int kVRCode = kLOCode;
   static const int kMinValueLength = 1;
@@ -319,7 +330,7 @@ abstract class SH extends Utf8 {
   @override
   String get vrName => kVRName;
   @override
-  bool get isAsciiRequired => false;
+  bool get isAsciiRequired => kIsAsciiRequired;
   @override
   int get maxValueLength => kMaxValueLength;
   @override
@@ -404,7 +415,9 @@ abstract class SH extends Utf8 {
       {Issues issues, bool allowInvalid = false}) {
     if (s == null || !isValidValueLength(s, issues)) return false;
     if (isDcmString(s, kMaxValueLength)) return true;
-    if (allowOversizedStrings) return true;
+    if (allowInvalidValueLengths ||
+        allowOversizedStrings ||
+        allowInvalidCharsInStrings) return true;
     return invalidString('Invalid Short String (SH): "$s"', issues);
   }
 }

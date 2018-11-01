@@ -147,6 +147,8 @@ ActiveStudies:
     _patients.clear();
     _studies.clear();
     _studyPatient.clear();
+    _series.clear();
+    _instances.clear();
   }
 
   Patient search(String pid, {PersonName name, Date dob}) {

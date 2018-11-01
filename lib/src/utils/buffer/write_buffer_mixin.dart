@@ -74,11 +74,11 @@ abstract class WriteBufferMixin {
     return _wIndex = v;
   }
 
-  void write(Bytes bList, [int offset = 0, int length]) {
-    length ??= bList.length;
+  void write(Bytes b, [int offset = 0, int length]) {
+    length ??= b.length;
     ensureRemaining(length + 1);
     for (var i = offset, j = _wIndex; i < length; i++, j++)
-      bytes.setUint8(j, bList[i]);
+      bytes.setUint8(j, b[i]);
     _wIndex += length;
   }
 
@@ -212,9 +212,9 @@ abstract class WriteBufferMixin {
     _wIndex += list.length * 8;
   }
 
-  void writeUint8List(Uint8List bList, [int offset = 0, int length]) {
-    if (bList.lengthInBytes == 0) return;
-    writeByteData(bList.buffer.asByteData(bList.offsetInBytes, bList.length));
+  void writeUint8List(Uint8List list, [int offset = 0, int length]) {
+    if (list.lengthInBytes == 0) return;
+    writeByteData(list.buffer.asByteData(list.offsetInBytes, list.length));
   }
 
   void writeByteData(ByteData bd, [int offset = 0, int length]) {

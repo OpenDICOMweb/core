@@ -20,7 +20,7 @@ part of odw.sdk.element.base.string;
 //       bool isEmptyStringAllowed = x;
 
 /// DICOM Age (AS) Value Representation
-abstract class AS extends StringAscii {
+abstract class AS extends Ascii {
   @override
   bool operator ==(Object other) => other is AS && value == other.value;
 
@@ -153,7 +153,7 @@ abstract class AS extends StringAscii {
 // **** Date/Time Elements
 
 /// An abstract class for date ([DA]) [Element]s.
-abstract class DA extends StringAscii {
+abstract class DA extends Ascii {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -301,7 +301,7 @@ abstract class DA extends StringAscii {
 }
 
 /// An abstract class for time ([TM]) [Element]s.
-abstract class DT extends StringAscii {
+abstract class DT extends Ascii {
   @override
   int get vrIndex => kVRIndex;
   @override
@@ -423,7 +423,7 @@ abstract class DT extends StringAscii {
 /// [Time] [String]s have the following format: HHMMSS.ffffff.
 /// [See PS3.18, TM](http://dicom.nema.org/medical/dicom/current/output/
 /// html/part18.html#para_3f950ae4-871c-48c5-b200-6bccf821653b)
-abstract class TM extends StringAscii {
+abstract class TM extends Ascii {
   @override
   int get vrIndex => kVRIndex;
   @override

@@ -264,6 +264,7 @@ bool allowBlankDates = false;
 bool allowBlankTimes = false;
 bool allowBlankDateTimes = false;
 bool allowZeroAges = false;
+bool allowInvalidNumberOfValues = false;
 bool allowOversizedStrings = false;
 bool allowInvalidValueLengths = false;
 bool allowInvalidCharsInStrings = false;

@@ -40,9 +40,6 @@ abstract class ByteElement<V> {
 
   DicomBytes get bytes;
 
-//  List<V> get values;
-//  set values(Iterable<V> vList) => unsupportedError();
-
   /// The length of values;
   int get length;
 

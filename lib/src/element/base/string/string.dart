@@ -69,9 +69,11 @@ abstract class StringBase extends Element<String> {
 
   // **** Getters that MUST be supported by every Element Type.
 
+/*
   @override
   TypedData get typedData =>
       stringListToUint8List(values, maxLength: maxVFLength);
+*/
 
   @override
   StringBase get hash => sha256;

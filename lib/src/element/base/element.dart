@@ -364,7 +364,7 @@ abstract class Element<V> extends ListBase<V> {
   /// [vList] defaults to [values].
   bool checkLength([Iterable<V> vList, Issues issues]) {
     vList ??= values;
-    if (isLengthAlwaysValid) return true;
+    if (isLengthAlwaysValid || allowInvalidNumberOfValues) return true;
     final length = vList.length;
     return (length == 0) ||
         (length >= minValues && length <= maxValues && (length % columns == 0));
