@@ -261,10 +261,10 @@ void main() {
     test('LO fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 1);
-        final bytes = Bytes.fromUtf8List(vList1);
+        final bytes = Bytes.utf8FromList(vList1);
         log.debug('bytes:$bytes');
-        final e0 = LOtag.fromBytes(
-            PTag.kReceiveCoilManufacturerName, bytes, utf8.decoder);
+        final e0 =
+            LOtag.fromBytes(PTag.kReceiveCoilManufacturerName, bytes, utf8);
         log.debug('e0: ${e0.info}');
         expect(e0.hasValidValues, true);
       }
@@ -274,10 +274,9 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getLOList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
-          final e1 =
-              LOtag.fromBytes(PTag.kSelectorLOValue, bytes0, utf8.decoder);
+          final e1 = LOtag.fromBytes(PTag.kSelectorLOValue, bytes0, utf8);
           log.debug('e1: ${e1.info}');
           expect(e1.hasValidValues, true);
         }
@@ -289,16 +288,13 @@ void main() {
         final vList1 = rsg.getLOList(1, 10);
         for (var listS in vList1) {
           global.throwOnError = false;
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
-          final e1 =
-              LOtag.fromBytes(PTag.kSelectorCSValue, bytes0, utf8.decoder);
+          final e1 = LOtag.fromBytes(PTag.kSelectorCSValue, bytes0, utf8);
           expect(e1, isNull);
 
           global.throwOnError = true;
-          expect(
-              () =>
-                  LOtag.fromBytes(PTag.kSelectorCSValue, bytes0, utf8.decoder),
+          expect(() => LOtag.fromBytes(PTag.kSelectorCSValue, bytes0, utf8),
               throwsA(const TypeMatcher<InvalidTagError>()));
         }
       }
@@ -446,7 +442,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, i);
-        final bytes = Bytes.fromUtf8List(vList0);
+        final bytes = Bytes.utf8FromList(vList0);
         final e0 = LOtag(PTag.kSelectorLOValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
@@ -773,19 +769,19 @@ void main() {
     test('LO fromBytes', () {
 //      system.level = Level.info;
       final vList1 = rsg.getLOList(1, 1);
-      final bytes = Bytes.fromUtf8List(vList1);
+      final bytes = Bytes.utf8FromList(vList1);
       log.debug('LO.fromBytes(bytes):  $bytes');
       expect(bytes.stringListFromUtf8(), equals(vList1));
     });
 
     test('LO toUint8List', () {
       final vList1 = rsg.getLOList(1, 1);
-      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
+      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.utf8FromList(vList1)}');
 
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = ascii.encode(vList1[0]);
-      expect(Bytes.fromUtf8List(vList1), equals(values));
+      expect(Bytes.utf8FromList(vList1), equals(values));
     });
 
     test('LO isValidValues good values', () {
@@ -828,8 +824,8 @@ void main() {
         final vList0 = rsg.getLOList(1, 1);
         global.throwOnError = false;
         final values = ascii.encode(vList0[0]);
-        final tbd0 = Bytes.fromUtf8List(vList0);
-        final tbd1 = Bytes.fromUtf8List(vList0);
+        final tbd0 = Bytes.utf8FromList(vList0);
+        final tbd1 = Bytes.utf8FromList(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -837,8 +833,8 @@ void main() {
       for (var s in goodLOList) {
         for (var a in s) {
           final values = ascii.encode(a);
-          final tbd2 = Bytes.fromUtf8List(s);
-          final tbd3 = Bytes.fromUtf8List(s);
+          final tbd2 = Bytes.utf8FromList(s);
+          final tbd3 = Bytes.utf8FromList(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -849,13 +845,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 1);
         global.throwOnError = false;
-        final bd0 = Bytes.fromUtf8List(vList0);
+        final bd0 = Bytes.utf8FromList(vList0);
         final fbd0 = bd0.stringListFromUtf8();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodLOList) {
-        final bd0 = Bytes.fromUtf8List(s);
+        final bd0 = Bytes.utf8FromList(s);
         final fbd0 = bd0.stringListFromUtf8();
         expect(fbd0, equals(s));
       }
@@ -865,31 +861,31 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getLOList(1, 10);
         global.throwOnError = false;
-        final toB0 = Bytes.fromUtf8List(vList0, kMaxShortVF);
-        final bytes0 = Bytes.fromAscii(vList0.join('\\'));
+        final toB0 = Bytes.utf8FromList(vList0, kMaxShortVF);
+        final bytes0 = Bytes.ascii(vList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodLOList) {
-        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
-        final bytes1 = Bytes.fromAscii(s.join('\\'));
+        final toB1 = Bytes.utf8FromList(s, kMaxShortVF);
+        final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
       global.throwOnError = false;
-      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
+      final toB2 = Bytes.utf8FromList([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
+      final toB3 = Bytes.utf8FromList([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = Bytes.fromUtf8List(null, kMaxShortVF);
+      final toB4 = Bytes.utf8FromList(null, kMaxShortVF);
       expect(toB4, isNull);
 
       global.throwOnError = true;
-      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+      expect(() => Bytes.utf8FromList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
     });
 
@@ -925,7 +921,7 @@ void main() {
 
       global.throwOnError = false;
       final vList2 = rsg.getLOList(1, 1);
-      final bytes = Bytes.fromUtf8List(vList2);
+      final bytes = Bytes.utf8FromList(vList2);
       final fvf4 = Utf8String.fromValueField(bytes, k8BitMaxLongLength);
       expect(fvf4, equals(vList2));
 
@@ -937,7 +933,7 @@ void main() {
     test('LO isValidBytesArgs', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLOList(1, i);
-        final vfBytes = Bytes.fromUtf8List(vList0);
+        final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
           for (var tag in loVM1Tags) {
@@ -952,7 +948,7 @@ void main() {
         }
       }
       final vList0 = rsg.getLOList(1, 1);
-      final vfBytes = Bytes.fromUtf8List(vList0);
+      final vfBytes = Bytes.utf8FromList(vList0);
 
       final e1 = LO.isValidBytesArgs(null, vfBytes);
       expect(e1, false);

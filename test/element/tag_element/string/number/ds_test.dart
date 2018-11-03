@@ -324,7 +324,7 @@ void main() {
     test('DS fromUint8List', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDSList(1, 1);
-        final bytes = Bytes.fromAsciiList(vList1);
+        final bytes = Bytes.asciiFromList(vList1);
         log.debug('bytes:$bytes');
         final e1 = DStag.fromBytes(PTag.kSamplingFrequency, bytes);
         log.debug('e1: ${e1.info}');
@@ -336,7 +336,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDSList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           final ur1 = DStag.fromBytes(PTag.kSelectorDSValue, bytes0);
           log.debug('ur1: ${ur1.info}');
           expect(ur1.hasValidValues, true);
@@ -349,7 +349,7 @@ void main() {
         final vList1 = rsg.getDSList(1, 10);
         for (var listS in vList1) {
           global.throwOnError = false;
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           final ur1 = DStag.fromBytes(PTag.kSelectorAEValue, bytes0);
           expect(ur1, isNull);
 
@@ -1107,7 +1107,7 @@ void main() {
     test('DS fromUint8List', () {
       //  system.level = Level.info;;
       final vList0 = rsg.getDSList(1, 1);
-      final bytes = Bytes.fromAsciiList(vList0);
+      final bytes = Bytes.asciiFromList(vList0);
       final vList1 = bytes.stringListFromAscii();
       log.debug('DS.decodeBinaryVF(bytes): $vList1, '
           'bytes: $bytes');
@@ -1118,7 +1118,7 @@ void main() {
       final vList = rsg.getDSList(1, 1);
       final v = vList[0];
       log.debug('vList0:"$v"');
-      final bytes0 = Bytes.fromAsciiList(vList);
+      final bytes0 = Bytes.asciiFromList(vList);
       log.debug('DS.toBytes("$v"): $bytes0');
       //if (vList[0].length.isOdd) vList[0] = '$v';
       final values = ascii.encode(v);
@@ -1203,42 +1203,42 @@ void main() {
       global.throwOnError = false;
       final vList0 = rsg.getDSList(1, 1);
       final parse0 = double.parse(vList0.join('//'));
-      final bytes0 = Bytes.fromAsciiList(vList0);
+      final bytes0 = Bytes.asciiFromList(vList0);
       final tpb0 = DS.tryParseBytes(bytes0);
       log.debug('tpb0: $tpb0');
       expect(tpb0, equals([parse0]));
 
       final vList1 = ['123'];
       final parse1 = double.parse(vList1.join('//'));
-      final bytes1 = Bytes.fromAsciiList(vList1);
+      final bytes1 = Bytes.asciiFromList(vList1);
       expect(DS.tryParseBytes(bytes1), <double>[parse1]);
 
       final vList2 = ['12.34'];
       final parse2 = double.parse(vList2.join('//'));
-      final bytes2 = Bytes.fromAsciiList(vList2);
+      final bytes2 = Bytes.asciiFromList(vList2);
       expect(DS.tryParseBytes(bytes2), <double>[parse2]);
 
       final vList3 = ['abc'];
-      final bytes3 = Bytes.fromAsciiList(vList3);
+      final bytes3 = Bytes.asciiFromList(vList3);
       expect(DS.tryParseBytes(bytes3), isNull);
 
       final vList4 = [' 1245'];
       final parse4 = double.parse(vList4.join('//'));
-      final bytes4 = Bytes.fromAsciiList(vList4);
+      final bytes4 = Bytes.asciiFromList(vList4);
       expect(DS.tryParseBytes(bytes4), <double>[parse4]);
 
       final vList5 = ['1245 '];
       final parse5 = double.parse(vList5.join('//'));
-      final bytes5 = Bytes.fromAsciiList(vList5);
+      final bytes5 = Bytes.asciiFromList(vList5);
       expect(DS.tryParseBytes(bytes5), <double>[parse5]);
 
       final vList6 = [' 1245  '];
       final parse6 = double.parse(vList6.join('//'));
-      final bytes6 = Bytes.fromAsciiList(vList6);
+      final bytes6 = Bytes.asciiFromList(vList6);
       expect(DS.tryParseBytes(bytes6), <double>[parse6]);
 
       final vList7 = ['12 45'];
-      final bytes7 = Bytes.fromAsciiList(vList7);
+      final bytes7 = Bytes.asciiFromList(vList7);
       expect(DS.tryParseBytes(bytes7), isNull);
 
       global.throwOnError = true;
@@ -1252,19 +1252,19 @@ void main() {
     test('DS validateValueField', () {
       global.throwOnError = false;
       final vList0 = rsg.getISList(1, 1);
-      final bytes0 = Bytes.fromAsciiList(vList0);
+      final bytes0 = Bytes.asciiFromList(vList0);
       expect(DS.validateValueField(bytes0), equals(vList0));
 
       final vList1 = ['123'];
-      final bytes1 = Bytes.fromAsciiList(vList1);
+      final bytes1 = Bytes.asciiFromList(vList1);
       expect(DS.validateValueField(bytes1), equals(vList1));
 
       final vList2 = ['12.34'];
-      final bytes2 = Bytes.fromAsciiList(vList2);
+      final bytes2 = Bytes.asciiFromList(vList2);
       expect(DS.validateValueField(bytes2), equals(vList2));
 
       final vList3 = ['abc'];
-      final bytes3 = Bytes.fromAsciiList(vList3);
+      final bytes3 = Bytes.asciiFromList(vList3);
       expect(DS.validateValueField(bytes3), equals(vList3));
     });
 
@@ -1316,7 +1316,7 @@ void main() {
     test('DS decodeBinaryStringVF', () {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getDSList(1, i);
-        final bytes = Bytes.fromAsciiList(vList1);
+        final bytes = Bytes.asciiFromList(vList1);
         final dbStr0 = bytes.stringListFromAscii();
         log.debug('dbStr0: $dbStr0');
         expect(dbStr0, vList1);
@@ -1325,7 +1325,7 @@ void main() {
         log.debug('dbStr1: $dbStr1');
         expect(dbStr1, vList1);
       }
-      final bytes = Bytes.fromAsciiList([]);
+      final bytes = Bytes.asciiFromList([]);
       expect(bytes.stringListFromAscii(), <String>[]);
     });
 
@@ -1334,8 +1334,8 @@ void main() {
         final vList0 = rsg.getDSList(1, 1);
         global.throwOnError = false;
         final values = ascii.encode(vList0[0]);
-        final tbd0 = Bytes.fromAsciiList(vList0);
-        final tbd1 = Bytes.fromAsciiList(vList0);
+        final tbd0 = Bytes.asciiFromList(vList0);
+        final tbd1 = Bytes.asciiFromList(vList0);
         log.debug('tbd1: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -1343,8 +1343,8 @@ void main() {
       for (var s in goodDSList) {
         for (var a in s) {
           final values = ascii.encode(a);
-          final tbd2 = Bytes.fromAsciiList(s);
-          final tbd3 = Bytes.fromAsciiList(s);
+          final tbd2 = Bytes.asciiFromList(s);
+          final tbd3 = Bytes.asciiFromList(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -1355,13 +1355,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 1);
         global.throwOnError = false;
-        final bd0 = Bytes.fromAsciiList(vList0);
+        final bd0 = Bytes.asciiFromList(vList0);
         final fbd0 = bd0.stringListFromAscii();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodDSList) {
-        final bd0 = Bytes.fromAsciiList(s);
+        final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
       }
@@ -1371,31 +1371,31 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDSList(1, 10);
         global.throwOnError = false;
-        final toB0 = Bytes.fromAsciiList(vList0);
-        final bytes0 = Bytes.fromAscii(vList0.join('\\'));
+        final toB0 = Bytes.asciiFromList(vList0);
+        final bytes0 = Bytes.ascii(vList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodDSList) {
-        final toB1 = Bytes.fromAsciiList(s);
-        final bytes1 = Bytes.fromAscii(s.join('\\'));
+        final toB1 = Bytes.asciiFromList(s);
+        final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
       global.throwOnError = false;
-      final toB2 = Bytes.fromAsciiList(['']);
+      final toB2 = Bytes.asciiFromList(['']);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.fromAsciiList([]);
+      final toB3 = Bytes.asciiFromList([]);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = Bytes.fromAsciiList(null);
+      final toB4 = Bytes.asciiFromList(null);
       expect(toB4, isNull);
 
       global.throwOnError = true;
-      expect(() => Bytes.fromAsciiList(null),
+      expect(() => Bytes.asciiFromList(null),
           throwsA(const TypeMatcher<GeneralError>()));
     });
 
@@ -1403,7 +1403,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 15; i++) {
         final vList0 = rsg.getDSList(1, i);
-        final vfBytes = Bytes.fromUtf8List(vList0);
+        final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
           for (var tag in dsVM1Tags) {
@@ -1438,7 +1438,7 @@ void main() {
         }
       }
       final vList0 = rsg.getDSList(1, 1);
-      final vfBytes = Bytes.fromUtf8List(vList0);
+      final vfBytes = Bytes.utf8FromList(vList0);
 
       final e1 = DS.isValidBytesArgs(null, vfBytes);
       expect(e1, false);

@@ -13,8 +13,7 @@ import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/utils.dart';
 import 'package:core/src/values/uid/well_known/transfer_syntax.dart';
 
 // ignore_for_file: public_member_api_docs
@@ -86,7 +85,7 @@ class SStag extends SS with TagElement<int>, TagIntegerMixin {
       SStag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static SStag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static SStag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       SStag._(tag, bytes.asInt16List());
 }
 
@@ -122,7 +121,7 @@ class SLtag extends SL with TagElement<int>, TagIntegerMixin {
       SLtag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static SLtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static SLtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       SLtag._(tag, bytes.asInt32List());
 }
 
@@ -159,7 +158,7 @@ class OBtag extends OB with TagElement<int>, TagIntegerMixin {
       OBtag._(tag, Uint8.fromList(vList));
 
   // ignore: prefer_constructors_over_static_methods
-  static OBtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static OBtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       OBtag._(tag, bytes.asUint8List());
 }
 
@@ -193,7 +192,7 @@ class UNtag extends UN with TagElement<int>, TagIntegerMixin {
   static UNtag fromValues(Tag tag, Iterable<int> vList) => UNtag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static UNtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static UNtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       UNtag._(tag, bytes.asUint8List());
 }
 
@@ -227,7 +226,7 @@ class UStag extends US with TagElement<int>, TagIntegerMixin {
       UStag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static UStag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static UStag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       UStag._(tag, bytes.asUint16List());
 }
 
@@ -264,7 +263,7 @@ class OWtag extends OW with TagElement<int>, TagIntegerMixin {
   static OWtag fromValues(Tag tag, List<int> vList) => OWtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static OWtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static OWtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       OWtag._(tag, bytes.asUint16List());
 }
 
@@ -299,7 +298,7 @@ class OLtag extends OL with TagElement<int>, TagIntegerMixin {
       OLtag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static OLtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static OLtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       OLtag._(tag, bytes.asUint32List());
 }
 
@@ -334,7 +333,7 @@ class ULtag extends UL with TagElement<int>, TagIntegerMixin {
       ULtag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static ULtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static ULtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       ULtag._(tag, bytes.asUint32List());
 }
 
@@ -363,7 +362,7 @@ class GLtag extends ULtag {
       GLtag(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static GLtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static GLtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       GLtag._x(tag, bytes.asUint32List());
 }
 
@@ -403,6 +402,6 @@ class ATtag extends AT with TagElement<int>, TagIntegerMixin {
       ATtag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static ATtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static ATtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       ATtag._(tag, bytes.asUint32List());
 }

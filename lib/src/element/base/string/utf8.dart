@@ -33,14 +33,14 @@ abstract class Utf8String extends StringBase {
   @override
   bool get isSingleValued => false;
 
-  Bytes get asBytes => Bytes.fromUtf8List(values, maxVFLength);
+  Bytes get asBytes => Bytes.utf8FromList(values, maxVFLength);
 
   @override
   TypedData get typedData =>
       stringListToUint8List(values, maxLength: maxVFLength, isAscii: false);
 
   List<String> valuesFromBytes(Bytes bytes) =>
-      bytes.stringListFromUtf8(allowMalformed: global.allowMalformedUtf8);
+      bytes.stringListFromUtf8(allowInvalid: global.allowMalformedUtf8);
 
   Utf8String append(String s) => update(values.append(s, maxValueLength));
 

@@ -13,8 +13,7 @@ import 'package:core/src/element/tag/tag_element.dart';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/tag.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/primitives.dart';
+import 'package:core/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -76,7 +75,7 @@ class FLtag extends FL with TagElement<double>, TagFloatMixin {
       FLtag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static FLtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static FLtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       FL.isValidBytesArgs(tag, bytes)
           ? FLtag._x(tag, bytes.asFloat32List())
           : badTag(tag, null, FL);
@@ -119,7 +118,7 @@ class OFtag extends OF with TagElement<double>, TagFloatMixin {
       OFtag(tag, vList ?? kEmptyDoubleList);
 
   // ignore: prefer_constructors_over_static_methods
-  static OFtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static OFtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       OF.isValidBytesArgs(tag, bytes)
           ? OFtag._x(tag, bytes.asFloat32List())
           : badTag(tag, null, FL);
@@ -161,7 +160,7 @@ class FDtag extends FD with TagElement<double>, TagFloatMixin {
       FDtag(tag, vList ?? kEmptyDoubleList);
 
   // ignore: prefer_constructors_over_static_methods
-  static FDtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static FDtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       FD.isValidBytesArgs(tag, bytes)
           ? FDtag._x(tag, bytes.asFloat64List())
           : badTag(tag, null, FL);
@@ -203,7 +202,7 @@ class ODtag extends OD with TagElement<double>, TagFloatMixin {
       ODtag._(tag, vList);
 
   // ignore: prefer_constructors_over_static_methods
-  static ODtag fromBytes(Tag tag, Bytes bytes, [Decoder _]) =>
+  static ODtag fromBytes(Tag tag, Bytes bytes, [Charset _]) =>
       OD.isValidBytesArgs(tag, bytes)
           ? ODtag._x(tag, bytes.asFloat64List())
           : badTag(tag, null, FL);

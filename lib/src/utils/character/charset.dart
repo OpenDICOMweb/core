@@ -11,6 +11,10 @@ import 'dart:typed_data';
 
 import 'package:core/src/utils/character/ascii.dart';
 
+typedef Decoder = String Function(Uint8List list, {bool allowInvalid});
+
+typedef Encoder = Uint8List Function(String s);
+
 // Urgent Sharath: Unit test classes in this file
 
 /// The base Charset is the ASCII (or US-ASCII) Character Set.
@@ -70,13 +74,14 @@ class Charset {
   }
 
   /// Returns an ASCII decoder
-  String Function (Uint8List list) get decoder => cvt.ascii.decode;
+//  Decoder get decoder => cvt.ascii.decode;
 
   /// Decode [list] into a [String].
-  String decode(Uint8List list) => cvt.ascii.decode(list);
+  String decode(Uint8List list, {bool allowInvalid = true}) =>
+      cvt.ascii.decode(list, allowInvalid: allowInvalid);
 
-  /// Returns an ASCII decoder
-  Uint8List Function (String s) get encoder => cvt.ascii.encode;
+  /// Returns an ASCII encoder.
+//  Encoder get encoder => cvt.ascii.encode;
 
   /// Encode [s] into a [Uint8List].
   Uint8List encode(String s) => cvt.ascii.encode(s);
@@ -132,11 +137,18 @@ class Latin extends Charset {
   @override
   bool isControl(int c) => c >= kNull && c < kSpace || c >= 128 && c <= 159;
 
-  @override
-  String decode(Uint8List list) => latin1.decode(list);
+  /// Returns an ASCII decoder
+// Decoder get decoder => cvt.latin1.decode;
 
   @override
-  Uint8List encode(String s) => latin1.encode(s);
+  String decode(Uint8List list, {bool allowInvalid = true}) =>
+      cvt.latin1.decode(list, allowInvalid: allowInvalid);
+
+  /// Returns an ASCII encoder.
+//  Encoder get encoder => cvt.latin1.encode;
+
+  @override
+  Uint8List encode(String s) => cvt.latin1.encode(s);
 
   /// Minimum valid value
   static const int kMin = 0;
@@ -182,11 +194,17 @@ class Utf8 extends Charset {
   @override
   bool isControl(int c) => c >= kNull && c < kSpace || c >= 128 && c <= 159;
 
-  @override
-  String decode(Uint8List list) => utf8.decode(list);
+  /// Returns an ASCII decoder
+//String f(List<int> list, {bool allowMalformed}) get decoder =>
+// cvt.utf8.decode;
 
   @override
-  Uint8List encode(String s) => utf8.encode(s);
+  String decode(Uint8List list, {bool allowInvalid = true}) =>
+      cvt.utf8.decode(list, allowMalformed: allowInvalid);
+
+//  Encoder get encoder => cvt.utf8.encode;
+  @override
+  Uint8List encode(String s) => cvt.utf8.encode(s);
 
   /// Minimum valid value
   static const int kMin = 0;

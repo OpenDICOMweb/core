@@ -11,9 +11,7 @@ import 'dart:collection';
 import 'package:core/src/error.dart';
 import 'package:core/src/global.dart';
 import 'package:core/src/error/general_errors.dart';
-import 'package:core/src/utils/bytes.dart';
-import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/utils/string/string.dart';
+import 'package:core/src/utils.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -41,7 +39,8 @@ class StringList extends ListBase<String> {
 
   StringList._(this._values);
 
-  StringList.decode(Bytes bytes) : _values = bytes.stringListFromUtf8();
+  StringList.decode(Bytes bytes, [Charset charset]) : 
+        _values = bytes.getStringList(charset);
 
   @override
   String operator [](int i) => _values[i];
@@ -73,7 +72,7 @@ class StringList extends ListBase<String> {
   // Performance: This is very inefficient
   int get lengthInBytes => asBytes.length;
 
-  Bytes get asBytes => Bytes.fromUtf8List(_values);
+  Bytes get asBytes => Bytes.utf8FromList(_values);
 
   List<String> get uppercase => _values.map((v) => v.toUpperCase());
 
@@ -188,7 +187,7 @@ class StringList extends ListBase<String> {
   }
 
   Bytes encode([int separator = kBackslash]) =>
-      Bytes.fromUtf8List(_values, separator);
+      Bytes.utf8FromList(_values, separator);
 
   static final StringList kEmptyList = StringList._(kEmptyStringList);
 }

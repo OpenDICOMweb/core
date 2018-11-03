@@ -14,8 +14,6 @@ part of odw.sdk.utils.bytes;
 bool showByteValues = false;
 int truncateBytesLength = 16;
 
-typedef Decoder = String Function(Uint8List list, {bool allowInvalid});
-
 /// [BytesMixin] is a class that provides a read-only byte array that
 /// supports both [Uint8List] and [ByteData] interfaces.
 mixin BytesMixin {
@@ -385,7 +383,7 @@ mixin BytesMixin {
   /// region of _this_.
   String getBase64([int offset = 0, int length]) {
     final bList = asUint8List(offset, length);
-    return bList.isEmpty ? '' : base64.encode(bList);
+    return bList.isEmpty ? '' : cvt.base64.encode(bList);
   }
 
   // Allows the removal of padding characters.
@@ -407,12 +405,11 @@ mixin BytesMixin {
   String stringFromAscii(
       {int offset = 0, int length, bool allowInvalid = true}) {
     final v = _asUint8ListFromString(offset, length ?? bdLength);
-    if (v.isEmpty) return '';
-    final s = ascii.decode(v, allowInvalid: allowInvalid);
-    final last = s.length - 1;
-    final c = s.codeUnitAt(last);
+    return v.isEmpty ? '' : cvt.ascii.decode(v, allowInvalid: allowInvalid);
+//    final last = s.length - 1;
+//    final c = s.codeUnitAt(last);
     // TODO: kNull should never get here but it does. Fix
-    return (c == kNull) ? s.substring(0, last) : s;
+//    return (c == kNull) ? s.substring(0, last) : s;
   }
 
   /// Returns a [List<String>]. This is done by first decoding
@@ -432,9 +429,9 @@ mixin BytesMixin {
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
   /// Also, allows the removal of padding characters.
   String stringFromUtf8(
-      {int offset = 0, int length, bool allowMalformed = true}) {
+      {int offset = 0, int length, bool allowInvalid = true}) {
     final v = _asUint8ListFromString(offset, length ?? bdLength);
-    return v.isEmpty ? '' : utf8.decode(v, allowMalformed: allowMalformed);
+    return v.isEmpty ? '' : cvt.utf8.decode(v, allowMalformed: allowInvalid);
   }
 
   /// Returns a [List<String>]. This is done by first decoding
@@ -443,20 +440,17 @@ mixin BytesMixin {
   List<String> stringListFromUtf8(
       {int offset = 0,
       int length,
-      bool allowMalformed = true,
+      bool allowInvalid = true,
       String separator = '\\'}) {
     final s = stringFromUtf8(
-        offset: offset, length: length, allowMalformed: allowMalformed);
+        offset: offset, length: length, allowInvalid: allowInvalid);
     return (s.isEmpty) ? kEmptyStringList : s.split(separator);
   }
 
   String stringFromLatin(
-      {int offset = 0,
-      int length,
-      bool allowInvalid = true,
-      String decoder(Uint8List list)}) {
+      {int offset = 0, int length, bool allowInvalid = true}) {
     final v = _asUint8ListFromString(offset, length ?? bdLength);
-    return v.isEmpty ? '' : latin1.decode(v, allowInvalid: allowInvalid);
+    return v.isEmpty ? '' : cvt.latin1.decode(v, allowInvalid: allowInvalid);
   }
 
   /// Returns a [List<String>]. This is done by first decoding
@@ -473,31 +467,24 @@ mixin BytesMixin {
   }
 
   /// Returns a [String] containing a _UTF-8_ decoding of the specified region.
-  String getString(
+  String getString(Charset charset,
       {int offset = 0,
       int length,
       bool allowInvalid = true,
-      String separator = '\\',
-      Decoder decoder}) {
-    decoder ??= _utf8Decode;
+      String separator = '\\'}) {
     final v = _asUint8ListFromString(offset, length ?? bdLength);
-    return v.isEmpty ? '' : decoder(v, allowInvalid: true);
+    return v.isEmpty ? '' : charset.decode(v, allowInvalid: true);
   }
-
-  String _utf8Decode(Uint8List list, {bool allowInvalid}) =>
-      utf8.decode(list, allowMalformed: allowInvalid);
 
   /// Returns a [List<String>]. This is done by first decoding
   /// the specified region as _UTF-8_, and then _split_ing the
   /// resulting [String] using the [separator].
-  List<String> getStringList(
+  List<String> getStringList(Charset charset,
       {int offset = 0,
       int length,
       bool allowInvalid = true,
-      String separator = '\\',
-      Decoder decoder}) {
-    decoder ??= _utf8Decode;
-    final s = getString(
+      String separator = '\\'}) {
+    final s = getString(charset,
         offset: offset,
         length: length,
         allowInvalid: allowInvalid,
@@ -596,7 +583,7 @@ mixin BytesMixin {
       [int offset = 0, int length, int padChar = kSpace]) {
     length ??= s.length;
     final v = _maybeGetSubstring(s, offset, length);
-    return __setUint8List(start, ascii.encode(v), offset, length, padChar);
+    return __setUint8List(start, cvt.ascii.encode(v), offset, length, padChar);
   }
 
   /// Writes the elements of the specified region of [list] to
@@ -803,7 +790,7 @@ mixin BytesMixin {
       [int offset = 0, int length, int padChar = kSpace]) {
     length ??= s.length;
     final v = _maybeGetSubstring(s, offset, length);
-    return _setUint8List(start, utf8.encode(v), offset, length, padChar);
+    return _setUint8List(start, cvt.utf8.encode(v), offset, length, padChar);
   }
 
   String _maybeGetSubstring(String s, int offset, int length) =>

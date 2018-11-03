@@ -69,7 +69,7 @@ void main() {
   test('textListToBytes', () {
     for (var i = 0; i < 10; i++) {
       final vList = rsg.getAEList(1, 1);
-      final bytes = Bytes.fromAsciiList(vList);
+      final bytes = Bytes.asciiFromList(vList);
       final bytes0 = textListToBytes(vList);
       log.debug('bytes0: $bytes0');
       expect(bytes0 == bytes, true);
@@ -224,7 +224,7 @@ void main() {
     test('others', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getLTList(1, i);
-        final bytes0 = Bytes.fromAsciiList(vList0);
+        final bytes0 = Bytes.asciiFromList(vList0);
         final sfrom0 = StringList.from(vList0);
 
         expect(sfrom0.length, equals(vList0.length));

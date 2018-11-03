@@ -230,8 +230,8 @@ void main() {
       final vList = ['1q221'];
       final vList0 = ['1q221', 'sadaq223'];
       //final bytes = Bytes.fromList(vList);
-      final bytes = Bytes.fromAsciiList(vList);
-      final bytes0 = Bytes.fromAsciiList(vList0);
+      final bytes = Bytes.asciiFromList(vList);
+      final bytes0 = Bytes.asciiFromList(vList0);
       final dsBytes0 = RDSBytes(bytes, 0);
       final dsBytes1 = RDSBytes(bytes, 0);
       final dsBytes2 = RDSBytes(bytes0, 0);
@@ -272,8 +272,8 @@ void main() {
     test('IDSBytes', () {
       final vList = ['1q221'];
       final vList0 = ['1q221', 'sadaq223'];
-      final bytes = Bytes.fromAsciiList(vList);
-      final bytes0 = Bytes.fromAsciiList(vList0);
+      final bytes = Bytes.asciiFromList(vList);
+      final bytes0 = Bytes.asciiFromList(vList0);
       final idsBytes0 = IDSBytes(bytes);
       final idsBytes1 = IDSBytes(bytes);
       final idsBytes2 = IDSBytes(bytes0);

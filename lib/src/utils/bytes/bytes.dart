@@ -9,14 +9,12 @@
 library odw.sdk.utils.bytes;
 
 import 'dart:collection';
-import 'dart:convert';
+import 'dart:convert' as cvt;
 import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:core/src/system.dart';
-import 'package:core/src/utils/bytes/constants.dart';
-import 'package:core/src/utils/primitives.dart';
-import 'package:core/src/utils/string.dart';
+import 'package:core/src/utils.dart';
 
 part 'package:core/src/utils/bytes/bytes_mixin.dart';
 part 'package:core/src/utils/bytes/growable_bytes.dart';
@@ -95,7 +93,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// Returns a [Bytes] containing the Base64 decoding of [s].
   factory Bytes.fromBase64(String s, {bool padToEvenLength = false}) {
     if (s.isEmpty) return kEmptyBytes;
-    var bList = base64.decode(s);
+    var bList = cvt.base64.decode(s);
     final bLength = bList.length;
     if (padToEvenLength == true && bLength.isOdd) {
       // Performance: It would be good to ignore this copy
@@ -108,24 +106,33 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   }
 
   /// Returns a [Bytes] containing the ASCII encoding of [s].
-  factory Bytes.fromAscii(String s) {
+  factory Bytes.ascii(String s) {
     if (s == null) return nullValueError(s);
-    return s.isEmpty ? kEmptyBytes : Bytes.typedDataView(ascii.encode(s));
+    return s.isEmpty ? kEmptyBytes : Bytes.typedDataView(cvt.ascii.encode(s));
   }
 
   /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  factory Bytes.fromUtf8(String s) {
+  factory Bytes.utf8(String s) {
     if (s == null) return nullValueError(s);
     if (s.isEmpty) return kEmptyBytes;
-    final Uint8List u8List = utf8.encode(s);
+    final Uint8List u8List = cvt.utf8.encode(s);
     return Bytes.typedDataView(u8List);
   }
 
   /// Returns [Bytes] containing the UTF-8 encoding of [s];
-  factory Bytes.fromString(String s, {bool isAscii = false}) {
+  factory Bytes.latin(String s) {
     if (s == null) return nullValueError(s);
     if (s.isEmpty) return kEmptyBytes;
-    return isAscii ? Bytes.fromAscii(s) : Bytes.fromUtf8(s);
+    final u8List = cvt.latin1.encode(s);
+    return Bytes.typedDataView(u8List);
+  }
+
+  /// Returns [Bytes] containing the UTF-8 encoding of [s];
+  factory Bytes.fromString(String s, Charset charset) {
+    charset ??= utf8;
+    if (s == null) return nullValueError(s);
+    if (s.isEmpty) return kEmptyBytes;
+    return Bytes.typedDataView(charset.encode(s));
   }
 
   /// Returns a [Bytes] containing ASCII code units.
@@ -133,25 +140,32 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as ASCII. The result is returns as [Bytes].
-  factory Bytes.fromAsciiList(List<String> vList,
+  factory Bytes.asciiFromList(List<String> vList,
           [int maxLength, String separator = '\\']) =>
-      Bytes.fromAscii(_listToString(vList, maxLength, separator));
+      Bytes.ascii(_listToString(vList, maxLength, separator));
 
   /// Returns a [Bytes] containing UTF-8 code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
   /// then they are encoded as UTF-8. The result is returns as [Bytes].
-  factory Bytes.fromUtf8List(List<String> vList,
+  factory Bytes.utf8FromList(List<String> vList,
           [int maxLength, String separator = '\\']) =>
-      Bytes.fromUtf8(_listToString(vList, maxLength, separator));
+      Bytes.utf8(_listToString(vList, maxLength, separator));
+
+  /// Returns a [Bytes] containing Latin (1 - 8) code units.
+  ///
+  /// The [String]s in [vList] are [join]ed into a single string using
+  /// using [separator] (which defaults to '\') to separate them, and
+  /// then they are encoded as UTF-8. The result is returns as [Bytes].
+  factory Bytes.latinFromList(List<String> vList,
+          [int maxLength, String separator = '\\']) =>
+      Bytes.latin(_listToString(vList, maxLength, separator));
 
   /// Returns a [Bytes] containing UTF-8 code units.
-  factory Bytes.fromStrings(List<String> vList,
-          {int maxLength, bool isAscii = false, String separator = '\\'}) =>
-      isAscii
-          ? Bytes.fromAsciiList(vList, maxLength, separator)
-          : Bytes.fromUtf8List(vList, maxLength, separator);
+  factory Bytes.fromStringList(List<String> vList, Charset charset,
+          {int maxLength, String separator = '\\'}) =>
+      Bytes.fromString(_listToString(vList, maxLength, separator), charset);
 
   // *** Comparable interface
 

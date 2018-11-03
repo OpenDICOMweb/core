@@ -61,11 +61,11 @@ abstract class DicomBytes extends Bytes with DicomBytesMixin {
   /// If [s].length is odd, [padChar] is appended to [s] before
   /// encoding it.
   static Bytes fromAscii(String s, [String padChar = ' ']) =>
-      Bytes.fromAscii(_maybePad(s, padChar));
+      Bytes.ascii(_maybePad(s, padChar));
 
   /// Returns [Bytes] containing the UTF-8 encoding of [s];
   static Bytes fromUtf8(String s, [String padChar = ' ']) =>
-      Bytes.fromUtf8(_maybePad(s, padChar));
+      Bytes.utf8(_maybePad(s, padChar));
 
   static String _maybePad(String s, String p) => s.length.isOdd ? '$s$p' : s;
 

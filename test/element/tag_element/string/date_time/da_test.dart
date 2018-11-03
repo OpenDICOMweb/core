@@ -393,7 +393,7 @@ void main() {
     test('DA getAsciiList', () {
       for (var s in goodDAList) {
         //final bytes = encodeStringListValueField(vList1);
-        final bytes = Bytes.fromAsciiList(s);
+        final bytes = Bytes.asciiFromList(s);
         log.debug('bytes:$bytes');
         final e0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
         log.debug('e0: $e0');
@@ -405,7 +405,7 @@ void main() {
       //    	system.level = Level.info;
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDAList(1, 1);
-        final bytes = Bytes.fromAsciiList(vList1);
+        final bytes = Bytes.asciiFromList(vList1);
         log.debug('bytes:$bytes');
         final e0 = DAtag.fromBytes(PTag.kCreationDate, bytes);
         log.debug('e0: $e0');
@@ -417,7 +417,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getDAList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           final e1 = DAtag.fromBytes(PTag.kSelectorDAValue, bytes0);
           log.debug('e1: $e1');
           expect(e1.hasValidValues, true);
@@ -430,7 +430,7 @@ void main() {
         final vList1 = rsg.getDAList(1, 10);
         for (var listS in vList1) {
           global.throwOnError = false;
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           final e1 = DAtag.fromBytes(PTag.kSelectorAEValue, bytes0);
           expect(e1, isNull);
 
@@ -959,7 +959,7 @@ void main() {
     test('DA getAsciiList', () {
       //    	system.level = Level.info;
       for (var s in goodDAList) {
-        final bytes = Bytes.fromAsciiList(s);
+        final bytes = Bytes.asciiFromList(s);
         log.debug('DA.getAsciiList(bytes): $bytes');
         expect(bytes.stringListFromAscii(), equals(s));
       }
@@ -967,12 +967,12 @@ void main() {
 
     test('DA toUint8List good values', () {
       for (var s in goodDAList) {
-        log.debug('Bytes.fromAsciiList(s): ${Bytes.fromAsciiList(s)}');
+        log.debug('Bytes.fromAsciiList(s): ${Bytes.asciiFromList(s)}');
 
         if (s[0].length.isOdd) s[0] = '${s[0]} ';
         log.debug('s:"$s"');
         final values = cvt.ascii.encode(s[0]);
-        expect(Bytes.fromAsciiList(s), equals(values));
+        expect(Bytes.asciiFromList(s), equals(values));
       }
     });
 
@@ -980,7 +980,7 @@ void main() {
       global.throwOnError = false;
       final vList0 = rsg.getDAList(DA.kMaxVFLength + 1, DA.kMaxVFLength + 1);
       expect(vList0.length > DA.kMaxLength, true);
-      final bytes = Bytes.fromAsciiList(vList0);
+      final bytes = Bytes.asciiFromList(vList0);
       expect(bytes, isNotNull);
       expect(bytes.length > DA.kMaxVFLength, true);
       expect(DA.isValidBytesArgs(PTag.kSelectorDAValue, bytes), false);
@@ -992,7 +992,7 @@ void main() {
 
     test('DA getAsciiList', () {
       final vList1 = ['19500712'];
-      final bytes = Bytes.fromAsciiList(vList1);
+      final bytes = Bytes.asciiFromList(vList1);
       log.debug('DA.getAsciiList(bytes): $bytes');
       expect(bytes.stringListFromAscii(), equals(vList1));
     });
@@ -1040,8 +1040,8 @@ void main() {
         final vList0 = rsg.getDAList(1, 1);
         global.throwOnError = false;
         final values = cvt.ascii.encode(vList0[0]);
-        final tbd0 = Bytes.fromAsciiList(vList0);
-        final tbd1 = Bytes.fromAsciiList(vList0);
+        final tbd0 = Bytes.asciiFromList(vList0);
+        final tbd1 = Bytes.asciiFromList(vList0);
         log.debug('bd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -1049,8 +1049,8 @@ void main() {
       for (var s in goodDAList) {
         for (var a in s) {
           final values = cvt.ascii.encode(a);
-          final tbd2 = Bytes.fromAsciiList(s);
-          final tbd3 = Bytes.fromAsciiList(s);
+          final tbd2 = Bytes.asciiFromList(s);
+          final tbd3 = Bytes.asciiFromList(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -1061,13 +1061,13 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 1);
         global.throwOnError = false;
-        final bd0 = Bytes.fromAsciiList(vList0);
+        final bd0 = Bytes.asciiFromList(vList0);
         final fbd0 = bd0.stringListFromAscii();
         log.debug('fbd0: $fbd0, vList0: $vList0');
         expect(fbd0, equals(vList0));
       }
       for (var s in goodDAList) {
-        final bd0 = Bytes.fromAsciiList(s);
+        final bd0 = Bytes.asciiFromList(s);
         final fbd0 = bd0.stringListFromAscii();
         expect(fbd0, equals(s));
       }
@@ -1077,31 +1077,31 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getDAList(1, 10);
         global.throwOnError = false;
-        final toB0 = Bytes.fromAsciiList(vList0, kMaxShortVF);
-        final bytes0 = Bytes.fromAscii(vList0.join('\\'));
+        final toB0 = Bytes.asciiFromList(vList0, kMaxShortVF);
+        final bytes0 = Bytes.ascii(vList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodDAList) {
-        final toB1 = Bytes.fromAsciiList(s, kMaxShortVF);
-        final bytes1 = Bytes.fromAscii(s.join('\\'));
+        final toB1 = Bytes.asciiFromList(s, kMaxShortVF);
+        final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
       global.throwOnError = false;
-      final toB2 = Bytes.fromAsciiList([''], kMaxShortVF);
+      final toB2 = Bytes.asciiFromList([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.fromAsciiList([], kMaxShortVF);
+      final toB3 = Bytes.asciiFromList([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
-      final toB4 = Bytes.fromAsciiList(null, kMaxShortVF);
+      final toB4 = Bytes.asciiFromList(null, kMaxShortVF);
       expect(toB4, isNull);
 
       global.throwOnError = true;
-      expect(() => Bytes.fromAsciiList(null, kMaxShortVF),
+      expect(() => Bytes.asciiFromList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
     });
 
@@ -1109,7 +1109,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getDAList(1, i);
-        final vfBytes = Bytes.fromUtf8List(vList0);
+        final vfBytes = Bytes.utf8FromList(vList0);
 
         if (vList0.length == 1) {
           for (var tag in daVM1Tags) {
@@ -1124,7 +1124,7 @@ void main() {
         }
       }
       final vList0 = rsg.getDAList(1, 1);
-      final vfBytes = Bytes.fromUtf8List(vList0);
+      final vfBytes = Bytes.utf8FromList(vList0);
 
       final e1 = DA.isValidBytesArgs(null, vfBytes);
       expect(e1, false);

@@ -243,7 +243,7 @@ void main() {
     test('ST fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSTList(1, 1);
-        final bytes = Bytes.fromUtf8List(vList1);
+        final bytes = Bytes.utf8FromList(vList1);
         log.debug('bytes:$bytes');
         final e0 = STtag.fromBytes(PTag.kSelectorSTValue, bytes);
         log.debug('e0: ${e0.info}');
@@ -255,7 +255,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getSTList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
           final e1 = STtag.fromBytes(PTag.kSelectorSTValue, bytes0);
           log.debug('e1: ${e1.info}');
@@ -269,7 +269,7 @@ void main() {
         final vList1 = rsg.getSTList(1, 10);
         for (var listS in vList1) {
           global.throwOnError = false;
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
           final e1 = STtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
@@ -368,7 +368,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList = rsg.getSTList(1, 1);
         final s0 = vList[0];
-        final bytes = Bytes.fromUtf8(s0);
+        final bytes = Bytes.utf8(s0);
         final s1 = bytes.stringFromUtf8();
         log.debug('s1: $s1');
         expect(s1, equals(s0));
@@ -428,7 +428,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final bytes = Bytes.fromUtf8List(vList0);
+        final bytes = Bytes.utf8FromList(vList0);
         final e0 = STtag(PTag.kSelectorSTValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
@@ -707,8 +707,8 @@ void main() {
         final vList0 = rsg.getSTList(1, 1);
         global.throwOnError = false;
         final values = ascii.encode(vList0[0]);
-        final tbd0 = Bytes.fromUtf8List(vList0);
-        final tbd1 = Bytes.fromUtf8List(vList0);
+        final tbd0 = Bytes.utf8FromList(vList0);
+        final tbd1 = Bytes.utf8FromList(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -716,8 +716,8 @@ void main() {
       for (var s in goodSTList) {
         for (var a in s) {
           final values = ascii.encode(a);
-          final tbd2 = Bytes.fromUtf8List(s);
-          final tbd3 = Bytes.fromUtf8List(s);
+          final tbd2 = Bytes.utf8FromList(s);
+          final tbd3 = Bytes.utf8FromList(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -730,14 +730,14 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
         final s0 = vList0[0];
-        final bytes = Bytes.fromUtf8(s0);
+        final bytes = Bytes.utf8(s0);
         final s1 = bytes.stringFromUtf8();
         log.debug('s1: $s1, s0: $s0');
         expect(s1, equals(s0));
       }
       for (var vList1 in goodSTList) {
         final s0 = vList1[0];
-        final bytes = Bytes.fromUtf8(s0);
+        final bytes = Bytes.utf8(s0);
         final s1 = bytes.stringFromUtf8();
         expect(s1, equals(s0));
       }
@@ -746,7 +746,7 @@ void main() {
     test('ST fromBytes', () {
       final vList = rsg.getSTList(1, 1);
       final s0 = vList[0];
-      final bytes = Bytes.fromUtf8(s0);
+      final bytes = Bytes.utf8(s0);
       log.debug('ST.fromBytes(bytes):  $bytes');
       expect(bytes.stringFromUtf8(), equals(s0));
     });
@@ -755,48 +755,48 @@ void main() {
       final vList = rsg.getSTList(1, 1);
       final s0 = vList[0];
       log
-        ..debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8(s0)}')
+        ..debug('Bytes.fromUtf8List(vList1): ${Bytes.utf8(s0)}')
         ..debug('s0:"$s0"');
       final bytes = cvt.utf8.encode(vList[0]);
-      expect(Bytes.fromUtf8(s0), equals(bytes));
+      expect(Bytes.utf8(s0), equals(bytes));
     });
 
     test('ST toBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
         global.throwOnError = false;
-        final toB0 = Bytes.fromUtf8List(vList0, kMaxShortVF);
-        final bytes0 = Bytes.fromAscii(vList0.join('\\'));
+        final toB0 = Bytes.utf8FromList(vList0, kMaxShortVF);
+        final bytes0 = Bytes.ascii(vList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodSTList) {
-        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
-        final bytes1 = Bytes.fromAscii(s.join('\\'));
+        final toB1 = Bytes.utf8FromList(s, kMaxShortVF);
+        final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
+      final toB2 = Bytes.utf8FromList([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
+      final toB3 = Bytes.utf8FromList([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
 
       global.throwOnError = false;
-      final toB4 = Bytes.fromUtf8List(null, kMaxShortVF);
+      final toB4 = Bytes.utf8FromList(null, kMaxShortVF);
       expect(toB4, isNull);
 
       global.throwOnError = true;
-      expect(() => Bytes.fromUtf8List(null, kMaxShortVF),
+      expect(() => Bytes.utf8FromList(null, kMaxShortVF),
           throwsA(const TypeMatcher<GeneralError>()));
     });
 
     test('ST isValidBytesArgs', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getSTList(1, 1);
-        final vfBytes = Bytes.fromUtf8List(vList0);
+        final vfBytes = Bytes.utf8FromList(vList0);
 
         for (var tag in stVM1Tags) {
           final e0 = ST.isValidBytesArgs(tag, vfBytes);
@@ -804,7 +804,7 @@ void main() {
         }
       }
       final vList0 = rsg.getSTList(1, 1);
-      final vfBytes = Bytes.fromUtf8List(vList0);
+      final vfBytes = Bytes.utf8FromList(vList0);
 
       global.throwOnError = false;
       final e1 = ST.isValidBytesArgs(null, vfBytes);

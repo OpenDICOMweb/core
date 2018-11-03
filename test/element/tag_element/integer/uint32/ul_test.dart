@@ -285,7 +285,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         global.throwOnError = false;
         final vList = rng.uint32List(1, 10);
-        final bytes0 = Bytes.fromAscii(vList.toString());
+        final bytes0 = Bytes.ascii(vList.toString());
         final e0 = ULtag.fromBytes(PTag.kSelectorFDValue, bytes0);
         expect(e0, isNull);
 

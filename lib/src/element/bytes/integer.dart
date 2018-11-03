@@ -27,7 +27,7 @@ class SSbytes extends SS with ByteElement<int>, Int16Mixin {
   SSbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static SSbytes fromBytes(DicomBytes bytes, [Decoder _]) => SSbytes(bytes);
+  static SSbytes fromBytes(DicomBytes bytes, [Charset _]) => SSbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static ByteElement fromValues(int code, List<int> vList,
@@ -58,7 +58,7 @@ class SLbytes extends SL with ByteElement<int>, Int32Mixin {
   SLbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static SLbytes fromBytes(DicomBytes bytes, [Decoder _]) => SLbytes(bytes);
+  static SLbytes fromBytes(DicomBytes bytes, [Charset _]) => SLbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static SLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
@@ -90,7 +90,7 @@ class OBbytes extends OB with ByteElement<int>, Uint8Mixin {
   OBbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OBbytes fromBytes(DicomBytes bytes, [Decoder _]) =>
+  static OBbytes fromBytes(DicomBytes bytes, [Charset _]) =>
       OBbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
@@ -109,7 +109,7 @@ class UNbytes extends UN with ByteElement<int>, Uint8Mixin {
   UNbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static UNbytes fromBytes(DicomBytes bytes, [Decoder _]) =>
+  static UNbytes fromBytes(DicomBytes bytes, [Charset _]) =>
       UNbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
@@ -139,7 +139,7 @@ class USbytes extends US with ByteElement<int>, Uint16Mixin {
   USbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static USbytes fromBytes(DicomBytes bytes, [Decoder _]) => USbytes(bytes);
+  static USbytes fromBytes(DicomBytes bytes, [Charset _]) => USbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static ByteElement fromValues(int code, List<int> vList,
@@ -159,7 +159,7 @@ class OWbytes extends OW with ByteElement<int>, Uint16Mixin {
   OWbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OWbytes fromBytes(DicomBytes bytes, [Decoder _]) =>
+  static OWbytes fromBytes(DicomBytes bytes, [Charset _]) =>
       OWbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
@@ -191,7 +191,7 @@ class ATbytes extends AT with ByteElement<int>, Uint32Mixin {
   ATbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ATbytes fromBytes(DicomBytes bytes, [Decoder _]) => ATbytes(bytes);
+  static ATbytes fromBytes(DicomBytes bytes, [Charset _]) => ATbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static ATbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
@@ -211,7 +211,7 @@ class OLbytes extends OL with ByteElement<int>, Uint32Mixin {
   OLbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static OLbytes fromBytes(DicomBytes bytes, [Decoder _]) => OLbytes(bytes);
+  static OLbytes fromBytes(DicomBytes bytes, [Charset _]) => OLbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static OLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {
@@ -231,7 +231,7 @@ class ULbytes extends UL with ByteElement<int>, Uint32Mixin {
   ULbytes(this.bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static ULbytes fromBytes(DicomBytes bytes, [Decoder _]) =>
+  static ULbytes fromBytes(DicomBytes bytes, [Charset _]) =>
       // If the code is (gggg,0000) create a Group Length element
       (bytes.getUint16(2) == 0) ? GLbytes(bytes) : ULbytes(bytes);
 
@@ -250,7 +250,7 @@ class GLbytes extends ULbytes {
   GLbytes(DicomBytes bytes) : super(bytes);
 
   // ignore: prefer_constructors_over_static_methods
-  static GLbytes fromBytes(DicomBytes bytes, [Decoder _]) => GLbytes(bytes);
+  static GLbytes fromBytes(DicomBytes bytes, [Charset _]) => GLbytes(bytes);
 
   // ignore: prefer_constructors_over_static_methods
   static GLbytes fromValues(int code, List<int> vList, {bool isEvr = true}) {

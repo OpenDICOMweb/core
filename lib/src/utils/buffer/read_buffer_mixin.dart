@@ -261,7 +261,7 @@ abstract class ReadBufferMixin {
 
   List<String> readUtf8List(int length) {
     final v = bytes.stringListFromUtf8(
-        offset: _rIndex, length: length, allowMalformed: true);
+        offset: _rIndex, length: length, allowInvalid: true);
     _rIndex += length;
     return v;
   }

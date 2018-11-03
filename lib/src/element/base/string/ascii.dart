@@ -33,7 +33,7 @@ abstract class Ascii extends StringBase {
   @override
   bool get isSingleValued => false;
 
-  Bytes get asBytes => Bytes.fromAsciiList(values, maxVFLength);
+  Bytes get asBytes => Bytes.asciiFromList(values, maxVFLength);
 
   @override
   TypedData get typedData =>

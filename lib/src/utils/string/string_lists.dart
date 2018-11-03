@@ -124,7 +124,7 @@ Bytes textListToBytes(Iterable<String> values) {
     final s = values.elementAt(0);
     if (s == null) return nullValueError();
     if (s.isEmpty) return kEmptyBytes;
-    return Bytes.fromUtf8(s);
+    return Bytes.utf8(s);
   }
   return badValuesLength(values, 1, 1);
 }

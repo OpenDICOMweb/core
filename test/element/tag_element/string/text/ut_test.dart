@@ -229,7 +229,7 @@ void main() {
     test('UT fromBytes random', () {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 1);
-        final bytes = Bytes.fromUtf8List(vList1);
+        final bytes = Bytes.utf8FromList(vList1);
         log.debug('bytes:$bytes');
         final e0 = UTtag.fromBytes(PTag.kUniversalEntityID, bytes);
         log.debug('e0: ${e0.info}');
@@ -241,7 +241,7 @@ void main() {
       for (var i = 0; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 10);
         for (var listS in vList1) {
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
           final e1 = UTtag.fromBytes(PTag.kSelectorUTValue, bytes0);
           log.debug('e1: ${e1.info}');
@@ -255,7 +255,7 @@ void main() {
         final vList1 = rsg.getUTList(1, 10);
         for (var listS in vList1) {
           global.throwOnError = false;
-          final bytes0 = Bytes.fromAscii(listS);
+          final bytes0 = Bytes.ascii(listS);
           //final bytes0 = Bytes();
           final e1 = UTtag.fromBytes(PTag.kSelectorCSValue, bytes0);
           expect(e1, isNull);
@@ -366,7 +366,7 @@ void main() {
       for (var i = 1; i < 10; i++) {
         final vList1 = rsg.getUTList(1, 1);
         final s0 = vList1[0];
-        final bytes = Bytes.fromUtf8(s0);
+        final bytes = Bytes.utf8(s0);
         final s1 = bytes.stringFromUtf8();
         log.debug('s1: $s1');
         expect(s1, equals(s0));
@@ -426,7 +426,7 @@ void main() {
       global.throwOnError = false;
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
-        final bytes = Bytes.fromUtf8List(vList0);
+        final bytes = Bytes.utf8FromList(vList0);
         final e0 = UTtag(PTag.kSelectorUTValue, vList0);
         final vfb0 = e0.valuesFromBytes(bytes);
         expect(vfb0, equals(vList0));
@@ -767,8 +767,8 @@ void main() {
         final vList0 = rsg.getUTList(1, 1);
         global.throwOnError = false;
         final values = ascii.encode(vList0[0]);
-        final tbd0 = Bytes.fromUtf8List(vList0);
-        final tbd1 = Bytes.fromUtf8List(vList0);
+        final tbd0 = Bytes.utf8FromList(vList0);
+        final tbd1 = Bytes.utf8FromList(vList0);
         log.debug('tbd0: ${tbd0.buffer.asUint8List()}, values: $values');
         expect(tbd0.buffer.asUint8List(), equals(values));
         expect(tbd0.buffer == tbd1.buffer, false);
@@ -776,8 +776,8 @@ void main() {
       for (var s in goodUTList) {
         for (var a in s) {
           final values = ascii.encode(a);
-          final tbd2 = Bytes.fromUtf8List(s);
-          final tbd3 = Bytes.fromUtf8List(s);
+          final tbd2 = Bytes.utf8FromList(s);
+          final tbd3 = Bytes.utf8FromList(s);
           expect(tbd2.buffer.asUint8List(), equals(values));
           expect(tbd2.buffer == tbd3.buffer, false);
         }
@@ -789,14 +789,14 @@ void main() {
         final vList0 = rsg.getUTList(1, 1);
         global.throwOnError = false;
         final s0 = vList0[0];
-        final bd0 = Bytes.fromUtf8(s0);
+        final bd0 = Bytes.utf8(s0);
         final s1 = bd0.stringFromUtf8();
         log.debug('fbd0: $s1, vList0: $vList0');
         expect(s1, equals(s0));
       }
       for (var sList in goodUTList) {
         final s0 = sList[0];
-        final bytes = Bytes.fromUtf8(s0);
+        final bytes = Bytes.utf8(s0);
         final s1 = bytes.stringFromUtf8();
         expect(s1, equals(s0));
       }
@@ -805,41 +805,41 @@ void main() {
     test('UT fromBytes', () {
       final vList = rsg.getUTList(1, 1);
       final s = vList[0];
-      final bytes = Bytes.fromUtf8(s);
+      final bytes = Bytes.utf8(s);
       log.debug('UT.fromBytes(bytes):  $bytes');
       expect(bytes.stringFromUtf8(), equals(s));
     });
 
     test('UT toUint8List', () {
       final vList1 = rsg.getUTList(1, 1);
-      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.fromUtf8List(vList1)}');
+      log.debug('Bytes.fromUtf8List(vList1): ${Bytes.utf8FromList(vList1)}');
       if (vList1[0].length.isOdd) vList1[0] = '${vList1[0]} ';
       log.debug('vList1:"$vList1"');
       final values = ascii.encode(vList1[0]);
-      expect(Bytes.fromUtf8List(vList1), equals(values));
+      expect(Bytes.utf8FromList(vList1), equals(values));
     });
 
     test('UT toBytes', () {
       for (var i = 0; i < 10; i++) {
         final vList0 = rsg.getUTList(1, 1);
         global.throwOnError = false;
-        final toB0 = Bytes.fromUtf8List(vList0, kMaxShortVF);
-        final bytes0 = Bytes.fromAscii(vList0.join('\\'));
+        final toB0 = Bytes.utf8FromList(vList0, kMaxShortVF);
+        final bytes0 = Bytes.ascii(vList0.join('\\'));
         log.debug('toBytes:$toB0, bytes0: $bytes0');
         expect(toB0, equals(bytes0));
       }
 
       for (var s in goodUTList) {
-        final toB1 = Bytes.fromUtf8List(s, kMaxShortVF);
-        final bytes1 = Bytes.fromAscii(s.join('\\'));
+        final toB1 = Bytes.utf8FromList(s, kMaxShortVF);
+        final bytes1 = Bytes.ascii(s.join('\\'));
         log.debug('toBytes:$toB1, bytes1: $bytes1');
         expect(toB1, equals(bytes1));
       }
 
-      final toB2 = Bytes.fromUtf8List([''], kMaxShortVF);
+      final toB2 = Bytes.utf8FromList([''], kMaxShortVF);
       expect(toB2, equals(<String>[]));
 
-      final toB3 = Bytes.fromUtf8List([], kMaxShortVF);
+      final toB3 = Bytes.utf8FromList([], kMaxShortVF);
       expect(toB3, equals(<String>[]));
       /*global.throwOnError = false;
       final toB2 = Bytes.fromUtf8List([null], kMaxShortVF);
@@ -853,7 +853,7 @@ void main() {
     test('UT isValidBytesArgs', () {
       for (var i = 1; i < 10; i++) {
         final vList0 = rsg.getUTList(1, i);
-        final vfBytes = Bytes.fromUtf8List(vList0);
+        final vfBytes = Bytes.utf8FromList(vList0);
 
         for (var tag in utVM1Tags) {
           final e0 = UT.isValidBytesArgs(tag, vfBytes);
@@ -861,7 +861,7 @@ void main() {
         }
       }
       final vList0 = rsg.getUTList(1, 1);
-      final vfBytes = Bytes.fromUtf8List(vList0);
+      final vfBytes = Bytes.utf8FromList(vList0);
 
       final e1 = UT.isValidBytesArgs(null, vfBytes);
       expect(e1, false);

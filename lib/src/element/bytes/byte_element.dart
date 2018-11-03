@@ -95,10 +95,10 @@ abstract class ByteElement<V> {
     final vrIndex = isEvr ? bytes.vrIndex : kUNIndex;
     final tag = lookupTagByCode(code, vrIndex, ds);
     final index = getValidVR(vrIndex, tag.vrIndex);
-    final decoder = (ds == null) ? utf8.decoder : ds.charset.decoder;
+    final charset = (ds == null) ? utf8 : ds.charset;
     return (index == kSQIndex)
         ? sqFromBytes(ds, <ByteItem>[], bytes)
-        : _bytesMakers[index](bytes, decoder);
+        : _bytesMakers[index](bytes, charset);
   }
 
   static final List<Function> _bytesMakers = <Function>[
