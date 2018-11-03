@@ -153,7 +153,7 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
           [int maxLength, String separator = '\\']) =>
       Bytes.utf8(_listToString(vList, maxLength, separator));
 
-  /// Returns a [Bytes] containing Latin (1 - 8) code units.
+  /// Returns a [Bytes] containing Latin (1 - 9) code units.
   ///
   /// The [String]s in [vList] are [join]ed into a single string using
   /// using [separator] (which defaults to '\') to separate them, and
@@ -162,10 +162,12 @@ class Bytes extends ListBase<int> with BytesMixin implements Comparable<Bytes> {
           [int maxLength, String separator = '\\']) =>
       Bytes.latin(_listToString(vList, maxLength, separator));
 
-  /// Returns a [Bytes] containing UTF-8 code units.
-  factory Bytes.fromStringList(List<String> vList, Charset charset,
-          {int maxLength, String separator = '\\'}) =>
-      Bytes.fromString(_listToString(vList, maxLength, separator), charset);
+  /// Returns a [Bytes] containing [charset] code units.
+  /// [charset] defaults to UTF8.
+  factory Bytes.fromStringList(List<String> vList,
+          {Charset charset, int maxLength, String separator = '\\'}) =>
+      Bytes.fromString(
+          _listToString(vList, maxLength, separator), charset ?? utf8);
 
   // *** Comparable interface
 
